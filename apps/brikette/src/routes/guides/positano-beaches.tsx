@@ -1,5 +1,5 @@
 // src/routes/guides/positano-beaches.tsx
-import { memo } from "react";
+import { Fragment, memo, type ReactNode } from "react";
 import type { LoaderFunctionArgs } from "react-router-dom";
 import type { LinksFunction, MetaFunction } from "react-router";
 import i18n from "@/i18n";
@@ -9,18 +9,19 @@ import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import ImageGallery from "@/components/guides/ImageGallery";
 import GenericContent, { type GenericContentTranslator } from "@/components/guides/GenericContent";
 import ProsConsTable from "@/components/guides/ProsConsTable";
-import TableOfContents from "@/components/guides/TableOfContents";
 import GuideFaqSection from "@/components/guides/GuideFaqSection";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { guideHref, guideSlug, GUIDE_KEYS, type GuideKey } from "@/routes.guides-helpers";
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { BASE_URL } from "@/config/site";
+import { IS_DEV } from "@/config/env";
 import { getSlug } from "@/utils/slug";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import { useGuideTranslations } from "./guide-seo/translations";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import GuideSeoTemplate from "./_GuideSeoTemplate";
+import { renderGuideLinkTokens } from "./utils/linkTokens";
 
 import {
   GUIDE_KEY as GUIDE_KEY_CONST,
@@ -178,6 +179,13 @@ function PositanoBeaches(): JSX.Element {
   // Grab the active guides translator so we can pass the exact function
   // reference through to GenericContent in manual fallback scenarios.
   const { tGuides, guidesEn, anyEn } = useGuideTranslations(useCurrentLanguage());
+  const renderTokens = (value: string, keyBase: string, lang: AppLanguage): ReactNode => {
+    const nodes = renderGuideLinkTokens(value, lang, keyBase);
+    if (nodes.length === 1) {
+      return nodes[0] ?? null;
+    }
+    return nodes.map((node, index) => <Fragment key={`${keyBase}-${index}`}>{node}</Fragment>);
+  };
   return (
     <GuideSeoTemplate
       guideKey={GUIDE_KEY}
@@ -246,23 +254,78 @@ function PositanoBeaches(): JSX.Element {
           /* noop */
         }
 
-        try {
-          const tocItems = (() => {
-            const fallbackToc = parsedEn?.toc ?? [];
-            if (fallbackToc.length > 0) return fallbackToc;
-            const explicit = resolved.toc ?? [];
-            if (explicit.length > 0) return explicit;
-            const derived =
-              resolved.sections
-                ?.filter((section) => Boolean(readNonEmptyString(section.id) && readNonEmptyString(section.title)))
-                .map((section) => ({ href: `#${section.id}`, label: section.title })) ?? [];
-            return derived;
-          })();
-          if (tocItems.length > 0) {
-            parts.push(<TableOfContents key="toc" items={tocItems} />);
+
+        const normalizeText = (value: unknown, fallback: unknown, key: string): string => {
+          const resolvedValue = resolveLocalizedString(value, typeof fallback === "string" ? fallback : "", key);
+          const trimmed = resolvedValue.trim();
+          if (!trimmed || trimmed === key || trimmed === key.replace(/^content\./, "")) {
+            return "";
           }
-        } catch {
-          /* ignore ToC synthesis errors */
+          return trimmed;
+        };
+
+        const introLocal = resolved.intro ?? [];
+        const introFallback = parsedEn?.intro ?? [];
+        const introItems = Array.from({ length: Math.max(introLocal.length, introFallback.length) })
+          .map((_, index) =>
+            normalizeText(introLocal[index], introFallback[index], `content.positanoBeaches.intro.${index}`),
+          )
+          .filter((value) => value.length > 0);
+        if (introItems.length > 0) {
+          parts.push(
+            <div key="intro" className="space-y-4">
+              {introItems.map((paragraph, index) => (
+                <p key={`intro-${index}`}>
+                  {renderTokens(paragraph, `intro-${index}`, ctx.lang)}
+                </p>
+              ))}
+            </div>,
+          );
+        }
+
+        const sectionsLocal = resolved.sections ?? [];
+        const sectionsFallback = parsedEn?.sections ?? [];
+        const sections = Array.from({ length: Math.max(sectionsLocal.length, sectionsFallback.length) })
+          .map((_, index) => {
+            const localSection = sectionsLocal[index];
+            const fallbackSection = sectionsFallback[index];
+            const idCandidate =
+              readNonEmptyString(localSection?.id) ?? readNonEmptyString(fallbackSection?.id) ?? `s-${index}`;
+            const title = normalizeText(
+              localSection?.title,
+              fallbackSection?.title,
+              `content.positanoBeaches.sections.${index}.title`,
+            );
+            const localBody = localSection?.body ?? [];
+            const fallbackBody = fallbackSection?.body ?? [];
+            const body = Array.from({ length: Math.max(localBody.length, fallbackBody.length) })
+              .map((_, bodyIndex) =>
+                normalizeText(
+                  localBody[bodyIndex],
+                  fallbackBody[bodyIndex],
+                  `content.positanoBeaches.sections.${index}.body.${bodyIndex}`,
+                ),
+              )
+              .filter((value) => value.length > 0);
+            if (!title && body.length === 0) return null;
+            return { id: idCandidate, title, body };
+          })
+          .filter((section): section is { id: string; title: string; body: string[] } => section !== null);
+        if (sections.length > 0) {
+          parts.push(
+            <div key="sections" className="space-y-10">
+              {sections.map((section) => (
+                <section key={section.id} id={section.id} className="scroll-mt-28 space-y-4">
+                  {section.title ? <h2>{section.title}</h2> : null}
+                  {section.body.map((paragraph, index) => (
+                    <p key={`${section.id}-${index}`}>
+                      {renderTokens(paragraph, `section-${section.id}-${index}`, ctx.lang)}
+                    </p>
+                  ))}
+                </section>
+              ))}
+            </div>,
+          );
         }
 
         const localGallery = (() => {
@@ -307,8 +370,8 @@ function PositanoBeaches(): JSX.Element {
         }
         try {
           // i18n-exempt -- TECH-000 [ttl=2026-12-31] Debug log label
-          if (process.env["DEBUG_TOC"] === "1") {
-            console.log(GALLERY_DEBUG_LABEL, {
+          if (IS_DEV && process.env["DEBUG_TOC"] === "1") {
+            console.info(GALLERY_DEBUG_LABEL, {
               local: localGallery.length,
               fb: fbGallery.length,
             });
@@ -375,8 +438,8 @@ function PositanoBeaches(): JSX.Element {
         if (faqsSrc.length > 0) {
           try {
             // i18n-exempt -- TECH-000 [ttl=2026-12-31] Debug log label
-            if (process.env["DEBUG_TOC"] === "1") {
-              console.log(FAQ_DEBUG_LABEL, { localCount: resolved.faqs?.length });
+            if (IS_DEV && process.env["DEBUG_TOC"] === "1") {
+              console.info(FAQ_DEBUG_LABEL, { localCount: resolved.faqs?.length });
             }
           } catch {
             /* noop */

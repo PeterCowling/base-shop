@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Política de Privacidade | Hostel Brikette",
+    "description": "Como o Hostel Brikette recolhe, usa, armazena e partilha dados pessoais quando navega no nosso site ou faz uma reserva."
+  },
+  "headings": {
+    "pageTitle": "Política de Privacidade",
+    "subtitle": "Como tratamos os seus dados pessoais"
+  },
+  "lastUpdated": {
+    "label": "Última atualização",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Nesta página",
+    "aria": "Índice da política de privacidade"
+  },
+  "sections": {
+    "intro": {
+      "title": "Visão geral",
+      "body": [
+        "Esta Política de Privacidade explica quais dados pessoais recolhemos, por que os recolhemos e como os utilizamos quando navega no nosso site, nos contacta ou faz uma reserva de quarto.",
+        "Se procura as regras e os termos comerciais de uma reserva (pagamentos, prazos de cancelamento, check-in/out e obrigações dos hóspedes), leia os nossos Termos e Condições para Reservas de Quartos."
+      ]
+    },
+    "controller": {
+      "title": "Quem é responsável pelos seus dados",
+      "body": [
+        "O responsável pelo tratamento é a Skylar SRL, que opera como Hostel Brikette (\"nós\").",
+        "Se tiver dúvidas sobre esta política ou quiser exercer os seus direitos de privacidade, contacte-nos em {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Dados pessoais que recolhemos",
+      "body": [
+        "Quando nos contacta ou solicita uma reserva, pode fornecer dados como o seu nome, endereço de e-mail, número de telefone, nacionalidade, datas de estadia e quaisquer mensagens que nos envie.",
+        "Se concluir uma reserva através de uma Agência de Viagens Online (OTA) ou de um motor de reservas de terceiros, esse fornecedor processa os seus dados de pagamento ao abrigo da sua própria política de privacidade. Normalmente recebemos a informação necessária para o alojar (por exemplo: nome do hóspede, contactos, datas e referência de reserva).",
+        "Quando navega no nosso site, os nossos servidores podem processar dados técnicos básicos (como endereço IP, informações do dispositivo e do navegador, e páginas solicitadas) para segurança, depuração e desempenho."
+      ]
+    },
+    "howWeUse": {
+      "title": "Como usamos os seus dados",
+      "body": [
+        "Para responder a pedidos e fornecer apoio ao cliente.",
+        "Para processar e gerir a sua reserva, check-in e comunicações relacionadas com a estadia.",
+        "Para cumprir obrigações legais (incluindo as relacionadas com a hotelaria e a segurança pública).",
+        "Para proteger e manter o nosso site (prevenção de fraude, monitorização de abusos e fiabilidade)."
+      ]
+    },
+    "legalBases": {
+      "title": "Bases legais (porque podemos tratar dados)",
+      "body": [
+        "Contrato: para tomar medidas a seu pedido antes de celebrar uma reserva e para cumprir o contrato de reserva.",
+        "Obrigação legal: para cumprir requisitos impostos pela lei aplicável (incluindo as regulamentações italianas para a hotelaria).",
+        "Interesses legítimos: para operar, proteger e melhorar o nosso site e comunicações, desde que esses interesses não prevaleçam sobre os seus direitos."
+      ]
+    },
+    "sharing": {
+      "title": "Com quem partilhamos dados",
+      "body": [
+        "Partilhamos dados pessoais apenas quando necessário para prestar serviços ou cumprir a lei. Isto pode incluir plataformas de reserva que escolher, fornecedores de pagamento usados por essas plataformas, fornecedores de e-mail/comunicações e prestadores técnicos que alojam ou protegem o nosso site.",
+        "Não vendemos dados pessoais."
+      ]
+    },
+    "retention": {
+      "title": "Durante quanto tempo guardamos dados",
+      "body": [
+        "Guardamos dados pessoais apenas pelo tempo necessário para os fins descritos acima e para cumprir requisitos legais, contabilísticos ou de reporte.",
+        "Os períodos de retenção podem variar consoante o tipo de registo e a obrigação legal aplicável."
+      ]
+    },
+    "security": {
+      "title": "Como protegemos os seus dados",
+      "body": [
+        "Usamos medidas técnicas e organizativas razoáveis para proteger os dados pessoais contra perda, uso indevido e acesso não autorizado.",
+        "Nenhum sistema pode ser garantido a 100%, mas trabalhamos continuamente para melhorar a segurança."
+      ]
+    },
+    "yourRights": {
+      "title": "Os seus direitos",
+      "body": [
+        "Dependendo da sua localização e da lei aplicável, pode ter direitos de acesso, correção, eliminação ou limitação do tratamento dos seus dados pessoais e de oposição a determinados tratamentos.",
+        "Para exercer os seus direitos, contacte-nos em {{email}}. Poderemos precisar de verificar a sua identidade."
+      ]
+    },
+    "international": {
+      "title": "Transferências internacionais",
+      "body": [
+        "Alguns prestadores de serviços podem processar dados fora do seu país. Quando necessário, utilizamos salvaguardas adequadas para transferências internacionais de dados."
+      ]
+    },
+    "changes": {
+      "title": "Alterações a esta política",
+      "body": [
+        "Podemos atualizar esta Política de Privacidade periodicamente. A versão mais recente é a publicada nesta página."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Voltar ao topo"
+  }
+}

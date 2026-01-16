@@ -75,6 +75,7 @@ model RentalOrder {
   stripeChargeId              String?
   stripeBalanceTransactionId  String?
   stripeCustomerId            String?
+  lineItems          Json?
 
   @@unique([shop, sessionId])
   @@unique([shop, trackingNumber])

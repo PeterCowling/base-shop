@@ -10,16 +10,16 @@
     "caption": "Hostel Brikette ligger en sving oppover fra holdeplassen. Beregn et par minutter slik at du kan stå i køen før bussen kommer."
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "På denne siden",
+    "before": "Før du drar",
+    "steps": "Steg for steg",
+    "knees": "Ben og bagasje",
+    "faqs": "Ofte stilte spørsmål"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "Hvorfor denne ruten fungerer",
       "body": [
         "Det er 120 meter (400 fot) gange fra vandrerhjemmets inngang til holdeplassen, på hovedveien.",
         "Skal du mot Amalfi er holdeplassen rett overfor Bar Internazionale. Kø på sjøutsiktssiden av veien.  Skal du mot Sorrento, venter du rett utenfor selve baren."
@@ -27,7 +27,7 @@
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "Billetter og timing",
       "body": [
         "Kjøp en SITA-billett på tabacchi eller inne i baren.  Ikke prøv å gå ombord på bussen uten billett, da du ikke vil kunne kjøpe en på selve bussen.  Presenter billetten din til sjåføren ved ombordstigning.  Hvis du rekker den første bussen ut, kjøp billett dagen før, og kom til oss i resepsjonen for å avtale utsjekking.",
         "Sommerbusser fyller ofte. Planlegg deretter, spesielt i de mest travle periodene."
@@ -42,16 +42,16 @@
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
   "kneesList": [],
   "kneesDockPrefix": "Begynner du med bagasje ved fergekaien? Bruk vår",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesDockLinkLabel": "bagasjerute fra fergekaien",
   "kneesPorterPrefix": "Trenger du portørpriser eller bestillingshjelp? Sjekk",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "portørtjenesteguiden",
   "faqs": [
     {
-      "q": "How early should I reach the stop?",
+      "q": "Hvor tidlig bør jeg være ved holdeplassen?",
       "a": "Kom minst 10 minutter før din valgte buss om sommeren, slik at du kan stå i kø i nærheten av krisesenteret og gå komfortabelt ombord."
     },
     {
-      "q": "Where can I buy or validate tickets?",
+      "q": "Hvor kan jeg kjøpe eller validere billetter?",
       "a": "Bruk tabacchi ved siden av Bar Internazionale for billettsalg. Validatorer er om bord; klipp eller skann billetten din så snart du går på."
     }
   ],

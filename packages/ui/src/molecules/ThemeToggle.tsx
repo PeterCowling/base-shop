@@ -1,5 +1,5 @@
 // Copied from src/components/header/ThemeToggle.tsx
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "@ui/hooks/useTheme";
 import { Moon, Sun } from "lucide-react";
 import { memo, useCallback } from "react";
 import { useTranslations } from "@acme/i18n";

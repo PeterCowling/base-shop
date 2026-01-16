@@ -102,7 +102,7 @@
   ],
   "prosCons": [
     {
-      "title": "Fornillo",
+      "title": "포르닐로",
       "pros": [
         "선베드 15유로부터",
         "넓은 무료 구역과 숨은 무료 공간",
@@ -114,7 +114,7 @@
       ]
     },
     {
-      "title": "Spiaggia Grande",
+      "title": "스피아지아 그란데",
       "pros": [
         "포시타노 시내를 배경으로 한 상징적인 전망",
         "중심부 페리 연결",
@@ -126,7 +126,7 @@
       ]
     },
     {
-      "title": "Arienzo",
+      "title": "아리엔초",
       "pros": [
         "오후까지 이어지는 풍부한 일조",
         "점심과 보트가 포함된 패키지",
@@ -138,7 +138,7 @@
       ]
     },
     {
-      "title": "Laurito",
+      "title": "라우리토",
       "pros": [
         "늦은 오후까지 이어지는 햇살",
         "다 아돌포의 상징적인 점심",
@@ -151,7 +151,7 @@
       "guideKey": "lauritoBeachGuide"
     },
     {
-      "title": "Gavitella (Praiano)",
+      "title": "가비텔라(프라이아노)",
       "pros": [
         "석양과 함께하는 아페리티보",
         "레스토랑 테라스"
@@ -162,7 +162,7 @@
       ]
     },
     {
-      "title": "Marina di Praia",
+      "title": "마리나 디 프라이아",
       "pros": [
         "매력적인 어촌 풍경",
         "리도 옆 무료 구간"
@@ -173,7 +173,7 @@
       ]
     },
     {
-      "title": "Fiordo di Furore",
+      "title": "피오르도 디 푸로레",
       "pros": [
         "무료 입장",
         "절벽 다이빙",
@@ -185,7 +185,7 @@
       ]
     },
     {
-      "title": "Regina Giovanna Bath",
+      "title": "레지나 조반나 바스",
       "pros": [
         "무료 천연 풀",
         "무더운 날에 어울리는 시원한 물"
@@ -196,7 +196,7 @@
       ]
     },
     {
-      "title": "Amalfi Marina Grande",
+      "title": "아말피 마리나 그란데",
       "pros": [
         "다양한 클럽 선택지",
         "페리·버스 접근 용이"
@@ -209,39 +209,39 @@
   ],
   "itemList": [
     {
-      "name": "Fornillo",
+      "name": "포르닐로",
       "note": "선베드 15유로와 두 개의 무료 구역이 있는 현지인 추천 해변."
     },
     {
-      "name": "Spiaggia Grande",
+      "name": "스피아지아 그란데",
       "note": "상징적인 전망과 높은 요금의 클럽, 중앙 무료 구역이 있는 메인 해변."
     },
     {
-      "name": "Arienzo",
+      "name": "아리엔초",
       "note": "300개 계단이나 워터택시로 가는 햇살 가득한 테라스형 해변."
     },
     {
-      "name": "Laurito",
+      "name": "라우리토",
       "note": "다 아돌포와 빌라 트레 빌레 셔틀 보트가 오가는 아담한 만."
     },
     {
-      "name": "Gavitella",
+      "name": "가비텔라",
       "note": "석양 아페리티보에 제격인 프라이아노 데크(클럽 전용)."
     },
     {
-      "name": "Marina di Praia",
+      "name": "마리나 디 프라이아",
       "note": "작은 무료 구역과 리도가 공존하는 어촌 해변."
     },
     {
-      "name": "Fiordo di Furore",
+      "name": "피오르도 디 푸로레",
       "note": "다리가 둘러싼 극적인 만. 무료지만 공간이 매우 좁음."
     },
     {
-      "name": "Regina Giovanna Bath",
+      "name": "레지나 조반나 바스",
       "note": "소렌토의 숨은 수영 명소. 무료지만 준비물 필수."
     },
     {
-      "name": "Amalfi Marina Grande",
+      "name": "아말피 마리나 그란데",
       "note": "두오모 맞은편에 늘어선 전통 아말피 리도."
     }
   ],

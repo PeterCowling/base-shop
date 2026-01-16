@@ -1,98 +1,95 @@
 [
   {
     "id": "01K5NZ3KVH5TQXYVFZW27HCE10",
-    "sku": "DRAFT-1758452633457",
+    "sku": "green-sneaker",
     "title": {
-      "en": "Untitled",
-      "de": "",
-      "it": ""
+      "en": "Eco Runner — Green",
+      "de": "Eco Runner — Grün",
+      "it": "Eco Runner — Verde"
     },
     "description": {
-      "en": "",
-      "de": "",
-      "it": ""
+      "en": "Lightweight upper knit from 90% recycled PET. Natural cork insole.",
+      "de": "Leichter Strick aus 90% recyceltem PET. Natürliche Kork‑Einlegesohle.",
+      "it": "Tomaia leggera in maglia da 90% PET riciclato. Soletta in sughero naturale."
     },
-    "price": 0,
+    "price": 119,
     "currency": "EUR",
-    "media": [],
-    "status": "draft",
-    "shop": "bcd",
+    "deposit": 50,
+    "forSale": true,
+    "forRental": false,
+    "media": [
+      {
+        "url": "/shop/green.jpg",
+        "type": "image",
+        "altText": "Eco Runner sneaker in green"
+      }
+    ],
+    "status": "active",
+    "shop": "cover-me-pretty",
     "row_version": 1,
     "created_at": "2025-09-21T11:03:53.453Z",
     "updated_at": "2025-09-21T11:03:53.453Z"
   },
   {
     "id": "01K5NWE2T4JGCXRAC94K8TNBH4",
-    "sku": "DRAFT-1758449830724",
+    "sku": "sand-sneaker",
     "title": {
-      "en": "Untitled",
-      "de": "",
-      "it": ""
+      "en": "Eco Runner — Sand",
+      "de": "Eco Runner — Sand",
+      "it": "Eco Runner — Sabbia"
     },
     "description": {
-      "en": "",
-      "de": "",
-      "it": ""
+      "en": "Earth-tone edition coloured with mineral pigments; zero water waste.",
+      "de": "Erdton‑Edition mit Mineralpigmenten gefärbt; ohne Wasserabfall.",
+      "it": "Edizione dai toni naturali colorata con pigmenti minerali; zero sprechi d'acqua."
     },
-    "price": 0,
+    "price": 119,
     "currency": "EUR",
-    "media": [],
-    "status": "draft",
-    "shop": "bcd",
+    "deposit": 50,
+    "forSale": true,
+    "forRental": true,
+    "media": [
+      {
+        "url": "/shop/sand.jpg",
+        "type": "image",
+        "altText": "Eco Runner sneaker in sand"
+      }
+    ],
+    "status": "active",
+    "shop": "cover-me-pretty",
     "row_version": 1,
     "created_at": "2025-09-21T10:17:10.720Z",
     "updated_at": "2025-09-21T10:17:10.720Z"
   },
   {
     "id": "01K5NWC3QSKWPWH5H0792AT3QR",
-    "sku": "DRAFT-1758449766137",
+    "sku": "black-sneaker",
     "title": {
-      "en": "Untitled",
-      "de": "",
-      "it": ""
+      "en": "Eco Runner — Black",
+      "de": "Eco Runner — Schwarz",
+      "it": "Eco Runner — Nero"
     },
     "description": {
-      "en": "",
-      "de": "",
-      "it": ""
+      "en": "All-black favourite with algae-based foam midsole for extra bounce.",
+      "de": "All‑Black‑Favorit mit Algen‑Schaum‑Zwischensohle für extra Federung.",
+      "it": "Preferito total black con intersuola in schiuma a base di alghe per più rimbalzo."
     },
-    "price": 0,
+    "price": 119,
     "currency": "EUR",
-    "media": [],
-    "status": "draft",
-    "shop": "bcd",
+    "deposit": 50,
+    "forSale": true,
+    "forRental": false,
+    "media": [
+      {
+        "url": "/shop/black.jpg",
+        "type": "image",
+        "altText": "Eco Runner sneaker in black"
+      }
+    ],
+    "status": "active",
+    "shop": "cover-me-pretty",
     "row_version": 1,
     "created_at": "2025-09-21T10:16:06.135Z",
     "updated_at": "2025-09-21T10:16:06.135Z"
-  },
-  {
-    "id": "123",
-    "sku": "demo-123",
-    "title": {
-      "en": "Demo"
-    },
-    "description": {
-      "en": ""
-    },
-    "price": 1999,
-    "currency": "USD",
-    "media": [],
-    "shop": "bcd",
-    "status": "draft",
-    "row_version": 0,
-    "created_at": "2025-01-01T00:00:00.000Z",
-    "updated_at": "2025-01-01T00:00:00.000Z",
-    "dailyRate": 100,
-    "weeklyRate": 500,
-    "monthlyRate": 1500,
-    "deposit": 1000,
-    "forSale": true,
-    "forRental": true,
-    "availability": [
-      {
-        "from": "2025-01-01T00:00:00.000Z",
-        "to": "2025-12-31T23:59:59.000Z"
-      }
-    ]
   }
 ]

@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Husregler | Hostel Brikette",
+    "description": "Husregler for Hostel Brikette om adfærd, besøgende, stille tider, sikkerhed, nøglekort og procedurer på stedet."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Husregler",
+    "pageSubtitle": "Husregler"
+  },
+  "toc": {
+    "title": "Indhold",
+    "aria": "Indholdsfortegnelse"
+  },
+  "footer": {
+    "end": "Slut på dokumentet.",
+    "backToTop": "Tilbage til toppen"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Respektfuld adfærd og sikkerhed",
+      "body": [
+        "Gælder: alle gæster og besøgende på stedet.",
+        "Disse Husregler er en del af din overnatningsaftale. Overtrædelser kan medføre bortvisning fra ejendommen og/eller Ophør ved misligholdelse i henhold til Bookingvilkårene.",
+        "1.1 Behandl personalet og andre gæster respektfuldt. Chikane, trusler, vold eller diskriminerende adfærd er ikke tilladt.",
+        "1.2 Følg personalets instruktioner vedrørende sikkerhed og drift.",
+        "1.3 Undlad at beskadige ejendom eller forstyrre sikkerhedsudstyr."
+      ]
+    },
+    "s2": {
+      "title": "2. Stilletider og støj",
+      "body": [
+        "2.1 Stilletider er 23:45–08:00. I stilletiden: hold støj på et minimum i værelser og fællesområder; ingen høj musik/højtalere; tag telefonsamtaler uden for soveområder.",
+        "2.2 Hvis du gentagne gange forstyrrer andre, kan vi bede dig forlade stedet i henhold til Bookingvilkårene."
+      ]
+    },
+    "s3": {
+      "title": "3. Besøgende / Midlertidige gæster (kun fællesområder)",
+      "body": [
+        "3.1 Besøgende er kun tilladt efter vores skøn og kun i fællesområder. Besøgende er ikke tilladt i gæsteværelser/sovesale.",
+        "3.2 Besøgstider (hvis tilladt) er 10:30–23:00, afhængigt af driftsbehov.",
+        "3.3 Besøgende skal fremvise gyldigt originalt ID og overholde sikkerhedsforanstaltninger (herunder armbånd/bånd, hvis anvendt).",
+        "3.4 Gæster må ikke \"sponsere\" besøgende ind i værelser. Forsøg på at lukke uregistrerede personer ind i værelser er en alvorlig overtrædelse."
+      ]
+    },
+    "s4": {
+      "title": "4. Uregistrerede personer",
+      "body": [
+        "4.1 Kun registrerede gæster må overnatte.",
+        "4.2 Hvis en uregistreret person findes i et værelse eller overnatter: kan vi kræve øjeblikkelig check‑in/registrering (hvis muligt) eller bede vedkommende om at forlade stedet, og vi kan opkræve gebyrer som beskrevet i Bookingvilkårene (Sikkerhedsdepositum og skader/gebyrer), underlagt gældende lov."
+      ]
+    },
+    "s5": {
+      "title": "5. Check‑in og ankomst",
+      "body": [
+        "5.1 Det officielle check‑in‑vindue er 15:00–22:00.",
+        "5.2 Ankomst før åbning: Hvis du ankommer før 10:30, kan du muligvis ikke komme ind.",
+        "5.3 Mellem åbningstid og check‑in kan vi (efter eget skøn) tillade: ventetid i udpegede områder, besøgende/midlertidige gæster i fællesområder og/eller bagageopbevaring under særskilte vilkår."
+      ]
+    },
+    "s6": {
+      "title": "6. ID‑krav (på stedet)",
+      "body": [
+        "6.1 Gæster og besøgende skal fremvise gyldigt originalt ID på anmodning af hensyn til sikkerhed og registrering.",
+        "6.2 Manglende fremvisning af ID kan medføre, at du bliver bedt om at forlade stedet."
+      ]
+    },
+    "s7": {
+      "title": "7. Nøglekort, armbånd/sikkerhedsbånd og adgangskontrol",
+      "body": [
+        "7.1 Nøglekort og/eller adgangskoder er personlige. Del dem ikke.",
+        "7.2 Når sikkerhedsbånd anvendes, skal de bæres på stedet og vises på anmodning.",
+        "7.3 Mistede/beskadigede nøglekort eller bånd skal rapporteres straks. Eventuelle erstatningsgebyrer er oplyst på stedet og/eller i Bookingvilkårene."
+      ]
+    },
+    "s8": {
+      "title": "8. Linned og depositum",
+      "body": [
+        "8.1 Linned stilles til rådighed pr. gæst (som beskrevet ved check‑in).",
+        "8.2 Hvis der opkræves depositum (f.eks. nøglekort/linned‑depositum på 10 €), refunderes det efter check‑out‑processen, forudsat at udleverede genstande returneres, og at eventuelle fradrag er tilladt i henhold til Bookingvilkårene."
+      ]
+    },
+    "s9": {
+      "title": "9. Sovesals‑etikette og valg af seng",
+      "body": [
+        "9.1 Senge i sovesale vælges efter først‑til‑mølle, medmindre andet er angivet.",
+        "9.2 Du må kun flytte til en anden ledig seng med personalets tilladelse og uden at forstyrre andre gæster.",
+        "9.3 Hold dit soveområde ryddeligt og opbevar ikke ting i andres områder."
+      ]
+    },
+    "s10": {
+      "title": "10. Alkoholpolitik",
+      "body": [
+        "10.1 Hvis Hostel Brikette har licens og vi forbyder udefrakommende alkohol: gæster må ikke medbringe alkohol købt uden for stedet. Hvis udefrakommende alkohol findes, kan personalet kræve, at den fjernes eller opbevare den til udlevering ved check‑out (hvor det er tilladt).",
+        "10.2 Gentagne eller alvorlige overtrædelser kan medføre Ophør ved misligholdelse i henhold til Bookingvilkårene og bortvisning fra ejendommen."
+      ]
+    },
+    "s11": {
+      "title": "11. Ulovlige eller farlige genstande",
+      "body": [
+        "11.1 Ulovlige stoffer, våben og farlige genstande er forbudt.",
+        "11.2 Vi kan konfiskere forbudte genstande, hvor det er tilladt, og/eller anmelde forhold til myndighederne, når det kræves."
+      ]
+    },
+    "s12": {
+      "title": "12. Væggelus (gæstens ansvar)",
+      "body": [
+        "12.1 Hvis du mistænker væggelus, skal du straks give besked. Flyt ikke værelser/senge og transportér ikke linned eller bløde genstande gennem ejendommen uden personalets instruktion.",
+        "12.2 Du kan blive bedt om at følge inddæmningsforanstaltninger (pose dine ejendele, vask) for at forhindre spredning.",
+        "12.3 Omkostninger til afhjælpning reguleres af Bookingvilkårene og vil være baseret på beviser og gældende lov."
+      ]
+    },
+    "s13": {
+      "title": "13. Check‑out, sen check‑out og ejendele",
+      "body": [
+        "13.1 Check‑out‑tiden er 07:30–10:30, medmindre du har skriftlig godkendelse til sen check‑out.",
+        "13.2 Sen check‑out (hvis tilbudt) er afhængig af tilgængelighed og skriftlig bekræftelse, gælder til 12:00 og koster EUR 40.",
+        "13.3 Hvis du ikke checker ud til tiden, kan vi: sikre dine ejendele (pakke og opbevare dem på rimelig vis); begrænse adgang til værelser/gæsteområder; opkræve gebyrer eller omkostninger som tilladt i Bookingvilkårene.",
+        "13.4 Ikke‑afhentede ejendele: efterladte genstande kan opbevares i 30 dage og derefter bortskaffes eller doneres, hvor det er lovligt."
+      ]
+    },
+    "s14": {
+      "title": "14. Håndhævelse",
+      "body": [
+        "14.1 Vi kan give advarsler ved mindre overtrædelser.",
+        "14.2 Alvorlige eller gentagne overtrædelser kan medføre bortvisning og Ophør ved misligholdelse i henhold til Bookingvilkårene.",
+        "14.3 Når der opkræves gebyrer (skader, ekstra rengøring, gebyrer), håndteres de i henhold til Bookingvilkårene."
+      ]
+    }
+  }
+}

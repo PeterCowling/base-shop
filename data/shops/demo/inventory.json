@@ -2,26 +2,31 @@
   {
     "sku": "blue-shirt-m",
     "productId": "blue-shirt",
-    "variant": {
-      "size": "m",
-      "color": "blue"
-    },
     "quantity": 4,
     "lowStockThreshold": 2,
     "wearCount": 1,
     "wearAndTearLimit": 10,
-    "maintenanceCycle": 5
+    "maintenanceCycle": 5,
+    "variantAttributes": {
+      "size": "m",
+      "color": "blue"
+    }
   },
   {
     "sku": "jeans-32",
     "productId": "jeans",
-    "variant": {
-      "size": "32"
-    },
     "quantity": 6,
     "lowStockThreshold": 3,
     "wearCount": 0,
     "wearAndTearLimit": 20,
-    "maintenanceCycle": 10
+    "maintenanceCycle": 10,
+    "variantAttributes": {
+      "size": "32"
+    }
+  },
+  {
+    "sku": "sku-1",
+    "productId": "p-1",
+    "quantity": 10
   }
 ]

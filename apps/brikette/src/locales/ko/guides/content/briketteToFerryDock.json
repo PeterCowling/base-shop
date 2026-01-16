@@ -8,9 +8,9 @@
     "짐을 가지고 호스텔 브리켓을 출발하시나요? 인테르노 포지타노(Interno Positano) 버스를 타고 내리막길을 따라가면 선착장 포터가 무거운 가방을 옮겨주므로 포지타노의 계단을 헤치지 않고도 페리에 도착할 수 있습니다."
   ],
   "beforeList": [
-    "현재 Interno Positano 시간표를 확인하세요. [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26)은 다음과 같습니다.",
+    "현재 Interno Positano 시간표를 확인하세요. [최신 시간표와 요금](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26)은 다음과 같습니다.",
     "탑승 전 Chiesa Nuova 옆에 있는 타바치에서 Interno Positano 티켓을 수령하세요(또는 리셉션에 문의하여 재고를 확인하세요).",
-    "부피가 큰 가방이 있는 경우 포터의 도움을 받으세요. 리셉션에서 미리 전화하거나 [porter service guide](guide:porterServices)에서 번호와 가격을 확인하세요."
+    "부피가 큰 가방이 있는 경우 포터의 도움을 받으세요. 리셉션에서 미리 전화하거나 [포터 서비스 가이드](guide:porterServices)에서 번호와 가격을 확인하세요."
   ],
   "sections": [
     {
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini에서 페리 선착장까지",
       "body": [
         "버스에서 내려 미리 예약한 포터를 만나고 Spiaggia Grande로 이어지는 보행자 전용 차선으로 곧장 걸어가세요.",
-        "약 7분 동안 내리막 산책로를 따라 가십시오. 가장 부드러운 경사로 구간을 유지하려면 [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)을 사용하십시오.",
+        "약 7분 동안 내리막 산책로를 따라 가십시오. 가장 부드러운 경사로 구간을 유지하려면 [이 경로](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)을 사용하십시오.",
         "페리 부두에서 담당자에게 체크인하세요. 포터는 수하물을 별도로 배달합니다. 여권, 약, 귀중품을 잘 보관하세요."
       ]
     }
@@ -50,9 +50,9 @@
     "포터는 여행 가방을 별도의 트롤리에 실을 수 있으므로 산책로에서는 데이팩만 관리할 수 있습니다."
   ],
   "kneesDockPrefix": "돌아올 때 오르막 버전이 필요합니까? 우리의 글을 읽어보세요",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "Chiesa Nuova 도착 가이드",
   "kneesPorterPrefix": "포터 가격과 예약 팁을 원하시나요? 확인해보세요",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "포터 서비스 가이드",
   "faqs": [
     {
       "q": "호스텔 근처 인테르노 포지타노 티켓을 어디에서 구입할 수 있나요?",

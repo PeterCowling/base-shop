@@ -48,13 +48,15 @@ export function SelectField({
   children,
   ...rootProps
 }: SelectFieldProps) {
+  const fieldClassName = className;
+  const isRequired = required;
   return (
     <FormField
       label={label}
       description={description}
       error={error}
-      required={required}
-      className={className}
+      {...(isRequired !== undefined ? { required: isRequired } : {})}
+      {...(fieldClassName !== undefined ? { className: fieldClassName } : {})}
       // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: inline render prop keeps Select wired to FormField ids for accessibility
       input={({ id, describedBy, ariaInvalid }) => (
         <Select {...rootProps}>
@@ -73,7 +75,9 @@ export function SelectField({
                 <SelectItem
                   key={option.value}
                   value={option.value}
-                  disabled={option.disabled}
+                  {...(option.disabled !== undefined
+                    ? { disabled: option.disabled }
+                    : {})}
                 >
                   {option.label}
                 </SelectItem>

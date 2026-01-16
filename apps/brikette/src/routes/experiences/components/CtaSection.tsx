@@ -29,7 +29,7 @@ export function CtaSection({ cta, ctaLinks }: CtaSectionProps) {
   ];
 
   return (
-    <Section padding="none" className="px-6 pb-24 sm:px-8" aria-labelledby={CTA_HEADING_ID}>
+    <Section padding="none" className="px-6 pb-24 sm:px-8 md:px-12 lg:px-16" aria-labelledby={CTA_HEADING_ID}>
       <Section
         as="div"
         padding="none"

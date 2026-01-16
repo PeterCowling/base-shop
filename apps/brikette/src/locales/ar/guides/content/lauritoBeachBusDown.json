@@ -5,16 +5,14 @@
   },
   "linkLabel": "حافلة إلى شاطئ لوريتو",
   "lead": {
-    "shareLabel": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
     "figures": [
       {
         "alt": "موقف حافلات تشيزا نوفا بجوار بار إنترناسيونالي",
-        "caption": "Chiesa Nuova – Bar Internazionale stop"
+        "caption": "موقف كييزيّا نوفا - بار إنترناسيونالي"
       },
       {
         "alt": "سلم يؤدي إلى شاطئ لوريتو (مع لافتة)",
-        "caption": "Signposted stairs down to Laurito"
+        "caption": "سلالم مُعلّمة نزولاً إلى لوريتو"
       }
     ]
   },
@@ -25,55 +23,55 @@
   "sections": [
     {
       "id": "reach-bus-stop",
-      "title": "Go to the Chiesa Nuova bus stop",
+      "title": "اذهب إلى موقف حافلات كييزيّا نوفا",
       "body": [
-        "Exit Hostel Brikette through the main door and walk down the steps to Viale Pasitea.",
-        "Turn left toward the Chiesa Nuova neighbourhood; the bus stop sits beside Bar Internazionale about 100 metres (330 feet) away.",
-        "Spot the blue-and-white SITA sign outside the bar — this is the Amalfi Coast line toward Praiano and Amalfi."
+        "اخرج من Hostel Brikette عبر الباب الرئيسي وانزل الدرج إلى فياليه بازيتيا.",
+        "انعطف يسارًا باتجاه حي كييزيّا نوفا؛ يقع الموقف بجوار بار إنترناسيونالي على بعد نحو 100 متر (330 قدمًا).",
+        "ابحث عن لافتة SITA الزرقاء والبيضاء خارج البار — هذا خط ساحل أمالفي باتجاه برايانو وأمالفي."
       ]
     },
     {
       "id": "buy-tickets",
-      "title": "Buy Amalfi Coast bus tickets",
+      "title": "اشترِ تذاكر حافلات ساحل أمالفي",
       "body": [
-        "Go inside Bar Internazionale (the tabacchi/newsagent) to buy tickets for the Amalfi Coast bus.",
-        "Purchase enough tickets for the outbound and return journeys; Laurito has no ticket sellers.",
-        "Keep the tickets ready but validate them only once you board."
+        "ادخل بار إنترناسيونالي (التبغ/بائع الصحف) لشراء تذاكر حافلة ساحل أمالفي.",
+        "اشترِ عددًا كافيًا لرحلة الذهاب والعودة؛ لا يوجد بائع تذاكر في لوريتو.",
+        "احتفظ بالتذاكر جاهزة لكن فعّلها فقط عند الصعود."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the opposite side of the road",
+      "title": "انتظر على الجانب المقابل من الطريق",
       "body": [
-        "Cross to the opposite side of Viale Pasitea after buying your ticket.",
-        "Stand in the pull-in area facing Amalfi so the driver can see you and raise your hand to signal the stop.",
-        "Use the posted timetable or a quick photo of the schedule to double-check the next departures."
+        "اعبر إلى الجانب المقابل من فياليه بازيتيا بعد شراء التذكرة.",
+        "قف في منطقة التوقف باتجاه أمالفي ليتمكن السائق من رؤيتك وارفع يدك للإشارة.",
+        "استخدم الجدول المعلّق أو صورة سريعة للتحقق من المواعيد القادمة."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride toward Laurito",
+      "title": "اركب باتجاه لوريتو",
       "body": [
-        "Board the blue SITA bus marked for Amalfi or Praiano when it arrives.",
-        "Stay alert as the coach makes request stops around Positano; press the button shortly before you reach Laurito.",
-        "Expect the ride to cover roughly 4.1 kilometres (2.5 miles) and around 10 minutes after the Positano Sponda stop."
+        "اصعد إلى حافلة SITA الزرقاء المتجهة إلى أمالفي أو برايانو عند وصولها.",
+        "ابقَ منتبهًا لأن الحافلة تتوقف حسب الطلب حول بوسيتانو؛ اضغط الزر قبل الوصول بقليل إلى لوريتو.",
+        "توقّع مسافة تقارب 4.1 كيلومتر (2.5 ميل) ونحو 10 دقائق بعد موقف بوسيتانو سبوندا."
       ]
     },
     {
       "id": "walk-down",
-      "title": "Walk down to the beach",
+      "title": "انزل سيرًا إلى الشاطئ",
       "body": [
-        "Step off at the Laurito stop beside the stairway down to the beach access road.",
-        "Walk a few metres back in the direction the bus came from and look for the signposted staircase on the seaward side.",
-        "Descend carefully — the steps are steep and can be slippery; sturdy footwear helps."
+        "انزل عند موقف لوريتو بجوار الدرج المؤدي إلى طريق الوصول للشاطئ.",
+        "ارجع بضعة أمتار باتجاه قدوم الحافلة وابحث عن الدرج المعلّم على جانب البحر.",
+        "انزل بحذر — الدرج شديد الانحدار وقد يكون زلقًا؛ الحذاء المتين يساعد."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "نصائح الحافلات",
   "tips": [
-    "The printed timetable lists Positano times but not Laurito; plan on Laurito being about 10 minutes after Sponda when leaving town.",
-    "Buy your return ticket before you leave — there are no shops near the beach to sell extras.",
-    "Follow the %LINK:lauritoBeachBusBack|bus-back guide% when you are ready to return uphill.",
-    "Check our %LINK:positanoBeaches|Positano beaches overview% for details on Laurito facilities and shuttle boats."
+    "الجدول المطبوع يعرض أوقات بوسيتانو وليس لوريتو؛ توقّع وصول لوريتو بعد سبوندا بنحو 10 دقائق عند مغادرة البلدة.",
+    "اشترِ تذكرة العودة قبل المغادرة — لا توجد متاجر قرب الشاطئ لشراء المزيد.",
+    "اتبع %LINK:lauritoBeachBusBack|دليل العودة بالحافلة% عندما تكون مستعدًا للصعود.",
+    "اطّلع على %LINK:positanoBeaches|نظرة عامة على شواطئ بوسيتانو% لمعرفة مرافق لوريتو وقوارب النقل."
   ]
 }

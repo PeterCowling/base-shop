@@ -7,6 +7,7 @@ import { Inline } from "../../atoms/primitives";
 import type { CommentThread } from "./CommentsDrawer";
 import Image from "next/image";
 import { LinkText } from "../../atoms";
+import { getCsrfToken } from "@acme/shared-utils";
 
 // i18n-exempt — internal editor UI; strings are minimal and not end-user content
 /* i18n-exempt */
@@ -153,8 +154,10 @@ export default function CommentsThreadDetails({
     data.append("file", file);
     setUploading(true);
     try {
-      const res = await fetch(`/cms/api/media?shop=${encodeURIComponent(shop)}`, {
+      const csrfToken = getCsrfToken();
+      const res = await fetch(`/api/media?shop=${encodeURIComponent(shop)}`, {
         method: "POST",
+        headers: csrfToken ? { "x-csrf-token": csrfToken } : undefined,
         body: data,
       });
       const json = await res.json();

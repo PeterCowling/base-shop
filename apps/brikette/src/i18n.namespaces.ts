@@ -46,6 +46,7 @@ export const APP_I18N_NAMESPACES = [
   "roomsPage",
   "rules",
   "security",
+  "houseRulesPage",
   "termsPage",
   "testimonials",
   "translation",

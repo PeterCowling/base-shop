@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/utils/faq.ts
 // -----------------------------------------------------------------------------
 // Helpers for working with FAQ translations across runtimes.
@@ -27,6 +26,8 @@ export interface LocalisedFaqItem {
   sourceUrl?: string;
   sourceLabel?: string;
 }
+
+export type FaqResourceImporter = (lang: string) => Promise<FaqResource | undefined>;
 
 const normalise = (value?: string): string => value?.trim() ?? "";
 
@@ -81,10 +82,12 @@ const importFaqResource = async (lang: string): Promise<FaqResource | undefined>
 
 const isLanguageCode = (lang: string): lang is LanguageCode => isSupportedLanguage(lang);
 
-export const loadFaqEntries = async (): Promise<FAQEntry[]> => {
+export const loadFaqEntries = async (
+  importer: FaqResourceImporter = importFaqResource,
+): Promise<FAQEntry[]> => {
   const languages = [...i18nConfig.supportedLngs];
   const resources = await Promise.all(
-    languages.map(async (lang) => ({ lang, resource: await importFaqResource(lang) })),
+    languages.map(async (lang) => ({ lang, resource: await importer(lang) })),
   );
 
   const english = resources.find((entry) => entry.lang === "en")?.resource;

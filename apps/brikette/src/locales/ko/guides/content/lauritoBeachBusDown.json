@@ -1,79 +1,77 @@
 {
   "seo": {
-    "title": "Bus from Hostel Brikette to Laurito Beach",
-    "description": "Walk to the Chiesa Nuova stop, ride the Amalfi Coast bus, and follow the stairs down to Laurito Beach."
+    "title": "Hostel Brikette에서 라우리토 해변으로 가는 버스",
+    "description": "키에사 누오바 정류장까지 걸어가 아말피 해안 버스를 타고 라우리토 해변으로 내려가는 계단을 따라가세요."
   },
-  "linkLabel": "Bus to Laurito Beach",
+  "linkLabel": "라우리토 해변 버스",
   "lead": {
-    "shareLabel": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
     "figures": [
       {
         "alt": "Bar Internazionale 옆 Chiesa Nuova 버스 정류장",
-        "caption": "Chiesa Nuova – Bar Internazionale stop"
+        "caption": "키에사 누오바 - Bar Internazionale 정류장"
       },
       {
         "alt": "라우리토 해변으로 내려가는 계단(표지판 있음)",
-        "caption": "Signposted stairs down to Laurito"
+        "caption": "라우리토로 내려가는 표지판 계단"
       }
     ]
   },
   "intro": [
-    "Reaching Laurito Beach from Hostel Brikette is simplest on the blue SITA Amalfi Coast bus that stops at Chiesa Nuova.",
-    "Use this guide to find the stop, buy tickets, ride to Laurito, and follow the final stairs down to the water."
+    "Hostel Brikette에서 라우리토 해변으로 가는 가장 쉬운 방법은 키에사 누오바에 정차하는 파란색 SITA 아말피 해안 버스입니다.",
+    "이 가이드로 정류장 찾기, 티켓 구매, 라우리토까지 이동, 마지막 계단 내려가기까지 확인하세요."
   ],
   "sections": [
     {
       "id": "reach-bus-stop",
-      "title": "Go to the Chiesa Nuova bus stop",
+      "title": "키에사 누오바 버스 정류장으로 이동",
       "body": [
-        "Exit Hostel Brikette through the main door and walk down the steps to Viale Pasitea.",
-        "Turn left toward the Chiesa Nuova neighbourhood; the bus stop sits beside Bar Internazionale about 100 metres (330 feet) away.",
-        "Spot the blue-and-white SITA sign outside the bar — this is the Amalfi Coast line toward Praiano and Amalfi."
+        "Hostel Brikette 정문으로 나와 계단을 내려 비알레 파시테아로 이동하세요.",
+        "왼쪽으로 돌아 키에사 누오바 방향으로 가면 Bar Internazionale 옆 약 100미터(330피트) 지점에 정류장이 있습니다.",
+        "바 밖 파란색·흰색 SITA 표지판을 찾으세요. 프라이아노/아말피 방면 아말피 해안 노선입니다."
       ]
     },
     {
       "id": "buy-tickets",
-      "title": "Buy Amalfi Coast bus tickets",
+      "title": "아말피 해안 버스 티켓 구매",
       "body": [
-        "Go inside Bar Internazionale (the tabacchi/newsagent) to buy tickets for the Amalfi Coast bus.",
-        "Purchase enough tickets for the outbound and return journeys; Laurito has no ticket sellers.",
-        "Keep the tickets ready but validate them only once you board."
+        "Bar Internazionale(타바키/신문가판대) 안으로 들어가 아말피 해안 버스 티켓을 구매하세요.",
+        "왕복에 필요한 티켓을 충분히 구매하세요. 라우리토에는 판매처가 없습니다.",
+        "티켓은 준비해 두되 탑승 후에만 검표하세요."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the opposite side of the road",
+      "title": "도로 반대편에서 대기",
       "body": [
-        "Cross to the opposite side of Viale Pasitea after buying your ticket.",
-        "Stand in the pull-in area facing Amalfi so the driver can see you and raise your hand to signal the stop.",
-        "Use the posted timetable or a quick photo of the schedule to double-check the next departures."
+        "티켓 구매 후 비알레 파시테아 반대편으로 건너세요.",
+        "아말피 방향을 바라보는 대기 공간에 서서 운전기사가 볼 수 있게 손을 들어 신호하세요.",
+        "게시된 시간표나 시간표 사진으로 다음 출발 시간을 다시 확인하세요."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride toward Laurito",
+      "title": "라우리토 방향으로 이동",
       "body": [
-        "Board the blue SITA bus marked for Amalfi or Praiano when it arrives.",
-        "Stay alert as the coach makes request stops around Positano; press the button shortly before you reach Laurito.",
-        "Expect the ride to cover roughly 4.1 kilometres (2.5 miles) and around 10 minutes after the Positano Sponda stop."
+        "아말피 또는 프라이아노행으로 표시된 파란색 SITA 버스를 탑승하세요.",
+        "포지타노 주변 요청 정차가 있으니 주의하고 라우리토 직전에 버튼을 누르세요.",
+        "이동 거리는 약 4.1km(2.5마일)이며 포지타노 스폰다 정류장 이후 약 10분입니다."
       ]
     },
     {
       "id": "walk-down",
-      "title": "Walk down to the beach",
+      "title": "해변으로 내려가기",
       "body": [
-        "Step off at the Laurito stop beside the stairway down to the beach access road.",
-        "Walk a few metres back in the direction the bus came from and look for the signposted staircase on the seaward side.",
-        "Descend carefully — the steps are steep and can be slippery; sturdy footwear helps."
+        "라우리토 정류장에서 내려 해변 진입로 계단 옆에서 하차하세요.",
+        "버스가 왔던 방향으로 몇 미터 되돌아가 바다 쪽 표지판 계단을 찾으세요.",
+        "계단이 가파르고 미끄러울 수 있으니 조심히 내려가세요. 튼튼한 신발이 도움이 됩니다."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "버스 팁",
   "tips": [
-    "The printed timetable lists Positano times but not Laurito; plan on Laurito being about 10 minutes after Sponda when leaving town.",
-    "Buy your return ticket before you leave — there are no shops near the beach to sell extras.",
-    "Follow the %LINK:lauritoBeachBusBack|bus-back guide% when you are ready to return uphill.",
-    "Check our %LINK:positanoBeaches|Positano beaches overview% for details on Laurito facilities and shuttle boats."
+    "인쇄 시간표에는 포지타노 시간만 있고 라우리토는 없습니다. 시내에서 출발하면 라우리토는 스폰다 이후 약 10분입니다.",
+    "떠나기 전에 왕복 티켓을 구매하세요. 해변 근처에는 추가로 살 곳이 없습니다.",
+    "돌아갈 때는 %LINK:lauritoBeachBusBack|버스 복귀 가이드%를 참고하세요.",
+    "%LINK:positanoBeaches|포지타노 해변 개요%에서 라우리토 시설과 셔틀 보트 정보를 확인하세요."
   ]
 }

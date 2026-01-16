@@ -1,125 +1,99 @@
 // packages/ui/src/organisms/QuickLinksSection.tsx
-import { Files, Home, MapPin } from "lucide-react";
-import type { FC, MouseEventHandler, ReactNode, SVGProps } from "react";
+import { BedDouble, BookOpen, MapPin, Sparkles } from "lucide-react";
+import type { FC, ReactNode, SVGProps } from "react";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
+import type { AppLanguage } from "@ui/i18n.config";
 import { Section } from "../atoms/Section";
-import { Grid } from "@/components/atoms/primitives/Grid";
+import { Grid } from "../components/atoms/primitives/Grid";
 
 export interface QuickLink {
   label: string;
+  description: string;
   Icon: FC<SVGProps<SVGSVGElement>>;
-  to?: string;
-  href?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  href: string;
 }
 
 interface QuickLinksSectionProps {
   lang: AppLanguage;
-  onLocationClick?: () => void;
-  onFacilitiesClick?: () => void;
 }
 
-const QuickLinkCard: FC<QuickLink> = memo(({ label, Icon, to, href, onClick }): ReactNode => {
+const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): ReactNode => {
   const container =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "group flex flex-col items-center justify-center rounded-xl bg-brand-bg/90 shadow-sm ring-1 ring-brand-surface/70 " +
+    "group flex h-full min-h-[120px] flex-col items-start gap-3 rounded-2xl border border-brand-outline/30 bg-white/90 p-5 text-start shadow-sm backdrop-blur " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "dark:bg-brand-text dark:ring-brand-surface/20 transition hover:-translate-y-1 hover:shadow-md hover:ring-brand-surface " +
+    "dark:bg-brand-text dark:border-white/10 transition hover:-translate-y-1 hover:shadow-lg " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 min-h-32 min-w-32 px-4 py-3";
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2";
+
+  const iconWrapper =
+    /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
+    "inline-flex size-10 items-center justify-center rounded-full bg-brand-secondary/20 text-brand-primary shadow-sm transition group-hover:scale-105 dark:bg-brand-surface/20";
 
   const icon =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "h-8 w-8 text-brand-text/70 transition-transform duration-200 group-hover:scale-110 group-hover:text-brand-text dark:text-brand-surface/70 dark:group-hover:text-brand-surface";
+    "h-5 w-5";
 
   const labelStyles =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "mt-3 text-center text-sm font-semibold leading-snug whitespace-normal break-words text-brand-text group-hover:text-brand-heading dark:text-brand-surface";
+    "text-base font-semibold leading-tight text-brand-heading dark:text-brand-surface";
 
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={container} aria-label={label}>
-        <Icon className={icon} aria-hidden />
-        <span className={labelStyles}>{label}</span>
-      </a>
-    );
-  }
-
-  if (to) {
-    return (
-      <Link to={to} prefetch="intent" className={container} aria-label={label}>
-        <Icon className={icon} aria-hidden />
-        <span className={labelStyles}>{label}</span>
-      </Link>
-    );
-  }
+  const descriptionStyles =
+    /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
+    "text-sm leading-snug text-brand-text/70 dark:text-brand-surface/70";
 
   return (
-    <button type="button" onClick={onClick} className={container} aria-label={label}>
-      <Icon className={icon} aria-hidden />
+    <a href={href} className={container} aria-label={label}>
+      <span className={iconWrapper} aria-hidden>
+        <Icon className={icon} />
+      </span>
       <span className={labelStyles}>{label}</span>
-    </button>
+      <span className={descriptionStyles}>{description}</span>
+    </a>
   );
 });
 
 QuickLinkCard.displayName = "QuickLinkCard";
 
-const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang, onLocationClick, onFacilitiesClick }) => {
+const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
   const { t, ready } = useTranslation("landingPage", { lng: lang });
 
   const links: QuickLink[] = useMemo(() => {
     if (!ready) return [];
-    const locationLabel = t("quickLinksSection.location", {
-      defaultValue: t("quickLinksSection.location", { lng: "en", defaultValue: "Location" }) as string,
-    }) as string;
-    const facilitiesLabel = t("quickLinksSection.facilitiesAndAmenities", {
-      defaultValue: t("quickLinksSection.facilitiesAndAmenities", {
-        lng: "en",
-        defaultValue: "Facilities & Amenities",
-      }) as string,
-    }) as string;
-    const barMenuLabel = t("quickLinksSection.barMenu", {
-      defaultValue: t("quickLinksSection.barMenu", { lng: "en", defaultValue: "Bar Menu" }) as string,
-    }) as string;
-    const breakfastMenuLabel = t("quickLinksSection.breakfastMenu", {
-      defaultValue: t("quickLinksSection.breakfastMenu", { lng: "en", defaultValue: "Breakfast Menu" }) as string,
-    }) as string;
-
-    const out: QuickLink[] = [
+    return [
       {
-        label: locationLabel,
+        label: t("quickLinksSection.rooms", { defaultValue: "Rooms" }) as string,
+        description: t("quickLinksSection.roomsHint", { defaultValue: "Dorms and private rooms" }) as string,
+        Icon: BedDouble,
+        href: "#rooms",
+      },
+      {
+        label: t("quickLinksSection.commonAreas", { defaultValue: "Common areas" }) as string,
+        description: t("quickLinksSection.commonAreasHint", { defaultValue: "Terrace, bar, shared spaces" }) as string,
+        Icon: Sparkles,
+        href:
+          /* i18n-exempt -- UI-1000 ttl=2026-12-31 anchor id. */
+          "#common-areas",
+      },
+      {
+        label: t("quickLinksSection.location", { defaultValue: "Location" }) as string,
+        description: t("quickLinksSection.locationHint", { defaultValue: "Bus stop and beach tips" }) as string,
         Icon: MapPin,
-        href: "https://maps.app.goo.gl/2rnfYjF3YZB5wPqt8",
+        href: "#location",
       },
       {
-        label: facilitiesLabel,
-        Icon: Home,
-        to: `/${lang}/facilities`,
-      },
-      {
-        label: barMenuLabel,
-        Icon: Files,
-        to: `/${lang}/${getSlug("barMenu", lang)}`,
-      },
-      {
-        label: breakfastMenuLabel,
-        Icon: Files,
-        to: `/${lang}/${getSlug("breakfastMenu", lang)}`,
+        label: t("quickLinksSection.guides", { defaultValue: "Guides" }) as string,
+        description: t("quickLinksSection.guidesHint", { defaultValue: "Local tips for your trip" }) as string,
+        Icon: BookOpen,
+        href: "#guides",
       },
     ];
-
-    if (onLocationClick) out[0] = { ...out[0], href: undefined, onClick: onLocationClick };
-    if (onFacilitiesClick) out[1] = { ...out[1], to: undefined, onClick: onFacilitiesClick };
-    return out;
-  }, [lang, onFacilitiesClick, onLocationClick, t, ready]);
+  }, [t, ready]);
 
   return (
-    <Section as="section" padding="none" className="max-w-6xl px-4 py-10 lg:py-14">
-      <Grid cols={2} gap={6} className="place-items-center sm:grid-cols-4">
+    <Section as="section" padding="none" className="max-w-6xl px-6 py-6 sm:py-8 lg:py-10">
+      <Grid cols={2} gap={3} className="lg:grid-cols-4 sm:gap-4">
         {links.map((link) => (
           <QuickLinkCard key={link.label} {...link} />
         ))}

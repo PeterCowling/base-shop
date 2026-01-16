@@ -1,0 +1,76 @@
+/* Handbag configurator tokens (light/dark). */
+
+:root {
+  color-scheme: light;
+  --color-bg: 0 0% 100%;
+  --color-fg: 220 8% 18%;
+  --color-primary: 210 88% 52%;
+  --color-primary-fg: 0 0% 100%;
+  --color-accent: 210 88% 52%;
+  --color-accent-fg: 0 0% 100%;
+  --color-link: 210 40% 35%;
+  --color-muted: 0 0% 96%;
+  --color-fg-muted: 220 4% 50%;
+  --color-muted-fg: 220 6% 30%;
+  --color-muted-border: 0 0% 86%;
+  --color-panel: 0 0% 100%;
+
+  --font-serif: var(--font-display);
+
+  --surface-1: 0 0% 100%;
+  --surface-2: 0 0% 88%;
+  --surface-3: 0 0% 97%;
+  --surface-input: 0 0% 97%;
+
+  --border-1: 0 0% 85% / 1;
+  --border-2: 0 0% 78% / 1;
+  --border-3: 0 0% 70% / 1;
+
+  --ring: var(--color-primary);
+  --ring-offset: 0 0% 100%;
+
+  --color-bg-dark: 26 16% 8%;
+  --color-fg-dark: 30 12% 92%;
+  --color-primary-dark: 210 88% 62%;
+  --color-primary-fg-dark: 0 0% 10%;
+  --color-accent-dark: 210 88% 62%;
+  --color-accent-fg-dark: 0 0% 10%;
+  --color-link-dark: 210 45% 70%;
+  --color-muted-dark: 26 8% 22%;
+  --color-fg-muted-dark: 30 10% 70%;
+  --color-muted-fg-dark: 30 12% 84%;
+  --color-muted-border-dark: 26 10% 32%;
+  --color-panel-dark: 26 14% 10%;
+
+  --surface-1-dark: 26 16% 8%;
+  --surface-2-dark: 26 16% 11%;
+  --surface-3-dark: 26 16% 14%;
+  --surface-input-dark: 26 16% 12%;
+
+  --ring-dark: var(--color-primary-dark);
+  --ring-offset-dark: var(--color-bg-dark);
+}
+
+html.theme-dark {
+  color-scheme: dark;
+  --color-bg: var(--color-bg-dark);
+  --color-fg: var(--color-fg-dark);
+  --color-primary: var(--color-primary-dark);
+  --color-primary-fg: var(--color-primary-fg-dark);
+  --color-accent: var(--color-accent-dark);
+  --color-accent-fg: var(--color-accent-fg-dark);
+  --color-link: var(--color-link-dark);
+  --color-muted: var(--color-muted-dark);
+  --color-fg-muted: var(--color-fg-muted-dark);
+  --color-muted-fg: var(--color-muted-fg-dark);
+  --color-muted-border: var(--color-muted-border-dark);
+  --color-panel: var(--color-panel-dark);
+
+  --surface-1: var(--surface-1-dark);
+  --surface-2: var(--surface-2-dark);
+  --surface-3: var(--surface-3-dark);
+  --surface-input: var(--surface-input-dark);
+
+  --ring: var(--ring-dark);
+  --ring-offset: var(--ring-offset-dark);
+}

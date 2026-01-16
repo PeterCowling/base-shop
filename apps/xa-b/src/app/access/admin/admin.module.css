@@ -1,0 +1,14 @@
+@keyframes adminFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adminFade {
+  animation: adminFade 0.6s ease-out both;
+}

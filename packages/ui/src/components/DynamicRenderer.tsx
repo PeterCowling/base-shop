@@ -12,7 +12,7 @@ import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./
 import { initTimelines } from "./cms/page-builder/timeline";
 import { initLottie } from "./cms/page-builder/lottie";
 import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
-import { cssVars } from "../utils/style";
+import { cssVars } from "@ui/utils/style";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 export default function DynamicRenderer({

@@ -148,16 +148,24 @@ function NotFoundView() {
       {process.env.NODE_ENV === "test" && (
         <Fragment>
           {(fallbackHeadDescriptors ?? []).map((d, i) => {
-            const titleMaybe = (d as { title?: string }).title;
+            const descriptor = d as Record<string, string | undefined>;
+            const titleMaybe = descriptor["title"];
             if (typeof titleMaybe === "string" && titleMaybe) {
               return <title key={`t-${i}`}>{titleMaybe}</title>;
             }
-            const { key: _k, ...rest } = d as Record<string, string | undefined> & { key?: string };
-            return <meta key={`m-${i}`} {...(rest as Record<string, string | undefined>)} />;
+            const tagName = descriptor["tagName"];
+            if (tagName === "link") {
+              const { ["tagName"]: _ignored, ["key"]: _key, ...rest } = descriptor;
+              return <link key={`m-${i}`} {...rest} />;
+            }
+            const { ["key"]: _k, ["tagName"]: _tag, ...rest } = descriptor;
+            return <meta key={`m-${i}`} {...rest} />;
           })}
           {(fallbackHeadLinks ?? []).map((l, i) => {
-            const { key: linkKey, ...rest } = l as unknown as Record<string, string | undefined> & { key?: string };
-            return <link key={`l-${i}-${linkKey ?? ""}`} {...(rest as Record<string, string | undefined>)} />;
+            const descriptor = l as unknown as Record<string, string | undefined> & { key?: string };
+            const linkKey = descriptor["key"];
+            const { ["key"]: _ignored, ...rest } = descriptor;
+            return <link key={`l-${i}-${linkKey ?? ""}`} {...rest} />;
           })}
         </Fragment>
       )}

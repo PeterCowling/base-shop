@@ -115,7 +115,6 @@ export default function SocialProof({
     return (
       <div className="space-y-8 text-center">
         {orgJson ? (
-          // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0001: SEO JSON-LD script type is not user copy
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJson) }} />
         ) : null}
         {hasRating && (
@@ -138,7 +137,6 @@ export default function SocialProof({
                   src={u.src}
                   alt={u.alt ?? ""}
                   fill
-                  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0001: Responsive sizes string, not user-facing copy
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />

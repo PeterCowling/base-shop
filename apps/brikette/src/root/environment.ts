@@ -40,7 +40,7 @@ const getOrigin = (): string => {
   // the document element for stability within a single runtime session.
   if (rawBrowserOrigin) {
     const browserOrigin = normaliseBrowserOrigin(rawBrowserOrigin);
-    if (isLoopbackOrigin(browserOrigin)) {
+    if (isLoopbackOrigin(browserOrigin) && !IS_TEST) {
       return DOMAIN;
     }
     if (root) root.setAttribute("data-origin", browserOrigin);

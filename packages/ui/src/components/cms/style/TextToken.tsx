@@ -26,9 +26,7 @@ export function TextToken({
     const v = t("common.default");
     return v === "common.default" ? "Default" : (v as string);
   })();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const WRAPPER_CLASS = "min-w-0 flex-1";
   return (
     <label

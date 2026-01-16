@@ -40,6 +40,10 @@ describe("ProductsTable", () => {
     const user = userEvent.setup();
     const onDuplicate = jest.fn();
     const onDelete = jest.fn();
+    const sellability = {
+      "1": { state: "sellable" as const, issues: [], stock: 5 },
+      "2": { state: "needs_attention" as const, issues: ["needs_stock"], stock: 0 },
+    };
 
     render(
       <ProductsTable
@@ -48,6 +52,7 @@ describe("ProductsTable", () => {
         isAdmin
         onDuplicate={onDuplicate}
         onDelete={onDelete}
+        sellability={sellability}
       />
     );
 
@@ -55,6 +60,7 @@ describe("ProductsTable", () => {
     expect(screen.getByText("Title")).toBeInTheDocument();
     expect(screen.getByText("SKU")).toBeInTheDocument();
     expect(screen.getByText("Price")).toBeInTheDocument();
+    expect(screen.getByText("Sellability")).toBeInTheDocument();
     expect(screen.getByText("Status")).toBeInTheDocument();
     expect(screen.getByText("Actions")).toBeInTheDocument();
 
@@ -65,6 +71,8 @@ describe("ProductsTable", () => {
       screen.getByText(formatCurrency(products[0].price, products[0].currency))
     ).toBeInTheDocument();
     expect(screen.getAllByText("active", { selector: "td" })[0]).toBeInTheDocument();
+    expect(screen.getByText("Sellable")).toBeInTheDocument();
+    expect(screen.getByText("Needs stock")).toBeInTheDocument();
 
     const duplicateBtn = screen.getAllByRole("button", { name: "Duplicate" })[0];
     await user.click(duplicateBtn);
@@ -103,4 +111,3 @@ describe("ProductsTable", () => {
     expect(screen.getByText("Beta")).toBeInTheDocument();
   });
 });
-

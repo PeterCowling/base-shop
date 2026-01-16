@@ -123,14 +123,22 @@ describe("media actions", () => {
         expect(item.altText).toBe("hello");
         expect(item.type).toBe("image");
 
-        const stored = path.join(dir, "public", item.url);
+        const stored = path.join(
+          dir,
+          "data",
+          "shops",
+          "shop1",
+          "uploads",
+          path.basename(item.url),
+        );
         await expect(fs.access(stored)).resolves.toBeUndefined();
 
         const metaPath = path.join(
           dir,
-          "public",
-          "uploads",
+          "data",
+          "shops",
           "shop1",
+          "uploads",
           "metadata.json"
         );
         const meta = JSON.parse(
@@ -161,14 +169,22 @@ describe("media actions", () => {
 
         expect(item.type).toBe("video");
 
-        const stored = path.join(dir, "public", item.url);
+        const stored = path.join(
+          dir,
+          "data",
+          "shops",
+          "shop1",
+          "uploads",
+          path.basename(item.url),
+        );
         await expect(fs.access(stored)).resolves.toBeUndefined();
 
         const metaPath = path.join(
           dir,
-          "public",
-          "uploads",
+          "data",
+          "shops",
           "shop1",
+          "uploads",
           "metadata.json"
         );
         const meta = JSON.parse(

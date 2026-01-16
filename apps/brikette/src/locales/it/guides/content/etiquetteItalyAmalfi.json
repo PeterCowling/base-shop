@@ -5,28 +5,28 @@
   },
   "linkLabel": "Galateo locale: cosa fare e non fare (Italia, esempi amalfitani)",
   "intro": [
-    "Traduzione in arrivo."
+    "Galateo pratico per mangiare fuori, visitare chiese e condividere vicoli stretti tra Positano e Costiera Amalfitana."
   ],
   "sections": [
     {
       "id": "dining",
       "title": "A tavola",
       "body": [
-        "Traduzione in arrivo."
+        "Prenota in alta stagione, sii paziente tra le portate, chiedi il conto quando sei pronto e lascia una mancia modesta per un servizio eccellente."
       ]
     },
     {
       "id": "churches",
       "title": "Chiese e abbigliamento",
       "body": [
-        "Traduzione in arrivo."
+        "Copri le spalle in chiesa ed evita di passare nei negozi in costume da bagno."
       ]
     },
     {
       "id": "lanes",
       "title": "Corsie condivise",
       "body": [
-        "Traduzione in arrivo."
+        "Tieni la destra nei vicoli stretti, lascia passare gli altri e alternati rapidamente nei punti foto piu richiesti."
       ]
     }
   ],
@@ -34,13 +34,13 @@
     {
       "q": "Devo lasciare la mancia?",
       "a": [
-        "Traduzione in arrivo."
+        "Le mance sono facoltative; lascia 1-2 EUR per un servizio eccellente o arrotonda il conto. Il coperto copre gia pane e servizio."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Cosa devo indossare in chiesa?",
       "a": [
-        "Traduzione in arrivo."
+        "Copri spalle e ginocchia, togli il cappello e tieni un tono di voce basso. Porta un foulard leggero da mettere sulle spalle."
       ]
     }
   ]

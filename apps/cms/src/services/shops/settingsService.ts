@@ -195,6 +195,16 @@ export async function updatePremierDelivery(
     return { errors };
   }
   const current = await fetchSettings(shop);
+  const luxuryFeatures = {
+    blog: false,
+    contentMerchandising: false,
+    raTicketing: false,
+    fraudReviewThreshold: 0,
+    requireStrongCustomerAuth: false,
+    strictReturnConditions: false,
+    trackingDashboard: false,
+    ...(current.luxuryFeatures ?? {}),
+  };
   const updated: ShopSettings = {
     ...current,
     premierDelivery: {
@@ -205,7 +215,7 @@ export async function updatePremierDelivery(
       serviceLabel: data.serviceLabel,
     },
     luxuryFeatures: {
-      ...(current.luxuryFeatures ?? {}),
+      ...luxuryFeatures,
       premierDelivery: true,
     },
   };

@@ -178,7 +178,7 @@ export default function HeadSection({
       )}
       <BreadcrumbStructuredData breadcrumb={breadcrumb} />
       {howToJson ? (
-        <script type={howToJsonType} dangerouslySetInnerHTML={{ __html: howToJson }} />
+        <script type={howToJsonType} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: howToJson }} />
       ) : null}
       {additionalScripts ?? null}
     </>

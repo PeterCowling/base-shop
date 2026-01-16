@@ -22,6 +22,12 @@ export type SlugMap = {
   guidesTags: Record<AppLanguage, string>;
   /** Terms & Conditions for room bookings */
   terms: Record<AppLanguage, string>;
+  /** House rules for on-site conduct */
+  houseRules: Record<AppLanguage, string>;
+  /** Privacy policy */
+  privacyPolicy: Record<AppLanguage, string>;
+  /** Cookie policy */
+  cookiePolicy: Record<AppLanguage, string>;
   /** Public breakfast menu */
   breakfastMenu: Record<AppLanguage, string>;
   /** Public bar menu */

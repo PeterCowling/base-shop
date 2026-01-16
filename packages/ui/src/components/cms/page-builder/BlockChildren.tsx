@@ -120,9 +120,7 @@ export default function BlockChildren({
 
   // Compute container class name once (utility classes only).
   const containerClass =
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
     "border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
     (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "");
 
   return (
@@ -151,11 +149,8 @@ export default function BlockChildren({
             data-placeholder
             className={
               (dropAllowed === false
-                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
                 ? "border-danger bg-danger/10 ring-2 ring-danger"
-                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
                 : "border-primary bg-primary/10 ring-2 ring-primary") +
-              // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
               " h-4 w-full rounded border-2 border-dashed"
             }
           />

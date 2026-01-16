@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "पोसिटानो के मुख्य समुद्र तट से हॉस्टल ब्रिकेट के लिए बस",
-    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+    "description": "Piazza dei Mulini पर Interno बस पकड़ें और Hostel Brikette के पास tabacchi तक ऊपर जाएँ।"
   },
   "linkLabel": "स्पियागिया ग्रांडे से हॉस्टल ब्रिकेट के लिए बस",
   "intro": [
@@ -50,7 +50,7 @@
   ],
   "extras": {
     "photos": {
-      "title": "Photos",
+      "title": "तस्वीरें",
       "items": {
         "busInterior": {
           "alt": "समुद्र तट के किनारे स्टॉप पर इंटरनो पोसिटानो बस",

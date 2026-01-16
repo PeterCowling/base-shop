@@ -1,0 +1,28 @@
+{
+  "title": "Configuración",
+  "cache": {
+    "title": "Datos en caché",
+    "usage": "Almacenamiento usado",
+    "quota": "{{percent}}% del almacenamiento disponible",
+    "description": "Los datos en caché ayudan a que la app funcione sin conexión. Borrarlos puede requerir volver a descargar contenido.",
+    "clear": "Borrar datos en caché",
+    "clearing": "Borrando...",
+    "cleared": "¡Borrado!",
+    "refresh": "Actualizar"
+  },
+  "language": {
+    "title": "Idioma",
+    "select": "Seleccionar idioma"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "push": "Notificaciones push",
+    "email": "Notificaciones por email"
+  },
+  "about": {
+    "title": "Acerca de",
+    "version": "Versión",
+    "terms": "Términos de servicio",
+    "privacy": "Política de privacidad"
+  }
+}

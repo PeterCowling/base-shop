@@ -1,0 +1,682 @@
+{
+  "collections": [
+    {
+      "handle": "necklaces",
+      "title": "Necklaces"
+    },
+    {
+      "handle": "bracelets",
+      "title": "Bracelets"
+    },
+    {
+      "handle": "earrings",
+      "title": "Earrings"
+    },
+    {
+      "handle": "rings",
+      "title": "Rings"
+    }
+  ],
+  "brands": [
+    {
+      "handle": "atelier-x",
+      "name": "Atelier X"
+    },
+    {
+      "handle": "nova",
+      "name": "Nova"
+    },
+    {
+      "handle": "orbit",
+      "name": "Orbit"
+    },
+    {
+      "handle": "sable",
+      "name": "Sable"
+    }
+  ],
+  "products": [
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1F",
+      "slug": "minimal-sneaker",
+      "title": "Minimal chain necklace",
+      "brand": "orbit",
+      "collection": "necklaces",
+      "price": 129,
+      "deposit": 0,
+      "stock": 20,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1685970731194-e27b477e87ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8Y2hhaW4lMjBuZWNrbGFjZXxlbnwwfHx8fDE3NjY5MzY4Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Minimal chain necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1618522761561-f1211c4781dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Y2hhaW4lMjBuZWNrbGFjZXxlbnwwfHx8fDE3NjY5MzY4Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Minimal chain necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1750492272603-43888a3fee4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8Y2hhaW4lMjBuZWNrbGFjZXxlbnwwfHx8fDE3NjY5MzY4Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Minimal chain necklace"
+        }
+      ],
+      "sizes": [],
+      "description": "A fine sterling chain with a subtle polished finish.",
+      "createdAt": "2025-09-18T12:00:00.000Z",
+      "popularity": 50,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "necklaces",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "sterling silver",
+        "gemstone": "none",
+        "jewelrySize": "18 in",
+        "jewelryStyle": "chain",
+        "jewelryTier": "fine"
+      },
+      "details": {
+        "sizeGuide": "Adjustable length 16-18 in.",
+        "care": "Store in the pouch between wears.",
+        "warranty": "2-year care promise."
+      }
+    },
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1G",
+      "slug": "field-cap",
+      "title": "Field cuff bracelet",
+      "brand": "sable",
+      "collection": "bracelets",
+      "price": 29,
+      "compareAtPrice": 39,
+      "deposit": 0,
+      "stock": 200,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1724896728449-fae038f93e59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8Y3VmZiUyMGJyYWNlbGV0fGVufDB8fHx8MTc2NjkzNjgzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Field cuff bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1760721943467-9269733a5848?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Y3VmZiUyMGJyYWNlbGV0fGVufDB8fHx8MTc2NjkzNjgzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Field cuff bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1764265149183-5f219f7ea28d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8Y3VmZiUyMGJyYWNlbGV0fGVufDB8fHx8MTc2NjkzNjgzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Field cuff bracelet"
+        }
+      ],
+      "sizes": [],
+      "description": "A matte cuff with a clean edge and low-profile silhouette.",
+      "createdAt": "2025-12-20T12:00:00.000Z",
+      "popularity": 35,
+      "taxonomy": {
+        "department": "men",
+        "category": "jewelry",
+        "subcategory": "bracelets",
+        "color": [
+          "black",
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "oxidized silver",
+        "gemstone": "onyx",
+        "jewelrySize": "medium",
+        "jewelryStyle": "cuff",
+        "jewelryTier": "demi-fine"
+      },
+      "details": {
+        "sizeGuide": "Fits 16-18 cm wrists.",
+        "care": "Wipe clean with a soft cloth.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-LOCKET-NECKLACE",
+      "slug": "locket-necklace",
+      "title": "Locket necklace",
+      "brand": "atelier-x",
+      "collection": "necklaces",
+      "price": 180,
+      "deposit": 0,
+      "stock": 22,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1605939471344-2edc2900ab9f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8bG9ja2V0JTIwbmVja2xhY2V8ZW58MHx8fHwxNzY2OTM2ODI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Locket necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1705326453273-1c35d7dad309?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8bG9ja2V0JTIwbmVja2xhY2V8ZW58MHx8fHwxNzY2OTM2ODI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Locket necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1739383601339-e233a1e8b74d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8bG9ja2V0JTIwbmVja2xhY2V8ZW58MHx8fHwxNzY2OTM2ODI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Locket necklace"
+        }
+      ],
+      "sizes": [],
+      "description": "A compact locket on a fine chain with soft shine.",
+      "createdAt": "2025-10-12T12:00:00.000Z",
+      "popularity": 66,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "necklaces",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "gold vermeil"
+        ],
+        "metal": "gold vermeil",
+        "gemstone": "none",
+        "jewelrySize": "20 in",
+        "jewelryStyle": "pendant",
+        "jewelryTier": "fine"
+      },
+      "details": {
+        "sizeGuide": "Length 18-20 in adjustable.",
+        "care": "Store separately to avoid scratches.",
+        "warranty": "2-year care promise."
+      }
+    },
+    {
+      "id": "XA-PENDANT-NECKLACE",
+      "slug": "pendant-necklace",
+      "title": "Pendant necklace",
+      "brand": "orbit",
+      "collection": "necklaces",
+      "price": 140,
+      "deposit": 0,
+      "stock": 28,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1763256614647-14abbc578252?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGVuZGFudCUyMG5lY2tsYWNlfGVufDB8fHx8MTc2NjkzNjgyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pendant necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1762337383928-ed5e352977d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGVuZGFudCUyMG5lY2tsYWNlfGVufDB8fHx8MTc2NjkzNjgyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pendant necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1665703156759-8b8f66ff0397?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGVuZGFudCUyMG5lY2tsYWNlfGVufDB8fHx8MTc2NjkzNjgyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pendant necklace"
+        }
+      ],
+      "sizes": [],
+      "description": "A slim pendant on a longer chain for layering.",
+      "createdAt": "2025-09-06T12:00:00.000Z",
+      "popularity": 54,
+      "taxonomy": {
+        "department": "men",
+        "category": "jewelry",
+        "subcategory": "necklaces",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "sterling silver",
+        "gemstone": "onyx",
+        "jewelrySize": "22 in",
+        "jewelryStyle": "pendant",
+        "jewelryTier": "demi-fine"
+      },
+      "details": {
+        "sizeGuide": "Length 20-22 in adjustable.",
+        "care": "Wipe clean with a soft cloth.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-CHAIN-BRACELET",
+      "slug": "chain-bracelet",
+      "title": "Chain bracelet",
+      "brand": "nova",
+      "collection": "bracelets",
+      "price": 75,
+      "deposit": 0,
+      "stock": 58,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1744472457504-f99a96ecbd3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8Y2hhaW4lMjBicmFjZWxldHxlbnwwfHx8fDE3NjY5MzY4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Chain bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1617071380442-97e4d5a711e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Y2hhaW4lMjBicmFjZWxldHxlbnwwfHx8fDE3NjY5MzY4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Chain bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1761222101900-9c9e34fac2ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8Y2hhaW4lMjBicmFjZWxldHxlbnwwfHx8fDE3NjY5MzY4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Chain bracelet"
+        }
+      ],
+      "sizes": [],
+      "description": "A polished chain bracelet with a minimal clasp.",
+      "createdAt": "2025-07-26T12:00:00.000Z",
+      "popularity": 43,
+      "taxonomy": {
+        "department": "men",
+        "category": "jewelry",
+        "subcategory": "bracelets",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "stainless steel"
+        ],
+        "metal": "stainless steel",
+        "gemstone": "none",
+        "jewelrySize": "medium",
+        "jewelryStyle": "chain",
+        "jewelryTier": "fashion"
+      },
+      "details": {
+        "sizeGuide": "Fits 17-19 cm wrists.",
+        "care": "Wipe clean after wear.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-BEADED-BRACELET",
+      "slug": "beaded-bracelet",
+      "title": "Beaded bracelet",
+      "brand": "sable",
+      "collection": "bracelets",
+      "price": 65,
+      "deposit": 0,
+      "stock": 80,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1519431458145-1ca3d5ccd68e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8YmVhZGVkJTIwYnJhY2VsZXR8ZW58MHx8fHwxNzY2OTM2NzgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Beaded bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1766560360611-ea9da518e5e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8YmVhZGVkJTIwYnJhY2VsZXR8ZW58MHx8fHwxNzY2OTM2NzgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Beaded bracelet"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1766560359399-b8ac22d0e2c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8YmVhZGVkJTIwYnJhY2VsZXR8ZW58MHx8fHwxNzY2OTM2NzgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Beaded bracelet"
+        }
+      ],
+      "sizes": [],
+      "description": "Glossy onyx beads with warm metal accents.",
+      "createdAt": "2025-06-18T12:00:00.000Z",
+      "popularity": 38,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "bracelets",
+        "color": [
+          "black",
+          "gold"
+        ],
+        "material": [
+          "onyx",
+          "gold plated"
+        ],
+        "metal": "gold plated",
+        "gemstone": "onyx",
+        "jewelrySize": "small",
+        "jewelryStyle": "beaded",
+        "jewelryTier": "fashion"
+      },
+      "details": {
+        "sizeGuide": "Fits 15-17 cm wrists.",
+        "care": "Avoid contact with water and fragrance.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-PAVE-HOOP-EARRINGS",
+      "slug": "pave-hoop-earrings",
+      "title": "Pave hoop earrings",
+      "brand": "atelier-x",
+      "collection": "earrings",
+      "price": 160,
+      "deposit": 0,
+      "stock": 24,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1673584837353-9e69cf6ec862?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8aG9vcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pave hoop earrings"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1765852550345-ddb23c794d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8aG9vcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pave hoop earrings"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1602699121297-81f2312fa4e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8aG9vcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Pave hoop earrings"
+        }
+      ],
+      "sizes": [],
+      "description": "Small hoops with subtle pave sparkle.",
+      "createdAt": "2025-12-02T12:00:00.000Z",
+      "popularity": 71,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "earrings",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "gold"
+        ],
+        "metal": "gold",
+        "gemstone": "diamond",
+        "jewelrySize": "small",
+        "jewelryStyle": "hoop",
+        "jewelryTier": "fine"
+      },
+      "details": {
+        "sizeGuide": "Diameter 12 mm.",
+        "care": "Store in the pouch between wears.",
+        "warranty": "2-year care promise."
+      }
+    },
+    {
+      "id": "XA-DROP-EARRINGS",
+      "slug": "drop-earrings",
+      "title": "Drop earrings",
+      "brand": "nova",
+      "collection": "earrings",
+      "price": 95,
+      "deposit": 0,
+      "stock": 36,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1765560172744-dcc030763771?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZHJvcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Drop earrings"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1758974504288-4e6f55f81c82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZHJvcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Drop earrings"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1758995115555-766abbd9a491?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZHJvcCUyMGVhcnJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Drop earrings"
+        }
+      ],
+      "sizes": [],
+      "description": "Light-catching drops with soft movement.",
+      "createdAt": "2025-08-12T12:00:00.000Z",
+      "popularity": 48,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "earrings",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "sterling silver",
+        "gemstone": "pearl",
+        "jewelrySize": "medium",
+        "jewelryStyle": "drop",
+        "jewelryTier": "demi-fine"
+      },
+      "details": {
+        "sizeGuide": "Drop length 28 mm.",
+        "care": "Keep away from moisture.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-SIGNET-RING",
+      "slug": "signet-ring",
+      "title": "Signet ring",
+      "brand": "orbit",
+      "collection": "rings",
+      "price": 130,
+      "deposit": 0,
+      "stock": 30,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1758362197676-228703a17e69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8c2lnbmV0JTIwcmluZ3xlbnwwfHx8fDE3NjY5MzY3ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Signet ring"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1766593682286-a0db1daaf772?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2lnbmV0JTIwcmluZ3xlbnwwfHx8fDE3NjY5MzY3ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Signet ring"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1657703193954-9d85e9574fa0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8c2lnbmV0JTIwcmluZ3xlbnwwfHx8fDE3NjY5MzY3ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Signet ring"
+        }
+      ],
+      "sizes": [],
+      "description": "A refined signet ring with a brushed face.",
+      "createdAt": "2025-07-10T12:00:00.000Z",
+      "popularity": 44,
+      "taxonomy": {
+        "department": "men",
+        "category": "jewelry",
+        "subcategory": "rings",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "sterling silver",
+        "gemstone": "none",
+        "jewelrySize": "9",
+        "jewelryStyle": "signet",
+        "jewelryTier": "demi-fine"
+      },
+      "details": {
+        "sizeGuide": "Standard US size 9.",
+        "care": "Polish gently with a soft cloth.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-STACKED-RING-SET",
+      "slug": "stacked-ring-set",
+      "title": "Stacked ring set",
+      "brand": "sable",
+      "collection": "rings",
+      "price": 110,
+      "deposit": 0,
+      "stock": 44,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1550305490-75e5ba3e301c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8c3RhY2tlZCUyMHJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Stacked ring set"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1761735489573-15b2d60280f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c3RhY2tlZCUyMHJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Stacked ring set"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1745271009249-9bb471aab9e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8c3RhY2tlZCUyMHJpbmdzfGVufDB8fHx8MTc2NjkzNjgzNXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Stacked ring set"
+        }
+      ],
+      "sizes": [],
+      "description": "A trio of slim bands designed for stacking.",
+      "createdAt": "2025-08-26T12:00:00.000Z",
+      "popularity": 41,
+      "taxonomy": {
+        "department": "women",
+        "category": "jewelry",
+        "subcategory": "rings",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "gold vermeil"
+        ],
+        "metal": "gold vermeil",
+        "gemstone": "none",
+        "jewelrySize": "7",
+        "jewelryStyle": "stacked",
+        "jewelryTier": "fashion"
+      },
+      "details": {
+        "sizeGuide": "Standard US size 7.",
+        "care": "Store separately to avoid scratches.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-KIDS-STAR-NECKLACE",
+      "slug": "star-charm-necklace",
+      "title": "Star charm necklace",
+      "brand": "sable",
+      "collection": "necklaces",
+      "price": 32,
+      "deposit": 0,
+      "stock": 60,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1521694139475-da661702d635?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Star charm necklace"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Star charm necklace"
+        }
+      ],
+      "sizes": [],
+      "description": "Delicate charm necklace with a polished finish.",
+      "createdAt": "2025-10-08T12:00:00.000Z",
+      "popularity": 36,
+      "taxonomy": {
+        "department": "kids",
+        "category": "jewelry",
+        "subcategory": "necklaces",
+        "color": [
+          "gold"
+        ],
+        "material": [
+          "gold plated"
+        ],
+        "metal": "gold plated",
+        "gemstone": "none",
+        "jewelrySize": "short",
+        "jewelryStyle": "charm",
+        "jewelryTier": "fashion"
+      },
+      "details": {
+        "sizeGuide": "Adjustable 14-16 in chain.",
+        "care": "Wipe clean with a soft cloth.",
+        "warranty": "Care and polishing included."
+      }
+    },
+    {
+      "id": "XA-KIDS-FRIENDSHIP-BRACELET",
+      "slug": "friendship-bracelet-set",
+      "title": "Friendship bracelet set",
+      "brand": "nova",
+      "collection": "bracelets",
+      "price": 28,
+      "deposit": 0,
+      "stock": 70,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1534976618208-4833d5b57d08?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Friendship bracelet set"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Friendship bracelet set"
+        }
+      ],
+      "sizes": [],
+      "description": "A matching bracelet set with beaded accents.",
+      "createdAt": "2025-09-12T12:00:00.000Z",
+      "popularity": 34,
+      "taxonomy": {
+        "department": "kids",
+        "category": "jewelry",
+        "subcategory": "bracelets",
+        "color": [
+          "silver"
+        ],
+        "material": [
+          "sterling silver"
+        ],
+        "metal": "sterling silver",
+        "gemstone": "none",
+        "jewelrySize": "small",
+        "jewelryStyle": "beaded",
+        "jewelryTier": "fashion"
+      },
+      "details": {
+        "sizeGuide": "Fits 5.5-6 in wrist.",
+        "care": "Avoid water and perfumes.",
+        "warranty": "Care and polishing included."
+      }
+    }
+  ]
+}

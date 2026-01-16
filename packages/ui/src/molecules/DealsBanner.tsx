@@ -1,8 +1,8 @@
 /* ---------------------------------------------------------------------------
    Promotional banner shown at the top of the deals page
 --------------------------------------------------------------------------- */
-import { useSetBannerRef } from "@/context/NotificationBannerContext";
-import enDeals from "@/locales/en/dealsPage.json";
+import { useSetBannerRef } from "@ui/context/NotificationBannerContext";
+import enDeals from "@ui/locales/en/dealsPage.json";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------
    src/routes/terms.tsx
-   Room Bookings — Terms & Conditions (on‑site copy of the Google Doc)
+   Booking Terms (on‑site copy of the updated policy)
    ---------------------------------------------------------------------- */
 import i18n from "@/i18n";
 import { type AppLanguage } from "@/i18n.config";
@@ -34,7 +34,7 @@ export async function clientLoader({ request }: { request: Request }) {
   return { lang, title: meta.title, desc: meta.description };
 }
 
-const SECTION_KEYS: readonly string[] = Array.from({ length: 33 }, (_, i) => `s${i + 1}`);
+const SECTION_KEYS: readonly string[] = Array.from({ length: 17 }, (_, i) => `s${i + 1}`);
 
 export default memo(function TermsPage() {
   const { lang, title: loaderTitle, desc: loaderDesc } = useLoaderData() as {
@@ -87,7 +87,10 @@ export default memo(function TermsPage() {
     <Fragment>
       {/* Head handled by meta()/links() */}
 
-      <Section padding="none" className="mx-auto max-w-6xl p-6 pt-24 sm:pt-10">
+      <Section
+        padding="none"
+        className="mx-auto w-full max-w-6xl px-4 pb-10 pt-24 sm:px-6 sm:pt-10 md:px-8 lg:px-10"
+      >
         <section id="top">
           <header className="mb-6 space-y-2 text-center">
             <h1 className="text-3xl font-bold">{t("headings.pageTitle")}</h1>
@@ -137,16 +140,21 @@ export default memo(function TermsPage() {
               </nav>
             </aside>
 
-            <article className="prose prose-neutral prose-li:leading-7 prose-p:leading-7 dark:prose-invert lg:col-span-8 xl:col-span-9">
+            <article className="lg:col-span-8 xl:col-span-9">
               {sections.map((s) => (
-                <section key={s.id}>
-                  <h2 id={s.id} className="scroll-mt-28">
+                <section key={s.id} className="mt-14 space-y-4 first:mt-0">
+                  <h2 id={s.id} className="scroll-mt-28 text-2xl font-bold leading-tight">
                     {t(`sections.${s.key}.title`)}
                   </h2>
                   {(
                     t(`sections.${s.key}.body`, { returnObjects: true }) as unknown as string[]
                   ).map((p, i) => (
-                    <p key={`${s.key}-${i}`}>{p}</p>
+                    <p
+                      key={`${s.key}-${i}`}
+                      className="text-base leading-7 text-neutral-900 sm:text-lg sm:leading-8 dark:text-neutral-100"
+                    >
+                      {p}
+                    </p>
                   ))}
                 </section>
               ))}

@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "spots",
-      "title": "Spots near Brikette",
+      "title": "Steder nær Brikette",
       "body": [
         "Små kafeer på Via Pasitea og rundt Chiesa Nuova har ofte stabil Wi-Fi.",
         "Ta med batteripakke; strømuttak er begrenset i eldre lokaler."
@@ -18,23 +18,23 @@
     },
     {
       "id": "backup",
-      "title": "Backup connectivity",
+      "title": "Reserve-tilkobling",
       "body": [
         "Behold et eSIM som en reserve; transportører varierer etter område - TIM/Vodafone er vanligvis sterk.",
         "Tether når lunsjrushet bremser kafénettverk."
       ]
     }
   ],
-  "galleryTitle": "Gallery",
+  "galleryTitle": "Galleri",
   "gallery": {
-    "item1Alt": "Laptop on a café table",
-    "item1Caption": "A quiet corner for calls",
-    "item2Alt": "Espresso and notebook",
-    "item2Caption": "Rotate venues and order regularly"
+    "item1Alt": "Bærbar PC på et kafébord",
+    "item1Caption": "Et rolig hjørne for samtaler",
+    "item2Alt": "Espresso og notatbok",
+    "item2Caption": "Bytt kafé og bestill jevnlig"
   },
   "faqs": [
     {
-      "q": "Is all‑day work OK?",
+      "q": "Er det greit å jobbe hele dagen?",
       "a": [
         "Kjøp hvert 60.–90. minutt og unngå topp lunsj; vurdere å rotere arenaer."
       ]

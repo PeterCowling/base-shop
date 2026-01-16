@@ -1,0 +1,28 @@
+{
+  "title": "Settings",
+  "cache": {
+    "title": "Cached Data",
+    "usage": "Storage used",
+    "quota": "{{percent}}% of available storage",
+    "description": "Cached data helps the app work offline. Clearing it may require re-downloading content.",
+    "clear": "Clear cached data",
+    "clearing": "Clearing...",
+    "cleared": "Cleared!",
+    "refresh": "Refresh"
+  },
+  "language": {
+    "title": "Language",
+    "select": "Select language"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "push": "Push notifications",
+    "email": "Email notifications"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy"
+  }
+}

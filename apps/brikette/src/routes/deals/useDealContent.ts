@@ -2,41 +2,33 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { AppLanguage } from "@/i18n.config";
-import formatDisplayDate from "@/utils/formatDisplayDate";
 
-import { DEAL_END, DEAL_VALIDITY } from "./constants";
 import {
   createFallbackTranslator,
   createTokenResolver,
+  type TokenResolver,
   type FallbackTranslator,
 } from "./fallback";
 import {
   buildPerksList,
-  buildRestrictions,
-  resolveActiveCtaLabel,
-  resolveExpiredCtaLabel,
   resolvePerksHeading,
+  type PerkItem,
 } from "./content";
 import { DEALS_NAMESPACE } from "./constants";
 
 export interface DealsPageLabels {
-  seasonLabel: string;
   perksHeading: string;
   perksIntro: string;
   perksGuarantee: string;
+  perksLinkLabel: string;
   termsLabel: string;
-  expiredRobotsDirective: string;
-  expiredCtaLabel: string;
-  activeCtaLabel: string;
+  checkAvailabilityLabel: string;
 }
 
 export interface DealsPageContent {
   translate: FallbackTranslator;
-  perks: string[];
-  restrictions: string[];
-  isExpired: boolean;
-  validityFrom: string;
-  validityTo: string;
+  resolveToken: TokenResolver;
+  perks: PerkItem[];
   labels: DealsPageLabels;
 }
 
@@ -65,45 +57,25 @@ export function useDealContent(lang: AppLanguage): DealsPageContent {
     }
     return buildPerksList(t, tEn);
   }, [t, tEn, ready, readyEn]);
-  const restrictions = useMemo(() => buildRestrictions(translate), [translate]);
-
-  const isExpired = Date.now() > DEAL_END.getTime();
-  const validityFrom = formatDisplayDate(lang, DEAL_VALIDITY.start);
-  const validityTo = formatDisplayDate(lang, DEAL_VALIDITY.end);
-  const seasonLabel = translate("seasonLabel");
   const directBookingPerksLabel = resolveToken("directBookingPerks");
   const perksHeading = resolvePerksHeading(directBookingPerksLabel, translate);
   const perksIntro = translate("perksIntro");
   const perksGuarantee = translate("perksGuarantee");
+  const perksLinkLabel = translate("perksIntroLink");
   const termsLabel = translate("restrictions.other");
   const checkAvailabilityLabel = resolveToken("checkAvailability");
-  const reserveLabel = resolveToken("reserveNow");
-  const bookLabel = resolveToken("bookNow");
-  const expiredRobotsDirective = translate("robots.expiredNoindex");
-  const expiredCtaLabel = resolveExpiredCtaLabel(
-    checkAvailabilityLabel,
-    reserveLabel,
-    bookLabel,
-    translate
-  );
-  const activeCtaLabel = resolveActiveCtaLabel(reserveLabel, bookLabel, translate);
 
   return {
     translate,
+    resolveToken,
     perks,
-    restrictions,
-    isExpired,
-    validityFrom,
-    validityTo,
     labels: {
-      seasonLabel,
       perksHeading,
       perksIntro,
       perksGuarantee,
+      perksLinkLabel,
       termsLabel,
-      expiredRobotsDirective,
-      expiredCtaLabel,
-      activeCtaLabel,
+      checkAvailabilityLabel,
     },
   };
 }

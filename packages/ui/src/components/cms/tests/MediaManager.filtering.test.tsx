@@ -92,7 +92,7 @@ function createShadcnStub() {
   };
 }
 
-jest.mock("@/components/atoms/shadcn", () =>
+jest.mock("@ui/components/atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 jest.mock("../../atoms/shadcn", () =>

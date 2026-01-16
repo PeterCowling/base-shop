@@ -266,6 +266,6 @@
   "loadingPrice": "요금을 불러오는 중…",
   "landingImageAlt": "{{room}} 대표 이미지",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "1박 1인 기준입니다. 1인당 1개 침대를 제공합니다."
   }
 }

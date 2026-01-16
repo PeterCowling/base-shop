@@ -15,27 +15,57 @@ export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras
   const guidesFallbackLocal = getGuidesFallbackTranslator(context.lang);
   const guidesFallbackEn = getGuidesFallbackTranslator("en");
   const fallbackLabels = buildGuideFallbackLabels(guidesFallbackLocal, guidesFallbackEn);
+  const translationKeyFor = (suffix: string) => buildTranslationKey(suffix);
+  const isMissingTranslationValue = (value: string, suffix: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return true;
+    return trimmed === translationKeyFor(suffix) || trimmed === `${GUIDE_KEY}.${suffix}`;
+  };
+  const stripMissingTranslationValues = <T,>(values: T[], suffix: string): T[] =>
+    values.filter((value) => (typeof value === "string" ? !isMissingTranslationValue(value, suffix) : true));
 
   const readArray = <T,>(suffix: string, normaliser: (value: unknown) => T[]): T[] => {
-    const primary = normaliser(translate(buildTranslationKey(suffix), { returnObjects: true }));
+    const primary = stripMissingTranslationValues(
+      normaliser(translate(buildTranslationKey(suffix), { returnObjects: true })),
+      suffix,
+    );
     if (primary.length > 0) return primary;
-    const fallbackLocal = normaliser(guidesFallbackLocal(`${GUIDE_KEY}.${suffix}`, { returnObjects: true }));
+    const fallbackLocal = stripMissingTranslationValues(
+      normaliser(guidesFallbackLocal(`${GUIDE_KEY}.${suffix}`, { returnObjects: true })),
+      suffix,
+    );
     if (fallbackLocal.length > 0) return fallbackLocal;
-    return normaliser(guidesFallbackEn(`${GUIDE_KEY}.${suffix}`, { returnObjects: true }));
+    return stripMissingTranslationValues(
+      normaliser(guidesFallbackEn(`${GUIDE_KEY}.${suffix}`, { returnObjects: true })),
+      suffix,
+    );
   };
 
   const readString = (suffix: string): string | undefined => {
     const translationKey = buildTranslationKey(suffix);
     const value = translate(translationKey);
-    if (typeof value === "string" && value.trim().length > 0 && value !== translationKey) {
+    if (
+      typeof value === "string" &&
+      value.trim().length > 0 &&
+      value !== translationKey &&
+      value !== `${GUIDE_KEY}.${suffix}`
+    ) {
       return value.trim();
     }
     const fallbackLocal = guidesFallbackLocal(`${GUIDE_KEY}.${suffix}`, { defaultValue: "" });
-    if (typeof fallbackLocal === "string" && fallbackLocal.trim().length > 0) {
+    if (
+      typeof fallbackLocal === "string" &&
+      fallbackLocal.trim().length > 0 &&
+      fallbackLocal !== `${GUIDE_KEY}.${suffix}`
+    ) {
       return fallbackLocal.trim();
     }
     const fallbackEn = guidesFallbackEn(`${GUIDE_KEY}.${suffix}`, { defaultValue: "" });
-    if (typeof fallbackEn === "string" && fallbackEn.trim().length > 0) {
+    if (
+      typeof fallbackEn === "string" &&
+      fallbackEn.trim().length > 0 &&
+      fallbackEn !== `${GUIDE_KEY}.${suffix}`
+    ) {
       return fallbackEn.trim();
     }
     return undefined;

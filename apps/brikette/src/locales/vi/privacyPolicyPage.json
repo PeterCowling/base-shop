@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Chính sách quyền riêng tư | Hostel Brikette",
+    "description": "Cách Hostel Brikette thu thập, sử dụng, lưu trữ và chia sẻ dữ liệu cá nhân khi bạn truy cập website hoặc đặt phòng."
+  },
+  "headings": {
+    "pageTitle": "Chính sách quyền riêng tư",
+    "subtitle": "Cách chúng tôi xử lý dữ liệu cá nhân của bạn"
+  },
+  "lastUpdated": {
+    "label": "Cập nhật lần cuối",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Trong trang này",
+    "aria": "Mục lục chính sách quyền riêng tư"
+  },
+  "sections": {
+    "intro": {
+      "title": "Tổng quan",
+      "body": [
+        "Chính sách quyền riêng tư này giải thích dữ liệu cá nhân chúng tôi thu thập, lý do thu thập và cách sử dụng khi bạn truy cập website, liên hệ với chúng tôi hoặc đặt phòng.",
+        "Nếu bạn đang tìm các quy tắc và điều khoản thương mại của việc đặt phòng (thanh toán, thời hạn hủy, check‑in/out và nghĩa vụ của khách), vui lòng đọc Điều khoản và Điều kiện cho việc đặt phòng."
+      ]
+    },
+    "controller": {
+      "title": "Ai chịu trách nhiệm về dữ liệu của bạn",
+      "body": [
+        "Bên kiểm soát dữ liệu là Skylar SRL, hoạt động với tên Hostel Brikette (\"chúng tôi\").",
+        "Nếu bạn có câu hỏi về chính sách này hoặc muốn thực hiện quyền riêng tư, hãy liên hệ với chúng tôi tại {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Dữ liệu cá nhân chúng tôi thu thập",
+      "body": [
+        "Khi bạn liên hệ hoặc yêu cầu đặt phòng, bạn có thể cung cấp thông tin như tên, địa chỉ email, số điện thoại, quốc tịch, ngày lưu trú và mọi tin nhắn bạn gửi cho chúng tôi.",
+        "Nếu bạn hoàn tất đặt phòng thông qua Đại lý Du lịch Trực tuyến (OTA) hoặc công cụ đặt phòng bên thứ ba, nhà cung cấp đó sẽ xử lý thông tin thanh toán của bạn theo chính sách quyền riêng tư của họ. Chúng tôi thường nhận thông tin đặt phòng cần thiết để đón tiếp bạn (ví dụ: tên khách, thông tin liên hệ, ngày tháng và mã đặt phòng).",
+        "Khi bạn truy cập website, máy chủ của chúng tôi có thể xử lý dữ liệu kỹ thuật cơ bản (như địa chỉ IP, thông tin thiết bị và trình duyệt, và các trang được yêu cầu) cho mục đích bảo mật, gỡ lỗi và hiệu năng."
+      ]
+    },
+    "howWeUse": {
+      "title": "Cách chúng tôi sử dụng dữ liệu của bạn",
+      "body": [
+        "Để phản hồi yêu cầu và cung cấp hỗ trợ khách hàng.",
+        "Để xử lý và quản lý đặt phòng, check‑in và các liên lạc liên quan đến lưu trú.",
+        "Để tuân thủ nghĩa vụ pháp lý (bao gồm các nghĩa vụ liên quan đến dịch vụ lưu trú và an toàn công cộng).",
+        "Để bảo vệ và duy trì website của chúng tôi (phòng chống gian lận, giám sát lạm dụng và độ tin cậy)."
+      ]
+    },
+    "legalBases": {
+      "title": "Cơ sở pháp lý (vì sao chúng tôi được phép xử lý dữ liệu)",
+      "body": [
+        "Hợp đồng: để thực hiện các bước theo yêu cầu của bạn trước khi đặt phòng và thực hiện hợp đồng đặt phòng.",
+        "Nghĩa vụ pháp lý: để đáp ứng các yêu cầu của pháp luật áp dụng (bao gồm các quy định của Ý về lưu trú).",
+        "Lợi ích hợp pháp: để vận hành, bảo vệ và cải thiện website và liên lạc của chúng tôi, miễn là các lợi ích đó không vượt quá quyền của bạn."
+      ]
+    },
+    "sharing": {
+      "title": "Chúng tôi chia sẻ dữ liệu với ai",
+      "body": [
+        "Chúng tôi chỉ chia sẻ dữ liệu cá nhân khi cần thiết để cung cấp dịch vụ hoặc tuân thủ pháp luật. Điều này có thể bao gồm các nền tảng đặt phòng bạn chọn sử dụng, nhà cung cấp thanh toán của các nền tảng đó, nhà cung cấp email/liên lạc và nhà cung cấp kỹ thuật lưu trữ hoặc bảo vệ website của chúng tôi.",
+        "Chúng tôi không bán dữ liệu cá nhân."
+      ]
+    },
+    "retention": {
+      "title": "Chúng tôi lưu giữ dữ liệu trong bao lâu",
+      "body": [
+        "Chúng tôi chỉ giữ dữ liệu cá nhân trong thời gian cần thiết cho các mục đích nêu trên và để đáp ứng các yêu cầu pháp lý, kế toán hoặc báo cáo.",
+        "Thời gian lưu giữ có thể khác nhau tùy theo loại hồ sơ và nghĩa vụ pháp lý áp dụng."
+      ]
+    },
+    "security": {
+      "title": "Cách chúng tôi bảo vệ dữ liệu của bạn",
+      "body": [
+        "Chúng tôi áp dụng các biện pháp kỹ thuật và tổ chức hợp lý để bảo vệ dữ liệu cá nhân khỏi mất mát, lạm dụng và truy cập trái phép.",
+        "Không hệ thống nào có thể đảm bảo an toàn 100%, nhưng chúng tôi liên tục cải thiện bảo mật."
+      ]
+    },
+    "yourRights": {
+      "title": "Quyền của bạn",
+      "body": [
+        "Tùy theo nơi bạn ở và luật áp dụng, bạn có thể có quyền truy cập, chỉnh sửa, xóa hoặc hạn chế việc xử lý dữ liệu cá nhân của mình, và phản đối một số hoạt động xử lý.",
+        "Để thực hiện quyền của bạn, hãy liên hệ với chúng tôi tại {{email}}. Chúng tôi có thể cần xác minh danh tính của bạn."
+      ]
+    },
+    "international": {
+      "title": "Chuyển dữ liệu quốc tế",
+      "body": [
+        "Một số nhà cung cấp dịch vụ có thể xử lý dữ liệu ngoài quốc gia của bạn. Khi cần, chúng tôi sử dụng các biện pháp bảo vệ phù hợp cho việc chuyển dữ liệu quốc tế."
+      ]
+    },
+    "changes": {
+      "title": "Thay đổi đối với chính sách này",
+      "body": [
+        "Chúng tôi có thể cập nhật Chính sách quyền riêng tư này theo thời gian. Phiên bản mới nhất là phiên bản được đăng trên trang này."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Lên đầu trang"
+  }
+}

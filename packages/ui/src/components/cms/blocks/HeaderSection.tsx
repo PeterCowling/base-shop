@@ -114,7 +114,6 @@ export default function HeaderSection({
   };
 
   return (
-    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: CSS utility classes only [ttl=2026-12-31]
     <header className={[className, stickyClass, transparentClass, "relative w-full border-b border-border"].filter(Boolean).join(" ") || undefined} {...rest}>
       {announcement ? (
         experimentKey ? (

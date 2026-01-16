@@ -1,11 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // AUTO-GENERATED: route module map for Next route resolver.
 // Reason: Next needs explicit import paths; dynamic lookup is brittle in bundled builds.
 // Follow-up: consider build-time generation to keep this file small.
 
-import type { RouteModule } from "./route-module-types";
-
-export const routeModules: Record<string, () => Promise<RouteModule>> = {
+export const routeModules: Record<string, () => Promise<unknown>> = {
   "routes/NotFound.tsx": () => import("@/routes/NotFound"),
   "routes/_manifest-sentinel.tsx": () => import("@/routes/_manifest-sentinel"),
   "routes/about.tsx": () => import("@/routes/about"),
@@ -37,6 +34,8 @@ export const routeModules: Record<string, () => Promise<RouteModule>> = {
   "routes/breakfast-menu.tsx": () => import("@/routes/breakfast-menu"),
   "routes/breakfast-menu/_MenuRow.tsx": () => import("@/routes/breakfast-menu/_MenuRow"),
   "routes/careers.tsx": () => import("@/routes/careers"),
+  "routes/cookie-policy.redirect.tsx": () => import("@/routes/cookie-policy.redirect"),
+  "routes/cookie-policy.tsx": () => import("@/routes/cookie-policy"),
   "routes/deals.tsx": () => import("@/routes/deals"),
   "routes/experiences.tsx": () => import("@/routes/experiences"),
   "routes/experiences/ExperiencesPage.tsx": () => import("@/routes/experiences/ExperiencesPage"),
@@ -182,6 +181,7 @@ export const routeModules: Record<string, () => Promise<RouteModule>> = {
   "routes/guides/salerno-amalfi-coast-gateway.tsx": () => import("@/routes/guides/salerno-amalfi-coast-gateway"),
   "routes/guides/salerno-to-positano.tsx": () => import("@/routes/guides/salerno-to-positano"),
   "routes/guides/salerno-vs-naples-arrivals.tsx": () => import("@/routes/guides/salerno-vs-naples-arrivals"),
+  "routes/guides/santa-maria-del-castello-hike.tsx": () => import("@/routes/guides/santa-maria-del-castello-hike"),
   "routes/guides/scenic-walks-positano-environs.tsx": () => import("@/routes/guides/scenic-walks-positano-environs"),
   "routes/guides/scooter-rental-positano-guide.tsx": () => import("@/routes/guides/scooter-rental-positano-guide"),
   "routes/guides/sim-esim-and-atms-positano.tsx": () => import("@/routes/guides/sim-esim-and-atms-positano"),
@@ -242,7 +242,10 @@ export const routeModules: Record<string, () => Promise<RouteModule>> = {
   "routes/how-to-get-here/sections.tsx": () => import("@/routes/how-to-get-here/sections"),
   "routes/how-to-get-here/ui.tsx": () => import("@/routes/how-to-get-here/ui"),
   "routes/not-found.tsx": () => import("@/routes/not-found"),
+  "routes/privacy-policy.redirect.tsx": () => import("@/routes/privacy-policy.redirect"),
+  "routes/privacy-policy.tsx": () => import("@/routes/privacy-policy"),
   "routes/rooms.$id.tsx": () => import("@/routes/rooms.$id"),
   "routes/rooms.tsx": () => import("@/routes/rooms"),
+  "routes/house-rules.tsx": () => import("@/routes/house-rules"),
   "routes/terms.tsx": () => import("@/routes/terms"),
-} satisfies Record<string, () => Promise<RouteModule>>;
+} satisfies Record<string, () => Promise<unknown>>;

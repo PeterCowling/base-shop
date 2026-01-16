@@ -3,7 +3,6 @@
 // Single-purpose stub: Porter service in Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const porterService = {
   seo: {
@@ -18,5 +17,4 @@ export const porterService = {
   faqs: [{ q: "Can I book on arrival?", a: ["Possible, but better to book ahead."] }],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

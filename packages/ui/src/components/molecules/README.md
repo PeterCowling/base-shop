@@ -13,7 +13,7 @@ import {
   PaginationControl,
   PriceCluster,
   QuantityInput,
-} from "@/components/molecules";
+} from "@ui/components/molecules";
 ```
 
 Molecules tend to orchestrate behaviour (search suggestions, quantity counters,
@@ -40,7 +40,7 @@ form labels) so downstream apps only need to forward event handlers.
 <QuantityInput value={qty} min={1} max={10} onChange={setQty} />
 ``` |
 | `FormField` | `label`, optional `htmlFor`, `error`, `required`, layout props. Wraps custom form controls with accessible labelling and error messaging. | ```tsx
-import { Input } from "@/components/atoms/shadcn";
+import { Input } from "@ui/components/atoms/shadcn";
 
 <FormField label="Email" htmlFor="email" required error={errors.email}>
   <Input id="email" type="email" value={form.email} onChange={handleChange} />

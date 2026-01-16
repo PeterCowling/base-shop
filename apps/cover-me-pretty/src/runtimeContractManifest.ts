@@ -38,7 +38,7 @@ export const runtimeContractManifest = {
     apiCart: {
       path: "/api/cart",
       runtime: "nodejs",
-      uses: "@platform-core/cartApi",
+      uses: "@platform-core/cartApiForShop",
     } satisfies ApiRouteDescriptor,
 
     // Checkout session route name and implementation should converge

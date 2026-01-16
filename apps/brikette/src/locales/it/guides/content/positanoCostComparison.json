@@ -5,14 +5,14 @@
   },
   "linkLabel": "Costi di Positano vs altre destinazioni balneari",
   "intro": [
-    "Traduzione in arrivo."
+    "Confronta Positano con altre destinazioni balneari europee per fare un budget intelligente e capire quando vale lo splurge."
   ],
   "sections": [
     {
       "id": "stay",
-      "title": "Accommodation vs peers",
+      "title": "Alloggi rispetto ad altre mete",
       "body": [
-        "Traduzione in arrivo.",
+        "In alta stagione i dormitori a Positano costano circa il doppio rispetto a Lisbona o Spalato. Le camere private sono simili a Santorini ma finiscono prima per la scarsita di disponibilita.",
         "Soggiorna a Praiano o Sorrento per risparmiare €40–€60 a notte mantenendo l'accesso in traghetto/autobus per Positano."
       ]
     },
@@ -20,34 +20,34 @@
       "id": "food",
       "title": "Food & drink",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "I pasti informali costano 5-10 EUR in piu rispetto a Bari o Valencia, ma la qualita dei prodotti e alta. Gli aperitivi aiutano a cenare con 12 EUR includendo il drink.",
+        "Fai colazioni in autonomia con frutta e brioche del mercato per compensare le cene piu costose vista mare."
       ]
     },
     {
       "id": "transport",
       "title": "Transport & experiences",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "I traghetti costano 9-22 EUR, un po' piu della Croazia ma meno dei water taxi greci.",
+        "Esperienze come tour in barca o corsi di cucina costano simili ad Amalfi o Santorini; prenota in mezza stagione per tariffe piu basse e mare piu calmo."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
+    "Viaggia in aprile, maggio o ottobre per prezzi piu vicini a Dubrovnik con meteo piu fresco.",
     "Pacchetto di esperienze (ad esempio, corso di cucina in ostello + gita in barca) per sconti sui pacchetti invece di prenotare slot individuali."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Positano vale il prezzo piu alto?",
       "a": [
-        "Traduzione in arrivo."
+        "Si se dai priorita a viste sul mare, spiagge iconiche e collegamenti rapidi in traghetto. Puoi ridurre i costi soggiornando nei dintorni e concentrando la spesa su pasti o tour speciali."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Dove andare per viste simili spendendo meno?",
       "a": [
-        "Traduzione in arrivo."
+        "Praiano e Minori offrono panorama di Costiera con tariffe hotel piu basse. Abbinali a gite di un giorno a Positano per i classici scatti."
       ]
     }
   ],
@@ -55,31 +55,31 @@
     "toc": [
       {
         "href": "#overview",
-        "label": "Overview"
+        "label": "Panoramica"
       },
       {
         "href": "#when",
-        "label": "When it’s good value"
+        "label": "Quando conviene"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "Domande frequenti"
       }
     ],
-    "faqLabel": "FAQs",
+    "faqLabel": "Domande frequenti",
     "sections": {
       "overview": {
-        "heading": "Overview",
-        "body": "Traduzione in arrivo."
+        "heading": "Panoramica",
+        "body": "Gli alloggi possono costare di piu, ma trasporti e cibo restano gestibili con scelte intelligenti."
       },
       "when": {
-        "heading": "When it’s good value",
-        "body": "Traduzione in arrivo."
+        "heading": "Quando conviene",
+        "body": "Mezza stagione, giorni feriali e soggiorni piu lunghi vicino a Chiesa Nuova riducono costi e fatica."
       }
     },
     "faq": {
-      "summary": "Traduzione in arrivo.",
-      "answer": "Traduzione in arrivo."
+      "summary": "Positano e piu cara di Amalfi?",
+      "answer": "Spesso per i soggiorni fronte mare; il rapporto migliora all'interno o vicino alle fermate bus."
     }
   }
 }

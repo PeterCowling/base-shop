@@ -1,7 +1,7 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 import i18n from "@/i18n";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import { getGuidesBundle, type GuidesNamespace } from "../locales/guides";
+import { loadGuidesNamespaceFromImports } from "../locales/guides.imports";
 import { IS_SERVER } from "@/config/env";
 import { loadLocaleResource } from "@/locales/locale-loader";
 const nodeCache = new Set<string>();
@@ -81,24 +81,37 @@ async function loadBundleFromFs(lang: string, ns: string): Promise<unknown | und
  */
 export async function loadI18nNs(lang: string, ns: string): Promise<void> {
   const onceKey = `${lang}/${ns}`;
-  if (onceCache.has(onceKey)) return;
+  const hasExistingResource = (() => {
+    if (typeof i18n.hasResourceBundle !== "function") return false;
+    try {
+      return i18n.hasResourceBundle(lang, ns);
+    } catch {
+      return false;
+    }
+  })();
 
   const existing = (() => {
+    if (typeof i18n.getResourceBundle !== "function") return undefined;
     try {
       return i18n.getResourceBundle(lang, ns) as Record<string, unknown> | undefined;
     } catch {
       return undefined;
     }
   })();
-  if (
-    existing &&
-    typeof existing === "object" &&
-    Object.keys(existing).length > 0 &&
-    !isSeededBundle(ns, existing)
-  ) {
+
+  const hasValidExisting =
+    (existing &&
+      typeof existing === "object" &&
+      Object.keys(existing).length > 0 &&
+      !isSeededBundle(ns, existing)) ||
+    (hasExistingResource && existing === undefined);
+
+  if (hasValidExisting) {
     onceCache.add(onceKey);
     return;
   }
+
+  if (onceCache.has(onceKey)) return;
 
   if (isServerRuntime()) {
     const key = `${lang}/${ns}`;
@@ -230,6 +243,9 @@ async function loadGuidesNamespace(lang: string): Promise<GuidesNamespace | unde
       // fall through to return undefined
     }
   }
+
+  const imported = await loadGuidesNamespaceFromImports(lang);
+  if (imported) return imported;
 
   return undefined;
 }

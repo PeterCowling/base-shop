@@ -3,7 +3,6 @@
 // Single-purpose stub: Hostel → Ferry Dock (with luggage)
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const hostelToFerryDock = {
   seo: {
@@ -20,5 +19,4 @@ export const hostelToFerryDock = {
   kneesPorterLinkLabel: "porter service guide",
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

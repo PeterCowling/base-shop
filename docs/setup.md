@@ -1,15 +1,17 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Project Setup
+# Project Setup (Agent Runbook)
+
+Audience: agents only. Follow `AGENTS.md` for git safety and test scoping.
 
 ## Prerequisites
 
 - **Node.js** v20 or newer
 - **pnpm** v10 (repo uses pnpm@10.12.1)
-- `DATABASE_URL` in your `.env` pointing to a PostgreSQL database. See [environment variable reference](./.env.reference.md) for the full list of required keys and [plugin environment variables](./plugins.md) for provider credentials.
+- `DATABASE_URL` in `.env` pointing to a PostgreSQL database. See [environment variable reference](./.env.reference.md) for the full list of required keys and [plugin environment variables](./plugins.md) for provider credentials.
 
 See [Next.js configuration](./nextjs-config.md) for Cloudflare-specific framework options.
 
@@ -41,7 +43,7 @@ pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugi
 
 `--auto-plugins` selects any detected provider plugins, `--auto-env` populates required environment variables with placeholders, and `--presets` applies default navigation, pages, and a GitHub Actions workflow.
 
-`quickstart-shop` runs `pnpm -r build` automatically before seeding or launching the dev server, so you don't need to build the workspace ahead of time.
+`quickstart-shop` runs `pnpm -r build` automatically before seeding or launching the dev server, so a manual workspace build is not required.
 
 Add `--seed` to copy sample products and inventory. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings so the shop is immediately populated. Pass `--pages-template <name>` to apply predefined page layouts (`hero`, `product-grid`, `contact`). The script also accepts `--config <file>` to prefill options and skip prompts:
 
@@ -87,10 +89,10 @@ Passing `--defaults` tells the configurator to prefill navigation links and page
 from the selected template's `shop.json` when those fields exist. Any missing
 entries fall back to interactive prompts.
 
-After answering the prompts the configurator scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
+After answering the prompts the configurator scaffolds `apps/shop-<id>` and writes the answers to `apps/shop-<id>/.env`.
 The initializer also respects analytics/lead toggles: set `--analytics off` or `--lead-capture off` (or edit `settings.json` after scaffolding) to keep signals disabled until keys are configured.
 During `init-shop`, the starter pages include Consent + Newsletter/Contact blocks so new shops launch with wiring visible; leave analytics/lead toggles off until ready to supply IDs/endpoints.
-If you enable analytics, ensure `NEXT_PUBLIC_GA4_ID` and `GA_API_SECRET` are provided. If you enable lead capture, set `leadCapture.endpoint` (or leave it off for local JSONL persistence only).
+If analytics is enabled, ensure `NEXT_PUBLIC_GA4_ID` and `GA_API_SECRET` are provided. If lead capture is enabled, set `leadCapture.endpoint` (or leave it off for local JSONL persistence only).
 Starter pages now include Consent + Newsletter/Contact blocks automatically; keep analytics/lead toggles off until IDs/endpoints are ready, then re-publish.
 
 To skip the theme prompts, provide overrides via flags:
@@ -101,7 +103,7 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 
 `--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
 
-For more extensive customization you could import design tokens from common sources like Figma or Style Dictionary, or start with theme presets tailored to a specific vertical to avoid editing each value by hand.
+For deeper customization, import design tokens from common sources like Figma or Style Dictionary, or start with theme presets tailored to a specific vertical to avoid editing each value by hand.
 
 To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Provide `--pages-template <name>` to copy predefined page layouts (`hero`, `product-grid`, `contact`). Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
@@ -117,16 +119,16 @@ To reuse answers across runs, create `profiles/<name>.json` and run
 with `--skip-prompts` to accept defaults for remaining questions and run
 non-interactively.
 
-Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages. The shop dashboard now
+Once scaffolded, use the CMS [Page Builder](./cms.md#page-builder) to lay out pages. The shop dashboard now
 includes quick actions for staging upgrades and requesting a rollback—use **Upgrade & preview** to run the templating script and
 review changes at `/cms/shop/<id>/upgrade-preview`, or **Rollback to previous version** to restore the last published template
 without leaving the CMS. See [Upgrade & rollback workflows](./cms.md#upgrade--rollback-workflows) for details.
 
 ### Analytics & lead capture switches
 
-- Toggle analytics per shop in `settings.json` → `analytics.enabled` (provider/id set when you’re ready). Consent must still be `true` for browser beacons.
+- Toggle analytics per shop in `settings.json` → `analytics.enabled` (provider/id set when ready). Consent must still be `true` for browser beacons.
 - Lead capture is gated by `leadCapture.enabled`; submissions persist to `data/shops/<id>/leads.jsonl` or forward to a configured `endpoint`.
-- The client SDK `@platform-core/analytics/client` is used by storefront beacons; no app changes needed when you flip these flags.
+- The client SDK `@platform-core/analytics/client` is used by storefront beacons; no app changes needed when toggling these flags.
 
 ### Rental shops
 
@@ -135,14 +137,14 @@ Choosing `rental` as the shop type enables additional workflows:
 - Define rental prices in `data/rental/pricing.json` and currency conversion
   rates in `data/rental/exchangeRates.json`.
 - Set `rentalInventoryAllocation` and any `rentalSubscriptions` in the shop's
-  `shop.json` if you need stock reservations or subscription plans.
+  `shop.json` when stock reservations or subscription plans are required.
 - Configure deposit release by setting `DEPOSIT_RELEASE_ENABLED=true` and
   `DEPOSIT_RELEASE_INTERVAL_MS` in the generated `.env` file. Run
   `pnpm release-deposits` to process refunds on demand.
 - Ensure `coverageIncluded` or coverage codes are set in shop settings when
   offering damage coverage at checkout.
 
-For automated scripts you can still call `pnpm create-shop <id>` with flags:
+For automated scripts, call `pnpm create-shop <id>` with flags:
 
 ```bash
 pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed] [--config=path]
@@ -218,7 +220,7 @@ Scaffolded apps/shop-demo
 The configurator captures common environment variables and writes them to `apps/shop-<id>/.env`.
 
 After scaffolding, the configurator writes both `.env` and `.env.template` to `apps/shop-<id>/`.
-The template lists all variables required by your chosen providers. If you used `--auto-env`,
+The template lists all variables required by the selected providers. When `--auto-env` is used,
 `.env` contains placeholder values like `TODO_API_KEY`. Supplying `--env-file` copies matching keys
 from that file, and `--vault-cmd <cmd>` invokes the given command with each variable name to retrieve
 secrets from an external vault. Placeholders and missing variables must be replaced with real
@@ -234,7 +236,7 @@ pnpm validate-env <id>
 
 ## 3. Run the shop
 
-Start the development server for your newly created shop:
+Start the development server for the newly created shop:
 
 ```bash
 cd apps/shop-<id>
@@ -255,9 +257,9 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
-During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the configurator prompts for any required environment variables.
+During `init-shop`, the configurator lists detected plugins. Selected plugins are added to the new shop's `package.json` and the configurator prompts for any required environment variables.
 
-To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
+To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS, enable and configure the plugin under **CMS → Plugins**.
 
 Some plugins require additional environment variables (for example Stripe API keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>` before using the plugin.
 
@@ -294,5 +296,5 @@ See [machine](./machine.md#deposit-release-service) for more details and configu
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
 - **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.
-- **Node or pnpm version errors** – check you are running Node.js ≥20 and pnpm 10.x. Version mismatches can cause dependency resolution issues.
+- **Node or pnpm version errors** – confirm Node.js >=20 and pnpm 10.x. Version mismatches can cause dependency resolution issues.
 - **`pnpm dev` throws an `array.length` error** – see `docs/troubleshooting.md` for steps to capture detailed logs and resolve the issue.

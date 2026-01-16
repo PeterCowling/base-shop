@@ -1,8 +1,8 @@
 // src/hooks/useResponsiveImage.ts
-import { PRESETS } from "@/config/imagePresets";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { getIntrinsicSize } from "@/lib/getIntrinsicSize";
-import type { ImageDims, SrcSetEntry } from "@/types/image";
+import { PRESETS } from "@ui/config/imagePresets";
+import buildCfImageUrl from "@ui/lib/buildCfImageUrl";
+import { getIntrinsicSize } from "@ui/lib/getIntrinsicSize";
+import type { ImageDims, SrcSetEntry } from "@ui/types/image";
 import { useMemo } from "react";
 
 /* ---------- shared option fragments ------------------------------------ */

@@ -1,0 +1,25 @@
+name: Handbag Configurator Budgets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "products/**"
+      - "packages/tools/**"
+      - ".github/workflows/handbag-configurator-budgets.yml"
+  pull_request:
+    paths:
+      - "products/**"
+      - "packages/tools/**"
+      - ".github/workflows/handbag-configurator-budgets.yml"
+  workflow_dispatch:
+
+jobs:
+  budgets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+      - name: Check GLB budgets
+        run: pnpm budgets:check

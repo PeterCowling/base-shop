@@ -23,12 +23,14 @@ function ExperiencesPageComponent() {
     guideCollectionCopy,
     guideCollectionId,
     clearFilterHref,
+    filterParam,
     filterTag,
     faqTitle,
     faqEntries,
     cta,
     ctaLinks,
   } = useExperiencesPageContent();
+  const totalGuideCount = experienceGuides.length;
 
   return (
     <Fragment>
@@ -44,7 +46,9 @@ function ExperiencesPageComponent() {
               id={collection.id}
               lang={meta.lang}
               guides={collection.guides}
+              totalCount={totalGuideCount}
               filterTag={filterTag}
+              filterParam={filterParam}
               clearFilterHref={clearFilterHref}
               copy={collection.copy}
               showFilters={collection.showFilters ?? index === 0}
@@ -55,9 +59,12 @@ function ExperiencesPageComponent() {
             id={guideCollectionId}
             lang={meta.lang}
             guides={experienceGuides}
+            totalCount={totalGuideCount}
             filterTag={filterTag}
+            filterParam={filterParam}
             clearFilterHref={clearFilterHref}
             copy={guideCollectionCopy}
+            showFilters={filterParam !== "tag"}
           />
         )}
         <FaqSection title={faqTitle} entries={faqEntries} />

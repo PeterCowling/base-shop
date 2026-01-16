@@ -1,0 +1,30 @@
+name = "front-door-worker"
+main = "src/index.ts"
+compatibility_date = "2025-12-26"
+
+[vars]
+# Used in local dev/tests to avoid D1/KV dependencies.
+# Example:
+# {
+#   "shop.example": { "shopId": "shop_1", "canonicalHost": "shop.example", "defaultLocale": "en", "mode": "active" }
+# }
+HOST_MAPPING_JSON = ""
+
+# Where to forward commerce authority endpoints.
+# Example: "https://gateway.example"
+GATEWAY_ORIGIN = ""
+
+# Optional: injected into Gateway requests as `x-front-door-token`.
+GATEWAY_AUTH_TOKEN = ""
+
+CONTROL_PLANE_TOKEN = "dev-control-plane-token"
+
+[[kv_namespaces]]
+binding = "HOST_MAPPING_CACHE"
+id = "00000000000000000000000000000000"
+preview_id = "11111111111111111111111111111111"
+
+[[d1_databases]]
+binding = "ROUTING_DB"
+database_name = "front_door_routing"
+database_id = "00000000-0000-0000-0000-000000000000"

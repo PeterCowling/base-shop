@@ -14,7 +14,7 @@
   },
   "sections": {
     "spritzFrozen": {
-      "title": "Spritz & Frozen Cocktails"
+      "title": "Spritz og frosne cocktails"
     },
     "houseWine": {
       "title": "Husvin"
@@ -23,7 +23,7 @@
       "title": "Øl"
     },
     "vodka": {
-      "title": "Vodka Mixed Drinks",
+      "title": "Vodka-drinker",
       "note": "Prisen inkluderer en mikser av tonic, cola brus, cola null eller sprite."
     },
     "rum": {
@@ -31,7 +31,7 @@
       "note": "Velg rom og gi oss beskjed hvis du vil ha en koffeinmikser til. Kaffe kan være islagt eller varm, som et espresso-skudd eller lang/Americano."
     },
     "gin": {
-      "title": "Gin Mixed Drinks",
+      "title": "Gin-drinker",
       "note": "Serveres med Schweppes tonic vann, over flasset is og pyntet med deilig Amalfi-kyst sitron."
     },
     "whisky": {
@@ -157,13 +157,13 @@
       "note": "En klassisk sørlig italiensk drink, servert rett opp."
     },
     "oneScoop": {
-      "name": "1 Scoop"
+      "name": "1 kule"
     },
     "twoScoops": {
-      "name": "2 Scoops"
+      "name": "2 kuler"
     },
     "threeScoops": {
-      "name": "3 Scoops",
+      "name": "3 kuler",
       "note": "Velg mellom sitron, sjokolade, vanilje og hasselnøttsmaker."
     }
   },

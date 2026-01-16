@@ -3,13 +3,16 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@platform-core/types/inventory";
 import { inventoryRepository } from "@platform-core/repositories/inventory.server";
+import { hasPermission } from "@auth";
+import type { Role } from "@auth/types";
 
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
   const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  const role = session?.user?.role as Role | undefined;
+  if (!role || !hasPermission(role, "manage_inventory")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {

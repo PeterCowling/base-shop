@@ -1,8 +1,11 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy -- UI-9999 [ttl=2026-12-31] pending i18n coverage for CMS media replacement */
+
 import type { ApiError, MediaItem } from "@acme/types";
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getCsrfToken } from "@acme/shared-utils";
 
 interface Options {
   item: MediaItem & { url: string };
@@ -81,15 +84,17 @@ export function useMediaReplacement({
         if (previewAlt) fd.append("altText", previewAlt);
         if (tags.length > 0) fd.append("tags", JSON.stringify(tags));
 
-        const response = await fetch(`/cms/api/media?shop=${shop}`, {
+        const csrfToken = getCsrfToken();
+        const response = await fetch(`/api/media?shop=${shop}`, {
           method: "POST",
+          headers: csrfToken ? { "x-csrf-token": csrfToken } : undefined,
           body: fd,
         });
 
         const data = (await response.json()) as MediaItem | ApiError;
         if (!response.ok || "error" in data) {
-          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — surfaced verbatim to caller, upstream may provide localized message
-          throw new Error("Failed to upload replacement");
+          // i18n-exempt -- surfaced verbatim to caller; upstream may provide localized message [ttl=2026-12-31]
+          throw new Error(("error" in data && data.error) || response.statusText || "Failed to upload replacement");
         }
 
         finishUploadProgress();

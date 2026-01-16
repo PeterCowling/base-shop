@@ -1,9 +1,10 @@
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
-import { loadSplitRouteModule } from "./content-modules";
+import { loadSplitRouteModule, splitRouteModules } from "./content-modules";
 
 const FALLBACK_LANGUAGE = (i18nConfig.fallbackLng ?? "en") as AppLanguage;
+const HAS_LOCALE_CONTENT = Object.keys(splitRouteModules).length > 0;
 
 const normaliseModuleDefault = (value: unknown): RouteContent | undefined => {
   if (value && typeof value === "object") {
@@ -22,6 +23,10 @@ export async function getContentForRoute(
   lang: string,
   contentKey: string,
 ): Promise<RouteContent> {
+  if (!HAS_LOCALE_CONTENT) {
+    throw new Error("Missing how-to-get-here locale content");
+  }
+
   const local = await loadContentForRoute(lang, contentKey);
   if (local) return local;
 

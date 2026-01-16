@@ -11,36 +11,9 @@
 import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
-
-// Simple translation function until i18n is set up
-const translations: Record<string, string> = {
-  'staffLookup.back': 'Back',
-  'staffLookup.title': 'Staff Lookup',
-  'staffLookup.subtitle': 'Look up guest check-in details',
-  'staffLookup.placeholder': 'Enter check-in code',
-  'staffLookup.loading': 'Looking up...',
-  'staffLookup.errors.codeNotFound': 'Code not found',
-  'staffLookup.errors.codeExpired': 'Code has expired',
-  'staffLookup.errors.lookupFailed': 'Lookup failed',
-  'staffLookup.tryAgain': 'Please try again',
-  'staffLookup.guestName': 'Guest Name',
-  'staffLookup.room': 'Room',
-  'staffLookup.nights': 'Nights',
-  'staffLookup.dates': 'Dates',
-  'staffLookup.eta': 'Expected Arrival',
-  'staffLookup.payment': 'Payment Due',
-  'stay.night': 'night',
-  'stay.nights': 'nights',
-  'cash.cityTax.label': 'City Tax',
-  'cash.deposit.label': 'Deposit',
-  'cash.total': 'Total Due',
-  'eta.methods.bus': 'Bus',
-  'eta.methods.ferry': 'Ferry',
-  'eta.methods.taxi': 'Taxi',
-  'eta.methods.car': 'Car',
-};
-const t = (key: string) => translations[key] || key;
+import Container from '@/components/layout/Container';
 
 interface StaffCheckInView {
   guestName: string;
@@ -76,6 +49,7 @@ function formatEtaWindow(window: string | null): string {
 function StaffLookupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useTranslation('PreArrival');
   const { role, user } = usePinAuth();
 
   const codeFromUrl = searchParams.get('code') ?? '';
@@ -144,7 +118,7 @@ function StaffLookupContent() {
   // Show loading while checking auth
   if (!user || !role) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
       </div>
     );
@@ -155,14 +129,14 @@ function StaffLookupContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="mx-auto max-w-md">
+    <div className="min-h-svh bg-gray-50 p-4">
+      <Container className="max-w-md">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.back()}
-            className="rounded-full p-2 hover:bg-gray-200"
+            className="min-h-11 min-w-11 rounded-full p-2 hover:bg-gray-200"
             aria-label={t('staffLookup.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -181,13 +155,13 @@ function StaffLookupContent() {
               value={inputCode}
               onChange={(e) => setInputCode(e.target.value.toUpperCase())}
               placeholder={t('staffLookup.placeholder')}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-lg font-mono uppercase focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-lg font-mono uppercase focus-visible:border-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200"
               disabled={isLoading}
             />
             <button
               type="submit"
               disabled={isLoading || !inputCode.trim()}
-              className="rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
+              className="min-h-11 min-w-11 rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
             >
               <Search className="h-5 w-5" />
             </button>
@@ -310,7 +284,7 @@ function StaffLookupContent() {
             </div>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }
@@ -318,7 +292,7 @@ function StaffLookupContent() {
 export default function StaffLookupPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
       </div>
     }>

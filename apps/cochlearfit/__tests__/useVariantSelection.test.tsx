@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Product } from "@/types/product";
-import { getProducts } from "@/lib/catalog";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { useVariantSelection } from "@/hooks/useVariantSelection";
 
 const HookHarness = ({
@@ -31,9 +31,19 @@ const HookHarness = ({
 };
 
 describe("useVariantSelection", () => {
+  let product: Product;
+
+  beforeAll(async () => {
+    const products = await listCochlearfitProducts("en");
+    const first = products[0];
+    if (!first) {
+      throw new Error("Missing product fixture");
+    }
+    product = first;
+  });
+
   it("tracks selected size and color", async () => {
     const user = userEvent.setup();
-    const product = getProducts()[0] as Product;
 
     render(<HookHarness product={product} />);
 
@@ -49,7 +59,6 @@ describe("useVariantSelection", () => {
   });
 
   it("uses the initial variant when provided", () => {
-    const product = getProducts()[0] as Product;
     const initialVariantId = "classic-adult-berry";
 
     render(<HookHarness product={product} initialVariantId={initialVariantId} />);

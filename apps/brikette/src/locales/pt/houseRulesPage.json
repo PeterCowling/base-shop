@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Regras da casa | Hostel Brikette",
+    "description": "Regras da casa do Hostel Brikette sobre conduta, visitantes, horários de silêncio, segurança, keycards e procedimentos no local."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Regras da casa",
+    "pageSubtitle": "Regras da casa"
+  },
+  "toc": {
+    "title": "Conteúdo",
+    "aria": "Tabela de conteúdos"
+  },
+  "footer": {
+    "end": "Fim do documento.",
+    "backToTop": "Voltar ao topo"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Conduta respeitosa e segurança",
+      "body": [
+        "Aplica-se a: todos os Hóspedes e Visitantes nas dependências.",
+        "Estas Regras da casa fazem parte do contrato de hospedagem. Violações podem resultar na remoção da propriedade e/ou Rescisão por violação nos termos dos Termos de reserva.",
+        "1.1 Trate a equipe e outros Hóspedes com respeito. Assédio, ameaças, violência ou conduta discriminatória não são permitidos.",
+        "1.2 Siga as orientações da equipe relacionadas a segurança e operações.",
+        "1.3 Não danifique a propriedade nem interfira com equipamentos de segurança."
+      ]
+    },
+    "s2": {
+      "title": "2. Horários de silêncio e ruído",
+      "body": [
+        "2.1 Os horários de silêncio são 23:45–08:00. Durante esses horários: mantenha o ruído ao mínimo em quartos e Áreas comuns; sem música/caixas de som altas; faça ligações fora das áreas de descanso.",
+        "2.2 Se você perturbar repetidamente outros hóspedes, podemos exigir sua saída nos termos dos Termos de reserva."
+      ]
+    },
+    "s3": {
+      "title": "3. Visitantes / Visitantes temporários (apenas Áreas comuns)",
+      "body": [
+        "3.1 Visitantes são permitidos apenas a nosso critério e somente em Áreas comuns. Visitantes não são permitidos em quartos/dormitórios.",
+        "3.2 O horário de Visitantes (se permitido) é 10:30–23:00, sujeito às necessidades operacionais.",
+        "3.3 Visitantes devem apresentar identificação original e cumprir medidas de segurança (incluindo pulseiras/bandas se usadas).",
+        "3.4 Hóspedes não podem \"patrocinar\" Visitantes nos quartos. Tentar admitir pessoas não registradas em quartos é uma violação grave."
+      ]
+    },
+    "s4": {
+      "title": "4. Pessoas não registradas",
+      "body": [
+        "4.1 Apenas Hóspedes registrados podem pernoitar.",
+        "4.2 Se uma pessoa não registrada for encontrada em um quarto ou pernoitando: podemos exigir check-in/registro imediato (se possível) ou exigir que saia, e podemos cobrar taxas conforme descrito nos Termos de reserva (Depósito de segurança e danos/taxas), sujeito à lei aplicável."
+      ]
+    },
+    "s5": {
+      "title": "5. Check‑in e operações de chegada",
+      "body": [
+        "5.1 A janela oficial de check‑in é 15:00–22:00.",
+        "5.2 Chegadas antes da abertura: se você chegar antes de 10:30, talvez não consiga entrar.",
+        "5.3 Entre a abertura e o check‑in, podemos (a nosso critério) permitir: espera em áreas designadas, acesso às Áreas comuns para Visitantes temporários e/ou depósito de bagagem sob termos separados."
+      ]
+    },
+    "s6": {
+      "title": "6. Requisitos de identificação (no local)",
+      "body": [
+        "6.1 Hóspedes e Visitantes devem apresentar identificação original válida quando solicitado para segurança e registro.",
+        "6.2 Não apresentar identificação quando solicitado pode resultar em pedido de saída."
+      ]
+    },
+    "s7": {
+      "title": "7. Keycards, pulseiras/bandas de segurança e controle de acesso",
+      "body": [
+        "7.1 Keycards e/ou códigos de acesso são pessoais. Não compartilhe.",
+        "7.2 Quando pulseiras de segurança são usadas, você deve usá-las nas dependências e apresentá-las quando solicitado.",
+        "7.3 Keycards ou pulseiras perdidas/danificadas devem ser comunicadas imediatamente. Taxas de reposição (se houver) são informadas no local e/ou nos Termos de reserva."
+      ]
+    },
+    "s8": {
+      "title": "8. Roupa de cama e depósitos",
+      "body": [
+        "8.1 Roupa de cama é fornecida por Hóspede (conforme descrito no check‑in).",
+        "8.2 Se um depósito for cobrado (por exemplo, depósito de keycard/roupa de cama de €10), ele será reembolsado conforme o processo de check‑out, sujeito à devolução dos itens fornecidos e às deduções permitidas pelos Termos de reserva."
+      ]
+    },
+    "s9": {
+      "title": "9. Etiqueta no dormitório e escolha de cama",
+      "body": [
+        "9.1 Camas em dormitórios são escolhidas por ordem de chegada, salvo indicação em contrário.",
+        "9.2 Você pode mudar para outra cama disponível apenas com permissão da equipe e sem perturbar outros Hóspedes.",
+        "9.3 Mantenha sua área de dormir organizada e não guarde itens no espaço de outras pessoas."
+      ]
+    },
+    "s10": {
+      "title": "10. Política de álcool",
+      "body": [
+        "10.1 Se o Hostel Brikette for licenciado e proibirmos álcool externo: Hóspedes não podem trazer álcool comprado fora para as dependências. Se álcool externo for encontrado, a equipe pode exigir sua retirada ou armazená-lo para devolução no check‑out (quando permitido).",
+        "10.2 Violações repetidas ou graves podem resultar em Rescisão por violação nos Termos de reserva e remoção da propriedade."
+      ]
+    },
+    "s11": {
+      "title": "11. Itens ilegais ou perigosos",
+      "body": [
+        "11.1 Drogas ilegais, armas e itens perigosos são proibidos.",
+        "11.2 Podemos confiscar itens proibidos quando permitido e/ou reportar às autoridades conforme exigido."
+      ]
+    },
+    "s12": {
+      "title": "12. Percevejos (responsabilidades do Hóspede)",
+      "body": [
+        "12.1 Se suspeitar de percevejos, informe imediatamente. Não mude de quarto/cama nem transporte roupa de cama/itens macios pela propriedade sem instruções da equipe.",
+        "12.2 Você pode ser obrigado a seguir medidas de contenção (ensacar pertences, lavar) para evitar propagação.",
+        "12.3 As cobranças por remediação são regidas pelos Termos de reserva e serão baseadas em evidências e na lei aplicável."
+      ]
+    },
+    "s13": {
+      "title": "13. Check‑out, late check‑out e pertences",
+      "body": [
+        "13.1 O horário de check‑out é 07:30–10:30, salvo aprovação por escrito para late check‑out.",
+        "13.2 O late check‑out (se oferecido) está sujeito à disponibilidade e confirmação por escrito, válido até 12:00, e custa EUR 40.",
+        "13.3 Se você não fizer o check‑out no horário, podemos: guardar seus pertences (embalar e armazenar de forma razoável); restringir o acesso a quartos/áreas exclusivas para Hóspedes; aplicar taxas permitidas pelos Termos de reserva.",
+        "13.4 Pertences não reclamados: itens deixados podem ser armazenados por 30 dias e depois descartados ou doados quando legal."
+      ]
+    },
+    "s14": {
+      "title": "14. Aplicação",
+      "body": [
+        "14.1 Podemos emitir avisos para violações menores.",
+        "14.2 Violações graves ou repetidas podem resultar em remoção e Rescisão por violação nos Termos de reserva.",
+        "14.3 Quando há cobranças (danos, limpeza extra, taxas), elas serão tratadas de acordo com os Termos de reserva."
+      ]
+    }
+  }
+}

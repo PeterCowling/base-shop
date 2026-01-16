@@ -29,6 +29,11 @@
         "packages/platform-core/src/*",
         "packages/platform-core/src/*/index.ts"
       ],
+      "@platform-core": ["packages/platform-core/src/index"],
+      "@platform-core/*": [
+        "packages/platform-core/src/*",
+        "packages/platform-core/src/*/index.ts"
+      ],
       "@acme/types": ["packages/types/src/index"],
       "@acme/types/*": [
         "packages/types/src/*",

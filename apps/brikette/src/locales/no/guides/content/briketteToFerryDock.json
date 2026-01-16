@@ -8,7 +8,7 @@
     "Avreise Hostel Brikette med bagasje? Kjør Interno Positano-bussen nedover og la havneportørene flytte tunge sekker slik at du når fergen uten å bryte Positanos trapper."
   ],
   "beforeList": [
-    "Sjekk gjeldende Interno Positano-timeplan - her er [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Sjekk gjeldende Interno Positano-timeplan - her er [siste ruteplan og priser](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Hent Interno Positano-billetter på tabacchi ved siden av Chiesa Nuova før du går ombord (eller spør resepsjonen om å bekrefte beholdningen).",
     "Ordne portørhjelp hvis du har store sekker – resepsjonen kan ringe på forhånd, eller se [porterserviceguiden](guide:porterServices) for tall og priser."
   ],
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini til fergekaien",
       "body": [
         "Gå av bussen, møt bærerne hvis du har forhåndsbestilt dem, og gå rett inn i fotgjengerfeltet som fører til Spiaggia Grande.",
-        "Følg promenaden nedover i omtrent 7 minutter — bruk [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) for å holde deg på de jevneste rampedelene.",
+        "Følg promenaden nedover i omtrent 7 minutter — bruk [disse veibeskrivelsene](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) for å holde deg på de jevneste rampedelene.",
         "På fergekaien, sjekk inn med operatøren din. Bærere leverer bagasje separat; ha pass, medisiner og verdisaker med deg."
       ]
     }
@@ -50,9 +50,9 @@
     "Bærere kan ta med seg kofferter på separate traller, slik at du kun klarer en dagstursekk på promenaden."
   ],
   "kneesDockPrefix": "Trenger du oppoverbakkeversjonen når du kommer tilbake? Les vår",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "Chiesa Nuova ankomstguide",
   "kneesPorterPrefix": "Vil du ha portierpriser og bestillingstips? Sjekk",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "portørtjenesteguide",
   "faqs": [
     {
       "q": "Hvor kan jeg kjøpe Interno Positano-billetter i nærheten av vandrerhjemmet?",

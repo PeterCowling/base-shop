@@ -1,7 +1,7 @@
 // Copied from src/components/images/CfImage.tsx
-import { PRESETS } from "@/config/imagePresets";
-import { useResponsiveImage } from "@/hooks/useResponsiveImage";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { PRESETS } from "@ui/config/imagePresets";
+import { useResponsiveImage } from "@ui/hooks/useResponsiveImage";
+import buildCfImageUrl from "@ui/lib/buildCfImageUrl";
 import { createElement, memo, useMemo, type CSSProperties } from "react";
 
 export interface CfImageProps extends React.ComponentPropsWithoutRef<"img"> {
@@ -49,10 +49,7 @@ function CfImageBase({
     return dims.height;
   }, [htmlHeight, dims.height, dims.width, numericWidth]);
 
-  const supportsFetchPriority =
-    typeof HTMLImageElement !== "undefined" && "fetchPriority" in HTMLImageElement.prototype;
-  const fetchPriority: "high" | undefined =
-    priority && supportsFetchPriority ? "high" : undefined;
+  const fetchPriority: "high" | undefined = priority ? "high" : undefined;
 
   const aspectRatio = useMemo(() => {
     const width = typeof numericWidth === "number" ? numericWidth : undefined;
@@ -95,7 +92,7 @@ function CfImageBase({
   };
 
   return (
-    <picture data-aspect={dataAspectAttr ?? aspectRatio} className="block">
+    <picture data-aspect={dataAspectAttr ?? aspectRatio} className="block h-full w-full">
       {sources.map(({ type, fmt }) => (
         <source key={type} type={type} srcSet={srcSet.replace(/format=\w+/g, `format=${fmt}`)} sizes={sizes} />
       ))}

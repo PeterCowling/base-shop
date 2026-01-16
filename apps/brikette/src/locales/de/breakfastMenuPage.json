@@ -29,7 +29,7 @@
         "Schinken",
         "Tomaten",
         "Champignons",
-        "Toast",
+        "Toastbrot",
         "Käse",
         "Bohnen"
       ],
@@ -39,7 +39,7 @@
       "title": "Süße Optionen",
       "chooseOneFreeSyrup": "Wähle einen gratis Sirup:",
       "syrups": [
-        "Golden",
+        "Goldsirup",
         "Zitrone",
         "Orange & Zimt",
         "Nutella"
@@ -139,7 +139,7 @@
       "name": "Soja‑ oder Reismilch — Aufpreis"
     },
     "icedLatte": {
-      "name": "Iced Latte"
+      "name": "Latte mit Eis"
     },
     "icedSoyLatte": {
       "name": "Iced Latte mit Sojamilch"

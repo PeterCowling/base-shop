@@ -5,28 +5,28 @@
   },
   "linkLabel": "Campeggiare sulla Costiera Amalfitana",
   "intro": [
-    "Traduzione in arrivo."
+    "Campeggiare vicino alla Costiera Amalfitana significa usare strutture dedicate fuori dal centro di Positano; verifica regolamenti e disponibilita."
   ],
   "sections": [
     {
       "id": "where",
       "title": "Dove puoi campeggiare",
       "body": [
-        "Traduzione in arrivo."
+        "Esistono campeggi autorizzati fuori dal centro di Positano; controlla regole locali e disponibilita."
       ]
     },
     {
       "id": "access",
       "title": "Accesso e trasporti",
       "body": [
-        "Traduzione in arrivo."
+        "Metti in conto bus o tratti a piedi dai campeggi; le strade costiere sono strette e i parcheggi limitati."
       ]
     },
     {
       "id": "etiquette",
       "title": "Etichetta e sicurezza",
       "body": [
-        "Traduzione in arrivo."
+        "Rispetta le ore di quiete e le regole sui fuochi; porta via i rifiuti; evita bordi di scogliera e zone non segnalate."
       ]
     }
   ],
@@ -34,7 +34,7 @@
     {
       "q": "Il campeggio libero è consentito?",
       "a": [
-        "Traduzione in arrivo."
+        "In genere no: usa campeggi ufficiali e segui le regole esposte."
       ]
     }
   ]

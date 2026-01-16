@@ -1,24 +1,82 @@
 [
   {
-    "sku": "123",
-    "productId": "123",
-    "variant": {
-      "size": "l"
-    },
-    "quantity": 5,
-    "wearAndTearLimit": 10,
-    "maintenanceCycle": 5
+    "sku": "green-sneaker-38",
+    "productId": "green-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "38"
+    }
+  },
+  {
+    "sku": "green-sneaker-39",
+    "productId": "green-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "39"
+    }
+  },
+  {
+    "sku": "green-sneaker-40",
+    "productId": "green-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "40"
+    }
+  },
+  {
+    "sku": "sand-sneaker-38",
+    "productId": "sand-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "38"
+    }
+  },
+  {
+    "sku": "sand-sneaker-39",
+    "productId": "sand-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "39"
+    }
+  },
+  {
+    "sku": "sand-sneaker-40",
+    "productId": "sand-sneaker",
+    "quantity": 2,
+    "variantAttributes": {
+      "size": "40"
+    }
+  },
+  {
+    "sku": "sand-sneaker-41",
+    "productId": "sand-sneaker",
+    "quantity": 1,
+    "variantAttributes": {
+      "size": "41"
+    }
+  },
+  {
+    "sku": "black-sneaker-41",
+    "productId": "black-sneaker",
+    "quantity": 1,
+    "variantAttributes": {
+      "size": "41"
+    }
+  },
+  {
+    "sku": "black-sneaker-42",
+    "productId": "black-sneaker",
+    "quantity": 1,
+    "variantAttributes": {
+      "size": "42"
+    }
   },
   {
     "sku": "black-sneaker-43",
     "productId": "black-sneaker",
-    "variant": {
-      "size": "43",
-      "color": "black"
-    },
-    "quantity": 1,
-    "lowStockThreshold": 1,
-    "wearAndTearLimit": 10,
-    "maintenanceCycle": 5
+    "quantity": 0,
+    "variantAttributes": {
+      "size": "43"
+    }
   }
 ]

@@ -11,6 +11,7 @@ import {
   nowIso,
   type PipelineEnv,
 } from "../../_lib/db";
+import { checkStageTSGate } from "../../_lib/stage-gating";
 import { errorResponse, jsonResponse } from "../../_lib/response";
 
 const centsSchema = z.number().int().min(0);
@@ -97,6 +98,11 @@ export const onRequestPost = async ({
   const candidate = await fetchCandidateById(db, candidateId);
   if (!candidate) {
     return errorResponse(404, "candidate_not_found", { candidateId });
+  }
+
+  const stageGate = await checkStageTSGate(db, candidateId);
+  if (stageGate) {
+    return errorResponse(409, stageGate.code, stageGate.details);
   }
 
   if (candidate.fingerprint) {

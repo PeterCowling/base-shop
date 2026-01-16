@@ -1,56 +1,28 @@
 /** @jest-environment node */
 
-import path from 'path';
-
+import { MediaError } from "@acme/platform-core/repositories/media.errors";
 import {
-  fsMock,
-  writeJsonFileMock,
+  deleteMediaFile,
+  ensureHasPermission,
   resetMediaMocks,
   restoreMediaMocks,
-} from './media.test.mocks';
-import * as mediaHelpers from '../media.helpers';
-import { deleteMedia } from '../media.server';
+} from "./media.test.mocks";
+import { deleteMedia } from "../media.server";
 
-describe('deleteMedia', () => {
+describe("deleteMedia", () => {
   beforeEach(resetMediaMocks);
   afterEach(restoreMediaMocks);
 
-  it('rejects paths outside uploads directory', async () => {
-    await expect(deleteMedia('shop', '/uploads/other/file.jpg')).rejects.toThrow(
-      'Invalid file path',
-    );
-    await expect(deleteMedia('shop', '/etc/passwd')).rejects.toThrow(
-      'Invalid file path',
-    );
-    await expect(deleteMedia('shop', '/uploads/shop/../escape.jpg')).rejects.toThrow(
-      'Invalid file path',
-    );
+  it("delegates to platform-core", async () => {
+    deleteMediaFile.mockResolvedValueOnce(undefined);
+    await expect(deleteMedia("shop", "/uploads/shop/file.jpg")).resolves.toBeUndefined();
+    expect(ensureHasPermission).toHaveBeenCalledWith("manage_media");
+    expect(deleteMediaFile).toHaveBeenCalledWith("shop", "/uploads/shop/file.jpg");
   });
 
-  it('deletes file and updates metadata', async () => {
-    fsMock.readFile.mockResolvedValueOnce('{"file.jpg":{"title":"t"}}');
-    await deleteMedia('shop', '/uploads/shop/file.jpg');
-    expect(fsMock.unlink).toHaveBeenCalledWith(
-      path.join(process.cwd(), 'public', 'uploads', 'shop', 'file.jpg'),
-    );
-    expect(writeJsonFileMock).toHaveBeenCalledWith(
-      path.join(
-        process.cwd(),
-        'public',
-        'uploads',
-        'shop',
-        'metadata.json',
-      ),
-      {},
-    );
-  });
-
-  it('ignores missing files and does not update metadata', async () => {
-    fsMock.unlink.mockRejectedValueOnce(new Error('missing'));
-    jest.spyOn(mediaHelpers, 'readMetadata').mockResolvedValue({});
-    const writeMetadataSpy = jest.spyOn(mediaHelpers, 'writeMetadata');
-    await expect(deleteMedia('shop', '/uploads/shop/missing.jpg')).resolves.toBeUndefined();
-    expect(writeMetadataSpy).not.toHaveBeenCalled();
+  it("translates MediaError messages", async () => {
+    deleteMediaFile.mockRejectedValueOnce(new MediaError("INVALID_FILE_PATH"));
+    await expect(deleteMedia("shop", "/uploads/other/file.jpg")).rejects.toThrow("Invalid file path");
   });
 });
 

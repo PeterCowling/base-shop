@@ -28,6 +28,10 @@ jobs:
             shop_skylar:
               - 'apps/cover-me-pretty/**'
               - 'apps/skylar/**'
+              - 'packages/ui/**'
+              - 'packages/design-tokens/**'
+              - 'packages/tailwind-config/**'
+              - 'packages/themes/**'
 
   lhci:
     needs: [changes]

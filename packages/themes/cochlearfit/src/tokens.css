@@ -1,0 +1,119 @@
+/* Cochlearfit theme tokens - coral/terracotta primary, burnt orange accent */
+/* Warm, earthy, medical device aesthetic with sandy/cream backgrounds */
+
+:root {
+  /* Override base theme with Cochlearfit's brand colors */
+  --color-primary: 9 75% 59%; /* coral/terracotta */
+  --color-primary-fg: 0 0% 100%;
+  --color-secondary: 9 62% 48%; /* burnt orange */
+  --color-secondary-fg: 0 0% 100%;
+
+  /* Cochlearfit accent color */
+  --color-accent: 9 62% 48%; /* burnt orange */
+  --color-accent-fg: 0 0% 100%;
+
+  /* Core surfaces - warm sandy/cream tones */
+  --color-bg: 42 45% 94%; /* sandy cream */
+  --color-fg: 33 15% 12%; /* warm charcoal */
+  --color-fg-muted: 33 11% 33%;
+  --color-muted: 40 30% 90%;
+
+  /* Link color */
+  --color-link: 9 62% 48%;
+
+  /* Extended Cochlearfit palette */
+  --color-sand: 38 52% 80%;
+  --color-ocean: 180 32% 46%; /* teal/ocean */
+  --color-berry: 351 54% 60%;
+  --color-info: 178 51% 29%; /* dark teal */
+  --color-info-fg: 0 0% 100%;
+
+  /* Surfaces */
+  --surface-1: 35 100% 98%;
+  --surface-2: 0 0% 100%;
+  --surface-3: 42 45% 92%;
+  --surface-input: 0 0% 100%;
+  --color-panel: 0 0% 100%;
+
+  /* Extended primary palette */
+  --color-primary-50: 9 75% 97%;
+  --color-primary-100: 9 75% 94%;
+  --color-primary-200: 9 75% 85%;
+  --color-primary-300: 9 75% 73%;
+  --color-primary-400: 9 75% 66%;
+  --color-primary-500: 9 75% 59%; /* main */
+  --color-primary-600: 9 70% 52%;
+  --color-primary-700: 9 65% 45%;
+  --color-primary-800: 9 60% 38%;
+  --color-primary-900: 9 55% 30%;
+
+  /* Extended accent palette */
+  --color-accent-50: 9 62% 97%;
+  --color-accent-100: 9 62% 92%;
+  --color-accent-200: 9 62% 82%;
+  --color-accent-300: 9 62% 68%;
+  --color-accent-400: 9 62% 58%;
+  --color-accent-500: 9 62% 48%; /* main */
+  --color-accent-600: 9 62% 40%;
+  --color-accent-700: 9 62% 33%;
+  --color-accent-800: 9 62% 26%;
+  --color-accent-900: 9 62% 20%;
+
+  /* Focus ring uses primary */
+  --color-focus-ring: 9 75% 59%;
+  --ring: 9 75% 59%;
+  --ring-offset: 42 45% 94%;
+
+  /* Gradient tokens for hero sections */
+  --gradient-hero-from: 178 51% 29%; /* teal */
+  --gradient-hero-via: 42 45% 94%; /* sandy */
+  --gradient-hero-to: 9 75% 59%; /* coral */
+
+  /* Typography - Cochlearfit uses Fraunces + Space Grotesk */
+  --font-body: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-heading-1: var(--font-fraunces), "Times New Roman", serif;
+  --font-heading-2: var(--font-fraunces), "Times New Roman", serif;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: 33 15% 8%; /* dark warm charcoal */
+    --color-fg: 42 45% 94%; /* sandy cream text */
+    --color-fg-muted: 33 11% 65%;
+    --color-muted: 33 15% 20%;
+    --color-primary: 9 75% 65%; /* lighter coral for dark mode */
+    --color-primary-fg: 33 15% 8%;
+    --color-secondary: 9 62% 55%;
+    --color-secondary-fg: 33 15% 8%;
+    --color-accent: 9 62% 55%;
+    --color-accent-fg: 33 15% 8%;
+    --surface-1: 33 15% 8%;
+    --surface-2: 33 15% 12%;
+    --surface-3: 33 15% 16%;
+    --surface-input: 33 15% 14%;
+    --color-panel: 33 15% 12%;
+    --ring: 9 75% 65%;
+    --ring-offset: 33 15% 8%;
+  }
+}
+
+html.theme-dark {
+  --color-bg: 33 15% 8%;
+  --color-fg: 42 45% 94%;
+  --color-fg-muted: 33 11% 65%;
+  --color-muted: 33 15% 20%;
+  --color-primary: 9 75% 65%;
+  --color-primary-fg: 33 15% 8%;
+  --color-secondary: 9 62% 55%;
+  --color-secondary-fg: 33 15% 8%;
+  --color-accent: 9 62% 55%;
+  --color-accent-fg: 33 15% 8%;
+  --surface-1: 33 15% 8%;
+  --surface-2: 33 15% 12%;
+  --surface-3: 33 15% 16%;
+  --surface-input: 33 15% 14%;
+  --color-panel: 33 15% 12%;
+  --ring: 9 75% 65%;
+  --ring-offset: 33 15% 8%;
+}

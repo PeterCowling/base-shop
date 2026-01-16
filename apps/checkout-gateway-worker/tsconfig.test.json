@@ -1,0 +1,11 @@
+// apps/checkout-gateway-worker/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "jest", "node"],
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}
+

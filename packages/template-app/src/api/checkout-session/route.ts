@@ -147,6 +147,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const orderId = ulid();
+    const orderLineItems = cartToInventoryRequests(cart).map((item) => ({
+      sku: item.sku,
+      variantAttributes: item.variantAttributes ?? {},
+      quantity: item.quantity,
+    }));
     const result = await createCheckoutSession(cart, {
       mode: checkoutMode,
       returnDate,
@@ -168,7 +173,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       orderId,
       skipInventoryValidation: true,
     });
-    return NextResponse.json({ ...result, orderId: result.orderId ?? orderId });
+    return NextResponse.json({
+      ...result,
+      orderId: result.orderId ?? orderId,
+      orderLineItems,
+    });
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
       return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error

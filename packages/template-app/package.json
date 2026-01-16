@@ -28,10 +28,11 @@
     "@acme/config": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
+    "@acme/page-builder-ui": "workspace:*",
     "react": "workspace:^",
     "react-dom": "workspace:^"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   }
 }

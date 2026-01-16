@@ -16,7 +16,7 @@ export function FaqSection({ title, entries }: FaqSectionProps) {
   return (
     <Section
       padding="none"
-      className="mt-16 px-6 pb-12 sm:mt-20 sm:px-8 lg:mt-24 lg:pb-20"
+      className="mt-16 px-6 pb-12 sm:mt-20 sm:px-8 md:px-12 lg:mt-24 lg:px-16 lg:pb-20"
       aria-labelledby={FAQ_HEADING_ID}
     >
       <Section

@@ -9,9 +9,9 @@ import ProductStickyBar from "@/components/ProductStickyBar";
 import ProductDetail from "@/components/ProductDetail";
 import Price from "@/components/Price";
 import { renderWithProviders } from "./testUtils";
-import { getProducts } from "@/lib/catalog";
 import { useCart } from "@/contexts/cart/CartContext";
 import type { Product } from "@/types/product";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 
 const CartCount = () => {
   const { itemCount } = useCart();
@@ -27,13 +27,19 @@ const AddOnMount = ({ variantId }: { variantId: string }) => {
 };
 
 describe("product components", () => {
+  let products: Product[];
+
+  beforeAll(async () => {
+    products = await listCochlearfitProducts("en");
+  });
+
   it("renders price labels", () => {
     renderWithProviders(<Price amount={3400} currency="USD" />);
     expect(screen.getByText(/\$/)).toBeInTheDocument();
   });
 
   it("renders a product card with link and price range", () => {
-    const product = getProducts()[0] as Product;
+    const product = products[0] as Product;
     renderWithProviders(<ProductCard product={product} />);
 
     expect(screen.getByText("From")).toBeInTheDocument();
@@ -64,7 +70,7 @@ describe("product components", () => {
   });
 
   it("renders a grid of products", () => {
-    renderWithProviders(<ProductGrid products={getProducts()} />);
+    renderWithProviders(<ProductGrid products={products} />);
     expect(screen.getAllByRole("link", { name: "View details" })).toHaveLength(2);
   });
 
@@ -84,7 +90,7 @@ describe("product components", () => {
 
   it("adds selected items from product detail", async () => {
     const user = userEvent.setup();
-    const product = getProducts()[0] as Product;
+    const product = products[0] as Product;
 
     renderWithProviders(
       <div>
@@ -102,7 +108,7 @@ describe("product components", () => {
   });
 
   it("reflects cart changes inside product detail price", async () => {
-    const product = getProducts()[0] as Product;
+    const product = products[0] as Product;
     const variant = product.variants[0];
 
     renderWithProviders(

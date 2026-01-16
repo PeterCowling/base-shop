@@ -101,20 +101,17 @@ const BlockItem = memo(function BlockItemComponent({
   const childComponents = (component as { children?: import("@acme/types").PageComponent[] }).children;
 
   // Compose wrapper class (utility classes only) outside JSX to avoid i18n rule noise.
+  /* eslint-disable ds/no-hardcoded-copy -- PB-2461 [ttl=2026-12-31] utility class names */
   const wrapperClass =
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
     "hover:border-primary relative rounded border hover:border-dashed" +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
     (selected ? " ring-2 ring-blue-500" : "") +
-    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
     (overlay.snapping ? " border-primary" : "") +
     (dnd.isOver || dnd.isDragging
       ? dropAllowed === false
-        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
         ? " border-danger border-dashed cursor-not-allowed"
-        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
         : " border-primary border-dashed"
       : "");
+  /* eslint-enable ds/no-hardcoded-copy -- PB-2461 [ttl=2026-12-31] */
 
   return (
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- PB-2461: Canvas item must handle click/contextmenu/keyboard to support selection & DnD
@@ -147,7 +144,7 @@ const BlockItem = memo(function BlockItemComponent({
         viewport,
         t: t as unknown as (key: string, vars?: Record<string, unknown>) => string,
       })}
-      /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: editor canvas item uses dynamic inline positioning/transforms during interactions */
+      // eslint-disable-next-line react/forbid-dom-props -- PB-2461 [ttl=2026-12-31] inline style required for drag/resize layout
       style={style}
       className={wrapperClass}
     >

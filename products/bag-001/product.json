@@ -1,0 +1,8 @@
+{
+  "productId": "bag-001",
+  "name": "Bag 001 (Sample)",
+  "version": "0.1.0",
+  "poster": "assets/poster.jpg",
+  "defaultAssetTier": "mobile"
+}
+

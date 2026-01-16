@@ -1,15 +1,13 @@
 /* ────────────────────────────────────────────────────────────────
    src/routes/deals.tsx
-   Summer-2025 promo – fully localised head tags
+   Deals index – date-driven promo + fully localised head tags
 ---------------------------------------------------------------- */
-import { Button } from "@acme/ui/atoms/Button";
 import { useOptionalModal } from "@/context/ModalContext";
-import { CheckCircle2, Hotel } from "lucide-react";
-import { Fragment, memo, useCallback, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Button, Grid, Section } from "@acme/ui/atoms";
 import { BASE_URL } from "@/config/site";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
@@ -21,39 +19,92 @@ import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
-import { DEFAULT_PERK_ICON, DISCOUNT_PCT, OG_IMAGE_PATH, PERK_ICONS, PERKS_HEADING_ID, RESTRICTIONS_HEADING_ID } from "./deals/constants";
+import { DEFAULT_PERK_ICON, OG_IMAGE_PATH, PERK_ICONS } from "./deals/constants";
+import { DEALS, PRIMARY_DEAL } from "./deals/deals";
+import { formatDateRange, formatPercent, isoDateToLocalStart } from "./deals/dates";
 import type { DealsLoaderData } from "./deals/loader";
 import { clientLoader } from "./deals/loader";
-import { DEAL_END } from "./deals/constants";
+import DealCard from "./deals/DealCard";
+import { getDealStatus } from "./deals/status";
 import { useDealContent } from "./deals/useDealContent";
-
-type ClusterProps = JSX.IntrinsicElements["div"];
-const Cluster = ({ className, ...props }: ClusterProps) => (
-  <div
-    className={clsx(
-      "flex",
-      "flex-col",
-      "items-center",
-      "gap-4",
-      "sm:flex-row",
-      "sm:justify-center",
-      className,
-    )}
-    {...props}
-  />
-);
+import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
 
 export { clientLoader };
+
+/* i18n-exempt -- DX-451 [ttl=2026-12-31] Non-UI anchor identifiers. */
+const CURRENT_DEALS_ID = "current-deals";
+const EXPIRED_DEALS_PANEL_ID = "expired-deals-panel";
+const DIRECT_BOOKING_PERKS_ID = "direct-booking-perks";
 
 export default memo(function Deals() {
   const loaded = safeUseLoaderData<DealsLoaderData | undefined>();
   const lang = (loaded?.lang as AppLanguage | undefined) || (i18nConfig.fallbackLng as AppLanguage);
   const { openModal } = useOptionalModal();
 
-  const { translate: ft, perks, restrictions, isExpired, validityFrom, validityTo, labels } = useDealContent(lang);
+  const { translate: ft, perks, labels } = useDealContent(lang);
+  const perksLinkLabel = typeof labels.perksLinkLabel === "string" ? labels.perksLinkLabel : "";
 
-  const reserve = useCallback(() => openModal("booking"), [openModal]);
+  const openBooking = useCallback(
+    ({ kind, dealId }: { kind: "deal" | "standard"; dealId?: string }) => {
+      if (kind === "deal" && dealId) {
+        openModal("booking", { deal: dealId });
+        return;
+      }
+      openModal("booking");
+    },
+    [openModal],
+  );
+
+  const openOffers = useCallback(() => openModal("offers"), [openModal]);
   // Head handled by meta()/links(); avoid inline tags here
+
+  const [now, setNow] = useState<number>(() => loaded?.generatedAt ?? Date.now());
+  useEffect(() => {
+    // Keep build-time prerender deterministic, then snap to real client time after hydration.
+    setNow(Date.now());
+  }, [loaded?.generatedAt]);
+  const dealsWithStatus = useMemo(() => {
+    const snapshot = new Date(now);
+    return DEALS.map((deal) => ({
+      deal,
+      status: getDealStatus(deal, snapshot),
+    }));
+  }, [now]);
+
+  const activeDeals = useMemo(
+    () => dealsWithStatus.filter((entry) => entry.status === "active"),
+    [dealsWithStatus],
+  );
+  const upcomingDeals = useMemo(
+    () => dealsWithStatus.filter((entry) => entry.status === "upcoming"),
+    [dealsWithStatus],
+  );
+  const expiredDeals = useMemo(
+    () => dealsWithStatus.filter((entry) => entry.status === "expired"),
+    [dealsWithStatus],
+  );
+
+  const referenceDate = useMemo(() => new Date(now), [now]);
+  const activeDeal = activeDeals[0]?.deal ?? PRIMARY_DEAL;
+  const hasActiveDeals = activeDeals.length > 0;
+  const hasUpcomingDeals = upcomingDeals.length > 0;
+  const hasExpiredDeals = expiredDeals.length > 0;
+  const hasIndexableDeals = hasActiveDeals || hasUpcomingDeals;
+
+  const heroRange = useMemo(() => {
+    const start = isoDateToLocalStart(activeDeal.startDate);
+    const end = isoDateToLocalStart(activeDeal.endDate);
+    return formatDateRange(lang, start, end, referenceDate);
+  }, [activeDeal.endDate, activeDeal.startDate, lang, referenceDate]);
+  const heroPercent = useMemo(() => formatPercent(lang, activeDeal.discountPct), [activeDeal.discountPct, lang]);
+
+  const [expiredOpen, setExpiredOpen] = useState(() => !hasActiveDeals && hasExpiredDeals);
+  useEffect(() => {
+    if (!hasActiveDeals && hasExpiredDeals) {
+      setExpiredOpen(true);
+    }
+  }, [hasActiveDeals, hasExpiredDeals]);
+  const toggleExpired = useCallback(() => setExpiredOpen((prev) => !prev), []);
 
   // Deterministic head tags for tests when router head placeholders are unavailable
   const __fallbackMeta = useMemo(() => {
@@ -73,9 +124,9 @@ export default memo(function Deals() {
       url: `${BASE_URL}${path}`,
       path,
       image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
-      isPublished: !isExpired,
+      isPublished: hasIndexableDeals,
     });
-  }, [lang, loaded?.title, loaded?.desc, isExpired]);
+  }, [lang, loaded?.title, loaded?.desc, hasIndexableDeals]);
   const __fallbackLinks = useMemo(() => {
     if (process.env.NODE_ENV !== "test") return undefined;
     const path = `/${lang}/${getSlug("deals", lang)}`;
@@ -90,113 +141,187 @@ export default memo(function Deals() {
       <DealsStructuredData />
 
       <Section
-        as="section"
+        as="main"
         padding="none"
-        className="mx-auto w-full max-w-xl scroll-mt-24 space-y-10 p-6 pt-24 text-center sm:pt-10"
+        className="mx-auto w-full max-w-5xl scroll-mt-24 space-y-8 px-4 pb-16 pt-24 text-start sm:px-6 sm:pt-16 lg:px-8"
       >
-        <Section
-          aria-labelledby={PERKS_HEADING_ID}
-          padding="none"
-          width="constrained"
-          className="my-8 space-y-4 rounded-3xl border border-brand-primary/20 bg-brand-primary/5 px-6 py-8 text-start shadow-sm sm:my-12 sm:px-8 sm:py-10"
-        >
-          <div className="space-y-3">
-            <h2 id={PERKS_HEADING_ID} className="text-xl font-semibold text-brand-primary">
-              {labels.perksHeading}
-            </h2>
-            <p className="text-base text-brand-text/90">{labels.perksIntro}</p>
-            <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary/80">
-              {labels.perksGuarantee}
-            </p>
-          </div>
-          <Section as="div" padding="none" width="full" className="mx-auto max-w-prose">
-            <ul className="space-y-3 text-start">
-              {perks.map((item, idx) => {
-                const Icon = PERK_ICONS[idx] ?? DEFAULT_PERK_ICON;
-                return (
-                  <li key={item}>
-                    <div className="flex items-start gap-3">
-                      <Icon className="mt-0.5 size-5 shrink-0 text-brand-secondary" aria-hidden="true" />
-                      <span>{item}</span>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </Section>
-          <div>
-            <Link
-              to={`/${lang}/${getSlug("terms", lang)}`}
-              prefetch="intent"
-              className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea"
-            >
-              {labels.termsLabel}
-            </Link>
-          </div>
-        </Section>
-
-        <header className="space-y-4">
-          <h1 className="text-3xl font-bold">
-            {ft("title", {
-              percent: DISCOUNT_PCT,
-              season: labels.seasonLabel,
-            })}
-          </h1>
-          {isExpired ? (
-            <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-start text-sm text-red-900">
-              {ft("expired.message", {
-                endedOn: validityTo,
-              })}
+        <header className="rounded-3xl border border-brand-outline/20 bg-brand-bg px-6 py-8 shadow-sm dark:bg-brand-text">
+          {hasActiveDeals ? (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand-primary/80">
+                  {ft("hero.activeLabel")}
+                </p>
+                <h1 className="text-3xl font-semibold text-brand-heading">
+                  {ft("hero.activeTitle", { percent: heroPercent })}
+                </h1>
+                <p className="text-sm text-brand-text/80">
+                  {ft("hero.activeDatesLabel")}{" "}
+                  <span className="whitespace-nowrap">{heroRange}</span>
+                </p>
+                <p className="text-sm text-brand-text/70">{ft("hero.activeSubtitle")}</p>
+              </div>
+              <Button
+                onClick={() => openBooking({ kind: "deal", dealId: activeDeal.id })}
+                className="cta-light dark:cta-dark"
+              >
+                {ft("dealCard.cta.bookDirect")}
+              </Button>
             </div>
           ) : (
-            <p className="text-sm text-brand-text/80">
-              {ft("restrictions.stayWindow", {
-                from: validityFrom,
-                to: validityTo,
-              })}
-            </p>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-semibold text-brand-heading">{ft("emptyState.title")}</h1>
+                <p className="text-sm text-brand-text/80">{ft("emptyState.subtitle")}</p>
+              </div>
+              <Stack className="gap-3 sm:flex-row sm:items-center">
+                <Button onClick={() => openBooking({ kind: "standard" })} className="cta-light dark:cta-dark">
+                  {labels.checkAvailabilityLabel}
+                </Button>
+                <Inline
+                  as="a"
+                  href={`#${DIRECT_BOOKING_PERKS_ID}`}
+                  className="min-h-11 min-w-11 text-sm font-medium text-brand-primary hover:text-brand-bougainvillea focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+                >
+                  {ft("emptyState.secondaryCta")}
+                </Inline>
+              </Stack>
+            </div>
           )}
-          <p>
-            {ft("promo", {
-              percent: DISCOUNT_PCT,
-            })}
-          </p>
         </header>
 
-        <Section aria-labelledby={RESTRICTIONS_HEADING_ID} padding="none" className="space-y-4">
-          <h2 id={RESTRICTIONS_HEADING_ID} className="text-xl font-semibold text-brand-primary">
-            {ft("restrictions.heading")}
-          </h2>
-          <Section as="div" padding="none" width="full" className="mx-auto max-w-prose">
-            <ul className="space-y-2 text-start">
-              {restrictions.map((rule, i) => (
-                <li key={i}>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-brand-primary" aria-hidden="true" />
-                    <span>{rule}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Section>
-        </Section>
+        <div id={CURRENT_DEALS_ID} className="space-y-6">
+            {hasActiveDeals ? (
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-brand-heading">{ft("sections.active")}</h2>
+                <div className="space-y-5">
+                  {activeDeals.map(({ deal, status }) => (
+                    <DealCard
+                      key={deal.id}
+                      deal={deal}
+                      status={status}
+                      lang={lang}
+                      translate={ft}
+                      termsLabel={labels.termsLabel}
+                      termsHref={`/${lang}/${getSlug("terms", lang)}`}
+                      onOpenBooking={openBooking}
+                      referenceDate={referenceDate}
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
-        <Cluster className="mt-2">
-          {isExpired ? (
-            <Link
-              to={`/${lang}/${getSlug("rooms", lang)}`}
-              prefetch="intent"
-              className="cta-light dark:cta-dark rounded-md px-4 py-2 font-semibold text-brand-primary underline-offset-4 hover:underline"
+            {hasUpcomingDeals ? (
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-brand-heading">{ft("sections.upcoming")}</h2>
+                <div className="space-y-5">
+                  {upcomingDeals.map(({ deal, status }) => (
+                    <DealCard
+                      key={deal.id}
+                      deal={deal}
+                      status={status}
+                      lang={lang}
+                      translate={ft}
+                      termsLabel={labels.termsLabel}
+                      termsHref={`/${lang}/${getSlug("terms", lang)}`}
+                      onOpenBooking={openBooking}
+                      referenceDate={referenceDate}
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : null}
+          </div>
+
+        {hasExpiredDeals ? (
+          <section className="rounded-2xl border border-brand-outline/30 bg-brand-bg text-start shadow-sm dark:bg-brand-text">
+            <Cluster
+              as="button"
+              type="button"
+              onClick={toggleExpired}
+              aria-expanded={expiredOpen}
+              aria-controls={EXPIRED_DEALS_PANEL_ID}
+              className="min-h-12 min-w-12 w-full items-center justify-between gap-3 px-6 py-3 text-sm font-semibold text-brand-heading focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
             >
-              {labels.expiredCtaLabel}
-            </Link>
-          ) : (
-            <Button onClick={reserve} className="cta-light dark:cta-dark">
-              <Hotel className="size-5" aria-hidden />
-              {labels.activeCtaLabel}
-            </Button>
-          )}
-        </Cluster>
+              <span>{ft("sections.expired")}</span>
+              <Inline className="gap-3">
+                <span className="rounded-full border border-brand-outline/40 px-3 py-1 text-xs font-semibold text-brand-text/80">
+                  {expiredDeals.length}
+                </span>
+                <ChevronDown
+                  className={clsx(
+                    "size-4",
+                    "text-brand-text/70",
+                    "transition-transform",
+                    expiredOpen ? "rotate-180" : "rotate-0",
+                  )}
+                  aria-hidden="true"
+                />
+              </Inline>
+            </Cluster>
+            {expiredOpen ? (
+              <div id={EXPIRED_DEALS_PANEL_ID} className="border-t border-brand-outline/20 px-6 pb-6 pt-5">
+                <div className="space-y-5">
+                  {expiredDeals.map(({ deal, status }) => (
+                    <DealCard
+                      key={deal.id}
+                      deal={deal}
+                      status={status}
+                      lang={lang}
+                      translate={ft}
+                      termsLabel={labels.termsLabel}
+                      termsHref={`/${lang}/${getSlug("terms", lang)}`}
+                      onOpenBooking={openBooking}
+                      referenceDate={referenceDate}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </section>
+        ) : null}
+
+        {perks.length ? (
+          <Section
+            id={DIRECT_BOOKING_PERKS_ID}
+            as="section"
+            padding="none"
+            className="rounded-3xl border border-brand-primary/20 bg-brand-primary/5 p-6 text-start shadow-sm"
+          >
+            <Stack className="gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="text-lg font-semibold text-brand-heading">{labels.perksHeading}</h2>
+              {perksLinkLabel.trim().length ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={openOffers}
+                  className="min-h-11 min-w-11 border-transparent text-brand-primary hover:bg-brand-primary/10"
+                >
+                  {perksLinkLabel}
+                </Button>
+              ) : null}
+            </Stack>
+
+            <Grid as="ul" columns={{ base: 1, sm: 3 }} gap={4} className="mt-5 text-start">
+              {perks.slice(0, 3).map((item, idx) => {
+                const Icon = PERK_ICONS[idx] ?? DEFAULT_PERK_ICON;
+                return (
+                  <InlineItem
+                    key={item.title}
+                    className="gap-3 rounded-2xl border border-brand-outline/20 bg-brand-bg p-4 shadow-sm dark:bg-brand-text"
+                  >
+                    <Icon className="mt-0.5 size-5 shrink-0 text-brand-secondary" aria-hidden="true" />
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-brand-heading">{item.title}</p>
+                      {item.subtitle ? <p className="text-xs text-brand-text/70">{item.subtitle}</p> : null}
+                    </div>
+                  </InlineItem>
+                );
+              })}
+            </Grid>
+          </Section>
+        ) : null}
       </Section>
     </Fragment>
   );
@@ -214,7 +339,7 @@ export const meta: MetaFunction = ({ data }: { data?: unknown } = {}) => {
     quality: 85,
     format: "auto",
   });
-  const isExpired = Date.now() > DEAL_END.getTime();
+  const isPublished = DEALS.some((deal) => getDealStatus(deal) !== "expired");
   return buildRouteMeta({
     lang,
     title,
@@ -222,7 +347,7 @@ export const meta: MetaFunction = ({ data }: { data?: unknown } = {}) => {
     url: `${BASE_URL}${path}`,
     path,
     image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
-    isPublished: !isExpired,
+    isPublished,
   });
 };
 

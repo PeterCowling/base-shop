@@ -39,7 +39,6 @@ const OG_IMAGE = {
 const GALLERY_SOURCES = [
   "/img/guides/arienzo-beach/image1.jpg",
   "/img/guides/arienzo-beach/image2.jpg",
-  "/img/guides/arienzo-beach/image3.jpg",
 ] as const;
 
 const manifestEntry = getGuideManifestEntry(GUIDE_KEY);
@@ -81,17 +80,16 @@ function buildArienzoGalleryExtras(
     context.translateGuides,
     `content.${GUIDE_KEY}.gallery.secondaryCaption`,
   );
-  const fallbackAlt = translateWithFallback(context.translateGuides, `content.${GUIDE_KEY}.gallery.tertiaryAlt`);
-  const fallbackCaption = translateWithFallback(
-    context.translateGuides,
-    `content.${GUIDE_KEY}.gallery.tertiaryCaption`,
-  );
 
   const items = [
-    { src: buildCfImageUrl(GALLERY_SOURCES[0], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: primaryAlt, caption: primaryCaption },
-    { src: buildCfImageUrl(GALLERY_SOURCES[1], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: secondaryAlt, caption: secondaryCaption },
-    { src: buildCfImageUrl(GALLERY_SOURCES[2], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: fallbackAlt, caption: fallbackCaption },
-  ].filter((item) => item.alt && item.caption);
+    { src: GALLERY_SOURCES[0], alt: primaryAlt, caption: primaryCaption },
+    { src: GALLERY_SOURCES[1], alt: secondaryAlt, caption: secondaryCaption },
+  ]
+    .filter((item) => item.src && item.alt && item.caption)
+    .map((item) => ({
+      ...item,
+      src: buildCfImageUrl(item.src, { width: 1200, height: 800, quality: 85, format: "auto" }),
+    }));
 
   if (items.length === 0) return null;
   return (

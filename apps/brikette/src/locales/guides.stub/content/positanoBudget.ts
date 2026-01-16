@@ -3,7 +3,6 @@
 // Single-purpose stub: Positano on a budget
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const positanoBudget = {
   seo: {
@@ -32,5 +31,4 @@ export const positanoBudget = {
   ],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

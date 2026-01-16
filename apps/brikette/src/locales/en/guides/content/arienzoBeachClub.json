@@ -122,14 +122,12 @@
         "Wear sturdy sandals or trainers for the descent. Carry heavier items in a backpack and pause at the midway landings. On the way back up, take breaks in the shade and hydrate before boarding the bus or taxi."
       ]
     }
-  ]
-  ,
+  ],
+  "galleryHeading": "Arienzo photo highlights",
   "gallery": {
-    "title": "Arienzo photo highlights",
-    "items": [
-      { "alt": "Arienzo Beach Club terraces", "caption": "Cliffside decks and orange loungers" },
-      { "alt": "Arienzo shuttle boat dock", "caption": "Shuttle pick-up from Spiaggia Grande" },
-      { "alt": "Stairs down to Arienzo", "caption": "300 steps through lemon terraces" }
-    ]
+    "primaryAlt": "Arienzo Beach shoreline and cliffside club",
+    "primaryCaption": "Pebble beach with orange umbrellas below the cliffs",
+    "secondaryAlt": "Terrace dining at Arienzo Beach Club",
+    "secondaryCaption": "Sea-view tables under orange-and-white umbrellas"
   }
 }

@@ -25,6 +25,11 @@ const nextConfig = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
     };
+
+    // Avoid wasm hashing issues in local builds by using a stable hash function.
+    config.output ??= {};
+    config.output.hashFunction = "sha256";
+
     return config;
   },
 };

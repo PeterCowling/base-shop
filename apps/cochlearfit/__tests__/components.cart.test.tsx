@@ -8,7 +8,9 @@ import CartSummary from "@/components/cart/CartSummary";
 import CartItemRow from "@/components/cart/CartItemRow";
 import CartIconButton from "@/components/CartIconButton";
 import { useCart } from "@/contexts/cart/CartContext";
-import { getProductBySlug, getVariantById } from "@/lib/catalog";
+import type { Product } from "@/types/product";
+import { getVariantById } from "@/lib/catalog";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { renderWithProviders } from "./testUtils";
 
 const AddItemOnMount = ({ variantId, quantity }: { variantId: string; quantity: number }) => {
@@ -19,7 +21,7 @@ const AddItemOnMount = ({ variantId, quantity }: { variantId: string; quantity: 
   return null;
 };
 
-const CartRowHarness = () => {
+const CartRowHarness = ({ products }: { products: Product[] }) => {
   const { items, addItem } = useCart();
 
   useEffect(() => {
@@ -29,20 +31,26 @@ const CartRowHarness = () => {
   const item = items[0];
   if (!item) return null;
 
-  const product = getProductBySlug("classic");
-  const variant = getVariantById(item.variantId);
+  const product = products.find((p) => p.slug === "classic");
+  const variant = getVariantById(products, item.variantId);
   if (!product || !variant) return null;
 
   return <CartItemRow item={item} product={product} variant={variant} />;
 };
 
 describe("cart components", () => {
+  let products: Product[];
+
+  beforeAll(async () => {
+    products = await listCochlearfitProducts("en");
+  });
+
   beforeEach(() => {
     localStorage.clear();
   });
 
   it("renders empty cart state", () => {
-    renderWithProviders(<CartContents />, { withCart: true });
+    renderWithProviders(<CartContents products={products} />, { withCart: true });
     expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Browse the shop" })).toHaveAttribute(
       "href",
@@ -54,7 +62,7 @@ describe("cart components", () => {
     renderWithProviders(
       <div>
         <AddItemOnMount variantId="classic-kids-sand" quantity={2} />
-        <CartContents />
+        <CartContents products={products} />
       </div>,
       { withCart: true }
     );
@@ -86,7 +94,7 @@ describe("cart components", () => {
 
     renderWithProviders(
       <div>
-        <CartRowHarness />
+        <CartRowHarness products={products} />
       </div>,
       { withCart: true }
     );

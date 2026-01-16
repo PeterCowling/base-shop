@@ -17,6 +17,19 @@ type CandidateListRow = {
   lead_title: string | null;
   lead_source: string | null;
   lead_url: string | null;
+  stage_m_status: string | null;
+  stage_m_created_at: string | null;
+  stage_t_output: string | null;
+  stage_t_status: string | null;
+  stage_t_created_at: string | null;
+  stage_s_output: string | null;
+  stage_s_status: string | null;
+  stage_s_created_at: string | null;
+  stage_b_status: string | null;
+  stage_b_created_at: string | null;
+  stage_c_output: string | null;
+  stage_c_status: string | null;
+  stage_c_created_at: string | null;
   stage_k_output: string | null;
   stage_k_status: string | null;
   stage_k_created_at: string | null;
@@ -60,6 +73,21 @@ type StageRSummary = {
   returnRate: number | null;
   rankScore: number | null;
   nextAction: string | null;
+};
+
+type StageTSummary = {
+  decision: string | null;
+  action: string | null;
+};
+
+type StageCSummary = {
+  contributionPerUnitCents: string | null;
+  contributionMarginPct: number | null;
+};
+
+type StageSSummary = {
+  overallRisk: string | null;
+  action: string | null;
 };
 
 function safeJsonParse<T>(value: string | null): T | null {
@@ -121,6 +149,45 @@ function parseStageRSummary(value: string | null): StageRSummary | null {
   };
 }
 
+function parseStageCSummary(value: string | null): StageCSummary | null {
+  const payload = safeJsonParse<{
+    summary?: { contributionPerUnitCents?: string; contributionMarginPct?: number | null };
+  }>(value);
+  if (!payload?.summary) return null;
+  const summary = payload.summary;
+  return {
+    contributionPerUnitCents: summary.contributionPerUnitCents ?? null,
+    contributionMarginPct:
+      summary.contributionMarginPct === undefined
+        ? null
+        : summary.contributionMarginPct ?? null,
+  };
+}
+
+function parseStageTSummary(value: string | null): StageTSummary | null {
+  const payload = safeJsonParse<{
+    summary?: { decision?: string; action?: string };
+  }>(value);
+  if (!payload?.summary) return null;
+  const summary = payload.summary;
+  return {
+    decision: summary.decision ?? null,
+    action: summary.action ?? null,
+  };
+}
+
+function parseStageSSummary(value: string | null): StageSSummary | null {
+  const payload = safeJsonParse<{
+    summary?: { overallRisk?: string; action?: string };
+  }>(value);
+  if (!payload?.summary) return null;
+  const summary = payload.summary;
+  return {
+    overallRisk: summary.overallRisk ?? null,
+    action: summary.action ?? null,
+  };
+}
+
 export const onRequestGet = async ({
   request,
   env,
@@ -161,6 +228,19 @@ export const onRequestGet = async ({
       leads.title as lead_title,
       leads.source as lead_source,
       leads.url as lead_url,
+      stage_m.status as stage_m_status,
+      stage_m.created_at as stage_m_created_at,
+      stage_t.output_json as stage_t_output,
+      stage_t.status as stage_t_status,
+      stage_t.created_at as stage_t_created_at,
+      stage_s.output_json as stage_s_output,
+      stage_s.status as stage_s_status,
+      stage_s.created_at as stage_s_created_at,
+      stage_b.status as stage_b_status,
+      stage_b.created_at as stage_b_created_at,
+      stage_c.output_json as stage_c_output,
+      stage_c.status as stage_c_status,
+      stage_c.created_at as stage_c_created_at,
       stage_k.output_json as stage_k_output,
       stage_k.status as stage_k_status,
       stage_k.created_at as stage_k_created_at,
@@ -169,6 +249,36 @@ export const onRequestGet = async ({
       stage_r.created_at as stage_r_created_at
     FROM candidates
     LEFT JOIN leads ON leads.id = candidates.lead_id
+    LEFT JOIN stage_runs AS stage_m ON stage_m.id = (
+      SELECT id FROM stage_runs AS sr
+      WHERE sr.candidate_id = candidates.id AND sr.stage = 'M'
+      ORDER BY sr.created_at DESC
+      LIMIT 1
+    )
+    LEFT JOIN stage_runs AS stage_t ON stage_t.id = (
+      SELECT id FROM stage_runs AS sr
+      WHERE sr.candidate_id = candidates.id AND sr.stage = 'T'
+      ORDER BY sr.created_at DESC
+      LIMIT 1
+    )
+    LEFT JOIN stage_runs AS stage_s ON stage_s.id = (
+      SELECT id FROM stage_runs AS sr
+      WHERE sr.candidate_id = candidates.id AND sr.stage = 'S'
+      ORDER BY sr.created_at DESC
+      LIMIT 1
+    )
+    LEFT JOIN stage_runs AS stage_b ON stage_b.id = (
+      SELECT id FROM stage_runs AS sr
+      WHERE sr.candidate_id = candidates.id AND sr.stage = 'B'
+      ORDER BY sr.created_at DESC
+      LIMIT 1
+    )
+    LEFT JOIN stage_runs AS stage_c ON stage_c.id = (
+      SELECT id FROM stage_runs AS sr
+      WHERE sr.candidate_id = candidates.id AND sr.stage = 'C'
+      ORDER BY sr.created_at DESC
+      LIMIT 1
+    )
     LEFT JOIN stage_runs AS stage_k ON stage_k.id = (
       SELECT id FROM stage_runs AS sr
       WHERE sr.candidate_id = candidates.id AND sr.stage = 'K'
@@ -207,6 +317,29 @@ export const onRequestGet = async ({
       status: row.stage_r_status,
       createdAt: row.stage_r_created_at,
       summary: parseStageRSummary(row.stage_r_output),
+    },
+    stageM: {
+      status: row.stage_m_status,
+      createdAt: row.stage_m_created_at,
+    },
+    stageT: {
+      status: row.stage_t_status,
+      createdAt: row.stage_t_created_at,
+      summary: parseStageTSummary(row.stage_t_output),
+    },
+    stageS: {
+      status: row.stage_s_status,
+      createdAt: row.stage_s_created_at,
+      summary: parseStageSSummary(row.stage_s_output),
+    },
+    stageB: {
+      status: row.stage_b_status,
+      createdAt: row.stage_b_created_at,
+    },
+    stageC: {
+      status: row.stage_c_status,
+      createdAt: row.stage_c_created_at,
+      summary: parseStageCSummary(row.stage_c_output),
     },
     lead: row.lead_id
       ? {

@@ -9,7 +9,7 @@ Most blocks honour the shared layout props (`width`, `height`, `padding`,
 
 ## Usage
 
-- Import blocks via `@/components/cms/blocks/*` when composing custom previews.
+- Import blocks via `@ui/components/cms/blocks/*` when composing custom previews.
 - Within the CMS, block props are edited through form controls and persisted as
   JSON. The components here map those props to design-system primitives.
 - Blocks that fetch remote data (`ProductGrid`, `CollectionList`) handle loading

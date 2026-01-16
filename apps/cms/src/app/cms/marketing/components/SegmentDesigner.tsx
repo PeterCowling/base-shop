@@ -134,7 +134,7 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
       return;
     }
 
-    const result = await saveSegment(parsed.data);
+    const result = await saveSegment(parsed.data as SegmentPayload);
     onNotify(result);
     if (result.status === "success") {
       setForm({ shop: form.shop, id: "", name: "" });

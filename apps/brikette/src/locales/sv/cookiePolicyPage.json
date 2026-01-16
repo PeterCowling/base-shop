@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Cookiepolicy | Hostel Brikette",
+    "description": "Hur Hostel Brikette använder cookies och liknande tekniker på vår webbplats och vilka val du har."
+  },
+  "headings": {
+    "pageTitle": "Cookiepolicy",
+    "subtitle": "Cookies, lokal lagring och tredjepartstjänster"
+  },
+  "lastUpdated": {
+    "label": "Senast uppdaterad",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denna sida",
+    "aria": "Innehållsförteckning för cookiepolicy"
+  },
+  "sections": {
+    "intro": {
+      "title": "Översikt",
+      "body": [
+        "Denna cookiepolicy förklarar vad cookies är, om vi använder dem på denna webbplats och hur tredjepartstjänster kan använda cookies när du interagerar med deras innehåll."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Vad cookies är",
+      "body": [
+        "Cookies är små textfiler som webbplatser kan lagra på din enhet för att komma ihåg information mellan besök. Liknande tekniker inkluderar lokal lagring och sessionslagring i din webbläsare."
+      ]
+    },
+    "ourUse": {
+      "title": "Hur vi använder cookies på denna webbplats",
+      "body": [
+        "Vi strävar efter att hålla cookies till ett minimum. När det är möjligt använder vi webbläsarens lagring (lokal lagring) för enkla preferenser i stället för cookies.",
+        "Om vi inför cookies i framtiden (till exempel för nödvändig säkerhet, analys eller inbäddade tjänster) kommer vi att uppdatera denna policy."
+      ]
+    },
+    "localStorage": {
+      "title": "Lokal lagring (preferenser)",
+      "body": [
+        "Lokal lagring gör att webbplatsen kan komma ihåg vissa preferenser på din enhet. Till exempel kan den användas för att behålla gränssnittsinställningar mellan sidor.",
+        "Du kan rensa lokal lagring via webbläsarens inställningar."
+      ]
+    },
+    "thirdParties": {
+      "title": "Tredjepartstjänster",
+      "body": [
+        "Vissa länkar eller inbäddade upplevelser kan tillhandahållas av tredje part (till exempel kartor eller bokningsleverantörer). Dessa tredje parter kan sätta cookies eller använda liknande tekniker enligt sina egna policys.",
+        "När du följer en länk till en tredjepartswebbplats gäller deras integritets- och cookiepolicys."
+      ]
+    },
+    "choices": {
+      "title": "Dina val",
+      "body": [
+        "De flesta webbläsare låter dig blockera eller ta bort cookies och rensa webbplatsdata som lokal lagring. Att blockera vissa tekniker kan påverka funktionaliteten.",
+        "Du kan också använda privat läge eller webbläsartillägg för att begränsa spårning."
+      ]
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": [
+        "Om du har frågor om denna cookiepolicy, kontakta oss på {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tillbaka till toppen"
+  }
+}

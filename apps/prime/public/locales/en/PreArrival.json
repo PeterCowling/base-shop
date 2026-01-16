@@ -1,0 +1,158 @@
+{
+  "header": {
+    "preArrival": "Pre-Arrival",
+    "arrivalDay": "Arrival Day",
+    "welcome": "Hey {{name}}, let's get ready!",
+    "welcomeArrivalDay": "Welcome {{name}}!",
+    "subtitle": "Complete a few quick items before you arrive.",
+    "arrivalDaySubtitle": "You're almost here! Make sure you're ready for check-in."
+  },
+  "checkIn": {
+    "label": "Check-in",
+    "daysLeft": "days left",
+    "dayLeft": "day left",
+    "today": "Today!"
+  },
+  "readiness": {
+    "score": "ready",
+    "of": "of",
+    "itemsComplete": "items complete",
+    "status": {
+      "not-started": "Just getting started",
+      "in-progress": "Making progress",
+      "almost-ready": "Almost there!",
+      "ready": "You're all set!"
+    }
+  },
+  "checklist": {
+    "title": "Readiness Checklist",
+    "completed": "Done",
+    "routePlanned": {
+      "title": "Plan your route"
+    },
+    "etaConfirmed": {
+      "title": "Confirm arrival time"
+    },
+    "cashPrepared": {
+      "title": "Prepare cash",
+      "amount": "City tax + deposit"
+    },
+    "rulesReviewed": {
+      "title": "Review house rules"
+    },
+    "locationSaved": {
+      "title": "Save hostel location"
+    },
+    "etaMethod": {
+      "ferry": "By ferry",
+      "bus": "By bus",
+      "taxi": "By taxi",
+      "private": "Private transfer",
+      "train": "By train",
+      "other": "Other"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "You're all set!",
+      "description": "You're ready for your stay. We can't wait to see you!",
+      "button": "See you soon!"
+    },
+    "routePlanned": {
+      "title": "Plan your route",
+      "description": "Positano is tricky to reach. Let us help you find the best way to get here.",
+      "button": "See route options"
+    },
+    "etaConfirmed": {
+      "title": "When will you arrive?",
+      "description": "Let us know your expected arrival time so we can prepare for you.",
+      "button": "Set arrival time"
+    },
+    "cashPrepared": {
+      "title": "Prepare cash",
+      "description": "You'll need cash for city tax and keycard deposit at check-in.",
+      "descriptionWithAmount": "Bring approximately \u20ac{{amount}} in cash for city tax and deposit.",
+      "button": "See what you need"
+    },
+    "rulesReviewed": {
+      "title": "Quick look at house rules",
+      "description": "A 2-minute read to help your stay go smoothly.",
+      "button": "Review rules"
+    },
+    "locationSaved": {
+      "title": "Save our location",
+      "description": "Save the hostel address to your maps app so you can find us easily.",
+      "button": "Get directions"
+    },
+    "default": {
+      "title": "Get ready",
+      "description": "Complete a few items to be ready for your stay.",
+      "button": "Continue"
+    }
+  },
+  "stay": {
+    "night": "night",
+    "nights": "nights",
+    "location": "Hostel Brikette, Positano"
+  },
+  "eta": {
+    "title": "When will you arrive?",
+    "subtitle": "Select your expected arrival time and how you're getting here.",
+    "timeLabel": "Arrival time",
+    "methodLabel": "Travel method",
+    "noteLabel": "Note (optional)",
+    "notePlaceholder": "Any details about your arrival",
+    "lateArrival": {
+      "title": "Late arrival",
+      "message": "Check-in closes at 22:00. For late arrivals, we'll send you special instructions."
+    },
+    "confirm": "Confirm arrival time",
+    "methods": {
+      "ferry": "Ferry",
+      "bus": "Bus",
+      "taxi": "Taxi",
+      "private": "Private transfer",
+      "train": "Train",
+      "other": "Other"
+    }
+  },
+  "cash": {
+    "title": "Cash for check-in",
+    "subtitle": "You'll need to pay these in cash when you arrive:",
+    "cityTax": {
+      "label": "City tax",
+      "perNight": "per person, per night"
+    },
+    "deposit": {
+      "label": "Keycard deposit",
+      "refundable": "Refundable at checkout"
+    },
+    "total": "Total to prepare",
+    "confirm": {
+      "cityTax": "I have cash for city tax",
+      "deposit": "I have cash for deposit"
+    },
+    "done": "I'm ready!"
+  },
+  "rules": {
+    "title": "House Rules",
+    "subtitle": "A quick overview to help everyone have a great stay.",
+    "confirm": "I've reviewed the rules"
+  },
+  "location": {
+    "title": "Find us",
+    "subtitle": "Save our address so you can find us easily.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, Italy",
+    "openMaps": "Open in Maps",
+    "copyAddress": "Copy address",
+    "copied": "Address copied!",
+    "confirm": "I've saved the location"
+  },
+  "routes": {
+    "title": "How to get here",
+    "subtitle": "Choose your starting point to see route options.",
+    "viewRoute": "View route",
+    "saveRoute": "Save this route",
+    "savedRoute": "Saved!"
+  }
+}

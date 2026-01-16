@@ -1,0 +1,56 @@
+{
+  "tiers": {
+    "settle-in": {
+      "name": "Settle In",
+      "description": "Get oriented with the hostel basics"
+    },
+    "social-night": {
+      "name": "Social Night",
+      "description": "Join the evening activities and meet fellow travelers"
+    },
+    "positano-explorer": {
+      "name": "Positano Explorer",
+      "description": "Discover the local gems and hidden spots"
+    }
+  },
+  "badges": {
+    "early-bird": {
+      "name": "Early Bird",
+      "description": "Completed the Settle In quest"
+    },
+    "social-butterfly": {
+      "name": "Social Butterfly",
+      "description": "Joined the social activities"
+    },
+    "explorer": {
+      "name": "Explorer",
+      "description": "Discovered local Positano spots"
+    }
+  },
+  "labels": {
+    "currentQuest": "Current Quest",
+    "nextQuest": "Next Quest",
+    "completedQuests": "Completed Quests",
+    "progress": "Progress",
+    "xpEarned": "XP Earned",
+    "badges": "Badges",
+    "lockedUntil": "Unlocks in {{hours}} hours",
+    "requiresPrevious": "Complete {{tierName}} first",
+    "allComplete": "All quests complete!"
+  },
+  "completion": {
+    "title": "Quest Complete!",
+    "badgeEarned": "Badge Earned",
+    "continue": "Continue"
+  },
+  "tasks": {
+    "welcome": "Complete welcome",
+    "featuresIntro": "Learn hostel features",
+    "mainDoorAccess": "Set up door access",
+    "complimentaryEveningDrink": "Claim evening drink",
+    "activityJoined": "Join an activity",
+    "guidebookVisited": "Visit the guidebook",
+    "localSpotVisited": "Visit a local spot",
+    "profileOnboardingComplete": "Complete your profile"
+  }
+}

@@ -25,11 +25,11 @@
       ],
       "addThree": "Choisissez trois ingrédients à ajouter",
       "ingredients": [
-        "Bacon",
+        "Lard",
         "Jambon",
         "Tomates",
         "Champignons",
-        "Toast",
+        "Pain grillé",
         "Fromage",
         "Haricots"
       ],
@@ -71,7 +71,7 @@
       "note": "Garniture Nutella."
     },
     "pancakes": {
-      "name": "Pancakes"
+      "name": "Crêpes américaines"
     },
     "addEggComboItem": {
       "name": "Ajouter un élément du Combo Œufs",

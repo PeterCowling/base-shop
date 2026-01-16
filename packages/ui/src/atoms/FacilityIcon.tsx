@@ -1,5 +1,5 @@
 // Copied from src/components/rooms/FacilityIcon.tsx
-import type { FacilityKey } from "../types/facility";
+import type { FacilityKey } from "@ui/types/facility";
 import { Archive, Bath, BedDouble, Eye, HelpCircle, Home, KeyRound, Sun, Users, type LucideIcon } from "lucide-react";
 import { memo } from "react";
 

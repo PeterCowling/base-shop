@@ -29,7 +29,9 @@ export function makeArticleMeta(namespace: string): MetaFunction {
       fallbackPath,
       locationPathname: location?.pathname ?? null,
     });
-    const url = `${BASE_URL}${path}`;
+    const origin =
+      typeof window !== "undefined" && window.location?.origin ? window.location.origin : BASE_URL;
+    const url = `${origin}${path}`;
     return buildRouteMeta({
       lang,
       title,

@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "Por qué funciona esta ruta",
         "body": [
           "Son 120 metros (400 pies) a pie desde la entrada del hostal hasta la parada, por la carretera principal.",
           "Si vas hacia Amalfi, la parada está frente al Bar Internazionale. Haz fila en el lado de la carretera con vistas al mar. Si vas hacia Sorrento, esperarás justo delante del bar."
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "Billetes y horarios",
         "body": [
           "Compra un billete de SITA en el estanco o dentro del bar. No intentes subir al autobús sin billete, porque no podrás comprarlo a bordo. Entrega tu billete al conductor al subir. Si vas a tomar el primer autobús del día, compra el billete el día anterior y ven a recepción para organizar el check-out.",
           "En verano los autobuses suelen llenarse. Planifica en consecuencia, especialmente en los periodos de mayor afluencia."
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Sal del Hostel Brikette, baja por la escalera corta hacia Viale Pasitea y gira a la izquierda.",
       "Sigue la acera durante unos 120 metros (400 pies) por la carretera principal hasta llegar al Bar Internazionale."
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "¿Empiezas con equipaje en el muelle del ferry? Usa nuestra",
+    "kneesDockLinkLabel": "Ruta con equipaje desde el muelle del ferry",
+    "kneesPorterPrefix": "¿Necesitas precios de porteadores o ayuda para reservar? Consulta el",
+    "kneesPorterLinkLabel": "guía de porteadores",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "¿Los autobuses paran justo frente al hostel?",
+        "a": "Paran en Bar Internazionale, a unos 120 metros (400 pies) cuesta abajo desde la entrada."
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "¿Puedo comprar billetes a última hora?",
+        "a": "Sí, el tabacchi junto a la parada vende billetes SITA, pero espera colas en horas punta."
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Sal del Hostel Brikette y baja por Viale Pasitea",
+      "Haz la cola en Bar Internazionale y valida al subir"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "Preguntas frecuentes"
   }
 }

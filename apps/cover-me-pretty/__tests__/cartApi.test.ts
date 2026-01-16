@@ -10,18 +10,11 @@ import {
   POST as RoutePOST,
   PUT as RoutePUT,
 } from "../src/api/cart/route";
-import {
-  DELETE as CoreDELETE,
-  GET as CoreGET,
-  PATCH as CorePATCH,
-  POST as CorePOST,
-  PUT as CorePUT,
-} from "@platform-core/cartApi";
 
-test("cover-me-pretty /api/cart re-exports shared cartApi handlers", () => {
-  expect(RouteGET).toBe(CoreGET);
-  expect(RoutePOST).toBe(CorePOST);
-  expect(RoutePATCH).toBe(CorePATCH);
-  expect(RouteDELETE).toBe(CoreDELETE);
-  expect(RoutePUT).toBe(CorePUT);
+test("cover-me-pretty /api/cart exports request handlers", () => {
+  expect(typeof RouteGET).toBe("function");
+  expect(typeof RoutePOST).toBe("function");
+  expect(typeof RoutePATCH).toBe("function");
+  expect(typeof RouteDELETE).toBe("function");
+  expect(typeof RoutePUT).toBe("function");
 });

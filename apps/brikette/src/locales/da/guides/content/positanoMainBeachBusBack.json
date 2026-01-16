@@ -42,7 +42,7 @@
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Busstips",
   "tips": [
     "Medbring en ekstra billet, så du kan gå om bord med det samme, hvis bussen er optaget.",
     "Hvis servicerne afsluttes tidligt, skal du falde tilbage til %LINK:positanoMainBeachWalkBack|vandrerute% — det følger vandrerhjemmets trappekontrolpunkter.",
@@ -50,7 +50,7 @@
   ],
   "extras": {
     "photos": {
-      "title": "Photos",
+      "title": "Fotos",
       "items": {
         "busInterior": {
           "alt": "Interno Positano bus ved stoppestedet ved stranden",

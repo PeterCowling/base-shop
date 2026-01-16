@@ -2,8 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import { createPage as createPageAction } from "@cms/actions/pages/create";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 
 function parsePositiveInt(value: string | null, fallback: number): number {
   const n = Number.parseInt(value ?? "", 10);
@@ -16,11 +15,7 @@ export async function GET(
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
+    await ensureRole(["admin", "ShopAdmin"]);
     const { shop } = await context.params;
     const { searchParams } = new URL(req.url);
     const q = (searchParams.get("q") || "").toLowerCase().trim();

@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "到着前",
+    "arrivalDay": "到着日",
+    "welcome": "{{name}}さん、準備を始めましょう！",
+    "welcomeArrivalDay": "{{name}}さん、ようこそ！",
+    "subtitle": "到着前にいくつかの準備を完了しましょう。",
+    "arrivalDaySubtitle": "もうすぐ到着です！チェックインの準備ができているか確認しましょう。"
+  },
+  "checkIn": {
+    "label": "チェックイン",
+    "daysLeft": "日後",
+    "dayLeft": "日後",
+    "today": "今日！",
+    "qrAlt": "{{code}}のチェックインQRコード",
+    "qrError": "QRコードを生成できません",
+    "yourCode": "チェックインコード",
+    "codeCopied": "コードをコピーしました！"
+  },
+  "readiness": {
+    "score": "準備完了",
+    "of": "/",
+    "itemsComplete": "項目完了",
+    "status": {
+      "not-started": "始めたばかり",
+      "in-progress": "進行中",
+      "almost-ready": "もう少し！",
+      "ready": "準備完了！"
+    }
+  },
+  "checklist": {
+    "title": "準備リスト",
+    "completed": "完了",
+    "routePlanned": {
+      "title": "ルートを計画"
+    },
+    "etaConfirmed": {
+      "title": "到着時間を確認"
+    },
+    "cashPrepared": {
+      "title": "現金を準備",
+      "amount": "宿泊税 + デポジット"
+    },
+    "rulesReviewed": {
+      "title": "ハウスルールを確認"
+    },
+    "locationSaved": {
+      "title": "場所を保存"
+    },
+    "etaMethod": {
+      "ferry": "フェリー",
+      "bus": "バス",
+      "taxi": "タクシー",
+      "private": "プライベート送迎",
+      "train": "電車",
+      "other": "その他"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "準備完了！",
+      "description": "滞在の準備ができました。お会いできるのを楽しみにしています！",
+      "button": "またね！"
+    },
+    "routePlanned": {
+      "title": "ルートを計画",
+      "description": "ポジターノへのアクセスは複雑です。最適なルートを見つけるお手伝いをします。",
+      "button": "ルートオプションを見る"
+    },
+    "etaConfirmed": {
+      "title": "到着時間は？",
+      "description": "予定到着時間をお知らせください。",
+      "button": "到着時間を設定"
+    },
+    "cashPrepared": {
+      "title": "現金を準備",
+      "description": "チェックイン時に宿泊税とデポジットの現金が必要です。",
+      "descriptionWithAmount": "約€{{amount}}の現金をご用意ください。",
+      "button": "詳細を見る"
+    },
+    "rulesReviewed": {
+      "title": "ハウスルールを確認",
+      "description": "快適な滞在のための2分間の確認事項です。",
+      "button": "ルールを確認"
+    },
+    "locationSaved": {
+      "title": "場所を保存",
+      "description": "ホステルの住所をマップアプリに保存しましょう。",
+      "button": "道順を取得"
+    },
+    "default": {
+      "title": "準備しましょう",
+      "description": "滞在に向けていくつかの項目を完了しましょう。",
+      "button": "続ける"
+    }
+  },
+  "stay": {
+    "night": "泊",
+    "nights": "泊",
+    "location": "ホステル・ブリケッテ、ポジターノ"
+  },
+  "eta": {
+    "title": "到着時間は？",
+    "subtitle": "予定到着時間と交通手段を選択してください。",
+    "back": "戻る",
+    "timeLabel": "到着時間",
+    "methodLabel": "交通手段",
+    "noteLabel": "メモ（任意）",
+    "notePlaceholder": "到着に関する詳細",
+    "lateArrival": {
+      "title": "遅い到着",
+      "message": "チェックインは22:00に終了します。遅い到着の場合は、特別な指示をお送りします。"
+    },
+    "confirm": "到着時間を確認",
+    "methods": {
+      "ferry": "フェリー",
+      "bus": "バス",
+      "taxi": "タクシー",
+      "private": "プライベート送迎",
+      "train": "電車",
+      "other": "その他"
+    }
+  },
+  "cash": {
+    "title": "チェックイン用の現金",
+    "subtitle": "到着時に現金でお支払いいただく必要があります：",
+    "back": "戻る",
+    "cashOnly": "現金のみ",
+    "cityTax": {
+      "label": "宿泊税",
+      "perNight": "1人1泊あたり"
+    },
+    "deposit": {
+      "label": "カードデポジット",
+      "refundable": "チェックアウト時に返金"
+    },
+    "total": "準備する合計",
+    "confirm": {
+      "cityTax": "宿泊税の現金があります",
+      "deposit": "デポジットの現金があります"
+    },
+    "info": {
+      "message": "これらの金額はチェックイン時にフロントでお支払いいただきます。正確な金額またはそれに近い金額をご用意ください。"
+    },
+    "cardNote": "その他のサービスはカード払い可",
+    "done": "準備できました！",
+    "confirmPartial": "保存して続ける",
+    "arrivalReminder": {
+      "title": "現金をお忘れなく！",
+      "message": "宿泊税とデポジットのために約€{{amount}}の現金をお持ちください。"
+    }
+  },
+  "rules": {
+    "title": "ハウスルール",
+    "subtitle": "快適な滞在のための簡単な概要です。",
+    "confirm": "ルールを確認しました"
+  },
+  "location": {
+    "title": "私たちを見つける",
+    "subtitle": "簡単に見つけられるよう住所を保存してください。",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, イタリア",
+    "openMaps": "マップで開く",
+    "copyAddress": "住所をコピー",
+    "copied": "住所をコピーしました！",
+    "confirm": "場所を保存しました"
+  },
+  "routes": {
+    "title": "アクセス方法",
+    "subtitle": "出発地を選択してルートオプションを確認してください。",
+    "viewRoute": "ルートを見る",
+    "saveRoute": "ルートを保存",
+    "savedRoute": "保存しました！",
+    "routeSaved": "ルートを保存しました！",
+    "recommended": "おすすめ",
+    "back": "戻る",
+    "fromOrigin": "{{origin}}から",
+    "selectRoute": "ルートを選択",
+    "noRoutes": "ルートが見つかりません",
+    "totalTime": "合計時間",
+    "cost": "おおよその費用",
+    "importantNotes": "知っておくべきこと",
+    "journey": "あなたの旅",
+    "arrival": "到着しました！",
+    "viewFullGuide": "完全なガイドを見る",
+    "categories": {
+      "airport": "空港",
+      "train-station": "駅",
+      "port": "港",
+      "city": "都市"
+    }
+  },
+  "arrival": {
+    "badge": "到着日",
+    "welcome": "{{name}}さん、ようこそ！",
+    "subtitle": "この画面をフロントで見せてチェックインしてください。",
+    "showAtReception": "フロントで見せる",
+    "generatingCode": "チェックインコードを生成中...",
+    "codeUnavailable": "チェックインコードが利用できません。スタッフにお問い合わせください。",
+    "cashReminder": "現金をお忘れなく！",
+    "cashReady": "現金準備完了",
+    "cashAmount": "約€{{amount}}の現金をお持ちください",
+    "cityTaxLabel": "宿泊税: €{{amount}}",
+    "depositLabel": "デポジット: €{{amount}}",
+    "idReminder": "身分証明書を準備",
+    "idNote": "チェックインにはパスポートまたは身分証明書が必要です",
+    "findUs": "私たちを見つける",
+    "whatHappensNext": "チェックイン時の流れ",
+    "step1": "QRコードを見せるか、コードをお伝えください",
+    "step2": "宿泊税とデポジットを現金でお支払いください",
+    "step3": "カードキーとウェルカムパケットを受け取ります",
+    "step4": "探索して滞在をお楽しみください！"
+  },
+  "staffLookup": {
+    "title": "ゲストチェックイン",
+    "code": "コード: {{code}}",
+    "back": "戻る",
+    "loading": "ゲストを検索中...",
+    "guestName": "ゲスト",
+    "room": "部屋",
+    "nights": "滞在",
+    "dates": "日程",
+    "eta": "予定到着時間",
+    "payment": "支払い額",
+    "tryAgain": "再試行するか、コードを確認してください。",
+    "errors": {
+      "codeNotFound": "コードが見つかりません",
+      "codeExpired": "コードの有効期限切れ",
+      "lookupFailed": "ゲストを検索できません"
+    }
+  },
+  "welcome": {
+    "title": "{{firstName}}さん、ようこそ！",
+    "subtitle": "お越しいただきありがとうございます。",
+    "tip1": "お部屋の準備ができています。",
+    "tip2": "ホームページでヒントやツールをチェックしてください。",
+    "tapToDismiss": "続けるにはタップしてください"
+  },
+  "calendar": {
+    "addToCalendar": "カレンダーに追加",
+    "downloading": "ダウンロード中..."
+  }
+}

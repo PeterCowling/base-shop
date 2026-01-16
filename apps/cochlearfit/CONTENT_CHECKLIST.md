@@ -2,10 +2,9 @@
 
 You can swap the following without code changes elsewhere:
 
-- Copy and translations: `apps/cochlearfit/i18n/en.json`, `apps/cochlearfit/i18n/it.json`
-- Product names, descriptions, and care/compatibility notes (via translation keys in the files above)
-- Product images (SVGs): `apps/cochlearfit/public/images/*.svg`
-- Pricing, stock flags, and Stripe price IDs: `apps/cochlearfit/src/data/products.ts`
+- UI copy and translations: `apps/cochlearfit/i18n/en.json`, `apps/cochlearfit/i18n/it.json`, `apps/cochlearfit/i18n/es.json`, `apps/cochlearfit/i18n/de.json`
+- Product catalogue data (titles/descriptions/bullets/media ordering): `data/shops/cochlearfit/products.json`
+- Product stock levels: `data/shops/cochlearfit/inventory.json`
+- Variant pricing + Stripe price IDs: `data/shops/cochlearfit/variants.json`
+- Product images (uploaded media): `data/shops/cochlearfit/uploads/*` (synced into `apps/cochlearfit/public/uploads/cochlearfit/*` at dev/build time)
 - Site meta and contact info: `apps/cochlearfit/src/lib/site.ts`
-
-When updating Stripe price IDs, mirror the same changes in `apps/cochlearfit-worker/src/index.ts`.

@@ -1,51 +1,51 @@
 {
   "seo": {
     "title": "लॉरिटो बीच से हॉस्टल ब्रिकेट के लिए बस",
-    "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
+    "description": "Laurito बस स्टॉप तक चढ़ें, Amalfi Coast सेवा से Chiesa Nuova जाएँ, और Hostel Brikette तक छोटी पैदल दूरी पूरी करें।"
   },
-  "linkLabel": "Bus back from Laurito Beach",
+  "linkLabel": "Laurito Beach से बस द्वारा वापसी",
   "intro": [
-    "Skip the full stair climb from Laurito by boarding the Amalfi Coast bus that stops beside the beach access road and runs back up to Chiesa Nuova.",
-    "Buy your return ticket in town before heading down to the cove — there is nowhere near Laurito to purchase one, and without it you'll need to take the shuttle boat back to Positano."
+    "पूरी सीढ़ी चढ़ाई से बचने के लिए बीच एक्सेस रोड के पास रुकने वाली Amalfi Coast बस लें, जो आपको वापस Chiesa Nuova तक ले जाती है।",
+    "कोव में उतरने से पहले शहर में वापसी टिकट खरीदें — Laurito के पास टिकट खरीदने की जगह नहीं है, और टिकट के बिना आपको Positano वापस शटल बोट लेनी पड़ेगी।"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the Laurito bus stop",
+      "title": "Laurito बस स्टॉप तक ऊपर चढ़ें",
       "body": [
-        "Follow the stairs from the beach up to the coastal road and cross carefully to the uphill side.",
-        "Look for the blue-and-white SITA sign mounted on the metal pole and wait on the lay-by so the driver can see you."
+        "बीच से सीढ़ियाँ चढ़कर तटीय सड़क तक जाएँ और सावधानी से अंदरूनी तरफ पार करें।",
+        "धातु के खंभे पर लगे नीले-सफेद SITA साइन देखें और ले-बाय में प्रतीक्षा करें ताकि ड्राइवर आपको देख सके।"
       ]
     },
     {
       "id": "board-the-bus",
-      "title": "Board the Amalfi Coast bus",
+      "title": "Amalfi Coast बस में चढ़ें",
       "body": [
-        "Flag the driver as the Amalfi- or Positano-bound coach approaches and have your validated ticket ready.",
-        "The ride covers roughly 4.1 kilometres (2.5 miles) with several village stops; hold on as the bus climbs the hairpins toward Positano."
+        "Amalfi या Positano की ओर जाने वाली बस आते ही ड्राइवर को संकेत दें और वैलिडेटेड टिकट तैयार रखें।",
+        "सवारी लगभग 4.1 किमी (2.5 मील) की है और कई गांवों में स्टॉप होंगे; Positano की ओर बस हेयरपिन मोड़ चढ़ती है, इसलिए संभलकर बैठें।"
       ]
     },
     {
       "id": "arrive-chiesa-nuova",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Bar Internazionale / Chiesa Nuova पर उतरें",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — it is the first major stop once you re-enter Positano.",
-        "Press the stop button in advance and step off beside the tabacchi corner opposite Hostel Brikette."
+        "घोषणा सुनें या Bar Internazionale tabacchi देखें — यह Positano में दोबारा प्रवेश करने के बाद पहला बड़ा स्टॉप है।",
+        "स्टॉप बटन पहले दबाएँ और Hostel Brikette के सामने tabacchi कॉर्नर पर उतरें।"
       ]
     },
     {
       "id": "final-steps",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Hostel Brikette तक वापस पैदल जाएँ",
       "body": [
-        "Continue in the same direction as the bus for just over 100 metres (330 feet) along Viale Pasitea.",
-        "Take the staircase on your right to return directly to Hostel Brikette's main entrance."
+        "Viale Pasitea पर बस की दिशा में लगभग 100 मीटर (330 फीट) आगे बढ़ें।",
+        "दाईं ओर की सीढ़ियाँ लेकर सीधे Hostel Brikette के मुख्य प्रवेश तक जाएँ।"
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "बस टिप्स",
   "tips": [
-    "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
-    "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
+    "प्रिंटेड समय-सारिणी में Positano के समय दिए होते हैं, Laurito के नहीं; Positano Sponda आने से लगभग 10 मिनट पहले Laurito स्टॉप मानें।",
+    "यदि टिकट खत्म हो जाएँ, तो Laurito शटल बोट से Spiaggia Grande वापस जाएँ ताकि tabacchi से और टिकट खरीद सकें।",
     "लॉरिटो सुविधाओं और शटल विकल्पों के बारे में अधिक जानकारी के लिए हमारे %लिंक:समुद्र तट|पोसिटानो समुद्र तटों का अवलोकन% देखें।"
   ],
   "faqs": [
@@ -65,11 +65,9 @@
     }
   ],
   "articleLead": {
-    "scanHeading": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
-    "rideAlt": "Amalfi Coast bus en route from Laurito",
-    "rideCaption": "Ride from Laurito toward Positano",
+    "rideAlt": "Laurito से आती Amalfi Coast बस",
+    "rideCaption": "Laurito से Positano की ओर सवारी",
     "stopAlt": "बार इंटरनैजियोनेल / चिएसा नुओवा बस स्टॉप",
-    "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
+    "stopCaption": "Bar Internazionale / Chiesa Nuova स्टॉप"
   }
 }

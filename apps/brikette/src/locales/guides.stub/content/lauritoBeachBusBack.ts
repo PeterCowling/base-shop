@@ -3,7 +3,6 @@
 // Single-purpose stub: Bus back from Laurito Beach
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const lauritoBeachBusBack = {
   seo: {
@@ -21,14 +20,10 @@ export const lauritoBeachBusBack = {
     },
   ],
   articleLead: {
-    scanHeading: "Scan to Share",
-    qrAlt: "QR code to share this guide",
     rideAlt: "Amalfi Coast bus en route from Laurito",
     rideCaption: "Ride from Laurito toward Positano",
     stopAlt: "Bar Internazionale / Chiesa Nuova bus stop",
     stopCaption: "Bar Internazionale / Chiesa Nuova stop",
   },
 } as const;
-
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

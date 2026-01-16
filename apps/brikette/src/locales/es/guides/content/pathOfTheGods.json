@@ -106,9 +106,9 @@
     "costs": "Costes aproximados",
     "faqs": "Preguntas frecuentes",
     "gallery": "Galería de fotos",
-    "tips": "Smart timing"
+    "tips": "Mejor horario"
   },
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Mejor horario",
   "tips": [
     "Salga antes de las 09:00 en julio y agosto o busque las horas doradas en primavera y otoño para disfrutar de temperaturas más frescas y una luz más suave.",
     "Evite el descenso de 1.700 escalones hasta Positano a menos que tenga las rodillas frescas; bajar las escaleras de Montepertuso después de una larga caminata es brutal.",
@@ -122,13 +122,13 @@
       ]
     },
     {
-      "q": "Is the trail suitable for beginners?",
+      "q": "¿Es el sendero apto para principiantes?",
       "a": [
         "Sí, siempre que se mantenga firme y se sienta cómodo con las alturas. No hay subidas técnicas, sólo subidas y bajadas constantes."
       ]
     },
     {
-      "q": "What happens if ferries are cancelled?",
+      "q": "¿Qué pasa si se cancelan los ferris?",
       "a": [
         "Cambie al autobús vía Amalfi o viaje directamente a Nocelle. Lleva siempre un billete de autobús de repuesto para poder adaptarte a las condiciones del mar o del clima."
       ]

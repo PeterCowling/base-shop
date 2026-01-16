@@ -9,6 +9,14 @@ export type RouteDirection = "to" | "from";
 
 export type TransportMode = "bus" | "ferry" | "train" | "car" | "walk";
 
+export type RouteFacts = {
+  duration?: string;
+  cost?: string;
+  walking?: string;
+  luggageFriendly?: 1 | 2 | 3;
+  seasonality?: string;
+};
+
 export type DestinationLink = {
   label: string;
   href: string;
@@ -16,6 +24,9 @@ export type DestinationLink = {
   external?: boolean;
   direction?: RouteDirection;
   transportModes?: TransportMode[];
+  summary?: string;
+  facts?: RouteFacts;
+  groupKey?: string;
 };
 
 export type RichTextTextPart = {
@@ -41,6 +52,7 @@ export type DestinationSectionImage = {
 
 export type DestinationSection = {
   name: string;
+  description?: string;
   image?: DestinationSectionImage;
   links?: DestinationLink[] | Record<string, DestinationLink> | DestinationLink;
 };
@@ -48,6 +60,7 @@ export type DestinationSection = {
 export type NormalizedDestinationSection = {
   id: string;
   name: string;
+  description?: string;
   links: DestinationLink[];
   image?: DestinationSectionImage;
 };

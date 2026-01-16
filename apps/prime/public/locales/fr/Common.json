@@ -1,0 +1,23 @@
+{
+  "offline": {
+    "indicator": "Tu es hors ligne",
+    "message": "Certaines fonctionnalités peuvent être limitées"
+  },
+  "update": {
+    "available": "Mise à jour disponible",
+    "message": "Une nouvelle version est prête. Rafraîchis pour la mettre à jour.",
+    "refresh": "Rafraîchir",
+    "later": "Plus tard"
+  },
+  "loading": "Chargement...",
+  "error": "Une erreur s'est produite",
+  "retry": "Réessayer",
+  "back": "Retour",
+  "next": "Suivant",
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "done": "Terminé",
+  "yes": "Oui",
+  "no": "Non"
+}

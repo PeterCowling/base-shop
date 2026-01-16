@@ -1,0 +1,26 @@
+{
+  "title": "Meinen Aufenthalt finden",
+  "subtitle": "Gib deine Buchungsdaten ein, um auf dein Gästeportal zuzugreifen.",
+  "fields": {
+    "bookingCode": "Buchungscode",
+    "bookingCodePlaceholder": "z.B. BKG12345",
+    "bookingCodeHint": "Findest du in deiner Bestätigungs-E-Mail",
+    "lastName": "Nachname",
+    "lastNamePlaceholder": "Wie in der Buchung angegeben",
+    "lastNameHint": "Nachname des Hauptgastes"
+  },
+  "button": {
+    "submit": "Aufenthalt finden",
+    "loading": "Suche läuft..."
+  },
+  "errors": {
+    "fieldsRequired": "Bitte gib sowohl deinen Buchungscode als auch deinen Nachnamen ein.",
+    "notFound": "Wir konnten keine Buchung mit diesen Daten finden. Bitte überprüfe und versuche es erneut.",
+    "tooManyAttempts": "Zu viele Versuche. Bitte warte einige Minuten und versuche es erneut.",
+    "networkError": "Verbindung nicht möglich. Bitte überprüfe deine Internetverbindung und versuche es erneut."
+  },
+  "help": {
+    "cantFind": "Buchungscode nicht gefunden?",
+    "contactUs": "Kontaktiere die Rezeption für Hilfe."
+  }
+}

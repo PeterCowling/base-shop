@@ -1,21 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
-    "outDir": "dist",
-    "declarationDir": "dist",
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "strict": true,
-    "skipLibCheck": true,
-    "jsx": "preserve",
     "baseUrl": ".",
-    "resolveJsonModule": true,
-    "allowJs": false,
-    "rootDir": "../..",
     "types": ["node", "react", "react-dom", "next"],
     "paths": {
       "@/*": ["./src/*"],
@@ -50,6 +36,10 @@
       ],
       "@acme/ui": [
         "../../packages/ui/src/index.ts", "../../packages/ui/dist/index"
+      ],
+      "@acme/ui/operations": [
+        "../../packages/ui/src/components/organisms/operations/index.ts",
+        "../../packages/ui/dist/components/organisms/operations/index.d.ts"
       ],
       "@acme/ui/*": [
         "../../packages/ui/src/*", "../../packages/ui/dist/*"
@@ -135,6 +125,12 @@
       "@acme/config/*": [
         "../../packages/config/src/*", "../../packages/config/dist/*"
       ],
+      "@acme/configurator": [
+        "../../packages/configurator/src/index.ts", "../../packages/configurator/dist/index"
+      ],
+      "@acme/configurator/*": [
+        "../../packages/configurator/src/*", "../../packages/configurator/dist/*"
+      ],
       "@acme/i18n": [
         "../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index"
       ],
@@ -177,12 +173,7 @@
       "@acme/page-builder-ui/*": [
         "../../packages/page-builder-ui/dist/*", "../../packages/page-builder-ui/src/*"
       ]
-    },
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "incremental": true,
-    "isolatedModules": true,
-    "plugins": [{ "name": "next" }]
+    }
   },
   "include": [
     "next-env.d.ts",

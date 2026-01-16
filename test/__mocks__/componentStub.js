@@ -45,13 +45,52 @@ function ComponentStub(props) {
     );
   }
 
+  if (props && props.onClick) {
+    return React.createElement(
+      "button",
+      { type: "button", ...props },
+      props.children
+    );
+  }
+
+  if (props && props.children) {
+    return React.createElement("div", null, props.children);
+  }
+
   return null;
 }
 
 /* The proxy lets the same file satisfy:
-   -   default export     →  import X from '…'
-   - *any* named export   →  import { Y } from '…'
+   - default export      → import X from '…'
+   - any named export    → import { Y } from '…'
 */
-module.exports = new Proxy(ComponentStub, {
-  get: () => ComponentStub,
+const namedExports = {
+  __esModule: true,
+  default: ComponentStub,
+  Button: ComponentStub,
+  Select: ComponentStub,
+  SelectTrigger: ComponentStub,
+  SelectValue: ComponentStub,
+  SelectContent: ComponentStub,
+  SelectItem: ComponentStub,
+  Price: ComponentStub,
+  PriceCluster: ComponentStub,
+  IconButton: ComponentStub,
+  OverlayScrim: ComponentStub,
+  Drawer: ComponentStub,
+  DrawerContent: ComponentStub,
+  DrawerPortal: ComponentStub,
+  DrawerTitle: ComponentStub,
+  DrawerTrigger: ComponentStub,
+  Stack: ComponentStub,
+  HeartIcon: ComponentStub,
+  HeartFilledIcon: ComponentStub,
+  Cross1Icon: ComponentStub,
+};
+
+module.exports = new Proxy(namedExports, {
+  get: (target, prop) => {
+    if (prop in target) return target[prop];
+    return ComponentStub;
+  },
 });

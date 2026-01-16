@@ -1,0 +1,52 @@
+name: Lighthouse CI - Brikette
+
+on:
+  pull_request:
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/ui/**'
+      - '.github/workflows/lighthouse-brikette.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/ui/**'
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-repo
+
+      - name: Build Brikette
+        run: pnpm --filter @apps/brikette build
+        env:
+          NEXT_PUBLIC_SITE_DOMAIN: brikette.hostel
+
+      - name: Start server
+        run: |
+          pnpm --filter @apps/brikette start &
+          sleep 10
+        env:
+          NEXT_PUBLIC_SITE_DOMAIN: brikette.hostel
+
+      - name: Wait for server
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3014/en; do sleep 2; done'
+
+      - name: Run Lighthouse CI
+        run: pnpm --filter @apps/brikette lighthouse
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results
+          path: .lighthouseci
+          retention-days: 30

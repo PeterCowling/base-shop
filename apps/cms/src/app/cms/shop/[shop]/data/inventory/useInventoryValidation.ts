@@ -10,6 +10,9 @@ import { expandInventoryItem } from "@platform-core/utils/inventory";
  */
 export function validateInventoryItems(items: InventoryItem[]) {
   try {
+    const variantKeySet = new Set<string>();
+    const requiredKeysBySku = new Map<string, Set<string>>();
+
     for (const item of items) {
       const errors: string[] = [];
       if (!item.sku.trim()) errors.push("SKU is required");
@@ -19,6 +22,27 @@ export function validateInventoryItems(items: InventoryItem[]) {
       if (errors.length) {
         return { success: false as const, error: errors.join(", ") };
       }
+
+      const variantEntries = Object.entries(item.variantAttributes ?? {}).filter(
+        ([, v]) => v !== "",
+      );
+      const variantKey = `${item.sku}::${variantEntries
+        .map(([k, v]) => `${k}=${v}`)
+        .sort()
+        .join("|")}`;
+      if (variantKeySet.has(variantKey)) {
+        return {
+          success: false as const,
+          error: `Duplicate inventory row for SKU "${item.sku}" with the same variant attributes.`,
+        };
+      }
+      variantKeySet.add(variantKey);
+
+      if (variantEntries.length) {
+        const required = requiredKeysBySku.get(item.sku) ?? new Set<string>();
+        variantEntries.forEach(([k]) => required.add(k));
+        requiredKeysBySku.set(item.sku, required);
+      }
     }
 
     const cleaned = items.map((i) => ({
@@ -27,6 +51,25 @@ export function validateInventoryItems(items: InventoryItem[]) {
         Object.entries(i.variantAttributes ?? {}).filter(([, v]) => v !== ""),
       ),
     }));
+
+    // Guardrail: if any row for a SKU uses variant attributes, all rows for that SKU must include the same keys.
+    for (const item of cleaned) {
+      const required = requiredKeysBySku.get(item.sku);
+      if (required && required.size > 0) {
+        const missing = Array.from(required).filter(
+          (key) => !item.variantAttributes[key],
+        );
+        if (missing.length) {
+          return {
+            success: false as const,
+            error: `SKU "${item.sku}" is missing required variant attributes: ${missing.join(
+              ", ",
+            )}. Add values or remove empty rows to avoid creating a shadow variant.`,
+          };
+        }
+      }
+    }
+
     const normalized = cleaned.map((i) => expandInventoryItem(i));
     const parsed = inventoryItemSchema.array().safeParse(normalized);
     if (!parsed.success) {
@@ -47,4 +90,3 @@ export function validateInventoryItems(items: InventoryItem[]) {
 export function useInventoryValidation() {
   return validateInventoryItems;
 }
-

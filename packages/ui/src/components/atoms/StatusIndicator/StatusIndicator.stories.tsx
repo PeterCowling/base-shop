@@ -1,0 +1,228 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { StatusIndicator } from "./StatusIndicator";
+import { Inline, Stack } from "../../atoms/primitives";
+
+const meta: Meta<typeof StatusIndicator> = {
+  title: "Atoms/StatusIndicator",
+  component: StatusIndicator,
+  decorators: [
+    (Story) => (
+      <div className="context-operations bg-surface-1 p-8">
+        <Story />
+      </div>
+    ),
+  ],
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<typeof StatusIndicator>;
+
+export const RoomAvailable: Story = {
+  args: {
+    status: "available",
+    variant: "room",
+  },
+};
+
+export const RoomOccupied: Story = {
+  args: {
+    status: "occupied",
+    variant: "room",
+  },
+};
+
+export const RoomCleaning: Story = {
+  args: {
+    status: "cleaning",
+    variant: "room",
+  },
+};
+
+export const RoomMaintenance: Story = {
+  args: {
+    status: "maintenance",
+    variant: "room",
+  },
+};
+
+export const StockLow: Story = {
+  args: {
+    status: "low",
+    variant: "stock",
+  },
+};
+
+export const StockOk: Story = {
+  args: {
+    status: "ok",
+    variant: "stock",
+  },
+};
+
+export const StockHigh: Story = {
+  args: {
+    status: "high",
+    variant: "stock",
+  },
+};
+
+export const OrderPending: Story = {
+  args: {
+    status: "pending",
+    variant: "order",
+  },
+};
+
+export const OrderProcessing: Story = {
+  args: {
+    status: "processing",
+    variant: "order",
+  },
+};
+
+export const OrderCompleted: Story = {
+  args: {
+    status: "completed",
+    variant: "order",
+  },
+};
+
+export const SmallSize: Story = {
+  args: {
+    status: "available",
+    variant: "room",
+    size: "sm",
+  },
+};
+
+export const LargeSize: Story = {
+  args: {
+    status: "occupied",
+    variant: "room",
+    size: "lg",
+  },
+};
+
+export const DotOnly: Story = {
+  args: {
+    status: "available",
+    variant: "room",
+    dotOnly: true,
+  },
+};
+
+export const CustomLabel: Story = {
+  args: {
+    status: "available",
+    variant: "room",
+    label: "Ready for Check-in",
+  },
+};
+
+export const AllRoomStatuses: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Inline gap={4}>
+        <StatusIndicator status="available" variant="room" />
+        <StatusIndicator status="occupied" variant="room" />
+        <StatusIndicator status="cleaning" variant="room" />
+        <StatusIndicator status="maintenance" variant="room" />
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const AllStockStatuses: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Inline gap={4}>
+        <StatusIndicator status="low" variant="stock" />
+        <StatusIndicator status="ok" variant="stock" />
+        <StatusIndicator status="high" variant="stock" />
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const AllOrderStatuses: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Inline gap={4}>
+        <StatusIndicator status="pending" variant="order" />
+        <StatusIndicator status="processing" variant="order" />
+        <StatusIndicator status="completed" variant="order" />
+        <StatusIndicator status="cancelled" variant="order" />
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Inline gap={4}>
+        <StatusIndicator status="available" variant="room" size="sm" />
+        <StatusIndicator status="available" variant="room" size="md" />
+        <StatusIndicator status="available" variant="room" size="lg" />
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const DotsOnly: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Inline gap={3}>
+        <StatusIndicator status="available" variant="room" dotOnly />
+        <StatusIndicator status="occupied" variant="room" dotOnly />
+        <StatusIndicator status="cleaning" variant="room" dotOnly />
+        <StatusIndicator status="maintenance" variant="room" dotOnly />
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const InDataTable: Story = {
+  render: () => (
+    <table className="min-w-full border border-border-1">
+      <thead>
+        <tr className="bg-surface-2">
+          <th className="p-2 text-start">Room</th>
+          <th className="p-2 text-start">Status</th>
+          <th className="p-2 text-start">Guest</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="p-2">101</td>
+          <td className="p-2">
+            <StatusIndicator status="available" variant="room" size="sm" />
+          </td>
+          <td className="p-2">-</td>
+        </tr>
+        <tr className="bg-surface-1">
+          <td className="p-2">102</td>
+          <td className="p-2">
+            <StatusIndicator status="occupied" variant="room" size="sm" />
+          </td>
+          <td className="p-2">John Doe</td>
+        </tr>
+        <tr>
+          <td className="p-2">103</td>
+          <td className="p-2">
+            <StatusIndicator status="cleaning" variant="room" size="sm" />
+          </td>
+          <td className="p-2">-</td>
+        </tr>
+        <tr className="bg-surface-1">
+          <td className="p-2">104</td>
+          <td className="p-2">
+            <StatusIndicator status="maintenance" variant="room" size="sm" />
+          </td>
+          <td className="p-2">-</td>
+        </tr>
+      </tbody>
+    </table>
+  ),
+};

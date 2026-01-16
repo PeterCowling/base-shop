@@ -8,7 +8,7 @@ import type { Page } from "@acme/types";
 import DataTable, { type Column } from "./DataTable";
 import { Card, CardContent, Input } from "../atoms/shadcn";
 import { Tag } from "../atoms";
-import { cn } from "@ui/utils/style";
+import { cn } from "../../utils/style";
 import { useTranslations } from "@acme/i18n";
 
 // Use shared translations hook; defaults to English in tests/storybook

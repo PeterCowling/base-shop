@@ -25,7 +25,7 @@ describe("tailwind build", () => {
 
   const itFn = cliPath ? it : it.skip;
 
-  itFn("builds globals.css with tailwind", () => {
+  const buildCss = (inputPath: string, configPath: string): string => {
     if (!cliPath) {
       throw new Error("tailwindcss CLI missing");
     }
@@ -38,9 +38,9 @@ describe("tailwind build", () => {
       [
         cliPath,
         "-i",
-        "apps/cms/src/app/globals.css",
+        inputPath,
         "-c",
-        "tailwind.config.mjs",
+        configPath,
         "-o",
         outputPath,
       ],
@@ -56,9 +56,26 @@ describe("tailwind build", () => {
       expect(result.status).toBe(0);
 
       const css: string = readFileSync(outputPath, "utf8");
-      expect(css).toContain("--color-bg");
+      return css;
     } finally {
       rmSync(tmpDir, { recursive: true, force: true });
     }
+  };
+
+  itFn("builds cms globals.css with tailwind", () => {
+    const css = buildCss(
+      "apps/cms/src/app/globals.css",
+      "tailwind.config.mjs"
+    );
+    expect(css).toContain("--color-bg");
+  });
+
+  itFn("builds reception globals.css with tailwind", () => {
+    const css = buildCss(
+      "apps/reception/src/app/globals.css",
+      "apps/reception/tailwind.config.mjs"
+    );
+    expect(css).toContain(".bg-action-primary");
+    expect(css).toContain("dark\\:bg-darkBg");
   });
 });

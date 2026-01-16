@@ -95,7 +95,7 @@
       },
       {
         "href": "#last-mile",
-        "label": "A fordítás folyamatban van."
+        "label": "Utolsó szakasz Positanóba"
       },
       {
         "href": "#faqs",
@@ -107,7 +107,7 @@
         "id": "routes",
         "title": "Fő útvonalak",
         "body": [
-          "A fordítás folyamatban van."
+          "Róma → Nápoly/Salerno nagysebességű; helyi vonatok Sorrentóba; buszok Positanóba."
         ]
       },
       {
@@ -119,9 +119,9 @@
       },
       {
         "id": "last-mile",
-        "title": "A fordítás folyamatban van.",
+        "title": "Utolsó szakasz Positanóba",
         "body": [
-          "A fordítás folyamatban van."
+          "Nápolyból: Circumvesuviana Sorrentóig, majd SITA busz. Salernóból: szezonban komp/busz."
         ]
       }
     ],
@@ -286,64 +286,64 @@
     "toc": [
       {
         "href": "#getting-around",
-        "label": "Getting around"
+        "label": "Közlekedés"
       },
       {
         "href": "#refills",
-        "label": "Refills & waste"
+        "label": "Utántöltés és hulladék"
       },
       {
         "href": "#trails",
-        "label": "Trails etiquette"
+        "label": "Ösvény-etikett"
       }
     ],
     "sections": [
       {
         "id": "getting-around",
-        "title": "Getting around",
+        "title": "Közlekedés",
         "body": [
-          "Prefer ferries and buses to private cars; walk between nearby villages when it’s safe.",
-          "Travel off-peak to ease operations and avoid crowding on the coast."
+          "Válaszd a kompokat és buszokat a magánautó helyett; ha biztonságos, sétálj a közeli falvak között.",
+          "Utazz csúcsidőn kívül, hogy könnyebb legyen a közlekedés és kisebb legyen a zsúfoltság a parton."
         ]
       },
       {
         "id": "refills",
-        "title": "Refills & waste",
+        "title": "Utántöltés és hulladék",
         "body": [
-          "Use public fountains or ask cafés for refills; carry a reusable bottle.",
-          "Sort waste where possible and skip single-use beach gear."
+          "Használj közkutakat, vagy kérj utántöltést a kávézókban; vigyél újratölthető kulacsot.",
+          "Szelektálj, ahol lehet, és kerüld az egyszer használatos strandfelszerelést."
         ]
       },
       {
         "id": "trails",
-        "title": "Trails etiquette",
+        "title": "Ösvény-etikett",
         "body": [
-          "Give way on narrow sections, pack out all rubbish, and respect private property.",
-          "Start early to beat the heat and trail congestion."
+          "A szűk szakaszokon adj utat, vidd magaddal a szemetet, és tartsd tiszteletben a magántulajdont.",
+          "Indulj korán, hogy elkerüld a meleget és az ösvények zsúfoltságát."
         ]
       }
     ],
     "faqs": [],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "GYIK"
   },
   "itinerariesPillar": {
-    "intro": "You don’t need a car to enjoy the Amalfi Coast. Use ferries for scenic hops, buses for ridge towns, and a little timing to avoid the busiest windows. Start with these templates, then customise.",
+    "intro": "Az Amalfi-part élvezetéhez nincs szükség autóra. A látványos szakaszokra válassz kompokat, a hegygerincen fekvő településekhez buszt, és időzítéssel kerüld el a legzsúfoltabb időszakokat. Indulj ezekből a sablonokból, majd alakítsd személyre.",
     "toc": {
       "twoDays": "2 nap: Positano fókusz",
-      "threeDays": "3 nap: Capri vagy Ravello",
+      "threeDays": "3 nap: Capri vagy Amalfi + Ravello",
       "sevenDays": "7 nap: teljes kör",
       "tips": "Időzítés és közlekedés",
       "faqs": "GYIK"
     },
     "twoDaysHeading": "2 nap: Positano fókusz",
     "twoDaysItems": [
-      "A fordítás folyamatban van.",
-      "A fordítás folyamatban van."
+      "1. nap: Positano óváros, Fornillo a tengerparti ösvényen, naplemente a Via Pasitea kanyarjainál.",
+      "2. nap: <pathOfTheGodsLink>Isteni ösvény</pathOfTheGodsLink> Nocelléből; utána strand és lehűlés."
     ],
     "threeDaysHeading": "3 nap: Capri vagy Ravello",
     "threeDaysIntro": "Válassz egyet:",
     "threeDaysOptions": [
-      "A fordítás folyamatban van.",
+      "Capri egynapos: korai komp → Marina Grande → Anacapri libegő → Marina Piccola kör.",
       "Amalfi + Ravello: busz Amalfig, onnan fel Ravellóba kertekért és kilátásért; vissza busz/komp."
     ],
     "sevenDaysHeading": "7 nap: teljes kör",
@@ -370,16 +370,16 @@
   },
   "amalfiTownGuide": {
     "headings": {
-      "highlights": "Highlights",
-      "gettingThere": "Getting there",
-      "tips": "Tips"
+      "highlights": "Fő látnivalók",
+      "gettingThere": "Hogyan jutsz oda",
+      "tips": "Tippek"
     },
     "highlights": [
-      "Duomo di Amalfi and the Chiostro del Paradiso (cloister).",
-      "Paper Museum (Museo della Carta) — unique to Amalfi’s history.",
-      "Beachfront promenade and gelato on the steps."
+      "Duomo di Amalfi és a Chiostro del Paradiso (kolostorudvar).",
+      "Paper Museum (Museo della Carta) — Amalfi történetének egyedi része.",
+      "Tengerparti sétány és fagylalt a lépcsőkön."
     ],
-    "gettingThere": "From Positano, ferries (in season) are scenic and comfortable. Otherwise, take the SITA bus; expect queues in peak time. Buy tickets in advance.",
+    "gettingThere": "Positanóból szezonban a komp látványos és kényelmes. Egyébként a SITA busz a megoldás; csúcsidőben sorokra számíts. Jegyet előre vegyél.",
     "tips": [
       "Vigyél könnyű sálat a templomokba és napvédőnek a kompra.",
       "Hűsítsd magad citromgranitéval a vízparti kioszkoknál a megállók között."
@@ -399,7 +399,7 @@
         "id": "day1",
         "label": "1. nap",
         "items": [
-          "A fordítás folyamatban van."
+          "Érkezés Positanóba; óváros és Fornillo"
         ]
       },
       {
@@ -420,14 +420,14 @@
         "id": "day4",
         "label": "4. nap",
         "items": [
-          "A fordítás folyamatban van."
+          "Átszállás Amalfi-ba; dóm; naplemente a mólón"
         ]
       },
       {
         "id": "day5",
         "label": "5. nap",
         "items": [
-          "A fordítás folyamatban van."
+          "Ravellói kertek (Villa Rufolo/Villa Cimbrone)"
         ]
       },
       {

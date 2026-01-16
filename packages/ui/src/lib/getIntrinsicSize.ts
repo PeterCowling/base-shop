@@ -1,6 +1,6 @@
 // src/lib/getIntrinsicSize.ts
-import manifest from "@/data/imageDimensions.json";
-import type { ImageDims } from "@/types/image";
+import manifest from "@ui/data/imageDimensions.json";
+import type { ImageDims } from "@ui/types/image";
 
 const dimCache = new Map<string, ImageDims>();
 

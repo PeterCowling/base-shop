@@ -8,7 +8,6 @@ export {
   type ModalContextValue,
   type ModalProviderProps,
   type ModalType,
-  ModalProvider,
-  useModal,
-  useOptionalModal,
-} from "@acme/ui/context/ModalContext";
+} from "@/context/modal/context";
+export { ModalProvider } from "@/context/modal/provider";
+export { useModal, useOptionalModal } from "@/context/modal/hooks";

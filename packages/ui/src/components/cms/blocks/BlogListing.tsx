@@ -9,7 +9,6 @@ import { Inline } from "../../atoms/primitives/Inline";
 
 const CATEGORY_QUERY_PARAM = "category"; // i18n-exempt -- TECH-4821 [ttl=2026-01-01] — URL search parameter key
 
-/* eslint-disable ds/no-hardcoded-copy -- DS-2504: Classname templates contain only design tokens */
 
 export type BlogPost = {
   title: string;

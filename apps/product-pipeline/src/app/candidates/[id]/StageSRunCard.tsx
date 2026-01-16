@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
+
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Cluster, Stack } from "@ui/components/atoms/primitives";
 import type {
@@ -15,6 +17,7 @@ import {
   parseStageSList,
 } from "./stageSHelpers";
 import StageSSummaryCard from "./StageSSummary";
+import { resolveGateMessage, resolveStageTGate } from "./stageGate";
 
 type FormState = {
   complianceRisk: StageSRiskBand;
@@ -80,7 +83,9 @@ export default function StageSRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
+  const stageGate = resolveStageTGate(stageRuns);
 
   useEffect(() => {
     if (hasEdited) return;
@@ -165,10 +170,12 @@ export default function StageSRunCard({
           | null;
         if (!response.ok) {
           const reason = data?.details?.reasonCode;
+          const gateError = resolveGateMessage(data?.error ?? null, strings.gates);
           const text =
-            data?.error === "cooldown_active"
+            gateError ??
+            (data?.error === "cooldown_active"
               ? `${strings.cooldown.activeMessage}${reason ? ` (${reason})` : ""}`
-              : strings.stageS.errorRun;
+              : strings.stageS.errorRun);
           setMessage({ tone: "error", text });
         } else {
           setMessage({ tone: "success", text: strings.stageS.success });
@@ -181,7 +188,7 @@ export default function StageSRunCard({
         await onRun();
       }
     },
-    [candidate, candidateId, form, onRun, strings.cooldown, strings.stageS],
+    [candidate, candidateId, form, onRun, strings.cooldown, strings.gates, strings.stageS],
   );
 
   const riskFields: Array<{ key: RiskFieldKey; label: string }> = [
@@ -200,7 +207,7 @@ export default function StageSRunCard({
   ];
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-s">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageS.label}
@@ -216,7 +223,18 @@ export default function StageSRunCard({
         notAvailable={strings.notAvailable}
       />
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageS}>
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageS}>
         {riskFields.map((field) => (
           <label
             key={field.key}
@@ -233,7 +251,7 @@ export default function StageSRunCard({
                 }));
                 setHasEdited(true);
               }}
-              disabled={running || cooldownActive}
+              disabled={running || cooldownActive || Boolean(stageGate)}
             >
               {riskOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -255,7 +273,7 @@ export default function StageSRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={running || cooldownActive || Boolean(stageGate)}
             type="number"
             min={0}
             max={100}
@@ -273,7 +291,7 @@ export default function StageSRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={running || cooldownActive || Boolean(stageGate)}
             type="text"
           />
         </label>
@@ -286,7 +304,7 @@ export default function StageSRunCard({
               setForm((current) => ({ ...current, notes: event.target.value }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={running || cooldownActive || Boolean(stageGate)}
           />
         </label>
         <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
@@ -310,12 +328,13 @@ export default function StageSRunCard({
           <button
             className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
             type="submit"
-            disabled={running || loading || cooldownActive}
+            disabled={running || loading || cooldownActive || Boolean(stageGate)}
           >
             {strings.stageS.runLabel}
           </button>
         </Cluster>
       </form>
+      ) : null}
     </section>
   );
 }

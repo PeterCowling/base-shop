@@ -6,7 +6,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
-import GlobalModals from "@/organisms/GlobalModals";
+import GlobalModals from "../../organisms/GlobalModals";
 import { ensureDocument, type DocumentShim } from "./environment";
 
 ensureDocument();

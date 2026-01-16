@@ -1,0 +1,34 @@
+name = "xa-site"
+compatibility_date = "2025-06-20"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"
+XA_ALLOWED_HOSTS = "thestylemarket.shop"
+NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"
+
+[env.preview]
+name = "xa-preview"
+
+[env.preview.vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"
+XA_ALLOWED_HOSTS = "thestylemarket.shop"
+NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"
+
+[env.backup]
+name = "xa-backup"
+
+[env.backup.vars]
+XA_STEALTH_MODE = "true"
+XA_REQUIRE_CF_ACCESS = "true"
+XA_STRICT_STEALTH = "true"
+NEXT_PUBLIC_STEALTH_MODE = "true"
+XA_ALLOWED_HOSTS = "thestylemarket.shop"
+NEXT_PUBLIC_SITE_DOMAIN = "thestylemarket.shop"

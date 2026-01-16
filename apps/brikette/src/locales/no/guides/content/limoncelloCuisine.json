@@ -8,19 +8,19 @@
     "Limoncello og lokal mat på Amalfikysten: hva du bør smake og hvordan du bestiller som en lokal.",
     "Her er hvor du kan nippe, hva du skal kjøpe og hvordan du lager mat med dem hjemme."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "På denne siden",
   "sections": [
     {
       "id": "tasting",
-      "title": "Tasting",
+      "title": "Smaking",
       "body": [
-        "Besøk small botteghe for håndverkslimoncello og be om en prøve for å sammenligne stiler.",
+        "Besøk små botteghe for håndverkslimoncello og be om en prøve for å sammenligne stiler.",
         "Kombiner smaksprøver med sitrongelato, sorbet eller bakverk for å måle sødme og balanse."
       ]
     },
     {
       "id": "purchase",
-      "title": "Buying & shipping",
+      "title": "Kjøp og frakt",
       "body": [
         "Sjekk flyselskapets væskegrenser; pakke flasker trygt i innsjekket bagasje.",
         "Se etter IGP Costa d’Amalfi-etiketter og resirkulerbar emballasje fra lokale produsenter."
@@ -28,7 +28,7 @@
     },
     {
       "id": "cooking",
-      "title": "Cooking with lemons",
+      "title": "Matlaging med sitron",
       "body": [
         "Bruk skall og juice i salater, sjømatpasta og desserter for lysstyrke.",
         "Oppbevar sitroner på et kjølig, mørkt sted og bruk skallene til sirup eller marinader."
@@ -54,15 +54,15 @@
     }
   ],
   "gallery": {
-    "title": "Photo gallery",
+    "title": "Bildegalleri",
     "items": [
       {
-        "alt": "Positano vintage poster with lemons",
-        "caption": "Vintage lemons"
+        "alt": "Vintageplakat fra Positano med sitroner",
+        "caption": "Vintage-sitroner"
       },
       {
-        "alt": "Terrace table with limoncello glasses",
-        "caption": "Terrace limoncello"
+        "alt": "Terrassebord med limoncelloglass",
+        "caption": "Limoncello på terrassen"
       }
     ]
   }

@@ -15,6 +15,12 @@ const GRID_CLASSES = ["mt-6", "grid", "gap-4", "sm:grid-cols-2"] as const;
 
 type Translator = TFunction;
 
+const KEEP_ARROW_TOGETHER = /\s*→\s*/g;
+function formatGuideTitleForCta(title: string): string {
+  // Prevent orphaned arrows in narrow CTA buttons.
+  return title.replace(KEEP_ARROW_TOGETHER, "\u00A0→\u00A0");
+}
+
 interface GuideCollectionListProps {
   lang: AppLanguage;
   guides: readonly GuideMeta[];
@@ -42,7 +48,10 @@ export const GuideCollectionList = ({
         : guide.key;
 
       const summary = resolveSummary(guide.key);
-      const ctaLabel = copy.cardCta ? formatGuideCardCta(copy.cardCta, label) : undefined;
+      const ctaLabel = copy.cardCta
+        ? formatGuideCardCta(copy.cardCta, formatGuideTitleForCta(label))
+        : undefined;
+      const directionsLabel = copy.directionsLabel;
 
       return (
         <li key={guide.key}>
@@ -52,6 +61,7 @@ export const GuideCollectionList = ({
             label={label}
             {...(summary !== undefined ? { summary } : {})}
             {...(ctaLabel !== undefined ? { ctaLabel } : {})}
+            {...(directionsLabel ? { directionsLabel } : {})}
           />
         </li>
       );

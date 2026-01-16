@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "Avant l'arrivée",
+    "arrivalDay": "Jour d'arrivée",
+    "welcome": "Salut {{name}}, préparons-nous !",
+    "welcomeArrivalDay": "Bienvenue {{name}} !",
+    "subtitle": "Complète quelques étapes avant ton arrivée.",
+    "arrivalDaySubtitle": "Tu y es presque ! Assure-toi d'être prêt pour le check-in."
+  },
+  "checkIn": {
+    "label": "Check-in",
+    "daysLeft": "jours restants",
+    "dayLeft": "jour restant",
+    "today": "Aujourd'hui !",
+    "qrAlt": "Code QR de check-in pour {{code}}",
+    "qrError": "Impossible de générer le code QR",
+    "yourCode": "Ton code de check-in",
+    "codeCopied": "Code copié !"
+  },
+  "readiness": {
+    "score": "prêt",
+    "of": "sur",
+    "itemsComplete": "éléments complétés",
+    "status": {
+      "not-started": "C'est parti",
+      "in-progress": "En progression",
+      "almost-ready": "Presque prêt !",
+      "ready": "Tout est prêt !"
+    }
+  },
+  "checklist": {
+    "title": "Liste de préparation",
+    "completed": "Fait",
+    "routePlanned": {
+      "title": "Planifie ton itinéraire"
+    },
+    "etaConfirmed": {
+      "title": "Confirme ton heure d'arrivée"
+    },
+    "cashPrepared": {
+      "title": "Prépare du liquide",
+      "amount": "Taxe de séjour + caution"
+    },
+    "rulesReviewed": {
+      "title": "Lis le règlement"
+    },
+    "locationSaved": {
+      "title": "Enregistre l'adresse"
+    },
+    "etaMethod": {
+      "ferry": "En ferry",
+      "bus": "En bus",
+      "taxi": "En taxi",
+      "private": "Transfert privé",
+      "train": "En train",
+      "other": "Autre"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "Tout est prêt !",
+      "description": "Tu es prêt pour ton séjour. On a hâte de te voir !",
+      "button": "À bientôt !"
+    },
+    "routePlanned": {
+      "title": "Planifie ton itinéraire",
+      "description": "Positano n'est pas facile d'accès. On t'aide à trouver le meilleur chemin.",
+      "button": "Voir les options"
+    },
+    "etaConfirmed": {
+      "title": "Quand arrives-tu ?",
+      "description": "Dis-nous ton heure d'arrivée prévue.",
+      "button": "Définir l'heure"
+    },
+    "cashPrepared": {
+      "title": "Prépare du liquide",
+      "description": "Tu auras besoin de liquide pour la taxe de séjour et la caution.",
+      "descriptionWithAmount": "Apporte environ €{{amount}} en liquide.",
+      "button": "Voir les détails"
+    },
+    "rulesReviewed": {
+      "title": "Un coup d'œil au règlement",
+      "description": "2 minutes de lecture pour un séjour sans souci.",
+      "button": "Lire le règlement"
+    },
+    "locationSaved": {
+      "title": "Enregistre notre adresse",
+      "description": "Sauvegarde l'adresse de l'auberge dans ton appli de cartes.",
+      "button": "Obtenir l'itinéraire"
+    },
+    "default": {
+      "title": "Prépare-toi",
+      "description": "Complète quelques étapes pour ton séjour.",
+      "button": "Continuer"
+    }
+  },
+  "stay": {
+    "night": "nuit",
+    "nights": "nuits",
+    "location": "Hostel Brikette, Positano"
+  },
+  "eta": {
+    "title": "Quand arrives-tu ?",
+    "subtitle": "Sélectionne ton heure d'arrivée et ton moyen de transport.",
+    "back": "Retour",
+    "timeLabel": "Heure d'arrivée",
+    "methodLabel": "Moyen de transport",
+    "noteLabel": "Note (optionnel)",
+    "notePlaceholder": "Détails sur ton arrivée",
+    "lateArrival": {
+      "title": "Arrivée tardive",
+      "message": "Le check-in ferme à 22h00. Pour les arrivées tardives, on t'enverra des instructions spéciales."
+    },
+    "confirm": "Confirmer l'heure d'arrivée",
+    "methods": {
+      "ferry": "Ferry",
+      "bus": "Bus",
+      "taxi": "Taxi",
+      "private": "Transfert privé",
+      "train": "Train",
+      "other": "Autre"
+    }
+  },
+  "cash": {
+    "title": "Liquide pour le check-in",
+    "subtitle": "Tu devras payer ceci en liquide à ton arrivée :",
+    "back": "Retour",
+    "cashOnly": "Paiement en liquide uniquement",
+    "cityTax": {
+      "label": "Taxe de séjour",
+      "perNight": "par personne, par nuit"
+    },
+    "deposit": {
+      "label": "Caution carte",
+      "refundable": "Remboursable au check-out"
+    },
+    "total": "Total à préparer",
+    "confirm": {
+      "cityTax": "J'ai du liquide pour la taxe de séjour",
+      "deposit": "J'ai du liquide pour la caution"
+    },
+    "info": {
+      "message": "Ces montants sont perçus à la réception lors du check-in. Merci de préparer le montant exact ou proche."
+    },
+    "cardNote": "Carte acceptée pour les autres services",
+    "done": "Je suis prêt !",
+    "confirmPartial": "Enregistrer et continuer",
+    "arrivalReminder": {
+      "title": "N'oublie pas le liquide !",
+      "message": "Apporte environ €{{amount}} en liquide pour la taxe et la caution."
+    }
+  },
+  "rules": {
+    "title": "Règlement de l'auberge",
+    "subtitle": "Un aperçu rapide pour un séjour agréable.",
+    "confirm": "J'ai lu le règlement"
+  },
+  "location": {
+    "title": "Nous trouver",
+    "subtitle": "Sauvegarde notre adresse pour nous trouver facilement.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, Italie",
+    "openMaps": "Ouvrir dans Plans",
+    "copyAddress": "Copier l'adresse",
+    "copied": "Adresse copiée !",
+    "confirm": "J'ai enregistré l'adresse"
+  },
+  "routes": {
+    "title": "Comment venir",
+    "subtitle": "Choisis ton point de départ pour voir les options d'itinéraire.",
+    "viewRoute": "Voir l'itinéraire",
+    "saveRoute": "Sauvegarder l'itinéraire",
+    "savedRoute": "Sauvegardé !",
+    "routeSaved": "Itinéraire sauvegardé !",
+    "recommended": "Recommandé",
+    "back": "Retour",
+    "fromOrigin": "Depuis {{origin}}",
+    "selectRoute": "Sélectionne un itinéraire",
+    "noRoutes": "Aucun itinéraire trouvé",
+    "totalTime": "Temps total",
+    "cost": "Coût approx.",
+    "importantNotes": "Bon à savoir",
+    "journey": "Ton voyage",
+    "arrival": "Tu es arrivé !",
+    "viewFullGuide": "Voir le guide complet",
+    "categories": {
+      "airport": "Aéroports",
+      "train-station": "Gares",
+      "port": "Ports",
+      "city": "Villes"
+    }
+  },
+  "arrival": {
+    "badge": "Jour d'arrivée",
+    "welcome": "Bienvenue, {{name}} !",
+    "subtitle": "Montre cet écran à la réception pour le check-in.",
+    "showAtReception": "Montrer à la réception",
+    "generatingCode": "Génération de ton code de check-in...",
+    "codeUnavailable": "Code de check-in indisponible. Merci de voir avec le personnel.",
+    "cashReminder": "N'oublie pas le liquide !",
+    "cashReady": "Liquide prêt",
+    "cashAmount": "Apporte environ €{{amount}} en liquide",
+    "cityTaxLabel": "Taxe de séjour : €{{amount}}",
+    "depositLabel": "Caution : €{{amount}}",
+    "idReminder": "Prépare ta pièce d'identité",
+    "idNote": "Passeport ou carte d'identité pour le check-in",
+    "findUs": "Nous trouver",
+    "whatHappensNext": "Que se passe-t-il au check-in",
+    "step1": "Montre ton code QR ou donne ton code",
+    "step2": "Paye la taxe et la caution en liquide",
+    "step3": "Reçois ta carte et ton kit de bienvenue",
+    "step4": "Explore et profite de ton séjour !"
+  },
+  "staffLookup": {
+    "title": "Check-in voyageur",
+    "code": "Code : {{code}}",
+    "back": "Retour",
+    "loading": "Recherche du voyageur...",
+    "guestName": "Voyageur",
+    "room": "Chambre",
+    "nights": "Séjour",
+    "dates": "Dates",
+    "eta": "Arrivée prévue",
+    "payment": "Paiement dû",
+    "tryAgain": "Merci de réessayer ou de vérifier le code.",
+    "errors": {
+      "codeNotFound": "Code non trouvé",
+      "codeExpired": "Code expiré",
+      "lookupFailed": "Impossible de trouver le voyageur"
+    }
+  },
+  "welcome": {
+    "title": "Bienvenue, {{firstName}} !",
+    "subtitle": "On est ravis de t'accueillir.",
+    "tip1": "Ta chambre est prête.",
+    "tip2": "Consulte la page d'accueil pour des conseils et outils.",
+    "tapToDismiss": "Touche n'importe où pour continuer"
+  },
+  "calendar": {
+    "addToCalendar": "Ajouter au calendrier",
+    "downloading": "Téléchargement..."
+  }
+}

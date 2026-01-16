@@ -30,13 +30,9 @@ export function CheckoutTemplate({
 }: CheckoutTemplateProps) {
   const t = useTranslations();
   const [step, setStep] = React.useState(initialStep);
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
   const stepActive = "bg-primary border-primary text-primary-fg"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
   const stepDone = "bg-primary/80 border-primary/80 text-primary-fg"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
   const stepTodo = "bg-muted text-muted-foreground"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
   const circleBase = "mb-1 h-8 w-8 justify-center rounded-full border"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
   const primaryToken = "--color-primary"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: DS token literal
   const mutedToken = "--color-muted"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: DS token literal

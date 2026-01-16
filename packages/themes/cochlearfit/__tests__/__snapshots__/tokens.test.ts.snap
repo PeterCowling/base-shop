@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cochlearfit theme tokens tokens snapshot 1`] = `
+{
+  "--color-accent": "9 62% 48%",
+  "--color-accent-fg": "0 0% 100%",
+  "--color-accent-soft": "9 62% 95%",
+  "--color-berry": "351 54% 60%",
+  "--color-bg": "42 45% 94%",
+  "--color-danger": "0 72% 51%",
+  "--color-danger-fg": "0 0% 100%",
+  "--color-fg": "33 15% 12%",
+  "--color-fg-muted": "33 11% 33%",
+  "--color-info": "178 51% 29%",
+  "--color-muted": "40 30% 90%",
+  "--color-ocean": "180 32% 46%",
+  "--color-primary": "9 75% 59%",
+  "--color-primary-active": "9 75% 45%",
+  "--color-primary-fg": "0 0% 100%",
+  "--color-primary-hover": "9 75% 52%",
+  "--color-primary-soft": "9 75% 95%",
+  "--color-sand": "38 52% 80%",
+  "--color-success": "142 76% 36%",
+  "--color-success-fg": "0 0% 100%",
+  "--color-warning": "45 93% 47%",
+  "--color-warning-fg": "0 0% 10%",
+  "--gradient-hero-from": "178 51% 29%",
+  "--gradient-hero-to": "9 75% 59%",
+  "--gradient-hero-via": "42 45% 94%",
+  "--ring": "9 75% 59%",
+  "--ring-offset": "42 45% 94%",
+  "--surface-1": "35 100% 98%",
+  "--surface-2": "0 0% 100%",
+  "--surface-3": "42 45% 92%",
+  "--surface-input": "0 0% 100%",
+}
+`;

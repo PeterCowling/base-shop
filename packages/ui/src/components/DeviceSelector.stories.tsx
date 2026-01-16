@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import DeviceSelector from './DeviceSelector';
 import { useState } from 'react';
-import { getLegacyPreset } from '../utils/devicePresets';
+import { getLegacyPreset } from '@ui/utils/devicePresets';
 
 function Harness() {
   const [deviceId, setDeviceId] = useState(getLegacyPreset('desktop').id);

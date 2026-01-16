@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "Antes da chegada",
+    "arrivalDay": "Dia de chegada",
+    "welcome": "Olá {{name}}, vamos nos preparar!",
+    "welcomeArrivalDay": "Bem-vindo {{name}}!",
+    "subtitle": "Complete algumas coisas rápidas antes de chegar.",
+    "arrivalDaySubtitle": "Você está quase aqui! Certifique-se de estar pronto para o check-in."
+  },
+  "checkIn": {
+    "label": "Check-in",
+    "daysLeft": "dias restantes",
+    "dayLeft": "dia restante",
+    "today": "Hoje!",
+    "qrAlt": "Código QR de check-in para {{code}}",
+    "qrError": "Não foi possível gerar o código QR",
+    "yourCode": "Seu código de check-in",
+    "codeCopied": "Código copiado!"
+  },
+  "readiness": {
+    "score": "pronto",
+    "of": "de",
+    "itemsComplete": "itens completos",
+    "status": {
+      "not-started": "Começando",
+      "in-progress": "Progredindo",
+      "almost-ready": "Quase pronto!",
+      "ready": "Tudo pronto!"
+    }
+  },
+  "checklist": {
+    "title": "Lista de preparação",
+    "completed": "Feito",
+    "routePlanned": {
+      "title": "Planeje sua rota"
+    },
+    "etaConfirmed": {
+      "title": "Confirme hora de chegada"
+    },
+    "cashPrepared": {
+      "title": "Prepare dinheiro",
+      "amount": "Taxa turística + depósito"
+    },
+    "rulesReviewed": {
+      "title": "Revise as regras"
+    },
+    "locationSaved": {
+      "title": "Salve a localização"
+    },
+    "etaMethod": {
+      "ferry": "De balsa",
+      "bus": "De ônibus",
+      "taxi": "De táxi",
+      "private": "Transfer privado",
+      "train": "De trem",
+      "other": "Outro"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "Tudo pronto!",
+      "description": "Você está preparado para sua estadia. Mal podemos esperar para vê-lo!",
+      "button": "Até breve!"
+    },
+    "routePlanned": {
+      "title": "Planeje sua rota",
+      "description": "Positano é difícil de alcançar. Deixe-nos ajudá-lo a encontrar o melhor caminho.",
+      "button": "Ver opções de rota"
+    },
+    "etaConfirmed": {
+      "title": "Quando você chega?",
+      "description": "Informe-nos seu horário de chegada previsto.",
+      "button": "Definir horário"
+    },
+    "cashPrepared": {
+      "title": "Prepare dinheiro",
+      "description": "Você precisará de dinheiro para a taxa turística e depósito.",
+      "descriptionWithAmount": "Traga aproximadamente €{{amount}} em dinheiro.",
+      "button": "Ver detalhes"
+    },
+    "rulesReviewed": {
+      "title": "Uma olhada nas regras",
+      "description": "2 minutos de leitura para uma estadia tranquila.",
+      "button": "Revisar regras"
+    },
+    "locationSaved": {
+      "title": "Salve nossa localização",
+      "description": "Salve o endereço do hostel no seu app de mapas.",
+      "button": "Obter direções"
+    },
+    "default": {
+      "title": "Prepare-se",
+      "description": "Complete alguns passos para sua estadia.",
+      "button": "Continuar"
+    }
+  },
+  "stay": {
+    "night": "noite",
+    "nights": "noites",
+    "location": "Hostel Brikette, Positano"
+  },
+  "eta": {
+    "title": "Quando você chega?",
+    "subtitle": "Selecione seu horário de chegada e como está vindo.",
+    "back": "Voltar",
+    "timeLabel": "Horário de chegada",
+    "methodLabel": "Meio de transporte",
+    "noteLabel": "Nota (opcional)",
+    "notePlaceholder": "Detalhes sobre sua chegada",
+    "lateArrival": {
+      "title": "Chegada tardia",
+      "message": "O check-in fecha às 22:00. Para chegadas tardias, enviaremos instruções especiais."
+    },
+    "confirm": "Confirmar horário de chegada",
+    "methods": {
+      "ferry": "Balsa",
+      "bus": "Ônibus",
+      "taxi": "Táxi",
+      "private": "Transfer privado",
+      "train": "Trem",
+      "other": "Outro"
+    }
+  },
+  "cash": {
+    "title": "Dinheiro para o check-in",
+    "subtitle": "Você precisará pagar isto em dinheiro ao chegar:",
+    "back": "Voltar",
+    "cashOnly": "Apenas pagamento em dinheiro",
+    "cityTax": {
+      "label": "Taxa turística",
+      "perNight": "por pessoa, por noite"
+    },
+    "deposit": {
+      "label": "Depósito do cartão",
+      "refundable": "Reembolsável no check-out"
+    },
+    "total": "Total a preparar",
+    "confirm": {
+      "cityTax": "Tenho dinheiro para a taxa turística",
+      "deposit": "Tenho dinheiro para o depósito"
+    },
+    "info": {
+      "message": "Estes valores são cobrados na recepção durante o check-in. Por favor, tenha o valor exato ou próximo pronto."
+    },
+    "cardNote": "Cartão aceito para outros serviços",
+    "done": "Estou pronto!",
+    "confirmPartial": "Salvar e continuar",
+    "arrivalReminder": {
+      "title": "Não esqueça o dinheiro!",
+      "message": "Traga aproximadamente €{{amount}} em dinheiro para taxa turística e depósito."
+    }
+  },
+  "rules": {
+    "title": "Regras da casa",
+    "subtitle": "Uma visão geral rápida para uma estadia agradável.",
+    "confirm": "Revisei as regras"
+  },
+  "location": {
+    "title": "Encontre-nos",
+    "subtitle": "Salve nosso endereço para nos encontrar facilmente.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, Itália",
+    "openMaps": "Abrir no Maps",
+    "copyAddress": "Copiar endereço",
+    "copied": "Endereço copiado!",
+    "confirm": "Salvei a localização"
+  },
+  "routes": {
+    "title": "Como chegar",
+    "subtitle": "Escolha seu ponto de partida para ver opções de rota.",
+    "viewRoute": "Ver rota",
+    "saveRoute": "Salvar rota",
+    "savedRoute": "Salvo!",
+    "routeSaved": "Rota salva!",
+    "recommended": "Recomendado",
+    "back": "Voltar",
+    "fromOrigin": "De {{origin}}",
+    "selectRoute": "Selecione uma rota",
+    "noRoutes": "Nenhuma rota encontrada",
+    "totalTime": "Tempo total",
+    "cost": "Custo aprox.",
+    "importantNotes": "Bom saber",
+    "journey": "Sua viagem",
+    "arrival": "Você chegou!",
+    "viewFullGuide": "Ver guia completo",
+    "categories": {
+      "airport": "Aeroportos",
+      "train-station": "Estações de trem",
+      "port": "Portos",
+      "city": "Cidades"
+    }
+  },
+  "arrival": {
+    "badge": "Dia de chegada",
+    "welcome": "Bem-vindo, {{name}}!",
+    "subtitle": "Mostre esta tela na recepção para fazer o check-in.",
+    "showAtReception": "Mostrar na recepção",
+    "generatingCode": "Gerando seu código de check-in...",
+    "codeUnavailable": "Código de check-in indisponível. Por favor, consulte a equipe.",
+    "cashReminder": "Não esqueça o dinheiro!",
+    "cashReady": "Dinheiro pronto",
+    "cashAmount": "Traga aproximadamente €{{amount}} em dinheiro",
+    "cityTaxLabel": "Taxa turística: €{{amount}}",
+    "depositLabel": "Depósito: €{{amount}}",
+    "idReminder": "Tenha documento pronto",
+    "idNote": "Passaporte ou RG para o check-in",
+    "findUs": "Encontre-nos",
+    "whatHappensNext": "O que acontece no check-in",
+    "step1": "Mostre seu código QR ou diga seu código",
+    "step2": "Pague taxa turística e depósito em dinheiro",
+    "step3": "Receba seu cartão e kit de boas-vindas",
+    "step4": "Explore e aproveite sua estadia!"
+  },
+  "staffLookup": {
+    "title": "Check-in de hóspede",
+    "code": "Código: {{code}}",
+    "back": "Voltar",
+    "loading": "Procurando hóspede...",
+    "guestName": "Hóspede",
+    "room": "Quarto",
+    "nights": "Estadia",
+    "dates": "Datas",
+    "eta": "Chegada esperada",
+    "payment": "Pagamento devido",
+    "tryAgain": "Por favor, tente novamente ou verifique o código.",
+    "errors": {
+      "codeNotFound": "Código não encontrado",
+      "codeExpired": "Código expirado",
+      "lookupFailed": "Não foi possível encontrar o hóspede"
+    }
+  },
+  "welcome": {
+    "title": "Bem-vindo, {{firstName}}!",
+    "subtitle": "Estamos felizes por você estar aqui.",
+    "tip1": "Seu quarto está pronto e esperando.",
+    "tip2": "Confira a página inicial para dicas e ferramentas.",
+    "tapToDismiss": "Toque em qualquer lugar para continuar"
+  },
+  "calendar": {
+    "addToCalendar": "Adicionar ao calendário",
+    "downloading": "Baixando..."
+  }
+}

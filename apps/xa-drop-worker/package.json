@@ -1,0 +1,12 @@
+{
+  "name": "@apps/xa-drop-worker",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev src/index.ts --local --port 8792",
+    "build": "wrangler build",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --config ../../jest.config.cjs"
+  }
+}
+

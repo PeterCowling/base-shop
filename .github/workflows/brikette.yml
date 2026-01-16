@@ -1,0 +1,80 @@
+name: Deploy Brikette
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/next-config/**'
+      - 'packages/ui/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - 'packages/platform-core/**'
+      - 'packages/platform-machine/**'
+      - 'packages/i18n/**'
+      - 'packages/themes/**'
+      - '.github/workflows/brikette.yml'
+  pull_request:
+    paths:
+      - 'apps/brikette/**'
+      - 'packages/next-config/**'
+      - 'packages/ui/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - 'packages/platform-core/**'
+      - 'packages/platform-machine/**'
+      - 'packages/i18n/**'
+      - 'packages/themes/**'
+      - '.github/workflows/brikette.yml'
+  workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/brikette"
+      build-cmd: pnpm --filter @apps/brikette... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/brikette && pnpm exec next-on-pages deploy --project-name brikette --branch staging
+      project-name: "brikette"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/brikette"
+      build-cmd: pnpm --filter @apps/brikette... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/brikette && pnpm exec next-on-pages deploy --project-name brikette --branch main
+      project-name: "brikette"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/brikette"
+      build-cmd: pnpm --filter @apps/brikette... build
+      artifact-path: ""
+      project-name: "brikette"
+      target-environment: staging
+    secrets: inherit

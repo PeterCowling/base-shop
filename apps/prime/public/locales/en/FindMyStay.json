@@ -1,0 +1,26 @@
+{
+  "title": "Find My Stay",
+  "subtitle": "Enter your booking details to access your guest portal.",
+  "fields": {
+    "bookingCode": "Booking Code",
+    "bookingCodePlaceholder": "e.g., BKG12345",
+    "bookingCodeHint": "Find this in your confirmation email",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "As shown on booking",
+    "lastNameHint": "The lead guest's last name"
+  },
+  "button": {
+    "submit": "Find my stay",
+    "loading": "Looking up..."
+  },
+  "errors": {
+    "fieldsRequired": "Please enter both your booking code and last name.",
+    "notFound": "We couldn't find a booking with those details. Please check and try again.",
+    "tooManyAttempts": "Too many attempts. Please wait a few minutes and try again.",
+    "networkError": "Unable to connect. Please check your internet and try again."
+  },
+  "help": {
+    "cantFind": "Can't find your booking code?",
+    "contactUs": "Contact reception for assistance."
+  }
+}

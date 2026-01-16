@@ -1,9 +1,9 @@
 Type: Guide
 Status: Active
 Domain: CMS
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# CMS Navigation Guide
+# CMS Navigation Guide (Agent Runbook)
 
 This document describes how to navigate the in-browser CMS and what each link in the sidebar does.
 
@@ -30,7 +30,7 @@ Links such as **New Product**, **Create new page** and **SEO** only appear after
 
 ## Switching Shops
 
-Use the shop selector in the top bar to change which shop you are editing. The selector fetches available shops from `/api/shops` and updates the current route accordingly. Once you select a shop, the menu updates to include actions specific to that shop.
+Use the shop selector in the top bar to change the active shop. The selector fetches available shops from `/api/shops` and updates the current route accordingly. Once a shop is selected, the menu updates to include actions specific to that shop.
 
 ## Admin‑only Routes
 
@@ -44,11 +44,11 @@ Attempting to access these pages without the proper role will redirect back to t
 
 ## Shop Configurator
 
-Admins can scaffold and launch a shop directly from the CMS at `/cms/configurator`. The configurator guides you through:
+Admins can scaffold and launch a shop directly from the CMS at `/cms/configurator`. The configurator guides the flow through:
 
 1. **Shop Details** – provide the shop ID, display name, logo URL, contact email and shop type.
 2. **Theme** – pick a base theme.
-3. **Tokens** – tweak design tokens to match your brand. See [advanced theming](./theming-advanced.md) for details.
+3. **Tokens** – tweak design tokens to match the brand. See [advanced theming](./theming-advanced.md) for details.
 4. **Options** – select a base template and plugins.
 5. **Navigation** – build the header navigation tree or start from presets.
 6. **Layout** – choose overall page layouts.
@@ -97,13 +97,12 @@ displays a failure toast.
 
 ## Configurator Resume & Page Drafts
 
-The shop configurator now resumes where you left off. If you log in via
-`/login?callbackUrl=/cms/configurator` or return to `/cms/configurator` later, the flow jumps
-to your last completed step so you can continue configuring the shop without
-starting over.
+The shop configurator now resumes where it left off. If login occurs via
+`/login?callbackUrl=/cms/configurator` or the flow returns to `/cms/configurator` later, the flow jumps
+to the last completed step so configuration continues without starting over.
 
 When building pages, the **Save** button stores the current state as a draft.
-Draft pages keep `status: "draft"` in the database via Prisma, with `pages.json` used only as a filesystem fallback, until you click **Publish**.
+Draft pages keep `status: "draft"` in the database via Prisma, with `pages.json` used only as a filesystem fallback, until **Publish** is clicked.
 Edit drafts at `/cms/shop/{shop}/pages/{slug}/builder` or start a new page at
 `/cms/shop/{shop}/pages/new/builder`. A list of pages (including drafts) is
 available via `GET /cms/api/pages/{shop}`.
@@ -144,7 +143,7 @@ Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
     - Permissions (Visibility, allowed roles — stub)
     - SEO Basics (Title, Description, Noindex)
     - Social Share (OG Title/Description/Image + preview)
-- Persistence: current implementation is local (stub). A “Save Draft” button emits a `pb:notify` event for future integration. To persist, wire these actions to your `/cms/api/pages/:shop` endpoints.
+- Persistence: current implementation is local (stub). A “Save Draft” button emits a `pb:notify` event for future integration. To persist, wire these actions to `/cms/api/pages/:shop` endpoints.
 
 ### Add blocks
 
@@ -185,7 +184,7 @@ based on available width.
 ### Publish changes
 
 1. Use **Save** to keep a draft version.
-2. Click **Publish** when you're ready for the page to go live at
+2. Click **Publish** when the page is ready to go live at
    `/shop/{shop}/{slug}`.
 
 ## Rental deposits

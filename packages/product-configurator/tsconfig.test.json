@@ -1,0 +1,9 @@
+// packages/product-configurator/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}
+

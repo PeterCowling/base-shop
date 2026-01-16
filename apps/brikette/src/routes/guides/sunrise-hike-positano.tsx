@@ -78,6 +78,10 @@ function SunriseHikeExtras({ context }: { context: GuideSeoTemplateContext }): J
   const sections = context.translateGuides(SECTIONS_KEY, { returnObjects: true }) as unknown;
   const resolvedIntro = resolveStructuredArray(intro, INTRO_KEY, englishGuidesTranslator);
   const resolvedSections = resolveStructuredArray(sections, SECTIONS_KEY, englishGuidesTranslator);
+  if (process.env["DEBUG_GUIDE_TRANSLATIONS"] === "1") {
+    // eslint-disable-next-line no-console -- Localised debug helper for coverage tests
+    console.log("[sunrise-hike] resolved structured", { resolvedIntro, resolvedSections });
+  }
   const hasStructured = resolvedIntro.length > 0 || resolvedSections.length > 0;
 
   const translator = useMemo<GenericContentTranslator>(() => {
@@ -169,9 +173,9 @@ export function SunriseHikeGallery({ translator }: { translator: GalleryTranslat
   const items = Array.isArray(itemsRaw) ? (itemsRaw as Array<{ alt?: string; caption?: string }>) : [];
 
   const sources = [
-    "/img/guides/sunrise-hike/01-qr.png",
     "/img/guides/sunrise-hike/02-house.jpg",
     "/img/guides/sunrise-hike/03-viewpoint.jpg",
+    "/img/guides/sunrise-hike/04-trail-switchbacks.jpg",
   ] as const;
 
   const galleryItems = sources

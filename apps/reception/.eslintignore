@@ -1,0 +1,2 @@
+# Ignore the massive generated types file
+src/types/reservation.ts

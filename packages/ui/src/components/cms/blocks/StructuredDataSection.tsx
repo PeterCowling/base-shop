@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- ABC-123: JSON-LD schema includes non-UI string literals (context/type identifiers) */
 
 import React from "react";
 

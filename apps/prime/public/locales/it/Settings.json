@@ -1,0 +1,28 @@
+{
+  "title": "Impostazioni",
+  "cache": {
+    "title": "Dati memorizzati",
+    "usage": "Spazio utilizzato",
+    "quota": "{{percent}}% dello spazio disponibile",
+    "description": "I dati memorizzati aiutano l'app a funzionare offline. Cancellarli potrebbe richiedere di riscaricare i contenuti.",
+    "clear": "Cancella dati memorizzati",
+    "clearing": "Cancellazione...",
+    "cleared": "Cancellato!",
+    "refresh": "Aggiorna"
+  },
+  "language": {
+    "title": "Lingua",
+    "select": "Seleziona lingua"
+  },
+  "notifications": {
+    "title": "Notifiche",
+    "push": "Notifiche push",
+    "email": "Notifiche email"
+  },
+  "about": {
+    "title": "Info",
+    "version": "Versione",
+    "terms": "Termini di servizio",
+    "privacy": "Informativa sulla privacy"
+  }
+}

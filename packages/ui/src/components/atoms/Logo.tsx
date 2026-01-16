@@ -1,3 +1,5 @@
+"use client";
+
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
 import useViewport from "../../hooks/useViewport";
@@ -103,11 +105,11 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const imageProps: LogoImageProps = {
       ...props,
       src: imageSrc,
-      width: typeof imageWidth === "number" ? imageWidth : undefined,
-      height: typeof imageHeight === "number" ? imageHeight : undefined,
-      sizes,
       className: cn(className),
       role: props.role ?? "img",
+      ...(typeof imageWidth === "number" ? { width: imageWidth } : {}),
+      ...(typeof imageHeight === "number" ? { height: imageHeight } : {}),
+      ...(sizes !== undefined ? { sizes } : {}),
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 

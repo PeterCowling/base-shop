@@ -1,4 +1,6 @@
 /* i18n-exempt file -- ABC-123 worker API error strings are not user-facing UI [ttl=2026-06-30] */
+import cochlearfitVariants from "../../../data/shops/cochlearfit/variants.json";
+
 export interface Env {
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
@@ -13,21 +15,12 @@ export interface Env {
 
 type CatalogVariant = {
   id: string;
+  productSlug: string;
   stripePriceId: string;
   price: number;
   currency: "USD";
   size: "kids" | "adult";
   color: "sand" | "ocean" | "berry";
-  productNameKey: string;
-  inStock: boolean;
-};
-
-type CatalogColor = {
-  key: "sand" | "ocean" | "berry";
-};
-
-type CatalogSize = {
-  key: "kids" | "adult";
 };
 
 type StripeSessionPayload = {
@@ -46,40 +39,24 @@ type StripeWebhookEvent = {
   data?: { object?: StripeSessionPayload };
 };
 
-const COLORS: CatalogColor[] = [
-  { key: "sand" },
-  { key: "ocean" },
-  { key: "berry" },
-];
+const isCatalogVariant = (value: unknown): value is CatalogVariant => {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
 
-const SIZES: CatalogSize[] = [
-  { key: "kids" },
-  { key: "adult" },
-];
+  if (typeof record.id !== "string" || record.id.length === 0) return false;
+  if (typeof record.productSlug !== "string" || record.productSlug.length === 0) return false;
+  if (typeof record.stripePriceId !== "string" || record.stripePriceId.length === 0) return false;
+  if (typeof record.price !== "number" || !Number.isFinite(record.price)) return false;
+  if (record.currency !== "USD") return false;
+  if (record.size !== "kids" && record.size !== "adult") return false;
+  if (record.color !== "sand" && record.color !== "ocean" && record.color !== "berry") return false;
 
-const buildVariants = (
-  prefix: string,
-  productNameKey: string,
-  priceBySize: Record<CatalogVariant["size"], number>
-): CatalogVariant[] => {
-  return SIZES.flatMap((size) =>
-    COLORS.map((color) => ({
-      id: `${prefix}-${size.key}-${color.key}`,
-      stripePriceId: `price_${prefix}_${size.key}_${color.key}`,
-      price: priceBySize[size.key],
-      currency: "USD",
-      size: size.key,
-      color: color.key,
-      productNameKey,
-      inStock: true,
-    }))
-  );
+  return true;
 };
 
-const catalog = [
-  ...buildVariants("classic", "product.classic.name", { kids: 3400, adult: 3800 }),
-  ...buildVariants("sport", "product.sport.name", { kids: 3600, adult: 4000 }),
-];
+const catalog = Array.isArray(cochlearfitVariants)
+  ? cochlearfitVariants.filter(isCatalogVariant)
+  : [];
 
 const catalogById = new Map(catalog.map((variant) => [variant.id, variant]));
 const catalogByPriceId = new Map(catalog.map((variant) => [variant.stripePriceId, variant]));
@@ -218,7 +195,7 @@ const buildStripeForm = (items: Array<{ variantId: string; quantity: number }>, 
 
 const createStripeSession = async (
   items: Array<{ variantId: string; quantity: number }>,
-  locale: "en" | "it",
+  locale: "en" | "it" | "es" | "de",
   env: Env
 ) => {
   const baseUrl = (env.SITE_URL || "").replace(/\/$/, "");
@@ -347,7 +324,8 @@ const handleCheckoutSession = async (request: Request, env: Env) => {
   const rawLocale = body && typeof (body as Record<string, unknown>).locale === "string"
     ? ((body as Record<string, unknown>).locale as string)
     : "en";
-  const locale = rawLocale === "it" ? "it" : "en";
+  const locale =
+    rawLocale === "it" || rawLocale === "es" || rawLocale === "de" ? rawLocale : "en";
 
   const session = await createStripeSession(items, locale, env);
 
@@ -379,7 +357,7 @@ const handleSessionStatus = async (request: Request, env: Env, sessionId: string
       if (!variant) return null;
       return {
         variantId: variant.id,
-        name: variant.productNameKey,
+        name: `product.${variant.productSlug}.name`,
         size: variant.size,
         color: variant.color,
         quantity: item.quantity ?? 1,

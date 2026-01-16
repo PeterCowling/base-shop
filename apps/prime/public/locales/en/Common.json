@@ -1,0 +1,46 @@
+{
+  "offline": {
+    "indicator": "You're offline",
+    "message": "Some features may be limited"
+  },
+  "update": {
+    "available": "Update available",
+    "message": "A new version is ready. Refresh to update.",
+    "refresh": "Refresh",
+    "later": "Later"
+  },
+  "loading": "Loading...",
+  "error": "Something went wrong",
+  "retry": "Try again",
+  "back": "Back",
+  "next": "Next",
+  "save": "Save",
+  "cancel": "Cancel",
+  "close": "Close",
+  "done": "Done",
+  "yes": "Yes",
+  "no": "No",
+  "placeholders": {
+    "comingSoon": "Coming soon.",
+    "returnHome": "Return home",
+    "titles": {
+      "adminUsers": "User Management",
+      "bagStorage": "Bag Storage",
+      "barMenu": "Bar Menu",
+      "bookingDetails": "Booking Details",
+      "breakfastMenu": "Breakfast Menu",
+      "chat": "Chat",
+      "chatActivities": "Activities",
+      "chatChannel": "Channel",
+      "complimentaryBreakfast": "Complimentary Breakfast",
+      "complimentaryEveningDrink": "Complimentary Evening Drink",
+      "digitalAssistant": "Digital Assistant",
+      "languageSelector": "Language",
+      "mainDoorAccess": "Main Door Access",
+      "manageActivities": "Manage Activities",
+      "ownerSetup": "Owner Setup",
+      "overnightIssues": "Overnight Issues",
+      "positanoGuide": "Positano Guide"
+    }
+  }
+}

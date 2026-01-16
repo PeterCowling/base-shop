@@ -14,7 +14,12 @@ import {
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
 import { captureException } from "@/utils/sentry.server";
-import type { Locale, ProductPublication, PublicationStatus } from "@acme/types";
+import type {
+  Locale,
+  MediaItem,
+  ProductPublication,
+  PublicationStatus,
+} from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
@@ -106,6 +111,9 @@ export async function createMinimalFirstProduct(
   });
 
   const repo = await readRepo<ProductPublication>(shop);
+  const mediaItems: MediaItem[] = parsed.media.filter(
+    (item): item is MediaItem => Boolean(item.url) && Boolean(item.type)
+  );
 
   const product: ProductPublication = {
     id: parsed.id,
@@ -114,7 +122,7 @@ export async function createMinimalFirstProduct(
     description: parsed.description as unknown as Record<Locale, string>,
     price: parsed.price,
     currency: settings.currency ?? "EUR",
-    media: parsed.media,
+    media: mediaItems,
     status: "active",
     shop,
     row_version: 1,
@@ -203,7 +211,9 @@ export async function updateProduct(
 
   const data: ProductForm = parsed.data;
   const { id, price, media: nextMedia } = data;
-  const mediaItems = nextMedia.filter((m) => Boolean(m.url) && Boolean(m.type));
+  const mediaItems: MediaItem[] = nextMedia.filter(
+    (item): item is MediaItem => Boolean(item.url) && Boolean(item.type)
+  );
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 

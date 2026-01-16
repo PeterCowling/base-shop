@@ -20,6 +20,12 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
   { key: "pathOfTheGodsBus", section: "experiences", tags: ["hiking", "bus", "amalfi"] },
   { key: "pathOfTheGodsNocelle", section: "experiences", tags: ["hiking", "nocelle", "positano"] },
   { key: "topOfTheMountainHike", section: "experiences", tags: ["hiking", "positano", "viewpoints"] },
+  {
+    key: "santaMariaDelCastelloHike",
+    section: "experiences",
+    tags: ["hiking", "positano", "viewpoints", "village"],
+    status: "published",
+  },
   { key: "sunriseHike", section: "experiences", tags: ["hiking", "viewpoints", "positano"] },
   { key: "parking", section: "help", tags: ["transport", "car", "positano"] },
   { key: "luggageStorage", section: "help", tags: ["porters", "logistics", "positano"] },

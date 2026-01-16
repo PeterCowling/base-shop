@@ -74,9 +74,10 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
       ) : null}
 
       {sections.map((section) => {
-        const isDuplicateOfGeneric = Array.isArray(context.sections)
-          ? context.sections.some((s) => s?.id === section.id)
-          : false;
+        const isDuplicateOfGeneric =
+          (context.renderGenericContent ?? true) &&
+          Array.isArray(context.sections) &&
+          context.sections.some((s) => s?.id === section.id);
         if (isDuplicateOfGeneric) return null;
 
         return (

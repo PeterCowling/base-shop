@@ -3,8 +3,8 @@
 /*  Shared constants for modal orchestration                                  */
 /* -------------------------------------------------------------------------- */
 
-import hotel from "@/config/hotel";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import hotel from "../../config/hotel";
+import { i18nConfig, type AppLanguage } from "../../i18n.config";
 
 export const BOOKING_CODE = "45111" as const;
 export const ENCODED_CONTACT_EMAIL = "aG9zdGVscG9zaXRhbm9AZ21haWwuY29t" as const;

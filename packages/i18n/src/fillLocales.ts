@@ -9,7 +9,7 @@ export function fillLocales(
   fallback: string
 ): Record<Locale, string> {
   return LOCALES.reduce<Record<Locale, string>>(
-    (acc, locale: Locale) => {
+    (acc: Record<Locale, string>, locale: Locale) => {
       acc[locale] = values?.[locale] ?? fallback;
       return acc;
     },

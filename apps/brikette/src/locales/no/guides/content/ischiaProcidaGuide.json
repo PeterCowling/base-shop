@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "ischia",
-      "title": "Ischia highlights",
+      "title": "Høydepunkter på Ischia",
       "body": [
         "Sug i termiske parker som Poseidon eller Negombo; Heldagspass varierer fra €35–€45.",
         "Bestig Aragonese Castle for utsikt over bukten og utforsk Sant'Angelos fotgjengerfelt."
@@ -18,7 +18,7 @@
     },
     {
       "id": "procida",
-      "title": "Procida highlights",
+      "title": "Høydepunkter på Procida",
       "body": [
         "Fotografer Marina Corricellas pastellhus fra Terra Murata og prøv lingue di bue bakverk.",
         "Lei en scooter eller e-sykkel for å nå bortgjemte strender som Chiaiolella."
@@ -26,7 +26,7 @@
     },
     {
       "id": "logistics",
-      "title": "Logistics & tickets",
+      "title": "Logistikk og billetter",
       "body": [
         "Ta tidlige ferger fra Napoli Beverello (en time til Ischia, 35 minutter til Procida). En kombinert dagstur er mulig, men best delt over to dager.",
         "Kjøp returbilletter på forhånd i sommerhelgene; siste båter tilbake til Napoli går rundt 21:30."
@@ -39,7 +39,7 @@
   ],
   "faqs": [
     {
-      "q": "Can I visit both islands in one day?",
+      "q": "Kan jeg besøke begge øyene på én dag?",
       "a": [
         "Det er mulig, men det hastet. Fokuser på én øy per dag eller bli over natten for å nyte solnedganger uten fergestress."
       ]

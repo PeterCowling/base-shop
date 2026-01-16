@@ -11,9 +11,9 @@
       "between": "hjem borte fra",
       "home": "hjemmet"
     },
-    "paragraph1": "Hostel Brikette er <strong>Positanos eneste hostell</strong> og tilbyr <strong>budsjettvennlig</strong> overnatting med høydepunktene på Amalfikysten rett utenfor døren.",
-    "paragraph2": "På kanten av klippene har vi <strong>fantastisk havutsikt</strong>, praktiske fasiliteter og døgnåpne lokale tips via vår <strong>digitale concierge</strong>—din guide til fergeruter, turstier, restauranter og mer.",
-    "paragraph3": "Enten du velger sovesal eller privat rom, er alt utformet for <strong>komfort</strong> og <strong>bekvemmelighet</strong>."
+    "paragraph1": "Hostel Brikette er Positanos eneste hostel - budsjettvennlig, vakkert beliggende og perfekt plassert for å utforske Amalfikysten.",
+    "paragraph2": "Vi kombinerer uforglemmelig havutsikt med den praktiske komforten du faktisk trenger, pluss lokale tips 24/7 via vår digitale concierge: fergetider, turråd, restauranttips...alt du trenger.",
+    "paragraph3": "Velg mellom sosiale sovesaler eller private rom—alle er designet for å være enkle, komfortable og lette å bo i."
   },
   "facilitiesModal": {
     "title": "Fasiliteter og bekvemmeligheter",
@@ -107,14 +107,31 @@
     "locationButton": "Plassering",
     "contactButton": "Kontakt oss",
     "helpButton": "Hjelp",
-    "reserveNow": "Bestill nå"
+    "reserveNow": "Bestill nå",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "Positanos eneste hostel – havutsikt, fellesområder og digital concierge.",
+    "primaryCta": "Sjekk tilgjengelighet",
+    "selectDatesCta": "Velg datoer",
+    "secondaryCta": "Se rom",
+    "trustItems": [
+      "100 m til SITA-busstoppet",
+      "Terrasse med havutsikt",
+      "Tips fra digital concierge"
+    ]
   },
   "quickLinksSection": {
     "location": "Plassering",
     "photosAndVideos": "Bilder og videoer",
     "facilitiesAndAmenities": "Fasiliteter og bekvemmeligheter",
     "barMenu": "Barmeny",
-    "breakfastMenu": "Frokostmeny"
+    "breakfastMenu": "Frokostmeny",
+    "rooms": "Rom",
+    "roomsHint": "Sovesaler og private rom",
+    "commonAreas": "Fellesområder",
+    "commonAreasHint": "Terrasse, bar og fellesområder",
+    "locationHint": "Busstopp og strandtips",
+    "guides": "Guider",
+    "guidesHint": "Lokale tips for reisen"
   },
   "destinationSlideshow": {
     "sectionTitle": "Vakre fellesområder",
@@ -135,5 +152,41 @@
         "alt": "Vid horisont over havet fra hostellets terrasse"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "Utsjekk må være etter innsjekk."
+  },
+  "whyStaySection": {
+    "title": "Hvorfor bo her",
+    "items": [
+      {
+        "title": "Digital concierge",
+        "text": "Raske tips om ferger, fotturer og restauranter."
+      },
+      {
+        "title": "Fellesområder med havutsikt",
+        "text": "Terrasse, bar og områder for å møte folk."
+      },
+      {
+        "title": "Budsjettvennlige opphold",
+        "text": "Komfortable sovesaler og private rom som holder kostnadene nede."
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "Beliggenhet og transport",
+    "subtitle": "Plassert over Positano med enkel tilgang til buss, strand og ferger.",
+    "nearbyBeach": "≈350 m til stranden",
+    "mapLabel": "Åpne i Maps",
+    "mapHint": "Trykk for å åpne en Google Maps‑pin og rute.",
+    "mapCta": "Vis kart"
+  },
+  "socialProof": {
+    "title": "Gjester elsker Brikette",
+    "subtitle": "Høye vurderinger og ferske anmeldelser fra reisende."
+  },
+  "faqSection": {
+    "title": "Raske svar",
+    "ctaLabel": "Besøk hjelpesenteret"
   }
 }

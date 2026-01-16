@@ -26,6 +26,8 @@ tester.run("no-hardcoded-copy", rule, {
     { code: '<button aria-description="Long description of control" />' },
     { code: "export const short='Short text';" },
     { code: "const Comp=()=> <span>{'Short text'}</span>" },
+    { code: '<div data-testid="editor-container-root" />' },
+    { code: "const s = 'flex items-center gap-2 rounded-lg';" },
     // directive prologues like "use client" should be ignored
     { code: "'use client';" },
     // module specifiers in import/export declarations should be ignored
@@ -42,7 +44,7 @@ tester.run("no-hardcoded-copy", rule, {
       errors: [{ messageId: "hardcodedCopy" }],
     },
     {
-      code: '<div data-testid="This long attribute should trigger" />',
+      code: "const Comp=()=> <p>This string is still user-facing copy</p>",
       errors: [{ messageId: "hardcodedCopy" }],
     },
   ],

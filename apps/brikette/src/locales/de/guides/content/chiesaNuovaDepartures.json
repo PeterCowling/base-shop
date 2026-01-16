@@ -10,16 +10,16 @@
     "caption": "Das Hostel Brikette liegt eine Kurve bergauf von der Haltestelle entfernt. Nehmen Sie sich ein paar Minuten Zeit, damit Sie sich in die Warteschlange einreihen können, bevor der Bus ankommt."
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "Auf dieser Seite",
+    "before": "Bevor du losgehst",
+    "steps": "Schritt für Schritt",
+    "knees": "Beine & Gepäck",
+    "faqs": "Häufige Fragen"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "Warum diese Route funktioniert",
       "body": [
         "Vom Eingang des Hostels bis zur Haltestelle an der Hauptstraße sind es 120 Meter (400 Fuß).",
         "Wenn Sie in Richtung Amalfi fahren, befindet sich die Haltestelle gegenüber der Bar Internazionale. Warteschlange auf der Straßenseite mit Meerblick.  Wenn Sie in Richtung Sorrent fahren, warten Sie direkt vor der Bar."
@@ -27,7 +27,7 @@
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "Tickets und Timing",
       "body": [
         "Kaufen Sie ein SITA-Ticket im Tabacchi oder in der Bar.  Versuchen Sie nicht, ohne Ticket in den Bus einzusteigen, da Sie im Bus selbst kein Ticket kaufen können.  Legen Sie Ihr Ticket beim Einsteigen dem Fahrer vor.  Wenn Sie den ersten Bus nehmen, kaufen Sie Ihr Ticket am Vortag und kommen Sie zur Rezeption, um den Check-in zu vereinbaren.",
         "Im Sommer sind die Busse oft voll. Planen Sie entsprechend, insbesondere in den geschäftigsten Zeiten."
@@ -42,16 +42,16 @@
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
   "kneesList": [],
   "kneesDockPrefix": "Beginnen Sie mit dem Gepäck am Fähranleger? Nutzen Sie unsere",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesDockLinkLabel": "Route fürs Gepäck vom Fähranleger",
   "kneesPorterPrefix": "Benötigen Sie Hilfe zu Preisauskünften oder Buchungen für den Gepäckträger? Überprüfen Sie die",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "Guide zum Gepäckträgerservice",
   "faqs": [
     {
-      "q": "How early should I reach the stop?",
+      "q": "Wie früh sollte ich an der Haltestelle sein?",
       "a": "Kommen Sie im Sommer mindestens 10 Minuten vor dem Bus Ihrer Wahl an, damit Sie sich in der Nähe der Schutzhütte anstellen und bequem einsteigen können."
     },
     {
-      "q": "Where can I buy or validate tickets?",
+      "q": "Wo kann ich Tickets kaufen oder entwerten?",
       "a": "Nutzen Sie für den Ticketverkauf die Tabacchi neben der Bar Internazionale. Validatoren sind an Bord; Schneiden oder scannen Sie Ihr Ticket, sobald Sie darauf treten."
     }
   ],

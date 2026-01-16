@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <rect width="1200" height="1200" fill="#0f172a"/>
+  <rect x="120" y="120" width="960" height="960" rx="40" fill="#111827" stroke="#334155" stroke-width="8"/>
+  <text x="600" y="610" font-family="ui-sans-serif, system-ui, -apple-system" font-size="84" text-anchor="middle" fill="#e2e8f0">XA</text>
+  <text x="600" y="700" font-family="ui-sans-serif, system-ui, -apple-system" font-size="28" text-anchor="middle" fill="#94a3b8">Demo image 2</text>
+</svg>
+

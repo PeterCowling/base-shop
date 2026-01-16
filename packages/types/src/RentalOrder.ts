@@ -41,6 +41,19 @@ export const rentalOrderSchema = z
     stripeChargeId: z.string().optional(),
     stripeBalanceTransactionId: z.string().optional(),
     stripeCustomerId: z.string().optional(),
+    /** Variant allocation details for inventory linkage */
+    lineItems: z
+      .array(
+        z
+          .object({
+            sku: z.string(),
+            productId: z.string().optional(),
+            variantAttributes: z.record(z.string()).default({}),
+            quantity: z.number().int().default(1),
+          })
+          .strict(),
+      )
+      .optional(),
   })
   .strict();
 

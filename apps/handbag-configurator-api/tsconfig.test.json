@@ -1,0 +1,12 @@
+// apps/handbag-configurator-api/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "noEmit": true,
+    "allowJs": true,
+    "rootDir": "."
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}
+

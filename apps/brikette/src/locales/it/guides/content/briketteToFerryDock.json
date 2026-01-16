@@ -8,7 +8,7 @@
     "Parti dall'Hostel Brikette con i bagagli? Prendi l'autobus Interno Positano in discesa e lascia che i facchini del molo spostino i bagagli pesanti in modo da raggiungere il traghetto senza lottare contro le scale di Positano."
   ],
   "beforeList": [
-    "Controlla l'orario attuale dell'Interno Positano: ecco il [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Controlla l'orario attuale dell'Interno Positano: ecco gli [orari e le tariffe aggiornati](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Ritira i biglietti Interno Positano presso i tabacchi accanto alla Chiesa Nuova prima di salire (o chiedi alla reception di confermare la disponibilità).",
     "Organizza l'aiuto del facchino se hai bagagli ingombranti: la reception può chiamare in anticipo oppure consultare la [guida al servizio di facchinaggio](guida:porterServices) per numeri e prezzi."
   ],
@@ -17,7 +17,7 @@
       "id": "hostel-to-stop",
       "title": "Ingresso dell'Ostello alla fermata Chiesa Nuova",
       "body": [
-        "Check out, quindi seguire la scalinata principale fino a Viale Pasitea e girare a sinistra (in discesa). Cammina per poco più di 100 metri (330 piedi) fino al tabacchi/edicola che hai utilizzato all'arrivo.",
+        "Fai il check-out, poi segui la scalinata principale fino a Viale Pasitea e gira a sinistra (in discesa). Cammina per poco più di 100 metri (330 piedi) fino al tabacchi/edicola che hai utilizzato all'arrivo.",
         "La fermata dell'autobus Interno Positano è subito accanto ai tabacchi. Tieni i biglietti pronti; se ne hai bisogno di più, comprali all'interno prima che arrivi l'autobus."
       ]
     },
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini fino al molo dei traghetti",
       "body": [
         "Scendi dall'autobus, incontra i facchini se li hai prenotati in anticipo e cammina dritto nella corsia pedonale che porta alla Spiaggia Grande.",
-        "Segui il lungomare in discesa per circa 7 minuti: usa [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) per rimanere sui tratti di rampa più scorrevoli.",
+        "Segui il lungomare in discesa per circa 7 minuti: usa [queste indicazioni](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) per rimanere sui tratti di rampa più scorrevoli.",
         "Al molo dei traghetti, effettua il check-in con il tuo operatore. I facchini consegnano i bagagli separatamente; tieni con te passaporti, farmaci e oggetti di valore."
       ]
     }
@@ -50,9 +50,9 @@
     "I facchini possono caricare le valigie su carrelli separati, così potrai gestire solo uno zaino sul lungomare."
   ],
   "kneesDockPrefix": "Hai bisogno della versione in salita al tuo ritorno? Leggi il nostro",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "guida all'arrivo a Chiesa Nuova",
   "kneesPorterPrefix": "Vuoi prezzi per il servizio di portineria e consigli per la prenotazione? Controlla il",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "guida al servizio facchini",
   "faqs": [
     {
       "q": "Dove posso acquistare i biglietti Interno Positano vicino all’ostello?",

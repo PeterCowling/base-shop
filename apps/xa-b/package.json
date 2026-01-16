@@ -1,0 +1,33 @@
+{
+  "name": "@apps/xa-b",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3013",
+    "build": "node ./scripts/build-xa.mjs",
+    "start": "next start -p 3013",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/config": "workspace:*",
+    "@acme/i18n": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
+    "@acme/shared-utils": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "@acme/template-app": "workspace:*",
+    "@acme/types": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@acme/zod-utils": "workspace:*",
+    "@themes/base": "workspace:*",
+    "idb": "^8.0.3",
+    "minisearch": "^7.2.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "next": "^15.3.6",
+    "typescript": "5.8.3"
+  }
+}

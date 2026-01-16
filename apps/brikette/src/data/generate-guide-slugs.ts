@@ -106,6 +106,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   salernoGatewayGuide: "salerno-amalfi-coast-gateway",
   salernoPositano: "salerno-to-positano",
   salernoVsNaplesArrivals: "salerno-vs-naples-arrivals",
+  santaMariaDelCastelloHike: "santa-maria-del-castello-hike",
   scenicWalksPositano: "scenic-walks-positano-environs",
   scooterRentalPositano: "scooter-rental-positano-guide",
   sevenDayNoCar: "7-day-amalfi-coast-itinerary-no-car",

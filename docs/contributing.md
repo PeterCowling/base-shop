@@ -1,33 +1,77 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Contributing
+# Contributing (Agent Runbook)
 
-Contributions are welcome! Please open an issue or pull request with improvements.
+Audience: agents only. Follow `AGENTS.md` and `docs/git-safety.md`.
+
+## Git Safety (Required)
+
+1. Never run destructive git commands (see prohibited list in `docs/git-safety.md`).
+2. Never work directly on `main` (use `work/*` branches).
+3. Commit and push regularly.
+4. Use PRs for all changes; keep PRs green and conflict-free before approval.
+
+Quick reference:
+
+```bash
+# Start work on a new feature
+git checkout -b work/2026-01-15-my-feature
+
+# Commit often
+git add -A && git commit -m "feat: add new feature"
+
+# Push to GitHub
+git push -u origin HEAD
+
+# Open a PR (GitHub UI or gh if available)
+# gh pr create --fill --base main --head <branch>
+```
 
 ## Formatting
 
-Use [pnpm](https://pnpm.io) for package management. The repository uses Prettier and ESLint with semicolons, double quotes, two-space indentation, an 80-character line width, and the Tailwind CSS plugin. Run [`pnpm lint`](../package.json#L24) to check formatting and lint rules, or [`pnpm format`](../package.json#L37) to automatically apply fixes.
+Use [pnpm](https://pnpm.io) for package management. The repository uses Prettier
+and ESLint with semicolons, double quotes, two-space indentation, an 80-character
+line width, and the Tailwind CSS plugin. Run `pnpm lint` to check formatting and
+lint rules, or `pnpm format` to auto-apply fixes.
 
 ## Commit Messages
 
-Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. Start messages with a type such as `feat:` or `fix:` and write in the present tense with a concise subject line under 72 characters.
+Follow [Conventional Commits](https://www.conventionalcommits.org/). Start
+messages with a type such as `feat:` or `fix:` and keep the subject line under
+72 characters.
 
-## Branching
+## Branching and PRs
 
-Create branches from `main` and name them descriptively (e.g., `feat/login-form` or `fix/cart-redirect`). Push your branch and open a pull request against `main`.
+Branch naming convention:
 
-## Linting and Tests
+```
+work/YYYY-MM-DD-brief-description
+```
 
-Before submitting changes, run [`pnpm lint`](../package.json#L24). For tests, avoid monorepo‑wide runs unless necessary; scope tests to the package or files you touched to keep feedback fast.
+Examples:
+- `work/2026-01-15-add-login-form`
+- `work/2026-01-15-fix-cart-redirect`
+
+Push the branch and open a PR against `main`.
+Resolve merge conflicts and fix GitHub Actions failures before requesting approval.
+
+Protected branches:
+- `main` requires PR + approval; CI must pass
+- Direct pushes and force pushes are blocked
+
+## Tests (Scoped)
+
+Avoid monorepo-wide runs unless explicitly requested. Scope tests to the package
+or files touched.
 
 - Single package: `pnpm --filter <workspace> test`
 - Single file/pattern (Jest): `pnpm --filter <workspace> test -- --testPathPattern <pattern>`
 - Cypress subsets: use `pnpm e2e:dashboard` or targeted scripts in `docs/cypress.md`
 
-### Exceptions and disable policy
+## Exceptions and disable policy
 
 When disabling a rule, include a ticket ID after `--` and, optionally, a TTL:
 
@@ -37,16 +81,11 @@ When disabling a rule, include a ticket ID after `--` and, optionally, a TTL:
 
 See `docs/linting.md` for the exceptions registry and CI validation flow.
 
-## Testing
-
-- Policy: Do not run package/app‑wide tests across the whole workspace unless explicitly requested (they’re time‑consuming).
-- See [testing](../__tests__/docs/testing.md) for guidance on running tests with Prisma (stubbed vs. real DB), and [coverage](./coverage.md) for when you need instrumentation.
-
 ## Prisma model access
 
-Avoid adding `[key: string]: unknown` (or any permissive string index
-signature) to `PrismaClient`. When a model name must be chosen dynamically,
-use a typed helper to keep type safety:
+Avoid adding `[key: string]: unknown` (or any permissive string index signature)
+to `PrismaClient`. When a model name must be chosen dynamically, use a typed
+helper to keep type safety:
 
 ```ts
 function getModelDelegate<K extends keyof PrismaClient>(
@@ -57,9 +96,6 @@ function getModelDelegate<K extends keyof PrismaClient>(
 }
 ```
 
-This approach prevents the accidental introduction of an `any`-typed index
-signature on the Prisma client.
-
 ## API documentation
 
 Generate API reference docs for all public packages by running:
@@ -69,3 +105,11 @@ pnpm doc:api
 ```
 
 The output is written to `docs/api/`.
+
+## Related Documentation
+
+- `docs/git-safety.md` - Git safety rules
+- `AGENTS.md` - Agent runbook
+- `docs/git-hooks.md` - Local hook configuration
+- `docs/linting.md` - ESLint rules and exceptions
+- `__tests__/docs/testing.md` - Test guidelines

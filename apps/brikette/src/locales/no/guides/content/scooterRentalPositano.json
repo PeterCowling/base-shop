@@ -10,21 +10,21 @@
   "sections": [
     {
       "id": "where",
-      "title": "Where to rent",
+      "title": "Hvor du kan leie",
       "body": [
         "Tilgjengeligheten i Positano svinger og prisene er høye; Sorrento tilbyr vanligvis flere valgmuligheter og jevnere priser."
       ]
     },
     {
       "id": "rules",
-      "title": "Rules & documents",
+      "title": "Regler og dokumenter",
       "body": [
         "Ta med lisens (pluss en IDP der det er nødvendig) og et kredittkort, og dobbeltsjekk hva forsikringen faktisk dekker."
       ]
     },
     {
       "id": "safety",
-      "title": "Safety & when to avoid",
+      "title": "Sikkerhet og når du bør la være",
       "body": [
         "Kystveiene er smale med blinde svinger og busser; hvis du er uerfaren, er ferger og busser det tryggeste alternativet."
       ]
@@ -32,7 +32,7 @@
   ],
   "faqs": [
     {
-      "q": "Should beginners rent a scooter here?",
+      "q": "Bør nybegynnere leie scooter her?",
       "a": [
         "Egentlig ikke - uten solide scooterferdigheter er disse klippeveiene stressende, så hold deg til offentlig transport."
       ]

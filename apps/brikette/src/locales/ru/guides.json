@@ -5,13 +5,18 @@
     "popularGuides": "Популярные руководства",
     "helpfulGuides": "Полезные руководства",
     "alsoSee": "Смотрите также",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Смотреть все гиды"
   },
   "meta": {
     "index": {
       "title": "Путеводители по Позитано",
       "description": "Практические пошаговые руководства по перемещению по Позитано и Амальфитанскому побережью."
     }
+  },
+  "redirectPage": {
+    "title": "Перенаправление…",
+    "message": "Если перенаправление не произошло, <link>перейдите по этой ссылке</link>."
   },
   "content": {
     "onlyHostel": {

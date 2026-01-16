@@ -10,21 +10,21 @@
   "sections": [
     {
       "id": "wifi",
-      "title": "Wi‑Fi & backups",
+      "title": "Wi‑Fi og backup",
       "body": [
         "Bruk eSIM-sikkerhetskopier; test hastigheter; unngå kritiske anløp under lossetider for ferge på hovedfeltene."
       ]
     },
     {
       "id": "cafes",
-      "title": "Work‑friendly cafés",
+      "title": "Arbeidsvennlige kafeer",
       "body": [
-        "Se guiden vår for Wi-Fi og arbeidsvennlige kafeer; tanker og kjøp regelmessig."
+        "Se guiden vår for Wi‑Fi og arbeidsvennlige kafeer; bestill og kjøp regelmessig."
       ]
     },
     {
       "id": "routines",
-      "title": "Routines that work",
+      "title": "Rutiner som fungerer",
       "body": [
         "Arbeid blokkerer tidlig og sent; utforske midt på dagen når folkemengdene topper seg eller etter solnedgang."
       ]
@@ -32,7 +32,7 @@
   ],
   "faqs": [
     {
-      "q": "Is remote work viable here?",
+      "q": "Er fjernarbeid realistisk her?",
       "a": [
         "Ja med planlegging — hold deg i nærheten av Chiesa Nuova, bruk sikkerhetskopier og hold fleksible åpningstider."
       ]

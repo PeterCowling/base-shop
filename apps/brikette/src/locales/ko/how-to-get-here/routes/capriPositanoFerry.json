@@ -26,8 +26,8 @@
         "카프리 관광 항구로 이동해 해당 운항사의 티켓 부스에서 표를 구매하세요.",
         "바우처를 교환하고 승선 대기 줄에 설 수 있도록 출발 20~30분 전에 도착하세요."
       ],
-      "link": "페리 시간표를 비교하고 예매하세요: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (통합 시간표)</positanoLink>.",
-      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "link": "페리 시간표를 비교하고 예매하세요: <capriLink>Capri.net – 카프리 ↔ 포지타노</capriLink> · <positanoLink>Positano.com (통합 시간표)</positanoLink>.",
+      "linkLabelCapri": "Capri.net – 카프리 ↔ 포지타노",
       "linkLabelPositano": "Positano.com (통합 시간표)"
     },
     "arrival": {

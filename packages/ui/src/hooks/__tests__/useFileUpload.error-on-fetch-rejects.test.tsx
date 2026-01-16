@@ -11,7 +11,7 @@ function createShadcnStub() {
   return { Button };
 }
 
-jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("@ui/components/atoms/shadcn", createShadcnStub);
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),

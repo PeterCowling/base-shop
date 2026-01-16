@@ -5,21 +5,28 @@ import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { useModal } from "@/context/ModalContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { useTheme } from "@/hooks/useTheme";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { useModal } from "@ui/context/ModalContext";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { useTheme } from "@ui/hooks/useTheme";
+import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
+import { resolvePrimaryCtaLabel } from "../shared";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
+const FALLBACK_PRIMARY_CTA_LABEL =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback copy until tokens are wired. */
+  "Check availability";
+const FALLBACK_TOGGLE_LABEL =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback aria label. */
+  "Toggle menu";
 
 interface Props {
   menuOpen: boolean;
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
+  bannerHeight?: number;
 }
 
-function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.Element {
+function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n: i18nextInstance } = useTranslation();
   const i18nLanguage = i18nextInstance?.language;
@@ -38,33 +45,21 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.El
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const openBooking = useCallback(() => openModal("booking"), [openModal]);
   const ctaClass = useMemo(() => (theme === "dark" ? "cta-dark" : "cta-light"), [theme]);
-  const reserveLabel = useMemo(() => {
+  const primaryCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
-      return "Reserve Now";
+      return FALLBACK_PRIMARY_CTA_LABEL;
     }
-    return (
-      resolveBookingCtaLabel(tTokens, {
-        fallback: () => {
-          const label = t("reserveNow") as string;
-          if (label && label.trim() && label !== "reserveNow") {
-            return label;
-          }
-          const fallback = t("reserveNow", { lng: i18nConfig.fallbackLng }) as string;
-          if (fallback && fallback.trim() && fallback !== "reserveNow") {
-            return fallback;
-          }
-          return "Reserve Now";
-        },
-      }) ?? "Reserve Now"
-    );
-  }, [t, tTokens, ready, tokensReady]);
+    return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;
+  }, [tTokens, ready, tokensReady]);
 
   return (
     <nav
       data-testid="mobile-nav"
-      className="fixed inset-x-0 top-0 z-50 bg-header-gradient px-4 py-3 shadow lg:hidden"
+      className="fixed inset-x-0 z-50 h-16 bg-header-gradient px-3 py-3 shadow lg:hidden sm:px-4"
+      // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 banner offset is runtime-calculated.
+      style={{ top: bannerHeight }}
     >
-      <div className="grid grid-cols-3 items-center gap-2">
+      <div className="flex h-full w-full items-center gap-2">
         {/* Logo → home */}
         <Link
           to={`/${lang}`}
@@ -87,13 +82,15 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.El
         </Link>
 
         {/* Reserve CTA */}
-        <button
-          type="button"
-          onClick={openBooking}
-          className={`min-h-10 min-w-10 px-4 py-2 text-sm font-semibold ${ctaClass}`}
-        >
-          {reserveLabel}
-        </button>
+        <div className="flex flex-1 justify-center">
+          <button
+            type="button"
+            onClick={openBooking}
+            className={`min-h-10 min-w-10 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
+          >
+            {primaryCtaLabel}
+          </button>
+        </div>
 
         {/* Burger / X toggler */}
         <button
@@ -103,7 +100,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang }: Props): JSX.El
             if (toggle && toggle !== "toggleMenu") return toggle;
             const menu = t("siteMenu") as string;
             if (menu && menu !== "siteMenu") return menu;
-            return "Toggle menu";
+            return FALLBACK_TOGGLE_LABEL;
           })()}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"

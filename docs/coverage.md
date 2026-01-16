@@ -2,6 +2,8 @@ Type: Guide
 Status: Active
 Domain: Testing
 Last-reviewed: 2025-12-02
+Last-updated: 2026-01-15
+Last-updated-by: Claude Opus 4.5
 
 # Test Coverage — Jest, Cypress CT, Cypress E2E
 
@@ -10,6 +12,56 @@ This repo generates a single, unified coverage report that combines:
 - Jest unit/integration coverage (Node + JSDOM)
 - Cypress Component Testing coverage (Vite + React)
 - Cypress E2E coverage for both client and server routes
+
+## Coverage Targets
+
+All packages must meet minimum coverage thresholds enforced by Jest. These thresholds are configured in `jest.coverage.cjs` and package-specific `jest.config.cjs` files.
+
+### Global Defaults
+
+| Metric     | Target |
+|------------|--------|
+| Lines      | 80%    |
+| Branches   | 80%    |
+| Functions  | 80%    |
+
+### Package-Specific Thresholds
+
+| Package      | Lines | Branches | Functions | Notes                                    |
+|--------------|-------|----------|-----------|------------------------------------------|
+| `@acme/ui`   | 90%   | 85%      | 90%       | Stricter for shared design system        |
+
+### Exclusions
+
+The following are excluded from coverage metrics:
+- Test files (`__tests__/`, `*.test.ts`, `*.spec.ts`)
+- Type definitions (`*.d.ts`)
+- Storybook stories (`*.stories.ts`)
+- DevTools code
+- CMS/page-builder components (until migrated)
+- Data/constant files (icons, palettes, presets)
+
+### Relaxing Thresholds
+
+For targeted test runs where full coverage isn't expected:
+
+```bash
+# Disable thresholds for @acme/ui
+JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter @acme/ui test
+
+# Allow partial coverage globally
+JEST_ALLOW_PARTIAL_COVERAGE=1 pnpm test
+```
+
+### E2E Coverage Targets
+
+E2E tests focus on critical user paths rather than line coverage:
+
+| Area                | Target  | Notes                              |
+|---------------------|---------|-------------------------------------|
+| Critical user paths | 80%+    | Checkout, auth, core navigation     |
+| Accessibility       | WCAG AA | Automated axe testing on all pages  |
+| Performance         | FCP <1.5s, TTI <3.5s | Core Web Vitals budgets  |
 
 ## Outputs
 

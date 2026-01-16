@@ -50,15 +50,53 @@ on:
       - 'packages/design-tokens/**'
       - '.github/workflows/cms.yml'
   workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
-  deploy:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/cms"
       build-cmd: pnpm --filter @apps/cms... build
       artifact-path: ""
       deploy-cmd: >
-        cd apps/cms && pnpm exec next-on-pages deploy --project-name cms --branch ${{ github.ref_name }}
+        cd apps/cms && pnpm exec next-on-pages deploy --project-name cms --branch staging
       project-name: "cms"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/cms"
+      build-cmd: pnpm --filter @apps/cms... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/cms && pnpm exec next-on-pages deploy --project-name cms --branch main
+      project-name: "cms"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/cms"
+      build-cmd: pnpm --filter @apps/cms... build
+      artifact-path: ""
+      project-name: "cms"
+      target-environment: staging
     secrets: inherit

@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
+
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Cluster, Stack } from "@ui/components/atoms/primitives";
 import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
@@ -51,6 +53,7 @@ export default function StageBRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
 
   useEffect(() => {
@@ -145,7 +148,7 @@ export default function StageBRunCard({
   const inputDisabled = running || loading || cooldownActive;
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-b">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageB.label}
@@ -175,41 +178,53 @@ export default function StageBRunCard({
         notAvailable={strings.notAvailable}
       />
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageB}>
-        <StageBFormFields
-          form={form}
-          setForm={setForm}
-          disabled={inputDisabled}
-          strings={strings.stageB}
-          onEdit={() => setHasEdited(true)}
-        />
-        <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
-          {message ? (
-            <span
-              className={
-                message.tone === "success"
-                  ? ("text-xs text-emerald-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
-                  : ("text-xs text-red-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
-              }
-            >
-              {message.text}
-            </span>
-          ) : (
-            <span className="text-xs text-foreground/60">
-              {cooldownActive
-                ? strings.cooldown.activeMessage
-                : strings.stageB.inputHelp}
-            </span>
-          )}
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageB}>
+          <StageBFormFields
+            form={form}
+            setForm={setForm}
             disabled={inputDisabled}
-          >
-            {strings.stageB.runLabel}
-          </button>
-        </Cluster>
-      </form>
+            strings={strings.stageB}
+            onEdit={() => setHasEdited(true)}
+          />
+          <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
+            {message ? (
+              <span
+                className={
+                  message.tone === "success"
+                    ? ("text-xs text-emerald-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                    : ("text-xs text-red-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                }
+              >
+                {message.text}
+              </span>
+            ) : (
+              <span className="text-xs text-foreground/60">
+                {cooldownActive
+                  ? strings.cooldown.activeMessage
+                  : strings.stageB.inputHelp}
+              </span>
+            )}
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={inputDisabled}
+            >
+              {strings.stageB.runLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

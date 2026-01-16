@@ -4,7 +4,7 @@ import { readRepo as readProducts } from "@platform-core/repositories/products.s
 import { loadCoreEnv } from "@acme/config/env/core";
 import type { ProductPublication } from "@acme/types";
 import { nowIso } from "@date-utils";
-import { getConfig as getSanityConfig, type BlogPost } from "@acme/sanity";
+import { getConfig as getSanityConfig } from "@acme/sanity";
 import { listPosts } from "@platform-core/repositories/blog.server";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -60,11 +60,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (sanityCfg) {
       const posts = (await listPosts(sanityCfg)) ?? [];
       for (const post of posts) {
-        const slug = (post as BlogPost & { slug?: string }).slug as string;
+        const slug = post.slug;
         if (!slug) continue;
         entries.push({
           url: `${base}/${primary}/blog/${slug}`,
-          lastModified: (post as { publishedAt?: string }).publishedAt || now,
+          lastModified: post.publishedAt || now,
           alternates: buildAlternates(`/blog/${slug}`),
         });
       }

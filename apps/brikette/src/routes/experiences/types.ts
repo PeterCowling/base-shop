@@ -49,6 +49,7 @@ export type GuideCollectionCopy = {
   emptyMessage?: string;
   clearFilterLabel: string;
   cardCta: string;
+  directionsLabel?: string;
   filterHeading?: string;
   filterDescription?: string;
 };
@@ -94,7 +95,9 @@ export type ExperiencesPageViewModel = {
   guideCollectionCopy: GuideCollectionCopy;
   guideCollectionId: string;
   clearFilterHref: string;
+  filterParam: "topic" | "tag";
   filterTag: string | null;
+  filterTopic: string | null;
   faqTitle: string;
   faqEntries: NormalizedFaqEntry[];
   cta: CtaContent;

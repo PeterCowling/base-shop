@@ -5,7 +5,8 @@
     "popularGuides": "人気のガイド",
     "helpfulGuides": "役立つガイド",
     "alsoSee": "こちらもご覧ください",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "すべてのガイドを見る"
   },
   "meta": {
     "index": {
@@ -13,131 +14,135 @@
       "description": "ポジターノやアマルフィ海岸を効率よく回るための実用的なステップバイステップガイド。"
     }
   },
+  "redirectPage": {
+    "title": "リダイレクト中…",
+    "message": "自動で移動しない場合は、<link>こちらをクリック</link>してください。"
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "ポジターノ唯一のホステル",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "ポジターノ唯一のホステル",
+        "description": "絶景ビューとフレンドリーな雰囲気で、ポジターノの手頃なベッドを紹介します。"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "バックパッカー向け旅程",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "アマルフィ海岸のバックパッカー向け旅程",
+        "description": "車なしで2〜7日を回る、予算重視の実用ルート。"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "予算を抑えてポジターノへ",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "予算を抑えてポジターノへ",
+        "description": "バス・電車・フェリーで行く最安ルート。"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "フェリー時刻表",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "ポジターノのフェリー時刻表",
+        "description": "ポジターノ行きフェリー運航会社と季節ダイヤの最新情報。"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "ポジターノ発「神々の道」ハイク",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "「神々の道」を歩く",
+        "description": "ポジターノから Sentiero degli Dei を歩くドアツードアの手順。"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "アマルフィ経由（フェリー）で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "アマルフィ経由（フェリー）で「神々の道」",
+        "description": "フェリーでアマルフィへ、バスでボメラーノへ上り、復路案内付きで「神々の道」をハイク。"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "アマルフィ経由（バス）で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "アマルフィ経由（バス）で「神々の道」",
+        "description": "SITA Sud でボメラーノへ行き、ポジターノ方面へ戻るルートに沿って「神々の道」を歩きます。"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "ノチェッレ経由で「神々の道」",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "ノチェッレ経由で「神々の道」",
+        "description": "ノチェッレ発の短い往復ハイクで、Hostel Briketteへの戻り方も案内。"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "ポジターノ発のデイトリップ",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "ポジターノ発のデイトリップ",
+        "description": "アマルフィ、ラヴェッロ、カプリ、ポンペイのアイデアと時間・交通のコツ。"
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "アマルフィ海岸 公共交通ガイド",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "アマルフィ海岸 公共交通ガイド",
+        "description": "パス、時間帯、ルートを含むバスとフェリーの使い方。"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "初めてのポジターノ旅行のヒント",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "初めてのポジターノ旅行のヒント",
+        "description": "到着、荷物、支払い、通信など、初めての旅に役立つ実用アドバイス。"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "アマルフィ海岸の持ち物",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "アマルフィ海岸の持ち物",
+        "description": "ポジターノとアマルフィ海岸の季節別持ち物チェックリスト。"
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "ガイドのステータス: {{status}}（クリックで切り替え）"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "編集ワークフロー",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "下書き",
+        "review": "レビュー中",
+        "live": "公開中"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "下書きプレビュー",
+        "published": "公開済み",
+        "pending": "公開待ち",
+        "allComplete": "チェックリストがすべて完了",
+        "outstanding_one": "未完了が{{count}}件",
+        "outstanding_other": "未完了が{{count}}件"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "下書きパス",
+        "dashboardCta": "下書きダッシュボードを開く"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "公開先",
+        "primary": "主要"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "完了チェックリスト",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "不足",
+          "inProgress": "進行中",
+          "complete": "完了"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "アクセス方法",
+        "help": "ヘルプセンター",
+        "experience": "体験"
       }
     }
   }

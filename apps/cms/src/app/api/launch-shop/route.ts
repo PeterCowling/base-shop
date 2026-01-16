@@ -106,8 +106,12 @@ async function readPersistedConfiguratorState(
     const parsed = readConfiguratorProgress();
     const entry = parsed[userId];
     if (!entry || typeof entry !== "object") return null;
+    const stateObject =
+      entry.state && typeof entry.state === "object"
+        ? (entry.state as Record<string, unknown>)
+        : {};
     const safeState = configuratorStateSchema.safeParse({
-      ...(entry.state ?? {}),
+      ...stateObject,
       completed: entry.completed ?? {},
     });
     if (!safeState.success) return null;

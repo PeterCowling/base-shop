@@ -49,12 +49,22 @@
       "@acme/pipeline-engine/*": [
         "../../packages/pipeline-engine/src/*",
         "../../packages/pipeline-engine/dist/*"
+      ],
+      "@react-three/fiber": [
+        "src/types/three-stdlib.d.ts"
+      ],
+      "@react-three/drei": [
+        "src/types/three-stdlib.d.ts"
+      ],
+      "three": [
+        "src/types/three-stdlib.d.ts"
       ]
     },
     "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",
+    "src/types/three-stdlib.d.ts",
     "src/**/*",
     "src/app/**/*",
     "src/app/**/*.ts",

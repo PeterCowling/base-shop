@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Dev-only warning copy is not user-facing. */
 // src/context/HelpDrawerContext.tsx
 /* ────────────────────────────────────────────────────────────────
    Global drawer state (desktop + mobile nav share this)

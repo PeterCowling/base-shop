@@ -8,7 +8,7 @@
     "@acme/i18n": "workspace:*"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   },
   "type": "module",
   "files": [

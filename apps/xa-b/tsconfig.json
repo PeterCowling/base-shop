@@ -1,0 +1,72 @@
+{
+  "extends": "../../packages/config/tsconfig.nextjs-app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@ui": [
+        "../../packages/ui/dist",
+        "../../packages/ui/src"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@i18n": [
+        "../../packages/i18n/src/index.ts",
+        "../../packages/i18n/dist/index"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/src/*",
+        "../../packages/i18n/dist/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/src/index.ts",
+        "../../packages/i18n/dist/index"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/src/*",
+        "../../packages/i18n/dist/*"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "middleware.ts",
+    "src/**/*",
+    "src/**/*.json",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/i18n"
+    },
+    {
+      "path": "../../packages/platform-core"
+    }
+  ]
+}

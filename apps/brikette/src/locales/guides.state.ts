@@ -16,9 +16,7 @@ import type {
 
 import { assignNestedValue, finaliseSplitBundle, normalisePathSegments, readModule } from "./guides.util";
 import { loadGuidesModuleOverridesFromFs, loadGuidesModuleOverridesFromFsSync } from "./guides.fs";
-import { supportsWebpackGlob, type WebpackRequire, webpackContextToRecord } from "@/utils/webpackGlob";
-
-declare const require: WebpackRequire | undefined;
+import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "../utils/webpackGlob";
 
 // Avoid the unsafe `Function` type; we only need to check presence
 // of a callable webpack context at runtime.
@@ -36,9 +34,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.legacy ?? ({} as ModuleRecord<GuidesNamespace>)
     : (shouldUseRealModules
       ? (webpackContextToRecord<GuidesNamespace>(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\\.json$/)
         ) as ModuleRecord<GuidesNamespace>)
         : ({} as ModuleRecord<GuidesNamespace>));
 
@@ -46,9 +42,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.splitGlobal ?? ({} as ModuleRecord)
     : shouldUseRealModules
       ? webpackContextToRecord(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\/.*\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\/.*\\.json$/)
         )
       : ({} as ModuleRecord);
 
@@ -56,9 +50,7 @@ function buildGuidesState(overrides?: ModuleOverrides): GuidesState {
     ? overrides?.splitContent ?? ({} as ModuleRecord)
     : shouldUseRealModules
       ? webpackContextToRecord(
-          typeof require === "function" && typeof require.context === "function"
-            ? require.context("./", true, /guides\/content\/[^/]+\\.json$/)
-            : undefined
+          getWebpackContext("./", true, /guides\/content\/[^/]+\\.json$/)
         )
       : ({} as ModuleRecord);
 

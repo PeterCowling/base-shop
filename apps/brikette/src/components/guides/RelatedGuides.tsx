@@ -73,9 +73,11 @@ function RelatedGuides({
             typeof Guides.guideSlug === "function"
               ? Guides.guideSlug(lang, key)
               : key.replace(/([a-z\d])([A-Z])/g, "$1-$2").replace(/_/g, "-").toLowerCase();
-          // Prefer a local computation for href to avoid depending on external helpers
-          // in tests that partially mock the module without exporting guideHref.
-          const computedHref = `/${lang}/${getSlug("guides", lang)}/${computedSlug}`;
+          // Prefer canonical helper when available to respect namespace routing.
+          const computedHref =
+            typeof Guides.guideHref === "function"
+              ? Guides.guideHref(lang, key)
+              : `/${lang}/${getSlug("guides", lang)}/${computedSlug}`;
           return (
             <li key={computedSlug}>
               <Link

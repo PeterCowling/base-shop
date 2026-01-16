@@ -68,6 +68,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       props.value !== undefined
         ? String(props.value).length > 0
         : Boolean(props.defaultValue);
+    const required = props.required;
+    const formClassName = wrapperClassName;
 
     /* ------------------------------------------------------------------
      * Render
@@ -78,8 +80,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         label={!floatingLabel ? label : undefined}
         description={description}
         error={error}
-        required={props.required}
-        className={wrapperClassName}
+        {...(required !== undefined ? { required } : {})}
+        {...(formClassName !== undefined ? { className: formClassName } : {})}
         // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
         input={({ id: controlId, describedBy, ariaInvalid }) =>
           floatingLabel ? (

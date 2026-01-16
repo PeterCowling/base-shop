@@ -520,7 +520,7 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm HowTo schema reflects bus timings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add route imagery for bus stops." },
+      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -914,6 +914,31 @@ const manifestSeed: GuideManifestEntry[] = [
       showTagChips: true,
       showPlanChoice: true,
       preferManualWhenUnlocalized: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "santaMariaDelCastelloHike",
+    slug: "santa-maria-del-castello-hike",
+    contentKey: "santaMariaDelCastelloHike",
+    status: "live",
+    draftPathSegment: "guides/santa-maria-del-castello-hike",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "santaMariaDelCastelloHike", showToc: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({

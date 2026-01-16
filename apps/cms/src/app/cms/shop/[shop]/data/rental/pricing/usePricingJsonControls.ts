@@ -49,7 +49,7 @@ export function usePricingJsonControls({
 
   const applyJson = useCallback(() => {
     const parsed = parseDraft();
-    if (!parsed.success) {
+    if (parsed.success === false) {
       const message = parsed.errors.json ?? "JSON is invalid";
       setError(message);
       setStatus("error");
@@ -77,7 +77,7 @@ export function usePricingJsonControls({
       try {
         const text = await file.text();
         const parsed = parseJsonDraft(text);
-        if (!parsed.success) {
+        if (parsed.success === false) {
           throw new Error(parsed.errors.json ?? "JSON is invalid");
         }
 
@@ -102,7 +102,7 @@ export function usePricingJsonControls({
 
   const handleExport = useCallback(() => {
     const result = getFormPricing();
-    if (!result.success) {
+    if (result.success === false) {
       onValidationErrors(result.errors);
       setStatus("error");
       onToast("Fix validation errors before exporting.");

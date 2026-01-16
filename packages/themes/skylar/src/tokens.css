@@ -1,0 +1,134 @@
+/* Skylar theme tokens - Multi-locale luxury brand aesthetic */
+/* Primary: vermilion/burnt orange accent, gold accents */
+/* Supports locale-specific variants: en (cream/coral), zh (dark/gold), it (parchment/ink) */
+
+:root {
+  /* Base Skylar brand colors */
+  --color-primary: 11.7 85% 48%; /* vermilion accent #E43D12 */
+  --color-primary-fg: 0 0% 100%;
+  --color-secondary: 45 69% 63%; /* gold */
+  --color-secondary-fg: 0 0% 10%;
+
+  /* Skylar accent color (gold) */
+  --color-accent: 45 69% 63%; /* gold */
+  --color-accent-fg: 0 0% 10%;
+
+  /* Core surfaces - cream tones */
+  --color-bg: 40 33% 96%; /* skylar-cream #f8f4ed */
+  --color-fg: 0 0% 3%; /* near black #080808 */
+  --color-fg-muted: 0 0% 25%;
+  --color-muted: 40 20% 90%;
+
+  /* Skylar-specific palette */
+  --skylar-accent: 11.7 85% 48%;
+  --skylar-gold: #d5b169;
+  --skylar-cream: #f8f4ed;
+  --skylar-charcoal: #080808;
+  --skylar-charcoal-soft: #111;
+
+  /* EN locale palette */
+  --skylar-en-cream: #EBE9E1;
+  --skylar-en-panel: #fff8f0;
+  --skylar-en-accent: #E43D12;
+  --skylar-en-secondary: #D6536D;
+  --skylar-en-soft: #FFA2B6;
+  --skylar-en-gold: #EFB11D;
+  --skylar-en-ink: #9B2C0C;
+  --skylar-en-body: rgba(46, 36, 30, 0.92);
+  --skylar-en-dark: #181818;
+
+  /* IT locale palette */
+  --it-ink: #941F1E;
+  --it-secondary: #2F221E;
+  --it-ground: #F6F0E6;
+  --it-ground-soft: #FCF8F1;
+  --it-gold: #D8B072;
+  --it-sage: #5F6F52;
+  --it-parchment: #FFFDF7;
+
+  /* Surfaces */
+  --surface-1: 40 33% 99%;
+  --surface-2: 0 0% 100%;
+  --surface-3: 40 33% 94%;
+  --surface-input: 0 0% 100%;
+
+  /* Extended primary palette */
+  --color-primary-50: 11.7 85% 97%;
+  --color-primary-100: 11.7 85% 93%;
+  --color-primary-200: 11.7 85% 82%;
+  --color-primary-300: 11.7 85% 68%;
+  --color-primary-400: 11.7 85% 58%;
+  --color-primary-500: 11.7 85% 48%; /* main */
+  --color-primary-600: 11.7 85% 42%;
+  --color-primary-700: 11.7 85% 36%;
+  --color-primary-800: 11.7 85% 28%;
+  --color-primary-900: 11.7 85% 20%;
+
+  /* Extended gold/accent palette */
+  --color-accent-50: 45 69% 97%;
+  --color-accent-100: 45 69% 92%;
+  --color-accent-200: 45 69% 82%;
+  --color-accent-300: 45 69% 73%;
+  --color-accent-400: 45 69% 63%; /* main */
+  --color-accent-500: 45 60% 55%;
+  --color-accent-600: 45 55% 48%;
+  --color-accent-700: 45 50% 40%;
+  --color-accent-800: 45 45% 32%;
+  --color-accent-900: 45 40% 24%;
+
+  /* Focus ring uses primary */
+  --color-focus-ring: 11.7 85% 48%;
+  --ring: 11.7 85% 48%;
+  --ring-offset: 40 33% 96%;
+
+  /* Typography - Skylar uses serif display + sans body */
+  --font-body: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --font-heading-1: "Times New Roman", serif;
+  --font-heading-2: "Times New Roman", serif;
+
+  /* Shadows */
+  --skylar-shadow-soft: rgba(0, 0, 0, 0.06);
+  --skylar-shadow-strong: rgba(0, 0, 0, 0.18);
+  --it-shadow-soft: 0 40px 70px -50px rgba(52, 41, 33, 0.35);
+}
+
+/* Dark mode - zh-inspired dark luxury aesthetic */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: 0 0% 2%; /* near black */
+    --color-fg: 42 53% 81%; /* gold-tinted cream #f7dfb0 */
+    --color-fg-muted: 42 40% 60%;
+    --color-muted: 0 0% 15%;
+    --color-primary: 11.7 85% 55%; /* lighter vermilion for dark mode */
+    --color-primary-fg: 0 0% 5%;
+    --color-secondary: 42 53% 62%; /* gold */
+    --color-secondary-fg: 0 0% 5%;
+    --color-accent: 42 53% 62%;
+    --color-accent-fg: 0 0% 5%;
+    --surface-1: 0 0% 4%;
+    --surface-2: 0 0% 6%;
+    --surface-3: 0 0% 9%;
+    --surface-input: 0 0% 8%;
+    --ring: 42 53% 62%; /* gold ring in dark mode */
+    --ring-offset: 0 0% 2%;
+  }
+}
+
+html.theme-dark {
+  --color-bg: 0 0% 2%;
+  --color-fg: 42 53% 81%;
+  --color-fg-muted: 42 40% 60%;
+  --color-muted: 0 0% 15%;
+  --color-primary: 11.7 85% 55%;
+  --color-primary-fg: 0 0% 5%;
+  --color-secondary: 42 53% 62%;
+  --color-secondary-fg: 0 0% 5%;
+  --color-accent: 42 53% 62%;
+  --color-accent-fg: 0 0% 5%;
+  --surface-1: 0 0% 4%;
+  --surface-2: 0 0% 6%;
+  --surface-3: 0 0% 9%;
+  --surface-input: 0 0% 8%;
+  --ring: 42 53% 62%;
+  --ring-offset: 0 0% 2%;
+}

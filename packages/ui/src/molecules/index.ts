@@ -9,3 +9,5 @@ export * from "./IntroTextBox";
 export * from "./Highlights";
 export * from "./DealsBanner";
 export * from "./SlideItem";
+export * from "./SimpleModal";
+export * from "./StatusChip";

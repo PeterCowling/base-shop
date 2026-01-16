@@ -4,7 +4,7 @@ import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 export const handle = { tags: ["cuisine", "amalfi", "positano", "food"] } as const;
 
 export type ItemListEntry = { name: string; note?: string };
-export type GalleryTranslation = { alt?: string; caption?: string };
+export type GalleryTranslation = { alt?: string | undefined; caption?: string | undefined };
 export type FallbackTocItem = { href: string; label: string };
 export type FallbackSection = { id: string; title: string; body: string[] };
 

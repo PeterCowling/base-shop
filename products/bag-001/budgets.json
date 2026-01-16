@@ -1,0 +1,16 @@
+{
+  "version": "0.1.0",
+  "mobile": {
+    "maxTriangles": 80000,
+    "maxMaterials": 12,
+    "maxTextures": 24,
+    "maxDecodedTextureMemoryMB": 128
+  },
+  "desktop": {
+    "maxTriangles": 160000,
+    "maxMaterials": 20,
+    "maxTextures": 48,
+    "maxDecodedTextureMemoryMB": 256
+  }
+}
+

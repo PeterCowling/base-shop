@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- PB-0001: internal builder strings and utility classes */
 "use client";
 
 import type { PageComponent, HistoryState } from "@acme/types";

@@ -1,0 +1,166 @@
+{
+  "Import Design Token Colors": {
+    "prefix": "import-token-colors",
+    "body": [
+      "import { colors } from \"@acme/design-tokens/core/colors\";"
+    ],
+    "description": "Import design token colors"
+  },
+  "Import Layout Primitives": {
+    "prefix": "import-primitives",
+    "body": [
+      "import { Stack, Inline, Grid, Cluster } from '@acme/ui/atoms';"
+    ],
+    "description": "Import layout primitives"
+  },
+  "Chart Colors Constant": {
+    "prefix": "chart-colors",
+    "body": [
+      "const CHART_COLORS = {",
+      "  primary: colors.indigo[600],",
+      "  success: colors.emerald[500],",
+      "  warning: colors.orange[400],",
+      "  danger: colors.rose[600],",
+      "  info: colors.sky[500],",
+      "  neutral: colors.teal[600],",
+      "} as const;"
+    ],
+    "description": "Create chart colors constant from tokens"
+  },
+  "Stack Layout": {
+    "prefix": "stack",
+    "body": [
+      "<Stack gap={${1:4}}>",
+      "  ${2:// content}",
+      "</Stack>"
+    ],
+    "description": "Vertical stack layout"
+  },
+  "Inline Layout": {
+    "prefix": "inline",
+    "body": [
+      "<Inline gap={${1:2}} alignY=\"${2|center,start,end,baseline|}\">",
+      "  ${3:// content}",
+      "</Inline>"
+    ],
+    "description": "Horizontal inline layout"
+  },
+  "Grid Layout": {
+    "prefix": "grid",
+    "body": [
+      "<Grid cols={${1|2,3,4,6,12|}} gap={${2:4}}>",
+      "  ${3:// content}",
+      "</Grid>"
+    ],
+    "description": "Grid layout"
+  },
+  "Cluster Layout": {
+    "prefix": "cluster",
+    "body": [
+      "<Cluster justify=\"${1|start,center,end,between|}\" alignY=\"${2|center,start,end|}\" gap={${3:2}}>",
+      "  ${4:// content}",
+      "</Cluster>"
+    ],
+    "description": "Cluster layout with justify"
+  },
+  "Operations Micro Text": {
+    "prefix": "text-micro",
+    "body": [
+      "className=\"text-ops-micro $1\""
+    ],
+    "description": "10px micro text"
+  },
+  "Operations Tiny Text": {
+    "prefix": "text-tiny",
+    "body": [
+      "className=\"text-ops-tiny $1\""
+    ],
+    "description": "11px tiny text"
+  },
+  "Operations Compact Text": {
+    "prefix": "text-compact",
+    "body": [
+      "className=\"text-ops-compact $1\""
+    ],
+    "description": "13px compact text"
+  },
+  "Action Color - Primary": {
+    "prefix": "color-primary",
+    "body": [
+      "className=\"${1|text,bg,border|}-action-primary $2\""
+    ],
+    "description": "Indigo action color"
+  },
+  "Action Color - Success": {
+    "prefix": "color-success",
+    "body": [
+      "className=\"${1|text,bg,border|}-action-success $2\""
+    ],
+    "description": "Emerald success color"
+  },
+  "Action Color - Warning": {
+    "prefix": "color-warning",
+    "body": [
+      "className=\"${1|text,bg,border|}-action-warning $2\""
+    ],
+    "description": "Orange warning color"
+  },
+  "Action Color - Danger": {
+    "prefix": "color-danger",
+    "body": [
+      "className=\"${1|text,bg,border|}-action-danger $2\""
+    ],
+    "description": "Rose danger color"
+  },
+  "CSS Variable - Modal Size": {
+    "prefix": "modal-size",
+    "body": [
+      "className=\"${1|min-w,max-w,w|}-[var(--ops-modal-${2|sm,md,lg,xl|})] $3\""
+    ],
+    "description": "Modal width from token"
+  },
+  "CSS Variable - Panel Height": {
+    "prefix": "panel-height",
+    "body": [
+      "className=\"${1|min-h,max-h,h|}-[var(--ops-panel-${2|short,medium,tall|})] $3\""
+    ],
+    "description": "Panel height from token"
+  },
+  "Status Chip": {
+    "prefix": "status-chip",
+    "body": [
+      "<StatusChip variant=\"${1|success,warning,error,info,neutral,primary,secondary|}\" size=\"${2|sm,md|}\">",
+      "  ${3:label}",
+      "</StatusChip>"
+    ],
+    "description": "Status chip component"
+  },
+  "Table Header": {
+    "prefix": "table-header",
+    "body": [
+      "<TableHeader",
+      "  label=\"${1:Column Name}\"",
+      "  field=\"${2:fieldName}\"",
+      "  sortable",
+      "  currentSortField={sortField}",
+      "  sortAscending={ascending}",
+      "  onSort={handleSort}",
+      "/>"
+    ],
+    "description": "Sortable table header"
+  },
+  "Simple Modal": {
+    "prefix": "simple-modal",
+    "body": [
+      "<SimpleModal",
+      "  isOpen={${1:isOpen}}",
+      "  onClose={${2:onClose}}",
+      "  title=\"${3:Modal Title}\"",
+      "  maxWidth=\"max-w-[var(--ops-modal-${4|sm,md,lg,xl|})]\"",
+      ">",
+      "  ${5:// content}",
+      "</SimpleModal>"
+    ],
+    "description": "Simple modal component"
+  }
+}

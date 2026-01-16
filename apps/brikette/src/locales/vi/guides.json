@@ -5,13 +5,18 @@
     "popularGuides": "Hướng dẫn phổ biến",
     "helpfulGuides": "Hướng dẫn hữu ích",
     "alsoSee": "Xem thêm",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Xem tất cả hướng dẫn"
   },
   "meta": {
     "index": {
       "title": "Hướng dẫn du lịch Positano",
       "description": "Các hướng dẫn thực tế theo từng bước để di chuyển quanh Positano và Bờ biển Amalfi."
     }
+  },
+  "redirectPage": {
+    "title": "Đang chuyển hướng...",
+    "message": "Nếu bạn không được chuyển hướng, hãy <link>tiếp tục tại đây</link>."
   },
   "content": {
     "onlyHostel": {

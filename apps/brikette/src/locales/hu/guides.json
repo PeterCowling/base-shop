@@ -5,13 +5,18 @@
     "popularGuides": "Népszerű útmutatók",
     "helpfulGuides": "Hasznos útmutatók",
     "alsoSee": "Lásd még",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Összes útmutató"
   },
   "meta": {
     "index": {
       "title": "Positano utazási útmutatók",
       "description": "Gyakorlati, lépésről lépésre útmutatók Positano és az Amalfi-part bejárásához."
     }
+  },
+  "redirectPage": {
+    "title": "Átirányítás folyamatban...",
+    "message": "Ha nem történt átirányítás, <link>folytasd itt</link>."
   },
   "content": {
     "onlyHostel": {

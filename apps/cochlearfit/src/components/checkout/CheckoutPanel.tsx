@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
+import type { Product } from "@/types/product";
 import { useCart } from "@/contexts/cart/CartContext";
 import { getCartLineItems } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout";
@@ -9,14 +10,17 @@ import Price from "@/components/Price";
 import CheckoutButton from "@/components/checkout/CheckoutButton";
 import { useLocale } from "@/contexts/LocaleContext";
 
-const CheckoutPanel = React.memo(function CheckoutPanel() {
+const CheckoutPanel = React.memo(function CheckoutPanel({ products }: { products: Product[] }) {
   const t = useTranslations();
   const locale = useLocale();
   const { items, subtotal, currency } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const lineItems = useMemo(() => getCartLineItems(items), [items]);
+  const lineItems = useMemo(
+    () => getCartLineItems(items, products),
+    [items, products]
+  );
   const canCheckout = items.length > 0;
 
   const payload = useMemo(

@@ -1,0 +1,27 @@
+// File: /src/libs/reservation-grid/src/lib/constants/theme.ts
+
+import type { TTheme } from "../interfaces/theme.interface";
+
+/**
+ * THEME object can be further simplified if you don't need all these keys.
+ */
+const THEME: TTheme = {
+  "font.face": "sans-serif",
+  "font.size": "14px",
+  "color.text": "#30424F",
+  "color.background": "#FFFFFF",
+  "color.border": "#DDEBF3",
+  "color.today": "#E4FFE6",
+  "color.selected": "#FFF2F2",
+  "color.weekend": "#F8FAFB",
+  "width.title": "50%",
+  "width.info": "50%",
+  "date.status": {
+    free: "transparent",
+    disabled: "#759AB5",
+    awaiting: "#DDEBF3",
+    confirmed: "#006490",
+  },
+};
+
+export { THEME };

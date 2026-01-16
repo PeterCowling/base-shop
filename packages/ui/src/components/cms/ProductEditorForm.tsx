@@ -108,7 +108,6 @@ export default function ProductEditorForm({
   return (
     <>
       <Toast open={toast.open} message={toast.message} onClose={closeToast} />
-      {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: test IDs and tokens are not UI copy */}
       <form
         id={formId}
         data-cy="product-editor-form"
@@ -119,22 +118,18 @@ export default function ProductEditorForm({
       >
         
         <Input type="hidden" name="id" value={product.id} />
-        {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: delimiter and test id are not UI copy */}
         <Input
           type="hidden"
           name="publishShops"
           value={publishShops.join(",")}
           data-testid="publish-shops-input"
         />
-        {/* eslint-enable ds/no-hardcoded-copy */}
 
         {hasErrors && (
-          /* eslint-disable ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy */
           <div
             className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
             data-token="--color-danger"
           >
-            {/* eslint-enable ds/no-hardcoded-copy */}
             <p className="font-medium">{t("errors.foundIssues")}</p>
             <ul className="mt-2 space-y-1">
               {errorEntries.map(([field, messages]) => (

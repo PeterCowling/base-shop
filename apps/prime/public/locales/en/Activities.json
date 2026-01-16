@@ -1,0 +1,22 @@
+{
+  "title": "Activities",
+  "subtitle": "Join fellow travelers for adventures and social events",
+  "status": {
+    "live": "Live now",
+    "upcoming": "Coming up"
+  },
+  "sections": {
+    "happeningNow": "Happening Now",
+    "upcoming": "Coming Up"
+  },
+  "actions": {
+    "joinNow": "Join now",
+    "seeDetails": "See details",
+    "backHome": "← Back to home"
+  },
+  "empty": {
+    "title": "No activities yet",
+    "description": "Check back later for upcoming events, or explore Positano on your own!",
+    "exploreGuide": "Explore Positano Guide"
+  }
+}

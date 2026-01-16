@@ -7,6 +7,11 @@ import { RouteDataProvider } from "@/compat/router-state";
 import AppLayout from "@/components/layout/AppLayout";
 import RouteHead from "@/next/RouteHead";
 import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
+import {
+  resolveGuideLabelKeysForRouteFile,
+  resolveGuideSummaryKeysForRouteFile,
+  resolveNamespacesForRouteFile,
+} from "@/next/i18nNamespaceSelector";
 import HomeRoute, { clientLoader, links, meta } from "@/routes/home";
 
 type HomeLoaderData = Awaited<ReturnType<typeof clientLoader>>;
@@ -45,7 +50,13 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async ({ params }) 
 
   const headMeta = meta({ data: loaderData });
   const headLinks = links({ data: loaderData });
-  const i18nResources = collectI18nResources(lang as AppLanguage);
+  const namespaces = resolveNamespacesForRouteFile("routes/home.tsx");
+  const guideSummaryKeys = resolveGuideSummaryKeysForRouteFile("routes/home.tsx", lang as AppLanguage);
+  const guideLabelKeys = resolveGuideLabelKeysForRouteFile("routes/home.tsx", lang as AppLanguage);
+  const i18nResources = collectI18nResources(lang as AppLanguage, namespaces, {
+    guideSummaryKeys,
+    ...(guideLabelKeys !== undefined ? { guideLabelKeys } : {}),
+  });
 
   return {
     props: {

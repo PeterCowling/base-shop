@@ -7,6 +7,7 @@ import type { LinkDescriptor, MetaDescriptor } from "react-router";
 
 import { RouteDataProvider } from "./router-state";
 import type { ResolvedMatch } from "./route-runtime";
+import type { RouteModule } from "./route-module-types";
 import { routeModules } from "./route-modules";
 
 type HeadProps = {
@@ -32,9 +33,14 @@ const getRouteComponent = (file: string): React.ComponentType<Record<string, unk
     return Missing;
   }
 
-  const Component = dynamic(() => loader().then((mod) => mod.default ?? (() => null)), {
-    ssr: true,
-  });
+  const Component = dynamic(
+    () =>
+      loader().then((mod) => {
+        const routeModule = mod as RouteModule;
+        return routeModule.default ?? (() => null);
+      }),
+    { ssr: true },
+  );
   componentCache.set(file, Component);
   return Component;
 };
@@ -69,7 +75,10 @@ const renderLinks = (links: LinkDescriptor[]): React.ReactNode[] =>
   links.map((link, index) => {
     const { rel, href, hrefLang } = link;
     const key = `${rel ?? "link"}-${href ?? ""}-${hrefLang ?? ""}-${index}`;
-    const { key: _key, ...rest } = link as Record<string, string | undefined> & { key?: string };
+    const { key: _key, tagName: _tagName, ...rest } = link as Record<string, string | undefined> & {
+      key?: string;
+      tagName?: string;
+    };
     return <link key={key} {...rest} />;
   });
 

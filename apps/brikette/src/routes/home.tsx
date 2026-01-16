@@ -5,22 +5,25 @@
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { langFromRequest } from "@/utils/lang";
-import { Fragment, lazy, memo, Suspense, useCallback, useMemo, type ComponentType } from "react";
+import { Fragment, lazy, memo, Suspense, useCallback, useMemo, useRef, type ComponentType } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { Link, useLoaderData, useParams, type LoaderFunctionArgs } from "react-router-dom";
 import { type MetaFunction, type LinksFunction, type LinkDescriptor } from "react-router";
 import QuickLinksSection from "@acme/ui/organisms/QuickLinksSection"; // i18n-exempt -- I18N-1234 [ttl=2026-12-31]
-import { Section } from "@acme/ui/atoms/Section";
+import { Grid, Section } from "@acme/ui/atoms";
 import {
   loadCarouselSlides,
   loadDestinationSlideshow,
   loadIntroTextBox,
 } from "./home.module-specifiers";
-import StickyBookNow from "@acme/ui/organisms/StickyBookNow";
-import { useIsDesktop } from "@/hooks/useIsDesktop";
+import BookingWidget from "@/components/landing/BookingWidget";
 
-type LanguageAwareComponent = ComponentType<{ lang?: AppLanguage }>;
+type LanguageAwareComponent = ComponentType<{
+  lang?: AppLanguage;
+  showTitle?: boolean;
+  className?: string;
+}>;
 
 const IntroTextBox = lazy<LanguageAwareComponent>(loadIntroTextBox);
 const CarouselSlides = lazy(loadCarouselSlides);
@@ -30,7 +33,6 @@ import HeroSection from "@acme/ui/organisms/LandingHeroSection";
 import { links as heroLinks } from "@acme/ui/organisms/LandingHeroSection";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
-import RatingsBar from "@acme/ui/atoms/RatingsBar";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
 import { BASE_URL } from "@/config/site";
 import { i18nConfig } from "@/i18n.config";
@@ -44,8 +46,14 @@ import { guideSlug } from "@/routes.guides-helpers";
 import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
+import { getGuideLinkLabel, getRequiredString, getStringWithFallback } from "@/utils/translationFallbacks";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import WhyStaySection from "@/components/landing/WhyStaySection";
+import SocialProofSection from "@/components/landing/SocialProofSection";
+import LocationMiniBlock from "@/components/landing/LocationMiniBlock";
+import FaqStrip from "@/components/landing/FaqStrip";
+import { ArrowRight } from "lucide-react";
+import { Cluster } from "@/components/ui/flex";
 
 /*──────── helpers ──────────────────────────────────────────────*/
 // use shared helper for language parsing
@@ -54,9 +62,10 @@ import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 export async function clientLoader({ request }: LoaderFunctionArgs) {
   const lang = langFromRequest(request);
   const ns = "landingPage";
+  const requiredNamespaces = ["landingPage", "guides", "testimonials", "faq"] as const;
 
-  await preloadNamespacesWithFallback(lang, [ns]);
-  await preloadI18nNamespaces(lang, ["_tokens", "roomsPage", "ratingsBar", "modals", "guides"], { optional: true });
+  await preloadNamespacesWithFallback(lang, requiredNamespaces);
+  await preloadI18nNamespaces(lang, ["_tokens", "roomsPage", "ratingsBar", "modals"], { optional: true });
 
   // Ensure correct language during prerender and client
   await i18n.changeLanguage(lang);
@@ -88,25 +97,37 @@ export default memo(function Home() {
   const lang = (loaded?.lang as AppLanguage | undefined) ?? paramLang ?? (i18nConfig.fallbackLng as AppLanguage);
   const title = loaded?.title ?? "";
   const desc = loaded?.desc ?? "";
-  const { t } = useTranslation("landingPage", { lng: lang });
   const { t: tGuides } = useTranslation("guides", { lng: lang });
   const guidesEnT = useMemo<TFunction>(
     () => i18n.getFixedT("en", "guides") as TFunction,
     [],
   );
-  const isDesktop = useIsDesktop();
+  const popularGuidesLabel = useMemo(
+    () => getRequiredString(tGuides, guidesEnT, "labels.popularGuides"),
+    [tGuides, guidesEnT],
+  );
+  const viewAllGuidesLabel = useMemo(
+    () => getRequiredString(tGuides, guidesEnT, "labels.viewAll"),
+    [tGuides, guidesEnT],
+  );
+  const bookingSectionRef = useRef<HTMLElement | null>(null);
+  const checkInInputRef = useRef<HTMLInputElement | null>(null);
 
   /* modal helpers */
   const { openModal } = useOptionalModal();
-  const hostelAddress = t("heroSection.address");
-
-  const handleLocationClick = () => openModal("location", { hostelAddress });
-  const handleFacilitiesClick = () => openModal("facilities");
-
   const openModalForRate = useCallback(
     (room: Room, rateType: RateType) => openModal("booking", { room, rateType }),
     [openModal]
   );
+
+  const handleSelectDates = useCallback(() => {
+    bookingSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (typeof window !== "undefined") {
+      window.requestAnimationFrame(() => checkInInputRef.current?.focus());
+      return;
+    }
+    checkInInputRef.current?.focus();
+  }, []);
 
   // Head handled via meta()/links() exports; Hero preloads remain in links()
   // During tests, Router head placeholders are not mounted; emit a deterministic
@@ -150,73 +171,83 @@ export default memo(function Home() {
       <SiteSearchStructuredData lang={lang} />
 
       {/*──── page content ────*/}
-      <HeroSection lang={lang} />
+      <div>
+        <HeroSection lang={lang} onPrimaryCtaClick={handleSelectDates} />
+        <BookingWidget lang={lang} sectionRef={bookingSectionRef} checkInRef={checkInInputRef} />
 
-      <section className="intro-quicklinks">
-        <Suspense fallback={null}>
-          <IntroTextBox lang={lang} />
-        </Suspense>
-        <QuickLinksSection
-          lang={lang}
-          onLocationClick={handleLocationClick}
-          onFacilitiesClick={handleFacilitiesClick}
-        />
-      </section>
+        <section className="intro-quicklinks">
+          <QuickLinksSection lang={lang} />
+          <Suspense fallback={null}>
+            <IntroTextBox lang={lang} showTitle={false} className="py-10 sm:py-12" />
+          </Suspense>
+        </section>
 
-      {/* External ratings confidence bar */}
-      <RatingsBar lang={lang} />
+        <WhyStaySection lang={lang} />
+        <SocialProofSection lang={lang} />
 
-      <Suspense fallback={null}>
-        <CarouselSlides roomsData={roomsData} openModalForRate={openModalForRate} lang={lang} />
-      </Suspense>
+        <div id="rooms" className="scroll-mt-24">
+          <Suspense fallback={null}>
+            <CarouselSlides roomsData={roomsData} openModalForRate={openModalForRate} lang={lang} />
+          </Suspense>
+        </div>
 
-      <Suspense fallback={null}>
-        <DestinationSlideshow lang={lang} />
-      </Suspense>
+        <div id="common-areas" className="scroll-mt-24">
+          <Suspense fallback={null}>
+            <DestinationSlideshow lang={lang} />
+          </Suspense>
+        </div>
 
-      {/* Popular guides for internal linking */}
-      <Section padding="none" className="mx-auto max-w-5xl px-4 pb-12">
-        <h2 className="mb-3 text-xl font-semibold text-brand-heading dark:text-brand-surface">{tGuides("labels.popularGuides")}</h2>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
-          <li>
+        <LocationMiniBlock lang={lang} />
+
+        {/* Popular guides for internal linking */}
+        <Section padding="none" className="mx-auto max-w-5xl px-4 pb-12 scroll-mt-24" id="guides">
+          <Cluster className="items-end justify-between gap-3">
+            <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+              {popularGuidesLabel}
+            </h2>
             <Link
-              to={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "onlyHostel")}`}
+              to={`/${lang}/${getSlug("guides", lang)}`}
               prefetch="intent"
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
+              className="text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline"
             >
-              {getGuideLinkLabel(tGuides, guidesEnT, "onlyHostel")}
+              {viewAllGuidesLabel}
             </Link>
-          </li>
-          <li>
-            <Link
-              to={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "reachBudget")}`}
-              prefetch="intent"
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "reachBudget")}
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "pathOfTheGods")}`}
-              prefetch="intent"
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "pathOfTheGods")}
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "backpackerItineraries")}`}
-              prefetch="intent"
-              className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
-            >
-              {getGuideLinkLabel(tGuides, guidesEnT, "backpackerItineraries")}
-            </Link>
-          </li>
-        </ul>
-      </Section>
-      {isDesktop ? <StickyBookNow lang={lang} /> : null}
+          </Cluster>
+          <Grid as="ul" columns={{ base: 1, lg: 2 }} gap={3} className="mt-6">
+            {([
+              "onlyHostel",
+              "reachBudget",
+              "pathOfTheGods",
+              "backpackerItineraries",
+            ] as const).map((key) => {
+              const label = getGuideLinkLabel(tGuides, guidesEnT, key);
+              const description = getStringWithFallback(
+                tGuides,
+                guidesEnT,
+                `content.${key}.seo.description`
+              );
+              return (
+                <li key={key}>
+                  <Cluster
+                    as={Link}
+                    to={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, key)}`}
+                    prefetch="intent"
+                    className="group items-center justify-between gap-4 rounded-2xl border border-brand-outline/30 bg-brand-bg px-4 py-4 text-brand-primary transition hover:-translate-y-0.5 hover:shadow-md dark:bg-brand-text dark:text-brand-secondary flex-nowrap"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-base font-semibold text-brand-heading dark:text-brand-surface">{label}</p>
+                      <p className="mt-1 text-sm text-brand-text/70 dark:text-brand-surface/70">{description}</p>
+                    </div>
+                    <ArrowRight className="size-4 shrink-0 text-brand-bougainvillea transition-transform group-hover:translate-x-1" aria-hidden />
+                  </Cluster>
+                </li>
+              );
+            })}
+          </Grid>
+        </Section>
+
+        <FaqStrip lang={lang} />
+      </div>
     </Fragment>
   );
 });

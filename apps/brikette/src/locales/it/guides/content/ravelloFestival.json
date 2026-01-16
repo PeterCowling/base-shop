@@ -5,57 +5,57 @@
   },
   "linkLabel": "Guida al Ravello Music Festival",
   "intro": [
-    "Traduzione in arrivo."
+    "Il Ravello Festival unisce concerti orchestrali a viste sulla costa; pianifica in anticipo biglietti, dress code e rientro notturno a Positano."
   ],
   "sections": [
     {
       "id": "tickets",
-      "title": "Securing tickets",
+      "title": "Acquistare i biglietti",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prenota sul sito ufficiale del Ravello Festival appena escono le date, di solito in primavera; stampa o scarica il QR code prima di lasciare il Wi-Fi di Positano.",
+        "Scegli posti assegnati vicino ai corridoi se vuoi prendere il bus di mezzanotte per Amalfi."
       ]
     },
     {
       "id": "getting-there",
-      "title": "Getting there",
+      "title": "Come arrivare",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Prendi un traghetto o bus nel tardo pomeriggio per Amalfi (circa 30-45 minuti) e poi il bus SITA verso Ravello, calcolando 25 minuti di salita.",
+        "Se i bus sono pieni, prenota una navetta condivisa o un taxi da Amalfi: dividi i costi con altri viaggiatori per mantenere le tariffe ragionevoli."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Concert etiquette",
+      "title": "Galateo del concerto",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Un abbigliamento smart-casual e perfetto: strati leggeri per le terrazze ventilate e scarpe comode per i gradini in pietra.",
+        "Arriva almeno 30 minuti prima per i controlli, i bagni e per sistemarti senza fretta."
       ]
     },
     {
       "id": "late-return",
-      "title": "Late return logistics",
+      "title": "Rientro tardivo",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "L'ultimo bus SITA per scendere ad Amalfi e intorno alle 00:15 in alta stagione; verifica gli orari in giornata e fai la fila 20 minuti prima.",
+        "Se le coincidenze sono strette, organizza un taxi per Amalfi o direttamente per Positano (~120-140 EUR) e dividilo con il gruppo."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Metti in borsa una sciarpa leggera o una giacca packable: la sera si scende a 18 °C sulla terrazza anche in agosto.",
+    "Porta contanti per un espresso o uno snack rapido ad Amalfi mentre aspetti il bus notturno."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "I concerti vengono annullati con la pioggia?",
       "a": [
-        "Traduzione in arrivo."
+        "Piogge leggere di solito causano solo un breve ritardo, ma piogge forti possono spostare i concerti al chiuso o cancellarli: controlla email e canali social del festival."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso rientrare a Positano dopo mezzanotte?",
       "a": [
-        "Traduzione in arrivo."
+        "Si, ma le opzioni diminuiscono. Organizza un taxi condiviso o pernotta ad Amalfi/Ravello se gli orari non sono affidabili."
       ]
     }
   ],
@@ -63,8 +63,8 @@
     "name": "Ravello Festival",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
+    "locationName": "Location del Ravello Festival",
     "addressLocality": "Ravello",
-    "description": "Traduzione in arrivo."
+    "description": "Festival di musica classica estivo con vista sulla Costiera Amalfitana. Controlla il programma ufficiale per date e biglietti."
   }
 }

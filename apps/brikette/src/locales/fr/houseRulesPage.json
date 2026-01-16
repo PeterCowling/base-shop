@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Règlement intérieur | Hostel Brikette",
+    "description": "Règlement intérieur de Hostel Brikette couvrant conduite, visiteurs, heures calmes, sécurité, keycards et procédures sur place."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Règlement intérieur",
+    "pageSubtitle": "Règlement intérieur"
+  },
+  "toc": {
+    "title": "Sommaire",
+    "aria": "Table des matières"
+  },
+  "footer": {
+    "end": "Fin du document.",
+    "backToTop": "Retour en haut"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Conduite respectueuse et sécurité",
+      "body": [
+        "S'applique à : tous les Clients et Visiteurs présents dans l'établissement.",
+        "Ce Règlement intérieur fait partie de votre contrat d'hébergement. Les violations peuvent entraîner le départ des lieux et/ou une Résiliation pour manquement au titre des Conditions de réservation.",
+        "1.1 Traitez le personnel et les autres Clients avec respect. Le harcèlement, les menaces, la violence ou les comportements discriminatoires ne sont pas autorisés.",
+        "1.2 Suivez les consignes du personnel liées à la sécurité et aux opérations.",
+        "1.3 Ne pas endommager la propriété ni interférer avec les équipements de sécurité."
+      ]
+    },
+    "s2": {
+      "title": "2. Heures calmes et bruit",
+      "body": [
+        "2.1 Les heures calmes sont 23:45–08:00. Pendant ces heures : gardez le bruit au minimum dans les chambres et les Espaces communs ; pas de musique/haut‑parleurs forts ; passez vos appels en dehors des zones de sommeil.",
+        "2.2 Si vous dérangez régulièrement les autres, nous pouvons vous demander de quitter les lieux selon les Conditions de réservation."
+      ]
+    },
+    "s3": {
+      "title": "3. Visiteurs / Visiteurs temporaires (Espaces communs uniquement)",
+      "body": [
+        "3.1 Les Visiteurs sont autorisés uniquement à notre discrétion et uniquement dans les Espaces communs. Les Visiteurs ne sont pas autorisés dans les chambres/dortoirs.",
+        "3.2 Les horaires de Visiteurs (si autorisés) sont 10:30–23:00, sous réserve des besoins opérationnels.",
+        "3.3 Les Visiteurs doivent présenter une pièce d'identité originale et se conformer aux mesures de sécurité (y compris bracelets/bandes si utilisés).",
+        "3.4 Les Clients ne peuvent pas \"parrainer\" des Visiteurs dans les chambres. Tenter d'admettre des personnes non enregistrées dans les chambres constitue une violation grave."
+      ]
+    },
+    "s4": {
+      "title": "4. Personnes non enregistrées",
+      "body": [
+        "4.1 Seuls les Clients enregistrés peuvent passer la nuit.",
+        "4.2 Si une personne non enregistrée est trouvée dans une chambre ou séjournant la nuit : nous pouvons exiger un check‑in/inscription immédiat(e) (si possible) ou demander son départ, et nous pouvons facturer des frais comme décrit dans les Conditions de réservation (Dépôt de garantie et dommages/frais), sous réserve de la loi applicable."
+      ]
+    },
+    "s5": {
+      "title": "5. Check‑in et opérations d'arrivée",
+      "body": [
+        "5.1 La plage officielle de check‑in est 15:00–22:00.",
+        "5.2 Arrivées avant l'ouverture : si vous arrivez avant 10:30, il se peut que vous ne puissiez pas entrer.",
+        "5.3 Entre l'ouverture et l'heure de check‑in, nous pouvons (à notre discrétion) autoriser : l'attente dans des zones désignées, l'accès aux Espaces communs pour les Visiteurs temporaires et/ou la bagagerie selon des conditions séparées."
+      ]
+    },
+    "s6": {
+      "title": "6. Exigences d'identification (sur place)",
+      "body": [
+        "6.1 Clients et Visiteurs doivent présenter une pièce d'identité originale valide sur demande pour la sécurité et l'enregistrement.",
+        "6.2 Le refus de présenter une pièce d'identité peut entraîner une demande de départ."
+      ]
+    },
+    "s7": {
+      "title": "7. Keycards, bracelets/bandes de sécurité et contrôle d'accès",
+      "body": [
+        "7.1 Les keycards et/ou codes d'accès sont personnels. Ne les partagez pas.",
+        "7.2 Lorsque des bracelets de sécurité sont utilisés, vous devez les porter dans l'établissement et les présenter sur demande.",
+        "7.3 Les keycards ou bracelets perdus/endommagés doivent être signalés immédiatement. Les frais de remplacement (le cas échéant) sont affichés sur place et/ou indiqués dans les Conditions de réservation."
+      ]
+    },
+    "s8": {
+      "title": "8. Linge et dépôts",
+      "body": [
+        "8.1 Le linge est fourni par Client (comme indiqué au check‑in).",
+        "8.2 Si un dépôt est demandé (par ex. dépôt keycard/linge de €10), il sera remboursé selon la procédure de check‑out, sous réserve du retour des articles remis et des déductions autorisées par les Conditions de réservation."
+      ]
+    },
+    "s9": {
+      "title": "9. Étiquette en dortoir et choix de lit",
+      "body": [
+        "9.1 Les lits en dortoir sont choisis selon l'ordre d'arrivée sauf indication contraire.",
+        "9.2 Vous pouvez changer de lit disponible uniquement avec l'autorisation du personnel et sans déranger les autres Clients.",
+        "9.3 Gardez votre espace de couchage propre et ne stockez pas d'objets dans l'espace des autres."
+      ]
+    },
+    "s10": {
+      "title": "10. Politique d'alcool",
+      "body": [
+        "10.1 Si Hostel Brikette est un établissement licencié et que nous interdisons l'alcool extérieur : les Clients ne peuvent pas apporter d'alcool acheté à l'extérieur dans les locaux. Si de l'alcool extérieur est trouvé, le personnel peut exiger son retrait ou le conserver pour restitution au check‑out (lorsque permis).",
+        "10.2 Les violations répétées ou graves peuvent entraîner une Résiliation pour manquement au titre des Conditions de réservation et une expulsion de l'établissement."
+      ]
+    },
+    "s11": {
+      "title": "11. Articles illégaux ou dangereux",
+      "body": [
+        "11.1 Drogues illégales, armes et articles dangereux sont interdits.",
+        "11.2 Nous pouvons confisquer les articles interdits lorsque permis et/ou signaler aux autorités si requis."
+      ]
+    },
+    "s12": {
+      "title": "12. Punaises de lit (responsabilités du Client)",
+      "body": [
+        "12.1 Si vous suspectez des punaises de lit, signalez‑le immédiatement. Ne changez pas de chambre/lit ni ne transportez de linge/objets textiles dans l'établissement sans instruction du personnel.",
+        "12.2 Vous pouvez être tenu de suivre des mesures de confinement (mise en sac des effets, lavage) pour éviter la propagation.",
+        "12.3 Les frais de remédiation sont régis par les Conditions de réservation et seront basés sur des preuves et la loi applicable."
+      ]
+    },
+    "s13": {
+      "title": "13. Check‑out, late check‑out et effets personnels",
+      "body": [
+        "13.1 L'heure de check‑out est 07:30–10:30 sauf autorisation écrite pour un late check‑out.",
+        "13.2 Le late check‑out (si proposé) dépend de la disponibilité et d'une confirmation écrite, est valable jusqu'à 12:00 et coûte EUR 40.",
+        "13.3 Si vous ne faites pas le check‑out à temps, nous pouvons : sécuriser vos effets (les emballer et les stocker de manière raisonnable) ; restreindre l'accès aux chambres/zones réservées aux Clients ; appliquer des frais permis par les Conditions de réservation.",
+        "13.4 Effets non réclamés : les objets laissés peuvent être stockés pendant 30 jours puis éliminés ou donnés lorsque la loi l'autorise."
+      ]
+    },
+    "s14": {
+      "title": "14. Application",
+      "body": [
+        "14.1 Nous pouvons émettre des avertissements pour des violations mineures.",
+        "14.2 Les violations graves ou répétées peuvent entraîner l'expulsion et une Résiliation pour manquement au titre des Conditions de réservation.",
+        "14.3 Lorsque des frais s'appliquent (dommages, nettoyage excessif, frais), ils seront traités conformément aux Conditions de réservation."
+      ]
+    }
+  }
+}

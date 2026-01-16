@@ -11,9 +11,9 @@
       "between": "otthon",
       "home": "az otthontól távol"
     },
-    "paragraph1": "A Hostel Brikette <strong>Positano egyetlen hostele</strong>, <strong>pénztárcabarát</strong> szállással, hogy az Amalfi‑part látnivalói karnyújtásnyira legyenek.",
-    "paragraph2": "A sziklákon ülve <strong>lélegzetelállító tengeri kilátást</strong>, praktikus kényelmi szolgáltatásokat és éjjel‑nappal elérhető helyi tippeket kínálunk <strong>digitális concierge</strong>‑ünkön keresztül—személyes útmutatód a kompmenetrendekhez, túraútvonalakhoz, éttermekhez és még sok máshoz.",
-    "paragraph3": "Akár hálótermet, akár privát szobát választasz, mindegyik a <strong>kényelem</strong> és a <strong>praktikum</strong> jegyében készült."
+    "paragraph1": "A Hostel Brikette Positano egyetlen hostele - pénztárcabarát, gyönyörű helyen van, és tökéletes az Amalfi-part felfedezéséhez.",
+    "paragraph2": "Felejthetetlen tengeri kilátást párosítunk azokkal a praktikus kényelmi dolgokkal, amelyekre valóban szükséged van, és 24/7 helyi tippeket adunk a digitális concierge-ünkön keresztül: kompmenetrendek, túratippek, étteremajánlók...minden, amire szükséged van.",
+    "paragraph3": "Választhatsz közösségi hálótermet vagy privát szobát—mindegyik úgy készült, hogy egyszerű, kényelmes és könnyű legyen a tartózkodásod."
   },
   "facilitiesModal": {
     "title": "Szolgáltatások és felszereltség",
@@ -107,14 +107,31 @@
     "locationButton": "Helyszín",
     "contactButton": "Kapcsolat",
     "helpButton": "Segítség",
-    "reserveNow": "Foglalj most"
+    "reserveNow": "Foglalj most",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "Positano egyetlen hostelje — tengerre néző kilátás, közösségi terek és digitális concierge.",
+    "primaryCta": "Elérhetőség ellenőrzése",
+    "selectDatesCta": "Dátumok kiválasztása",
+    "secondaryCta": "Szobák megtekintése",
+    "trustItems": [
+      "100 m-re a SITA buszmegállótól",
+      "Tengerre néző terasz",
+      "Digitális concierge tippek"
+    ]
   },
   "quickLinksSection": {
     "location": "Helyszín",
     "photosAndVideos": "Fotók és videók",
     "facilitiesAndAmenities": "Létesítmények és szolgáltatások",
     "barMenu": "Bár menü",
-    "breakfastMenu": "Reggeli menü"
+    "breakfastMenu": "Reggeli menü",
+    "rooms": "Szobák",
+    "roomsHint": "Hálók és privát szobák",
+    "commonAreas": "Közösségi terek",
+    "commonAreasHint": "Terasz, bár és közös terek",
+    "locationHint": "Buszmegálló és strandtippek",
+    "guides": "Útmutatók",
+    "guidesHint": "Helyi tippek az utazáshoz"
   },
   "destinationSlideshow": {
     "sectionTitle": "Gyönyörű közösségi terek",
@@ -135,5 +152,41 @@
         "alt": "Széles tengeri horizont a hostel teraszáról"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "A kijelentkezésnek a bejelentkezés után kell lennie."
+  },
+  "whyStaySection": {
+    "title": "Miért érdemes itt megszállni",
+    "items": [
+      {
+        "title": "Digitális concierge",
+        "text": "Azonnali tippek kompokhoz, túrákhoz és éttermekhez."
+      },
+      {
+        "title": "Tengerre néző közösségi terek",
+        "text": "Terasz, bár és terek ismerkedéshez."
+      },
+      {
+        "title": "Költségbarát tartózkodás",
+        "text": "Kényelmes hálók és privát szobák, amelyek kímélik a büdzsét."
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "Elhelyezkedés és közlekedés",
+    "subtitle": "Positano felett, gyors eléréssel a buszokhoz, a strandhoz és a kompokhoz.",
+    "nearbyBeach": "≈350 m a strandig",
+    "mapLabel": "Megnyitás Maps-ben",
+    "mapHint": "Koppints a Google Maps jelölőre és útvonalra.",
+    "mapCta": "Térkép megtekintése"
+  },
+  "socialProof": {
+    "title": "A vendégek imádják a Brikette-et",
+    "subtitle": "Kiemelkedő értékelések és friss vélemények utazóktól."
+  },
+  "faqSection": {
+    "title": "Gyors válaszok",
+    "ctaLabel": "Segítőközpont megnyitása"
   }
 }

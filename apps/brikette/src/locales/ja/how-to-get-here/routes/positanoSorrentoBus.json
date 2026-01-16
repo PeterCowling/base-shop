@@ -12,7 +12,7 @@
   "tip": {
     "eyebrow": "ヒント",
     "copy": "ほかの交通手段も確認したい場合は、<link>アクセス方法（How to Get Here）概要</link>でフェリーやタクシー、組み合わせルートをチェックしましょう。",
-    "linkLabel": "翻訳を準備中です。"
+    "linkLabel": "アクセス方法（How to Get Here）概要"
   },
   "sections": {
     "overview": {
@@ -45,7 +45,7 @@
       "image": {
         "alt": "Bar Internazionale 前にあるポジターノのキエーザ・ヌオーヴァ停留所",
         "caption": "夏のハイシーズンは満席になりやすいので、数分早めに到着して座席を確保しましょう。",
-        "src": "翻訳を準備中です。"
+        "src": "/img/directions/positano-bus-stop.png"
       }
     },
     "walk": {
@@ -53,7 +53,7 @@
       "list": [
         "ホステルの正面ドアから出て、階段を降りて道路に出ます。",
         "左に曲がり、約100メートル（約330フィート）進みます。",
-        "翻訳を準備中です。"
+        "左手に「Bar Internazionale」が見えたら、その外がSITA停留所です。"
       ]
     },
     "wait": {

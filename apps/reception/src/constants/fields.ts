@@ -1,0 +1,1 @@
+export const TIMESTAMP_KEY: "timestamp" = "timestamp";

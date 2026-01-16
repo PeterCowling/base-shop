@@ -82,7 +82,7 @@ describe("CurrencyProvider", () => {
     clearWindowOverride();
   });
 
-  it("reads initial currency from localStorage when valid", () => {
+  it("reads initial currency from localStorage when valid", async () => {
     window.localStorage.setItem(LS_KEY, "USD");
 
     const { getByTestId, unmount } = render(
@@ -91,11 +91,13 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("USD");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
+    });
     unmount();
   });
 
-  it("falls back to default when localStorage has invalid value", () => {
+  it("falls back to default when localStorage has invalid value", async () => {
     window.localStorage.setItem(LS_KEY, "JPY");
 
     const { getByTestId, unmount } = render(
@@ -104,11 +106,13 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("EUR");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("EUR");
+    });
     unmount();
   });
 
-  it("falls back to default when localStorage access throws", () => {
+  it("falls back to default when localStorage access throws", async () => {
     jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("blocked");
     });
@@ -119,7 +123,9 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("EUR");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("EUR");
+    });
     unmount();
   });
 

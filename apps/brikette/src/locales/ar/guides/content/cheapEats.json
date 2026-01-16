@@ -49,7 +49,7 @@
   "recommendationsTitle": "أين تتناول الطعام",
   "recommendations": [
     {
-      "name": "Collina Bakery",
+      "name": "مخبز كولّينا",
       "note": "بانيني، بيتزا بالتقطيع، سلطات، ومخبوزات جاهزة لوجبات سريعة."
     },
     {
@@ -93,7 +93,7 @@
   ],
   "fallbackRecommendations": [
     {
-      "name": "Collina Bakery",
+      "name": "مخبز كولّينا",
       "note": "بانيني، بيتزا بالتقطيع، سلطات، ومخبوزات جاهزة لوجبات سريعة."
     },
     {

@@ -19,12 +19,18 @@ function todayKey(id: string) {
   return `${id}:${day}`;
 }
 function identity(req: Request): string {
+  // Check for user-specific cookie first (most reliable for logged-in users)
   const cookies = req.headers.get('cookie') || '';
   const m = /(?:^|;\s*)tryon\.uid=([^;]+)/.exec(cookies);
   if (m) return decodeURIComponent(m[1]);
+  // SECURITY: Prefer verified CDN headers over spoofable x-forwarded-for
+  // cf-connecting-ip is set by Cloudflare and cannot be spoofed by clients
+  const cfIp = req.headers.get('cf-connecting-ip');
+  if (cfIp) return cfIp;
+  // Fallback to x-forwarded-for only as last resort (can be spoofed in non-CDN environments)
   const xf = req.headers.get('x-forwarded-for') || '';
   if (xf) return xf.split(',')[0].trim();
-  return req.headers.get('cf-connecting-ip') || 'anon';
+  return 'anon';
 }
 async function checkQuota(req: Request): Promise<string | null> {
   const id = identity(req);

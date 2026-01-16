@@ -1,10 +1,13 @@
 "use client";
 
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
+
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
 import StageKLaneCompareCard from "./StageKLaneCompareCard";
+import { resolveGateMessage, resolveStageTSGate } from "./stageGate";
 
 type StageKSummary = {
   peakCashOutlayCents?: string;
@@ -109,7 +112,9 @@ export default function StageKRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
+  const stageGate = resolveStageTSGate(stageRuns);
 
   useEffect(() => {
     if (hasEdited) return;
@@ -189,10 +194,12 @@ export default function StageKRunCard({
           | null;
         if (!response.ok) {
           const reason = payload?.details?.reasonCode;
+          const gateError = resolveGateMessage(payload?.error ?? null, strings.gates);
           const text =
-            payload?.error === "cooldown_active"
+            gateError ??
+            (payload?.error === "cooldown_active"
               ? `${strings.cooldown.activeMessage}${reason ? ` (${reason})` : ""}`
-              : strings.stageK.errorRun;
+              : strings.stageK.errorRun);
           setMessage({
             tone: "error",
             text,
@@ -214,14 +221,15 @@ export default function StageKRunCard({
         await onRun();
       }
     },
-    [candidateId, inputJson, onRun, scenario, strings.stageK, strings.cooldown],
+    [candidateId, inputJson, onRun, scenario, strings.cooldown, strings.gates, strings.stageK],
   );
 
-  const inputDisabled = running || loading || cooldownActive;
-  const composeDisabled = composeRunning || running || loading || cooldownActive;
+  const inputDisabled = running || loading || cooldownActive || Boolean(stageGate);
+  const composeDisabled =
+    composeRunning || running || loading || cooldownActive || Boolean(stageGate);
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-k">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageK.label}
@@ -269,7 +277,18 @@ export default function StageKRunCard({
         />
       </div>
 
-      <form className="mt-4 grid gap-4" onSubmit={runStageK}>
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4" onSubmit={runStageK}>
         <div>
           <Cluster justify="between" alignY="center" className="gap-3">
             <label className="text-xs uppercase tracking-widest text-foreground/60">
@@ -322,6 +341,7 @@ export default function StageKRunCard({
           </button>
         </Cluster>
       </form>
+      ) : null}
     </section>
   );
 }

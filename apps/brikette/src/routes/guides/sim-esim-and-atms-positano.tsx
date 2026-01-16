@@ -15,17 +15,14 @@ import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
 import i18n from "@/i18n";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import { supportsWebpackGlob, type WebpackRequire, webpackContextToRecord } from "@/utils/webpackGlob";
-
-declare const require: WebpackRequire | undefined;
+import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob";
 
 export const GUIDE_KEY = "simsAtms" as const satisfies GuideKey;
 export const GUIDE_SLUG = "sim-esim-and-atms-positano" as const;
 
-const GUIDE_FALLBACK_CONTEXT =
-  supportsWebpackGlob && typeof require === "function" && typeof require.context === "function"
-    ? require.context("../../locales", true, /guidesFallback\\.json$/)
-    : undefined;
+const GUIDE_FALLBACK_CONTEXT = supportsWebpackGlob
+  ? getWebpackContext("../../locales", true, /guidesFallback\\.json$/)
+  : undefined;
 const GUIDE_FALLBACK_BUNDLES: Record<string, unknown> =
   webpackContextToRecord<{
     default?: Record<string, unknown>;

@@ -1,0 +1,28 @@
+{
+  "name": "@apps/handbag-configurator",
+  "private": true,
+  "scripts": {
+    "prelint": "pnpm --filter @acme/eslint-plugin-ds build",
+    "dev": "next dev -p 3016",
+    "build": "next build",
+    "start": "next start -p 3016",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/next-config": "workspace:*",
+    "@acme/product-configurator": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "next": "^15.3.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "three": "^0.182.0",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@types/three": "^0.182.0"
+  }
+}

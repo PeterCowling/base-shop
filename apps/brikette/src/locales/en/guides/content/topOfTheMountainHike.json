@@ -37,7 +37,7 @@
       "id": "getting-to-santa-maria",
       "title": "Getting to Santa Maria del Castello",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Follow the [Santa Maria del Castello hike guide](guide:santaMariaDelCastelloHike) directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
         "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
       ]
     },
@@ -126,9 +126,8 @@
   "gallery": {
     "title": "Photo gallery",
     "items": [
-      { "alt": "Looking across the peninsula to Capri", "caption": "Looking across the peninsula to Capri" },
-      { "alt": "Scan to Share QR code", "caption": "Scan to Share" },
-      { "alt": "Trail near the summit", "caption": "Approaching the summit" }
+      { "alt": "Panoramic view across the Amalfi Coast and Capri", "caption": "Looking out from the summit ridge." },
+      { "alt": "Elevation profile showing Santa Maria del Castello and the summit climb", "caption": "Santa Maria del Castello sits about one third of the way up." }
     ]
   },
   "toc": {

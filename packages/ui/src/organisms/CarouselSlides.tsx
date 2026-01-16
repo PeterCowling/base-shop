@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { SwiperProps, SwiperSlideProps } from "swiper/react";
 import type { CarouselSlidesProps } from "./CarouselSlides.types";
 import SlideItem from "../molecules/SlideItem";
-import { Grid } from "@/components/atoms/primitives/Grid";
+import { Grid } from "../components/atoms/primitives/Grid";
 import { Section } from "../atoms/Section";
 
 interface SwiperBundle {
@@ -17,27 +17,13 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
   const { t } = useTranslation("roomsPage", { lng: lang });
   const [swiperBundle, setSwiperBundle] = useState<SwiperBundle | null>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const [cardHeight, setCardHeight] = useState<number>();
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
 
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const navId = useId();
-
-  const recalcHeights = useCallback(() => {
-    const max = Math.max(0, ...itemRefs.current.map((el) => el?.offsetHeight ?? 0));
-    if (max && max !== cardHeight) setCardHeight(max);
-  }, [cardHeight]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    recalcHeights();
-    window.addEventListener("resize", recalcHeights);
-    return () => window.removeEventListener("resize", recalcHeights);
-  }, [recalcHeights]);
 
   // Load Swiper only when the carousel is visible or interacted with
   const ensureLoad = useCallback(() => setShouldLoad(true), []);
@@ -87,7 +73,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
 
   const baseBtn =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "group rounded-full p-3 shadow-md transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-60 shrink-0 self-center";
+    "group hidden lg:inline-flex rounded-full p-3 shadow-md transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-primary disabled:cursor-not-allowed disabled:opacity-60 shrink-0 self-center";
   const leftBtn =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
     "bg-brand-bg/90 dark:bg-brand-surface/90 ring-1 ring-black/10 dark:ring-white/10 hover:bg-brand-primary/90 hover:text-white";
@@ -102,17 +88,9 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
 
   const StaticList = (
     <Grid cols={1} gap={6} className="list-none auto-rows-fr sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-      {roomsData.map((room, idx) => (
+      {roomsData.map((room) => (
         <div key={room.id} className="flex">
-          <SlideItem
-            ref={(el) => {
-              itemRefs.current[idx] = el;
-            }}
-            item={room}
-            lang={lang}
-            openModalForRate={openModalForRate}
-            height={cardHeight}
-          />
+          <SlideItem item={room} lang={lang} openModalForRate={openModalForRate} />
         </div>
       ))}
     </Grid>
@@ -130,29 +108,19 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
           480: { slidesPerView: 1.35 },
           640: { slidesPerView: 1.6 },
           768: { slidesPerView: 1.9 },
-          1024: { slidesPerView: 2.5 },
-          1280: { slidesPerView: 3.2 },
-          1536: { slidesPerView: 4 },
+          1024: { slidesPerView: 2.2 },
+          1280: { slidesPerView: 2.8 },
+          1536: { slidesPerView: 3.2 },
         }}
         navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
         onBeforeInit={(sw) => {
           sw.params.navigation = { ...(sw.params.navigation as object), prevEl: prevRef.current, nextEl: nextRef.current };
           onSwiperInit(sw);
         }}
-        onBreakpoint={recalcHeights}
-        onResize={recalcHeights}
       >
-        {roomsData.map((room, idx) => (
+        {roomsData.map((room) => (
           <SwiperSlide key={room.id} className="flex h-full">
-            <SlideItem
-              ref={(el) => {
-                itemRefs.current[idx] = el;
-              }}
-              item={room}
-              lang={lang}
-              openModalForRate={openModalForRate}
-              height={cardHeight}
-            />
+            <SlideItem item={room} lang={lang} openModalForRate={openModalForRate} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -160,11 +128,11 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
   }
 
   return (
-    <Section as="section" ref={sectionRef} className="max-w-screen-2xl cv-auto">
+    <Section as="section" ref={sectionRef} padding="none" className="px-4 py-6 sm:py-8 cv-auto">
       <div className="flex items-center gap-4 sm:gap-5 md:gap-6">
         <button
           ref={prevRef}
-          aria-label={t("previousSlide")}
+          aria-label={t("carousel.previousSlide")}
           disabled={atStart}
           onClick={ensureLoad}
           className={`${navId}-prev ${hideArrows ? "hidden" : ""} ${baseBtn} ${leftBtn}`}
@@ -176,7 +144,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
         </div>
         <button
           ref={nextRef}
-          aria-label={t("nextSlide")}
+          aria-label={t("carousel.nextSlide")}
           disabled={atEnd}
           onClick={ensureLoad}
           className={`${navId}-next ${hideArrows ? "hidden" : ""} ${baseBtn} ${rightBtn}`}

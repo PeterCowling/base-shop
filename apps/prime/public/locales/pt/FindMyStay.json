@@ -1,0 +1,26 @@
+{
+  "title": "Encontrar minha estadia",
+  "subtitle": "Digite os dados da sua reserva para acessar seu portal de hóspede.",
+  "fields": {
+    "bookingCode": "Código de reserva",
+    "bookingCodePlaceholder": "ex. BKG12345",
+    "bookingCodeHint": "Encontre no seu email de confirmação",
+    "lastName": "Sobrenome",
+    "lastNamePlaceholder": "Como aparece na reserva",
+    "lastNameHint": "Sobrenome do hóspede principal"
+  },
+  "button": {
+    "submit": "Encontrar minha estadia",
+    "loading": "Procurando..."
+  },
+  "errors": {
+    "fieldsRequired": "Por favor, digite o código de reserva e o sobrenome.",
+    "notFound": "Não encontramos uma reserva com esses dados. Por favor, verifique e tente novamente.",
+    "tooManyAttempts": "Muitas tentativas. Por favor, aguarde alguns minutos e tente novamente.",
+    "networkError": "Não foi possível conectar. Por favor, verifique sua internet e tente novamente."
+  },
+  "help": {
+    "cantFind": "Não encontra seu código de reserva?",
+    "contactUs": "Entre em contato com a recepção para ajuda."
+  }
+}

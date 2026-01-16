@@ -10,7 +10,7 @@ const EXPERIENCES_NAMESPACE = "experiencesPage" as const;
 
 export async function experiencesClientLoader({ request }: LoaderFunctionArgs) {
   const lang = langFromRequest(request) as AppLanguage;
-  await preloadNamespacesWithFallback(lang, [EXPERIENCES_NAMESPACE, "_tokens", "guides"], {
+  await preloadNamespacesWithFallback(lang, [EXPERIENCES_NAMESPACE, "guides"], {
     optional: true,
   });
   await i18n.changeLanguage(lang);

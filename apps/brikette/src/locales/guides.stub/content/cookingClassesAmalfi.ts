@@ -3,7 +3,6 @@
 // Single-purpose stub: Cooking Classes on the Amalfi Coast
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const cookingClassesAmalfi = {
   seo: {
@@ -37,5 +36,4 @@ export const cookingClassesAmalfi = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

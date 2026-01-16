@@ -46,11 +46,22 @@
       "import": "./dist/env/shipping.js",
       "default": "./dist/env/shipping.js"
     },
+    "./jest-presets": "./jest-presets/index.cjs",
+    "./jest-presets/base": "./jest-presets/base.cjs",
+    "./jest-presets/react": "./jest-presets/react.cjs",
+    "./jest-presets/node": "./jest-presets/node.cjs",
+    "./jest-presets/coverage-tiers": "./jest-presets/coverage-tiers.cjs",
+    "./jest-presets/modules/workspace": "./jest-presets/modules/workspace.cjs",
+    "./jest-presets/modules/esm-compat": "./jest-presets/modules/esm-compat.cjs",
+    "./jest-presets/modules/mocks": "./jest-presets/modules/mocks.cjs",
+    "./jest-presets/modules/react": "./jest-presets/modules/react.cjs",
+    "./jest-presets/modules/runtime": "./jest-presets/modules/runtime.cjs",
     "./jest.preset.cjs": "./jest.preset.cjs",
     "./tsconfig.app.json": "./tsconfig.app.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "jest-presets"
   ],
   "sideEffects": false,
   "scripts": {

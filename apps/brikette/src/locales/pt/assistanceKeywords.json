@@ -36,7 +36,7 @@
     {
       "type": 1,
       "slug": "can-i-bring-my-own-alcohol",
-      "s1": "byo",
+      "s1": "bebida própria",
       "s2": "Posso trazer minha própria bebida",
       "s3": "O albergue tem um abridor de vinho",
       "s4": "comprar álcool próprio",
@@ -643,7 +643,7 @@
       "s1": "Verifique no tempo",
       "s2": "check-in pela primeira vez",
       "s3": "ao fazer o check-in",
-      "s4": "check-in",
+      "s4": "registro de entrada",
       "s5": "horário de check-in",
       "humanReadableQuestion": "Qual é a primeira vez que posso fazer o check-in?",
       "humanReadableAnswer": "O horário de check-in é às 15h.",

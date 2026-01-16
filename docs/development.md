@@ -1,13 +1,13 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Development
+# Development (Agent Runbook)
 
 ## Linting and local checks
 
-- Run the repository linter locally before pushing:
+- Run the repository linter before pushing:
 
   ```bash
   pnpm lint
@@ -18,7 +18,7 @@ Last-reviewed: 2025-12-02
 ## Tests and CI gating
 
 - Prefer running tests in CI rather than locally for day-to-day work:
-  - Use app- or package-scoped commands when you do need local tests, e.g.:
+  - Use app- or package-scoped commands when local tests are required, e.g.:
 
     ```bash
     pnpm --filter @apps/cms test
@@ -43,14 +43,20 @@ Last-reviewed: 2025-12-02
   - Runs as a “slow lane” on:
     - `push` to `main` (full workspace matrix with coverage artefacts).
     - Scheduled nightly runs.
-    - Manual `workflow_dispatch` when you want an explicit, deep pass.
+    - Manual `workflow_dispatch` when an explicit, deep pass is required.
 - App workflows:
   - `cms.yml` – lint/test/build/deploy for `@apps/cms`, triggered by CMS-related changes.
   - `skylar.yml` – lint/typecheck/test/build/deploy for `@apps/skylar` as a static export via `wrangler pages deploy`.
+  - `prime.yml` – lint/typecheck/test/build/deploy for `@apps/prime` as a static export via `wrangler pages deploy` (Cloudflare-generated `prime.pages.dev` URL, no custom domain).
+  - `brikette.yml` – lint/typecheck/test/build/deploy for `@apps/brikette` via `@cloudflare/next-on-pages`.
   - `cypress.yml` – CMS E2E smoke runs when CMS or its shared dependencies change.
   - `storybook.yml` – Storybook/Chromatic and UI smoke tests, triggered by Storybook/UI-related changes.
 
-When adding a new shared package dependency to an app, remember to update the relevant workflow `paths` filters so CI fan-out stays correct (for example, ensure the new package path is included in the app’s workflow and, if appropriate, in any E2E or Storybook workflows it affects).
+When adding a new shared package dependency to an app, update the relevant workflow `paths` filters so CI fan-out stays correct (for example, ensure the new package path is included in the app’s workflow and, if appropriate, in any E2E or Storybook workflows it affects).
+
+Prime deploy requirements:
+- Repo secrets: `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` (Pages write access).
+- Cloudflare Pages env vars for primetime functions: `CF_OPENAI_API_KEY`, `CF_PINECONE_API_KEY`, `CF_PINECONE_ENVIRONMENT`, `CF_PINECONE_INDEX_NAME`, `CF_NORMALISATION_MODEL` (optional: `CF_EMBEDDING_MODEL`, `CF_TOP_K`, `CF_SIMILARITY_THRESHOLD`, `CF_RATE_LIMIT_MAX_REQUESTS`, `CF_MIN_TEXT_LENGTH`).
 
 ## First deploy vs ongoing updates
 
@@ -63,7 +69,7 @@ When adding a new shared package dependency to an app, remember to update the re
 
 ## Adding a new app + CI
 
-When you add a new app, keep CI aligned with the patterns above:
+When adding a new app, keep CI aligned with the patterns above:
 
 - For generated shops:
   - Use `pnpm setup-ci <id>` to scaffold a `shop-<id>.yml` workflow under `.github/workflows/`.

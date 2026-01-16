@@ -4,14 +4,36 @@ import { useTranslation } from "react-i18next";
 import { Coffee, Percent, Wine } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { getSlug } from "@/utils/slug";
-import { toAppLanguage } from "@/utils/lang";
+import { getSlug } from "@ui/utils/slug";
+import { toAppLanguage } from "@ui/utils/lang";
 import { Section } from "../atoms/Section";
 
 interface Props {
   limit?: number;
   lang?: string;
 }
+
+type PerkItem = {
+  title: string;
+  subtitle?: string;
+};
+
+const normalizePerkItem = (item: unknown): PerkItem | null => {
+  if (typeof item === "string") {
+    return { title: item };
+  }
+  if (typeof item === "object" && item !== null) {
+    const maybe = item as { title?: unknown; subtitle?: unknown };
+    if (typeof maybe.title === "string") {
+      const perk: PerkItem = { title: maybe.title };
+      if (typeof maybe.subtitle === "string") {
+        perk.subtitle = maybe.subtitle;
+      }
+      return perk;
+    }
+  }
+  return null;
+};
 
 function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -21,7 +43,8 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const perks = useMemo(() => {
     if (!ready || !tokensReady || !dealsReady) return [];
     const raw = t("dealsPage:perksList", { returnObjects: true });
-    return Array.isArray(raw) ? (raw as string[]) : [];
+    if (!Array.isArray(raw)) return [];
+    return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
   }, [t, ready, tokensReady, dealsReady]);
 
   if (!perks.length) return null;
@@ -66,21 +89,27 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
           </p>
         ) : null}
       </div>
-      <Section as="div" padding="none" className="max-w-prose">
+      <div className="w-full">
         <ul className="space-y-3 text-start">
-          {items.map((text, idx) => {
+          {items.map((item, idx) => {
             const Icon = icons[idx] ?? Percent;
+            const perkKey = item.subtitle ? `${item.title}-${item.subtitle}` : item.title;
             return (
-              <li key={text}>
+              <li key={perkKey}>
                 <div className="flex items-start gap-3">
                   <Icon className="mt-0.5 size-5 shrink-0 text-brand-secondary" aria-hidden />
-                  <span>{text}</span>
+                  <div className="space-y-1">
+                    <span className="block">{item.title}</span>
+                    {item.subtitle ? (
+                      <span className="block text-sm text-brand-text/70">{item.subtitle}</span>
+                    ) : null}
+                  </div>
                 </div>
               </li>
             );
           })}
         </ul>
-      </Section>
+      </div>
       {termsLabel.trim().length > 0 ? (
         <div>
           <Link

@@ -59,8 +59,8 @@ Set `INVENTORY_AUTHORITY_URL` in the Worker deployment environment (Cloudflare d
 
 1. Create Stripe products and prices for each variant (kids/adult x sand/ocean/berry for both Classic and Sport).
 2. Copy the Stripe Price IDs into:
-   - `apps/cochlearfit/src/data/products.ts`
-   - `apps/cochlearfit-worker/src/index.ts`
+   - `apps/cochlearfit-worker/src/index.ts` (checkout source of truth)
+   - `apps/cochlearfit/src/lib/catalog.ts` and `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts` (UI price/variant metadata)
 3. Deploy the Worker and route `/api/*` to it in Cloudflare so the frontend can call it.
 
 ## Worker deploy

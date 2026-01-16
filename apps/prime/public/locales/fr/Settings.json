@@ -1,0 +1,28 @@
+{
+  "title": "Paramètres",
+  "cache": {
+    "title": "Données en cache",
+    "usage": "Stockage utilisé",
+    "quota": "{{percent}}% du stockage disponible",
+    "description": "Les données en cache aident l'appli à fonctionner hors ligne. Les effacer peut nécessiter de retélécharger du contenu.",
+    "clear": "Effacer les données en cache",
+    "clearing": "Effacement...",
+    "cleared": "Effacé !",
+    "refresh": "Actualiser"
+  },
+  "language": {
+    "title": "Langue",
+    "select": "Sélectionner la langue"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "push": "Notifications push",
+    "email": "Notifications par email"
+  },
+  "about": {
+    "title": "À propos",
+    "version": "Version",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité"
+  }
+}

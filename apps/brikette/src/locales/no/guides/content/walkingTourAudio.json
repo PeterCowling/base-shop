@@ -8,25 +8,25 @@
     "Last ned vår gratis Positano-lydvandring: start ved Chiesa Nuova, vev deg gjennom gamlebyen og avslutt på Spiaggia Grande.",
     "Følg rute- og lyttetipsene nedenfor, og lagre filene over Wi-Fi før du går ut."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "På denne siden",
   "toc": [
     {
       "href": "#route",
-      "label": "Route"
+      "label": "Rute"
     },
     {
       "href": "#listen",
-      "label": "How to listen"
+      "label": "Slik lytter du"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "Ofte stilte spørsmål"
     }
   ],
   "sections": [
     {
       "id": "route",
-      "title": "Route",
+      "title": "Rute",
       "body": [
         "Start ved bussholdeplassen Chiesa Nuova → ta en pause ved utsiktspunktene Via Pasitea → vind gjennom smugene → ankom Spiaggia Grande.",
         "Ta deg tid på terrasser, men vær oppmerksom på lokalbefolkningen og bærere som bruker trappene for leveringer."
@@ -34,29 +34,29 @@
     },
     {
       "id": "listen",
-      "title": "How to listen",
+      "title": "Slik lytter du",
       "body": [
         "Last ned lyden på vandrerhjemmets Wi-Fi eller stream på kjente hotspots langs ruten.",
         "Hold volumet lavt i trapper og trekk ut den ene øreproppen når du krysser veier eller passerer andre turgåere."
       ]
     }
   ],
-  "faqHeading": "FAQs",
+  "faqHeading": "Ofte stilte spørsmål",
   "faqs": [
     {
-      "q": "Is the loop steep?",
+      "q": "Er runden bratt?",
       "a": [
         "Ja - forvent trapper. Vend løkken eller bruk SITA-bussen oppoverbakke hvis knærne trenger en pause."
       ]
     },
     {
-      "q": "Can I listen offline?",
+      "q": "Kan jeg lytte offline?",
       "a": [
         "Absolutt. Lagre filene på telefonen din slik at du ikke er avhengig av ujevn mobildata i bakgatene."
       ]
     },
     {
-      "q": "How long does it take?",
+      "q": "Hvor lang tid tar det?",
       "a": [
         "Planlegg for 45–60 minutter inkludert fotostopp og terrassepauser."
       ]

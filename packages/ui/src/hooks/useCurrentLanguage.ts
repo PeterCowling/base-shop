@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------
 // Use react-router-dom hooks; fall back gracefully when outside a Router
 import { useLocation, useParams } from "react-router-dom";
-import { i18nConfig, type AppLanguage } from "../i18n.config";
+import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
 
 export function useCurrentLanguage(): AppLanguage {
   // 1) Parse from current URL pathname (most stable across nested routers/tests)

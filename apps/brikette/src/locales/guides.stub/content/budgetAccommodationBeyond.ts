@@ -3,7 +3,6 @@
 // Single-purpose stub: Budget accommodation beyond Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const budgetAccommodationBeyond = {
   seo: {
@@ -43,5 +42,4 @@ export const budgetAccommodationBeyond = {
   ],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
 import { useCallback, useMemo, useState, type FormEvent } from "react";
@@ -58,6 +59,7 @@ export default function CooldownCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
 
   const cooldown = candidate?.cooldown ?? null;
   const activeLabel = cooldown?.active
@@ -151,7 +153,7 @@ export default function CooldownCard({
   }, [cooldown, recheckLabel, severityLabel, strings.notAvailable]);
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="cooldown">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.cooldown.label}
@@ -197,117 +199,129 @@ export default function CooldownCard({
         )}
       </div>
 
-      <form className="mt-4 grid gap-4" onSubmit={submitCooldown}>
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.cooldown.reasonLabel}
-          <input
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            value={form.reasonCode}
-            onChange={(event) =>
-              setForm((current) => ({
-                ...current,
-                reasonCode: event.target.value,
-              }))
-            }
-            disabled={disabled}
-            type="text"
-          />
-        </label>
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.cooldown.severityLabel}
-          <select
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            value={form.severity}
-            onChange={(event) =>
-              setForm((current) => ({
-                ...current,
-                severity: event.target.value as CooldownSeverity,
-              }))
-            }
-            disabled={disabled}
-          >
-            <option
-              value={
-                "short_cooldown" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
-              }
-            >
-              {strings.cooldown.severityShort}
-            </option>
-            <option
-              value={
-                "long_cooldown" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
-              }
-            >
-              {strings.cooldown.severityLong}
-            </option>
-            <option
-              value={
-                "permanent" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
-              }
-            >
-              {strings.cooldown.severityPermanent}
-            </option>
-          </select>
-        </label>
-        {form.severity !== "permanent" ? (
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4" onSubmit={submitCooldown}>
           <label className="text-xs uppercase tracking-widest text-foreground/60">
-            {strings.cooldown.recheckLabel}
+            {strings.cooldown.reasonLabel}
             <input
               className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-              value={form.recheckDays}
+              value={form.reasonCode}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
-                  recheckDays: event.target.value,
+                  reasonCode: event.target.value,
                 }))
               }
               disabled={disabled}
-              type="number"
-              min={1}
-              max={3650}
+              type="text"
             />
           </label>
-        ) : null}
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.cooldown.whatWouldChangeLabel}
-          <input
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            value={form.whatWouldChange}
-            onChange={(event) =>
-              setForm((current) => ({
-                ...current,
-                whatWouldChange: event.target.value,
-              }))
-            }
-            disabled={disabled}
-            type="text"
-          />
-        </label>
-        <Cluster justify="between" alignY="center" className="gap-3">
-          {message ? (
-            <span
-              className={
-                message.tone === "success"
-                  ? ("text-xs text-emerald-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
-                  : ("text-xs text-red-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+          <label className="text-xs uppercase tracking-widest text-foreground/60">
+            {strings.cooldown.severityLabel}
+            <select
+              className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              value={form.severity}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  severity: event.target.value as CooldownSeverity,
+                }))
               }
+              disabled={disabled}
             >
-              {message.text}
-            </span>
-          ) : (
-            <span className="text-xs text-foreground/60">
-              {helperMessage}
-            </span>
-          )}
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
-            disabled={disabled}
-          >
-            {strings.cooldown.submitLabel}
-          </button>
-        </Cluster>
-      </form>
+              <option
+                value={
+                  "short_cooldown" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
+                }
+              >
+                {strings.cooldown.severityShort}
+              </option>
+              <option
+                value={
+                  "long_cooldown" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
+                }
+              >
+                {strings.cooldown.severityLong}
+              </option>
+              <option
+                value={
+                  "permanent" /* i18n-exempt -- PP-1100 cooldown enum value [ttl=2026-06-30] */
+                }
+              >
+                {strings.cooldown.severityPermanent}
+              </option>
+            </select>
+          </label>
+          {form.severity !== "permanent" ? (
+            <label className="text-xs uppercase tracking-widest text-foreground/60">
+              {strings.cooldown.recheckLabel}
+              <input
+                className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                value={form.recheckDays}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    recheckDays: event.target.value,
+                  }))
+                }
+                disabled={disabled}
+                type="number"
+                min={1}
+                max={3650}
+              />
+            </label>
+          ) : null}
+          <label className="text-xs uppercase tracking-widest text-foreground/60">
+            {strings.cooldown.whatWouldChangeLabel}
+            <input
+              className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              value={form.whatWouldChange}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  whatWouldChange: event.target.value,
+                }))
+              }
+              disabled={disabled}
+              type="text"
+            />
+          </label>
+          <Cluster justify="between" alignY="center" className="gap-3">
+            {message ? (
+              <span
+                className={
+                  message.tone === "success"
+                    ? ("text-xs text-emerald-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                    : ("text-xs text-red-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                }
+              >
+                {message.text}
+              </span>
+            ) : (
+              <span className="text-xs text-foreground/60">
+                {helperMessage}
+              </span>
+            )}
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={disabled}
+            >
+              {strings.cooldown.submitLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

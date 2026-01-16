@@ -29,7 +29,6 @@ export function FontToken({
   setGoogleFont,
 }: FontTokenProps): ReactElement {
   const t = useTranslations();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   return (
     <label
@@ -66,7 +65,7 @@ export function FontToken({
         >
           <option value="">{t("cms.style.googleFonts") as string}</option>
           {googleFonts.map((f: string) => (
-            // eslint-disable-next-line react/forbid-dom-props -- DX-0003: Inline font preview on <option> requires style
+            // eslint-disable-next-line react/forbid-dom-props -- DX-0002 [ttl=2026-12-31] inline font preview for select options
             <option key={f} value={f} style={{ fontFamily: f }}>
               {f}
             </option>

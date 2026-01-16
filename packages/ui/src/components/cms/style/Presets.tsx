@@ -25,16 +25,14 @@ export default function Presets({
   onChange,
 }: PresetsProps): ReactElement {
   const t = useTranslations();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
   const PRESET_SELECT_CLASS = "rounded border p-1";
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
   const PLACEHOLDER_P_CLASS = "text-sm text-muted";
   const applyPreset = (id: string) => {
     const preset = presetList?.find((p) => p.id === id);
     if (preset) {
       onChange({ ...tokens, ...preset.tokens });
       // Heuristically load Google Fonts for known families to keep previews WYSIWYG
-      /* eslint-disable ds/no-hardcoded-copy -- DX-0003: font family allowlist, not user-facing copy */
+      /* eslint-disable ds/no-hardcoded-copy -- DX-0005 [ttl=2026-12-31] font family allowlist */
       const googleFamilies = new Set([
         "Inter",
         "Space Grotesk",
@@ -51,7 +49,7 @@ export default function Presets({
         "Merriweather",
         "Poppins",
       ]);
-      /* eslint-enable ds/no-hardcoded-copy */
+      /* eslint-enable ds/no-hardcoded-copy -- DX-0005 [ttl=2026-12-31] */
       const injectGoogle = (name: string) => {
         const id = `google-font-${name}`;
         if (!document.getElementById(id)) {
@@ -77,16 +75,13 @@ export default function Presets({
   };
 
   if (presetList.length === 0) {
-    /* eslint-disable ds/no-hardcoded-copy -- DX-0005: utility class strings below are not user copy */
     return (
       <p className={PLACEHOLDER_P_CLASS} data-cy="presets-placeholder">
         {t("cms.style.presets.none") as string}
       </p>
     );
-    /* eslint-enable ds/no-hardcoded-copy */
   }
 
-  /* eslint-disable ds/no-hardcoded-copy -- DX-0005: utility class strings below are not user copy */
   return (
     <div className="flex items-center gap-2 text-sm">
       <label className="flex items-center gap-2">
@@ -117,5 +112,4 @@ export default function Presets({
       </button>
     </div>
   );
-  /* eslint-enable ds/no-hardcoded-copy */
 }

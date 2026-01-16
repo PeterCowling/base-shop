@@ -20,3 +20,12 @@ export type { RequestContext, EnvLabel } from "./requestContext";
 export { getShopFromPath } from "./getShopFromPath";
 export { replaceShopInPath } from "./replaceShopInPath";
 export { buildResponse } from "./buildResponse";
+export {
+  SHOP_ID_HEADER,
+  REQUEST_ID_HEADER,
+  getShopIdFromHeaders,
+  requireShopIdFromHeaders,
+  getRequestIdFromHeaders,
+  getOrCreateRequestId,
+  stripSpoofableShopHeaders,
+} from "./shopContext";

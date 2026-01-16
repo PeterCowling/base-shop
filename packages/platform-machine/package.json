@@ -32,6 +32,6 @@
     "react-dom": ">=19 <20"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   }
 }

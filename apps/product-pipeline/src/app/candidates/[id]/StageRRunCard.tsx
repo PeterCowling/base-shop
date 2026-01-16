@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
@@ -11,6 +12,7 @@ import {
   formatStageRScore,
   parseStageRDrivers,
 } from "./stageRHelpers";
+import { resolveGateMessage, resolveStageTSGate } from "./stageGate";
 
 type FormState = {
   riskScore: string;
@@ -59,7 +61,9 @@ export default function StageRRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
+  const stageGate = resolveStageTSGate(stageRuns);
 
   useEffect(() => {
     if (hasEdited) return;
@@ -120,10 +124,12 @@ export default function StageRRunCard({
           | null;
         if (!response.ok) {
           const reason = data?.details?.reasonCode;
+          const gateError = resolveGateMessage(data?.error ?? null, strings.gates);
           const text =
-            data?.error === "cooldown_active"
+            gateError ??
+            (data?.error === "cooldown_active"
               ? `${strings.cooldown.activeMessage}${reason ? ` (${reason})` : ""}`
-              : strings.stageR.errorRun;
+              : strings.stageR.errorRun);
           setMessage({ tone: "error", text });
         } else {
           setMessage({ tone: "success", text: strings.stageR.success });
@@ -145,6 +151,7 @@ export default function StageRRunCard({
       form.riskScore,
       onRun,
       strings.cooldown.activeMessage,
+      strings.gates,
       strings.stageR.errorInvalid,
       strings.stageR.errorRun,
       strings.stageR.success,
@@ -162,9 +169,10 @@ export default function StageRRunCard({
           : nextAction === "NEED_STAGE_K"
             ? strings.stageR.nextActions.needStageK
             : strings.notAvailable;
+  const inputDisabled = running || loading || cooldownActive || Boolean(stageGate);
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-r">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageR.label}
@@ -220,7 +228,18 @@ export default function StageRRunCard({
         </Grid>
       ) : null}
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageR}>
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageR}>
         <label className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageR.inputRiskScore}
           <input
@@ -233,7 +252,7 @@ export default function StageRRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={inputDisabled}
             type="number"
             min={0}
             max={100}
@@ -251,7 +270,7 @@ export default function StageRRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={inputDisabled}
             type="number"
             min={0}
             max={100}
@@ -269,7 +288,7 @@ export default function StageRRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={inputDisabled}
           />
         </label>
         <label className="text-xs uppercase tracking-widest text-foreground/60 md:col-span-2">
@@ -284,7 +303,7 @@ export default function StageRRunCard({
               }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={inputDisabled}
           />
         </label>
         <label className="text-xs uppercase tracking-widest text-foreground/60 md:col-span-2">
@@ -296,7 +315,7 @@ export default function StageRRunCard({
               setForm((current) => ({ ...current, notes: event.target.value }));
               setHasEdited(true);
             }}
-            disabled={running || cooldownActive}
+            disabled={inputDisabled}
           />
         </label>
         <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
@@ -312,20 +331,21 @@ export default function StageRRunCard({
             </span>
           ) : (
             <span className="text-xs text-foreground/60">
-              {cooldownActive
-                ? strings.cooldown.activeMessage
-                : strings.stageR.inputHelp}
-            </span>
-          )}
+                {cooldownActive
+                  ? strings.cooldown.activeMessage
+                  : strings.stageR.inputHelp}
+              </span>
+            )}
           <button
             className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
             type="submit"
-            disabled={running || loading || cooldownActive}
+            disabled={inputDisabled}
           >
             {strings.stageR.runLabel}
           </button>
         </Cluster>
       </form>
+      ) : null}
     </section>
   );
 }

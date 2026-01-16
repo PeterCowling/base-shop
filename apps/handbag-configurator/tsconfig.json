@@ -1,0 +1,45 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*", "dist/*"],
+      "@acme/product-configurator": [
+        "../../packages/product-configurator/src/index.ts",
+        "../../packages/product-configurator/dist/index.d.ts"
+      ],
+      "@acme/product-configurator/*": [
+        "../../packages/product-configurator/src/*",
+        "../../packages/product-configurator/dist/*"
+      ],
+      "@acme/ui/atoms": [
+        "../../packages/ui/src/components/atoms/index.ts",
+        "../../packages/ui/dist/components/atoms/index.d.ts"
+      ],
+      "@acme/ui/atoms/*": [
+        "../../packages/ui/src/components/atoms/*",
+        "../../packages/ui/dist/components/atoms/*"
+      ],
+      "@i18n": ["../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index.d.ts"],
+      "@i18n/*": ["../../packages/i18n/src/*", "../../packages/i18n/dist/*"],
+      "@acme/i18n": [
+        "../../packages/i18n/src/index.ts",
+        "../../packages/i18n/dist/index.d.ts"
+      ],
+      "@acme/i18n/*": ["../../packages/i18n/src/*", "../../packages/i18n/dist/*"],
+      "three-stdlib": ["src/types/three-stdlib.d.ts"]
+    }
+  },
+  "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts"],
+  "exclude": [
+    ".next/types/server.d.ts",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [
+    { "path": "../../packages/product-configurator" },
+    { "path": "../../packages/ui" }
+  ]
+}

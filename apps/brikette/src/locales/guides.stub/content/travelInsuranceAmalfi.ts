@@ -5,7 +5,6 @@
 
 import { stubFaq } from "../shared";
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const travelInsuranceAmalfi = {
   seo: {
@@ -15,5 +14,4 @@ export const travelInsuranceAmalfi = {
   faqs: stubFaq.faqs,
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

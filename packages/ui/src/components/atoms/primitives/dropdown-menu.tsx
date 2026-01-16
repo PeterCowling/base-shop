@@ -1,5 +1,4 @@
 // packages/ui/components/atoms/primitives/dropdown-menu.tsx
-/* eslint-disable ds/no-hardcoded-copy -- CHORE-0000: primitives contain only class tokens and no user-facing copy */
 "use client";
 
 import {

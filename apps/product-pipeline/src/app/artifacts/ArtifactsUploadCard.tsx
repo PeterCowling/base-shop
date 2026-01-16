@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { formatStageRunLabel } from "@/lib/stage-labels";
 import type { ArtifactsStrings, CandidateOption, StageRunOption } from "./types";
 
 type CandidateSummary = {
@@ -25,15 +26,6 @@ function formatCandidateLabel(candidate: CandidateSummary): string {
     return `${candidate.lead.title} | ${shortId}`;
   }
   return candidate.id;
-}
-
-function formatStageRunLabel(run: {
-  stage: string;
-  status: string;
-  createdAt: string | null;
-}): string {
-  const timestamp = run.createdAt ?? "";
-  return `${run.stage} | ${run.status}${timestamp ? ` | ${timestamp}` : ""}`;
 }
 
 export default function ArtifactsUploadCard({
@@ -90,7 +82,7 @@ export default function ArtifactsUploadCard({
         setStageRuns(
           data.stageRuns.map((run) => ({
             id: run.id,
-            label: formatStageRunLabel(run),
+            label: formatStageRunLabel(run, strings.stageLabels),
           })),
         );
       } else {
@@ -102,7 +94,7 @@ export default function ArtifactsUploadCard({
     } finally {
       setLoadingRuns(false);
     }
-  }, []);
+  }, [strings.stageLabels]);
 
   useEffect(() => {
     void loadCandidates();

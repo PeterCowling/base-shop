@@ -3,17 +3,12 @@
 // Runtime-safe locale loader that works in Next (webpack) and Node contexts.
 // ---------------------------------------------------------------------------
 
+import { getWebpackContext as getWebpackContextFromMeta } from "../utils/webpackGlob";
+
 type WebpackContext = {
   keys(): string[];
   <T = unknown>(id: string): T;
 };
-
-type WebpackRequire = NodeRequire & {
-  context?: (path: string, recursive?: boolean, filter?: RegExp) => WebpackContext;
-};
-
-// `require` is only available in webpack or CJS runtimes.
-declare const require: WebpackRequire | undefined;
 
 const unwrapDefault = (mod: unknown): unknown => {
   if (mod && typeof mod === "object" && "default" in mod) {
@@ -27,8 +22,9 @@ let cachedContext: WebpackContext | null | undefined;
 const getWebpackContext = (): WebpackContext | null => {
   if (cachedContext !== undefined) return cachedContext;
   try {
-    if (typeof require === "function" && typeof require.context === "function") {
-      cachedContext = require.context("./", true, /\.json$/);
+    const context = getWebpackContextFn();
+    if (context) {
+      cachedContext = context;
     } else {
       cachedContext = null;
     }
@@ -37,6 +33,9 @@ const getWebpackContext = (): WebpackContext | null => {
   }
   return cachedContext;
 };
+
+const getWebpackContextFn = (): WebpackContext | undefined =>
+  getWebpackContextFromMeta("./", true, /\.json$/) as WebpackContext | undefined;
 
 export const loadLocaleResource = async (
   lang: string,

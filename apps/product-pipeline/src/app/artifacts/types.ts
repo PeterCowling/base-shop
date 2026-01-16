@@ -46,6 +46,7 @@ export type ArtifactsStrings = {
     open: string;
     viewCandidate: string;
   };
+  stageLabels: Record<string, string>;
   notAvailable: string;
 };
 

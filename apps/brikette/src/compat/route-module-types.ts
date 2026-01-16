@@ -4,7 +4,7 @@ import type { LoaderFunctionArgs } from "./router-state";
 
 export type RouteModule = {
   // Route modules can export memo/exotic components with stricter prop types.
-  // Use `unknown` here to avoid overly-narrow variance issues during dynamic imports.
+  // Use `unknown` here and cast at call sites to avoid variance issues.
   default?: ComponentType<unknown> | ExoticComponent<unknown>;
   clientLoader?: (args: LoaderFunctionArgs) => unknown | Promise<unknown>;
   loader?: (args: LoaderFunctionArgs) => unknown | Promise<unknown>;

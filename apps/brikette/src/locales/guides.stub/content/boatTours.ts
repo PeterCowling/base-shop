@@ -3,7 +3,6 @@
 // Single-purpose stub: Boat tours in Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const boatTours = {
   seo: {
@@ -28,5 +27,4 @@ export const boatTours = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

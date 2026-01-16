@@ -10,16 +10,16 @@
     "caption": "يقع هوستل بريكيت منعطفًا واحدًا أعلى التل من الموقف. خصص بضع دقائق إضافية لتلتحق بالطابور قبل وصول الحافلة."
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "في هذه الصفحة",
+    "before": "قبل المغادرة",
+    "steps": "خطوة بخطوة",
+    "knees": "الأرجل والأمتعة",
+    "faqs": "الأسئلة الشائعة"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "لماذا ينجح هذا المسار",
       "body": [
         "يبعد الموقف 120 مترًا تقريبًا عن مدخل الهوستل على الطريق الرئيسي.",
         "إذا كنت متجهًا نحو أمالفي فالموقف مقابل بار إنترناسيونالي — اصطف على جانب الطريق المطل على البحر. إذا كنت متجهًا نحو سورينتو فستنتظر أمام البار مباشرة."
@@ -27,7 +27,7 @@
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "التذاكر والتوقيت",
       "body": [
         "اشترِ تذكرة SITA من كشك التبغ أو من داخل البار. لا تحاول الصعود بدون تذكرة؛ لن تتمكن من شرائها على متن الحافلة. قدّم تذكرتك للسائق عند الصعود. إذا كنت ستأخذ أول حافلة صباحاً فاشترِ التذكرة في اليوم السابق وتواصل مع الاستقبال لترتيب تسجيل الخروج.",
         "حافلات الصيف غالباً ما تكون ممتلئة. خطط وفقاً لذلك، خاصة في فترات الذروة."
@@ -42,9 +42,9 @@
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale&hl=ar",
   "kneesList": [],
   "kneesDockPrefix": "تبدأ رحلتك ومعك أمتعة من رصيف العبّارات؟ استخدم دليلنا",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesDockLinkLabel": "مسار الأمتعة من رصيف العبّارات",
   "kneesPorterPrefix": "تحتاج أسعار الحمّالين أو مساعدة في الحجز؟ راجع",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "دليل خدمة الحمّالين",
   "faqs": [
     {
       "q": "متى يجب أن أصل إلى الموقف؟",

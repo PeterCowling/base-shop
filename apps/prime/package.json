@@ -6,7 +6,7 @@
     "dev": "next dev -p 3015",
     "build": "next build",
     "start": "next start -p 3015",
-    "lint": "eslint .",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -17,7 +17,7 @@
     "i18next": "^24.2.3",
     "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.511.0",
-    "next": "^15.3.5",
+    "next": "^15.3.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-i18next": "^15.5.3",

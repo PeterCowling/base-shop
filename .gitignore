@@ -36,6 +36,11 @@ apps/cms/dist/
 **/.turbo/
 
 # ---------------------------
+# Git worktrees
+# ---------------------------
+.worktrees/
+
+# ---------------------------
 # Misc
 # ---------------------------
 .DS_Store
@@ -43,6 +48,18 @@ apps/cms/dist/
 *.tsbuildinfo
 next-env.d.ts
 data/users.json
+
+# ---------------------------
+# XA catalog operator data (local paths)
+# ---------------------------
+apps/xa-uploader/data/products.csv
+apps/xa-uploader/data/images.csv
+apps/xa-uploader/data/*.export.csv
+apps/xa-uploader/data/*.generated.csv
+apps/xa-uploader/data/.xa-upload-state*.json
+apps/xa-uploader/data/backups/
+apps/xa-uploader/data/inbox/
+apps/xa-uploader/data/.xa-r2-processed*.json
 
 # ---------------------------
 # Debug logs

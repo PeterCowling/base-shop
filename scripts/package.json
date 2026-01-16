@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "test": "cross-env JEST_FORCE_CJS=1 jest --config ../jest.config.cjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.6.0"
   }
 }

@@ -1,0 +1,28 @@
+{
+  "title": "设置",
+  "cache": {
+    "title": "缓存数据",
+    "usage": "已使用存储",
+    "quota": "已使用可用存储的{{percent}}%",
+    "description": "缓存数据帮助应用离线工作。清除可能需要重新下载内容。",
+    "clear": "清除缓存数据",
+    "clearing": "清除中...",
+    "cleared": "已清除！",
+    "refresh": "刷新"
+  },
+  "language": {
+    "title": "语言",
+    "select": "选择语言"
+  },
+  "notifications": {
+    "title": "通知",
+    "push": "推送通知",
+    "email": "邮件通知"
+  },
+  "about": {
+    "title": "关于",
+    "version": "版本",
+    "terms": "服务条款",
+    "privacy": "隐私政策"
+  }
+}

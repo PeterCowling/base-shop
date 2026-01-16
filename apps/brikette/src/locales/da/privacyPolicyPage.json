@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Privatlivspolitik | Hostel Brikette",
+    "description": "Hvordan Hostel Brikette indsamler, bruger, lagrer og deler persondata, når du besøger vores website eller booker et værelse."
+  },
+  "headings": {
+    "pageTitle": "Privatlivspolitik",
+    "subtitle": "Hvordan vi håndterer dine persondata"
+  },
+  "lastUpdated": {
+    "label": "Sidst opdateret",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denne side",
+    "aria": "Indholdsfortegnelse for privatlivspolitik"
+  },
+  "sections": {
+    "intro": {
+      "title": "Overblik",
+      "body": [
+        "Denne privatlivspolitik forklarer, hvilke persondata vi indsamler, hvorfor vi indsamler dem, og hvordan vi bruger dem, når du besøger vores website, kontakter os eller booker et værelse.",
+        "Hvis du leder efter reglerne og de kommercielle vilkår for en booking (betalinger, afbestillingsfrister, check‑in/out og gæsters forpligtelser), kan du læse vores Vilkår og betingelser for værelsesbookinger."
+      ]
+    },
+    "controller": {
+      "title": "Hvem der er ansvarlig for dine data",
+      "body": [
+        "Dataansvarlig er Skylar SRL, der driver Hostel Brikette (\"vi\").",
+        "Hvis du har spørgsmål om denne politik eller ønsker at udøve dine privatlivsrettigheder, kontakt os på {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Persondata vi indsamler",
+      "body": [
+        "Når du kontakter os eller anmoder om en booking, kan du give oplysninger som navn, e‑mailadresse, telefonnummer, nationalitet, opholdsdatoer og eventuelle beskeder, du sender til os.",
+        "Hvis du gennemfører en booking via en Online Travel Agent (OTA) eller en tredjeparts bookingmotor, behandler udbyderen dine betalingsoplysninger under sin egen privatlivspolitik. Vi modtager typisk de bookingoplysninger, vi har brug for for at være vært for dig (f.eks. gæstens navn, kontaktoplysninger, datoer og reservationsreference).",
+        "Når du besøger vores website, kan vores servere behandle grundlæggende tekniske data (såsom IP‑adresse, enheds- og browserinformation samt forespurgte sider) for sikkerhed, fejlfinding og ydeevne."
+      ]
+    },
+    "howWeUse": {
+      "title": "Hvordan vi bruger dine data",
+      "body": [
+        "Til at besvare forespørgsler og yde kundesupport.",
+        "Til at behandle og administrere din reservation, check‑in og kommunikation relateret til opholdet.",
+        "Til at overholde lovmæssige forpligtelser (herunder dem der vedrører gæstfrihed og offentlig sikkerhed).",
+        "Til at sikre og vedligeholde vores website (forebyggelse af svindel, overvågning af misbrug og driftssikkerhed)."
+      ]
+    },
+    "legalBases": {
+      "title": "Retsgrundlag (hvorfor vi må behandle data)",
+      "body": [
+        "Kontrakt: for at tage skridt på din anmodning før en booking indgås og for at opfylde bookingkontrakten.",
+        "Retlig forpligtelse: for at opfylde krav i gældende lov (herunder italienske regler for gæstfrihed).",
+        "Legitime interesser: for at drive, beskytte og forbedre vores website og kommunikation, forudsat at disse interesser ikke går forud for dine rettigheder."
+      ]
+    },
+    "sharing": {
+      "title": "Hvem vi deler data med",
+      "body": [
+        "Vi deler persondata kun når det er nødvendigt for at levere tjenester eller overholde loven. Dette kan omfatte bookingplatforme, du vælger at bruge, betalingsudbydere brugt af disse platforme, e‑mail/kommunikationsudbydere og tekniske tjenesteleverandører, der hoster eller beskytter vores website.",
+        "Vi sælger ikke persondata."
+      ]
+    },
+    "retention": {
+      "title": "Hvor længe vi opbevarer data",
+      "body": [
+        "Vi opbevarer persondata kun så længe det er nødvendigt for de formål, der er beskrevet ovenfor, og for at opfylde juridiske, regnskabsmæssige eller rapporteringskrav.",
+        "Opbevaringsperioder kan variere afhængigt af typen af post og den gældende juridiske forpligtelse."
+      ]
+    },
+    "security": {
+      "title": "Hvordan vi beskytter dine data",
+      "body": [
+        "Vi anvender rimelige tekniske og organisatoriske foranstaltninger for at beskytte persondata mod tab, misbrug og uautoriseret adgang.",
+        "Ingen system kan garantere 100 % sikkerhed, men vi arbejder løbende på at forbedre sikkerheden."
+      ]
+    },
+    "yourRights": {
+      "title": "Dine rettigheder",
+      "body": [
+        "Afhængigt af din placering og gældende lov kan du have rettigheder til indsigt, rettelse, sletning eller begrænsning af behandlingen af dine persondata samt ret til at gøre indsigelse mod visse behandlinger.",
+        "For at udøve dine rettigheder, kontakt os på {{email}}. Vi kan have brug for at bekræfte din identitet."
+      ]
+    },
+    "international": {
+      "title": "Internationale overførsler",
+      "body": [
+        "Nogle tjenesteleverandører kan behandle data uden for dit land. Når det er nødvendigt, bruger vi passende sikkerhedsforanstaltninger for internationale dataoverførsler."
+      ]
+    },
+    "changes": {
+      "title": "Ændringer af denne politik",
+      "body": [
+        "Vi kan opdatere denne privatlivspolitik fra tid til anden. Den nyeste version er den, der er offentliggjort på denne side."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tilbage til toppen"
+  }
+}

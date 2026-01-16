@@ -75,6 +75,30 @@ if (isSkylarApp) {
   ];
 }
 
+const isPrimeApp = /apps\/prime$/.test(process.cwd());
+if (isPrimeApp) {
+  const overrides = {
+    "^@/lib/router$": " /apps/prime/src/test-utils/router.tsx",
+    "^@/(.*)$": [" /apps/prime/src/$1", " /apps/prime/dist/$1"],
+  };
+  const pruned = Object.fromEntries(
+    Object.entries(moduleNameMapper).filter(([key]) => !(key in overrides))
+  );
+  moduleNameMapper = { ...overrides, ...pruned };
+}
+
+const isCochlearfitApp = /apps\/cochlearfit$/.test(process.cwd());
+if (isCochlearfitApp) {
+  moduleNameMapper["^@/(.*)$"] = [
+    " /apps/cochlearfit/src/$1",
+    " /apps/cochlearfit/dist/$1",
+  ];
+  moduleNameMapper["^@/components/(.*)$"] = [
+    " /apps/cochlearfit/src/components/$1",
+    " /apps/cochlearfit/dist/components/$1",
+  ];
+}
+
 const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
 const coveragePathIgnorePatterns = [
   ...coverageDefaults.coveragePathIgnorePatterns,
@@ -108,6 +132,19 @@ if (isTargetedRun || process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1") {
   coverageThreshold.global = { lines: 0, branches: 0, functions: 0 };
 }
 
+const isXaApp = /apps\/xa$/.test(process.cwd());
+if (isXaApp) {
+  const overrides = {
+    "^@/(.*)$": [" /apps/xa/src/$1", " /apps/xa/dist/$1"],
+    "^@ui/(atoms|components|molecules|organisms|providers|rooms|shared)(/.*)?$":
+      " /test/__mocks__/componentStub.js",
+    "^@radix-ui/react-icons$": " /test/__mocks__/componentStub.js",
+  };
+  const pruned = Object.fromEntries(
+    Object.entries(moduleNameMapper).filter(([key]) => !(key in overrides))
+  );
+  moduleNameMapper = { ...overrides, ...pruned };
+}
 const forceCjs = process.env.JEST_FORCE_CJS === "1";
 const isPlatformCorePackage = /packages\/platform-core$/.test(process.cwd());
 const isLibPackage = /packages\/lib$/.test(process.cwd());
@@ -180,6 +217,7 @@ const config = {
     "node",
     "d.ts",
   ],
+  coverageProvider: isXaApp ? "v8" : "babel",
   collectCoverage: coverageDefaults.collectCoverage,
   collectCoverageFrom,
   // Normalize coverage output path so all workspace packages write into

@@ -44,7 +44,7 @@ export function HeroSection({ hero, heroCtas, sections }: HeroSectionProps) {
         width="full"
         className="relative mx-auto max-w-5xl"
       >
-        <Stack className="gap-8 px-6 py-16 sm:px-10 lg:flex-row lg:items-center lg:py-24">
+        <Stack className="gap-8 px-6 py-16 sm:px-10 md:px-12 lg:flex-row lg:items-center lg:px-16 lg:py-24">
           <Stack className="flex-1 gap-4">
             <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary/90">
               {hero.eyebrow}

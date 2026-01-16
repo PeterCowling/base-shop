@@ -5,13 +5,18 @@
     "popularGuides": "Populära guider",
     "helpfulGuides": "Användbara guider",
     "alsoSee": "Se även",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Visa alla guider"
   },
   "meta": {
     "index": {
       "title": "Reseguider för Positano",
       "description": "Praktiska steg-för-steg-guider för att ta sig runt i Positano och längs Amalfikusten."
     }
+  },
+  "redirectPage": {
+    "title": "Omdirigerar...",
+    "message": "Om du inte omdirigeras, <link>fortsätt här</link>."
   },
   "content": {
     "onlyHostel": {

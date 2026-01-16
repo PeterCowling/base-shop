@@ -1,0 +1,19 @@
+{
+  "name": "@acme/tools",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint .",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "budgets:check": "pnpm exec tsx src/cli.ts budgets:check"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "^4.2.1"
+  }
+}
+

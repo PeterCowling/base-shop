@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/data/imageManifest.ts
 // Optional per-image metadata used to enrich JSON-LD ImageObject nodes and image sitemaps.
 // Keys must be URL paths relative to the site root (e.g. "/images/7/landing.webp").

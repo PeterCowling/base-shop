@@ -1,17 +1,28 @@
 Type: Contract
 Status: Canonical
 Domain: Auth
-Last-reviewed: 2025-12-02
+Last-reviewed: 2025-12-29
 
 Primary code entrypoints:
 - apps/cms/src/app/cms/rbac/**
-- packages/auth/**
+- apps/cms/src/actions/common/auth.ts
+- apps/cms/src/app/api/shop/[shop]/product-import/route.ts
+- apps/cms/src/app/api/shop/[shop]/stock-inflows/route.ts
+- apps/cms/src/app/api/shop/[shop]/stock-adjustments/route.ts
+- packages/auth/src/permissions.json
+- packages/auth/src/permissions.ts
+- packages/auth/src/requirePermission.ts
+- packages/auth/src/rbac.ts
 
 # Permission Guide
 
 This guide lists built-in permissions and their default role mappings.
 
+Note: the inventory matrix save endpoint now enforces `manage_inventory` (default roles: `admin`, `ShopAdmin`), matching stock inflows.
+
 ## Default permission map
+
+Source of truth: `packages/auth/src/permissions.json`.
 
 | Permission | Default roles |
 | --- | --- |
@@ -23,6 +34,9 @@ This guide lists built-in permissions and their default role mappings.
 | `change_password` | customer, admin, ShopAdmin, CatalogManager, ThemeEditor |
 | `manage_cart` | customer, admin, ShopAdmin, CatalogManager, ThemeEditor |
 | `view_orders` | customer, admin, ShopAdmin |
+| `manage_catalog` | admin, ShopAdmin, CatalogManager |
+| `manage_inventory` | admin, ShopAdmin |
+| `manage_media` | admin, ShopAdmin, CatalogManager |
 | `manage_orders` | admin, ShopAdmin |
 | `manage_pages` | admin, ShopAdmin |
 | `manage_sessions` | admin, ShopAdmin |
@@ -30,7 +44,7 @@ This guide lists built-in permissions and their default role mappings.
 | `manage_rentals` | admin, ShopAdmin |
 
 ## read
-Allows viewing CMS content and APIs.
+Allows viewing CMS content and APIs (coarse role gate).
 
 **Default roles**
 
@@ -52,7 +66,7 @@ if (!canRead(session.user.role)) {
 ```
 
 ## write
-Allows creating or modifying resources in the CMS.
+Allows creating or modifying resources in the CMS (coarse role gate).
 
 **Default roles**
 
@@ -92,7 +106,7 @@ examples show how common roles interact with those checks.
 - Attempts to add items to the cart fail because `manage_cart` is missing.
 
 ```ts
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 
 export async function addItem() {
   await requirePermission("manage_cart"); // throws for viewers
@@ -114,4 +128,16 @@ await requirePermission("checkout"); // allowed
 
 ```ts
 await requirePermission("manage_orders");
+```
+
+### CatalogManager (CMS uploads)
+
+- Can manage catalogue imports and media uploads (for example `manage_catalog`, `manage_media`).
+- Cannot receive stock inflows because `manage_inventory` is missing.
+
+```ts
+import { requirePermission } from "@acme/auth";
+
+await requirePermission("manage_catalog"); // allowed
+await requirePermission("manage_inventory"); // throws
 ```

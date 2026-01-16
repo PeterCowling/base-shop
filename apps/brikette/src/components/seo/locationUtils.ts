@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/locationUtils.ts
 import { useLocation } from "react-router-dom";
 
@@ -9,7 +8,10 @@ const ROUTER_CONTEXT_MESSAGES = [
 
 export function useOptionalRouterPathname(): string | undefined {
   try {
-    return useLocation().pathname;
+    const location = useLocation() as unknown;
+    if (!location || typeof location !== "object") return undefined;
+    const pathname = (location as { pathname?: unknown }).pathname;
+    return typeof pathname === "string" ? pathname : undefined;
   } catch (error) {
     if (error instanceof Error && typeof error.message === "string") {
       if (ROUTER_CONTEXT_MESSAGES.some((snippet) => error.message.includes(snippet))) {

@@ -164,7 +164,17 @@ export function buildRouteLinks(args?: BuildRouteLinksArgs): ReturnType<LinksFun
   const contextSource = args ?? routeLinkContextStack.pop() ?? lastRouteLinkContext;
   if (!contextSource) return [];
 
-  const resolvedOrigin = contextSource.origin ?? CANONICAL_ORIGIN;
+  const resolvedOrigin = (() => {
+    if (contextSource.origin) return contextSource.origin;
+    if (contextSource.url) {
+      try {
+        return new URL(contextSource.url).origin;
+      } catch {
+        // ignore invalid url and fall back
+      }
+    }
+    return CANONICAL_ORIGIN;
+  })();
 
   const resolvedPath = (() => {
     if (contextSource.path && contextSource.path.trim().length > 0) {

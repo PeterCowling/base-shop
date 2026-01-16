@@ -1,9 +1,9 @@
 // packages/ui/src/organisms/DestinationSlideshow.tsx
 import { FC, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CfHeroImage } from "@/atoms/CfHeroImage";
-import { Section } from "@/atoms/Section";
-import { Grid } from "@/components/atoms/primitives/Grid";
+import { CfHeroImage } from "../atoms/CfHeroImage";
+import { Section } from "../atoms/Section";
+import { Grid } from "../components/atoms/primitives/Grid";
 import { Heading } from "../atoms/Typography";
 
 const IMG = {
@@ -51,27 +51,29 @@ const DestinationSlideshow: FC<{ lang?: string }> = ({ lang }) => {
       slides.map(({ title, text, image, alt }) => (
         <figure
           key={title}
-          className="group flex w-full flex-col overflow-hidden rounded-3xl shadow-xl transition-shadow duration-300 hover:shadow-2xl"
+          className="group relative overflow-hidden rounded-3xl shadow-xl transition-shadow duration-300 hover:shadow-2xl"
         >
-          <div className="relative aspect-[var(--destination-slideshow-aspect,4/3)] w-full overflow-hidden">
+          <div className="relative h-56 w-full sm:h-64 lg:h-72">
             <CfHeroImage
               src={image}
               alt={alt}
               quality={80}
               loading="lazy"
+              data-testid="cf-hero-img"
               className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           </div>
 
-          <figcaption className="relative mt-0 flex w-full justify-center bg-black/55 px-6 py-6 text-center backdrop-blur-sm sm:px-8 sm:py-8 after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/40 after:to-transparent dark:bg-black/60">
+          <figcaption className="absolute inset-x-0 bottom-0 px-6 pb-6 pt-10 text-center sm:px-8">
             <Section
               as="div"
               padding="none"
               width="full"
-              className="relative z-10 flex w-full max-w-md flex-col items-center justify-center"
+              className="relative z-10 flex w-full max-w-md flex-col items-center justify-center px-4"
             >
-              <h3 className="text-xl font-semibold leading-snug text-white dark:text-white md:text-2xl">{title}</h3>
-              <p className="mt-2 text-sm text-white/90 dark:text-white/90 md:text-base">{text}</p>
+              <h3 className="text-lg font-semibold leading-snug text-white sm:text-xl md:text-2xl">{title}</h3>
+              <p className="mt-2 text-sm text-white/90 md:text-base">{text}</p>
             </Section>
           </figcaption>
         </figure>

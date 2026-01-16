@@ -93,6 +93,19 @@ mutableEnv.STRIPE_USE_MOCK ||= "true";
 /* -------------------------------------------------------------------------- */
 
 import "@testing-library/jest-dom";
+// Some streaming libraries (e.g. ZIP builders) expect setImmediate/clearImmediate
+// to exist; jsdom doesn't provide them by default.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const g = globalThis as any;
+  if (typeof g.setImmediate !== "function") {
+    g.setImmediate = (fn: (...args: unknown[]) => void, ...args: unknown[]) =>
+      setTimeout(fn, 0, ...args);
+  }
+  if (typeof g.clearImmediate !== "function") {
+    g.clearImmediate = (handle: ReturnType<typeof setTimeout>) => clearTimeout(handle);
+  }
+} catch {}
 // Configure Testing Library defaults
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { configure } = require("@testing-library/react");

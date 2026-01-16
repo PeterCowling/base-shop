@@ -24,6 +24,7 @@ pnpm --filter @apps/product-pipeline exec wrangler pages dev .vercel/output/stat
 - The UI talks to the Worker API for pipeline operations.
 - Access control is expected via Cloudflare Access (single-user key) in production.
 - Cloudflare bindings are defined in `apps/product-pipeline/wrangler.toml`.
+- Localization: English-only forever for this app; do not add or propose additional locales.
 
 ## Stage M runner (Playwright/headed capture)
 

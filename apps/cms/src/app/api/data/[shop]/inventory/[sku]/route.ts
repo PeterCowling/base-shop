@@ -1,5 +1,4 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@platform-core/types/inventory";
 import { inventoryRepository } from "@platform-core/repositories/inventory.server";
@@ -8,11 +7,8 @@ export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shop: string; sku: string }> },
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const body = await req.json();
     const parsed = inventoryItemSchema.partial().safeParse(body);
     if (!parsed.success) {

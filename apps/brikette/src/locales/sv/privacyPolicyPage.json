@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Integritetspolicy | Hostel Brikette",
+    "description": "Hur Hostel Brikette samlar in, använder, lagrar och delar personuppgifter när du besöker vår webbplats eller bokar ett rum."
+  },
+  "headings": {
+    "pageTitle": "Integritetspolicy",
+    "subtitle": "Hur vi hanterar dina personuppgifter"
+  },
+  "lastUpdated": {
+    "label": "Senast uppdaterad",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denna sida",
+    "aria": "Innehållsförteckning för integritetspolicy"
+  },
+  "sections": {
+    "intro": {
+      "title": "Översikt",
+      "body": [
+        "Denna integritetspolicy förklarar vilka personuppgifter vi samlar in, varför vi samlar in dem och hur vi använder dem när du besöker vår webbplats, kontaktar oss eller bokar ett rum.",
+        "Om du söker reglerna och de kommersiella villkoren för en bokning (betalningar, avbokningsfrister, check‑in/out och gästernas skyldigheter) ber vi dig läsa våra villkor för rumsbokningar."
+      ]
+    },
+    "controller": {
+      "title": "Vem som ansvarar för dina uppgifter",
+      "body": [
+        "Personuppgiftsansvarig är Skylar SRL som driver Hostel Brikette (\"vi\").",
+        "Om du har frågor om denna policy eller vill utöva dina integritetsrättigheter, kontakta oss på {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Personuppgifter vi samlar in",
+      "body": [
+        "När du kontaktar oss eller begär en bokning kan du lämna uppgifter såsom namn, e‑postadress, telefonnummer, nationalitet, vistelsedatum och eventuella meddelanden du skickar till oss.",
+        "Om du genomför en bokning via en Online Travel Agent (OTA) eller en tredjepartsbokningsmotor behandlar den leverantören dina betalningsuppgifter enligt sin egen integritetspolicy. Vi får vanligtvis den bokningsinformation vi behöver för att ta emot dig (t.ex. gästnamn, kontaktuppgifter, datum och bokningsreferens).",
+        "När du besöker vår webbplats kan våra servrar behandla grundläggande tekniska data (såsom IP‑adress, enhets- och browserinformation samt begärda sidor) för säkerhet, felsökning och prestanda."
+      ]
+    },
+    "howWeUse": {
+      "title": "Hur vi använder dina uppgifter",
+      "body": [
+        "För att svara på förfrågningar och ge kundsupport.",
+        "För att behandla och hantera din reservation, check‑in och kommunikation kopplad till vistelsen.",
+        "För att uppfylla rättsliga skyldigheter (inklusive de som rör gästfrihet och offentlig säkerhet).",
+        "För att säkra och underhålla vår webbplats (bedrägeriförebyggande, övervakning av missbruk och driftsäkerhet)."
+      ]
+    },
+    "legalBases": {
+      "title": "Rättsliga grunder (varför vi får behandla data)",
+      "body": [
+        "Avtal: för att vidta åtgärder på din begäran innan en bokning ingås och för att fullgöra bokningsavtalet.",
+        "Rättslig förpliktelse: för att uppfylla krav enligt tillämplig lag (inklusive italienska regler för gästfrihet).",
+        "Berättigade intressen: för att driva, skydda och förbättra vår webbplats och kommunikation, förutsatt att dessa intressen inte väger tyngre än dina rättigheter."
+      ]
+    },
+    "sharing": {
+      "title": "Vem vi delar data med",
+      "body": [
+        "Vi delar personuppgifter endast när det är nödvändigt för att leverera tjänster eller följa lagen. Detta kan inkludera bokningsplattformar du väljer att använda, betalningsleverantörer som används av dessa plattformar, e‑post/kommunikationsleverantörer och tekniska tjänsteleverantörer som hostar eller skyddar vår webbplats.",
+        "Vi säljer inte personuppgifter."
+      ]
+    },
+    "retention": {
+      "title": "Hur länge vi sparar data",
+      "body": [
+        "Vi behåller personuppgifter bara så länge det behövs för ändamålen ovan och för att uppfylla juridiska, bokförings- eller rapporteringskrav.",
+        "Lagringstider kan variera beroende på typ av registrering och tillämplig rättslig skyldighet."
+      ]
+    },
+    "security": {
+      "title": "Hur vi skyddar dina uppgifter",
+      "body": [
+        "Vi använder rimliga tekniska och organisatoriska åtgärder för att skydda personuppgifter mot förlust, missbruk och obehörig åtkomst.",
+        "Inget system kan garantera 100 % säkerhet, men vi arbetar kontinuerligt för att förbättra säkerheten."
+      ]
+    },
+    "yourRights": {
+      "title": "Dina rättigheter",
+      "body": [
+        "Beroende på din plats och tillämplig lag kan du ha rätt att få tillgång till, rätta, radera eller begränsa behandlingen av dina personuppgifter samt att invända mot vissa typer av behandling.",
+        "För att utöva dina rättigheter, kontakta oss på {{email}}. Vi kan behöva verifiera din identitet."
+      ]
+    },
+    "international": {
+      "title": "Internationella överföringar",
+      "body": [
+        "Vissa tjänsteleverantörer kan behandla data utanför ditt land. Vid behov använder vi lämpliga skyddsåtgärder för internationella dataöverföringar."
+      ]
+    },
+    "changes": {
+      "title": "Ändringar i denna policy",
+      "body": [
+        "Vi kan uppdatera denna integritetspolicy från tid till annan. Den senaste versionen är den som publiceras på denna sida."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tillbaka till toppen"
+  }
+}

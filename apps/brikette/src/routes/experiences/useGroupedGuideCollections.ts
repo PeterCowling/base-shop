@@ -11,7 +11,7 @@ type Params = {
   experienceGuides: ReadonlyArray<GuideMeta>;
   guideCollectionCopy: GuideCollectionCopy;
   guideCollectionId: string;
-  normalizedFilterTag: string;
+  normalizedFilterTopic: string;
   t: Translator;
   experiencesEnT: ExperiencesTranslator;
 };
@@ -20,7 +20,7 @@ export function useGroupedGuideCollections({
   experienceGuides,
   guideCollectionCopy,
   guideCollectionId,
-  normalizedFilterTag,
+  normalizedFilterTopic,
   t,
   experiencesEnT,
 }: Params): ReadonlyArray<GuideCollectionGroup> | undefined {
@@ -38,7 +38,7 @@ export function useGroupedGuideCollections({
   );
 
   return useMemo(() => {
-    if (normalizedFilterTag !== "beaches") {
+    if (normalizedFilterTopic !== "beaches") {
       return undefined;
     }
 
@@ -109,7 +109,7 @@ export function useGroupedGuideCollections({
     experienceGuides,
     guideCollectionCopy,
     guideCollectionId,
-    normalizedFilterTag,
+    normalizedFilterTopic,
     experiencesEnT,
     translate,
   ]);

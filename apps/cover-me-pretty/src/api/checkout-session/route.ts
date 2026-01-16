@@ -157,7 +157,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 503 },
     );
   }
-  if (!inventoryCheck.ok) {
+  if (inventoryCheck.ok === false) {
     return NextResponse.json(
       {
         error: INSUFFICIENT_STOCK_ERROR,
@@ -170,6 +170,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const orderId = ulid();
+    const orderLineItems = cartToInventoryRequests(cart).map((item) => ({
+      sku: item.sku,
+      variantAttributes: item.variantAttributes ?? {},
+      quantity: item.quantity,
+    }));
     const result = await createCheckoutSession(cart, {
       mode: "rental",
       returnDate,
@@ -205,6 +210,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         currency,
         cartId: cartId ?? undefined,
         stripePaymentIntentId: result.paymentIntentId,
+        lineItems: orderLineItems,
       });
     } catch {
       // fallback to JSONL persistence

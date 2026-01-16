@@ -1,7 +1,7 @@
 // apps/cover-me-pretty/src/app/api/analytics/event/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent, type AnalyticsEvent } from "@platform-core/analytics";
 import { getShopSettings } from "@platform-core/repositories/shops.server";
 import shop from "../../../../../shop.json";
 
@@ -91,6 +91,6 @@ export async function POST(req: NextRequest) {
   }
 
   // Delegate to platform analytics; when analyticsEnabled is false this is a no-op.
-  await trackEvent(shop.id, parsed.data);
+  await trackEvent(shop.id, parsed.data as AnalyticsEvent);
   return NextResponse.json({ ok: true });
 }

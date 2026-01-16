@@ -52,9 +52,11 @@ jobs:
       - name: Test next-config (node test runner coverage)
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage
-      - run: pnpm --filter ./${{ matrix.workspace }} coverage
+      - name: Coverage (api only)
         if: matrix.workspace == 'apps/api'
-      - run: pnpm --filter ./${{ matrix.workspace }} e2e
+        run: pnpm --filter ./${{ matrix.workspace }} coverage
+      - name: E2E (if script exists)
+        run: pnpm --filter ./${{ matrix.workspace }} e2e --if-present
       - name: Compute coverage artifact name
         id: coverage-name
         if: always()

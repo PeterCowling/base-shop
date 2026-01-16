@@ -214,7 +214,6 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
             ));
         })()}
       </div>
-      {/* eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 style value string; not user-facing copy */}
       <DSStack gap={2} className="overflow-auto p-2" style={{ maxHeight: "calc(100svh - 6rem)" }}>
         {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>}
         {items

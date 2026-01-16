@@ -1,0 +1,31 @@
+{
+  "name": "@apps/xa-uploader",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3020",
+    "build": "pnpm exec next build",
+    "start": "next start -p 3020",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/next-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "@acme/template-app": "workspace:*",
+    "@themes/base": "workspace:*",
+    "fast-csv": "^5.0.5",
+    "minimatch": "^9.0.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "yazl": "^3.3.1",
+    "zod": "^3.25.73"
+  },
+  "devDependencies": {
+    "@types/yauzl": "^2.10.3",
+    "@types/yazl": "^3.3.0",
+    "next": "^15.3.6",
+    "typescript": "5.8.3",
+    "yauzl": "^2.10.0"
+  }
+}

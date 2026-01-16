@@ -24,7 +24,6 @@ export function CheckoutStepper({
   ...props
 }: CheckoutStepperProps) {
   return (
-    /* eslint-disable ds/no-hardcoded-copy -- DS-0008: CSS utility strings only in className; no user-facing copy here */
     <ol className={cn("flex items-center gap-4 text-sm", className)} {...props}>
       {steps.map((step, idx) => (
         <li key={step} className="flex flex-1 items-center gap-2">
@@ -46,6 +45,5 @@ export function CheckoutStepper({
         </li>
       ))}
     </ol>
-    /* eslint-enable ds/no-hardcoded-copy */
   );
 }

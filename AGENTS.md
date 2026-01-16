@@ -19,6 +19,13 @@ Always cross-check the relevant locale doc before touching copy, layout, or imag
   - `pnpm --filter @acme/config run build:stubs`
 - TypeScript path mapping: apps must map workspace packages to both `src` and `dist` so imports resolve pre/post build. See `docs/tsconfig-paths.md` for examples.
 
+## Stash Handling
+- Agents may inspect and compare stashes to the repo to evaluate whether to incorporate partially/fully or drop.
+- Prefer commits for durable work; stashes are for short-lived triage.
+- Review/compare: `git stash list`, `git stash show -p stash@{n}`, `git diff stash@{n}`, or `git diff stash@{n} -- <path>`.
+- Incorporate changes: `git restore -s stash@{n} -- <path>` for partial, or `git stash apply stash@{n}` for full.
+- Drop a stash only after explicit user confirmation: `git stash drop stash@{n}`.
+
 ## Troubleshooting
 - If `pnpm run dev` fails with an `array.length` error, see `docs/troubleshooting.md` for steps to capture detailed logs and stack traces.
 

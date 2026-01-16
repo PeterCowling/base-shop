@@ -41,7 +41,7 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
   - Scope: For each candidate file, compare `stash@{1}` against `HEAD` and decide include/exclude with rationale.
   - Dependencies: REPO-1.
   - Definition of done: A decision list (include/exclude + reason) captured in this plan.
-  - Progress: Docs/config, apps/cms, apps/dashboard/shop-bcd, packages/ui, packages/platform-core, packages shared (i18n/design-tokens/themes/types/tailwind-config), and tests/data decisions captured below.
+  - Progress: Docs/config, apps/cms, apps/dashboard/shop-bcd, packages/ui, packages/platform-core, packages shared (design-tokens/i18n/themes/types/tailwind-config/email/lib/platform-machine), and tests/data decisions captured below.
 
 - [ ] REPO-3: Manually apply approved changes
   - Scope: Recreate approved edits via focused patches; avoid `git stash pop`. Keep changes minimal and on the current `work/*` branch.
@@ -103,6 +103,9 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
 | --- | --- | --- |
 | `packages/design-tokens/**` | Exclude | Stash removes docs, token contexts, and plugin code; large deletions indicate regression. |
 | `packages/i18n/**` | Exclude | Stash drops locales and translation tooling; would reduce language coverage and tooling. |
+| `packages/email/**` | Exclude | Stash replaces large test suites and deletes analytics/provider coverage; likely a rollback. |
+| `packages/lib/**` | Exclude | Stash deletes large portions of tests and try-on providers; not safe to restore without context. |
+| `packages/platform-machine/**` | Exclude | Stash removes maintenance/release service logic and many tests; suggests downgrade. |
 | `packages/themes/**` | Exclude | Stash removes theme packages and token assets; looks like a rollback. |
 | `packages/types/**` | Exclude | Stash removes large portions of type schemas and docs; high regression risk. |
 | `packages/tailwind-config/**` | Exclude | Stash removes README and plugin logic and changes config/tests; appears older. |

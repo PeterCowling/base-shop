@@ -1,11 +1,13 @@
 ---
 Type: Plan
-Status: Active
+Status: Completed
 Domain: Repo
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
 Last-updated-by: Codex
+Completed: 2026-01-16
+Completed-by: Codex
 Last-reviewed: 2026-01-16
 Relates-to charter: AGENTS.md
 ---
@@ -37,18 +39,18 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
   - Dependencies: stash exists locally.
   - Definition of done: A short inventory table in this plan listing candidate paths and exclusions.
 
-- [ ] REPO-2: Decide what to integrate
+- [x] REPO-2: Decide what to integrate
   - Scope: For each candidate file, compare `stash@{1}` against `HEAD` and decide include/exclude with rationale.
   - Dependencies: REPO-1.
   - Definition of done: A decision list (include/exclude + reason) captured in this plan.
   - Progress: Docs/config, apps/cms, apps/dashboard/shop-bcd, packages/ui, packages/platform-core, packages shared (design-tokens/i18n/themes/types/tailwind-config/email/lib/platform-machine), and tests/data decisions captured below.
 
-- [ ] REPO-3: Manually apply approved changes
+- [x] REPO-3: Manually apply approved changes
   - Scope: Recreate approved edits via focused patches; avoid `git stash pop`. Keep changes minimal and on the current `work/*` branch.
   - Dependencies: REPO-2.
   - Definition of done: Only approved files changed; no generated outputs added; changes committed with attribution.
 
-- [ ] REPO-4: Validate and push
+- [x] REPO-4: Validate and push
   - Scope: Run targeted lint/tests per touched packages; push updates and confirm CI is green.
   - Dependencies: REPO-3.
   - Definition of done: CI green on the PR branch; user notified with summary and any remaining warnings.
@@ -121,3 +123,7 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
 ## Risks / Notes
 - The stash appears to include large generated output and mixed changes across multiple apps; careless application could regress unrelated areas.
 - Integration must remain selective, auditable, and reversible.
+
+## Completion Summary
+- Reviewed all stash buckets; all changes excluded due to regression risk or excessive scope.
+- No stash changes applied; repo remains on current `HEAD` behavior.

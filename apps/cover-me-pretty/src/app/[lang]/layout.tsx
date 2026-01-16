@@ -1,17 +1,17 @@
 // apps/cover-me-pretty/src/app/[lang]/layout.tsx
 
-import Footer from "@ui/components/layout/Footer";
-import Header from "@ui/components/layout/Header";
-import TranslationsProvider from "@i18n/Translations";
-import { Locale, resolveLocale } from "@i18n/locales";
+import Footer from "@acme/ui/components/layout/Footer";
+import Header from "@acme/ui/components/layout/Header";
+import TranslationsProvider from "@acme/i18n/Translations";
+import { Locale, resolveLocale } from "@acme/i18n/locales";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getSeo } from "../../lib/seo";
 import "../globals.css";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import shop from "../../../shop.json";
 import { JsonLdScript, organizationJsonLd } from "../../lib/jsonld";
-import { ThemeStyle } from "@acme/ui";
+import ThemeStyle from "@acme/ui/components/ThemeStyle";
 
 export async function generateMetadata({
   params,
@@ -75,7 +75,7 @@ export default async function LocaleLayout({
     const messages = (
       await import(
         /* webpackInclude: /(en|de|it|fr|es|ja|ko)\.json$/ */
-        `@i18n/${lang}.json`
+        `@acme/i18n/${lang}.json`
       )
     ).default;
 

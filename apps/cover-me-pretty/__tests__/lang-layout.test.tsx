@@ -2,8 +2,8 @@
 
 import { render, screen } from "@testing-library/react";
 import type { getSeo as GetSeoFn } from "../src/lib/seo";
-import type { getShopSettings as GetShopSettingsFn } from "@platform-core/repositories/settings.server";
-import type { Messages } from "@i18n/Translations";
+import type { getShopSettings as GetShopSettingsFn } from "@acme/platform-core/repositories/settings.server";
+import type { Messages } from "@acme/i18n/Translations";
 import type { ReactNode } from "react";
 
 type GetSeo = typeof GetSeoFn;
@@ -24,24 +24,24 @@ jest.mock("../src/lib/seo", () => ({
   getSeo: (...args: Parameters<GetSeo>) => getSeoMock(...args),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: Parameters<GetShopSettings>) =>
     getShopSettingsMock(...args),
 }));
 
-jest.mock("@ui/components/layout/Footer", () => ({
+jest.mock("@acme/ui/components/layout/Footer", () => ({
   __esModule: true,
   default: () => <div data-cy="footer" />,
 }));
 
-jest.mock("@ui/components/layout/Header", () => ({
+jest.mock("@acme/ui/components/layout/Header", () => ({
   __esModule: true,
   default: ({ lang }: { lang: string }) => (
     <div data-cy="header">{lang}</div>
   ),
 }));
 
-jest.mock("@i18n/Translations", () => ({
+jest.mock("@acme/i18n/Translations", () => ({
   __esModule: true,
   default: ({
     children,
@@ -56,8 +56,9 @@ jest.mock("@i18n/Translations", () => ({
   ),
 }));
 
-jest.mock("@acme/ui", () => ({
-  ThemeStyle: () => <div data-cy="theme-style" />,
+jest.mock("@acme/ui/components/ThemeStyle", () => ({
+  __esModule: true,
+  default: () => <div data-cy="theme-style" />,
 }));
 
 describe("[lang] layout", () => {

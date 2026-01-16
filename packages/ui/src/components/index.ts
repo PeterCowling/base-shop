@@ -24,4 +24,3 @@ export { default as ThemeToggle } from "./ThemeToggle";
 export { default as ComponentPreview } from "./ComponentPreview";
 export { default as DeviceSelector } from "./DeviceSelector";
 export * from "./overlays";
-export { default as ThemeStyle } from "./ThemeStyle";

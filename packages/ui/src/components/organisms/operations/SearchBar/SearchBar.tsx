@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect, type ChangeEvent, type KeyboardEvent } from 'react';
 import { Search, X } from 'lucide-react';
+import { useTranslations } from '@acme/i18n';
+import { Inline, Stack } from '../../../atoms/primitives';
+import { cn } from '../../../../utils/style/cn';
 
 export interface SearchBarProps {
   /**
@@ -45,11 +48,6 @@ export interface SearchBarProps {
   showRecent?: boolean;
 
   /**
-   * Whether to autofocus the input
-   */
-  autoFocus?: boolean;
-
-  /**
    * Additional CSS classes
    */
   className?: string;
@@ -88,20 +86,21 @@ export interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = 'Search...',
+  placeholder,
   disabled = false,
   recentSearches = [],
   onSelectRecent,
   onClearRecent,
   showRecent = true,
-  autoFocus = false,
   className = '',
   shortcutHint,
 }: SearchBarProps) {
+  const t = useTranslations();
   const [isFocused, setIsFocused] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const resolvedPlaceholder = placeholder ?? t('searchBar.placeholder');
 
   const hasValue = value.length > 0;
   const hasRecent = recentSearches.length > 0;
@@ -159,87 +158,107 @@ export function SearchBar({
   };
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Search input */}
-      <div
-        className={`
-          relative flex items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm transition-colors
-          ${isFocused ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-gray-300'}
-          ${disabled ? 'cursor-not-allowed opacity-50' : ''}
-          dark:bg-darkSurface dark:border-darkSurface
-          ${isFocused ? 'dark:border-darkAccentGreen dark:ring-darkAccentGreen/20' : ''}
-        `}
-      >
-        <Search className="h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
-
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          className="flex-1 border-none bg-transparent text-sm text-gray-900 placeholder-gray-500 outline-none dark:text-darkAccentGreen dark:placeholder-gray-500"
-        />
-
-        {shortcutHint && !hasValue && !isFocused && (
-          <kbd className="hidden rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 text-xs font-semibold text-gray-600 sm:inline-block dark:border-darkBg dark:bg-darkBg dark:text-gray-400">
-            {shortcutHint}
-          </kbd>
-        )}
-
-        {hasValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="rounded-full p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:hover:bg-darkBg dark:hover:text-darkAccentGreen"
-            aria-label="Clear search"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      {/* Recent searches dropdown */}
-      {shouldShowDropdown && (
-        <div
-          ref={dropdownRef}
-          className="absolute top-full z-10 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:border-darkSurface dark:bg-darkSurface"
+    <div className={cn(className)}>
+      <div className="relative">
+        {/* Search input */}
+        <Inline
+          asChild
+          alignY="center"
+          gap={2}
+          className={cn(
+            'relative rounded-lg border bg-surface-1 px-3 py-2 shadow-sm transition-colors',
+            isFocused ? 'border-primary' : 'border-border-2',
+            disabled && 'cursor-not-allowed opacity-50'
+          )}
         >
-          <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-darkBg">
-            <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
-              Recent Searches
-            </span>
-            {onClearRecent && (
+          <div>
+            <Search className="h-5 w-5 shrink-0 text-muted" />
+
+            <input
+              ref={inputRef}
+              type="text"
+              value={value}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              placeholder={resolvedPlaceholder}
+              disabled={disabled}
+              className="flex-1 border-none bg-transparent text-sm text-fg placeholder:text-muted outline-none"
+            />
+
+            {shortcutHint && !hasValue && !isFocused && (
+              <kbd className="hidden rounded border border-border-2 bg-muted/40 px-1.5 py-0.5 text-xs font-semibold text-muted sm:inline-block">
+                {shortcutHint}
+              </kbd>
+            )}
+
+            {hasValue && (
               <button
                 type="button"
-                onClick={onClearRecent}
-                className="text-xs font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-darkAccentGreen"
+                onClick={handleClear}
+                className={cn(
+                  'grid min-h-11 min-w-11 place-items-center rounded-full text-muted transition-colors',
+                  'hover:bg-muted/40 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+                )}
+                aria-label={t('searchBar.clearLabel')}
               >
-                Clear
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
-          <ul className="max-h-60 overflow-y-auto py-1">
-            {recentSearches.map((search, index) => (
-              <li key={index}>
+        </Inline>
+
+        {/* Recent searches dropdown */}
+        {shouldShowDropdown && (
+          <div
+            ref={dropdownRef}
+            className="absolute top-full mt-2 w-full rounded-lg border border-border-2 bg-surface-1 shadow-lg"
+          >
+            <Inline
+              alignY="center"
+              className="justify-between border-b border-border-2 px-3 py-2"
+            >
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                {t('searchBar.recentTitle')}
+              </span>
+              {onClearRecent && (
                 <button
                   type="button"
-                  onClick={() => handleSelectRecent(search)}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                  onClick={onClearRecent}
+                  className={cn(
+                    'min-h-11 min-w-11 text-xs font-medium text-muted transition-colors',
+                    'hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+                  )}
                 >
-                  <Search className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                  <span className="truncate">{search}</span>
+                  {t('searchBar.clearRecent')}
                 </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+              )}
+            </Inline>
+            <Stack asChild gap={1} className="max-h-60 overflow-y-auto py-1">
+              <ul>
+                {recentSearches.map((search) => (
+                  <li key={search}>
+                    <Inline asChild alignY="center" gap={2}>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectRecent(search)}
+                        className={cn(
+                          'min-h-11 min-w-11 w-full px-3 py-2 text-start text-sm text-fg transition-colors',
+                          'hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+                        )}
+                      >
+                        <Search className="h-4 w-4 shrink-0 text-muted" />
+                        <span className="truncate">{search}</span>
+                      </button>
+                    </Inline>
+                  </li>
+                ))}
+              </ul>
+            </Stack>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

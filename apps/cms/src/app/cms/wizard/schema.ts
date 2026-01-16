@@ -53,17 +53,16 @@ type NavItemInternal = {
   children?: NavItemInternal[];
 };
 
-export const navItemSchema: ZodType<NavItemInternal> = z.lazy(
-  (): ZodType<NavItemInternal> =>
-    z
-      .object({
-        id: z.string(),
-        label: z.string(),
-        url: z.string().url(),
-        children: z.array(navItemSchema).optional(),
-      })
-      .strict(),
-);
+const navItemSchemaInner = z
+  .object({
+    id: z.string(),
+    label: z.string(),
+    url: z.string().url(),
+    children: z.array(z.lazy(() => navItemSchema)).optional(),
+  })
+  .strict() as unknown as ZodType<NavItemInternal>;
+
+export const navItemSchema = z.lazy(() => navItemSchemaInner) as ZodType<NavItemInternal>;
 
 export type NavItem = z.infer<typeof navItemSchema>;
 

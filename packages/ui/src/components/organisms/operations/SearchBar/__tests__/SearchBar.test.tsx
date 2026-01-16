@@ -67,13 +67,6 @@ describe('SearchBar', () => {
     expect(input).toBeDisabled();
   });
 
-  it('is autofocused when autoFocus is true', () => {
-    render(<SearchBar {...defaultProps} autoFocus={true} />);
-
-    const input = screen.getByRole('textbox');
-    expect(input).toHaveFocus();
-  });
-
   it('renders recent searches dropdown when showRecent is true', () => {
     render(
       <SearchBar

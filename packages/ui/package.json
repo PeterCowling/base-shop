@@ -100,7 +100,7 @@
     }
   },
   "scripts": {
-    "build": "rimraf dist && tsc -b && tsup",
+    "build": "rimraf dist tsconfig.tsbuildinfo && tsc -b && tsup",
     "clean": "rimraf dist *.tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",

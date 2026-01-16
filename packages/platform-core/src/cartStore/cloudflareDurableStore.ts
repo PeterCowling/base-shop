@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import type { CartState, CartLine } from "../cart";
+import type { CartState } from "../cart";
 import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
 

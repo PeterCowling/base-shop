@@ -639,6 +639,8 @@ export default [
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-types": "off",
+      // Declaration files may include raw token values that are not authored UI code.
+      "ds/no-raw-color": "off",
       // Declaration files may include raw font stacks as string literal types
       // (e.g., "sans-serif", "monospace"). These are not authored UI code
       // paths and should not be subject to DS enforcement.
@@ -1023,7 +1025,7 @@ export default [
 
   /* ▸ Treat UI Storybook files as non-project to avoid TS project errors */
   {
-    files: ["packages/ui/**/*.stories.{ts,tsx}"],
+    files: ["**/*.stories.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -1044,6 +1046,7 @@ export default [
       "ds/min-tap-size": "off",
       "ds/container-widths-only-at": "off",
       "ds/no-physical-direction-classes-in-rtl": "off",
+      "no-restricted-syntax": "off",
       // Relax additional UI-hardening rules for dev-only stories
       "react/forbid-dom-props": "off",
       "react/no-array-index-key": "off",
@@ -1063,6 +1066,18 @@ export default [
       "jsx-a11y/media-has-caption": "off",
       "jsx-a11y/role-has-required-aria-props": "off",
       "jsx-a11y/no-aria-hidden-on-focusable": "off",
+    },
+  },
+
+  /* ▸ UI build config: parse without TS project to avoid project service errors */
+  {
+    files: ["packages/ui/tsup.config.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+      },
     },
   },
 
@@ -1454,6 +1469,25 @@ export default [
       "ds/absolute-parent-guard": "off",
       "ds/enforce-layout-primitives": "off",
       "ds/require-disable-justification": "off",
+    },
+  },
+
+  /* ▸ Storybook files (final override) */
+  {
+    files: ["**/*.stories.{ts,tsx}"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "no-restricted-syntax": "off",
+      "ds/no-hardcoded-copy": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/no-margins-on-atoms": "off",
+      "ds/min-tap-size": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/no-physical-direction-classes-in-rtl": "off",
+      "react/forbid-dom-props": "off",
+      "react/no-array-index-key": "off",
+      "react/jsx-no-constructed-context-values": "off",
     },
   },
 

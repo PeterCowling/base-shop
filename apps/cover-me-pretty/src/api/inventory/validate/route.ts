@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import {
   validateInventoryAvailability,
+  type InventoryValidationRequest,
 } from "@platform-core/inventoryValidation";
 import { INSUFFICIENT_STOCK_ERROR } from "@platform-core/checkout/session";
 import shop from "../../../../shop.json";
@@ -48,11 +49,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = await validateInventoryAvailability(
-      shop.id,
-      parsed.data.items,
-    );
-    if (!result.ok) {
+    const items = parsed.data.items as InventoryValidationRequest[];
+    const result = await validateInventoryAvailability(shop.id, items);
+    if (result.ok === false) {
       return NextResponse.json(
         {
           error: INSUFFICIENT_STOCK_ERROR,

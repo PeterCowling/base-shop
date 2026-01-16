@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import {
   PIPELINE_MAP_CONNECTIONS,
   PIPELINE_MAP_NODES,
+  type PipelineStage,
   hashSeed,
   lcg,
   normalizeCount,
@@ -81,8 +82,10 @@ function useStarfield(canvasRef: React.RefObject<HTMLCanvasElement | null>): voi
 
 export default function PipelineMap2D({
   stageCounts,
+  labels,
 }: {
   stageCounts: Record<string, number>;
+  labels: Record<PipelineStage, string>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useStarfield(canvasRef);
@@ -180,7 +183,7 @@ export default function PipelineMap2D({
             style={{ left: `${node.x}%`, top: `${node.y}%` }}
           >
             <span className="pp-map-node-stage">{node.stage}</span>
-            <span className="pp-map-node-label">{node.label}</span>
+            <span className="pp-map-node-label">{labels[node.stage] ?? node.stage}</span>
             <span className="pp-map-node-count">{count}</span>
           </Link>
         );

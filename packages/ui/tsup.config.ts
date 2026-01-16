@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- UI-3007 [ttl=2026-12-31] build log strings */
 import { defineConfig } from 'tsup';
 import { resolve } from 'path';
 

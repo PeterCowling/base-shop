@@ -31,20 +31,28 @@ export const Default: Story = {
     children: (
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label
+            htmlFor="formcard-quantity"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Quantity
           </label>
           <input
+            id="formcard-quantity"
             type="number"
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
             placeholder="Enter quantity"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label
+            htmlFor="formcard-reason"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Reason
           </label>
           <textarea
+            id="formcard-reason"
             rows={3}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
             placeholder="Explain the adjustment"
@@ -172,10 +180,14 @@ export const Interactive: Story = {
         }
       >
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label
+            htmlFor="formcard-quantity-add"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             Quantity to Add
           </label>
           <input
+            id="formcard-quantity-add"
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}

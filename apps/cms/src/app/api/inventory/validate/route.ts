@@ -75,7 +75,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       body.items as InventoryValidationRequest[]
     );
 
-    if (!result.ok) {
+    if (result.ok === false) {
       return NextResponse.json(
         {
           ok: false,

@@ -59,6 +59,7 @@ These commands can permanently destroy work:
 | Every significant change | Commit immediately |
 | Every 2 hours | Push to GitHub |
 | Every 3 local commits | Push to GitHub |
+| After first push of a `work/*` branch | Open a PR |
 
 **Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails.
 
@@ -114,7 +115,14 @@ Examples:
         ▼
 ┌─────────────┐
 │ Auto-deploy │
-│ to prod     │
+│ to staging  │
+└─────────────┘
+        │
+        ▼
+┌─────────────┐
+│ Manual      │
+│ promote to  │
+│ prod        │
 └─────────────┘
 ```
 
@@ -204,6 +212,7 @@ git pull origin HEAD
 
 - Commit after every significant change
 - Push every 2 hours or 3 commits
+- Open a PR after the first push and keep it green
 - Never run destructive commands
 - If git is confusing, STOP and ask the user
 
@@ -244,7 +253,7 @@ git push origin HEAD
 
 ## For Humans
 
-### Deploying to Production
+### Deploying to Staging + Production
 
 1. **Review the work branch:**
    ```bash
@@ -257,15 +266,18 @@ git push origin HEAD
    - Go to GitHub → Pull Requests → New Pull Request
    - Select `work/<branch>` → `main`
    - Review changes
+   - Resolve merge conflicts on the work branch before approval
+   - Ensure GitHub Actions is green (fix failures, do not bypass)
 
-3. **Merge (triggers deployment):**
+3. **Merge (triggers staging):**
    - Approve the PR
    - Click "Merge"
-   - Deployment starts automatically
+   - Staging deploy starts automatically
 
-4. **Verify:**
+4. **Verify staging and promote:**
    - Check GitHub Actions tab
-   - Once green, changes are live
+   - Confirm staging URL (see `docs/deployment-workflow.md`)
+   - After visual review, trigger production deploy (see `docs/deployment-workflow.md`)
 
 ### Cleaning Up
 

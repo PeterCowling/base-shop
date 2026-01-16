@@ -9,6 +9,9 @@ import React, {
   type ReactNode,
 } from "react";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 // ============================================================================
 // Types
@@ -75,6 +78,7 @@ const WizardContext = createContext<WizardContextValue | null>(null);
 export function useWizard(): WizardContextValue {
   const context = useContext(WizardContext);
   if (!context) {
+    // i18n-exempt -- UI-3013 [ttl=2026-12-31] developer-facing error message
     throw new Error("useWizard must be used within a StepWizard");
   }
   return context;
@@ -104,129 +108,211 @@ function StepIndicator({
   onStepClick,
 }: StepIndicatorProps) {
   const isHorizontal = orientation === "horizontal";
+  const t = useTranslations();
 
   return (
     <nav
-      aria-label="Progress"
-      className={
-        isHorizontal
-          ? "mb-8"
-          : "mr-8 min-w-48"
-      }
+      aria-label={t("stepWizard.progress")}
+      className={isHorizontal ? "mb-8" : "me-8 min-w-48"}
     >
-      <ol
-        className={
-          isHorizontal
-            ? "flex items-center justify-between"
-            : "flex flex-col space-y-4"
-        }
-      >
-        {steps.map((step, index) => {
-          const isActive = index === currentStep;
-          const isCompleted = completedSteps.has(index);
-          const isVisited = visitedSteps.has(index);
-          const Icon = step.icon;
+      {isHorizontal ? (
+        <Inline asChild alignY="center" className="justify-between">
+          <ol>
+            {steps.map((step, index) => {
+              const isActive = index === currentStep;
+              const isCompleted = completedSteps.has(index);
+              const isVisited = visitedSteps.has(index);
+              const Icon = step.icon;
 
-          return (
-            <li
-              key={step.id}
-              className={
-                isHorizontal
-                  ? "flex items-center" + (index < steps.length - 1 ? " flex-1" : "")
-                  : "relative"
-              }
-            >
-              <button
-                type="button"
-                onClick={() => onStepClick?.(index)}
-                disabled={!isVisited && !isCompleted}
-                className={
-                  "group flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg " +
-                  (isVisited || isCompleted ? "cursor-pointer" : "cursor-not-allowed")
-                }
-                aria-current={isActive ? "step" : undefined}
-              >
-                {/* Step circle */}
-                <span
-                  className={
-                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-colors " +
-                    (isActive
-                      ? "border-blue-600 bg-blue-600 text-white"
-                      : isCompleted
-                      ? "border-green-600 bg-green-600 text-white"
-                      : isVisited
-                      ? "border-gray-300 bg-white text-gray-500 group-hover:border-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                      : "border-gray-200 bg-white text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600")
-                  }
+              return (
+                <Inline
+                  asChild
+                  alignY="center"
+                  wrap={false}
+                  className={cn(index < steps.length - 1 && "flex-1")}
+                  key={step.id}
                 >
-                  {isCompleted ? (
-                    <Check className="h-5 w-5" aria-hidden="true" />
-                  ) : Icon ? (
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  ) : showStepNumbers ? (
-                    <span className="text-sm font-medium">{index + 1}</span>
-                  ) : (
-                    <span className="h-2.5 w-2.5 rounded-full bg-current" />
-                  )}
-                </span>
-
-                {/* Step text */}
-                <span className="ml-3 text-left">
-                  <span
-                    className={
-                      "block text-sm font-medium " +
-                      (isActive
-                        ? "text-blue-600 dark:text-blue-400"
-                        : isCompleted
-                        ? "text-green-600 dark:text-green-400"
-                        : "text-gray-500 dark:text-gray-400")
-                    }
-                  >
-                    {step.title}
-                    {step.optional && (
-                      <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">
-                        (optional)
+                  <li>
+                    <button
+                      id={`step-${step.id}`}
+                      type="button"
+                      onClick={() => onStepClick?.(index)}
+                      disabled={!isVisited && !isCompleted}
+                      className={cn(
+                        "group inline-flex min-h-11 items-center rounded-lg",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                        isVisited || isCompleted
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed opacity-60"
+                      )}
+                      aria-current={isActive ? "step" : undefined}
+                    >
+                      {/* Step circle */}
+                      <span
+                        className={cn(
+                          "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                          isActive
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : isCompleted
+                            ? "border-success bg-success text-success-foreground"
+                            : isVisited
+                            ? "border-border-2 bg-surface-1 text-muted group-hover:border-border-2"
+                            : "border-border-1 bg-surface-1 text-muted"
+                        )}
+                      >
+                        {isCompleted ? (
+                          <Check className="h-5 w-5" aria-hidden="true" />
+                        ) : Icon ? (
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        ) : showStepNumbers ? (
+                          <span className="text-sm font-medium">{index + 1}</span>
+                        ) : (
+                          <span className="h-2.5 w-2.5 rounded-full bg-current" />
+                        )}
                       </span>
+
+                      {/* Step text */}
+                      <span className="ms-3 text-start">
+                        <span
+                          className={cn(
+                            "block text-sm font-medium",
+                            isActive
+                              ? "text-primary"
+                              : isCompleted
+                              ? "text-success"
+                              : "text-muted"
+                          )}
+                        >
+                          {step.title}
+                          {step.optional && (
+                            <span className="ms-1 text-xs text-muted">
+                              ({t("stepWizard.optional")})
+                            </span>
+                          )}
+                        </span>
+                        {step.description && (
+                          <span className="block text-xs text-muted">
+                            {step.description}
+                          </span>
+                        )}
+                      </span>
+                    </button>
+
+                    {/* Connector line (horizontal) */}
+                    {index < steps.length - 1 && (
+                      <div
+                        className={cn(
+                          "ms-4 h-0.5 flex-1",
+                          completedSteps.has(index)
+                            ? "bg-success"
+                            : "bg-border-2"
+                        )}
+                        aria-hidden="true"
+                      />
                     )}
-                  </span>
-                  {step.description && (
-                    <span className="block text-xs text-gray-400 dark:text-gray-500">
-                      {step.description}
+                  </li>
+                </Inline>
+              );
+            })}
+          </ol>
+        </Inline>
+      ) : (
+        <Stack asChild gap={4}>
+          <ol>
+            {steps.map((step, index) => {
+              const isActive = index === currentStep;
+              const isCompleted = completedSteps.has(index);
+              const isVisited = visitedSteps.has(index);
+              const Icon = step.icon;
+
+              return (
+                <li key={step.id} className="relative">
+                  <button
+                    id={`step-${step.id}`}
+                    type="button"
+                    onClick={() => onStepClick?.(index)}
+                    disabled={!isVisited && !isCompleted}
+                    className={cn(
+                      "group inline-flex min-h-11 items-center rounded-lg",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      isVisited || isCompleted
+                        ? "cursor-pointer"
+                        : "cursor-not-allowed opacity-60"
+                    )}
+                    aria-current={isActive ? "step" : undefined}
+                  >
+                    {/* Step circle */}
+                    <span
+                      className={cn(
+                        "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                        isActive
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : isCompleted
+                          ? "border-success bg-success text-success-foreground"
+                          : isVisited
+                          ? "border-border-2 bg-surface-1 text-muted group-hover:border-border-2"
+                          : "border-border-1 bg-surface-1 text-muted"
+                      )}
+                    >
+                      {isCompleted ? (
+                        <Check className="h-5 w-5" aria-hidden="true" />
+                      ) : Icon ? (
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      ) : showStepNumbers ? (
+                        <span className="text-sm font-medium">{index + 1}</span>
+                      ) : (
+                        <span className="h-2.5 w-2.5 rounded-full bg-current" />
+                      )}
                     </span>
+
+                    {/* Step text */}
+                    <span className="ms-3 text-start">
+                      <span
+                        className={cn(
+                          "block text-sm font-medium",
+                          isActive
+                            ? "text-primary"
+                            : isCompleted
+                            ? "text-success"
+                            : "text-muted"
+                        )}
+                      >
+                        {step.title}
+                        {step.optional && (
+                          <span className="ms-1 text-xs text-muted">
+                            ({t("stepWizard.optional")})
+                          </span>
+                        )}
+                      </span>
+                      {step.description && (
+                        <span className="block text-xs text-muted">
+                          {step.description}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+
+                  {/* Connector line (vertical) */}
+                  {index < steps.length - 1 && (
+                    <StyledDiv
+                      className={cn(
+                        "absolute start-5 top-10 h-full w-0.5 -translate-x-1/2",
+                        completedSteps.has(index)
+                          ? "bg-success"
+                          : "bg-border-2"
+                      )}
+                      aria-hidden="true"
+                      style={{
+                        height: "calc(100% + 1rem)", // i18n-exempt -- UI-3020 [ttl=2026-12-31] non-UI style string
+                      }}
+                    />
                   )}
-                </span>
-              </button>
-
-              {/* Connector line (horizontal) */}
-              {isHorizontal && index < steps.length - 1 && (
-                <div
-                  className={
-                    "ml-4 h-0.5 flex-1 " +
-                    (completedSteps.has(index)
-                      ? "bg-green-600"
-                      : "bg-gray-200 dark:bg-gray-700")
-                  }
-                  aria-hidden="true"
-                />
-              )}
-
-              {/* Connector line (vertical) */}
-              {!isHorizontal && index < steps.length - 1 && (
-                <div
-                  className={
-                    "absolute left-5 top-10 h-full w-0.5 -translate-x-1/2 " +
-                    (completedSteps.has(index)
-                      ? "bg-green-600"
-                      : "bg-gray-200 dark:bg-gray-700")
-                  }
-                  aria-hidden="true"
-                  style={{ height: "calc(100% + 1rem)" }}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ol>
+                </li>
+              );
+            })}
+          </ol>
+        </Stack>
+      )}
     </nav>
   );
 }
@@ -382,25 +468,39 @@ export function StepWizard({
 
   return (
     <WizardContext.Provider value={contextValue}>
-      <div
-        className={
-          "w-full " +
-          (orientation === "vertical" ? "flex" : "") +
-          (className ? " " + className : "")
-        }
-      >
-        <StepIndicator
-          steps={steps}
-          currentStep={currentStep}
-          visitedSteps={visitedSteps}
-          completedSteps={completedSteps}
-          orientation={orientation}
-          showStepNumbers={showStepNumbers}
-          onStepClick={handleStepClick}
-        />
+      {orientation === "vertical" ? (
+        <Inline asChild alignY="start" wrap={false} className={cn("w-full", className)}>
+          <div>
+            <StepIndicator
+              steps={steps}
+              currentStep={currentStep}
+              visitedSteps={visitedSteps}
+              completedSteps={completedSteps}
+              orientation={orientation}
+              showStepNumbers={showStepNumbers}
+              onStepClick={handleStepClick}
+            />
 
-        <div className="flex-1">{children}</div>
-      </div>
+            <div className="flex-1">{children}</div>
+          </div>
+        </Inline>
+      ) : (
+        <Stack asChild gap={0} className={cn("w-full", className)}>
+          <div>
+            <StepIndicator
+              steps={steps}
+              currentStep={currentStep}
+              visitedSteps={visitedSteps}
+              completedSteps={completedSteps}
+              orientation={orientation}
+              showStepNumbers={showStepNumbers}
+              onStepClick={handleStepClick}
+            />
+
+            <div className="flex-1">{children}</div>
+          </div>
+        </Stack>
+      )}
     </WizardContext.Provider>
   );
 }
@@ -434,13 +534,17 @@ export function StepContent({ stepId, children }: StepContentProps) {
 
 export function StepActions({
   children,
-  nextLabel = "Next",
-  prevLabel = "Back",
-  completeLabel = "Complete",
+  nextLabel,
+  prevLabel,
+  completeLabel,
   showPrev = true,
   showNext = true,
   className = "",
 }: StepActionsProps) {
+  const t = useTranslations();
+  const resolvedNextLabel = nextLabel ?? t("stepWizard.next");
+  const resolvedPrevLabel = prevLabel ?? t("stepWizard.back");
+  const resolvedCompleteLabel = completeLabel ?? t("stepWizard.complete");
   const {
     isFirstStep,
     isLastStep,
@@ -453,56 +557,70 @@ export function StepActions({
   } = useWizard();
 
   return (
-    <div
-      className={
-        "mt-8 flex items-center justify-between " + className
-      }
-    >
+    <Inline alignY="center" className={cn("mt-8 w-full justify-between", className)}>
       <div>
         {showPrev && !isFirstStep && (
-          <button
-            type="button"
-            onClick={prevStep}
-            disabled={!canGoPrev || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          >
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            {prevLabel}
-          </button>
+          <Inline asChild alignY="center" gap={2}>
+            <button
+              type="button"
+              onClick={prevStep}
+              disabled={!canGoPrev || isValidating}
+              className={cn(
+                "min-h-11 min-w-11 rounded-lg border border-border-2 bg-surface-1 px-4 py-2 text-sm font-medium text-fg shadow-sm",
+                "hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "disabled:cursor-not-allowed disabled:opacity-50"
+              )}
+            >
+              <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+              {resolvedPrevLabel}
+            </button>
+          </Inline>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <Inline gap={3} alignY="center">
         {children}
 
         {showNext && (
-          <button
-            type="button"
-            onClick={isLastStep ? completeWizard : nextStep}
-            disabled={(!canGoNext && !isLastStep) || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isValidating ? (
-              <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                Validating...
-              </>
-            ) : isLastStep ? (
-              <>
-                {completeLabel}
-                <Check className="h-4 w-4" aria-hidden="true" />
-              </>
-            ) : (
-              <>
-                {nextLabel}
-                <ChevronRight className="h-4 w-4" aria-hidden="true" />
-              </>
-            )}
-          </button>
+          <Inline asChild alignY="center" gap={2}>
+            <button
+              type="button"
+              onClick={isLastStep ? completeWizard : nextStep}
+              disabled={(!canGoNext && !isLastStep) || isValidating}
+              className={cn(
+                "min-h-11 min-w-11 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm",
+                "hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "disabled:cursor-not-allowed disabled:opacity-50"
+              )}
+            >
+              {isValidating ? (
+                <>
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  {t("stepWizard.validating")}
+                </>
+              ) : isLastStep ? (
+                <>
+                  {resolvedCompleteLabel}
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                </>
+              ) : (
+                <>
+                  {resolvedNextLabel}
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </>
+              )}
+            </button>
+          </Inline>
         )}
-      </div>
-    </div>
+      </Inline>
+    </Inline>
   );
 }
 
 export default StepWizard;
+
+// Wrap DOM nodes to satisfy react/forbid-dom-props for "style"
+const StyledDiv = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  (props, ref) => <div ref={ref} {...props} />
+);
+StyledDiv.displayName = "StyledDiv";

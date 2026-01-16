@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
 import type { RunnerStatus } from "../types";
 
 function formatRunnerAge(value: string | null | undefined, fallback: string): string {
@@ -65,7 +65,7 @@ export default function RunnerPanel({
           <div className={`mt-1 font-semibold ${statusTone}`}>
             {loading && !runner ? "Checking…" : statusText}
           </div>
-          <div className="mt-3 grid gap-2 text-xs text-foreground/70">
+          <Grid cols={1} gap={2} className="mt-3 text-xs text-foreground/70">
             <div>
               <span className="text-foreground/60">{strings.lastSeenLabel}:</span>{" "}
               <span className="font-semibold text-foreground">
@@ -96,7 +96,7 @@ export default function RunnerPanel({
                 {runner?.sessionProfile ?? notAvailable}
               </span>
             </div>
-          </div>
+          </Grid>
         </div>
       </Stack>
     </section>

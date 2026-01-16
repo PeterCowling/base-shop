@@ -38,12 +38,24 @@ function DateRangeFilter() {
   return (
     <div className="space-y-2">
       <div>
-        <label className="mb-1 block text-xs text-slate-600">From</label>
-        <input type="date" className="w-full rounded border border-slate-200 px-2 py-1 text-sm" />
+        <label htmlFor="filter-date-from" className="mb-1 block text-xs text-slate-600">
+          From
+        </label>
+        <input
+          id="filter-date-from"
+          type="date"
+          className="w-full rounded border border-slate-200 px-2 py-1 text-sm"
+        />
       </div>
       <div>
-        <label className="mb-1 block text-xs text-slate-600">To</label>
-        <input type="date" className="w-full rounded border border-slate-200 px-2 py-1 text-sm" />
+        <label htmlFor="filter-date-to" className="mb-1 block text-xs text-slate-600">
+          To
+        </label>
+        <input
+          id="filter-date-to"
+          type="date"
+          className="w-full rounded border border-slate-200 px-2 py-1 text-sm"
+        />
       </div>
     </div>
   );

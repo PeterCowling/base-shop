@@ -86,7 +86,7 @@ export default function ProductImportClient({
 
     if (name.endsWith(".csv")) {
       const parsed = parseCsvToItems(text);
-      if (!parsed.ok) {
+      if (parsed.ok === false) {
         setError(parsed.error);
         return;
       }
@@ -96,7 +96,7 @@ export default function ProductImportClient({
 
     if (name.endsWith(".json") || file.type === "application/json") {
       const parsed = parseItemsJson(text);
-      if (!parsed.ok) {
+      if (parsed.ok === false) {
         setError(parsed.error);
         return;
       }
@@ -113,7 +113,7 @@ export default function ProductImportClient({
       setBusy(true);
       try {
         const parsedItems = parseItemsJson(itemsJson);
-        if (!parsedItems.ok) {
+        if (parsedItems.ok === false) {
           setError(parsedItems.error);
           return;
         }
@@ -143,7 +143,7 @@ export default function ProductImportClient({
           setError("Request failed.");
           return;
         }
-        if (!json.ok) {
+        if (json.ok === false) {
           setError(json.message || "Request failed.");
           setResult(json);
           setPreviewFingerprint(null);

@@ -1,10 +1,10 @@
-// @ts-nocheck -- Three.js dependencies (@react-three/fiber, @react-three/drei, three) are optional
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, Line, OrbitControls, Stars } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { colors } from "@acme/design-tokens";
 import {
   AdditiveBlending,
   type Mesh,
@@ -24,15 +24,16 @@ import {
 
 type WorldNode = PipelineMapNode & {
   count: number;
+  label: string;
   position: [number, number, number];
 };
 
 const STAGE_COLORS: Record<PipelineStage, { core: string; glow: string }> = {
-  P: { core: "#ff5d45", glow: "#ffb39b" },
-  M: { core: "#ffcc7a", glow: "#ffe7c3" },
-  S: { core: "#6ddcff", glow: "#b8f1ff" },
-  K: { core: "#b69cff", glow: "#e3d8ff" },
-  L: { core: "#66ffc0", glow: "#c7ffea" },
+  P: { core: colors.red[500], glow: colors.red[200] },
+  M: { core: colors.yellow[400], glow: colors.yellow[200] },
+  S: { core: colors.blue[400], glow: colors.blue[200] },
+  K: { core: colors.purple[500], glow: colors.purple[100] },
+  L: { core: colors.green[400], glow: colors.green[200] },
 };
 
 function worldPositionFromMap(x: number, y: number): [number, number, number] {
@@ -113,7 +114,7 @@ function Swarm({
     });
   }, [count, stage]);
 
-  useFrame((_, delta) => {
+  useFrame((_, delta: number) => {
     const group = groupRef.current;
     if (!group || reduceMotion) return;
     group.rotation.y += delta * 0.25;
@@ -145,10 +146,12 @@ function Swarm({
 function StageNode({
   node,
   reduceMotion,
+  runsLabel,
   onNavigate,
 }: {
   node: WorldNode;
   reduceMotion: boolean;
+  runsLabel: string;
   onNavigate: () => void;
 }) {
   const groupRef = useRef<Group>(null);
@@ -156,7 +159,7 @@ function StageNode({
   const active = node.count > 0;
   const scale = 1 + Math.min(0.55, Math.sqrt(node.count) / 6);
 
-  useFrame((_, delta) => {
+  useFrame((_, delta: number) => {
     const group = groupRef.current;
     if (!group || reduceMotion) return;
     group.rotation.y += delta * 0.2;
@@ -171,7 +174,7 @@ function StageNode({
       />
 
       <mesh
-        onClick={(event) => {
+        onClick={(event: { stopPropagation: () => void }) => {
           event.stopPropagation();
           onNavigate();
         }}
@@ -208,14 +211,15 @@ function StageNode({
         <button
           type="button"
           onClick={onNavigate}
-          className="rounded-2xl border border-border-1 bg-surface-1 px-3 py-2 text-left text-xs shadow-md backdrop-blur"
+          className="min-h-11 min-w-11 rounded-2xl border border-border-1 bg-surface-1 px-3 py-2 text-start text-xs shadow-md backdrop-blur"
         >
           <div className="flex items-center gap-2">
             <span className="pp-chip">{node.stage}</span>
             <span className="font-semibold text-foreground">{node.label}</span>
           </div>
-          <div className="mt-1 text-[11px] text-foreground/60">
-            Runs: <span className="font-semibold text-foreground">{node.count}</span>
+          <div className="mt-1 text-xs text-foreground/60">
+            {runsLabel}{" "}
+            <span className="font-semibold text-foreground">{node.count}</span>
           </div>
         </button>
       </Html>
@@ -226,19 +230,24 @@ function StageNode({
 function PipelineMapScene({
   stageCounts,
   reduceMotion,
+  labels,
+  runsLabel,
 }: {
   stageCounts: Record<string, number>;
   reduceMotion: boolean;
+  labels: Record<PipelineStage, string>;
+  runsLabel: string;
 }) {
   const router = useRouter();
 
   const nodes = useMemo((): WorldNode[] => {
     return PIPELINE_MAP_NODES.map((node) => ({
       ...node,
+      label: labels[node.stage] ?? node.stage,
       count: normalizeCount(stageCounts[node.stage]),
       position: worldPositionFromMap(node.x, node.y),
     }));
-  }, [stageCounts]);
+  }, [labels, stageCounts]);
 
   const nodesByStage = useMemo(() => {
     const map = new Map<string, WorldNode>();
@@ -262,14 +271,14 @@ function PipelineMapScene({
 
   return (
     <>
-      <color attach="background" args={["#060c12"]} />
-      <fog attach="fog" args={["#060c12", 7, 18]} />
+      <color attach="background" args={[colors.gray[900]]} />
+      <fog attach="fog" args={[colors.gray[900], 7, 18]} />
 
       <ambientLight intensity={0.5} />
       <directionalLight
         position={[6, 6, 4]}
         intensity={0.65}
-        color="#fff6e2"
+        color={colors.yellow[50]}
       />
 
       <Stars
@@ -311,6 +320,7 @@ function PipelineMapScene({
           key={node.stage}
           node={node}
           reduceMotion={reduceMotion}
+          runsLabel={runsLabel}
           onNavigate={() => router.push(node.href)}
         />
       ))}
@@ -333,9 +343,13 @@ function PipelineMapScene({
 export default function PipelineMap3D({
   stageCounts,
   reduceMotion = false,
+  labels,
+  runsLabel,
 }: {
   stageCounts: Record<string, number>;
   reduceMotion?: boolean;
+  labels: Record<PipelineStage, string>;
+  runsLabel: string;
 }) {
   return (
     <div className="pp-map">
@@ -345,7 +359,12 @@ export default function PipelineMap3D({
         dpr={[1, 1.6]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
-        <PipelineMapScene stageCounts={stageCounts} reduceMotion={reduceMotion} />
+        <PipelineMapScene
+          stageCounts={stageCounts}
+          reduceMotion={reduceMotion}
+          labels={labels}
+          runsLabel={runsLabel}
+        />
       </Canvas>
     </div>
   );

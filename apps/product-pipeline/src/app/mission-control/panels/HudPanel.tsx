@@ -24,6 +24,10 @@ export default function HudPanel({
     artifactsLabel: string;
     xpLabel: string;
     nextLevelLabel: string;
+    statusSyncing: string;
+    statusOffline: string;
+    streakSummary: string;
+    streakEmpty: string;
   };
   state: GameState | null;
   loading: boolean;
@@ -44,7 +48,11 @@ export default function HudPanel({
           <h2 className="text-xl font-semibold tracking-tight">{strings.title}</h2>
         </Stack>
         <span className="pp-chip">
-          {loading ? "Syncing" : operator ? `${operator.title}` : "Offline"}
+          {loading
+            ? strings.statusSyncing
+            : operator
+              ? `${operator.title}`
+              : strings.statusOffline}
         </span>
       </Cluster>
 
@@ -81,7 +89,7 @@ export default function HudPanel({
               {operator ? `${operator.streakDays}d` : "-"}
             </span>
             <span className="text-xs text-foreground/60">
-              {operator ? "Consecutive run-days" : "No telemetry yet"}
+              {operator ? strings.streakSummary : strings.streakEmpty}
             </span>
           </Stack>
         </div>

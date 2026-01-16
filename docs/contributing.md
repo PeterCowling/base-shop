@@ -12,7 +12,7 @@ Audience: agents only. Follow `AGENTS.md` and `docs/git-safety.md`.
 1. Never run destructive git commands (see prohibited list in `docs/git-safety.md`).
 2. Never work directly on `main` (use `work/*` branches).
 3. Commit and push regularly.
-4. Use PRs for all changes; direct pushes to `main` are blocked.
+4. Use PRs for all changes; keep PRs green and conflict-free before approval.
 
 Quick reference:
 
@@ -25,6 +25,9 @@ git add -A && git commit -m "feat: add new feature"
 
 # Push to GitHub
 git push -u origin HEAD
+
+# Open a PR (GitHub UI or gh if available)
+# gh pr create --fill --base main --head <branch>
 ```
 
 ## Formatting
@@ -53,6 +56,7 @@ Examples:
 - `work/2026-01-15-fix-cart-redirect`
 
 Push the branch and open a PR against `main`.
+Resolve merge conflicts and fix GitHub Actions failures before requesting approval.
 
 Protected branches:
 - `main` requires PR + approval; CI must pass

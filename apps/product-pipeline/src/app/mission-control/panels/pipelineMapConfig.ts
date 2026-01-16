@@ -2,18 +2,17 @@ export type PipelineStage = "P" | "M" | "S" | "K" | "L";
 
 export type PipelineMapNode = {
   stage: PipelineStage;
-  label: string;
   href: string;
   x: number;
   y: number;
 };
 
 export const PIPELINE_MAP_NODES: PipelineMapNode[] = [
-  { stage: "P", label: "Gate Scan", href: "/leads/triage", x: 14, y: 68 },
-  { stage: "M", label: "Market Sweep", href: "/candidates", x: 36, y: 30 },
-  { stage: "S", label: "Safety Shield", href: "/candidates", x: 56, y: 62 },
-  { stage: "K", label: "Capital Run", href: "/scenario-lab", x: 78, y: 26 },
-  { stage: "L", label: "Mission Log", href: "/launches", x: 90, y: 70 },
+  { stage: "P", href: "/leads/triage", x: 14, y: 68 },
+  { stage: "M", href: "/candidates", x: 36, y: 30 },
+  { stage: "S", href: "/candidates", x: 56, y: 62 },
+  { stage: "K", href: "/scenario-lab", x: 78, y: 26 },
+  { stage: "L", href: "/launches", x: 90, y: 70 },
 ];
 
 export const PIPELINE_MAP_CONNECTIONS: Array<[PipelineStage, PipelineStage]> = [

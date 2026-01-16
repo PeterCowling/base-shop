@@ -83,8 +83,28 @@ export default function MissionControlClient({
       artifactsLabel: string;
       xpLabel: string;
       nextLevelLabel: string;
+      statusSyncing: string;
+      statusOffline: string;
+      streakSummary: string;
+      streakEmpty: string;
+      levelUpToast: string;
     };
-    missions: Record<string, unknown>;
+    missions: {
+      label: string;
+      title: string;
+      busyLabel: string;
+      readyLabel: string;
+      resultSuccessLabel: string;
+      resultErrorLabel: string;
+      runningLabel: string;
+      metaTargets: string;
+      metaPromotionLimit: string;
+      metaQueue: string;
+      failureSummary: string;
+      triageBlitz: { title: string; description: string; cta: string };
+      promotionSortie: { title: string; description: string; cta: string };
+      marketSweep: { title: string; description: string; cta: string };
+    };
     loadout: {
       label: string;
       title: string;
@@ -109,6 +129,9 @@ export default function MissionControlClient({
       hint: string;
       mode2d: string;
       mode3d: string;
+      webglUnavailable: string;
+      runsLabel: string;
+      nodeLabels: Record<"P" | "M" | "S" | "K" | "L", string>;
     };
     achievements: Record<string, unknown>;
     battleLog: {
@@ -216,7 +239,10 @@ export default function MissionControlClient({
     const previous = lastLevelRef.current;
     lastLevelRef.current = nextLevel;
     if (previous !== null && nextLevel > previous) {
-      setLevelUpToast(`Level up: ${gameState.operator.title} (L${nextLevel})`);
+      const message = strings.hud.levelUpToast
+        .replace("{title}", gameState.operator.title)
+        .replace("{level}", String(nextLevel));
+      setLevelUpToast(message);
       if (toastTimerRef.current) {
         window.clearTimeout(toastTimerRef.current);
       }
@@ -224,7 +250,7 @@ export default function MissionControlClient({
         setLevelUpToast(null);
       }, 3500);
     }
-  }, [gameState]);
+  }, [gameState, strings.hud.levelUpToast]);
 
   useEffect(() => {
     return () => {
@@ -270,14 +296,14 @@ export default function MissionControlClient({
         setMissionResult({
           ok: false,
           mission,
-          summary: "Mission failed",
+          summary: strings.missions.failureSummary,
         });
       } finally {
         setMissionBusy(false);
         await loadGameState();
       }
     },
-    [loadGameState, loadout, strings.notAvailable],
+    [loadGameState, loadout, strings.missions.failureSummary, strings.notAvailable],
   );
 
   const stageCounts = useMemo(() => gameState?.stats.stageCounts ?? {}, [gameState]);

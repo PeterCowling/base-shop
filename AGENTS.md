@@ -55,6 +55,29 @@ git push origin HEAD
 
 **Why:** Local commits are lost if the machine fails. GitHub is the backup.
 
+### Rule 2a: Create a Pull Request After Pushing
+
+**Trigger:** After the first push of a `work/*` branch (and whenever new work is ready for review).
+
+**Agent action:**
+```bash
+# Create a PR on GitHub (preferred), or with gh if available:
+# gh pr create --fill --base main --head <branch>
+```
+
+**Why:** The PR is the durable handoff to humans and the gate for CI, staging, and approval.
+
+### Rule 2b: Keep PRs Green and Mergeable
+
+**Trigger:** Before requesting approval or merge.
+
+**Agent action:**
+- Ensure the PR has **no merge conflicts**.
+- Ensure **GitHub Actions is green** (fix failures on the work branch and push).
+- Do **not** bypass checks.
+
+**Why:** Staging only updates after a clean merge to `main`, so conflicts and CI failures must be resolved first.
+
 ### Rule 3: Never Run Destructive Commands
 
 **PROHIBITED commands (never run these):**
@@ -184,7 +207,8 @@ git diff --cached --stat
 1. **Always work on `work/*` branches** — never commit directly to `main`
 2. **Name branches clearly:** `work/YYYY-MM-DD-brief-description`
 3. **Push branches to GitHub:** So humans can review and merge
-4. **Never merge to main** — that's a human decision
+4. **Open a PR after pushing:** Keep it updated as you work
+5. **Never merge to main** — that's a human decision
 
 ### Creating a Work Branch (Agent Procedure)
 
@@ -204,13 +228,16 @@ git checkout -b work/$(date +%Y-%m-%d)-<description>
 # 4. Do work, commit frequently (Rule 1)
 # 5. Push to GitHub (Rule 2)
 git push -u origin HEAD
+
+# 6. Open a PR (Rule 2a)
+# Use GitHub UI or gh if available
 ```
 
 ---
 
-## Human Workflow: Deploying to Production
+## Human Workflow: Staging + Production
 
-When an agent completes work, they push to a `work/*` branch. Here's how humans deploy it:
+When an agent completes work, they push to a `work/*` branch and open a PR. Here's how humans deploy it:
 
 ### Step 1: Review the Work Branch
 
@@ -221,33 +248,31 @@ git log origin/main..origin/work/<branch-name> --oneline
 git diff origin/main..origin/work/<branch-name> --stat
 ```
 
-### Step 2: Merge to Main (Triggers Deployment)
+### Step 2: Open/Review the PR
 
-**Option A: Via GitHub (Recommended)**
 1. Go to GitHub → Pull Requests → New Pull Request
 2. Select `work/<branch-name>` → `main`
-3. Review changes, then click "Merge"
-4. Deployment starts automatically
+3. Confirm there are **no merge conflicts**
+4. Confirm **GitHub Actions is green** (fix failures before approval)
+5. Approve the PR
 
-**Option B: Via Command Line**
-```bash
-git checkout main
-git pull origin main
-git merge origin/work/<branch-name> --no-ff -m "Merge work/<branch-name>: <summary>"
-git push origin main
-```
+### Step 3: Merge to Main (Triggers Staging)
 
-### Step 3: Verify Deployment
+- Merge the PR in GitHub (required)
+- Staging deploy runs automatically via GitHub Actions
+
+### Step 4: Verify Staging
 
 After merge to `main`:
-- GitHub Actions runs automatically
-- Check Actions tab for build status
-- Once green, changes are live on:
-  - CMS: https://cms.pages.dev
-  - Brikette: https://brikette.pages.dev
-  - (etc.)
+- Check the Actions tab for build status
+- Verify the staging URL for the app (see `docs/deployment-workflow.md`)
 
-### Step 4: Clean Up (Optional)
+### Step 5: Promote to Production
+
+- After visual review on staging, run the production workflow
+- See `docs/deployment-workflow.md` for the exact steps
+
+### Step 6: Clean Up (Optional)
 
 ```bash
 # Delete the work branch after merge
@@ -278,6 +303,7 @@ git pull origin HEAD
 
 - Commit after every significant change (Rule 1)
 - Push every 2 hours or 3 commits (Rule 2)
+- Open a PR after the first push and keep it green (Rules 2a/2b)
 - Never run destructive commands (Rule 3)
 
 ### End of Session
@@ -292,7 +318,7 @@ Co-Authored-By: Claude <model> <noreply@anthropic.com>"
 # 2. Push to GitHub
 git push origin HEAD
 
-# 3. Tell user: "Work pushed to branch <name>. Ready for review and merge."
+# 3. Ensure PR exists and share the link with the user
 ```
 
 ---
@@ -300,8 +326,8 @@ git push origin HEAD
 ## What Happens When (Decision Tree)
 
 ### User says "deploy" or "push to production"
-1. Ensure all changes are committed and pushed to work branch
-2. Tell user: "Changes are on branch `work/X`. To deploy: merge this branch to `main` via GitHub PR or `git merge`."
+1. Ensure all changes are committed, pushed, and a PR is open
+2. Tell user: "PR is ready. Resolve conflicts + CI, merge to `main` to update staging, then visually review staging and promote to production."
 3. Do NOT merge to main yourself
 
 ### User says "undo" or "revert"

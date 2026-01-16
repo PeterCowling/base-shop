@@ -9,6 +9,13 @@ type MissionsStrings = {
   label: string;
   title: string;
   busyLabel: string;
+  readyLabel: string;
+  resultSuccessLabel: string;
+  resultErrorLabel: string;
+  runningLabel: string;
+  metaTargets: string;
+  metaPromotionLimit: string;
+  metaQueue: string;
   triageBlitz: { title: string; description: string; cta: string };
   promotionSortie: { title: string; description: string; cta: string };
   marketSweep: { title: string; description: string; cta: string };
@@ -32,6 +39,18 @@ export default function MissionsPanel({
   onRunMission: (mission: MissionId) => Promise<void>;
 }) {
   const s = strings as MissionsStrings;
+  const triageMeta = s.metaTargets.replace(
+    "{count}",
+    String(loadout.triageLeadCount),
+  );
+  const promotionMeta = s.metaPromotionLimit.replace(
+    "{count}",
+    String(loadout.promotionLimit),
+  );
+  const sweepMeta = s.metaQueue.replace(
+    "{count}",
+    String(loadout.marketSweepCandidateCount),
+  );
 
   return (
     <section className="pp-card p-6">
@@ -42,15 +61,15 @@ export default function MissionsPanel({
           </span>
           <h2 className="text-xl font-semibold tracking-tight">{s.title}</h2>
         </Stack>
-        <span className="pp-chip">{busy ? s.busyLabel : "Ready"}</span>
+        <span className="pp-chip">{busy ? s.busyLabel : s.readyLabel}</span>
       </Cluster>
 
       {result?.summary && (
         <div className="mt-4 rounded-2xl border border-border-1 bg-surface-2 p-3 text-sm">
           <span className={`font-semibold ${resultTone(result.ok)}`}>
-            {result.ok ? "Success" : "Error"}
+            {result.ok ? s.resultSuccessLabel : s.resultErrorLabel}
           </span>
-          <span className="ml-2 text-foreground/70">{result.summary}</span>
+          <span className="ms-2 text-foreground/70">{result.summary}</span>
         </div>
       )}
 
@@ -58,24 +77,27 @@ export default function MissionsPanel({
         <MissionCard
           title={s.triageBlitz.title}
           description={s.triageBlitz.description}
-          meta={`Targets: ${loadout.triageLeadCount} leads`}
+          meta={triageMeta}
           cta={s.triageBlitz.cta}
+          runningLabel={s.runningLabel}
           busy={busy}
           onClick={() => onRunMission("triage-blitz")}
         />
         <MissionCard
           title={s.promotionSortie.title}
           description={s.promotionSortie.description}
-          meta={`Promotion cap: ${loadout.promotionLimit}`}
+          meta={promotionMeta}
           cta={s.promotionSortie.cta}
+          runningLabel={s.runningLabel}
           busy={busy}
           onClick={() => onRunMission("promotion-sortie")}
         />
         <MissionCard
           title={s.marketSweep.title}
           description={s.marketSweep.description}
-          meta={`Queue: ${loadout.marketSweepCandidateCount} candidates`}
+          meta={sweepMeta}
           cta={s.marketSweep.cta}
+          runningLabel={s.runningLabel}
           busy={busy}
           onClick={() => onRunMission("market-sweep")}
         />
@@ -89,6 +111,7 @@ function MissionCard({
   description,
   meta,
   cta,
+  runningLabel,
   busy,
   onClick,
 }: {
@@ -96,6 +119,7 @@ function MissionCard({
   description: string;
   meta: string;
   cta: string;
+  runningLabel: string;
   busy: boolean;
   onClick: () => void;
 }) {
@@ -107,11 +131,11 @@ function MissionCard({
         <p className="text-xs text-foreground/60">{meta}</p>
         <button
           type="button"
-          className="mt-2 w-full rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+          className="mt-2 min-h-11 min-w-11 w-full rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
           onClick={onClick}
           disabled={busy}
         >
-          {busy ? "Running…" : cta}
+          {busy ? runningLabel : cta}
         </button>
       </Stack>
     </div>

@@ -39,20 +39,28 @@ export const Default: Story = {
           <h3 className="mb-4 text-lg font-semibold">Personal Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="wizard-full-name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Full Name
               </label>
               <input
+                id="wizard-full-name"
                 type="text"
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="John Doe"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="wizard-email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Email
               </label>
               <input
+                id="wizard-email"
                 type="email"
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="john@example.com"
@@ -67,10 +75,14 @@ export const Default: Story = {
           <h3 className="mb-4 text-lg font-semibold">Payment Details</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="wizard-card-number"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Card Number
               </label>
               <input
+                id="wizard-card-number"
                 type="text"
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="4242 4242 4242 4242"
@@ -78,20 +90,28 @@ export const Default: Story = {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="wizard-card-expiry"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Expiry
                 </label>
                 <input
+                  id="wizard-card-expiry"
                   type="text"
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   placeholder="MM/YY"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="wizard-card-cvc"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   CVC
                 </label>
                 <input
+                  id="wizard-card-cvc"
                   type="text"
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   placeholder="123"
@@ -226,8 +246,9 @@ function ValidationExample() {
     >
       <StepContent stepId="name">
         <div className="rounded-lg border p-6">
-          <h3 className="mb-4 text-lg font-semibold">What's your name?</h3>
+          <h3 className="mb-4 text-lg font-semibold">What&apos;s your name?</h3>
           <input
+            id="wizard-validation-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -238,8 +259,9 @@ function ValidationExample() {
       </StepContent>
       <StepContent stepId="email">
         <div className="rounded-lg border p-6">
-          <h3 className="mb-4 text-lg font-semibold">What's your email?</h3>
+          <h3 className="mb-4 text-lg font-semibold">What&apos;s your email?</h3>
           <input
+            id="wizard-validation-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

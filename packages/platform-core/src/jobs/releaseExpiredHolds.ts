@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { releaseExpiredInventoryHolds } from "../inventoryHolds.reaper";
+import type { InventoryHoldDb } from "../inventoryHolds.db";
 import { listShops } from "../repositories/shops.server";
 import { prisma } from "../db";
 
@@ -16,7 +17,7 @@ export async function releaseExpiredHoldsForAllShops(): Promise<{
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await releaseExpiredInventoryHolds({
           shopId,
-          tx: tx as any,
+          tx: tx as unknown as InventoryHoldDb,
           now: new Date(),
           limit: 100,
         });

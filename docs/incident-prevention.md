@@ -49,7 +49,7 @@ These commands are blocked by one or more protection layers:
 | Commit changes | Every 30 min or significant change | Creates restore points |
 | Push to GitHub | Every 2 hours or 3 commits | Backs up work off-machine |
 | Use work branches | Always | Isolates work from production |
-| Create PRs | For all main merges | Enables review and CI |
+| Create PRs (green, conflict-free) | For all main merges | Enables review and CI |
 
 ---
 
@@ -87,4 +87,4 @@ These commands are blocked by one or more protection layers:
 
 ---
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-16

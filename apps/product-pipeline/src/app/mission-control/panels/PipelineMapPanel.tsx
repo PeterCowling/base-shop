@@ -4,10 +4,19 @@ import { Cluster, Stack } from "@ui/components/atoms/primitives";
 import { useEffect, useMemo, useState } from "react";
 import PipelineMap2D from "./PipelineMap2D";
 import PipelineMap3D from "./PipelineMap3D";
+import type { PipelineStage } from "./pipelineMapConfig";
 
 type MapMode = "2d" | "3d";
 
 const MAP_MODE_STORAGE_KEY = "pp_command_deck_map_mode_v1";
+const MODE_ACTIVE_CLASS = ["bg-primary", "text-primary-foreground"].join(" ");
+const MODE_INACTIVE_CLASS = ["text-foreground/70", "hover:bg-surface-3"].join(" ");
+const MODE_INACTIVE_DISABLED_CLASS = [
+  "text-foreground/70",
+  "hover:bg-surface-3",
+  "disabled:cursor-not-allowed",
+  "disabled:opacity-50",
+].join(" ");
 
 function supportsWebGL(): boolean {
   try {
@@ -25,7 +34,7 @@ function supportsWebGL(): boolean {
 function getPrefersReducedMotion(): boolean {
   if (typeof window === "undefined") return false;
   if (!("matchMedia" in window)) return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return window.matchMedia("(prefers-reduced-motion:reduce)").matches;
 }
 
 function readStoredMode(): MapMode | null {
@@ -56,6 +65,9 @@ export default function PipelineMapPanel({
     hint: string;
     mode2d: string;
     mode3d: string;
+    webglUnavailable: string;
+    runsLabel: string;
+    nodeLabels: Record<PipelineStage, string>;
   };
   stageCounts: Record<string, number>;
 }) {
@@ -97,9 +109,7 @@ export default function PipelineMapPanel({
             <button
               type="button"
               className={`rounded-full px-3 py-1 font-semibold ${
-                effectiveMode === "2d"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground/70 hover:bg-surface-3"
+                effectiveMode === "2d" ? MODE_ACTIVE_CLASS : MODE_INACTIVE_CLASS
               }`}
               onClick={() => setMode("2d")}
               aria-pressed={effectiveMode === "2d"}
@@ -110,13 +120,13 @@ export default function PipelineMapPanel({
               type="button"
               className={`rounded-full px-3 py-1 font-semibold ${
                 effectiveMode === "3d"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground/70 hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
+                  ? MODE_ACTIVE_CLASS
+                  : MODE_INACTIVE_DISABLED_CLASS
               }`}
               onClick={() => setMode("3d")}
               aria-pressed={effectiveMode === "3d"}
               disabled={!can3d}
-              title={!can3d ? "WebGL not available" : undefined}
+              title={!can3d ? strings.webglUnavailable : undefined}
             >
               {strings.mode3d}
             </button>
@@ -126,9 +136,14 @@ export default function PipelineMapPanel({
 
       <div className="mt-6">
         {effectiveMode === "3d" ? (
-          <PipelineMap3D stageCounts={stageCounts} reduceMotion={prefersReducedMotion} />
+          <PipelineMap3D
+            stageCounts={stageCounts}
+            reduceMotion={prefersReducedMotion}
+            labels={strings.nodeLabels}
+            runsLabel={strings.runsLabel}
+          />
         ) : (
-          <PipelineMap2D stageCounts={stageCounts} />
+          <PipelineMap2D stageCounts={stageCounts} labels={strings.nodeLabels} />
         )}
       </div>
     </section>

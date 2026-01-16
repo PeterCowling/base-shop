@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
 import type { GameEvent } from "../types";
 
 function formatAge(value: string | null | undefined): string | null {
@@ -42,7 +42,7 @@ export default function BattleLogPanel({
       {events.length === 0 ? (
         <p className="mt-6 text-sm text-foreground/70">{strings.empty}</p>
       ) : (
-        <div className="mt-6 grid gap-3">
+        <Grid cols={1} gap={3} className="mt-6">
           {events.slice(0, 12).map((event) => {
             const age = formatAge(event.createdAt);
             const stage = event.stage ?? "?";
@@ -67,7 +67,7 @@ export default function BattleLogPanel({
               </Link>
             );
           })}
-        </div>
+        </Grid>
       )}
     </section>
   );

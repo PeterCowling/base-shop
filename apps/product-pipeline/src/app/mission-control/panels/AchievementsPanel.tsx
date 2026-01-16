@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
 import type { GameAchievement } from "../types";
 
 type AchievementsStrings = {
@@ -49,7 +49,7 @@ export default function AchievementsPanel({
         <h2 className="text-xl font-semibold tracking-tight">{s.title}</h2>
       </Stack>
 
-      <div className="mt-6 grid gap-4">
+      <Grid cols={1} gap={4} className="mt-6">
         {achievements.map((achievement) => {
           const copy = safeCopy(s[achievement.id]) ?? {
             title: achievement.id,
@@ -97,7 +97,7 @@ export default function AchievementsPanel({
             </div>
           );
         })}
-      </div>
+      </Grid>
     </section>
   );
 }

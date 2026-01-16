@@ -50,6 +50,7 @@ const designTokens = plugin.withOptions(
       },
     },
   })
-);
+) as unknown;
 
 export default designTokens;
+export * from "./src/index";

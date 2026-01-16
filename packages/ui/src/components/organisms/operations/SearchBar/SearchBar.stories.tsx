@@ -95,20 +95,6 @@ export const Disabled: Story = {
 };
 
 // With autofocus
-export const WithAutofocus: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <SearchBar
-        value={value}
-        onChange={setValue}
-        placeholder="Auto-focused search..."
-        autoFocus={true}
-      />
-    );
-  },
-};
-
 // Interactive example with results
 export const InteractiveWithResults: Story = {
   render: () => {
@@ -177,7 +163,7 @@ export const InteractiveWithResults: Story = {
         {value && filteredProducts.length === 0 && (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-darkSurface dark:bg-darkSurface">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              No results found for "{value}"
+              No results found for &quot;{value}&quot;
             </p>
           </div>
         )}

@@ -1,5 +1,8 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { useTranslations } from '@acme/i18n';
+import { Inline } from '../../../atoms/primitives';
+import { cn } from '../../../../utils/style/cn';
 
 export interface PaginationProps {
   currentPage: number;
@@ -52,6 +55,7 @@ export function Pagination({
   className = '',
   disabled = false,
 }: PaginationProps) {
+  const t = useTranslations();
   const startItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
@@ -70,96 +74,119 @@ export function Pagination({
   };
 
   return (
-    <div
-      className={`flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-800 ${className}`}
+    <Inline
+      asChild
+      alignY="center"
+      className={cn(
+        'w-full justify-between gap-4 rounded-lg border border-border-2 bg-surface-1 px-4 py-3',
+        className
+      )}
       role="navigation"
-      aria-label="Pagination"
+      aria-label={t('pagination.ariaLabel')}
     >
-      {/* Items info */}
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-slate-600 dark:text-slate-400">
-          {totalItems === 0 ? (
-            'No items'
-          ) : (
-            <>
-              Showing <span className="font-medium text-slate-900 dark:text-slate-100">{startItem}</span>
-              {' - '}
-              <span className="font-medium text-slate-900 dark:text-slate-100">{endItem}</span>
-              {' of '}
-              <span className="font-medium text-slate-900 dark:text-slate-100">{totalItems}</span>
-            </>
+      <div>
+        {/* Items info */}
+        <Inline alignY="center" gap={4}>
+          <span className="text-sm text-muted">
+            {totalItems === 0
+              ? t('pagination.noItems')
+              : t('pagination.range', {
+                  start: startItem,
+                  end: endItem,
+                  total: totalItems,
+                })}
+          </span>
+
+          {/* Page size selector */}
+          {showPageSizeSelector && onPageSizeChange && (
+            <Inline alignY="center" gap={2}>
+              <label htmlFor="page-size" className="text-sm text-muted">
+                {t('pagination.perPage')}
+              </label>
+              <select
+                id="page-size"
+                value={pageSize}
+                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                disabled={disabled}
+                className={cn(
+                  'min-h-10 rounded border border-border-2 bg-surface-1 px-2 py-1 text-sm text-fg transition-colors',
+                  'hover:border-border-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                  'disabled:cursor-not-allowed disabled:opacity-50'
+                )}
+              >
+                {pageSizeOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </Inline>
           )}
-        </span>
+        </Inline>
 
-        {/* Page size selector */}
-        {showPageSizeSelector && onPageSizeChange && (
-          <div className="flex items-center gap-2">
-            <label htmlFor="page-size" className="text-sm text-slate-600 dark:text-slate-400">
-              Per page:
-            </label>
-            <select
-              id="page-size"
-              value={pageSize}
-              onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-              disabled={disabled}
-              className="rounded border border-slate-200 bg-white px-2 py-1 text-sm text-slate-900 transition-colors hover:border-slate-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-500 dark:focus:border-blue-400 dark:focus:ring-blue-900"
+        {/* Page navigation */}
+        <Inline alignY="center" gap={2}>
+          {showFirstLast && (
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={!canGoPrevious}
+              aria-label={t('pagination.first')}
+              className={cn(
+                'grid min-h-11 min-w-11 place-items-center rounded-md text-muted transition-colors',
+                'hover:bg-muted/40 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent'
+              )}
             >
-              {pageSizeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-      </div>
+              <ChevronsLeft className="h-4 w-4" />
+            </button>
+          )}
 
-      {/* Page navigation */}
-      <div className="flex items-center gap-2">
-        {showFirstLast && (
           <button
-            onClick={() => handlePageChange(1)}
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={!canGoPrevious}
-            aria-label="Go to first page"
-            className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+            aria-label={t('pagination.prev')}
+            className={cn(
+              'grid min-h-11 min-w-11 place-items-center rounded-md text-muted transition-colors',
+              'hover:bg-muted/40 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+              'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent'
+            )}
           >
-            <ChevronsLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4" />
           </button>
-        )}
 
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={!canGoPrevious}
-          aria-label="Go to previous page"
-          className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
+          <span className="min-w-24 text-center text-sm text-fg">
+            {t('pagination.pageOf', { current: currentPage, total: totalPages })}
+          </span>
 
-        <span className="min-w-[100px] text-center text-sm text-slate-900 dark:text-slate-100">
-          Page {currentPage} of {totalPages}
-        </span>
-
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={!canGoNext}
-          aria-label="Go to next page"
-          className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-
-        {showFirstLast && (
           <button
-            onClick={() => handlePageChange(totalPages)}
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={!canGoNext}
-            aria-label="Go to last page"
-            className="rounded p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+            aria-label={t('pagination.next')}
+            className={cn(
+              'grid min-h-11 min-w-11 place-items-center rounded-md text-muted transition-colors',
+              'hover:bg-muted/40 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+              'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent'
+            )}
           >
-            <ChevronsRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" />
           </button>
-        )}
+
+          {showFirstLast && (
+            <button
+              onClick={() => handlePageChange(totalPages)}
+              disabled={!canGoNext}
+              aria-label={t('pagination.last')}
+              className={cn(
+                'grid min-h-11 min-w-11 place-items-center rounded-md text-muted transition-colors',
+                'hover:bg-muted/40 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent'
+              )}
+            >
+              <ChevronsRight className="h-4 w-4" />
+            </button>
+          )}
+        </Inline>
       </div>
-    </div>
+    </Inline>
   );
 }

@@ -3,7 +3,7 @@ import "@acme/zod-utils/initZod";
 import { calculateTax, type TaxCalculationRequest } from "@platform-core/tax";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { z, type ZodSchema } from "zod";
 import { parseJsonBody } from "@shared-utils";
 
 // Tax calculations rely on platform-core functions that read from the
@@ -18,7 +18,7 @@ const schema = z
     toCountry: z.string(),
     toPostalCode: z.string().optional(),
   })
-  .strict();
+  .strict() as unknown as ZodSchema<TaxCalculationRequest>;
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody<TaxCalculationRequest>(req, schema, "1mb");

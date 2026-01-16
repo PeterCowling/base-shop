@@ -242,7 +242,7 @@ export function XaProductListing({
             href={productHref(product)}
             title={product.title ?? ""}
             price={product.price ?? 0}
-            compareAtPrice={estimateCompareAt(product.price)}
+            compareAtPrice={estimateCompareAt(product.price as number | undefined) ?? undefined}
             images={(product.media ?? [])
               .filter((m) => m.type === "image")
               .map((m) => ({ src: m.url, alt: m.altText }))}

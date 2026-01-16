@@ -1,7 +1,18 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
 import type { MissionLoadout } from "../types";
+
+const STAGE_M_KINDS = {
+  amazonSearch: "amazon_search",
+  amazonListing: "amazon_listing",
+  taobaoListing: "taobao_listing",
+} as const;
+
+const STAGE_M_CAPTURE_MODES = {
+  runner: "runner",
+  queue: "queue",
+} as const;
 
 function clampInt(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
@@ -52,7 +63,7 @@ export default function LoadoutPanel({
         <h2 className="text-xl font-semibold tracking-tight">{strings.title}</h2>
       </Stack>
 
-      <div className="mt-6 grid gap-4">
+      <Grid cols={1} gap={4} className="mt-6">
         <label className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.triageLeadCountLabel}
           <input
@@ -123,9 +134,15 @@ export default function LoadoutPanel({
               })
             }
           >
-            <option value="amazon_search">{strings.stageMKindAmazonSearch}</option>
-            <option value="amazon_listing">{strings.stageMKindAmazonListing}</option>
-            <option value="taobao_listing">{strings.stageMKindTaobaoListing}</option>
+            <option value={STAGE_M_KINDS.amazonSearch}>
+              {strings.stageMKindAmazonSearch}
+            </option>
+            <option value={STAGE_M_KINDS.amazonListing}>
+              {strings.stageMKindAmazonListing}
+            </option>
+            <option value={STAGE_M_KINDS.taobaoListing}>
+              {strings.stageMKindTaobaoListing}
+            </option>
           </select>
         </label>
 
@@ -144,8 +161,12 @@ export default function LoadoutPanel({
               })
             }
           >
-            <option value="runner">{strings.stageMCaptureModeRunner}</option>
-            <option value="queue">{strings.stageMCaptureModeQueue}</option>
+            <option value={STAGE_M_CAPTURE_MODES.runner}>
+              {strings.stageMCaptureModeRunner}
+            </option>
+            <option value={STAGE_M_CAPTURE_MODES.queue}>
+              {strings.stageMCaptureModeQueue}
+            </option>
           </select>
         </label>
 
@@ -203,7 +224,7 @@ export default function LoadoutPanel({
             }
           />
         </label>
-      </div>
+      </Grid>
     </section>
   );
 }

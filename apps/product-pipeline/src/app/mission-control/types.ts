@@ -120,11 +120,24 @@ export type MissionControlStrings = {
     xpLabel: string;
     nextLevel: string;
     nextLevelLabel: string;
+    statusSyncing: string;
+    statusOffline: string;
+    streakSummary: string;
+    streakEmpty: string;
+    levelUpToast: string;
   };
   missions: {
     label: string;
     title: string;
     busyLabel: string;
+    readyLabel: string;
+    resultSuccessLabel: string;
+    resultErrorLabel: string;
+    runningLabel: string;
+    metaTargets: string;
+    metaPromotionLimit: string;
+    metaQueue: string;
+    failureSummary: string;
     triageBlitz: { title: string; description: string; cta: string };
     promotionSortie: { title: string; description: string; cta: string };
     marketSweep: { title: string; description: string; cta: string };
@@ -153,6 +166,9 @@ export type MissionControlStrings = {
     hint: string;
     mode2d: string;
     mode3d: string;
+    webglUnavailable: string;
+    runsLabel: string;
+    nodeLabels: Record<"P" | "M" | "S" | "K" | "L", string>;
   };
   achievements: {
     label: string;

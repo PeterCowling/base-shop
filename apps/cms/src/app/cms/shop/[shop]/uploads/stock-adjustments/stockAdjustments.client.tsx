@@ -304,7 +304,7 @@ export default function StockAdjustmentsClient({
           }
           const mergedAttrs: Record<string, string> = { ...row.variantAttributes };
           const extraAttrs = parseVariantAttributesJson(row.extraVariantJson);
-          if (!extraAttrs.ok) {
+          if (extraAttrs.ok === false) {
             setError(`Row ${idx + 1}: ${extraAttrs.error}`);
             return;
           }
@@ -345,7 +345,7 @@ export default function StockAdjustmentsClient({
           setError("Request failed.");
           return;
         }
-        if (!json.ok) {
+        if (json.ok === false) {
           setError(json.message || "Request failed.");
           setResult(json);
           return;

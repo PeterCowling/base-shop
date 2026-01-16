@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-raw-color -- OPS-000: operations token definitions include raw hex values */
 import { spacing } from '../../core/spacing'
 import { colors } from '../../core/colors'
 

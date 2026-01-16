@@ -72,7 +72,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
 
       if (next === "json") {
         const result = getFormPricing();
-        if (!result.success) {
+        if (result.success === false) {
           setFieldErrors(result.errors);
           setStatus("error");
           onToast("Resolve highlighted fields before viewing JSON.");
@@ -86,7 +86,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
       }
 
       const parsed = parseDraft();
-      if (!parsed.success) {
+      if (parsed.success === false) {
         const message = parsed.errors.json ?? "JSON is invalid";
         setJsonError(message);
         setStatus("error");
@@ -120,7 +120,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
       let pricing: PricingMatrix;
       if (activeTab === "json") {
         const parsed = parseDraft();
-        if (!parsed.success) {
+        if (parsed.success === false) {
           const message = parsed.errors.json ?? "JSON could not be parsed.";
           setJsonError(message);
           setStatus("error");
@@ -133,7 +133,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
         setDraftFromMatrix(parsed.data);
       } else {
         const result = getFormPricing();
-        if (!result.success) {
+        if (result.success === false) {
           setFieldErrors(result.errors);
           setStatus("error");
           onToast("Fix validation issues before saving.");

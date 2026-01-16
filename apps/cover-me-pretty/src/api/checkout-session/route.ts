@@ -157,7 +157,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 503 },
     );
   }
-  if (!inventoryCheck.ok) {
+  if (inventoryCheck.ok === false) {
     return NextResponse.json(
       {
         error: INSUFFICIENT_STOCK_ERROR,

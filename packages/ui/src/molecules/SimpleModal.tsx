@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import { cn } from '../utils/style/cn'
+import { cn } from '@ui/utils/style/cn'
 
 export interface SimpleModalProps {
   /** Whether modal is open */

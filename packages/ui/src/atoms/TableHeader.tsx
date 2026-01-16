@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import { cn } from '../utils/style/cn'
+import { cn } from '@ui/utils/style/cn'
 
 export interface TableHeaderProps extends React.ThHTMLAttributes<HTMLTableHeaderCellElement> {
   /** Display label (already translated) */

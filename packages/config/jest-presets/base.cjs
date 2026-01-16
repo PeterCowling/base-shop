@@ -97,8 +97,20 @@ module.exports = {
     "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|msw|@mswjs/interceptors|strict-event-emitter|headers-polyfill|outvariant|until-async|@bundled-es-modules|@acme)/)",
   ],
 
-  // Setup files
-  setupFiles: ["dotenv/config"],
+  // Setup files (run before test environment is initialized)
+  setupFiles: [
+    "dotenv/config",
+    // Phase 1: Environment variables and configuration
+    "<rootDir>/../../test/setup/env.ts",
+  ],
+
+  // Setup files after environment (run after jsdom/node is initialized)
+  setupFilesAfterEnv: [
+    // Phase 2: Polyfills for browser/Node APIs
+    "<rootDir>/../../test/setup/polyfills.ts",
+    // Phase 3: Mocks and test utilities
+    "<rootDir>/../../test/setup/mocks.ts",
+  ],
 
   // Paths to ignore during testing
   testPathIgnorePatterns: [

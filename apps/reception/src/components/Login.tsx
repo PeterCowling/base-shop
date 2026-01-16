@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 
-import landingImage from "../assets/landing_positano.avif";
 import { useAuth, type AuthStatus } from "../context/AuthContext";
 import { useDarkMode } from "../context/DarkModeContext";
 import { readJson, writeJson, removeItem } from "../lib/offline/storage";
@@ -313,7 +312,7 @@ function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
   return (
     <div className="relative isolate flex min-h-dvh w-full items-center justify-center overflow-hidden bg-gray-100 dark:bg-darkBg">
       <img
-        src={landingImage.src}
+        src="/landing_positano.avif"
         alt="Colourful panorama of Positano"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center md:object-bottom"
       />

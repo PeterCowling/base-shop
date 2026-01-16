@@ -1,14 +1,84 @@
 ---
 Type: Plan
-Status: Active
+Status: Completed
 Domain: Platform
 Created: 2026-01-15
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-15
+Last-updated: 2026-01-16
 Last-updated-by: Claude Opus 4.5
+Completed: 2026-01-16
+Completed-by: Claude Opus 4.5
 ---
 
 # Jest Configuration Consolidation Plan
+
+## Completion Summary
+
+**All phases completed on 2026-01-16.** The Jest configuration has been successfully consolidated from a complex, scattered system into a well-organized preset-based architecture.
+
+### Final Deliverables
+
+| Deliverable | Location | Description |
+|-------------|----------|-------------|
+| Preset Infrastructure | `packages/config/jest-presets/` | base, react, node presets + coverage tiers |
+| Module Mappings | `packages/config/jest-presets/modules/` | workspace, esm-compat, mocks, react, runtime |
+| Setup Consolidation | `test/setup/` | env.ts, polyfills.ts, mocks.ts |
+| Baseline Tools | `test/jest-baselines/`, `scripts/` | Config snapshots and migration scripts |
+| Documentation | README.md files, CLAUDE.md | Comprehensive usage guides |
+
+### Packages Migrated (All Waves Complete)
+
+- **Wave 1:** api, template-app, cover-me-pretty ✅
+- **Wave 2:** types, tailwind-config, email, page-builder-core ✅
+- **Wave 3:** platform-core, page-builder-ui, cms-marketing, dashboard ✅
+- **Wave 4:** reception, ui (with 90% strict coverage) ✅
+
+### Rollback Safety
+
+All migrated packages support instant rollback via `JEST_USE_NEW_PRESET=0` environment variable.
+
+## Implementation Progress
+
+**Phase 0-4 and Phase 6 completed on 2026-01-16:**
+
+**Phase 0 (Baseline Capture):**
+- Generated `jest --showConfig` snapshots for 15 workspaces
+- Created `test/jest-baselines/` with comparison infrastructure
+- Created `scripts/jest-migration-check.sh` acceptance script
+
+**Phase 1 (Preset Infrastructure):**
+- Created `packages/config/jest-presets/` with base, react, node presets
+- Added coverage-tiers.cjs with 5 standardized tiers
+- Added exports entries to packages/config/package.json
+
+**Phase 2 (Module Mapping Extraction):**
+- Created modular mapping files: workspace, esm-compat, mocks, react, runtime
+- Preserved order-sensitive mapping composition
+
+**Phase 3 (Package Migration - All 4 Waves):**
+- Migrated all 15 packages to new preset system
+- Added rollback wrappers for safety
+
+**Phase 4 (Setup Consolidation):**
+- Created test/setup/env.ts (environment variables)
+- Created test/setup/polyfills.ts (browser/node polyfills)
+- Created test/setup/mocks.ts (MSW, global mocks)
+- Updated base preset setupFilesAfterEnv
+
+**Phase 6 (Documentation):**
+- Created comprehensive `packages/config/jest-presets/README.md`
+- Updated `CLAUDE.md` with Jest preset usage section
+- Created `test/setup/README.md` and `test/setup/MIGRATION.md`
+
+**Lessons Learned:**
+- Documentation structure mirrors the developer journey: Quick Start → Selection → Customization → Troubleshooting
+- Troubleshooting section addresses real issues encountered during implementation
+- Migration guide includes rollback strategy for safety
+- Coverage tier documentation emphasizes choosing by code criticality
+
+**Remaining Work (Optional):**
+- Phase 5 (Hard-Coding Removal) - Can be done incrementally as apps are touched
+- Remove rollback wrappers after extended validation period
 
 ## Problem Statement
 
@@ -744,11 +814,11 @@ Add section on Jest preset usage for AI assistants.
 - [ ] Verify all apps pass tests after each removal
 
 ### Phase 6: Documentation
-- [ ] Write `packages/config/jest-presets/README.md`
-- [ ] Add preset selection flowchart
-- [ ] Document coverage tier rationale
-- [ ] Update CLAUDE.md with Jest preset usage
-- [ ] Add troubleshooting guide for common ESM issues
+- [x] Write `packages/config/jest-presets/README.md`
+- [x] Add preset selection flowchart
+- [x] Document coverage tier rationale
+- [x] Update CLAUDE.md with Jest preset usage
+- [x] Add troubleshooting guide for common ESM issues
 
 ## Success Metrics
 

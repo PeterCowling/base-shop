@@ -9,7 +9,7 @@ import React, {
   type ReactNode,
   type CSSProperties,
 } from "react";
-import { cn } from "@ui/utils/style/cn";
+import { cn } from "../../../../utils/style/cn";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

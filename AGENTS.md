@@ -586,10 +586,130 @@ These shortcuts created technical debt that now needs proper plans to resolve:
 
 **Lesson:** Proper planning upfront prevents accumulated tech debt.
 
-## Testing Policy
-- Do not run package- or app-wide test suites across the monorepo unless explicitly asked. These runs are expensive and slow down iteration.
-- Prefer scoped runs:
-  - Single package: `pnpm --filter <workspace> test`
-  - Single file or pattern (Jest): `pnpm --filter <workspace> test -- --testPathPattern <pattern>`
-  - Cypress subset: `pnpm e2e:dashboard` or tag/grep focused specs
-- For coverage, run targeted commands only when needed (see `docs/coverage.md`).
+## Testing Policy (MANDATORY)
+
+> **⚠️ INCIDENT REFERENCE: On Jan 16, 2026, orphaned Jest processes consumed 2.5GB+ RAM and caused system slowdown.**
+> Multiple test runs were started but never terminated, accumulating over 2+ hours.
+> The machine had only 93MB free RAM and load average of 7.73.
+> **THESE RULES EXIST TO PREVENT THIS FROM HAPPENING AGAIN.**
+
+### Rule 1: NEVER Run Broad Test Suites
+
+**PROHIBITED test commands (never run these without explicit user request):**
+
+```bash
+# ❌ NEVER run these - they spawn many workers and take forever
+pnpm test                           # Runs ALL tests in monorepo
+pnpm --filter @acme/ui test         # Runs ALL tests in a large package
+pnpm --filter @apps/cms test        # Runs ALL tests in an app
+jest                                # Runs all tests in current directory
+```
+
+**Why:** Broad test runs spawn multiple Jest workers (4-8 per run), each consuming 200-500MB RAM. Multiple concurrent runs can easily consume 2-5GB and bring the system to a crawl.
+
+### Rule 2: Always Use Targeted Test Commands
+
+**REQUIRED approach - always scope tests to the minimum necessary:**
+
+```bash
+# ✅ CORRECT: Run a single test file
+pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx
+
+# ✅ CORRECT: Run tests matching a pattern
+pnpm --filter @acme/ui test -- --testPathPattern="Button"
+
+# ✅ CORRECT: Run a specific describe block or test
+pnpm --filter @acme/ui test -- --testNamePattern="renders correctly"
+
+# ✅ CORRECT: Combine file and test name patterns
+pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx -t "handles click"
+```
+
+### Rule 3: Limit Jest Workers
+
+**When you must run broader tests, always limit workers:**
+
+```bash
+# ✅ Limit to 2 workers maximum
+pnpm --filter @acme/ui test -- --maxWorkers=2
+
+# ✅ Run sequentially (safest, slowest)
+pnpm --filter @acme/ui test -- --runInBand
+```
+
+### Rule 4: Never Start Multiple Test Runs
+
+**Before starting ANY test run:**
+
+1. Check for existing Jest processes:
+   ```bash
+   ps aux | grep -E "(jest|vitest)" | grep -v grep
+   ```
+
+2. If processes exist, either:
+   - Wait for them to complete, OR
+   - Kill them first: `pkill -f jest`
+
+3. Only then start your test run
+
+**NEVER start a new test run in a different terminal while one is already running.**
+
+### Rule 5: Clean Up Stuck Tests
+
+**If tests seem stuck (running > 5 minutes for unit tests):**
+
+```bash
+# Check what's running
+ps aux | grep jest | head -10
+
+# Kill all Jest processes
+pkill -f "jest-worker"
+pkill -f "jest.js"
+
+# Then re-run with --detectOpenHandles to find the issue
+pnpm --filter <package> test -- <specific-file> --detectOpenHandles
+```
+
+### Test Scope Decision Tree
+
+| Scenario | Command |
+|----------|---------|
+| Changed one file `Button.tsx` | `pnpm --filter @acme/ui test -- Button.test.tsx` |
+| Changed one function | `pnpm --filter <pkg> test -- -t "function name"` |
+| Changed a component + its tests | `pnpm --filter <pkg> test -- ComponentName` |
+| Changed multiple files in one package | `pnpm --filter <pkg> test -- --maxWorkers=2` |
+| Need to verify CI will pass | Ask user first; use `--maxWorkers=2` |
+| User explicitly asks for full test run | Run with `--maxWorkers=2`, monitor for stuck processes |
+
+### Reference Commands
+
+```bash
+# Check for orphaned test processes
+ps aux | grep -E "(jest|vitest)" | grep -v grep
+
+# Kill all Jest processes
+pkill -f "jest-worker" && pkill -f "jest.js"
+
+# Check system resources
+top -l 1 | head -10
+
+# Run single test file (preferred)
+pnpm --filter <package> test -- path/to/file.test.ts
+
+# Run tests matching pattern
+pnpm --filter <package> test -- --testPathPattern="pattern"
+
+# Run with limited workers
+pnpm --filter <package> test -- --maxWorkers=2
+```
+
+### Why This Matters
+
+**Reference incident (2026-01-16):**
+- 10+ Jest worker processes were running simultaneously
+- Combined RAM usage: 2.5GB+
+- System had only 93MB free RAM (out of 16GB)
+- Load average: 7.73 (should be <4)
+- Some processes had been running since 9:05AM (2+ hours)
+
+**Lesson:** Always run the minimum necessary tests. One targeted test file runs in seconds and uses <100MB. A full package test suite spawns 4-8 workers at 200-500MB each.

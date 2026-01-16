@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01KF320470XVXVC6ANEHTP24V3",
+    "sku": "sku-1",
+    "title": {
+      "en": "Hat",
+      "de": "Hat",
+      "it": "Hat",
+      "es": "Hat"
+    },
+    "description": {
+      "en": "Warm",
+      "de": "Warm",
+      "it": "Warm",
+      "es": "Warm"
+    },
+    "price": 1000,
+    "currency": "EUR",
+    "media": [],
+    "shop": "demo",
+    "status": "draft",
+    "row_version": 2,
+    "created_at": "2026-01-16T09:25:47.693Z",
+    "updated_at": "2026-01-16T09:25:49.018Z"
+  }
+]

@@ -356,6 +356,7 @@
       "domutils": "3.1.0",
       "htmlparser2>entities": "4.5.0",
       "dom-serializer>entities": "4.5.0",
+      "form-data": "4.0.4",
       "@tanstack/query-core": "^5.81.4",
       "@storybook/addon-coverage>vite-plugin-istanbul": "^7.2.0"
     }

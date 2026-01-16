@@ -18,3 +18,7 @@ runs:
     - name: Install Dependencies
       run: pnpm install --frozen-lockfile
       shell: bash
+
+    - name: Build eslint plugin
+      run: pnpm --filter @acme/eslint-plugin-ds build
+      shell: bash

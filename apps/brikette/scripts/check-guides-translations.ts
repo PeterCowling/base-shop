@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] CLI audit reads locale JSON files from the app workspace. */
+/* eslint-disable ds/no-hardcoded-copy -- i18n-exempt -- ABC-123 [ttl=2026-12-31] CLI audit output. */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import i18n from "../src/i18n";
-import { i18nConfig } from "../src/i18n.config";
+import { i18nConfig, type AppLanguage } from "../src/i18n.config";
 import { preloadNamespacesWithFallback } from "../src/utils/loadI18nNs";
 import { ensureGuideContent } from "../src/utils/ensureGuideContent";
 
@@ -28,7 +29,7 @@ const LIST_KEYS = [
   { key: "content.backpackerItineraries.intro", guideKey: "backpackerItineraries" },
 ] as const;
 
-type Failure = { locale: string; key: string; message: string };
+type Failure = { locale: AppLanguage; key: string; message: string };
 
 const isMeaningfulString = (value: unknown, key: string): boolean =>
   typeof value === "string" && value.trim().length > 0 && value.trim() !== key;
@@ -114,7 +115,9 @@ const hasIntroContent = (value: unknown): boolean => {
 };
 
 async function main(): Promise<void> {
-  const supported = (i18nConfig.supportedLngs ?? []) as string[];
+  const supported = Array.isArray(i18nConfig.supportedLngs)
+    ? (i18nConfig.supportedLngs as AppLanguage[])
+    : [];
   const failures: Failure[] = [];
 
   for (const locale of supported) {

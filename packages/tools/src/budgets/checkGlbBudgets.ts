@@ -113,27 +113,26 @@ export async function checkGlbBudgets({
     for (const currentTier of tiers) {
       const budget = budgets[currentTier];
       if (!budget) continue;
-      const glbPath = path.join(
-        productsDir,
-        id,
-        "assets",
-        currentTier === "mobile" ? "mobile.glb" : "desktop.glb",
-      );
+      const tierFilename = currentTier === "mobile" ? "mobile" : "desktop";
+      const gltfPath = path.join(productsDir, id, "assets", "v1", `${tierFilename}.gltf`);
+      const glbPath = path.join(productsDir, id, "assets", `${tierFilename}.glb`);
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 path is built from validated product id
+      const assetPath = existsSync(gltfPath) ? gltfPath : glbPath;
 
       // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 path is built from validated product id
-      if (!existsSync(glbPath)) {
+      if (!existsSync(assetPath)) {
         results.push({
           productId: id,
           tier: currentTier,
           ok: !strictMissing,
           messages: [
-            `missing asset: ${path.relative(repoRoot, glbPath)}`,
+            `missing asset: ${path.relative(repoRoot, assetPath)}`,
           ],
         });
         continue;
       }
 
-      const stats = await readGlbStats(glbPath);
+      const stats = await readGlbStats(assetPath);
       const failures = compareBudget(stats, budget);
       results.push({
         productId: id,

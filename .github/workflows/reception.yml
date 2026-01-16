@@ -22,15 +22,53 @@ on:
       - 'packages/ui/**'
       - '.github/workflows/reception.yml'
   workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
-  deploy:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/reception"
       build-cmd: pnpm --filter @apps/reception... build
       artifact-path: ""
       deploy-cmd: >
-        cd apps/reception && pnpm exec next-on-pages deploy --project-name reception --branch ${{ github.ref_name }}
+        cd apps/reception && pnpm exec next-on-pages deploy --project-name reception --branch staging
       project-name: "reception"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/reception"
+      build-cmd: pnpm --filter @apps/reception... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/reception && pnpm exec next-on-pages deploy --project-name reception --branch main
+      project-name: "reception"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/reception"
+      build-cmd: pnpm --filter @apps/reception... build
+      artifact-path: ""
+      project-name: "reception"
+      target-environment: staging
     secrets: inherit

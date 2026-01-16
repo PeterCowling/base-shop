@@ -30,9 +30,20 @@ on:
       - 'packages/design-tokens/**'
       - '.github/workflows/skylar.yml'
   workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
-  deploy:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/skylar"
@@ -42,6 +53,33 @@ jobs:
       build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/skylar... build
       artifact-path: apps/skylar/out
       deploy-cmd: >
-        pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch ${{ github.ref_name }}
+        pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch staging
       project-name: "skylar"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/skylar"
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/skylar... build
+      artifact-path: apps/skylar/out
+      deploy-cmd: >
+        pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch main
+      project-name: "skylar"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/skylar"
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/skylar... build
+      artifact-path: apps/skylar/out
+      project-name: "skylar"
+      target-environment: staging
     secrets: inherit

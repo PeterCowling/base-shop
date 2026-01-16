@@ -30,15 +30,53 @@ on:
       - 'packages/design-tokens/**'
       - '.github/workflows/prime.yml'
   workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
-  deploy:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/prime"
       build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
       artifact-path: apps/prime/out
       deploy-cmd: >
-        pnpm exec wrangler pages deploy apps/prime/out --project-name prime --branch ${{ github.ref_name }} --functions apps/prime/functions
+        pnpm exec wrangler pages deploy apps/prime/out --project-name prime --branch staging --functions apps/prime/functions
       project-name: "prime"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/prime"
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      artifact-path: apps/prime/out
+      deploy-cmd: >
+        pnpm exec wrangler pages deploy apps/prime/out --project-name prime --branch main --functions apps/prime/functions
+      project-name: "prime"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/prime"
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      artifact-path: apps/prime/out
+      project-name: "prime"
+      target-environment: staging
     secrets: inherit

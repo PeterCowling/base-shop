@@ -12,12 +12,11 @@ on:
         type: choice
         options:
           - product-pipeline
-          # Add more apps here as they migrate to staging/production workflow:
-          # - cms
-          # - brikette
-          # - skylar
-          # - reception
-          # - prime
+          - cms
+          - brikette
+          - skylar
+          - reception
+          - prime
 
 jobs:
   promote:

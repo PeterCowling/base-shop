@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- UI-3003 [ttl=2026-12-31] svg attrs + default labels */
 "use client";
 
 import * as React from "react";
@@ -16,6 +17,14 @@ export interface ThemeToggleProps {
   size?: "sm" | "md";
   /** Show labels next to icons */
   showLabels?: boolean;
+  /** Accessible label for the toggle group */
+  ariaLabel?: string;
+  /** Custom labels for themes */
+  labels?: {
+    light: string;
+    dark: string;
+    system: string;
+  };
 }
 
 const SunIcon = ({ className }: { className?: string }) => (
@@ -69,11 +78,12 @@ const MonitorIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const themes: { value: ThemeOption; label: string; icon: typeof SunIcon }[] = [
-  { value: "base", label: "Light", icon: SunIcon },
-  { value: "dark", label: "Dark", icon: MoonIcon },
-  { value: "system", label: "System", icon: MonitorIcon },
-];
+const DEFAULT_LABELS = {
+  // i18n-exempt -- UI-3003 [ttl=2026-12-31] default theme labels for fallback
+  light: "Light",
+  dark: "Dark",
+  system: "System",
+};
 
 /**
  * ThemeToggle - A segmented control for switching between light, dark, and system themes.
@@ -90,7 +100,18 @@ const themes: { value: ThemeOption; label: string; icon: typeof SunIcon }[] = [
  * ```
  */
 export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
-  ({ theme, onThemeChange, className, size = "sm", showLabels = false }, ref) => {
+  (
+    {
+      theme,
+      onThemeChange,
+      className,
+      size = "sm",
+      showLabels = false,
+      ariaLabel,
+      labels = DEFAULT_LABELS,
+    },
+    ref
+  ) => {
     const sizeClasses = {
       // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
       sm: "h-8 text-sm",
@@ -109,11 +130,21 @@ export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
       md: showLabels ? "px-3 gap-2" : "px-2.5",
     };
 
+    const themes: { value: ThemeOption; label: string; icon: typeof SunIcon }[] = [
+      { value: "base", label: labels.light, icon: SunIcon },
+      { value: "dark", label: labels.dark, icon: MoonIcon },
+      { value: "system", label: labels.system, icon: MonitorIcon },
+    ];
+
     return (
       <div
         ref={ref}
         role="radiogroup"
-        aria-label="Theme selection"
+        aria-label={
+          ariaLabel ??
+          /* i18n-exempt -- UI-3003 [ttl=2026-12-31] default aria label */
+          "Theme selection"
+        }
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           "inline-flex items-center rounded-lg border border-border bg-muted/50 p-0.5",

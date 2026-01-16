@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-hardcoded-copy, ds/min-tap-size -- UI-9999 [ttl=2026-12-31] retention UI pending DS layout/i18n refactor */
+/* eslint-disable ds/enforce-layout-primitives, ds/min-tap-size -- UI-9999 [ttl=2026-12-31] retention UI pending DS layout/i18n refactor */
 
 import * as React from "react";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";

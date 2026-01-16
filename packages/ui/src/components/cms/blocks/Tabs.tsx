@@ -44,14 +44,12 @@ export default function TabsBlock({
                 setCurrent((i - 1 + labels.length) % labels.length);
               }
             }}
-            /* eslint-disable ds/no-hardcoded-copy -- ABC-123: class names are not user copy */
             className={cn(
               "border-b-2 px-3 py-1 text-sm",
               i === safeIndex
                 ? "border-primary text-primary"
                 : "border-transparent text-muted-foreground hover:text-foreground"
             )}
-            /* eslint-enable ds/no-hardcoded-copy */
           >
             {label}
           </button>

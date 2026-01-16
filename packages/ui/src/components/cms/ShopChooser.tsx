@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- UI-1420: className literals and prop-driven content; user-facing strings wrapped with t() */
 
 import Link from "next/link";
 import type { ReactNode } from "react";

@@ -1,8 +1,10 @@
 // packages/ui/src/components/ErrorBoundary.tsx
+/* eslint-disable ds/no-hardcoded-copy -- UI-3002 [ttl=2026-12-31] default fallback copy; apps may override via `fallback` prop */
 
 "use client";
 
 import React from "react";
+import { Grid, Stack } from "./atoms/primitives";
 import { captureError } from "@acme/telemetry";
 
 interface ErrorBoundaryProps {
@@ -63,23 +65,25 @@ export class ErrorBoundary extends React.Component<
 
       // Default fallback UI
       return (
-        <div className="flex min-h-screen items-center justify-center p-8">
-          <div className="max-w-md text-center">
-            <h1 className="mb-4 text-2xl font-semibold">
-              Something went wrong
-            </h1>
-            <p className="mb-6 text-muted-foreground">
+        <Grid
+          cols={1}
+          gap={6}
+          className="min-h-dvh place-items-center p-8 text-center"
+        >
+          <Stack gap={4} className="w-full sm:w-96">
+            <h1 className="text-2xl font-semibold">Something went wrong</h1>
+            <p className="text-foreground/70">
               An unexpected error occurred. Please try reloading the page.
             </p>
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-6 text-primary-foreground hover:bg-primary/90"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-primary px-6 text-primary-foreground hover:bg-primary/90"
             >
               Reload page
             </button>
-          </div>
-        </div>
+          </Stack>
+        </Grid>
       );
     }
 

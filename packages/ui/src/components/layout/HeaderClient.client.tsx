@@ -92,7 +92,6 @@ export default function HeaderClient({
   );
 }
 
-/* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: className tokens and layout strings only */
 function EnglishHeader({
   lang,
   nav,
@@ -336,4 +335,3 @@ function EnglishHeader({
     </header>
   );
 }
-/* eslint-enable ds/no-hardcoded-copy */

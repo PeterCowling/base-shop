@@ -133,7 +133,6 @@ function NavList({
         items={items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: spacing utility is not UI copy */}
         <ul className={level ? "ms-4 space-y-2" : "space-y-2"}>
           {items.map((item, i) => (
             <Fragment key={item.id}>

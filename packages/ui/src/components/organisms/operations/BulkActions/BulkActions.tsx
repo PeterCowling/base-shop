@@ -1,12 +1,13 @@
-import React from 'react';
-import { X, type LucideIcon } from 'lucide-react';
+import React from "react";
+import { X, type LucideIcon } from "lucide-react";
+import { Cluster, Inline } from "../../../atoms/primitives";
 
 export interface BulkAction {
   id: string;
   label: string;
   icon?: LucideIcon;
   onClick: () => void;
-  variant?: 'default' | 'danger';
+  variant?: "default" | "danger";
   disabled?: boolean;
 }
 
@@ -15,7 +16,7 @@ export interface BulkActionsProps {
   totalCount?: number;
   actions: BulkAction[];
   onClearSelection: () => void;
-  position?: 'top' | 'bottom' | 'sticky';
+  position?: "top" | "bottom" | "sticky";
   className?: string;
 }
 
@@ -59,53 +60,55 @@ export function BulkActions({
   totalCount,
   actions,
   onClearSelection,
-  position = 'top',
-  className = '',
+  position = "top",
+  className = "",
 }: BulkActionsProps) {
   if (selectedCount === 0) {
     return null;
   }
 
   const positionClasses = {
-    top: '',
-    bottom: '',
-    sticky: 'sticky top-0 z-10',
+    top: "",
+    bottom: "",
+    sticky: "sticky top-0 z-10",
   };
 
   return (
-    <div
-      className={`flex items-center justify-between gap-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-900 dark:bg-blue-950 ${positionClasses[position]} ${className}`}
+    <Cluster
+      justify="between"
+      alignY="center"
+      className={`gap-4 rounded-lg border border-info bg-info-soft px-4 py-3 ${positionClasses[position]} ${className}`}
       role="toolbar"
       aria-label="Bulk actions"
     >
       {/* Selection info */}
-      <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
-          {selectedCount} {selectedCount === 1 ? 'item' : 'items'} selected
+      <Inline gap={3}>
+        <span className="text-sm font-medium text-foreground">
+          {selectedCount} {selectedCount === 1 ? "item" : "items"} selected
           {totalCount !== undefined && ` of ${totalCount}`}
         </span>
 
         <button
           onClick={onClearSelection}
-          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-blue-700 transition-colors hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-900"
+          className="inline-flex min-h-11 min-w-11 items-center gap-1 rounded px-2 py-1 text-xs text-foreground/70 transition-colors hover:bg-info-soft"
           aria-label="Clear selection"
         >
           <X className="h-3 w-3" />
           Clear
         </button>
-      </div>
+      </Inline>
 
       {/* Action buttons */}
-      <div className="flex items-center gap-2">
+      <Inline gap={2} wrap>
         {actions.map((action) => {
           const Icon = action.icon;
           const isDisabled = action.disabled;
 
           const variantClasses = {
             default:
-              'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400 dark:bg-blue-700 dark:hover:bg-blue-600',
+              "bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-primary/60",
             danger:
-              'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400 dark:bg-red-700 dark:hover:bg-red-600',
+              "bg-danger text-danger-foreground hover:bg-danger/90 disabled:bg-danger/60",
           };
 
           return (
@@ -113,8 +116,8 @@ export function BulkActions({
               key={action.id}
               onClick={action.onClick}
               disabled={isDisabled}
-              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-slate-800 ${
-                variantClasses[action.variant || 'default']
+              className={`inline-flex min-h-10 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${
+                variantClasses[action.variant || "default"]
               }`}
             >
               {Icon && <Icon className="h-4 w-4" />}
@@ -122,7 +125,7 @@ export function BulkActions({
             </button>
           );
         })}
-      </div>
-    </div>
+      </Inline>
+    </Cluster>
   );
 }

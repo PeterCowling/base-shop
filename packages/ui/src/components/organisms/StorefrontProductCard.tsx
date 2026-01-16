@@ -13,6 +13,10 @@ export interface StorefrontProductCardProps
   compareAtPrice?: number;
   currency?: string;
   images: Array<{ src: string; alt?: string }>;
+  labels?: {
+    savingsLabel: string;
+    discountBadge: (percent: number) => string;
+  };
 }
 
 export function StorefrontProductCard({
@@ -22,6 +26,7 @@ export function StorefrontProductCard({
   compareAtPrice,
   currency,
   images,
+  labels,
   className,
   ...props
 }: StorefrontProductCardProps) {
@@ -36,7 +41,15 @@ export function StorefrontProductCard({
   const CARD_CLASS = "rounded-lg border p-4";
   const primary = images[0];
   const secondary = images[1];
-  const SIZES = "(min-width: 768px) 25vw, 50vw"; // i18n-exempt -- responsive sizes string
+  const SIZES =
+    "(min-width: 768px) 25vw, 50vw"; // i18n-exempt -- UI-3005 [ttl=2026-12-31] responsive sizes string
+  const defaultLabels = {
+    // i18n-exempt -- UI-3005 [ttl=2026-12-31] default storefront labels
+    savingsLabel: "Save",
+    // i18n-exempt -- UI-3005 [ttl=2026-12-31] default storefront labels
+    discountBadge: (percent: number) => `${percent}% OFF`,
+  };
+  const copy = labels ?? defaultLabels;
 
   return (
     <div className={cn(CARD_CLASS, className)} {...props}>
@@ -65,9 +78,9 @@ export function StorefrontProductCard({
           ) : null}
 
           {hasDiscount ? (
-            <div className="absolute left-2 top-2">
+            <div className="absolute start-2 top-2">
               <ProductBadge
-                label={`${discountPct}% OFF`} // i18n-exempt -- XA-0005: demo badge label
+                label={copy.discountBadge(discountPct)}
                 variant="sale"
                 size="sm"
               />
@@ -89,7 +102,7 @@ export function StorefrontProductCard({
           </div>
           {hasDiscount ? (
             <div className="text-xs text-muted-foreground">
-              Save{" "}
+              {copy.savingsLabel}{" "}
               <Price amount={saving} currency={currency} className="font-medium" />
             </div>
           ) : null}

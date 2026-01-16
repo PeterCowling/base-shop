@@ -124,7 +124,6 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
     }
   };
 
-  /* eslint-disable ds/no-hardcoded-copy -- CMS-000: palette entries (labels/categories) are builder-only */
   const itemButtons = items.map((i, idx) => {
     const label = i.label;
     const category = i.category;
@@ -144,7 +143,6 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
       </button>
     );
   });
-  /* eslint-enable ds/no-hardcoded-copy */
 
   return (
     <div className="relative my-1 flex w-full justify-center">

@@ -1,5 +1,8 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Check, ChevronDown, X, Search, Loader2 } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { Check, ChevronDown, X, Search, Loader2 } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 export interface ComboBoxOption<T = string> {
   /**
@@ -199,8 +202,8 @@ export function ComboBox<T = string>({
   options,
   value,
   onChange,
-  placeholder = 'Select an option...',
-  searchPlaceholder = 'Search...',
+  placeholder,
+  searchPlaceholder,
   multiple = false,
   disabled = false,
   loading = false,
@@ -208,30 +211,36 @@ export function ComboBox<T = string>({
   searchable = true,
   filterFn,
   onSearch,
-  emptyMessage = 'No results found',
+  emptyMessage,
   renderOption,
   renderValue,
   grouped = false,
   maxSelections,
   closeOnSelect = true,
-  className = '',
-  size = 'md',
+  className = "",
+  size = "md",
   error,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
   id,
 }: ComboBoxProps<T>) {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const resolvedPlaceholder = placeholder ?? t("comboBox.placeholder");
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t("comboBox.searchPlaceholder");
+  const resolvedEmptyMessage = emptyMessage ?? t("comboBox.emptyMessage");
+  const highlightedSelector =
+    '[data-highlighted="true"]'; // i18n-exempt -- UI-3008 [ttl=2026-12-31] DOM selector
 
   // Size classes
   const sizeClasses = {
-    sm: 'px-2 py-1.5 text-sm',
-    md: 'px-3 py-2 text-sm',
-    lg: 'px-4 py-2.5 text-base',
+    sm: "px-2 py-1.5 text-sm",
+    md: "px-3 py-2 text-sm",
+    lg: "px-4 py-2.5 text-base",
   };
 
   // Filter options based on query
@@ -248,11 +257,11 @@ export function ComboBox<T = string>({
 
   // Group options if needed
   const groupedOptions = useMemo(() => {
-    if (!grouped) return { '': filteredOptions };
+    if (!grouped) return { "": filteredOptions };
 
     return filteredOptions.reduce(
       (acc, option) => {
-        const group = option.group ?? '';
+        const group = option.group ?? "";
         if (!acc[group]) acc[group] = [];
         acc[group].push(option);
         return acc;
@@ -299,7 +308,7 @@ export function ComboBox<T = string>({
       onChange(option.value);
       if (closeOnSelect) {
         setIsOpen(false);
-        setQuery('');
+        setQuery("");
       }
     }
   };
@@ -308,7 +317,7 @@ export function ComboBox<T = string>({
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     onChange(multiple ? ([] as unknown as T[]) : null);
-    setQuery('');
+    setQuery("");
   };
 
   // Handle search input change
@@ -353,7 +362,7 @@ export function ComboBox<T = string>({
       case 'Escape':
         e.preventDefault();
         setIsOpen(false);
-        setQuery('');
+        setQuery("");
         break;
       case 'Tab':
         setIsOpen(false);
@@ -364,7 +373,7 @@ export function ComboBox<T = string>({
   // Scroll highlighted option into view
   useEffect(() => {
     if (isOpen && listRef.current) {
-      const highlighted = listRef.current.querySelector('[data-highlighted="true"]');
+      const highlighted = listRef.current.querySelector(highlightedSelector);
       highlighted?.scrollIntoView({ block: 'nearest' });
     }
   }, [highlightedIndex, isOpen]);
@@ -374,7 +383,7 @@ export function ComboBox<T = string>({
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
-        setQuery('');
+        setQuery("");
       }
     };
 
@@ -397,99 +406,115 @@ export function ComboBox<T = string>({
   const hasValue = multiple ? (Array.isArray(value) && value.length > 0) : value !== null;
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative ${className}`}
-      onKeyDown={handleKeyDown}
-    >
+    <div className={className}>
+      <div ref={containerRef} className="relative">
       {/* Trigger Button */}
       <button
         type="button"
         id={id}
         onClick={() => !disabled && setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
         disabled={disabled}
         aria-label={ariaLabel}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className={`
-          flex w-full items-center justify-between gap-2 rounded-lg border bg-white transition-colors
-          ${sizeClasses[size]}
-          ${isOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-gray-300'}
-          ${disabled ? 'cursor-not-allowed bg-gray-100 opacity-60' : 'hover:border-gray-400'}
-          ${error ? 'border-red-500' : ''}
-          dark:bg-slate-800 dark:border-slate-600
-          ${isOpen ? 'dark:border-blue-400 dark:ring-blue-400/20' : ''}
-          ${disabled ? 'dark:bg-slate-900' : 'dark:hover:border-slate-500'}
-        `}
+        className={cn(
+          "w-full rounded-lg border border-border-1 bg-surface-1 text-fg transition-colors",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          sizeClasses[size],
+          isOpen && "border-primary",
+          disabled ? "cursor-not-allowed bg-muted text-muted opacity-60" : "hover:border-border-2",
+          error && "border-danger"
+        )}
       >
-        <span className={`flex-1 truncate text-left ${!hasValue ? 'text-gray-500' : 'text-gray-900 dark:text-slate-100'}`}>
-          {hasValue ? (
-            renderValue ? (
-              renderValue(multiple ? selectedOptions : selectedOptions[0])
-            ) : multiple ? (
-              <span className="flex flex-wrap gap-1">
-                {selectedOptions.slice(0, 3).map((opt) => (
-                  <span
-                    key={String(opt.value)}
-                    className="inline-flex items-center gap-1 rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300"
-                  >
-                    {opt.label}
-                  </span>
-                ))}
-                {selectedOptions.length > 3 && (
-                  <span className="text-xs text-gray-500">
-                    +{selectedOptions.length - 3} more
-                  </span>
-                )}
-              </span>
+        <Cluster alignY="center" justify="between" className="w-full gap-2">
+          <div
+            className={cn(
+              "min-w-0 flex-1 truncate text-start",
+              hasValue ? "text-fg" : "text-muted"
+            )}
+          >
+            {hasValue ? (
+              renderValue ? (
+                renderValue(multiple ? selectedOptions : selectedOptions[0])
+              ) : multiple ? (
+                <Inline gap={1} className="text-xs">
+                  {selectedOptions.slice(0, 3).map((opt) => (
+                    <span
+                      key={String(opt.value)}
+                      className="rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary"
+                    >
+                      {opt.label}
+                    </span>
+                  ))}
+                  {selectedOptions.length > 3 && (
+                    <span className="text-xs text-muted">
+                      {t("comboBox.moreSelected", {
+                        count: selectedOptions.length - 3,
+                      })}
+                    </span>
+                  )}
+                </Inline>
+              ) : (
+                selectedOptions[0]?.label
+              )
             ) : (
-              selectedOptions[0]?.label
-            )
-          ) : (
-            placeholder
-          )}
-        </span>
+              resolvedPlaceholder
+            )}
+          </div>
 
-        <div className="flex items-center gap-1">
-          {loading && (
-            <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-          )}
-          {clearable && hasValue && !disabled && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
-              aria-label="Clear selection"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-          <ChevronDown
-            className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          />
-        </div>
+          <Inline gap={1} alignY="center" wrap={false} className="shrink-0">
+            {loading && (
+              <Loader2 className="h-4 w-4 animate-spin text-muted" />
+            )}
+            {clearable && hasValue && !disabled && (
+              <button
+                type="button"
+                onClick={handleClear}
+                className={cn(
+                  "min-h-11 min-w-11 rounded text-muted transition-colors",
+                  "hover:bg-muted/60 hover:text-fg",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                )}
+                aria-label={t("comboBox.clearSelection")}
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 text-muted transition-transform",
+                isOpen && "rotate-180"
+              )}
+            />
+          </Inline>
+        </Cluster>
       </button>
 
       {/* Error message */}
       {error && (
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="mt-1 text-sm text-danger">{error}</p>
       )}
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
+        <div className="absolute top-full mt-1 w-full rounded-lg border border-border-1 bg-surface-1 shadow-elevation-3">
           {/* Search Input */}
           {searchable && (
-            <div className="border-b border-gray-200 p-2 dark:border-slate-700">
+            <div className="border-b border-border-1 p-2">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute start-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={query}
                   onChange={handleSearchChange}
-                  placeholder={searchPlaceholder}
-                  className="w-full rounded-md border border-gray-300 bg-transparent py-1.5 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-blue-400"
+                  onKeyDown={handleKeyDown}
+                  placeholder={resolvedSearchPlaceholder}
+                  className={cn(
+                    "w-full rounded-md border border-border-1 bg-surface-1 py-1.5 ps-8 pe-3 text-sm text-fg placeholder:text-muted",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  )}
                 />
               </div>
             </div>
@@ -503,14 +528,14 @@ export function ComboBox<T = string>({
             className="max-h-60 overflow-y-auto py-1"
           >
             {flatOptions.length === 0 ? (
-              <li className="px-3 py-2 text-center text-sm text-gray-500 dark:text-slate-400">
-                {loading ? 'Loading...' : emptyMessage}
+              <li className="px-3 py-2 text-center text-sm text-muted">
+                {loading ? t("comboBox.loading") : resolvedEmptyMessage}
               </li>
             ) : grouped ? (
               Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <React.Fragment key={group || 'ungrouped'}>
                   {group && (
-                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
+                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
                       {group}
                     </li>
                   )}
@@ -544,12 +569,16 @@ export function ComboBox<T = string>({
 
           {/* Selection info for multiple */}
           {multiple && maxSelections && (
-            <div className="border-t border-gray-200 px-3 py-2 text-xs text-gray-500 dark:border-slate-700 dark:text-slate-400">
-              {selectedOptions.length} / {maxSelections} selected
+            <div className="border-t border-border-1 px-3 py-2 text-xs text-muted">
+              {t("comboBox.selectionCount", {
+                selected: selectedOptions.length,
+                max: maxSelections,
+              })}
             </div>
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -575,61 +604,57 @@ function OptionItem<T>({
   const Icon = option.icon;
 
   return (
-    <li
-      role="option"
-      aria-selected={selected}
-      aria-disabled={option.disabled}
-      data-highlighted={highlighted}
-      onClick={() => onSelect(option)}
-      onMouseEnter={(e) => {
-        // Update highlighted index on mouse enter
-        const list = e.currentTarget.parentElement;
-        if (list) {
-          const items = Array.from(list.querySelectorAll('[role="option"]'));
-          const index = items.indexOf(e.currentTarget);
-          if (index !== -1) {
-            // This is handled by parent state, but we need visual feedback
-          }
-        }
-      }}
-      className={`
-        flex cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors
-        ${highlighted ? 'bg-blue-50 dark:bg-slate-700' : ''}
-        ${selected ? 'bg-blue-100 dark:bg-blue-900/50' : ''}
-        ${option.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-50 dark:hover:bg-slate-700'}
-      `}
-    >
-      {multiple && (
-        <div
-          className={`
-            flex h-4 w-4 items-center justify-center rounded border
-            ${selected ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-slate-600'}
-          `}
-        >
-          {selected && <Check className="h-3 w-3 text-white" />}
-        </div>
-      )}
-
-      {renderOption ? (
-        renderOption(option, selected)
-      ) : (
-        <>
-          {Icon && <Icon className="h-4 w-4 flex-shrink-0 text-gray-400" />}
-          <div className="flex-1 min-w-0">
-            <div className={`truncate ${selected ? 'font-medium' : ''} text-gray-900 dark:text-slate-100`}>
-              {option.label}
-            </div>
-            {option.description && (
-              <div className="truncate text-xs text-gray-500 dark:text-slate-400">
-                {option.description}
-              </div>
-            )}
-          </div>
-          {!multiple && selected && (
-            <Check className="h-4 w-4 flex-shrink-0 text-blue-500" />
+    <li role="presentation">
+      <button
+        type="button"
+        role="option"
+        tabIndex={-1}
+        aria-selected={selected}
+        aria-disabled={option.disabled}
+        data-highlighted={highlighted}
+        onClick={() => onSelect(option)}
+        disabled={option.disabled}
+        className={cn(
+          "w-full rounded-md px-3 py-2 text-sm text-start text-fg transition-colors",
+          highlighted && "bg-muted/60",
+          selected && "bg-primary/10",
+          option.disabled ? "cursor-not-allowed opacity-50" : "hover:bg-muted/40"
+        )}
+      >
+        <Inline gap={2} alignY="center" wrap={false} className="w-full">
+          {multiple && (
+            <span
+              className={cn(
+                "inline-grid h-4 w-4 place-items-center rounded border text-primary-foreground",
+                selected ? "border-primary bg-primary" : "border-border-1 bg-surface-1"
+              )}
+            >
+              {selected && <Check className="h-3 w-3" />}
+            </span>
           )}
-        </>
-      )}
+
+          {renderOption ? (
+            <div className="min-w-0 flex-1">{renderOption(option, selected)}</div>
+          ) : (
+            <>
+              {Icon && <Icon className="h-4 w-4 flex-shrink-0 text-muted" />}
+              <Stack gap={1} className="min-w-0 flex-1">
+                <span className={cn("truncate", selected && "font-medium")}>
+                  {option.label}
+                </span>
+                {option.description && (
+                  <span className="truncate text-xs text-muted">
+                    {option.description}
+                  </span>
+                )}
+              </Stack>
+              {!multiple && selected && (
+                <Check className="h-4 w-4 flex-shrink-0 text-primary" />
+              )}
+            </>
+          )}
+        </Inline>
+      </button>
     </li>
   );
 }

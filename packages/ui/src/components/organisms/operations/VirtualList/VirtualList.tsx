@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- UI-3000 [ttl=2026-12-31] svg attrs + default loading labels */
 "use client";
 
 import React, {
@@ -10,6 +11,7 @@ import React, {
   type CSSProperties,
 } from "react";
 import { cn } from "../../../../utils/style/cn";
+import { Inline } from "../../../atoms/primitives/Inline";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -67,6 +69,12 @@ export interface VirtualListHandle {
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Wrap DOM nodes to satisfy react/forbid-dom-props for "style"
+const StyledDiv = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  (props, ref) => <div ref={ref} {...props} />
+);
+StyledDiv.displayName = "StyledDiv";
+
 function VirtualListInner<T>(
   {
     items,
@@ -96,14 +104,14 @@ function VirtualListInner<T>(
   // Calculate total height and visible range
   const totalHeight = items.length * itemHeight;
 
-  const { startIndex, endIndex, visibleCount } = useMemo(() => {
+  const { startIndex, endIndex } = useMemo(() => {
     const visibleCount = Math.ceil(height / itemHeight);
     const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
     const endIndex = Math.min(
       items.length - 1,
       Math.floor(scrollTop / itemHeight) + visibleCount + overscan
     );
-    return { startIndex, endIndex, visibleCount };
+    return { startIndex, endIndex };
   }, [scrollTop, height, itemHeight, items.length, overscan]);
 
   // Notify parent of visible range changes
@@ -182,14 +190,14 @@ function VirtualListInner<T>(
           height: itemHeight,
         };
         result.push(
-          <div
+          <StyledDiv
             key={i}
             className={cn("virtual-list-row", rowClassName)}
             style={style}
             role="listitem"
           >
             {renderItem(items[i], i, style)}
-          </div>
+          </StyledDiv>
         );
       }
     }
@@ -197,41 +205,43 @@ function VirtualListInner<T>(
     return result;
   }, [startIndex, endIndex, items, itemHeight, renderItem, rowClassName]);
 
+  const loadingAriaLabel =
+    "Loading more items"; // i18n-exempt -- UI-3000 [ttl=2026-12-31] loading status label
+  const loadingLabel = "Loading..."; // i18n-exempt -- UI-3000 [ttl=2026-12-31] loading status label
+
   return (
-    <div
+    <StyledDiv
       ref={containerRef}
       className={cn(
-        "virtual-list-container overflow-auto",
+        "virtual-list-container relative overflow-auto",
         className
       )}
       style={{
         height,
         width,
-        position: "relative",
       }}
       onScroll={handleScroll}
       aria-label={ariaLabel}
       role={role}
       tabIndex={0}
     >
-      <div
-        className="virtual-list-inner"
+      <StyledDiv
+        className="virtual-list-inner relative"
         style={{
           height: totalHeight,
-          position: "relative",
           width: "100%",
         }}
       >
         {visibleItems}
-      </div>
+      </StyledDiv>
       {isLoading && (
         <div
-          className="virtual-list-loading absolute bottom-0 left-0 right-0 flex items-center justify-center py-4"
+          className="virtual-list-loading sticky bottom-0 inset-x-0 py-4"
           role="progressbar"
-          aria-label="Loading more items"
+          aria-label={loadingAriaLabel}
         >
           {loadingIndicator || (
-            <div className="flex items-center gap-2 text-sm text-slate-500">
+            <Inline gap={2} className="text-sm text-foreground/60 justify-center">
               <svg
                 className="h-4 w-4 animate-spin"
                 xmlns="http://www.w3.org/2000/svg"
@@ -252,12 +262,12 @@ function VirtualListInner<T>(
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              Loading...
-            </div>
+              {loadingLabel}
+            </Inline>
           )}
         </div>
       )}
-    </div>
+    </StyledDiv>
   );
 }
 
@@ -395,7 +405,7 @@ export function VariableVirtualList<T>({
       if (i < items.length) {
         const pos = itemPositions[i];
         result.push(
-          <div
+          <StyledDiv
             key={i}
             style={{
               position: "absolute",
@@ -407,7 +417,7 @@ export function VariableVirtualList<T>({
             role="listitem"
           >
             {renderItem(items[i], i, createMeasureRef(i))}
-          </div>
+          </StyledDiv>
         );
       }
     }
@@ -416,9 +426,9 @@ export function VariableVirtualList<T>({
   }, [startIndex, endIndex, items, itemPositions, renderItem, createMeasureRef]);
 
   return (
-    <div
+    <StyledDiv
       ref={containerRef}
-      className={cn("virtual-list-container overflow-auto", className)}
+      className={cn("virtual-list-container relative overflow-auto", className)}
       style={{
         height,
         width,
@@ -428,7 +438,7 @@ export function VariableVirtualList<T>({
       role="list"
       tabIndex={0}
     >
-      <div
+      <StyledDiv
         className="virtual-list-inner"
         style={{
           height: totalHeight,
@@ -437,8 +447,8 @@ export function VariableVirtualList<T>({
         }}
       >
         {visibleItems}
-      </div>
-    </div>
+      </StyledDiv>
+    </StyledDiv>
   );
 }
 

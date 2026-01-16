@@ -1,5 +1,8 @@
-import React from 'react';
-import { type LucideIcon } from 'lucide-react';
+import React from "react";
+import { type LucideIcon } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 export interface TimelineEvent {
   id: string;
@@ -55,107 +58,119 @@ export function Timeline({
   events,
   showTime = true,
   showDate = false,
-  className = '',
-  emptyMessage = 'No events yet',
+  className = "",
+  emptyMessage,
 }: TimelineProps) {
+  const t = useTranslations();
+  const resolvedEmptyMessage = emptyMessage ?? t("timeline.empty");
   if (events.length === 0) {
     return (
-      <div className={`rounded-lg border border-slate-200 bg-slate-50 px-4 py-8 text-center dark:border-slate-700 dark:bg-slate-800 ${className}`}>
-        <p className="text-sm text-slate-500 dark:text-slate-400">{emptyMessage}</p>
+      <div
+        className={cn(
+          "rounded-lg border border-border-1 bg-surface-2 px-4 py-8 text-center",
+          className
+        )}
+      >
+        <p className="text-sm text-muted">{resolvedEmptyMessage}</p>
       </div>
     );
   }
 
   const formatDate = (timestamp: Date | string) => {
     const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
   const formatTime = (timestamp: Date | string) => {
     const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
   };
 
   const iconColorClasses = {
-    blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300',
-    green: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300',
-    yellow: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300',
-    red: 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300',
-    gray: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+    blue: "bg-info-soft text-info-foreground",
+    green: "bg-success-soft text-success-foreground",
+    yellow: "bg-warning-soft text-warning-foreground",
+    red: "bg-danger-soft text-danger-foreground",
+    gray: "bg-muted text-muted",
   };
 
   return (
-    <div className={`space-y-0 ${className}`}>
+    <Stack gap={0} className={cn(className)}>
       {events.map((event, index) => {
         const Icon = event.icon;
         const isLast = index === events.length - 1;
-        const iconColor = event.iconColor || 'gray';
+        const iconColor = event.iconColor || "gray";
 
         return (
-          <div key={event.id} className="relative flex gap-4 pb-8">
-            {/* Timeline line */}
-            {!isLast && (
-              <div className="absolute left-5 top-10 h-full w-0.5 bg-slate-200 dark:bg-slate-700" />
-            )}
+          <div key={event.id} className={cn(!isLast && "pb-8")}>
+            <div className="relative">
+              {/* Timeline line */}
+              {!isLast && (
+                <div className="absolute start-5 top-10 h-full w-0.5 bg-border-2" />
+              )}
 
-            {/* Icon */}
-            <div className="relative z-10 flex-shrink-0">
-              <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${iconColorClasses[iconColor]}`}
-              >
-                {Icon ? <Icon className="h-5 w-5" /> : null}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 pt-1">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h4 className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                    {event.title}
-                  </h4>
-
-                  {event.description && (
-                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                      {event.description}
-                    </p>
+              <Inline gap={4} alignY="start" wrap={false} className="relative">
+              {/* Icon */}
+              <div className="shrink-0">
+                <div
+                  className={cn(
+                    "inline-grid h-10 w-10 place-items-center rounded-full",
+                    iconColorClasses[iconColor]
                   )}
-
-                  {event.user && (
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-500">
-                      by {event.user}
-                    </p>
-                  )}
-
-                  {event.metadata && <div className="mt-2">{event.metadata}</div>}
-                </div>
-
-                {/* Timestamp */}
-                <div className="flex-shrink-0 text-right">
-                  {showDate && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
-                      {formatDate(event.timestamp)}
-                    </p>
-                  )}
-                  {showTime && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
-                      {formatTime(event.timestamp)}
-                    </p>
-                  )}
+                >
+                  {Icon ? <Icon className="h-5 w-5" /> : null}
                 </div>
               </div>
+
+              {/* Content */}
+              <div className="min-w-0 flex-1 pt-1">
+                <Cluster alignY="start" justify="between" className="gap-4">
+                  <Stack gap={2} className="min-w-0 flex-1">
+                    <h4 className="text-sm font-medium text-fg">
+                      {event.title}
+                    </h4>
+
+                    {event.description && (
+                      <p className="text-sm text-muted">{event.description}</p>
+                    )}
+
+                    {event.user && (
+                      <p className="text-xs text-muted">
+                        {t("timeline.byUser", { user: event.user })}
+                      </p>
+                    )}
+
+                    {event.metadata && <div>{event.metadata}</div>}
+                  </Stack>
+
+                  {/* Timestamp */}
+                  <Stack gap={1} className="shrink-0 text-end">
+                    {showDate && (
+                      <p className="text-xs text-muted">
+                        {formatDate(event.timestamp)}
+                      </p>
+                    )}
+                    {showTime && (
+                      <p className="text-xs text-muted">
+                        {formatTime(event.timestamp)}
+                      </p>
+                    )}
+                  </Stack>
+                </Cluster>
+              </div>
+              </Inline>
             </div>
           </div>
         );
       })}
-    </div>
+    </Stack>
   );
 }

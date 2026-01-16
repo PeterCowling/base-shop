@@ -1,6 +1,5 @@
 // packages/ui/components/cms/TopBar.tsx
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- UI-1421: className literals and control labels handled via t(); remaining literals are non-user-facing */
 
 import { getShopFromPath } from "@acme/shared-utils";
 import { signOut } from "next-auth/react";

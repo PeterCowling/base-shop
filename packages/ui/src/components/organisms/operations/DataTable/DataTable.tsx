@@ -1,9 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { ChevronUp, ChevronDown, Search } from 'lucide-react'
-import { Input } from '../../../atoms/shadcn/Input'
-import { Button } from '../../../atoms/shadcn/Button'
+import { useState, useMemo } from "react"
+import { ChevronUp, ChevronDown, Search } from "lucide-react"
+import { useTranslations } from "@acme/i18n"
+import { Input } from "../../../atoms/shadcn/Input"
+import { Button } from "../../../atoms/shadcn/Button"
+import { Cluster, Inline, Stack } from "../../../atoms/primitives"
+import { cn } from "../../../../utils/style/cn"
 
 /**
  * Column definition with split getValue/cell pattern
@@ -33,23 +36,29 @@ export interface DataTableProps<T> {
   emptyMessage?: string
   loading?: boolean
   className?: string
+  getRowId?: (row: T) => string
 }
 
-export function DataTable<T extends Record<string, any>>({
+export function DataTable<T extends Record<string, unknown>>({
   data,
   columns,
   searchable = true,
-  searchPlaceholder = 'Search...',
+  searchPlaceholder,
   onRowClick,
-  emptyMessage = 'No data available',
+  emptyMessage,
   loading = false,
-  className = '',
+  className = "",
+  getRowId,
 }: DataTableProps<T>) {
+  const t = useTranslations()
   const [sortConfig, setSortConfig] = useState<{
     key: string
-    direction: 'asc' | 'desc'
+    direction: "asc" | "desc"
   } | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState("")
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t("dataTable.searchPlaceholder")
+  const resolvedEmptyMessage = emptyMessage ?? t("dataTable.emptyMessage")
+  const hasWidths = columns.some((column) => Boolean(column.width))
 
   const processedData = useMemo(() => {
     let filtered = data
@@ -58,7 +67,7 @@ export function DataTable<T extends Record<string, any>>({
     if (searchable && searchTerm) {
       filtered = data.filter((row) =>
         columns
-          .filter(col => col.filterable !== false)  // Default to searchable
+          .filter((col) => col.filterable !== false) // Default to searchable
           .some((col) => {
             const value = col.getValue(row)
             return String(value)
@@ -99,119 +108,132 @@ export function DataTable<T extends Record<string, any>>({
       if (current?.key === columnId) {
         return {
           key: columnId,
-          direction: current.direction === 'asc' ? 'desc' : 'asc',
+          direction: current.direction === "asc" ? "desc" : "asc",
         }
       }
-      return { key: columnId, direction: 'asc' }
+      return { key: columnId, direction: "asc" }
     })
   }
 
   return (
-    <div className={`flex flex-col gap-[var(--row-gap)] ${className}`}>
+    <Stack gap={2} className={className}>
       {/* Search bar */}
       {searchable && (
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+        <Cluster alignY="center" className="gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute start-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <Input
               type="text"
-              placeholder={searchPlaceholder}
+              placeholder={resolvedSearchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
+              className="ps-8"
             />
           </div>
           {searchTerm && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setSearchTerm('')}
+              onClick={() => setSearchTerm("")}
             >
-              Clear
+              {t("dataTable.clearSearch")}
             </Button>
           )}
-        </div>
+        </Cluster>
       )}
 
       {/* Table */}
-      <div className="rounded-lg border border-muted overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-border-2">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-muted border-b border-muted">
+            {hasWidths && (
+              <colgroup>
+                {columns.map((column) => (
+                  <col key={column.id} width={column.width} />
+                ))}
+              </colgroup>
+            )}
+            <thead className="border-b border-border-2 bg-muted">
               <tr>
                 {columns.map((column) => (
                   <th
                     key={column.id}
-                    style={{ width: column.width }}
-                    className={`
-                      px-[var(--table-cell-padding)] py-2
-                      text-left text-xs font-medium uppercase tracking-wider
-                      ${column.sortable ? 'cursor-pointer hover:bg-muted/80' : ''}
-                      ${column.align === 'center' ? 'text-center' : ''}
-                      ${column.align === 'right' ? 'text-right' : ''}
-                    `}
+                    className={cn(
+                      "px-4 py-2 text-start text-xs font-medium uppercase tracking-wider",
+                      column.sortable && "cursor-pointer hover:bg-muted/80",
+                      column.align === "center" && "text-center",
+                      column.align === "right" && "text-end"
+                    )}
                     onClick={() => handleSort(column.id)}
                   >
-                    <div className="flex items-center gap-1">
-                      {column.header}
+                    <Inline gap={1} alignY="center">
+                      <span>{column.header}</span>
                       {column.sortable && sortConfig?.key === column.id && (
                         <span>
-                          {sortConfig.direction === 'asc' ? (
+                          {sortConfig.direction === "asc" ? (
                             <ChevronUp className="h-3 w-3" />
                           ) : (
                             <ChevronDown className="h-3 w-3" />
                           )}
                         </span>
                       )}
-                    </div>
+                    </Inline>
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-bg divide-y divide-muted">
+            <tbody className="divide-y divide-border-2 bg-bg">
               {loading ? (
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted"
+                    className="px-4 py-8 text-center text-muted"
                   >
-                    Loading...
+                    {t("dataTable.loading")}
                   </td>
                 </tr>
               ) : processedData.length === 0 ? (
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-[var(--table-cell-padding)] py-8 text-center text-muted"
+                    className="px-4 py-8 text-center text-muted"
                   >
-                    {emptyMessage}
+                    {resolvedEmptyMessage}
                   </td>
                 </tr>
               ) : (
-                processedData.map((row, idx) => (
+                processedData.map((row) => {
+                  const rowKey =
+                    getRowId?.(row) ??
+                    (row as { id?: string }).id ??
+                    (row as { key?: string }).key ??
+                    (row as { _id?: string })._id ??
+                    JSON.stringify(row)
+                  return (
                   <tr
-                    key={idx}
+                    key={rowKey}
                     onClick={() => onRowClick?.(row)}
-                    className={`
-                      ${onRowClick ? 'cursor-pointer hover:bg-muted/50' : ''}
-                      transition-colors
-                    `}
+                    className={cn(
+                      "transition-colors",
+                      onRowClick && "cursor-pointer hover:bg-muted/50"
+                    )}
                   >
                     {columns.map((column) => (
                       <td
                         key={column.id}
-                        className={`
-                          px-[var(--table-cell-padding)] py-3 text-sm
-                          ${column.align === 'center' ? 'text-center' : ''}
-                          ${column.align === 'right' ? 'text-right' : ''}
-                        `}
+                        className={cn(
+                          "px-4 py-3 text-sm",
+                          column.align === "center" && "text-center",
+                          column.align === "right" && "text-end"
+                        )}
                       >
                         {/* Use cell render if provided, otherwise getValue */}
                         {column.cell ? column.cell(row) : String(column.getValue(row))}
                       </td>
                     ))}
                   </tr>
-                ))
+                  )
+                })
               )}
             </tbody>
           </table>
@@ -220,10 +242,13 @@ export function DataTable<T extends Record<string, any>>({
 
       {/* Footer info */}
       {processedData.length > 0 && (
-        <div className="text-sm text-muted">
-          Showing {processedData.length} of {data.length} items
-        </div>
+        <p className="text-sm text-muted">
+          {t("dataTable.footer", {
+            shown: processedData.length,
+            total: data.length,
+          })}
+        </p>
       )}
-    </div>
+    </Stack>
   )
 }

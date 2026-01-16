@@ -89,7 +89,6 @@ export function ColorToken({
 
   // Advanced menu disabled on this screen to avoid ref thrash in nested menus
 
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   // i18n-exempt: DS token reference, not user-facing copy
   const DANGER_TOKEN = "--color-danger";

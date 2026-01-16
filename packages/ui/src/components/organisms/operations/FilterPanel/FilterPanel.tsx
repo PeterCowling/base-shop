@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, X } from 'lucide-react';
+import React, { useState } from "react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 export interface FilterSection {
   id: string;
@@ -61,9 +64,10 @@ export function FilterPanel({
   defaultCollapsed = false,
   showClearButton = true,
   showApplyButton = false,
-  className = '',
+  className = "",
   activeFiltersCount = 0,
 }: FilterPanelProps) {
+  const t = useTranslations();
   const [isExpanded, setIsExpanded] = useState(!defaultCollapsed);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
     sections.reduce((acc, section) => {
@@ -85,59 +89,82 @@ export function FilterPanel({
 
   return (
     <div
-      className={`rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800 ${className}`}
+      className={cn(
+        "rounded-lg border border-border-2 bg-surface-1",
+        className
+      )}
     >
       {/* Panel Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-700">
-        <div className="flex items-center gap-2">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">Filters</h3>
+      <Cluster
+        alignY="center"
+        justify="between"
+        className="border-b border-border-2 px-4 py-3"
+      >
+        <Inline gap={2} alignY="center">
+          <h3 className="font-medium text-fg">{t("filterPanel.title")}</h3>
           {activeFiltersCount > 0 && (
-            <span className="inline-flex items-center justify-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+            <span className="inline-flex min-h-6 min-w-6 items-center justify-center rounded-full bg-info-soft px-2 py-0.5 text-xs font-medium text-info-foreground">
               {activeFiltersCount}
             </span>
           )}
-        </div>
+        </Inline>
 
-        <div className="flex items-center gap-2">
+        <Inline gap={2} alignY="center">
           {showClearButton && activeFiltersCount > 0 && (
             <button
               onClick={onClear}
-              className="flex items-center gap-1 rounded px-2 py-1 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+              className={cn(
+                "inline-flex min-h-11 min-w-11 items-center gap-1 rounded px-3 text-sm text-muted transition-colors",
+                "hover:bg-muted/50 hover:text-fg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              )}
             >
               <X className="h-3 w-3" />
-              Clear
+              {t("filterPanel.clear")}
             </button>
           )}
 
           {isCollapsible && (
             <button
               onClick={togglePanel}
-              aria-label={isExpanded ? 'Collapse filters' : 'Expand filters'}
-              className="rounded p-1 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+              aria-label={
+                isExpanded
+                  ? t("filterPanel.collapse")
+                  : t("filterPanel.expand")
+              }
+              className={cn(
+                "min-h-11 min-w-11 rounded text-muted transition-colors",
+                "hover:bg-muted/50 hover:text-fg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              )}
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </button>
           )}
-        </div>
-      </div>
+        </Inline>
+      </Cluster>
 
       {/* Panel Content */}
       {isExpanded && (
-        <div className="divide-y divide-slate-200 dark:divide-slate-700">
+        <div className="divide-y divide-border-2">
           {sections.map((section) => (
             <div key={section.id}>
               {/* Section Header */}
               <button
                 onClick={() => toggleSection(section.id)}
-                className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-750"
+                className={cn(
+                  "flex min-h-11 min-w-11 w-full items-center justify-between px-4 py-3 text-start transition-colors",
+                  "hover:bg-muted/40",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                )}
               >
-                <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                <span className="text-sm font-medium text-fg">
                   {section.title}
                 </span>
                 {expandedSections[section.id] ? (
-                  <ChevronUp className="h-4 w-4 text-slate-400" />
+                  <ChevronUp className="h-4 w-4 text-muted" />
                 ) : (
-                  <ChevronDown className="h-4 w-4 text-slate-400" />
+                  <ChevronDown className="h-4 w-4 text-muted" />
                 )}
               </button>
 
@@ -153,9 +180,13 @@ export function FilterPanel({
             <div className="px-4 py-3">
               <button
                 onClick={onApply}
-                className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+                className={cn(
+                  "min-h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors",
+                  "hover:bg-primary/90",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                )}
               >
-                Apply Filters
+                {t("filterPanel.apply")}
               </button>
             </div>
           )}

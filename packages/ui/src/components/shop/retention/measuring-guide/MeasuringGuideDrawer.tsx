@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-arbitrary-tailwind, no-restricted-syntax -- UI-9999 [ttl=2026-12-31] retention UI pending design/i18n cleanup */
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-arbitrary-tailwind, no-restricted-syntax -- UI-9999 [ttl=2026-12-31] retention UI pending design/i18n cleanup */
 
 import * as React from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";

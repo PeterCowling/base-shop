@@ -65,7 +65,6 @@ export function LiveShoppingEventTemplate({
         <div className="aspect-video w-full bg-fg">
           <video src={streamUrl} controls className="h-full w-full" data-aspect="16/9">
             {/* i18n-exempt: placeholder captions track for accessibility tooling */}
-            {/* eslint-disable ds/no-hardcoded-copy -- PB-2419: non-user-facing data URI and internal labels */}
             <track
               kind="captions"
               srcLang="en"
@@ -73,7 +72,6 @@ export function LiveShoppingEventTemplate({
               src="data:text/vtt;base64,"
               default
             />
-            {/* eslint-enable ds/no-hardcoded-copy */}
           </video>
         </div>
         <div className="space-y-2">

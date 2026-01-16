@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Search, Command, ArrowRight, X, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { Search, Command, ArrowRight, Loader2 } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline, Stack } from "../../../atoms/primitives";
+import { Dialog, DialogContent } from "../../../atoms/primitives/dialog";
+import { cn } from "../../../../utils/style/cn";
 
 export interface CommandItem {
   /**
@@ -184,20 +188,25 @@ export function CommandPalette({
   onOpenChange,
   commands = [],
   groups = [],
-  placeholder = 'Type a command or search...',
-  emptyMessage = 'No results found.',
+  placeholder,
+  emptyMessage,
   loading = false,
   onSearch,
   filterFn,
   footer,
-  shortcutKey = 'k',
+  shortcutKey = "k",
   useMetaKey = true,
-  className = '',
+  className = "",
 }: CommandPaletteProps) {
-  const [query, setQuery] = useState('');
+  const t = useTranslations();
+  const [query, setQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const resolvedPlaceholder = placeholder ?? t("commandPalette.placeholder");
+  const resolvedEmptyMessage = emptyMessage ?? t("commandPalette.emptyMessage");
+  const highlightedSelector =
+    '[data-highlighted="true"]'; // i18n-exempt -- UI-3009 [ttl=2026-12-31] DOM selector
 
   // Flatten groups into commands if groups are provided
   const allCommands = useMemo(() => {
@@ -259,7 +268,7 @@ export function CommandPalette({
   // Reset state when opening
   useEffect(() => {
     if (open) {
-      setQuery('');
+      setQuery("");
       setHighlightedIndex(0);
       // Focus input after a tick to ensure DOM is ready
       setTimeout(() => inputRef.current?.focus(), 0);
@@ -302,7 +311,7 @@ export function CommandPalette({
   // Scroll highlighted item into view
   useEffect(() => {
     if (open && listRef.current) {
-      const highlighted = listRef.current.querySelector('[data-highlighted="true"]');
+      const highlighted = listRef.current.querySelector(highlightedSelector);
       highlighted?.scrollIntoView({ block: 'nearest' });
     }
   }, [highlightedIndex, open]);
@@ -325,149 +334,148 @@ export function CommandPalette({
   if (!open) return null;
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-        onClick={() => onOpenChange(false)}
-        aria-hidden="true"
-      />
-
-      {/* Dialog */}
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Command palette"
-        className={`
-          fixed left-1/2 top-[20%] z-50 w-full max-w-lg -translate-x-1/2
-          overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl
-          dark:border-slate-700 dark:bg-slate-800
-          ${className}
-        `}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        aria-label={t("commandPalette.ariaLabel")}
         onKeyDown={handleKeyDown}
-      >
-        {/* Search Input */}
-        <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 dark:border-slate-700">
-          {loading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
-          ) : (
-            <Search className="h-5 w-5 text-gray-400" />
-          )}
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={handleSearchChange}
-            placeholder={placeholder}
-            className="flex-1 border-none bg-transparent text-base text-gray-900 placeholder-gray-500 outline-none dark:text-slate-100 dark:placeholder-slate-400"
-          />
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
-            aria-label="Close"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        {/* Results */}
-        <div
-          ref={listRef}
-          className="max-h-80 overflow-y-auto py-2"
-          role="listbox"
-        >
-          {flatResults.length === 0 ? (
-            <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-slate-400">
-              {loading ? 'Searching...' : emptyMessage}
-            </div>
-          ) : (
-            Object.entries(groupedResults).map(([group, groupCommands]) => (
-              <div key={group || 'ungrouped'}>
-                {group && (
-                  <div className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
-                    {group}
-                  </div>
-                )}
-                {groupCommands.map((command) => {
-                  const index = flatResults.indexOf(command);
-                  const isHighlighted = index === highlightedIndex;
-                  const Icon = command.icon;
-
-                  return (
-                    <button
-                      key={command.id}
-                      type="button"
-                      role="option"
-                      aria-selected={isHighlighted}
-                      aria-disabled={command.disabled}
-                      data-highlighted={isHighlighted}
-                      onClick={() => handleSelect(command)}
-                      disabled={command.disabled}
-                      className={`
-                        flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors
-                        ${isHighlighted ? 'bg-blue-50 dark:bg-slate-700' : ''}
-                        ${command.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-50 dark:hover:bg-slate-700'}
-                      `}
-                    >
-                      {Icon && (
-                        <Icon className="h-4 w-4 flex-shrink-0 text-gray-400" />
-                      )}
-                      <div className="min-w-0 flex-1">
-                        <div className="text-sm font-medium text-gray-900 dark:text-slate-100">
-                          {command.label}
-                        </div>
-                        {command.description && (
-                          <div className="truncate text-xs text-gray-500 dark:text-slate-400">
-                            {command.description}
-                          </div>
-                        )}
-                      </div>
-                      {command.shortcut && (
-                        <kbd className="hidden rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 sm:inline-block dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
-                          {command.shortcut}
-                        </kbd>
-                      )}
-                      {command.hasSubmenu && (
-                        <ArrowRight className="h-4 w-4 text-gray-400" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Footer */}
-        {footer ? (
-          <div className="border-t border-gray-200 px-4 py-2 dark:border-slate-700">
-            {footer}
-          </div>
-        ) : (
-          <div className="flex items-center justify-between border-t border-gray-200 px-4 py-2 text-xs text-gray-500 dark:border-slate-700 dark:text-slate-400">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↑↓</kbd>
-                Navigate
-              </span>
-              <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↵</kbd>
-                Select
-              </span>
-              <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">esc</kbd>
-                Close
-              </span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Command className="h-3 w-3" />
-              <span>Command Palette</span>
-            </div>
-          </div>
+        className={cn(
+          /* i18n-exempt -- UI-3009 [ttl=2026-12-31] class names */
+          "top-[20%] -translate-y-0 p-0 gap-0 sm:max-w-lg rounded-xl",
+          className
         )}
-      </div>
-    </>
+      >
+        <Stack gap={0} className="overflow-hidden">
+          {/* Search Input */}
+          <Cluster
+            alignY="center"
+            justify="between"
+            className="border-b border-border-1 px-4 py-3"
+          >
+            <Inline gap={3} alignY="center" wrap={false} className="min-w-0 flex-1">
+              {loading ? (
+                <Loader2 className="h-5 w-5 animate-spin text-muted" />
+              ) : (
+                <Search className="h-5 w-5 text-muted" />
+              )}
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={handleSearchChange}
+                placeholder={resolvedPlaceholder}
+                className={cn(
+                  "min-w-0 flex-1 border-0 bg-transparent text-base text-fg placeholder:text-muted",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                )}
+              />
+            </Inline>
+          </Cluster>
+
+          {/* Results */}
+          <div
+            ref={listRef}
+            className="max-h-80 overflow-y-auto py-2"
+            role="listbox"
+          >
+            {flatResults.length === 0 ? (
+              <div className="px-4 py-8 text-center text-sm text-muted">
+                {loading ? t("commandPalette.searching") : resolvedEmptyMessage}
+              </div>
+            ) : (
+              Object.entries(groupedResults).map(([group, groupCommands]) => (
+                <Stack key={group || "ungrouped"} gap={1}>
+                  {group && (
+                    <div className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
+                      {group}
+                    </div>
+                  )}
+                  {groupCommands.map((command) => {
+                    const index = flatResults.indexOf(command);
+                    const isHighlighted = index === highlightedIndex;
+                    const Icon = command.icon;
+
+                    return (
+                      <button
+                        key={command.id}
+                        type="button"
+                        role="option"
+                        aria-selected={isHighlighted}
+                        aria-disabled={command.disabled}
+                        data-highlighted={isHighlighted}
+                        onClick={() => handleSelect(command)}
+                        disabled={command.disabled}
+                        className={cn(
+                          "min-h-11 w-full rounded-md px-4 py-2.5 text-start text-sm transition-colors",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                          isHighlighted && "bg-muted/60",
+                          command.disabled ? "cursor-not-allowed opacity-50" : "hover:bg-muted/40"
+                        )}
+                      >
+                        <Inline gap={3} alignY="center" wrap={false} className="w-full">
+                          {Icon && (
+                            <Icon className="h-4 w-4 flex-shrink-0 text-muted" />
+                          )}
+                          <Stack gap={1} className="min-w-0 flex-1">
+                            <span className="truncate text-sm font-medium text-fg">
+                              {command.label}
+                            </span>
+                            {command.description && (
+                              <span className="truncate text-xs text-muted">
+                                {command.description}
+                              </span>
+                            )}
+                          </Stack>
+                          {command.shortcut && (
+                            <kbd className="hidden rounded border border-border-1 bg-muted px-1.5 py-0.5 text-xs font-medium text-muted sm:inline-block">
+                              {command.shortcut}
+                            </kbd>
+                          )}
+                          {command.hasSubmenu && (
+                            <ArrowRight className="h-4 w-4 text-muted" />
+                          )}
+                        </Inline>
+                      </button>
+                    );
+                  })}
+                </Stack>
+              ))
+            )}
+          </div>
+
+          {/* Footer */}
+          {footer ? (
+            <div className="border-t border-border-1 px-4 py-2">
+              {footer}
+            </div>
+          ) : (
+            <Cluster
+              alignY="center"
+              justify="between"
+              className="border-t border-border-1 px-4 py-2 text-xs text-muted"
+            >
+              <Inline gap={4} alignY="center" wrap={false} className="min-w-0">
+                <Inline gap={1} alignY="center" wrap={false}>
+                  <kbd className="rounded border border-border-1 bg-muted px-1 py-0.5 font-mono text-xs text-muted">↑↓</kbd>
+                  <span>{t("commandPalette.footer.navigate")}</span>
+                </Inline>
+                <Inline gap={1} alignY="center" wrap={false}>
+                  <kbd className="rounded border border-border-1 bg-muted px-1 py-0.5 font-mono text-xs text-muted">↵</kbd>
+                  <span>{t("commandPalette.footer.select")}</span>
+                </Inline>
+                <Inline gap={1} alignY="center" wrap={false}>
+                  <kbd className="rounded border border-border-1 bg-muted px-1 py-0.5 font-mono text-xs text-muted">esc</kbd>
+                  <span>{t("commandPalette.footer.close")}</span>
+                </Inline>
+              </Inline>
+              <Inline gap={1} alignY="center" wrap={false}>
+                <Command className="h-3 w-3" />
+                <span>{t("commandPalette.footer.title")}</span>
+              </Inline>
+            </Cluster>
+          )}
+        </Stack>
+      </DialogContent>
+    </Dialog>
   );
 }
 

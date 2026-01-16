@@ -18,7 +18,6 @@ export function RangeToken({
   setToken,
 }: RangeTokenProps): ReactElement {
   const t = useTranslations();
-  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   return (
     <label

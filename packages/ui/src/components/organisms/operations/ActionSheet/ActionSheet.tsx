@@ -1,5 +1,12 @@
-import React, { useEffect, type ReactNode } from 'react';
-import { X } from 'lucide-react';
+import React, { useEffect, type ReactNode } from "react";
+import { X } from "lucide-react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "../../../../utils/style/cn";
+import {
+  Cluster,
+  Stack,
+} from "../../../atoms/primitives";
+import { Dialog, DialogOverlay, DialogPortal, DialogTitle, DialogDescription } from "../../../atoms/primitives/dialog";
 
 export interface ActionSheetProps {
   /**
@@ -43,6 +50,11 @@ export interface ActionSheetProps {
    * @default true
    */
   closeOnEscape?: boolean;
+
+  /**
+   * Accessible label for the close button
+   */
+  closeLabel?: string;
 }
 
 /**
@@ -51,9 +63,7 @@ export interface ActionSheetProps {
  * Features:
  * - Slides up from bottom on mobile, centered modal on desktop
  * - Backdrop click and Escape key to close
- * - Smooth animations with framer-motion
  * - Scrollable content area
- * - Dark mode support
  * - Accessible with proper focus management
  *
  * @example
@@ -77,104 +87,79 @@ export function ActionSheet({
   title,
   description,
   children,
-  className = '',
+  className = "",
   closeOnBackdropClick = true,
   closeOnEscape = true,
+  closeLabel =
+    "Close", // i18n-exempt -- UI-3006 [ttl=2026-12-31] default close label
 }: ActionSheetProps) {
-  // Handle escape key
-  useEffect(() => {
-    if (!isOpen || !closeOnEscape) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose, closeOnEscape]);
-
   // Lock body scroll when open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) onClose();
+  };
+
   if (!isOpen) return null;
 
-  const handleBackdropClick = () => {
-    if (closeOnBackdropClick) {
-      onClose();
-    }
-  };
-
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
-      onClick={handleBackdropClick}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="action-sheet-title"
-    >
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 transition-opacity dark:bg-black/70" />
-
-      {/* Sheet */}
-      <div
-        className={`
-          relative w-full max-w-lg transform overflow-hidden rounded-t-2xl bg-white shadow-xl
-          transition-all sm:rounded-2xl
-          dark:bg-darkSurface
-          ${className}
-        `}
-        style={{
-          maxHeight: '90vh',
-        }}
-        onClick={handleContentClick}
-      >
-        {/* Header */}
-        <div className="sticky top-0 z-10 flex items-start justify-between border-b border-gray-200 bg-white px-[var(--card-padding)] py-4 dark:border-darkSurface dark:bg-darkSurface">
-          <div className="flex-1 pr-4">
-            <h3
-              id="action-sheet-title"
-              className="text-lg font-semibold text-gray-900 dark:text-darkAccentGreen"
-            >
-              {title}
-            </h3>
-            {description && (
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {description}
-              </p>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:hover:bg-darkBg dark:hover:text-darkAccentGreen"
-            aria-label="Close"
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogPrimitive.Content
+          className={cn(
+            "fixed bottom-0 start-1/2 w-full -translate-x-1/2 rounded-t-2xl border border-border-1 bg-surface-1 shadow-elevation-4",
+            "sm:top-1/2 sm:bottom-auto sm:w-96 sm:-translate-y-1/2 sm:rounded-2xl",
+            className
+          )}
+          onEscapeKeyDown={(event) => {
+            if (!closeOnEscape) event.preventDefault();
+          }}
+          onPointerDownOutside={(event) => {
+            if (!closeOnBackdropClick) event.preventDefault();
+          }}
+          aria-labelledby="action-sheet-title"
+        >
+          <Cluster
+            justify="between"
+            alignY="start"
+            className="border-b border-border-1 px-6 py-4"
           >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
+            <Stack gap={1} className="min-w-0">
+              <DialogTitle id="action-sheet-title" className="text-lg font-semibold">
+                {title}
+              </DialogTitle>
+              {description ? (
+                <DialogDescription className="text-sm text-foreground/70">
+                  {description}
+                </DialogDescription>
+              ) : null}
+            </Stack>
+            <DialogPrimitive.Close asChild>
+              <button
+                type="button"
+                aria-label={closeLabel}
+                className="min-h-11 min-w-11 rounded-full p-2 text-foreground/60 hover:bg-surface-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </DialogPrimitive.Close>
+          </Cluster>
 
-        {/* Content */}
-        <div className="overflow-y-auto px-[var(--card-padding)] py-[var(--card-padding)]">
-          {children}
-        </div>
-      </div>
-    </div>
+          <div className="max-h-dvh overflow-y-auto px-6 py-4">{children}</div>
+        </DialogPrimitive.Content>
+      </DialogPortal>
+    </Dialog>
   );
 }
 

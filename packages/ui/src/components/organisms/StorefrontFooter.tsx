@@ -32,7 +32,7 @@ export function StorefrontFooter({
   const FOOTER_CLASS = "border-t bg-surface-1";
   return (
     <footer className={cn(FOOTER_CLASS, className)} {...props}>
-      <div className="mx-auto max-w-screen-2xl px-4 py-10">
+      <div className="mx-auto w-full px-4 py-10">
         <Grid cols={4} gap={8} className="grid-cols-2 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
             <div className="text-lg font-semibold">{brandName}</div>
@@ -61,4 +61,3 @@ export function StorefrontFooter({
     </footer>
   );
 }
-

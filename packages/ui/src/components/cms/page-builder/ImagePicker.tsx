@@ -135,7 +135,6 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
           </p>
         )}
         {uploadError && (
-          // eslint-disable-next-line ds/no-hardcoded-copy -- CMS-000: error message comes from server, not user-facing copy to translate
           <p className="text-sm text-danger" data-token="--color-danger">{uploadError}</p>
         )}
         <Input
@@ -153,7 +152,6 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
               </div>
             )}
             {!loading && mediaError && (
-              // eslint-disable-next-line ds/no-hardcoded-copy -- CMS-000: error string from server/logging
               <p className="text-danger col-span-3 text-sm" data-token="--color-danger">{mediaError}</p>
             )}
             {!loading && !mediaError &&

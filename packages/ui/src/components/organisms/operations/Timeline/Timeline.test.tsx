@@ -9,7 +9,7 @@ describe('Timeline', () => {
       id: '1',
       timestamp: new Date('2024-01-15T10:30:00'),
       title: 'Order created',
-      description: 'New order #1234',
+      description: 'New order 1234',
       icon: Package,
       iconColor: 'blue' as const,
       user: 'John Doe',
@@ -36,7 +36,7 @@ describe('Timeline', () => {
     it('renders event descriptions', () => {
       render(<Timeline events={mockEvents} />);
 
-      expect(screen.getByText('New order #1234')).toBeInTheDocument();
+      expect(screen.getByText('New order 1234')).toBeInTheDocument();
       expect(screen.getByText('Order shipped via FedEx')).toBeInTheDocument();
     });
 
@@ -114,7 +114,7 @@ describe('Timeline', () => {
       ];
       const { container } = render(<Timeline events={events} />);
 
-      const iconContainer = container.querySelector('.bg-blue-100');
+      const iconContainer = container.querySelector('.bg-info-soft');
       expect(iconContainer).toBeInTheDocument();
     });
 
@@ -130,7 +130,7 @@ describe('Timeline', () => {
       ];
       const { container } = render(<Timeline events={events} />);
 
-      const iconContainer = container.querySelector('.bg-green-100');
+      const iconContainer = container.querySelector('.bg-success-soft');
       expect(iconContainer).toBeInTheDocument();
     });
 
@@ -146,7 +146,7 @@ describe('Timeline', () => {
       ];
       const { container } = render(<Timeline events={events} />);
 
-      const iconContainer = container.querySelector('.bg-red-100');
+      const iconContainer = container.querySelector('.bg-danger-soft');
       expect(iconContainer).toBeInTheDocument();
     });
 
@@ -162,7 +162,7 @@ describe('Timeline', () => {
       ];
       const { container } = render(<Timeline events={events} />);
 
-      const iconContainer = container.querySelector('.bg-yellow-100');
+      const iconContainer = container.querySelector('.bg-warning-soft');
       expect(iconContainer).toBeInTheDocument();
     });
 
@@ -177,7 +177,7 @@ describe('Timeline', () => {
       ];
       const { container } = render(<Timeline events={events} />);
 
-      const iconContainer = container.querySelector('.bg-slate-100');
+      const iconContainer = container.querySelector('.bg-muted');
       expect(iconContainer).toBeInTheDocument();
     });
   });
@@ -222,7 +222,7 @@ describe('Timeline', () => {
       const { container } = render(<Timeline events={events} />);
 
       // Icon container still rendered, just empty
-      const iconContainer = container.querySelector('.bg-slate-100');
+      const iconContainer = container.querySelector('.bg-muted');
       expect(iconContainer).toBeInTheDocument();
     });
 

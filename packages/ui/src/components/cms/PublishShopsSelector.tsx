@@ -78,7 +78,6 @@ function PublishShopsSelectorInner({
     return <span className="text-sm">{t("shops.loading")}</span>;
   if (status === "error")
     return (
-      // eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy
       <span className="text-sm text-danger" data-token="--color-danger">
         {errorMsg ?? (t("shops.loadFailed") as string)}
       </span>

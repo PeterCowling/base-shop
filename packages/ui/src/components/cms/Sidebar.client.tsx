@@ -1,6 +1,5 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- UI-1420: className literals and icon-only elements; user-facing strings wrapped with t() */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { memo, useMemo } from "react";

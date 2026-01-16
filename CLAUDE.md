@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-15
+Last-reviewed: 2026-01-16
 ---
 
 # Claude Coding Assistant Guide
@@ -388,6 +388,28 @@ pnpm inventory import <shop> --file inventory.json
 pnpm inventory:check
 ```
 
+### Deployment
+
+The repo uses a two-stage deployment workflow:
+
+1. **Staging (automatic):** Merging to `main` auto-deploys to staging
+2. **Production (manual):** Requires explicit trigger and approval
+
+```bash
+# Promote an app to production (via GitHub CLI)
+gh workflow run <app>.yml -f deploy-target=production
+
+# Or use the centralized promotion workflow
+gh workflow run promote-to-production.yml -f app=<app-name>
+
+# Apps: product-pipeline, cms, brikette, skylar, reception, prime
+```
+
+**Staging URLs:** `staging.<app>.pages.dev`
+**Production URLs:** `<app>.pages.dev`
+
+See [docs/deployment-workflow.md](docs/deployment-workflow.md) for full details.
+
 ## Important Patterns
 
 ### Importing from Workspace Packages
@@ -608,9 +630,10 @@ These shortcuts created technical debt that now needs proper plans to resolve:
 
 ---
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-01-16
 
 **Recent Updates:**
+- 2026-01-16: Added Deployment section with staging/production workflow (Claude Opus 4.5)
 - 2026-01-15: Added "Systemic Issues: Plan-First Approach" section (Claude Opus 4.5)
 
 **Incident Reference:** See `docs/RECOVERY-PLAN-2026-01-14.md` for why destructive commands are prohibited.

@@ -1,7 +1,8 @@
 Type: Plan
 Status: Active
 Domain: CI-Deploy
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
+Last-updated-by: Claude Opus 4.5
 Relates-to charter: docs/architecture.md
 
 ## CI & Deploy Roadmap — Apps vs Platform
@@ -148,6 +149,47 @@ _Phase completed; kept for context._
 
 ---
 
+## Phase 7 — Staging/Production Workflow (COMPLETED)
+
+_Implemented 2026-01-16 by Claude Opus 4.5._
+
+All app workflows now follow a two-stage deployment pattern:
+
+1. **Staging (automatic):** Merging a PR to `main` triggers validation + build + deploy to staging
+2. **Production (manual + approval):** Manual `workflow_dispatch` with `deploy-target: production` triggers deploy to production, gated by GitHub Environment protection rules
+
+### Apps Migrated
+
+| App | Workflow | Staging URL | Production URL |
+|-----|----------|-------------|----------------|
+| product-pipeline | `product-pipeline.yml` | `staging.product-pipeline.pages.dev` | `product-pipeline.pages.dev` |
+| cms | `cms.yml` | `staging.cms-9by.pages.dev` | `cms-9by.pages.dev` |
+| brikette | `brikette.yml` | `staging.brikette.pages.dev` | `brikette.pages.dev` |
+| skylar | `skylar.yml` | `staging.skylar.pages.dev` | `skylar.pages.dev` |
+| reception | `reception.yml` | `staging.reception.pages.dev` | `reception.pages.dev` |
+| prime | `prime.yml` | `staging.prime.pages.dev` | `prime.pages.dev` |
+
+### Key Files
+
+- **Reusable workflow:** `.github/workflows/reusable-app.yml` — Updated with `target-environment` input and split `deploy-staging`/`deploy-production` jobs
+- **Convenience workflow:** `.github/workflows/promote-to-production.yml` — Centralized way to promote any app to production
+
+### Usage
+
+See [docs/deployment-workflow.md](./deployment-workflow.md) for detailed instructions.
+
+### GitHub Environments Setup (One-Time)
+
+To enable the approval workflow:
+
+1. Go to **Settings → Environments** in GitHub
+2. Create `staging` environment (no protection rules needed)
+3. Create `production` environment with:
+   - **Required reviewers:** Add your GitHub username
+   - **Deployment branches:** Restrict to `main`
+
+---
+
 ## Quick Reference — Responsibilities
 
 - **Root CI (`ci.yml`)**
@@ -158,6 +200,10 @@ _Phase completed; kept for context._
   - App-specific lint/typecheck/test/build.
   - App-specific E2Es / a11y checks.
   - Deploy their Cloudflare Pages projects.
+  - **Staging:** Auto-deploy on merge to `main` via `--branch staging`.
+  - **Production:** Manual trigger with approval via `--branch main`.
   - Trigger on app-local changes **and** on changes to the shared packages they depend on (from P1.3), so shared updates are re-validated in each app.
 - **First deploys**
   - Use the same app workflow (`cms.yml`, `skylar.yml`, `shop-*.yml`) via manual `workflow_dispatch` for the initial deploy, with any extra one-off steps gated by inputs/conditions rather than separate workflows.
+- **Production promotion**
+  - Use `promote-to-production.yml` or the individual app workflow with `deploy-target: production`.

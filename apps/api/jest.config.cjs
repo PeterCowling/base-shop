@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const base = require("@acme/config/jest.preset.cjs");
+const base = require("@acme/config/jest.preset.cjs")();
 
 const coveragePathIgnorePatterns = base.coveragePathIgnorePatterns.filter(
   (pattern) => pattern !== "/apps/"

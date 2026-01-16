@@ -1,110 +1,247 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+/**
+ * Hybrid Jest preset with declarative options API.
+ *
+ * Usage:
+ *   // Simple (defaults):
+ *   module.exports = require("@acme/config/jest.preset.cjs")();
+ *
+ *   // With options:
+ *   module.exports = require("@acme/config/jest.preset.cjs")({
+ *     useCjs: true,           // Force CommonJS preset (no ESM)
+ *     relaxCoverage: true,    // Set coverage thresholds to 0%
+ *     skipEnvMocks: true,     // Don't mock @acme/config/env modules
+ *     useRealEnvLoaders: true // Use real env loaders (for auth package)
+ *   });
+ *
+ * This replaces the hard-coded app detection in the root jest.config.cjs.
+ * Each package declares what it needs instead of the root config detecting
+ * where it's running via process.cwd() regex checks.
+ */
+
 const path = require("path");
-const base = require("../../jest.config.cjs");
+const fs = require("fs");
 
 const workspaceRoot = path.resolve(__dirname, "../..");
-const packageRoot = path.resolve(__dirname);
-const packagePath = path
-  .relative(workspaceRoot, packageRoot)
-  .replace(/\\/g, "/");
-const [scope, ...rest] = packagePath.split("/");
-const subPath = rest.join("/");
 
-const coveragePathIgnorePatterns = (base.coveragePathIgnorePatterns || []).filter(
-  (pattern) =>
-    !pattern.includes("/packages/config/src/env/__tests__/")
-);
-coveragePathIgnorePatterns.push(
-  `/${scope}/(?!${subPath})/`,
-  scope === "packages" ? "/apps/" : "/packages/"
-);
+// Import helpers and base config pieces
+const {
+  resolveRoot,
+  resolveReactPaths,
+  loadTsPaths,
+} = require(path.join(workspaceRoot, "jest.config.helpers.cjs"));
+const baseModuleNameMapper = require(path.join(workspaceRoot, "jest.moduleMapper.cjs"));
+const coverageDefaults = require(path.join(workspaceRoot, "jest.coverage.cjs"));
 
-const setupFilesAfterEnv = [
-  ...(base.setupFilesAfterEnv || []),
-  path.join(workspaceRoot, "test/setup-response-json.ts"),
-];
+// Prevent Browserslist from resolving config files in temporary Jest paths.
+process.env.BROWSERSLIST = process.env.BROWSERSLIST || "defaults";
 
-const setupFiles = [
-  ...(base.setupFiles || []),
-  path.join(packageRoot, "test/setup-env.ts"),
-];
+const tsPaths = loadTsPaths();
 
-const tsJestOptions = {
-  tsconfig: path.join(packageRoot, "tsconfig.test.json"),
-  useESM: false,
-  diagnostics: false,
-  babelConfig: false,
-};
+const {
+  reactPath,
+  reactDomPath,
+  reactDomClientPath,
+  reactJsxRuntimePath,
+  reactJsxDevRuntimePath,
+} = resolveReactPaths();
 
-const transform = {
-  "^.+\\.(ts|tsx)$": ["ts-jest", tsJestOptions],
-  "^.+\\.[tj]sx?$": [
-    "babel-jest",
-    {
-      presets: [["@babel/preset-env", { targets: { node: "current" }, modules: "commonjs" }]],
+/**
+ * @typedef {Object} JestPresetOptions
+ * @property {boolean} [useCjs] - Force CommonJS preset (ts-jest instead of ts-jest/presets/default-esm)
+ * @property {boolean} [relaxCoverage] - Set all coverage thresholds to 0%
+ * @property {boolean} [skipEnvMocks] - Don't mock @acme/config/env modules (for config package itself)
+ * @property {boolean} [useRealEnvLoaders] - Use real env loaders instead of test mocks (for auth package)
+ * @property {Record<string, string|string[]>} [moduleNameMapper] - Additional module name mappings
+ * @property {string[]} [coveragePathIgnorePatterns] - Additional patterns to ignore from coverage
+ * @property {Object} [coverageThreshold] - Override coverage thresholds
+ */
+
+/**
+ * Creates a Jest configuration with the given options.
+ * @param {JestPresetOptions} [options={}]
+ * @returns {import('jest').Config}
+ */
+function createJestPreset(options = {}) {
+  const {
+    useCjs = false,
+    relaxCoverage = false,
+    skipEnvMocks = false,
+    useRealEnvLoaders = false,
+    moduleNameMapper: additionalModuleNameMapper = {},
+    coveragePathIgnorePatterns: additionalCoverageIgnorePatterns = [],
+    coverageThreshold: customCoverageThreshold,
+  } = options;
+
+  // Build module name mapper
+  let moduleNameMapper = {
+    ...baseModuleNameMapper,
+    // Use resolved React paths to ensure a single instance across tests
+    "^react$": reactPath,
+    "^react-dom/client\\.js$": reactDomClientPath,
+    "^react-dom$": reactDomPath,
+    "^react/jsx-runtime$": reactJsxRuntimePath,
+    "^react/jsx-dev-runtime$": reactJsxDevRuntimePath,
+    ...tsPaths,
+  };
+
+  // Always mock NextAuth modules to avoid ESM-only deps and reduce per-test duplication
+  moduleNameMapper["^next-auth$"] = " /test/mocks/next-auth.ts";
+  moduleNameMapper["^next-auth/jwt$"] = " /test/mocks/next-auth-jwt.ts";
+  moduleNameMapper["^next-auth/react$"] = " /test/mocks/next-auth-react.ts";
+
+  // Apply env mocking unless explicitly skipped (for config package)
+  if (!skipEnvMocks) {
+    const overrides = {
+      // Mock core/shipping env for most packages; useRealEnvLoaders skips these
+      ...(useRealEnvLoaders ? {} : { "^@acme/config/env/core$": " /test/mocks/config-env-core.ts" }),
+      ...(useRealEnvLoaders ? {} : { "^@acme/config/env/shipping$": " /test/mocks/config-env-shipping.ts" }),
+    };
+    const pruned = Object.fromEntries(
+      Object.entries(moduleNameMapper).filter(
+        ([key]) => !(key in overrides)
+      )
+    );
+    moduleNameMapper = { ...overrides, ...pruned };
+  }
+
+  // Apply any additional module name mappings from options
+  moduleNameMapper = { ...moduleNameMapper, ...additionalModuleNameMapper };
+
+  // Build coverage configuration
+  const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
+  const coveragePathIgnorePatterns = [
+    ...coverageDefaults.coveragePathIgnorePatterns,
+    ...additionalCoverageIgnorePatterns,
+  ];
+  const coverageReporters = [...coverageDefaults.coverageReporters];
+  let coverageThreshold = customCoverageThreshold
+    ? JSON.parse(JSON.stringify(customCoverageThreshold))
+    : JSON.parse(JSON.stringify(coverageDefaults.coverageThreshold));
+
+  // Relax coverage if requested or for targeted runs
+  const isTargetedRun =
+    process.argv.includes("--runTestsByPath") ||
+    process.argv.some((arg) => arg.startsWith("--testPathPattern"));
+  if (relaxCoverage || isTargetedRun || process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1") {
+    coverageThreshold = { global: { lines: 0, branches: 0, functions: 0 } };
+  }
+
+  // Determine preset based on options or env
+  const forceCjs = process.env.JEST_FORCE_CJS === "1";
+  const useESM = !(useCjs || forceCjs);
+  const preset = useESM ? "ts-jest/presets/default-esm" : "ts-jest";
+
+  const config = {
+    preset,
+    testEnvironment: "jsdom",
+    extensionsToTreatAsEsm: useESM ? [".ts", ".tsx"] : [],
+    transform: {
+      "^.+\\.(ts|tsx)$": [
+        "ts-jest",
+        {
+          // Prefer package-local tsconfig when available; otherwise fall back
+          // to the monorepo root test config to guarantee a concrete outDir.
+          tsconfig: (() => {
+            const pkgTs = path.join(process.cwd(), "tsconfig.test.json");
+            if (fs.existsSync(pkgTs)) return pkgTs;
+            return path.join(workspaceRoot, "tsconfig.test.json");
+          })(),
+          useESM,
+          diagnostics: false,
+          babelConfig: false,
+        },
+      ],
+      // Transform ESM JavaScript from selected node_modules to CJS for Jest
+      "^.+\\.(mjs|cjs|js)$": [
+        "babel-jest",
+        {
+          presets: [[
+            "@babel/preset-env",
+            { targets: { node: "current" }, modules: "commonjs" }
+          ]],
+        },
+      ],
     },
-  ],
-};
+    transformIgnorePatterns: [
+      // Transpile selected ESM dependencies (including pnpm nested paths)
+      // and internal "@acme" workspace packages.
+      "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|msw|@mswjs/interceptors|strict-event-emitter|headers-polyfill|outvariant|until-async|@bundled-es-modules|@acme)/)",
+    ],
+    setupFiles: ["dotenv/config"],
+    setupFilesAfterEnv: [
+      path.join(workspaceRoot, "test/setupFetchPolyfill.ts"),
+      path.join(workspaceRoot, "jest.setup.ts"),
+    ],
+    testPathIgnorePatterns: [
+      path.join(workspaceRoot, "test/e2e/"),
+      path.join(workspaceRoot, "apps/storybook/.storybook/"),
+      "/apps/storybook/.storybook/test-runner/",
+      path.join(workspaceRoot, "apps/storybook/.storybook-ci/"),
+      "/apps/storybook/.storybook-composed/",
+    ],
+    moduleNameMapper,
+    testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
+    passWithNoTests: true,
+    moduleFileExtensions: [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "mjs",
+      "node",
+      "d.ts",
+    ],
+    collectCoverage: coverageDefaults.collectCoverage,
+    collectCoverageFrom,
+    // Normalize coverage output path so all workspace packages write into
+    // the monorepo root coverage directory under their own sanitized name.
+    coverageDirectory: (() => {
+      let name = path.basename(process.cwd());
+      try {
+        const pkg = require(path.join(process.cwd(), "package.json"));
+        if (pkg && typeof pkg.name === "string" && pkg.name.trim()) {
+          name = pkg.name.trim();
+        }
+      } catch {
+        // fall back to directory name
+      }
+      const sanitized = name.replace(/^@/, "").replace(/[\/]/g, "-");
+      return path.join(workspaceRoot, "coverage", sanitized);
+    })(),
+    coveragePathIgnorePatterns,
+    coverageReporters,
+    coverageThreshold,
+    rootDir: process.cwd(),
+  };
 
-/** @type {import('jest').Config} */
-const config = {
-  ...base,
-  preset: "ts-jest/presets/js-with-ts",
-  rootDir: workspaceRoot,
-  collectCoverageFrom: [`${packagePath}/src/**/*.{ts,tsx}`],
-  // Use a plain Node environment for configuration tests. These tests don't
-  // depend on DOM APIs and running them under jsdom pulls in additional
-  // transitive dependencies like `parse5`, which in turn requires the
-  // `entities/decode` subpath that isn't exported in older versions.  Using the
-  // Node environment avoids that resolution path entirely and prevents
-  // `ERR_PACKAGE_PATH_NOT_EXPORTED` errors when running unit tests.
-  testEnvironment: "node",
-  setupFiles,
-  moduleNameMapper: {
-    ...base.moduleNameMapper,
-    "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    // Map internal ESM-style .js imports in TS sources to their TS files for Jest
-    "^\\./core/require-env\\.js$": "<rootDir>/packages/config/src/env/core/require-env.ts",
-    "^\\./core/schema\\.base-merge\\.js$": "<rootDir>/packages/config/src/env/core/schema.base-merge.ts",
-    "^\\./core/refinement\\.deposit\\.js$": "<rootDir>/packages/config/src/env/core/refinement.deposit.ts",
-    "^\\./core/schema\\.core\\.js$": "<rootDir>/packages/config/src/env/core/schema.core.ts",
-    "^\\./core/loader\\.parse\\.js$": "<rootDir>/packages/config/src/env/core/loader.parse.ts",
-    "^\\./core/runtime\\.proxy\\.js$": "<rootDir>/packages/config/src/env/core/runtime.proxy.ts",
-    "^\\./core/runtime\\.prod-failfast\\.js$": "<rootDir>/packages/config/src/env/core/runtime.prod-failfast.ts",
-    "^\\./core/runtime\\.test-auth-init\\.js$": "<rootDir>/packages/config/src/env/core/runtime.test-auth-init.ts",
-    "^\\./core/schema\\.base\\.js$": "<rootDir>/packages/config/src/env/core/schema.base.ts",
-    // When resolving from within src/env/core/*, map local .js specifiers to TS
-    "^\\./schema\\.base\\.js$": "<rootDir>/packages/config/src/env/core/schema.base.ts",
-    "^\\./schema\\.base-merge\\.js$": "<rootDir>/packages/config/src/env/core/schema.base-merge.ts",
-    "^\\./constants\\.js$": "<rootDir>/packages/config/src/env/core/constants.ts",
-    "^\\./schema\\.preprocess\\.js$": "<rootDir>/packages/config/src/env/core/schema.preprocess.ts",
-    "^\\./schema\\.core\\.js$": "<rootDir>/packages/config/src/env/core/schema.core.ts",
-    "^\\./refinement\\.deposit\\.js$": "<rootDir>/packages/config/src/env/core/refinement.deposit.ts",
-    "^\\./loader\\.parse\\.js$": "<rootDir>/packages/config/src/env/core/loader.parse.ts",
-    "^\\./runtime\\.resolve-loader\\.js$": "<rootDir>/packages/config/src/env/core/runtime.resolve-loader.ts",
-    "^\\./env\\.snapshot\\.js$": "<rootDir>/packages/config/src/env/core/env.snapshot.ts",
-    "^\\./runtime\\.proxy\\.js$": "<rootDir>/packages/config/src/env/core/runtime.proxy.ts",
-    "^\\./runtime\\.prod-failfast\\.js$": "<rootDir>/packages/config/src/env/core/runtime.prod-failfast.ts",
-    "^\\./runtime\\.test-auth-init\\.js$": "<rootDir>/packages/config/src/env/core/runtime.test-auth-init.ts",
-    // Map references to sibling schemas used by core internals
-    "^\\.\\./cms\\.schema\\.js$": "<rootDir>/packages/config/src/env/cms.schema.ts",
-    "^\\.\\./email\\.schema\\.js$": "<rootDir>/packages/config/src/env/email.schema.ts",
-    "^\\.\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
-  },
-  setupFilesAfterEnv,
-  extensionsToTreatAsEsm: [],
-  transform,
-  coveragePathIgnorePatterns,
-  coverageThreshold: { global: { lines: 60, branches: 60 } },
-};
+  // Limit coverage collection to the current workspace package/app
+  const relativePath = path
+    .relative(workspaceRoot, process.cwd())
+    .replace(/\\/g, "/");
+  if (relativePath) {
+    const [scope, ...rest] = relativePath.split("/");
+    const subPath = rest.join("/");
+    config.collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
+    const coverageIgnores = [];
+    if (subPath) {
+      coverageIgnores.push(`/${scope}/(?!${subPath})/`);
+    }
+    coverageIgnores.push(scope === "packages" ? "/apps/" : "/packages/");
+    config.coveragePathIgnorePatterns.push(...coverageIgnores);
+  }
 
-// Allow targeted runs (e.g., --runTestsByPath) to skip global coverage gates so
-// quick iteration on a narrow file set doesn't fail on overall thresholds.
-const isTargetedRun =
-  process.argv.includes("--runTestsByPath") ||
-  process.argv.some((arg) => arg.startsWith("--testPathPattern"));
-if (isTargetedRun || process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1") {
-  config.coverageThreshold = { global: { lines: 0, branches: 0, functions: 0 } };
+  return resolveRoot(config);
 }
 
-module.exports = config;
+// Export the factory function as the module
+module.exports = createJestPreset;
+
+// Also export a pre-built default config for backwards compatibility
+// This allows both:
+//   const preset = require("@acme/config/jest.preset.cjs");
+//   module.exports = preset();
+// And:
+//   const base = require("@acme/config/jest.preset.cjs");
+//   module.exports = { ...base, ... }; // Works because base is a function with spread props

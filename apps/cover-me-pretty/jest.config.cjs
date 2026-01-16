@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const base = require("@acme/config/jest.preset.cjs");
+
+// Cover-me-pretty uses CJS preset for Next.js stability
+const base = require("@acme/config/jest.preset.cjs")({
+  useCjs: true,
+});
 
 /** @type {import('jest').Config} */
 module.exports = {

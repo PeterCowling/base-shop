@@ -1,0 +1,530 @@
+---
+Type: Handbook
+Status: Canonical
+Domain: Design System
+Created: 2026-01-16
+Created-by: Claude Opus 4.5
+Last-updated: 2026-01-16
+---
+
+# Design System Handbook
+
+This handbook consolidates all design system documentation for the Base-Shop platform. It covers the component library (`@acme/ui`), token system, theming, and CMS UI patterns.
+
+## Quick Reference
+
+| Topic | Section | Key Files |
+|-------|---------|-----------|
+| Component Library | [1. Component Library](#1-component-library) | `packages/ui/` |
+| Tokens & Theming | [2. Token System](#2-token-system) | `packages/themes/`, `packages/design-tokens/` |
+| Sizes & Tones | [3. Size & Tone Guide](#3-size--tone-guide) | Atoms: Button, Tag, Chip, etc. |
+| Surfaces & Elevation | [4. Surfaces & Elevation](#4-surfaces--elevation) | Drawer, Dialog, Popover, Card |
+| CMS Patterns | [5. CMS UI Patterns](#5-cms-ui-patterns) | `packages/ui/src/components/cms/` |
+| Typography & Color | [6. Typography & Color](#6-typography--color) | Fonts, palettes, contrast |
+| Accessibility | [7. Accessibility](#7-accessibility) | WCAG, tap targets, screen readers |
+
+---
+
+## 1. Component Library
+
+The `@acme/ui` package provides shared design system and CMS UI components for the Acme platform.
+
+### Structure
+
+```
+packages/ui/src/components/
+├── atoms/           # Button, Tag, Input, Chip, etc.
+├── molecules/       # Accordion, CodeBlock, CurrencySwitcher
+├── organisms/       # ProductGrid, FilterSidebar, DataTable
+├── templates/       # AppShell, TrackingDashboard
+├── overlays/        # Dialog, Drawer, Popover
+├── cms/             # CMS-specific patterns
+└── platform/        # Platform-core UI (shop, pdp, blog)
+```
+
+### Import Rules
+
+```tsx
+// Correct: use public entrypoints
+import { Button, Card, Tag } from "@acme/ui";
+import { CmsBuildHero } from "@acme/ui/cms";
+
+// Incorrect: avoid deep imports
+import { Button } from "@acme/ui/src/components/atoms/Button";
+```
+
+For layering rules and public API surfaces, see:
+- `packages/ui/docs/architecture.md`
+- `packages/ui/docs/platform-vs-apps.md`
+
+---
+
+## 2. Token System
+
+### Token Architecture
+
+Tokens are CSS custom properties using HSL numeric tuples for colors and raw stacks for fonts.
+
+**Token Sources:**
+- Base catalogue: `packages/themes/base/src/tokens.ts`
+- Generated CSS: `packages/themes/base/src/tokens.css`
+- Theme overrides: `packages/themes/*/src/tokens.css`
+- Exported map: `packages/design-tokens/src/exportedTokenMap.ts`
+
+### Token Categories
+
+| Category | Example Tokens | Usage |
+|----------|---------------|-------|
+| Colors | `--color-primary`, `--color-fg`, `--color-bg` | `hsl(var(--color-primary))` |
+| Typography | `--font-body`, `--font-heading-1`, `--font-mono` | `var(--font-body)` |
+| Spacing | `--space-1` through `--space-16` | 8-pt rhythm scale |
+| Radius | `--radius-sm`, `--radius-md`, `--radius-lg` | Border radii |
+| Shadows | `--shadow-sm`, `--shadow-md`, `--shadow-lg` | Elevation |
+
+### Tailwind Integration
+
+Tokens are exposed via `@acme/design-tokens` preset:
+
+```tsx
+// Colors
+className="bg-primary text-primary-foreground"
+className="bg-bg text-fg"
+
+// Typography
+className="font-sans"  // follows --font-body via alias
+className="font-mono"
+
+// Spacing (8-pt rhythm)
+className="p-4"  // var(--space-4)
+
+// Radius
+className="rounded-md"  // var(--radius-md)
+```
+
+### Dark Mode
+
+Strategy: hybrid "system preference + class override".
+
+- Media query: `@media (prefers-color-scheme: dark)` swaps tokens
+- Class override: `html.theme-dark` forces dark regardless of system
+- Initialization: `packages/platform-core/src/utils/initTheme.ts`
+
+```tsx
+// localStorage values: 'light' | 'dark' | 'system'
+```
+
+---
+
+## 3. Size & Tone Guide
+
+Use these defaults to keep atoms consistent across apps.
+
+### Sizes
+
+| Size | Dimensions | Icon-only | Applies to |
+|------|------------|-----------|------------|
+| `sm` | h-9 / px-3 | h/w-9 | Button, IconButton, Tag, ProductBadge, Chip |
+| `md` | h-10 / px-4 | h/w-10 | (default) |
+| `lg` | h-11 / px-5 / text-base | h/w-11 | |
+
+### Tones
+
+| Tone | Description | Use case |
+|------|-------------|----------|
+| `solid` | Filled background + foreground contrast | Primary actions |
+| `soft` | Tinted background, neutral foreground | Secondary actions |
+| `outline` | Border + neutral text | Tertiary actions |
+| `ghost` | Neutral text, subtle hover fill | Inline actions |
+| `quiet` | Text-forward, near-transparent hover | Low-emphasis actions |
+
+### Colors
+
+Available colors for toned components:
+- `default`, `primary`, `accent`
+- `success`, `info`, `warning`, `danger`
+- `destructive` (alias for danger on Tag/Badge/Chip)
+
+### Storybook Reference
+
+- Buttons: `Primitives/Button` (TonesAndColors, TonesColorsSizes)
+- IconButton: `Atoms/IconButton`
+- Pills: `Atoms/Tag`, `Atoms/ProductBadge`, `Atoms/Chip`
+
+---
+
+## 4. Surfaces & Elevation
+
+### Surface Tokens
+
+| Token | Usage |
+|-------|-------|
+| `bg-panel` | Containers: dialogs, drawers, popovers, dropdowns, cards |
+| `bg-surface-2` | Lightweight hover/highlight states |
+| `bg-surface-3` | Stronger emphasis: selected rows, elevated hover |
+| `border-border-2` | Container edges |
+| `border-border-1` | Subtle separators |
+| `ring-ring` | Focus rings |
+
+### Component Patterns
+
+```tsx
+// DropdownMenu / Select / Popover
+className="bg-panel border-border-2"
+// Item hover
+className="hover:bg-surface-3"
+
+// Dialog content
+className="bg-panel border-border-2"
+
+// Table rows
+className="hover:bg-surface-2"      // hover
+className="bg-surface-3"            // selected
+```
+
+### Drawer Primitive
+
+For slide-over surfaces, use the Drawer primitive:
+
+```tsx
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+} from "@acme/ui";
+
+<Drawer>
+  <DrawerTrigger asChild>
+    <button>Open</button>
+  </DrawerTrigger>
+  <DrawerContent side="right" width="w-80" className="p-6">
+    <DrawerTitle>Title</DrawerTitle>
+    <DrawerDescription className="sr-only">Description</DrawerDescription>
+    {/* content */}
+  </DrawerContent>
+</Drawer>
+```
+
+**Props:**
+- `side`: `"left" | "right"` (default: `"right"`)
+- `width`: Tailwind width class or pixel number
+
+---
+
+## 5. CMS UI Patterns
+
+CMS UI patterns live in `packages/ui/src/components/cms/`. These canonical patterns provide consistency across CMS build, launch, and update flows.
+
+### 5.1 CmsBuildHero
+
+Shared hero layout for main build/launch surfaces.
+
+**Usage:** Configurator dashboard, Settings hero, Products hero
+
+```tsx
+import { CmsBuildHero } from "@acme/ui/cms";
+
+<CmsBuildHero
+  tag="Configurator"
+  title="Build your shop"
+  body="Complete the steps below to launch."
+  primaryCta={{ label: "Quick launch", href: "/launch" }}
+  inlineMeta={[{ label: "Progress", value: "4/7" }]}
+  tone="build"
+/>
+```
+
+**Props:**
+- `tag: string` – short label
+- `title: string` – main heading
+- `body: string` – supporting copy
+- `primaryCta?: { label, href?, onClick? }`
+- `secondaryCtas?: { label, href?, onClick? }[]`
+- `inlineMeta?: { label, value }[]` – stats like "3/7 complete"
+- `tone?: "build" | "operate" | "upgrade"`
+
+### 5.2 CmsLaunchChecklist
+
+Standard checklist UI for launch and readiness states.
+
+**Usage:** Configurator LaunchPanel, Products catalog checklist, Upgrade readiness
+
+```tsx
+import { CmsLaunchChecklist } from "@acme/ui/cms";
+
+<CmsLaunchChecklist
+  items={[
+    { id: "products", label: "Products in stock", status: "complete", href: "/products" },
+    { id: "payments", label: "Payments configured", status: "warning", href: "/settings" },
+  ]}
+  readyLabel="Ready to launch!"
+  showReadyCelebration
+/>
+```
+
+**Props:**
+- `items: { id, label, status, href, onFix? }[]`
+  - `status`: `"complete" | "warning" | "error" | "pending"`
+- `readyLabel?: string`
+- `showReadyCelebration?: boolean`
+
+### 5.3 CmsSettingsSnapshot
+
+Snapshot view of shop configuration.
+
+**Usage:** SettingsHero, ConfigurationOverview
+
+```tsx
+import { CmsSettingsSnapshot } from "@acme/ui/cms";
+
+<CmsSettingsSnapshot
+  title="Current snapshot"
+  rows={[
+    { id: "lang", label: "Languages", value: "en, de" },
+    { id: "currency", label: "Currency", value: "EUR", tone: "success" },
+  ]}
+/>
+```
+
+**Props:**
+- `title?: string`
+- `body?: string`
+- `rows: { id, label, value, tone? }[]`
+  - `tone`: `"default" | "warning" | "error" | "success"`
+
+### 5.4 CmsStepShell
+
+Standard frame for Configurator-style step pages.
+
+**Usage:** Configurator step pages, multi-step wizards
+
+```tsx
+import { CmsStepShell } from "@acme/ui/cms";
+
+<CmsStepShell
+  stepId="products"
+  icon={<ShoppingCart />}
+  title="Add your products"
+  description="Import or create your catalog"
+  status="in-progress"
+  trackLabel="Essentials"
+>
+  {/* step content */}
+</CmsStepShell>
+```
+
+**Props:**
+- `stepId: string`
+- `icon?: ReactNode`
+- `title: string`
+- `description?: string`
+- `status: "complete" | "skipped" | "in-progress"`
+- `trackLabel?: string`
+- `trackTone?: "default" | "info" | "warning"`
+- `recommendedBefore?: string[]`
+- `children: ReactNode`
+
+### 5.5 CmsInlineHelpBanner
+
+Inline help for build surfaces with doc links and telemetry.
+
+**Usage:** Status bar, Settings help, Theme Editor banners
+
+```tsx
+import { CmsInlineHelpBanner } from "@acme/ui/cms";
+
+<CmsInlineHelpBanner
+  heading="Need help?"
+  body="Learn how to configure your shop theme."
+  links={[
+    { label: "Theming guide", href: "/docs/theming" },
+    { label: "Build journey", href: "/docs/journey" },
+  ]}
+  tone="info"
+/>
+```
+
+**Props:**
+- `heading?: string`
+- `body: string`
+- `links: { label, href, onClick? }[]`
+- `tone?: "info" | "warning"`
+
+### 5.6 CmsMetricTiles
+
+Quick-stats tiles for build/launch or catalog state.
+
+**Usage:** Configurator dashboard, Products hero stats
+
+```tsx
+import { CmsMetricTiles } from "@acme/ui/cms";
+
+<CmsMetricTiles
+  items={[
+    { id: "milestones", label: "Core milestones", value: "3/7", caption: "Essential steps" },
+    { id: "health", label: "Shop health", value: "Healthy" },
+  ]}
+/>
+```
+
+**Props:**
+- `items: { id, label, value, caption? }[]`
+
+### Pattern Mapping by Surface
+
+| Surface | Patterns Used |
+|---------|---------------|
+| Configurator dashboard | CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist |
+| Settings | CmsBuildHero, CmsSettingsSnapshot |
+| Products | CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist |
+| Theme Editor | CmsInlineHelpBanner |
+| Configurator steps | CmsStepShell |
+| Upgrade preview | CmsBuildHero, CmsLaunchChecklist, CmsInlineHelpBanner |
+
+---
+
+## 6. Typography & Color
+
+### Three-Font Model
+
+| Token | Purpose |
+|-------|---------|
+| `--font-body` | Primary body stack |
+| `--font-heading-1` | H1–H3 stack |
+| `--font-heading-2` | H4–H6 stack |
+| `--font-sans` | Low-level (defaults to Geist) |
+| `--font-mono` | Monospace (defaults to Geist Mono) |
+
+Fonts are selected in the CMS via `FontsPanel.tsx` and injected by `ThemeStyle.tsx`.
+
+### Color Palette
+
+Base and dark themes share a WCAG AA compliant color system:
+
+| Token | Light | Dark | Contrast |
+|-------|-------|------|----------|
+| `--color-bg` / `--color-fg` | white/near-black | near-black/white | 17+ |
+| `--color-primary` / `--color-primary-fg` | blue/white | blue/dark | 4.5+ |
+| `--color-accent` / `--color-accent-fg` | purple/dark | purple/dark | 5+ |
+| `--color-success` | green tint | green | 4.5+ |
+| `--color-warning` | amber tint | amber | 5.5+ |
+| `--color-info` | blue tint | blue | 6+ |
+
+### Theme Generator
+
+Generate a token map from a brand color:
+
+```bash
+pnpm ts-node scripts/src/generate-theme.ts '#336699'
+```
+
+### Runtime Token Injection
+
+`ThemeStyle.tsx` (server component) is the canonical injector:
+- Emits `<style data-shop-theme>` with `:root { … }` CSS variables
+- Loads Google Fonts via `<link rel="preconnect">` and stylesheet links
+
+---
+
+## 7. Accessibility
+
+### Contrast Requirements
+
+- All text meets WCAG 2.1 AA (≥ 4.5:1 for normal text)
+- Contrast tests in `packages/ui/src/components/cms/page-builder/__tests__/`
+
+### Tap Targets
+
+| Token | Size | Standard |
+|-------|------|----------|
+| `--target-min-aa` | 24px | WCAG 2.2 minimum |
+| `--target-hig` | 44px | Apple HIG |
+| `--target-material` | 48px | Material/Android |
+
+CMS utilities: `.min-target-aa`, `.min-target-hig`, `.min-target-material`
+
+### Icon-Only Actions
+
+Icon-only buttons require accessible labels:
+
+```tsx
+// Correct
+<IconButton aria-label="Close menu">
+  <XIcon />
+</IconButton>
+
+// Incorrect - no accessible name
+<IconButton>
+  <XIcon />
+</IconButton>
+```
+
+### Drawer/Dialog Accessibility
+
+Always provide `DrawerTitle` and `DrawerDescription` (use `sr-only` to visually hide):
+
+```tsx
+<DrawerContent>
+  <DrawerTitle>Settings</DrawerTitle>
+  <DrawerDescription className="sr-only">
+    Configure your preferences
+  </DrawerDescription>
+</DrawerContent>
+```
+
+### Reduced Motion
+
+Global transitions are disabled when `prefers-reduced-motion` is set.
+
+---
+
+## Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [theming-charter.md](theming-charter.md) | Canonical theming system charter |
+| [theming.md](theming.md) | Theme Editor and live preview guide |
+| [palette.md](palette.md) | Base color palette and contrast table |
+| [typography-and-color.md](typography-and-color.md) | Deep dive on fonts and colors |
+| [design-system-package-import.md](design-system-package-import.md) | External package import guide |
+| [ui-responsive-audit.md](ui-responsive-audit.md) | Responsive/stress audit status |
+| [cms/shop-build-ui-patterns.md](cms/shop-build-ui-patterns.md) | Detailed CMS pattern specs |
+| [cms/shop-build-ui-audit.md](cms/shop-build-ui-audit.md) | CMS component inventory |
+
+---
+
+## File Map
+
+### Core Packages
+
+| Path | Purpose |
+|------|---------|
+| `packages/ui/` | Component library |
+| `packages/themes/base/` | Base token definitions |
+| `packages/themes/dark/` | Dark theme overrides |
+| `packages/design-tokens/` | Tailwind preset/plugin |
+| `packages/eslint-plugin-ds/` | Design system ESLint rules (33 rules) |
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `packages/themes/base/src/tokens.ts` | Source of truth for tokens |
+| `packages/ui/src/components/ThemeStyle.tsx` | Runtime token injector |
+| `packages/platform-core/src/utils/initTheme.ts` | Dark mode initialization |
+| `tailwind.config.mjs` | Root Tailwind configuration |
+
+---
+
+## ESLint Design System Rules
+
+The `@acme/eslint-plugin-ds` package enforces design system compliance with 33 rules:
+
+| Category | Rules |
+|----------|-------|
+| Token Enforcement | `no-raw-color`, `no-raw-spacing`, `no-raw-radius`, `no-raw-shadow`, `no-raw-typography` |
+| Layer Boundaries | `no-margins-on-atoms`, `enforce-layout-primitives`, `absolute-parent-guard` |
+| Accessibility | `min-tap-size`, `enforce-focus-ring-token`, `no-misused-sr-only`, `icon-button-size` |
+| Responsive | `require-breakpoint-modifiers`, `container-widths-only-at` |
+| RTL/i18n | `no-physical-direction-classes-in-rtl`, `no-hardcoded-copy` |

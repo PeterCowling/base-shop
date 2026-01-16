@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const baseConfig = require("../../jest.config.cjs");
+const baseConfig = require("@acme/config/jest.preset.cjs")();
+
 module.exports = {
   ...baseConfig,
   rootDir: path.resolve(__dirname, "..", ".."),

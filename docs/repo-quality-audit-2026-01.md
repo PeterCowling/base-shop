@@ -16,7 +16,7 @@ This audit summarizes the current state of architecture, tooling, and delivery p
 
 **Overall Grade: B**
 
-The repository has made significant improvements in January 2026, particularly in testing infrastructure (Jest presets, visual regression), CI/CD coverage (23 workflows), and documentation (plan lifecycle, templates). Security remains a concern with Next.js 15.3.5 still below the RCE fix; Turbo remote cache is configured in workflows but requires GitHub secrets/vars. Remaining gaps focus on post-deployment validation and Design System documentation consolidation.
+The repository has made significant improvements in January 2026, particularly in testing infrastructure (Jest presets, visual regression), CI/CD coverage (23 workflows), and documentation (plan lifecycle, templates, dependency graph, DS handbook). Security remains a concern with Next.js 15.3.5 still below the RCE fix; Turbo remote cache is configured in workflows but requires GitHub secrets/vars. Remaining gaps focus on post-deployment validation and Design System API consistency/adoption.
 
 ### Top Risks (P0)
 - Next.js RCE exposure pending dependency upgrade (target 15.3.6+)
@@ -34,10 +34,10 @@ The repository has made significant improvements in January 2026, particularly i
 | Testing | A- | Jest presets, Chromatic visual regression | Root config refactoring incomplete |
 | CI/CD | A- | 23 workflows, reusable templates | No post-deploy validation |
 | Git Safety | A+ | Multi-layer protection | None observed |
-| Documentation | A- | 233 docs, plan templates, metadata lifecycle | No unified DS handbook |
+| Documentation | A- | Plan templates, DS handbook, dependency graph | Some docs still human-first |
 | Design System | B+ | Multi-context tokens, lint enforcement | No API standard, no handbook |
 | Security | C+ | Zod validation, Argon2, weekly audits | Next.js RCE pending, SSRF validation, auth audit needed |
-| Developer Experience | A- | 123 scripts, good IDE support, 34 READMEs | Dependency graph missing |
+| Developer Experience | A- | 123 scripts, good IDE support, 34 READMEs | Naming guide missing |
 
 ## Scope and Method
 
@@ -183,23 +183,25 @@ The repository has made significant improvements in January 2026, particularly i
 ### G. Documentation — Grade: A- *(upgraded from B+)*
 
 **Strengths**
-- **NEW:** 233 documentation files (up from 215+).
+- **NEW:** 200+ markdown files across the repo (docs + package/app guides).
 - Exceptional AI-agent documentation (`CLAUDE.md`, `AGENTS.md`, `INDEX_FOR_CLAUDE`).
 - Solid operational guides that can be adapted into agent runbooks (`install.md`, `setup.md`, `contributing.md`).
 - **NEW:** Package agent brief template at `docs/templates/package-agent-brief.md`.
 - **NEW:** Plan documentation lifecycle fully implemented with metadata headers (Type, Status, Domain, Created-by, etc.).
 - **NEW:** Historical archive structure at `docs/historical/plans/` with 5+ archived plans.
+- **NEW:** Dependency graph documented in `docs/dependency-graph.md`.
+- **NEW:** Design System Handbook consolidated at `docs/design-system-handbook.md`.
 - **NEW:** 34 READMEs across packages and apps (25 in packages/, 9 in apps/).
 
 **Gaps**
-- No unified Design System Handbook (documentation scattered across `ui-system-phase*.md` files).
-- No dependency graph documentation (package import boundaries are implicit).
+- ~~No unified Design System Handbook (documentation scattered across `ui-system-phase*.md` files).~~ **RESOLVED** — See [design-system-handbook.md](design-system-handbook.md).
+- ~~No dependency graph documentation (package import boundaries are implicit).~~ **RESOLVED** — See [dependency-graph.md](dependency-graph.md).
 - No package architecture guide (when to create a package vs a folder).
 - Some docs still use human-first tone rather than agent-runbook style.
 
 **Recommendations**
-1. Consolidate scattered DS docs into a unified Design System Handbook.
-2. Document package layers and import boundaries (diagram + text).
+1. ~~Consolidate scattered DS docs into a unified Design System Handbook.~~ **DONE** — See [design-system-handbook.md](design-system-handbook.md).
+2. ~~Document package layers and import boundaries (diagram + text).~~ **DONE** — See [dependency-graph.md](dependency-graph.md).
 3. Add a short guide for "package vs folder" decisions.
 4. Continue converting human-first docs into agent-runbook style.
 
@@ -210,17 +212,18 @@ The repository has made significant improvements in January 2026, particularly i
 - Strong ESLint enforcement of design patterns (33 rules).
 - Atomic component library (atoms → molecules → organisms).
 - shadcn/Radix integration is pragmatic.
+- **NEW:** Design System Handbook consolidated at `docs/design-system-handbook.md`.
 
 **Gaps**
 - No component API standardization; props vary across components.
-- No Design System Handbook.
+- Handbook adoption and maintenance are still early.
 - Visual regression configured, but DS coverage is incomplete.
 - Accessibility lacks a comprehensive audit plan.
 - Theming limited to light/dark (no multi-brand support).
 
 **Recommendations**
 1. Standardize component prop conventions (naming, sizing, variant patterns).
-2. Publish a Design System Handbook (see Documentation section).
+2. Adopt and maintain the Design System Handbook (see Documentation section).
 3. Expand visual regression coverage for DS components (see Testing section).
 4. Run a WCAG 2.1 AA audit and track remediation.
 
@@ -264,10 +267,10 @@ The repository has made significant improvements in January 2026, particularly i
 
 **Gaps**
 - Confusing package names and overlap (`templates` vs `template-app`).
-- No dependency visualization.
+- ~~No dependency visualization.~~ **RESOLVED** — See [dependency-graph.md](dependency-graph.md).
 
 **Recommendations**
-1. Create a dependency graph (e.g., simple static diagram).
+1. ~~Create a dependency graph (e.g., simple static diagram).~~ **DONE** — See [dependency-graph.md](dependency-graph.md).
 2. Add a naming guide and enforce it for new packages.
 
 ## Priority Fixes
@@ -297,9 +300,9 @@ The repository has made significant improvements in January 2026, particularly i
 |---|-------|--------|--------|
 | 10 | No agent package briefs | Add agent-focused README/AGENTS to all packages | **RESOLVED** (34 READMEs, template available) |
 | 11 | Path alias explosion | Reduce from 63 to ~20 | **PARTIAL** (reduced to 40+) |
-| 12 | No DS handbook | Create component API reference | Pending |
+| 12 | No DS handbook | Create component API reference | **RESOLVED** (`docs/design-system-handbook.md`) |
 | 13 | Missing app workflows | Add CI/CD for remaining 15+ apps | **RESOLVED** (23 workflows, all major apps covered) |
-| 14 | No dependency graph | Document package layers visually | Pending |
+| 14 | No dependency graph | Document package layers visually | **RESOLVED** (see `docs/dependency-graph.md`) |
 
 ### P3: Quality Polish (Ongoing)
 
@@ -343,6 +346,10 @@ The repository has made significant improvements in January 2026, particularly i
 - `packages/ui/` — Component library
 - `packages/design-tokens/` — Token definitions
 - `packages/eslint-plugin-ds/` — Custom ESLint rules
+- `docs/design-system-handbook.md` — Design System Handbook
+
+### Architecture
+- `docs/dependency-graph.md` — Package dependency graph
 
 ## Change Log
 
@@ -355,6 +362,7 @@ The repository has made significant improvements in January 2026, particularly i
 | 2026-01-16 | Claude Opus 4.5 | Updated grades based on January improvements: Testing B→A-, CI/CD B→A-, Documentation B+→A-, Security C+→B, Monorepo A-→A, DX B+→A-. Overall B-→B+. Marked resolved items in Priority Fixes (Next.js 15.3.8, Chromatic, ESLint cache, app workflows, READMEs). Added new findings for Jest preset system, plan lifecycle, 23 workflows. |
 | 2026-01-16 | Codex | Corrected README counts in summaries and recommendations. |
 | 2026-01-16 | Codex | Corrected Next.js version and reopened RCE status; aligned Turbo cache status with workflows. |
+| 2026-01-16 | Codex | Updated audit for dependency graph + Design System Handbook additions. |
 
 ## Related Documents
 
@@ -363,3 +371,4 @@ The repository has made significant improvements in January 2026, particularly i
 - [Coverage Configuration](coverage.md)
 - [CI/CD Roadmap](ci-and-deploy-roadmap.md)
 - [Contributing Guide](contributing.md)
+- [Dependency Graph](dependency-graph.md)

@@ -1,25 +1,19 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-// Package-scoped Jest config allowing local overrides to reduce flakiness
-// for targeted runs. Inherit the monorepo config and optionally relax
-// coverage thresholds via env var.
+// Package-scoped Jest config - uses CJS preset for simpler jest.doMock/require semantics.
 
 const path = require("path");
-const base = require("../../jest.config.cjs");
 
-// Clone to avoid mutating the shared object
-const config = { ...base, coverageThreshold: { ...(base.coverageThreshold || {}) } };
-
-// Force CommonJS in this package to make Jest module mocking simpler
-// for tests that rely on jest.doMock/require semantics.
-config.preset = "ts-jest";
-config.extensionsToTreatAsEsm = [];
+// Use CJS preset for this package
+const config = require("@acme/config/jest.preset.cjs")({
+  useCjs: true,
+});
 
 // Ensure ts-jest uses this package's local tsconfig, not the repo root one
-const baseTsTransform = base.transform && base.transform["^.+\\.(ts|tsx)$"];
+const baseTsTransform = config.transform && config.transform["^.+\\.(ts|tsx)$"];
 const baseTsJestOptions = Array.isArray(baseTsTransform) ? baseTsTransform[1] : {};
 
 config.transform = {
-  ...base.transform,
+  ...config.transform,
   "^.+\\.(ts|tsx)$": [
     "ts-jest",
     {

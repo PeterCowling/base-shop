@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const base = require("@acme/config/jest.preset.cjs");
+
+// CMS uses CJS preset for Next.js compatibility
+const base = require("@acme/config/jest.preset.cjs")({
+  useCjs: true,
+});
+
 const {
   "^@/(.*)$": _unused,
   "^../components/(.*)$": _unused2,

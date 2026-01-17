@@ -29,6 +29,9 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."
   },
+  "dependencies": {
+    "@acme/types": "workspace:^"
+  },
   "devDependencies": {
     "next": "^15.3.8"
   },

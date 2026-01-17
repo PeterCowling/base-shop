@@ -120,7 +120,7 @@ The scenario:
 ### Rule 3b: Never Use Stash as Storage
 
 **Stashes are temporary and dangerous:**
-- `lint-staged` and other tools create hidden stashes automatically
+- Some tools can create hidden stashes automatically (lint-staged is configured to run with `--no-stash`, but other tooling may still stash)
 - Stashes are local-only — not backed up to GitHub
 - Stash conflicts are hard to resolve
 - The Jan 14 incident involved 179 files stuck in a stash
@@ -425,8 +425,8 @@ The repo has these hooks via `simple-git-hooks`:
 
 | Hook | Script | What it does |
 |------|--------|--------------|
-| `pre-commit` | `pre-commit-check-env.sh` + `lint-staged` | Blocks secrets, runs linting |
-| `pre-push` | `pre-push-safety.sh` | Blocks force push to main, warns on direct push |
+| `pre-commit` | `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` | Blocks secret env files, blocks partial staging, runs check-only lint without creating a backup stash |
+| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` | Blocks non-fast-forward pushes to protected branches; runs typecheck before pushing |
 
 **Setup after cloning:**
 ```bash

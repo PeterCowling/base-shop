@@ -147,9 +147,11 @@ Git hooks run automatically before commits and pushes:
 
 | Hook | Script | What It Does |
 |------|--------|--------------|
-| `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret files |
-| `pre-commit` | `lint-staged` | Runs linting on staged files |
-| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks force push to main |
+| `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret env files |
+| `pre-commit` | [no-partially-staged.js](../scripts/git-hooks/no-partially-staged.js) | Blocks partially staged files before lint-staged runs |
+| `pre-commit` | `lint-staged --no-stash` | Runs check-only linting on staged files without backup stashes |
+| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks non-fast-forward pushes to protected branches |
+| `pre-push` | `pnpm typecheck` | Runs typecheck before pushing |
 
 **Setup:**
 ```bash

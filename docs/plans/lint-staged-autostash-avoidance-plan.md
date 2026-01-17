@@ -79,31 +79,31 @@ Dependency pinning (recommended)
   - Scope: pin at least major+minor (ideally exact) in `package.json` (avoid `^` ranges); update lockfile.
   - Dependencies: none.
   - Definition of done: `package.json` no longer permits drift for lint-staged; upgrade requires explicit review + validation run.
-- [ ] REPO-LS-03: Make lint-staged tasks check-only
+- [x] REPO-LS-03: Make lint-staged tasks check-only
   - Scope: remove `--fix` (and any write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
   - Dependencies: REPO-LS-02 (pinning) recommended to avoid behavior drift while changing hooks.
   - Definition of done: `pnpm exec lint-staged` in pre-commit never writes to tracked files.
-- [ ] REPO-LS-04: Add partial-staging guard script (prescriptive approach)
+- [x] REPO-LS-04: Add partial-staging guard script (prescriptive approach)
   - Scope: implement a guard that parses `git status --porcelain=v2 -z` and blocks any path modified in both index and working tree.
   - Dependencies: none.
   - Definition of done: partial staging fails before lint-staged runs, with an actionable message that explains why (prevents unstaged hunks being staged under `--no-stash` behavior).
-- [ ] REPO-LS-05: Update `pre-commit` to run guard then `lint-staged --no-stash`
+- [x] REPO-LS-05: Update `pre-commit` to run guard then `lint-staged --no-stash`
   - Scope: run guard first, then `pnpm exec lint-staged --no-stash`.
   - Dependencies: REPO-LS-03, REPO-LS-04.
   - Definition of done: no lint-staged backup stash is created in any commit attempt.
-- [ ] REPO-LS-06: Add `pnpm lint:staged` developer command (debugging parity)
+- [x] REPO-LS-06: Add `pnpm lint:staged` developer command (debugging parity)
   - Scope: provide a manual command that runs the same check-only lint-staged invocation as the hook (so developers/agents can debug without triggering a commit).
   - Dependencies: REPO-LS-03, REPO-LS-05.
   - Definition of done: documented, discoverable script exists and matches the hook behavior exactly.
-- [ ] REPO-LS-07: Add local typecheck on `pre-push` (default)
+- [x] REPO-LS-07: Add local typecheck on `pre-push` (default)
   - Scope: add a `pre-push` hook that runs `pnpm typecheck` (leverages incremental `tsc -b` + `turbo run typecheck` caching).
   - Dependencies: none.
   - Definition of done: pushes are blocked locally on type errors without slowing down every commit; command is documented and bypass caveat is explicit.
-- [ ] REPO-LS-08: CI + ruleset enforcement (authoritative)
+- [x] REPO-LS-08: CI + ruleset enforcement (authoritative)
   - Scope: ensure GitHub Actions runs `pnpm lint` + `pnpm typecheck` on PRs, and `main` rulesets require PRs + required checks (no direct pushes).
   - Dependencies: none.
   - Definition of done: failing lint/typecheck cannot merge to `main` in GitHub UI.
-- [ ] REPO-LS-09: Update docs for the new workflow
+- [x] REPO-LS-09: Update docs for the new workflow
   - Scope: update developer docs (`docs/development.md`, `docs/linting.md`) and `AGENTS.md` to explain no-partial-staging, `--no-stash` rationale, and the agent "fix then commit" flow.
   - Dependencies: REPO-LS-05, REPO-LS-07, REPO-LS-08.
   - Definition of done: docs explain the workflow and recovery steps without relying on tribal knowledge.

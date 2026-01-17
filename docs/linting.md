@@ -7,6 +7,14 @@ Last-reviewed: 2025-12-02
 
 ESLint keeps the monorepo consistent and enforces architectural rules.
 
+## Pre-commit (lint-staged)
+
+This repo runs lint checks in `pre-commit` via `lint-staged` (check-only; no `--fix`).
+
+- Run the same checks without committing: `pnpm lint:staged`.
+- `lint-staged` is invoked with `--no-stash` to avoid creating the `lint-staged automatic backup` stash.
+- Partially staged files are blocked before lint-staged runs, because lint-staged can re-add files during its apply phase, which can stage unstaged hunks under lint-staged 15.x behavior.
+
 ## Classic `.eslintrc.cjs` vs flat `eslint.config.mjs`
 
 The legacy `.eslintrc.cjs` uses the classic configuration shape. Global exclusions live in `ignorePatterns` and scoped tweaks are expressed with `overrides`.

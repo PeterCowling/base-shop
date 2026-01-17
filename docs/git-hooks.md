@@ -17,17 +17,18 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `pre-commit-check-env.sh` + `lint-staged` | Block secrets, run linting |
-| `pre-push` | `pre-push-safety.sh` | Block force pushes, warn on direct push to main |
+| `pre-commit` | `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` | Block secrets, block partial staging, run linting without backup stashes |
+| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` | Block force pushes; run typecheck before pushing |
 
 ---
 
 ## Pre-commit Hook
 
-The pre-commit hook runs two checks before allowing a commit:
+The pre-commit hook runs checks before allowing a commit:
 
 1. **Environment File Check** - Prevents accidental commits of sensitive credential files
-2. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files
+2. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
+3. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
 
 #### Environment File Protection
 
@@ -133,8 +134,8 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 
 ```json
 "simple-git-hooks": {
-  "pre-commit": "sh scripts/git-hooks/pre-commit-check-env.sh && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged",
-  "pre-push": "sh scripts/git-hooks/pre-push-safety.sh"
+  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash",
+  "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck"
 }
 ```
 

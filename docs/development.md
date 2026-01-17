@@ -13,7 +13,10 @@ Last-reviewed: 2025-12-02
   pnpm lint
   ```
 
-- Pre-commit hooks (`simple-git-hooks` + `lint-staged`) already run ESLint on staged files with `--max-warnings=0`, so lint failures should be caught locally rather than in CI.
+- Pre-commit hooks (`simple-git-hooks`) run check-only ESLint on staged files via `lint-staged --no-stash`:
+  - Partially staged files are blocked (to prevent unstaged hunks being staged under lint-staged 15.x behavior).
+  - Reproduce the hook locally without committing: `pnpm lint:staged`.
+- Pre-push runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching) to catch type errors before remote CI churn.
 
 ## Tests and CI gating
 

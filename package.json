@@ -17,6 +17,7 @@
     "lint": "turbo run lint",
     "lint:json": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --cache --cache-location .eslintcache --format json --output-file .eslint-report.json --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
     "lint:exceptions": "pnpm run lint:json && node scripts/lint-exceptions.cjs",
+    "lint:staged": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash",
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
     "lint:all": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" pnpm -r --workspace-concurrency=1 --no-bail --if-present run lint",
     "lint:all:raw": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
@@ -111,11 +112,12 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [
-      "eslint --fix --max-warnings=0 --cache --cache-location .eslintcache --no-warn-ignored"
+      "eslint --max-warnings=0 --cache --cache-location .eslintcache --no-warn-ignored"
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged"
+    "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash",
+    "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck"
   },
   "dependencies": {
     "@acme/config": "workspace:^",
@@ -289,7 +291,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jest-localstorage-mock": "^2.4.21",
     "lighthouse": "^11.5.0",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "15.5.2",
     "minimatch": "^9.0.5",
     "msw": "^2.6.5",
     "msw-storybook-addon": "^2.0.3",

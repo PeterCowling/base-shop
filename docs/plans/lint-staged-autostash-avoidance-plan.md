@@ -64,28 +64,35 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 Pre-push (recommended default for local typecheck)
 - Run `pnpm typecheck` in a `pre-push` hook (or a scoped/cached variant). This catches problems before remote CI churn without making every local commit slow. Keep pre-commit fast and predictable.
 
+Dependency pinning (recommended)
+- Pin `lint-staged` deliberately (at least major+minor, ideally exact) because this policy is sensitive to subtle behavioral changes across versions (including semantic changes in `16.1.1`).
+- Only upgrade `lint-staged` with an explicit review and validation run that exercises the failure modes this plan cares about (interruptions, partial staging, and no-stash invariants).
+
 ## Implementation Tasks
 1. Document lint-staged semantics in this plan (backup stash default, `--no-stash` "no revert on error", and the implied `--no-hide-partially-staged`).
-2. Add a pre-commit partial-staging guard script:
+2. Pin `lint-staged` deliberately:
+   - Prefer an exact version pin in `package.json` (avoid `^` ranges for this dependency).
+   - Upgrade only with an explicit review and validation run for the no-stash/partial-staging behaviors.
+3. Add a pre-commit partial-staging guard script:
    - Prefer parsing `git status --porcelain=v2 -z` to detect paths that are modified in both index and working tree (aligns with lint-staged's own detection approach).
    - If using diff intersection instead, match lint-staged's defaults (`--diff-filter=ACMR`) to avoid drift.
    - Abort before lint-staged with a message explaining why partial staging is blocked (prevents unstaged hunks being committed under `--no-stash`).
-3. Update the pre-commit hook:
+4. Update the pre-commit hook:
    - Run the guard first.
    - Run `pnpm exec lint-staged --no-stash`.
-4. Update lint-staged tasks to be check-only:
+5. Update lint-staged tasks to be check-only:
    - Remove `--fix` (and any other write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
-5. Add developer commands:
+6. Add developer commands:
    - `pnpm lint:staged` mirrors hook behavior.
    - Optional (non-hook): add `pnpm lint:fix` for opportunistic fixes, but do not rely on it as the primary remediation path.
-6. Add/confirm CI enforcement:
+7. Add/confirm CI enforcement:
    - Ensure a workflow runs `pnpm lint` and `pnpm typecheck`.
    - Update branch protection/rulesets to require those checks for merging to `main`.
-7. Add local typecheck on pre-push:
+8. Add local typecheck on pre-push:
    - Add `pre-push` hook to run `pnpm typecheck` (or a scoped/cached variant); note it is still bypassable.
-8. Hardening (optional / future):
+9. Hardening (optional / future):
    - If/when supported by the pinned lint-staged version, consider `--fail-on-changes` as a regression tripwire so the commit fails if any task modifies tracked files.
-9. Update docs:
+10. Update docs:
    - Developer docs: explain "no partial staging" rule, `--no-stash` tradeoffs, and recovery guidance (what to do if the hook leaves changes).
    - `AGENTS.md`: note the hard partial-staging guard is required for correctness under `--no-stash`.
 
@@ -107,6 +114,3 @@ Pre-push (recommended default for local typecheck)
   - Mitigation: mandatory partial-staging guard as a correctness gate.
 - Risk: Developers rely on partial staging workflows.
   - Mitigation: provide guidance for splitting commits (separate files, temporary commit, or use branch-based workflows).
-
-## Open Questions
-- Should we pin `lint-staged` to an exact version and only upgrade with an explicit review + validation run (recommended given behavioral changes across versions)?

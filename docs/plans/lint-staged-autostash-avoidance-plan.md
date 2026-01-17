@@ -107,5 +107,6 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
   - Mitigation: provide guidance for splitting commits (separate files, temporary commit, or use branch-based workflows).
 
 ## Open Questions
-- Where should typecheck run locally (pre-push only, or also pre-commit for stricter gating)?
+- Where should typecheck run locally?
+  - Default: pre-push. It catches problems before remote CI churn, without making every local commit slow. Keep pre-commit fast and predictable.
 - Should we pin `lint-staged` to an exact version and only upgrade with an explicit review + validation run (recommended given behavioral changes across versions)?

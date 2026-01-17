@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 const requirePermission = jest.fn();
 const spawnSync = jest.fn();
 
-jest.mock('@auth', () => ({
+jest.mock('@acme/auth', () => ({
   requirePermission: (...args: any[]) => requirePermission(...args),
 }));
 

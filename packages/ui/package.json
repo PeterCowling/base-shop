@@ -61,6 +61,162 @@
     "./account": {
       "types": "./dist/account.d.ts",
       "import": "./dist/account.js"
+    },
+    "./components/atoms/Price": {
+      "types": "./dist/components/atoms/Price.d.ts",
+      "import": "./dist/components/atoms/Price.js"
+    },
+    "./components/ComponentPreview": {
+      "types": "./dist/components/ComponentPreview.d.ts",
+      "import": "./dist/components/ComponentPreview.js"
+    },
+    "./components/DeviceSelector": {
+      "types": "./dist/components/DeviceSelector.d.ts",
+      "import": "./dist/components/DeviceSelector.js"
+    },
+    "./utils/devicePresets": {
+      "types": "./dist/utils/devicePresets.d.ts",
+      "import": "./dist/utils/devicePresets.js"
+    },
+    "./hooks/usePreviewDevice": {
+      "types": "./dist/hooks/usePreviewDevice.d.ts",
+      "import": "./dist/hooks/usePreviewDevice.js"
+    },
+    "./components/cms/blocks/HeroBanner": {
+      "types": "./dist/components/cms/blocks/HeroBanner.d.ts",
+      "import": "./dist/components/cms/blocks/HeroBanner.js"
+    },
+    "./components/cms/blocks/BlogListing": {
+      "types": "./dist/components/cms/blocks/BlogListing.d.ts",
+      "import": "./dist/components/cms/blocks/BlogListing.js"
+    },
+    "./components/cms/blocks/ContactForm": {
+      "types": "./dist/components/cms/blocks/ContactForm.d.ts",
+      "import": "./dist/components/cms/blocks/ContactForm.js"
+    },
+    "./components/home/ReviewsCarousel": {
+      "types": "./dist/components/home/ReviewsCarousel.d.ts",
+      "import": "./dist/components/home/ReviewsCarousel.js"
+    },
+    "./components/home/ValueProps": {
+      "types": "./dist/components/home/ValueProps.d.ts",
+      "import": "./dist/components/home/ValueProps.js"
+    },
+    "./components/cms/blocks/ContactFormWithMap": {
+      "types": "./dist/components/cms/blocks/ContactFormWithMap.d.ts",
+      "import": "./dist/components/cms/blocks/ContactFormWithMap.js"
+    },
+    "./components/cms/blocks/Gallery": {
+      "types": "./dist/components/cms/blocks/Gallery.d.ts",
+      "import": "./dist/components/cms/blocks/Gallery.js"
+    },
+    "./components/cms/blocks/HeaderCart": {
+      "types": "./dist/components/cms/blocks/HeaderCart.d.ts",
+      "import": "./dist/components/cms/blocks/HeaderCart.js"
+    },
+    "./components/cms/blocks/Testimonials": {
+      "types": "./dist/components/cms/blocks/Testimonials.d.ts",
+      "import": "./dist/components/cms/blocks/Testimonials.js"
+    },
+    "./components/cms/blocks/TestimonialSlider": {
+      "types": "./dist/components/cms/blocks/TestimonialSlider.d.ts",
+      "import": "./dist/components/cms/blocks/TestimonialSlider.js"
+    },
+    "./components/atoms/primitives/textarea": {
+      "types": "./dist/components/atoms/primitives/textarea.d.ts",
+      "import": "./dist/components/atoms/primitives/textarea.js"
+    },
+    "./utils/style/cssVars": {
+      "types": "./dist/utils/style/cssVars.d.ts",
+      "import": "./dist/utils/style/cssVars.js"
+    },
+    "./components/cms": {
+      "types": "./dist/components/cms/index.d.ts",
+      "import": "./dist/components/cms/index.js"
+    },
+    "./components/cms/blocks/Section": {
+      "types": "./dist/components/cms/blocks/Section.d.ts",
+      "import": "./dist/components/cms/blocks/Section.js"
+    },
+    "./components/layout/Footer": {
+      "types": "./dist/components/layout/Footer.d.ts",
+      "import": "./dist/components/layout/Footer.js"
+    },
+    "./components/layout/Header": {
+      "types": "./dist/components/layout/Header.d.ts",
+      "import": "./dist/components/layout/Header.js"
+    },
+    "./components/organisms/StoreLocatorMap": {
+      "types": "./dist/components/organisms/StoreLocatorMap.d.ts",
+      "import": "./dist/components/organisms/StoreLocatorMap.js"
+    },
+    "./components/cms/page-builder/libraryStore": {
+      "types": "./dist/components/cms/page-builder/libraryStore.d.ts",
+      "import": "./dist/components/cms/page-builder/libraryStore.js"
+    },
+    "./components/cms/page-builder/DragHandle": {
+      "types": "./dist/components/cms/page-builder/DragHandle.d.ts",
+      "import": "./dist/components/cms/page-builder/DragHandle.js"
+    },
+    "./components/cms/blocks/*": {
+      "types": "./dist/components/cms/blocks/*.d.ts",
+      "import": "./dist/components/cms/blocks/*.js"
+    },
+    "./components/cms/page-builder/*": {
+      "types": "./dist/components/cms/page-builder/*.d.ts",
+      "import": "./dist/components/cms/page-builder/*.js"
+    },
+    "./components/home/*": {
+      "types": "./dist/components/home/*.d.ts",
+      "import": "./dist/components/home/*.js"
+    },
+    "./components/layout/*": {
+      "types": "./dist/components/layout/*.d.ts",
+      "import": "./dist/components/layout/*.js"
+    },
+    "./components/organisms/*": {
+      "types": "./dist/components/organisms/*.d.ts",
+      "import": "./dist/components/organisms/*.js"
+    },
+    "./components/atoms/*": {
+      "types": "./dist/components/atoms/*.d.ts",
+      "import": "./dist/components/atoms/*.js"
+    },
+    "./components/atoms/primitives/*": {
+      "types": "./dist/components/atoms/primitives/*.d.ts",
+      "import": "./dist/components/atoms/primitives/*.js"
+    },
+    "./utils/*": {
+      "types": "./dist/utils/*.d.ts",
+      "import": "./dist/utils/*.js"
+    },
+    "./hooks/*": {
+      "types": "./dist/hooks/*.d.ts",
+      "import": "./dist/hooks/*.js"
+    },
+    "./components/atoms": {
+      "types": "./dist/components/atoms/index.d.ts",
+      "import": "./dist/components/atoms/index.js"
+    },
+    "./components/atoms/primitives": {
+      "types": "./dist/components/atoms/primitives/index.d.ts",
+      "import": "./dist/components/atoms/primitives/index.js"
+    },
+    "./utils/style": {
+      "types": "./dist/utils/style/index.d.ts",
+      "import": "./dist/utils/style/index.js"
+    },
+    "./utils/style/*": {
+      "types": "./dist/utils/style/*.d.ts",
+      "import": "./dist/utils/style/*.js"
+    },
+    "./components/atoms/shadcn": {
+      "types": "./dist/components/atoms/shadcn/index.d.ts",
+      "import": "./dist/components/atoms/shadcn/index.js"
+    },
+    "./components/atoms/shadcn/*": {
+      "types": "./dist/components/atoms/shadcn/*.d.ts",
+      "import": "./dist/components/atoms/shadcn/*.js"
     }
   },
   "scripts": {

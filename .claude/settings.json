@@ -56,5 +56,10 @@
         "message": "BLOCKED: '--no-verify' is prohibited. Do not bypass git hooks. Fix the underlying issue instead. See AGENTS.md."
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(head:*)"
+    ]
   }
 }

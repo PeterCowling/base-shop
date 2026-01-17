@@ -30,7 +30,7 @@ Last-reviewed: 2025-12-02
 
 - CI workflows (`ci.yml`, app-specific workflows, and the workspace matrix in `test.yml`) are responsible for running the full test suites (unit, integration, E2E) and acting as the main gate for merges and deploys.
 - For monorepo-wide tests:
-  - `pnpm test` runs `turbo run test` across all workspaces.
+  - `pnpm test` runs `turbo run test` across all workspaces. **Warning:** Never run this locally — it spawns too many workers. Use targeted tests instead. See [testing-policy.md](testing-policy.md).
   - `pnpm test:affected` runs `turbo run test --affected`, executing tests only in affected workspaces plus their dependents (used on all branches in root CI to keep runs fast).
 
 ## CI ownership and app workflows
@@ -71,7 +71,7 @@ When you add a new app, keep CI aligned with the patterns above:
 - For generated shops:
   - Use `pnpm setup-ci <id>` to scaffold a `shop-<id>.yml` workflow under `.github/workflows/`.
   - The generated workflow:
-    - Installs dependencies and runs `pnpm lint && pnpm test`.
+    - Installs dependencies and runs `pnpm lint && pnpm --filter @apps/shop-<id> test`.
     - Builds `@apps/shop-<id>` and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
   - Make sure the shop’s `.env` and Cloudflare Pages env vars are configured before the first deploy.
 

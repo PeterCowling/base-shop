@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { logger } from "@acme/shared-utils";
 
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 
 jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: (val: string) => val,

@@ -7,7 +7,7 @@ import { nextHeadersMock } from "../../../../../__tests__/mocks/external";
 const SHOP_URL = "http://localhost/api/edit-changes?shop=test";
 
 async function createSessionCookie(role: Role): Promise<string> {
-  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@auth");
+  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@acme/auth/session");
   const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
   nextHeadersMock.cookies.mockReturnValue(store);
   await createCustomerSession({ customerId: "c1", role });

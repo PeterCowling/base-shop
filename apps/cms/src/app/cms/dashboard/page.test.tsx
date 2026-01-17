@@ -13,7 +13,7 @@ afterEach(() => {
 it("renders shop links", async () => {
   mockList.mockResolvedValue(["one", "two"]);
   const { default: Page } = await import("./page");
-  render(await Page());
+  render(await Page({ searchParams: {} }));
   expect(
     screen.getByRole("heading", { name: "Choose a storefront to inspect" })
   ).toBeInTheDocument();
@@ -26,7 +26,7 @@ it("renders shop links", async () => {
 it("shows message when no shops", async () => {
   mockList.mockResolvedValue([]);
   const { default: Page } = await import("./page");
-  render(await Page());
+  render(await Page({ searchParams: {} }));
   expect(
     screen.getByText(
       "No shops found. Create a shop in the configurator to unlock dashboards."

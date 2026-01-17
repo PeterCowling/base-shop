@@ -61,6 +61,7 @@ describe("SEO revert via timeline", () => {
       const fd = new FormData();
       fd.append("locale", "en");
       fd.append("title", "Hello");
+      fd.append("description", "World");
 
       await actions.updateSeo("test", fd);
 

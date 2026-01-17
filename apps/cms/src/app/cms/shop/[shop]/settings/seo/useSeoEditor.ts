@@ -263,6 +263,9 @@ export function useSeoEditor({
       if (res.generated.image) {
         updateField("image", res.generated.image);
       }
+      if (typeof res.generated.alt === "string") {
+        updateField("alt", res.generated.alt);
+      }
       return { status: "success", message: String(t("cms.seo.generate.success")) };
     } catch {
       return { status: "error", message: String(t("cms.seo.generate.error")) };

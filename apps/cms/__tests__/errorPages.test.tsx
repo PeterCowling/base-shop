@@ -46,7 +46,15 @@ type MiddlewareRequest = Parameters<typeof middleware>[0];
 function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   url.clone = () => new URL(url.toString());
-  return { nextUrl: url, url: url.toString() } as unknown as MiddlewareRequest;
+  return {
+    nextUrl: url,
+    url: url.toString(),
+    headers: new Headers(),
+    cookies: {
+      get: () => undefined,
+    },
+    method: "GET",
+  } as unknown as MiddlewareRequest;
 }
 
 describe("CMS error pages", () => {

@@ -20,14 +20,17 @@
   },
   "dependencies": {
     "@themes/base": "workspace:*",
+    "@acme/auth": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
+    "@acme/ui": "workspace:*",
     "react": "workspace:^",
     "react-dom": "workspace:^"
   },

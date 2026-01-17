@@ -20,6 +20,17 @@ jest.mock("../ConfiguratorContext", () => ({
   }),
 }));
 
+jest.mock("../components/DashboardPrimitives", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    ButtonElement: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    CardRoot: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardSection: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    TagElement: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+  };
+});
+
 jest.mock("../steps", () => {
   const React = require("react");
   const Dummy = () => <div>Step</div>;
@@ -102,7 +113,8 @@ describe("LaunchPanel confetti", () => {
       />,
     );
 
-    expect(screen.getByText("cms.configurator.launchPanel.beatBadge")).toBeInTheDocument();
+    // The i18n mock returns the translation key itself, and the component renders it with an emoji prefix
+    expect(screen.getByText(/cms\.configurator\.launchPanel\.beatBadge/)).toBeInTheDocument();
     expect(screen.getAllByText(/🎉/).length).toBeGreaterThan(0);
 
     act(() => {

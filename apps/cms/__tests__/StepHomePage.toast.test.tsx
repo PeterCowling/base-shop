@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { fetchJson } from "@acme/shared-utils";
 
+jest.mock("@acme/shared-utils", () => ({ fetchJson: jest.fn() }));
 
 jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");
@@ -32,7 +33,7 @@ jest.mock("../../../test/__mocks__/componentStub.js", () => {
   );
 });
 
-jest.mock("@shared-utils");
+jest.mock("@acme/lib");
 jest.mock("../src/app/cms/configurator/hooks/useStepCompletion", () => ({
   __esModule: true,
   default: () => [false, jest.fn()],

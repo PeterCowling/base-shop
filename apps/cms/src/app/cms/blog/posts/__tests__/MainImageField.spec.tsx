@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import MainImageField from "@cms/app/cms/blog/posts/MainImageField";
 
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Button: ({ children }: any) => <button>{children}</button>,
   ImagePicker: ({ children }: any) => <div>{children}</div>,
 }));

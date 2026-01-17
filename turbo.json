@@ -13,7 +13,8 @@
       ],
       "outputs": [
         "dist/**",
-        ".next/**"
+        ".next/**",
+        "*.tsbuildinfo"
       ]
     },
     "lint": {

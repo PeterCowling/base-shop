@@ -122,7 +122,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors hover:bg-accent-soft focus:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
-    checked={checked}
+    checked={checked ?? false}
     {...props}
   >
     {/* Relative wrapper ensures the absolute indicator has a positioned ancestor */}

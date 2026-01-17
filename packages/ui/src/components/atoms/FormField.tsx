@@ -2,15 +2,15 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 
 export interface FormFieldProps {
-  id?: string;
-  label?: React.ReactNode;
-  description?: React.ReactNode;
-  error?: React.ReactNode;
-  required?: boolean;
-  className?: string;
+  id?: string | undefined;
+  label?: React.ReactNode | undefined;
+  description?: React.ReactNode | undefined;
+  error?: React.ReactNode | undefined;
+  required?: boolean | undefined;
+  className?: string | undefined;
   input:
     | React.ReactElement
-    | ((args: { id: string; describedBy?: string; ariaInvalid?: boolean }) => React.ReactNode);
+    | ((args: { id: string; describedBy?: string | undefined; ariaInvalid?: boolean | undefined }) => React.ReactNode);
 }
 
 /**

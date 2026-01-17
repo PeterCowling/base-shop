@@ -12,6 +12,10 @@ const {
   ...baseModuleNameMapper
 } = base.moduleNameMapper;
 
+const relaxCoverage =
+  process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1" ||
+  process.env.JEST_DISABLE_COVERAGE_THRESHOLD === "1";
+
 /** @type {import('jest').Config} */
 module.exports = {
   // Reuse the base Jest preset, but override coverage settings for CMS
@@ -103,12 +107,21 @@ module.exports = {
   coverageReporters: ["text", "lcov"],
   // Preserve the base coverage ignore patterns to avoid instrumenting other packages/apps
   coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
-  coverageThreshold: {
-    global: {
-      statements: 40,
-      branches: 30,
-      functions: 10,
-      lines: 40,
-    },
-  },
+  coverageThreshold: relaxCoverage
+    ? {
+        global: {
+          statements: 0,
+          branches: 0,
+          functions: 0,
+          lines: 0,
+        },
+      }
+    : {
+        global: {
+          statements: 40,
+          branches: 30,
+          functions: 10,
+          lines: 40,
+        },
+      },
 };

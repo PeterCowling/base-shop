@@ -1,6 +1,5 @@
  
-
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   requirePermission: jest.fn(),
 }));
 
@@ -18,7 +17,7 @@ describe("upgrade-shop API route", () => {
 
   beforeEach(() => {
     jest.resetModules();
-    ({ requirePermission } = require("@auth"));
+    ({ requirePermission } = require("@acme/auth"));
     ({ spawnSync } = require("child_process"));
     spawnSync.mockReset();
     requirePermission.mockReset();

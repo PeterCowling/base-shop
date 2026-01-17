@@ -69,7 +69,7 @@ describe("TemplateActions telemetry", () => {
       ),
     );
 
-    fireEvent.click(screen.getByText("Tpl One"));
+    fireEvent.click(screen.getByRole("button", { name: /Tpl One/i }));
     expect(track).toHaveBeenCalledWith(
       "pb_template_select",
       expect.objectContaining({ templateId: "tpl-1", pageId: "page-1" }),

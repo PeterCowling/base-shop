@@ -43,7 +43,7 @@ export default function GuestPortalPage() {
         <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-gray-900">Portal unavailable</h1>
           <p className="mb-6 text-gray-600">
-            We couldn\'t find an active guest session. Please use your personal link.
+            We couldn&apos;t find an active guest session. Please use your personal link.
           </p>
           <Link
             href="/find-my-stay"

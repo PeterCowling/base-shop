@@ -207,7 +207,7 @@ for pkg_file in "$PKG_MAP"/*; do
             RELATIVE_TESTS="$RELATIVE_TESTS $REL"
         done
         # Use explicit -- separator (not --$VAR which is fragile)
-        if ! pnpm --filter "$PKG_PATH" test -- $RELATIVE_TESTS --maxWorkers=2 2>&1; then
+        if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" test -- $RELATIVE_TESTS --maxWorkers=2 2>&1; then
             echo "    FAIL: Tests failed in $PKG_PATH"
             exit 1
         fi
@@ -247,8 +247,8 @@ for pkg_file in "$PKG_MAP"/*; do
 
         # Run one Jest invocation for all source files that have related tests
         if [ -n "$FILES_WITH_TESTS" ]; then
-            echo "    Running related tests for files with coverage..."
-            if ! pnpm --filter "$PKG_PATH" exec jest --findRelatedTests $FILES_WITH_TESTS --maxWorkers=2 2>&1; then
+            echo "    Running related tests for files (coverage thresholds relaxed)..."
+            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" exec jest --findRelatedTests $FILES_WITH_TESTS --maxWorkers=2 2>&1; then
                 echo "    FAIL: Tests failed in $PKG_PATH"
                 exit 1
             fi

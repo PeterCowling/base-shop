@@ -12,7 +12,7 @@ jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   publishPost: jest.fn(),
 }));
 
-jest.mock("@date-utils", () => ({
+jest.mock("@acme/date-utils", () => ({
   nowIso: jest.fn(),
 }));
 
@@ -29,7 +29,7 @@ describe("publishPost", () => {
     const { publishPost: repoPublishPost } = await import(
       "@acme/platform-core/repositories/blog.server"
     );
-    const { nowIso } = await import("@date-utils");
+    const { nowIso } = await import("@acme/date-utils");
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -56,7 +56,7 @@ describe("publishPost", () => {
     const { publishPost: repoPublishPost } = await import(
       "@acme/platform-core/repositories/blog.server"
     );
-    const { nowIso } = await import("@date-utils");
+    const { nowIso } = await import("@acme/date-utils");
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);

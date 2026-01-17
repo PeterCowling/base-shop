@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-01-17
 ---
 
 # Contributing
@@ -19,7 +19,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Create branches from `main` and name them descriptively (e.g., `feat/login-form` or `fix/cart-redirect`). Push your branch and open a pull request against `main`.
+Create branches from `main` and name them descriptively (e.g., `work/2026-01-15-login-form` or `fix/cart-redirect`). Push your branch; PRs are zero-touch and auto-merge when checks pass. If no PR exists after the first push, open one manually and enable auto-merge.
 
 ## Linting and Tests
 

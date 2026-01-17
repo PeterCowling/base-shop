@@ -13,7 +13,7 @@
 │  └─ Blocks destructive commands before AI can execute them      │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 3: GitHub Branch Protection (server-side)                │
-│  └─ Requires PR, approval, and passing CI to merge to main      │
+│  └─ Requires PR and passing CI; auto-merge on green             │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 2: Git Hooks (local)                                     │
 │  └─ pre-push blocks force push; pre-commit blocks secrets       │
@@ -49,7 +49,7 @@ These commands are blocked by one or more protection layers:
 | Commit changes | Every 30 min or significant change | Creates restore points |
 | Push to GitHub | Every 2 hours or 3 commits | Backs up work off-machine |
 | Use work branches | Always | Isolates work from production |
-| Create PRs (green, conflict-free) | For all main merges | Enables review and CI |
+| Create PRs (green, conflict-free) | For all main merges | Enables CI gating and auto-merge |
 
 ---
 
@@ -87,4 +87,4 @@ These commands are blocked by one or more protection layers:
 
 ---
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-01-17

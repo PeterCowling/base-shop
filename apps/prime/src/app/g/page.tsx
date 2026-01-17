@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 type Status = 'loading' | 'ready' | 'error' | 'verified';
 
-export default function GuestEntryPage() {
+function GuestEntryContent() {
   const searchParams = useSearchParams();
   const token = useMemo(() => {
     return searchParams.get('token') || searchParams.get('t') || '';
@@ -140,7 +140,7 @@ export default function GuestEntryPage() {
             {guestFirstName ? `Welcome, ${guestFirstName}` : 'You\'re in'}
           </h1>
           <p className="mb-6 text-gray-600">
-            Your portal is ready. We\'ll guide you through arrival prep next.
+            Your portal is ready. We&apos;ll guide you through arrival prep next.
           </p>
           <Link
             href="/portal"
@@ -193,5 +193,19 @@ export default function GuestEntryPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+export default function GuestEntryPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        </main>
+      }
+    >
+      <GuestEntryContent />
+    </Suspense>
   );
 }

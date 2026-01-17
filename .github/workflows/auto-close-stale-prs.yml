@@ -1,0 +1,26 @@
+name: Auto-close Stale Zero-Touch PRs
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          days-before-pr-stale: 5
+          days-before-pr-close: 2
+          stale-pr-label: stale
+          stale-pr-message: "This zero-touch PR has been inactive for 5 days and will be closed in 2 days if no new commits are pushed."
+          close-pr-message: "Auto-closed stale zero-touch PR after 7 days of inactivity."
+          only-labels: zero-touch
+          exempt-pr-labels: keep-open

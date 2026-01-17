@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-01-17
 
 # Git Safety Guide (Agent Runbook)
 
@@ -73,7 +73,7 @@ git branch --show-current
 git checkout -b work/2026-01-15-my-feature
 ```
 
-**Why:** Direct commits to `main` risk accidental deployment and bypass code review.
+**Why:** Direct commits to `main` risk accidental deployment and bypass CI gating.
 
 ### 5. Use Worktrees for Parallel Work (Recommended)
 
@@ -105,7 +105,7 @@ git worktree add -b work/$(date +%Y-%m-%d)-<desc> .worktrees/$(date +%Y-%m-%d)-<
 |--------|---------|-------------|------------|
 | `main` | Production code | Humans only (via PR) | Production (live sites) |
 | `work/*` | Development work | Agents or humans | Preview only |
-| `hotfix/*` | Emergency fixes | Humans | Production (after review) |
+| `hotfix/*` | Emergency fixes | Humans | Production (after CI green) |
 
 ### Naming Convention
 
@@ -188,8 +188,9 @@ GitHub enforces these rules on the `main` branch:
 | Setting | Value | Why |
 |---------|-------|-----|
 | Require pull request | ✅ On | No direct pushes to main |
-| Required approvals | 1 | Human must review |
+| Required approvals | 0 | No manual review required |
 | Require status checks | ✅ On | CI must pass |
+| Auto-merge enabled | ✅ On | Merges PRs when checks pass |
 | Block force pushes | ✅ On | Prevents history destruction |
 
 **Configuration:** GitHub → Settings → Rules → Rulesets → `main`
@@ -234,7 +235,7 @@ git pull origin HEAD
 
 - Commit after every significant change
 - Push every 2 hours or 3 commits
-- Open a PR after the first push and keep it green
+- Ensure a PR exists after the first push; keep it green with `zero-touch` + auto-merge enabled
 - Never run destructive commands
 - If git is confusing, STOP and ask the user
 
@@ -284,17 +285,16 @@ git push origin HEAD
    git diff origin/main..origin/work/<branch> --stat
    ```
 
-2. **Create PR on GitHub:**
-   - Go to GitHub → Pull Requests → New Pull Request
-   - Select `work/<branch>` → `main`
-   - Review changes
-   - Resolve merge conflicts on the work branch before approval
+2. **Ensure PR exists and is zero-touch:**
+   - If no PR, create one (`gh pr create --fill`)
+   - Confirm the `zero-touch` label and auto-merge are enabled
+   - Add `keep-open` if the PR should not auto-close on failures or staleness
+   - Resolve merge conflicts on the work branch before auto-merge
    - Ensure GitHub Actions is green (fix failures, do not bypass)
 
-3. **Merge (triggers staging):**
-   - Approve the PR
-   - Click "Merge"
-   - Staging deploy starts automatically
+3. **Auto-merge (triggers staging):**
+   - Auto-merge runs when required checks pass
+   - If checks fail, the PR auto-closes; open a new PR after fixing
 
 4. **Verify staging and promote:**
    - Check GitHub Actions tab

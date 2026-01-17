@@ -17,7 +17,7 @@ Use these `package.json` scripts for day‑to‑day development:
 - `pnpm dev` – runs `turbo run dev --parallel` to start all apps in development. Build packages first with `pnpm -r build`.
 - `pnpm build` – cleans and builds every package, regenerates tokens, and checks the Tailwind preset.
 - `pnpm lint` – runs lint rules on all projects.
-- `pnpm test` – executes unit tests. Prefer scoping: `pnpm --filter <workspace> test`. Avoid monorepo‑wide runs unless necessary.
+- `pnpm --filter <workspace> test` – executes unit tests for a specific workspace. **Never run `pnpm test` unfiltered** — it spawns too many workers and can destabilize the system. See [testing-policy.md](testing-policy.md).
 - `pnpm quickstart-shop` – scaffolds a new shop with optional seeding for rapid demos.
 
 ## Reproducible builds

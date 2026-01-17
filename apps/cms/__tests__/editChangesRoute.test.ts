@@ -6,7 +6,7 @@ describe("/api/edit-changes", () => {
   });
 
   test("returns 401 for unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
@@ -21,7 +21,7 @@ describe("/api/edit-changes", () => {
   });
 
   test("aggregates changed components", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));

@@ -3,6 +3,7 @@ import { authorize, fetchDiffHistory, persistSettings } from "../helpers";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),
+  fetchSettings: jest.fn().mockResolvedValue({}),
   fetchDiffHistory: jest.fn(),
   persistSettings: jest.fn().mockResolvedValue(undefined),
 }));
@@ -31,19 +32,6 @@ describe("revertSeo", () => {
     const expected = {
       languages: ["en"],
       seo: { en: { title: "T1", description: "D2" } },
-      luxuryFeatures: {
-        premierDelivery: false,
-        blog: false,
-        contentMerchandising: false,
-        raTicketing: false,
-        fraudReviewThreshold: 0,
-        requireStrongCustomerAuth: false,
-        strictReturnConditions: false,
-        trackingDashboard: false,
-      },
-      freezeTranslations: false,
-      updatedAt: "",
-      updatedBy: "",
     };
     const result = await revertSeo("shop", "2024-03-01");
     expect(persistSettings).toHaveBeenCalledWith("shop", expected);

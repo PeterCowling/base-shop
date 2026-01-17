@@ -37,7 +37,12 @@ describe("NewsletterSignup", () => {
       expect.objectContaining({
         method: "post",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "test@example.com" }),
+        body: JSON.stringify({
+          type: "newsletter",
+          email: "test@example.com",
+          locale: "en",
+          source: "footer",
+        }),
       })
     );
     expect(await screen.findByText(/success/i)).toBeInTheDocument();

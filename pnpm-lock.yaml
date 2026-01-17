@@ -1403,6 +1403,9 @@ importers:
 
   packages/template-app:
     dependencies:
+      '@acme/auth':
+        specifier: workspace:*
+        version: link:../auth
       '@acme/config':
         specifier: workspace:*
         version: link:../config
@@ -1418,6 +1421,9 @@ importers:
       '@acme/page-builder-core':
         specifier: workspace:*
         version: link:../page-builder-core
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
       '@acme/sanity':
         specifier: workspace:*
         version: link:../sanity
@@ -1427,6 +1433,9 @@ importers:
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:../tailwind-config
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@themes/base':
         specifier: workspace:*
         version: link:../themes/base

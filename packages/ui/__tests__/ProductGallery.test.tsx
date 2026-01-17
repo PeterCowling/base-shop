@@ -30,8 +30,8 @@ describe("ProductGallery", () => {
 
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
-    const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("model-viewer")).toBeInTheDocument();
+    render(<ProductGallery media={media} />);
+    expect(screen.getByRole("status")).toHaveTextContent(/loading 3d model/i);
   });
 
   it("updates viewer when selecting different media", () => {

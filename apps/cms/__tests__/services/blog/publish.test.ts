@@ -17,7 +17,7 @@ jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   publishPost: (...args: unknown[]) => repoPublishPost(...args),
 }));
 
-jest.mock('@date-utils', () => ({
+jest.mock('@acme/date-utils', () => ({
   nowIso: jest.fn(),
 }));
 

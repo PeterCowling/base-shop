@@ -14,7 +14,7 @@ This audit is rebuilt around the core requirement: roll out a new shop website i
 
 ## Executive Summary
 
-Launch Readiness Score: 64/100 (world-class bar is 85+).
+Launch Readiness Score: 65/100 (world-class bar is 85+).
 
 The repo is strong in scaffolding, theming, and agent operations. It is not yet world-class for the 3-hour launch requirement because the production-critical path still includes manual steps for secrets, deployment validation, and security gaps that block a safe rollout. The fastest path exists for local or internal demo shops; production-ready launch within 3 hours is not yet dependable.
 
@@ -73,12 +73,12 @@ World-class bar: 85+ with no category below 3.
 | Content and CMS | 10 | 3.0 | 6.0 | Template scaffolding exists; content depth still manual |
 | Environment and secrets | 10 | 2.0 | 4.0 | Placeholders and manual secrets slow real launches |
 | CI/CD and deployment | 12 | 3.0 | 7.2 | Solid pipelines; inconsistent post-deploy checks and cache gaps |
-| Testing and regression | 8 | 3.5 | 5.6 | Good infra; E2E ownership fragmented |
+| Testing and regression | 8 | 4.0 | 6.4 | Tiered coverage policy + local gate; E2E ownership fragmented |
 | Security and tenancy isolation | 12 | 2.0 | 4.8 | Cross-shop auth and SSRF issues block safe launch |
 | Observability and validation | 6 | 2.5 | 3.0 | Some checks exist, not universal |
 | Agent cohesion and delivery ops | 10 | 4.0 | 8.0 | Strong runbooks and governance; no single launch runbook |
 
-Total: 64.2 / 100
+Total: 65.0 / 100
 
 ## Critical Path to Sub-3-Hour Rollout
 
@@ -169,12 +169,20 @@ Gaps
 Impact on 3-hour requirement
 - Deploy is possible, but validation and speed are inconsistent across apps.
 
-### 6) Testing and Regression (Score 3.5/5)
+### 6) Testing and Regression (Score 4/5)
 
 Strengths
 - Jest preset system with coverage tiers and a local coverage gate.
 - Cypress smoke suite and Storybook UI smoke tests.
 - Visual regression testing via Chromatic.
+- **NEW:** Uniform tiered coverage policy implemented (`packages/config/coverage-tiers.cjs`):
+  - CRITICAL (90%): `@acme/stripe`, `@acme/auth`, `@acme/platform-core`
+  - STANDARD (80%): All other packages (default)
+  - MINIMAL (0%): Type definitions, configs, templates
+- **NEW:** Local coverage gate script (`scripts/check-coverage.sh`) for pre-commit validation.
+- **NEW:** Coverage policy documented at `docs/test-coverage-policy.md`.
+
+Coverage enforcement is local-only by design (not CI). This is best practice: immediate feedback, no flaky CI failures. CI gating will be revisited in June 2026.
 
 Gaps
 - E2E ownership is fragmented across root and app workflows.
@@ -261,3 +269,13 @@ P2 - quality improvements to approach world-class
 - `.github/workflows/cypress.yml`
 - `.github/workflows/storybook.yml`
 - `AGENTS.md`
+- `packages/config/coverage-tiers.cjs` — Tiered coverage policy (CRITICAL/STANDARD/MINIMAL)
+- `scripts/check-coverage.sh` — Local coverage gate script
+- `docs/test-coverage-policy.md` — Coverage enforcement policy
+
+## Change Log
+
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-01-17 | Codex | Restructured audit around 3-hour launch readiness requirement |
+| 2026-01-17 | Claude Opus 4.5 | Testing score 3.5→4.0: Added tiered coverage policy (`packages/config/coverage-tiers.cjs`), local gate script (`scripts/check-coverage.sh`), and policy doc (`docs/test-coverage-policy.md`). Coverage enforcement is local-only by design; CI gating deferred to June 2026. Total score 64→65. |

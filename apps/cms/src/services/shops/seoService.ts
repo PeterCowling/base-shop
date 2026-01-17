@@ -133,7 +133,7 @@ export async function generateSeo(
   shop: string,
   formData: FormData,
 ): Promise<{
-  generated?: { title: string; description: string; image: string };
+  generated?: { title: string; description: string; image: string; alt: string };
   errors?: Record<string, string[]>;
 }> {
   await authorize();
@@ -175,10 +175,23 @@ export async function revertSeo(shop: string, timestamp: string) {
   const idx = sorted.findIndex((e) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
   const base = await fetchSettings(shop);
-  let state: ShopSettings = { ...base };
-  for (let i = 0; i < idx; i++) {
-    state = { ...state, ...sorted[i].diff } as ShopSettings;
+  let state: Partial<ShopSettings> = { ...base };
+  const changedKeys = new Set<keyof ShopSettings>();
+  for (const entry of sorted) {
+    for (const key of Object.keys(entry.diff ?? {}) as (keyof ShopSettings)[]) {
+      changedKeys.add(key);
+    }
   }
-  await persistSettings(shop, state);
-  return state;
+  for (const key of changedKeys) {
+    delete state[key];
+  }
+  for (let i = 0; i < idx; i++) {
+    state = { ...state, ...sorted[i].diff };
+  }
+  if (!state.seo) {
+    state.seo = {};
+  }
+  const updated = state as ShopSettings;
+  await persistSettings(shop, updated);
+  return updated;
 }

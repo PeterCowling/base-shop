@@ -51,6 +51,7 @@ const nextConfig = {
     ...sharedConfig.transpilePackages,
     "@acme/ui",
     "@acme/config",
+    "@acme/auth",
     "@acme/zod-utils", // needed by @acme/config/env/auth.ts
     "@acme/i18n",
   ],

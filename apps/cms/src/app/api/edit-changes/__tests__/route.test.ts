@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 const diffHistory = jest.fn();
 jest.mock("@acme/platform-core/repositories/settings.server", () => ({ diffHistory }));
 

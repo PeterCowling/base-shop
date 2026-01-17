@@ -20,14 +20,19 @@ describe("SEO structured data persistence", () => {
       const fd = new FormData();
       fd.append("locale", "en");
       fd.append("title", "Hello");
-      fd.append("brand", "Acme");
-      fd.append("offers", '{"price":"19.99","priceCurrency":"USD"}');
-      fd.append(
-        "aggregateRating",
-        '{"ratingValue":4.5,"reviewCount":10}',
-      );
+      fd.append("description", "Test description");
+      fd.append("structuredData", JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "brand": "Acme",
+        "offers": { "price": "19.99", "priceCurrency": "USD" },
+        "aggregateRating": { "ratingValue": 4.5, "reviewCount": 10 }
+      }));
 
-      await actions.updateSeo("test", fd);
+      const result = await actions.updateSeo("test", fd);
+      if (result.errors) {
+        throw new Error(`updateSeo failed: ${JSON.stringify(result.errors)}`);
+      }
 
       const settingsFile = path.join(
         dir,

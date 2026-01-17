@@ -7,7 +7,7 @@ import {
 } from "@cms/app/cms/blog/posts/schema";
 import { InvalidProductContext } from "@cms/app/cms/blog/posts/invalidProductContext";
 
-jest.mock("@ui", () => ({ Button: ({ children }: any) => <button>{children}</button> }));
+jest.mock("@acme/ui", () => ({ Button: ({ children }: any) => <button>{children}</button> }));
 jest.mock("@portabletext/editor", () => ({
   defineSchema: (x: any) => x,
   useEditor: () => ({}),

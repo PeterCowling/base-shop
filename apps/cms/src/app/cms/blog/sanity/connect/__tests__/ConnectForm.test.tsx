@@ -5,7 +5,7 @@ jest.mock("@cms/actions/deleteSanityConfig", () => ({
   deleteSanityConfig: jest.fn().mockResolvedValue({}),
 }));
 
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Toast: ({ open, message }: any) => (open ? <div role="alert">{message}</div> : null),
 }));
 

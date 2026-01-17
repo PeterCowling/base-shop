@@ -7,9 +7,9 @@ const rename = jest.fn();
 jest.mock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
 jest.mock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: "/tmp/data" }));
 const validateShopName = jest.fn((s: string) => s);
-jest.mock("@acme/lib", () => ({ validateShopName }));
 const parseJsonBody = jest.fn();
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib", () => ({ validateShopName }));
+jest.mock("@acme/shared-utils", () => ({ parseJsonBody }));
 const segmentSchema = { extend: jest.fn(() => ({})) } as any;
 jest.mock("@acme/types", () => ({ segmentSchema }));
 

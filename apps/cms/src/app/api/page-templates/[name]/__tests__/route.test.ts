@@ -1,18 +1,22 @@
-/*
-  eslint-disable security/detect-non-literal-fs-filename -- SEC-TEST-002: Test builds file paths inside a temp directory with known names; no user input or traversal risk.
-*/
 import { NextRequest } from "next/server";
-import fs from "fs";
-import os from "os";
-import path from "path";
+import type { TemplateDescriptor } from "@acme/page-builder-core";
+
+// Mock the templates module
+jest.mock("@acme/templates", () => ({
+  corePageTemplates: [],
+}));
 
 let route: typeof import("../route");
+let mockTemplates: TemplateDescriptor[];
 
 beforeAll(async () => {
+  const templatesModule = await import("@acme/templates");
+  mockTemplates = templatesModule.corePageTemplates as unknown as TemplateDescriptor[];
   route = await import("../route");
 });
 
 afterEach(() => {
+  mockTemplates.length = 0;
   jest.restoreAllMocks();
 });
 
@@ -22,21 +26,36 @@ function req(name: string) {
 
 describe("GET", () => {
   it("reads and returns existing template", async () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "tpl-"));
-    fs.writeFileSync(path.join(dir, "home.json"), JSON.stringify({ ok: true }));
-    jest.spyOn(route, "resolveTemplatesRoot").mockReturnValue(dir);
+    mockTemplates.push({
+      id: "core.page.home.default",
+      version: "1.0.0",
+      kind: "page",
+      label: "Test Home",
+      description: "Test template",
+      category: "Commerce",
+      pageType: "marketing",
+      previewImage: "/test.svg",
+      components: [{ id: "test", type: "TestComponent" }],
+    });
 
-    const res = await route.GET(req("home"), {
-      params: Promise.resolve({ name: "home" }),
+    const res = await route.GET(req("home.default"), {
+      params: Promise.resolve({ name: "home.default" }),
     });
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ ok: true });
+    const data = await res.json();
+    expect(data).toMatchObject({
+      id: "core.page.home.default",
+      name: "Test Home",
+      category: "Commerce",
+      pageType: "marketing",
+      version: "1.0.0",
+      origin: "core",
+      previewImage: "/test.svg",
+      components: [{ id: "test", type: "TestComponent" }],
+    });
   });
 
   it("returns 404 for missing template", async () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "tpl-"));
-    jest.spyOn(route, "resolveTemplatesRoot").mockReturnValue(dir);
-
     const res = await route.GET(req("missing"), {
       params: Promise.resolve({ name: "missing" }),
     });
@@ -44,17 +63,23 @@ describe("GET", () => {
     await expect(res.json()).resolves.toEqual({ error: "Not found" });
   });
 
-  it("returns 404 when templates root resolution fails", async () => {
-    jest
-      .spyOn(route, "resolveTemplatesRoot")
-      .mockImplementation(() => {
-        throw new Error("fail");
-      });
-
-    const res = await route.GET(req("any"), {
-      params: Promise.resolve({ name: "any" }),
+  it("finds template by suffix when full id not provided", async () => {
+    mockTemplates.push({
+      id: "core.page.about.default",
+      version: "1.0.0",
+      kind: "page",
+      label: "About Page",
+      description: "Test template",
+      category: "Marketing",
+      pageType: "marketing",
+      components: [],
     });
-    expect(res.status).toBe(404);
-    await expect(res.json()).resolves.toEqual({ error: "Not found" });
+
+    const res = await route.GET(req("about.default"), {
+      params: Promise.resolve({ name: "about.default" }),
+    });
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.id).toBe("core.page.about.default");
   });
 });

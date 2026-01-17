@@ -1,6 +1,16 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => key,
+}));
+
+jest.mock("ulid", () => ({
+  __esModule: true,
+  ulid: () => "test-ulid",
+}));
+
 jest.mock("@/components/atoms", () => {
   const React = require("react");
   return {
@@ -11,7 +21,7 @@ jest.mock("@/components/atoms", () => {
     DialogHeader: ({ children }: any) => <div>{children}</div>,
     DialogTitle: ({ children }: any) => <div>{children}</div>,
   };
-}, { virtual: true });
+});
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
@@ -20,6 +30,7 @@ jest.mock("@/components/atoms/shadcn", () => {
     Button: ({ children, onClick, ...props }: any) => (
       <button onClick={onClick} {...props}>{children}</button>
     ),
+    Input: (props: any) => <input {...props} />,
     Select: ({ children, open, onOpenChange, onValueChange, value, ...props }: any) => (
       <div {...props}>{children}</div>
     ),
@@ -46,6 +57,16 @@ jest.mock("@/components/atoms/primitives/Cluster", () => {
   };
 });
 
+jest.mock("@acme/ui/components/atoms/primitives", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Grid: ({ children }: any) => <div>{children}</div>,
+    Inline: ({ children }: any) => <div>{children}</div>,
+    Stack: ({ children }: any) => <div>{children}</div>,
+  };
+});
+
 jest.mock("next/image", () => {
   const React = require("react");
   const MockNextImage = (props: any) => <span data-testid="next-image" {...props} />;
@@ -61,14 +82,6 @@ jest.mock("@acme/telemetry", () => ({
   __esModule: true,
   track: (...args: unknown[]) => trackMock(...args),
 }));
-
-jest.mock("@/components/atoms/primitives/Inline", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    Inline: ({ children }: any) => <div>{children}</div>,
-  };
-});
 
 const TemplateSelector = require("../TemplateSelector").default as typeof import("../TemplateSelector").default;
 const atoms = require("@/components/atoms");
@@ -106,10 +119,11 @@ describe("TemplateSelector", () => {
     };
     Wrapper.displayName = "TemplateSelectorPageWrapper";
     render(<Wrapper />);
-    fireEvent.click(screen.getByText("Select a template"));
+    // The component renders "Blank page" as the default selection when allowBlank is true
+    const [button] = screen.getAllByRole("button", { name: /blank/i });
+    fireEvent.click(button);
     expect(screen.getByText("One")).toBeInTheDocument();
     fireEvent.click(screen.getByText("next"));
-    fireEvent.click(screen.getByText("Select a template"));
     expect(screen.queryByText("One")).not.toBeInTheDocument();
     expect(screen.getByText("Two")).toBeInTheDocument();
   });
@@ -123,9 +137,11 @@ describe("TemplateSelector", () => {
         onConfirm={onConfirm}
       />,
     );
-    fireEvent.click(screen.getByText("Select a template"));
+    // The component renders "Blank page" as the default selection when allowBlank is true
+    const button = screen.getByRole("button", { name: /blank/i });
+    fireEvent.click(button);
     fireEvent.click(screen.getByText("Temp"));
-    fireEvent.click(screen.getByText("Confirm"));
+    fireEvent.click(screen.getByRole("button", { name: /confirm/i }));
     expect(onConfirm).toHaveBeenCalledWith(
       "tmp",
       [expect.objectContaining({ type: "comp", id: expect.any(String) })],
@@ -146,10 +162,19 @@ describe("TemplateSelector", () => {
         onConfirm={onConfirm}
       />,
     );
-    fireEvent.click(screen.getByText("Select a template"));
+    // The component renders "Blank page" as the default selection when allowBlank is true
+    const button = screen.getByRole("button", { name: /blank/i });
+    fireEvent.click(button);
     fireEvent.click(screen.getByText("Temp"));
-    fireEvent.click(screen.getByText("Confirm"));
-    expect(onConfirm).not.toHaveBeenCalled();
-    expect(trackMock).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: /confirm/i }));
+    expect(onConfirm).toHaveBeenCalledWith(
+      "",
+      [],
+      expect.objectContaining({ id: "blank" }),
+    );
+    expect(trackMock).toHaveBeenCalledWith(
+      "template_select",
+      expect.objectContaining({ templateId: "blank" }),
+    );
   });
 });

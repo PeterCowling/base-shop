@@ -66,10 +66,11 @@ export function Accordion({
   className,
   ...props
 }: AccordionProps) {
-  const initialValues = useMemo(() => {
+  const initialValues = useMemo((): string[] => {
     const normalized = toArray(defaultValue);
     if (type === "single") {
-      return normalized.length > 0 ? [normalized[0]] : [];
+      const first = normalized[0];
+      return first !== undefined ? [first] : [];
     }
     return Array.from(new Set(normalized));
   }, [defaultValue, type]);

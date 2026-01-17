@@ -18,7 +18,7 @@ jest.mock("next/link", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-jest.mock("@ui", () => ({
+jest.mock("@acme/ui", () => ({
   Button: ({ children }: any) => <button>{children}</button>,
 }));
 

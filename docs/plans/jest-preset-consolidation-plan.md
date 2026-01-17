@@ -608,7 +608,7 @@ pnpm --filter <workspace> test
 pnpm --filter "./packages/*" --filter "./apps/*" test --passWithNoTests
 ```
 
-Only run full `pnpm test` before the final merge PR.
+Only run full `pnpm test` in CI before the final merge PR. **Never run `pnpm test` unfiltered locally** — see [docs/testing-policy.md](../testing-policy.md).
 
 #### 3.3 Rollback Strategy
 

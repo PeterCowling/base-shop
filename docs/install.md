@@ -55,7 +55,7 @@ For manual flow with `pnpm init-shop` / `pnpm create-shop`, follow [setup.md](./
 | `pnpm build` | Production build (next build) |
 | `pnpm preview` | Edge preview with Wrangler |
 | `pnpm lint` | ESLint + Prettier |
-| `pnpm test` | Jest unit tests |
+| `pnpm --filter <pkg> test` | Jest unit tests (always use targeted filter) |
 | `pnpm e2e` | Cypress e2e suite |
 | `pnpm test:coverage` | Jest tests with coverage summary |
 | `pnpm run lh:checkout` | Lighthouse audit for /en/checkout |

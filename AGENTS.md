@@ -76,13 +76,12 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 
 ## Pull Requests & CI
 
-- Create PR after first push (`gh pr create`) — include summary and test plan
+- PRs are zero-touch: auto-open on `work/*` push, labeled `zero-touch`, auto-merge on green, auto-close on failing checks or staleness (add `keep-open` to skip auto-close)
+- If auto-open fails, create PR manually (`gh pr create --fill`) and enable auto-merge (`gh pr merge --auto --squash --delete-branch`)
 - Keep PR green and mergeable — fix CI failures promptly
 - **Never merge directly to `main`** — always use PR workflow
-- All CI checks must pass before merge
-- Request review for non-trivial changes
-- Squash merge to keep history clean
-- Delete branch after merge
+- All CI checks must pass before auto-merge
+- Reviews are optional; no approval required for merge
 
 ## File Boundaries
 

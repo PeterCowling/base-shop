@@ -1,5 +1,5 @@
 const requirePermission = jest.fn();
-jest.mock("@auth", () => ({ requirePermission }));
+jest.mock("@acme/auth", () => ({ requirePermission }));
 
 const execFile = jest.fn();
 jest.mock("child_process", () => ({ execFile }));

@@ -26,10 +26,10 @@ jest.mock("../hooks/useProductPageData", () => ({
   }),
 }));
 
-jest.mock("../components/TemplateSelector", () => {
+jest.mock("../../components/TemplateSelector", () => {
   const React = require("react");
-  const MockTemplateSelector = ({ onSelect }: any) => (
-    <button data-cy="template-selector" onClick={() => onSelect("Temp", [])}>
+  const MockTemplateSelector = ({ onConfirm }: any) => (
+    <button data-cy="template-selector" onClick={() => onConfirm("Temp", [], { id: "Temp", name: "Temp" })}>
       template
     </button>
   );
@@ -97,7 +97,12 @@ describe("StepProductPage", () => {
   });
 
   it("marks complete and navigates on Save & return", () => {
-    setup();
+    // Setup with values that make canProceed true
+    setup({
+      productLayout: "template-id",
+      productPageId: "page-123",
+      productComponents: [{ id: "comp-1", type: "test" } as any],
+    });
     fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");

@@ -73,6 +73,7 @@ describe("useLaunchShop", () => {
   it("launches without seeding when categoriesText missing", async () => {
     const state = completeState();
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       body: streamFromEvents([
         { step: "create", status: "success" },
         { step: "init", status: "success" },
@@ -99,6 +100,7 @@ describe("useLaunchShop", () => {
   it("launches with seeding when categoriesText present", async () => {
     const state = { ...completeState(), categoriesText: "seed" };
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       body: streamFromEvents([
         { step: "create", status: "success" },
         { step: "init", status: "success" },
@@ -127,6 +129,7 @@ describe("useLaunchShop", () => {
   it("records failure events from stream", async () => {
     const state = completeState();
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       body: streamFromEvents([
         { step: "create", status: "success" },
         { step: "init", status: "failure", error: "boom" },

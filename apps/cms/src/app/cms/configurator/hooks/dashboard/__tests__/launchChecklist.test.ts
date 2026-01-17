@@ -1,4 +1,4 @@
-import { buildLaunchChecklist } from "../../launchChecklist";
+import { buildLaunchChecklist } from "../launchChecklist";
 import type { ConfiguratorProgress } from "@acme/types";
 
 const t = (key: string) => key;

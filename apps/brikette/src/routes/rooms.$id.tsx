@@ -112,6 +112,12 @@ export default memo(function RoomDetail() {
 
   type AmenityContent = { title?: string; body?: string };
 
+  // Safely extract string values from potentially malformed translation results
+  const safeString = (value: unknown): string | undefined => {
+    if (typeof value === "string") return value;
+    return undefined;
+  };
+
   const heroRaw = tRoomsPageDetail(`detail.${id}.hero`, { returnObjects: true });
   const hero =
     heroRaw && typeof heroRaw === "object" && !Array.isArray(heroRaw)
@@ -164,9 +170,9 @@ export default memo(function RoomDetail() {
               {hero.eyebrow}
             </p>
           ) : null}
-          {hero.title ? (
+          {safeString(hero.title) ? (
             <p className="mt-3 text-3xl font-extrabold text-brand-primary dark:text-brand-secondary">
-              {hero.title}
+              {safeString(hero.title)}
             </p>
           ) : null}
           {hero.subtitle ? (
@@ -210,14 +216,14 @@ export default memo(function RoomDetail() {
                 key={`${item.title ?? "outline"}-${idx}`}
                 className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
               >
-                {item.title ? (
+                {safeString(item.title) ? (
                   <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                    {item.title}
+                    {safeString(item.title)}
                   </h3>
                 ) : null}
-                {item.body ? (
+                {safeString(item.body) ? (
                   <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
-                    {item.body}
+                    {safeString(item.body)}
                   </p>
                 ) : null}
               </article>
@@ -243,14 +249,14 @@ export default memo(function RoomDetail() {
                   key={`${item.title ?? "amenity"}-${idx}`}
                   className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
                 >
-                  {item.title ? (
+                  {safeString(item.title) ? (
                     <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                      {item.title}
+                      {safeString(item.title)}
                     </h3>
                   ) : null}
-                  {item.body ? (
+                  {safeString(item.body) ? (
                     <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
-                      {item.body}
+                      {safeString(item.body)}
                     </p>
                   ) : null}
                 </div>

@@ -21,7 +21,15 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const perks = useMemo(() => {
     if (!ready || !tokensReady || !dealsReady) return [];
     const raw = t("dealsPage:perksList", { returnObjects: true });
-    return Array.isArray(raw) ? (raw as string[]) : [];
+    if (!Array.isArray(raw)) return [];
+    // Handle both string[] and {title: string, subtitle?: string}[] formats
+    return raw.map((item: unknown) => {
+      if (typeof item === "string") return item;
+      if (item && typeof item === "object" && "title" in item) {
+        return (item as { title: string }).title;
+      }
+      return "";
+    }).filter((s) => s.length > 0);
   }, [t, ready, tokensReady, dealsReady]);
 
   if (!perks.length) return null;

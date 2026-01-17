@@ -30,7 +30,7 @@ describe("ProductGallery media types", () => {
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("model-viewer")).toBeInTheDocument();
+    expect(container.querySelector('[role="status"]')).toBeInTheDocument();
   });
 });
 

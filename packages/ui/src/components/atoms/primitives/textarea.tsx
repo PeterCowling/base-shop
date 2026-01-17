@@ -107,26 +107,16 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               )}
             </div>
           ) : (
-            <div className="flex flex-col gap-1"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
-              {label && (
-                <label
-                  htmlFor={controlId}
-                  className="block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                >
-                  {label}
-                </label>
-              )}
-              <textarea
-                id={controlId}
-                ref={ref}
-                className={baseClasses}
-                aria-invalid={ariaInvalid}
-                aria-describedby={describedBy}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                {...props}
-              />
-            </div>
+            <textarea
+              id={controlId}
+              ref={ref}
+              className={baseClasses}
+              aria-invalid={ariaInvalid}
+              aria-describedby={describedBy}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              {...props}
+            />
           )
         }
       />

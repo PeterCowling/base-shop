@@ -96,6 +96,7 @@ describe("SeoForm", () => {
       brand: "",
       offers: "",
       aggregateRating: "",
+      structuredData: "",
     });
 
     expect(

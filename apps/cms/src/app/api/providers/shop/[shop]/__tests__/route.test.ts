@@ -8,7 +8,7 @@ jest.mock("@/lib/server/jsonIO", () => ({ writeJsonFile }));
 jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
 
 const parseJsonBody = jest.fn();
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib", () => ({ parseJsonBody }));
 
 let POST: typeof import("../route").POST;
 

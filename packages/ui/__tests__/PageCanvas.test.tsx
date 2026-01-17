@@ -72,11 +72,11 @@ describe("PageCanvas", () => {
 
     fireEvent.dragOver(item);
     expect(canvas.className).toMatch(/ring-2/);
-    expect(container.querySelector(".pointer-events-none")).not.toBeNull();
+    expect(container.querySelector(".border-primary\\/50.bg-primary\\/10")).not.toBeNull();
 
     fireEvent.dragLeave(canvas);
     expect(canvas.className).not.toMatch(/ring-2/);
-    expect(container.querySelector(".pointer-events-none")).toBeNull();
+    expect(container.querySelector(".border-primary\\/50.bg-primary\\/10")).toBeNull();
   });
 
   it("renders blocks only when preview is true", () => {

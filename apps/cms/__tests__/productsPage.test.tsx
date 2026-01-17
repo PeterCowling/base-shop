@@ -79,6 +79,34 @@ jest.mock("@acme/ui/components/atoms", () => {
   };
 });
 
+jest.mock("@acme/ui/components/cms", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    CmsBuildHero: ({ tag, title, body }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-build-hero" },
+        React.createElement("span", null, tag),
+        React.createElement("h1", null, title),
+        React.createElement("p", null, body),
+      ),
+    CmsMetricTiles: ({ items }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-metric-tiles" },
+        items?.map((item: any) => React.createElement("div", { key: item.id }, item.label)),
+      ),
+    CmsLaunchChecklist: ({ heading, items }: any) =>
+      React.createElement(
+        "div",
+        { "data-testid": "cms-launch-checklist" },
+        React.createElement("h3", null, heading),
+        items?.map((item: any) => React.createElement("div", { key: item.id }, item.label)),
+      ),
+  };
+});
+
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
   return {

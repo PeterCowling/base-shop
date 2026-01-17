@@ -17,10 +17,12 @@ Pre-commit runs `lint-staged`. By default, lint-staged creates an `automatic lin
 
 We want a hook workflow that never creates a lint-staged backup stash ("no autostash ever") while remaining safe and predictable.
 
-## Key lint-staged behaviors (v15.2.0+)
-- Default behavior: creates a backup stash and attempts to revert on errors.
-- `--no-stash`: disables the backup stash and does not revert in case of errors. It also implies `--no-hide-partially-staged`.
-- Safety implication: with `--no-stash`, partially staged files are dangerous because lint-staged will not hide unstaged hunks; tasks that modify files (e.g. `eslint --fix`) can end up staging/committing unintended hunks.
+## Key lint-staged behaviors (current repo: 15.5.2)
+- Default behavior: creates a backup stash (`lint-staged automatic backup`) and attempts to revert on errors.
+- `--no-stash`: disables the backup stash and does not revert in case of errors.
+- In lint-staged `15.2.0` through `16.1.0`, `--no-stash` also effectively enables behavior equivalent to `--no-hide-partially-staged`, which makes partially staged files dangerous.
+  - In `16.1.1`, upstream changed semantics to prevent unstaged changes being committed when using `--no-stash`; re-evaluate this plan when upgrading.
+- Safety implication: with `--no-stash` (and in our current 15.5.2 behavior), partially staged files are dangerous even with check-only tasks because lint-staged can re-add files to the index during its apply phase, which can stage unstaged hunks.
 
 ## Goals
 - Ensure pre-commit creates no `automatic lint-staged backup` stash in any outcome (success, lint error, timeout, SIGINT).
@@ -35,7 +37,7 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 
 ## Current State
 - Root `simple-git-hooks` runs `pnpm exec ... lint-staged` on `pre-commit`.
-- Root `lint-staged` config runs `eslint --fix --max-warnings=0 ...` on staged JS/TS files.
+- Root `lint-staged` config runs `eslint --fix --max-warnings=0 ...` on staged JS/TS files (this must change if hooks are to be check-only).
 - `lint-staged` is currently resolved to `15.5.2` (declared as `^15.2.10`).
 
 ## Proposed Approach
@@ -57,6 +59,7 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 ### CI + branch protection (authoritative)
 - Run `pnpm lint` and `pnpm typecheck` in GitHub Actions on PRs.
 - Require those checks in the GitHub `main` ruleset so merges to `main` cannot happen unless lint and typecheck pass.
+- Also require PRs (no direct pushes to `main`) so checks cannot be bypassed by skipping the PR workflow.
 
 (Optional) Pre-push
 - Add `pre-push` hook to run `pnpm typecheck` (or a scoped/cached variant) to catch failures before pushing; note it is still bypassable.
@@ -64,29 +67,34 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 ## Implementation Tasks
 1. Document lint-staged semantics in this plan (backup stash default, `--no-stash` "no revert on error", and the implied `--no-hide-partially-staged`).
 2. Add a pre-commit partial-staging guard script:
-   - Use `git diff --name-only -z --cached` and `git diff --name-only -z` (or porcelain v2 `-z`) to correctly handle spaces and edge cases.
+   - Prefer parsing `git status --porcelain=v2 -z` to detect paths that are modified in both index and working tree (aligns with lint-staged's own detection approach).
+   - If using diff intersection instead, match lint-staged's defaults (`--diff-filter=ACMR`) to avoid drift.
    - Abort before lint-staged with a message explaining why partial staging is blocked (prevents unstaged hunks being committed under `--no-stash`).
 3. Update the pre-commit hook:
    - Run the guard first.
    - Run `pnpm exec lint-staged --no-stash`.
-4. Add developer commands:
+4. Update lint-staged tasks to be check-only:
+   - Remove `--fix` (and any other write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
+5. Add developer commands:
    - `pnpm lint:staged` mirrors hook behavior.
    - Optional (non-hook): add `pnpm lint:fix` for opportunistic fixes, but do not rely on it as the primary remediation path.
-5. Add/confirm CI enforcement:
+6. Add/confirm CI enforcement:
    - Ensure a workflow runs `pnpm lint` and `pnpm typecheck`.
    - Update branch protection/rulesets to require those checks for merging to `main`.
-6. Update docs:
+7. Hardening (optional / future):
+   - If/when supported by the pinned lint-staged version, consider `--fail-on-changes` as a regression tripwire so the commit fails if any task modifies tracked files.
+8. Update docs:
    - Developer docs: explain "no partial staging" rule, `--no-stash` tradeoffs, and recovery guidance (what to do if the hook leaves changes).
    - `AGENTS.md`: note the hard partial-staging guard is required for correctness under `--no-stash`.
 
 ## Validation
 - No-stash invariant:
-  - After any failed/aborted run (lint error, typecheck error, SIGINT), `git stash list` shows no new `automatic lint-staged backup` entries.
-  - No leftover lint-staged temp artifacts under `.git/` after aborted runs.
+  - After any failed/aborted run (lint error, typecheck error, SIGINT), `git stash list` is unchanged.
+  - `.git/lint-staged_unstaged.patch` does not exist after aborted runs.
 - Partial staging:
   - With a partially staged file, the guard aborts before lint-staged and nothing is stashed or auto-staged.
-- Failure semantics clarity:
-  - If using `--fix`, intentionally trigger a later failure and confirm the repo is left in a predictable state (document expected `git status` output and next steps).
+- Check-only hooks:
+  - Intentionally trigger a lint failure and confirm the repo remains unchanged (`git diff` and `git diff --cached` are unchanged after the failed commit attempt).
 - CI enforcement:
   - A PR with lint/typecheck failures cannot be merged to `main` due to required status checks.
 
@@ -100,4 +108,4 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 
 ## Open Questions
 - Where should typecheck run locally (pre-push only, or also pre-commit for stricter gating)?
-- Should we pin `lint-staged` to an exact version to avoid behavior changes in future minors?
+- Should we pin `lint-staged` to an exact version and only upgrade with an explicit review + validation run (recommended given behavioral changes across versions)?

@@ -3,14 +3,13 @@ import type { Configuration as WebpackConfiguration, ResolveOptions } from "webp
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import webpack from "webpack";
-import { createRequire } from "node:module";
 
 import { coverageAddon } from "../.storybook/coverage.ts";
+import { getStorybookAliases } from "../.storybook/aliases.ts";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   framework: {
@@ -68,25 +67,7 @@ const config: StorybookConfig = {
 
     const aliases: NonNullable<ResolveOptions["alias"]> = {
       ...existingAlias,
-      "@acme/page-builder-core": path.resolve(
-        __dirname,
-        "../../../packages/page-builder-core/src"
-      ),
-      "@acme/platform-core/contexts/ThemeContext": path.resolve(
-        __dirname,
-        "../.storybook/mocks/ThemeContext.tsx"
-      ),
-      "@themes-local": path.resolve(__dirname, "../../../packages/themes"),
-      "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src"),
-      "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
-      "@acme/types": path.resolve(__dirname, "../../../packages/types/src"),
-      "@acme/types/package.json": path.resolve(
-        __dirname,
-        "../../../packages/types/package.json"
-      ),
-      "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),
-      "@acme/tailwind-config": path.resolve(__dirname, "../../../packages/tailwind-config/src"),
-      "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),
+      ...getStorybookAliases(),
       "@storybook/test": path.resolve(__dirname, "../.storybook/mocks/storybook-test.ts"),
       "node:fs": false,
       "node:path": false,

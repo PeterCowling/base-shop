@@ -61,8 +61,8 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 - Require those checks in the GitHub `main` ruleset so merges to `main` cannot happen unless lint and typecheck pass.
 - Also require PRs (no direct pushes to `main`) so checks cannot be bypassed by skipping the PR workflow.
 
-(Optional) Pre-push
-- Add `pre-push` hook to run `pnpm typecheck` (or a scoped/cached variant) to catch failures before pushing; note it is still bypassable.
+Pre-push (recommended default for local typecheck)
+- Run `pnpm typecheck` in a `pre-push` hook (or a scoped/cached variant). This catches problems before remote CI churn without making every local commit slow. Keep pre-commit fast and predictable.
 
 ## Implementation Tasks
 1. Document lint-staged semantics in this plan (backup stash default, `--no-stash` "no revert on error", and the implied `--no-hide-partially-staged`).
@@ -81,9 +81,11 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 6. Add/confirm CI enforcement:
    - Ensure a workflow runs `pnpm lint` and `pnpm typecheck`.
    - Update branch protection/rulesets to require those checks for merging to `main`.
-7. Hardening (optional / future):
+7. Add local typecheck on pre-push:
+   - Add `pre-push` hook to run `pnpm typecheck` (or a scoped/cached variant); note it is still bypassable.
+8. Hardening (optional / future):
    - If/when supported by the pinned lint-staged version, consider `--fail-on-changes` as a regression tripwire so the commit fails if any task modifies tracked files.
-8. Update docs:
+9. Update docs:
    - Developer docs: explain "no partial staging" rule, `--no-stash` tradeoffs, and recovery guidance (what to do if the hook leaves changes).
    - `AGENTS.md`: note the hard partial-staging guard is required for correctness under `--no-stash`.
 
@@ -107,6 +109,4 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
   - Mitigation: provide guidance for splitting commits (separate files, temporary commit, or use branch-based workflows).
 
 ## Open Questions
-- Where should typecheck run locally?
-  - Default: pre-push. It catches problems before remote CI churn, without making every local commit slow. Keep pre-commit fast and predictable.
 - Should we pin `lint-staged` to an exact version and only upgrade with an explicit review + validation run (recommended given behavioral changes across versions)?

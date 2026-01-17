@@ -14,6 +14,10 @@ const i18nDistPath = path.resolve(__dirname, "../i18n/dist");
 const i18nSrcPath = path.resolve(__dirname, "../i18n/src");
 const i18nAliasPath = fs.existsSync(i18nDistPath) ? i18nDistPath : i18nSrcPath;
 
+const typesDistPath = path.resolve(__dirname, "../types/dist");
+const typesSrcPath = path.resolve(__dirname, "../types/src");
+const typesAliasPath = fs.existsSync(typesDistPath) ? typesDistPath : typesSrcPath;
+
 const coreEnv = {
   SHOP_CODE: process.env.SHOP_CODE,
 };
@@ -36,6 +40,9 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       // Ensure workspace i18n package resolves reliably in Next builds:
       // use dist when it exists, otherwise point at src.
       "@acme/i18n": i18nAliasPath,
+      // Ensure workspace types package resolves reliably in Next builds:
+      // use dist when it exists, otherwise point at src.
+      "@acme/types": typesAliasPath,
       "drizzle-orm": false,
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../themes"),

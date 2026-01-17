@@ -967,6 +967,10 @@ importers:
       three:
         specifier: ^0.182.0
         version: 0.182.0
+    devDependencies:
+      '@types/three':
+        specifier: ^0.182.0
+        version: 0.182.0
 
   apps/product-pipeline-queue-worker: {}
 

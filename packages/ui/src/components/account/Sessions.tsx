@@ -34,7 +34,7 @@ export default async function SessionsPage({
   callbackUrl = ACCOUNT_SESSIONS_PATH,
   locale = "en",
 }: SessionsPageProps = {}) {
-  const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
+  const { getCustomerSession, listSessions, hasPermission } = await import("@acme/auth");
   const t = await getServerTranslations(locale as Locale);
   const session = await getCustomerSession();
   if (!session) {

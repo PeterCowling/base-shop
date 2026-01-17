@@ -60,6 +60,12 @@
       "@auth/*": [
         "../../packages/auth/src/*", "../../packages/auth/dist/*"
       ],
+      "@acme/auth": [
+        "../../packages/auth/src/index.ts", "../../packages/auth/dist/index"
+      ],
+      "@acme/auth/*": [
+        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+      ],
       "@acme/lib": [
         "../../packages/lib/src/index.ts", "../../packages/lib/dist/index"
       ],

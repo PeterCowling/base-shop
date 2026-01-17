@@ -1,5 +1,6 @@
 // packages/design-tokens/src/index.ts
 import type { Config } from "tailwindcss";
+export { colors } from "./core/colors";
 
 // Removed dev console.log to avoid i18n lint noise
 

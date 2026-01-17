@@ -1,6 +1,8 @@
 import plugin from "tailwindcss/plugin";
 
-const designTokens = plugin.withOptions(
+export { colors } from "./src/core/colors";
+
+const designTokens: unknown = plugin.withOptions(
   () => () => {},
   () => ({
     theme: {

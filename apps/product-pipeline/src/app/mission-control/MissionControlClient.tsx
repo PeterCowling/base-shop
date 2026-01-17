@@ -83,6 +83,10 @@ export default function MissionControlClient({
       artifactsLabel: string;
       xpLabel: string;
       nextLevelLabel: string;
+      statusSyncing: string;
+      statusOffline: string;
+      streakSummary: string;
+      streakEmpty: string;
       levelUpToast: string;
     };
     missions: {

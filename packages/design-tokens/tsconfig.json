@@ -6,6 +6,7 @@
     "declarationMap": true,
     "noEmit": false,
     "rootDir": ".",
+    "baseUrl": "./src",
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -14,9 +15,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
-    "paths": {
-      "@themes/*": ["packages/themes/*/dist/index.d.ts"]
-    }
+    "paths": {}
   },
   "include": ["index.ts", "src/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"],

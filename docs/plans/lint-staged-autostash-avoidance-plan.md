@@ -46,9 +46,13 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 2. Run lint-staged with stash disabled
    - Use `pnpm exec lint-staged --no-stash`.
    - Treat the changed failure semantics as deliberate: if tasks modify files and the hook fails later, the repo may be left modified (no automatic revert).
-3. Decide fix vs check-only behavior (must be explicit)
-   - Recommended: make the hook check-only (remove `--fix`) and provide explicit `pnpm lint:fix` / `pnpm lint:staged:fix` commands.
-   - Alternative: keep `--fix`, but document that failures can leave changes staged and require the developer to review/re-run.
+3. Hooks are check-only (no `--fix`)
+   - Do not run `eslint --fix` in pre-commit. Auto-fix is unreliable for most failures and any hook-driven mutations become riskier under `--no-stash` (no revert on error).
+   - If lint/typecheck fails, the commit attempt should fail with actionable output, and fixes are applied by a developer or by an agent in a follow-up edit pass.
+4. Agent commit workflow (when asked to "commit/push to GitHub")
+   - Run lint (and fix any lint errors by editing code), re-run until clean.
+   - Run typecheck (and fix any type errors by editing code), re-run until clean.
+   - Only then attempt `git commit` / `git push` (never `--no-verify`).
 
 ### CI + branch protection (authoritative)
 - Run `pnpm lint` and `pnpm typecheck` in GitHub Actions on PRs.
@@ -67,7 +71,7 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
    - Run `pnpm exec lint-staged --no-stash`.
 4. Add developer commands:
    - `pnpm lint:staged` mirrors hook behavior.
-   - If moving to check-only: add `pnpm lint:staged:fix` and/or `pnpm lint:fix` for explicit auto-fix.
+   - Optional (non-hook): add `pnpm lint:fix` for opportunistic fixes, but do not rely on it as the primary remediation path.
 5. Add/confirm CI enforcement:
    - Ensure a workflow runs `pnpm lint` and `pnpm typecheck`.
    - Update branch protection/rulesets to require those checks for merging to `main`.
@@ -87,14 +91,13 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
   - A PR with lint/typecheck failures cannot be merged to `main` due to required status checks.
 
 ## Risks and Mitigations
-- Risk: `--no-stash` disables revert-on-error; a failed hook can leave modified/staged files.
-  - Mitigation: prefer check-only in hooks, or clearly document the "fix then re-run commit" workflow.
+- Risk: `--no-stash` disables revert-on-error; if hooks mutate files, a failed hook can leave modified/staged files.
+  - Mitigation: keep hooks check-only (no `--fix`) so failures leave no repo mutations to unwind.
 - Risk: `--no-stash` implies `--no-hide-partially-staged`; partially staged files can lead to unstaged hunks being committed.
   - Mitigation: mandatory partial-staging guard as a correctness gate.
 - Risk: Developers rely on partial staging workflows.
   - Mitigation: provide guidance for splitting commits (separate files, temporary commit, or use branch-based workflows).
 
 ## Open Questions
-- Do we want pre-commit to be check-only (recommended) or keep `eslint --fix`?
 - Where should typecheck run locally (pre-push only, or also pre-commit for stricter gating)?
 - Should we pin `lint-staged` to an exact version to avoid behavior changes in future minors?

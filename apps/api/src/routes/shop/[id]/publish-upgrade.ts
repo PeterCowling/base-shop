@@ -8,7 +8,7 @@ import {
   type RequestContext,
 } from "@acme/shared-utils";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { incrementOperationalError } from "@acme/platform-core/shops";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
 
 const SERVICE_NAME = "api";
 const ENV_LABEL: "dev" | "stage" | "prod" =

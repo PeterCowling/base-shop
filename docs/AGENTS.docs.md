@@ -27,10 +27,14 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
 - **Planning lives in Plan docs**
   - Plan‑type docs (`IMPLEMENTATION_PLAN.md`, `docs/*-plan/*.md`) are the primary “interface into planning”.
   - Agents and humans should pick, add, or update work items by editing the relevant Plan doc, not by inventing ad‑hoc checklists elsewhere.
+  - If a user explicitly asks for a plan and no relevant Plan doc exists, create one (default: `docs/plans/<name>-plan.md`, or the domain’s plan directory) and write the planning/audit output into it.
 
 - **Plan docs follow a shared pattern**
   - Every Plan must declare:
     - `Type: Plan`, `Status`, `Domain`, `Last-reviewed`, and `Relates-to charter`.
+  - Plans may include additional operational metadata:
+    - `Created`, `Created-by`, `Last-updated`, `Last-updated-by` (attribution tracking)
+    - `Docs-custodian: @username` (when parallel work requires serialized edits)
   - Each Plan should include:
     - An **Active tasks** section with IDs, statuses, scope, dependencies, and definition‑of‑done.
     - An optional **Completed** / **Frozen** section for history.
@@ -66,7 +70,8 @@ From an AI’s point of view, the repo already has many of the right building bl
   - `docs/runtime/template-contract.md`
 
 - **Plans and implementation snapshots**
-  - `IMPLEMENTATION_PLAN.md`: Base‑Shop app plan, sprint tracker, launch checklist.
+  - `IMPLEMENTATION_PLAN.md`: Now/Next/Later index linking to active plans in `docs/plans/`.
+  - `docs/plans/*.md`: Per-feature plans with task lists and acceptance criteria.
 
 - **ADRs**
   - `docs/adr/adr-00-i18n-foundation.md`: clear `Status`, `Decision`, `Consequences`.

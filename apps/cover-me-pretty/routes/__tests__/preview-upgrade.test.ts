@@ -45,7 +45,10 @@ test("valid upgrade token returns page JSON", async () => {
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+  jest.doMock("@acme/auth", () => ({
+    __esModule: true,
+    requirePermission: jest.fn(),
+  }));
 
   const { GET: tokenGET } = await import(
     "../../src/app/api/preview-token/route"

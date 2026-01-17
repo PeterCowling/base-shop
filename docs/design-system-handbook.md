@@ -615,6 +615,22 @@ The `@acme/eslint-plugin-ds` package enforces design system compliance with 33 r
 | Responsive | `require-breakpoint-modifiers`, `container-widths-only-at` |
 | RTL/i18n | `no-physical-direction-classes-in-rtl`, `no-hardcoded-copy` |
 
+### Purpose and Escape Hatches
+
+The DS rules exist to keep UI consistent, accessible, and theme-safe across brands:
+
+- Tokens: prevent raw values that bypass theming and contrast guarantees.
+- Boundaries: keep layout decisions in layout primitives, not leaf components.
+- Accessibility: enforce tap targets, focus rings, and SR-only usage.
+- Responsiveness: require breakpoint-aware patterns for layout stability.
+- RTL/i18n: avoid physical directions and hardcoded copy for localization.
+
+When a rule blocks legitimate work, use a temporary, ticketed exception and plan a follow-up fix:
+
+- Prefer fixing the violation using tokens or DS primitives first.
+- If you must disable a rule, add an inline `eslint-disable-next-line` with a ticket and (optionally) `ttl=YYYY-MM-DD`.
+- Some rules are relaxed in stories and during migration; see `docs/linting.md` for current exception patterns and scope.
+
 ---
 
 ## 8. Component API Reference

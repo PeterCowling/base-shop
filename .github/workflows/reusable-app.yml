@@ -99,3 +99,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: ${{ inputs.deploy-cmd }}
         shell: bash
+
+      - name: Post-Deploy Health Check
+        if: success() && inputs.project-name != ''
+        run: |
+          chmod +x scripts/post-deploy-health-check.sh
+          ./scripts/post-deploy-health-check.sh ${{ inputs.project-name }}
+        shell: bash
+        env:
+          EXTRA_ROUTES: "/api/health"
+          MAX_RETRIES: "10"
+          RETRY_DELAY: "6"

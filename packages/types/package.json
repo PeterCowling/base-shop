@@ -2,7 +2,7 @@
   "name": "@acme/types",
   "version": "0.0.1",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@acme/i18n": "workspace:*"
@@ -12,7 +12,8 @@
   },
   "type": "module",
   "files": [
-    "src"
+    "dist",
+    "src/global.d.ts"
   ],
   "scripts": {
     "build": "tsc -b",
@@ -24,53 +25,53 @@
     "./package.json": "./package.json",
     "./page": {
       "types": "./dist/page/index.d.ts",
-      "import": "./src/page/index.ts",
-      "default": "./src/page/index.ts"
+      "import": "./dist/page/index.js",
+      "default": "./dist/page/index.js"
     },
     "./page/*": {
       "types": "./dist/page/*.d.ts",
-      "import": "./src/page/*.ts",
-      "default": "./src/page/*.ts"
+      "import": "./dist/page/*.js",
+      "default": "./dist/page/*.js"
     },
     "./settings": {
       "types": "./dist/settings/index.d.ts",
-      "import": "./src/settings/index.ts",
-      "default": "./src/settings/index.ts"
+      "import": "./dist/settings/index.js",
+      "default": "./dist/settings/index.js"
     },
     "./settings/*": {
       "types": "./dist/settings/*.d.ts",
-      "import": "./src/settings/*.ts",
-      "default": "./src/settings/*.ts"
+      "import": "./dist/settings/*.js",
+      "default": "./dist/settings/*.js"
     },
     "./theme": {
       "types": "./dist/theme/index.d.ts",
-      "import": "./src/theme/index.ts",
-      "default": "./src/theme/index.ts"
+      "import": "./dist/theme/index.js",
+      "default": "./dist/theme/index.js"
     },
     "./theme/*": {
       "types": "./dist/theme/*.d.ts",
-      "import": "./src/theme/*.ts",
-      "default": "./src/theme/*.ts"
+      "import": "./dist/theme/*.js",
+      "default": "./dist/theme/*.js"
     },
     "./ds": {
       "types": "./dist/ds/index.d.ts",
-      "import": "./src/ds/index.ts",
-      "default": "./src/ds/index.ts"
+      "import": "./dist/ds/index.js",
+      "default": "./dist/ds/index.js"
     },
     "./ds/*": {
       "types": "./dist/ds/*.d.ts",
-      "import": "./src/ds/*.ts",
-      "default": "./src/ds/*.ts"
+      "import": "./dist/ds/*.js",
+      "default": "./dist/ds/*.js"
     },
     "./*": {
       "types": "./dist/*.d.ts",
-      "import": "./src/*.ts",
-      "default": "./src/*.ts"
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
     },
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./src/index.ts",
-      "default": "./src/index.ts"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   }
 }

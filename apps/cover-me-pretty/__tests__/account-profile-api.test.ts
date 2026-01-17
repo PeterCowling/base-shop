@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/__tests__/account-profile-api.test.ts
 jest.mock("@acme/zod-utils/initZod", () => ({}));
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));

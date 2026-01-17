@@ -7,7 +7,7 @@ import { createPreviewToken } from "@acme/platform-core/previewTokens";
 
 async function withRepo(
   cb: (
-    repo: typeof import("@acme/platform-core/repositories/pages")
+    repo: typeof import("@acme/platform-core/repositories/pages/index.server")
   ) => Promise<void>
 ) {
   jest.resetModules();
@@ -35,11 +35,6 @@ async function withRepo(
       return pages[idx];
     },
   };
-  jest.doMock(
-    "@acme/platform-core/repositories/pages",
-    () => ({ __esModule: true, ...repo }),
-    { virtual: true },
-  );
   jest.doMock(
     "@acme/platform-core/repositories/pages/index.server",
     () => ({ __esModule: true, ...repo }),

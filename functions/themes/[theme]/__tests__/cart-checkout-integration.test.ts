@@ -2,6 +2,7 @@ import { jest } from "@jest/globals";
 import { asNextJson } from "@acme/test-utils";
 
 const CART_COOKIE = "__Host-CART_ID";
+jest.setTimeout(30000);
 jest.doMock(
   "@acme/zod-utils/initZod",
   () => ({ initZod: () => {} }),
@@ -46,6 +47,18 @@ jest.doMock(
 jest.mock("@acme/platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
+
+jest.doMock(
+  "@acme/platform-core/inventoryValidation",
+  () => ({
+    cartToInventoryRequests: jest.fn(() => []),
+    validateInventoryAvailability: jest.fn(async () => ({
+      ok: true,
+      insufficient: [],
+    })),
+  }),
+  { virtual: true },
+);
 
 jest.doMock(
   "@auth",

@@ -67,7 +67,7 @@
   --rgb-brand-outline: 27 27 27;
 }
 
-.dark {
+.theme-dark {
   color-scheme: dark;
 
   /* surfaces / content */
@@ -226,7 +226,7 @@
       color var(--theme-transition-duration) ease,
       background-color var(--theme-transition-duration) ease;
   }
-  .dark .hero-panel {
+  .theme-dark .hero-panel {
     opacity: 1;
   }
 
@@ -298,11 +298,11 @@
   #mobile-menu a {
     color: var(--color-brand-heading);
   }
-  .dark #mobile-menu a {
+  .theme-dark #mobile-menu a {
     color: var(--color-brand-heading);
   }
-  .dark #mobile-menu a:hover,
-  .dark #mobile-menu a:focus-visible {
+  .theme-dark #mobile-menu a:hover,
+  .theme-dark #mobile-menu a:focus-visible {
     text-decoration-color: var(--color-brand-primary);
   }
 
@@ -322,8 +322,8 @@
     background-color: var(--color-brand-primary);
     color: #ffffff;
   }
-  .dark #mobile-menu button.lang-option:hover,
-  .dark #mobile-menu button.lang-option:focus-visible {
+  .theme-dark #mobile-menu button.lang-option:hover,
+  .theme-dark #mobile-menu button.lang-option:focus-visible {
     background-color: rgb(255 255 255 / 0.12);
   }
 
@@ -475,7 +475,7 @@
     @apply absolute inset-0 bg-[linear-gradient(135deg,_var(--color-brand-gradient-start)_0%,_var(--color-brand-primary)_100%)] opacity-10;
     transition: opacity var(--theme-transition-duration) ease;
   }
-  .dark .hero-gradient-overlay {
+  .theme-dark .hero-gradient-overlay {
     @apply bg-none opacity-0;
   }
 }

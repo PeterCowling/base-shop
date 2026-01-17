@@ -192,6 +192,7 @@ Overall Security Grade: D+ (would be B after addressing Critical/High access-con
 - Exploit narrative: Attackers target known CVEs in deployed packages.
 - Minimal patch: Update dependencies or apply overrides; remove unused packages.
 - Test: CI job runs `pnpm audit --production` and fails on high/critical.
+- Update (2026-01-17): `form-data` vulnerability in Cypress dependency chain resolved via `pnpm.overrides` pin to 4.0.5.
 
 | Package | Severity | CVE | Path |
 |---------|----------|-----|------|

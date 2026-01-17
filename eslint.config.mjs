@@ -191,6 +191,12 @@ export default [
       "security/detect-non-literal-fs-filename": "off",
     },
   },
+  {
+    files: ["scripts/src/component-names.ts"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
   /* ▸ Serverless functions: allow dynamic filesystem paths rooted at DATA_ROOT */
   {
     files: ["functions/src/**/*.{ts,tsx,js,jsx}"],
@@ -213,6 +219,7 @@ export default [
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.eslint.json",
           "./functions/tsconfig.json",
+          "./scripts/tsconfig.eslint.json",
         ],
         projectService: true,
         allowDefaultProject: true,
@@ -651,6 +658,17 @@ export default [
     },
     plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
+  },
+  {
+    files: ["scripts/seo-audit.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
   },
   /* ▸ App scripts: parse without a TS project */
   {

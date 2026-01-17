@@ -1,5 +1,5 @@
 // apps/cover-me-pretty/__tests__/login-mfa.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
   validateCsrfToken: jest.fn(),

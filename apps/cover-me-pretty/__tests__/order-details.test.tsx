@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/__tests__/order-details.test.tsx
 
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));

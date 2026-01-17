@@ -1,7 +1,7 @@
 /** @jest-environment node */
 
 jest.mock("@acme/zod-utils/initZod", () => ({}));
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));

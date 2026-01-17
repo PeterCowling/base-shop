@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ShopClient from "../../apps/cms/src/app/[lang]/shop/ShopClient.client";
+import ShopClient from "../../../apps/cms/src/app/[lang]/shop/ShopClient.client";
 import type { SKU } from "@acme/types";
 
 // Mock next/navigation hooks used by ShopClient
@@ -135,4 +135,3 @@ describe("ShopClient URL state", () => {
     ).toBe("red");
   });
 });
-

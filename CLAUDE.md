@@ -2,63 +2,40 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-01-17
 ---
 
 # Claude Coding Assistant Guide
 
-This document helps Claude (and AI coding assistants) navigate and work effectively within this monorepo.
+This document helps Claude navigate and work effectively within this monorepo.
+For universal agent rules, see [AGENTS.md](AGENTS.md).
 
 ## Project Overview
 
-**Base-Shop** is a multilingual, hybrid-rendered e-commerce platform built with Next.js 15 and React 19. It's a Turborepo monorepo using pnpm workspaces with multiple applications and shared packages.
+**Base-Shop** is a multilingual, hybrid-rendered e-commerce platform built with Next.js 15 and React 19. It's a Turborepo monorepo using pnpm workspaces.
 
 ### Key Technologies
 - **Framework:** Next.js 15 (App Router), React 19
 - **Package Manager:** pnpm 10.12.1
-- **Node Version:** >=20
 - **Database:** PostgreSQL + Prisma ORM
 - **Build System:** Turborepo
-- **Testing:** Jest, Cypress, Playwright, Storybook test runner
+- **Testing:** Jest, Cypress, Playwright
 - **Styling:** Tailwind CSS 4 with design tokens
-- **Deployment:** Cloudflare Pages (primary), Next.js standalone
-- **State Management:** XState for finite state machines
-- **Authentication:** NextAuth.js
+- **Deployment:** Cloudflare Pages
 
 ## Monorepo Structure
 
 ```
 base-shop/
-├── apps/                    # Applications
-│   ├── cms/                # Content Management System (port 3006)
-│   ├── brikette/           # Brikette shop example
-│   ├── cover-me-pretty/    # Cover Me Pretty shop
-│   ├── cochlearfit/        # Cochlearfit shop
-│   ├── skylar/             # Skylar shop
-│   ├── dashboard/          # Dashboard app
-│   ├── product-pipeline/   # Product import pipeline
-│   ├── handbag-configurator/ # Interactive product configurator
-│   ├── xa/                 # XA shop
-│   ├── storybook/          # Storybook (port 6007)
-│   └── *-worker/           # Cloudflare Workers
+├── apps/                    # Applications (cms, brikette, skylar, etc.)
 ├── packages/               # Shared packages
 │   ├── platform-core/      # Domain logic, persistence, cart, pricing
 │   ├── ui/                 # Design system and UI components
 │   ├── config/             # Shared configuration
-│   ├── auth/               # Authentication logic
-│   ├── i18n/               # Internationalization
-│   ├── email/              # Email templates and marketing
-│   ├── stripe/             # Stripe integration
-│   ├── configurator/       # Product configurator engine
-│   ├── page-builder-core/  # Page builder core logic
-│   ├── page-builder-ui/    # Page builder React UI
-│   ├── platform-machine/   # XState machines and services
-│   ├── design-tokens/      # Design tokens
-│   └── types/              # Shared TypeScript types
+│   └── ...                 # auth, i18n, email, stripe, etc.
 ├── docs/                   # Documentation
 ├── scripts/                # Build and utility scripts
-├── __tests__/              # Test fixtures and data
-└── test/                   # Test utilities
+└── __tests__/              # Test fixtures and data
 ```
 
 ## Architecture Principles
@@ -67,7 +44,7 @@ base-shop/
 
 Components follow a strict layering model. **Higher layers may only import from lower layers:**
 
-1. **Atoms** (`packages/ui/components/atoms/`) - Primitive components (Button, Input)
+1. **Atoms** (`packages/ui/components/atoms/`) - Button, Input
 2. **Molecules** (`packages/ui/components/molecules/`) - Compositions of atoms
 3. **Organisms** (`packages/ui/components/organisms/`) - Complex interface sections
 4. **Templates** (`packages/ui/components/templates/`) - Page layouts
@@ -94,433 +71,6 @@ Low-level libraries (@acme/types, @acme/date-utils, etc.)
 - Internal package paths (use exports map only)
 - Higher layers from lower layers
 
-## Important File Locations
-
-### Configuration
-- Root config: `package.json`, `turbo.json`, `tsconfig.json`
-- Tailwind: `tailwind.config.mjs`, `packages/tailwind-config/`
-- ESLint: `eslint.config.mjs`, `.eslintrc.cjs`
-- TypeScript: `tsconfig.base.json`, `tsconfig.packages.json`
-- Jest: `jest.config.cjs`, `jest.setup.ts`
-- Cypress: `apps/cms/cypress.config.mjs`
-
-### Key Documentation
-- Architecture: `docs/architecture.md`
-- Setup: `docs/setup.md`, `docs/install.md`
-- Testing: `__tests__/docs/testing.md`
-- Development: `docs/development.md`
-- Environment vars: `docs/.env.reference.md`
-- Linting: `docs/linting.md`
-- Database: `packages/platform-core/prisma/schema.prisma`
-
-### Data
-- Test fixtures: `__tests__/data/shops/`
-- Inventory: `data/shops/*/inventory.json`
-- Rental pricing: `data/rental/pricing.json`
-
-## Critical Rules & Conventions
-
-### GIT SAFETY RULES (MANDATORY)
-
-**Read and follow `AGENTS.md` for complete Git safety procedures.** Key rules:
-
-1. **Commit every 30 minutes** — Uncommitted work is unrecoverable
-2. **Push every 2 hours (or 3 commits)** — GitHub is your backup
-3. **Never run destructive commands** — See prohibited list below
-4. **Never work on `main`** — Always use `work/*` branches
-5. **Check git status before risky operations** — Commit first
-
-#### Prohibited Commands (NEVER RUN)
-
-```bash
-git reset --hard    # Destroys uncommitted work
-git clean -fd       # Deletes files permanently
-git checkout -- .   # Discards all changes
-git stash pop       # Can cause conflicts; let human handle stashes
-git stash drop      # Loses stashed work
-git push --force    # Overwrites remote history
-git rebase -i       # Can lose commits
-```
-
-**If user requests these:** REFUSE and offer safe alternatives from `AGENTS.md`.
-
-**Reference incident (2026-01-14):** `git reset --hard` deleted 8 apps. Recovery took days. See `docs/RECOVERY-PLAN-2026-01-14.md`.
-
-#### Other Preservation Rules
-
-- **Never delete files** — Move to `archive/` folder instead
-- **Never delete plans** — Mark as COMPLETED and move to `docs/historical/`
-- **Read before edit** — Don't assume file contents
-- **Fix root causes** — Don't take shortcuts that create tech debt
-
-### PLAN DOCUMENTATION LIFECYCLE (MANDATORY)
-
-Plans are critical artifacts for understanding project history, decision-making, and reconstruction of events. They must NEVER be deleted and MUST include proper attribution and dating.
-
-#### 1. Plans Are NEVER Deleted
-
-**ABSOLUTE PROHIBITION** - Plans are historical records that may be needed for:
-- Understanding why decisions were made
-- Reconstructing timelines after incidents
-- Auditing who did what and when
-- Learning from past approaches
-
-**Correct approach:**
-```markdown
-# WRONG - Information destroyed
-[Delete the plan file when done]
-rm docs/plans/feature-xyz-plan.md
-
-# RIGHT - Archive and mark complete
-mv docs/plans/feature-xyz-plan.md docs/historical/plans/feature-xyz-plan.md
-# Then add completion header to the file (see below)
-```
-
-#### 2. Required Plan Metadata Headers
-
-Every plan document MUST include these metadata fields at the top:
-
-```markdown
----
-Type: Plan
-Status: Active | Completed | Superseded | Frozen
-Domain: <CMS | Runtime | Platform | Commerce | etc.>
-Created: YYYY-MM-DD
-Created-by: <Human name> | Claude <model> | Codex
-Last-updated: YYYY-MM-DD
-Last-updated-by: <Human name> | Claude <model> | Codex
-Completed: YYYY-MM-DD (if applicable)
-Completed-by: <Human name> | Claude <model> | Codex (if applicable)
-Superseded-by: <path to new plan> (if applicable)
-Related-PR: #123 (if applicable)
----
-```
-
-**Example:**
-```markdown
----
-Type: Plan
-Status: Completed
-Domain: CMS
-Created: 2026-01-10
-Created-by: Peter Cowling
-Last-updated: 2026-01-15
-Last-updated-by: Claude Opus 4.5
-Completed: 2026-01-15
-Completed-by: Claude Opus 4.5
-Related-PR: #456
----
-
-# Feature XYZ Implementation Plan
-
-## Completion Summary
-Implemented in PR #456 on 2026-01-15. All tasks completed successfully.
-
-[Original plan content preserved below...]
-```
-
-#### 3. Authorship Attribution Rules
-
-**Always track who did what:**
-- Human work: Use full name (e.g., "Peter Cowling")
-- Claude work: Use "Claude <model>" (e.g., "Claude Opus 4.5", "Claude Sonnet 4")
-- Codex work: Use "Codex"
-- Collaborative work: List all contributors (e.g., "Peter Cowling, Claude Opus 4.5")
-
-**In commit messages, always include:**
-```
-Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-```
-or
-```
-Co-Authored-By: Codex <noreply@openai.com>
-```
-
-#### 4. Plan Status Transitions
-
-Plans move through these states:
-
-```
-Active → Completed (work finished, plan archived)
-Active → Superseded (replaced by better plan)
-Active → Frozen (paused indefinitely, may resume)
-```
-
-**When completing a plan:**
-1. Update the `Status:` to `Completed`
-2. Add `Completed:` date and `Completed-by:` attribution
-3. Add a "Completion Summary" section at the top
-4. Move to `docs/historical/plans/` directory
-5. Update any references to point to archived location
-
-**When superseding a plan:**
-1. Update old plan's `Status:` to `Superseded`
-2. Add `Superseded-by:` pointing to the new plan
-3. Move old plan to `docs/historical/plans/`
-4. New plan should reference the old plan in its context
-
-#### 5. Archive Directory Structure
-
-```
-docs/
-├── historical/
-│   ├── plans/           # Completed and superseded plans (flat, no date subdirs)
-│   ├── research/        # Historical research docs
-│   └── decisions/       # Historical decision records
-```
-
-**Note:** The canonical plan metadata fields are defined in `AGENTS.md`. Optional fields like `Related-PR` and `Relates-to charter` can be added when relevant.
-
-#### 6. Why This Matters
-
-**Reference incident (2026-01-14):** During recovery from a `git reset --hard` incident, the ability to reconstruct work depended entirely on having preserved documentation with clear authorship and dates. Without this metadata, determining what was lost and who did what would have been impossible.
-
-Plans with proper attribution allow:
-- **Audit trails**: Who made decisions and when
-- **Reconstruction**: Rebuild lost work from documented plans
-- **Learning**: Understand past approaches and their outcomes
-- **Accountability**: Clear ownership of work and decisions
-
-### File Operations
-- **Read before write:** ALWAYS read a file with the Read tool before editing
-- **Prefer Edit over Write:** Use Edit for existing files, Write only for new files
-- **Don't create docs:** Never proactively create README.md or documentation files unless explicitly requested
-- **Avoid over-engineering:** Only make changes that are directly requested
-
-### TypeScript
-- Use project references for package dependencies
-- Apps must map workspace packages to both `src` and `dist` in tsconfig paths
-- Provider packages need: `composite: true`, `declaration: true`, `declarationMap: true`
-
-### Testing (CRITICAL - Resource Safety)
-
-> **⚠️ Reference incident (2026-01-16):** Orphaned Jest processes consumed 2.5GB+ RAM, leaving only 93MB free on a 16GB machine. Load average hit 7.73. See `AGENTS.md` Testing Policy for full details.
-
-**NEVER run broad test suites without explicit user request:**
-
-```bash
-# ❌ PROHIBITED - spawns many workers, consumes 2-5GB RAM
-pnpm test                           # ALL monorepo tests
-pnpm --filter @acme/ui test         # ALL tests in large package
-jest                                # ALL tests in directory
-```
-
-**ALWAYS use targeted test commands:**
-
-```bash
-# ✅ REQUIRED - run minimum necessary tests
-pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx    # Single file
-pnpm --filter @acme/ui test -- --testPathPattern="Button"   # Pattern match
-pnpm --filter @acme/ui test -- -t "renders correctly"       # Single test name
-```
-
-**Before running ANY tests:**
-1. Check for existing Jest processes: `ps aux | grep jest | grep -v grep`
-2. Kill orphans if found: `pkill -f "jest-worker" && pkill -f "jest.js"`
-3. When broader tests needed, limit workers: `--maxWorkers=2`
-
-**Full policy:** See `AGENTS.md` → Testing Policy section.
-
-**Other testing notes:**
-- Seed data before E2E: `pnpm --filter @acme/platform-core exec prisma db seed`
-- Coverage: `pnpm test:coverage`
-- **Coverage targets:** 80% lines/branches/functions globally; 90%/85%/90% for `@acme/ui`
-- See `docs/coverage.md` for full coverage configuration and targets
-
-#### Jest Preset Usage
-
-All packages/apps should use the centralized Jest presets from `@acme/config/jest-presets`:
-
-**Preset Selection:**
-- Use `react` preset for React components (jsdom environment)
-- Use `node` preset for Node.js packages (no DOM)
-
-**Coverage Tiers:**
-- `strict` (90/85/90): Critical business logic (@acme/ui, payment processing)
-- `standard` (80/80/80): Default for most packages
-- `moderate` (60/60/60): Partial coverage, legacy code
-- `relaxed` (40/30/30): Apps, presentation-only code
-- `minimal` (0/0/0): Scripts, tooling, temporary exemptions
-
-**Example Configuration:**
-```javascript
-// jest.config.cjs
-const { react, coverageTiers } = require("@acme/config/jest-presets");
-
-module.exports = {
-  ...react,
-  coverageThreshold: coverageTiers.standard,
-  // Add package-specific overrides only if needed
-};
-```
-
-**Common Customizations:**
-```javascript
-// Add app-specific path aliases
-moduleNameMapper: {
-  ...react.moduleNameMapper,
-  "^@/(.*)$": "<rootDir>/src/$1",
-}
-
-// Exclude files from coverage
-collectCoverageFrom: [
-  "src/**/*.ts",
-  "!src/**/*.generated.ts",
-]
-
-// Add package-specific setup
-setupFilesAfterEnv: [
-  ...react.setupFilesAfterEnv,
-  "<rootDir>/jest.setup.local.ts",
-]
-```
-
-**Rollback Pattern:**
-During migration, configs use `JEST_USE_NEW_PRESET` env var:
-```bash
-# Temporarily use old config if issues arise
-JEST_USE_NEW_PRESET=0 pnpm --filter <package> test
-```
-
-**Important Rules:**
-- Don't override `coverageDirectory` (breaks aggregation)
-- Use coverage tiers instead of custom thresholds
-- When overriding `moduleNameMapper`, always spread preset's mappings first
-- Read `packages/config/jest-presets/README.md` for full documentation
-
-**Common Pitfalls:**
-- ESM resolution errors: Add package to `transformIgnorePatterns`
-- Multiple React instances: Preserve preset's React path mappings
-- Coverage not found: Don't override `coverageDirectory`
-- Setup order issues: Append to `setupFilesAfterEnv`, don't replace
-
-### Git & Commits
-
-**Follow `AGENTS.md` Git Safety Rules.** Key points:
-
-- **Commit automatically every 30 minutes** (or after significant changes) — see AGENTS.md Rule 1
-- **Push to GitHub every 2 hours** (or every 3 commits) — see AGENTS.md Rule 2
-- **Work on `work/*` branches only** — never directly on `main`
-- **Never run destructive commands** — see prohibited list in AGENTS.md Rule 3
-- Use attribution matching the agent that did the work (see AGENTS.md for format)
-- Use heredoc for commit messages
-- Resolve conflicts properly — never reset to avoid them
-
-### Code Style
-- Don't add unnecessary error handling for scenarios that can't happen
-- Trust internal code and framework guarantees
-- Don't create abstractions for one-time operations
-- Don't add comments/docstrings to code you didn't change
-- Delete unused code completely (no `// removed` comments)
-
-## Common Commands
-
-### Development
-```bash
-# Start all apps in dev mode
-pnpm dev
-
-# Start specific app
-pnpm --filter @apps/cms dev
-pnpm --filter @apps/brikette dev
-
-# Type checking (watch mode)
-pnpm typecheck:watch
-
-# Build everything
-pnpm build
-
-# Build specific dependencies for CMS
-pnpm build:cms-deps
-```
-
-### Testing
-```bash
-# ⚠️ ALWAYS use targeted tests - see "Testing (CRITICAL)" section above
-
-# Run a SINGLE test file (preferred)
-pnpm --filter @acme/platform-core test -- src/cart/addItem.test.ts
-
-# Run tests matching a pattern
-pnpm --filter @acme/platform-core test -- --testPathPattern="cart"
-
-# Run a specific test by name
-pnpm --filter @acme/platform-core test -- -t "adds item to cart"
-
-# If you MUST run broader tests, limit workers
-pnpm --filter @acme/platform-core test -- --maxWorkers=2
-
-# Check for orphaned test processes BEFORE running tests
-ps aux | grep jest | grep -v grep
-
-# Kill orphaned processes if found
-pkill -f "jest-worker" && pkill -f "jest.js"
-
-# E2E tests (run sparingly - resource intensive)
-pnpm e2e:cms
-pnpm e2e:shop
-
-# Storybook
-pnpm storybook
-pnpm test-storybook
-
-# Coverage (run only when specifically needed)
-pnpm test:coverage
-```
-
-### Linting & Quality
-```bash
-pnpm lint
-pnpm typecheck
-pnpm format
-```
-
-### Database
-```bash
-# Generate Prisma client
-pnpm prisma:generate
-
-# Seed database
-pnpm --filter @acme/platform-core exec prisma db seed
-
-# Seed with skip inventory
-pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
-```
-
-### Shop Management
-```bash
-# Initialize new shop
-pnpm init-shop
-
-# Inventory operations
-pnpm inventory export <shop> --file inventory.csv
-pnpm inventory import <shop> --file inventory.json
-pnpm inventory:check
-```
-
-### Deployment
-
-The repo uses a two-stage deployment workflow:
-
-1. **Staging (automatic):** Merging to `main` auto-deploys to staging
-2. **Production (manual):** Requires explicit trigger and approval
-
-```bash
-# Promote an app to production (via GitHub CLI)
-gh workflow run <app>.yml -f deploy-target=production
-
-# Or use the centralized promotion workflow
-gh workflow run promote-to-production.yml -f app=<app-name>
-
-# Apps: product-pipeline, cms, brikette, skylar, reception, prime,
-#       cover-me-pretty, xa, xa-b, xa-j, cochlearfit, handbag-configurator
-```
-
-**Staging URLs:** `staging.<app>.pages.dev`
-**Production URLs:** `<app>.pages.dev`
-
-See [docs/deployment-workflow.md](docs/deployment-workflow.md) for full details.
-
 ## Important Patterns
 
 ### Importing from Workspace Packages
@@ -543,14 +93,8 @@ import { Button } from '@/components/atoms'
 import { Button as ShButton } from '@/components/atoms/shadcn'
 ```
 
-### Environment Variables
-- Next.js apps: `NEXT_PUBLIC_*` for client-side
-- Server-only: no prefix required
-- See `.env.template` and `docs/.env.reference.md`
-
 ### Client-Only Code (App Router)
 ```typescript
-// Use 'use client' directive
 'use client'
 
 export function ClientComponent() {
@@ -558,205 +102,59 @@ export function ClientComponent() {
 }
 ```
 
-## Security
+## Key File Locations
 
-- Content Security Policy enforced via middleware
-- Strict-Transport-Security headers
-- Never commit secrets or `.env` files
-- Warn if user tries to commit `.env`, `credentials.json`, etc.
+| Category | Location |
+|----------|----------|
+| Architecture | `docs/architecture.md` |
+| Database schema | `packages/platform-core/prisma/schema.prisma` |
+| Test fixtures | `__tests__/data/shops/` |
+| Environment vars | `docs/.env.reference.md` |
 
-## Database Schema Highlights
+## Common Commands
 
-```prisma
-Shop             // JSON shop configuration
-Page             // Per-shop pages
-RentalOrder      // Rental transactions
-SubscriptionUsage // Monthly shipment counts
-CustomerProfile  // Customer metadata
-CustomerMfa      // MFA secrets
-User             // Application users
-ReverseLogisticsEvent // Return tracking
-```
-
-## Development Ports
-
-Check `docs/dev-ports.md` for current port assignments. Common ones:
-- CMS: 3006
-- Storybook: 6007
-- Shops: Various (see dev-ports.md)
-
-## Migration & Upgrade Guidance
-
-- Check `docs/plans/` for active migration plans
-- Check `docs/upgrade-preview-republish.md` for shop upgrade workflows
-- Inventory is JSON-based (migration to Prisma planned - see `docs/inventory-migration.md`)
-
-## When Asked to Code
-
-### Before Writing Code
-1. Read relevant files first (don't assume structure)
-2. Check existing patterns in the codebase
-3. Review architecture docs for the relevant layer
-4. Verify you're in the correct package/app
-
-### During Implementation
-1. Use TodoWrite to track multi-step tasks
-2. Follow existing code style and patterns
-3. Respect the UI layer hierarchy
-4. Use existing types and utilities
-5. Add tests if the area has test coverage
-
-### After Implementation
-1. Run relevant tests: `pnpm --filter <package> test`
-2. Run type checking: `pnpm typecheck`
-3. Run linting: `pnpm lint`
-4. Commit changes (follow AGENTS.md Rule 1 — commit every 30 min or after significant work)
-
-## Common Pitfalls to Avoid
-
-### Destructive Actions (CRITICAL)
-1. **NEVER run `git reset --hard`** - This destroyed 8 apps worth of work on 2026-01-14
-2. **NEVER run `git clean`, `git checkout -- .`, or other destructive git commands**
-3. **NEVER delete files** - Archive them instead (`mv file.ts archive/file.ts`)
-4. **NEVER delete plan files** - Mark them as COMPLETED with status header
-5. **NEVER take shortcuts** - If a solution involves deleting something to simplify, find another way
-
-### Architecture & Code
-6. **Don't break layer hierarchy** - atoms can't import organisms
-7. **Don't import from internal paths** - use package exports
-8. **Don't use bash for file operations** - use Read/Edit/Write tools
-9. **Don't create files unnecessarily** - prefer editing existing ones
-10. **Don't work directly on `main`** - use `work/*` branches (see AGENTS.md)
-11. **Don't add backwards-compatibility hacks** - archive unused code instead
-12. **Don't guess URLs** - only use user-provided or documented URLs
-13. **Don't add time estimates** - focus on what needs to be done
-
-### Testing
-14. **Don't run broad test suites** - Use targeted single-file tests (incident: 2026-01-16)
-15. **Don't start tests without checking for existing processes** - `ps aux | grep jest`
-16. **Don't leave test processes running** - Kill orphans before starting new tests
-
-### Decision Making
-17. **Don't assume you know what a file contains** - Read it first
-18. **Don't fix symptoms instead of causes** - Investigate root cause
-19. **Don't choose easy over correct** - The extra effort now saves pain later
-
-## Systemic Issues: Plan-First Approach (MANDATORY)
-
-When encountering a problem that appears to require a large-scale fix (e.g., fixing 80+ files, disabling linters/type checkers, mass search-and-replace), **STOP and create a plan document instead of taking shortcuts**.
-
-### What Constitutes a Shortcut
-
-| Shortcut (AVOID) | Why It's Bad | Proper Approach |
-|------------------|--------------|-----------------|
-| `sed -i 's/old/new/g' **/*.ts` on 80+ files | Creates mass changes without understanding root cause | Create a plan to fix the underlying tooling issue |
-| Adding `ignoreDuringBuilds: true` to Next.js config | Masks ESLint configuration problems | Create a plan to fix ESLint configuration |
-| Adding `ignoreBuildErrors: true` to Next.js config | Masks TypeScript type issues | Create a plan to fix the type definitions |
-| Deleting a file to fix an import error | Loses work and doesn't fix the actual problem | Fix the import path or module resolution |
-| Disabling a test to make CI pass | Hides real bugs | Fix the code the test is catching |
-| Using `any` type to silence TypeScript | Creates type safety holes | Fix the types properly |
-| Mass-renaming imports without fixing the build system | Creates maintenance burden | Fix the build tooling (bundler, path aliases) |
-
-### When to Create a Plan
-
-Create a plan document in `docs/plans/` when:
-
-1. **The fix affects 10+ files** — Large-scale changes need tracking and reversibility
-2. **The fix involves disabling checks** — Linting, type checking, or test skipping
-3. **The fix is a workaround, not a solution** — "This works but isn't the right way"
-4. **The root cause is tooling or configuration** — Not just a code bug
-5. **You're uncertain if the approach is correct** — Document reasoning for review
-
-### Plan Creation Process
-
-1. **Identify the problem clearly** — What's broken, what error messages appear
-2. **Research the root cause** — Don't just fix symptoms
-3. **Propose a proper solution** — How it should be fixed long-term
-4. **Create the plan document**:
-   ```bash
-   # Location
-   docs/plans/<descriptive-name>-plan.md
-
-   # Required metadata (see PLAN DOCUMENTATION LIFECYCLE section)
-   Type: Plan
-   Status: Active
-   Domain: <relevant domain>
-   Created: <today's date>
-   Created-by: Claude <model>
-   ```
-5. **Tell the user** — "This is a systemic issue. I've created a plan at `docs/plans/xyz-plan.md` for the proper fix. Would you like to proceed with the plan, or should I apply a temporary workaround with a TODO noting the tech debt?"
-
-### Example: Path Alias Issue
-
-**Scenario:** The `@acme/ui` package uses `@ui/` path aliases that don't resolve in downstream apps.
-
-**Wrong approach:**
 ```bash
-# DON'T: Mass sed replace across 80+ files
-sed -i 's/@ui\//..\/..\/src\//g' packages/ui/src/**/*.ts
+# Development
+pnpm --filter @apps/cms dev
+pnpm typecheck:watch
+
+# Testing (always targeted - see AGENTS.md)
+pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx
+
+# Building
+pnpm build
+pnpm --filter @acme/platform-core build
+
+# Database
+pnpm prisma:generate
+pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
-**Right approach:**
-1. Recognize this as a build tooling issue (tsc doesn't transform paths)
-2. Create `docs/plans/ui-package-build-tooling-plan.md`
-3. Document the proper solution (migrate to tsup/esbuild bundler)
-4. Present the plan to the user before proceeding
+## When Working on Code
 
-### Reference Incident
+1. **Read before editing** — Don't assume structure
+2. **Follow existing patterns** — Check similar code first
+3. **Respect layer hierarchy** — Check `docs/architecture.md`
+4. **Use targeted tests** — Never run `pnpm test` unfiltered
+5. **ESM vs CJS in Jest** — If a test or imported file throws ESM parsing errors (`Cannot use import statement outside a module`, `import.meta`), rerun with `JEST_FORCE_CJS=1` to force the CommonJS preset.
+6. **Validate before commit** — `pnpm typecheck && pnpm lint`
 
-On 2026-01-15, shortcuts were taken to "fix" build issues:
-- `sed` replaced `@ui/` imports in 80+ files (created maintenance burden)
-- `ignoreDuringBuilds: true` was added (masked ESLint config issues)
-- `ignoreBuildErrors: true` was added (masked React 19 type issues)
+## Workflow Prompts
 
-These shortcuts created technical debt that now needs proper plans to resolve:
-- `docs/plans/ui-package-build-tooling-plan.md`
-- `docs/plans/monorepo-eslint-standardization-plan.md`
-
-**Lesson:** Proper planning upfront prevents accumulated tech debt.
-
-## Helpful Context
-
-- This is a rental/e-commerce platform with deposits handled via Stripe
-- Inventory tracks stock levels and sends low-stock alerts
-- Multiple shops can be created and managed via the CMS
-- Page Builder allows visual editing of shop pages
-- Marketing automation supports SendGrid and Resend
-- Offline support via Service Workers (see XA app pattern)
-
-## Getting Help
-
-- Full docs: `docs/`
-- Testing docs: `__tests__/docs/testing.md`
-- Plans & RFCs: `docs/plans/`, `docs/cms-plan/`
-- Troubleshooting: `docs/troubleshooting.md`
+For structured workflows, use:
+- `.claude/prompts/plan-feature.md` — Planning mode
+- `.claude/prompts/build-feature.md` — Building mode
 
 ## Quick Reference
 
-| Task | Command |
-|------|---------|
-| Install | `pnpm install` |
-| Dev | `pnpm --filter <app> dev` |
-| Build | `pnpm build` |
-| Test single file | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
-| Test by pattern | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
-| Test (limited workers) | `pnpm --filter <pkg> test -- --maxWorkers=2` |
-| Check for orphan tests | `ps aux \| grep jest \| grep -v grep` |
-| Kill orphan tests | `pkill -f "jest-worker" && pkill -f "jest.js"` |
-| Typecheck | `pnpm typecheck` |
-| Lint | `pnpm lint` |
-| Format | `pnpm format` |
-| Storybook | `pnpm storybook` |
+| Need | Location |
+|------|----------|
+| Git rules | [AGENTS.md](AGENTS.md) |
+| Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
+| Plan schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
+| Architecture | [docs/architecture.md](docs/architecture.md) |
+| Troubleshooting | [docs/troubleshooting.md](docs/troubleshooting.md) |
 
 ---
 
-**Last Updated:** 2026-01-16
-
-**Recent Updates:**
-- 2026-01-16: Added Testing Policy (CRITICAL) section after orphaned Jest processes incident (Claude Opus 4.5)
-- 2026-01-16: Added Deployment section with staging/production workflow (Claude Opus 4.5)
-- 2026-01-15: Added "Systemic Issues: Plan-First Approach" section (Claude Opus 4.5)
-
-**Incident Reference:** See `docs/RECOVERY-PLAN-2026-01-14.md` for why destructive commands are prohibited.
-
-For questions or clarifications, check the extensive documentation in `docs/` or ask the user.
+**Previous version:** [docs/historical/CLAUDE-2026-01-17-pre-ralph.md](docs/historical/CLAUDE-2026-01-17-pre-ralph.md)

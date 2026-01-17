@@ -22,7 +22,11 @@ class ManagedMessageChannel {
   constructor() {
     this.port1 = {
       onmessage: null,
-      addEventListener: function (this: any, type: string, handler: (e: { data: unknown }) => void) {
+      addEventListener: function (
+        this: { onmessage: ((event: { data: unknown }) => void) | null },
+        type: string,
+        handler: (e: { data: unknown }) => void
+      ) {
         if (type === "message") {
           this.onmessage = handler;
         }
@@ -35,9 +39,13 @@ class ManagedMessageChannel {
     };
     this.port2 = {
       postMessage: (data: unknown) => {
-        setTimeout(() => {
-          (this.port1.onmessage as any)?.({ data });
+        const timer = setTimeout(() => {
+          const handler = this.port1.onmessage;
+          if (handler) {
+            handler({ data });
+          }
         }, 0);
+        (timer as { unref?: () => void }).unref?.();
       },
       addEventListener: () => {},
       removeEventListener: () => {},
@@ -47,6 +55,8 @@ class ManagedMessageChannel {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(globalThis as any).MessageChannel = ManagedMessageChannel;
+declare global {
+  var MessageChannel: typeof ManagedMessageChannel;
+}
 
+globalThis.MessageChannel = ManagedMessageChannel;

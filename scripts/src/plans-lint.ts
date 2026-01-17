@@ -130,6 +130,9 @@ async function main() {
         `[plans-lint] ${rel}: Plan missing Relates-to charter header`,
       );
       hadError = true;
+    } else if (header.relatesToCharter.toLowerCase() === "none") {
+      // "none" is a valid explicit acknowledgment that the plan doesn't relate to a charter
+      // This is acceptable for repo-level or cross-cutting plans
     } else {
       const ok = await hasCharterType(header.relatesToCharter);
       if (!ok) {

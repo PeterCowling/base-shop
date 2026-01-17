@@ -18,7 +18,7 @@ jest.mock("@acme/platform-core/orders", () => ({
   refundOrder: jest.fn(),
 }));
 
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));

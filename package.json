@@ -335,6 +335,7 @@
       "react": "19.2.0-canary-3fbfb9ba-20250409",
       "yallist": "4.0.0",
       "dom-serializer": "2.0.0",
+      "form-data": "4.0.5",
       "htmlparser2": "8.0.2",
       "domhandler": "5.0.3",
       "domutils": "3.1.0",

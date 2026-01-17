@@ -1,7 +1,12 @@
+---
 Type: Plan
 Status: Draft
 Domain: Dashboard / Upgrade
 Last-reviewed: 2025-12-02
+Relates-to charter: none
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
 
 “Dashboard Upgrade Aggregator” — Implementation Plan
 rev 2025-12-02 · Slice roadmap toward multi-shop release control

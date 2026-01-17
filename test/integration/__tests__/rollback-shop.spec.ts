@@ -58,6 +58,17 @@ describe("rollback-shop script", () => {
       );
       chmodSafe(join(binDir, "pnpm"), 0o755);
 
+      const acmeLibDir = join(tmp, "node_modules", "@acme", "lib");
+      mkdirSafe(acmeLibDir, { recursive: true });
+      writeFileSafe(
+        join(acmeLibDir, "index.js"),
+        "exports.validateShopName = (id) => id;",
+      );
+      writeFileSafe(
+        join(acmeLibDir, "package.json"),
+        JSON.stringify({ name: "@acme/lib", version: "0.0.0", main: "index.js" }, null, 2),
+      );
+
       const appDir = join(tmp, "apps", "shop-test");
       mkdirSafe(appDir, { recursive: true });
       writeFileSafe(
@@ -77,7 +88,12 @@ describe("rollback-shop script", () => {
 
       execFileSync(process.execPath, [scriptPath, "shop-test"], {
         cwd: tmp,
-        env: { ...process.env, PATH: `${binDir}:${process.env.PATH}`, LOG_PATH: logPath },
+        env: {
+          ...process.env,
+          PATH: `${binDir}:${process.env.PATH}`,
+          LOG_PATH: logPath,
+          NODE_PATH: join(__dirname, "../../..", "node_modules"),
+        },
       });
 
       const log = readFileSafe(logPath).trim().split("\n");

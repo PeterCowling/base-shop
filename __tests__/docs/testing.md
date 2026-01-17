@@ -1,18 +1,30 @@
 # Testing
 
-This guide explains how to run unit and integration tests and how to choose between mocking Prisma calls or using a real database. Tests run with a stubbed Prisma client by default, so `pnpm test` completes without requiring a database.
+This guide explains how to run unit and integration tests and how to choose between mocking Prisma calls or using a real database. Tests run with a stubbed Prisma client by default.
+
+> **For agent-specific testing rules, see [docs/testing-policy.md](../../docs/testing-policy.md).**
+> Key rule: Always use targeted tests — never run `pnpm test` unfiltered.
 
 ## Running tests
+
+### Targeted Test Commands (REQUIRED)
+
+Always scope tests to the minimum necessary:
+
+```bash
+# Run a single test file (preferred)
+pnpm --filter @acme/platform-core test -- src/cart/addItem.test.ts
+
+# Run tests matching a pattern
+pnpm --filter @acme/platform-core test -- --testPathPattern="cart"
+
+# Limit workers for broader runs
+pnpm --filter @acme/platform-core test -- --maxWorkers=2
+```
 
 ### Stubbed Prisma client (`DATABASE_URL` unset)
 
 When `DATABASE_URL` is not defined, the platform swaps Prisma with an in-memory stub. This mode is ideal for fast unit tests that focus on business logic.
-
-Run tests without a database:
-
-```bash
-pnpm test
-```
 
 ### Real Prisma client (`DATABASE_URL` set)
 
@@ -21,7 +33,8 @@ Set `DATABASE_URL` to point at a test database to exercise the real Prisma clien
 ```bash
 export DATABASE_URL="postgres://user:password@localhost:5432/base_shop_test"
 pnpm prisma migrate deploy
-pnpm test
+# Run targeted tests (never unfiltered pnpm test)
+pnpm --filter @acme/platform-core test -- --testPathPattern="integration"
 ```
 
 ## Mocking Prisma vs. using a test database

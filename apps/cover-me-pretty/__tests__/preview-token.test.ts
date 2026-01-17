@@ -17,7 +17,7 @@ describe("/api/preview-token", () => {
   });
 
   test("returns 401 for unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
@@ -27,7 +27,7 @@ describe("/api/preview-token", () => {
   });
 
   test("returns token when authorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));

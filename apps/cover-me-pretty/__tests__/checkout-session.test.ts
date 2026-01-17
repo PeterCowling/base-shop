@@ -45,7 +45,7 @@ const validateInventoryAvailabilityMock =
   validateInventoryAvailability as jest.Mock;
 
 jest.mock("@acme/platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@acme/auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
 jest.mock("@acme/platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
 jest.mock("@acme/platform-core/identity", () => ({
   getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),

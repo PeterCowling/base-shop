@@ -1,5 +1,5 @@
 // apps/cover-me-pretty/__tests__/orders-history-api.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));

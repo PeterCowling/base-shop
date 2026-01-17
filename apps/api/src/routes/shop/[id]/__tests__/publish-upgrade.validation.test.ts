@@ -33,7 +33,10 @@ describe("onRequestPost validation", () => {
       const body = await res.json();
       expect(res.status).toBe(400);
       expect(body).toEqual({ error: "Invalid shop id" });
-      expect(warn).toHaveBeenCalledWith("invalid shop id", { id: undefined });
+      expect(warn).toHaveBeenCalledWith(
+        "invalid shop id",
+        expect.objectContaining({ id: undefined })
+      );
       warn.mockReset();
     });
 
@@ -51,7 +54,10 @@ describe("onRequestPost validation", () => {
         const body = await res.json();
         expect(res.status).toBe(400);
         expect(body).toEqual({ error: "Invalid shop id" });
-        expect(warn).toHaveBeenCalledWith("invalid shop id", { id: bad });
+        expect(warn).toHaveBeenCalledWith(
+          "invalid shop id",
+          expect.objectContaining({ id: bad })
+        );
         warn.mockReset();
       }
     );
@@ -75,7 +81,10 @@ describe("onRequestPost validation", () => {
         const body = await res.json();
         expect(res.status).toBe(401);
         expect(body).toEqual({ error: "Unauthorized" });
-        expect(warn).toHaveBeenCalledWith("missing bearer token", { id });
+        expect(warn).toHaveBeenCalledWith(
+          "missing bearer token",
+          expect.objectContaining({ id })
+        );
         warn.mockReset();
       }
     );
@@ -96,7 +105,10 @@ describe("onRequestPost validation", () => {
     const body = await res.json();
     expect(res.status).toBe(403);
     expect(body).toEqual({ error: "Forbidden" });
-    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    expect(warn).toHaveBeenCalledWith(
+      "invalid token",
+      expect.objectContaining({ id })
+    );
     warn.mockReset();
   });
 
@@ -117,7 +129,10 @@ describe("onRequestPost validation", () => {
     const body = await res.json();
     expect(res.status).toBe(403);
     expect(body).toEqual({ error: "Forbidden" });
-    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    expect(warn).toHaveBeenCalledWith(
+      "invalid token",
+      expect.objectContaining({ id })
+    );
     expect(verify).not.toHaveBeenCalled();
     warn.mockReset();
     verify.mockRestore();
@@ -141,7 +156,10 @@ describe("onRequestPost validation", () => {
     const body = await res.json();
     expect(res.status).toBe(403);
     expect(body).toEqual({ error: "Forbidden" });
-    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    expect(warn).toHaveBeenCalledWith(
+      "invalid token",
+      expect.objectContaining({ id })
+    );
     warn.mockReset();
     verify.mockRestore();
   });

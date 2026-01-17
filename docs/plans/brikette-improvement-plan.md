@@ -1,3 +1,13 @@
+---
+Type: Plan
+Status: Draft
+Domain: Brikette
+Last-reviewed: 2026-01-12
+Relates-to charter: TBD (no Brikette charter yet)
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
+
 # Brikette App Improvement Plan
 
 **Date:** 2026-01-12

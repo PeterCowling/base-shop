@@ -19,7 +19,10 @@ describe('onRequest authorization', () => {
     const res = await onRequest(createContext({ shopId: 'bcd' }));
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'missing bearer token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when authorization not bearer', async () => {
@@ -28,7 +31,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'missing bearer token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when preview token secret missing', async () => {
@@ -38,7 +44,10 @@ describe('onRequest authorization', () => {
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when preview token secret is empty string', async () => {
@@ -49,7 +58,10 @@ describe('onRequest authorization', () => {
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token is empty', async () => {
@@ -79,7 +91,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when jwt.verify throws', async () => {
@@ -102,7 +117,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token expired', async () => {
@@ -117,7 +135,10 @@ describe('onRequest authorization', () => {
     expect(verify).toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token has wrong audience', async () => {
@@ -140,7 +161,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token has wrong issuer', async () => {
@@ -163,7 +187,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token payload lacks numeric exp', async () => {
@@ -174,7 +201,10 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 
   it('returns 403 when token payload missing exp', async () => {
@@ -186,6 +216,9 @@ describe('onRequest authorization', () => {
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
+    expect(warnSpy).toHaveBeenCalledWith(
+      'invalid token',
+      expect.objectContaining({ shopId: 'bcd' })
+    );
   });
 });

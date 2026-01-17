@@ -1,9 +1,15 @@
-<!-- docs/plans/edge-commerce-standardization-implementation-plan.md -->
-
-Type: Implementation Plan
-Status: Draft (Revised after repo review + follow‑up refinements)
-Domains: Platform, Commerce
+---
+Type: Plan
+Status: Draft
+Status-note: Revised after repo review + follow-up refinements
+Domain: Platform, Commerce
 Last-reviewed: 2025-12-26
+Relates-to charter: docs/commerce-charter.md
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
+
+<!-- docs/plans/edge-commerce-standardization-implementation-plan.md -->
 
 Unified Edge Routing + Multi‑Tenant Commerce Standardization Implementation Plan
 Audience
@@ -801,4 +807,3 @@ Workstream 6 (worker convergence + optimistic “Processing…” UX + deprecati
 Workstream 7 (payments breadth consolidation + tenant-scoped jobs)
 
 Workstreams 8–9 continuously (domain rollout + security/observability hardening)
-

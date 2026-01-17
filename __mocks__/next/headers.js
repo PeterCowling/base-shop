@@ -1,4 +1,7 @@
-import { fn } from 'storybook/test';
+const namedMock = (impl, name) => {
+  const mockFn = jest.fn(impl);
+  return mockFn.mockName(name);
+};
 
 const cookieStore = new Map();
 
@@ -6,7 +9,7 @@ function mapEntry([name, value]) {
   return { name, value };
 }
 
-export const cookies = fn(() => ({
+export const cookies = namedMock(() => ({
   get: (name) => {
     if (!cookieStore.has(name)) return undefined;
     return mapEntry([name, cookieStore.get(name)]);
@@ -22,7 +25,7 @@ export const cookies = fn(() => ({
   clear: () => {
     cookieStore.clear();
   },
-})).mockName('next/headers.cookies');
+}), 'next/headers.cookies');
 
 function createHeadersStore() {
   const store = new Map();
@@ -55,16 +58,16 @@ function createHeadersStore() {
   };
 }
 
-export const headers = fn(() => {
+export const headers = namedMock(() => {
   if (typeof Headers === 'function') {
     return new Headers();
   }
   return createHeadersStore();
-}).mockName('next/headers.headers');
+}, 'next/headers.headers');
 
 const draftModeState = { isEnabled: false };
 
-export const draftMode = fn(() => ({
+export const draftMode = namedMock(() => ({
   isEnabled: draftModeState.isEnabled,
   enable: () => {
     draftModeState.isEnabled = true;
@@ -72,7 +75,7 @@ export const draftMode = fn(() => ({
   disable: () => {
     draftModeState.isEnabled = false;
   },
-})).mockName('next/headers.draftMode');
+}), 'next/headers.draftMode');
 
 export default {
   cookies,

@@ -1,5 +1,5 @@
 // apps/cover-me-pretty/__tests__/logout.test.ts
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   destroyCustomerSession: jest.fn(),
 }));

@@ -44,7 +44,13 @@
     "apps/**/__tests__/**/*.ts",
     "apps/**/__tests__/**/*.tsx",
     "apps/**/?(*.)+(spec|test).ts",
-    "apps/**/?(*.)+(spec|test).tsx"
+    "apps/**/?(*.)+(spec|test).tsx",
+    "functions/**/__tests__/**/*.ts",
+    "functions/**/__tests__/**/*.tsx",
+    "functions/**/?(*.)+(spec|test).ts",
+    "functions/**/?(*.)+(spec|test).tsx",
+    "functions/**/*.ts",
+    "functions/**/*.tsx"
   ],
 
   /* Exclude e2e specs and any test-framework configs of their own ---- */

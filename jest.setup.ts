@@ -354,3 +354,59 @@ const shouldIgnoreConsoleMessage = (
   // eslint-disable-next-line no-console
   globalThis.console = patchedConsole;
 })();
+
+if (process.env.JEST_DEBUG_HANDLES === "1") {
+  afterAll(() => {
+    const getHandles = (process as any)._getActiveHandles?.bind(process);
+    const getRequests = (process as any)._getActiveRequests?.bind(process);
+    const handles: any[] = getHandles ? getHandles() : [];
+    const requests: any[] = getRequests ? getRequests() : [];
+
+    // Surface handle types to help identify open resources keeping Jest alive.
+    const handleSummary = handles.map((handle) => {
+      const type = handle?.constructor?.name;
+      const base = {
+        type,
+        hasRef: typeof handle?.hasRef === "function" ? handle.hasRef() : undefined,
+      };
+
+      if (type === "Timeout") {
+        return { ...base, details: { repeat: handle?._repeat, idleTimeout: handle?._idleTimeout } };
+      }
+
+      if (type === "Socket") {
+        const socket = handle as {
+          localAddress?: string;
+          localPort?: number;
+          remoteAddress?: string;
+          remotePort?: number;
+          fd?: number;
+          readable?: boolean;
+          writable?: boolean;
+        };
+        return {
+          ...base,
+          details: {
+            local: socket.localAddress ? `${socket.localAddress}:${socket.localPort ?? ""}` : undefined,
+            remote: socket.remoteAddress
+              ? `${socket.remoteAddress}:${socket.remotePort ?? ""}`
+              : undefined,
+            fd: socket.fd,
+            readable: socket.readable,
+            writable: socket.writable,
+          },
+        };
+      }
+
+      return base;
+    });
+
+    // eslint-disable-next-line no-console
+    console.log("JEST_DEBUG_HANDLES active handles:", handleSummary);
+    // eslint-disable-next-line no-console
+    console.log(
+      "JEST_DEBUG_HANDLES active requests:",
+      requests.map((req) => req?.constructor?.name),
+    );
+  });
+}

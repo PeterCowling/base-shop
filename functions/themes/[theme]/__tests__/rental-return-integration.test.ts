@@ -14,6 +14,7 @@ async function withShop(
   ) => Promise<void>
 ) {
   await withTempRepo(async (dir) => {
+    const rentalOrders: any[] = [];
     await setupRentalData(dir, "cover-me-pretty");
     await seedShop(dir, {
       id: "cover-me-pretty",
@@ -30,6 +31,36 @@ async function withShop(
       priceOverrides: {},
       localeOverrides: {},
     } as any);
+    jest.doMock("@acme/platform-core/db", () => ({
+      prisma: {
+        rentalOrder: {
+          findMany: jest.fn(async ({ where }) =>
+            rentalOrders.filter((order) => order.shop === where.shop),
+          ),
+          findUnique: jest.fn(async ({ where }) =>
+            rentalOrders.find(
+              (order) =>
+                order.shop === where.shop_sessionId.shop &&
+                order.sessionId === where.shop_sessionId.sessionId,
+            ) ?? null,
+          ),
+          create: jest.fn(async ({ data }) => {
+            rentalOrders.push(data);
+            return data;
+          }),
+          update: jest.fn(async ({ where, data }) => {
+            const idx = rentalOrders.findIndex(
+              (order) =>
+                order.shop === where.shop_sessionId.shop &&
+                order.sessionId === where.shop_sessionId.sessionId,
+            );
+            if (idx === -1) throw new Error("order not found");
+            rentalOrders[idx] = { ...rentalOrders[idx], ...data };
+            return rentalOrders[idx];
+          }),
+        },
+      },
+    }));
     jest.doMock(
       "@acme/zod-utils/initZod",
       () => ({ initZod: () => {} }),
@@ -66,7 +97,12 @@ test("rental order is returned and refunded", async () => {
     // Seed an order directly via the repository to avoid depending on the rental
     // endpoint wiring. The return handler should look up this order and mark it
     // refunded when a refund is issued.
-    await repo.addOrder("cover-me-pretty", "sess", 50, "2030-01-02" as any);
+    await repo.addOrder({
+      shop: "cover-me-pretty",
+      sessionId: "sess",
+      deposit: 50,
+      expectedReturnDate: "2030-01-02",
+    });
     await returnPost(
       new Request("http://test", {
         method: "POST",

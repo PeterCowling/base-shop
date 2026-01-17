@@ -1,6 +1,28 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 import { render } from "@testing-library/react";
-import { composeStories } from "@storybook/react";
+
+type StoryModule = {
+  default?: {
+    component?: (props: Record<string, unknown>) => JSX.Element | null;
+    args?: Record<string, unknown>;
+  };
+  [key: string]: unknown;
+};
+
+const composeStories = (stories: StoryModule) => {
+  const { component: Component, args: defaultArgs } = stories.default ?? {};
+  const composed: Record<string, (props?: Record<string, unknown>) => JSX.Element | null> = {};
+
+  Object.entries(stories).forEach(([key, story]) => {
+    if (key === "default" || !Component) return;
+    const storyArgs = (story as { args?: Record<string, unknown> })?.args ?? {};
+    composed[key] = (props = {}) => (
+      <Component {...defaultArgs} {...storyArgs} {...props} />
+    );
+  });
+
+  return composed;
+};
 
 import * as errorStories from "../../../../apps/storybook/.storybook/stories/ErrorScenarios.stories";
 

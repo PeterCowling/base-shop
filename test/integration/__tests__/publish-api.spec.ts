@@ -34,7 +34,7 @@ describe("publish API", () => {
         join(scriptsDir, "republish-shop.js"),
         `const fs=require('fs');\nconst path=require('path');\nexports.republishShop=(id)=>{\n global.__calls__.push("--filter apps/"+id+" build");\n global.__calls__.push("--filter apps/"+id+" deploy");\n const file=path.join('${tmp.replace(/\\/g, '/')}',"data","shops",id,"shop.json");\n const json=JSON.parse(fs.readFileSync(file,"utf8"));\n json.status="published";\n fs.writeFileSync(file,JSON.stringify(json,null,2));\n const ufile=path.join('${tmp.replace(/\\/g, '/')}',"data","shops",id,"upgrade.json");\n if(fs.existsSync(ufile)) fs.unlinkSync(ufile);\n};`
       );
-      jest.doMock("@auth", () => ({ requirePermission: jest.fn() }), {
+      jest.doMock("@acme/auth", () => ({ requirePermission: jest.fn() }), {
         virtual: true,
       });
       jest.doMock(

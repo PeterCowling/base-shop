@@ -1,12 +1,13 @@
 import { listPlugins } from "../src/utils/providers";
 import { pluginEnvVars } from "@acme/platform-core/configurator";
+import * as fs from "node:fs";
 
-const fsMock = {
+jest.mock("node:fs", () => ({
   readdirSync: jest.fn(),
   readFileSync: jest.fn(),
-};
+}));
 
-jest.mock("node:fs", () => fsMock);
+const fsMock = jest.mocked(fs);
 
 describe("listPlugins", () => {
   beforeEach(() => {

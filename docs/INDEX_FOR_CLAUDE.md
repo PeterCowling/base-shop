@@ -1,18 +1,26 @@
 Type: Guide
 Status: Active
 Domain: Documentation
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-17
 
 # Quick Index for Claude
 
 This is a fast-reference guide to help Claude navigate this monorepo efficiently.
 
-## 🚀 Start Here
+## Start Here
 
-### Essential Reading
-- [CLAUDE.md](../CLAUDE.md) - Main guide for working with this repo
-- [AGENTS.md](../AGENTS.md) - Global AI runbook
-- [README.md](../README.md) - Project overview
+### Essential Reading (Ralph Methodology)
+- [AGENTS.md](../AGENTS.md) - Universal agent runbook (~100 lines)
+- [CLAUDE.md](../CLAUDE.md) - Claude-specific context (~160 lines)
+- [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md) - Now/Next/Later index
+
+### Workflow Prompts
+- [.claude/prompts/plan-feature.md](../.claude/prompts/plan-feature.md) - Planning mode
+- [.claude/prompts/build-feature.md](../.claude/prompts/build-feature.md) - Building mode
+
+### Key Policies
+- [docs/testing-policy.md](testing-policy.md) - Testing rules (MANDATORY)
+- [docs/git-safety.md](git-safety.md) - Git safety rules
 
 ### Quick Context
 - **Monorepo:** Turborepo + pnpm workspaces
@@ -140,18 +148,17 @@ This is a fast-reference guide to help Claude navigate this monorepo efficiently
 ### Run Tests
 
 ```bash
-# Specific package (PREFERRED)
-pnpm --filter @acme/ui test
+# Single test file (REQUIRED - always use targeted tests)
+pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx
 
-# Specific test file
-pnpm --filter @acme/ui test -- --testPathPattern Button
+# Test pattern match
+pnpm --filter @acme/ui test -- --testPathPattern="Button"
 
-# Affected packages only
-pnpm test:affected
+# Limit workers for broader runs
+pnpm --filter @acme/ui test -- --maxWorkers=2
 
-# AVOID: Workspace-wide tests (slow, expensive)
-# Only run if explicitly requested
-pnpm test
+# NEVER run unfiltered (see docs/testing-policy.md)
+# pnpm test  # PROHIBITED - spawns too many workers
 ```
 
 ### Build & Dev

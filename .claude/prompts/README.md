@@ -12,6 +12,10 @@ Reference these prompts when asking Claude to perform specific tasks. Each promp
 
 ## Available Prompts
 
+### Workflow Modes (Ralph Methodology)
+- `plan-feature.md` - **Planning mode** — Create detailed plans before implementation
+- `build-feature.md` - **Building mode** — Implement tasks one-by-one from approved plans
+
 ### Component Development
 - `create-ui-component.md` - Create new UI components (atoms/molecules/organisms)
 - `migrate-component.md` - Migrate components from legacy codebases

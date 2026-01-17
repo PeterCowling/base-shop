@@ -1,3 +1,13 @@
+---
+Type: Plan
+Status: Draft
+Domain: Platform
+Last-reviewed: 2026-01-17
+Relates-to charter: docs/runtime/runtime-charter.md
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
+
 # SEO & Machine-Readable Implementation Plan
 
 > **Goal**: Achieve world-class SEO and AI/machine-readable capabilities across all customer-facing apps through automation and centralization.

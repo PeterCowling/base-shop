@@ -1,10 +1,19 @@
+---
 Type: Plan
-Status: Draft
+Status: Superseded
 Domain: Prime
 Last-reviewed: 2026-01-13
-Relates-to: prime-improvement-plan.md (completed)
+Relates-to charter: TBD (Prime charter not yet defined)
+Relates-to plan: docs/plans/prime-improvement-plan.md (completed)
+Last-updated: 2026-01-17
+Last-updated-by: Codex
+---
 
 # Prime - Pre-Arrival & Check-In Experience Plan
+
+Superseded by `docs/plans/prime-guest-portal-gap-plan.md`. This plan remains as
+historical context, but all open work has been rolled forward into the newer
+plan with an updated gap audit.
 
 Transform Prime from a post-arrival utility into a complete guest journey that
 begins at booking confirmation and guides guests through arrival readiness,
@@ -24,6 +33,35 @@ quests, badges, social features, and local content. This plan addresses the
 - Activity chat and social features
 - Positano guidebook linking to Brikette content
 - Badge collection and XP tracking
+
+### Implementation audit (code truth, 2026-01-17)
+
+Source of truth: Prime app code and CF Pages Functions. No code was found in
+`apps/reception/src` to confirm booking data schema; Prime functions reference
+`bookings` data directly.
+Guest UUID format from operations: `occ_<13-digit-number>` (example:
+`occ_1747615362152`).
+
+- Partial: Find-my-stay UI + API exist and redirect to a tokenized guest link,
+  but the portal is still a placeholder:
+  `apps/prime/src/app/find-my-stay/page.tsx`,
+  `apps/prime/functions/api/find-booking.ts`,
+  `apps/prime/src/app/g/page.tsx`,
+  `apps/prime/src/app/portal/page.tsx`.
+- Partial: Check-in code generation exists via CF Pages Functions and is tied to
+  booking IDs (no UUID mapping), with no atomic counter:
+  `apps/prime/functions/api/check-in-code.ts`,
+  `apps/prime/functions/api/find-booking.ts`.
+- Partial: Guest token validation and last-name verification exist (not part of
+  this original plan scope): `apps/prime/functions/api/guest-session.ts`.
+- Partial: Staff lookup UI exists but uses localStorage PIN stub and has no
+  server-side auth guard:
+  `apps/prime/src/app/staff-lookup/page.tsx`,
+  `apps/prime/src/contexts/messaging/PinAuthProvider.tsx`,
+  `apps/prime/functions/api/check-in-lookup.ts`.
+- Missing: Pre-arrival data model, readiness dashboard, route planner, ETA
+  capture, cash prep UI, arrival mode, keycard status, messaging hooks, offline
+  support, i18n updates (no code present under `apps/prime/src`).
 
 ### Gap Summary
 

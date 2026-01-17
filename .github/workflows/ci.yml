@@ -30,12 +30,6 @@ jobs:
         uses: dorny/paths-filter@v3
         with:
           filters: |
-            dashboard:
-              - 'apps/dashboard/**'
-              - 'packages/ui/**'
-              - 'packages/design-tokens/**'
-              - 'packages/tailwind-config/**'
-              - 'packages/theme/**'
             shop:
               - 'apps/cover-me-pretty/**'
               - 'apps/cms/**'
@@ -85,9 +79,6 @@ jobs:
           files: ./coverage/lcov.info
       - name: Build
         run: pnpm build
-      - name: E2E (dashboard subset)
-        if: steps.changes.outputs.dashboard == 'true'
-        run: pnpm e2e:dashboard
       - name: E2E (shop subset)
         if: steps.changes.outputs.shop == 'true'
         run: pnpm e2e:shop

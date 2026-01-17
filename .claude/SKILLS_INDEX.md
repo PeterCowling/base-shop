@@ -2,9 +2,16 @@
 
 This document outlines custom skills/prompts that should be added to maximize Claude's effectiveness in this codebase.
 
-## 🎯 Priority 1: Essential Skills (Implemented)
+## Workflow Modes (Ralph Methodology)
 
-### ✅ Already Created
+These are the primary workflow prompts — use them for structured work:
+
+- **plan-feature.md** - **Planning mode**: Create detailed plans before implementation
+- **build-feature.md** - **Building mode**: Implement tasks one-by-one from approved plans
+
+## Priority 1: Essential Skills (Implemented)
+
+### Already Created
 - **create-ui-component.md** - Create new components following atomic design
 - **migrate-to-app-router.md** - Migrate Pages Router to App Router (for Reception migration)
 - **apply-design-system.md** - Use design tokens correctly

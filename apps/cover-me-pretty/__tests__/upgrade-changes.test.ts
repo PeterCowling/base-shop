@@ -40,7 +40,7 @@ describe("/api/upgrade-changes", () => {
         ],
       })
     );
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));
@@ -61,7 +61,7 @@ describe("/api/upgrade-changes", () => {
   });
 
   test("returns 401 for unauthorized", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
@@ -71,7 +71,7 @@ describe("/api/upgrade-changes", () => {
   });
 
   test("returns empty arrays when no file present", async () => {
-    jest.doMock("@auth", () => ({
+    jest.doMock("@acme/auth", () => ({
       __esModule: true,
       requirePermission: jest.fn(),
     }));

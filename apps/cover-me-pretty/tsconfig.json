@@ -78,6 +78,15 @@
       "@auth/*": [
         "../../packages/auth/src/*", "../../packages/auth/dist/*"
       ],
+      "@acme/auth": [
+        "../../packages/auth/src/index.ts",
+        "../../packages/auth/src",
+        "../../packages/auth/dist/index",
+        "../../packages/auth/dist"
+      ],
+      "@acme/auth/*": [
+        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+      ],
       "@date-utils": [
         "../../packages/date-utils/src/index.ts",
         "../../packages/date-utils/src",

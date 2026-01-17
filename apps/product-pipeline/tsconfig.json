@@ -12,7 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "src/*",
@@ -51,6 +51,7 @@
         "../../packages/pipeline-engine/dist/*"
       ]
     },
+    "types": ["node", "react", "react-dom", "three"],
     "jsx": "preserve"
   },
   "include": [

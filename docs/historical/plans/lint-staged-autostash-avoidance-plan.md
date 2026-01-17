@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Completed
 Domain: Repo
 Created: 2026-01-16
 Created-by: Codex
@@ -11,6 +11,8 @@ Relates-to charter: none (repo tooling)
 Owner: Peter Cowling
 Target: TBD
 Related-PR: #7157
+Completed: 2026-01-17
+Completed-by: Codex
 ---
 
 # Lint-staged Autostash Avoidance Plan
@@ -141,3 +143,8 @@ Dependency pinning (recommended)
 - `docs/git-safety.md`
 - `docs/git-hooks.md`
 - `docs/RECOVERY-PLAN-2026-01-14.md`
+
+## Completion Summary
+- Pre-commit runs a mandatory partial-staging guard before `lint-staged --no-stash`, eliminating lint-staged backup stashes in the hook path.
+- Hook tasks are check-only (no `--fix`), with `pnpm lint:staged` for debugging parity.
+- Local `pre-push` runs `pnpm typecheck`; CI + `main` ruleset remains the authoritative enforcement point for merge gating.

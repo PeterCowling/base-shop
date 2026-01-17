@@ -13,7 +13,7 @@ Relates-to charter: none (repo tooling)
 # Lint-staged Autostash Avoidance Plan
 
 ## Problem
-Pre-commit runs `lint-staged`. By default, lint-staged creates an `automatic lint-staged backup` stash before running tasks so it can revert on errors. Timeouts/interrupts (SIGINT, crashes) can leave this stash behind even when there are no partially staged files, creating confusing repo state and a real "lost work" footgun.
+Pre-commit runs `lint-staged`. By default, lint-staged creates a `lint-staged automatic backup` stash before running tasks so it can revert on errors. Timeouts/interrupts (SIGINT, crashes) can leave this stash behind even when there are no partially staged files, creating confusing repo state and a real "lost work" footgun.
 
 We want a hook workflow that never creates a lint-staged backup stash ("no autostash ever") while remaining safe and predictable.
 
@@ -25,7 +25,7 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 - Safety implication: with `--no-stash` (and in our current 15.5.2 behavior), partially staged files are dangerous even with check-only tasks because lint-staged can re-add files to the index during its apply phase, which can stage unstaged hunks.
 
 ## Goals
-- Ensure pre-commit creates no `automatic lint-staged backup` stash in any outcome (success, lint error, timeout, SIGINT).
+- Ensure pre-commit creates no `lint-staged automatic backup` stash in any outcome (success, lint error, timeout, SIGINT).
 - Make partially staged files a hard error before lint-staged runs.
 - Enforce "lint + typecheck must pass before GitHub integration" using CI-required checks; optionally add local hooks as best-effort early feedback.
 

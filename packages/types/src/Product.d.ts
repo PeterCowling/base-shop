@@ -1,4 +1,4 @@
-import { type Locale } from "@acme/i18n";
+import { type Locale } from "./constants";
 import { z } from "zod";
 import type { MediaItem } from "./MediaItem";
 export declare const localeSchema: z.ZodEnum<["en", "de", "it"]>;

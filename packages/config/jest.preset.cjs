@@ -115,6 +115,12 @@ function createJestPreset(options = {}) {
     ...additionalCoverageIgnorePatterns,
   ];
   const coverageReporters = [...coverageDefaults.coverageReporters];
+  const wantsCoverage =
+    process.argv.includes("--coverage") ||
+    process.env.JEST_FORCE_COVERAGE === "1";
+  const collectCoverage = wantsCoverage
+    ? coverageDefaults.collectCoverage
+    : false;
   let coverageThreshold = customCoverageThreshold
     ? JSON.parse(JSON.stringify(customCoverageThreshold))
     : JSON.parse(JSON.stringify(coverageDefaults.coverageThreshold));
@@ -193,7 +199,7 @@ function createJestPreset(options = {}) {
       "node",
       "d.ts",
     ],
-    collectCoverage: coverageDefaults.collectCoverage,
+    collectCoverage,
     collectCoverageFrom,
     // Normalize coverage output path so all workspace packages write into
     // the monorepo root coverage directory under their own sanitized name.

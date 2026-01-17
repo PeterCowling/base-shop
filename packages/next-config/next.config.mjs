@@ -20,7 +20,7 @@ const coreEnv = {
 
 export default withShopCode(coreEnv.SHOP_CODE, {
   eslint: { ignoreDuringBuilds: true },
-  webpack(config, { isServer }) {
+  webpack(config, { isServer, webpack }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
       config = baseConfig.webpack(config, { isServer });
@@ -87,6 +87,15 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "zlib",
     ]) {
       config.resolve.alias[`node:${mod}`] = mod;
+    }
+
+    if (webpack?.NormalModuleReplacementPlugin) {
+      config.plugins ??= [];
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+          resource.request = resource.request.replace(/^node:/, "");
+        }),
+      );
     }
 
     return config;

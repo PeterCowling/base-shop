@@ -65,7 +65,7 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 - Also require PRs (no direct pushes to `main`) so checks cannot be bypassed by skipping the PR workflow.
 
 Pre-push (recommended default for local typecheck)
-- Run `pnpm typecheck` in a `pre-push` hook (or a scoped/cached variant). This catches problems before remote CI churn without making every local commit slow. Keep pre-commit fast and predictable.
+- Run `pnpm typecheck` in a `pre-push` hook (leverages incremental `tsc -b` + `turbo run typecheck` caching). This catches problems before remote CI churn without making every local commit slow. Keep pre-commit fast and predictable.
 
 Dependency pinning (recommended)
 - Pin `lint-staged` deliberately (at least major+minor, ideally exact) because this policy is sensitive to subtle behavioral changes across versions.

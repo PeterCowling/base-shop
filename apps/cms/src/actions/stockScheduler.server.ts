@@ -2,8 +2,8 @@
 
 // apps/cms/src/actions/stockScheduler.server.ts
 
-import { scheduleStockChecks, getStockCheckStatus } from "@platform-core/services/stockScheduler.server";
-import { readInventory } from "@platform-core/repositories/inventory.server";
+import { scheduleStockChecks, getStockCheckStatus } from "@acme/platform-core/services/stockScheduler.server";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
 
 interface StockCheckStatus {
   intervalMs: number;

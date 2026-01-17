@@ -4,29 +4,29 @@
 import NextImage, { type ImageProps } from "next/image";
 import * as React from "react";
 
-import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
-import ReviewsCarousel from "@ui/components/home/ReviewsCarousel";
-import { ValueProps } from "@ui/components/home/ValueProps";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
+import HeroBanner from "@acme/ui/components/cms/blocks/HeroBanner";
+import ReviewsCarousel from "@acme/ui/components/home/ReviewsCarousel";
+import { ValueProps } from "@acme/ui/components/home/ValueProps";
+import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
 
-import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import ContactForm from "@ui/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@ui/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@ui/components/cms/blocks/Gallery";
-import HeaderCart from "@ui/components/cms/blocks/HeaderCart";
-import Testimonials from "@ui/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
+import BlogListing from "@acme/ui/components/cms/blocks/BlogListing";
+import ContactForm from "@acme/ui/components/cms/blocks/ContactForm";
+import ContactFormWithMap from "@acme/ui/components/cms/blocks/ContactFormWithMap";
+import Gallery from "@acme/ui/components/cms/blocks/Gallery";
+import HeaderCart from "@acme/ui/components/cms/blocks/HeaderCart";
+import Testimonials from "@acme/ui/components/cms/blocks/Testimonials";
+import TestimonialSlider from "@acme/ui/components/cms/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@acme/ui/components/atoms/primitives/textarea";
 
-import { PRODUCTS } from "@platform-core/products/index";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { SKU } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { cssVars } from "@ui/utils/style/cssVars";
+import { cssVars } from "@acme/ui/utils/style/cssVars";
 import { extractTextThemes, applyTextThemeToOverrides } from "@acme/page-builder-ui";
-import type { Locale } from "@i18n/locales";
-import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
-import Section from "@ui/components/cms/blocks/Section";
+import type { Locale } from "@acme/i18n/locales";
+import { ensureLightboxStyles, initLightbox } from "@acme/ui/components/cms";
+import Section from "@acme/ui/components/cms/blocks/Section";
 import { buildBlockRegistry, coreBlockDescriptors, type BlockTypeId } from "@acme/page-builder-core";
 
 /* ------------------------------------------------------------------

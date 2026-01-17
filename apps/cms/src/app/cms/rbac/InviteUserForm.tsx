@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Input, Tag } from "@/components/atoms/shadcn";
 import { Tooltip } from "@/components/atoms";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
 import type { Role } from "@cms/auth/roles";
 import { useTranslations } from "@acme/i18n";

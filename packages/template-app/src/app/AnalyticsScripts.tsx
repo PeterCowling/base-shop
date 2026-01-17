@@ -1,7 +1,7 @@
 import {
   getShopSettings,
   readShop,
-} from "@platform-core/repositories/shops.server";
+} from "@acme/platform-core/repositories/shops.server";
 import { coreEnv } from "@acme/config/env/core";
 
 export default async function AnalyticsScripts() {

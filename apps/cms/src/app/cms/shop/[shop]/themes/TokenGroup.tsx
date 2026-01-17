@@ -1,11 +1,11 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/TokenGroup.tsx
 "use client";
-import { hslToHex, isHex, isHsl } from "@ui/utils/colorUtils";
+import { hslToHex, isHex, isHsl } from "@acme/ui/utils/colorUtils";
 import OverrideField from "./OverrideField";
 import type { MutableRefObject } from "react";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { useTranslations } from "@i18n/Translations";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
+import { useTranslations } from "@acme/i18n/Translations";
 import clsx from "clsx";
 
 interface Props {

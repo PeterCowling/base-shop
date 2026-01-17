@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import OrdersPage from "../Orders";
 import { redirect } from "next/navigation";
-import { getCustomerSession, hasPermission } from "@auth";
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import { getOrdersForCustomer } from "@acme/platform-core/orders";
 import {
   getTrackingStatus as getShippingTrackingStatus,

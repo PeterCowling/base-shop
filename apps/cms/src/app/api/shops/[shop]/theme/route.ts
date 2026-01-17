@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { patchTheme } from "@cms/services/shops";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 export async function PATCH(
   req: NextRequest,

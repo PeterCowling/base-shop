@@ -1,18 +1,18 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/edit/page.tsx
 
-import { canWrite } from "@auth";
+import { canWrite } from "@acme/auth";
 import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@acme/lib";
-import { getPages } from "@platform-core/repositories/pages/index.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import PagesClient from "../PagesClient";
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
-import { cn } from "@ui/utils/style";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives";
+import { Tag } from "@acme/ui/components/atoms";
+import { cn } from "@acme/ui/utils/style";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 
 export const revalidate = 0;

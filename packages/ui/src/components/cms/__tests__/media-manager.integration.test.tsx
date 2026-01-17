@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import Library from "../media/Library";
 import MediaManager from "../MediaManager";
 
-jest.mock("@ui/hooks/useMediaUpload", () => {
+jest.mock("@acme/ui/hooks/useMediaUpload", () => {
   const React = require("react");
   return {
     useMediaUpload: jest.fn((options: any) => {

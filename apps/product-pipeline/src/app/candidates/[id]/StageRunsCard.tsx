@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Stack, Cluster } from "@ui/components/atoms/primitives";
+import { Grid, Stack, Cluster } from "@acme/ui/components/atoms/primitives";
 import type { CandidateDetailStrings, StageRun } from "./types";
 import { safeTimestamp, stringifyPayload } from "./types";
 

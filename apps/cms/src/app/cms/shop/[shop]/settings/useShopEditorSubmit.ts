@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 import type { ChangeEvent } from "react";
 import type { Provider } from "@acme/configurator/providers";
 import type { Shop } from "@acme/types";

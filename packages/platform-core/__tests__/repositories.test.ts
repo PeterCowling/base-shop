@@ -2,7 +2,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { ProductPublication } from "../src/products/index";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 import { withTempRepo } from "@acme/test-utils";
 
 // These integration-style tests touch the filesystem and can occasionally be

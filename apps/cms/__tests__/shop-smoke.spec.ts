@@ -1,4 +1,4 @@
-import { getShopBaseUrl } from "@platform-core/shops/url";
+import { getShopBaseUrl } from "@acme/platform-core/shops/url";
 import type { Environment } from "@acme/types";
 
 /**

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { join } from "path";
 import { execFile } from "child_process";
 import { promisify } from "util";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 
 export const runtime = "nodejs";
 

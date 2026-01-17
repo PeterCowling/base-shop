@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("@platform-core/plugins", () => ({
+jest.mock("@acme/platform-core/plugins", () => ({
   loadPlugins: jest.fn(),
 }));
 
@@ -20,7 +20,7 @@ describe("PluginsPage", () => {
     const samplePlugins = [
       { id: "p1", name: "Test Plugin", defaultConfig: { foo: "bar" } },
     ];
-    const { loadPlugins } = require("@platform-core/plugins");
+    const { loadPlugins } = require("@acme/platform-core/plugins");
     loadPlugins.mockResolvedValue(samplePlugins);
 
     render(await PluginsPage());

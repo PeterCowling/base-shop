@@ -1,12 +1,12 @@
 // packages/template-app/src/routes/preview/[pageId].ts
 
 import type { EventContext } from "@cloudflare/workers-types";
-import { getPages } from "@platform-core/repositories/pages/index.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import { coreEnv } from "@acme/config/env/core";
 import {
   verifyPreviewToken,
   verifyUpgradePreviewToken,
-} from "@platform-core/previewTokens";
+} from "@acme/platform-core/previewTokens";
 
 const {
   PREVIEW_TOKEN_SECRET,

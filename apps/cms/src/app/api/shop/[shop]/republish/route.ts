@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { join } from "path";
 import { execFile } from "child_process";
 import { promisify } from "util";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
 import { updateDeployStatus } from "@cms/actions/deployShop.server";
 import type { Environment } from "@acme/types";
-import { incrementOperationalError } from "@platform-core/shops/health";
-import { recordMetric } from "@platform-core/utils/metrics";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils/metrics";
 
 export const runtime = "nodejs";
 

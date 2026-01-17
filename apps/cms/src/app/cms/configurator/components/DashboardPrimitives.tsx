@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import { Progress, Tag } from "@/components/atoms";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 
 export const CardRoot: ElementType = Card ?? "div";
 export const CardSection: ElementType = CardContent ?? "div";

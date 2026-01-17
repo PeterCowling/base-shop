@@ -12,7 +12,7 @@ describe("globals route", () => {
 
   beforeAll(async () => {
     tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "globals-api-"));
-    jest.doMock("@platform-core/dataRoot", () => ({ DATA_ROOT: tmpRoot }));
+    jest.doMock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: tmpRoot }));
     ({ GET, POST, PATCH, DELETE } = await import("../route"));
   });
 

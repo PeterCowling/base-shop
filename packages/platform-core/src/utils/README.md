@@ -7,6 +7,6 @@ Shared helpers for platform-core.
 - `initTheme` – initialize the client's theme based on saved preferences.
 - `logger` – structured console logger; set `LOG_LEVEL` (`error`, `warn`, `info`, `debug`) to control output (defaults to `info`).
 
-These utilities are re-exported from the `@platform-core` package root for
+These utilities are re-exported from the `@acme/platform-core` package root for
 easy consumption. Functions like `slugify` and `genSecret` now live in
 `@acme/shared-utils`.

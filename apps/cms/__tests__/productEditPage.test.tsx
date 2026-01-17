@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 
 const mockGetProductById = jest.fn();
 const mockReadSettings = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   getProductById: (...args: any[]) => mockGetProductById(...args),
   readSettings: (...args: any[]) => mockReadSettings(...args),
 }));

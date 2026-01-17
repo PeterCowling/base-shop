@@ -4,10 +4,10 @@ import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import DataTable from "@ui/components/cms/DataTable";
-import { FormField } from "@ui/components/molecules";
+import DataTable from "@acme/ui/components/cms/DataTable";
+import { FormField } from "@acme/ui/components/molecules";
 import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import {
   mapSchedulerHistoryRows,

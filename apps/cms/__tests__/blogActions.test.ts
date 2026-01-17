@@ -1,10 +1,10 @@
 import { afterEach, expect, test, describe, jest } from "@jest/globals";
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({}),
 }));
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({ projectId: "p", dataset: "d", token: "t" }),
 }));
 

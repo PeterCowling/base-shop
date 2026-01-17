@@ -8,7 +8,7 @@ jest.mock('next/navigation', () => ({
   redirect: jest.fn(),
 }));
 
-jest.mock('@platform-core/repositories/json.server', () => ({
+jest.mock('@acme/platform-core/repositories/json.server', () => ({
   readSettings: jest.fn(),
   readRepo: jest.fn(),
   writeRepo: jest.fn(),
@@ -39,7 +39,7 @@ import {
   updateProductInRepo,
   duplicateProductInRepo,
   deleteProductFromRepo,
-} from '@platform-core/repositories/json.server';
+} from '@acme/platform-core/repositories/json.server';
 import { redirect } from 'next/navigation';
 import { captureException } from '@/utils/sentry.server';
 

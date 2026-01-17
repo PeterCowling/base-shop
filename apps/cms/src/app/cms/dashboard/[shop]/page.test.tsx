@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { listEvents, readAggregates } from "@platform-core/repositories/analytics.server";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { listEvents, readAggregates } from "@acme/platform-core/repositories/analytics.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import { buildMetrics } from "@cms/lib/analytics";
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn(),
   readAggregates: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(),
 }));
 

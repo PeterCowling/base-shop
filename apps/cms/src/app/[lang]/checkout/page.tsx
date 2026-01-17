@@ -5,9 +5,9 @@ import { Locale, resolveLocale } from "@/i18n/locales";
 import type { Metadata } from "next";
 // Use server-side translations in server components/routes
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
+import { createCartStore } from "@acme/platform-core/cartStore";
 import { cookies } from "next/headers";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { useTranslations: getServerTranslations } = await import(

@@ -2,10 +2,10 @@
 "use client";
 
 import { updateProduct } from "@cms/actions/products.server";
-import type { ProductPublication } from "@platform-core/products";
+import type { ProductPublication } from "@acme/platform-core/products";
 import type { Locale } from "@acme/types";
-import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
-import { LOCALES as UILOCALES, type Locale as UiLocale } from "@i18n/locales";
+import ProductEditorForm from "@acme/ui/components/cms/ProductEditorForm";
+import { LOCALES as UILOCALES, type Locale as UiLocale } from "@acme/i18n/locales";
 
 interface Props {
   shop: string;

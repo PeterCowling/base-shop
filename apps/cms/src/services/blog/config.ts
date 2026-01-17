@@ -1,6 +1,6 @@
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
-import type { SanityConfig } from "@platform-core/repositories/blog.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import type { SanityConfig } from "@acme/platform-core/repositories/blog.server";
 
 export async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);

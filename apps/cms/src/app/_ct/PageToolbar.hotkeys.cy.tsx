@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageToolbar } from '@acme/page-builder-ui';
-import { getLegacyPreset } from '@ui/utils/devicePresets';
+import { getLegacyPreset } from '@acme/ui/utils/devicePresets';
 
 describe('PageToolbar hotkeys (CT)', { tags: ['inspectors'] }, () => {
   it('Ctrl/⌘+1/2/3 switch device and reset orientation', () => {

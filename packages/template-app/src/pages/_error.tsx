@@ -1,7 +1,7 @@
 // packages/template-app/src/pages/_error.tsx
 
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
-import en from "@i18n/en.json";
+import en from "@acme/i18n/en.json";
 
 type ErrorCtx = {
   res?: { statusCode?: number };

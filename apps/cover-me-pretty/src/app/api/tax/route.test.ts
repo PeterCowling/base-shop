@@ -6,8 +6,8 @@ jest.mock("@shared-utils", () => ({ parseJsonBody: jest.fn() }));
 const parseJsonBody = jest.requireMock("@shared-utils")
   .parseJsonBody as jest.Mock;
 
-jest.mock("@platform-core/tax", () => ({ calculateTax: jest.fn() }));
-const calculateTax = jest.requireMock("@platform-core/tax")
+jest.mock("@acme/platform-core/tax", () => ({ calculateTax: jest.fn() }));
+const calculateTax = jest.requireMock("@acme/platform-core/tax")
   .calculateTax as jest.Mock;
 
 afterEach(() => {

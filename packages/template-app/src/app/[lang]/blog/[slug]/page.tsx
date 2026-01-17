@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
-import Section from "@ui/components/cms/blocks/Section";
+import Section from "@acme/ui/components/cms/blocks/Section";
 
 export const revalidate = 60;
 

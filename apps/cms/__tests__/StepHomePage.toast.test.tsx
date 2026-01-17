@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { fetchJson } from "@shared-utils";
+import { fetchJson } from "@acme/shared-utils";
 
 
 jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {

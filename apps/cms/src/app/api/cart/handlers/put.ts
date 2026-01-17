@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getProductById } from "@platform-core/products";
-import { putSchema } from "@platform-core/schemas/cart";
-import type { CartState } from "@platform-core/cart";
+import { getProductById } from "@acme/platform-core/products";
+import { putSchema } from "@acme/platform-core/schemas/cart";
+import type { CartState } from "@acme/platform-core/cart";
 import {
   ensureCartStore,
   getDecodedCartId,

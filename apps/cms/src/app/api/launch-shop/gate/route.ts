@@ -5,7 +5,7 @@ import {
   getLaunchGate,
   type LaunchGateEntry,
 } from "@/lib/server/launchGate";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 
 type MissingGateReason = "stage-tests" | "qa-ack";
 

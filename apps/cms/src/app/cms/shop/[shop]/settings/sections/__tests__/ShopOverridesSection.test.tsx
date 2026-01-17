@@ -27,7 +27,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components",
+  "@acme/ui/components",
   () => {
     const React = require("react");
     const {

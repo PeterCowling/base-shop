@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/plugins/page.tsx
-import { loadPlugins } from "@platform-core/plugins";
+import { loadPlugins } from "@acme/platform-core/plugins";
 import Link from "next/link";
 import PluginList from "./PluginList.client";
 

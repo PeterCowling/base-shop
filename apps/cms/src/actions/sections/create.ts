@@ -4,7 +4,7 @@ import { sectionTemplateSchema } from "@acme/types";
 import { ulid } from "ulid";
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { getSections, saveSection } from "@platform-core/repositories/sections/index.server";
+import { getSections, saveSection } from "@acme/platform-core/repositories/sections/index.server";
 // Load server-side translations within the async action
 
 export async function createSection(

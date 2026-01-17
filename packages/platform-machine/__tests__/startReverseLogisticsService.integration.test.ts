@@ -7,7 +7,7 @@ import {
   resetReverseLogisticsMocks,
 } from "../src/__tests__/reverseLogisticsTestHelpers";
 
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
 
 let service: typeof import("@acme/platform-machine");
 
@@ -157,10 +157,10 @@ describe("startReverseLogisticsService (package entry)", () => {
 afterAll(() => {
   jest.resetModules();
   jest.unmock("fs/promises");
-  jest.unmock("@platform-core/repositories/rentalOrders.server");
-  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
-  jest.unmock("@platform-core/utils");
+  jest.unmock("@acme/platform-core/repositories/rentalOrders.server");
+  jest.unmock("@acme/platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@acme/platform-core/utils");
   jest.unmock("crypto");
-  jest.unmock("@platform-core/dataRoot");
+  jest.unmock("@acme/platform-core/dataRoot");
 });
 

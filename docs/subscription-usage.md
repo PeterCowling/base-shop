@@ -21,7 +21,7 @@ Unique constraint:
 
 ## Public API
 ```ts
-import { getSubscriptionUsage, incrementSubscriptionUsage } from "@platform-core/subscriptionUsage";
+import { getSubscriptionUsage, incrementSubscriptionUsage } from "@acme/platform-core/subscriptionUsage";
 
 // read current usage
 await getSubscriptionUsage("shop1", "cust_1", "2025-01");

@@ -2,13 +2,13 @@ import { stripe } from "@acme/stripe";
 import {
   markRefunded,
   markReturned,
-} from "@platform-core/repositories/rentalOrders.server";
-import { computeDamageFee } from "@platform-core/pricing";
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { computeDamageFee } from "@acme/platform-core/pricing";
 
 import { NextRequest, NextResponse } from "next/server";
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 

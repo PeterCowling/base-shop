@@ -8,13 +8,13 @@ import {
 } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@acme/lib";
-import type { ProductPublication } from "@platform-core/products";
-import { readRepo } from "@platform-core/repositories/json.server";
-import ProductsTable from "@ui/components/cms/ProductsTable.client";
+import type { ProductPublication } from "@acme/platform-core/products";
+import { readRepo } from "@acme/platform-core/repositories/json.server";
+import ProductsTable from "@acme/ui/components/cms/ProductsTable.client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { Alert, Progress, Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Alert, Progress, Tag } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import Link from "next/link";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { Locale } from "@acme/i18n/locales";
@@ -23,7 +23,7 @@ import {
   CmsBuildHero,
   CmsMetricTiles,
   CmsLaunchChecklist,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
+} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
 
 export const revalidate = 0;
 

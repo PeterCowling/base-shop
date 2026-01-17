@@ -9,9 +9,9 @@ import {
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { FormField } from "@acme/ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 import { ErrorChips } from "../components/ErrorChips";
 import {

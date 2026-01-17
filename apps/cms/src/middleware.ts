@@ -1,7 +1,7 @@
 // apps/cms/src/middleware.ts
 
-import type { Role } from "@auth/types";
-import { canRead, canWrite } from "@auth/rbac";
+import type { Role } from "@acme/auth/types";
+import { canRead, canWrite } from "@acme/auth/rbac";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -14,7 +14,7 @@ import {
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
 import type { IncomingMessage, ServerResponse } from "http";
-// Avoid importing @auth/session in middleware (Edge) because it pulls in
+// Avoid importing @acme/auth/session in middleware (Edge) because it pulls in
 // Node-only dependencies like 'crypto' via iron-session. We'll perform a
 // lightweight CSRF check inline using the request cookies instead.
 

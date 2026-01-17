@@ -1,7 +1,7 @@
 "use client";
-import { useLayout } from "@platform-core/contexts/LayoutContext";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 import { usePathname } from "next/navigation";
-import TopBar from "@ui/components/cms/TopBar.client";
+import TopBar from "@acme/ui/components/cms/TopBar.client";
 import type { ReactNode } from "react";
 import { Progress } from "@/components/atoms";
 import { resetConfiguratorProgress } from "@/app/cms/configurator/hooks/useConfiguratorPersistence";

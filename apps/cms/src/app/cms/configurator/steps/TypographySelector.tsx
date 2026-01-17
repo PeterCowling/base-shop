@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { TokenMap } from "../../wizard/tokenUtils";
-import Tokens from "@ui/components/cms/style/Tokens";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { Inline as DSInline } from "@ui/components/atoms/primitives/Inline";
-import presetData from "@ui/components/cms/style/presets.json";
+import Tokens from "@acme/ui/components/cms/style/Tokens";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
+import { Inline as DSInline } from "@acme/ui/components/atoms/primitives/Inline";
+import presetData from "@acme/ui/components/cms/style/presets.json";
 
 interface Props {
   tokens: TokenMap;

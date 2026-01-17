@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@ui/components/atoms/shadcn";
+import { Button, Checkbox, Input } from "@acme/ui/components/atoms/shadcn";
 import { updateLateFee } from "@cms/actions/shops.server";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useTranslations } from "@acme/i18n";

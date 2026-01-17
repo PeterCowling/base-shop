@@ -6,7 +6,7 @@ import PdpClient from "./PdpClient.client";
 
 const addToCartMock = jest.fn();
 
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: (props: any) => {
     addToCartMock(props);
@@ -14,12 +14,12 @@ jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
   },
 }));
 
-jest.mock("@platform-core/components/pdp/ImageGallery", () => ({
+jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => ({
   __esModule: true,
   default: () => <div data-testid="image-gallery" />,
 }));
 
-jest.mock("@ui/components/atoms/Price", () => ({
+jest.mock("@acme/ui/components/atoms/Price", () => ({
   __esModule: true,
   Price: ({ amount }: any) => <span>{amount}</span>,
 }));

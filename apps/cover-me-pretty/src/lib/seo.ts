@@ -1,5 +1,5 @@
-import type { Locale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import type { Locale } from "@acme/i18n/locales";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import type { ShopSettings } from "@acme/types";
 import type { NextSeoProps } from "next-seo";
 import { coreEnv as env } from "@acme/config/env/core";

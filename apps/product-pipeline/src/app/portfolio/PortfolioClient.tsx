@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import type { PortfolioCandidate, PortfolioStrings } from "./types";
 
 const DEFAULT_CONSTRAINTS = {

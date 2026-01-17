@@ -6,7 +6,7 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
 import { useTranslations } from "@acme/i18n";
 
 export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?: string; nextStepId?: string }) {

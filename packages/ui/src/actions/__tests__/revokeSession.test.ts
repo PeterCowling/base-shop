@@ -16,7 +16,7 @@ import {
   listSessions,
   hasPermission,
   revokeSession as authRevokeSession,
-} from "@auth";
+} from "@acme/auth";
 import { revalidatePath } from "next/cache";
 import { revoke } from "../revokeSession";
 

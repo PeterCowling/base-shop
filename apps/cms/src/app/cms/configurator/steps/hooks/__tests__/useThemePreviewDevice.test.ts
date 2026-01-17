@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { devicePresets } from "@ui/utils/devicePresets";
+import { devicePresets } from "@acme/ui/utils/devicePresets";
 import { useThemePreviewDevice } from "../useThemePreviewDevice";
 
 describe("useThemePreviewDevice", () => {

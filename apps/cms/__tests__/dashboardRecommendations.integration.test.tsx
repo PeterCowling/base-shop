@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
-jest.mock("@platform-core/contexts/LayoutContext", () => ({
+jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   __esModule: true,
   useLayout: () => ({ setConfiguratorProgress: jest.fn() }),
 }));

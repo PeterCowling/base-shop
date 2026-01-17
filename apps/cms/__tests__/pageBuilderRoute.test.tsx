@@ -11,7 +11,7 @@ type BuilderProps = {
 
 let capturedBuilderProps: BuilderProps | undefined;
 
-jest.mock("@platform-core/repositories/pages/index.server", () => ({
+jest.mock("@acme/platform-core/repositories/pages/index.server", () => ({
   getPages: jest.fn(),
 }));
 jest.mock("@cms/actions/pages/update", () => ({
@@ -30,7 +30,7 @@ jest.mock("next/dynamic", () => ({
   }),
 }));
 
-import { getPages } from "@platform-core/repositories/pages/index.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import { updatePage } from "@cms/actions/pages/update";
 import { notFound } from "next/navigation";
 import PageBuilderRoute from "../src/app/cms/shop/[shop]/pages/[page]/builder/page";

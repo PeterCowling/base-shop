@@ -22,7 +22,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Grid, Inline, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 interface Template {
   id: string;

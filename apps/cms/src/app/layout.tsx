@@ -1,7 +1,7 @@
 // apps/cms/src/app/layout.tsx
 import { CartProvider } from "@/contexts/CartContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
-import { initTheme } from "@platform-core/utils";
+import { initTheme } from "@acme/platform-core/utils";
 import "@acme/zod-utils/initZod";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

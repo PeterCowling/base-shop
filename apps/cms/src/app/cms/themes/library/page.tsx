@@ -3,7 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { track } from "@acme/telemetry";
 import type { ThemeLibraryEntry } from "@acme/types/theme/ThemeLibrary";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 async function fetchThemes(origin: string): Promise<ThemeLibraryEntry[]> {
   const url = new URL("/api/themes", origin).toString();

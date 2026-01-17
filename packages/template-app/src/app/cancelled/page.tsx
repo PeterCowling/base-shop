@@ -4,7 +4,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 /**
  * Non-locale-specific payment-cancelled page.

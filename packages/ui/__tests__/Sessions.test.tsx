@@ -21,7 +21,7 @@ import {
   listSessions,
   revokeSession,
   hasPermission,
-} from "@auth";
+} from "@acme/auth";
 import { revalidatePath } from "next/cache";
 import SessionsPage, { revoke } from "../src/components/account/Sessions";
 import { redirect } from "next/navigation";

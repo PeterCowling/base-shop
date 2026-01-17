@@ -5,8 +5,8 @@ import {
   appendSeoAudit,
   readSeoAudits,
   type SeoAuditEntry,
-} from "@platform-core/repositories/seoAudit.server";
-import { nowIso } from "@date-utils";
+} from "@acme/platform-core/repositories/seoAudit.server";
+import { nowIso } from "@acme/date-utils";
 import type { RunnerResult } from "lighthouse";
 import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 

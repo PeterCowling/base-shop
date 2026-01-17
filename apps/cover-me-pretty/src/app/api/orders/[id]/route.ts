@@ -1,12 +1,12 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/orders/[id]/route.ts
-import { getCustomerSession } from "@auth";
+import { getCustomerSession } from "@acme/auth";
 import {
   getOrdersForCustomer,
   markCancelled,
   markDelivered,
   refundOrder,
-} from "@platform-core/orders";
+} from "@acme/platform-core/orders";
 import { NextResponse } from "next/server";
 import shop from "../../../../../shop.json";
 

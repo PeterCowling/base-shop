@@ -2,8 +2,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button, Card, CardContent, Toast } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Button, Card, CardContent, Toast } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 type ToastState = {

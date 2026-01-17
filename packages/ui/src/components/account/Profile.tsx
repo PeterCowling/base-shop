@@ -1,5 +1,5 @@
 // packages/ui/src/components/account/Profile.tsx
-import { getCustomerSession, hasPermission } from "@auth";
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
 import ProfileForm from "./ProfileForm";
 import { redirect } from "next/navigation";

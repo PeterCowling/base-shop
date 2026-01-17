@@ -1,15 +1,15 @@
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
+import { getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
 import {
   getShopSettings,
   readShop,
-} from "@platform-core/repositories/shops.server";
+} from "@acme/platform-core/repositories/shops.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
 // i18n-exempt -- ABC-123 [ttl=2025-12-31] static metadata; app-level routes localize this
 export const metadata = { title: "Schedule pickup" };
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
-import type { Locale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import type { Locale } from "@acme/i18n/locales";
 
 export default async function PickupPage({
   searchParams,

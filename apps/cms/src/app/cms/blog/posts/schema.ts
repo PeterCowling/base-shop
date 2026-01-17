@@ -9,7 +9,7 @@ import {
 } from "@portabletext/editor";
 import type { PortableTextBlock } from "@portabletext/editor";
 import React, { useContext } from "react";
-import { Button } from "@ui/components/atoms";
+import { Button } from "@acme/ui/components/atoms";
 import ProductPreview from "./ProductPreview";
 import { InvalidProductContext } from "./invalidProductContext";
 

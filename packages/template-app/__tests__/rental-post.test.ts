@@ -12,23 +12,23 @@ describe("/api/rental POST", () => {
   test("returns 400 when sessionId is missing", async () => {
     mockStripe();
     mockRentalRepo();
-    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+    jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST(asNextJson({}));
@@ -58,26 +58,26 @@ describe("/api/rental POST", () => {
       .fn()
       .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
     const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
-    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+    jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,
     }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({
         rentalInventoryAllocation: true,
         coverageIncluded: true,
       }),
     }));
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST(asNextJson({ sessionId: "sess" }));
@@ -122,26 +122,26 @@ describe("/api/rental POST", () => {
       .fn()
       .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
     const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
-    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+    jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,
     }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({
         rentalInventoryAllocation: false,
         coverageIncluded: true,
       }),
     }));
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST(asNextJson({ sessionId: "sess" }));
@@ -183,26 +183,26 @@ describe("/api/rental POST", () => {
       { sku: "missing", quantity: 1, variantAttributes: {} },
     ]);
     const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
-    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+    jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,
     }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory,
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: readProducts,
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({
         rentalInventoryAllocation: true,
         coverageIncluded: true,
       }),
     }));
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST(asNextJson({ sessionId: "sess" }));

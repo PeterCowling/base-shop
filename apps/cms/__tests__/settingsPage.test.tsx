@@ -8,7 +8,7 @@ jest.mock("@cms/actions/shops.server", () => ({ resetThemeOverride: jest.fn() })
 jest.mock("@acme/lib", () => ({ checkShopExists: jest.fn().mockResolvedValue(true) }));
 const mockReadSettings = jest.fn();
 const mockReadShop = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readSettings: (...args: any[]) => mockReadSettings(...args),
   readShop: (...args: any[]) => mockReadShop(...args),
 }));

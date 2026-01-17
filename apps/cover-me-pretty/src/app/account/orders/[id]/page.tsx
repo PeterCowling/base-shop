@@ -1,8 +1,8 @@
 // apps/cover-me-pretty/src/app/account/orders/[id]/page.tsx
-import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { OrderTrackingTimeline, type OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
+import { getCustomerSession } from "@acme/auth";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { OrderTrackingTimeline, type OrderStep } from "@acme/ui/components/organisms/OrderTrackingTimeline";
 import { redirect } from "next/navigation";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { Metadata } from "next";

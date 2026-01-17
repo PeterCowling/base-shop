@@ -16,8 +16,8 @@ describe("ComponentPreview", () => {
     const handleClick = jest.fn();
 
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     const component: UpgradeComponent = {

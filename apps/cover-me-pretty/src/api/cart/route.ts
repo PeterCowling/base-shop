@@ -2,10 +2,10 @@
 import "@acme/zod-utils/initZod";
 
 // Align cover-me-pretty's cart API with the canonical platform-core
-// implementation. All handlers are re-exported from `@platform-core/cartApi`
+// implementation. All handlers are re-exported from `@acme/platform-core/cartApi`
 // so this app shares the same CartStore and cookie semantics as the template
 // app and CMS.
-import { DELETE, GET, PATCH, POST, PUT } from "@platform-core/cartApi";
+import { DELETE, GET, PATCH, POST, PUT } from "@acme/platform-core/cartApi";
 
 export { DELETE, GET, PATCH, POST, PUT };
 

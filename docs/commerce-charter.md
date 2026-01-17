@@ -27,7 +27,7 @@ If behaviour in this doc contradicts the code, treat the code as canonical and u
   - Platform-core exposes helper functions such as `addOrder`, `listOrders`, `markShipped`, `markReturned`, `markRefunded`, `updateRisk`, and `setReturnTracking`.
 
 - **Checkout**
-  - `createCheckoutSession` in `@platform-core/checkout/session` creates Stripe sessions for:
+  - `createCheckoutSession` in `@acme/platform-core/checkout/session` creates Stripe sessions for:
     - Rental mode – with rental duration, deposit line items, and metadata (`rentalDays`, `returnDate`, `depositTotal`, sizes, etc.).
     - Sale mode – with direct product charges and neutral rental metadata.
   - Both modes share a common metadata layout so downstream services can interpret orders consistently.

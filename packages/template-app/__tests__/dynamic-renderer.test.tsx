@@ -2,16 +2,16 @@
 import { render, screen } from "@testing-library/react";
 import DynamicRenderer from "../src/components/DynamicRenderer";
 
-jest.mock("@platform-core/products/index", () => ({ PRODUCTS: [{ id: "sku1" }] }));
+jest.mock("@acme/platform-core/products/index", () => ({ PRODUCTS: [{ id: "sku1" }] }));
 
 const productGridMock = jest.fn(() => <div data-testid="grid" />);
-jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
   ProductGrid: (props: any) => productGridMock(props),
 }));
 
 // Capture Text block props to verify className merge (stackStrategy branch)
 const textMock = jest.fn((props: any) => <div data-testid="text" data-class={props.className} />);
-jest.mock("@ui/components/atoms/primitives/textarea", () => ({
+jest.mock("@acme/ui/components/atoms/primitives/textarea", () => ({
   Textarea: (props: any) => textMock(props),
 }));
 

@@ -16,7 +16,7 @@ describe("ComponentPreview", () => {
   it("renders new component without comparison controls when no legacy component", async () => {
     const NewComp = () => <div>New Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp": NewComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -29,8 +29,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -48,8 +48,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);
@@ -70,8 +70,8 @@ describe("ComponentPreview", () => {
     const NewComp = () => <div>New Component</div>;
     const OldComp = () => <div>Old Component</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
+      "@acme/ui/components/MyComp": NewComp,
+      "@acme/ui/components/MyComp.bak": OldComp,
     };
 
     render(<ComponentPreview component={component} />);

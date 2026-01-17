@@ -14,7 +14,7 @@ const mockGetLaunchStatus = jest.fn<
   [import("@acme/types").LaunchEnv, string]
 >();
 
-jest.mock("@platform-core/configurator", () => ({
+jest.mock("@acme/platform-core/configurator", () => ({
   getLaunchStatus: (...args: unknown[]) =>
     mockGetLaunchStatus(
       args[0] as import("@acme/types").LaunchEnv,

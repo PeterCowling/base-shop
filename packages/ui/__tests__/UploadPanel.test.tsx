@@ -1,4 +1,4 @@
-jest.mock("@ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
+jest.mock("@acme/ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
   const Input = React.forwardRef((props: any, ref: any) => <input ref={ref} {...props} />);
@@ -7,7 +7,7 @@ jest.mock("@/components/atoms/shadcn", () => {
   Button.displayName = "Button";
   return { Input, Button };
 });
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useMediaUpload } from "@acme/ui/hooks/useMediaUpload";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import UploadPanel from "../src/components/cms/media/UploadPanel";
 

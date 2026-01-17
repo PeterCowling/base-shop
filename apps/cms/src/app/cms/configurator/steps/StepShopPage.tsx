@@ -7,28 +7,28 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components/atoms/shadcn";
+} from "@acme/ui/components/atoms/shadcn";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/atoms";
+} from "@acme/ui/components/atoms";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useContext, useMemo, useState } from "react";
-import { Toast } from "@ui/components/atoms";
+import { Toast } from "@acme/ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import { ConfiguratorContext } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
-import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { Inline, Cluster } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface Props {

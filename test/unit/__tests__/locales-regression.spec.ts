@@ -1,12 +1,12 @@
 // test/unit/locales-regression.spec.ts
 
-import { resolveLocale } from "@i18n/locales";
-import { assertLocale } from "@platform-core/products";
+import { resolveLocale } from "@acme/i18n/locales";
+import { assertLocale } from "@acme/platform-core/products";
 import { LOCALES, type Locale } from "@acme/types";
-import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
+import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
 import { getSeo } from "../../../packages/template-app/src/lib/seo";
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: () => Promise.resolve({ seo: {} }),
 }));
 

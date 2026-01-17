@@ -15,7 +15,7 @@ describe("autostart catch logging", () => {
     jest.clearAllMocks();
     jest.unmock("fs/promises");
     jest.unmock("node:fs/promises");
-    jest.unmock("@platform-core/utils");
+    jest.unmock("@acme/platform-core/utils");
   });
 
   const flush = () => new Promise((r) => setImmediate(r));
@@ -28,7 +28,7 @@ describe("autostart catch logging", () => {
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
 
     const error: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));
@@ -55,7 +55,7 @@ describe("autostart catch logging", () => {
     }));
 
     const error: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));
@@ -83,7 +83,7 @@ describe("autostart catch logging", () => {
 
     const error: Mock = jest.fn();
     const cerror: Mock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
     }));

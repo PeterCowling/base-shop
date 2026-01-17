@@ -4,7 +4,7 @@ import { useCallback, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { FormField } from "@acme/ui/components/molecules";
 import { updateReverseLogistics } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";

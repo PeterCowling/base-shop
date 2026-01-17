@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import { useContext, useMemo } from "react";
 import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";

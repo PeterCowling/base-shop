@@ -9,10 +9,10 @@ afterEach(() => {
 
 describe("Product detail page", () => {
   test("calls notFound when product missing", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
+    jest.mock("@acme/platform-core/repositories/json.server", () => ({
       readRepo: jest.fn().mockResolvedValue([]),
     }));
-    jest.mock("@platform-core/returnLogistics", () => ({
+    jest.mock("@acme/platform-core/returnLogistics", () => ({
       getReturnLogistics: jest.fn().mockResolvedValue({ requireTags: false, allowWear: true }),
     }));
     jest.mock("next/headers", () => ({ draftMode: jest.fn().mockResolvedValue({ isEnabled: false }) }));
@@ -24,7 +24,7 @@ describe("Product detail page", () => {
   });
 
   test("renders product with merchandising content", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
+    jest.mock("@acme/platform-core/repositories/json.server", () => ({
       readRepo: jest.fn().mockResolvedValue([
         {
           id: "p1",
@@ -46,7 +46,7 @@ describe("Product detail page", () => {
         { title: "Blog", excerpt: "Ex", slug: "b1", products: ["p1"] },
       ]),
     }));
-    jest.mock("@ui/components/cms/blocks/BlogListing", () => ({
+    jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
       __esModule: true,
       default: jest.fn(() => null),
     }));
@@ -54,7 +54,7 @@ describe("Product detail page", () => {
       __esModule: true,
       default: jest.fn(() => null),
     }));
-    jest.mock("@platform-core/returnLogistics", () => ({
+    jest.mock("@acme/platform-core/returnLogistics", () => ({
       getReturnLogistics: jest.fn().mockResolvedValue({ requireTags: true, allowWear: false }),
     }));
     jest.mock("next/headers", () => ({ draftMode: jest.fn().mockResolvedValue({ isEnabled: false }) }));
@@ -66,7 +66,7 @@ describe("Product detail page", () => {
     const { default: Page } = await import("../src/app/[lang]/product/[slug]/page");
     const element = await Page({ params: { slug: "p1", lang: "en" } });
     render(element);
-    const BlogListing = (await import("@ui/components/cms/blocks/BlogListing")).default as jest.Mock;
+    const BlogListing = (await import("@acme/ui/components/cms/blocks/BlogListing")).default as jest.Mock;
     const PdpClient = (await import("../src/app/[lang]/product/[slug]/PdpClient.client")).default as jest.Mock;
     expect(BlogListing).toHaveBeenCalled();
     expect(BlogListing.mock.calls[0][0]).toEqual({
@@ -94,7 +94,7 @@ describe("Product detail page", () => {
 
 describe("page helpers", () => {
   test("generateMetadata returns product title", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
+    jest.mock("@acme/platform-core/repositories/json.server", () => ({
       readRepo: jest.fn().mockResolvedValue([
         { id: "p1", sku: "p1", status: "active", title: { en: "Prod" }, description: { en: "" }, price: 0, deposit: 0 },
       ]),
@@ -105,7 +105,7 @@ describe("page helpers", () => {
   });
 
   test("generateMetadata returns fallback when product missing", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
+    jest.mock("@acme/platform-core/repositories/json.server", () => ({
       readRepo: jest.fn().mockResolvedValue([]),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");

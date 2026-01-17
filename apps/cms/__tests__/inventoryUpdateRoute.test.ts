@@ -22,7 +22,7 @@ describe("inventory update route", () => {
           },
         }));
       const { writeInventory, readInventory } = await import(
-        "@platform-core/repositories/inventory.server",
+        "@acme/platform-core/repositories/inventory.server",
       );
       await writeInventory("test", [
         {
@@ -65,7 +65,7 @@ describe("inventory update route", () => {
           },
         }));
       const { writeInventory, readInventory } = await import(
-        "@platform-core/repositories/inventory.server",
+        "@acme/platform-core/repositories/inventory.server",
       );
       await writeInventory("test", [
         { sku: "a", productId: "p1", quantity: 0, variantAttributes: {} },

@@ -1,11 +1,11 @@
-import BlogListing from "@ui/components/cms/blocks/BlogListing";
+import BlogListing from "@acme/ui/components/cms/blocks/BlogListing";
 import { notFound } from "next/navigation";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";
 import type { Metadata } from "next";
 import { getSeo } from "../../util/seo";
-import { resolveLocale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { resolveLocale } from "@acme/i18n/locales";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import type { NextSeoProps } from "next-seo";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
 import { getBlogProvider } from "./provider";

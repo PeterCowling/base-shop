@@ -16,7 +16,7 @@ jest.mock("next/navigation", () => ({
   usePathname: () => "/en/shop",
 }));
 
-jest.mock("@platform-core/components/shop/FilterBar", () => {
+jest.mock("@acme/platform-core/components/shop/FilterBar", () => {
   function FilterBarMock(props: any) {
     change = props.onChange;
     return <div data-testid="filters" />;
@@ -24,7 +24,7 @@ jest.mock("@platform-core/components/shop/FilterBar", () => {
   return FilterBarMock;
 });
 
-jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
   ProductGrid: (props: any) => {
     gridProps = props;
     return <div data-testid="grid" />;

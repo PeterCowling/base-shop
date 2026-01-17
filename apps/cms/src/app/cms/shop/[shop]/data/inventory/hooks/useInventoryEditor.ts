@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { InventoryItem } from "@platform-core/types/inventory";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
 
 export type InventoryStatus = "idle" | "saved" | "error";
 

@@ -1,11 +1,11 @@
 // packages/template-app/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import ShopClient from "./ShopClient.client";
 import { getStructuredData, serializeJsonLd } from "../../../lib/seo";
-import { resolveLocale, type Locale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+import { resolveLocale, type Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export async function generateMetadata({
   params,

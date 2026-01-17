@@ -8,7 +8,7 @@ jest.mock("../../atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 
-jest.mock("@ui/hooks/useMediaUpload", () => ({
+jest.mock("@acme/ui/hooks/useMediaUpload", () => ({
   __esModule: true,
   useMediaUpload: () => ({
     pendingFile: null,

@@ -1,9 +1,9 @@
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { z } from "zod";
 import argon2 from "argon2";
-import { getUserByResetToken, updatePassword, setResetToken } from "@platform-core/users";
+import { getUserByResetToken, updatePassword, setResetToken } from "@acme/platform-core/users";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export const runtime = "nodejs";

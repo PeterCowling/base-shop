@@ -1,4 +1,4 @@
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 import { setupMocks } from "./analyticsTestUtils";
 

@@ -1,12 +1,12 @@
 // apps/cover-me-pretty/__tests__/checkout-session.test.ts
-import { decodeCartCookie } from "@platform-core/cartCookie";
-import { PRODUCTS } from "@platform-core/products";
+import { decodeCartCookie } from "@acme/platform-core/cartCookie";
+import { PRODUCTS } from "@acme/platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
 import { asNextJson } from "@acme/test-utils";
-import { CART_COOKIE } from "@platform-core/cartCookie";
-import { validateInventoryAvailability } from "@platform-core/inventoryValidation";
-import { variantKey } from "@platform-core/types/inventory";
+import { CART_COOKIE } from "@acme/platform-core/cartCookie";
+import { validateInventoryAvailability } from "@acme/platform-core/inventoryValidation";
+import { variantKey } from "@acme/platform-core/types/inventory";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -19,7 +19,7 @@ jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("@acme/platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
   convertCurrency: jest.fn(async (n: number) => n),
   getPricing: jest.fn(async () => ({
@@ -28,11 +28,11 @@ jest.mock("@platform-core/pricing", () => ({
     },
   })),
 }));
-jest.mock("@platform-core/tax", () => ({
+jest.mock("@acme/platform-core/tax", () => ({
   getTaxRate: jest.fn(async () => 0.2),
 }));
-jest.mock("@platform-core/inventoryValidation", () => {
-  const actual = jest.requireActual("@platform-core/inventoryValidation");
+jest.mock("@acme/platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@acme/platform-core/inventoryValidation");
   return {
     ...actual,
     validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
@@ -44,21 +44,21 @@ const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const validateInventoryAvailabilityMock =
   validateInventoryAvailability as jest.Mock;
 
-jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@acme/platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
-jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
-jest.mock("@platform-core/identity", () => ({
+jest.mock("@acme/platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@acme/platform-core/identity", () => ({
   getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
 }));
 
 // In tests we treat the cart cookie as carrying a simple cart ID string.
-jest.mock("@platform-core/cartCookie", () => ({
+jest.mock("@acme/platform-core/cartCookie", () => ({
   CART_COOKIE: "__Host-CART_ID",
   decodeCartCookie: jest.fn((raw: string | null) => raw ?? null),
 }));
 
 let mockCart: Record<string, unknown> = {};
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 
@@ -226,7 +226,7 @@ test("responds with 502 when session creation fails", async () => {
   const cookie = "cart-1";
   const spy = jest
     .spyOn(
-      await import("@platform-core/checkout/session"),
+      await import("@acme/platform-core/checkout/session"),
       "createCheckoutSession",
     )
     .mockRejectedValueOnce(new Error("boom"));

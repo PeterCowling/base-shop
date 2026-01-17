@@ -1,4 +1,4 @@
-import { logger } from "@platform-core/utils";
+import { logger } from "@acme/platform-core/utils";
 import {
   resetReleaseDepositsEnv,
   restoreOriginalEnv,
@@ -299,7 +299,7 @@ describe("startDepositReleaseService", () => {
 
   it("defaults to logger.error when releaseFn rejects", async () => {
     service = await import("@acme/platform-machine");
-    const { logger: freshLogger } = await import("@platform-core/utils");
+    const { logger: freshLogger } = await import("@acme/platform-core/utils");
     readdir.mockResolvedValue(["shop1"]);
     readOrders.mockResolvedValue([]);
     const err = new Error("boom");

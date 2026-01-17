@@ -1,4 +1,4 @@
-import { Stack } from "@ui/components/atoms/primitives";
+import { Stack } from "@acme/ui/components/atoms/primitives";
 
 export default function PageHeader({
   title,

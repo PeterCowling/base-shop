@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventWebhook } from "@sendgrid/eventwebhook";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 import {
   mapSendGridEvent,
   type SendGridWebhookEvent,

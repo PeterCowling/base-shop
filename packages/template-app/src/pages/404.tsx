@@ -1,7 +1,7 @@
 // packages/template-app/src/pages/404.tsx
 
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
-import en from "@i18n/en.json";
+import en from "@acme/i18n/en.json";
 
 /**
  * Minimal Pages Router 404 page for template-app, i18n-ready.

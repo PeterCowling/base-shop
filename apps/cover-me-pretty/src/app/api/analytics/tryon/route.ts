@@ -2,7 +2,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 
 export const runtime = "edge";
 

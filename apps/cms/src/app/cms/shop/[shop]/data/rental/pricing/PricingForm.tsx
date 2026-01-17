@@ -3,8 +3,8 @@
 import { Button, Input } from "@/components/atoms/shadcn";
 import { Toast, Tag } from "@/components/atoms";
 import { type PricingMatrix } from "@acme/types";
-import { cn } from "@ui/utils/style";
-import { Inline } from "@ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useCallback, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 

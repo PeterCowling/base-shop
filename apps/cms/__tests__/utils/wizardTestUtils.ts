@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 /* -------------------------------------------------------------------------- */
 /*  External stubs                                                            */
 /* -------------------------------------------------------------------------- */
-jest.mock("@platform-core/contexts/ThemeContext", () => {
+jest.mock("@acme/platform-core/contexts/ThemeContext", () => {
   const React = require("react");
   return {
     __esModule: true,

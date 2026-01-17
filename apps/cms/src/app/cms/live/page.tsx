@@ -3,13 +3,13 @@ import fs from "fs/promises";
 import path from "path";
 import { listShops } from "../../../lib/listShops";
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
-import { Grid } from "@ui/components/atoms/primitives";
+import { Grid } from "@acme/ui/components/atoms/primitives";
 import { LivePreviewList } from "./LivePreviewList";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { TranslationsProvider } from "@i18n/Translations";
-import en from "@i18n/en.json";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const HERO_LABEL_CLASS = "text-hero-foreground/80";

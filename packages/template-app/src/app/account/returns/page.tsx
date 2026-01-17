@@ -1,9 +1,9 @@
 import {
   getReturnLogistics,
   getReturnBagAndLabel,
-} from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+} from "@acme/platform-core/returnLogistics";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";

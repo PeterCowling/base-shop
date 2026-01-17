@@ -3,8 +3,8 @@
 
 import { useConfigurator } from "./ConfiguratorContext";
 import { useGuidedTour } from "./GuidedTour";
-import { Loader, Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Loader, Tag } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";

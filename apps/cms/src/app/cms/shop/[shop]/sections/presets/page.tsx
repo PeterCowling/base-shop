@@ -1,10 +1,10 @@
 import "server-only";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import { listPresets } from "@acme/platform-core/repositories/sections/presets.server";
 // Note: no need for SectionPreset type import here
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { TranslationsProvider } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 export const dynamic = "force-dynamic";
 

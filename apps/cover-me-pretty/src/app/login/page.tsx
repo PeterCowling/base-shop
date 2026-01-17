@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getCsrfToken } from "@shared-utils";
+import { getCsrfToken } from "@acme/shared-utils";
 import type { LoginInput } from "../api/login/route";
 
 export default function LoginPage() {

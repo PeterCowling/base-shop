@@ -18,7 +18,7 @@
   "dependencies": {
     "@acme/config": "workspace:^",
     "@next/env": "15.3.5",
-    "next": "^15.3.5"
+    "next": "^15.3.8"
   },
   "files": [
     "index.mjs",

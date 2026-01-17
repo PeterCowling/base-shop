@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 import { Tooltip } from "@/components/atoms";
-import { Inline, Stack } from "@ui/components/atoms/primitives";
+import { Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";

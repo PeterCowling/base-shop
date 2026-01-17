@@ -6,10 +6,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 // Use server translation API; alias to avoid hooks lint rule
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 

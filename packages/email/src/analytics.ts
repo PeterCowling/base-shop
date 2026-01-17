@@ -1,5 +1,5 @@
 import "server-only";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 import { getCampaignStore } from "./storage";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";

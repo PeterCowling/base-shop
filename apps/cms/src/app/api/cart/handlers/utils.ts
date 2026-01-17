@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
-import type { CartState } from "@platform-core/cart";
+import type { CartState } from "@acme/platform-core/cart";
 import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "@platform-core/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
+} from "@acme/platform-core/cartCookie";
+import { createCartStore } from "@acme/platform-core/cartStore";
 
 export type CartStore = ReturnType<typeof createCartStore>;
 let _store: CartStore | null = null;

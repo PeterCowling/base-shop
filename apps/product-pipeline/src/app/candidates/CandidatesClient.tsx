@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatCurrency } from "@/lib/format";
-import { Cluster, Inline, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 type Candidate = {
   id: string;

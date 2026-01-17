@@ -2,7 +2,7 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 export async function POST(

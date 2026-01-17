@@ -34,7 +34,7 @@ describe("products repository", () => {
   });
 
   test("readRepo returns array and empty array when missing", async () => {
-    const { readRepo } = await import("@platform-core/repositories/products.server");
+    const { readRepo } = await import("@acme/platform-core/repositories/products.server");
     files.set(file, JSON.stringify([{ id: "p1" }]));
     const list = await readRepo(shop);
     expect(list).toEqual([{ id: "p1" }]);
@@ -44,7 +44,7 @@ describe("products repository", () => {
   });
 
   test("updateProductInRepo updates record and increments version", async () => {
-    const { updateProductInRepo } = await import("@platform-core/repositories/products.server");
+    const { updateProductInRepo } = await import("@acme/platform-core/repositories/products.server");
     files.set(file, JSON.stringify([{ id: "p1", row_version: 1 }]));
     const updated = await updateProductInRepo(shop, { id: "p1", title: "New" });
     expect(updated).toMatchObject({ id: "p1", title: "New", row_version: 2 });
@@ -53,7 +53,7 @@ describe("products repository", () => {
   });
 
   test("updateProductInRepo throws when product missing", async () => {
-    const { updateProductInRepo } = await import("@platform-core/repositories/products.server");
+    const { updateProductInRepo } = await import("@acme/platform-core/repositories/products.server");
     files.set(file, JSON.stringify([{ id: "p1", row_version: 1 }]));
     await expect(updateProductInRepo(shop, { id: "p2" })).rejects.toThrow(
       "Product p2 not found"
@@ -61,7 +61,7 @@ describe("products repository", () => {
   });
 
   test("deleteProductFromRepo removes product and errors when missing", async () => {
-    const { deleteProductFromRepo } = await import("@platform-core/repositories/products.server");
+    const { deleteProductFromRepo } = await import("@acme/platform-core/repositories/products.server");
     files.set(file, JSON.stringify([{ id: "p1", row_version: 1 }]));
     await deleteProductFromRepo(shop, "p1");
     expect(JSON.parse(files.get(file)!)).toEqual([]);

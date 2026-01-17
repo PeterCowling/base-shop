@@ -7,10 +7,10 @@ Last-reviewed: 2025-12-02
 
 This platform supports a pluggable architecture for payments, shipping and UI widgets.  
 Plugins are plain npm packages that export a default object implementing the
-`Plugin` interface from `@platform-core/plugins`.
+`Plugin` interface from `@acme/platform-core/plugins`.
 
 ```ts
-import type { Plugin, PaymentRegistry } from "@platform-core/plugins";
+import type { Plugin, PaymentRegistry } from "@acme/platform-core/plugins";
 
 const myPlugin: Plugin = {
   id: "my-plugin",
@@ -31,7 +31,7 @@ Plugins are discovered by calling `loadPlugins` and providing either an array of
 plugin package directories or directories that contain multiple plugins:
 
 ```ts
-import { loadPlugins } from "@platform-core/plugins";
+import { loadPlugins } from "@acme/platform-core/plugins";
 import path from "node:path";
 
 const pluginsDir = path.resolve(process.cwd(), "packages/plugins");
@@ -66,7 +66,7 @@ export async function importByType(entryPath: string) {
 can be supplied per plugin using the plugin id:
 
 ```ts
-import { initPlugins } from "@platform-core/plugins";
+import { initPlugins } from "@acme/platform-core/plugins";
 
 const manager = await initPlugins({
   directories: [pluginsDir],

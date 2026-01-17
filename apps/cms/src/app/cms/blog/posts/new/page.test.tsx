@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -12,9 +12,9 @@ jest.mock("@cms/actions/blog.server", () => ({
   createPost: jest.fn(),
 }));
 
-jest.mock("@platform-core/shops", () => ({ getSanityConfig: jest.fn() }));
+jest.mock("@acme/platform-core/shops", () => ({ getSanityConfig: jest.fn() }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn(),
 }));
 

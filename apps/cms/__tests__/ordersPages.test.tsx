@@ -8,7 +8,7 @@ jest.mock("../src/lib/listShops", () => ({ listShops }));
 const readOrders = jest.fn();
 const markReturned = jest.fn();
 const markRefunded = jest.fn();
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   readOrders,
   markReturned,
   markRefunded,

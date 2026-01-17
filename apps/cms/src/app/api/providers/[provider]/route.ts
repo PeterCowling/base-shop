@@ -2,7 +2,7 @@ import "@acme/zod-utils/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { z } from "zod";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 const ParamsSchema = z

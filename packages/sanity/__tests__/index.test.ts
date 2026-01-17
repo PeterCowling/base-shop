@@ -1,10 +1,10 @@
 jest.mock('@sanity/client', () => ({
   createClient: jest.fn(),
 }));
-jest.mock('@platform-core/repositories/shop.server', () => ({
+jest.mock('@acme/platform-core/repositories/shop.server', () => ({
   getShopById: jest.fn(),
 }));
-jest.mock('@platform-core/shops', () => ({
+jest.mock('@acme/platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
 }));
 jest.mock('@date-utils', () => ({
@@ -17,9 +17,9 @@ import {
   publishQueuedPost,
 } from '../src';
 import { createClient } from '@sanity/client';
-import { getShopById } from '@platform-core/repositories/shop.server';
-import { getSanityConfig } from '@platform-core/shops';
-import { nowIso } from '@date-utils';
+import { getShopById } from '@acme/platform-core/repositories/shop.server';
+import { getSanityConfig } from '@acme/platform-core/shops';
+import { nowIso } from '@acme/date-utils';
 
 describe('sanity index', () => {
   const createClientMock = createClient as jest.Mock;

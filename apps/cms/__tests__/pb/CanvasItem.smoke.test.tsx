@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import CanvasItem from "@ui/components/cms/page-builder/CanvasItem";
+import CanvasItem from "@acme/ui/components/cms/page-builder/CanvasItem";
 
 // Stub BlockItem to avoid deep rendering; TextBlock path is simple and fine.
-jest.mock(require.resolve("@ui/components/cms/page-builder/BlockItem"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/BlockItem"), () => ({
   __esModule: true,
   default: () => <div data-cy="block-item-stub" />,
 }));

@@ -15,8 +15,8 @@ declare global {
 
 if (typeof globalThis !== 'undefined') {
   (globalThis as unknown as { __UPGRADE_MOCKS__?: Record<string, React.ComponentType<unknown>> }).__UPGRADE_MOCKS__ = {
-    '@ui/components/demo/Button': Demo,
-    '@ui/components/demo/Button.bak': (props: { label?: string }) => (
+    '@acme/ui/components/demo/Button': Demo,
+    '@acme/ui/components/demo/Button.bak': (props: { label?: string }) => (
       <button type="button" className="rounded border px-3 py-2 opacity-70">{props.label || 'Demo (old)'}</button>
     ),
   };

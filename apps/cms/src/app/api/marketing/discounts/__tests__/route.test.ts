@@ -11,7 +11,7 @@ import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const resolveDataRoot = jest.fn();
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot }));
 
 let POST: typeof import("../route").POST;
 

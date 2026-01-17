@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { getSections, saveSection, updateSection, deleteSection } from "@platform-core/repositories/sections/index.server";
+import { getSections, saveSection, updateSection, deleteSection } from "@acme/platform-core/repositories/sections/index.server";
 import { pageComponentSchema, type SectionTemplate } from "@acme/types";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";

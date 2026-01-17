@@ -1,2 +1,2 @@
-export { default } from "@ui/components/cms/PageBuilder";
-export type { PageBuilderProps } from "@ui/components/cms/PageBuilder";
+export { default } from "@acme/ui/components/cms/PageBuilder";
+export type { PageBuilderProps } from "@acme/ui/components/cms/PageBuilder";

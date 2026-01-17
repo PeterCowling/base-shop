@@ -14,7 +14,7 @@ jest.mock("@acme/telemetry", () => ({
   track,
 }));
 
-jest.mock("@i18n/useTranslations.server", () => ({
+jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations,
 }));
 

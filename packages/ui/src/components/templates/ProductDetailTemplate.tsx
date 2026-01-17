@@ -9,7 +9,7 @@ import { ProductBadge } from "../atoms/ProductBadge";
 import type { SKU } from "@acme/types";
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
 import { Stack, Inline } from "../atoms/primitives";
 
 export interface ProductDetailTemplateProps

@@ -1,4 +1,4 @@
-import { logger } from "@platform-core/utils";
+import { logger } from "@acme/platform-core/utils";
 import {
   resetReleaseDepositsEnv,
   restoreOriginalEnv,

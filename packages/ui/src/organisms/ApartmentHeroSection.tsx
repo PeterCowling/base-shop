@@ -7,7 +7,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { i18nConfig } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 const APARTMENT_HERO_IMAGE_SRC = "/img/facade.avif";
 

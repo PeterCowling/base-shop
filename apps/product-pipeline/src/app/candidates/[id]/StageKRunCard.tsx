@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
 import StageKLaneCompareCard from "./StageKLaneCompareCard";

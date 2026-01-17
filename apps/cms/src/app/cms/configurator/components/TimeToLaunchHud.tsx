@@ -7,7 +7,7 @@ import {
   TagElement,
 } from "./DashboardPrimitives";
 import type { TimeToLaunchData } from "../hooks/dashboard/types";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface Props {

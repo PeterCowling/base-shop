@@ -2,7 +2,7 @@
 
 // packages/ui/hooks/useProductMediaManager.tsx
 import { useFileUpload } from "./useFileUpload";
-import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import type { ImageOrientation, MediaItem, PublishLocation } from "@acme/types";
 import { useCallback, useMemo } from "react";
 import type { ProductWithVariants } from "./useProductInputs";

@@ -11,7 +11,7 @@ import {
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import ConfiguratorStatusBar from "./ConfiguratorStatusBar";
 import { calculateConfiguratorProgress } from "./lib/progress";
-import { useLayout } from "@platform-core/contexts/LayoutContext";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 
 export interface ConfiguratorContextValue {
   state: ConfiguratorState;

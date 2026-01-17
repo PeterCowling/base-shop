@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
 
@@ -9,7 +9,7 @@ import {
   CmsBuildHero,
   CmsSettingsSnapshot,
   type CmsSettingsSnapshotRow,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
+} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
 
 interface SettingsHeroProps {
   readonly shop: string;

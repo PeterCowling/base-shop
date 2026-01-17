@@ -1,9 +1,9 @@
 import { coreEnv } from "@acme/config/env/core";
 import { sendCampaignEmail } from "@acme/email";
 import { runSeoAudit } from "@acme/lib/seoAudit";
-import { nowIso } from "@date-utils";
-import { trackEvent } from "@platform-core/analytics";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { nowIso } from "@acme/date-utils";
+import { trackEvent } from "@acme/platform-core/analytics";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -33,7 +33,7 @@ async function auditShop(shop: string): Promise<void> {
   }
 }
 
-export default {
+const seoAudit = {
   async scheduled() {
     const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });
     for (const entry of entries) {
@@ -51,3 +51,5 @@ export default {
     }
   },
 };
+
+export default seoAudit;

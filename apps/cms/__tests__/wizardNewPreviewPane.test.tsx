@@ -21,12 +21,12 @@ const previewRendererMock = jest.fn((props: PreviewRendererProps) => {
   return <div data-testid="preview-renderer" />;
 });
 
-jest.mock("@ui/components/cms/page-builder/PreviewRenderer", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/PreviewRenderer", () => ({
   __esModule: true,
   default: (props: PreviewRendererProps) => previewRendererMock(props),
 }));
 
-jest.mock("@ui/components/common/DeviceSelector", () => ({
+jest.mock("@acme/ui/components/common/DeviceSelector", () => ({
   __esModule: true,
   default: ({ deviceId, onChange }: DeviceSelectorProps) => (
     <button

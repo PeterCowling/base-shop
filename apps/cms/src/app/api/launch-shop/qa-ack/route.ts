@@ -5,7 +5,7 @@ import {
   getLaunchGate,
   recordQaAcknowledgement,
 } from "@/lib/server/launchGate";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 
 async function requireCsrf(req: Request): Promise<void> {
   const header = req.headers.get("x-csrf-token");

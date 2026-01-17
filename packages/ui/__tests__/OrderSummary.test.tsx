@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import type { CartState } from "@/lib/cartCookie";
 import OrderSummary from "../src/components/organisms/OrderSummary";
-import { useCart } from "@ui/hooks/useCart";
+import { useCart } from "@acme/ui/hooks/useCart";
 import { formatPrice } from "@acme/shared-utils";
 
-jest.mock("@ui/hooks/useCart", () => ({
+jest.mock("@acme/ui/hooks/useCart", () => ({
   useCart: jest.fn(),
 }));
 

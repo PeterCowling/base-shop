@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { FormField } from "@acme/ui/components/molecules";
 import type { Provider } from "@acme/configurator/providers";
 import { useTranslations } from "@acme/i18n";
 

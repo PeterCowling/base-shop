@@ -6,7 +6,7 @@
 /* -------------------------------------------------------------------------- */
 
 const rbacStorePath = require.resolve("../src/lib/server/rbacStore");
-const { ROLE_PERMISSIONS } = require("@auth/permissions");
+const { ROLE_PERMISSIONS } = require("@acme/auth/permissions");
 
 jest.doMock(rbacStorePath, () => ({
   readRbac: async () => ({

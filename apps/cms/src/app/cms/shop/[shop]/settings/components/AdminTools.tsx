@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Alert } from "@ui/components/atoms";
+import { Alert } from "@acme/ui/components/atoms";
 import type { Shop } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
 

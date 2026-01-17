@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 const readRepo = jest.fn();
 const readInventory = jest.fn();
 
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readRepo: (shop: string) => readRepo(shop),
   readInventory: (shop: string) => readInventory(shop),
 }));

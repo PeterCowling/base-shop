@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import ThemeToggle from "../src/components/ThemeToggle";
 
 const state: { theme: "base" | "dark" | "system" } = { theme: "base" };
-jest.mock("@platform-core/contexts/ThemeContext", () => ({
+jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
   useTheme: () => ({ theme: state.theme, setTheme: () => {} }),
 }));
 

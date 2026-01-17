@@ -7,7 +7,7 @@
 const diffHistoryMock = jest.fn();
 const revertSeoMock = jest.fn();
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   diffHistory: (...a: unknown[]) => diffHistoryMock(...a),
 }));
 jest.mock("@cms/actions/shops.server", () => ({

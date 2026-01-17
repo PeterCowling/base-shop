@@ -4,7 +4,7 @@ describe("resolveDataRoot", () => {
   // require instead of import to avoid ESM hoisting issues
   const fs = require("node:fs");
   const pathMod = require("node:path");
-  const { resolveDataRoot } = require("@platform-core/dataRoot");
+  const { resolveDataRoot } = require("@acme/platform-core/dataRoot");
 
   afterEach(() => {
     delete process.env.DATA_ROOT;

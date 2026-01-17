@@ -4,12 +4,12 @@
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 import { __setMockToken, __resetMockToken } from "next-auth/jwt";
-import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@auth/rbac";
+import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@acme/auth/rbac";
 
 /* -------------------------------------------------------------------------- */
 /* Mock RBAC helpers so importing middleware doesn't pull in JSON modules.   */
 /* -------------------------------------------------------------------------- */
-jest.mock("@auth/rbac", () => ({
+jest.mock("@acme/auth/rbac", () => ({
   __esModule: true,
   canRead: jest.fn(() => true),
   canWrite: jest.fn(() => true),
@@ -63,10 +63,10 @@ const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
 const canRead = mockedCanRead as jest.MockedFunction<
-  typeof import("@auth/rbac").canRead
+  typeof import("@acme/auth/rbac").canRead
 >;
 const canWrite = mockedCanWrite as jest.MockedFunction<
-  typeof import("@auth/rbac").canWrite
+  typeof import("@acme/auth/rbac").canWrite
 >;
 
 /* -------------------------------------------------------------------------- */

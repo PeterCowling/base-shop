@@ -44,7 +44,7 @@ Like `withTempRepo`, but also sets `process.env.DATA_ROOT = <dir>/data/shops` so
 ```
 await withShop(async (dir) => {
   await seedShop(dir); // write data/shops/test/shop.json
-  const repo = await import('@platform-core/repositories/shops.server');
+  const repo = await import('@acme/platform-core/repositories/shops.server');
   const shop = await repo.readShop('test');
 });
 ```

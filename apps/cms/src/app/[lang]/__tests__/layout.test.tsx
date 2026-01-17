@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 
 import LocaleLayout from "../layout";
 
-jest.mock("@ui/components/layout/Footer", () => ({
+jest.mock("@acme/ui/components/layout/Footer", () => ({
   __esModule: true,
   default: () => <div data-cy="footer" />,
 }));
 
-jest.mock("@ui/components/layout/Header", () => ({
+jest.mock("@acme/ui/components/layout/Header", () => ({
   __esModule: true,
   default: jest.fn(({ lang }: { lang: string }) => (
     <div data-cy="header">{lang}</div>
@@ -16,9 +16,9 @@ jest.mock("@ui/components/layout/Header", () => ({
 }));
 
 const HeaderMock =
-  jest.requireMock("@ui/components/layout/Header").default as jest.Mock;
+  jest.requireMock("@acme/ui/components/layout/Header").default as jest.Mock;
 
-jest.mock("@i18n/Translations", () => ({
+jest.mock("@acme/i18n/Translations", () => ({
   __esModule: true,
   TranslationsProvider: ({ children }: { children: ReactNode }) => (
     <>{children}</>

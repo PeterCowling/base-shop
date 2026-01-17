@@ -4,10 +4,10 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 /**

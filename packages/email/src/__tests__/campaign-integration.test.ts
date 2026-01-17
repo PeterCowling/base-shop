@@ -1,9 +1,9 @@
 import { jest } from "@jest/globals";
 import path from "node:path";
 import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
@@ -36,7 +36,7 @@ beforeEach(async () => {
   jest.clearAllMocks();
   await fs.rm(shopDir, { recursive: true, force: true });
   await fs.mkdir(shopDir, { recursive: true });
-  ({ trackEvent } = require("@platform-core/analytics"));
+  ({ trackEvent } = require("@acme/platform-core/analytics"));
   process.env.CART_COOKIE_SECRET = "secret";
   process.env.CAMPAIGN_FROM = "campaign@example.com";
   process.env.NEXT_PUBLIC_BASE_URL = "http://example.com";

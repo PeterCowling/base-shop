@@ -3,8 +3,8 @@
 import Link from "next/link";
 import PostForm from "../PostForm.client";
 import { createPost } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
 
 export default async function NewPostPage(props: {
   searchParams?: Promise<{ shopId?: string }>;

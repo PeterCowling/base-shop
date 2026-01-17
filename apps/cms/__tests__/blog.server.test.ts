@@ -6,11 +6,11 @@ jest.mock("../src/actions/common/auth", () => ({
   ensureCanRead: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({ id: "shop" }),
 }));
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({
     projectId: "p",
     dataset: "d",
@@ -18,7 +18,7 @@ jest.mock("@platform-core/shops", () => ({
   }),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   slugExists: jest.fn(),
   createPost: jest.fn(),
   updatePost: jest.fn(),
@@ -38,7 +38,7 @@ afterEach(() => {
 describe("blog post slug conflicts", () => {
 
   it("returns error when slug already exists on create", async () => {
-    const { slugExists } = require("@platform-core/repositories/blog.server");
+    const { slugExists } = require("@acme/platform-core/repositories/blog.server");
     (slugExists as jest.Mock).mockResolvedValue(true);
 
     const fd = new FormData();
@@ -52,7 +52,7 @@ describe("blog post slug conflicts", () => {
   });
 
   it("returns error when slug already exists on update", async () => {
-    const { slugExists } = require("@platform-core/repositories/blog.server");
+    const { slugExists } = require("@acme/platform-core/repositories/blog.server");
     (slugExists as jest.Mock).mockResolvedValue(true);
 
     const fd = new FormData();
@@ -69,7 +69,7 @@ describe("blog post slug conflicts", () => {
 
 describe("getConfig", () => {
   it("throws when Sanity config is missing", async () => {
-    const { getSanityConfig } = require("@platform-core/shops");
+    const { getSanityConfig } = require("@acme/platform-core/shops");
     (getSanityConfig as jest.Mock).mockReturnValueOnce(undefined);
     await expect(getPosts("shop")).rejects.toThrow(
       "Missing Sanity config for shop shop",
@@ -82,7 +82,7 @@ describe("filterExistingProductSlugs", () => {
     const {
       createPost: repoCreatePost,
       slugExists,
-    } = require("@platform-core/repositories/blog.server");
+    } = require("@acme/platform-core/repositories/blog.server");
     (repoCreatePost as jest.Mock).mockResolvedValue("1");
     (slugExists as jest.Mock).mockResolvedValue(false);
     global.fetch = jest.fn().mockRejectedValue(new Error("network"));

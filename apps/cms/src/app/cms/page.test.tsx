@@ -42,7 +42,7 @@ jest.mock("@cms/lib/server/rbacStore", () => ({
   readRbac: jest.fn().mockResolvedValue({ users: {} }),
 }));
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: () => "/data",
 }));
 

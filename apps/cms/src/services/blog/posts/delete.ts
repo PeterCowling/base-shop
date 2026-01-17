@@ -1,4 +1,4 @@
-import { deletePost as repoDeletePost } from "@platform-core/repositories/blog.server";
+import { deletePost as repoDeletePost } from "@acme/platform-core/repositories/blog.server";
 import { ensureAuthorized } from "../../../actions/common/auth";
 import { getConfig } from "../config";
 

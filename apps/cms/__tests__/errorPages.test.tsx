@@ -17,7 +17,7 @@ jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
 
-jest.mock("@i18n/useTranslations.server", () => ({
+jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations,
 }));
 

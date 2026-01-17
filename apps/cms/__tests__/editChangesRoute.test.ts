@@ -10,7 +10,7 @@ describe("/api/edit-changes", () => {
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("no")),
     }));
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn(),
     }));
@@ -25,7 +25,7 @@ describe("/api/edit-changes", () => {
       __esModule: true,
       requirePermission: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/settings.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
       diffHistory: jest.fn().mockResolvedValue([
         { diff: { pages: { p1: { components: ["Hero", "Banner"] } } } },

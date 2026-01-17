@@ -7,12 +7,12 @@ jest.mock("@acme/lib", () => ({
   checkShopExists: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/pricing.server", () => ({
+jest.mock("@acme/platform-core/repositories/pricing.server", () => ({
   readPricing: jest.fn(),
 }));
 
 jest.mock(
-  "@ui/components/atoms/shadcn",
+  "@acme/ui/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Textarea: (props: any) => <textarea {...props} />,
@@ -32,7 +32,7 @@ jest.mock(
 );
 
 import { checkShopExists } from "@acme/lib";
-import { readPricing } from "@platform-core/repositories/pricing.server";
+import { readPricing } from "@acme/platform-core/repositories/pricing.server";
 
 const mockCheckShopExists = checkShopExists as jest.Mock;
 const mockReadPricing = readPricing as jest.Mock;

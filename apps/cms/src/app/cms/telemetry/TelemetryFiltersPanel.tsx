@@ -1,10 +1,10 @@
 import type { ChangeEvent } from "react";
 import type { TelemetryEvent } from "@acme/telemetry";
-import { LineChart } from "@ui/components/atoms";
-import { Loader, Tag } from "@ui/components/atoms";
+import { LineChart } from "@acme/ui/components/atoms";
+import { Loader, Tag } from "@acme/ui/components/atoms";
 import { Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { cn } from "@ui/utils/style";
-import { Grid, Sidebar, Stack } from "@ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
+import { Grid, Sidebar, Stack } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 import { TelemetryEventTable } from "./TelemetryEventTable";

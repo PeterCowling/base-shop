@@ -10,7 +10,7 @@ jest.mock("../../config", () => ({
   filterExistingProductSlugs: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   createPost: jest.fn(),
   slugExists: jest.fn(),
 }));
@@ -24,7 +24,7 @@ describe("createPost", () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
       await import("../../config");
     const { createPost: repoCreatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "cfg" } as any;
@@ -52,7 +52,7 @@ describe("createPost", () => {
       "../../config"
     );
     const { createPost: repoCreatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "cfg" } as any;
@@ -75,7 +75,7 @@ describe("createPost", () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
       await import("../../config");
     const { createPost: repoCreatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "cfg" } as any;
@@ -106,7 +106,7 @@ describe("createPost", () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
       await import("../../config");
     const { createPost: repoCreatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "cfg" } as any;

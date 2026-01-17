@@ -2,7 +2,7 @@
 import { promises as fs } from "node:fs";
 import publishEditorial from "../src/publishEditorial";
 import { publishQueuedPost } from "@acme/sanity";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 
 jest.mock("node:fs", () => {
   const actual = jest.requireActual("node:fs");
@@ -20,7 +20,7 @@ jest.mock("@acme/sanity", () => ({
   publishQueuedPost: jest.fn(),
 }));
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 

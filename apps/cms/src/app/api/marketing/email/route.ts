@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Campaign } from "@acme/email";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");

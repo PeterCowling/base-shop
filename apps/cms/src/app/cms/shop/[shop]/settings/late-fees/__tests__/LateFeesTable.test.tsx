@@ -7,11 +7,11 @@ import { mapLateFeeRows } from "../../tableMappers";
 const readOrders = jest.fn();
 const DataTable = jest.fn(() => null);
 
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   readOrders: (...args: unknown[]) => readOrders(...args),
 }));
 
-jest.mock("@ui/components/cms/DataTable", () => ({
+jest.mock("@acme/ui/components/cms/DataTable", () => ({
   __esModule: true,
   default: (props: unknown) => DataTable(props),
 }));

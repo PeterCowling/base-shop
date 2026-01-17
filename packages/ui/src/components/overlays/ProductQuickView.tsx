@@ -4,7 +4,7 @@ import { Dialog, DialogContent, Button } from "../atoms/shadcn";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
 import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 export interface ProductQuickViewProps {
   /** Product to display */

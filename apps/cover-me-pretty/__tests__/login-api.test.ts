@@ -7,7 +7,7 @@ jest.mock("@auth", () => ({
   verifyMfa: jest.fn(),
 }));
 
-import { createCustomerSession, validateCsrfToken } from "@auth";
+import { createCustomerSession, validateCsrfToken } from "@acme/auth";
 import { POST } from "../src/app/api/login/route";
 
 type LoginBody = {

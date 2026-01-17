@@ -5,7 +5,7 @@ import * as fsSync from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { sendDueCampaigns } from "./scheduler";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 function resolveDataRoot() {
     let dir = process.cwd();
     while (true) {

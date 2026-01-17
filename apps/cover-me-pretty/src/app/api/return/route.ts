@@ -4,9 +4,9 @@ import "@acme/zod-utils/initZod";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
-import { setReturnTracking } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { parseJsonBody } from "@acme/shared-utils";
+import { setReturnTracking } from "@acme/platform-core/orders";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

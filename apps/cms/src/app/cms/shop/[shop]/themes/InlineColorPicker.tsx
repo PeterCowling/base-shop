@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ChangeEvent } from "react";
-import { hslToHex, hexToHsl, isHsl, isHex } from "@ui/utils/colorUtils";
+import { hslToHex, hexToHsl, isHsl, isHex } from "@acme/ui/utils/colorUtils";
 
 interface Props {
   token: string;

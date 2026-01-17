@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { ApiError } from "@acme/types";
-import ComponentPreview from "@ui/components/ComponentPreview";
+import ComponentPreview from "@acme/ui/components/ComponentPreview";
 
 interface UpgradeComponent {
   file: string;

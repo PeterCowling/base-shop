@@ -16,7 +16,7 @@ import {
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
 import { z } from "zod";
-import { getConfiguratorProgressForShop } from "@platform-core/configurator";
+import { getConfiguratorProgressForShop } from "@acme/platform-core/configurator";
 
 interface UserRecord {
   state: unknown;

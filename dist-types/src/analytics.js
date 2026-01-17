@@ -1,4 +1,4 @@
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 import { coreEnv } from "@acme/config/env/core";
 import { getCampaignStore } from "./storage";
 import { SendgridProvider } from "./providers/sendgrid";

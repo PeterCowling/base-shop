@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Locale } from "@/lib/locales";
 import { localizedPath, type Section } from "@/lib/routes";
-import { useTranslations } from "@i18n";
+import { useTranslations } from "@acme/i18n";
 import styles from "./Nav.module.css";
 
 type NavProps = {

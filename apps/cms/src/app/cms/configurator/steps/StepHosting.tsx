@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
-import { Alert } from "@ui/components/atoms";
+import { Alert } from "@acme/ui/components/atoms";
 import { useEffect, type ChangeEvent } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";

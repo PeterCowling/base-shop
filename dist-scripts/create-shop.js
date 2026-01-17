@@ -1,6 +1,6 @@
 // scripts/create-shop.ts
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
-import { createShop } from "@platform-core/createShop";
+import { createShop } from "@acme/platform-core/createShop";
 import { readdirSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";

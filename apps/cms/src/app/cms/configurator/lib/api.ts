@@ -1,4 +1,4 @@
-import { fetchJson } from "@shared-utils";
+import { fetchJson } from "@acme/shared-utils";
 
 export interface ApiResult<T> {
   data?: T;

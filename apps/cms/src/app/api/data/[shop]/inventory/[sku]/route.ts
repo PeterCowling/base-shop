@@ -1,8 +1,8 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { inventoryItemSchema } from "@platform-core/types/inventory";
-import { inventoryRepository } from "@platform-core/repositories/inventory.server";
+import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 
 export async function PATCH(
   req: NextRequest,

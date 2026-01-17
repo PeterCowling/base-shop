@@ -4,10 +4,10 @@ import { z } from "zod";
 import {
   readRepo,
   readInventory,
-} from "@platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/json.server";
 import type {
   ProductPublication,
-} from "@platform-core/products";
+} from "@acme/platform-core/products";
 
 const searchSchema = z
   .object({

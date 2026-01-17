@@ -1,6 +1,6 @@
 // apps/cms/src/actions/media.helpers.ts
 
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { writeJsonFile } from "@/lib/server/jsonIO";

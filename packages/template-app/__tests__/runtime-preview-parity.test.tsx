@@ -50,19 +50,19 @@ async function setupPreviewFixture() {
       NEXT_PUBLIC_SHOP_ID: shopId,
     },
   }));
-  jest.doMock("@ui/hooks/usePreviewDevice", () => ({
+  jest.doMock("@acme/ui/hooks/usePreviewDevice", () => ({
     usePreviewDevice: () => ["desktop", jest.fn()],
   }));
-  jest.doMock("@ui/components/DeviceSelector", () => ({
+  jest.doMock("@acme/ui/components/DeviceSelector", () => ({
     __esModule: true,
     default: () => null,
   }));
 
   const { scaffoldPageFromTemplate } = await import("@acme/page-builder-core");
   const { savePage } = await import(
-    "@platform-core/repositories/pages/index.server"
+    "@acme/platform-core/repositories/pages/index.server"
   );
-  const { createPreviewToken } = await import("@platform-core/previewTokens");
+  const { createPreviewToken } = await import("@acme/platform-core/previewTokens");
   const { onRequest } = await import("../src/routes/preview/[pageId].ts");
   const { default: PreviewPage } = await import(
     "../src/app/preview/[pageId]/page"

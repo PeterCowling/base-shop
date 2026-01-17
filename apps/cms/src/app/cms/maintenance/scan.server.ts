@@ -1,7 +1,7 @@
 "use server";
 
 import { runMaintenanceScan } from "@acme/platform-machine/maintenanceScheduler";
-import { logger } from "@platform-core/utils";
+import { logger } from "@acme/platform-core/utils";
 import type { FlaggedItem } from "./types";
 import { MSG_ITEM_NEEDS_MAINTENANCE, MSG_ITEM_NEEDS_RETIREMENT } from "./constants";
 

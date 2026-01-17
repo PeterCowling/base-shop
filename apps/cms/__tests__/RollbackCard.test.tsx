@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import RollbackCard from "../src/app/cms/shop/[shop]/RollbackCard";
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
 
   return {

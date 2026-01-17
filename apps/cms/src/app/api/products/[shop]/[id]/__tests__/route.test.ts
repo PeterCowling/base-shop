@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 
 const getProductById = jest.fn();
 
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   getProductById: (shop: string, id: string) => getProductById(shop, id),
 }));
 

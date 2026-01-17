@@ -6,7 +6,7 @@ const parseJsonBody = jest.fn();
 const getShopSettings = jest.fn();
 
 jest.mock("@shared-utils", () => ({ parseJsonBody }));
-jest.mock("@platform-core/repositories/settings.server", () => ({ getShopSettings }));
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({ getShopSettings }));
 
 let POST: typeof import("./route").POST;
 

@@ -58,7 +58,7 @@ It focuses on:
     - Where apps diverge:
       - Introduce a small adapter around `cartApi` instead of a full reimplementation, preserving any needed app-specific behaviour via hooks or middleware.
     - Current state:
-      - Template app and `apps/cover-me-pretty` now both expose `/api/cart` by re-exporting `@platform-core/cartApi` (App Router and pages routes), and cover-me-pretty’s checkout-session route reads carts via `getCart`/`CartStore`, matching the canonical cookie + CartStore semantics.
+      - Template app and `apps/cover-me-pretty` now both expose `/api/cart` by re-exporting `@acme/platform-core/cartApi` (App Router and pages routes), and cover-me-pretty’s checkout-session route reads carts via `getCart`/`CartStore`, matching the canonical cookie + CartStore semantics.
   - Definition of done:
     - All app/cart endpoints either:
       - Re-export `cartApi` handlers, or

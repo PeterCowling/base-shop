@@ -2,7 +2,7 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { pricingSchema } from "@acme/types";
-import { writePricing } from "@platform-core/repositories/pricing.server";
+import { writePricing } from "@acme/platform-core/repositories/pricing.server";
 
 export async function POST(
   req: NextRequest,

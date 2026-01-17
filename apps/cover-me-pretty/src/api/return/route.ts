@@ -1,13 +1,13 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import "@acme/zod-utils/initZod";
 import { stripe } from "@acme/stripe";
-import { computeDamageFee } from "@platform-core/pricing";
+import { computeDamageFee } from "@acme/platform-core/pricing";
 import {
   markRefunded,
   markReturned,
   readOrders,
-} from "@platform-core/repositories/rentalOrders.server";
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
 import shop from "../../../shop.json";
 import type { RentalOrder } from "@acme/types";
 

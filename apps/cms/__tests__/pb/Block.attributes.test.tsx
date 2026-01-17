@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 
 // Mock block registry to a minimal set
-jest.mock(require.resolve("@ui/components/cms/blocks"), () => ({
+jest.mock(require.resolve("@acme/ui/components/cms/blocks"), () => ({
   __esModule: true,
   blockRegistry: {
     Hero: { component: (props: any) => <div data-cy="hero" {...props} /> },
@@ -10,18 +10,18 @@ jest.mock(require.resolve("@ui/components/cms/blocks"), () => ({
 }));
 
 // No-op side effects
-jest.mock(require.resolve("@ui/components/cms/page-builder/scrollEffects"), () => ({ __esModule: true, ensureScrollStyles: () => {} }));
-jest.mock(require.resolve("@ui/components/cms/page-builder/timeline"), () => ({ __esModule: true, initTimelines: () => {} }));
-jest.mock(require.resolve("@ui/components/cms/page-builder/lottie"), () => ({ __esModule: true, initLottie: () => {} }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/scrollEffects"), () => ({ __esModule: true, ensureScrollStyles: () => {} }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/timeline"), () => ({ __esModule: true, initTimelines: () => {} }));
+jest.mock(require.resolve("@acme/ui/components/cms/page-builder/lottie"), () => ({ __esModule: true, initLottie: () => {} }));
 
 // Control cssVars to return stable mapping
 const cssVarsMap = {
   "--pb-static-transform": "scale(1.5)",
   "--pb-anim-duration": "250ms",
 };
-jest.mock(require.resolve("@ui/utils/style/cssVars"), () => ({ __esModule: true, cssVars: () => ({ ...cssVarsMap }) }));
+jest.mock(require.resolve("@acme/ui/utils/style/cssVars"), () => ({ __esModule: true, cssVars: () => ({ ...cssVarsMap }) }));
 
-import Block from "@ui/components/cms/page-builder/Block";
+import Block from "@acme/ui/components/cms/page-builder/Block";
 
 describe("Block (attributes)", () => {
   it("wraps non-Button with animation, data attrs, grid props and style vars", () => {

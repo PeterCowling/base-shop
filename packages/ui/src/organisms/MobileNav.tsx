@@ -9,7 +9,7 @@ import { useModal } from "@/context/ModalContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 

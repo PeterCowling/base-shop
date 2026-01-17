@@ -1,12 +1,12 @@
 import { createShop } from "../createShop";
-import { validateShopName } from "@platform-core/shops";
-import { createShopOptionsSchema } from "@platform-core/createShop/schema";
+import { validateShopName } from "@acme/platform-core/shops";
+import { createShopOptionsSchema } from "@acme/platform-core/createShop/schema";
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),
 }));
 
-jest.mock("@platform-core/createShop/schema", () => ({
+jest.mock("@acme/platform-core/createShop/schema", () => ({
   createShopOptionsSchema: { safeParse: jest.fn() },
 }));
 

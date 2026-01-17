@@ -5,7 +5,7 @@ import { __setMockSession } from "next-auth";
 const writeJsonFile = jest.fn();
 jest.mock("@/lib/server/jsonIO", () => ({ writeJsonFile }));
 
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
 
 const parseJsonBody = jest.fn();
 jest.mock("@shared-utils", () => ({ parseJsonBody }));

@@ -1,17 +1,17 @@
 import { render, screen } from "@testing-library/react";
 
-jest.mock("@ui/components/home/HeroBanner.client", () => ({
+jest.mock("@acme/ui/components/home/HeroBanner.client", () => ({
   __esModule: true,
   // Use data-cy so getByTestId matches the configured attribute.
   default: () => <div data-cy="home-hero">Hero Banner</div>,
 }));
 
-jest.mock("@ui/components/home/ValueProps", () => ({
+jest.mock("@acme/ui/components/home/ValueProps", () => ({
   __esModule: true,
   ValueProps: () => <div data-cy="home-value-props">Value Props</div>,
 }));
 
-jest.mock("@ui/components/home/ReviewsCarousel", () => ({
+jest.mock("@acme/ui/components/home/ReviewsCarousel", () => ({
   __esModule: true,
   default: () => <div data-cy="home-reviews">Reviews Carousel</div>,
 }));

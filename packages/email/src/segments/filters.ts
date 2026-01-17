@@ -1,4 +1,4 @@
-import type { AnalyticsEvent } from "@platform-core/analytics";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 
 export type ComparisonOp = "gt" | "lt" | "gte" | "lte" | "eq";
 

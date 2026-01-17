@@ -8,7 +8,7 @@ jest.mock("../../config", () => ({
   getConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   publishPost: jest.fn(),
 }));
 
@@ -27,7 +27,7 @@ describe("publishPost", () => {
     );
     const { getConfig } = await import("../../config");
     const { publishPost: repoPublishPost } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
     const { nowIso } = await import("@date-utils");
 
@@ -54,7 +54,7 @@ describe("publishPost", () => {
     );
     const { getConfig } = await import("../../config");
     const { publishPost: repoPublishPost } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
     const { nowIso } = await import("@date-utils");
 

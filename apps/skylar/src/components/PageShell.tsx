@@ -1,7 +1,7 @@
 'use client';
 
 
-import { useTranslations } from "@i18n";
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@/lib/locales";
 import type { ReactNode } from "react";
 import type { Section } from "@/lib/routes";

@@ -7,7 +7,7 @@ import {
   CmsBuildHero,
   CmsMetricTiles,
   type CmsMetricTile,
-} from "@ui/components/cms";
+} from "@acme/ui/components/cms";
 
 type ConfiguratorHeroProps = ConfiguratorHeroData;
 

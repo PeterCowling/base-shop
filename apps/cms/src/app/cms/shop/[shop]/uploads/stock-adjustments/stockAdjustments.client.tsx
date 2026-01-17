@@ -5,7 +5,7 @@
 import type {
   StockAdjustmentEvent,
   StockAdjustmentReport,
-} from "@platform-core/types/stockAdjustments";
+} from "@acme/platform-core/types/stockAdjustments";
 import { getCsrfToken } from "@acme/shared-utils";
 import {
   Button,

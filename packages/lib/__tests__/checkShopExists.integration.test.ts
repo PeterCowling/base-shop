@@ -7,7 +7,7 @@ describe('checkShopExists integration', () => {
     const dataRoot = await fs.mkdtemp(join(tmpdir(), 'check-shop-'));
 
     jest.resetModules();
-    jest.doMock('@platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));
+    jest.doMock('@acme/platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));
     const { checkShopExists } = await import('../src/checkShopExists.server');
 
     await expect(checkShopExists('valid-shop')).resolves.toBe(false);

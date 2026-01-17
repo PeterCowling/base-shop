@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { getPages, updatePage as updatePageInRepo } from "@platform-core/repositories/pages/index.server";
+import { getPages, updatePage as updatePageInRepo } from "@acme/platform-core/repositories/pages/index.server";
 import type { Page, Locale } from "@acme/types";
 
 type Visibility = "public" | "hidden";

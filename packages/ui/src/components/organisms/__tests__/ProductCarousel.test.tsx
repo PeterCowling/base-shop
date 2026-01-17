@@ -7,11 +7,11 @@ import "../../../../../../test/resetNextMocks";
 
 // Avoid TDZ issues with jest.mock hoisting by requiring inside the factory
 jest.mock(
-  "@platform-core/contexts/CurrencyContext",
+  "@acme/platform-core/contexts/CurrencyContext",
   () => require("~test/__mocks__/currencyContextMock.tsx")
 );
 
-jest.mock("@platform-core/contexts/CartContext", () => ({
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 

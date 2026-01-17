@@ -68,7 +68,7 @@ Describe the schemas for shop‑level configuration and make it clear which fiel
   - Captures env variables used by template/tenant apps.
   - Enforces required vs optional values and reports invalid combinations via structured errors.
 - Configurator‑side checks currently use:
-  - `@platform-core/configurator.validateShopEnv` to validate `.env` files for a given shop.
+  - `@acme/platform-core/configurator.validateShopEnv` to validate `.env` files for a given shop.
   - `pluginEnvVars` in the same module to assert required variables for Stripe, PayPal, and Sanity based on selected providers.
 
 **Remaining work (optional refinements)**
@@ -204,25 +204,25 @@ Describe how the configuration produced by the wizard flows into:
 - The creation pipeline is implemented as:
   - Wizard UI → `createShop` wizard service (`apps/cms/src/app/cms/wizard/services/createShop.ts`).
   - `POST /cms/api/configurator` (`apps/cms/src/app/api/configurator/route.ts`) which:
-    - Validates the payload with `createShopOptionsSchema` from `@platform-core/createShop`.
+    - Validates the payload with `createShopOptionsSchema` from `@acme/platform-core/createShop`.
     - Calls `createNewShop` in `apps/cms/src/actions/createShop.server.ts`.
-  - `createNewShop` delegates to `@platform-core/createShop`, which:
+  - `createNewShop` delegates to `@acme/platform-core/createShop`, which:
     - Writes Prisma `Shop`/`ShopSettings` state.
     - Writes initial filesystem artefacts under `data/shops/<id>` via repositories.
   - After creation, `/cms/api/configurator` attempts env validation via `validateShopEnv(id)` and returns any env errors alongside creation status.
 - Launch uses `/api/launch-shop`, which:
   - Ensures all required Configurator steps are marked complete.
-  - Calls `runRequiredConfigChecks` from `@platform-core/configurator` for the shop, which runs the shared `configuratorChecks` for the required step set.
+  - Calls `runRequiredConfigChecks` from `@acme/platform-core/configurator` for the shop, which runs the shared `configuratorChecks` for the required step set.
   - Delegates to `deployShop` (and related services) to perform the deploy, optionally seeding demo data.
 
 **Remaining work (optional refinements)**
 
-- If we need richer tracking of creation attempts, introduce a lightweight “creation state” artefact (for example, recording last error and timestamp) built on top of the existing pipeline, without replacing `@platform-core/createShop`.
+- If we need richer tracking of creation attempts, introduce a lightweight “creation state” artefact (for example, recording last error and timestamp) built on top of the existing pipeline, without replacing `@acme/platform-core/createShop`.
 - Extend logging/telemetry around creation and launch so CMS operators can more easily see and retry failures.
 
 **Acceptance criteria**
 
-- The wizard, `POST /cms/api/configurator`, `createNewShop`, and `@platform-core/createShop` remain the single, shared path for turning Configurator state into a new shop.
+- The wizard, `POST /cms/api/configurator`, `createNewShop`, and `@acme/platform-core/createShop` remain the single, shared path for turning Configurator state into a new shop.
 - Launch and deploy flows continue to build on this path, using `configuratorChecks` to guard unsafe deployments.
 
 ---
@@ -233,4 +233,4 @@ Thread A is considered aligned when:
 
 1. `Shop`, `ShopSettings`, and provider schemas in `@acme/types` / `@acme/config` are treated as the canonical contracts for shop configuration.
 2. The Configurator wizard in `apps/cms` can collect the configuration required for a viable shop and surface readiness via `configuratorChecks` and the dashboard.
-3. The existing creation and launch pipeline (`createShop` wizard service → `/cms/api/configurator` → `createNewShop` → `@platform-core/createShop` → `/api/launch-shop`) is the documented, shared path from configuration to live shop.
+3. The existing creation and launch pipeline (`createShop` wizard service → `/cms/api/configurator` → `createNewShop` → `@acme/platform-core/createShop` → `/api/launch-shop`) is the documented, shared path from configuration to live shop.

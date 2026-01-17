@@ -96,7 +96,7 @@ When these decisions change, update this section and `thread-a-architecture.md` 
   - **Creating a shop (CMS → platform-core)**:
     - CMS exposes `POST /cms/api/create-shop` at `apps/cms/src/app/api/create-shop/route.ts`.
     - The route validates `{ id, ...ShopConfig }` with `shopConfigSchema` from `@acme/types`, then calls the server action `createNewShop` in `apps/cms/src/actions/createShop.server.ts`.
-    - `createNewShop` verifies authorization (`ensureAuthorized`), then invokes `createShopFromConfig(id, config, { deploy: false })` from `@platform-core/createShop`, which parses the config, maps it to `CreateShopOptions`, and delegates to the underlying `createShop` helper without deploying.
+    - `createNewShop` verifies authorization (`ensureAuthorized`), then invokes `createShopFromConfig(id, config, { deploy: false })` from `@acme/platform-core/createShop`, which parses the config, maps it to `CreateShopOptions`, and delegates to the underlying `createShop` helper without deploying.
   - **`createShop` implementation (platform-core)**:
     - Validates the `id` via `validateShopName` and builds `prepared` options using `prepareOptions` (theme, name, navigation, pages, analytics/shipping/tax providers, etc.).
     - Loads theme tokens via `loadTokens(prepared.theme)` and constructs the initial `Shop` object with:
@@ -117,7 +117,7 @@ When these decisions change, update this section and `thread-a-architecture.md` 
     - `/cms/api/upgrade-shop` (third handler in the same route file) is a Node‑only endpoint that shells out to `scripts/src/upgrade-shop.ts` via `pnpm tsx`.
     - It requires `manage_pages` permission via `@auth`, then runs the upgrade script in the repo root; failures surface as a generic 500 “Upgrade failed”.
   - **Creation status surfaces**:
-    - `@platform-core/createShop` writes a per‑shop `ShopCreationState` record to `data/shops/<id>/creation.json` whenever `createShopFromConfig` runs, capturing `status`, `env`, timestamps, and the last error (if any).
+    - `@acme/platform-core/createShop` writes a per‑shop `ShopCreationState` record to `data/shops/<id>/creation.json` whenever `createShopFromConfig` runs, capturing `status`, `env`, timestamps, and the last error (if any).
     - CMS reads this state via `readShopCreationState` and exposes it through:
       - `GET /cms/api/shop-creation-state/[shop]` (`apps/cms/src/app/api/shop-creation-state/[shop]/route.ts`), which returns the structured `ShopCreationState` for admins and ShopAdmins, and
       - A `CreationStatus` card on the per‑shop dashboard (`apps/cms/src/app/cms/shop/[shop]/CreationStatus.tsx`) that surfaces creation status and the last error inline.
@@ -134,7 +134,7 @@ When these decisions change, update this section and `thread-a-architecture.md` 
     - The `/cms/api/shops` route (`apps/cms/src/app/api/shops/route.ts`) currently calls a separate `listShops` implementation from `apps/cms/src/lib/listShops`, so the CMS “shop chooser” effectively operates on the directories under `data/shops`.
     - Platform repositories (`shops.server.ts`, `settings.server.ts`, `pages/index.server.ts`) can use either Prisma or JSON according to `*_BACKEND` variables and `DATABASE_URL` (see `docs/persistence.md`).
     - This filesystem‑driven discovery is acceptable in local JSON/dev mode, but the **best‑bet direction** is to move CMS lists and configurator flows in shared environments to:
-      - Query `Shop` via `@platform-core/repositories/shops.server` as the primary registry, and
+      - Query `Shop` via `@acme/platform-core/repositories/shops.server` as the primary registry, and
       - Optionally enrich those rows with “has app scaffold” / “has deploy.json” by checking `data/shops/<id>` and `apps/shop-<id>`.
   - **Environments (staging/production)**
     - There is **no explicit multi‑environment abstraction** per shop in the core types; `Shop` and `ShopSettings` are environment‑agnostic and represent a single configuration.
@@ -173,7 +173,7 @@ These findings suggest that:
   - **Details:**
     - *Shop registry (prod/stage vs local JSON mode)*
       - In shared and production environments, the **`Shop` table is the canonical registry** of which shops exist:
-        - CMS lists, configurator flows, and health views should ultimately query shops via `@platform-core/repositories/shops.server` (`getShops`, `getShopById`).
+        - CMS lists, configurator flows, and health views should ultimately query shops via `@acme/platform-core/repositories/shops.server` (`getShops`, `getShopById`).
         - `data/shops/<id>` and `apps/shop-<id>` are **derived artefacts** (deployments, upgrades, exports); they do not themselves define whether a shop “exists”.
       - In local/offline JSON mode (`DATABASE_URL` unset and `SHOP_BACKEND=json`):
         - CMS may fall back to filesystem‑driven discovery (scanning `DATA_ROOT` for `data/shops/<id>` and `apps/shop-<id>`), since there is no DB‑backed registry.
@@ -495,7 +495,7 @@ When these decisions change, update this section and `thread-b-page-builder.md` 
       - Applies `.pb-hide-desktop/tablet/mobile` classes and inline styles for position/size/z-index, as well as data attributes for scroll effects, timelines, hover/click actions and Lottie.
     - `packages/template-app/src/components/DynamicRenderer.tsx` is a template-app-specific renderer that:
       - Maps a subset of block types (e.g. `HeroBanner`, `ValueProps`, `ReviewsCarousel`, `ProductGrid`, `Section`, `ContactForm`, `Gallery`, `BlogListing`) to concrete components.
-      - Injects product data from `@platform-core/products` into `ProductGrid` when the CMS block type is `ProductGrid`, wiring static structure to catalog data.
+      - Injects product data from `@acme/platform-core/products` into `ProductGrid` when the CMS block type is `ProductGrid`, wiring static structure to catalog data.
 
 - **Editor UX & block registry**
   - The main Page Builder UI lives under `packages/ui/src/components/cms/page-builder`:
@@ -555,7 +555,7 @@ The main gaps for our “prefab shop” goal are:
       - **PLP (“shop” listing)**:
         - `/[lang]/shop` routes in template app and `cover-me-pretty` are **code‑driven PLPs** (`ShopClient` components) over `PRODUCTS`, with built‑in search and filters based on URL query params. They do not currently consume Page Builder pages; customization is via code and theme, not CMS blocks.
       - **PDP (product details)**:
-        - `/[lang]/product/[slug]` is a fixed route that fetches products via `@platform-core/products` and renders `PdpClient` plus some extra components (e.g. `CleaningInfo`), with SEO handled via `generateMetadata`. PDP is not Page Builder–driven today.
+        - `/[lang]/product/[slug]` is a fixed route that fetches products via `@acme/platform-core/products` and renders `PdpClient` plus some extra components (e.g. `CleaningInfo`), with SEO handled via `generateMetadata`. PDP is not Page Builder–driven today.
       - **Checkout / order confirmation / cancellation**:
         - `/[lang]/checkout` (template + `cover-me-pretty`) is a fixed route that reads the cart cookie, fetches products/settings, computes totals, and composes `OrderSummary` + `CheckoutForm` inside a `Section` block. Success/cancel pages are simple, non‑PB routes.
       - **Cart**:
@@ -588,7 +588,7 @@ The main gaps for our “prefab shop” goal are:
         - Marketing/editorial pages are **fully Page Builder–driven** (`PageComponent[]` trees rendered via `DynamicRenderer`), with:
           - A dedicated CMS page type (e.g. “Marketing Page”) and a generic `[lang]/pages/[slug]` route in future, built on the existing `Page` + `DynamicRenderer` primitives.
       - For commerce‑critical types, a pragmatic v1 plan is:
-        - **PLP** – keep `/[lang]/shop` as a system route backed by `@platform-core/products`, but:
+        - **PLP** – keep `/[lang]/shop` as a system route backed by `@acme/platform-core/products`, but:
           - Introduce PLP‑oriented blocks (`ProductGrid`, filter sidebar, category hero) that can be used both in the PLP template and in Page Builder pages.
           - Allow limited PB slots (above/below the grid) controlled from CMS.
         - **PDP** – keep `/[lang]/product/[slug]` as a system route that:
@@ -1109,7 +1109,7 @@ The main gaps for our “prefab shop” goal are:
         - No keyboard traps: modals and other overlays must be dismissible via keyboard and keep focus within the dialog while open.
     - *Where to enforce guardrails*
       - At implementation time (component code):
-        - A11y‑critical behaviours live in the block implementations in `@acme/ui` and `@platform-core/components`:
+        - A11y‑critical behaviours live in the block implementations in `@acme/ui` and `@acme/platform-core/components`:
           - Use semantic elements by default (e.g. `<button>` instead of clickable `<div>`).
           - Ensure focus management and keyboard behaviour is baked in.
         - Complex interactive blocks (carousels, accordions, modals, menus) should ship with:
@@ -1240,10 +1240,10 @@ The main gaps for our “prefab shop” goal are:
     - All responses set the `CART_ID` cookie via `asSetCookieHeader(encodeCartCookie(cartId))` and return `{ ok, cart }`.
   - App-specific cart endpoints:
     - Template app:
-      - `packages/template-app/src/api/cart/route.ts` re-exports `@platform-core/cartApi` handlers but forces `runtime = "nodejs"` to avoid edge runtime limitations during development.
+      - `packages/template-app/src/api/cart/route.ts` re-exports `@acme/platform-core/cartApi` handlers but forces `runtime = "nodejs"` to avoid edge runtime limitations during development.
       - The template app’s layout wraps the tree with `CartProvider` (`packages/template-app/src/app/layout.tsx`), so any cart-aware UI block can access the shared context.
     - Cover-me-pretty:
-      - `apps/cover-me-pretty/src/api/cart/route.ts` re-exports the shared handlers from `@platform-core/cartApi`, and `src/app/api/cart/route.ts` is a thin shim that points the App Router route at the same implementation while forcing the Node runtime.
+      - `apps/cover-me-pretty/src/api/cart/route.ts` re-exports the shared handlers from `@acme/platform-core/cartApi`, and `src/app/api/cart/route.ts` is a thin shim that points the App Router route at the same implementation while forcing the Node runtime.
       - By delegating to `cartApi`, it uses the same `CartStore` (memory/Redis selection) and signed cart-ID cookie mechanics as the template app.
     - CMS:
       - Exposes `/cms/api/cart` using handlers in `apps/cms/src/app/api/cart/handlers/*.ts`:
@@ -1459,7 +1459,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
         - For JSON: acquires a per‑shop file lock, re‑reads `inventory.json`, applies `mutate(current)`, and writes a normalised file back.
       - This gives a simple invariant: **per `(shop, sku, variantAttributes)` updates are atomic**, so concurrent CMS edits, background stock checks, and reservation helpers cannot interleave and corrupt a single inventory row.
     - *Add‑to‑cart: per‑cart checks, no global reservation*
-      - Cart endpoints (`@platform-core/cartApi`, re-exported by both `packages/template-app/src/api/cart/route.ts` and `apps/cover-me-pretty/src/api/cart/route.ts`) enforce requested quantities against **product‑level `sku.stock`**, not live `InventoryItem.quantity`:
+      - Cart endpoints (`@acme/platform-core/cartApi`, re-exported by both `packages/template-app/src/api/cart/route.ts` and `apps/cover-me-pretty/src/api/cart/route.ts`) enforce requested quantities against **product‑level `sku.stock`**, not live `InventoryItem.quantity`:
         - `POST`/`PUT` handlers compute `newQty` per cart line and reject with `409` `"Out of stock"` / `"Insufficient stock"` when `newQty > sku.stock`.
         - No inventory rows are touched at add‑to‑cart time; carts remain **ephemeral intent state** scoped to a single cookie/cart id.
       - For v1 we keep this behaviour: add‑to‑cart is a **per‑cart best‑effort gate** based on catalogue stock, and **global inventory enforcement happens at checkout/order creation** using `InventoryItem.quantity`, not on every cart mutation. Over time, add‑to‑cart can migrate to consulting `InventoryItem` as well, but that is an optimisation rather than a v1 requirement.
@@ -1502,7 +1502,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
         - Treat Stripe as the **source of truth for money** (captures/refunds) and `RentalOrder` (and any future order models) as the source of truth for business state; reconciliation jobs compare our records to Stripe, not vice versa.
         - Ensure webhook handlers (`checkout.session.completed`, `charge.refunded`, `payment_intent.*`, etc.) are idempotent and keyed by `(shop, sessionId)`, so replayed events cannot double‑create orders or refunds.
     - *Cart cookie integrity and scope*
-      - Cart identity and state are protected via `@platform-core/cartCookie`:
+      - Cart identity and state are protected via `@acme/platform-core/cartCookie`:
         - The cookie name is `__Host-CART_ID` (`CART_COOKIE`), set with `Path=/`, `Secure`, `HttpOnly`, and `SameSite=Lax` by `asSetCookieHeader`, which limits exposure to the current origin and mitigates some CSRF risks.
         - Cookie values are HMAC‑signed strings produced by `encodeCartCookie` using `CART_COOKIE_SECRET` from `loadCoreEnv`; `decodeCartCookie` verifies signatures with `timingSafeEqual` and returns `null` on tampering or malformed JSON (it will parse JSON payloads for backwards compatibility, but production handlers only ever store cart IDs).
         - Both the template app and cover-me-pretty run the shared `cartApi`, so the cookie stores a **cart ID** and all cart mutations go through `CartStore` abstractions (memory/Redis) on the server.
@@ -1584,13 +1584,13 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
   - What tests and scaffolding do we need so new tenant apps always implement the same `/api/cart` and `CartProvider` contract?
   - **Details:**
     - *Canonical `/api/cart` contract*
-      - **Contract:** all tenant apps must expose `/api/cart` by re‑exporting `@platform-core/cartApi` (or an exact, tested equivalent), and `CartProvider` is only supported against this contract.
-      - The shared cart API in `@platform-core/cartApi` (as re‑exported by `packages/template-app/src/api/cart/route.ts`) is the **canonical contract** all tenant apps should implement:
+      - **Contract:** all tenant apps must expose `/api/cart` by re‑exporting `@acme/platform-core/cartApi` (or an exact, tested equivalent), and `CartProvider` is only supported against this contract.
+      - The shared cart API in `@acme/platform-core/cartApi` (as re‑exported by `packages/template-app/src/api/cart/route.ts`) is the **canonical contract** all tenant apps should implement:
         - **Routes**:
           - `POST`, `PUT`, `PATCH`, `DELETE`, and `GET` on `/api/cart`.
           - `/cms/api/cart` in CMS uses the exact same contract, with `CartContext` resolving the base path via `getCartApi`.
         - **Schemas and shapes**:
-          - Request/response schemas are defined in `@platform-core/cartApi` via shared zod schemas (`postSchema`, `putSchema`, `patchSchema`, plus an internal `deleteSchema`); conceptually:
+          - Request/response schemas are defined in `@acme/platform-core/cartApi` via shared zod schemas (`postSchema`, `putSchema`, `patchSchema`, plus an internal `deleteSchema`); conceptually:
             - `POST /api/cart` – add an item: body like `{ sku: { id }, qty, size?, rental? }`, returns `{ ok: true, cart }`.
             - `PUT /api/cart` – replace cart: body like `{ lines: Array<{ sku: { id }, qty, size? }> }`, returns `{ ok: true, cart }`.
             - `PATCH /api/cart` – update quantity: body like `{ id, qty }`, returns `{ ok: true, cart }`.
@@ -1606,8 +1606,8 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
           - All handlers enforce stock limits against `sku.stock`, validate payloads with shared schemas, and handle sizes consistently (error if the SKU has sizes but `size` is missing).
           - Pricing and totals are **never** trusted from the client; `/api/cart` stores SKUs/quantities/metadata only, and totals are recomputed in pricing/checkout code.
       - Tenant apps should **not** hand‑roll their own cookie‑based cart logic; instead they should:
-        - Re‑export the shared handlers (`import { DELETE, GET, PATCH, POST, PUT } from "@platform-core/cartApi";`) and set the runtime (`runtime = "nodejs"` where needed).
-        - Ensure `CartProvider`/`CartContext` from `@platform-core/contexts/CartContext` is wired into their app layout so prefab blocks (`CartSection`, `CheckoutSection`, header cart icon) behave consistently.
+        - Re‑export the shared handlers (`import { DELETE, GET, PATCH, POST, PUT } from "@acme/platform-core/cartApi";`) and set the runtime (`runtime = "nodejs"` where needed).
+        - Ensure `CartProvider`/`CartContext` from `@acme/platform-core/contexts/CartContext` is wired into their app layout so prefab blocks (`CartSection`, `CheckoutSection`, header cart icon) behave consistently.
       - For prefab CMS blocks to “just work”, an app must satisfy **both** and is then considered **platform‑compatible** for cart/checkout:
         - Use `CartProvider` at the appropriate layout level, and
         - Expose `/api/cart` (and `/cms/api/cart` for CMS) that honours the above contract, plus a shared `/api/checkout-session` that uses the platform checkout helpers.
@@ -1616,22 +1616,22 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
       - Both template app and cover-me-pretty now ship the shared `cartApi` implementation, so there are no outstanding divergences.
       - To keep things that way (and to catch any future fork), keep a shared “cart contract” harness (e.g. `@acme/test/cartContract`) that:
         - Spins up an app and hits `/api/cart` with a matrix of scenarios (add, setQty, remove, clear, invalid payloads, stock errors).
-        - Asserts responses and side effects against `@platform-core/cartApi` running in isolation.
+        - Asserts responses and side effects against `@acme/platform-core/cartApi` running in isolation.
       - If a brand app ever diverges again, the convergence steps remain:
         - Wrap `/api/cart` in a thin shim that re-exports `cartApi`, or temporarily delegates while reusing shared helpers, until contract tests pass.
-        - Once behaviour matches, drop bespoke logic entirely so changes happen in one place (`@platform-core/cartApi`).
+        - Once behaviour matches, drop bespoke logic entirely so changes happen in one place (`@acme/platform-core/cartApi`).
     - *Scaffolding and tests for new apps*
       - To keep future tenant apps aligned:
         - Provide a small **scaffold** (plop template or CLI) that:
-          - Adds a `src/api/cart/route.ts` that re‑exports `@platform-core/cartApi` handlers and opts into the appropriate runtime (e.g. `export const runtime = "nodejs";`).
+          - Adds a `src/api/cart/route.ts` that re‑exports `@acme/platform-core/cartApi` handlers and opts into the appropriate runtime (e.g. `export const runtime = "nodejs";`).
           - Wraps the root layout with `CartProvider` (and the agreed currency provider), and demonstrates usage in header/footer/cart pages.
           - Includes an `.env.example` with `CART_COOKIE_SECRET`, `SESSION_STORE`, and any Redis env vars required for `CartStore`.
-        - Add reusable tests (e.g. in `@platform-core` or shared test utilities) that:
+        - Add reusable tests (e.g. in `@acme/platform-core` or shared test utilities) that:
           - Hit an app’s `/api/cart` with the standard flows (add, setQty, remove, clear, GET) and assert behaviour matches the shared helpers used in `packages/template-app/__tests__/cart/*.test.ts`.
           - Cover both success paths and edge cases (missing size, stock exceeded, invalid payloads).
         - New apps are considered “CMS prefab ready” only once the cart contract tests pass.
       - Versioning and evolution:
-        - Treat `@platform-core/cartApi` as a versioned public API for tenant apps:
+        - Treat `@acme/platform-core/cartApi` as a versioned public API for tenant apps:
           - Breaking changes (removing fields, changing error semantics) should either:
             - Bump to a new entry point (e.g. `cartApiV2`) with updated contract tests and migration notes, or
             - Be rolled out in a coordinated way across all apps with clear documentation.
@@ -1646,7 +1646,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
         - `ShopSettings.currency` is set to a supported ISO 4217 code.
         - `ShopSettings.taxRegion` is set to a known region identifier.
         - `PAYMENTS_PROVIDER=stripe` and required Stripe env vars (`STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`) are present for this deployment.
-        - The app exposes `/api/cart` with the canonical contract from `@platform-core/cartApi` and exposes `/api/checkout-session` wired to `createCheckoutSession` (or an exact, tested equivalent).
+        - The app exposes `/api/cart` with the canonical contract from `@acme/platform-core/cartApi` and exposes `/api/checkout-session` wired to `createCheckoutSession` (or an exact, tested equivalent).
         - At least one product/SKU is available with:
           - `price` and `deposit` for rental flows, or
           - `price` for simple sale flows.
@@ -1718,7 +1718,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
         - `ShopSettings.taxRegion: string` is a **logical region key** (e.g. `"US-CA"`, `"GB"`), never a numeric rate.
         - `tax/rules.json` (per environment) is the single source of truth for tax rates:
           - Conceptually: `{ [region: string]: number }` mapping region codes to rates (e.g. `0.07` for 7%); it is environment‑level, not per‑shop.
-        - The shared `tax` module in `@platform-core`:
+        - The shared `tax` module in `@acme/platform-core`:
           - `getTaxRate(region)` is the only way to convert a region key into a tax percentage; it loads `rules.json` from `DATA_ROOT/../tax/` and returns a cached rate (or `0` if no rule is found).
           - `calculateTax({ provider: "taxjar", ... })` exists for future API‑backed tax calculation via `TAXJAR_KEY` and other shipping env vars, but is not required for v1 checkout.
         - `createCheckoutSession` must:
@@ -1771,7 +1771,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
         - CMS exposes these via targeted actions (`updateUpsReturns`, `updateReverseLogistics`, `updatePremierDelivery`), so shop operators can toggle offerings without code changes.
       - High‑level rules:
         - CMS/`ShopSettings` decide **which shipping/returns options a shop wants to offer**; env/shipping config decides **which external providers and keys are available** to back those options.
-        - All external carrier/tax calls (UPS/DHL labels, TaxJar, future rate shopping) must go through shared helpers in `@platform-core` (e.g. `calculateTax`, `getReturnLogistics`, future `getShippingRates`); tenant apps must not call carrier SDKs directly.
+        - All external carrier/tax calls (UPS/DHL labels, TaxJar, future rate shopping) must go through shared helpers in `@acme/platform-core` (e.g. `calculateTax`, `getReturnLogistics`, future `getShippingRates`); tenant apps must not call carrier SDKs directly.
         - Return mechanics (labels, tracking URLs, home pickup) are **order‑side behaviour** driven by `returnService`/reverse‑logistics helpers and order APIs. Page Builder blocks may explain “how returns work”, but the actual return options a customer gets come from backend logic, not CMS copy alone.
         - The only place we decide which shipping methods a customer sees at checkout should be shared checkout logic (e.g. a helper like `getAvailableShippingOptions(shop, country)`), not ad‑hoc per app or inside Page Builder blocks.
     - *How changes surface in checkout UX*
@@ -2013,7 +2013,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
 
 - **CMS → runtime wiring for CMS pages**
   - Page storage and retrieval:
-    - CMS saves pages via `apps/cms/src/actions/pages/service.ts` → `@platform-core/repositories/pages/index.server.ts`, which persists to Prisma or JSON and tracks diffs.
+    - CMS saves pages via `apps/cms/src/actions/pages/service.ts` → `@acme/platform-core/repositories/pages/index.server.ts`, which persists to Prisma or JSON and tracks diffs.
     - Runtime apps, including the template app, read pages via the same `getPages(shop)` function for preview (`/preview/:pageId`) and potentially for dynamic content routes.
   - Rendering CMS pages in runtime:
     - Template app’s preview pipeline shows the “end‑to‑end” path:
@@ -2181,7 +2181,7 @@ The key gaps for our goal are:
         - Refusing to publish pages whose slugs would collide with system routes, surfacing a clear error to editors.
     - *Runtime wiring for CMS routes*
       - The template app should introduce a single dynamic server route, conceptually `packages/template-app/src/app/[lang]/pages/[slug]/page.tsx`, that:
-        - Resolves `lang` and `slug`, then looks up the `Page` for the current `shopId` and slug via a helper such as `getPageBySlug(shopId, slug)` in `@platform-core/repositories/pages`.
+        - Resolves `lang` and `slug`, then looks up the `Page` for the current `shopId` and slug via a helper such as `getPageBySlug(shopId, slug)` in `@acme/platform-core/repositories/pages`.
         - Restricts to pages where `pageType === "marketing"`, `status === "published"`, and visibility flags indicate the page should be live; all other cases should return `notFound()` to avoid leaking drafts or non‑marketing types.
         - Implements `generateStaticParams` to pre‑render all published marketing pages for each language and sets `export const revalidate = 60;` so the route’s caching behaviour matches the global CMS content SLO.
         - Renders the page via the same `DynamicRenderer`/layout shell as preview, wrapped in the app’s standard layout (`[lang]/layout.tsx`) so header/footer/nav and theme remain consistent.
@@ -2217,7 +2217,7 @@ The key gaps for our goal are:
         - In production and other shared environments, **Prisma `Shop` is canonical**; `shop.json` is a snapshot/export only. Header/Footer in those environments must not read JSON directly.
         - In local/offline JSON mode (`SHOP_BACKEND=json`), `shop.json` becomes canonical and the shop repositories resolve to JSON under the hood.
         - CMS manages `Shop.navigation` via shop settings forms that always go through repositories (`fetchShop`/`persistShop`), which abstract over Prisma vs JSON.
-        - Runtime `Header`/`Footer` components should be migrated to use the same consolidated repository (e.g. `getShop(shopId)` from `@platform-core/repositories/shops.server`) rather than JSON‑specific helpers like `readShop`, so there is a single code path for reading navigation in all environments.
+        - Runtime `Header`/`Footer` components should be migrated to use the same consolidated repository (e.g. `getShop(shopId)` from `@acme/platform-core/repositories/shops.server`) rather than JSON‑specific helpers like `readShop`, so there is a single code path for reading navigation in all environments.
         - Over time, JSON‑only helpers such as `readShop` should be treated as deprecated for new code in favour of repository functions, to avoid re‑introducing skew between backends.
       - In v1, navigation is **shop‑level**, not per‑page: the same nav is rendered for all pages of a given shop, with the exception of context‑specific highlights (e.g. “current page” styling) handled in the layout, not by duplicating nav structures per page.
     - *Header/footer as CMS‑driven layout with system slots*
@@ -2251,7 +2251,7 @@ The key gaps for our goal are:
     - *Reconciling JSON vs Prisma for header data*
       - To avoid source‑of‑truth skew:
         - CMS should always read/write navigation and header‑related properties (`navigation`, `homeTitle`, `homeDescription`, `homeImage`, `domain`, etc.) via **platform repositories** (`fetchShop`/`persistShop`), which already abstract over Prisma vs JSON.
-        - Runtime `Header`/`Footer` should be updated to use the same consolidated repository (`getShop(shopId)` from `@platform-core/repositories/shops.server`) instead of the JSON‑only `readShop`, so both CMS and runtime agree on the same `Shop` shape.
+        - Runtime `Header`/`Footer` should be updated to use the same consolidated repository (`getShop(shopId)` from `@acme/platform-core/repositories/shops.server`) instead of the JSON‑only `readShop`, so both CMS and runtime agree on the same `Shop` shape.
       - Any future schema changes to `Shop.navigation` (e.g. adding icons, badges, or deep‑link metadata) must be reflected in:
         - The shared `Shop` type in `@acme/types`, and
         - A migration path for existing `shop.json` files and Prisma rows, keeping `Header`/`Footer` logic stable.
@@ -2271,7 +2271,7 @@ The key gaps for our goal are:
   - How should SEO, link generation, and email templates use per-shop base URLs (including preview vs production)?
   - **Details:**
     - *Per‑shop domain model*
-      - `Shop.domain` (via the `ShopDomain` type and `getDomain`/`setDomain` helpers in `@platform-core/shops`) is the **single place** where a shop’s primary runtime domain is recorded (e.g. `shop.example.com` or `www.brand.com`):
+      - `Shop.domain` (via the `ShopDomain` type and `getDomain`/`setDomain` helpers in `@acme/platform-core/shops`) is the **single place** where a shop’s primary runtime domain is recorded (e.g. `shop.example.com` or `www.brand.com`):
         - For dev/stage, this may be a subdomain of a shared host (e.g. `shop-id.dev.example.net`), while production uses the merchant’s real domain.
         - CMS reads/writes `Shop.domain` through the same shop repositories that abstract over Prisma vs JSON so the value remains consistent for both CMS and runtime.
       - V1 assumes **one primary domain per shop per environment**; multiple domains/aliases (e.g. `.com` + `.de`) are future work and must be modelled explicitly (e.g. an array of `ShopDomain` entries) before being used.
@@ -2424,7 +2424,7 @@ The key gaps for our goal are:
       - This gives us a de‑facto “preview adapter” without introducing a new registry; CMS simply links to `/<app>/preview/[pageId]?token=…` for the selected shop/app.
     - *Keeping preview and live in sync*
       - To ensure preview remains accurate even as apps diverge:
-        - Block registries and dynamic renderers should live in shared packages (`@acme/ui`, `@platform-core/page-builder-core`), and apps should configure them via composition (e.g. `registerBlocks`), not by copying code.
+        - Block registries and dynamic renderers should live in shared packages (`@acme/ui`, `@acme/platform-core/page-builder-core`), and apps should configure them via composition (e.g. `registerBlocks`), not by copying code.
         - Any app‑specific blocks must be registered in a **single place** and used both in live routes and in the app’s PreviewPage; preview must never import a “lighter” or different block map.
         - The app’s preview route should wrap `DynamicRenderer` in the same providers as live (translations, theme tokens, cart context where relevant) so styling and behaviour match.
       - When apps need to diverge significantly from the template app, they should do so by:
@@ -2441,7 +2441,7 @@ The key gaps for our goal are:
   - **Details:**
     - *Single registry per app + explicit compatibility*
       - Each app has a **block registry** that maps block `type` strings to React components; the registry is the single source of truth for what that app can render:
-        - Core blocks live in shared packages (`@acme/ui`, `@platform-core/page-builder-core`) and are registered in every app that uses PB.
+        - Core blocks live in shared packages (`@acme/ui`, `@acme/platform-core/page-builder-core`) and are registered in every app that uses PB.
         - App‑specific blocks are registered only in that app’s registry.
       - The combination of:
         - The page’s `component.type` values, and
@@ -2813,7 +2813,7 @@ The key gaps for our goal are:
       - The platform’s governance model should steer all tenant changes through CMS/configurator and shared upgrade/edit flows, not per‑shop code edits:
         - **Preferred path**:
           - Content and layout: Page Builder and CMS pages.
-          - Behaviour and flows: configuration in CMS + `@platform-core` logic.
+          - Behaviour and flows: configuration in CMS + `@acme/platform-core` logic.
           - Template changes: shared components + `edit-preview-republish` / `upgrade-shop` flows.
         - **Disallowed/strongly discouraged path**:
           - Editing tenant app code under `apps/<shop>` in ways that diverge from the template and are not reflected in CMS or shared packages.
@@ -2839,7 +2839,7 @@ The key gaps for our goal are:
     - `apps/cms/src/app/layout.tsx` wraps the entire CMS app with `CurrencyProvider` and `CartProvider`, applying global fonts and theme initialization via `initTheme`.
     - All `/cms/*` routes are wrapped by `apps/cms/src/app/cms/layout.tsx`, which:
       - Retrieves the NextAuth session and passes it through `CmsSessionProvider`.
-      - Wraps children in `LayoutProvider` (`@platform-core/contexts/LayoutContext`) to expose breadcrumbs and configurator progress to client components.
+      - Wraps children in `LayoutProvider` (`@acme/platform-core/contexts/LayoutContext`) to expose breadcrumbs and configurator progress to client components.
       - Renders `LayoutClient` with the user’s role, which drives the top navigation/menu and shop selector.
   - Navigation & shop selection (per `docs/cms.md` and `apps/cms/src/app/cms/page.tsx` + `shop/settings` index pages):
     - Top-level nav options: Dashboard, Products, Pages, Media, Theme, Settings, Live, RBAC, Account Requests, Create Shop.
@@ -3105,7 +3105,7 @@ For the “extremely easy to use” goal, likely improvements include:
       - These tests run without any app code and use Prisma/JSON repositories as appropriate.
     - *App‑level integration tests and contract harness*
       - Apps should have thin integration tests that assert adherence to shared HTTP contracts:
-        - `/api/cart` and `/api/checkout-session` – responses and error semantics match `@platform-core/cartApi` and checkout helpers.
+        - `/api/cart` and `/api/checkout-session` – responses and error semantics match `@acme/platform-core/cartApi` and checkout helpers.
         - `/preview/:pageId` – honours the HMAC token model and returns valid `Page` JSON.
         - Any PB routes (e.g. `/[lang]/pages/[slug]`) – correctly resolve pages by slug and render via `DynamicRenderer`.
       - A small shared “contract harness” (e.g. in `@acme/test/contracts`) can:
@@ -3150,7 +3150,7 @@ For the “extremely easy to use” goal, likely improvements include:
     - CMS-specific glue (e.g. `apps/cms/src/components/cms/PageBuilder.tsx`) is intentionally thin, keeping behaviour in shared packages.
   - Domain and persistence:
     - `packages/platform-core` encapsulates domain logic (shops, pages, products, cart, checkout, pricing, tax, orders, returns, settings) and repository resolution logic (`resolveRepo`, `DATA_ROOT`, `*_BACKEND` envs), documented in `docs/persistence.md` and other domain docs (orders, returns, upgrade flow).
-    - Template app and tenant shops (e.g. `apps/cover-me-pretty`, `apps/skylar`) import from `@platform-core` to avoid reimplementing business rules.
+    - Template app and tenant shops (e.g. `apps/cover-me-pretty`, `apps/skylar`) import from `@acme/platform-core` to avoid reimplementing business rules.
     - `packages/types` provides Zod-backed schemas for core entities (`Shop`, `ShopSettings`, `Page`, `PageComponent`, `SKU`, etc.), giving compile-time and runtime validation for CMS and runtimes.
   - Page Builder:
     - The shared Page Builder data model and transforms now live primarily in `@acme/page-builder-core` (schemas, diff/history helpers, export helpers, block registries) and `@acme/templates` (curated template catalogs); React editor components still live in `packages/ui` and CMS code, while `@acme/page-builder-ui` remains a small placeholder package that currently only exports a `version` string.

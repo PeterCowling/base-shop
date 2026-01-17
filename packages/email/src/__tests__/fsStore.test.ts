@@ -1,6 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { fsCampaignStore } from "../storage/fsStore";
 
 describe("fsCampaignStore.writeCampaigns", () => {

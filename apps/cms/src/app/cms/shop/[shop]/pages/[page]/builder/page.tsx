@@ -1,14 +1,14 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/[page]/builder/page.tsx
 
 import { updatePage } from "@cms/actions/pages/update";
-import { getPages, savePage } from "@platform-core/repositories/pages/index.server";
+import { getPages, savePage } from "@acme/platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import { notFound } from "next/navigation";
 import PageBuilderClient from "./PageBuilderClient";
 import { checkoutPageTemplates, corePageTemplates } from "@acme/templates";
 import { scaffoldPageFromTemplate } from "@acme/page-builder-core";
 import { ulid } from "ulid";
-import { buildPagePreview } from "@platform-core/shops/preview";
+import { buildPagePreview } from "@acme/platform-core/shops/preview";
 import type { PageBuilderProps } from "@acme/page-builder-ui";
 
 export const dynamic = "force-dynamic";

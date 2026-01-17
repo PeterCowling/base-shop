@@ -16,7 +16,7 @@ describe("create-shop API", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
     const deployment = { status: "success", previewUrl: "https://new.pages.dev" };
     const createNewShop = jest.fn().mockResolvedValue(deployment);
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: {
         extend: () => ({
@@ -60,7 +60,7 @@ describe("create-shop API", () => {
     const createNewShop = jest
       .fn()
       .mockRejectedValue(new Error("Forbidden"));
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: {
         extend: () => ({
@@ -84,7 +84,7 @@ describe("create-shop API", () => {
     const createNewShop = jest
       .fn()
       .mockRejectedValue(new Error("Failed to assign ShopAdmin role"));
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: {
         extend: () => ({

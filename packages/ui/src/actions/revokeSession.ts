@@ -1,6 +1,6 @@
 "use server";
 
-import type { SessionRecord } from "@auth";
+import type { SessionRecord } from "@acme/auth";
 import { revalidatePath } from "next/cache";
 
 export async function revoke(id: string) {

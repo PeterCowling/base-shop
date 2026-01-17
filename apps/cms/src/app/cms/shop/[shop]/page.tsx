@@ -4,9 +4,9 @@ import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, StatCard } from "@ui/components/atoms";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives";
-import { CmsBuildHero } from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero
+import { Button, StatCard } from "@acme/ui/components/atoms";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
+import { CmsBuildHero } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero
 import UpgradeButton from "./UpgradeButton";
 import RollbackCard from "./RollbackCard";
 import CreationStatus from "./CreationStatus";
@@ -16,7 +16,7 @@ import ReRunSmokeButton from "../ReRunSmokeButton.client";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 import { deriveShopHealth } from "../../../lib/shopHealth";
 import type { ConfiguratorProgress } from "@acme/types";
-import { deriveOperationalHealth } from "@platform-core/shops/health";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");

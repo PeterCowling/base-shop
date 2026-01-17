@@ -8,8 +8,8 @@ import {
   TableRow,
 } from "@/components/atoms/shadcn";
 import { Card, CardContent, Button } from "@/components/atoms/shadcn";
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 interface EventRecord {
   shop?: string;

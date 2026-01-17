@@ -3,8 +3,8 @@ import MarketingOverview, {
   type MarketingSummary,
   type SegmentActivityMetric,
 } from "../../../../marketing/components/MarketingOverview";
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import type { AnalyticsEvent } from "@platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 import ShopEmailComposerClient from "./shop-email-composer.client";
 
 export default async function ShopEmailMarketingPage({

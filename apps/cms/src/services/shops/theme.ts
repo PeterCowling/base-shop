@@ -1,5 +1,5 @@
-import { syncTheme } from "@platform-core/createShop";
-import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
+import { syncTheme } from "@acme/platform-core/createShop";
+import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
 import type { Shop } from "@acme/types";
 import type { ShopForm } from "./validation";
 

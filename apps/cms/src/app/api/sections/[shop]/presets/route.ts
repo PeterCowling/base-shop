@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import { listPresets, savePreset, deletePreset } from "@acme/platform-core/repositories/sections/presets.server";
 import type { SectionPreset } from "@acme/types";
 

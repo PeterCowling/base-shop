@@ -73,7 +73,7 @@ Upgrade/edit previews for tenant apps are covered in more detail in:
     - Reads `PREVIEW_TOKEN_SECRET` and `UPGRADE_PREVIEW_TOKEN_SECRET` from `@acme/config/env/core`.
     - Resolves the current shop id from `NEXT_PUBLIC_SHOP_ID || "default"`.
     - Validates either a `token` (normal preview) or `upgrade` (upgrade preview) query param using a base64url‑encoded HMAC SHA‑256 digest over `\`${shopId}:${pageId}\``.
-    - Uses `getPages(shopId)` from `@platform-core/repositories/pages/index.server` to load pages and returns the matching page JSON, or:
+    - Uses `getPages(shopId)` from `@acme/platform-core/repositories/pages/index.server` to load pages and returns the matching page JSON, or:
       - `401 Unauthorized` if the HMAC check fails.
       - `404 Not Found` if the page does not exist.
   - The Next.js route:

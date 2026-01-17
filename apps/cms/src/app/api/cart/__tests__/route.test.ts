@@ -40,7 +40,7 @@ const cartStore = {
   }),
 };
 
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   createCartStore: () => cartStore,
 }));
 
@@ -52,7 +52,7 @@ const getProductById = jest.fn((id: string) => {
 });
 const PRODUCTS = [mockProduct, productNoSize, productMissingSizes];
 
-jest.mock("@platform-core/products", () => ({
+jest.mock("@acme/platform-core/products", () => ({
   getProductById: (id: string) => getProductById(id),
   PRODUCTS,
 }));
@@ -64,7 +64,7 @@ const decodeCartCookie = jest.fn((value?: string) =>
 const asSetCookieHeader = jest.fn((value: string) => `cart=${value}`);
 const CART_COOKIE = "cart";
 
-jest.mock("@platform-core/cartCookie", () => ({
+jest.mock("@acme/platform-core/cartCookie", () => ({
   encodeCartCookie,
   decodeCartCookie,
   asSetCookieHeader,

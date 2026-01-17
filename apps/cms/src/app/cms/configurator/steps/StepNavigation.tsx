@@ -7,9 +7,9 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useThemeLoader } from "../hooks/useThemeLoader";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "@acme/ui/utils/devicePresets";
 import { useState, useMemo } from "react";
-import DeviceSelector from "@ui/components/cms/DeviceSelector";
+import DeviceSelector from "@acme/ui/components/cms/DeviceSelector";
 import NavTemplateSelector from "@/app/cms/configurator/components/NavTemplateSelector";
 
 interface NavItem {

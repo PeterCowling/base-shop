@@ -13,7 +13,7 @@ import {
   GET as CoreGET,
   PATCH as CorePATCH,
   POST as CorePOST,
-} from "@platform-core/cartApi";
+} from "@acme/platform-core/cartApi";
 
 test("App Router /api/cart re-exports shared cartApi handlers", () => {
   expect(AppGET).toBe(CoreGET);

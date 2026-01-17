@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input } from "@ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import { updateCurrencyAndTax } from "@cms/actions/shops.server";
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";

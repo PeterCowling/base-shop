@@ -37,7 +37,7 @@ jest.mock("@/components/atoms/shadcn", () => ({
   ),
   SelectValue: () => null,
 }));
-jest.mock("@ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/ui/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Input: (props: any) => <input {...props} />,
   Select: ({ value, onValueChange, children }: any) => (
@@ -113,7 +113,7 @@ jest.mock("../src/app/cms/configurator/steps/ThemeEditorForm", () => ({
   ),
 }));
 
-jest.mock("@ui/components/cms/StyleEditor", () => ({
+jest.mock("@acme/ui/components/cms/StyleEditor", () => ({
   __esModule: true,
   default: () => <div data-cy="style-editor">editor</div>,
 }));

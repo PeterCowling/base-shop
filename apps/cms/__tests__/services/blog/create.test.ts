@@ -19,7 +19,7 @@ jest.mock('../../../src/services/blog/config', () => ({
 const repoCreatePost = jest.fn();
 const repoSlugExists = jest.fn();
 
-jest.mock('@platform-core/repositories/blog.server', () => ({
+jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   createPost: (...args: unknown[]) => repoCreatePost(...args),
   slugExists: (...args: unknown[]) => repoSlugExists(...args),
 }));

@@ -48,7 +48,7 @@ describe("createNewShop authorization", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
 
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShop: jest.fn(),
     }));
@@ -75,7 +75,7 @@ describe("createNewShop authorization", () => {
 
     const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
     const createShop = jest.fn().mockResolvedValue(deployResult);
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShop,
     }));
@@ -121,11 +121,11 @@ describe("submitShop error handling", () => {
   });
 
   it("returns error when env request fails", async () => {
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/shops", () => ({
+    jest.doMock("@acme/platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 
@@ -148,11 +148,11 @@ describe("submitShop error handling", () => {
   });
 
   it("returns error when providers request fails", async () => {
-    jest.doMock("@platform-core/createShop", () => ({
+    jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/shops", () => ({
+    jest.doMock("@acme/platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 

@@ -13,7 +13,7 @@ jest.mock('../../../src/services/blog/config', () => ({
 
 const repoGetPost = jest.fn();
 
-jest.mock('@platform-core/repositories/blog.server', () => ({
+jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   getPost: (...args: unknown[]) => repoGetPost(...args),
 }));
 

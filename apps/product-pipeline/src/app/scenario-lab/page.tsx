@@ -6,8 +6,8 @@ import {
   money,
   type StageKInput,
 } from "@acme/pipeline-engine";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 
 const horizonDays = 120;
 const unitsPlanned = 500;

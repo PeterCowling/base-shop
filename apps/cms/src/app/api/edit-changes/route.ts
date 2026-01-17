@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import {
   diffHistory,
   type SettingsDiffEntry,
-} from "@platform-core/repositories/settings.server";
+} from "@acme/platform-core/repositories/settings.server";
 
 export const runtime = "nodejs";
 

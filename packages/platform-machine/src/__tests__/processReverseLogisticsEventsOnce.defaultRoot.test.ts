@@ -9,7 +9,7 @@ describe("processReverseLogisticsEventsOnce (default data root)", () => {
   });
 
   it("uses resolveDataRoot() when dataRoot arg is omitted", async () => {
-    jest.doMock("@platform-core/dataRoot", () => ({
+    jest.doMock("@acme/platform-core/dataRoot", () => ({
       __esModule: true,
       resolveDataRoot: () => "/data",
     }));

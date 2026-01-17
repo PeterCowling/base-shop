@@ -16,7 +16,7 @@ import {
   PATCH as CorePATCH,
   POST as CorePOST,
   PUT as CorePUT,
-} from "@platform-core/cartApi";
+} from "@acme/platform-core/cartApi";
 
 test("cover-me-pretty /api/cart re-exports shared cartApi handlers", () => {
   expect(RouteGET).toBe(CoreGET);

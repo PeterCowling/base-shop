@@ -1,9 +1,9 @@
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { z } from "zod";
 import crypto from "crypto";
-import { getUserByEmail, setResetToken } from "@platform-core/users";
+import { getUserByEmail, setResetToken } from "@acme/platform-core/users";
 import { sendEmail } from "@acme/email";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 

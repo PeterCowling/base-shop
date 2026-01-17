@@ -7,11 +7,11 @@ import {
   validateCsrfToken,
   isMfaEnabled,
   verifyMfa,
-} from "@auth";
-import type { Role } from "@auth/types/roles";
+} from "@acme/auth";
+import type { Role } from "@acme/auth/types/roles";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
-import { createRateLimiter } from "@auth/rateLimiter";
+import { parseJsonBody } from "@acme/shared-utils";
+import { createRateLimiter } from "@acme/auth/rateLimiter";
 import { authEnv } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";

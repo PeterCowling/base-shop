@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { reorderPages } from "@platform-core/repositories/pages/index.server";
+import { reorderPages } from "@acme/platform-core/repositories/pages/index.server";
 
 export async function PUT(
   req: NextRequest,

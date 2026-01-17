@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import { join } from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 
 export async function GET() {
   try {

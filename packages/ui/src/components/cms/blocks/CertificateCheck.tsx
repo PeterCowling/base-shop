@@ -4,7 +4,7 @@ import * as React from "react";
 import { useTranslations } from "@acme/i18n";
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
 
 export interface CertificateCheckProps extends React.HTMLAttributes<HTMLDivElement> {
   productId?: string;

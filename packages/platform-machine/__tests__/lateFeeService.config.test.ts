@@ -30,7 +30,7 @@ describe("resolveConfig", () => {
       readFile,
       readdir: jest.fn(),
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error: jest.fn(), info: jest.fn() },
     }));
@@ -61,7 +61,7 @@ describe("resolveConfig", () => {
       readFile,
       readdir: jest.fn(),
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error: jest.fn(), info: jest.fn() },
     }));
@@ -86,7 +86,7 @@ describe("resolveConfig", () => {
       readFile,
       readdir: jest.fn(),
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error: jest.fn(), info: jest.fn() },
     }));
@@ -113,7 +113,7 @@ describe("resolveConfig", () => {
       readFile,
       readdir: jest.fn(),
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error: jest.fn(), info: jest.fn() },
     }));
@@ -138,7 +138,7 @@ describe("resolveConfig", () => {
       readFile,
       readdir: jest.fn(),
     }));
-    jest.doMock("@platform-core/utils", () => ({
+    jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error: jest.fn(), info: jest.fn() },
     }));

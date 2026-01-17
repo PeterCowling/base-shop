@@ -1,4 +1,4 @@
-import type { OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
+import type { OrderStep } from "@acme/ui/components/organisms/OrderTrackingTimeline";
 
 describe("Account orders", () => {
   // Skip when the shopper login endpoint is not available in this deployment.

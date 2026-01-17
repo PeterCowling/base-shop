@@ -5,7 +5,7 @@ import InlineColorPicker from "./InlineColorPicker";
 import WizardPreview from "../../../wizard/WizardPreview";
 import TokenInspector from "../../../wizard/TokenInspector";
 import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "@acme/ui/utils/devicePresets";
 import type { CSSProperties } from "react";
 
 interface Picker {

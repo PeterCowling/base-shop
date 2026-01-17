@@ -6,7 +6,7 @@ import {
   updateMediaMetadata,
 } from "@cms/actions/media.server";
 import { checkShopExists } from "@acme/lib";
-import MediaManager from "@ui/components/cms/MediaManager";
+import MediaManager from "@acme/ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
 import MediaOverviewHero from "./components/MediaOverviewHero";
 

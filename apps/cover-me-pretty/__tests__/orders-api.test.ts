@@ -6,11 +6,11 @@ import {
   markCancelled,
   markDelivered,
   refundOrder,
-} from "@platform-core/orders";
-import { getCustomerSession } from "@auth";
+} from "@acme/platform-core/orders";
+import { getCustomerSession } from "@acme/auth";
 import { stripe } from "@acme/stripe";
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
   markCancelled: jest.fn(),

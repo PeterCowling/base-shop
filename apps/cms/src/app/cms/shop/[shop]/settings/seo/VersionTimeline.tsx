@@ -9,13 +9,13 @@ import {
   DialogTrigger,
 } from "@/components/atoms/shadcn";
 import { revertSeo } from "@cms/actions/shops.server";
-import type { SettingsDiffEntry } from "@platform-core/repositories/settings.server";
-import { diffHistory } from "@platform-core/repositories/settings.server";
+import type { SettingsDiffEntry } from "@acme/platform-core/repositories/settings.server";
+import { diffHistory } from "@acme/platform-core/repositories/settings.server";
 import { formatTimestamp } from "@acme/date-utils";
-import { CodeBlock } from "@ui/components/molecules";
+import { CodeBlock } from "@acme/ui/components/molecules";
 import { useEffect, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 interface VersionTimelineProps {
   /** Shop identifier */

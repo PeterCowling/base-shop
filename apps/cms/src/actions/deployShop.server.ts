@@ -1,13 +1,13 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
-import { deployShop, type DeployShopResult } from "@platform-core/createShop";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { deployShop, type DeployShopResult } from "@acme/platform-core/createShop";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import fs from "fs/promises";
 import path from "path";
 import { writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
 import { ensureAuthorized } from "./common/auth";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 import { verifyShopAfterDeploy } from "./verifyShopAfterDeploy.server";
 import type { Environment } from "@acme/types";
 import { recordStageTests } from "@/lib/server/launchGate";
@@ -126,7 +126,7 @@ export async function updateDeployStatus(
     try {
       // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
       const { updateShopInRepo } = await import(
-        "@platform-core/repositories/shop.server" // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
+        "@acme/platform-core/repositories/shop.server" // i18n-exempt -- CMS-2651 [ttl=2026-01-01] non-UI module specifier
       );
       await updateShopInRepo(id, {
         id,

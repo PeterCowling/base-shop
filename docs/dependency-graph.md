@@ -41,7 +41,6 @@ flowchart TB
         email-templates["@acme/email-templates"]
         telemetry["@acme/telemetry"]
         configurator["@acme/configurator"]
-        product-configurator["@acme/product-configurator"]
         pipeline-engine["@acme/pipeline-engine"]
     end
 
@@ -228,8 +227,7 @@ flowchart LR
 | `@acme/*` | Core packages | `packages/*` |
 | `@apps/*` | Applications | `apps/*` |
 | `@themes/*` | Theme packages | `packages/themes/*` |
-| `@auth/*` | Auth types (next-auth) | Virtual (tsconfig paths) |
-| `@i18n/*` | i18n data | Virtual (tsconfig paths) |
+| `@cms/*` | CMS app internals | `apps/cms/src/*` (tsconfig paths) |
 
 ### Key Dependencies
 

@@ -2,8 +2,8 @@
 
 import { Tooltip } from "@/components/atoms";
 import { useTranslations } from "@acme/i18n";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
 interface SeoEditorHeaderProps {
   freeze: boolean;

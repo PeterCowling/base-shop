@@ -1,6 +1,6 @@
 import type { ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings } from "./helpers";
-import { recordMetric } from "@platform-core/utils";
+import { recordMetric } from "@acme/platform-core/utils";
 import {
   parseCurrencyTaxForm,
   parseDepositForm,

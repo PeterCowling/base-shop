@@ -1,8 +1,8 @@
 // apps/cover-me-pretty/src/components/NotFoundContent.test.tsx
 import { render, screen } from "@testing-library/react";
 import NotFoundContent from "./NotFoundContent";
-import TranslationsProvider from "@i18n/Translations";
-import en from "@i18n/en.json";
+import TranslationsProvider from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 describe("NotFoundContent", () => {
   it("renders headline, text, and homepage link", () => {

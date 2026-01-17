@@ -1,6 +1,6 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import type { AnalyticsEvent } from "@platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
+import { Tag } from "@acme/ui/components/atoms";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { Grid as DSGrid, Stack } from "@ui/components/atoms/primitives";
+import { Grid as DSGrid, Stack } from "@acme/ui/components/atoms/primitives";
 import { useTranslations as serverT } from "@acme/i18n/useTranslations.server";
 
 // cards defined from translations inside component below

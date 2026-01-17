@@ -9,7 +9,7 @@ const translations = {
 
 const useTranslations = jest.fn();
 
-jest.mock("@i18n/useTranslations.server", () => ({
+jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations,
 }));
 

@@ -12,20 +12,20 @@ describe("runtimeContractManifest", () => {
 
     expect(apiCart.path).toBe("/api/cart");
     expect(apiCart.runtime).toBe("nodejs");
-    expect(apiCart.uses).toBe("@platform-core/cartApi");
+    expect(apiCart.uses).toBe("@acme/platform-core/cartApi");
 
     expect(apiCheckoutSession.path).toBe("/api/checkout-session");
     expect(apiCheckoutSession.runtime).toBe("nodejs");
-    expect(apiCheckoutSession.uses).toBe("@platform-core/checkout/session");
+    expect(apiCheckoutSession.uses).toBe("@acme/platform-core/checkout/session");
 
     expect(apiStripeWebhook.path).toBe("/api/stripe-webhook");
     expect(apiStripeWebhook.runtime).toBe("nodejs");
-    expect(apiStripeWebhook.uses).toBe("@platform-core/stripe-webhook");
+    expect(apiStripeWebhook.uses).toBe("@acme/platform-core/stripe-webhook");
 
     expect(apiReturn.path).toBe("/api/return");
     expect(apiReturn.runtime).toBe("edge");
     expect(apiReturn.uses).toBe(
-      "@platform-core/repositories/rentalOrders.server",
+      "@acme/platform-core/repositories/rentalOrders.server",
     );
   });
 
@@ -41,7 +41,7 @@ describe("runtimeContractManifest", () => {
     expect(preview.apiPreviewTokenRoute.path).toBe("/api/preview-token");
     expect(preview.apiPreviewTokenRoute.runtime).toBe("nodejs");
     expect(preview.apiPreviewTokenRoute.uses).toBe(
-      "@platform-core/previewTokens",
+      "@acme/platform-core/previewTokens",
     );
   });
 

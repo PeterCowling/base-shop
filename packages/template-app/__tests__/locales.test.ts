@@ -1,4 +1,4 @@
-import { assertLocales, resolveLocale } from "@i18n/locales";
+import { assertLocales, resolveLocale } from "@acme/i18n/locales";
 
 describe("locales", () => {
   it("resolves supported locales and falls back to 'en'", () => {

@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 import {
   Button,
   Popover,
   PopoverAnchor,
   PopoverContent,
-} from "@ui/components/atoms";
+} from "@acme/ui/components/atoms";
 
 interface Props {
   inspectMode?: boolean;

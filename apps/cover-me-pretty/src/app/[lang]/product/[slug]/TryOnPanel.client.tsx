@@ -2,19 +2,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { SKU } from "@acme/types";
 import type React from "react";
-import { UploaderSurface } from "@ui/components/upload/UploaderSurface";
+import { UploaderSurface } from "@acme/ui/components/upload/UploaderSurface";
 import type { ImageOrientation } from "@acme/types";
-import { useTryOnController } from "@ui/hooks/tryon/useTryOnController";
+import { useTryOnController } from "@acme/ui/hooks/tryon/useTryOnController";
 import { tryonMeta } from "../../../../lib/tryonMeta";
-import { ARViewer } from "@ui/components/atoms/ARViewer";
-import { RecommendationCarousel } from "@ui/components/organisms";
-import { useCart } from "@platform-core/contexts/CartContext";
+import { ARViewer } from "@acme/ui/components/atoms/ARViewer";
+import { RecommendationCarousel } from "@acme/ui/components/organisms";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
 import { ComparePreview } from "./ComparePreview";
 import { SignedViewLink } from "./SignedViewLink";
 import { TryOnStepper } from "./TryOnStepper";
 import { useTranslations } from "@acme/i18n";
 import { drawPreview, computeSmartAnchor } from "./PreviewUtils";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 interface Props { product: SKU }
 

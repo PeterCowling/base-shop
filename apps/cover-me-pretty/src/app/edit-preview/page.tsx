@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ComponentPreview from "@ui/components/ComponentPreview";
+import ComponentPreview from "@acme/ui/components/ComponentPreview";
 
 interface UpgradeComponent {
   file: string;

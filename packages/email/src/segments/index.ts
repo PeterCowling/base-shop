@@ -1,6 +1,6 @@
 import "server-only";
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import type { AnalyticsEvent } from "@platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 import { readSegments, analyticsMTime, SegmentCache, cacheTtl } from "./storage";
 import { matches } from "./filters";
 import { createContact, addToList, listSegments } from "./providers";

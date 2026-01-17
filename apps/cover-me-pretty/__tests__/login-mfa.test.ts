@@ -12,7 +12,7 @@ import {
   validateCsrfToken,
   isMfaEnabled,
   verifyMfa,
-} from "@auth";
+} from "@acme/auth";
 import { POST } from "../src/app/api/login/route";
 
 type LoginBody = {

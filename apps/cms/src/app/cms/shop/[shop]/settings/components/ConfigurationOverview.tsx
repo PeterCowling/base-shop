@@ -1,8 +1,8 @@
 "use client";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { CodeBlock } from "@ui/components/molecules";
-import DataTable from "@ui/components/cms/DataTable";
+import { CodeBlock } from "@acme/ui/components/molecules";
+import DataTable from "@acme/ui/components/cms/DataTable";
 import { resetThemeOverride } from "@cms/actions/shops.server";
 import type { Locale } from "@acme/types";
 import { useTranslations } from "@acme/i18n";

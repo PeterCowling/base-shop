@@ -9,7 +9,7 @@ import {
   Checkbox,
   Input,
 } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
+import { FormField } from "@acme/ui/components/molecules";
 import type { IdentityField, LuxuryFeatureKey } from "../useShopEditorSubmit";
 
 const FEATURE_KEYS = [

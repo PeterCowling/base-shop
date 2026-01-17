@@ -29,7 +29,7 @@ Unique constraints:
 
 ## Public API
 ```ts
-import { addOrder, listOrders, markShipped } from "@platform-core/orders";
+import { addOrder, listOrders, markShipped } from "@acme/platform-core/orders";
 
 // create a new order
 await addOrder({
@@ -50,7 +50,7 @@ Other lifecycle helpers include `markFulfilled`, `markDelivered`, `markCancelled
 
 ## Checkout flows
 
-Checkout sessions for both rentals and straight sales are created via the shared helper `createCheckoutSession` in `@platform-core/checkout/session`:
+Checkout sessions for both rentals and straight sales are created via the shared helper `createCheckoutSession` in `@acme/platform-core/checkout/session`:
 
 - **Rental checkout**
   - Call `createCheckoutSession(cart, { mode: "rental", returnDate, currency, taxRegion, shopId, internalCustomerId, stripeCustomerId, ... })`.

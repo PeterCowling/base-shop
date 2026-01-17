@@ -19,12 +19,12 @@ jest.mock("@acme/lib", () => ({
 }));
 
 const readRepoMock = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readRepo: (...args: unknown[]) => readRepoMock(...args),
 }));
 
 const productsTableRenderSpy = jest.fn();
-jest.mock("@ui/components/cms/ProductsTable.client", () => {
+jest.mock("@acme/ui/components/cms/ProductsTable.client", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -57,7 +57,7 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -70,7 +70,7 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("@ui/utils/style", () => ({
+jest.mock("@acme/ui/utils/style", () => ({
   cn: (...classes: any[]) => classes.filter(Boolean).join(" "),
 }));
 

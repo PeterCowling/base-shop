@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { listShops } from "../../../lib/listShops";
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { Tag } from "@acme/ui/components/atoms";
+import { Grid } from "@acme/ui/components/atoms/primitives/Grid";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export default async function PagesIndexPage() {

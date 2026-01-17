@@ -5,7 +5,7 @@ import UpgradePreviewPage from "./page";
 
 type ComponentPreviewProps = { component: { componentName: string } };
 
-jest.mock("@ui/components/ComponentPreview", () => {
+jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview: FC<ComponentPreviewProps> = ({ component }) => (
     <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
   );

@@ -2,4 +2,4 @@
 export {
   profileMetadata as metadata,
   ProfilePage as default,
-} from "@ui/account";
+} from "@acme/ui/account";

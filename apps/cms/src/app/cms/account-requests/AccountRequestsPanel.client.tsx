@@ -3,8 +3,8 @@
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 import type { PendingUser } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
 import type { ActionResult, ActionStatus } from "../components/actionResult";

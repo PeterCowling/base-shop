@@ -2,27 +2,27 @@
 // apps/cover-me-pretty/src/app/api/checkout-session/route.ts
 import "@acme/zod-utils/initZod";
 
-import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
-import { getCart } from "@platform-core/cartStore";
-import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@platform-core/identity";
+import { CART_COOKIE, decodeCartCookie, type CartState } from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
+import { getCustomerSession } from "@acme/auth";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
 import {
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
-} from "@platform-core/checkout/session";
+} from "@acme/platform-core/checkout/session";
 import {
   cartToInventoryRequests,
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
-import { convertCurrency, getPricing } from "@platform-core/pricing";
+} from "@acme/platform-core/inventoryValidation";
+import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
 import shop from "../../../shop.json";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
+import { shippingSchema, billingSchema } from "@acme/platform-core/schemas/address";
 import type Stripe from "stripe";
-import { addOrder } from "@platform-core/orders/creation";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { addOrder } from "@acme/platform-core/orders/creation";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import { ulid } from "ulid";

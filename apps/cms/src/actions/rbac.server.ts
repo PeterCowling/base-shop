@@ -3,7 +3,7 @@
 
 import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
-import type { Permission } from "@auth";
+import type { Permission } from "@acme/auth";
 import argon2 from "argon2";
 import { ulid } from "ulid";
 import { readRbac, writeRbac } from "../lib/server/rbacStore";

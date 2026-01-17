@@ -21,15 +21,15 @@ const translations: Record<string, string> = {
   "cms.seo.progress.failed": "failed",
 };
 
-jest.mock("@i18n/useTranslations.server", () => ({
+jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations,
 }));
 
-jest.mock("@platform-core/repositories/seoAudit.server", () => ({
+jest.mock("@acme/platform-core/repositories/seoAudit.server", () => ({
   readSeoAudits: (...a: unknown[]) => readSeoAuditsMock(...a),
 }));
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: (...a: unknown[]) => listEventsMock(...a),
 }));
 

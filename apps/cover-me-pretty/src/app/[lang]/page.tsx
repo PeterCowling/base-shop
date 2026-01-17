@@ -4,8 +4,8 @@ import path from "path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
 import { fetchPublishedPosts } from "@acme/sanity";
-import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
-import { Locale, resolveLocale } from "@i18n/locales";
+import type { BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
+import { Locale, resolveLocale } from "@acme/i18n/locales";
 
 async function loadComponents(): Promise<PageComponent[]> {
   try {

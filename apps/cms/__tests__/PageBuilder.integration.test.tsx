@@ -48,14 +48,14 @@ jest.mock("@dnd-kit/sortable", () => ({
   sortableKeyboardCoordinates: jest.fn(),
 }));
 
-jest.mock("@ui/components/cms/page-builder/Palette", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/Palette", () => ({
   __esModule: true,
   default: ({ onAdd }: any) => (
     <button onClick={() => onAdd("Text")}>Add Block</button>
   ),
 }));
 
-jest.mock("@ui/hooks/useFileUpload", () => ({
+jest.mock("@acme/ui/hooks/useFileUpload", () => ({
   __esModule: true,
   default: () => ({ onDrop: jest.fn(), progress: 0, isValid: true }),
 }));
@@ -69,7 +69,7 @@ jest.mock("@acme/i18n/locales", () => ({ locales: ["en"] }));
 
 jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
 
-jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/CanvasItem", () => ({
   __esModule: true,
   default: ({ component, onRemove }: any) => {
     const overrides = component.styles ? JSON.parse(component.styles) : {};
@@ -85,7 +85,7 @@ jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
   },
 }));
 
-jest.mock("@ui/components/cms/page-builder/Block", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/Block", () => ({
   __esModule: true,
   default: ({ component }: any) => {
     const overrides = component.styles ? JSON.parse(component.styles) : {};
@@ -98,7 +98,7 @@ jest.mock("@ui/components/cms/page-builder/Block", () => ({
   },
 }));
 
-jest.mock("@ui/components/cms/blocks", () => ({
+jest.mock("@acme/ui/components/cms/blocks", () => ({
   blockRegistry: {
     Text: { component: (props: any) => <div {...props} /> },
   },

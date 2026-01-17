@@ -38,6 +38,7 @@ export default [
   {
     ignores: [
       "node_modules/",
+      "dist-types/",
       "**/dist/**",
       "packages/auth/dist/",
       "packages/configurator/bin/**",
@@ -186,6 +187,13 @@ export default [
   },
   {
     files: ["scripts/src/seed-test-data.ts"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+  /* ▸ Serverless functions: allow dynamic filesystem paths rooted at DATA_ROOT */
+  {
+    files: ["functions/src/**/*.{ts,tsx,js,jsx}"],
     rules: {
       "security/detect-non-literal-fs-filename": "off",
     },

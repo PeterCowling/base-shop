@@ -1,5 +1,5 @@
 import { ensureAuthorized } from "../common/auth";
-import { deleteSection } from "@platform-core/repositories/sections/index.server";
+import { deleteSection } from "@acme/platform-core/repositories/sections/index.server";
 
 export async function deleteSectionAction(shop: string, id: string): Promise<{ ok?: boolean; error?: string }> {
   await ensureAuthorized();

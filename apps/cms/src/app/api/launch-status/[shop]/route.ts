@@ -3,7 +3,7 @@ import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { getLaunchStatus } from "@platform-core/configurator";
+import { getLaunchStatus } from "@acme/platform-core/configurator";
 import type { LaunchEnv, LaunchCheckResult } from "@acme/types";
 
 const ENVS: LaunchEnv[] = ["dev", "stage", "prod"];

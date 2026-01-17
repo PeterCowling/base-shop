@@ -2,7 +2,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { ChangeEvent } from "react";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface Props {

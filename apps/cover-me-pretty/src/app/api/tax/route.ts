@@ -1,10 +1,10 @@
 // apps/cover-me-pretty/src/app/api/tax/route.ts
 import "@acme/zod-utils/initZod";
-import { calculateTax, type TaxCalculationRequest } from "@platform-core/tax";
+import { calculateTax, type TaxCalculationRequest } from "@acme/platform-core/tax";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 
 // Tax calculations rely on platform-core functions that read from the
 // filesystem, which requires Node.js APIs. Use the Node.js runtime so these

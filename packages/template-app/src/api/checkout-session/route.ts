@@ -3,25 +3,25 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
-} from "@platform-core/cartCookie";
-import { getCart } from "@platform-core/cartStore";
+} from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
 import {
   convertCurrency,
   getPricing,
-} from "@platform-core/pricing";
+} from "@acme/platform-core/pricing";
 import {
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
-} from "@platform-core/checkout/session";
+} from "@acme/platform-core/checkout/session";
 import {
   cartToInventoryRequests,
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
+} from "@acme/platform-core/inventoryValidation";
 import { coreEnv } from "@acme/config/env/core";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@platform-core/identity";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getCustomerSession } from "@acme/auth";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { ulid } from "ulid";

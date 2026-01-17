@@ -5,8 +5,8 @@ const prismaMock = {
   page: { createMany: jest.fn(async () => ({})) },
 };
 
-jest.mock("@platform-core/db", () => ({ prisma: prismaMock }));
-jest.mock("@platform-core/createShop/themeUtils", () => ({ loadTokens: () => ({}) }));
+jest.mock("@acme/platform-core/db", () => ({ prisma: prismaMock }));
+jest.mock("@acme/platform-core/createShop/themeUtils", () => ({ loadTokens: () => ({}) }));
 
 let wizardStateSchema: any;
 let submitShop: any;
@@ -44,7 +44,7 @@ describe("navigation round-trip", () => {
     const fetchMock = jest.fn(async (input: RequestInfo, init?: RequestInit) => {
       if (typeof input === "string" && input === "/cms/api/configurator") {
         const body = JSON.parse(init!.body as string) as any;
-        const { createShop } = await import("@platform-core/createShop");
+        const { createShop } = await import("@acme/platform-core/createShop");
         const { id, ...opts } = body;
         await createShop(id, opts, { deploy: false });
         return new Response(JSON.stringify({ success: true }), { status: 201 });

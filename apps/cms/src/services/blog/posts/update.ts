@@ -1,7 +1,7 @@
 import {
   updatePost as repoUpdatePost,
   slugExists,
-} from "@platform-core/repositories/blog.server";
+} from "@acme/platform-core/repositories/blog.server";
 import { ensureAuthorized } from "../../../actions/common/auth";
 import {
   collectProductSlugs,

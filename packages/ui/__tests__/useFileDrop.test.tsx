@@ -8,7 +8,7 @@ const useFileUploadMock = jest.fn(() => ({
   isValid: true,
 }));
 
-jest.mock("@ui/hooks/useFileUpload", () => ({
+jest.mock("@acme/ui/hooks/useFileUpload", () => ({
   __esModule: true,
   default: function useFileUpload(opts: any) { return useFileUploadMock(opts); },
 }));

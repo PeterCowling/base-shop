@@ -12,7 +12,7 @@ jest.mock('../../../src/services/blog/config', () => ({
 
 const repoDeletePost = jest.fn();
 
-jest.mock('@platform-core/repositories/blog.server', () => ({
+jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   deletePost: (...args: unknown[]) => repoDeletePost(...args),
 }));
 

@@ -218,7 +218,7 @@ When `checkShopBasics`, `checkTheme`, `checkPayments`, `checkShippingTax`, `chec
 - Under the hood:
   - `apps/cms/src/app/cms/configurator/hooks/useConfiguratorDashboardState.ts`:
     - Calls `GET /api/configurator-progress?shopId=...`.
-    - Uses `REQUIRED_CONFIG_CHECK_STEPS` and `OPTIONAL_CONFIG_CHECK_STEPS` from `@platform-core/configurator` to compute counts.
+    - Uses `REQUIRED_CONFIG_CHECK_STEPS` and `OPTIONAL_CONFIG_CHECK_STEPS` from `@acme/platform-core/configurator` to compute counts.
     - Derives a health status from `steps` and `errors`.
 
 - Pragmatically:
@@ -255,7 +255,7 @@ When all required checks are green, the Summary view effectively becomes a **lau
     - Consumes SSE events to update per-step launch status (`create`, `init`, `deploy`, `seed?`).
   - `/api/launch-shop`:
     - Authenticates the request.
-    - Calls `runRequiredConfigChecks(shopId)` and `getLaunchStatus(env, shopId)` from `@platform-core/configurator`.
+    - Calls `runRequiredConfigChecks(shopId)` and `getLaunchStatus(env, shopId)` from `@acme/platform-core/configurator`.
     - If configuration is invalid:
       - Does **not** deploy and returns an error; UI surfaces a failure state.
     - If configuration is valid:

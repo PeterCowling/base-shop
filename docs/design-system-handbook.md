@@ -113,6 +113,92 @@ Strategy: hybrid "system preference + class override".
 // localStorage values: 'light' | 'dark' | 'system'
 ```
 
+### Multi-Brand Theming
+
+The design system supports multiple brand themes beyond light/dark mode.
+
+**Available Theme Packages:**
+
+| Theme | Package | Purpose |
+|-------|---------|---------|
+| base | `packages/themes/base/` | Default light theme tokens |
+| dark | `packages/themes/dark/` | Dark mode overrides |
+| brandx | `packages/themes/brandx/` | Brand X customization |
+| bcd | `packages/themes/bcd/` | BCD brand |
+| cochlearfit | `packages/themes/cochlearfit/` | CochlearFit brand |
+| skylar | `packages/themes/skylar/` | Skylar brand |
+| prime | `packages/themes/prime/` | Prime brand |
+
+**Theme Structure:**
+
+Each theme package exports token overrides that layer on top of base tokens:
+
+```typescript
+// packages/themes/brandx/src/index.ts
+export const tokens = {
+  "--color-primary": { light: "280 70% 50%", dark: "280 70% 60%" },
+  "--color-accent": { light: "220 80% 55%", dark: "220 80% 65%" },
+  // Override only the tokens you need
+};
+```
+
+**Applying a Brand Theme:**
+
+1. Import theme tokens in your app layout
+2. Apply via `ThemeStyle` component or direct CSS injection
+3. Brand tokens cascade over base tokens via CSS specificity
+
+```tsx
+// apps/myshop/src/app/layout.tsx
+import { ThemeStyle } from "@acme/ui";
+import { tokens as brandTokens } from "@acme/themes-brandx";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <head>
+        <ThemeStyle tokens={brandTokens} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Creating a New Brand Theme:**
+
+```bash
+# 1. Create theme package
+mkdir -p packages/themes/mybrand/src
+
+# 2. Create package.json
+cat > packages/themes/mybrand/package.json << 'EOF'
+{
+  "name": "@acme/themes-mybrand",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts"
+}
+EOF
+
+# 3. Export token overrides
+cat > packages/themes/mybrand/src/index.ts << 'EOF'
+export const tokens = {
+  "--color-primary": { light: "220 80% 50%", dark: "220 80% 60%" },
+  "--color-accent": { light: "280 70% 60%", dark: "280 70% 70%" },
+};
+EOF
+
+# 4. Register in workspace (add to pnpm-workspace.yaml if needed)
+# 5. Add to tsconfig paths if using TypeScript aliases
+```
+
+**Storybook Testing:**
+
+Brand themes can be tested in Storybook using the theme toolbar:
+- Token switcher: `base` vs `brandx` vs other themes
+- Combined with locale/currency selectors for full context testing
+
 ---
 
 ## 3. Size & Tone Guide
@@ -528,3 +614,103 @@ The `@acme/eslint-plugin-ds` package enforces design system compliance with 33 r
 | Accessibility | `min-tap-size`, `enforce-focus-ring-token`, `no-misused-sr-only`, `icon-button-size` |
 | Responsive | `require-breakpoint-modifiers`, `container-widths-only-at` |
 | RTL/i18n | `no-physical-direction-classes-in-rtl`, `no-hardcoded-copy` |
+
+---
+
+## 8. Component API Reference
+
+For canonical prop naming conventions, see [Component API Standard](component-api-standard.md).
+
+### Quick Reference
+
+| Prop | Purpose | Values |
+|------|---------|--------|
+| `color` | Semantic intent | default, primary, accent, success, info, warning, danger |
+| `tone` | Fill intensity | solid, soft, outline, ghost, quiet |
+| `size` | Scale | sm, md, lg |
+
+### Migration from Legacy Props
+
+The `variant` prop is deprecated. Migrate to `color` + `tone`:
+
+```tsx
+// Before
+<Button variant="destructive">Delete</Button>
+
+// After
+<Button color="danger" tone="solid">Delete</Button>
+```
+
+### Component Compliance
+
+See [Component API Standard - Compliance Status](component-api-standard.md#component-compliance-status) for current migration status.
+
+---
+
+## 9. Contribution Guidelines
+
+### Adding a New Component
+
+1. **Follow [Component API Standard](component-api-standard.md)**
+   - Implement `color`, `tone`, `size` props where applicable
+   - Use standard values (no custom variants)
+
+2. **Implement all three sizes** (sm/md/lg) for sizable components
+
+3. **Add Storybook stories** covering:
+   - Default state
+   - All sizes
+   - All colors and tones
+   - Interactive states (hover, focus, disabled)
+   - Dark mode via decorator
+
+4. **Add accessibility tests**
+   - jest-axe for unit tests
+   - Cypress a11y for E2E tests
+
+5. **Document in this handbook** if it's a CMS pattern (Section 5)
+
+### Modifying Existing Components
+
+1. **Check compliance status** in [Component API Standard](component-api-standard.md)
+
+2. **Maintain backward compatibility** with deprecated props
+   - Add console warnings for deprecated usage in development
+   - Keep legacy props working for at least 2 minor versions
+
+3. **Update Storybook stories** to cover changes
+
+4. **Update handbook sections** if behavior changes
+
+### Token Changes
+
+1. **Modify base tokens:**
+   ```bash
+   # Edit source of truth
+   packages/themes/base/src/tokens.ts
+   ```
+
+2. **Run contrast tests:**
+   ```bash
+   pnpm test --filter=@acme/themes-base
+   ```
+
+3. **Update dark theme if needed:**
+   ```bash
+   packages/themes/dark/src/tokens.ts
+   ```
+
+4. **Regenerate CSS (if applicable):**
+   ```bash
+   pnpm tokens:build
+   ```
+
+### Adding a Brand Theme
+
+See [Multi-Brand Theming](#multi-brand-theming) section above.
+
+### Testing Requirements
+
+- All new components need story coverage
+- Run `pnpm stories:verify` to check coverage
+- Add to [Visual Regression Coverage](visual-regression-coverage.md) if critical

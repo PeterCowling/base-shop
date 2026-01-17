@@ -5,7 +5,7 @@ import { Grid as DSGrid } from "../../atoms/primitives";
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
 
 export type GalleryImage = { src: string; alt?: TranslatableText; caption?: TranslatableText };
 

@@ -5,7 +5,7 @@
 import type {
   StockInflowEvent,
   StockInflowReport,
-} from "@platform-core/types/stockInflows";
+} from "@acme/platform-core/types/stockInflows";
 import { getCsrfToken } from "@acme/shared-utils";
 import {
   Button,

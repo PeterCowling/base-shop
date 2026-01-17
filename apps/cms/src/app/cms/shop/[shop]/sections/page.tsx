@@ -1,10 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/sections/page.tsx
 
 import Link from "next/link";
-import { getSections } from "@platform-core/repositories/sections/index.server";
+import { getSections } from "@acme/platform-core/repositories/sections/index.server";
 import { deleteSectionAction } from "@/actions/sections/delete";
 import { updateSectionAction } from "@/actions/sections/update";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 export const revalidate = 0;
 

@@ -1,9 +1,9 @@
 // src/app/layout.tsx
-import { CartProvider } from "@platform-core/contexts/CartContext";
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
+import { CartProvider } from "@acme/platform-core/contexts/CartContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import type { Metadata } from "next";
 import { TranslationsProvider } from "@acme/i18n";
-import en from "@i18n/en.json";
+import en from "@acme/i18n/en.json";
 import AnalyticsScripts from "./AnalyticsScripts";
 import "./globals.css";
 

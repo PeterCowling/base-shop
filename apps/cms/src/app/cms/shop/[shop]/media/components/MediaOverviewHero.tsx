@@ -16,7 +16,7 @@ import {
   UploadIcon,
   VideoIcon,
 } from "@radix-ui/react-icons";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface MediaOverviewHeroProps {

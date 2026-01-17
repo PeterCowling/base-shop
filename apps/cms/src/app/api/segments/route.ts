@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { promises as fs } from "fs";
 import { writeJsonFile } from "@/lib/server/jsonIO";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { segmentSchema, type Segment } from "@acme/types";
 
 function segmentsPath(shop: string): string {

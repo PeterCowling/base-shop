@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { beginOidcLogin } from "@auth";
+import { beginOidcLogin } from "@acme/auth";
 import { authEnv } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";

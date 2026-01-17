@@ -13,13 +13,13 @@ jest.mock("@/lib/server/jsonIO", () => ({
   writeJsonFile: (...args: any[]) => writeJsonFileMock(...args),
   withFileLock: (...args: any[]) => withFileLockMock(...args),
 }));
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: () => "/data",
 }));
 jest.mock("fs/promises", () => ({
   readFile: (...args: any[]) => readFileMock(...args),
 }));
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   updateShopInRepo: (...args: any[]) => updateShopInRepoMock(...args),
 }));
 

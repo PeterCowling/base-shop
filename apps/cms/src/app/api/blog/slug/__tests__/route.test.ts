@@ -9,12 +9,12 @@ jest.mock("@cms/actions/common/auth", () => ({
   ensureAuthorized: (...args: any[]) => ensureAuthorized(...args),
 }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   __esModule: true,
   getShopById: (...args: any[]) => getShopById(...args),
 }));
 
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   __esModule: true,
   getSanityConfig: (...args: any[]) => getSanityConfig(...args),
 }));

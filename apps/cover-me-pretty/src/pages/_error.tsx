@@ -8,7 +8,7 @@
  * error page from rendering.
  */
 
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 type ErrorContext = {
   res?: { statusCode?: number };

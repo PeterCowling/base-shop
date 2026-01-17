@@ -4,11 +4,11 @@ import OrderSummary from "../OrderSummary";
 import type { CartLine } from "@acme/types";
 import { formatPrice } from "@acme/shared-utils";
 
-jest.mock("@ui/hooks/useCart", () => ({
+jest.mock("@acme/ui/hooks/useCart", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 
-jest.mock("@platform-core/contexts/CurrencyContext", () => ({
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["EUR", jest.fn()],
 }));
 

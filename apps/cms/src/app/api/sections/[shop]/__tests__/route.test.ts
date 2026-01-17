@@ -12,7 +12,7 @@ describe("sections route", () => {
 
   beforeAll(async () => {
     tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "sections-api-"));
-    jest.doMock("@platform-core/dataRoot", () => ({ DATA_ROOT: tmpRoot }));
+    jest.doMock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: tmpRoot }));
     jest.doMock("@cms/actions/common/auth", () => ({ ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "t@test" } }) }));
     ({ GET, POST, PATCH, DELETE } = await import("../route"));
   });

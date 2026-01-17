@@ -4,9 +4,9 @@ import Link from "next/link";
 import { MaintenanceScanner } from "./MaintenanceScanner";
 import { scanForMaintenance } from "./scan.server";
 import { MSG_ITEM_NEEDS_MAINTENANCE, MSG_ITEM_NEEDS_RETIREMENT } from "./constants";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { TranslationsProvider } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const HERO_LABEL_CLASS = "text-hero-foreground/80";

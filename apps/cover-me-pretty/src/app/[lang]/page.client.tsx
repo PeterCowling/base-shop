@@ -1,13 +1,13 @@
 // apps/cover-me-pretty/src/app/[lang]/page.tsx
 "use client";
 
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
 import type { PageComponent } from "@acme/page-builder-core";
-import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
-import type { Locale } from "@i18n/locales";
+import BlogListing, { type BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
+import type { Locale } from "@acme/i18n/locales";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 export default function Home({
   components,

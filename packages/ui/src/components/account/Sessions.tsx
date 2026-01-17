@@ -1,5 +1,5 @@
 // packages/ui/src/components/account/Sessions.tsx
-import { type SessionRecord } from "@auth";
+import { type SessionRecord } from "@acme/auth";
 import { redirect } from "next/navigation";
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";

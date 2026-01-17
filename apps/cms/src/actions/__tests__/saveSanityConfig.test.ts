@@ -8,7 +8,7 @@ jest.mock("@acme/plugin-sanity", () => ({
   verifyCredentials: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn(),
   updateShopInRepo: jest.fn(),
 }));
@@ -19,7 +19,7 @@ jest.mock("../setupSanityBlog", () => ({
 
 import { saveSanityConfig } from "../saveSanityConfig";
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
 import { setupSanityBlog } from "../setupSanityBlog";
 
 describe("saveSanityConfig", () => {

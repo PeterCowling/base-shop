@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getPages } from "@platform-core/repositories/pages/index.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import { createPage as createPageAction } from "@cms/actions/pages/create";
 import { authOptions } from "@cms/auth/options";

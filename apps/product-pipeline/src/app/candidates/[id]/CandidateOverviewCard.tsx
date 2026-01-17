@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Stack } from "@acme/ui/components/atoms/primitives";
 import type { CandidateDetail, CandidateDetailStrings } from "./types";
 
 export default function CandidateOverviewCard({

@@ -6,15 +6,15 @@ import { Alert, Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import type { Locale } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
 import clsx from "clsx";
 
 import { SeoAdvancedSettings } from "./SeoAdvancedSettings";
 import { SeoEditorHeader } from "./SeoEditorHeader";
 import { SeoSharedFields } from "./SeoSharedFields";
 import { useSeoEditor, type UseSeoEditorProps } from "./useSeoEditor";
-import { Tag } from "@ui/components/atoms/Tag";
+import { Tag } from "@acme/ui/components/atoms/Tag";
 
 const Tabs = ({
   value,

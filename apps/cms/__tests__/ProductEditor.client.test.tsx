@@ -5,7 +5,7 @@ import { render } from "@testing-library/react";
 const updateProduct = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({ updateProduct }));
 let receivedProps: any;
-jest.mock("@ui/components/cms/ProductEditorForm", () => {
+jest.mock("@acme/ui/components/cms/ProductEditorForm", () => {
   const ProductEditorFormMock = (props: any) => {
     receivedProps = props;
     return <div data-testid="form" />;

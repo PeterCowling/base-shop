@@ -6,7 +6,7 @@ import {
   startMaintenanceScheduler,
   runMaintenanceScan,
 } from "@acme/platform-machine/maintenanceScheduler";
-import { logger } from "@platform-core/utils";
+import { logger } from "@acme/platform-core/utils";
 
 let timer: NodeJS.Timeout | undefined;
 

@@ -3,7 +3,7 @@
 export type { Locale, ProductPublication } from "@acme/types";
 
 // Pull in the real product dataset and helpers. This keeps existing imports
-// like `@platform-core/products` working while ensuring the in-memory list
+// like `@acme/platform-core/products` working while ensuring the in-memory list
 // actually contains catalogue data.
 import type { SKU as BaseSKU } from "@acme/types";
 import * as base from "./products/index";

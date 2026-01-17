@@ -8,7 +8,7 @@ import {
   type ProductSaveResult,
 } from "../useProductEditorFormState";
 
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
 }));
 

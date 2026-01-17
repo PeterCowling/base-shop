@@ -80,7 +80,7 @@ export const getStorybookAliases = () => ({
     __dirname,
     "./mocks/redirect-status-code.js",
   ),
-  "@platform-core/contexts/ThemeContext": path.resolve(
+  "@acme/platform-core/contexts/ThemeContext": path.resolve(
     __dirname,
     "./mocks/ThemeContext.tsx",
   ),

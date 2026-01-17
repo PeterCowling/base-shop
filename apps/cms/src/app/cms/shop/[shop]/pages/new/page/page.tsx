@@ -1,8 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/page/page.tsx
 
 import { createPage } from "@cms/actions/pages/create";
-import { getPages } from "@platform-core/repositories/pages/index.server";
-import { fillLocales } from "@i18n/fillLocales";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page } from "@acme/types";
 import PageBuilderClient from "./PageBuilderClient";
 import { corePageTemplates } from "@acme/templates";

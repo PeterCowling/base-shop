@@ -2,7 +2,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { Button, Toast } from "@ui/components/atoms";
+import { Button, Toast } from "@acme/ui/components/atoms";
 import { deletePost } from "@cms/actions/blog.server";
 import type { FormState } from "./PostForm.client";
 

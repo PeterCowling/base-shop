@@ -19,8 +19,8 @@ describe("ComponentPreview", () => {
     const New = ({ label }: { label: string }) => <div>new:{label}</div>;
     const Old = ({ label }: { label: string }) => <div>old:{label}</div>;
 
-    registerMock("@ui/components/MyComp", New);
-    registerMock("@ui/components/MyComp.bak", Old);
+    registerMock("@acme/ui/components/MyComp", New);
+    registerMock("@acme/ui/components/MyComp.bak", Old);
 
     const { default: ComponentPreview } = await import("../ComponentPreview");
 
@@ -53,7 +53,7 @@ describe("ComponentPreview", () => {
       const Boom = () => {
         throw new Error("boom");
       };
-      registerMock("@ui/components/Boomy", Boom);
+      registerMock("@acme/ui/components/Boomy", Boom);
 
       const { default: ComponentPreview } = await import("../ComponentPreview");
       render(

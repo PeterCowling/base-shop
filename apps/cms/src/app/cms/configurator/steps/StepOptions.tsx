@@ -15,7 +15,7 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { providersByType, type Provider } from "@acme/configurator/providers";
 import type { ConfiguratorStepProps } from "@/types/configurator";
-import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { Inline, Cluster } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {

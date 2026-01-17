@@ -7,8 +7,8 @@ import { ensureAuthorized } from "../common/auth";
 import { createSchema } from "./validation";
 import { getPages, savePage } from "./service";
 import { computeRevisionId, mapLocales, reportError } from "./utils";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
 
 export async function createPage(
   shop: string,

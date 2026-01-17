@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+const { execFileSync } = require("node:child_process");
 
 function afterNthSpace(line, count) {
   let index = -1;

@@ -8,6 +8,9 @@ Last-updated: 2026-01-17
 Last-updated-by: Codex
 Last-reviewed: 2026-01-17
 Relates-to charter: none (repo tooling)
+Owner: Peter Cowling
+Target: TBD
+Related-PR: #7157
 ---
 
 # Lint-staged Autostash Avoidance Plan
@@ -43,11 +46,11 @@ We want a hook workflow that never creates a lint-staged backup stash ("no autos
 ## Proposed Approach
 ### Local hooks (best-effort)
 1. Pre-commit guard (required correctness gate)
-   - Detect any partially staged paths (present in both staged and unstaged diffs) using NUL-delimited git output.
+   - Detect partially staged paths by parsing `git status --porcelain=v2 -z` (NUL-delimited; safe for spaces/renames) and blocking any path that is modified in both the index and the working tree.
    - If any exist: abort with an actionable message and do not run lint-staged.
 2. Run lint-staged with stash disabled
    - Use `pnpm exec lint-staged --no-stash`.
-   - Treat the changed failure semantics as deliberate: if tasks modify files and the hook fails later, the repo may be left modified (no automatic revert).
+   - Treat the changed failure semantics as deliberate: `--no-stash` disables lint-staged's revert-on-error safety net, so the hook must remain check-only and guarded against partial staging.
 3. Hooks are check-only (no `--fix`)
    - Do not run `eslint --fix` in pre-commit. Auto-fix is unreliable for most failures and any hook-driven mutations become riskier under `--no-stash` (no revert on error).
    - If lint/typecheck fails, the commit attempt should fail with actionable output, and fixes are applied by a developer or by an agent in a follow-up edit pass.
@@ -65,36 +68,49 @@ Pre-push (recommended default for local typecheck)
 - Run `pnpm typecheck` in a `pre-push` hook (or a scoped/cached variant). This catches problems before remote CI churn without making every local commit slow. Keep pre-commit fast and predictable.
 
 Dependency pinning (recommended)
-- Pin `lint-staged` deliberately (at least major+minor, ideally exact) because this policy is sensitive to subtle behavioral changes across versions (including semantic changes in `16.1.1`).
+- Pin `lint-staged` deliberately (at least major+minor, ideally exact) because this policy is sensitive to subtle behavioral changes across versions.
 - Only upgrade `lint-staged` with an explicit review and validation run that exercises the failure modes this plan cares about (interruptions, partial staging, and no-stash invariants).
 
-## Implementation Tasks
-1. Document lint-staged semantics in this plan (backup stash default, `--no-stash` "no revert on error", and the implied `--no-hide-partially-staged`).
-2. Pin `lint-staged` deliberately:
-   - Prefer an exact version pin in `package.json` (avoid `^` ranges for this dependency).
-   - Upgrade only with an explicit review and validation run for the no-stash/partial-staging behaviors.
-3. Add a pre-commit partial-staging guard script:
-   - Prefer parsing `git status --porcelain=v2 -z` to detect paths that are modified in both index and working tree (aligns with lint-staged's own detection approach).
-   - If using diff intersection instead, match lint-staged's defaults (`--diff-filter=ACMR`) to avoid drift.
-   - Abort before lint-staged with a message explaining why partial staging is blocked (prevents unstaged hunks being committed under `--no-stash`).
-4. Update the pre-commit hook:
-   - Run the guard first.
-   - Run `pnpm exec lint-staged --no-stash`.
-5. Update lint-staged tasks to be check-only:
-   - Remove `--fix` (and any other write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
-6. Add developer commands:
-   - `pnpm lint:staged` mirrors hook behavior.
-   - Optional (non-hook): add `pnpm lint:fix` for opportunistic fixes, but do not rely on it as the primary remediation path.
-7. Add/confirm CI enforcement:
-   - Ensure a workflow runs `pnpm lint` and `pnpm typecheck`.
-   - Update branch protection/rulesets to require those checks for merging to `main`.
-8. Add local typecheck on pre-push:
-   - Add `pre-push` hook to run `pnpm typecheck` (or a scoped/cached variant); note it is still bypassable.
-9. Hardening (optional / future):
-   - If/when supported by the pinned lint-staged version, consider `--fail-on-changes` as a regression tripwire so the commit fails if any task modifies tracked files.
-10. Update docs:
-   - Developer docs: explain "no partial staging" rule, `--no-stash` tradeoffs, and recovery guidance (what to do if the hook leaves changes).
-   - `AGENTS.md`: note the hard partial-staging guard is required for correctness under `--no-stash`.
+## Active Tasks
+- [x] REPO-LS-01: Document lint-staged semantics (15.5.2 vs 16.1.1)
+  - Scope: capture the backup-stash default, `--no-stash` semantics, and version-sensitive partial-staging behavior.
+  - Definition of done: this plan documents the behaviors and the safety rationale clearly enough to implement without guessing.
+- [ ] REPO-LS-02: Pin `lint-staged` deliberately
+  - Scope: pin at least major+minor (ideally exact) in `package.json` (avoid `^` ranges); update lockfile.
+  - Dependencies: none.
+  - Definition of done: `package.json` no longer permits drift for lint-staged; upgrade requires explicit review + validation run.
+- [ ] REPO-LS-03: Make lint-staged tasks check-only
+  - Scope: remove `--fix` (and any write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
+  - Dependencies: REPO-LS-02 (pinning) recommended to avoid behavior drift while changing hooks.
+  - Definition of done: `pnpm exec lint-staged` in pre-commit never writes to tracked files.
+- [ ] REPO-LS-04: Add partial-staging guard script (prescriptive approach)
+  - Scope: implement a guard that parses `git status --porcelain=v2 -z` and blocks any path modified in both index and working tree.
+  - Dependencies: none.
+  - Definition of done: partial staging fails before lint-staged runs, with an actionable message that explains why (prevents unstaged hunks being staged under `--no-stash` behavior).
+- [ ] REPO-LS-05: Update `pre-commit` to run guard then `lint-staged --no-stash`
+  - Scope: run guard first, then `pnpm exec lint-staged --no-stash`.
+  - Dependencies: REPO-LS-03, REPO-LS-04.
+  - Definition of done: no lint-staged backup stash is created in any commit attempt.
+- [ ] REPO-LS-06: Add `pnpm lint:staged` developer command (debugging parity)
+  - Scope: provide a manual command that runs the same check-only lint-staged invocation as the hook (so developers/agents can debug without triggering a commit).
+  - Dependencies: REPO-LS-03, REPO-LS-05.
+  - Definition of done: documented, discoverable script exists and matches the hook behavior exactly.
+- [ ] REPO-LS-07: Add local typecheck on `pre-push` (default)
+  - Scope: add a `pre-push` hook that runs `pnpm typecheck` (leverages incremental `tsc -b` + `turbo run typecheck` caching).
+  - Dependencies: none.
+  - Definition of done: pushes are blocked locally on type errors without slowing down every commit; command is documented and bypass caveat is explicit.
+- [ ] REPO-LS-08: CI + ruleset enforcement (authoritative)
+  - Scope: ensure GitHub Actions runs `pnpm lint` + `pnpm typecheck` on PRs, and `main` rulesets require PRs + required checks (no direct pushes).
+  - Dependencies: none.
+  - Definition of done: failing lint/typecheck cannot merge to `main` in GitHub UI.
+- [ ] REPO-LS-09: Update docs for the new workflow
+  - Scope: update developer docs (`docs/development.md`, `docs/linting.md`) and `AGENTS.md` to explain no-partial-staging, `--no-stash` rationale, and the agent "fix then commit" flow.
+  - Dependencies: REPO-LS-05, REPO-LS-07, REPO-LS-08.
+  - Definition of done: docs explain the workflow and recovery steps without relying on tribal knowledge.
+- [ ] REPO-LS-10: Hardening (optional / future)
+  - Scope: if supported by the pinned lint-staged version, evaluate `--fail-on-changes` as a regression tripwire so any unexpected task writes fail the commit.
+  - Dependencies: REPO-LS-02.
+  - Definition of done: accidental reintroduction of fixers is caught automatically (or task is explicitly deferred with rationale).
 
 ## Validation
 - No-stash invariant:
@@ -110,7 +126,18 @@ Dependency pinning (recommended)
 ## Risks and Mitigations
 - Risk: `--no-stash` disables revert-on-error; if hooks mutate files, a failed hook can leave modified/staged files.
   - Mitigation: keep hooks check-only (no `--fix`) so failures leave no repo mutations to unwind.
-- Risk: `--no-stash` implies `--no-hide-partially-staged`; partially staged files can lead to unstaged hunks being committed.
+- Risk: Partially staged files can lead to unstaged hunks being staged under `--no-stash` behavior.
   - Mitigation: mandatory partial-staging guard as a correctness gate.
 - Risk: Developers rely on partial staging workflows.
   - Mitigation: provide guidance for splitting commits (separate files, temporary commit, or use branch-based workflows).
+
+## Rollback
+- Temporary unblock (local): set `SKIP_SIMPLE_GIT_HOOKS=1` to bypass hooks if a new guard breaks commits unexpectedly; restore once fixed.
+- Revert (repo): revert the commits that changed `simple-git-hooks` / guard script / lint-staged config via a PR (use `git revert`, not resets).
+- Scope reduction: if the guard is too aggressive, prefer tightening detection logic or messaging over removing the guard (partial staging remains a correctness risk under `--no-stash` behavior).
+
+## Related Documents
+- `AGENTS.md` (Git safety rules; no `--no-verify`)
+- `docs/git-safety.md`
+- `docs/git-hooks.md`
+- `docs/RECOVERY-PLAN-2026-01-14.md`

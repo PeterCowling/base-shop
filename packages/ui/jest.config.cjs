@@ -37,8 +37,14 @@ if (disableCoverageThreshold) {
 // missing browser globals used by shared test utilities (e.g. MSW v2).
 config.setupFilesAfterEnv = [
   path.join(__dirname, "jest.setup.local.ts"),
-  ...(base.setupFilesAfterEnv || []),
+  ...(config.setupFilesAfterEnv || []),
 ];
+
+// Ensure "@/..." resolves to UI sources instead of the CMS alias in base config.
+config.moduleNameMapper = {
+  ...(config.moduleNameMapper || {}),
+  "^@/(.*)$": "<rootDir>/src/$1",
+};
 
 // Transform additional ESM dependencies used by MSW in this package
 config.transformIgnorePatterns = [

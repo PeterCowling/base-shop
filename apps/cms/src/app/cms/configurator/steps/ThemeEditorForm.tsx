@@ -43,9 +43,26 @@ export default function ThemeEditorForm({
   onReset,
 }: ThemeEditorFormProps): React.JSX.Element {
   const t = useTranslations();
+  const themeLabel = String(t("cms.theme.selectTheme"));
+  const resolvedThemeLabel =
+    themeLabel === "cms.theme.selectTheme" ? "Theme" : themeLabel;
   return (
     <div className="space-y-4">
-      {/* Theme select removed per request; Color Themes picker remains below */}
+      <label className="flex flex-col gap-1">
+        <span>{resolvedThemeLabel}</span>
+        <select
+          className="border p-2"
+          name="themeId"
+          value={_theme}
+          onChange={(e) => _onThemeChange(e.target.value)}
+        >
+          {_themes.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </label>
 
       {/* Prebuilt color theme picker — moved here for prominence under theme select */}
       <ColorThemeSelector

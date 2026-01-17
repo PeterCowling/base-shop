@@ -12,6 +12,7 @@ import {
   removeThemeToken,
 } from "../theme";
 import { revalidatePath } from "next/cache";
+import { listThemes, syncTheme } from "@acme/platform-core/createShop";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn(),
@@ -31,6 +32,11 @@ jest.mock("next/cache", () => ({
   revalidatePath: jest.fn(),
 }));
 
+jest.mock("@acme/platform-core/createShop", () => ({
+  listThemes: jest.fn(),
+  syncTheme: jest.fn(),
+}));
+
 const mockAuthorize = authorize as jest.Mock;
 const mockFetchShop = fetchShop as jest.Mock;
 const mockPersistShop = persistShop as jest.Mock;
@@ -40,6 +46,8 @@ const mockBuildThemeData = buildThemeData as jest.Mock;
 const mockMergeThemePatch = mergeThemePatch as jest.Mock;
 const mockRemoveThemeToken = removeThemeToken as jest.Mock;
 const mockRevalidatePath = revalidatePath as jest.Mock;
+const mockListThemes = listThemes as jest.Mock;
+const mockSyncTheme = syncTheme as jest.Mock;
 
 describe("theme service", () => {
   let consoleErrorSpy: jest.SpyInstance | undefined;
@@ -61,6 +69,8 @@ describe("theme service", () => {
       themeTokens: {},
     });
     mockFetchSettings.mockResolvedValue({});
+    mockListThemes.mockReturnValue(["base", "dark"]);
+    mockSyncTheme.mockReturnValue({ base: "token" });
   });
 
   it("returns validation errors", async () => {
@@ -139,6 +149,33 @@ describe("theme service", () => {
       { b: "2" },
       { a: "1" },
     );
+    expect(mockPersistShop).toHaveBeenCalledWith("test", savedShop);
+    expect(result.shop).toEqual(savedShop);
+  });
+
+  it("persists theme changes when themeId updates", async () => {
+    const current = {
+      id: "test",
+      themeId: "base",
+      themeDefaults: { old: "token" },
+      themeOverrides: { old: "override" },
+    };
+    mockFetchShop.mockResolvedValue(current);
+    mockSyncTheme.mockReturnValue({ a: "1" });
+    const savedShop = {
+      id: "test",
+      themeId: "dark",
+      themeDefaults: { a: "1" },
+      themeOverrides: {},
+      themeTokens: { a: "1" },
+    };
+    mockPersistShop.mockResolvedValue(savedShop);
+    const result = await patchTheme("test", {
+      themeId: "dark",
+      themeOverrides: {},
+      themeDefaults: {},
+    });
+    expect(mockSyncTheme).toHaveBeenCalledWith("test", "dark");
     expect(mockPersistShop).toHaveBeenCalledWith("test", savedShop);
     expect(result.shop).toEqual(savedShop);
   });

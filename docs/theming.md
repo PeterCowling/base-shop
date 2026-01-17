@@ -27,6 +27,14 @@ Use the desktop/tablet/mobile buttons or the dropdown to switch widths and break
 2. The preview offers an inspect mode. Clicking any tokenised element highlights it and focuses its matching input.
 3. Click a color swatch or field to open the picker and enter a new value. Only differences from the base theme are stored as overrides.
 
+## Brand intensity
+
+The Theme Editor includes a brand intensity control that previews subtle or bold brand overlays while keeping overrides intact. This is a preview-only adjustment; persisted tokens remain the explicit overrides you set.
+
+## Contrast warnings
+
+When overrides push key foreground/background pairs below the WCAG AA target, the Theme Editor surfaces a warning list so you can adjust token pairs before publishing.
+
 ## Presets
 
 - Type a name in _Preset name_ and press **Save Preset** to capture the current set of overrides.
@@ -35,6 +43,7 @@ Use the desktop/tablet/mobile buttons or the dropdown to switch widths and break
 ## Resetting to defaults
 
 - Use the reset icon beside a color input to remove its override.
+- Use **Reset all** to clear every override at once (with confirmation).
 - To clear an override outside the editor, call `resetThemeOverride(shop, token)` from [`apps/cms/src/actions/shops.server.ts`](../apps/cms/src/actions/shops.server.ts).
 
 ## Implementation references

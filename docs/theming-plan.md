@@ -21,7 +21,7 @@ This plan tracks work around tokens, base themes, and the CMS Theme Editor.
     - A small matrix exists mapping tokens → components, and any missing tokens or docs are captured as follow-up tasks.
 
 - **THEME-02 — Align Theme Editor with charter**
-  - Status: ☐
+  - Status: ☑
   - Scope:
     - Review `apps/cms/src/app/cms/shop/[shop]/themes/**` against `docs/theming.md` and `docs/theming-advanced.md`.
     - Ensure behaviour (presets, brand intensity, contrast warnings, reset flows) is documented and matches implementation.
@@ -40,7 +40,45 @@ This plan tracks work around tokens, base themes, and the CMS Theme Editor.
   - Definition of done:
     - Documented guidance for theme-related performance and accessibility exists, and at least one automated check references it.
 
+- **THEME-04 — Persist Theme Editor theme selection**
+  - Status: ☑
+  - Scope:
+    - Ensure theme changes update `Shop.themeId` and persist new defaults/overrides.
+    - Align Theme Editor and theme patch API to accept theme changes safely.
+  - Dependencies:
+    - THEME-02.
+  - Definition of done:
+    - Selecting a theme updates the shop’s `themeId` and defaults; preview and persisted data stay in sync.
+
+- **THEME-05 — Refresh Theme Editor token map doc**
+  - Status: ☑
+  - Scope:
+    - Audit current `data-token` usage and update `docs/theme-editor-tokens.md`.
+    - Include missing or corrected tokens (e.g., `--surface-input`, token variants in badges/tags).
+  - Dependencies:
+    - THEME-01.
+  - Definition of done:
+    - `docs/theme-editor-tokens.md` matches current component token usage.
+
+- **THEME-06 — Align init-shop theme override docs/flags**
+  - Status: ☑
+  - Scope:
+    - Decide whether `init-shop` should accept `--brand/--tokens` or update docs to point to `quickstart-shop`.
+  - Dependencies:
+    - None.
+  - Definition of done:
+    - CLI and docs agree on which command supports theme overrides.
+
+- **THEME-07 — Token matrix + guardrail evidence**
+  - Status: ☑
+  - Scope:
+    - Build the token/component matrix from THEME-01 and link it to follow-up tasks.
+    - Add at least one additional automated guardrail beyond typography contrast (or document why not).
+  - Dependencies:
+    - THEME-01, THEME-03.
+  - Definition of done:
+    - Token matrix exists and guardrail check is present or documented as explicitly deferred.
+
 ## Completed / historical
 
 - None yet.
-

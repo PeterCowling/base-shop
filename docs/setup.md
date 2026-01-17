@@ -98,10 +98,10 @@ Starter pages now include Consent + Newsletter/Contact blocks automatically; kee
 To skip the theme prompts, provide overrides via flags:
 
 ```bash
-pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
+pnpm quickstart-shop --brand "#663399" --tokens ./my-tokens.json
 ```
 
-`--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
+`--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file. Use `quickstart-shop` for these flags; `init-shop` accepts theme overrides via the config file or interactive prompts.
 
 For more extensive customization you could import design tokens from common sources like Figma or Style Dictionary, or start with theme presets tailored to a specific vertical to avoid editing each value by hand.
 

@@ -27,6 +27,6 @@ script extends the base theme tokens and prints the full map as JSON:
 pnpm ts-node scripts/src/generate-theme.ts '#336699'
 ```
 
-During `init-shop` scaffolding you can provide a primary color when prompted.
+During `init-shop` scaffolding you can provide a primary color when prompted. If you prefer flags, `quickstart-shop` supports `--brand` and `--tokens`.
 Any generated tokens are stored in `data/shops/<id>/shop.json` under
 `themeOverrides`.

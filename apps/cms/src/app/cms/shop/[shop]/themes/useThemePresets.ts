@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { savePreset, deletePreset } from "./page";
+import { patchShopTheme } from "../../../wizard/services/patchTheme";
 
 interface Args {
   shop: string;
@@ -45,6 +46,15 @@ export function useThemePresets({
     setOverrides({});
     setThemeDefaults(tokens);
     setPresetName("");
+    try {
+      await patchShopTheme(shop, {
+        themeId: name,
+        themeOverrides: {},
+        themeDefaults: tokens,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleDeletePreset = async () => {
@@ -60,6 +70,16 @@ export function useThemePresets({
     setTheme(fallback);
     setOverrides({});
     setThemeDefaults(tokensByThemeState[fallback]);
+    const fallbackDefaults = tokensByThemeState[fallback] ?? {};
+    try {
+      await patchShopTheme(shop, {
+        themeId: fallback,
+        themeOverrides: {},
+        themeDefaults: fallbackDefaults,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return {

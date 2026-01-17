@@ -20,6 +20,8 @@ const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
 };
 ```
 
+Theme selection also persists `themeId` and new defaults to the shop so subsequent sessions stay aligned with the selected theme.
+
 ## Element overrides
 
 Each override merges with the current theme and updates the preview:
@@ -95,12 +97,16 @@ useEffect(() => {
 }, []);
 ```
 
+## Brand intensity preview
+
+The Theme Editor supports a brand intensity control that blends an overlay into the preview. This affects preview tokens only and does not mutate stored overrides unless you explicitly change a token.
+
 ## CLI overrides
 
 Theme tokens can also be supplied when creating a shop:
 
 ```bash
-pnpm init-shop --brand "#663399" --tokens ./tokens.json
+pnpm quickstart-shop --brand "#663399" --tokens ./tokens.json
 ```
 
-`--brand` generates tokens for the primary color while `--tokens` loads additional overrides from a JSON file.
+`--brand` generates tokens for the primary color while `--tokens` loads additional overrides from a JSON file. For `init-shop`, use the interactive token prompts or provide `themeOverrides` via the config file instead.

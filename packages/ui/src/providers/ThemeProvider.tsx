@@ -105,12 +105,12 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     writeStoredTheme(state.theme);
   }, [state.theme]);
 
-  /* 5 ▪ Apply / remove `.dark` on <html> */
+  /* 5 ▪ Apply / remove `.theme-dark` on <html> */
   useEffect(() => {
     const root = document.documentElement;
     const dark = state.theme === "dark";
 
-    root.classList.toggle("dark", dark);
+    root.classList.toggle("theme-dark", dark);
   }, [state.theme]);
 
   /* 6 ▪ Helpers */

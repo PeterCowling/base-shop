@@ -155,6 +155,17 @@ export default function StepSummary({
                 {t("cms.configurator.summary.themeLabel")}
               </span>{" "}
               {theme}
+              {shopId ? (
+                <>
+                  {" "}
+                  <a
+                    href={`/cms/shop/${shopId}/themes`}
+                    className="text-link underline"
+                  >
+                    Open Theme Editor{/* i18n-exempt -- CMS summary link; admin-only label */}
+                  </a>
+                </>
+              ) : null}
             </li>
             <li>
               <span className="font-semibold">

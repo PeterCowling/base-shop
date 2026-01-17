@@ -56,6 +56,11 @@ This document explains how font and colour selection works across the Base‑Sho
 - Initialization: `packages/platform-core/src/utils/initTheme.ts` toggles `theme-dark` and sets `color-scheme` on page load using `localStorage('theme')` or system default.
   - `theme = 'light' | 'dark' | 'system'`.
 
+## Troubleshooting
+
+- If `dark:` utilities or token-backed colours look missing, confirm `<html>` has the `theme-dark` class (not `dark`) and the app toggles it.
+- If Tailwind changes do not show up in Next dev, stop the dev server, delete the app's `.next` directory, and restart.
+
 ## Fonts: Three‑Font Model
 
 - Tokens:

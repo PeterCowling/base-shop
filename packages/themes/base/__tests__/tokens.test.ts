@@ -22,6 +22,26 @@ const requiredKeys = [
   '--ring-offset-width',
 ] as const;
 
+const themeEditorTokens = [
+  '--color-primary',
+  '--color-primary-fg',
+  '--color-accent',
+  '--color-accent-fg',
+  '--color-bg',
+  '--color-fg',
+  '--color-muted',
+  '--color-muted-fg',
+  '--color-success',
+  '--color-success-fg',
+  '--color-info',
+  '--color-info-fg',
+  '--color-warning',
+  '--color-warning-fg',
+  '--color-danger',
+  '--color-danger-fg',
+  '--surface-input',
+] as const;
+
 describe('base theme tokens', () => {
   test('exports expected token keys', () => {
     for (const key of requiredKeys) {
@@ -39,6 +59,12 @@ describe('base theme tokens', () => {
 
     for (const key of requiredKeys) {
       expect(css).toContain(key);
+    }
+  });
+
+  test('theme editor token map stays within base tokens', () => {
+    for (const key of themeEditorTokens) {
+      expect(tokens).toHaveProperty(key);
     }
   });
 

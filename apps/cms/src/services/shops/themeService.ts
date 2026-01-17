@@ -3,6 +3,7 @@ import type { Locale, Shop, ShopSettings } from "@acme/types";
 import { authorize, fetchShop, persistShop, fetchSettings, persistSettings } from "./helpers";
 import { parseShopForm } from "./validation";
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "./theme";
+import { listThemes, syncTheme } from "@acme/platform-core/createShop";
 
 export async function updateShop(
   shop: string,
@@ -50,10 +51,41 @@ export async function patchTheme(
   patch: {
     themeOverrides?: Record<string, string>;
     themeDefaults?: Record<string, string>;
+    themeId?: string;
   },
 ): Promise<{ shop: Shop }> {
   await authorize();
   const current = await fetchShop(shop);
+  const nextThemeId = patch.themeId ?? current.themeId;
+  const themeChanged =
+    typeof patch.themeId === "string" && patch.themeId !== current.themeId;
+
+  if (themeChanged) {
+    const builtInThemes = new Set(listThemes());
+    const isBuiltInTheme = builtInThemes.has(nextThemeId);
+    let themeDefaults = patch.themeDefaults ?? {};
+    let syncedDefaults: Record<string, string> | undefined;
+
+    if (isBuiltInTheme) {
+      syncedDefaults = syncTheme(shop, nextThemeId);
+    }
+
+    if (Object.keys(themeDefaults).length === 0) {
+      themeDefaults = syncedDefaults ?? (current.themeDefaults ?? {});
+    }
+
+    const overrides = patch.themeOverrides ?? {};
+    const themeTokens = { ...themeDefaults, ...overrides } as Record<string, string>;
+    const saved = await persistShop(shop, {
+      id: current.id,
+      themeId: nextThemeId,
+      themeDefaults,
+      themeOverrides: overrides,
+      themeTokens,
+    });
+    return { shop: saved };
+  }
+
   const { themeDefaults, overrides, themeTokens } = mergeThemePatch(
     current,
     patch.themeOverrides ?? {},

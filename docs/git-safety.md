@@ -75,6 +75,26 @@ git checkout -b work/2026-01-15-my-feature
 
 **Why:** Direct commits to `main` risk accidental deployment and bypass code review.
 
+### 5. Use Worktrees for Parallel Work (Recommended)
+
+If you’re running multiple agents (or editing while an agent runs), don’t share one working tree.
+
+Create a dedicated worktree per agent/human:
+
+```bash
+scripts/git/new-worktree.sh <label>
+# Example: scripts/git/new-worktree.sh codex-hooks
+```
+
+Or manually:
+
+```bash
+git fetch origin
+git worktree add -b work/$(date +%Y-%m-%d)-<desc> .worktrees/$(date +%Y-%m-%d)-<desc> origin/main
+```
+
+**Why:** Shared working trees cause “mystery edits” mid-task and make “save to GitHub” nondeterministic. Worktrees isolate changes so each branch can be committed/pushed independently.
+
 ---
 
 ## Branch Strategy

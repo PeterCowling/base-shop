@@ -22,6 +22,26 @@ Use this file as the global checklist for working in the Skylar SRL monorepo.
 
 These rules protect work from being lost. Agents MUST follow them automatically without user prompting.
 
+### Rule 0: One Worktree Per Agent/Human (MANDATORY for parallel work)
+
+**Trigger:** More than one agent/human is editing the repo at the same time, OR you need to “save to GitHub” while someone else keeps editing.
+
+**Agent action:**
+- Do **not** share a single working tree between agents/humans.
+- Create a dedicated worktree + branch for each agent:
+  ```bash
+  scripts/git/new-worktree.sh <label>
+  # Example: scripts/git/new-worktree.sh codex-hooks
+  ```
+  Or manually:
+  ```bash
+  git fetch origin
+  git worktree add -b work/$(date +%Y-%m-%d)-<desc> .worktrees/$(date +%Y-%m-%d)-<desc> origin/main
+  ```
+- Commit/push only from your own worktree. This avoids “mystery edits” appearing mid-task and prevents accidental mixed commits.
+
+**Why:** A shared working tree makes agents loop on “what changed?” and risks committing someone else’s edits. Worktrees isolate changes so “save to GitHub” is deterministic.
+
 ### Rule 1: Commit Every 30 Minutes
 
 **Trigger:** After 30 minutes of work OR after completing any significant change (new file, major edit, feature complete).
@@ -31,7 +51,7 @@ These rules protect work from being lost. Agents MUST follow them automatically 
 # Check if there are uncommitted changes
 git status --porcelain
 
-# If changes exist and 30+ minutes since last commit:
+# If changes exist and 30+ minutes since last commit (in your own worktree):
 git add -A
 git commit -m "WIP: <brief description of changes>
 

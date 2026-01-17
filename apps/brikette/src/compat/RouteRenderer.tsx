@@ -32,9 +32,11 @@ const getRouteComponent = (file: string): React.ComponentType<Record<string, unk
     return Missing;
   }
 
-  const Component = dynamic(() => loader().then((mod) => mod.default ?? (() => null)), {
-    ssr: true,
-  });
+  const Component = dynamic(
+    () =>
+      loader().then((mod) => (mod.default ?? (() => null)) as React.ComponentType<Record<string, unknown>>),
+    { ssr: true },
+  );
   componentCache.set(file, Component);
   return Component;
 };

@@ -1,11 +1,10 @@
-import type { ComponentType, ExoticComponent } from "react";
 import type { LinksFunction, MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "./router-state";
 
 export type RouteModule = {
-  // Route modules can export memo/exotic components with stricter prop types.
-  // Use `unknown` here to avoid overly-narrow variance issues during dynamic imports.
-  default?: ComponentType<unknown> | ExoticComponent<unknown>;
+  // Route modules can export components with arbitrary prop types (including memo/exotic wrappers).
+  // We only treat them as opaque exports at this layer.
+  default?: unknown;
   clientLoader?: (args: LoaderFunctionArgs) => unknown | Promise<unknown>;
   loader?: (args: LoaderFunctionArgs) => unknown | Promise<unknown>;
   links?: LinksFunction;

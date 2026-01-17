@@ -1478,9 +1478,9 @@ importers:
 
   packages/types:
     dependencies:
-      '@acme/i18n':
-        specifier: workspace:*
-        version: link:../i18n
+      zod:
+        specifier: 3.25.73
+        version: 3.25.73
     devDependencies:
       next:
         specifier: ^15.3.8

@@ -532,7 +532,7 @@ importers:
         specifier: ^11.5.0
         version: 11.7.1
       lint-staged:
-        specifier: ^15.2.10
+        specifier: 15.5.2
         version: 15.5.2
       minimatch:
         specifier: ^9.0.5
@@ -22364,7 +22364,7 @@ snapshots:
 
   groq-js@1.17.3:
     dependencies:
-      debug: 4.4.1(supports-color@8.1.1)
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 

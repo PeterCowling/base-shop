@@ -19,6 +19,10 @@ export const getStorybookAliases = () => ({
   "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
   "@acme/types": path.resolve(__dirname, "../../../packages/types/src"),
   "@acme/types/package.json": path.resolve(__dirname, "../../../packages/types/package.json"),
+  "@acme/page-builder-core": path.resolve(
+    __dirname,
+    "../../../packages/page-builder-core/src",
+  ),
   "@acme/zod-utils": path.resolve(__dirname, "../../../packages/zod-utils/src"),
   "@acme/zod-utils/package.json": path.resolve(__dirname, "../../../packages/zod-utils/package.json"),
   "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),

@@ -68,6 +68,10 @@ const config: StorybookConfig = {
 
     const aliases: NonNullable<ResolveOptions["alias"]> = {
       ...existingAlias,
+      "@acme/page-builder-core": path.resolve(
+        __dirname,
+        "../../../packages/page-builder-core/src"
+      ),
       "@acme/platform-core/contexts/ThemeContext": path.resolve(
         __dirname,
         "../.storybook/mocks/ThemeContext.tsx"
@@ -75,6 +79,11 @@ const config: StorybookConfig = {
       "@themes-local": path.resolve(__dirname, "../../../packages/themes"),
       "@acme/i18n": path.resolve(__dirname, "../../../packages/i18n/src"),
       "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
+      "@acme/types": path.resolve(__dirname, "../../../packages/types/src"),
+      "@acme/types/package.json": path.resolve(
+        __dirname,
+        "../../../packages/types/package.json"
+      ),
       "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),
       "@acme/tailwind-config": path.resolve(__dirname, "../../../packages/tailwind-config/src"),
       "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),

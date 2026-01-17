@@ -72,6 +72,10 @@ const config: StorybookConfig = {
       "@acme/i18n/package.json": path.resolve(__dirname, "../../../packages/i18n/package.json"),
       "@acme/types": path.resolve(__dirname, "../../../packages/types/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "@acme/types/package.json": path.resolve(__dirname, "../../../packages/types/package.json"),
+      "@acme/page-builder-core": path.resolve(
+        __dirname,
+        "../../../packages/page-builder-core/src"
+      ),
       "@acme/zod-utils": path.resolve(__dirname, "../../../packages/zod-utils/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "@acme/zod-utils/package.json": path.resolve(__dirname, "../../../packages/zod-utils/package.json"),
       // Use Jest-style mocks for Next client modules when running in Storybook

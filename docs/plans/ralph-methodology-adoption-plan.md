@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Repo
+Last-reviewed: 2026-01-17
+Relates-to charter: none
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-17
@@ -22,6 +24,35 @@ Adopt Ralph Wiggum methodology principles for agent-agnostic, iteration-based de
 4. **Clarify persistent task state** — per-feature plans in `docs/plans/`, root `IMPLEMENTATION_PLAN.md` becomes index
 5. **Strengthen backpressure** with robust validation script
 6. **Create agent-neutral guidance** that works for Claude, Codex, and future agents
+7. **Support high concurrency** — multiple agents/humans can work and “save to GitHub” without stepping on each other
+
+## Concurrency Protocol (MANDATORY for parallel work)
+
+This plan touches many **high-conflict** files (global runbooks, indexes, prompts). The workflow must explicitly support multiple agents/humans working at once.
+
+### 1) Isolation: one worktree per agent/human
+
+- Never share a single working tree between agents/humans.
+- Create a dedicated worktree + `work/*` branch per agent:
+  ```bash
+  scripts/git/new-worktree.sh <label>
+  # Example: scripts/git/new-worktree.sh claude-docs
+  ```
+- Each agent commits/pushes only from its own worktree. This makes “save to GitHub” deterministic.
+
+### 2) Ownership: serialize edits to global docs
+
+Designate a single **Docs Custodian** (human or one agent) for these files to avoid constant merge conflicts:
+
+- `AGENTS.md`, `CLAUDE.md`, `IMPLEMENTATION_PLAN.md`
+- `docs/INDEX_FOR_CLAUDE.md`, `.claude/SKILLS_INDEX.md`, `.claude/prompts/README.md`
+
+Other agents can work in parallel on additive files (new docs/prompts/scripts) and open PRs, but should not concurrently rewrite the global docs.
+
+### 3) Plan updates: minimize conflicts
+
+- Treat this plan file as owned by the **Docs Custodian** during active parallel work.
+- Other agents report progress via PR description / comment (“completed Phase 1 task X”), and the custodian updates checkboxes during merge.
 
 ## Current State Analysis
 
@@ -34,14 +65,14 @@ Adopt Ralph Wiggum methodology principles for agent-agnostic, iteration-based de
 | `docs/git-safety.md` | 408 | Full git safety guide | **KEEP** as canonical |
 | `docs/git-hooks.md` | 314 | Hook documentation | **KEEP** as canonical |
 | `docs/incident-prevention.md` | 90 | Protection layers summary | **KEEP** as canonical |
-| `docs/RECOVERY-PLAN-2026-01-14.md` | ~300 | Incident details | **KEEP** in place |
+| `docs/RECOVERY-PLAN-2026-01-14.md` | 1841 | Incident details | **KEEP** in place |
 | `docs/plans/` | 27 files | Per-feature plans | **KEEP** — this IS the task state |
 | `docs/historical/plans/` | 3 files | Archived plans | **KEEP** as archive |
 | `.claude/prompts/` | 11 files | Task prompts for Claude | **EXTEND** with plan/build modes |
 | `.claude/SKILLS_INDEX.md` | ~200 | Skills catalog | **UPDATE** index |
 | `docs/INDEX_FOR_CLAUDE.md` | ~390 | Quick reference | **UPDATE** with new structure |
-| `docs/AGENTS.docs.md` | ~150 | AI-first doc runbook | **KEEP** — defines plan metadata schema |
-| `__tests__/docs/testing.md` | ~75 | Testing guide | **UPDATE** to align with testing policy |
+| `docs/AGENTS.docs.md` | 497 | AI-first doc runbook | **KEEP** — defines plan metadata schema |
+| `__tests__/docs/testing.md` | 56 | Testing guide | **UPDATE** to align with testing policy |
 | `IMPLEMENTATION_PLAN.md` | ~93 | Sprint/feature tracker | **REPURPOSE** as now/next index |
 
 ### What Doesn't Exist (CREATE)
@@ -91,16 +122,22 @@ Type: Plan
 Status: Active | Completed | Superseded | Frozen
 Domain: <CMS | Runtime | Platform | Commerce | etc.>
 Last-reviewed: YYYY-MM-DD          # Required
-Relates-to charter: <path>          # Optional, when plan implements a charter
+Relates-to charter: <path> | none  # Required (use "none" if no charter)
 Created: YYYY-MM-DD                 # Optional but recommended
 Created-by: <Human | Claude <model> | Codex>  # Optional but recommended
 Last-updated: YYYY-MM-DD            # Optional
 Last-updated-by: <same format>      # Optional
 ```
 
-**Note:** `Last-reviewed` and `Relates-to charter` come from `docs/AGENTS.docs.md`. `Created`/`Created-by` were added for attribution tracking. Both are valid; prefer the full set for new plans.
+**Note:** `Last-reviewed` and `Relates-to charter` are required per `docs/AGENTS.docs.md`. Use `none` when a plan doesn't implement a specific charter. `Created`/`Created-by` were added for attribution tracking.
 
 ## Tasks
+
+### Phase 0: Concurrency & Ownership (Prerequisite)
+
+- [ ] Confirm each agent/human is working in a dedicated worktree (`scripts/git/new-worktree.sh <label>`)
+- [ ] Appoint a Docs Custodian (the only editor of global runbooks/indexes during this effort)
+- [ ] Require PRs for parallel work; do not “share a working tree” as a coordination mechanism
 
 ### Phase 1: Create Missing Files (Non-Breaking)
 
@@ -193,6 +230,7 @@ pnpm typecheck && pnpm lint
 ## Git Rules
 
 - Work on `work/*` branches only — never commit to `main`
+- For parallel work: **one worktree per agent/human** (avoid shared working tree collisions)
 - Commit after each completed task
 - Push every 2 hours or 3 commits
 - **NEVER run:** `git reset --hard`, `git clean -fd`, `git push --force`
@@ -223,7 +261,19 @@ Building prompt: `.claude/prompts/build-feature.md`
 
 - Plans live in `docs/plans/<name>-plan.md`
 - Never delete — archive to `docs/historical/plans/`
-- Required metadata: Type, Status, Domain, Created, Created-by
+- Required metadata: Type, Status, Domain, Last-reviewed, Relates-to charter
+
+Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
+
+## Pull Requests & CI
+
+- Create PR after first push (`gh pr create`) — include summary and test plan
+- Keep PR green and mergeable — fix CI failures promptly
+- **Never merge directly to `main`** — always use PR workflow
+- All CI checks must pass before merge
+- Request review for non-trivial changes
+- Squash merge to keep history clean
+- Delete branch after merge
 
 ## File Boundaries
 
@@ -251,6 +301,10 @@ Use this prompt when starting a new feature or multi-file change.
 ## Mode: PLANNING (No Implementation)
 
 ### Instructions
+
+0. **Concurrency setup**
+   - Ensure you are working in your own worktree + branch (`scripts/git/new-worktree.sh <label>`)
+   - If another agent is actively editing the same plan/doc file, coordinate before proceeding
 
 1. **Study the requirements**
    - Read specs, issues, or user request carefully
@@ -280,6 +334,8 @@ Use this prompt when starting a new feature or multi-file change.
 Type: Plan
 Status: Active
 Domain: <CMS | Platform | UI | etc.>
+Last-reviewed: YYYY-MM-DD
+Relates-to charter: <path to charter, or "none">
 Created: YYYY-MM-DD
 Created-by: Claude <model> | Codex | <Human name>
 Last-updated: YYYY-MM-DD
@@ -328,6 +384,10 @@ Use this prompt when implementing tasks from an approved plan.
 ## Mode: BUILDING (One Task at a Time)
 
 ### Instructions
+
+0. **Concurrency setup**
+   - Ensure you are working in your own worktree + branch (`scripts/git/new-worktree.sh <label>`)
+   - Avoid editing global docs (AGENTS.md/CLAUDE.md/indexes) unless you are the designated Docs Custodian
 
 1. **Read the plan**
    - Open `docs/plans/<feature>-plan.md`
@@ -383,34 +443,58 @@ When all tasks show `[x]`:
 3. Tell user: "All tasks complete. PR ready for review."
 ```
 
-### scripts/validate-changes.sh (NEW — Robust Version)
+### scripts/validate-changes.sh (NEW — POSIX-Compatible)
 
-```bash
-#!/bin/bash
+```sh
+#!/bin/sh
 # Validation gate — run before every commit
-# Fails loud when it can't map changes to tests
+# POSIX-compatible (works on macOS /bin/sh, bash 3.2, dash, etc.)
+#
+# Usage:
+#   ./scripts/validate-changes.sh              # Warn on missing tests
+#   STRICT=1 ./scripts/validate-changes.sh     # Fail on missing tests
+#
+# Limitations:
+#   - Filenames with spaces are not supported (repo convention forbids them)
 
 set -e
 
-echo "╔════════════════════════════════════════╗"
-echo "║  Validation Gate                       ║"
-echo "╚════════════════════════════════════════╝"
+STRICT="${STRICT:-0}"
+
+echo "========================================"
+echo "  Validation Gate"
+echo "========================================"
+
+# 0. Check for orphaned test processes (incident 2026-01-16)
+JEST_PROCS=$(ps aux | grep -E 'jest|vitest' | grep -v grep | wc -l | tr -d ' ')
+if [ "$JEST_PROCS" -gt 0 ]; then
+    echo "FAIL: $JEST_PROCS Jest/Vitest processes already running."
+    echo "  Kill them first: pkill -f 'jest-worker' && pkill -f 'jest.js'"
+    echo "  See: docs/RECOVERY-PLAN-2026-01-14.md for incident context"
+    exit 1
+fi
 
 # 1. Typecheck
 echo ""
-echo "▶ Typecheck"
-pnpm typecheck || { echo "❌ Typecheck failed"; exit 1; }
-echo "✓ Typecheck passed"
+echo "> Typecheck"
+if ! pnpm typecheck; then
+    echo "FAIL: Typecheck failed"
+    exit 1
+fi
+echo "OK: Typecheck passed"
 
 # 2. Lint
 echo ""
-echo "▶ Lint"
-pnpm lint || { echo "❌ Lint failed"; exit 1; }
-echo "✓ Lint passed"
+echo "> Lint"
+if ! pnpm lint; then
+    echo "FAIL: Lint failed"
+    exit 1
+fi
+echo "OK: Lint passed"
 
 # 3. Find changed files
 echo ""
-echo "▶ Finding changed files..."
+echo "> Finding changed files..."
 
 CHANGED=""
 if git diff --cached --quiet 2>/dev/null; then
@@ -422,9 +506,9 @@ else
 fi
 
 if [ -z "$CHANGED" ]; then
-    echo "ℹ No changed TS/TSX files detected"
+    echo "INFO: No changed TS/TSX files detected"
     echo ""
-    echo "✓ All checks passed (no tests to run)"
+    echo "OK: All checks passed (no tests to run)"
     exit 0
 fi
 
@@ -433,84 +517,134 @@ echo "$CHANGED" | sed 's/^/  /'
 
 # 4. Map changes to packages and tests
 echo ""
-echo "▶ Running targeted tests..."
+echo "> Running targeted tests..."
 
 TESTED=0
 SKIPPED=0
-declare -A PACKAGES_TESTED
+TESTED_FILES=""  # Track tested files to avoid duplicates (space-separated list)
 
 for file in $CHANGED; do
     # Skip test files themselves, .d.ts files
-    if [[ "$file" == *.test.ts* ]] || [[ "$file" == *.spec.ts* ]] || [[ "$file" == *.d.ts ]]; then
-        continue
-    fi
+    case "$file" in
+        *.test.ts*|*.spec.ts*|*.d.ts) continue ;;
+    esac
 
     # Determine package from path
     PKG_PATH=""
     FILTER=""
 
-    if [[ "$file" == packages/* ]]; then
-        PKG_NAME=$(echo "$file" | cut -d/ -f2)
-        PKG_PATH="packages/$PKG_NAME"
-        FILTER="@acme/$PKG_NAME"
-    elif [[ "$file" == apps/* ]]; then
-        PKG_NAME=$(echo "$file" | cut -d/ -f2)
-        PKG_PATH="apps/$PKG_NAME"
-        FILTER="@apps/$PKG_NAME"
-    else
-        echo "  ⚠ Cannot map to package: $file"
-        ((SKIPPED++))
-        continue
-    fi
+    case "$file" in
+        packages/*)
+            PKG_NAME=$(echo "$file" | cut -d/ -f2)
+            PKG_PATH="packages/$PKG_NAME"
+            FILTER="@acme/$PKG_NAME"
+            ;;
+        apps/*)
+            PKG_NAME=$(echo "$file" | cut -d/ -f2)
+            PKG_PATH="apps/$PKG_NAME"
+            FILTER="@apps/$PKG_NAME"
+            ;;
+        *)
+            echo "  WARN: Cannot map to package: $file"
+            SKIPPED=$((SKIPPED + 1))
+            continue
+            ;;
+    esac
 
     # Find corresponding test file
-    BASE="${file%.ts}"
-    BASE="${BASE%.tsx}"
+    # Strip extension
+    BASE="${file%.tsx}"
+    BASE="${BASE%.ts}"
     TEST_FILE=""
 
-    for pattern in "${BASE}.test.ts" "${BASE}.test.tsx" "${BASE}.spec.ts" "${BASE}.spec.tsx"; do
-        if [ -f "$pattern" ]; then
-            TEST_FILE="$pattern"
+    # Check colocated test files
+    for ext in ".test.ts" ".test.tsx" ".spec.ts" ".spec.tsx"; do
+        if [ -f "${BASE}${ext}" ]; then
+            TEST_FILE="${BASE}${ext}"
             break
         fi
     done
 
+    # Check __tests__/ directory patterns if colocated not found
     if [ -z "$TEST_FILE" ]; then
-        echo "  ⚠ No test file found for: $file"
-        ((SKIPPED++))
+        # Get filename without path
+        FILENAME=$(basename "$BASE")
+        DIR=$(dirname "$file")
+
+        # Check __tests__/ in same directory
+        for ext in ".test.ts" ".test.tsx" ".spec.ts" ".spec.tsx"; do
+            if [ -f "${DIR}/__tests__/${FILENAME}${ext}" ]; then
+                TEST_FILE="${DIR}/__tests__/${FILENAME}${ext}"
+                break
+            fi
+        done
+    fi
+
+    # Check src/__tests__/ pattern (for files in src/)
+    if [ -z "$TEST_FILE" ]; then
+        case "$file" in
+            */src/*)
+                # Extract path after src/ and check in src/__tests__/
+                SRC_REL=$(echo "$file" | sed 's|.*/src/||')
+                SRC_REL_BASE="${SRC_REL%.tsx}"
+                SRC_REL_BASE="${SRC_REL_BASE%.ts}"
+                PKG_SRC=$(echo "$file" | sed 's|\(.*\)/src/.*|\1/src|')
+
+                for ext in ".test.ts" ".test.tsx" ".spec.ts" ".spec.tsx"; do
+                    if [ -f "${PKG_SRC}/__tests__/${SRC_REL_BASE}${ext}" ]; then
+                        TEST_FILE="${PKG_SRC}/__tests__/${SRC_REL_BASE}${ext}"
+                        break
+                    fi
+                done
+                ;;
+        esac
+    fi
+
+    if [ -z "$TEST_FILE" ]; then
+        echo "  WARN: No test file found for: $file"
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
-    # Run test (skip if we already tested this package with same file)
+    # Check if we already tested this file (avoid duplicates)
     TEST_KEY="${FILTER}:${TEST_FILE}"
-    if [ -z "${PACKAGES_TESTED[$TEST_KEY]}" ]; then
-        echo "  ▶ Testing: $TEST_FILE"
-        if pnpm --filter "$FILTER" test -- "$TEST_FILE" --maxWorkers=2 2>&1; then
-            echo "  ✓ Passed: $TEST_FILE"
-            ((TESTED++))
-        else
-            echo "  ❌ Failed: $TEST_FILE"
-            exit 1
-        fi
-        PACKAGES_TESTED[$TEST_KEY]=1
+    case " $TESTED_FILES " in
+        *" $TEST_KEY "*) continue ;;  # Already tested
+    esac
+
+    echo "  > Testing: $TEST_FILE"
+    if pnpm --filter "$FILTER" test -- "$TEST_FILE" --maxWorkers=2 2>&1; then
+        echo "  OK: Passed: $TEST_FILE"
+        TESTED=$((TESTED + 1))
+    else
+        echo "  FAIL: $TEST_FILE"
+        exit 1
     fi
+    TESTED_FILES="$TESTED_FILES $TEST_KEY"
 done
 
 # 5. Summary
 echo ""
-echo "════════════════════════════════════════"
+echo "========================================"
 echo "Summary:"
 echo "  Tests run: $TESTED"
 echo "  Skipped (no test found): $SKIPPED"
 
-if [ $SKIPPED -gt 0 ]; then
+if [ "$SKIPPED" -gt 0 ]; then
     echo ""
-    echo "⚠ Warning: $SKIPPED changed files have no corresponding tests."
-    echo "  Consider adding tests for these files."
+    if [ "$STRICT" = "1" ]; then
+        echo "FAIL: $SKIPPED changed files have no corresponding tests."
+        echo "  Run without STRICT=1 to warn instead of fail."
+        exit 1
+    else
+        echo "WARN: $SKIPPED changed files have no corresponding tests."
+        echo "  Consider adding tests for these files."
+        echo "  Run with STRICT=1 to fail instead of warn."
+    fi
 fi
 
 echo ""
-echo "✓ All validation checks passed"
+echo "OK: All validation checks passed"
 ```
 
 ### CODEX.md (NEW — Conditional, Not Absolute)
@@ -591,18 +725,23 @@ Co-Authored-By: Codex <noreply@openai.com>
 - Never take shortcuts on large-scale fixes
 ```
 
-### IMPLEMENTATION_PLAN.md (Repurposed as Index)
+### IMPLEMENTATION_PLAN.md (Repurposed as Now/Next Index)
 
 ```markdown
 ---
-Type: Index
+Type: Plan
 Status: Active
 Domain: Base-Shop
+Last-reviewed: YYYY-MM-DD
+Relates-to charter: docs/base-shop-charter.md
 Last-updated: YYYY-MM-DD
 Last-updated-by: <agent or human>
 ---
 
 # Now / Next / Later
+
+> **Note:** This file serves as an index to active plans, not as a detailed plan itself.
+> Per `docs/AGENTS.docs.md`, we use `Type: Plan` for tooling compatibility.
 
 This file indexes active work. For detailed task lists, see individual plans in `docs/plans/`.
 
@@ -693,17 +832,17 @@ If issues arise:
 - [ ] `AGENTS.md` reduced to ~80-100 lines
 - [ ] `CLAUDE.md` reduced to ~150-200 lines
 - [ ] Both Claude and Codex can use plan/build prompts
-- [ ] `validate-changes.sh` catches failures AND warns on missing tests
+- [ ] `validate-changes.sh` catches failures, warns on missing tests, fails with `STRICT=1`
 - [ ] Per-feature plans in `docs/plans/` are the canonical task state
 - [ ] `IMPLEMENTATION_PLAN.md` serves as useful index, not duplicate state
+- [ ] Multiple agents/humans can work concurrently via worktrees without “mystery edits” blocking commits
 - [ ] No broken references in docs
 - [ ] Total agent context load reduced by >40%
 
 ## Open Questions
 
-1. **Should we add a `--strict` mode to validate-changes.sh that fails on missing tests?**
-   - Pro: Enforces test coverage
-   - Con: May block legitimate changes to untested code
+1. ~~**Should we add a `--strict` mode to validate-changes.sh that fails on missing tests?**~~
+   - **RESOLVED:** Implemented as `STRICT=1` env var. Default warns; `STRICT=1` fails.
 
 2. **How do we handle the 27 package-level AGENTS.md files?**
    - Option A: Keep as-is (package-specific guidance)

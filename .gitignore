@@ -59,6 +59,7 @@ yarn-error.log*
 # ---------------------------
 .env*
 !**/.env.example
+!**/.env.*.sops
 !apps/cms/.env.production
 !docs/.env.reference.md
 

@@ -17,17 +17,14 @@ creation_rules:
   # Preview environment (test/staging keys)
   - path_regex: \.env\.preview\.sops$
     age: >-
-      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    # TODO: Replace with your actual age public key
+      age107p6cj636znhzft84eptmcpartgv4j6arytvu8phpjf9vj4um9qs5t6ev6
 
   # Production environment (live keys)
   - path_regex: \.env\.production\.sops$
     age: >-
-      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    # TODO: Replace with your actual age public key
+      age107p6cj636znhzft84eptmcpartgv4j6arytvu8phpjf9vj4um9qs5t6ev6
 
   # Legacy single .env.sops (fallback)
   - path_regex: \.env\.sops$
     age: >-
-      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    # TODO: Replace with your actual age public key
+      age107p6cj636znhzft84eptmcpartgv4j6arytvu8phpjf9vj4um9qs5t6ev6

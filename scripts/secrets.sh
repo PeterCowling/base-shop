@@ -70,6 +70,12 @@ usage() {
     exit 1
 }
 
+# Set up age key file location for SOPS
+# SOPS looks for keys in SOPS_AGE_KEY_FILE or SOPS_AGE_KEY env vars
+if [ -z "$SOPS_AGE_KEY_FILE" ] && [ -z "$SOPS_AGE_KEY" ]; then
+    export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
+fi
+
 # Check prerequisites
 check_prereqs() {
     if ! command -v sops >/dev/null 2>&1; then
@@ -195,7 +201,11 @@ cmd_encrypt() {
     fi
 
     # Encrypt with explicit dotenv format
-    sops -e --input-type dotenv --output-type dotenv "$PLAIN_FILE" > "$ENCRYPTED_FILE"
+    # SOPS matches creation_rules against the input file path, so we:
+    # 1. Copy plain to target path
+    # 2. Encrypt in-place
+    cp "$PLAIN_FILE" "$ENCRYPTED_FILE"
+    sops -e -i --input-type dotenv --output-type dotenv "$ENCRYPTED_FILE"
 
     echo "${GREEN}OK:${NC} Encrypted to $ENCRYPTED_FILE"
     echo ""

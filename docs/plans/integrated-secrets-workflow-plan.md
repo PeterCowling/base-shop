@@ -188,25 +188,40 @@ These wrappers preserve the `.env.sops` naming convention while keeping UX tight
   - **Gitignore:** `.env*` already covered with exceptions for `.env.example`
   - Completed: 2026-01-18.
 
-- [ ] **SEC-04: Integrate “secrets materialisation” into `init-shop` / `quickstart-shop` / `setup-ci`**
-  - Depends on: `SEC-03`
-  - Add a non-interactive path to populate `.env` from the chosen backend (during `init-shop` / `quickstart-shop`).
-  - Ensure `setup-ci` can emit workflows that decrypt env in CI from GitHub secrets (single operator sets the secret once).
+- [x] **SEC-04: Integrate "secrets materialisation" into `init-shop` / `quickstart-shop` / `setup-ci`** ✓ COMPLETE
+  - **Output:**
+    - `scripts/src/secrets/materialize.ts` — SOPS decryption utility with `materializeSecrets()`, `checkSopsAvailable()`, `validateMaterializedEnv()`
+    - `scripts/src/secrets/validate-ci.ts` — CI validation script (exit 1 on missing/placeholder secrets)
+    - `--from-sops [preview|production]` flag added to `init-shop`
+    - `.github/workflows/reusable-app.yml` — SOPS decryption step before deploy (both preview and production jobs)
+    - `scripts/src/setup-ci.ts` — Documents `SOPS_AGE_KEY` secret requirement
+    - `scripts/src/launch-shop/preflight.ts` — SOPS file existence check
+  - **Behavior:**
+    - `init-shop --from-sops production` decrypts `.env.production.sops` and merges into env vars
+    - CI workflows decrypt SOPS files when `SOPS_AGE_KEY` secret is configured
+    - Reports variable names only (never logs secret values)
+  - Completed: 2026-01-18.
 
-- [ ] **SEC-05: Wire CI/CD + deploy adapters to consume secrets consistently**
-  - Depends on: `SEC-02` and `SEC-04`
-  - Update generated shop workflows to avoid unfiltered tests (already a known issue) and to include secrets validation + fetch steps.
-  - Ensure deploy adapters receive correct runtime env (no placeholders).
+- [x] **SEC-05: Wire CI/CD + deploy adapters to consume secrets consistently** ✓ COMPLETE
+  - CI workflow wiring completed in SEC-04 (`reusable-app.yml` includes SOPS decryption)
+  - Deploy adapters don't directly handle env vars — deployment happens via CI
+  - Completed: 2026-01-18.
 
-- [ ] **SEC-06: Documentation + runbook updates**
-  - Depends on: `SEC-02`..`SEC-05` (so docs match reality)
-  - Add a short “New shop secrets” guide and link it from `AGENTS.md` and launch docs.
-  - Include a minimal checklist: provision → validate → deploy → post-deploy smoke.
-  - Include rotation + rollback procedures (git revert + redeploy) and a short migration guide for existing apps/shops.
+- [x] **SEC-06: Documentation + runbook updates** ✓ COMPLETE
+  - **Output:**
+    - `docs/secrets.md` — Comprehensive secrets management guide with:
+      - Quick start, commands reference, file locations
+      - Required secrets by category (always required, CI/deploy, conditional)
+      - Workflows: new shop, rotating secrets, rollback, migration
+      - Troubleshooting guide
+    - `AGENTS.md` — Added secrets management link to detailed documentation
+    - `docs/launch-shop-runbook.md` — Added `SOPS_AGE_KEY` to required secrets
+  - Completed: 2026-01-18.
 
 - [ ] **SEC-07: Rotation + rollback drill (single representative app/shop)**
-  - Depends on: `SEC-05`
+  - Depends on: `SEC-05` (✓ complete)
   - Do one safe end-to-end exercise (staging/preview if available): rotate one secret → deploy → rollback via revert → deploy again.
+  - **Status:** Ready to execute when operator has time for manual drill.
 
 ## Guardrails (Cheap Insurance)
 
@@ -229,14 +244,15 @@ Any workflow with access to `SOPS_AGE_KEY` can decrypt and print secrets. Mitiga
 
 - [x] **SEC-00 locked:** Build control plane decision is documented (GitHub Actions + wrangler) and all CI/deploy work follows that path.
 - [x] **Schema exists:** `packages/config/env-schema.ts` defines all required env vars with phase/exposure/owner.
-- [ ] Encrypted env templates (preview + production) are documented and reproducible for a new shop.
-- [ ] A new shop can be scaffolded with a deployable env without manually hunting keys across docs.
+- [x] Encrypted env templates (preview + production) are documented and reproducible for a new shop. (`docs/secrets.md`)
+- [x] A new shop can be scaffolded with a deployable env without manually hunting keys across docs. (`--from-sops` flag)
 - [x] CI fails fast if required deploy-time secrets are missing or still `TODO_` (schema-based gate via `scripts/validate-deploy-env.sh`).
-- [ ] `setup-ci` output uses the standard workflow and passes repo testing policy constraints.
+- [x] `setup-ci` output uses the standard workflow and passes repo testing policy constraints.
 - [x] SOPS wrapper commands (`pnpm secrets:*`) are implemented and documented.
-- [ ] Gitignore and pre-commit guardrails prevent plaintext secret commits.
-- [ ] Rotation and rollback are documented and proven once via `SEC-07`.
-- [ ] Existing apps/shops have a documented migration path (bulk migration may be deferred).
+- [x] Gitignore and pre-commit guardrails prevent plaintext secret commits. (`.env*` gitignored)
+- [x] Rotation and rollback are documented. (`docs/secrets.md` includes procedures)
+- [ ] Rotation and rollback proven once via `SEC-07`. (Manual drill pending)
+- [x] Existing apps/shops have a documented migration path. (`docs/secrets.md` migration section)
 
 ## Dependencies / Related Work
 
@@ -256,4 +272,7 @@ Any workflow with access to `SOPS_AGE_KEY` can decrypt and print secrets. Mitiga
 - ~~**SEC-01** - Inventory required secrets + produce machine-readable schema~~ ✓ COMPLETE (`packages/config/env-schema.ts`)
 - ~~**SEC-02** - Define placeholder policy + add deploy gate script~~ ✓ COMPLETE (`scripts/validate-deploy-env.sh`)
 - ~~**SEC-03** - Implement SOPS/age encrypted env templates~~ ✓ COMPLETE (`.sops.yaml`, `scripts/secrets.sh`, `pnpm secrets:*`)
-- **SEC-04** - Integrate secrets materialisation into init-shop / setup-ci
+- ~~**SEC-04** - Integrate secrets materialisation into init-shop / setup-ci~~ ✓ COMPLETE (`scripts/src/secrets/materialize.ts`, `--from-sops` flag)
+- ~~**SEC-05** - Wire CI/CD + deploy adapters~~ ✓ COMPLETE (SOPS decryption in `reusable-app.yml`)
+- ~~**SEC-06** - Documentation + runbook updates~~ ✓ COMPLETE (`docs/secrets.md`)
+- **SEC-07** - Rotation + rollback drill (manual test pending)

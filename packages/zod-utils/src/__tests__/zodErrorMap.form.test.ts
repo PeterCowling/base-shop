@@ -16,6 +16,9 @@ describe("friendly error map for user form", () => {
   it("returns human friendly messages and format for multiple issues", () => {
     const result = schema.safeParse({ email: "not-an-email", password: "123" });
     expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error("Expected validation to fail");
+    }
     const messages = result.error.issues.map((i) => i.message);
     expect(messages).toEqual([
       "Invalid email",

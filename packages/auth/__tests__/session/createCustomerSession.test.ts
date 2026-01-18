@@ -11,17 +11,22 @@ import {
 describe("createCustomerSession", () => {
   const sampleSession = { customerId: "cust", role: "customer" as Role };
   const originalNodeEnv = process.env.NODE_ENV;
+  const setNodeEnv = (value: string | undefined) => {
+    const env = { ...process.env } as Record<string, string | undefined>;
+    if (value === undefined) {
+      delete env.NODE_ENV;
+    } else {
+      env.NODE_ENV = value;
+    }
+    process.env = env as NodeJS.ProcessEnv;
+  };
 
   beforeEach(() => {
     resetSessionMocks();
   });
 
   afterAll(() => {
-    if (originalNodeEnv === undefined) {
-      delete process.env.NODE_ENV;
-    } else {
-      process.env.NODE_ENV = originalNodeEnv;
-    }
+    setNodeEnv(originalNodeEnv);
     restoreEnv();
   });
 
@@ -61,7 +66,7 @@ describe("createCustomerSession", () => {
   });
 
   it("disables secure cookies for development environments", async () => {
-    process.env.NODE_ENV = "development";
+    setNodeEnv("development");
     queueRandomUUIDs(["session-id", "csrf-id"]);
 
     const {
@@ -85,7 +90,7 @@ describe("createCustomerSession", () => {
   });
 
   it("keeps secure cookies outside development", async () => {
-    process.env.NODE_ENV = "production";
+    setNodeEnv("production");
     queueRandomUUIDs(["session-id", "csrf-id"]);
 
     const {

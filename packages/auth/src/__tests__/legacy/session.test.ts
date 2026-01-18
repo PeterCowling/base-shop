@@ -1,13 +1,40 @@
 import { jest } from "@jest/globals";
+import type { Mock } from "jest-mock";
 
-const mockCookies = {
-  get: jest.fn(),
-  set: jest.fn(),
-  delete: jest.fn(),
+type CookieOptions = {
+  httpOnly?: boolean;
+  secure?: boolean;
+  path?: string;
+  sameSite?: "lax" | "strict" | "none";
+  maxAge?: number;
+  domain?: string;
 };
 
-const mockHeaders = {
-  get: jest.fn(),
+type CookieStore = {
+  get: Mock<{ value: string } | undefined, [string]>;
+  set: Mock<void, [string, string, CookieOptions?]>;
+  delete: Mock<void, [{ name: string; path?: string; domain?: string }]>;
+};
+
+type HeadersStore = {
+  get: Mock<string | null, [string]>;
+};
+
+type SessionStoreMock = {
+  get: Mock<Promise<{ sessionId: string } | undefined>, [string]>;
+  set: Mock<Promise<void>, [{ sessionId: string; customerId: string }]>;
+  delete: Mock<Promise<void>, [string]>;
+  list: Mock<Promise<{ sessionId: string }[]>, [string]>;
+};
+
+const mockCookies: CookieStore = {
+  get: jest.fn<{ value: string } | undefined, [string]>(),
+  set: jest.fn<void, [string, string, CookieOptions?]>(),
+  delete: jest.fn<void, [{ name: string; path?: string; domain?: string }]>(),
+};
+
+const mockHeaders: HeadersStore = {
+  get: jest.fn<string | null, [string]>(),
 };
 
 jest.mock("next/headers", () => ({
@@ -26,8 +53,8 @@ jest.mock("@acme/config/env/core", () => ({
   },
 }));
 
-const sealData = jest.fn();
-const unsealData = jest.fn();
+const sealData = jest.fn<Promise<string>, [unknown, { password: string; ttl: number }]>();
+const unsealData = jest.fn<Promise<unknown>, [string, { password: string; ttl: number }]>();
 
 jest.mock("iron-session", () => ({
   sealData,
@@ -40,8 +67,8 @@ jest.mock("crypto", () => ({
   randomUUID,
 }));
 
-let mockSessionStore: any;
-const createSessionStore = jest.fn(async () => mockSessionStore);
+let mockSessionStore: SessionStoreMock;
+const createSessionStore = jest.fn<Promise<SessionStoreMock>, []>(async () => mockSessionStore);
 
 jest.mock("../../store", () => ({
   createSessionStore,
@@ -66,10 +93,10 @@ beforeEach(() => {
   unsealData.mockReset();
   randomUUID.mockReset();
   mockSessionStore = {
-    get: jest.fn(),
-    set: jest.fn(),
-    delete: jest.fn(),
-    list: jest.fn(),
+    get: jest.fn<Promise<{ sessionId: string } | undefined>, [string]>(),
+    set: jest.fn<Promise<void>, [{ sessionId: string; customerId: string }]>(),
+    delete: jest.fn<Promise<void>, [string]>(),
+    list: jest.fn<Promise<{ sessionId: string }[]>, [string]>(),
   };
   createSessionStore.mockResolvedValue(mockSessionStore);
 });

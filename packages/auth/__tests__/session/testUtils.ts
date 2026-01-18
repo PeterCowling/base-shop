@@ -1,14 +1,24 @@
 import { jest } from "@jest/globals";
+import type { Mock } from "jest-mock";
+
+type CookieOptions = {
+  httpOnly?: boolean;
+  secure?: boolean;
+  path?: string;
+  sameSite?: "lax" | "strict" | "none";
+  maxAge?: number;
+  domain?: string;
+};
 
 export interface CookieStoreMock {
   jar: Map<string, string>;
-  get: jest.Mock<{ name: string; value: string } | undefined, [string]>;
-  set: jest.Mock<void, [string, string, unknown?]>;
-  delete: jest.Mock<void, [{ name: string; path?: string; domain?: string }]>;
+  get: Mock<{ name: string; value: string } | undefined, [string]>;
+  set: Mock<void, [string, string, CookieOptions?]>;
+  delete: Mock<void, [{ name: string; path?: string; domain?: string }]>;
 }
 
 export interface HeadersMock {
-  get: jest.Mock<string | null, [string]>;
+  get: Mock<string | null, [string]>;
 }
 
 export interface MockSessionRecord {
@@ -19,20 +29,20 @@ export interface MockSessionRecord {
 }
 
 export interface SessionStoreMock {
-  get: jest.Mock<Promise<MockSessionRecord | null>, [string]>;
-  set: jest.Mock<Promise<void>, [MockSessionRecord]>;
-  delete: jest.Mock<Promise<void>, [string]>;
-  list: jest.Mock<Promise<MockSessionRecord[]>, [string]>;
+  get: Mock<Promise<MockSessionRecord | null>, [string]>;
+  set: Mock<Promise<void>, [MockSessionRecord]>;
+  delete: Mock<Promise<void>, [string]>;
+  list: Mock<Promise<MockSessionRecord[]>, [string]>;
 }
 
 interface SessionMockState {
   cookies: CookieStoreMock;
   headers: HeadersMock;
-  sealData: jest.Mock<Promise<string>, [unknown, { password: string; ttl: number }]>;
-  unsealData: jest.Mock<Promise<any>, [string, { password: string; ttl: number }]>;
-  randomUUID: jest.Mock<string, []>;
+  sealData: Mock<Promise<string>, [unknown, { password: string; ttl: number }] >;
+  unsealData: Mock<Promise<unknown>, [string, { password: string; ttl: number }] >;
+  randomUUID: Mock<string, []>;
   sessionStore: SessionStoreMock;
-  createSessionStoreImpl: jest.Mock<Promise<SessionStoreMock>, []>;
+  createSessionStoreImpl: Mock<Promise<SessionStoreMock>, []>;
   sessionTtlSeconds: number;
   env: {
     SESSION_SECRET?: string;
@@ -44,19 +54,16 @@ function createCookieStore(): CookieStoreMock {
   const jar = new Map<string, string>();
   const store: CookieStoreMock = {
     jar,
-    get: jest.fn(function get(this: CookieStoreMock, key: string) {
+    get: jest.fn<{ name: string; value: string } | undefined, [string]>(function get(this: CookieStoreMock, key: string) {
       const value = this.jar.get(key);
       return value ? { name: key, value } : undefined;
     }),
-    set: jest.fn(function set(this: CookieStoreMock, key: string, value: string) {
+    set: jest.fn<void, [string, string, CookieOptions?]>(function set(this: CookieStoreMock, key: string, value: string) {
       this.jar.set(key, value);
-    }) as CookieStoreMock["set"],
-    delete: jest.fn(function del(
-      this: CookieStoreMock,
-      opts: { name: string }
-    ) {
+    }),
+    delete: jest.fn<void, [{ name: string; path?: string; domain?: string }]>(function del(this: CookieStoreMock, opts: { name: string }) {
       this.jar.delete(opts.name);
-    }) as CookieStoreMock["delete"],
+    }),
   };
   return store;
 }
@@ -71,16 +78,16 @@ export function makeCookieStore(initial: Record<string, string> = {}): CookieSto
 
 function createHeaders(): HeadersMock {
   return {
-    get: jest.fn(() => null),
+    get: jest.fn<string | null, [string]>(() => null),
   };
 }
 
 function createSessionStore(): SessionStoreMock {
   return {
-    get: jest.fn(async () => null),
-    set: jest.fn(async () => undefined),
-    delete: jest.fn(async () => undefined),
-    list: jest.fn(async () => []),
+    get: jest.fn<Promise<MockSessionRecord | null>, [string]>(async () => null),
+    set: jest.fn<Promise<void>, [MockSessionRecord]>(async () => undefined),
+    delete: jest.fn<Promise<void>, [string]>(async () => undefined),
+    list: jest.fn<Promise<MockSessionRecord[]>, [string]>(async () => []),
   };
 }
 
@@ -94,13 +101,13 @@ const ORIGINAL_ENV = { ...process.env };
 const state: SessionMockState = {
   cookies: createCookieStore(),
   headers: createHeaders(),
-  sealData: jest.fn(async () => "sealed-token"),
-  unsealData: jest.fn(async () => {
+  sealData: jest.fn<Promise<string>, [unknown, { password: string; ttl: number }]>(async (_data, _options) => "sealed-token"),
+  unsealData: jest.fn<Promise<unknown>, [string, { password: string; ttl: number }]>(async (_token, _options) => {
     throw new Error("unsealData mock not configured");
   }),
-  randomUUID: jest.fn(),
+  randomUUID: jest.fn<string, []>(),
   sessionStore: createSessionStore(),
-  createSessionStoreImpl: jest.fn(),
+  createSessionStoreImpl: jest.fn<Promise<SessionStoreMock>, []>(),
   sessionTtlSeconds: 3600,
   env: {
     SESSION_SECRET: "secret",
@@ -136,7 +143,7 @@ jest.mock("@acme/config/env/core", () => ({
 }));
 
 jest.mock("../../src/store", () => {
-  const actual = jest.requireActual("../../src/store");
+  const actual = jest.requireActual("../../src/store") as typeof import("../../src/store");
   return {
     __esModule: true,
     ...actual,

@@ -8,9 +8,11 @@ type Envs = {
   cmsEnv: any;
 };
 
+type EnvOverrides = Record<string, string | undefined>;
+
 const scenarios: Array<{
   name: string;
-  env: NodeJS.ProcessEnv;
+  env: EnvOverrides;
   assert: (envs: Envs) => void;
 }> = [
   {
@@ -105,7 +107,7 @@ const scenarios: Array<{
 
 describe("env matrix scenarios", () => {
   it.each(scenarios)("$name", async ({ env, assert }) => {
-    await withEnv(env, async () => {
+    await withEnv(env as unknown as NodeJS.ProcessEnv, async () => {
       const { paymentsEnv } = await import("@acme/config/env/payments");
       const { emailEnv } = await import("@acme/config/env/email");
       const { authEnv } = await import("@acme/config/env/auth");

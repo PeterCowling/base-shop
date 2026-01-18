@@ -1,12 +1,15 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
+type EnvOverrides = Record<string, string | undefined>;
+
 const ORIGINAL_ENV = process.env;
 
 const getLoader = async () => {
   jest.resetModules();
   process.env = {} as NodeJS.ProcessEnv;
   const { loadShippingEnv } = await import("@acme/config/env/shipping");
-  return loadShippingEnv;
+  return (overrides: EnvOverrides = {}) =>
+    loadShippingEnv(overrides as unknown as NodeJS.ProcessEnv);
 };
 
 afterEach(() => {

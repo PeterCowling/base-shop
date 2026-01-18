@@ -21,19 +21,25 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   ...overrides,
 });
 
+const asProcessEnv = (env: EnvOverrides): NodeJS.ProcessEnv =>
+  env as unknown as NodeJS.ProcessEnv;
+
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
   consoleErrorSpy?: jest.SpyInstance,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
-    env: prodEnv(overrides),
+    env: asProcessEnv(prodEnv(overrides)),
     accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
     consoleErrorSpy,
   });
 
 const getProdAuthEnv = async (overrides: EnvOverrides = {}) => {
-  const { authEnv } = await withEnv(prodEnv(overrides), () => import("@acme/config/env/auth"));
+  const { authEnv } = await withEnv(
+    asProcessEnv(prodEnv(overrides)),
+    () => import("@acme/config/env/auth"),
+  );
   return authEnv;
 };
 

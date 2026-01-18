@@ -27,12 +27,15 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   ...overrides,
 });
 
+const asProcessEnv = (env: EnvOverrides): NodeJS.ProcessEnv =>
+  env as unknown as NodeJS.ProcessEnv;
+
 const expectInvalidProd = (
   overrides: EnvOverrides,
   consoleErrorSpy?: jest.SpyInstance,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
-    env: prodEnv(overrides),
+    env: asProcessEnv(prodEnv(overrides)),
     accessor: (auth) => auth.authEnv.AUTH_PROVIDER,
     consoleErrorSpy,
   });
@@ -44,7 +47,7 @@ afterEach(() => {
 describe("AUTH_TOKEN_TTL normalisation", () => {
   it("trims and converts minutes to seconds", async () => {
     const { authEnv, normalized } = await withEnv(
-      devEnv({ AUTH_TOKEN_TTL: " 5 m " }),
+      asProcessEnv(devEnv({ AUTH_TOKEN_TTL: " 5 m " })),
       async () => {
         const mod = await import("@acme/config/env/auth");
         return { authEnv: mod.authEnv, normalized: process.env.AUTH_TOKEN_TTL };
@@ -109,11 +112,11 @@ describe("redis session store requirements", () => {
 
   it("parses redis config when url and token present", async () => {
     const { authEnv } = await withEnv(
-      prodEnv({
+      asProcessEnv(prodEnv({
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
-      }),
+      })),
       () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe("redis");
@@ -182,7 +185,7 @@ describe("auth provider specific checks", () => {
 
   it("parses jwt provider when secret present", async () => {
     const { authEnv } = await withEnv(
-      prodEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: STRONG_TOKEN }),
+      asProcessEnv(prodEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: STRONG_TOKEN })),
       () => import("@acme/config/env/auth"),
     );
     expect(authEnv.AUTH_PROVIDER).toBe("jwt");
@@ -240,13 +243,13 @@ describe("auth provider specific checks", () => {
 
   it("parses oauth provider when credentials present", async () => {
     const { authEnv } = await withEnv(
-      {
+      asProcessEnv({
         OAUTH_ISSUER,
         AUTH_PROVIDER: "oauth",
         OAUTH_CLIENT_ID: "client-id",
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
         OAUTH_REDIRECT_ORIGIN,
-      },
+      }),
       () => import("@acme/config/env/auth"),
     );
     expect(authEnv.AUTH_PROVIDER).toBe("oauth");

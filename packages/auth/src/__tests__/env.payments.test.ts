@@ -1,8 +1,8 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
 async function withEnv<T>(
-  vars: NodeJS.ProcessEnv,
-  loader: () => Promise<T>,
+  vars: Record<string, string | number | undefined>,
+  loader: () => Promise<T> | T,
 ): Promise<T> {
   const snapshot = { ...process.env };
   const nextEnv: NodeJS.ProcessEnv = Object.assign(Object.create(null), snapshot);
@@ -11,7 +11,7 @@ async function withEnv<T>(
     if (typeof value === "undefined") {
       delete nextEnv[key];
     } else {
-      nextEnv[key] = value;
+      nextEnv[key] = value as any;
     }
   }
 

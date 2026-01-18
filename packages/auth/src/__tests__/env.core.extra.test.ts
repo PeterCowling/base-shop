@@ -126,19 +126,24 @@ describe("deposit/reverse/late-fee refinement", () => {
       EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(false);
-    const messages = result.error.issues.reduce<Record<string, string>>(
-      (acc, issue) => {
-        acc[issue.path.join(".")] = issue.message;
-        return acc;
-      },
-      {},
-    );
-    expect(messages.DEPOSIT_RELEASE_CUSTOM_ENABLED).toBe(
-      "must be true or false",
-    );
-    expect(messages.DEPOSIT_RELEASE_CUSTOM_INTERVAL_MS).toBe(
-      "must be a number",
-    );
+    if (!result.success) {
+      const messages = result.error.issues.reduce<Record<string, string>>(
+        (acc, issue) => {
+          acc[issue.path.join(".")] = issue.message;
+          return acc;
+        },
+        {},
+      );
+      expect(messages.DEPOSIT_RELEASE_CUSTOM_ENABLED).toBe(
+        "must be true or false",
+      );
+      expect(messages.DEPOSIT_RELEASE_CUSTOM_INTERVAL_MS).toBe(
+        "must be a number",
+      );
+      return;
+    }
+
+    throw new Error("Expected coreEnvSchema to fail validation");
   });
 });
 

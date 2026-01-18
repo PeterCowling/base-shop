@@ -8,13 +8,13 @@ function updateNonStringMetadata(
 ): void {
   if (tracked.size > 0) {
     const list = Array.from(tracked);
-    (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = list;
+    (env as unknown as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = list;
     (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ = list.slice();
     if (list.includes("AUTH_TOKEN_TTL")) {
       (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__ = true;
     }
   } else {
-    delete (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    delete (env as unknown as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     delete (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__;
   }
@@ -77,7 +77,7 @@ function installNonStringTracker(
 
 export async function withEnv(
   vars: Record<string, string | number | undefined>,
-  fn: () => Promise<void> | void,
+  fn: () => Promise<unknown> | unknown,
 ): Promise<void> {
   const originalEnv = process.env;
   const originalSnapshot = { ...process.env };
@@ -124,7 +124,7 @@ export async function withEnv(
       jest.isolateModules(() => {
         Promise.resolve()
           .then(fn)
-          .then(resolve)
+          .then(() => resolve())
           .catch(reject);
       });
     });
@@ -138,7 +138,7 @@ export async function withEnv(
       Object.create(null),
       originalSnapshot,
     );
-    delete (restoreEnv as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    delete (restoreEnv as unknown as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     process.env = restoreEnv;
   }

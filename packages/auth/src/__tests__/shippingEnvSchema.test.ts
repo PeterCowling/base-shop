@@ -9,7 +9,7 @@ describe("shippingEnvSchema", () => {
     const env = loadShippingEnv({
       DEFAULT_SHIPPING_ZONE: "eu",
       FREE_SHIPPING_THRESHOLD: "100",
-    } as NodeJS.ProcessEnv);
+    } as unknown as NodeJS.ProcessEnv);
     expect(env).toEqual({
       DEFAULT_SHIPPING_ZONE: "eu",
       FREE_SHIPPING_THRESHOLD: 100,
@@ -19,21 +19,21 @@ describe("shippingEnvSchema", () => {
   it("throws on invalid zone", async () => {
     const { loadShippingEnv } = await import("@acme/config/env/shipping");
     expect(() =>
-      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "galaxy" } as NodeJS.ProcessEnv),
+      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "galaxy" } as unknown as NodeJS.ProcessEnv),
     ).toThrow();
   });
 
   it("throws on negative threshold", async () => {
     const { loadShippingEnv } = await import("@acme/config/env/shipping");
     expect(() =>
-      loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "-10" } as NodeJS.ProcessEnv),
+      loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "-10" } as unknown as NodeJS.ProcessEnv),
     ).toThrow();
   });
 
   it("throws on non-numeric threshold", async () => {
     const { loadShippingEnv } = await import("@acme/config/env/shipping");
     expect(() =>
-      loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "abc" } as NodeJS.ProcessEnv),
+      loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "abc" } as unknown as NodeJS.ProcessEnv),
     ).toThrow();
   });
 
@@ -89,7 +89,7 @@ describe("shippingEnvSchema", () => {
 
   it("returns empty object when keys missing", async () => {
     const { loadShippingEnv } = await import("@acme/config/env/shipping");
-    const env = loadShippingEnv({} as NodeJS.ProcessEnv);
+    const env = loadShippingEnv({} as unknown as NodeJS.ProcessEnv);
     expect(env).toEqual({});
   });
 

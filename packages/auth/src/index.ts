@@ -29,6 +29,7 @@ export {
   enrollMfa,
   verifyMfa,
   isMfaEnabled,
+  deactivateMfa,
   generateMfaToken,
   verifyMfaToken,
 } from "./mfa";

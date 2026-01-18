@@ -1,4 +1,11 @@
 import { describe, expect, it, jest, beforeEach } from "@jest/globals";
+import type { OidcConfig } from "../src/oidc/config";
+
+type OidcClientMock = {
+  authorizationUrl?: (...args: unknown[]) => string;
+  callback?: (...args: unknown[]) => Promise<unknown>;
+  endSessionUrl?: (...args: unknown[]) => string;
+};
 
 const records = new Map<string, any>();
 const store = {
@@ -11,8 +18,8 @@ const store = {
   }),
 };
 
-const getOidcClient = jest.fn();
-const loadOidcConfig = jest.fn(() => ({
+const getOidcClient = jest.fn<Promise<OidcClientMock>, []>();
+const loadOidcConfig = jest.fn<OidcConfig, []>(() => ({
   issuer: "https://auth.example.com/realms/base-shop",
   clientId: "client-id",
   clientSecret: "client-secret",

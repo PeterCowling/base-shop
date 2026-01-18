@@ -1,5 +1,12 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
+type RbacModule = typeof import("../rbac");
+type RolesModule = typeof import("../types/roles");
+type PermissionsModule = typeof import("../permissions");
+type SessionModule = typeof import("../session");
+type StoreModule = typeof import("../store");
+type MfaModule = typeof import("../mfa");
+
 jest.mock("../rbac", () => ({
   canRead: jest.fn(() => true),
   canWrite: jest.fn(() => true),
@@ -40,6 +47,7 @@ jest.mock("../mfa", () => ({
   enrollMfa: jest.fn(),
   verifyMfa: jest.fn(),
   isMfaEnabled: jest.fn(),
+  deactivateMfa: jest.fn(),
   generateMfaToken: jest.fn(),
   verifyMfaToken: jest.fn(),
 }));
@@ -49,22 +57,22 @@ describe("package entrypoint", () => {
     jest.resetModules();
     const mod = await import("../index");
 
-    const rbac = jest.requireMock("../rbac");
+    const rbac = jest.requireMock("../rbac") as jest.Mocked<RbacModule>;
     expect(mod.canRead).toBe(rbac.canRead);
     expect(mod.canWrite).toBe(rbac.canWrite);
     expect(mod.READ_ROLES).toBe(rbac.READ_ROLES);
     expect(mod.WRITE_ROLES).toBe(rbac.WRITE_ROLES);
 
-    const roles = jest.requireMock("../types/roles");
+    const roles = jest.requireMock("../types/roles") as jest.Mocked<RolesModule>;
     expect(mod.extendRoles).toBe(roles.extendRoles);
     expect(mod.isRole).toBe(roles.isRole);
 
-    const permissions = jest.requireMock("../permissions");
+    const permissions = jest.requireMock("../permissions") as jest.Mocked<PermissionsModule>;
     expect(mod.hasPermission).toBe(permissions.hasPermission);
 
     expect(mod.requirePermission).toBe(requirePermissionMock);
 
-    const session = jest.requireMock("../session");
+    const session = jest.requireMock("../session") as jest.Mocked<SessionModule>;
     expect(mod.CUSTOMER_SESSION_COOKIE).toBe(session.CUSTOMER_SESSION_COOKIE);
     expect(mod.CSRF_TOKEN_COOKIE).toBe(session.CSRF_TOKEN_COOKIE);
     expect(mod.getCustomerSession).toBe(session.getCustomerSession);
@@ -74,15 +82,15 @@ describe("package entrypoint", () => {
     expect(mod.revokeSession).toBe(session.revokeSession);
     expect(mod.validateCsrfToken).toBe(session.validateCsrfToken);
 
-    const store = jest.requireMock("../store");
+    const store = jest.requireMock("../store") as jest.Mocked<StoreModule>;
     expect(mod.setSessionStoreFactory).toBe(store.setSessionStoreFactory);
 
-    const mfa = jest.requireMock("../mfa");
+    const mfa = jest.requireMock("../mfa") as jest.Mocked<MfaModule>;
     expect(mod.enrollMfa).toBe(mfa.enrollMfa);
     expect(mod.verifyMfa).toBe(mfa.verifyMfa);
     expect(mod.isMfaEnabled).toBe(mfa.isMfaEnabled);
+    expect(mod.deactivateMfa).toBe(mfa.deactivateMfa);
     expect(mod.generateMfaToken).toBe(mfa.generateMfaToken);
     expect(mod.verifyMfaToken).toBe(mfa.verifyMfaToken);
   });
 });
-

@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import StepCheckoutPage from "../StepCheckoutPage";
 import { ConfiguratorContext, type ConfiguratorContextValue } from "../../ConfiguratorContext";
-import type { ConfiguratorState } from "../../wizard/schema";
+import type { ConfiguratorState } from "../../../wizard/schema";
 
 const markComplete = jest.fn();
 jest.mock("../../hooks/useStepCompletion", () => ({
@@ -20,12 +20,12 @@ jest.mock("../../lib/api", () => ({
   apiRequest: (...args: any[]) => apiRequest(...args),
 }));
 
-jest.mock("../components/TemplateSelector", () => ({
+jest.mock("../../components/TemplateSelector", () => ({
   __esModule: true,
   default: ({ pageTemplates, onConfirm }: any) => (
     <div>
       <button
-        data-testid="mock-template-confirm"
+        data-cy="mock-template-confirm"
         onClick={() => onConfirm(pageTemplates[0].id, pageTemplates[0].components, pageTemplates[0])}
       >
         choose template
@@ -49,6 +49,17 @@ jest.mock("@/components/atoms", () => ({
 jest.mock("@acme/i18n", () => ({
   __esModule: true,
   useTranslations: () => (key: string) => key,
+  LOCALES: ["en", "de", "it"] as const,
+}));
+
+jest.mock("@acme/ui/components/atoms", () => ({
+  __esModule: true,
+  Tag: ({ children }: any) => <span>{children}</span>,
+}));
+
+jest.mock("@acme/ui/components/atoms/primitives", () => ({
+  __esModule: true,
+  Inline: ({ children }: any) => <div>{children}</div>,
 }));
 
 function renderWithContext(
@@ -98,7 +109,6 @@ describe("StepCheckoutPage", () => {
 
   it("creates a checkout page when a template is chosen", async () => {
     const setCheckoutLayout = jest.fn();
-    const setCheckoutComponents = jest.fn();
     const setCheckoutPageId = jest.fn();
     const summary = {
       id: "p1",
@@ -109,7 +119,11 @@ describe("StepCheckoutPage", () => {
       draftPreviewPath: "/checkout?preview=draft",
       templateId: "tpl1",
     };
-    apiRequest.mockResolvedValueOnce({ data: summary, error: null });
+    // First call: useEffect GET on mount (returns nothing)
+    // Second call: POST when template is confirmed
+    apiRequest
+      .mockResolvedValueOnce({ data: null, error: null })
+      .mockResolvedValueOnce({ data: summary, error: null });
 
     render(
       <StepCheckoutPage
@@ -126,6 +140,8 @@ describe("StepCheckoutPage", () => {
       fireEvent.click(screen.getByTestId("mock-template-confirm"));
     });
 
+    await screen.findByText("cms.configurator.shopPage.draftSaved");
+
     expect(apiRequest).toHaveBeenCalledWith(
       "/cms/api/checkout-page/shop1",
       expect.objectContaining({
@@ -135,7 +151,6 @@ describe("StepCheckoutPage", () => {
     );
     expect(setCheckoutLayout).toHaveBeenCalledWith("tpl1");
     expect(setCheckoutPageId).toHaveBeenCalledWith("p1");
-    await screen.findByText("cms.configurator.shopPage.draftSaved");
   });
 
   it("blocks completion until checkout dependencies are met", () => {
@@ -148,7 +163,20 @@ describe("StepCheckoutPage", () => {
     expect(screen.getByTestId("save-return")).toBeDisabled();
   });
 
-  it("allows completion when template, page, and settings are ready", () => {
+  it("allows completion when template, page, and settings are ready", async () => {
+    apiRequest.mockResolvedValueOnce({
+      data: {
+        id: "page-1",
+        slug: "checkout",
+        status: "published",
+        updatedAt: "2025-01-01T00:00:00.000Z",
+        previewPath: "/checkout",
+        draftPreviewPath: "/checkout?preview=draft",
+        templateId: "tpl1",
+      },
+      error: null,
+    });
+
     renderWithContext(
       {
         checkoutLayout: "tpl1",
@@ -157,6 +185,9 @@ describe("StepCheckoutPage", () => {
       },
       { checkoutLayout: "tpl1", checkoutPageId: "page-1" },
     );
+
+    // Wait for useEffect to fetch and set pageSummary
+    await screen.findByText("cms.pages.status.published");
 
     fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);

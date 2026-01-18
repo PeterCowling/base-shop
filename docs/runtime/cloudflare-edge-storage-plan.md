@@ -1,5 +1,5 @@
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: Runtime
 Last-reviewed: 2025-12-04
 Relates-to charter: docs/runtime/runtime-charter.md

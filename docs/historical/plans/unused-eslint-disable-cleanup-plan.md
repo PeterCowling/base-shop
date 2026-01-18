@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: Platform
 Created: 2026-01-16
 Created-by: Codex

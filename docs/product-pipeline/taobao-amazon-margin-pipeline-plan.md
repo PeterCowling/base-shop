@@ -3,7 +3,7 @@
 China Sourcing → EU Multi-Channel Capital Return Pipeline
 
 Type: Plan
-Status: In progress (repo audit 2025-12-22)
+Status: Active
 Domain: Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement
 Last-reviewed: 2025-12-22
 Relates-to charter: (planned) docs/product-pipeline/product-pipeline-charter.md

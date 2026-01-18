@@ -118,7 +118,7 @@ describe("UpgradePreviewClient", () => {
 
     render(<UpgradePreviewClient shop={shop} />);
 
-    const publishButton = await screen.findByText("Publish upgrade");
+    const publishButton = await screen.findByRole("button", { name: "Publish upgrade" });
     await act(async () => {
       publishButton.click();
     });

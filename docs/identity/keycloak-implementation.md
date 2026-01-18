@@ -1,3 +1,9 @@
+---
+Type: Plan
+Status: Draft
+Domain: Identity
+---
+
 # Keycloak OIDC Implementation Plan (Multi-TLD)
 
 Status: Draft blueprint → execution starter

@@ -74,10 +74,10 @@ describe("createNewShop authorization", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
 
     const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
-    const createShop = jest.fn().mockResolvedValue(deployResult);
+    const createShopFromConfig = jest.fn().mockResolvedValue(deployResult);
     jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
-      createShop,
+      createShopFromConfig,
     }));
     mockNextAuthAdmin();
     jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
@@ -87,8 +87,8 @@ describe("createNewShop authorization", () => {
     );
     const res = await createNewShop("shop2", { theme: "base" } as any);
 
-    expect(createShop).toHaveBeenCalledTimes(1);
-    expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" }, { deploy: false });
+    expect(createShopFromConfig).toHaveBeenCalledTimes(1);
+    expect(createShopFromConfig).toHaveBeenCalledWith("shop2", { theme: "base" }, { deploy: false });
     expect(res).toBe(deployResult);
 
     (process.env as Record<string, string>).NODE_ENV = prevEnv;

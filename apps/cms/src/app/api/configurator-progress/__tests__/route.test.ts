@@ -11,8 +11,18 @@ const mockRename = jest.fn(async () => {});
 const mockExistsSync = jest.fn(() => true);
 const mockRenameSync = jest.fn();
 
+const mockOpen = jest.fn(async () => ({ close: jest.fn(async () => {}) }));
+const mockUnlink = jest.fn(async () => {});
+const mockCopyFile = jest.fn(async () => {});
+
 jest.mock('fs', () => ({
-  promises: { readFile: mockReadFile, rename: mockRename },
+  promises: {
+    readFile: mockReadFile,
+    rename: mockRename,
+    open: mockOpen,
+    unlink: mockUnlink,
+    copyFile: mockCopyFile,
+  },
   existsSync: mockExistsSync,
   renameSync: mockRenameSync,
 }));

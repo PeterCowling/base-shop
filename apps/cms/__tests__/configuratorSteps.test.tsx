@@ -318,11 +318,11 @@ describe("StepHomePage", () => {
     render(
       <StepHomePage
         pageTemplates={[]}
-        homeLayout=""
+        homeLayout="basic"
         setHomeLayout={jest.fn()}
-        components={[]}
+        components={[{ type: "hero", id: "1" }]}
         setComponents={jest.fn()}
-        homePageId={null}
+        homePageId="page-1"
         setHomePageId={jest.fn()}
         shopId="shop"
         themeStyle={{}}

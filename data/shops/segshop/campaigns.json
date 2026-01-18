@@ -1,25 +1,13 @@
 [
   {
-    "id": "mkingldi",
-    "recipients": [
-      "a@example.com",
-      "b@example.com"
-    ],
-    "subject": "Hello",
-    "body": "<p>Hi</p><p>%%UNSUBSCRIBE%%</p>",
-    "segment": "vip",
-    "sendAt": "2026-01-17T19:35:52.601Z",
-    "templateId": null
-  },
-  {
-    "id": "mkingle9",
+    "id": "mkiv58ig",
     "recipients": [
       "manual@example.com"
     ],
     "subject": "Hello",
     "body": "<p>Hi</p><p>%%UNSUBSCRIBE%%</p>",
     "segment": "vip",
-    "sendAt": "2026-01-17T19:37:33.392Z",
+    "sendAt": "2026-01-17T23:12:40.408Z",
     "templateId": null
   }
 ]

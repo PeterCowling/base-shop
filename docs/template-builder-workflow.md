@@ -1,3 +1,9 @@
+---
+Type: Reference
+Status: Canonical
+Domain: CMS
+---
+
 # Template Builder Workflow — Author → Package → Ship
 
 Audience: template builders and design system owners creating reusable page/section templates and presets for shop owners. Builders here **do not** launch shops or edit production data; they work in fixture shops and Storybook playgrounds, then publish templates to the library used by CMS.

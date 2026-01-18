@@ -6,6 +6,24 @@
     "domain": "Documentation"
   },
   {
+    "path": "docs/INDEX_FOR_CLAUDE.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/RECOVERY-PLAN-2026-01-14.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Recovery"
+  },
+  {
+    "path": "docs/accessibility-audit-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Accessibility"
+  },
+  {
     "path": "docs/adr/adr-00-i18n-foundation.md",
     "type": "ADR",
     "status": "Proposed",
@@ -22,6 +40,12 @@
     "type": "Guide",
     "status": "Active",
     "domain": "Auth"
+  },
+  {
+    "path": "docs/brikette-translation-coverage.md",
+    "type": "Research",
+    "status": "Active",
+    "domain": "Brikette i18n"
   },
   {
     "path": "docs/campaign-marketing-test-plan.md",
@@ -126,6 +150,12 @@
     "domain": "CMS"
   },
   {
+    "path": "docs/cms-plan/thread-b-page-builder-next.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "CMS"
+  },
+  {
     "path": "docs/cms-plan/thread-b-page-builder.md",
     "type": "Plan",
     "status": "Active",
@@ -186,6 +216,18 @@
     "domain": "CMS"
   },
   {
+    "path": "docs/commerce/cart-checkout-standardization-blueprint.md",
+    "type": "Blueprint",
+    "status": "Draft",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/commerce/inventory-standardization-blueprint.md",
+    "type": "Blueprint",
+    "status": "Draft",
+    "domain": "Commerce"
+  },
+  {
     "path": "docs/commerce-charter.md",
     "type": "Charter",
     "status": "Draft",
@@ -196,6 +238,12 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Commerce"
+  },
+  {
+    "path": "docs/component-api-standard.md",
+    "type": "Standard",
+    "status": "Canonical",
+    "domain": "Design System"
   },
   {
     "path": "docs/contributing.md",
@@ -222,10 +270,22 @@
     "domain": "Testing"
   },
   {
+    "path": "docs/dependency-graph.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Architecture"
+  },
+  {
     "path": "docs/deployment-adapters.md",
     "type": "Contract",
     "status": "Canonical",
     "domain": "Deploy"
+  },
+  {
+    "path": "docs/design-system-handbook.md",
+    "type": "Handbook",
+    "status": "Canonical",
+    "domain": "Design System"
   },
   {
     "path": "docs/design-system-package-import.md",
@@ -264,6 +324,30 @@
     "domain": "Theming"
   },
   {
+    "path": "docs/git-hooks.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/git-safety.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/historical/AGENTS-2026-01-17-pre-ralph.md",
+    "type": "Runbook",
+    "status": "Canonical",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/historical/CLAUDE-2026-01-17-pre-ralph.md",
+    "type": "Runbook",
+    "status": "Canonical",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/historical/argon2-migration.md",
     "type": "Guide",
     "status": "Historical",
@@ -278,6 +362,42 @@
   {
     "path": "docs/historical/loadPlugins-baseline.md",
     "type": "Research",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/historical/plans/agent-doc-runbook-tone-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/historical/plans/lint-staged-autostash-avoidance-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/historical/plans/package-agent-briefs-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/historical/plans/ralph-methodology-adoption-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/historical/plans/remaining-package-briefs-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/historical/plans/unused-eslint-disable-cleanup-plan.md",
+    "type": "Plan",
     "status": "Historical",
     "domain": "Platform"
   },
@@ -324,6 +444,18 @@
     "domain": "i18n"
   },
   {
+    "path": "docs/identity/keycloak-implementation.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Identity"
+  },
+  {
+    "path": "docs/incident-prevention.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Operations"
+  },
+  {
     "path": "docs/index.md",
     "type": "Guide",
     "status": "Active",
@@ -334,6 +466,12 @@
     "type": "Guide",
     "status": "Active",
     "domain": "Repo"
+  },
+  {
+    "path": "docs/inventory/reservation-service.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Inventory"
   },
   {
     "path": "docs/inventory-migration.md",
@@ -408,6 +546,12 @@
     "domain": "Orders"
   },
   {
+    "path": "docs/package-architecture.md",
+    "type": "Guide",
+    "status": "Canonical",
+    "domain": "Architecture"
+  },
+  {
     "path": "docs/package-management.md",
     "type": "Guide",
     "status": "Active",
@@ -450,6 +594,198 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/agent-git-instructions-update-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/brikette-improvement-plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Brikette"
+  },
+  {
+    "path": "docs/plans/brikette-translation-coverage-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Brikette i18n"
+  },
+  {
+    "path": "docs/plans/catalog-stock-media-upload-facility-plan.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/ci-deploy/ci-and-deploy-roadmap.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CI-Deploy"
+  },
+  {
+    "path": "docs/plans/dashboard-upgrade-aggregator-plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Dashboard / Upgrade"
+  },
+  {
+    "path": "docs/plans/e2e-ownership-consolidation-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/edge-commerce-standardization-implementation-plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Platform, Commerce"
+  },
+  {
+    "path": "docs/plans/handbag-configurator-implementation-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/integrated-secrets-workflow-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/jest-preset-consolidation-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/launch-shop-pipeline-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/lint-warnings-mission-control-brikette-scripts-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/monorepo-eslint-standardization-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/nextjs-15-3-6-upgrade-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/no-hardcoded-copy-non-ui-exemptions-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/post-deploy-health-checks-mandatory-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/prime-guest-portal-gap-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-improvement-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-nextjs-port-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CI-Deploy"
+  },
+  {
+    "path": "docs/plans/prime-optimization-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Performance"
+  },
+  {
+    "path": "docs/plans/prime-pre-arrival-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/reception-functionality-improvements-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/reception-login-ui-improvement-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/reception-nextjs-migration-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/reception-stock-cash-control-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/seo-machine-readable-implementation.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/structured-toc-block-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Brikette Guides"
+  },
+  {
+    "path": "docs/plans/theming-audit-2026-01-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/plans/ui-lint-remediation-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/ui-package-build-tooling-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/xa-coverage-80-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
     "path": "docs/platform-vs-apps.md",
     "type": "Contract",
     "status": "Canonical",
@@ -474,6 +810,36 @@
     "domain": "CMS"
   },
   {
+    "path": "docs/product-pipeline/3pl-shipping-approach-decision-v0.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Commerce / Sourcing / Ops / Logistics"
+  },
+  {
+    "path": "docs/product-pipeline/logistics-lanes-implementation-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce / Sourcing / Ops / Logistics"
+  },
+  {
+    "path": "docs/product-pipeline/taobao-amazon-margin-pipeline-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement"
+  },
+  {
+    "path": "docs/ralph-methodology-executive-summary.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/repo-quality-audit-2026-01.md",
+    "type": "Audit",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/returns.md",
     "type": "Guide",
     "status": "Active",
@@ -484,6 +850,12 @@
     "type": "Contract",
     "status": "Canonical",
     "domain": "Reverse-Logistics"
+  },
+  {
+    "path": "docs/runtime/cloudflare-edge-storage-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Runtime"
   },
   {
     "path": "docs/runtime/runtime-charter.md",
@@ -510,6 +882,12 @@
     "domain": "CMS"
   },
   {
+    "path": "docs/security-audit-2026-01.md",
+    "type": "Log",
+    "status": "Active",
+    "domain": "Security"
+  },
+  {
     "path": "docs/seo.md",
     "type": "Guide",
     "status": "Active",
@@ -525,6 +903,12 @@
     "path": "docs/shop-editor-refactor.md",
     "type": "Research",
     "status": "Reference",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/shop-owner-workflow.md",
+    "type": "Reference",
+    "status": "Canonical",
     "domain": "CMS"
   },
   {
@@ -544,6 +928,24 @@
     "type": "Guide",
     "status": "Active",
     "domain": "Commerce"
+  },
+  {
+    "path": "docs/template-builder-workflow.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/test-coverage-policy.md",
+    "type": "Policy",
+    "status": "Active",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/testing-policy.md",
+    "type": "Policy",
+    "status": "Active",
+    "domain": "Repo"
   },
   {
     "path": "docs/testing-with-msw.md",
@@ -570,6 +972,12 @@
     "domain": "Theming"
   },
   {
+    "path": "docs/theming-audit-2026-01.md",
+    "type": "Audit",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
     "path": "docs/theming-charter.md",
     "type": "Charter",
     "status": "Canonical",
@@ -578,6 +986,12 @@
   {
     "path": "docs/theming-plan.md",
     "type": "Plan",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theming-token-component-matrix.md",
+    "type": "Reference",
     "status": "Active",
     "domain": "Theming"
   },
@@ -618,6 +1032,12 @@
     "domain": "Theming"
   },
   {
+    "path": "docs/ui-responsive-audit.md",
+    "type": "Report",
+    "status": "Draft",
+    "domain": "UI"
+  },
+  {
     "path": "docs/upgrade-flow.md",
     "type": "Guide",
     "status": "Active",
@@ -634,5 +1054,11 @@
     "type": "Contract",
     "status": "Canonical",
     "domain": "Users"
+  },
+  {
+    "path": "docs/visual-regression-coverage.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Design System / Testing"
   }
 ]

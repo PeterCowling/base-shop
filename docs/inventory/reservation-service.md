@@ -1,3 +1,9 @@
+---
+Type: Plan
+Status: Draft
+Domain: Inventory
+---
+
 # Inventory Reservation Service (Reserve TTL)
 
 Status: Design stub for platform + worker convergence

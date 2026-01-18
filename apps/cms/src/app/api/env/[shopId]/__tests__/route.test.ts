@@ -6,7 +6,7 @@ const parseJsonBody = jest.fn();
 
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 jest.mock("@cms/actions/setupSanityBlog", () => ({ setupSanityBlog }));
-jest.mock("@acme/lib", () => ({ parseJsonBody }));
+jest.mock("@acme/shared-utils", () => ({ parseJsonBody }));
 
 const mkdir = jest.fn();
 const writeFile = jest.fn();

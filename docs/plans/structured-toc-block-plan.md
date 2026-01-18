@@ -1,5 +1,5 @@
 Type: Plan
-Status: COMPLETED
+Status: Historical
 Domain: Brikette Guides
 Last-reviewed: 2026-01-15
 Completed: 2026-01-15

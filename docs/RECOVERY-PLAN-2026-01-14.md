@@ -1,3 +1,10 @@
+---
+Type: Plan
+Status: Historical
+Domain: Recovery
+Created: 2026-01-14
+---
+
 # File Recovery Plan - January 14, 2026
 
 > **NOTE (Updated):** The "affected apps" status below describes the state AT THE TIME OF THE INCIDENT (2026-01-14 ~12:52 CET). Partial recovery work has since been performed, so some apps now contain files that were previously empty. The recovery algorithm and pseudocode remain valid for completing the recovery.

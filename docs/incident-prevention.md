@@ -1,3 +1,9 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Operations
+---
+
 # Incident Prevention Summary
 
 > **One-page summary of protections against accidental data loss.**

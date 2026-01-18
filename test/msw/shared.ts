@@ -39,6 +39,10 @@ export const defaultHandlers: HttpHandler[] = [
   ),
   rest.put("/cms/api/configurator-progress", () => HttpResponse.json({})),
   rest.patch("/cms/api/configurator-progress", () => HttpResponse.json({})),
+  // Non-prefixed configurator-progress endpoint used by StepSummary
+  rest.get("/api/configurator-progress", () =>
+    HttpResponse.json({ state: {}, completed: {}, steps: {} }),
+  ),
   rest.post("/cms/api/launch-shop", async ({ request }) => {
     type LaunchShopBody = { seed?: boolean };
     let body: Partial<LaunchShopBody> = {};
@@ -82,6 +86,9 @@ export const defaultHandlers: HttpHandler[] = [
   rest.put("/api/cart", () => passthrough()),
   rest.patch("/api/cart", () => passthrough()),
   rest.delete("/api/cart", () => passthrough()),
+
+  // Page Builder: comments endpoint (for NotificationsBell)
+  rest.get("/api/comments/:shop/:pageId", () => HttpResponse.json([])),
 
   // Page Builder: presets and sections feeds
   rest.get("/api/sections/:shop/presets", () => HttpResponse.json([])),

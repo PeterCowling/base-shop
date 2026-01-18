@@ -1,7 +1,9 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
+type EnvOverrides = Record<string, string | undefined>;
+
 async function withEnv<T>(
-  vars: NodeJS.ProcessEnv,
+  vars: EnvOverrides,
   loader: () => Promise<T>,
 ): Promise<T> {
   const snapshot = { ...process.env };

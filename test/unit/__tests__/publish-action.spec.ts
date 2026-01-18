@@ -1,6 +1,8 @@
 /** @jest-environment node */
 import type { Page } from "@acme/types/page";
-import { __setMockSession } from "next-auth";
+const { __setMockSession } = require("next-auth") as {
+  __setMockSession: (session: unknown) => void;
+};
 
 function mockAuth() {
   const session = { user: { role: "admin", email: "admin@example.com" } } as any;

@@ -92,7 +92,7 @@ describe("logger", () => {
       info: jest.fn(),
       debug: jest.fn(),
     });
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const { logger } = await import("../src/logger");
     logger.info("hi");
     expect(pinoMock).toHaveBeenCalledWith({ level: "info" });
@@ -105,7 +105,7 @@ describe("logger", () => {
       info: jest.fn(),
       debug: jest.fn(),
     });
-    process.env.NODE_ENV = "test"; // non-production
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test"; // non-production
     const { logger } = await import("../src/logger");
     logger.debug("hi");
     expect(pinoMock).toHaveBeenCalledWith({ level: "debug" });

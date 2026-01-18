@@ -6,6 +6,10 @@ import {
   setEditorialBlog,
   getDomain,
   setDomain,
+  getShopAppPackage,
+  getShopAppSlug,
+  getShopWorkflowName,
+  normalizeShopId,
   type Shop,
   type SanityBlogConfig,
   type ShopDomain,
@@ -55,6 +59,27 @@ describe("validateShopName", () => {
     ]) {
       expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
     }
+  });
+});
+
+describe("shop id normalization", () => {
+  it("uses legacy app slug aliases when configured", () => {
+    expect(getShopAppSlug("bcd")).toBe("cover-me-pretty");
+    expect(getShopAppPackage("bcd")).toBe("@apps/cover-me-pretty");
+    expect(getShopWorkflowName("bcd")).toBe("cover-me-pretty.yml");
+  });
+
+  it("normalizes standard shop ids", () => {
+    expect(getShopAppSlug("acme")).toBe("shop-acme");
+    expect(getShopAppPackage("acme")).toBe("@apps/shop-acme");
+    expect(getShopWorkflowName("acme")).toBe("shop-acme.yml");
+  });
+
+  it("returns targets via normalizeShopId", () => {
+    expect(normalizeShopId("acme", "rawId")).toBe("acme");
+    expect(normalizeShopId("acme", "appSlug")).toBe("shop-acme");
+    expect(normalizeShopId("acme", "appPackage")).toBe("@apps/shop-acme");
+    expect(normalizeShopId("acme", "workflowName")).toBe("shop-acme.yml");
   });
 });
 

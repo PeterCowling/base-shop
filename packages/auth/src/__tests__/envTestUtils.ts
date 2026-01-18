@@ -8,13 +8,15 @@ function updateNonStringMetadata(
 ): void {
   if (tracked.size > 0) {
     const list = Array.from(tracked);
-    (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = list;
+    const envSymbols = env as unknown as Record<symbol, unknown>;
+    envSymbols[NON_STRING_ENV_SYMBOL] = list;
     (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ = list.slice();
     if (list.includes("AUTH_TOKEN_TTL")) {
       (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__ = true;
     }
   } else {
-    delete (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    const envSymbols = env as unknown as Record<symbol, unknown>;
+    delete envSymbols[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     delete (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__;
   }
@@ -138,7 +140,8 @@ export async function withEnv(
       Object.create(null),
       originalSnapshot,
     );
-    delete (restoreEnv as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    const restoreSymbols = restoreEnv as unknown as Record<symbol, unknown>;
+    delete restoreSymbols[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     process.env = restoreEnv;
   }

@@ -11,7 +11,7 @@ import { RedisCartStore } from "../../src/cartStore/redisStore";
 import type { CartStore } from "../../src/cartStore";
 
 describe("RedisCartStore", () => {
-  let consoleErrorSpy: jest.SpiedFunction<typeof console.error>;
+  let consoleErrorSpy: { mockRestore: () => void };
 
   beforeAll(() => {
     consoleErrorSpy = jest

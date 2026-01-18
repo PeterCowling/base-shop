@@ -31,7 +31,7 @@ describe("TranslationsProvider", () => {
 
   it("falls back to key and warns when missing", () => {
     const original = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const { getByText } = render(
       <TranslationsProvider messages={{}}>
@@ -41,7 +41,7 @@ describe("TranslationsProvider", () => {
     getByText("missing");
     expect(warn).toHaveBeenCalledWith("Missing translation for key: missing");
     warn.mockRestore();
-    process.env.NODE_ENV = original;
+    (process.env as Record<string, string | undefined>).NODE_ENV = original;
   });
 });
 

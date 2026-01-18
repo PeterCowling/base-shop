@@ -6,7 +6,6 @@ import { validateFilePolicy, firstFileFromChange } from "../filePolicy";
 describe("uploadToCms + helpers", () => { // i18n-exempt: test titles are not user-facing
   const originalFetch = global.fetch;
   afterEach(() => {
-    // @ts-expect-error: restoring test stubbed global.fetch
     global.fetch = originalFetch;
   });
 
@@ -33,14 +32,10 @@ describe("uploadToCms + helpers", () => { // i18n-exempt: test titles are not us
   test("uploadToCms returns item on ok and error on failure", async () => { // i18n-exempt: test title
     const file = new File([1], "a.png", { type: "image/png" });
     // ok response
-    // @ts-expect-error: stubbing global.fetch for test
-    global.fetch = jest.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ id: "m1" }) });
     const ok = await api.uploadToCms({ shop: "s1", requiredOrientation: "landscape", file });
     expect(ok.item).toEqual({ id: "m1" });
     // error response
-    // @ts-expect-error: stubbing global.fetch for test
     global.fetch = jest.fn().mockResolvedValueOnce({ ok: false, statusText: "Bad", json: async () => ({ error: "nope" }) });
-    const bad = await api.uploadToCms({ shop: "s1", requiredOrientation: "landscape", file });
     expect(bad.error).toBe("nope");
   });
 });

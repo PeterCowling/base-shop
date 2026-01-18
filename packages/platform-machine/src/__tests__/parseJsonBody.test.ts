@@ -14,7 +14,7 @@ function makeRequest(body: any, headers: HeadersInit = {}, mode: 'text' | 'json'
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
-  let consoleSpy: jest.SpyInstance;
+  let consoleSpy: jest.SpiedFunction<typeof console.error>;
   beforeEach(() => {
     consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -55,7 +55,6 @@ describe('parseJsonBody', () => {
         return new Uint8Array(11); // always 11 bytes
       }
     }
-    // @ts-expect-error overriding global
     global.TextEncoder = MockEncoder;
     try {
       const result = await parseJsonBody(req, schema, 10);

@@ -5,7 +5,7 @@ jest.mock("node:child_process", () => ({
 }));
 
 describe("configurator CLI", () => {
-  let exitSpy: jest.SpyInstance;
+  let exitSpy: jest.SpiedFunction<typeof process.exit>;
 
   beforeEach(() => {
     jest.resetModules();
@@ -115,7 +115,7 @@ describe("configurator CLI", () => {
 
   it("exits when required env vars are missing", async () => {
     const prevNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await import("@acme/config/env");
     delete process.env.STRIPE_SECRET_KEY;
     delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -139,6 +139,6 @@ describe("configurator CLI", () => {
       expect.anything()
     );
     errorSpy.mockRestore();
-    process.env.NODE_ENV = prevNodeEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = prevNodeEnv;
   });
 });

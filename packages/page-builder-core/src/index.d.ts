@@ -1,0 +1,12 @@
+export declare const version = "0.0.0-dev";
+export { pageSchema, historyStateSchema, pageComponentSchema, } from "@acme/types";
+export type { Page, PageComponent, HistoryState, EditorFlags, } from "@acme/types";
+export { commit, undo, redo } from "./history";
+export { diffPage, mergeDefined, parsePageDiffHistory, } from "./pageHistory";
+export type { PageDiffEntry } from "./pageHistory";
+export type { TemplateKind, TemplateOrigin, TemplateDescriptor, ScaffoldContext, } from "./templates";
+export { cloneTemplateComponents, scaffoldPageFromTemplate, } from "./templates";
+export type { ExportedComponent } from "./runtime/exportComponents";
+export { exportComponents, exportComponentsFromHistory, } from "./runtime/exportComponents";
+export * from "./blocks/registry";
+export { coreBlockDescriptors } from "./blocks/core-blocks";

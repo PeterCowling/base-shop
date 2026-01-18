@@ -7,7 +7,6 @@ import { baseImageItem as baseItem, createDeferred, makeFile, mockFetchJson, set
 describe("MediaFileItem", () => {
 
   beforeEach(() => {
-    // @ts-expect-error — tests control fetch
     global.fetch = jest.fn();
   });
 

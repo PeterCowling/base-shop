@@ -69,7 +69,6 @@ describe("ProductCarousel", () => {
       configurable: true,
     });
     const scrollTo = jest.fn();
-    // @ts-expect-error jsdom
     scroller.scrollTo = scrollTo;
 
     const next = screen.getByRole("button", { name: /next/i });

@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 
-const getCustomerSession = jest.fn();
-const hasPermission = jest.fn();
+const getCustomerSession = jest.fn<Promise<unknown>, any[]>();
+const hasPermission = jest.fn<boolean, any[]>();
 
 jest.mock("../session", () => ({ getCustomerSession }));
 jest.mock("../permissions", () => ({ hasPermission }));
@@ -60,4 +60,3 @@ describe("requirePermission", () => {
     expect(hasPermission).toHaveBeenCalledWith("admin", "manage_orders");
   });
 });
-

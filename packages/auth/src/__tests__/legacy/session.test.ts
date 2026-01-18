@@ -1,12 +1,38 @@
 import { jest } from "@jest/globals";
 
-const mockCookies = {
+type CookieOptions = {
+  httpOnly?: boolean;
+  secure?: boolean;
+  path?: string;
+  sameSite?: "lax" | "strict" | "none";
+  maxAge?: number;
+  domain?: string;
+};
+
+type CookieStore = {
+  get: jest.MockedFunction<(name: string) => { value: string } | undefined>;
+  set: jest.MockedFunction<(name: string, value: string, opts?: CookieOptions) => void>;
+  delete: jest.MockedFunction<(opts: { name: string; path?: string; domain?: string }) => void>;
+};
+
+type HeadersStore = {
+  get: jest.MockedFunction<(name: string) => string | null>;
+};
+
+type SessionStoreMock = {
+  get: jest.MockedFunction<(id: string) => Promise<{ sessionId: string } | undefined>>;
+  set: jest.MockedFunction<(record: { sessionId: string; customerId: string }) => Promise<void>>;
+  delete: jest.MockedFunction<(id: string) => Promise<void>>;
+  list: jest.MockedFunction<(customerId: string) => Promise<{ sessionId: string }[]>>;
+};
+
+const mockCookies: CookieStore = {
   get: jest.fn(),
   set: jest.fn(),
   delete: jest.fn(),
 };
 
-const mockHeaders = {
+const mockHeaders: HeadersStore = {
   get: jest.fn(),
 };
 
@@ -40,8 +66,8 @@ jest.mock("crypto", () => ({
   randomUUID,
 }));
 
-let mockSessionStore: any;
-const createSessionStore = jest.fn(async () => mockSessionStore);
+let mockSessionStore: SessionStoreMock;
+const createSessionStore = jest.fn<Promise<SessionStoreMock>, []>(async () => mockSessionStore);
 
 jest.mock("../../store", () => ({
   createSessionStore,

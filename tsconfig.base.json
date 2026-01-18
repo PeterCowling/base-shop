@@ -229,9 +229,11 @@
         "packages/pipeline-engine/dist/*"
       ],
       "@acme/types": [
+        "packages/types/src/index.ts",
         "packages/types/dist/index.d.ts"
       ],
       "@acme/types/*": [
+        "packages/types/src/*",
         "packages/types/dist/*"
       ]
     }

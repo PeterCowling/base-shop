@@ -4,6 +4,7 @@ import { savePageDraft } from "../draft";
 
 jest.mock("@acme/types", () => ({
   historyStateSchema: { parse: (v: any) => v ?? {} },
+  pageSchema: { partial: () => ({ parse: (v: any) => v }) },
 }), { virtual: true });
 
 jest.mock("../../common/auth", () => ({

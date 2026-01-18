@@ -6,12 +6,10 @@ import useRemoteImageProbe from "../useRemoteImageProbe";
 describe("useRemoteImageProbe", () => {
   const originalFetch = global.fetch;
   afterEach(() => {
-    // @ts-expect-error restore original fetch type
     global.fetch = originalFetch;
   });
 
   test("sets valid=true for ok image content-type", async () => {
-    // @ts-expect-error mock fetch for test
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       headers: new Headers({ "content-type": "image/png" }),
@@ -25,7 +23,6 @@ describe("useRemoteImageProbe", () => {
   });
 
   test("sets error when not ok or non-image", async () => {
-    // @ts-expect-error mock fetch for test
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       headers: new Headers({ "content-type": "text/plain" }),
@@ -39,7 +36,6 @@ describe("useRemoteImageProbe", () => {
   });
 
   test("sets error on fetch rejection", async () => {
-    // @ts-expect-error mock fetch for test
     global.fetch = jest.fn().mockRejectedValue(new Error("boom"));
     const { result } = renderHook(() => useRemoteImageProbe());
     await act(async () => {

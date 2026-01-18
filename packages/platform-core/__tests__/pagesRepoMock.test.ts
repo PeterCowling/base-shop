@@ -61,7 +61,7 @@ beforeAll(async () => {
   repo = await import("../src/repositories/pages/index.server");
 });
 
-let consoleErrorSpy: jest.SpyInstance;
+let consoleErrorSpy: { mockRestore: () => void };
 
 beforeEach(() => {
   files.clear();

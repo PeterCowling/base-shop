@@ -16,7 +16,6 @@ describe("StartReturnButton", () => {
         fn();
         return 0 as any;
       });
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({
@@ -43,7 +42,6 @@ describe("StartReturnButton", () => {
 
   it("shows tracking without label or drop-off provider", async () => {
     jest.spyOn(global, "setInterval").mockReturnValue(0 as any);
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({
@@ -63,7 +61,6 @@ describe("StartReturnButton", () => {
 
   it("handles network errors", async () => {
     const user = userEvent.setup();
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockRejectedValue(new Error("network"));
 
     render(<StartReturnButton sessionId="s1" />);

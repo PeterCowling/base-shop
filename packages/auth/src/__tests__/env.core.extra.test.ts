@@ -126,6 +126,9 @@ describe("deposit/reverse/late-fee refinement", () => {
       EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error("Expected invalid custom flags to fail validation");
+    }
     const messages = result.error.issues.reduce<Record<string, string>>(
       (acc, issue) => {
         acc[issue.path.join(".")] = issue.message;

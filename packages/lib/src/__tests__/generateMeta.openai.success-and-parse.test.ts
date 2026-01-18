@@ -22,7 +22,7 @@ describe("generateMeta", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (global as any).__OPENAI_IMPORT_ERROR__;
     expect(fetchMock).not.toHaveBeenCalled();
     writeMock.mockReset();
@@ -34,7 +34,7 @@ describe("generateMeta", () => {
   });
 
   it("generates metadata via OpenAI default export", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [
         {
@@ -80,7 +80,7 @@ describe("generateMeta", () => {
   });
 
   it("detects OpenAI constructor from named export", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [
         {
@@ -121,7 +121,7 @@ describe("generateMeta", () => {
   });
 
   it("detects OpenAI constructor from nested default", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [
         {
@@ -164,7 +164,7 @@ describe("generateMeta", () => {
   });
 
   it("overrides only provided fields from AI response", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [{ content: [JSON.stringify({ title: "LLM Title" })] }],
     });

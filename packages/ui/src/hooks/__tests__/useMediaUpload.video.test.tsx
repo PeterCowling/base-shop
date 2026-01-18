@@ -6,10 +6,7 @@ describe("useMediaUpload (video thumbnail path)", () => {
   const originalCreateEl = document.createElement;
 
   afterEach(() => {
-    // @ts-expect-error: restore stubbed API
     URL.createObjectURL = originalCreate;
-    // @ts-expect-error: restore stubbed API
-    document.createElement = originalCreateEl as any;
     jest.resetModules();
   });
 
@@ -20,9 +17,7 @@ describe("useMediaUpload (video thumbnail path)", () => {
     const { default: useMediaUpload } = await import("../useMediaUpload");
 
     // Stub object URL
-    // @ts-expect-error: test stubs object URL API
     URL.createObjectURL = jest.fn(() => "blob:video");
-
     // Fake video + canvas
     const fakeVideo: any = {
       preload: "metadata",
@@ -39,10 +34,8 @@ describe("useMediaUpload (video thumbnail path)", () => {
       getContext: () => ({ drawImage: jest.fn() }),
       toDataURL: () => "data:video-thumb",
     };
-    // @ts-expect-error: override createElement for test
     document.createElement = (tag: string) => {
       if (tag === "video") return fakeVideo as any;
-      if (tag === "canvas") return fakeCanvas as any;
       return originalCreateEl.call(document, tag) as any;
     };
 

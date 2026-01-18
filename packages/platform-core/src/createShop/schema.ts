@@ -70,6 +70,48 @@ export const createShopOptionsSchema = z
 
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 
+const deployTargetSchema = z
+  .object({
+    type: z.enum(["cloudflare-pages", "vercel", "local"]),
+    projectName: z.string().min(1).max(63).optional(),
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    if (value.type !== "local" && !value.projectName) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "deployTarget.projectName is required for non-local deploy targets",
+      });
+    }
+  });
+
+const ciConfigSchema = z
+  .object({
+    workflowName: z.string().min(1).optional(),
+    useReusableWorkflow: z.boolean().optional(),
+  })
+  .strict();
+
+const smokeCheckSchema = z
+  .object({
+    endpoint: z.string().min(1),
+    expectedStatus: z.number().int().optional().default(200),
+  })
+  .strict();
+
+export const launchConfigSchema = createShopOptionsSchema
+  .extend({
+    schemaVersion: z.number().int().min(1),
+    shopId: z.string().min(1).regex(/^[a-z0-9_-]+$/i),
+    deployTarget: deployTargetSchema,
+    ci: ciConfigSchema.optional(),
+    smokeChecks: z.array(smokeCheckSchema).optional(),
+    environments: z.record(z.string(), z.record(z.unknown())).optional(),
+  })
+  .strict();
+
+export type LaunchConfig = z.infer<typeof launchConfigSchema>;
+
 export type PreparedAnalyticsOptions = {
   enabled: boolean;
   provider: string;

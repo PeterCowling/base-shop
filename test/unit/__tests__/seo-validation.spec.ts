@@ -1,5 +1,7 @@
 (process.env as Record<string, string>).NODE_ENV = "development";
-import { __setMockSession } from "next-auth";
+const { __setMockSession } = require("next-auth") as {
+  __setMockSession: (session: unknown) => void;
+};
 
 jest.mock("@prisma/client", () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({})),

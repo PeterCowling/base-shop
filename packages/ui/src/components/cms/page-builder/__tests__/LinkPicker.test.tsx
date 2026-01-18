@@ -10,7 +10,6 @@ describe("LinkPicker", () => {
 
   it("lists pages and calls onPick with page href", async () => {
     const onPick = jest.fn();
-    // @ts-expect-error - override global.fetch type for test stubbing
     global.fetch = jest.fn().mockImplementation((input: RequestInfo) => {
       const url = String(input);
       if (url.includes("/cms/api/pages/")) {
@@ -54,8 +53,6 @@ describe("LinkPicker", () => {
       }
       return Promise.resolve({ ok: true, json: async () => ([])});
     });
-    // @ts-expect-error - assign mocked fetch to global for tests
-    global.fetch = fetchMock;
 
     render(<LinkPicker open onClose={() => {}} onPick={onPick} shop="bcd" />);
 
@@ -79,9 +76,7 @@ describe("LinkPicker", () => {
 
   it("shows empty states when responses are invalid", async () => {
     jest.useFakeTimers();
-    // @ts-expect-error - override global.fetch type for test stubbing
     global.fetch = jest.fn().mockImplementation((input: RequestInfo) => {
-      const url = String(input);
       if (url.includes("/cms/api/pages/")) {
         // non-ok response => pages should remain [] and show empty state
         return Promise.resolve({ ok: false, json: async () => ([]) });

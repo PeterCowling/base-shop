@@ -7,7 +7,7 @@ describe("telemetry index", () => {
   beforeEach(async () => {
     originalFetch = global.fetch;
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     jest.spyOn(Math, "random").mockReturnValue(0);
     global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
     telemetry = await import("@acme/telemetry/index");

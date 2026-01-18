@@ -22,7 +22,7 @@ describe("generateMeta", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (global as any).__OPENAI_IMPORT_ERROR__;
     expect(fetchMock).not.toHaveBeenCalled();
     writeMock.mockReset();
@@ -34,7 +34,7 @@ describe("generateMeta", () => {
   });
 
   it("returns fallback meta without API key", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: undefined };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
@@ -59,7 +59,7 @@ describe("generateMeta", () => {
   });
 
   it("uses hard-coded meta in test environment", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: undefined };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));

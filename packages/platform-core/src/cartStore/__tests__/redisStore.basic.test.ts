@@ -30,7 +30,7 @@ describe("RedisCartStore basic operations", () => {
   let redis: MockRedis;
   let fallback: MemoryCartStore;
   let store: RedisCartStore;
-  let consoleErrorSpy: jest.SpyInstance;
+  let consoleErrorSpy: { mockRestore: () => void };
 
   beforeEach(() => {
     consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

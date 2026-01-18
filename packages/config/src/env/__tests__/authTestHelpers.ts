@@ -14,6 +14,8 @@ export const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
 export const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 export type EnvOverrides = Record<string, string | undefined>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Jest SpyInstance types vary between @jest/globals and @types/jest
+type AnySpyInstance = { mockRestore: () => void } & Record<string, any>;
 
 const baseProdEnv: EnvOverrides = {
   NODE_ENV: "production",
@@ -53,7 +55,7 @@ export const loadAuthModule = (env: EnvOverrides) => withEnv(env, () => import("
 export const expectInvalidAuthEnv = async (
   env: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: AnySpyInstance,
 ) =>
   expectInvalidAuth({
     env,
@@ -66,7 +68,7 @@ export const loadProd = (overrides: EnvOverrides = {}) => loadAuthModule(prodEnv
 export const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: AnySpyInstance,
 ) => expectInvalidAuthEnv(prodEnv(overrides), accessor, consoleErrorSpy);
 
 export const getProdAuthEnv = async (overrides: EnvOverrides = {}) => (await loadProd(overrides)).authEnv;

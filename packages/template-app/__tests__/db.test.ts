@@ -14,7 +14,7 @@ describe("platform-core db stub", () => {
   });
 
   it("uses in-memory stub when NODE_ENV=test", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -46,8 +46,8 @@ describe("platform-core db stub", () => {
   });
 
   it("falls back to stub when prisma client fails to load", async () => {
-    process.env.NODE_ENV = "production";
-    process.env.DATABASE_URL = "postgres://example";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
     }));
@@ -69,7 +69,7 @@ describe("platform-core db stub", () => {
   });
 
   it("throws when updating a nonexistent order", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",

@@ -56,7 +56,6 @@ describe("try-on analytics storage helpers", () => { // i18n-exempt: test titles
     analytics.setTryOnCtx({ productId: "p1", mode: "garment", idempotencyKey: "idem" });
 
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
-    // @ts-expect-error: assigning test stub
     global.fetch = fetchMock;
     await analytics.logTryOnEvent("TryOnEnhanced", { extra: "value" });
 

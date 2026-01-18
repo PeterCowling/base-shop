@@ -11,7 +11,6 @@ describe("CodeBlock copy-to-clipboard", () => {
     jest.useRealTimers();
     // Reset clipboard mock
     try {
-      // @ts-expect-error redefine
       Object.defineProperty(global.navigator, "clipboard", { value: undefined, configurable: true });
     } catch {}
   });

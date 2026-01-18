@@ -81,7 +81,7 @@ describe("shop.server delegation", () => {
 
   it("clears repoPromise in test env and forwards params", async () => {
     const originalNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "test";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
 
     const repo1 = {
       getShopById: jest.fn().mockResolvedValue({ id: "shop1" }),
@@ -113,7 +113,7 @@ describe("shop.server delegation", () => {
     if (originalNodeEnv === undefined) {
       delete process.env.NODE_ENV;
     } else {
-      process.env.NODE_ENV = originalNodeEnv;
+      (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     }
   });
 });

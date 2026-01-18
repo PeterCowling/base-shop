@@ -54,13 +54,20 @@ describe("setup-ci script", () => {
     expect(wfPath).toBe(
       path.join(".github", "workflows", "cover-me-pretty.yml")
     );
-    expect(content).toContain("@apps/cover-me-pretty");
-    expect(content).toContain("STRIPE_SECRET_KEY: sk");
-    expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
+    expect(content).toContain("uses: ./.github/workflows/reusable-app.yml");
+    expect(content).toContain('app-filter: "@apps/cover-me-pretty"');
+    expect(content).toContain(
+      'build-cmd: "pnpm --filter @apps/cover-me-pretty... build"'
+    );
+    expect(content).toContain(
+      'deploy-cmd: "pnpm exec next-on-pages deploy --project-name cover-me-pretty --branch ${{ github.ref_name }}"'
+    );
+    expect(content).toContain('project-name: "cover-me-pretty"');
+    expect(content).not.toContain("STRIPE_SECRET_KEY");
     expect(exitMock).not.toHaveBeenCalled();
   });
 
-  it("injects domain env vars when configured", async () => {
+  it("includes path filters for the app and packages", async () => {
     const { envSchema } = await import("@config/src/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
@@ -69,16 +76,10 @@ describe("setup-ci script", () => {
       "STRIPE_WEBHOOK_SECRET=whsec",
       "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
     ].join("\n");
-    jest
-      .spyOn(fs, "existsSync")
-      .mockImplementation((p) => true);
-    jest
-      .spyOn(fs, "readFileSync")
-      .mockImplementation((p) =>
-        p.toString().endsWith(".env")
-          ? env
-          : JSON.stringify({ domain: { name: "shop.example.com" } })
-      );
+    jest.spyOn(fs, "existsSync").mockReturnValue(true);
+    jest.spyOn(fs, "readFileSync").mockImplementation((p) =>
+      p.toString().endsWith(".env") ? env : "{}"
+    );
     const writeMock = jest
       .spyOn(fs, "writeFileSync")
       .mockImplementation(() => {});
@@ -88,7 +89,9 @@ describe("setup-ci script", () => {
     await import("../src/setup-ci");
 
     const [, content] = writeMock.mock.calls[0];
-    expect(content).toContain("SHOP_DOMAIN: shop.example.com");
+    expect(content).toContain("apps/cover-me-pretty/**");
+    expect(content).toContain("packages/**");
+    expect(content).toContain(".github/workflows/cover-me-pretty.yml");
   });
 
   it("fails when env file is missing", async () => {

@@ -7,21 +7,15 @@ describe("page-builder useViewport", () => {
   const originalCancel = global.cancelAnimationFrame;
   beforeEach(() => {
     // Execute raf callbacks immediately
-    // @ts-expect-error -- test shim for RAF
     global.requestAnimationFrame = (cb: FrameRequestCallback) => {
       cb(0);
       return 1 as any;
     };
-    // @ts-expect-error -- test shim for cancelRAF
-    global.cancelAnimationFrame = () => {};
   });
   afterEach(() => {
-    // @ts-expect-error -- restore original
     global.requestAnimationFrame = originalRAF;
-    // @ts-expect-error -- restore original
     global.cancelAnimationFrame = originalCancel;
   });
-
   test("updates width/height and animates scale on device change", () => {
     const d1 = { id: "d1", label: "D1", width: 1000, height: 800, type: "desktop", orientation: "portrait" } as any;
     const d2 = { id: "d2", label: "D2", width: 500, height: 400, type: "mobile", orientation: "portrait" } as any;

@@ -6,6 +6,7 @@ import {
   uploadMedia,
   type UpdateMediaMetadataFields,
 } from "@cms/actions/media.server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
 import { NextResponse } from "next/server";
 
 function parseTagsValue(value: unknown): string[] | null | undefined {
@@ -44,7 +45,20 @@ function parseTagsValue(value: unknown): string[] | null | undefined {
   return undefined;
 }
 
+async function requireMediaAuth() {
+  try {
+    await ensureAuthorized();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function GET(req: Request) {
+  if (!(await requireMediaAuth())) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   const summaryParam = url.searchParams.get("summary");
@@ -71,6 +85,10 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  if (!(await requireMediaAuth())) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   const orientation =
@@ -94,6 +112,10 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  if (!(await requireMediaAuth())) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   const file = url.searchParams.get("file");
@@ -114,6 +136,10 @@ export async function DELETE(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  if (!(await requireMediaAuth())) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   if (!shop) {

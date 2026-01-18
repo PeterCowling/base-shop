@@ -4,11 +4,14 @@ import { authenticator } from "otplib";
 const realKeyuri = authenticator.keyuri;
 const keyuri = jest.spyOn(authenticator, "keyuri");
 const realVerify = authenticator.verify;
-const verify = jest.spyOn(authenticator, "verify");
+type VerifyOptions = Parameters<typeof authenticator.verify>[0] & { window?: number };
+const verify = jest.spyOn(authenticator, "verify") as jest.MockedFunction<
+  (opts: VerifyOptions) => boolean
+>;
 
-const mockUpsert = jest.fn();
-const mockFindUnique = jest.fn();
-const mockUpdate = jest.fn();
+const mockUpsert = jest.fn<Promise<unknown>, any[]>();
+const mockFindUnique = jest.fn<Promise<unknown>, any[]>();
+const mockUpdate = jest.fn<Promise<unknown>, any[]>();
 
 jest.mock("@acme/platform-core/db", () => ({
   prisma: {
@@ -258,4 +261,3 @@ describe("mfa", () => {
     });
   });
 });
-

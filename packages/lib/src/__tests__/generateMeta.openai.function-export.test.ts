@@ -25,7 +25,7 @@ describe("generateMeta when OpenAI module is a function export", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (globalThis as { __OPENAI_IMPORT_ERROR__?: boolean }).__OPENAI_IMPORT_ERROR__;
     writeMock.mockReset();
     mkdirMock.mockReset();
@@ -37,7 +37,7 @@ describe("generateMeta when OpenAI module is a function export", () => {
   });
 
   it("parses text content objects and writes empty image buffers", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
 
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [

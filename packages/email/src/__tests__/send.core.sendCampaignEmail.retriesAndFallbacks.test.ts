@@ -15,8 +15,8 @@ import {
 } from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
-  let warnSpy: jest.SpyInstance;
-  let errorSpy: jest.SpyInstance;
+  let warnSpy: jest.SpiedFunction<typeof console.warn>;
+  let errorSpy: jest.SpiedFunction<typeof console.error>;
   let loggerModule: typeof import("@acme/shared-utils");
   let originalWarn: any;
   let originalError: any;

@@ -10,7 +10,6 @@ describe('createReturnLabel', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
     for (const key of Object.keys(mockEnv)) {
       delete mockEnv[key];
@@ -94,8 +93,6 @@ describe('getStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
-    global.fetch = fetchMock;
   });
 
   it('returns status type from response', async () => {

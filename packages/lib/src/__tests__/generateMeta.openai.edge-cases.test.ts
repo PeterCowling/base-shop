@@ -25,7 +25,7 @@ describe("generateMeta edge cases", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     writeMock.mockReset();
     mkdirMock.mockReset();
     fetchMock.mockReset();
@@ -35,7 +35,7 @@ describe("generateMeta edge cases", () => {
   });
 
   it("handles responses that omit content entries", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({ output: [] });
     const imagesGenerate = jest.fn().mockResolvedValue({ data: [{ b64_json: "" }] });
     const OpenAI = jest.fn().mockImplementation(() => ({
@@ -64,7 +64,7 @@ describe("generateMeta edge cases", () => {
   });
 
   it("ignores non-string content payloads", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [
         {

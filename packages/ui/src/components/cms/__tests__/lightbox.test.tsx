@@ -5,10 +5,7 @@ describe("lightbox", () => {
     // Reset DOM and global flags between tests
     document.head.innerHTML = "";
     document.body.innerHTML = "";
-    // @ts-expect-error test cleanup for globals the module sets
     delete (globalThis as any).__pbLightboxReady;
-    // @ts-expect-error test cleanup for globals the module sets
-    delete (globalThis as any).__pbLightboxStyles;
   });
 
   it("injects styles once", () => {

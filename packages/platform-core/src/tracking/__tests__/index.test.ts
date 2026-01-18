@@ -51,7 +51,6 @@ describe('notifyStatusChange', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error - override global fetch
     global.fetch = fetchMock;
     emailMock = { sendEmail: jest.fn() };
     delete process.env.TWILIO_SID;

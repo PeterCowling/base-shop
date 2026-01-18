@@ -21,7 +21,6 @@ function mockFileReader(result: string) {
       }, 0);
     }
   }
-  // @ts-expect-error override
   global.FileReader = FR as any;
 }
 

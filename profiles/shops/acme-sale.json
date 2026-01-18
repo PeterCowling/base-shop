@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "shopId": "acme-sale",
+  "name": "Acme Sale",
+  "type": "sale",
+  "theme": "base",
+  "template": "template-app",
+  "payment": ["stripe"],
+  "shipping": ["ups"],
+  "deployTarget": {
+    "type": "cloudflare-pages",
+    "projectName": "shop-acme-sale"
+  },
+  "ci": {
+    "workflowName": "deploy-shop-acme-sale.yml",
+    "useReusableWorkflow": true
+  },
+  "smokeChecks": [
+    {
+      "endpoint": "/",
+      "expectedStatus": 200
+    },
+    {
+      "endpoint": "/api/health",
+      "expectedStatus": 200
+    }
+  ]
+}

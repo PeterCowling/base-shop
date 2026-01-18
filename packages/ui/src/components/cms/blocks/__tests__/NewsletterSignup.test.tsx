@@ -20,7 +20,6 @@ describe("NewsletterSignup", () => {
   it("clears form and shows success message on successful submission", async () => {
     const user = userEvent.setup();
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
-    // @ts-expect-error - overriding fetch for test
     global.fetch = fetchMock;
     render(
       <NewsletterSignup
@@ -52,8 +51,6 @@ describe("NewsletterSignup", () => {
   it("shows error message on failed submission", async () => {
     const user = userEvent.setup();
     const fetchMock = jest.fn().mockResolvedValue({ ok: false });
-    // @ts-expect-error - overriding fetch for test
-    global.fetch = fetchMock;
     render(
       <NewsletterSignup
         action="/api/newsletter"

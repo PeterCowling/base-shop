@@ -720,6 +720,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/page-builder-ui':
+        specifier: workspace:*
+        version: link:../../packages/page-builder-ui
       '@acme/plugin-sanity':
         specifier: workspace:*
         version: link:../../packages/plugins/sanity

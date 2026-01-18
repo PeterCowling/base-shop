@@ -13,6 +13,17 @@
  */
 export const SHOP_NAME_RE = /^[a-z0-9_-]+$/i;
 
+const LEGACY_APP_SLUGS: Record<string, string> = {
+  bcd: "cover-me-pretty",
+};
+
+export type ShopIdTarget =
+  | "rawId"
+  | "appSlug"
+  | "appPackage"
+  | "workflowName"
+  | "cloudflareProjectName";
+
 /**
  * Validate and normalize a shop name.  The input is trimmed and
  * tested against {@link SHOP_NAME_RE}.  If invalid, an error is thrown.
@@ -25,6 +36,47 @@ export function validateShopName(shop: string): string {
     throw new Error(`Invalid shop name: ${shop}`);
   }
   return normalized;
+}
+
+function validateCloudflareProjectName(name: string): string {
+  if (name.length > 63) {
+    throw new Error(`Cloudflare project name too long: ${name}`);
+  }
+  if (!/^[a-z0-9-]+$/.test(name)) {
+    throw new Error(`Invalid Cloudflare project name: ${name}`);
+  }
+  return name;
+}
+
+export function getShopAppSlug(rawId: string): string {
+  const id = validateShopName(rawId);
+  return LEGACY_APP_SLUGS[id] ?? `shop-${id}`;
+}
+
+export function getShopAppPackage(rawId: string): string {
+  return `@apps/${getShopAppSlug(rawId)}`;
+}
+
+export function getShopWorkflowName(rawId: string): string {
+  return `${getShopAppSlug(rawId)}.yml`;
+}
+
+export function normalizeShopId(rawId: string, target: ShopIdTarget): string {
+  const id = validateShopName(rawId);
+  switch (target) {
+    case "rawId":
+      return id;
+    case "appSlug":
+      return getShopAppSlug(id);
+    case "appPackage":
+      return getShopAppPackage(id);
+    case "workflowName":
+      return getShopWorkflowName(id);
+    case "cloudflareProjectName":
+      return validateCloudflareProjectName(getShopAppSlug(id));
+    default:
+      return id;
+  }
 }
 
 /**

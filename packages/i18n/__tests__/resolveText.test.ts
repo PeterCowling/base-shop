@@ -38,7 +38,7 @@ describe("resolveText", () => {
 
   it("logs when resolving legacy string in development", () => {
     const original = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     expect(resolveText("Hello", "en" as Locale, t)).toBe("Hello");
@@ -47,12 +47,12 @@ describe("resolveText", () => {
     );
 
     warn.mockRestore();
-    process.env.NODE_ENV = original;
+    (process.env as Record<string, string | undefined>).NODE_ENV = original;
   });
 
   it("logs when inline value is missing across fallbacks in development", () => {
     const original = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     const v: TranslatableText = { type: "inline", value: {} } as const;
@@ -67,12 +67,12 @@ describe("resolveText", () => {
     );
 
     warn.mockRestore();
-    process.env.NODE_ENV = original;
+    (process.env as Record<string, string | undefined>).NODE_ENV = original;
   });
 
   it("logs when value has unknown shape in development", () => {
     const original = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     expect(resolveText({} as unknown as TranslatableText, "en" as Locale, t)).toBe(
@@ -84,7 +84,7 @@ describe("resolveText", () => {
     );
 
     warn.mockRestore();
-    process.env.NODE_ENV = original;
+    (process.env as Record<string, string | undefined>).NODE_ENV = original;
   });
 });
 

@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 describe('fetchJson', () => {
   beforeEach(() => {
-    // @ts-expect-error - jest mock
     global.fetch = jest.fn();
   });
 

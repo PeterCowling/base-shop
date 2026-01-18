@@ -21,7 +21,6 @@ describe("MfaChallenge", () => {
 
   it("successful verification clears error and invokes onSuccess", async () => {
     const onSuccess = jest.fn();
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ json: async () => ({ verified: false }) })
@@ -46,7 +45,6 @@ describe("MfaChallenge", () => {
   });
 
   it("failed verification displays \"Invalid code\"", async () => {
-    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValue({ json: async () => ({ verified: false }) });

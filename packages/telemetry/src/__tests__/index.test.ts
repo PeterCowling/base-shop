@@ -10,7 +10,6 @@ describe("telemetry index", () => {
     delete process.env.NODE_ENV;
     delete process.env.FORCE_TELEMETRY;
     // restore fetch if mocked
-    // @ts-expect-error: assignment to global.fetch in tests
     if (originalFetch) global.fetch = originalFetch;
   });
 
@@ -18,7 +17,7 @@ describe("telemetry index", () => {
 
   test("track respects ENABLED and SAMPLE_RATE", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "0.5";
     const mod = await import("../index");
     const rand = jest.spyOn(Math, "random").mockReturnValue(0.6);
@@ -31,7 +30,7 @@ describe("telemetry index", () => {
 
   test("track records events at sample rate boundary", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "0.5";
     const mod = await import("../index");
     const rand = jest.spyOn(Math, "random").mockReturnValue(0.5);
@@ -45,7 +44,7 @@ describe("telemetry index", () => {
 
   test("__flush sends buffered events and retries on failure", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest
       .fn()
@@ -74,7 +73,7 @@ describe("telemetry index", () => {
 
   test("__flush restores events when all retries fail", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
@@ -88,7 +87,7 @@ describe("telemetry index", () => {
 
   test("uses custom endpoint when provided", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT = "/custom-endpoint";
     const mod = await import("../index");
     const fetchMock = jest.fn().mockResolvedValue({ ok: true } as any);
@@ -119,7 +118,7 @@ describe("telemetry index", () => {
 
   test("does not send events when telemetry disabled", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "false";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const fetchMock = jest.fn();
     originalFetch = global.fetch;
     // @ts-expect-error: override global.fetch for test
@@ -132,7 +131,7 @@ describe("telemetry index", () => {
 
   test("scheduleFlush only creates a single timer", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     jest.useFakeTimers();
     const setTimeoutSpy = jest.spyOn(global, "setTimeout");
     try {
@@ -149,7 +148,7 @@ describe("telemetry index", () => {
 
   test("scheduled flush logs errors and restores buffer", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     jest.useFakeTimers();
     const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
@@ -172,7 +171,7 @@ describe("telemetry index", () => {
 
   test("FORCE_TELEMETRY enables events in development", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     process.env.FORCE_TELEMETRY = "true";
     const mod = await import("../index");
     mod.track("forcedEvent");
@@ -187,7 +186,7 @@ describe("telemetry index", () => {
     });
     try {
       process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
-      process.env.NODE_ENV = "production";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
       const mod = await import("../index");
       mod.track("offlineEvent");
       expect(mod.__buffer.length).toBe(0);

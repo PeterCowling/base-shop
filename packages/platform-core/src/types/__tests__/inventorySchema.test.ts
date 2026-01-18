@@ -37,7 +37,6 @@ describe("inventoryItemSchema", () => {
         sku: "s1",
         productId: "p1",
         quantity: 1,
-        // @ts-expect-error intentionally wrong type
         variantAttributes: { size: 42 as any },
       }),
     ).toThrow();

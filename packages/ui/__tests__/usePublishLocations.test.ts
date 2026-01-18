@@ -19,7 +19,7 @@ afterEach(() => {
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 const originalError = console.error;
-let consoleErrorSpy: jest.SpyInstance | undefined;
+let consoleErrorSpy: jest.SpiedFunction<typeof console.error> | undefined;
 
 beforeAll(() => {
   consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((msg, ...args) => {

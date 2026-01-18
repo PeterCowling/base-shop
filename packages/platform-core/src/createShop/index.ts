@@ -1,7 +1,9 @@
 import {
   prepareOptions,
   createShopOptionsSchema as baseCreateShopOptionsSchema,
+  launchConfigSchema as baseLaunchConfigSchema,
   type CreateShopOptions,
+  type LaunchConfig,
   type PreparedCreateShopOptions,
   type NavItem,
 } from "./schema";
@@ -35,8 +37,10 @@ export {
 } from "./deploymentAdapter";
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions, NavItem };
+export type { LaunchConfig };
 export type { DeployStatusBase, DeployShopResult } from "./deployTypes";
 export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
+export const launchConfigSchema = baseLaunchConfigSchema;
 
 export interface ShopCreationState {
   shopId: string;

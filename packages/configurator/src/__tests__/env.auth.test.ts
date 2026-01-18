@@ -20,7 +20,7 @@ const devEnv = (
 const expectInvalidDev = (
   overrides: Record<string, string | undefined>,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnv({
     env: devEnv(overrides),

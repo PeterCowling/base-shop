@@ -44,7 +44,6 @@ describe("ProductBadge", () => {
   it("uses provided tone even when variant is unset", () => {
     const badge = render(
       <ProductBadge
-        // @ts-expect-error intentionally unset to exercise tone fallback branch
         variant={undefined}
         label="Custom"
         tone="soft"

@@ -41,7 +41,6 @@ export function makeFile(name = "hello.png", type = "image/png") {
 }
 
 export function mockFetchJson<T>(data: T, status = 200) {
-  // @ts-expect-error — tests control fetch
   global.fetch = jest.fn().mockResolvedValue(
     new Response(JSON.stringify(data), {
       status,

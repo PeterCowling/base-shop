@@ -17,7 +17,7 @@ describe("generateMeta", () => {
         coreEnv: { OPENAI_API_KEY: undefined },
       }));
       jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
-      process.env.NODE_ENV = "production";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
       const { generateMeta } = await import("@acme/lib/generateMeta");
       result = await generateMeta(product);
     });
@@ -40,7 +40,7 @@ describe("generateMeta", () => {
         coreEnv: { OPENAI_API_KEY: undefined },
       }));
       jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
-      process.env.NODE_ENV = "test";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "test";
       const { generateMeta } = await import("@acme/lib/generateMeta");
       result = await generateMeta(product);
     });

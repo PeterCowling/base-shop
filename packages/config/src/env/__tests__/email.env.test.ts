@@ -118,7 +118,7 @@ describe("email env provider selection", () => {
   });
 
   it("requires EMAIL_FROM when default provider is smtp", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     delete process.env.EMAIL_PROVIDER;
     delete process.env.EMAIL_FROM;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

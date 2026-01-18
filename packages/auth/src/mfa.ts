@@ -58,6 +58,13 @@ export async function isMfaEnabled(customerId: string): Promise<boolean> {
   return record?.enabled ?? false;
 }
 
+export async function deactivateMfa(customerId: string): Promise<void> {
+  await prisma.customerMfa.update({
+    where: { customerId },
+    data: { secret: null, enabled: false },
+  });
+}
+
 export interface MfaToken {
   token: string;
   expiresAt: Date;

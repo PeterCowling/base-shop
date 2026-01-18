@@ -13,7 +13,9 @@ const ORIGINAL_ENV = {
   SANITY_PREVIEW_SECRET: "secret",
 };
 
-const withEnv = async <T>(env: NodeJS.ProcessEnv, fn: () => Promise<T>): Promise<T> => {
+type EnvOverrides = Record<string, string | undefined>;
+
+const withEnv = async <T>(env: EnvOverrides, fn: () => Promise<T>): Promise<T> => {
   process.env = { ...ORIGINAL_ENV, ...env } as NodeJS.ProcessEnv;
   for (const [key, value] of Object.entries(env)) {
     if (value === undefined) delete (process.env as any)[key];

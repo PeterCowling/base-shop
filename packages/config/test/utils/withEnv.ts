@@ -104,7 +104,7 @@ function shouldPreserveEnvKey(key: string): boolean {
 }
 
 export async function withEnv<T>(
-  vars: NodeJS.ProcessEnv,
+  vars: Record<string, string | undefined>,
   loader: () => Promise<T>,
 ): Promise<T> {
   const originalEnv = process.env;

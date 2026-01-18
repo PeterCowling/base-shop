@@ -12,18 +12,12 @@ describe("useMediaUpload (image thumbnail path)", () => {
   const originalRevoke = URL.revokeObjectURL;
   beforeEach(() => {
     // stub object URL APIs
-    // @ts-expect-error: test stubs object URL API
     URL.createObjectURL = jest.fn(() => "blob:thumb");
-    // @ts-expect-error: test stubs object URL API
-    URL.revokeObjectURL = jest.fn();
   });
   afterEach(() => {
-    // @ts-expect-error: restore stubbed API
     URL.createObjectURL = originalCreate;
-    // @ts-expect-error: restore stubbed API
     URL.revokeObjectURL = originalRevoke;
   });
-
   test("sets thumbnail when pendingFile is an image", () => {
     const opts = { shop: "s", requiredOrientation: "landscape" } as UseMediaUploadOptions;
     const { result } = renderHook(() => useMediaUpload(opts));

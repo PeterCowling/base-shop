@@ -3,12 +3,12 @@ describe("lateFeeService auto-start", () => {
   const ORIGINAL_ENV = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = ORIGINAL_ENV;
+    (process.env as Record<string, string | undefined>).NODE_ENV = ORIGINAL_ENV;
     jest.resetModules();
   });
 
   it("does not start the service in test environment", async () => {
-    process.env.NODE_ENV = "test";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
     const startLateFeeService = jest.fn().mockResolvedValue(undefined);
     const loggerError = jest.fn();
 
@@ -28,7 +28,7 @@ describe("lateFeeService auto-start", () => {
   });
 
   it("starts the service on import", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const startLateFeeService = jest.fn().mockResolvedValue(undefined);
     const loggerError = jest.fn();
 
@@ -48,7 +48,7 @@ describe("lateFeeService auto-start", () => {
   });
 
   it("logs errors if startup fails", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     const error = new Error("boom");
     const startLateFeeService = jest.fn().mockRejectedValue(error);
     const loggerError = jest.fn();

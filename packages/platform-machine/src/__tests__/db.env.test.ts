@@ -9,7 +9,7 @@ describe("db env guards", () => {
   });
 
   it("falls back to the stub client when core env throws", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     let prisma: any;
     await jest.isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({
@@ -25,7 +25,7 @@ describe("db env guards", () => {
   });
 
   it("errors on invalid DATABASE_URL", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     await expect(
       jest.isolateModulesAsync(async () => {
         jest.doMock("@acme/config/env/core", () => ({
@@ -51,7 +51,7 @@ describe("db env guards", () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),
       }));
-      process.env.NODE_ENV = "production";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
       jest.doMock("@prisma/client", () => ({ PrismaClient: ctor }), {
         virtual: true,
       });
@@ -69,7 +69,7 @@ describe("db env guards", () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),
       }));
-      process.env.NODE_ENV = "production";
+      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
       jest.doMock("@prisma/client", () => ({ PrismaClient: ctor }), {
         virtual: true,
       });

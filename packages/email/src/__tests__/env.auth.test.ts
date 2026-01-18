@@ -19,7 +19,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidDev = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: devEnv(overrides),

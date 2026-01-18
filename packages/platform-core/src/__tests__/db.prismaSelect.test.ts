@@ -11,9 +11,9 @@ describe("prisma client selection", () => {
   });
 
   it("instantiates PrismaClient with DATABASE_URL", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const fakeUrl = "postgres://fake";
-    process.env.DATABASE_URL = fakeUrl;
+    (process.env as Record<string, string | undefined>).DATABASE_URL = fakeUrl;
 
     class FakePrismaClient {
       static args: unknown;
@@ -41,7 +41,7 @@ describe("prisma client selection", () => {
   });
 
   it("falls back to stub when DATABASE_URL is missing", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
 
     const ctor = jest.fn();
     jest.doMock("@acme/config/env/core", () => ({

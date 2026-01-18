@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 import { render } from "@testing-library/react";
+import type { ComponentType, JSX } from "react";
 
 type StoryModule = {
   default?: {
-    component?: (props: Record<string, unknown>) => JSX.Element | null;
+    component?: ComponentType<any>;
     args?: Record<string, unknown>;
   };
   [key: string]: unknown;

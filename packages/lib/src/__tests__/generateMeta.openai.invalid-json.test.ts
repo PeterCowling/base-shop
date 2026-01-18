@@ -22,7 +22,7 @@ describe("generateMeta", () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalEnv;
     delete (global as any).__OPENAI_IMPORT_ERROR__;
     expect(fetchMock).not.toHaveBeenCalled();
     writeMock.mockReset();
@@ -34,7 +34,7 @@ describe("generateMeta", () => {
   });
 
   it("falls back when OpenAI returns invalid JSON", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [{ content: [{ text: "notjson" }] }],
     });

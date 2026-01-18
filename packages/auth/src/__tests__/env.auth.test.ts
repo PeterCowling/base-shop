@@ -24,7 +24,7 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: jest.SpiedFunction<typeof console.error>,
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: prodEnv(overrides),

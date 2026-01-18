@@ -30,7 +30,7 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
 const expectInvalidProd = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: prodEnv(overrides),
@@ -41,7 +41,7 @@ const expectInvalidProd = (
 const expectInvalidDev = (
   overrides: EnvOverrides,
   accessor: (env: Record<string, unknown>) => unknown,
-  consoleErrorSpy?: jest.SpyInstance,
+  consoleErrorSpy?: { mockRestore: () => void },
 ) =>
   expectInvalidAuthEnvWithConfigEnv({
     env: devEnv(overrides),

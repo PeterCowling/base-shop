@@ -74,7 +74,6 @@ describe("validateQuery sort and filter", () => {
 
   it("defaults to safe sort and drops unknown filters", () => {
     const { sort, filter } = validateQuery({
-      // @ts-expect-error test invalid sort
       sort: "rating",
       filter: { brand: "Eco", unknown: "x" },
     });

@@ -20,7 +20,7 @@ describe("createCustomerSession", () => {
     if (originalNodeEnv === undefined) {
       delete process.env.NODE_ENV;
     } else {
-      process.env.NODE_ENV = originalNodeEnv;
+      (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     }
     restoreEnv();
   });
@@ -61,7 +61,7 @@ describe("createCustomerSession", () => {
   });
 
   it("disables secure cookies for development environments", async () => {
-    process.env.NODE_ENV = "development";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "development";
     queueRandomUUIDs(["session-id", "csrf-id"]);
 
     const {
@@ -85,7 +85,7 @@ describe("createCustomerSession", () => {
   });
 
   it("keeps secure cookies outside development", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     queueRandomUUIDs(["session-id", "csrf-id"]);
 
     const {

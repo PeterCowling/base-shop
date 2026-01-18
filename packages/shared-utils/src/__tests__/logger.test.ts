@@ -96,7 +96,7 @@ describe('logger', () => {
   });
 
   it('suppresses debug output when level \u2265 info', async () => {
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string | undefined>).NODE_ENV = 'production';
     const { logger } = await import('../logger');
     logger.debug('hidden');
     expect(debugOutput).not.toHaveBeenCalled();

@@ -4,8 +4,8 @@ Status: Active
 Domain: Base-Shop
 Last-reviewed: 2026-01-17
 Relates-to charter: none
-Last-updated: 2026-01-17
-Last-updated-by: Codex
+Last-updated: 2026-01-18
+Last-updated-by: Codex (GPT-5.2)
 ---
 
 # Implementation Plan Index (Prioritized)
@@ -18,6 +18,7 @@ Last-updated-by: Codex
 | Plan | Status | Notes |
 |------|--------|-------|
 | [Next.js 15.3.6 Upgrade](docs/plans/nextjs-15-3-6-upgrade-plan.md) | Active | Security patch; lockfile update still pending |
+| [Launch Readiness Hardening (M0–M2)](docs/plans/launch-readiness-hardening-plan.md) | Active | Execution plan for entrypoints, `setup-ci` safety, staging health checks, CMS auth gaps |
 | [Launch Shop Pipeline](docs/plans/launch-shop-pipeline-plan.md) | Active | Repo audit P0.1 |
 | [Integrated Secrets Workflow](docs/plans/integrated-secrets-workflow-plan.md) | Active | Repo audit P0.2 |
 | [Post-Deploy Health Checks Mandatory](docs/plans/post-deploy-health-checks-mandatory-plan.md) | Active | Repo audit P0.3 |

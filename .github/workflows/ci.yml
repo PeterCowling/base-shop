@@ -168,3 +168,13 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: pnpm exec next-on-pages deploy --project-name base-shop --branch staging
+      - name: Post-Deploy Health Check
+        if: success()
+        run: |
+          chmod +x scripts/post-deploy-health-check.sh
+          ./scripts/post-deploy-health-check.sh base-shop --staging
+        shell: bash
+        env:
+          EXTRA_ROUTES: "/api/health"
+          MAX_RETRIES: "10"
+          RETRY_DELAY: "6"

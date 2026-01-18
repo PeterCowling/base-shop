@@ -14,9 +14,12 @@ const { readDeployInfo } = jest.requireMock("../deployInfo") as {
   readDeployInfo: jest.Mock;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnySpyInstance = ReturnType<typeof jest.spyOn<any, any>>;
+
 describe("deriveOperationalHealth", () => {
-  let latestUpgrade: jest.SpyInstance;
-  let healthJson: jest.SpyInstance;
+  let latestUpgrade: AnySpyInstance;
+  let healthJson: AnySpyInstance;
 
   beforeEach(() => {
     readDeployInfo.mockReset();

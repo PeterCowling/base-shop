@@ -8,7 +8,6 @@ describe('getShippingRate', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
     __resetShippingEnv();
   });
@@ -265,8 +264,6 @@ describe('getTrackingStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error replace global fetch
-    global.fetch = fetchMock;
   });
 
   it('returns DHL tracking status', async () => {

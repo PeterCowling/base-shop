@@ -43,7 +43,7 @@ describe("loadCoreEnv errors and logging", () => {
     const originalNodeEnv = process.env.NODE_ENV;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    process.env.NODE_ENV = "production";
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     const { loadCoreEnv: freshLoad } = await import("../../core.ts");
     expect(() => freshLoad({} as NodeJS.ProcessEnv)).toThrow(
       "Invalid core environment variables",
@@ -58,7 +58,7 @@ describe("loadCoreEnv errors and logging", () => {
       expect.stringContaining("SESSION_SECRET"),
     );
     errorSpy.mockRestore();
-    process.env.NODE_ENV = originalNodeEnv;
+    (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     jest.resetModules();
   });
 

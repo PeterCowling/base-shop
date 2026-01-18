@@ -74,7 +74,11 @@ function createJestPreset(options = {}) {
   } = options;
 
   // Build module name mapper
+  // Note: baseModuleNameMapper is spread AFTER tsPaths so explicit mappings
+  // (e.g., @acme/types -> src/*.ts) take precedence over tsconfig paths
+  // that may point to dist/ without file extensions.
   let moduleNameMapper = {
+    ...tsPaths,
     ...baseModuleNameMapper,
     // Use resolved React paths to ensure a single instance across tests
     "^react$": reactPath,
@@ -82,7 +86,6 @@ function createJestPreset(options = {}) {
     "^react-dom$": reactDomPath,
     "^react/jsx-runtime$": reactJsxRuntimePath,
     "^react/jsx-dev-runtime$": reactJsxDevRuntimePath,
-    ...tsPaths,
   };
 
   // Always mock NextAuth modules to avoid ESM-only deps and reduce per-test duplication

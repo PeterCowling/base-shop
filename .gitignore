@@ -69,3 +69,5 @@ yarn-error.log*
 **/coverage/
 **/.ts-jest/
 .lighthouseci/
+packages/types/src/**/*.js
+packages/types/src/**/*.d.ts.map

@@ -5,7 +5,7 @@ describe("payments env schema", () => {
   it("defaults to disabled configuration when gateway disabled", async () => {
     const { paymentsEnv, paymentsEnvSchema } = await withEnv(
       { PAYMENTS_GATEWAY: "disabled" },
-      () => import("@acme/config/src/env/payments.ts"),
+      () => import("@acme/config/env/payments"),
     );
     expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
   });
@@ -20,7 +20,7 @@ describe("payments env schema", () => {
       PAYMENTS_SANDBOX: "false",
     } as const;
     const { paymentsEnv } = await withEnv(input, () =>
-      import("@acme/config/src/env/payments.ts"),
+      import("@acme/config/env/payments"),
     );
     expect(paymentsEnv).toEqual({
       PAYMENTS_PROVIDER: "stripe",
@@ -37,7 +37,7 @@ describe("payments env schema", () => {
     await expect(
       withEnv(
         { PAYMENTS_PROVIDER: "paypal" },
-        () => import("@acme/config/src/env/payments.ts"),
+        () => import("@acme/config/env/payments"),
       ),
     ).rejects.toThrow("Invalid payments environment variables");
     expect(err).toHaveBeenCalledWith(
@@ -67,7 +67,7 @@ describe("payments env schema", () => {
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
           ...vars,
         },
-        () => import("@acme/config/src/env/payments.ts"),
+        () => import("@acme/config/env/payments"),
       ),
     ).rejects.toThrow("Invalid payments environment variables");
     expect(err).toHaveBeenCalledWith(message);
@@ -81,7 +81,7 @@ describe("payments env schema", () => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const { paymentsEnv, paymentsEnvSchema } = await withEnv(
       vars,
-      () => import("@acme/config/src/env/payments.ts"),
+      () => import("@acme/config/env/payments"),
     );
     expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
     expect(warn).toHaveBeenCalledWith(

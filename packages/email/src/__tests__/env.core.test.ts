@@ -14,7 +14,7 @@ describe("deposit-release validation", () => {
       },
       async () => {
         const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-        const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
+        const { loadCoreEnv } = await import("@acme/config/env/core");
         expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
         const calls = spy.mock.calls.map((c) => c[0]);
         expect(calls).toEqual(
@@ -35,7 +35,7 @@ describe("deposit-release validation", () => {
         DEPOSIT_RELEASE_INTERVAL_MS: "5000",
       },
       async () => {
-        const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
+        const { loadCoreEnv } = await import("@acme/config/env/core");
         const env = loadCoreEnv();
         expect(env.DEPOSIT_RELEASE_ENABLED).toBe(true);
         expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBe(5000);
@@ -45,7 +45,7 @@ describe("deposit-release validation", () => {
 });
 
 describe("requireEnv helper", () => {
-  const getRequire = async () => (await import("@acme/config/src/env/core.ts")).requireEnv;
+  const getRequire = async () => (await import("@acme/config/env/core")).requireEnv;
 
   it("parses booleans", async () => {
     await withEnv({ TEST_BOOL: "TrUe" }, async () => {
@@ -94,7 +94,7 @@ describe("requireEnv helper", () => {
 describe("AUTH_TOKEN_TTL normalisation", () => {
   it("trims whitespace and normalises units", async () => {
     await withEnv({ NODE_ENV: "development", AUTH_TOKEN_TTL: " 5 m " }, async () => {
-      const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
+      const { loadCoreEnv } = await import("@acme/config/env/core");
       const env = loadCoreEnv();
       expect(env.AUTH_TOKEN_TTL).toBe(300);
     });
@@ -107,7 +107,7 @@ describe("NEXT_PUBLIC_BASE_URL validation", () => {
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
-      const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
+      const { loadCoreEnv } = await import("@acme/config/env/core");
       expect(() => loadCoreEnv()).toThrow(
         "Invalid core environment variables",
       );
@@ -117,7 +117,7 @@ describe("NEXT_PUBLIC_BASE_URL validation", () => {
 
   it("accepts valid url", async () => {
     await withEnv({ NEXT_PUBLIC_BASE_URL: "https://example.com" }, async () => {
-      const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
+      const { loadCoreEnv } = await import("@acme/config/env/core");
       const env = loadCoreEnv();
       expect(env.NEXT_PUBLIC_BASE_URL).toBe("https://example.com");
     });

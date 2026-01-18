@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { withEnv } from "./envTestUtils";
 
-const MODULE_PATH = "@acme/config/src/env/shipping.ts";
+const MODULE_PATH = "@acme/config/env/shipping";
 
 describe("loadShippingEnv", () => {
   it("parses valid configuration", async () => {

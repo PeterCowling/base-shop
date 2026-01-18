@@ -73,7 +73,7 @@ describe("auth env validation", () => {
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_SECRET,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe("redis");
   });

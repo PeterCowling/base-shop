@@ -12,7 +12,7 @@ describe("payments gateway flag", () => {
       },
       async () => {
         const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-        const { paymentsEnv } = await import("@acme/config/src/env/payments.ts");
+        const { paymentsEnv } = await import("@acme/config/env/payments");
         expect(paymentsEnv).toMatchObject({
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
@@ -32,7 +32,7 @@ describe("payments gateway flag", () => {
         STRIPE_WEBHOOK_SECRET: "hook",
       },
       async () => {
-        const { paymentsEnv } = await import("@acme/config/src/env/payments.ts");
+        const { paymentsEnv } = await import("@acme/config/env/payments");
         expect(paymentsEnv).toMatchObject({
           STRIPE_SECRET_KEY: "secret",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pub",
@@ -51,7 +51,7 @@ describe("payments gateway flag", () => {
       },
       async () => {
         const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-        const { paymentsEnv } = await import("@acme/config/src/env/payments.ts");
+        const { paymentsEnv } = await import("@acme/config/env/payments");
         expect(paymentsEnv).toMatchObject({
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",

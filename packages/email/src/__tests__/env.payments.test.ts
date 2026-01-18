@@ -10,7 +10,7 @@ describe("payments env", () => {
     const env = await withEnv(
       { PAYMENTS_GATEWAY: "disabled" },
       async () => {
-        const mod = await import("@acme/config/src/env/payments.ts");
+        const mod = await import("@acme/config/env/payments");
         return mod.loadPaymentsEnv();
       },
     );
@@ -26,7 +26,7 @@ describe("payments env", () => {
         STRIPE_WEBHOOK_SECRET: "wh",
       },
       async () => {
-        const mod = await import("@acme/config/src/env/payments.ts");
+        const mod = await import("@acme/config/env/payments");
         return mod.loadPaymentsEnv();
       },
     );
@@ -43,7 +43,7 @@ describe("payments env", () => {
           STRIPE_WEBHOOK_SECRET: undefined,
         },
         async () => {
-          const mod = await import("@acme/config/src/env/payments.ts");
+          const mod = await import("@acme/config/env/payments");
           return mod.loadPaymentsEnv();
         },
       ),

@@ -14,7 +14,7 @@ describe("shipping env", () => {
         DEFAULT_SHIPPING_ZONE: "domestic",
       },
       async () => {
-        const mod = await import("@acme/config/src/env/shipping.ts");
+        const mod = await import("@acme/config/env/shipping");
         return mod.loadShippingEnv();
       },
     );
@@ -28,7 +28,7 @@ describe("shipping env", () => {
       withEnv(
         { DEFAULT_SHIPPING_ZONE: "moon" },
         async () => {
-          const mod = await import("@acme/config/src/env/shipping.ts");
+          const mod = await import("@acme/config/env/shipping");
           return mod.loadShippingEnv();
         },
       ),
@@ -40,7 +40,7 @@ describe("shipping env", () => {
       withEnv(
         { FREE_SHIPPING_THRESHOLD: "abc" },
         async () => {
-          const mod = await import("@acme/config/src/env/shipping.ts");
+          const mod = await import("@acme/config/env/shipping");
           return mod.loadShippingEnv();
         },
       ),
@@ -52,7 +52,7 @@ describe("shipping env", () => {
     await expect(
       withEnv(
         { UPS_KEY: 123 as any },
-        () => import("@acme/config/src/env/shipping.ts"),
+        () => import("@acme/config/env/shipping"),
       ),
     ).rejects.toThrow("Invalid shipping environment variables");
     expect(errorSpy).toHaveBeenCalled();

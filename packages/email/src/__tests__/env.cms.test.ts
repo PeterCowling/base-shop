@@ -17,7 +17,7 @@ describe("cms env", () => {
           SANITY_DATASET: "",
           SANITY_API_TOKEN: "token",
         },
-        () => import("@acme/config/src/env/cms.ts"),
+        () => import("@acme/config/env/cms"),
       ),
     ).rejects.toThrow("Invalid CMS environment variables");
     expect(errorSpy).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe("cms env", () => {
         SANITY_DATASET: "production",
         SANITY_API_TOKEN: undefined,
       },
-      () => import("@acme/config/src/env/cms.ts"),
+      () => import("@acme/config/env/cms"),
     );
     expect(cmsEnv.SANITY_PROJECT_ID).toBe("proj");
   });
@@ -46,7 +46,7 @@ describe("cms env", () => {
         SANITY_DATASET: "production",
         SANITY_API_TOKEN: "token",
       },
-      () => import("@acme/config/src/env/cms.ts"),
+      () => import("@acme/config/env/cms"),
     );
     expect(cmsEnv.SANITY_API_TOKEN).toBe("token");
   });
@@ -61,7 +61,7 @@ describe("cms env", () => {
         SANITY_API_TOKEN: "token",
         SANITY_PREVIEW_SECRET: undefined,
       },
-      () => import("@acme/config/src/env/cms.ts"),
+      () => import("@acme/config/env/cms"),
     );
     expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("dummy-preview-secret");
   });
@@ -78,7 +78,7 @@ describe("cms env", () => {
           SANITY_API_TOKEN: "token",
           SANITY_BASE_URL: "not-a-url",
         },
-        () => import("@acme/config/src/env/cms.ts"),
+        () => import("@acme/config/env/cms"),
       ),
     ).rejects.toThrow("Invalid CMS environment variables");
     expect(errorSpy).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe("cms env", () => {
         SANITY_API_TOKEN: "token",
         SANITY_BASE_URL: "https://cms.example.com/",
       },
-      () => import("@acme/config/src/env/cms.ts"),
+      () => import("@acme/config/env/cms"),
     );
     expect(cmsEnv.SANITY_BASE_URL).toBe("https://cms.example.com");
   });

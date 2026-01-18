@@ -11,7 +11,7 @@ describe("env index", () => {
     await expect(
       withEnv(
         { DEPOSIT_RELEASE_ENABLED: "maybe" },
-        () => import("@acme/config/src/env/index.ts"),
+        () => import("@acme/config/env"),
       ),
     ).rejects.toThrow("Invalid environment variables");
     expect(errorSpy).toHaveBeenCalled();
@@ -23,7 +23,7 @@ describe("env index", () => {
         DEPOSIT_RELEASE_ENABLED: "true",
         DEPOSIT_RELEASE_INTERVAL_MS: "1000",
       },
-      () => import("@acme/config/src/env/index.ts"),
+      () => import("@acme/config/env"),
     );
     expect(mod.env.DEPOSIT_RELEASE_ENABLED).toBe(true);
     expect(mod.env.DEPOSIT_RELEASE_INTERVAL_MS).toBe(1000);

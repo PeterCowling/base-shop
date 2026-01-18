@@ -36,7 +36,7 @@ describe("auth env validation", () => {
     const result = await withEnv(
       devEnv({ AUTH_TOKEN_TTL: " 5 m " }),
       async () => {
-        const mod = await import("@acme/config/src/env/auth.ts");
+        const mod = await import("@acme/config/env/auth");
         return { ...mod, ttl: process.env.AUTH_TOKEN_TTL };
       },
     );
@@ -85,7 +85,7 @@ describe("auth env validation", () => {
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe("redis");
   });
@@ -132,7 +132,7 @@ describe("auth env validation", () => {
   it("loads for jwt provider with secret", async () => {
     const { authEnv } = await withEnv(
       devEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: STRONG_TOKEN }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.JWT_SECRET).toBe(STRONG_TOKEN);
   });
@@ -172,7 +172,7 @@ describe("auth env validation", () => {
         OAUTH_CLIENT_ID: "client-id",
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
       }),
-      () => import("@acme/config/src/env/auth.ts"),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.AUTH_PROVIDER).toBe("oauth");
     expect(authEnv.OAUTH_CLIENT_ID).toBe("client-id");

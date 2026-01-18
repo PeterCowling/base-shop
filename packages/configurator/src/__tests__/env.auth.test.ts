@@ -37,7 +37,7 @@ describe('auth env validation', () => {
     const result = await withEnv(
       { NODE_ENV: 'development', AUTH_TOKEN_TTL: ' 5 m ' },
       async () => {
-        const mod = await import('@acme/config/src/env/auth.ts');
+        const mod = await import("@acme/config/env/auth");
         return { ...mod, ttl: process.env.AUTH_TOKEN_TTL };
       },
     );
@@ -83,7 +83,7 @@ describe('auth env validation', () => {
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       },
-      () => import('@acme/config/src/env/auth.ts'),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.SESSION_STORE).toBe('redis');
   });
@@ -130,7 +130,7 @@ describe('auth env validation', () => {
         AUTH_PROVIDER: 'jwt',
         JWT_SECRET: STRONG_TOKEN,
       },
-      () => import('@acme/config/src/env/auth.ts'),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.JWT_SECRET).toBe(STRONG_TOKEN);
   });
@@ -163,7 +163,7 @@ describe('auth env validation', () => {
         OAUTH_CLIENT_ID: 'client-id',
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
       },
-      () => import('@acme/config/src/env/auth.ts'),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.AUTH_PROVIDER).toBe('oauth');
     expect(authEnv.OAUTH_CLIENT_ID).toBe('client-id');
@@ -175,7 +175,7 @@ describe('auth env validation', () => {
   ])('parses ALLOW_GUEST=%s', async (value, expected) => {
     const { authEnv } = await withEnv(
       { NODE_ENV: 'development', ALLOW_GUEST: value },
-      () => import('@acme/config/src/env/auth.ts'),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.ALLOW_GUEST).toBe(expected);
   });
@@ -186,7 +186,7 @@ describe('auth env validation', () => {
   ])('parses ENFORCE_2FA=%s', async (value, expected) => {
     const { authEnv } = await withEnv(
       { NODE_ENV: 'development', ENFORCE_2FA: value },
-      () => import('@acme/config/src/env/auth.ts'),
+      () => import("@acme/config/env/auth"),
     );
     expect(authEnv.ENFORCE_2FA).toBe(expected);
   });

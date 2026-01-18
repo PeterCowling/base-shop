@@ -25,3 +25,4 @@ export declare const couponSchema: z.ZodObject<{
     validTo?: string | undefined;
 }>;
 export type Coupon = z.infer<typeof couponSchema>;
+//# sourceMappingURL=Coupon.d.ts.map

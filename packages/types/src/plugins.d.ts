@@ -60,3 +60,4 @@ export interface Plugin<Config = Record<string, unknown>, PPay = PaymentPayload,
     /** optional async initialization hook */
     init?(config: Config): Promise<void> | void;
 }
+//# sourceMappingURL=plugins.d.ts.map

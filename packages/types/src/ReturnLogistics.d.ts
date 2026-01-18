@@ -48,3 +48,4 @@ export declare const returnLogisticsSchema: z.ZodObject<{
     mobileApp?: boolean | undefined;
 }>;
 export type ReturnLogistics = z.infer<typeof returnLogisticsSchema>;
+//# sourceMappingURL=ReturnLogistics.d.ts.map

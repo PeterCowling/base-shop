@@ -6,11 +6,11 @@ export declare const aiCatalogConfigSchema: z.ZodObject<{
     pageSize: z.ZodNumber;
 }, "strict", z.ZodTypeAny, {
     enabled: boolean;
-    fields: ("id" | "title" | "price" | "description" | "media")[];
+    fields: ("id" | "title" | "description" | "price" | "media")[];
     pageSize: number;
 }, {
     enabled: boolean;
-    fields: ("id" | "title" | "price" | "description" | "media")[];
+    fields: ("id" | "title" | "description" | "price" | "media")[];
     pageSize: number;
 }>;
 export declare const seoSettingsSchema: z.ZodObject<{
@@ -20,11 +20,11 @@ export declare const seoSettingsSchema: z.ZodObject<{
         pageSize: z.ZodNumber;
     }, "strict", z.ZodTypeAny, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }>>;
 }, "strip", z.ZodObject<{
@@ -67,41 +67,41 @@ export declare const seoSettingsSchema: z.ZodObject<{
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }>, z.objectOutputType<{
@@ -111,11 +111,11 @@ export declare const seoSettingsSchema: z.ZodObject<{
         pageSize: z.ZodNumber;
     }, "strict", z.ZodTypeAny, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }>>;
 }, z.ZodObject<{
@@ -158,41 +158,41 @@ export declare const seoSettingsSchema: z.ZodObject<{
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }>, "strip">, z.objectInputType<{
@@ -202,11 +202,11 @@ export declare const seoSettingsSchema: z.ZodObject<{
         pageSize: z.ZodNumber;
     }, "strict", z.ZodTypeAny, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }, {
         enabled: boolean;
-        fields: ("id" | "title" | "price" | "description" | "media")[];
+        fields: ("id" | "title" | "description" | "price" | "media")[];
         pageSize: number;
     }>>;
 }, z.ZodObject<{
@@ -249,41 +249,41 @@ export declare const seoSettingsSchema: z.ZodObject<{
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }>, "strip">>;
@@ -309,11 +309,11 @@ export declare const shopSettingsSchema: z.ZodObject<{
             pageSize: z.ZodNumber;
         }, "strict", z.ZodTypeAny, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }>>;
     }, "strip", z.ZodObject<{
@@ -356,41 +356,41 @@ export declare const shopSettingsSchema: z.ZodObject<{
         }>>;
         structuredData: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }>, z.objectOutputType<{
@@ -400,11 +400,11 @@ export declare const shopSettingsSchema: z.ZodObject<{
             pageSize: z.ZodNumber;
         }, "strict", z.ZodTypeAny, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }>>;
     }, z.ZodObject<{
@@ -447,41 +447,41 @@ export declare const shopSettingsSchema: z.ZodObject<{
         }>>;
         structuredData: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }>, "strip">, z.objectInputType<{
@@ -491,11 +491,11 @@ export declare const shopSettingsSchema: z.ZodObject<{
             pageSize: z.ZodNumber;
         }, "strict", z.ZodTypeAny, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }, {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         }>>;
     }, z.ZodObject<{
@@ -538,41 +538,41 @@ export declare const shopSettingsSchema: z.ZodObject<{
         }>>;
         structuredData: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }, {
-        alt?: string | undefined;
         title?: string | undefined;
-        twitter?: {
-            title?: string | undefined;
-            description?: string | undefined;
-            image?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
         description?: string | undefined;
         image?: string | undefined;
         canonicalBase?: string | undefined;
+        alt?: string | undefined;
         openGraph?: {
             url?: string | undefined;
             title?: string | undefined;
             description?: string | undefined;
             image?: string | undefined;
+        } | undefined;
+        twitter?: {
+            title?: string | undefined;
+            description?: string | undefined;
+            image?: string | undefined;
+            card?: string | undefined;
         } | undefined;
         structuredData?: string | undefined;
     }>, "strip">>;
@@ -582,12 +582,12 @@ export declare const shopSettingsSchema: z.ZodObject<{
         id: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
         provider: string;
-        id?: string | undefined;
         enabled?: boolean | undefined;
+        id?: string | undefined;
     }, {
         provider: string;
-        id?: string | undefined;
         enabled?: boolean | undefined;
+        id?: string | undefined;
     }>>;
     leadCapture: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodOptional<z.ZodBoolean>;
@@ -732,27 +732,27 @@ export declare const shopSettingsSchema: z.ZodObject<{
     seo: {
         aiCatalog?: {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         } | undefined;
     } & {
         [k: string]: {
-            alt?: string | undefined;
             title?: string | undefined;
-            twitter?: {
-                title?: string | undefined;
-                description?: string | undefined;
-                image?: string | undefined;
-                card?: string | undefined;
-            } | undefined;
             description?: string | undefined;
             image?: string | undefined;
             canonicalBase?: string | undefined;
+            alt?: string | undefined;
             openGraph?: {
                 url?: string | undefined;
                 title?: string | undefined;
                 description?: string | undefined;
                 image?: string | undefined;
+            } | undefined;
+            twitter?: {
+                title?: string | undefined;
+                description?: string | undefined;
+                image?: string | undefined;
+                card?: string | undefined;
             } | undefined;
             structuredData?: string | undefined;
         };
@@ -771,8 +771,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedBy: string;
     analytics?: {
         provider: string;
-        id?: string | undefined;
         enabled?: boolean | undefined;
+        id?: string | undefined;
+    } | undefined;
+    leadCapture?: {
+        enabled?: boolean | undefined;
+        provider?: string | undefined;
+        endpoint?: string | undefined;
     } | undefined;
     freezeTranslations?: boolean | undefined;
     currency?: string | undefined;
@@ -817,27 +822,27 @@ export declare const shopSettingsSchema: z.ZodObject<{
     seo: {
         aiCatalog?: {
             enabled: boolean;
-            fields: ("id" | "title" | "price" | "description" | "media")[];
+            fields: ("id" | "title" | "description" | "price" | "media")[];
             pageSize: number;
         } | undefined;
     } & {
         [k: string]: {
-            alt?: string | undefined;
             title?: string | undefined;
-            twitter?: {
-                title?: string | undefined;
-                description?: string | undefined;
-                image?: string | undefined;
-                card?: string | undefined;
-            } | undefined;
             description?: string | undefined;
             image?: string | undefined;
             canonicalBase?: string | undefined;
+            alt?: string | undefined;
             openGraph?: {
                 url?: string | undefined;
                 title?: string | undefined;
                 description?: string | undefined;
                 image?: string | undefined;
+            } | undefined;
+            twitter?: {
+                title?: string | undefined;
+                description?: string | undefined;
+                image?: string | undefined;
+                card?: string | undefined;
             } | undefined;
             structuredData?: string | undefined;
         };
@@ -846,8 +851,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedBy: string;
     analytics?: {
         provider: string;
-        id?: string | undefined;
         enabled?: boolean | undefined;
+        id?: string | undefined;
+    } | undefined;
+    leadCapture?: {
+        enabled?: boolean | undefined;
+        provider?: string | undefined;
+        endpoint?: string | undefined;
     } | undefined;
     freezeTranslations?: boolean | undefined;
     currency?: string | undefined;
@@ -902,3 +912,4 @@ export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 export type AiCatalogConfig = z.infer<typeof aiCatalogConfigSchema>;
 export type AiCatalogField = z.infer<typeof aiCatalogFieldSchema>;
 export type StockAlertConfig = z.infer<typeof stockAlertConfigSchema>;
+//# sourceMappingURL=ShopSettings.d.ts.map

@@ -10,3 +10,4 @@ export interface AnalyticsEvent {
     code?: string;
     [key: string]: unknown;
 }
+//# sourceMappingURL=AnalyticsEvent.d.ts.map

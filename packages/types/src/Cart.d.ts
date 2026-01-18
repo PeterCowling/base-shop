@@ -19,3 +19,4 @@ export interface CartLine {
  * preserving type-safety while still documenting intent.
  */
 export type CartState = Record<NonNullable<SKU["id"]>, CartLine>;
+//# sourceMappingURL=Cart.d.ts.map

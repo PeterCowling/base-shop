@@ -43,4 +43,9 @@ export type { SectionTemplate, SectionPreset } from "./section/template";
 export type { RentalLineItem } from "./rental";
 export * from "./data";
 export * from "./recommendations";
-export type { LocalizedString, TranslatableText, KeyRef, Inline } from "./i18n";
+export * from "./i18n";
+export * from "./tryon";
+export * from "./configurator";
+export * from "./environment";
+export * from "./shop-config";
+//# sourceMappingURL=index.d.ts.map

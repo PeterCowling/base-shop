@@ -10,23 +10,23 @@ export declare const inventoryItemSchema: z.ZodObject<{
     wearAndTearLimit: z.ZodOptional<z.ZodNumber>;
     maintenanceCycle: z.ZodOptional<z.ZodNumber>;
 }, "strict", z.ZodTypeAny, {
+    quantity: number;
     sku: string;
     productId: string;
-    quantity: number;
     variantAttributes: Record<string, string>;
-    lowStockThreshold?: number | undefined;
-    wearCount?: number | undefined;
     wearAndTearLimit?: number | undefined;
     maintenanceCycle?: number | undefined;
+    lowStockThreshold?: number | undefined;
+    wearCount?: number | undefined;
 }, {
+    quantity: number;
     sku: string;
     productId: string;
-    quantity: number;
     variantAttributes: Record<string, string>;
-    lowStockThreshold?: number | undefined;
-    wearCount?: number | undefined;
     wearAndTearLimit?: number | undefined;
     maintenanceCycle?: number | undefined;
+    lowStockThreshold?: number | undefined;
+    wearCount?: number | undefined;
 }>;
 export type VariantAttributes = z.infer<typeof variantAttributesSchema>;
 export type InventoryItem = z.infer<typeof inventoryItemSchema>;
@@ -36,3 +36,4 @@ export interface SerializedInventoryItem {
     variantAttributes?: VariantAttributes;
     [key: string]: unknown;
 }
+//# sourceMappingURL=InventoryItem.d.ts.map

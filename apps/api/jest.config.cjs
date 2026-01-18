@@ -9,18 +9,18 @@ const coveragePathIgnorePatterns = base.coveragePathIgnorePatterns.filter(
 module.exports = {
   ...base,
   // Run from the workspace root but limit tests and coverage to the API app
-  roots: ["<rootDir>/apps/api/src", "<rootDir>/apps/api/__tests__"],
+  roots: ["<rootDir>/src", "<rootDir>/__tests__"],
   testEnvironment: "node",
   setupFilesAfterEnv: [
     ...(base.setupFilesAfterEnv || []),
-    "<rootDir>/apps/api/jest.setup.ts",
+    "<rootDir>/jest.setup.ts",
   ],
   collectCoverage: true,
   collectCoverageFrom: [
-    "apps/api/src/**/*.{ts,tsx}",
-    "!apps/api/src/**/*.d.ts",
-    "!apps/api/src/**/?(*.)+(spec|test).{ts,tsx}",
-    "!apps/api/src/**/__tests__/**",
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/?(*.)+(spec|test).{ts,tsx}",
+    "!src/**/__tests__/**",
   ],
   coveragePathIgnorePatterns,
   coverageReporters: ["text", "json", "lcov"],

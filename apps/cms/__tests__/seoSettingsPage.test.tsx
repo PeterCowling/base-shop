@@ -31,6 +31,12 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel", () => ({
   default: (props: any) => seoProgressMock(props),
 }));
 
+const sitemapStatusMock = jest.fn(() => <div data-cy="sitemap-status" />);
+jest.mock("../src/app/cms/shop/[shop]/settings/seo/SitemapStatusPanel", () => ({
+  __esModule: true,
+  default: () => sitemapStatusMock(),
+}));
+
 jest.mock("next/dynamic", () => {
   return (importer: () => Promise<any>) => {
     const key = importer.toString();

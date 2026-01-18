@@ -5,3 +5,4 @@ export interface CmsUser {
     /** argon2 hashed password */
     password: string;
 }
+//# sourceMappingURL=CmsUser.d.ts.map

@@ -23,3 +23,4 @@ export declare const coverageSchema: z.ZodRecord<z.ZodEnum<["scuff", "tear", "lo
 export type CoverageCode = z.infer<typeof coverageCodeSchema>;
 export type CoverageRule = z.infer<typeof coverageRuleSchema>;
 export type CoverageMatrix = z.infer<typeof coverageSchema>;
+//# sourceMappingURL=Coverage.d.ts.map

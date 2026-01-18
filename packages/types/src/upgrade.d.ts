@@ -27,3 +27,4 @@ export declare const shopMetadataSchema: z.ZodObject<{
     componentVersions: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodString>>;
 }, z.ZodUnknown, "strip">>;
 export type ShopMetadata = z.infer<typeof shopMetadataSchema>;
+//# sourceMappingURL=upgrade.d.ts.map

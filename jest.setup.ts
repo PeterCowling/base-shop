@@ -53,7 +53,8 @@ Object.defineProperty(process, "env", {
   },
 });
 
-mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
+mutableEnv.NODE_ENV ||= "development"; // relax "edge" runtime checks
+mutableEnv.LOG_LEVEL ||= "silent"; // suppress pino/metric logging during tests
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
 mutableEnv.EMAIL_FROM ||= "test@example.com"; // dummy sender email
@@ -284,11 +285,17 @@ type ConsolePattern = string | RegExp;
 
 const JSDOM_NAV_ERROR = "Not implemented: navigation (except hash changes)";
 
+const IGNORED_LOG_PATTERNS: ConsolePattern[] = [
+  // Pino JSON logs (level 10=trace, 20=debug, 30=info)
+  /^\{"level":(10|20|30),/,
+];
+
 const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   JSDOM_NAV_ERROR,
   // Service-layer logs exercised in tests
   "Failed to unpublish post",
   "Failed to list media",
+  "Inventory patch failed",
   // React dev warnings for DS props on DOM elements
   /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
   /React does not recognize the `%s` prop on a DOM element\..*trailingIcon/,
@@ -307,6 +314,8 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Failed to send campaign email",
   // Bullet-point issue details printed by core/shipping env loaders
   /^  • .*: .+/,
+  // MSW warning for unhandled AI catalog feed preview request in tests
+  /\[MSW\] Error: intercepted a request without a matching request handler:.*\/api\/seo\/ai-catalog/,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
@@ -340,6 +349,11 @@ const shouldIgnoreConsoleMessage = (
 (() => {
   const originalConsole = globalThis.console;
   const patchedConsole = Object.create(originalConsole) as Console;
+
+  patchedConsole.log = (...args: unknown[]) => {
+    if (shouldIgnoreConsoleMessage(args, IGNORED_LOG_PATTERNS)) return;
+    originalConsole.log(...(args as []));
+  };
 
   patchedConsole.error = (...args: unknown[]) => {
     if (shouldIgnoreConsoleMessage(args, IGNORED_ERROR_PATTERNS)) return;

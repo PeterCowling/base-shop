@@ -31,11 +31,11 @@ export declare const skuSchema: z.ZodObject<{
         from: z.ZodString;
         to: z.ZodString;
     }, "strict", z.ZodTypeAny, {
-        to: string;
         from: string;
+        to: string;
     }, {
-        to: string;
         from: string;
+        to: string;
     }>, "many">>;
     /** Ordered media gallery for the product */
     media: z.ZodArray<z.ZodObject<{
@@ -60,53 +60,53 @@ export declare const skuSchema: z.ZodObject<{
     id: string;
     slug: string;
     title: string;
-    price: number;
     description: string;
+    price: number;
+    deposit: number;
+    stock: number;
+    forSale: boolean;
+    forRental: boolean;
     media: {
         type: "image" | "video";
         url: string;
         title?: string | undefined;
         altText?: string | undefined;
     }[];
-    deposit: number;
-    stock: number;
-    forSale: boolean;
-    forRental: boolean;
     sizes: string[];
-    wearAndTearLimit?: number | undefined;
-    maintenanceCycle?: number | undefined;
     dailyRate?: number | undefined;
     weeklyRate?: number | undefined;
     monthlyRate?: number | undefined;
+    wearAndTearLimit?: number | undefined;
+    maintenanceCycle?: number | undefined;
     availability?: {
-        to: string;
         from: string;
+        to: string;
     }[] | undefined;
 }, {
     id: string;
     slug: string;
     title: string;
-    price: number;
     description: string;
+    price: number;
+    deposit: number;
+    stock: number;
     media: {
         type: "image" | "video";
         url: string;
         title?: string | undefined;
         altText?: string | undefined;
     }[];
-    deposit: number;
-    stock: number;
     sizes: string[];
-    wearAndTearLimit?: number | undefined;
-    maintenanceCycle?: number | undefined;
     forSale?: boolean | undefined;
     forRental?: boolean | undefined;
     dailyRate?: number | undefined;
     weeklyRate?: number | undefined;
     monthlyRate?: number | undefined;
+    wearAndTearLimit?: number | undefined;
+    maintenanceCycle?: number | undefined;
     availability?: {
-        to: string;
         from: string;
+        to: string;
     }[] | undefined;
 }>;
 export type SKU = z.infer<typeof skuSchema>;
@@ -146,4 +146,7 @@ export interface ProductPublication extends ProductCore {
     shop: string;
     status: PublicationStatus;
     row_version: number;
+    /** Optional list of shops this product is published to (in addition to owner). */
+    publishShops?: string[];
 }
+//# sourceMappingURL=Product.d.ts.map

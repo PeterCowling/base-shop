@@ -227,6 +227,12 @@
       "@acme/pipeline-engine/*": [
         "packages/pipeline-engine/src/*",
         "packages/pipeline-engine/dist/*"
+      ],
+      "@acme/types": [
+        "packages/types/dist/index.d.ts"
+      ],
+      "@acme/types/*": [
+        "packages/types/dist/*"
       ]
     }
   },

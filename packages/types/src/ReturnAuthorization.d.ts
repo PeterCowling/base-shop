@@ -9,13 +9,14 @@ export declare const returnAuthorizationSchema: z.ZodObject<{
     inspectionNotes: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
     status: string;
-    orderId: string;
     raId: string;
+    orderId: string;
     inspectionNotes?: string | undefined;
 }, {
     status: string;
-    orderId: string;
     raId: string;
+    orderId: string;
     inspectionNotes?: string | undefined;
 }>;
 export type ReturnAuthorization = z.infer<typeof returnAuthorizationSchema>;
+//# sourceMappingURL=ReturnAuthorization.d.ts.map

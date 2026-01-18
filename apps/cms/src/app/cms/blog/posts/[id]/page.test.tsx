@@ -12,6 +12,10 @@ jest.mock("next/link", () => ({
 
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 
+jest.mock("@acme/shared-utils", () => ({
+  logger: { info: jest.fn(), debug: jest.fn(), warn: jest.fn(), error: jest.fn() },
+}));
+
 jest.mock("@cms/actions/blog.server", () => ({
   getPost: jest.fn(),
   updatePost: jest.fn(),

@@ -51,14 +51,100 @@ on:
       - '.github/workflows/cms.yml'
   workflow_dispatch:
 
+concurrency:
+  group: cms-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  lint-typecheck:
+    name: Lint & typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Lint
+        run: pnpm --filter @apps/cms lint
+      - name: Typecheck
+        run: pnpm --filter @apps/cms typecheck
+
+  test:
+    name: Test (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run tests (shard ${{ matrix.shard }}/4)
+        run: |
+          pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests \
+            --coverage --config apps/cms/jest.config.cjs \
+            --shard=${{ matrix.shard }}/4
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cms-coverage-shard-${{ matrix.shard }}
+          path: coverage/
+          if-no-files-found: ignore
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint-typecheck, test]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Build
+        run: pnpm --filter @apps/cms... build
+
   deploy:
-    uses: ./.github/workflows/reusable-app.yml
-    with:
-      app-filter: "@apps/cms"
-      build-cmd: pnpm --filter @apps/cms... build
-      artifact-path: ""
-      deploy-cmd: >
-        cd apps/cms && pnpm exec next-on-pages deploy --project-name cms --branch ${{ github.ref_name }}
-      project-name: "cms"
-    secrets: inherit
+    name: Deploy
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://cms.pages.dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: cd apps/cms && pnpm exec next-on-pages deploy --project-name cms --branch ${{ github.ref_name }}
+      - name: Post-Deploy Health Check
+        run: |
+          chmod +x scripts/post-deploy-health-check.sh
+          ./scripts/post-deploy-health-check.sh cms
+        env:
+          EXTRA_ROUTES: "/api/health"
+          MAX_RETRIES: "10"
+          RETRY_DELAY: "6"

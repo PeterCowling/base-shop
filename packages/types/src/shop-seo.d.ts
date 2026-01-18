@@ -39,42 +39,43 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }, {
-    alt?: string | undefined;
     title?: string | undefined;
-    twitter?: {
-        title?: string | undefined;
-        description?: string | undefined;
-        image?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
     description?: string | undefined;
     image?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         url?: string | undefined;
         title?: string | undefined;
         description?: string | undefined;
         image?: string | undefined;
+    } | undefined;
+    twitter?: {
+        title?: string | undefined;
+        description?: string | undefined;
+        image?: string | undefined;
+        card?: string | undefined;
     } | undefined;
     structuredData?: string | undefined;
 }>;
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
+//# sourceMappingURL=shop-seo.d.ts.map

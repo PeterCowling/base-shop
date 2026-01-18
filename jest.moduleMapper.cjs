@@ -89,6 +89,8 @@ const moduleMapper = {
     " /test/__mocks__/@radix-ui/react-dropdown-menu.tsx",
   "^@acme/sanity$": " /packages/sanity/src/index.ts",
   "^@acme/sanity/(.*)$": " /packages/sanity/src/$1",
+  "^@acme/types$": " /packages/types/src/index.ts",
+  "^@acme/types/(.*)$": " /packages/types/src/$1",
   "^@acme/platform-machine/src/(.*)$": " /packages/platform-machine/src/$1",
   "^@acme/shared-utils/src/(.*)$": " /packages/shared-utils/src/$1",
   "^@acme/plugin-sanity$": " /test/__mocks__/pluginSanityStub.ts",

@@ -6,7 +6,7 @@ import PreviewViewer from "../src/app/preview/[token]/page";
 jest.mock("@acme/ui/components/DynamicRenderer", () => ({
   __esModule: true,
   default: (props: { components: unknown[] }) => (
-    <div data-testid="runtime-preview">
+    <div data-cy="runtime-preview">
       {Array.isArray(props.components) ? props.components.length : "no-components"}
     </div>
   ),

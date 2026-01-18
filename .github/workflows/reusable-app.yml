@@ -35,7 +35,9 @@ on:
 
 jobs:
   validate-and-build:
+    name: Validate & build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,10 +72,12 @@ jobs:
           retention-days: 1
 
   deploy:
+    name: Deploy
     # Only deploy if a deploy command is provided AND we are on main
     if: ${{ inputs.deploy-cmd != '' && github.ref == 'refs/heads/main' }}
     needs: validate-and-build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: production
       url: https://${{ inputs.project-name }}.pages.dev

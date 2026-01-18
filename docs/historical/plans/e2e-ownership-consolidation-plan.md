@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Historical
 Domain: Repo
 Last-reviewed: 2026-01-17
 Relates-to charter: none
@@ -8,6 +8,8 @@ Created: 2026-01-17
 Created-by: Codex
 Last-updated: 2026-01-17
 Last-updated-by: Codex (E2E-01 inventory, E2E-02 policy, E2E-03 consolidation, E2E-04 docs, owner naming)
+Completed: 2026-01-17
+Completed-by: Codex
 ---
 
 # E2E Ownership Consolidation Plan
@@ -92,3 +94,7 @@ E2E ownership is fragmented across root CI (`ci.yml`), the CMS Cypress workflow 
 
 - `docs/repo-quality-audit-2026-01.md`
 - `docs/plans/ci-deploy/ci-and-deploy-roadmap.md`
+
+## Active tasks
+
+(All tasks completed)

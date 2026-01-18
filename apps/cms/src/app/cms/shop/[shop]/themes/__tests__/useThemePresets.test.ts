@@ -6,6 +6,10 @@ jest.mock("../page", () => ({
   deletePreset: jest.fn().mockResolvedValue(undefined),
 }));
 
+jest.mock("../../../../wizard/services/patchTheme", () => ({
+  patchShopTheme: jest.fn().mockResolvedValue(undefined),
+}));
+
 describe("useThemePresets", () => {
   const baseArgs = {
     shop: "shop1",

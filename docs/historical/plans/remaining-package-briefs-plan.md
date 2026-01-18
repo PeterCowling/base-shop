@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Documentation
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -39,3 +41,7 @@ have a package-level `README.md`.
 ## Completion Summary
 - Added README briefs for remaining packages without `README.md`.
 - Scoped content to agent-focused template fields and entry points.
+
+## Active tasks
+
+(Historical - all tasks completed)

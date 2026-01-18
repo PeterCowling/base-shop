@@ -2,6 +2,8 @@
 Type: Plan
 Status: Draft
 Domain: Inventory
+Last-reviewed: 2026-01-18
+Relates-to charter: none
 ---
 
 # Inventory Reservation Service (Reserve TTL)
@@ -37,3 +39,10 @@ Provide a shared reservation/hold mechanism so checkout can guarantee availabili
 - Phase 1: keep `validate_only` (current).
 - Phase 2: add `reserve_ttl` implementation behind a flag; add conformance tests gated by `capabilities.inventoryMode`.
 - Phase 3: adopt `reserve_ttl` across runtimes; decommission bespoke checks.
+
+## Active tasks
+
+- **RESERVE-01**: Design storage layer for holds (Redis/DO/DB evaluation)
+- **RESERVE-02**: Implement reserve_ttl API behind feature flag
+- **RESERVE-03**: Add Stripe metadata and order plumbing for holdId
+- **RESERVE-04**: Add conformance tests gated by capabilities.inventoryMode

@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Repo
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -66,3 +68,7 @@ The current agent runbook emphasizes frequent commits, push frequency, and avoid
 ## Validation
 - Manual doc review for clarity and consistency.
 - (Optional) Verify CI workflow triggers mention work branches or PRs in `.github/workflows` if needed for accuracy.
+
+## Active tasks
+
+- **GITDOCS-01** - Audit `AGENTS.md` for insertion points and draft updates

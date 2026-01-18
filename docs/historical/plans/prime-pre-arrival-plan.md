@@ -3,7 +3,7 @@ Type: Plan
 Status: Superseded
 Domain: Prime
 Last-reviewed: 2026-01-13
-Relates-to charter: TBD (Prime charter not yet defined)
+Relates-to charter: none
 Relates-to plan: docs/plans/prime-improvement-plan.md (completed)
 Last-updated: 2026-01-17
 Last-updated-by: Codex
@@ -438,7 +438,9 @@ const DEPOSIT_CONFIG = {
 
 ## Active tasks
 
-### Phase 0 - Security foundation
+None - this plan is superseded by `docs/plans/prime-guest-portal-gap-plan.md`. The tasks below are retained for historical context only.
+
+### Phase 0 - Security foundation (historical)
 
 - [ ] PRIME-SEC-01: Firebase RTDB rules for pre-arrival data
   - Scope:

@@ -1,4 +1,4 @@
-name: Workspace CI
+name: Package Quality Matrix
 
 on:
   push:
@@ -12,9 +12,15 @@ on:
   schedule:
     - cron: '0 3 * * *'
 
+concurrency:
+  group: package-quality-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   workspaces:
+    name: Discover packages
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -30,9 +36,11 @@ jobs:
           matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', '')).filter(p=>p!=='apps/cms' && p!=='apps/skylar');process.stdout.write(JSON.stringify(arr));")
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
-  quality:
+  package-checks:
+    name: Check ${{ matrix.workspace }}
     needs: workspaces
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -40,8 +48,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
-      - name: Build ESLint plugin
-        run: pnpm --filter @acme/eslint-plugin-ds build
       - name: Build workspace (scoped)
         run: pnpm --filter ./${{ matrix.workspace }}... build
       - run: pnpm --filter ./${{ matrix.workspace }} lint

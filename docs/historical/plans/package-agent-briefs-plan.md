@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Documentation
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -43,3 +45,7 @@ package-level README/AGENTS doc.
 
 - Added agent-brief README templates to packages missing package briefs.
 - Stamped package name, `Domain: Package`, and updated review date per package.
+
+## Active tasks
+
+(Historical - all tasks completed)

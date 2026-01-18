@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -70,3 +72,7 @@ Last-updated-by: Codex
 ## Open Questions
 - Are there preferred DS token mappings for the flagged palette colors in `@acme/ui`?
 - Should we prioritize specific components or flows for first fixes?
+
+## Active tasks
+
+- **UI-LINT-01** - Resolve config parsing error (tsup.config.ts in tsconfig)

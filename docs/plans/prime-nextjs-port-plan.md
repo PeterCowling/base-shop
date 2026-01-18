@@ -233,5 +233,9 @@ apps/
 
 - Does Prime require any true server-side features (SSR, API routes, middleware)? If yes:
   - Can those be moved to existing workers/services so the UI remains static?
-  - Or do we need to switch to a Cloudflare Next runtime (`@cloudflare/next-on-pages`) despite the “Skylar-style” preference?
-- Which Prime components are “core UI primitives” that should live in `packages/ui` vs “product-specific” that should remain in `apps/prime`?
+  - Or do we need to switch to a Cloudflare Next runtime (`@cloudflare/next-on-pages`) despite the "Skylar-style" preference?
+- Which Prime components are "core UI primitives" that should live in `packages/ui` vs "product-specific" that should remain in `apps/prime`?
+
+## Active tasks
+
+- **PRIME-01** - Route inventory and parity analysis

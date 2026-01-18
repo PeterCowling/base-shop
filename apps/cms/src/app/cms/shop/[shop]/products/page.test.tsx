@@ -70,6 +70,35 @@ jest.mock("@acme/ui/components/atoms", () => {
   };
 });
 
+jest.mock("@acme/ui/components/atoms/primitives", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Inline: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+  };
+});
+
+jest.mock("@acme/ui/components/cms", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    CmsBuildHero: () => React.createElement("div", { "data-testid": "cms-build-hero" }),
+    CmsMetricTiles: () => React.createElement("div", { "data-testid": "cms-metric-tiles" }),
+    CmsLaunchChecklist: () => React.createElement("div", { "data-testid": "cms-launch-checklist" }),
+  };
+});
+
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => key,
+}));
+
+jest.mock("@acme/telemetry", () => ({
+  __esModule: true,
+  track: jest.fn(),
+}));
+
 jest.mock("@acme/ui/utils/style", () => ({
   cn: (...classes: any[]) => classes.filter(Boolean).join(" "),
 }));
@@ -136,9 +165,7 @@ describe("ProductsPage", () => {
     render(ui);
 
     expect(
-      screen.getByText(
-        "You are signed in as a viewer. Editing actions like create, duplicate, or delete are disabled.",
-      ),
+      screen.getByText("cms.products.viewerNotice"),
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /add new product/i })).toBeNull();
     expect(productsTableRenderSpy).toHaveBeenCalledWith(

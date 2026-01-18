@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Reception
 Last-reviewed: 2026-01-15
-Relates-to charter: TBD (Reception charter not yet defined)
+Relates-to charter: none
+---
 
 # Reception - Functionality Improvements Plan
 

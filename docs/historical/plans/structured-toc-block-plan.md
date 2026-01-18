@@ -1,9 +1,11 @@
+---
 Type: Plan
 Status: Historical
 Domain: Brikette Guides
 Last-reviewed: 2026-01-15
+Relates-to charter: none
 Completed: 2026-01-15
-Relates-to charter: TBD (no guides charter yet)
+---
 
 # StructuredTocBlock Refactor Plan
 
@@ -243,3 +245,7 @@ The refactoring is **complete and stable**:
 - Keep tests bounded to `StructuredTocBlock` behavior and avoid wide route snapshots.
 - Use mocks for `TableOfContents`/`GenericContent` where needed to assert decision outputs.
 - Run only scoped tests for new/updated files.
+
+## Active tasks
+
+(Historical - all tasks completed)

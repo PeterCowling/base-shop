@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Reception
 Last-reviewed: 2026-01-12
 Relates-to charter: docs/platform-vs-apps.md
+---
 
 # Reception — Next.js App Router Migration Plan (Monorepo)
 

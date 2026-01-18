@@ -2,12 +2,12 @@
 Type: Plan
 Status: Historical
 Domain: Repo
+Last-reviewed: 2026-01-17
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-17
 Last-updated-by: Codex
-Last-reviewed: 2026-01-17
-Relates-to charter: none (repo tooling)
 Owner: Peter Cowling
 Target: TBD
 Related-PR: #7157
@@ -73,46 +73,9 @@ Dependency pinning (recommended)
 - Pin `lint-staged` deliberately (at least major+minor, ideally exact) because this policy is sensitive to subtle behavioral changes across versions.
 - Only upgrade `lint-staged` with an explicit review and validation run that exercises the failure modes this plan cares about (interruptions, partial staging, and no-stash invariants).
 
-## Active Tasks
-- [x] REPO-LS-01: Document lint-staged semantics (15.5.2 vs 16.1.1)
-  - Scope: capture the backup-stash default, `--no-stash` semantics, and version-sensitive partial-staging behavior.
-  - Definition of done: this plan documents the behaviors and the safety rationale clearly enough to implement without guessing.
-- [ ] REPO-LS-02: Pin `lint-staged` deliberately
-  - Scope: pin at least major+minor (ideally exact) in `package.json` (avoid `^` ranges); update lockfile.
-  - Dependencies: none.
-  - Definition of done: `package.json` no longer permits drift for lint-staged; upgrade requires explicit review + validation run.
-- [x] REPO-LS-03: Make lint-staged tasks check-only
-  - Scope: remove `--fix` (and any write flags like `prettier --write`) from the `lint-staged` config used by pre-commit.
-  - Dependencies: REPO-LS-02 (pinning) recommended to avoid behavior drift while changing hooks.
-  - Definition of done: `pnpm exec lint-staged` in pre-commit never writes to tracked files.
-- [x] REPO-LS-04: Add partial-staging guard script (prescriptive approach)
-  - Scope: implement a guard that parses `git status --porcelain=v2 -z` and blocks any path modified in both index and working tree.
-  - Dependencies: none.
-  - Definition of done: partial staging fails before lint-staged runs, with an actionable message that explains why (prevents unstaged hunks being staged under `--no-stash` behavior).
-- [x] REPO-LS-05: Update `pre-commit` to run guard then `lint-staged --no-stash`
-  - Scope: run guard first, then `pnpm exec lint-staged --no-stash`.
-  - Dependencies: REPO-LS-03, REPO-LS-04.
-  - Definition of done: no lint-staged backup stash is created in any commit attempt.
-- [x] REPO-LS-06: Add `pnpm lint:staged` developer command (debugging parity)
-  - Scope: provide a manual command that runs the same check-only lint-staged invocation as the hook (so developers/agents can debug without triggering a commit).
-  - Dependencies: REPO-LS-03, REPO-LS-05.
-  - Definition of done: documented, discoverable script exists and matches the hook behavior exactly.
-- [x] REPO-LS-07: Add local typecheck on `pre-push` (default)
-  - Scope: add a `pre-push` hook that runs `pnpm typecheck` (leverages incremental `tsc -b` + `turbo run typecheck` caching).
-  - Dependencies: none.
-  - Definition of done: pushes are blocked locally on type errors without slowing down every commit; command is documented and bypass caveat is explicit.
-- [x] REPO-LS-08: CI + ruleset enforcement (authoritative)
-  - Scope: ensure GitHub Actions runs `pnpm lint` + `pnpm typecheck` on PRs, and `main` rulesets require PRs + required checks (no direct pushes).
-  - Dependencies: none.
-  - Definition of done: failing lint/typecheck cannot merge to `main` in GitHub UI.
-- [x] REPO-LS-09: Update docs for the new workflow
-  - Scope: update developer docs (`docs/development.md`, `docs/linting.md`) and `AGENTS.md` to explain no-partial-staging, `--no-stash` rationale, and the agent "fix then commit" flow.
-  - Dependencies: REPO-LS-05, REPO-LS-07, REPO-LS-08.
-  - Definition of done: docs explain the workflow and recovery steps without relying on tribal knowledge.
-- [ ] REPO-LS-10: Hardening (optional / future)
-  - Scope: if supported by the pinned lint-staged version, evaluate `--fail-on-changes` as a regression tripwire so any unexpected task writes fail the commit.
-  - Dependencies: REPO-LS-02.
-  - Definition of done: accidental reintroduction of fixers is caught automatically (or task is explicitly deferred with rationale).
+## Active tasks
+
+None - this plan is historical/completed.
 
 ## Validation
 - No-stash invariant:

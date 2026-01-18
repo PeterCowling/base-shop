@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Documentation
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -66,3 +68,7 @@ code examples, and adding explicit runbook framing and metadata updates.
 - All scoped docs reflect agent-only tone with minimal narrative "you/your" phrasing.
 - Metadata updates applied consistently.
 - No changes to quoted UI copy or code examples.
+
+## Active tasks
+
+(Historical - all tasks completed)

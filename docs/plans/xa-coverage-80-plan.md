@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Commerce
+Last-reviewed: 2026-01-15
+Relates-to charter: none
 Created: 2026-01-15
 Created-by: Codex
 Last-updated: 2026-01-15
@@ -75,3 +77,6 @@ branches, and functions for the XA app.
 - Are there specific flows you want prioritized (e.g., cart, search,
   access-admin)?
 
+## Active tasks
+
+- **XA-COV-01** - Baseline coverage measurement and gap analysis

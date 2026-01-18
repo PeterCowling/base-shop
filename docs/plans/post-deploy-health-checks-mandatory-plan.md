@@ -1,12 +1,14 @@
+---
 Type: Plan
 Status: Active
 Domain: Repo
+Last-reviewed: 2026-01-17
+Relates-to charter: docs/runtime/runtime-charter.md
 Created: 2026-01-17
 Created-by: Codex
 Last-updated: 2026-01-17
 Last-updated-by: Codex
-Last-reviewed: 2026-01-17
-Relates-to charter: docs/runtime/runtime-charter.md
+---
 
 # Post-Deploy Health Checks Mandatory Plan
 
@@ -85,3 +87,7 @@ Make post-deploy health checks a hard requirement for every shop deploy path (ro
 - `docs/repo-quality-audit-2026-01.md` (priority recommendation)
 - `docs/plans/ci-deploy/ci-and-deploy-roadmap.md`
 - `scripts/post-deploy-health-check.sh`
+
+## Active tasks
+
+See "Active Tasks" section above for the full task list (DEPLOY-01 through DEPLOY-05).

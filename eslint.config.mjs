@@ -409,6 +409,18 @@ export default [
       },
     },
   },
+  /* ▸ config env schema lives at package root; lint without TS project */
+  {
+    files: ["packages/config/env-schema.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
   {
     files: ["packages/configurator/**/*.{ts,tsx,js,jsx}"],
     languageOptions: {

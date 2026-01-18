@@ -14,6 +14,10 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
 }));
 
+jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => ({
+  useConfigurator: () => ({ state: { shopId: "test-shop" } }),
+}));
+
 describe("useConfiguratorStep", () => {
   beforeEach(() => {
     push.mockClear();

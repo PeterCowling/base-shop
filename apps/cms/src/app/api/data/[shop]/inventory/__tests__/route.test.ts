@@ -62,6 +62,7 @@ describe("POST", () => {
   });
 
   it("returns 503 when backend delegate is unavailable", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     write.mockRejectedValueOnce(new Error("Prisma inventory delegate is unavailable"));
     const items = [
@@ -74,5 +75,6 @@ describe("POST", () => {
     expect(await res.json()).toEqual({
       error: "Prisma inventory delegate is unavailable",
     });
+    errorSpy.mockRestore();
   });
 });

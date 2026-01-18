@@ -1,3 +1,6 @@
+// Disable MSW - this test mocks all dependencies with Jest
+process.env.DISABLE_MSW = "1";
+
 import "@testing-library/jest-dom";
 import React from "react";
 import { render, screen } from "@testing-library/react";

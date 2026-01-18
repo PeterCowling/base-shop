@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -41,3 +43,7 @@ These are spread across more than 10 files, so we need a plan before applying fi
 
 ## Validation
 - `pnpm exec eslint --fix --max-warnings=0 <restored-files>`
+
+## Active tasks
+
+- **LINT-WARN-01** - Fix Mission Control hook warnings and tap-size warnings

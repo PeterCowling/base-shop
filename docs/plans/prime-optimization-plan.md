@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Performance
 Last-reviewed: 2026-01-12
-Relates-to charter: docs/plans/prime-nextjs-port-plan.md
+Relates-to charter: none
+---
 
 # Prime Optimization Plan — Database & Performance
 
@@ -496,3 +498,7 @@ export const get: typeof rtdbGet = async (q) => {
 **Reviewer:** Technical Lead
 
 For questions or to prioritize tasks, reference task IDs (OPT-01, etc.) in discussions.
+
+## Active tasks
+
+See "Optimization Tasks" section above for the full task list (OPT-01 through OPT-07).

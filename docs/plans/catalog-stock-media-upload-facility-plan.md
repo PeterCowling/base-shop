@@ -1,9 +1,12 @@
-<!-- docs/plans/catalog-stock-media-upload-facility-plan.md -->
-
-Type: Guide
+---
+Type: Plan
 Status: Active
 Domain: Commerce
 Last-reviewed: 2025-12-29
+Relates-to charter: docs/commerce-charter.md
+---
+
+<!-- docs/plans/catalog-stock-media-upload-facility-plan.md -->
 
 Related docs:
 - docs/commerce-charter.md
@@ -113,5 +116,6 @@ To adopt this facility for another app:
    - Copy `data/shops/<shop>/uploads/*` into deployed static assets at build time (like cochlearfit).
 5) If checkout pricing is variant-based, centralize Stripe price IDs in one place (for cochlearfit today this is `data/shops/cochlearfit/variants.json`).
 
-## Remaining gaps / follow-ups (unimplemented)
- - [ ] Ensure order allocation/return entries carry real before/after quantities (requires inventory reservation linkage), and migrate DBs to include `lineItems` JSON column on RentalOrder.
+## Active tasks
+
+- **CAT-01** - Ensure order allocation/return entries carry real before/after quantities (requires inventory reservation linkage), and migrate DBs to include `lineItems` JSON column on RentalOrder.

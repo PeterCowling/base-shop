@@ -46,9 +46,11 @@ describe("PATCH", () => {
   it("returns 404 when item not found", async () => {
     __setMockSession({ user: { role: "admin" } } as any);
     update.mockRejectedValue(new Error("Not found"));
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     const res = await PATCH(req({ quantity: 1, variantAttributes: {} }), {
       params: Promise.resolve({ shop: "s1", sku: "sku1" }),
     });
+    spy.mockRestore();
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "Not found" });
   });

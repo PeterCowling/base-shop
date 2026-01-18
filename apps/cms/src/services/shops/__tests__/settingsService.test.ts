@@ -16,6 +16,10 @@ jest.mock("../helpers", () => ({
   persistSettings: jest.fn(),
 }));
 
+jest.mock("@acme/platform-core/utils", () => ({
+  recordMetric: jest.fn(),
+}));
+
 describe("settings service", () => {
   beforeEach(() => {
     jest.clearAllMocks();

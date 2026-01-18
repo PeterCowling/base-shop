@@ -88,10 +88,11 @@ Notes:
 
 ## Decisions Needed (Lock Before SEC-03)
 
-- [ ] **SEC-00 Decision: Build control plane** — Where does the build run?
-  - **Option A (recommended):** GitHub Actions builds and deploys via `wrangler`. SOPS decryption uses `SOPS_AGE_KEY` GitHub secret. Full control over build environment.
-  - **Option B:** Cloudflare Pages Git integration runs the build. Age key must live in Cloudflare Pages environment variables (not GitHub). Limited build customisation.
-  - This is a binary choice — pick one path to avoid two partially-working implementations.
+- [x] **SEC-00 Decision: Build control plane** — **LOCKED: GitHub Actions + wrangler**
+  - GitHub Actions builds and deploys via `wrangler`.
+  - SOPS decryption uses `SOPS_AGE_KEY` GitHub secret.
+  - Full control over build environment.
+  - Decision made: 2026-01-18.
 - [ ] Confirm encrypted file location and naming convention (see proposed defaults below).
 - [ ] Confirm age key bootstrap and storage (local + CI secret names).
 - [ ] Confirm build-time vs runtime env classification rules for Next.js on Pages in this repo.
@@ -141,45 +142,51 @@ These wrappers preserve the `.env.sops` naming convention while keeping UX tight
 
 ## Active Tasks (Lean Path)
 
-- [ ] **SEC-00: Lock build control plane decision**
-  - **Blocker for all other tasks** — must be decided before wiring SOPS into CI.
-  - Decision: GitHub Actions builds + wrangler deploy (recommended) OR Cloudflare Pages Git integration builds.
-  - Output: A one-line decision documented in this plan's "Decisions Needed" section.
+- [x] **SEC-00: Lock build control plane decision** ✓ COMPLETE
+  - **Decision:** GitHub Actions builds + wrangler deploy.
+  - SOPS decryption happens in GitHub Actions using `SOPS_AGE_KEY` secret.
+  - Locked: 2026-01-18.
 
-- [ ] **SEC-01: Inventory required secrets + produce machine-readable schema**
-  - Affects: `scripts/src/quickstart-shop.ts`, `scripts/src/initShop.ts`, `scripts/src/setup-ci.ts`, provider plugin metadata, `.github/workflows/*`
-  - Output: A **machine-readable schema** (JSON/TypeScript) at `packages/config/env-schema.ts` with fields:
-    ```typescript
-    interface EnvVar {
-      name: string;                           // e.g., "STRIPE_SECRET_KEY"
-      required: "deploy" | "runtime-only" | "dev-only";
-      phase: "build" | "runtime" | "both";   // Next.js on Pages: NEXT_PUBLIC_* = build
-      exposure: "public" | "secret";          // public = safe to log/inline
-      owner: string;                          // e.g., "stripe", "cms", "internal"
-      whereUsed: string[];                    // entrypoints/files
-    }
-    ```
-  - This schema becomes the **single source of truth** consumed by: deploy gate, init scripts, docs generation, runtime validation.
-  - **Build-time vs runtime anchors for Next.js on Pages:**
-    - `NEXT_PUBLIC_*` vars are inlined into client bundle at build time (build-time).
-    - `next.config.js` `env` option is compile-time replacement (build-time).
-    - Cloudflare Pages Functions access vars via `context.env` at runtime.
+- [x] **SEC-01: Inventory required secrets + produce machine-readable schema** ✓ COMPLETE
+  - **Output:** `packages/config/env-schema.ts` created with:
+    - 25+ env var definitions with `name`, `required`, `phase`, `exposure`, `owner`, `whereUsed`, `description`, `condition`
+    - Helper functions: `getDeployRequiredVars()`, `getBuildTimeVars()`, `getSecretVars()`, `validateDeployEnv()`
+    - Placeholder detection: `isPlaceholder()` function
+  - **Key deploy-required vars identified:**
+    - Auth: `NEXTAUTH_SECRET`, `SESSION_SECRET`, `CART_COOKIE_SECRET`
+    - Payments (when Stripe): `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`
+    - Storage (when Redis): `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+    - Deploy: `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`
+  - **Build-time vs runtime anchors documented:**
+    - `NEXT_PUBLIC_*` = build-time (inlined into client bundle)
+    - `next.config.js` `env` = build-time
+    - Cloudflare Functions `context.env` = runtime
+  - Completed: 2026-01-18.
 
-- [ ] **SEC-02: Define placeholder policy + add a fast "no TODO_ in deploy" gate**
-  - Depends on: `SEC-01` (schema defines which keys are deploy-required)
-  - Define which keys may be scaffolded as `TODO_` (dev-only) vs must be real for deploy.
-  - Implement the gate as **schema-based** (only required deploy keys), **value-based** (check actual values, not key names), and **non-leaky** (never print secret values in logs).
-  - Gate behavior:
-    - Parse dotenv / process.env
-    - Extract keys marked `required: "deploy"` from schema
-    - Fail if: missing, empty, or value starts with `TODO_` (or `__REPLACE_ME__`)
-  - This can land early with a **minimal hardcoded required-key list**, then refactor to schema-backed once SEC-01 lands.
-  - This is the quickest win for a solo operator: it prevents wasted deploy attempts before secrets are actually provisioned.
+- [x] **SEC-02: Define placeholder policy + add a fast "no TODO_ in deploy" gate** ✓ COMPLETE
+  - **Output:** `scripts/validate-deploy-env.sh` created.
+  - **Placeholder policy:** Values starting with `TODO_`, `__REPLACE_ME__`, `placeholder`, `CHANGEME`, `xxx`, `your_` are rejected.
+  - **Gate behavior:**
+    - Loads env from file or current process
+    - Checks variables by category (Auth, Deploy, Payments, Redis, Email, Sanity)
+    - Conditional checks (e.g., Stripe vars only checked when `PAYMENTS_PROVIDER=stripe`)
+    - **Non-leaky:** Never prints secret values, only variable names and failure reasons
+  - **Usage:** `./scripts/validate-deploy-env.sh` or `./scripts/validate-deploy-env.sh apps/cms/.env`
+  - Completed: 2026-01-18.
 
-- [ ] **SEC-03: Implement encrypted env templates (SOPS/age) as the default**
-  - Depends on: Decisions Needed (and `SEC-01` classification)
-  - Define a simple convention for where encrypted env lives (per shop/app) and how it is materialised into `.env` for local + CI.
-  - Document one-time bootstrap steps for the single operator (key generation/storage, CI secret setup).
+- [x] **SEC-03: Implement encrypted env templates (SOPS/age) as the default** ✓ COMPLETE
+  - **Output:**
+    - `.sops.yaml` — SOPS configuration with age key placeholders
+    - `scripts/secrets.sh` — Wrapper commands for edit/decrypt/encrypt/list/status/bootstrap
+    - `pnpm secrets:*` aliases in package.json
+  - **Convention:**
+    - Encrypted: `apps/<app>/.env.preview.sops`, `apps/<app>/.env.production.sops`
+    - Plain (gitignored): `apps/<app>/.env`
+    - Age key (local): `~/.config/sops/age/keys.txt`
+    - Age key (CI): `SOPS_AGE_KEY` GitHub secret
+  - **Bootstrap:** `pnpm secrets:bootstrap` generates age key pair
+  - **Gitignore:** `.env*` already covered with exceptions for `.env.example`
+  - Completed: 2026-01-18.
 
 - [ ] **SEC-04: Integrate “secrets materialisation” into `init-shop` / `quickstart-shop` / `setup-ci`**
   - Depends on: `SEC-03`
@@ -220,13 +227,13 @@ Any workflow with access to `SOPS_AGE_KEY` can decrypt and print secrets. Mitiga
 
 ## Acceptance Criteria
 
-- [ ] **SEC-00 locked:** Build control plane decision is documented and all CI/deploy work follows that path.
-- [ ] **Schema exists:** `packages/config/env-schema.ts` defines all required env vars with phase/exposure/owner.
+- [x] **SEC-00 locked:** Build control plane decision is documented (GitHub Actions + wrangler) and all CI/deploy work follows that path.
+- [x] **Schema exists:** `packages/config/env-schema.ts` defines all required env vars with phase/exposure/owner.
 - [ ] Encrypted env templates (preview + production) are documented and reproducible for a new shop.
 - [ ] A new shop can be scaffolded with a deployable env without manually hunting keys across docs.
-- [ ] CI fails fast if required deploy-time secrets are missing or still `TODO_` (schema-based gate).
+- [x] CI fails fast if required deploy-time secrets are missing or still `TODO_` (schema-based gate via `scripts/validate-deploy-env.sh`).
 - [ ] `setup-ci` output uses the standard workflow and passes repo testing policy constraints.
-- [ ] SOPS wrapper commands (`pnpm secrets:*`) are implemented and documented.
+- [x] SOPS wrapper commands (`pnpm secrets:*`) are implemented and documented.
 - [ ] Gitignore and pre-commit guardrails prevent plaintext secret commits.
 - [ ] Rotation and rollback are documented and proven once via `SEC-07`.
 - [ ] Existing apps/shops have a documented migration path (bulk migration may be deferred).
@@ -242,3 +249,11 @@ Any workflow with access to `SOPS_AGE_KEY` can decrypt and print secrets. Mitiga
 - ~~Which secrets must exist at build time vs runtime (especially for Next.js on Pages)?~~ **Resolved:** SEC-01 schema will encode `phase: build | runtime | both` with documented Next.js anchors.
 - Back-compat: how to migrate existing shops that currently rely on manual `.env` handling? (Answer: documented migration path in SEC-06, bulk migration deferred.)
 - **NEW:** Sentinel choice — `TODO_` is okay but consider switching to `__REPLACE_ME__` if false positives occur from legitimate values containing "TODO_".
+
+## Active tasks
+
+- ~~**SEC-00** - Lock "build control plane" decision before schema work~~ ✓ COMPLETE (GitHub Actions + wrangler)
+- ~~**SEC-01** - Inventory required secrets + produce machine-readable schema~~ ✓ COMPLETE (`packages/config/env-schema.ts`)
+- ~~**SEC-02** - Define placeholder policy + add deploy gate script~~ ✓ COMPLETE (`scripts/validate-deploy-env.sh`)
+- ~~**SEC-03** - Implement SOPS/age encrypted env templates~~ ✓ COMPLETE (`.sops.yaml`, `scripts/secrets.sh`, `pnpm secrets:*`)
+- **SEC-04** - Integrate secrets materialisation into init-shop / setup-ci

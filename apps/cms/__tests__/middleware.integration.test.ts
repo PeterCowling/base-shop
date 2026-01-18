@@ -7,6 +7,20 @@ import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@acme/auth/rbac";
 
 /* -------------------------------------------------------------------------- */
+/* Mock logger to silence log output during tests.                            */
+/* -------------------------------------------------------------------------- */
+jest.mock("@acme/shared-utils", () => ({
+  __esModule: true,
+  logger: {
+    info: jest.fn(),
+    debug: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+  withRequestContext: jest.fn((_ctx, fn) => fn()),
+}));
+
+/* -------------------------------------------------------------------------- */
 /* Mock RBAC helpers so importing middleware doesn't pull in JSON modules.   */
 /* -------------------------------------------------------------------------- */
 jest.mock("@acme/auth/rbac", () => ({

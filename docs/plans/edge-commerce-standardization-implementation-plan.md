@@ -807,3 +807,7 @@ Workstream 6 (worker convergence + optimistic “Processing…” UX + deprecati
 Workstream 7 (payments breadth consolidation + tenant-scoped jobs)
 
 Workstreams 8–9 continuously (domain rollout + security/observability hardening)
+
+## Active tasks
+
+- **EDGE-01** - Workstream 2: Front Door + mapping + allowlist + basic injection scaffolding

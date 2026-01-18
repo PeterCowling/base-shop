@@ -24,6 +24,11 @@ jest.mock("@acme/i18n/useTranslations.server", () => ({
 // Stub Zod initializer to avoid top-level await in CommonJS tests
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 
+jest.mock("@acme/shared-utils", () => ({
+  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+  withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
+}));
+
 // Import modules after mocks so Next.js internals aren't executed
 import { middleware } from "../src/middleware";
 import NotFound from "../src/app/not-found";

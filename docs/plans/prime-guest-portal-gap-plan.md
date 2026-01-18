@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Prime
 Last-reviewed: 2026-01-17
-Relates-to charter: docs/runtime/runtime-charter.md (Prime charter TBD)
+Relates-to charter: none
+---
 
 # Prime Guest Portal - Gap Review and Bridge Plan
 
@@ -173,3 +175,7 @@ requirements that are not covered in the older plan.
 - In-app payments or city tax collection.
 - Digital keys or smart locks.
 - Full staff app (beyond lightweight lookup).
+
+## Active tasks
+
+See "Bridge Plan (Epics)" section above for the full task list (PRIME-GAP-01 through PRIME-GAP-10).

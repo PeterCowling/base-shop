@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Prime
 Last-reviewed: 2026-01-13
-Relates-to charter: TBD (Prime charter not yet defined)
+Relates-to charter: none
+---
 
 # Prime - Experience & Onboarding Improvement Plan
 

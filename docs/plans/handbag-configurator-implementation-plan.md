@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Commerce
 Last-reviewed: 2026-01-07
 Relates-to charter: docs/commerce-charter.md
+---
 
 # Handbag Configurator — Implementation Plan (Repo‑Aligned)
 
@@ -166,3 +168,7 @@ When implementing epics B–H, use the same file structure as the original plan 
 
 - Web: `apps/handbag-configurator/src/**`
 - API: `apps/handbag-configurator-api/src/**`
+
+## Active tasks
+
+- **CFG-01** - Epic B: Implement option fetcher and caching layer

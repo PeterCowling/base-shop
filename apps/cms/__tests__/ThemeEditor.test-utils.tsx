@@ -68,6 +68,9 @@ jest.mock("../src/app/cms/wizard/PreviewDeviceSelector", () => ({
   __esModule: true,
   default: () => <div />,
 }));
+jest.mock("../src/app/cms/wizard/services/patchTheme", () => ({
+  patchShopTheme: jest.fn().mockResolvedValue(undefined),
+}));
 jest.mock("../src/app/cms/wizard/TokenInspector", () => ({
   __esModule: true,
   default: ({ children, onTokenSelect }: any) => (

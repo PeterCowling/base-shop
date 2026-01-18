@@ -76,3 +76,7 @@ rev 2025-12-02 · Slice roadmap toward multi-shop release control
 - Component metadata fields (package/version/checksums/preview URLs) exposed by diff endpoint.
 - Auth UX for 401/403 (re-auth vs request access).
 - Telemetry sink selection for production (console/no-op acceptable in Slice 1).
+
+## Active tasks
+
+- **DASH-01** - Implement Slice 1: header, diff table, confirmation modal, and telemetry

@@ -1,10 +1,12 @@
-<!-- docs/product-pipeline/logistics-lanes-implementation-plan.md -->
-
+---
 Type: Plan
 Status: Active
 Domain: Commerce / Sourcing / Ops / Logistics
 Last-reviewed: 2025-12-21
-Relates-to charter: (planned) docs/product-pipeline/product-pipeline-charter.md
+Relates-to charter: none
+---
+
+<!-- docs/product-pipeline/logistics-lanes-implementation-plan.md -->
 
 # Logistics Lanes Implementation Plan (3PL decision support)
 
@@ -111,3 +113,4 @@ Primary references:
 2) Apply lane to a candidate; Stage B input saved with lane metadata.
 3) Scenario compare: Stage K recompute for two lane versions (if enabled).
 4) Pilot actuals update: lane shows variance and confidence update (if enabled).
+

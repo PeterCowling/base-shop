@@ -1,12 +1,14 @@
-<!-- docs/product-pipeline/taobao-amazon-margin-pipeline-plan.md -->
-
-China Sourcing → EU Multi-Channel Capital Return Pipeline
-
+---
 Type: Plan
 Status: Active
 Domain: Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement
 Last-reviewed: 2025-12-22
-Relates-to charter: (planned) docs/product-pipeline/product-pipeline-charter.md
+Relates-to charter: none
+---
+
+<!-- docs/product-pipeline/taobao-amazon-margin-pipeline-plan.md -->
+
+China Sourcing → EU Multi-Channel Capital Return Pipeline
 
 Note: This plan exceeds 350 lines to keep the full end-to-end pipeline in one view. Follow-up: split into docs/product-pipeline/{scope,stages,architecture,testing}.md once scope is locked.
 
@@ -1211,3 +1213,7 @@ ingest pilot actuals and update priors
 export data to CSV/XLSX
 
 preserve audit logs and evidence references for reproducibility
+
+## Active tasks
+
+- **PIPE-01** - Milestone 0: App bootstrap (monorepo + Cloudflare project)

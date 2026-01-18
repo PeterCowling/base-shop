@@ -7,13 +7,15 @@ on:
 
 concurrency:
   group: lhci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   changes:
+    name: Detect app changes
     # Only needed for pull requests; pushes to main always run LHCI.
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       shop_skylar: ${{ steps.filter.outputs.shop_skylar }}
     steps:
@@ -30,6 +32,7 @@ jobs:
               - 'apps/skylar/**'
 
   lhci:
+    name: Lighthouse (${{ matrix.config }})
     needs: [changes]
     # Run on all pushes to main. For PRs, only run when:
     # - Shop/Skylar paths changed, or
@@ -43,7 +46,9 @@ jobs:
         )
       )
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
         config:
           [

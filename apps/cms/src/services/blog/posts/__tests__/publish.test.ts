@@ -16,6 +16,14 @@ jest.mock("@acme/date-utils", () => ({
   nowIso: jest.fn(),
 }));
 
+jest.mock("@acme/platform-core/utils", () => ({
+  recordMetric: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/shops/health", () => ({
+  incrementOperationalError: jest.fn(),
+}));
+
 describe("publishPost", () => {
   beforeEach(() => {
     jest.clearAllMocks();

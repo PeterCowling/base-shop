@@ -139,6 +139,7 @@ describe("POST", () => {
   });
 
   it("returns 400 when write fails", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     write.mockRejectedValueOnce(new Error("boom"));
     const items = [
@@ -150,6 +151,7 @@ describe("POST", () => {
     const res = await POST(req(file), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "boom" });
+    errorSpy.mockRestore();
   });
 
   it("returns 503 when backend delegate is unavailable", async () => {

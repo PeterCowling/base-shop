@@ -1,12 +1,16 @@
+---
 Type: Plan
 Status: Historical
 Domain: Platform
+Last-reviewed: 2026-01-15
+Relates-to charter: none
 Created: 2026-01-15
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-15
 Last-updated-by: Claude Sonnet 4.5
 Completed: 2026-01-15
 Completed-by: Claude Sonnet 4.5
+---
 
 # Monorepo ESLint Standardization Plan
 
@@ -293,3 +297,7 @@ Key sections:
 **Remaining work (separate issues):**
 - CMS workarounds remain due to ui package build tooling (tracked in `docs/plans/ui-package-build-tooling-plan.md`)
 - Monorepo-wide lint/typecheck has pre-existing errors unrelated to this work
+
+## Active tasks
+
+None - this plan is historical/completed.

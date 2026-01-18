@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-15
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-16
@@ -895,3 +897,7 @@ Current mappings in `jest.moduleMapper.cjs` (137 lines) break down as:
 | Path aliases | 15 | `^@/(.*)$` |
 | CSS/assets | 5 | `\\.(css\|less)$` |
 | Config-specific | 27 | `^@acme/config/env/(.*)$` |
+
+## Active tasks
+
+None - this plan is historical/completed.

@@ -108,7 +108,14 @@
     "lhci:shop:mobile": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.shop.json",
     "lhci:shop:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.shop.desktop.json",
     "lhci:skylar:mobile": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.skylar.json",
-    "lhci:skylar:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.skylar.desktop.json"
+    "lhci:skylar:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.skylar.desktop.json",
+    "secrets:edit": "scripts/secrets.sh edit",
+    "secrets:decrypt": "scripts/secrets.sh decrypt",
+    "secrets:encrypt": "scripts/secrets.sh encrypt",
+    "secrets:list": "scripts/secrets.sh list",
+    "secrets:status": "scripts/secrets.sh status",
+    "secrets:bootstrap": "scripts/secrets.sh bootstrap",
+    "validate:deploy-env": "scripts/validate-deploy-env.sh"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [

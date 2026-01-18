@@ -104,6 +104,7 @@ describe("GET", () => {
   });
 
   it("returns 400 when repository errors", async () => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     read.mockRejectedValue(new Error("oops"));
     const res = await GET(req("http://test.local"), {

@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Recovery
+Last-reviewed: 2026-01-14
+Relates-to charter: none
 Created: 2026-01-14
 ---
 
@@ -1846,3 +1848,7 @@ If the recovery fails or produces a broken state:
 - [ ] Create backup branch
 
 ### This MUST succeed - there is no other recovery path for this data.
+
+## Active tasks
+
+(Historical - all tasks completed)

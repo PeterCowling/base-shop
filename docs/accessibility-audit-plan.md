@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Accessibility
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-16
@@ -265,3 +267,7 @@ Accessibility checks run automatically via `@storybook/addon-a11y`. View results
 - [Design System Handbook](design-system-handbook.md) - Component library overview
 - [Component API Standard](component-api-standard.md) - Prop conventions
 - [Visual Regression Coverage](visual-regression-coverage.md) - Visual testing
+
+## Active tasks
+
+- **A11Y-01** - Complete Tier 1 Atoms audit (Q1 2026)

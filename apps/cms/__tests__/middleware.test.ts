@@ -1,6 +1,11 @@
 /* eslint-env jest */
 /* apps/cms/__tests__/middleware.test.ts */
 
+jest.mock("@acme/shared-utils", () => ({
+  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+  withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
+}));
+
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 import { __setMockToken, __resetMockToken } from "next-auth/jwt";

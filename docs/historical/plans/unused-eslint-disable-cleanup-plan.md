@@ -2,6 +2,8 @@
 Type: Plan
 Status: Historical
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -43,3 +45,7 @@ Completed-by: Codex
 - Removed unused `eslint-disable` directives and related `eslint-enable` leftovers in `packages/ui/src`.
 - Replaced necessary suppressions with scoped, documented directives where lint still required them.
 - Verified no remaining `Unused eslint-disable directive` warnings in `@acme/ui` lint output.
+
+## Active tasks
+
+(Historical - all tasks completed)

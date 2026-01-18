@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -43,3 +45,7 @@ The `ds/no-hardcoded-copy` rule is flagging strings that are not customer-facing
 ## Validation
 - Run targeted lint checks for touched files/paths when needed.
 - Spot-check remaining `eslint-disable ds/no-hardcoded-copy` annotations to ensure they still have value.
+
+## Active tasks
+
+- **COPY-01** - Implement path exemptions in eslint.config.mjs

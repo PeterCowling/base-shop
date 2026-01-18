@@ -791,3 +791,7 @@ CCBot           # Common Crawl (used by many AI)
 FacebookBot     # Meta AI
 Bytespider      # ByteDance AI
 ```
+
+## Active tasks
+
+- **SEO-01** - Create packages/seo directory structure and schema

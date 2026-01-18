@@ -1185,3 +1185,7 @@ If issues arise:
 - [Ralph Wiggum Methodology](https://github.com/ghuntley/how-to-ralph-wiggum)
 - [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum)
 - [Ralph Wiggum - Awesome Claude](https://awesomeclaude.ai/ralph-wiggum)
+
+## Active tasks
+
+(Historical - all tasks completed)

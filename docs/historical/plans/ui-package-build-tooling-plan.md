@@ -1,11 +1,15 @@
+---
 Type: Plan
 Status: Historical
 Domain: Platform
+Last-reviewed: 2026-01-15
+Relates-to charter: none
 Created: 2026-01-15
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-15
 Last-updated-by: Claude Opus 4.5
 Completed: 2026-01-15
+---
 
 # @acme/ui Package — Build Tooling Migration Plan
 
@@ -237,3 +241,7 @@ The @acme/ui package now uses tsup for bundling with proper path alias transform
 5. **Path aliases** properly transformed in compiled output
 
 The original issue (`Module not found: Can't resolve '@ui/hooks/useResponsiveImage'`) is resolved.
+
+## Active tasks
+
+(Historical - all tasks completed)

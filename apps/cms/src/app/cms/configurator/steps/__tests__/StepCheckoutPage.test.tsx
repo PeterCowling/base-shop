@@ -36,7 +36,7 @@ jest.mock("../../components/TemplateSelector", () => ({
 
 jest.mock("@/components/atoms/shadcn", () => ({
   __esModule: true,
-  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+  Button: ({ children, asChild: _, ...props }: any) => <button {...props}>{children}</button>,
   Card: ({ children }: any) => <div>{children}</div>,
   CardContent: ({ children }: any) => <div>{children}</div>,
 }));

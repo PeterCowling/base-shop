@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Reception
 Last-reviewed: 2026-01-13
-Relates-to: reception-functionality-improvements-plan.md (REC-AUTH-02)
+Relates-to charter: none
+---
 
 # Reception Login UI Improvement Plan
 
@@ -468,3 +470,7 @@ The login screen should:
 7. Handle errors gracefully with clear messaging
 8. Provide recovery paths (forgot password)
 9. Feel polished and professional, building user trust
+
+## Active tasks
+
+- **REC-LOGIN-01** - Replace background image with solid/gradient background

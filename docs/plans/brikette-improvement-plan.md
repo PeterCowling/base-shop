@@ -3,7 +3,7 @@ Type: Plan
 Status: Draft
 Domain: Brikette
 Last-reviewed: 2026-01-12
-Relates-to charter: TBD (no Brikette charter yet)
+Relates-to charter: none
 Last-updated: 2026-01-17
 Last-updated-by: Codex
 ---
@@ -691,3 +691,7 @@ Following a comprehensive code analysis of the Brikette app, we've identified cr
 **Document Version:** 1.0
 **Last Updated:** 2026-01-12
 **Next Review:** 2026-02-12 (after Phase 1 completion)
+
+## Active tasks
+
+- **BRIK-01** - Phase 1: Type safety fixes and error handling improvements

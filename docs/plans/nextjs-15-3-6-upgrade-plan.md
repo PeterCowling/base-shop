@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Platform
+Last-reviewed: 2026-01-16
+Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
@@ -34,3 +36,7 @@ Last-updated-by: Codex
 
 ## Progress
 - 2026-01-16: Updated `next` versions in workspace `package.json` files to 15.3.6. Lockfile update pending until the working tree is clean.
+
+## Active tasks
+
+- **NEXT-01** - Run `pnpm install` after working tree is clean and validate builds

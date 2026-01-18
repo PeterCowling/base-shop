@@ -1,0 +1,33 @@
+# SOPS Configuration for Base-Shop
+#
+# This file configures SOPS to encrypt/decrypt environment files using age.
+# See: docs/plans/integrated-secrets-workflow-plan.md
+#
+# Setup:
+#   1. Generate age key: age-keygen -o ~/.config/sops/age/keys.txt
+#   2. Add public key to this file under creation_rules
+#   3. Add private key to GitHub secret SOPS_AGE_KEY
+#
+# Usage:
+#   pnpm secrets:edit <app> [preview|production]
+#   pnpm secrets:decrypt <app> [preview|production]
+#   pnpm secrets:encrypt <app> [preview|production]
+
+creation_rules:
+  # Preview environment (test/staging keys)
+  - path_regex: \.env\.preview\.sops$
+    age: >-
+      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # TODO: Replace with your actual age public key
+
+  # Production environment (live keys)
+  - path_regex: \.env\.production\.sops$
+    age: >-
+      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # TODO: Replace with your actual age public key
+
+  # Legacy single .env.sops (fallback)
+  - path_regex: \.env\.sops$
+    age: >-
+      age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # TODO: Replace with your actual age public key

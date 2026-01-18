@@ -1,8 +1,10 @@
+---
 Type: Plan
 Status: Active
 Domain: Brikette i18n
 Last-reviewed: 2026-01-14
-Relates-to charter: TBD (no Brikette i18n charter yet)
+Relates-to charter: none
+---
 
 # Brikette Translation Coverage Fix Plan
 
@@ -81,5 +83,9 @@ Relates-to charter: TBD (no Brikette i18n charter yet)
   - Status: Deferred (explicitly no action for now).
 
 ## Validation
-- JSON validity: run the parse scan in `docs/brikette-translation-coverage.md` (“Validate Locale JSON”).
+- JSON validity: run the parse scan in `docs/brikette-translation-coverage.md` ("Validate Locale JSON").
 - Targeted tests: `pnpm --filter @apps/brikette test -- src/test/i18n/translation-language.test.ts`
+
+## Active tasks
+
+- **BRIK-I18N-COV-07** - Decide fate of 24 extra root route-guide JSON files

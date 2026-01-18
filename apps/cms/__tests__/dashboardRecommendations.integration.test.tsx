@@ -80,12 +80,9 @@ jest.mock("../src/app/cms/configurator/steps", () => {
   };
 });
 
-declare global {
-  var fetch: jest.Mock;
-}
-
 let serverState: { state: any; completed: Record<string, boolean> };
-let originalAddEventListener: any;
+let originalAddEventListener: typeof window.addEventListener;
+let fetchMock: jest.Mock;
 
 beforeEach(() => {
   originalAddEventListener = window.addEventListener;
@@ -94,8 +91,8 @@ beforeEach(() => {
     state: { shopId: "shop" },
     completed: {},
   };
-  global.fetch = jest.fn((url: string, init?: RequestInit) => {
-    if (url === "/cms/api/configurator-progress") {
+  fetchMock = jest.fn((url: string, init?: RequestInit) => {
+    if (url === "/cms/api/configurator-progress" || url === "/api/configurator-progress") {
       if (init?.method === "PUT") {
         const body = JSON.parse(init.body as string);
         serverState.state = { ...serverState.state, ...(body.data ?? {}) };
@@ -108,14 +105,26 @@ beforeEach(() => {
       }
       return Promise.resolve({ ok: true, json: async () => serverState });
     }
+    if (url.startsWith("/api/launch-shop/gate")) {
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          gate: {},
+          prodAllowed: false,
+          missing: [],
+          stage: { status: "not-run" },
+        }),
+      });
+    }
     return Promise.resolve({ ok: true, json: async () => ({}) });
-  }) as unknown as jest.Mock;
+  });
+  global.fetch = fetchMock as unknown as typeof fetch;
   Element.prototype.scrollIntoView = jest.fn();
   localStorage.clear();
 });
 
 afterEach(() => {
-  global.fetch.mockRestore();
+  fetchMock.mockRestore();
   localStorage.clear();
   window.addEventListener = originalAddEventListener;
 });

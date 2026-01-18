@@ -15,8 +15,8 @@ import { File as NodeFile } from "node:buffer";
 import { webcrypto } from "node:crypto";
 
 type DomCompatGlobal = typeof globalThis & {
-  TextEncoder?: typeof TextEncoder;
-  TextDecoder?: typeof TextDecoder;
+  TextEncoder?: typeof globalThis.TextEncoder;
+  TextDecoder?: typeof globalThis.TextDecoder;
   File?: typeof File;
   crypto?: Crypto;
   ResizeObserver?: typeof ResizeObserver;
@@ -27,8 +27,8 @@ type DomCompatGlobal = typeof globalThis & {
 const domGlobal = globalThis as DomCompatGlobal;
 
 // WHATWG encoders/decoders used by various libs
-domGlobal.TextEncoder ||= TextEncoder;
-domGlobal.TextDecoder ||= TextDecoder;
+domGlobal.TextEncoder ||= TextEncoder as unknown as typeof globalThis.TextEncoder;
+domGlobal.TextDecoder ||= TextDecoder as unknown as typeof globalThis.TextDecoder;
 
 // Basic File and crypto availability
 domGlobal.File ||= NodeFile as unknown as typeof File;

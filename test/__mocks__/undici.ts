@@ -8,7 +8,7 @@ class FormDataStub {
         const name = el.name;
         if (!name) return;
         if (el.type === 'file' && el.files) {
-          Array.from(el.files).forEach((file: File) => this.append(name, file));
+          Array.from(el.files as FileList).forEach((file) => this.append(name, file));
         } else {
           this.append(name, el.value);
         }

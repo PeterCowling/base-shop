@@ -52,12 +52,16 @@ export function Dialog({ open, onOpenChange, children }: { open: boolean; onOpen
   );
 }
 
-export function DialogTrigger({ children }: { children: React.ReactElement }) {
+export function DialogTrigger({
+  children,
+}: {
+  children: React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+}) {
   const ctx = useContext(DialogContext);
   return React.cloneElement(children, {
     onClick: (event: React.MouseEvent) => {
       ctx.onOpenChange(true);
-      children.props.onClick?.(event);
+      children.props.onClick?.(event as React.MouseEvent<HTMLElement>);
     },
   });
 }
@@ -109,13 +113,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
     ...rest
   }, ref) => {
     if (asChild && React.isValidElement(children)) {
-      const childProps = children.props as Record<string, unknown>;
+      const childElement = children as React.ReactElement<AnyProps>;
+      const childProps = childElement.props as AnyProps;
       const combinedClassName = [childProps.className, className]
         .filter(Boolean)
         .join(" ")
         .trim();
 
-      const mergedProps: Record<string, unknown> = { ...rest };
+      const mergedProps: AnyProps = { ...rest };
 
       if (combinedClassName) {
         mergedProps.className = combinedClassName;
@@ -137,7 +142,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
         mergedProps.ref = ref;
       }
 
-      return React.cloneElement(children, mergedProps);
+      return React.cloneElement(childElement, mergedProps);
     }
 
     return (
@@ -197,11 +202,12 @@ export function Select({ value, onValueChange, children }: AnyProps) {
     const arr = React.Children.toArray(node);
     for (const child of arr) {
       if (!React.isValidElement(child)) continue;
+      const element = child as React.ReactElement<AnyProps>;
       // Identify our stubbed SelectItem by a marker
-      if ((child.type as any).__shadcnSelectItem === true) {
-        options.push({ value: child.props.value ?? "", label: child.props.children });
+      if ((element.type as any).__shadcnSelectItem === true) {
+        options.push({ value: element.props.value ?? "", label: element.props.children });
       }
-      if (child.props?.children) walk(child.props.children);
+      if (element.props?.children) walk(element.props.children);
     }
   };
   walk(children);

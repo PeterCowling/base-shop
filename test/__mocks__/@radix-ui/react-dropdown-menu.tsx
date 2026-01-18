@@ -67,10 +67,14 @@ export const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trig
   const open = context?.open ?? false;
   const setOpen = context?.setOpen;
 
-  const childProps = React.isValidElement(children) ? children.props : {};
+  type ChildProps = React.HTMLAttributes<HTMLElement>;
+  const childElement = React.isValidElement(children)
+    ? (children as React.ReactElement<ChildProps>)
+    : null;
+  const childProps = childElement?.props ?? {};
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    (childProps.onClick as ((event: React.MouseEvent<HTMLElement>) => void) | undefined)?.(event);
+    childProps.onClick?.(event);
     onClick?.(event);
     if (!event.defaultPrevented && event.detail !== 0) {
       setOpen?.((prev) => !prev);
@@ -78,7 +82,7 @@ export const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trig
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    (childProps.onKeyDown as ((event: React.KeyboardEvent<HTMLElement>) => void) | undefined)?.(event);
+    childProps.onKeyDown?.(event);
     onKeyDown?.(event);
     if (event.defaultPrevented) return;
     if (event.key === "Enter" || event.key === " " || event.key === "Space" || event.key === "Spacebar") {
@@ -93,20 +97,24 @@ export const Trigger = React.forwardRef<HTMLElement, TriggerProps>(function Trig
     ...props,
     className: mergeClassNames(childProps.className, className),
     "aria-haspopup": "menu" as const,
-    "aria-expanded": open ? "true" : "false",
+    "aria-expanded": open,
     onClick: handleClick,
     onKeyDown: handleKeyDown,
   };
 
-  if (React.isValidElement(children)) {
-    return React.cloneElement(children, {
+  if (childElement) {
+    return React.cloneElement(childElement, {
       ...sharedProps,
       ref,
-    });
+    } as ChildProps & { ref?: React.Ref<HTMLElement> });
   }
 
   return (
-    <button type="button" ref={ref as React.Ref<HTMLButtonElement>} {...sharedProps}>
+    <button
+      type="button"
+      ref={ref as React.Ref<HTMLButtonElement>}
+      {...(sharedProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+    >
       {children}
     </button>
   );
@@ -116,7 +124,7 @@ const assignRef = <T,>(ref: React.Ref<T | null> | undefined, value: T | null) =>
   if (typeof ref === "function") {
     ref(value);
   } else if (ref) {
-    (ref as React.MutableRefObject<T>).current = value;
+    (ref as React.MutableRefObject<T | null>).current = value;
   }
 };
 
@@ -232,14 +240,14 @@ export const Item = React.forwardRef<HTMLDivElement, ItemProps>(function Item(
   );
 });
 
-const createPrimitive = <T extends HTMLElement>(displayName: string, role?: string) => {
-  return React.forwardRef<T, React.HTMLAttributes<T>>(function Primitive(
+const createPrimitive = (displayName: string, role?: string) => {
+  return React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(function Primitive(
     { children, ...props },
     ref
   ) {
     return (
       <div
-        ref={ref as React.Ref<HTMLDivElement>}
+        ref={ref}
         data-radix-mock={displayName}
         role={role}
         {...props}
@@ -250,17 +258,17 @@ const createPrimitive = <T extends HTMLElement>(displayName: string, role?: stri
   });
 };
 
-export const Group = createPrimitive<HTMLDivElement>("Group");
-export const Sub = createPrimitive<HTMLDivElement>("Sub");
+export const Group = createPrimitive("Group");
+export const Sub = createPrimitive("Sub");
 export const Portal = ({ children }: { children?: React.ReactNode }) => <>{children}</>;
-export const RadioGroup = createPrimitive<HTMLDivElement>("RadioGroup");
-export const SubTrigger = createPrimitive<HTMLDivElement>("SubTrigger");
-export const SubContent = createPrimitive<HTMLDivElement>("SubContent");
-export const CheckboxItem = createPrimitive<HTMLDivElement>("CheckboxItem");
-export const RadioItem = createPrimitive<HTMLDivElement>("RadioItem");
-export const ItemIndicator = createPrimitive<HTMLDivElement>("ItemIndicator");
-export const Label = createPrimitive<HTMLDivElement>("Label");
-export const Separator = createPrimitive<HTMLDivElement>("Separator", "separator");
+export const RadioGroup = createPrimitive("RadioGroup");
+export const SubTrigger = createPrimitive("SubTrigger");
+export const SubContent = createPrimitive("SubContent");
+export const CheckboxItem = createPrimitive("CheckboxItem");
+export const RadioItem = createPrimitive("RadioItem");
+export const ItemIndicator = createPrimitive("ItemIndicator");
+export const Label = createPrimitive("Label");
+export const Separator = createPrimitive("Separator", "separator");
 
 export default {
   Root,

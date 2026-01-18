@@ -1,5 +1,5 @@
 // Minimal mock for packages/ui/src/hooks/useFileUpload used by PageBuilder tests
-export default function useFileUpload(_: any) {
+const useFileUpload = (_: unknown) => {
   return {
     onDrop: jest.fn(),
     progress: null,
@@ -16,7 +16,8 @@ export default function useFileUpload(_: any) {
     openFileDialog: jest.fn(),
     onFileChange: jest.fn(),
     uploader: null,
-  } as any;
-}
+  } as const;
+};
 
-export const useFileUpload = useFileUpload;
+export { useFileUpload };
+export default useFileUpload;

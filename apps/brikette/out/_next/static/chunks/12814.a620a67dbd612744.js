@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[12814],{12814:e=>{e.exports=JSON.parse('{"seo":{"title":"Salerno vs Naples: Which Arrival is Better for Positano?","description":"When Salerno is faster or cheaper than Naples for reaching Positano, by season and timing."},"linkLabel":"Salerno vs Naples arrivals","intro":[],"sections":[],"faqs":[]}')}}]);

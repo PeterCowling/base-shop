@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[14824],{14824:e=>{e.exports=JSON.parse('{"planChoice":{"title":"V\xe4lj din plan","options":{"ferry":"F\xe4rja (s\xe4song)","trainBus":"T\xe5g + buss (\xe5ret runt)","transfer":"Privat transfer"},"selectedLabel":"Vald:"},"eventInfo":{"title":"Evenemangsdetaljer","labels":{"when":"N\xe4r","where":"Var"}}}')}}]);

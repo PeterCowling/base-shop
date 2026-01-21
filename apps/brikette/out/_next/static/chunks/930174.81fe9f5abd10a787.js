@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[930174],{930174:e=>{e.exports=JSON.parse('{"seo":{"title":"ساليرنو مقابل نابولي: الأفضل للوصول إلى بوسيتانو؟","description":"متى تفضّل ساليرنو أو نابولي للوصول إلى بوسيتانو بالاعتماد على الموسم والوقت."},"linkLabel":"ساليرنو مقابل نابولي للوصول","intro":[],"sections":[],"faqs":[]}')}}]);

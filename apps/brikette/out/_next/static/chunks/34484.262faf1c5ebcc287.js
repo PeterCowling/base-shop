@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[34484],{34484:e=>{e.exports=JSON.parse('{"title":"أدلة السفر إلى بوسيتانو","description":"أدلة عملية خطوة بخطوة للتنقل في بوسيتانو وساحل أمالفي."}')}}]);

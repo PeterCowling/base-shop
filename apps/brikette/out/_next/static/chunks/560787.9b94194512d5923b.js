@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[560787],{560787:e=>{e.exports=JSON.parse('{"planChoice":{"title":"이동 계획 선택","options":{"ferry":"페리 (성수기 운항)","trainBus":"기차 + 버스 (연중)","transfer":"개인 차량 이동"},"selectedLabel":"선택됨:"},"eventInfo":{"title":"행사 정보","labels":{"when":"일시","where":"장소"}}}')}}]);

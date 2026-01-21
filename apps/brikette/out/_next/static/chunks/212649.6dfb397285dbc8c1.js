@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[212649],{212649:o=>{o.exports=JSON.parse('{"slug":"sorrento-positano-bus","meta":{"title":"Stub: sorrento-positano-bus","description":"Placeholder journey copy for sorrento-positano-bus (sorrentoPositanoBus)."},"summary":"TODO: replace stub content for sorrento-positano-bus."}')}}]);

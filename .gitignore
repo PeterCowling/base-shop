@@ -67,6 +67,7 @@ yarn-error.log*
 **/dist/
 **/.tsbuildinfo
 **/.next/
+**/out/
 **/coverage/
 **/.ts-jest/
 .lighthouseci/

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[223307],{223307:e=>{e.exports=JSON.parse('{"seo":{"title":"Salerno kontra Neapol: wyb\xf3r lotniska","description":"Kt\xf3re lotnisko wybrać w zależności od sezonu, budżetu i planu podr\xf3ży na wybrzeże."},"linkLabel":"Salerno vs Naples arrivals","intro":[],"sections":[],"faqs":[]}')}}]);

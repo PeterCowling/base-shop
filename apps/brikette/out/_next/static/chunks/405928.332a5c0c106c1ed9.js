@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[405928],{405928:e=>{e.exports=JSON.parse('{"planChoice":{"title":"Выберите способ","options":{"ferry":"Паром (сезонно)","trainBus":"Поезд + автобус (круглый год)","transfer":"Частный трансфер"},"selectedLabel":"Выбрано:"},"eventInfo":{"title":"Детали события","labels":{"when":"Когда","where":"Где"}}}')}}]);

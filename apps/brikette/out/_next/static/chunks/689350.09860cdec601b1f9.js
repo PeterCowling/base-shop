@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[689350],{689350:e=>{e.exports=JSON.parse('{"title":"V\xe5r plats","inputLabel":"Ange din nuvarande plats:","inputPlaceholder":"t.ex. Neapel, Italien eller fullst\xe4ndig adress","getDirections":"H\xe4mta v\xe4gbeskrivning","justShowMap":"Visa bara karta","close":"St\xe4ng dialog"}')}}]);

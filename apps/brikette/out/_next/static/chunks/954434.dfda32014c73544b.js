@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[954434],{954434:e=>{e.exports=JSON.parse('{"title":"旅行ガイドは「ヘルプ」と「エクスペリエンス」に移動しました","description":"計画向けのリソースはヘルプセンターへ、インスピレーション系はエクスペリエンスへ統合し、必要なツールの隣にすべてのガイドが並ぶようにしました。","helpCta":"ヘルプセンターのガイドを見る","experiencesCta":"エクスペリエンスのガイドをチェック"}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[85005],{85005:a=>{a.exports=JSON.parse('{"luminariaPraiano":{"name":"مهرجان لومناريا دي سان دومينيكو","startDate":"2025-08-01","endDate":"2025-08-04","locationName":"ساحة سان جنّارو","addressLocality":"Praiano","description":"تُضيء آلاف الشموع ساحة برايانو وتراساتها في أوائل أغسطس."}}')}}]);

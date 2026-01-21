@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[327127],{327127:a=>{a.exports=JSON.parse('{"luminariaPraiano":{"name":"Luminaria di San Domenico","startDate":"2025-08-01","endDate":"2025-08-04","locationName":"Piazza San Gennaro","addressLocality":"Praiano","description":"В начале августа тысячи свечей освещают площадь и террасы Прайано."}}')}}]);

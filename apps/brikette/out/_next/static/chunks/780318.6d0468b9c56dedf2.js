@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[780318],{780318:e=>{e.exports=JSON.parse('{"seo":{"title":"浏览波西塔诺指南标签","description":"浏览标签，直接查看波西塔诺及阿马尔菲海岸的交通、海滩和省钱提示等主题。"},"linkLabel":"浏览指南标签","intro":["查看我们的标签，立即跳转到你关心的主题——交通与渡轮、最佳海滩、观景点以及美食提示。"],"sections":[],"faqs":[]}')}}]);

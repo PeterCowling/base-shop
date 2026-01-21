@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[718406],{718406:e=>{e.exports=JSON.parse('{"seo":{"title":"포지타노 가이드 태그 둘러보기","description":"교통, 해변, 예산 팁 등 포지타노와 아말피 해안 주제를 바로 확인할 수 있는 태그를 둘러보세요."},"linkLabel":"가이드 태그 보기","intro":["교통\xb7페리 일정\xb7최고의 해변\xb7전망 포인트\xb7음식 팁 등, 관심 있는 주제로 바로 이동할 수 있도록 태그를 살펴보세요."],"sections":[],"faqs":[]}')}}]);

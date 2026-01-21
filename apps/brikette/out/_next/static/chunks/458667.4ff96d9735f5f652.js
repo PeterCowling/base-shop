@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[458667],{458667:e=>{e.exports=JSON.parse('{"home":"Strona gł\xf3wna","guides":"Przewodniki"}')}}]);

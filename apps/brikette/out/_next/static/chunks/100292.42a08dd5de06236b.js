@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[100292],{100292:e=>{e.exports=JSON.parse('{"title":"हमारा स्थान","inputLabel":"अपना वर्तमान स्थान दर्ज करें:","inputPlaceholder":"जैसे: नेपल्स, इटली या पूरा पता","getDirections":"दिशाएँ प्राप्त करें","justShowMap":"केवल मानचित्र दिखाएँ","close":"मॉडल बंद करें"}')}}]);

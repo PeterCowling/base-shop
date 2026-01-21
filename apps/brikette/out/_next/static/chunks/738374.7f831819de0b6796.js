@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[738374],{738374:e=>{e.exports=JSON.parse('{"planChoice":{"title":"अपना प्लान चुनें","options":{"ferry":"फेरी (मौसमी)","trainBus":"ट्रेन + बस (सालभर)","transfer":"निजी ट्रांसफ़र"},"selectedLabel":"चयनित:"},"eventInfo":{"title":"इवेंट विवरण","labels":{"when":"कब","where":"कहाँ"}}}')}}]);

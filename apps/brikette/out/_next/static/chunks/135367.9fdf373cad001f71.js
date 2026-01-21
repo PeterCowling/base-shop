@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[135367],{135367:e=>{e.exports=JSON.parse('{"bookNow":"Bestill n\xe5","reserveNow":"Bestill n\xe5","checkAvailability":"Sjekk tilgjengelighet","directBookingPerks":"Fordeler ved direktebestilling","bestPriceGuaranteed":"Best pris garantert","openBarMenu":"\xc5pne barmenyen"}')}}]);

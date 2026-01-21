@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[38734],{38734:(c,n,e)=>{e.r(n),e.d(n,{clientLoader:()=>o,default:()=>u});var t=e(54421),a=e(519992),l=e(104005);async function o(c){let n=a.X.fallbackLng;throw(0,t.V2)("/".concat(n,"/").concat((0,l.i)("cookiePolicy",n)))}function u(){return null}}}]);

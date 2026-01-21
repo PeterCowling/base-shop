@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[362598],{362598:e=>{e.exports=JSON.parse('{"planChoice":{"title":"Velg plan","options":{"ferry":"Ferje (sesong)","trainBus":"Tog + buss (\xe5ret rundt)","transfer":"Privat transport"},"selectedLabel":"Valgt:"},"eventInfo":{"title":"Arrangementdetaljer","labels":{"when":"N\xe5r","where":"Hvor"}}}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[986123],{986123:e=>{e.exports=JSON.parse('{"planChoice":{"title":"选择你的方案","options":{"ferry":"渡轮（季节性）","trainBus":"火车＋公交（全年）","transfer":"私人接驳"},"selectedLabel":"已选择："},"eventInfo":{"title":"活动详情","labels":{"when":"时间","where":"地点"}}}')}}]);

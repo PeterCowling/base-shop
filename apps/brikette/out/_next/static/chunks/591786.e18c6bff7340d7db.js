@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[591786],{591786:t=>{t.exports=JSON.parse('{"title":"Vị tr\xed của ch\xfang t\xf4i","inputLabel":"Nhập vị tr\xed hiện tại của bạn:","inputPlaceholder":"Bản dịch đang được chuẩn bị.","getDirections":"Xem đường đi","justShowMap":"Chỉ hiển thị bản đồ","close":"Đ\xf3ng hộp thoại"}')}}]);

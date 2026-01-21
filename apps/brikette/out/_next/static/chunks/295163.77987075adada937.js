@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[295163],{295163:e=>{e.exports=JSON.parse('{"bookNow":"احجز الآن","reserveNow":"احجز الآن","checkAvailability":"تحقق من التوافر","directBookingPerks":"مزايا الحجز المباشر","bestPriceGuaranteed":"أفضل سعر مضمون","openBarMenu":"افتح قائمة البار"}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[300566],{300566:e=>{e.exports=JSON.parse('{"planChoice":{"title":"اختر خطتك","options":{"ferry":"العبّارة (موسمي)","trainBus":"قطار + حافلة (طوال العام)","transfer":"نقل خاص"},"selectedLabel":"المحدد:"},"eventInfo":{"title":"تفاصيل الفعالية","labels":{"when":"متى","where":"أين"}}}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[127252],{127252:e=>{e.exports=JSON.parse('{"slug":"positano-salerno-ferry","meta":{"title":"Stub: positano-salerno-ferry","description":"Placeholder journey copy for positano-salerno-ferry (howToGetHerePositanoSalernoFerry)."},"summary":"TODO: replace stub content for positano-salerno-ferry."}')}}]);

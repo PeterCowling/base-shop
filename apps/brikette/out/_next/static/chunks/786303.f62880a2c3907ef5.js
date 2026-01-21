@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[786303],{786303:e=>{e.exports=JSON.parse('{"articleCount_one":"{{count}} cikk","articleCount_other":"{{count}} cikk","topTagsHeading":"Legn\xe9pszerűbb c\xedmk\xe9k","robots":{"noindexFollow":"noindex,follow"}}')}}]);

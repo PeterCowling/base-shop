@@ -1,9 +1,0 @@
-# Cloudflare Pages redirects
-# https://developers.cloudflare.com/pages/configuration/redirects/
-# This file is deployed alongside static HTML for edge-level redirects
-
-# Legacy /directions/* URLs (no lang prefix) -> English how-to-get-here routes
-/directions/:slug  /en/how-to-get-here/:slug  301
-
-# Legacy redirect pages that previously used getServerSideProps/redirect()
-# Add any additional legacy routes here as needed

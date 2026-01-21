@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[787517],{787517:e=>{e.exports=JSON.parse('{"bookNow":"Prenota ora","reserveNow":"Prenota ora","checkAvailability":"Verifica disponibilit\xe0","directBookingPerks":"Vantaggi della prenotazione diretta","bestPriceGuaranteed":"Miglior prezzo garantito","openBarMenu":"Apri il menu del bar"}')}}]);

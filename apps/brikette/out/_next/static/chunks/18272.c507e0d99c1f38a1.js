@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[18272],{18272:e=>{e.exports=JSON.parse('{"seo":{"title":"Arrivare a Salerno o Napoli: cosa scegliere","description":"Tabella comparativa tra i due hub: tempi di trasferimento, servizi disponibili e collegamenti verso Positano."},"linkLabel":"Salerno vs Naples arrivals","intro":[],"sections":[],"faqs":[]}')}}]);

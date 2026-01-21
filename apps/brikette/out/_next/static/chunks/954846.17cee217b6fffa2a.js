@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[954846],{954846:e=>{e.exports=JSON.parse('{"bookNow":"立即预订","reserveNow":"立即预订","checkAvailability":"查看可用房","directBookingPerks":"直接预订福利","bestPriceGuaranteed":"最低价保证","openBarMenu":"查看酒吧菜单"}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[668205],{668205:e=>{e.exports=JSON.parse('{"title":"我们的地址","inputLabel":"请输入您当前的位置：","inputPlaceholder":"例如：意大利那不勒斯或完整地址","getDirections":"获取路线","justShowMap":"仅显示地图","close":"关闭窗口"}')}}]);

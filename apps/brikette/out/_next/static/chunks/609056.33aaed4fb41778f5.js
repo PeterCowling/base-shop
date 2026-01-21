@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[609056],{609056:e=>{e.exports=JSON.parse('{"cuisineAmalfiGuide":{"itemListTitle":"시그니처 요리 & 추천 식당","galleryTitle":"대표 요리 하이라이트"},"walkingTourAudio":{"seoTitle":"무료 도보 투어 오디오: 포지타노","seoDescription":"지도 하이라이트가 포함된 DIY 오디오 루프: 키에사 누오바 근처에서 시작해 구시가를 지나 해변으로 내려갑니다."}}')}}]);

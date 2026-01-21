@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[368909],{368909:e=>{e.exports=JSON.parse('{"bookNow":"Đặt ngay","reserveNow":"Đặt ngay","checkAvailability":"Kiểm tra ph\xf2ng trống","directBookingPerks":"Quyền lợi khi đặt trực tiếp","bestPriceGuaranteed":"Gi\xe1 tốt nhất được đảm bảo","openBarMenu":"Xem thực đơn đồ uống tại quầy bar"}')}}]);

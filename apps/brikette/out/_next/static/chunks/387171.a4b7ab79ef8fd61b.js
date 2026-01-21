@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[387171],{387171:o=>{o.exports=JSON.parse('{"articleCount_one":"{{count}} artikel","articleCount_other":"{{count}} artikler","topTagsHeading":"Top-tags","robots":{"noindexFollow":"noindex,follow"}}')}}]);

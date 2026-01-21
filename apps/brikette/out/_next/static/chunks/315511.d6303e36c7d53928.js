@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[315511],{315511:e=>{e.exports=JSON.parse('{"bookNow":"Book now","reserveNow":"Reserve Now","checkAvailability":"Check availability","directBookingPerks":"Direct booking perks","bestPriceGuaranteed":"Best price guaranteed","openBarMenu":"Open the bar menu"}')}}]);

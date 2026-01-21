@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[996160],{996160:a=>{a.exports=JSON.parse('{"luminariaPraiano":{"name":"산 도메니코 촛불 축제","startDate":"2025-08-01","endDate":"2025-08-04","locationName":"피아차 산 젠나로","addressLocality":"프라이아노","description":"8월 초 프라이아노의 광장과 테라스를 수천 개의 촛불이 밝히는 축제입니다."}}')}}]);

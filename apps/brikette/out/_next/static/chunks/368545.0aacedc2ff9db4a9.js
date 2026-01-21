@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[368545],{368545:e=>{e.exports=JSON.parse('{"bookNow":"予約する","reserveNow":"今すぐ予約","checkAvailability":"空室状況を確認","directBookingPerks":"直接予約の特典","bestPriceGuaranteed":"最安値保証","openBarMenu":"バーメニューを見る"}')}}]);

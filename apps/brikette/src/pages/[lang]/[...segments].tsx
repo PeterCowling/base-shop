@@ -2,14 +2,12 @@ import type { LinkDescriptor, MetaDescriptor } from "react-router";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
 import type { ResolvedMatch } from "@/compat/route-runtime";
-import { listLocalizedPaths, resolveRoute } from "@/compat/route-runtime";
+import { resolveRoute } from "@/compat/route-runtime";
 import AppLayout from "@/components/layout/AppLayout";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
 import RouteHead from "@/next/RouteHead";
 import RouteTree from "@/next/RouteTree";
-import type { SlugKey } from "@/types/slugs";
-import { getSlug } from "@/utils/slug";
 
 type PageProps = {
   matches: ResolvedMatch[];
@@ -24,48 +22,9 @@ const buildPathFromParams = (lang: string, segments?: string[] | string): string
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const supported = (i18nConfig.supportedLngs ?? []) as string[];
-  const excludedKeys: SlugKey[] = ["experiences", "howToGetHere", "rooms", "deals"];
-
-  const normalize = (value: string): string => {
-    if (value.length > 1 && value.endsWith("/")) return value.slice(0, -1);
-    return value;
-  };
-
-  const isHandledByExplicitRoutes = (path: string): boolean => {
-    const parts = path.replace(/^\/+/, "").split("/").filter(Boolean);
-    const [lang, section] = parts;
-    if (!lang || !supported.includes(lang)) return false;
-    // Home page (just /lang) is handled elsewhere
-    if (parts.length === 1) return true;
-    // All 2-segment paths like /lang/section are handled by [section]/index.tsx
-    if (parts.length === 2) return true;
-    // 3+ segment paths with section keys are handled by [section]/[...segments].tsx
-    if (parts.length >= 3 && section) {
-      const sectionSlugs = new Set<string>([
-        ...excludedKeys.map((key) => getSlug(key, lang as AppLanguage)),
-        getSlug("guides", lang as AppLanguage),
-      ]);
-      if (sectionSlugs.has(section)) return true;
-    }
-    return false;
-  };
-
-  const paths = listLocalizedPaths()
-    .map((path) => normalize(path))
-    .filter((path) => !isHandledByExplicitRoutes(path))
-    .map((path) => {
-      const parts = path.replace(/^\/+/, "").split("/").filter(Boolean);
-      const lang = parts.shift() ?? "";
-      return {
-        params: {
-          lang,
-          segments: parts.length > 0 ? parts : undefined,
-        },
-      };
-    });
-
-  return { paths, fallback: false };
+  // All public routes are now handled by App Router.
+  // This catch-all is disabled to avoid generating internal/draft paths.
+  return { paths: [], fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {

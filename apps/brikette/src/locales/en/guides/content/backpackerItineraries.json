@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "Positano on a backpacker budget: 1–3 day itineraries",
-    "description": "Day‑by‑day plans that hit Positano’s highlights while keeping costs in check."
+    "title": "Positano on a backpacker budget: 1-3 day itineraries",
+    "description": "Simple 1-3 day plans with beaches, viewpoints, and low-cost day trips."
   },
-  "linkLabel": "Positano on a backpacker budget: 1–3 day itineraries",
+  "linkLabel": "Positano on a backpacker budget: 1-3 day itineraries",
   "intro": [
-    "Practical day-by-day plans that hit the highlights without blowing your budget."
+    "Pick a 1-, 2-, or 3-day plan that keeps costs down while still hitting the must-see views, beaches, and day trips."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Day 1: Core Positano"
+      "label": "Day 1: Positano essentials"
     },
     {
       "href": "#day2",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Pace the climb-heavy days",
+      "title": "Front-load the big climbs",
       "body": [
-        "Use arrival day to explore Chiesa Nuova and Fornillo first; save longer stair sessions (Path of the Gods, Arienzo steps) for after a full night of sleep.",
-        "Group activities by elevation so you stay on one terrace level at a time—finish upper-town viewpoints before descending to the marina."
+        "Use arrival day for lower-town walks (Spiaggia Grande, Fornillo) and save the big stair days (Path of the Gods, Arienzo steps) for after a full night's sleep.",
+        "Group stops by elevation so you stay on one terrace level at a time; finish upper-town viewpoints before descending to the marina."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Balance paid and free highlights",
+      "title": "One paid highlight per day",
       "body": [
-        "Aim for one paid experience per day (boat tour, limoncello tasting, Capri ferry) and fill the rest with free beaches and scenic walks.",
-        "Carry snacks and refillable bottles; grocery runs at the Chiesa Nuova minimarket are far cheaper than waterfront cafés."
+        "Budget for one paid experience each day (ferry to Capri, shared boat, garden entry), then fill the rest with free walks and beaches.",
+        "Stock up on snacks and water near Chiesa Nuova; waterfront cafes add the fastest markups."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Squeeze in the best viewpoints",
+      "title": "Viewpoints without ticket costs",
       "body": [
-        "Via Cristoforo Colombo delivers the classic postcard angle at sunrise and golden hour without entry fees.",
-        "For quiet photos, detour to the tiled courtyard by Chiesa Nuova or the small belvedere above Fornillo around 08:00."
+        "Via Cristoforo Colombo gives the classic postcard angle at sunrise or golden hour, no entry fee.",
+        "For quieter photos, detour to the tiled courtyard by Chiesa Nuova or the small belvedere above Fornillo before 08:30."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Plan budget swim breaks",
+      "title": "Budget swim breaks",
       "body": [
-        "Fornillo Beach is free and less crowded—walk the coastal path from Spiaggia Grande and rent only the gear you need.",
-        "If you want Arienzo’s beach club vibe, take the stairs before 10:30 to snag public-space spots, then picnic with supermarket focaccia."
+        "Fornillo Beach has a free public section; walk the coastal path from Spiaggia Grande and rent only what you need.",
+        "For Arienzo's beach club vibe, take the stairs before 10:30 to claim public-space spots, then picnic with focaccia and fruit."
       ]
     },
     {
       "id": "evenings",
-      "title": "Evenings without overspending",
+      "title": "Low-cost evenings",
       "body": [
-        "Sunset on the hostel terrace is free; mix your own spritz with supermarket prosecco and share tapas-style snacks.",
-        "Check the noticeboard for hostel social nights or head to Music on the Rocks after 23:30 when cover drops for hostel guests—bring ID."
+        "Sunset from the hostel terrace is free; mix a simple spritz with supermarket prosecco and share snacks.",
+        "Check the hostel noticeboard for socials; if you head out, arrive late when cover is lower and bring ID."
       ]
     }
   ],
-  "day1Title": "1 day: essentials",
+  "day1Title": "1 day: Positano essentials",
   "day1": [
-    "Morning: Spiaggia Grande lookouts → Fornillo via coastal path",
-    "Lunch: panini/pizza al taglio near Chiesa Nuova to save",
-    "Sunset: terrace viewpoints near the hostel"
+    "Morning: Spiaggia Grande lookouts, then the coastal path to Fornillo for a swim.",
+    "Lunch: pizza al taglio or panini near Chiesa Nuova; eat on the terraces.",
+    "Sunset: Via Cristoforo Colombo or the hostel terrace."
   ],
   "day2Title": "2 days: add Path of the Gods",
   "day2": [
-    "Day 1 as above",
-    "Day 2: SITA to Nocelle → Sentiero degli Dei segments → beach cooldown"
+    "Morning: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (bus to Nocelle, hike down to Positano).",
+    "Afternoon: %LINK:fornilloBeachGuide|cool down at Fornillo Beach% or a late lunch in town."
   ],
-  "day3Title": "3 days: island or Amalfi combo",
+  "day3Title": "3 days: Capri or Amalfi + Ravello",
   "day3": [
-    "Option A: Day trip to Capri (early ferry) with DIY walking loop",
-    "Option B: Amalfi + Ravello via bus; Villa Rufolo gardens then gelato on the Duomo steps"
+    "Option A: %LINK:capriDayTrip|Capri day trip% - take the first ferry, plan a DIY loop, and pack snacks.",
+    "Option B: %LINK:positanoRavello|Amalfi + Ravello% - bus or ferry to Amalfi, then up to Villa Rufolo or Villa Cimbrone."
   ],
   "savingsTitle": "Money-saving tips",
   "savings": [
-    "Travel in shoulder seasons; use SITA buses and walk between viewpoints.",
-    "Stay in dorms, cook simple breakfasts, and picnic at viewpoints for sunset."
+    "Travel in shoulder months (April-May, late September) for lower prices and fewer crowds.",
+    "Use SITA buses for most hops; add a single ferry leg if you want the view.",
+    "Stay in dorms or share rooms near Chiesa Nuova to cut porter fees and stairs.",
+    "Refill water bottles at the hostel or public fountains before heading out.",
+    "If you booked direct, use the complimentary breakfast and evening drink to cover a meal.",
+    "Walk between viewpoints instead of hopping buses; the stairs are free and scenic."
   ],
   "foodTitle": "Cheap eats",
-  "foodText": "Find panini, pizza al taglio, and supermarket salads around mid-town; avoid waterfront price spikes.",
+  "foodText": "Think pizza al taglio, panini, and deli salads around Via dei Mulini and Chiesa Nuova. Stock up at mini-markets for picnic supplies and save sit-down meals for one treat.",
   "transportTitle": "Transport tips",
   "transportCompareLabel": "Compare routes:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "What’s the best 1-day plan?",
       "a": [
-        "Start at Spiaggia Grande, hike to Fornillo, sunset from Chiesa Nuova terrace, dinner with hostel friends."
+        "Start at Spiaggia Grande, walk the coastal path to Fornillo, then watch sunset from Via Cristoforo Colombo or the hostel terrace."
       ]
     },
     {
       "q": "How can I keep transport costs low?",
       "a": [
-        "Use SITA buses and walk stairs where possible; ferries are great in season but cost more."
+        "Use SITA buses for most trips and mix in one ferry leg for the view; buy tickets before boarding to avoid surprises."
       ]
     },
     {
       "q": "What about a 2-day itinerary?",
       "a": [
-        "Day 1 covers Positano’s essentials; Day 2 adds the Path of the Gods loop via Nocelle plus beach time at Arienzo or Fornillo."
+        "Day 1 covers Positano's essentials; Day 2 adds the Path of the Gods via Nocelle plus a beach cooldown."
       ]
     },
     {
       "q": "Any 3-day add-ons?",
       "a": [
-        "Capri day trip or an Amalfi + Ravello combo; plan early ferries and bring snacks to save."
+        "Pick one: a Capri day trip or an Amalfi + Ravello combo; leave early and pack snacks to keep costs down."
       ]
     }
   ]

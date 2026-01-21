@@ -1,3 +1,5 @@
+"use client";
+
 // src/context/modal/provider.tsx
 /* -------------------------------------------------------------------------- */
 /*  Modal provider component                                                  */
@@ -6,8 +8,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
-import { GlobalModals } from "./global-modals";
 import { ensureDocument } from "./environment";
+import { GlobalModals } from "./global-modals";
 
 ensureDocument();
 

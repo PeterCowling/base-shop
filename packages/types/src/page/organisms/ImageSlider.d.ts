@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ImageSliderComponent extends PageComponentBase {
     type: "ImageSlider";
     slides?: {

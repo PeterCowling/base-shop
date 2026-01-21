@@ -1,3 +1,13 @@
+import { promises as fs } from "fs";
+
+import { shopSchema } from "@acme/types";
+
+import { prisma } from "../../db";
+import { defaultFilterMappings } from "../../defaultFilterMappings";
+import { loadThemeTokens } from "../../themeTokens/index";
+import { getShopById,updateShopInRepo } from "../shop.server";
+import * as shops from "../shops.server";
+
 jest.mock("../shop.server", () => ({
   getShopById: jest.fn(),
   updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
@@ -7,14 +17,6 @@ jest.mock("../../themeTokens/index", () => ({
   baseTokens: { base: "base" },
   loadThemeTokens: jest.fn(async () => ({ theme: "theme" })),
 }));
-
-import { shopSchema } from "@acme/types";
-import { updateShopInRepo, getShopById } from "../shop.server";
-import { loadThemeTokens } from "../../themeTokens/index";
-import { prisma } from "../../db";
-import * as shops from "../shops.server";
-import { defaultFilterMappings } from "../../defaultFilterMappings";
-import { promises as fs } from "fs";
 
 const { readShop } = shops;
 

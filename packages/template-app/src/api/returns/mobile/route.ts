@@ -1,12 +1,13 @@
-import { markReturned } from "@acme/platform-core/repositories/rentalOrders.server";
-import {
-  getReturnLogistics,
-  getReturnBagAndLabel,
-} from "@acme/platform-core/returnLogistics";
+import { type NextRequest, NextResponse } from "next/server";
+
 import { setReturnTracking } from "@acme/platform-core/orders";
-import { NextRequest, NextResponse } from "next/server";
-import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { markReturned } from "@acme/platform-core/repositories/rentalOrders.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import {
+  getReturnBagAndLabel,
+  getReturnLogistics,
+} from "@acme/platform-core/returnLogistics";
 
 const SHOP_ID = "bcd";
 

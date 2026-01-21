@@ -1,6 +1,7 @@
-import { priceForDays, convertCurrency } from "../pricing";
-import type { CartLine } from "../cart";
 import type Stripe from "stripe";
+
+import type { CartLine } from "../cart";
+import { convertCurrency,priceForDays } from "../pricing";
 
 /**
  * Build the two Stripe line-items (rental + deposit) for a single cart item.

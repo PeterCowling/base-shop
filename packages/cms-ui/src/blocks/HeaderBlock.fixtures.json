@@ -1,0 +1,10 @@
+{
+  "nav": [
+    { "title": "Home", "href": "/" },
+    { "title": "Shop", "href": "/shop" }
+  ],
+  "shopName": "Demo Shop",
+  "locale": "en",
+  "showSearch": true
+}
+

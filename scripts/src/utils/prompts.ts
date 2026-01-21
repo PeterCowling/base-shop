@@ -102,7 +102,7 @@ export async function promptPages(): Promise<CreateShopOptions["pages"]> {
     const slug = await prompt("Page slug (leave empty to finish): ");
     if (!slug) break;
     const title = await prompt("Page title: ");
-    pages.push({ slug, title: { en: title }, components: [] });
+    pages.push({ slug, title: { en: title }, components: [], status: "draft", visibility: "public" });
   }
   return pages;
 }

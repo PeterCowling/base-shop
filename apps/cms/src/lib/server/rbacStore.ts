@@ -1,14 +1,16 @@
 import "server-only";
 
-// apps/cms/src/lib/server/rbacStore.ts
-
-import type { CmsUser } from "@acme/types";
-import type { Permission } from "@acme/auth";
-import { ROLE_PERMISSIONS } from "@acme/auth/permissions";
 import * as fsSync from "fs";
 import { promises as fs } from "fs";
 import * as path from "path";
+
+import type { Permission } from "@acme/auth";
+import { ROLE_PERMISSIONS } from "@acme/auth/permissions";
+// apps/cms/src/lib/server/rbacStore.ts
+import type { CmsUser } from "@acme/types";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
+
 import type { Role } from "../../auth/roles";
 
 export interface RbacDB {

@@ -1,6 +1,7 @@
-import { updateSeo } from "../seoService";
-import { authorize, fetchSettings, persistSettings } from "../helpers";
 import { revalidatePath } from "next/cache";
+
+import { authorize, fetchSettings, persistSettings } from "../helpers";
+import { updateSeo } from "../seoService";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),
@@ -100,7 +101,6 @@ describe("seo service", () => {
     const fd = new FormData();
     fd.append("locale", "en");
     fd.append("title", "t");
-    fd.append("description", "d");
     const result = await updateSeo("shop", fd);
     expect(errorSpy).toHaveBeenCalledWith(
       "[updateSeo] failed to persist settings for shop shop",

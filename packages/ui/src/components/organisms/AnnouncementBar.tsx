@@ -1,10 +1,12 @@
 "use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { cn } from "../../utils/style";
 
 export interface AnnouncementBarProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Message text displayed in the bar */

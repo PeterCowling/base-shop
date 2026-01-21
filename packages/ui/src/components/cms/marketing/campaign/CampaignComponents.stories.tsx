@@ -1,13 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
+
+import { Sidebar } from "../../../atoms/primitives";
+
 import CampaignForm from "./CampaignForm";
-import CampaignWizard from "./CampaignWizard";
 import CampaignPreviewPanel from "./CampaignPreviewPanel";
 import CampaignSummaryCard from "./CampaignSummaryCard";
+import CampaignWizard from "./CampaignWizard";
 import {
+  type CampaignPreviewData,
   defaultCampaignValues,
   getCampaignPreview,
-  type CampaignPreviewData,
 } from "./types";
 
 const meta: Meta<typeof CampaignForm> = {
@@ -66,4 +69,3 @@ function FormWithPreviewStory() {
     </Sidebar>
   );
 }
-import { Sidebar } from "../../../atoms/primitives";

@@ -1,7 +1,10 @@
 "use client";
 import type { ChangeEvent } from "react";
+
 import type { PricingTableComponent } from "@acme/types";
+
 import { Button, Input, Textarea } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<PricingTableComponent>;

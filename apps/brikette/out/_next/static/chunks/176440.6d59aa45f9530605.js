@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[176440],{176440:e=>{e.exports=JSON.parse('{"title":"Our Location","inputLabel":"Enter your current location:","inputPlaceholder":"e.g. Naples, Italy or full address","getDirections":"Get Directions","justShowMap":"Just Show Map","close":"Close modal"}')}}]);

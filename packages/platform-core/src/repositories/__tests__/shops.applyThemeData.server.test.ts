@@ -1,3 +1,8 @@
+import { shopSchema } from "@acme/types";
+
+import { loadThemeTokens } from "../../themeTokens/index";
+import * as shops from "../shops.server";
+
 jest.mock("../shop.server", () => ({
   getShopById: jest.fn(),
   updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
@@ -7,10 +12,6 @@ jest.mock("../../themeTokens/index", () => ({
   baseTokens: { base: "base" },
   loadThemeTokens: jest.fn(async () => ({ theme: "theme" })),
 }));
-
-import { shopSchema } from "@acme/types";
-import { loadThemeTokens } from "../../themeTokens/index";
-import * as shops from "../shops.server";
 
 const { applyThemeData } = shops;
 

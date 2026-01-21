@@ -1,19 +1,20 @@
 // src/routes/guides/luggage-storage-positano.tsx
-import i18n from "@/i18n";
-import ServiceStructuredData from "@/components/seo/ServiceStructuredData";
-import ImageGallery from "@/components/guides/ImageGallery";
-import AlsoHelpful from "@/components/common/AlsoHelpful";
-import CfImage from "@/components/images/CfImage";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { toAppLanguage } from "@/utils/lang";
-import { buildLinks as buildSeoLinks } from "@/utils/seo";
 import type { TFunction } from "i18next";
 
+import AlsoHelpful from "@/components/common/AlsoHelpful";
+import ImageGallery from "@/components/guides/ImageGallery";
+import CfImage from "@/components/images/CfImage";
+import ServiceStructuredData from "@/components/seo/ServiceStructuredData";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
+import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
@@ -21,17 +22,16 @@ import {
   DEFAULT_IMAGE_FORMAT,
   GUIDE_KEY as GUIDE_KEY_CONST,
   GUIDE_SLUG as GUIDE_SLUG_CONST,
+  handle,
   HERO_IMAGE_DIMENSIONS,
   HERO_IMAGE_PATH,
   OG_IMAGE_DIMENSIONS,
   OG_IMAGE_PATH,
-  handle,
 } from "./luggage-storage-positano.constants";
 import { buildLuggageStorageContent } from "./luggage-storage-positano.content";
 import { buildLuggageStorageFaqEntries as buildFaqEntries } from "./luggage-storage-positano.faq";
-import { resolveLuggageStorageString } from "./luggage-storage-positano.strings";
 import { buildLuggageStorageGallery } from "./luggage-storage-positano.gallery";
-import { BASE_URL } from "@/config/site";
+import { resolveLuggageStorageString } from "./luggage-storage-positano.strings";
 
 export { handle };
 export const GUIDE_KEY: GuideKey = GUIDE_KEY_CONST;
@@ -271,4 +271,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

@@ -2,25 +2,26 @@
 /* ─────────────────────────────────────────────────────────────
    Assistance landing – “Ask-Me-Anything” section (AMA)
    ---------------------------------------------------------------- */
+import { type ComponentProps,memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import * as Router from "react-router-dom";
+import clsx from "clsx";
+import type { TFunction } from "i18next";
+
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
-import { memo, useMemo, type ComponentProps } from "react";
-import { useTranslation } from "react-i18next";
-import type { TFunction } from "i18next";
-import * as Router from "react-router-dom";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
-import clsx from "clsx";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 import { DOMAIN } from "@/config";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import { OG_IMAGE } from "@/utils/headConstants";
 import { normaliseBrowserOrigin } from "@/utils/origin";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type LocationLike = { pathname?: string };
 

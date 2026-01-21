@@ -1,15 +1,18 @@
-import { checkShopExists } from "@acme/lib";
-import { readPricing } from "@acme/platform-core/repositories/pricing.server";
 import { notFound } from "next/navigation";
-import PricingForm from "./PricingForm";
-import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { checkShopExists } from "@acme/platform-core";
+import { readPricing } from "@acme/platform-core/repositories/pricing.server";
+import { formatNumber } from "@acme/lib/format";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid } from "@acme/ui/components/atoms/primitives";
 import { cn } from "@acme/ui/utils/style";
-import { formatNumber } from "@acme/shared-utils";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { TranslationsProvider } from "@acme/i18n/Translations";
-import en from "@acme/i18n/en.json";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import PricingForm from "./PricingForm";
 
 export const revalidate = 0;
 

@@ -1,29 +1,31 @@
 // packages/ui/components/cms/NavigationEditor.tsx
 "use client";
 
+import { forwardRef,Fragment, useState } from "react";
 import {
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragStartEvent,
+  type DragEndEvent,
+  type DragOverEvent,
+  type DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { Fragment, useState, forwardRef } from "react";
 import { ulid } from "ulid";
-import { Button, Input } from "../atoms/shadcn";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Input } from "../atoms/shadcn";
 
 export interface NavItem {
   id: string;
@@ -133,7 +135,7 @@ function NavList({
         items={items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: spacing utility is not UI copy */}
+        { }
         <ul className={level ? "ms-4 space-y-2" : "space-y-2"}>
           {items.map((item, i) => (
             <Fragment key={item.id}>

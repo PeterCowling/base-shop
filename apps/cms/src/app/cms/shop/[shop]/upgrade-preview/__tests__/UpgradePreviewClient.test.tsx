@@ -1,7 +1,8 @@
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
 import { act, render, screen, waitFor } from "@testing-library/react";
+
 import UpgradePreviewClient from "../UpgradePreviewClient";
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview = ({ component }: any) => (
@@ -118,7 +119,7 @@ describe("UpgradePreviewClient", () => {
 
     render(<UpgradePreviewClient shop={shop} />);
 
-    const publishButton = await screen.findByRole("button", { name: "Publish upgrade" });
+    const publishButton = await screen.findByText("Publish upgrade");
     await act(async () => {
       publishButton.click();
     });

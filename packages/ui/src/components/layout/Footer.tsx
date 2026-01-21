@@ -1,8 +1,10 @@
 "use client";
 // src/components/layout/Footer.tsx
-import Link from "next/link";
 import { memo } from "react";
+import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../utils/style";
 
 const Footer = memo(function Footer({

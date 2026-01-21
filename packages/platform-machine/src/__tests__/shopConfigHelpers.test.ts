@@ -1,7 +1,9 @@
-import { validateShopName } from "@acme/platform-core/shops";
-import * as depositService from "../releaseDepositsService";
-import { getShopFromPath } from "@acme/shared-utils/src/getShopFromPath";
 import { readdir, readFile } from "node:fs/promises";
+
+import { validateShopName } from "@acme/platform-core/shops";
+import { getShopFromPath } from "@acme/lib/shop";
+
+import * as depositService from "../releaseDepositsService";
 
 jest.mock("node:fs/promises", () => ({
   readdir: jest.fn(),

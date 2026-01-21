@@ -1,9 +1,10 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
-jest.mock("path", () => ({
-  join: jest.fn((...parts) => parts.join("/")),
-  dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
-}));
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import * as path from "path";
+
+jest.mock("path", () => ({
+  join: jest.fn((...parts: string[]) => parts.join("/")),
+  dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
+}));
 
 const product = { id: "123", title: "Title", description: "Desc" };
 const writeMock = jest.fn();

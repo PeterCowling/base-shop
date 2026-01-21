@@ -1,0 +1,28 @@
+{
+  "seo": {
+    "title": "Sorrento: porta de entrada para a Costa Amalfitana",
+    "description": "Por que começar em Sorrento e como seguir para Positano e Capri."
+  },
+  "linkLabel": "Sorrento: porta de entrada para a Costa Amalfitana",
+  "intro": [
+    "Sorrento é um ponto de partida prático, com ônibus e balsas frequentes para a Costa Amalfitana e conexões de trem fáceis de volta para Nápoles e Pompeia."
+  ],
+  "sections": [
+    {
+      "id": "why-sorrento",
+      "title": "Por que chegar via Sorrento",
+      "body": [
+        "Trens de Nápoles chegam regularmente; há muitas acomodações e, muitas vezes, preços melhores que em Positano.",
+        "Da cidade, ônibus e balsas sazonais levam você a Positano e Amalfi."
+      ]
+    },
+    {
+      "id": "onward-connections",
+      "title": "Conexões seguintes",
+      "body": [
+        "Os ônibus SITA operam o ano todo para Positano e Amalfi; compre as passagens antes de embarcar.",
+        "Na alta temporada, as balsas chegam direto a Positano — ótima vista e menos escadas quando você está com bagagem."
+      ]
+    }
+  ]
+}

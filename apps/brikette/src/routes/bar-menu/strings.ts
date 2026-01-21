@@ -1,5 +1,5 @@
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import { type BarMenuItemKey } from "@/data/menuPricing";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import enBarMenuPage from "@/locales/en/barMenuPage.json";
 import enMenus from "@/locales/en/menus.json";
 import { asString, resolveFallbackKey } from "@/utils/localeFallback";

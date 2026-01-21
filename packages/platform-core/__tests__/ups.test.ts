@@ -1,9 +1,20 @@
 import { jest } from '@jest/globals';
 
-const mockEnv: Record<string, string | undefined> = {};
-jest.mock('@acme/config/env/shipping', () => ({ shippingEnv: mockEnv }));
-
 import { createReturnLabel, getStatus } from '../src/shipping/ups';
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __upsTestMockEnv: Record<string, string | undefined> | undefined;
+}
+globalThis.__upsTestMockEnv = {};
+
+jest.mock('@acme/config/env/shipping', () => ({
+  get shippingEnv() {
+    return globalThis.__upsTestMockEnv ?? {};
+  },
+}));
+
+const mockEnv = globalThis.__upsTestMockEnv!;
 
 describe('createReturnLabel', () => {
   let fetchMock: jest.Mock;
@@ -74,6 +85,7 @@ describe('getStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
+    global.fetch = fetchMock;
   });
 
   it('returns status when API succeeds', async () => {

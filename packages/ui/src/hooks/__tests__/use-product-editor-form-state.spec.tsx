@@ -1,11 +1,13 @@
-import { act, renderHook } from "@testing-library/react";
 import type { FormEvent } from "react";
+import { act, renderHook } from "@testing-library/react";
+
 import type { Locale } from "@acme/i18n";
 import type { ProductPublication } from "@acme/types";
+
 import * as buildProductFormData from "../../utils/buildProductFormData";
 import {
-  useProductEditorFormState,
   type ProductSaveResult,
+  useProductEditorFormState,
 } from "../useProductEditorFormState";
 
 jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({

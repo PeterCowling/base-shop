@@ -1,5 +1,6 @@
 // packages/platform-core/src/customerProfiles.ts
 import type { CustomerProfile } from "@acme/types";
+
 import { prisma } from "./db";
 
 /**

@@ -8,14 +8,14 @@
     "Slik ordner du klesvask i Positano – selvbetjening, innlevering og tips for å få klærne tørre i fuktig klima."
   ],
   "toc": {
-    "onThisPage": "On this page",
-    "selfService": "Self‑service laundromats",
-    "dropOff": "Drop‑off services",
-    "howto": "How‑to: self‑service",
-    "tips": "Detergent & machines",
-    "faqs": "FAQs"
+    "onThisPage": "På denne siden",
+    "selfService": "Selvbetjente vaskerier",
+    "dropOff": "Innleveringstjenester",
+    "howto": "Slik gjør du: selvbetjent",
+    "tips": "Vaskemiddel og maskiner",
+    "faqs": "Vanlige spørsmål"
   },
-  "selfServiceText": "Forvent kompakte europeiske maskiner. Ta med småpenger og vurder tider utenfor peak for å unngå køer (sen morgen eller tidlig ettermiddag utenom omsetningsdager).",
+  "selfServiceText": "Forvent kompakte europeiske maskiner. Ta med småpenger og vurder tider utenfor topptidene for å unngå køer (sen morgen eller tidlig ettermiddag utenom omsetningsdager).",
   "dropOffText": "Be om vask-og-fold-pris per kg og behandling samme dag. I høye perioder forbedrer tidlig avlevering sjansene.",
   "howtoSteps": [
     "Velg maskinstørrelse basert på belastning; ikke overfyll.",

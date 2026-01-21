@@ -1,11 +1,13 @@
-import { LOCALES } from "@acme/i18n";
-import {
-  createSchema,
-  updateSchema,
-  emptyTranslated,
-  componentsField,
-} from "../validation";
 import { describe, expect, it } from "@jest/globals";
+
+import { LOCALES } from "@acme/i18n";
+
+import {
+  componentsField,
+  createSchema,
+  emptyTranslated,
+  updateSchema,
+} from "../validation";
 
 describe("pages validation", () => {
   it("creates empty translated object for all locales", () => {

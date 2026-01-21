@@ -10,6 +10,9 @@ import { fixupPluginRules } from "@eslint/compat";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import testingLibrary from "eslint-plugin-testing-library";
 import storybook from "eslint-plugin-storybook";
+import noOnlyTests from "eslint-plugin-no-only-tests";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import promisePlugin from "eslint-plugin-promise";
 // Optional: Tailwind plugin is currently incompatible with Tailwind v4's exports in some versions
 let tailwindcss;
 try {
@@ -40,6 +43,7 @@ export default [
       "node_modules/",
       "dist-types/",
       "**/dist/**",
+      "**/*.tsbuildinfo",
       "packages/auth/dist/",
       "packages/configurator/bin/**",
       "**/.next/**",
@@ -57,6 +61,10 @@ export default [
       "packages/ui/src/**/*.js",
       "packages/ui/src/**/*.d.ts",
       "packages/ui/src/**/*.d.ts.map",
+      // Ignore compiled JS files in package src directories (TypeScript emits these)
+      "packages/*/src/**/*.js",
+      // Ignore ts-jest cache/build artifacts
+      "**/.ts-jest/**",
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
@@ -70,6 +78,21 @@ export default [
       "apps/api/postcss.config.cjs",
       // Prime app: exempt while in early development
       "apps/prime/**",
+      // Handbag configurator: exempt while in early development
+      "apps/handbag-configurator/**",
+      // Cochlearfit: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
+      "apps/cochlearfit/**",
+      // Product-pipeline: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
+      "apps/product-pipeline/**",
+      // Cover-me-pretty: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
+      "apps/cover-me-pretty/**",
+      // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
+      "apps/brikette/**",
+      // Cypress files: exempt from main linting (type-aware rules crash during init without project)
+      "apps/cms/cypress/**",
+      "apps/cms/cypress.config.mjs",
+      // Vendor WASM transcoder files
+      "**/public/ktx2/basis_transcoder.js",
     ],
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */
@@ -98,7 +121,13 @@ export default [
   /* ▸ UI published components: disallow Tailwind palette colors; use tokens */
   {
     files: ["packages/ui/src/components/**/*.{ts,tsx,js,jsx}"],
-    ignores: ["packages/ui/src/components/cms/**/*"],
+    ignores: [
+      "packages/ui/src/components/cms/**/*",
+      // Operations are internal admin tools; relax palette color restrictions
+      "packages/ui/src/components/organisms/operations/**/*",
+      // StatusIndicator uses semantic palette colors for status states
+      "packages/ui/src/components/atoms/StatusIndicator/**/*",
+    ],
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -124,7 +153,16 @@ export default [
       "packages/ui/src/components/**/*.{ts,tsx,js,jsx}",
       "apps/storybook/.storybook/**/*.{ts,tsx,js,jsx}",
     ],
-    ignores: ["**/__tests__/**/*", "**/*.test.*", "**/*.spec.*", "**/*.d.ts"],
+    ignores: [
+      "**/__tests__/**/*",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/*.d.ts",
+      // Operations are internal admin tools; relax palette color restrictions
+      "packages/ui/src/components/organisms/operations/**/*",
+      // StatusIndicator uses semantic palette colors for status states
+      "packages/ui/src/components/atoms/StatusIndicator/**/*",
+    ],
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -717,6 +755,8 @@ export default [
       "security/detect-unsafe-regex": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      // Type-aware rules cannot be used without project config
+      "@typescript-eslint/consistent-type-exports": "off",
     },
   },
 
@@ -896,8 +936,8 @@ export default [
             {
               group: [
                 "@acme/*/src/**",
-                "@ui/src/**",
-                "@platform-core/src/**",
+                "@acme/ui/src/**",
+                "@acme/platform-core/src/**",
               ],
               message:
                 "Import from package public entrypoints (e.g. @acme/<pkg> or documented subpaths) instead of src/* internals.",
@@ -1024,6 +1064,81 @@ export default [
     },
   },
 
+  /* ▸ Package layering: design-system cannot import from cms-ui or ui */
+  {
+    files: ["packages/design-system/**/*.{ts,tsx,js,jsx}"],
+    plugins: { import: importPlugin },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@acme/cms-ui", "@acme/cms-ui/*"],
+              message:
+                "@acme/design-system cannot depend on @acme/cms-ui; design system is the base layer.",
+            },
+            {
+              group: ["@acme/ui", "@acme/ui/*"],
+              message:
+                "@acme/design-system cannot depend on @acme/ui; design system is the base layer.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  /* ▸ Package layering: cms-ui cannot import from ui (siblings, both depend on design-system) */
+  {
+    files: ["packages/cms-ui/**/*.{ts,tsx,js,jsx}"],
+    plugins: { import: importPlugin },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@acme/ui", "@acme/ui/*"],
+              message:
+                "@acme/cms-ui cannot depend on @acme/ui; they are sibling packages that both depend on @acme/design-system.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  /* ▸ Package layering: ui shims can import from cms-ui (backward compat only) */
+  {
+    files: ["packages/ui/src/shims/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      // Override the cms-ui restriction for shim files only
+      "no-restricted-imports": "off",
+    },
+  },
+
+  /* ▸ Package layering: ui production code cannot import from cms-ui (except shims) */
+  {
+    files: ["packages/ui/src/**/*.{ts,tsx,js,jsx}"],
+    ignores: ["packages/ui/src/shims/**/*.{ts,tsx,js,jsx}"],
+    plugins: { import: importPlugin },
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@acme/cms-ui", "@acme/cms-ui/*"],
+              message:
+                "@acme/ui production code cannot depend on @acme/cms-ui; import from @acme/design-system instead.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   /* ▸ UI atoms/primitives seldom contain user-facing copy — relax i18n rule */
   {
     files: ["packages/ui/src/components/atoms/primitives/**/*.{ts,tsx}"],
@@ -1063,6 +1178,7 @@ export default [
       "react/jsx-no-useless-fragment": "off",
       "react/self-closing-comp": "off",
       "react/jsx-no-target-blank": "off",
+      "react/no-unescaped-entities": "off",
       "jsx-a11y/anchor-is-valid": "off",
       "jsx-a11y/alt-text": "off",
       "jsx-a11y/label-has-associated-control": "off",
@@ -1074,6 +1190,27 @@ export default [
       "jsx-a11y/media-has-caption": "off",
       "jsx-a11y/role-has-required-aria-props": "off",
       "jsx-a11y/no-aria-hidden-on-focusable": "off",
+      // Stories can use plain <img> for simplicity; not production code
+      "@next/next/no-img-element": "off",
+    },
+  },
+
+  /* ▸ UI test files: relax rules for test ergonomics */
+  {
+    files: ["packages/ui/**/*.test.{ts,tsx}", "packages/ui/**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      // Tests are dev-only; disable copy and DS rules
+      "ds/no-hardcoded-copy": "off",
+      ...offAllDsRules,
+      // Relax a11y and React rules for test fixtures
+      "jsx-a11y/no-autofocus": "off",
+      "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "react/no-unescaped-entities": "off",
+      "react/forbid-dom-props": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 
@@ -1111,8 +1248,13 @@ export default [
   /* ▸ UI package: temporarily downgrade strict rules to warnings to unblock lint */
   {
     files: ["packages/ui/src/**/*.{ts,tsx}"],
-    // Do not apply this downgrade to published UI components; they are handled below
-    ignores: ["packages/ui/src/components/**/*.{ts,tsx}"],
+    // Do not apply this downgrade to published UI components, tests, or stories; they are handled elsewhere
+    ignores: [
+      "packages/ui/src/components/**/*.{ts,tsx}",
+      "**/*.test.{ts,tsx}",
+      "**/__tests__/**/*.{ts,tsx}",
+      "**/*.stories.{ts,tsx}",
+    ],
     rules: {
       // Governance: warn in UI package during migration
       "ds/require-disable-justification": "warn",
@@ -1174,6 +1316,7 @@ export default [
       "packages/ui/src/components/molecules/**/*.{ts,tsx}",
       "packages/ui/src/components/organisms/**/*.{ts,tsx}",
     ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
     rules: {
       "ds/no-hardcoded-copy": "error",
     },
@@ -1186,6 +1329,7 @@ export default [
       "packages/ui/src/components/molecules/**/*.{ts,tsx}",
       "packages/ui/src/components/organisms/**/*.{ts,tsx}",
     ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
     rules: {
       // Accessibility fundamentals
       "jsx-a11y/anchor-is-valid": "error",
@@ -1279,6 +1423,19 @@ export default [
     },
   },
 
+  /* ▸ Temporary suppression: treat hardcoded copy in select packages as off while compliance work is underway */
+  {
+    files: [
+      "packages/ui/**/*.{ts,tsx}",
+      "packages/mcp-cloudflare/**/*.{ts,tsx}",
+      "packages/mcp-server/**/*.{ts,tsx}",
+      "packages/lib/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
   /* ▸ MSW fixtures: disable hardcoded-copy (test-only strings) */
   {
     files: ["test/msw/**/*.{ts,tsx}"],
@@ -1324,6 +1481,8 @@ export default [
       "ds/no-hardcoded-copy": "off",
       // Also ensure font stack rule is disabled in tests to prevent matches on identifiers
       "ds/no-raw-font": "off",
+      // Allow raw colors in test fixtures (e.g., mock data with "#123" strings)
+      "ds/no-raw-color": "off",
       // Governance: do not require ticket IDs on eslint-disable in tests
       // Tests often toggle rules for fixtures/mocks; enforcing ticket IDs adds noise
       "ds/require-disable-justification": "off",
@@ -1361,6 +1520,38 @@ export default [
     },
   },
 
+  /* ▸ SEO/Structured data components: Schema.org literals are non-UI (SEO-315) */
+  {
+    files: [
+      "**/components/seo/**/*.{ts,tsx,js,jsx}",
+      "**/*StructuredData*.{ts,tsx,js,jsx}",
+      "**/utils/seo*.{ts,tsx,js,jsx}",
+      "**/utils/schema/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  /* ▸ Locale stub fixtures: test/dev fallbacks, not user-facing */
+  {
+    files: ["**/locales/**/*.stub/**/*.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  /* ▸ Root scripts: CLI/build tooling diagnostics are non-UI */
+  {
+    files: ["scripts/**/*.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
   /* ▸ Requested exceptions: disable no-hardcoded-copy in specific apps/packages */
   {
     files: [
@@ -1382,6 +1573,7 @@ export default [
       "packages/config/**/*.{ts,tsx,js,jsx}",
       "packages/zod-utils/**/*.{ts,tsx,js,jsx}",
       "packages/themes/**/*.{ts,tsx,js,jsx}",
+      "packages/tailwind-config/**/*.{ts,tsx,js,jsx}",
       "packages/shared-utils/**/*.{ts,tsx,js,jsx}",
       "packages/i18n/**/*.{ts,tsx,js,jsx}",
       "packages/date-utils/**/*.{ts,tsx,js,jsx}",
@@ -1395,6 +1587,454 @@ export default [
       "ds/require-disable-justification": "off",
     },
   },
- 
-  
+
+  /* ▸ UI operations components: internal admin tools, exempt from strict DS/a11y rules */
+  {
+    files: ["packages/ui/src/components/organisms/operations/**/*.{ts,tsx}"],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      // Operations are internal admin tools (CMS, dashboards); not customer-facing, no i18n needed
+      // Full exemption from DS rules - these are admin-only components with different UX requirements
+      "ds/no-hardcoded-copy": "off",
+      "ds/min-tap-size": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/no-physical-direction-classes-in-rtl": "off",
+      "ds/enforce-focus-ring-token": "off",
+      "ds/no-arbitrary-tailwind": "off",
+      "ds/no-nonlayered-zindex": "off",
+      "ds/absolute-parent-guard": "off",
+      "ds/no-unsafe-viewport-units": "off",
+      // Relaxed a11y for internal tools - admin users have different requirements
+      "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-autofocus": "off",
+      // Relaxed React rules for internal tools
+      "react/no-array-index-key": "off",
+      "react/forbid-dom-props": "off",
+      "react/no-unescaped-entities": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
+  },
+
+  /* ▸ UI design system internals: ErrorBoundary, ThemeToggle, StatusIndicator use hardcoded defaults */
+  {
+    files: [
+      "packages/ui/src/components/ErrorBoundary.tsx",
+      "packages/ui/src/components/atoms/ThemeToggle.tsx",
+      "packages/ui/src/components/atoms/StatusIndicator/**/*.{ts,tsx}",
+    ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      // DS internal components with hardcoded fallback strings; not customer-facing
+      "ds/no-hardcoded-copy": "off",
+      // ErrorBoundary is a fallback UI - exempt from strict DS rules
+      "ds/no-unsafe-viewport-units": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/min-tap-size": "off",
+    },
+  },
+
+  /* ▸ UI hooks and utils: internal tooling */
+  {
+    files: [
+      "packages/ui/src/hooks/**/*.{ts,tsx}",
+      "packages/ui/src/utils/**/*.{ts,tsx}",
+      "packages/ui/src/context/**/*.{ts,tsx}",
+      "packages/ui/src/providers/**/*.{ts,tsx}",
+    ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      // Hooks, utils, context, providers are internal tooling; not customer-facing copy
+      "ds/no-hardcoded-copy": "off",
+      "ds/enforce-focus-ring-token": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
+  },
+
+  /* ▸ UI molecules and legacy organisms: downgrade strict rules during migration */
+  {
+    files: [
+      "packages/ui/src/molecules/**/*.{ts,tsx}",
+      "packages/ui/src/organisms/**/*.{ts,tsx}",
+      "packages/ui/src/atoms/**/*.{ts,tsx}",
+    ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "warn",
+      "ds/min-tap-size": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/container-widths-only-at": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+    },
+  },
+
+  /* ▸ UI storefront components: downgrade during migration */
+  {
+    files: [
+      "packages/ui/src/components/organisms/StorefrontFooter.tsx",
+      "packages/ui/src/components/organisms/StorefrontProductCard.tsx",
+      "packages/ui/src/components/organisms/FilterDrawer.tsx",
+    ],
+    ignores: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    rules: {
+      // Storefront components receive copy via props from the app layer (which handles i18n)
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      "ds/enforce-focus-ring-token": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      "ds/container-widths-only-at": "warn",
+      "react/forbid-dom-props": "warn",
+      "jsx-a11y/no-static-element-interactions": "warn",
+      "jsx-a11y/click-events-have-key-events": "warn",
+    },
+  },
+
+  /* ▸ UI type compatibility shims: declaration files with non-UI strings */
+  {
+    files: ["packages/ui/types-compat/**/*.d.ts"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  /* ▸ LINT-02: Prevent .only in tests (eslint-plugin-no-only-tests) */
+  {
+    files: [
+      // TypeScript test files
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.spec.ts",
+      "**/*.spec.tsx",
+      // JavaScript test files
+      "**/*.test.js",
+      "**/*.test.jsx",
+      "**/*.spec.js",
+      "**/*.spec.jsx",
+      // ESM test files
+      "**/*.test.mjs",
+      "**/*.spec.mjs",
+      // Cypress files
+      "**/*.cy.ts",
+      "**/*.cy.tsx",
+      // Directory-based test files
+      "**/__tests__/**/*.{ts,tsx,js,jsx,mjs}",
+      "**/e2e/**/*.{ts,tsx,js,jsx}",
+      "**/playwright/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { "no-only-tests": noOnlyTests },
+    rules: {
+      "no-only-tests/no-only-tests": "error",
+    },
+  },
+
+  /* ▸ LINT-08: Console and debugger enforcement */
+  {
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    rules: {
+      "no-console": ["error", { allow: ["warn", "error", "info", "debug"] }],
+      "no-debugger": "error",
+    },
+  },
+  /* ▸ LINT-08: Exception for CLI scripts */
+  {
+    files: ["scripts/**/*.{ts,js,mjs}", "tools/**/*.{ts,js,mjs}"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+
+  /* ▸ LINT-04: Import sorting (eslint-plugin-simple-import-sort) */
+  {
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            // Side effects (e.g., CSS imports, polyfills)
+            ["^\\u0000"],
+            // Node.js builtins
+            ["^node:"],
+            // React/Next first, then other external packages (NOT starting with @acme)
+            ["^react", "^next", "^(?!@acme)@?\\w"],
+            // Internal packages (@acme/*)
+            ["^@acme/"],
+            // Internal aliases (@/)
+            ["^@/"],
+            // Parent imports (..)
+            ["^\\.\\."],
+            // Sibling imports (./)
+            ["^\\."],
+          ],
+        },
+      ],
+      "simple-import-sort/exports": "error",
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-duplicates": "error",
+    },
+  },
+
+  /* ▸ LINT-05: Promise rules (eslint-plugin-promise) */
+  {
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    plugins: { promise: promisePlugin },
+    rules: {
+      "promise/no-return-wrap": "error",
+      "promise/param-names": "error",
+      "promise/no-return-in-finally": "error",
+      "promise/valid-params": "error",
+      // Disabled initially due to high violation count
+      "promise/always-return": "off",
+      "promise/catch-or-return": "off",
+      "promise/no-nesting": "off",
+      "promise/no-promise-in-callback": "off",
+      "promise/no-callback-in-promise": "off",
+    },
+  },
+
+  /* ▸ LINT-03: TypeScript strict rules (consistent type imports) */
+  /* consistent-type-imports is NOT type-aware, safe for all TS files */
+  /* Excludes .d.ts files which legitimately use import() type annotations */
+  {
+    files: ["**/*.{ts,tsx}"],
+    ignores: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+          disallowTypeAnnotations: false,
+        },
+      ],
+    },
+  },
+  /* ▸ LINT-03: consistent-type-exports IS type-aware, must exclude project:null files */
+  {
+    files: ["**/*.{ts,tsx}"],
+    ignores: [
+      // All patterns that have project: null in the config
+      "**/__tests__/**/*",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/*.cy.*",
+      "**/*.stories.*",
+      "packages/design-tokens/**/*",
+      "packages/config/env-schema.ts",
+      "packages/configurator/**/*",
+      "packages/i18n/**/*",
+      "packages/tailwind-config/**/*",
+      "packages/ui/**/story-utils/**/*",
+      "packages/eslint-plugin-ds/tests/**/*",
+      "packages/platform-core/defaultFilterMappings.ts",
+      "packages/platform-core/prisma/**/*",
+      "**/*.d.ts",
+      "scripts/**/*",
+      "apps/*/scripts/**/*",
+      "apps/cms/cypress.config.mjs",
+      "apps/cms/cypress/**/*",
+      "apps/cms/middleware.ts",
+      "packages/themes/dummy/tailwind-tokens/src/**/*",
+      "apps/storybook/.storybook*/**/*",
+      "plopfile.ts",
+    ],
+    rules: {
+      "@typescript-eslint/consistent-type-exports": [
+        "error",
+        {
+          fixMixedExportsWithInlineTypeSpecifier: true,
+        },
+      ],
+    },
+  },
+  /* ▸ LINT-03b: Disable type-aware rules for project:null files (override for flat config merge order) */
+  {
+    files: [
+      "apps/cms/cypress/**/*.{ts,tsx}",
+      "apps/cms/cypress.config.mjs",
+      "apps/cms/middleware.ts",
+    ],
+    rules: {
+      "@typescript-eslint/consistent-type-exports": "off",
+    },
+  },
+
+  /* ▸ LINT-01: Complexity limits */
+  {
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
+    rules: {
+      complexity: ["error", 20],
+      "max-depth": ["error", 5],
+      "max-nested-callbacks": ["error", 4],
+      "max-params": ["error", 6],
+      "max-lines-per-function": [
+        "error",
+        { max: 200, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for test files (describe/it nesting is normal) */
+  {
+    files: [
+      "**/*.test.{ts,tsx,js,jsx,mjs}",
+      "**/*.spec.{ts,tsx,js,jsx,mjs}",
+      "**/__tests__/**/*.{ts,tsx,js,jsx,mjs}",
+    ],
+    rules: {
+      complexity: ["error", 40],
+      "max-nested-callbacks": ["error", 6],
+      "max-lines-per-function": [
+        "error",
+        { max: 500, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for MCP adapter (tool handlers are inherently complex) */
+  {
+    files: ["packages/mcp-cloudflare/**/*.ts"],
+    rules: {
+      complexity: ["error", 40],
+      "max-lines-per-function": [
+        "error",
+        { max: 300, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for MCP server (tool handlers are inherently complex) */
+  {
+    files: ["packages/mcp-server/**/*.ts"],
+    rules: {
+      complexity: ["error", 55],
+      "max-lines-per-function": [
+        "error",
+        { max: 300, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for ESLint plugin (AST visitors are inherently complex) */
+  {
+    files: ["packages/eslint-plugin-ds/**/*.{ts,js,mjs}"],
+    rules: {
+      complexity: ["error", 45],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for dashboard pages (admin UI components are inherently complex) */
+  {
+    files: ["apps/dashboard/src/pages/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 30],
+      "max-lines-per-function": [
+        "error",
+        { max: 400, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for platform-core (domain logic is inherently complex) */
+  {
+    files: ["packages/platform-core/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 75],
+      "max-depth": ["error", 7],
+      "max-lines-per-function": [
+        "error",
+        { max: 500, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for lib (utility algorithms can be complex) */
+  {
+    files: ["packages/lib/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 45],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for platform-machine (state machine logic is complex) */
+  {
+    files: ["packages/platform-machine/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 25],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for UI package (large component library with complex page builder) */
+  {
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 70],
+      "max-lines-per-function": [
+        "error",
+        { max: 400, skipBlankLines: true, skipComments: true },
+      ],
+      "max-params": ["error", 12],
+      // Disable promise param naming in UI tests - many use short names in promise-based test patterns
+      "promise/param-names": "off",
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for template-app (complex boilerplate with API route handlers) */
+  {
+    files: ["packages/template-app/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 65],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for email package (complex email rendering/sending logic) */
+  {
+    files: ["packages/email/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 25],
+    },
+  },
+  /* ▸ Workaround: Disable import resolver rules for dashboard (tsconfig extends path issue) */
+  {
+    files: ["apps/dashboard/**/*.{ts,tsx}"],
+    rules: {
+      "import/no-duplicates": "off",
+    },
+  },
+  /* ▸ Workaround: Disable import resolver rules for skylar (tsconfig extends path issue) */
+  {
+    files: ["apps/skylar/**/*.{ts,tsx}"],
+    rules: {
+      "import/no-duplicates": "off",
+      "import/no-unresolved": "off",
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for skylar pages (complex page components) */
+  {
+    files: ["apps/skylar/src/app/**/*.{ts,tsx}"],
+    rules: {
+      "max-lines-per-function": [
+        "error",
+        { max: 300, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for CMS app (admin UI with complex forms and configurators) */
+  {
+    files: ["apps/cms/src/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 60],
+      "max-lines-per-function": [
+        "error",
+        { max: 550, skipBlankLines: true, skipComments: true },
+      ],
+      "max-nested-callbacks": ["error", 6],
+      // CMS uses any types in component config wiring
+      "@typescript-eslint/no-explicit-any": "off",
+      // CMS services may log during development
+      "no-console": "off",
+      // Allow import duplicates (path alias resolution issues)
+      "import/no-duplicates": "off",
+      // Disable promise param naming in CMS - many use short names in test patterns
+      "promise/param-names": "off",
+    },
+  },
 ];

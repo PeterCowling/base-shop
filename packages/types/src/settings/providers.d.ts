@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const providerSettingsSchema: z.ZodObject<{
     payment: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     billingProvider: z.ZodDefault<z.ZodOptional<z.ZodString>>;

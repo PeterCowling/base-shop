@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const rentalOrderSchema: z.ZodObject<{
     id: z.ZodString;
     sessionId: z.ZodString;

@@ -1,14 +1,15 @@
-import appI18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { guideSlug } from "@/routes.guides-helpers";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import type { LoaderFunctionArgs } from "react-router-dom";
 
-import { GUIDE_KEY, REQUIRED_NAMESPACES } from "./constants";
+import appI18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 import { resolveHowToRouteSlug as baseResolveHowToRouteSlug } from "../loader";
+
+import { GUIDE_KEY, REQUIRED_NAMESPACES } from "./constants";
 
 export { resolveHowToRouteSlug } from "../loader";
 

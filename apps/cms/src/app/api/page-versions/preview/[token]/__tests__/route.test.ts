@@ -1,5 +1,11 @@
-const readJsonFile = jest.fn();
-const argon2Verify = jest.fn();
+import type { NextRequest } from "next/server";
+
+export {};
+
+type MockFn = jest.Mock;
+
+const readJsonFile = jest.fn() as unknown as MockFn;
+const argon2Verify = jest.fn() as unknown as MockFn;
 
 jest.mock("@/lib/server/jsonIO", () => ({
   readJsonFile: (...args: unknown[]) => readJsonFile(...args),
@@ -38,7 +44,7 @@ describe("preview token auth", () => {
     argon2Verify.mockResolvedValue(true);
 
     const res = await GET(
-      new Request("http://test.local/api/page-versions/preview/t1?pw=secret"),
+      new Request("http://test.local/api/page-versions/preview/t1?pw=secret") as unknown as NextRequest,
       { params: Promise.resolve({ token: "t1" }) } as any
     );
 
@@ -65,7 +71,7 @@ describe("preview token auth", () => {
     });
 
     const res = await GET(
-      new Request("http://test.local/api/page-versions/preview/t2?pw=secret"),
+      new Request("http://test.local/api/page-versions/preview/t2?pw=secret") as unknown as NextRequest,
       { params: Promise.resolve({ token: "t2" }) } as any
     );
 
@@ -86,7 +92,7 @@ describe("preview token auth", () => {
     argon2Verify.mockResolvedValue(false);
 
     const res = await GET(
-      new Request("http://test.local/api/page-versions/preview/t3?pw=bad"),
+      new Request("http://test.local/api/page-versions/preview/t3?pw=bad") as unknown as NextRequest,
       { params: Promise.resolve({ token: "t3" }) } as any
     );
 

@@ -1,7 +1,7 @@
 // src/components/guides/CostBreakdown.tsx
-import { memo, createElement, type ComponentPropsWithoutRef, type ElementType } from "react";
-import clsx from "clsx";
+import { type ComponentPropsWithoutRef, createElement, type ElementType,memo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 type Slice = {
   label: string;

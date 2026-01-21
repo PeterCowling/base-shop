@@ -1,10 +1,11 @@
 // packages/template-app/src/api/billing/webhook/route.ts
-import { stripe } from "@acme/stripe";
-import { paymentsEnv } from "@acme/config/env/payments";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+
+import { paymentsEnv } from "@acme/config/env/payments";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+import { stripe } from "@acme/stripe";
 
 const SHOP_ID = "bcd";
 

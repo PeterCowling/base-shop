@@ -1,4 +1,5 @@
 import { RuleTester } from "eslint";
+
 import rule from "../../src/rules/no-raw-font";
 
 (globalThis as any).structuredClone =

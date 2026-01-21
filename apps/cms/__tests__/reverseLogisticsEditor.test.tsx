@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React, { act } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import ReverseLogisticsEditor from "../src/app/cms/shop/[shop]/settings/reverse-logistics/ReverseLogisticsEditor";
 
 const updateReverseLogistics = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateReverseLogistics }));
@@ -11,8 +14,6 @@ jest.mock("@/components/atoms/shadcn", () => ({
   Checkbox: (props: any) => <input type="checkbox" {...props} />,
   Input: (props: any) => <input {...props} />,
 }));
-
-import ReverseLogisticsEditor from "../src/app/cms/shop/[shop]/settings/reverse-logistics/ReverseLogisticsEditor";
 
 describe("ReverseLogisticsEditor", () => {
   it("submits form and updates state", async () => {

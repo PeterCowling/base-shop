@@ -21,7 +21,6 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/plugin-sanity": "workspace:*",
-    "@acme/shared-utils": "workspace:*",
     "@acme/theme": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/zod-utils": "workspace:^",
@@ -34,7 +33,8 @@
     "dompurify": "^3.2.6",
     "file-type": "^21.0.0",
     "validator": "^13.15.15",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.511.0"
   },
   "devDependencies": {
     "axe-core": "^4.10.3",

@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
+import type { LinkDescriptor, MetaDescriptor } from "react-router";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
 import Root from "@/root/Root";
-import type { LinkDescriptor, MetaDescriptor } from "react-router";
 
-import { RouteDataProvider } from "./router-state";
-import type { ResolvedMatch } from "./route-runtime";
+import type { RouteModule } from "./route-module-types";
 import { routeModules } from "./route-modules";
+import type { ResolvedMatch } from "./route-runtime";
+import { RouteDataProvider } from "./router-state";
 
 type HeadProps = {
   meta: MetaDescriptor[];
@@ -34,7 +35,10 @@ const getRouteComponent = (file: string): React.ComponentType<Record<string, unk
 
   const Component = dynamic(
     () =>
-      loader().then((mod) => (mod.default ?? (() => null)) as React.ComponentType<Record<string, unknown>>),
+      loader().then((mod) => {
+        const routeModule = mod as RouteModule;
+        return routeModule.default ?? (() => null);
+      }),
     { ssr: true },
   );
   componentCache.set(file, Component);
@@ -71,7 +75,10 @@ const renderLinks = (links: LinkDescriptor[]): React.ReactNode[] =>
   links.map((link, index) => {
     const { rel, href, hrefLang } = link;
     const key = `${rel ?? "link"}-${href ?? ""}-${hrefLang ?? ""}-${index}`;
-    const { key: _key, ...rest } = link as Record<string, string | undefined> & { key?: string };
+    const { key: _key, tagName: _tagName, ...rest } = link as Record<string, string | undefined> & {
+      key?: string;
+      tagName?: string;
+    };
     return <link key={key} {...rest} />;
   });
 

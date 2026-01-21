@@ -1,28 +1,29 @@
 // src/routes/guides/tags.$tag.tsx
 import { memo, useEffect, useMemo } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { getSlug } from "@/utils/slug";
 import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { Link, useLocation,useParams } from "react-router-dom";
 import type { TFunction } from "i18next";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { GUIDES_INDEX, type GuideMeta } from "@/data/guides.index";
-import { TAGS_SUMMARY } from "@/data/tags.index";
-import { getTagMeta } from "@/utils/tags";
+
 import GuidesTagsStructuredData, {
   type GuidesTagListItem,
 } from "@/components/seo/GuidesTagsStructuredData";
 import { BASE_URL } from "@/config/site";
+import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
+import { TAGS_SUMMARY } from "@/data/tags.index";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getGuidesBundle, type GuidesNamespace } from "@/locales/guides";
 import { guideSlug } from "@/routes.guides-helpers";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import i18n from "@/i18n";
 import { langFromRequest } from "@/utils/lang";
 import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import type { MetaFunction, LinksFunction } from "react-router";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+import { getTagMeta } from "@/utils/tags";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 const Section = (props: JSX.IntrinsicElements["section"]) => <section {...props} />;
 const Grid = (props: JSX.IntrinsicElements["ul"]) => <ul {...props} />;

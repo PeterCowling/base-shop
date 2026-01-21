@@ -4,11 +4,13 @@
 // Added DEBUG logging so we can trace why ↘︎priceFrom is not appearing.
 // =============================================================================
 
-import { useRates } from "@/context/RatesContext";
-import type { Room } from "@/data/roomsData";
-import { getToday } from "@/utils/dateUtils";
-import { getPriceForDate } from "@/rooms/pricing";
 import { useMemo } from "react";
+
+import { useRates } from "@acme/ui/context/RatesContext";
+import type { Room } from "@acme/ui/data/roomsData";
+import { getToday } from "@acme/ui/utils/dateUtils";
+
+import { getPriceForDate } from "../rooms/pricing";
 
 export interface RoomPricing {
   lowestPrice?: number;

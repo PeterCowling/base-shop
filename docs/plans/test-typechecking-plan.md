@@ -17,6 +17,14 @@ Test files (`.test.ts`, `.spec.ts`, `__tests__/**`) are excluded from the main `
 1. **Editor UX**: VS Code doesn't typecheck test files because it uses `tsconfig.json` by default
 2. **CI/CLI Typechecking**: Running `tsc -p tsconfig.test.json` fails due to architecture issues
 
+## Progress Updates
+
+### 2026-01-18
+
+- Aligned test typecheck config `rootDir`/`include` to workspace sources to clear TS6059/TS6307 (see repo changes).
+- Running targeted package checks with `TYPECHECK_FILTER=packages/ui node scripts/typecheck-tests.mjs`.
+- Current focus: clearing remaining `packages/ui` test type errors (module aliases, strict prop typing in fixtures, and page-builder test scaffolding).
+
 ## Current State (Verified 2026-01-18)
 
 ### Test File Inventory

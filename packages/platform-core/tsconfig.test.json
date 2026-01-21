@@ -1,21 +1,37 @@
-// packages/platform-core/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
-
   "compilerOptions": {
-    /* test environment types */
     "types": ["@testing-library/jest-dom", "jest", "node"],
-    /* no JS output for tests */
     "noEmit": true,
-    "rootDir": ".",
-    "outDir": ".ts-jest",
-    "verbatimModuleSyntax": false
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "baseUrl": ".",
+    "paths": {
+      "@acme/ui": ["../ui/dist/index.d.ts"],
+      "@acme/ui/*": ["../ui/dist/*"],
+      "@acme/platform-core": ["src/index.ts", "dist/index.d.ts"],
+      "@acme/platform-core/*": ["src/*", "dist/*"],
+      "@acme/page-builder-core": ["../page-builder-core/dist/index.d.ts"],
+      "@acme/page-builder-core/*": ["../page-builder-core/dist/*"],
+      "@acme/date-utils": ["../date-utils/dist/index.d.ts"],
+      "@acme/date-utils/*": ["../date-utils/dist/*"],
+      "@acme/stripe": ["../stripe/dist/index.d.ts"],
+      "@acme/stripe/*": ["../stripe/dist/*"],
+      "@acme/email": ["../email/dist/index.d.ts"],
+      "@acme/email/*": ["../email/dist/*"],
+      "@acme/config": ["../config/dist/index.d.ts"],
+      "@acme/config/*": ["../config/dist/*"],
+      "@acme/config/env/*": ["../config/dist/env/*"],
+      "@acme/i18n": ["../i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["../i18n/dist/*"],
+      "@acme/email-templates": ["../email-templates/dist/index.d.ts"],
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"],
+      "@acme/zod-utils": ["../zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["../zod-utils/dist/*"],
+      "@themes/*": ["../themes/*/dist/index.d.ts"],
+      "@themes-local/*": ["themes/*/dist/index.d.ts"]
+    }
   },
-
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "__tests__/**/*",
-    "*.ts"
-  ]
+  "include": ["src/**/*", "__tests__/**/*", "../themes/*/src/**/*"]
 }

@@ -1,6 +1,8 @@
-import { render, fireEvent, screen, waitFor, within, act } from "@testing-library/react";
 import type { ComponentProps } from "react";
+import { act,fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { z } from "zod";
+
+import InventoryForm from "../InventoryForm";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -44,7 +46,6 @@ jest.mock("@acme/platform-core/types/inventory", () => {
   return { inventoryItemSchema };
 });
 
-import InventoryForm from "../InventoryForm";
 let capturedUpdateItem: (
   index: number,
   field: keyof import("@acme/platform-core/types/inventory").InventoryItem | `variantAttributes.${string}`,

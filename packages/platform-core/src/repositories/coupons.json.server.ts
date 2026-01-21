@@ -1,10 +1,12 @@
 import "server-only";
 
-import { couponSchema, type Coupon } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index";
+
+import { type Coupon,couponSchema } from "@acme/types";
+
 import { DATA_ROOT } from "../dataRoot";
+import { validateShopName } from "../shops/index";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);

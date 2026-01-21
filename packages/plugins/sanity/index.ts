@@ -1,7 +1,8 @@
 // packages/plugins/sanity/index.ts
-import type { Plugin } from "@acme/types";
-import { createClient, type SanityClient, type Mutation } from "@sanity/client";
+import { createClient, type Mutation,type SanityClient } from "@sanity/client";
 import { z } from "zod";
+
+import type { Plugin } from "@acme/types";
 
 export const configSchema = z
   .object({

@@ -1,10 +1,11 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useComponentInputs from "../src/components/cms/page-builder/useComponentInputs";
 import useComponentResize from "../src/components/cms/page-builder/useComponentResize";
 
 describe("component hooks", () => {
   it("useComponentInputs forwards field changes", () => {
-    const onChange = jest.fn<(patch: Partial<Record<string, string>>) => void>();
+    const onChange = jest.fn<void, [Partial<Record<string, string>>]>();
     const { result } = renderHook(() =>
       useComponentInputs<Record<string, string>>(onChange),
     );

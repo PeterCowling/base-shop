@@ -11,7 +11,7 @@ describe("loadPrismaClient", () => {
 
   it("returns undefined and falls back to stub when DATABASE_URL is missing", async () => {
     await jest.isolateModulesAsync(async () => {
-      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
       const createRequireMock = jest.fn(() => {
         throw new Error("cannot load");
@@ -38,7 +38,7 @@ describe("loadPrismaClient", () => {
 
   it("caches the Prisma client after first load", async () => {
     await jest.isolateModulesAsync(async () => {
-      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
       }));
@@ -56,7 +56,7 @@ describe("loadPrismaClient", () => {
 
   it("propagates errors from the Prisma constructor", async () => {
     await jest.isolateModulesAsync(async () => {
-      (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+      process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
       }));

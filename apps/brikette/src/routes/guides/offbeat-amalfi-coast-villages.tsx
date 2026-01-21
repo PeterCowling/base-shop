@@ -1,17 +1,17 @@
 // src/routes/guides/offbeat-amalfi-coast-villages.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction } from "react-router";
 
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
-
-import { guideHref, guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
-import type { LinksFunction } from "react-router";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 export const handle = {
   tags: ["hidden-gems", "amalfi", "day-trip", "cetara", "vietri-sul-mare", "minori", "maiori", "atrani", "furore"],

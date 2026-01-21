@@ -1,13 +1,14 @@
 // packages/platform-core/__tests__/shops.test.ts
+import type { Shop } from "@acme/types";
+
+import { tokens as bcdTokens } from "../../themes/bcd/src/tailwind-tokens";
+import { tokens as darkTokens } from "../../themes/dark/src/tailwind-tokens";
 import {
   getSanityConfig,
   setSanityConfig,
   validateShopName,
 } from "../src/shops";
 import { baseTokens } from "../src/themeTokens";
-import { tokens as bcdTokens } from "../../themes/bcd/src/tailwind-tokens";
-import { tokens as darkTokens } from "../../themes/dark/src/tailwind-tokens";
-import type { Shop } from "@acme/types";
 
 describe("validateShopName", () => {
   it("trims and accepts safe names", () => {

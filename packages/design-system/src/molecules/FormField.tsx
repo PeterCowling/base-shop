@@ -1,0 +1,94 @@
+import * as React from "react";
+
+import { boxProps , cn } from "../utils/style";
+
+export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Label for the form control */
+  label: React.ReactNode;
+  /** id of the form control this label describes */
+  htmlFor?: string;
+  /** Error message shown below the control */
+  error?: React.ReactNode;
+  /** Display asterisk after the label */
+  required?: boolean;
+  /** Optional width */
+  width?: string | number;
+  /** Optional height */
+  height?: string | number;
+  /** Optional padding classes */
+  padding?: string;
+  /** Optional margin classes */
+  margin?: string;
+}
+
+// i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS utility class tokens and design tokens below are not user-facing copy
+const WRAPPER_CLASSES = "flex flex-col gap-1"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS classes
+const ERROR_TEXT_CLASSES = "text-sm text-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS classes
+const DANGER_TOKEN = "--color-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] design token
+
+export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
+  (
+    {
+      label,
+      htmlFor,
+      error,
+      required = false,
+      width,
+      height,
+      padding,
+      margin,
+      className,
+      children,
+      style: inlineStyle,
+      ...props
+    },
+    ref
+  ) => {
+    const { classes, style } = boxProps({ width, height, padding, margin });
+    const mergedStyle = {
+      ...style,
+      ...(inlineStyle ?? {}),
+    };
+    const errorChildren = React.Children.toArray(error ?? null).filter(
+      (child) => child !== "",
+    );
+    const hasError = errorChildren.length > 0;
+    const isTextOnly =
+      hasError &&
+      errorChildren.every(
+        (child) => typeof child === "string" || typeof child === "number",
+      );
+    const ErrorContainer = isTextOnly ? "p" : "div";
+
+    return (
+      <div
+        ref={ref}
+        className={cn(WRAPPER_CLASSES, classes, className)}
+        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: box props produce inline sizing when needed
+        style={mergedStyle}
+        {...props}
+      >
+        <label htmlFor={htmlFor} className="text-sm font-medium">
+          {label}
+          {required && (
+            <span
+              aria-hidden="true"
+              className="text-danger"
+              data-token={DANGER_TOKEN}
+            >
+              {/* i18n-exempt -- TECH-000 [ttl=2026-01-31] required field asterisk */}
+              *
+            </span>
+          )}
+        </label>
+        {children}
+        {hasError && (
+          <ErrorContainer className={ERROR_TEXT_CLASSES} data-token={DANGER_TOKEN}>
+            {error}
+          </ErrorContainer>
+        )}
+      </div>
+    );
+  }
+);
+FormField.displayName = "FormField";

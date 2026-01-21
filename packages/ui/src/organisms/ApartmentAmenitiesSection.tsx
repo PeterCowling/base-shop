@@ -1,8 +1,9 @@
 // packages/ui/src/organisms/ApartmentAmenitiesSection.tsx
-import { CfImage } from "@/atoms/CfImage";
-import { Snowflake, Utensils, WashingMachine, Wifi } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { Snowflake, Utensils, WashingMachine, Wifi } from "lucide-react";
+
+import { CfImage } from "../atoms/CfImage";
 
 const AMENITY_ICONS = [Wifi, Utensils, Snowflake, WashingMachine] as const;
 const AMENITIES_IMAGE_SRC = "/img/free-perks.avif";

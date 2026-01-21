@@ -2,12 +2,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+
 import type { PageComponent } from "@acme/types";
+
+import { Button } from "../../atoms/shadcn";
+
+import useGroupingActions from "./hooks/useGroupingActions";
 import type { Action } from "./state";
 import type { ResizeAction } from "./state/layout";
-import { Button } from "../../atoms/shadcn";
-import { alignLeft, alignRight, alignTop, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "./state/layout/geometry";
-import useGroupingActions from "./hooks/useGroupingActions";
+import { alignBottom, alignCenterX, alignCenterY, alignLeft, alignRight, alignTop, distributeHorizontal, distributeVertical } from "./state/layout/geometry";
 import { rectScreenToCanvas } from "./utils/coords";
 
 interface Props {

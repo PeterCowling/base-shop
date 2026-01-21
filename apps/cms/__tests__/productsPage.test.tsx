@@ -1,6 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
+import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
+
 const checkShopExistsMock = jest.fn();
 jest.mock("@acme/lib", () => ({
   __esModule: true,
@@ -130,8 +132,6 @@ jest.mock("@acme/ui/components/cms/ProductsTable.client", () => ({
   default: productsTableMock,
 }));
 
-import ProductsPage from "../src/app/cms/shop/[shop]/products/page";
-
 type FormAction = (...args: any[]) => unknown | Promise<unknown>;
 
 function findFormAction(node: React.ReactNode): FormAction | undefined {
@@ -146,11 +146,12 @@ function findFormAction(node: React.ReactNode): FormAction | undefined {
   }
 
   if (React.isValidElement(node)) {
-    if (node.type === "form" && typeof node.props.action === "function") {
-      return node.props.action;
+    const props = node.props as { action?: unknown; children?: React.ReactNode };
+    if (node.type === "form" && typeof props.action === "function") {
+      return props.action as FormAction;
     }
 
-    return findFormAction(React.Children.toArray(node.props.children));
+    return findFormAction(React.Children.toArray(props.children));
   }
 
   return undefined;

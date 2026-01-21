@@ -1,15 +1,34 @@
-const DATA_ROOT = "/data/shops";
+import { promises as fs } from "fs";
+import * as path from "path";
+
+import { jsonCouponsRepository } from "@acme/platform-core/repositories/coupons.json.server";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __couponsRepoTestDataRoot: string | undefined;
+}
+globalThis.__couponsRepoTestDataRoot = "/data/shops";
+
+const DATA_ROOT = globalThis.__couponsRepoTestDataRoot!;
 
 jest.mock("@acme/platform-core/dataRoot", () => ({
-  DATA_ROOT,
+  get DATA_ROOT() {
+    return globalThis.__couponsRepoTestDataRoot;
+  },
 }));
 
-const files = new Map<string, string>();
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __couponsRepoTestFiles: Map<string, string> | undefined;
+}
+globalThis.__couponsRepoTestFiles = new Map<string, string>();
+
+const files = globalThis.__couponsRepoTestFiles!;
 
 jest.mock("fs", () => ({
   promises: {
     readFile: jest.fn(async (p: string) => {
-      const data = files.get(p);
+      const data = globalThis.__couponsRepoTestFiles?.get(p);
       if (data === undefined) {
         const err = new Error("not found") as NodeJS.ErrnoException;
         err.code = "ENOENT";
@@ -18,22 +37,20 @@ jest.mock("fs", () => ({
       return data;
     }),
     writeFile: jest.fn(async (p: string, data: string) => {
-      files.set(p, data);
+      globalThis.__couponsRepoTestFiles?.set(p, data);
     }),
     rename: jest.fn(async (tmp: string, dest: string) => {
-      const data = files.get(tmp);
+      const data = globalThis.__couponsRepoTestFiles?.get(tmp);
       if (data === undefined) throw new Error("missing");
-      files.set(dest, data);
-      files.delete(tmp);
+      globalThis.__couponsRepoTestFiles?.set(dest, data);
+      globalThis.__couponsRepoTestFiles?.delete(tmp);
     }),
     mkdir: jest.fn(async () => {}),
-    __files: files,
+    get __files() {
+      return globalThis.__couponsRepoTestFiles;
+    },
   },
 }));
-
-import { promises as fs } from "fs";
-import * as path from "path";
-import { jsonCouponsRepository } from "@acme/platform-core/repositories/coupons.json.server";
 
 const shop = "demo";
 const file = path.join(DATA_ROOT, shop, "coupons.json");

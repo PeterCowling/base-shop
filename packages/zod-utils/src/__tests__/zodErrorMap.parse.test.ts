@@ -1,5 +1,6 @@
-import { z, ZodError } from "zod";
-import { friendlyErrorMap, applyFriendlyZodMessages } from "../zodErrorMap";
+import { z, type ZodError } from "zod";
+
+import { applyFriendlyZodMessages,friendlyErrorMap } from "../zodErrorMap";
 
 describe("friendlyErrorMap with parse errors", () => {
   const ctx = { defaultError: "fallback", data: undefined } as const;

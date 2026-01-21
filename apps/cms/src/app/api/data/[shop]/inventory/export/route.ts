@@ -1,8 +1,11 @@
-import { authOptions } from "@cms/auth/options";
+import { type NextRequest,NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { NextResponse, type NextRequest } from "next/server";
-import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
+import { authOptions } from "@cms/auth/options";
 import { format as formatCsv } from "fast-csv";
+
+import { hasPermission } from "@acme/auth";
+import type { Role } from "@acme/auth/types";
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { flattenInventoryItem } from "@acme/platform-core/utils/inventory";
 
 export async function GET(
@@ -10,7 +13,8 @@ export async function GET(
   context: { params: Promise<{ shop: string }> }
 ) {
   const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  const role = session?.user?.role as Role | undefined;
+  if (!role || !hasPermission(role, "manage_inventory")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
@@ -25,14 +29,14 @@ export async function GET(
           .on("error", reject)
           .on("data", (c) => chunks.push(c.toString()))
           .on("end", () => resolve(chunks.join("")));
-        items.map(flattenInventoryItem).forEach((i) => stream.write(i));
+        items.map(flattenInventoryItem).forEach((i: Record<string, unknown>) => stream.write(i));
         stream.end();
       });
       return new Response(csv, {
         headers: { "content-type": "text/csv" },
       });
     }
-    const json = items.map((i) => flattenInventoryItem(i));
+    const json = items.map((i: typeof items[number]) => flattenInventoryItem(i));
     return NextResponse.json(json);
   } catch (err) {
     console.error("Inventory export failed", err); // i18n-exempt -- non-UX log

@@ -1,6 +1,8 @@
-/* eslint-disable ds/no-raw-color */
-import fs from "fs";
+ 
 import { join } from "node:path";
+
+import fs from "fs";
+
 import * as themeTokens from "../src/themeTokens";
 
 const { loadThemeTokensNode, loadThemeTokensBrowser, baseTokens } = themeTokens;

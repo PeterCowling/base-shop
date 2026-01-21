@@ -1,23 +1,26 @@
 "use client";
 
 import React from "react";
-import { useTranslations } from "@acme/i18n";
-import { Tooltip } from "../../atoms";
 import {
-  PlusIcon,
-  LayersIcon,
-  ReaderIcon,
-  SectionIcon,
-  TokensIcon,
-  TableIcon,
   ChevronRightIcon,
   FontFamilyIcon,
+  LayersIcon,
+  PlusIcon,
+  ReaderIcon,
+  SectionIcon,
+  TableIcon,
+  TokensIcon,
 } from "@radix-ui/react-icons";
-import MoreMenu from "./MoreMenu";
-import { ViewMenuContent } from "./ViewMenu";
+
+import { useTranslations } from "@acme/i18n";
+
+import { Tooltip } from "../../atoms";
+
 import { DesignMenuContent } from "./DesignMenu";
 import type GridSettings from "./GridSettings";
+import MoreMenu from "./MoreMenu";
 import type { Breakpoint } from "./panels/BreakpointsPanel";
+import { ViewMenuContent } from "./ViewMenu";
 
 interface Props {
   onOpenAdd: () => void;

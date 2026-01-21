@@ -1,11 +1,13 @@
 /** @jest-environment jsdom */
 
-import { promises as fs } from "fs";
-import path from "path";
-import { tmpdir } from "os";
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
+import { promises as fs } from "fs";
+import { tmpdir } from "os";
+import path from "path";
+
 import type { HistoryState, TemplateDescriptor } from "@acme/page-builder-core";
+
 import DynamicRenderer from "../src/components/DynamicRenderer";
 
 const secret = "preview-secret";

@@ -2,10 +2,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { baseTokens, loadThemeTokens } from "../../wizard/tokenUtils";
-import type { TokenMap } from "../../wizard/tokenUtils";
-import { useConfigurator } from "../ConfiguratorContext";
+
 import type { ConfiguratorState } from "../../wizard/schema";
+import type { TokenMap } from "../../wizard/tokenUtils";
+import { baseTokens, loadThemeTokens } from "../../wizard/tokenUtils";
+import { useConfigurator } from "../ConfiguratorContext";
 
 /**
  * Loads theme tokens whenever the selected theme changes and returns the

@@ -1,8 +1,8 @@
 // src/routes/guides/amalfi-coast-cuisine-guide.breadcrumb.ts
 import type { TFunction } from "i18next";
 
-import { getSlug } from "@/utils/slug";
 import type { AppLanguage } from "@/i18n.config";
+import { getSlug } from "@/utils/slug";
 
 import type { CuisineBreadcrumb } from "./amalfi-coast-cuisine-guide.constants";
 

@@ -1,7 +1,8 @@
 "use client";
 
 import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
-import type { SupplierSummary, SuppliersStrings } from "./types";
+
+import type { SuppliersStrings,SupplierSummary } from "./types";
 
 function formatDate(value: string | null, fallback: string): string {
   if (!value) return fallback;

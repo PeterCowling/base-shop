@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+
 import GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
-import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
 import i18nApp from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import type { TFunction } from "i18next";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
 
 interface FaqStructuredDataBlockProps {
   guideKey: GuideKey;

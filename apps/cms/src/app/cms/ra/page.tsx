@@ -1,8 +1,10 @@
 // apps/cms/src/app/cms/ra/page.tsx
-import { listReturnAuthorizations } from "@acme/platform-core/returnAuthorization";
-import { features } from "@acme/platform-core/features";
 import { notFound } from "next/navigation";
+
+import { features } from "@acme/platform-core/features";
+import { listReturnAuthorizations } from "@acme/platform-core/returnAuthorization";
 import type { ReturnAuthorization } from "@acme/types";
+
 import RaDashboard from "./RaDashboardClient";
 
 export const revalidate = 0;

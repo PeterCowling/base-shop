@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { pageDelegate, createPageDelegate } from "../db/stubs/page";
+import { createPageDelegate,pageDelegate } from "../db/stubs/page";
 
 describe("page delegate default instance", () => {
   it("update throws when page is missing", async () => {

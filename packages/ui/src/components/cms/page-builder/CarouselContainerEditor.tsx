@@ -1,8 +1,9 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 import type { CarouselContainerComponent } from "@acme/types/page/layouts/carousel-container";
-import { useTranslations } from "@acme/i18n";
+
 import { Checkbox, Input } from "../../atoms/shadcn";
 
 interface Props {

@@ -6,12 +6,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { ContactModalCopy } from "@acme/ui/organisms/modals";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 
 import { ENCODED_CONTACT_EMAIL } from "../constants";
 import { useModal } from "../hooks";
 import { ContactModal } from "../lazy-modals";
-import type { ContactModalCopy } from "@acme/ui/organisms/modals";
 
 export function ContactGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();

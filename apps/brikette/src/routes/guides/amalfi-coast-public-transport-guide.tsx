@@ -1,25 +1,25 @@
 // src/routes/guides/amalfi-coast-public-transport-guide.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction, MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
 import type { TFunction } from "i18next";
+
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest, toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import RenderFallbackStructured from "./guide-seo/components/fallback/RenderFallbackStructured";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import { buildStructuredFallback } from "./guide-seo/utils/fallbacks";
-import RenderFallbackStructured from "./guide-seo/components/fallback/RenderFallbackStructured";
-
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest, toAppLanguage } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import type { LinksFunction, MetaFunction } from "react-router";
-import i18n from "@/i18n";
 
 export const handle = { tags: ["transport", "bus", "ferry", "train", "amalfi", "positano"] };
 

@@ -1,8 +1,10 @@
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
 import { Grid } from "@/components/primitives/Grid";
-import { localizedPath } from "@/lib/routes";
 import { joinClasses } from "@/lib/joinClasses";
+import { localizedPath } from "@/lib/routes";
+
 import type { ProductsPageComponentProps } from "../types";
 
 /* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: Milan layout relies on CSS class tokens */

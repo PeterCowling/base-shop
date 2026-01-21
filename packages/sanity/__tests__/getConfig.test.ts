@@ -1,14 +1,16 @@
+import { ZodError } from 'zod';
+
+import { getShopById } from '@acme/platform-core/repositories/shop.server';
+import { getSanityConfig } from '@acme/platform-core/shops';
+
+import { getConfig } from '../src';
+
 jest.mock('@acme/platform-core/repositories/shop.server', () => ({
   getShopById: jest.fn(),
 }));
 jest.mock('@acme/platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
 }));
-
-import { getConfig } from '../src';
-import { getShopById } from '@acme/platform-core/repositories/shop.server';
-import { getSanityConfig } from '@acme/platform-core/shops';
-import { ZodError } from 'zod';
 
 describe('getConfig', () => {
   const getShopByIdMock = getShopById as jest.Mock;

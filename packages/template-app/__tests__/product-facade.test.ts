@@ -1,8 +1,9 @@
 // packages/template-app/__tests__/product-facade.test.ts
 import { jest } from "@jest/globals";
+
 import {
-  getProductBySlug,
   getProductById,
+  getProductBySlug,
   getProducts,
   searchProducts,
 } from "@acme/platform-core/products";

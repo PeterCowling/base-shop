@@ -1,16 +1,17 @@
 import { renderHook } from "@testing-library/react";
+
 import { useTokenColors } from "../src/hooks/useTokenColors";
 
 describe("useTokenColors token pairing and contrast", () => {
   it("pairs fg/bg tokens and computes contrast issue", () => {
     const tokens = {
-      // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
+       
       "--color-bg": "#ffffff",
-      // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
+       
       "--color-bg-fg": "#000000",
-      // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
+       
       "--color-muted": "#cccccc",
-      // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
+       
       "--color-muted-fg": "#bbbbbb",
     } as Record<string, string>;
     const base: Record<string, string> = {};

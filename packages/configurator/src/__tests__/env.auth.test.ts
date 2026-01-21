@@ -1,5 +1,7 @@
-import { describe, it, expect, afterEach } from '@jest/globals';
+import { afterEach,describe, expect, it } from '@jest/globals';
+
 import { createExpectInvalidAuthEnv } from '../../../config/test/utils/expectInvalidAuthEnv';
+
 import { withEnv } from './envTestUtils';
 
 const REDIS_URL = 'https://example.com';
@@ -162,6 +164,8 @@ describe('auth env validation', () => {
         AUTH_PROVIDER: 'oauth',
         OAUTH_CLIENT_ID: 'client-id',
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+        OAUTH_REDIRECT_ORIGIN: 'https://example.com',
+        OAUTH_ISSUER: 'https://auth.example.com',
       },
       () => import("@acme/config/env/auth"),
     );

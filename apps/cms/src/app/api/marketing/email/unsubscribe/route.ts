@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import { trackEvent } from "@acme/platform-core/analytics";
 
 export const runtime = "nodejs";

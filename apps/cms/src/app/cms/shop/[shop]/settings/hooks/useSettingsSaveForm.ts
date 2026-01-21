@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, type FormEvent } from "react";
+import { type FormEvent,useCallback, useMemo, useState } from "react";
 
 export type ValidationErrors = Record<string, string[]>;
 
@@ -154,3 +154,13 @@ export function useSettingsSaveForm<TResult>({
 }
 
 export default useSettingsSaveForm;
+
+// Test helpers - only work when jest.mock is active
+// These are re-exported from __mocks__/useSettingsSaveForm.ts
+export function __resetUseSettingsSaveFormMock(): void {
+  throw new Error("__resetUseSettingsSaveFormMock is only available in tests with jest.mock");
+}
+
+export function __getUseSettingsSaveFormToastLog(): { status: string; message: string }[] {
+  throw new Error("__getUseSettingsSaveFormToastLog is only available in tests with jest.mock");
+}

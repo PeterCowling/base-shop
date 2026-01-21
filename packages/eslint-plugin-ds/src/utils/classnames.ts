@@ -1,4 +1,5 @@
-import type { Node, Expression, Property } from "estree";
+import type { Expression, Node, Property } from "estree";
+
 import { getBooleanIfStatic, getStringIfStatic } from "./ast.js";
 
 export type Parsed = { classes: string[]; confident: boolean };

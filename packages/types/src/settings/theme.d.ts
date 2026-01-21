@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const themeSettingsSchema: z.ZodObject<{
     template: z.ZodDefault<z.ZodOptional<z.ZodString>>;
     theme: z.ZodDefault<z.ZodOptional<z.ZodString>>;

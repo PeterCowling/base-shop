@@ -2,8 +2,9 @@
 // React Error Boundary with simple fallback UI
 // --------------------------------------------------------------------------
 import React, { Component, type ReactNode } from "react";
-import i18n from "@/i18n";
+
 import { IS_DEV } from "@/config/env";
+import i18n from "@/i18n";
 
 interface Props {
   children: ReactNode;

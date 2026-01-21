@@ -1,8 +1,8 @@
 // src/routes/guides/cheapEatsInPositano/buildCheapEatsArticle.ts
-import type { CheapEatsArticleData } from "./constants";
 import type { CheapEatsFaqContent } from "./buildFaqContent";
 import type { CheapEatsGalleryContent } from "./buildGalleryContent";
 import type { CheapEatsRecommendationsContent } from "./buildRecommendationsContent";
+import type { CheapEatsArticleData } from "./constants";
 import type { CheapEatsFallbackContent } from "./getFallbackGuideContent";
 import type { CheapEatsStructuredContent } from "./getStructuredGuideContent";
 

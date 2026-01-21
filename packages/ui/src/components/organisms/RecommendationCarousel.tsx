@@ -1,11 +1,14 @@
 "use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
 import type { SKU } from "@acme/types";
-import { ProductCard } from "./ProductCard";
+
+import { cn } from "../../utils/style";
 import { Inline } from "../atoms/primitives/Inline";
+
+import { ProductCard } from "./ProductCard";
 
 export interface RecommendationCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,8 +1,9 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@cms/auth/options";
-import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
 import { updateDeployStatus } from "@cms/actions/deployShop.server";
+import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
+import { authOptions } from "@cms/auth/options";
+
 import type { Environment } from "@acme/types";
 
 type SessionWithRole = Awaited<ReturnType<typeof getServerSession>> & {

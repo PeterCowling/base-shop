@@ -22,6 +22,9 @@ export const shopSeoFieldsSchema = z
         title: z.string().optional(),
         description: z.string().optional(),
         image: z.string().url().optional(),
+        // LAUNCH-23: Added to support createShop SeoConfig
+        site: z.string().optional(),
+        creator: z.string().optional(),
       })
       .strict()
       .optional(),

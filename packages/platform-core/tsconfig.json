@@ -34,13 +34,13 @@
         "../page-builder-core/dist/*"
       ],
 
-      "@acme/shared-utils": [
-        "../shared-utils/src/index.ts",
-        "../shared-utils/dist/index.d.ts"
+      "@acme/lib": [
+        "../lib/src/index.ts",
+        "../lib/dist/index.d.ts"
       ],
-      "@acme/shared-utils/*": [
-        "../shared-utils/src/*",
-        "../shared-utils/dist/*"
+      "@acme/lib/*": [
+        "../lib/src/*",
+        "../lib/dist/*"
       ],
       "@acme/date-utils": [
         "../date-utils/src/index.ts",
@@ -67,7 +67,7 @@
     { "path": "../config" },
     { "path": "../date-utils" },
     { "path": "../i18n" },
-    { "path": "../shared-utils" },
+    { "path": "../lib" },
     { "path": "../stripe" },
     { "path": "../types" },
     { "path": "../themes/base" },

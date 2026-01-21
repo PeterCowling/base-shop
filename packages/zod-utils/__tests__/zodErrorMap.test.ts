@@ -1,3 +1,7 @@
+import { z, type ZodIssue, ZodIssueCode, type ZodIssueOptionalMessage } from 'zod';
+
+import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/zodErrorMap';
+
 jest.mock('zod', () => {
   const actual = jest.requireActual('zod');
   return {
@@ -5,9 +9,6 @@ jest.mock('zod', () => {
     z: { ...actual.z, setErrorMap: jest.fn(actual.z.setErrorMap) },
   };
 });
-
-import { z, ZodIssueCode, type ZodIssue, type ZodIssueOptionalMessage } from 'zod';
-import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/zodErrorMap';
 
 describe('applyFriendlyZodMessages', () => {
   it('sets the global error map', () => {

@@ -2,15 +2,16 @@
    src/components/header/NotificationBanner.tsx
    Offers banner – one interactive control (no nested buttons)
 ---------------------------------------------------------------- */
-import { useSetBannerRef } from "@/context/NotificationBannerContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { translatePath } from "@/utils/translate-path";
-import { X } from "lucide-react";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
+import { X } from "lucide-react";
+
+import { useSetBannerRef } from "@/context/NotificationBannerContext";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
+import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {
   message?: string;
@@ -218,7 +219,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     if (modalClose && modalClose !== "booking.close") {
       return modalClose;
     }
-    return resolved || modalClose || "closeLabel";
+    return resolved || modalClose || "Close";
   }, [t, tModals]);
 
   const stopDomPropagation = useCallback(

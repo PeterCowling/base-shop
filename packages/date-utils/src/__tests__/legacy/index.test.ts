@@ -1,11 +1,11 @@
 import {
   calculateRentalDays,
-  parseTargetDate,
-  getTimeRemaining,
   formatDuration,
+  formatTimestamp,
+  getTimeRemaining,
   isoDateInNDays,
   nowIso,
-  formatTimestamp,
+  parseTargetDate,
 } from "../../index";
 
 process.env.TZ = "Europe/Rome";

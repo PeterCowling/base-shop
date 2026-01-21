@@ -1,13 +1,15 @@
 import "@acme/zod-utils/initZod";
-import { NextResponse, type NextRequest } from "next/server";
+
+import { type NextRequest,NextResponse } from "next/server";
 import { z } from "zod";
-import {
-  readRepo,
-  readInventory,
-} from "@acme/platform-core/repositories/json.server";
+
 import type {
   ProductPublication,
 } from "@acme/platform-core/products";
+import {
+  readInventory,
+  readRepo,
+} from "@acme/platform-core/repositories/json.server";
 
 const searchSchema = z
   .object({

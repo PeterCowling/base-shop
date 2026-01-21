@@ -1,14 +1,15 @@
 import { DOMAIN } from "@/config";
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
+
+import { JSON_LD_MIME, STRUCTURED_DATA_ID } from "./constants";
+import { createMenuGraph } from "./menu-graph";
 import {
   BREAKFAST_MENU_SLUGS,
-  SUPPORTED_LANG_SET,
   createBreakfastMenuStrings,
   resolveDefaultLanguage,
+  SUPPORTED_LANG_SET,
 } from "./strings";
-import { createMenuGraph } from "./menu-graph";
-import { JSON_LD_MIME, STRUCTURED_DATA_ID } from "./constants";
 
 type EnsureJsonLd = (pathname?: string) => void;
 

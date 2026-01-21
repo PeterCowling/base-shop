@@ -71,7 +71,7 @@ describe("order details page", () => {
       (child) => child?.type === OrderTrackingTimeline,
     );
     expect(timeline).toBeDefined();
-    expect(timeline.props).toEqual(
+    expect(timeline!.props).toEqual(
       expect.objectContaining({ steps: [{ name: "Ordered" }] }),
     );
   });

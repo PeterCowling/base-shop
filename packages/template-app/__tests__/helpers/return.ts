@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import type Stripe from "stripe";
+
 import type { RentalOrder } from "@acme/types";
 
 type SessionSubset = Pick<Stripe.Checkout.Session, "metadata" | "payment_intent">;

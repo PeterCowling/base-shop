@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 import {
   Card,
   CardContent,
@@ -10,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+
 import type { EmailScheduleErrors } from "./hooks/useEmailScheduleFormState";
 import type { EmailScheduleFormValues } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 const timezoneOptions = [
   "America/New_York", // i18n-exempt: IANA timezone identifier, not translatable

@@ -1,13 +1,15 @@
-import { Button, Card, CardContent, Input, Tag } from "@/components/atoms/shadcn";
-import { Tooltip } from "@/components/atoms";
+import type { Role } from "@cms/auth/roles";
+
+import { useTranslations } from "@acme/i18n";
 import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
 import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
-import type { Role } from "@cms/auth/roles";
-import { useTranslations } from "@acme/i18n";
+import { Tooltip } from "@/components/atoms";
+import { Button, Card, CardContent, Input, Tag } from "@/components/atoms/shadcn";
+
+import type { RoleDetail } from "../components/roleDetails";
 
 import type { InviteFormState } from "./useRbacManagementPanel";
-import type { RoleDetail } from "../components/roleDetails";
 
 type InviteUserFormProps = {
   roles: Role[];

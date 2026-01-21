@@ -1,9 +1,11 @@
-import type { PageComponent } from "@acme/types";
-import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
-import { upgradeComponentSchema as pageComponentSchema } from "@acme/types";
 import { z } from "zod";
-import { slugify } from "@acme/shared-utils";
+
 import { fillLocales } from "@acme/i18n";
+import { slugify } from "@acme/lib/string";
+import type { PageComponent } from "@acme/types";
+import { localeSchema, sanityBlogConfigSchema , upgradeComponentSchema as pageComponentSchema } from "@acme/types";
+
+import { shopAccountConfigSchema } from "./accountRegistry";
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 import { defaultTaxProviders } from "./defaultTaxProviders";
@@ -24,6 +26,80 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
     .strict()
 );
 
+// SEO schema for brand kit / shop-level SEO (LAUNCH-23)
+const seoConfigSchema = z
+  .object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    image: z.string().url().optional(),
+    canonicalBase: z.string().url().optional(),
+    openGraph: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        url: z.string().url().optional(),
+        image: z.string().url().optional(),
+      })
+      .strict()
+      .optional(),
+    twitter: z
+      .object({
+        card: z.enum(["summary", "summary_large_image"]).optional(),
+        site: z.string().optional(),
+        creator: z.string().optional(),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
+export type SeoConfig = z.infer<typeof seoConfigSchema>;
+
+// Page config schema with template provenance (LAUNCH-23)
+const pageConfigSchema = z.object({
+  slug: z.string(),
+  title: z.record(localeSchema, z.string()),
+  description: z.record(localeSchema, z.string()).optional(),
+  image: z.record(localeSchema, z.string()).optional(),
+  components: z.array(pageComponentSchema),
+  // Template provenance fields
+  templateId: z.string().optional(),
+  templateVersion: z.string().optional(),
+  status: z.enum(["draft", "published"]).optional().default("draft"),
+  visibility: z.enum(["public", "hidden"]).optional().default("public"),
+});
+
+export type PageConfig = z.infer<typeof pageConfigSchema>;
+
+// Required pages for Basic tier launches (LAUNCH-23)
+export const REQUIRED_PAGES_BASIC = [
+  "home",
+  "shop", // category/PLP
+  "about",
+  "contact",
+  "faq", // FAQ/size guide
+  "shipping-returns",
+] as const;
+
+// Required legal pages for compliance (LAUNCH-27)
+export const REQUIRED_LEGAL_PAGES = [
+  "terms", // Terms of service
+  "privacy", // Privacy policy
+  "returns", // Returns/refund policy (can overlap with shipping-returns)
+] as const;
+
+// Optional legal pages (recommended but not blocking launch)
+export const OPTIONAL_LEGAL_PAGES = [
+  "cookie", // Cookie policy
+  "vat", // VAT/tax information
+  "accessibility", // Accessibility statement
+] as const;
+
+export type RequiredLegalPageSlug = (typeof REQUIRED_LEGAL_PAGES)[number];
+export type OptionalLegalPageSlug = (typeof OPTIONAL_LEGAL_PAGES)[number];
+
+export type RequiredPageSlug = (typeof REQUIRED_PAGES_BASIC)[number];
+
 export const createShopOptionsSchema = z
   .object({
     name: z.string().optional(),
@@ -32,16 +108,23 @@ export const createShopOptionsSchema = z
       .optional(),
     contactInfo: z.string().optional(),
     type: z.enum(["sale", "rental"]).optional(),
+    // Theme fields (LAUNCH-23: add themeDefaults and themeTokens)
     theme: z.string().optional(),
+    themeDefaults: z.record(z.string()).optional(),
     themeOverrides: z.record(z.string()).default({}),
+    themeTokens: z.record(z.string()).optional(),
     template: z.string().optional(),
     payment: z.array(z.enum(defaultPaymentProviders)).default([]),
     billingProvider: z.enum(defaultPaymentProviders).optional(),
     shipping: z.array(z.enum(defaultShippingProviders)).default([]),
     tax: z.enum(defaultTaxProviders).default("taxjar"),
+    // Legacy SEO fields (kept for backwards compat)
     pageTitle: z.record(localeSchema, z.string()).optional(),
     pageDescription: z.record(localeSchema, z.string()).optional(),
     socialImage: z.string().url().optional(),
+    // Brand kit / SEO (LAUNCH-23)
+    favicon: z.string().url().optional(),
+    seo: seoConfigSchema.optional(),
     analytics: z
       .object({
         enabled: z.boolean().optional(),
@@ -53,23 +136,20 @@ export const createShopOptionsSchema = z
     enableEditorial: z.boolean().optional(),
     enableSubscriptions: z.boolean().optional(),
     navItems: z.array(navItemSchema).default([]),
-    pages: z
-      .array(
-        z.object({
-          slug: z.string(),
-          title: z.record(localeSchema, z.string()),
-          description: z.record(localeSchema, z.string()).optional(),
-          image: z.record(localeSchema, z.string()).optional(),
-          components: z.array(pageComponentSchema),
-        })
-      )
-      .default([]),
+    // Pages with template provenance (LAUNCH-23)
+    pages: z.array(pageConfigSchema).default([]),
+    // Required pages mapping for Basic tier (LAUNCH-23)
+    // Maps required page slugs to template IDs
+    requiredPages: z
+      .record(z.enum(REQUIRED_PAGES_BASIC), z.string())
+      .optional(),
     checkoutPage: z.array(pageComponentSchema).default([]),
   })
   .strict();
 
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 
+// Launch config schema for pnpm launch-shop orchestrator
 const deployTargetSchema = z
   .object({
     type: z.enum(["cloudflare-pages", "vercel", "local"]),
@@ -99,6 +179,29 @@ const smokeCheckSchema = z
   })
   .strict();
 
+// Compliance sign-off schema (LAUNCH-27)
+const complianceSignOffSchema = z
+  .object({
+    // Owner confirms compliance with legal requirements
+    signedOffBy: z.string().min(1).describe("Email or name of person who signed off"),
+    signedOffAt: z.string().datetime().describe("ISO 8601 signed-off value"),
+    // Optional: specific acknowledgments
+    acknowledgments: z
+      .object({
+        termsReviewed: z.boolean().optional(),
+        privacyReviewed: z.boolean().optional(),
+        vatCompliant: z.boolean().optional(),
+        gdprCompliant: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
+    // Director approval for templates (required for Basic tier)
+    directorApprovedTemplates: z.boolean().optional(),
+  })
+  .strict();
+
+export type ComplianceSignOff = z.infer<typeof complianceSignOffSchema>;
+
 export const launchConfigSchema = createShopOptionsSchema
   .extend({
     schemaVersion: z.number().int().min(1),
@@ -107,6 +210,27 @@ export const launchConfigSchema = createShopOptionsSchema
     ci: ciConfigSchema.optional(),
     smokeChecks: z.array(smokeCheckSchema).optional(),
     environments: z.record(z.string(), z.record(z.unknown())).optional(),
+    // Compliance sign-off (LAUNCH-27) - required for production launches
+    complianceSignOff: complianceSignOffSchema.optional(),
+    // Legal pages mapping (LAUNCH-27) - maps legal page slugs to template IDs
+    legalPages: z
+      .record(z.string(), z.string())
+      .optional()
+      .describe("Maps legal page slugs (terms, privacy, etc.) to template IDs"),
+    // Provider accounts configuration (LAUNCH-28)
+    providerAccounts: shopAccountConfigSchema
+      .optional()
+      .describe("Payment, shipping, and tax provider account configuration"),
+    // Provider template overrides (LAUNCH-28) - for custom provider selection
+    providerTemplates: z
+      .object({
+        payment: z.string().optional().describe("Payment provider template ID"),
+        shipping: z.string().optional().describe("Shipping provider template ID"),
+        tax: z.string().optional().describe("Tax provider template ID"),
+      })
+      .strict()
+      .optional()
+      .describe("Override default provider templates"),
   })
   .strict();
 
@@ -121,7 +245,17 @@ export type PreparedAnalyticsOptions = {
 export type PreparedCreateShopOptions = Required<
   Omit<
     CreateShopOptions,
-    "analytics" | "checkoutPage" | "sanityBlog" | "enableEditorial" | "enableSubscriptions"
+    | "analytics"
+    | "checkoutPage"
+    | "sanityBlog"
+    | "enableEditorial"
+    | "enableSubscriptions"
+    // LAUNCH-23: Optional fields with defaults
+    | "themeDefaults"
+    | "themeTokens"
+    | "favicon"
+    | "seo"
+    | "requiredPages"
   >
 > & {
   analytics: PreparedAnalyticsOptions;
@@ -129,6 +263,12 @@ export type PreparedCreateShopOptions = Required<
   enableEditorial: boolean;
   enableSubscriptions: boolean;
   checkoutPage: PageComponent[];
+  // LAUNCH-23: New optional fields
+  themeDefaults?: Record<string, string>;
+  themeTokens?: Record<string, string>;
+  favicon?: string;
+  seo?: SeoConfig;
+  requiredPages?: Partial<Record<RequiredPageSlug, string>>;
 };
 
 function prepareNavItems(items: NavItem[]): NavItem[] {
@@ -167,6 +307,9 @@ export function prepareOptions(
     theme: parsed.theme ?? "base",
     template: parsed.template ?? "template-app",
     themeOverrides: parsed.themeOverrides ?? {},
+    // LAUNCH-23: Theme defaults and tokens
+    themeDefaults: parsed.themeDefaults,
+    themeTokens: parsed.themeTokens,
     payment: payments,
     billingProvider,
     shipping,
@@ -174,6 +317,9 @@ export function prepareOptions(
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
+    // LAUNCH-23: Brand kit fields
+    favicon: parsed.favicon,
+    seo: parsed.seo,
     analytics: parsed.analytics
       ? {
           enabled: parsed.analytics.enabled !== false,
@@ -182,13 +328,20 @@ export function prepareOptions(
         }
       : { enabled: false, provider: "none" },
     navItems: prepareNavItems(parsed.navItems ?? []),
+    // LAUNCH-23: Include template provenance and status fields
     pages: parsed.pages.map((p) => ({
       slug: p.slug ?? slugify(p.title.en ?? Object.values(p.title)[0]),
       title: p.title,
       description: p.description,
       image: p.image,
       components: p.components ?? [],
+      templateId: p.templateId,
+      templateVersion: p.templateVersion,
+      status: p.status ?? "draft",
+      visibility: p.visibility ?? "public",
     })),
+    // LAUNCH-23: Required pages mapping
+    requiredPages: parsed.requiredPages,
     checkoutPage: parsed.checkoutPage as unknown as PageComponent[],
     sanityBlog: parsed.sanityBlog,
     enableEditorial: parsed.enableEditorial ?? false,

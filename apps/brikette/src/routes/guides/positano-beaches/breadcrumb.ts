@@ -1,5 +1,6 @@
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import type { TFunction } from "i18next";
+
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 
 import { resolveLocalizedString } from "./strings";
 

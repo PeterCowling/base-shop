@@ -1,22 +1,13 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/locationUtils.ts
-import { useLocation } from "react-router-dom";
-
-const ROUTER_CONTEXT_MESSAGES = [
-  "useLocation() may be used only in the context of a <Router>",
-  "You must render this element inside a <HydratedRouter> element",
-];
+import { usePathname } from "next/navigation";
 
 export function useOptionalRouterPathname(): string | undefined {
   try {
-    return useLocation().pathname;
-  } catch (error) {
-    if (error instanceof Error && typeof error.message === "string") {
-      if (ROUTER_CONTEXT_MESSAGES.some((snippet) => error.message.includes(snippet))) {
-        return undefined;
-      }
-    }
-    throw error;
+    const pathname = usePathname();
+    return typeof pathname === "string" ? pathname : undefined;
+  } catch {
+    return undefined;
   }
 }
 

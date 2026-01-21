@@ -5,13 +5,18 @@
     "popularGuides": "Popularne przewodniki",
     "helpfulGuides": "Pomocne przewodniki",
     "alsoSee": "Zobacz także",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Zobacz wszystkie przewodniki"
   },
   "meta": {
     "index": {
       "title": "Przewodniki po Positano",
       "description": "Praktyczne przewodniki krok po kroku po poruszaniu się po Positano i Wybrzeżu Amalfitańskim."
     }
+  },
+  "redirectPage": {
+    "title": "Trwa przekierowanie...",
+    "message": "Jeśli nie nastąpi przekierowanie, <link>kontynuuj tutaj</link>."
   },
   "content": {
     "onlyHostel": {

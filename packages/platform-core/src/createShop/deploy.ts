@@ -1,15 +1,17 @@
-import { dirname, join, isAbsolute } from "path";
-import { genSecret } from "@acme/shared-utils";
-import type { DeployShopResult } from "./deployTypes";
+import { dirname, isAbsolute,join } from "path";
+
+import { genSecret } from "@acme/lib/security";
+
 import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+import type { DeployShopResult } from "./deployTypes";
 import {
-  repoRoot,
+  ensureDir,
   fileExists,
   readFile,
-  ensureDir,
+  repoRoot,
   writeFile,
 } from "./fsUtils";
 

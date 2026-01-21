@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { CampaignForm } from "../CampaignForm";
-import { defaultCampaignValues, type CampaignFormValues } from "../types";
+import { type CampaignFormValues,defaultCampaignValues } from "../types";
 
 describe("CampaignForm", () => {
   function renderForm(overrides: Partial<React.ComponentProps<typeof CampaignForm>> = {}) {

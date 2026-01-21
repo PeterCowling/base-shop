@@ -1,4 +1,5 @@
 import type { SessionRecord, SessionStore } from "./store";
+
 interface DurableObjectNamespace {
     idFromName(name: string): DurableObjectId;
     get(id: DurableObjectId): DurableObjectStub;

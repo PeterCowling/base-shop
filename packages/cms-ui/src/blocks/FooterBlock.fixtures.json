@@ -1,0 +1,8 @@
+{
+  "links": [
+    { "href": "/about", "label": "About" },
+    { "href": "/contact", "label": "Contact" }
+  ],
+  "shopName": "Demo Shop"
+}
+

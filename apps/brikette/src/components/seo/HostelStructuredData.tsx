@@ -6,10 +6,11 @@
    - Mirrors the core Hotel node but typed as "Hostel".
    - Omits any third-party reviews to comply with policy.
 */
+import { memo, useMemo } from "react";
+
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildHotelNode, HOTEL_ID } from "@/utils/schema";
-import { memo, useMemo } from "react";
 
 function HostelStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();

@@ -1,12 +1,15 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent } from "@testing-library/react";
 import type { ReactElement } from "react";
-import PdpClient from "../src/app/[lang]/product/[slug]/PdpClient.client";
-import ProductPage, {
-  generateStaticParams,
-  generateMetadata,
-} from "../src/app/[lang]/product/[slug]/page";
+import { notFound } from "next/navigation";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
+
+import ProductPage, {
+  generateMetadata,
+  generateStaticParams,
+} from "../src/app/[lang]/product/[slug]/page";
+import PdpClient from "../src/app/[lang]/product/[slug]/PdpClient.client";
 
 jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => {
   function ImageGalleryMock() {
@@ -34,8 +37,6 @@ jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => {
 jest.mock("@acme/ui/components/atoms/Price", () => ({
   Price: ({ amount }: { amount: number }) => <span data-testid="price">{amount}</span>,
 }));
-
-import { notFound } from "next/navigation";
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 
 const getProduct = jest.fn();

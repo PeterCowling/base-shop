@@ -1,17 +1,19 @@
 // src/routes/assistance/HelpArticlesList.tsx
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Link } from "react-router-dom";
-import type { AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import { articleSlug } from "@/routes.assistance-helpers";
-import type { TFunction } from "i18next";
-import { Section } from "@acme/ui/atoms/Section";
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import type { LinksFunction, MetaFunction } from "react-router";
 import { useTranslation } from "react-i18next";
+import type { LinksFunction, MetaFunction } from "react-router";
+import { Link } from "react-router-dom";
+import type { TFunction } from "i18next";
+
+import { Grid } from "@acme/ui/atoms/Grid";
+import { Section } from "@acme/ui/atoms/Section";
+
+import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
+import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
+import { articleSlug } from "@/routes.assistance-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 type Props = {
   lang?: AppLanguage;

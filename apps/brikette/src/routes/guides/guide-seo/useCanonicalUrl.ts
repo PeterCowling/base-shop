@@ -4,11 +4,10 @@ import { BASE_URL } from "@/config/site";
 // Import from the consolidated slugs helper to avoid tests that partially
 // mock "@/routes.guides-helpers" and omit certain exports.
 import * as Slugs from "@/guides/slugs";
-import { getSlug } from "@/utils/slug";
-import { slugify } from "@/utils/slugify";
-
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
+import { getSlug } from "@/utils/slug";
+import { slugify } from "@/utils/slugify";
 
 interface CanonicalUrlArgs {
   pathname?: string | null;

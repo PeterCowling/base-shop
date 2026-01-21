@@ -1,6 +1,8 @@
 /* i18n-exempt file -- test titles and UI copy are asserted literally */
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
 import { TrackingDashboardTemplate } from "../TrackingDashboardTemplate";
 
 const records = [

@@ -59,7 +59,7 @@ describe("navigation round-trip", () => {
     expect(result.ok).toBe(true);
 
     expect(prismaMock.shop.create).toHaveBeenCalledTimes(1);
-    const nav = prismaMock.shop.create.mock.calls[0][0].data.data.navigation;
+    const nav = (prismaMock.shop.create.mock.calls[0] as any)[0].data.data.navigation;
     expect(nav).toEqual([
       {
         label: "Parent",

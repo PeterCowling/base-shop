@@ -1,20 +1,20 @@
 // src/routes/guides/ravello-travel-guide.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-// Satisfy template-enforcement lint rule without adding runtime weight
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
 import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+// Satisfy template-enforcement lint rule without adding runtime weight
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["ravello", "culture", "day-trip", "viewpoints", "couples"] };
 
@@ -121,4 +121,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

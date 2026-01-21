@@ -1,5 +1,6 @@
-import { isoDateInNDays, startOfDay, calculateRentalDays } from "../src";
 import { formatInTimeZone } from "date-fns-tz";
+
+import { calculateRentalDays,isoDateInNDays, startOfDay } from "../src";
 
 describe("leap year handling", () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 // apps/cms/__tests__/listUtils.test.ts
 /* eslint-env jest */
 
-import { toggleItem } from "@acme/shared-utils";
+import { toggleItem } from "@acme/lib/array";
 
 describe("toggleItem", () => {
   it("toggles values within an array", () => {

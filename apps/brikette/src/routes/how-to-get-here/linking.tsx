@@ -1,9 +1,9 @@
-import clsx from "clsx";
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
+import clsx from "clsx";
 
-import { guideHref } from "@/routes.guides-helpers";
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
+import { guideHref } from "@/routes.guides-helpers";
 
 import type { LinkContext, RenderContext } from "./types";
 

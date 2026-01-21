@@ -1,9 +1,11 @@
 // packages/ui/src/components/templates/OrderTrackingTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { OrderTrackingTemplate } from './OrderTrackingTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
 import type { OrderStep } from '../organisms/OrderTrackingTimeline';
+
+import { OrderTrackingTemplate } from './OrderTrackingTemplate';
 
 const steps: OrderStep[] = [
   { label: 'Order placed', date: '2025-04-02', complete: true },

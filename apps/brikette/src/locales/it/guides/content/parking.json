@@ -1,49 +1,49 @@
 {
   "linkLabel": "Parcheggiare a Positano: dove e quanto costa",
   "intro": [
-    "Traduzione in arrivo."
+    "Il parcheggio a Positano e scarso e costoso; prenota un garage in anticipo e considera l'auto come depositata per il soggiorno."
   ],
   "sections": [
     {
       "id": "garages",
       "title": "Garage privati in paese",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Mandara, Car Park Anna e Di Gennaro accettano prenotazioni — prenota 7-10 giorni prima per arrivi luglio-agosto.",
+        "Tariffe intorno a 35-60 EUR per 24 ore; conferma limiti di altezza (circa 1,9 m) e se devi lasciare le chiavi."
       ]
     },
     {
       "id": "drop-off",
-      "title": "Traduzione in arrivo.",
+      "title": "Drop-off e pagamento",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Usa le piazzole brevi vicino a Chiesa Nuova o Sponda per scaricare i bagagli prima di parcheggiare; tieni le quattro frecce e muoviti in fretta.",
+        "Porta carta e contanti: i garage accettano spesso carte ma preferiscono cash per soste sotto le 48 ore."
       ]
     },
     {
       "id": "park-elsewhere",
-      "title": "Traduzione in arrivo.",
+      "title": "Parcheggi piu economici fuori Positano",
       "body": [
         "I parcheggi coperti a Meta, Piano di Sorrento o Sorrento costano circa 20–25 € al giorno e collegano a Positano tramite gli autobus SITA in 45 minuti.",
-        "Traduzione in arrivo."
+        "Arrivi da nord? Lascia l'auto nei parcheggi del porto di Salerno e raggiungi Positano in traghetto quando il mare e calmo."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
+    "Controlla i divieti ZTL/numero di targa alternato prima di guidare sulla SS163; le multe arrivano mesi dopo anche all'estero.",
     "Prepara una borsa giornaliera con l'essenziale prima di consegnare le chiavi: il garage potrebbe parcheggiare le auto paraurti contro paraurti fino al ritiro."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso parcheggiare per poche ore?",
       "a": [
-        "Traduzione in arrivo."
+        "I garage fanno tariffa oraria ma passano rapidamente alla giornaliera; per commissioni brevi usa gli spazi da 30 minuti vicino alla curva di Sponda."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "I garage restano aperti fino a tardi?",
       "a": [
-        "Traduzione in arrivo."
+        "La maggior parte fa 07:00-00:00; avvisa i custodi per rientri tardivi cosi lasciano le chiavi al portiere notturno."
       ]
     }
   ],
@@ -51,6 +51,6 @@
   "faqsTitle": "Domande frequenti",
   "seo": {
     "title": "Parcheggiare a Positano: garage, regole stradali e alternative",
-    "description": "Dove parcheggiare a Positano, quanto costano i garage, quando i posti in strada sono realistici e opzioni più intelligenti senza auto."
+    "description": "Dove parcheggiare a Positano, quanto costano i garage, quando i posti in strada sono realistici e opzioni piu intelligenti senza auto."
   }
 }

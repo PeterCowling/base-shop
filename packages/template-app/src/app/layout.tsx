@@ -1,11 +1,14 @@
 // src/app/layout.tsx
-import { CartProvider } from "@acme/platform-core/contexts/CartContext";
-import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import "./globals.css";
+
 import type { Metadata } from "next";
+
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
+import { CartProvider } from "@acme/platform-core/contexts/CartContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+
 import AnalyticsScripts from "./AnalyticsScripts";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Base-Shop", // i18n-exempt -- ABC-123 [ttl=2025-12-31] default app metadata; localized variants come from page-level SEO

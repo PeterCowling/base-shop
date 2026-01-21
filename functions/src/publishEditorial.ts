@@ -8,7 +8,7 @@ async function handleShop(shop: string): Promise<void> {
     await publishQueuedPost(shop);
     await trackEvent(shop, { type: "editorial_publish", success: true });
   } catch (err) {
-    console.error(`editorial publish failed for ${shop}`, err);
+    console.error(`editorial publish failed for ${shop}` , err);
     await trackEvent(shop, {
       type: "editorial_publish",
       success: false,
@@ -17,7 +17,7 @@ async function handleShop(shop: string): Promise<void> {
   }
 }
 
-const publishEditorial = {
+export default {
   async scheduled() {
     const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });
     for (const entry of entries) {
@@ -27,4 +27,3 @@ const publishEditorial = {
   },
 };
 
-export default publishEditorial;

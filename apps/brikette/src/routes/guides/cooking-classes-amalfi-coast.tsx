@@ -1,19 +1,18 @@
 // src/routes/guides/cooking-classes-amalfi-coast.tsx
+import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
 import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
-
-import { guideHref, guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import getFallbackLanguage from "./utils/getFallbackLanguage";
+import { getGuideManifestEntry } from "./guide-manifest";
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-
-import type { LinksFunction } from "react-router";
+import getFallbackLanguage from "./utils/getFallbackLanguage";
 
 export const GUIDE_KEY: GuideKey = "cookingClassesAmalfi" as const;
 export const GUIDE_SLUG = "cooking-classes-amalfi-coast" as const;

@@ -1,6 +1,7 @@
 "use client";
 
 import { Cluster, Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+
 import type { GameState } from "../types";
 
 function formatCount(value: number | null | undefined): string {
@@ -24,10 +25,6 @@ export default function HudPanel({
     artifactsLabel: string;
     xpLabel: string;
     nextLevelLabel: string;
-    statusSyncing: string;
-    statusOffline: string;
-    streakSummary: string;
-    streakEmpty: string;
   };
   state: GameState | null;
   loading: boolean;
@@ -48,11 +45,7 @@ export default function HudPanel({
           <h2 className="text-xl font-semibold tracking-tight">{strings.title}</h2>
         </Stack>
         <span className="pp-chip">
-          {loading
-            ? strings.statusSyncing
-            : operator
-              ? `${operator.title}`
-              : strings.statusOffline}
+          {loading ? "Syncing" : operator ? `${operator.title}` : "Offline"}
         </span>
       </Cluster>
 
@@ -89,7 +82,8 @@ export default function HudPanel({
               {operator ? `${operator.streakDays}d` : "-"}
             </span>
             <span className="text-xs text-foreground/60">
-              {operator ? strings.streakSummary : strings.streakEmpty}
+              {/* i18n-exempt -- PP-001 [ttl=2027-01-01] internal admin tool */}
+              {operator ? "Consecutive run-days" : "No telemetry yet"}
             </span>
           </Stack>
         </div>

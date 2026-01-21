@@ -1,4 +1,5 @@
 import "server-only";
+
 import type { RentalOrder } from "@acme/types";
 
 type Order = RentalOrder;

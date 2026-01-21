@@ -4,7 +4,7 @@ import path from "node:path";
 import ts from "typescript";
 import { requirePermission } from "@acme/auth";
 
-jest.mock("@auth", () => ({ requirePermission: jest.fn() }));
+jest.mock("@acme/auth", () => ({ requirePermission: jest.fn() }));
 const mockedRequirePermission = requirePermission as jest.Mock;
 
 jest.mock("fs", () => {

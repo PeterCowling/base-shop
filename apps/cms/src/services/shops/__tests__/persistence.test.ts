@@ -1,9 +1,9 @@
 import {
-  fetchShop,
-  persistShop,
-  fetchSettings,
-  persistSettings,
   fetchDiffHistory,
+  fetchSettings,
+  fetchShop,
+  persistSettings,
+  persistShop,
 } from "../persistence";
 
 jest.mock("@acme/platform-core/repositories/shop.server", () => ({

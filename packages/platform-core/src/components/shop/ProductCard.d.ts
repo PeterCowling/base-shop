@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 declare function ProductCardInner({ sku }: {
     sku: SKU & {
         badges?: {

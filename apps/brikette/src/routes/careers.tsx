@@ -2,21 +2,22 @@
    src/routes/careers.tsx
    Careers – static route with fully localised head tags
 ---------------------------------------------------------------- */
+import { Fragment, memo, useMemo } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+
 import CareersHero from "@/components/careers/CareersHero";
 import CareersSection from "@/components/careers/CareersSection";
 import CareersStructuredData from "@/components/seo/CareersStructuredData";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { getSlug } from "@/utils/slug";
-import { Fragment, memo, useMemo } from "react";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { createBasicPageClientLoader } from "@/routes/_shared/createBasicPageLoader";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
 const OG_IMAGE_DIMENSIONS = OG_IMAGE;

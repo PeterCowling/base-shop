@@ -1,7 +1,7 @@
-import { locales } from "@acme/i18n/locales";
-import enMessages from "@acme/i18n/en.json";
 import deMessages from "@acme/i18n/de.json";
+import enMessages from "@acme/i18n/en.json";
 import itMessages from "@acme/i18n/it.json";
+import { locales } from "@acme/i18n/locales";
 
 const messages: Record<string, Record<string, string>> = {
   en: enMessages as Record<string, string>,

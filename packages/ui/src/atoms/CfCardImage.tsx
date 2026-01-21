@@ -1,7 +1,9 @@
 // Copied from src/components/images/CfCardImage.tsx
+import { type FC,memo } from "react";
+
+import { type PRESETS } from "@acme/ui/config/imagePresets";
+
 import { CfImage, type CfImageProps } from "./CfImage";
-import { PRESETS } from "@/config/imagePresets";
-import { memo, type FC } from "react";
 
 export interface CfCardImageProps extends Omit<CfImageProps, "preset"> {
   preset?: keyof typeof PRESETS;

@@ -1,25 +1,26 @@
 // src/routes/guides/how-to-get-to-positano.tsx
 import { memo, useCallback } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-
 import GuideSeoTemplate from "./_GuideSeoTemplate";
-import { renderArticleLead } from "./how-to-get-to-positano.article-lead";
 import { renderAdditionalScripts } from "./how-to-get-to-positano.additional-scripts";
+import { renderArticleLead } from "./how-to-get-to-positano.article-lead";
 import { buildBreadcrumb } from "./how-to-get-to-positano.breadcrumb";
 import { ALSO_HELPFUL_TAGS, OG_IMAGE, RELATED_GUIDES } from "./how-to-get-to-positano.constants";
-import type { GuideKey } from "@/routes.guides-helpers";
 import { buildGuideExtras } from "./how-to-get-to-positano.extras";
 import { buildGuideFaqFallback } from "./how-to-get-to-positano.faq";
-export { handle } from "./how-to-get-to-positano.metadata";
 import { buildTocItems } from "./how-to-get-to-positano.toc";
-import type { MetaFunction, LinksFunction } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+
+export { handle } from "./how-to-get-to-positano.metadata";
 
 function HowToGetToPositano(): JSX.Element {
   const buildExtras = useCallback(buildGuideExtras, []);
@@ -63,14 +64,14 @@ function HowToGetToPositano(): JSX.Element {
 
 export default memo(HowToGetToPositano);
 
-export { buildGuideExtras } from "./how-to-get-to-positano.extras";
 export { renderAdditionalScripts } from "./how-to-get-to-positano.additional-scripts";
 export { renderArticleLead } from "./how-to-get-to-positano.article-lead";
+export { buildGuideExtras } from "./how-to-get-to-positano.extras";
 export {
-  safeString,
+  normaliseFaqs,
   normaliseSections,
   normaliseWhenItems,
-  normaliseFaqs,
+  safeString,
 } from "./how-to-get-to-positano.normalizers";
 
 // Route head exports – canonical/hreflang + OG/Twitter (incl. twitter:card)

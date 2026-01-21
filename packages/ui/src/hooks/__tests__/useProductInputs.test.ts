@@ -1,7 +1,9 @@
-import { act, renderHook } from "@testing-library/react";
 import type { ChangeEvent } from "react";
-import type { ProductPublication } from "@acme/types";
+import { act, renderHook } from "@testing-library/react";
+
 import type { Locale } from "@acme/i18n";
+import type { ProductPublication } from "@acme/types";
+
 import { useProductInputs } from "../useProductInputs";
 
 // i18n-exempt: test-only product fixture strings

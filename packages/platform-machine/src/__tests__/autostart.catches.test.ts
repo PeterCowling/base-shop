@@ -1,5 +1,4 @@
 /** @jest-environment node */
-import type { Mock } from "jest-mock";
 
 describe("autostart catch logging", () => {
   const OLD_ENV = process.env;
@@ -18,16 +17,16 @@ describe("autostart catch logging", () => {
     jest.unmock("@acme/platform-core/utils");
   });
 
-  const flush = () => new Promise((r) => setImmediate(r));
+  const flush = () => new Promise((resolve) => setImmediate(resolve));
 
   it("logs when reverse logistics autostart fails", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     const err = new Error("boom");
 
     const readdir = jest.fn().mockRejectedValue(err);
     jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
 
-    const error: Mock = jest.fn();
+    const error = jest.fn();
     jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
@@ -43,7 +42,7 @@ describe("autostart catch logging", () => {
   });
 
   it("logs when late fee service autostart fails", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     const err = new Error("boom");
 
     const readdir = jest.fn().mockRejectedValue(err);
@@ -54,7 +53,7 @@ describe("autostart catch logging", () => {
       readFile,
     }));
 
-    const error: Mock = jest.fn();
+    const error = jest.fn();
     jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },
@@ -81,8 +80,8 @@ describe("autostart catch logging", () => {
       readFile,
     }));
 
-    const error: Mock = jest.fn();
-    const cerror: Mock = jest.fn();
+    const error = jest.fn();
+    const cerror = jest.fn();
     jest.doMock("@acme/platform-core/utils", () => ({
       __esModule: true,
       logger: { error, info: jest.fn() },

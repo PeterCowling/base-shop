@@ -8,4 +8,12 @@ describe("cn", () => {
   it("returns empty string with no arguments", () => {
     expect(cn()).toBe("");
   });
+
+  it("dedupes design-token color utilities with later overrides", () => {
+    const merged = cn("bg-primary text-primary-foreground", "bg-black text-white");
+    expect(merged).toContain("bg-black");
+    expect(merged).toContain("text-white");
+    expect(merged).not.toContain("bg-primary");
+    expect(merged).not.toContain("text-primary-foreground");
+  });
 });

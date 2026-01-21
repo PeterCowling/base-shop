@@ -1,9 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { sendCampaignEmail } from "./send";
-import { escapeHtml } from "./escapeHtml";
-import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
 import { validateShopName } from "@acme/lib";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
+import { escapeHtml } from "./escapeHtml";
+import { sendCampaignEmail } from "./send";
 
 const DEFAULT_DELAY_MS = 1000 * 60 * 60 * 24;
 

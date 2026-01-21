@@ -1,11 +1,12 @@
-import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
-import { Tooltip } from "@/components/atoms";
-import { Inline, Stack } from "@acme/ui/components/atoms/primitives";
-
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
-import { useTranslations } from "@acme/i18n";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+import { Inline, Stack } from "@acme/ui/components/atoms/primitives";
+
+import { Tooltip } from "@/components/atoms";
+import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 
 import type { RoleDetail } from "../components/roleDetails";
 

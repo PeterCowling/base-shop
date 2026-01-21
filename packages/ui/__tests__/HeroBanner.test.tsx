@@ -1,4 +1,6 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { usePathname } from "next/navigation";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import HeroBanner, { type Slide } from "../src/components/home/HeroBanner.client";
 
 const translations: Record<string, string> = {};
@@ -11,7 +13,6 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-import { usePathname } from "next/navigation";
 const mockPathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
 beforeEach(() => {
@@ -30,6 +31,8 @@ describe("HeroBanner", () => {
       "hero.slide1.headline": "Slide One",
       "hero.slide2.headline": "Slide Two",
       "hero.cta": "Shop now",
+      "hero.nav.prev": "Previous slide",
+      "hero.nav.next": "Next slide",
     });
 
     const { container } = render(<HeroBanner />);
@@ -61,6 +64,8 @@ describe("HeroBanner", () => {
       "a.cta": "Buy A",
       "b.head": "Beta",
       "b.cta": "Buy B",
+      "hero.nav.prev": "Previous slide",
+      "hero.nav.next": "Next slide",
     });
 
     render(<HeroBanner slides={slides} />);
@@ -79,8 +84,10 @@ describe("HeroBanner", () => {
       "hero.slide1.headline": "Slide One",
       "hero.slide3.headline": "Slide Three",
       "hero.cta": "Shop now",
+      "hero.nav.prev": "Previous slide",
+      "hero.nav.next": "Next slide",
     });
-    mockPathname.mockReturnValue(null);
+    mockPathname.mockReturnValue(null as any);
     render(<HeroBanner slides={[]} />);
     expect(screen.getByText("Slide One")).toBeInTheDocument();
     const link = screen.getByRole("link", { name: "Shop now" });
@@ -118,4 +125,3 @@ describe("HeroBanner", () => {
     expect(screen.getByText("Beta")).toBeInTheDocument();
   });
 });
-

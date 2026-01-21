@@ -1,13 +1,17 @@
-// packages/i18n/tsconfig.test.json
-
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "module": "esnext",
+    "moduleResolution": "bundler",
     "types": ["@testing-library/jest-dom", "jest", "node", "react"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": "../..",
+    "resolveJsonModule": true,
+    "paths": {
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx"]
+  "include": ["src/**/*", "src/**/*.json", "__tests__/**/*"]
 }

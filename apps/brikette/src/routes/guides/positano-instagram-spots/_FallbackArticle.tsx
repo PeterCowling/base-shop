@@ -5,12 +5,13 @@ import type { TFunction } from "i18next";
 
 import ImageGallery from "@/components/guides/ImageGallery";
 import TableOfContents from "@/components/guides/TableOfContents";
-import { guideHref } from "@/routes.guides-helpers";
-import type { AppLanguage } from "@/i18n.config";
 import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { guideHref } from "@/routes.guides-helpers";
 import { getOptionalString } from "@/utils/translationFallbacks";
 
 import { renderGuideLinkTokens } from "../utils/linkTokens";
+
 import { GUIDE_KEY } from "./constants";
 import type { FallbackData, FallbackListItem } from "./types";
 

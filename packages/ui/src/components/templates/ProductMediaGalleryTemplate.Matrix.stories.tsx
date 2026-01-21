@@ -1,9 +1,12 @@
 // packages/ui/src/components/templates/ProductMediaGalleryTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { SKU } from '@acme/types';
-import { ProductMediaGalleryTemplate } from './ProductMediaGalleryTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductMediaGalleryTemplate } from './ProductMediaGalleryTemplate';
 
 const product: SKU = {
   id: '1',

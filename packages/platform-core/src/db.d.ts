@@ -1,5 +1,6 @@
-type PrismaClientType = any;
 import { type InventoryItemDelegate } from './db/stubs';
+
+type PrismaClientType = any;
 /**
  * Avoid augmenting `PrismaClient` with a permissive index signature.
  * For dynamic model access, use a typed helper instead.
@@ -19,4 +20,4 @@ declare function createTestPrismaStub(): Pick<PrismaClientType, 'rentalOrder' | 
 };
 declare function loadPrismaClient(): (new (...args: unknown[]) => PrismaClientType) | undefined;
 declare const prisma: PrismaClientType;
-export { prisma, createTestPrismaStub, loadPrismaClient };
+export { createTestPrismaStub, loadPrismaClient,prisma };

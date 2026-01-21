@@ -1,6 +1,8 @@
-import { type Locale } from "./constants";
 import { z } from "zod";
+
+import { type Locale } from "./constants";
 import type { MediaItem } from "./MediaItem";
+
 export declare const localeSchema: z.ZodEnum<["en", "de", "it"]>;
 export declare const skuSchema: z.ZodObject<{
     id: z.ZodString;

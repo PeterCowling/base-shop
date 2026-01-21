@@ -1,7 +1,8 @@
+import { type ComponentPropsWithoutRef,Fragment, memo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
-import { Fragment, memo, type ComponentPropsWithoutRef } from "react";
-import { ModalContainer, ModalOverlay, ModalPanel, ModalFooterButton } from "./primitives";
+
+import { ModalContainer, ModalFooterButton,ModalOverlay, ModalPanel } from "./primitives";
 import type { LanguageModalCopy, LanguageOption } from "./types";
 
 const DEFAULT_TEST_ID = "language-modal";
@@ -78,7 +79,7 @@ export interface LanguageModalProps {
 const Cluster = memo(function Cluster({ className, ...rest }: ComponentPropsWithoutRef<"div">): JSX.Element {
   const base =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "flex flex-wrap gap-2";
+    "flex max-h-[50svh] flex-wrap gap-2 overflow-y-auto pr-1 sm:max-h-[60svh]";
   return <div className={className ? `${base} ${className}` : base} {...rest} />;
 });
 

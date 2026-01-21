@@ -1,11 +1,12 @@
 // src/routes/guides/day-trip-capri-from-positano/guideFaqFallback.ts
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+
 import { stripGuideLinkTokens } from "../utils/linkTokens";
 
 import { GUIDE_KEY } from "./constants";
 import { getGuidesTranslator } from "./i18n";
 import { toFaqEntries } from "./transformers";
 import type { GuideFaq } from "./types";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 function sanitizeFaqs(faqs: GuideFaq[]): GuideFaq[] {
   return faqs.map(({ q, a }) => ({ q, a: a.map((answer) => stripGuideLinkTokens(answer)) }));

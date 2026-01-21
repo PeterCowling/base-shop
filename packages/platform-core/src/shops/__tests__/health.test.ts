@@ -1,6 +1,7 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import * as health from "../health";
+
 import type { DeployInfo } from "../deployInfo";
+import * as health from "../health";
 
 jest.mock("../deployInfo", () => {
   const actual = jest.requireActual("../deployInfo");
@@ -14,12 +15,9 @@ const { readDeployInfo } = jest.requireMock("../deployInfo") as {
   readDeployInfo: jest.Mock;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnySpyInstance = ReturnType<typeof jest.spyOn<any, any>>;
-
 describe("deriveOperationalHealth", () => {
-  let latestUpgrade: AnySpyInstance;
-  let healthJson: AnySpyInstance;
+  let latestUpgrade: jest.SpyInstance;
+  let healthJson: jest.SpyInstance;
 
   beforeEach(() => {
     readDeployInfo.mockReset();

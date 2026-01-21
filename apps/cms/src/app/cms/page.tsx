@@ -1,17 +1,19 @@
+import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import { collectStats } from "@cms/lib/dashboardData";
 import { DashboardHero } from "@cms/components/DashboardHero";
-import { ShopOverviewCard } from "@cms/components/ShopOverviewCard";
 import { PendingSummaryPanel } from "@cms/components/PendingSummaryPanel";
-import type { Metadata } from "next";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { getServerSession } from "next-auth";
-import { PendingRequestsPanel } from "./components/PendingRequestsPanel";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { TranslationsProvider } from "@acme/i18n/Translations";
+import { ShopOverviewCard } from "@cms/components/ShopOverviewCard";
+import { collectStats } from "@cms/lib/dashboardData";
+
 import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+
+import { PendingRequestsPanel } from "./components/PendingRequestsPanel";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getServerTranslations("en");

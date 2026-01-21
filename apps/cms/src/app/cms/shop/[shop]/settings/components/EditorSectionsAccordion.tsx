@@ -2,6 +2,7 @@
 
 import type { FormEventHandler, ReactNode } from "react";
 
+import { Toast } from "@/components/atoms";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +13,6 @@ import {
   CardContent,
   Input,
 } from "@/components/atoms/shadcn";
-import { Toast } from "@/components/atoms";
 
 import type { EditorSectionConfig } from "../editorSections";
 

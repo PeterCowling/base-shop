@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar breakpoints editor (CT)', { tags: ['inspectors'] }, () => {

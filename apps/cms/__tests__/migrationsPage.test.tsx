@@ -1,6 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
+import MigrationsPage from "../src/app/cms/migrations/page";
+
 const translations = {
   "cms.migrations.hero.title": "Upgrade storefronts to the latest tokens",
   "cms.migrations.actions.openConfigurator": "Open configurator",
@@ -12,8 +14,6 @@ const useTranslations = jest.fn();
 jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations,
 }));
-
-import MigrationsPage from "../src/app/cms/migrations/page";
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");

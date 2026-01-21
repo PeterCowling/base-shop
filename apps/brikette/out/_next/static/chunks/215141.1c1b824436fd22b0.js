@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[215141],{215141:o=>{o.exports=JSON.parse('{"articleCount_one":"{{count}} b\xe0i viết","articleCount_other":"{{count}} b\xe0i viết","topTagsHeading":"Thẻ nổi bật","robots":{"noindexFollow":"noindex,follow"}}')}}]);

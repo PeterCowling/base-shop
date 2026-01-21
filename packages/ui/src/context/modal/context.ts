@@ -1,3 +1,5 @@
+"use client";
+
 // src/context/modal/context.ts
 /* -------------------------------------------------------------------------- */
 /*  Modal context definitions                                                 */

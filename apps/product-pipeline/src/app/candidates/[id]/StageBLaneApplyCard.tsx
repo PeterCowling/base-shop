@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
-import type { CandidateDetailStrings } from "./types";
+
 import type { StageBLaneMeta } from "./stageBHelpers";
+import type { CandidateDetailStrings } from "./types";
 
 type LaneOption = {
   id: string;

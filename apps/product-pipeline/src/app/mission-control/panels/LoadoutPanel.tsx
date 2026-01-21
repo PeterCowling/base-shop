@@ -1,18 +1,8 @@
 "use client";
 
 import { Stack } from "@acme/ui/components/atoms/primitives";
+
 import type { MissionLoadout } from "../types";
-
-const STAGE_M_KINDS = {
-  amazonSearch: "amazon_search",
-  amazonListing: "amazon_listing",
-  taobaoListing: "taobao_listing",
-} as const;
-
-const STAGE_M_CAPTURE_MODES = {
-  runner: "runner",
-  queue: "queue",
-} as const;
 
 function clampInt(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
@@ -134,15 +124,11 @@ export default function LoadoutPanel({
               })
             }
           >
-            <option value={STAGE_M_KINDS.amazonSearch}>
-              {strings.stageMKindAmazonSearch}
-            </option>
-            <option value={STAGE_M_KINDS.amazonListing}>
-              {strings.stageMKindAmazonListing}
-            </option>
-            <option value={STAGE_M_KINDS.taobaoListing}>
-              {strings.stageMKindTaobaoListing}
-            </option>
+            {/* eslint-disable ds/no-hardcoded-copy -- PP-001 programmatic option values, not user-facing */}
+            <option value="amazon_search">{strings.stageMKindAmazonSearch}</option>
+            <option value="amazon_listing">{strings.stageMKindAmazonListing}</option>
+            <option value="taobao_listing">{strings.stageMKindTaobaoListing}</option>
+            {/* eslint-enable ds/no-hardcoded-copy */}
           </select>
         </label>
 
@@ -161,12 +147,8 @@ export default function LoadoutPanel({
               })
             }
           >
-            <option value={STAGE_M_CAPTURE_MODES.runner}>
-              {strings.stageMCaptureModeRunner}
-            </option>
-            <option value={STAGE_M_CAPTURE_MODES.queue}>
-              {strings.stageMCaptureModeQueue}
-            </option>
+            <option value="runner">{strings.stageMCaptureModeRunner}</option>
+            <option value="queue">{strings.stageMCaptureModeQueue}</option>
           </select>
         </label>
 

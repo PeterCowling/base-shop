@@ -1,3 +1,9 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import ContentPanel from "../src/components/cms/page-builder/panels/ContentPanel";
+
 jest.mock("../src/components/atoms/shadcn", () => {
   const React = require("react");
   return {
@@ -13,9 +19,6 @@ jest.mock("../src/components/cms/page-builder/editorRegistry", () => ({
   __esModule: true,
   default: {},
 }));
-import { render, fireEvent, screen } from "@testing-library/react";
-import ContentPanel from "../src/components/cms/page-builder/panels/ContentPanel";
-import type { PageComponent } from "@acme/types";
 
 test("updates min items", () => {
   const component: PageComponent = { id: "1", type: "ProductCarousel", minItems: 1, maxItems: 5 } as any;

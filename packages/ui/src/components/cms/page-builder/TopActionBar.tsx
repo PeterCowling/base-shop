@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { Button } from "../../atoms/shadcn";
-import { Tooltip } from "../../atoms";
-import { Spinner } from "../../atoms";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Spinner,Tooltip  } from "../../atoms";
+import { Button } from "../../atoms/shadcn";
 
 interface Props {
   onSave: () => void;

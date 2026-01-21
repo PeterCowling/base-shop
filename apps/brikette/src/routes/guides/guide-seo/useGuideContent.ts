@@ -1,16 +1,14 @@
 /* eslint-disable ds/no-hardcoded-copy -- DEV-1790: Structured guide fallbacks rely on static copy */
 import { useMemo } from "react";
-import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
-
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
 import type { AppLanguage } from "@/i18n.config";
-import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import getFallbackLanguage from "@/routes/guides/utils/getFallbackLanguage";
-
 import type { GuideKey } from "@/routes.guides-helpers";
+import getFallbackLanguage from "@/routes/guides/utils/getFallbackLanguage";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
+import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import type {
   NormalisedFaq,

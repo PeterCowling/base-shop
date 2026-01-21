@@ -1,12 +1,14 @@
-import { COST_ITEM_DEFS, GUIDE_KEY } from "./constants";
-import { getGuidesTranslator } from "./translator";
-import { getString, getStringArray } from "./strings";
-import { normaliseFaqs, normaliseSections, normaliseStringList } from "./normalisers";
-import type { GuideExtras, TocItem } from "./types";
 import type { TFunction } from "i18next";
 
-export type { GuideExtras } from "./types";
 import type { GuideSeoTemplateContext } from "../_GuideSeoTemplate";
+
+import { COST_ITEM_DEFS, GUIDE_KEY } from "./constants";
+import { normaliseFaqs, normaliseSections, normaliseStringList } from "./normalisers";
+import { getString, getStringArray } from "./strings";
+import { getGuidesTranslator } from "./translator";
+import type { GuideExtras, TocItem } from "./types";
+
+export type { GuideExtras } from "./types";
 
 export function buildGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
   const translator = context.translateGuides as TFunction<"guides">;

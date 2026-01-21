@@ -1,8 +1,10 @@
 // apps/cms/src/app/api/shops/route.ts
 
 import { NextResponse } from "next/server";
+
+import { logger } from "@acme/lib/logger";
+
 import { listShops } from "../../../lib/listShops";
-import { logger } from "@acme/shared-utils";
 
 export const runtime = "nodejs";
 

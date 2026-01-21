@@ -1,17 +1,17 @@
 // src/routes/guides/salerno-to-positano.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import type {} from "@/routes/guides/_GuideSeoTemplate";
 import type { LinksFunction } from "react-router";
 
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["transport", "salerno", "positano", "ferry", "bus"] };
 
@@ -116,4 +116,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

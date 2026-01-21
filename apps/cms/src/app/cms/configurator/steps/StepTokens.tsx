@@ -1,17 +1,21 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-// Step now focuses on typography (fonts only)
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
+import presetData from "@acme/ui/components/cms/style/presets.json";
+
+import { Button } from "@/components/atoms/shadcn";
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
+import { patchShopTheme } from "../../wizard/services/patchTheme";
 import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
-import type { ConfiguratorStepProps } from "@/types/configurator";
+// Step now focuses on typography (fonts only)
+import useStepCompletion from "../hooks/useStepCompletion";
+
 import TypographySelector from "./TypographySelector";
-import presetData from "@acme/ui/components/cms/style/presets.json";
-import { patchShopTheme } from "../../wizard/services/patchTheme";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element {
   const [, markComplete] = useStepCompletion("tokens");

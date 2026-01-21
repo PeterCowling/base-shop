@@ -1,6 +1,7 @@
-import { resolveText } from "../src/resolveText";
-import { fallbackChain } from "../src/fallbackChain";
 import type { Locale, TranslatableText } from "@acme/types";
+
+import { fallbackChain } from "../src/fallbackChain";
+import { resolveText } from "../src/resolveText";
 
 const t = (key: string, params?: Record<string, unknown>) => {
   let out = key;

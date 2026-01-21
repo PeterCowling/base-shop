@@ -1,31 +1,30 @@
 // src/routes/guides/path-of-the-gods-from-brikette.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction } from "react-router";
 
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
+import { langFromRequest,toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import {
   createPathOfTheGodsArticleExtras,
   createPathOfTheGodsArticleLead,
 } from "./_path-of-the-gods.article";
-import { createPathOfTheGodsExtras } from "./path-of-the-gods.extras";
-import { createPathOfTheGodsHowToSteps } from "./path-of-the-gods.how-to";
-import { buildPathOfTheGodsGallerySources } from "./path-of-the-gods.gallery";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
 import {
-  PATH_OF_THE_GODS_HANDLE,
   GUIDE_KEY as PATH_GUIDE_KEY,
   GUIDE_SLUG as PATH_GUIDE_SLUG,
   OG_IMAGE,
+  PATH_OF_THE_GODS_HANDLE,
 } from "./path-of-the-gods.constants";
-
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import { toAppLanguage, langFromRequest } from "@/utils/lang";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import type { LinksFunction } from "react-router";
-import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
+import { createPathOfTheGodsExtras } from "./path-of-the-gods.extras";
+import { buildPathOfTheGodsGallerySources } from "./path-of-the-gods.gallery";
+import { createPathOfTheGodsHowToSteps } from "./path-of-the-gods.how-to";
 
 export const handle = PATH_OF_THE_GODS_HANDLE;
 

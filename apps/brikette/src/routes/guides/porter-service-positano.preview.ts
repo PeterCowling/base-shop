@@ -1,9 +1,11 @@
-import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-import { computePorterGuideExtras } from "./porter-service-positano.extras";
-import { GUIDE_KEY, OG_IMAGE } from "./porter-service-positano.constants";
-import type { GuideExtras } from "./porter-service-positano.types";
-import type { AppLanguage } from "@/i18n.config";
 import type { TFunction } from "i18next";
+
+import type { AppLanguage } from "@/i18n.config";
+
+import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import { GUIDE_KEY, OG_IMAGE } from "./porter-service-positano.constants";
+import { computePorterGuideExtras } from "./porter-service-positano.extras";
+import type { GuideExtras } from "./porter-service-positano.types";
 
 interface PreviewContextParams {
   lang: AppLanguage;

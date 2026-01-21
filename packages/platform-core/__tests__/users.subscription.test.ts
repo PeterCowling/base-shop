@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { setStripeSubscriptionId } from "../src/repositories/users.server";
-import { readShop } from "../src/repositories/shops.server";
+
 import { prisma } from "../src/db";
+import { readShop } from "../src/repositories/shops.server";
+import { setStripeSubscriptionId } from "../src/repositories/users.server";
 
 jest.mock("../src/repositories/shops.server", () => ({
   readShop: jest.fn(),

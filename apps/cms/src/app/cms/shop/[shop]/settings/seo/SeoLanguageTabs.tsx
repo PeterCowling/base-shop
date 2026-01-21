@@ -1,13 +1,16 @@
 "use client";
 
+import type { ChangeEvent } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/types";
+import { Inline } from "@acme/ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
+
 import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms/shadcn";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import type { Locale } from "@acme/types";
-import { cn } from "@acme/ui/utils/style";
-import type { ChangeEvent } from "react";
+
 import type { SeoRecord } from "./useSeoForm";
-import { useTranslations } from "@acme/i18n";
 
 interface Props {
   languages: readonly Locale[];

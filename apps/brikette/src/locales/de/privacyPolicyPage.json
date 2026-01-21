@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Datenschutzerklärung | Hostel Brikette",
+    "description": "Wie Hostel Brikette personenbezogene Daten erhebt, verwendet, speichert und weitergibt, wenn Sie unsere Website besuchen oder ein Zimmer buchen."
+  },
+  "headings": {
+    "pageTitle": "Datenschutzerklärung",
+    "subtitle": "Wie wir Ihre personenbezogenen Daten behandeln"
+  },
+  "lastUpdated": {
+    "label": "Zuletzt aktualisiert",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Auf dieser Seite",
+    "aria": "Inhaltsverzeichnis der Datenschutzerklärung"
+  },
+  "sections": {
+    "intro": {
+      "title": "Übersicht",
+      "body": [
+        "Diese Datenschutzerklärung erklärt, welche personenbezogenen Daten wir erheben, warum wir sie erheben und wie wir sie verwenden, wenn Sie unsere Website besuchen, uns kontaktieren oder ein Zimmer buchen.",
+        "Wenn Sie die Regeln und kommerziellen Bedingungen einer Buchung (Zahlungen, Stornofristen, Check-in/out und Pflichten der Gäste) suchen, lesen Sie bitte unsere Allgemeinen Geschäftsbedingungen für Zimmerbuchungen."
+      ]
+    },
+    "controller": {
+      "title": "Wer für Ihre Daten verantwortlich ist",
+      "body": [
+        "Verantwortlicher ist die Skylar SRL, die als Hostel Brikette tätig ist (\"wir\").",
+        "Wenn Sie Fragen zu dieser Richtlinie haben oder Ihre Datenschutzrechte ausüben möchten, kontaktieren Sie uns unter {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Personenbezogene Daten, die wir erheben",
+      "body": [
+        "Wenn Sie uns kontaktieren oder eine Buchung anfragen, können Sie Angaben wie Ihren Namen, Ihre E-Mail-Adresse, Telefonnummer, Nationalität, Aufenthaltsdaten und alle Nachrichten, die Sie uns senden, bereitstellen.",
+        "Wenn Sie eine Buchung über eine Online Travel Agency (OTA) oder eine Buchungsmaschine eines Drittanbieters abschließen, verarbeitet dieser Anbieter Ihre Zahlungsdaten gemäß seiner eigenen Datenschutzerklärung. Wir erhalten in der Regel die Buchungsinformationen, die wir benötigen, um Sie zu beherbergen (z. B. Gastname, Kontaktdaten, Daten und Buchungsreferenz).",
+        "Wenn Sie unsere Website besuchen, können unsere Server grundlegende technische Daten (wie IP-Adresse, Geräte- und Browserinformationen sowie aufgerufene Seiten) zu Sicherheits-, Debugging- und Leistungszwecken verarbeiten."
+      ]
+    },
+    "howWeUse": {
+      "title": "Wie wir Ihre Daten verwenden",
+      "body": [
+        "Um auf Anfragen zu antworten und Kundensupport zu leisten.",
+        "Um Ihre Reservierung, den Check-in und die Kommunikation während des Aufenthalts zu verarbeiten und zu verwalten.",
+        "Um gesetzlichen Verpflichtungen nachzukommen (einschließlich solcher im Zusammenhang mit Gastgewerbe und öffentlicher Sicherheit).",
+        "Um unsere Website zu schützen und zu betreiben (Betrugsprävention, Missbrauchsüberwachung und Zuverlässigkeit)."
+      ]
+    },
+    "legalBases": {
+      "title": "Rechtsgrundlagen (warum wir Daten verarbeiten dürfen)",
+      "body": [
+        "Vertrag: um auf Ihre Anfrage hin Schritte vor Vertragsabschluss einzuleiten und den Buchungsvertrag zu erfüllen.",
+        "Rechtliche Verpflichtung: um Anforderungen des geltenden Rechts zu erfüllen (einschließlich italienischer Vorschriften für das Gastgewerbe).",
+        "Berechtigte Interessen: um unsere Website und Kommunikation zu betreiben, zu schützen und zu verbessern, sofern diese Interessen Ihre Rechte nicht überwiegen."
+      ]
+    },
+    "sharing": {
+      "title": "Mit wem wir Daten teilen",
+      "body": [
+        "Wir geben personenbezogene Daten nur weiter, wenn dies zur Leistungserbringung oder zur Einhaltung des Gesetzes erforderlich ist. Dazu können von Ihnen gewählte Buchungsplattformen, von diesen Plattformen genutzte Zahlungsdienstleister, E-Mail/Kommunikationsanbieter sowie technische Dienstleister gehören, die unsere Website hosten oder schützen.",
+        "Wir verkaufen keine personenbezogenen Daten."
+      ]
+    },
+    "retention": {
+      "title": "Wie lange wir Daten speichern",
+      "body": [
+        "Wir speichern personenbezogene Daten nur so lange, wie es für die oben beschriebenen Zwecke und zur Erfüllung gesetzlicher, buchhalterischer oder Berichtspflichten erforderlich ist.",
+        "Aufbewahrungsfristen können je nach Art des Datensatzes und der jeweiligen gesetzlichen Verpflichtung variieren."
+      ]
+    },
+    "security": {
+      "title": "Wie wir Ihre Daten schützen",
+      "body": [
+        "Wir verwenden angemessene technische und organisatorische Maßnahmen, um personenbezogene Daten vor Verlust, Missbrauch und unbefugtem Zugriff zu schützen.",
+        "Kein System kann zu 100 % sicher sein, aber wir arbeiten kontinuierlich an Verbesserungen der Sicherheit."
+      ]
+    },
+    "yourRights": {
+      "title": "Ihre Rechte",
+      "body": [
+        "Abhängig von Ihrem Standort und dem geltenden Recht haben Sie möglicherweise Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer personenbezogenen Daten sowie auf Widerspruch gegen bestimmte Verarbeitungen.",
+        "Zur Ausübung Ihrer Rechte kontaktieren Sie uns unter {{email}}. Wir müssen möglicherweise Ihre Identität überprüfen."
+      ]
+    },
+    "international": {
+      "title": "Internationale Übermittlungen",
+      "body": [
+        "Einige Dienstleister können Daten außerhalb Ihres Landes verarbeiten. Wo erforderlich, setzen wir geeignete Garantien für internationale Datenübermittlungen ein."
+      ]
+    },
+    "changes": {
+      "title": "Änderungen dieser Richtlinie",
+      "body": [
+        "Wir können diese Datenschutzerklärung gelegentlich aktualisieren. Die aktuellste Version ist die auf dieser Seite veröffentlichte."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Nach oben"
+  }
+}

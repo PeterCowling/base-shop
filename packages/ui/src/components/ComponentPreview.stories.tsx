@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import type { UpgradeComponent } from '@acme/types';
+
 import ComponentPreview from './ComponentPreview';
 
 // Provide a mock component via the global mapping consumed by ComponentPreview

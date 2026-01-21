@@ -1,6 +1,6 @@
 /** @jest-environment jsdom */
-import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
+import { render, screen } from "@testing-library/react";
 
 // Stub UI + i18n wrappers to keep the test lightweight
 jest.mock("@acme/ui/components/layout/Header", () => {

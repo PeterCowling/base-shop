@@ -1,5 +1,7 @@
 import "server-only";
+
 import { type TokenSet } from "openid-client";
+
 export type OidcProfile = {
     issuer: string;
     subject: string;

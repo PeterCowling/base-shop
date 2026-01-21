@@ -2,10 +2,11 @@
    src/components/seo/DealsStructuredData.tsx
    JSON-LD for Summer-2025 −15 % coupon – Google travel carousel
 ---------------------------------------------------------------- */
-import { BASE_URL } from "@/config/site";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { getSlug } from "@/utils/slug";
 import { memo, useMemo } from "react";
+
+import { BASE_URL } from "../../config/site";
+import { useCurrentLanguage } from "../../hooks/useCurrentLanguage";
+import { getSlug } from "../../utils/slug";
 
 function DealsStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();

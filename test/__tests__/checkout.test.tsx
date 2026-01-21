@@ -5,14 +5,14 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 import CheckoutForm from "../../packages/ui/src/components/checkout/CheckoutForm";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import { isoDateInNDays } from "@acme/date-utils";
-import * as sharedUtils from "@acme/shared-utils";
+import * as httpLib from "@acme/lib/http";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
 
-const mockFetchJson = sharedUtils.fetchJson as jest.MockedFunction<
-  typeof sharedUtils.fetchJson
+const mockFetchJson = httpLib.fetchJson as jest.MockedFunction<
+  typeof httpLib.fetchJson
 >;
 
 const mockPush = jest.fn();
@@ -33,11 +33,12 @@ const mockConfirmPayment = jest.fn();
 jest.mock("@stripe/react-stripe-js", () => {
   const React = require("react");
   return {
-    CheckoutProvider: ({ children }: { children: React.ReactNode }) =>
-      React.createElement("div", { "data-cy": "checkout-provider" }, children),
+    Elements: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", { "data-testid": "elements" }, children),
     PaymentElement: () =>
-      React.createElement("div", { "data-cy": "payment-element" }),
-    useCheckout: () => ({ confirm: mockConfirmPayment, canConfirm: true }),
+      React.createElement("div", { "data-testid": "payment-element" }),
+    useStripe: () => ({ confirmPayment: mockConfirmPayment }),
+    useElements: () => ({}),
   };
 });
 
@@ -67,10 +68,10 @@ test("renders Elements once client secret is fetched", async () => {
     </CurrencyProvider>
   );
 
-  expect(screen.getByText(/loading payment form/i)).toBeInTheDocument();
+  expect(screen.getByText(/checkout\.loading/i)).toBeInTheDocument();
 
   expect(await screen.findByTestId("payment-element")).toBeInTheDocument();
-  expect(screen.queryByText(/loading payment form/i)).toBeNull();
+  expect(screen.queryByText(/checkout\.loading/i)).toBeNull();
 });
 
 test("successful payment redirects to success", async () => {
@@ -78,10 +79,7 @@ test("successful payment redirects to success", async () => {
     clientSecret: "cs_test",
     sessionId: "sess",
   } as any);
-  mockConfirmPayment.mockResolvedValue({
-    type: "complete",
-    session: { id: "sess" },
-  });
+  mockConfirmPayment.mockResolvedValue({});
 
   render(
     <CurrencyProvider>
@@ -92,11 +90,10 @@ test("successful payment redirects to success", async () => {
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalled());
-  expect(mockConfirmPayment.mock.calls[0][0]).toEqual({
-    redirect: "if_required",
-    returnUrl: "http://localhost/en/success",
-  });
-  expect(mockPush).toHaveBeenCalledWith("/en/success?orderId=sess&currency=EUR");
+  expect(mockConfirmPayment.mock.calls[0][0].confirmParams.return_url).toBe(
+    "http://localhost/en/success"
+  );
+  expect(mockPush).toHaveBeenCalledWith("/en/success");
 });
 
 test("failed payment redirects to cancelled with error message", async () => {
@@ -104,10 +101,7 @@ test("failed payment redirects to cancelled with error message", async () => {
     clientSecret: "cs_test",
     sessionId: "sess",
   } as any);
-  mockConfirmPayment.mockResolvedValue({
-    type: "error",
-    error: { message: "fail" },
-  });
+  mockConfirmPayment.mockResolvedValue({ error: { message: "fail" } });
 
   const { unmount } = render(
     <CurrencyProvider>
@@ -147,7 +141,7 @@ test("requests new session when return date changes", async () => {
   expect(calls[0].currency).toBe("EUR");
   expect(calls[0].taxRegion).toBe("EU");
 
-  const input = screen.getByLabelText(/return date/i);
+  const input = screen.getByLabelText(/checkout\.return/i);
   fireEvent.change(input, { target: { value: "2025-12-25" } });
 
   await waitFor(() => expect(calls).toHaveLength(2));
@@ -173,7 +167,7 @@ test("only final return date triggers request", async () => {
   );
   await screen.findByTestId("payment-element");
 
-  const input = screen.getByLabelText(/return date/i);
+  const input = screen.getByLabelText(/checkout\.return/i);
   fireEvent.change(input, { target: { value: "2025-12-24" } });
   fireEvent.change(input, { target: { value: "2025-12-25" } });
   fireEvent.change(input, { target: { value: "2025-12-26" } });
@@ -196,7 +190,7 @@ test("default return date is 7 days ahead", async () => {
     </CurrencyProvider>
   );
   await screen.findByTestId("payment-element");
-  const input = screen.getByLabelText(/return date/i) as HTMLInputElement;
+  const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
   expect(input.value).toBe(expected);
 });
 
@@ -210,7 +204,7 @@ test("shows fallback when session request fails", async () => {
   );
 
   expect(
-    await screen.findByText("Failed to load payment form.", undefined, {
+    await screen.findByText(/checkout\.loaderror/i, undefined, {
       timeout: 3000,
     })
   ).toBeInTheDocument();

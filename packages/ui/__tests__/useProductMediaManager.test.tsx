@@ -1,5 +1,6 @@
 import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { useProductMediaManager } from "../src/hooks/useProductMediaManager";
 
 // Mock platform publish locations

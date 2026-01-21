@@ -1,9 +1,10 @@
 // src/components/guides/GuideCollectionFilters.tsx
 import { useId } from "react";
-import { Link, type To } from "react-router-dom";
+import Link from "next/link";
 import clsx from "clsx";
 
 import type { GuideFilterOption } from "./useGuideFilterOptions";
+import { GuideSearchBar } from "./GuideSearchBar";
 
 const FILTER_PANEL_CLASSES = [
   "mt-8",
@@ -100,15 +101,22 @@ export interface GuideCollectionFiltersProps {
   heading: string;
   description?: string;
   label: string;
-  allHref: To;
+  allHref: string;
   clearFilterLabel: string;
   totalCount: number;
   options: readonly GuideFilterOption[];
   activeTag: string;
-  makeHref: (value: string | null) => To;
+  makeHref: (value: string | null) => string;
   // When true, render plain <a href="?…"> links to keep hrefs query‑relative
-  // (React Router <Link> normalises these to "/?…" which breaks tests/expectations)
+  // (next/link handles query-only hrefs fine, but keeping for backwards compat)
   useRelativeAnchors?: boolean;
+  // Search functionality
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
+  searchSuggestions?: string[];
+  isSearching?: boolean;
+  showSearch?: boolean;
+  searchPlaceholder?: string;
 }
 
 export const GuideCollectionFilters = ({
@@ -122,13 +130,19 @@ export const GuideCollectionFilters = ({
   activeTag,
   makeHref,
   useRelativeAnchors = false,
+  searchQuery = "",
+  onSearchChange,
+  searchSuggestions = [],
+  isSearching = false,
+  showSearch = false,
+  searchPlaceholder,
 }: GuideCollectionFiltersProps): JSX.Element => {
   const headingId = useId();
   const descriptionId = useId();
   const hasDescription = Boolean(description);
 
   const renderLink = (
-    to: To,
+    href: string,
     {
       className,
       ariaCurrent,
@@ -141,8 +155,7 @@ export const GuideCollectionFilters = ({
       children: React.ReactNode;
     },
   ) => {
-    const href = typeof to === "string" ? to : undefined;
-    if (useRelativeAnchors && typeof href === "string" && href.startsWith("?")) {
+    if (useRelativeAnchors && href.startsWith("?")) {
       return (
         <a href={href} className={className} aria-current={ariaCurrent} aria-label={ariaLabel}>
           {children}
@@ -150,7 +163,7 @@ export const GuideCollectionFilters = ({
       );
     }
     return (
-      <Link to={to} prefetch="intent" preventScrollReset className={className} aria-current={ariaCurrent} aria-label={ariaLabel}>
+      <Link href={href} prefetch={true} scroll={false} className={className} aria-current={ariaCurrent} aria-label={ariaLabel}>
         {children}
       </Link>
     );
@@ -174,6 +187,15 @@ export const GuideCollectionFilters = ({
             </p>
           ) : null}
         </div>
+        {showSearch && onSearchChange ? (
+          <GuideSearchBar
+            query={searchQuery}
+            onChange={onSearchChange}
+            suggestions={searchSuggestions}
+            isSearching={isSearching}
+            placeholder={searchPlaceholder}
+          />
+        ) : null}
       </div>
       <div className={clsx(FILTER_LINK_WRAP_CLASSES)} aria-label={label}>
         {renderLink(

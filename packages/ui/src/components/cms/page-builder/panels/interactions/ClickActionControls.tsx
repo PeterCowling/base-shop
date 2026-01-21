@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
-import type { InteractionsProps } from "./types";
-import { openSelectOnMouseDown } from "./helpers";
+
 import {
+  Button,
   Input,
   Select,
   SelectContent,
@@ -12,9 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
-  Button,
 } from "../../../../atoms/shadcn";
 import LinkPicker from "../../LinkPicker";
+
+import { openSelectOnMouseDown } from "./helpers";
+import type { InteractionsProps } from "./types";
 
 export default function ClickActionControls({ component, handleInput }: InteractionsProps) {
   const t = useTranslations();

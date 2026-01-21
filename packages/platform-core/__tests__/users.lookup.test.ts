@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { getUserByEmail, getUserById } from "../src/users";
+
 import { prisma } from "../src/db";
+import { getUserByEmail, getUserById } from "../src/users";
 
 type StoreUser = {
   id: string;

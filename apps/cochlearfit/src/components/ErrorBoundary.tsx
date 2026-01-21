@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import Button from "@/components/Button";
 
 type ErrorBoundaryState = {

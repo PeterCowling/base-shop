@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 import { getLayer } from "../utils/layer.js";
 

@@ -1,6 +1,8 @@
-import { describe, it, expect } from "@jest/globals";
-import { withEnv } from "../../../test/utils/withEnv";
+import { describe, expect,it } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../test/utils/withEnv";
+
 import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
 
 async function expectInvalidAuthEnv(

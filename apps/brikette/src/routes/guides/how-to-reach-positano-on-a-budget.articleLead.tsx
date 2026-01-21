@@ -1,12 +1,12 @@
 import TableOfContents from "@/components/guides/TableOfContents";
 
-import { renderGuideLinkTokens, stripGuideLinkTokens } from "./utils/linkTokens";
 import { buildGuideExtras } from "./how-to-reach-positano-on-a-budget.extras";
 import type {
   GuideExtras,
   GuideSeoTemplateContext,
   HowToStepDetail,
 } from "./how-to-reach-positano-on-a-budget.types";
+import { renderGuideLinkTokens, stripGuideLinkTokens } from "./utils/linkTokens";
 
 export function renderArticleLead(
   context: GuideSeoTemplateContext,

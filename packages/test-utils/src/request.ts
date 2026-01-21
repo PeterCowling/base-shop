@@ -1,10 +1,12 @@
+import type { NextRequest } from "next/server";
+
 export type JsonRequestInit = RequestInit & { url?: string };
 
 /**
  * Build a standard WHATWG Request with a JSON body and proper headers.
  * Defaults to POST and `http://localhost` unless overridden.
  */
-export function jsonRequest(body: unknown, init: JsonRequestInit = {}): Request {
+export function jsonRequest(body: unknown, init: JsonRequestInit = {}): NextRequest {
   const url = init.url || "http://localhost";
   const method = init.method || "POST";
   const headers = new Headers(init.headers);
@@ -14,7 +16,7 @@ export function jsonRequest(body: unknown, init: JsonRequestInit = {}): Request 
     method,
     headers,
     body: JSON.stringify(body),
-  });
+  }) as unknown as NextRequest;
 }
 
 /**
@@ -31,7 +33,7 @@ type NextJsonRequestStub<T> = {
 export function asNextJson<T extends object>(
   body: T,
   options: { cookies?: Record<string, string>; url?: string; headers?: Record<string, string> } = {}
-): NextJsonRequestStub<T> {
+): NextRequest {
   const url = options.url || "http://localhost";
   const headersLower: Record<string, string> = {};
   for (const [k, v] of Object.entries(options.headers || {})) {
@@ -51,5 +53,5 @@ export function asNextJson<T extends object>(
     },
     nextUrl,
   } satisfies NextJsonRequestStub<T>;
-  return request;
+  return request as unknown as NextRequest;
 }

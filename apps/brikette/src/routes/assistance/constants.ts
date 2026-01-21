@@ -1,4 +1,4 @@
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
+import { type HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
 
 export type HelpArticleKey = (typeof HELP_ARTICLE_KEYS)[number];
 

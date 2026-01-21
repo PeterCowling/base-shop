@@ -1,9 +1,9 @@
 // packages/ui/src/utils/__tests__/colorUtils.test.ts
 /* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
-/* eslint-disable ds/no-raw-color -- TEST-0001: hex literals are required inputs/outputs for color utils tests */
+ 
 import {
-  HEX_RE,
   getContrastColor,
+  HEX_RE,
   hexToHsl,
   hexToRgb,
   hslToHex,

@@ -1,6 +1,7 @@
 // apps/cms/src/app/api/page-templates/[name]/route.ts
 
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
+
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { corePageTemplates } from "@acme/templates";
 

@@ -1,11 +1,11 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import {
-  schema,
-  renderBlock,
-  previewComponents,
-} from "@cms/app/cms/blog/posts/schema";
 import { InvalidProductContext } from "@cms/app/cms/blog/posts/invalidProductContext";
+import {
+  previewComponents,
+  renderBlock,
+  schema,
+} from "@cms/app/cms/blog/posts/schema";
+import { render } from "@testing-library/react";
 
 jest.mock("@acme/ui", () => ({ Button: ({ children }: any) => <button>{children}</button> }));
 jest.mock("@portabletext/editor", () => ({
@@ -23,7 +23,7 @@ jest.mock("@cms/app/cms/blog/posts/ProductPreview", () => ({
 
 describe("schema", () => {
   it("includes productReference block", () => {
-    const block = (schema.blockObjects as any[]).find(
+    const block = (schema.blockObjects as unknown as any[]).find(
       (b) => b.name === "productReference",
     );
     expect(block).toBeTruthy();

@@ -1,21 +1,22 @@
 // src/routes/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette.tsx
-import { makeHowToGuidePage } from "./makeHowToGuidePage";
-import type { MetaFunction, LinksFunction } from "react-router";
+import type { LinksFunction,MetaFunction } from "react-router";
+
 import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
-import * as breadcrumb from "./chiesaNuovaArrivals/breadcrumb";
 import * as articleLead from "./chiesaNuovaArrivals/articleLead";
-import * as guideFaqFallback from "./chiesaNuovaArrivals/guideFaqFallback";
-import * as guideExtras from "./chiesaNuovaArrivals/guideExtras";
+import * as breadcrumb from "./chiesaNuovaArrivals/breadcrumb";
 import * as constants from "./chiesaNuovaArrivals/constants";
-import * as selectors from "./chiesaNuovaArrivals/selectors";
+import * as guideExtras from "./chiesaNuovaArrivals/guideExtras";
+import * as guideFaqFallback from "./chiesaNuovaArrivals/guideFaqFallback";
 import * as loader from "./chiesaNuovaArrivals/loader";
+import * as selectors from "./chiesaNuovaArrivals/selectors";
+import { makeHowToGuidePage } from "./makeHowToGuidePage";
 
 const { component: ChiesaNuovaArrivals, loader: clientLoader } = makeHowToGuidePage({
   modules: {

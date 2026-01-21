@@ -1,17 +1,17 @@
 // src/routes/guides/ischia-and-procida-guide.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["ischia", "procida", "day-trip", "naples", "ferry"] };
 
@@ -108,4 +108,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
-import * as path from "path";
 import * as os from "os";
+import * as path from "path";
 
 jest.setTimeout(10000);
 
@@ -32,7 +32,7 @@ describe("public tracking functions", () => {
   });
 
   test("trackEvent adds timestamp and delegates to provider", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(logSpy).toHaveBeenCalledWith(
@@ -47,7 +47,7 @@ describe("public tracking functions", () => {
   });
 
   test("trackPageView wraps trackEvent", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackPageView } = await import("../index");
     await trackPageView(shop, "home");
     expect(logSpy).toHaveBeenCalledWith(
@@ -83,7 +83,7 @@ describe("public tracking functions", () => {
   });
 
   test("trackOrder wraps trackEvent", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackOrder } = await import("../index");
     await trackOrder(shop, "o1", 42);
     expect(logSpy).toHaveBeenCalledWith(

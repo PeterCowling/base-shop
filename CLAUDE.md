@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-20
 ---
 
 # Claude Coding Assistant Guide
@@ -142,8 +142,10 @@ pnpm --filter @acme/platform-core exec prisma db seed
 ## Workflow Prompts
 
 For structured workflows, use:
-- `.claude/prompts/plan-feature.md` — Planning mode
-- `.claude/prompts/build-feature.md` — Building mode
+- `.agents/skills/workflows/plan-feature.md` — Planning mode
+- `.agents/skills/workflows/build-feature.md` — Building mode
+
+For the full skill system, see `.agents/README.md` and `.agents/skills/manifest.yaml`.
 
 ## Quick Reference
 

@@ -89,38 +89,6 @@
     "empty": "{{tag}} 관련 체험 가이드는 아직 없습니다. 다른 태그를 선택하거나 필터를 제거하세요.",
     "clearFilter": "모든 체험 가이드 보기",
     "cardCta": "“{{guideTitle}}” 체험 가이드를 살펴보세요",
-    "directionsLabel": "길 안내",
-    "directionLinks": {
-      "capriDayTrip": {
-        "positanoCapriFerry": "포지타노 → 카프리 페리",
-        "capriPositanoFerry": "카프리 → 포지타노 페리"
-      },
-      "positanoAmalfi": {
-        "positanoAmalfiBus": "포지타노 → 아말피 버스",
-        "amalfiPositanoBus": "아말피 → 포지타노 버스",
-        "positanoAmalfiFerry": "포지타노 → 아말피 페리 (계절 운항)",
-        "amalfiPositanoFerry": "아말피 → 포지타노 페리 (계절 운항)"
-      },
-      "positanoRavello": {
-        "positanoRavelloBus": "포지타노 → 라벨로 버스",
-        "ravelloPositanoBus": "라벨로 → 포지타노 버스",
-        "positanoRavelloFerryBus": "포지타노 → 라벨로 페리 + 버스"
-      },
-      "naplesPositano": {
-        "naplesCenterTrainBus": "나폴리 중심부 → 포지타노 (기차 + 버스)",
-        "naplesCenterPositanoFerry": "나폴리 중심부 → 포지타노 페리",
-        "naplesAirportPositanoBus": "나폴리 공항 → 포지타노 버스",
-        "positanoNaplesCenterBusTrain": "포지타노 → 나폴리 중심부 (버스 + 기차)",
-        "positanoNaplesCenterFerry": "포지타노 → 나폴리 페리",
-        "positanoNaplesAirportBus": "포지타노 → 나폴리 공항 버스"
-      },
-      "salernoPositano": {
-        "salernoPositanoBus": "살레르노 → 포지타노 버스",
-        "salernoPositanoFerry": "살레르노 → 포지타노 페리 (계절 운항)",
-        "positanoSalernoBus": "포지타노 → 살레르노 버스",
-        "positanoSalernoFerry": "포지타노 → 살레르노 페리 (계절 운항)"
-      }
-    },
     "filterHeading": "체험 가이드 필터",
     "filterDescription": "태그를 선택해 강조할 체험을 좁혀보세요.",
     "grouped": {

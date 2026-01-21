@@ -1,7 +1,8 @@
 "use client";
 
-import ShopChooser from "@/components/cms/ShopChooser";
 import { useTranslations } from "@acme/i18n/Translations";
+
+import ShopChooser from "@/components/cms/ShopChooser";
 
 export default function ThemesShopChooser({ shops }: { shops: string[] }) {
   const t = useTranslations();

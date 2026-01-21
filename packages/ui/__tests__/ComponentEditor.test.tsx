@@ -1,8 +1,10 @@
-import { render, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render } from "@testing-library/react";
+
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
-import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
+
+import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 
 const handleInput = jest.fn();
 jest.mock("../src/components/cms/page-builder/useComponentInputs", () => ({
@@ -147,7 +149,7 @@ describe("ComponentEditor", () => {
     );
 
     fireEvent.click(getByText("Style"));
-    // eslint-disable-next-line ds/no-raw-color -- simulating user change to a hex value
+     
     fireEvent.change(getByLabelText("Foreground"), { target: { value: "#fff" } });
     expect(handleInput).toHaveBeenCalledWith("styles", expect.any(String));
 

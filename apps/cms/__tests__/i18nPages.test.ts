@@ -4,10 +4,11 @@
 // -------------------------------------------------------
 
 import React, { Children, isValidElement } from "react";
-import { TranslationsProvider } from "@acme/i18n/Translations";
 
 // Static imports because Next 12-15 can handle literal “[lang]” folders.
 import { LOCALES } from "@acme/i18n";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+
 import generateStaticParams from "../src/app/[lang]/generateStaticParams";
 import LocaleLayout from "../src/app/[lang]/layout";
 
@@ -36,8 +37,8 @@ describe("i18n helpers", () => {
     // Ensure our child is somewhere in the tree
     const hasChild = (node: React.ReactNode): boolean =>
       isValidElement(node)
-        ? node.props.id === "c" ||
-          Children.toArray(node.props.children).some(hasChild)
+        ? (node.props as { id?: string }).id === "c" ||
+          Children.toArray((node.props as { children?: React.ReactNode }).children).some(hasChild)
         : false;
 
     expect(hasChild(tree)).toBe(true);

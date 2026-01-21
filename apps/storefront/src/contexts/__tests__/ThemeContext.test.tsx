@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
-import { ThemeProvider, useTheme } from "../../../../../packages/platform-core/src/contexts/ThemeContext";
+
+import { ThemeProvider, useTheme } from "@acme/platform-core/contexts/ThemeContext";
 
 function Toggle() {
   const { theme, setTheme } = useTheme();

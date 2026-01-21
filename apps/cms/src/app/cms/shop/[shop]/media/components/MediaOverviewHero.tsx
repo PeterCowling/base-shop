@@ -1,14 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback } from "react";
-import type { MediaItem } from "@acme/types";
-import {
-  Button,
-  Card,
-  CardContent,
-  Progress,
-} from "@/components/atoms/shadcn";
+import Image from "next/image";
 import {
   ClockIcon,
   ImageIcon,
@@ -16,8 +9,17 @@ import {
   UploadIcon,
   VideoIcon,
 } from "@radix-ui/react-icons";
-import { Inline } from "@acme/ui/components/atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+import { Inline } from "@acme/ui/components/atoms/primitives";
+
+import {
+  Button,
+  Card,
+  CardContent,
+  Progress,
+} from "@/components/atoms/shadcn";
 
 interface MediaOverviewHeroProps {
   shop: string;

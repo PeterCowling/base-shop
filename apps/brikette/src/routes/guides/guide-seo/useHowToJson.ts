@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 
 import type { AppLanguage } from "@/i18n.config";
+import { buildHowToPayload } from "@/utils/seo/jsonld";
 
 import type { GuideSeoTemplateContext, HowToStep } from "./types";
-import { buildHowToPayload } from "@/utils/seo/jsonld";
 
 function isHowToObjectPayload(value: unknown): value is {
   steps?: readonly HowToStep[] | null;

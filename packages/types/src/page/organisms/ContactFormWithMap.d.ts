@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ContactFormWithMapComponent extends PageComponentBase {
     type: "ContactFormWithMap";
     mapSrc?: string;

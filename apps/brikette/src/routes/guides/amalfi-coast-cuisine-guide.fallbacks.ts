@@ -37,14 +37,17 @@ export function buildEnglishFallbacks(translator: TFunction<"guides">): EnglishF
       returnObjects: true,
       defaultValue: [],
     }),
-  ).map((item) => ({
-    ...(typeof item?.alt === "string" && item.alt.trim().length > 0
-      ? { alt: item.alt.trim() }
-      : {}),
-    ...(typeof item?.caption === "string" && item.caption.trim().length > 0
-      ? { caption: item.caption.trim() }
-      : {}),
-  }));
+  ).map((item) => {
+    const altText =
+      typeof item?.alt === "string" && item.alt.trim().length > 0
+        ? item.alt.trim()
+        : undefined;
+    const captionText =
+      typeof item?.caption === "string" && item.caption.trim().length > 0
+        ? item.caption.trim()
+        : undefined;
+    return { alt: altText, caption: captionText };
+  });
 
   const fallbackItemListTitle = translator("content.cuisineAmalfiGuide.itemListTitle", {
     defaultValue: "",

@@ -1,10 +1,10 @@
 import {
-  parseISO,
   format,
-  fromZonedTime,
-  startOfDay,
-  parseDate,
   formatDate,
+  fromZonedTime,
+  parseDate,
+  parseISO,
+  startOfDay,
 } from "../index";
 
 describe("parseISO and format", () => {

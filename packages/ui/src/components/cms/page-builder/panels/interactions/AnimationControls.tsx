@@ -1,9 +1,7 @@
 "use client";
 
 import { useTranslations } from "@acme/i18n";
-import type { InteractionsProps } from "./types";
-import { openSelectOnMouseDown } from "./helpers";
-import { easingPresets } from "../EasingPresets";
+
 import {
   Input,
   Select,
@@ -12,6 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../atoms/shadcn";
+import { easingPresets } from "../EasingPresets";
+
+import { openSelectOnMouseDown } from "./helpers";
+import type { InteractionsProps } from "./types";
 
 export default function AnimationControls({ component, handleInput }: InteractionsProps) {
   const t = useTranslations();

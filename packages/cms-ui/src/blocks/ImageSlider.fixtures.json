@@ -1,0 +1,9 @@
+{
+  "slides": [
+    { "src": "/images/hero1.jpg", "alt": "Hero 1", "caption": "Summer" },
+    { "src": "/images/hero2.jpg", "alt": "Hero 2", "caption": "Winter" }
+  ],
+  "openInLightbox": false,
+  "locale": "en"
+}
+

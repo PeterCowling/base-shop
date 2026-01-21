@@ -1,35 +1,36 @@
+import absoluteParentGuard from "./rules/absolute-parent-guard.js";
+import containerWidthsOnlyAt from "./rules/container-widths-only-at.js";
+import enforceFocusRingToken from "./rules/enforce-focus-ring-token.js";
+import enforceLayoutPrimitives from "./rules/enforce-layout-primitives.js";
+import forbidFixedHeightsOnText from "./rules/forbid-fixed-heights-on-text.js";
+import iconButtonSize from "./rules/icon-button-size.js";
+import minTapSize from "./rules/min-tap-size.js";
+import noArbitraryTailwind from "./rules/no-arbitrary-tailwind.js";
+import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
+import noHeroPrimaryForeground from "./rules/no-hero-primary-foreground.js";
+import noHslVarInTests from "./rules/no-hsl-var-in-tests.js";
+import noImportant from "./rules/no-important.js";
+import noMarginsOnAtoms from "./rules/no-margins-on-atoms.js";
+import noMisusedSrOnly from "./rules/no-misused-sr-only.js";
+import noNakedImg from "./rules/no-naked-img.js";
+import noNegativeMargins from "./rules/no-negative-margins.js";
+import noNonlayeredZindex from "./rules/no-nonlayered-zindex.js";
+import noOverflowHazards from "./rules/no-overflow-hazards.js";
+import noPhysicalDirectionClassesInRtl from "./rules/no-physical-direction-classes-in-rtl.js";
 import noRawColor from "./rules/no-raw-color.js";
 import noRawFont from "./rules/no-raw-font.js";
-import noRawTailwindColor from "./rules/no-raw-tailwind-color.js";
-import noHslVarInTests from "./rules/no-hsl-var-in-tests.js";
-import noHeroPrimaryForeground from "./rules/no-hero-primary-foreground.js";
-import iconButtonSize from "./rules/icon-button-size.js";
-import noRawSpacing from "./rules/no-raw-spacing.js";
-import noRawTypography from "./rules/no-raw-typography.js";
 import noRawRadius from "./rules/no-raw-radius.js";
 import noRawShadow from "./rules/no-raw-shadow.js";
+import noRawSpacing from "./rules/no-raw-spacing.js";
+import noRawTailwindColor from "./rules/no-raw-tailwind-color.js";
+import noRawTypography from "./rules/no-raw-typography.js";
 import noRawZindex from "./rules/no-raw-zindex.js";
-import noArbitraryTailwind from "./rules/no-arbitrary-tailwind.js";
-import noImportant from "./rules/no-important.js";
-import noNegativeMargins from "./rules/no-negative-margins.js";
-import noMarginsOnAtoms from "./rules/no-margins-on-atoms.js";
-import enforceLayoutPrimitives from "./rules/enforce-layout-primitives.js";
-import containerWidthsOnlyAt from "./rules/container-widths-only-at.js";
-import requireMinW0InFlex from "./rules/require-min-w-0-in-flex.js";
-import forbidFixedHeightsOnText from "./rules/forbid-fixed-heights-on-text.js";
-import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
-import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
-import noPhysicalDirectionClassesInRtl from "./rules/no-physical-direction-classes-in-rtl.js";
-import enforceFocusRingToken from "./rules/enforce-focus-ring-token.js";
-import minTapSize from "./rules/min-tap-size.js";
-import noMisusedSrOnly from "./rules/no-misused-sr-only.js";
-import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
-import noNakedImg from "./rules/no-naked-img.js";
-import noOverflowHazards from "./rules/no-overflow-hazards.js";
-import absoluteParentGuard from "./rules/absolute-parent-guard.js";
-import noNonlayeredZindex from "./rules/no-nonlayered-zindex.js";
 import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
+import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
+import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
 import requireDisableJustification from "./rules/require-disable-justification.js";
+import requireMinW0InFlex from "./rules/require-min-w-0-in-flex.js";
+import requireSectionPadding from "./rules/require-section-padding.js";
 
 export const rules = {
   "no-raw-color": noRawColor,
@@ -64,6 +65,7 @@ export const rules = {
   "no-nonlayered-zindex": noNonlayeredZindex,
   "no-unsafe-viewport-units": noUnsafeViewportUnits,
   "require-disable-justification": requireDisableJustification,
+  "require-section-padding": requireSectionPadding,
 };
 
 const plugin = { rules };

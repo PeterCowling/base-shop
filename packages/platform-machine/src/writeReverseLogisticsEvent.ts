@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
-import type { ReverseLogisticsEventName } from "@acme/types";
-import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { randomUUID } from "crypto";
 import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
-import { randomUUID } from "crypto";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import type { ReverseLogisticsEventName } from "@acme/types";
 
 const DATA_ROOT = resolveDataRoot();
 

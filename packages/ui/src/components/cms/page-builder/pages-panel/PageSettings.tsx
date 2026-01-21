@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Input, Textarea, Checkbox, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../../atoms/shadcn";
-import { Sidebar } from "../../../atoms/primitives/Sidebar";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import type { PageItem } from "./types";
+
+import { Sidebar } from "../../../atoms/primitives/Sidebar";
+import { Checkbox, Input, Select, SelectContent, SelectItem,SelectTrigger, SelectValue, Textarea } from "../../../atoms/shadcn";
 import useLocalStrings from "../hooks/useLocalStrings";
+
+import type { PageItem } from "./types";
 
 export function PageSettings({ selected, updateSelected }: { selected: PageItem | null; updateSelected: (patch: Partial<PageItem>) => void }) {
   const t = useLocalStrings();

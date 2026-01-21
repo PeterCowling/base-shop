@@ -1,4 +1,6 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import InventoryForm from "../src/app/cms/shop/[shop]/data/inventory/InventoryForm";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -44,8 +46,6 @@ jest.mock("@acme/platform-core/types/inventory", () => {
     .strict();
   return { inventoryItemSchema };
 });
-
-import InventoryForm from "../src/app/cms/shop/[shop]/data/inventory/InventoryForm";
 
 describe("InventoryForm integration", () => {
   beforeEach(() => {

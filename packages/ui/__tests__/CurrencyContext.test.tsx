@@ -1,4 +1,5 @@
 import { configure, fireEvent, render, screen } from "@testing-library/react";
+
 import { CurrencyProvider, useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 // React 19 requires this flag for `act` to suppress environment warnings

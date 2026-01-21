@@ -1,24 +1,26 @@
 /* src/routes/bar-menu.tsx
    Internal page for the public bar menu. Content summary + link to full menu. */
-import { formatBarMenuPrice, type BarMenuItemKey } from "@/data/menuPricing";
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { buildBarMenuStructuredData } from "@/routes/bar-menu/jsonld";
-import { MenuRow } from "@/routes/bar-menu/_menu-row";
-import { Section } from "@acme/ui/atoms/Section";
-import { createBarMenuStrings, fallbackLang } from "@/routes/bar-menu/strings";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { OG_IMAGE } from "@/utils/headConstants";
 import { Fragment, memo, useMemo } from "react";
-import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { useTranslation } from "react-i18next";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import { Section } from "@acme/ui/atoms/Section";
+
+import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
+import { BASE_URL } from "@/config/site";
+import { type BarMenuItemKey,formatBarMenuPrice } from "@/data/menuPricing";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { MenuRow } from "@/routes/bar-menu/_menu-row";
+import { buildBarMenuStructuredData } from "@/routes/bar-menu/jsonld";
+import { createBarMenuStrings, fallbackLang } from "@/routes/bar-menu/strings";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
 export { clientLoader } from "@/routes/bar-menu/loader";

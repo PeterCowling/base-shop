@@ -1,23 +1,25 @@
 // apps/cms/src/app/cms/blog/posts/PostForm.client.tsx
 "use client";
 
+import { useEffect,useState } from "react";
 import { useFormState } from "react-dom";
-import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Input, Switch, Textarea, Toast } from "@acme/ui/components/atoms";
-import { slugify } from "@acme/shared-utils";
 import { PortableText } from "@portabletext/react";
+
 import { useTranslations } from "@acme/i18n";
-import {
-  previewComponents,
-  type PortableTextBlock,
-} from "./schema";
+import { slugify } from "@acme/lib/string";
+import { Button, Input, Switch, Textarea, Toast } from "@acme/ui/components/atoms";
+
 import {
   InvalidProductProvider,
   useInvalidProductContext,
 } from "./invalidProductContext";
 import MainImageField from "./MainImageField";
 import RichTextEditor from "./RichTextEditor";
+import {
+  type PortableTextBlock,
+  previewComponents,
+} from "./schema";
 
 export interface FormState {
   message?: string;
@@ -123,7 +125,7 @@ function PostFormContent({ action, submitLabel, post }: Props) {
             <Switch
               id="edit-slug"
               checked={editSlug}
-              onChange={(e) => setEditSlug(e.target.checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditSlug(e.target.checked)}
             />
             <label htmlFor="edit-slug">{t("cms.blog.postForm.editSlug")}</label>
           </div>

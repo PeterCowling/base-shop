@@ -1,22 +1,6 @@
-import type { CartState } from "@/types/cart";
-import type { Product, ProductColor } from "@/types/product";
-import { clampQuantity, MAX_QTY, MIN_QTY } from "@/lib/quantity";
-import {
-  DEFAULT_LOCALE,
-  LOCALES,
-  getLocaleFromPath,
-  isLocale,
-  resolveLocale,
-  toIntlLocale,
-} from "@/lib/locales";
-import {
-  getCanonicalPath,
-  replaceLocaleInPath,
-  stripLocale,
-  withLocale,
-} from "@/lib/routes";
-import { createTranslator, loadMessages } from "@/lib/messages";
-import { formatPrice } from "@/lib/pricing";
+import { HttpResponse } from "msw";
+
+import { getCartLineItems, getCartTotals } from "@/lib/cart";
 import {
   getAvailableColors,
   getAvailableSizes,
@@ -27,11 +11,29 @@ import {
   getVariantById,
   getVariantBySelection,
 } from "@/lib/catalog";
-import { getCartLineItems, getCartTotals } from "@/lib/cart";
-import { buildMetadata } from "@/lib/seo";
-import { getPreferredLocale, setPreferredLocale } from "@/lib/localePreference";
 import { createCheckoutSession, fetchCheckoutSession } from "@/lib/checkout";
-import { HttpResponse } from "msw";
+import { getPreferredLocale, setPreferredLocale } from "@/lib/localePreference";
+import {
+  DEFAULT_LOCALE,
+  getLocaleFromPath,
+  isLocale,
+  LOCALES,
+  resolveLocale,
+  toIntlLocale,
+} from "@/lib/locales";
+import { createTranslator, loadMessages } from "@/lib/messages";
+import { formatPrice } from "@/lib/pricing";
+import { clampQuantity, MAX_QTY, MIN_QTY } from "@/lib/quantity";
+import {
+  getCanonicalPath,
+  replaceLocaleInPath,
+  stripLocale,
+  withLocale,
+} from "@/lib/routes";
+import { buildMetadata } from "@/lib/seo";
+import type { CartState } from "@/types/cart";
+import type { Product, ProductColor } from "@/types/product";
+
 import { rest, server } from "~test/msw/server";
 
 describe("locales", () => {

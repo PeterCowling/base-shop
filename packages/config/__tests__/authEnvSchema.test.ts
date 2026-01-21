@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
+
 import { authEnvSchema } from "../src/env/auth";
 
 const parse = (env: Record<string, any>) => authEnvSchema.safeParse(env);

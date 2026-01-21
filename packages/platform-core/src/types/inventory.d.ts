@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { type z } from "zod";
+
 export declare const variantAttributesSchema: z.ZodRecord<z.ZodString, z.ZodString>;
 export declare const inventoryItemSchema: z.ZodObject<{
     sku: z.ZodString;

@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import RevokeSessionButton from "../RevokeSessionButton";
 
 const refresh = jest.fn();
@@ -26,7 +27,7 @@ describe("RevokeSessionButton", () => {
     let resolve: (value: { success: boolean }) => void;
     const revoke = jest
       .fn()
-      .mockReturnValue(new Promise((res) => (resolve = res)));
+      .mockReturnValue(new Promise((r) => (resolve = r)));
 
     render(<RevokeSessionButton sessionId="123" revoke={revoke} />);
 
@@ -46,7 +47,7 @@ describe("RevokeSessionButton", () => {
     let resolve: (value: { success: boolean; error: string }) => void;
     const revoke = jest
       .fn()
-      .mockReturnValue(new Promise((res) => (resolve = res)));
+      .mockReturnValue(new Promise((r) => (resolve = r)));
 
     render(<RevokeSessionButton sessionId="123" revoke={revoke} />);
 

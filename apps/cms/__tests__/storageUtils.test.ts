@@ -2,8 +2,8 @@
 /* eslint-env jest */
 
 import {
-  STORAGE_KEY,
   resetConfiguratorProgress,
+  STORAGE_KEY,
 } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
 describe("storageUtils", () => {

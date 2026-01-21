@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/Footer.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import Footer from './Footer';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import Footer from './Footer';
 
 const meta: Meta<typeof Footer> = {
   title: 'Organisms/Footer/Matrix',

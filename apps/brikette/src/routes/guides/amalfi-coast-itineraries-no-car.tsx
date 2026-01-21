@@ -1,30 +1,30 @@
 // src/routes/guides/amalfi-coast-itineraries-no-car.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
+import type { LinksFunction, MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { TFunction } from "i18next";
+
+import TableOfContents from "@/components/guides/TableOfContents";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type { GuideSeoTemplateContext, HowToStep } from "./guide-seo/types";
 import { normalizeFaqFallback } from "./guide-seo/seo/jsonld";
-
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import TableOfContents from "@/components/guides/TableOfContents";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import type { LinksFunction, MetaFunction } from "react-router";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import type { GuideSeoTemplateContext, HowToStep } from "./guide-seo/types";
 
 export const handle = { tags: ["itinerary", "amalfi", "pillar"] };
 

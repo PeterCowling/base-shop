@@ -107,19 +107,8 @@ export async function loadGuidesModuleOverridesFromFs(): Promise<ModuleOverrides
 // logic from the async loader but uses sync FS calls only.
 export function loadGuidesModuleOverridesFromFsSync(): ModuleOverrides | undefined {
   if (!isNodeRuntime()) return undefined;
-  // Guard against ESM contexts where `require` is unavailable. In those
-  // environments, skip the sync pass and let the async loader warm caches.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-000: ESM-to-CJS bridge for Node require in tests [ttl=2026-12-31]
-  if (typeof (globalThis as any).require !== "function") {
-    return undefined;
-  }
 
-  // Use require to access Node built-ins from ESM context without top-level await.
-  // Avoid referencing an undeclared `require` identifier in ESM by reading from globalThis.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-000: ESM-to-CJS bridge for Node require in tests [ttl=2026-12-31]
-  const req = (globalThis as any).require as (id: string) => unknown;
-  const { createRequire: createRequireFn } = req("module") as unknown as typeof import("module");
-  const nodeRequire = createRequireFn(import.meta.url);
+  const nodeRequire = createRequire(import.meta.url);
   const fs = nodeRequire("fs") as typeof import("fs");
   const path = nodeRequire("path") as typeof import("path");
   const { fileURLToPath } = nodeRequire("url") as typeof import("url");

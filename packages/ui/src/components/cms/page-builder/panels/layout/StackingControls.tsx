@@ -1,12 +1,14 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/StackingControls.tsx
 "use client";
 
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
 import { Tooltip } from "../../../../atoms";
 import { Grid } from "../../../../atoms/primitives/Grid";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
 import type { EditorContextProps, EditorFlags } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 interface Props extends EditorContextProps {
   component: PageComponent;

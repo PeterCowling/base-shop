@@ -1,8 +1,8 @@
-export { getPosts } from "./posts/list";
-export { getPost } from "./posts/get";
 export { createPost } from "./posts/create";
-export { updatePost } from "./posts/update";
+export { deletePost } from "./posts/delete";
+export { getPost } from "./posts/get";
+export { getPosts } from "./posts/list";
 export { publishPost } from "./posts/publish";
 export { unpublishPost } from "./posts/unpublish";
-export { deletePost } from "./posts/delete";
+export { updatePost } from "./posts/update";
 export type { SanityPost } from "@acme/platform-core/repositories/blog.server";

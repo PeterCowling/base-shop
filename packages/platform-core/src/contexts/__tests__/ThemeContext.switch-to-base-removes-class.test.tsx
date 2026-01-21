@@ -1,6 +1,8 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
+
 import { ThemeProvider, useTheme } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: switching to base removes class and sets light scheme", () => {

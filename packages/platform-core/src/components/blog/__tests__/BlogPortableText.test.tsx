@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import { BlogPortableText } from "../BlogPortableText";
 
 // Mock ProductCard to a simple component for deterministic DOM

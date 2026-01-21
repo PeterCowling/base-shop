@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
-import { WishlistTemplate, type WishlistItem } from "./WishlistTemplate";
+
+import { type WishlistItem,WishlistTemplate } from "./WishlistTemplate";
 
 const items: WishlistItem[] = [
   {

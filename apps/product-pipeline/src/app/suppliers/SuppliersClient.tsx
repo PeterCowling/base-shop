@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import SupplierCreateCard from "./SupplierCreateCard";
-import SupplierTermsCard from "./SupplierTermsCard";
 import SuppliersList from "./SuppliersList";
+import SupplierTermsCard from "./SupplierTermsCard";
 import type { SupplierOption, SuppliersStrings, SupplierSummary } from "./types";
 
 export default function SuppliersClient({

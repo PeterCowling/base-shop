@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/returns/page.tsx
-import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
+import { getSettings } from "@cms/actions/shops.server";
 
 const ReturnsEditor = dynamic(() => import("./ReturnsEditor"));
 void ReturnsEditor;

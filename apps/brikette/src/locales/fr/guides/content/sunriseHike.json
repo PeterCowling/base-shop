@@ -78,15 +78,15 @@
     "title": "Images",
     "items": [
       {
-        "alt": "QR code to share the guide",
+        "alt": "Code QR pour partager le guide",
         "caption": "Scanner pour partager"
       },
       {
-        "alt": "House at the top of the initial climb",
+        "alt": "Maison au sommet de la première montée",
         "caption": "Maison en haut de l'escalier"
       },
       {
-        "alt": "Viewpoint over Positano at sunrise",
+        "alt": "Point de vue sur Positano au lever du soleil",
         "caption": "Point de vue avec lever de soleil sur Positano"
       }
     ]

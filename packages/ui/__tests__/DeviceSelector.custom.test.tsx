@@ -1,7 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import DeviceSelector from "../src/components/DeviceSelector";
-import { CUSTOM_DEVICES_KEY, getLegacyPreset, devicePresets } from "../src/utils/devicePresets";
+import { CUSTOM_DEVICES_KEY, devicePresets,getLegacyPreset } from "../src/utils/devicePresets";
 
 jest.mock("../src/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,

@@ -1,4 +1,5 @@
 import type { SubscriptionUsage } from "@acme/types";
+
 type SubscriptionUsageWhere = Partial<SubscriptionUsage>;
 interface UpsertArgs {
     where: SubscriptionUsageWhere;

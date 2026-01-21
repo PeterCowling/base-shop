@@ -1,3 +1,4 @@
+import { getCsrfToken } from "@acme/lib/security";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 
 export interface UploadParams {
@@ -29,8 +30,10 @@ export async function uploadToCms({ shop, requiredOrientation, file, altText, ta
   }
 
   try {
-    const res = await fetch(`/cms/api/media?shop=${shop}&orientation=${requiredOrientation}`, {
+    const csrfToken = getCsrfToken();
+    const res = await fetch(`/api/media?shop=${shop}&orientation=${requiredOrientation}`, {
       method: "POST",
+      headers: csrfToken ? { "x-csrf-token": csrfToken } : undefined,
       body: fd,
     });
     const data = await res.json();

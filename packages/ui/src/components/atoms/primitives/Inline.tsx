@@ -1,6 +1,8 @@
 // packages/ui/src/components/atoms/primitives/Inline.tsx
-import { cn } from "../../../utils/style/cn";
 import * as React from "react";
+
+import { cn } from "../../../utils/style/cn";
+
 import { Slot } from "./slot";
 
 type Props = React.ComponentPropsWithoutRef<"div"> & {

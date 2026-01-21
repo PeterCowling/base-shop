@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, jest,test } from "@jest/globals";
 
-const getShopById = jest.fn();
-const getSanityConfig = jest.fn();
+import { collectProductSlugs, filterExistingProductSlugs,getConfig } from "../config";
+
+const getShopById = jest.fn<any, any[]>();
+const getSanityConfig = jest.fn<any, any[]>();
 
 jest.mock("@acme/platform-core/repositories/shop.server", () => ({ getShopById }));
 jest.mock("@acme/platform-core/shops", () => ({ getSanityConfig }));
-
-import { getConfig, collectProductSlugs, filterExistingProductSlugs } from "../config";
 
 describe("blog config service", () => {
   beforeEach(() => {
@@ -55,14 +55,14 @@ describe("blog config service", () => {
     });
 
     test("returns [] on non-ok response", async () => {
-      global.fetch = jest.fn().mockResolvedValue({ ok: false }) as any;
+      global.fetch = jest.fn<any, any[]>().mockResolvedValue({ ok: false }) as any;
       await expect(
         filterExistingProductSlugs("shop", ["a"]),
       ).resolves.toEqual([]);
     });
 
     test("returns original slugs when JSON is not an array", async () => {
-      global.fetch = jest.fn().mockResolvedValue({
+      global.fetch = jest.fn<any, any[]>().mockResolvedValue({
         ok: true,
         json: async () => ({ not: "array" }),
       }) as any;
@@ -72,7 +72,7 @@ describe("blog config service", () => {
     });
 
     test("returns filtered slugs", async () => {
-      global.fetch = jest.fn().mockResolvedValue({
+      global.fetch = jest.fn<any, any[]>().mockResolvedValue({
         ok: true,
         json: async () => ["a"],
       }) as any;
@@ -82,7 +82,7 @@ describe("blog config service", () => {
     });
 
     test("returns full list on invalid JSON", async () => {
-      global.fetch = jest.fn().mockResolvedValue({
+      global.fetch = jest.fn<any, any[]>().mockResolvedValue({
         ok: true,
         json: async () => {
           throw new Error("bad");

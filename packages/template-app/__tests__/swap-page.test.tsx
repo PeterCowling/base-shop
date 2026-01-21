@@ -1,12 +1,14 @@
 /** @jest-environment jsdom */
-import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
-import SwapPage from "../src/app/account/swaps/page";
 import { notFound } from "next/navigation";
-import { getCart } from "@acme/platform-core/cartStore";
+import { render, screen } from "@testing-library/react";
+
 import { getCustomerSession } from "@acme/auth";
+import { getCart } from "@acme/platform-core/cartStore";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { getUserPlan, getRemainingSwaps } from "@acme/platform-core/repositories/subscriptionUsage.server";
+import { getRemainingSwaps,getUserPlan } from "@acme/platform-core/repositories/subscriptionUsage.server";
+
+import SwapPage from "../src/app/account/swaps/page";
 
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 

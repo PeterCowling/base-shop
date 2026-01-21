@@ -1,6 +1,8 @@
-import { jest } from "@jest/globals";
-import path from "node:path";
 import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import { jest } from "@jest/globals";
+
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
 jest.mock("@acme/platform-core/analytics", () => ({

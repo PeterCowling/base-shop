@@ -1,13 +1,16 @@
 import {
-  render,
-  fireEvent,
-  waitFor,
   act,
+  fireEvent,
+  render,
+  waitFor,
 } from "@testing-library/react";
+
 import type { MediaItem } from "@acme/types";
 
+import MediaManager from "../MediaManager";
+
 jest.mock("@acme/ui/components/atoms/shadcn", () => {
-  const React = require("react");
+  const React = require("react") as typeof import("react");
   const passthrough = (name: string, tag = "div") => {
     const Comp = React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
       React.createElement(tag, { ref, ...props })
@@ -167,7 +170,6 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => {
     DialogFooter: ({ children }: any) => <div>{children}</div>,
   };
 });
-import MediaManager from "../MediaManager";
 
 describe("MediaManager", () => {
   const originalFetch = global.fetch;
@@ -278,11 +280,12 @@ describe("MediaManager", () => {
     const onDelete = jest.fn();
     const onMetadataUpdate = jest
       .fn<
-        (
+        Promise<MediaItem>,
+        [
           shop: string,
           url: string,
           fields: { title: string; altText: string; tags: string[] }
-        ) => Promise<MediaItem>
+        ]
       >()
       .mockImplementation(async (_shop, url, fields) => ({
         url,

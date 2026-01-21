@@ -1,11 +1,12 @@
 import {
-  useCallback,
-  useRef,
-  useState,
   type ChangeEvent,
   type Dispatch,
   type SetStateAction,
+  useCallback,
+  useRef,
+  useState,
 } from "react";
+
 import type { PricingMatrix } from "@acme/types";
 
 import {
@@ -49,7 +50,7 @@ export function usePricingJsonControls({
 
   const applyJson = useCallback(() => {
     const parsed = parseDraft();
-    if (!parsed.success) {
+    if ("errors" in parsed) {
       const message = parsed.errors.json ?? "JSON is invalid";
       setError(message);
       setStatus("error");
@@ -77,7 +78,7 @@ export function usePricingJsonControls({
       try {
         const text = await file.text();
         const parsed = parseJsonDraft(text);
-        if (!parsed.success) {
+        if ("errors" in parsed) {
           throw new Error(parsed.errors.json ?? "JSON is invalid");
         }
 
@@ -102,7 +103,7 @@ export function usePricingJsonControls({
 
   const handleExport = useCallback(() => {
     const result = getFormPricing();
-    if (!result.success) {
+    if ("errors" in result) {
       onValidationErrors(result.errors);
       setStatus("error");
       onToast("Fix validation errors before exporting.");

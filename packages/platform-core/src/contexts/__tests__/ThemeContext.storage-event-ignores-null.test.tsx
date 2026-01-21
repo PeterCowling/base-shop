@@ -1,6 +1,8 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
+
 import { ThemeProvider } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: ignores storage events with null newValue", () => {

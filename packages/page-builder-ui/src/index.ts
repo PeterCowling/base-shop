@@ -4,72 +4,69 @@
 
 import type { ComponentProps } from "react";
 
+import type { BlockRegistryEntry as UiBlockRegistryEntry } from "@acme/ui";
 import {
+  applyTextThemeToOverrides,
+  // Block/component editors used by CMS
+  ComponentEditor as UiComponentEditor,
+  // Starter registry from default theme
+  coreBlockRegistry as uiCoreBlockRegistry,
+  // Text theme helpers used by editor and runtime
+  extractTextThemes,
+  ImagePicker as UiImagePicker,
   // Editor shell primitives
   PageBuilder as UiPageBuilder,
   PageBuilderLayout as UiPageBuilderLayout,
-  PageToolbar as UiPageToolbar,
   PageCanvas as UiPageCanvas,
   PageSidebar as UiPageSidebar,
-  // Block/component editors used by CMS
-  ComponentEditor as UiComponentEditor,
-  ImagePicker as UiImagePicker,
-  // State and interaction hooks
-  usePageBuilderState as uiUsePageBuilderState,
-  usePageBuilderDnD as uiUsePageBuilderDnD,
-  usePageBuilderControls as uiUsePageBuilderControls,
-  usePageBuilderSave as uiUsePageBuilderSave,
+  PageToolbar as UiPageToolbar,
   useAutoSave as uiUseAutoSave,
-  useCanvasDrag as uiUseCanvasDrag,
-  useCanvasResize as uiUseCanvasResize,
   useBlockDimensions as uiUseBlockDimensions,
   useBlockDnD as uiUseBlockDnD,
   useBlockTransform as uiUseBlockTransform,
-  useLocalizedTextEditor as uiUseLocalizedTextEditor,
+  useCanvasDrag as uiUseCanvasDrag,
+  useCanvasResize as uiUseCanvasResize,
   useComponentInputs as uiUseComponentInputs,
-  // Text theme helpers used by editor and runtime
-  extractTextThemes,
-  applyTextThemeToOverrides,
-  // Starter registry from default theme
-  coreBlockRegistry as uiCoreBlockRegistry,
+  useLocalizedTextEditor as uiUseLocalizedTextEditor,
+  usePageBuilderControls as uiUsePageBuilderControls,
+  usePageBuilderDnD as uiUsePageBuilderDnD,
+  usePageBuilderSave as uiUsePageBuilderSave,
+  // State and interaction hooks
+  usePageBuilderState as uiUsePageBuilderState,
 } from "@acme/ui";
-
-import type { BlockRegistryEntry as UiBlockRegistryEntry } from "@acme/ui";
-
+import DragHandleInternal from "@acme/ui/components/cms/page-builder/DragHandle";
 import {
+  clearLibrary as uiClearLibrary,
+  type GlobalItem as UiGlobalItem,
+  type LibraryItem as UiLibraryItem,
+  listGlobals as uiListGlobals,
+  listGlobalsForPage as uiListGlobalsForPage,
   // Local library and globals store used by the builder.
   listLibrary as uiListLibrary,
+  removeGlobal as uiRemoveGlobal,
+  removeGlobalForPage as uiRemoveGlobalForPage,
+  removeLibrary as uiRemoveLibrary,
+  saveGlobal as uiSaveGlobal,
+  saveGlobalForPage as uiSaveGlobalForPage,
   saveLibrary as uiSaveLibrary,
   saveLibraryStrict as uiSaveLibraryStrict,
   syncFromServer as uiSyncLibraryFromServer,
-  clearLibrary as uiClearLibrary,
-  updateLibrary as uiUpdateLibrary,
-  removeLibrary as uiRemoveLibrary,
-  type LibraryItem as UiLibraryItem,
-  listGlobals as uiListGlobals,
-  saveGlobal as uiSaveGlobal,
   updateGlobal as uiUpdateGlobal,
-  removeGlobal as uiRemoveGlobal,
-  listGlobalsForPage as uiListGlobalsForPage,
-  saveGlobalForPage as uiSaveGlobalForPage,
   updateGlobalForPage as uiUpdateGlobalForPage,
-  removeGlobalForPage as uiRemoveGlobalForPage,
-  type GlobalItem as UiGlobalItem,
+  updateLibrary as uiUpdateLibrary,
 } from "@acme/ui/components/cms/page-builder/libraryStore";
-
-import DragHandleInternal from "@acme/ui/components/cms/page-builder/DragHandle";
 import SizeControlsInternal from "@acme/ui/components/cms/page-builder/panels/layout/SizeControls";
 import PreviewRendererInternal from "@acme/ui/components/cms/page-builder/PreviewRenderer";
 
-export { extractTextThemes, applyTextThemeToOverrides };
+export { applyTextThemeToOverrides,extractTextThemes };
 
-export { buildBlockRegistry, coreBlockDescriptors } from "@acme/page-builder-core";
 export type {
-  BlockTypeId,
-  BlockRegistry,
   BlockDescriptor,
+  BlockRegistry,
   BlockRegistryEntryConfig,
+  BlockTypeId,
 } from "@acme/page-builder-core";
+export { buildBlockRegistry, coreBlockDescriptors } from "@acme/page-builder-core";
 
 // Package semantic version. Kept in sync with package.json.
 export const version = "1.0.0";

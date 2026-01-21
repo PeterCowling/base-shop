@@ -1,5 +1,16 @@
 import { jest } from "@jest/globals";
 
+import * as service from "../../services/blog";
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getPosts,
+  publishPost,
+  unpublishPost,
+  updatePost,
+} from "../blog.server";
+
 jest.mock("../../services/blog", () => ({
   getPosts: jest.fn(),
   getPost: jest.fn(),
@@ -9,17 +20,6 @@ jest.mock("../../services/blog", () => ({
   unpublishPost: jest.fn(),
   deletePost: jest.fn(),
 }));
-
-import {
-  getPosts,
-  getPost,
-  createPost,
-  updatePost,
-  publishPost,
-  unpublishPost,
-  deletePost,
-} from "../blog.server";
-import * as service from "../../services/blog";
 
 describe("blog.server actions", () => {
   const fd = new FormData();

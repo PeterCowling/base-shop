@@ -1,7 +1,9 @@
 // i18n-exempt -- Storybook docs and demo copy
-import { type Meta, type StoryObj } from "@storybook/nextjs";
 import * as React from "react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import type { SKU } from "@acme/types";
+
 import { ProductCarousel, type ProductCarouselProps } from "./ProductCarousel";
 
 const products: SKU[] = Array.from({ length: 5 }).map((_, i) => ({

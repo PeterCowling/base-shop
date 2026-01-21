@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import { ProductBadge } from "../src/components/atoms/ProductBadge";
 
 describe("ProductBadge", () => {

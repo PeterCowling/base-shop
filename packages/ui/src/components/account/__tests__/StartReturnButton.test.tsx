@@ -1,5 +1,6 @@
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { act,render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import StartReturnButton from "../StartReturnButton";
 
 jest.setTimeout(10000);

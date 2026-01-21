@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 
 import { BASE_URL } from "@/config/site";
-import { faqEntriesToJsonLd, normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
-
 import type { AppLanguage } from "@/i18n.config";
+import { faqEntriesToJsonLd, normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
 
 type Translator = (key: string, options?: Record<string, unknown>) => unknown;
 

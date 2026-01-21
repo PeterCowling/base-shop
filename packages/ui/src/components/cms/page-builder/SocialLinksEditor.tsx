@@ -1,6 +1,8 @@
 import type { SocialLinksComponent } from "@acme/types";
-import type { EditorProps } from "./EditorProps";
+
 import { Input } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
 import useComponentInputs from "./useComponentInputs";
 
 type Props = EditorProps<SocialLinksComponent>;

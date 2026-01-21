@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";

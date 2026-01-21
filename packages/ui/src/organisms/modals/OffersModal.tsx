@@ -1,4 +1,5 @@
 import { memo } from "react";
+
 import { ModalFooterButton, ModalOverlay, ModalPanel } from "./primitives";
 import type { OffersModalCopy } from "./types";
 

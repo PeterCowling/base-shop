@@ -1,6 +1,28 @@
 /* eslint-env jest */
 
 // Minimal auth config
+import { redirect } from "next/navigation";
+
+import {
+  deleteProductFromRepo,
+  duplicateProductInRepo,
+  getProductById,
+  readRepo,
+  readSettings,
+  updateProductInRepo,
+  writeRepo,
+} from "@acme/platform-core/repositories/json.server";
+
+import { captureException } from "@/utils/sentry.server";
+
+import { ensureAuthorized } from "../actions/common/auth";
+import {
+  createDraft,
+  deleteProduct,
+  duplicateProduct,
+  updateProduct,
+} from "../actions/products.server";
+
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 jest.mock("../actions/common/auth", () => ({
@@ -28,27 +50,9 @@ jest.mock("ulid", () => ({
 jest.mock("@/utils/sentry.server", () => ({
   captureException: jest.fn(),
 }));
-import {
-  createDraft,
-  updateProduct,
-  duplicateProduct,
-  deleteProduct,
-} from "../actions/products.server";
-import { ensureAuthorized } from "../actions/common/auth";
-import { redirect } from "next/navigation";
-import {
-  readRepo,
-  writeRepo,
-  readSettings,
-  updateProductInRepo,
-  getProductById,
-  duplicateProductInRepo,
-  deleteProductFromRepo,
-} from "@acme/platform-core/repositories/json.server";
-import { captureException } from "@/utils/sentry.server";
 
 const ensureAuthorizedMock = ensureAuthorized as jest.Mock;
-const redirectMock = redirect as jest.Mock;
+const redirectMock = redirect as unknown as jest.Mock;
 const readRepoMock = readRepo as jest.Mock;
 const writeRepoMock = writeRepo as jest.Mock;
 const readSettingsMock = readSettings as jest.Mock;

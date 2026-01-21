@@ -1,9 +1,10 @@
 // src/hooks/useResponsiveImage.ts
+import { useMemo } from "react";
+
 import { PRESETS } from "@/config/imagePresets";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { getIntrinsicSize } from "@/lib/getIntrinsicSize";
 import type { ImageDims, SrcSetEntry } from "@/types/image";
-import { useMemo } from "react";
 
 /* ---------- shared option fragments ------------------------------------ */
 

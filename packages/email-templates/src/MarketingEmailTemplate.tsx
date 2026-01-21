@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Logo } from "@acme/ui";
 
 export interface MarketingEmailTemplateProps

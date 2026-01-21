@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
+import { formatPrice } from "@acme/lib/format";
+
 import OrderSummary from "../OrderSummary";
-import type { CartLine } from "@acme/types";
-import { formatPrice } from "@acme/shared-utils";
 
 jest.mock("@acme/ui/hooks/useCart", () => ({
   useCart: () => [{}, jest.fn()],
@@ -12,11 +14,28 @@ jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["EUR", jest.fn()],
 }));
 
+type TestCartLine = {
+  sku: {
+    id: string;
+    slug: string;
+    title: string;
+    price: number;
+    deposit: number;
+    stock: number;
+    forSale: boolean;
+    forRental: boolean;
+    media: unknown[];
+    sizes: unknown[];
+    description: string;
+  };
+  qty: number;
+};
+
 describe("OrderSummary", () => {
   const format = (amount: number) => formatPrice(amount, "EUR");
 
   it("renders subtotal and deposit without tax or discount by default", () => {
-    const cart: Record<string, CartLine> = {
+    const cart: Record<string, TestCartLine> = {
       sku1: {
         sku: {
           id: "sku1",
@@ -51,7 +70,7 @@ describe("OrderSummary", () => {
       },
     };
 
-    render(<OrderSummary cart={cart} />);
+    render(<OrderSummary cart={cart as Parameters<typeof OrderSummary>[0]["cart"]} />);
 
     expect(screen.getByText("Subtotal")).toBeInTheDocument();
     expect(screen.getByText(format(20))).toBeInTheDocument();

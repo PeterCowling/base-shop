@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input } from "../../../atoms/shadcn";
+
 import { Inline } from "../../../atoms/primitives/Inline";
+import { Button, Input } from "../../../atoms/shadcn";
+
 import type { VersionEntry } from "./api";
 
 interface Props {

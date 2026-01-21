@@ -1,17 +1,19 @@
 "use client";
 
+import React, { useContext } from "react";
 import {
-  defineSchema,
   type BlockRenderProps,
-  type RenderBlockFunction,
+  defineSchema,
+  type PortableTextBlock,
   PortableTextEditor,
+  type RenderBlockFunction,
   useEditor,
 } from "@portabletext/editor";
-import type { PortableTextBlock } from "@portabletext/editor";
-import React, { useContext } from "react";
+
 import { Button } from "@acme/ui/components/atoms";
-import ProductPreview from "./ProductPreview";
+
 import { InvalidProductContext } from "./invalidProductContext";
+import ProductPreview from "./ProductPreview";
 
 export const schema = defineSchema({
   decorators: [{ name: "strong" }, { name: "em" }],

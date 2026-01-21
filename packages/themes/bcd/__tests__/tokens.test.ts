@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+
 import { tokens } from '../src/tailwind-tokens';
 
 const expectedKeys = [

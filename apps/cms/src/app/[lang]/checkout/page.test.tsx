@@ -1,7 +1,9 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
-import CheckoutPage from "./page";
+
 import { encodeCartCookie } from "@acme/platform-core/cartCookie";
+
+import CheckoutPage from "./page";
 
 const cookiesMock = jest.fn();
 jest.mock("next/headers", () => ({
@@ -62,7 +64,7 @@ describe("CheckoutPage", () => {
     const ui = (await CheckoutPage({
       params: Promise.resolve({ lang: "en" }),
     })) as ReactElement;
-    const [summary, form] = ui.props.children as ReactElement[];
+    const [summary, form] = (ui.props as { children: ReactElement[] }).children;
     render(ui);
 
     expect(screen.getAllByTestId("order-summary").length).toBeGreaterThan(0);

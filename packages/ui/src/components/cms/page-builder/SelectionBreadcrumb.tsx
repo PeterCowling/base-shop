@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
+
 import { Inline } from "../../atoms/primitives";
 
 interface Props {

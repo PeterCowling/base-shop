@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/sections/history/page.tsx
 import "server-only";
+
 import { requirePermission } from "@acme/auth";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { listSectionHistory } from "@acme/platform-core/repositories/sections/sections.json.server";

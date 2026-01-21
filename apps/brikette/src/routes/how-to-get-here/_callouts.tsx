@@ -1,5 +1,6 @@
-import { findPlaceholderBinding } from "@/lib/how-to-get-here/definitions";
 import type { ReactNode } from "react";
+
+import { findPlaceholderBinding } from "@/lib/how-to-get-here/definitions";
 
 import { isLinkedCopy, renderLinkedCopy, renderRichText } from "./linking";
 import type { BindingLookupResult, RenderContext } from "./types";

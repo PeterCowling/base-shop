@@ -1,5 +1,6 @@
 // packages/ui/src/hooks/__tests__/usePreviewDevice.test.tsx
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { PREVIEW_DEVICE_STORAGE_KEY, usePreviewDevice } from "../usePreviewDevice";
 
 describe("usePreviewDevice", () => {

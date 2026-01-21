@@ -1,6 +1,8 @@
-import { LOCALES, type Locale } from "@acme/i18n/locales";
-import type { ShopSettings } from "@acme/types";
 import type { NextSeoProps } from "next-seo";
+
+import { coreEnv } from "@acme/config/env/core";
+import { type Locale,LOCALES } from "@acme/i18n/locales";
+import type { ShopSettings } from "@acme/types";
 
 /** Minimal representation of a link tag for Next SEO */
 type LinkTag = {
@@ -8,7 +10,6 @@ type LinkTag = {
   href: string;
   hrefLang?: string;
 };
-import { coreEnv } from "@acme/config/env/core";
 
 interface OpenGraphImageProps {
   image?: string;

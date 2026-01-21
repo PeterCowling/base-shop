@@ -1,14 +1,10 @@
-import { provisionDomain } from "@cms/actions/cloudflare.server";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { provisionDomain } from "@cms/actions/cloudflare.server";
+import { ensureRole } from "@cms/actions/common/auth";
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const body = await req.json();
     const { id, domain } = body as { id: string; domain: string };
     const res = await provisionDomain(id, domain);

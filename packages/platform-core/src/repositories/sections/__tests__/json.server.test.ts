@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+
 import type { SectionTemplate } from "@acme/types";
 
 function makeSection(id = "sec1"): SectionTemplate {

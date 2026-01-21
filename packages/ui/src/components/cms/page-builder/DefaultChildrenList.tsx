@@ -1,14 +1,16 @@
-/* eslint-disable ds/no-hardcoded-copy -- PB-0001: internal builder strings and utility classes */
+ 
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { Locale } from "@acme/i18n/locales";
-import type { Action } from "./state";
-import type { DevicePreset } from "../../../utils/devicePresets";
-import CanvasItem from "./CanvasItem";
-import InlineInsert from "./InlineInsert";
-import GridChildControls from "./GridChildControls";
 import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import type { DevicePreset } from "../../../utils/devicePresets";
+
+import CanvasItem from "./CanvasItem";
+import GridChildControls from "./GridChildControls";
+import InlineInsert from "./InlineInsert";
+import type { Action } from "./state";
 
 type Props = {
   component: PageComponent;

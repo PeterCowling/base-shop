@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface FAQBlockComponent extends PageComponentBase {
     type: "FAQBlock";
     items?: {

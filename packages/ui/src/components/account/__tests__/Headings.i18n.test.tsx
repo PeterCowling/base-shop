@@ -1,6 +1,11 @@
+import '@testing-library/jest-dom';
+
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+
+import OrdersPage from '../Orders';
+import ProfilePage from '../Profile';
+import SessionsPage from '../Sessions';
 
 // Mock server translations to a simple key→message map
 const messages: Record<string, string> = {
@@ -14,7 +19,7 @@ jest.mock('@acme/i18n/useTranslations.server', () => ({
 }));
 
 // Mock auth/session APIs used by pages
-jest.mock('@auth', () => ({
+jest.mock('@acme/auth', () => ({
   getCustomerSession: async () => ({ customerId: 'c1', role: 'user' }),
   hasPermission: () => true,
   listSessions: async () => [{ sessionId: 's1', userAgent: 'UA', createdAt: new Date() }],
@@ -39,10 +44,6 @@ jest.mock('next/navigation', () => ({
   redirect: () => undefined,
   useRouter: () => ({ push: () => undefined, refresh: () => undefined }),
 }));
-
-import ProfilePage from '../Profile';
-import SessionsPage from '../Sessions';
-import OrdersPage from '../Orders';
 
 describe('Account page headings i18n', () => {
   it('ProfilePage uses key/inline headings', async () => {

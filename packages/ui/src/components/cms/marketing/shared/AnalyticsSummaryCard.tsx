@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+
+import { cn } from "../../../../utils/style";
 import {
   Card,
   CardContent,
@@ -7,8 +9,7 @@ import {
   Tag,
   type TagProps,
 } from "../../../atoms";
-import { Inline, Grid as GridPrimitive } from "../../../atoms/primitives";
-import { cn } from "../../../../utils/style";
+import { Grid as GridPrimitive,Inline } from "../../../atoms/primitives";
 
 export interface AnalyticsSummaryMetric {
   label: string;

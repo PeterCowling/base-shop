@@ -1,8 +1,10 @@
 /** @jest-environment node */
 
-import "./setup";
+// Import setup first to ensure mocks are registered before importing orders
+import { nowIsoMock,prismaMock } from "./setup";
+
 import * as orders from "../../src/orders";
-import { prismaMock, nowIsoMock } from "./setup";
+
 import { createOrder } from "./orderFactory";
 
 const {

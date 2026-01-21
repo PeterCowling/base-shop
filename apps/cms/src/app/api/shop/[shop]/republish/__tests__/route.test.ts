@@ -49,7 +49,7 @@ describe("POST /api/shop/[shop]/republish", () => {
       status: "passed",
     });
 
-    const res = await POST(req(), { params: { shop: "shop1" } });
+    const res = await POST(req(), { params: Promise.resolve({ shop: "shop1" }) });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ status: "ok" });
     expect(execFile).toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe("POST /api/shop/[shop]/republish", () => {
   it("returns 401 when permission check fails", async () => {
     requirePermission.mockRejectedValue(new Error("nope"));
 
-    const res = await POST(req(), { params: { shop: "shop1" } });
+    const res = await POST(req(), { params: Promise.resolve({ shop: "shop1" }) });
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: "Unauthorized" });
     expect(execFile).not.toHaveBeenCalled();
@@ -80,10 +80,12 @@ describe("POST /api/shop/[shop]/republish", () => {
       cb(new Error("republish failed"), { stdout: "", stderr: "" });
     });
 
-    const res = await POST(req(), { params: { shop: "bad" } });
+    const res = await POST(req(), { params: Promise.resolve({ shop: "bad" }) });
     expect(res.status).toBe(500);
     expect(await res.json()).toEqual({ error: "Republish failed" });
     expect(consoleErrorSpy).toHaveBeenCalled();
     expect(updateDeployStatus).not.toHaveBeenCalled();
   });
 });
+
+export {};

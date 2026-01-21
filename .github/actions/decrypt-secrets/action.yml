@@ -1,0 +1,79 @@
+name: "Decrypt SOPS Secrets"
+description: "Decrypt SOPS-encrypted environment files for deployment"
+
+inputs:
+  sops-age-key:
+    description: "Age private key for SOPS decryption (skip decryption if empty)"
+    required: false
+    default: ""
+  app-path:
+    description: "Path to the app directory (e.g., apps/cms)"
+    required: false
+    default: ""
+  environment:
+    description: "Environment to decrypt (production or preview)"
+    required: false
+    default: "production"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install SOPS
+      shell: bash
+      run: |
+        if ! command -v sops &> /dev/null; then
+          curl -LO https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
+          chmod +x sops-v3.9.4.linux.amd64
+          sudo mv sops-v3.9.4.linux.amd64 /usr/local/bin/sops
+        fi
+        sops --version
+
+    - name: Decrypt secrets
+      shell: bash
+      env:
+        SOPS_AGE_KEY: ${{ inputs.sops-age-key }}
+      run: |
+        # Skip if no SOPS_AGE_KEY provided
+        if [ -z "$SOPS_AGE_KEY" ]; then
+          echo "No SOPS_AGE_KEY provided - skipping decryption"
+          echo "To enable decryption, add SOPS_AGE_KEY to repository secrets"
+          exit 0
+        fi
+
+        # Decrypt specific app secrets if app-path is provided
+        if [ -n "${{ inputs.app-path }}" ]; then
+          SOPS_FILE="${{ inputs.app-path }}/.env.${{ inputs.environment }}.sops"
+          OUTPUT_FILE="${{ inputs.app-path }}/.env.${{ inputs.environment }}"
+
+          if [ -f "$SOPS_FILE" ]; then
+            echo "Decrypting $SOPS_FILE -> $OUTPUT_FILE"
+            sops -d "$SOPS_FILE" > "$OUTPUT_FILE"
+            echo "Successfully decrypted secrets for ${{ inputs.app-path }}"
+          else
+            echo "No SOPS file found at $SOPS_FILE (skipping)"
+          fi
+        else
+          # Decrypt all .sops files in apps/
+          echo "Decrypting all ${{ inputs.environment }} SOPS files..."
+          find apps -name ".env.${{ inputs.environment }}.sops" -type f | while read -r sops_file; do
+            output_file="${sops_file%.sops}"
+            echo "Decrypting $sops_file -> $output_file"
+            sops -d "$sops_file" > "$output_file"
+          done
+          echo "Decryption complete"
+        fi
+
+    - name: Verify decrypted files exist
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.app-path }}" ]; then
+          OUTPUT_FILE="${{ inputs.app-path }}/.env.${{ inputs.environment }}"
+          if [ -f "$OUTPUT_FILE" ]; then
+            echo "Verified: $OUTPUT_FILE exists"
+          else
+            echo "Warning: $OUTPUT_FILE does not exist (no SOPS file to decrypt)"
+          fi
+        else
+          echo "Decrypted files:"
+          find apps -name ".env.${{ inputs.environment }}" -type f || echo "No decrypted files found"
+        fi

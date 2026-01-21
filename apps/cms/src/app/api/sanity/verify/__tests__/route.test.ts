@@ -1,6 +1,7 @@
+import { NextRequest } from 'next/server';
 import { jest } from '@jest/globals';
 
-const verifyCredentials = jest.fn();
+const verifyCredentials = jest.fn<any, any>();
 
 jest.mock('@acme/plugin-sanity', () => ({
   __esModule: true,
@@ -25,14 +26,14 @@ describe('POST /api/sanity/verify', () => {
   it('returns datasets on success', async () => {
     verifyCredentials.mockResolvedValue(true);
     const mockFetch = jest
-      .fn()
+      .fn<any, any>()
       .mockResolvedValue(
         new Response(JSON.stringify({ datasets: [{ name: 'prod' }] }), { status: 200 })
       );
     (global as any).fetch = mockFetch;
 
     const res = await POST(
-      new Request('https://example.com', {
+      new NextRequest('https://example.com', {
         method: 'POST',
         body: JSON.stringify({ projectId: 'p123', token: 'tok', dataset: 'prod' }),
       })
@@ -50,12 +51,12 @@ describe('POST /api/sanity/verify', () => {
   it('returns 401 for invalid credentials', async () => {
     verifyCredentials.mockResolvedValue(false);
     const mockFetch = jest
-      .fn()
+      .fn<any, any>()
       .mockResolvedValue(new Response(JSON.stringify({ datasets: [] }), { status: 200 }));
     (global as any).fetch = mockFetch;
 
     const res = await POST(
-      new Request('https://example.com', {
+      new NextRequest('https://example.com', {
         method: 'POST',
         body: JSON.stringify({ projectId: 'p123', token: 'tok', dataset: 'prod' }),
       })
@@ -71,14 +72,14 @@ describe('POST /api/sanity/verify', () => {
   });
 
   it('returns 500 when dataset list fails', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleError = jest.spyOn(console, 'error').mockImplementation((() => {}) as any);
     const mockFetch = jest
-      .fn()
+      .fn<any, any>()
       .mockResolvedValue(new Response('fail', { status: 500 }));
     (global as any).fetch = mockFetch;
 
     const res = await POST(
-      new Request('https://example.com', {
+      new NextRequest('https://example.com', {
         method: 'POST',
         body: JSON.stringify({ projectId: 'p123', token: 'tok' }),
       })

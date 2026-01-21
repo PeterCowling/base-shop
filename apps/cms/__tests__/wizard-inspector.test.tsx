@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import { devicePresets } from "@acme/ui/utils/devicePresets";
+
 import ThemeSelector from "../src/app/cms/shop/[shop]/themes/ThemeSelector";
 import PreviewDeviceSelector from "../src/app/cms/wizard/PreviewDeviceSelector";
 import WizardPreview from "../src/app/cms/wizard/WizardPreview";
-import { devicePresets } from "@acme/ui/utils/devicePresets";
 
 jest.mock("@acme/ui/components/atoms", () => ({
   Button: (props: any) => <button {...props} />,
@@ -39,7 +41,7 @@ jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
 function Inspector() {
   const [theme, setTheme] = useState("base");
   const [device, setDevice] = useState(devicePresets[0]);
-  const style = theme === "base" ? { "--color-bg": "white" } : { "--color-bg": "black" };
+  const style = (theme === "base" ? { "--color-bg": "white" } : { "--color-bg": "black" }) as React.CSSProperties;
   return (
     <>
       <ThemeSelector themes={["base", "dark"]} value={theme} onChange={(e) => setTheme(e.target.value)} />

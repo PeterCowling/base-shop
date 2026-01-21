@@ -1,7 +1,8 @@
+import type { TFunction } from "i18next";
+
 import appI18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import type { TFunction } from "i18next";
 
 import { FALLBACK_GALLERY } from "./constants";
 import type { FallbackContent, FallbackData, FallbackListItem } from "./types";

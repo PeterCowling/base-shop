@@ -1,4 +1,5 @@
 import type { PaymentPayload, PaymentProvider, Plugin, ShippingProvider, ShippingRequest, WidgetComponent, WidgetProps } from "@acme/types";
+
 export interface RegistryItem<T> {
     id: string;
     value: T;

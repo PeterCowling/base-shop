@@ -1,8 +1,11 @@
 /* eslint-env jest */
 
+import { NextResponse } from "next/server";
 import type { JWT } from "next-auth/jwt";
+import { __resetMockToken,__setMockToken } from "next-auth/jwt";
+import { render, screen } from "@testing-library/react";
+
 import { middleware } from "../middleware";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 // Mock RBAC helpers to control permission checks
 jest.mock("@acme/auth/rbac", () => ({
@@ -37,9 +40,6 @@ jest.mock("next/server", () => ({
     ),
   },
 }));
-
-import { NextResponse } from "next/server";
-import { render, screen } from "@testing-library/react";
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
@@ -47,12 +47,9 @@ const rewrite = NextResponse.rewrite as jest.Mock;
 function createRequest(path: string) {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   url.clone = () => new URL(url.toString());
-  const headers = new Headers();
-  return {
-    nextUrl: url,
-    url: url.toString(),
-    headers,
-  } as unknown as Parameters<typeof middleware>[0];
+  return { nextUrl: url, url: url.toString() } as unknown as Parameters<
+    typeof middleware
+  >[0];
 }
 
 afterEach(() => {
@@ -90,12 +87,12 @@ describe("/cms access", () => {
   });
 
   it("returns 403 for roles without read access", async () => {
-    const { canRead } = (await import("@acme/auth/rbac")) as {
+    const { canRead } = (await import("@acme/auth/rbac")) as unknown as {
       canRead: jest.Mock;
       canWrite: jest.Mock;
     };
     canRead.mockReturnValueOnce(false);
-    __setMockToken({ role: "stranger" } as JWT);
+    __setMockToken({ role: "stranger" } as unknown as JWT);
 
     const res = await middleware(createRequest("/cms"));
 

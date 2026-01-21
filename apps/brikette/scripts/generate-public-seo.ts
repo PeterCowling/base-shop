@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { listDirectionPaths, listLocalizedPaths } from "@/compat/route-runtime";
 import { BASE_URL } from "@/config/site";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 

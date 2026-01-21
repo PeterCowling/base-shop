@@ -1,13 +1,13 @@
 // src/components/ui/cta/SecondaryLinkButton.tsx
-import clsx from "clsx";
 import type { ReactNode } from "react";
-import { Link, type LinkProps } from "react-router-dom";
+import Link from "next/link";
+import clsx from "clsx";
 
 type SecondaryLinkButtonProps = {
-  to: LinkProps["to"];
+  to: string;
   children: ReactNode;
   ariaLabel?: string | null;
-  prefetch?: LinkProps["prefetch"];
+  prefetch?: boolean;
   className?: string;
 };
 
@@ -15,12 +15,12 @@ export function SecondaryLinkButton({
   to,
   children,
   ariaLabel,
-  prefetch = "intent",
+  prefetch = true,
   className,
 }: SecondaryLinkButtonProps): JSX.Element {
   return (
     <Link
-      to={to}
+      href={to}
       prefetch={prefetch}
       aria-label={ariaLabel || undefined}
       className={clsx(

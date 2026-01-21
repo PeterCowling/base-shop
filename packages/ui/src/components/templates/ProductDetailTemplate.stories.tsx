@@ -1,6 +1,8 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
-import { ProductDetailTemplate } from "./ProductDetailTemplate";
+
 import type { SKU } from "@acme/types";
+
+import { ProductDetailTemplate } from "./ProductDetailTemplate";
 
 const product: SKU = {
   id: "1",

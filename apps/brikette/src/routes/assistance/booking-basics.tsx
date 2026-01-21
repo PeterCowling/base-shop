@@ -1,5 +1,5 @@
 // src/routes/assistance/booking-basics.tsx
-import { makeArticleClientLoader, makeArticlePage, makeArticleMeta, makeArticleLinks } from "./_ArticleFactory";
+import { makeArticleClientLoader, makeArticleLinks,makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
 
 export const clientLoader = makeArticleClientLoader("bookingBasics");
 export { clientLoader as loader };

@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import StepShopDetails from "../StepShopDetails";
 
 // mocks for UI components
@@ -44,7 +45,7 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
     if (!values.name) errors.name = "Required";
     for (const [k, v] of Object.entries(values.logo || {})) {
       try {
-        if (v) new URL(v);
+        if (v) new URL(v as string);
       } catch {
         errors[`logo.${k}`] = "Invalid URL";
       }
@@ -77,15 +78,17 @@ function Wrapper() {
   const [contactInfo, setContactInfo] = React.useState("");
   return (
     <StepShopDetails
-      shopId={shopId}
-      setShopId={setShopId}
-      storeName={storeName}
-      setStoreName={setStoreName}
-      logo={logo}
-      setLogo={setLogo}
-      contactInfo={contactInfo}
-      setContactInfo={setContactInfo}
-      templates={["default"]}
+      {...({
+        shopId,
+        setShopId,
+        storeName,
+        setStoreName,
+        logo,
+        setLogo,
+        contactInfo,
+        setContactInfo,
+        templates: ["default"],
+      } as any)}
     />
   );
 }

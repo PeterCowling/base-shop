@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface CartSectionComponent extends PageComponentBase {
     type: "CartSection";
     showPromo?: boolean;

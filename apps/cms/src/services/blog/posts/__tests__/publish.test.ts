@@ -12,16 +12,8 @@ jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   publishPost: jest.fn(),
 }));
 
-jest.mock("@acme/date-utils", () => ({
+jest.mock("@date-utils", () => ({
   nowIso: jest.fn(),
-}));
-
-jest.mock("@acme/platform-core/utils", () => ({
-  recordMetric: jest.fn(),
-}));
-
-jest.mock("@acme/platform-core/shops/health", () => ({
-  incrementOperationalError: jest.fn(),
 }));
 
 describe("publishPost", () => {
@@ -32,12 +24,12 @@ describe("publishPost", () => {
   it("calls authorization, publishes post, and returns message", async () => {
     const { ensureAuthorized } = await import(
       "../../../../actions/common/auth"
-    );
-    const { getConfig } = await import("../../config");
+    ) as unknown as { ensureAuthorized: jest.Mock };
+    const { getConfig } = await import("../../config") as unknown as { getConfig: jest.Mock };
     const { publishPost: repoPublishPost } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
-    const { nowIso } = await import("@acme/date-utils");
+    ) as unknown as { publishPost: jest.Mock };
+    const { nowIso } = await import("@date-utils") as unknown as { nowIso: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -59,12 +51,12 @@ describe("publishPost", () => {
   it("returns error when repository rejects", async () => {
     const { ensureAuthorized } = await import(
       "../../../../actions/common/auth"
-    );
-    const { getConfig } = await import("../../config");
+    ) as unknown as { ensureAuthorized: jest.Mock };
+    const { getConfig } = await import("../../config") as unknown as { getConfig: jest.Mock };
     const { publishPost: repoPublishPost } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
-    const { nowIso } = await import("@acme/date-utils");
+    ) as unknown as { publishPost: jest.Mock };
+    const { nowIso } = await import("@date-utils") as unknown as { nowIso: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);

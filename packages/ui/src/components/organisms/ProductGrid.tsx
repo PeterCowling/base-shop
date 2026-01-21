@@ -1,13 +1,16 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import type { SKU } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { ProductQuickView } from "../overlays/ProductQuickView";
-import type { SKU } from "@acme/types";
-import type { TranslatableText } from "@acme/types/i18n";
-import type { Locale } from "@acme/i18n/locales";
+
 import { ProductCard } from "./ProductCard";
-import { useTranslations } from "@acme/i18n";
 
 export type Product = SKU;
 

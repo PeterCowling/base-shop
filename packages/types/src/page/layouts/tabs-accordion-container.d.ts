@@ -1,6 +1,8 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
 import type { PageComponent } from "../page";
+
 export interface TabsAccordionContainerComponent extends PageComponentBase {
     type: "TabsAccordionContainer";
     children?: PageComponent[];

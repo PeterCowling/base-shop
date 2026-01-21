@@ -1,4 +1,4 @@
-import { describe, beforeEach, afterEach, test, expect, jest } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, jest,test } from '@jest/globals';
 import path from 'path';
 
 const mockFs = () => {
@@ -28,7 +28,11 @@ describe('email cli', () => {
     fs.existsSync.mockImplementation((p: string) => p === path.join('/root', 'data', 'shops'));
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
-    jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/lib', () => ({ validateShopName: (s: string) => s }));
+    jest.doMock('@acme/i18n/useTranslations.server', () => ({
+      useTranslations: () => Promise.resolve((key: string) => key),
+    }));
     const cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue('/root/project');
 
     const { resolveDataRoot } = await import('../../cli');
@@ -43,7 +47,11 @@ describe('email cli', () => {
     fs.promises.readFile.mockRejectedValue(new Error('fail'));
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
-    jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/lib', () => ({ validateShopName: (s: string) => s }));
+    jest.doMock('@acme/i18n/useTranslations.server', () => ({
+      useTranslations: () => Promise.resolve((key: string) => key),
+    }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
@@ -61,7 +69,11 @@ describe('email cli', () => {
     fs.promises.mkdir.mockResolvedValue(undefined as any);
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
-    jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/lib', () => ({ validateShopName: (s: string) => s }));
+    jest.doMock('@acme/i18n/useTranslations.server', () => ({
+      useTranslations: () => Promise.resolve((key: string) => key),
+    }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
@@ -95,7 +107,11 @@ describe('email cli', () => {
     fs.promises.mkdir.mockResolvedValue(undefined as any);
     jest.doMock('fs', () => fs);
     jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
-    jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
+    jest.doMock('@acme/lib', () => ({ validateShopName: (s: string) => s }));
+    jest.doMock('@acme/i18n/useTranslations.server', () => ({
+      useTranslations: () => Promise.resolve((key: string) => key),
+    }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     const { run } = await import('../../cli');

@@ -1,5 +1,6 @@
-import { Card, CardContent } from "@/components/atoms/shadcn";
 import { Grid } from "@acme/ui/components/atoms/primitives";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
 
 export interface TelemetrySummaryMetric {
   label: string;

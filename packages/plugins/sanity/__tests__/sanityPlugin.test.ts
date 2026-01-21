@@ -1,12 +1,13 @@
+import { createClient } from "@sanity/client";
+
 import {
-  verifyCredentials,
+  configSchema,
+  mutate,
   publishPost,
   query,
-  mutate,
   slugExists,
-  configSchema,
+  verifyCredentials,
 } from "../index";
-import { createClient } from "@sanity/client";
 
 jest.mock("@sanity/client", () => ({
   createClient: jest.fn(),

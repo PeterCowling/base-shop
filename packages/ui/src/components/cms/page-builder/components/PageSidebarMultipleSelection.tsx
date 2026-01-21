@@ -1,14 +1,15 @@
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { Action } from "../state";
-import { Button } from "../../../atoms/shadcn";
-import { Tooltip } from "../../../atoms";
-import { alignLeft, alignTop, alignRight, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "../state/layout/geometry";
-import useCenterInParent from "../hooks/useCenterInParent";
-import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
-import useGroupingActions from "../hooks/useGroupingActions";
 import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { Tooltip } from "../../../atoms";
+import { Button } from "../../../atoms/shadcn";
+import useCenterInParent from "../hooks/useCenterInParent";
+import useGroupingActions from "../hooks/useGroupingActions";
+import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
+import type { Action } from "../state";
+import { alignBottom, alignCenterX, alignCenterY, alignLeft, alignRight, alignTop, distributeHorizontal, distributeVertical } from "../state/layout/geometry";
 
 interface Props {
   components: PageComponent[];

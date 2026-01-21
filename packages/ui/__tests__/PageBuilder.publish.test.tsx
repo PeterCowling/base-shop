@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import PageBuilder from "../src/components/cms/PageBuilder";
+
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
 }));
-
-import PageBuilder from "../src/components/cms/PageBuilder";
 
 describe("PageBuilder publishing", () => {
   const page = {

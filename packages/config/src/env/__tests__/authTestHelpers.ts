@@ -1,5 +1,6 @@
 import { expectInvalidAuthEnvWithConfigEnv as expectInvalidAuth } from "../../../test/utils/expectInvalidAuthEnv";
 import { withEnv } from "../../../test/utils/withEnv";
+
 import {
   DEV_NEXTAUTH_SECRET,
   DEV_SESSION_SECRET,
@@ -14,7 +15,7 @@ export const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
 export const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 export type EnvOverrides = Record<string, string | undefined>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Jest SpyInstance types vary between @jest/globals and @types/jest
+ 
 type AnySpyInstance = { mockRestore: () => void } & Record<string, any>;
 
 const baseProdEnv: EnvOverrides = {

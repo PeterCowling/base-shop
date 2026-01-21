@@ -1,14 +1,14 @@
 // src/routes/guides/driving-the-amalfi-coast-tips.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry } from "./guide-manifest";
-
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { toAppLanguage } from "@/utils/lang";
-import type { LinksFunction, MetaFunction } from "react-router";
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 import getFallbackLanguage from "./utils/getFallbackLanguage";
 

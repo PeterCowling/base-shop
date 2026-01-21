@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/__tests__/TopBar.client.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import TopBar from "../TopBar.client";
 
 const mockRouter = { refresh: jest.fn(), push: jest.fn() };
@@ -9,7 +10,7 @@ jest.mock("next/navigation", () => ({
   useRouter: () => mockRouter,
 }));
 
-jest.mock("@acme/shared-utils", () => ({ getShopFromPath: () => "s1" }));
+jest.mock("@acme/lib/shop", () => ({ getShopFromPath: () => "s1" }));
 
 jest.mock("next-auth/react", () => ({
   signOut: jest.fn(() => Promise.resolve(undefined)),

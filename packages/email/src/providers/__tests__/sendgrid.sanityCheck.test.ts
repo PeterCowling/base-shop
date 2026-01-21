@@ -1,10 +1,10 @@
+import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
+
 jest.mock("@sendgrid/mail", () => {
   const setApiKey = jest.fn();
   const send = jest.fn();
   return { __esModule: true, default: { setApiKey, send }, setApiKey, send };
 });
-
-import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
 
 describe("SendgridProvider sanityCheck", () => {
   createSendgridTestHarness();

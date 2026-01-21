@@ -1,13 +1,13 @@
 import {
-  isoDateInNDays,
   calculateRentalDays,
-  formatTimestamp,
-  startOfDay,
-  parseDate,
   formatDate,
-  parseTargetDate,
-  getTimeRemaining,
   formatDuration,
+  formatTimestamp,
+  getTimeRemaining,
+  isoDateInNDays,
+  parseDate,
+  parseTargetDate,
+  startOfDay,
 } from '../index';
 
 describe('isoDateInNDays & calculateRentalDays', () => {

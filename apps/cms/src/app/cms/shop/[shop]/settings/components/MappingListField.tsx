@@ -2,13 +2,13 @@
 
 import type { ComponentProps, ReactNode } from "react";
 
-import { Button, Input } from "@acme/ui/components/atoms";
+import { Button, type Input } from "@acme/ui/components/atoms";
 
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import ErrorChips from "./ErrorChips";
-import MappingListRow from "./MappingListRow";
 import { hasErrors, joinClassNames } from "./mappingListField.utils";
+import MappingListRow from "./MappingListRow";
 
 export type MappingFieldName = "key" | "value";
 

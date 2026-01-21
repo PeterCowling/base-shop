@@ -1,14 +1,14 @@
 import {
   addDays,
-  format,
-  fromZonedTime,
-  nowIso,
-  isoDateInNDays,
   calculateRentalDays,
-  formatTimestamp,
-  parseTargetDate,
-  getTimeRemaining,
+  format,
   formatDuration,
+  formatTimestamp,
+  fromZonedTime,
+  getTimeRemaining,
+  isoDateInNDays,
+  nowIso,
+  parseTargetDate,
 } from "@acme/date-utils";
 
 describe("date-utils", () => {

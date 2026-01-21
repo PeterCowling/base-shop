@@ -15,5 +15,5 @@ export const getThemeInitScript = (): string =>
       fallback="light";
     }
     var theme=stored||fallback;
-    document.documentElement.classList.toggle("theme-dark",theme==="dark");
+    document.documentElement.classList.toggle("dark",theme==="dark");
   })();`;

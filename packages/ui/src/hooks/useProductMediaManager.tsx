@@ -1,10 +1,12 @@
 "use client";
 
 // packages/ui/hooks/useProductMediaManager.tsx
-import { useFileUpload } from "./useFileUpload";
+import { useCallback, useMemo } from "react";
+
 import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import type { ImageOrientation, MediaItem, PublishLocation } from "@acme/types";
-import { useCallback, useMemo } from "react";
+
+import { useFileUpload } from "./useFileUpload";
 import type { ProductWithVariants } from "./useProductInputs";
 
 export interface UseProductMediaManagerResult {

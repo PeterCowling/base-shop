@@ -4,8 +4,9 @@
    Breadcrumb only – the heavy hotel graph now lives in the
    Home page and nowhere else
 ---------------------------------------------------------------- */
-import type { BreadcrumbList } from "@/utils/seo";
 import { memo, useMemo } from "react";
+
+import type { BreadcrumbList } from "@/utils/seo";
 
 function StructuredData({ breadcrumb }: { breadcrumb: BreadcrumbList }): JSX.Element {
   const breadcrumbJson = useMemo(() => JSON.stringify(breadcrumb), [breadcrumb]);

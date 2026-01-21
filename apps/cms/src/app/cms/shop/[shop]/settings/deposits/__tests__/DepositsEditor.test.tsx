@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import DepositsEditor from "../DepositsEditor";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
-const parseDepositForm = jest.fn(() => ({
+const parseDepositForm = jest.fn((_formData: FormData) => ({
   data: { enabled: true, intervalMinutes: 5 },
 }));
 

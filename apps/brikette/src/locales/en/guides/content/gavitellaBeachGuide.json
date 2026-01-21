@@ -72,6 +72,32 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
+      "caption": "The two beach clubs share a narrow platform carved into the cliff."
+    },
+    "gavitellaClub": {
+      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
+      "caption": "La Gavitella's sunset dinners pair sea views with long aperitivi."
+    },
+    "oneFire": {
+      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
+      "caption": "One Fire is known for lively afternoons and a DJ-led sunset scene."
+    }
+  },
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Reserve in advance for both clubs; sunset slots and weekends sell out first.",
+    "Plan for 400+ steps down from Piazza San Gennaro and a steep return unless you take the interno shuttle.",
+    "Pack water shoes for the rocky platform and reef-safe sunscreen for late-afternoon sun."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "La Gavitella lounger set for two: €70–€100 depending on season.",
+    "One Fire day bed or cabana for two: €100–€180, often with a deposit in peak months.",
+    "Boat shuttle add-on (when available): €10–€20 per person each way."
+  ],
   "tipsTitle": "Quick tips",
   "tips": [
     "Use %LINK:positanoAmalfi|our Positano ↔ Amalfi transport guide% to plan the SITA ride to Piazza San Gennaro before you tackle the 400 steps down.",

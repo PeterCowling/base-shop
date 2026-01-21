@@ -1,14 +1,14 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import type { Mock } from "jest-mock";
+
 import { savePageDraft } from "../draft";
 
 jest.mock("@acme/types", () => ({
   historyStateSchema: { parse: (v: any) => v ?? {} },
-  pageSchema: { partial: () => ({ parse: (v: any) => v }) },
 }), { virtual: true });
 
 jest.mock("../../common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),
+  ensureAuthorized: jest.fn<Promise<{ user: { email: string } }>, []>().mockResolvedValue({ user: { email: "user@example.com" } }),
 }));
 
 jest.mock("../service", () => ({
@@ -21,8 +21,8 @@ jest.mock("ulid", () => ({ ulid: () => "generated-ulid" }));
 jest.mock("@acme/date-utils", () => ({ nowIso: () => "now" }));
 
 const service = jest.requireMock("../service") as {
-  getPages: Mock;
-  savePage: Mock;
+  getPages: Mock<any, any>;
+  savePage: Mock<any, any>;
 };
 
 describe("savePageDraft", () => {

@@ -1,19 +1,21 @@
 // src/routes/guides/off-season-long-stay-tips.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import type { GuideKey } from "@/routes.guides-helpers";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+
 import TableOfContents from "@/components/guides/TableOfContents";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const handle = { tags: ["digital-nomads", "off-season", "positano"] };
 

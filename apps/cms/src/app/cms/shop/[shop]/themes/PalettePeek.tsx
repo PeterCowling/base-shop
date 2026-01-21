@@ -1,9 +1,11 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/PalettePeek.tsx
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import { Popover, PopoverContent, PopoverTrigger } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+
 import MicroScenes from "../../../wizard/MicroScenes";
 
 interface Props {
@@ -47,7 +49,7 @@ export default function PalettePeek({ themes, value, onChange, hasWarnings = fal
       wrap
     >
       {themes.map((themeId, idx) => (
-        <Popover key={themeId} open={openIndex === idx} onOpenChange={(o) => setOpenIndex(o ? idx : null)}>
+        <Popover key={themeId} open={openIndex === idx} onOpenChange={(o: boolean) => setOpenIndex(o ? idx : null)}>
           <PopoverTrigger asChild>
             <button
               type="button"

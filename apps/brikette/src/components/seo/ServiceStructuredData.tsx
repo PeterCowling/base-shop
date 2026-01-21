@@ -1,8 +1,9 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/ServiceStructuredData.tsx
 import { memo, useMemo } from "react";
+import { usePathname } from "next/navigation";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { useLocation } from "react-router-dom";
 
 type MonetaryAmount = {
   price: string;
@@ -37,7 +38,7 @@ function ServiceStructuredData({
   url,
 }: Props): JSX.Element {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
 
   const json = useMemo(() => {
     const resolvedLang = inLanguage ?? lang;

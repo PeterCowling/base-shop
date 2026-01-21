@@ -1,5 +1,12 @@
 import type { Rule } from "eslint";
 
+interface RuleOptions {
+  /** Regex patterns to ignore (matched against string value) */
+  ignorePatterns?: string[];
+  /** Property names where string values are always ignored (e.g., displayName) */
+  ignoreProperties?: string[];
+}
+
 const MICROCOPY = new Set(
   [
     "ok",
@@ -89,6 +96,45 @@ function isTrivial(text: string): boolean {
   return false;
 }
 
+/** Common CSS utility helper function names */
+const CSS_HELPER_FUNCTIONS = new Set(["cn", "clsx", "classnames", "cx", "cva", "tv"]);
+
+/** Check if a string looks like CSS utility classes (space-separated kebab-case tokens) */
+function looksLikeCssClasses(value: string): boolean {
+  const tokens = value.trim().split(/\s+/);
+  // Must have at least one token
+  if (tokens.length === 0) return false;
+  // Each token should look like a CSS utility class (kebab-case, may include modifiers like hover:, md:, etc.)
+  // Pattern: optional modifiers (word:) followed by kebab-case identifiers with optional brackets/parentheses
+  const cssTokenPattern = /^(?:[a-z0-9]+:)*[a-z0-9_\-\[\]\(\)\/\.!]+$/i;
+  return tokens.every((token) => cssTokenPattern.test(token));
+}
+
+/** Check if node is inside a CSS helper function call like cn(), clsx(), etc. */
+function isInsideCssHelper(node: any): boolean {
+  let p: any = node.parent;
+  while (p) {
+    if (p.type === "CallExpression") {
+      const callee = p.callee;
+      if (callee?.type === "Identifier" && CSS_HELPER_FUNCTIONS.has(callee.name)) {
+        return true;
+      }
+    }
+    // Don't traverse past function boundaries
+    if (p.type === "FunctionExpression" || p.type === "ArrowFunctionExpression" || p.type === "FunctionDeclaration") {
+      break;
+    }
+    p = p.parent;
+  }
+  return false;
+}
+
+/** Default properties that are always non-user-facing */
+const DEFAULT_IGNORE_PROPERTIES = new Set([
+  "displayName", // React component displayName
+  "name",        // Function/class name assignments
+]);
+
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
@@ -98,20 +144,72 @@ const rule: Rule.RuleModule = {
       // Repo doc with concrete steps for adding keys and wiring t()
       url: "docs/i18n/add-translation-keys.md",
     },
-    schema: [],
+    schema: [
+      {
+        type: "object",
+        properties: {
+          ignorePatterns: {
+            type: "array",
+            items: { type: "string" },
+            description: "Regex patterns to ignore (matched against string value)",
+          },
+          ignoreProperties: {
+            type: "array",
+            items: { type: "string" },
+            description: "Additional property names where string values are always ignored",
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       hardcodedCopy:
         "Hardcoded copy detected. Move text into packages/i18n/src/<locale>.json and reference via t('key'). See docs/i18n/add-translation-keys.md. Exemptions are tech debt and only for non‑UI strings — they must include a ticket (// i18n-exempt -- ABC-123 [ttl=YYYY-MM-DD]) or they will be ignored.",
     },
   },
   create(context) {
+    const options: RuleOptions = context.options[0] ?? {};
+    const ignorePatternRegexes = (options.ignorePatterns ?? []).map((p) => new RegExp(p));
+    const ignoreProperties = new Set([
+      ...DEFAULT_IGNORE_PROPERTIES,
+      ...(options.ignoreProperties ?? []),
+    ]);
+
     const sc = (context as any).sourceCode || context.getSourceCode();
     const EXEMPT_FILE_RE = /i18n-exempt\s+file\s*--\s*([A-Z]{2,}-\d+)(?:[^\S\r\n]+ttl=\d{4}-\d{2}-\d{2})?/;
     const fileExempt = (sc.getAllComments?.() ?? []).some((c: any) => EXEMPT_FILE_RE.test(String(c.value || "")));
+
+    function isIgnoredByPattern(value: string): boolean {
+      return ignorePatternRegexes.some((re) => re.test(value));
+    }
+
+    function isIgnoredPropertyAssignment(node: any): boolean {
+      const parent = node.parent;
+      // Check for: Component.displayName = "Component"
+      if (parent?.type === "AssignmentExpression" && parent.left?.type === "MemberExpression") {
+        const propName = parent.left.property?.name;
+        if (propName && ignoreProperties.has(propName)) return true;
+      }
+      // Check for: { displayName: "Component" }
+      if (parent?.type === "Property" && parent.key?.type === "Identifier") {
+        const propName = parent.key.name;
+        if (propName && ignoreProperties.has(propName)) return true;
+      }
+      return false;
+    }
+
     return {
       Literal(node: any) {
         if (fileExempt) return;
         if (typeof node.value !== "string") return;
+        const strValue = String(node.value);
+
+        // Check configurable ignore patterns
+        if (isIgnoredByPattern(strValue)) return;
+
+        // Check if this is a property assignment we should ignore
+        if (isIgnoredPropertyAssignment(node)) return;
+
         // Ignore module specifiers in import/export declarations
         const p = node.parent;
         // Ignore directive prologues like "use client", "use server", "use strict"
@@ -141,17 +239,18 @@ const rule: Rule.RuleModule = {
         }
         // Heuristic: ignore CSS/utility-like strings in non-JSX contexts
         if (parent?.type !== "JSXAttribute") {
-          const s = String(node.value);
           // Ignore token-y strings without whitespace (e.g., bg-bg, text-foreground)
-          if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(s)) return;
-          if (s.startsWith("/") || /:\/\//.test(s)) return;
-          if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(s)) return; // MIME types
-          if (/^var\(--[a-z0-9\-]+\)$/i.test(s)) return;
-          if (/^(hsl|hsla|rgb|rgba)\(/i.test(s)) return;
-          if (/var\(/i.test(s)) return;
+          if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(strValue)) return;
+          if (strValue.startsWith("/") || /:\/\//.test(strValue)) return;
+          if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(strValue)) return; // MIME types
+          if (/^var\(--[a-z0-9\-]+\)$/i.test(strValue)) return;
+          if (/^(hsl|hsla|rgb|rgba)\(/i.test(strValue)) return;
+          if (/var\(/i.test(strValue)) return;
+          // Ignore space-separated CSS class strings inside cn(), clsx(), etc.
+          if (isInsideCssHelper(node) && looksLikeCssClasses(strValue)) return;
         }
         if (isWrappedByT(node)) return;
-        if (isTrivial(String(node.value))) return;
+        if (isTrivial(strValue)) return;
         context.report({ node, messageId: "hardcodedCopy" });
       },
       JSXText(node: any) {
@@ -160,6 +259,8 @@ const rule: Rule.RuleModule = {
         if (hasExemptComment(context, node)) return;
         const t = raw.replace(/\s+/g, " ").trim();
         if (!t) return;
+        // Check configurable ignore patterns
+        if (isIgnoredByPattern(t)) return;
         // JSXText cannot be wrapped by t() directly here; allow trivial/microcopy only
         if (isTrivial(t)) return;
         context.report({ node, messageId: "hardcodedCopy" });

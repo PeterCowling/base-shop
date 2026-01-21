@@ -1,5 +1,6 @@
-import React from "react";
-import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
+import type React from "react";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import StepShopPage from "../src/app/cms/configurator/steps/StepShopPage";
 
 // Router mock

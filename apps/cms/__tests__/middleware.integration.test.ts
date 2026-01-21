@@ -1,15 +1,22 @@
 // apps/cms/__tests__/middleware.integration.test.ts
 /* eslint-env jest */
 
-import type { JWT } from "next-auth/jwt";
-import { middleware } from "../src/middleware";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
+/* -------------------------------------------------------------------------- */
+/* Typed handles to the mocked functions                                      */
+/* -------------------------------------------------------------------------- */
+import { NextResponse } from "next/server";
+
 import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@acme/auth/rbac";
+
+import { middleware } from "../src/middleware";
+
+import type { JWT } from "~test/mocks/next-auth-jwt";
+import { __resetMockToken,__setMockToken } from "~test/mocks/next-auth-jwt";
 
 /* -------------------------------------------------------------------------- */
 /* Mock logger to silence log output during tests.                            */
 /* -------------------------------------------------------------------------- */
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   __esModule: true,
   logger: {
     info: jest.fn(),
@@ -17,6 +24,9 @@ jest.mock("@acme/shared-utils", () => ({
     warn: jest.fn(),
     error: jest.fn(),
   },
+}));
+jest.mock("@acme/lib/context", () => ({
+  __esModule: true,
   withRequestContext: jest.fn((_ctx, fn) => fn()),
 }));
 
@@ -68,11 +78,6 @@ jest.mock("next/server", () => ({
     ),
   },
 }));
-
-/* -------------------------------------------------------------------------- */
-/* Typed handles to the mocked functions                                      */
-/* -------------------------------------------------------------------------- */
-import { NextResponse } from "next/server";
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;

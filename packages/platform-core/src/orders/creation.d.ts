@@ -1,7 +1,10 @@
 import "server-only";
+
 import type { Order } from "./utils";
+
 export declare function listOrders(shop: string): Promise<Order[]>;
 export declare const readOrders: typeof listOrders;
+export declare function getOrderById(shop: string, orderId: string): Promise<Order | null>;
 export declare type AddOrderInput = {
   orderId?: string;
   shop: string;

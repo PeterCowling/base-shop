@@ -12,11 +12,12 @@
  * @see docs/plans/integrated-secrets-workflow-plan.md
  */
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-04: CLI script with controlled paths derived from app options */
-/* eslint-disable ds/no-hardcoded-copy -- SEC-04: CLI-only script, not user-facing UI */
+ 
 import { execSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { validateDeployEnv, isPlaceholder } from "@config/env-schema";
+import { dirname,join } from "node:path";
+
+import { isPlaceholder,validateDeployEnv } from "@acme/config/env-schema";
 
 export interface MaterializeOptions {
   /** App directory, e.g., "apps/shop-acme" */

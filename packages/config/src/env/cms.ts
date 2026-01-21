@@ -1,4 +1,4 @@
-import { cmsEnvSchema, type CmsEnv } from "./cms.schema.js";
+import { type CmsEnv,cmsEnvSchema } from "./cms.schema.js";
 
 const parsed = cmsEnvSchema.safeParse(process.env);
 if (!parsed.success) {

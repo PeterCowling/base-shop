@@ -1,7 +1,8 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { PendingUser } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import AccountRequestsPanel, {
   type ApproveAction,
 } from "../account-requests/AccountRequestsPanel.client";

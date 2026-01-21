@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import { TranslationsProvider, useTranslations } from "../Translations";
 
 function Greeter() {

@@ -1,9 +1,11 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import type { Locale } from "@acme/i18n/locales";
-import PageToolbar from "../PageToolbar";
+
 import { getLegacyPreset } from "../../../../utils/devicePresets";
 import HistoryControls from "../HistoryControls";
+import PageToolbar from "../PageToolbar";
 
 describe("PageToolbar", () => {
   it("responds to keyboard shortcuts", () => {

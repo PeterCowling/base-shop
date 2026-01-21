@@ -5,35 +5,35 @@
 export const version = "0.0.0-dev";
 
 // Page and history types/schemas re-exported from @acme/types.
+export type {
+  EditorFlags,
+  HistoryState,
+  Page,
+  PageComponent,
+} from "@acme/types";
 export {
-  pageSchema,
   historyStateSchema,
   // Re-exporting the component schema keeps callers independent of
   // the underlying @acme/types layout.
   pageComponentSchema,
-} from "@acme/types";
-export type {
-  Page,
-  PageComponent,
-  HistoryState,
-  EditorFlags,
+  pageSchema,
 } from "@acme/types";
 
 // Shared history reducers and helpers.
-export { commit, undo, redo } from "./history";
+export { commit, redo,undo } from "./history";
+export type { PageDiffEntry } from "./pageHistory";
 export {
   diffPage,
   mergeDefined,
   parsePageDiffHistory,
 } from "./pageHistory";
-export type { PageDiffEntry } from "./pageHistory";
 
 // Template descriptor contracts and scaffolding helpers.
 export type {
+  ScaffoldContext,
+  TemplateDescriptor,
   TemplateKind,
   TemplateOrigin,
-  TemplateDescriptor,
-  ScaffoldContext,
 } from "./templates";
 export {
   cloneTemplateComponents,
@@ -48,5 +48,5 @@ export {
 } from "./runtime/exportComponents";
 
 // Shared block registry contracts used by CMS and runtime apps.
-export * from "./blocks/registry";
 export { coreBlockDescriptors } from "./blocks/core-blocks";
+export * from "./blocks/registry";

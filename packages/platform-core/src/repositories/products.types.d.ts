@@ -1,4 +1,5 @@
 import type { ProductPublication } from "../products/index";
+
 export interface ProductsRepository {
     read<T = ProductPublication>(shop: string): Promise<T[]>;
     write<T = ProductPublication>(shop: string, catalogue: T[]): Promise<void>;

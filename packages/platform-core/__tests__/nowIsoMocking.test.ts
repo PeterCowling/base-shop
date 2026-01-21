@@ -10,7 +10,7 @@ jest.mock("../src/db", () => ({
 
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
 
-jest.mock("@date-utils", () => ({ nowIso: jest.fn(() => "2000-01-01T00:00:00.000Z") }));
+jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn(() => "2000-01-01T00:00:00.000Z") }));
 
 describe("nowIso mocking", () => {
   it("uses mocked nowIso in addOrder", async () => {

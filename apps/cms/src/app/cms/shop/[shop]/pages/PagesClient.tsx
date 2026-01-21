@@ -1,15 +1,16 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/PagesClient.tsx
 "use client";
 
+import { useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
   useSuspenseQuery,
 } from "@tanstack/react-query";
+
+import { fetchJson } from "@acme/lib/http";
 import type { Page } from "@acme/types";
 import { PagesTable } from "@acme/ui/components/cms";
-import { fetchJson } from "@acme/shared-utils";
-import { useState } from "react";
 
 interface Props {
   shop: string;

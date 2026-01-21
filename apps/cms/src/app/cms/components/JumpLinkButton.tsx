@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback } from "react";
-import { Button } from "@/components/atoms/shadcn";
 import type { ComponentProps } from "react";
+import { useCallback } from "react";
+
+import { Button } from "@/components/atoms/shadcn";
 
 export type JumpLinkButtonProps = ComponentProps<typeof Button> & {
   targetId: string;

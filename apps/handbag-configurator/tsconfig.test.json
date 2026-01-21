@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["@testing-library/jest-dom", "jest", "node"],
+    "noEmit": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": false,
+    "rootDir": "../..",
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["apps/handbag-configurator/src/*"],
+      "@acme/product-configurator": ["packages/product-configurator/src/index.ts"],
+      "@acme/product-configurator/*": ["packages/product-configurator/src/*"],
+      "@acme/ui/atoms": ["packages/ui/dist/components/atoms/index.d.ts"],
+      "@acme/ui/atoms/*": ["packages/ui/dist/components/atoms/*"],
+      "@i18n": ["packages/i18n/dist/index.d.ts"],
+      "@i18n/*": ["packages/i18n/dist/*"],
+      "@acme/i18n": ["packages/i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["packages/i18n/dist/*"],
+      "three-stdlib": ["apps/handbag-configurator/src/types/three-stdlib.d.ts"]
+    }
+  },
+  "include": ["src/**/*", "__tests__/**/*", "../../packages/product-configurator/src/**/*"]
+}
+

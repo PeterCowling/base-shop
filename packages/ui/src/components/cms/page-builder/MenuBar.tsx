@@ -1,7 +1,9 @@
 "use client";
-import type { Editor } from "@tiptap/react";
-import { Button } from "../../atoms/shadcn";
 import { useMemo, useState } from "react";
+import type { Editor } from "@tiptap/react";
+
+import { Button } from "../../atoms/shadcn";
+
 import LinkModal from "./LinkModal";
 
 function MenuBar({ editor }: { editor: Editor | null }) {

@@ -2,15 +2,15 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+
 import {
-  Dialog,
+ Button,   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../atoms/shadcn";
-import { Button, Input } from "../../atoms/shadcn";
+Input } from "../../atoms/shadcn";
 
 export type FocalPoint = { x: number; y: number }; // 0..1
 

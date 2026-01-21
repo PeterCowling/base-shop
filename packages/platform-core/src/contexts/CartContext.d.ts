@@ -1,6 +1,9 @@
-import { type CartState } from "../cart";
-import type { SKU } from "@acme/types";
 import { type ReactNode } from "react";
+
+import type { SKU } from "@acme/types";
+
+import { type CartState } from "../cart";
+
 type Action = {
     type: "add";
     sku: SKU;

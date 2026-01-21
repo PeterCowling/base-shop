@@ -1,4 +1,5 @@
 import type { Locale, TranslatableText } from "@acme/types";
+
 type TFunc = (key: string, params?: Record<string, unknown>) => string;
 /**
  * Resolve a translatable value for the given locale.

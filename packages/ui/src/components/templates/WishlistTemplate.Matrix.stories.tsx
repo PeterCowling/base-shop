@@ -1,9 +1,11 @@
 // packages/ui/src/components/templates/WishlistTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
+
+import { makeStateStory } from '../../story-utils/createStories';
+
 import type { WishlistItem } from './WishlistTemplate';
 import { WishlistTemplate } from './WishlistTemplate';
-import { makeStateStory } from '../../story-utils/createStories';
 
 const items: WishlistItem[] = [
   {

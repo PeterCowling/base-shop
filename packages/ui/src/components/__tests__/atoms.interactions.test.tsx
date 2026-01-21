@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { FileSelector } from "../atoms/FileSelector";
-import ThemeToggle from "../ThemeToggle";
 import { Tag } from "../atoms/Tag";
+import ThemeToggle from "../ThemeToggle";
 
 let setThemeMock: jest.Mock | undefined;
 

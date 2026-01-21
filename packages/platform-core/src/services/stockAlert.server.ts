@@ -1,12 +1,15 @@
 import "server-only";
 
-import { loadCoreEnv } from "@acme/config/env/core";
-import { type EmailService, getEmailService } from "./emailService";
-import type { InventoryItem } from "../types/inventory";
 import { z } from "zod";
+
+import { loadCoreEnv } from "@acme/config/env/core";
+
 import { variantKey } from "../repositories/inventory.server";
 import { getShopSettings } from "../repositories/settings.server";
-import { readFromShop, writeToShop, ensureShopDir } from "../utils/safeFs";
+import type { InventoryItem } from "../types/inventory";
+import { ensureShopDir,readFromShop, writeToShop } from "../utils/safeFs";
+
+import { type EmailService, getEmailService } from "./emailService";
 
 
 const coreEnv = loadCoreEnv();

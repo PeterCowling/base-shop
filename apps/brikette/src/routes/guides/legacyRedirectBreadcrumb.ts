@@ -1,11 +1,11 @@
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import { BASE_URL } from "@/config/site";
 import appI18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import { translateStringWithFallback } from "@/routes/guides/guide-seo/translations";
 import type { Translator } from "@/routes/guides/guide-seo/types";
+import { getSlug } from "@/utils/slug";
 
 export function resolveLabel({
   lang,

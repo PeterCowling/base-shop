@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { MarketingOverviewHero } from './MarketingOverviewHero';
 
 describe('MarketingOverviewHero (CT)', { tags: ['basics'] }, () => {

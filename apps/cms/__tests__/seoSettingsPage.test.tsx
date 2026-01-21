@@ -1,9 +1,12 @@
 // Disable MSW - this test mocks all dependencies with Jest
-process.env.DISABLE_MSW = "1";
-
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+import SeoSettingsPage from "../src/app/cms/shop/[shop]/settings/seo/page";
+
+process.env.DISABLE_MSW = "1";
 
 const getSettings = jest.fn();
 const listEvents = jest.fn();
@@ -25,7 +28,7 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/AiFeedPanel", () => ({
 }));
 
 const seoAuditMock = jest.fn((props: any) => <div data-cy="seo-audit" />);
-const seoProgressMock = jest.fn(() => <div />);
+const seoProgressMock = jest.fn((_props?: any) => <div />);
 jest.mock("../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel", () => ({
   __esModule: true,
   default: (props: any) => seoProgressMock(props),
@@ -49,8 +52,6 @@ jest.mock("next/dynamic", () => {
     return () => null;
   };
 });
-
-import SeoSettingsPage from "../src/app/cms/shop/[shop]/settings/seo/page";
 
 describe("SeoSettingsPage", () => {
   it("renders panels with props", async () => {

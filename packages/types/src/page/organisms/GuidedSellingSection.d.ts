@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export type GuidedQuestion = {
     id: string;
     label: string;

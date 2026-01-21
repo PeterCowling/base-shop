@@ -1,13 +1,15 @@
 import "@acme/zod-utils/initZod";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+
 import { NextResponse } from "next/server";
+import { ensureRole } from "@cms/actions/common/auth";
 import { promises as fs } from "fs";
 import path from "path";
+import { z } from "zod";
+
 import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/platform-core/shops";
-import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 /**
@@ -16,12 +18,8 @@ import { writeJsonFile } from "@/lib/server/jsonIO";
  * Seeds categories and product CSV for a shop.
  */
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "cms.errors.forbidden" }, { status: 403 });
-  }
-
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const schema = z
       .object({
         id: z

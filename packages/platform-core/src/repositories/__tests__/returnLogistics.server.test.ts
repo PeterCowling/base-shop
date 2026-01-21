@@ -1,5 +1,7 @@
 import { promises as fs } from "fs";
 
+import { createReturnLabel,readReturnLogistics } from "../returnLogistics.server";
+
 jest.mock("../../dataRoot", () => ({
   resolveDataRoot: jest.fn(() => "/data/root/shops"),
 }));
@@ -11,8 +13,6 @@ jest.mock("fs", () => ({
 }));
 
 const readFile = fs.readFile as jest.MockedFunction<typeof fs.readFile>;
-
-import { readReturnLogistics, createReturnLabel } from "../returnLogistics.server";
 
 describe("return logistics repository", () => {
   afterEach(() => {

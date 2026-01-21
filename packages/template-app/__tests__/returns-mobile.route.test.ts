@@ -1,5 +1,14 @@
-import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
+import { setReturnTracking } from "@acme/platform-core/orders";
+import { markReturned } from "@acme/platform-core/repositories/rentalOrders.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import {
+  getReturnBagAndLabel,
+  getReturnLogistics,
+} from "@acme/platform-core/returnLogistics";
 
 // Ensure Response.json exists for NextResponse
 const ResponseWithJson = Response as unknown as typeof Response & {
@@ -30,15 +39,6 @@ jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
 jest.mock("@acme/platform-core/orders", () => ({
   setReturnTracking: jest.fn(),
 }));
-
-import { readShop } from "@acme/platform-core/repositories/shops.server";
-import {
-  getReturnLogistics,
-  getReturnBagAndLabel,
-} from "@acme/platform-core/returnLogistics";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { markReturned } from "@acme/platform-core/repositories/rentalOrders.server";
-import { setReturnTracking } from "@acme/platform-core/orders";
 
 const makeReq = (body: object) =>
   ({

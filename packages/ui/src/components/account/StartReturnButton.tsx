@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import enMessages from "@acme/i18n/en.json";
 

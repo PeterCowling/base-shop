@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { CartProvider, useCart } from "@/contexts/cart/CartContext";
 
 const STORAGE_KEY = "cochlearfit:cart";

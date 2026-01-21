@@ -5,12 +5,13 @@ import { Buffer } from "node:buffer";
 import { mkdir, readFile } from "node:fs/promises";
 import { basename, extname, resolve } from "node:path";
 import readline from "node:readline";
+
 import type {
+  RunnerArtifact,
   RunnerClaimResponse,
   RunnerCompleteRequest,
-  RunnerJob,
-  RunnerArtifact,
   RunnerError,
+  RunnerJob,
 } from "../src/lib/pipeline/runner-contract";
 
 const args = new Set(process.argv.slice(2));

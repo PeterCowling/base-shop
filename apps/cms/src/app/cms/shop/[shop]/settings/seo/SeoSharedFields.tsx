@@ -1,7 +1,8 @@
 "use client";
 
-import { Input, Textarea } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import { Input, Textarea } from "@/components/atoms/shadcn";
 
 import type { SeoData } from "./useSeoEditor";
 
@@ -30,7 +31,7 @@ export function SeoSharedFields({ draft, updateField, errorFor }: SeoSharedField
         <Textarea
           rows={3}
           value={draft.description}
-          onChange={(event) => updateField("description", event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => updateField("description", event.target.value)}
         />
         {errorFor("description") && (
           <span className="text-xs text-destructive">{errorFor("description")}</span>

@@ -1,5 +1,6 @@
-import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 import i18n from "@/i18n";
+import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
+
 import type { Translator } from "../../types";
 
 /** Probe for any localized structured guide content (intro/sections/tips/warnings). */

@@ -1,13 +1,14 @@
-import clsx from "clsx";
 import {
+  type KeyboardEvent as ReactKeyboardEvent,
   memo,
+  type MouseEvent,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type KeyboardEvent as ReactKeyboardEvent,
-  type MouseEvent,
 } from "react";
+import clsx from "clsx";
+
 import { ModalPanel } from "./primitives";
 import type { LocationModalCopy } from "./types";
 

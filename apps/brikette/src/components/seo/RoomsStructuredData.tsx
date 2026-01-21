@@ -14,11 +14,11 @@ import { memo, useMemo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { getSlug } from "@/utils/slug";
-import { getRoomsCatalog, resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import type { LocalizedRoom } from "@/rooms/types";
+import { getRoomsCatalog, resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema/builders";
 import { WEBSITE_ID } from "@/utils/schema/types";
+import { getSlug } from "@/utils/slug";
 
 /** Constant slug used to build the @id for every offer. */
 const OFFER_PREFIX = `${BASE_URL}#offer-`;

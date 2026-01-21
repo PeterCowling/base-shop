@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 type Props = {
     skus: SKU[];
     columns?: number;

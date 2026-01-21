@@ -1,6 +1,8 @@
-import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+import { checkShopExists } from "@acme/platform-core";
+
 import EditPreviewPage from "./EditPreviewPage";
 
 export const metadata: Metadata = {

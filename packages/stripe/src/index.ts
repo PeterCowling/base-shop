@@ -1,8 +1,9 @@
 // packages/stripe/src/index.ts
 import "server-only";
 
-import { coreEnv } from "@acme/config/env/core";
 import Stripe from "stripe";
+
+import { coreEnv } from "@acme/config/env/core";
 
 /**
  * Edge-friendly Stripe client with safe fallbacks for tests/dev.
@@ -56,6 +57,10 @@ function createMock(): Stripe {
     subscriptions: {
       async del(id: string) {
         console.info("[stripe-mock] subscriptions.del", id); // i18n-exempt: developer debug log label
+        return { id, status: "canceled" } as unknown as Stripe.Subscription;
+      },
+      async cancel(id: string) {
+        console.info("[stripe-mock] subscriptions.cancel", id); // i18n-exempt: developer debug log label
         return { id, status: "canceled" } as unknown as Stripe.Subscription;
       },
     },

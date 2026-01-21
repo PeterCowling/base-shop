@@ -5,9 +5,11 @@ import {
   createShopFromConfig,
   type DeployStatusBase,
 } from "@acme/platform-core/createShop";
-import type { ShopConfig } from "@acme/types";
 import { prisma } from "@acme/platform-core/db";
+import type { ShopConfig } from "@acme/types";
+
 import { readRbac, writeRbac } from "../lib/server/rbacStore";
+
 import { ensureAuthorized } from "./common/auth";
 
 export async function createNewShop(

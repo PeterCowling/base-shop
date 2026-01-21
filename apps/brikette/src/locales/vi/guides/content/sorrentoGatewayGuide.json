@@ -1,0 +1,28 @@
+{
+  "seo": {
+    "title": "Sorrento: cửa ngõ đến Bờ biển Amalfi",
+    "description": "Vì sao nên bắt đầu ở Sorrento và cách đi tiếp đến Positano và Capri."
+  },
+  "linkLabel": "Sorrento: cửa ngõ đến Bờ biển Amalfi",
+  "intro": [
+    "Sorrento là điểm khởi hành thuận tiện với nhiều chuyến xe buýt và phà tới Bờ biển Amalfi, cùng các tuyến tàu dễ dàng quay lại Naples và Pompeii."
+  ],
+  "sections": [
+    {
+      "id": "why-sorrento",
+      "title": "Vì sao đến qua Sorrento",
+      "body": [
+        "Tàu từ Naples đến thường xuyên; chỗ ở nhiều và thường rẻ hơn so với Positano.",
+        "Từ trung tâm, xe buýt và phà theo mùa kết nối tới Positano và Amalfi."
+      ]
+    },
+    {
+      "id": "onward-connections",
+      "title": "Kết nối tiếp theo",
+      "body": [
+        "Xe buýt SITA chạy quanh năm tới Positano và Amalfi; mua vé trước khi lên xe.",
+        "Mùa cao điểm có phà đi thẳng Positano — cảnh đẹp và đỡ phải leo nhiều bậc thang khi mang hành lý."
+      ]
+    }
+  ]
+}

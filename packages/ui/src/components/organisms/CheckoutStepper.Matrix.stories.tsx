@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/CheckoutStepper.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { CheckoutStepper } from './CheckoutStepper';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { CheckoutStepper } from './CheckoutStepper';
 
 const steps = ['Cart', 'Shipping', 'Payment', 'Review'];
 

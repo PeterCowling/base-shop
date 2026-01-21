@@ -1,7 +1,8 @@
 // src/routes/guides/guide-seo/useStructuredTocItems.ts
 import { useMemo } from "react";
+
 import { normalizeGuideToc } from "./toc";
-import type { GuideSeoTemplateContext, TocItem, GuideSeoTemplateProps } from "./types";
+import type { GuideSeoTemplateContext, GuideSeoTemplateProps,TocItem } from "./types";
 
 export function useStructuredTocItems(params: {
   context: GuideSeoTemplateContext;

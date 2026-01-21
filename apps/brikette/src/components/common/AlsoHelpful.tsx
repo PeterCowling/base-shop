@@ -1,16 +1,17 @@
 // src/components/common/AlsoHelpful.tsx
 import { memo, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import clsx from "clsx";
+
+import type { GuideSection } from "@/data/guides.index";
+import type { AppLanguage } from "@/i18n.config";
+import { guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type { TFunction } from "@/utils/i18nSafe";
+import { getNamespaceTranslator, getStringWithFallback } from "@/utils/i18nSafe";
+import { relatedGuidesByTags } from "@/utils/related";
 import { getSlug } from "@/utils/slug";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { guideHref, type GuideKey } from "@/routes.guides-helpers";
-import type { AppLanguage } from "@/i18n.config";
-import { relatedGuidesByTags } from "@/utils/related";
-import type { GuideSection } from "@/data/guides.index";
-import clsx from "clsx";
-import { getNamespaceTranslator, getStringWithFallback } from "@/utils/i18nSafe";
-import type { TFunction } from "@/utils/i18nSafe";
 
 function buildSeoCta(prefix: string, subject: string): string {
   const cleanedSubject = subject.replace(/→/g, " ").replace(/\s+/g, " ").trim();
@@ -264,8 +265,8 @@ function AlsoHelpful({
               return (
                 <li key={`${key}-${index}`} className="h-full">
                   <Link
-                    to={guideHref(lang, key)}
-                    prefetch="intent"
+                    href={guideHref(lang, key)}
+                    prefetch={true}
                     className={clsx(CARD_SHARED_CLASSES, STANDARD_CARD_VARIANTS)}
                     aria-label={ariaLabel}
                   >
@@ -303,8 +304,8 @@ function AlsoHelpful({
               return (
                 <li key="rooms" className="h-full">
                   <Link
-                    to={`/${lang}/${getSlug("rooms", lang)}`}
-                    prefetch="intent"
+                    href={`/${lang}/${getSlug("rooms", lang)}`}
+                    prefetch={true}
                     className={clsx(CARD_SHARED_CLASSES, FEATURED_CARD_VARIANTS)}
                     aria-label={roomsAriaLabel}
                   >

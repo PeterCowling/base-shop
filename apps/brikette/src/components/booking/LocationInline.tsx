@@ -2,8 +2,9 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng, FallbackLngObjList } from "i18next";
-import { useModal } from "@/context/ModalContext";
 import { Bus, MapPin } from "lucide-react";
+
+import { useModal } from "@/context/ModalContext";
 
 function LocationInline({ lang }: { lang?: string }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;

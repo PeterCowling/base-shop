@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ShowcaseSectionComponent extends PageComponentBase {
     type: "ShowcaseSection";
     preset?: "featured" | "new" | "bestsellers" | "clearance" | "limited";

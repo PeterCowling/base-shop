@@ -1,9 +1,10 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@acme/ui/components/atoms/shadcn";
+import { type ChangeEvent, type FormEvent,useState } from "react";
 import { updateLateFee } from "@cms/actions/shops.server";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import { Button, Checkbox, Input } from "@acme/ui/components/atoms/shadcn";
 
 interface Props {
   shop: string;

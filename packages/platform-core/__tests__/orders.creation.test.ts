@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { addOrder, listOrders, getOrdersForCustomer } from "../src/orders";
+import { addOrder, getOrdersForCustomer,listOrders } from "../src/orders";
 
 jest.mock("../src/db", () => ({
   prisma: {

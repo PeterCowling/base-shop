@@ -1,10 +1,10 @@
+import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
+
 jest.mock("@sendgrid/mail", () => {
   const setApiKey = jest.fn();
   const send = jest.fn();
   return { __esModule: true, default: { setApiKey, send }, setApiKey, send };
 });
-
-import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
 
 describe("SendgridProvider send – config edge cases", () => {
   const getSgMail = createSendgridTestHarness();
@@ -18,7 +18,7 @@ describe("SendgridProvider send – config edge cases", () => {
 
   it("warns when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const warn = jest.spyOn(logger, "warn").mockImplementation(() => undefined as any);
     const sgMail = getSgMail();
     sgMail.send.mockResolvedValueOnce(undefined);

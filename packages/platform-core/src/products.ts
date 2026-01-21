@@ -1,13 +1,14 @@
 // Compat facade for product lookups used by both UI and server.
 /* Broad types on purpose; tighten when real models land. */
-export type { Locale, ProductPublication } from "@acme/types";
-
 // Pull in the real product dataset and helpers. This keeps existing imports
 // like `@acme/platform-core/products` working while ensuring the in-memory list
 // actually contains catalogue data.
 import type { SKU as BaseSKU } from "@acme/types";
-import * as base from "./products/index";
+
 import { defaultFilterMappings } from "./defaultFilterMappings";
+import * as base from "./products/index";
+
+export type { Locale, ProductPublication } from "@acme/types";
 
 /**
  * Compatibility SKU type that allows optional `sku` field for legacy access.

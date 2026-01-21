@@ -1,0 +1,2 @@
+{ "minAge": 18, "message": "You must be 18+ to continue.", "confirmLabel": "I am over 18", "storageKey": "age-gate", "rememberDays": 30 }
+

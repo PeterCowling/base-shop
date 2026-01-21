@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface CheckoutSectionComponent extends PageComponentBase {
     type: "CheckoutSection";
     locale?: string;

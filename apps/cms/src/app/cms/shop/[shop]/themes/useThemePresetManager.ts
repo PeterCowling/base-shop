@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { type ChangeEvent,useState } from "react";
+
 import { useThemePresets } from "./useThemePresets";
-import { patchShopTheme } from "../../../wizard/services/patchTheme";
 
 interface Options {
   shop: string;
@@ -47,21 +47,9 @@ export function useThemePresetManager({
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newTheme = e.target.value;
-    const nextDefaults = tokensByThemeState[newTheme] ?? {};
     setTheme(newTheme);
     setOverrides({});
-    setThemeDefaults(nextDefaults);
-    void (async () => {
-      try {
-        await patchShopTheme(shop, {
-          themeId: newTheme,
-          themeOverrides: {},
-          themeDefaults: nextDefaults,
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    setThemeDefaults(tokensByThemeState[newTheme]);
   };
 
   return {
@@ -79,3 +67,4 @@ export function useThemePresetManager({
     handleThemeChange,
   };
 }
+

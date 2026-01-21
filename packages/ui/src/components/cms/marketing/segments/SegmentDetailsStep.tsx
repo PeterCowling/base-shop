@@ -1,7 +1,10 @@
 import type { FormEvent } from "react";
-import { Button, Card, CardContent, Input, Textarea } from "../../../atoms/shadcn";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Card, CardContent, Input, Textarea } from "../../../atoms/shadcn";
 import type { ValidationErrors } from "../shared";
+
 import type { SegmentDefinition } from "./types";
 
 interface SegmentDetailsStepProps {

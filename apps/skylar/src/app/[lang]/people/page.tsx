@@ -2,9 +2,9 @@ import PageShell from "@/components/PageShell";
 import PeopleCard from "@/components/PeopleCard";
 import { Grid } from "@/components/primitives/Grid";
 import { PEOPLE } from "@/data/people";
-import { createTranslator, getMessages } from "@/lib/messages";
-import { LOCALES, getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
 import { joinClasses } from "@/lib/joinClasses";
+import { getLocaleFromParams, type LangRouteParams, type Locale,LOCALES } from "@/lib/locales";
+import { createTranslator, getMessages } from "@/lib/messages";
 
 export default async function PeoplePage({ params }: { params?: Promise<LangRouteParams> }) {
   const resolvedParams = params ? await params : undefined;

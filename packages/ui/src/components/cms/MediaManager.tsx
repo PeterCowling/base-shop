@@ -1,14 +1,15 @@
 // packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
-import { memo, ReactElement } from "react";
+import { memo, type ReactElement } from "react";
+
 import type { MediaItem } from "@acme/types";
 
 import MediaDetailsPanel, {
   type MediaDetailsFormValues,
 } from "./media/details/MediaDetailsPanel";
-import MediaManagerView from "./media/MediaManagerView";
 import { useMediaManagerState } from "./media/hooks/useMediaManagerState";
+import MediaManagerView from "./media/MediaManagerView";
 
 interface Props {
   shop: string;

@@ -1,6 +1,7 @@
 import React from "react";
+
 import AccountNavigation from "@acme/ui/components/account/AccountNavigation";
-import { OrderTrackingTimeline, type OrderStep } from "@acme/ui/components/organisms/OrderTrackingTimeline";
+import { type OrderStep,OrderTrackingTimeline } from "@acme/ui/components/organisms/OrderTrackingTimeline";
 
 const navItems = [
   { href: "/account/profile", label: "Profile" },

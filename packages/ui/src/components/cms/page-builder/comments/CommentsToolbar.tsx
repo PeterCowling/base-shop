@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 import {
   Button,
   DropdownMenu,
@@ -11,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "../../../atoms/shadcn";
 import type { PresencePeer } from "../collab/usePresence";
-import { useTranslations } from "@acme/i18n";
 
 export function CommentsToolbar(props: {
   peers: PresencePeer[];

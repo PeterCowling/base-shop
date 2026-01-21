@@ -1,6 +1,7 @@
-import type { ConfiguratorStep } from "../../types";
-import type { ConfiguratorState } from "../../../wizard/schema";
 import type { Environment } from "@acme/types";
+
+import type { ConfiguratorState } from "../../../wizard/schema";
+import type { ConfiguratorStep } from "../../types";
 
 export interface QuickStat {
   label: string;

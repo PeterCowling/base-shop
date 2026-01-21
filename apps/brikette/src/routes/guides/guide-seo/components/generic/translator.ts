@@ -1,6 +1,7 @@
-import i18n from "@/i18n";
 import type { TFunction } from "i18next";
+
 import type { GenericContentTranslator } from "@/components/guides/generic-content/types";
+import i18n from "@/i18n";
 
 export type GuidesTranslator = TFunction;
 

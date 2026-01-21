@@ -2,8 +2,9 @@ import "server-only";
 
 import { prisma } from "../db";
 import type { ProductPublication } from "../products/index";
-import type { ProductsRepository } from "./products.types";
+
 import { jsonProductsRepository } from "./products.json.server";
+import type { ProductsRepository } from "./products.types";
 
 function toProduct(record: unknown): ProductPublication {
   return record as ProductPublication;

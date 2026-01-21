@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
 import {
   Accordion,
   AccordionContent,
@@ -8,12 +9,11 @@ import {
   Card,
   CardContent,
 } from "@acme/ui/components/atoms";
-import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import MappingListField, {
   type MappingListFieldErrors,
 } from "../components/MappingListField";
-import { useTranslations } from "@acme/i18n";
+import type { MappingRowsController } from "../useShopEditorSubmit";
 
 export type ShopOverridesSectionErrors = Partial<
   Record<"filterMappings" | "priceOverrides", MappingListFieldErrors>

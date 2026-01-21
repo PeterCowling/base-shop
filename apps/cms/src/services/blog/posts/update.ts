@@ -1,7 +1,8 @@
 import {
-  updatePost as repoUpdatePost,
   slugExists,
+  updatePost as repoUpdatePost,
 } from "@acme/platform-core/repositories/blog.server";
+
 import { ensureAuthorized } from "../../../actions/common/auth";
 import {
   collectProductSlugs,
@@ -55,7 +56,7 @@ export async function updatePost(
     if (slug && (await slugExists(config, slug, id))) {
       return { error: "Slug already exists" }; // i18n-exempt: stable server error message expected by tests and UI
     }
-    await repoUpdatePost(config, id, {
+    await repoUpdatePost(config as any, id, {
       title,
       body,
       products,

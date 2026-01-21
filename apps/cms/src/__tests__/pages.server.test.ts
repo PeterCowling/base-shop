@@ -1,6 +1,12 @@
 /** @jest-environment node */
-import { historyStateSchema } from "@acme/types";
 import { coreEnv as env } from "@acme/config/env/core";
+import { historyStateSchema } from "@acme/types";
+
+import { createPage } from "../actions/pages/create";
+import { deletePage } from "../actions/pages/delete";
+import { savePageDraft } from "../actions/pages/draft";
+import * as service from "../actions/pages/service";
+import { updatePage } from "../actions/pages/update";
 
 const captureException = jest.fn();
 
@@ -32,12 +38,6 @@ jest.mock("@acme/platform-core/shops/health", () => ({
 }));
 
 jest.mock("@/utils/sentry.server", () => ({ captureException }));
-
-import { createPage } from "../actions/pages/create";
-import { savePageDraft } from "../actions/pages/draft";
-import { updatePage } from "../actions/pages/update";
-import { deletePage } from "../actions/pages/delete";
-import * as service from "../actions/pages/service";
 
 describe("pages.server", () => {
   beforeEach(() => {

@@ -1,11 +1,12 @@
 import { z } from "zod";
+
 import {
-  headerComponentSchema,
-  footerComponentSchema,
-  sectionComponentSchema,
-  multiColumnComponentSchema,
-  tabsComponentSchema,
   bindPageComponentSchema,
+  footerComponentSchema,
+  headerComponentSchema,
+  multiColumnComponentSchema,
+  sectionComponentSchema,
+  tabsComponentSchema,
 } from "../src/page/layouts";
 
 // bind a simple schema to satisfy layout child references

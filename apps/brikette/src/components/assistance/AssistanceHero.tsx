@@ -1,8 +1,10 @@
-import type { AppLanguage } from "@/i18n.config";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Cluster, Stack } from "@/components/ui/flex";
+
 import { Section } from "@acme/ui/atoms/Section";
+
+import { Cluster, Stack } from "@/components/ui/flex";
+import type { AppLanguage } from "@/i18n.config";
 
 const BOOKING_LINKS = {
   googleBusiness: "https://maps.google.com/maps?cid=17733313080460471781",
@@ -23,7 +25,7 @@ function AssistanceHero({ lang }: { lang: AppLanguage }) {
   >;
 
   return (
-    <Section padding="none" width="full" className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <Section padding="none" width="full" className="mx-auto mt-35 max-w-5xl px-4 sm:px-6 lg:px-8">
       <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-bg via-brand-bg to-brand-bg/70 p-8 shadow-sm dark:border-brand-text/10 dark:from-brand-text dark:via-brand-text/95 dark:to-brand-text/90">
         <Stack className="gap-6 lg:flex-row lg:items-start lg:justify-between">
           <Section as="div" padding="none" width="full" className="max-w-xl space-y-4">

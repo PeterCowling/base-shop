@@ -1,8 +1,9 @@
 // apps/cms/src/app/api/products/[shop]/slugs/route.ts
 
-import { NextResponse, type NextRequest } from "next/server";
-import { readRepo } from "@acme/platform-core/repositories/json.server";
+import { type NextRequest,NextResponse } from "next/server";
+
 import type { ProductPublication } from "@acme/platform-core/products";
+import { readRepo } from "@acme/platform-core/repositories/json.server";
 
 export async function POST(
   req: NextRequest,

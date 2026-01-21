@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { localeSchema } from "../Product";
+
 import type { Locale } from "../constants";
+import { localeSchema } from "../Product";
+
 export declare const pageComponentSchema: z.ZodTypeAny;
 export type PageComponent = z.infer<typeof pageComponentSchema>;
 export interface EditorFlags {
@@ -70,6 +72,6 @@ export interface Page {
 }
 export declare const pageSchema: z.ZodSchema<Page>;
 export { localeSchema };
-export { scaffoldSpecSchema } from "./ScaffoldSpec";
 export type { ScaffoldSpec } from "./ScaffoldSpec";
+export { scaffoldSpecSchema } from "./ScaffoldSpec";
 //# sourceMappingURL=page.d.ts.map

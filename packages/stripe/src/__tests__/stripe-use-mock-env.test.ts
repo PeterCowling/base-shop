@@ -13,7 +13,7 @@ describe("STRIPE_USE_MOCK environment variable", () => {
   it("uses real Stripe client when STRIPE_USE_MOCK='TRUE'", async () => {
     process.env = { ...OLD_ENV, STRIPE_USE_MOCK: "TRUE" } as NodeJS.ProcessEnv;
 
-    const StripeCtor = jest.fn().mockImplementation(() => ({}));
+    const StripeCtor = jest.fn().mockImplementation(() => ({})) as jest.Mock & { createFetchHttpClient: jest.Mock };
     const httpClient = {};
     StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue(httpClient);
 

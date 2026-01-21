@@ -20,12 +20,7 @@ export function useIsDesktop(options: UseIsDesktopOptions = {}): boolean {
   const { minWidth = DEFAULT_MIN_WIDTH } = options;
   const query = createQuery(minWidth);
 
-  const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-      return false;
-    }
-    return window.matchMedia(query).matches;
-  });
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") {

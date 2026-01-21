@@ -1,14 +1,25 @@
 import { jest } from '@jest/globals';
 
-const mockProduct = { id: "prod-1", slug: "prod-1", stock: 1 } as any;
+import { getProductById, getProductBySlug } from "../src/products";
+import * as base from "../src/products/index";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __productsFacadeTestMockProduct: any;
+}
+globalThis.__productsFacadeTestMockProduct = { id: "prod-1", slug: "prod-1", stock: 1 };
+
+const mockProduct = globalThis.__productsFacadeTestMockProduct;
 
 jest.mock("../src/products/index", () => ({
-  PRODUCTS: [mockProduct],
+  get PRODUCTS() {
+    return [globalThis.__productsFacadeTestMockProduct];
+  },
   getProductById: jest.fn((id: string) =>
-    id === mockProduct.id ? mockProduct : undefined,
+    id === globalThis.__productsFacadeTestMockProduct?.id ? globalThis.__productsFacadeTestMockProduct : undefined,
   ),
   getProductBySlug: jest.fn((slug: string) =>
-    slug === mockProduct.slug ? mockProduct : undefined,
+    slug === globalThis.__productsFacadeTestMockProduct?.slug ? globalThis.__productsFacadeTestMockProduct : undefined,
   ),
 }));
 
@@ -20,9 +31,6 @@ const serverMocks = {
 };
 
 jest.mock("../src/repositories/products.server", () => serverMocks);
-
-import { getProductById, getProductBySlug } from "../src/products";
-import * as base from "../src/products/index";
 
 describe("getProductById overloads", () => {
   beforeEach(() => {

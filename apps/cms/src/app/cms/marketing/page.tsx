@@ -1,6 +1,8 @@
-import { listShops } from "../../../lib/listShops";
-import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
+import { listShops } from "../../../lib/listShops";
+
 import MarketingOverview, {
   type CampaignAnalyticsItem,
   type MarketingSummary,

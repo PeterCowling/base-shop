@@ -1,7 +1,8 @@
-import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
-import StepShopPage from "../StepShopPage";
+import type React from "react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import { STORAGE_KEY } from "../../hooks/useConfiguratorPersistence";
+import StepShopPage from "../StepShopPage";
 
 // Mocks
 const push = jest.fn();

@@ -2,5 +2,5 @@ import { createGuideNormalisers } from "../guideNormalisers";
 
 const { normaliseSections, normaliseFaqs, normaliseToc } = createGuideNormalisers();
 
-export { normaliseSections, normaliseFaqs };
+export { normaliseFaqs,normaliseSections };
 export const normaliseTocItems = normaliseToc;

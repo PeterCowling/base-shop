@@ -1,12 +1,15 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/ThemePreview.tsx
 "use client";
-import { useState } from "react";
-import InlineColorPicker from "./InlineColorPicker";
-import WizardPreview from "../../../wizard/WizardPreview";
-import TokenInspector from "../../../wizard/TokenInspector";
-import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@acme/ui/utils/devicePresets";
 import type { CSSProperties } from "react";
+import { useState } from "react";
+
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
+import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
+import TokenInspector from "../../../wizard/TokenInspector";
+import WizardPreview from "../../../wizard/WizardPreview";
+
+import InlineColorPicker from "./InlineColorPicker";
 
 interface Picker {
   token: string;

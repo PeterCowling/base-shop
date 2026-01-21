@@ -2,6 +2,7 @@
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — primitives expose no user-facing copy
 
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
 
 /**
@@ -23,7 +24,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     </div>
   )
 );
-Table.displayName = "Table"; // i18n-exempt: component displayName
+Table.displayName = "Table";
 
 export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
@@ -34,7 +35,7 @@ export const TableHeader = React.forwardRef<
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
   <thead ref={ref} className={cn("bg-panel border-b border-border-2", className)} {...props} />
 ));
-TableHeader.displayName = "TableHeader"; // i18n-exempt: component displayName
+TableHeader.displayName = "TableHeader";
 
 export type TableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
@@ -43,7 +44,7 @@ export const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProp
     <tbody ref={ref} className={cn(className)} {...props} />
   )
 );
-TableBody.displayName = "TableBody"; // i18n-exempt: component displayName
+TableBody.displayName = "TableBody";
 
 export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
 
@@ -60,7 +61,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     />
   )
 );
-TableRow.displayName = "TableRow"; // i18n-exempt: component displayName
+TableRow.displayName = "TableRow";
 
 export type TableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>;
 
@@ -74,7 +75,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
     />
   )
 );
-TableHead.displayName = "TableHead"; // i18n-exempt: component displayName
+TableHead.displayName = "TableHead";
 
 export type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
 
@@ -86,4 +87,4 @@ export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
     </>
   )
 );
-TableCell.displayName = "TableCell"; // i18n-exempt: component displayName
+TableCell.displayName = "TableCell";

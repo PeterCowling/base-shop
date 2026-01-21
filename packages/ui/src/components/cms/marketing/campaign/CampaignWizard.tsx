@@ -1,29 +1,32 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button } from "../../../atoms/shadcn";
-import { Toast } from "../../../atoms";
+
+import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../../../utils/style";
+import { Toast } from "../../../atoms";
+import { Inline } from "../../../atoms/primitives";
+import { Button } from "../../../atoms/shadcn";
 import { StepIndicator } from "../shared";
-import type { StepDefinition } from "../shared/StepIndicator";
-import type { CampaignFormMessages } from "./CampaignForm";
-import CampaignForm from "./CampaignForm";
-import CampaignPreviewPanel from "./CampaignPreviewPanel";
-import CampaignSummaryCard from "./CampaignSummaryCard";
-import {
-  defaultCampaignValues,
-  getCampaignPreview,
-  type CampaignFormSectionId,
-  type CampaignFormValues,
-  type CampaignPreviewData,
-} from "./types";
 import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
   type ValidationErrors,
 } from "../shared";
-import { useTranslations } from "@acme/i18n";
-import { Inline } from "../../../atoms/primitives";
+import type { StepDefinition } from "../shared/StepIndicator";
+
+import type { CampaignFormMessages } from "./CampaignForm";
+import CampaignForm from "./CampaignForm";
+import CampaignPreviewPanel from "./CampaignPreviewPanel";
+import CampaignSummaryCard from "./CampaignSummaryCard";
+import {
+  type CampaignFormSectionId,
+  type CampaignFormValues,
+  type CampaignPreviewData,
+  defaultCampaignValues,
+  getCampaignPreview,
+} from "./types";
 
 export interface CampaignWizardMessages extends CampaignFormMessages {
   complete?: string;

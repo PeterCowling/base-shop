@@ -1,15 +1,14 @@
 import { formatTimestamp } from "@acme/date-utils";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
 import {
-  Table,
+ Button,Card, CardContent,  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/atoms/shadcn";
-import { Card, CardContent, Button } from "@/components/atoms/shadcn";
-import { listEvents } from "@acme/platform-core/repositories/analytics.server";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+  TableRow } from "@/components/atoms/shadcn";
 
 interface EventRecord {
   shop?: string;

@@ -1,7 +1,6 @@
 [
   {
     "id": "c2-001",
-    "title": { "en": "Demo A" },
     "price": 2999,
     "media": [],
     "row_version": 0,
@@ -12,12 +11,20 @@
     "forSale": true,
     "forRental": true,
     "availability": [
-      { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" }
-    ]
+      {
+        "from": "2025-01-01T00:00:00.000Z",
+        "to": "2025-12-31T23:59:59.000Z"
+      }
+    ],
+    "title": {
+      "type": "inline",
+      "value": {
+        "en": "Demo A"
+      }
+    }
   },
   {
     "id": "c2-002",
-    "title": { "en": "Demo B" },
     "price": 4999,
     "media": [],
     "row_version": 0,
@@ -28,7 +35,16 @@
     "forSale": true,
     "forRental": true,
     "availability": [
-      { "from": "2025-03-01T00:00:00.000Z", "to": "2025-11-30T23:59:59.000Z" }
-    ]
+      {
+        "from": "2025-03-01T00:00:00.000Z",
+        "to": "2025-11-30T23:59:59.000Z"
+      }
+    ],
+    "title": {
+      "type": "inline",
+      "value": {
+        "en": "Demo B"
+      }
+    }
   }
 ]

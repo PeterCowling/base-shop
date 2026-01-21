@@ -3,14 +3,14 @@
     "title": "Hostel Brikette → Fornillo Beach gåtur",
     "description": "Trin-for-trin-vejledning fra hostellet til Fornillo Beach samt tips til den hurtigste nedstigning og tur tilbage."
   },
-  "linkLabel": "Vandrehjem Brikette → Fornillo Beach vandreguide",
+  "linkLabel": "Hostel Brikette → Fornillo Beach vandreguide",
   "intro": [
     "At gå fra Hostel Brikette til Fornillo Beach tager omkring 15-25 minutter på en hovedsageligt trappetrinnet rute. Følg denne genvej for at blive på den hurtigste trappe og asfalterede bane hele vejen ned."
   ],
   "sections": [
     {
       "id": "plan-your-walk",
-      "title": "Plan your walk",
+      "title": "Planlæg din gåtur",
       "body": [
         "Tillad omkring 20 minutter at nå sandet; tiden varierer med fotostop og hvor komfortabel du er på Positanos trin.",
         "Google Maps sender lejlighedsvis gæster gennem langsommere omveje. Hold dig til denne rute for at følge hovedtrappen og glat kørebanen hele vejen."
@@ -30,7 +30,7 @@
     },
     {
       "id": "return-options",
-      "title": "Getting back up",
+      "title": "Tilbage op",
       "body": [
         "Efter svømning fortsætter du langs havnefronten til Spiaggia Grande og kør med den orange interne bus op til Chiesa Nuova, hvis du hellere vil springe stigningen over.",
         "Afhent busbilletter ved tabacchi/kiosk ved siden af ​​Chiesa Nuova-stoppestedet, før du går ud, eller spørg receptionen om at bekræfte lagerbeholdningen."
@@ -43,16 +43,16 @@
     "Planlæg ekstra strandtid med vores %LINK:fornilloBeachGuide|Fornillo strandguide% og %LINK:positanoBeaches|Positano strande oversigt%.",
     "Se, hvordan denne gåtur passer ind i en hel tur i Positano-rejseoversigten."
   ],
-  "faqsTitle": "Route FAQs",
+  "faqsTitle": "FAQ om ruten",
   "faqs": [
     {
-      "q": "How long does the walk take?",
+      "q": "Hvor lang tid tager gåturen?",
       "a": [
         "De fleste gæster når Fornillo på 15-25 minutter afhængigt af tempo og fotostop. At gå tidligere på dagen holder trappen køligere."
       ]
     },
     {
-      "q": "Are there many stairs?",
+      "q": "Er der mange trapper?",
       "a": [
         "Genvejen går ned adskillige fly fra vandrerhjemmet, før den skifter til en asfalteret bane. Brug bussen til retur, hvis du foretrækker at undgå at klatre op igen."
       ]

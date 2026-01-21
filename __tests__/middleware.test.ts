@@ -1,14 +1,14 @@
 import type { NextRequest } from "next/server";
-import * as secureHeaders from "next-secure-headers";
-
-import { middleware } from "../middleware.js";
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  jest.resetModules();
+  jest.dontMock("next-secure-headers");
 });
 
 describe("middleware security headers", () => {
   it("adds expected security headers and values", async () => {
+    const { middleware } = await import("../middleware");
+    const { createHeadersObject } = await import("next-secure-headers");
     const response = middleware({} as unknown as NextRequest);
 
     const expectedHeaders = [
@@ -27,7 +27,7 @@ describe("middleware security headers", () => {
       expect(response.headers.get(header)).not.toBeNull();
     }
 
-    const expected = secureHeaders.createHeadersObject({
+    const expected = createHeadersObject({
       contentSecurityPolicy: {
         directives: {
           defaultSrc: "'self'",
@@ -59,9 +59,12 @@ describe("middleware security headers", () => {
   });
 
   it("returns a response even if createHeadersObject fails", async () => {
-    jest.spyOn(secureHeaders, "createHeadersObject").mockImplementation(() => {
-      throw new Error("boom");
-    });
+    jest.doMock("next-secure-headers", () => ({
+      createHeadersObject: () => {
+        throw new Error("boom");
+      },
+    }));
+    const { middleware } = await import("../middleware");
     const response = middleware({} as unknown as NextRequest);
 
     expect(response).toBeInstanceOf(Response);

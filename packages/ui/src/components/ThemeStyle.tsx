@@ -1,8 +1,9 @@
 // packages/ui/src/components/ThemeStyle.tsx
 import * as React from "react";
+
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 // Local t shim (no runtime change); ThemeStyle is server-side and emits links/styles
 const t = (s: string) => s;
-import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 function firstFamilyFromStack(stack?: string): string | null {
   if (!stack) return null;

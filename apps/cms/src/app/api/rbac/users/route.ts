@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { readRbac } from "@/lib/server/rbacStore";
 
 export async function GET() {

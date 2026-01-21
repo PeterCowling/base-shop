@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import HeaderClient from "../src/components/layout/HeaderClient.client";
 
 jest.mock("@acme/platform-core/contexts/CartContext", () => ({

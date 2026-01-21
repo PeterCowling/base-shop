@@ -1,6 +1,8 @@
 import '@testing-library/cypress/add-commands';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import ProfileForm from '../../../../packages/ui/src/components/account/ProfileForm';
 
 describe('ProfileForm accessibility', { tags: ['a11y'] }, () => {

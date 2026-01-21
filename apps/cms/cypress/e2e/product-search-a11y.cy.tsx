@@ -1,11 +1,14 @@
 import '@testing-library/cypress/add-commands';
 import 'cypress-plugin-tab';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { SearchResultsTemplate } from '../../../../packages/ui/src/components/templates/SearchResultsTemplate';
+
 import { CartProvider } from '@acme/platform-core/contexts/CartContext';
 import { CurrencyProvider } from '@acme/platform-core/contexts/CurrencyContext';
 import type { SKU } from '@acme/types';
+
+import { SearchResultsTemplate } from '../../../../packages/ui/src/components/templates/SearchResultsTemplate';
 
 const products: SKU[] = [
   {

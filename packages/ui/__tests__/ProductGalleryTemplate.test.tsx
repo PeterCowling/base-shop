@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { ProductGalleryTemplate } from "../src/components/templates/ProductGalleryTemplate";
 
 jest.mock("../src/components/organisms/ProductCarousel", () => ({

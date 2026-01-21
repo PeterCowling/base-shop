@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 describe("runSeoAudit", () => {
   afterEach(() => {
@@ -25,10 +25,10 @@ describe("runSeoAudit", () => {
 
   it("throws when lighthouse export is not a function", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9222, kill: jest.fn().mockResolvedValue(undefined) };
+      const chrome = { port: 9222, kill: jest.fn(() => Promise.resolve(undefined)) };
       jest.doMock(
         "chrome-launcher",
-        () => ({ launch: jest.fn().mockResolvedValue(chrome) }),
+        () => ({ launch: jest.fn(() => Promise.resolve(chrome)) }),
         { virtual: true },
       );
       jest.doMock("lighthouse", () => ({ default: {} }), { virtual: true });
@@ -45,10 +45,10 @@ describe("runSeoAudit", () => {
 
   it("throws when desktop config cannot be resolved", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9222, kill: jest.fn().mockResolvedValue(undefined) };
+      const chrome = { port: 9222, kill: jest.fn(() => Promise.resolve(undefined)) };
       jest.doMock(
         "chrome-launcher",
-        () => ({ launch: jest.fn().mockResolvedValue(chrome) }),
+        () => ({ launch: jest.fn(() => Promise.resolve(chrome)) }),
         { virtual: true },
       );
       const lighthouseFn = jest.fn();
@@ -70,9 +70,9 @@ describe("runSeoAudit", () => {
 
   it("throws when Lighthouse returns no result", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9333, kill: jest.fn().mockResolvedValue(undefined) };
-      const launch = jest.fn().mockResolvedValue(chrome);
-      const lighthouseFn = jest.fn().mockResolvedValue(undefined);
+      const chrome = { port: 9333, kill: jest.fn(() => Promise.resolve(undefined)) };
+      const launch = jest.fn(() => Promise.resolve(chrome));
+      const lighthouseFn = jest.fn(() => Promise.resolve(undefined));
 
       jest.doMock("lighthouse", () => lighthouseFn, { virtual: true });
       jest.doMock("chrome-launcher", () => ({ launch }), { virtual: true });
@@ -92,9 +92,9 @@ describe("runSeoAudit", () => {
 
   it("returns audit results with recommendations", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9222, kill: jest.fn().mockResolvedValue(undefined) };
-      const launch = jest.fn().mockResolvedValue(chrome);
-      const lighthouseFn = jest.fn().mockResolvedValue({
+      const chrome = { port: 9222, kill: jest.fn(() => Promise.resolve(undefined)) };
+      const launch = jest.fn(() => Promise.resolve(chrome));
+      const lighthouseFn = jest.fn(() => Promise.resolve({
         lhr: {
           categories: { seo: { score: 0.91 } },
           audits: {
@@ -103,7 +103,7 @@ describe("runSeoAudit", () => {
             na: { score: 0, scoreDisplayMode: "notApplicable", title: "N/A" },
           },
         },
-      });
+      }));
 
       jest.doMock("lighthouse", () => lighthouseFn, { virtual: true });
       jest.doMock("chrome-launcher", () => ({ launch }), { virtual: true });
@@ -120,7 +120,7 @@ describe("runSeoAudit", () => {
       expect(launch).toHaveBeenCalledWith({ chromeFlags: ["--headless"] });
       expect(chrome.kill).toHaveBeenCalledTimes(1);
       expect(lighthouseFn).toHaveBeenCalledTimes(1);
-      const [urlArg, optsArg, configArg] = (lighthouseFn as jest.Mock).mock.calls[0];
+      const [urlArg, optsArg, configArg] = (lighthouseFn as unknown as jest.Mock).mock.calls[0];
       expect(urlArg).toBe("https://example.com");
       expect(optsArg).toMatchObject({ onlyCategories: ["seo"], port: chrome.port });
       if (configArg && typeof configArg === "object") {
@@ -134,18 +134,18 @@ describe("runSeoAudit", () => {
 
   it("supports direct function exports and plain config modules", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9223, kill: jest.fn().mockResolvedValue(undefined) };
-      const launch = jest.fn().mockResolvedValue(chrome);
-      const lighthouseFn = jest.fn().mockResolvedValue({
+      const chrome = { port: 9223, kill: jest.fn(() => Promise.resolve(undefined)) };
+      const launch = jest.fn(() => Promise.resolve(chrome));
+      const lighthouseFn = jest.fn(() => Promise.resolve({
         lhr: {
           categories: { seo: { score: 0.5 } },
           audits: {
             fail: { score: 0, scoreDisplayMode: "binary", title: "Fix meta" },
           },
         },
-      });
+      }));
 
-      const actualTslib = jest.requireActual("tslib");
+      const actualTslib = jest.requireActual("tslib") as object;
       jest.doMock(
         "tslib",
         () => ({
@@ -172,16 +172,16 @@ describe("runSeoAudit", () => {
 
   it("defaults the SEO score to zero when the category is missing", async () => {
     await jest.isolateModulesAsync(async () => {
-      const chrome = { port: 9224, kill: jest.fn().mockResolvedValue(undefined) };
-      const launch = jest.fn().mockResolvedValue(chrome);
-      const lighthouseFn = jest.fn().mockResolvedValue({
+      const chrome = { port: 9224, kill: jest.fn(() => Promise.resolve(undefined)) };
+      const launch = jest.fn(() => Promise.resolve(chrome));
+      const lighthouseFn = jest.fn(() => Promise.resolve({
         lhr: {
           categories: {},
           audits: {
             missing: { score: 0, scoreDisplayMode: "binary", title: "Add descriptions" },
           },
         },
-      });
+      }));
 
       jest.doMock("lighthouse", () => lighthouseFn, { virtual: true });
       jest.doMock("chrome-launcher", () => ({ launch }), { virtual: true });

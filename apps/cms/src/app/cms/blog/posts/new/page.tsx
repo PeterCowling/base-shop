@@ -1,10 +1,12 @@
 // apps/cms/src/app/cms/blog/posts/new/page.tsx
 
 import Link from "next/link";
-import PostForm from "../PostForm.client";
 import { createPost } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@acme/platform-core/shops";
+
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+
+import PostForm from "../PostForm.client";
 
 export default async function NewPostPage(props: {
   searchParams?: Promise<{ shopId?: string }>;
@@ -13,6 +15,7 @@ export default async function NewPostPage(props: {
   const shopId = sp?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
+  if (!shop) return <p>Shop not found.</p>;
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     return (

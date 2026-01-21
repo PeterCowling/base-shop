@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import ThemeToggle from "../src/components/ThemeToggle";
 
 const state: { theme: "base" | "dark" | "system" } = { theme: "base" };

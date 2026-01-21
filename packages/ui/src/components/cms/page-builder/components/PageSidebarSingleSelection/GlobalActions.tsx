@@ -1,9 +1,10 @@
 import type { Dispatch, SetStateAction } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
-import type { GlobalItem } from "../../libraryStore";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../../atoms";
 import { Button } from "../../../../atoms/shadcn";
+import type { GlobalItem } from "../../libraryStore";
 import GlobalsPicker from "../GlobalsPicker";
 
 interface GlobalActionsProps {

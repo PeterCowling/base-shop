@@ -3,14 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@acme/ui/components/atoms/shadcn";
+
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +14,14 @@ import {
   DialogTitle,
 } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@acme/ui/components/atoms/shadcn";
 
 interface Template {
   name: string;

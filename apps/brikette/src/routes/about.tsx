@@ -2,28 +2,31 @@
    src/routes/about.tsx
    Simple about page with localised head tags
    ---------------------------------------------------------------------- */
-import AboutStructuredData from "@/components/seo/AboutStructuredData";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { CfImage } from "@/components/images/CfImage";
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { Fragment, memo } from "react";
-import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
 import { type LoaderFunctionArgs } from "react-router-dom";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
-import { langFromRequest } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
 import { Section } from "@acme/ui/atoms/Section";
+
+import { CfImage } from "@/components/images/CfImage";
+import AboutStructuredData from "@/components/seo/AboutStructuredData";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { langFromRequest } from "@/utils/lang";
+import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
 const OG_IMAGE_DIMENSIONS = OG_IMAGE;
 const HERO_IMAGE_PATH = "/img/facade.avif" as const;
+const FALLBACK_LANG = i18nConfig.fallbackLng as AppLanguage;
 
 export async function clientLoader({ request }: LoaderFunctionArgs) {
   const lang = langFromRequest(request);
@@ -182,12 +185,22 @@ export default memo(function About() {
   );
 });
 
-export const meta: MetaFunction = ({ data }: { data?: unknown } = {}) => {
+export const meta: MetaFunction = ({ data, params }: { data?: unknown; params?: Record<string, string | undefined> } = {}) => {
   const d = (data || {}) as { lang?: AppLanguage; title?: string; desc?: string };
-  const lang = d.lang || (i18nConfig.fallbackLng as AppLanguage);
-  const title = d.title || "";
-  const description = d.desc || "";
-  const path = `/${lang}/${getSlug("about", lang)}`;
+  const supportedLangs = (i18nConfig.supportedLngs ?? []) as readonly AppLanguage[];
+  const paramLang =
+    typeof params?.["lang"] === "string" && supportedLangs.includes(params["lang"] as AppLanguage)
+      ? (params["lang"] as AppLanguage)
+      : undefined;
+  const pathLang = d.lang ?? paramLang ?? FALLBACK_LANG;
+  const loaderTitle = (d.title ?? "").trim();
+  const loaderDescription = (d.desc ?? "").trim();
+  const hasLoaderMeta = loaderTitle.length > 0 || loaderDescription.length > 0;
+  const metaLang = hasLoaderMeta ? pathLang : FALLBACK_LANG;
+  const fallbackMeta = resolveI18nMeta(metaLang, "aboutPage");
+  const title = loaderTitle || fallbackMeta.title;
+  const description = loaderDescription || fallbackMeta.description;
+  const path = `/${pathLang}/${getSlug("about", pathLang)}`;
   const imageSrc = buildCfImageUrl("/img/og-about.jpg", {
     width: OG_IMAGE_DIMENSIONS.width,
     height: OG_IMAGE_DIMENSIONS.height,
@@ -195,7 +208,7 @@ export const meta: MetaFunction = ({ data }: { data?: unknown } = {}) => {
     format: "auto",
   });
   return buildRouteMeta({
-    lang,
+    lang: metaLang,
     title,
     description,
     url: `${BASE_URL}${path}`,

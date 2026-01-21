@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription, DrawerPortal } from "../../atoms/primitives/drawer";
+
 import { OverlayScrim } from "../../atoms";
-import CommentsThreadList from "./CommentsThreadList";
+import { Drawer, DrawerContent, DrawerDescription, DrawerPortal,DrawerTitle } from "../../atoms/primitives/drawer";
+
 import CommentsThreadDetails from "./CommentsThreadDetails";
+import CommentsThreadList from "./CommentsThreadList";
 
 export type Message = { id: string; text: string; ts: string; author?: string };
 export type CommentThread = {

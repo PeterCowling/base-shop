@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "buses",
-      "title": "SITA buses",
+      "title": "SITA-busser",
       "body": [
         "Kjøp billetter på tobakksbutikker/kiosker før ombordstigning og valider på bussen.",
         "Forvent køer i rushtiden. Start tidlig og se på en ferge som en omkjøringsvei for publikum."
@@ -18,7 +18,7 @@
     },
     {
       "id": "ferries",
-      "title": "Ferries (seasonal)",
+      "title": "Ferger (sesong)",
       "body": [
         "Rask og naturskjønn mellom hovedbyene fra vår til høst; værkanselleringer er mulig.",
         "Sjekk live tidsplaner på operatørnettsteder og tillat buffer for dagens siste båter."
@@ -26,7 +26,7 @@
     },
     {
       "id": "trains",
-      "title": "Trains (to gateways)",
+      "title": "Tog (til knutepunkter)",
       "body": [
         "Bruk Trenitalia/Italo for å nå Sorrento/Salerno/Napoli, og koble deretter til med buss eller ferge.",
         "Intercity-etapper sparer tid på Roma/Napoli/Salerno-rutingen; lokale Circumvesuviana serverer Sorrento."
@@ -34,7 +34,7 @@
     },
     {
       "id": "timing",
-      "title": "Timing & strategy",
+      "title": "Timing og strategi",
       "body": [
         "Gå før 09:00 for å slå køene; for retur ved solnedgang, foretrekk ferger når havet er rolig.",
         "Ha med småpenger for billetter og lue/vann for utsatte holdeplasser."
@@ -43,13 +43,13 @@
   ],
   "faqs": [
     {
-      "q": "Can I bring luggage on buses?",
+      "q": "Kan jeg ta med bagasje på bussene?",
       "a": [
         "Tillatt, men ikke ideelt på topp; vurdere ferger eller bærere for tunge sekker."
       ]
     },
     {
-      "q": "Are there night services?",
+      "q": "Finnes det nattavganger?",
       "a": [
         "Begrenset; sjekk siste buss/ferge i god tid for å unngå dyre drosjer."
       ]

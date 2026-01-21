@@ -1,9 +1,12 @@
 // packages/ui/src/components/organisms/Header.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { Header } from './Header';
+
 import type { Locale } from '@acme/i18n/locales';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { Header } from './Header';
 
 const meta: Meta<typeof Header> = {
   title: 'Organisms/Header/Matrix',

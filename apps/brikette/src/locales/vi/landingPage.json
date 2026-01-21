@@ -11,9 +11,9 @@
       "between": "xa",
       "home": "nhà"
     },
-    "paragraph1": "Hostel Brikette là <strong>nhà trọ duy nhất ở Positano</strong>, mang đến chỗ ở <strong>tiết kiệm</strong> giúp bạn chạm tới những điểm nổi bật của Bờ biển Amalfi.",
-    "paragraph2": "Tựa lưng trên vách đá, chúng tôi có <strong>tầm nhìn biển tuyệt đẹp</strong>, tiện ích thiết thực và thông tin địa phương 24/7 qua <strong>trợ lý số</strong>—người bạn đồng hành cho lịch phà, lộ trình trekking, nhà hàng và hơn thế nữa.",
-    "paragraph3": "Dù bạn chọn giường ký túc hay phòng riêng, mọi lựa chọn đều hướng tới <strong>sự thoải mái</strong> và <strong>tiện lợi</strong>."
+    "paragraph1": "Hostel Brikette là hostel duy nhất ở Positano - giá hợp lý, vị trí đẹp và hoàn hảo để khám phá Bờ biển Amalfi.",
+    "paragraph2": "Chúng tôi kết hợp tầm nhìn biển khó quên với những tiện nghi thực sự cần thiết, cùng mẹo địa phương 24/7 qua trợ lý số: giờ phà, lời khuyên về đường mòn, gợi ý nhà hàng...mọi thứ bạn cần.",
+    "paragraph3": "Chọn dorm xã hội hoặc phòng riêng—mỗi lựa chọn đều được thiết kế đơn giản, thoải mái và dễ dàng cho kỳ nghỉ của bạn."
   },
   "facilitiesModal": {
     "title": "Tiện nghi & Dịch vụ",
@@ -107,14 +107,31 @@
     "locationButton": "Vị trí",
     "contactButton": "Liên hệ",
     "helpButton": "Hỗ trợ",
-    "reserveNow": "Đặt ngay"
+    "reserveNow": "Đặt ngay",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "Ký túc xá duy nhất ở Positano — nhìn ra biển, khu sinh hoạt chung và concierge số.",
+    "primaryCta": "Kiểm tra phòng trống",
+    "selectDatesCta": "Chọn ngày",
+    "secondaryCta": "Xem phòng",
+    "trustItems": [
+      "Cách bến xe SITA 100 m",
+      "Sân thượng nhìn ra biển",
+      "Mẹo từ concierge số"
+    ]
   },
   "quickLinksSection": {
     "location": "Vị trí",
     "photosAndVideos": "Ảnh & Video",
     "facilitiesAndAmenities": "Tiện nghi & Dịch vụ",
     "barMenu": "Thực đơn quầy bar",
-    "breakfastMenu": "Thực đơn bữa sáng"
+    "breakfastMenu": "Thực đơn bữa sáng",
+    "rooms": "Phòng",
+    "roomsHint": "Ký túc xá và phòng riêng",
+    "commonAreas": "Khu chung",
+    "commonAreasHint": "Sân thượng, quầy bar, khu sinh hoạt chung",
+    "locationHint": "Bến xe và mẹo đi biển",
+    "guides": "Hướng dẫn",
+    "guidesHint": "Mẹo địa phương cho chuyến đi"
   },
   "destinationSlideshow": {
     "sectionTitle": "Khu vực chung đẹp mắt",
@@ -135,5 +152,41 @@
         "alt": "Đường chân trời biển từ sân thượng hostel"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "Ngày trả phòng phải sau ngày nhận phòng."
+  },
+  "whyStaySection": {
+    "title": "Vì sao ở đây",
+    "items": [
+      {
+        "title": "Concierge số",
+        "text": "Mẹo nhanh về phà, đường hiking và nhà hàng."
+      },
+      {
+        "title": "Khu chung hướng biển",
+        "text": "Sân thượng, quầy bar và không gian kết nối."
+      },
+      {
+        "title": "Lưu trú tiết kiệm",
+        "text": "Ký túc xá thoải mái và phòng riêng phù hợp ngân sách."
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "Vị trí & di chuyển",
+    "subtitle": "Nằm trên cao ở Positano, thuận tiện đến xe buýt, bãi biển và phà.",
+    "nearbyBeach": "≈350 m đến bãi biển",
+    "mapLabel": "Mở trong Maps",
+    "mapHint": "Chạm để mở ghim và lộ trình trên Google Maps.",
+    "mapCta": "Xem bản đồ"
+  },
+  "socialProof": {
+    "title": "Khách rất thích Brikette",
+    "subtitle": "Điểm đánh giá cao và nhận xét gần đây từ du khách."
+  },
+  "faqSection": {
+    "title": "Câu trả lời nhanh",
+    "ctaLabel": "Xem trung tâm trợ giúp"
   }
 }

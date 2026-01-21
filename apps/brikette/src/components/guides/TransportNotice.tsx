@@ -1,9 +1,11 @@
 // src/components/guides/TransportNotice.tsx
-import { memo, type ComponentProps, type ComponentPropsWithoutRef } from "react";
-import clsx from "clsx";
+import { type ComponentProps, type ComponentPropsWithoutRef,memo } from "react";
 import * as I18n from "react-i18next";
-type TransComponentProps = ComponentProps<(typeof I18n)["Trans"]>;
+import clsx from "clsx";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+
+type TransComponentProps = ComponentProps<(typeof I18n)["Trans"]>;
 
 const LINK_CLASS_NAME = clsx(
   "inline-flex",

@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
+import type { Locale } from "@acme/i18n/locales";
 // Target under test (UI package source)
 import PageCanvas from "@acme/ui/components/cms/page-builder/PageCanvas";
 
@@ -38,7 +39,7 @@ jest.mock(require.resolve("@acme/ui/components/cms/page-builder/PreviewCanvas"),
 
 const baseProps = {
   components: [],
-  locale: "en",
+  locale: "en" as Locale,
   containerStyle: { width: 1000 },
   viewport: "desktop" as const,
 };

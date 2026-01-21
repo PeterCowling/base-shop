@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import AnnouncementBar from '../../organisms/AnnouncementBar';
+import { fireEvent,render, screen } from '@testing-library/react';
+
 import { TranslationsProvider } from '@acme/i18n';
+
+import AnnouncementBar from '../../organisms/AnnouncementBar';
 
 describe('AnnouncementBar i18n', () => {
   it('renders legacy string', () => {

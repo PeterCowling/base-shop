@@ -1,7 +1,7 @@
 // src/routes/guides/guide-seo/components/GuideEditorialPanel.tsx
-import clsx from "clsx";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
 

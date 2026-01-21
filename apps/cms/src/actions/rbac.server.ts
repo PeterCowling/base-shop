@@ -3,9 +3,11 @@
 
 import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
-import type { Permission } from "@acme/auth";
 import argon2 from "argon2";
 import { ulid } from "ulid";
+
+import type { Permission } from "@acme/auth";
+
 import { readRbac, writeRbac } from "../lib/server/rbacStore";
 
 export interface UserWithRoles extends CmsUser {

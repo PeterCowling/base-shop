@@ -1,18 +1,17 @@
-import { describe, it, afterEach, expect, jest } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import * as path from "path";
 
 jest.mock("path", () => ({
   join: jest.fn((...parts: string[]) => parts.join("/")),
   dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
 }));
 
-import * as path from "path";
-
 const product = { id: "abc-123", title: "Title", description: "Description" };
 const writeMock = jest.fn();
 const mkdirMock = jest.fn();
 const fetchMock = jest.fn();
 
-(global as unknown as { fetch: typeof fetch }).fetch = fetchMock;
+(global as unknown as { fetch: typeof fetch }).fetch = fetchMock as unknown as typeof fetch;
 
 jest.mock("fs", () => ({
   promises: {
@@ -39,7 +38,7 @@ describe("generateMeta when OpenAI module is a function export", () => {
   it("parses text content objects and writes empty image buffers", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
 
-    const responsesCreate = jest.fn().mockResolvedValue({
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [
         {
           content: [
@@ -52,7 +51,7 @@ describe("generateMeta when OpenAI module is a function export", () => {
         },
       ],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({ data: [{}] });
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({ data: [{}] });
 
     const OpenAIImpl = jest.fn().mockImplementation(() => ({
       responses: { create: responsesCreate },
@@ -66,7 +65,7 @@ describe("generateMeta when OpenAI module is a function export", () => {
       jest.doMock(
         "tslib",
         () => ({
-          ...actualTslib,
+          ...(actualTslib as object),
           __importStar: (mod: unknown) => mod,
         }),
         { virtual: true },

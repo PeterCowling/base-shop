@@ -5,13 +5,18 @@
     "popularGuides": "热门指南",
     "helpfulGuides": "实用指南",
     "alsoSee": "另见",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "查看全部攻略"
   },
   "meta": {
     "index": {
       "title": "波西塔诺旅游指南",
       "description": "帮助你在波西塔诺和阿马尔菲海岸出行的实用分步指南。"
     }
+  },
+  "redirectPage": {
+    "title": "正在重定向…",
+    "message": "如果没有自动跳转，<link>请点击这里继续</link>。"
   },
   "content": {
     "onlyHostel": {

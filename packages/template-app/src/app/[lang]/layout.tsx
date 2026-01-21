@@ -1,8 +1,10 @@
 // packages/template-app/src/app/[lang]/layout.tsx
-import { TranslationsProvider } from "@acme/i18n";
-import { resolveLocale, type Locale } from "@acme/i18n/locales";
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
+
+import { TranslationsProvider } from "@acme/i18n";
+import { type Locale,resolveLocale } from "@acme/i18n/locales";
+
 import { getSeo, serializeJsonLd } from "../../lib/seo";
 
 export async function generateMetadata({

@@ -2,7 +2,7 @@
 "use server";
 
 import { LOCALES } from "@acme/i18n";
-import { ProductPublication } from "@acme/platform-core/products";
+import { type ProductPublication } from "@acme/platform-core/products";
 import {
   getProductById,
   updateProductInRepo,

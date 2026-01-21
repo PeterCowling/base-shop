@@ -2,13 +2,15 @@
 
 import {
   cloneElement,
-  isValidElement,
   type ComponentProps,
   type ElementType,
+  isValidElement,
 } from "react";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
-import { Progress, Tag } from "@/components/atoms";
+
 import { cn } from "@acme/ui/utils/style";
+
+import { Progress, Tag } from "@/components/atoms";
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 
 export const CardRoot: ElementType = Card ?? "div";
 export const CardSection: ElementType = CardContent ?? "div";

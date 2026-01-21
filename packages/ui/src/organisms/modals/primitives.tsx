@@ -1,10 +1,10 @@
-import clsx from "clsx";
 import {
-  forwardRef,
   type ButtonHTMLAttributes,
+  forwardRef,
   type HTMLAttributes,
   type Ref,
 } from "react";
+import clsx from "clsx";
 
 /** Shared frosted-glass overlay used by the modal suite. */
 export interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {

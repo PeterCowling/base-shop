@@ -1,7 +1,7 @@
 import {
-  nowIso,
-  isoDateInNDays,
   calculateRentalDays,
+  isoDateInNDays,
+  nowIso,
 } from "../index";
 
 describe("nowIso", () => {

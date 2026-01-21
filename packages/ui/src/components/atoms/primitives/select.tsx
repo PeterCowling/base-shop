@@ -2,9 +2,10 @@
 "use client";
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — purely structural primitive, no user-facing copy
 
+import * as React from "react";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import * as React from "react";
+
 import { cn } from "../../../utils/style";
 
 export const Select = SelectPrimitive.Root;
@@ -31,7 +32,7 @@ export const SelectTrigger = React.forwardRef<
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName; // i18n-exempt: component displayName
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
 
 export const SelectContent = React.forwardRef<

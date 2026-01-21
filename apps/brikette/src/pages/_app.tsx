@@ -3,31 +3,31 @@ import "react-datepicker/dist/react-datepicker.css";
 import "swiper/css";
 import "swiper/css/navigation";
 
+import { useCallback, useEffect, useMemo } from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import type { ResourceKey } from "i18next";
 
+import type { ResolvedMatch } from "@/compat/route-runtime";
+import {
+  type Location,
+  locationFromUrl,
+  type NavigateFunction,
+  type NavigateOptions,
+  type RouteMatch,
+  type RouterState,
+  RouterStateProvider,
+  type To,
+  toHref,
+} from "@/compat/router-state";
+import { NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
+import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import type { I18nResourcesPayload } from "@/next/i18nResources";
 import { getOrigin } from "@/root/environment";
 import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "@/root/theme";
-import {
-  RouterStateProvider,
-  locationFromUrl,
-  toHref,
-  type NavigateOptions,
-  type Location,
-  type RouterState,
-  type RouteMatch,
-  type NavigateFunction,
-  type To,
-} from "@/compat/router-state";
-import { BASE_URL } from "@/config/site";
-import { NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
-import type { ResolvedMatch } from "@/compat/route-runtime";
 
 type PageProps = {
   routerState?: RouterState;

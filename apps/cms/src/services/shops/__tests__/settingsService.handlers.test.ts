@@ -1,22 +1,22 @@
-import {
-  setFreezeTranslations,
-  updateCurrencyAndTax,
-  updateDeposit,
-  updateReverseLogistics,
-  updateUpsReturns,
-  updateStockAlert,
-  updatePremierDelivery,
-  updateAiCatalog,
-} from "../settingsService";
 import { authorize, fetchSettings, persistSettings } from "../helpers";
 import {
+  setFreezeTranslations,
+  updateAiCatalog,
+  updateCurrencyAndTax,
+  updateDeposit,
+  updatePremierDelivery,
+  updateReverseLogistics,
+  updateStockAlert,
+  updateUpsReturns,
+} from "../settingsService";
+import {
+  parseAiCatalogForm,
   parseCurrencyTaxForm,
   parseDepositForm,
-  parseReverseLogisticsForm,
-  parseUpsReturnsForm,
-  parseStockAlertForm,
   parsePremierDeliveryForm,
-  parseAiCatalogForm,
+  parseReverseLogisticsForm,
+  parseStockAlertForm,
+  parseUpsReturnsForm,
 } from "../validation";
 
 jest.mock("../helpers", () => ({

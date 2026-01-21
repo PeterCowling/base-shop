@@ -1,5 +1,6 @@
 import fs from "fs";
-import { ensureDir, copyTemplate, writeJSON } from "../fsUtils";
+
+import { copyTemplate, ensureDir, writeJSON } from "../fsUtils";
 
 jest.mock("fs");
 

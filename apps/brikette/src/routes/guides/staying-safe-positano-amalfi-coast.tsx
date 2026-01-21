@@ -1,29 +1,28 @@
 // src/routes/guides/staying-safe-positano-amalfi-coast.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-
-// Enforce shared guide template usage for linting
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
 
 import GenericContent from "@/components/guides/GenericContent";
-import type { GuideSeoTemplateContext, NormalisedFaq, NormalisedSection } from "./guide-seo/types";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-
-import type { LinksFunction } from "react-router";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest, toAppLanguage } from "@/utils/lang";
+// Enforce shared guide template usage for linting
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import i18n from "@/i18n";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest, toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry } from "./guide-manifest";
+import type { GuideSeoTemplateContext, NormalisedFaq, NormalisedSection } from "./guide-seo/types";
 
 export const handle = { tags: ["safety", "positano", "amalfi", "general-tourists", "solo-travel"] };
 
@@ -536,4 +535,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

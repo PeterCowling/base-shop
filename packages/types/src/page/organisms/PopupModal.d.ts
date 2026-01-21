@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface PopupModalComponent extends PageComponentBase {
     type: "PopupModal";
     trigger?: "load" | "delay" | "exit";

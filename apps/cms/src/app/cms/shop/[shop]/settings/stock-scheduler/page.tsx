@@ -1,9 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/stock-scheduler/page.tsx
 import dynamic from "next/dynamic";
 import { getSchedulerStatus } from "@cms/actions/stockScheduler.server";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { TranslationsProvider } from "@acme/i18n/Translations";
+
 import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 const StockSchedulerEditor = dynamic(() => import("./StockSchedulerEditor"));
 void StockSchedulerEditor;

@@ -1,6 +1,9 @@
 import { MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
+// Force dynamic rendering to avoid SSG issues with context providers
+export const dynamic = 'force-dynamic';
+
 export default function ChannelPage() {
   return (
     <main className="min-h-screen bg-gray-50 p-4">

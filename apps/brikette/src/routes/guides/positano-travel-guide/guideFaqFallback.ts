@@ -1,8 +1,8 @@
+import i18n from "@/i18n";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { toAppLanguage } from "@/utils/lang";
 
 import { stripGuideLinkTokens } from "../utils/linkTokens";
-import { toAppLanguage } from "@/utils/lang";
-import i18n from "@/i18n";
 
 import { createFallbackData } from "./fallbackData";
 import { getGuidesTranslator } from "./i18n";

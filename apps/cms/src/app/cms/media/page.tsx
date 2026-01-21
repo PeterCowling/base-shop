@@ -1,8 +1,10 @@
 // apps/cms/src/app/cms/media/page.tsx
 
-import MediaShopChooser from "./MediaShopChooser.client";
 import { Tag } from "@acme/ui/components/atoms";
+
 import { listShops } from "../../../lib/listShops";
+
+import MediaShopChooser from "./MediaShopChooser.client";
 
 export default async function MediaIndexPage() {
   const shops = await listShops();

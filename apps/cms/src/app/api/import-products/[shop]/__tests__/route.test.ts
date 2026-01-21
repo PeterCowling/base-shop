@@ -1,14 +1,16 @@
 /**
  * @jest-environment node
  */
-import request from 'supertest';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
-import { PassThrough } from 'stream';
-import type { IncomingMessage, ServerResponse } from 'http';
-import { server } from '~test/msw/server';
 import { __setMockSession } from 'next-auth';
+import fs from 'fs';
+import type { IncomingMessage, ServerResponse } from 'http';
+import os from 'os';
+import path from 'path';
+import { PassThrough } from 'stream';
+import request from 'supertest';
+
+import { server } from '~test/msw/server';
+
 jest.mock('@cms/auth/options', () => ({ authOptions: {} }));
 
 const fileTypeFromBuffer = jest.fn();

@@ -46,6 +46,49 @@ type StripeWebhookEvent = {
   data?: { object?: StripeSessionPayload };
 };
 
+type OrderRecord = {
+  id: string;
+  amountTotal: number;
+  currency: string;
+  status: string;
+  created: number;
+  paymentIntentId?: string;
+  stripeCustomerId?: string;
+  cartId?: string;
+  orderId?: string;
+  internalCustomerId?: string;
+  environment?: string;
+};
+
+/** Extract order record from Stripe session payload */
+const buildOrderRecord = (session: StripeSessionPayload): OrderRecord => ({
+  id: String(session.id ?? ""),
+  amountTotal: Number(session.amount_total ?? 0),
+  currency: String(session.currency ?? "USD").toUpperCase(),
+  status: String(session.payment_status ?? "paid"),
+  created: Number(session.created ?? Date.now() / 1000),
+  paymentIntentId: session.payment_intent
+    ? String(session.payment_intent)
+    : undefined,
+  stripeCustomerId: session.customer ? String(session.customer) : undefined,
+  cartId:
+    typeof session.metadata?.cart_id === "string"
+      ? session.metadata.cart_id
+      : undefined,
+  orderId:
+    typeof session.metadata?.order_id === "string"
+      ? session.metadata.order_id
+      : undefined,
+  internalCustomerId:
+    typeof session.metadata?.internal_customer_id === "string"
+      ? session.metadata.internal_customer_id
+      : undefined,
+  environment:
+    typeof session.metadata?.environment === "string"
+      ? session.metadata.environment
+      : undefined,
+});
+
 const COLORS: CatalogColor[] = [
   { key: "sand" },
   { key: "ocean" },
@@ -131,7 +174,7 @@ const parseItems = (data: unknown): Array<{ variantId: string; quantity: number 
   const items = Array.isArray(record.items) ? record.items : [];
   // Emit analytics-style echo for debugging/telemetry; not persisted.
   // i18n-exempt -- worker-only internal instrumentation [ttl=2026-06-30]
-  console.log(
+  console.info(
     JSON.stringify({
       event: "cart_items_parsed",
       source: "cochlearfit-worker",
@@ -353,7 +396,7 @@ const handleCheckoutSession = async (request: Request, env: Env) => {
 
   // Emit minimal analytics-style events for shim visibility.
   // i18n-exempt -- worker-only internal instrumentation [ttl=2026-06-30]
-  console.log(
+  console.info(
     JSON.stringify({
       event: "checkout_session_created",
       source: "cochlearfit-worker",
@@ -414,7 +457,7 @@ const handleWebhook = async (request: Request, env: Env) => {
   const event = JSON.parse(payload) as StripeWebhookEvent;
   if (event.type === "checkout.session.completed") {
     const session: StripeSessionPayload = event.data?.object ?? {};
-    console.log(
+    console.info(
       JSON.stringify({
         event: "payment_succeeded",
         source: "cochlearfit-worker",
@@ -425,33 +468,7 @@ const handleWebhook = async (request: Request, env: Env) => {
         currency: session.currency ?? "USD",
       }),
     ); // i18n-exempt -- worker-only internal instrumentation [ttl=2026-06-30]
-    const orderRecord = {
-      id: String(session.id ?? ""),
-      amountTotal: Number(session.amount_total ?? 0),
-      currency: String(session.currency ?? "USD").toUpperCase(),
-      status: String(session.payment_status ?? "paid"),
-      created: Number(session.created ?? Date.now() / 1000),
-      paymentIntentId: session.payment_intent
-        ? String(session.payment_intent)
-        : undefined,
-      stripeCustomerId: session.customer ? String(session.customer) : undefined,
-      cartId:
-        typeof session.metadata?.cart_id === "string"
-          ? session.metadata.cart_id
-          : undefined,
-      orderId:
-        typeof session.metadata?.order_id === "string"
-          ? session.metadata.order_id
-          : undefined,
-      internalCustomerId:
-        typeof session.metadata?.internal_customer_id === "string"
-          ? session.metadata.internal_customer_id
-          : undefined,
-      environment:
-        typeof session.metadata?.environment === "string"
-          ? session.metadata.environment
-          : undefined,
-    };
+    const orderRecord = buildOrderRecord(session);
     if (orderRecord.id) {
       await env.ORDERS_KV.put(orderRecord.id, JSON.stringify(orderRecord));
       // Optional: forward to a central reconciliation endpoint if configured.
@@ -470,7 +487,7 @@ const handleWebhook = async (request: Request, env: Env) => {
             event: "order_recorded",
           }),
         }).catch((err) => {
-          console.log(
+          console.info(
             JSON.stringify({
               event: "reconciliation_forward_failed",
               source: "cochlearfit-worker",

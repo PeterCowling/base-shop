@@ -1,8 +1,9 @@
+import type { TFunction } from "i18next";
+
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { computePorterGuideExtras } from "./porter-service-positano.extras";
-import type { GuideExtras } from "./porter-service-positano.types";
 import { getGuidesFallbackTranslator } from "./porter-service-positano.translators";
-import type { TFunction } from "i18next";
+import type { GuideExtras } from "./porter-service-positano.types";
 
 interface GuideExtrasBuilderParams {
   previewContext: GuideSeoTemplateContext;

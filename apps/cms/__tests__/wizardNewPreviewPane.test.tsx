@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+
 import PreviewPane from "../src/app/cms/shop/[shop]/wizard/new/components/PreviewPane";
 
 type PreviewRendererProps = {

@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import { variantKey } from "../../repositories/inventory.server";
 
 const sendEmail = jest.fn();

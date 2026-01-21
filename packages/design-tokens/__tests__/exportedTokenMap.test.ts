@@ -1,5 +1,5 @@
-import { exportedTokenMap } from "../src/exportedTokenMap.ts";
 import { tokens } from "../../themes/base/src/tokens.ts";
+import { exportedTokenMap } from "../src/exportedTokenMap.ts";
 
 function mergeTokenMaps(
   ...maps: Array<Record<string, string>>

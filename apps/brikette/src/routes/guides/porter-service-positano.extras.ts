@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { ensureStringArray } from "@/utils/i18nContent";
 
@@ -9,15 +11,13 @@ import {
   HERO_IMAGE_PATH,
   RELATED_GUIDES,
 } from "./porter-service-positano.constants";
+import { normaliseFaqs, normaliseSections, normaliseToc } from "./porter-service-positano.normalisers";
 import {
   type GuideExtras,
   type GuideFaq,
   type ResourceLink,
   type TocEntry,
 } from "./porter-service-positano.types";
-import { normaliseFaqs, normaliseSections, normaliseToc } from "./porter-service-positano.normalisers";
-
-import type { TFunction } from "i18next";
 
 export function computePorterGuideExtras(
   context: GuideSeoTemplateContext,

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[179383],{179383:e=>{e.exports=JSON.parse('{"title":"Nossa localiza\xe7\xe3o","inputLabel":"Digite sua localiza\xe7\xe3o atual:","inputPlaceholder":"ex: N\xe1poles, It\xe1lia ou endere\xe7o completo","getDirections":"Obter dire\xe7\xf5es","justShowMap":"Apenas mostrar mapa","close":"Fechar modal"}')}}]);

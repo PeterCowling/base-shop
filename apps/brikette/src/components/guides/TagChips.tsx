@@ -1,7 +1,6 @@
 // src/components/guides/TagChips.tsx
-import { memo, useContext } from "react";
-import { Link, useInRouterContext } from "react-router-dom";
-import { UNSAFE_DataRouterStateContext } from "react-router";
+import { memo } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -43,19 +42,7 @@ type Props = {
 
 function TagChips({ tags, className = "" }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  // Some tests render this component without a Data Router or with a different
-  // router package instance. Read router state via context (safe outside a
-  // Router) instead of calling hooks conditionally.
-  const routerState = useContext(UNSAFE_DataRouterStateContext);
-  const inRouter = useInRouterContext();
-  type Handle = { tags?: string[] };
-  const matches = routerState?.matches as
-    | Array<{ route?: { handle?: Handle } }>
-    | undefined;
-  const fromHandle: string[] | undefined = matches?.length
-    ? matches[matches.length - 1]?.route?.handle?.tags
-    : undefined;
-  const list = tags ?? fromHandle ?? [];
+  const list = tags ?? [];
 
   if (!list.length) return null;
 
@@ -72,16 +59,9 @@ function TagChips({ tags, className = "" }: Props): JSX.Element | null {
             <span aria-hidden="true">{tag}</span>
           </>
         );
-        if (!routerState || !inRouter) {
-          return (
-            <a key={tag} href={path} className={clsx(CHIP_CLASSES)}>
-              {content}
-            </a>
-          );
-        }
 
         return (
-          <Link key={tag} to={path} className={clsx(CHIP_CLASSES)}>
+          <Link key={tag} href={path} className={clsx(CHIP_CLASSES)}>
             {content}
           </Link>
         );

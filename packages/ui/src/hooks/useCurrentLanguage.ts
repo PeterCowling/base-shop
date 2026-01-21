@@ -1,33 +1,32 @@
 // src/hooks/useCurrentLanguage.ts
 //
 // Returns the current locale by parsing the first pathname segment.
-// Works with the static `prefix("<lng>", …)` route tree.
+// Works with Next.js App Router dynamic routes like /[lang]/...
 // --------------------------------------------------------------------------
-// Use react-router-dom hooks; fall back gracefully when outside a Router
-import { useLocation, useParams } from "react-router-dom";
-import { i18nConfig, type AppLanguage } from "../i18n.config";
+import { useParams,usePathname } from "next/navigation";
+
+import { type AppLanguage,i18nConfig } from "@acme/ui/i18n.config";
 
 export function useCurrentLanguage(): AppLanguage {
-  // 1) Parse from current URL pathname (most stable across nested routers/tests)
+  // 1) Parse from current URL pathname (most stable)
   let fromPath: string | undefined;
   try {
-    const routerLoc = useLocation();
-    const pathname = routerLoc?.pathname ?? "";
-    fromPath = pathname.split("/").filter(Boolean)[0];
+    const pathname = usePathname();
+    fromPath = pathname?.split("/").filter(Boolean)[0];
   } catch {
-    // ignore – not within a Router
+    // ignore – not within Next.js context
   }
 
-  // 2) Fallback to explicit ":lang" route param if provided
+  // 2) Fallback to explicit "lang" route param if provided
   let fromParam: string | undefined;
   try {
     const params = useParams();
-    fromParam = params?.lang;
+    fromParam = params?.lang as string | undefined;
   } catch {
-    // ignore – not within a Router
+    // ignore – not within Next.js context
   }
 
-  // 3) Last resort: parse from window (SSR/tests without Router)
+  // 3) Last resort: parse from window (SSR/tests)
   let fromWindow: string | undefined;
   if (!fromPath && typeof window !== "undefined") {
     const pathname = window.location.pathname ?? "";

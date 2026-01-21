@@ -6,7 +6,7 @@ import type { FallbackLng } from "i18next";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { parseFaqResource, type FaqResource } from "@/utils/faq";
+import { type FaqResource,parseFaqResource } from "@/utils/faq";
 import { getSlug } from "@/utils/slug";
 
 const pickFirstLanguage = (value: unknown): string | undefined => {

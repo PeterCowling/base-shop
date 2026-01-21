@@ -1,15 +1,15 @@
 export { getShopFromPath } from "./getShopFromPath";
-export { replaceShopInPath } from "./replaceShopInPath";
 export { initTheme } from "./initTheme";
-export { logger } from "./logger";
-export type { LogMeta } from "./logger";
-export { recordMetric } from "./metrics";
-export type { MetricStatus, MetricLabels } from "./metrics";
+export type { FlattenedInventoryItem,RawInventoryItem } from "./inventory";
 export {
-  flattenInventoryItem,
-  expandInventoryItem,
-  normalizeQuantity,
-  computeAvailability,
   applyInventoryBatch,
+  computeAvailability,
+  expandInventoryItem,
+  flattenInventoryItem,
+  normalizeQuantity,
 } from "./inventory";
-export type { RawInventoryItem, FlattenedInventoryItem } from "./inventory";
+export type { LogMeta } from "./logger";
+export { logger } from "./logger";
+export type { MetricLabels,MetricStatus } from "./metrics";
+export { recordMetric } from "./metrics";
+export { replaceShopInPath } from "./replaceShopInPath";

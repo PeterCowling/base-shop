@@ -1,5 +1,8 @@
-import { render, screen, act, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import type { SKU } from "@acme/types";
+
 import { ProductGrid } from "../src/components/organisms/ProductGrid";
 
 jest.mock("../src/components/atoms/shadcn", () =>
@@ -7,7 +10,13 @@ jest.mock("../src/components/atoms/shadcn", () =>
 );
 
 jest.mock("../src/components/organisms/ProductCard", () => ({
-  ProductCard: ({ product, onAddToCart }) => (
+  ProductCard: ({
+    product,
+    onAddToCart,
+  }: {
+    product: SKU;
+    onAddToCart?: (product: SKU) => void;
+  }) => (
     <article>
       {product.title}
       <button onClick={() => onAddToCart?.(product)}>Add to cart</button>
@@ -15,7 +24,7 @@ jest.mock("../src/components/organisms/ProductCard", () => ({
   ),
 }));
 
-const products = [
+const products: SKU[] = [
   {
     id: "1",
     title: "A",
@@ -61,7 +70,7 @@ describe("ProductGrid", () => {
     const grid = screen.getByTestId("grid") as HTMLElement;
 
     Object.defineProperty(grid, "clientWidth", { value: 100, configurable: true });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(2, minmax(0, 1fr))"
     );
@@ -70,7 +79,7 @@ describe("ProductGrid", () => {
       value: 2000,
       configurable: true,
     });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(4, minmax(0, 1fr))"
     );
@@ -103,7 +112,7 @@ describe("ProductGrid", () => {
     );
     const grid = screen.getByTestId("grid") as HTMLElement;
 
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(4, minmax(0, 1fr))"
     );
@@ -112,7 +121,7 @@ describe("ProductGrid", () => {
       value: 800,
       configurable: true,
     });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(2, minmax(0, 1fr))"
     );
@@ -121,7 +130,7 @@ describe("ProductGrid", () => {
       value: 400,
       configurable: true,
     });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(1, minmax(0, 1fr))"
     );
@@ -154,4 +163,3 @@ describe("ProductGrid", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
-

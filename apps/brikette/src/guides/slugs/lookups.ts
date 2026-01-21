@@ -1,7 +1,8 @@
 import type { AppLanguage } from "../../i18n.config";
+
 import type { GuideKey } from "./keys";
-import { SUPPORTED_LANGS } from "./supported-langs";
 import { GUIDE_KEYS_WITH_OVERRIDES } from "./keys";
+import { SUPPORTED_LANGS } from "./supported-langs";
 import { guideSlug } from "./urls";
 
 // Reverse lookup map: per-language mapping from slug → guide key

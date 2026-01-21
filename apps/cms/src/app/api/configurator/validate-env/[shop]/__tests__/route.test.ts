@@ -1,5 +1,6 @@
 import { type NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+
 const validateShopEnv = jest.fn();
 
 jest.mock("@acme/platform-core/configurator", () => ({

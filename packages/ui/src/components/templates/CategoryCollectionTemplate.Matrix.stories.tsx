@@ -1,9 +1,11 @@
 // packages/ui/src/components/templates/CategoryCollectionTemplate.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import type { Category } from '../organisms/CategoryCard';
-import { CategoryCollectionTemplate } from './CategoryCollectionTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
+import type { Category } from '../organisms/CategoryCard';
+
+import { CategoryCollectionTemplate } from './CategoryCollectionTemplate';
 
 const categories: Category[] = [
   { id: 'outerwear', title: 'Outerwear', image: 'https://placehold.co/480x480/png', description: 'Coats, shells, and puffers.' },

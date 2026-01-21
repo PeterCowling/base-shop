@@ -1,6 +1,8 @@
-import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { Stack } from "@acme/ui/components/atoms/primitives";
+
+import PageHeader from "@/components/PageHeader";
+
 import LaneDetailClient from "./LaneDetailClient";
 import type { LaneDetailStrings } from "./types";
 

@@ -1,4 +1,4 @@
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
 import { loadSplitRouteModule } from "./content-modules";
@@ -31,5 +31,7 @@ export async function getContentForRoute(
   }
 
   // i18n-exempt -- TECH-000 [ttl=2026-12-31] developer error message
-  throw new Response("Not Found", { status: 404 });
+  throw new Error(
+    `Missing how-to-get-here route content for key "${contentKey}" (lang="${lang}", fallback="${FALLBACK_LANGUAGE}")`,
+  );
 }

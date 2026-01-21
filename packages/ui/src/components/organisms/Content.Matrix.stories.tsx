@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/Content.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { Content } from './Content';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { Content } from './Content';
 
 const meta: Meta<typeof Content> = {
   title: 'Organisms/Content/Matrix',

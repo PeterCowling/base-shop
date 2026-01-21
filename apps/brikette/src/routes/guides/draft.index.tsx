@@ -1,31 +1,31 @@
 // src/routes/guides/draft.index.tsx
 /* eslint-disable ds/no-hardcoded-copy -- TECH-DEBT-000 [ttl=2025-12-31] Editorial dashboard copy awaiting i18n coverage */
 import { useMemo } from "react";
-import { Section } from "@acme/ui/atoms/Section";
-import { Cluster, Inline, Stack } from "@/components/ui/flex";
-import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
 import type { LinksFunction, MetaFunction } from "react-router";
+import { Link, type LoaderFunctionArgs,useLoaderData } from "react-router-dom";
 
-import type { GuideSeoTemplateProps } from "./guide-seo/types";
-import type {} from "./_GuideSeoTemplate";
+import { Section } from "@acme/ui/atoms/Section";
 
-import {
-  buildGuideChecklist,
-  guideAreaToSlugKey,
-  listGuideManifestEntries,
-  resolveDraftPathSegment,
-  type ChecklistSnapshot,
-  type GuideManifestEntry,
-} from "./guide-manifest";
-
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
+import { Cluster, Inline, Stack } from "@/components/ui/flex";
+import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { guideSlug } from "@/routes.guides-helpers";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
-import type { AppLanguage } from "@/i18n.config";
-import { BASE_URL } from "@/config/site";
+
+import type {} from "./_GuideSeoTemplate";
+import {
+  buildGuideChecklist,
+  type ChecklistSnapshot,
+  guideAreaToSlugKey,
+  type GuideManifestEntry,
+  listGuideManifestEntries,
+  resolveDraftPathSegment,
+} from "./guide-manifest";
+import type { GuideSeoTemplateProps } from "./guide-seo/types";
 
 // This dashboard does not map to a real guide route. Expose null markers so the
 // slug manifest generator skips it while the lint rule still sees the exports.

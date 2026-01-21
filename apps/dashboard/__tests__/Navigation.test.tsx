@@ -10,6 +10,7 @@ jest.mock("../src/pages/Upgrade", () => ({
 }));
 
 const { useRouter } = require("next/router");
+
 const originalFetch = global.fetch;
 let consoleErrorSpy: jest.SpyInstance;
 

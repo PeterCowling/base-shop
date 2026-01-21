@@ -58,30 +58,30 @@
       "body": [
         "Fornillo stays the hostel favourite thanks to its relaxed vibe, two free sections (one tucked away), and beach clubs such as Pupetto, Grassi, Ferdinando, and La Marinella starting around €15. The climb back up is steep, so many walkers cut across to the main beach and ride the bus uphill — check the %LINK:fornilloBeachGuide|Fornillo beach guide% for operator details and free-zone maps.",
         "Spiaggia Grande delivers the postcard view with Positano's cliffside skyline behind the umbrellas. Expect higher prices: L'Incanto starts near €25, while La Scogliera's VIP decks run €100–€400. A public strip sits in the middle, yet most guests prefer Fornillo's calmer scene — follow our %LINK:positanoMainBeachWalkDown|walking directions% or %LINK:positanoMainBeachBusDown|bus guide% to arrive quickly, then use the %LINK:positanoMainBeachBusBack|return bus tips% if you want to skip the climb back.",
-        "Arienzo combines long afternoon sun with a dramatic staircase descent. Packages with loungers, lunch, and boat transfers start near €60 and include access to the club's water taxi—ideal because independent access is challenging.",
-        "Laurito is a compact cove serviced by Da Adolfo (free loungers with a restaurant tab) and Villa Tre Ville (from €30). Sunshine lasts late into the day, but the only easy access is via their shuttle boats; the public section is tiny."
+        "Arienzo combines long afternoon sun with a dramatic staircase descent. Packages with loungers, lunch, and boat transfers start near €60 and include access to the club's water taxi—ideal because independent access is challenging. Use the %LINK:arienzoBeachClub|Arienzo Beach Club guide% for shuttle timing and booking tips.",
+        "Laurito is a compact cove serviced by Da Adolfo (free loungers with a restaurant tab) and Villa Tre Ville (from €30). Sunshine lasts late into the day, but the only easy access is via their shuttle boats; the public section is tiny. For shuttle details and timing, see the %LINK:lauritoBeachGuide|Laurito Beach guide%."
       ]
     },
     {
       "id": "praiano-beaches",
       "title": "Praiano day-trip options",
       "body": [
-        "Praiano's Gavitella Beach is a sunset haven with a restaurant terrace ideal for aperitivi and dinner. There is no free zone, and the midday heat reflects off the concrete platforms, so aim for late afternoon.",
-        "Marina di Praia offers a narrow pebble cove framed by fishing boats and cliffs. A modest free section remains alongside lidos—perfect if you want a change of scenery without losing services."
+        "Praiano's Gavitella Beach is a sunset haven with a restaurant terrace ideal for aperitivi and dinner. There is no free zone, and the midday heat reflects off the concrete platforms, so aim for late afternoon. Use the %LINK:gavitellaBeachGuide|Gavitella beach guide% for step-by-step access.",
+        "Marina di Praia offers a narrow pebble cove framed by fishing boats and cliffs. A modest free section remains alongside lidos—perfect if you want a change of scenery without losing services. See the %LINK:marinaDiPraiaBeaches|Marina di Praia guide% for transport options."
       ]
     },
     {
       "id": "furore-beaches",
       "title": "Furore's fjord-style cove",
       "body": [
-        "Fiordo di Furore is the Amalfi Coast's Instagram classic with a stone bridge overhead and cliff-jumping spots. Entry is free and costs stay low, but space is extremely limited so arrive early or visit outside peak hours."
+        "Fiordo di Furore is the Amalfi Coast's Instagram classic with a stone bridge overhead and cliff-jumping spots. Entry is free and costs stay low, but space is extremely limited so arrive early or visit outside peak hours. Plan the trip with the %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide%."
       ]
     },
     {
       "id": "sorrento-beaches",
       "title": "Sorrento's Regina Giovanna Bath",
       "body": [
-        "Regina Giovanna Bath (Bagni della Regina Giovanna) near Sorrento is a natural swimming hole carved into the cliff. It's free to enter, refreshingly cool, and still under the radar compared with Positano's main beaches—pack water shoes and snacks because there are no facilities."
+        "Regina Giovanna Bath (Bagni della Regina Giovanna) near Sorrento is a natural swimming hole carved into the cliff. It's free to enter, refreshingly cool, and still under the radar compared with Positano's main beaches—pack water shoes and snacks because there are no facilities. Use the %LINK:reginaGiovannaBath|Regina Giovanna Bath guide% for the approach path."
       ]
     },
     {
@@ -95,7 +95,7 @@
       "id": "logistics",
       "title": "Getting to and from the beach",
       "body": [
-        "For Fornillo and Spiaggia Grande, start from the hostel and descend via Viale Pasitea. If climbing back feels daunting, continue along the waterfront to the main beach and ride the orange internal bus up to Chiesa Nuova, a short walk from Hostel Brikette.",
+        "For Fornillo and Spiaggia Grande, start from the hostel and descend via Viale Pasitea. If climbing back feels daunting, continue along the waterfront to the main beach and ride the orange internal bus up to Chiesa Nuova, a short walk from Hostel Brikette. Buy tickets at any Tabacchi/newsagent before you need them.",
         "Arienzo and Laurito run private shuttle boats from Spiaggia Grande; confirm the last return sail before committing to a late aperitif. For Praiano, Furore, Sorrento, or Amalfi, follow the linked guides for transport directions, bus schedules, and ferry options."
       ]
     }
@@ -129,6 +129,7 @@
     },
     {
       "title": "Arienzo",
+      "guideKey": "arienzoBeachClub",
       "pros": [
         "Long afternoon sun",
         "Package deals include lunch and boat",
@@ -154,6 +155,7 @@
     },
     {
       "title": "Gavitella (Praiano)",
+      "guideKey": "gavitellaBeachGuide",
       "pros": [
         "Sunset aperitivi",
         "Restaurant terrace"
@@ -177,6 +179,7 @@
     },
     {
       "title": "Fiordo di Furore",
+      "guideKey": "fiordoDiFuroreBeachGuide",
       "pros": [
         "Free entry",
         "Cliff jumping",
@@ -189,6 +192,7 @@
     },
     {
       "title": "Regina Giovanna Bath",
+      "guideKey": "reginaGiovannaBath",
       "pros": [
         "Free natural pool",
         "Cool water for hot days"
@@ -248,27 +252,7 @@
       "note": "Row of classic Amalfi lidos opposite the Duomo."
     }
   ],
-  "faqsTitle": "Positano beach FAQs",
-  "faqs": [
-    {
-      "q": "Where can I find a free beach area in Positano?",
-      "a": [
-        "Fornillo has the largest free stretch plus a quieter hidden section past the main clubs. Spiaggia Grande also keeps a public zone between the paid decks, while Laurito offers only a tiny patch beside Da Adolfo's pontoon."
-      ]
-    },
-    {
-      "q": "How do I get back to Hostel Brikette after a beach day?",
-      "a": [
-        "From Fornillo, follow the coastal path to Spiaggia Grande and ride the orange internal bus up to Chiesa Nuova. It drops you within a short walk of the hostel and saves the steep climb."
-      ]
-    },
-    {
-      "q": "Do I need to reserve beach clubs in advance?",
-      "a": [
-        "Book ahead for Arienzo, Laurito's Da Adolfo or Villa Tre Ville, and Spiaggia Grande's front-row spots—weekend seats go quickly. Smaller clubs at Fornillo often accept walk-ins early in the day."
-      ]
-    }
-  ],
+
   "gallery": [
     {
       "alt": "Spiaggia Grande from above",

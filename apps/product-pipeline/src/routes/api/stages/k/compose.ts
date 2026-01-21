@@ -1,15 +1,17 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/k/compose.ts
 
-import type { D1Database, PipelineEventContext } from "../../_lib/types";
 import { z } from "zod";
+
 import {
   buildStageKScenario,
-  type VelocityPrior,
   type StageKScenarioAssumptions,
+  type VelocityPrior,
 } from "@/lib/pipeline/stage-k-scenario";
+
 import { fetchCandidateById, getDb, type PipelineEnv } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import type { D1Database, PipelineEventContext } from "../../_lib/types";
 
 type StageRunRow = {
   id: string;

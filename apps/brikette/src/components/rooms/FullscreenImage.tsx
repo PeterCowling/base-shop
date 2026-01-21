@@ -1,9 +1,10 @@
 // src/components/rooms/FullscreenImage.tsx
-import { CfImage } from "@/components/images/CfImage";
-import { getIntrinsicSize } from "@/lib/getIntrinsicSize";
-import { ComponentPropsWithoutRef, KeyboardEvent, memo, useCallback, useMemo } from "react";
+import { type ComponentPropsWithoutRef, type KeyboardEvent, memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+
+import { CfImage } from "@/components/images/CfImage";
+import { getIntrinsicSize } from "@/lib/getIntrinsicSize";
 
 type ModalProps = ComponentPropsWithoutRef<"div">;
 

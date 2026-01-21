@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Zimmerbuchungen — Allgemeine Geschäftsbedingungen | Hostel Brikette",
-    "description": "Offizielle Bedingungen für Zimmerbuchungen: Buchung, Stornierungen, Check-in/Check-out, Zahlungen, Sorgfaltspflicht und Richtlinien."
+    "title": "Buchungsbedingungen | Hostel Brikette",
+    "description": "Buchungsbedingungen für Hostel Brikette zu Reservierungen, Zahlungen, Stornierungen, Kautionen, Haftung und Datenschutz."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Zimmerbuchungen",
-    "pageSubtitle": "Allgemeine Geschäftsbedingungen"
+    "pageTitle": "Hostel Brikette — Buchungsbedingungen",
+    "pageSubtitle": "Buchungsbedingungen"
   },
   "toc": {
     "title": "Inhalt",
@@ -13,338 +13,168 @@
   },
   "footer": {
     "end": "Ende des Dokuments.",
-    "backToTop": "Zurück nach oben"
+    "backToTop": "Nach oben"
   },
   "sections": {
     "s1": {
-      "title": "1. Definitionen und Auslegung",
+      "title": "1. Parteien und Definitionen",
       "body": [
-        "1.1 \"Allgemeine Geschäftsbedingungen\" — Die in diesem Dokument beschriebenen Bedingungen.",
-        "1.2 \"Das Hostel\", \"wir\" oder \"uns\" — Skylar SRL, eingetragener Sitz: Via Guglielmo Marconi 358, 84017 Positano (SA), Italien.",
-        "1.3 \"Sie\", \"Ihr\", Kunde, Bewohner oder \"Gast\" — Jede Person, die eine Zimmerbuchungsanfrage stellt, offizieller Hostelgast ist, vorübergehender Gast ist, dem Personal angehört, Veranstalter/Gruppenleiter ist oder sonstiger Drittanbieter/-käufer ist.",
-        "1.4 \"Zimmerbuchungsanfrage\" — Eine Anfrage, einen Aufenthalt im Hostel gemäß diesen Bedingungen zu buchen; gestellt von Ihnen oder Ihrer OTA. Nur das Hostel und autorisierte OTAs dürfen Betten zum Verkauf anbieten; jeder Wiederverkauf durch Unbefugte führt zur Ablehnung der Anfrage bzw. zur Stornierung bestätigter Buchungen.",
-        "1.5 \"Gemeinschaftsbereiche\" — Bereiche des Hostels, die sowohl offiziellen Hostelgästen als auch vorübergehenden Gästen offenstehen: Eingang/Rezeption, Gemeinschaftsterrasse, Gemeinschaftsbäder.",
-        "1.6 \"Karteninhaber\" — Inhaber der in der Zimmerbuchungsanfrage angegebenen Kreditkarte.",
-        "1.7 \"Gegenangebot\" — Abwandlung einer Zimmerbuchungsanfrage. Das erste Gegenangebot erfolgt durch das Hostel; weitere können folgen.",
-        "1.8 \"Bestätigte Zimmerbuchung\" — Kommt zustande, wenn das Hostel eine Zimmerbuchungsanfrage annimmt oder Sie ein Gegenangebot annehmen. Der rechtsverbindliche Vertrag umfasst Leistungen, Services und diese Bedingungen.",
-        "1.9 \"No‑Show\" — Status, der gilt, wenn ein oder mehrere berechtigte Gäste am ersten Buchungstag bis zum Ende der offiziellen Check‑in‑Zeit nicht einchecken.",
-        "1.10 \"No‑Show‑Gebühr\" — Entgelt des Hostels bei No‑Show oder bei bestätigter Stornierung außerhalb der Stornofrist. Höhe: der höhere Betrag aus Kosten der ersten Nacht oder nicht erstattbarer Anzahlung laut Buchung.",
-        "1.11 \"Stornierungsanfrage\" — Antrag auf Stornierung einer bestätigten Zimmerbuchung.",
-        "1.12 \"Stornofrist\" — Erforderliche Frist in Stunden zur Stornierung einer bestätigten Zimmerbuchung; in Tagen angegebene Fristen werden in Stunden umgerechnet (z. B. 3 Tage = 72 Stunden).",
-        "1.13 \"Stornierungsgebühr (Verwaltung)\" — Bearbeitungsentgelt für eine Stornierungsanfrage, basierend auf dem vereinbarten Tarif.",
-        "1.14 \"Offizielle E-Mail-Adresse des Hostels\" — hostelpositano@gmail.com.",
-        "1.15 \"Bestätigte Stornierung\" — Schriftliche Bestätigung des Hostels über die Stornierung, versendet von der offiziellen E‑Mail‑Adresse.",
-        "1.16 \"Änderungsanfrage\" — Antrag auf Änderung einer bestätigten Zimmerbuchung (Teil‑Storno oder Änderung von Beginn/Ende).",
-        "1.17 \"Bestätigte Buchungsänderung\" — Schriftliche Bestätigung des Hostels, dass die Änderung durchgeführt wurde.",
-        "1.18 \"Angegebene E‑Mail‑Adresse\" — Von Ihnen in der Buchungsanfrage angegebene Adresse; das Hostel nutzt sie für die gesamte Korrespondenz. Sie sind für Korrektheit und das Lesen der Nachrichten verantwortlich.",
-        "1.19 \"Verlängerungsanfrage\" — Antrag auf Verlängerung einer bestätigten Zimmerbuchung.",
-        "1.20 \"Bestätigte Verlängerung\" — Schriftliche Bestätigung des Hostels, dass die Verlängerung durchgeführt wurde.",
-        "1.21 \"Check‑in‑Anfrage\" — Antrag, einzuchecken und die Buchung zu beginnen.",
-        "1.22 \"Offizielle Check‑in‑Zeit\" — Zeitraum 15:00–22:00 Uhr am Anreisetag.",
-        "1.23 \"Offizieller Hostelgast\" — Person, die den Check‑in‑Prozess abgeschlossen hat.",
-        "1.24 \"Zugewiesenes Zimmer\" — Das dem offiziellen Gast zugewiesene Zimmer; Zutritt nur zu diesem.",
-        "1.25 \"Zimmer des Hostels\" — Private Zimmer und Schlafsäle, ausschließlich für offizielle Gäste.",
-        "1.26 \"Bettwäsche\" — Beim Check‑in ausgegebenes Set: Kissenbezug, Bettlaken, Spannlaken, Handtuch.",
-        "1.27 \"Zimmer‑Upgrade\" — Zuweisung eines teureren Zimmers als gebucht (maßgeblich ist nur der Preis).",
-        "1.28 \"Keycard (Schlüsselkarte)\" — Plastikkarte (gegen Pfand), kodiert zum Öffnen der Tür des zugewiesenen Zimmers.",
-        "1.29 \"Vorautorisierung\" — Vorübergehende Reservierung eines Betrags auf der Karte des Karteninhabers; die Mittel sind blockiert, nicht sofort belastet.",
-        "1.30 \"Check‑out\" — Erfolgt nur, wenn: die Bettwäsche zurückgegeben, die Keycard zurückgegeben und alle persönlichen Gegenstände aus dem Zimmer entfernt wurden.",
-        "1.31 \"Minderjähriger\" — Person unter 18 Jahren in Italien.",
-        "1.32 \"Kostenlose Zusatzleistung\" — Vom Hostel ggf. kostenlos angebotener, nicht vertragsbestandteillicher Service (z. B. Frühstück, Getränke, WLAN, Gepäckaufbewahrung, Kühlschranknutzung).",
-        "1.33 \"Vorübergehender Gast\" — Person mit Zutritt nur zu Gemeinschaftsbereichen, nach Vorlage eines Originalausweises. Nur Personal darf diesen Status vergeben.",
-        "1.34 \"Akzeptierte Zahlungsmittel\" — Visa‑ oder MasterCard‑Kreditkarten; Banküberweisung nur von Unternehmen. AmEx/PayPal u. Ä. werden nicht akzeptiert. Bargeld in Euro.",
-        "1.35 \"Prepaid, nicht erstattbare Buchungen\" — Vergünstigte Tarife mit vollständiger Zahlung bei Buchung; niemals erstattungsfähig.",
-        "1.36 \"Wer zuerst kommt, wählt zuerst\" — Keine Zuweisung bestimmter Betten im Schlafsaal; Gäste wählen aus verfügbaren Betten und können bei Verfügbarkeit wechseln.",
-        "1.37 \"Buchungsart\" — Prepaid/nicht erstattbar oder erstattbar.",
-        "1.38 \"Erstattbare Buchungen\" — Standardtarif mit flexiblen Bedingungen (anpassbare Anreise/ Dauer; großzügigere Stornoregeln gemäß Tarif).",
-        "1.39 \"Identitätsnachweis\" — Reisepass, Personalausweis, Führerschein oder Militär‑ID. Nur Originale.",
-        "1.40 \"Schwerwiegender Mangel\" — Mangel, der den Aufenthalt erheblich beeinträchtigt (z. B. defektes Bett, unsichere Temperatur, kein Zugang, fehlendes Wasser).",
-        "1.41 \"OTA\" — Online-Reiseagentur, die zum Verkauf von Betten gegen Provision berechtigt ist (z. B. Hostelworld.com und Booking.com)."
+        "Gültig ab: 2026-01-09.",
+        "Gilt für: alle Buchungen im Hostel Brikette und, soweit relevant, Besucher vor Ort.",
+        "Wenn Sie über eine OTA gebucht haben, kann die OTA eigene Plattformbedingungen auferlegen. Diese Buchungsbedingungen regeln den Beherbergungsvertrag zwischen Ihnen und Skylar SRL für Ihren Aufenthalt im Hostel Brikette, soweit gesetzlich zulässig.",
+        "1.1 Wer wir sind — Skylar SRL (\"wir\") betreibt Hostel Brikette. Sitz: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Objektadresse: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Offizielle E‑Mail: hostelpositano@gmail.com. Website: https://hostel-positano.com.",
+        "1.2 \"Buchungsbedingungen\" — Dieses Dokument.",
+        "1.3 \"Hausregeln\" — Das separate Dokument der Hostel Brikette Hausregeln, das für Ihren Aufenthalt gilt und Bestandteil des Beherbergungsvertrags ist.",
+        "1.4 \"Buchende Person\" — Die Person, die eine Buchungsanfrage stellt und auf deren Namen die Buchung erfolgt.",
+        "1.5 \"Gast\" — Person, die über eine bestätigte Buchung übernachtet.",
+        "1.6 \"Besucher\" — Person, die gemäß den Hausregeln nur Gemeinschaftsbereiche betreten darf und nicht übernachtet (in manchen Ländern auch \"Temporary Guest\").",
+        "1.7 \"Karteninhaber\" — Eigentümer der Zahlungskarte, mit der eine Buchung bezahlt oder garantiert wird.",
+        "1.8 \"Buchungsanfrage\" — Anfrage zur Reservierung einer Unterkunft im Hostel Brikette über unsere Website oder eine autorisierte OTA.",
+        "1.9 \"Bestätigte Buchung\" — Eine Buchungsanfrage, die wir schriftlich angenommen haben (einschließlich E‑Mail oder Bestätigung/Nachricht über die OTA‑Plattform), wodurch ein verbindlicher Beherbergungsvertrag entsteht.",
+        "1.10 \"OTA\" — Online‑Reiseagentur, die von uns autorisiert ist, unsere Betten/Zimmer anzubieten (z. B. Hostelworld.com und Booking.com).",
+        "1.11 \"Tariftyp\" — Das Preisregelwerk einer Buchung, z. B. Erstattbarer Tarif oder Nicht erstattbarer Tarif, wie bei der Buchung und in Ihrer bestätigten Buchung angezeigt.",
+        "1.12 \"Nicht erstattbarer Tarif\" — Rabattierter oder eingeschränkter Tarif, der vollständige Zahlung bei Buchung erfordert und nicht erstattungsfähig ist, sofern gesetzlich nichts anderes vorgeschrieben ist.",
+        "1.13 \"Erstattbarer Tarif\" — Tarif, der Stornierungen oder Änderungen gemäß den bei der Buchung und in der bestätigten Buchung angegebenen Regeln zulassen kann.",
+        "1.14 \"Offizielles Check‑in‑Fenster\" — 15:00 bis 22:00 am Anreisetag, sofern in Ihrer bestätigten Buchung nichts anderes angegeben ist.",
+        "1.15 \"No Show\" — Ein Gast schließt den Check‑in bis zum Ende des offiziellen Check‑in‑Fensters am Anreisetag nicht ab und hat keine schriftliche Zustimmung für eine spätere Anreise erhalten.",
+        "1.16 \"Späte Stornierung\" — Stornierung, die außerhalb der für den Tariftyp geltenden Frist erfolgt.",
+        "1.17 \"Beendigung wegen Verstoßes\" — Wir beenden einen Aufenthalt (oder verweigern die Fortsetzung der Unterkunft) aufgrund eines Verstoßes gegen die Hausregeln oder diese Buchungsbedingungen.",
+        "1.18 \"Vorautorisierung\" — Vorübergehende Reservierung von Geldern auf einer Zahlungskarte ohne sofortige Belastung.",
+        "1.19 \"Sicherheitskaution\" — Kaution oder Vorautorisierung zur Deckung von Beträgen, die gemäß diesen Buchungsbedingungen oder den Hausregeln geschuldet sind (z. B. Schäden, Strafen, unbezahlte Gebühren), wie in Abschnitt 5 beschrieben.",
+        "1.20 \"Gemeinschaftsbereiche\" — Ausgewiesene Gemeinschaftsbereiche gemäß den Hausregeln (ausgenommen Gästezimmer/Dorms, sofern nicht ausdrücklich angegeben).",
+        "1.21 \"Erheblicher Mangel\" — Ein Mangel der Unterkunft oder Einrichtung, der den Aufenthalt wesentlich beeinträchtigt (Beispiele: kaputtes Bett, fehlendes Wasser, kein Zugang zum Zimmer), der von uns angemessen beurteilt wird.",
+        "1.22 Auslegung — \"Schriftlich\" umfasst E‑Mails und Nachrichten über die OTA‑Plattform.",
+        "1.23 Zeiten und Fristen gelten in Ortszeit, sofern nicht anders angegeben.",
+        "1.24 Bei Konflikten zwischen diesen Buchungsbedingungen und den Hausregeln zu finanziellen Angelegenheiten haben diese Buchungsbedingungen Vorrang; bei Verhalten und Abläufen vor Ort haben die Hausregeln Vorrang."
       ]
     },
     "s2": {
-      "title": "2. Buchungsanfragen",
+      "title": "2. Buchungsanfragen, autorisierte Kanäle und Vertragsabschluss",
       "body": [
-        "2.1 Einreichung — Buchungsanfragen sind schriftlich über eine OTA oder unsere Website zu stellen. Gespräche vor Ort sind rein informativ. Mit Einreichung stimmen Sie diesen Bedingungen zu und bestätigen die Richtigkeit Ihrer Angaben.",
-        "2.2 Bearbeitung — Beginnt nach Eingang der erforderlichen Anzahlung/Vorautorisierung/Zahlung über ein akzeptiertes Mittel. Der Karteninhaber ist zu verifizieren und kann schriftlich zur Belastung über die offizielle E‑Mail autorisieren müssen; ohne Verifizierung Ablehnung der Anfrage.",
-        "2.3 Ablehnung — Wir können jede Zimmerbuchungsanfrage ohne Angabe von Gründen ablehnen.",
-        "2.4 Umfang — Maximal sieben (7) Nächte und Gruppen bis fünf (5) Personen; darüber hinaus als mehrere Buchungen behandelt.",
-        "2.5 Gegenangebot — Bei Nichtverfügbarkeit senden wir Alternativen an die angegebene E‑Mail‑Adresse. Annahme löst Zahlungs/Vorautorisierungsversuche aus.",
-        "2.6 Prepaid, nicht erstattbar — Ggf. ausdrückliche Zustimmung zu diesen Bedingungen erforderlich; bei Ausbleiben Stornierung der Anfrage. Bis zu drei Zahlungsversuche.",
-        "2.7 Bestätigung — Eine Buchung ist erst bestätigt, wenn wir die Bestätigung (Referenz, Anreise, Dauer etc.) an die angegebene E‑Mail senden. Sie prüfen die Angaben und melden Fehler an die offizielle E‑Mail.",
-        "2.9 Anzahl der enthaltenen Gäste — Ein Gast pro Einzelbett; bis zu zwei pro Doppelbett; Apartments gemäß ausgeschriebener Kapazität. Keine Überbelegung.",
-        "2.9 Leistungsumfang — Inklusive Bettwäsche und Keycard pro Person, Zugang zu Duschen und Warmwasser zu angegebenen Zeiten sowie Zugang zu Gemeinschaftsbereichen. Weitere Leistungen sind kostenlose Zusatzleistungen mit eigenen Bedingungen.",
-        "2.10 Finanzielle Verantwortung — Der Karteninhaber haftet für die Buchung und etwaige Zusatzkosten (Schäden, Zusatzreinigung, Bußgelder, Verstoß gegen Check‑out‑Regeln etc.).",
-        "2.11 Zuteilung von Zimmern/Betten — Jede Person wird einem Zimmer zugewiesen. Im Schlafsaal gilt: Wer zuerst kommt, wählt zuerst; Gruppen können auf mehrere Zimmer verteilt werden.",
-        "2.12 Upgrades — Können aus Bestandsgründen oder gegen Zahlung zugeteilt werden; ohne Zahlung ggf. Rückkehr zur ursprünglichen Kategorie."
+        "2.1 Autorisierte Buchungskanäle und Verbot des Weiterverkaufs — Buchungen müssen über unsere Website oder eine autorisierte OTA erfolgen. Der unautorisierte Weiterverkauf unseres Unterkunftsbestands ist verboten. Wir können Anfragen ablehnen oder stornieren, die wir vernünftigerweise mit unautorisiertem Weiterverkauf oder Betrug in Verbindung bringen.",
+        "2.2 Wie eine Buchung bestätigt wird — Eine Buchung wird erst dann zur bestätigten Buchung, wenn wir eine schriftliche Bestätigung senden (per E‑Mail, OTA‑Bestätigung oder OTA‑Nachrichtenverlauf). Bis dahin sind Gespräche (auch persönlich oder telefonisch) nur informativ.",
+        "2.3 Ablehnung von Buchungsanfragen — Wir können eine Buchungsanfrage ablehnen, wenn dies für den rechtmäßigen Betrieb, die Sicherheit, Kapazitäts-/Bestandsgrenzen, fehlende Verifizierung oder Zahlung, Betrugsverdacht oder einen Verstoß gegen diese Buchungsbedingungen oder die Hausregeln erforderlich ist. Wir lehnen Buchungen nicht aus unzulässigen diskriminierenden Gründen ab.",
+        "2.4 Richtigkeit der Angaben und Kommunikation — Die buchende Person muss korrekte Kontaktdaten angeben (einschließlich einer überwachten E‑Mail‑Adresse). Wir senden wesentliche Buchungsmitteilungen an die angegebenen Kontaktdaten. Wenn Sie über eine OTA gebucht haben, können wir über das OTA‑Nachrichtensystem und/oder per E‑Mail kommunizieren.",
+        "2.5 Verifizierung, Betrugsprävention und Autorisierungen — Wir können eine Identitäts- und/oder Zahlungsprüfung verlangen, um Betrug zu vermeiden (einschließlich Bestätigung, dass der Karteninhaber die Belastungen autorisiert). Wird die erforderliche Verifizierung nicht innerhalb einer angemessenen Frist bereitgestellt, können wir die Buchungsanfrage ablehnen oder die Buchung stornieren (und die anwendbaren Gebührenregeln anwenden, falls sie bereits bestätigt war).",
+        "2.6 Buchungsgrößen‑Limits — Sofern nicht schriftlich anders vereinbart, gelten folgende Limits: maximale Aufenthaltsdauer pro Buchung: 7 Nächte; maximale Gruppengröße pro Buchung: 5 Personen. Wenn größere Anfragen akzeptiert werden, können sie als mehrere Buchungen strukturiert sein. Gebührenregeln gelten pro Buchung, sofern nicht schriftlich anders bestätigt.",
+        "2.7 Nichtübertragbarkeit — Buchungen sind nicht übertragbar. Der Name der buchenden Person kann ohne unsere schriftliche Zustimmung nicht geändert werden. Gäste einer Buchung können nur mit unserer schriftlichen Zustimmung und vorbehaltlich Identitätsprüfung und Kapazitätsregeln geändert werden."
       ]
     },
     "s3": {
-      "title": "3. Alter und Barrierefreiheit",
+      "title": "3. Tarife, Inklusivleistungen und Zimmerzuteilung",
       "body": [
-        "3.1 Barrierefreiheit — Kontaktieren Sie uns vor der Buchung bei speziellen Anforderungen. Das Gebäude hat Treppen und keinen Gepäckträgerdienst. Geräuschverursachende Schlafgeräte sind nur in Privatzimmern erlaubt.",
-        "3.2 Selbstständigkeit — Wir leisten keine fortlaufende Betreuung; wenn Sie Ihren Aufenthalt nicht selbstständig bewältigen können, stornieren wir die Buchung.",
-        "3.3 Minderjährige — In Italien dürfen Minderjährige nicht allein reisen. Kinder bis 16 nur in Privatzimmern mit Erziehungsberechtigten (18+). 17‑Jährige nur im Schlafsaal mit einer 18+‑Begleitperson im selben Zimmer und geeigneter Nachweisführung; andernfalls Stornierung gemäß Tarif."
+        "3.1 Was enthalten ist — Sofern in Ihrer bestätigten Buchung nichts anderes angegeben ist, umfasst die Unterkunft: ein Bett/Zimmer pro Gast für die gebuchten Nächte; Standardbettwäsche beim Check‑in (siehe Hausregeln); Zugang zu Gemeinschaftsbereichen während des Aufenthalts; Zugang zu gemeinsamen Bädern/Duschen unter Vorbehalt ausgehängter Zeitpläne (falls vorhanden). Zusätzliche Leistungen (z. B. Frühstück, Getränke, WLAN, Gepäckaufbewahrung, Kühlschrankaufbewahrung) können kostenfrei oder kostenpflichtig sein und unterliegen ggf. separaten Bedingungen vor Ort oder auf der Website.",
+        "3.2 Zimmer‑ und Bettenzuteilung — Wir weisen Zimmertypen gemäß Ihrer bestätigten Buchung zu. In Dorms werden Betten in der Regel nach dem Prinzip „wer zuerst kommt“ vergeben, sofern wir nichts anderes angeben. Gruppenbuchungen können auf mehrere Zimmer aufgeteilt werden, je nach Verfügbarkeit.",
+        "3.3 Upgrades — Wenn wir ein Upgrade anbieten, kann es: kostenpflichtig sein (mit schriftlicher Zustimmung und erfolgreicher Zahlung) oder betrieblich (vorübergehende Unterbringung in einem anderen Zimmer aus Bestandsgründen). Wenn ein Upgrade kostenpflichtig ist, aber die Zahlung fehlschlägt, können wir die Buchung auf den ursprünglichen Zimmertyp zurücksetzen (vorbehaltlich Verfügbarkeit)."
       ]
     },
     "s4": {
-      "title": "4. Drittprozesse und Zahlungen",
+      "title": "4. Zahlungen, Deposits und Vorautorisierungen",
       "body": [
-        "Geben Sie eine Zimmerbuchungsanfrage über einen Dritt‑Zahlungsdienst (OTA) ab, erfolgt die Zahlung auf deren Plattform gemäß deren Bedingungen.",
-        "Direkt an Dritte geleistete Zahlungen unterliegen Ihrer Vereinbarung mit diesen; das Hostel hat keinen Einfluss auf diese Prozesse.",
-        "Wir erhalten keinen Anteil an solchen Zahlungen und übernehmen keine Haftung für so getätigte Buchungen.",
-        "Sie tragen die Verantwortung sicherzustellen, dass die Zahlung erfolgreich war und die Buchung vor Anreise bestätigt ist.",
-        "Fragen zur OTA‑Zahlung richten Sie bitte direkt an den Drittanbieter."
+        "4.1 Akzeptierte Zahlungsmethoden — Akzeptierte Zahlungsmethoden sind: Visa und Mastercard; Bargeld in EUR; Banküberweisung nur von eingetragenen Unternehmen.",
+        "4.2 Fälligkeit der Zahlung — Der Zeitpunkt der Zahlung hängt vom Tariftyp und Buchungskanal ab. Nicht erstattbarer Tarif: vollständige Zahlung bei Buchung (oder bei Bestätigung, wenn wir manuell verarbeiten). Erstattbarer Tarif: Zahlung kann bei Buchung, beim Check‑in oder innerhalb einer angegebenen Frist fällig sein; wir können eine Vorautorisierung/Garantie verlangen. Ihre bestätigte Buchung enthält die Zahlungszeitpunkte und Regeln für Ihren Tariftyp.",
+        "4.3 Zahlungen über OTAs — Wenn Sie über eine OTA buchen, kann Ihre Zahlung entweder durch die OTA (als Merchant of Record) oder durch Skylar SRL (als Merchant of Record) eingezogen werden. Der Merchant of Record und der geltende Erstattungsprozess werden in Ihrer Buchungsbestätigung und/oder auf der OTA‑Buchungsseite angegeben. Wenn die OTA Merchant of Record ist, werden Erstattungen (falls zutreffend) nach deren Verfahren abgewickelt.",
+        "4.4 Deposits und Vorauszahlungen — Wenn wir eine Kaution oder Vorauszahlung nehmen, hängt deren Erstattbarkeit vom Tariftyp und den Stornierungsregeln ab, die bei der Buchung und in Ihrer bestätigten Buchung angezeigt werden. Wir behandeln nicht alle Deposits automatisch als nicht erstattbar, sofern dies für den Tariftyp nicht ausdrücklich angegeben ist.",
+        "4.5 Vorautorisierungen — Wir können eine Zahlungskarte für Beträge vorautorisieren, die mit dem Unterkunftspreis, der Sicherheitskaution (Abschnitt 5) und/oder voraussichtlichen Gebühren der Buchung (z. B. späte Stornierung, No Show, Schäden) übereinstimmen. Eine Vorautorisierung ist keine endgültige Belastung. Die Freigabezeit hängt vom Kartenanbieter und der abwickelnden Bank ab."
       ]
     },
     "s5": {
-      "title": "5. Anzahlungen und Vorautorisierungen",
+      "title": "5. Sicherheitskaution und Absicherung",
       "body": [
-        "5.1 Anzahlung — Zur Sicherung Ihrer Buchung kann eine Anzahlung erforderlich sein. Betrag je nach Buchungsart; bei Prepaid‑nicht erstattbar 100%. Sämtliche an das Hostel geleisteten Anzahlungen sind nicht erstattbar. Ohne Einzug der Anzahlung Ablehnung der Anfrage.",
-        "5.2 Vorautorisierung — Ggf. Vorautorisierung in Höhe des vereinbarten Betrags erforderlich. Ist diese nicht möglich, wird die Anfrage abgelehnt."
+        "5.1 Regel zur Sicherheitskaution — Wir können für die Dauer des Aufenthalts eine Sicherheitskaution in Höhe einer Nacht pro Gast verlangen, als Vorautorisierung oder Barhinterlegung (zulässige Methoden können je nach Standort variieren).",
+        "5.2 Verwendung der Sicherheitskaution — Wir können die Sicherheitskaution ganz oder teilweise für Beträge verwenden, die gemäß diesen Buchungsbedingungen oder den Hausregeln geschuldet sind, einschließlich: unbezahlte Unterkunft oder Verlängerungen; Schäden oder fehlende Gegenstände; Reinigungsgebühren bei erheblicher Verschmutzung; Strafen für schwere Verstöße gegen Hausregeln (wo zulässig); Ersatz von Keycard/Bettwäsche, sofern zutreffend. Wenn die Kosten die Sicherheitskaution übersteigen, bleibt die Verantwortung für den Rest.",
+        "5.3 Wenn wir die Sicherheitskaution nicht erhalten können — Wenn wir die Sicherheitskaution nicht per Vorautorisierung erhalten, können wir Bargeld oder eine andere akzeptable Methode annehmen oder eine andere Person/Karteninhaber kann sie stellen. Wenn keine akzeptable Sicherheitskaution bereitgestellt wird, können wir den Check‑in verweigern und die Buchung nach den No‑Show-/Stornierungsregeln des Tariftyps behandeln."
       ]
     },
     "s6": {
-      "title": "6. No‑Show‑Gebühren",
+      "title": "6. Stornierungen, Änderungen, No Show, vorzeitige Abreise",
       "body": [
-        "Bei Nichterscheinen (No‑Show) wird pro bestätigter Zimmerbuchung eine No‑Show‑Gebühr fällig.",
-        "Buchungen können unterschiedliche Stornofristen haben; dies beeinflusst die Beurteilung mehrerer Fälle."
+        "6.1 Wie Änderungen oder Stornierungen beantragt werden — Alle Stornierungs- oder Änderungsanfragen müssen schriftlich an hostelpositano@gmail.com oder über das OTA‑Nachrichtensystem (wenn über eine OTA gebucht) gestellt werden. Wir empfehlen, denselben Kanal zu verwenden, über den Sie gebucht haben.",
+        "6.2 Wie Fristen gemessen werden — Sofern in Ihrer bestätigten Buchung nichts anderes angegeben ist: Fristen werden in Ortszeit gemessen und rückwärts von 15:00 am geplanten Anreisetag gezählt.",
+        "6.3 Stornierungsregeln und Gebühren — Stornierungsgebühren (falls vorhanden), Erstattungsfähigkeit (falls vorhanden) und Fristen hängen vom Tariftyp und Buchungskanal ab und werden bei der Buchung, in Ihrer bestätigten Buchung und in Anhang A (Tarif- und Gebührenplan) beschrieben.",
+        "6.4 Änderungen und Verlängerungen — Eine Änderungsanfrage kann als Stornierung der ursprünglichen Buchung und Erstellung einer neuen Buchung behandelt werden, abhängig von Verfügbarkeit und Tariftyp. Verlängerungen sind abhängig von Verfügbarkeit und werden als neuer Buchungszeitraum behandelt (mit möglicherweise anderem Tariftyp). Wir bestätigen genehmigte Änderungen schriftlich. Bis zur Bestätigung bleibt die ursprüngliche Buchung gültig.",
+        "6.5 No Show — Wenn eine Buchung zu einem No Show wird, fallen Gebühren gemäß Tariftyp und Anhang A an. Bei nicht erstattbaren Tarifen bedeutet dies in der Regel keine Erstattung.",
+        "6.6 Vorzeitige Abreise und ungenutzte Nächte — Wenn Sie nach dem Check‑in frühzeitig abreisen, entsteht dadurch nicht automatisch ein Erstattungsanspruch. Etwaige Erstattung, Gutschrift oder Verzicht (falls zutreffend) richtet sich nach dem Tariftyp, einer schriftlich bestätigten Änderung/Stornierung und zwingenden gesetzlichen Vorgaben.",
+        "6.7 Beendigung wegen Verstoßes (Räumung / Verweigerung der Fortsetzung) — Wenn wir Ihren Aufenthalt aufgrund eines schweren Verstoßes gegen diese Buchungsbedingungen oder die Hausregeln beenden: können Sie verpflichtet werden, sofort zu gehen; können Ihnen Gebühren für ungenutzte Nächte berechnet werden, soweit gesetzlich zulässig und mit dem Tariftyp vereinbar; wir können die Sicherheitskaution auf geschuldete Beträge anwenden und/oder den Karteninhaber belasten. Eine Beendigung wegen Verstoßes ist kein \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Stornierungen",
+      "title": "7. Check‑in‑Anforderungen (Berechtigung, Ausweis und Zahlung)",
       "body": [
-        "Stornierungsanfragen sind schriftlich an unsere offizielle E‑Mail zu richten.",
-        "Für die Fristberechnung gilt: ab Eingang Ihrer E‑Mail bis 00:01 Uhr des Anreisetages.",
-        "Es kann eine Verwaltungsgebühr für Stornierungen anfallen (standardmäßig 15% des Buchungspreises abzüglich bereits gezahlter Drittprovisionen).",
-        "Bei Annahme bestätigen wir per E‑Mail; bis dahin bleibt die Buchung bestätigt.",
-        "Eine Stornierung ohne Antrag ist möglich, wenn: Sie am ersten Tag vor Schließung der Rezeption nicht einchecken; Sie vorzeitig auschecken; oder gegen Regelungen verstoßen.",
-        "Neubuchungen nach Stornierung sind verfügbarkeitsabhängig.",
-        "Stornierungen außerhalb der Frist gelten als No‑Show und können eine Gebühr auslösen."
+        "7.1 Check‑in‑Fenster und späte Anreisen — Der Check‑in ist von 15:00–22:00 möglich. Wenn Sie eine späte Anreise erwarten, müssen Sie im Voraus Anweisungen anfordern. Ein Self‑Check‑in liegt in unserem Ermessen und kann eine erfolgreiche Ausweis- und Zahlungsprüfung im Voraus erfordern.",
+        "7.2 Identitätsnachweis — Jeder Gast muss beim Check‑in einen gültigen Original‑Ausweis vorlegen, wie für Registrierung und Sicherheit erforderlich. Akzeptierte Ausweise (Beispielliste): Reisepass, nationaler Personalausweis, Führerschein, Militärausweis (nur Originaldokumente). Lokale Versionen sollten erforderliche Datenfelder enthalten. Wenn ein Gast keinen gültigen Ausweis bis 22:00 am Anreisetag vorlegen kann, können wir den Check‑in verweigern und die No‑Show/Spätstornierungsregeln des Tariftyps anwenden.",
+        "7.3 Restzahlung beim Check‑in — Jeder offene Betrag muss vor Abschluss des Check‑in bezahlt werden.",
+        "7.4 Alter und Minderjährige (Richtlinie) — Die buchende Person muss mindestens 18 Jahre alt sein. Gäste unter 18 (\"Minderjährige\") können auf private Zimmer beschränkt sein und/oder eine erwachsene Begleitperson und einen Nachweis der Sorgeberechtigung erfordern, wie in den Hausregeln und/oder der bestätigten Buchung angegeben."
       ]
     },
     "s8": {
-      "title": "8. Änderungen bestätigter Buchungen",
+      "title": "8. Mängel, Wartung und Abhilfen",
       "body": [
-        "Wir ersetzen bestätigte Buchungen durch neue, statt sie zu ändern.",
-        "Senden Sie Änderungsanträge innerhalb der Frist an die offizielle E‑Mail.",
-        "Alle Änderungen stehen unter Verfügbarkeits‑ und weiteren Vorbehalten.",
-        "Änderungen der Aufenthaltsdauer gelten zugleich als Änderungsantrag und als Stornierungs‑ oder Verlängerungsantrag.",
-        "Verlängerungen werden als neue Buchungen behandelt.",
-        "Bei vorzeitigem Verlassen ohne bestätigte Stornierung gilt die ursprüngliche Buchung als erfüllt."
+        "8.1 Meldung — Gäste müssen Mängel oder Wartungsprobleme so bald wie vernünftigerweise möglich melden, damit wir prüfen können.",
+        "8.2 Bearbeitung und Priorisierung — Wir priorisieren Reparaturen nach Auswirkung und Sicherheit.",
+        "8.3 Erhebliche Mängel — Wenn wir einen erheblichen Mangel bestätigen und ihn nicht in angemessener Zeit beheben können, können wir (je nach Angemessenheit und Verfügbarkeit) eine alternative Unterkunft bereitstellen, eine anteilige Anpassung für betroffene Nächte gewähren und/oder eine andere gesetzlich erforderliche Abhilfe 제공."
       ]
     },
     "s9": {
-      "title": "9. Übertragbarkeit der Buchung",
+      "title": "9. Schäden, übermäßige Reinigung und Bettwanzen (Gebühren)",
       "body": [
-        "Zimmerbuchungsanfragen und bestätigte Zimmerbuchungen sind strikt nicht übertragbar, weder ganz noch teilweise.",
-        "Jede Buchung bleibt während der gesamten Dauer auf den ursprünglichen Bucher ausgestellt.",
-        "Versuche, mit übertragener Buchung einzuchecken, begründen eine Kostenpflicht und können zur sofortigen Stornierung führen.",
-        "Versuche, den zugewiesenen Gastnamen zu ändern, können ebenfalls zur Stornierung führen."
+        "9.1 Schäden und Verlust — Wenn Sie Eigentum beschädigen oder Verlust verursachen, sind Sie für angemessene Reparatur-/Ersatzkosten und angemessene Verwaltungskosten verantwortlich, vorbehaltlich der geltenden Gesetze. Wir können den Karteninhaber belasten und/oder die Sicherheitskaution verwenden. Personalkosten (falls genutzt): Direktor 50 €/h, Manager 35 €/h, Staff 25 €/h.",
+        "9.2 Bettwanzen — Wenn wir angemessen feststellen (auf Basis von Inspektion und Belegen), dass ein Gast Bettwanzen eingebracht hat, können wir angemessene direkte Sanierungskosten und nachweisbare Verluste berechnen, vorbehaltlich der geltenden Gesetze. Siehe Hausregeln für das erforderliche Verhalten des Gastes (Meldung, Eindämmungsschritte)."
       ]
     },
     "s10": {
-      "title": "10. Prepaid, nicht erstattbare Buchungen",
+      "title": "10. Persönliche Gegenstände und Aufbewahrung",
       "body": [
-        "Vollzahlung zum Zeitpunkt der Buchung erforderlich; schlägt die Zahlung fehl, wird die Anfrage storniert.",
-        "Bei No‑Show erfolgt keine Rückerstattung.",
-        "Verlängerungsanträge werden gemäß diesen Bedingungen geprüft."
+        "Gäste sind für ihre Gegenstände verantwortlich. Wenn wir Schließfächer/Safes oder Aufbewahrung als Service anbieten, sind Verfügbarkeit und Regeln in den Hausregeln und/oder separaten Aufbewahrungsbedingungen beschrieben.",
+        "Nichts in diesen Buchungsbedingungen schließt Haftung aus oder beschränkt sie, soweit ein solcher Ausschluss oder eine solche Beschränkung nach geltendem Recht unzulässig ist."
       ]
     },
     "s11": {
-      "title": "11. Anreise",
+      "title": "11. Haftung",
       "body": [
-        "11.1 Check‑in‑Anfrage — Bei Ankunft müssen sich alle Gäste ausweisen und den Check‑in einleiten.",
-        "11.2 Frühe Anreise — Vor 10:30 Uhr am Anreisetag ist kein Zutritt möglich.",
-        "11.3 Ankunft zwischen 10:30 und 15:00 Uhr — Nach Zustimmung können Sie vorübergehender Gast werden. Eine Gepäckaufbewahrung kann nach Ermessen und mit separaten Bedingungen angeboten werden.",
-        "11.3 Check‑in‑Zeitfenster — Regulärer Check‑in innerhalb der offiziellen Zeit (15:00–22:00 Uhr).",
-        "11.5 Späte Anreise — Nach 22:00 Uhr ist die Rezeption geschlossen. Nach Ermessen stellen wir Self‑Check‑in‑Anweisungen bereit; Sie tragen Verantwortung für Probleme durch Nichterhalt/Nichtbefolgung oder falsche Kontaktdaten."
+        "11.1 Zwingendes Recht — Nichts in diesen Buchungsbedingungen beschränkt oder schließt unsere Haftung aus, soweit dies nach geltendem Recht nicht zulässig ist.",
+        "11.2 Umfang — Vorbehaltlich Abschnitt 11.1 sind wir für die Bereitstellung der Unterkunft und der in Ihrer bestätigten Buchung enthaltenen Leistungen verantwortlich. Wir haften nicht für Probleme, die durch Ihren Verstoß gegen diese Buchungsbedingungen oder die Hausregeln verursacht werden, durch Dritte außerhalb unserer Kontrolle (einschließlich OTAs, Zahlungsdienstleister, Beförderer) oder durch Ereignisse außerhalb unserer angemessenen Kontrolle (höhere Gewalt), soweit gesetzlich zulässig.",
+        "11.3 Verlustarten und Haftungsbegrenzung (soweit zulässig) — Vorbehaltlich Abschnitt 11.1 und soweit gesetzlich zulässig: haften wir nicht für indirekte oder Folgeschäden, und unsere Gesamthaftung im Zusammenhang mit der Buchung ist auf den Gesamtbetrag beschränkt, den Sie an uns für den Unterkunftsteil der bestätigten Buchung gezahlt haben."
       ]
     },
     "s12": {
-      "title": "12. Check‑in",
+      "title": "12. Datenschutz und CCTV",
       "body": [
-        "12.1 Erforderlichkeit — Können wir den Check‑in nicht abschließen, verweigern wir ihn und stornieren die Buchung (No‑Show).",
-        "12.2 Identitätsnachweis — Für jeden Gast ist ein gültiges Dokument erforderlich (Vorname, Nachname, Geburtsort, Staatsangehörigkeit, Geburtsdatum, Ausweisnummer). Ohne Vorlage bis 22:00 Uhr des ersten Tages Stornierung (No‑Show).",
-        "12.2 Restzahlung — Offene Beträge sind vor Abschluss des Check‑ins mit akzeptiertem Mittel zu zahlen; sonst Stornierung (No‑Show).",
-        "12.3 Pfand für Keycard & Bettwäsche — 10 € in bar beim Check‑in; Rückerstattung beim Check‑out gegen Rückgabe von Keycard und Bettwäsche."
+        "12.1 Datenschutzhinweis — Wir verarbeiten personenbezogene Daten gemäß unserer Datenschutzerklärung unter https://hostel-positano.com/privacy-policy. Diese erläutert, was wir erfassen, warum, die Rechtsgrundlagen (wo relevant), Aufbewahrung und wie Rechte ausgeübt werden können.",
+        "12.2 CCTV in öffentlichen Bereichen — Wir betreiben CCTV in bestimmten öffentlichen Bereichen der Unterkunft zu Sicherheits-, Schutz- und Betrugspräventionszwecken. CCTV ist vor Ort ausgeschildert, wird nur von autorisiertem Personal eingesehen, kann an Strafverfolgungsbehörden weitergegeben werden, sofern gesetzlich erforderlich oder zulässig, und wird 30 Tage lang gespeichert, sofern eine längere Speicherung für die Untersuchung eines Vorfalls oder gesetzlich erforderlich ist. Für CCTV‑Anfragen kontaktieren Sie: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Sicherheitsbetrag (Safeguarding)",
+      "title": "13. Website‑Informationen und Links Dritter",
       "body": [
-        "Wir können für die Aufenthaltsdauer einen Betrag in Höhe einer Nacht pro Person als Sicherheitsleistung blocken (Vorautorisierung oder Barhinterlegung).",
-        "Dieser Betrag kann gemäß unseren Richtlinien für Bußgelder, Gebühren, Verlängerungen oder sonstige Forderungen verwendet werden.",
-        "Ist die Vorautorisierung nicht möglich, kann ein anderes Gruppenmitglied leisten oder bar gezahlt werden; andernfalls Stornierung."
+        "Wir bemühen uns um korrekte Website‑Informationen, können Inhalte aber aktualisieren. Fotos können beispielhaft sein. Links Dritter dienen der Bequemlichkeit; wir übernehmen keine Verantwortung für Inhalte Dritter."
       ]
     },
     "s14": {
-      "title": "14. Sorgfaltspflicht",
+      "title": "14. Gesundheit und Sicherheit",
       "body": [
-        "Gäste haben andere Gäste und Personal zu respektieren, Schäden zu vermeiden und die Hausregeln zu befolgen.",
-        "Verstöße können zur sofortigen Stornierung (ggf. No‑Show‑Regel) und/oder zur Aufforderung zum Verlassen ohne Erstattung führen.",
-        "Durch Ihr Verhalten verursachte Kosten/Bußgelder können in Rechnung gestellt werden. Gesetzesverstöße melden wir erforderlichenfalls."
+        "Gäste sollten sich in Bezug auf übertragbare Krankheiten verantwortungsbewusst verhalten. Erstattungsregeln richten sich nach dem Tariftyp, sofern zwingendes Recht nichts anderes verlangt. Wir empfehlen eine Reiseversicherung."
       ]
     },
     "s15": {
-      "title": "15. Mängel und Schäden",
+      "title": "15. Aktionen und Gutscheine",
       "body": [
-        "15.1 Meldung — Melden Sie Zimmermängel umgehend.",
-        "15.2 Bewertung — Wir priorisieren Maßnahmen nach Auswirkung auf Ihren Aufenthalt.",
-        "15.3 Schwerwiegende Mängel — Wir bemühen uns um Behebung; ist dies nicht möglich, suchen wir Ersatzunterkunft oder leisten zeitanteilige Erstattung nach Preisdifferenz oder Restnächten.",
-        "15.4 Nicht gemeldete Mängel — Werden später entdeckt, kann unsere Schaden/Verlust‑Policy angewandt werden.",
-        "15.5 Schäden — Wir können vorautorisieren oder ein Pfand verlangen. Erstattungen erfolgen abzüglich angefallener Kosten. Überschreitende Kosten (Material, Arbeit, Verwaltung) werden berechnet. Überstundensätze: Direktor 50 €/h, Manager 35 €/h, Mitarbeiter 25 €/h."
+        "Gutscheine sind, sofern angeboten, nur wie angegeben gültig (z. B. nur Website) und können zusätzliche Bedingungen enthalten, die mit der Aktion angezeigt werden."
       ]
     },
     "s16": {
-      "title": "16. Bettwanzen",
+      "title": "16. Anwendbares Recht und Gerichtsstand",
       "body": [
-        "Wir treffen Maßnahmen zur Vorbeugung und Beseitigung von Bettwanzen. Tritt während Ihres Aufenthalts ein Befall auf, können Sie für Schäden inkl. Einnahmeausfällen, Gästebeschwerden und Reinigungs/Schädlingskosten haftbar sein.",
-        "Wenn Sie zuvor an Orten mit Bettwanzen übernachtet haben, teilen Sie dies beim Check‑in mit und desinfizieren Sie Ihr Gepäck.",
-        "Prüfen Sie Ihr Eigentum vor dem Check‑in und melden Sie Verdachtsfälle umgehend."
+        "Diese Buchungsbedingungen unterliegen italienischem Recht und Streitigkeiten sind vor den Gerichten in Italien auszutragen, vorbehaltlich zwingender Verbrauchergerichtsstände am Wohnsitz des Gastes."
       ]
     },
     "s17": {
-      "title": "17. Persönliche Gegenstände und Sicherheit",
+      "title": "Anhang A — Tarif- und Gebührenplan",
       "body": [
-        "Gäste sind jederzeit für ihre Habseligkeiten verantwortlich. Das Hostel haftet nicht für Verlust, Beschädigung oder Diebstahl, außer wo gesetzlich vorgeschrieben.",
-        "Schließfächer/Tresore können bereitgestellt werden; die Verantwortung bleibt beim Gast.",
-        "Nicht abgeholte Gegenstände werden 30 Tage nach Check‑out entsorgt.",
-        "Gefährliche oder illegale Gegenstände sind verboten und können beschlagnahmt oder gemeldet werden."
-      ]
-    },
-    "s18": {
-      "title": "18. Identifikation und Sicherheitsmaßnahmen",
-      "body": [
-        "Alle Gäste müssen die bereitgestellten Sicherheitsarmbänder auf dem Gelände tragen und auf Verlangen einen gültigen Ausweis vorzeigen.",
-        "Das Nichttragen des Armbands oder die Nichtvorlage eines Ausweises kann zum Verweis ohne Erstattung führen.",
-        "Verlust oder Beschädigung ist umgehend zu melden; ggf. fällt eine geringe Ersatzgebühr an."
-      ]
-    },
-    "s19": {
-      "title": "19. Videoüberwachung (CCTV)",
-      "body": [
-        "In öffentlichen Bereichen sind CCTV‑Kameras installiert, um Gäste und Eigentum zu schützen.",
-        "Aufzeichnungen werden sicher gespeichert, sind nur der autorisierten Leitung zugänglich und können bei gesetzlicher Verpflichtung an Behörden weitergegeben werden.",
-        "CCTV garantiert keine absolute Sicherheit; mit Zustimmung zu diesen Bedingungen akzeptieren Sie deren Einsatz."
-      ]
-    },
-    "s20": {
-      "title": "20. Vorübergehende Gäste",
-      "body": [
-        "Der Status als vorübergehender Gast kann nach unserem alleinigen Ermessen gewährt werden.",
-        "Vorübergehende Gäste haben nur Zugang zu Gemeinschaftsbereichen; Zimmer sind nicht erlaubt.",
-        "Offizielle Hostelgäste dürfen diesen Status nicht an Dritte vergeben.",
-        "Anträge können zwischen 9:00 und 23:00 Uhr an geöffneten Tagen angenommen werden.",
-        "Wir behalten uns vor, den Status jederzeit abzulehnen oder zu widerrufen."
-      ]
-    },
-    "s21": {
-      "title": "21. Nicht registrierte Personen",
-      "body": [
-        "Gesetzlich müssen alle im Haus befindlichen Personen registriert werden, einschließlich vorübergehender Gäste.",
-        "Stellen wir eine nicht registrierte Person in einem Zimmer fest, können wir den Standardpreis pro Person sowie eine Verwaltungsgebühr in Höhe des Zweifachen des Standardpreises berechnen.",
-        "Die nicht registrierte Person muss einchecken und die Standardverfahren befolgen; andernfalls können wir die Polizei informieren.",
-        "Das Unterlassen der Meldung kann zur Stornierung der Buchung führen (ggf. No‑Show‑Regel)."
-      ]
-    },
-    "s22": {
-      "title": "22. Check‑out",
-      "body": [
-        "Der offizielle Check‑out ist zwischen 7:30 und 10:30 Uhr.",
-        "Nach dem Check‑out dürfen Sie das Zimmer nicht erneut betreten und keine Gegenstände dort belassen.",
-        "Die Bedingungen nach dem Check‑out sind einzuhalten."
-      ]
-    },
-    "s23": {
-      "title": "23. Früher Check‑out",
-      "body": [
-        "Wenn Sie vor 7:30 Uhr abreisen, kommen Sie bitte am Vorabend an die Rezeption, um den frühen Check‑out zu organisieren und die Pfand‑Rückzahlung der Keycard zu erhalten.",
-        "Nicht zurückgegebene Keycards führen zum Verfall des Pfands.",
-        "Rückzahlungen erfolgen ausschließlich bar und persönlich an ein Teammitglied."
-      ]
-    },
-    "s24": {
-      "title": "24. Später Check‑out",
-      "body": [
-        "Nur nach vorheriger schriftlicher Vereinbarung möglich, Check‑out bis 12:00 Uhr.",
-        "Ermessensleistung, abhängig von Auslastung; schriftlich zu bestätigen.",
-        "Gebühr 40 €; Vergabe nach Reihenfolge der Anfragen."
-      ]
-    },
-    "s25": {
-      "title": "25. Versäumter Check‑out",
-      "body": [
-        "Erfolgt kein Check‑out zur vereinbarten Zeit, können wir Ihr Eigentum ohne Haftung aus dem Zimmer entfernen.",
-        "Jeder Versuch, nach der Zeit Gäste‑Bereiche zu betreten, kann als Sicherheitsverstoß gewertet werden.",
-        "Wir können Ihr Eigentum an einen lokalen Trägerdienst zur Aufbewahrung übergeben; Abholgebühren legt der Dienst fest."
-      ]
-    },
-    "s26": {
-      "title": "26. Nach dem Check‑out",
-      "body": [
-        "Mit Abschluss des Check‑outs gilt Ihre bestätigte Zimmerbuchung als erfüllt, unabhängig von verbleibenden Nächten.",
-        "Sie sind danach kein offizieller Hostelgast mehr und gelten bis 15:30 Uhr als vorübergehender Gast.",
-        "Auf Wunsch können wir Sie nach Ermessen in die Gepäckaufbewahrung aufnehmen; gesonderte Bedingungen gelten."
-      ]
-    },
-    "s27": {
-      "title": "27. Alkohol",
-      "body": [
-        "Als lizenzierter Betrieb ist das Mitbringen außerhalb gekaufter alkoholischer Getränke nicht gestattet.",
-        "Werden solche Getränke festgestellt, können wir sie verwahren und beim Check‑out oder bei gesichertem Konsum außerhalb zurückgeben.",
-        "Bei Verstoß kann die Buchung sofort storniert werden (ggf. No‑Show‑Regel)."
-      ]
-    },
-    "s28": {
-      "title": "28. Änderung dieser Bedingungen",
-      "body": [
-        "Diese Bedingungen bilden die gesamte Vereinbarung zwischen Ihnen und dem Hostel und ersetzen frühere Absprachen, schriftlich oder mündlich.",
-        "Wir behalten uns vor, diese Bedingungen jederzeit zu ändern."
-      ]
-    },
-    "s29": {
-      "title": "29. Haftungsumfang",
-      "body": [
-        "Unsere Haftung beschränkt sich auf die in diesen Bedingungen genannten Leistungen und Gegenstände.",
-        "Die Gesamthaftung übersteigt nicht den von Ihnen gezahlten Buchungsbetrag.",
-        "Wir haften nicht für Verlust/Beschädigung persönlicher Gegenstände, außer wo gesetzlich vorgeschrieben.",
-        "Wir haften nicht für indirekte, Folgeschäden oder wirtschaftliche Verluste bzw. entgangenen Gewinn, Goodwill oder Chancen, auch nicht bei Fahrlässigkeit oder höherer Gewalt.",
-        "Für Wertsachen stehen sichere Aufbewahrungen zur Verfügung; hierfür übernehmen wir keine finanzielle Haftung.",
-        "Wir behalten uns vor, Gegenstände während der Reinigung ohne Ankündigung zu bewegen."
-      ]
-    },
-    "s30": {
-      "title": "30. Anwendbares Recht",
-      "body": [
-        "Diese Bedingungen unterliegen italienischem Recht; Klagen sind vor italienischen Gerichten zu erheben."
-      ]
-    },
-    "s31": {
-      "title": "31. Website‑Informationen",
-      "body": [
-        "Wir bemühen uns um korrekte Angaben auf unserer Website, haften jedoch nicht für Fehler oder Auslassungen.",
-        "Wir dürfen Website und Inhalte jederzeit ohne Ankündigung ändern.",
-        "Einige Abbildungen zeigen den generellen Stil unserer Angebote und entsprechen ggf. nicht exakt dem dargestellten Produkt/Merkmal.",
-        "Sämtliche Inhalte (Texte, Bilder, Marken) sind Eigentum des Hostels und dürfen ohne schriftliche Zustimmung nicht genutzt werden.",
-        "Verlinkungen zu Drittseiten dienen der Bequemlichkeit; für deren Inhalte/Nutzung übernehmen wir keine Verantwortung.",
-        "Bitte beachten Sie unsere Datenschutzrichtlinie zur Verarbeitung Ihrer Daten bei Nutzung unserer Website."
-      ]
-    },
-    "s32": {
-      "title": "32. Gesundheits‑ und Sicherheitsrichtlinie",
-      "body": [
-        "Zum Schutz aller sollen Gäste, die kürzlich einer übertragbaren Erkrankung ausgesetzt waren, verantwortungsbewusst handeln.",
-        "Prepaid, nicht erstattbare Buchungen bleiben auch in solchen Fällen nicht erstattbar.",
-        "Wir empfehlen dringend eine Reiseversicherung gegen unvorhergesehene Ereignisse, inkl. Krankheit oder Reiseunfähigkeit."
-      ]
-    },
-    "s33": {
-      "title": "33. Gutscheine",
-      "body": [
-        "Wir können gelegentlich Werbegutscheine ausgeben.",
-        "Gutscheine gelten ausschließlich für Buchungen über unsere offizielle Website (hostel-positano.com).",
-        "Für jeden Gutschein können zusätzliche spezifische Bedingungen gelten."
+        "Dieser Anhang muss mit dem übereinstimmen, was bei der Buchung angezeigt wird.",
+        "A1. Nicht erstattbarer Tarif (Vorauszahlung) — Zahlung: 100 % bei Buchung/Bestätigung. Stornierung: keine Erstattung (sofern gesetzlich erforderlich ausgenommen). No Show: keine Erstattung. Änderungen: als neue Buchung behandelt; Preis/Tarif kann abweichen; vorbehaltlich Verfügbarkeit.",
+        "A2. Erstattbarer Tarif (nur Garantie) — Zahlung: beim Check‑in (oder innerhalb eines angegebenen Voranreisezeitraums), aber wir können bei Buchung vorautorisieren. Kostenlose Stornierung: bis 72 Stunden vor 15:00 am Anreisetag. Gebühr bei später Stornierung: der höhere Betrag aus der ersten Übernachtung oder einer nicht erstattbaren Anzahlung, plus eine ggf. anfallende Stornierungsgebühr. No‑Show‑Gebühr: der höhere Betrag aus der ersten Übernachtung oder einer nicht erstattbaren Anzahlung.",
+        "A3. Stornierungsverwaltungsgebühr — 5 € pro Buchung, angezeigt bei der Buchung und in der Bestätigungs‑E‑Mail wiederholt."
       ]
     }
   }

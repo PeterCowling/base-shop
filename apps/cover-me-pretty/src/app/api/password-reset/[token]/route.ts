@@ -1,6 +1,6 @@
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import { z } from "zod";
 import argon2 from "argon2";
 import { getUserByResetToken, updatePassword, setResetToken } from "@acme/platform-core/users";

@@ -1,9 +1,9 @@
 import {
   cleanupEnv,
   mockResendSend,
-  mockSendMail,
-  mockSendgridSend,
   mockSanitizeHtml,
+  mockSendgridSend,
+  mockSendMail,
   resetMocks,
   setupEnv,
 } from './sendCampaignTestUtils';

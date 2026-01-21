@@ -5,19 +5,19 @@
   },
   "linkLabel": "Auberge Brikette → quai du ferry, avec bagages",
   "intro": [
-    "Departing Hostel Brikette with luggage? Montez à bord du bus Interno Positano et laissez les porteurs du quai déplacer les sacs lourds pour atteindre le ferry sans avoir à affronter les escaliers de Positano."
+    "Vous partez de l'Hostel Brikette avec des bagages ? Montez à bord du bus Interno Positano et laissez les porteurs du quai déplacer les sacs lourds pour atteindre le ferry sans affronter les escaliers de Positano."
   ],
   "beforeList": [
-    "Consultez les horaires actuels d’Interno Positano – voici le [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Consultez les horaires actuels d’Interno Positano – voici les [horaires et tarifs à jour](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Récupérez les billets Interno Positano au tabacchi à côté de Chiesa Nuova avant d'embarquer (ou demandez à la réception de confirmer le stock).",
-    "Demandez l'aide d'un porteur si vous avez des bagages volumineux : la réception peut appeler à l'avance ou consulter le [porter service guide](guide:porterServices) pour connaître les numéros et les tarifs."
+    "Demandez l'aide d'un porteur si vous avez des bagages volumineux : la réception peut appeler à l'avance ou consulter le [guide des porteurs](guide:porterServices) pour connaître les numéros et les tarifs."
   ],
   "sections": [
     {
       "id": "hostel-to-stop",
       "title": "Entrée de l'auberge à l'arrêt Chiesa Nuova",
       "body": [
-        "Check-out, puis suivez l'escalier principal jusqu'à Viale Pasitea et tournez à gauche (en descente). Marchez un peu plus de 100 mètres (330 pieds) jusqu'au tabacchi/kiosque à journaux que vous avez utilisé à votre arrivée.",
+        "Après le check-out, suivez l'escalier principal jusqu'à Viale Pasitea et tournez à gauche (en descente). Marchez un peu plus de 100 mètres (330 pieds) jusqu'au tabacchi/kiosque à journaux que vous avez utilisé à votre arrivée.",
         "L'arrêt de bus Interno Positano se trouve juste à côté du tabacchi. Préparez vos billets ; si vous en avez besoin de plus, achetez-les à l’intérieur avant l’arrivée du bus."
       ]
     },
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini jusqu'à l'embarcadère",
       "body": [
         "Descendez du bus, rencontrez les porteurs si vous les avez réservés à l'avance et marchez directement dans la voie réservée aux piétons menant à Spiaggia Grande.",
-        "Suivez la promenade en descente pendant environ 7 minutes – utilisez [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) pour rester sur les sections de rampe les plus lisses.",
+        "Suivez la promenade en descente pendant environ 7 minutes – utilisez [ces indications](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) pour rester sur les sections de rampe les plus lisses.",
         "À l'embarcadère du ferry, enregistrez-vous auprès de votre opérateur. Les porteurs livrent les bagages séparément ; conservez vos passeports, vos médicaments et vos objets de valeur avec vous."
       ]
     }
@@ -50,9 +50,9 @@
     "Les porteurs peuvent transporter les valises sur des chariots séparés, vous n'avez donc qu'à gérer un sac à dos sur la promenade."
   ],
   "kneesDockPrefix": "Besoin de la version montée à votre retour ? Lisez notre",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "guide d'arrivée à Chiesa Nuova",
   "kneesPorterPrefix": "Vous souhaitez connaître les tarifs des porteurs et des conseils de réservation ? Vérifiez le",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "guide du service des porteurs",
   "faqs": [
     {
       "q": "Où puis-je acheter des billets Interno Positano près de l'auberge ?",

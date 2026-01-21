@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[167990],{167990:e=>{e.exports=JSON.parse('{"title":"Путеводители по Позитано","description":"Практичные пошаговые гиды о том, как ориентироваться в Позитано и на Амальфитанском побережье."}')}}]);

@@ -5,7 +5,7 @@ import { getShopSettings } from "@acme/platform-core/repositories/settings.serve
 import shop from "../../../../shop.json";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 
 // Accessing shop settings requires filesystem access via Node's `fs` module.
 // Switch to the Node.js runtime so these APIs are available during build and

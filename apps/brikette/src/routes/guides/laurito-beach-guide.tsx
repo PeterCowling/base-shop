@@ -1,24 +1,25 @@
 // src/routes/guides/laurito-beach-guide.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import { CfImage } from "@/components/images/CfImage";
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
 import { defineGuideRoute } from "./defineGuideRoute";
 import {
   getGuideManifestEntry,
-  guideAreaToSlugKey,
   type GuideAreaSlugKey,
+  guideAreaToSlugKey,
 } from "./guide-manifest";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import ImageGallery from "@/components/guides/ImageGallery";
-import i18n from "@/i18n";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import type { LinksFunction, MetaFunction } from "react-router";
 
 export const handle = { tags: ["beaches", "positano", "tips"] };
 
@@ -37,7 +38,40 @@ const OG_IMAGE = {
   },
 } as const;
 
-const GALLERY_IMAGE_INDICES = [1, 2, 3, 4, 5] as const;
+const SECTION_IMAGE_VARIANTS = {
+  "why-go": "whyGo",
+  layout: "layout",
+  "tre-ville": "treVille",
+  "da-adolfo": "daAdolfo",
+} as const;
+
+type SectionImageVariant = (typeof SECTION_IMAGE_VARIANTS)[keyof typeof SECTION_IMAGE_VARIANTS];
+
+const LAURITO_SECTION_IMAGES: Record<
+  SectionImageVariant,
+  { src: string; width: number; height: number }
+> = {
+  whyGo: {
+    src: "/img/guides/laurito/laurito-2.jpg",
+    width: 1500,
+    height: 1000,
+  },
+  layout: {
+    src: "/img/guides/laurito/laurito-5.jpg",
+    width: 512,
+    height: 215,
+  },
+  treVille: {
+    src: "/img/guides/laurito/laurito-4.jpg",
+    width: 1280,
+    height: 1600,
+  },
+  daAdolfo: {
+    src: "/img/guides/laurito/laurito-3.jpg",
+    width: 403,
+    height: 500,
+  },
+};
 
 const manifestEntry = getGuideManifestEntry(GUIDE_KEY);
 if (!manifestEntry) {
@@ -47,7 +81,14 @@ if (!manifestEntry) {
 const { Component, clientLoader, meta, links: baseLinks } = defineGuideRoute(manifestEntry, {
   template: () => ({
     ogImage: OG_IMAGE,
-    articleExtras: buildLauritoGallery,
+    genericContentOptions: {
+      sectionTopExtras: {
+        "why-go": <LauritoSectionFigure variant={SECTION_IMAGE_VARIANTS["why-go"]} />,
+        layout: <LauritoSectionFigure variant={SECTION_IMAGE_VARIANTS.layout} />,
+        "tre-ville": <LauritoSectionFigure variant={SECTION_IMAGE_VARIANTS["tre-ville"]} />,
+        "da-adolfo": <LauritoSectionFigure variant={SECTION_IMAGE_VARIANTS["da-adolfo"]} />,
+      },
+    },
   }),
   meta: buildMeta(
     manifestEntry.metaKey ?? manifestEntry.key,
@@ -65,36 +106,43 @@ export const links: LinksFunction = (
   return Array.isArray(descriptors) && descriptors.length > 0 ? descriptors : buildRouteLinks();
 };
 
-function buildLauritoGallery(context: GuideSeoTemplateContext) {
-  const altKey = `content.${GUIDE_KEY}.gallery.alt` as const;
-  const fallbackAlt =
-    translateWithFallback(context.translateGuides, altKey) || context.article.title;
+type SectionFigureProps = {
+  variant: SectionImageVariant;
+};
 
-  const sources = GALLERY_IMAGE_INDICES.map((index) =>
-    buildCfImageUrl(`/img/guides/laurito/laurito-${index}.jpg`, {
-      width: 1200,
-      height: 800,
-      quality: 85,
-      format: "auto",
-    }),
+function LauritoSectionFigure({ variant }: SectionFigureProps): JSX.Element {
+  const currentLang = useCurrentLanguage();
+  const lang = (currentLang ?? i18nConfig.fallbackLng) as AppLanguage;
+  const image = LAURITO_SECTION_IMAGES[variant];
+  const alt = translateWithFallback(
+    i18n.getFixedT(lang, "guides"),
+    `content.${GUIDE_KEY}.images.${variant}.alt`,
+  );
+  const caption = translateWithFallback(
+    i18n.getFixedT(lang, "guides"),
+    `content.${GUIDE_KEY}.images.${variant}.caption`,
   );
 
-  const items = sources
-    .map((src) => ({ src, alt: fallbackAlt, caption: fallbackAlt }))
-    .filter((item) => item.alt && item.src && item.src.length > 0);
-
-  if (items.length === 0) return null;
   return (
-    <section id="gallery">
-      <ImageGallery items={items} />
-    </section>
+    <figure className="rounded-xl border border-brand-outline/20 bg-brand-surface/40 p-2 shadow-sm dark:border-brand-outline/40 dark:bg-brand-bg/60">
+      <CfImage
+        src={image.src}
+        width={image.width}
+        height={image.height}
+        preset="gallery"
+        alt={alt}
+        className="h-auto w-full rounded-lg"
+      />
+      {caption ? <figcaption className="mt-2 text-center text-sm text-brand-text/80">{caption}</figcaption> : null}
+    </figure>
   );
 }
 
 function translateWithFallback(
-  translate: (key: string, options?: Record<string, unknown>) => unknown,
+  translate: ((key: string, options?: Record<string, unknown>) => unknown) | undefined,
   key: string,
 ): string {
+  if (typeof translate !== "function") return "";
   const primary = translate(key);
   if (typeof primary === "string") {
     const trimmed = primary.trim();

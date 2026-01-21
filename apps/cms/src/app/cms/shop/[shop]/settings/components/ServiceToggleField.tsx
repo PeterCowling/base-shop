@@ -1,7 +1,8 @@
 "use client";
 
-import { Switch } from "@/components/atoms";
 import { FormField } from "@acme/ui/components/molecules";
+
+import { Switch } from "@/components/atoms";
 
 import { ErrorChips } from "./ErrorChips";
 
@@ -45,7 +46,7 @@ export function ServiceToggleField({
           id={id}
           name={name}
           checked={checked}
-          onChange={(event) => onChange(event.target.checked)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.checked)}
           aria-describedby={description ? `${id}-description` : undefined}
           disabled={disabled}
           className="shrink-0"

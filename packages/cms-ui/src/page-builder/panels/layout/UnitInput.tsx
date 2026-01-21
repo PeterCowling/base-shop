@@ -1,0 +1,118 @@
+// packages/ui/src/components/cms/page-builder/panels/layout/UnitInput.tsx
+"use client";
+
+import * as React from "react";
+
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+
+import { cssError } from "./helpers";
+
+type Axis = "w" | "h";
+
+function getRootFontPx() {
+  const fs = typeof window !== "undefined" ? getComputedStyle(document.documentElement).fontSize : "16px";
+  const n = parseFloat(fs || "16");
+  return isFinite(n) && n > 0 ? n : 16;
+}
+
+function getParentSize(componentId: string, axis: Axis) {
+  try {
+    const el = document.querySelector(`[data-component-id="${componentId}"]`) as HTMLElement | null;
+    const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+    if (!parent) return 0;
+    return axis === "w" ? parent.clientWidth : parent.clientHeight;
+  } catch {
+    return 0;
+  }
+}
+
+const parseVal = (v?: string): { num: number; unit: "%" | "px" | "rem" } => {
+  const s = String(v ?? "").trim();
+  if (s.endsWith("%")) return { num: parseFloat(s.slice(0, -1)) || 0, unit: "%" };
+  if (s.endsWith("rem")) return { num: parseFloat(s.slice(0, -3)) || 0, unit: "rem" };
+  if (s.endsWith("px")) return { num: parseFloat(s.slice(0, -2)) || 0, unit: "px" };
+  // default to px
+  const num = parseFloat(s) || 0;
+  return { num, unit: "px" };
+};
+
+const fmt = (num: number, unit: "%" | "px" | "rem") =>
+  `${Number.isFinite(num) ? Math.round(num) : 0}${unit}`;
+
+const convert = (componentId: string, num: number, from: "%" | "px" | "rem", to: "%" | "px" | "rem", axis: Axis) => {
+  if (from === to) return num;
+  const basePx = getRootFontPx();
+  const parentSize = getParentSize(componentId, axis) || 0;
+  // Convert from -> px
+  let px: number = num;
+  if (from === "%") px = parentSize > 0 ? (num / 100) * parentSize : num;
+  else if (from === "rem") px = num * basePx;
+  // px -> to
+  if (to === "%") return parentSize > 0 ? (px / parentSize) * 100 : px;
+  if (to === "rem") return basePx > 0 ? px / basePx : px;
+  return px;
+};
+
+interface UnitInputProps {
+  componentId: string;
+  label: React.ReactNode;
+  labelSuffix?: React.ReactNode;
+  value?: string;
+  onChange: (v: string) => void;
+  axis: Axis;
+  placeholder?: string;
+  disabled?: boolean;
+  cssProp: string;
+  extraError?: boolean;
+}
+
+export default function UnitInput({ componentId, label, labelSuffix, value, onChange, axis, placeholder, disabled, cssProp, extraError }: UnitInputProps) {
+  const { num, unit } = parseVal(value);
+  // Determine error message string (or undefined) for DOM attribute + UI
+  const cssErr = cssError(cssProp, value);
+  const errorMsg = cssErr ?? (extraError ? `Invalid ${cssProp} value` : undefined);
+  const inputId = React.useId();
+  return (
+    <Inline alignY="end" gap={2} className="w-full">
+      <Stack gap={1} className="flex-1">
+        {(label || labelSuffix) && (
+          <Inline gap={1} alignY="center">
+            {label ? (
+              <label htmlFor={inputId} className="block text-sm font-medium">
+                {label}
+              </label>
+            ) : null}
+            {labelSuffix ? <span className="pointer-events-auto">{labelSuffix}</span> : null}
+          </Inline>
+        )}
+        <Input
+          id={inputId}
+          placeholder={placeholder}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
+          error={errorMsg}
+        />
+      </Stack>
+      <Select
+        value={unit}
+        onValueChange={(next) => {
+          const nextUnit = next as "%" | "px" | "rem";
+          const nextNum = convert(componentId, num, unit, nextUnit, axis);
+          onChange(fmt(nextNum, nextUnit));
+        }}
+      >
+        <SelectTrigger className="w-20">
+          <SelectValue placeholder="unit" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="px">px</SelectItem>
+          <SelectItem value="%">%</SelectItem>
+          <SelectItem value="rem">rem</SelectItem>
+        </SelectContent>
+      </Select>
+    </Inline>
+  );
+}

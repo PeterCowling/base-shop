@@ -1,10 +1,11 @@
 import { jest } from "@jest/globals";
-import type { Page } from "@acme/types";
+
 import { nowIso } from "@acme/date-utils";
 import {
   createPreviewToken,
   createUpgradePreviewToken,
 } from "@acme/platform-core/previewTokens";
+import type { Page } from "@acme/types";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";

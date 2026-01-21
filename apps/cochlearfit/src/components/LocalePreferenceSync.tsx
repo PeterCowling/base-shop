@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import { useLocale } from "@/contexts/LocaleContext";
 import { getPreferredLocale } from "@/lib/localePreference";
 import { replaceLocaleInPath } from "@/lib/routes";

@@ -60,10 +60,10 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "مهرجان رافيللو",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
+    "locationName": "أماكن مهرجان رافيللو",
     "addressLocality": "Ravello",
     "description": "مهرجان موسيقي صيفي يطل على ساحل أمالفي. راجع البرنامج الرسمي للمواعيد والتذاكر."
   }

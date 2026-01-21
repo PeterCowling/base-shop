@@ -44,19 +44,19 @@
   "positanoStop": {
     "title": "ポジターノ（Chiesa Nuova）バス停",
     "items": [
-      "翻訳を準備中です。",
+      "最寄りのSITA停留所は Via G. Marconi 上の Positano（Chiesa Nuova）です。",
       "停留所からホステル入口までは約 140 メートル（約 490 フィート）です。",
       "停留所は「Bar Internazionale」というカフェ／バーの前にあります。"
     ],
     "caption": "夏は数分早めに到着して座席を確保しましょう。混雑しやすいです。",
-    "alt": "翻訳を準備中です。"
+    "alt": "Bar Internazionale前のポジターノChiesa Nuova SITA停留所"
   },
   "walk": {
     "title": "ホステルから停留所まで歩く",
     "items": [
       "ホステルを出て階段を下り、大通りに出たら左折します。",
       "Via G. Marconi をおよそ 100 メートル（約 330 フィート）進みます。",
-      "翻訳を準備中です。"
+      "左手にBar Internazionaleが見えたら、その外がSITA停留所です。"
     ]
   },
   "buyTickets": {

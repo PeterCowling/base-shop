@@ -1,16 +1,18 @@
 import * as React from "react";
+
+import { cn } from "../../../utils/style";
+
 import {
   Dialog,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
 } from "./Dialog";
-import { cn } from "../../../utils/style";
 
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;

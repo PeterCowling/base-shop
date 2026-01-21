@@ -1,7 +1,7 @@
 // src/components/rooms/RoomFilters.tsx
 import { memo } from "react";
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 export type RoomFilter = "all" | "private" | "dorms";
 

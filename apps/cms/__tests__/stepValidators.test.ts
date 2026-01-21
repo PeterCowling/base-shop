@@ -1,6 +1,7 @@
+import { fillLocales } from "@acme/i18n/fillLocales";
+
 import { validators } from "../src/app/cms/configurator/hooks/useStepCompletion";
 import { wizardStateSchema } from "../src/app/cms/wizard/schema";
-import { fillLocales } from "@acme/i18n/fillLocales";
 
 describe("step validators", () => {
   const base = wizardStateSchema.parse({});

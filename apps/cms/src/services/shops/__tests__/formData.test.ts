@@ -1,7 +1,7 @@
 import {
   parseFilterMappings,
-  parsePriceOverrides,
   parseLocaleOverrides,
+  parsePriceOverrides,
 } from "../formData";
 
 describe("form data helpers", () => {

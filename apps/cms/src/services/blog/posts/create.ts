@@ -2,6 +2,7 @@ import {
   createPost as repoCreatePost,
   slugExists,
 } from "@acme/platform-core/repositories/blog.server";
+
 import { ensureAuthorized } from "../../../actions/common/auth";
 import {
   collectProductSlugs,
@@ -54,7 +55,7 @@ export async function createPost(
     if (slug && (await slugExists(config, slug))) {
       return { error: "Slug already exists" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
     }
-    const id = await repoCreatePost(config, {
+    const id = await repoCreatePost(config as any, {
       _type: "post",
       title,
       body,
@@ -67,7 +68,7 @@ export async function createPost(
       ...(categories.length ? { categories } : {}),
       ...(publishedAt ? { publishedAt } : {}),
     });
-    return { message: "Post created", id }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
+    return { message: "Post created", id: id as any }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
     console.error("Failed to create post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
     return { error: "Failed to create post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010

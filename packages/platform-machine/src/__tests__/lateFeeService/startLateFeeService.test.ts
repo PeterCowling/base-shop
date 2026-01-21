@@ -1,6 +1,7 @@
 /** @jest-environment node */
-import * as testSetup from "./testSetup";
 import * as lateFeeService from "../../lateFeeService";
+
+import * as testSetup from "./testSetup";
 
 const {
   readdirMock,

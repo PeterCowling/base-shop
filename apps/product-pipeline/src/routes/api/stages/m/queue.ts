@@ -1,14 +1,11 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/stages/m/queue.ts
 
-import type {
-  D1Database,
-  D1PreparedStatement,
-  PipelineEventContext,
-} from "../../_lib/types";
 import { z } from "zod";
+
 import { isCooldownActive } from "@/lib/pipeline/cooldown";
 import type { StageMJobInput } from "@/lib/pipeline/runner-contract";
+
 import {
   fetchCandidateById,
   fetchLatestCooldownByFingerprint,
@@ -17,6 +14,11 @@ import {
   type PipelineEnv,
 } from "../../_lib/db";
 import { errorResponse, jsonResponse } from "../../_lib/response";
+import type {
+  D1Database,
+  D1PreparedStatement,
+  PipelineEventContext,
+} from "../../_lib/types";
 
 const DEFAULT_AMAZON_DAILY_LIMIT = 20;
 const DEFAULT_TAOBAO_DAILY_LIMIT = 10;

@@ -1,5 +1,12 @@
 /** @jest-environment node */
 
+import argon2 from 'argon2';
+
+import { sendEmail } from '@acme/email';
+
+import { readRbac, writeRbac } from '../../lib/server/rbacStore';
+import { approveAccount, listPendingUsers,requestAccount } from '../accounts.server';
+
 jest.mock('../../lib/server/rbacStore', () => ({
   readRbac: jest.fn(),
   writeRbac: jest.fn(),
@@ -12,11 +19,6 @@ jest.mock('@acme/email', () => ({
 jest.mock('argon2', () => ({
   hash: jest.fn().mockResolvedValue('hashed'),
 }));
-
-import { approveAccount, requestAccount, listPendingUsers } from '../accounts.server';
-import { readRbac, writeRbac } from '../../lib/server/rbacStore';
-import { sendEmail } from '@acme/email';
-import argon2 from 'argon2';
 
 describe('requestAccount', () => {
   beforeEach(() => {

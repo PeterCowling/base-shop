@@ -1,8 +1,9 @@
 // packages/ui/components/atoms/primitives/overlayScrim.tsx
 "use client";
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+
 import { cn } from "../../../utils/style";
 
 export type OverlayScrimProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>;

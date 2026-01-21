@@ -1,6 +1,7 @@
 import { formatTimestamp } from "@acme/date-utils";
-import { listEvents } from "@acme/platform-core/repositories/reverseLogisticsEvents.server";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { listEvents } from "@acme/platform-core/repositories/reverseLogisticsEvents.server";
+
 import shop from "../../../../../shop.json";
 
 // i18n-exempt: Fallback labels for backend status codes

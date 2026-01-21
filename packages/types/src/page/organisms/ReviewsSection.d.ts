@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ReviewsSectionComponent extends PageComponentBase {
     type: "ReviewsSection";
     provider?: "custom" | "yotpo" | "okendo";

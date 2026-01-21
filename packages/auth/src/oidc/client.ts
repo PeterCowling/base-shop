@@ -1,5 +1,7 @@
 import "server-only";
-import { Issuer, type Client } from "openid-client";
+
+import { type Client,Issuer } from "openid-client";
+
 import { loadOidcConfig } from "./config";
 
 let clientPromise: Promise<Client> | null = null;

@@ -1,16 +1,20 @@
 "use client";
 
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import { useContext, useMemo } from "react";
-import { z } from "zod";
-import type { ConfiguratorStepProps } from "@/types/configurator";
-import useConfiguratorStep from "./hooks/useConfiguratorStep";
-import ShopPreview from "./components/ShopPreview";
-import { ImagePicker } from "@acme/page-builder-ui";
-import { ConfiguratorContext } from "../ConfiguratorContext";
-import type { ConfiguratorState } from "../../wizard/schema";
 import Image from "next/image";
+import { z } from "zod";
+
 import { useTranslations } from "@acme/i18n";
+import { ImagePicker } from "@acme/page-builder-ui";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
+
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
+import type { ConfiguratorState } from "../../wizard/schema";
+import { ConfiguratorContext } from "../ConfiguratorContext";
+
+import ShopPreview from "./components/ShopPreview";
+import useConfiguratorStep from "./hooks/useConfiguratorStep";
 
 export default function StepShopDetails(
   props: ConfiguratorStepProps,

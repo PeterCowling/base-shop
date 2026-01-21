@@ -1,9 +1,10 @@
 /* src/routes/experiences.tsx */
 import type { LinksFunction, MetaFunction } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
+
 import { BASE_URL } from "@/config/site";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 export { experiencesClientLoader as clientLoader } from "./experiences/clientLoader";
 export { default } from "./experiences/ExperiencesPage";

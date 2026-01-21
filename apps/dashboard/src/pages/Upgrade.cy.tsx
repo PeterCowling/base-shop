@@ -1,9 +1,11 @@
-import React from 'react';
-import { __setNextRouter } from '../../../../test/shims/next-router-ct';
-import Upgrade from './Upgrade';
-
 // Bring in dashboard styles so rendered text colors reflect the app
 import '../styles/globals.css';
+
+import React from 'react';
+
+import { __setNextRouter } from '../../../../test/shims/next-router-ct';
+
+import Upgrade from './Upgrade';
 
 describe('Dashboard – Upgrade page (CT)', () => {
   it('renders, allows selection + publish, and has no color-contrast issues', () => {

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render } from "@testing-library/react";
+
+import ProductEditor from "../src/app/cms/shop/[shop]/products/[id]/edit/ProductEditor.client";
 
 const updateProduct = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({ updateProduct }));
@@ -13,8 +16,6 @@ jest.mock("@acme/ui/components/cms/ProductEditorForm", () => {
   (ProductEditorFormMock as any).displayName = "ProductEditorFormMock";
   return ProductEditorFormMock;
 });
-
-import ProductEditor from "../src/app/cms/shop/[shop]/products/[id]/edit/ProductEditor.client";
 
 describe("ProductEditor client", () => {
   it("renders form and calls update on save", () => {

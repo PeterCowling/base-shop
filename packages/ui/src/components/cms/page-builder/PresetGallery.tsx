@@ -3,8 +3,10 @@
 /* eslint-disable react/forbid-dom-props -- LINT-1005: preview tiles require inline style to reflect preset values */
 
 import type { CSSProperties } from "react";
-import { Grid as DSGrid } from "../../atoms/primitives/Grid";
+
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 
 export interface PresetItem {
   id: string;

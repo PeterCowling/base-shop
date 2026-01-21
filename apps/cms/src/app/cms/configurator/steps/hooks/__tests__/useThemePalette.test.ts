@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { useThemePalette } from "../useThemePalette";
+
 import { useConfigurator } from "../../../ConfiguratorContext";
+import { useThemePalette } from "../useThemePalette";
 
 jest.mock("../../../ConfiguratorContext", () => ({
   useConfigurator: jest.fn(),

@@ -1,7 +1,7 @@
 // src/routes/guides/day-trip-capri-from-positano/buildGuideExtras.ts
+import appI18n from "@/i18n";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { ensureStringArray } from "@/utils/i18nContent";
-import appI18n from "@/i18n";
 
 import type { GuideSeoTemplateContext } from "../_GuideSeoTemplate";
 

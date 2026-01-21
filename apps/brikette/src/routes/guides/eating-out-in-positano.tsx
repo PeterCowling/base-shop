@@ -1,22 +1,24 @@
 // src/routes/guides/eating-out-in-positano.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
-import { getGuidesBundle } from "../../locales/guides";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
+
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { toAppLanguage } from "@/utils/lang";
+import { langFromRequest , toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { getGuidesBundle } from "../../locales/guides";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const handle = { tags: ["cuisine", "positano"] };
 

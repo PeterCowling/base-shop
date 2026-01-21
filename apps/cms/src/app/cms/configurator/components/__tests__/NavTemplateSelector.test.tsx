@@ -1,20 +1,26 @@
 import "../../../../../../../../test/resetNextMocks";
+
+import type React from "react";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import NavTemplateSelector from "../NavTemplateSelector";
 // Use lightweight shadcn stubs for deterministic tests
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
-  const SelectItem = ({ value, children }) => (
+  const SelectItem = ({ value, children }: { value: string; children: React.ReactNode }) => (
     <option value={value}>{children}</option>
   );
-  const Select = ({ value, onValueChange, children }) => (
+  const Select = ({ value, onValueChange, children }: { value: string; onValueChange?: (v: string) => void; children: React.ReactNode }) => (
     <select
       data-cy="layout-select"
       value={value}
-      onChange={(e) => onValueChange?.(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onValueChange?.(e.target.value)}
     >
       {children}
     </select>
   );
-  const SelectContent = ({ children }) => <>{children}</>;
+  const SelectContent = ({ children }: { children: React.ReactNode }) => <>{children}</>;
   const SelectTrigger = () => null;
   const SelectValue = () => null;
   const Button = (props: any) => <button {...props} />;
@@ -29,18 +35,10 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
-import React from "react";
-import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import NavTemplateSelector from "../NavTemplateSelector";
-
 // Provide missing pointer APIs for Radix Select
 beforeAll(() => {
-  // @ts-expect-error jsdom lacks Pointer Events APIs
   HTMLElement.prototype.hasPointerCapture = () => false;
-  // @ts-expect-error jsdom lacks Pointer Events APIs
   HTMLElement.prototype.setPointerCapture = () => {};
-  // @ts-expect-error jsdom: scrollIntoView not implemented
   Element.prototype.scrollIntoView = () => {};
 });
 
@@ -76,7 +74,7 @@ describe("NavTemplateSelector", () => {
   it("search/filter input narrows results", async () => {
     render(<NavTemplateSelector templates={templates} onSelect={() => {}} />);
     const user = userEvent.setup();
-    const select = screen.getByTestId("layout-select");
+    const select = screen.getByTestId("layout-select") as HTMLSelectElement;
     await user.type(select, "Ga");
     const filtered = Array.from(select.options).filter((o) =>
       o.textContent?.toLowerCase().includes("ga")

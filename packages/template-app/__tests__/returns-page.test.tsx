@@ -1,10 +1,12 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { ReactElement } from "react";
-import ReturnForm from "../src/app/account/returns/ReturnForm";
-import ReturnsPage from "../src/app/account/returns/page";
-import { getReturnLogistics, getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { getReturnBagAndLabel,getReturnLogistics } from "@acme/platform-core/returnLogistics";
+
+import ReturnsPage from "../src/app/account/returns/page";
+import ReturnForm from "../src/app/account/returns/ReturnForm";
 
 // ---------- ReturnForm tests ----------
 

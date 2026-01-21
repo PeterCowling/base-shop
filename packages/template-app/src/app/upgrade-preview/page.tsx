@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { ApiError } from "@acme/types";
 import ComponentPreview from "@acme/ui/components/ComponentPreview";

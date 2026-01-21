@@ -6,13 +6,14 @@
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { OffersModalCopy } from "@acme/ui/organisms/modals";
 import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+
+import { i18nConfig } from "../constants";
 import { useModal } from "../hooks";
 import { OffersModal } from "../lazy-modals";
-import { i18nConfig } from "../constants";
-import type { OffersModalCopy } from "@acme/ui/organisms/modals";
 
 export function OffersGlobalModal(): JSX.Element | null {
   const { closeModal, openModal } = useModal();

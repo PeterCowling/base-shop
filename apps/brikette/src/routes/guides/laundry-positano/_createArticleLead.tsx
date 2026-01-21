@@ -1,7 +1,7 @@
 // src/routes/guides/laundry-positano/_createArticleLead.tsx
  
-import TableOfContents from "@/components/guides/TableOfContents";
 import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
 
 import type { GuideSeoTemplateContext } from "../_GuideSeoTemplate";
 import { renderGuideLinkTokens } from "../utils/linkTokens";

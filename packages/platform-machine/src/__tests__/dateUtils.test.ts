@@ -1,12 +1,12 @@
 import {
-  nowIso,
-  isoDateInNDays,
   calculateRentalDays,
-  formatTimestamp,
-  parseTargetDate,
-  getTimeRemaining,
-  formatDuration,
   DAY_MS,
+  formatDuration,
+  formatTimestamp,
+  getTimeRemaining,
+  isoDateInNDays,
+  nowIso,
+  parseTargetDate,
 } from '@acme/date-utils';
 
 describe('nowIso', () => {

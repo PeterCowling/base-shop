@@ -1,15 +1,17 @@
 import "server-only";
 
-import {
-  inventoryItemSchema,
-  type InventoryItem,
-  variantKey,
-} from "../types/inventory";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index";
+
 import { DATA_ROOT } from "../dataRoot";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+import { validateShopName } from "../shops/index";
+import {
+  type InventoryItem,
+  inventoryItemSchema,
+  variantKey,
+} from "../types/inventory";
+
+import type { InventoryMutateFn,InventoryRepository } from "./inventory.types";
 
 /**
  * Filesystem-backed inventory repository used as a fallback when Prisma is
@@ -63,7 +65,7 @@ async function acquireLock(
           `Timed out acquiring inventory lock ${lockFile} after ${timeoutMs}ms`,
         );
       }
-      await new Promise((res) => setTimeout(res, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
     }
   }
 }

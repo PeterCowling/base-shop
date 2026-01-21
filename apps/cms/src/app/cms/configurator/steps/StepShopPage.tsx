@@ -1,5 +1,21 @@
 "use client";
 
+import { useContext, useMemo, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ulid } from "ulid";
+
+import { useTranslations } from "@acme/i18n";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import type { Page, PageComponent } from "@acme/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+ Toast } from "@acme/ui/components/atoms";
+import { Cluster,Inline } from "@acme/ui/components/atoms/primitives";
 import {
   Button,
   Select,
@@ -8,28 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/ui/components/atoms/shadcn";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@acme/ui/components/atoms";
+
 import PageBuilder from "@/components/cms/PageBuilder";
-import { fillLocales } from "@acme/i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
-import { apiRequest } from "../lib/api";
-import { ulid } from "ulid";
-import { useContext, useMemo, useState } from "react";
-import { Toast } from "@acme/ui/components/atoms";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+
 import { ConfiguratorContext } from "../ConfiguratorContext";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import useStepCompletion from "../hooks/useStepCompletion";
 import { useThemeLoader } from "../hooks/useThemeLoader";
-import { Inline, Cluster } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+import { apiRequest } from "../lib/api";
 
 interface Props {
   pageTemplates?: Array<{

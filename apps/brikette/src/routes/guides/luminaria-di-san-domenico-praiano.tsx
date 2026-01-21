@@ -1,22 +1,24 @@
 // src/routes/guides/luminaria-di-san-domenico-praiano.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import ImageGallery from "@/components/guides/ImageGallery";
-import EventInfo from "@/components/guides/EventInfo";
-import EventStructuredData from "@/components/seo/EventStructuredData";
-import type { GuideKey } from "@/routes.guides-helpers";
 import type { TFunction } from "i18next";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+
+import EventInfo from "@/components/guides/EventInfo";
+import ImageGallery from "@/components/guides/ImageGallery";
+import EventStructuredData from "@/components/seo/EventStructuredData";
 import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const handle = { tags: ["event", "seasonal", "amalfi"] };
 

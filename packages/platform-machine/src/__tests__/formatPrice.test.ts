@@ -1,4 +1,4 @@
-import { formatPrice } from '@acme/shared-utils/src/formatPrice';
+import { formatPrice } from '@acme/lib/format';
 
 describe('formatPrice', () => {
   const original = (Intl as any).supportedValuesOf;

@@ -1,6 +1,8 @@
 import React from 'react';
-import ShopClient from './ShopClient.client';
+
 import type { SKU } from '@acme/types';
+
+import ShopClient from './ShopClient.client';
 
 const skus: SKU[] = [
   {

@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { Tooltip } from "../../atoms";
 import Link from "next/link";
+
+import { Tooltip } from "../../atoms";
 
 export default function CommentsHelpLauncher() {
   return (

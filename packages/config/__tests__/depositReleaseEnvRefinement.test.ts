@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 
 describe("depositReleaseEnvRefinement", () => {
   it("reports non-boolean ENABLED and non-numeric INTERVAL_MS values", async () => {

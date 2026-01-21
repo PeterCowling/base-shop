@@ -1,11 +1,13 @@
 // src/routes/assistance/_ArticleFactory/makeArticleClientLoader.ts
-import i18n from "@/i18n";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+
+import i18n from "@/i18n";
 import { langFromRequest } from "@/utils/lang";
-import type { AssistanceArticleLoaderData } from "./types";
+import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+
 import { OPTIONAL_NAMESPACES } from "./constants";
 import { resolveMeta } from "./metaUtils";
+import type { AssistanceArticleLoaderData } from "./types";
 
 export function makeArticleClientLoader(namespace: string) {
   return async function clientLoader({ request }: LoaderFunctionArgs): Promise<AssistanceArticleLoaderData> {

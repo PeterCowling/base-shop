@@ -1,42 +1,42 @@
 // src/routes/guides/amalfi-coast-cuisine-guide.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction, MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
 import type { TFunction } from "i18next";
 
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import { normalizeFaqFallback } from "./guide-seo/seo/jsonld";
+import { Grid } from "@acme/ui/atoms/Grid";
 
 import GenericContent from "@/components/guides/GenericContent";
 import ImageGallery from "@/components/guides/ImageGallery";
 import TableOfContents from "@/components/guides/TableOfContents";
-import { Grid } from "@acme/ui/atoms/Grid";
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
-import { langFromRequest } from "@/utils/lang";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import type { LinksFunction, MetaFunction } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
-import { buildCuisineGallery } from "./amalfi-coast-cuisine-guide.gallery";
-import { buildCuisineItemList } from "./amalfi-coast-cuisine-guide.item-list";
-import { determineHasCuisineContent, getExtrasAvailability } from "./amalfi-coast-cuisine-guide.content";
-import { buildEnglishFallbacks, buildFallbackStructuredContent } from "./amalfi-coast-cuisine-guide.fallbacks";
 import {
   GUIDE_KEY as GUIDE_KEY_CONST,
   GUIDE_SLUG as GUIDE_SLUG_CONST,
-  SIGNATURE_DISHES_SECTION_ID,
   handle,
+  SIGNATURE_DISHES_SECTION_ID,
 } from "./amalfi-coast-cuisine-guide.constants";
+import { determineHasCuisineContent, getExtrasAvailability } from "./amalfi-coast-cuisine-guide.content";
+import { buildEnglishFallbacks, buildFallbackStructuredContent } from "./amalfi-coast-cuisine-guide.fallbacks";
+import { buildCuisineGallery } from "./amalfi-coast-cuisine-guide.gallery";
+import { buildCuisineItemList } from "./amalfi-coast-cuisine-guide.item-list";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import { normalizeFaqFallback } from "./guide-seo/seo/jsonld";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 export { handle };
 export const GUIDE_KEY: GuideKey = GUIDE_KEY_CONST;

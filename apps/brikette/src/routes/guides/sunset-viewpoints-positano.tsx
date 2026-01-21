@@ -1,35 +1,37 @@
 // src/routes/guides/sunset-viewpoints-positano.tsx
-import { memo, type ReactNode, type ComponentProps } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import { type ComponentProps,memo, type ReactNode } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import ImageGallery from "@/components/guides/ImageGallery";
+
 import GenericContent from "@/components/guides/GenericContent";
+import ImageGallery from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { type NormalizedFaqEntry,normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import { JSON_LD_MIME_TYPE } from "./sunset-viewpoints-positano/constants";
 import {
-  getItemList,
   getGallery,
+  getItemList,
   getStructuredIntro,
   getStructuredSections,
 } from "./sunset-viewpoints-positano/contentParsers";
 import { buildGalleryView } from "./sunset-viewpoints-positano/gallery";
-import { buildItemListJson } from "./sunset-viewpoints-positano/seo";
-import { normalizeFaqEntries, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import type { AppLanguage } from "@/i18n.config";
-import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import { buildFallbackIntroParagraphs } from "./sunset-viewpoints-positano/intro";
+import { buildItemListJson } from "./sunset-viewpoints-positano/seo";
 
 type GuidesTranslator = Parameters<typeof getStructuredIntro>[0];
 

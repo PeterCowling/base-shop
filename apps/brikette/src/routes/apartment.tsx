@@ -1,26 +1,28 @@
+import { Fragment, memo } from "react";
+import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
+import { type LoaderFunctionArgs } from "react-router-dom";
+
+import { Section } from "@acme/ui/atoms/Section";
 import AmenitiesSection from "@acme/ui/organisms/ApartmentAmenitiesSection";
 import DetailsSection from "@acme/ui/organisms/ApartmentDetailsSection";
-import GallerySection from "@/components/apartment/GallerySection";
 import HeroSection from "@acme/ui/organisms/ApartmentHeroSection";
 import HighlightsSection from "@acme/ui/organisms/ApartmentHighlightsSection";
+
+import GallerySection from "@/components/apartment/GallerySection";
 import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { Fragment, memo } from "react";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { useTranslation } from "react-i18next";
-import { type LoaderFunctionArgs } from "react-router-dom";
-import { langFromRequest } from "@/utils/lang";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { Section } from "@acme/ui/atoms/Section";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
 export async function clientLoader({ request }: LoaderFunctionArgs) {

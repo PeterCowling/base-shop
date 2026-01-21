@@ -1,10 +1,12 @@
 // src/routes/guides/guide-seo/useGuideBreadcrumb.ts
 import { useMemo } from "react";
-import { useDefaultBreadcrumb } from "./useDefaultBreadcrumb";
+
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+
 import type { GuideSeoTemplateContext } from "./types";
+import { useDefaultBreadcrumb } from "./useDefaultBreadcrumb";
 
 export function useGuideBreadcrumb(params: {
   lang: AppLanguage;

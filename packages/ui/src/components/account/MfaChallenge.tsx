@@ -2,9 +2,10 @@
 
 // packages/ui/src/components/account/MfaChallenge.tsx
 import { useState } from "react";
-import { getCsrfToken } from "@acme/shared-utils";
+
 import { useTranslations } from "@acme/i18n";
 import enMessages from "@acme/i18n/en.json";
+import { getCsrfToken } from "@acme/lib/security";
 
 const FALLBACK_MESSAGES = enMessages as Record<string, string>;
 

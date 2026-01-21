@@ -21,6 +21,8 @@ describe("cms env – pagination and flags", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2024-01-01",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
       } as NodeJS.ProcessEnv;
       jest.resetModules();
       const { cmsEnv } = await import("../cms.ts");
@@ -34,6 +36,8 @@ describe("cms env – pagination and flags", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2024-01-01",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
         CMS_PAGINATION_LIMIT: "25",
       } as unknown as NodeJS.ProcessEnv;
       jest.resetModules();
@@ -50,6 +54,8 @@ describe("cms env – pagination and flags", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2024-01-01",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
       } as NodeJS.ProcessEnv;
       jest.resetModules();
       const { cmsEnv } = await import("../cms.ts");
@@ -66,6 +72,8 @@ describe("cms env – pagination and flags", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2024-01-01",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
         CMS_DRAFTS_ENABLED: "true",
         CMS_DRAFTS_DISABLED_PATHS: "/draft1,/draft2",
         CMS_SEARCH_ENABLED: "true",
@@ -89,6 +97,8 @@ describe("cms env – pagination and flags", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2024-01-01",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
         CMS_DRAFTS_ENABLED: "",
         CMS_DRAFTS_DISABLED_PATHS: "/draft1, /draft2 ,",
         CMS_SEARCH_ENABLED: "",

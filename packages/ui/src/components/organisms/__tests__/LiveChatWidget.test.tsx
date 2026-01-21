@@ -1,6 +1,7 @@
 /* i18n-exempt file -- tests rely on literal chat copy */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { LiveChatWidget } from "../LiveChatWidget";
 
 describe("LiveChatWidget", () => {

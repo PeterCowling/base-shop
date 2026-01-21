@@ -1,5 +1,6 @@
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { act,render } from "@testing-library/react";
+
 import { useSegmentBuilderWizard, type UseSegmentBuilderWizardReturn } from "../useSegmentBuilderWizard";
 
 function renderHookUI(props?: Parameters<typeof useSegmentBuilderWizard>[0]) {

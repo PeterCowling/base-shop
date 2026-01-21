@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { createPost, updatePost, getPosts } from "../src/services/blog";
+import { createPost, getPosts,updatePost } from "../src/services/blog";
 
 jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),

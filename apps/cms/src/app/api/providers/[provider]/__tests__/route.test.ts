@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 jest
   .spyOn(NextResponse, "redirect")
-  .mockImplementation((url: string) =>
-    new Response(null, { status: 307, headers: { location: url } }),
-  );
+  .mockImplementation(((url: string | URL) =>
+    new Response(null, { status: 307, headers: { location: String(url) } })) as any);
 
 const mkdir = jest.fn();
 const writeFile = jest.fn();

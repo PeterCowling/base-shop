@@ -6,18 +6,20 @@
 /* ------------------------------------------------------------------ */
 
 import { index, prefix, route, type RouteConfig } from "@react-router/dev/routes";
-import { i18nConfig, type AppLanguage } from "./i18n.config";
+
+import { IS_PROD } from "@/config/env";
+
+import type { GuideKey } from "./guides/slugs";
+import { GUIDE_KEYS,guideComponentPath, guideSlug , publishedGuideKeysByBase } from "./guides/slugs";
+import { type AppLanguage,i18nConfig } from "./i18n.config";
+import { listHowToSlugs } from "./lib/how-to-get-here/definitions";
+import type { HelpArticleKey } from "./routes.assistance-helpers";
 // Use namespace import for assistance helpers to tolerate partial test mocks
 import * as assistance from "./routes.assistance-helpers";
-type AssistanceModule = typeof import("./routes.assistance-helpers");
-import type { HelpArticleKey } from "./routes.assistance-helpers";
-import { listHowToSlugs } from "./lib/how-to-get-here/definitions";
-import { getSlug } from "./utils/slug";
-import { guideComponentPath, guideSlug, GUIDE_KEYS } from "./guides/slugs";
-import type { GuideKey } from "./guides/slugs";
-import { publishedGuideKeysByBase } from "./guides/slugs";
 import { buildGuideStatusMap, listGuideManifestEntries, resolveDraftPathSegment } from "./routes/guides/guide-manifest";
-import { IS_PROD } from "@/config/env";
+import { getSlug } from "./utils/slug";
+
+type AssistanceModule = typeof import("./routes.assistance-helpers");
 
 /* Root path handled at the edge (functions/index.ts) */
 
@@ -55,6 +57,8 @@ const LEGACY_GUIDE_KEYS = Array.from(
 // EXPERIENCE_ROUTE_KEYS and ASSISTANCE_ROUTE_KEYS derived via shared helper above
 
 const STATIC_ROUTES = [
+  route("privacy-policy", "routes/privacy-policy.redirect.tsx", { id: "privacy-policy" }),
+  route("cookie-policy", "routes/cookie-policy.redirect.tsx", { id: "cookie-policy" }),
   ...DATA_HOW_TO_ROUTE_SLUGS.map((slug) =>
     route(`directions/${slug}`, "routes/how-to-get-here.$slug.tsx", { id: `directions-${slug}` })
   ),
@@ -78,6 +82,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
   const bookSlug = getSlug("book", lang);
   const aboutSlug = getSlug("about", lang);
   const termsSlug = getSlug("terms", lang);
+  const houseRulesSlug = getSlug("houseRules", lang);
+  const privacySlug = getSlug("privacyPolicy", lang);
+  const cookieSlug = getSlug("cookiePolicy", lang);
   const breakfastMenuSlug = getSlug("breakfastMenu", lang);
   const barMenuSlug = getSlug("barMenu", lang);
   const assistanceSlug = getSlug("assistance", lang);
@@ -134,6 +141,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
     route(bookSlug, "routes/book.tsx", { id: `${lang}-book` }),
     route(aboutSlug, "routes/about.tsx", { id: `${lang}-about` }),
     route(termsSlug, "routes/terms.tsx", { id: `${lang}-terms` }),
+    route(houseRulesSlug, "routes/house-rules.tsx", { id: `${lang}-house-rules` }),
+    route(privacySlug, "routes/privacy-policy.tsx", { id: `${lang}-privacy-policy` }),
+    route(cookieSlug, "routes/cookie-policy.tsx", { id: `${lang}-cookie-policy` }),
     route("draft", "routes/guides/draft.index.tsx", {
       id: `${lang}-draft-dashboard`,
     }),
@@ -176,6 +186,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
     }),
     route(`${experiencesSlug}/${guidesTagsSlug}/:tag`, "routes/guides/tags.$tag.tsx", {
       id: `${lang}-experiences-tag`,
+    }),
+    route(`${experiencesSlug}/:slug`, "routes/guides/legacy-redirect.tsx", {
+      id: `${lang}-experiences-legacy`,
     }),
     ...legacyGuideRoutes,
 

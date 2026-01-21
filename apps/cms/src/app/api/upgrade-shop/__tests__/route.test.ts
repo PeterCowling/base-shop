@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 
-const requirePermission = jest.fn();
-const spawnSync = jest.fn();
+const requirePermission = jest.fn<any, any[]>();
+const spawnSync = jest.fn<any, any[]>();
 
 jest.mock('@acme/auth', () => ({
   requirePermission: (...args: any[]) => requirePermission(...args),
@@ -12,14 +12,14 @@ jest.mock('child_process', () => ({
 }));
 
 let POST: typeof import('../route').POST;
-let consoleErrorSpy: jest.SpyInstance;
+let consoleErrorSpy: jest.SpyInstance<any, any, any>;
 
 beforeAll(async () => {
   ({ POST } = await import('../route'));
 });
 
 beforeEach(() => {
-  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation((() => {}) as any) as unknown as jest.SpyInstance<any, any, any>;
 });
 
 afterEach(() => {

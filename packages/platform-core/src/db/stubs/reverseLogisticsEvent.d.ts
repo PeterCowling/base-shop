@@ -1,4 +1,5 @@
 import type { ReverseLogisticsEvent } from "@acme/types";
+
 export declare function createReverseLogisticsEventDelegate(): {
     create({ data }: {
         data: ReverseLogisticsEvent;

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import TokenInspector from './TokenInspector';
 
 describe('TokenInspector (CT)', { tags: ['inspectors'] }, () => {

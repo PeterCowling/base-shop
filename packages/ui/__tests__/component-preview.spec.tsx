@@ -1,7 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import ComponentPreview from "../src/components/ComponentPreview";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { UpgradeComponent } from "@acme/types";
+
+import ComponentPreview from "../src/components/ComponentPreview";
 
 describe("ComponentPreview", () => {
   afterEach(() => {
@@ -11,6 +13,7 @@ describe("ComponentPreview", () => {
   const component: UpgradeComponent = {
     componentName: "MyComp",
     file: "MyComp.tsx",
+    newChecksum: "new",
   } as UpgradeComponent;
 
   it("renders new component without comparison controls when no legacy component", async () => {
@@ -89,4 +92,3 @@ describe("ComponentPreview", () => {
     expect(screen.queryByText("Old Component")).not.toBeInTheDocument();
   });
 });
-

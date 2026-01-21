@@ -2,11 +2,14 @@
 "use client";
 
 import React from "react";
-import { Button, Dialog, DialogTrigger } from "../../atoms/shadcn";
-import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
-import ThemePanel from "./ThemePanel";
-import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
+import { Button, Dialog, DialogTrigger } from "../../atoms/shadcn";
+
+import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
+import ThemePanel from "./ThemePanel";
 
 interface Props {
   breakpoints?: Breakpoint[];

@@ -1,8 +1,8 @@
 import { memo, useMemo } from "react";
 
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
-import type { AppLanguage } from "@/i18n.config";
 import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 

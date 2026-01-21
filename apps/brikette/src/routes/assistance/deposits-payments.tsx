@@ -1,5 +1,5 @@
 // src/routes/assistance/deposits-payments.tsx
-import { makeArticleClientLoader, makeArticlePage, makeArticleMeta, makeArticleLinks } from "./_ArticleFactory";
+import { makeArticleClientLoader, makeArticleLinks,makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
 // SEO lint markers (helper-generated in _ArticleFactory):
 // property: "og:type", content: "article"
 // name: "twitter:card"

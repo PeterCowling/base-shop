@@ -2,22 +2,23 @@
 
 "use client";
 
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
-import { LOCALES, useTranslations } from "@acme/i18n";
-import type { Locale } from "@acme/types";
-import type { ConfiguratorProgress } from "@acme/types";
 import React, { useEffect, useState } from "react";
-import WizardPreview from "../../wizard/WizardPreview";
-import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@acme/ui/utils/devicePresets";
-import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+
+import { LOCALES, useTranslations } from "@acme/i18n";
+import type { ConfiguratorProgress,Locale  } from "@acme/types";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import {
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
 } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
+
+import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
+import WizardPreview from "../../wizard/WizardPreview";
 import { buildLaunchChecklist } from "../hooks/dashboard/launchChecklist";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;
@@ -155,17 +156,6 @@ export default function StepSummary({
                 {t("cms.configurator.summary.themeLabel")}
               </span>{" "}
               {theme}
-              {shopId ? (
-                <>
-                  {" "}
-                  <a
-                    href={`/cms/shop/${shopId}/themes`}
-                    className="text-link underline"
-                  >
-                    Open Theme Editor{/* i18n-exempt -- CMS summary link; admin-only label */}
-                  </a>
-                </>
-              ) : null}
             </li>
             <li>
               <span className="font-semibold">

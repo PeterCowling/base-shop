@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ProfileForm from "../ProfileForm";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));

@@ -1,10 +1,12 @@
 // packages/ui/src/components/organisms/ProductVariantSelector.Matrix.stories.tsx
 
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, fn, userEvent, within } from '@storybook/test';
-import React from 'react';
-import { ProductVariantSelector, type VariantSelectorProps } from './ProductVariantSelector';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductVariantSelector, type VariantSelectorProps } from './ProductVariantSelector';
 
 const meta: Meta<typeof ProductVariantSelector> = {
   title: 'Organisms/Product Variant Selector/Matrix',

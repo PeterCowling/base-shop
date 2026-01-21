@@ -1,18 +1,18 @@
 // src/routes/guides/work-exchange-in-italian-hostels.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import type { LinksFunction } from "react-router";
 
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
 // Enforce shared guide template usage for linting without runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { guideHref, guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
-import type { LinksFunction } from "react-router";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 export const handle = { tags: ["work-exchange", "hostel-life", "italy"] };
 

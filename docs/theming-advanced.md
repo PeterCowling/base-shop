@@ -110,3 +110,44 @@ pnpm quickstart-shop --brand "#663399" --tokens ./tokens.json
 ```
 
 `--brand` generates tokens for the primary color while `--tokens` loads additional overrides from a JSON file. For `init-shop`, use the interactive token prompts or provide `themeOverrides` via the config file instead.
+
+## Creating a new theme package
+
+For a reusable theme package that can be shared across shops, use the `generate-theme` CLI:
+
+```bash
+# Generate a complete theme package
+pnpm generate-theme --name my-brand --primary '#2563eb'
+
+# With custom accent color
+pnpm generate-theme --name my-brand --primary '#2563eb' --accent '#7c3aed'
+
+# Generate a dark theme variant
+pnpm generate-theme --name my-brand-dark --primary '#3b82f6' --dark
+```
+
+This creates a fully functional theme package at `packages/themes/<name>/` with:
+
+| File | Purpose |
+|------|---------|
+| `src/tailwind-tokens.ts` | Token overrides for Tailwind integration |
+| `src/index.ts` | Package exports |
+| `src/tokens.css` | CSS custom properties for direct import |
+| `__tests__/contrast.test.ts` | Automated WCAG contrast validation |
+| `README.md` | Documentation with color palette swatches |
+
+The generated theme includes:
+- An 11-shade color palette (50-950) derived from your primary color
+- WCAG 2.1 AA compliant contrast ratios
+- Harmonized semantic colors (success, warning, danger, info)
+- Surface and border tokens
+- Gradient tokens for hero sections
+
+After generating, install dependencies and build:
+
+```bash
+pnpm install
+pnpm --filter @themes/<name> build
+```
+
+Then use the theme with `init-shop --theme <name>` or in the CMS Theme Editor.

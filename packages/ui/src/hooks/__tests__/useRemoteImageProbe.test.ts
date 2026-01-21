@@ -1,6 +1,7 @@
 // packages/ui/src/hooks/__tests__/useRemoteImageProbe.test.ts
 // i18n-exempt: Test descriptions and fixtures use literal strings
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useRemoteImageProbe from "../useRemoteImageProbe";
 
 describe("useRemoteImageProbe", () => {

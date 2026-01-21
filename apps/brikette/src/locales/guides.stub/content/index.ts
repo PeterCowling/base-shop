@@ -6,32 +6,30 @@
 
 import { stubFaq } from "../shared";
 
- 
-
-// Compose the legacy `content` structure expected by the stub bundle
-import { parking } from "./parking";
-import { onlyHostel } from "./onlyHostel";
-import { reachBudget } from "./reachBudget";
-import { ferrySchedules } from "./ferrySchedules";
-import { pathOfTheGods } from "./pathOfTheGods";
-import { chiesaNuovaArrivals } from "./chiesaNuovaArrivals";
-import { hostelToFerryDock } from "./hostelToFerryDock";
-import { ferryDockToBrikette } from "./ferryDockToBrikette";
+import { arienzoBeachBusBack } from "./arienzoBeachBusBack";
+import { backpackerItineraries } from "./backpackerItineraries";
 import { backpackingSouthernItaly } from "./backpackingSouthernItaly";
 import { beachHoppingAmalfi } from "./beachHoppingAmalfi";
-import { cheapEats } from "./cheapEats";
-import { backpackerItineraries } from "./backpackerItineraries";
 import { bestTimeToVisit } from "./bestTimeToVisit";
 import { boatTours } from "./boatTours";
-import { ecoFriendlyAmalfi } from "./ecoFriendlyAmalfi";
 import { budgetAccommodationBeyond } from "./budgetAccommodationBeyond";
-import { positanoBudget } from "./positanoBudget";
-import { porterService } from "./porterService";
 import { capriDayTrip } from "./capriDayTrip";
-import { arienzoBeachBusBack } from "./arienzoBeachBusBack";
-import { lauritoBeachBusBack } from "./lauritoBeachBusBack";
-import { travelInsuranceAmalfi } from "./travelInsuranceAmalfi";
+import { cheapEats } from "./cheapEats";
+import { chiesaNuovaArrivals } from "./chiesaNuovaArrivals";
 import { cookingClassesAmalfi } from "./cookingClassesAmalfi";
+import { ecoFriendlyAmalfi } from "./ecoFriendlyAmalfi";
+import { ferryDockToBrikette } from "./ferryDockToBrikette";
+import { ferrySchedules } from "./ferrySchedules";
+import { hostelToFerryDock } from "./hostelToFerryDock";
+import { lauritoBeachBusBack } from "./lauritoBeachBusBack";
+import { onlyHostel } from "./onlyHostel";
+// Compose the legacy `content` structure expected by the stub bundle
+import { parking } from "./parking";
+import { pathOfTheGods } from "./pathOfTheGods";
+import { porterService } from "./porterService";
+import { positanoBudget } from "./positanoBudget";
+import { reachBudget } from "./reachBudget";
+import { travelInsuranceAmalfi } from "./travelInsuranceAmalfi";
 
 export const content = {
   parking,

@@ -1,9 +1,12 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { providersByType } from "@acme/configurator/providers";
 import { LOCALES } from "@acme/types";
+
 import useMappingRows from "@/hooks/useMappingRows";
-import useShopEditorSubmit from "../useShopEditorSubmit";
+
 import useShopEditorForm from "../useShopEditorForm";
+import useShopEditorSubmit from "../useShopEditorSubmit";
 
 jest.mock("@acme/configurator/providers", () => ({
   providersByType: jest.fn(),

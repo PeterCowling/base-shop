@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
 
-import { ROOM_CARD_TEST_IDS, RoomCard, ROOM_CARD_ACTION_BUTTON_CLASS } from "../RoomCard";
 import type { RoomCardAction, RoomCardProps } from "../../types/roomCard";
+import { ROOM_CARD_ACTION_BUTTON_CLASS,ROOM_CARD_TEST_IDS, RoomCard } from "../RoomCard";
 
 const BASE_IMAGE_LABELS = {
   enlarge: "View image",
@@ -14,8 +13,8 @@ const BASE_IMAGE_LABELS = {
 
 function buildActions(overrides?: Partial<RoomCardAction>[]): RoomCardAction[] {
   const defaults: RoomCardAction[] = [
-    { id: "nr", label: "Book NR", onSelect: vi.fn() },
-    { id: "flex", label: "Book Flex", onSelect: vi.fn() },
+    { id: "nr", label: "Book NR", onSelect: jest.fn() },
+    { id: "flex", label: "Book Flex", onSelect: jest.fn() },
   ];
 
   return overrides
@@ -98,7 +97,7 @@ describe("RoomCard (design system)", () => {
 
   it("invokes fullscreen handler with current image payload", async () => {
     const user = userEvent.setup();
-    const onRequestFullscreen = vi.fn();
+    const onRequestFullscreen = jest.fn();
 
     renderRoomCard({
       onRequestFullscreen,
@@ -131,7 +130,7 @@ describe("RoomCard (design system)", () => {
   it("splits hyphenated action labels across two lines", () => {
     renderRoomCard({
       actions: [
-        { id: "nr", label: "Non-Refundable Rates – From €259.20", onSelect: vi.fn() },
+        { id: "nr", label: "Non-Refundable Rates – From €259.20", onSelect: jest.fn() },
       ],
     });
 

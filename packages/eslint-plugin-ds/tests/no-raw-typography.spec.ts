@@ -1,4 +1,5 @@
 import { RuleTester } from "eslint";
+
 const rule = require("../src/rules/no-raw-typography.ts").default as typeof import("../src/rules/no-raw-typography").default;
 
 (globalThis as any).structuredClone =

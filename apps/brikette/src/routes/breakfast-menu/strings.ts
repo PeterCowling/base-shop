@@ -1,5 +1,7 @@
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import type { InitOptions } from "i18next";
+
 import { type BreakfastMenuItemKey } from "@/data/menuPricing";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import enBreakfastMenuPage from "@/locales/en/breakfastMenuPage.json";
 import enMenus from "@/locales/en/menus.json";
 import {
@@ -9,25 +11,18 @@ import {
   type LocaleModule,
 } from "@/utils/localeFallback";
 import { getSlug } from "@/utils/slug";
-import { supportsWebpackGlob, type WebpackRequire, webpackContextToRecord } from "@/utils/webpackGlob";
-import type { InitOptions } from "i18next";
-
-declare const require: WebpackRequire | undefined;
+import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob";
 
 // i18n-exempt -- TECH-000 [ttl=2026-12-31] build-time locale discovery
 const breakfastMenuLocaleModules: Record<string, LocaleModule> = supportsWebpackGlob
   ? webpackContextToRecord<LocaleModule>(
-      typeof require === "function" && typeof require.context === "function"
-        ? require.context("../../locales", true, /breakfastMenuPage\\.json$/)
-        : undefined,
+      getWebpackContext("../../locales", true, /breakfastMenuPage\\.json$/),
       { prefix: "/locales" },
     )
   : {};
 const menusLocaleModules: Record<string, LocaleModule> = supportsWebpackGlob
   ? webpackContextToRecord<LocaleModule>(
-      typeof require === "function" && typeof require.context === "function"
-        ? require.context("../../locales", true, /menus\\.json$/)
-        : undefined,
+      getWebpackContext("../../locales", true, /menus\\.json$/),
       { prefix: "/locales" },
     )
   : {};

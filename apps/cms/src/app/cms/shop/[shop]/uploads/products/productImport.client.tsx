@@ -2,11 +2,15 @@
 
 /* eslint-disable react-hooks/exhaustive-deps, ds/no-arbitrary-tailwind -- COM-0001 [ttl=2026-12-31] product import UI pending DS refactor */
 
+import { useCallback, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import type {
   ProductImportEvent,
   ProductImportReport,
 } from "@acme/platform-core/types/productImport";
-import { getCsrfToken } from "@acme/shared-utils";
+import { getCsrfToken } from "@acme/lib/security";
+
 import {
   Button,
   Input,
@@ -17,16 +21,15 @@ import {
   SelectValue,
   Textarea,
 } from "@/components/atoms/shadcn";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useRef, useState } from "react";
-import ProductImportResults from "./ProductImportResults";
-import RecentProductImports from "./RecentProductImports";
+
 import {
   createIdempotencyKey,
   exampleItemsJson,
   parseCsvToItems,
   parseItemsJson,
 } from "./productImport.utils";
+import ProductImportResults from "./ProductImportResults";
+import RecentProductImports from "./RecentProductImports";
 
 type ImportResult =
   | {
@@ -86,7 +89,7 @@ export default function ProductImportClient({
 
     if (name.endsWith(".csv")) {
       const parsed = parseCsvToItems(text);
-      if (parsed.ok === false) {
+      if ("error" in parsed) {
         setError(parsed.error);
         return;
       }
@@ -96,7 +99,7 @@ export default function ProductImportClient({
 
     if (name.endsWith(".json") || file.type === "application/json") {
       const parsed = parseItemsJson(text);
-      if (parsed.ok === false) {
+      if ("error" in parsed) {
         setError(parsed.error);
         return;
       }
@@ -113,7 +116,7 @@ export default function ProductImportClient({
       setBusy(true);
       try {
         const parsedItems = parseItemsJson(itemsJson);
-        if (parsedItems.ok === false) {
+        if ("error" in parsedItems) {
           setError(parsedItems.error);
           return;
         }
@@ -143,8 +146,8 @@ export default function ProductImportClient({
           setError("Request failed.");
           return;
         }
-        if (json.ok === false) {
-          setError(json.message || "Request failed.");
+        if (!json.ok) {
+          setError("message" in json && json.message ? json.message : "Request failed.");
           setResult(json);
           setPreviewFingerprint(null);
           return;
@@ -209,12 +212,14 @@ export default function ProductImportClient({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Input
-            label="Idempotency key"
-            value={idempotencyKey}
-            onChange={(e) => setIdempotencyKey(e.target.value)}
-            description="Submitting the same key twice returns the original import result instead of applying changes again."
-          />
+          <div className="space-y-1">
+            <Input
+              label="Idempotency key"
+              value={idempotencyKey}
+              onChange={(e) => setIdempotencyKey(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">Submitting the same key twice returns the original import result instead of applying changes again.</p>
+          </div>
           <div className="grid gap-2 sm:grid-cols-2">
             <div className="space-y-1">
               <p className="text-xs font-medium text-muted-foreground">Default status</p>
@@ -247,7 +252,7 @@ export default function ProductImportClient({
           <Textarea
             label="Note (optional)"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value)}
             placeholder="Supplier, batch name, or context for this import…"
             className="min-h-[96px]"
           />
@@ -290,7 +295,7 @@ export default function ProductImportClient({
         </div>
         <Textarea
           value={itemsJson}
-          onChange={(e) => setItemsJson(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setItemsJson(e.target.value)}
           className="min-h-[240px] font-mono text-xs"
           aria-label="Items JSON"
         />

@@ -1,9 +1,10 @@
 // packages/ui/src/organisms/ApartmentHighlightsSection.tsx
-import { CfHeroImage } from "@/atoms/CfHeroImage";
-import { memo, useMemo, type FC } from "react";
+import { type FC,memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Section } from "../atoms/Section";
-import { Grid } from "@/components/atoms/primitives/Grid";
+import { Grid } from "../components/atoms/primitives/Grid";
 
 const IMAGES = {
   slide1: "/img/positano-panorama.avif",

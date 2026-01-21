@@ -4,6 +4,11 @@ interface Props {
     shop: string;
     rows: ProductPublication[];
     isAdmin: boolean;
+    sellability?: Record<string, {
+        state: "sellable" | "needs_attention";
+        issues: string[];
+        stock: number;
+    }>;
     /**
      * Callback that duplicates a product on the server.
      * Provided by the host application (e.g. `apps/cms`).

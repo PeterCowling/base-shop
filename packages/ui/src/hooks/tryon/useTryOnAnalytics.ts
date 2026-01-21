@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
-import { getTryOnCtx, setTryOnCtx, logTryOnEvent } from "./analytics";
+
+import { getTryOnCtx, logTryOnEvent,setTryOnCtx } from "./analytics";
 
 export type TryOnMode = 'accessory' | 'garment';
 

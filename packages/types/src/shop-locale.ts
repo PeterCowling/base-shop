@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { localeSchema } from "./Product";
 
 export const shopLocaleSchema = z

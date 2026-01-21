@@ -1,5 +1,7 @@
+import { type z } from "zod";
+
 import type { PageComponent } from "@acme/types";
-import { z } from "zod";
+
 export interface NavItem {
     label: string;
     url: string;

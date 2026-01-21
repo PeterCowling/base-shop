@@ -1,126 +1,126 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "라우리토 해변 가이드",
+    "description": "Da Adolfo와 Tre Ville 선택, 셔틀 보트 이용법, 여유로운 해변 하루 계획."
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "라우리토 해변 가이드",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "라우리토는 포시타노와 프라이아노 사이에 숨은 작은 만입니다. Da Adolfo와 Villa Tre Ville 두 비치클럽이 해변 대부분을 차지해 무료 구역은 좁지만, 서향 햇빛과 유명한 점심, 스피아지아 그란데보다 조용한 분위기가 보상입니다.",
+    "이 가이드를 통해 어떤 클럽이 맞는지 고르고, 워터 택시 운영 방식과 Hostel Brikette로 돌아오는 버스·계단 루트를 확인하세요."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "라우리토에 가야 하는 이유"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "구성 & 서비스"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Villa Tre Ville 비치클럽"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Da Adolfo 비치클럽"
     },
     {
       "href": "#logistics",
-      "label": "Logistics & getting back"
+      "label": "이동 & 돌아오는 길"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "title": "라우리토가 수고할 가치가 있는 이유",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "라우리토는 포시타노 중심에서 조금 떨어져 있어 스피아지아 그란데보다 한산합니다. 이른 저녁까지 햇빛이 들어오고 수영하기 잔잔하며 절벽 배경 덕분에 아말피 해안 사진이 잘 나옵니다.",
+        "예약이 없거나 무료 구역을 원한다면 인내가 필요하지만, 한 번 자리 잡으면 Hostel Brikette에서 가까운 가장 여유로운 해변 중 하나입니다."
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "해변 구성과 운영",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "만은 세 구역으로 나뉩니다. 가장 오른쪽에 작은 무료 구역, 가운데는 Villa Tre Ville의 테라코타 라운저, 왼쪽은 Da Adolfo의 목재 베드와 레스토랑 테라스가 있습니다.",
+        "모든 방문객은 보트 또는 SITA 정류장에서 계단을 내려야 하며, 성수기에는 대기열이 생길 수 있습니다."
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Villa Tre Ville 비치클럽",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville은 한정 라운저와 세심한 서비스, 그에 맞는 가격을 가진 부티크 클럽입니다. 프리미엄 데이베드, 알라카르트 다이닝, 의자까지 서빙되는 프로세코를 기대하세요.",
+        "예약은 호텔 컨시어지를 통해 진행됩니다. 성수기에는 2인 기준 €200 이상도 가능하지만, 타월·샤워·스피아지아 그란데 왕복 보트가 포함됩니다.",
+        "늦은 오후 풍경이 특히 좋고, 마지막 셔틀 전 일몰 스프리츠 테이스팅이 종종 준비됩니다."
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Da Adolfo 비치클럽",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Da Adolfo는 레몬잎에 구운 모차렐라와 자유로운 분위기로 유명합니다. 예약은 매우 어렵고, 당일 자리는 단골 우선입니다.",
+        "예약을 못했다면 스피아지아 그란데 부두에서 Da Adolfo 워터 택시에 대기 탑승을 요청하세요. 도착 후 노쇼 대기 리스트에 올릴 수 있습니다.",
+        "라운저 패키지는 2인 €50–€70 정도이며 셔틀 포함입니다. 점심 메인은 €18–€26, 주방은 오후 늦게까지 운영합니다."
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "title": "이동, 티켓, 돌아오는 길",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "두 클럽 모두 스피아지아 그란데의 작은 부두에서 보트를 운행합니다. 보통 09:30부터 30분 간격으로 운항하고, 15:00경부터 복귀가 재개됩니다. 파도가 높을 때는 부두 칠판의 공지를 확인하세요.",
+        "대중교통을 선호한다면 %LINK:lauritoBeachBusDown|버스 가이드%와 %LINK:lauritoBeachBusBack|복귀 가이드%를 참고하세요. 라우리토에는 버스 티켓 판매처가 없으니 시내에서 미리 구매해야 합니다.",
+        "돌아오는 길에는 소렌토/포시타노 방면 해안 버스가 계단 입구 옆에 정차합니다. 19:00 이후 배차가 줄어드니 막차 시간을 확인하거나 호스텔을 통해 택시를 예약하세요."
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "간단 요약",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "여름에는 두 클럽 모두 예약 필수이며, 워크인은 10:00 이전에만 가능성이 높습니다.",
+    "무료 구역은 매우 작으니 우산과 매트를 챙기고 일찍 도착하세요.",
+    "복귀 보트는 오후 중반에 끝나므로 저녁 계획이 있다면 버스 백업을 준비하세요."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "대략 비용",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "Da Adolfo 2인 라운저 세트: €50–€70(셔틀 보트 포함).",
+    "Villa Tre Ville 프리미엄 데크 2인: €180–€220(타월 및 컨시어지 포함).",
+    "점심 메인: €18–€30, 칵테일 €12–€15, 생수 €3–€4."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "빠른 팁",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "예약 메일을 캡처해 두세요 — 부두 근처에서는 신호가 약합니다.",
+    "리프 세이프 선크림과 워터 슈즈를 챙기세요. 자갈과 바위가 섞여 있습니다.",
+    "%LINK:beaches|포시타노 해변 개요%에서 라우리토와 다른 만을 비교하세요."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "알아두면 좋은 점",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "파도가 거칠면 셔틀 보트가 중단됩니다. 문자로 공지되지만 버스가 유일한 복귀 수단일 수 있습니다.",
+    "ATM이나 상점이 없으니 식사와 추가 비용을 위한 현금을 준비하세요.",
+    "계단이 가파르고 고르지 않습니다. 휴식 시간을 잡고 접지력 있는 신발을 신으세요."
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "라우리토 해변 FAQ",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "예약이 필요하나요?",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "네. 두 클럽 모두 예약 손님을 우선합니다. Da Adolfo는 대기 손님을 받지만 예약 손님이 먼저 좌석을 배정받습니다."
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "무료 구역을 이용할 수 있나요?",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "가능하지만 공간이 매우 제한적입니다. 그늘과 물을 포함해 필요한 것을 모두 가져오고, 09:30 이전에 도착하세요."
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "보트는 몇 시까지 운행하나요?",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "여름에는 보통 18:00 전에 종료되며, 간절기에는 더 일찍 끝납니다. 도착 시 막차를 확인하고 버스 시간표를 백업으로 저장하세요."
       ]
     }
   ],
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "alt": "라우리토 해변 해안선"
   }
 }

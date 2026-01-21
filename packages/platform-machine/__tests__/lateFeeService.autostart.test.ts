@@ -15,7 +15,7 @@ describe("auto-start", () => {
     const error = jest.fn();
     jest.doMock("../src/lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
-        start().catch((err) =>
+        start().catch((err: any) =>
           error("failed to start late fee service", { err })
         );
       }

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { LOCALES } from "@acme/i18n";
 
 jest.mock("@acme/platform-core/products", () => ({ getProductBySlug: jest.fn() }));

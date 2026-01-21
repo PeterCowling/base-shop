@@ -1,17 +1,20 @@
-export { clientLoader } from "./assistance/client-loader";
-export type { AssistanceLoaderData } from "./assistance/client-loader";
-export { ASSISTANCE_HUB_TEST_IDS } from "./assistance/constants";
-export { default } from "./assistance/assistance-route";
-import type { MetaFunction, LinksFunction } from "react-router";
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
-import { BASE_URL } from "@/config/site";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
 import { resolveCanonicalAssistancePath } from "./assistance/resolveCanonicalPath";
+
+export { default } from "./assistance/assistance-route";
+export type { AssistanceLoaderData } from "./assistance/client-loader";
+export { clientLoader } from "./assistance/client-loader";
+export { ASSISTANCE_HUB_TEST_IDS } from "./assistance/constants";
 
 export const meta: MetaFunction = ({ data, location }) => {
   const d = (data || {}) as { lang?: AppLanguage; title?: string; desc?: string };

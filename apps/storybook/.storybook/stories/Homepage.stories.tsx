@@ -1,11 +1,12 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { within, waitFor } from '@testing-library/dom';
+import { waitFor,within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import HeaderSection from '../../../../packages/ui/src/components/cms/blocks/HeaderSection';
+
 import CampaignHeroSection from '../../../../packages/ui/src/components/cms/blocks/CampaignHeroSection';
-import ShowcaseSection from '../../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
 import FooterSection from '../../../../packages/ui/src/components/cms/blocks/FooterSection';
+import HeaderSection from '../../../../packages/ui/src/components/cms/blocks/HeaderSection';
+import ShowcaseSection from '../../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
 import { CartStatus } from '../components/CartStatus';
 
 type HomeCompositionProps = {

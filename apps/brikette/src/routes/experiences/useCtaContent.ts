@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 
-import type { HeroCta, ExperiencesPageViewModel } from "./types";
+import type { ExperiencesPageViewModel,HeroCta } from "./types";
 import type { ExperiencesTranslator } from "./useExperiencesTranslations";
 
 type Translator = (key: string, options?: Record<string, unknown>) => unknown;

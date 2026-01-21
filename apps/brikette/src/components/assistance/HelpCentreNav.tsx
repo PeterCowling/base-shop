@@ -1,20 +1,22 @@
 /* file path: src/components/assistance/HelpCentreNav.tsx */
 /* Desktop drawer – visible from ≥ lg (1024 px) */
 
-import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "lucide-react";
-import clsx from "clsx";
-import { memo, useCallback, useMemo, type ReactNode } from "react";
+import { memo, type ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { Bus, CalendarDays, Clock, CreditCard, FileText, IdCard, Info, MapPin, Scale, ShieldCheck, Undo2, Wrench } from "lucide-react";
 
 import HelpCentreNavUI, { type AssistanceNavItem } from "@acme/ui/organisms/HelpCentreNav";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
+import type { AppLanguage } from "@/i18n.config";
 import type { HelpArticleKey } from "@/routes.assistance-helpers";
 // Namespace import to tolerate partial mocks
 import * as assistance from "@/routes.assistance-helpers";
 import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
 
 /* ── static helpers ─────────────────────────────────────────── */
 type IconComponent = typeof IdCard;
@@ -53,6 +55,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
   const { open, toggle } = useHelpDrawer();
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
+  const pathname = usePathname();
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
 
   const fallbackT = useMemo(() => {
@@ -135,16 +138,20 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
       highlighted: boolean;
       defaultClassName: string;
       children: ReactNode;
-    }) => (
-      <NavLink
-        to={item.href}
-        prefetch="intent"
-        className={({ isActive }) => linkClasses(highlighted || isActive)}
-      >
-        {children}
-      </NavLink>
-    ),
-    [linkClasses],
+    }) => {
+      const isActive = pathname === item.href || (pathname?.startsWith(`${item.href}/`) ?? false);
+      return (
+        <Link
+          href={item.href}
+          prefetch={true}
+          className={linkClasses(highlighted || isActive)}
+          aria-current={isActive ? "page" : undefined}
+        >
+          {children}
+        </Link>
+      );
+    },
+    [linkClasses, pathname],
   );
 
   return (

@@ -1,4 +1,5 @@
 import { getContrast } from 'polished';
+
 import { tokens } from '../src/tokens';
 
 type Mode = 'light' | 'dark';

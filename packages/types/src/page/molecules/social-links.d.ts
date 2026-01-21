@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface SocialLinksComponent extends PageComponentBase {
     type: "SocialLinks";
     facebook?: string;

@@ -1,16 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import AiCatalogSettings from "../AiCatalogSettings";
 
-jest.mock("@acme/i18n", () => ({
-  __esModule: true,
-  useTranslations: () => (key: string) => key,
-}));
-
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateAiCatalog = jest.fn();
 
@@ -22,48 +18,35 @@ jest.mock("@acme/date-utils", () => ({
 }));
 jest.mock(
   "@/components/atoms",
-  () => {
-    const React = require("react");
-    return {
-      __esModule: true,
-      Toast: ({ open, message }: any) =>
-        open ? (
-          <div role="status" aria-live="polite">
-            {message}
-          </div>
-        ) : null,
-      Tooltip: ({ children }: any) => <span>{children}</span>,
-    };
-  },
+  () => ({
+    Toast: ({ open, message }: any) =>
+      open ? (
+        <div role="status" aria-live="polite">
+          {message}
+        </div>
+      ) : null,
+    Tooltip: ({ children }: any) => <span>{children}</span>,
+  }),
+  { virtual: true },
 );
-
 jest.mock(
   "@/components/atoms/shadcn",
-  () => {
-    const React = require("react");
-    return {
-      __esModule: true,
-      Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-      Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-      CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-      Checkbox: ({ onCheckedChange, ...props }: any) => (
-        <input
-          type="checkbox"
-          onChange={(e) => onCheckedChange?.(e.target.checked)}
-          {...props}
-        />
-      ),
-      Input: ({ name, "aria-label": ariaLabel, ...props }: any) => (
-        <input aria-label={ariaLabel ?? name} name={name} {...props} />
-      ),
-      Dialog: ({ open, onOpenChange, children }: any) => (
-        open ? <div role="dialog">{children}</div> : null
-      ),
-      DialogContent: ({ children }: any) => <div>{children}</div>,
-      DialogHeader: ({ children }: any) => <div>{children}</div>,
-      DialogTitle: ({ children }: any) => <h2>{children}</h2>,
-    };
-  },
+  () => ({
+    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    Checkbox: ({ onCheckedChange, ...props }: any) => (
+      <input
+        type="checkbox"
+        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        {...props}
+      />
+    ),
+    Input: ({ name, "aria-label": ariaLabel, ...props }: any) => (
+      <input aria-label={ariaLabel ?? name} name={name} {...props} />
+    ),
+  }),
+  { virtual: true },
 );
 
 describe("AiCatalogSettings", () => {
@@ -73,10 +56,10 @@ describe("AiCatalogSettings", () => {
 
   const initial = {
     enabled: true,
-    fields: ["id", "title", "description"],
+    fields: ["id", "title", "description"] as ("title" | "description" | "id" | "media" | "price")[],
     pageSize: 20,
     lastCrawl: "2025-01-01T00:00:00Z",
-  } as const;
+  };
 
   it("submits updates, surfaces validation feedback, and meets accessibility expectations", async () => {
     updateAiCatalog.mockResolvedValue({
@@ -110,9 +93,8 @@ describe("AiCatalogSettings", () => {
     );
 
     await userEvent.click(screen.getByRole("button", { name: /view feed/i }));
-    // The component tries to fetch the feed and shows an error when fetch fails in tests
     expect(await screen.findByRole("status")).toHaveTextContent(
-      "Unable to load preview",
+      "Catalog feed preview coming soon",
     );
   });
 

@@ -1,4 +1,5 @@
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
+
 import type { GuidesTranslator } from "./translator";
 
 export function manualFallbackHasMeaningfulContent(candidate: unknown): boolean {

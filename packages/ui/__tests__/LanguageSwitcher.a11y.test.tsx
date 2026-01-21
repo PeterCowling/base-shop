@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import LanguageSwitcher from "../src/components/molecules/LanguageSwitcher";
 
 describe("LanguageSwitcher keyboard navigation", () => {

@@ -2,8 +2,10 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { Cluster, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+
 import { formatNumber, formatPercent } from "@/lib/format";
-import type { LaneEvidence, LaneDetailStrings, LaneVersion } from "./types";
+
+import type { LaneDetailStrings, LaneEvidence, LaneVersion } from "./types";
 
 const DIFF_FIELDS: Array<{
   key: keyof LaneVersion;

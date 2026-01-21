@@ -1,9 +1,11 @@
 import "server-only";
 
 import type { Coupon } from "@acme/types";
+
 import { prisma } from "../db";
-import { resolveRepo } from "./repoResolver";
+
 import type { CouponsRepository } from "./coupons.json.server";
+import { resolveRepo } from "./repoResolver";
 
 let repoPromise: Promise<CouponsRepository> | undefined;
 

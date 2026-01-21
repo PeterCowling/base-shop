@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import type { MediaItem } from "@acme/types";
 
 import MediaFileItem from "./MediaFileItem";

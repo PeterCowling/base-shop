@@ -1,6 +1,8 @@
 import { useMemo } from "react";
-import type { TokenMap } from "./useTokenEditor";
+
 import { getContrast, suggestContrastColor } from "../components/cms/ColorInput";
+
+import type { TokenMap } from "./useTokenEditor";
 
 export interface ContrastWarning {
   contrast: number;

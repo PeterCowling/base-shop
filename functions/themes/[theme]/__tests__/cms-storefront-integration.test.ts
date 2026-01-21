@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import { nowIso } from "@acme/date-utils";
+import { nowIso } from "@date-utils";
 
 import type { Page } from "@acme/types";
 import { createPreviewToken } from "@acme/platform-core/previewTokens";
@@ -7,7 +7,7 @@ import { createPreviewToken } from "@acme/platform-core/previewTokens";
 
 async function withRepo(
   cb: (
-    repo: typeof import("@acme/platform-core/repositories/pages/index.server")
+    repo: typeof import("@acme/platform-core/repositories/pages")
   ) => Promise<void>
 ) {
   jest.resetModules();
@@ -35,6 +35,11 @@ async function withRepo(
       return pages[idx];
     },
   };
+  jest.doMock(
+    "@acme/platform-core/repositories/pages",
+    () => ({ __esModule: true, ...repo }),
+    { virtual: true },
+  );
   jest.doMock(
     "@acme/platform-core/repositories/pages/index.server",
     () => ({ __esModule: true, ...repo }),

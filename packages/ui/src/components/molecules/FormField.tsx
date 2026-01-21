@@ -1,6 +1,6 @@
 import * as React from "react";
-import { boxProps } from "../../utils/style";
-import { cn } from "../../utils/style";
+
+import { boxProps , cn } from "../../utils/style";
 
 export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Label for the form control */

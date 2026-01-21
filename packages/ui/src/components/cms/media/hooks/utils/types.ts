@@ -1,5 +1,6 @@
 // packages/ui/src/components/cms/media/hooks/utils/types.ts
 import type { MediaItem } from "@acme/types";
+
 import type { MediaDetailsFormValues } from "../../details/MediaDetailsPanel";
 
 export type MediaItemWithUrl = MediaItem & { url: string };

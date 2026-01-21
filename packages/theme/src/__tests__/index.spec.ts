@@ -1,5 +1,5 @@
-/* eslint-disable ds/no-raw-color -- TEST-123: test fixtures use literal hex strings to validate schemas */
-import { parseTheme, parseDsPackage, mergeExternalTokens } from '../';
+ 
+import { mergeExternalTokens,parseDsPackage, parseTheme } from '../';
 
 describe('package exports', () => {
   it('exposes parseTheme', () => {

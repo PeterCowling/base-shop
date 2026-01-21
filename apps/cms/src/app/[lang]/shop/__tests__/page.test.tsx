@@ -1,5 +1,7 @@
 import type { SKU } from "@acme/types";
 
+import { default as ShopIndexPage,metadata } from "../page";
+
 const mockSkus: SKU[] = [
   {
     id: "01H000000000000000000001",
@@ -39,8 +41,6 @@ jest.mock("../ShopClient.client", () => ({
   __esModule: true,
   default: mockShopClient,
 }));
-
-import { metadata, default as ShopIndexPage } from "../page";
 
 describe("ShopIndexPage", () => {
   beforeEach(() => {

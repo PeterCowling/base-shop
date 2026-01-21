@@ -1,20 +1,23 @@
 import { join } from "path";
+
+import type { Shop } from "@acme/types";
+
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
-import {
-  prepareOptions,
-  type CreateShopOptions,
-  type PreparedCreateShopOptions,
-} from "./schema";
-import { loadTokens } from "./themeUtils";
-import type { DeployShopResult } from "./deployTypes";
+import { recordMetric } from "../utils";
+
 import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+import type { DeployShopResult } from "./deployTypes";
 import { ensureDir, writeJSON } from "./fsUtils";
-import type { Shop } from "@acme/types";
-import { recordMetric } from "../utils";
+import {
+  type CreateShopOptions,
+  type PreparedCreateShopOptions,
+  prepareOptions,
+} from "./schema";
+import { loadTokens } from "./themeUtils";
 
 /**
  * Create a new shop app and seed data.
@@ -42,6 +45,10 @@ export async function createShop(
     themeDefaults,
     themeOverrides,
     themeTokens,
+    // LAUNCH-23: Persist favicon, seo, and requiredPages
+    favicon: prepared.favicon,
+    seo: prepared.seo,
+    requiredPages: prepared.requiredPages,
     filterMappings: {},
     priceOverrides: {},
     localeOverrides: {},
@@ -67,6 +74,7 @@ export async function createShop(
       premierDelivery: false,
     },
     componentVersions: {},
+    tier: "basic",
   };
 
   await prisma.shop.create({

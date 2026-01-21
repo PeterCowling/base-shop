@@ -1,7 +1,8 @@
 // packages/ui/src/hooks/upload/__tests__/uploadToCms.test.ts
 import type { ChangeEvent } from "react";
+
+import { firstFileFromChange,validateFilePolicy } from "../filePolicy";
 import * as api from "../uploadToCms";
-import { validateFilePolicy, firstFileFromChange } from "../filePolicy";
 
 describe("uploadToCms + helpers", () => { // i18n-exempt: test titles are not user-facing
   const originalFetch = global.fetch;
@@ -19,7 +20,7 @@ describe("uploadToCms + helpers", () => { // i18n-exempt: test titles are not us
 
   test("firstFileFromChange returns first file or null", () => { // i18n-exempt: test title
     const input = document.createElement("input");
-    const file = new File([1], "a.txt", { type: "text/plain" });
+    const file = new File([""], "a.txt", { type: "text/plain" });
     const filesLike = { 0: file, length: 1, item: (i: number) => (i === 0 ? file : null) } as unknown as FileList;
     Object.defineProperty(input, "files", { value: filesLike });
     const e = { target: input } as unknown as ChangeEvent<HTMLInputElement>;
@@ -30,12 +31,14 @@ describe("uploadToCms + helpers", () => { // i18n-exempt: test titles are not us
   });
 
   test("uploadToCms returns item on ok and error on failure", async () => { // i18n-exempt: test title
-    const file = new File([1], "a.png", { type: "image/png" });
+    const file = new File([""], "a.png", { type: "image/png" });
     // ok response
+    global.fetch = jest.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ id: "m1" }) });
     const ok = await api.uploadToCms({ shop: "s1", requiredOrientation: "landscape", file });
     expect(ok.item).toEqual({ id: "m1" });
     // error response
     global.fetch = jest.fn().mockResolvedValueOnce({ ok: false, statusText: "Bad", json: async () => ({ error: "nope" }) });
+    const bad = await api.uploadToCms({ shop: "s1", requiredOrientation: "landscape", file });
     expect(bad.error).toBe("nope");
   });
 });

@@ -1,5 +1,6 @@
-import { seedShop } from "../seedShop";
 import { validateShopName } from "@acme/platform-core/shops";
+
+import { seedShop } from "../seedShop";
 
 jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),

@@ -2,8 +2,10 @@
 /* eslint-disable react/forbid-dom-props -- LINT-1004: dynamic peer color circles require inline background-color */
 
 import React, { useMemo } from "react";
-import usePresence from "./collab/usePresence";
+
 import { Inline } from "../../atoms/primitives/Inline";
+
+import usePresence from "./collab/usePresence";
 
 export default function PresenceAvatars({ shop, pageId }: { shop: string | null; pageId: string | null }) {
   const w = (typeof window !== "undefined" ? (globalThis as { __PB_USER_ID?: string; __PB_USER_NAME?: string }) : ({} as { __PB_USER_ID?: string; __PB_USER_NAME?: string }));

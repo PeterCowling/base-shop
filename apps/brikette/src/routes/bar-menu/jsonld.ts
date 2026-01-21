@@ -1,5 +1,6 @@
-import { getBarMenuPriceAmount, type BarMenuItemKey } from "@/data/menuPricing";
+import { type BarMenuItemKey,getBarMenuPriceAmount } from "@/data/menuPricing";
 import type { AppLanguage } from "@/i18n.config";
+
 import type { BarMenuStrings } from "./strings";
 import { getBarMenuFallback } from "./strings";
 

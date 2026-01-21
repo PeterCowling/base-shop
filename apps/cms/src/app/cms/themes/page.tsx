@@ -1,11 +1,13 @@
 // apps/cms/src/app/cms/themes/page.tsx
 
-import ThemesShopChooser from "./ThemesShopChooser.client";
-import { Tag } from "@acme/ui/components/atoms";
-import { listShops } from "../../../lib/listShops";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { TranslationsProvider } from "@acme/i18n/Translations";
 import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Tag } from "@acme/ui/components/atoms";
+
+import { listShops } from "../../../lib/listShops";
+
+import ThemesShopChooser from "./ThemesShopChooser.client";
 
 export default async function ThemesIndexPage() {
   const t = await getTranslations("en");

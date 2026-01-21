@@ -1,5 +1,7 @@
 "use client";
 
+import { Line } from "react-chartjs-2";
+import type { MultiSeries,Series } from "@cms/lib/analytics";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -10,8 +12,6 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import type { Series, MultiSeries } from "@cms/lib/analytics";
 
 ChartJS.register(
   CategoryScale,

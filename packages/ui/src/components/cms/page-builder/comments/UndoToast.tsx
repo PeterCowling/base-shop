@@ -1,8 +1,10 @@
 "use client";
 
-import type { Thread } from "./types";
-import { Toast } from "../../../atoms";
 import { useTranslations } from "@acme/i18n";
+
+import { Toast } from "../../../atoms";
+
+import type { Thread } from "./types";
 
 export function UndoToast({ lastDeleted, onRestore, onDismiss }: {
   lastDeleted: Thread | null;

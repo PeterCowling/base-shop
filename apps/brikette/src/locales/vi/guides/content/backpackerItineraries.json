@@ -1,24 +1,24 @@
 {
   "seo": {
-    "title": "Positano cho phượt thủ tiết kiệm: lịch trình 1–3 ngày",
-    "description": "Kế hoạch từng ngày bao trọn điểm nổi bật Positano mà vẫn giữ chi phí ở mức hợp lý."
+    "title": "Positano cho phượt thủ tiết kiệm: lịch trình 1-3 ngày",
+    "description": "Kế hoạch 1-3 ngày đơn giản với bãi biển, điểm ngắm và các chuyến đi trong ngày giá rẻ."
   },
-  "linkLabel": "Positano cho phượt thủ tiết kiệm: lịch trình 1–3 ngày",
+  "linkLabel": "Positano cho phượt thủ tiết kiệm: lịch trình 1-3 ngày",
   "intro": [
-    "Lịch trình từng ngày thực tế, bao trọn điểm nổi bật mà không làm đội ngân sách."
+    "Chọn lịch trình 1, 2 hoặc 3 ngày để giữ chi phí thấp nhưng vẫn đủ view, bãi biển và chuyến đi trong ngày."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Ngày 1: Positano cốt lõi"
+      "label": "Ngày 1: Positano cơ bản"
     },
     {
       "href": "#day2",
-      "label": "Ngày 2: Con Đường của Các Vị Thần + tắm biển"
+      "label": "Ngày 2: Con Đường của Các Vị Thần + bãi biển"
     },
     {
       "href": "#day3",
-      "label": "Bản dịch đang được chuẩn bị."
+      "label": "Ngày 3: Capri hoặc Amalfi + Ravello"
     },
     {
       "href": "#savings",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Điều phối ngày leo bậc",
+      "title": "Ưu tiên các ngày leo nhiều bậc",
       "body": [
-        "Ngày đầu nên khám phá khu Chiesa Nuova và Fornillo trước; để các chặng nhiều bậc (Path of the Gods, cầu thang Arienzo) sau một đêm nghỉ ngơi trọn vẹn.",
-        "Nhóm hoạt động theo độ cao để ở cùng một tầng ban công; hoàn tất viewpoint trên cao rồi mới xuống bến thuyền."
+        "Ngày đến nên đi dạo khu thấp (Spiaggia Grande, Fornillo) và để các ngày leo nhiều bậc (Path of the Gods, bậc thang Arienzo) sau khi đã ngủ đủ.",
+        "Nhóm điểm theo cao độ để ở cùng một tầng; làm xong các viewpoint ở trên rồi mới xuống bến thuyền."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Cân bằng trải nghiệm trả phí và miễn phí",
+      "title": "Mỗi ngày một điểm trả phí",
       "body": [
-        "Mỗi ngày chỉ cần một trải nghiệm trả phí (tour thuyền, nếm limoncello, phà Capri) và lấp đầy phần còn lại bằng bãi biển miễn phí, lối đi ngắm cảnh.",
-        "Mang đồ ăn nhẹ và bình nước; mua đồ ở minimarket Chiesa Nuova rẻ hơn nhiều so với quán ven biển."
+        "Ngân sách cho một trải nghiệm trả phí mỗi ngày (phà đi Capri, tour thuyền chung, vé vườn), còn lại là đi bộ miễn phí và tắm biển.",
+        "Mua đồ ăn nhẹ và nước gần Chiesa Nuova; quán ven biển thường cộng giá cao nhất."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Đừng bỏ lỡ viewpoint đẹp",
+      "title": "Viewpoint không tốn vé",
       "body": [
-        "Via Cristoforo Colombo cho góc bưu thiếp kinh điển vào bình minh hoặc giờ vàng mà không tốn phí.",
-        "Muốn chụp yên tĩnh, rẽ vào sân lát gạch cạnh Chiesa Nuova hoặc belvedere nhỏ trên Fornillo khoảng 08:00."
+        "Via Cristoforo Colombo cho góc bưu thiếp vào bình minh hoặc golden hour mà không mất phí vào.",
+        "Muốn chụp yên tĩnh, rẽ vào sân lát gạch cạnh Chiesa Nuova hoặc belvedere nhỏ phía trên Fornillo trước 08:30."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Lên kế hoạch tắm biển tiết kiệm",
+      "title": "Tắm biển tiết kiệm",
       "body": [
-        "Bãi Fornillo miễn phí và bớt đông — đi bộ theo lối ven biển từ Spiaggia Grande và chỉ thuê đồ thật cần thiết.",
-        "Nếu thích không khí Arienzo Beach Club, đi cầu thang trước 10:30 để giữ chỗ khu vực công cộng rồi picnic với focaccia mua ở siêu thị."
+        "Bãi Fornillo có khu công cộng miễn phí; đi theo lối ven biển từ Spiaggia Grande và chỉ thuê những gì cần.",
+        "Muốn không khí beach club Arienzo, đi xuống cầu thang trước 10:30 để giữ chỗ khu công cộng, rồi picnic với focaccia và trái cây."
       ]
     },
     {
       "id": "evenings",
-      "title": "Buổi tối không tốn kém",
+      "title": "Buổi tối tiết kiệm",
       "body": [
-        "Ngắm hoàng hôn ở sân thượng hostel là miễn phí; pha spritz từ prosecco mua ở siêu thị và chia sẻ đồ ăn nhẹ kiểu tapas.",
-        "Xem bảng thông báo các đêm giao lưu của hostel hoặc tới Music on the Rocks sau 23:30 khi phí vào cửa giảm cho khách hostel — nhớ mang giấy tờ."
+        "Ngắm hoàng hôn ở sân thượng hostel là miễn phí; pha spritz đơn giản với prosecco từ siêu thị và chia sẻ đồ ăn nhẹ.",
+        "Xem bảng thông báo ở hostel; nếu ra ngoài, đi muộn khi phí vào cửa thấp hơn và mang giấy tờ."
       ]
     }
   ],
-  "day1Title": "1 ngày: những điều thiết yếu",
+  "day1Title": "1 ngày: Positano cơ bản",
   "day1": [
-    "Sáng: nhìn Spiaggia Grande → đi bộ tới Fornillo theo lối ven biển",
-    "Bản dịch đang được chuẩn bị.",
-    "Hoàng hôn: viewpoint sân thượng gần hostel"
+    "Sáng: ngắm Spiaggia Grande, rồi đi theo lối ven biển tới Fornillo để tắm.",
+    "Trưa: pizza al taglio hoặc panini gần Chiesa Nuova; ăn ở các sân hiên.",
+    "Hoàng hôn: Via Cristoforo Colombo hoặc sân thượng hostel."
   ],
   "day2Title": "2 ngày: thêm Con Đường của Các Vị Thần",
   "day2": [
-    "Ngày 1 như trên",
-    "Bản dịch đang được chuẩn bị."
+    "Sáng: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (xe buýt tới Nocelle, đi bộ xuống Positano).",
+    "Chiều: %LINK:fornilloBeachGuide|làm mát ở bãi Fornillo% hoặc ăn trưa muộn trong thị trấn."
   ],
-  "day3Title": "3 ngày: đảo hay combo Amalfi",
+  "day3Title": "3 ngày: Capri hoặc Amalfi + Ravello",
   "day3": [
-    "Phương án A: Đi Capri trong ngày (phà sớm) với vòng đi bộ DIY",
-    "Phương án B: Amalfi + Ravello bằng xe buýt; thăm vườn Villa Rufolo rồi ăn kem trên bậc thềm Nhà thờ"
+    "Lựa chọn A: %LINK:capriDayTrip|đi Capri trong ngày% - bắt phà sớm nhất, lên lịch vòng DIY và mang đồ ăn nhẹ.",
+    "Lựa chọn B: %LINK:positanoRavello|Amalfi + Ravello% - đi bus hoặc phà tới Amalfi, rồi lên Villa Rufolo hoặc Villa Cimbrone."
   ],
   "savingsTitle": "Mẹo tiết kiệm",
   "savings": [
-    "Du lịch vào mùa giao mùa; tận dụng xe buýt SITA và đi bộ giữa các viewpoint.",
-    "Ở phòng dorm, tự chuẩn bị bữa sáng đơn giản và picnic tại viewpoint khi hoàng hôn."
+    "Du lịch mùa vai (tháng 4-5, cuối tháng 9) để giá rẻ và ít đông.",
+    "Dùng xe buýt SITA cho hầu hết chặng; thêm một chặng phà nếu muốn ngắm cảnh.",
+    "Ở phòng dorm hoặc chia sẻ phòng gần Chiesa Nuova để tiết kiệm phí porter và bậc thang.",
+    "Đổ đầy nước ở hostel hoặc vòi nước công cộng trước khi đi.",
+    "Nếu đặt trực tiếp, dùng bữa sáng và đồ uống buổi tối miễn phí để thay một bữa.",
+    "Đi bộ giữa các viewpoint thay vì đi bus; cầu thang miễn phí và nhiều cảnh đẹp."
   ],
   "foodTitle": "Ăn rẻ",
-  "foodText": "Bản dịch đang được chuẩn bị.",
+  "foodText": "Ưu tiên pizza al taglio, panini và salad deli quanh Via dei Mulini và Chiesa Nuova. Mua ở mini-market để picnic và dành bữa ăn ngồi bàn cho một lần duy nhất.",
   "transportTitle": "Mẹo di chuyển",
   "transportCompareLabel": "So sánh tuyến:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "Kế hoạch 1 ngày tốt nhất là gì?",
       "a": [
-        "Bắt đầu từ Spiaggia Grande, đi bộ tới Fornillo, ngắm hoàng hôn từ sân thượng Chiesa Nuova, ăn tối cùng bạn hostel."
+        "Bắt đầu ở Spiaggia Grande, đi theo lối ven biển tới Fornillo, rồi ngắm hoàng hôn từ Via Cristoforo Colombo hoặc sân thượng hostel."
       ]
     },
     {
       "q": "Giữ chi phí di chuyển thấp bằng cách nào?",
       "a": [
-        "Dùng xe buýt SITA và đi bộ cầu thang khi có thể; phà tiện mùa cao điểm nhưng đắt hơn."
+        "Dùng xe buýt SITA cho hầu hết hành trình và thêm một chặng phà để ngắm cảnh; mua vé trước khi lên xe để tránh bất ngờ."
       ]
     },
     {
       "q": "Lịch trình 2 ngày thì sao?",
       "a": [
-        "Ngày 1 bao gồm những điểm chính của Positano; Ngày 2 thêm vòng Con Đường của Các Vị Thần qua Nocelle cùng thời gian tắm biển tại Arienzo hoặc Fornillo."
+        "Ngày 1 bao gồm essentials của Positano; Ngày 2 thêm Sentiero degli Dei qua Nocelle và một lần tắm biển."
       ]
     },
     {
       "q": "Có gợi ý nào cho 3 ngày không?",
       "a": [
-        "Thử đi Capri trong ngày hoặc combo Amalfi + Ravello; hãy đi phà sớm và mang đồ ăn nhẹ để tiết kiệm."
+        "Chọn một: đi Capri trong ngày hoặc combo Amalfi + Ravello; đi sớm và mang đồ ăn nhẹ để tiết kiệm."
       ]
     }
   ]

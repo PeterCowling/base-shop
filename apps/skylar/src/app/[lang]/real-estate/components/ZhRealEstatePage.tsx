@@ -1,6 +1,8 @@
 import Link from "next/link";
+
 import PageShell from "@/components/PageShell";
 import type { Locale } from "@/lib/locales";
+
 import type { TranslateFn } from "../utils";
 
 type ZhRealEstatePageProps = {

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import SegmentBuilderWizard from "./SegmentBuilderWizard";
 import { defaultSegmentDefinition } from "./types";
 

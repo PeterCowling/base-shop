@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { track } from "@acme/telemetry";
+
 import ShopChooser from "../ShopChooser";
 
 jest.mock("@acme/telemetry", () => ({
@@ -12,7 +14,7 @@ describe("ShopChooser", () => {
     tag: "Testing",
     heading: "Workspace heading",
     subheading: "Workspace description",
-    shops: ["alpha", "beta", "gamma"],
+    shops: ["alpha", "beta", "gamma"] as string[],
     card: {
       icon: "🧪",
       title: (shop: string) => shop.toUpperCase(),
@@ -31,7 +33,7 @@ describe("ShopChooser", () => {
       analyticsEventName: "shopchooser:create",
       analyticsPayload: { area: "test" },
     },
-  } as const;
+  };
 
   beforeEach(() => {
     (track as jest.Mock).mockClear();

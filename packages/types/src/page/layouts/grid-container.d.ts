@@ -1,6 +1,8 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
 import type { PageComponent } from "../page";
+
 export interface GridContainerComponent extends PageComponentBase {
     type: "Grid";
     children?: PageComponent[];

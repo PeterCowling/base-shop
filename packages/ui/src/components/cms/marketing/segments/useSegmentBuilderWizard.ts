@@ -1,7 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "@acme/i18n";
 import type { FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
+import type {
+  AsyncSubmissionHandler,
+  SubmissionStatus,
+  ValidationErrors,
+} from "../shared";
 import type { StepDefinition } from "../shared/StepIndicator";
+
 import {
   defaultSegmentDefinition,
   getSegmentPreview,
@@ -9,11 +17,6 @@ import {
   type SegmentPreviewData,
   type SegmentRule,
 } from "./types";
-import type {
-  AsyncSubmissionHandler,
-  SubmissionStatus,
-  ValidationErrors,
-} from "../shared";
 
 type SegmentValidationErrors = ValidationErrors<"name" | "rules">;
 

@@ -1,11 +1,12 @@
 // src/routes/assistance/_ArticleFactory/makeArticleLinks.ts
-import type { LinksFunction, LinkDescriptor } from "react-router";
-import { getSlug } from "@/utils/slug";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import { i18nConfig } from "@/i18n.config";
-import type { AppLanguage } from "@/i18n.config";
+import type { LinkDescriptor,LinksFunction } from "react-router";
+
 import { DOMAIN } from "@/config";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
 import { normaliseBrowserOrigin } from "@/utils/origin";
+import { getSlug } from "@/utils/slug";
 
 export function makeArticleLinks(namespace: string): LinksFunction {
   return (({ data, location }: { data?: unknown; location?: { pathname?: string } }) => {

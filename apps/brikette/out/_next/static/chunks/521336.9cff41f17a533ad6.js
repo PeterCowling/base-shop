@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[521336],{521336:e=>{e.exports=JSON.parse('{"planChoice":{"title":"プランを選ぶ","options":{"ferry":"フェリー（季節運航）","trainBus":"電車＋バス（通年）","transfer":"専用送迎"},"selectedLabel":"選択中："},"eventInfo":{"title":"イベント情報","labels":{"when":"日時","where":"場所"}}}')}}]);

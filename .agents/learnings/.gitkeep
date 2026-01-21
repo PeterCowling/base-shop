@@ -1,0 +1,2 @@
+# This file ensures the learnings/ directory exists on fresh clones.
+# Actual learning files are gitignored (ephemeral, may contain task details).

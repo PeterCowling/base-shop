@@ -2,11 +2,11 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
 import type { MediaItemWithUrl, UseMediaManagerStateOptions } from "./types";
-import type { MediaManagerState } from "./useMediaState";
-import type { MediaStateActions } from "./useMediaState";
+import type { MediaManagerState , MediaStateActions } from "./useMediaState";
 
 const isTestEnvironment =
   typeof process !== "undefined" &&

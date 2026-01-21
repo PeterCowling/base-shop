@@ -2,11 +2,12 @@
 // src/components/seo/GuideSectionsItemListStructuredData.tsx
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import type { GuideKey } from "@/routes.guides-helpers";
+import { usePathname } from "next/navigation";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { GuideKey } from "@/routes.guides-helpers";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
 
 type ListItem = { "@type": "ListItem"; position: number; name: string; description?: string };
 
@@ -18,7 +19,7 @@ interface Props {
 
 function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("guides", { lng: lang });
 
   const json = useMemo(() => {

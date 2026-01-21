@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import React, { useEffect } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+
 import MfaSetup from "./MfaSetup";
 
 const meta: Meta<typeof MfaSetup> = {

@@ -1,5 +1,6 @@
-import { renderHook, act } from "@testing-library/react";
 import * as React from "react";
+import { act,renderHook } from "@testing-library/react";
+
 import useViewport from "../src/hooks/useViewport";
 
 describe("useViewport hook", () => {

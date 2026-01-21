@@ -1,6 +1,7 @@
 import type { AppLanguage } from "@/i18n.config";
 
 import { stripGuideLinkTokens } from "../utils/linkTokens";
+
 import { createFallbackData } from "./createFallbackData";
 
 export function buildGuideFaqFallback(lang: AppLanguage) {

@@ -1,10 +1,12 @@
 // packages/ui/src/organisms/AssistanceAmaSection.tsx
 /* AMA search – accepts an `initialQuery` so deep-links work. */
-import Fuse, { type IFuseOptions } from "fuse.js";
-import { memo, useCallback, useEffect, useMemo, useState, type ChangeEvent, type JSX } from "react";
+import { type ChangeEvent, type JSX,memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { AssistanceKeyword, AssistanceKeywordResource } from "@/utils/parseAmaKeywords";
-import { parseAssistanceKeywords } from "@/utils/parseAmaKeywords";
+import Fuse, { type IFuseOptions } from "fuse.js";
+
+import type { AssistanceKeyword, AssistanceKeywordResource } from "@acme/ui/utils/parseAmaKeywords";
+import { parseAssistanceKeywords } from "@acme/ui/utils/parseAmaKeywords";
+
 import { Section } from "../atoms/Section";
 
 const clean = (s?: string): string => (s ? s.trim() : "");

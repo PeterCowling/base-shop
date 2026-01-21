@@ -1,13 +1,15 @@
 /** @jest-environment node */
 
-import "./setup";
-import * as orders from "../../src/orders";
+// Import setup first to ensure mocks are registered before importing orders
 import {
-  prismaMock,
   nowIsoMock,
-  stripeRefund,
+  prismaMock,
   stripeCheckoutRetrieve,
+  stripeRefund,
 } from "./setup";
+
+import * as orders from "../../src/orders";
+
 import { createOrder } from "./orderFactory";
 
 const { markRefunded, refundOrder } = orders;

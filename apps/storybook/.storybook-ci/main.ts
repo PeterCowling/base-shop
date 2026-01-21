@@ -1,11 +1,12 @@
-import type { StorybookConfig } from "@storybook/nextjs";
-import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import type { StorybookConfig } from "@storybook/nextjs";
+import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import webpack from "webpack";
 
-import { coverageAddon } from "../.storybook/coverage.ts";
 import { getStorybookAliases } from "../.storybook/aliases.ts";
+import { coverageAddon } from "../.storybook/coverage.ts";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const __filename = fileURLToPath(import.meta.url);

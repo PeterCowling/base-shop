@@ -1,8 +1,9 @@
 import type Stripe from "stripe";
+
 import { prisma } from "../db";
 import {
-  persistRiskFromCharge,
   type ChargeWithInvoice,
+  persistRiskFromCharge,
 } from "../internal/helpers/risk";
 
 export default async function chargeSucceeded(

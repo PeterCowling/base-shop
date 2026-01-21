@@ -1,6 +1,6 @@
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import { z } from "zod";
 import crypto from "crypto";
 import { getUserByEmail, setResetToken } from "@acme/platform-core/users";

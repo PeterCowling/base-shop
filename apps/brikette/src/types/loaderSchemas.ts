@@ -1,9 +1,10 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/types/loaderSchemas.ts
 
-import { ARTICLE_SLUGS } from "@/article-slug-map";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import { z } from "zod";
+
+import { ARTICLE_SLUGS } from "@/article-slug-map";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import enTranslation from "@/locales/en/translation.json";
 
 const supportedLanguages = Array.isArray(i18nConfig.supportedLngs) ? i18nConfig.supportedLngs : [];

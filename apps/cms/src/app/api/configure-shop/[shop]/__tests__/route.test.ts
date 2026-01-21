@@ -55,3 +55,5 @@ describe("configure-shop route", () => {
     await expect(res.json()).resolves.toEqual({ error: expect.any(String) })
   })
 })
+
+export {};

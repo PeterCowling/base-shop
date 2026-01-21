@@ -3,8 +3,8 @@
  * Usage:
  *   API_BASE_URL=http://localhost:8788 k6 run cart.k6.js
  */
-import http from 'k6/http';
 import { check, sleep } from 'k6';
+import http from 'k6/http';
 
 export const options = {
   scenarios: {

@@ -1,4 +1,5 @@
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
+
 export type ComparisonOp = "gt" | "lt" | "gte" | "lte" | "eq";
 export interface FieldFilter {
     field: string;

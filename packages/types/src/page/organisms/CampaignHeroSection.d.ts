@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface CampaignHeroSectionComponent extends PageComponentBase {
     type: "CampaignHeroSection";
     mediaType?: "image" | "video";

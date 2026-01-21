@@ -1,6 +1,7 @@
-import { generateSeo } from "../seoService";
-import { authorize, fetchSettings, persistSettings } from "../helpers";
 import { generateMeta } from "@acme/lib";
+
+import { authorize, fetchSettings, persistSettings } from "../helpers";
+import { generateSeo } from "../seoService";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),

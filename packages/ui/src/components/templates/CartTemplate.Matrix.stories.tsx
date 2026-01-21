@@ -1,14 +1,16 @@
 // packages/ui/src/components/templates/CartTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import { expect, fn,userEvent, within  } from '@storybook/test';
+
 import type { CartState } from '@acme/platform-core/cart';
 import { CurrencyProvider } from '@acme/platform-core/contexts/CurrencyContext';
-import { CartTemplate } from './CartTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
-import { expect, userEvent, within } from '@storybook/test';
-import { fn } from '@storybook/test';
 import { Price } from '../atoms/Price';
+
+import { CartTemplate } from './CartTemplate';
 
 const baseCart: CartState = {
   sku1: {

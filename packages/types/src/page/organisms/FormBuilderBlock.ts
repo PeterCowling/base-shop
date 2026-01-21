@@ -1,6 +1,7 @@
 import { z } from "zod";
+
 import { baseComponentSchema, type PageComponentBase } from "../base";
-import { formFieldSchema, type FormField } from "../forms";
+import { type FormField,formFieldSchema } from "../forms";
 
 export interface FormBuilderBlockComponent extends PageComponentBase {
   type: "FormBuilderBlock";

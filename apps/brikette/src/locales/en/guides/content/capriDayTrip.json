@@ -21,8 +21,8 @@
       "label": "Afternoon — Capri town & return"
     },
     {
-      "href": "#gallery",
-      "label": "Photo gallery"
+      "href": "#getting-there",
+      "label": "Getting to and from Capri"
     },
     {
       "href": "#faqs",
@@ -54,20 +54,15 @@
         "Be at Marina Grande at least 30 minutes before departure in case there’s a queue for the funicular or baggage drop."
       ]
     }
-  ],
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "items": {
-      "monteSolaro": {
-        "alt": "View from Monte Solaro, Capri",
-        "caption": "Monte Solaro overview"
-      },
-      "gardensOfAugustus": {
-        "alt": "Gardens of Augustus, Capri",
-        "caption": "Gardens of Augustus"
-      }
+    ,
+    {
+      "id": "getting-there",
+      "title": "Getting to and from Capri",
+      "body": [
+        "Use the %HOWTO:positano-capri-ferry|Positano → Capri ferry guide% for the outbound crossing and the %HOWTO:capri-positano-ferry|Capri → Positano ferry guide% on your return."
+      ]
     }
-  },
+  ],
   "faqsTitle": "FAQs",
   "howTo": {
     "steps": [

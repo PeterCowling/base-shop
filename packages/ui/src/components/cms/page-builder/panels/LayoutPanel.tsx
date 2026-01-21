@@ -1,18 +1,20 @@
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { Input } from "../../../atoms/shadcn";
+
+import ContainerQueryControls from "./layout/ContainerQueryControls";
+import GridPlacementControls from "./layout/GridPlacementControls";
+import PositionControls from "./layout/PositionControls";
+import SectionSettings from "./layout/SectionSettings";
+import SizeControls from "./layout/SizeControls";
+import SpacingControls from "./layout/SpacingControls";
+import StackingControls from "./layout/StackingControls";
+import TabSlotControl from "./layout/TabSlotControl";
 import type { EditorFlags } from "./layout/types";
 import ZIndexControls from "./layout/ZIndexControls";
-import SizeControls from "./layout/SizeControls";
-import PositionControls from "./layout/PositionControls";
-import StackingControls from "./layout/StackingControls";
-import SpacingControls from "./layout/SpacingControls";
-import TabSlotControl from "./layout/TabSlotControl";
-import SectionSettings from "./layout/SectionSettings";
-import GridPlacementControls from "./layout/GridPlacementControls";
-import ContainerQueryControls from "./layout/ContainerQueryControls";
-import { Input } from "../../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 interface Props {
   component: PageComponent;

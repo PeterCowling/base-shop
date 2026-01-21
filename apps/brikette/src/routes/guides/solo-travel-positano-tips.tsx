@@ -1,18 +1,16 @@
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import { normalizeGuideToc } from "./guide-seo/toc";
-
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideHref } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry } from "./guide-manifest";
+import { normalizeGuideToc } from "./guide-seo/toc";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 export const handle = { tags: ["solo-travel", "safety", "positano", "hostel-life"] };
 
@@ -89,4 +87,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

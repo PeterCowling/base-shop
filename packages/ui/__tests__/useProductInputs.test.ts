@@ -1,6 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
-import type { ProductPublication } from "@acme/types";
+
 import type { Locale } from "@acme/i18n";
+import type { ProductPublication } from "@acme/types";
+
 import { useProductInputs } from "../src/hooks/useProductInputs";
 
 function createProduct(): ProductPublication {

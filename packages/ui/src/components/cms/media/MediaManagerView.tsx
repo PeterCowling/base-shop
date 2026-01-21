@@ -3,6 +3,8 @@
 
 import type { ReactElement } from "react";
 
+import { useTranslations } from "@acme/i18n";
+
 import { Spinner, Toast } from "../../atoms";
 import {
   Button,
@@ -13,11 +15,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../atoms/shadcn";
-import Library from "./Library";
-import UploadPanel from "./UploadPanel";
+
 import MediaDetailsPanel from "./details/MediaDetailsPanel";
 import type { UseMediaManagerStateResult } from "./hooks/useMediaManagerState";
-import { useTranslations } from "@acme/i18n";
+import Library from "./Library";
+import UploadPanel from "./UploadPanel";
 
 export interface MediaManagerViewProps extends UseMediaManagerStateResult {
   shop: string;

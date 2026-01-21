@@ -1,17 +1,19 @@
-import { debugGuide } from "@/utils/debug";
 import i18nApp from "@/i18n";
+import { debugGuide } from "@/utils/debug";
 import { ensureStringArray } from "@/utils/i18nContent";
-import StructuredToc from "./StructuredToc";
-import { normalizeTocForDisplay, computeStructuredTocItems, resolveFaqTitle } from "../utils/toc";
-import { logStructuredToc } from "../utils/logging";
+
 import type {
-  TocItem,
   GuideSeoTemplateContext,
-  Translator,
-  NormalisedSection,
   NormalisedFaq,
+  NormalisedSection,
+  TocItem,
+  Translator,
 } from "../types";
 import type { StructuredFallback } from "../utils/fallbacks";
+import { logStructuredToc } from "../utils/logging";
+import { computeStructuredTocItems, normalizeTocForDisplay, resolveFaqTitle } from "../utils/toc";
+
+import StructuredToc from "./StructuredToc";
 
 interface StructuredTocBlockProps {
   itemsBase: TocItem[] | null | undefined;
@@ -35,6 +37,79 @@ interface StructuredTocBlockProps {
   fallbackToEnTocTitle?: boolean;
 }
 
+type StructuredTocOverride = {
+  suppressTemplateToc?: boolean;
+  suppressTemplateTocWhenUnlocalized?: boolean;
+  suppressTemplateTocWhenLocalized?: boolean;
+  suppressTemplateTocWhenSectionsEmpty?: boolean;
+  suppressTemplateTocWhenPreferManual?: boolean;
+  suppressTemplateTocWhenGatewayContentKey?: string;
+  allowTocWithGenericContent?: boolean;
+  allowMinimalWithGenericContent?: boolean;
+  suppressMinimalLocalizedContent?: boolean;
+  suppressMinimalUnlocalizedToc?: boolean;
+  suppressMinimalUnlocalizedIntro?: boolean;
+  suppressMinimalUnlocalizedSections?: boolean;
+  allowOnThisPageTitle?: boolean;
+  forceEnTocTitleFallback?: boolean;
+  sectionIdFilterPattern?: RegExp;
+};
+
+const STRUCTURED_TOC_OVERRIDES: Partial<Record<GuideSeoTemplateContext["guideKey"], StructuredTocOverride>> = {
+  ecoFriendlyAmalfi: { suppressTemplateTocWhenPreferManual: true },
+  capriDayTrip: { suppressTemplateToc: true },
+  walkingTourAudio: { suppressTemplateToc: true },
+  offSeasonLongStay: { suppressTemplateToc: true },
+  luggageStorage: { suppressTemplateToc: true },
+  itinerariesPillar: {
+    suppressTemplateToc: true,
+    suppressMinimalUnlocalizedToc: true,
+    suppressMinimalLocalizedContent: true,
+  },
+  chiesaNuovaArrivals: { suppressTemplateToc: true },
+  chiesaNuovaDepartures: { suppressTemplateToc: true },
+  workCafes: { suppressTemplateTocWhenSectionsEmpty: true },
+  sorrentoGuide: { suppressTemplateTocWhenGatewayContentKey: "sorrentoGatewayGuide" },
+  positanoTravelGuide: {
+    suppressTemplateTocWhenUnlocalized: true,
+    suppressMinimalLocalizedContent: true,
+    suppressMinimalUnlocalizedSections: true,
+  },
+  photographyGuidePositano: { suppressTemplateTocWhenLocalized: true },
+  etiquetteItalyAmalfi: {
+    suppressTemplateTocWhenUnlocalized: true,
+    allowTocWithGenericContent: true,
+    allowMinimalWithGenericContent: true,
+    suppressMinimalUnlocalizedToc: true,
+    forceEnTocTitleFallback: true,
+  },
+  workExchangeItaly: {
+    allowTocWithGenericContent: true,
+    allowMinimalWithGenericContent: true,
+  },
+  weekend48Positano: {
+    allowMinimalWithGenericContent: true,
+    allowOnThisPageTitle: true,
+  },
+  sevenDayNoCar: { allowMinimalWithGenericContent: true },
+  soloTravelPositano: { sectionIdFilterPattern: /^section-\d+$/u },
+  transportMoneySaving: { suppressMinimalLocalizedContent: true },
+  safetyAmalfi: { suppressMinimalLocalizedContent: true },
+  cheapEats: { suppressMinimalLocalizedContent: true },
+  positanoBeaches: {
+    suppressMinimalLocalizedContent: true,
+    suppressMinimalUnlocalizedSections: true,
+  },
+  simsAtms: {
+    suppressMinimalLocalizedContent: true,
+    suppressMinimalUnlocalizedIntro: true,
+  },
+};
+
+const getStructuredTocOverride = (
+  guideKey: GuideSeoTemplateContext["guideKey"],
+): StructuredTocOverride => STRUCTURED_TOC_OVERRIDES[guideKey] ?? {};
+
 export default function StructuredTocBlock({
   itemsBase,
   context,
@@ -53,99 +128,41 @@ export default function StructuredTocBlock({
   suppressUnlocalizedFallback,
   fallbackToEnTocTitle = true,
 }: StructuredTocBlockProps): JSX.Element | null {
+  const policy = getStructuredTocOverride(guideKey);
   const baseItems = Array.isArray(itemsBase) ? itemsBase : [];
   const fallbackTranslator =
     fallbackStructured && typeof fallbackStructured === "object"
       ? fallbackStructured.translator
       : undefined;
 
-  // For routes that prefer manual handling when unlocalized, avoid rendering
-  // any template-level ToC at all. The manual/fallback renderer will control
-  // whether a ToC appears. This prevents duplicate navigation and matches
-  // tests that expect only the curated fallback ToC to be shown.
+  // Policy-driven suppression checks (consolidated from individual route checks)
+  // 1. Routes that prefer manual handling when unlocalized
   if (!hasLocalizedContent && preferManualWhenUnlocalized) return null;
-  if (guideKey === ("ecoFriendlyAmalfi" as string) && preferManualWhenUnlocalized) return null;
+  if (policy.suppressTemplateTocWhenPreferManual && preferManualWhenUnlocalized) return null;
 
-  // Route-specific safeguard: the Capri day-trip guide renders its ToC inside
-  // the route's article lead (using translated or curated fallback items).
-  // Suppress this template-level block entirely to avoid duplicate
-  // "On this page" navigation landmarks in tests/runtime.
-  if (guideKey === ("capriDayTrip" as string)) return null;
-  // Route-specific safeguard: the work-exchange guide handles ToC rendering
-  // via fallback/manual components. Suppress the template-level block so the
-  // curated ToC (or fallback ToC derived from localized data) controls nav.
-  if (guideKey === ("workExchangeItaly" as string)) return null;
-  // Route-specific safeguard: the walking tour audio guide renders its ToC
-  // via GenericContent or manual route fallbacks. Suppress this template-level
-  // block to avoid duplicate <nav data-testid="toc"> elements in tests/runtime.
-  if (guideKey === ("walkingTourAudio" as string)) return null;
-  // Route-specific safeguard: Positano Travel Guide renders its unlocalized
-  // content (intro/sections/ToC) via a dedicated FallbackContent component in
-  // the route's article lead. Suppress this template-level block when the
-  // active locale lacks structured content to avoid duplicate nav and to keep
-  // test expectations aligned with the curated fallback order/labels.
-  if (guideKey === ("positanoTravelGuide" as string) && !hasLocalizedContent) return null;
-  // Route-specific: the photography guide should not render a template-level
-  // ToC when localized structured arrays are present; let GenericContent own
-  // ToC rendering so tests that mock TableOfContents can assert null here.
-  if (guideKey === ("photographyGuidePositano" as string) && hasLocalizedContent) return null;
-  // Route-specific safeguard: off-season long-stay guide renders all content
-  // via a manual article lead; suppress this block entirely to avoid duplicate
-  // intros/ToC/sections in tests/runtime.
-  if (guideKey === ("offSeasonLongStay" as string)) return null;
+  // 2. Routes that unconditionally suppress the template ToC
+  if (policy.suppressTemplateToc) return null;
 
-  // Route-specific safeguard: the luggage-storage guide renders a simple
-  // inline ToC inside its article lead. Suppress the template-level block to
-  // avoid duplicate "On this page" navigation landmarks in tests/runtime.
-  if (guideKey === ("luggageStorage" as string)) return null;
+  // 3. Conditional suppression based on localization state
+  if (policy.suppressTemplateTocWhenUnlocalized && !hasLocalizedContent) return null;
+  if (policy.suppressTemplateTocWhenLocalized && hasLocalizedContent) return null;
 
-  // Route-specific safeguard: Sorrento gateway page composes gateway content
-  // above the main Sorrento guide sections. When gateway content exists,
-  // suppress the template-level ToC so GenericContent can render without its
-  // own ToC (toggled via a custom builder) and no duplicate nav is shown.
-  if (guideKey === ("sorrentoGuide" as string)) {
+  // 4. Conditional suppression when sections are empty
+  if (policy.suppressTemplateTocWhenSectionsEmpty && (!Array.isArray(sections) || sections.length === 0)) {
+    return null;
+  }
+
+  // 5. Dynamic gateway content probe (keeps runtime check for sorrentoGuide)
+  if (policy.suppressTemplateTocWhenGatewayContentKey) {
     try {
-      const intro = tGuides(`content.sorrentoGatewayGuide.intro`, { returnObjects: true }) as unknown;
-      const sections = tGuides(`content.sorrentoGatewayGuide.sections`, { returnObjects: true }) as unknown;
+      const gatewayKey = policy.suppressTemplateTocWhenGatewayContentKey;
+      const intro = tGuides(`content.${gatewayKey}.intro`, { returnObjects: true }) as unknown;
+      const gatewaySections = tGuides(`content.${gatewayKey}.sections`, { returnObjects: true }) as unknown;
       const hasIntro = Array.isArray(intro) && (intro as unknown[]).length > 0;
-      const hasSections = Array.isArray(sections) && (sections as unknown[]).length > 0;
-      if (hasIntro || hasSections) return null;
+      const hasGatewaySections = Array.isArray(gatewaySections) && (gatewaySections as unknown[]).length > 0;
+      if (hasIntro || hasGatewaySections) return null;
     } catch { /* noop */ }
   }
-
-  // Route-specific safeguard: Chiesa Nuova arrival/departure guides render
-  // their localized sections via the route's article lead (including stub
-  // anchors). Suppress this template-level block entirely to avoid duplicate
-  // H2 headings such as "Bus timing & tickets" / "Tickets and timing".
-  if (
-    guideKey === ("chiesaNuovaArrivals" as string) ||
-    guideKey === ("chiesaNuovaDepartures" as string)
-  ) {
-    return null;
-  }
-
-  // Route-specific safeguard: the luggage-storage guide renders a simple
-  // in-article navigation list as part of its article lead. Suppress this
-  // template-level ToC to avoid duplicate "On this page" navigation landmarks
-  // in tests/runtime.
-  if (guideKey === ("luggageStorage" as string)) return null;
-
-  // Route-specific safeguard: the work-cafes guide renders a manual ToC and
-  // sections via the route when structured sections are missing. Suppress this
-  // template-level ToC to avoid duplicate navigation landmarks in tests/runtime.
-  if (guideKey === ("workCafes" as string) && (!Array.isArray(sections) || sections.length === 0)) {
-    return null;
-  }
-
-  // Route-specific safeguard: the itineraries pillar renders both localized
-  // and fallback content manually via articleExtras and explicitly disables
-  // GenericContent. Suppress this entire block to avoid duplicate intros/ToC.
-  if (guideKey === ("itinerariesPillar" as string)) return null;
-
-  // Route-specific: when this etiquette guide lacks localized structured
-  // arrays entirely, do not render any ToC from this block. Tests expect the
-  // page to fall back to GenericContent without a ToC present.
-  if (!hasLocalizedContent && guideKey === ("etiquetteItalyAmalfi" as string)) return null;
 
   // When a structured fallback renderer is active (unlocalized page with a
   // built fallback object), avoid rendering a parallel ToC here to prevent
@@ -173,10 +190,7 @@ export default function StructuredTocBlock({
       return hasSections || hasTips || hasFaqs || hasBase;
     })();
     const allowWithGenericForRoute = (
-      (guideKey === ("etiquetteItalyAmalfi" as string) && hasStructured) ||
-      // Allow ToC to render alongside GenericContent for this guide so tests
-      // can assert TableOfContents calls even when GenericContent is mocked.
-      (guideKey === ("workExchangeItaly" as string) && hasStructured)
+      Boolean(policy.allowTocWithGenericContent && hasStructured)
     );
     if (!hasCustomItems && !allowWithGenericForRoute) return null;
   }
@@ -245,7 +259,7 @@ export default function StructuredTocBlock({
     // can be applied below. Allow a targeted exception for legacy coverage
     // where a guide explicitly expects the generic label.
     if (t === "On this page") {
-      if (guideKey === ("weekend48Positano" as string)) return t;
+      if (policy.allowOnThisPageTitle) return t;
       return undefined;
     }
     return t;
@@ -295,7 +309,8 @@ export default function StructuredTocBlock({
         };
         if (!suppressTocTitle && typeof tocTitleProp === 'string' && tocTitleProp.trim().length > 0) {
           props.title = tocTitleProp;
-        } else if (guideKey === ("etiquetteItalyAmalfi" as string)) {
+        } else if (policy.forceEnTocTitleFallback) {
+          // Policy-driven EN title fallback (e.g., etiquetteItalyAmalfi → "Outline")
           try {
             const getEn = i18nApp?.getFixedT?.('en', 'guides');
             if (typeof getEn === 'function') {
@@ -319,19 +334,12 @@ export default function StructuredTocBlock({
         if (!showTocWhenUnlocalized) return null;
         // Respect routes that prefer manual handling for unlocalized pages.
         if (preferManualWhenUnlocalized) return null;
-        // Route-specific: itineraries pillar renders fallback intro via
-        // articleExtras; suppress this minimal duplicate block.
-        if (guideKey === ("itinerariesPillar" as string)) return null;
-        // Route-specific: etiquette guide should not render a minimal ToC
-        // when unlocalized structured arrays are absent; tests expect
-        // GenericContent to be invoked without a ToC.
-        if (guideKey === ("etiquetteItalyAmalfi" as string)) return null;
+        // Policy-driven: suppress minimal unlocalized ToC for routes that handle
+        // fallback content manually (e.g., itinerariesPillar, etiquetteItalyAmalfi).
+        if (policy.suppressMinimalUnlocalizedToc) return null;
         // Avoid duplicating ToC when a structured fallback object exists;
         // the fallback renderer will output its own ToC.
         if (fallbackStructured) return null;
-        // Route-specific: itineraries pillar handles fallback sections/ToC
-        // manually in the route; suppress this minimal duplicate block.
-        if (guideKey === ("itinerariesPillar" as string)) return null;
         // Reuse the computed title logic; allow suppressing the visible title.
         const props: { items: TocItem[]; sectionsPresent?: boolean; title?: string } = {
           items: items,
@@ -339,7 +347,8 @@ export default function StructuredTocBlock({
         };
         if (!suppressTocTitle && typeof tocTitleProp === 'string' && tocTitleProp.trim().length > 0) {
           props.title = tocTitleProp;
-        } else if (guideKey === ("etiquetteItalyAmalfi" as string)) {
+        } else if (policy.forceEnTocTitleFallback) {
+          // Policy-driven EN title fallback (e.g., etiquetteItalyAmalfi → "Outline")
           try {
             const getEn = i18nApp?.getFixedT?.('en', 'guides');
             if (typeof getEn === 'function') {
@@ -380,43 +389,14 @@ export default function StructuredTocBlock({
         // Avoid duplicating localized intro/sections when GenericContent is
         // being rendered by the parent template. The minimal block below exists
         // primarily for environments/tests that mock out GenericContent.
-        const allowMinimalWithGeneric = (
-          (guideKey === ("etiquetteItalyAmalfi" as string) && hasLocalizedContent) ||
-          // Surface minimal localized content for this guide too so tests that
-          // mock GenericContent can still assert intro/sections/FAQs rendering.
-          (guideKey === ("workExchangeItaly" as string) && hasLocalizedContent) ||
-          // Weekend 48-hour Positano guide: tests mock GenericContent but
-          // still expect localized intro/sections to be visible.
-          (guideKey === ("weekend48Positano" as string) && hasLocalizedContent) ||
-          // Seven-day Amalfi itinerary: tests mock GenericContent but still
-          // expect localized intro to be visible when present.
-          (guideKey === ("sevenDayNoCar" as string) && hasLocalizedContent)
-        );
+        // Policy-driven: routes with allowMinimalWithGenericContent can surface
+        // minimal content even when GenericContent is active.
+        const allowMinimalWithGeneric = policy.allowMinimalWithGenericContent && hasLocalizedContent;
         if (renderGenericContent && !allowMinimalWithGeneric) return null;
-        // Route-specific safeguard: the transport money-saving guide renders
-        // its localized structured content via GenericContent in tests/runtime.
-        // Suppress this minimal duplicate block to avoid duplicate H2 headings
-        // like "Tickets" when tests assert single occurrences.
-        if (guideKey === ("transportMoneySaving" as string)) return null;
-        // Route-specific safeguard: the itineraries pillar renders its
-        // localized structured content manually via articleExtras and sets
-        // renderGenericContent=false. Suppress this minimal duplicate block to
-        // prevent duplicated intros/sections in tests/runtime.
-        if (guideKey === ("itinerariesPillar" as string)) return null;
-        // Route-specific safeguard: the Positano travel guide renders its
-        // localized structured content via the `articleLead` hook instead of
-        // the GenericContent path. Suppress this minimal duplicate block to
-        // avoid duplicate H2 headings in tests/runtime for that route.
-        if (guideKey === ("positanoTravelGuide" as string)) return null;
-        // Route-specific safeguard: the safety guide renders its localized
-        // content via the route's own `articleExtras` block. Suppress the
-        // minimal duplicate block to avoid duplicate paragraphs in tests.
-        if (guideKey === ("safetyAmalfi" as string)) return null;
-        // Route-specific safeguard: the Cheap Eats guide renders its localized
-        // structured content via a custom article component (afterArticle) and
-        // suppresses GenericContent. Avoid rendering this minimal block to
-        // prevent duplicate section headings such as "Grab-and-go staples".
-        if (guideKey === ("cheapEats" as string)) return null;
+        // Policy-driven: suppress minimal localized content for routes that render
+        // structured content via their own hooks (articleExtras, articleLead, afterArticle).
+        // This prevents duplicate H2 headings and paragraphs in tests/runtime.
+        if (policy.suppressMinimalLocalizedContent) return null;
         // If the route supplied custom ToC items and they are present, treat the
         // route as owning content rendering; suppress this minimal duplicate
         // block to avoid duplicate sections in tests/runtime.
@@ -428,22 +408,17 @@ export default function StructuredTocBlock({
         // are visible without relying on GenericContent. In runtime this may
         // duplicate content, but it keeps tests deterministic.
         if (!hasLocalizedContent) return null;
-        // Route-specific: this guide renders a manual intro via articleLead
-        // for unlocalized locales; suppress the minimal duplicate block here.
-        if (guideKey === ("simsAtms" as string)) return null;
         const introTrimmed = (Array.isArray(context?.intro) ? context.intro : [])
           .map((p) => (typeof p === 'string' ? p.trim() : String(p)))
           .filter((p) => p.length > 0);
         const meaningfulSections = (Array.isArray(sections) ? sections : [])
           .filter((s) => Array.isArray(s?.body) && s.body.length > 0);
         const sectionsForDisplay = meaningfulSections.filter((section) => {
-          if (guideKey === ("soloTravelPositano" as string)) {
-            const id = typeof section?.id === "string" ? section.id.trim() : "";
-            if (id.length > 0 && /^section-\d+$/u.test(id)) {
-              return false;
-            }
-          }
-          return true;
+          const pattern = policy.sectionIdFilterPattern;
+          if (!pattern) return true;
+          const id = typeof section?.id === "string" ? section.id.trim() : "";
+          if (id.length === 0) return true;
+          return !pattern.test(id);
         });
         const tipsList = (() => {
           try {
@@ -619,10 +594,7 @@ export default function StructuredTocBlock({
         // When a structured fallback object is available, the dedicated
         // fallback renderer will output the intro. Avoid duplicating it here.
         if (fallbackStructured) return null;
-        // Route-specific: the SIMs/ATMs guide renders its own manual intro
-        // via the route's articleLead when unlocalized. Suppress this minimal
-        // fallback block to avoid duplicate paragraphs in tests/runtime.
-        if (guideKey === ("simsAtms" as string)) return null;
+        if (policy.suppressMinimalUnlocalizedIntro) return null;
         if (preferManualWhenUnlocalized) return null;
         let introFb: string[] = [];
         // As a resiliency fallback in tests, attempt to read EN intro directly
@@ -662,12 +634,9 @@ export default function StructuredTocBlock({
         if (typeof buildTocItems === 'function' && Array.isArray(context?.toc) && context.toc.length > 0) {
           return null;
         }
-        // Route-specific safeguard: the Positano travel guide renders its
-        // unlocalized content via a dedicated FallbackContent component in the
-        // route's article lead. Suppress this minimal duplicate block to avoid
-        // duplicate H2 headings like "Where to stay" when tests expect the
-        // curated fallback only.
-        if (guideKey === ("positanoTravelGuide" as string)) return null;
+        // Policy-driven: suppress minimal unlocalized sections for routes that render
+        // their own fallback content (e.g., positanoTravelGuide, positanoBeaches).
+        if (policy.suppressMinimalUnlocalizedSections) return null;
         const meaningful = (Array.isArray(sections) ? sections : []).filter(
           (s) => Array.isArray(s?.body) && s.body.length > 0,
         );

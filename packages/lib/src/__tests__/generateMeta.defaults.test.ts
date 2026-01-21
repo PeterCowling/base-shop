@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+
 describe("generateMeta defaults", () => {
   const product = { id: "1", title: "Title", description: "Desc" };
 
@@ -13,12 +14,8 @@ describe("generateMeta defaults", () => {
         coreEnv: { OPENAI_API_KEY: "key" },
       }));
       jest.doMock("fs", () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
-      const responsesCreate = jest
-        .fn()
-        .mockResolvedValue({ output: [{ content: [{ text: content }] }] });
-      const imagesGenerate = jest
-        .fn()
-        .mockResolvedValue({ data: [{ b64_json: "" }] });
+      const responsesCreate = jest.fn(() => Promise.resolve({ output: [{ content: [{ text: content }] }] }));
+      const imagesGenerate = jest.fn(() => Promise.resolve({ data: [{ b64_json: "" }] }));
       class OpenAI {
         responses = { create: responsesCreate };
         images = { generate: imagesGenerate };

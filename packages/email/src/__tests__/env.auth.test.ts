@@ -1,6 +1,7 @@
-import { describe, it, expect, afterEach } from "@jest/globals";
-import { withEnv } from "../../../config/test/utils/withEnv";
+import { afterEach,describe, expect, it } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../../config/test/utils/withEnv";
 
 const REDIS_URL = "https://example.com";
 const STRONG_TOKEN = "redis-token-32-chars-long-string!";

@@ -1,9 +1,10 @@
-import { NextResponse, type NextRequest } from "next/server";
-import {
-  validateInventoryAvailability,
-  type InventoryValidationRequest,
-} from "@acme/platform-core/inventoryValidation";
+import { type NextRequest,NextResponse } from "next/server";
 import { z } from "zod";
+
+import {
+  type InventoryValidationRequest,
+  validateInventoryAvailability,
+} from "@acme/platform-core/inventoryValidation";
 
 export const runtime = "nodejs";
 
@@ -75,12 +76,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       body.items as InventoryValidationRequest[]
     );
 
-    if (result.ok === false) {
+    if (!result.ok) {
       return NextResponse.json(
         {
           ok: false,
           code: "inventory_insufficient",
-          items: result.insufficient,
+          items: "insufficient" in result ? result.insufficient : [],
         },
         { status: 409 }
       );

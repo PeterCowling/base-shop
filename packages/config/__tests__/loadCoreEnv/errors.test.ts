@@ -1,4 +1,4 @@
-import { describe, it, afterEach, expect } from "@jest/globals";
+import { afterEach, describe, expect,it } from "@jest/globals";
 
 afterEach(() => {
   jest.restoreAllMocks();
@@ -37,8 +37,9 @@ describe("loadCoreEnv – errors", () => {
     expect(spy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
     );
+    // Zod error message format may vary - check for NODE_ENV and "Invalid"
     expect(spy).toHaveBeenCalledWith(
-      expect.stringContaining("NODE_ENV: Invalid enum value"),
+      expect.stringMatching(/NODE_ENV:.*Invalid/i),
     );
   });
 

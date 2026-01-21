@@ -1,5 +1,6 @@
+import { getLocaleFromParams, type LangRouteParams, type Locale,LOCALES } from "@/lib/locales";
 import { createTranslator, getMessages } from "@/lib/messages";
-import { LOCALES, getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
+
 import DefaultRealEstatePage from "./components/DefaultRealEstatePage";
 import EnglishRealEstatePage from "./components/EnglishRealEstatePage";
 import ZhRealEstatePage from "./components/ZhRealEstatePage";

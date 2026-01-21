@@ -1,4 +1,4 @@
-import { expect, describe, it } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 
 describe("coreEnvSchema refinement", () => {
   it("coerces boolean and number strings", async () => {

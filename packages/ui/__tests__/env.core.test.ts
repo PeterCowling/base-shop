@@ -1,5 +1,6 @@
 /** @jest-environment node */
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { withEnv } from "../../config/test/utils/withEnv";
 
 describe("core env", () => {

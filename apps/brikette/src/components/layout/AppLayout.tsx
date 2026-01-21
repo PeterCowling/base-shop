@@ -1,23 +1,25 @@
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { Footer } from "@/components/footer/Footer";
+import React, { memo, useEffect, useLayoutEffect } from "react";
+
 import { NotificationBanner } from "@acme/ui/molecules/NotificationBanner";
 import { Header } from "@acme/ui/organisms/Header";
+
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { Footer } from "@/components/footer/Footer";
+import { IS_DEV } from "@/config/env";
 import { HelpDrawerProvider } from "@/context/HelpDrawerContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { BannerProvider } from "@/context/NotificationBannerContext";
 import { RatesProvider } from "@/context/RatesContext";
-import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useProtectBrandName } from "@/hooks/useProtectBrandName";
 import { useWebVitals } from "@/hooks/useWebVitals";
-import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
-import React, { memo, useEffect, useLayoutEffect } from "react";
 import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { APP_I18N_NAMESPACES } from "@/i18n.namespaces";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { InlineBoundary } from "@/root/boundaries";
 import { isTestEnvironment } from "@/root/environment";
-import { IS_DEV } from "@/config/env";
+import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
 
 type AppLayoutProps = {
   lang: AppLanguage;
@@ -112,7 +114,7 @@ function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
                 <InlineBoundary>
                   <Header lang={lang} />
                 </InlineBoundary>
-                <main>{children}</main>
+                <main className="pt-16 lg:pt-0">{children}</main>
                 <InlineBoundary>
                   <Footer lang={lang} />
                 </InlineBoundary>

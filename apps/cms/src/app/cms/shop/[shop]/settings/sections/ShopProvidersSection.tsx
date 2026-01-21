@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
-import { FormField } from "@acme/ui/components/molecules";
 import type { Provider } from "@acme/configurator/providers";
 import { useTranslations } from "@acme/i18n";
+import { FormField } from "@acme/ui/components/molecules";
+
+import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
 
 export type ShopProvidersSectionErrors = Partial<
   Record<"trackingProviders", string[]>
@@ -86,7 +87,7 @@ export default function ShopProvidersSection({
                       name={"trackingProviders" /* i18n-exempt: technical form field name */}
                       value={provider.id}
                       checked={checked}
-                      onCheckedChange={(state) =>
+                      onCheckedChange={(state: boolean | "indeterminate") =>
                         handleToggle(provider.id, state === true)
                       }
                       aria-describedby={errorId}

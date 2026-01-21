@@ -1,9 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { RouteOption } from "./types";
- 
-import { ProsCons } from "./ProsCons";
+
 import { Cluster } from "../ui";
+
+import { ProsCons } from "./ProsCons";
+import type { RouteOption } from "./types";
 
 interface RouteCardProps {
   route: RouteOption;

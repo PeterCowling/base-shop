@@ -36,7 +36,7 @@
     {
       "type": 1,
       "slug": "can-i-bring-my-own-alcohol",
-      "s1": "byo",
+    "s1": "trae lo tuyo",
       "s2": "¿Puedo traer mi propio alcohol?",
       "s3": "¿Tiene el hostal un sacacorchos?",
       "s4": "comprar mi propio alcohol",
@@ -643,7 +643,7 @@
       "s1": "hora de check-in",
       "s2": "¿cuál es la primera hora de check-in?",
       "s3": "¿cuándo se hace el check-in?",
-      "s4": "check-in",
+    "s4": "registro",
       "s5": "hora de check-in",
       "humanReadableQuestion": "¿A qué hora puedo hacer el check-in más temprano?",
       "humanReadableAnswer": "La hora de check-in es a las 3 pm.",

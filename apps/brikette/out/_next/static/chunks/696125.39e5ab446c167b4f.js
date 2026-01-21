@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[696125],{696125:e=>{e.exports=JSON.parse('{"meta":{"title":"页面未找到","description":"您访问的页面不存在。"},"heading":"找不到页面","message":"不妨浏览我们的房型或直接预订入住。","linksTitle":"实用链接","links":{"home":"首页","deals":"优惠","assistance":"联系与帮助","about":"关于我们"},"buttonRooms":"查看房型","buttonReserve":"立即预订"}')}}]);

@@ -1,22 +1,25 @@
 // apps/cms/src/app/api/configurator-progress/route.ts
 import "@acme/zod-utils/initZod";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+
 import { NextResponse } from "next/server";
-// Use the server translation loader; alias to avoid React Hooks lint
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { promises as fs } from "fs";
-import type { FileHandle as FsFileHandle } from "fs/promises";
-import * as fsSync from "fs";
-import { writeJsonFile } from "@/lib/server/jsonIO";
-import path from "path";
+import { getServerSession } from "next-auth";
 import {
   configuratorStateSchema,
-  stepStatusSchema,
   type StepStatus,
+  stepStatusSchema,
 } from "@cms/app/cms/wizard/schema";
+import { authOptions } from "@cms/auth/options";
+import { promises as fs } from "fs";
+import * as fsSync from "fs";
+import type { FileHandle as FsFileHandle } from "fs/promises";
+import path from "path";
 import { z } from "zod";
+
+// Use the server translation loader; alias to avoid React Hooks lint
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { getConfiguratorProgressForShop } from "@acme/platform-core/configurator";
+
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 interface UserRecord {
   state: unknown;

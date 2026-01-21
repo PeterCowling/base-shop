@@ -251,4 +251,4 @@ const setTestRuntimeForTests = (value: boolean | undefined): void => {
   forcedTestRuntime = value;
 };
 
-export { ensureDocument, globalRef, setWindowLocationHref, setTestRuntimeForTests };
+export { ensureDocument, globalRef, setTestRuntimeForTests,setWindowLocationHref };

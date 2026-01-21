@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
+
+import NewProductPage from "../src/app/cms/shop/[shop]/products/new/page";
 
 const createDraftRecord = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({ createDraftRecord }));
 const redirect = jest.fn();
 jest.mock("next/navigation", () => ({ redirect }));
-
-import NewProductPage from "../src/app/cms/shop/[shop]/products/new/page";
 
 describe("NewProductPage", () => {
   it("creates draft and redirects", async () => {

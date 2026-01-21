@@ -1,9 +1,11 @@
 "use client";
 
 import { Grid } from "@acme/ui/components/atoms/primitives";
+
 import { formatNumber } from "@/lib/format";
-import type { CandidateDetailStrings } from "./types";
+
 import type { StageSSummary } from "./stageSHelpers";
+import type { CandidateDetailStrings } from "./types";
 
 export default function StageSSummaryCard({
   summary,

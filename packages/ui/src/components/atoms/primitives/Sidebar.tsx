@@ -1,6 +1,7 @@
 // packages/ui/src/components/atoms/primitives/Sidebar.tsx
-import { cn } from "../../../utils/style/cn";
 import type { HTMLAttributes } from "react";
+
+import { cn } from "../../../utils/style/cn";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   sideWidth?: "w-48" | "w-56" | "w-64" | "w-72" | "w-80";

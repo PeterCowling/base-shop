@@ -1,21 +1,20 @@
 // src/routes/guides/work-and-travel-remote-work-positano.tsx
 import type { ComponentProps } from "react";
-
-import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import { OG_IMAGE } from "@/utils/headConstants";
-import { buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import type { LinksFunction } from "react-router";
 
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { BASE_URL } from "@/config/site";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["digital-nomads", "work-life", "positano"] };
 
@@ -127,4 +126,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 export default Component;
 
 export { clientLoader };
-export { meta, links };
+export { links,meta };

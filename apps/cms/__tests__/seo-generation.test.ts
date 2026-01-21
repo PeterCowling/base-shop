@@ -1,6 +1,7 @@
 /* apps/cms/__tests__/seo-generation.test.ts */
 /* eslint-env jest */
 import path from "node:path";
+
 import React from "react";
 import { DefaultSeo } from "next-seo";
 import { render } from "@testing-library/react";

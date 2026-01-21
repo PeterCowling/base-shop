@@ -1,7 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import DeviceSelector from "../DeviceSelector";
+
 import { getLegacyPreset } from "../../../utils/devicePresets";
+import DeviceSelector from "../DeviceSelector";
 
 describe("DeviceSelector", () => {
   it("renders legacy icon buttons with correct sizing and icon visibility", () => {

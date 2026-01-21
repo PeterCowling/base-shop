@@ -8,31 +8,7 @@
   "title": "{{from}}〜{{to}}のご滞在が{{percent}} %オフ",
   "promo": "直接予約で{{percent}} %割引。割引はチェックアウト時に自動適用されます。",
   "dealCard": {
-    "savePercent": "{{percent}}オフ",
-    "stayDatesLabel": "滞在日程：",
-    "badges": {
-      "autoApplied": "自動適用",
-      "directOnly": "直接予約のみ"
-    },
-    "cta": {
-      "bookDirect": "直接予約する",
-      "applyDeal": "オファーを適用"
-    },
-    "status": {
-      "upcoming": "今後のオファー · {{startDate}}開始",
-      "expired": "終了"
-    }
-  },
-  "hero": {
-    "activeLabel": "開催中のオファー",
-    "activeTitle": "{{percent}}オフ",
-    "activeDatesLabel": "滞在日程：",
-    "activeSubtitle": "チェックアウト時に自動適用。直接予約のみ対象です。"
-  },
-  "emptyState": {
-    "title": "現在のオファーなし",
-    "subtitle": "直接予約で最安料金と全特典をご利用ください。",
-    "secondaryCta": "直接予約の特典を見る"
+    "savePercent": "{{percent}}オフ"
   },
   "status": {
     "banner": {
@@ -79,15 +55,9 @@
   "perksGuarantee": "当サイトでの直接予約なら、これらの限定特典が自動的に適用されます。",
   "perksIntroLink": "特典をすべて見る",
   "perksList": [
-    {
-      "title": "クーポン利用で通常料金から最大25 %オフ"
-    },
-    {
-      "title": "無料朝食付き"
-    },
-    {
-      "title": "夕方のウェルカムドリンク無料"
-    }
+    "クーポン利用で通常料金から最大25 %オフ",
+    "無料朝食付き",
+    "夕方のウェルカムドリンク無料"
   ],
   "expired": {
     "message": "このオファーは終了しました。"

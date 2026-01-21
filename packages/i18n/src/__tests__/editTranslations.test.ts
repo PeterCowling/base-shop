@@ -1,7 +1,6 @@
 import path from "node:path";
 
 const files: Record<string, string> = {};
-
 const fsMock = {
   readFileSync: jest.fn((file: string, encoding: string) => {
     if (encoding !== "utf8") {
@@ -21,10 +20,6 @@ const fsMock = {
   }),
 };
 
-jest.mock("node:fs", () => fsMock);
-
-import { addOrUpdateKey, readLocalizedValues } from "../editTranslations";
-
 describe("editTranslations helpers", () => {
   const srcDir = path.join(__dirname, "..");
   const enFile = path.join(srcDir, "en.json");
@@ -32,6 +27,7 @@ describe("editTranslations helpers", () => {
   const itFile = path.join(srcDir, "it.json");
 
   beforeEach(() => {
+    jest.resetModules();
     for (const key of Object.keys(files)) {
       delete files[key];
     }
@@ -41,9 +37,16 @@ describe("editTranslations helpers", () => {
     files[enFile] = JSON.stringify({ existing: "A", title: "Title EN" });
     files[deFile] = JSON.stringify({ existing: "B" });
     files[itFile] = JSON.stringify({ existing: "C" });
+
+    jest.doMock("node:fs", () => fsMock);
   });
 
-  it("adds missing key to non-English locales without overwriting existing values", () => {
+  afterEach(() => {
+    jest.dontMock("node:fs");
+  });
+
+  it("adds missing key to non-English locales without overwriting existing values", async () => {
+    const { addOrUpdateKey } = await import("../editTranslations");
     addOrUpdateKey("title", "Title EN");
 
     expect(fsMock.writeFileSync).toHaveBeenCalledTimes(2);
@@ -57,9 +60,10 @@ describe("editTranslations helpers", () => {
     expect(it).toEqual({ existing: "C", title: "Title EN" });
   });
 
-  it("reads localized values for the given key", () => {
+  it("reads localized values for the given key", async () => {
     files[deFile] = JSON.stringify({ existing: "B", title: "Titel DE" });
 
+    const { readLocalizedValues } = await import("../editTranslations");
     const values = readLocalizedValues("title");
 
     expect(values).toEqual({ en: "Title EN", de: "Titel DE" });

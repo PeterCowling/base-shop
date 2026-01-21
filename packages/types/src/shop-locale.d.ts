@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const shopLocaleSchema: z.ZodObject<{
     priceOverrides: z.ZodDefault<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodNumber>>;
     localeOverrides: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodEnum<["en", "de", "it"]>>>;

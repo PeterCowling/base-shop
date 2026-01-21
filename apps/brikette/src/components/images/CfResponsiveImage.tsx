@@ -1,7 +1,8 @@
 // src/components/images/CfResponsiveImage.tsx
+import { type FC,memo } from "react";
+
 import { CfImage, type CfImageProps } from "@/components/images/CfImage";
-import { PRESETS } from "@/config/imagePresets";
-import { memo, type FC } from "react";
+import { type PRESETS } from "@/config/imagePresets";
 
 export interface CfResponsiveImageProps extends Omit<CfImageProps, "preset"> {
   preset?: keyof typeof PRESETS;

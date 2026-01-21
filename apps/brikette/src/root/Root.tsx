@@ -1,26 +1,30 @@
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { Footer } from "@/components/footer/Footer";
+import React, { memo, useEffect, useLayoutEffect } from "react";
+import { Outlet, type RouteObject,useOutlet } from "react-router";
+
 import { NotificationBanner } from "@acme/ui/molecules/NotificationBanner";
 import { Header } from "@acme/ui/organisms/Header";
+
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { Footer } from "@/components/footer/Footer";
+import { IS_DEV } from "@/config/env";
 import { HelpDrawerProvider } from "@/context/HelpDrawerContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { BannerProvider } from "@/context/NotificationBannerContext";
 import { RatesProvider } from "@/context/RatesContext";
-import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useProtectBrandName } from "@/hooks/useProtectBrandName";
 import { useWebVitals } from "@/hooks/useWebVitals";
-import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
-import React, { memo, useEffect, useLayoutEffect } from "react";
-import { Outlet, useOutlet, type RouteObject } from "react-router";
+import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
+
 import { isSupportedLanguage } from "../config";
 import i18n from "../i18n";
-import { i18nConfig, type AppLanguage } from "../i18n.config";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { APP_I18N_NAMESPACES } from "../i18n.namespaces";
+
 import { InlineBoundary } from "./boundaries";
 import { getPathname, isTestEnvironment } from "./environment";
 import { useSafeLocation } from "./useSafeLocation";
-import { IS_DEV } from "@/config/env";
 
 type RootProps = {
   __testOutlets?: RouteObject[];
@@ -124,7 +128,7 @@ function Root({ __testOutlets }: RootProps): React.JSX.Element {
                 <InlineBoundary>
                   <Header lang={lang} />
                 </InlineBoundary>
-                <main>{outlet ?? fallbackOutlet ?? <Outlet />}</main>
+                <main className="pt-16 lg:pt-0">{outlet ?? fallbackOutlet ?? <Outlet />}</main>
                 <InlineBoundary>
                   <Footer lang={lang} />
                 </InlineBoundary>

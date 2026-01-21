@@ -8,7 +8,7 @@
     "Wyjeżdżasz z hostelu Brikette z bagażem? Zjedź autobusem Interno Positano w dół i pozwól tragarzom przenosić ciężkie torby, abyś dotarł na prom bez konieczności zmagania się ze schodami Positano."
   ],
   "beforeList": [
-    "Sprawdź aktualny rozkład lotów Interno Positano — oto [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Sprawdź aktualny rozkład Interno Positano — oto [najświeższy rozkład i ceny](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Odbierz bilety Interno Positano w tabacchi obok Chiesa Nuova przed wejściem na pokład (lub poproś recepcję o potwierdzenie dostępności).",
     "Jeśli masz nieporęczne torby, zorganizuj pomoc portiera – w recepcji możesz zadzwonić wcześniej lub zapoznać się z [przewodnikiem po usługach portiera](guide:porterServices), aby poznać numery i ceny."
   ],
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini do przystani promowej",
       "body": [
         "Wysiądź z autobusu, spotkaj się z tragarzami, jeśli zarezerwowałeś ich z wyprzedzeniem, i idź prosto na pas dla pieszych prowadzący do Spiaggia Grande.",
-        "Podążaj promenadą w dół przez około 7 minut — użyj [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), aby pozostać na najbardziej gładkich odcinkach rampy.",
+        "Podążaj promenadą w dół przez około 7 minut — użyj [tych wskazówek](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), aby pozostać na najbardziej gładkich odcinkach rampy.",
         "Na przystani promowej skontaktuj się ze swoim operatorem. Tragarze dostarczają bagaż osobno; trzymaj przy sobie paszporty, leki i kosztowności."
       ]
     }
@@ -50,9 +50,9 @@
     "Tragarze mogą zabierać walizki na oddzielnych wózkach, więc na promenadzie zmieścisz się tylko z plecakiem dziennym."
   ],
   "kneesDockPrefix": "Potrzebujesz wersji pod górę po powrocie? Przeczytaj nasze",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "przewodnik po przyjeździe do Chiesa Nuova",
   "kneesPorterPrefix": "Chcesz uzyskać wskazówki dotyczące cen i rezerwacji portiera? Sprawdź",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "przewodnik po usługach tragarzy",
   "faqs": [
     {
       "q": "Gdzie mogę kupić bilety Interno Positano w pobliżu hostelu?",

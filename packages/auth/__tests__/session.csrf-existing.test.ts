@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+import type { Role } from "../src/types";
+
 type CookieOptions = {
   httpOnly?: boolean;
   secure?: boolean;
@@ -27,8 +29,6 @@ jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
   headers: () => mockHeaders(),
 }));
-
-import type { Role } from "../src/types";
 
 function createStore(): CookieStore {
   const jar = new Map<string, string>();

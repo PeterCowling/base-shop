@@ -1,4 +1,5 @@
 import "server-only";
+
 import type { OidcConfig } from "../oidc/config";
 import { loadOidcConfig } from "../oidc/config";
 

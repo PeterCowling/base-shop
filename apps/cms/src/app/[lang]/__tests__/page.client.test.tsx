@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
+import Home from "../page.client";
+
 jest.mock("@acme/ui/components/home/HeroBanner.client", () => ({
   __esModule: true,
   // Use data-cy so getByTestId matches the configured attribute.
@@ -15,8 +17,6 @@ jest.mock("@acme/ui/components/home/ReviewsCarousel", () => ({
   __esModule: true,
   default: () => <div data-cy="home-reviews">Reviews Carousel</div>,
 }));
-
-import Home from "../page.client";
 
 describe("Home page client", () => {
   it("renders mocked sections once in order", () => {

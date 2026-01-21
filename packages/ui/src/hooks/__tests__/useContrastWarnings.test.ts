@@ -1,15 +1,15 @@
 import { renderHook } from "@testing-library/react";
+
+import {
+  getContrast,
+  suggestContrastColor,
+} from "../../components/cms/ColorInput";
 import useContrastWarnings from "../useContrastWarnings";
 
 jest.mock("../../components/cms/ColorInput", () => ({
   getContrast: jest.fn(),
   suggestContrastColor: jest.fn(),
 }));
-
-import {
-  getContrast,
-  suggestContrastColor,
-} from "../../components/cms/ColorInput";
 
 const mockGetContrast = getContrast as jest.MockedFunction<typeof getContrast>;
 const mockSuggestContrastColor = suggestContrastColor as jest.MockedFunction<

@@ -1,11 +1,14 @@
 "use client";
 
+import { useCallback, useRef,useState } from "react";
+import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState, useCallback, useRef } from "react";
-import Image from "next/image";
-import { Tooltip } from "../../atoms";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Tooltip } from "../../atoms";
+
 import type { LibraryItem } from "./libraryStore";
 
 export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUpdate, shop }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void; onUpdate: (patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail">>) => void; shop?: string | null }) {

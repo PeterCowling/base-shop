@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { approveAccount } from "@cms/actions/accounts.server";
 import type { PendingUser } from "@cms/actions/accounts.server";
+import { approveAccount } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
+
+import { useTranslations } from "@acme/i18n";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
+
 import { Toast } from "@/components/atoms";
 import {
   Button,
@@ -12,8 +16,6 @@ import {
   Checkbox,
   Tag,
 } from "@/components/atoms/shadcn";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
-import { useTranslations } from "@acme/i18n";
 
 interface PendingRequestsPanelProps {
   pending: PendingUser[];

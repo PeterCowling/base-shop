@@ -1,15 +1,15 @@
 {
   "meta": {
-    "title": "Reservas de Quartos — Termos e Condições | Hostel Brikette",
-    "description": "Termos oficiais para reservas: reservas, cancelamentos, check-in/check-out, pagamentos, dever de cuidado e políticas."
+    "title": "Termos de reserva | Hostel Brikette",
+    "description": "Termos de reserva do Hostel Brikette sobre reservas, pagamentos, cancelamentos, depósitos, responsabilidade e privacidade."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Reservas de Quartos",
-    "pageSubtitle": "Termos e Condições"
+    "pageTitle": "Hostel Brikette — Termos de reserva",
+    "pageSubtitle": "Termos de reserva"
   },
   "toc": {
     "title": "Conteúdo",
-    "aria": "Índice"
+    "aria": "Tabela de conteúdos"
   },
   "footer": {
     "end": "Fim do documento.",
@@ -17,334 +17,164 @@
   },
   "sections": {
     "s1": {
-      "title": "1. Definições e Interpretações",
+      "title": "1. Partes e definições",
       "body": [
-        "1.1 \"Termos e Condições\" — Os termos e condições definidos neste documento.",
-        "1.2 \"O Hostel\", \"nós\" ou \"nosso\" — Skylar SRL, sede: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Itália.",
-        "1.3 \"Você\", \"seu\", cliente, residente ou \"hóspede\" — Qualquer pessoa que envia uma Solicitação de Reserva de Quarto, é Hóspede Oficial do Hostel, é Hóspede Temporário, integra a equipa, é organizador de eventos, líder de grupo ou outro fornecedor/comprador terceiro.",
-        "1.4 \"Solicitação de Reserva de Quarto\" — Pedido para reservar uma estadia no Hostel segundo estes termos, feito por si ou pela sua OTA. Apenas o hostel e OTAs autorizadas podem vender camas; tentativas de revenda por terceiros não autorizados levam à recusa do pedido ou ao cancelamento de reservas confirmadas.",
-        "1.5 \"Áreas Comuns\" — Áreas do Hostel acessíveis a Hóspedes Oficiais e Hóspedes Temporários: entrada/receção, terraço comum, casas de banho comuns.",
-        "1.6 \"Titular do Cartão\" — Proprietário do cartão de crédito indicado na Solicitação de Reserva de Quarto.",
-        "1.7 \"Contra‑proposta\" — Variação de uma Solicitação de Reserva. A primeira é emitida pelo Hostel; outras podem seguir‑se.",
-        "1.8 \"Reserva de Quarto Confirmada\" — Forma‑se quando o Hostel aceita a solicitação ou você aceita a contra‑proposta. O contrato inclui instalações, serviços e estes termos.",
-        "1.9 \"No Show\" — Estatuto aplicável quando um ou mais hóspedes elegíveis não fazem check‑in até ao fim do Horário Oficial de Check‑in do primeiro dia.",
-        "1.10 \"Encargo por No Show\" — Valor cobrado em caso de No Show ou de cancelamento confirmado fora do Prazo de Aviso. O montante é o maior entre: custo da primeira noite ou o depósito não reembolsável.",
-        "1.11 \"Pedido de Cancelamento de Quarto\" — Pedido para cancelar uma Reserva de Quarto Confirmada.",
-        "1.12 \"Prazo de Aviso de Cancelamento\" — Prazo exigido, em horas, para cancelar uma reserva confirmada; se indicado em dias, é convertido (ex.: 3 dias = 72 horas).",
-        "1.13 \"Taxa Administrativa de Cancelamento\" — Encargo de processamento do pedido de cancelamento, segundo a tarifa acordada.",
-        "1.14 \"E‑mail Oficial do Hostel\" — hostelpositano@gmail.com.",
-        "1.15 \"Cancelamento Confirmado\" — Confirmação escrita enviada pelo Hostel a partir do E‑mail Oficial de que o cancelamento foi processado.",
-        "1.16 \"Pedido de Alteração de Reserva\" — Pedido para alterar uma reserva confirmada (cancelamento parcial ou alteração de datas).",
-        "1.17 \"Alteração de Reserva Confirmada\" — Confirmação escrita de que a alteração foi concluída.",
-        "1.18 \"E‑mail Designado\" — Endereço indicado na Solicitação de Reserva; o Hostel utiliza‑o para toda a correspondência. Você é responsável pela exatidão e por ler as mensagens.",
-        "1.19 \"Pedido de Extensão de Reserva\" — Pedido para prolongar uma Reserva de Quarto Confirmada.",
-        "1.20 \"Extensão de Reserva Confirmada\" — Confirmação escrita de que a extensão foi concluída.",
-        "1.21 \"Pedido de Check‑in\" — Pedido para efetuar check‑in e iniciar a reserva.",
-        "1.22 \"Horário Oficial de Check‑in\" — Janela de 15:00 às 22:00 do dia de chegada.",
-        "1.23 \"Hóspede Oficial do Hostel\" — Pessoa que concluiu o processo de check‑in.",
-        "1.24 \"Quarto Atribuído\" — Quarto específico atribuído ao Hóspede Oficial; o acesso é permitido apenas a esse quarto.",
-        "1.25 \"Quartos do Hostel\" — Quartos privados e dormitórios disponíveis exclusivamente para Hóspedes Oficiais.",
-        "1.26 \"Roupa de Cama\" — Conjunto fornecido no check‑in: fronha, lençol, lençol de baixo e toalha.",
-        "1.27 \"Upgrade de Quarto\" — Atribuição de um quarto mais caro do que o reservado (apenas o preço é relevante).",
-        "1.28 \"Keycard\" — Cartão plástico (com depósito) codificado para abrir a porta do Quarto Atribuído.",
-        "1.29 \"Pré‑autorização\" — Reserva temporária de montante no cartão do Titular; fundos ficam reservados e não são debitados de imediato.",
-        "1.30 \"Check‑out\" — Ocorre apenas quando: a Roupa de Cama é devolvida; a Keycard é devolvida; todos os pertences são retirados do Quarto Atribuído.",
-        "1.31 \"Menor\" — Pessoa com menos de 18 anos em Itália.",
-        "1.32 \"Serviço Complementar\" — Serviço que o hostel pode oferecer gratuitamente, não incluído na reserva confirmada (ex.: Pequeno‑almoço, Bebidas, Wi‑Fi, Guarda‑volumes, Frigorífico).",
-        "1.33 \"Hóspede Temporário\" — Indivíduo com acesso apenas às Áreas Comuns, mediante verificação de documento original. Apenas a Equipa do Hostel pode atribuir este estatuto.",
-        "1.34 \"Métodos de Pagamento Aceites\" — Cartões Visa ou MasterCard; transferência bancária apenas de empresa. AmEx/PayPal e similares não são aceites. Numerário em euros.",
-        "1.35 \"Reservas Pré‑pagas e Não Reembolsáveis\" — Tarifas reduzidas com pagamento integral no ato da reserva; nunca reembolsáveis.",
-        "1.36 \"Quem chega primeiro escolhe\" — Não atribuímos camas específicas em dormitórios; o hóspede escolhe entre as disponíveis e pode mudar se surgir outra livre.",
-        "1.37 \"Tipo de Reserva\" — Pré‑paga Não Reembolsável ou Reembolsável.",
-        "1.38 \"Reservas Reembolsáveis\" — Tarifa padrão com condições flexíveis (datas/duração ajustáveis; políticas de cancelamento mais permissivas, conforme o plano).",
-        "1.39 \"Documento de Identificação\" — Passaporte, Cartão de Cidadão/BI, Carta de Condução ou Identificação Militar. Apenas originais.",
-        "1.40 \"Defeito Grave\" — Defeito que afeta seriamente a estadia (ex.: cama partida, temperatura insegura, inacessibilidade, falta de água).",
-        "1.41 \"OTA\" — Agência de viagens online autorizada (ex.: Hostelworld.com, Booking.com)."
+        "Data de vigência: 2026-01-09.",
+        "Aplica-se a: todas as Reservas no Hostel Brikette e, quando aplicável, a Visitantes no local.",
+        "Se você reservou por uma OTA, a OTA também pode impor seus próprios termos de plataforma. Estes Termos de reserva regem o contrato de hospedagem entre você e a Skylar SRL para sua estadia no Hostel Brikette, na medida permitida pela lei aplicável.",
+        "1.1 Quem somos — A Skylar SRL (\"nós\", \"nosso\") opera o Hostel Brikette. Endereço registrado: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Itália. Endereço da propriedade: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Itália. Email oficial: hostelpositano@gmail.com. Site: https://hostel-positano.com.",
+        "1.2 \"Termos de reserva\" — Este documento.",
+        "1.3 \"Regras da casa\" — O documento separado das Regras da casa do Hostel Brikette em vigor para sua estadia, incorporado por referência ao contrato de hospedagem.",
+        "1.4 \"Reservante\" — A pessoa que envia uma Solicitação de reserva e em cujo nome a Reserva é feita.",
+        "1.5 \"Hóspede\" — Uma pessoa que pernoita sob uma Reserva confirmada.",
+        "1.6 \"Visitante\" — Uma pessoa autorizada a acessar apenas as Áreas comuns conforme as Regras da casa e que não pernoita (em alguns locais também \"Visitante temporário\").",
+        "1.7 \"Titular do cartão\" — O proprietário do cartão de pagamento usado para pagar ou garantir uma Reserva.",
+        "1.8 \"Solicitação de reserva\" — Um pedido para reservar acomodação no Hostel Brikette, feito pelo nosso Site ou por uma OTA autorizada.",
+        "1.9 \"Reserva confirmada\" — Uma Solicitação de reserva que aceitamos por escrito (inclusive por email ou confirmação via mensagem/plataforma OTA), formando um contrato de hospedagem vinculante.",
+        "1.10 \"OTA\" — Agência de viagens online autorizada a vender nossas camas/quartos (exemplos: Hostelworld.com e Booking.com).",
+        "1.11 \"Tipo de tarifa\" — O conjunto de regras de preço associado a uma Reserva, como Tarifa reembolsável ou Tarifa não reembolsável, conforme mostrado no momento da reserva e na Reserva confirmada.",
+        "1.12 \"Tarifa não reembolsável\" — Tarifa com desconto ou restrições que exige pagamento integral na reserva e não é reembolsável, salvo exigência legal.",
+        "1.13 \"Tarifa reembolsável\" — Tarifa que pode permitir cancelamentos ou alterações conforme as regras mostradas na reserva e na Reserva confirmada.",
+        "1.14 \"Janela oficial de check-in\" — 15:00–22:00 na data de chegada, salvo indicação diferente na Reserva confirmada.",
+        "1.15 \"No Show\" — Um Hóspede não conclui o check-in até o fim da Janela oficial de check-in na data de chegada e não obteve nosso acordo por escrito para chegar mais tarde.",
+        "1.16 \"Cancelamento tardio\" — Cancelamento solicitado fora do prazo de aviso aplicável ao Tipo de tarifa.",
+        "1.17 \"Rescisão por violação\" — Encerramos a estadia (ou recusamos a continuidade da hospedagem) por violação das Regras da casa ou destes Termos de reserva.",
+        "1.18 \"Pré-autorização\" — Bloqueio temporário em um cartão de pagamento, reservando fundos sem cobrança imediata.",
+        "1.19 \"Depósito de segurança\" — Depósito ou pré-autorização retida para cobrir valores devidos nos termos destes Termos de reserva ou das Regras da casa (por exemplo, danos, multas, taxas não pagas), conforme descrito na Seção 5.",
+        "1.20 \"Áreas comuns\" — Áreas compartilhadas designadas conforme descritas nas Regras da casa (exclui quartos/dormitórios salvo indicação expressa).",
+        "1.21 \"Defeito grave\" — Defeito na acomodação ou instalações que afeta materialmente a estadia (exemplos: cama quebrada, falta de água, impossibilidade de acessar o quarto) avaliado de forma razoável por nós.",
+        "1.22 Interpretação — \"Por escrito\" inclui email e mensagens pela plataforma OTA.",
+        "1.23 Horários e prazos são em horário local salvo indicação em contrário.",
+        "1.24 Em caso de conflito entre estes Termos de reserva e as Regras da casa em assuntos financeiros, prevalecem estes Termos; em conduta e operações no local, prevalecem as Regras da casa."
       ]
     },
     "s2": {
-      "title": "2. Solicitações de Reserva",
+      "title": "2. Solicitações de reserva, canais autorizados e formação do contrato",
       "body": [
-        "2.1 Submissão — Deve ser feita por escrito via OTA ou website. Conversas presenciais são apenas informativas. Ao submeter, aceita estes Termos e confirma a exatidão dos dados.",
-        "2.2 Processamento — Inicia após receção de depósito/pré‑autorização/pagamento por método aceite. O Titular do Cartão deve ser identificado e pode ter de autorizar por escrito os débitos através do E‑mail Oficial; sem verificação a solicitação é recusada.",
-        "2.3 Recusa — Podemos recusar qualquer Solicitação de Reserva de Quarto por qualquer motivo.",
-        "2.4 Limite de Pedido — Máximo de sete (7) noites e grupos até cinco (5) pessoas; pedidos superiores são tratados como múltiplas reservas.",
-        "2.5 Contra‑proposta — Se não houver disponibilidade do pedido, poderemos propor alternativas ao E‑mail Designado. A aceitação inicia tentativas de cobrança/pré‑autorização.",
-        "2.6 Pré‑paga Não Reembolsável — Podemos exigir aceitação explícita dos Termos; a falta de aceitação implica cancelamento. Realizamos até três tentativas de cobrança antes de cancelar.",
-        "2.7 Confirmação — A reserva só fica confirmada quando enviamos e‑mail de confirmação (referência, data de chegada, duração etc.) ao E‑mail Designado. Deve verificar os dados e comunicar erros através do E‑mail Oficial.",
-        "2.9 Número de Hóspedes Incluídos — Um por cama individual; até dois por cama de casal; apartamentos segundo capacidade anunciada. É proibido exceder a lotação do quarto.",
-        "2.9 Âmbito das Instalações — Inclui Roupa de Cama e Keycard por pessoa, acesso a duches e água quente nos horários indicados e acesso às Áreas Comuns. Os restantes serviços são complementares e têm condições próprias.",
-        "2.10 Responsabilidade Financeira — O Titular do Cartão é responsável pela reserva e por quaisquer encargos adicionais (danos, limpeza extra, multas, incumprimento do check‑out, etc.).",
-        "2.11 Atribuição de Quartos e Camas — Atribuímos cada pessoa a um Quarto Atribuído. Em dormitórios, as camas são escolhidas por ordem de chegada; grupos podem ser repartidos por vários quartos.",
-        "2.12 Atribuição de Upgrades — Upgrades podem ser atribuídos mediante pagamento ou por gestão de inventário; na falta de pagamento, podemos reverter para a categoria original."
+        "2.1 Canais autorizados e proibição de revenda — As reservas devem ser feitas pelo nosso Site ou por uma OTA autorizada. A revenda não autorizada do nosso inventário é proibida. Podemos recusar ou cancelar solicitações que acreditamos razoavelmente envolver revenda não autorizada ou fraude.",
+        "2.2 Como uma Reserva é confirmada — Uma Reserva só se torna Reserva confirmada quando emitimos confirmação por escrito (por email, confirmação OTA ou thread de mensagens da OTA). Até então, conversas (inclusive presencialmente ou por telefone) são apenas informativas.",
+        "2.3 Recusa de Solicitações de reserva — Podemos recusar uma Solicitação de reserva quando necessário para operação legal, segurança, restrições de capacidade/inventário, falha em concluir verificação ou pagamento exigido, suspeita de fraude ou violação destes Termos de reserva ou das Regras da casa. Não recusaremos reservas por motivos discriminatórios ilegais.",
+        "2.4 Exatidão de dados e comunicações — O Reservante deve fornecer dados de contato precisos (incluindo email monitorado). Enviamos comunicações relevantes aos contatos fornecidos. Se você reservou por uma OTA, podemos nos comunicar via sistema de mensagens da OTA e/ou email.",
+        "2.5 Verificação, prevenção de fraude e autorizações — Podemos exigir verificação de identidade e/ou pagamento para prevenir fraude (incluindo confirmação de que o Titular do cartão autoriza cobranças). Se a verificação exigida não for fornecida em tempo razoável, podemos recusar a Solicitação de reserva ou cancelar a Reserva (e aplicar as regras de taxas se já estivesse confirmada).",
+        "2.6 Limites de tamanho da reserva — Salvo acordo escrito, aplicam-se os seguintes limites: estadia máxima por Reserva: 7 noites; tamanho máximo do grupo por Reserva: 5 pessoas. Se solicitações maiores forem aceitas, podem ser estruturadas como múltiplas reservas. As regras de taxas se aplicam por Reserva, salvo confirmação em contrário.",
+        "2.7 Não transferibilidade — As Reservas não são transferíveis. O nome do Reservante não pode ser alterado sem nossa aprovação por escrito. Os Hóspedes listados em uma Reserva só podem ser alterados com aprovação por escrito e sujeitos à verificação de identidade e regras de capacidade."
       ]
     },
     "s3": {
-      "title": "3. Idade e Acessibilidade",
+      "title": "3. Tarifas, inclusões e alocação de quartos",
       "body": [
-        "3.1 Acessibilidade — Contacte‑nos antes de reservar para necessidades específicas. O edifício tem escadas e não dispõe de serviço de bagageiros. Equipamentos sonoros para dormir são permitidos apenas em quartos privados.",
-        "3.2 Autonomia — Não prestamos assistência contínua; se não conseguir gerir a estadia de forma independente, cancelaremos a reserva.",
-        "3.3 Menores — Em Itália, menores não podem viajar sozinhos. Até 16 anos, apenas quartos privados com tutor 18+. Aos 17 anos, dormitório apenas com acompanhante 18+ no mesmo quarto e documentação de tutela; caso contrário, a reserva será cancelada conforme a tipologia."
+        "3.1 O que está incluído — Salvo indicação contrária na Reserva confirmada, a acomodação inclui: uma cama/quarto por Hóspede para as noites reservadas; roupa de cama padrão fornecida no check-in (veja as Regras da casa para detalhes); acesso às Áreas comuns durante a estadia; acesso a banheiros/chuveiros compartilhados sujeitos a horários publicados (se houver). Serviços adicionais (por exemplo, café da manhã, bebidas, Wi‑Fi, depósito de bagagem, armazenamento de geladeira) podem ser gratuitos ou pagos e podem estar sujeitos a termos separados comunicados no local ou no Site.",
+        "3.2 Alocação de quartos e camas — Alocamos o tipo de quarto com base na Reserva confirmada. Em dormitórios, as camas geralmente são escolhidas por ordem de chegada, salvo indicação contrária. Reservas de grupo podem ser divididas entre quartos devido à disponibilidade.",
+        "3.3 Upgrades — Se oferecermos um upgrade, ele pode ser pago (com concordância por escrito e pagamento bem-sucedido) ou operacional (colocação temporária em outro quarto por motivos de inventário). Se o upgrade pago falhar, podemos reverter a Reserva ao tipo de quarto original (sujeito à disponibilidade)."
       ]
     },
     "s4": {
-      "title": "4. Processos e Pagamentos de Terceiros",
+      "title": "4. Pagamentos, depósitos e pré-autorização",
       "body": [
-        "Ao enviar uma Solicitação de Reserva por um processador de pagamentos de terceiros (OTA), o pagamento é concluído na plataforma desse prestador, segundo os respetivos termos.",
-        "Pagamentos feitos diretamente ao terceiro regem‑se pelo seu acordo com este; o Hostel não tem controlo sobre tais processos.",
-        "Não recebemos qualquer parte desses pagamentos nem assumimos responsabilidade por reservas efetuadas desse modo.",
-        "É sua responsabilidade assegurar que o pagamento foi bem‑sucedido e que a reserva foi confirmada antes da chegada.",
-        "Para dúvidas sobre pagamento numa OTA, contacte diretamente o prestador."
+        "4.1 Métodos de pagamento aceitos — Métodos aceitos: Visa e Mastercard; dinheiro em EUR; transferência bancária apenas de empresas incorporadas.",
+        "4.2 Quando o pagamento é devido — O momento do pagamento depende do Tipo de tarifa e do canal de reserva. Tarifa não reembolsável: pagamento integral na reserva (ou na confirmação se processarmos manualmente). Tarifa reembolsável: o pagamento pode ser na reserva, no check-in ou dentro de um prazo informado; podemos exigir pré-autorização/garantia. Sua Reserva confirmada indicará o momento e as regras aplicáveis.",
+        "4.3 Pagamentos via OTA — Se você reservar por uma OTA, o pagamento pode ser coletado pela OTA (como merchant of record) ou pela Skylar SRL (como merchant of record). O merchant of record e o processo de reembolso aplicável serão indicados na confirmação e/ou na página da OTA. Quando a OTA for merchant of record, os reembolsos (se houver) serão processados pela OTA conforme seus procedimentos.",
+        "4.4 Depósitos e pagamentos antecipados — Se tomarmos um depósito ou pagamento antecipado, a reembolsabilidade depende do Tipo de tarifa e das regras de cancelamento mostradas na reserva e na Reserva confirmada. Não tratamos todos os depósitos como automaticamente não reembolsáveis, salvo indicação explícita para aquele Tipo de tarifa.",
+        "4.5 Pré-autorização — Podemos pré-autorizar um cartão de pagamento por valores compatíveis com o preço da hospedagem, a regra do Depósito de segurança (Seção 5) e/ou cobranças razoavelmente previstas (por exemplo, cancelamento tardio, no show, danos). Uma pré-autorização não é uma cobrança final. O prazo de liberação depende do emissor do cartão e do banco processador."
       ]
     },
     "s5": {
-      "title": "5. Depósitos e Pré‑autorizações",
+      "title": "5. Depósito de segurança e salvaguarda",
       "body": [
-        "5.1 Depósitos — Podemos exigir um depósito para garantir a reserva. O montante varia conforme a tipologia; reservas pré‑pagas e não reembolsáveis exigem 100%. Todos os depósitos pagos ao Hostel são não reembolsáveis. Sem cobrança do depósito, o pedido é recusado.",
-        "5.2 Pré‑autorizações — Podemos exigir pré‑autorização de acordo com o preço e condições acordadas. Se não for possível processar o montante requerido, o pedido é recusado."
+        "5.1 Regra do Depósito de segurança — Podemos exigir um Depósito de segurança durante a estadia equivalente a uma noite por Hóspede, como pré-autorização ou depósito em dinheiro (métodos permitidos podem variar por localidade).",
+        "5.2 Uso do Depósito de segurança — Podemos aplicar total ou parcialmente o Depósito de segurança a valores devidos sob estes Termos de reserva ou as Regras da casa, incluindo: hospedagem não paga ou extensões; danos ou itens faltantes; taxas de limpeza por sujeira excessiva; penalidades por violações graves das Regras da casa (quando permitido); substituição de keycard/roupa de cama quando aplicável. Se os custos excederem o Depósito de segurança, você permanece responsável pelo saldo.",
+        "5.3 Se não conseguirmos obter o Depósito de segurança — Se não conseguirmos obter o Depósito de segurança por pré-autorização, podemos aceitar dinheiro ou outro método aceitável, ou outro Hóspede/Titular do cartão pode fornecê-lo. Se nenhum Depósito de segurança aceitável for fornecido, podemos recusar o check-in e tratar a Reserva conforme as regras de No Show/cancelamento aplicáveis ao Tipo de tarifa."
       ]
     },
     "s6": {
-      "title": "6. Encargos por No Show",
+      "title": "6. Cancelamentos, alterações, no show, saída antecipada",
       "body": [
-        "Se não comparecer, a reserva torna‑se No Show e será aplicado o Encargo por No Show.",
-        "O encargo aplica‑se a cada Reserva de Quarto Confirmada. Reservas diferentes podem ter prazos de cancelamento distintos, afetando o resultado."
+        "6.1 Como solicitar alterações ou cancelamentos — Todas as solicitações de cancelamento ou alteração devem ser feitas por escrito para hostelpositano@gmail.com ou via sistema de mensagens da OTA (se reservado por OTA). Recomendamos usar o mesmo canal usado para reservar.",
+        "6.2 Como os prazos são medidos — Salvo indicação contrária na Reserva confirmada: os prazos são medidos em horário local e contados para trás a partir de 15:00 no dia de chegada programado.",
+        "6.3 Regras de cancelamento e taxas — As taxas de cancelamento (se houver), elegibilidade de reembolso (se houver) e prazos dependem do Tipo de tarifa e do canal de reserva e são informados no momento da reserva, na Reserva confirmada e no Apêndice A (Tabela de tarifas e taxas).",
+        "6.4 Alterações e extensões — Um pedido de alteração pode ser tratado como cancelamento da Reserva original e criação de uma nova Reserva, dependendo da disponibilidade e do Tipo de tarifa. Extensões estão sujeitas à disponibilidade e são tratadas como um novo período de reserva (que pode ter um Tipo de tarifa diferente). Confirmaremos por escrito as alterações aprovadas. Até a confirmação, a Reserva original permanece em vigor.",
+        "6.5 No Show — Se uma Reserva se tornar No Show, as taxas serão aplicadas conforme o Tipo de tarifa e o Apêndice A. Para Tarifas não reembolsáveis, isso geralmente significa sem reembolso.",
+        "6.6 Saída antecipada e noites não utilizadas — Se você sair cedo após o check-in, isso não gera automaticamente um reembolso. Qualquer reembolso, crédito ou isenção (se houver) é regido pelo Tipo de tarifa, pela confirmação por escrito de uma alteração/cancelamento e por exigências legais aplicáveis.",
+        "6.7 Rescisão por violação (expulsão / recusa de continuidade) — Se encerrarmos sua estadia devido a uma violação grave destes Termos de reserva ou das Regras da casa: você pode ser obrigado a sair imediatamente; pode permanecer responsável por cobranças de noites não utilizadas conforme permitido pela lei e consistente com o Tipo de tarifa; podemos aplicar o Depósito de segurança a valores devidos e/ou cobrar o Titular do cartão. Rescisão por violação não é \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Cancelamentos",
+      "title": "7. Requisitos de check‑in (elegibilidade, ID e pagamento)",
       "body": [
-        "Pedidos de cancelamento devem ser enviados por escrito para o nosso E‑mail Oficial.",
-        "Para apurar o cumprimento do prazo, conta‑se do momento da receção do seu e‑mail até às 00:01 do dia de início da reserva.",
-        "Pode aplicar‑se Taxa Administrativa de Cancelamento (padrão 15% do preço da reserva, deduzidas comissões já pagas a terceiros).",
-        "Se aceitarmos o pedido, confirmaremos por e‑mail; até lá, a reserva permanece confirmada.",
-        "Uma reserva pode ser cancelada sem pedido escrito se: não fizer check‑in antes do fecho da receção no primeiro dia; fizer check‑out antecipado; violar políticas do hostel.",
-        "Novas reservas após cancelamento ficam sujeitas a disponibilidade.",
-        "Cancelamentos fora do prazo são tratados como No Show e podem incorrer em Encargo por No Show."
+        "7.1 Janela de check‑in e chegadas tardias — O check‑in está disponível das 15:00 às 22:00. Se você espera chegar tarde, deve solicitar instruções de chegada tardia com antecedência. Qualquer check‑in autoatendimento é discricionário e pode exigir verificação prévia de ID e pagamento.",
+        "7.2 Prova de identidade — Cada Hóspede deve apresentar documento de identidade original válido no check‑in, conforme exigências de registro e segurança. IDs aceitos (lista de exemplo): passaporte, documento de identidade nacional, carteira de motorista, ID militar (somente documentos originais). As versões locais devem incluir os campos exigidos por lei. Se um Hóspede não apresentar ID válido até 22:00 no dia de chegada, podemos recusar o check‑in e aplicar as regras de No Show/Cancelamento tardio do Tipo de tarifa.",
+        "7.3 Pagamento do saldo no check‑in — Qualquer saldo pendente deve ser pago antes de concluir o check‑in.",
+        "7.4 Idade e menores (política) — O Reservante deve ter pelo menos 18 anos. Hóspedes menores de 18 anos (\"Menores\") podem ser restritos a quartos privados e/ou exigir um adulto acompanhante e prova de tutela, conforme indicado nas Regras da casa e/ou na Reserva confirmada."
       ]
     },
     "s8": {
-      "title": "8. Alteração de Reservas Confirmadas",
+      "title": "8. Defeitos, manutenção e remédios",
       "body": [
-        "Substituímos reservas confirmadas por novas reservas, em vez de as modificar.",
-        "Envie Pedidos de Alteração para o E‑mail Oficial dentro do prazo aplicável.",
-        "Todas as alterações estão sujeitas a disponibilidade e outras condições.",
-        "Pedidos de alteração de duração contam como Pedido de Alteração e como Pedido de Cancelamento ou de Extensão.",
-        "Extensões são tratadas como novas reservas.",
-        "Se sair antes sem Cancelamento Confirmado, a reserva original é considerada cumprida."
+        "8.1 Relato — Os Hóspedes devem relatar defeitos ou problemas de manutenção o mais rápido possível para que possamos investigar.",
+        "8.2 Tratamento e priorização — Priorizamos reparos com base no impacto e na segurança.",
+        "8.3 Defeitos graves — Se confirmarmos um Defeito grave e não conseguirmos remediar razoavelmente em tempo razoável, podemos (conforme apropriado e sujeito à disponibilidade) realocá-lo para outra acomodação, fornecer ajuste proporcional para as noites afetadas e/ou oferecer outro remédio exigido pela lei aplicável."
       ]
     },
     "s9": {
-      "title": "9. Transferibilidade da Reserva",
+      "title": "9. Danos, limpeza extra e percevejos (cobranças)",
       "body": [
-        "Solicitações de Reserva de Quarto e Reservas Confirmadas são estritamente intransferíveis, no todo ou em parte.",
-        "Cada reserva deve permanecer em nome do titular original durante todo o período.",
-        "Tentar fazer check‑in com reserva transferida torna o indivíduo responsável pelos custos e pode levar a cancelamento imediato.",
-        "Tentar alterar o nome do hóspede atribuído também pode levar a cancelamento."
+        "9.1 Danos e perdas — Se você danificar a propriedade ou causar perdas, é responsável por custos razoáveis de reparo/substituição e custos administrativos razoáveis, sujeitos à lei aplicável. Podemos cobrar do Titular do cartão e/ou aplicar o Depósito de segurança. Tarifas de mão de obra (se usadas): Diretor €50/h, Gerente €35/h, Staff €25/h.",
+        "9.2 Percevejos — Se determinarmos razoavelmente (com base em inspeção e evidências) que um Hóspede introduziu percevejos, podemos cobrar custos diretos razoáveis de remediação e perdas demonstráveis associadas, sujeitos à lei aplicável. Veja as Regras da casa para a conduta exigida (relato, contenção)."
       ]
     },
     "s10": {
-      "title": "10. Reservas Pré‑pagas e Não Reembolsáveis",
+      "title": "10. Pertences pessoais e armazenamento",
       "body": [
-        "Pagamento integral obrigatório no ato da reserva; falhando o pagamento, o pedido será cancelado.",
-        "Em caso de No Show, não haverá reembolso.",
-        "Pedidos de extensão são analisados segundo estes termos."
+        "Os Hóspedes são responsáveis por seus pertences. Quando oferecemos armários/cofres ou armazenamento como conveniência, disponibilidade e regras são definidas nas Regras da casa e/ou em termos separados.",
+        "Nada nestes Termos de reserva exclui ou limita responsabilidade quando tal exclusão/limitação não é permitida pela lei aplicável."
       ]
     },
     "s11": {
-      "title": "11. Chegada",
+      "title": "11. Responsabilidade",
       "body": [
-        "11.1 Pedido de Check‑in — Todos os hóspedes devem identificar‑se e iniciar o check‑in à chegada.",
-        "11.2 Chegada Antecipada — Hóspedes que chegam antes das 10:30 do dia da reserva não poderão entrar no hostel.",
-        "11.3 Chegada entre 10:30 e 15:00 — Se concordado, poderá tornar‑se Hóspede Temporário. Pode existir guarda‑volumes, a título discricionário e com termos próprios.",
-        "11.3 Janela de Check‑in — O check‑in regular ocorre durante o Horário Oficial (15:00–22:00).",
-        "11.5 Chegada Tardia — Após as 22:00, a receção está encerrada. Podemos fornecer instruções de self check‑in; você assume responsabilidade por problemas decorrentes de não receber/seguir instruções ou por dados de contacto incorretos."
+        "11.1 Salvaguarda de lei obrigatória — Nada nestes Termos de reserva limita ou exclui nossa responsabilidade quando não puder ser limitada ou excluída sob a lei aplicável.",
+        "11.2 Escopo — Sujeito ao acima, somos responsáveis por fornecer a acomodação e os serviços incluídos na Reserva confirmada. Não somos responsáveis por problemas causados por: sua violação destes Termos de reserva ou das Regras da casa; terceiros fora do nosso controle (incluindo OTAs, processadores de pagamento, transportadoras); ou eventos fora do nosso controle razoável (força maior), na medida permitida por lei.",
+        "11.3 Tipos de perdas e limites (quando permitido) — Sujeito ao acima e na medida permitida pela lei aplicável: não somos responsáveis por perdas indiretas ou consequenciais, e nossa responsabilidade total em conexão com a Reserva é limitada ao valor total pago a nós pela parte de hospedagem da Reserva confirmada."
       ]
     },
     "s12": {
-      "title": "12. Check‑in",
+      "title": "12. Privacidade e CCTV",
       "body": [
-        "12.1 Necessidade — Se não conseguirmos concluir o check‑in, recusaremos a entrada e cancelaremos a reserva (No Show).",
-        "12.2 Prova de Identificação — Devemos receber documento válido para cada hóspede (Nome, Apelido, Local de Nascimento, Nacionalidade, Data de Nascimento, Número de Documento). A não apresentação até às 22:00 do primeiro dia implica cancelamento (No Show).",
-        "12.2 Saldo — Qualquer saldo remanescente deve ser pago por método aceite antes de concluir o check‑in; caso contrário, cancelamento (No Show).",
-        "12.3 Depósito de Keycard e Roupa de Cama — Depósito de 10 € em numerário no check‑in; devolução no check‑out mediante devolução da Keycard e da Roupa de Cama."
+        "12.1 Aviso de privacidade — Processamos dados pessoais de acordo com nossa política de privacidade em https://hostel-positano.com/privacy-policy. Essa política descreve o que coletamos, por quê, bases legais (quando relevante), retenção e como exercer direitos.",
+        "12.2 CCTV em áreas públicas — Operamos CCTV em determinadas áreas públicas da propriedade para segurança, proteção e prevenção de fraudes. O CCTV é sinalizado no local, acessado apenas por pessoal autorizado, pode ser compartilhado com autoridades quando exigido ou permitido por lei e é retido por 30 dias, salvo necessidade de período maior por investigação ou por lei. Para dúvidas ou solicitações sobre CCTV, contate: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Processo de Salvaguarda",
+      "title": "13. Informações do site e links de terceiros",
       "body": [
-        "Podemos reter um montante igual a uma noite por pessoa como caução durante a estadia (pré‑autorização ou numerário).",
-        "Este montante pode ser usado para pagar multas, taxas, extensões ou outras quantias devidas segundo as políticas.",
-        "Se a pré‑autorização falhar, outro membro do grupo pode prestar ou pode pagar em numerário; caso contrário, a reserva poderá ser cancelada."
+        "Buscamos manter as informações do Site precisas, mas podemos atualizar conteúdo. Fotos podem ser ilustrativas. Links de terceiros são fornecidos por conveniência; não somos responsáveis por conteúdo de terceiros."
       ]
     },
     "s14": {
-      "title": "14. Dever de Cuidado",
+      "title": "14. Saúde e segurança",
       "body": [
-        "Deve respeitar outros hóspedes e a equipa, evitar danos e cumprir as regras do hostel.",
-        "Violações podem levar a cancelamento imediato (podendo aplicar‑se a política de No Show) e/ou pedido para abandonar o local sem reembolso.",
-        "Custos ou multas causados pelas suas ações podem ser cobrados; reportamos infrações legais quando necessário."
+        "Os Hóspedes devem agir de forma responsável em relação a doenças transmissíveis. As regras de reembolso seguem o Tipo de tarifa, salvo exigência legal. Recomendamos seguro de viagem."
       ]
     },
     "s15": {
-      "title": "15. Defeitos e Danos",
+      "title": "15. Promoções e cupons",
       "body": [
-        "15.1 Comunicação de Defeitos — Informe imediatamente quaisquer defeitos no quarto.",
-        "15.2 Avaliação — Priorizamos a resposta consoante o impacto na sua estadia.",
-        "15.3 Defeitos Graves — Tentaremos resolver; se não for possível, procuraremos alojamento alternativo ou reembolso pró‑rata segundo diferença de preço ou noites remanescentes.",
-        "15.4 Defeitos não comunicados — Se descobertos mais tarde, poderá aplicar‑se a nossa política de danos/perdas.",
-        "15.5 Danos — Podemos pré‑autorizar ou exigir depósito para cobrir danos/perdas. Reembolsos são líquidos dos custos incorridos. Custos excedentes (materiais, mão‑de‑obra, administração) serão cobrados. Tarifas extra: Diretor 50 €/h, Gestor 35 €/h, Equipa 25 €/h."
+        "Cupons, quando oferecidos, são válidos apenas conforme indicado (por exemplo, apenas no Site) e podem ter termos adicionais mostrados com a promoção."
       ]
     },
     "s16": {
-      "title": "16. Percevejos (bed bugs)",
+      "title": "16. Lei aplicável e foro",
       "body": [
-        "Adotamos medidas para prevenir e remover infestações. Se ocorrer infestação durante a estadia, poderá ser responsável por danos, incluindo perda de receita, reclamações de outros hóspedes e custos de limpeza/desinfestação.",
-        "Se já esteve em local com histórico de percevejos, comunique no check‑in e desinfete os seus pertences.",
-        "Verifique os seus pertences antes do check‑in e reporte suspeitas de imediato."
+        "Estes Termos de reserva são regidos pela lei italiana e disputas devem ser apresentadas perante os tribunais da Itália, sujeitas a regras obrigatórias de jurisdição do consumidor aplicáveis no local de residência do Hóspede."
       ]
     },
     "s17": {
-      "title": "17. Pertences Pessoais e Segurança",
+      "title": "Apêndice A — Tabela de tarifas e taxas",
       "body": [
-        "Os hóspedes são responsáveis pelos seus pertences em todos os momentos. O hostel não se responsabiliza por perdas, danos ou furtos, salvo quando exigido por lei.",
-        "Podem ser disponibilizados cacifos/cofres; a responsabilidade permanece do hóspede.",
-        "Itens não reclamados serão descartados após 30 dias do check‑out.",
-        "Itens perigosos ou ilegais são proibidos e podem ser confiscados ou reportados às autoridades."
-      ]
-    },
-    "s18": {
-      "title": "18. Identificação e Medidas de Segurança",
-      "body": [
-        "Todos os hóspedes devem usar as pulseiras de segurança fornecidas nas instalações e apresentar identificação válida quando solicitado pela equipa.",
-        "A falta de pulseira ou de identificação pode resultar em saída sem reembolso.",
-        "Pulseiras perdidas/danificadas devem ser reportadas de imediato; pode ser cobrada pequena taxa de substituição."
-      ]
-    },
-    "s19": {
-      "title": "19. Videovigilância (CCTV)",
-      "body": [
-        "Existem câmaras CCTV em áreas públicas para segurança de hóspedes e património.",
-        "As gravações são guardadas de forma segura, acessíveis apenas à direção autorizada, e podem ser partilhadas com autoridades quando exigido por lei.",
-        "A CCTV não garante segurança total; ao aceitar estes termos, consente o uso como descrito."
-      ]
-    },
-    "s20": {
-      "title": "20. Hóspedes Temporários",
-      "body": [
-        "O estatuto de Hóspede Temporário pode ser concedido a nosso exclusivo critério.",
-        "Hóspedes Temporários apenas acedem às Áreas Comuns e não podem entrar nos quartos.",
-        "Hóspedes Oficiais do Hostel não podem conceder este estatuto a terceiros.",
-        "Pedidos podem ser aceites entre 9:00 e 23:00 em dias de funcionamento do hostel.",
-        "Reservamo‑nos o direito de recusar ou revogar o estatuto a qualquer momento."
-      ]
-    },
-    "s21": {
-      "title": "21. Pessoas Não Registadas",
-      "body": [
-        "Por lei, todas as pessoas alojadas devem estar registadas, incluindo Hóspedes Temporários.",
-        "Se detetarmos pessoa não registada num quarto, podemos cobrar a tarifa padrão por pessoa não registada, mais taxa administrativa igual ao dobro da tarifa padrão.",
-        "A pessoa não registada deve fazer check‑in e seguir os procedimentos; caso contrário, poderemos informar as autoridades.",
-        "Não reportar pessoa não registada pode levar ao cancelamento da reserva (podendo aplicar‑se a política de No Show)."
-      ]
-    },
-    "s22": {
-      "title": "22. Check‑out",
-      "body": [
-        "O horário oficial de check‑out é entre 7:30 e 10:30.",
-        "Após o check‑out, não volte a entrar no quarto nem deixe pertences no interior.",
-        "Deve cumprir as condições de Pós Check‑out descritas nestes termos."
-      ]
-    },
-    "s23": {
-      "title": "23. Check‑out Antecipado",
-      "body": [
-        "Se precisar de sair antes das 7:30, dirija‑se à receção na noite anterior para organizar o check‑out antecipado e o reembolso do depósito da Keycard.",
-        "A não devolução da Keycard implica perda do depósito.",
-        "Depósitos são reembolsados apenas em numerário e presencialmente a um membro da equipa."
-      ]
-    },
-    "s24": {
-      "title": "24. Check‑out Tardio",
-      "body": [
-        "Disponível apenas mediante acordo prévio por escrito, permitindo check‑out até às 12:00.",
-        "Serviço discricionário, dependente da ocupação, a confirmar por escrito.",
-        "Custo: 40 €; atribuído por ordem de pedido."
-      ]
-    },
-    "s25": {
-      "title": "25. Falha em Fazer Check‑out",
-      "body": [
-        "Se não fizer check‑out à hora acordada, podemos remover os seus pertences do quarto sem responsabilidade.",
-        "Qualquer tentativa de aceder a áreas reservadas a hóspedes após a hora pode ser tratada como violação de segurança, segundo as nossas políticas.",
-        "Podemos transferir os pertences para um serviço local de porteiros/armazenamento; as taxas são definidas por esse serviço."
-      ]
-    },
-    "s26": {
-      "title": "26. Pós Check‑out",
-      "body": [
-        "Concluído o check‑out, a sua Reserva de Quarto Confirmada considera‑se cumprida, independentemente de noites remanescentes.",
-        "Deixa de ser Hóspede Oficial e passa a Hóspede Temporário até às 15:30.",
-        "Mediante pedido, poderemos inscrevê‑lo na guarda‑volumes, a nosso critério e com termos próprios."
-      ]
-    },
-    "s27": {
-      "title": "27. Álcool",
-      "body": [
-        "Sendo estabelecimento licenciado, é proibido trazer álcool adquirido fora para o hostel.",
-        "Se detetado, poderemos guardá‑lo e devolvê‑lo no check‑out ou quando garantido o consumo fora das instalações.",
-        "O incumprimento pode levar ao cancelamento imediato da reserva (aplica‑se política de No Show)."
-      ]
-    },
-    "s28": {
-      "title": "28. Alteração destes Termos e Condições",
-      "body": [
-        "Estes Termos e Condições constituem o acordo integral entre si e o Hostel e substituem quaisquer entendimentos anteriores, escritos ou orais.",
-        "Reservamo‑nos o direito de os alterar a qualquer momento."
-      ]
-    },
-    "s29": {
-      "title": "29. Âmbito de Responsabilidade",
-      "body": [
-        "A nossa responsabilidade limita‑se aos serviços e itens listados nestes termos.",
-        "A responsabilidade total não excederá o montante pago por si pela reserva.",
-        "Não respondemos por perdas ou danos a bens pessoais, salvo quando exigido por lei.",
-        "Não respondemos por perdas indiretas, consequenciais ou económicas, nem por perda de lucro, clientela ou oportunidade, incluindo quando decorrentes de negligência ou força maior.",
-        "Dispomos de armazenamento seguro para objetos de valor, sem assumir responsabilidade financeira pelos mesmos.",
-        "Reservamo‑nos o direito de mover itens durante a limpeza sem aviso."
-      ]
-    },
-    "s30": {
-      "title": "30. Lei Aplicável",
-      "body": [
-        "Estes termos são regidos pela lei italiana; qualquer ação deverá ser proposta nos tribunais de Itália."
-      ]
-    },
-    "s31": {
-      "title": "31. Informações do Website",
-      "body": [
-        "Empenhamo‑nos em garantir a exatidão das informações no nosso website; não obstante, não nos responsabilizamos por erros ou omissões.",
-        "Reservamo‑nos o direito de alterar o Website e os seus conteúdos a qualquer momento, sem aviso.",
-        "Algumas imagens representam o estilo geral das nossas instalações e podem não refletir exatamente o produto/aspecto mostrado.",
-        "Todo o conteúdo (textos, imagens, marcas) é propriedade do Hostel e não pode ser utilizado sem autorização escrita.",
-        "Fornecemos ligações a sites de terceiros para conveniência; não nos responsabilizamos pelo seu conteúdo ou utilização.",
-        "Consulte a nossa política de privacidade para saber como protegemos a sua privacidade ao usar o website."
-      ]
-    },
-    "s32": {
-      "title": "32. Política de Saúde e Segurança",
-      "body": [
-        "Para garantir segurança e bem‑estar, qualquer hóspede recentemente exposto a doença transmissível deve agir responsavelmente.",
-        "Reservas pré‑pagas e não reembolsáveis mantêm‑se não reembolsáveis nestas circunstâncias.",
-        "Recomendamos vivamente contratar seguro de viagem contra imprevistos, incluindo doença ou impossibilidade de viajar."
-      ]
-    },
-    "s33": {
-      "title": "33. Cupões",
-      "body": [
-        "Podemos emitir cupões promocionais periodicamente.",
-        "Os cupões são válidos exclusivamente para reservas feitas no nosso website oficial (hostel-positano.com).",
-        "Cada cupão pode estar sujeito a termos específicos adicionais aos aqui previstos."
+        "Este apêndice deve ser consistente com o que é mostrado na reserva.",
+        "A1. Tarifa não reembolsável (pré‑paga) — Pagamento: 100% na reserva/confirmação. Cancelamento: sem reembolso (salvo exigência legal). No Show: sem reembolso. Alterações: tratadas como nova reserva; preço/tarifa podem variar; sujeito à disponibilidade.",
+        "A2. Tarifa reembolsável (apenas garantia) — Pagamento: no check‑in (ou dentro de um prazo pré‑chegada indicado), mas podemos pré‑autorizar na reserva. Cancelamento gratuito: até 72 horas antes de 15:00 no dia de chegada. Taxa de Cancelamento tardio: o maior entre a primeira noite ou qualquer depósito não reembolsável, mais qualquer taxa administrativa de cancelamento aplicável. Taxa de No Show: o maior entre a primeira noite ou qualquer depósito não reembolsável.",
+        "A3. Taxa administrativa de cancelamento — €5 por reserva, exibida na reserva e reiterada no email de confirmação."
       ]
     }
   }

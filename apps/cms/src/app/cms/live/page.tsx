@@ -1,15 +1,19 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
-import { listShops } from "../../../lib/listShops";
-import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { LivePreviewList } from "./LivePreviewList";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { TranslationsProvider } from "@acme/i18n/Translations";
+
 import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+
+import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
+
+import { listShops } from "../../../lib/listShops";
+
+import { LivePreviewList } from "./LivePreviewList";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const HERO_LABEL_CLASS = "text-hero-foreground/80";

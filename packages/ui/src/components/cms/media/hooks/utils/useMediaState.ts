@@ -2,15 +2,16 @@
 "use client";
 
 import { useCallback, useState } from "react";
+
 import type { MediaItem } from "@acme/types";
 
-import { ensureHasUrl } from "./utils";
 import type {
   MediaItemWithUrl,
   MediaManagerState,
   StateUpdater,
   ToastState,
 } from "./types";
+import { ensureHasUrl } from "./utils";
 
 export interface MediaStateActions {
   setFiles: (value: StateUpdater<MediaItemWithUrl[]>) => void;

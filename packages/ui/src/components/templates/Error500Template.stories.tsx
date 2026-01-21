@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { Error500Template } from "./Error500Template";
 
 const meta: Meta<typeof Error500Template> = {

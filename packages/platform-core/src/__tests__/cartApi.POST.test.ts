@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { buildRequest, mockCartCookie, mockCartStore, CART_COOKIE } from "./cartApi.test.utils";
+import { buildRequest, CART_COOKIE,mockCartCookie, mockCartStore } from "./cartApi.test.utils";
 
 describe("cart API POST", () => {
   afterEach(() => {

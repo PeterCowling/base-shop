@@ -1,15 +1,13 @@
 import { NextRequest } from "next/server";
-import { middleware } from "../middleware";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
+import { __resetMockToken,__setMockToken } from "next-auth/jwt";
+
 import { canRead, canWrite } from "@acme/auth/rbac";
+
+import { middleware } from "../middleware";
 
 jest.mock("../auth/secret", () => ({ authSecret: "test-secret" }));
 // Use centralized next-auth/jwt mock via moduleNameMapper
 jest.mock("@acme/auth/rbac", () => ({ canRead: jest.fn(), canWrite: jest.fn() }));
-jest.mock("@acme/shared-utils", () => ({
-  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
-  withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
-}));
 
 const canReadMock = canRead as jest.MockedFunction<typeof canRead>;
 const canWriteMock = canWrite as jest.MockedFunction<typeof canWrite>;

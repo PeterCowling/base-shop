@@ -1,20 +1,20 @@
 // src/routes/guides/boat-tours-positano.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import ImageGallery from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideHref } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, type GuideManifestEntry } from "./guide-manifest";
 import { resolveGuideOgType } from "./guide-seo/utils/resolveOgType";
-
-import ImageGallery from "@/components/guides/ImageGallery";
-import i18n from "@/i18n";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-import { normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
 
 export const handle = { tags: ["experiences", "boat", "positano"] };
 export const GUIDE_KEY: GuideKey = "boatTours";

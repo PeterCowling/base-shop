@@ -1,4 +1,4 @@
-import { validatePlacement, canDropChild } from "../placement";
+import { canDropChild,validatePlacement } from "../placement";
 
 const node = (type: string, children?: any[]) => ({ id: type.toLowerCase(), type, ...(children ? { children } : {}) });
 

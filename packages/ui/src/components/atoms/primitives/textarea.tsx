@@ -2,6 +2,7 @@
 "use client";
 
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
 import { FormField } from "../FormField";
 
@@ -68,6 +69,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       props.value !== undefined
         ? String(props.value).length > 0
         : Boolean(props.defaultValue);
+    const required = props.required;
+    const formClassName = wrapperClassName;
 
     /* ------------------------------------------------------------------
      * Render
@@ -78,8 +81,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         label={!floatingLabel ? label : undefined}
         description={description}
         error={error}
-        required={props.required}
-        className={wrapperClassName}
+        {...(required !== undefined ? { required } : {})}
+        {...(formClassName !== undefined ? { className: formClassName } : {})}
         // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
         input={({ id: controlId, describedBy, ariaInvalid }) =>
           floatingLabel ? (
@@ -107,16 +110,26 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               )}
             </div>
           ) : (
-            <textarea
-              id={controlId}
-              ref={ref}
-              className={baseClasses}
-              aria-invalid={ariaInvalid}
-              aria-describedby={describedBy}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              {...props}
-            />
+            <div className="flex flex-col gap-1"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
+              {label && (
+                <label
+                  htmlFor={controlId}
+                  className="block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                >
+                  {label}
+                </label>
+              )}
+              <textarea
+                id={controlId}
+                ref={ref}
+                className={baseClasses}
+                aria-invalid={ariaInvalid}
+                aria-describedby={describedBy}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                {...props}
+              />
+            </div>
           )
         }
       />

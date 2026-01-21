@@ -2,12 +2,13 @@
 
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
-import { signIn } from "next-auth/react";
+import type { ChangeEvent,FormEvent, MouseEvent } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { FormEvent, MouseEvent, ChangeEvent } from "react";
-import { useRef, useState } from "react";
+import { signIn } from "next-auth/react";
+
+import { Button, Input } from "@/components/atoms/shadcn";
 
 export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   const router = useRouter();

@@ -1,4 +1,12 @@
-import { readFile, readdir } from "fs/promises";
+import { readdir,readFile } from "fs/promises";
+
+import { coreEnv } from "@acme/config/env/core";
+import {
+  markLateFeeCharged,
+  readOrders,
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { logger } from "@acme/platform-core/utils";
+import { stripe } from "@acme/stripe";
 
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
@@ -24,14 +32,6 @@ jest.mock("@acme/platform-core/utils", () => ({
 jest.mock("@acme/config/env/core", () => ({
   coreEnv: {},
 }));
-
-import { stripe } from "@acme/stripe";
-import {
-  readOrders,
-  markLateFeeCharged,
-} from "@acme/platform-core/repositories/rentalOrders.server";
-import { logger } from "@acme/platform-core/utils";
-import { coreEnv } from "@acme/config/env/core";
 
 export const readdirMock = readdir as unknown as jest.Mock;
 export const readFileMock = readFile as unknown as jest.Mock;

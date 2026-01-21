@@ -1,4 +1,5 @@
 import { renderHook } from "@testing-library/react";
+
 import useContrastWarnings from "../useContrastWarnings";
 
 // i18n-exempt: test names

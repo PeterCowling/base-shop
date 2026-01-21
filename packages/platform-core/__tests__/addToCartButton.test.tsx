@@ -2,10 +2,12 @@
 
 // Import CartContext directly from source to avoid alias mismatches during tests.
 import React from "react";
-import { CartProvider, useCart } from "../src/contexts/CartContext";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@acme/platform-core/products";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { CartProvider, useCart } from "../src/contexts/CartContext";
 
 function Qty() {
   const [state] = useCart();

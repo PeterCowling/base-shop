@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { getCsrfToken } from "@acme/shared-utils";
+
+import { getCsrfToken } from "@acme/lib/security";
+
 import ProfileForm from "../ProfileForm";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
@@ -14,7 +16,7 @@ describe("ProfileForm", () => {
   });
 
   afterEach(() => {
-    delete global.fetch;
+    (global as Partial<typeof globalThis>).fetch = undefined;
   });
 
   it("shows validation errors when fields are empty", async () => {

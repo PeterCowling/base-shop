@@ -1,16 +1,17 @@
 // src/utils/routeHead.ts
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import { PUBLIC_BASE_URL } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { getOrigin } from "@/root/environment";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 // Use a namespace import so partial vi.mocks that only export a subset
 // of the SEO helpers (e.g. pageHead) don't throw at import time.
 import * as seo from "@/utils/seo";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { getSlug } from "@/utils/slug";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { getOrigin } from "@/root/environment";
-import { PUBLIC_BASE_URL } from "@/config/env";
 
 const FALLBACK_CANONICAL_ORIGIN = "https://hostel-positano.com";
 
@@ -164,7 +165,17 @@ export function buildRouteLinks(args?: BuildRouteLinksArgs): ReturnType<LinksFun
   const contextSource = args ?? routeLinkContextStack.pop() ?? lastRouteLinkContext;
   if (!contextSource) return [];
 
-  const resolvedOrigin = contextSource.origin ?? CANONICAL_ORIGIN;
+  const resolvedOrigin = (() => {
+    if (contextSource.origin) return contextSource.origin;
+    if (contextSource.url) {
+      try {
+        return new URL(contextSource.url).origin;
+      } catch {
+        // ignore invalid url and fall back
+      }
+    }
+    return CANONICAL_ORIGIN;
+  })();
 
   const resolvedPath = (() => {
     if (contextSource.path && contextSource.path.trim().length > 0) {

@@ -1,13 +1,14 @@
 // packages/ui/src/components/cms/page-builder/panels/content/ColumnsControls.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
-import { Input } from "../../../../atoms/shadcn";
+import type { PageComponent } from "@acme/types";
+
 import { Tooltip } from "../../../../atoms";
-import { Button } from "../../../../atoms/shadcn";
-import type { ContentComponent, HandleInput } from "./types";
+import { Button,Input  } from "../../../../atoms/shadcn";
+
 import { isOverridden, nonNegative } from "./helpers";
+import type { ContentComponent, HandleInput } from "./types";
 
 interface Props {
   component: PageComponent;

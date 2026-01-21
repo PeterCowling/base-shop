@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
 import dynamic from "next/dynamic";
 
-import { RouteDataProvider } from "@/compat/router-state";
+import type { RouteModule } from "@/compat/route-module-types";
 import { routeModules } from "@/compat/route-modules";
 import type { ResolvedMatch } from "@/compat/route-runtime";
+import { RouteDataProvider } from "@/compat/router-state";
 
 const componentCache = new Map<string, React.ComponentType<Record<string, unknown>>>();
 
@@ -20,7 +21,10 @@ const getRouteComponent = (file: string): React.ComponentType<Record<string, unk
 
   const Component = dynamic(
     () =>
-      loader().then((mod) => (mod.default ?? (() => null)) as React.ComponentType<Record<string, unknown>>),
+      loader().then((mod) => {
+        const routeModule = mod as RouteModule;
+        return routeModule.default ?? (() => null);
+      }),
     { ssr: true },
   );
   componentCache.set(file, Component);

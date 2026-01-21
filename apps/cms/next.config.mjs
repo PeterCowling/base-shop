@@ -3,6 +3,7 @@ import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import preset from "@acme/next-config/next.config.mjs";
 
 const require = createRequire(import.meta.url);
@@ -170,7 +171,6 @@ const nextConfig = {
       "@acme/ui",
       "@acme/date-utils",
       "@acme/lib",
-      "@acme/shared-utils",
       "@acme/types",
       "@acme/tailwind-config",
       "@acme/design-tokens",

@@ -1,9 +1,12 @@
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { ProductDetailTemplate } from "../ProductDetailTemplate";
+
 import type { SKU } from "@acme/types";
-import "../../../../../../test/resetNextMocks";
+
+import { ProductDetailTemplate } from "../ProductDetailTemplate";
 
 jest.mock("../../atoms/Price", () => ({
   Price: ({ amount }: any) => <div data-cy="price">{amount}</div>,
@@ -16,7 +19,7 @@ jest.mock("../../atoms/ProductBadge", () => ({
 }));
 
 describe("ProductDetailTemplate", () => {
-  const product: SKU & { badges?: { label: string; variant?: string }[] } = {
+  const product: SKU & { badges?: { label: string; variant?: "default" | "sale" | "new" }[] } = {
     id: "1",
     slug: "prod-1",
     title: "Product 1",

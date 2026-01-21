@@ -1,11 +1,13 @@
 import { LOCALES } from "@acme/i18n";
-import type { Locale } from "@acme/types";
 import {
-  historyStateSchema,
   type HistoryState,
+  historyStateSchema,
 } from "@acme/page-builder-core";
-import { tryJsonParse } from "../../utils/formData";
+import type { Locale } from "@acme/types";
+
 import { captureException } from "@/utils/sentry.server";
+
+import { tryJsonParse } from "../../utils/formData";
 
 export function mapLocales(
   data: Record<string, string | undefined>
@@ -17,7 +19,7 @@ export function mapLocales(
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
-  LOCALES.forEach((l) => {
+  (LOCALES as readonly Locale[]).forEach((l) => {
     title[l] = data[`title_${l}`] ?? "";
     description[l] = data[`desc_${l}`] ?? "";
     image[l] = data.image ?? "";

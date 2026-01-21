@@ -1,7 +1,7 @@
 // src/routes/guides/cheapEatsInPositano/buildGalleryContent.ts
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 
-import { GUIDE_KEY, type GalleryCopy, type GalleryItem } from "./constants";
+import { type GalleryCopy, type GalleryItem,GUIDE_KEY } from "./constants";
 import { normalizeText } from "./normalizeText";
 import type { CheapEatsTranslationContext } from "./useCheapEatsTranslationContext";
 

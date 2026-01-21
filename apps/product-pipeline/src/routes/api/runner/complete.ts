@@ -1,10 +1,11 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/runner/complete.ts
 
-import type { D1PreparedStatement, PipelineEventContext } from "../_lib/types";
 import { z } from "zod";
+
 import { fetchStageRunById, getDb, nowIso, type PipelineEnv } from "../_lib/db";
 import { errorResponse, jsonResponse } from "../_lib/response";
+import type { D1PreparedStatement, PipelineEventContext } from "../_lib/types";
 
 const errorSchema = z.object({
   message: z.string().min(1),

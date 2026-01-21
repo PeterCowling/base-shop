@@ -1,7 +1,8 @@
 // src/routes/($lang)._locale.ts
 // Minimal locale guard loader for tests and future routing
-import { redirect, type ClientLoaderFunctionArgs } from "react-router-dom";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type ClientLoaderFunctionArgs,redirect } from "react-router-dom";
+
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 
 export async function clientLoader({ request, params }: ClientLoaderFunctionArgs) {
   const { supportedLngs, fallbackLng } = i18nConfig;

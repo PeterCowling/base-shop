@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import { validateShopName } from "@acme/lib";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { readRepo } from "@acme/platform-core/repositories/products.server";
 import { getProductById, PRODUCTS } from "@acme/platform-core/products";
+import { readRepo } from "@acme/platform-core/repositories/products.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import type { ProductPublication, SKU } from "@acme/types";
 
 const DEFAULT_FIELDS = ["id", "title", "description", "price", "media"] as const;
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
         );
 
   const items = all.slice(0, limit).map((p) => {
-    const sku: SKU | null = getProductById(p.sku);
+    const sku = getProductById(p.sku) as SKU | null;
     const item: Record<string, unknown> = {};
     if (fields.includes("id")) item.id = p.id;
     if (fields.includes("title")) item.title = p.title;

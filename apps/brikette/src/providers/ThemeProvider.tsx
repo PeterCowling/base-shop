@@ -1,7 +1,7 @@
 // src/providers/ThemeProvider.tsx
 // -----------------------------------------------------------------
 export {
-  ThemeProvider,
   ThemeContext,
   type ThemeContextValue,
+  ThemeProvider,
 } from "@acme/ui/providers/ThemeProvider";

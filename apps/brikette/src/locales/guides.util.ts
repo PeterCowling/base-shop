@@ -3,7 +3,7 @@
 // Small pure helpers used by the guides loaders/state.
 // -----------------------------------------------------------------------------
 
-import type { JsonModule, PartialGuidesNamespace, GuidesNamespace } from "./guides.types";
+import type { GuidesNamespace,JsonModule, PartialGuidesNamespace } from "./guides.types";
 
 export function readModule<T>(mod: JsonModule<T>): T {
   if (mod && typeof mod === "object" && "default" in mod && (mod as { default?: T }).default !== undefined) {

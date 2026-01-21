@@ -1,6 +1,8 @@
-import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { Stack } from "@acme/ui/components/atoms/primitives";
+
+import PageHeader from "@/components/PageHeader";
+
 import MissionControlClient from "./MissionControlClient";
 
 export default async function MissionControlPage() {
@@ -18,24 +20,11 @@ export default async function MissionControlPage() {
       artifactsLabel: t("pipeline.missionControl.hud.artifacts"),
       xpLabel: t("pipeline.missionControl.hud.xp"),
       nextLevelLabel: t("pipeline.missionControl.hud.nextLevel"),
-      statusSyncing: t("pipeline.missionControl.hud.statusSyncing"),
-      statusOffline: t("pipeline.missionControl.hud.statusOffline"),
-      streakSummary: t("pipeline.missionControl.hud.streakSummary"),
-      streakEmpty: t("pipeline.missionControl.hud.streakEmpty"),
-      levelUpToast: t("pipeline.missionControl.hud.levelUpToast"),
     },
     missions: {
       label: t("pipeline.missionControl.missions.label"),
       title: t("pipeline.missionControl.missions.title"),
       busyLabel: t("pipeline.missionControl.missions.busy"),
-      readyLabel: t("pipeline.missionControl.missions.ready"),
-      resultSuccessLabel: t("pipeline.missionControl.missions.success"),
-      resultErrorLabel: t("pipeline.missionControl.missions.error"),
-      runningLabel: t("pipeline.missionControl.missions.running"),
-      metaTargets: t("pipeline.missionControl.missions.meta.targets"),
-      metaPromotionLimit: t("pipeline.missionControl.missions.meta.promotionLimit"),
-      metaQueue: t("pipeline.missionControl.missions.meta.queue"),
-      failureSummary: t("pipeline.missionControl.missions.failureSummary"),
       triageBlitz: {
         title: t("pipeline.missionControl.missions.triageBlitz.title"),
         description: t("pipeline.missionControl.missions.triageBlitz.description"),
@@ -80,15 +69,6 @@ export default async function MissionControlPage() {
       hint: t("pipeline.missionControl.map.hint"),
       mode2d: t("pipeline.missionControl.map.mode2d"),
       mode3d: t("pipeline.missionControl.map.mode3d"),
-      webglUnavailable: t("pipeline.missionControl.map.webglUnavailable"),
-      runsLabel: t("pipeline.missionControl.map.runsLabel"),
-      nodeLabels: {
-        P: t("pipeline.missionControl.map.nodes.P"),
-        M: t("pipeline.missionControl.map.nodes.M"),
-        S: t("pipeline.missionControl.map.nodes.S"),
-        K: t("pipeline.missionControl.map.nodes.K"),
-        L: t("pipeline.missionControl.map.nodes.L"),
-      },
     },
     achievements: {
       label: t("pipeline.missionControl.achievements.label"),

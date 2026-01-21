@@ -1,29 +1,30 @@
 // src/routes/guides/porter-service-positano.tsx
-import { memo, useMemo, type ComponentType } from "react";
+import { type ComponentType,memo, useMemo } from "react";
+import type { LinksFunction,MetaFunction  } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import type { GuideSeoTemplateProps } from "./guide-seo/types";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import { createPreviewContext, createInitialExtras } from "./porter-service-positano.preview";
-import { createGuideExtrasBuilder } from "./porter-service-positano.guide-extras";
 import { createArticleLead } from "./porter-service-positano.article-lead";
-import { createBuildTocItems } from "./porter-service-positano.toc";
-import { createBuildHowToSteps } from "./porter-service-positano.how-to";
-import { createGuideFaqFallback } from "./porter-service-positano.faq-fallback";
-import { createAdditionalScripts } from "./porter-service-positano.service-data";
-import { ALSO_HELPFUL_TAGS, RELATED_GUIDES } from "./porter-service-positano.extras";
 // Use namespace import so tests can partially mock the constants module
 import * as CONSTS from "./porter-service-positano.constants";
+import { ALSO_HELPFUL_TAGS, RELATED_GUIDES } from "./porter-service-positano.extras";
+import { createGuideFaqFallback } from "./porter-service-positano.faq-fallback";
+import { createGuideExtrasBuilder } from "./porter-service-positano.guide-extras";
+import { createBuildHowToSteps } from "./porter-service-positano.how-to";
+import { createInitialExtras,createPreviewContext } from "./porter-service-positano.preview";
+import { createAdditionalScripts } from "./porter-service-positano.service-data";
+import { createBuildTocItems } from "./porter-service-positano.toc";
 import { getGuidesFallbackTranslator, getGuidesTranslator } from "./porter-service-positano.translators";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import type { MetaFunction } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction } from "react-router";
+
 type PositanoConstants = typeof import("./porter-service-positano.constants");
 const C: Partial<PositanoConstants> = CONSTS;
 
@@ -31,8 +32,8 @@ export {
   computePorterGuideExtras,
   createPorterHowToSteps,
 } from "./porter-service-positano.extras";
-export { getGuidesFallbackTranslator, getGuidesTranslator } from "./porter-service-positano.translators";
 export { normaliseFaqs, normaliseSections, normaliseToc } from "./porter-service-positano.normalisers";
+export { getGuidesFallbackTranslator, getGuidesTranslator } from "./porter-service-positano.translators";
 
 function PorterService(): JSX.Element {
   const OG_IMAGE = C.OG_IMAGE ?? {

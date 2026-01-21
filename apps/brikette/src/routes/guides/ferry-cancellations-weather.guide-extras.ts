@@ -1,11 +1,10 @@
-import { ensureStringArray } from "@/utils/i18nContent";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { ensureStringArray } from "@/utils/i18nContent";
 
+import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { GUIDE_KEY } from "./ferry-cancellations-weather.constants";
 import { normaliseFaqs, normaliseGallery, normaliseSections } from "./ferry-cancellations-weather.normalisers";
 import { getGuidesFallbackTranslator, getGuidesTranslator } from "./ferry-cancellations-weather.translators";
-
-import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import type { FerryFaq, GuideExtras } from "./ferry-cancellations-weather.types";
 
 const ensureLabel = (value: string | undefined, fallback: string): string => {

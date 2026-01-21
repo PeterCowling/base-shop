@@ -1,16 +1,18 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
-import Image from "next/image";
 import * as React from "react";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
-import { cn } from "../../utils/style";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
-import { ProductBadge } from "../atoms/ProductBadge";
-import type { SKU } from "@acme/types";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
-import { Stack, Inline } from "../atoms/primitives";
+import type { SKU } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
+import { Inline,Stack } from "../atoms/primitives";
+import { ProductBadge } from "../atoms/ProductBadge";
+import { Button } from "../atoms/shadcn";
 
 export interface ProductDetailTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

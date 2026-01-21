@@ -1,11 +1,15 @@
 import "@testing-library/jest-dom";
-import { render, waitFor, act } from "@testing-library/react";
+
+import * as React from "react";
+import { act,render, waitFor } from "@testing-library/react";
+
+import ProductGrid from "../src/components/cms/blocks/ProductGrid.client";
+import { fetchCollection } from "../src/components/cms/blocks/products/fetchCollection";
 
 jest.mock("react", () => {
   const actual = jest.requireActual("react");
   return { ...actual, useState: jest.fn(actual.useState) };
 });
-import * as React from "react";
 
 jest.mock("../src/components/cms/blocks/products/fetchCollection", () => ({
   fetchCollection: jest.fn(),
@@ -21,9 +25,6 @@ jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
     ) : null;
   },
 }));
-
-import ProductGrid from "../src/components/cms/blocks/ProductGrid.client";
-import { fetchCollection } from "../src/components/cms/blocks/products/fetchCollection";
 
 describe("ProductGrid.client", () => {
   let setItems: (val: any) => void;
@@ -65,7 +66,7 @@ describe("ProductGrid.client", () => {
   it("does not update state after unmount", async () => {
     let resolve: (value: unknown) => void;
     (fetchCollection as jest.Mock).mockImplementationOnce(
-      () => new Promise((res) => (resolve = res))
+      () => new Promise((r) => (resolve = r))
     );
 
     const { unmount } = render(<ProductGrid collectionId="col" />);

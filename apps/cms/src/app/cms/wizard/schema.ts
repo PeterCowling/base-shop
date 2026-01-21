@@ -1,19 +1,21 @@
 // apps/cms/src/app/cms/wizard/schema.ts
+import { ulid } from "ulid";
+import { z, type ZodType } from "zod";
+
 import { LOCALES } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import {
-  pageComponentSchema,
-  localeSchema,
   type Locale,
+  localeSchema,
   type PageComponent,
+  pageComponentSchema,
 } from "@acme/types";
 import {
   environmentSettingsSchema,
   providerSettingsSchema,
   themeSettingsSchema,
 } from "@acme/types/settings";
-import { ulid } from "ulid";
-import { z, type ZodType } from "zod";
+
 import { baseTokens } from "./tokenUtils";
 
 /* -------------------------------------------------------------------------- */
@@ -54,15 +56,13 @@ type NavItemInternal = {
 };
 
 export const navItemSchema: ZodType<NavItemInternal> = z.lazy(
-  (): ZodType<NavItemInternal> =>
-    z
-      .object({
-        id: z.string(),
-        label: z.string(),
-        url: z.string().url(),
-        children: z.array(navItemSchema).optional(),
-      })
-      .strict(),
+  () =>
+    z.object({
+      id: z.string(),
+      label: z.string(),
+      url: z.string().url(),
+      children: z.array(navItemSchema).optional(),
+    }) as ZodType<NavItemInternal>,
 );
 
 export type NavItem = z.infer<typeof navItemSchema>;

@@ -1,5 +1,6 @@
-import appI18n from "@/i18n";
 import type { TFunction } from "i18next";
+
+import appI18n from "@/i18n";
 
 import { GUIDE_KEY } from "./constants";
 

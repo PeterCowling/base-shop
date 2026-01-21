@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import type { Page } from "@acme/types";
+
 import PagesTable from "./PagesTable";
 
 const pages: Page[] = [

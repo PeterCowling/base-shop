@@ -1,53 +1,56 @@
 // src/routes/guides/_GuideSeoTemplate.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- DEV-000 [ttl=2099-12-31] Template helper (_-prefixed) not shipped as a route. It intentionally contains placeholders, broad typing, and debug strings. Suppress to reduce IDE noise per src/routes/AGENTS.md; real routes must not rely on these disables. */
-import { memo, useContext, useEffect, useMemo, useRef, isValidElement } from "react";
-
-import { Section } from "@acme/ui/atoms/Section";
+import { isValidElement,memo, useContext, useEffect, useMemo, useRef } from "react";
 import { UNSAFE_DataRouterStateContext } from "react-router";
 
+import { Section } from "@acme/ui/atoms/Section";
+
+import TableOfContents from "@/components/guides/TableOfContents";
+import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { DEFAULT_OG_IMAGE, HOW_TO_JSON_TYPE } from "./guide-seo/constants";
-import { useGuideTranslations } from "./guide-seo/translations";
-import { useGuideContent } from "./guide-seo/useGuideContent";
-import { useGuideMeta } from "./guide-seo/useGuideMeta";
-import { useOgImage } from "./guide-seo/useOgImage";
-import { useCanonicalUrl } from "./guide-seo/useCanonicalUrl";
-import { useGuideBreadcrumb } from "./guide-seo/useGuideBreadcrumb";
-import { useStructuredTocItems } from "./guide-seo/useStructuredTocItems";
-import { useGuideSeoContext } from "./guide-seo/useGuideSeoContext";
-import { useHowToJson } from "./guide-seo/useHowToJson";
-import type { GuideSeoTemplateProps } from "./guide-seo/types";
+import i18n from "@/i18n";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { debugGuide } from "@/utils/debug";
-import {
-  buildStructuredFallback,
-  probeHasLocalizedStructuredContent,
-  type StructuredFallback,
-} from "./guide-seo/utils/fallbacks";
-import FaqStructuredDataBlock from "./guide-seo/components/FaqStructuredDataBlock";
-import DevStatusPill from "./guide-seo/components/DevStatusPill";
-import GuideEditorialPanel from "./guide-seo/components/GuideEditorialPanel";
-import ArticleHeader from "./guide-seo/components/ArticleHeader";
-import StructuredTocBlock from "./guide-seo/components/StructuredTocBlock";
-import FooterWidgets from "./guide-seo/components/FooterWidgets";
-import HeadSection from "./guide-seo/components/HeadSection";
-import GenericOrFallbackContent from "./guide-seo/components/GenericOrFallbackContent";
-import { useDisplayH1Title } from "./guide-seo/useDisplayH1Title";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
+import type { GuideRouteLoaderData } from "./defineGuideRoute";
+import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "./guide-manifest";
 import {
   buildGuideChecklist,
   getGuideManifestEntry,
   resolveDraftPathSegment,
 } from "./guide-manifest";
-import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "./guide-manifest";
-import type { GuideRouteLoaderData } from "./defineGuideRoute";
-import i18n from "@/i18n";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import TableOfContents from "@/components/guides/TableOfContents";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import ArticleHeader from "./guide-seo/components/ArticleHeader";
+import DevStatusPill from "./guide-seo/components/DevStatusPill";
+import FaqStructuredDataBlock from "./guide-seo/components/FaqStructuredDataBlock";
+import FooterWidgets from "./guide-seo/components/FooterWidgets";
+import GenericOrFallbackContent from "./guide-seo/components/GenericOrFallbackContent";
+import GuideEditorialPanel from "./guide-seo/components/GuideEditorialPanel";
+import HeadSection from "./guide-seo/components/HeadSection";
+import StructuredTocBlock from "./guide-seo/components/StructuredTocBlock";
+import { DEFAULT_OG_IMAGE, HOW_TO_JSON_TYPE } from "./guide-seo/constants";
+import { useGuideTranslations } from "./guide-seo/translations";
+import type { GuideSeoTemplateProps } from "./guide-seo/types";
+import { useCanonicalUrl } from "./guide-seo/useCanonicalUrl";
+import { useDisplayH1Title } from "./guide-seo/useDisplayH1Title";
+import { useGuideBreadcrumb } from "./guide-seo/useGuideBreadcrumb";
+import { useGuideContent } from "./guide-seo/useGuideContent";
+import { useGuideMeta } from "./guide-seo/useGuideMeta";
+import { useGuideSeoContext } from "./guide-seo/useGuideSeoContext";
+import { useHowToJson } from "./guide-seo/useHowToJson";
+import { useOgImage } from "./guide-seo/useOgImage";
+import { useStructuredTocItems } from "./guide-seo/useStructuredTocItems";
+import {
+  buildStructuredFallback,
+  probeHasLocalizedStructuredContent,
+  type StructuredFallback,
+} from "./guide-seo/utils/fallbacks";
 import { resolveGuideOgType } from "./guide-seo/utils/resolveOgType";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 
 // Cache additional head scripts by guide + lang to avoid duplicate
 // invocations across incidental remounts (e.g., StrictMode) in tests.
@@ -110,6 +113,10 @@ function GuideSeoTemplate({
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
 }: GuideSeoTemplateProps): JSX.Element {
+  const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
+  const articleHeadingWeightClass = isExperiencesGuide
+    ? "prose-headings:font-bold"
+    : "prose-headings:font-semibold";
   const lang = useCurrentLanguage();
   const search = typeof window !== "undefined" ? window.location?.search ?? "" : "";
   const translations = useGuideTranslations(lang);
@@ -317,7 +324,8 @@ function GuideSeoTemplate({
   if ((shouldSkipNow || shouldForceSkipFromTranslator) && !skipGenericRef.current) {
     skipGenericRef.current = true;
   }
-  const skipGenericForRequestedLocale = skipGenericRef.current;
+  const skipGenericForRequestedLocale =
+    skipGenericRef.current || guideKey === "positanoBeaches";
 
   const canonicalUrl = useCanonicalUrl({ pathname: canonicalPathname ?? null, lang, guideKey });
 
@@ -464,6 +472,7 @@ function GuideSeoTemplate({
     translateGuides,
     translateGuidesEn,
     ...(typeof buildTocItems === "function" ? { buildTocItems } : {}),
+    renderGenericContent: shouldRenderGenericContentForLocale,
   };
   const { context } = useGuideSeoContext(guideSeoContextArgs);
 
@@ -691,7 +700,7 @@ function GuideSeoTemplate({
               {intro.length > 0 ? (
                 <div className="space-y-4">
                   {intro.map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
+                    <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`)}</p>
                   ))}
                 </div>
               ) : null}
@@ -700,7 +709,7 @@ function GuideSeoTemplate({
                 <section key={`${section.id}-${idxSection}`} id={section.id} className="scroll-mt-28 space-y-4">
                   {section.title ? <h2 className="text-xl font-semibold">{section.title}</h2> : null}
                   {section.body.map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+                    <p key={index}>{renderGuideLinkTokens(paragraph, lang, `section-${section.id}-${index}`)}</p>
                   ))}
                 </section>
               ))}
@@ -715,6 +724,7 @@ function GuideSeoTemplate({
     [
       fallbackStructured,
       hasLocalizedContent,
+      lang,
       preferManualWhenUnlocalized,
       suppressUnlocalizedFallback,
       translatorProvidedEmptyStructured,
@@ -889,9 +899,9 @@ function GuideSeoTemplate({
         {...(typeof guideFaqFallback === "function" ? { guideFaqFallback } : {})}
       />
 
-      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4">
+      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-35 md:px-8 lg:px-10">
         <DevStatusPill guideKey={guideKey as any} />
-        <article className="prose prose-slate dark:prose-invert prose-headings:font-semibold prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-justify space-y-10">
+        <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
           {shouldShowEditorialPanel && manifestEntry ? (
             <GuideEditorialPanel
               manifest={manifestEntry}
@@ -1062,7 +1072,7 @@ function GuideSeoTemplate({
           {articleExtrasNodeRef.current}
         </article>
       </Section>
-      <Section as="div" padding="none" className="max-w-4xl space-y-12 px-4 pb-16 sm:px-6 lg:px-8">
+      <Section as="div" padding="none" className="max-w-4xl space-y-12 px-4 pb-16 sm:px-6 md:px-8 lg:px-10">
         {afterArticleNode}
         <FooterWidgets
           lang={lang as any}
@@ -1081,7 +1091,7 @@ function GuideSeoTemplate({
   );
 }
 
-export { makeGuideMeta, makeGuideLinks } from "./guide-seo/routeHead";
+export { makeGuideLinks,makeGuideMeta } from "./guide-seo/routeHead";
 export default memo(GuideSeoTemplate);
 export type { GuideSeoTemplateContext } from "./guide-seo/types";
 

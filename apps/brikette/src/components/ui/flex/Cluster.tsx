@@ -1,6 +1,6 @@
 // src/components/ui/flex/Cluster.tsx
-import clsx from "clsx";
 import type { ComponentPropsWithoutRef, ElementType } from "react";
+import clsx from "clsx";
 
 import type { PolymorphicProps } from "./types";
 

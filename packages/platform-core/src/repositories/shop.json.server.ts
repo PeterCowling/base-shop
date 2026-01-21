@@ -1,7 +1,8 @@
 import "server-only";
 
-import { shopSchema, type Shop } from "@acme/types";
-import { ensureShopDir, readFromShop, writeToShop, renameInShop } from "../utils/safeFs";
+import { type Shop,shopSchema } from "@acme/types";
+
+import { ensureShopDir, readFromShop, renameInShop,writeToShop } from "../utils/safeFs";
 
 // shop path is resolved via safeFs helpers
 

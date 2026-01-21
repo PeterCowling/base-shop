@@ -1,4 +1,5 @@
 import { __setMockSession } from "next-auth";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 let GET: typeof import("../route").GET;
@@ -12,7 +13,7 @@ beforeAll(async () => {
 
 beforeEach(() => {
   jest.clearAllMocks();
-  fetchMock = jest.fn<typeof fetch>();
+  fetchMock = jest.fn() as jest.MockedFunction<typeof fetch>;
   global.fetch = fetchMock;
 });
 

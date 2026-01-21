@@ -39,8 +39,8 @@ export const EXTENDED_TOKENS: TokenRecord = {
   "--target-material": "48px", /* Material / Android recommended */
 
   /* Safe‑area insets (for full‑bleed layouts across devices) */
-  "--safe-top": "env(safe-area-inset-top, 0px)", // i18n-exempt -- DS-000 ttl=2025-03-31
-  "--safe-right": "env(safe-area-inset-right, 0px)", // i18n-exempt -- DS-000 ttl=2025-03-31
-  "--safe-bottom": "env(safe-area-inset-bottom, 0px)", // i18n-exempt -- DS-000 ttl=2025-03-31
-  "--safe-left": "env(safe-area-inset-left, 0px)", // i18n-exempt -- DS-000 ttl=2025-03-31
+  "--safe-top": "env(safe-area-inset-top, 0px)",
+  "--safe-right": "env(safe-area-inset-right, 0px)",
+  "--safe-bottom": "env(safe-area-inset-bottom, 0px)",
+  "--safe-left": "env(safe-area-inset-left, 0px)",
 };

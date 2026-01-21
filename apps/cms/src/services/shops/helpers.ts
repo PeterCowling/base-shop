@@ -1,8 +1,8 @@
 export { authorize } from "./authorization";
 export {
-  fetchShop,
-  persistShop,
-  fetchSettings,
-  persistSettings,
   fetchDiffHistory,
+  fetchSettings,
+  fetchShop,
+  persistSettings,
+  persistShop,
 } from "./persistence";

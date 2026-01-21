@@ -1,21 +1,24 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
-import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import {
+  historyStateSchema,
   type Page,
   type PageComponent,
-  historyStateSchema,
 } from "@acme/types";
-import { apiRequest } from "../lib/api";
-import { useEffect, useState } from "react";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
-import { useTranslations } from "@acme/i18n";
+
+import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
+import { Button } from "@/components/atoms/shadcn";
+import PageBuilder from "@/components/cms/PageBuilder";
+
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import useStepCompletion from "../hooks/useStepCompletion";
+import { apiRequest } from "../lib/api";
 
 interface Props {
   pageTemplates: Array<{

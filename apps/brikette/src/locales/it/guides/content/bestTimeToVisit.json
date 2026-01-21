@@ -5,77 +5,77 @@
   },
   "linkLabel": "Il periodo migliore per visitare Positano",
   "intro": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Pianifica la visita con aspettative realistiche su meteo, affluenza e disponibilita dei traghetti.",
+    "Usa la tabella stagionale e le note mese per mese per capire quando Positano coincide con le tue priorita."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "In questa pagina",
   "toc": [
     {
       "href": "#matrix",
-      "label": "Traduzione in arrivo."
+      "label": "Matrice meteo/affollamento/prezzi"
     },
     {
       "href": "#months",
-      "label": "Month-by-month notes"
+      "label": "Note mese per mese"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "Domande frequenti"
     }
   ],
   "sections": [
     {
       "id": "matrix",
-      "title": "Traduzione in arrivo.",
+      "title": "Matrice meteo / affollamento / prezzi",
       "body": [
-        "Traduzione in arrivo."
+        "Alta stagione (giu-ago) = caldo, folla e prezzi massimi. Mezza stagione (apr-mag, set-ott) = clima piu mite e miglior rapporto qualita-prezzo. Inverno (nov-mar) = tranquillo con servizi ridotti."
       ]
     },
     {
       "id": "months",
-      "title": "Month-by-month notes",
+      "title": "Note mese per mese",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Aprile: iniziano i traghetti; temperature miti e meno folla.",
+        "Maggio: meteo eccellente; piu corse; weekend piu affollati.",
+        "Giugno-agosto: alta stagione; caldo e code — prenota trasporti e attivita in anticipo.",
+        "Settembre: mare caldo e un po' piu tranquillo di agosto.",
+        "Ottobre: mezza stagione; i traghetti calano verso fine mese.",
+        "Novembre-marzo: bassa stagione tranquilla con servizi ridotti; i bus diventano la spina dorsale.",
+        "La frequenza dei traghetti aumenta in primavera, raggiunge il picco in estate e cala a fine ottobre."
       ]
     }
   ],
   "schemaMonths": [
     {
-      "name": "April",
-      "note": "Traduzione in arrivo."
+      "name": "Aprile",
+      "note": "Inizio della stagione dei traghetti; temperature miti; meno folla."
     },
     {
-      "name": "May",
-      "note": "Traduzione in arrivo."
+      "name": "Maggio",
+      "note": "Ottimo meteo; traghetti frequenti; weekend piu affollati."
     },
     {
-      "name": "June–August",
-      "note": "Traduzione in arrivo."
+      "name": "Giugno-agosto",
+      "note": "Alta stagione; caldo; prenota trasporti/attivita in anticipo."
     },
     {
-      "name": "September",
-      "note": "Traduzione in arrivo."
+      "name": "Settembre",
+      "note": "Mare caldo; meno folla rispetto ad agosto."
     },
     {
-      "name": "October",
-      "note": "Traduzione in arrivo."
+      "name": "Ottobre",
+      "note": "Mezza stagione; i traghetti calano verso fine mese."
     },
     {
-      "name": "November–March",
-      "note": "Traduzione in arrivo."
+      "name": "Novembre-marzo",
+      "note": "Tranquillo; molti servizi ridotti; i bus sono il trasporto principale."
     }
   ],
   "faqs": [
     {
-      "q": "When is the sea warmest?",
+      "q": "Quando il mare e piu caldo?",
       "a": [
-        "Traduzione in arrivo."
+        "Di solito da fine giugno a inizio settembre l'acqua e piu calda per nuotare."
       ]
     }
   ]

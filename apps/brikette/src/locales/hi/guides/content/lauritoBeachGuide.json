@@ -1,126 +1,126 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "Laurito Beach गाइड",
+    "description": "Da Adolfo और Tre Ville में से चुनें, शटल बोट कैसे चलती हैं जानें, और Laurito में बिना तनाव का बीच डे प्लान करें।"
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "Laurito Beach गाइड",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "Laurito, Positano और Praiano के बीच बसा एक छोटा-सा कोव है। Da Adolfo और Villa Tre Ville के दो बीच क्लब तट का अधिकांश हिस्सा संभालते हैं, जिससे सार्वजनिक रेत की सिर्फ़ एक पतली पट्टी बचती है। इनाम है पश्चिममुखी धूप, प्रतिष्ठित लंच स्पॉट और Spiaggia Grande से शांत माहौल।",
+    "इस गाइड से तय करें कि कौन सा क्लब आपके लिए सही है, वाटर टैक्सी कैसे चलती हैं समझें और Hostel Brikette लौटने के लिए बस+सीढ़ियों वाला रूट मैप करें।"
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "Laurito क्यों जाएँ"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "लेआउट और सेवाएँ"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Villa Tre Ville बीच क्लब"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Da Adolfo बीच क्लब"
     },
     {
       "href": "#logistics",
-      "label": "Logistics & getting back"
+      "label": "लॉजिस्टिक्स और वापसी"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "title": "Laurito मेहनत के लायक क्यों है",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "Laurito, Positano के केंद्र से थोड़ी बाहर है, इसलिए यहाँ Spiaggia Grande के मुकाबले भीड़ कम रहती है। धूप शुरुआती शाम तक रहती है, पानी तैराकी के लिए शांत रहता है, और चट्टानों की पृष्ठभूमि क्लासिक Amalfi Coast फोटो देती है।",
+        "छोटे से फ्री स्ट्रिप के लिए आपको या तो पुष्टि किया हुआ आरक्षण चाहिए या धैर्य, लेकिन बैठ जाने के बाद यह Hostel Brikette से छोटी दूरी में सबसे आरामदेह स्पॉट्स में से एक है।"
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "लेआउट और कौन क्या संभालता है",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "कोव तीन हिस्सों में बँटा है। सबसे दाईं ओर अपना तौलिया लाने वालों के लिए एक संकरी सार्वजनिक जगह है। Villa Tre Ville का क्लब टेराकोटा लाउंजर्स के साथ बीच के डेक पर है, जबकि Da Adolfo बाईं ओर लकड़ी के बेड और रेस्टोरेंट टैरेस चलाता है।",
+        "सभी मेहमान या तो बोट से आते हैं या SITA बस स्टॉप से खड़ी सीढ़ियाँ उतरते हैं। पीक समय में कतार की उम्मीद करें क्योंकि दोनों क्लब अधिकांश तटरेखा का प्रवेश नियंत्रित करते हैं।"
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Villa Tre Ville बीच क्लब",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville एक बुटीक क्लब चलाता है जिसमें सीमित लाउंजर्स, ध्यान देने वाली सेवा और उसी अनुरूप कीमतें हैं। प्रीमियम डे-बेड, आ-ला-कार्ट डाइनिंग और कुर्सी तक प्रोसेक्को की सेवा की उम्मीद करें।",
+        "आरक्षण होटल कंसीयज के माध्यम से होता है। हाई सीज़न में दो लोगों के लिए सीटें €200 से ऊपर जा सकती हैं, लेकिन इसमें तौलिए, शॉवर और Spiaggia Grande तक वापसी बोट सेवा शामिल होती है।",
+        "देर दोपहर खास तौर पर सुंदर होती है; स्टाफ अक्सर Positano लौटने वाली अंतिम शटल से पहले सनसेट स्प्रिट्ज़ टेस्टिंग आयोजित करता है।"
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Da Adolfo बीच क्लब",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Da Adolfo अपने नींबू पत्तों पर ग्रिल्ड मोत्ज़ारेला और आरामदायक बोहेमियन माहौल के लिए मशहूर है। बुकिंग काफ़ी मुश्किल होती है — जवाब धीमे आते हैं और उसी दिन के स्लॉट पहले लौटने वाले मेहमानों को मिलते हैं।",
+        "अगर आरक्षण नहीं मिले, तो Spiaggia Grande पर जल्दी पहुँचकर Da Adolfo वाटर टैक्सी में स्टैंडबाय गेस्ट के रूप में शामिल होने को कहें। डॉक पर पहुँचने के बाद स्टाफ आपको नो-शो की वेटलिस्ट में जोड़ देगा।",
+        "दो लोगों के लिए लाउंजर पैकेज लगभग €50–€70 रहता है, जिसमें शटल शामिल है। लंच मेन €18–€26 के होते हैं और किचन देर दोपहर तक खुला रहता है।"
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "title": "लॉजिस्टिक्स, टिकट और वापसी",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "दोनों क्लबों की वाटर टैक्सियाँ Spiaggia Grande के छोटे पियर से चलती हैं। बोट आमतौर पर 09:30 से शुरुआती दोपहर तक हर 30 मिनट में चलती हैं, फिर लगभग 15:00 के बाद वापसी शुरू होती है। समुद्र खुरदरा हो तो डॉक पर चॉकबोर्ड अपडेट देखें।",
+        "पब्लिक ट्रांसपोर्ट चाहिए? आने के लिए हमारा %LINK:lauritoBeachBusDown|बस गाइड% और लौटने के लिए %LINK:lauritoBeachBusBack|रिटर्न गाइड% फ़ॉलो करें। शहर छोड़ने से पहले बस टिकट खरीद लें — Laurito पर टिकट खरीदने की जगह नहीं है।",
+        "वापसी में Sorrento या Positano की ओर जाने वाली तटीय बस सीढ़ियों के प्रवेश के पास रुकती है। 19:00 के बाद सेवाएँ कम हो जाती हैं, इसलिए आख़िरी प्रस्थान की पुष्टि करें या हॉस्टल के ज़रिए टैक्सी का बजट रखें।"
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "क्या उम्मीद करें",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "गर्मियों में दोनों क्लबों के लिए आरक्षण अनिवार्य है; वॉक-इन आमतौर पर 10:00 से पहले ही सफल होते हैं।",
+    "छोटा सार्वजनिक हिस्सा जल्दी भर जाता है — इस्तेमाल करना हो तो अपनी छतरी और मैट के साथ जल्दी पहुँचें।",
+    "वापसी बोट दोपहर बाद जाती हैं; शाम की योजना के लिए बस बैकअप तैयार रखें।"
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "सामान्य लागत",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "Da Adolfo में दो लोगों के लिए लाउंजर सेट: शटल बोट सहित €50–€70।",
+    "Villa Tre Ville प्रीमियम डेक (दो लोगों के लिए): तौलिए और कंसीयज सेवा सहित €180–€220।",
+    "किसी भी क्लब में लंच मेन: €18–€30, कॉकटेल €12–€15, बोतलबंद पानी €3–€4।"
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "त्वरित टिप्स",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "कन्फर्मेशन ईमेल का स्क्रीनशॉट रखें — डॉक के पास मोबाइल सिग्नल कमजोर हो जाता है।",
+    "रीफ-सेफ सनस्क्रीन और वाटर शूज़ साथ रखें; तटरेखा में कंकड़ और पत्थर की स्लैब मिलती हैं।",
+    "Laurito की तुलना अन्य कोव्स से करने के लिए हमारा %LINK:beaches|Positano बीच ओवरव्यू% देखें।"
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "जानने योग्य बातें",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "खुरदरा समुद्र शटल बोट रोक देता है; स्टाफ अपडेट भेजेगा, लेकिन बस आपका एकमात्र वापसी रास्ता हो सकता है।",
+    "कोव में ATM या दुकानें नहीं हैं — खाने और अतिरिक्त चीज़ों के लिए नकद या कार्ड रखें।",
+    "सीढ़ियाँ खड़ी और असमतल हैं; बीच-बीच में विराम लें और ग्रिप वाले जूते पहनें।"
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "Laurito Beach प्रश्नोत्तर",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "क्या मुझे आरक्षण चाहिए?",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "हाँ। दोनों क्लब पुष्टि किए गए बुकिंग वाले मेहमानों को प्राथमिकता देते हैं। Da Adolfo वेटलिस्ट पर स्टैंडबाय मेहमान लेता है, लेकिन पहले से बुक मेहमानों के बैठने के बाद।"
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "क्या मैं सार्वजनिक हिस्सा इस्तेमाल कर सकता/सकती हूँ?",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "हाँ, लेकिन जगह बहुत सीमित है। छाया और पानी सहित जो भी चाहिए सब साथ लाएँ और जगह पाने के लिए 09:30 से पहले पहुँचें।"
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "बोटें कितनी देर तक चलती हैं?",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "अधिकांश रिटर्न शटल गर्मियों में 18:00 तक खत्म हो जाती हैं, शोल्डर सीज़न में इससे पहले। पहुँचते ही अंतिम प्रस्थान की पुष्टि करें और बैकअप के लिए बस समय-सारिणी सहेजें।"
       ]
     }
   ],
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "alt": "Laurito बीच का किनारा"
   }
 }

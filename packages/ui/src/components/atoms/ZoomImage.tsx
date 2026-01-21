@@ -1,7 +1,8 @@
 /* i18n-exempt file -- ABC-123 CSS utility class tokens [ttl=2026-01-31] */
 "use client";
-import Image, { type ImageProps } from "next/image";
 import * as React from "react";
+import Image, { type ImageProps } from "next/image";
+
 import { cn } from "../../utils/style";
 
 export interface ZoomImageProps extends ImageProps {

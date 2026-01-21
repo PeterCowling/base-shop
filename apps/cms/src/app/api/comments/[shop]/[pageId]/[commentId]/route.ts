@@ -1,6 +1,7 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import path from "path";
-import { readJsonFile, writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
+
+import { readJsonFile, withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
 
 type Message = { id: string; text: string; ts: string; author?: string };
 type Thread = {

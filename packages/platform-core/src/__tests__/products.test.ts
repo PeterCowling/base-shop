@@ -1,6 +1,13 @@
 /** @jest-environment node */
 
 import { jest } from '@jest/globals';
+
+import {
+  getProductById,
+  getProductBySlug,
+  getProducts,
+  searchProducts,
+} from '../products';
 import { PRODUCTS } from '../products/index';
 
 const serverMocks = {
@@ -11,13 +18,6 @@ const serverMocks = {
 };
 
 jest.mock('../repositories/products.server', () => serverMocks);
-
-import {
-  getProductBySlug,
-  getProductById,
-  getProducts,
-  searchProducts,
-} from '../products';
 
 describe('getProductBySlug', () => {
   it('returns null for an unknown slug', () => {

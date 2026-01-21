@@ -1,5 +1,5 @@
-import parse from "../src/parseMultilingualInput";
 import { LOCALES } from "../src/locales";
+import parse from "../src/parseMultilingualInput";
 
 describe("parseMultilingualInput normalization", () => {
   it("trims whitespace for single-locale input", () => {

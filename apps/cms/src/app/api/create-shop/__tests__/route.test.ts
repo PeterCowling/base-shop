@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
+
 import { jsonRequest } from '@acme/test-utils';
 
-const createNewShop = jest.fn();
+const createNewShop = jest.fn<Promise<{ ok: boolean }>, any[]>();
 
 jest.mock('@cms/actions/createShop.server', () => ({
   __esModule: true,

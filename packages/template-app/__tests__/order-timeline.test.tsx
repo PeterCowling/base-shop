@@ -1,8 +1,10 @@
 /** @jest-environment jsdom */
-import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
-import OrderTimeline from "../src/app/account/orders/[id]/timeline";
+import { render, screen } from "@testing-library/react";
+
 import { listEvents } from "@acme/platform-core/repositories/reverseLogisticsEvents.server";
+
+import OrderTimeline from "../src/app/account/orders/[id]/timeline";
 
 const events = [
   { id: "1", sessionId: "s1", event: "received", createdAt: "2023-01-01" },

@@ -1,17 +1,18 @@
 // src/routes/guides/fornillo-beach-guide.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import type {} from "@/routes/guides/_GuideSeoTemplate";
 import type { LinksFunction } from "react-router";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
+
 import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["beaches", "positano", "tips"] };
 

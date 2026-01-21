@@ -1,12 +1,13 @@
 /** @jest-environment node */
 
+import { getProductById, updateProductInRepo } from '@acme/platform-core/repositories/json.server';
+
+import { updateProduct } from '../updateProduct.server';
+
 jest.mock('@acme/platform-core/repositories/json.server', () => ({
   getProductById: jest.fn(),
   updateProductInRepo: jest.fn(),
 }));
-
-import { updateProduct } from '../updateProduct.server';
-import { getProductById, updateProductInRepo } from '@acme/platform-core/repositories/json.server';
 
 describe('updateProduct', () => {
   beforeEach(() => {

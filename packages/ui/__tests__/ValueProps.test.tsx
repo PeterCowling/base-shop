@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+
 import ValueProps from "../src/components/home/ValueProps";
 
 const translations: Record<string, string> = {};

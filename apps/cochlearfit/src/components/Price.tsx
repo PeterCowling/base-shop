@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useMemo } from "react";
-import type { CurrencyCode } from "@/types/product";
-import { formatPrice } from "@/lib/pricing";
+
 import { useLocale } from "@/contexts/LocaleContext";
 import { toIntlLocale } from "@/lib/locales";
+import { formatPrice } from "@/lib/pricing";
+import type { CurrencyCode } from "@/types/product";
 
 type PriceProps = {
   amount: number;

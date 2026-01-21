@@ -1,6 +1,6 @@
 // packages/ui/src/lib/__tests__/useThemePalette.test.ts
 /* i18n-exempt file -- TEST-0001: unit test titles and messages are developer-facing */
-import useThemePalette, { mapTokensToCssVars, defaultPalette } from "../useThemePalette";
+import useThemePalette, { defaultPalette,mapTokensToCssVars } from "../useThemePalette";
 
 describe("useThemePalette and mapTokensToCssVars", () => {
   test("exposes matrix, defaultPalette and mapper", () => {

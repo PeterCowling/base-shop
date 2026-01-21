@@ -1,5 +1,11 @@
 /** @jest-environment node */
 
+import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
+import { verifyCredentials } from "@acme/plugin-sanity";
+
+import { saveSanityConfig } from "../saveSanityConfig";
+import { setupSanityBlog } from "../setupSanityBlog";
+
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
@@ -16,11 +22,6 @@ jest.mock("@acme/platform-core/repositories/shop.server", () => ({
 jest.mock("../setupSanityBlog", () => ({
   setupSanityBlog: jest.fn(),
 }));
-
-import { saveSanityConfig } from "../saveSanityConfig";
-import { verifyCredentials } from "@acme/plugin-sanity";
-import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
-import { setupSanityBlog } from "../setupSanityBlog";
 
 describe("saveSanityConfig", () => {
   beforeEach(() => {

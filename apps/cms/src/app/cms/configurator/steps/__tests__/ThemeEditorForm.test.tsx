@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ThemeEditorForm from "../ThemeEditorForm";
 
 jest.mock("@acme/ui/components/atoms/shadcn", () => ({
@@ -40,7 +41,7 @@ jest.mock("../ColorThemeSelector", () => ({
 
 const getContrastMock = jest.fn((fg: string, bg: string) => (fg === "low" || bg === "low" ? 1 : 5));
 jest.mock("@acme/ui/components/cms", () => ({
-  getContrast: (...args: any) => getContrastMock(...args),
+  getContrast: (...args: [string, string]) => getContrastMock(...args),
 }));
 
 // Mock next/image without using a raw <img> to satisfy DS lint rules

@@ -1,29 +1,26 @@
 // src/routes/guides/positano-instagram-spots.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { createElement, type ComponentType } from "react";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-
+import { type ComponentType,createElement } from "react";
 import type { LinksFunction } from "react-router";
 import type { TFunction } from "i18next";
 
 import GenericContent from "@/components/guides/GenericContent";
-import type { AppLanguage } from "@/i18n.config";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import FallbackArticle from "./positano-instagram-spots/_FallbackArticle";
 import { buildGuideFaqFallback } from "./positano-instagram-spots/buildGuideFaqFallback";
-import { createFallbackData } from "./positano-instagram-spots/createFallbackData";
 import * as IG from "./positano-instagram-spots/constants";
+import { createFallbackData } from "./positano-instagram-spots/createFallbackData";
 
 export const handle = { tags: ["photography", "viewpoints", "positano"] };
 export const GUIDE_KEY = IG.GUIDE_KEY;
@@ -128,4 +125,4 @@ const links: LinksFunction = (...args: Parameters<LinksFunction>) => {
 };
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

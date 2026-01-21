@@ -9,7 +9,7 @@ type Config = Record<string, unknown>;
  * ------------------------------------------------------------ */
 if (process.env.NODE_ENV !== "production") {
   // i18n-exempt: developer diagnostic log, not user-facing UI copy
-  console.log(
+  console.info(
     `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
   );
 }
@@ -155,11 +155,9 @@ const preset: Config = {
 
 // Additional diagnostics
 if (process.env.NODE_ENV !== "production") {
-  // i18n-exempt -- DS-000 ttl=2025-03-31
-  console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
-  // i18n-exempt -- DS-000 ttl=2025-03-31
-  console.log(
-    "[@acme/tailwind-config] has nested", // i18n-exempt -- DS-000 ttl=2025-03-31
+  console.info("[@acme/tailwind-config] preset keys", Object.keys(preset));
+  console.info(
+    "[@acme/tailwind-config] has nested",
     {
       plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
       presets: Array.isArray((preset as { presets?: unknown[] }).presets),

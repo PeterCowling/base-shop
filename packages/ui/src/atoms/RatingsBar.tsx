@@ -1,8 +1,10 @@
 import type { FC } from "react";
-import clsx from "clsx";
-import hotel from "@/config/hotel";
 import { useTranslation } from "react-i18next";
-import { Inline } from "@/components/atoms/primitives/Inline";
+import clsx from "clsx";
+
+import hotel from "@acme/ui/config/hotel";
+
+import { Inline } from "../components/atoms/primitives/Inline";
 
 type Props = { className?: string; lang?: string };
 
@@ -36,11 +38,12 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
 
 const ROOT_CONTAINER_CLASSES = [
   "mx-auto",
-  "my-10",
+  "my-8",
   "w-full",
   "max-w-screen-xl",
   "px-4",
   "sm:px-6",
+  "lg:my-10",
 ] as const;
 const PANEL_CLASSES = [
   "relative",

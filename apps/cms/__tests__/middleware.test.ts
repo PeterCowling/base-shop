@@ -1,14 +1,17 @@
 /* eslint-env jest */
 /* apps/cms/__tests__/middleware.test.ts */
 
-jest.mock("@acme/shared-utils", () => ({
+import { middleware } from "../src/middleware";
+
+import type { JWT } from "~test/mocks/next-auth-jwt";
+import { __resetMockToken,__setMockToken } from "~test/mocks/next-auth-jwt";
+
+jest.mock("@acme/lib/logger", () => ({
   logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+}));
+jest.mock("@acme/lib/context", () => ({
   withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
 }));
-
-import type { JWT } from "next-auth/jwt";
-import { middleware } from "../src/middleware";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -108,7 +111,7 @@ describe("middleware", () => {
   });
 
   it("rewrites roles without read access to /403 with shop query", async () => {
-    __setMockToken({ role: "ghost" } as JWT);
+    __setMockToken({ role: "ghost" } as unknown as JWT);
 
     const res = await middleware(createRequest("/cms/foo/products"));
 

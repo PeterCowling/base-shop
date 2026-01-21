@@ -1,10 +1,13 @@
 // packages/ui/src/components/cms/page-builder/ViewMenu.tsx
 "use client";
 
-import { Button, Popover, PopoverContent, PopoverTrigger, Switch, Tooltip } from "../../atoms";
 import type { ComponentProps } from "react";
-import type GridSettings from "./GridSettings";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Popover, PopoverContent, PopoverTrigger, Switch, Tooltip } from "../../atoms";
+
+import type GridSettings from "./GridSettings";
 
 interface Props {
   showPreview: boolean;

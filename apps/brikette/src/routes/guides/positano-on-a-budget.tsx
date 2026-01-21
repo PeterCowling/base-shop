@@ -1,28 +1,28 @@
 // src/routes/guides/positano-on-a-budget.tsx
 import { memo, useCallback } from "react";
-import type { MetaFunction, LinksFunction } from "react-router";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { TFunction } from "i18next";
 
-import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-import { renderGuideLinkTokens, stripGuideLinkTokens } from "./utils/linkTokens";
-
-import TableOfContents from "@/components/guides/TableOfContents";
-import ImageGallery from "@/components/guides/ImageGallery";
 import CostBreakdown from "@/components/guides/CostBreakdown";
 import GenericContent from "@/components/guides/GenericContent";
+import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@/components/images/CfImage";
+import { BASE_URL } from "@/config/site";
+import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import appI18n from "@/i18n";
-import type { TFunction } from "i18next";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import { renderGuideLinkTokens, stripGuideLinkTokens } from "./utils/linkTokens";
 
 export const handle = { tags: ["budgeting", "positano", "travel-tips"] };
 

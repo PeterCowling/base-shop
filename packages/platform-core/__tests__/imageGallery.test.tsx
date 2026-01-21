@@ -1,5 +1,6 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import ImageGallery from "../src/components/pdp/ImageGallery";
 
 describe("ImageGallery", () => {

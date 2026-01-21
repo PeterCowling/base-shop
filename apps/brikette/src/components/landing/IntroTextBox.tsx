@@ -1,8 +1,8 @@
 // src/components/landing/IntroTextBox.tsx
 
-import clsx from "clsx";
-import { FC, memo, useMemo } from "react";
+import { type FC, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 type TitlePartsResource = {
   before?: unknown;
@@ -51,12 +51,22 @@ function Inline({ className, ...props }: InlineProps): JSX.Element {
   return <div className={clsx("flex", "items-center", className)} {...props} />;
 }
 
-const IntroTextBox: FC<{ lang?: string }> = ({ lang }) => {
+type IntroTextBoxProps = {
+  lang?: string;
+  showTitle?: boolean;
+  className?: string;
+};
+
+const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className }) => {
   const translationOptions = lang ? { lng: lang } : undefined;
-  const { t, i18n } = useTranslation("landingPage", translationOptions);
+  const { t, i18n, ready } = useTranslation("landingPage", translationOptions);
 
   const rawTitle = t("introSection.title") as string;
   const activeLanguage = lang ?? i18n.language;
+  const hasBundle = i18n.hasResourceBundle(activeLanguage, "landingPage");
+  if (!ready || !hasBundle) {
+    return null;
+  }
   const resource = i18n.getResource(activeLanguage, "landingPage", "introSection.titleParts");
   const titleParts = extractTitleParts(resource);
 
@@ -71,36 +81,56 @@ const IntroTextBox: FC<{ lang?: string }> = ({ lang }) => {
   );
 
   return (
-    <section className="bg-brand-surface py-20 motion-safe:animate-fade-up dark:bg-brand-text">
+    <section
+      className={clsx(
+        "bg-brand-surface",
+        "py-12",
+        "sm:py-14",
+        "lg:py-16",
+        "motion-safe:animate-fade-up",
+        "dark:bg-brand-text",
+        className
+      )}
+    >
       <Container>
         {/* ---------------------------- Headline ------------------------ */}
-        {titleParts ? (
-          <h2
-            aria-label={rawTitle}
-            className="mx-auto text-balance text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl"
-          >
-            <Inline className="justify-center gap-x-2 sm:gap-x-4">
-              <Stack className="items-end text-end leading-none">
-                <span className="pe-1 sm:pe-2">{titleParts.before}</span>
-                <span className="pe-1 sm:pe-2">{titleParts.between}</span>
-              </Stack>
-              <span
-                className="self-center whitespace-nowrap text-5xl leading-none text-brand-bougainvillea sm:text-6xl md:text-7xl"
-                aria-hidden="true"
-              >
-                {titleParts.home}
-              </span>
-            </Inline>
-          </h2>
-        ) : (
-          /* Fallback when the pattern doesn’t match (other locales) */
-          <h2 className="text-balance text-center text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl">
-            {rawTitle}
-          </h2>
-        )}
+        {showTitle ? (
+          titleParts ? (
+            <h2
+              aria-label={rawTitle}
+              className="mx-auto text-balance text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl"
+            >
+              <Inline className="justify-center gap-x-2 sm:gap-x-4">
+                <Stack className="items-end text-end leading-none">
+                  <span className="pe-1 sm:pe-2">{titleParts.before}</span>
+                  <span className="pe-1 sm:pe-2">{titleParts.between}</span>
+                </Stack>
+                <span
+                  className="self-center whitespace-nowrap text-5xl leading-none text-brand-bougainvillea sm:text-6xl md:text-7xl"
+                  aria-hidden="true"
+                >
+                  {titleParts.home}
+                </span>
+              </Inline>
+            </h2>
+          ) : (
+            /* Fallback when the pattern doesn’t match (other locales) */
+            <h2 className="text-balance text-center text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl">
+              {rawTitle}
+            </h2>
+          )
+        ) : null}
 
         {/* ----------------------------- Copy --------------------------- */}
-        <Stack className="mx-auto mt-10 gap-6 text-center">
+        <Stack
+          className={clsx(
+            "mx-auto",
+            "gap-6",
+            "text-center",
+            showTitle ? "mt-6" : "mt-0",
+            showTitle && "sm:mt-8"
+          )}
+        >
           {paragraphs.map(({ id, content }) => (
             <p
               key={id}

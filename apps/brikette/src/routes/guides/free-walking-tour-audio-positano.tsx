@@ -1,20 +1,21 @@
 // src/routes/guides/free-walking-tour-audio-positano.tsx
-import { defineGuideRoute, type GuideLinksArgs } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-
-import type { TFunction } from "i18next";
-import { ensureStringArray } from "@/utils/i18nContent";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import type { AppLanguage } from "@/i18n.config";
 import type { LinksFunction, MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { toAppLanguage } from "@/utils/lang";
-import getFallbackLanguage from "./utils/getFallbackLanguage";
+import type { TFunction } from "i18next";
+
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule for guides routes without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { ensureStringArray } from "@/utils/i18nContent";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute, type GuideLinksArgs } from "./defineGuideRoute";
+import { getGuideManifestEntry } from "./guide-manifest";
+import getFallbackLanguage from "./utils/getFallbackLanguage";
 
 export const handle = { tags: ["walking-tour", "positano", "audio-guide"] };
 

@@ -2,6 +2,7 @@
 /* eslint-env jest */
 
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 

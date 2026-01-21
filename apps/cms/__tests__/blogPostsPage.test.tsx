@@ -30,7 +30,7 @@ describe("BlogPostsPage", () => {
       { _id: "1", title: "Post", published: true, publishedAt: future },
     ]);
     const Page = (await import("../src/app/cms/blog/posts/page")).default;
-    render(await Page({ searchParams: { shopId: "s" } }));
+    render(await Page({ searchParams: Promise.resolve({ shopId: "s" }) }));
     expect(screen.getByText(/scheduled for/i)).toBeInTheDocument();
   });
 });

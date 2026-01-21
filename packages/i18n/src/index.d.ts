@@ -1,5 +1,4 @@
-export * from "./locales";
-export { assertLocales, LOCALES } from "./locales";
-export { default as TranslationsProvider, useTranslations } from "./Translations";
-export { fillLocales } from "./fillLocales";
-export { parseMultilingualInput, type MultilingualField } from "./parseMultilingualInput";
+export { fillLocales } from "./fillLocales.js";
+export { assertLocales, type Locale,LOCALES, locales, resolveLocale } from "./locales.js";
+export { type MultilingualField,parseMultilingualInput } from "./parseMultilingualInput.js";
+export { default as TranslationsProvider, useTranslations } from "./Translations.js";

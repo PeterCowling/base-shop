@@ -1,8 +1,9 @@
 import { ensureStringArray } from "@/utils/i18nContent";
 
 import { stripGuideLinkTokens } from "../utils/linkTokens";
-import { getGuidesTranslator } from "./translator";
+
 import { getFaqItemsWithFallback } from "./faq";
+import { getGuidesTranslator } from "./translator";
 import type { FaqItem } from "./types";
 
 export function buildGuideFaqFallback(targetLang: string): FaqItem[] {

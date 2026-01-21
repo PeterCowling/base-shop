@@ -1,27 +1,16 @@
+import { NextResponse } from "next/server";
+import { ensureRole } from "@cms/actions/common/auth";
 import {
   deployShopHosting,
   getDeployStatus,
   updateDeployStatus,
 } from "@cms/actions/deployShop.server";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
-import type { Session } from "next-auth";
-import { NextResponse } from "next/server";
+
 import type { Environment } from "@acme/types";
 
-function resolveRole(session: Session | null | undefined): string | undefined {
-  const envAssumeAdmin = process.env.CMS_TEST_ASSUME_ADMIN === "1";
-  const role = session?.user?.role as string | undefined;
-  const mockSet = Boolean((globalThis as Record<string, unknown>).__NEXTAUTH_MOCK_SET);
-  return role ?? (envAssumeAdmin && !mockSet ? "admin" : undefined);
-}
-
 export async function POST(req: Request) {
-  const role = resolveRole(await getServerSession(authOptions));
-  if (!role || !["admin", "ShopAdmin"].includes(role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const body = await req.json();
     const { id, domain, env } = body as {
       id: string;
@@ -31,16 +20,18 @@ export async function POST(req: Request) {
     const res = await deployShopHosting(id, domain, env);
     return NextResponse.json(res);
   } catch (err) {
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+    const message = (err as Error).message;
+    if (message === "Forbidden") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }
 
 export async function GET(req: Request) {
-  const role = resolveRole(await getServerSession(authOptions));
-  if (!role || !["admin", "ShopAdmin"].includes(role)) {
+  try {
+    await ensureRole(["admin", "ShopAdmin"]);
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const url = new URL(req.url);
@@ -53,11 +44,8 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const role = resolveRole(await getServerSession(authOptions));
-  if (!role || !["admin", "ShopAdmin"].includes(role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const body = await req.json();
     const { id, ...data } = body as {
       id: string;
@@ -72,9 +60,10 @@ export async function PUT(req: Request) {
     await updateDeployStatus(id, data);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+    const message = (err as Error).message;
+    if (message === "Forbidden") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

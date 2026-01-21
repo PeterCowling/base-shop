@@ -1,25 +1,26 @@
 // src/routes/guides/layout.tsx
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
 import {
   Link,
-  Outlet,
   type LoaderFunctionArgs,
+  Outlet,
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
+
 import PlanChoiceAnalytics from "@/components/guides/PlanChoiceAnalytics";
-import { GUIDE_KEYS, guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import * as GuidesIndex from "@/data/guides.index";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { IS_PROD, PREVIEW_TOKEN } from "@/config/env";
+import { BASE_URL } from "@/config/site";
+import * as GuidesIndex from "@/data/guides.index";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { GUIDE_KEYS, type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 // Container primitive wrapper to satisfy DS container-width guardrails
 type ContainerProps = JSX.IntrinsicElements["div"];

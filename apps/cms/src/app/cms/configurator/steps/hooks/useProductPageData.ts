@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Page, type PageComponent, historyStateSchema } from "@acme/types";
+
+import { historyStateSchema,type Page, type PageComponent } from "@acme/types";
+
 import { apiRequest } from "../../lib/api";
 
 interface ToastSetter {

@@ -1,8 +1,8 @@
 "use client";
 
+import { Inline, Stack } from "../../../atoms/primitives";
 import LibraryPaletteItem from "../LibraryPaletteItem";
 import type { LibraryItem } from "../libraryStore";
-import { Inline, Stack } from "../../../atoms/primitives";
 
 interface Props {
   title: React.ReactNode;

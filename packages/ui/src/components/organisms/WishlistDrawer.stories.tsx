@@ -1,8 +1,10 @@
 "use client";
 /* i18n-exempt file -- Storybook demo content uses literal strings */
 import { type Meta, type StoryObj } from "@storybook/nextjs";
-import { WishlistDrawer } from "./WishlistDrawer";
+
 import type { SKU } from "@acme/types";
+
+import { WishlistDrawer } from "./WishlistDrawer";
 
 const items: SKU[] = [
   { id: "1", title: "Trail Shoes", price: 9900, slug: "trail-shoes", deposit: 0, stock: 0, forSale: true, forRental: false, media: [], sizes: [], description: "" },

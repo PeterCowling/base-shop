@@ -1,6 +1,7 @@
-import { submitShop } from "../submitShop";
-import { validateShopName } from "@acme/platform-core/shops";
 import { createShopOptionsSchema } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
+
+import { submitShop } from "../submitShop";
 
 jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),

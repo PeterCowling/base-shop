@@ -1,6 +1,7 @@
 // src/components/guides/ImageGallery.tsx
-import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";
 import { memo } from "react";
+
+import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";
 
 const TEST_IDS = {
   root: "image-gallery",

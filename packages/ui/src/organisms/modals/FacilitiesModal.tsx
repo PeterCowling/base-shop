@@ -1,6 +1,7 @@
+import { type ComponentPropsWithoutRef,Fragment, memo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, memo, type ComponentPropsWithoutRef } from "react";
-import { ModalContainer, ModalOverlay, ModalPanel, ModalFooterButton } from "./primitives";
+
+import { ModalContainer, ModalFooterButton,ModalOverlay, ModalPanel } from "./primitives";
 import type { FacilitiesModalCategory, FacilitiesModalCopy } from "./types";
 
 const FACILITIES_MODAL_TEST_ID = "facilities-modal";

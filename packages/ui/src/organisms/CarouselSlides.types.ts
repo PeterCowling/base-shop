@@ -1,6 +1,6 @@
 // Copied from src/components/accommodations-carousel/CarouselSlides.types.ts
-import type { Room } from "@/data/roomsData";
-import type { AppLanguage } from "@/i18n.config";
+import type { Room } from "@acme/ui/data/roomsData";
+import type { AppLanguage } from "@acme/ui/i18n.config";
 
 export interface CarouselSlidesProps {
   roomsData: Room[];

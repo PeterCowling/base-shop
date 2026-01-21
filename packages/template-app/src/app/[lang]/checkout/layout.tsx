@@ -1,11 +1,13 @@
 // packages/template-app/src/app/[lang]/layout.tsx
 
+import "../../globals.css";
+
+import type { ReactNode } from "react";
+
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
 import TranslationsProvider from "@acme/i18n/Translations";
-import { Locale, resolveLocale } from "@acme/i18n/locales";
 import Footer from "@acme/ui/components/layout/Footer";
 import Header from "@acme/ui/components/layout/Header";
-import type { ReactNode } from "react";
-import "../../globals.css";
 
 export default async function LocaleLayout({
   children,

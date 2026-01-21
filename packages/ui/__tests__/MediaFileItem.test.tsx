@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import {
-  MediaSelector,
   type MediaItem,
+  MediaSelector,
 } from "../src/components/molecules/MediaSelector";
 
 describe("MediaFileItem", () => {

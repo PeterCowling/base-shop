@@ -1,20 +1,20 @@
 // src/routes/guides/positano-in-winter-on-a-budget.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import { useTranslation } from "react-i18next";
+import type { LinksFunction } from "react-router";
 
 import GenericContent from "@/components/guides/GenericContent";
 import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import type { LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE as OG_DIMS } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
-import { useTranslation } from "react-i18next";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["seasonal", "winter", "positano", "budgeting"] } as const;
 
@@ -70,7 +70,7 @@ const links: LinksFunction = (...args: Parameters<LinksFunction>) => {
 };
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };
 
 function PositanoWinterBudgetLead(): JSX.Element | null {
   const { t } = useTranslation("guides");

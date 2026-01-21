@@ -1,10 +1,11 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { getSections, saveSection, updateSection, deleteSection } from "@acme/platform-core/repositories/sections/index.server";
-import { pageComponentSchema, type SectionTemplate } from "@acme/types";
+import { type NextRequest,NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";
+
 import { nowIso } from "@acme/date-utils";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { deleteSection,getSections, saveSection, updateSection } from "@acme/platform-core/repositories/sections/index.server";
+import { pageComponentSchema, type SectionTemplate } from "@acme/types";
 
 export async function GET(
   req: NextRequest,
@@ -122,7 +123,7 @@ export async function POST(
       template: parsedTemplate,
       createdAt: now,
       updatedAt: now,
-      createdBy: session.user.email ?? "unknown",
+      createdBy: session.user?.email ?? "unknown",
     };
     const saved = await saveSection(shop, section, undefined);
     return NextResponse.json(saved, { status: 201 });

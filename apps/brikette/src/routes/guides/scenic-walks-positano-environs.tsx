@@ -1,18 +1,17 @@
 // src/routes/guides/scenic-walks-positano-environs.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-// Satisfy guide template enforcement without altering runtime behaviour
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+// Satisfy guide template enforcement without altering runtime behaviour
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["walking-tour", "positano", "hiking", "viewpoints"] };
 
@@ -60,4 +59,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

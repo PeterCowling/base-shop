@@ -1,9 +1,11 @@
-import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { ZodTypeAny } from "zod";
-import useStepCompletion from "../../hooks/useStepCompletion";
-import { useConfigurator } from "../../ConfiguratorContext";
+
 import { track } from "@acme/telemetry";
+
+import { useConfigurator } from "../../ConfiguratorContext";
+import useStepCompletion from "../../hooks/useStepCompletion";
 
 interface Options<T> {
   stepId: string;

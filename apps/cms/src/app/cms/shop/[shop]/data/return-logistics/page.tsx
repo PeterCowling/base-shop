@@ -1,14 +1,17 @@
-import { checkShopExists } from "@acme/lib";
-import { readReturnLogistics } from "@acme/platform-core/repositories/returnLogistics.server";
 import { notFound } from "next/navigation";
-import ReturnLogisticsForm from "./ReturnLogisticsForm";
-import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { checkShopExists } from "@acme/platform-core";
+import { readReturnLogistics } from "@acme/platform-core/repositories/returnLogistics.server";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid } from "@acme/ui/components/atoms/primitives";
 import { cn } from "@acme/ui/utils/style";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { TranslationsProvider } from "@acme/i18n/Translations";
-import en from "@acme/i18n/en.json";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import ReturnLogisticsForm from "./ReturnLogisticsForm";
 
 export const revalidate = 0;
 

@@ -1,8 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/BrandIntensitySelector.tsx
 "use client";
 import type { ChangeEvent } from "react";
-import type { BrandIntensity } from "./brandIntensity";
+
 import { useTranslations } from "@acme/i18n/Translations";
+
+import type { BrandIntensity } from "./brandIntensity";
 
 interface Props {
   value: BrandIntensity;

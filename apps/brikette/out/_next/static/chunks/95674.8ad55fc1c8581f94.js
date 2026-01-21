@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[95674],{95674:e=>{e.exports=JSON.parse('{"slug":"naples-center-train-bus","meta":{"title":"Stub: naples-center-train-bus","description":"Placeholder journey copy for naples-center-train-bus (naplesCenterTrainBus)."},"summary":"TODO: replace stub content for naples-center-train-bus."}')}}]);

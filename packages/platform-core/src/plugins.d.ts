@@ -1,5 +1,7 @@
-import { PluginManager } from "./plugins/PluginManager";
-import type { PaymentPayload, ShippingRequest, WidgetProps, PaymentProvider, ShippingProvider, WidgetComponent, PaymentRegistry, ShippingRegistry, WidgetRegistry, PluginOptions, Plugin } from "@acme/types";
+import type { PaymentPayload, PaymentProvider, PaymentRegistry, Plugin,PluginOptions, ShippingProvider, ShippingRegistry, ShippingRequest, WidgetComponent, WidgetProps, WidgetRegistry } from "@acme/types";
+
+import { type PluginManager } from "./plugins/PluginManager";
+
 export declare function loadPlugin(id: string): Promise<Plugin | undefined>;
 export interface LoadPluginsOptions {
     /** directories containing plugin packages */
@@ -16,4 +18,4 @@ export interface InitPluginsOptions extends LoadPluginsOptions {
 }
 /** Load plugins and call their registration hooks */
 export declare function initPlugins<PPay extends PaymentPayload = PaymentPayload, SReq extends ShippingRequest = ShippingRequest, WProp extends WidgetProps = WidgetProps, P extends PaymentProvider<PPay> = PaymentProvider<PPay>, S extends ShippingProvider<SReq> = ShippingProvider<SReq>, W extends WidgetComponent<WProp> = WidgetComponent<WProp>>(options?: InitPluginsOptions): Promise<PluginManager<PPay, SReq, WProp, P, S, W>>;
-export type { PaymentPayload, ShippingRequest, WidgetProps, WidgetComponent, PaymentProvider, ShippingProvider, PaymentRegistry, ShippingRegistry, WidgetRegistry, PluginOptions, Plugin, };
+export type { PaymentPayload, PaymentProvider, PaymentRegistry, Plugin,PluginOptions, ShippingProvider, ShippingRegistry, ShippingRequest, WidgetComponent, WidgetProps, WidgetRegistry,  };

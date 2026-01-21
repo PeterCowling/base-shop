@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { validateShopName } from "@acme/lib";
+import { type NextRequest, NextResponse } from "next/server";
+import { nowIso } from "@date-utils";
+import type { RunnerResult } from "lighthouse";
+import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 import isURL from "validator/lib/isURL";
+
+import { validateShopName } from "@acme/lib";
 import {
   appendSeoAudit,
   readSeoAudits,
   type SeoAuditEntry,
 } from "@acme/platform-core/repositories/seoAudit.server";
-import { nowIso } from "@acme/date-utils";
-import type { RunnerResult } from "lighthouse";
-import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 
 export const TRUSTED_HOSTS = new Set(
   (process.env.LIGHTHOUSE_TRUSTED_HOSTS || "localhost")

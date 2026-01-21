@@ -4,6 +4,7 @@
 // -----------------------------------------------------------------------------
 
 import type { TagMeta } from "@/utils/tagSchema";
+
 import type { TagsResource } from "./types";
 
 export const normalise = (value?: string): string => (typeof value === "string" ? value.trim() : "");

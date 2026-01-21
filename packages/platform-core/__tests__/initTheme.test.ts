@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+
 import { initTheme } from "../src/utils/initTheme";
 
 describe("initTheme", () => {

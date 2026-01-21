@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[828332],{828332:e=>{e.exports=JSON.parse('{"title":"布里凯特旅舍","reserve":"立即预订","home":"首页","rooms":"客房","apartment":"公寓","deals":"优惠","careers":"招聘信息","assistance":"帮助","guides":"指南","logoAlt":"布里凯特旅舍标志","siteMenu":"网站菜单","toggleMenu":"切换菜单","experiences":"体验","howToGetHere":"如何到达"}')}}]);

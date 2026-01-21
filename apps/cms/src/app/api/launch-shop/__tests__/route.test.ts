@@ -59,14 +59,14 @@ Object.assign(globalThis, {
   Request: NodeRequest,
 });
 
-const createShop = jest.fn();
-const initShop = jest.fn();
-const deployShop = jest.fn();
-const seedShop = jest.fn();
-const getRequiredSteps = jest.fn();
-const getConfiguratorProgressForShop = jest.fn();
-const runRequiredConfigChecks = jest.fn();
-const configuratorChecks: Record<string, jest.Mock> = {};
+const createShop = jest.fn<Promise<{ ok: boolean; error?: string }>, any[]>();
+const initShop = jest.fn<Promise<{ ok: boolean; error?: string }>, any[]>();
+const deployShop = jest.fn<Promise<{ ok: boolean; error?: string }>, any[]>();
+const seedShop = jest.fn<Promise<{ ok: boolean; error?: string }>, any[]>();
+const getRequiredSteps = jest.fn<any[], any[]>();
+const getConfiguratorProgressForShop = jest.fn<Promise<any>, any[]>();
+const runRequiredConfigChecks = jest.fn<Promise<{ ok: boolean; error?: string }>, any[]>();
+const configuratorChecks: Record<string, jest.Mock<any, any, any>> = {};
 const mockCookies = jest.fn(() => ({
   get: (name: string) => (name === 'csrf_token' ? { value: 'token' } : undefined),
 }));
@@ -105,12 +105,12 @@ jest.mock('@acme/platform-core/configurator', () => ({
 }));
 
 jest.mock('next/headers', () => ({
-  cookies: (...args: any[]) => mockCookies(...args),
+  cookies: () => mockCookies(),
 }));
 
 jest.mock('@cms/actions/common/auth', () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: 'test-user', role: 'admin' } }),
+  ensureAuthorized: jest.fn<Promise<{ user: { id: string; role: string } }>, []>().mockResolvedValue({ user: { id: 'test-user', role: 'admin' } }),
 }));
 
 afterEach(() => {
@@ -169,7 +169,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
@@ -205,7 +205,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: false, error: 'nope' });
     getConfiguratorProgressForShop.mockResolvedValue({
@@ -244,7 +244,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: false, error: 'nope' });
@@ -285,7 +285,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
@@ -322,7 +322,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
@@ -363,7 +363,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockRejectedValue(new Error('boom'));
 
@@ -396,7 +396,7 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
@@ -438,12 +438,12 @@ describe('launch-shop route', () => {
       'products-inventory',
       'navigation-home',
     ]) {
-      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true })) as unknown as jest.Mock<any, any, any>;
     }
     configuratorChecks['payments'] = jest.fn(async () => ({
       ok: false,
       reason: 'missing-payment-provider',
-    }));
+    })) as unknown as jest.Mock<any, any, any>;
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });

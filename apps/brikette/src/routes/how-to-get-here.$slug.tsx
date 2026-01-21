@@ -1,29 +1,30 @@
-import { Section } from "@acme/ui/atoms";
-import { Fragment, useMemo, type ReactNode } from "react";
+import { Fragment, type ReactNode,useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
+import type { LinksFunction,MetaFunction } from "react-router";
+import { type LoaderFunctionArgs,useLoaderData } from "react-router-dom";
 
-import { getCanonicalUrl } from "@/utils/canonical";
-import HowToJsonLd from "@/components/seo/HowToJsonLd";
+import { Section } from "@acme/ui/atoms";
+
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, { type BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE } from "@/utils/headConstants";
-import type { AppLanguage } from "@/i18n.config";
-import i18n from "@/i18n";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import HowToJsonLd from "@/components/seo/HowToJsonLd";
 import { PREVIEW_TOKEN } from "@/config/env";
-
-import type { LoaderData, RenderContext } from "./how-to-get-here/types";
-import { renderCallout } from "./how-to-get-here/callouts";
-import { renderGallery } from "./how-to-get-here/_galleries";
-import ChiesaNuovaArrivalDropIn from "./how-to-get-here/chiesaNuovaArrivals/DropIn";
-import { getSections, renderSection } from "./how-to-get-here/sections";
-import { clientLoader as baseClientLoader } from "./how-to-get-here/loader";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { LinkedCopy, RouteContentValue } from "@/lib/how-to-get-here/schema";
+import { getCanonicalUrl } from "@/utils/canonical";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
+import { renderGallery } from "./how-to-get-here/_galleries";
+import { renderCallout } from "./how-to-get-here/callouts";
+import ChiesaNuovaArrivalDropIn from "./how-to-get-here/chiesaNuovaArrivals/DropIn";
+import { clientLoader as baseClientLoader } from "./how-to-get-here/loader";
+import { getSections, renderSection } from "./how-to-get-here/sections";
+import type { LoaderData, RenderContext } from "./how-to-get-here/types";
 
 export async function clientLoader(args: LoaderFunctionArgs) {
   return baseClientLoader(args);

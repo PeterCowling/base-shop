@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import type { BrandIntensity } from "./brandIntensity";
 
 const STORAGE_KEY = "cms-brand-intensity";

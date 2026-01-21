@@ -141,7 +141,7 @@
       "text": "Nimm den Nocelle-Bus zurück zur Bar Internazionale oder geh die Straße, falls die Busse voll sind."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Wo kaufe ich die Tickets?",
@@ -168,6 +168,6 @@
     "costs": "Typische Kosten",
     "tips": "Routentipps",
     "warnings": "Darauf achten",
-    "faqs": "FAQs"
+    "faqs": "Häufige Fragen"
   }
 }

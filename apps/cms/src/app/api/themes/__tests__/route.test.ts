@@ -1,7 +1,10 @@
 import { NextRequest } from "next/server";
-import path from "path";
 import { promises as fs } from "fs";
+import path from "path";
+
 import { writeJsonFile } from "@/lib/server/jsonIO";
+
+import { GET, POST } from "../route";
 
 jest.mock("fs", () => ({
   promises: {
@@ -17,8 +20,6 @@ jest.mock("@/lib/server/jsonIO", () => ({
 
 // Use the schema from the types package to avoid ESM parsing issues
 jest.mock("@acme/theme", () => require("@acme/types/theme/ThemeLibrary"));
-
-import { GET, POST } from "../route";
 
 describe("themes API route", () => {
   const LIB_PATH = path.join(process.cwd(), "data", "themes", "library.json");

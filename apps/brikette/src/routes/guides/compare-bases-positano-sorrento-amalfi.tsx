@@ -1,17 +1,19 @@
 // src/routes/guides/compare-bases-positano-sorrento-amalfi.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest, toAppLanguage } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+
 import TableOfContents from "@/components/guides/TableOfContents";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest, toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const GUIDE_KEY: GuideKey = "compareBasesPositanoSorrentoAmalfi";
 export const GUIDE_SLUG = "compare-bases-positano-sorrento-amalfi" as const;

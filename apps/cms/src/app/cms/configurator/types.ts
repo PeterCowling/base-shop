@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+
 import type { ConfiguratorStepProps } from "@/types/configurator";
 
 export type ConfiguratorStepTrack =

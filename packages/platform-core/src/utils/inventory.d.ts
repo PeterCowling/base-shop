@@ -1,4 +1,5 @@
 import { type InventoryItem } from "../types/inventory";
+
 export type FlattenedInventoryItem = {
     sku: string;
     productId: string;

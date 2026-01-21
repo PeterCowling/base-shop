@@ -1,4 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
+
 import useMediaUpload from "../src/hooks/useMediaUpload";
 
 const originalFetch = global.fetch;

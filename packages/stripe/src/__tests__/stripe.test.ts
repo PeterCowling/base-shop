@@ -1,8 +1,9 @@
 /** @jest-environment node */
 // packages/stripe/src/__tests__/stripe.test.ts
 import type Stripe from "stripe";
-import { rest } from "~test/msw/shared";
+
 import { server } from "~test/msw/server";
+import { rest } from "~test/msw/shared";
 
 /**
  * Our Stripe singleton is fully typed, but the test needs access to an
@@ -78,7 +79,7 @@ describe("stripe client", () => {
     const createdIntent = await stripe.paymentIntents.create({ amount: 1234 } as any);
     expect(createdIntent.id).toBe("pi_mock");
 
-    const subscription = await stripe.subscriptions.del("sub_123");
+    const subscription = await stripe.subscriptions.cancel("sub_123");
     expect(subscription.id).toBe("sub_123");
   });
 

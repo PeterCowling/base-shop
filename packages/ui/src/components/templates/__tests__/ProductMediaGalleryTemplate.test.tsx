@@ -1,9 +1,12 @@
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
+
 import type { SKU } from "@acme/types";
+
 import { ProductMediaGalleryTemplate } from "../ProductMediaGalleryTemplate";
-import "../../../../../../test/resetNextMocks";
 
 const galleryCalls: any[] = [];
 jest.mock("../../organisms/ProductGallery", () => ({
@@ -24,7 +27,7 @@ jest.mock("../../atoms/ProductBadge", () => ({
 }));
 
 describe("ProductMediaGalleryTemplate", () => {
-  const product: SKU & { badges?: { label: string; variant?: string }[] } = {
+  const product: SKU & { badges?: { label: string; variant?: "default" | "sale" | "new" }[] } = {
     id: "1",
     slug: "prod-1",
     title: "Product 1",

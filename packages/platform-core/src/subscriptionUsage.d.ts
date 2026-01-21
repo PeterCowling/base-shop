@@ -1,4 +1,5 @@
 import "server-only";
+
 import type { SubscriptionUsage } from "@acme/types";
 
 export declare function getSubscriptionUsage(

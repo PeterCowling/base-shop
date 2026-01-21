@@ -1,7 +1,9 @@
 // src/components/guides/TagFilterBar.tsx
 import { memo } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { Link, useLocation } from "react-router-dom";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { getSlug } from "@/utils/slug";
 
@@ -17,7 +19,8 @@ type Props = {
 
 function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { search } = useLocation();
+  const searchParams = useSearchParams();
+  const search = searchParams?.toString() ?? "";
   const params = new URLSearchParams(search);
   const selected = new Set(params.getAll("tag"));
 
@@ -74,7 +77,7 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
         return (
           <Link
             key={id}
-            to={toggle(id)}
+            href={toggle(id)}
             className={clsx(base, active ? activeClasses : inactiveClasses)}
           >
             {active ? "✓ " : ""}#

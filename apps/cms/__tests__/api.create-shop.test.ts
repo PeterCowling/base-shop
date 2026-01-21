@@ -1,5 +1,8 @@
 import { jest } from "@jest/globals";
+
 import { jsonRequest } from "@acme/test-utils";
+
+type MockFn = jest.Mock;
 
 beforeEach(() => {
   jest.spyOn(console, "error").mockImplementation(() => {});
@@ -15,7 +18,7 @@ describe("create-shop API", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
     const deployment = { status: "success", previewUrl: "https://new.pages.dev" };
-    const createNewShop = jest.fn().mockResolvedValue(deployment);
+    const createNewShop = (jest.fn() as unknown as MockFn).mockResolvedValue(deployment);
     jest.doMock("@acme/types", () => ({
       __esModule: true,
       shopConfigSchema: {

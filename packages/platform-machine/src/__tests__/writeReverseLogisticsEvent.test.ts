@@ -1,11 +1,11 @@
 /** @jest-environment node */
+import { writeReverseLogisticsEvent } from "../writeReverseLogisticsEvent";
+
 import {
   mkdir,
-  writeFile,
   resetReverseLogisticsMocks,
+  writeFile,
 } from "./reverseLogisticsTestHelpers";
-
-import { writeReverseLogisticsEvent } from "../writeReverseLogisticsEvent";
 
 describe("writeReverseLogisticsEvent", () => {
   beforeEach(() => {

@@ -1,14 +1,15 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/TravelHelpStructuredData.tsx
-import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { BASE_URL } from "@/config/site";
-import { HOTEL_ID } from "@/utils/schema";
-import { getSlug } from "@/utils/slug";
-import { articleSlug } from "@/routes.assistance-helpers";
-import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travelHelp";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { articleSlug } from "@/routes.assistance-helpers";
+import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
+import { HOTEL_ID } from "@/utils/schema";
+import { getSlug } from "@/utils/slug";
+import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travelHelp";
 
 export default function TravelHelpStructuredData() {
   const lang = useCurrentLanguage();

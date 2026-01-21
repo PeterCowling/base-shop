@@ -1,15 +1,18 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import { resetThemeOverride } from "@cms/actions/shops.server";
 import Link from "next/link";
+import { resetThemeOverride } from "@cms/actions/shops.server";
+
+import { useTranslations } from "@acme/i18n";
 import DataTable from "@acme/ui/components/cms/DataTable";
+
+import { Button } from "@/components/atoms/shadcn";
+
 import {
   createThemeTokenColumns,
-  themeTokenRowClassName,
   type ThemeTokenRow,
+  themeTokenRowClassName,
 } from "../tableMappers";
-import { useTranslations } from "@acme/i18n";
 
 export type ShopThemeSectionErrors = Partial<
   Record<"themeDefaults" | "themeOverrides", string[]>

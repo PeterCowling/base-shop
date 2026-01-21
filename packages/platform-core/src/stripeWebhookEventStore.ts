@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+
 import { prisma } from "./db";
 
 type StripeWebhookEventStatus = "processed" | "failed";

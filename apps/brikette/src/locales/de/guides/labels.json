@@ -11,15 +11,15 @@
   "photoGallery": "Fotogalerie",
   "homeBreadcrumb": "Startseite",
   "guidesBreadcrumb": "Guides",
-  "filterActive": "Filter: {{tags}}",
+  "filterActive": "Aktiver Filter: {{tags}}",
   "clearFilter": "Zurücksetzen",
   "onThisPage": "Auf dieser Seite",
-  "faqsHeading": "FAQs",
+  "faqsHeading": "Häufige Fragen",
   "costBreakdownTitle": "Tägliche Kostenübersicht",
   "costBreakdownCurrencySuffix": "von {{currency}}",
   "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
   "backLink": "Zurück",
   "typicalCostsHeading": "Typische Kosten",
   "essentialsHeading": "Wesentliches",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "Abschnitt"
 }

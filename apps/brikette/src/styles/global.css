@@ -6,8 +6,17 @@
 
 /* 0 ▪ Imports
    ------------------------------------------------------------------ */
+@import "@themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/builder.css";
 @import "./fonts.css"; /* font-faces with font-display: optional */
-@import "tailwindcss";
+@import "tailwindcss" source("../..");
+
+/* Tailwind v4 sources — keep class scanning deterministic in the monorepo. */
+@source "../../../../packages/ui/src";
+@source "../../../../packages/platform-core/src";
+@source "../../../../packages/platform-machine/src";
+@source "../../../../packages/i18n/src";
+@source "../../../../packages/themes";
 
 /* 1 ▪ Design-token custom properties
    ------------------------------------------------------------------ */
@@ -50,6 +59,7 @@
   --z-modal: 80;
 
   --color-header-link: #ffffff;
+  --color-header-logo-text: #f7f7f7;
 
   /* layering */
   --layer-modal: 9999;
@@ -67,7 +77,7 @@
   --rgb-brand-outline: 27 27 27;
 }
 
-.theme-dark {
+.dark {
   color-scheme: dark;
 
   /* surfaces / content */
@@ -94,6 +104,7 @@
   --color-rating-booking: #003580;
 
   --color-header-link: #f7f7f7;
+  --color-header-logo-text: #ffffff;
 
   /* layering */
   --layer-modal: 9999;
@@ -127,6 +138,13 @@
   html,
   body {
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html,
+    body {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -226,7 +244,7 @@
       color var(--theme-transition-duration) ease,
       background-color var(--theme-transition-duration) ease;
   }
-  .theme-dark .hero-panel {
+  .dark .hero-panel {
     opacity: 1;
   }
 
@@ -260,6 +278,12 @@
   header button.lang-option {
     color: var(--color-header-link);
     border-color: var(--color-header-link);
+  }
+  header .header-row-1 > a {
+    color: var(--color-header-logo-text);
+  }
+  header nav[data-testid="mobile-nav"] a > span {
+    color: var(--color-header-logo-text);
   }
   header a:not(.cta):hover {
     text-decoration-color: var(--color-brand-bougainvillea);
@@ -298,11 +322,11 @@
   #mobile-menu a {
     color: var(--color-brand-heading);
   }
-  .theme-dark #mobile-menu a {
+  .dark #mobile-menu a {
     color: var(--color-brand-heading);
   }
-  .theme-dark #mobile-menu a:hover,
-  .theme-dark #mobile-menu a:focus-visible {
+  .dark #mobile-menu a:hover,
+  .dark #mobile-menu a:focus-visible {
     text-decoration-color: var(--color-brand-primary);
   }
 
@@ -322,17 +346,17 @@
     background-color: var(--color-brand-primary);
     color: #ffffff;
   }
-  .theme-dark #mobile-menu button.lang-option:hover,
-  .theme-dark #mobile-menu button.lang-option:focus-visible {
+  .dark #mobile-menu button.lang-option:hover,
+  .dark #mobile-menu button.lang-option:focus-visible {
     background-color: rgb(255 255 255 / 0.12);
   }
 
   /* Reusable paddings */
   .header-row-1 {
-    @apply py-4;
+    @apply h-16;
   }
   .header-row-2 {
-    @apply mt-4 pt-1 pb-3;
+    @apply mt-2 pb-2;
   }
 
   .rooms-carousel-nav,
@@ -475,7 +499,7 @@
     @apply absolute inset-0 bg-[linear-gradient(135deg,_var(--color-brand-gradient-start)_0%,_var(--color-brand-primary)_100%)] opacity-10;
     transition: opacity var(--theme-transition-duration) ease;
   }
-  .theme-dark .hero-gradient-overlay {
+  .dark .hero-gradient-overlay {
     @apply bg-none opacity-0;
   }
 }

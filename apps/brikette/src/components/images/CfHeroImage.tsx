@@ -1,6 +1,7 @@
 /* file path: src/components/images/CfHeroImage.tsx */
+import { type FC,memo } from "react";
+
 import { CfImage, type CfImageProps } from "@/components/images/CfImage";
-import { memo, type FC } from "react";
 
 export type CfHeroImageProps = Omit<CfImageProps, "preset">;
 

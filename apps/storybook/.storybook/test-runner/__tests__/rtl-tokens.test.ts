@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect,test } from "@playwright/test";
 
 test("Order Summary Matrix story loads under Brand X + RTL globals", async ({ page }) => {
   const base =

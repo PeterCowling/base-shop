@@ -1,20 +1,21 @@
 import { useEffect, useMemo } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
+import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule for guides routes without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { langFromRequest } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
+
 import { buildLegacyGuideRedirectBreadcrumb } from "./legacyRedirectBreadcrumb";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { i18nConfig } from "@/i18n.config";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 
 export const GUIDE_KEY = "chiesaNuovaArrivals" as const;
 export const GUIDE_SLUG = "chiesa-nuova-bar-internazionale-to-hostel-brikette" as const;

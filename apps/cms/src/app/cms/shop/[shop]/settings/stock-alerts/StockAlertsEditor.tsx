@@ -1,17 +1,18 @@
 "use client";
 
 import {
-  useCallback,
-  useState,
   type ChangeEvent,
   type FormEvent,
+  useCallback,
+  useState,
 } from "react";
+import { updateStockAlert } from "@cms/actions/shops.server";
+
+import { useTranslations } from "@acme/i18n/Translations";
+import { FormField } from "@acme/ui/components/molecules";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
-import { FormField } from "@acme/ui/components/molecules";
-import { updateStockAlert } from "@cms/actions/shops.server";
-import { useTranslations } from "@acme/i18n/Translations";
 
 import { ErrorChips } from "../components/ErrorChips";
 import {

@@ -1,14 +1,16 @@
 import type { PopupModalComponent } from "@acme/types";
-import type { EditorProps } from "./EditorProps";
+
 import {
   Input,
-  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<PopupModalComponent>;
 

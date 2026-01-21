@@ -1,10 +1,12 @@
 // packages/ui/src/components/organisms/FilterSidebar.client.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React, { useState } from 'react';
-import { FilterSidebar } from './FilterSidebar.client';
-import { makeStateStory } from '../../story-utils/createStories';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, userEvent, within } from '@storybook/test';
+
+import { makeStateStory } from '../../story-utils/createStories';
+
+import { FilterSidebar } from './FilterSidebar.client';
 
 const meta: Meta<typeof FilterSidebar> = {
   title: 'Organisms/Filter Sidebar (Client)/Matrix',

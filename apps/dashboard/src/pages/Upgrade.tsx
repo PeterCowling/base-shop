@@ -1,12 +1,14 @@
 "use client";
 /* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind, ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/container-widths-only-at, ds/min-tap-size, react-hooks/exhaustive-deps -- DASH-3200 legacy upgrade dashboard layout uses bespoke sizing/z-index [ttl=2026-06-30] */
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  upgradeComponentSchema,
-  type UpgradeComponent,
-} from "@acme/types/upgrade";
+import { useRouter } from "next/router";
+
 import { useTranslations } from "@acme/i18n";
+import {
+  type UpgradeComponent,
+  upgradeComponentSchema,
+} from "@acme/types/upgrade";
+
 import { trackEvent } from "../lib/telemetry";
 
 interface ComponentGroups {

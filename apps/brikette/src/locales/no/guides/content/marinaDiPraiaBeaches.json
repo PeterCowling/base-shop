@@ -5,88 +5,88 @@
   },
   "linkLabel": "Marina di Praia og bortgjemte strender",
   "intro": [
-    "Explore Marina di Praia and nearby coves for a change of pace from Positano's main beach."
+    "Utforsk Marina di Praia og nærliggende viker for et avbrekk fra Positanos hovedstrand."
   ],
   "sections": [
     {
       "id": "marina",
-      "title": "Marina di Praia essentials",
+      "title": "Det viktigste om Marina di Praia",
       "body": [
-        "Nestled between cliffs, this pebbly beach has sunbeds, kayak rentals, and seafood restaurants built into the rock.",
-        "Arrive before 10:30 to secure front-row loungers; afternoon shade creeps in after 16:00."
+        "Mellom klippene ligger en rullesteinsstrand med solsenger, kajakkutleie og sjømatrestauranter bygget inn i fjellet.",
+        "Kom før 10:30 for å sikre solsenger på første rad; skyggen kommer etter 16:00."
       ]
     },
     {
       "id": "coves",
-      "title": "Nearby coves",
+      "title": "Nærliggende viker",
       "body": [
-        "Rent a kayak to explore Grotta di Suppraiano or take a short boat transfer to secluded spots like Gavitella or Laurito.",
-        "Pack reef-friendly sunscreen and water shoes—the rocky seabed offers great snorkeling visibility."
+        "Lei kajakk for å utforske Grotta di Suppraiano eller ta en kort båtoverfart til avsides steder som Gavitella eller Laurito.",
+        "Ta med revvennlig solkrem og badesko – den steinete bunnen gir god sikt for snorkling."
       ]
     },
     {
       "id": "logistics",
-      "title": "Getting there",
+      "title": "Slik kommer du dit",
       "body": [
-        "Catch the SITA bus from Positano toward Amalfi; ask the driver for the Marina di Praia stop and walk down the ramp (five minutes).",
-        "Scooters can park at the top of the cove—bring coins for metered spots."
+        "Ta SITA-bussen fra Positano mot Amalfi; be sjåføren om Marina di Praia-stoppet og gå ned rampen (fem minutter).",
+        "Scootere kan parkere på toppen av bukten – ta med mynter til betalingsplasser."
       ]
     }
   ],
   "tips": [
-    "Book lunch at Il Pirata or La Praia for cliffside dining between swims.",
-    "Carry a dry bag for valuables; beach space is compact and tidier when everything stays together."
+    "Bestill lunsj på Il Pirata eller La Praia for klippemiddag mellom badene.",
+    "Ta med en drybag til verdisaker; stranden er kompakt og ryddigere når alt holdes samlet."
   ],
   "faqs": [
     {
-      "q": "Is the beach free?",
+      "q": "Er stranden gratis?",
       "a": [
-        "There is a free section, but space is limited. Expect €20–€25 for a pair of sunbeds and an umbrella at beach clubs in peak season."
+        "Det finnes en gratis del, men plassen er begrenset. Regn med €20–€25 for to solsenger og parasoll ved strandklubbene i høysesongen."
       ]
     },
     {
-      "q": "Can I walk from Positano?",
+      "q": "Kan jeg gå fra Positano?",
       "a": [
-        "The walk takes roughly 50 minutes along the road with narrow shoulders. A bus or scooter is safer, especially in high season traffic."
+        "Gåturen tar rundt 50 minutter langs en vei med smale skuldre. Buss eller scooter er tryggere, spesielt i høysesongtrafikk."
       ]
     }
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Hvorfor dra"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Slik kommer du dit"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Oppsett og tjenester"
     },
     {
       "href": "#evening",
-      "label": "Stay for dinner"
+      "label": "Bli til middag"
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "Hva du kan forvente",
   "essentials": [
     "20-minutters SITA busstur fra Positano; be om Marina di Praia-stoppet og gå to minutter nedoverbakke.",
     "Smal rullesteinstrand med en hovedlido pluss en liten ledig del i midten.",
     "Restauranter og snackskiosker langs gangveien – ideelt for en middag i solnedgangen før du drar hjem."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske kostnader",
   "typicalCosts": [
-    "Solseng + paraply på Marina di Praia Beach Club: € 25–€ 35 for dagen (to-personers sett tilgjengelig).",
+    "Solseng + paraply på Marina di Praia strandklubb: € 25–€ 35 for dagen (to-personers sett tilgjengelig).",
     "Kajakkutleie: rundt € 20 per time for to personer.",
     "Middag på Da Armandino eller Il Pirata: €16–28 € avhengig av fangst og pastaspesialiteter."
   ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
+  "tipsTitle": "Raske tips",
+  "warningsTitle": "Greit å vite",
   "warnings": [
     "Plassen er begrenset; det ledige området fylles først og lido solsenger selges ut i helgene.",
     "Klippene blokkerer for direkte sol midt på ettermiddagen - flott for å kjøle seg ned, men det kan føles kjølig på vindfulle dager.",
     "Mobilt mottak faller inne i juvet; last ned bussruter eller middagsbekreftelser på forhånd."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia – ofte stilte spørsmål"
 }

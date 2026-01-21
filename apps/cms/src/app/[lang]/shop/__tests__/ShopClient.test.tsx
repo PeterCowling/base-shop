@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import ShopClient from "../ShopClient.client";
+
 import type { SKU } from "@acme/types";
+
+import ShopClient from "../ShopClient.client";
 
 // Mock next/navigation hooks used by ShopClient
 const mockPush = jest.fn();

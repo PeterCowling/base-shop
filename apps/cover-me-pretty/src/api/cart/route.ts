@@ -2,12 +2,15 @@
 import "@acme/zod-utils/initZod";
 
 // Align cover-me-pretty's cart API with the canonical platform-core
-// implementation. All handlers are re-exported from `@acme/platform-core/cartApi`
-// so this app shares the same CartStore and cookie semantics as the template
-// app and CMS.
-import { DELETE, GET, PATCH, POST, PUT } from "@acme/platform-core/cartApi";
+// implementation, but make it shop-aware by resolving SKUs from the shop
+// catalogue + inventory repositories.
+import { createShopCartApi } from "@acme/platform-core/cartApiForShop";
+import shop from "../../../shop.json";
 
-export { DELETE, GET, PATCH, POST, PUT };
+export const { DELETE, GET, PATCH, POST, PUT } = createShopCartApi({
+  shop: shop.id,
+  locale: "en",
+});
 
 // Use the Node.js runtime so platform-core utilities that rely on Node APIs
 // (e.g. crypto, optional Redis client) work consistently in this route.

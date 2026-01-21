@@ -1,15 +1,17 @@
 import "~test/resetNextMocks";
 
 import React from "react";
+import * as navigation from "next/navigation";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import * as navigation from "next/navigation";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import Shell from "@/components/layout/Shell";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+
 import HtmlLangUpdater from "@/components/HtmlLangUpdater";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import Shell from "@/components/layout/Shell";
 import LocalePreferenceSync from "@/components/LocalePreferenceSync";
+
 import { renderWithProviders } from "./testUtils";
 
 describe("layout components", () => {

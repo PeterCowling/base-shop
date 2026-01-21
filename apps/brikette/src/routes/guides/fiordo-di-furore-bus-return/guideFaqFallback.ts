@@ -2,11 +2,11 @@
 import type { TFunction } from "i18next";
 
 import appI18n from "@/i18n";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 import { stripGuideLinkTokens } from "../utils/linkTokens";
 
 import { GUIDE_KEY } from "./constants";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 type Translator = TFunction<"guides">;
 

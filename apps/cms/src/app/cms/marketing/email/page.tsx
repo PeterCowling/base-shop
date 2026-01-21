@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+
 import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
 } from "@acme/email-templates";
 import { Toast } from "@acme/ui/components/atoms";
+
 import type { ActionResult, ActionStatus } from "../../components/actionResult";
 import EmailCampaignComposer, {
   type EmailCampaignComposerProps,

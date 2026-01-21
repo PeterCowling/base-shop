@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface SearchBarComponent extends PageComponentBase {
     type: "SearchBar";
     placeholder?: string;

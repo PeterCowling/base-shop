@@ -3,11 +3,12 @@
 // Retrieve a deep-cloned guides bundle for a locale, with a Vitest safety net.
 // -----------------------------------------------------------------------------
 
+import { isTestEnvironment } from "../root/environment";
+
+import { getGuidesBundlesMap, getOverridesActiveFlag } from "./guides.state";
+import { guidesTestStubBundle } from "./guides.stub";
 import type { GuidesNamespace } from "./guides.types";
 import { cloneNamespace } from "./guides.util";
-import { getGuidesBundlesMap, getOverridesActiveFlag } from "./guides.state";
-import { isTestEnvironment } from "../root/environment";
-import { guidesTestStubBundle } from "./guides.stub";
 
 export function getGuidesBundle(locale: string): GuidesNamespace | undefined {
   const guidesBundles = getGuidesBundlesMap();

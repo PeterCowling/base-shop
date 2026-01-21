@@ -1,0 +1,241 @@
+# Agent Skills Manifest
+# ---------------------
+# This manifest catalogs all available skills for agents.
+# Agents should consult this file to find relevant skills for their current task.
+#
+# Load modes:
+#   - always: Skill is referenced in core workflow docs
+#   - on-demand: Skill loaded when specific triggers match
+#
+# Triggers are human-readable hints for agents to match against their current context.
+
+version: "1.0"
+
+skills:
+  # ===================
+  # Core Workflows
+  # ===================
+  - name: plan-feature
+    path: workflows/plan-feature.md
+    description: Create detailed implementation plans before coding
+    load: always
+    triggers:
+      - "starting a new feature"
+      - "multi-file change needed"
+      - "need to plan before implementing"
+    provides:
+      - structured-planning
+      - task-breakdown
+
+  - name: build-feature
+    path: workflows/build-feature.md
+    description: Implement tasks from an approved plan
+    load: always
+    triggers:
+      - "plan approved, ready to implement"
+      - "working through a task list"
+    depends_on:
+      - plan-feature
+    provides:
+      - task-execution
+      - validation-workflow
+
+  - name: session-reflection
+    path: workflows/session-reflection.md
+    description: Capture learnings at end of significant work sessions
+    load: on-demand
+    triggers:
+      - "session complete"
+      - "finished multi-task plan"
+      - "resolved unexpected problem"
+      - "discovered documentation gap"
+    provides:
+      - learning-capture
+      - skill-improvement-suggestions
+
+  # ===================
+  # Component Development
+  # ===================
+  - name: create-ui-component
+    path: components/create-ui-component.md
+    description: Create new UI components following atomic design
+    load: on-demand
+    triggers:
+      - "create a new component"
+      - "add a button/input/card"
+      - "build UI element"
+    provides:
+      - atomic-design
+      - component-creation
+    location: .claude/prompts/create-ui-component.md  # Not yet migrated
+
+  - name: refactor-component
+    path: components/refactor-component.md
+    description: Improve existing component structure and maintainability
+    load: on-demand
+    triggers:
+      - "refactor component"
+      - "improve component code"
+      - "component is too complex"
+    provides:
+      - code-improvement
+    location: .claude/prompts/refactor-component.md  # Not yet migrated
+
+  - name: apply-design-system
+    path: components/apply-design-system.md
+    description: Apply design tokens correctly to components
+    load: on-demand
+    triggers:
+      - "fix hardcoded colors"
+      - "use design tokens"
+      - "apply design system"
+    provides:
+      - design-consistency
+    location: .claude/prompts/apply-design-system.md  # Not yet migrated
+
+  # ===================
+  # Testing
+  # ===================
+  - name: add-component-tests
+    path: testing/add-component-tests.md
+    description: Write comprehensive component tests
+    load: on-demand
+    triggers:
+      - "add tests for component"
+      - "write unit tests"
+      - "test coverage needed"
+    provides:
+      - component-testing
+    location: .claude/prompts/add-component-tests.md  # Not yet migrated
+
+  - name: add-e2e-test
+    path: testing/add-e2e-test.md
+    description: Create Cypress E2E tests
+    load: on-demand
+    triggers:
+      - "add e2e test"
+      - "test user flow"
+      - "cypress test needed"
+    provides:
+      - e2e-testing
+    location: .claude/prompts/add-e2e-test.md  # Not yet migrated
+
+  - name: add-form-validation
+    path: testing/add-form-validation.md
+    description: Add Zod + react-hook-form validation
+    load: on-demand
+    triggers:
+      - "add form validation"
+      - "validate user input"
+      - "zod schema needed"
+    provides:
+      - form-validation
+    location: .claude/prompts/add-form-validation.md  # Not yet migrated
+
+  # ===================
+  # Backend / API
+  # ===================
+  - name: create-server-action
+    path: domain/create-server-action.md
+    description: Create Next.js server actions
+    load: on-demand
+    triggers:
+      - "create server action"
+      - "form submission handler"
+      - "server-side mutation"
+    provides:
+      - server-actions
+    location: .claude/prompts/create-server-action.md  # Not yet migrated
+
+  - name: create-api-endpoint
+    path: domain/create-api-endpoint.md
+    description: Create API route handlers
+    load: on-demand
+    triggers:
+      - "create API endpoint"
+      - "add route handler"
+      - "REST API needed"
+    provides:
+      - api-routes
+    location: .claude/prompts/create-api-endpoint.md  # Not yet migrated
+
+  - name: create-prisma-model
+    path: domain/create-prisma-model.md
+    description: Add Prisma database models
+    load: on-demand
+    triggers:
+      - "create database model"
+      - "add prisma model"
+      - "new table needed"
+    provides:
+      - database-modeling
+    location: .claude/prompts/create-prisma-model.md  # Not yet migrated
+
+  # ===================
+  # Migration
+  # ===================
+  - name: migrate-to-app-router
+    path: domain/migrate-to-app-router.md
+    description: Migrate Pages Router to App Router
+    load: on-demand
+    triggers:
+      - "migrate to app router"
+      - "convert pages to app directory"
+      - "next.js migration"
+    provides:
+      - nextjs-migration
+    location: .claude/prompts/migrate-to-app-router.md  # Not yet migrated
+
+# ===================
+# Troubleshooting
+# ===================
+  - name: jest-esm-issues
+    path: testing/jest-esm-issues.md
+    description: Fix Jest ESM/CJS compatibility errors
+    load: on-demand
+    triggers:
+      - "Cannot use import statement outside a module"
+      - "import.meta is not defined"
+      - "SyntaxError: Unexpected token 'export'"
+      - "Jest test fails with ESM error"
+      - "JEST_FORCE_CJS"
+    provides:
+      - jest-troubleshooting
+
+  - name: git-recovery
+    path: safety/git-recovery.md
+    description: Recover from confusing git states
+    load: on-demand
+    triggers:
+      - "git status confusing"
+      - "lost commits"
+      - "detached HEAD"
+      - "merge conflict overwhelming"
+      - "git state unexpected"
+    provides:
+      - git-troubleshooting
+
+  - name: dependency-conflicts
+    path: domain/dependency-conflicts.md
+    description: Resolve pnpm workspace dependency issues
+    load: on-demand
+    triggers:
+      - "ERESOLVE unable to resolve"
+      - "peer dependency error"
+      - "Cannot find module after install"
+      - "version mismatch between packages"
+      - "pnpm workspace error"
+    provides:
+      - dependency-troubleshooting
+
+# ===================
+# Metadata
+# ===================
+meta:
+  last_updated: "2026-01-20"
+  total_skills: 16
+  migrated_skills: 6
+  migration_notes: |
+    Skills are being migrated from .claude/prompts/ to .agents/skills/.
+    During migration, the 'location' field indicates the current actual path.
+    Once migrated, remove the 'location' field and the file will be at 'path'.

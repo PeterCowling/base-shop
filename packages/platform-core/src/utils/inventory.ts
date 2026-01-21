@@ -1,6 +1,6 @@
 import {
-  inventoryItemSchema,
   type InventoryItem,
+  inventoryItemSchema,
 } from "../types/inventory";
 
 export type FlattenedInventoryItem = {

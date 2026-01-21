@@ -14,7 +14,7 @@ const nextResponseJson = jest.fn(
   })
 );
 
-jest.mock("@shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
 jest.mock("@acme/platform-core/plugins", () => ({ initPlugins }));
 jest.mock("next/server", () => ({
   NextResponse: { json: nextResponseJson },

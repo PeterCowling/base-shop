@@ -1,20 +1,22 @@
 // src/components/checkout/CheckoutForm.tsx
 "use client";
 
-import { useTranslations } from "@acme/i18n";
+import { useEffect, useState } from "react";
+import { useForm, type UseFormReturn } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import {
   CheckoutProvider,
   PaymentElement,
   useCheckout,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { fetchJson } from "@acme/shared-utils";
-import { useRouter } from "next/navigation";
-import { Alert, Button } from "../atoms";
-import { useEffect, useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+
 import { isoDateInNDays } from "@acme/date-utils";
+import { useTranslations } from "@acme/i18n";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
+import { fetchJson } from "@acme/lib/http";
+
+import { Alert, Button } from "../atoms";
 
 const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = stripePublishableKey
@@ -44,7 +46,7 @@ async function logAnalytics(event: { type: string; [key: string]: unknown }) {
 }
 
 type Props = {
-  locale: "en" | "de" | "it";
+  locale: "en" | "de" | "it" | "es";
   taxRegion: string;
   coverage?: string[];
 };
@@ -200,7 +202,7 @@ function PaymentForm({
   currency,
 }: {
   form: UseFormReturn<FormValues>;
-  locale: "en" | "de" | "it";
+  locale: "en" | "de" | "it" | "es";
   sessionId?: string;
   cartValue?: number;
   currency?: string;

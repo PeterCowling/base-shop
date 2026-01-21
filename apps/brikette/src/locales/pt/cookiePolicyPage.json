@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Política de Cookies | Hostel Brikette",
+    "description": "Como o Hostel Brikette usa cookies e tecnologias semelhantes no nosso site e quais são as suas opções."
+  },
+  "headings": {
+    "pageTitle": "Política de Cookies",
+    "subtitle": "Cookies, armazenamento local e serviços de terceiros"
+  },
+  "lastUpdated": {
+    "label": "Última atualização",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Nesta página",
+    "aria": "Índice da política de cookies"
+  },
+  "sections": {
+    "intro": {
+      "title": "Visão geral",
+      "body": [
+        "Esta Política de Cookies explica o que são cookies, se os usamos neste site e como serviços de terceiros podem usar cookies quando interage com o seu conteúdo."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "O que são cookies",
+      "body": [
+        "Cookies são pequenos ficheiros de texto que os sites podem armazenar no seu dispositivo para recordar informações entre visitas. Tecnologias semelhantes incluem armazenamento local e armazenamento de sessão no seu navegador."
+      ]
+    },
+    "ourUse": {
+      "title": "Como usamos cookies neste site",
+      "body": [
+        "Procuramos manter os cookies ao mínimo. Quando possível, usamos o armazenamento do navegador (armazenamento local) para preferências simples em vez de cookies.",
+        "Se introduzirmos cookies no futuro (por exemplo, para segurança essencial, análises ou serviços incorporados), atualizaremos esta política."
+      ]
+    },
+    "localStorage": {
+      "title": "Armazenamento local (preferências)",
+      "body": [
+        "O armazenamento local permite que o site memorize certas preferências no seu dispositivo. Por exemplo, pode ser usado para manter as preferências de interface entre páginas.",
+        "Pode limpar o armazenamento local nas definições do seu navegador."
+      ]
+    },
+    "thirdParties": {
+      "title": "Serviços de terceiros",
+      "body": [
+        "Alguns links ou experiências incorporadas podem ser fornecidos por terceiros (por exemplo, mapas ou fornecedores de reservas). Esses terceiros podem definir cookies ou usar tecnologias semelhantes de acordo com as suas próprias políticas.",
+        "Quando segue um link para um site de terceiros, aplicam-se as suas políticas de privacidade e de cookies."
+      ]
+    },
+    "choices": {
+      "title": "As suas opções",
+      "body": [
+        "A maioria dos navegadores permite bloquear ou apagar cookies e limpar dados do site como o armazenamento local. Bloquear certas tecnologias pode afetar a funcionalidade.",
+        "Também pode usar modos de navegação privada ou extensões do navegador para limitar o rastreio."
+      ]
+    },
+    "contact": {
+      "title": "Contacto",
+      "body": [
+        "Se tiver perguntas sobre esta Política de Cookies, contacte-nos em {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Voltar ao topo"
+  }
+}

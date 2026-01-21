@@ -1,5 +1,16 @@
 /** @jest-environment node */
 
+import argon2 from 'argon2';
+import { ulid } from 'ulid';
+
+import { readRbac, writeRbac } from '../../lib/server/rbacStore';
+import {
+  inviteUser,
+  listUsers,
+  updateRolePermissions,
+  updateUserRoles,
+} from '../rbac.server';
+
 jest.mock('../../lib/server/rbacStore', () => ({
   readRbac: jest.fn(),
   writeRbac: jest.fn(),
@@ -7,15 +18,6 @@ jest.mock('../../lib/server/rbacStore', () => ({
 
 jest.mock('argon2', () => ({ hash: jest.fn() }));
 jest.mock('ulid', () => ({ ulid: jest.fn() }));
-import {
-  listUsers,
-  updateUserRoles,
-  inviteUser,
-  updateRolePermissions,
-} from '../rbac.server';
-import { readRbac, writeRbac } from '../../lib/server/rbacStore';
-import argon2 from 'argon2';
-import { ulid } from 'ulid';
 
 describe('listUsers', () => {
   beforeEach(() => {

@@ -1,10 +1,11 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { within, waitFor } from '@testing-library/dom';
+import { waitFor,within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+
+import FinancingBadge from '../../../../packages/ui/src/components/cms/blocks/FinancingBadge';
 import PDPDetailsSection from '../../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
 import PoliciesAccordion from '../../../../packages/ui/src/components/cms/blocks/PoliciesAccordion';
-import FinancingBadge from '../../../../packages/ui/src/components/cms/blocks/FinancingBadge';
 import StickyBuyBar from '../../../../packages/ui/src/components/cms/blocks/StickyBuyBar';
 import { ProductGallery } from '../../../../packages/ui/src/components/organisms/ProductGallery';
 import { CartStatus } from '../components/CartStatus';

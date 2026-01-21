@@ -1,10 +1,12 @@
 'use client';
 
 import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
+
 import type { PersonDefinition } from "@/data/people";
-import type { Locale } from "@/lib/locales";
 import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";
+import type { Locale } from "@/lib/locales";
 import { MILAN_CLASSES } from "@/styles/milan";
 
 type PeopleCardProps = {

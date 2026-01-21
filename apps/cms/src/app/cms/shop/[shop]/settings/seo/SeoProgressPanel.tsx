@@ -1,22 +1,24 @@
 import { formatTimestamp } from "@acme/date-utils";
-import type { AnalyticsEvent } from "@acme/types";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import {
+  readSeoAudits,
+  type SeoAuditEntry,
+} from "@acme/platform-core/repositories/seoAudit.server";
+import type { AnalyticsEvent } from "@acme/types";
+
+import {
+  Card,
+  CardContent,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Card,
-  CardContent,
 } from "@/components/atoms/shadcn";
-import {
-  readSeoAudits,
-  type SeoAuditEntry,
-} from "@acme/platform-core/repositories/seoAudit.server";
-import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+
 import { SeoChart } from "./SeoChart.client";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 interface Props {
   /** Shop identifier */

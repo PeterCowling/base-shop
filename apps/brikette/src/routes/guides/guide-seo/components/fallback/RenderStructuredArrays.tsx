@@ -1,7 +1,11 @@
 import { Children } from "react";
+
 import TableOfContents from "@/components/guides/TableOfContents";
-import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
+import type { AppLanguage } from "@/i18n.config";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import { debugGuide } from "@/utils/debug";
+import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
+
 import type { Translator } from "../../types";
 import type { FallbackTranslator } from "../../utils/fallbacks";
 
@@ -17,6 +21,7 @@ interface RenderContext {
   hasLocalizedContent?: unknown;
   intro?: unknown;
   sections?: unknown;
+  lang?: string;
 }
 
 interface Props {
@@ -453,14 +458,15 @@ export default function RenderStructuredArrays({
       return (t("labels.onThisPage", { defaultValue: "On this page" }) as string) ?? "On this page";
     })();
 
-    
+    const lang = (typeof context?.lang === "string" ? context.lang : "en") as AppLanguage;
+
     return (
       <>
         {/* Avoid duplicating EN fallback intro that StructuredTocBlock may already render */}
         {showIntro ? (
           <div className="space-y-4">
             {introFb.map((p, idx) => (
-              <p key={idx}>{p}</p>
+              <p key={idx}>{renderGuideLinkTokens(p, lang, `intro-${idx}`)}</p>
             ))}
           </div>
         ) : null}
@@ -479,7 +485,7 @@ export default function RenderStructuredArrays({
                 <section key={`${s.id}-${index}`} id={s.id} className="scroll-mt-28 space-y-4">
                   {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
                   {s.body.map((b, i) => (
-                    <p key={i}>{b}</p>
+                    <p key={i}>{renderGuideLinkTokens(b, lang, `section-${s.id}-${i}`)}</p>
                   ))}
                 </section>
               )),
@@ -543,7 +549,7 @@ export default function RenderStructuredArrays({
                 <details key={i}>
                   <summary role="button" className="font-medium">{f.q}</summary>
                   {f.a.map((ans, j) => (
-                    <p key={j}>{ans}</p>
+                    <p key={j}>{renderGuideLinkTokens(ans, lang, `faq-${i}-${j}`)}</p>
                   ))}
                 </details>
               ))}

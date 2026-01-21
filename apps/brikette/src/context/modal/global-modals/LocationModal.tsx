@@ -6,12 +6,13 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { LocationModalCopy } from "@acme/ui/organisms/modals";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 
 import { HOSTEL_ADDRESS } from "../constants";
 import { useModal } from "../hooks";
 import { LocationModal } from "../lazy-modals";
-import type { LocationModalCopy } from "@acme/ui/organisms/modals";
 
 export function LocationGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();

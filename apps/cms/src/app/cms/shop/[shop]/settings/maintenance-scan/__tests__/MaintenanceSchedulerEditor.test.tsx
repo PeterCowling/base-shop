@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import MaintenanceSchedulerEditor from "../MaintenanceSchedulerEditor";
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateMaintenanceSchedule = jest.fn();
 

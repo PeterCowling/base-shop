@@ -1,6 +1,8 @@
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
 
 export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
   rating: number; // 0-5

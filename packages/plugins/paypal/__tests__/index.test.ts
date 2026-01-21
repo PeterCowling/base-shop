@@ -1,31 +1,32 @@
+import type { PaymentRegistry } from "@acme/types";
+
+import plugin from "../index";
+import { processPaypalPayment } from "../paypalClient";
+
 const mockProcessPaypalPayment = jest.fn();
 
 jest.mock("../paypalClient", () => ({
   processPaypalPayment: mockProcessPaypalPayment,
 }));
 
-import plugin from "../index";
-import type { PaymentRegistry } from "@acme/types";
-import { processPaypalPayment } from "../paypalClient";
-
 describe("paypal plugin", () => {
   it("parses valid custom config", () => {
     const cfg = { clientId: "abc", secret: "xyz" };
-    expect(plugin.configSchema.parse(cfg)).toEqual(cfg);
+    expect(plugin.configSchema!.parse(cfg)).toEqual(cfg);
   });
 
   it("rejects missing clientId/secret", () => {
-    expect(plugin.configSchema.safeParse({}).success).toBe(false);
-    expect(plugin.configSchema.safeParse({ clientId: "abc" }).success).toBe(
+    expect(plugin.configSchema!.safeParse({}).success).toBe(false);
+    expect(plugin.configSchema!.safeParse({ clientId: "abc" }).success).toBe(
       false
     );
-    expect(plugin.configSchema.safeParse({ secret: "xyz" }).success).toBe(
+    expect(plugin.configSchema!.safeParse({ secret: "xyz" }).success).toBe(
       false
     );
   });
 
   it("rejects unknown config fields", () => {
-    const result = plugin.configSchema.safeParse({
+    const result = plugin.configSchema!.safeParse({
       clientId: "abc",
       secret: "xyz",
       extra: "nope",
@@ -40,7 +41,7 @@ describe("paypal plugin", () => {
       list: jest.fn(),
     };
 
-    const cfg = plugin.configSchema.parse({
+    const cfg = plugin.configSchema!.parse({
       clientId: "abc",
       secret: "xyz",
     });
@@ -63,7 +64,7 @@ describe("paypal plugin", () => {
     };
 
     expect(() => {
-      const cfg = plugin.configSchema.parse({ clientId: "abc" } as any);
+      const cfg = plugin.configSchema!.parse({ clientId: "abc" } as any);
       plugin.registerPayments!(registry, cfg);
     }).toThrow();
 

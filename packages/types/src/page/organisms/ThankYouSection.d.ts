@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ThankYouSectionComponent extends PageComponentBase {
     type: "ThankYouSection";
     headline?: string;

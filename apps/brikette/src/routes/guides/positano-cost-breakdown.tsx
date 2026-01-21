@@ -1,26 +1,25 @@
 // src/routes/guides/positano-cost-breakdown.tsx
 import { memo, useCallback } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
 
-import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-import { renderGuideLinkTokens } from "./utils/linkTokens";
-import type { GuideSeoTemplateProps } from "./guide-seo/types";
-
-import TableOfContents from "@/components/guides/TableOfContents";
 import CostBreakdown from "@/components/guides/CostBreakdown";
 import GenericContent from "@/components/guides/GenericContent";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import TableOfContents from "@/components/guides/TableOfContents";
 import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
+import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import type { GuideSeoTemplateProps } from "./guide-seo/types";
 import {
   GUIDE_KEY as GUIDE_KEY_CONST,
   GUIDE_SLUG as GUIDE_SLUG_CONST,
@@ -28,7 +27,8 @@ import {
 } from "./positano-cost-breakdown/constants";
 import { buildGuideExtras } from "./positano-cost-breakdown/extras";
 import { buildGuideFaqFallback } from "./positano-cost-breakdown/guideFaqFallback";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { renderGuideLinkTokens } from "./utils/linkTokens";
+
 export { handle } from "./positano-cost-breakdown/constants";
 // Required identifiers for lint/template enforcement
 export const GUIDE_KEY: GuideKey = GUIDE_KEY_CONST;

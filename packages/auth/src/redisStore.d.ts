@@ -1,5 +1,7 @@
 import type { Redis } from "@upstash/redis";
+
 import type { SessionRecord, SessionStore } from "./store.js";
+
 export declare class RedisSessionStore implements SessionStore {
     private client;
     private ttl;

@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
 import ProductPreview from "@cms/app/cms/blog/posts/ProductPreview";
+import { render, screen } from "@testing-library/react";
 
 afterEach(() => {
   (global.fetch as jest.Mock | undefined)?.mockReset?.();

@@ -15,7 +15,7 @@ describe("captureException", () => {
     expect(captureExceptionSpy).toHaveBeenCalledTimes(1);
 
     const error2 = new Error("second");
-    const context = { foo: "bar" };
+    const context = { foo: "bar" } as any;
     await captureException(error2, context);
 
     expect(importMock).toHaveBeenCalledTimes(1);

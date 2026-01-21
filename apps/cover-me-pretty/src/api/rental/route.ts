@@ -12,7 +12,7 @@ import type { RentalOrder } from "@acme/types";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 
 export const runtime = "edge";
 

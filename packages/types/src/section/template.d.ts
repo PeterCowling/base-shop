@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponent } from "../page/page";
+
 export type SectionStatus = "draft" | "published";
 export interface SectionTemplate {
     id: string;

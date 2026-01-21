@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[575948],{575948:s=>{s.exports=JSON.parse('{"seo":{"title":"Сравнение прибытия в Салерно и Неаполь","description":"Расходы, пересадки, расписания и для кого подходит каждый маршрут."},"linkLabel":"Salerno vs Naples arrivals","intro":[],"sections":[],"faqs":[]}')}}]);

@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/PalettePicker.tsx
 "use client";
-import { useState } from "react";
 import type { MutableRefObject } from "react";
+import { useState } from "react";
+
 import TokenGroup from "./TokenGroup";
 
 interface Props {

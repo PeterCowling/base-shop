@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
-import { apiRequest } from "../../lib/api";
-import { toPageInfo } from "../../../wizard/utils/page-utils";
+
 import type { PageInfo } from "../../../wizard/schema";
+import { toPageInfo } from "../../../wizard/utils/page-utils";
+import { apiRequest } from "../../lib/api";
 
 interface Params {
   shopId: string;

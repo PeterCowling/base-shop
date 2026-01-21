@@ -1,12 +1,13 @@
 /** @jest-environment node */
 
+import { publishPost,verifyCredentials } from "@acme/plugin-sanity";
+
+import { connectSanity, createSanityPost } from "../sanity.server";
+
 jest.mock("@acme/plugin-sanity", () => ({
   verifyCredentials: jest.fn(),
   publishPost: jest.fn(),
 }));
-
-import { connectSanity, createSanityPost } from "../sanity.server";
-import { verifyCredentials, publishPost } from "@acme/plugin-sanity";
 
 describe("connectSanity", () => {
   beforeEach(() => {

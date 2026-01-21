@@ -1,9 +1,11 @@
 import { revalidatePath } from "next/cache";
-import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
-import { authorize, fetchSettings, persistSettings, fetchDiffHistory } from "./helpers";
-import { recordMetric } from "@acme/platform-core/utils";
+
 import { incrementOperationalError } from "@acme/platform-core/shops/health";
-import { parseSeoForm, parseGenerateSeoForm } from "./validation";
+import { recordMetric } from "@acme/platform-core/utils";
+import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
+
+import { authorize, fetchDiffHistory,fetchSettings, persistSettings } from "./helpers";
+import { parseGenerateSeoForm,parseSeoForm } from "./validation";
 
 export async function updateSeo(
   shop: string,
@@ -92,10 +94,10 @@ export async function updateSeo(
       : {}),
     ...(sd ? { structuredData: sd } : {}),
   };
-  const updated: ShopSettings = {
+  const updated = {
     ...current,
     seo,
-  };
+  } as unknown as ShopSettings;
   try {
     await persistSettings(shop, updated);
   } catch (err) {
@@ -133,7 +135,7 @@ export async function generateSeo(
   shop: string,
   formData: FormData,
 ): Promise<{
-  generated?: { title: string; description: string; image: string; alt: string };
+  generated?: { title: string; description: string; image: string };
   errors?: Record<string, string[]>;
 }> {
   await authorize();
@@ -155,7 +157,7 @@ export async function generateSeo(
     image: result.image,
     openGraph: { ...(seo[locale]?.openGraph ?? {}), image: result.image },
   };
-  const updated: ShopSettings = { ...current, seo };
+  const updated = { ...current, seo } as unknown as ShopSettings;
   await persistSettings(shop, updated);
 
   return { generated: result };
@@ -175,23 +177,10 @@ export async function revertSeo(shop: string, timestamp: string) {
   const idx = sorted.findIndex((e) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
   const base = await fetchSettings(shop);
-  let state: Partial<ShopSettings> = { ...base };
-  const changedKeys = new Set<keyof ShopSettings>();
-  for (const entry of sorted) {
-    for (const key of Object.keys(entry.diff ?? {}) as (keyof ShopSettings)[]) {
-      changedKeys.add(key);
-    }
-  }
-  for (const key of changedKeys) {
-    delete state[key];
-  }
+  let state = { ...base } as ShopSettings;
   for (let i = 0; i < idx; i++) {
-    state = { ...state, ...sorted[i].diff };
+    state = { ...state, ...sorted[i].diff } as ShopSettings;
   }
-  if (!state.seo) {
-    state.seo = {};
-  }
-  const updated = state as ShopSettings;
-  await persistSettings(shop, updated);
-  return updated;
+  await persistSettings(shop, state);
+  return state;
 }

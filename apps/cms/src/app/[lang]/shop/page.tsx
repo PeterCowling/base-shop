@@ -1,7 +1,9 @@
 // apps/cms/src/app/[lang]/shop/page.tsx
+import type { Metadata } from "next";
+
 import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
-import type { Metadata } from "next";
+
 import ShopClient from "./ShopClient.client";
 
 export const metadata: Metadata = {

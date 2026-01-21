@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import ProfilePage from "../Profile";
 import { redirect } from "next/navigation";
+import { render, screen } from "@testing-library/react";
+
+import ProfilePage from "../Profile";
 
 const getCustomerSession = jest.fn();
 const hasPermission = jest.fn();
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   getCustomerSession: () => getCustomerSession(),
   hasPermission: (...args: any[]) => hasPermission(...args),
 }));

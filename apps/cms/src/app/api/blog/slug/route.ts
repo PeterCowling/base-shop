@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
+
 import { cmsEnv as env } from "@acme/config/env/cms";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
 import { getSanityConfig } from "@acme/platform-core/shops";
-import { ensureAuthorized } from "@cms/actions/common/auth";
 
 export const runtime = "nodejs";
 
@@ -30,6 +31,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing slug or shopId" }, { status: 400 });
   }
   const shop = await getShopById(shopId);
+  if (!shop) {
+    return NextResponse.json({ error: "Shop not found" }, { status: 404 });
+  }
   const sanity = getSanityConfig(shop) as
     | { projectId: string; dataset: string; token?: string }
     | undefined;

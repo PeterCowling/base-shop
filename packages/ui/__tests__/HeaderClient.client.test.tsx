@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
+import { render, screen } from "@testing-library/react";
+
 import HeaderClient from "../src/components/layout/HeaderClient.client";
 
 // Mutable cart state for mocking useCart

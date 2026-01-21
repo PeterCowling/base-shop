@@ -17,6 +17,44 @@ export type ExportedComponent = PageComponent & {
   children?: ExportedComponent[];
 };
 
+type GlobalMeta = { id?: string; overrides?: Record<string, unknown> };
+
+/** Resolve a node to either its global template or itself */
+function resolveBase(
+  node: PageComponent,
+  globalMeta: GlobalMeta | undefined,
+  globals: Record<string, PageComponent> | null | undefined,
+): ExportedComponent {
+  const globalId = globalMeta?.id;
+  if (globalId && globals?.[globalId]) {
+    return { ...(globals[globalId] as ExportedComponent), id: node.id };
+  }
+  return { ...(node as ExportedComponent) };
+}
+
+/** Apply visibility flags from editor metadata */
+function applyVisibilityFlags(copy: ExportedComponent, flags: EditorFlags | undefined): void {
+  if (Array.isArray(flags?.hidden) && flags.hidden.length > 0) {
+    copy.hiddenBreakpoints = [...flags.hidden];
+  }
+  if (Array.isArray(flags?.hiddenDeviceIds) && flags.hiddenDeviceIds.length > 0) {
+    copy.hiddenDeviceIds = [...flags.hiddenDeviceIds];
+  }
+}
+
+/** Apply layout flags for mobile stacking */
+function applyLayoutFlags(copy: ExportedComponent, flags: EditorFlags | undefined): void {
+  if (typeof flags?.stackStrategy === "string") {
+    const strategy = flags.stackStrategy as EditorFlags["stackStrategy"];
+    if (strategy === "default" || strategy === "reverse") {
+      copy.stackStrategy = strategy;
+    }
+  }
+  if (typeof flags?.orderMobile === "number") {
+    copy.orderMobile = flags.orderMobile;
+  }
+}
+
 /**
  * Merge builder editor metadata into components for storefront/runtime.
  *
@@ -36,39 +74,19 @@ export function exportComponents(
 
   return list.map((node) => {
     const flags: EditorFlags | undefined = map[node.id];
-    const globalMeta = flags?.global as { id?: string; overrides?: Record<string, unknown> } | undefined;
-    const globalId = globalMeta?.id;
+    const globalMeta = flags?.global as GlobalMeta | undefined;
 
     // Start from either the linked global template or the node itself.
-    let copy: ExportedComponent = { ...(node as ExportedComponent) };
-    if (globalId && globals && globals[globalId]) {
-      // Clone template but preserve instance id.
-      copy = { ...(globals[globalId] as ExportedComponent), id: node.id } as ExportedComponent;
-    }
+    const copy = resolveBase(node, globalMeta, globals);
 
     // Apply per-instance overrides (builder-only) at shallow level.
-    if (globalMeta && globalMeta.overrides && typeof globalMeta.overrides === "object") {
+    if (globalMeta?.overrides && typeof globalMeta.overrides === "object") {
       Object.assign(copy, globalMeta.overrides);
     }
 
     // Stamp runtime flags.
-    if (Array.isArray(flags?.hidden) && flags.hidden.length > 0) {
-      copy.hiddenBreakpoints = [...flags.hidden];
-    }
-    if (Array.isArray(flags?.hiddenDeviceIds) && flags.hiddenDeviceIds.length > 0) {
-      copy.hiddenDeviceIds = [...flags.hiddenDeviceIds];
-    }
-
-    // For runtime we only care about the effective mobile stacking behaviour.
-    if (typeof flags?.stackStrategy === "string") {
-      const strategy = flags.stackStrategy as EditorFlags["stackStrategy"];
-      if (strategy === "default" || strategy === "reverse") {
-        copy.stackStrategy = strategy;
-      }
-    }
-    if (typeof flags?.orderMobile === "number") {
-      copy.orderMobile = flags.orderMobile as number;
-    }
+    applyVisibilityFlags(copy, flags);
+    applyLayoutFlags(copy, flags);
 
     const childrenFromCopy = (copy as unknown as { children?: PageComponent[] }).children;
     const childrenFromNode = (node as unknown as { children?: PageComponent[] }).children;

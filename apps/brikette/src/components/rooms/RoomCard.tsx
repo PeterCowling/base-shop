@@ -4,15 +4,8 @@
 import { isValidElement, memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import FacilityIcon from "@/components/rooms/FacilityIcon";
-import FullscreenImage from "@/components/rooms/FullscreenImage";
-import { useModal } from "@/context/ModalContext";
-import type { Room } from "@/data/roomsData";
-import { useRoomPricing } from "@/hooks/useRoomPricing";
-import type { FacilityKey } from "@acme/ui/types/facility";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { i18nConfig } from "@/i18n.config";
 import { RoomCard as UiRoomCard } from "@acme/ui/molecules/RoomCard";
+import type { FacilityKey } from "@acme/ui/types/facility";
 import type {
   RoomCardAction,
   RoomCardFacility,
@@ -20,7 +13,15 @@ import type {
   RoomCardImageLabels,
   RoomCardPrice,
 } from "@acme/ui/types/roomCard";
+
+import FacilityIcon from "@/components/rooms/FacilityIcon";
+import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
+import { useModal } from "@/context/ModalContext";
+import type { Room } from "@/data/roomsData";
+import { useRoomPricing } from "@/hooks/useRoomPricing";
+import { i18nConfig } from "@/i18n.config";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
 
@@ -115,8 +116,10 @@ export default memo(function RoomCard({
   lang,
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
-  const { t, ready } = useTranslation("roomsPage", { lng: resolvedLang });
-  const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: resolvedLang });
+  const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
+  const ready = readyRaw !== false;
+  const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
+  const tokensReady = tokensReadyRaw !== false;
   const { openModal } = useModal();
 
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);

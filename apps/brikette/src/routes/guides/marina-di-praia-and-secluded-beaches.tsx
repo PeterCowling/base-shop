@@ -1,19 +1,25 @@
 // src/routes/guides/marina-di-praia-and-secluded-beaches.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey, type GuideAreaSlugKey } from "./guide-manifest";
-
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import { toAppLanguage } from "@/utils/lang";
-import { buildLinks as buildSeoLinks } from "@/utils/seo";
 import type { MetaFunction } from "react-router";
 
+import ImageGallery, { type ImageGalleryItem } from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteMeta } from "@/utils/routeHead";
+import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { getGuidesBundle } from "../../locales/guides";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, type GuideAreaSlugKey,guideAreaToSlugKey } from "./guide-manifest";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 export const handle = { tags: ["beaches", "praiano", "furore", "hidden-gems", "positano"] };
 
@@ -67,6 +73,8 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
         { key: "positanoBeaches" },
       ],
     },
+    articleLead: (context) => renderMarinaIntroWithGallery(context),
+    genericContentOptions: { suppressIntro: true },
   }),
   meta: buildMeta(
     manifestEntry.metaKey ?? manifestEntry.key,
@@ -134,7 +142,7 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };
 
 export function resolveMarinaString(
   translator: ((key: string) => unknown) | null | undefined,
@@ -163,4 +171,104 @@ export function pickMarinaContentTranslator<Fn extends (...args: unknown[]) => u
   if (primaryHas) return primary;
   if (fallbackHas) return fallback;
   return null;
+}
+
+type GalleryCopy = { alt?: string; caption?: string } | undefined;
+
+function renderMarinaIntroWithGallery(context: GuideSeoTemplateContext): JSX.Element | null {
+  const intro = Array.isArray(context.intro)
+    ? context.intro
+        .filter((paragraph): paragraph is string => typeof paragraph === "string")
+        .map((paragraph) => paragraph.trim())
+        .filter((paragraph) => paragraph.length > 0)
+    : [];
+  const gallery = renderMarinaGallery(context);
+
+  if (intro.length === 0 && !gallery) return null;
+
+  const [first, ...rest] = intro;
+
+  return (
+    <div className="space-y-4">
+      {first ? <p>{renderGuideLinkTokens(first, context.lang, "intro-0")}</p> : null}
+      {gallery}
+      {rest.map((paragraph, index) => (
+        <p key={`intro-${index + 1}`}>
+          {renderGuideLinkTokens(paragraph, context.lang, `intro-${index + 1}`)}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function renderMarinaGallery(context: GuideSeoTemplateContext): JSX.Element | null {
+  const itemsRaw = context.translateGuides(`content.${GUIDE_KEY}.gallery.items`, {
+    returnObjects: true,
+  }) as unknown;
+  const localItems = Array.isArray(itemsRaw) ? (itemsRaw as GalleryCopy[]) : [];
+  const fallbackItems = resolveEnglishGalleryItems();
+
+  const sources = [
+    {
+      src: "/img/guides/marina-di-praia/marina-di-praia-cove.png",
+      width: 1600,
+      height: 1100,
+    },
+    {
+      src: "/img/guides/marina-di-praia/marina-di-praia-beachfront.png",
+      width: 900,
+      height: 509,
+    },
+  ] as const;
+
+  const galleryItems = sources.reduce<ImageGalleryItem[]>((acc, entry, index) => {
+    const local = localItems[index];
+    const fallback = fallbackItems[index];
+    const altLocal = typeof local?.alt === "string" ? local.alt.trim() : "";
+    const capLocal = typeof local?.caption === "string" ? local.caption.trim() : "";
+    const altFallback = typeof fallback?.alt === "string" ? fallback.alt.trim() : "";
+    const capFallback = typeof fallback?.caption === "string" ? fallback.caption.trim() : "";
+    const alt = context.hasLocalizedContent ? (altLocal || altFallback) : altFallback;
+    const caption = context.hasLocalizedContent ? (capLocal || capFallback) : capFallback;
+    if (!alt) return acc;
+    acc.push({ ...entry, alt, ...(caption ? { caption } : {}) });
+    return acc;
+  }, []);
+
+  if (galleryItems.length === 0) return null;
+
+  const titleRaw = context.translateGuides(`content.${GUIDE_KEY}.gallery.title`) as unknown;
+  const title = typeof titleRaw === "string" && titleRaw.trim().length > 0 ? titleRaw.trim() : undefined;
+
+  return (
+    <section id="gallery">
+      {title ? <h2>{title}</h2> : null}
+      <ImageGallery items={galleryItems} />
+    </section>
+  );
+}
+
+function resolveEnglishGalleryItems(): GalleryCopy[] {
+  try {
+    const fixed = i18n.getFixedT?.("en", "guides");
+    const value = fixed?.(`content.${GUIDE_KEY}.gallery.items`, { returnObjects: true });
+    if (Array.isArray(value)) {
+      return value as GalleryCopy[];
+    }
+  } catch {
+    // ignore and fall back to eager bundles
+  }
+
+  try {
+    const bundle = getGuidesBundle("en") as { content?: Record<string, unknown> } | undefined;
+    const gallery = bundle?.content?.[GUIDE_KEY as string] as Record<string, unknown> | undefined;
+    const items = (gallery?.["gallery"] as Record<string, unknown> | undefined)?.["items"];
+    if (Array.isArray(items)) {
+      return items as GalleryCopy[];
+    }
+  } catch {
+    // ignore fallback errors
+  }
+
+  return [];
 }

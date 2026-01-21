@@ -1,12 +1,15 @@
 "use client";
 
 import type { CSSProperties, DragEvent } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
+
 import type { Locale } from "@acme/i18n/locales";
-import type { Action } from "./state";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { DevicePreset } from "../../../utils/devicePresets";
-import PreviewCanvas from "./PreviewCanvas";
+
 import EditableCanvas from "./EditableCanvas";
+import PreviewCanvas from "./PreviewCanvas";
+import type { Action } from "./state";
 
 export interface PageCanvasProps {
   components: PageComponent[];

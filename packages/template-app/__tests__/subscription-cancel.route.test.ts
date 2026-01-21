@@ -1,5 +1,9 @@
-import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getUserById, setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+import { stripe } from "@acme/stripe";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -21,10 +25,6 @@ jest.mock("@acme/platform-core/repositories/users", () => ({
   getUserById: jest.fn(),
   setStripeSubscriptionId: jest.fn(),
 }));
-
-import { stripe } from "@acme/stripe";
-import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { getUserById, setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
 
 const SHOP = {
   subscriptionsEnabled: true,

@@ -1,6 +1,8 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { withEnv } from "../../../test/utils/withEnv";
+
 import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
 
 const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);

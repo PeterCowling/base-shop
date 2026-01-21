@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import { CmsSettingsSnapshot } from "./CmsSettingsSnapshot";
 
 const meta: Meta<typeof CmsSettingsSnapshot> = {

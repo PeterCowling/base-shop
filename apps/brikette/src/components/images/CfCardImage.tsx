@@ -1,7 +1,8 @@
 /* file path: src/components/images/CfCardImage.tsx */
+import { type FC,memo } from "react";
+
 import { CfImage, type CfImageProps } from "@/components/images/CfImage";
-import { PRESETS } from "@/config/imagePresets";
-import { memo, type FC } from "react";
+import { type PRESETS } from "@/config/imagePresets";
 
 export interface CfCardImageProps extends Omit<CfImageProps, "preset"> {
   /** Image preset key from `PRESETS`; defaults to `thumb` */

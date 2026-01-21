@@ -4,14 +4,14 @@
 // tiny aggregator and defers heavy data to single-purpose modules.
 // -----------------------------------------------------------------------------
 
-import type { GuidesNamespace } from "./guides.types";
-import { labels } from "./guides.stub/labels";
 import { breadcrumbs } from "./guides.stub/breadcrumbs";
-import { tagsIndex } from "./guides.stub/tagsIndex";
 import { components } from "./guides.stub/components";
-import { transportNotice } from "./guides.stub/transportNotice";
-import { meta } from "./guides.stub/meta";
 import { content } from "./guides.stub/content";
+import { labels } from "./guides.stub/labels";
+import { meta } from "./guides.stub/meta";
+import { tagsIndex } from "./guides.stub/tagsIndex";
+import { transportNotice } from "./guides.stub/transportNotice";
+import type { GuidesNamespace } from "./guides.types";
 
 export const guidesTestStubBundle: GuidesNamespace = {
   labels,

@@ -1,8 +1,10 @@
-import type { Role } from "@acme/types";
 import "next-auth";
-import { DefaultSession, DefaultUser } from "next-auth";
 import "next-auth/adapters";
 import "next-auth/jwt";
+
+import { DefaultSession, DefaultUser } from "next-auth";
+
+import type { Role } from "@acme/types";
 
 export type { Role };
 

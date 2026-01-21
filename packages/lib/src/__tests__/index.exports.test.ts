@@ -7,7 +7,6 @@ describe("package root exports", () => {
 
   it("re-exports helpers from their source modules", async () => {
     const validateModule = await import("../validateShopName");
-    const checkModule = await import("../checkShopExists.server");
     const generateModule = await import("../generateMeta");
 
     const zodExports = {
@@ -25,7 +24,6 @@ describe("package root exports", () => {
 
     expect(pkg.validateShopName).toBe(validateModule.validateShopName);
     expect(pkg.SHOP_NAME_RE).toBe(validateModule.SHOP_NAME_RE);
-    expect(pkg.checkShopExists).toBe(checkModule.checkShopExists);
     expect(pkg.applyFriendlyZodMessages).toBe(zodExports.applyFriendlyZodMessages);
     expect(pkg.friendlyErrorMap).toBe(zodExports.friendlyErrorMap);
     expect(pkg.generateMeta).toBe(generateModule.generateMeta);

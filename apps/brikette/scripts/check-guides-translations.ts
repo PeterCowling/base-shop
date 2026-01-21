@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] CLI audit reads locale JSON files from the app workspace. */
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import i18n from "../src/i18n";
 import { i18nConfig } from "../src/i18n.config";
-import { preloadNamespacesWithFallback } from "../src/utils/loadI18nNs";
 import { ensureGuideContent } from "../src/utils/ensureGuideContent";
+import { preloadNamespacesWithFallback } from "../src/utils/loadI18nNs";
 
 const STRING_KEYS = [
   "components.planChoice.title",

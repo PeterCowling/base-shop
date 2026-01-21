@@ -1,11 +1,13 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/candidates/[id].ts
 
-import type { PipelineEventContext } from "../_lib/types";
 import { z } from "zod";
+
 import { isCooldownActive } from "@/lib/pipeline/cooldown";
-import { getDb, nowIso, type PipelineEnv, type CooldownRow } from "../_lib/db";
+
+import { type CooldownRow,getDb, nowIso, type PipelineEnv } from "../_lib/db";
 import { errorResponse, jsonResponse } from "../_lib/response";
+import type { PipelineEventContext } from "../_lib/types";
 
 type CandidateDetailRow = {
   id: string;

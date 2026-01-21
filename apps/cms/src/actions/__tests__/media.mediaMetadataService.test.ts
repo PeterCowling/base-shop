@@ -3,15 +3,16 @@
 import path from 'path';
 
 import {
+  getMediaOverviewForShop,
+  updateMediaMetadataEntry,
+} from '../media/mediaMetadataService';
+
+import {
   fsMock,
-  writeJsonFileMock,
   resetMediaMocks,
   restoreMediaMocks,
+  writeJsonFileMock,
 } from './media.test.mocks';
-import {
-  updateMediaMetadataEntry,
-  getMediaOverviewForShop,
-} from '../media/mediaMetadataService';
 
 describe('mediaMetadataService', () => {
   beforeEach(resetMediaMocks);

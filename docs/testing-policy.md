@@ -110,6 +110,8 @@ pnpm --filter @acme/ui test -- --runInBand
 
 **NEVER start a new test run in a different terminal while one is already running.**
 
+**Editor note:** The repo includes `.vscode/settings.json` to disable VS Code Jest auto-run/watch. Keep it enabled to avoid unintended background runners.
+
 ---
 
 ## Rule 5: Clean Up Stuck Tests

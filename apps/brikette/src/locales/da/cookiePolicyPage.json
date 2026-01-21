@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Cookiepolitik | Hostel Brikette",
+    "description": "Hvordan Hostel Brikette bruger cookies og lignende teknologier på vores website, og hvilke valg du har."
+  },
+  "headings": {
+    "pageTitle": "Cookiepolitik",
+    "subtitle": "Cookies, lokal lagring og tredjepartstjenester"
+  },
+  "lastUpdated": {
+    "label": "Sidst opdateret",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denne side",
+    "aria": "Indholdsfortegnelse for cookiepolitik"
+  },
+  "sections": {
+    "intro": {
+      "title": "Overblik",
+      "body": [
+        "Denne cookiepolitik forklarer, hvad cookies er, om vi bruger dem på dette website, og hvordan tredjepartstjenester kan bruge cookies, når du interagerer med deres indhold."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Hvad cookies er",
+      "body": [
+        "Cookies er små tekstfiler, som websites kan gemme på din enhed for at huske information mellem besøg. Lignende teknologier omfatter lokal lagring og sessionslagring i din browser."
+      ]
+    },
+    "ourUse": {
+      "title": "Sådan bruger vi cookies på dette website",
+      "body": [
+        "Vi forsøger at holde brugen af cookies på et minimum. Når det er muligt, bruger vi browserlagring (lokal lagring) til simple præferencer i stedet for cookies.",
+        "Hvis vi indfører cookies i fremtiden (for eksempel til nødvendig sikkerhed, analyse eller indlejrede tjenester), opdaterer vi denne politik."
+      ]
+    },
+    "localStorage": {
+      "title": "Lokal lagring (præferencer)",
+      "body": [
+        "Lokal lagring gør det muligt for website at huske visse præferencer på din enhed. For eksempel kan det bruges til at bevare grænsefladepræferencer mellem sider.",
+        "Du kan rydde lokal lagring i din browsers indstillinger."
+      ]
+    },
+    "thirdParties": {
+      "title": "Tredjepartstjenester",
+      "body": [
+        "Nogle links eller indlejrede oplevelser kan leveres af tredjeparter (for eksempel kort eller bookingudbydere). Disse tredjeparter kan sætte cookies eller bruge lignende teknologier i henhold til deres egne politikker.",
+        "Når du følger et link til et tredjepartswebsite, gælder deres privatlivs- og cookiepolitikker."
+      ]
+    },
+    "choices": {
+      "title": "Dine valg",
+      "body": [
+        "De fleste browsere lader dig blokere eller slette cookies og rydde websitedata som lokal lagring. Blokering af visse teknologier kan påvirke funktionaliteten.",
+        "Du kan også bruge privat browsing eller browserudvidelser til at begrænse sporing."
+      ]
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": [
+        "Hvis du har spørgsmål om denne cookiepolitik, kan du kontakte os på {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tilbage til toppen"
+  }
+}

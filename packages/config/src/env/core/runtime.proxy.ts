@@ -1,6 +1,6 @@
-import type { CoreEnv } from "./schema.core.js";
-import { resolveLoadCoreEnvFn } from "./runtime.resolve-loader.js";
 import { snapshotForCoreEnv } from "./env.snapshot.js";
+import { resolveLoadCoreEnvFn } from "./runtime.resolve-loader.js";
+import type { CoreEnv } from "./schema.core.js";
 
 let __cachedCoreEnv: CoreEnv | null = null;
 

@@ -1,5 +1,13 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import StepEnvVars from "../src/app/cms/configurator/steps/StepEnvVars";
+import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
+import StepOptions from "../src/app/cms/configurator/steps/StepOptions";
+import StepSeedData from "../src/app/cms/configurator/steps/StepSeedData";
+import StepSummary from "../src/app/cms/configurator/steps/StepSummary";
+import StepTheme from "../src/app/cms/configurator/steps/StepTheme";
+import StepTokens from "../src/app/cms/configurator/steps/StepTokens";
 
 // ---------------------------------------------------------------------------
 // shared mocks
@@ -140,14 +148,6 @@ jest.mock("../src/app/cms/wizard/PreviewDeviceSelector", () => ({
   ),
 }));
 
-import StepEnvVars from "../src/app/cms/configurator/steps/StepEnvVars";
-import StepOptions from "../src/app/cms/configurator/steps/StepOptions";
-import StepSeedData from "../src/app/cms/configurator/steps/StepSeedData";
-import StepTheme from "../src/app/cms/configurator/steps/StepTheme";
-import StepTokens from "../src/app/cms/configurator/steps/StepTokens";
-import StepSummary from "../src/app/cms/configurator/steps/StepSummary";
-import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
-
 let configurator: any;
 jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => ({
   useConfigurator: () => configurator,
@@ -201,7 +201,7 @@ describe("StepEnvVars", () => {
 
 describe("StepOptions", () => {
   it("selects analytics provider and saves", () => {
-    render(<StepOptions />);
+    render(<StepOptions {...{} as any} />);
     fireEvent.change(screen.getByTestId("select"), {
       target: { value: "ga" },
     });
@@ -249,7 +249,7 @@ describe("StepSeedData", () => {
 describe("StepTheme", () => {
   it("changes theme and navigates next", () => {
     render(
-      <StepTheme themes={[]} prevStepId="prev" nextStepId="next" />,
+      <StepTheme themes={[]} prevStepId="prev" nextStepId="next" {...{} as any} />,
     );
     fireEvent.click(screen.getByText("select theme"));
     expect(configurator.state.theme).toBe("dark");
@@ -262,7 +262,7 @@ describe("StepTheme", () => {
 describe("StepTokens", () => {
   it("selects a pairing and saves", () => {
     configurator.state.themeDefaults = { "--font-sans": "system-ui" } as any;
-    render(<StepTokens />);
+    render(<StepTokens {...{} as any} />);
     // Click the first available pairing button in the list
     const useButtons = screen.getAllByText("Use pairing");
     expect(useButtons.length).toBeGreaterThan(0);
@@ -287,14 +287,13 @@ describe("StepSummary", () => {
         logo={{}}
         contactInfo=""
         type="sale"
-        template="tpl"
         theme="thm"
         payment={[]}
         shipping={[]}
         analyticsProvider=""
-        pageTitle={{ en: "" }}
+        pageTitle={{ en: "", de: "", it: "" }}
         setPageTitle={setPageTitle}
-        pageDescription={{ en: "" }}
+        pageDescription={{ en: "", de: "", it: "" }}
         setPageDescription={setPageDescription}
         socialImage=""
         setSocialImage={setSocialImage}

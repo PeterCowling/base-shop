@@ -1,5 +1,7 @@
 import type { SocialFeedComponent } from "@acme/types";
+
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<SocialFeedComponent>;

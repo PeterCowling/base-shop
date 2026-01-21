@@ -1,76 +1,76 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
+    "title": "Hostel Brikette सूर्योदय हाइक",
     "description": "हॉस्टल ब्रिकेट से पोसिटानो के अबाधित सूर्योदय दृश्यों के साथ एक शांत चट्टान के दृश्य बिंदु तक भोर से पहले का मार्ग।"
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Hostel Brikette सूर्योदय हाइक",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "भोर से पहले निकलें ताकि Positano के ऊपर एक शांत व्यूपॉइंट से Amalfi Coast की पहली रोशनी देख सकें।",
+    "यह वॉक Hostel Brikette से शुरू होती है और व्यूपॉइंट तक की सीढ़ियाँ चढ़ने सहित लगभग 25 मिनट लेती है।"
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "What is the sunrise hike?",
+      "title": "सूर्योदय हाइक क्या है?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "अगर आप यहीं रहना चाहें, तो हॉस्टल की टैरेस से सूर्योदय देख सकते हैं — सूरज इमारत के बाईं ओर से उगता है।",
+        "और विस्तृत पैनोरमा के लिए यह छोटा हाइक करें; पास की चट्टान से सूरज को क्षितिज से ऊपर उठते और नीचे शहर को रोशन करते देख सकते हैं।"
       ]
     },
     {
       "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "title": "सीढ़ियों के ट्रेलहेड तक पहुँचें",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "हॉस्टल के मुख्य दरवाज़े से बाहर निकलें और Via Pasitea तक नीचे जाएँ।",
+        "Sorrento की दिशा में दाएँ मुड़ें और लगभग 350 मीटर सड़क के साथ चलें।",
+        "बाईं ओर ऊपर जाती सीढ़ियाँ देखें — पहले हिस्से पर पक्की सतह और हैंडरेल है।"
       ]
     },
     {
       "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "title": "व्यूपॉइंट तक चढ़ें",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "सीढ़ियाँ पूरी तरह चढ़ें जब तक शुरुआती चढ़ाई के शीर्ष पर एक छोटा घर न आ जाए।",
+        "घर पर बाएँ मुड़कर वुडलैंड ट्रेल में प्रवेश करें।",
+        "जहाँ रास्ता दो भागों में बँटता है, दाएँ वाले रास्ते पर चलें और पेड़ों के बीच चढ़ते रहें।",
+        "जब रास्ता खुल जाए और सामने समुद्र दिखने लगे, तो बाईं ओर हो जाएँ।",
+        "चट्टानों के आसपास चलते हुए खुले व्यूपॉइंट तक पहुँचें, जहाँ से सूर्योदय का व्यापक दृश्य दिखता है।"
       ]
     },
     {
       "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "title": "सुरक्षित रूप से सूर्योदय का आनंद लें",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "आखिरी चट्टानें सुबह की ओस से फिसलनभरी हो सकती हैं; सावधानी से चलें और ढीले किनारों पर न खड़े हों।",
+        "मुख्य चट्टान से सूरज को क्षितिज के ऊपर आते देख सकते हैं, या पर्याप्त रोशनी होने पर फोटो के लिए थोड़ा ऊपर चढ़ें।"
       ]
     }
   ],
   "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+    "हॉस्टल से व्यूपॉइंट तक लगभग 25 मिनट का समय रखें और प्रकाशित सूर्योदय समय से 10 मिनट पहले पहुँचने का लक्ष्य रखें।",
+    "हेडलैम्प या फोन की टॉर्च साथ रखें — भोर से पहले सीढ़ियों वाले हिस्से अंधेरे होते हैं।",
+    "अच्छी पकड़ वाले जूते पहनें और एक अतिरिक्त परत रखें; समुद्री हवा सुबह को और ठंडा महसूस कराती है।"
   ],
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "क्या मैं हॉस्टल से ही सूर्योदय देख सकता/सकती हूँ?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "हाँ। टैरेस पूर्व की ओर है और आप इमारत के बाईं तरफ सूरज उगते देख सकते हैं, बिना प्रॉपर्टी छोड़े।",
+        "यह हाइक उन मेहमानों के लिए है जो व्यापक पैनोरमा या बिना सामने की इमारतों के फोटो चाहते हैं।"
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "क्या ट्रेल चिन्हित है या फॉलो करना मुश्किल है?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
+        "रास्ता स्थानीय सीढ़ियों और एक अनौपचारिक वुडलैंड ट्रेल से गुजरता है। कोई संकेत नहीं हैं, इसलिए ऑफ़लाइन मैप्स वाला फोन रखें या इन निर्देशों का ध्यान से पालन करें।",
+        "अंधेरे में धीरे चलें और टॉर्च से असमतल सीढ़ियाँ व पेड़ों की जड़ों को देखें।"
       ]
     },
     {
-      "q": "What should I bring?",
+      "q": "मुझे क्या साथ लाना चाहिए?",
       "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "ग्रिप वाले ट्रेनर या हाइकिंग शूज़ पहनें, पानी साथ रखें और हवा के लिए एक हल्की परत पैक करें।",
+        "अगर आप सूर्योदय की तस्वीरों के लिए रुकने की योजना बनाते हैं, तो ट्राइपॉड या फोन स्टैंड साथ रखें।"
       ]
     }
   ],
@@ -78,15 +78,15 @@
     "title": "चित्र",
     "items": [
       {
-        "alt": "QR code to share the guide",
+        "alt": "गाइड शेयर करने के लिए QR कोड",
         "caption": "साझा करने के लिए स्कैन करें"
       },
       {
-        "alt": "House at the top of the initial climb",
+        "alt": "पहली चढ़ाई के शीर्ष पर घर",
         "caption": "सीढ़ियों के शीर्ष पर घर"
       },
       {
-        "alt": "Viewpoint over Positano at sunrise",
+        "alt": "सूर्योदय पर Positano का व्यूपॉइंट",
         "caption": "पोसीटानो के सूर्योदय का दृश्य बिंदु"
       }
     ]

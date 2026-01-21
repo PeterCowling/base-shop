@@ -1,7 +1,8 @@
 /* eslint-env jest */
 
-import { publishPost } from '../../../src/services/blog/posts/publish';
 import { nowIso } from '@acme/date-utils';
+
+import { publishPost } from '../../../src/services/blog/posts/publish';
 
 jest.mock('../../../src/actions/common/auth', () => ({
   ensureAuthorized: jest.fn(),

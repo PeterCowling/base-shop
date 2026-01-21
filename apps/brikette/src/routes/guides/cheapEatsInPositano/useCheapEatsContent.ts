@@ -1,13 +1,13 @@
 // src/routes/guides/cheapEatsInPositano/useCheapEatsContent.ts
 import type { AppLanguage } from "@/i18n.config";
 
-import type { CheapEatsArticleData, CheapEatsMetaData } from "./constants";
-import { GUIDE_KEY } from "./constants";
 import { buildCheapEatsArticle } from "./buildCheapEatsArticle";
 import { buildCheapEatsMeta } from "./buildCheapEatsMeta";
 import { buildFaqContent } from "./buildFaqContent";
 import { buildGalleryContent } from "./buildGalleryContent";
 import { buildRecommendationsContent } from "./buildRecommendationsContent";
+import type { CheapEatsArticleData, CheapEatsMetaData } from "./constants";
+import { GUIDE_KEY } from "./constants";
 import { createBreadcrumb } from "./createBreadcrumb";
 import { getFallbackGuideContent } from "./getFallbackGuideContent";
 import { getStructuredGuideContent } from "./getStructuredGuideContent";

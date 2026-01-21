@@ -1,0 +1,35 @@
+// apps/handbag-configurator-api/tsconfig.json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "rootDir": "./src",
+    "types": ["node"],
+    "strict": false,
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "paths": {
+      "@acme/product-configurator": [
+        "../../packages/product-configurator/src/index.ts",
+        "../../packages/product-configurator/dist/index.d.ts"
+      ],
+      "@acme/product-configurator/*": [
+        "../../packages/product-configurator/src/*",
+        "../../packages/product-configurator/dist/*"
+      ]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [{ "path": "../../packages/product-configurator" }]
+}
+

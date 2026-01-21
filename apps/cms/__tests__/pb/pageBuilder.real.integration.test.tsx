@@ -1,7 +1,9 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import PageBuilder from "../../src/components/cms/PageBuilder";
+
 import type { Page } from "@acme/types";
+
+import PageBuilder from "../../src/components/cms/PageBuilder";
 
 // Scoped helper: give dnd-kit predictable geometry inside jsdom without mocking PB internals.
 const rectDefaults = { width: 320, height: 64 };
@@ -83,8 +85,8 @@ describe.skip("PageBuilder real integration (palette, dnd, history, save/publish
   let rectSpy: jest.SpyInstance;
 
   beforeAll(() => {
-    rectSpy = jest.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function mock() {
-      return mockRect(this as HTMLElement);
+    rectSpy = jest.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function mock(this: HTMLElement) {
+      return mockRect(this);
     });
   });
 

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[65346],{65346:e=>{e.exports=JSON.parse('{"title":"Наше местоположение","inputLabel":"Введите ваше текущее местоположение:","inputPlaceholder":"например, Неаполь, Италия или полный адрес","getDirections":"Проложить маршрут","justShowMap":"Показать только карту","close":"Закрыть окно"}')}}]);

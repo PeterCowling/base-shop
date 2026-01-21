@@ -1,12 +1,12 @@
+import type { ReadonlyURLSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { render, screen } from "@testing-library/react";
+
+import AccessDenied from "../page";
 
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
-
-import type { ReadonlyURLSearchParams } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import AccessDenied from "../page";
 
 const mockSearch = useSearchParams as jest.MockedFunction<typeof useSearchParams>;
 

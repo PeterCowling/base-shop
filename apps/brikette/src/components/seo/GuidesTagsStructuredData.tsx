@@ -1,9 +1,10 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/GuidesTagsStructuredData.tsx
 import { memo, useMemo } from "react";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildTagDictionary, buildTagDefinedTermSets, type TagDictionary } from "@/utils/tags";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { buildTagDefinedTermSets, buildTagDictionary, type TagDictionary } from "@/utils/tags";
 
 export interface GuidesTagListItem {
   url: string;

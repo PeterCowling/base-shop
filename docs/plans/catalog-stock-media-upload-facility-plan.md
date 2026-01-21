@@ -118,4 +118,4 @@ To adopt this facility for another app:
 
 ## Active tasks
 
-- **CAT-01** - Ensure order allocation/return entries carry real before/after quantities (requires inventory reservation linkage), and migrate DBs to include `lineItems` JSON column on RentalOrder.
+- **CAT-01** ✅ - Added `lineItems` JSON column to RentalOrder Prisma schema. Created `OrderLineItem` type with `previousQuantity`/`nextQuantity` fields for before/after inventory tracking (following stockInflows pattern). Order creation already persists lineItems. **Completed 2026-01-19.**

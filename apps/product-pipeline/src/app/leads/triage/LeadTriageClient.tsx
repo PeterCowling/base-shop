@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { fingerprintLead } from "@/lib/pipeline/fingerprint";
+
 import DuplicateReviewCard from "./DuplicateReviewCard";
 import LeadCooldownCard from "./LeadCooldownCard";
 import LeadTriageFilters from "./LeadTriageFilters";

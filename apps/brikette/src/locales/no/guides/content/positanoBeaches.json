@@ -8,7 +8,7 @@
     "Sammenlign strendene i Positano og nærliggende bukter før du bestemmer deg for en solseng. Oversikten fremhever priser, gratisområder og stemning slik at du kan velge et sted som passer budsjettet og energinivået ditt.",
     "Trykk på et strandenavn i tabellen eller oppsummeringene nedenfor for å åpne de detaljerte guidene våre med veibeskrivelser, mattips og forklaringer på tilgangen steg for steg."
   ],
-  "galleryTitle": "Positano beach highlights",
+  "galleryTitle": "Høydepunkter på Positano-strendene",
   "toc": [
     {
       "href": "#overview",
@@ -79,16 +79,16 @@
     },
     {
       "id": "sorrento-beaches",
-      "title": "Regina Giovanna Bath i Sorrento",
+      "title": "Regina Giovanna-badet i Sorrento",
       "body": [
-        "Regina Giovanna Bath (Bagni della Regina Giovanna) nær Sorrento er et naturlig svømmehull hugget inn i klippen. Det er gratis, avkjølende og fortsatt mindre kjent enn hovedstrendene i Positano – ta med badesko og snacks siden det ikke finnes fasiliteter."
+        "Regina Giovanna-badet (Bagni della Regina Giovanna) nær Sorrento er et naturlig svømmehull hugget inn i klippen. Det er gratis, avkjølende og fortsatt mindre kjent enn hovedstrendene i Positano – ta med badesko og snacks siden det ikke finnes fasiliteter."
       ]
     },
     {
       "id": "amalfi-beaches",
       "title": "Strandklubber i Amalfi",
       "body": [
-        "Hovedstranden Marina Grande i Amalfi er omgitt av klubber som Stella Maris, Marina Grande Beach Club, Silver Moon og Bagni Mar di Cobalto. Forvent klassiske lido-oppsett med servering, dusjer og utsikt mot domkirken – reserver på forhånd i høysesongen for å sikre solsenger på første rad."
+        "Hovedstranden Marina Grande i Amalfi er omgitt av klubber som Stella Maris, Marina Grande strandklubb, Silver Moon og Bagni Mar di Cobalto. Forvent klassiske lido-oppsett med servering, dusjer og utsikt mot domkirken – reserver på forhånd i høysesongen for å sikre solsenger på første rad."
       ]
     },
     {
@@ -185,7 +185,7 @@
       ]
     },
     {
-      "title": "Regina Giovanna Bath",
+      "title": "Regina Giovanna-badet",
       "pros": [
         "Gratis naturlig basseng",
         "Svalt vann på varme dager"

@@ -1,77 +1,45 @@
 // packages/design-tokens/src/index.ts
-import type { Config } from "tailwindcss";
-export { colors } from "./core/colors";
 
-// Removed dev console.log to avoid i18n lint noise
+// Export core tokens
+// Export context tokens
+import { consumerTokens } from './contexts/consumer'
+import { hospitalityTokens } from './contexts/hospitality'
+import { operationsTokens } from './contexts/operations'
+
+export * from './core/colors'
+export * from './core/spacing'
+export * from './core/typography'
+
+export { consumerTokens, hospitalityTokens,operationsTokens }
+
+// Export types
+export type { ConsumerTokens } from './contexts/consumer'
+export type { HospitalityTokens } from './contexts/hospitality'
+export type { OperationsTokens } from './contexts/operations'
+
+// Phase 1: 3 contexts only
+export type TokenContext = 'operations' | 'consumer' | 'hospitality'
+export type Density = 'compact' | 'default' | 'comfortable'
+
+// Phase 2: Add dashboard context and spacious density
+// export type TokenContext = 'operations' | 'consumer' | 'hospitality' | 'dashboard'
+// export type Density = 'compact' | 'default' | 'comfortable' | 'spacious'
 
 /**
- * Tailwind preset shared across all workspace packages.
- * Since this package does not emit CSS directly, the `content`
- * array is intentionally left empty to satisfy Tailwind’s
- * `RequiredConfig` type without scanning any files here.
+ * Get tokens for a specific context
  */
-const preset: Config = {
-  content: [],
+export function getContextTokens(context: TokenContext) {
+  switch (context) {
+    case 'operations':
+      return operationsTokens
+    case 'consumer':
+      return consumerTokens
+    case 'hospitality':
+      return hospitalityTokens
+    default:
+      return consumerTokens
+  }
+}
 
-  theme: {
-      colors: {
-        bg: "hsl(var(--color-bg))",
-        fg: "hsl(var(--color-fg))",
-        primary: "hsl(var(--color-primary))",
-        accent: "hsl(var(--color-accent))",
-        // Alias destructive -> danger for shadcn compatibility
-        destructive: "hsl(var(--color-danger))",
-        danger: "hsl(var(--color-danger))",
-        success: "hsl(var(--color-success))",
-        warning: "hsl(var(--color-warning))",
-        info: "hsl(var(--color-info))",
-        muted: "hsl(var(--color-muted))",
-      },
-      textColor: {
-        "primary-foreground": "hsl(var(--color-primary-fg))",
-        "accent-foreground": "hsl(var(--color-accent-fg))",
-        // Alias destructive -> danger for shadcn compatibility
-        "destructive-foreground": "hsl(var(--color-danger-fg))",
-        "danger-foreground": "hsl(var(--color-danger-fg))",
-        "success-foreground": "hsl(var(--color-success-fg))",
-        "warning-foreground": "hsl(var(--color-warning-fg))",
-        "info-foreground": "hsl(var(--color-info-fg))",
-      },
-      fontFamily: {
-        sans: "var(--font-sans)",
-        mono: "var(--font-mono)",
-      },
-      spacing: {
-        0: "var(--space-0)",
-        1: "var(--space-1)",
-        2: "var(--space-2)",
-        3: "var(--space-3)",
-        4: "var(--space-4)",
-        5: "var(--space-5)",
-        6: "var(--space-6)",
-        8: "var(--space-8)",
-        10: "var(--space-10)",
-        12: "var(--space-12)",
-        16: "var(--space-16)",
-      },
-      borderRadius: {
-        none: "var(--radius-none)",
-        xs: "var(--radius-xs)",
-        sm: "var(--radius-sm)",
-        md: "var(--radius-md)",
-        lg: "var(--radius-lg)",
-        xl: "var(--radius-xl)",
-        '2xl': "var(--radius-2xl)",
-        '3xl': "var(--radius-3xl)",
-        '4xl': "var(--radius-4xl)",
-        full: "var(--radius-full)",
-      },
-      boxShadow: {
-        sm: "var(--shadow-sm)",
-        md: "var(--shadow-md)",
-        lg: "var(--shadow-lg)",
-      },
-  },
-};
-
-export default preset;
+// Export Tailwind plugin
+export { contextPlugin } from './tailwind-plugin'

@@ -22,10 +22,10 @@ describe("createPost", () => {
 
   it("falls back to empty body/products on bad JSON", async () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
-      await import("../../config");
+      await import("../../config") as unknown as { getConfig: jest.Mock; collectProductSlugs: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { createPost: repoCreatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { createPost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "cfg" } as any;
     getConfig.mockResolvedValue(config);
@@ -50,10 +50,10 @@ describe("createPost", () => {
   it("returns error when slug already exists", async () => {
     const { filterExistingProductSlugs, getConfig } = await import(
       "../../config"
-    );
+    ) as unknown as { getConfig: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { createPost: repoCreatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { createPost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "cfg" } as any;
     getConfig.mockResolvedValue(config);
@@ -73,10 +73,10 @@ describe("createPost", () => {
 
   it("preserves manual slugs when filtering fails", async () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
-      await import("../../config");
+      await import("../../config") as unknown as { getConfig: jest.Mock; collectProductSlugs: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { createPost: repoCreatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { createPost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "cfg" } as any;
     getConfig.mockResolvedValue(config);
@@ -104,10 +104,10 @@ describe("createPost", () => {
 
   it("returns error message when repository createPost rejects", async () => {
     const { collectProductSlugs, filterExistingProductSlugs, getConfig } =
-      await import("../../config");
+      await import("../../config") as unknown as { getConfig: jest.Mock; collectProductSlugs: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { createPost: repoCreatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { createPost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "cfg" } as any;
     getConfig.mockResolvedValue(config);

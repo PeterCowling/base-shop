@@ -1,10 +1,13 @@
 /* i18n-exempt file -- test titles and UI copy are asserted literally */
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { SearchResultsTemplate } from "../SearchResultsTemplate";
+
 import type { SKU } from "@acme/types";
-import "../../../../../../test/resetNextMocks";
+
+import { SearchResultsTemplate } from "../SearchResultsTemplate";
 
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],

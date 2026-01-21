@@ -1,11 +1,12 @@
-import { logger } from "@acme/shared-utils";
+import { logger } from "@acme/lib/logger";
+
 import {
   cleanupEnv,
   mockHasProviderErrorFields,
   mockResendSend,
-  mockSendMail,
-  mockSendgridSend,
   mockSanitizeHtml,
+  mockSendgridSend,
+  mockSendMail,
   resetMocks,
   setupEnv,
 } from './sendCampaignTestUtils';
@@ -215,7 +216,7 @@ describe('sendCampaignEmail failure paths', () => {
     mockSanitizeHtml.mockImplementation((html: string) => html);
     mockHasProviderErrorFields.mockImplementation();
 
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const consoleSpy = jest.fn();
     const originalWarn = logger.warn;
     logger.warn = consoleSpy as any;

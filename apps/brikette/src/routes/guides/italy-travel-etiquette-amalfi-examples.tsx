@@ -1,18 +1,18 @@
 // src/routes/guides/italy-travel-etiquette-amalfi-examples.tsx
+import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { toAppLanguage } from "@/utils/lang";
-import type { LinksFunction } from "react-router";
 
 export const GUIDE_KEY = "etiquetteItalyAmalfi" as const satisfies GuideKey;
 export const GUIDE_SLUG = "italy-travel-etiquette-amalfi-examples" as const;

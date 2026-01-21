@@ -7,9 +7,10 @@
 import { CONTACT_EMAIL } from "@/config/hotel";
 import { BASE_URL } from "@/config/site";
 import IMAGE_MANIFEST, { type ImageMeta } from "@/data/imageManifest";
-import { getRoomsCatalog, type LocalizedRoom } from "@/utils/roomsCatalog";
 import type { HotelGraph, HotelRoom, Offer, OfferInput } from "@/types/schema";
-import { HOTEL_ID, WEBSITE_ID, type ExtHotelNode } from "./types";
+import { getRoomsCatalog, type LocalizedRoom } from "@/utils/roomsCatalog";
+
+import { type ExtHotelNode,HOTEL_ID, WEBSITE_ID } from "./types";
 
 function makeImageNode(pathRel: string): string | { "@type": "ImageObject"; url: string; width?: number; height?: number } {
   const meta: ImageMeta | undefined = IMAGE_MANIFEST[pathRel];

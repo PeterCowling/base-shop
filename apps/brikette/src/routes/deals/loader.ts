@@ -1,9 +1,10 @@
+import type { LoaderFunctionArgs } from "react-router-dom";
+
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { langFromRequest } from "@/utils/lang";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { langFromRequest } from "@/utils/lang";
 import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import type { LoaderFunctionArgs } from "react-router-dom";
 
 import {
   DEALS_NAMESPACE,
@@ -15,6 +16,7 @@ export interface DealsLoaderData {
   lang: AppLanguage;
   title: string;
   desc: string;
+  generatedAt: number;
 }
 
 export async function loadDealsData(request: Request): Promise<DealsLoaderData> {
@@ -31,10 +33,10 @@ export async function loadDealsData(request: Request): Promise<DealsLoaderData> 
     lang,
     title: resolveMetaString("meta.title", meta.title),
     desc: resolveMetaString("meta.description", meta.description),
+    generatedAt: Date.now(),
   };
 }
 
 export async function clientLoader({ request }: LoaderFunctionArgs): Promise<DealsLoaderData> {
   return loadDealsData(request);
 }
-

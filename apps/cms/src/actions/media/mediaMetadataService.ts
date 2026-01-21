@@ -1,15 +1,17 @@
 // apps/cms/src/actions/media/mediaMetadataService.ts
 
-import { validateShopName } from "@acme/platform-core/shops";
-import type { MediaItem } from "@acme/types";
-import { promises as fs } from "fs";
 import type { Stats } from "fs";
+import { promises as fs } from "fs";
 import * as path from "path";
 
-import { readMetadata, uploadsDir, writeMetadata } from "../media.helpers";
+import { validateShopName } from "@acme/platform-core/shops";
+import type { MediaItem } from "@acme/types";
+
 import type { MediaMetadataEntry } from "../media.helpers";
+import { readMetadata, uploadsDir, writeMetadata } from "../media.helpers";
+
+import { buildMediaItem, inferMediaType,listMediaFiles } from "./mediaFileService";
 import { normalizeTagsForStorage } from "./tagUtils";
-import { buildMediaItem, listMediaFiles, inferMediaType } from "./mediaFileService";
 // Use server-side translations loader inside async functions
 
 function buildOverview(files: MediaItem[]) {

@@ -1,6 +1,8 @@
-import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import reducer from "../src/components/cms/page-builder/state";
+
 import { ComponentEditor, renderCanvasItem, setRect } from "./helpers/pageBuilderSetup";
 
 describe("PageBuilder resize interactions", () => {

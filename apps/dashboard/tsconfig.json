@@ -22,6 +22,12 @@
       ],
       "@acme/types/*": [
         "../../packages/types/src/*", "../../packages/types/dist/*"
+      ],
+      "@acme/telemetry": [
+        "../../packages/telemetry/dist/index.d.ts"
+      ],
+      "@acme/telemetry/*": [
+        "../../packages/telemetry/dist/*"
       ]
     }
   },

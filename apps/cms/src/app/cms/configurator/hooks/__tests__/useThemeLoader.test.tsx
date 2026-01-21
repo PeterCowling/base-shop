@@ -1,4 +1,10 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
+
+import {
+  baseTokens as mockBaseTokens,
+  loadThemeTokens as mockLoadThemeTokens,
+} from "../../../wizard/tokenUtils";
+import { useThemeLoader } from "../useThemeLoader";
 
 jest.mock("../../../wizard/tokenUtils", () => ({
   baseTokens: { color: "base" },
@@ -13,12 +19,6 @@ const setState = jest.fn((updater: any) => {
 jest.mock("../../ConfiguratorContext", () => ({
   useConfigurator: () => ({ state, setState }),
 }));
-
-import { useThemeLoader } from "../useThemeLoader";
-import {
-  baseTokens as mockBaseTokens,
-  loadThemeTokens as mockLoadThemeTokens,
-} from "../../../wizard/tokenUtils";
 
 beforeEach(() => {
   state = { theme: "light", themeDefaults: {}, themeOverrides: {} };
@@ -36,7 +36,7 @@ function deferred<T>() {
 describe("useThemeLoader", () => {
   it("populates themeDefaults with baseTokens on first render", async () => {
     const def = deferred<Record<string, string>>();
-    mockLoadThemeTokens.mockReturnValue(def.promise);
+    (mockLoadThemeTokens as jest.Mock).mockReturnValue(def.promise);
 
     renderHook(() => useThemeLoader());
 
@@ -52,7 +52,7 @@ describe("useThemeLoader", () => {
     const darkTokens = { color: "dark", background: "black" };
     state.themeOverrides = { color: "override" };
 
-    mockLoadThemeTokens
+    (mockLoadThemeTokens as jest.Mock)
       .mockResolvedValueOnce(lightTokens)
       .mockResolvedValueOnce(darkTokens);
 

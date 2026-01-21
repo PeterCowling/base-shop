@@ -1,13 +1,15 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
+import { notFound } from "next/navigation";
 import {
   deleteMedia,
   getMediaOverview,
   updateMediaMetadata,
 } from "@cms/actions/media.server";
-import { checkShopExists } from "@acme/lib";
+
+import { checkShopExists } from "@acme/platform-core";
 import MediaManager from "@acme/ui/components/cms/MediaManager";
-import { notFound } from "next/navigation";
+
 import MediaOverviewHero from "./components/MediaOverviewHero";
 
 interface Params {

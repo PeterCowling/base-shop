@@ -3,11 +3,7 @@
 
 export async function patchShopTheme(
   shopId: string,
-  data: {
-    themeOverrides: Record<string, string>;
-    themeDefaults: Record<string, string>;
-    themeId?: string;
-  },
+  data: { themeOverrides: Record<string, string>; themeDefaults: Record<string, string> },
 ) {
   await fetch(`/cms/api/shops/${shopId}/theme`, {
     method: "PATCH",

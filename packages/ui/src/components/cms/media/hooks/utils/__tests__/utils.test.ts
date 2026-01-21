@@ -1,4 +1,5 @@
-import { describe, it, expect, jest, beforeEach } from "@jest/globals";
+import { beforeEach,describe, expect, it, jest } from "@jest/globals";
+
 import { ensureHasUrl, hasUrl } from "../utils";
 
 describe("media utils: hasUrl/ensureHasUrl", () => {

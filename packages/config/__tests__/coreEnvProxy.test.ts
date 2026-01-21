@@ -1,4 +1,5 @@
-import { describe, it, afterEach, expect } from "@jest/globals";
+import { afterEach, describe, expect,it } from "@jest/globals";
+
 import { withEnv } from "../test/utils/withEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
@@ -94,6 +95,10 @@ describe("coreEnv proxy", () => {
         CMS_SPACE_URL: "https://example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
+        SANITY_PROJECT_ID: "test-project",
+        SANITY_DATASET: "production",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
         EMAIL_FROM: "from@example.com",
       },
       () => import("../src/env/core"),

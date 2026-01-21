@@ -1,4 +1,5 @@
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+
 import { OG_IMAGE_DIMENSIONS } from "./constants";
 
 export function buildAssistanceOgImage(): string {

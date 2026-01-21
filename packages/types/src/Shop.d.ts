@@ -1,7 +1,8 @@
 import { z } from "zod";
-export { shopSeoFieldsSchema, type ShopSeoFields } from "./shop-seo";
-export { shopLocaleSchema, type ShopLocale } from "./shop-locale";
-export { shopThemeSchema, type ShopTheme } from "./shop-theme";
+
+export { type ShopLocale,shopLocaleSchema } from "./shop-locale";
+export { type ShopSeoFields,shopSeoFieldsSchema } from "./shop-seo";
+export { type ShopTheme,shopThemeSchema } from "./shop-theme";
 export declare const sanityBlogConfigSchema: z.ZodObject<{
     projectId: z.ZodString;
     dataset: z.ZodString;

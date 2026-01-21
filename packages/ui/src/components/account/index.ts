@@ -1,8 +1,8 @@
-export { default as ProfileForm } from "./ProfileForm";
-export { default as ProfilePage, metadata as profileMetadata } from "./Profile";
-export { default as OrdersPage, metadata as ordersMetadata } from "./Orders";
-export { default as MfaSetup } from "./MfaSetup";
-export { default as MfaChallenge } from "./MfaChallenge";
-export { default as SessionsPage, metadata as sessionsMetadata } from "./Sessions";
-export { default as AccountNavigation } from "./AccountNavigation";
 export { revoke } from "../../actions/revokeSession";
+export { default as AccountNavigation } from "./AccountNavigation";
+export { default as MfaChallenge } from "./MfaChallenge";
+export { default as MfaSetup } from "./MfaSetup";
+export { metadata as ordersMetadata,default as OrdersPage } from "./Orders";
+export { metadata as profileMetadata,default as ProfilePage } from "./Profile";
+export { default as ProfileForm } from "./ProfileForm";
+export { metadata as sessionsMetadata,default as SessionsPage } from "./Sessions";

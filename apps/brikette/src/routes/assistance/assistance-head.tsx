@@ -1,10 +1,11 @@
 import { type JSX } from "react";
-import { type AppLanguage } from "@/i18n.config";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import type { LinksFunction, MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import { type AppLanguage } from "@/i18n.config";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 interface AssistanceHeadProps {
   lang: AppLanguage;

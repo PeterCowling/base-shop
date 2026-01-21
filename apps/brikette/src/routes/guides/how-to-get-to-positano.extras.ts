@@ -3,9 +3,9 @@ import { ensureStringArray } from "@/utils/i18nContent";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { GUIDE_KEY } from "./how-to-get-to-positano.constants";
-import { safeString, normaliseSections, normaliseWhenItems } from "./how-to-get-to-positano.normalizers";
-import type { GuideExtras, TocItem } from "./how-to-get-to-positano.types";
+import { normaliseSections, normaliseWhenItems,safeString } from "./how-to-get-to-positano.normalizers";
 import { getGuidesTranslator } from "./how-to-get-to-positano.translators";
+import type { GuideExtras, TocItem } from "./how-to-get-to-positano.types";
 
 export function buildGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
   const translate = context.translateGuides;

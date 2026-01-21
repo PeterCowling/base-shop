@@ -1,6 +1,7 @@
-import { Card, CardContent, Input } from "../atoms/shadcn";
+import { type ChangeEvent,useId } from "react";
+
 import { Chip } from "../atoms";
-import { useId, type ChangeEvent } from "react";
+import { Card, CardContent, Input } from "../atoms/shadcn";
 
 // i18n-exempt — admin-only CMS field label
 /* i18n-exempt */

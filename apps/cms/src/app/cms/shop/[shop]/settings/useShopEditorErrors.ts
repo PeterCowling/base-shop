@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 
 import type {
+  MappingListFieldErrors,
+  MappingListFieldRowErrors,
+} from "./components/MappingListField";
+import type {
   ShopIdentitySectionErrors,
   ShopLocalizationSectionErrors,
   ShopOverridesSectionErrors,
@@ -8,10 +12,6 @@ import type {
   ShopSeoSectionErrors,
   ShopThemeSectionErrors,
 } from "./sections";
-import type {
-  MappingListFieldErrors,
-  MappingListFieldRowErrors,
-} from "./components/MappingListField";
 
 const LUXURY_FEATURE_ERROR_KEYS = [
   "blog",

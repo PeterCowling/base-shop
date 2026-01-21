@@ -2,12 +2,11 @@
   eslint-disable security/detect-non-literal-fs-filename -- SEC-TEST-001: Tests construct temp file paths under os.tmpdir with controlled inputs; no user input involved.
 */
 import { NextRequest } from "next/server";
-import fs from "fs";
-import { promises as fsp } from "fs";
+import { __setMockSession } from "next-auth";
+import fs, { promises as fsp } from "fs";
 import os from "os";
 import path from "path";
 
-import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const resolveDataRoot = jest.fn();

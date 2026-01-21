@@ -1,8 +1,9 @@
 /** @jest-environment node */
 
-jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
-import * as repo from "../src/repositories/rentalOrders.server";
 import { getOrdersForCustomer } from "../src/orders/creation";
+import * as repo from "../src/repositories/rentalOrders.server";
+
+jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
 
 describe("rental order repository", () => {
   it("returns empty array when no orders exist", async () => {

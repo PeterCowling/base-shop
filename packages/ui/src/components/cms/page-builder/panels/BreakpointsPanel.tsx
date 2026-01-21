@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import { Button, DialogContent, DialogHeader, DialogTitle, Input } from "../../../atoms/shadcn";
 
 export type Breakpoint = { id: string; label: string; min?: number; max?: number };

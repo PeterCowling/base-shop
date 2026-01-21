@@ -27,8 +27,8 @@ function generateStub(tsPath) {
   const content = `export * from "./${base}.ts";\n`;
   if (!fs.existsSync(jsPath) || fs.readFileSync(jsPath, 'utf8') !== content) {
     fs.writeFileSync(jsPath, content, 'utf8');
-     
-    console.log(`stub: ${path.relative(process.cwd(), jsPath)}`);
+
+    console.info(`stub: ${path.relative(process.cwd(), jsPath)}`);
   }
 }
 

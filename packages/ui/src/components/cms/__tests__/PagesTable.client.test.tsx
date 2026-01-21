@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import PagesTable from "../PagesTable.client";
-import * as DataTableModule from "../DataTable";
+
 import type { Page } from "@acme/types";
+
+import * as DataTableModule from "../DataTable";
+import PagesTable from "../PagesTable.client";
 
 // Ensure Next.js Link renders an anchor in JSDOM
 jest.mock("next/link", () => ({

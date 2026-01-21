@@ -1,15 +1,18 @@
 "use client";
 
 import { useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
 import type { Shop } from "@acme/types";
+import { FormField } from "@acme/ui/components/molecules";
+
 import {
   Card,
   CardContent,
   Checkbox,
   Input,
 } from "@/components/atoms/shadcn";
-import { FormField } from "@acme/ui/components/molecules";
+
 import type { IdentityField, LuxuryFeatureKey } from "../useShopEditorSubmit";
 
 const FEATURE_KEYS = [
@@ -197,7 +200,7 @@ export default function ShopIdentitySection({
                     name={key}
                     value="on"
                     checked={checked}
-                    onCheckedChange={(state) =>
+                    onCheckedChange={(state: boolean | "indeterminate") =>
                       onLuxuryFeatureChange(
                         key,
                         (state === true) as Shop["luxuryFeatures"][typeof key],

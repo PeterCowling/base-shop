@@ -1,22 +1,23 @@
 // i18n-exempt: test file uses literal strings for clarity
 // packages/ui/src/hooks/__tests__/useFileUpload.process.test.tsx
-import { renderHook, act } from "@testing-library/react";
 import type { DragEvent as ReactDragEvent } from "react";
+import { act,renderHook } from "@testing-library/react";
+
 import type { ImageOrientation } from "@acme/types";
+
+import { validateFilePolicy } from "../upload/filePolicy";
+import { ingestExternalUrl, ingestFromText } from "../upload/ingestExternalUrl";
 import type { UseFileUploadOptions } from "../useFileUpload";
+import useFileUpload from "../useFileUpload";
 
 // Mocks for policy and ingestion
 jest.mock("../upload/filePolicy", () => ({
   validateFilePolicy: jest.fn(() => undefined),
 }));
 jest.mock("../upload/ingestExternalUrl", () => ({
-  ingestExternalUrl: jest.fn(async () => ({ file: new File([1], "u.png", { type: "image/png" }), handled: "url" })),
-  ingestFromText: jest.fn(async (text: string) => ({ file: new File([1], "t.png", { type: "image/png" }), handled: text ? "url" : "none" })),
+  ingestExternalUrl: jest.fn(async () => ({ file: new File([""], "u.png", { type: "image/png" }), handled: "url" })),
+  ingestFromText: jest.fn(async (text: string) => ({ file: new File([""], "t.png", { type: "image/png" }), handled: text ? "url" : "none" })),
 }));
-
-import { validateFilePolicy } from "../upload/filePolicy";
-import { ingestExternalUrl, ingestFromText } from "../upload/ingestExternalUrl";
-import useFileUpload from "../useFileUpload";
 
 type MockFileList = {
   length: number;
@@ -26,12 +27,13 @@ type MockFileList = {
 
 function makeDT(
   overrides: Partial<DataTransfer> & {
-    files?: MockFileList;
+    files?: FileList & MockFileList;
     getData?: (t: string) => string;
   } = {},
 ): DataTransfer {
-  const base: Partial<DataTransfer> & { files: MockFileList; getData: (t: string) => string } = {
-    files: overrides.files ?? { 0: undefined, length: 0, item: () => null },
+  const defaultFiles: FileList & MockFileList = { 0: undefined, length: 0, item: () => null } as unknown as FileList & MockFileList;
+  const base: Partial<DataTransfer> & { files: FileList & MockFileList; getData: (t: string) => string } = {
+    files: overrides.files ?? defaultFiles,
     getData: overrides.getData ?? ((_: string) => ""),
   };
   return base as unknown as DataTransfer;
@@ -40,8 +42,8 @@ function makeDT(
 describe("useFileUpload.processDataTransfer", () => {
   test("handles file with passing policy", async () => {
     (validateFilePolicy as jest.MockedFunction<typeof validateFilePolicy>).mockReturnValueOnce(undefined);
-    const file = new File([1], "a.png", { type: "image/png" });
-    const files: MockFileList = { 0: file, length: 1, item: () => file };
+    const file = new File([""], "a.png", { type: "image/png" });
+    const files = { 0: file, length: 1, item: () => file } as unknown as FileList & MockFileList;
     const dt = makeDT({ files });
     const opts: UseFileUploadOptions = { shop: "s", requiredOrientation: "landscape" as ImageOrientation };
     const { result } = renderHook(() => useFileUpload(opts));
@@ -54,8 +56,8 @@ describe("useFileUpload.processDataTransfer", () => {
 
   test("blocks file by policy and returns none with error", async () => {
     (validateFilePolicy as jest.MockedFunction<typeof validateFilePolicy>).mockReturnValueOnce("Unsupported");
-    const file = new File([1], "a.txt", { type: "text/plain" });
-    const dt = makeDT({ files: { 0: file, length: 1, item: () => file } });
+    const file = new File([""], "a.txt", { type: "text/plain" });
+    const dt = makeDT({ files: { 0: file, length: 1, item: () => file } as unknown as FileList & MockFileList });
     const opts: UseFileUploadOptions = { shop: "s", requiredOrientation: "landscape" as ImageOrientation };
     const { result } = renderHook(() => useFileUpload(opts));
     const handled = await act(

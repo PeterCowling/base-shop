@@ -1,8 +1,9 @@
 /** @jest-environment jsdom */
 
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
-import { CurrencyProvider, useCurrency, readInitial } from "../CurrencyContext";
+import { fireEvent, render, waitFor } from "@testing-library/react";
+
+import { CurrencyProvider, readInitial,useCurrency } from "../CurrencyContext";
 
 // React 19 requires this flag for `act` to suppress environment warnings
 ;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
@@ -82,7 +83,7 @@ describe("CurrencyProvider", () => {
     clearWindowOverride();
   });
 
-  it("reads initial currency from localStorage when valid", () => {
+  it("reads initial currency from localStorage when valid", async () => {
     window.localStorage.setItem(LS_KEY, "USD");
 
     const { getByTestId, unmount } = render(
@@ -91,11 +92,13 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("USD");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
+    });
     unmount();
   });
 
-  it("falls back to default when localStorage has invalid value", () => {
+  it("falls back to default when localStorage has invalid value", async () => {
     window.localStorage.setItem(LS_KEY, "JPY");
 
     const { getByTestId, unmount } = render(
@@ -104,11 +107,13 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("EUR");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("EUR");
+    });
     unmount();
   });
 
-  it("falls back to default when localStorage access throws", () => {
+  it("falls back to default when localStorage access throws", async () => {
     jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("blocked");
     });
@@ -119,7 +124,9 @@ describe("CurrencyProvider", () => {
       </CurrencyProvider>
     );
 
-    expect(getByTestId("currency").textContent).toBe("EUR");
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("EUR");
+    });
     unmount();
   });
 

@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Cluster, Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
-import type { GameLootDrop } from "../types";
+import { Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+
 import { resolveArtifactHref } from "@/app/artifacts/types";
+
+import type { GameLootDrop } from "../types";
 
 function formatAge(value: string | null | undefined): string | null {
   if (!value) return null;
@@ -55,19 +57,15 @@ export default function LootDropsPanel({
                 key={drop.id}
                 className="rounded-2xl border border-border-1 bg-surface-2 p-3 text-sm"
               >
-                <Cluster justify="between" alignY="center" className="gap-3">
-                  <Inline gap={2} alignY="center">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
                     <span className="pp-chip">{stage}</span>
                     <span className="font-semibold text-foreground">{title}</span>
-                  </Inline>
+                  </div>
                   <span className="text-xs text-foreground/60">{age ?? ""}</span>
-                </Cluster>
+                </div>
 
-                <Cluster
-                  justify="between"
-                  alignY="center"
-                  className="mt-2 gap-3 text-xs text-foreground/60"
-                >
+                <Inline gap={3} alignY="center" className="mt-2 justify-between text-xs text-foreground/60">
                   <span>{drop.kind ?? "-"}</span>
                   <Inline gap={2} alignY="center">
                     {drop.candidateId && (
@@ -81,7 +79,7 @@ export default function LootDropsPanel({
                     {href && (
                       <a
                         href={href}
-                        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-primary px-3 py-1 font-semibold text-primary-foreground"
+                        className="rounded-full bg-primary px-3 py-1 font-semibold text-primary-foreground"
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -89,7 +87,7 @@ export default function LootDropsPanel({
                       </a>
                     )}
                   </Inline>
-                </Cluster>
+                </Inline>
               </div>
             );
           })}

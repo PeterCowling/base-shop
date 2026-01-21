@@ -18,7 +18,7 @@ describe("ResendProvider", () => {
 
   beforeEach(async () => {
     jest.resetModules();
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     warnSpy = jest.fn();
     errorSpy = jest.fn();
     logger.warn = warnSpy as any;

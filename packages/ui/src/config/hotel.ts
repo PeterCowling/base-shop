@@ -1,8 +1,8 @@
 // src/config/hotel.ts
 // ─────────────────────────────────────────────────────────────
 // i18n-exempt file -- UI-1000 ttl=2026-12-31: Hotel config embeds per-locale content; migrate to @acme/i18n later.
-import type { Hotel, RatingSource } from "../types/machine-layer/ml.ts";
-import { hotelSchema } from "../types/schemas";
+import type { Hotel, RatingSource } from "@acme/ui/types/machine-layer/ml.ts";
+import { hotelSchema } from "@acme/ui/types/schemas";
 /** Official hostel contact e-mail. */
 export const CONTACT_EMAIL = "hostelpositano@gmail.com" as const;
 

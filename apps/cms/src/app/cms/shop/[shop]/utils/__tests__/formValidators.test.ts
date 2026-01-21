@@ -1,4 +1,5 @@
-import type { ErrorSetter as SharedErrorSetter } from "@acme/shared-utils";
+import type { ErrorSetter as SharedErrorSetter } from "@acme/lib/json";
+
 import type { ErrorSetter as FormErrorSetter } from "../formValidators";
 
 type Expect<T extends true> = T;
@@ -15,11 +16,11 @@ type AssertErrorSetterReExported = Expect<
 const jsonFieldHandlerSentinel = jest.fn();
 const errorSetterSentinel = jest.fn(() => undefined) as unknown as SharedErrorSetter;
 // The typed assignment below enforces at compile time that formValidators continues
-// to re-export the ErrorSetter alias from @acme/shared-utils.
+// to re-export the ErrorSetter alias from @acme/lib/json.
 const forwardedErrorSetter: FormErrorSetter = errorSetterSentinel;
 const _compileTimeCheck: AssertErrorSetterReExported = true;
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/json", () => ({
   __esModule: true,
   jsonFieldHandler: jsonFieldHandlerSentinel,
   ErrorSetter: errorSetterSentinel,
@@ -35,12 +36,12 @@ describe("formValidators shared-utils wiring", () => {
     jest.clearAllMocks();
   });
 
-  it("re-exports jsonFieldHandler from @acme/shared-utils", async () => {
+  it("re-exports jsonFieldHandler from @acme/lib/json", async () => {
     const mod = await import("../formValidators");
     expect(mod.jsonFieldHandler).toBe(jsonFieldHandlerSentinel);
   });
 
-  it("keeps ErrorSetter wired to the @acme/shared-utils export", async () => {
+  it("keeps ErrorSetter wired to the @acme/lib/json export", async () => {
     await import("../formValidators");
     expect(_compileTimeCheck).toBe(true);
     // If the type-only re-export changes, the assignment above will fail to compile.

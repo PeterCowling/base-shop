@@ -1,5 +1,6 @@
+import type { AnalyticsAggregates,AnalyticsEvent } from "@acme/platform-core/analytics";
+
 import { buildMetrics } from "../analytics";
-import type { AnalyticsEvent, AnalyticsAggregates } from "@acme/platform-core/analytics";
 
 describe("buildMetrics", () => {
   it("returns empty metrics for no events and no aggregates", () => {

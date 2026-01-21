@@ -89,38 +89,6 @@
     "empty": "{{tag}} に関する体験ガイドはまだありません。別のタグを試すかフィルターを外してください。",
     "clearFilter": "体験ガイドをすべて表示",
     "cardCta": "「{{guideTitle}}」の体験ガイドを詳しく見る",
-    "directionsLabel": "アクセス",
-    "directionLinks": {
-      "capriDayTrip": {
-        "positanoCapriFerry": "ポジターノ → カプリ フェリー",
-        "capriPositanoFerry": "カプリ → ポジターノ フェリー"
-      },
-      "positanoAmalfi": {
-        "positanoAmalfiBus": "ポジターノ → アマルフィ バス",
-        "amalfiPositanoBus": "アマルフィ → ポジターノ バス",
-        "positanoAmalfiFerry": "ポジターノ → アマルフィ フェリー（季節運航）",
-        "amalfiPositanoFerry": "アマルフィ → ポジターノ フェリー（季節運航）"
-      },
-      "positanoRavello": {
-        "positanoRavelloBus": "ポジターノ → ラヴェッロ バス",
-        "ravelloPositanoBus": "ラヴェッロ → ポジターノ バス",
-        "positanoRavelloFerryBus": "ポジターノ → ラヴェッロ フェリー + バス"
-      },
-      "naplesPositano": {
-        "naplesCenterTrainBus": "ナポリ中心部 → ポジターノ（電車 + バス）",
-        "naplesCenterPositanoFerry": "ナポリ中心部 → ポジターノ フェリー",
-        "naplesAirportPositanoBus": "ナポリ空港 → ポジターノ バス",
-        "positanoNaplesCenterBusTrain": "ポジターノ → ナポリ中心部（バス + 電車）",
-        "positanoNaplesCenterFerry": "ポジターノ → ナポリ フェリー",
-        "positanoNaplesAirportBus": "ポジターノ → ナポリ空港 バス"
-      },
-      "salernoPositano": {
-        "salernoPositanoBus": "サレルノ → ポジターノ バス",
-        "salernoPositanoFerry": "サレルノ → ポジターノ フェリー（季節運航）",
-        "positanoSalernoBus": "ポジターノ → サレルノ バス",
-        "positanoSalernoFerry": "ポジターノ → サレルノ フェリー（季節運航）"
-      }
-    },
     "filterHeading": "体験ガイドを絞り込む",
     "filterDescription": "タグを選んで表示する体験を絞り込みます。",
     "grouped": {

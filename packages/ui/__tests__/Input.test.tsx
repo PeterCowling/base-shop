@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import { Input } from "../src/components/atoms/shadcn";
 
 describe("Input", () => {

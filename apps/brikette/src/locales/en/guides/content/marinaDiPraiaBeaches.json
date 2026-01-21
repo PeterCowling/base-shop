@@ -86,6 +86,19 @@
     "The cliffs block direct sun by mid-afternoon — great for cooling down but it can feel chilly on windy days.",
     "Mobile reception dips inside the gorge; download bus timetables or dinner booking confirmations beforehand."
   ],
+  "gallery": {
+    "title": "Photo walkthrough",
+    "items": [
+      {
+        "alt": "Overlook of Marina di Praia with boats and umbrellas on the pebble shore.",
+        "caption": "The cove is narrow, sheltered by cliffs, and stays calmer than Positano’s main beaches."
+      },
+      {
+        "alt": "Pebble beach lined with blue-and-yellow loungers at Marina di Praia.",
+        "caption": "The lido section has most of the loungers, with a small free stretch nearer the center."
+      }
+    ]
+  },
   "faqsTitle": "Marina di Praia FAQs",
   "faqs": [
     {

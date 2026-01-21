@@ -14,7 +14,7 @@ const lighthouse = jest.fn();
 jest.mock("lighthouse", () => ({ __esModule: true, default: lighthouse }));
 
 const nowIso = jest.fn(() => "t");
-jest.mock("@acme/date-utils", () => ({ nowIso }));
+jest.mock("@date-utils", () => ({ nowIso }));
 
 process.env.LIGHTHOUSE_TRUSTED_HOSTS = "example.com";
 let route: typeof import("../route");

@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { describe, it, expect, afterEach } from "@jest/globals";
+import { afterEach,describe, expect, it } from "@jest/globals";
 
 describe("env.snapshot utilities", () => {
   const ORIGINAL_ENV = process.env;

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import MfaChallenge from "./MfaChallenge";
 
 const meta: Meta<typeof MfaChallenge> = {

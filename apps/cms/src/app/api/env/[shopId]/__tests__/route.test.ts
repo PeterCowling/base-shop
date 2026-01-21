@@ -1,12 +1,13 @@
 import { type NextRequest } from "next/server";
-import path from "path";
 import { __setMockSession } from "next-auth";
+import path from "path";
+
 const setupSanityBlog = jest.fn();
 const parseJsonBody = jest.fn();
 
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 jest.mock("@cms/actions/setupSanityBlog", () => ({ setupSanityBlog }));
-jest.mock("@acme/shared-utils", () => ({ parseJsonBody }));
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody }));
 
 const mkdir = jest.fn();
 const writeFile = jest.fn();

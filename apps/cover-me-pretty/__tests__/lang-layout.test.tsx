@@ -74,8 +74,23 @@ describe("[lang] layout", () => {
       canonical: "https://example.com/de",
       openGraph: { url: "https://example.com/de" },
       twitter: { card: "summary" },
-    });
-    getShopSettingsMock.mockResolvedValue({ languages: ["de", "en", "it"], seo: {} });
+    } as Awaited<ReturnType<GetSeo>>);
+    getShopSettingsMock.mockResolvedValue({
+      languages: ["de", "en", "it"],
+      seo: {},
+      luxuryFeatures: {
+        blog: false,
+        contentMerchandising: false,
+        raTicketing: false,
+        fraudReviewThreshold: 0,
+        requireStrongCustomerAuth: false,
+        strictReturnConditions: false,
+        trackingDashboard: false,
+        premierDelivery: false,
+      },
+      updatedAt: new Date().toISOString(),
+      updatedBy: "test",
+    } as Awaited<ReturnType<GetShopSettings>>);
   });
 
   afterEach(() => {

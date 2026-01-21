@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "classics",
-      "title": "Classic postcard shots",
+      "title": "Klassiske postkortbilder",
       "body": [
         "Ta bilder fra kirken Santa Maria Assunta-trinn like etter soloppgang; stranden er tom og kuppelen lyser varm.",
         "Gå til fergekaien for en vidvinkelutsikt tilbake mot klippesiden – ankom før kl. 09.00 når dagsturskøer dannes."
@@ -18,15 +18,15 @@
     },
     {
       "id": "hidden",
-      "title": "Underrated angles",
+      "title": "Undervurderte vinkler",
       "body": [
         "Klatre til utsiktspunktet på Via Trara Genoino ovenfor Fornillo for et lagvis skudd av fiskebåter og pastellhus.",
-        "Kjør den lokale bussen til Nocelle, og ta deretter kysten fra Path of the Gods-terrassen; panoramaet er uslåelig på klare morgener."
+        "Kjør den lokale bussen til Nocelle, og ta deretter kysten fra Gudestien-terrassen; panoramaet er uslåelig på klare morgener."
       ]
     },
     {
       "id": "sunset",
-      "title": "Golden hour setups",
+      "title": "Golden hour-oppsett",
       "body": [
         "Ta en plass på Via Cristoforo Colombo-benkene omtrent 45 minutter før solnedgang; solen faller bak Li Galli-øyene om sommeren.",
         "Gå til Laurito-stranden for silhuetter av Positanos skyline – trappene er bratte, så bruk gripende sko og ta med en hodelykt på turen tilbake."
@@ -34,7 +34,7 @@
     },
     {
       "id": "etiquette",
-      "title": "Photo etiquette",
+      "title": "Fotoetikette",
       "body": [
         "Hold stativene kompakte og gå til side når du har tatt en ramme, slik at trapper forblir farbare.",
         "Unngå droner innenfor byens grenser; Italienske forskrifter krever tillatelser og bøter er høye når vakter oppdager fly uten lisens."
@@ -64,47 +64,47 @@
     "toc": [
       {
         "href": "#classics",
-        "label": "The classics (timing matters)"
+        "label": "Klassikerne (timing betyr noe)"
       },
       {
         "href": "#alternatives",
-        "label": "Underrated alternatives"
+        "label": "Undervurderte alternativer"
       },
       {
         "href": "#sunset",
-        "label": "Sunset choices"
+        "label": "Solnedgangsvalg"
       },
       {
         "href": "#etiquette",
-        "label": "Etiquette & local tips"
+        "label": "Etikette og lokale tips"
       },
       {
         "href": "#faqs",
-        "label": "FAQs"
+        "label": "Vanlige spørsmål"
       }
     ],
     "classics": {
-      "heading": "The classics (timing matters)",
+      "heading": "Klassikerne (timing betyr noe)",
       "items": [
         {
           "title": "Spiaggia Grande",
           "description": "Ankom ved soloppgang for tomme kaier og rolig vann; unngå køer midt på morgenen."
         },
         {
-          "title": "Fornillo path",
+          "title": "Fornillo-stien",
           "description": "Slak kystgangvei med lagdelt utsikt over klippene; best tidlig eller like etter solnedgang."
         },
         {
-          "title": "Via Pasitea bends",
+          "title": "Svingene på Via Pasitea",
           "description": "Forhøyede kurver gir postkortet vinkel uten folkemengder. Respekter trafikken og hold deg unna veien."
         }
       ]
     },
     "alternatives": {
-      "heading": "Underrated alternatives",
+      "heading": "Undervurderte alternativer",
       "items": [
         {
-          "title": "Chiesa Nuova terraces",
+          "title": "Terrassene ved Chiesa Nuova",
           "description": "Gylden time over Fornillo; minimal folkemengde og en kort spasertur fra vandrerhjemmet."
         },
         {
@@ -117,19 +117,19 @@
           "link": {
             "guideKey": "sunsetViewpoints"
           },
-          "description": "List for varied compositions."
+          "description": "Se listen for varierte komposisjoner."
         }
       ]
     },
     "sunset": {
-      "heading": "Sunset choices",
+      "heading": "Solnedgangsvalg",
       "paragraphs": [
         "For en publikumsfri golden hour, ta turen til øvre Via Pasitea-gater eller terrassene i nærheten av Chiesa Nuova.",
         "Hvis du foretrekker strandsilhuetter, ankom Fornillo 30–45 minutter før solnedgang."
       ]
     },
     "etiquette": {
-      "heading": "Etiquette & local tips",
+      "heading": "Etikette og lokale tips",
       "items": [
         "Ikke blokker smale trapper eller veier; ta skuddet og gå til side.",
         "Respekter privat eiendom og unngå klatrevegger/tak.",
@@ -137,22 +137,22 @@
       ]
     },
     "faqs": {
-      "heading": "FAQs",
+      "heading": "Vanlige spørsmål",
       "items": [
         {
-          "summary": "What’s the best time for photos?",
+          "summary": "Hva er beste tidspunkt for bilder?",
           "body": "Soloppgang for tommere scener; golden hour for varme toner og mykere skygger."
         }
       ]
     },
     "drone": {
-      "summary": "Do I need a drone permit?",
+      "summary": "Trenger jeg dronetillatelse?",
       "body": "Italia har strenge droneregler og mange flyforbudssoner. Sjekk alltid ENAC-veiledning og lokale forskrifter; unngå å fly nær folkemengder."
     },
     "galleryAlt": [
-      "Positano from above",
-      "Coastal panorama"
+      "Positano ovenfra",
+      "Kystpanorama"
     ],
-    "galleryFallbackAlt": "Scenic view of Positano coastline"
+    "galleryFallbackAlt": "Naturskjønn utsikt over Positanokysten"
   }
 }

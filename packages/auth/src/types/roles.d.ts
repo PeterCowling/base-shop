@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 type RolesConfig = {
     write: readonly string[];
     read: readonly string[];

@@ -1,15 +1,15 @@
 // src/routes/guides/hostel-brikette-to-fiordo-di-furore-by-bus.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry } from "./guide-manifest";
-
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
 
 export const handle = { tags: ["beaches", "bus", "stairs", "positano"] };
 

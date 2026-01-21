@@ -141,14 +141,14 @@ function main() {
   const total = results.reduce((n, r) => n + r.changes, 0);
   if (results.length === 0) {
     // i18n-exempt -- I18N-201 CLI output for developers [ttl=2026-03-31]
-    console.log('No changes'); // i18n-exempt -- I18N-201 CLI output for developers [ttl=2026-03-31]
+    console.info('No changes'); // i18n-exempt -- I18N-201 CLI output for developers [ttl=2026-03-31]
   } else {
     // i18n-exempt -- I18N-201 CLI summary output for developers [ttl=2026-03-31]
-    console.log(`${results.length} files would change (${total} updates).`); // i18n-exempt -- I18N-201 CLI summary output for developers [ttl=2026-03-31]
-    for (const r of results) console.log(`- ${r.file}`); // i18n-exempt -- I18N-201 CLI detail output [ttl=2026-03-31]
+    console.info(`${results.length} files would change (${total} updates).`); // i18n-exempt -- I18N-201 CLI summary output for developers [ttl=2026-03-31]
+    for (const r of results) console.info(`- ${r.file}`); // i18n-exempt -- I18N-201 CLI detail output [ttl=2026-03-31]
   }
   if (!write)
-    console.log('Dry-run only. Re-run with --write to apply.');
+    console.info('Dry-run only. Re-run with --write to apply.');
 }
 
 main();

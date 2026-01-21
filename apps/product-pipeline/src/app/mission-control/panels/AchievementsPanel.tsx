@@ -1,6 +1,7 @@
 "use client";
 
 import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
+
 import type { GameAchievement } from "../types";
 
 type AchievementsStrings = {

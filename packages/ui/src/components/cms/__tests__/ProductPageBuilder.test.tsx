@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
+
+import PageBuilder from "../page-builder/PageBuilder";
 import ProductPageBuilder from "../ProductPageBuilder";
 
 jest.mock("../page-builder/PageBuilder", () => jest.fn(() => null));
-
-import PageBuilder from "../page-builder/PageBuilder";
 
 const MockPageBuilder = PageBuilder as unknown as jest.Mock;
 

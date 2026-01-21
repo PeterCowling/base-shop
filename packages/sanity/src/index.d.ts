@@ -1,5 +1,7 @@
 import "server-only";
+
 import { type SanityBlogConfig } from "@acme/types";
+
 export interface PortableBlock {
     _type: string;
     [key: string]: unknown;

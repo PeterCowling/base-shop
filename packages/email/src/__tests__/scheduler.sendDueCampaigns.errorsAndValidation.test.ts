@@ -1,3 +1,10 @@
+// Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  useTranslations: jest.fn(() =>
+    Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
+  ),
+}));
+
 import { setupTest, teardown, shop, sendCampaignEmail, validateShopName } from "./testUtils";
 import { sendDueCampaigns } from "../scheduler";
 

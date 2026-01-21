@@ -3,8 +3,10 @@ import "server-only";
 
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index";
+
 import { DATA_ROOT } from "../dataRoot";
+import { validateShopName } from "../shops/index";
+
 import type { SeoAuditEntry } from "./seoAudit.server";
 
 function auditPath(shop: string): string {

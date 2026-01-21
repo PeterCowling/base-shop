@@ -1,11 +1,13 @@
 "use client";
 
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+
 import { Inline } from "../../atoms/primitives/Inline";
 import { Stack } from "../../atoms/primitives/Stack";
+
 import type { LayerNode } from "./LayersPanel.types";
-import { LayersPanelRow } from "./LayersPanelRow";
 import { LayersPanelChildren } from "./LayersPanelChildren";
+import { LayersPanelRow } from "./LayersPanelRow";
 
 export function LayerList({ nodes, parentId, selectedIds, onSelect, onToggleHidden, onToggleLocked, onRename, collapsed, setCollapsed }: {
   nodes: LayerNode[];

@@ -2,8 +2,8 @@ import { decodeCartCookie, encodeCartCookie } from "@acme/platform-core/cartCook
 import {
   createCart,
   getCart,
-  setCart,
   incrementQty,
+  setCart,
 } from "@acme/platform-core/cartStore";
 import { PRODUCTS } from "@acme/platform-core/products";
 
@@ -56,10 +56,10 @@ export function invalidSize() {
 }
 
 export {
+  createCart,
   decodeCartCookie,
   encodeCartCookie,
-  createCart,
   getCart,
-  setCart,
   incrementQty,
+  setCart,
 };

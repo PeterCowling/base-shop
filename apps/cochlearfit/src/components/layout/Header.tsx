@@ -2,13 +2,15 @@
 
 import React, { useMemo } from "react";
 import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
-import { useLocale } from "@/contexts/LocaleContext";
-import { withLocale } from "@/lib/routes";
+
+import CartIconButton from "@/components/CartIconButton";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Container from "@/components/layout/Container";
 import Inline from "@/components/layout/Inline";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-import CartIconButton from "@/components/CartIconButton";
+import { useLocale } from "@/contexts/LocaleContext";
+import { withLocale } from "@/lib/routes";
 
 type NavItem = {
   key: string;

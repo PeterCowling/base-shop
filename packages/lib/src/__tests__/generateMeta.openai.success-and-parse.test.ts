@@ -1,9 +1,10 @@
-import { describe, it, expect, afterEach, jest } from "@jest/globals";
-jest.mock("path", () => ({
-  join: jest.fn((...parts) => parts.join("/")),
-  dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
-}));
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import * as path from "path";
+
+jest.mock("path", () => ({
+  join: jest.fn((...parts: string[]) => parts.join("/")),
+  dirname: jest.fn((p: string) => p.split("/").slice(0, -1).join("/")),
+}));
 
 const product = { id: "123", title: "Title", description: "Desc" };
 const writeMock = jest.fn();
@@ -35,7 +36,7 @@ describe("generateMeta", () => {
 
   it("generates metadata via OpenAI default export", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [
         {
           content: [
@@ -48,7 +49,7 @@ describe("generateMeta", () => {
         },
       ],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({
       data: [{ b64_json: Buffer.from("data").toString("base64") }],
     });
     const OpenAI = jest.fn().mockImplementation(() => ({
@@ -81,7 +82,7 @@ describe("generateMeta", () => {
 
   it("detects OpenAI constructor from named export", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [
         {
           content: [
@@ -94,7 +95,7 @@ describe("generateMeta", () => {
         },
       ],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({
       data: [{ b64_json: Buffer.from("data").toString("base64") }],
     });
     const OpenAI = jest.fn().mockImplementation(() => ({
@@ -122,7 +123,7 @@ describe("generateMeta", () => {
 
   it("detects OpenAI constructor from nested default", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [
         {
           content: [
@@ -135,7 +136,7 @@ describe("generateMeta", () => {
         },
       ],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({
       data: [{ b64_json: Buffer.from("data").toString("base64") }],
     });
     const OpenAI = jest.fn().mockImplementation(() => ({
@@ -165,10 +166,10 @@ describe("generateMeta", () => {
 
   it("overrides only provided fields from AI response", async () => {
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    const responsesCreate = jest.fn().mockResolvedValue({
+    const responsesCreate = jest.fn<any, any[]>().mockResolvedValue({
       output: [{ content: [JSON.stringify({ title: "LLM Title" })] }],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
+    const imagesGenerate = jest.fn<any, any[]>().mockResolvedValue({
       data: [{ b64_json: Buffer.from("data").toString("base64") }],
     });
     const OpenAI = jest.fn().mockImplementation(() => ({

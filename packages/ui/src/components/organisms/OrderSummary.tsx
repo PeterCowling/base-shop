@@ -1,11 +1,13 @@
 // packages/ui/components/organisms/OrderSummary.tsx
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 
-import { useCart } from "../../hooks/useCart";
-import type { CartLine } from "@acme/types/Cart";
-import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { CartLine } from "@acme/types/Cart";
+
+import { useCart } from "../../hooks/useCart";
+import { Price } from "../atoms/Price";
 
 type Totals = {
   subtotal: number;

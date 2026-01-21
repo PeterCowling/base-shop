@@ -1,7 +1,10 @@
-import { renderHook, act } from "@testing-library/react";
-import type { MappingRow } from "@/hooks/useMappingRows";
-import { useShopEditorSubmit } from "../useShopEditorSubmit";
 import { updateShop } from "@cms/actions/shops.server";
+import { act,renderHook } from "@testing-library/react";
+
+import type { MappingRow } from "@/hooks/useMappingRows";
+
+import { useShopEditorSubmit } from "../useShopEditorSubmit";
+
 import {
   createForm,
   createSections,
@@ -34,7 +37,7 @@ describe("useShopEditorSubmit — success flow", () => {
       priceOverrides: { en: 42 },
       localeOverrides: { banner: "it" },
       luxuryFeatures: sections.identity.info.luxuryFeatures,
-    };
+    } as any;
 
     updateShopMock.mockResolvedValueOnce({ shop: responseShop });
 

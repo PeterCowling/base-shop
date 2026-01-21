@@ -1,5 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import SearchBarBlock from "../src/components/cms/blocks/SearchBar";
 import { SearchBar } from "../src/components/molecules/SearchBar";
 

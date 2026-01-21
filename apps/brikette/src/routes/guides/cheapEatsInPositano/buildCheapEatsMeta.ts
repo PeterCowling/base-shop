@@ -1,7 +1,7 @@
 // src/routes/guides/cheapEatsInPositano/buildCheapEatsMeta.ts
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 
-import { HERO_IMAGE_PATH, type CheapEatsMetaData } from "./constants";
+import { type CheapEatsMetaData,HERO_IMAGE_PATH } from "./constants";
 
 type BuildCheapEatsMetaParams = {
   title: string;

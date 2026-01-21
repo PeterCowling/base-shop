@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface GiftCardBlockComponent extends PageComponentBase {
     type: "GiftCardBlock";
     denominations?: number[];

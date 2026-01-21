@@ -1,10 +1,11 @@
 // apps/cms/src/app/cms/shop/[shop]/sections/[id]/builder/page.tsx
 
 import dynamic from "next/dynamic";
-import type SectionBuilderComponent from "@acme/ui/components/cms/SectionBuilder";
-import type { SectionTemplate } from "@acme/types";
-import { getSections } from "@acme/platform-core/repositories/sections/index.server";
 import { updateSectionAction } from "@cms/actions/sections/update";
+
+import { getSections } from "@acme/platform-core/repositories/sections/index.server";
+import type { SectionTemplate } from "@acme/types";
+import type SectionBuilderComponent from "@acme/ui/components/cms/SectionBuilder";
 
 type SectionBuilderProps = React.ComponentProps<typeof SectionBuilderComponent>;
 const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@acme/ui/components/cms/SectionBuilder"));

@@ -1,21 +1,22 @@
 // src/routes/guides/what-to-pack-amalfi-coast.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import type { LinksFunction } from "react-router";
 
 import GenericContent from "@/components/guides/GenericContent";
 import GuideSectionsItemListStructuredData from "@/components/seo/GuideSectionsItemListStructuredData";
-import i18n from "@/i18n";
 import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import type { LinksFunction } from "react-router";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
+import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 import { OG_IMAGE as OG_DIMS } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
-import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteMeta } from "@/utils/routeHead";
 import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["travel-tips", "packing", "amalfi"] } as const;
 
@@ -128,7 +129,7 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };
 
 function renderWhatToPackContent(context: GuideSeoTemplateContext) {
   if (!hasLocalizedCopy(context)) {

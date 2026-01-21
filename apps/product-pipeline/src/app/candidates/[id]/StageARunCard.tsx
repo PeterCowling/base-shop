@@ -1,17 +1,19 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
 import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
-import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
-import { extractStageAInput, extractStageASummary } from "./stageAHelpers";
-import StageASummaryCard from "./StageASummary";
-import StageAFormFields from "./StageAFormFields";
+
 import {
   DEFAULT_STAGE_A_FORM,
   hydrateStageAForm,
   parseStageAForm,
   type StageAFormState,
 } from "./stageAForm";
+import StageAFormFields from "./StageAFormFields";
+import { extractStageAInput, extractStageASummary } from "./stageAHelpers";
+import StageASummaryCard from "./StageASummary";
+import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
 
 export default function StageARunCard({
   candidateId,
@@ -44,6 +46,7 @@ export default function StageARunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
 
   useEffect(() => {
@@ -106,7 +109,7 @@ export default function StageARunCard({
   const inputDisabled = running || loading || cooldownActive;
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-a">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageA.label}
@@ -122,41 +125,53 @@ export default function StageARunCard({
         notAvailable={strings.notAvailable}
       />
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageA}>
-        <StageAFormFields
-          form={form}
-          setForm={setForm}
-          disabled={inputDisabled}
-          strings={strings.stageA}
-          onEdit={() => setHasEdited(true)}
-        />
-        <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
-          {message ? (
-            <span
-              className={
-                message.tone === "success"
-                  ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-                  : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-              }
-            >
-              {message.text}
-            </span>
-          ) : (
-            <span className="text-xs text-foreground/60">
-              {cooldownActive
-                ? strings.cooldown.activeMessage
-                : strings.stageA.inputHelp}
-            </span>
-          )}
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageA}>
+          <StageAFormFields
+            form={form}
+            setForm={setForm}
             disabled={inputDisabled}
-          >
-            {strings.stageA.runLabel}
-          </button>
-        </Cluster>
-      </form>
+            strings={strings.stageA}
+            onEdit={() => setHasEdited(true)}
+          />
+          <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
+            {message ? (
+              <span
+                className={
+                  message.tone === "success"
+                    ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                    : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                }
+              >
+                {message.text}
+              </span>
+            ) : (
+              <span className="text-xs text-foreground/60">
+                {cooldownActive
+                  ? strings.cooldown.activeMessage
+                  : strings.stageA.inputHelp}
+              </span>
+            )}
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={inputDisabled}
+            >
+              {strings.stageA.runLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

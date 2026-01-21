@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/AnnouncementBar.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import AnnouncementBar from './AnnouncementBar';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import AnnouncementBar from './AnnouncementBar';
 
 const meta: Meta<typeof AnnouncementBar> = {
   title: 'Organisms/Announcement Bar/Matrix',

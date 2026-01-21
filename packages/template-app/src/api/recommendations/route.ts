@@ -1,5 +1,6 @@
 // packages/template-app/src/api/recommendations/route.ts
 import { NextResponse } from "next/server";
+
 import { PRODUCTS } from "@acme/platform-core/products";
 import type { RecommendationPreset } from "@acme/types";
 

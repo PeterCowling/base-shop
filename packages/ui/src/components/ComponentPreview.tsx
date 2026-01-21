@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import type { UpgradeComponent } from "@acme/types";
 
 // i18n-exempt — developer tooling copy (not user-facing)

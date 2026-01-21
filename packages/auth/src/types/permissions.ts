@@ -1,7 +1,8 @@
 // packages/auth/src/types/permissions.ts
 
-import permissionsConfig from "../permissions.json" with { type: "json" };
 import { z } from "zod";
+
+import permissionsConfig from "../permissions.json" with { type: "json" };
 
 // Permissions configuration maps roles to their permissions
 // We only care about the union of all unique permission strings

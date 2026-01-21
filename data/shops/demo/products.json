@@ -1,0 +1,24 @@
+[
+  {
+    "id": "01KFDMP858QMP91H9SGG7Z468X",
+    "sku": "sku-1",
+    "title": {
+      "en": "Hat",
+      "de": "Hat",
+      "it": "Hat"
+    },
+    "description": {
+      "en": "Warm",
+      "de": "Warm",
+      "it": "Warm"
+    },
+    "price": 1000,
+    "currency": "EUR",
+    "media": [],
+    "shop": "demo",
+    "status": "draft",
+    "row_version": 2,
+    "created_at": "2026-01-20T12:04:52.297Z",
+    "updated_at": "2026-01-20T12:21:49.660Z"
+  }
+]

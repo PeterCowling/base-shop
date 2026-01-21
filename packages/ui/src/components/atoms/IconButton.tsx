@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 
 export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "quiet";
@@ -80,6 +81,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   },
 );
 
-IconButton.displayName = "IconButton"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName, not user-facing
+IconButton.displayName = "IconButton";
 
 export default IconButton;

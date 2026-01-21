@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import type { TFunction } from "i18next";
+
 import type { AssistanceTranslator, GuideCollectionCopy } from "./constants";
 
 function interpolateTag(

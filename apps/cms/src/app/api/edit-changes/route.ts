@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import { requirePermission } from "@acme/auth";
 import {
   diffHistory,
@@ -34,14 +35,14 @@ export async function GET(req: NextRequest) {
       const pages = entry.diff?.pages;
       if (!pages) continue;
       for (const [pageId, pageDiff] of Object.entries(pages)) {
-        const comps = pageDiff.components;
+        const comps = (pageDiff as { components?: unknown[] }).components;
         if (!Array.isArray(comps)) continue;
         let set = map.get(pageId);
         if (!set) {
           set = new Set<string>();
           map.set(pageId, set);
         }
-        for (const comp of comps) {
+        for (const comp of comps as Array<string | { name?: string }>) {
           const name = typeof comp === "string" ? comp : comp.name;
           if (typeof name === "string") set.add(name);
         }

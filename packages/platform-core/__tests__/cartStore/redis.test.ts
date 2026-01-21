@@ -1,14 +1,14 @@
 import { jest } from "@jest/globals";
 
+import type { CartStore } from "../../src/cartStore";
+import { createCartStore } from "../../src/cartStore";
+import { RedisCartStore } from "../../src/cartStore/redisStore";
+
 process.env.STRIPE_SECRET_KEY = "test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "test";
 process.env.CART_COOKIE_SECRET = "test";
 
 jest.mock("@upstash/redis", () => ({ Redis: jest.fn() }));
-
-import { createCartStore } from "../../src/cartStore";
-import { RedisCartStore } from "../../src/cartStore/redisStore";
-import type { CartStore } from "../../src/cartStore";
 
 describe("RedisCartStore", () => {
   let consoleErrorSpy: { mockRestore: () => void };

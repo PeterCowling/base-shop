@@ -1,22 +1,26 @@
 // src/routes/guides/fiordo-di-furore-beach-guide.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import type { GenericContentTranslator } from "@/components/guides/GenericContent";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
 import type { LinksFunction } from "react-router";
 
+import type { GenericContentTranslator } from "@/components/guides/GenericContent";
+import { CfImage } from "@/components/images/CfImage";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import { useGuideTranslations } from "./guide-seo/translations";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 type LabelTranslator = GenericContentTranslator | undefined;
 
@@ -189,6 +193,11 @@ const { Component, clientLoader, meta, links: baseLinks } = defineGuideRoute(man
     preferGenericWhenFallback: true,
     buildBreadcrumb,
     relatedGuides: { items: RELATED_GUIDES.map((item) => ({ key: item.key })) },
+    genericContentOptions: {
+      sectionTopExtras: {
+        "on-site": <FiordoSectionFigure />,
+      },
+    },
   }),
   meta: ({ data }) => {
     const payload = (data ?? {}) as { lang?: string };
@@ -219,3 +228,46 @@ export const links: LinksFunction = (
   const descriptors = baseLinks(...linkArgs);
   return Array.isArray(descriptors) && descriptors.length > 0 ? descriptors : buildRouteLinks();
 };
+
+const ARTICLE_IMAGE = {
+  src: "/img/guides/fiordo-di-furore/fiordo-di-furore-cove.png",
+  width: 700,
+  height: 425,
+} as const;
+
+const ARTICLE_IMAGE_COPY_KEYS = {
+  alt: `content.${GUIDE_KEY}.sectionFigure.alt`,
+  caption: `content.${GUIDE_KEY}.sectionFigure.caption`,
+} as const;
+
+function useGuideCopyResolver(): (key: string) => string {
+  const lang = useCurrentLanguage();
+  const { translateGuides, guidesEn } = useGuideTranslations(lang);
+  const normalize = (value: unknown, key: string): string | undefined => {
+    if (typeof value !== "string") return undefined;
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === key) return undefined;
+    return trimmed;
+  };
+  return (key: string) =>
+    normalize(translateGuides(key), key) ?? normalize(guidesEn(key), key) ?? "";
+}
+
+function FiordoSectionFigure(): JSX.Element {
+  const copy = useGuideCopyResolver();
+  return (
+    <figure className="rounded-xl border border-brand-outline/20 bg-brand-surface/40 p-2 shadow-sm dark:border-brand-outline/40 dark:bg-brand-bg/60">
+      <CfImage
+        src={ARTICLE_IMAGE.src}
+        width={ARTICLE_IMAGE.width}
+        height={ARTICLE_IMAGE.height}
+        preset="gallery"
+        alt={copy(ARTICLE_IMAGE_COPY_KEYS.alt)}
+        className="h-auto w-full rounded-lg"
+      />
+      <figcaption className="mt-2 text-center text-sm text-brand-text/80">
+        {copy(ARTICLE_IMAGE_COPY_KEYS.caption)}
+      </figcaption>
+    </figure>
+  );
+}

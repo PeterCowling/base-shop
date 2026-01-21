@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  Currency,
+  type Currency,
   useCurrency,
 } from "@acme/platform-core/contexts/CurrencyContext";
+
 import {
   Select,
   SelectContent,

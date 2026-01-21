@@ -359,15 +359,16 @@
     "width": 1596,
     "height": 804
   },
-  "/img/guides/sunrise-hike/01-qr.png": {
-    "width": 450,
-    "height": 450
-  },
+
   "/img/guides/sunrise-hike/02-house.jpg": {
     "width": 876,
     "height": 530
   },
   "/img/guides/sunrise-hike/03-viewpoint.jpg": {
+    "width": 677,
+    "height": 600
+  },
+  "/img/guides/sunrise-hike/04-trail-switchbacks.jpg": {
     "width": 677,
     "height": 600
   },

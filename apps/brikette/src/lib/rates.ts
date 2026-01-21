@@ -1,8 +1,9 @@
 // src/lib/rates.ts
-import { RatePlan, RatesData, RatesDataSchema, RateRow } from "@/types/rates";
-import RATES from "@/data/rates/latest.json" assert { type: "json" };
 import dayjs from "dayjs";
+
 import { IS_DEV } from "@/config/env";
+import RATES from "@/data/rates/latest.json" assert { type: "json" };
+import { type RatePlan, type RateRow,type RatesData, RatesDataSchema } from "@/types/rates";
 
 const CITY_TAX_PER_GUEST_PER_NIGHT = 2.5; // EUR
 

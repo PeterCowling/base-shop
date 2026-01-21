@@ -1,6 +1,6 @@
+import type { AppLanguage } from "@/i18n.config";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 import { slugifyWithFallback } from "@/utils/slugify";
-import type { AppLanguage } from "@/i18n.config";
 
 import {
   FALLBACK_GALLERY,

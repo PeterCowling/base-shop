@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[732223],{732223:a=>{a.exports=JSON.parse('{"title":"Nasza lokalizacja","inputLabel":"Podaj swoją obecną lokalizację:","inputPlaceholder":"np. Neapol, Włochy lub pełny adres","getDirections":"Wyznacz trasę","justShowMap":"Pokaż tylko mapę","close":"Zamknij okno"}')}}]);

@@ -1,10 +1,18 @@
-const resolveRepoMock = jest.fn();
+import { getShopById, updateShopInRepo } from "../shop.server";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __shopServerDelegationResolveRepoMock: jest.Mock | undefined;
+}
+globalThis.__shopServerDelegationResolveRepoMock = jest.fn();
+
 jest.mock("../repoResolver", () => ({
-  resolveRepo: resolveRepoMock,
+  get resolveRepo() {
+    return globalThis.__shopServerDelegationResolveRepoMock;
+  },
 }));
 
-import { resolveRepo } from "../repoResolver";
-import { getShopById, updateShopInRepo } from "../shop.server";
+const { resolveRepo } = require("../repoResolver") as { resolveRepo: jest.Mock };
 
 describe("shop.server delegation", () => {
   const repo = {
@@ -16,7 +24,7 @@ describe("shop.server delegation", () => {
   const originalInventoryBackend = process.env.INVENTORY_BACKEND;
 
   beforeEach(() => {
-    resolveRepoMock.mockReset();
+    globalThis.__shopServerDelegationResolveRepoMock.mockReset();
     (resolveRepo as jest.Mock).mockResolvedValue(repo);
     repo.getShopById.mockReset();
     repo.updateShopInRepo.mockReset();
@@ -81,7 +89,7 @@ describe("shop.server delegation", () => {
 
   it("clears repoPromise in test env and forwards params", async () => {
     const originalNodeEnv = process.env.NODE_ENV;
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
+    process.env.NODE_ENV = "test";
 
     const repo1 = {
       getShopById: jest.fn().mockResolvedValue({ id: "shop1" }),
@@ -113,7 +121,7 @@ describe("shop.server delegation", () => {
     if (originalNodeEnv === undefined) {
       delete process.env.NODE_ENV;
     } else {
-      (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
+      process.env.NODE_ENV = originalNodeEnv;
     }
   });
 });

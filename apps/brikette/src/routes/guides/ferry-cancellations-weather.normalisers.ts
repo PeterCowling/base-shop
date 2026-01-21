@@ -1,5 +1,4 @@
 import { GUIDE_KEY } from "./ferry-cancellations-weather.constants";
-
 import type { FerryFaq, FerryGalleryItem, FerrySection } from "./ferry-cancellations-weather.types";
 
 function ensureContentStringArray(value: unknown): string[] {

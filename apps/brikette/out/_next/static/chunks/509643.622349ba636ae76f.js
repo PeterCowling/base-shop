@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[509643],{509643:e=>{e.exports=JSON.parse('{"title":"Notre emplacement","inputLabel":"Entrez votre position actuelle :","inputPlaceholder":"par ex. Naples, Italie ou adresse compl\xe8te","getDirections":"Obtenir l\'itin\xe9raire","justShowMap":"Afficher uniquement la carte","close":"Fermer la fen\xeatre"}')}}]);

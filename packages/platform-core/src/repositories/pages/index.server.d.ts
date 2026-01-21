@@ -1,4 +1,5 @@
 import "server-only";
+
 import { type Page } from "@acme/types";
 /** Return all pages for a shop, or an empty array if none exist */
 export declare function getPages(shop: string): Promise<Page[]>;

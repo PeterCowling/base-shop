@@ -1,12 +1,14 @@
 import "server-only";
-import type { CampaignProvider } from "./providers/types";
-import { ProviderError } from "./providers/types";
-import { hasProviderErrorFields } from "./providers/error";
+
+import { logger } from "@acme/lib/logger";
+
 import { getDefaultSender } from "./config";
-import { emailSchema, subjectSchema } from "./validators";
 import { prepareContent } from "./content";
 import { getProviderOrder, loadProvider } from "./providers";
-import { logger } from "@acme/shared-utils";
+import { hasProviderErrorFields } from "./providers/error";
+import type { CampaignProvider } from "./providers/types";
+import { ProviderError } from "./providers/types";
+import { emailSchema, subjectSchema } from "./validators";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -150,9 +152,9 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
 }
 
 export {
-  sendWithRetry,
   sendWithNodemailer,
+  sendWithRetry,
 };
 
 export { deriveText, ensureText, prepareContent } from "./content";
-export { loadProvider, getProviderOrder } from "./providers";
+export { getProviderOrder,loadProvider } from "./providers";

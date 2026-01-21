@@ -3,11 +3,17 @@
 /* -------------------------------------------------------------------------- */
 /*  Imports & global helpers                                                  */
 /* -------------------------------------------------------------------------- */
+import "../src/types/next-auth.d.ts";
+
+import { File } from "node:buffer";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { File } from "node:buffer";
-import "../src/types/next-auth.d.ts";
+
+/* -------------------------------------------------------------------------- */
+/*  Common mocks                                                              */
+/* -------------------------------------------------------------------------- */
+import { __setMockSession } from "~test/mocks/next-auth";
 
 const { resetModules } = jest;
 
@@ -44,11 +50,6 @@ function withDevEnv<T>(fn: () => Promise<T>): Promise<T> {
     (process.env as Record<string, string>).NODE_ENV = prev;
   });
 }
-
-/* -------------------------------------------------------------------------- */
-/*  Common mocks                                                              */
-/* -------------------------------------------------------------------------- */
-import { __setMockSession } from "next-auth";
 function mockAuth() {
   __setMockSession({ user: { role: "admin" } } as any);
 }
@@ -65,13 +66,13 @@ function mockSharp({
 }: { width?: number; height?: number; toBuffer?: Buffer } = {}) {
   jest.doMock("sharp", () => {
     const chain = {
-      metadata: jest.fn().mockResolvedValue({ width, height }),
+      metadata: (jest.fn() as unknown as jest.Mock).mockResolvedValue({ width, height }),
       resize: () => chain,
       rotate: () => chain,
       jpeg: () => chain,
       png: () => chain,
       webp: () => chain,
-      toBuffer: jest.fn().mockResolvedValue(toBuffer),
+      toBuffer: (jest.fn() as unknown as jest.Mock).mockResolvedValue(toBuffer),
     };
     return { __esModule: true, default: () => chain };
   });
@@ -113,7 +114,7 @@ describe("media actions", () => {
         );
         const file = new File([data], "test.png", { type: "image/png" });
         const fd = new FormData();
-        fd.append("file", file);
+        fd.append("file", file as unknown as Blob);
         fd.append("altText", "hello");
 
         const item = await uploadMedia("shop1", fd);
@@ -155,7 +156,7 @@ describe("media actions", () => {
 
         const file = new File(["vid"], "test.mp4", { type: "video/mp4" });
         const fd = new FormData();
-        fd.append("file", file);
+        fd.append("file", file as unknown as Blob);
 
         const item = await uploadMedia("shop1", fd);
 
@@ -192,7 +193,7 @@ describe("media actions", () => {
 
         const file = new File(["bad"], "test.txt", { type: "text/plain" });
         const fd = new FormData();
-        fd.append("file", file);
+        fd.append("file", file as unknown as Blob);
 
         await expect(uploadMedia("shop1", fd)).rejects.toThrow(
           "Invalid file type"
@@ -217,7 +218,7 @@ describe("media actions", () => {
         );
         const file = new File([data], "test.png", { type: "image/png" });
         const fd = new FormData();
-        fd.append("file", file);
+        fd.append("file", file as unknown as Blob);
 
         await expect(uploadMedia("shop1", fd, "landscape")).rejects.toThrow(
           "Image orientation must be landscape"

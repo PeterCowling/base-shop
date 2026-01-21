@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { fetchPublishedPosts } from "@acme/sanity";
 
 export const runtime = "nodejs";

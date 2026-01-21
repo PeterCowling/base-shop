@@ -1,5 +1,9 @@
 import { jest } from '@jest/globals';
 
+import { prisma } from '@acme/platform-core/db';
+import { readShop } from '@acme/platform-core/repositories/shops.server';
+import { setStripeSubscriptionId } from '@acme/platform-core/repositories/users.server';
+
 jest.mock('@acme/platform-core/repositories/shops.server', () => ({
   readShop: jest.fn(),
 }));
@@ -11,10 +15,6 @@ jest.mock('@acme/platform-core/db', () => ({
     },
   },
 }));
-
-import { setStripeSubscriptionId } from '@acme/platform-core/repositories/users.server';
-import { readShop } from '@acme/platform-core/repositories/shops.server';
-import { prisma } from '@acme/platform-core/db';
 
 const readShopMock = readShop as jest.Mock;
 const updateMock = prisma.user.update as jest.Mock;

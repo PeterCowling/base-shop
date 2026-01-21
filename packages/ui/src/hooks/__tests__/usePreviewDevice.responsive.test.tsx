@@ -1,6 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import { usePreviewDevice, PREVIEW_DEVICE_STORAGE_KEY } from "../usePreviewDevice";
 import { useEffect } from "react";
+import { act,renderHook } from "@testing-library/react";
+
+import { PREVIEW_DEVICE_STORAGE_KEY,usePreviewDevice } from "../usePreviewDevice";
 
 describe("usePreviewDevice", () => {
   beforeEach(() => {

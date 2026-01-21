@@ -1,350 +1,180 @@
 {
   "meta": {
-    "title": "Szobafoglalás — Általános Szerződési Feltételek | Hostel Brikette",
-    "description": "Hivatalos feltételek a Hostel Brikette szobafoglalásaihoz: foglalás, lemondás, check‑in/out, fizetések, gondossági kötelezettség és szabályzatok."
+    "title": "Foglalási feltételek | Hostel Brikette",
+    "description": "Hostel Brikette foglalási feltételek: foglalások, fizetések, lemondások, letétek, felelősség és adatvédelem."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Szobafoglalás",
-    "pageSubtitle": "Általános szerződési feltételek"
+    "pageTitle": "Hostel Brikette — Foglalási feltételek",
+    "pageSubtitle": "Foglalási feltételek"
   },
   "toc": {
-    "title": "Tartalomjegyzék",
+    "title": "Tartalom",
     "aria": "Tartalomjegyzék"
   },
   "footer": {
     "end": "A dokumentum vége.",
-    "backToTop": "Vissza az elejére"
+    "backToTop": "Vissza a tetejére"
   },
   "sections": {
     "s1": {
-      "title": "1. Fogalmak és értelmezések",
+      "title": "1. Felek és meghatározások",
       "body": [
-        "1.1 ‘Általános Szerződési Feltételek (ÁSZF)’ — A jelen dokumentumban meghatározott feltételek.",
-        "1.2 ‘A Hostel’, ‘mi’, ‘minket’ — Skylar SRL, székhely: Via Guglielmo Marconi 358, 84017 Positano, Salerno, Olaszország.",
-        "1.3 ‘Ön/Te’, ‘vendég’ — Bárki, aki Szobafoglalási kérelmet nyújt be, Hivatalos Vendég, Átmeneti Vendég, munkatárs, szervező, csoportvezető vagy más harmadik fél szolgáltató/vásárló.",
-        "1.4 ‘Szobafoglalási kérelem’ — A jelen feltételek szerinti foglalási kérelem Öntől vagy OTA‑ján keresztül. Csak a hostel és felhatalmazott OTA‑k értékesíthetnek ágyakat; illetéktelen viszonteladás esetén a kérelmet elutasítjuk vagy a foglalást töröljük.",
-        "1.5 ‘Közösségi terek’ — A hostel azon kijelölt területei, amelyeket Hivatalos és Átmeneti Vendégek is használhatnak (bejárat és lobby, közös terasz, közös fürdők).",
-        "1.6 ‘Kártyabirtokos’ — A Szobafoglalási kérelemben szereplő bankkártya tulajdonosa.",
-        "1.7 ‘Ellenajánlat’ — A Szobafoglalási kérelem módosított változata; az első ellenajánlatot a Hostel adja, továbbiak követhetik.",
-        "1.8 ‘Megerősített szobafoglalás’ — Jön létre, amikor a Hostel elfogadja a kérelmet, vagy Ön elfogadja az ellenajánlatot. Jogi kötelező erővel bír, és a dokumentumban meghatározott szolgáltatásokat/feltételeket foglalja magában.",
-        "1.9 ‘No Show’ — Olyan státusz, amikor a vendég(ek) az első napon a Hivatalos Check‑in idő végéig nem jelentkeznek be.",
-        "1.10 ‘No Show díj’ — A Hostel által felszámított díj No Show esetén vagy ha a Lemondás a lemondási határidőn túl történik. Mértéke: az első éjszaka ára vagy a nem visszatérítendő előleg közül a magasabb.",
-        "1.11 ‘Lemondási kérelem’ — Megerősített foglalás törlésének kérése.",
-        "1.12 ‘Lemondási határidő’ — A szükséges előzetes értesítési idő órában. Ha napokban van megadva, órára váltjuk (pl. 3 nap = 72 óra).",
-        "1.13 ‘Lemondási adminisztrációs díj’ — A lemondási kérelem feldolgozási díja; mértéke a megerősített foglalásban szereplő ártól függ.",
-        "A fordítás folyamatban van.",
-        "1.15 ‘Megerősített lemondás’ — A Hostel hivatalos e‑mail címéről küldött írásos visszaigazolás arról, hogy a lemondást feldolgoztuk.",
-        "1.16 ‘Foglalásmódosítási kérelem’ — Megerősített foglalás módosításának kérése (részleges törlés; kezdő/záró dátum módosítása).",
-        "1.17 ‘Megerősített módosítás’ — Írásos visszaigazolás arról, hogy a módosítást elvégeztük.",
-        "1.18 ‘Kijelölt e‑mail cím’ — Az Ön által megadott cím, amelyre minden hivatalos levelezést küldünk. Ön felel az adatok pontosságáért és a postafiók figyeléséért.",
-        "1.19 ‘Hosszabbítási kérelem’ — Megerősített foglalás meghosszabbításának kérése.",
-        "1.20 ‘Megerősített hosszabbítás’ — Írásos visszaigazolás a hosszabbítás teljesítéséről.",
-        "1.21 ‘Check‑in kérelem’ — Bejelentkezés kezdeményezése és a foglalás megkezdése.",
-        "1.22 ‘Hivatalos Check‑in idő’ — 15:00 és 22:00 között azon a napon, amikor a foglalás kezdődik.",
-        "A fordítás folyamatban van.",
-        "1.24 ‘Kijelölt szoba’ — Az a konkrét szoba, amelyhez a Hivatalos vendég beléphet.",
-        "1.25 ‘A Hostel szobái’ — A Hivatalos vendégek számára elérhető hálótermek és szobák.",
-        "1.26 ‘Ágynemű’ — A check‑innél biztosított csomag: párnahuzat, lepedő, alsólepedő, törölköző.",
-        "1.27 ‘Szobafeljavítás’ — A foglaltnál drágább szoba kiosztása (csak az ár számít, nem az ágyak száma stb.).",
-        "1.28 ‘Beléptetőkártya (Keycard)’ — Letét ellenében adott kártya, amellyel a Kijelölt szoba ajtaja nyitható.",
-        "1.29 ‘Előengedélyezés’ — A kártyabirtokos kártyájának ideiglenes zárolása meghatározott összegre; az összeg csak fenntartás, nem levonás.",
-        "1.30 ‘Check‑out’ — Csak akkor történik meg, ha a vendég visszaadta az ágyneműt és a kártyát, valamint minden személyes tárgyát eltávolította a Kijelölt szobából.",
-        "1.31 ‘Kiskorú’ — 18 év alatti személy Olaszországban.",
-        "1.32 ‘Térítésmentes szolgáltatás’ — Olyan opció, amely nem része a megerősített foglalásnak (pl. reggeli, italok, Wi‑Fi, csomagmegőrző, hűtőtárolás) és külön feltételei lehetnek.",
-        "1.33 ‘Átmeneti Vendég’ — Csak a Közösségi terekhez férhet hozzá, eredeti igazolvány bemutatásával. Csak a személyzet adhat ilyen státuszt.",
-        "1.34 ‘Elfogadott fizetési módok’ — MasterCard vagy Visa bankkártya. Átutalás csak cég részéről. Más kártyák/platformok (pl. AmEx, PayPal) nem elfogadottak. Készpénz euróban.",
-        "1.35 ‘Előre fizetett, nem visszatéríthető foglalás’ — Kedvezményes ár, a foglaláskor teljes fizetés, később nincs visszatérítés.",
-        "1.36 ‘Érkezési sorrend szerinti ágyválasztás’ — Nem osztunk ki konkrét hálótermi ágyat; a vendégek a szabad ágyakból választanak és tartózkodás közben válthatnak.",
-        "1.37 ‘Foglalástípus’ — Előre fizetett, nem visszatéríthető vagy visszatéríthető.",
-        "1.38 ‘Visszatéríthető foglalás’ — Rugalmas feltételekkel (érkezési dátum, időtartam, engedékeny lemondás), időzítéstől/politikától függően teljes visszatérítés vagy díjmentesség lehetséges.",
-        "1.39 ‘Személyazonosság igazolása’ — Útlevél, személyi igazolvány, jogosítvány vagy katonai igazolvány. Csak eredeti irat.",
-        "1.40 ‘Súlyos hiba’ — Olyan hibák, amelyek súlyosan befolyásolják a tartózkodást (pl. törött ágy, veszélyes hőmérséklet, nem elérhető szoba, vízhiány).",
-        "A fordítás folyamatban van."
+        "Hatálybalépés: 2026-01-09.",
+        "Alkalmazás: minden Hostel Brikette foglalásra és szükség szerint a helyszínen tartózkodó Látogatókra.",
+        "Ha OTA-n keresztül foglalt, az OTA saját platformfeltételeket is alkalmazhat. Ezek a Foglalási feltételek a Hostel Brikette szállás-szerződését szabályozzák Ön és a Skylar SRL között, a vonatkozó jog által megengedett mértékben.",
+        "1.1 Kik vagyunk — A Skylar SRL (\"mi\", \"minket\", \"miénk\") üzemelteti a Hostel Brikette-et. Székhely: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Szállás címe: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Hivatalos e‑mail: hostelpositano@gmail.com. Weboldal: https://hostel-positano.com.",
+        "1.2 \"Foglalási feltételek\" — jelen dokumentum.",
+        "1.3 \"Házirend\" — a Hostel Brikette külön Házirend dokumentuma, amely az Ön tartózkodására vonatkozik, és a szállás-szerződés részét képezi.",
+        "1.4 \"Foglaló\" — a Foglalási kérelmet benyújtó személy, akinek nevére a Foglalás szól.",
+        "1.5 \"Vendég\" — a Megerősített foglalás alapján éjszakázó személy.",
+        "1.6 \"Látogató\" — olyan személy, aki a Házirend szerint csak a Közös területeket használhatja, és nem éjszakázik (egyes helyeken \"Temporary Guest\").",
+        "1.7 \"Kártyabirtokos\" — a foglalás fizetésére vagy garantálására használt bankkártya tulajdonosa.",
+        "1.8 \"Foglalási kérelem\" — a Hostel Brikette szállására vonatkozó foglalási kérés a Weboldalon vagy engedélyezett OTA-n keresztül.",
+        "1.9 \"Megerősített foglalás\" — olyan Foglalási kérelem, amelyet írásban elfogadtunk (e‑mail vagy OTA‑visszaigazolás/üzenet), és amely kötelező érvényű szállás-szerződést hoz létre.",
+        "1.10 \"OTA\" — online utazási iroda, amelyet felhatalmaztunk ágyaink/szobáink értékesítésére (pl. Hostelworld.com és Booking.com).",
+        "1.11 \"Díjtípus\" — a Foglaláshoz tartozó árszabályok, például Visszatéríthető díj vagy Nem visszatéríthető díj, a foglaláskor és a Megerősített foglalásban megjelenítve.",
+        "1.12 \"Nem visszatéríthető díj\" — kedvezményes vagy korlátozott díj, amely a foglaláskor teljes fizetést igényel és nem visszatéríthető, kivéve ha azt a jog előírja.",
+        "1.13 \"Visszatéríthető díj\" — olyan díj, amely a foglaláskor és a Megerősített foglalásban szereplő szabályok szerint lemondást vagy módosítást tehet lehetővé.",
+        "1.14 \"Hivatalos bejelentkezési időablak\" — 15:00–22:00 az érkezés napján, hacsak a Megerősített foglalás másként nem rendelkezik.",
+        "1.15 \"No Show\" — a Vendég nem fejezi be a bejelentkezést az érkezés napján a Hivatalos bejelentkezési időablak végéig, és nem kapott írásbeli engedélyt későbbi érkezésre.",
+        "1.16 \"Késői lemondás\" — a Díjtípus szerinti értesítési határidőn túl benyújtott lemondás.",
+        "1.17 \"Megszüntetés szerződésszegés miatt\" — a Házirend vagy jelen Foglalási feltételek megszegése miatt megszüntetjük a tartózkodást (vagy megtagadjuk a további szállásnyújtást).",
+        "1.18 \"Előzetes autorizáció\" — ideiglenes zárolás a bankkártyán, azonnali terhelés nélkül.",
+        "1.19 \"Biztonsági letét\" — letét vagy előzetes autorizáció, amelyet az ezen Foglalási feltételek vagy a Házirend szerinti tartozások fedezésére tartunk fenn (pl. károk, bírságok, nem fizetett díjak), az 5. szakasz szerint.",
+        "1.20 \"Közös területek\" — a Házirendben meghatározott közösségi terek (és nem tartalmazza a vendégszobákat/kollektív szobákat, kivéve ha kifejezetten jelezzük).",
+        "1.21 \"Súlyos hiba\" — a szállás vagy létesítmény olyan hibája, amely lényegesen befolyásolja a tartózkodást (példák: törött ágy, vízhiány, a szobához való hozzáférés hiánya), amelyet ésszerűen értékelünk.",
+        "1.22 Értelmezés — \"Írásban\" magában foglalja az e‑mailt és az OTA‑platformon küldött üzeneteket.",
+        "1.23 Az időpontok és határidők helyi idő szerint értendők, hacsak nincs másként megadva.",
+        "1.24 Ha a Foglalási feltételek és a Házirend pénzügyi kérdésekben ellentmondanak, a Foglalási feltételek az irányadóak; a helyszíni magatartás és működés tekintetében a Házirend az irányadó."
       ]
     },
     "s2": {
-      "title": "2. Foglalási kérelmek",
+      "title": "2. Foglalási kérelmek, engedélyezett csatornák és szerződéskötés",
       "body": [
-        "2.1 Beküldés — Foglalási kérelmet OTA‑n vagy a weboldalunkon, írásban lehet benyújtani. Személyes egyeztetés csak tájékoztató jellegű. A beküldéssel elfogadja az ÁSZF‑et és az adatok helyességét.",
-        "2.2 Feldolgozás — A szükséges előleg/előengedélyezés/fizetés beérkezése után kezdjük meg. A Kártyabirtokos azonosítása kötelező, és e‑mailben kérhetjük a terhelés írásos jóváhagyását. Sikeres ellenőrzés hiányában elutasítjuk a kérelmet.",
-        "2.3 Elutasítás — Bármely foglalási kérelmet indoklás nélkül elutasíthatunk.",
-        "2.4 Terjedelmi korlát — Legfeljebb 7 éj és legfeljebb 5 fős csoport. Nagyobb kérelmek több foglalásnak minősülnek.",
-        "2.5 Ellenajánlat — Ha a kért szobák nem elérhetők, alternatívát küldhetünk a Kijelölt e‑mail címre. Elfogadáskor megkíséreljük a fizetést/előengedélyezést.",
-        "2.6 Előre fizetett, nem visszatéríthető — Előírhatjuk a feltételek kifejezett elfogadását; ennek hiányában a kérelmet töröljük. Legfeljebb három fizetési kísérletet teszünk.",
-        "2.7 Visszaigazolás — A foglalás csak akkor minősül megerősítettnek, ha e‑mailt küldünk (azonosító, érkezési dátum, időtartam stb.) a Kijelölt címre. Ön vállalja az adatok ellenőrzését és hibák jelzését.",
-        "2.8 Tartalmazott vendégek száma — Egy egyszemélyes ágyon 1 fő; franciaágyon legfeljebb 2 fő; apartmanokban a hirdetett kapacitás. A szobakapacitás nem léphető túl.",
-        "2.9 Szolgáltatások köre — Személyenként ágynemű és beléptetőkártya, zuhanyzó és melegvíz a megadott időkben, Közösségi terek használata. Minden más szolgáltatás térítésmentes és külön feltételekkel bír.",
-        "2.10 Pénzügyi felelősség — A Kártyabirtokos felel a foglalásért és minden további díjért (károk, extra takarítás, bírságok, késedelmes távozás stb.).",
-        "2.11 Szoba/ágy kiosztás — Minden személyhez Kijelölt szobát rendelünk. A hálótermi ágyak választása érkezési sorrendben történik; csoportokat több szobába oszthatunk.",
-        "2.12 Feljavítás kiosztása — Felár ellenében vagy készletgazdálkodási okból biztosítható; nem fizetés esetén visszaállíthatjuk az eredeti típust."
+        "2.1 Engedélyezett foglalási csatornák és viszonteladás tilalma — Foglalások kizárólag a Weboldalon vagy engedélyezett OTA-n keresztül történhetnek. A szálláshely‑készlet jogosulatlan viszonteladása tilos. Elutasíthatjuk vagy törölhetjük azokat a kérelmeket, amelyekről ésszerűen úgy véljük, hogy jogosulatlan viszonteladáshoz vagy csaláshoz kapcsolódnak.",
+        "2.2 Mikor válik a foglalás megerősítetté — A foglalás csak akkor válik Megerősített foglalássá, amikor írásos visszaigazolást küldünk (e‑mail, OTA‑visszaigazolás vagy OTA‑üzenet). Addig a megbeszélések (személyesen vagy telefonon is) csak tájékoztató jellegűek.",
+        "2.3 Foglalási kérelmek elutasítása — Elutasíthatunk Foglalási kérelmet, ha ez a jogszerű működéshez, biztonsághoz, kapacitás-/készletkorlátokhoz, szükséges ellenőrzés vagy fizetés hiányához, csalás gyanújához vagy a Foglalási feltételek/Házirend megszegéséhez szükséges. Nem utasítunk el foglalást jogellenes diszkriminációs okokból.",
+        "2.4 Adatok pontossága és kommunikáció — A Foglalónak pontos elérhetőséget (beleértve a figyelt e‑mail címet) kell megadnia. Fontos foglalási értesítéseket a megadott adatokra küldünk. OTA‑n keresztüli foglalás esetén az OTA üzenetkezelőjén és/vagy e‑mailben kommunikálhatunk.",
+        "2.5 Ellenőrzés, csalásmegelőzés és autorizációk — Kérhetünk személyazonosság- és/vagy fizetés‑ellenőrzést a csalás megelőzése érdekében (beleértve a Kártyabirtokos hozzájárulásának megerősítését). Ha a szükséges ellenőrzés ésszerű időn belül nem történik meg, elutasíthatjuk a kérelmet vagy törölhetjük a foglalást (és alkalmazhatjuk a díjszabási szabályokat, ha már megerősített volt).",
+        "2.6 Foglalási méretkorlátok — Ha nincs írásos eltérés, a következők érvényesek: maximális tartózkodási idő foglalásonként: 7 éjszaka; maximális csoportlétszám foglalásonként: 5 fő. Nagyobb kérések több foglalásként is kezelhetők. A díjszabás foglalásonként érvényes, hacsak írásban másként nem erősítjük meg.",
+        "2.7 Átruházhatatlanság — A foglalások nem átruházhatók. A Foglaló neve csak írásos jóváhagyásunkkal módosítható. A foglaláson szereplő Vendégek csak írásos jóváhagyással és személyazonosság‑ellenőrzés, illetve kapacitásszabályok mellett módosíthatók."
       ]
     },
     "s3": {
-      "title": "3. Korhatár és hozzáférhetőség",
+      "title": "3. Díjak, szolgáltatások és szobakiadás",
       "body": [
-        "3.1 Akadálymentesség — Speciális igény esetén foglalás előtt egyeztessen. Az épületben lépcsők vannak, hordárszolgálat nincs. Hangos alvóeszközök csak privát szobában használhatók.",
-        "3.2 Önállóság — Tartós gondozást nem tudunk biztosítani; ha önállóan nem megoldható, a foglalást töröljük.",
-        "3.3 Kiskorúak — Olaszországban kíséret nélkül nem utazhatnak. 16 év alatt csak privát szobában; 17 évesek hálóteremben csak 18+ kísérővel ugyanabban a szobában. A törvényes képviseletet igazolni kell, ennek hiányában törlés."
+        "3.1 Mit tartalmaz — Ha a Megerősített foglalás másként nem rendelkezik, a szállás tartalmazza: vendégenkénti ágy/szoba a lefoglalt éjszakákra; standard ágynemű a bejelentkezéskor (részletek a Házirendben); Közös területek használata a tartózkodás alatt; közös fürdő/zuhany használata a kifüggesztett időrend szerint (ha van). További szolgáltatások (pl. reggeli, italok, Wi‑Fi, csomagmegőrzés, hűtőhasználat) lehetnek ingyenesek vagy fizetősek, és külön feltételek vonatkozhatnak rájuk.",
+        "3.2 Szoba- és ágyszétosztás — A szobatípusokat a Megerősített foglalás alapján osztjuk ki. Kollektív szobákban az ágyakat általában érkezési sorrendben lehet választani, hacsak nem jelezzük másként. Csoportos foglalások esetén előfordulhat, hogy a csoport több szobára kerül szétosztásra.",
+        "3.3 Szintemelés — Ha frissítést biztosítunk, az lehet: fizetős (írásos jóváhagyással és sikeres terheléssel), vagy operatív (készletokokból ideiglenes áthelyezés). Ha a fizetős frissítés terhelése sikertelen, visszaállíthatjuk a foglalást az eredeti szobatípusra (elérhetőség függvényében)."
       ]
     },
     "s4": {
-      "title": "4. Külső szolgáltatók és fizetések",
+      "title": "4. Fizetések, letétek és előzetes autorizációk",
       "body": [
-        "Harmadik fél (OTA) felületén benyújtott foglalás esetén a fizetés az ő feltételeik szerint, az ő platformjukon történik.",
-        "Az ilyen fizetéseket az Ön és a szolgáltató megállapodása szabályozza; a Hostelnek nincs ráhatása.",
-        "Ezekből a kifizetésekből nem részesülünk, és az így létrejött foglalásokért felelősséget nem vállalunk.",
-        "Ön felel a fizetés sikeréért és a foglalás megerősítéséért, mielőtt megérkezik.",
-        "OTA‑s fizetéssel kapcsolatos kérdésekben közvetlenül a szolgáltatóhoz forduljon."
+        "4.1 Elfogadott fizetési módok — Elfogadott fizetési módok: Visa és Mastercard; készpénz EUR-ban; banki átutalás csak bejegyzett vállalkozásoktól.",
+        "4.2 Mikor esedékes a fizetés — A fizetés időzítése a Díjtípustól és a foglalási csatornától függ. Nem visszatéríthető díj: teljes összeg foglaláskor (vagy visszaigazoláskor, ha kézzel dolgozzuk fel). Visszatéríthető díj: fizetés foglaláskor, bejelentkezéskor vagy meghatározott határidőn belül; előzetes autorizációt/garanciát kérhetünk. A Megerősített foglalás tartalmazza a Díjtípusra vonatkozó szabályokat.",
+        "4.3 OTA-n keresztüli fizetés — OTA-n keresztüli foglalás esetén a fizetést beszedheti: az OTA (merchant of record) vagy a Skylar SRL (merchant of record). A merchant of record és a vonatkozó visszatérítési folyamat a foglalási visszaigazolásban és/vagy az OTA oldalán szerepel. Ha az OTA a merchant of record, a visszatérítéseket (ha van) az OTA kezeli.",
+        "4.4 Letétek és előlegfizetések — Ha letétet vagy előleget kérünk, annak visszatéríthetősége a Díjtípustól és a foglaláskor/meg­erősített foglalásban jelzett lemondási szabályoktól függ. Nem tekintjük automatikusan minden letétet nem visszatéríthetőnek, hacsak ez kifejezetten nincs jelezve az adott Díjtípusra.",
+        "4.5 Előzetes autorizációk — Előzetes autorizációt kérhetünk a kártyán az összegre, amely összhangban van a szállás árával, a Biztonsági letét szabályával (5. szakasz) és/vagy a foglalással kapcsolatban várható díjakkal (pl. késői lemondás, no show, károk). Az előzetes autorizáció nem végleges terhelés. A felszabadítás időpontja a kártyakibocsátótól és a feldolgozó banktól függ."
       ]
     },
     "s5": {
-      "title": "5. Előlegek és előengedélyezések",
+      "title": "5. Biztonsági letét és biztosíték",
       "body": [
-        "5.1 Előleg — A foglalás biztosításához előleget írhatunk elő. Mértéke foglalástípustól függ; előre fizetett, nem visszatéríthető foglalásnál 100%. A Hostelnek fizetett előlegek nem visszatéríthetők. Sikertelen beszedés esetén a kérelmet elutasítjuk.",
-        "5.2 Előengedélyezés — A megállapodott ár és feltételek alapján előengedélyezést kérhetünk. Ha nem sikerül, a kérelmet elutasítjuk."
+        "5.1 Biztonsági letét szabály — A tartózkodás idejére kérhetünk Biztonsági letétet vendégenként egy éjszaka összegében, előzetes autorizációként vagy készpénz letétként (a megengedett módszerek helytől függően eltérhetnek).",
+        "5.2 A biztonsági letét felhasználása — A Biztonsági letétet részben vagy egészben felhasználhatjuk a Foglalási feltételek vagy a Házirend szerint esedékes tételekre, beleértve: nem fizetett szállást vagy hosszabbításokat; károkat vagy hiányzó tételeket; túlzott rendetlenség miatti takarítási díjakat; súlyos házirendszegések miatti szankciókat (ahol megengedett); belépőkártya/ágynemű pótlását, ahol releváns. Ha a költségek meghaladják a Biztonsági letétet, a fennmaradó összeget Ön viseli.",
+        "5.3 Ha nem tudjuk megszerezni a Biztonsági letétet — Ha előzetes autorizációval nem tudjuk megszerezni a Biztonsági letétet, elfogadhatunk készpénzt vagy más elfogadható módszert, vagy egy másik Vendég/Kártyabirtokos is biztosíthatja. Ha nincs elfogadható Biztonsági letét, megtagadhatjuk a bejelentkezést és a Foglalást a Díjtípus szerinti No Show/lemondási szabályok szerint kezelhetjük."
       ]
     },
     "s6": {
-      "title": "6. No Show díjak",
+      "title": "6. Lemondások, módosítások, No Show, korai távozás",
       "body": [
-        "Ha nem érkezik meg, a foglalása No Show‑nak minősül, és No Show díjat számítunk fel.",
-        "A díj minden megerősített foglalásra külön értendő. A lemondási határidők foglalásonként eltérhetnek, ami az eredményt befolyásolhatja."
+        "6.1 Módosítás vagy lemondás kérése — Minden lemondási vagy módosítási kérelmet írásban kell benyújtani a hostelpositano@gmail.com címre vagy az OTA üzenetküldő rendszerén keresztül (ha OTA-n foglalt). Javasoljuk, hogy ugyanazt a csatornát használja, mint a foglaláskor.",
+        "6.2 A határidők számítása — Ha a Megerősített foglalás másként nem rendelkezik: a határidők helyi idő szerint számítódnak, és az érkezés napján 15:00 órától visszafelé számoljuk őket.",
+        "6.3 Lemondási szabályok és díjak — A lemondási díjak (ha vannak), a visszatérítés lehetősége (ha van) és a határidők a Díjtípustól és a foglalási csatornától függnek, és a foglaláskor, a Megerősített foglalásban, valamint az A Függelékben (Díj- és díjtáblázat) szerepelnek.",
+        "6.4 Módosítások és hosszabbítások — A módosítási kérelem kezelhető az eredeti Foglalás lemondásaként és új Foglalás létrehozásaként, az elérhetőségtől és a Díjtípustól függően. A hosszabbítások elérhetőségfüggők, és új foglalási időszakként kezeljük (eltérő Díjtípussal is). A jóváhagyott módosításokat írásban igazoljuk. Megerősítésig az eredeti Foglalás érvényben marad.",
+        "6.5 No Show — Ha a Foglalás No Show státuszba kerül, a Díjtípus és az A Függelék szerinti díjak érvényesek. Nem visszatéríthető díjaknál ez általában visszatérítés nélküli.",
+        "6.6 Korai távozás és fel nem használt éjszakák — Ha bejelentkezés után korábban távozik, ez nem jelent automatikus visszatérítést. Bármilyen visszatérítés, jóváírás vagy elengedés (ha alkalmazható) a Díjtípus, az írásban megerősített módosítás/lemondás és a kötelező jogszabályi előírások szerint történik.",
+        "6.7 Megszüntetés szerződésszegés miatt (kilakoltatás / további tartózkodás megtagadása) — Ha súlyos megszegés miatt megszüntetjük a tartózkodást: azonnali távozásra kötelezhetjük; a fel nem használt éjszakák díjaiért továbbra is felelőssé tehetjük a jog által megengedett mértékben és a Díjtípusnak megfelelően; a Biztonsági letétet felhasználhatjuk a tartozásokra és/vagy terhelhetjük a Kártyabirtokost. A megszüntetés szerződésszegés miatt nem \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Lemondások",
+      "title": "7. Bejelentkezési követelmények (jogosultság, azonosítás, fizetés)",
       "body": [
-        "Lemondási kérelmeket a hivatalos e‑mail címünkre, írásban kérjük.",
-        "A határidőn belüliség mérésének kezdőpontja az e‑mail beérkezése; végpontja a foglalás kezdő napján 00:01.",
-        "Lemondási adminisztrációs díj felszámítható (általában a foglalási ár 15%‑a, a harmadik feleknek fizetett jutalék levonása után).",
-        "Elfogadás esetén e‑mailben erősítjük meg; eddig a foglalás érvényben marad.",
-        "Írásbeli kérelem nélkül is törölhetjük: ha az első napon a recepció zárásáig nem jelentkezik be; ha idő előtt kijelentkezik; vagy ha megszegi a szabályzatot.",
-        "Újrafoglalás lemondás után a kapacitástól függ.",
-        "Határidőn túli lemondás No Show‑nak minősülhet, No Show díjjal."
+        "7.1 Bejelentkezési időablak és késői érkezés — Bejelentkezés 15:00–22:00 között lehetséges. Késői érkezés esetén előre kérjen utasításokat. Az önkiszolgáló bejelentkezés a mi mérlegelésünkön múlik és előzetes személyazonosság- és fizetés‑ellenőrzést igényelhet.",
+        "7.2 Személyazonosítás — Minden Vendégnek érvényes, eredeti személyazonosító okmányt kell bemutatnia bejelentkezéskor a regisztráció és biztonság érdekében. Elfogadott okmányok (példák): útlevél, személyi igazolvány, jogosítvány, katonai igazolvány (csak eredeti okmányok). A helyi verziókban kötelezően előírt adatmezők szerepeljenek. Ha egy Vendég 22:00-ig nem tud érvényes okmányt bemutatni az érkezés napján, megtagadhatjuk a bejelentkezést és a Díjtípus szerinti No Show/Késői lemondás szabályokat alkalmazhatjuk.",
+        "7.3 Hátralék megfizetése bejelentkezéskor — A fennmaradó egyenleget a bejelentkezés befejezése előtt ki kell egyenlíteni.",
+        "7.4 Életkor és kiskorúak (szabály) — A Foglalónak legalább 18 évesnek kell lennie. A 18 év alatti Vendégek (\"Kiskorúak\") csak privát szobában szállhatnak meg és/vagy felnőtt kísérő és gyámsági igazolás szükséges lehet a Házirend és/vagy a Megerősített foglalás szerint."
       ]
     },
     "s8": {
-      "title": "8. Megerősített foglalások módosítása",
+      "title": "8. Hibák, karbantartás és jogorvoslat",
       "body": [
-        "A meglévő foglalást nem módosítjuk; helyette új foglalást hozunk létre.",
-        "Módosítási kérelmét a határidőn belül küldje a hivatalos e‑mail címre.",
-        "Minden módosítás kapacitás‑ és feltétel‑függő.",
-        "A tartózkodási idő módosítása egyszerre minősül módosítási és lemondási vagy hosszabbítási kérelemnek.",
-        "A hosszabbítás új foglalásnak minősül.",
-        "Ha jóváhagyott lemondás nélkül távozik korábban, az eredeti foglalás teljesítettnek minősül."
+        "8.1 Bejelentés — A Vendégeknek a hibákat és karbantartási problémákat a lehető leghamarabb jelezniük kell, hogy kivizsgálhassuk.",
+        "8.2 Kezelés és priorizálás — A javításokat a hatás és a biztonság alapján prioritizáljuk.",
+        "8.3 Súlyos hibák — Ha Súlyos hibát igazolunk, és nem tudjuk ésszerű időn belül elhárítani, akkor (megfelelő esetben és elérhetőség függvényében) alternatív szobát/szállást biztosíthatunk, arányos jóváírást adhatunk az érintett éjszakákra és/vagy más, jogszabály által megkövetelt jogorvoslatot nyújthatunk."
       ]
     },
     "s9": {
-      "title": "9. Foglalások átruházhatatlansága",
+      "title": "9. Károk, extra takarítás és ágyi poloskák (díjak)",
       "body": [
-        "Szobafoglalási kérelmek és megerősített foglalások sem részben, sem egészben nem ruházhatók át.",
-        "A foglalás teljes időtartama alatt az eredeti foglaló nevén marad.",
-        "Átruházott foglalással történő bejelentkezési kísérlet esetén az illető anyagilag felel a tartózkodásért, és azonnali törlésre kerülhet sor.",
-        "A megadott vendégnév önkényes módosítására tett kísérlet szintén törléshez vezethet."
+        "9.1 Károk és veszteség — Ha kárt okoz vagy veszteséget idéz elő, felelős a javítás/csere ésszerű költségeiért és az ésszerű adminisztratív költségekért, a vonatkozó jog szerint. A Kártyabirtokost terhelhetjük és/vagy a Biztonsági letétet felhasználhatjuk. Személyzeti óradíjak (ha alkalmazzuk): Director 50 €/h, Manager 35 €/h, Staff 25 €/h.",
+        "9.2 Ágyi poloskák — Ha ésszerűen megállapítjuk (ellenőrzés és bizonyíték alapján), hogy a Vendég ágyi poloskákat hozott be, felszámíthatjuk a közvetlen, ésszerű mentesítési költségeket és az igazolt veszteségeket, a vonatkozó jog szerint. Lásd a Házirendet a Vendég kötelező teendőiről (jelentés, elkülönítési lépések)."
       ]
     },
     "s10": {
-      "title": "10. Előre fizetett, nem visszatéríthető foglalások",
+      "title": "10. Személyes tárgyak és megőrzés",
       "body": [
-        "A teljes összeg a foglaláskor esedékes. Sikertelen fizetés esetén a kérelmet töröljük.",
-        "No Show esetén visszatérítés nem jár.",
-        "Hosszabbítási kérelmeket a jelen feltételek szerint bírálunk el."
+        "A Vendégek felelősek a személyes tárgyaikért. Ha szekrényeket/széfeket vagy megőrzést biztosítunk, az elérhetőség és szabályok a Házirendben és/vagy külön megőrzési feltételekben szerepelnek.",
+        "Semmi a jelen Foglalási feltételekben nem zárja ki vagy korlátozza a felelősséget ott, ahol az kizárás/korlátozás a vonatkozó jog szerint nem megengedett."
       ]
     },
     "s11": {
-      "title": "11. Érkezés",
+      "title": "11. Felelősség",
       "body": [
-        "11.1 Check‑in kérelem — Minden vendégnek azonosítania kell magát és kezdeményeznie a check‑int érkezéskor.",
-        "11.2 Korai érkezés — A foglalás napján 10:30 előtt érkező vendégek nem léphetnek be a hostelbe.",
-        "11.3 Érkezés 10:30 és 15:00 között — Megállapodás szerint Átmeneti Vendéggé válhat; csomagmegőrző igény szerint, külön feltételekkel.",
-        "A fordítás folyamatban van.",
-        "11.5 Késői érkezés — 22:00 után a recepció zárva. Mérlegelésünk szerint önkiszolgáló check‑in útmutatót adhatunk; a tájékoztató átvételének/megértésének hibáiból vagy hibás elérhetőségből eredő következményekért felelősséget nem vállalunk."
+        "11.1 Kógens jog — A Foglalási feltételek semmilyen rendelkezése nem korlátozza vagy zárja ki a felelősségünket, ha azt a vonatkozó jog nem engedi.",
+        "11.2 Hatály — Az 11.1 szakaszra tekintettel felelünk a Megerősített foglalásban szereplő szállás és szolgáltatások nyújtásáért. Nem vállalunk felelősséget az Ön által elkövetett szerződésszegésből, általunk nem ellenőrzött harmadik felektől (ideértve az OTA-kat, fizetési szolgáltatókat, fuvarozókat), vagy rajtunk kívül álló eseményekből (vis maior) eredő problémákért, a jogszabályok által megengedett mértékben.",
+        "11.3 Kártípusok és felelősségi korlát (ahol megengedett) — Az 11.1 szakaszra tekintettel és a vonatkozó jog által megengedett mértékben: nem felelünk közvetett vagy következményes károkért, és a Foglalással kapcsolatos teljes felelősségünk a Megerősített foglalás szállásrészére nekünk fizetett teljes összegre korlátozódik."
       ]
     },
     "s12": {
-      "title": "12. Check‑in",
+      "title": "12. Adatvédelem és CCTV",
       "body": [
-        "12.1 Kötelező folyamat — Ha nem tudjuk befejezni a check‑int, a bejelentkezést megtagadjuk és a foglalást töröljük (No Show).",
-        "12.2 Személyazonosság — Minden vendégről érvényes igazolványadatokat kell kapnunk (vezetéknév, keresztnév, születési hely, állampolgárság, születési dátum, okmány száma). Ha az első napon 22:00‑ig nem áll rendelkezésre, törlés (No Show).",
-        "12.2 Egyenleg kiegyenlítése — A fennmaradó összeget elfogadott módon ki kell fizetni a check‑in befejezése előtt; ennek elmulasztása törlést (No Show) eredményez.",
-        "12.3 Kártya és ágynemű letét — 10 € készpénz letét szükséges, amely a Keycard és az ágynemű visszaadásakor, check‑outkor kerül visszafizetésre."
+        "12.1 Adatvédelmi tájékoztató — A személyes adatokat az adatvédelmi szabályzatunk szerint kezeljük: https://hostel-positano.com/privacy-policy. A szabályzat leírja, mit gyűjtünk, miért, az esetleges jogalapokat, megőrzési időt és a jogok gyakorlását.",
+        "12.2 CCTV a közös területeken — CCTV-t működtetünk a közös területek egyes részein biztonsági és csalásmegelőzési célból. A CCTV: a helyszínen jelölve van, csak felhatalmazott személyzet fér hozzá, szükség esetén a hatóságok számára megosztható, és 30 napig kerül megőrzésre, hacsak jogszabály vagy incidens kivizsgálása hosszabb időt nem ír elő. CCTV‑kérdésekhez: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Biztonsági letét folyamata",
+      "title": "13. Weboldal‑információk és külső linkek",
       "body": [
-        "A tartózkodás idejére személyenként egy éjszakának megfelelő összeget foglalhatunk le biztonsági letétként (előengedélyezés vagy készpénz).",
-        "A letét felhasználható díjakra, bírságokra, hosszabbításra vagy más, szabályzat szerinti kötelezettségre.",
-        "Sikertelen előengedélyezés esetén csoporttag biztosíthatja vagy készpénzben fizethető; ellenkező esetben törlés lehetséges."
+        "Igyekszünk a weboldal‑információkat pontosan tartani, de frissíthetjük őket. A fotók illusztratívak lehetnek. Külső linkek kényelmi célból vannak; nem vállalunk felelősséget a harmadik felek tartalmáért."
       ]
     },
     "s14": {
-      "title": "14. Gondossági kötelezettség",
+      "title": "14. Egészség és biztonság",
       "body": [
-        "Más vendégek és a személyzet tisztelete, károkozás kerülése, szabályok betartása kötelező.",
-        "Sértés esetén azonnali törlés (No Show szabály vonatkozhat) és/vagy távozás elrendelése visszatérítés nélkül.",
-        "Az Ön magatartásából eredő költségek/bírságok átháríthatók; jogsértéseket a szükséges mértékben jelentünk."
+        "A Vendégeknek felelősségteljesen kell eljárniuk a fertőző betegségek kapcsán. A visszatérítési szabályok a Díjtípust követik, kivéve ha a kötelező jog másként rendelkezik. Javasoljuk az utasbiztosítást."
       ]
     },
     "s15": {
-      "title": "15. Hibák és károk",
+      "title": "15. Promóciók és kuponok",
       "body": [
-        "15.1 Hibabejelentés — A szobahibákat haladéktalanul jelezze.",
-        "15.2 Értékelés — A beavatkozásokat a tartózkodásra gyakorolt hatás szerint priorizáljuk.",
-        "15.3 Súlyos hibák — Igyekszünk elhárítani; ha nem lehetséges, alternatív szállást keresünk vagy időarányos visszatérítést adunk (árkülönbözet/fennmaradó éjszakák alapján).",
-        "15.4 Be nem jelentett hibák — Utólagos feltárás esetén a kár‑ és veszteségszabályzat érvényes.",
-        "15.5 Károk — Előengedélyezést vagy letétet kérhetünk. Visszatérítések a felmerült költségekkel csökkentve. További költségek (anyag, munka, adminisztráció) terhelhetők. Túlóra díjak: igazgató 50 €/óra, menedzser 35 €/óra, személyzet 25 €/óra."
+        "A kuponok, ha kínáljuk őket, csak a meghatározottak szerint érvényesek (pl. csak a Weboldalon), és a promócióhoz kapcsolódóan további feltételek lehetnek."
       ]
     },
     "s16": {
-      "title": "16. Ágyi poloskák",
+      "title": "16. Irányadó jog és joghatóság",
       "body": [
-        "Megelőző és mentesítési intézkedéseket alkalmazunk. Fertőzés esetén a foglalások kieséséből, más vendégek igényeiből, takarítási/kártevőirtási költségekből eredő kárért felelősség terhelheti Önt.",
-        "Ha korábban poloskás helyen járt, jelezze check‑inkor és fertőtlenítse holmiját.",
-        "Check‑in előtt vizsgálja át a csomagjait; gyanú esetén azonnal jelezze."
+        "Ezek a Foglalási feltételek az olasz jog hatálya alá tartoznak, és a vitákat az olasz bíróságok előtt kell rendezni, a Vendég lakóhelye szerinti kötelező fogyasztó‑joghatósági szabályok sérelme nélkül."
       ]
     },
     "s17": {
-      "title": "17. Személyes tárgyak és biztonság",
+      "title": "A Függelék — Díj‑ és díjtáblázat",
       "body": [
-        "A vendégek tárgyaikért mindenkor felelősek. A hostel a jogszabályban előírt eseteket kivéve nem felel elvesztésért, kárért, lopásért.",
-        "Zárható szekrények/széf biztosítható, de a felelősség a vendéget terheli.",
-        "Gazdátlan tárgyakat a check‑out utáni 30. napon megsemmisítünk.",
-        "Veszélyes vagy jogellenes tárgyak tiltottak; elkobozhatók vagy bejelenthetők."
-      ]
-    },
-    "s18": {
-      "title": "18. Azonosítás és biztonsági intézkedések",
-      "body": [
-        "A vendégeknek a tartózkodás ideje alatt viselniük kell a kiadott biztonsági karszalagot és kérésre érvényes igazolványt kell bemutatniuk.",
-        "A karszalag viselésének vagy az igazolvány bemutatásának elmulasztása a visszatérítés nélküli távozásra szólíthat fel.",
-        "Elveszett/serült karszalagot azonnal jelezni kell; csere díja felszámítható."
-      ]
-    },
-    "s19": {
-      "title": "19. Kamerás megfigyelés (CCTV)",
-      "body": [
-        "Közösségi terekben CCTV működik a vendégek és a vagyon biztonsága érdekében.",
-        "A felvételek biztonságosan tárolódnak, csak felhatalmazott vezetők férnek hozzá, és jogszabály szerint a hatóságokkal megoszthatók.",
-        "A CCTV nem jelent teljes garanciát; a feltételek elfogadásával tudomásul veszi használatát."
-      ]
-    },
-    "s20": {
-      "title": "20. Átmeneti vendégek",
-      "body": [
-        "Átmeneti vendég státusz mérlegelésünk szerint adható.",
-        "Csak a Közösségi terekhez fér hozzá; szobákba nem léphet.",
-        "A fordítás folyamatban van.",
-        "Kérelmek 9:00–23:00 között fogadhatók nyitvatartási napokon.",
-        "A státuszt bármikor megtagadhatjuk vagy visszavonhatjuk."
-      ]
-    },
-    "s21": {
-      "title": "21. Nem regisztrált személyek",
-      "body": [
-        "Minden, a szálláson tartózkodó személyt regisztrálni kell, ideértve az Átmeneti vendégeket is.",
-        "Nem regisztrált személy észlelésekor személyenként a standard szobaár és annak kétszeresével azonos admin díj számítható fel.",
-        "A nem regisztrált személynek be kell jelentkeznie és követnie az eljárást; ennek hiányában rendőrségi bejelentés történhet.",
-        "Be nem jelentett személy észlelésének elmulasztása a foglalás törlését okozhatja (No Show szabály alkalmazható)."
-      ]
-    },
-    "s22": {
-      "title": "22. Kijelentkezés (check‑out)",
-      "body": [
-        "A hivatalos check‑out idő 7:30 és 10:30 között van.",
-        "Check‑out után ne térjen vissza a szobába, és ne hagyjon ott tárgyakat.",
-        "Köteles a check‑out utáni feltételeket betartani."
-      ]
-    },
-    "s23": {
-      "title": "23. Korai check‑out",
-      "body": [
-        "Ha 7:30 előtt kell távoznia, az előző este keresse a recepciót a korai check‑out intézéséhez és a kártyaletét visszatérítéséhez.",
-        "Vissza nem adott kártya esetén a letét elveszik.",
-        "A letétek kizárólag készpénzben, személyesen kerülnek visszafizetésre."
-      ]
-    },
-    "s24": {
-      "title": "24. Késői check‑out",
-      "body": [
-        "Késői check‑out csak előzetes írásos megállapodással lehetséges, legkésőbb 12:00‑ig.",
-        "Diszkrecionális, telítettségtől függ, és írásban szükséges megerősíteni.",
-        "A fordítás folyamatban van."
-      ]
-    },
-    "s25": {
-      "title": "25. Késedelmes vagy elmaradt check‑out",
-      "body": [
-        "Ha a megállapodott időre nem történik check‑out, felelősségvállalás nélkül eltávolíthatjuk a holmiját a szobából.",
-        "A csak vendégeknek szánt területekhez való hozzáférési kísérlet a megadott időn túl biztonsági incidensnek minősülhet.",
-        "A csomagokat helyi hordárszolgáltatáshoz helyezhetjük letétbe; az átvételi díjat ők határozzák meg."
-      ]
-    },
-    "s26": {
-      "title": "26. Check‑out után",
-      "body": [
-        "A check‑out befejezésével a Megerősített foglalás teljesítettnek minősül, függetlenül a hátralévő időtől.",
-        "Ön megszűnik Hivatalos vendégnek lenni, és 15:30‑ig Átmeneti vendég státuszba kerül.",
-        "Kérésre poggyászmegőrző szolgáltatásunkba vehetjük fel, külön feltételekkel."
-      ]
-    },
-    "s27": {
-      "title": "27. Alkohol",
-      "body": [
-        "Engedéllyel rendelkező helyszínként tilos külső helyről vásárolt alkoholt behozni a hostelbe.",
-        "Ha tudomásunkra jut ilyen alkohol, azt megőrizzük és check‑outkor vagy a külső fogyasztás igazolásakor adjuk vissza.",
-        "A szabály megszegése azonnali törlést eredményezhet és No Show‑ként kezeljük."
-      ]
-    },
-    "s28": {
-      "title": "28. Jelen feltételek módosítása",
-      "body": [
-        "Jelen feltételek képezik a teljes megállapodást Ön és a Hostel között, és felülírnak minden korábbi, írásbeli vagy szóbeli megállapodást.",
-        "Fenntartjuk a jogot, hogy a feltételeket bármikor módosítsuk."
-      ]
-    },
-    "s29": {
-      "title": "29. Felelősségvállalás köre",
-      "body": [
-        "Felelősségünk a jelen feltételekben felsorolt szolgáltatásokra és tételekre korlátozódik.",
-        "Teljes felelősségünk nem haladja meg a foglalásért fizetett összeget.",
-        "Személyes tárgyak elvesztéséért/károsodásáért nem felelünk, kivéve ha jogszabály előírja.",
-        "Nem felelünk közvetett, következményi vagy gazdasági károkért, elmaradt haszonért, goodwill‑ért vagy lehetőségért, ideértve a gondatlanságból vagy vis maiorból eredőket is.",
-        "Értéktárgyak számára biztos tárolást nyújtunk, de pénzügyi felelősséget nem vállalunk.",
-        "Takarítás közben tárgyakat előzetes értesítés nélkül mozgathatunk."
-      ]
-    },
-    "s30": {
-      "title": "30. Irányadó jog",
-      "body": [
-        "A jelen feltételekre az olasz jog az irányadó; jogvita esetén Olaszország bíróságai illetékesek."
-      ]
-    },
-    "s31": {
-      "title": "31. Weboldal‑információk",
-      "body": [
-        "Minden erőfeszítést megteszünk a weboldal információinak pontosságáért, ugyanakkor a hibákért/hiányosságokért felelősséget nem vállalunk.",
-        "Fenntartjuk a jogot, hogy a weboldalt és tartalmát bármikor, előzetes értesítés nélkül módosítsuk.",
-        "Egyes képek a termékek és létesítmények általános stílusát szemléltetik, nem feltétlenül a pontos megjelenést.",
-        "A weboldal minden tartalma (szöveg, képek, védjegyek) a Hostel tulajdona; írásos engedély nélkül nem használható.",
-        "Harmadik felek oldalaira mutató linkeket kényelmi okból biztosítunk; azok tartalmáért/használatáért nem vállalunk felelősséget.",
-        "Lásd adatvédelmi tájékoztatónkat, hogyan védjük a magánszféráját a weboldal használata során."
-      ]
-    },
-    "s32": {
-      "title": "32. Egészség‑ és biztonságpolitika",
-      "body": [
-        "A biztonság érdekében a fertőző betegségnek nemrég kitett vendég felelősen járjon el.",
-        "Előre fizetett, nem visszatéríthető foglalások ilyen esetben sem visszatéríthetők.",
-        "Erősen javasoljuk utasbiztosítás megkötését váratlan eseményekre (betegség, utazási akadály)."
-      ]
-    },
-    "s33": {
-      "title": "33. Kuponok",
-      "body": [
-        "A fordítás folyamatban van.",
-        "A kuponok kizárólag a hivatalos weboldalunkon (hostel-positano.com) keresztül leadott foglalásokra érvényesek.",
-        "Minden kuponhoz a jelen dokumentumon felül külön feltételek is tartozhatnak."
+        "A függeléknek összhangban kell lennie a foglaláskor megjelenített információkkal.",
+        "A1. Nem visszatéríthető díj (előre fizetett) — Fizetés: 100% foglaláskor/ megerősítéskor. Lemondás: nincs visszatérítés (kivéve ha jogszabály írja elő). No Show: nincs visszatérítés. Módosítások: új foglalásként kezelendők; ár/díj változhat; elérhetőség függvényében.",
+        "A2. Visszatéríthető díj (csak garancia) — Fizetés: bejelentkezéskor (vagy a megadott előzetes időablakon belül), de foglaláskor előzetes autorizáció kérhető. Ingyenes lemondás: az érkezés napján 15:00 előtt 72 óráig. Késői lemondás díja: az első éjszaka díja vagy bármely nem visszatéríthető letét közül a magasabb, plusz esetleges lemondási admin díj. No Show díja: az első éjszaka díja vagy bármely nem visszatéríthető letét közül a magasabb.",
+        "A3. Lemondási admin díj — 5 € foglalásonként, a foglaláskor megjelenítve és a visszaigazoló e‑mailben megismételve."
       ]
     }
   }

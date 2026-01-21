@@ -1,6 +1,7 @@
-import { Tag } from "@acme/ui/components/atoms";
-import { Button } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+import { Tag } from "@acme/ui/components/atoms";
+
+import { Button } from "@/components/atoms/shadcn";
 
 interface TelemetryHeaderProps {
   onReload?: () => void | Promise<void>;

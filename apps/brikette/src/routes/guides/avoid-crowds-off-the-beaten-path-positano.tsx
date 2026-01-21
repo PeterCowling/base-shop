@@ -1,15 +1,17 @@
 // src/routes/guides/avoid-crowds-off-the-beaten-path-positano.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import type { LinksFunction, MetaFunction } from "react-router";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 
 export const handle = { tags: ["travel-tips", "positano", "hidden-gems", "shoulder", "viewpoints"] };
 

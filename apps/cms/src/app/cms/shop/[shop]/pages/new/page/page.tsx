@@ -1,11 +1,13 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/page/page.tsx
 
 import { createPage } from "@cms/actions/pages/create";
-import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+
 import { fillLocales } from "@acme/i18n/fillLocales";
-import type { Page } from "@acme/types";
-import PageBuilderClient from "./PageBuilderClient";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import { corePageTemplates } from "@acme/templates";
+import type { Page } from "@acme/types";
+
+import PageBuilderClient from "./PageBuilderClient";
 
 export const dynamic = "force-dynamic";
 

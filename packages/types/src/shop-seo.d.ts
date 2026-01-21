@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const shopSeoFieldsSchema: z.ZodObject<{
     canonicalBase: z.ZodOptional<z.ZodString>;
     title: z.ZodOptional<z.ZodString>;

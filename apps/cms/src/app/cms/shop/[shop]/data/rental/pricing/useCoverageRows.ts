@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { coverageCodeSchema, type CoverageCode, type PricingMatrix } from "@acme/types";
+
+import { type CoverageCode, coverageCodeSchema, type PricingMatrix } from "@acme/types";
 
 import type { CoverageDraft } from "./pricingFormUtils";
 

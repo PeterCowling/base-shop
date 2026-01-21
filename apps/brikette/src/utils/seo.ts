@@ -5,16 +5,18 @@
    Handles one-level slugs and nested Assistance-article slugs.
    ---------------------------------------------------------------- */
 
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import React from "react";
+
 import { ARTICLE_SLUGS } from "@/article-slug-map";
+import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideSlug } from "@/guides/slugs";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 // Use a namespace import to avoid hard failures when tests partially mock
 // the module without all named exports (e.g. ARTICLE_KEYS).
 // Build a reverse-lookup for assistance article slugs without importing
 // assistance helpers (keeps tests resilient to partial mocks)
 import { SLUGS } from "@/slug-map";
-import { guideSlug, type GuideKey, GUIDE_SLUG_LOOKUP_BY_LANG } from "@/guides/slugs";
 import type { SlugKey, SlugMap } from "@/types/slugs";
+
 type ArticleSlugEntry = Readonly<Partial<Record<AppLanguage, string>>> & { readonly en: string };
 const ARTICLE_SLUGS_BY_KEY = ARTICLE_SLUGS as unknown as Record<string, ArticleSlugEntry>;
 /* ------------------------------------------------------------------ */

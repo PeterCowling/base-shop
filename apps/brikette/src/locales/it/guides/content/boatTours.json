@@ -5,43 +5,43 @@
   },
   "linkLabel": "Tour in barca a Positano",
   "intro": [
-    "Traduzione in arrivo."
+    "I tour in barca ti fanno vivere le scogliere senza traffico su strada; prenota in alta stagione e tieni un piano meteo di riserva."
   ],
   "sections": [
     {
       "id": "group-tours",
-      "title": "Group tours & shared boats",
+      "title": "Tour di gruppo e barche condivise",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Crociere condivise di 3 ore partono a meta mattina e includono soste bagno; prevedi 85-120 EUR a persona in luglio-agosto.",
+        "Porta scarpe da scoglio e uno strato leggero: la brezza in mare e piu fresca che sulle terrazze."
       ]
     },
     {
       "id": "private-charters",
-      "title": "Private charters",
+      "title": "Noleggi privati",
       "body": [
         "Gli skipper quotano €550–€850 per il noleggio di gozzi di mezza giornata (fino a 6 persone) più carburante; confermare inclusioni come prosecco o asciugamani.",
-        "Traduzione in arrivo."
+        "Negozia gli orari all'alba o nel tardo pomeriggio se vuoi luce piu morbida e meno scia dei traghetti."
       ]
     },
     {
       "id": "weather-backup",
-      "title": "Weather & backup plans",
+      "title": "Meteo e piani di riserva",
       "body": [
-        "Traduzione in arrivo.",
+        "Gli operatori cancellano con venti oltre forza 4; tieni pronto un piano bus o spiaggia per restare rilassato.",
         "I mari possono essere mossi anche in estate: se sei incline, porta con te un cinturino anti-chinetosi."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Arriva 20 minuti prima per saldare il pagamento e indossare le scarpe da barca fornite.",
+    "Porta una dry bag per il telefono e una bottiglia da 1 L: l'ombra a bordo e limitata."
   ],
   "faqs": [
     {
       "q": "Do I need to pre-book?",
       "a": [
-        "Traduzione in arrivo."
+        "Si tra maggio e settembre: le barche spesso si esauriscono con qualche giorno di anticipo, soprattutto al tramonto."
       ]
     },
     {
@@ -51,11 +51,11 @@
       ]
     }
   ],
-  "galleryHeading": "Photo gallery",
+  "galleryHeading": "Galleria fotografica",
   "gallery": {
-    "primaryAlt": "Traduzione in arrivo.",
-    "primaryCaption": "Cruising the coast",
-    "secondaryAlt": "Traduzione in arrivo.",
-    "secondaryCaption": "Swim stop"
+    "primaryAlt": "Barca in navigazione lungo la costa di Positano",
+    "primaryCaption": "Navigazione lungo la costa",
+    "secondaryAlt": "Sosta bagno vicino alle scogliere di Positano",
+    "secondaryCaption": "Sosta bagno"
   }
 }

@@ -1,5 +1,6 @@
-import Link from "next/link";
 import type { ReactElement } from "react";
+import Link from "next/link";
+
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 // This function must return a JSX element.

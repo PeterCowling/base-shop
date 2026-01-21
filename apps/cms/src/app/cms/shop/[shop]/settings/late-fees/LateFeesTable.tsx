@@ -1,5 +1,7 @@
-import { mapLateFeeRows } from "../tableMappers";
 import { readOrders } from "@acme/platform-core/repositories/rentalOrders.server";
+
+import { mapLateFeeRows } from "../tableMappers";
+
 import LateFeesTableClient from "./LateFeesTableClient";
 
 export default async function LateFeesTable({ shop }: { shop: string }) {

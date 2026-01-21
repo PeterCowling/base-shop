@@ -1,10 +1,10 @@
 {
   "labels": {
-    "onThisPage": "On this page",
-    "before": "Before you head out",
-    "steps": "Step-by-step route",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "इस पेज पर",
+    "before": "निकलने से पहले",
+    "steps": "स्टेप‑बाय‑स्टेप रूट",
+    "knees": "पैर और सामान",
+    "faqs": "अक्सर पूछे जाने वाले सवाल"
   },
   "folkloreAmalfi": {
     "intro": [
@@ -75,13 +75,13 @@
         "title": "किसके लिए कौन सा बेस",
         "body": [
           "Positano: शानदार दृश्य और होस्टल का सामाजिक जीवन।",
-          "अनुवाद तैयार किया जा रहा है।",
-          "अनुवाद तैयार किया जा रहा है।"
+          "Sorrento: वैल्यू चाहने वालों के लिए जो तेज़ ट्रांज़िट लिंक चाहते हैं।",
+          "Amalfi: कोस्ट के साथ संतुलित एक्सेस के लिए।"
         ]
       }
     ],
     "faqs": [],
-    "faqsTitle": "FAQ"
+    "faqsTitle": "अक्सर पूछे जाने वाले सवाल"
   },
   "interrailItalyRailPassAmalfiCoast": {
     "toc": [
@@ -99,7 +99,7 @@
       },
       {
         "href": "#faqs",
-        "label": "FAQ"
+        "label": "अक्सर पूछे जाने वाले सवाल"
       }
     ],
     "sections": [
@@ -107,7 +107,7 @@
         "id": "routes",
         "title": "मुख्य मार्ग",
         "body": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Rome → Naples/Salerno हाई-स्पीड; Sorrento तक लोकल ट्रेनें; Positano तक बसें।"
         ]
       },
       {
@@ -121,11 +121,11 @@
         "id": "last-mile",
         "title": "Positano तक अंतिम चरण",
         "body": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Naples से: Circumvesuviana से Sorrento, फिर SITA बस। Salerno से: सीज़न में फेरी/बस।"
         ]
       }
     ],
-    "faqsTitle": "FAQ",
+    "faqsTitle": "अक्सर पूछे जाने वाले सवाल",
     "faqs": [
       {
         "q": "क्या पास लेना फायदेमंद है?",
@@ -225,7 +225,7 @@
           "पीक सीज़न: अप्रैल–अक्टूबर। सर्दियों में सेवाएँ कम या न के बराबर।",
           "रवानगी से पहले समय पर पहुँचें ताकि कतार और टिकट मान्य कराने के लिए समय मिले।",
           "पोर्ट से हॉस्टल तक चढ़ाई है; भारी सामान हो तो पोर्टर या \"Chiesa Nuova\" तक बस पर विचार करें।",
-          "और आगमन सुझावों के लिए हमारी सहायता लेख \"Arriving by Ferry\" देखें।"
+          "और आगमन सुझावों के लिए हमारी सहायता लेख \"फेरी से आगमन\" देखें।"
         ]
       }
     ],
@@ -239,7 +239,7 @@
       {
         "q": "रीयल-टाइम फेरी समय कहाँ देखें?",
         "a": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "ऑपरेटर साइट्स (जैसे NLG, Travelmar, Alilauro) या गर्मियों में DirectFerries जैसे एग्रीगेटर्स देखें।"
         ]
       },
       {
@@ -263,11 +263,11 @@
     ],
     "gallery": [
       {
-        "alt": "Positano pier area",
-        "caption": "Spiaggia Grande pier"
+        "alt": "Positano पियर क्षेत्र",
+        "caption": "Spiaggia Grande पियर"
       },
       {
-        "alt": "Ferry approaching Amalfi",
+        "alt": "Amalfi की ओर आती फेरी",
         "caption": "तट के साथ चलती फेरियाँ"
       }
     ],
@@ -324,27 +324,27 @@
       }
     ],
     "faqs": [],
-    "faqsTitle": "FAQ"
+    "faqsTitle": "अक्सर पूछे जाने वाले सवाल"
   },
   "itinerariesPillar": {
     "intro": "अमाल्फी कोस्ट का आनंद लेने के लिए आपको कार की ज़रूरत नहीं। दर्शनीय यात्रा के लिए फेरी, पहाड़ी कस्बों के लिए बसें और भीड़ से बचने के लिए थोड़ी टाइमिंग का उपयोग करें। इन टेम्पलेट से शुरुआत करें और फिर अपनी योजना बनाएँ।",
     "toc": {
       "twoDays": "2 दिन: Positano केंद्रित",
-      "threeDays": "अनुवाद तैयार किया जा रहा है।",
+      "threeDays": "3 दिन: Capri या Amalfi+Ravello जोड़ें",
       "sevenDays": "7 दिन: पूरा लूप",
       "tips": "समय और परिवहन टिप्स",
-      "faqs": "FAQ"
+      "faqs": "अक्सर पूछे जाने वाले सवाल"
     },
     "twoDaysHeading": "2 दिन: Positano केंद्रित",
     "twoDaysItems": [
-      "अनुवाद तैयार किया जा रहा है।",
-      "अनुवाद तैयार किया जा रहा है।"
+      "दिन 1: Positano पुराना शहर, तटीय पाथ से Fornillo, Via Pasitea के मोड़ों से सूर्यास्त।",
+      "दिन 2: <pathOfTheGodsLink>Path of the Gods</pathOfTheGodsLink> Nocelle से; बाद में बीच पर आराम।"
     ],
     "threeDaysHeading": "3 दिन: Capri या Ravello जोड़ें",
     "threeDaysIntro": "एक चुनें:",
     "threeDaysOptions": [
-      "अनुवाद तैयार किया जा रहा है।",
-      "अनुवाद तैयार किया जा रहा है।"
+      "Capri डे ट्रिप: सुबह की फेरी → Marina Grande → Anacapri चेयरलिफ्ट → Marina Piccola लूप।",
+      "Amalfi + Ravello: Amalfi तक बस, फिर Ravello के बागों और व्यूज़ के लिए जाएँ; बस/फेरी से लौटें।"
     ],
     "sevenDaysHeading": "7 दिन: पूरा लूप",
     "sevenDaysItems": [
@@ -358,7 +358,7 @@
       "बस टिकट पहले से खरीदें; चढ़ते समय मान्य करें।",
       "समुद्र उफान पर हो तो बस योजना पर स्विच करें; ऑपरेटर के अपडेट देखें।"
     ],
-    "faqHeading": "FAQ",
+    "faqHeading": "अक्सर पूछे जाने वाले सवाल",
     "faqs": [
       {
         "q": "क्या कार लेना उचित है?",
@@ -375,7 +375,7 @@
       "tips": "टिप्स"
     },
     "highlights": [
-      "अनुवाद तैयार किया जा रहा है।",
+      "Duomo di Amalfi और Chiostro del Paradiso (क्लॉइस्टर)।",
       "पेपर म्यूज़ियम (Museo della Carta) — अमाल्फी के इतिहास का अनूठा हिस्सा।",
       "समुद्र तट के किनारे सैर और सीढ़ियों पर जेलाटो।"
     ],
@@ -386,60 +386,60 @@
     ]
   },
   "sevenDayNoCar": {
-    "intro": "अनुवाद तैयार किया जा रहा है।",
+    "intro": "ट्रांसफ़र सरल रखने के लिए Positano में 3 रातें, Amalfi/Ravello में 2 और Capri या Sorrento में 1–2 रातें रखें।",
     "toc": {
       "onThisPage": "इस पेज पर",
       "overview": "सारांश",
       "dayByDay": "दिनवार",
       "tips": "परिवहन और समय टिप्स",
-      "faqs": "FAQ"
+      "faqs": "अक्सर पूछे जाने वाले सवाल"
     },
     "days": [
       {
         "id": "day1",
-        "label": "Day 1",
+        "label": "दिन 1",
         "items": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Positano पहुँचना; पुराना शहर और Fornillo"
         ]
       },
       {
         "id": "day2",
-        "label": "Day 2",
+        "label": "दिन 2",
         "items": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Nocelle से Path of the Gods"
         ]
       },
       {
         "id": "day3",
-        "label": "Day 3",
+        "label": "दिन 3",
         "items": [
           "Capri डे ट्रिप या बीच + बोट टूर"
         ]
       },
       {
         "id": "day4",
-        "label": "Day 4",
+        "label": "दिन 4",
         "items": [
           "Amalfi के लिए ट्रांसफ़र; Duomo; पियर पर सूर्यास्त"
         ]
       },
       {
         "id": "day5",
-        "label": "Day 5",
+        "label": "दिन 5",
         "items": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Ravello गार्डन्स (Villa Rufolo/Villa Cimbrone)"
         ]
       },
       {
         "id": "day6",
-        "label": "Day 6",
+        "label": "दिन 6",
         "items": [
-          "अनुवाद तैयार किया जा रहा है।"
+          "Capri में रात या Sorrento की ओर"
         ]
       },
       {
         "id": "day7",
-        "label": "Day 7",
+        "label": "दिन 7",
         "items": [
           "प्रस्थान"
         ]
@@ -464,14 +464,14 @@
     ],
     "sections": [
       {
-        "title": "Why this route works",
+        "title": "यह रूट क्यों काम करता है",
         "body": [
           "हॉस्टल के प्रवेश द्वार से स्टॉप तक मुख्य सड़क पर लगभग 120 मीटर (400 फ़ुट) की पैदल दूरी है।",
           "अगर आप अमाल्फी की ओर जा रहे हैं तो स्टॉप बार इंटरनाज़ियोनाले के सामने है। सड़क के समुद्र की ओर वाले हिस्से में कतार में लगें। अगर आप सोरेंटो की ओर जा रहे हैं तो आपको सीधे बार के बाहर इंतज़ार करना होगा।"
         ]
       },
       {
-        "title": "Tickets and timing",
+        "title": "टिकट और समय",
         "body": [
           "SITA का टिकट तंबाकू की दुकान या बार के अंदर से खरीदें। बिना टिकट बस में चढ़ने की कोशिश न करें, क्योंकि बस में टिकट नहीं मिलेंगे। बस में चढ़ते समय अपना टिकट ड्राइवर को दिखाएं। अगर आप पहली बस पकड़ रहे हैं तो टिकट एक दिन पहले खरीदें और चेक-आउट की व्यवस्था के लिए रिसेप्शन पर हमें मिलें।",
           "गर्मी में बसें अक्सर भर जाती हैं। खासकर सबसे व्यस्त समय में उसी अनुसार योजना बनाएं।"
@@ -480,29 +480,29 @@
     ],
     "beforeList": [],
     "stepsList": [
-      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Hostel Brikette से निकलें, छोटी सीढ़ियाँ लेकर Viale Pasitea पर जाएँ, और बाएँ मुड़ें।",
       "मुख्य सड़क के साथ लगभग 120 मीटर (400 फ़ुट) तक फुटपाथ पर चलते हुए बार इंटरनाज़ियोनाले तक पहुंचें।"
     ],
     "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
     "kneesList": [],
-    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-    "kneesDockLinkLabel": "Ferry dock luggage route",
-    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-    "kneesPorterLinkLabel": "porter service guide",
+    "kneesDockPrefix": "फेरी डॉक पर सामान के साथ शुरू कर रहे हैं? हमारा उपयोग करें",
+    "kneesDockLinkLabel": "फेरी डॉक सामान रूट",
+    "kneesPorterPrefix": "पोर्टर कीमत या बुकिंग मदद चाहिए? देखें",
+    "kneesPorterLinkLabel": "पोर्टर सेवा गाइड",
     "faqs": [
       {
-        "q": "Do buses stop right outside the hostel?",
-        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+        "q": "क्या बसें हॉस्टल के ठीक बाहर रुकती हैं?",
+        "a": "वे Bar Internazionale पर रुकती हैं—प्रवेश से लगभग 120 मीटर (400 फीट) नीचे।"
       },
       {
-        "q": "Can I buy tickets at the last minute?",
-        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+        "q": "क्या मैं आखिरी समय में टिकट खरीद सकता/सकती हूँ?",
+        "a": "हाँ, स्टॉप के पास tabacchi SITA टिकट बेचता है, लेकिन पीक समय में कतारें होती हैं।"
       }
     ],
     "howtoSteps": [
-      "Leave Hostel Brikette and follow Viale Pasitea downhill",
-      "Join the queue at Bar Internazionale and validate on boarding"
+      "Hostel Brikette से निकलें और Viale Pasitea पर नीचे की ओर चलें",
+      "Bar Internazionale पर कतार में लगें और बोर्डिंग पर वैलिडेट करें"
     ],
-    "faqsTitle": "FAQs"
+    "faqsTitle": "अक्सर पूछे जाने वाले सवाल"
   }
 }

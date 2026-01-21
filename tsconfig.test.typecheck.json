@@ -28,8 +28,6 @@
       "@acme/auth/*": ["packages/auth/src/*", "packages/auth/dist/*"],
       "@acme/platform-core": ["packages/platform-core/src/index.ts", "packages/platform-core/dist/index.d.ts"],
       "@acme/platform-core/*": ["packages/platform-core/src/*", "packages/platform-core/dist/*"],
-      "@acme/shared-utils": ["packages/shared-utils/src/index.ts", "packages/shared-utils/dist/index.d.ts"],
-      "@acme/shared-utils/*": ["packages/shared-utils/src/*", "packages/shared-utils/dist/*"],
       "@acme/email": ["packages/email/src/index.ts", "packages/email/dist/index.d.ts"],
       "@acme/email/*": ["packages/email/src/*", "packages/email/dist/*"],
       "@acme/email-templates": ["packages/email-templates/src/index.ts", "packages/email-templates/dist/index.d.ts"],

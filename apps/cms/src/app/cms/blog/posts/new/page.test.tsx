@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
-import { getSanityConfig } from "@acme/platform-core/shops";
+import { render, screen } from "@testing-library/react";
+
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
 
 jest.mock("next/link", () => ({
   __esModule: true,
@@ -32,7 +33,7 @@ afterEach(() => {
 
 it("shows message when no shop selected", async () => {
   const { default: Page } = await import("./page");
-  render(await Page({ searchParams: {} }));
+  render(await Page({ searchParams: Promise.resolve({}) }));
   expect(screen.getByText("No shop selected.")).toBeInTheDocument();
 });
 
@@ -40,7 +41,7 @@ it("shows connect link when Sanity not configured", async () => {
   mockGetShop.mockResolvedValue({ id: "s1" });
   mockGetSanity.mockReturnValue(null);
   const { default: Page } = await import("./page");
-  render(await Page({ searchParams: { shopId: "s1" } }));
+  render(await Page({ searchParams: Promise.resolve({ shopId: "s1" }) }));
   expect(screen.getByText("Sanity is not connected.")).toBeInTheDocument();
   expect(
     screen.getByRole("link", { name: "Connect Sanity" })
@@ -51,7 +52,7 @@ it("renders form when sanity configured", async () => {
   mockGetShop.mockResolvedValue({ id: "s1" });
   mockGetSanity.mockReturnValue({});
   const { default: Page } = await import("./page");
-  render(await Page({ searchParams: { shopId: "s1" } }));
+  render(await Page({ searchParams: Promise.resolve({ shopId: "s1" }) }));
   expect(screen.getByText("New Post")).toBeInTheDocument();
   expect(screen.getByTestId("post-form")).toBeInTheDocument();
 });

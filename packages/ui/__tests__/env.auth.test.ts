@@ -1,7 +1,8 @@
 /** @jest-environment node */
-import { describe, it, expect, jest } from "@jest/globals";
-import { withEnv } from "../../config/test/utils/withEnv";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { expectInvalidAuthEnvWithConfigEnv } from "../../config/test/utils/expectInvalidAuthEnv";
+import { withEnv } from "../../config/test/utils/withEnv";
 
 const REDIS_URL = "https://example.com";
 const STRONG_SECRET = "redis-token-32-chars-long-string!";

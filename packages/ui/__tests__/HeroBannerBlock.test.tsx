@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
+
 import CmsHeroBanner from "../src/components/cms/blocks/HeroBanner";
 
-const heroMock = jest.fn(() => <div data-cy="hero" data-testid="hero" />);
+const heroMock = jest.fn((props: unknown) => (
+  <div data-cy="hero" data-testid="hero" data-props={String(!!props)} />
+));
 jest.mock("../src/components/home/HeroBanner.client", () => ({
   __esModule: true,
   default: (props: any) => {
@@ -22,7 +25,8 @@ describe("CmsHeroBanner", () => {
     render(<CmsHeroBanner slides={slides} minItems={1} maxItems={2} />);
     expect(screen.getByTestId("hero")).toBeInTheDocument();
     expect(heroMock).toHaveBeenCalled();
-    expect(heroMock.mock.calls[0][0].slides).toHaveLength(2);
+    const firstCall = heroMock.mock.calls[0]?.[0] as { slides?: unknown[] } | undefined;
+    expect(firstCall?.slides).toHaveLength(2);
   });
 
   it("returns null when slides below minimum", () => {

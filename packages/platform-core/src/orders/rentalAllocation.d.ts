@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 import type { InventoryItem } from "../types/inventory";
 /**
  * Reserve a rental inventory item if available and within wear limits.

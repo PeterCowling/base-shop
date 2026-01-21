@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface AgeGateSectionComponent extends PageComponentBase {
     type: "AgeGateSection";
     minAge?: number;

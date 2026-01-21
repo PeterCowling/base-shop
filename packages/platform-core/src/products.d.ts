@@ -1,4 +1,5 @@
-import type { SKU as BaseSKU, Locale, ProductPublication } from "@acme/types";
+import type { Locale, ProductPublication,SKU as BaseSKU } from "@acme/types";
+
 export type SKU = BaseSKU & { sku?: string };
 export type { Locale, ProductPublication };
 /** Simple in-memory list for legacy/sync call sites (stories, demos, cart sync path). */

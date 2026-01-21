@@ -1,13 +1,15 @@
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import type { Action } from "./state";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { DevicePreset } from "../../../utils/devicePresets";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
 import CanvasItem from "./CanvasItem";
 import InlineInsert from "./InlineInsert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
+import type { Action } from "./state";
 
 type Props = {
   component: PageComponent;

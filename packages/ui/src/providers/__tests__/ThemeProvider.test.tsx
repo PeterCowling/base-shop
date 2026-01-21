@@ -1,8 +1,8 @@
 import React from "react";
 import { act, render } from "@testing-library/react";
 
-import { ThemeProvider } from "../ThemeProvider";
 import { useTheme } from "../../hooks/useTheme";
+import { ThemeProvider } from "../ThemeProvider";
 
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 

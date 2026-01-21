@@ -1,21 +1,23 @@
-import { render, screen } from "@testing-library/react";
-import OrdersPage from "../Orders";
 import { redirect } from "next/navigation";
+import { render, screen } from "@testing-library/react";
+
 import { getCustomerSession, hasPermission } from "@acme/auth";
 import { getOrdersForCustomer } from "@acme/platform-core/orders";
 import {
-  getTrackingStatus as getShippingTrackingStatus,
-} from "@acme/platform-core/shipping";
-import {
   getTrackingStatus as getReturnTrackingStatus,
 } from "@acme/platform-core/returnAuthorization";
+import {
+  getTrackingStatus as getShippingTrackingStatus,
+} from "@acme/platform-core/shipping";
+
+import OrdersPage from "../Orders";
 
 jest.mock("next/navigation", () => ({
   __esModule: true,
   redirect: jest.fn(),
 }));
 
-jest.mock("@auth", () => ({
+jest.mock("@acme/auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   hasPermission: jest.fn(),

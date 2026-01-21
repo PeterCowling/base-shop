@@ -1,26 +1,25 @@
 // src/routes/guides/positano-travel-guide.tsx
 import { memo, useCallback } from "react";
-
-import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 
 import GenericContent from "@/components/guides/GenericContent";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { BASE_URL } from "@/config/site";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
-import { FallbackContent } from "./positano-travel-guide/FallbackContent";
-import { createFallbackData } from "./positano-travel-guide/fallbackData";
-import { createGuideFaqFallback } from "./positano-travel-guide/guideFaqFallback";
+import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import {
   GUIDE_KEY as GUIDE_KEY_CONST,
   GUIDE_SLUG as GUIDE_SLUG_CONST,
-  OG_IMAGE,
   handle,
+  OG_IMAGE,
 } from "./positano-travel-guide/constants";
+import { FallbackContent } from "./positano-travel-guide/FallbackContent";
+import { createFallbackData } from "./positano-travel-guide/fallbackData";
+import { createGuideFaqFallback } from "./positano-travel-guide/guideFaqFallback";
 
 export { handle };
 

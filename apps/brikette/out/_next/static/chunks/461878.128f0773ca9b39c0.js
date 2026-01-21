@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[461878],{461878:e=>{e.exports=JSON.parse('{"bookNow":"지금 예약","reserveNow":"지금 예약하기","checkAvailability":"예약 가능 여부 확인","directBookingPerks":"직접 예약 혜택","bestPriceGuaranteed":"최저가 보장","openBarMenu":"바 메뉴 열기"}')}}]);

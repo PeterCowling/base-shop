@@ -12,6 +12,10 @@ import {
   INSUFFICIENT_STOCK_ERROR,
 } from "@acme/platform-core/checkout/session";
 import {
+  createInventoryHold,
+  InventoryHoldInsufficientError,
+} from "@acme/platform-core/inventoryHolds";
+import {
   cartToInventoryRequests,
   validateInventoryAvailability,
 } from "@acme/platform-core/inventoryValidation";
@@ -142,34 +146,63 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     };
   }
 
-  let inventoryCheck: Awaited<
-    ReturnType<typeof validateInventoryAvailability>
-  >;
+  // Create inventory hold to reserve stock during checkout (20-minute TTL)
+  const inventoryRequests = cartToInventoryRequests(cart);
+  let inventoryReservationId: string | undefined;
   try {
-    inventoryCheck = await validateInventoryAvailability(
-      shop.id,
-      cartToInventoryRequests(cart),
-    );
+    const hold = await createInventoryHold({
+      shopId: shop.id,
+      requests: inventoryRequests,
+      ttlSeconds: 20 * 60, // 20 minutes
+    });
+    inventoryReservationId = hold.holdId;
   } catch (err) {
-    console.error("Inventory validation failed", err); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
-    return NextResponse.json(
-      { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123 machine-readable API error [ttl=2025-06-30]
-      { status: 503 },
-    );
-  }
-  if (!inventoryCheck.ok) {
-    return NextResponse.json(
-      {
-        error: INSUFFICIENT_STOCK_ERROR,
-        code: "inventory_insufficient",
-        items: inventoryCheck.insufficient,
-      },
-      { status: 409 },
-    );
+    if (err instanceof InventoryHoldInsufficientError) {
+      return NextResponse.json(
+        {
+          error: INSUFFICIENT_STOCK_ERROR,
+          code: "inventory_insufficient",
+          items: err.insufficient,
+        },
+        { status: 409 },
+      );
+    }
+    console.error("Inventory hold creation failed", err); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
+    // Fall back to read-only validation if holds are unavailable
+    let inventoryCheck: Awaited<
+      ReturnType<typeof validateInventoryAvailability>
+    >;
+    try {
+      inventoryCheck = await validateInventoryAvailability(
+        shop.id,
+        inventoryRequests,
+      );
+    } catch (validationErr) {
+      console.error("Inventory validation failed", validationErr); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
+      return NextResponse.json(
+        { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123 machine-readable API error [ttl=2025-06-30]
+        { status: 503 },
+      );
+    }
+    if (!inventoryCheck.ok) {
+      return NextResponse.json(
+        {
+          error: INSUFFICIENT_STOCK_ERROR,
+          code: "inventory_insufficient",
+          items: inventoryCheck.insufficient,
+        },
+        { status: 409 },
+      );
+    }
   }
 
   try {
     const orderId = ulid();
+    const orderLineItems = inventoryRequests.map((item) => ({
+      sku: item.sku,
+      variantAttributes: item.variantAttributes ?? {},
+      quantity: item.quantity,
+    }));
     const result = await createCheckoutSession(cart, {
       mode: "rental",
       returnDate,
@@ -189,6 +222,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       subtotalExtra,
       depositAdjustment,
       orderId,
+      inventoryReservationId,
       skipInventoryValidation: true,
     });
     const resolvedOrderId = result.orderId ?? orderId;
@@ -205,6 +239,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         currency,
         cartId: cartId ?? undefined,
         stripePaymentIntentId: result.paymentIntentId,
+        lineItems: orderLineItems,
       });
     } catch {
       // fallback to JSONL persistence

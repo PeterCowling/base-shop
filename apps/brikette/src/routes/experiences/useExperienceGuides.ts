@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
+import { IS_PROD } from "@/config/env";
 import {
   EXPERIENCES_GUIDES,
+  type GuideMeta,
   GUIDES_INDEX,
   HELP_GUIDES,
-  type GuideMeta,
 } from "@/data/guides.index";
-import { IS_PROD } from "@/config/env";
 
 export function useExperienceGuides(): ReadonlyArray<GuideMeta> {
   return useMemo(() => {

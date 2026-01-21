@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import CurrencySwitcher from "../src/components/molecules/CurrencySwitcher.client";
 
 const setCurrencySpy = jest.fn();

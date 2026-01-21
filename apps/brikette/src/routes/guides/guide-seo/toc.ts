@@ -1,6 +1,7 @@
 // src/routes/guides/guide-seo/toc.ts
-import type { GuideSeoTemplateContext, TocItem } from "./types";
 import type { TOptions } from "i18next";
+
+import type { GuideSeoTemplateContext, TocItem } from "./types";
 
 type Options = {
   /** When true and no items provided, treat as explicit opt-out. */

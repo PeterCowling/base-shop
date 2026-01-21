@@ -1,6 +1,15 @@
-import * as I18n from "react-i18next";
 import type { ComponentType, ReactNode } from "react";
+import * as I18n from "react-i18next";
 import type { TFunction } from "i18next";
+
+import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
+import type { AppLanguage } from "@/i18n.config";
+
+import { renderGuideLinkTokens } from "../utils/linkTokens";
+
+import { buildComponents } from "./componentTokens";
+import type { FallbackData } from "./types";
 
 type TransLikeProps = {
   children?: ReactNode;
@@ -30,14 +39,6 @@ const useTranslation = (I18n as unknown as {
     opts?: { lng?: AppLanguage } | undefined,
   ) => { t: TFunction };
 }).useTranslation;
-
-import ImageGallery from "@/components/guides/ImageGallery";
-import TableOfContents from "@/components/guides/TableOfContents";
-import { renderGuideLinkTokens } from "../utils/linkTokens";
-import type { AppLanguage } from "@/i18n.config";
-
-import { buildComponents } from "./componentTokens";
-import type { FallbackData } from "./types";
 
 export function FallbackContent({ data, lang }: { data: FallbackData; lang: AppLanguage }): JSX.Element {
   const { t } = useTranslation("guides", { lng: lang });

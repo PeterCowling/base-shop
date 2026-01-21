@@ -3,9 +3,9 @@
 import { POST } from "../../src/app/api/tryon/garment/route";
 // Polyfill ReadableStream for Jest Node environment
 import { ReadableStream } from "node:stream/web";
-const globalWithStream = globalThis as {
-  ReadableStream?: typeof ReadableStream;
-};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const globalWithStream = globalThis as any;
 
 const nativeReadableStream = globalWithStream.ReadableStream ?? ReadableStream;
 
@@ -43,12 +43,11 @@ describe("tryon/garment SSE route", () => {
   }
 
   beforeEach(() => {
-    globalThis.ReadableStream =
-      CapturedReadableStream as unknown as typeof ReadableStream;
+    globalWithStream.ReadableStream = CapturedReadableStream;
   });
 
   afterEach(() => {
-    globalThis.ReadableStream = nativeReadableStream;
+    globalWithStream.ReadableStream = nativeReadableStream;
     lastStream = null;
   });
 

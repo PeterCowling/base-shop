@@ -1,14 +1,16 @@
 // packages/ui/src/organisms/ApartmentDetailsSection.tsx
+import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { Check } from "lucide-react";
+
+import { useModal } from "@acme/ui/context/ModalContext";
+import { i18nConfig } from "@acme/ui/i18n.config";
+
 import { Button } from "../atoms/Button";
 import { Card, CardContent } from "../atoms/Card";
 import { Heading } from "../atoms/Typography";
-import { useModal } from "@/context/ModalContext";
-import { Check } from "lucide-react";
-import { memo, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { i18nConfig } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@acme/ui/shared";
+import { resolveBookingCtaLabel } from "../shared";
 
 interface DetailsSectionProps {
   bookingUrl?: string;
@@ -65,7 +67,7 @@ function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX
                 return (
                   <Button asChild className="cta-light dark:cta-dark">
                     {bookingUrl.startsWith("/") ? (
-                      <Link to={bookingUrl}>{ctaLabel}</Link>
+                      <Link href={bookingUrl}>{ctaLabel}</Link>
                     ) : (
                       <a href={bookingUrl}>{ctaLabel}</a>
                     )}

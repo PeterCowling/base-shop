@@ -1,11 +1,12 @@
 /* i18n-exempt file -- UI-000: Non-user-facing literals (HTML attributes, class names). All visible copy uses i18n keys. */
 "use client";
-import Image from "next/image";
 import * as React from "react";
+import Image from "next/image";
+
 import { useTranslations } from "@acme/i18n";
 
 import { cn } from "../../utils/style";
-import { Inline, Cover } from "../atoms/primitives";
+import { Cover,Inline } from "../atoms/primitives";
 
 export type MediaType = "image" | "video" | "360" | "model";
 

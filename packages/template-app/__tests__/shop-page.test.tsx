@@ -1,10 +1,12 @@
 /** @jest-environment jsdom */
 /** @jest-environment jsdom */
-import { render, act } from "@testing-library/react";
 import type { ReactElement } from "react";
-import ShopClient from "../src/app/[lang]/shop/ShopClient.client";
-import ShopPage from "../src/app/[lang]/shop/page";
+import { act,render } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
+
+import ShopPage from "../src/app/[lang]/shop/page";
+import ShopClient from "../src/app/[lang]/shop/ShopClient.client";
 
 const push = jest.fn();
 let change: any;

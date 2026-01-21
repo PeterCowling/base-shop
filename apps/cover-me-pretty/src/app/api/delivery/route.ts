@@ -10,7 +10,7 @@ import {
   type WidgetComponent,
   type WidgetProps,
 } from "@acme/platform-core/plugins";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";

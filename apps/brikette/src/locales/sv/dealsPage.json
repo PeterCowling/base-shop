@@ -8,31 +8,7 @@
   "title": "Spara {{percent}} % på vistelser från {{from}} till {{to}}",
   "promo": "Boka direkt och din {{percent}} % rabatt dras automatiskt i kassan.",
   "dealCard": {
-    "savePercent": "Spara {{percent}}",
-    "stayDatesLabel": "Vistelsedatum:",
-    "badges": {
-      "autoApplied": "Appliceras automatiskt",
-      "directOnly": "Endast direktbokning"
-    },
-    "cta": {
-      "bookDirect": "Boka direkt",
-      "applyDeal": "Aktivera erbjudande"
-    },
-    "status": {
-      "upcoming": "Kommande erbjudande · Startar {{startDate}}",
-      "expired": "Utgånget"
-    }
-  },
-  "hero": {
-    "activeLabel": "Aktuellt erbjudande",
-    "activeTitle": "Spara {{percent}}",
-    "activeDatesLabel": "Vistelsedatum:",
-    "activeSubtitle": "Appliceras automatiskt i kassan. Endast direktbokningar."
-  },
-  "emptyState": {
-    "title": "Inga aktuella erbjudanden",
-    "subtitle": "Boka direkt för bästa pris och förmåner.",
-    "secondaryCta": "Se förmåner vid direktbokning"
+    "savePercent": "Spara {{percent}}"
   },
   "status": {
     "banner": {
@@ -79,15 +55,9 @@
   "perksGuarantee": "Varje direktbokning via vår webbplats låser automatiskt upp dessa exklusiva förmåner.",
   "perksIntroLink": "Se alla förmåner",
   "perksList": [
-    {
-      "title": "Upp till 25 % rabatt på ordinarie pris när kupongen används"
-    },
-    {
-      "title": "Kostnadsfri frukost"
-    },
-    {
-      "title": "Kostnadsfri kvällsdrink"
-    }
+    "Upp till 25 % rabatt på ordinarie pris när kupongen används",
+    "Kostnadsfri frukost",
+    "Kostnadsfri kvällsdrink"
   ],
   "expired": {
     "message": "Det här erbjudandet har avslutats."

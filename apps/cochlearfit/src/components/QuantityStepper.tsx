@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
-import { MAX_QTY, MIN_QTY } from "@/lib/quantity";
+
 import Inline from "@/components/layout/Inline";
+import { MAX_QTY, MIN_QTY } from "@/lib/quantity";
 
 type QuantityStepperProps = {
   quantity: number;

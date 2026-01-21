@@ -1,8 +1,9 @@
 import "server-only";
 
 import { nowIso } from "@acme/date-utils";
-import { prisma } from "../db";
 import type { ReverseLogisticsEvent, ReverseLogisticsEventName } from "@acme/types";
+
+import { prisma } from "../db";
 
 /**
  * Insert a reverse logistics event for a rental session.

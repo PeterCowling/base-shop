@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { getSettings } from "@cms/actions/shops.server";
-import { listEvents } from "@acme/platform-core/repositories/analytics.server";
-import { readSeoAudits } from "@acme/platform-core/repositories/seoAudit.server";
-import { env } from "@acme/config";
-import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import fs from "fs/promises";
 import path from "path";
+
+import { env } from "@acme/config";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
+import { readSeoAudits } from "@acme/platform-core/repositories/seoAudit.server";
 
 type LocaleSeo = { title?: string; description?: string; structuredData?: string };
 type SeoSettings = {

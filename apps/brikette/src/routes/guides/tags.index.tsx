@@ -1,28 +1,30 @@
 // src/routes/guides/tags.index.tsx
 // Template-enforcement: import the guide template and export key/slug to satisfy lint rules.
 // Import name is prefixed with an underscore to avoid unused-var noise.
-import _GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
-export const GUIDE_KEY = "tagsIndex" as const;
-export const GUIDE_SLUG = "tags" as const;
 import { memo, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { getSlug } from "@/utils/slug";
-import { TAGS_SUMMARY } from "@/data/tags.index";
-import { getTagMeta } from "@/utils/tags";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import GuidesTagsStructuredData, {
   type GuidesTagListItem,
 } from "@/components/seo/GuidesTagsStructuredData";
 import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { TAGS_SUMMARY } from "@/data/tags.index";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import _GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
 import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+import { getTagMeta } from "@/utils/tags";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
+export const GUIDE_KEY = "tagsIndex" as const;
+export const GUIDE_SLUG = "tags" as const;
 
 const TAGS_INDEX_HEADING_ID = "guides-tags-index-heading"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Stable anchor id
 const TAGS_INDEX_TITLE_FALLBACK = "Browse tags"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Fallback when translations are missing

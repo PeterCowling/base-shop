@@ -1,10 +1,12 @@
 // packages/plugins/paypal/index.ts
+import { z } from "zod";
+
 import type {
   PaymentPayload,
   PaymentRegistry,
   Plugin,
 } from "@acme/types";
-import { z } from "zod";
+
 // Explicit .js extension for Node ESM runtime compatibility
 import { processPaypalPayment } from "./paypalClient.js";
 

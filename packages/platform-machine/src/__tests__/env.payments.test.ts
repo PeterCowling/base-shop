@@ -1,4 +1,5 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { loadPaymentsEnv } from "@acme/config/env/payments";
 
 describe("payments env", () => {

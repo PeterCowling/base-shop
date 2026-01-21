@@ -3,10 +3,10 @@ import BreadcrumbStructuredData, {
   type BreadcrumbList,
 } from "@/components/seo/BreadcrumbStructuredData";
 import ServiceStructuredData from "@/components/seo/ServiceStructuredData";
-import { guideHref } from "@/routes.guides-helpers";
 import { BASE_URL } from "@/config/site";
 import guidesBreadcrumbs from "@/locales/en/guides/breadcrumbs.json";
 import porterServicesContent from "@/locales/en/guides/content/porterServices.json";
+import { guideHref } from "@/routes.guides-helpers";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";

@@ -1,8 +1,9 @@
 // src/components/apartment/GallerySection.tsx
-import { CfImage } from "@/components/images/CfImage";
-import clsx from "clsx";
 import { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
+
+import { CfImage } from "@/components/images/CfImage";
 
 const IMAGES = [
   "/img/interno1.webp",

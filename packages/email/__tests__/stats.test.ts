@@ -1,4 +1,4 @@
-import { mapSendGridStats, mapResendStats, normalizeProviderStats, emptyStats } from "../src/analytics";
+import { emptyStats,mapResendStats, mapSendGridStats, normalizeProviderStats } from "../src/analytics";
 
 describe("provider stats mapping", () => {
   it("normalizes SendGrid stats including string numbers", () => {

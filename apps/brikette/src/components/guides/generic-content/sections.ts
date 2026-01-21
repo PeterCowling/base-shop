@@ -1,15 +1,22 @@
 // src/components/guides/generic-content/sections.ts
-import { normaliseKeySeed, nextStableKey } from "./keys";
-import { toStringArray, toTrimmedString } from "./strings";
-import type { ListSectionConfig, Section, ResolvedSection, TocOverrides } from "./types";
+import { nextStableKey,normaliseKeySeed } from "./keys";
+import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
+import type { ListSectionConfig, ResolvedSection, Section, TocOverrides } from "./types";
 
 export function toListSection(
   rawItems: unknown,
   title: string,
   id: string,
+  options?: { expectedKey?: string; guideKey?: string },
 ): ListSectionConfig | null {
   const items = toStringArray(rawItems);
-  if (items.length === 0) return null;
+  const meaningfulItems = options
+    ? items.filter(
+        (item) =>
+          !looksLikePlaceholderTranslation(item, options.expectedKey, options.guideKey),
+      )
+    : items;
+  if (meaningfulItems.length === 0) return null;
   return { id, title, items };
 }
 

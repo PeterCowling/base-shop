@@ -1,18 +1,17 @@
 // src/routes/guides/ferry-cancellations-weather.tsx
 import { memo, useCallback, useMemo } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
+import { CfImage } from "@/components/images/CfImage";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 
 import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-
-import TableOfContents from "@/components/guides/TableOfContents";
-import ImageGallery from "@/components/guides/ImageGallery";
-import { CfImage } from "@/components/images/CfImage";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-
-import type { GuideKey } from "@/routes.guides-helpers";
 import {
   ALSO_HELPFUL_TAGS,
   GUIDE_KEY as ROUTE_GUIDE_KEY,
@@ -137,8 +136,8 @@ function FerryCancellationsGuide(): JSX.Element {
 
 export default memo(FerryCancellationsGuide);
 
-export { getGuidesFallbackTranslator, getGuidesTranslator } from "./ferry-cancellations-weather.translators";
 export { normaliseFaqs, normaliseGallery, normaliseSections } from "./ferry-cancellations-weather.normalisers";
+export { getGuidesFallbackTranslator, getGuidesTranslator } from "./ferry-cancellations-weather.translators";
 
 // Head exports – ensure canonical + hreflang and twitter:card present
 export const meta: MetaFunction = ({ data }: { data?: unknown } = {}) => {

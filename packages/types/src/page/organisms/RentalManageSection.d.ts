@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface RentalManageSectionComponent extends PageComponentBase {
     type: "RentalManageSection";
     rentalId?: string;

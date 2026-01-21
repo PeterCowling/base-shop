@@ -28,8 +28,13 @@ async function runAccessor(
   ) => unknown | Promise<unknown>,
 ): Promise<void> {
   jest.resetModules();
-  if (typeof jest.isolateModulesAsync === "function") {
-    await jest.isolateModulesAsync(async () => {
+  const isolateModulesAsync = (
+    jest as unknown as {
+      isolateModulesAsync?: (fn: () => Promise<void>) => Promise<void>;
+    }
+  ).isolateModulesAsync;
+  if (typeof isolateModulesAsync === "function") {
+    await isolateModulesAsync(async () => {
       const authModule = await import("@acme/config/env/auth");
       await accessor(authModule);
     });

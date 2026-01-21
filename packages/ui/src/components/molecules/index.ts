@@ -1,17 +1,34 @@
-export { default as Breadcrumbs } from "./Breadcrumbs";
-export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
-export { default as CodeBlock } from "./CodeBlock";
-export { FormField } from "./FormField";
-export { Image360Viewer } from "./Image360Viewer";
-export { default as LanguageSwitcher } from "./LanguageSwitcher";
-export { MediaSelector } from "./MediaSelector";
-export { PaginationControl } from "./PaginationControl";
-export { PaymentMethodSelector } from "./PaymentMethodSelector";
-export { PriceCluster } from "./PriceCluster";
-export { PromoCodeInput } from "./PromoCodeInput";
-export { QuantityInput } from "./QuantityInput";
-export { RatingSummary } from "./RatingSummary";
-export { SearchBar } from "./SearchBar";
-export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
-// Avoid name collision with atoms' primitive Accordion
-export { default as AccordionMolecule } from "./Accordion";
+"use client";
+
+// DEPRECATED: Import from @acme/design-system/molecules instead
+// This shim will be removed in the next major version.
+
+if (process.env.NODE_ENV === "development") {
+  console.warn(
+    "[@acme/ui] Importing from '@acme/ui/molecules' or '@acme/ui/components/molecules' is deprecated. " +
+      "Please import from '@acme/design-system/molecules' instead."
+  );
+}
+
+// Re-export all molecules from design-system
+export {
+  type BreadcrumbItem,
+  Breadcrumbs,
+  CodeBlock,
+  CurrencySwitcher,
+  // Note: FormField in design-system is exported as FormFieldMolecule to avoid collision
+  // with atoms/FormField. Re-export with original name for backward compat.
+  FormFieldMolecule as FormField,
+  Image360Viewer,
+  LanguageSwitcher,
+  MediaSelector,
+  PaginationControl,
+  PaymentMethodSelector,
+  PriceCluster,
+  PromoCodeInput,
+  QuantityInput,
+  RatingSummary,
+  SearchBar,
+  SustainabilityBadgeCluster,
+  AccordionMolecule,
+} from "@acme/design-system/molecules";

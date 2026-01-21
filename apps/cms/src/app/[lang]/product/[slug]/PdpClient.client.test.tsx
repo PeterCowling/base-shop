@@ -1,8 +1,10 @@
 /** @jest-environment jsdom */
 import React from "react";
-import { render, screen, fireEvent, configure } from "@testing-library/react";
-configure({ testIdAttribute: "data-testid" });
+import { configure,fireEvent, render, screen } from "@testing-library/react";
+
 import PdpClient from "./PdpClient.client";
+
+configure({ testIdAttribute: "data-testid" });
 
 const addToCartMock = jest.fn();
 

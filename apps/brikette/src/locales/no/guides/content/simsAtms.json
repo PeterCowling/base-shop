@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "esim",
-      "title": "Activate an eSIM",
+      "title": "Aktiver en eSIM",
       "body": [
         "Last inn et italiensk eSIM (TIM, Vodafone eller pålitelige reiseleverandører) mens du er på vandrerhjemmets Wi-Fi eller før du flyr; dekningen er sterkest på terrasser og langs SS163.",
         "Velg minst 10 GB for en uke hvis du streamer musikk eller laster opp bilder; overvåke bruken fordi påfylling i byen er begrenset."
@@ -18,7 +18,7 @@
     },
     {
       "id": "physical-sim",
-      "title": "Picking up a physical SIM",
+      "title": "Hente et fysisk SIM",
       "body": [
         "Omvei via Sorrento, Salerno eller Napoli Centrale for transportørbutikker; ta med passet ditt og forvent en startpakke på €10–20 € med ID-registrering.",
         "Tabacchi selger noen ganger klare til å aktivere SIM-kort i høysesongen, men tilgjengeligheten svinger – kjøp når du ser dem."
@@ -26,7 +26,7 @@
     },
     {
       "id": "atm",
-      "title": "ATM strategy",
+      "title": "Minibankstrategi",
       "body": [
         "Foretrekk bankminibanker som Intesa Sanpaolo for €2–€3 avgifter; uavhengige maskiner i nærheten av stranden kan lade dobbelt med dårlige valutakurser.",
         "Ta ut €100–€150 per gang og del sedler mellom dagbaggen og en sikker lomme i bagasjen."
@@ -39,13 +39,13 @@
   ],
   "faqs": [
     {
-      "q": "Does coverage reach Capri and Amalfi?",
+      "q": "Rekker dekningen til Capri og Amalfi?",
       "a": [
         "Ja, men forvent lavere fart offshore; last ned spillelister og kart før du går ombord på fergene."
       ]
     },
     {
-      "q": "Are ATMs reliable late at night?",
+      "q": "Er minibanker pålitelige sent på kvelden?",
       "a": [
         "Banklobbyer holder åpent 24/7, men hvis en automat går tom for kontanter, kan det hende du må kjøre til Amalfi eller Sorrento neste morgen."
       ]

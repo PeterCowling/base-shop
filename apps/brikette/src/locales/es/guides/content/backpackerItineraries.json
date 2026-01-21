@@ -1,24 +1,24 @@
 {
   "seo": {
-    "title": "Positano para mochileros: itinerarios de 1 a 3 días",
-    "description": "Planes día a día que cubren lo esencial de Positano sin disparar el gasto."
+    "title": "Positano para mochileros: itinerarios de 1-3 días",
+    "description": "Planes sencillos de 1-3 días con playas, miradores y excursiones de bajo coste."
   },
-  "linkLabel": "Positano para mochileros: itinerarios de 1 a 3 días",
+  "linkLabel": "Positano para mochileros: itinerarios de 1-3 días",
   "intro": [
-    "Planes prácticos día a día que cubren lo imprescindible sin disparar el presupuesto."
+    "Elige un plan de 1, 2 o 3 días que mantiene los costes bajos sin perderte las vistas, playas y excursiones clave."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Día 1: Positano esencial"
+      "label": "Día 1: esenciales de Positano"
     },
     {
       "href": "#day2",
-      "label": "Día 2: Path of the Gods + playa"
+      "label": "Día 2: Sentiero degli Dei + playa"
     },
     {
       "href": "#day3",
-      "label": "Día 3: Capri o combo Amalfi"
+      "label": "Día 3: Capri o Amalfi + Ravello"
     },
     {
       "href": "#savings",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "ritmo",
-      "title": "Dosifica los días con escaleras",
+      "title": "Adelanta las grandes subidas",
       "body": [
-        "Aprovecha el día de llegada para explorar Chiesa Nuova y Fornillo; deja las jornadas con más escalones (Sentiero degli Dei, Arienzo) para cuando hayas descansado bien.",
-        "Agrupa actividades por nivel de altura para no subir y bajar sin parar: remata los miradores altos antes de bajar a la marina."
+        "Aprovecha el día de llegada para paseos por la parte baja (Spiaggia Grande, Fornillo) y deja los días de muchas escaleras (Sentiero degli Dei, escalones de Arienzo) para después de dormir bien.",
+        "Agrupa paradas por altura para no subir y bajar sin parar; termina los miradores altos antes de bajar a la marina."
       ]
     },
     {
       "id": "mezcla-presupuesto",
-      "title": "Equilibra lo de pago y lo gratuito",
+      "title": "Un imprescindible de pago al día",
       "body": [
-        "Limita a una actividad de pago al día (barco, cata de limoncello, ferry a Capri) y completa el resto con playas libres y paseos panorámicos.",
-        "Lleva snacks y botellas rellenables; las compras en el minimarket de Chiesa Nuova cuestan mucho menos que en la orilla."
+        "Presupuesta una experiencia de pago al día (ferry a Capri, barco compartido, entrada a jardines) y completa el resto con paseos gratuitos y playa.",
+        "Abastécete de snacks y agua cerca de Chiesa Nuova; los cafés frente al mar son los que más encarecen."
       ]
     },
     {
       "id": "miradores",
-      "title": "Haz hueco a los mejores miradores",
+      "title": "Miradores sin pagar entrada",
       "body": [
-        "Via Cristoforo Colombo ofrece la postal clásica al amanecer y la hora dorada sin pagar entrada.",
-        "Para fotos tranquilas, pasa por el patio de azulejos de Chiesa Nuova o el pequeño belvedere sobre Fornillo alrededor de las 08:00."
+        "Via Cristoforo Colombo ofrece la postal clásica al amanecer o la hora dorada, sin entrada.",
+        "Para fotos más tranquilas, desvía al patio de azulejos de Chiesa Nuova o al pequeño belvedere sobre Fornillo antes de las 08:30."
       ]
     },
     {
       "id": "baños",
-      "title": "Organiza los chapuzones low cost",
+      "title": "Chapuzones low cost",
       "body": [
-        "Fornillo es gratuito y más calmado: llega por el sendero costero desde Spiaggia Grande y alquila solo lo imprescindible.",
-        "Si quieres el ambiente de club de Arienzo, baja antes de las 10:30 para asegurar hueco público y lleva focaccia de supermercado para el picnic."
+        "Fornillo tiene una zona pública gratuita; ve por el sendero costero desde Spiaggia Grande y alquila solo lo necesario.",
+        "Para el ambiente de beach club de Arienzo, baja las escaleras antes de las 10:30 para pillar sitio en la zona pública y haz picnic con focaccia y fruta."
       ]
     },
     {
       "id": "tardes",
       "title": "Noches sin gastar de más",
       "body": [
-        "El atardecer en la terraza del hostel es gratis; prepara tus propios spritz con prosecco de supermercado y comparte picoteo casero.",
-        "Consulta el tablón por si hay noche social o baja a Music on the Rocks después de las 23:30 cuando la entrada baja para gente hospedada (lleva DNI)."
+        "El atardecer desde la terraza del hostel es gratis; prepara un spritz sencillo con prosecco de supermercado y comparte snacks.",
+        "Mira el tablón del hostel para las actividades sociales; si sales, llega tarde cuando la entrada es más barata y lleva DNI."
       ]
     }
   ],
-  "day1Title": "1 día: imprescindibles",
+  "day1Title": "1 día: esenciales de Positano",
   "day1": [
-    "Mañana: miradores de Spiaggia Grande → Fornillo por el sendero costero.",
-    "Comida: panini/pizza al taglio cerca de Chiesa Nuova para ahorrar.",
-    "Atardecer: miradores de la terraza junto al hostel."
+    "Mañana: miradores de Spiaggia Grande, luego el sendero costero a Fornillo para nadar.",
+    "Comida: pizza al taglio o panini cerca de Chiesa Nuova; come en las terrazas.",
+    "Atardecer: Via Cristoforo Colombo o la terraza del hostel."
   ],
   "day2Title": "2 días: añade el Sentiero degli Dei",
   "day2": [
-    "Día 1 como arriba.",
-    "Día 2: SITA a Nocelle → tramos del Sentiero degli Dei → refresco en la playa."
+    "Mañana: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (bus a Nocelle, bajada a pie hasta Positano).",
+    "Tarde: %LINK:fornilloBeachGuide|refrescarte en la playa de Fornillo% o comer tarde en el pueblo."
   ],
-  "day3Title": "3 días: isla o combo Amalfi",
+  "day3Title": "3 días: Capri o Amalfi + Ravello",
   "day3": [
-    "Opción A: excursión a Capri (ferry temprano) con recorrido a pie por tu cuenta.",
-    "Opción B: Amalfi + Ravello en autobús; Villa Rufolo y gelato en las escaleras del Duomo."
+    "Opción A: %LINK:capriDayTrip|excursión a Capri% - toma el primer ferry, planifica un recorrido por tu cuenta y lleva snacks.",
+    "Opción B: %LINK:positanoRavello|Amalfi + Ravello% - bus o ferry a Amalfi y luego sube a Villa Rufolo o Villa Cimbrone."
   ],
   "savingsTitle": "Consejos para ahorrar",
   "savings": [
-    "Viaja en temporada intermedia; usa autobuses SITA y camina entre miradores.",
-    "Quédate en dormitorios, prepara desayunos sencillos y haz picnic al atardecer."
+    "Viaja en temporada media (abril-mayo, finales de septiembre) para precios más bajos y menos gente.",
+    "Usa autobuses SITA para la mayoría de trayectos; añade un ferry si quieres vistas.",
+    "Quédate en dormitorio o comparte habitación cerca de Chiesa Nuova para ahorrar en porteadores y escaleras.",
+    "Rellena botellas en el hostel o en fuentes públicas antes de salir.",
+    "Si reservas directo, aprovecha el desayuno y la bebida de la tarde gratuitos para cubrir una comida.",
+    "Camina entre miradores en lugar de tomar bus; las escaleras son gratis y panorámicas."
   ],
   "foodTitle": "Comer barato",
-  "foodText": "Encuentra panini, pizza al taglio y ensaladas de supermercado en la zona media del pueblo; evita los precios de primera línea.",
+  "foodText": "Piensa en pizza al taglio, panini y ensaladas de deli por Via dei Mulini y Chiesa Nuova. Compra en mini-markets para picnic y deja las comidas de mesa para un solo capricho.",
   "transportTitle": "Transporte",
   "transportCompareLabel": "Compara rutas:",
   "transportCompareLinks": [
@@ -117,44 +121,44 @@
     {
       "q": "¿Cuál es el mejor plan para 1 día?",
       "a": [
-        "Empieza en Spiaggia Grande, sube caminando hasta Fornillo, contempla el atardecer desde la terraza de Chiesa Nuova y cena con nuevos amigos del hostal."
+        "Empieza en Spiaggia Grande, camina por el sendero costero hasta Fornillo y luego mira el atardecer desde Via Cristoforo Colombo o la terraza del hostel."
       ]
     },
     {
       "q": "¿Cómo puedo mantener bajos los costes de transporte?",
       "a": [
-        "Usa los autobuses SITA y toma las escaleras cuando sea posible; los ferris son estupendos en temporada, pero cuestan más."
+        "Usa autobuses SITA para la mayoría de trayectos y combina un ferry para las vistas; compra los billetes antes de subir para evitar sorpresas."
       ]
     },
     {
       "q": "¿Qué tal un itinerario de 2 días?",
       "a": [
-        "El día 1 cubre lo esencial de Positano; el día 2 añade el circuito del Sentiero degli Dei vía Nocelle más tiempo de playa en Arienzo o Fornillo."
+        "El día 1 cubre lo esencial de Positano; el día 2 añade el Sentiero degli Dei vía Nocelle y un chapuzón de playa."
       ]
     },
     {
       "q": "¿Algún extra para 3 días?",
       "a": [
-        "Haz una excursión de un día a Capri o combina Amalfi + Ravello; planifica ferris tempranos y lleva snacks para ahorrar."
+        "Elige uno: excursión a Capri o combo Amalfi + Ravello; sal temprano y lleva snacks para ahorrar."
       ]
     }
   ],
   "faq": [
     {
       "q": "¿Cuál es el mejor plan para 1 día?",
-      "a": "Empieza en Spiaggia Grande, camina a Fornillo, atardecer desde la terraza de Chiesa Nuova y cena con la gente del hostel."
+      "a": "Empieza en Spiaggia Grande, camina hasta Fornillo y mira el atardecer desde Via Cristoforo Colombo o la terraza del hostel."
     },
     {
       "q": "¿Cómo mantengo bajo el coste del transporte?",
-      "a": "Usa autobuses SITA y sube escaleras cuando sea posible; los ferries son geniales en temporada pero cuestan más."
+      "a": "Usa buses SITA para casi todo y añade un ferry por las vistas; compra billetes antes de subir."
     },
     {
       "q": "¿Qué hago en una estancia de 2 días?",
-      "a": "El día 1 cubre lo esencial de Positano; el día 2 suma el bucle del Sentiero degli Dei via Nocelle y tiempo de playa en Arienzo o Fornillo."
+      "a": "Día 1 esencial; día 2 Sentiero degli Dei vía Nocelle y playa."
     },
     {
       "q": "¿Algún extra para 3 días?",
-      "a": "Excursión a Capri o combo Amalfi + Ravello; planea ferries tempranos y lleva snacks para ahorrar."
+      "a": "Capri o Amalfi + Ravello; sal temprano y lleva snacks."
     }
   ]
 }

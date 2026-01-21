@@ -1,5 +1,6 @@
-jest.mock("@acme/zod-utils/initZod", () => ({}));
 import { setupMocks } from "./analyticsTestUtils";
+
+jest.mock("@acme/zod-utils/initZod", () => ({}));
 
 describe("webhook normalization", () => {
   it("normalizes SendGrid webhook events with multi-value array category", async () => {

@@ -1,7 +1,10 @@
+import type { PendingUser } from "@cms/actions/accounts.server";
+import { approveAccount } from "@cms/actions/accounts.server";
+import type { Role } from "@cms/auth/roles";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { PendingUser } from "@cms/actions/accounts.server";
-import type { Role } from "@cms/auth/roles";
+
+import { PendingRequestsPanel } from "../PendingRequestsPanel";
 
 jest.mock("@cms/actions/accounts.server", () => ({
   approveAccount: jest.fn(),
@@ -53,9 +56,6 @@ jest.mock("@/components/atoms", () => ({
       </div>
     ) : null,
 }));
-
-import { approveAccount } from "@cms/actions/accounts.server";
-import { PendingRequestsPanel } from "../PendingRequestsPanel";
 
 describe("PendingRequestsPanel", () => {
   const mockApproveAccount = approveAccount as jest.MockedFunction<

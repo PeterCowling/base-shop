@@ -1,21 +1,21 @@
 // src/routes/guides/budget-accommodation-beyond-positano.tsx
+import type { LinksFunction } from "react-router";
+
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import EN_GUIDES_LABELS from "@/locales/en/guides/labels.json";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey, type GuideManifestEntry } from "./guide-manifest";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { toAppLanguage } from "@/utils/lang";
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import type { LinksFunction } from "react-router";
-import EN_GUIDES_LABELS from "@/locales/en/guides/labels.json";
 
 export const handle = { tags: ["accommodation", "budgeting", "amalfi"] };
 

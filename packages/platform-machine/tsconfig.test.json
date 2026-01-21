@@ -2,7 +2,25 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "strict": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "paths": {
+      "@acme/config": ["../config/dist/index.d.ts"],
+      "@acme/config/*": ["../config/dist/*"],
+      "@acme/platform-core": ["../platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../platform-core/dist/*"],
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"],
+      "@acme/zod-utils": ["../zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["../zod-utils/dist/*"],
+      "@acme/i18n": ["../i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["../i18n/dist/*"]
+    }
   },
-  "include": ["src/**/*", "__tests__/**/*"]
+  "include": ["src/**/*", "__tests__/**/*", "types-compat/**/*.d.ts"],
+  "exclude": ["dist", ".turbo", "node_modules"]
 }

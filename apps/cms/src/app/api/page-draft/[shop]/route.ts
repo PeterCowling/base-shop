@@ -1,18 +1,15 @@
+import { type NextRequest,NextResponse } from "next/server";
+import { ensureRole } from "@cms/actions/common/auth";
 import { savePageDraft } from "@cms/actions/pages/draft";
-import { authOptions } from "@cms/auth/options";
+
 import { getPages } from "@acme/platform-core/repositories/pages/index.server";
-import { getServerSession } from "next-auth";
-import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const { shop } = await context.params;
     const pages = await getPages(shop);
     const draft = pages.find((p) => p.status === "draft");

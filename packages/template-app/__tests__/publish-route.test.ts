@@ -1,5 +1,6 @@
-import { POST } from "../src/app/api/publish/route";
 import { promises as fs } from "fs";
+
+import { POST } from "../src/app/api/publish/route";
 
 jest.mock("fs", () => ({ promises: { readFile: jest.fn() } }));
 const readFile = fs.readFile as unknown as jest.Mock;

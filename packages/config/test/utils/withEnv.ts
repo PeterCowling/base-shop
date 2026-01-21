@@ -82,6 +82,33 @@ const ALWAYS_PRESERVE_PREFIXES = [
   "__MISE_",
 ];
 
+/**
+ * Keys that are automatically carried over from the real process.env unless
+ * explicitly overridden in the `vars` parameter.
+ *
+ * IMPORTANT: When testing scenarios where these variables should be "missing"
+ * (e.g., testing development defaults), you MUST explicitly set them to
+ * `undefined` in your `vars` object:
+ *
+ * @example
+ * ```typescript
+ * // WRONG - SANITY vars will be carried over from real env
+ * await withEnv({ NODE_ENV: "development" }, async () => { ... });
+ *
+ * // CORRECT - explicitly unset carry-over keys
+ * await withEnv({
+ *   NODE_ENV: "development",
+ *   SANITY_PROJECT_ID: undefined,
+ *   SANITY_DATASET: undefined,
+ *   SANITY_API_TOKEN: undefined,
+ *   SANITY_PREVIEW_SECRET: undefined,
+ * }, async () => { ... });
+ *
+ * // OR use the helper from test/fixtures/productionEnv.ts
+ * import { withoutCarryOverKeys } from "../fixtures/productionEnv";
+ * await withEnv(withoutCarryOverKeys({ NODE_ENV: "development" }), ...);
+ * ```
+ */
 const CARRY_OVER_KEYS = [
   "SANITY_PROJECT_ID",
   "SANITY_DATASET",
@@ -109,7 +136,7 @@ export async function withEnv<T>(
 ): Promise<T> {
   const originalEnv = process.env;
 
-  const preservedEnv: NodeJS.ProcessEnv = {};
+  const preservedEnv = {} as NodeJS.ProcessEnv;
   for (const [key, value] of Object.entries(originalEnv)) {
     if (!shouldPreserveEnvKey(key)) {
       continue;
@@ -148,7 +175,8 @@ export async function withEnv<T>(
   }
 
   if (nonStringKeys.length > 0) {
-    (nextEnv as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = nonStringKeys;
+    const nextEnvSymbols = nextEnv as unknown as Record<symbol, unknown>;
+    nextEnvSymbols[NON_STRING_ENV_SYMBOL] = nonStringKeys;
     (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ =
       nonStringKeys.slice();
   } else {
@@ -171,17 +199,36 @@ export async function withEnv<T>(
   }
 
   if (!("NODE_ENV" in vars)) {
-    delete process.env.NODE_ENV;
+    delete (process.env as Record<string, string | undefined>).NODE_ENV;
   }
 
   try {
     let result!: T;
-    await jest.isolateModulesAsync(async () => {
-      result = await loader();
-    });
+    const isolateModulesAsync = (
+      jest as unknown as {
+        isolateModulesAsync?: (fn: () => Promise<void>) => Promise<void>;
+      }
+    ).isolateModulesAsync;
+    if (typeof isolateModulesAsync === "function") {
+      await isolateModulesAsync(async () => {
+        result = await loader();
+      });
+    } else {
+      await new Promise<void>((resolve, reject) => {
+        jest.isolateModules(() => {
+          Promise.resolve()
+            .then(async () => {
+              result = await loader();
+            })
+            .then(() => resolve())
+            .catch(reject);
+        });
+      });
+    }
     return result;
   } finally {
-    delete (process.env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    const processEnvSymbols = process.env as unknown as Record<symbol, unknown>;
+    delete processEnvSymbols[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     process.env = originalEnv;
   }

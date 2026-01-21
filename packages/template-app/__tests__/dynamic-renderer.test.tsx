@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import DynamicRenderer from "../src/components/DynamicRenderer";
 
 jest.mock("@acme/platform-core/products/index", () => ({ PRODUCTS: [{ id: "sku1" }] }));

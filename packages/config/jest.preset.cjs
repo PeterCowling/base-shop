@@ -189,6 +189,11 @@ function createJestPreset(options = {}) {
       path.join(workspaceRoot, "apps/storybook/.storybook-ci/"),
       "/apps/storybook/.storybook-composed/",
     ],
+    // Avoid duplicate manual mocks from worktrees and ts-jest cache artifacts.
+    modulePathIgnorePatterns: [
+      "<rootDir>/.worktrees/",
+      "<rootDir>/.ts-jest/",
+    ],
     moduleNameMapper,
     testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
     passWithNoTests: true,

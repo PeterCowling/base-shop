@@ -1,28 +1,30 @@
+import { type ComponentProps, type ComponentPropsWithoutRef,Fragment, memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
+import { Link, type LoaderFunctionArgs,redirect, useLoaderData } from "react-router-dom";
+import type { TFunction } from "i18next";
+
+import { DirectBookingPerks } from "@acme/ui/molecules/DirectBookingPerks";
+import StickyBookNow from "@acme/ui/organisms/StickyBookNow";
+
+import LocationInline from "@/components/booking/LocationInline";
 import RoomCard from "@/components/rooms/RoomCard";
+import RoomStructuredData from "@/components/seo/RoomStructuredData";
+import { BASE_URL } from "@/config/site";
 import roomsData from "@/data/roomsData";
 import i18n from "@/i18n";
 import { type AppLanguage } from "@/i18n.config";
-import { Fragment, memo, useMemo, type ComponentProps, type ComponentPropsWithoutRef } from "react";
-import { useTranslation } from "react-i18next";
-import type { TFunction } from "i18next";
-import { Link, redirect, useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
-import RoomStructuredData from "@/components/seo/RoomStructuredData";
-import { DirectBookingPerks } from "@acme/ui/molecules/DirectBookingPerks";
-import LocationInline from "@/components/booking/LocationInline";
-import StickyBookNow from "@acme/ui/organisms/StickyBookNow";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { guideHref } from "@/routes.guides-helpers";
-import { toAppLanguage } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
 import { i18nConfig } from "@/i18n.config";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideHref } from "@/routes.guides-helpers";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const lang = toAppLanguage(params["lang"]);
@@ -112,12 +114,6 @@ export default memo(function RoomDetail() {
 
   type AmenityContent = { title?: string; body?: string };
 
-  // Safely extract string values from potentially malformed translation results
-  const safeString = (value: unknown): string | undefined => {
-    if (typeof value === "string") return value;
-    return undefined;
-  };
-
   const heroRaw = tRoomsPageDetail(`detail.${id}.hero`, { returnObjects: true });
   const hero =
     heroRaw && typeof heroRaw === "object" && !Array.isArray(heroRaw)
@@ -170,9 +166,9 @@ export default memo(function RoomDetail() {
               {hero.eyebrow}
             </p>
           ) : null}
-          {safeString(hero.title) ? (
+          {hero.title ? (
             <p className="mt-3 text-3xl font-extrabold text-brand-primary dark:text-brand-secondary">
-              {safeString(hero.title)}
+              {hero.title}
             </p>
           ) : null}
           {hero.subtitle ? (
@@ -216,14 +212,14 @@ export default memo(function RoomDetail() {
                 key={`${item.title ?? "outline"}-${idx}`}
                 className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
               >
-                {safeString(item.title) ? (
+                {item.title ? (
                   <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                    {safeString(item.title)}
+                    {item.title}
                   </h3>
                 ) : null}
-                {safeString(item.body) ? (
+                {item.body ? (
                   <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
-                    {safeString(item.body)}
+                    {item.body}
                   </p>
                 ) : null}
               </article>
@@ -249,14 +245,14 @@ export default memo(function RoomDetail() {
                   key={`${item.title ?? "amenity"}-${idx}`}
                   className="rounded-lg border border-brand-surface/60 bg-brand-bg p-4 shadow-sm dark:border-brand-surface/20 dark:bg-brand-text"
                 >
-                  {safeString(item.title) ? (
+                  {item.title ? (
                     <h3 className="text-base font-semibold text-brand-heading dark:text-brand-secondary">
-                      {safeString(item.title)}
+                      {item.title}
                     </h3>
                   ) : null}
-                  {safeString(item.body) ? (
+                  {item.body ? (
                     <p className="mt-2 text-sm leading-relaxed text-brand-text dark:text-brand-surface/90">
-                      {safeString(item.body)}
+                      {item.body}
                     </p>
                   ) : null}
                 </div>

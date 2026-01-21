@@ -1,19 +1,20 @@
 // src/routes/guides/positano-to-amalfi.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey, type GuideAreaSlugKey } from "./guide-manifest";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction, MetaFunction } from "react-router";
 
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
 import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, type GuideAreaSlugKey,guideAreaToSlugKey } from "./guide-manifest";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import type { LinksFunction, MetaFunction } from "react-router";
 
 export const handle = { tags: ["transport", "amalfi", "positano", "ferry", "bus"] };
 
@@ -68,7 +69,7 @@ const links: LinksFunction = (...args: Parameters<LinksFunction>) => {
 };
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };
 
 function buildHowToSteps(context: GuideSeoTemplateContext) {
   const raw = context.translateGuides(`content.${GUIDE_KEY}.howTo.steps`, { returnObjects: true });

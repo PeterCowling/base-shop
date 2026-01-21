@@ -6,27 +6,30 @@
 // - Plain Node (scripts/tests)→ fs fallback inside the backend
 // -----------------------------------------------------------------------------
 
+import { initReactI18next } from "react-i18next";
 import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
-import { initReactI18next } from "react-i18next";
+
 import { i18nConfig } from "./i18n.config";
-import EN_TRANSLATION from "./locales/en/translation.json";
-import { loadLocaleResource } from "./locales/locale-loader";
 // Seed critical assistance article namespaces for English to avoid hydration
 // drift on direct loads of help articles before lazy bundles resolve.
 import EN_ASSIST_AGE from "./locales/en/ageAccessibility.json";
+import EN_ASSIST_ARRIVE_FERRY from "./locales/en/arrivingByFerry.json";
 import EN_ASSIST_BOOKING from "./locales/en/bookingBasics.json";
 import EN_ASSIST_CHANGE from "./locales/en/changingCancelling.json";
 import EN_ASSIST_CHECKIN from "./locales/en/checkinCheckout.json";
 import EN_ASSIST_DEFECTS from "./locales/en/defectsDamages.json";
 import EN_ASSIST_DEPOSITS from "./locales/en/depositsPayments.json";
-import EN_ASSIST_RULES from "./locales/en/rules.json";
+import EN_FOOTER from "./locales/en/footer.json";
 import EN_ASSIST_LEGAL from "./locales/en/legal.json";
-import EN_ASSIST_SECURITY from "./locales/en/security.json";
-import EN_ASSIST_ARRIVE_FERRY from "./locales/en/arrivingByFerry.json";
 import EN_ASSIST_AIRPORT_BUS from "./locales/en/naplesAirportBus.json";
+import EN_ASSIST_RULES from "./locales/en/rules.json";
+import EN_ASSIST_SECURITY from "./locales/en/security.json";
+import EN_TRANSLATION from "./locales/en/translation.json";
 import EN_ASSIST_TRAVEL_HELP from "./locales/en/travelHelp.json";
 import { getGuidesBundle } from "./locales/guides";
+import { loadGuidesNamespaceFromImports } from "./locales/guides.imports";
+import { loadLocaleResource } from "./locales/locale-loader";
 // (blog namespace removed)
 
 /*---------------------------------------------------------------*
@@ -69,6 +72,21 @@ const createGuidesTagsSeed = (label: string) =>
 
 i18n.use(
   resourcesToBackend(async (lng, ns, cb: ReadCallback) => {
+    if (ns === "guides") {
+      const overrides = (globalThis as {
+        __GUIDES_BACKEND_OVERRIDES__?: Record<string, unknown>;
+      }).__GUIDES_BACKEND_OVERRIDES__;
+      const overrideBundle = overrides?.[lng];
+      if (overrideBundle) {
+        if (process.env["DEBUG_GUIDE_TRANSLATIONS"] === "1") {
+          // eslint-disable-next-line no-console -- Localised debug helper for guide coverage tests
+          console.log(`[i18n] using guides override for ${lng}`);
+        }
+        cb(null, overrideBundle as import("i18next").ResourceKey);
+        return;
+      }
+    }
+
     // Prefer the Node FS loader for the guides namespace when running under Node
     // (tests/scripts). This avoids a race where the runtime module discovery
     // hasn’t warmed yet and getGuidesBundle() returns a stub.
@@ -90,6 +108,15 @@ i18n.use(
       if (bundle) {
         cb(null, bundle as import("i18next").ResourceKey);
         return;
+      }
+      try {
+        const imported = await loadGuidesNamespaceFromImports(lng);
+        if (imported) {
+          cb(null, imported as import("i18next").ResourceKey);
+          return;
+        }
+      } catch {
+        // fall through to other strategies
       }
     }
 
@@ -181,6 +208,7 @@ i18n.use(
       const base: Record<string, import("i18next").ResourceLanguage> = {
         en: {
           translation: EN_TRANSLATION as unknown as import("i18next").ResourceKey,
+          footer: EN_FOOTER as unknown as import("i18next").ResourceKey,
           // Assistance (help) article namespaces: seed English bundles to
           // guarantee immediate availability on hydration. Other languages
           // continue to load lazily via the backend.
@@ -201,9 +229,18 @@ i18n.use(
             // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON
             // i18n-exempt -- LINT-1007 [ttl=2026-12-31]
             perksList: [
-              "Complimentary breakfast voucher",
-              "Exclusive direct booking discount",
-              "Welcome drink at the bar",
+              {
+                title: "Complimentary breakfast voucher",
+                subtitle: "Included daily",
+              },
+              {
+                title: "Exclusive direct booking discount",
+                subtitle: "Auto-applied",
+              },
+              {
+                title: "Welcome drink at the bar",
+                subtitle: "House selection",
+              },
             ],
             // eslint-enable ds/no-hardcoded-copy
           },

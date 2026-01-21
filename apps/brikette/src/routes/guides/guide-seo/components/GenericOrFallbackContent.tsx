@@ -2,26 +2,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- DEV-000: Extracted from _GuideSeoTemplate for test parity. */
 import { memo, useMemo } from "react";
 import type { TFunction } from "i18next";
-import GenericContent from "@/components/guides/GenericContent";
-import { debugGuide } from "@/utils/debug";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
-import i18n from "@/i18n";
-import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 
-import { hasStructuredLocal as probeHasStructuredLocal, hasStructuredEn as probeHasStructuredEn } from "./generic/computeProbes";
-import { computeGenericContentProps, makeBaseGenericProps } from "./generic/translator";
-import { manualFallbackHasMeaningfulContent } from "./generic/fallbackDetection";
-import { shouldRenderGenericContent as decideShouldRenderGeneric } from "./generic/gating";
-import RenderInterrailAlias from "./fallback/RenderInterrailAlias";
+import GenericContent from "@/components/guides/GenericContent";
+import { IS_DEV } from "@/config/env";
+import i18n from "@/i18n";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { debugGuide } from "@/utils/debug";
+import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
-import RenderFallbackStructured from "./fallback/RenderFallbackStructured";
-import RenderManualString from "./fallback/RenderManualString";
-import RenderManualObject from "./fallback/RenderManualObject";
-import RenderManualParagraph from "./fallback/RenderManualParagraph";
-import RenderStructuredArrays from "./fallback/RenderStructuredArrays";
 
 import type { GuideSeoTemplateContext, TocItem } from "../types";
 import type { StructuredFallback } from "../utils/fallbacks";
+
+import RenderFallbackStructured from "./fallback/RenderFallbackStructured";
+import RenderInterrailAlias from "./fallback/RenderInterrailAlias";
+import RenderManualObject from "./fallback/RenderManualObject";
+import RenderManualParagraph from "./fallback/RenderManualParagraph";
+import RenderManualString from "./fallback/RenderManualString";
+import RenderStructuredArrays from "./fallback/RenderStructuredArrays";
+import { hasStructuredEn as probeHasStructuredEn,hasStructuredLocal as probeHasStructuredLocal } from "./generic/computeProbes";
+import { manualFallbackHasMeaningfulContent } from "./generic/fallbackDetection";
+import { shouldRenderGenericContent as decideShouldRenderGeneric } from "./generic/gating";
+import { computeGenericContentProps, makeBaseGenericProps } from "./generic/translator";
 
 const MemoGenericContent = memo(GenericContent as any);
 
@@ -709,26 +711,12 @@ export default function GenericOrFallbackContent({
     return null;
   }
 
-  // Helper: safely render GenericContent once. In test environments where
-  // GenericContent is mocked as a simple function, invoke it directly to
-  // avoid duplicate invocations from StrictMode. When the real component uses
-  // hooks, calling it directly would throw — in that case, fall back to
-  // returning the JSX element so React can render it normally.
+  // Helper: render the memoized GenericContent once when canonical gating allows.
+  // Keeping the hook order stable here avoids rare reconciling paths that would
+  // otherwise run GenericContent only after earlier fallbacks returned.
   const renderGenericOnce = (props: unknown): JSX.Element | null => {
     if (!hasLocalizedContent && preferManualWhenUnlocalized && !manualFallbackExists && !renderWhenEmpty) {
       return null;
-    }
-    try {
-      const Comp: any = GenericContent as any;
-      if (typeof Comp === 'function') {
-        // Invoke with an explicit second undefined argument so tests that
-        // assert the mock was called with `(props, undefined)` remain stable.
-        // When the real component uses hooks, this direct invocation will
-        // throw and we fall back to returning the JSX element below.
-        return Comp(withTranslator(props), undefined) as JSX.Element;
-      }
-    } catch {
-      /* fall back to normal JSX element render */
     }
     return <MemoGenericContent {...(withTranslator(props) as any)} /> as any;
   };
@@ -1674,17 +1662,22 @@ export default function GenericOrFallbackContent({
 
           return (
             <section id="faqs" className="space-y-4">
-              <h2 className="text-pretty text-2xl font-semibold tracking-tight text-brand-heading">{aliasLabel}</h2>
+              <h2 className="text-pretty text-2xl font-semibold leading-snug tracking-tight text-brand-heading sm:text-3xl">
+                {aliasLabel}
+              </h2>
               <div className="space-y-4">
                 {combined.map((faq, index) => (
                   <details
                     key={`${faq.q}-${index}`}
                     className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface/40 shadow-sm transition-shadow hover:shadow-md dark:border-brand-outline/40 dark:bg-brand-bg/60"
                   >
-                    <summary role="button" className="px-4 py-3 text-lg font-semibold text-brand-heading">
+                    <summary
+                      role="button"
+                      className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl"
+                    >
                       {faq.q}
                     </summary>
-                    <div className="space-y-3 px-4 pb-4 pt-1 text-base text-brand-text/90">
+                    <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
                       {faq.a.map((answer, answerIndex) => (
                         <p key={`${faq.q}-${answerIndex}`}>{answer}</p>
                       ))}
@@ -1764,7 +1757,13 @@ export default function GenericOrFallbackContent({
       fallbackTranslator: tFb,
     });
   if (manualObject) {
-    try { if (process.env["DEBUG_TOC"] === "1") console.log("[GenericOrFallbackContent:return:manualObject]"); } catch { /* noop */ }
+    try {
+      if (IS_DEV && process.env["DEBUG_TOC"] === "1") {
+        console.info("[GenericOrFallbackContent:return:manualObject]");
+      }
+    } catch {
+      /* noop */
+    }
     return manualObject as any;
   }
   }

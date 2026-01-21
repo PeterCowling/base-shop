@@ -1,3 +1,5 @@
+import { friendlyErrorMap } from "../zodErrorMap.js";
+
 const setErrorMap = jest.fn();
 
 jest.mock("zod", () => ({
@@ -7,8 +9,6 @@ jest.mock("zod", () => ({
 jest.mock("../zodErrorMap.js", () => ({
   friendlyErrorMap: jest.fn(() => ({ message: "ok" })),
 }));
-
-import { friendlyErrorMap } from "../zodErrorMap.js";
 
 describe("initZod", () => {
   const orig = process.env.ZOD_ERROR_MAP_OFF;

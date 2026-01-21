@@ -1,4 +1,4 @@
-import slugify from '@acme/shared-utils/src/slugify';
+import { slugify } from '@acme/lib/string';
 
 describe('slugify', () => {
   it('lowercases and replaces spaces with dashes', () => {

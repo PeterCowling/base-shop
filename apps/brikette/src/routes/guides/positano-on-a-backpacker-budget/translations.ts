@@ -1,8 +1,8 @@
 // src/routes/guides/positano-on-a-backpacker-budget/translations.ts
 import type { TFunction } from "i18next";
 
-import { TRANSPORT_LINK_KEYS, type GuideKey } from "@/routes.guides-helpers";
 import appI18n from "@/i18n";
+import { type GuideKey,TRANSPORT_LINK_KEYS } from "@/routes.guides-helpers";
 import {
   ensureArray,
   ensureStringArray,

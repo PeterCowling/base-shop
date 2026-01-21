@@ -64,7 +64,7 @@ describe("SendgridProvider send", () => {
 
   it("warns when API key is missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const warn = jest.fn();
     const originalWarn = logger.warn;
     logger.warn = warn as any;
@@ -205,7 +205,7 @@ describe("SendgridProvider send", () => {
     const { ProviderError } = await import("../../providers/types");
     const provider = new SendgridProvider();
 
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const consoleSpy = jest.fn();
     const originalError = logger.error;
     logger.error = consoleSpy as any;
@@ -245,7 +245,7 @@ describe("SendgridProvider send", () => {
     const { ProviderError } = await import("../../providers/types");
     const provider = new SendgridProvider();
 
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const consoleSpy = jest.fn();
     const originalError = logger.error;
     logger.error = consoleSpy as any;

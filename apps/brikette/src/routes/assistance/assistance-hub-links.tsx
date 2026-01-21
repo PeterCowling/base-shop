@@ -1,13 +1,16 @@
 import type { JSX } from "react";
-import { Link } from "react-router-dom";
-import { Section } from "@acme/ui/atoms/Section";
-import { ASSISTANCE_HUB_TEST_IDS } from "./constants";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
 import type { LinksFunction, MetaFunction } from "react-router";
+import { Link } from "react-router-dom";
+
+import { Section } from "@acme/ui/atoms/Section";
+
+import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { ASSISTANCE_HUB_TEST_IDS } from "./constants";
 
 export interface HubLinkContent {
   eyebrow?: string;

@@ -1,6 +1,7 @@
 "use client";
-import type { FormField, FormFieldOption } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
+import type { FormField, FormFieldOption } from "@acme/types";
+
 import {
   Button,
   Input,
@@ -11,12 +12,13 @@ import {
   SelectValue,
 } from "../../atoms/shadcn";
 
+import type { EditorProps } from "./EditorProps";
+
 type FormBuilderComponent = {
   id: string;
   type: "FormBuilderBlock";
   fields?: FormField[];
 } & Record<string, unknown>;
-import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<FormBuilderComponent>;
 

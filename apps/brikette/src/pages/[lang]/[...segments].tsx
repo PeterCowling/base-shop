@@ -1,15 +1,15 @@
+import type { LinkDescriptor, MetaDescriptor } from "react-router";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
-import { listLocalizedPaths, resolveRoute } from "@/compat/route-runtime";
 import type { ResolvedMatch } from "@/compat/route-runtime";
-import type { LinkDescriptor, MetaDescriptor } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import type { SlugKey } from "@/types/slugs";
+import { listLocalizedPaths, resolveRoute } from "@/compat/route-runtime";
 import AppLayout from "@/components/layout/AppLayout";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
 import RouteHead from "@/next/RouteHead";
 import RouteTree from "@/next/RouteTree";
-import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
+import type { SlugKey } from "@/types/slugs";
+import { getSlug } from "@/utils/slug";
 
 type PageProps = {
   matches: ResolvedMatch[];
@@ -36,12 +36,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const parts = path.replace(/^\/+/, "").split("/").filter(Boolean);
     const [lang, section] = parts;
     if (!lang || !supported.includes(lang)) return false;
+    // Home page (just /lang) is handled elsewhere
     if (parts.length === 1) return true;
-    const sectionSlugs = new Set<string>([
-      ...excludedKeys.map((key) => getSlug(key, lang as AppLanguage)),
-      getSlug("guides", lang as AppLanguage),
-    ]);
-    return section ? sectionSlugs.has(section) : false;
+    // All 2-segment paths like /lang/section are handled by [section]/index.tsx
+    if (parts.length === 2) return true;
+    // 3+ segment paths with section keys are handled by [section]/[...segments].tsx
+    if (parts.length >= 3 && section) {
+      const sectionSlugs = new Set<string>([
+        ...excludedKeys.map((key) => getSlug(key, lang as AppLanguage)),
+        getSlug("guides", lang as AppLanguage),
+      ]);
+      if (sectionSlugs.has(section)) return true;
+    }
+    return false;
   };
 
   const paths = listLocalizedPaths()

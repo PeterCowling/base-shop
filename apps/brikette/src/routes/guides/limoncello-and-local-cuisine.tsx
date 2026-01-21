@@ -1,22 +1,22 @@
 // src/routes/guides/limoncello-and-local-cuisine.tsx
+import type { LinksFunction } from "react-router";
+
+import ImageGallery, { type ImageGalleryItem } from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { getGuidesBundle } from "../../locales/guides";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import ImageGallery, { type ImageGalleryItem } from "@/components/guides/ImageGallery";
-import i18n from "@/i18n";
-import { getGuidesBundle } from "../../locales/guides";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideSlug } from "@/routes.guides-helpers";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { toAppLanguage } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import type { LinksFunction } from "react-router";
 
 export const GUIDE_KEY = "limoncelloCuisine" as const satisfies GuideKey;
 export const GUIDE_SLUG = "limoncello-and-local-cuisine" as const;

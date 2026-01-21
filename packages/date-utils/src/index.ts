@@ -2,11 +2,11 @@
 // which can cause missing vendor chunk errors in some server builds.
 import { addDays } from "date-fns/addDays";
 import { format } from "date-fns/format";
-import { parseISO } from "date-fns/parseISO";
 import { formatRelative as fnsFormatRelative } from "date-fns/formatRelative";
-import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
+import { parseISO } from "date-fns/parseISO";
+import { formatInTimeZone,fromZonedTime } from "date-fns-tz";
 
-export { addDays, format, parseISO, fromZonedTime };
+export { addDays, format, fromZonedTime,parseISO };
 
 export const nowIso = (): string => new Date().toISOString();
 

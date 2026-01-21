@@ -1,9 +1,10 @@
+import type { LoaderFunctionArgs } from "react-router-dom";
+
 import i18n from "@/i18n";
 import { type AppLanguage } from "@/i18n.config";
-import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import type { LoaderFunctionArgs } from "react-router-dom";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { langFromRequest } from "@/utils/lang";
+import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 export async function clientLoader({ request }: LoaderFunctionArgs) {
   const lang = langFromRequest(request) as AppLanguage;

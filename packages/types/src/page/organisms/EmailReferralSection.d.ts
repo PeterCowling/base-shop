@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface EmailReferralSectionComponent extends PageComponentBase {
     type: "EmailReferralSection";
     headline?: string;

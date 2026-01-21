@@ -1,14 +1,14 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
-import { NextResponse, type NextRequest } from "next/server";
-import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
+import { type NextRequest,NextResponse } from "next/server";
+import { ensureRole } from "@cms/actions/common/auth";
+import { parse } from "fast-csv";
+import { Readable } from "stream";
+
 import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
+import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
 import {
   expandInventoryItem,
   type RawInventoryItem,
 } from "@acme/platform-core/utils/inventory";
-import { parse } from "fast-csv";
-import { Readable } from "stream";
 
 function hasText(value: unknown): value is { text: () => Promise<string> } {
   return (
@@ -36,11 +36,8 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const form = await req.formData();
     const file = form.get("file");
     if (!file) {

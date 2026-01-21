@@ -1,8 +1,9 @@
 "use client";
 
-import { Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@acme/ui/components/molecules";
 import { useTranslations } from "@acme/i18n";
+import { FormField } from "@acme/ui/components/molecules";
+
+import { Card, CardContent, Input } from "@/components/atoms/shadcn";
 
 export type ShopSeoSectionErrors = Partial<Record<"catalogFilters", string[]>>;
 

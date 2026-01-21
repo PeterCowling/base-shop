@@ -1,7 +1,11 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen } from "@testing-library/react";
+
 import React from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import type { ReturnAuthorization } from "@acme/types";
+
+import { RaDashboard } from "../src/app/cms/ra/RaDashboardClient";
 
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: ({ children, asChild, ...props }: any) =>
@@ -23,8 +27,6 @@ jest.mock("next/link", () => ({
     </a>
   ),
 }));
-
-import { RaDashboard } from "../src/app/cms/ra/RaDashboardClient";
 
 const sampleRas: ReturnAuthorization[] = [
   {

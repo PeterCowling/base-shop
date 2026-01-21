@@ -3,7 +3,7 @@
 // Types used by tag utilities plus re-exports of public tag types.
 // -----------------------------------------------------------------------------
 
-export type { TagMeta, TagDictionary } from "@/utils/tagSchema";
+export type { TagDictionary,TagMeta } from "@/utils/tagSchema";
 
 export interface TagsResourceEntry {
   label?: string;

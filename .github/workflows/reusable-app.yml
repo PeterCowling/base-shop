@@ -32,6 +32,8 @@ on:
         required: true
       TURBO_TOKEN:
         required: false
+      SOPS_AGE_KEY:
+        required: false
 
 jobs:
   validate-and-build:
@@ -96,6 +98,20 @@ jobs:
         with:
           name: build-artifact-${{ inputs.project-name }}
           path: ${{ inputs.artifact-path }}
+
+      # ADMIN-04: Decrypt SOPS secrets before deploy
+      - name: Decrypt secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          environment: production
+
+      # ADMIN-05: Validate environment before deploy
+      - name: Validate deploy environment
+        run: |
+          chmod +x scripts/validate-deploy-env.sh
+          ./scripts/validate-deploy-env.sh
+        shell: bash
 
       - name: Deploy
         env:

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+import ThemesIndexPage from "../src/app/cms/themes/page";
 
 const mockShops = ["andromeda", "betelgeuse"];
 
@@ -15,8 +18,6 @@ jest.mock("@/components/cms/ShopChooser", () => ({
   __esModule: true,
   default: shopChooserMock,
 }));
-
-import ThemesIndexPage from "../src/app/cms/themes/page";
 
 describe("ThemesIndexPage", () => {
   beforeEach(() => {

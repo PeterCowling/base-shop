@@ -1,10 +1,12 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/ZIndexControls.tsx
 "use client";
 
-import { Button, Input } from "../../../../atoms/shadcn";
-import { Tooltip } from "../../../../atoms";
-import type { EditorFlags } from "./types";
 import { useTranslations } from "@acme/i18n";
+
+import { Tooltip } from "../../../../atoms";
+import { Button, Input } from "../../../../atoms/shadcn";
+
+import type { EditorFlags } from "./types";
 
 interface Props {
   locked: boolean;

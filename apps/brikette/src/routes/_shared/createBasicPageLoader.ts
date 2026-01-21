@@ -1,10 +1,11 @@
 // src/routes/_shared/createBasicPageLoader.ts
+import type { LoaderFunctionArgs } from "react-router-dom";
+
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
-import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { langFromRequest } from "@/utils/lang";
-import type { LoaderFunctionArgs } from "react-router-dom";
+import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 type MutableI18nInstance = {
   language?: string;

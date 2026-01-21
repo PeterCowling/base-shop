@@ -1,7 +1,8 @@
 /* eslint-env jest */
 
+import { publishPost,verifyCredentials } from "@acme/plugin-sanity";
+
 import { connectSanity, createSanityPost } from "../actions/sanity.server";
-import { verifyCredentials, publishPost } from "@acme/plugin-sanity";
 
 jest.mock("@acme/plugin-sanity", () => ({
   __esModule: true,

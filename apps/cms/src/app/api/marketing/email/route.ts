@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+
 import type { Campaign } from "@acme/email";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 

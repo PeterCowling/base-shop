@@ -2,8 +2,9 @@
 
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+
 import { useTranslations } from "@acme/i18n/Translations";
 
 /**

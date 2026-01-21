@@ -1,0 +1,97 @@
+// file path: src/locales/guides.imports.ts
+// -----------------------------------------------------------------------------
+// Client/runtime loader that assembles the guides namespace from split JSON
+// files when import.meta.webpackContext is unavailable (e.g. Turbopack).
+// -----------------------------------------------------------------------------
+
+import type { GuidesNamespace } from "./guides.types";
+import { isRecord } from "./guides.util";
+import { loadLocaleResource } from "./locale-loader";
+
+type GlobalGuideImport = {
+  key: string;
+  ns: string;
+};
+
+const GLOBAL_IMPORTS: GlobalGuideImport[] = [
+  { key: "breadcrumbs", ns: "guides/breadcrumbs" },
+  { key: "components", ns: "guides/components" },
+  { key: "fallbacks", ns: "guides/fallbacks" },
+  { key: "indexRedirect", ns: "guides/indexRedirect" },
+  { key: "labels", ns: "guides/labels" },
+  { key: "preview", ns: "guides/preview" },
+  { key: "robots", ns: "guides/robots" },
+  { key: "structured", ns: "guides/structured" },
+  { key: "tagPage", ns: "guides/tagPage" },
+  { key: "tags", ns: "guides/tags" },
+  { key: "tagsIndex", ns: "guides/tagsIndex" },
+  { key: "transportNotice", ns: "guides/transportNotice" },
+];
+
+const META_IMPORTS: GlobalGuideImport[] = [
+  { key: "index", ns: "guides/meta/index" },
+];
+
+const toRecord = (value: unknown): Record<string, unknown> | undefined =>
+  isRecord(value) ? (value as Record<string, unknown>) : undefined;
+
+const mergeRecords = (
+  base?: Record<string, unknown>,
+  patch?: Record<string, unknown>,
+): Record<string, unknown> | undefined => {
+  if (!base && !patch) return undefined;
+  return { ...(base ?? {}), ...(patch ?? {}) };
+};
+
+export async function loadGuidesNamespaceFromImports(
+  lang: string,
+): Promise<GuidesNamespace | undefined> {
+  const legacyRaw = await loadLocaleResource(lang, "guides");
+  const legacy = toRecord(legacyRaw);
+
+  const globals: Record<string, unknown> = {};
+  let hasGlobals = false;
+
+  for (const { key, ns } of GLOBAL_IMPORTS) {
+    const data = await loadLocaleResource(lang, ns);
+    if (typeof data !== "undefined") {
+      globals[key] = data;
+      hasGlobals = true;
+    }
+  }
+
+  const metaEntries: Record<string, unknown> = {};
+  for (const { key, ns } of META_IMPORTS) {
+    const data = await loadLocaleResource(lang, ns);
+    if (typeof data !== "undefined") {
+      metaEntries[key] = data;
+      hasGlobals = true;
+    }
+  }
+
+  if (Object.keys(metaEntries).length > 0) {
+    globals["meta"] = metaEntries;
+  }
+
+  if (!legacy && !hasGlobals) {
+    return undefined;
+  }
+
+  const merged: GuidesNamespace = {
+    ...(legacy ?? {}),
+    ...(hasGlobals ? globals : {}),
+    content: {},
+  };
+
+  const content = mergeRecords(toRecord(legacy?.["content"]), toRecord(merged["content"]));
+  if (content && Object.keys(content).length > 0) {
+    merged.content = content;
+  }
+
+  const meta = mergeRecords(toRecord(legacy?.["meta"]), toRecord(merged["meta"]));
+  if (meta && Object.keys(meta).length > 0) {
+    merged["meta"] = meta;
+  }
+
+  return merged;
+}

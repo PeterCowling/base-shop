@@ -2,12 +2,17 @@
 /* apps/cms/__tests__/seo-revert.test.ts                                   */
 /* ---------------------------------------------------------------------- */
 
-(process.env as Record<string, string>).NODE_ENV = "development";
+import "../src/types/next-auth.d.ts";
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import "../src/types/next-auth.d.ts";
+
 import { withTempRepo } from "@acme/test-utils";
+
+/** Stub `getServerSession` so the action layer sees an admin user. */
+import { __setMockSession } from "~test/mocks/next-auth";
+
+(process.env as Record<string, string>).NODE_ENV = "development";
 
 jest.setTimeout(120_000);
 
@@ -32,9 +37,6 @@ interface ShopSettings {
 
 const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(cb, { prefix: 'seo-' });
-
-/** Stub `getServerSession` so the action layer sees an admin user. */
-import { __setMockSession } from "next-auth";
 function mockAuth(): void {
   __setMockSession({ user: { role: "admin" } } as any);
 }

@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { useLaunchShop } from "../../src/app/cms/configurator/hooks/useLaunchShop";
 import { getRequiredSteps } from "../../src/app/cms/configurator/steps";
 

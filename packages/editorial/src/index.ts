@@ -1,7 +1,8 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import type { Shop } from "@acme/types";
+
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+import type { Shop } from "@acme/types";
 
 // Lightweight front‑matter parser for scaffolding. Expects YAML‑like key: value
 // pairs delimited by leading and trailing '---' lines.

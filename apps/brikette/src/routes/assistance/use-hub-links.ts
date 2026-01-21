@@ -1,10 +1,12 @@
 // src/routes/assistance/use-hub-links.ts
 import { useMemo } from "react";
 import type { TFunction } from "i18next";
+
 import type { AppLanguage } from "@/i18n.config";
 import { translatePath } from "@/utils/translate-path";
-import { buildHubLinkContent } from "./utils";
+
 import type { AssistanceTranslator, ExperiencesTranslator, HowToTranslator } from "./constants";
+import { buildHubLinkContent } from "./utils";
 
 export function useHubLinks({
   lang,

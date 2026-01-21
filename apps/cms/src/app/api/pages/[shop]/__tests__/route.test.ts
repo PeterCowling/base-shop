@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const getPages = jest.fn();

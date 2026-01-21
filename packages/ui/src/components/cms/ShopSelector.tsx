@@ -1,8 +1,11 @@
 "use client";
 
-import { getShopFromPath, replaceShopInPath } from "@acme/shared-utils";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath, replaceShopInPath } from "@acme/lib/shop";
+
 import {
   Select,
   SelectContent,
@@ -10,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 export default function ShopSelector() {
   const t = useTranslations();

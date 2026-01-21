@@ -1,8 +1,8 @@
 import {
+  buttonComponentSchema,
+  customHtmlComponentSchema,
   imageComponentSchema,
   textComponentSchema,
-  customHtmlComponentSchema,
-  buttonComponentSchema,
 } from "../src/page/atoms";
 
 describe("atoms schemas", () => {

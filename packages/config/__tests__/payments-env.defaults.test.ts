@@ -1,4 +1,5 @@
 import { describe, expect, it, jest } from "@jest/globals";
+
 import { loadPaymentsEnv, paymentsEnvSchema } from "../src/env/payments";
 
 describe("payments env – defaults & schema", () => {

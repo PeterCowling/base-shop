@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 declare const featuredProductSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

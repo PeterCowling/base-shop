@@ -12,16 +12,12 @@ for (const entry of readdirSync(appsDir, { withFileTypes: true })) {
   const appPath = join(appsDir, entry.name);
   const cjsPath = join(appPath, "postcss.config.cjs");
   const mjsPath = join(appPath, "postcss.config.mjs");
-  const hasCjs = existsSync(cjsPath);
-  const hasMjs = existsSync(mjsPath);
-
-  if (!hasCjs && !hasMjs) continue;
 
   it(`${entry.name} has postcss config that loads root`, async () => {
     let config: any;
-    if (hasCjs) {
+    if (existsSync(cjsPath)) {
       config = require(cjsPath);
-    } else if (hasMjs) {
+    } else if (existsSync(mjsPath)) {
       const mod = await import(mjsPath);
       config = mod.default ?? mod;
     } else {

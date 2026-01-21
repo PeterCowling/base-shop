@@ -1,12 +1,12 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
 import { createRequire } from "node:module";
+import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-// .storybook/main.ts
 
+// .storybook/main.ts
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import webpack from "webpack";
-import path, { dirname } from "node:path";
 
 import { coverageAddon } from "./coverage.ts";
 

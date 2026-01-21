@@ -1,9 +1,12 @@
 import React from "react";
 import { render, type RenderOptions } from "@testing-library/react";
+
 import { TranslationsProvider } from "@acme/i18n";
-import { LocaleProvider } from "@/contexts/LocaleContext";
+
 import { CartProvider } from "@/contexts/cart/CartContext";
+import { LocaleProvider } from "@/contexts/LocaleContext";
 import type { Locale } from "@/types/locale";
+
 import enMessages from "../i18n/en.json";
 import itMessages from "../i18n/it.json";
 

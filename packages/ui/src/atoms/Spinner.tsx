@@ -1,6 +1,6 @@
 // Copied from src/components/ui/Spinner.tsx
+import { type FC, memo, useMemo } from "react";
 import clsx from "clsx";
-import { FC, memo, useMemo } from "react";
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   label?: string;

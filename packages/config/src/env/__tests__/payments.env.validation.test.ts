@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import { describe, expect, it, jest } from "@jest/globals";
+
 import { withEnv } from "./test-helpers";
 
 describe("payments env validation", () => {

@@ -60,8 +60,8 @@ yarn-error.log*
 .env*
 !**/.env.example
 !**/.env.*.sops
-!apps/cms/.env.production
 !docs/.env.reference.md
+# Note: .env.production files are decrypted from .sops in CI and should NEVER be committed
 
 # Build outputs (monorepo)
 **/dist/
@@ -72,3 +72,14 @@ yarn-error.log*
 .lighthouseci/
 packages/types/src/**/*.js
 packages/types/src/**/*.d.ts.map
+
+# ---------------------------
+# Agent ephemeral files
+# ---------------------------
+# Session learnings (may contain task details, gitignored)
+.agents/learnings/*
+!.agents/learnings/.gitkeep
+
+# Worker status files (ephemeral coordination, gitignored)
+.agents/status/*
+!.agents/status/.gitkeep

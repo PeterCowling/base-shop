@@ -2,6 +2,8 @@
 
 import path from "path";
 
+import { getDeployStatus, updateDeployStatus } from "../deployShop.server";
+
 const ensureAuthorizedMock = jest.fn();
 const readFileMock = jest.fn();
 const withFileLockMock = jest.fn();
@@ -22,8 +24,6 @@ jest.mock("fs/promises", () => ({
 jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   updateShopInRepo: (...args: any[]) => updateShopInRepoMock(...args),
 }));
-
-import { getDeployStatus, updateDeployStatus } from "../deployShop.server";
 
 describe("getDeployStatus", () => {
   beforeEach(() => {

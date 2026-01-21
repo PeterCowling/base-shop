@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[673176],{673176:e=>{e.exports=JSON.parse('{"slug":"amalfi-positano-ferry","meta":{"title":"Stub: amalfi-positano-ferry","description":"Placeholder journey copy for amalfi-positano-ferry (howToGetHereAmalfiPositanoFerry)."},"summary":"TODO: replace stub content for amalfi-positano-ferry."}')}}]);

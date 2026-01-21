@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { scaffoldSpecSchema } from "@acme/types/page/ScaffoldSpec";
 import { z } from "zod";
+
+import { scaffoldSpecSchema } from "@acme/types/page/ScaffoldSpec";
 
 const createDraftSchema = z.object({
   shop: z.string(),

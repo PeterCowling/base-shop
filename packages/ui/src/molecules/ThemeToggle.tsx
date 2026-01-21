@@ -1,8 +1,9 @@
 // Copied from src/components/header/ThemeToggle.tsx
-import { useTheme } from "@/hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
 import { memo, useCallback } from "react";
+import { Moon, Sun } from "lucide-react";
+
 import { useTranslations } from "@acme/i18n";
+import { useTheme } from "@acme/ui/hooks/useTheme";
 
 export const ThemeToggle = memo((): JSX.Element => {
   const { theme, setTheme } = useTheme();

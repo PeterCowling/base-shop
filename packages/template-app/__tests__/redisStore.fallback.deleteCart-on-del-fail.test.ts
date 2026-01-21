@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals";
-import { RedisCartStore } from "@acme/platform-core/cartStore/redisStore";
+
 import { MemoryCartStore } from "@acme/platform-core/cartStore/memoryStore";
+import { RedisCartStore } from "@acme/platform-core/cartStore/redisStore";
+
 import { MockRedis } from "./helpers/mockRedis";
 
 describe("RedisCartStore – fallback: deleteCart when del fails once", () => {

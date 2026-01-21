@@ -5,7 +5,8 @@
     "popularGuides": "Guías populares",
     "helpfulGuides": "Guías útiles",
     "alsoSee": "Ver también",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Sección {{position}}",
+    "viewAll": "Ver todas las guías"
   },
   "meta": {
     "index": {
@@ -13,131 +14,135 @@
       "description": "Guías prácticas paso a paso para moverse por Positano y la Costa Amalfitana."
     }
   },
+  "redirectPage": {
+    "title": "Redirigiendo…",
+    "message": "Si no eres redirigido, <link>continúa aquí</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "El único hostel en Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "El único hostel en Positano",
+        "description": "Camas asequibles en Positano con vistas panorámicas y un ambiente acogedor."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Itinerarios para mochileros",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Itinerarios para mochileros en la Costa Amalfitana",
+        "description": "Rutas prácticas y de bajo presupuesto para 2 a 7 días sin coche."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Llegar a Positano con presupuesto ajustado",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Llegar a Positano con presupuesto ajustado",
+        "description": "Las formas más baratas de llegar a Positano en autobús, tren y ferry."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Horarios de ferry",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Horarios de ferry de Positano",
+        "description": "Operadores de ferry actualizados y horarios de temporada para Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Sendero de los Dioses desde Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Camina el Sendero de los Dioses",
+        "description": "Instrucciones puerta a puerta para recorrer el Sentiero degli Dei desde Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Sendero de los Dioses vía Amalfi (ferry)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Sendero de los Dioses vía Amalfi (ferry)",
+        "description": "Navega hasta Amalfi, sube en autobús a Bomerano y luego recorre el Sendero de los Dioses con indicaciones de regreso."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Sendero de los Dioses vía Amalfi (autobús)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Sendero de los Dioses vía Amalfi (autobús)",
+        "description": "Toma el autobús SITA Sud a Bomerano y sigue nuestra ruta del Sendero de los Dioses de vuelta hacia Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Sendero de los Dioses vía Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Sendero de los Dioses vía Nocelle",
+        "description": "Caminata más corta de ida y vuelta desde Nocelle con indicaciones para regresar al Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Excursiones de día desde Positano",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Excursiones de día desde Positano",
+        "description": "Ideas para Amalfi, Ravello, Capri y Pompeya con tiempos y consejos de transporte."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Guía de transporte público de la Costa Amalfitana",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Guía de transporte público de la Costa Amalfitana",
+        "description": "Cómo usar autobuses y ferris en la Costa Amalfitana con pases, horarios y rutas."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Consejos de viaje en Positano para quienes vienen por primera vez",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Consejos de viaje en Positano para quienes vienen por primera vez",
+        "description": "Llegadas, equipaje, pagos y conectividad: consejos prácticos para tu primer viaje."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Qué empacar para la Costa Amalfitana",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Qué empacar para la Costa Amalfitana",
+        "description": "Lista de equipaje por temporada para Positano y la Costa Amalfitana."
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "Estado de la guía: {{status}} (clic para alternar)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "Flujo editorial",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "Borrador",
+        "review": "En revisión",
+        "live": "En vivo"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "Vista previa del borrador",
+        "published": "Publicado",
+        "pending": "Publicación pendiente",
+        "allComplete": "Todos los elementos de la lista están completos",
+        "outstanding_one": "{{count}} elemento pendiente",
+        "outstanding_other": "{{count}} elementos pendientes"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "Ruta del borrador",
+        "dashboardCta": "Abrir panel de borradores"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "Publicar en",
+        "primary": "Principal"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "Lista de verificación",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "Falta",
+          "inProgress": "En curso",
+          "complete": "Completado"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "Cómo llegar",
+        "help": "Centro de ayuda",
+        "experience": "Experiencias"
       }
     }
   }

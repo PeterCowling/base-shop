@@ -1,11 +1,13 @@
-import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
-import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
-import PreviewBanner from "./PreviewBanner";
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import i18n from "@/i18n";
 import type { TFunction } from "i18next";
+
+import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
+
+import PreviewBanner from "./PreviewBanner";
 
 const META_NAME_DESCRIPTION = "description" as const; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Meta attribute name, non-UI
 const META_NAME_TWITTER_TITLE = "twitter:title" as const; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Meta attribute name, non-UI
@@ -178,7 +180,7 @@ export default function HeadSection({
       )}
       <BreadcrumbStructuredData breadcrumb={breadcrumb} />
       {howToJson ? (
-        <script type={howToJsonType} dangerouslySetInnerHTML={{ __html: howToJson }} />
+        <script type={howToJsonType} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: howToJson }} />
       ) : null}
       {additionalScripts ?? null}
     </>

@@ -1,9 +1,11 @@
 import * as React from "react";
-import { cn } from "../../utils/style";
-import type { LogoVariants } from "./types";
+
 import useViewport from "../../hooks/useViewport";
+import { cn } from "../../utils/style";
 import { Logo } from "../atoms";
 import { Inline } from "../atoms/primitives/Inline";
+
+import type { LogoVariants } from "./types";
 
 export interface FooterLink {
   label: string;

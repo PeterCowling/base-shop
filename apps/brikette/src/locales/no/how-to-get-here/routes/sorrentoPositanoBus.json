@@ -1,16 +1,16 @@
 {
   "meta": {
     "title": "Sorrento til Positano med buss | Hostel Brikette",
-    "description": "Trinn-for-trinn fra Sorrento til Hostel Brikette via Sita Bus til Positano (Chiesa Nuova): Billetter, timeplaner og hvordan du kan nå vandrerhjemmet fra stoppet."
+    "description": "Trinn-for-trinn fra Sorrento til Hostel Brikette via Sita-buss til Positano (Chiesa Nuova): Billetter, timeplaner og hvordan du kan nå vandrerhjemmet fra stoppet."
   },
   "hero": {
-    "eyebrow": "Hostel Brikette Travel Guide",
-    "title": "Sorrento til Positano - SITA BUS",
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Sorrento til Positano - SITA-buss",
     "description": "Bruk denne guiden når du reiser fra Sorrento til Positano. Du tar Sita Sud-bussen og går av på Positano (Chiesa Nuova), det nærmeste stoppet til vandrerhjemmet. Vi dekker grunnleggende billett, hvordan du kan lese timeplanen, og hvordan vi kan nå vandrerhjemmet fra stoppet."
   },
   "tip": {
     "label": "Tips",
-    "copy": "Trenger du hvert transportalternativ? <link>Hvise å komme over oversikt</link> for ferger, taxiinfo og alternativer."
+    "copy": "Trenger du hvert transportalternativ? <link>Hvordan du kommer deg hit-oversikten</link> for ferger, taxiinfo og alternativer."
   },
   "sections": {
     "journey": {
@@ -19,7 +19,7 @@
     },
     "tickets": {
       "title": "Billetter og validering",
-      "body": "Sita (Sita Sud) driver denne ruten. Kjøp billetter på kiosker eller Tabacchi. Presentere billetten din til sjåføren når du går ombord; Hold det til reisen slutter. Valider før bruk der det er nødvendig."
+      "body": "Sita (Sita Sud) driver denne ruten. Kjøp billetter på kiosker eller Tabacchi. Presenter billetten din til sjåføren når du går ombord; hold den til reisen slutter. Valider før bruk der det er nødvendig."
     },
     "timetable": {
       "title": "Leser timeplanen",
@@ -51,7 +51,7 @@
         "Se etter tegnet vårt over terrassen i andre etasje til høyre.",
         "Sving til høyre opp trinnene for å nå vandrerhjemmets hoveddør."
       ],
-      "link": "Foretrekker en kartlagt rute? Følg vår <link>chiesa nuova → Hostel Guide</link>."
+      "link": "Foretrekker en kartlagt rute? Følg vår <link>chiesa nuova → Hostel-guiden</link>."
     }
   }
 }

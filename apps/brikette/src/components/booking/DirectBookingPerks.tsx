@@ -1,14 +1,14 @@
 // src/components/booking/DirectBookingPerks.tsx
 import { memo, useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Coffee, Percent, Wine } from "lucide-react";
+import Link from "next/link";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { Coffee, Percent, Wine } from "lucide-react";
 
 import enTokens from "@/locales/en/_tokens.json";
 import enDealsPage from "@/locales/en/dealsPage.json";
-import { getSlug } from "@/utils/slug";
 import { toAppLanguage } from "@/utils/lang";
+import { getSlug } from "@/utils/slug";
 
 interface Props {
   limit?: number;
@@ -30,6 +30,28 @@ const FALLBACK_GUARANTEE = (enDealsPage.perksGuarantee as string | undefined) ??
 const FALLBACK_TERMS_LABEL =
   (enDealsPage.restrictions?.other as string | undefined) ?? "";
 
+type PerkItem = {
+  title: string;
+  subtitle?: string;
+};
+
+const normalizePerkItem = (item: unknown): PerkItem | null => {
+  if (typeof item === "string") {
+    return { title: item };
+  }
+  if (typeof item === "object" && item !== null) {
+    const maybe = item as { title?: unknown; subtitle?: unknown };
+    if (typeof maybe.title === "string") {
+      const perk: PerkItem = { title: maybe.title };
+      if (typeof maybe.subtitle === "string") {
+        perk.subtitle = maybe.subtitle;
+      }
+      return perk;
+    }
+  }
+  return null;
+};
+
 function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t, i18n } = useTranslation(undefined, translationOptions);
@@ -38,7 +60,8 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const headingId = useId();
   const perks = useMemo(() => {
     const raw = t("dealsPage:perksList", { returnObjects: true });
-    return Array.isArray(raw) ? (raw as string[]) : [];
+    if (!Array.isArray(raw)) return [];
+    return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
   }, [t]);
 
   const heading = useMemo(() => {
@@ -93,13 +116,16 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
         ) : null}
       </div>
       <ul className="space-y-3 text-start">
-        {items.map((text, idx) => {
+        {items.map((item, idx) => {
           const Icon = icons[idx] ?? Percent;
           return (
-            <li key={text}>
+            <li key={item.title}>
               <div className="flex items-start gap-3">
                 <Icon className="mt-0.5 size-5 shrink-0 text-brand-secondary" aria-hidden />
-                <span>{text}</span>
+                <div className="space-y-1">
+                  <p>{item.title}</p>
+                  {item.subtitle ? <p className="text-sm text-brand-text/80">{item.subtitle}</p> : null}
+                </div>
               </div>
             </li>
           );
@@ -108,9 +134,9 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
       {termsLabel.trim().length > 0 ? (
         <div>
           <Link
-            to={termsHref}
+            href={termsHref}
             className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea"
-            prefetch="intent"
+            prefetch={true}
           >
             {termsLabel}
           </Link>

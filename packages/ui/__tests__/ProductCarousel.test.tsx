@@ -1,16 +1,18 @@
 import React from "react";
-import { render, act, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import type { SKU } from "@acme/types";
+
 import { ProductCarousel } from "../src/components/organisms/ProductCarousel";
-import type { Product } from "../src/components/organisms/ProductCard";
 
 jest.mock("../src/components/organisms/ProductCard", () => ({
-  ProductCard: ({ product }: { product: Product }) => (
+  ProductCard: ({ product }: { product: SKU }) => (
     <div data-testid={`product-${product.id}`} />
   ),
 }));
 
-const products: Product[] = Array.from({ length: 5 }).map((_, i) => ({
+const products: SKU[] = Array.from({ length: 5 }).map((_, i) => ({
   id: String(i + 1),
   title: `Product ${i + 1}`,
   media: [{ url: "", type: "image" }],
@@ -40,7 +42,7 @@ describe("ProductCarousel", () => {
       value: 100,
       configurable: true,
     });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     const slide = container.querySelector(".snap-start") as HTMLElement;
     expect(slide.style.flex).toBe("0 0 50%");
   });
@@ -54,7 +56,7 @@ describe("ProductCarousel", () => {
       value: 2000,
       configurable: true,
     });
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
     const slide = container.querySelector(".snap-start") as HTMLElement;
     const expected = `0 0 ${100 / 3}%`;
     expect(slide.style.flex).toBe(expected);

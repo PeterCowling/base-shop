@@ -1,13 +1,15 @@
 "use client";
 
-import type { ConfiguratorHeroData } from "../hooks/useConfiguratorDashboardState";
-import { ProgressBar } from "./DashboardPrimitives";
 import { useTranslations } from "@acme/i18n";
 import {
   CmsBuildHero,
-  CmsMetricTiles,
   type CmsMetricTile,
+  CmsMetricTiles,
 } from "@acme/ui/components/cms";
+
+import type { ConfiguratorHeroData } from "../hooks/useConfiguratorDashboardState";
+
+import { ProgressBar } from "./DashboardPrimitives";
 
 type ConfiguratorHeroProps = ConfiguratorHeroData;
 

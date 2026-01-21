@@ -1,6 +1,6 @@
 "use client";
 
-import { hslToHex, hexToHsl } from "../../utils/colorUtils";
+import { hexToHsl,hslToHex } from "../../utils/colorUtils";
 
 interface ColorInputProps {
   value: string; // HSL value "h s% l%"

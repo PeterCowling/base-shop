@@ -1,9 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 
+import LateFeesSettingsPage from "../page";
+
 const getSettings = jest.fn();
-const lateFeesEditorMock = jest.fn(() => <div data-testid="late-fees-editor" />);
-const lateFeesTableMock = jest.fn(() => <div data-testid="late-fees-table" />);
+const lateFeesEditorMock = jest.fn((_props: any) => <div data-testid="late-fees-editor" />);
+const lateFeesTableMock = jest.fn((_props: any) => <div data-testid="late-fees-table" />);
 
 jest.mock("@cms/actions/shops.server", () => ({
   getSettings: (...args: any[]) => getSettings(...args),
@@ -29,8 +32,6 @@ jest.mock("../LateFeesTable", () => ({
   __esModule: true,
   default: (props: any) => lateFeesTableMock(props),
 }));
-
-import LateFeesSettingsPage from "../page";
 
 describe("LateFeesSettingsPage", () => {
   beforeEach(() => {

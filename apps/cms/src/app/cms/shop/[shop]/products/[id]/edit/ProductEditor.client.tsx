@@ -2,10 +2,11 @@
 "use client";
 
 import { updateProduct } from "@cms/actions/products.server";
+
+import { type Locale as UiLocale,LOCALES as UILOCALES } from "@acme/i18n/locales";
 import type { ProductPublication } from "@acme/platform-core/products";
 import type { Locale } from "@acme/types";
 import ProductEditorForm from "@acme/ui/components/cms/ProductEditorForm";
-import { LOCALES as UILOCALES, type Locale as UiLocale } from "@acme/i18n/locales";
 
 interface Props {
   shop: string;
@@ -26,7 +27,7 @@ export default function ProductEditor({
   );
   return (
     <ProductEditorForm
-      product={{ ...initialProduct, variants: initialProduct.variants ?? {} }}
+      product={{ ...initialProduct, variants: initialProduct.variants ?? {} } as any}
       onSave={onSave}
       locales={uiLocales}
       formId={formId}

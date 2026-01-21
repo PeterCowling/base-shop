@@ -1,6 +1,13 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
+import { notFound } from "next/navigation";
+import { updatePage } from "@cms/actions/pages/update";
 import { render, screen } from "@testing-library/react";
+
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+
+import PageBuilderRoute from "../src/app/cms/shop/[shop]/pages/[page]/builder/page";
 
 type BuilderProps = {
   page?: unknown;
@@ -29,11 +36,6 @@ jest.mock("next/dynamic", () => ({
     };
   }),
 }));
-
-import { getPages } from "@acme/platform-core/repositories/pages/index.server";
-import { updatePage } from "@cms/actions/pages/update";
-import { notFound } from "next/navigation";
-import PageBuilderRoute from "../src/app/cms/shop/[shop]/pages/[page]/builder/page";
 
 const getPagesMock = jest.mocked(getPages);
 const updatePageMock = jest.mocked(updatePage);

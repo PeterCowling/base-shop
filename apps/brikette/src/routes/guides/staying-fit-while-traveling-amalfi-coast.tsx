@@ -1,15 +1,18 @@
 // src/routes/guides/staying-fit-while-traveling-amalfi-coast.tsx
+import "@/routes/guides/_GuideSeoTemplate";
+
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
-import "@/routes/guides/_GuideSeoTemplate";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import type { MetaFunction, LinksFunction } from "react-router";
 
 export const handle = { tags: ["wellness", "hiking", "positano"] };
 

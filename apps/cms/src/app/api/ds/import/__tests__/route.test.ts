@@ -1,5 +1,6 @@
-import { NextRequest } from "next/server";
 import { File } from "node:buffer";
+
+import { NextRequest } from "next/server";
 
 const parseDsPackage = jest.fn();
 jest.mock("@acme/theme", () => ({ parseDsPackage }));

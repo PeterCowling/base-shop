@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[448195],{448195:e=>{e.exports=JSON.parse('{"title":"여행 가이드는 이제 도움말 & 경험 섹션에서 제공됩니다","description":"계획 자료는 도움말 센터로, 영감 콘텐츠는 경험 섹션으로 통합해 게스트가 기대하는 도구 옆에서 모든 가이드를 확인할 수 있도록 했습니다.","helpCta":"도움말 센터 가이드 둘러보기","experiencesCta":"익스피리언스 가이드 탐색"}')}}]);

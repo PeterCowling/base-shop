@@ -1,10 +1,20 @@
-// apps/skylar/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "allowJs": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": ["apps/skylar/src/*"],
+      "@acme/i18n": ["packages/i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["packages/i18n/dist/*"],
+      "@acme/types": ["packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/dist/*"]
+    }
   },
   "include": [
     "src/**/*",

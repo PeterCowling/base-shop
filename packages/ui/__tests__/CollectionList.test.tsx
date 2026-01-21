@@ -1,7 +1,8 @@
 import React from "react";
-import { render, act } from "@testing-library/react";
-import CollectionList from "../src/components/cms/blocks/CollectionList";
+import { act,render } from "@testing-library/react";
+
 import type { CollectionListProps } from "../src/components/cms/blocks/CollectionList";
+import CollectionList from "../src/components/cms/blocks/CollectionList";
 import type { Category } from "../src/components/organisms/CategoryCard";
 
 jest.mock("../src/components/organisms/CategoryCard", () => ({
@@ -41,7 +42,7 @@ function setup(props?: Partial<CollectionListProps>) {
   });
   const setWidth = (w: number) => {
     width = w;
-    act(() => resizeCb([]));
+    act(() => resizeCb([], {} as ResizeObserver));
   };
   return { root, setWidth };
 }
@@ -107,4 +108,3 @@ describe("CollectionList", () => {
     );
   });
 });
-

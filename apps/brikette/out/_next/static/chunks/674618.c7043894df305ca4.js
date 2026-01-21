@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[674618],{674618:i=>{i.exports=JSON.parse('{"title":"La nostra posizione","inputLabel":"Inserisci la tua posizione attuale:","inputPlaceholder":"es. Napoli, Italia o indirizzo completo","getDirections":"Ottieni indicazioni","justShowMap":"Mostra solo la mappa","close":"Chiudi finestra"}')}}]);

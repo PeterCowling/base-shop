@@ -1,13 +1,13 @@
 // src/routes/guides/hitchhiking-the-amalfi-coast.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import type { MetaDescriptor, MetaFunction } from "react-router";
 
 import type { GuideKey } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { buildRouteLinks } from "@/utils/routeHead";
-import type { MetaDescriptor, MetaFunction } from "react-router";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 export const handle = { tags: ["hitchhiking", "amalfi", "budgeting"] };
 

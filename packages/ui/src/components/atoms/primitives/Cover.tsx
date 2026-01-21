@@ -1,6 +1,7 @@
 // packages/ui/src/components/atoms/primitives/Cover.tsx
-import { cn } from "../../../utils/style/cn";
 import type { HTMLAttributes, ReactNode } from "react";
+
+import { cn } from "../../../utils/style/cn";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   minH?: "screen" | "[60vh]" | "[80vh]";

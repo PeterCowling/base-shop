@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
+import { renderRichText, resolveHref } from "../richText";
 import { RomeTravelPlanner } from "../rome/RomeTravelPlanner";
 import { externalLinkClass } from "../styles";
-import { renderRichText, resolveHref } from "../richText";
 import type { RomeTable } from "../types";
 
 export type RomeSectionProps = {

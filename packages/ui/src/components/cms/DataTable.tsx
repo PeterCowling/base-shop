@@ -1,7 +1,9 @@
 "use client";
 
-import { ReactNode, useRef, useState } from "react";
-import { toggleItem } from "@acme/shared-utils";
+import { type ReactNode, useRef, useState } from "react";
+
+import { toggleItem } from "@acme/lib/array";
+
 import { cn } from "../../utils/style";
 import {
   Table,

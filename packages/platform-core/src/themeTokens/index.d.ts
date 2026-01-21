@@ -1,4 +1,5 @@
 import { type TokenMap as ThemeTokenMap } from "@themes/base";
+
 export type TokenMap = Record<keyof ThemeTokenMap, string>;
 export declare const baseTokens: TokenMap;
 export declare function loadThemeTokensNode(theme: string): TokenMap;

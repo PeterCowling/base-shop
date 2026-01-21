@@ -15,6 +15,8 @@ export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";
 export { Loader, Loader as Spinner } from "./Loader";
 export { Logo } from "./Logo";
+export { OptionPill, type OptionPillProps } from "./OptionPill";
+export { OptionTile, type OptionTileProps } from "./OptionTile";
 export { PaginationDot } from "./PaginationDot";
 export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger, } from "./Popover";
 export { Price } from "./Price";

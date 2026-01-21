@@ -1,11 +1,11 @@
 import {
-  nowIso,
-  isoDateInNDays,
   calculateRentalDays,
-  formatTimestamp,
-  parseTargetDate,
-  getTimeRemaining,
   formatDuration,
+  formatTimestamp,
+  getTimeRemaining,
+  isoDateInNDays,
+  nowIso,
+  parseTargetDate,
 } from "@acme/date-utils";
 
 describe("date-utils integration", () => {

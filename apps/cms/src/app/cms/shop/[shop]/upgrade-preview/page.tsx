@@ -1,7 +1,9 @@
-import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import { requirePermission } from "@acme/auth";
+import { checkShopExists } from "@acme/platform-core";
+
 import UpgradePreviewClient from "./UpgradePreviewClient";
 
 // i18n-exempt: Static SEO title with brand; not user-facing runtime copy

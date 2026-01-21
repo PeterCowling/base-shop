@@ -2,10 +2,12 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
 import { useTranslations } from "@acme/i18n";
-import type { CheckoutSessionResponse } from "@/types/checkout";
-import { fetchCheckoutSession } from "@/lib/checkout";
+
 import Price from "@/components/Price";
+import { fetchCheckoutSession } from "@/lib/checkout";
+import type { CheckoutSessionResponse } from "@/types/checkout";
 
 type PanelState = {
   status: "idle" | "loading" | "error" | "success";

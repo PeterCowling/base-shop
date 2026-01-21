@@ -1,24 +1,26 @@
 // packages/template-app/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
-import { Locale, resolveLocale } from "@acme/i18n/locales";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import * as React from "react";
+import { cookies } from "next/headers";
+
+import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
 import { useTranslations } from "@acme/i18n/Translations";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   CART_COOKIE,
-  decodeCartCookie,
   type CartLine,
   type CartState,
+  decodeCartCookie,
 } from "@acme/platform-core/cartCookie";
 import { createCartStore } from "@acme/platform-core/cartStore";
+import { convertCurrency,priceForDays } from "@acme/platform-core/pricing";
 import { getProductById } from "@acme/platform-core/products";
-import { cookies } from "next/headers";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { priceForDays, convertCurrency } from "@acme/platform-core/pricing";
-import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
-import * as React from "react";
 import Section from "@acme/ui/components/cms/blocks/Section";
+
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import OrderSummary from "@/components/organisms/OrderSummary";
 
 export async function generateMetadata({
   params,

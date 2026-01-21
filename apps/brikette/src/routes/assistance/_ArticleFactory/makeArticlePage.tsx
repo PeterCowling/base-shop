@@ -1,25 +1,27 @@
 // src/routes/assistance/_ArticleFactory/makeArticlePage.tsx
-import { FC, memo, useEffect, useMemo, useRef, type ReactNode, type ComponentProps } from "react";
+import { type ComponentProps,type FC, memo, type ReactNode, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import type { TFunction } from "i18next";
 import * as Router from "react-router-dom";
+import type { TFunction } from "i18next";
 
-import ArticleSection from "@acme/ui/organisms/AssistanceArticleSection";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideSlug } from "@/routes.guides-helpers";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import { getSlug } from "@/utils/slug";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { Section } from "@acme/ui/atoms/Section";
+import ArticleSection from "@acme/ui/organisms/AssistanceArticleSection";
+
 import RelatedGuides, { type RelatedItem } from "@/components/guides/RelatedGuides";
-import i18n from "@/i18n";
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
 import { resolveCanonicalAssistancePath } from "../resolveCanonicalPath";
 
-import type { AppLanguage } from "@/i18n.config";
 import { DEFAULT_TWITTER_CARD, OG_IMAGE_DIMENSIONS, OG_IMAGE_TRANSFORM } from "./constants";
 import { normaliseMeta, resolveMeta } from "./metaUtils";
 import type { AssistanceArticleLoaderData } from "./types";
@@ -59,7 +61,7 @@ export function makeArticlePage(namespace: string, extraProps: Record<string, un
     const langFromLoader = loaderData?.lang;
     const currentLanguage = useCurrentLanguage();
     const lang = langFromLoader ?? currentLanguage;
-    const { t: tNamespace, ready } = useTranslation(namespace, { lng: lang });
+    const { t: tNamespace, ready = true } = useTranslation(namespace, { lng: lang });
     const { t: tGuides } = useTranslation("guides", { lng: lang });
     const guidesEnT = useMemo<TFunction>(
       () => i18n.getFixedT("en", "guides") as TFunction,
@@ -109,7 +111,14 @@ export function makeArticlePage(namespace: string, extraProps: Record<string, un
         fallbackPath,
         locationPathname: locationPathname ?? null,
       });
-      const url = `${BASE_URL}${path}`;
+      const canonicalOrigin = (() => {
+        try {
+          return new URL(BASE_URL).origin;
+        } catch {
+          return BASE_URL;
+        }
+      })();
+      const url = `${canonicalOrigin}${path}`;
       const image = buildCfImageUrl("/img/positano-panorama.avif", OG_IMAGE_TRANSFORM);
       const rawCard = (tTranslation("meta.twitterCard") as string) || "";
       const twitterCard = rawCard.trim() || String(DEFAULT_TWITTER_CARD);

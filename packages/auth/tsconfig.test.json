@@ -1,11 +1,20 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "paths": {
+      "@acme/config": ["../config/dist/index.d.ts"],
+      "@acme/config/*": ["../config/dist/*"],
+      "@acme/platform-core": ["../platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../platform-core/dist/*"],
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"]
+    }
   },
-  "include": ["src/**/*", "__tests__/**/*"]
+  "include": ["src/**/*", "src/**/*.json", "__tests__/**/*"]
 }

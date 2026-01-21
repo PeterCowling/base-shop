@@ -4,7 +4,8 @@
 // -----------------------------------------------------------------------------
 
 import { z } from "zod";
-import { i18nConfig, type AppLanguage } from "./i18n.config";
+
+import { type AppLanguage,i18nConfig } from "./i18n.config";
 
 /* -------------------------------------------------------------------------- */
 /* i18n                                                                       */

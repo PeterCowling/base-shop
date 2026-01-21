@@ -1,11 +1,12 @@
+import type { ShopHealthSummary } from "../../../../lib/shopHealth";
+import type { ConfiguratorStep } from "../../types";
+
 import type {
   ConfiguratorHeroData,
   HeroResumeCta,
   QuickStat,
   StepGroupInfo,
 } from "./types";
-import type { ConfiguratorStep } from "../../types";
-import type { ShopHealthSummary } from "../../../../lib/shopHealth";
 
 export function buildHeroData(
   groups: StepGroupInfo,

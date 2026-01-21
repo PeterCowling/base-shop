@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "shopId": "local-test",
+  "name": "Local Test Shop",
+  "type": "sale",
+  "theme": "base",
+  "template": "template-app",
+  "payment": ["stripe"],
+  "shipping": ["ups"],
+  "deployTarget": {
+    "type": "local",
+    "projectName": "shop-local-test"
+  },
+  "ci": {
+    "workflowName": "deploy-shop-local-test.yml",
+    "useReusableWorkflow": true
+  },
+  "smokeChecks": [
+    {
+      "endpoint": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

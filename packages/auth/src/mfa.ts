@@ -1,8 +1,9 @@
 // packages/auth/src/mfa.ts
+import { randomInt } from "crypto";
 import { authenticator } from "otplib";
+
 import { prisma } from "@acme/platform-core/db";
 import type { CustomerMfa } from "@acme/types";
-import { randomInt } from "crypto";
 
 const SECRET_BYTES = 20;
 

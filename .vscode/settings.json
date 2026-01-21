@@ -1,11 +1,4 @@
 {
-  // Suppress "File ignored because of a matching ignore pattern" warnings
-  // from the ESLint VS Code extension for files intentionally ignored by
-  // the repo's flat config (eslint.config.mjs).
-  "eslint.suppressWarningIgnored": true,
-
-  // Ensure the extension uses the new Flat Config (ESLint v9) behavior.
-  // Safe to keep on even if the extension auto-detects it.
-  "eslint.experimental.useFlatConfig": true
+  "jest.autoRun": "off",
+  "jest.runMode": "on-demand"
 }
-

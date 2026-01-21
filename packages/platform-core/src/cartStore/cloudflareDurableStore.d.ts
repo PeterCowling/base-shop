@@ -1,6 +1,8 @@
+import type { RentalLineItem,SKU } from "@acme/types";
+
 import type { CartState } from "../cart";
-import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
+
 export interface DurableObjectNamespace {
     idFromName(name: string): DurableObjectId;
     get(id: DurableObjectId): DurableObjectStub;

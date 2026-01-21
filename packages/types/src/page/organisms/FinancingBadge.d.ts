@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface FinancingBadgeComponent extends PageComponentBase {
     type: "FinancingBadge";
     provider?: "affirm" | "klarna" | "afterpay" | "custom";

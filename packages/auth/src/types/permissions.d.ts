@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 declare const allPermissionsFromConfig: readonly string[];
 export type Permission = (typeof allPermissionsFromConfig)[number];
 export declare const PERMISSIONS: Permission[];

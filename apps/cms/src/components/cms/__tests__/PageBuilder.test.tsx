@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import PageBuilder from "../PageBuilder";
+
 import UiPageBuilder from "@acme/ui/components/cms/PageBuilder";
+
+import PageBuilder from "../PageBuilder";
 
 jest.mock("@acme/ui/components/cms/PageBuilder", () => ({
   __esModule: true,

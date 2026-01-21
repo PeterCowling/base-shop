@@ -1,36 +1,34 @@
 // src/routes/guides/defineGuideRoute.tsx
-import { memo } from "react";
 import type { ComponentType } from "react";
-import type { MetaFunction, LinksFunction } from "react-router";
+import { memo } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
 
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest , toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteMeta } from "@/utils/routeHead";
+import { buildLinks as buildSeoLinks } from "@/utils/seo";
+import { getSlug } from "@/utils/slug";
+
 import GuideSeoTemplate from "./_GuideSeoTemplate";
-import type { GuideSeoTemplateProps } from "./guide-seo/types";
+import { buildBlockTemplate } from "./blocks";
+import { wrapGuideLinks } from "./ensureCanonicalLinkCluster";
 import {
   buildGuideChecklist,
-  guideAreaToSlugKey,
   type ChecklistSnapshot,
+  guideAreaToSlugKey,
   type GuideChecklistItem,
   type GuideManifestEntry,
 } from "./guide-manifest";
-import { buildBlockTemplate } from "./blocks";
-
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import i18n from "@/i18n";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import type { AppLanguage } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildLinks as buildSeoLinks } from "@/utils/seo";
-import { toAppLanguage } from "@/utils/lang";
-import { wrapGuideLinks } from "./ensureCanonicalLinkCluster";
-import getFallbackLanguage from "./utils/getFallbackLanguage";
-
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
+import type { GuideSeoTemplateProps } from "./guide-seo/types";
+import getFallbackLanguage from "./utils/getFallbackLanguage";
 
 const loadGuideContentModule = async (
   locale: string,

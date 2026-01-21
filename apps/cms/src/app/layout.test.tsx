@@ -1,6 +1,6 @@
+import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Geist, Geist_Mono } from "next/font/google";
-import React from "react";
 
 // Mock the next/font/google module to provide deterministic font variables
 jest.mock("next/font/google", () => ({

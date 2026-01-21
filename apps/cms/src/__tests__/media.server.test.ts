@@ -1,5 +1,12 @@
 /** @jest-environment node */
 
+import { File as NodeFile } from 'node:buffer';
+
+import { ensureAuthorized } from '../actions/common/auth';
+import { deleteMedia,listMedia, uploadMedia } from '../actions/media.server';
+// Cast to globalThis.File since buffer.File lacks webkitRelativePath
+const File = NodeFile as unknown as typeof globalThis.File;
+
 jest.mock('../actions/common/auth', () => ({
   ensureAuthorized: jest.fn(),
 }));
@@ -36,10 +43,6 @@ jest.mock('sharp', () => ({ __esModule: true, default: sharpMock }));
 
 const ulidMock = jest.fn();
 jest.mock('ulid', () => ({ ulid: ulidMock }));
-
-import { File } from 'node:buffer';
-import { listMedia, uploadMedia, deleteMedia } from '../actions/media.server';
-import { ensureAuthorized } from '../actions/common/auth';
 
 beforeEach(() => {
   jest.clearAllMocks();

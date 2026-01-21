@@ -1,4 +1,5 @@
 import type { Environment } from "@acme/types";
+
 import { readDeployInfo } from "./deployInfo";
 
 export function getShopBaseUrl(params: {

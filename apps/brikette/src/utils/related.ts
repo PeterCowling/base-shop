@@ -1,9 +1,9 @@
 // src/utils/related.ts
 // Utilities to compute related guide keys based on tag/context
 
+import type { GuideSection } from "@/data/guides.index";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import type { GuideKey } from "@/routes.guides-helpers";
-import type { GuideSection } from "@/data/guides.index";
 
 export function relatedGuidesByTags(
   tags: string[],

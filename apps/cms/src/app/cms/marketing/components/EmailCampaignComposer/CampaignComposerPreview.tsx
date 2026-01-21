@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@acme/ui/components/atoms";
 import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
+import { Card, CardContent } from "@acme/ui/components/atoms";
 
 export interface CampaignComposerPreviewProps {
   selectedTemplate?: MarketingEmailTemplateVariant;

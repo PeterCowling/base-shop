@@ -1,6 +1,7 @@
 // src/components/Avatar.tsx
-import Image, { type ImageProps } from "next/image";
 import * as React from "react";
+import Image, { type ImageProps } from "next/image";
+
 import { cn } from "../../utils/style";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -102,4 +103,4 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
   }
 );
 
-Avatar.displayName = "Avatar"; // i18n-exempt -- DEV-000 component displayName, not user-facing
+Avatar.displayName = "Avatar";

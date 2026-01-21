@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { Footer } from "./Footer";
 
 const meta: Meta<typeof Footer> = {

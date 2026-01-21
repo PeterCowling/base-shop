@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import FooterBlock from "../src/components/cms/blocks/FooterBlock";
 
 beforeAll(() => {

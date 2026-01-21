@@ -3,18 +3,18 @@
 /*  Booking v2 modal container                                                */
 /* -------------------------------------------------------------------------- */
 
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { type ChangeEvent,useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { BookingModal2Copy } from "@acme/ui/organisms/modals";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { getDatePlusTwoDays } from "@/utils/dateUtils";
 
 import { BOOKING_CODE } from "../constants";
 import { setWindowLocationHref } from "../environment";
 import { useModal } from "../hooks";
 import { BookingModal2 } from "../lazy-modals";
-import type { BookingModal2Copy } from "@acme/ui/organisms/modals";
-
-import { getDatePlusTwoDays } from "@/utils/dateUtils";
 
 export function Booking2GlobalModal(): JSX.Element | null {
   const { modalData, closeModal } = useModal();

@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { WishlistDrawer } from "../WishlistDrawer";
+
 import type { SKU } from "@acme/types";
+
+import { WishlistDrawer } from "../WishlistDrawer";
 
 describe("WishlistDrawer", () => {
   it("shows empty state", async () => {

@@ -20,5 +20,8 @@
   ],
   "exclude": [
     "dist"
+  ],
+  "references": [
+    { "path": "../../types" }
   ]
 }

@@ -1,7 +1,8 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { useTryOnController } from "../useTryOnController";
+
+import { logTryOnEvent,setTryOnCtx } from "../analytics";
 import { useDirectR2Upload } from "../useDirectR2Upload";
-import { setTryOnCtx, logTryOnEvent } from "../analytics";
+import { useTryOnController } from "../useTryOnController";
 
 jest.mock("../useDirectR2Upload", () => ({
   useDirectR2Upload: jest.fn(),

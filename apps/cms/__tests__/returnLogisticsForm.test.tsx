@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
+import ReturnLogisticsPage from "../src/app/cms/shop/[shop]/data/return-logistics/page";
 
 const mockCheckShopExists = jest.fn();
 const mockReadReturnLogistics = jest.fn();
@@ -25,8 +28,6 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => ({
     />
   ),
 }));
-
-import ReturnLogisticsPage from "../src/app/cms/shop/[shop]/data/return-logistics/page";
 
 const initial = {
   labelService: "ups",

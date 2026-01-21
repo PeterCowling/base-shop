@@ -4,7 +4,7 @@ import { calculateTax, type TaxCalculationRequest } from "@acme/platform-core/ta
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 
 // Tax calculations rely on platform-core functions that read from the
 // filesystem, which requires Node.js APIs. Use the Node.js runtime so these

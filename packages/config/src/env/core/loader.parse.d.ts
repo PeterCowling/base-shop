@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare function parseCoreEnv(raw?: NodeJS.ProcessEnv): z.objectOutputType<Omit<{
     NEXTAUTH_SECRET: z.ZodEffects<z.ZodString, string, string> | z.ZodDefault<z.ZodEffects<z.ZodString, string, string>>;
     PREVIEW_TOKEN_SECRET: z.ZodOptional<z.ZodEffects<z.ZodString, string, string>>;

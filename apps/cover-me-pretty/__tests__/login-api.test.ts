@@ -124,7 +124,7 @@ test("returns 400 for invalid body", async () => {
 test("rate limits after five rapid requests", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const originalEnv = process.env.NODE_ENV;
-  process.env.NODE_ENV = "production";
+  (process.env as { NODE_ENV: string }).NODE_ENV = "production";
   try {
     const body = { customerId: "cust1", password: "pass1234" };
     const headers = { "x-csrf-token": "token" };
@@ -137,6 +137,6 @@ test("rate limits after five rapid requests", async () => {
     expect(res6.status).toBe(429);
     await expect(res6.json()).resolves.toEqual({ error: "Too Many Requests" });
   } finally {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as { NODE_ENV?: string }).NODE_ENV = originalEnv;
   }
 });

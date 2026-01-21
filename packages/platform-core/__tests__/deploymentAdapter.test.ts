@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import os from 'node:os';
+import path from 'node:path';
 
 const spawnSyncMock = jest.fn();
 jest.mock('child_process', () => ({

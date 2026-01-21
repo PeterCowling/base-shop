@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
+
 import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+
 import PreviewViewer from "../src/app/preview/[token]/page";
 
 jest.mock("@acme/ui/components/DynamicRenderer", () => ({
@@ -16,7 +18,6 @@ describe("Version preview page", () => {
   const originalFetch = global.fetch;
 
   beforeEach(() => {
-    // @ts-expect-error jest override
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -34,7 +35,6 @@ describe("Version preview page", () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-    // @ts-expect-error jest override
     global.fetch = originalFetch;
   });
 

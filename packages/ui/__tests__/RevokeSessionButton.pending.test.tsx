@@ -1,6 +1,6 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react";
+import React, { act } from "react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import RevokeSessionButton from "../src/components/account/RevokeSessionButton";
 
 const refreshMock = jest.fn();
@@ -26,8 +26,8 @@ describe("RevokeSessionButton pending state", () => {
     // Use a manually controlled promise so we can resolve inside act()
     let resolve!: (v: { success: boolean }) => void;
     const revoke = jest.fn(() =>
-      new Promise<{ success: boolean }>((r) => {
-        resolve = r;
+      new Promise<{ success: boolean }>((_resolve) => {
+        resolve = _resolve;
       })
     );
 

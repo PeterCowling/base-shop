@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { SKU } from "@acme/types";
-import { formatCurrency } from "@acme/shared-utils";
 import Image from "next/image";
-import { Alert } from "@/components/atoms";
+
 import { useTranslations } from "@acme/i18n";
+import { formatCurrency } from "@acme/lib/format";
+import type { SKU } from "@acme/types";
+
+import { Alert } from "@/components/atoms";
 
 export interface Props {
   slug: string;

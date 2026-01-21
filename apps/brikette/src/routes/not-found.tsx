@@ -2,14 +2,16 @@
 // Route wrapper for 404/catch‑all. Defines head via shared helpers
 // to satisfy route-level lint rules and re-exports the view/loader.
 
-import NotFound, { clientLoader } from "./NotFound";
-import type { MetaFunction, LinksFunction } from "react-router";
+import type { LinksFunction,MetaFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import NotFound, { clientLoader } from "./NotFound";
 
 export default NotFound;
 export { clientLoader };

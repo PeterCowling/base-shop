@@ -1,6 +1,7 @@
-import { useConfigurator } from "../ConfiguratorContext";
 import { track } from "@acme/telemetry";
+
 import type { ConfiguratorState } from "../../wizard/schema";
+import { useConfigurator } from "../ConfiguratorContext";
 
 type Validator = (state: ConfiguratorState) => boolean;
 

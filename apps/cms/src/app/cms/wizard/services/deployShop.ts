@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/services/deployShop.ts
 "use client";
 
-import { validateShopName } from "@acme/platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops/client";
 
 interface DeployStatusBase {
   status: "pending" | "success" | "error";

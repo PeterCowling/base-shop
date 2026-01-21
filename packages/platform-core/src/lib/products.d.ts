@@ -1,1 +1,1 @@
-export { PRODUCTS, getProductBySlug, getProductById, } from "../products";
+export { getProductById,getProductBySlug, PRODUCTS,  } from "../products";

@@ -1,13 +1,18 @@
+import type { LinkDescriptor, MetaDescriptor } from "react-router";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
-import { listDirectionPaths, resolveRoute } from "@/compat/route-runtime";
 import type { ResolvedMatch } from "@/compat/route-runtime";
-import type { LinkDescriptor, MetaDescriptor } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { listDirectionPaths, resolveRoute } from "@/compat/route-runtime";
 import AppLayout from "@/components/layout/AppLayout";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import {
+  resolveGuideContentKeysForMatches,
+  resolveGuideLabelKeysForMatches,
+  resolveNamespacesForMatches,
+} from "@/next/i18nNamespaceSelector";
+import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
 import RouteHead from "@/next/RouteHead";
 import RouteTree from "@/next/RouteTree";
-import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
 
 type PageProps = {
   matches: ResolvedMatch[];
@@ -42,7 +47,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   const resolvedLang =
     (resolved.result.params["lang"] as AppLanguage | undefined) ??
     (i18nConfig.fallbackLng as AppLanguage);
-  const i18nResources = collectI18nResources(resolvedLang);
+  const namespaces = resolveNamespacesForMatches(resolved.result.matches);
+  const guideContentKeys = resolveGuideContentKeysForMatches(resolved.result.matches);
+  const guideLabelKeys = resolveGuideLabelKeysForMatches(resolved.result.matches, resolvedLang);
+  const i18nResources = collectI18nResources(resolvedLang, namespaces, {
+    guideContentKeys,
+    ...(guideLabelKeys !== undefined ? { guideLabelKeys } : {}),
+  });
 
   return {
     props: {

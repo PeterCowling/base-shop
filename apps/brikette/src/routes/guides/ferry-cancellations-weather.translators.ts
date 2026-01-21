@@ -1,6 +1,6 @@
-import appI18n from "@/i18n";
-
 import type { TFunction } from "i18next";
+
+import appI18n from "@/i18n";
 
 export function getGuidesFallbackTranslator(locale: string): TFunction<"guidesFallback"> {
   const fixed = appI18n.getFixedT(locale, "guidesFallback");

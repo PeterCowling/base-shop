@@ -2,8 +2,8 @@
 import {
   DEFAULT_LOCALE,
   getLocaleFromParams,
-  resolveLocale,
   type LangRouteParams,
+  resolveLocale,
 } from "../locales";
 
 describe("resolveLocale", () => {

@@ -1,5 +1,7 @@
 import React, { createRef } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import EditableCanvas from "@acme/ui/components/cms/page-builder/EditableCanvas";
 
 // Mocks for DnD kit - keep DOM simple
 jest.mock(require.resolve("@dnd-kit/sortable"), () => ({
@@ -59,8 +61,6 @@ jest.mock(require.resolve("@acme/ui/components/cms/page-builder/hooks/useDropHig
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/useMarqueeSelect"), () => ({ __esModule: true, default: () => ({ active: true, rect: { left: 10, top: 10, width: 20, height: 20 }, start: () => {} }) }));
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/collab/usePresence"), () => ({ __esModule: true, default: () => ({ peers: [], softLocksById: {} }) }));
 jest.mock(require.resolve("@acme/ui/components/cms/page-builder/state/layout/utils"), () => ({ __esModule: true, isHiddenForViewport: () => false }));
-
-import EditableCanvas from "@acme/ui/components/cms/page-builder/EditableCanvas";
 
 const base = {
   components: [

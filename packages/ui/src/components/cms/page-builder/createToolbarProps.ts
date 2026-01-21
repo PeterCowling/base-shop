@@ -1,13 +1,16 @@
-import { buildToolbarProps } from "./buildProps";
-import { listGlobals, updateGlobal, type GlobalItem } from "./libraryStore";
-import type { PageBuilderProps } from "./PageBuilder.types";
-import type { HistoryState } from "@acme/types";
-import type { EditorFlags } from "./state/layout/types";
 import type { Dispatch } from "react";
-import type usePageBuilderControls from "./hooks/usePageBuilderControls";
-import type { Action } from "./state";
+
+import type { HistoryState } from "@acme/types";
+
 import type { UploadProgress } from "../../../hooks/useFileUpload";
+
+import { buildToolbarProps } from "./buildProps";
+import type usePageBuilderControls from "./hooks/usePageBuilderControls";
+import { type GlobalItem,listGlobals, updateGlobal } from "./libraryStore";
+import type { PageBuilderProps } from "./PageBuilder.types";
 import type { Breakpoint } from "./panels/BreakpointsPanel";
+import type { Action } from "./state";
+import type { EditorFlags } from "./state/layout/types";
 /* i18n-exempt file -- PB-2418: helper; no user-facing strings */
 
 interface ToolbarOptions {

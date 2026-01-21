@@ -1,8 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { withErrorBoundary } from "@/hoc/withErrorBoundary";
+
 import { renderWithProviders } from "./testUtils";
 
 const Thrower = () => {

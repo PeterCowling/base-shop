@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
+
 import DataTable, { type Column } from "./DataTable";
 
 interface Row {

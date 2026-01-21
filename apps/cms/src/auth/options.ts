@@ -1,16 +1,18 @@
 // apps/cms/src/auth/options.ts
 import "server-only";
-import argon2 from "argon2";
+
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
-import { readRbac as defaultReadRbac } from "../lib/server/rbacStore";
-import { USERS as FALLBACK_USERS } from "./users";
+import argon2 from "argon2";
 
-import { logger } from "@acme/shared-utils";
-
+import { logger } from "@acme/lib/logger";
 import type { Role } from "@acme/types";
+
+import { readRbac as defaultReadRbac } from "../lib/server/rbacStore";
+
 import { authSecret } from "./secret";
+import { USERS as FALLBACK_USERS } from "./users";
 
 /* -------------------------------------------------------------------------- */
 /*  Secret handling                                                           */

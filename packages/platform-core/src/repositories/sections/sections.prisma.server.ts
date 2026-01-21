@@ -1,9 +1,11 @@
 import "server-only";
 
-import { sectionTemplateSchema, type SectionTemplate } from "@acme/types";
-import { prisma } from "../../db";
-import { nowIso } from "@acme/date-utils";
 import type { Prisma } from "@prisma/client";
+
+import { nowIso } from "@acme/date-utils";
+import { type SectionTemplate,sectionTemplateSchema } from "@acme/types";
+
+import { prisma } from "../../db";
 
 // JSON fallback loader (when Prisma model is unavailable)
 async function loadJsonRepo() {

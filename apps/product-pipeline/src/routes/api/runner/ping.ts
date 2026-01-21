@@ -1,10 +1,11 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/runner/ping.ts
 
-import type { PipelineEventContext } from "../_lib/types";
 import { z } from "zod";
+
 import { getDb, nowIso, type PipelineEnv } from "../_lib/db";
 import { errorResponse, jsonResponse } from "../_lib/response";
+import type { PipelineEventContext } from "../_lib/types";
 
 const bodySchema = z.object({
   runnerId: z.string().min(1),

@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render } from "@testing-library/react";
-import type { Series, MultiSeries } from "../src/lib/analytics";
+
+import { Charts } from "../src/app/cms/dashboard/[shop]/components/Charts.client";
+import type { MultiSeries,Series } from "../src/lib/analytics";
 
 const lineProps: any[] = [];
 jest.mock("react-chartjs-2", () => ({
@@ -10,8 +13,6 @@ jest.mock("react-chartjs-2", () => ({
     return null;
   },
 }));
-
-import { Charts } from "../src/app/cms/dashboard/[shop]/components/Charts.client";
 
 describe("Charts", () => {
   it("renders charts with correct labels and colors", () => {

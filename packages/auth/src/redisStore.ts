@@ -1,4 +1,5 @@
 import type { Redis } from "@upstash/redis";
+
 import type { SessionRecord, SessionStore } from "./store";
 
 export class RedisSessionStore implements SessionStore {

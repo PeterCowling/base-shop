@@ -6,7 +6,9 @@
     "docs/architecture.md",
     "docs/development.md",
     "docs/AGENTS.docs.md",
-    "docs/INDEX_FOR_CLAUDE.md"
+    "docs/INDEX_FOR_CLAUDE.md",
+    ".agents/README.md",
+    ".agents/skills/manifest.yaml"
   ],
   "ignorePatterns": [
     "**/.next/**",

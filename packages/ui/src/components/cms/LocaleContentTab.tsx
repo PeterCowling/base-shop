@@ -1,10 +1,13 @@
-import { Card, CardContent, Input, Textarea } from "../atoms/shadcn";
+import type { ChangeEvent } from "react";
+
+import type { Locale } from "@acme/i18n/locales";
+
 import { Chip } from "../atoms";
+import { Card, CardContent, Input, Textarea } from "../atoms/shadcn";
+
 import LocaleContentAccordion, {
   type LocalePanelConfig,
 } from "./LocaleContentAccordion";
-import type { Locale } from "@acme/i18n/locales";
-import type { ChangeEvent } from "react";
 
 interface LocaleContentTabProps {
   locales: readonly Locale[];

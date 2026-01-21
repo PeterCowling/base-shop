@@ -1,7 +1,10 @@
-import { act, render, screen, waitFor, configure } from "@testing-library/react";
-import { CartProvider } from "../CartContext";
-import { CartDisplay, clearCartStorage, setupFetchMock } from "./cartTestUtils";
+import { act, configure,render, screen, waitFor } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
+
+import { CartProvider } from "../CartContext";
+
+import { CartDisplay, clearCartStorage, setupFetchMock } from "./cartTestUtils";
 
 configure({ testIdAttribute: "data-testid" });
 

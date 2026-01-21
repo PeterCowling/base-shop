@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/page.tsx
 
-import { checkShopExists } from "@acme/lib";
 import { notFound, redirect } from "next/navigation";
+
+import { checkShopExists } from "@acme/platform-core";
 
 interface Params {
   shop: string;

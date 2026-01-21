@@ -1,10 +1,11 @@
-import { jest } from "@jest/globals";
 import { ReadableStream as NodeReadableStream } from "node:stream/web";
+
+import { jest } from "@jest/globals";
 import {
   fetch as nodeFetch,
-  Response as NodeResponse,
   Headers as NodeHeaders,
   Request as NodeRequest,
+  Response as NodeResponse,
 } from "undici";
 
 Object.assign(globalThis, {
@@ -70,13 +71,13 @@ Object.assign(globalThis, {
   Response: TestResponse,
 });
 
-const createShop = jest.fn();
-const initShop = jest.fn();
-const deployShop = jest.fn();
-const seedShop = jest.fn();
-const getRequiredSteps = jest.fn();
-const getConfiguratorProgressForShop = jest.fn();
-const runRequiredConfigChecks = jest.fn();
+const createShop = jest.fn() as unknown as jest.Mock;
+const initShop = jest.fn() as unknown as jest.Mock;
+const deployShop = jest.fn() as unknown as jest.Mock;
+const seedShop = jest.fn() as unknown as jest.Mock;
+const getRequiredSteps = jest.fn() as unknown as jest.Mock;
+const getConfiguratorProgressForShop = jest.fn() as unknown as jest.Mock;
+const runRequiredConfigChecks = jest.fn() as unknown as jest.Mock;
 
 jest.mock("../src/app/cms/wizard/services/createShop", () => ({
   __esModule: true,
@@ -119,12 +120,12 @@ jest.mock("next/headers", () => ({
 
 jest.mock("@cms/actions/common/auth", () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
+  ensureAuthorized: (jest.fn() as unknown as jest.Mock).mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
 }));
 
 jest.mock("@cms/actions/common/auth", () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
+  ensureAuthorized: (jest.fn() as unknown as jest.Mock).mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
 }));
 
 afterEach(() => {

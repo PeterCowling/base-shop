@@ -1,16 +1,16 @@
 // src/routes/guides/bus-down-to-positano-main-beach.tsx
+import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-import { toAppLanguage } from "@/utils/lang";
-import type { LinksFunction } from "react-router";
 
 export const handle = { tags: ["beaches", "bus", "stairs", "positano"] };
 

@@ -1,13 +1,12 @@
 import { useMemo } from "react";
 
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
+import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 import { slugify } from "@/utils/slugify";
-
-import type { AppLanguage } from "@/i18n.config";
-import type { GuideKey } from "@/routes.guides-helpers";
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 
 interface DefaultBreadcrumbArgs {
   lang: AppLanguage;

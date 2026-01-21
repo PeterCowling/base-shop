@@ -1,4 +1,5 @@
 import { type ReactElement } from "react";
+
 import CmsNotFound from "./not-found.client";
 
 /**

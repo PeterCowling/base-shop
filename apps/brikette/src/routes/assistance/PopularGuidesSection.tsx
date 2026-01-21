@@ -1,13 +1,14 @@
 // src/routes/assistance/PopularGuidesSection.tsx
-import { Link } from "react-router-dom";
-import type { AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
 import { useTranslation } from "react-i18next";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
 import type { LinksFunction, MetaFunction } from "react-router";
+import { Link } from "react-router-dom";
+
+import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 function PopularGuidesSection({ lang }: { lang: AppLanguage }) {
   const { t } = useTranslation("assistanceSection", { lng: lang });

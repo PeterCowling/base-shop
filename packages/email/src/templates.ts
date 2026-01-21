@@ -1,12 +1,15 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
-import { createRequire } from "module";
+
 import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+import { createRequire } from "module";
+
 import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
 } from "@acme/email-templates";
+
 import { escapeHtml } from "./escapeHtml";
 
 // Use Node's createRequire with the current file path so this works when the

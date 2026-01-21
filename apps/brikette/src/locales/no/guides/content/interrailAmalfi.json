@@ -10,21 +10,21 @@
   "sections": [
     {
       "id": "routes",
-      "title": "Core routes",
+      "title": "Kjernelinjer",
       "body": [
         "Roma → Napoli/Salerno høyhastighets; lokaltog til Sorrento; busser til Positano."
       ]
     },
     {
       "id": "supplements",
-      "title": "Supplements/reservations",
+      "title": "Tillegg og reservasjoner",
       "body": [
         "Frecciarossa/Italo krever ofte setereservasjoner; regionale tog gjør det ikke, men kan være overfylt."
       ]
     },
     {
       "id": "last-mile",
-      "title": "Last mile to Positano",
+      "title": "Siste etappe til Positano",
       "body": [
         "Fra Napoli: Circumvesuviana til Sorrento og deretter SITA-buss. Fra Salerno: ferge/buss i sesong."
       ]
@@ -32,7 +32,7 @@
   ],
   "faqs": [
     {
-      "q": "Is a pass worth it?",
+      "q": "Lønner et pass seg?",
       "a": [
         "Bare hvis du tar nok langdistansesegmenter; ellers kan punkt-til-punkt være billigere."
       ]

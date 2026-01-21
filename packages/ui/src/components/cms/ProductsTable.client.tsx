@@ -2,14 +2,17 @@
 
 "use client";
 
-import type { ProductPublication, PublicationStatus } from "@acme/types";
-import { useProductFilters } from "../../hooks/useProductFilters";
-import { formatCurrency } from "@acme/shared-utils";
+import { memo, type ReactElement, type ReactNode, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import { formatCurrency } from "@acme/lib/format";
+import type { ProductPublication, PublicationStatus } from "@acme/types";
+
+import { useProductFilters } from "../../hooks/useProductFilters";
+
 import DataTable from "./DataTable";
 import { ProductFilters, ProductRowActions } from "./products";
-import { useTranslations } from "@acme/i18n";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -19,6 +22,10 @@ interface Props {
   shop: string;
   rows: ProductPublication[];
   isAdmin: boolean;
+  sellability?: Record<
+    string,
+    { state: "sellable" | "needs_attention"; issues: string[]; stock: number }
+  >;
   /**
    * Callback that duplicates a product on the server.
    * Provided by the host application (e.g. `apps/cms`).
@@ -45,6 +52,7 @@ function ProductsTableBase({
   shop,
   rows,
   isAdmin,
+  sellability,
   onDuplicate,
   onDelete,
 }: Props): ReactElement {
@@ -74,6 +82,23 @@ function ProductsTableBase({
   /*  Columns                                                               */
   /* ---------------------------------------------------------------------- */
   const columns = useMemo<Column<ProductPublication>[]>(() => {
+    const issueLabel = (issue: string) => {
+      switch (issue) {
+        case "inactive":
+          return String(t("products.sellability.inactive"));
+        case "needs_stock":
+          return String(t("products.sellability.needs_stock"));
+        case "needs_media":
+          return String(t("products.sellability.needs_media"));
+        case "missing_translations":
+          return String(t("products.sellability.missing_translations"));
+        case "pending_rebuild":
+          return String(t("products.sellability.pending_rebuild"));
+        default:
+          return issue;
+      }
+    };
+
     return [
       {
         header: String(t("products.columns.title")),
@@ -99,6 +124,26 @@ function ProductsTableBase({
         render: (p) => formatCurrency(p.price, p.currency),
       },
       {
+        header: String(t("products.columns.sellability")),
+        render: (p) => {
+          const info = sellability?.[p.id];
+          if (!info) return "—";
+          if (info.state === "sellable") {
+            return (
+              <span className="inline-flex items-center rounded-full bg-success/15 px-3 py-1 text-xs font-semibold text-success-foreground">
+                {t("products.sellability.sellable")}
+              </span>
+            );
+          }
+          const labels = info.issues.map((i) => issueLabel(i));
+          return (
+            <span className="inline-flex items-center rounded-full bg-warning/10 px-3 py-1 text-xs font-semibold text-warning-foreground">
+              {labels.join(" · ")}
+            </span>
+          );
+        },
+      },
+      {
         header: String(t("products.columns.status")),
         render: (p) => p.status,
       },
@@ -115,7 +160,7 @@ function ProductsTableBase({
         ),
       },
     ];
-  }, [isAdmin, shop, handleDuplicate, handleDelete, t]);
+  }, [isAdmin, sellability, shop, handleDuplicate, handleDelete, t]);
 
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */

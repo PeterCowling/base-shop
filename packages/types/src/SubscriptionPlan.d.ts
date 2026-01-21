@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const subscriptionPlanSchema: z.ZodObject<{
     id: z.ZodString;
     price: z.ZodNumber;

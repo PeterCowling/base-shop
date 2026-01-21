@@ -1,5 +1,7 @@
-import { render, fireEvent } from "@testing-library/react";
+import { fireEvent,render } from "@testing-library/react";
+
 import type { PageComponent } from "@acme/types";
+
 import PageSidebar from "../src/components/cms/page-builder/PageSidebar";
 
 describe("PageSidebar", () => {

@@ -1,6 +1,10 @@
 /** @jest-environment node */
 import { readdir, readFile } from "node:fs/promises";
 
+import { readOrders } from "@acme/platform-core/repositories/rentalOrders.server";
+
+import * as service from "../releaseDepositsService";
+
 jest.mock("node:fs/promises", () => ({
   readdir: jest.fn(),
   readFile: jest.fn(),
@@ -25,9 +29,6 @@ jest.mock("@acme/platform-core/utils", () => ({
 jest.mock("@acme/config/env/core", () => ({
   coreEnv: {},
 }));
-
-import * as service from "../releaseDepositsService";
-import { readOrders } from "@acme/platform-core/repositories/rentalOrders.server";
 
 const readdirMock = readdir as unknown as jest.Mock;
 const readFileMock = readFile as unknown as jest.Mock;

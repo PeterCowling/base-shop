@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import { Checkbox } from "../src/components/atoms/shadcn";
 
 describe("Checkbox", () => {

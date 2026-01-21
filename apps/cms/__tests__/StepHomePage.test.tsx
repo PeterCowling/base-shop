@@ -1,7 +1,8 @@
-import React from "react";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
+import type React from "react";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 
 jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");

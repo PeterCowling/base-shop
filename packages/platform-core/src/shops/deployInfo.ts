@@ -1,7 +1,8 @@
-import * as path from "node:path";
 import * as fs from "node:fs";
-import { DATA_ROOT } from "../dataRoot";
+import * as path from "node:path";
+
 import type { DeployShopResult } from "../createShop/deployTypes";
+import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";
 
 export type DeployInfo = DeployShopResult;

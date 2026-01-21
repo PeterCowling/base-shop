@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+
 import type { InventoryItem } from "@acme/platform-core/types/inventory";
 
 export type InventoryStatus = "idle" | "saved" | "error";
@@ -33,8 +34,8 @@ export function useInventoryEditor(initialItems: InventoryItem[]) {
       setItems((prev) => {
         const next = [...prev];
         const item = { ...next[index] } as InventoryItem;
-        if (field.startsWith("variantAttributes.")) {
-          const key = field.split(".")[1]!;
+        if ((field as string).startsWith("variantAttributes.")) {
+          const key = (field as string).split(".")[1]!;
           item.variantAttributes = {
             ...item.variantAttributes,
             [key]: value,

@@ -1,13 +1,13 @@
 // apps/cms/__tests__/products.test.ts
 
+import fs from "node:fs/promises";
+import path from "node:path";
+
 import type { ProductPublication } from "@acme/platform-core/products/index";
+import { mockNextAuthAdmin,withTempRepo } from "@acme/test-utils";
 
 // Ensure auth options do not throw on import
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
-
-import fs from "node:fs/promises";
-import path from "node:path";
-import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
 
 jest.setTimeout(20000);
 

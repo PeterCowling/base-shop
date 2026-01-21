@@ -163,7 +163,7 @@ describe("sendCampaignEmail", () => {
 
   it("retries failing provider then falls back in order", async () => {
     const timeoutSpy = jest.spyOn(global, "setTimeout");
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const originalWarn = logger.warn;
     const originalError = logger.error;
     const warnSpy = jest.fn();

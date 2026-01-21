@@ -1,6 +1,7 @@
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import path from "path";
+
 import type { LoadPluginsOptions } from "../plugins";
 
 function unique<T>(arr: T[]): T[] {

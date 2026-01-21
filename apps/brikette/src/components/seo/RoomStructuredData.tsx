@@ -1,10 +1,11 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/RoomStructuredData.tsx
+import { memo, useMemo } from "react";
+
 import { BASE_URL } from "@/config/site";
 import type { Room as DataRoom } from "@/data/roomsData";
+import { getRoomsCatalog, type LocalizedRoom,resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema";
-import { getRoomsCatalog, resolveFallbackLanguage, type LocalizedRoom } from "@/utils/roomsCatalog";
-import { memo, useMemo } from "react";
 
 function pickImages(room: DataRoom): string[] {
   return Array.isArray(room.imagesRaw) ? room.imagesRaw.slice(0, 4).map((u) => `${BASE_URL}${u}`) : [];

@@ -1,23 +1,25 @@
 // src/routes/guides/positano-travel-tips-first-time-visitors.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { GUIDE_KEYS_WITH_OVERRIDES as ALL_GUIDE_KEYS } from "@/guide-slug-map";
+
 import GenericContent from "@/components/guides/GenericContent";
 import { BASE_URL } from "@/config/site";
+import { GUIDE_KEYS_WITH_OVERRIDES as ALL_GUIDE_KEYS } from "@/guide-slug-map";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import { getSlug } from "@/utils/slug";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE } from "@/utils/headConstants";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import type { LinksFunction } from "react-router";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 type RawSection = {
   id?: unknown;

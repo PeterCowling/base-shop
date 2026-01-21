@@ -133,24 +133,6 @@
         "../../packages/email-templates/src/*",
         "../../packages/email-templates/dist/*"
       ],
-      "@shared-utils": [
-        "../../packages/shared-utils/src/index.ts",
-        "../../packages/shared-utils/src",
-        "../../packages/shared-utils/dist/index",
-        "../../packages/shared-utils/dist"
-      ],
-      "@shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
-      ],
-      "@acme/shared-utils": [
-        "../../packages/shared-utils/src/index.ts",
-        "../../packages/shared-utils/src",
-        "../../packages/shared-utils/dist/index",
-        "../../packages/shared-utils/dist"
-      ],
-      "@acme/shared-utils/*": [
-        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
-      ],
       "@scripts": [
         "../../scripts/src/index.ts",
         "../../scripts/src",

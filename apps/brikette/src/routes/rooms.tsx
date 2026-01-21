@@ -1,29 +1,31 @@
 /* ────────────────────────────────────────────────────────────────
    src/routes/rooms.tsx
 ---------------------------------------------------------------- */
-import RoomsSection from "@acme/ui/organisms/RoomsSection";
-import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
-import RatingsBar from "@acme/ui/atoms/RatingsBar";
-import i18n from "@/i18n";
-// i18n config not required directly; alternates handled globally
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { Fragment, memo } from "react";
-import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, type LoaderFunctionArgs } from "react-router-dom";
+import type { LinksFunction,MetaFunction } from "react-router";
+import { type LoaderFunctionArgs,useLoaderData } from "react-router-dom";
+
+import RatingsBar from "@acme/ui/atoms/RatingsBar";
+import { Section } from "@acme/ui/atoms/Section";
 import { DirectBookingPerks } from "@acme/ui/molecules/DirectBookingPerks";
-import { getSlug } from "@/utils/slug";
+import RoomsSection from "@acme/ui/organisms/RoomsSection";
+
+import AlsoHelpful from "@/components/common/AlsoHelpful";
+import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
 // no need for guideSlug here; cross-links handled by AlsoHelpful
 import type { AppLanguage } from "@/i18n.config";
-import { langFromRequest } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
 import { i18nConfig } from "@/i18n.config";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
-import AlsoHelpful from "@/components/common/AlsoHelpful";
-import { Section } from "@acme/ui/atoms/Section";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+// i18n config not required directly; alternates handled globally
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { langFromRequest } from "@/utils/lang";
+import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
 /*── loader ──────────────────────────────────────────────────────*/

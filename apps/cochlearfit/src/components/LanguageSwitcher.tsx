@@ -2,13 +2,15 @@
 
 import React, { useCallback, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import { useTranslations } from "@acme/i18n";
+
+import Inline from "@/components/layout/Inline";
 import { useLocale } from "@/contexts/LocaleContext";
-import type { Locale } from "@/types/locale";
+import { setPreferredLocale } from "@/lib/localePreference";
 import { LOCALES } from "@/lib/locales";
 import { replaceLocaleInPath } from "@/lib/routes";
-import { setPreferredLocale } from "@/lib/localePreference";
-import Inline from "@/components/layout/Inline";
+import type { Locale } from "@/types/locale";
 
 type LocaleButtonProps = {
   locale: Locale;

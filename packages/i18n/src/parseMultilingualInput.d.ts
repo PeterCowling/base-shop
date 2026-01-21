@@ -1,4 +1,5 @@
-import type { Locale } from "./locales";
+import type { Locale } from "./locales.js";
+
 export interface MultilingualField {
     field: "title" | "desc";
     locale: Locale;

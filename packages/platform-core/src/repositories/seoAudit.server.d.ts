@@ -1,4 +1,5 @@
 import "server-only";
+
 export interface SeoAuditEntry {
     timestamp: string;
     score: number;

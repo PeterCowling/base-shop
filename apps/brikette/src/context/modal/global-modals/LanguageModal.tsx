@@ -6,20 +6,21 @@
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
+
+import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
+import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
+import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
+import { guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import { GUIDE_KEYS, guideSlug } from "@/routes.guides-helpers";
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
-import { SLUGS, SLUG_KEYS, type SlugMap } from "@/slug-map";
-import { IS_DEV } from "@/config/env";
 
-import { LanguageModal } from "../lazy-modals";
+import { type AppLanguage,CORE_LAYOUT_NAMESPACES, i18nConfig } from "../constants";
 import { useModal } from "../hooks";
+import { LanguageModal } from "../lazy-modals";
 import { useSafeLocation, useSafeNavigate } from "../navigation";
-import { CORE_LAYOUT_NAMESPACES, LANGUAGE_ORDER, i18nConfig, type AppLanguage } from "../constants";
-import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
 
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
@@ -55,7 +56,16 @@ export function LanguageGlobalModal(): JSX.Element | null {
   }, [slugKey, pathSegments, curLang]);
 
   const languageOptions = useMemo<LanguageOption[]>(() => {
-    return LANGUAGE_ORDER.map((lng) => {
+    const candidates = [
+      i18nConfig.fallbackLng as AppLanguage,
+      ...((i18nConfig.supportedLngs ?? []) as AppLanguage[]),
+    ];
+    if (!candidates.includes(curLang)) {
+      candidates.unshift(curLang);
+    }
+    const unique = Array.from(new Set(candidates));
+
+    return unique.map((lng) => {
       let label = lng.toUpperCase();
       if (typeof Intl !== "undefined" && typeof Intl.DisplayNames === "function") {
         try {
@@ -73,7 +83,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       }
       return { code: lng, label };
     });
-  }, []);
+  }, [curLang]);
 
   const languageCopy = useMemo<LanguageModalCopy>(() => {
     const base: LanguageModalCopy = {
@@ -123,7 +133,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
             trailingSegments.length > 0
           ) {
             const currentSecond = trailingSegments[0] ?? "";
-            const matchedGuideKey = GUIDE_KEYS.find((k) => guideSlug(curLang, k) === currentSecond);
+            const matchedGuideKey = resolveGuideKeyFromSlug(currentSecond, curLang);
             if (matchedGuideKey) {
               nextSegments.push(guideSlug(nextLang, matchedGuideKey));
               nextSegments.push(...trailingSegments.slice(1));

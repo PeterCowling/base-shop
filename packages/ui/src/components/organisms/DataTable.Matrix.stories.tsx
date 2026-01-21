@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/DataTable.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { DataTable, type Column } from './DataTable';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { type Column,DataTable } from './DataTable';
 
 interface OrderRow { id: string; customer: string; total: string; status: string; }
 

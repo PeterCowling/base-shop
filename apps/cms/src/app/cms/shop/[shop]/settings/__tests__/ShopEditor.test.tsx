@@ -1,5 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import ShopEditor from "../ShopEditor";
+import { useShopEditorForm } from "../useShopEditorForm";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 jest.mock(
@@ -84,9 +88,6 @@ jest.mock("@cms/actions/shops.server", () => ({
 jest.mock("../useShopEditorForm", () => ({
   useShopEditorForm: jest.fn(),
 }));
-
-import ShopEditor from "../ShopEditor";
-import { useShopEditorForm } from "../useShopEditorForm";
 
 type MappingRowLike = { key: string; value: string };
 

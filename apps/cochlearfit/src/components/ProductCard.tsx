@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useMemo } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
-import type { Product } from "@/types/product";
+
+import Price from "@/components/Price";
 import { useLocale } from "@/contexts/LocaleContext";
 import { withLocale } from "@/lib/routes";
-import Price from "@/components/Price";
+import type { Product } from "@/types/product";
 
 const ProductCard = React.memo(function ProductCard({
   product,

@@ -1,5 +1,5 @@
-/* eslint-disable ds/no-raw-color -- DS-TEST-011: raw hex values are required to validate color utility parsing/conversions */
-import { isHex, isHsl, hslToHex, hexToRgb, getContrastColor, hexToHsl } from "../src/utils/colorUtils";
+ 
+import { getContrastColor, hexToHsl,hexToRgb, hslToHex, isHex, isHsl } from "../src/utils/colorUtils";
 
 describe("colorUtils", () => {
   it("validates hex strings", () => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import MaintenancePage from "../src/app/cms/maintenance/page";
 
 jest.mock("@/components/atoms/shadcn", () => {

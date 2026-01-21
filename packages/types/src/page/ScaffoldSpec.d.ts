@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const scaffoldSpecSchema: z.ZodObject<{
     layout: z.ZodDefault<z.ZodEnum<["default", "sidebar"]>>;
     sections: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;

@@ -1,21 +1,23 @@
 // src/routes/guides/salerno-vs-naples-arrivals.tsx
 import { memo, useMemo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
 import { useTranslation } from "react-i18next";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+
 import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import type { MetaFunction, LinksFunction } from "react-router";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const handle = { tags: ["transport", "budgeting", "decision"] };
 

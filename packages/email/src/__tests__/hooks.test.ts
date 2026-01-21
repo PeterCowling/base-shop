@@ -47,7 +47,7 @@ describe("listener errors", () => {
     const error = new Error("listener error");
 
     on(async () => {
-      await new Promise((_, reject) =>
+      await new Promise((_resolve, reject) =>
         setTimeout(() => {
           order.push("rejected");
           reject(error);

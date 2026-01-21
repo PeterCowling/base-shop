@@ -1,6 +1,8 @@
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
 
 export interface VideoPlayerProps
   extends React.VideoHTMLAttributes<HTMLVideoElement> {
@@ -73,4 +75,4 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
     );
   }
 );
-VideoPlayer.displayName = "VideoPlayer"; // i18n-exempt -- UI-000: component displayName; not user-facing [ttl=2026-01-31]
+VideoPlayer.displayName = "VideoPlayer";

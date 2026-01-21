@@ -10,7 +10,7 @@ describe("Block (smoke)", () => {
   it("sanitizes and renders Text component content", () => {
     render(
       <Block
-        locale="en" as any
+        locale="en"
         component={{ id: "t1", type: "Text", text: "<b>Hi</b> <script>1</script>" } as any}
       />
     );
@@ -20,7 +20,7 @@ describe("Block (smoke)", () => {
 
   it("returns null for unknown non-Text block types (no registry entry)", () => {
     const { container } = render(
-      <Block locale="en" as any component={{ id: "c1", type: "UnknownType" } as any} />
+      <Block locale="en" component={{ id: "c1", type: "UnknownType" } as any} />
     );
     expect(container.firstChild).toBeNull();
   });

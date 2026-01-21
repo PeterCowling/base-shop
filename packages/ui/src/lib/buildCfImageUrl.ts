@@ -18,11 +18,40 @@ const FALLBACK_ORIGIN = "https://hostel-positano.com"; // keeps SSR prerender ha
 
 const stripProto = (u: string): string => u.replace(/^https?:\/\//, "").replace(/\/+$/, "");
 
+type ViteEnv = Partial<Record<"DEV" | "SSR" | "SITE_ORIGIN" | "VITE_SITE_ORIGIN" | "VITE_SITE_DOMAIN", string | boolean>>;
+
+function getViteEnv(): ViteEnv | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- UI-1000 [ttl=2026-12-31] `import.meta.env` is untyped in some runtimes; narrow safely at call sites
+  return (typeof import.meta !== "undefined" && (import.meta as any).env)
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- UI-1000 [ttl=2026-12-31] `import.meta.env` is untyped in some runtimes; narrow safely at call sites
+      ((import.meta as any).env as ViteEnv)
+    : undefined;
+}
+
+function isDevMode(): boolean {
+  const env = getViteEnv();
+  const viteFlag = env?.DEV as boolean | undefined;
+  return viteFlag ?? (typeof process !== "undefined" ? process.env.NODE_ENV !== "production" : false);
+}
+
+function isServerRuntime(): boolean {
+  const env = getViteEnv();
+  const viteFlag = env?.SSR as boolean | undefined;
+  return viteFlag ?? (typeof window === "undefined");
+}
+
+function readEnv(name: keyof NonNullable<ViteEnv>): string | undefined {
+  const env = getViteEnv();
+  const viteValue = env?.[name];
+  const nodeValue = typeof process !== "undefined" ? process.env[name] : undefined;
+  return (typeof viteValue === "string" ? viteValue : undefined) ?? nodeValue ?? undefined;
+}
+
 function getSiteOrigin(hostOverride?: string): string {
   const envOrigin =
-    import.meta.env.SITE_ORIGIN ||
-    import.meta.env.VITE_SITE_ORIGIN ||
-    import.meta.env.VITE_SITE_DOMAIN ||
+    readEnv("SITE_ORIGIN") ||
+    readEnv("VITE_SITE_ORIGIN") ||
+    readEnv("VITE_SITE_DOMAIN") ||
     "";
 
   if (envOrigin) return stripProto(envOrigin);
@@ -30,11 +59,11 @@ function getSiteOrigin(hostOverride?: string): string {
 
   /* During SSR prerender there is no window – fall back to a hard origin
      so images become absolute and bypass the internal router. */
-  if (import.meta.env.SSR) return stripProto(FALLBACK_ORIGIN);
+  if (isServerRuntime()) return stripProto(FALLBACK_ORIGIN);
 
   /* Runtime in the browser */
   if (typeof window !== "undefined" && window.location?.origin) {
-    return window.location.origin;
+    return stripProto(window.location.origin);
   }
 
   return "";
@@ -55,7 +84,7 @@ export function buildCfImageUrl(
   opts: BuildCfImageOptions = {},
   hostOverride?: string
 ): string {
-  if (import.meta.env.DEV) return pathOrUrl;
+  if (isDevMode()) return pathOrUrl;
 
   const params = toOptionsString({ ...opts });
   const isRemote = /^https?:\/\//i.test(pathOrUrl);

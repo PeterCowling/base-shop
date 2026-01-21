@@ -1,29 +1,32 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
+
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { Button } from "../../atoms/shadcn";
+
 import PreviewPane from "./PreviewPane";
-import VersionList from "./versions-panel/VersionList";
-import CreateVersionForm from "./versions-panel/CreateVersionForm";
-import DiffSummaryView from "./versions-panel/DiffSummary";
-import DiffDetails from "./versions-panel/DiffDetails";
-import RenameDeleteControls from "./versions-panel/RenameDeleteControls";
-import ExperimentForm from "./versions-panel/ExperimentForm";
-import SchedulePublishForm from "./versions-panel/SchedulePublishForm";
-import PreviewLinkForm from "./versions-panel/PreviewLinkForm";
+import type { VersionEntry } from "./versions-panel/api";
 import {
+  createExperimentApi,
   createPreviewLinkApi,
   createVersionApi,
   deleteVersion as deleteVersionApi,
   fetchVersions,
   renameVersion as renameVersionApi,
   schedulePublishApi,
-  createExperimentApi,
 } from "./versions-panel/api";
-import type { VersionEntry } from "./versions-panel/api";
+import CreateVersionForm from "./versions-panel/CreateVersionForm";
 import { computeDiffSummary } from "./versions-panel/diff";
-import { Button } from "../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
+import DiffDetails from "./versions-panel/DiffDetails";
+import DiffSummaryView from "./versions-panel/DiffSummary";
+import ExperimentForm from "./versions-panel/ExperimentForm";
+import PreviewLinkForm from "./versions-panel/PreviewLinkForm";
+import RenameDeleteControls from "./versions-panel/RenameDeleteControls";
+import SchedulePublishForm from "./versions-panel/SchedulePublishForm";
+import VersionList from "./versions-panel/VersionList";
 
 interface Props {
   shop: string;

@@ -1,5 +1,6 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import PageCanvas from "../src/components/cms/page-builder/PageCanvas";
 
 jest.mock("../src/components/cms/page-builder/CanvasItem", () => ({

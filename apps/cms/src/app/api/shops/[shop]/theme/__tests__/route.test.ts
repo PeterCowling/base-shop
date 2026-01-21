@@ -34,7 +34,6 @@ describe("PATCH", () => {
     expect(patchTheme).toHaveBeenCalledWith("s1", {
       themeOverrides: { color: "blue" },
       themeDefaults: {},
-      themeId: undefined,
     });
   });
 
@@ -49,7 +48,6 @@ describe("PATCH", () => {
     expect(patchTheme).toHaveBeenCalledWith("s1", {
       themeOverrides: undefined,
       themeDefaults: undefined,
-      themeId: undefined,
     });
   });
 

@@ -1,11 +1,12 @@
 "use client";
 
-import { LayoutProvider, ThemeProvider, useLayout } from "@acme/platform-core";
 import * as React from "react";
 
+import { LayoutProvider, ThemeProvider, useLayout } from "@acme/platform-core";
+
 import { cn } from "../../utils/style";
-import { Stack } from "../atoms/primitives/Stack";
 import { Sidebar } from "../atoms/primitives/Sidebar";
+import { Stack } from "../atoms/primitives/Stack";
 
 export interface AppShellProps {
   header?: React.ReactNode;

@@ -1,8 +1,10 @@
 /* i18n-exempt file -- test strings for alt text and types */
-import { render } from "@testing-library/react";
-import { ProductGallery } from "../ProductGallery";
-import type { MediaItem } from "../molecules/MediaSelector";
 import "../../../../../../test/resetNextMocks";
+
+import { render } from "@testing-library/react";
+
+import type { MediaItem } from "../../molecules/MediaSelector";
+import { ProductGallery } from "../ProductGallery";
 
 describe("ProductGallery media types", () => {
   it("renders image media", () => {
@@ -30,7 +32,7 @@ describe("ProductGallery media types", () => {
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector('[role="status"]')).toBeInTheDocument();
+    expect(container.querySelector("model-viewer")).toBeInTheDocument();
   });
 });
 

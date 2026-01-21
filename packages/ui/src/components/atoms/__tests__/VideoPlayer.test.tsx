@@ -1,5 +1,7 @@
 import "../../../../../../test/resetNextMocks";
+
 import { render } from "@testing-library/react";
+
 import { VideoPlayer } from "../VideoPlayer";
 
 describe("VideoPlayer", () => {

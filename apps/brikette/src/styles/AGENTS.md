@@ -5,8 +5,7 @@
 ## 1 · Tailwind setup
 
 - Tailwind **4.1.7** in JIT mode.
-- App config in `apps/brikette/tailwind.config.mjs` (referenced via `@config`).
-- Dark mode uses `.theme-dark` on `<html>` (matches Tailwind `darkMode`).
+- Custom tokens in `tailwind.config.ts`.
 - Global layers live in `src/styles/global.css`.
 
 ---
@@ -28,7 +27,7 @@
 | `--gradient-mid`        | `#005C9C` |
 | `--gradient-end`        | `#00629A` |
 
-### Dark theme (`.theme-dark`)
+### Dark theme (`.dark`)
 
 | Token                     | Hex       |
 | ------------------------- | --------- |
@@ -52,4 +51,4 @@ All light-mode colours meet **WCAG 2.2** contrast ≥ 4.5 : 1 against white.
 
 - Use `@apply` for small utility groups.
 - Avoid nesting `@apply` inside media queries; prefer responsive utilities.
-- Custom media queries live in `apps/brikette/tailwind.config.mjs → theme.screens`.
+- Custom media queries live in `tailwind.config.ts → theme.screens`.

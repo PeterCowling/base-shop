@@ -1,4 +1,5 @@
 import type { SectionTemplate } from "@acme/types";
+
 export type ValidationResult = {
     ok: true;
 } | {

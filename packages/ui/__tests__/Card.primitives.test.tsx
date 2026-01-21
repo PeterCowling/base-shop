@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
+
 import { Card, CardContent } from "../src/components/atoms/primitives/card";
 
 describe("Card primitives", () => {

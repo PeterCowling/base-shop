@@ -1,6 +1,7 @@
 // src/routes/assistance/_ArticleFactory/metaUtils.ts
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+
 import type { MetaKey } from "./types";
 
 export function normaliseMeta(value: unknown, key: MetaKey): string | undefined {

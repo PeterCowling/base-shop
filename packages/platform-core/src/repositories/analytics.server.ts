@@ -1,8 +1,10 @@
 import "server-only";
 
-import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 import type { PrismaClient } from "@prisma/client";
+
+import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 import { prisma } from "../db";
+
 import { resolveRepo } from "./repoResolver";
 
 interface AnalyticsRepository {

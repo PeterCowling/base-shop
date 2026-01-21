@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import ConfirmationStep from "../src/app/cms/blog/sanity/connect/ConfirmationStep";
 
 describe("ConfirmationStep", () => {

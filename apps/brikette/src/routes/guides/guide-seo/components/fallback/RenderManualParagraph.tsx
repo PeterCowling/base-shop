@@ -1,6 +1,6 @@
+import type { GuideKey } from "@/guides/slugs";
 import i18n from "@/i18n";
 import type { TFunction } from "@/utils/i18nSafe";
-import type { GuideKey } from "@/guides/slugs";
 
 interface Props {
   translations: { tGuides: TFunction };

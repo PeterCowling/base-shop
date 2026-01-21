@@ -10,7 +10,7 @@ describe("createStubPrisma", () => {
   });
 
   it("creates, updates, and queries rental orders", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({}),
     }));
@@ -47,7 +47,7 @@ describe("createStubPrisma", () => {
   });
 
   it("falls back to the stub when @prisma/client fails to load", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
     }));
@@ -69,7 +69,7 @@ describe("createStubPrisma", () => {
   });
 
   it("updates rental orders via tracking number and finds missing orders", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({}),
     }));

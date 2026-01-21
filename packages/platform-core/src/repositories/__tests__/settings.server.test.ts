@@ -1,5 +1,10 @@
-import * as path from "path";
+import { promises as fs } from "fs";
 import * as os from "os";
+import * as path from "path";
+
+import { LOCALES } from "@acme/i18n";
+
+import { diffHistory,getShopSettings, saveShopSettings } from "../settings.server";
 
 const DATA_ROOT = path.join(os.tmpdir(), "settings-tests");
 
@@ -7,31 +12,41 @@ jest.mock("../../dataRoot", () => ({
   DATA_ROOT,
 }));
 
-const files = new Map<string, string>();
+// Use globalThis to store test files - this avoids Jest hoisting issues
+declare global {
+  // eslint-disable-next-line no-var
+  var __settingsTestFiles: Map<string, string> | undefined;
+}
+globalThis.__settingsTestFiles = new Map<string, string>();
 
 jest.mock("fs", () => {
   return {
     promises: {
       readFile: jest.fn(async (p: string) => {
-        const data = files.get(p);
+        const files = globalThis.__settingsTestFiles;
+        const data = files?.get(p);
         if (data === undefined) throw new Error("not found");
         return data;
       }),
       writeFile: jest.fn(async (p: string, data: string) => {
-        files.set(p, data);
+        globalThis.__settingsTestFiles?.set(p, data);
       }),
       rename: jest.fn(async (tmp: string, dest: string) => {
-        const data = files.get(tmp);
+        const files = globalThis.__settingsTestFiles;
+        const data = files?.get(tmp);
         if (data === undefined) throw new Error("missing");
-        files.set(dest, data);
-        files.delete(tmp);
+        files?.set(dest, data);
+        files?.delete(tmp);
       }),
       appendFile: jest.fn(async (p: string, data: string) => {
-        const prev = files.get(p) ?? "";
-        files.set(p, prev + data);
+        const files = globalThis.__settingsTestFiles;
+        const prev = files?.get(p) ?? "";
+        files?.set(p, prev + data);
       }),
       mkdir: jest.fn(async () => {}),
-      __files: files,
+      get __files() {
+        return globalThis.__settingsTestFiles;
+      },
     },
   };
 });
@@ -40,17 +55,17 @@ jest.mock("@acme/date-utils", () => ({
   nowIso: jest.fn(() => "2020-01-01T00:00:00.000Z"),
 }));
 
-import { promises as fs } from "fs";
-import { getShopSettings, saveShopSettings, diffHistory } from "../settings.server";
-import { LOCALES } from "@acme/i18n";
-
 describe("settings repository", () => {
   const fsMock = fs as unknown as typeof fs & { __files: Map<string, string> };
   const appendFileMock = fs.appendFile as unknown as jest.Mock;
 
   beforeEach(() => {
-    fsMock.__files.clear();
+    globalThis.__settingsTestFiles?.clear();
     jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    delete globalThis.__settingsTestFiles;
   });
 
   it("reads existing settings file and deep merges with defaults", async () => {

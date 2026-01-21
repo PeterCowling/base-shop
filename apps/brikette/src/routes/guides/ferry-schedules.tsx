@@ -1,36 +1,35 @@
 // src/routes/guides/ferry-schedules.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { LinksFunction, MetaFunction } from "react-router";
 
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-
-import TableOfContents from "@/components/guides/TableOfContents";
 import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@/components/images/CfImage";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type { AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { toAppLanguage } from "@/utils/lang";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
-import getFallbackLanguage from "./utils/getFallbackLanguage";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
-type GuideMetaArgs = Parameters<MetaFunction>[0];
-
+import { defineGuideRoute } from "./defineGuideRoute";
 import * as FerrySchedulesModule from "./ferry-schedules";
 import {
-  HERO_IMAGE_PATH,
-  SECONDARY_IMAGE_PATH,
   GUIDE_KEY as ROUTE_GUIDE_KEY,
   GUIDE_SLUG as ROUTE_GUIDE_SLUG,
+  HERO_IMAGE_PATH,
+  SECONDARY_IMAGE_PATH,
 } from "./ferry-schedules/constants";
 import { buildFerrySchedulesGuideExtras as buildFerrySchedulesGuideExtrasImpl } from "./ferry-schedules/extras";
 import { getGuidesFallbackTranslator } from "./ferry-schedules/i18n";
 import { normaliseFaqs } from "./ferry-schedules/normalisers";
-import type { GuideExtras, FerryFaq } from "./ferry-schedules/types";
+import type { FerryFaq,GuideExtras } from "./ferry-schedules/types";
+import { getGuideManifestEntry } from "./guide-manifest";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
+import getFallbackLanguage from "./utils/getFallbackLanguage";
+
+type GuideMetaArgs = Parameters<MetaFunction>[0];
 
 export const handle = { tags: ["transport", "ferry", "positano"] };
 
@@ -254,6 +253,6 @@ export const links: LinksFunction = (
   ...args: Parameters<LinksFunction>
 ) => resolveLinks(...args);
 
+export { HERO_IMAGE_PATH, OG_IMAGE,SECONDARY_IMAGE_PATH } from "./ferry-schedules/constants";
 export { getGuidesFallbackTranslator, getGuidesTranslator } from "./ferry-schedules/i18n";
 export { normaliseFaqs, normaliseGallery, normaliseSections } from "./ferry-schedules/normalisers";
-export { HERO_IMAGE_PATH, SECONDARY_IMAGE_PATH, OG_IMAGE } from "./ferry-schedules/constants";

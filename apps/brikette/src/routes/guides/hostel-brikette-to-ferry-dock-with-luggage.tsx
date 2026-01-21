@@ -1,22 +1,23 @@
+import "@/routes/guides/_GuideSeoTemplate";
+
 import { useEffect, useMemo } from "react";
-import { redirect, type LoaderFunctionArgs } from "react-router";
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from "react-router";
+import { redirect } from "react-router";
 import { useNavigate } from "react-router-dom";
-import type { MetaFunction, LinksFunction } from "react-router";
 
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, { type BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { guideSlug } from "@/routes.guides-helpers";
-import "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
 import { langFromRequest } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
 
 import { buildLegacyGuideRedirectBreadcrumb, resolveLegacyGuideSeo } from "./legacyRedirectBreadcrumb";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
 
 export const GUIDE_KEY = "briketteToFerryDock" as const;
 export const GUIDE_SLUG = "hostel-brikette-to-ferry-dock-with-luggage" as const;

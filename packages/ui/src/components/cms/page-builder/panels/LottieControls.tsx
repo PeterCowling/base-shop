@@ -1,9 +1,10 @@
 // packages/ui/src/components/cms/page-builder/panels/LottieControls.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Checkbox } from "../../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Checkbox,Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../atoms/shadcn";
 
 interface Props {
   component: PageComponent;

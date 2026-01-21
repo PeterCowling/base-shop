@@ -1,4 +1,4 @@
-import { getShopFromPath } from '@acme/shared-utils/src/getShopFromPath';
+import { getShopFromPath } from '@acme/lib/shop';
 
 describe('getShopFromPath', () => {
   it('returns undefined for undefined input', () => {

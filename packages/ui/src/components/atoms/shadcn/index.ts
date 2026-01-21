@@ -1,6 +1,29 @@
-export { Card, CardContent } from "../primitives/card";
-export { Checkbox, type CheckboxProps } from "../primitives/checkbox";
+"use client";
+
+// DEPRECATED: Import from @acme/design-system/shadcn instead
+// This shim will be removed in the next major version.
+
+if (process.env.NODE_ENV === "development") {
+  console.warn(
+    "[@acme/ui] Importing from '@acme/ui/components/atoms/shadcn' is deprecated. " +
+      "Please import from '@acme/design-system/shadcn' instead."
+  );
+}
+
+// Re-export from design-system
 export {
+  Accordion,
+  AccordionContent,
+  type AccordionContentProps,
+  AccordionItem,
+  type AccordionItemProps,
+  type AccordionProps,
+  AccordionTrigger,
+  type AccordionTriggerProps,
+  Card,
+  CardContent,
+  Checkbox,
+  type CheckboxProps,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -10,19 +33,6 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "../primitives/dialog";
-export { Input, type InputProps } from "../primitives/input";
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "../primitives/select";
-export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -38,26 +48,29 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "../primitives/dropdown-menu";
-export {
+  Input,
+  type InputProps,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "../primitives/table";
-export { Textarea, type TextareaProps } from "../primitives/textarea";
-export { Button, type ButtonProps } from "./Button";
-export {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  type AccordionProps,
-  type AccordionItemProps,
-  type AccordionTriggerProps,
-  type AccordionContentProps,
-} from "../primitives/accordion";
-export { Progress, type ProgressProps } from "../Progress";
-export { Tag, type TagProps } from "../Tag";
+  Textarea,
+  type TextareaProps,
+  Progress,
+  type ProgressProps,
+  Tag,
+  type TagProps,
+} from "@acme/design-system";
+
+// Button comes from shadcn directory specifically
+export { Button, type ButtonProps } from "@acme/design-system/shadcn/Button";

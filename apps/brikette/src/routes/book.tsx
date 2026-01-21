@@ -1,23 +1,25 @@
 // src/routes/book.tsx
-import { useMemo, useState } from "react";
 import type React from "react";
-import { useSearchParams, useLoaderData, type LoaderFunctionArgs, Link } from "react-router-dom";
-import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import i18n from "@/i18n";
-import { toAppLanguage } from "@/utils/lang";
-import type { AppLanguage } from "@/i18n.config";
-import roomsData from "@/data/roomsData";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { BASE_URL } from "@/config/site";
-import { i18nConfig } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { resolveI18nMeta } from "@/utils/i18nMeta";
+import type { LinksFunction,MetaFunction } from "react-router";
+import { Link,type LoaderFunctionArgs, useLoaderData, useSearchParams } from "react-router-dom";
+
 import { Section } from "@acme/ui/atoms/Section";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE } from "@/utils/headConstants";
+
+import { BASE_URL } from "@/config/site";
+import roomsData from "@/data/roomsData";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import { toAppLanguage } from "@/utils/lang";
+import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 type LoaderOut = { lang: AppLanguage; title: string; desc: string };
 

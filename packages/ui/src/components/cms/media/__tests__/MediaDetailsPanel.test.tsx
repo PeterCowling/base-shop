@@ -1,9 +1,11 @@
+import type { ComponentProps } from "react";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ComponentProps } from "react";
+
 import type { MediaItem } from "@acme/types";
-import MediaDetailsPanel from "../MediaDetailsPanel";
+
 import * as shadcn from "../../../atoms/shadcn";
+import MediaDetailsPanel from "../MediaDetailsPanel";
 
 jest.mock("../../../atoms/shadcn", () => {
   const React = require("react");

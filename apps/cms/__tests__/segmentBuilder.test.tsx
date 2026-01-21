@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import SegmentBuilder from "../src/app/cms/segments/SegmentBuilder";
 
 describe("SegmentBuilder", () => {

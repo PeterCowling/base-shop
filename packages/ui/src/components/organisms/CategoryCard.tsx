@@ -1,5 +1,6 @@
-import Image from "next/image";
 import * as React from "react";
+import Image from "next/image";
+
 import { cn } from "../../utils/style";
 // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 const IMAGE_CLASSES = "rounded-md object-cover"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]

@@ -1,10 +1,11 @@
-import TagChips from "@/components/guides/TagChips";
-import TransportNotice from "@/components/guides/TransportNotice";
+import AlsoHelpful from "@/components/common/AlsoHelpful";
 import PlanChoice from "@/components/guides/PlanChoice";
 import RelatedGuides from "@/components/guides/RelatedGuides";
-import AlsoHelpful from "@/components/common/AlsoHelpful";
-import type { RelatedGuidesConfig, AlsoHelpfulConfig } from "../types";
+import TagChips from "@/components/guides/TagChips";
+import TransportNotice from "@/components/guides/TransportNotice";
 import type { AppLanguage } from "@/i18n.config";
+
+import type { AlsoHelpfulConfig,RelatedGuidesConfig } from "../types";
 
 interface FooterWidgetsProps {
   lang: AppLanguage;

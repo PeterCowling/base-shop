@@ -1,19 +1,21 @@
 "use client";
 // i18n-exempt file — editor toolbar; copy slated for extraction
 
-import type { Locale } from "@acme/i18n/locales";
-import { useTranslations } from "@acme/i18n";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import React, { useEffect } from "react";
-import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Dialog, DialogContent, DialogTrigger } from "../../atoms/shadcn";
-import { Popover, PopoverContent, PopoverTrigger, Tooltip as UITooltip } from "../../atoms";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+
 import { getLegacyPreset } from "../../../utils/devicePresets";
-import DeviceSelector from "../../common/DeviceSelector";
-import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
-import { DesignMenuContent } from "./DesignMenu";
-import { Tooltip } from "../../atoms";
+import { Popover, PopoverContent, PopoverTrigger, Tooltip,Tooltip as UITooltip  } from "../../atoms";
 // Avoid useRouter to keep this component usable in test/standalone environments
 import { Inline } from "../../atoms/primitives/Inline";
+import { Button, Dialog, DialogContent, DialogTrigger,Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import DeviceSelector from "../../common/DeviceSelector";
+
+import { DesignMenuContent } from "./DesignMenu";
+import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
 
 export interface PageToolbarProps {
   deviceId: string;

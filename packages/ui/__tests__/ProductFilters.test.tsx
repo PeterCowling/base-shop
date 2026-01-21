@@ -1,9 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProductFilters from "../src/components/cms/ProductFilters";
-import { useProductFilters } from "../src/hooks/useProductFilters";
 
-const products = [
+import ProductFilters from "../src/components/cms/ProductFilters";
+import { type ProductStatus,useProductFilters } from "../src/hooks/useProductFilters";
+
+const products: Array<{
+  id: string;
+  title: string;
+  sku: string;
+  status: ProductStatus;
+}> = [
   { id: "1", title: "Red Shoe", sku: "red", status: "active" },
   { id: "2", title: "Blue Hat", sku: "blue", status: "draft" },
 ];
@@ -51,4 +57,3 @@ describe("ProductFilters", () => {
     expect(screen.getByTestId("count").textContent).toBe("2");
   });
 });
-

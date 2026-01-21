@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "node:path";
 import ts from "typescript";
 import type { Role } from "@acme/auth/types/roles";
-import { republishShop } from "../../../../../../scripts/src/republish-shop";
+import { republishShop } from "../../../../../../../scripts/src/republish-shop";
 
 jest.setTimeout(15000);
 
@@ -46,7 +46,7 @@ jest.mock("../../../../../../scripts/src/republish-shop", () => ({
 }), { virtual: true });
 
 async function setSession(role: Role): Promise<void> {
-  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@auth");
+  const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("@acme/auth");
   mockCookies.get.mockReset();
   mockCookies.set.mockReset();
   await createCustomerSession({ customerId: "c1", role });

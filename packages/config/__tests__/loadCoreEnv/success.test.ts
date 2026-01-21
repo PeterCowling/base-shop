@@ -1,4 +1,4 @@
-import { describe, it, afterEach, expect } from "@jest/globals";
+import { afterEach, describe, expect,it } from "@jest/globals";
 
 afterEach(() => {
   jest.restoreAllMocks();

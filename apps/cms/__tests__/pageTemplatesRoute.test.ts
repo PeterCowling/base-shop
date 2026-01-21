@@ -38,7 +38,7 @@ describe("page templates list API route", () => {
   it("filters templates by group", async () => {
     const route = await import("../src/app/api/page-templates/route");
     const req = new Request("http://localhost/cms/api/page-templates?group=product");
-    const res = await route.GET(req as unknown as Request);
+    const res = await route.GET(req as any);
     const json = (await res.json()) as Array<{ id: string; components: unknown[] }>;
     expect(json.length).toBe(corePageTemplates.filter((tpl) => tpl.id.startsWith("core.page.product.")).length);
     json.forEach((tpl) => {

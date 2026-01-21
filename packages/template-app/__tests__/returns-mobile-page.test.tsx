@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
 import { render, screen } from "@testing-library/react";
+
 import MobileReturnPage from "../src/app/returns/mobile/page";
 
 jest.mock("@acme/platform-core/returnLogistics", () => ({

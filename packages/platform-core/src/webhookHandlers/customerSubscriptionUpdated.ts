@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+
 import { syncSubscriptionData } from "../repositories/subscriptions.server";
 
 export default async function customerSubscriptionUpdated(

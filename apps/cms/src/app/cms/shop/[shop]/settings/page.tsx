@@ -1,19 +1,20 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
+import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@acme/lib";
+
+import { checkShopExists } from "@acme/platform-core";
 import {
   readSettings,
   readShop,
 } from "@acme/platform-core/repositories/json.server";
 import type { Locale } from "@acme/types";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
 
-import SettingsHero from "./components/SettingsHero";
-import ServiceAutomationGrid from "./components/ServiceAutomationGrid";
-import ConfigurationOverview from "./components/ConfigurationOverview";
 import AdminTools from "./components/AdminTools";
+import ConfigurationOverview from "./components/ConfigurationOverview";
+import ServiceAutomationGrid from "./components/ServiceAutomationGrid";
+import SettingsHero from "./components/SettingsHero";
 import {
   buildServiceEditors,
   buildSnapshotItems,

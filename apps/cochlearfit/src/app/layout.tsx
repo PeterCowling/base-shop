@@ -1,8 +1,10 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
+
 import HtmlLangUpdater from "@/components/HtmlLangUpdater";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
-import "./globals.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],

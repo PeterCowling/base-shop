@@ -1,14 +1,15 @@
 // packages/ui/components/atoms/primitives/dropdown-menu.tsx
-/* eslint-disable ds/no-hardcoded-copy -- CHORE-0000: primitives contain only class tokens and no user-facing copy */
+ 
 "use client";
 
+import * as React from "react";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import {
   CheckIcon,
   ChevronRightIcon,
   DotFilledIcon,
 } from "@radix-ui/react-icons";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import * as React from "react";
+
 import { cn } from "../../../utils/style";
 
 export const DropdownMenu = DropdownMenuPrimitive.Root;
@@ -122,7 +123,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 ps-8 pe-2 text-sm outline-none transition-colors hover:bg-accent-soft focus:bg-accent-soft data-[highlighted]:bg-accent-soft data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
-    checked={checked ?? false}
+    checked={checked}
     {...props}
   >
     {/* Relative wrapper ensures the absolute indicator has a positioned ancestor */}

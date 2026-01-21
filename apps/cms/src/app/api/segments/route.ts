@@ -1,13 +1,16 @@
 import "@acme/zod-utils/initZod";
-import { NextRequest, NextResponse } from "next/server";
-import path from "path";
+
+import { type NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
-import { writeJsonFile } from "@/lib/server/jsonIO";
-import { DATA_ROOT } from "@acme/platform-core/dataRoot";
-import { validateShopName } from "@acme/lib";
+import path from "path";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
-import { segmentSchema, type Segment } from "@acme/types";
+
+import { validateShopName } from "@acme/lib";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+import { parseJsonBody } from "@acme/lib/http/server";
+import { type Segment,segmentSchema } from "@acme/types";
+
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 function segmentsPath(shop: string): string {
   shop = validateShopName(shop);

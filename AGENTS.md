@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-20
 ---
 
 # AGENTS.md — Operational Runbook
@@ -62,8 +62,48 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-Planning prompt: `.claude/prompts/plan-feature.md`
-Building prompt: `.claude/prompts/build-feature.md`
+Planning prompt: `.agents/skills/workflows/plan-feature.md`
+Building prompt: `.agents/skills/workflows/build-feature.md`
+
+**Skill system**: See `.agents/README.md` for the full skill catalog and usage guide.
+
+## Progressive Context Loading
+
+When you encounter errors or unfamiliar situations, load additional context on-demand rather than asking immediately.
+
+### Protocol
+
+1. **Check the manifest first**: `.agents/skills/manifest.yaml` lists skills with `triggers` — error patterns that indicate when a skill is relevant
+2. **Match your error to triggers**: If you see an error like `Cannot use import statement outside a module`, search the manifest for matching triggers
+3. **Load the skill**: Read the corresponding skill file (e.g., `.agents/skills/testing/jest-esm-issues.md`)
+4. **Follow the workflow**: Each skill has step-by-step instructions
+
+### Example
+
+```
+Error: Cannot use import statement outside a module
+```
+
+1. Search manifest → find `jest-esm-issues` skill with matching trigger
+2. Read `.agents/skills/testing/jest-esm-issues.md`
+3. Apply the fix: `JEST_FORCE_CJS=1 pnpm --filter <pkg> test -- path/to/file.test.ts`
+
+### Available Troubleshooting Skills
+
+| Error Pattern | Skill | Location |
+|---------------|-------|----------|
+| `Cannot use import statement outside a module` | jest-esm-issues | `.agents/skills/testing/jest-esm-issues.md` |
+| `git status` confusing / lost commits | git-recovery | `.agents/skills/safety/git-recovery.md` |
+| `ERESOLVE` / peer dependency errors | dependency-conflicts | `.agents/skills/domain/dependency-conflicts.md` |
+
+### When to Ask vs. When to Load Context
+
+| Situation | Action |
+|-----------|--------|
+| Error matches a trigger in manifest | Load the skill, try the fix |
+| Error is unclear after reading skill | Ask user with context from skill |
+| No matching skill exists | Ask user, then consider creating skill |
+| Ambiguous user intent | Ask user for clarification |
 
 ## Plan Documentation
 
@@ -97,6 +137,22 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
+
+## Session Reflection (Optional)
+
+After completing significant work, consider capturing learnings to improve future agent work.
+
+**When to reflect:**
+- Completed a multi-task plan
+- Resolved unexpected problems with novel solutions
+- Discovered gaps in documentation or skills
+
+**How to reflect:**
+1. Read `.agents/skills/workflows/session-reflection.md`
+2. Create a learning file in `.agents/learnings/`
+3. Note problems, patterns that worked, skill gaps, tooling ideas
+
+**Privacy:** Learnings are gitignored. Never include customer data, secrets, or PII.
 
 ---
 

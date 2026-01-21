@@ -1,7 +1,8 @@
 // packages/ui/src/components/cms/marketing/discounts/hooks/__tests__/useDiscountFormState.test.tsx
-import React, { FormEvent } from "react";
-import { render, fireEvent, screen, act } from "@testing-library/react";
-import { useDiscountFormState, type DiscountFormState } from "../useDiscountFormState";
+import React, { type FormEvent } from "react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
+import { type DiscountFormState,useDiscountFormState } from "../useDiscountFormState";
 
 function Harness({
   defaults,
@@ -55,7 +56,7 @@ describe("useDiscountFormState", () => {
 
   test("successful submission without onSubmit produces draft saved toast", async () => {
     const onStatus = jest.fn();
-    render(<Harness onStatus={onStatus} defaults={{ code: "X", value: 5, startDate: new Date(), appliesTo: "all" }} />);
+    render(<Harness onStatus={onStatus} defaults={{ code: "X", value: 5, startDate: new Date().toISOString(), appliesTo: "all" }} />);
 
     await act(async () => {
       fireEvent.click(screen.getByText("submit"));
@@ -73,7 +74,7 @@ describe("useDiscountFormState", () => {
       <Harness
         onSubmit={ok}
         onStatus={onStatus}
-        defaults={{ code: "OK", value: 10, startDate: new Date(), appliesTo: "all" }}
+        defaults={{ code: "OK", value: 10, startDate: new Date().toISOString(), appliesTo: "all" }}
       />
     );
     await act(async () => {
@@ -89,7 +90,7 @@ describe("useDiscountFormState", () => {
     render(
       <Harness
         onSubmit={fail}
-        defaults={{ code: "X", value: 1, startDate: new Date(), appliesTo: "all" }}
+        defaults={{ code: "X", value: 1, startDate: new Date().toISOString(), appliesTo: "all" }}
       />
     );
     await act(async () => {

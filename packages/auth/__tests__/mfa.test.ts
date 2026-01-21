@@ -1,12 +1,14 @@
+import { authenticator } from "otplib";
+
+import { prisma } from "@acme/platform-core/db";
+
 import {
   enrollMfa,
-  verifyMfa,
-  isMfaEnabled,
   generateMfaToken,
+  isMfaEnabled,
+  verifyMfa,
   verifyMfaToken,
 } from "../src/mfa";
-import { authenticator } from "otplib";
-import { prisma } from "@acme/platform-core/db";
 
 jest.mock("@acme/platform-core/db", () => {
   const store = new Map<string, any>();

@@ -1,4 +1,5 @@
 import "server-only";
+
 export declare const jsonThemePresetRepository: {
   getThemePresets(shop: string): Promise<Record<string, Record<string, string>>>;
   saveThemePreset(

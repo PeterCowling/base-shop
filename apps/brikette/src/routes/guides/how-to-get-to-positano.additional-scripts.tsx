@@ -1,5 +1,6 @@
 // src/routes/guides/how-to-get-to-positano.additional-scripts.tsx
 import { Fragment } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
 
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, {
@@ -7,19 +8,18 @@ import BreadcrumbStructuredData, {
 } from "@/components/seo/BreadcrumbStructuredData";
 import HowToReachPositanoStructuredData from "@/components/seo/HowToReachPositanoStructuredData";
 import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
 import type { AppLanguage } from "@/i18n.config";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { OG_IMAGE } from "./how-to-get-to-positano.constants";
-import type { GuideKey } from "@/routes.guides-helpers";
+import { getGuidesTranslator } from "./how-to-get-to-positano.translators";
 // Ensure this file declares GUIDE_KEY/SLUG as named const exports for linting
 export const GUIDE_KEY = "howToGetToPositano" satisfies GuideKey;
 export const GUIDE_SLUG = "how-to-get-to-positano" as const;
-import { getGuidesTranslator } from "./how-to-get-to-positano.translators";
 
 function createLazyGuidesTranslator(locale: string): GuideSeoTemplateContext["translateGuides"] {
   const translator = ((key: string, second?: unknown) => {

@@ -1,6 +1,7 @@
 /* i18n-exempt file -- TEST-0002: unit test literals are not user-facing */
-/* eslint-disable ds/no-raw-color, ds/no-hsl-var-in-tests -- TEST-0002: validating color parsing/contrast requires raw hex/HSL and CSS variable syntax */
-import { render, fireEvent } from "@testing-library/react";
+ 
+import { fireEvent,render } from "@testing-library/react";
+
 import * as CI from "../ColorInput";
 
 const {

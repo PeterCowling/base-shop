@@ -1,2 +1,2 @@
-export type { AnalyticsEvent, AnalyticsAggregates } from "./analytics/index";
-export { trackEvent, trackPageView, trackOrder } from "./analytics/index";
+export type { AnalyticsAggregates,AnalyticsEvent } from "./analytics/index";
+export { trackEvent, trackOrder,trackPageView } from "./analytics/index";

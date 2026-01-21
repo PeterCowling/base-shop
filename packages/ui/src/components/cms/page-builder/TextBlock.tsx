@@ -1,32 +1,35 @@
 "use client";
 
-import { locales as supportedLocales, type Locale } from "@acme/i18n/locales";
+import { memo, useCallback, useRef } from "react";
 import { CSS } from "@dnd-kit/utilities";
+import DOMPurify from "dompurify";
+
+import { type Locale,locales as supportedLocales } from "@acme/i18n/locales";
 import type {
+  HistoryState,
   PageComponent,
   TextComponent as BaseTextComponent,
-  HistoryState,
 } from "@acme/types";
-import { memo, useCallback, useRef } from "react";
-import DOMPurify from "dompurify";
-import useSortableBlock from "./useSortableBlock";
-import useBlockDimensions from "./useBlockDimensions";
-import useBlockTransform from "./useBlockTransform";
-import useLocalizedTextEditor from "./useLocalizedTextEditor";
-import useCanvasSpacing from "./useCanvasSpacing";
-import TextBlockView from "./TextBlockView";
-import { cssVars } from "../../../utils/style/cssVars";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import type { Action } from "./state";
-import useCanvasRotate from "./useCanvasRotate";
-import type { EditorFlags as EditorFlagsLocal } from "./state/layout/types";
+
+import { cssVars } from "../../../utils/style/cssVars";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Button,
 } from "../../atoms/shadcn";
+
+import type { Action } from "./state";
+import type { EditorFlags as EditorFlagsLocal } from "./state/layout/types";
+import TextBlockView from "./TextBlockView";
+import useBlockDimensions from "./useBlockDimensions";
+import useBlockTransform from "./useBlockTransform";
+import useCanvasRotate from "./useCanvasRotate";
+import useCanvasSpacing from "./useCanvasSpacing";
+import useLocalizedTextEditor from "./useLocalizedTextEditor";
+import useSortableBlock from "./useSortableBlock";
 
 type TextComponent = PageComponent & Omit<BaseTextComponent, "text"> & {
   text?: string | Record<string, string>;

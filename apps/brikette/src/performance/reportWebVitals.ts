@@ -1,8 +1,8 @@
 // src/performance/reportWebVitals.ts
-import { onCLS, onINP, onLCP, type Metric, type ReportOpts } from "web-vitals";
+import { type Metric, onCLS, onINP, onLCP, type ReportOpts } from "web-vitals";
 
-import { WebVitalMetric } from "@/types/performance";
 import { GA_MEASUREMENT_ID, IS_PROD } from "@/config/env";
+import { type WebVitalMetric } from "@/types/performance";
 
 /** POST/Beacon endpoint; adjust to your edge collector / worker */
 const ENDPOINT = "/api/rum";

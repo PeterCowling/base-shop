@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../../../utils/style";
+import { Inline, Stack } from "../../../atoms/primitives";
 import { Card, CardContent } from "../../../atoms/shadcn";
 import { CodeBlock } from "../../../molecules";
-import { cn } from "../../../../utils/style";
-import { useTranslations } from "@acme/i18n";
-import { Inline, Stack } from "../../../atoms/primitives";
 
 export interface PreviewPanelProps<TData> {
   title: string;

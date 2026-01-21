@@ -1,7 +1,8 @@
 /** @jest-environment jsdom */
-import { render, screen } from "@testing-library/react";
-import Cancelled from "../src/app/cancelled/page";
 import { useSearchParams } from "next/navigation";
+import { render, screen } from "@testing-library/react";
+
+import Cancelled from "../src/app/cancelled/page";
 
 jest.mock("next/navigation", () => ({ useSearchParams: jest.fn() }));
 

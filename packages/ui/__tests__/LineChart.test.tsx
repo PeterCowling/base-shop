@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
+
 import { LineChart } from "../src/components/atoms/LineChart";
 
 jest.mock("react-chartjs-2", () => ({

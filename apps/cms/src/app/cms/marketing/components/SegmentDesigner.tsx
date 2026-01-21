@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { z } from "zod";
-import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
-import { Grid, Inline, Cluster } from "@acme/ui/components/atoms/primitives";
-import { FormField } from "@acme/ui/components/molecules";
+
 import { useTranslations } from "@acme/i18n";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
+import { Cluster,Grid, Inline } from "@acme/ui/components/atoms/primitives";
+import { FormField } from "@acme/ui/components/molecules";
+
 import type { ActionResult } from "../../components/actionResult";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
@@ -134,7 +136,7 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
       return;
     }
 
-    const result = await saveSegment(parsed.data);
+    const result = await saveSegment(parsed.data as SegmentPayload);
     onNotify(result);
     if (result.status === "success") {
       setForm({ shop: form.shop, id: "", name: "" });

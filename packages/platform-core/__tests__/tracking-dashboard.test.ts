@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import type { TrackingStatus } from "../src/shipping";
 
 jest.mock("../src/shipping", () => ({

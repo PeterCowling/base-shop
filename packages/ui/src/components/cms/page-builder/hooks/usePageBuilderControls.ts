@@ -1,14 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Locale } from "@acme/i18n/locales";
-import type { HistoryState } from "@acme/types";
-import type { Action } from "../state";
-import { devicePresets, getLegacyPreset, type DevicePreset, findDevicePresetById } from "../../../../utils/devicePresets";
-import { usePreviewDevice } from "../../../../hooks";
-import useViewport from "./useViewport";
-import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
+
 import { useTranslations } from "@acme/i18n";
+import type { HistoryState } from "@acme/types";
+import type { Locale as PageBuilderLocale } from "@acme/types/constants";
+
+import { usePreviewDevice } from "../../../../hooks";
+import { type DevicePreset, devicePresets, findDevicePresetById,getLegacyPreset } from "../../../../utils/devicePresets";
+import { type CallBackProps, STATUS,type Step } from "../PageBuilderTour";
+import type { Action } from "../state";
+
+import useViewport from "./useViewport";
 
 export interface PageBuilderControlsParams {
   state: HistoryState;
@@ -169,7 +172,7 @@ const usePageBuilderControls = ({ state, dispatch }: PageBuilderControlsParams) 
     return viewportStyle;
   }, [viewportStyle, editingSizeRecord, viewport]);
 
-  const [locale, setLocale] = useState<Locale>("en");
+  const [locale, setLocale] = useState<PageBuilderLocale>("en");
   const [showPreview, setShowPreview] = useState(false);
   const togglePreview = useCallback(
     () => setShowPreview((p) => !p),

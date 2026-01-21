@@ -1,9 +1,11 @@
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] class names and UI symbols are not user-facing copy */
-import { memo, MouseEvent, useCallback } from "react";
+import { memo, type MouseEvent, useCallback } from "react";
+
+import type { RoomCardImageLabels } from "@acme/ui/types/roomCard";
+
+import { resolveAssetPath } from "../shared/media";
 
 import CfImage from "./CfImage";
-import { resolveAssetPath } from "../shared/media";
-import type { RoomCardImageLabels } from "../types/roomCard";
 
 export interface RoomImageProps {
   image: string;

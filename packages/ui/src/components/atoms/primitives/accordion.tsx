@@ -1,14 +1,14 @@
 "use client";
 
 import {
+  type ButtonHTMLAttributes,
   createContext,
   forwardRef,
+  type HTMLAttributes,
   useCallback,
   useContext,
   useMemo,
   useState,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
 } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 
@@ -29,7 +29,7 @@ function useAccordionContext() {
   const context = useContext(AccordionContext);
   if (!context) {
     // Developer-facing usage error; not user-visible copy
-    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0010 developer error message
+     
     throw new Error("Accordion components must be used within <Accordion>");
   }
   return context;
@@ -41,7 +41,7 @@ function useAccordionItemValue() {
   const value = useContext(AccordionItemContext);
   if (!value) {
     // Developer-facing usage error; not user-visible copy
-    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0009 developer error message
+     
     throw new Error("AccordionTrigger and AccordionContent must be rendered inside AccordionItem");
   }
   return value;
@@ -66,11 +66,11 @@ export function Accordion({
   className,
   ...props
 }: AccordionProps) {
-  const initialValues = useMemo((): string[] => {
+  const initialValues = useMemo(() => {
     const normalized = toArray(defaultValue);
     if (type === "single") {
       const first = normalized[0];
-      return first !== undefined ? [first] : [];
+      return typeof first === "string" ? [first] : [];
     }
     return Array.from(new Set(normalized));
   }, [defaultValue, type]);

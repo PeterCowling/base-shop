@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import ProductFilters from "./ProductFilters";
 
 const meta: Meta<typeof ProductFilters> = {

@@ -1,10 +1,11 @@
 // packages/template-app/src/api/stripe-webhook/route.ts
 
+import { type NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
+
+import { paymentsEnv } from "@acme/config/env/payments";
 import { handleStripeWebhook } from "@acme/platform-core/stripe-webhook";
 import { stripe } from "@acme/stripe";
-import { paymentsEnv } from "@acme/config/env/payments";
-import { NextRequest, NextResponse } from "next/server";
-import type Stripe from "stripe";
 
 export const runtime = "nodejs";
 

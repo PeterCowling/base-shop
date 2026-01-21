@@ -23,15 +23,15 @@ describe("updatePost", () => {
   it("handles invalid JSON in content producing empty body and products", async () => {
     const { ensureAuthorized } = await import(
       "../../../../actions/common/auth"
-    );
+    ) as unknown as { ensureAuthorized: jest.Mock };
     const {
       getConfig,
       collectProductSlugs,
       filterExistingProductSlugs,
-    } = await import("../../config");
+    } = await import("../../config") as unknown as { getConfig: jest.Mock; collectProductSlugs: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { updatePost: repoUpdatePost } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { updatePost: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -57,11 +57,11 @@ describe("updatePost", () => {
   it("returns error when slug already exists", async () => {
     const { getConfig, filterExistingProductSlugs } = await import(
       "../../config"
-    );
+    ) as unknown as { getConfig: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const {
       updatePost: repoUpdatePost,
       slugExists,
-    } = await import("@acme/platform-core/repositories/blog.server");
+    } = await import("@acme/platform-core/repositories/blog.server") as unknown as { updatePost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -83,10 +83,10 @@ describe("updatePost", () => {
 
   it("keeps original product slugs when filterExistingProductSlugs returns null", async () => {
     const { getConfig, collectProductSlugs, filterExistingProductSlugs } =
-      await import("../../config");
+      await import("../../config") as unknown as { getConfig: jest.Mock; collectProductSlugs: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { updatePost: repoUpdatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server"
-    );
+    ) as unknown as { updatePost: jest.Mock; slugExists: jest.Mock };
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -117,10 +117,10 @@ describe("updatePost", () => {
   it("surfaces repository update errors", async () => {
     const { getConfig, filterExistingProductSlugs } = await import(
       "../../config",
-    );
+    ) as unknown as { getConfig: jest.Mock; filterExistingProductSlugs: jest.Mock };
     const { updatePost: repoUpdatePost, slugExists } = await import(
       "@acme/platform-core/repositories/blog.server",
-    );
+    ) as unknown as { updatePost: jest.Mock; slugExists: jest.Mock };
     const consoleErrorSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});

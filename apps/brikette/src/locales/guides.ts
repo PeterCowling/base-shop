@@ -5,13 +5,13 @@
 // Existing import paths remain stable.
 // -----------------------------------------------------------------------------
 
-export type { GuidesNamespace } from "./guides.types";
 export {
   __setGuidesModulesForTests,
   getGuidesBundle,
-  peekGuidesBundle,
-  listGuidesLocales,
-  isSplitGuidesLocale,
   hasGuidesLocale,
+  isSplitGuidesLocale,
+  listGuidesLocales,
+  peekGuidesBundle,
 } from "./guides.api";
+export type { GuidesNamespace } from "./guides.types";
 

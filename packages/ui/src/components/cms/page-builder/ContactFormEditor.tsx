@@ -1,5 +1,7 @@
 import type { ContactFormComponent } from "@acme/types";
+
 import { Input } from "../../atoms/shadcn";
+
 import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<ContactFormComponent>;

@@ -1,19 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
 
-import {
-  defaultDiscountValues,
-  getDiscountPreview,
-  type DiscountFormValues,
-  type DiscountPreviewData,
-} from "../types";
 import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
   type ValidationErrors,
 } from "../../shared";
+import {
+  defaultDiscountValues,
+  type DiscountFormValues,
+  type DiscountPreviewData,
+  getDiscountPreview,
+} from "../types";
 
 export type DiscountField = keyof DiscountFormValues;
 export type DiscountErrors = ValidationErrors<DiscountField>;

@@ -1,6 +1,7 @@
-import { createShop } from "../createShop";
-import { validateShopName } from "@acme/platform-core/shops";
 import { createShopOptionsSchema } from "@acme/platform-core/createShop/schema";
+import { validateShopName } from "@acme/platform-core/shops";
+
+import { createShop } from "../createShop";
 
 jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),
@@ -24,8 +25,8 @@ describe("createShop", () => {
     type: "sale",
     template: "temp",
     theme: "theme",
-    payment: [],
-    shipping: [],
+    payment: {},
+    shipping: {},
     pageTitle: {},
     pageDescription: {},
     socialImage: "",

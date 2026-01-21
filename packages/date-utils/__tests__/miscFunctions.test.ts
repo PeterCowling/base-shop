@@ -1,5 +1,6 @@
-import { calculateRentalDays, formatTimestamp, parseDate, parseDateSafe, formatDate, startOfDay, getTimeRemaining, formatDuration } from "../src";
 import { fromZonedTime } from "date-fns-tz";
+
+import { calculateRentalDays, formatDate, formatDuration,formatTimestamp, getTimeRemaining, parseDate, parseDateSafe, startOfDay } from "../src";
 
 describe("additional date-utils coverage", () => {
   describe("calculateRentalDays variations", () => {

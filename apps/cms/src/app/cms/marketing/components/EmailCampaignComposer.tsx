@@ -5,8 +5,8 @@ import { CampaignComposerPreview } from "./EmailCampaignComposer/CampaignCompose
 import { CampaignHistoryTable } from "./EmailCampaignComposer/CampaignHistoryTable";
 import { CampaignMetricsCard } from "./EmailCampaignComposer/CampaignMetricsCard";
 import {
-  useEmailCampaignComposer,
   type EmailCampaignComposerProps,
+  useEmailCampaignComposer,
 } from "./EmailCampaignComposer/useEmailCampaignComposer";
 
 export function EmailCampaignComposer(props: EmailCampaignComposerProps) {

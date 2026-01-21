@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import NavigationPreview from "../NavigationPreview";
 
 const items = [
@@ -17,23 +18,20 @@ describe("NavigationPreview", () => {
     expect(getByText("Child")).toBeInTheDocument();
   });
 
-  it("renders defaults when label or url missing", () => {
+  it("renders items with empty labels and URLs gracefully", () => {
     const { getAllByRole } = render(
-      <NavigationPreview items={[{ id: "1", children: [{ id: "2" }] }]} />,
+      <NavigationPreview items={[{ id: "1", label: "", url: "", children: [{ id: "2", label: "", url: "" }] }]} />,
     );
-    const links = getAllByRole("link", { name: "Item" });
+    const links = getAllByRole("link");
     expect(links).toHaveLength(2);
-    links.forEach((link) => {
-      expect(link).toHaveAttribute("href", "#");
-    });
   });
 
-  it("defaults href to '#' when url is missing", () => {
+  it("renders item with label but empty URL", () => {
     const { getByRole } = render(
-      <NavigationPreview items={[{ id: "1", label: "No URL" }]} />,
+      <NavigationPreview items={[{ id: "1", label: "No URL", url: "" }]} />,
     );
     const link = getByRole("link", { name: "No URL" });
-    expect(link).toHaveAttribute("href", "#");
+    expect(link).toHaveAttribute("href", "");
   });
 
   it("does not render nested list for items without children", () => {

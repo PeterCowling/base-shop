@@ -1,7 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import path from "path";
-import { timingSafeEqual, createHash } from "crypto";
-import argon2 from "argon2";
+
 import { readJsonFile } from "@/lib/server/jsonIO";
 
 type PreviewLink = {
@@ -47,17 +46,10 @@ export async function GET(
   const link = links[token];
   if (!link) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const password = new URL(req.url).searchParams.get("pw") ?? "";
+  const password = new URL(req.url).searchParams.get("pw");
   if (link.passwordHash) {
-    let ok = false;
-    if (link.passwordHash.startsWith("$argon2")) {
-      ok = await argon2.verify(link.passwordHash, password);
-    } else {
-      const computed = createHash("sha256").update(password).digest("hex");
-      ok =
-        computed.length === link.passwordHash.length &&
-        timingSafeEqual(Buffer.from(computed), Buffer.from(link.passwordHash));
-    }
+    const crypto = await import("crypto");
+    const ok = crypto.createHash("sha256").update(password ?? "").digest("hex") === link.passwordHash;
     if (!ok) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

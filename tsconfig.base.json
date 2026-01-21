@@ -100,14 +100,6 @@
         "packages/platform-core/src/*",
         "packages/platform-core/dist/*"
       ],
-      "@acme/shared-utils": [
-        "packages/shared-utils/src/index.ts",
-        "packages/shared-utils/dist/index.d.ts"
-      ],
-      "@acme/shared-utils/*": [
-        "packages/shared-utils/src/*",
-        "packages/shared-utils/dist/*"
-      ],
       "@acme/email": [
         "packages/email/src/index.ts",
         "packages/email/dist/index.d.ts"

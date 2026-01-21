@@ -8,13 +8,14 @@
 import {
   cpSync,
   existsSync,
+  mkdirSync,
+  readdirSync,
   readFileSync,
   writeFileSync,
-  readdirSync,
-  mkdirSync,
 } from "fs";
 import { dirname, join, parse, resolve } from "path";
 import { fileURLToPath } from "url";
+
 import { loadTokens } from "./themeUtils";
 
 // `__dirname` only exists in CommonJS builds; declare it so TypeScript allows

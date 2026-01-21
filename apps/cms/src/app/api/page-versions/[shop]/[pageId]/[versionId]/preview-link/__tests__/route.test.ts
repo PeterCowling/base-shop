@@ -1,8 +1,14 @@
-const ensureAuthorized = jest.fn();
-const readJsonFile = jest.fn();
-const writeJsonFile = jest.fn();
-const withFileLock = jest.fn();
-const argon2Hash = jest.fn();
+import type { NextRequest } from "next/server";
+
+export {};
+
+type MockFn = jest.Mock;
+
+const ensureAuthorized = jest.fn() as unknown as MockFn;
+const readJsonFile = jest.fn() as unknown as MockFn;
+const writeJsonFile = jest.fn() as unknown as MockFn;
+const withFileLock = jest.fn() as unknown as MockFn;
+const argon2Hash = jest.fn() as unknown as MockFn;
 
 jest.mock("@cms/actions/common/auth", () => ({ ensureAuthorized }));
 jest.mock("@/lib/server/jsonIO", () => ({
@@ -34,7 +40,7 @@ describe("preview-link creation auth", () => {
       new Request("http://test.local/api/page-versions/preview-link", {
         method: "POST",
         body: JSON.stringify({}),
-      }),
+      }) as unknown as NextRequest,
       { params: Promise.resolve({ shop: "demo", pageId: "p1", versionId: "v1" }) } as any
     );
 
@@ -54,7 +60,7 @@ describe("preview-link creation auth", () => {
       new Request("http://test.local/api/page-versions/preview-link", {
         method: "POST",
         body: JSON.stringify({ password: "secret" }),
-      }),
+      }) as unknown as NextRequest,
       { params: Promise.resolve({ shop: "demo", pageId: "p1", versionId: "v1" }) } as any
     );
 

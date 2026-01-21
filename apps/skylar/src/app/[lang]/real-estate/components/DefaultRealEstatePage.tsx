@@ -1,11 +1,13 @@
 /* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] Milan real-estate CTAs and copy rely on CSS tokens; DS tap-size rule misestimates actual button size */
 
 import Image from "next/image";
+
 import PageShell from "@/components/PageShell";
-import type { Locale } from "@/lib/locales";
 import { joinClasses } from "@/lib/joinClasses";
+import type { Locale } from "@/lib/locales";
+
 import { SECTIONS } from "../constants";
-import { type TranslateFn, type TranslatedImageSource } from "../utils";
+import { type TranslatedImageSource,type TranslateFn } from "../utils";
 
 type DefaultRealEstatePageProps = {
   lang: Locale;

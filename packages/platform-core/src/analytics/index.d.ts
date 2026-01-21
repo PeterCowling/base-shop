@@ -1,5 +1,7 @@
 import "server-only";
+
 import type { AnalyticsEvent } from "@acme/types";
+
 export type { AnalyticsEvent };
 export interface AnalyticsProvider {
     track(event: AnalyticsEvent): Promise<void> | void;

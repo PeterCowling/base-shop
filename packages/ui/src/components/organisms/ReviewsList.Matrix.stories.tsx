@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/ReviewsList.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { ReviewsList } from './ReviewsList';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ReviewsList } from './ReviewsList';
 
 const reviews = [
   { id: '1', author: 'Jane', rating: 5, title: 'Great fit', body: 'Loved the jacket, perfect for fall.' },

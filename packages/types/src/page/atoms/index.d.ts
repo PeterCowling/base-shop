@@ -1,7 +1,7 @@
-export * from "./Image";
-export * from "./Text";
-export * from "./CustomHtml";
 export * from "./Button";
+export * from "./CustomHtml";
 export * from "./Divider";
+export * from "./Image";
 export * from "./Spacer";
+export * from "./Text";
 //# sourceMappingURL=index.d.ts.map

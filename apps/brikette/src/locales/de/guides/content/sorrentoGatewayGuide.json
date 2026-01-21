@@ -1,0 +1,28 @@
+{
+  "seo": {
+    "title": "Sorrent: Tor zur Amalfiküste",
+    "description": "Warum in Sorrent starten und wie es weiter nach Positano und Capri geht."
+  },
+  "linkLabel": "Sorrent: Tor zur Amalfiküste",
+  "intro": [
+    "Sorrent ist ein praktischer Ausgangspunkt mit häufigen Bussen und Fähren an die Amalfiküste sowie einfachen Zugverbindungen zurück nach Neapel und Pompeji."
+  ],
+  "sections": [
+    {
+      "id": "why-sorrento",
+      "title": "Warum über Sorrent anreisen",
+      "body": [
+        "Züge aus Neapel kommen regelmäßig; Unterkünfte sind zahlreich und oft günstiger als in Positano.",
+        "Von der Stadt aus verbinden Busse und saisonale Fähren mit Positano und Amalfi."
+      ]
+    },
+    {
+      "id": "onward-connections",
+      "title": "Weiterreise",
+      "body": [
+        "SITA-Busse fahren ganzjährig nach Positano und Amalfi; Tickets vor dem Einsteigen kaufen.",
+        "In der Saison fahren Fähren direkt nach Positano — tolle Aussicht und weniger Stufen mit Gepäck."
+      ]
+    }
+  ]
+}

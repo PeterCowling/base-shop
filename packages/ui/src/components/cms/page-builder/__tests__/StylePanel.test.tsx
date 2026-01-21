@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import StylePanel from "../StylePanel";
-import useContrastWarnings from "../../../../hooks/useContrastWarnings";
+
 import { track } from "@acme/telemetry";
+
+import useContrastWarnings from "../../../../hooks/useContrastWarnings";
+import StylePanel from "../StylePanel";
 
 const translations: Record<string, string> = {};
 

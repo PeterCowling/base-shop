@@ -1,12 +1,15 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import * as React from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
+import type { SKU } from "@acme/types";
+
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { ProductQuickView } from "../overlays/ProductQuickView";
-import type { SKU } from "@acme/types";
+
 import { ProductCard } from "./ProductCard";
-import { useTranslations } from "@acme/i18n";
 
 export type Product = SKU;
 

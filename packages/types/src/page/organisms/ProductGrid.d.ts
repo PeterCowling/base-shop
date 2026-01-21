@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ProductGridComponent extends PageComponentBase {
     type: "ProductGrid";
     skus?: string[];

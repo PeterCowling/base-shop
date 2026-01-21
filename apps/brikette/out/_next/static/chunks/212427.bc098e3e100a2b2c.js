@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[212427],{212427:a=>{a.exports=JSON.parse('{"luminariaPraiano":{"name":"サン・ドメニコのルミナリア","startDate":"2025-08-01","endDate":"2025-08-04","locationName":"Piazza San Gennaro","addressLocality":"Praiano","description":"8月上旬にプライアーノの広場とテラスが何千ものキャンドルで照らされます。"}}')}}]);

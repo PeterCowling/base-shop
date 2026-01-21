@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { __setMockSession } from "next-auth";
+
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const read = jest.fn();
@@ -104,7 +105,6 @@ describe("GET", () => {
   });
 
   it("returns 400 when repository errors", async () => {
-    jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     read.mockRejectedValue(new Error("oops"));
     const res = await GET(req("http://test.local"), {

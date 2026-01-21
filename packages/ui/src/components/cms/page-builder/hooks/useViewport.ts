@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import type { DevicePreset } from "../../../../utils/devicePresets";
 
 const useViewport = (device: DevicePreset) => {

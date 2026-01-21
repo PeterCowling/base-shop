@@ -1,8 +1,10 @@
 /* src/routes/experiences/components/CtaSection.tsx */
+import { Section } from "@acme/ui/atoms/Section";
+
 import { PrimaryLinkButton, SecondaryLinkButton } from "@/components/ui/cta";
 import { Cluster } from "@/components/ui/flex";
+
 import { CTA_HEADING_ID } from "../constants";
-import { Section } from "@acme/ui/atoms/Section";
 import type { CtaContent, CtaLink } from "../types";
 
 type CtaSectionProps = {
@@ -29,7 +31,7 @@ export function CtaSection({ cta, ctaLinks }: CtaSectionProps) {
   ];
 
   return (
-    <Section padding="none" className="px-6 pb-24 sm:px-8" aria-labelledby={CTA_HEADING_ID}>
+    <Section padding="none" className="px-6 pb-24 sm:px-8 md:px-12 lg:px-16" aria-labelledby={CTA_HEADING_ID}>
       <Section
         as="div"
         padding="none"

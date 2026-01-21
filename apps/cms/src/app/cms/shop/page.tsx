@@ -1,9 +1,11 @@
 // apps/cms/src/app/cms/shop/page.tsx
 
-import ShopIndexShopChooser from "./ShopIndexShopChooser.client";
-import { Tag } from "@acme/ui/components/atoms";
-import { listShops } from "../../../lib/listShops";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
+import { Tag } from "@acme/ui/components/atoms";
+
+import { listShops } from "../../../lib/listShops";
+
+import ShopIndexShopChooser from "./ShopIndexShopChooser.client";
 
 // i18n-exempt: Static SEO title with brand; not user-facing runtime copy
 export const metadata = {

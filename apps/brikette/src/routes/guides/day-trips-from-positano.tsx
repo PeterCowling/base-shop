@@ -1,17 +1,17 @@
 // src/routes/guides/day-trips-from-positano.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
-
-import { guideHref, guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
-import { BASE_URL } from "@/config/site";
-
 import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
+import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 
 export const handle = { tags: ["itinerary", "day-trip", "amalfi"] };
 

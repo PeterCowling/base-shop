@@ -1,14 +1,16 @@
 /* i18n-exempt file -- UI-000: Non-user-facing literals (class names, aria roles, HTML attributes, key names). Visible copy comes from props or i18n keys. */
 "use client";
 
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useId, useState } from "react";
-import { Input } from "../atoms/shadcn";
-import { cn } from "../../utils/style";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
 import { useTranslations } from "@acme/i18n";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { cn } from "../../utils/style";
+import { Input } from "../atoms/shadcn";
 
 export interface SearchBarProps {
   /** Suggestions to filter based on the search query */

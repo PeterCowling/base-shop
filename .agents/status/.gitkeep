@@ -1,0 +1,2 @@
+# This file ensures the status/ directory exists on fresh clones.
+# Actual status files are gitignored (ephemeral worker coordination).

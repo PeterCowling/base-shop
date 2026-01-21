@@ -1,18 +1,19 @@
 // src/routes/guides/ferragosto-in-positano.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import EventInfo from "@/components/guides/EventInfo";
+import EventStructuredData from "@/components/seo/EventStructuredData";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry } from "./guide-manifest";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import EventStructuredData from "@/components/seo/EventStructuredData";
-import EventInfo from "@/components/guides/EventInfo";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import { guideAbsoluteUrl, guideHref } from "@/routes.guides-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import i18n from "@/i18n";
-import type { LinksFunction, MetaFunction } from "react-router";
 import getFallbackLanguage from "./utils/getFallbackLanguage";
 
 type GuideLinksArgs = Parameters<LinksFunction>[0];

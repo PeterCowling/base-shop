@@ -1,9 +1,10 @@
-import appI18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import type { LoaderFunctionArgs } from "react-router-dom";
+
+import appI18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 import { GUIDE_KEY, REQUIRED_NAMESPACES } from "./constants";
 
@@ -31,5 +32,5 @@ export async function clientLoader({ request }: LoaderFunctionArgs) {
     (appI18n as { language?: string }).language = lang;
   }
 
-  return { lang } as const;
+  return { lang, guide: GUIDE_KEY } as const;
 }

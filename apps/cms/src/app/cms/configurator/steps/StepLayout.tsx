@@ -1,20 +1,23 @@
 // src/components/cms/StepLayout.tsx
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
+import { type ReactNode,useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { CheckIcon } from "@radix-ui/react-icons";
+
+import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
-import { apiRequest } from "../lib/api";
-import { useState, useEffect, useCallback, type ReactNode } from "react";
-import { Alert, Toast, Spinner } from "@/components/atoms";
-import { CheckIcon } from "@radix-ui/react-icons";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { Cluster,Inline } from "@acme/ui/components/atoms/primitives";
+
+import { Alert, Spinner,Toast } from "@/components/atoms";
+import { Button } from "@/components/atoms/shadcn";
+import PageBuilder from "@/components/cms/PageBuilder";
+
 import { useConfigurator } from "../ConfiguratorContext";
+import useStepCompletion from "../hooks/useStepCompletion";
 import { useThemeLoader } from "../hooks/useThemeLoader";
-import { Inline, Cluster } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+import { apiRequest } from "../lib/api";
 
 interface Props {
   /** Optional inner content for the step */

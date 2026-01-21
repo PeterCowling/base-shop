@@ -1,3 +1,10 @@
+import { deleteMedia } from "@cms/actions/media.server";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { useImageOrientationValidation } from "@acme/ui/hooks/useImageOrientationValidation";
+
+import MediaManager from "../MediaManager";
+
 jest.mock("@cms/actions/media.server", () => ({
   deleteMedia: jest.fn(),
 }));
@@ -92,17 +99,12 @@ function createShadcnStub() {
   };
 }
 
-jest.mock("@/components/atoms/shadcn", () =>
+jest.mock("@acme/ui/components/atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 jest.mock("../../atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
-
-import { deleteMedia } from "@cms/actions/media.server";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { useImageOrientationValidation } from "@acme/ui/hooks/useImageOrientationValidation";
-import MediaManager from "../MediaManager";
 
 jest.mock("@acme/ui/hooks/useImageOrientationValidation");
 
@@ -139,8 +141,7 @@ describe("MediaManager – delete", () => {
         onMetadataUpdate={mockMetadataUpdate}
       />
     );
-    fireEvent.click(screen.getByRole("button", { name: /media actions/i }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /delete media/i }));
+    fireEvent.click(screen.getAllByRole("button", { name: /Delete media/i })[0]);
     await waitFor(() =>
       expect(mockDelete).toHaveBeenCalledWith("s", "/img.jpg")
     );

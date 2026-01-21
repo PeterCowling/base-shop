@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { __setShippingEnv, __resetShippingEnv } from '@acme/config/env/shipping';
+
+import { __resetShippingEnv,__setShippingEnv } from '@acme/config/env/shipping';
 
 import { getShippingRate, getTrackingStatus } from '../src/shipping/index';
 
@@ -264,6 +265,7 @@ describe('getTrackingStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
+    global.fetch = fetchMock;
   });
 
   it('returns DHL tracking status', async () => {

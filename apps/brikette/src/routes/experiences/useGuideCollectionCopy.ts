@@ -39,6 +39,9 @@ export function useGuideCollectionCopy({
     const cardCta = translate("guideCollections.cardCta", () =>
       experiencesEnT("guideCollections.cardCta"),
     );
+    const directionsLabel = translate("guideCollections.directionsLabel", () =>
+      experiencesEnT("guideCollections.directionsLabel"),
+    );
     const filterHeading = translate("guideCollections.filterHeading", () =>
       experiencesEnT("guideCollections.filterHeading"),
     );
@@ -80,6 +83,7 @@ export function useGuideCollectionCopy({
       description,
       clearFilterLabel,
       cardCta,
+      directionsLabel,
       filterHeading,
       filterDescription,
       ...(taggedHeading ? { taggedHeading } : {}),

@@ -1,9 +1,9 @@
 {
   "title": "교통 정보는 반드시 재확인하세요",
   "items": {
-    "buses": "번역을 준비하고 있습니다.",
+    "buses": "버스: SITA Sud 공식 시간표를 확인하세요 — <sitaLink>sitasudtrasporti.it</sitaLink>.",
     "ferries": "페리: 계절과 날씨에 따라 운항이 달라집니다. <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink> 등 운영사 공지를 확인하세요.",
-    "airlink": "번역을 준비하고 있습니다.",
+    "airlink": "살레르노 코스타 다말피(QSR)로 입국하나요? Airlink 셔틀로 살레르노에 이동하세요 — <airportLink>aeroportodisalerno.it</airportLink> 및 <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
     "driving": "운전: SS163 도로는 번호판 요일제(4~10월)와 ZTL이 있습니다. 주차 요금은 계절과 위치에 따라 다르니, 공식 공지사항을 확인하세요.",
     "premium": "프리미엄·계절 상품: 우버 보트와 헬리콥터 전세는 여름에만 제한적으로 운영됩니다. 이용 전 최신 정보를 확인하세요."
   },

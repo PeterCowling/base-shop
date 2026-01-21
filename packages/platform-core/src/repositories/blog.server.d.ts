@@ -1,6 +1,8 @@
 import "server-only";
-import { slugExists, type SanityConfig } from "@acme/plugin-sanity";
+
+import { type SanityConfig,slugExists } from "@acme/plugin-sanity";
 import type { SanityPostCreate, SanityPostUpdate } from "@acme/types";
+
 export interface SanityPost {
     _id: string;
     title?: string;

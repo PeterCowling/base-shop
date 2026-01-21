@@ -1,6 +1,8 @@
-import type { CartLine, CartState } from "@acme/platform-core/cart";
 import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
+import type { CartLine, CartState } from "@acme/platform-core/cart";
+
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
 

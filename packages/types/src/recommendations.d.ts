@@ -1,4 +1,5 @@
 import type { SKU } from "./Product";
+
 export type RecommendationPreset = "featured" | "new" | "bestsellers" | "clearance" | "limited";
 export interface RecommendationRequest {
     preset?: RecommendationPreset;

@@ -1,4 +1,5 @@
 import "server-only";
+
 export type OidcConfig = {
     issuer: string;
     clientId: string;

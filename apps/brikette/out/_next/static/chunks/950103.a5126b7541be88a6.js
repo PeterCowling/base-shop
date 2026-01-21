@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[950103],{950103:e=>{e.exports=JSON.parse('{"bookNow":"अभी बुक करें","reserveNow":"अभी बुक करें","checkAvailability":"उपलब्धता जाँचें","directBookingPerks":"डायरेक्ट बुकिंग के फ़ायदे","bestPriceGuaranteed":"सर्वोत्तम कीमत की गारंटी","openBarMenu":"बार मेनू खोलें"}')}}]);

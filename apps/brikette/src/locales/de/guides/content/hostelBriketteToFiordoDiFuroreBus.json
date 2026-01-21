@@ -1,14 +1,14 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Schritt‑für‑Schritt von Hostel Brikette nach Fiordo di Furore mit dem SITA‑Bus: wo du Tickets kaufst und wie du zum Strand gelangst."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
     "Folgen Sie dieser Route, um mit dem SITA-Bus vom Hostel Brikette nach Fiordo di Furore zu reisen, ohne eine Haltestelle zu verpassen oder unvorbereitet anzukommen.",
     "Am Fjord gibt es keine Ticketverkaufsstellen oder Geschäfte, daher decken diese Stufen die Tickets, die nächste Bushaltestelle und die Treppe ab, die zum Strand hinunterführt."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Bevor du das Hostel verlässt",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -65,7 +65,7 @@
     "Bewahren Sie den %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette Rückfahrtführer% für Ihre Rückreise auf.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Muss ich wirklich im Voraus ein Rückflugticket kaufen?",
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "q": "How will I recognise the right stop?",
+      "q": "Wie erkenne ich die richtige Haltestelle?",
       "a": [
         "Nachdem der Bus die Bogenbrücke über den Fjord überquert hat, hält er neben der Leitplanke. Achten Sie auf die Brückenansichten, achten Sie auf den Fahrer und verwenden Sie die PIN „JH73+PQ Furore“ von Google Maps als Backup."
       ]

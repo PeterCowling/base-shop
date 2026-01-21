@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface CertificateCheckComponent extends PageComponentBase {
     type: "CertificateCheck";
     productId?: string;

@@ -1,5 +1,6 @@
-import { jest } from "@jest/globals";
 import { ReadableStream as NodeReadableStream } from "node:stream/web";
+
+import { jest } from "@jest/globals";
 import {
   fetch as nodeFetch,
   Headers as NodeHeaders,
@@ -75,18 +76,18 @@ const originalEnv = process.env;
 process.env = { ...process.env, CMS_BASE_URL: "https://cms.example" } as NodeJS.ProcessEnv;
 
 // Mocks for service modules
-const createShop = jest.fn();
-const initShop = jest.fn();
-const deployShop = jest.fn();
-const seedShop = jest.fn();
-const getRequiredSteps = jest.fn();
-const getConfiguratorProgressForShop = jest.fn();
-const runRequiredConfigChecks = jest.fn();
-const getLaunchGate = jest.fn();
-const evaluateProdGate = jest.fn();
-const recordFirstProdLaunch = jest.fn();
-const recordStageTests = jest.fn();
-const verifyShopAfterDeploy = jest.fn();
+const createShop = jest.fn() as unknown as jest.Mock;
+const initShop = jest.fn() as unknown as jest.Mock;
+const deployShop = jest.fn() as unknown as jest.Mock;
+const seedShop = jest.fn() as unknown as jest.Mock;
+const getRequiredSteps = jest.fn() as unknown as jest.Mock;
+const getConfiguratorProgressForShop = jest.fn() as unknown as jest.Mock;
+const runRequiredConfigChecks = jest.fn() as unknown as jest.Mock;
+const getLaunchGate = jest.fn() as unknown as jest.Mock;
+const evaluateProdGate = jest.fn() as unknown as jest.Mock;
+const recordFirstProdLaunch = jest.fn() as unknown as jest.Mock;
+const recordStageTests = jest.fn() as unknown as jest.Mock;
+const verifyShopAfterDeploy = jest.fn() as unknown as jest.Mock;
 const mockCookies = jest.fn(() => ({
   get: (name: string) => (name === "csrf_token" ? { value: "token" } : undefined),
 }));
@@ -124,7 +125,7 @@ jest.mock("@acme/platform-core/configurator", () => ({
 }));
 
 jest.mock("next/headers", () => ({
-  cookies: (...args: any[]) => mockCookies(...args),
+  cookies: (...args: unknown[]) => mockCookies(...(args as [])),
 }));
 
 jest.mock("../../src/lib/server/launchGate", () => ({
@@ -142,7 +143,7 @@ jest.mock("../../src/actions/verifyShopAfterDeploy.server", () => ({
 
 jest.mock("@cms/actions/common/auth", () => ({
   __esModule: true,
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
+  ensureAuthorized: (jest.fn() as unknown as jest.Mock).mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
 }));
 
 afterEach(() => {

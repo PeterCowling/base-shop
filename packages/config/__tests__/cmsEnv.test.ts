@@ -1,4 +1,5 @@
 import { expect } from "@jest/globals";
+
 import { withEnv } from "../test/utils/withEnv";
 
 describe("cmsEnv", () => {
@@ -15,6 +16,8 @@ describe("cmsEnv", () => {
         SANITY_API_VERSION: "2023-01-01",
         SANITY_PROJECT_ID: "test-project",
         SANITY_DATASET: "production",
+        SANITY_API_TOKEN: "test-token",
+        SANITY_PREVIEW_SECRET: "preview-secret",
       },
       () => import("../src/env/cms"),
     );
@@ -54,6 +57,10 @@ describe("cmsEnv", () => {
           CMS_SPACE_URL: "not-a-url",
           CMS_ACCESS_TOKEN: "token",
           SANITY_API_VERSION: "2023-01-01",
+          SANITY_PROJECT_ID: "test-project",
+          SANITY_DATASET: "production",
+          SANITY_API_TOKEN: "test-token",
+          SANITY_PREVIEW_SECRET: "preview-secret",
         },
         () => import("../src/env/cms"),
       ),
@@ -70,6 +77,10 @@ describe("cmsEnv", () => {
           CMS_SPACE_URL: "https://example.com",
           CMS_ACCESS_TOKEN: undefined,
           SANITY_API_VERSION: undefined,
+          SANITY_PROJECT_ID: "test-project",
+          SANITY_DATASET: "production",
+          SANITY_API_TOKEN: "test-token",
+          SANITY_PREVIEW_SECRET: "preview-secret",
         },
         () => import("../src/env/cms"),
       ),

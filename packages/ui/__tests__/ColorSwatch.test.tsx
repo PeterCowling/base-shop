@@ -1,11 +1,12 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { fireEvent,render } from "@testing-library/react";
+
 import { ColorSwatch } from "../src/components/atoms/ColorSwatch";
 
 describe("ColorSwatch", () => {
   it("applies size, color and selected ring class", () => {
     const { rerender, getByRole } = render(
-      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
+       
       <ColorSwatch color="#ff0000" size={30} selected={false} aria-label="swatch" />
     );
     const btn = getByRole("button", { name: "swatch" }) as HTMLButtonElement;
@@ -13,10 +14,12 @@ describe("ColorSwatch", () => {
     expect(btn.style.backgroundColor).toBe("rgb(255, 0, 0)");
     expect(btn.style.width).toBe("30px");
     expect(btn.style.height).toBe("30px");
-    expect(btn.className).not.toMatch(/ring-2/);
+    // When not selected, should not have ring-2 ring-offset-2 (the selected state)
+    // Note: focus-visible:ring-2 is always present but only applies on focus
+    expect(btn.className).not.toMatch(/\bring-2 ring-offset-2\b/);
 
     rerender(
-      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
+       
       <ColorSwatch color="#00ff00" size={16} selected aria-label="swatch" />
     );
     const btn2 = getByRole("button", { name: "swatch" }) as HTMLButtonElement;
@@ -26,7 +29,7 @@ describe("ColorSwatch", () => {
   it("fires onClick when pressed", () => {
     const onClick = jest.fn();
     const { getByRole } = render(
-      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
+       
       <ColorSwatch color="#123456" aria-label="pick" onClick={onClick} />
     );
     fireEvent.click(getByRole("button", { name: "pick" }));

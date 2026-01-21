@@ -34,7 +34,7 @@ function ensureTsconfigGuards() {
     json.compilerOptions.allowJs = false;
   }
   fs.writeFileSync(tsconfigPath, JSON.stringify(json, null, 2) + "\n", "utf8");
-  console.log(
+  console.info(
     "✓ tsconfig: set compilerOptions.verbatimModuleSyntax=true, allowJs=false"
   );
 }
@@ -173,7 +173,7 @@ function fixFile(filePath) {
 
   if (code !== original) {
     fs.writeFileSync(filePath, code, "utf8");
-    console.log(`✓ patched ${path.relative(repoRoot, filePath)}`);
+    console.info(`✓ patched ${path.relative(repoRoot, filePath)}`);
   }
 }
 
@@ -181,7 +181,7 @@ function run() {
   ensureTsconfigGuards();
   const files = listTsFiles(srcEnvDir);
   for (const f of files) fixFile(f);
-  console.log("Done.");
+  console.info("Done.");
 }
 
 run();

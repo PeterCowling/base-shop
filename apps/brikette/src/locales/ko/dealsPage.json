@@ -8,31 +8,7 @@
   "title": "{{from}}부터 {{to}}까지 숙박 시 {{percent}} % 할인",
   "promo": "공식 웹사이트에서 직접 예약하면 {{percent}} % 할인이 결제 시 자동으로 적용됩니다.",
   "dealCard": {
-    "savePercent": "{{percent}} 할인",
-    "stayDatesLabel": "숙박 기간:",
-    "badges": {
-      "autoApplied": "자동 적용",
-      "directOnly": "직접 예약만 해당"
-    },
-    "cta": {
-      "bookDirect": "직접 예약",
-      "applyDeal": "혜택 적용"
-    },
-    "status": {
-      "upcoming": "예정된 혜택 · {{startDate}} 시작",
-      "expired": "종료"
-    }
-  },
-  "hero": {
-    "activeLabel": "현재 혜택",
-    "activeTitle": "{{percent}} 할인",
-    "activeDatesLabel": "숙박 기간:",
-    "activeSubtitle": "결제 시 자동 적용. 직접 예약만 해당됩니다."
-  },
-  "emptyState": {
-    "title": "현재 혜택 없음",
-    "subtitle": "직접 예약으로 최적의 가격과 모든 혜택을 누리세요.",
-    "secondaryCta": "직접 예약 혜택 보기"
+    "savePercent": "{{percent}} 할인"
   },
   "status": {
     "banner": {
@@ -79,15 +55,9 @@
   "perksGuarantee": "공식 웹사이트에서 직접 예약하면 이러한 독점 혜택이 자동으로 적용됩니다.",
   "perksIntroLink": "모든 혜택 보기",
   "perksList": [
-    {
-      "title": "정상가 대비 최대 25 % 자동 할인"
-    },
-    {
-      "title": "무료 조식 제공"
-    },
-    {
-      "title": "무료 저녁 음료 제공"
-    }
+    "정상가 대비 최대 25 % 자동 할인",
+    "무료 조식 제공",
+    "무료 저녁 음료 제공"
   ],
   "expired": {
     "message": "이 혜택은 종료되었습니다."

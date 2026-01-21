@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[270895],{270895:o=>{o.exports=JSON.parse('{"articleCount_one":"مقال واحد","articleCount_other":"{{count}} مقالات","topTagsHeading":"أبرز الوسوم","robots":{"noindexFollow":"noindex,follow"}}')}}]);

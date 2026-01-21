@@ -1,10 +1,13 @@
 // packages/ui/src/components/organisms/ProductCard.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { within, userEvent, expect } from 'storybook/test';
-import { ProductCard, type ProductCardProps } from './ProductCard';
+import { expect,userEvent, within } from 'storybook/test';
+
 import { PRODUCTS } from '@acme/platform-core/products/index';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductCard, type ProductCardProps } from './ProductCard';
 
 const sample = PRODUCTS[0];
 

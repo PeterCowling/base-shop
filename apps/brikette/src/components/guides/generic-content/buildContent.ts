@@ -1,8 +1,13 @@
 // src/components/guides/generic-content/buildContent.ts
-import { toStringArray, toTrimmedString } from "./strings";
+import i18n from "@/i18n";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { debugGuide } from "@/utils/debug";
+import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
+
+import { resolveSections, toListSection } from "./sections";
+import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
 import { normaliseTocOverrides } from "./toc";
 import { resolveLabelFallback, resolveTitle } from "./translations";
-import { resolveSections, toListSection } from "./sections";
 import type {
   FAQ,
   GenericContentTranslator,
@@ -12,10 +17,6 @@ import type {
   SupplementalNavEntry,
   TocOverrides,
 } from "./types";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { debugGuide } from "@/utils/debug";
-import i18n from "@/i18n";
-import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 
 export type GenericContentData = {
   intro: string[];
@@ -45,6 +46,7 @@ export function buildGenericContentData(
   const tocRaw = t(`content.${guideKey}.toc`, { returnObjects: true });
   const tipsRaw = t(`content.${guideKey}.tips`, { returnObjects: true });
   const warningsRaw = t(`content.${guideKey}.warnings`, { returnObjects: true });
+  const warningsContentKey = `content.${guideKey}.warnings` as const;
 
   // Normalise intro to support legacy shapes like { default: string[] }
   const intro = (() => {
@@ -289,7 +291,9 @@ export function buildGenericContentData(
   }
 
   const tips = toStringArray(tipsRaw);
-  const warnings = toStringArray(warningsRaw);
+  const warnings = toStringArray(warningsRaw).filter((value) =>
+    !looksLikePlaceholderTranslation(value, warningsContentKey, guideKey),
+  );
 
   const tipsKey = "labels.tipsHeading" as const;
   const warningsKey = "labels.warningsHeading" as const;
@@ -325,6 +329,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.essentials`, { returnObjects: true }),
     essentialsTitle,
     "essentials",
+    {
+      expectedKey: `content.${guideKey}.essentials`,
+      guideKey,
+    },
   );
 
   const costsTitleKey = `content.${guideKey}.typicalCostsTitle` as const;
@@ -340,6 +348,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.typicalCosts`, { returnObjects: true }),
     costsTitle,
     "costs",
+    {
+      expectedKey: `content.${guideKey}.typicalCosts`,
+      guideKey,
+    },
   );
 
   const resolvedSections = resolveSections(sections, tocOverrides);

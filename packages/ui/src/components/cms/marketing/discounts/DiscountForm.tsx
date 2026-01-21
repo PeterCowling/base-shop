@@ -1,25 +1,27 @@
 "use client";
 
-import { Button } from "../../../atoms/shadcn";
-import { Toast } from "../../../atoms";
-import { cn } from "../../../../utils/style";
 import { useTranslations } from "@acme/i18n";
-import {
-  type DiscountFormValues,
-  type DiscountPreviewData,
-} from "./types";
+
+import { cn } from "../../../../utils/style";
+import { Toast } from "../../../atoms";
+import { Button } from "../../../atoms/shadcn";
 import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
 } from "../shared";
+
 import {
   DiscountConfigurationCard,
   DiscountScheduleCard,
 } from "./DiscountFieldGroups";
 import {
-  useDiscountFormState,
   type DiscountErrors,
+  useDiscountFormState,
 } from "./hooks/useDiscountFormState";
+import {
+  type DiscountFormValues,
+  type DiscountPreviewData,
+} from "./types";
 
 export interface DiscountFormProps {
   defaultValues?: Partial<DiscountFormValues>;

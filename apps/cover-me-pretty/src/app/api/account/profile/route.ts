@@ -9,10 +9,10 @@ import {
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
-// This route uses @auth which relies on Node.js APIs like `crypto`.
+// This route uses @acme/auth which relies on Node.js APIs like `crypto`.
 // The Edge runtime does not provide these modules, so we must opt into
 // the Node.js runtime to ensure the build succeeds.
 export const runtime = "nodejs";

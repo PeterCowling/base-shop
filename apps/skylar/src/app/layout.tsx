@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
 import "./globals.css";
 import "./styles/base.css";
 import "./styles/shell.css";
@@ -26,6 +24,9 @@ import "./styles/milan-home.css";
 import "./styles/milan-products.css";
 import "./styles/milan-real-estate.css";
 import "./styles/milan-people.css";
+
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],

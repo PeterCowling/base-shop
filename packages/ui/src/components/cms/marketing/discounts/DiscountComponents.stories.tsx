@@ -1,14 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
+
+import { useTranslations } from "@acme/i18n";
+
 import DiscountForm from "./DiscountForm";
 import DiscountPreviewPanel from "./DiscountPreviewPanel";
 import DiscountSummaryCard from "./DiscountSummaryCard";
 import {
   defaultDiscountValues,
-  getDiscountPreview,
   type DiscountPreviewData,
+  getDiscountPreview,
 } from "./types";
-import { useTranslations } from "@acme/i18n";
 
 const meta: Meta<typeof DiscountForm> = {
   title: "CMS/Marketing/Discounts",

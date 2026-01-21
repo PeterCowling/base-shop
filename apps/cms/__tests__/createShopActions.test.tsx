@@ -1,11 +1,14 @@
 // apps/cms/__tests__/createShopActions.test.tsx
 /* eslint-env jest */
 
-import { jest } from "@jest/globals";
+import "../src/types/next-auth.d.ts";
+
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
-import "../src/types/next-auth.d.ts";
+
+import { jest } from "@jest/globals";
+
+import { mockNextAuthAdmin,withTempRepo } from "@acme/test-utils";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -74,7 +77,7 @@ describe("createNewShop authorization", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
 
     const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
-    const createShopFromConfig = jest.fn().mockResolvedValue(deployResult);
+    const createShopFromConfig = (jest.fn() as unknown as jest.Mock).mockResolvedValue(deployResult);
     jest.doMock("@acme/platform-core/createShop", () => ({
       __esModule: true,
       createShopFromConfig,
@@ -133,8 +136,7 @@ describe("submitShop error handling", () => {
       /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
     );
 
-    const mockFetch = jest
-      .fn()
+    const mockFetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: false, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) });
@@ -160,8 +162,7 @@ describe("submitShop error handling", () => {
       /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
     );
 
-    const mockFetch = jest
-      .fn()
+    const mockFetch = (jest.fn() as unknown as jest.Mock)
       .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
       .mockResolvedValueOnce({ ok: false, json: async () => ({}) });
     global.fetch = mockFetch as any;

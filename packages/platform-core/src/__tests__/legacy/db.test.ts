@@ -13,7 +13,7 @@ describe("db", () => {
   });
 
   it("uses stub when NODE_ENV=test and no DATABASE_URL", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -62,7 +62,7 @@ describe("db", () => {
   });
 
   it("findMany filters by shop and customerId", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -114,7 +114,7 @@ describe("db", () => {
   });
 
   it("throws when updating a nonexistent order", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -137,7 +137,7 @@ describe("db", () => {
   });
 
   it("updates orders by trackingNumber", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -171,8 +171,8 @@ describe("db", () => {
   });
 
   it("uses stub when NODE_ENV=test even with DATABASE_URL", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "test";
-    (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
+    process.env.NODE_ENV = "test";
+    process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
     }));
@@ -195,7 +195,7 @@ describe("db", () => {
   });
 
   it("uses stub when NODE_ENV=production and no DATABASE_URL", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
       "@prisma/client",
@@ -217,8 +217,8 @@ describe("db", () => {
   });
 
   it("falls back to stub when @prisma/client fails to load", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
+    process.env.NODE_ENV = "production";
+    process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
     }));
@@ -240,8 +240,8 @@ describe("db", () => {
   });
 
   it("falls back to stub when createRequire throws", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
-    (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
+    process.env.NODE_ENV = "production";
+    process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
     }));
@@ -261,7 +261,7 @@ describe("db", () => {
   });
 
   it("passes DATABASE_URL to PrismaClient", async () => {
-    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    process.env.NODE_ENV = "production";
     const databaseUrl = "postgres://from-core-env";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: databaseUrl }),

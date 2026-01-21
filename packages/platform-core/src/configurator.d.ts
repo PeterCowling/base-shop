@@ -3,6 +3,8 @@
  * Empty values and comments are ignored.
  * @param file Path to the .env file.
  */
+import type { ConfiguratorStepId } from "@acme/types";
+
 export declare function readEnvFile(file: string): Record<string, string>;
 /**
  * Validate that an environment file exists and conforms to the schema defined above.
@@ -31,7 +33,6 @@ export declare const checkShippingTax: ConfigCheck;
 export declare const checkCheckout: ConfigCheck;
 export declare const checkProductsInventory: ConfigCheck;
 export declare const checkNavigationHome: ConfigCheck;
-import type { ConfiguratorStepId } from "@acme/types";
 export declare const configuratorChecks: Partial<
   Record<ConfiguratorStepId, ConfigCheck>
 >;

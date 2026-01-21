@@ -1,5 +1,3 @@
-// apps/cover-me-pretty/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
@@ -10,6 +8,8 @@ import BlogListing, {
 import { fetchPublishedPosts } from "@acme/sanity";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
+import { listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
+import { draftMode } from "next/headers";
 
 export async function generateMetadata({
   params,
@@ -32,6 +32,7 @@ export default async function ShopIndexPage({
 }: {
   params: Promise<{ lang?: string }>;
 }) {
+  const { isEnabled } = await draftMode();
   let latestPost: BlogPost | undefined;
   try {
     const { lang: rawLang } = await params;
@@ -55,10 +56,19 @@ export default async function ShopIndexPage({
   } catch {
     /* ignore bad feature flags / blog fetch issues */
   }
+
+  const { lang: rawLang } = await params;
+  const lang = resolveLocale(rawLang);
+  let skus: SKU[] = [];
+  try {
+    skus = await listShopSkus(shop.id, lang, { includeDraft: isEnabled });
+  } catch {
+    skus = [];
+  }
   return (
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
-      <ShopClient skus={PRODUCTS as SKU[]} />
+      <ShopClient skus={skus} />
     </>
   );
 }

@@ -3,16 +3,16 @@
  * Single-purpose: build route-level meta() and links() for guide pages.
  * Re-exported from src/routes/guides/_GuideSeoTemplate.tsx for backwards compatibility.
  */
-import type { MetaFunction, LinksFunction } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
+import type { LinksFunction,MetaFunction } from "react-router";
 
 import { BASE_URL } from "@/config/site";
+import { type GuideKey,guideSlug } from "@/guides/slugs";
+import type { AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideSlug, type GuideKey } from "@/guides/slugs";
-import { getSlug } from "@/utils/slug";
-import { toAppLanguage } from "@/utils/lang";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
 export function makeGuideMeta(guideKey: GuideKey): MetaFunction {
   return (args: Parameters<MetaFunction>[0]) => {

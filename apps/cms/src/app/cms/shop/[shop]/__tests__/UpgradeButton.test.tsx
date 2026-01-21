@@ -1,9 +1,10 @@
 // React 19 requires this flag to silence act warnings in tests
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { act,render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import UpgradeButton from "@/app/cms/shop/[shop]/UpgradeButton";
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("UpgradeButton", () => {
   const shop = "test-shop";
@@ -96,7 +97,7 @@ describe("UpgradeButton", () => {
   });
 
   it("toggles loading and resets error between attempts", async () => {
-    let rejectFetch: (reason?: any) => void;
+    let rejectFetch: (reason?: any) => void = () => {};
     (global.fetch as jest.Mock)
       .mockImplementationOnce(
         () =>

@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import type { Decorator } from "@storybook/nextjs";
-import { useChannel } from "storybook/preview-api";
 import {
   HIGHLIGHT,
+  type HighlightOptions,
   REMOVE_HIGHLIGHT,
   RESET_HIGHLIGHT,
-  type HighlightOptions,
 } from "storybook/highlight";
+import { useChannel } from "storybook/preview-api";
+
 import type { StoryHighlightParameter } from "../types";
 
 const normalizeHighlightParameter = (

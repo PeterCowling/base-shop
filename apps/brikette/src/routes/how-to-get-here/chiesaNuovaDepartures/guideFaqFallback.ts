@@ -1,6 +1,7 @@
+import { type NormalizedFaqEntry,normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
+
 import { GUIDE_KEY } from "./constants";
 import { getGuidesFallbackTranslator } from "./i18n";
-import { normalizeFaqEntries, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 export function resolveGuideFaqFallback(targetLang: string): NormalizedFaqEntry[] {
   const translator = getGuidesFallbackTranslator(targetLang);

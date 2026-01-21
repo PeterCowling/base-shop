@@ -13,7 +13,7 @@ import {
   testEnv,
 } from "./authTestHelpers";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Jest SpyInstance types vary between @jest/globals and @types/jest
+ 
 type AnySpyInstance = { mockRestore: () => void } & Record<string, any>;
 
 const expectSecretsError = (

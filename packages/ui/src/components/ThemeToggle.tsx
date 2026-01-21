@@ -1,8 +1,9 @@
 "use client";
 
-import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useTheme, Theme } from "@acme/platform-core/contexts/ThemeContext";
 import type { ComponentType, KeyboardEvent } from "react";
+import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+
+import { type Theme,useTheme } from "@acme/platform-core/contexts/ThemeContext";
 // Minimal local translator to satisfy lint without runtime changes
 const t = (s: string) => s;
 

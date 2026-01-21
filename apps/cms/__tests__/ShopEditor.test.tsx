@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen } from "@testing-library/react";
-import ShopEditor from "../src/app/cms/shop/[shop]/settings/ShopEditor";
+
 import { updateShop } from "@cms/actions/shops.server";
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import ShopEditor from "../src/app/cms/shop/[shop]/settings/ShopEditor";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -94,11 +96,16 @@ describe("ShopEditor", () => {
       name: "Test",
       themeId: "base",
       catalogFilters: [],
+      themeDefaults: {},
       themeOverrides: {},
       themeTokens: {},
       filterMappings: {},
       priceOverrides: {},
       localeOverrides: {},
+      coverageIncluded: true,
+      componentVersions: {},
+      rentalSubscriptions: [],
+      subscriptionsEnabled: false,
       luxuryFeatures: {
         blog: false,
         contentMerchandising: false,

@@ -3,6 +3,10 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
+import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
+
 jest.mock(
   "@/components/atoms",
   () => {
@@ -110,14 +114,6 @@ jest.mock("../src/app/cms/configurator/steps", () => {
   };
 });
 
-import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
-import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
-import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
-
-declare global {
-  var fetch: jest.Mock;
-}
-
 let serverState: { state: any; completed: Record<string, string> };
 let originalAddEventListener: any;
 
@@ -150,7 +146,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  global.fetch.mockRestore();
+  (global.fetch as jest.Mock).mockRestore?.();
   localStorage.clear();
   window.addEventListener = originalAddEventListener;
 });

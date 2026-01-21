@@ -1,17 +1,20 @@
 // src/components/guides/GenericContent.tsx
-import { Children, Fragment, createElement, type ReactNode } from "react";
-import TableOfContents from "./TableOfContents";
-import { applyStableKeys, buildTableOfContents, toTocItems } from "./generic-content/toc";
-import { SectionHeading } from "./generic-content/SectionHeading";
-import { buildGenericContentData } from "./generic-content/buildContent";
-import type { GenericContentTranslator } from "./generic-content/types";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
-import i18n from "@/i18n";
+import { Children, createElement, Fragment, type ReactNode } from "react";
 import type { TFunction } from "i18next";
-import { debugGuide } from "@/utils/debug";
+
+import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { debugGuide } from "@/utils/debug";
+
+import { buildGenericContentData } from "./generic-content/buildContent";
+import { SectionHeading } from "./generic-content/SectionHeading";
+import { applyStableKeys, buildTableOfContents, toTocItems } from "./generic-content/toc";
+import type { GenericContentTranslator } from "./generic-content/types";
+import TableOfContents from "./TableOfContents";
 
 const DEBUG_KEYS = {
   tocFinalItems: "guides.genericContent.toc.finalItems",
@@ -110,6 +113,7 @@ export default function GenericContent({
   faqHeadingLevel = 2,
 }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
+  const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
 
   const content = buildGenericContentData(t, guideKey);
   if (!content) return null;
@@ -340,7 +344,7 @@ export default function GenericContent({
   })();
 
   return (
-    <div data-testid={TEST_IDS.root}>
+    <div data-testid={TEST_IDS.root} className={isExperiencesGuide ? "space-y-10" : undefined}>
       {introParagraphs.length > 0 ? (
         <div className="space-y-4">
           {introParagraphs.map((paragraph, index) => (
@@ -437,8 +441,8 @@ export default function GenericContent({
         // the section if an explicit title is not provided.
         const showFaqs = effectiveFaqs.length > 0;
         try {
-          if (process.env["DEBUG_TOC"] === "1") {
-            console.log("GC:showFaqs", { headingRaw, count: effectiveFaqs.length });
+          if (process.env.NODE_ENV !== "production" && process.env["DEBUG_TOC"] === "1") {
+            console.info("GC:showFaqs", { headingRaw, count: effectiveFaqs.length });
           }
         } catch {
           /* noop */
@@ -475,8 +479,10 @@ export default function GenericContent({
                 "text-pretty",
                 "text-2xl",
                 "font-semibold",
+                "leading-snug",
                 "tracking-tight",
                 "text-brand-heading",
+                "sm:text-3xl",
               ].join(" ");
               return createElement(
                 HeadingTag,
@@ -493,11 +499,11 @@ export default function GenericContent({
                   key={index}
                   className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface/40 shadow-sm transition-shadow hover:shadow-md dark:border-brand-outline/40 dark:bg-brand-bg/60"
                 >
-                  <summary className="px-4 py-3 text-lg font-semibold text-brand-heading">
+                  <summary className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl">
                     {renderTokens(item.q, `${guideKey}-faq-${index}-question`)}
                   </summary>
                   {Array.isArray(item.a) ? (
-                    <div className="space-y-3 px-4 pb-4 pt-1 text-base text-brand-text/90">
+                    <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
                       {item.a.map((answer, answerIndex) => (
                         <p key={answerIndex}>
                           {renderTokens(answer, `${guideKey}-faq-${index}-answer-${answerIndex}`)}
@@ -505,7 +511,7 @@ export default function GenericContent({
                       ))}
                     </div>
                   ) : (
-                    <p className="px-4 pb-4 pt-1 text-base text-brand-text/90">
+                    <p className="px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
                       {renderTokens(item.a, `${guideKey}-faq-${index}-answer`)}
                     </p>
                   )}

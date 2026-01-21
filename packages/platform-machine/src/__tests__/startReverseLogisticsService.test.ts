@@ -1,12 +1,12 @@
 /** @jest-environment node */
+import { startReverseLogisticsService } from "../startReverseLogisticsService";
+
 import {
+  logger,
   readdir,
   readFile,
-  logger,
   resetReverseLogisticsMocks,
 } from "./reverseLogisticsTestHelpers";
-
-import { startReverseLogisticsService } from "../startReverseLogisticsService";
 
 describe("startReverseLogisticsService", () => {
   beforeEach(() => {

@@ -1,10 +1,11 @@
 // packages/template-app/src/api/subscription/cancel/route.ts
-import { stripe } from "@acme/stripe";
+import { type NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
+
 import { coreEnv } from "@acme/config/env/core";
-import { NextRequest, NextResponse } from "next/server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
 import { getUserById, setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
-import type Stripe from "stripe";
+import { stripe } from "@acme/stripe";
 
 export const runtime = "edge";
 

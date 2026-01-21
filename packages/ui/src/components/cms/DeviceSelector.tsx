@@ -1,14 +1,15 @@
 "use client";
 import { ReloadIcon } from "@radix-ui/react-icons";
+
+import { type DevicePreset,devicePresets } from "../../utils/devicePresets";
 import {
   Button,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../atoms/shadcn";
-import { devicePresets, type DevicePreset } from "../../utils/devicePresets";
 
 interface Props {
   deviceId: string;

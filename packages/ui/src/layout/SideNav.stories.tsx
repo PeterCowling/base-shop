@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import { SideNav } from "../components/organisms/SideNav";
 
 const meta: Meta<typeof SideNav> = {

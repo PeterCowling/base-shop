@@ -3,12 +3,14 @@ import "~test/resetNextMocks";
 import React, { useEffect } from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import CartContents from "@/components/cart/CartContents";
-import CartSummary from "@/components/cart/CartSummary";
 import CartItemRow from "@/components/cart/CartItemRow";
+import CartSummary from "@/components/cart/CartSummary";
 import CartIconButton from "@/components/CartIconButton";
 import { useCart } from "@/contexts/cart/CartContext";
 import { getProductBySlug, getVariantById } from "@/lib/catalog";
+
 import { renderWithProviders } from "./testUtils";
 
 const AddItemOnMount = ({ variantId, quantity }: { variantId: string; quantity: number }) => {

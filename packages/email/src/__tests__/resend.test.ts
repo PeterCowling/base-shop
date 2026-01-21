@@ -111,7 +111,7 @@ describe("ResendProvider", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "from@example.com";
     send.mockRejectedValueOnce("fail");
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const errorSpy = jest.fn();
     const originalError = logger.error;
     logger.error = errorSpy as any;
@@ -141,7 +141,7 @@ describe("ResendProvider", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "from@example.com";
     send.mockRejectedValueOnce({ statusCode: 500 });
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const errorSpy = jest.fn();
     const originalError = logger.error;
     logger.error = errorSpy as any;
@@ -169,7 +169,7 @@ describe("ResendProvider", () => {
 
   it("logs warning when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "from@example.com";
-    const { logger } = await import("@acme/shared-utils");
+    const { logger } = await import("@acme/lib/logger");
     const warnSpy = jest.fn();
     const originalWarn = logger.warn;
     logger.warn = warnSpy as any;

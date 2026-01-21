@@ -1,7 +1,8 @@
-jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
+import { __resetMockSession,__setMockSession } from "next-auth";
 
 import { ensureAuthorized } from "../auth";
-import { __setMockSession, __resetMockSession } from "next-auth";
+
+jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 describe("ensureAuthorized", () => {
   beforeEach(() => {

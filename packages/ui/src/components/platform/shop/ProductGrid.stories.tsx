@@ -1,10 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import type { PropsWithChildren } from "react";
 import React, { useEffect } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { expect, within } from "@storybook/test";
-import type { SKU } from "@acme/types";
+
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import type { SKU } from "@acme/types";
+
 import { ProductGrid } from "./index";
 
 const baseSku: SKU = {

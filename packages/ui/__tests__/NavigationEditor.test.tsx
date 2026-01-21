@@ -1,7 +1,7 @@
-import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
-import { act } from "react";
-import NavigationEditor, { NavItem } from "../src/components/cms/NavigationEditor";
+import React, { act } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import NavigationEditor, { type NavItem } from "../src/components/cms/NavigationEditor";
 
 let dndHandlers: any = {};
 

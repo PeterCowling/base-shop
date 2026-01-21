@@ -1,12 +1,15 @@
+"use client";
+
 // src/components/careers/CareersHero.tsx
-import { Button } from "@acme/ui/atoms/Button";
-import { useModal } from "@/context/ModalContext";
-import { CfHeroImage } from "@/components/images/CfHeroImage";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { Button } from "@acme/ui/atoms/Button";
+
+import { CfHeroImage } from "@/components/images/CfHeroImage";
+import { useModal } from "@/context/ModalContext";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getOptionalString } from "@/utils/translationFallbacks";
 
 const HERO_IMAGE = "/img/c2.avif";

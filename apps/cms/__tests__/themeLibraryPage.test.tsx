@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import ThemeLibraryPage from "../src/app/cms/themes/library/page";
 
 const track = jest.fn();
 const useTranslations = jest.fn();
@@ -8,7 +11,7 @@ const translations = {
   "cms.back": "Mock Back Link",
 };
 
-const translator = (key: string) => translations[key] ?? key;
+const translator = (key: string) => (translations as Record<string, string>)[key] ?? key;
 
 jest.mock("@acme/telemetry", () => ({
   track,
@@ -24,8 +27,6 @@ jest.mock("next/link", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-
-import ThemeLibraryPage from "../src/app/cms/themes/library/page";
 
 describe("ThemeLibraryPage", () => {
   const originalFetch = global.fetch;

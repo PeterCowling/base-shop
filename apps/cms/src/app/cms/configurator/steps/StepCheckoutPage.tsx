@@ -1,17 +1,20 @@
 "use client";
 
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
-import { Toast } from "@/components/atoms";
-import TemplateSelector from "../components/TemplateSelector";
-import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
-import { ConfiguratorContext } from "../ConfiguratorContext";
+
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-import { apiRequest } from "../lib/api";
 import { Tag } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+
+import { Toast } from "@/components/atoms";
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
+
+import TemplateSelector from "../components/TemplateSelector";
+import { ConfiguratorContext } from "../ConfiguratorContext";
+import useStepCompletion from "../hooks/useStepCompletion";
+import { apiRequest } from "../lib/api";
 
 interface TemplateOption {
   id: string;

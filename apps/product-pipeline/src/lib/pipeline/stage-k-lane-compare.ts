@@ -2,8 +2,9 @@
 // apps/product-pipeline/src/lib/pipeline/stage-k-lane-compare.ts
 
 import type { StageKInput, StageKResult } from "@acme/pipeline-engine";
-import type { StageKInputPayload } from "./stage-k-scenario";
+
 import type { StageBInput } from "./stage-b";
+import type { StageKInputPayload } from "./stage-k-scenario";
 
 export type StageKSummary = {
   peakCashOutlayCents: string;

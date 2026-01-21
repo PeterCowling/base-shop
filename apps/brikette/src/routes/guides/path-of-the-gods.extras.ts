@@ -1,9 +1,10 @@
+import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+
 import { getGuidesBundle } from "../../locales/guides";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { GUIDE_KEY } from "./path-of-the-gods.constants";
-import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
 
 export type PathOfTheGodsGuideExtras = {
   intro: string[];

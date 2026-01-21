@@ -1,5 +1,6 @@
-import React from "react";
 import type { ButtonHTMLAttributes } from "react";
+import React from "react";
+
 import { Button as BaseButton } from "./Button";
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

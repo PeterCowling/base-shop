@@ -52,14 +52,14 @@
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "Conseils de bus",
   "tips": [
     "Printed timetables list Positano stops; expect Arienzo to appear about 2–5 minutes after Positano Sponda when heading from town.",
     "Buy return tickets before leaving the hostel — there are no shops at the beach to sell you more if you decide to stay longer.",
     "Check our %LINK:beaches|Positano beaches overview% for Arienzo facilities, shuttle boats, and alternative ways back to town."
   ],
   "afterArticle": {
-    "scanToShareHeading": "Scan to Share",
+    "scanToShareHeading": "Scanner pour partager",
     "scanToShareGalleryAlt": [
       "Scanner pour partager – Guide de bus Arienzo QR ou carte",
       "Quartier du Bar Internazionale et arrêt de bus Chiesa Nuova",

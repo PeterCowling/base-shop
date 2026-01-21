@@ -7,8 +7,11 @@ export const loadSplitRouteModule = async (
   contentKey: string,
 ): Promise<RouteContentModule | undefined> => {
   try {
-    // i18n-exempt -- TECH-000 [ttl=2026-12-31] dynamic import path for split locale content JSON modules
-    return await import(`../../locales/${lang}/how-to-get-here/routes/${contentKey}.json`);
+    const mod = await import(
+      /* webpackInclude: /how-to-get-here\/routes\/[^/]+\.json$/ */
+      `../../locales/${lang}/how-to-get-here/routes/${contentKey}.json`
+    );
+    return mod as RouteContentModule;
   } catch {
     return undefined;
   }

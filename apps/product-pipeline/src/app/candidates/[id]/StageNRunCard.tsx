@@ -1,19 +1,22 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
 import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
-import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
-import { extractStageNInput, extractStageNSummary, parseStageNTasks } from "./stageNHelpers";
-import StageNSummaryCard from "./StageNSummary";
-import StageNFormFields, {
-  type StageNStatusOption,
-} from "./StageNFormFields";
+
+import { resolveGateMessage, resolveStageTSGate } from "./stageGate";
 import {
   DEFAULT_STAGE_N_FORM,
   hydrateStageNForm,
   parseStageNForm,
   type StageNFormState,
 } from "./stageNForm";
+import StageNFormFields, {
+  type StageNStatusOption,
+} from "./StageNFormFields";
+import { extractStageNInput, extractStageNSummary, parseStageNTasks } from "./stageNHelpers";
+import StageNSummaryCard from "./StageNSummary";
+import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
 
 export default function StageNRunCard({
   candidateId,
@@ -46,7 +49,9 @@ export default function StageNRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
+  const stageGate = resolveStageTSGate(stageRuns);
 
   useEffect(() => {
     if (hasEdited) return;
@@ -89,10 +94,12 @@ export default function StageNRunCard({
           | null;
         if (!response.ok) {
           const reason = data?.details?.reasonCode;
+          const gateError = resolveGateMessage(data?.error ?? null, strings.gates);
           const text =
-            data?.error === "cooldown_active"
+            gateError ??
+            (data?.error === "cooldown_active"
               ? `${strings.cooldown.activeMessage}${reason ? ` (${reason})` : ""}`
-              : strings.stageN.errorRun;
+              : strings.stageN.errorRun);
           setMessage({ tone: "error", text });
         } else {
           setMessage({ tone: "success", text: strings.stageN.success });
@@ -105,10 +112,10 @@ export default function StageNRunCard({
         await onRun();
       }
     },
-    [candidate, candidateId, form, onRun, strings.cooldown, strings.stageN],
+    [candidate, candidateId, form, onRun, strings.cooldown, strings.gates, strings.stageN],
   );
 
-  const inputDisabled = running || loading || cooldownActive;
+  const inputDisabled = running || loading || cooldownActive || Boolean(stageGate);
 
   const statusOptions: StageNStatusOption[] = [
     { value: "not_started", label: strings.stageN.statuses.notStarted },
@@ -119,7 +126,7 @@ export default function StageNRunCard({
   ];
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-n">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageN.label}
@@ -135,42 +142,54 @@ export default function StageNRunCard({
         notAvailable={strings.notAvailable}
       />
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageN}>
-        <StageNFormFields
-          form={form}
-          setForm={setForm}
-          disabled={inputDisabled}
-          strings={strings.stageN}
-          statusOptions={statusOptions}
-          onEdit={() => setHasEdited(true)}
-        />
-        <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
-          {message ? (
-            <span
-              className={
-                message.tone === "success"
-                  ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-                  : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-              }
-            >
-              {message.text}
-            </span>
-          ) : (
-            <span className="text-xs text-foreground/60">
-              {cooldownActive
-                ? strings.cooldown.activeMessage
-                : strings.stageN.inputHelp}
-            </span>
-          )}
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageN}>
+          <StageNFormFields
+            form={form}
+            setForm={setForm}
             disabled={inputDisabled}
-          >
-            {strings.stageN.runLabel}
-          </button>
-        </Cluster>
-      </form>
+            strings={strings.stageN}
+            statusOptions={statusOptions}
+            onEdit={() => setHasEdited(true)}
+          />
+          <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
+            {message ? (
+              <span
+                className={
+                  message.tone === "success"
+                    ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                    : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                }
+              >
+                {message.text}
+              </span>
+            ) : (
+              <span className="text-xs text-foreground/60">
+                {cooldownActive
+                  ? strings.cooldown.activeMessage
+                  : strings.stageN.inputHelp}
+              </span>
+            )}
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={inputDisabled}
+            >
+              {strings.stageN.runLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

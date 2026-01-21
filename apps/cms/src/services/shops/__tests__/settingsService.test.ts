@@ -1,23 +1,19 @@
+import { authorize, fetchSettings, persistSettings } from "../helpers";
 import {
+  setFreezeTranslations,
+  updateAiCatalog,
   updateCurrencyAndTax,
   updateDeposit,
-  updateReverseLogistics,
-  updateUpsReturns,
-  updateStockAlert,
   updatePremierDelivery,
-  updateAiCatalog,
-  setFreezeTranslations,
+  updateReverseLogistics,
+  updateStockAlert,
+  updateUpsReturns,
 } from "../settingsService";
-import { authorize, fetchSettings, persistSettings } from "../helpers";
 
 jest.mock("../helpers", () => ({
   authorize: jest.fn().mockResolvedValue(undefined),
   fetchSettings: jest.fn(),
   persistSettings: jest.fn(),
-}));
-
-jest.mock("@acme/platform-core/utils", () => ({
-  recordMetric: jest.fn(),
 }));
 
 describe("settings service", () => {

@@ -2,11 +2,13 @@
 
 import React, { useCallback, useMemo } from "react";
 import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
+
+import Price from "@/components/Price";
 import { useCart } from "@/contexts/cart/CartContext";
 import { useLocale } from "@/contexts/LocaleContext";
 import { withLocale } from "@/lib/routes";
-import Price from "@/components/Price";
 
 const CartSummary = React.memo(function CartSummary() {
   const t = useTranslations();

@@ -1,5 +1,6 @@
-import { useCallback, useRef } from "react";
 import type { ChangeEvent } from "react";
+import { useCallback, useRef } from "react";
+
 import type { InventoryItem } from "@acme/platform-core/types/inventory";
 
 interface InventoryFileTransferOptions {

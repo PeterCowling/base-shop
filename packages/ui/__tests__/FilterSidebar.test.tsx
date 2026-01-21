@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { FilterSidebar } from "../src/components/organisms/FilterSidebar";
 
 describe("FilterSidebar", () => {

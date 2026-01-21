@@ -1,12 +1,14 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+
+import type { Page } from "@acme/types";
+
 import { DATA_ROOT } from "../src/dataRoot";
 import {
+  diffHistory,
   savePage,
   updatePage,
-  diffHistory,
 } from "../src/repositories/pages/index.server";
-import type { Page } from "@acme/types";
 
 jest.mock("../src/db", () => ({
   prisma: {

@@ -1,15 +1,15 @@
 // i18n-exempt: Test descriptions and fixtures use literal strings
 import { act, renderHook } from "@testing-library/react";
-import {
-  usePublishLocations,
-  loadPublishLocations,
-} from "@acme/platform-core/hooks/usePublishLocations";
 
-jest.mock("@acme/shared-utils", () => ({
+import {
+  loadPublishLocations,
+  usePublishLocations,
+} from "@acme/platform-core/hooks/usePublishLocations";
+import { fetchJson } from "@acme/lib/http";
+
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
-
-import { fetchJson } from "@acme/shared-utils";
 
 const mockFetchJson = fetchJson as jest.MockedFunction<typeof fetchJson>;
 
@@ -22,7 +22,7 @@ afterEach(() => {
   true;
 
 const originalError = console.error;
-let consoleErrorSpy: jest.SpiedFunction<typeof console.error> | undefined;
+let consoleErrorSpy: jest.SpyInstance | undefined;
 beforeAll(() => {
   consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
     if (typeof msg === "string" && msg.includes("not wrapped in act")) {

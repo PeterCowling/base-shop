@@ -2,18 +2,20 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
+
 import {
-  DEFAULT_ADJUSTMENTS,
   adjustInput,
+  type Adjustments,
+  type CandidateDetailResponse,
+  type CandidateSummary,
   computeApproxReturn,
+  DEFAULT_ADJUSTMENTS,
   extractStageKInput,
   extractStageKOutput,
   extractStageKRun,
   formatPaybackDay,
-  type Adjustments,
-  type CandidateDetailResponse,
-  type CandidateSummary,
   type ScenarioLabStrings,
 } from "./types";
 

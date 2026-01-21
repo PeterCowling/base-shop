@@ -1,5 +1,7 @@
 import "server-only";
+
 import { type ShopSettings } from "@acme/types";
+
 export type Settings = ShopSettings;
 export declare function getShopSettings(shop: string): Promise<Settings>;
 export declare function saveShopSettings(shop: string, settings: Settings): Promise<void>;

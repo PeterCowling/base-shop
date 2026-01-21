@@ -2,16 +2,18 @@
 "use client";
 
 import {
-  useEffect,
-  useState,
-  useRef,
   type Dispatch,
   type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
-import { getCsrfToken } from "@acme/shared-utils";
+
+import { getCsrfToken } from "@acme/lib/security";
+
 import {
-  configuratorStateSchema,
   type ConfiguratorState,
+  configuratorStateSchema,
   type StepStatus,
 } from "../../wizard/schema";
 

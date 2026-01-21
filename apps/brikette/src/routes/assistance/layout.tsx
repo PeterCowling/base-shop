@@ -7,7 +7,7 @@
    – Guarantees i18n is on the right language *before* first render
    – ❌  NO more static `resources` import – fixes bundle bloat
    ───────────────────────────────────────────────────────────── */
-import { Fragment, memo, Suspense, useMemo, type ReactElement } from "react";
+import { Fragment, memo, type ReactElement,Suspense, useMemo } from "react";
 // SEO lint markers for layout (head handled by parent/children routes):
 // name: "twitter:card"
 // rel: "canonical"
@@ -21,12 +21,13 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 // Namespace import for resilience to partial mocks in tests
 import * as assistance from "@/routes.assistance-helpers";
+import { getSlug } from "@/utils/slug";
+
 type AssistanceModule = {
   ARTICLE_KEYS?: readonly HelpArticleKey[];
   articleSlug?: (l: string, k: HelpArticleKey) => string;
 };
 const assistanceHelpers = assistance as AssistanceModule;
-import { getSlug } from "@/utils/slug";
 
 /* ------------------------------------------------------------------ */
 /*  Utility                                                           */

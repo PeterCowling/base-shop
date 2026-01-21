@@ -1,5 +1,8 @@
-import { render, fireEvent } from "@testing-library/react";
 import type { ComponentProps } from "react";
+import { fireEvent,render } from "@testing-library/react";
+
+import PresetControls from "../PresetControls";
+import ThemeSelector from "../ThemeSelector";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -9,9 +12,6 @@ jest.mock(
   }),
   { virtual: true },
 );
-
-import ThemeSelector from "../ThemeSelector";
-import PresetControls from "../PresetControls";
 
 describe("ThemeSelector", () => {
   it("calls onChange when value changes", () => {

@@ -4,10 +4,14 @@
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
     "allowJs": true,
-    "rootDir": ".",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "verbatimModuleSyntax": false
+    "rootDir": "../..",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": false,
+    "paths": {
+      "@acme/zod-utils": ["../zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["../zod-utils/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

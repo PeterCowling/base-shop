@@ -1,7 +1,7 @@
-import { locales } from "@acme/i18n/locales";
-import en from "@acme/i18n/en.json";
 import de from "@acme/i18n/de.json";
+import en from "@acme/i18n/en.json";
 import itMessages from "@acme/i18n/it.json";
+import { locales } from "@acme/i18n/locales";
 
 describe("Localized storefront", () => {
   // Skip this suite when storefront routes redirect to the CMS login

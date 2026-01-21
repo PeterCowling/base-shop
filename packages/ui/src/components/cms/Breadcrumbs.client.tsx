@@ -1,13 +1,16 @@
 // packages/ui/components/cms/Breadcrumbs.tsx
 "use client";
 
-import type { ProductPublication } from "@acme/types";
-import { getShopFromPath } from "@acme/shared-utils";
-import type { Page } from "@acme/types";
-import { usePathname } from "next/navigation";
+ 
+
 import { memo, useEffect, useState } from "react";
-import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";
+import { usePathname } from "next/navigation";
+
 import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+import type { Page,ProductPublication  } from "@acme/types";
+
+import Breadcrumbs, { type BreadcrumbItem } from "../molecules/Breadcrumbs";
 
 const LABEL_KEYS: Record<string, string | null> = {
   cms: null,
@@ -23,6 +26,8 @@ const LABEL_KEYS: Record<string, string | null> = {
   builder: "cms.breadcrumb.builder",
   edit: "cms.breadcrumb.edit",
   seo: "cms.breadcrumb.seo",
+  uploads: "Uploads",
+  "stock-inflows": "Stock inflows",
 };
 
 function BreadcrumbsInner() {

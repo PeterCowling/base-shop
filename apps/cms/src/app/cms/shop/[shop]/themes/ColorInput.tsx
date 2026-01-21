@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent } from "react";
-import { Button, Input } from "@/components/atoms/shadcn";
-import { Tooltip } from "@acme/ui/components/atoms";
+import { type ChangeEvent,useEffect, useState } from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { getUsageText } from "./usageMap";
-import { hslToHex, hexToHsl, isHex, isHsl } from "@acme/ui/utils/colorUtils";
-import { getContrast, suggestContrastColor } from "@acme/ui/components/cms";
+
 import { useTranslations } from "@acme/i18n/Translations";
+import { Tooltip } from "@acme/ui/components/atoms";
+import { getContrast, suggestContrastColor } from "@acme/ui/components/cms";
+import { hexToHsl, hslToHex, isHex, isHsl } from "@acme/ui/utils/colorUtils";
+
+import { Button, Input } from "@/components/atoms/shadcn";
+
+import { getUsageText } from "./usageMap";
 
 interface Props {
   name: string;

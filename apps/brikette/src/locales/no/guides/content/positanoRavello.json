@@ -15,11 +15,11 @@
     },
     {
       "href": "#gardens",
-      "label": "Gardens & villas"
+      "label": "Hager og villaer"
     },
     {
       "href": "#timing",
-      "label": "Timing & returns"
+      "label": "Timing og retur"
     }
   ],
   "sections": [
@@ -33,7 +33,7 @@
     },
     {
       "id": "gardens",
-      "title": "Gardens & villas",
+      "title": "Hager og villaer",
       "body": [
         "Villa Rufolo byr på konserter og terrasser med utsikt over bukten; Villa Cimbrone er kjent for Terrassen over uendeligheten.",
         "Bestill billetter på nett i høysesongen for å unngå kø ved inngangen."
@@ -41,7 +41,7 @@
     },
     {
       "id": "timing",
-      "title": "Timing & returns",
+      "title": "Timing og retur",
       "body": [
         "Reis fra Positano tidlig for å unngå de varmeste timene og mest trafikk.",
         "Vend tilbake før solnedgang hvis du trenger dagslys i trappene eller er avhengig av en sikker fergeavgang."

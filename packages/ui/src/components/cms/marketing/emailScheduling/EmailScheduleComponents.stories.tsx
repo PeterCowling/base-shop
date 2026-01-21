@@ -1,12 +1,13 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import EmailScheduleForm from "./EmailScheduleForm";
 import EmailSchedulePreviewPanel from "./EmailSchedulePreviewPanel";
 import EmailScheduleSummaryCard from "./EmailScheduleSummaryCard";
 import {
   defaultEmailScheduleValues,
-  getEmailSchedulePreview,
   type EmailSchedulePreviewData,
+  getEmailSchedulePreview,
 } from "./types";
 
 const meta: Meta<typeof EmailScheduleForm> = {

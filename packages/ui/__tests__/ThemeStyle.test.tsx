@@ -1,7 +1,9 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import ThemeStyle from "../src/components/ThemeStyle";
+
 import { readShop } from "@acme/platform-core/repositories/shops.server";
+
+import ThemeStyle from "../src/components/ThemeStyle";
 
 jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(),

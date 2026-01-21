@@ -1,17 +1,18 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import StockAlertsEditor from "../StockAlertsEditor";
 import {
   __getUseSettingsSaveFormToastLog,
   __resetUseSettingsSaveFormMock,
 } from "../../hooks/useSettingsSaveForm";
+import StockAlertsEditor from "../StockAlertsEditor";
 
 jest.mock("../../hooks/useSettingsSaveForm");
 
-expect.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations as any);
 
 const updateStockAlert = jest.fn();
 

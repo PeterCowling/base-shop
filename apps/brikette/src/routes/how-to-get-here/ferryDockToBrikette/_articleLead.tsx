@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import TableOfContents from "@/components/guides/TableOfContents";
+import { CfImage } from "@/components/images/CfImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
@@ -152,6 +153,28 @@ export function renderArticleLead(
               </p>
             ))}
           </div>
+          {Array.isArray(section.figures) && section.figures.length > 0 ? (
+            <div className={section.figures.length > 1 ? "grid gap-4 md:grid-cols-2" : "space-y-4"}>
+              {section.figures.map((figure, index) => (
+                <figure
+                  key={`${section.id}-figure-${index}`}
+                  className="overflow-hidden rounded-2xl border border-brand-outline/20 shadow-sm"
+                >
+                  <CfImage
+                    src={figure.src}
+                    preset="gallery"
+                    alt={figure.alt}
+                    className="size-full object-cover"
+                  />
+                  {figure.caption ? (
+                    <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                      {figure.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+          ) : null}
         </section>
       ))}
 

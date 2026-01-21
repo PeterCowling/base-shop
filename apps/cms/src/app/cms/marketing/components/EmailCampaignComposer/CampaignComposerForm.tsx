@@ -1,13 +1,15 @@
 import type { FormEvent } from "react";
+
+import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
+import { useTranslations } from "@acme/i18n";
 import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
 import { FormField } from "@acme/ui/components/molecules";
-import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
+
 import type {
   FormErrors,
   FormState,
   SegmentOption,
 } from "./useEmailCampaignComposer";
-import { useTranslations } from "@acme/i18n";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const ID_MARKETING_SHOP = "marketing-shop";
@@ -99,7 +101,7 @@ export function CampaignComposerForm({
                 id={ID_MARKETING_RECIPIENTS}
                 placeholder={t("cms.marketing.campaignComposer.recipients.placeholder")}
                 value={form.recipients}
-                onChange={(event) => onFieldChange("recipients", event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => onFieldChange("recipients", event.target.value)}
                 rows={3}
               />
               <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.recipients.help")}</p>
@@ -172,7 +174,7 @@ export function CampaignComposerForm({
               <Textarea
                 id={ID_MARKETING_BODY}
                 value={form.body}
-                onChange={(event) => onFieldChange("body", event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => onFieldChange("body", event.target.value)}
                 rows={8}
                 placeholder={t("cms.marketing.campaignComposer.body.placeholder")}
               />

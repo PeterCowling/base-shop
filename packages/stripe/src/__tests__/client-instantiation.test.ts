@@ -24,7 +24,7 @@ describe("stripe client instantiation", () => {
     (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     const httpClient = {};
     const createHttpClient = jest.fn().mockReturnValue(httpClient);
-    const StripeMock = jest.fn().mockImplementation(() => ({}));
+    const StripeMock = jest.fn().mockImplementation(() => ({})) as jest.Mock & { createFetchHttpClient: jest.Mock };
     StripeMock.createFetchHttpClient = createHttpClient;
 
     jest.doMock("stripe", () => ({ __esModule: true, default: StripeMock }));
@@ -43,7 +43,7 @@ describe("stripe client instantiation", () => {
 
   it("caches instance and respects secret changes after reset", async () => {
     (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
-    const StripeMock = jest.fn().mockImplementation((key: string) => ({ key }));
+    const StripeMock = jest.fn().mockImplementation((key: string) => ({ key })) as jest.Mock & { createFetchHttpClient: jest.Mock };
     StripeMock.createFetchHttpClient = jest.fn().mockReturnValue({});
 
     jest.doMock("stripe", () => ({ __esModule: true, default: StripeMock }));
@@ -66,11 +66,11 @@ describe("stripe client instantiation", () => {
 
     const mod3 = await import("../index.ts");
     expect(StripeMock).toHaveBeenCalledWith("sk_new", expect.any(Object));
-    expect((mod3.stripe as { key: string }).key).toBe("sk_new");
+    expect((mod3.stripe as unknown as { key: string }).key).toBe("sk_new");
   });
 
   it("creates real client when STRIPE_USE_MOCK toggles off", async () => {
-    const StripeCtor = jest.fn().mockImplementation((key: string) => ({ key }));
+    const StripeCtor = jest.fn().mockImplementation((key: string) => ({ key })) as jest.Mock & { createFetchHttpClient: jest.Mock };
     StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
 
     process.env = {
@@ -99,6 +99,6 @@ describe("stripe client instantiation", () => {
     const { stripe: realStripe } = await import("../index.ts");
     expect(StripeCtor).toHaveBeenCalledWith("sk_live", expect.any(Object));
     expect(realStripe).not.toBe(mockStripe);
-    expect((realStripe as { key: string }).key).toBe("sk_live");
+    expect((realStripe as unknown as { key: string }).key).toBe("sk_live");
   });
 });

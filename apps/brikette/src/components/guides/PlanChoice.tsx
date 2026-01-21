@@ -1,7 +1,7 @@
 // src/components/guides/PlanChoice.tsx
 import { memo, useMemo, useState } from "react";
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";

@@ -1,6 +1,12 @@
 import type { ReturnLogistics } from "@acme/types";
 
-const cfg: ReturnLogistics = {
+import { getReturnBagAndLabel } from "../src/returnLogistics";
+
+// Use globalThis to avoid Jest mock hoisting issues
+declare global {
+  var __getReturnBagAndLabelTestCfg: ReturnLogistics | undefined;
+}
+globalThis.__getReturnBagAndLabelTestCfg = {
   labelService: "ups",
   inStore: true,
   dropOffProvider: "happy-returns",
@@ -13,21 +19,22 @@ const cfg: ReturnLogistics = {
   allowWear: false,
 };
 
+const cfg = globalThis.__getReturnBagAndLabelTestCfg!;
+
 jest.mock("../src/returnLogistics.ts", () => ({
-  getReturnLogistics: jest.fn().mockResolvedValue(cfg),
+  getReturnLogistics: jest.fn().mockResolvedValue(globalThis.__getReturnBagAndLabelTestCfg),
   getReturnBagAndLabel: async () => {
+    const config = globalThis.__getReturnBagAndLabelTestCfg!;
     const {
       bagType,
       labelService,
       tracking,
       returnCarrier,
       homePickupZipCodes,
-    } = await cfg;
+    } = config;
     return { bagType, labelService, tracking, returnCarrier, homePickupZipCodes };
   },
 }));
-
-import { getReturnBagAndLabel } from "../src/returnLogistics";
 
 describe("getReturnBagAndLabel", () => {
   it("returns only the bag and label fields", async () => {

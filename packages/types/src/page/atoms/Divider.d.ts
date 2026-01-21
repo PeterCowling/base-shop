@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface DividerComponent extends PageComponentBase {
     type: "Divider";
     /** Thickness of the divider */

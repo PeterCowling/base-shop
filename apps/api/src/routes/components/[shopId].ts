@@ -7,11 +7,11 @@ import { existsSync, readFileSync, readdirSync } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { validateShopName } from "@acme/lib";
+import { logger } from "@acme/lib/logger";
 import {
-  logger,
-  withRequestContext,
   type RequestContext,
-} from "@acme/shared-utils";
+  withRequestContext,
+} from "@acme/lib/context";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 const SERVICE_NAME = "api";

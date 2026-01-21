@@ -1,16 +1,16 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import appI18n from "@/i18n";
-import getGuideResource from "@/routes/guides/utils/getGuideResource";
 
-import type { AppLanguage } from "@/i18n.config";
 // i18nFallback not required here; remove unused import
-
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
+import appI18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { debugGuide } from "@/utils/debug";
+
+import { getGuidesBundle, type GuidesNamespace } from "../../../locales/guides";
 
 import type { Translator } from "./types";
-import { getGuidesBundle, type GuidesNamespace } from "../../../locales/guides";
-import { debugGuide } from "@/utils/debug";
 
 export interface GuideTranslationSuite {
   tGuides: Translator;

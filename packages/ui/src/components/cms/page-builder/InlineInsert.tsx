@@ -3,23 +3,26 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
+
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
-import { getAllowedChildren, isTopLevelAllowed } from "./rules";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../atoms";
+import { Stack } from "../../atoms/primitives/Stack";
 import {
   atomRegistry,
-  moleculeRegistry,
-  organismRegistry,
   containerRegistry,
   layoutRegistry,
+  moleculeRegistry,
+  organismRegistry,
 } from "../blocks";
-import { Stack } from "../../atoms/primitives/Stack";
-import { useTranslations } from "@acme/i18n";
+
+import { type ComponentType,CONTAINER_TYPES, defaults } from "./defaults";
+import { getAllowedChildren, isTopLevelAllowed } from "./rules";
 
 const ARIA_LABEL_INSERT_BUTTON = "Insert block here"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 const ARIA_LABEL_LIST = "Insert block list"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
@@ -124,7 +127,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
     }
   };
 
-  /* eslint-disable ds/no-hardcoded-copy -- CMS-000: palette entries (labels/categories) are builder-only */
+   
   const itemButtons = items.map((i, idx) => {
     const label = i.label;
     const category = i.category;
@@ -144,7 +147,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
       </button>
     );
   });
-  /* eslint-enable ds/no-hardcoded-copy */
+   
 
   return (
     <div className="relative my-1 flex w-full justify-center">

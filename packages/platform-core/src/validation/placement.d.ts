@@ -1,4 +1,5 @@
 import type { PageComponent } from "@acme/types";
+
 export type ValidationIssue = {
     path: Array<string | number>;
     message: string;

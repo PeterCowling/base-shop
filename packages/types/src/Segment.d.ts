@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const segmentSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodOptional<z.ZodString>;

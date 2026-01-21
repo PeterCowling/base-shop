@@ -1,5 +1,8 @@
 /** @jest-environment node */
 
+import { provisionDomain } from "../cloudflare.server";
+import { ensureAuthorized } from "../common/auth";
+
 const mockedEnv: any = {
   CLOUDFLARE_ACCOUNT_ID: "acc",
   CLOUDFLARE_API_TOKEN: "tok",
@@ -10,9 +13,6 @@ jest.mock("@acme/config/env/core", () => ({ coreEnv: mockedEnv }), { virtual: tr
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
-
-import { provisionDomain } from "../cloudflare.server";
-import { ensureAuthorized } from "../common/auth";
 
 const originalFetch = global.fetch;
 const fetchMock = jest.fn();

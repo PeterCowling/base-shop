@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "neighbourhoods",
-      "title": "Essential neighbourhoods",
+      "title": "Viktige nabolag",
       "body": [
         "Gå Spaccanapoli for kirker, fødselsverksteder og de underjordiske turene under San Lorenzo.",
         "Gå til strandpromenaden i Chiaia og Castel dell'Ovo for luftige kveldsturer."
@@ -18,7 +18,7 @@
     },
     {
       "id": "food",
-      "title": "Food & coffee",
+      "title": "Mat og kaffe",
       "body": [
         "Kø for pizza på Sorbillo eller Da Michele (forvent 30–45 minutter). Ta sfogliatella og espresso på Gran Caffè Gambrinus.",
         "Prøv cuoppo fritto (papirkjegler av stekt sjømat) for €6–8 € når du trenger en rask matbit."
@@ -26,7 +26,7 @@
     },
     {
       "id": "daytrips",
-      "title": "Day-trip staging",
+      "title": "Dagstur-logistikk",
       "body": [
         "Bruk Napoli Centrale for høyhastighetstog til Roma (1t10) eller Pompeii (40 minutter på Circumvesuviana).",
         "Oppbevar bagasjen på stasjonen (€ 7 per bag) hvis du reiser rett til Positano senere."
@@ -39,13 +39,13 @@
   ],
   "faqs": [
     {
-      "q": "Is Naples safe to explore on foot?",
+      "q": "Er Napoli trygt å utforske til fots?",
       "a": [
         "Ja med normal storbybevissthet. Hold deg til opplyste gater om natten, unngå å vise store mengder kontanter, og ta offisielle drosjer etter midnatt."
       ]
     },
     {
-      "q": "Where can I store luggage?",
+      "q": "Hvor kan jeg oppbevare bagasje?",
       "a": [
         "Napoli Centrale og Piazza Garibaldi har bemannet lager. Bestill skap online i travle helger for å garantere plass."
       ]

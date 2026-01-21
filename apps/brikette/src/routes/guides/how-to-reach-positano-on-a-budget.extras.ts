@@ -1,12 +1,10 @@
-import type { GuideSeoTemplateContext } from "./how-to-reach-positano-on-a-budget.types";
-
 import { ensureStringArray } from "@/utils/i18nContent";
 
 import {
   DEFAULT_SECTION_IDS,
+  GUIDE_KEY,
   MAP_EMBED_URL_FALLBACK,
   MAP_REFERRER_POLICY,
-  GUIDE_KEY,
 } from "./how-to-reach-positano-on-a-budget.constants";
 import {
   areStepsEqual,
@@ -17,14 +15,14 @@ import {
   normaliseSteps,
   safeString,
 } from "./how-to-reach-positano-on-a-budget.normalisers";
-import type {
-  GuideExtras,
-  HowToStepDetail,
-  TocItem,
-} from "./how-to-reach-positano-on-a-budget.types";
 import {
   getGuidesTranslator,
 } from "./how-to-reach-positano-on-a-budget.translators";
+import type {   GuideExtras,
+GuideSeoTemplateContext ,
+  HowToStepDetail,
+  TocItem,
+} from "./how-to-reach-positano-on-a-budget.types";
 
 function buildGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
   const translate = context.translateGuides;

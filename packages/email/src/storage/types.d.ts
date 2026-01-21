@@ -1,4 +1,5 @@
 import type { Campaign } from "../types";
+
 export interface CampaignStore {
     /**
      * Retrieve all campaigns for a shop.

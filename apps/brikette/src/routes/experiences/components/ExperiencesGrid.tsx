@@ -1,10 +1,13 @@
 /* src/routes/experiences/components/ExperiencesGrid.tsx */
-import { InlineItem, Stack } from "@/components/ui/flex";
-import { CfImage } from "@/components/images/CfImage";
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import type { SectionContent } from "../types";
 import clsx from "clsx";
+
+import { Grid } from "@acme/ui/atoms/Grid";
+import { Section } from "@acme/ui/atoms/Section";
+
+import { CfImage } from "@/components/images/CfImage";
+import { InlineItem, Stack } from "@/components/ui/flex";
+
+import type { SectionContent } from "../types";
 
 type ArticleProps = JSX.IntrinsicElements["article"];
 const Card = ({ className, ...props }: ArticleProps) => (
@@ -17,7 +20,7 @@ type ExperiencesGridProps = {
 
 export function ExperiencesGrid({ sections }: ExperiencesGridProps) {
   return (
-    <Section padding="none" className="px-6 py-16 sm:px-8 lg:py-24">
+    <Section padding="none" className="px-6 py-16 sm:px-8 md:px-12 lg:px-16 lg:py-24">
       <Section
         as="div"
         padding="none"

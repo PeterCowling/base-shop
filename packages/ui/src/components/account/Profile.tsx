@@ -1,21 +1,23 @@
 // packages/ui/src/components/account/Profile.tsx
-import { getCustomerSession, hasPermission } from "@acme/auth";
-import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import ProfileForm from "./ProfileForm";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import type { Locale } from "@acme/i18n/locales";
-import type { TranslatableText } from "@acme/types/i18n";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import type { TranslatableText } from "@acme/types/i18n";
+
 import AccountNavigation from "./AccountNavigation";
-import { resolveTranslatableText } from "./translations";
 import {
-  ACCOUNT_PROFILE_PATH,
+  ACCOUNT_CHANGE_PASSWORD_PATH,
   ACCOUNT_ORDERS_PATH,
+  ACCOUNT_PROFILE_PATH,
   ACCOUNT_SESSIONS_PATH,
   ACCOUNT_SHELL_TEST_ID,
-  ACCOUNT_CHANGE_PASSWORD_PATH,
 } from "./constants";
+import ProfileForm from "./ProfileForm";
+import { resolveTranslatableText } from "./translations";
 
 export interface ProfilePageProps {
   /** Optional heading to allow shop-specific overrides */
@@ -33,7 +35,7 @@ export default async function ProfilePage({
   callbackUrl = ACCOUNT_PROFILE_PATH,
   locale = "en",
 }: ProfilePageProps) {
-  const t = await getServerTranslations(locale);
+  const t = await getServerTranslations(locale as "en" | "de" | "it");
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);

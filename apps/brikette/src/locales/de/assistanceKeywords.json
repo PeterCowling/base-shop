@@ -643,7 +643,7 @@
       "s1": "check-in-zeit",
       "s2": "ab wann check-in",
       "s3": "wann ist check-in",
-      "s4": "check-in",
+    "s4": "Check-in",
       "s5": "check-in uhrzeit",
       "humanReadableQuestion": "Ab wann kann ich einchecken?",
       "humanReadableAnswer": "Check-in ist ab 15:00 Uhr.",

@@ -1,8 +1,7 @@
 "use client";
 
 import { useTranslations } from "@acme/i18n";
-import type { InteractionsProps } from "./types";
-import { openSelectOnMouseDown } from "./helpers";
+
 import {
   Input,
   Select,
@@ -11,6 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../atoms/shadcn";
+
+import { openSelectOnMouseDown } from "./helpers";
+import type { InteractionsProps } from "./types";
 
 export default function ScrollEffectsControls({ component, handleInput }: InteractionsProps) {
   const t = useTranslations();

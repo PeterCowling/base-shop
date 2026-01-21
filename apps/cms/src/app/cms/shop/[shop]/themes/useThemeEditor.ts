@@ -1,11 +1,13 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/useThemeEditor.ts
 "use client";
-import { useState, useMemo, useRef } from "react";
+import { useMemo, useRef,useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { tokenGroups } from "./tokenGroups";
+import { useBrandIntensity } from "./useBrandIntensity";
 import { useThemePresetManager } from "./useThemePresetManager";
 import { useThemeTokenSync } from "./useThemeTokenSync";
-import { useBrandIntensity } from "./useBrandIntensity";
-import { useTranslations } from "@acme/i18n";
 
 interface Options {
   shop: string;

@@ -1,5 +1,16 @@
 import { jest } from "@jest/globals";
 
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import {
+  getStockCheckStatus,
+  scheduleStockChecks,
+} from "@acme/platform-core/services/stockScheduler.server";
+
+import {
+  getSchedulerStatus,
+  updateStockScheduler,
+} from "../stockScheduler.server";
+
 jest.mock("@acme/platform-core/services/stockScheduler.server", () => ({
   scheduleStockChecks: jest.fn(),
   getStockCheckStatus: jest.fn(),
@@ -8,16 +19,6 @@ jest.mock("@acme/platform-core/services/stockScheduler.server", () => ({
 jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
   readInventory: jest.fn(),
 }));
-
-import {
-  scheduleStockChecks,
-  getStockCheckStatus,
-} from "@acme/platform-core/services/stockScheduler.server";
-import { readInventory } from "@acme/platform-core/repositories/inventory.server";
-import {
-  updateStockScheduler,
-  getSchedulerStatus,
-} from "../stockScheduler.server";
 
 describe("stockScheduler actions", () => {
   const shop = "shop-id";

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -58,4 +59,4 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     );
   }
 );
-Progress.displayName = "Progress"; // i18n-exempt -- UI-000: component displayName, not user-facing [ttl=2026-01-31]
+Progress.displayName = "Progress";

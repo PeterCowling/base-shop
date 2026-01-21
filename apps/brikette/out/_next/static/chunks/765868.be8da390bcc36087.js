@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[765868],{765868:e=>{e.exports=JSON.parse('{"title":"Unser Standort","inputLabel":"Geben Sie Ihren aktuellen Standort ein:","inputPlaceholder":"z. B. Neapel, Italien oder vollst\xe4ndige Adresse","getDirections":"Route berechnen","justShowMap":"Nur Karte anzeigen","close":"Modal schlie\xdfen"}')}}]);

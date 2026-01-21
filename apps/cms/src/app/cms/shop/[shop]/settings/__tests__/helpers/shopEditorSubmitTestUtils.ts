@@ -1,4 +1,5 @@
 import type { MappingRow } from "@/hooks/useMappingRows";
+
 import type {
   MappingRowsController,
   ShopEditorIdentitySection,

@@ -1,4 +1,5 @@
 import { configure, render } from "@testing-library/react";
+
 import MediaSelectionCheck from "../MediaSelectionCheck";
 
 configure({ testIdAttribute: "data-testid" });

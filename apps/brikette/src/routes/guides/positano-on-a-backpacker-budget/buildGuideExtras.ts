@@ -2,7 +2,6 @@
 import type { GuideSeoTemplateContext } from "../_GuideSeoTemplate";
 
 import { GUIDE_KEY, SECTION_IDS } from "./constants";
-import type { DaySection, GuideExtras, TocItem } from "./types";
 import {
   getFaqItemsWithFallback,
   getGuidesTranslator,
@@ -12,6 +11,7 @@ import {
   getTocItemsWithFallback,
   getTransportLinksWithFallback,
 } from "./translations";
+import type { DaySection, GuideExtras, TocItem } from "./types";
 
 export function buildGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
   const translator = getGuidesTranslator(context.lang);

@@ -3,10 +3,10 @@ import { describe, expect, it } from "@jest/globals";
 
 import {
   JWT_SECRET,
-  OAUTH_SECRET,
+  loadProdSchema,
   OAUTH_ISSUER,
   OAUTH_REDIRECT_ORIGIN,
-  loadProdSchema,
+  OAUTH_SECRET,
   prodSecrets,
 } from "./authTestHelpers";
 

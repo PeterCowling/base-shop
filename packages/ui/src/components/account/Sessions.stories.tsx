@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import Sessions from "./Sessions";
 
 const meta: Meta<typeof Sessions> = {

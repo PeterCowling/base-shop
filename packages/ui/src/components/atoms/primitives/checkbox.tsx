@@ -1,10 +1,11 @@
 // packages/ui/components/atoms/primitives/checkbox.tsx
-/* eslint-disable ds/no-hardcoded-copy -- CHORE-0000: primitives contain only class tokens and no user-facing copy */
+ 
 "use client";
 
+import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
-import * as React from "react";
+
 import { cn } from "../../../utils/style";
 
 export type CheckboxProps = React.ComponentPropsWithoutRef<

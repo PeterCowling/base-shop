@@ -1,11 +1,24 @@
-// apps/api/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["jest", "node"],
     "noEmit": true,
     "allowJs": true,
-    "rootDir": "."
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false,
+    "baseUrl": "../..",
+    "paths": {
+      "@acme/config": ["packages/config/dist/index.d.ts"],
+      "@acme/config/*": ["packages/config/dist/*"],
+      "@acme/platform-core": ["packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["packages/platform-core/dist/*"],
+      "@acme/lib": ["packages/lib/dist/index.d.ts"],
+      "@acme/lib/*": ["packages/lib/dist/*"],
+      "@acme/types": ["packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/dist/*"],
+      "@acme/zod-utils": ["packages/zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["packages/zod-utils/dist/*"]
+    }
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

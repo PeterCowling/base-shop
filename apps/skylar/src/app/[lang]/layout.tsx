@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 
 import TranslationsProvider from "@acme/i18n/Translations";
+
 import { getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
 
 const poppins = Poppins({

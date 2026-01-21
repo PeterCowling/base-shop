@@ -4,17 +4,37 @@
 // Docs: docs/cms/configurator-contract.md
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  configuratorStateSchema,
-  type ConfiguratorState,
-} from "../../wizard/schema";
-import type { ConfiguratorStep } from "../types";
-import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
-import { useLaunchShop } from "./useLaunchShop";
-import { calculateConfiguratorProgress } from "../lib/progress";
-import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
-import { getRequiredSteps, getSteps, getStepsMap } from "../steps";
+
 import { useTranslations } from "@acme/i18n";
+import { REQUIRED_CONFIG_CHECK_STEPS } from "@acme/platform-core/configurator";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
+import type { DeployShopResult } from "@acme/platform-core/createShop/deployTypes";
+import { getCsrfToken } from "@acme/lib/security";
+import { track } from "@acme/telemetry";
+import type { ConfiguratorProgress as ServerConfiguratorProgress , Environment } from "@acme/types";
+
+import {
+  deriveShopHealth,
+  type ShopHealthSummary,
+} from "../../../lib/shopHealth";
+import {
+  type ConfiguratorState,
+  configuratorStateSchema,
+} from "../../wizard/schema";
+import { calculateConfiguratorProgress } from "../lib/progress";
+import { getRequiredSteps, getSteps, getStepsMap } from "../steps";
+import type { ConfiguratorStep } from "../types";
+
+import { getFailedStepLink } from "./dashboard/failedStepLink";
+import { buildHeroData } from "./dashboard/heroData";
+import {
+  buildLaunchChecklist,
+  calculateProgressFromServer,
+  isLaunchReady,
+} from "./dashboard/launchChecklist";
+import { computeStepGroups } from "./dashboard/stepGroups";
+import { buildTimeToLaunch } from "./dashboard/timeToLaunch";
+import { buildTrackProgress } from "./dashboard/trackProgress";
 import type {
   ConfiguratorHeroData,
   LaunchChecklistItem,
@@ -22,26 +42,8 @@ import type {
   LaunchPanelData,
   TrackProgressItem,
 } from "./dashboard/types";
-import { computeStepGroups } from "./dashboard/stepGroups";
-import { buildHeroData } from "./dashboard/heroData";
-import { buildTrackProgress } from "./dashboard/trackProgress";
-import { getFailedStepLink } from "./dashboard/failedStepLink";
-import type { ConfiguratorProgress as ServerConfiguratorProgress } from "@acme/types";
-import { REQUIRED_CONFIG_CHECK_STEPS } from "@acme/platform-core/configurator-steps";
-import {
-  deriveShopHealth,
-  type ShopHealthSummary,
-} from "../../../lib/shopHealth";
-import type { Environment } from "@acme/types";
-import type { DeployShopResult } from "@acme/platform-core/createShop/deployTypes";
-import { track } from "@acme/telemetry";
-import {
-  buildLaunchChecklist,
-  calculateProgressFromServer,
-  isLaunchReady,
-} from "./dashboard/launchChecklist";
-import { buildTimeToLaunch } from "./dashboard/timeToLaunch";
-import { getCsrfToken } from "@acme/shared-utils";
+import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
+import { useLaunchShop } from "./useLaunchShop";
 
 type LaunchGateApi = {
   gate: {
@@ -660,10 +662,10 @@ export function useConfiguratorDashboardState(): {
 export default useConfiguratorDashboardState;
 
 export type {
-  QuickStat,
-  HeroResumeCta,
   ConfiguratorHeroData,
-  TrackProgressItem,
-  LaunchPanelData,
+  HeroResumeCta,
   LaunchErrorLink,
+  LaunchPanelData,
+  QuickStat,
+  TrackProgressItem,
 } from "./dashboard/types";

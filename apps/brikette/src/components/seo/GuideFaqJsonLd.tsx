@@ -2,10 +2,13 @@
 // src/components/seo/GuideFaqJsonLd.tsx
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
+import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { buildFaqJsonLd, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+
 import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
 
 interface GuideFaqJsonLdProps {
@@ -21,6 +24,16 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
   const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : undefined;
   const { t } = useTranslation("guides", { lng: lang });
   const faqsRaw = t(`content.${guideKey}.faqs`, { returnObjects: true }) as unknown;
+  const faqsResolved = useMemo(() => {
+    if (Array.isArray(faqsRaw)) return faqsRaw;
+    const fromStore = getGuideResource<unknown>(lang, `content.${guideKey}.faqs`);
+    if (fromStore !== undefined && fromStore !== null) return fromStore;
+    if (lang !== "en") {
+      const fromEn = getGuideResource<unknown>("en", `content.${guideKey}.faqs`);
+      if (fromEn !== undefined && fromEn !== null) return fromEn;
+    }
+    return faqsRaw;
+  }, [faqsRaw, guideKey, lang]);
 
   const canonicalUrl = useMemo(() => {
     if (typeof pathname === "string" && pathname.length > 0) {
@@ -30,7 +43,7 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
   }, [guideKey, lang, pathname]);
 
   const faqJson = useMemo(() => {
-    const fromTranslations = buildFaqJsonLd(lang, canonicalUrl, faqsRaw);
+    const fromTranslations = buildFaqJsonLd(lang, canonicalUrl, faqsResolved);
     if (fromTranslations && fromTranslations.length > 0) {
       return fromTranslations;
     }
@@ -52,13 +65,19 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
     } catch {
       return "";
     }
-  }, [canonicalUrl, faqsRaw, fallback, lang]);
+  }, [canonicalUrl, faqsResolved, fallback, lang]);
 
   if (!faqJson) {
     return null;
   }
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJson }} />;
+  return (
+    <script
+      type="application/ld+json"
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: faqJson }}
+    />
+  );
 }
 
 export default memo(GuideFaqJsonLd);

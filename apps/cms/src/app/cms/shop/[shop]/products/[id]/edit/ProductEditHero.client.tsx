@@ -2,10 +2,11 @@
 
 import { useCallback } from "react";
 import Link from "next/link";
-import { Button } from "@acme/ui/components/atoms/shadcn";
+
+import { useTranslations } from "@acme/i18n";
 import { Chip } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
+import { Button } from "@acme/ui/components/atoms/shadcn";
 
 interface HeroProps {
   shop: string;

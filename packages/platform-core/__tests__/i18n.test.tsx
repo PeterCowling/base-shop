@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import { memo } from "react";
+import { render, screen } from "@testing-library/react";
+
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
 
 describe("TranslationsProvider and useTranslations", () => {

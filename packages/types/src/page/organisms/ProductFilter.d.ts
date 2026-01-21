@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface ProductFilterComponent extends PageComponentBase {
     type: "ProductFilter";
     showSize?: boolean;

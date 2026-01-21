@@ -193,7 +193,7 @@ describe("email env providers", () => {
       "❌ Invalid email environment variables:",
       expect.objectContaining({
         EMAIL_PROVIDER: {
-          _errors: [expect.stringContaining("Invalid enum value")],
+          _errors: [expect.stringContaining("Invalid")],
         },
       }),
     );

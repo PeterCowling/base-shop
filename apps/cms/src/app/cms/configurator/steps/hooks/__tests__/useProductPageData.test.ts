@@ -1,4 +1,5 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
+
 import useProductPageData from "../useProductPageData";
 
 const apiRequest = jest.fn();

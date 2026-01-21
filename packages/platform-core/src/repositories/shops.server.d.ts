@@ -1,5 +1,7 @@
 import "server-only";
+
 import { type Shop } from "@acme/types";
+
 export { diffHistory, getShopSettings, saveShopSettings, type SettingsDiffEntry, } from "./settings.server";
 export declare function listShops(page?: number, limit?: number): Promise<string[]>;
 export declare function applyThemeData(data: Shop): Promise<Shop>;

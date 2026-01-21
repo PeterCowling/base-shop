@@ -2,9 +2,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import { Button, Card, CardContent, Toast } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";
-import { useTranslations } from "@acme/i18n";
 
 type ToastState = {
   open: boolean;

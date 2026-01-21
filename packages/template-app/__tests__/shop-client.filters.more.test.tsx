@@ -1,5 +1,6 @@
 /** @jest-environment jsdom */
-import { render, act } from "@testing-library/react";
+import { act,render } from "@testing-library/react";
+
 import type { SKU } from "@acme/types";
 
 let push: jest.Mock;

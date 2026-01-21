@@ -3,10 +3,11 @@
    Cloudflare Images <CfImage/> – TS-safe width handling
    --------------------------------------------------------------------------*/
 
-import { PRESETS } from "@/config/imagePresets";
+import { createElement, type CSSProperties,memo, useMemo } from "react";
+
+import { type PRESETS } from "@/config/imagePresets";
 import { useResponsiveImage } from "@/hooks/useResponsiveImage";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { createElement, memo, useMemo, type CSSProperties } from "react";
 
 /* ---------------------------------------------------------------------------
    Types
@@ -101,10 +102,7 @@ function CfImageBase({
   }, [htmlHeight, dims.height, dims.width, numericWidth]);
 
   /* 3️⃣  High-priority fetch hint (supported only in modern Chromium) ------*/
-  const supportsFetchPriority =
-    typeof HTMLImageElement !== "undefined" && "fetchPriority" in HTMLImageElement.prototype;
-  const fetchPriority: "high" | undefined =
-    priority && supportsFetchPriority ? "high" : undefined;
+  const fetchPriority: "high" | undefined = priority ? "high" : undefined;
 
   /* 4️⃣  Normalise aspect-ratio for DS lint rules -------------------------*/
   const aspectRatio = useMemo(() => {
@@ -152,7 +150,7 @@ function CfImageBase({
     height: "auto",
   };
 
-  const pictureStyle: CSSProperties = { display: "block", lineHeight: 0 };
+  const pictureStyle: CSSProperties = { display: "block", lineHeight: 0, width: "100%", height: "100%" };
 
   return (
     <picture data-aspect={dataAspectAttr ?? aspectRatio} style={pictureStyle}>

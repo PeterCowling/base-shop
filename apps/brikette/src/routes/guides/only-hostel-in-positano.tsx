@@ -1,28 +1,29 @@
 // src/routes/guides/only-hostel-in-positano.tsx
 import { Fragment, memo } from "react";
-import { Link } from "react-router-dom";
-import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import { getSlug } from "@/utils/slug";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { ensureStringArray } from "@/utils/i18nContent";
-import { GETTING_HERE_LINK_SETS } from "@/content/gettingHere";
-import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { normaliseGuideLinks } from "@/utils/guideLinks";
-import type { TFunction } from "i18next";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { toAppLanguage } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 import { useTranslation } from "react-i18next";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { Link } from "react-router-dom";
+import type { TFunction } from "i18next";
+
 import GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
-import { normalizeFaqEntries, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { BASE_URL } from "@/config/site";
+import { GETTING_HERE_LINK_SETS } from "@/content/gettingHere";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { type NormalizedFaqEntry,normalizeFaqEntries } from "@/utils/buildFaqJsonLd";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { normaliseGuideLinks } from "@/utils/guideLinks";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { ensureStringArray } from "@/utils/i18nContent";
+import { langFromRequest , toAppLanguage } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+import { getGuideLinkLabel } from "@/utils/translationFallbacks";
+
+import GuideSeoTemplate, { type GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 
 type FilteredFaqEntry = { q: string; a: string | string[] };
 

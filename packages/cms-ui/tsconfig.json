@@ -1,0 +1,50 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "declarationMap": true,
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"],
+    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@acme/cms-ui": ["./src/index", "./dist/index.d.ts"],
+      "@acme/cms-ui/*": ["./src/*", "./dist/*"],
+      "@acme/design-system": ["../design-system/src/index", "../design-system/dist/index.d.ts"],
+      "@acme/design-system/*": ["../design-system/src/*", "../design-system/dist/*"],
+      "@acme/page-builder-core": ["../page-builder-core/src/index.ts", "../page-builder-core/dist/index.d.ts"],
+      "@acme/page-builder-core/*": ["../page-builder-core/src/*", "../page-builder-core/dist/*"],
+      "@acme/types": ["../types/src/index", "../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/src/*", "../types/dist/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../design-system"
+    },
+    {
+      "path": "../page-builder-core"
+    },
+    {
+      "path": "../types"
+    }
+  ],
+  "include": ["src", "src/**/*.json"],
+  "exclude": [
+    "__tests__",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*"
+  ]
+}

@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { mkdir, writeFile, resetReverseLogisticsMocks } from "./reverseLogisticsTestHelpers";
+import { mkdir, resetReverseLogisticsMocks,writeFile } from "./reverseLogisticsTestHelpers";
 
 describe("writeReverseLogisticsEvent (default data root)", () => {
   beforeEach(() => {

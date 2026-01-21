@@ -1,6 +1,7 @@
+import { useTranslations } from "@acme/i18n";
+
 import { Tooltip } from "../../../../atoms";
 import { Button } from "../../../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 
 interface CenterInParentActionButtonsProps {
   onCenterX: () => void;

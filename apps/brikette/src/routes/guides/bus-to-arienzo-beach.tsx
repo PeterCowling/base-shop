@@ -1,18 +1,18 @@
 // src/routes/guides/bus-to-arienzo-beach.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
+import type { LinksFunction } from "react-router";
 
 import ImageGallery from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
 import EN_ARIENZO_GUIDE from "@/locales/en/guides/content/hostelBriketteToArienzoBus.json";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction } from "react-router";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 export const GUIDE_KEY = "hostelBriketteToArienzoBus" satisfies GuideKey;
 export const GUIDE_SLUG = "bus-to-arienzo-beach" as const;

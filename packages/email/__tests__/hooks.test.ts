@@ -28,12 +28,12 @@ describe.each([
     const order: string[] = [];
     const first = jest.fn(async () => {
       order.push("a-start");
-      await new Promise((r) => setTimeout(r, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       order.push("a-end");
     });
     const second = jest.fn(async () => {
       order.push("b-start");
-      await new Promise((r) => setTimeout(r, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
       order.push("b-end");
     });
 

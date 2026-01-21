@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+
 import { getProductById, getProducts, searchProducts } from '../src/products';
 import * as base from '../src/products/index';
 

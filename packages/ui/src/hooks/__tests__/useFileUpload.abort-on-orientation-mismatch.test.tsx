@@ -1,6 +1,9 @@
-import { act, renderHook } from "@testing-library/react";
+import type { ButtonHTMLAttributes, ChangeEvent,ForwardedRef } from "react";
 import React, { forwardRef } from "react";
-import type { ButtonHTMLAttributes, ForwardedRef, ChangeEvent } from "react";
+import { act, renderHook } from "@testing-library/react";
+
+import { useFileUpload } from "../useFileUpload";
+import { useImageOrientationValidation } from "../useImageOrientationValidation";
 
 function createShadcnStub() {
   const Button = forwardRef(function Button(
@@ -14,14 +17,11 @@ function createShadcnStub() {
   return { Button };
 }
 
-jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("@acme/ui/components/atoms/shadcn", createShadcnStub);
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));
-
-import { useImageOrientationValidation } from "../useImageOrientationValidation";
-import { useFileUpload } from "../useFileUpload";
 
 const mockOrientation =
   useImageOrientationValidation as jest.MockedFunction<

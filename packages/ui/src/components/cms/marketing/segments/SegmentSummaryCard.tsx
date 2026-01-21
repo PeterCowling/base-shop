@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import { SummaryCard, type SummaryMetric } from "../shared";
+
 import type { SegmentPreviewData } from "./types";
 
 export interface SegmentSummaryCardProps {

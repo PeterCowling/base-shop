@@ -1,6 +1,8 @@
-import { promises as fs, type Dirent } from "node:fs";
+import { type Dirent,promises as fs } from "node:fs";
 import path from "node:path";
+
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
+
 import { fsCampaignStore } from "../fsStore";
 
 jest.mock("@acme/lib", () => ({

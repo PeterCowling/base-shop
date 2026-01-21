@@ -1,4 +1,5 @@
 import { __setMockSession } from "next-auth";
+
 jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
 describe("IndexPage", () => {

@@ -1,20 +1,20 @@
 // src/routes/guides/path-of-the-gods-via-nocelle.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey, type GuideAreaSlugKey } from "./guide-manifest";
+import type { MetaFunction } from "react-router";
 
-import { getPathOfTheGodsVariant } from "./path-of-the-gods.variants";
-import { OG_IMAGE } from "./path-of-the-gods.constants";
-import { createPathOfTheGodsHowToSteps } from "./path-of-the-gods.how-to";
-
-import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import { BASE_URL } from "@/config/site";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import type { MetaFunction } from "react-router";
+
+import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, type GuideAreaSlugKey,guideAreaToSlugKey } from "./guide-manifest";
+import { OG_IMAGE } from "./path-of-the-gods.constants";
+import { createPathOfTheGodsHowToSteps } from "./path-of-the-gods.how-to";
+import { getPathOfTheGodsVariant } from "./path-of-the-gods.variants";
 
 export const GUIDE_KEY = "pathOfTheGodsNocelle" satisfies GuideKey;
 export const GUIDE_SLUG = "path-of-the-gods-via-nocelle" as const;
@@ -82,4 +82,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

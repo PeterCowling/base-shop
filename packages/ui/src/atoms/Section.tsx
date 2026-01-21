@@ -1,12 +1,12 @@
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] layout class maps are not user-facing */
-import { forwardRef, type ComponentPropsWithoutRef, type ElementType, type Ref } from "react";
+import { type ComponentPropsWithoutRef, type ElementType, forwardRef, type Ref } from "react";
 import clsx from "clsx";
 
 type SectionPadding = "none" | "narrow" | "default" | "wide";
 type SectionWidth = "constrained" | "full";
 
 const PADDING_MAP: Record<SectionPadding, string> = {
-  none: "px-0 py-0",
+  none: "",
   narrow: "px-4 py-6",
   default: "px-4 py-8",
   wide: "px-6 py-12",

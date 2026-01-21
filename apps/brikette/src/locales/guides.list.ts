@@ -3,9 +3,10 @@
 // Enumerate available guides locales with a stable Vitest fallback.
 // -----------------------------------------------------------------------------
 
-import { getGuidesBundlesMap, getOverridesActiveFlag } from "./guides.state";
 import { i18nConfig } from "../i18n.config";
 import { isTestEnvironment } from "../root/environment";
+
+import { getGuidesBundlesMap, getOverridesActiveFlag } from "./guides.state";
 
 export function listGuidesLocales(): string[] {
   const guidesBundles = getGuidesBundlesMap();

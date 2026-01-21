@@ -2,10 +2,10 @@
 // src/components/seo/SeoHead.tsx
 // Unified head builder: title/description, OG/Twitter parity, canonical + hreflang
 import React, { Fragment, memo, useMemo } from "react";
+
 import type { AppLanguage } from "@/i18n.config";
-import { pageHead } from "@/utils/seo";
-import { buildLinks } from "@/utils/seo";
 import { getOrigin, getPathname } from "@/root/environment";
+import { buildLinks,pageHead  } from "@/utils/seo";
 
 type OgImage = { src: string; width?: number | string; height?: number | string; alt?: string };
 

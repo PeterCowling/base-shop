@@ -1,14 +1,17 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
  
+import { memo, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { memo, useMemo } from "react";
-import { Button, Card, CardContent } from "../atoms/shadcn";
-import { Tag } from "../atoms";
-import { cn } from "@acme/ui/utils/style";
-import { useCmsNavItems } from "./nav/useCmsNavItems";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
+import { Tag } from "../atoms";
+import { Button, Card, CardContent } from "../atoms/shadcn";
+
+import { useCmsNavItems } from "./nav/useCmsNavItems";
 
 interface SidebarProps {
   role?: string;

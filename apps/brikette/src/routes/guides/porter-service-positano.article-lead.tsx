@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 
-import TableOfContents from "@/components/guides/TableOfContents";
 import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
 import TagChips from "@/components/guides/TagChips";
 
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { GUIDE_KEY } from "./porter-service-positano.constants";
-import type { GuideExtras } from "./porter-service-positano.types";
 import { PorterServiceStructuredDataPreview } from "./porter-service-positano.service-data";
+import type { GuideExtras } from "./porter-service-positano.types";
 import { renderGuideLinkTokens } from "./utils/linkTokens";
 
 function renderResourceItem(

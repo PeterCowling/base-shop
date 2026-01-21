@@ -1,10 +1,13 @@
 // packages/ui/src/components/organisms/ProductGrid.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import type { SKU } from '@acme/types';
+
 import type { Locale } from '@acme/i18n/locales';
-import { ProductGrid } from './ProductGrid';
+import type { SKU } from '@acme/types';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { ProductGrid } from './ProductGrid';
 
 const products: SKU[] = Array.from({ length: 8 }).map((_, i) => ({
   id: `grid-${i + 1}`,

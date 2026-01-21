@@ -1,6 +1,8 @@
 import { nowIso } from "@acme/date-utils";
-jest.mock("@acme/zod-utils/initZod", () => ({}));
+
 import { setupMocks } from "./analyticsTestUtils";
+
+jest.mock("@acme/zod-utils/initZod", () => ({}));
 
 describe("syncCampaignAnalytics", () => {
   it("fetches stats and forwards them to analytics", async () => {

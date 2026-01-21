@@ -1,12 +1,15 @@
+"use client";
+
 // src/components/careers/CareersSection.tsx
-import { CheckCircle, XCircle } from "lucide-react";
-import { memo, useMemo, type ReactNode } from "react";
+import { memo, type ReactNode,useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { CheckCircle, XCircle } from "lucide-react";
+
+import { Section as LayoutSection } from "@acme/ui/atoms";
+import { Button } from "@acme/ui/atoms/Button";
 
 import { CfImage } from "@/components/images/CfImage";
-import { Button } from "@acme/ui/atoms/Button";
 import { useModal } from "@/context/ModalContext";
-import { Section as LayoutSection } from "@acme/ui/atoms";
 
 /* ---------------------------------------------------------------------------
  * Types

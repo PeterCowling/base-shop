@@ -1,5 +1,5 @@
-import type { EmailAnalyticsEvent } from "../src/analytics";
 import { setupMocks } from "../src/__tests__/analyticsTestUtils";
+import type { EmailAnalyticsEvent } from "../src/analytics";
 
 describe("mapResendEvent", () => {
   it.each([

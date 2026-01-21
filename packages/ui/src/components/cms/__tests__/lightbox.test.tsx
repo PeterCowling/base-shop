@@ -5,7 +5,8 @@ describe("lightbox", () => {
     // Reset DOM and global flags between tests
     document.head.innerHTML = "";
     document.body.innerHTML = "";
-    delete (globalThis as any).__pbLightboxReady;
+    delete (globalThis as Record<string, unknown>).__pbLightboxReady;
+    delete (globalThis as Record<string, unknown>).__pbLightboxStyles;
   });
 
   it("injects styles once", () => {

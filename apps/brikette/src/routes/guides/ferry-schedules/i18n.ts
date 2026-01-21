@@ -1,8 +1,8 @@
 // src/routes/guides/ferry-schedules/i18n.ts
+import type { TFunction } from "i18next";
+
 import appI18n from "@/i18n";
 import guidesFallbackEn from "@/locales/en/guidesFallback.json";
-
-import type { TFunction } from "i18next";
 
 import { GUIDE_KEY } from "./constants";
 

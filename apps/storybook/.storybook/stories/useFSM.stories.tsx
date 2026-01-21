@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
 import { useFSM } from "@acme/platform-machine/useFSM";
 
 const meta: Meta = {

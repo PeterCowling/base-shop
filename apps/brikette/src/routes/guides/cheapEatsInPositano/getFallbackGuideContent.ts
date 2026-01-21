@@ -2,8 +2,8 @@
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import {
-  GUIDE_KEY,
   type GalleryCopy,
+  GUIDE_KEY,
   type Recommendation,
   type StructuredFaq,
 } from "./constants";

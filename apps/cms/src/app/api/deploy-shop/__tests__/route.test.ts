@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
 
-const deployShopHosting = jest.fn();
-const getDeployStatus = jest.fn();
-const updateDeployStatus = jest.fn();
+const deployShopHosting = jest.fn<Promise<{ ok: boolean }>, any[]>();
+const getDeployStatus = jest.fn<Promise<{ status: string } | undefined>, any[]>();
+const updateDeployStatus = jest.fn<Promise<void>, any[]>();
 function setSession(session: any) {
   const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
   __setMockSession(session);

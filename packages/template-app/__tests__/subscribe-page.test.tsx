@@ -1,12 +1,14 @@
 import type { ReactElement } from "react";
-import SubscribePage from "../src/app/[lang]/subscribe/page";
-import { resolveLocale } from "@acme/i18n/locales";
-import { stripe } from "@acme/stripe";
-import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { getCustomerSession } from "@acme/auth";
-import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
-import { setUserPlan } from "@acme/platform-core/repositories/subscriptionUsage.server";
 import { notFound } from "next/navigation";
+
+import { getCustomerSession } from "@acme/auth";
+import { resolveLocale } from "@acme/i18n/locales";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { setUserPlan } from "@acme/platform-core/repositories/subscriptionUsage.server";
+import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+import { stripe } from "@acme/stripe";
+
+import SubscribePage from "../src/app/[lang]/subscribe/page";
 
 jest.mock("@acme/i18n/locales", () => ({ resolveLocale: jest.fn() }));
 jest.mock("@acme/stripe", () => ({ stripe: { subscriptions: { create: jest.fn() } } }));

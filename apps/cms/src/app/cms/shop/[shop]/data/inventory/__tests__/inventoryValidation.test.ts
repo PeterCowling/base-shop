@@ -1,5 +1,6 @@
-import { validateInventoryItems } from "../useInventoryValidation";
 import type { InventoryItem } from "@acme/platform-core/types/inventory";
+
+import { validateInventoryItems } from "../useInventoryValidation";
 
 jest.mock("@acme/platform-core/types/inventory", () => {
   const { z } = require("zod");
@@ -35,7 +36,7 @@ describe("validateInventoryItems", () => {
     ]);
     expect(res.success).toBe(true);
     expect(res.data).toHaveLength(1);
-    expect(res.data[0].variantAttributes).toEqual({ color: "blue" });
+    expect(res.data![0].variantAttributes).toEqual({ color: "blue" });
   });
 
   it("returns error for invalid quantity", () => {

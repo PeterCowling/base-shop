@@ -2,8 +2,10 @@
 "use server";
 
 import { spawn } from "node:child_process";
-import { ensureAuthorized } from "./common/auth";
+
 import type { Environment } from "@acme/types";
+
+import { ensureAuthorized } from "./common/auth";
 
 export interface VerificationResult {
   status: "not-run" | "passed" | "failed";

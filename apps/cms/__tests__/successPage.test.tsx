@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
+import Success from "../src/app/success/page";
+
 const translations = {
   "success.thanks": "Thanks for your order!",
   "success.paymentReceived":
@@ -13,8 +15,6 @@ jest.mock("@acme/i18n/useTranslations.server", () => ({
 }));
 
 const translator = (key: string) => translations[key as keyof typeof translations] ?? key;
-
-import Success from "../src/app/success/page";
 
 describe("Success page", () => {
   beforeEach(() => {

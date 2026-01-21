@@ -1,10 +1,11 @@
 import { z } from "zod";
+
 import { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "../src/rbac";
-import { extendRoles } from "../src/types/roles";
-import * as roles from "../src/types/roles";
 import { requirePermission } from "../src/requirePermission";
 import { getCustomerSession } from "../src/session";
 import type { Role } from "../src/types/index";
+import { extendRoles } from "../src/types/roles";
+import * as roles from "../src/types/roles";
 
 jest.mock("../src/session", () => ({
   getCustomerSession: jest.fn(),

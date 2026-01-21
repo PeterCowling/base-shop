@@ -1,15 +1,19 @@
 "use client";
 
-import { Button } from "@acme/ui/components/atoms/shadcn";
-import { useRouter } from "next/navigation";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useConfigurator } from "../ConfiguratorContext";
-import ThemeEditorForm from "./ThemeEditorForm";
-import { useThemePalette } from "./hooks/useThemePalette";
-import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
-import type { ConfiguratorStepProps } from "@/types/configurator";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Cluster } from "@acme/ui/components/atoms/primitives";
+import { Button } from "@acme/ui/components/atoms/shadcn";
+
+import type { ConfiguratorStepProps } from "@/types/configurator";
+
+import { useConfigurator } from "../ConfiguratorContext";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import useStepCompletion from "../hooks/useStepCompletion";
+
+import { useThemePalette } from "./hooks/useThemePalette";
+import ThemeEditorForm from "./ThemeEditorForm";
 
 export default function StepTheme({
   themes,

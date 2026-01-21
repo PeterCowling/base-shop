@@ -1,21 +1,22 @@
-import { useEffect, useMemo } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import type { MetaFunction, LinksFunction } from "react-router";
-
-import { guideSlug } from "@/routes.guides-helpers";
 import "@/routes/guides/_GuideSeoTemplate";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { langFromRequest } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
+
+import { useEffect, useMemo } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+
 import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
-import { buildLegacyGuideRedirectBreadcrumb } from "./legacyRedirectBreadcrumb";
-import { resolveLegacyGuideSeo } from "./legacyRedirectBreadcrumb";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import type { AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { buildLegacyGuideRedirectBreadcrumb , resolveLegacyGuideSeo } from "./legacyRedirectBreadcrumb";
 
 export const GUIDE_KEY = "chiesaNuovaDepartures" as const;
 export const GUIDE_SLUG = "hostel-brikette-to-chiesa-nuova-bar-internazionale" as const;

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+import NewPageBuilderRoute from "../src/app/cms/shop/[shop]/pages/new/page/page";
 
 jest.mock("@cms/actions/pages/create", () => ({ createPage: jest.fn() }));
 jest.mock("next/dynamic", () => {
@@ -10,8 +13,6 @@ jest.mock("next/dynamic", () => {
     return NextDynamicMock;
   };
 });
-
-import NewPageBuilderRoute from "../src/app/cms/shop/[shop]/pages/new/page/page";
 
 describe("NewPageBuilderRoute", () => {
   it("renders header and builder", async () => {

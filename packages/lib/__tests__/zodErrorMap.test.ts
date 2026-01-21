@@ -1,3 +1,7 @@
+import { z, type ZodIssue,ZodIssueCode } from 'zod';
+
+import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/initZod';
+
 jest.mock('zod', () => {
   const actual = jest.requireActual('zod');
   return {
@@ -5,9 +9,6 @@ jest.mock('zod', () => {
     z: { ...actual.z, setErrorMap: jest.fn(actual.z.setErrorMap) },
   };
 });
-
-import { z, ZodIssueCode, type ZodIssue } from 'zod';
-import { applyFriendlyZodMessages, friendlyErrorMap } from '../src/initZod';
 
 describe('applyFriendlyZodMessages', () => {
   it('sets the global error map', () => {
@@ -27,6 +28,7 @@ describe('friendlyErrorMap', () => {
       expected: 'string',
       received: 'undefined',
       path: [],
+      message: '',
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Required');
   });
@@ -37,6 +39,7 @@ describe('friendlyErrorMap', () => {
       expected: 'number',
       received: 'string',
       path: [],
+      message: '',
     };
     expect(friendlyErrorMap(issue, ctx).message).toBe('Expected number');
   });
@@ -47,7 +50,7 @@ describe('friendlyErrorMap', () => {
       options: ['a', 'b'],
       received: 'c',
       path: [],
-    } as const;
+    } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Invalid value');
   });
 
@@ -58,7 +61,7 @@ describe('friendlyErrorMap', () => {
       inclusive: true,
       type: 'string',
       path: [],
-    } as const;
+    } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must be at least 2 characters');
   });
 
@@ -69,7 +72,7 @@ describe('friendlyErrorMap', () => {
       inclusive: true,
       type: 'array',
       path: [],
-    } as const;
+    } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must have at least 1 items');
   });
 
@@ -80,7 +83,7 @@ describe('friendlyErrorMap', () => {
       inclusive: true,
       type: 'string',
       path: [],
-    } as const;
+    } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must be at most 3 characters');
   });
 
@@ -91,17 +94,17 @@ describe('friendlyErrorMap', () => {
       inclusive: true,
       type: 'array',
       path: [],
-    } as const;
+    } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Must have at most 4 items');
   });
 
   it('falls back to ctx.defaultError', () => {
-    const issue = { code: ZodIssueCode.too_big, maximum: 1, inclusive: true, type: 'number', path: [] } as const;
+    const issue = { code: ZodIssueCode.too_big, maximum: 1, inclusive: true, type: 'number', path: [] } as any;
     expect(friendlyErrorMap(issue, ctx)).toEqual({ message: ctx.defaultError });
   });
 
   it('uses issue.message in default case', () => {
-    const issue = { code: ZodIssueCode.custom, message: 'Boom', path: [] } as const;
+    const issue = { code: ZodIssueCode.custom, message: 'Boom', path: [] } as any;
     expect(friendlyErrorMap(issue, ctx).message).toBe('Boom');
   });
 });

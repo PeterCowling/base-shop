@@ -2,6 +2,7 @@
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 import { stripGuideLinkTokens } from "../utils/linkTokens";
+
 import { GUIDE_KEY } from "./constants";
 import { getFaqItemsWithFallback, getGuidesTranslator } from "./translations";
 

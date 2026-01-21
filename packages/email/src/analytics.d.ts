@@ -1,6 +1,7 @@
 import "server-only";
-export { mapSendGridStats, mapResendStats, normalizeProviderStats, emptyStats, } from "./stats";
-export type { CampaignStats, SendGridStatsResponse, ResendStatsResponse, } from "./stats";
+
+export type { CampaignStats, ResendStatsResponse,SendGridStatsResponse,  } from "./stats";
+export { emptyStats,mapResendStats, mapSendGridStats, normalizeProviderStats,  } from "./stats";
 export type EmailEventType = "email_delivered" | "email_open" | "email_click" | "email_unsubscribe" | "email_bounce";
 export interface EmailAnalyticsEvent {
     type: EmailEventType;

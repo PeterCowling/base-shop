@@ -1,14 +1,18 @@
 "use client";
 
-import { Button } from "@acme/ui/components/atoms/shadcn";
-import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { type Page, type PageComponent } from "@acme/types";
-import { useState } from "react";
 import { Toast } from "@acme/ui/components/atoms";
-import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { Button } from "@acme/ui/components/atoms/shadcn";
+
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
+import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
+
+import useStepCompletion from "../hooks/useStepCompletion";
+
 import useProductPageData from "./hooks/useProductPageData";
 
 interface Props {

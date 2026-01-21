@@ -1,4 +1,5 @@
 import React from 'react';
+
 import VersionTimeline from './VersionTimeline';
 
 describe('VersionTimeline (CT)', { tags: ['inspectors'] }, () => {

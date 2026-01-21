@@ -1,9 +1,12 @@
 "use client";
 import * as React from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { cn } from "../../utils/style";
-import { Tag, TagProps } from "./Tag";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
+
+import { Tag, type TagProps } from "./Tag";
 
 export interface ChipProps extends TagProps {
   onRemove?: () => void;
@@ -41,4 +44,4 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
     );
   }
 );
-Chip.displayName = "Chip"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName, not user-facing
+Chip.displayName = "Chip";

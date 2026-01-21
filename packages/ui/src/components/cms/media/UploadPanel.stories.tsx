@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+import { delay,http, HttpResponse } from "msw";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { http, HttpResponse, delay } from "msw";
+
 import type { MediaItem } from "@acme/types";
+
 import UploadPanel from "./UploadPanel";
 
 const uploadedItem: MediaItem = {

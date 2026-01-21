@@ -6,6 +6,14 @@ jest.mock("@acme/sanity", () => ({
   fetchPublishedPosts: jest.fn(),
 }));
 
+jest.mock("@acme/platform-core/repositories/catalogSkus.server", () => ({
+  listShopSkus: jest.fn().mockResolvedValue([]),
+}));
+
+jest.mock("next/headers", () => ({
+  draftMode: jest.fn().mockResolvedValue({ isEnabled: false }),
+}));
+
 const mockFetchPublishedPosts =
   fetchPublishedPosts as jest.MockedFunction<typeof fetchPublishedPosts>;
 

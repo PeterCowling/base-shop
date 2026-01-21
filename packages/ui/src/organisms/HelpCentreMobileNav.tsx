@@ -1,15 +1,15 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
-import clsx from "clsx";
 import {
+  type ButtonHTMLAttributes,
   forwardRef,
+  type HTMLAttributes,
   memo,
+  type ReactNode,
   useEffect,
   useMemo,
   useState,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-  type ReactNode,
 } from "react";
+import clsx from "clsx";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export interface AssistanceMobileNavItem {
   key: string;

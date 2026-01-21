@@ -5,6 +5,7 @@
 import { NAV_ITEMS, type NavKey } from "@/config/navItems";
 import type { AppLanguage } from "@/i18n.config";
 import type { SlugMap } from "@/slug-map";
+
 import { translatePath } from "./translate-path";
 
 export interface NavItem {

@@ -1,6 +1,7 @@
 /* eslint-disable ds/enforce-layout-primitives -- DASH-3202 dashboard cards use custom grid layout [ttl=2026-06-30] */
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+
 import { trackEvent } from "../lib/telemetry";
 
 type ShopSummary = {

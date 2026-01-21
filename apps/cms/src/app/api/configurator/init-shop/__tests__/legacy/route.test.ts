@@ -97,3 +97,5 @@ describe("POST /cms/api/configurator/init-shop", () => {
     expect(await res.json()).toEqual({ error: "disk" });
   });
 });
+
+export {};

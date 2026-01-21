@@ -1,4 +1,5 @@
 import { Inline } from "@/components/primitives/Inline";
+
 import type { Translator } from "./types";
 
 export type ProductTile = {

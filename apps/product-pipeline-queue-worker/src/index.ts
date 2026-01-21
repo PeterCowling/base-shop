@@ -1,6 +1,5 @@
 /* i18n-exempt file -- PP-1100 Stage M queue worker [ttl=2026-06-30] */
 
-import type { Env, RunnerError, StageMJobInput, StageMQueueMessage } from "./types";
 import { buildStageMOutputFromHtml, resolveCaptureUrl } from "./stageMParser";
 import {
   completeStageRun,
@@ -9,6 +8,7 @@ import {
   nowIso,
   storeHtmlArtifact,
 } from "./storage";
+import type { Env, RunnerError, StageMJobInput, StageMQueueMessage } from "./types";
 
 const DEFAULT_USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
@@ -130,15 +130,15 @@ async function handleQueueMessage(
   const input = resolveStageMInput(stageRun.input_json, body);
 
   if (!input) {
-    await completeStageRun(
-      env.PIPELINE_DB,
+    await completeStageRun({
+      db: env.PIPELINE_DB,
       stageRun,
-      "failed",
-      null,
-      buildRunnerError("Missing Stage M input.", "input_missing"),
-      null,
+      status: "failed",
+      output: null,
+      error: buildRunnerError("Missing Stage M input.", "input_missing"),
+      artifact: null,
       now,
-    );
+    });
     message.ack();
     return;
   }
@@ -147,15 +147,15 @@ async function handleQueueMessage(
 
   const targetUrl = resolveCaptureUrl(input);
   if (!targetUrl) {
-    await completeStageRun(
-      env.PIPELINE_DB,
+    await completeStageRun({
+      db: env.PIPELINE_DB,
       stageRun,
-      "failed",
-      null,
-      buildRunnerError("Missing capture URL for job.", "capture_url_missing"),
-      null,
+      status: "failed",
+      output: null,
+      error: buildRunnerError("Missing capture URL for job.", "capture_url_missing"),
+      artifact: null,
       now,
-    );
+    });
     message.ack();
     return;
   }
@@ -167,19 +167,19 @@ async function handleQueueMessage(
     const messageText =
       error instanceof Error ? error.message : "Capture failed.";
     const isAbort = error instanceof Error && error.name === "AbortError";
-    await completeStageRun(
-      env.PIPELINE_DB,
+    await completeStageRun({
+      db: env.PIPELINE_DB,
       stageRun,
-      "failed",
-      null,
-      buildRunnerError(
+      status: "failed",
+      output: null,
+      error: buildRunnerError(
         isAbort ? "Capture timed out." : messageText,
         isAbort ? "capture_timeout" : "capture_failed",
         { url: targetUrl },
       ),
-      null,
+      artifact: null,
       now,
-    );
+    });
     message.ack();
     return;
   }
@@ -191,15 +191,15 @@ async function handleQueueMessage(
   );
 
   if (!output) {
-    await completeStageRun(
-      env.PIPELINE_DB,
+    await completeStageRun({
+      db: env.PIPELINE_DB,
       stageRun,
-      "failed",
-      null,
-      buildRunnerError("No parseable data found.", "parse_failed"),
-      null,
+      status: "failed",
+      output: null,
+      error: buildRunnerError("No parseable data found.", "parse_failed"),
+      artifact: null,
       now,
-    );
+    });
     message.ack();
     return;
   }
@@ -218,29 +218,29 @@ async function handleQueueMessage(
     } catch (error) {
       const messageText =
         error instanceof Error ? error.message : "Artifact storage failed.";
-      await completeStageRun(
-        env.PIPELINE_DB,
+      await completeStageRun({
+        db: env.PIPELINE_DB,
         stageRun,
-        "failed",
-        null,
-        buildRunnerError(messageText, "artifact_store_failed"),
-        null,
+        status: "failed",
+        output: null,
+        error: buildRunnerError(messageText, "artifact_store_failed"),
+        artifact: null,
         now,
-      );
+      });
       message.ack();
       return;
     }
   }
 
-  await completeStageRun(
-    env.PIPELINE_DB,
+  await completeStageRun({
+    db: env.PIPELINE_DB,
     stageRun,
-    "succeeded",
+    status: "succeeded",
     output,
-    null,
+    error: null,
     artifact,
     now,
-  );
+  });
   message.ack();
 }
 

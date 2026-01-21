@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { trackEvent } from "@acme/platform-core/analytics";
+
 import {
   mapResendEvent,
   type ResendWebhookEvent,
 } from "@acme/email/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");

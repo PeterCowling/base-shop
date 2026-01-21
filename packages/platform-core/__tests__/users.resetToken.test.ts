@@ -1,3 +1,4 @@
+import { prisma } from "../src/db";
 import {
   createUser,
   getUserByResetToken,
@@ -5,7 +6,6 @@ import {
   updatePassword,
   verifyEmail,
 } from "../src/users";
-import { prisma } from "../src/db";
 
 type StoreUser = {
   id: string;

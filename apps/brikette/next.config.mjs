@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,6 +46,10 @@ setEnv("NEXT_PUBLIC_NOINDEX_PREVIEW", readEnv("NEXT_PUBLIC_NOINDEX_PREVIEW", "NO
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...sharedConfig,
+  // Keep react-i18next bundled to avoid invalid hook calls during prerender.
+  serverExternalPackages: (sharedConfig.serverExternalPackages ?? []).filter(
+    (name) => name !== "react-i18next",
+  ),
   env: {
     ...(sharedConfig.env ?? {}),
     ...publicEnv,
@@ -63,6 +68,13 @@ const nextConfig = {
       "react-router/dom": path.resolve(__dirname, "src", "compat", "react-router-dom.tsx"),
       "@react-router/dev/routes": path.resolve(__dirname, "src", "compat", "react-router-dev-routes.ts"),
     };
+
+    if (context.isServer) {
+      config.resolve.alias = {
+        ...(config.resolve.alias ?? {}),
+        "react-i18next": path.resolve(__dirname, "src", "compat", "react-i18next-server.tsx"),
+      };
+    }
 
     // The brikette app still has a few Node-only helpers (fs loaders, createRequire).
     // Those are guarded at runtime, but webpack needs explicit "no polyfill" fallbacks

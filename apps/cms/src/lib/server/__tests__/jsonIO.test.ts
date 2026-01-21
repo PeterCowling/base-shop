@@ -2,7 +2,8 @@
 /* eslint-env jest */
 
 import { promises as fs } from "fs";
-import { readJsonFile, writeJsonFile, withFileLock } from "../jsonIO";
+
+import { readJsonFile, withFileLock,writeJsonFile } from "../jsonIO";
 
 jest.mock("fs", () => ({
   promises: {

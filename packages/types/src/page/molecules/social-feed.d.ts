@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface SocialFeedComponent extends PageComponentBase {
     type: "SocialFeed";
     platform?: "twitter" | "instagram";

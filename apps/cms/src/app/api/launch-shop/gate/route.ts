@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
+
+import { validateShopName } from "@acme/platform-core/shops";
+
 import {
   evaluateProdGate,
   getLaunchGate,
   type LaunchGateEntry,
 } from "@/lib/server/launchGate";
-import { validateShopName } from "@acme/platform-core/shops";
 
 type MissingGateReason = "stage-tests" | "qa-ack";
 

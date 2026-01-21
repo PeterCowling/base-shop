@@ -1,9 +1,10 @@
 // React 19 requires this flag to silence act warnings in tests
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { PreviewPanel } from "../PreviewPanel";
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("PreviewPanel", () => {
   const title = "API payload";
@@ -18,7 +19,7 @@ describe("PreviewPanel", () => {
     const mockNavigator = Object.create(originalNavigator) as Navigator;
     Object.defineProperty(mockNavigator, "clipboard", {
       configurable: true,
-      value: { writeText: writeTextMock } as Clipboard,
+      value: { writeText: writeTextMock } as unknown as Clipboard,
     });
     Object.defineProperty(global, "navigator", {
       configurable: true,

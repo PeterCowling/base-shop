@@ -1,7 +1,7 @@
 import {
-  getProductBySlug,
-  getProductById,
   assertLocale,
+  getProductById,
+  getProductBySlug,
   isSKU,
   PRODUCTS,
 } from "../index";

@@ -1,5 +1,5 @@
-import { SendgridProvider } from "../providers/sendgrid";
 import { ResendProvider } from "../providers/resend";
+import { SendgridProvider } from "../providers/sendgrid";
 import type { CampaignProvider } from "../providers/types";
 
 const providers: Record<string, CampaignProvider> = {

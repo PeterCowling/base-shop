@@ -1,6 +1,7 @@
 "use client";
 
 import { type ConfiguratorProgress } from "@acme/platform-core/contexts/LayoutContext";
+
 import { type StepStatus } from "../../wizard/schema";
 import { getSteps } from "../steps";
 

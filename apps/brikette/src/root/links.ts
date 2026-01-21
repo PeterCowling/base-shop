@@ -1,4 +1,6 @@
-import type { LinksFunction, LinkDescriptor } from "react-router";
+import type { LinkDescriptor, LinksFunction } from "react-router";
+
+import globalStylesHref from "@/styles/global.css?url";
 
 // Static assets: critical font preloads
 const links: LinksFunction = () => {
@@ -24,6 +26,7 @@ const links: LinksFunction = () => {
   return [
     // Cast to tolerate additional attributes not declared on LinkDescriptor
     ...(fonts as unknown as LinkDescriptor[]),
+    { rel: "stylesheet", href: globalStylesHref },
   ];
 };
 

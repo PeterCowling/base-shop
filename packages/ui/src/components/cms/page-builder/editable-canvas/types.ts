@@ -1,7 +1,8 @@
-import type { PageComponent, HistoryState } from "@acme/types";
 import type { Locale } from "@acme/i18n/locales";
-import type { Action } from "../state";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import type { DevicePreset } from "../../../../utils/devicePresets";
+import type { Action } from "../state";
 
 // i18n-exempt — builder-only surface; keep copy local
 /* i18n-exempt */

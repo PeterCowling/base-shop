@@ -1,3 +1,5 @@
+import { __setMockSession } from "next-auth";
+
 import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
 
 // Polyfill setImmediate used by fast-csv in the test environment
@@ -5,8 +7,6 @@ import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
   (global as any).setImmediate ||
   ((fn: (...args: any[]) => void, ...args: any[]) =>
     setTimeout(fn, 0, ...args));
-
-import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const write = jest.fn();
@@ -139,7 +139,6 @@ describe("POST", () => {
   });
 
   it("returns 400 when write fails", async () => {
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     write.mockRejectedValueOnce(new Error("boom"));
     const items = [
@@ -151,11 +150,9 @@ describe("POST", () => {
     const res = await POST(req(file), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "boom" });
-    errorSpy.mockRestore();
   });
 
   it("returns 503 when backend delegate is unavailable", async () => {
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     __setMockSession({ user: { role: "admin" } } as any);
     write.mockRejectedValueOnce(new Error("Prisma inventory delegate is unavailable"));
     const items = [
@@ -169,6 +166,5 @@ describe("POST", () => {
     await expect(res.json()).resolves.toEqual({
       error: "Prisma inventory delegate is unavailable",
     });
-    errorSpy.mockRestore();
   });
 });

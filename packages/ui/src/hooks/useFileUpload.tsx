@@ -12,11 +12,13 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useImageOrientationValidation } from "./useImageOrientationValidation";
-import { validateFilePolicy, firstFileFromChange } from "./upload/filePolicy";
+
+import UploaderSurface from "../components/upload/UploaderSurface";
+
+import { firstFileFromChange,validateFilePolicy } from "./upload/filePolicy";
 import { ingestExternalUrl, ingestFromText } from "./upload/ingestExternalUrl";
 import { uploadToCms } from "./upload/uploadToCms";
-import UploaderSurface from "../components/upload/UploaderSurface";
+import { useImageOrientationValidation } from "./useImageOrientationValidation";
 
 // Stable default list to avoid re-creation on each render
 const DEFAULT_PREFIXES = ["image/", "video/"] as const;

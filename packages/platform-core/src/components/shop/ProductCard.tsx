@@ -1,10 +1,13 @@
 // src/components/shop/ProductCard.tsx
-import type { SKU } from "@acme/types";
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { formatPrice } from "@acme/lib/format";
+import type { SKU } from "@acme/types";
+
 import { useCurrency } from "../../contexts/CurrencyContext";
-import { formatPrice } from "@acme/shared-utils";
-import { memo } from "react";
+
 import AddToCartButton from "./AddToCartButton.client";
 
 interface PriceProps {

@@ -1,4 +1,10 @@
 // Mock builder runtime hooks that use DOM APIs not present in jsdom
+import { render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import DynamicRenderer from "../DynamicRenderer";
+
 jest.mock("../cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -15,9 +21,6 @@ jest.mock("../cms/lightbox", () => ({
   initLightbox: jest.fn(),
 }));
 
-import { render, screen } from "@testing-library/react";
-import type { PageComponent } from "@acme/types";
-
 const ParentComp = jest.fn(({ children }: any) => (
   <div data-cy="parent">{children}</div>
 ));
@@ -26,7 +29,7 @@ const ChildComp = jest.fn(({ text }: any) => (
   <div data-cy="child">{text}</div>
 ));
 
-const SimpleComp = jest.fn(() => <div data-cy="simple" />);
+const SimpleComp: jest.Mock = jest.fn(() => <div data-cy="simple" />);
 
 const mockBlockRegistry = {
   Parent: {
@@ -48,7 +51,6 @@ const mockBlockRegistry = {
 };
 
 jest.mock("../cms/blocks", () => ({ blockRegistry: mockBlockRegistry }));
-import DynamicRenderer from "../DynamicRenderer";
 
 describe("DynamicRenderer", () => {
   afterEach(() => {
@@ -143,7 +145,7 @@ describe("DynamicRenderer", () => {
     render(<DynamicRenderer components={components} locale="en" />);
 
     expect(SimpleComp).toHaveBeenCalled();
-    const props = SimpleComp.mock.calls[0][0];
+    const props = (SimpleComp.mock.calls[0] as unknown[])[0] as Record<string, unknown>;
     expect(props).toMatchObject({ id: "1", type: "Simple", locale: "en" });
     expect(Object.keys(props).sort()).toEqual([
       "children",

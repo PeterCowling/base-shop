@@ -1,8 +1,9 @@
 // src/routes/guides/guide-seo/useDisplayH1Title.ts
 import { useMemo } from "react";
-import { getOptionalString, getStringWithFallback } from "@/utils/i18nSafe";
-import type { TFunction } from "@/utils/i18nSafe";
+
 import type { GuideKey } from "@/guides/slugs";
+import type { TFunction } from "@/utils/i18nSafe";
+import { getOptionalString, getStringWithFallback } from "@/utils/i18nSafe";
 
 type Translations = {
   tGuides: TFunction;

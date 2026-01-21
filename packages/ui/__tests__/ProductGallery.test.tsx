@@ -1,6 +1,7 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
-import { ProductGallery } from "../src/components/organisms/ProductGallery";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
 import type { MediaItem } from "../src/components/molecules/MediaSelector";
+import { ProductGallery } from "../src/components/organisms/ProductGallery";
 
 describe("ProductGallery", () => {
   it("returns null when media is empty", () => {

@@ -1,8 +1,10 @@
 "use client";
 import { useCallback, useMemo, useReducer, useRef } from "react";
-import { tryOnReducer, useTryOnDerived } from "./state";
-import { setTryOnCtx, logTryOnEvent } from "./analytics";
+
 import { useDirectR2Upload } from "../tryon/useDirectR2Upload";
+
+import { logTryOnEvent,setTryOnCtx } from "./analytics";
+import { tryOnReducer, useTryOnDerived } from "./state";
 
 export interface EnhancePayload {
   mode: 'garment';
@@ -89,7 +91,7 @@ export function useTryOnController() {
     // Simple retry with backoff if stream ended without final
     const ok = await runOnce();
     if (!ok) {
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await runOnce();
     }
   }, [dispatch, state]);

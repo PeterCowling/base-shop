@@ -1,10 +1,15 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
+
 import { withEnv } from "../test/utils/withEnv";
 
 const required = {
   CMS_SPACE_URL: "https://example.com",
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "2023-01-01",
+  SANITY_PROJECT_ID: "test-project",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "test-token",
+  SANITY_PREVIEW_SECRET: "preview-secret",
 };
 
 describe("cmsEnv normalization", () => {

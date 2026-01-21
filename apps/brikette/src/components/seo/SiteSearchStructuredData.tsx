@@ -2,11 +2,12 @@
 /* /src/components/seo/SiteSearchStructuredData.tsx
    Emits the SearchAction JSON‑LD that powers Google’s
    “Search Hostel Brikette” auto‑suggest box.  */
+import { memo, useMemo } from "react";
+
 import { BASE_URL } from "@/config/site";
-import { ORG_ID, WEBSITE_ID } from "@/utils/schema";
 import type { AppLanguage } from "@/i18n.config";
 import type { SearchActionSchema } from "@/types/seo";
-import { memo, useMemo } from "react";
+import { ORG_ID, WEBSITE_ID } from "@/utils/schema";
 
 /* Keep this component *tiny* so React can memo‑skip it. */
 interface Props {

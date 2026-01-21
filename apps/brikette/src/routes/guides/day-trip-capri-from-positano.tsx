@@ -1,34 +1,33 @@
 // src/routes/guides/day-trip-capri-from-positano.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
 import type { LinksFunction } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import { renderGuideLinkTokens } from "./utils/linkTokens";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
 
 import GenericContent from "@/components/guides/GenericContent";
 import ImageGallery from "@/components/guides/ImageGallery";
 import TableOfContents from "@/components/guides/TableOfContents";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { BASE_URL } from "@/config/site";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
+import { buildGuideExtras } from "./day-trip-capri-from-positano/buildGuideExtras";
 import {
   ALSO_HELPFUL_TAGS,
   GUIDE_KEY as GUIDE_KEY_INNER,
   GUIDE_SLUG as GUIDE_SLUG_INNER,
+  handle,
   OG_IMAGE,
   RELATED_GUIDES,
-  handle,
 } from "./day-trip-capri-from-positano/constants";
-import { buildGuideExtras } from "./day-trip-capri-from-positano/buildGuideExtras";
 import { createGuideFaqFallback } from "./day-trip-capri-from-positano/guideFaqFallback";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
+import { renderGuideLinkTokens } from "./utils/linkTokens";
 
 export { handle };
 export const GUIDE_KEY: GuideKey = GUIDE_KEY_INNER;

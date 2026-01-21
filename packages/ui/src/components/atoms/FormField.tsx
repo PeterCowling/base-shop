@@ -1,16 +1,17 @@
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 
 export interface FormFieldProps {
-  id?: string | undefined;
-  label?: React.ReactNode | undefined;
-  description?: React.ReactNode | undefined;
-  error?: React.ReactNode | undefined;
-  required?: boolean | undefined;
-  className?: string | undefined;
+  id?: string;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
+  error?: React.ReactNode;
+  required?: boolean;
+  className?: string;
   input:
     | React.ReactElement
-    | ((args: { id: string; describedBy?: string | undefined; ariaInvalid?: boolean | undefined }) => React.ReactNode);
+    | ((args: { id: string; describedBy?: string; ariaInvalid?: boolean }) => React.ReactNode);
 }
 
 /**
@@ -51,8 +52,8 @@ export function FormField({
     typeof input === "function"
       ? input({
           id: controlId,
-          describedBy,
-          ariaInvalid: Boolean(error) || undefined,
+          ...(describedBy ? { describedBy } : {}),
+          ...(error ? { ariaInvalid: true } : {}),
         })
       : inputElement
         ? React.cloneElement(inputElement, {

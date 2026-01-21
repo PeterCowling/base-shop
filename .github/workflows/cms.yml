@@ -135,6 +135,22 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
+
+      # ADMIN-04: Decrypt SOPS secrets before deploy
+      - name: Decrypt secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          app-path: apps/cms
+          environment: production
+
+      # ADMIN-05: Validate environment before deploy
+      - name: Validate deploy environment
+        run: |
+          chmod +x scripts/validate-deploy-env.sh
+          ./scripts/validate-deploy-env.sh
+        shell: bash
+
       - name: Deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -1,13 +1,19 @@
 // src/routes/guides/laundry-positano.tsx
+import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { buildGuideExtras } from "./laundry-positano/buildGuideExtras";
 import { createArticleLead } from "./laundry-positano/_createArticleLead";
-import { createGuideFaqFallback } from "./laundry-positano/createGuideFaqFallback";
-import { createHowToSteps } from "./laundry-positano/createHowToSteps";
-import { createTocBuilder } from "./laundry-positano/createTocBuilder";
+import { buildGuideExtras } from "./laundry-positano/buildGuideExtras";
 import {
   ALSO_HELPFUL_TAGS,
   GUIDE_KEY as ROUTE_GUIDE_KEY,
@@ -15,15 +21,9 @@ import {
   OG_IMAGE,
   RELATED_GUIDES,
 } from "./laundry-positano/constants";
-
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideSlug } from "@/routes.guides-helpers";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { toAppLanguage } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import type { LinksFunction } from "react-router";
+import { createGuideFaqFallback } from "./laundry-positano/createGuideFaqFallback";
+import { createHowToSteps } from "./laundry-positano/createHowToSteps";
+import { createTocBuilder } from "./laundry-positano/createTocBuilder";
 
 const manifestEntry = getGuideManifestEntry(ROUTE_GUIDE_KEY);
 if (!manifestEntry) {

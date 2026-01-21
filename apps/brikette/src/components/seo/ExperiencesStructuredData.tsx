@@ -1,11 +1,12 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/ExperiencesStructuredData.tsx
-import { BASE_URL } from "@/config/site";
-import { HOTEL_ID, WEBSITE_ID } from "@/utils/schema";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { usePathname } from "next/navigation";
+
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { HOTEL_ID, WEBSITE_ID } from "@/utils/schema";
 
 const SECTION_KEYS = ["bar", "hikes", "concierge"] as const;
 type SectionKey = (typeof SECTION_KEYS)[number];
@@ -77,7 +78,7 @@ function translateOrFallback(
 
 function ExperiencesStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("experiencesPage", { lng: lang });
 
   const json = useMemo(() => {

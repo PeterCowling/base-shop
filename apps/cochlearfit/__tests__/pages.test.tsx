@@ -1,31 +1,34 @@
 import "~test/resetNextMocks";
 
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
 import * as navigation from "next/navigation";
-import RootLayout, { metadata as rootMetadata } from "@/app/layout";
-import RootRedirect from "@/app/page";
-import RootNotFound from "@/app/not-found";
+import { render, screen, waitFor } from "@testing-library/react";
+
+import AboutPage, { generateMetadata as generateAboutMetadata } from "@/app/[lang]/about/page";
+import CartPage, { generateMetadata as generateCartMetadata } from "@/app/[lang]/cart/page";
+import CheckoutPage, { generateMetadata as generateCheckoutMetadata } from "@/app/[lang]/checkout/page";
+import ContactPage, { generateMetadata as generateContactMetadata } from "@/app/[lang]/contact/page";
+import FaqPage, { generateMetadata as generateFaqMetadata } from "@/app/[lang]/faq/page";
 import LocaleLayout, { generateStaticParams as generateLocaleParams } from "@/app/[lang]/layout";
 import LocaleNotFound from "@/app/[lang]/not-found";
 import HomePage, { generateMetadata as generateHomeMetadata } from "@/app/[lang]/page";
-import ShopPage, { generateMetadata as generateShopMetadata } from "@/app/[lang]/shop/page";
-import AboutPage, { generateMetadata as generateAboutMetadata } from "@/app/[lang]/about/page";
-import FaqPage, { generateMetadata as generateFaqMetadata } from "@/app/[lang]/faq/page";
-import ContactPage, { generateMetadata as generateContactMetadata } from "@/app/[lang]/contact/page";
-import SizingPage, { generateMetadata as generateSizingMetadata } from "@/app/[lang]/sizing/page";
-import CartPage, { generateMetadata as generateCartMetadata } from "@/app/[lang]/cart/page";
-import CheckoutPage, { generateMetadata as generateCheckoutMetadata } from "@/app/[lang]/checkout/page";
-import ThankYouPage, { generateMetadata as generateThankYouMetadata } from "@/app/[lang]/thank-you/page";
-import ShippingPage, { generateMetadata as generateShippingMetadata } from "@/app/[lang]/policies/shipping/page";
-import ReturnsPage, { generateMetadata as generateReturnsMetadata } from "@/app/[lang]/policies/returns/page";
 import PrivacyPage, { generateMetadata as generatePrivacyMetadata } from "@/app/[lang]/policies/privacy/page";
+import ReturnsPage, { generateMetadata as generateReturnsMetadata } from "@/app/[lang]/policies/returns/page";
+import ShippingPage, { generateMetadata as generateShippingMetadata } from "@/app/[lang]/policies/shipping/page";
 import TermsPage, { generateMetadata as generateTermsMetadata } from "@/app/[lang]/policies/terms/page";
 import ProductPage, {
   generateMetadata as generateProductMetadata,
   generateStaticParams as generateProductParams,
 } from "@/app/[lang]/product/[slug]/page";
+import ShopPage, { generateMetadata as generateShopMetadata } from "@/app/[lang]/shop/page";
+import SizingPage, { generateMetadata as generateSizingMetadata } from "@/app/[lang]/sizing/page";
+import ThankYouPage, { generateMetadata as generateThankYouMetadata } from "@/app/[lang]/thank-you/page";
+import RootLayout, { metadata as rootMetadata } from "@/app/layout";
+import RootNotFound from "@/app/not-found";
+import RootRedirect from "@/app/page";
+
 import enMessages from "../i18n/en.json";
+
 import { renderWithProviders } from "./testUtils";
 
 jest.mock("next/font/google", () => ({

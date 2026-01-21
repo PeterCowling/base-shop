@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import { ProductGrid } from "../src/components/shop/ProductGrid";
 import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";

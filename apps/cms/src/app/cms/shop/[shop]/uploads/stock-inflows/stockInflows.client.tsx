@@ -2,11 +2,15 @@
 
 "use client";
 
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import type {
   StockInflowEvent,
   StockInflowReport,
 } from "@acme/platform-core/types/stockInflows";
-import { getCsrfToken } from "@acme/shared-utils";
+import { getCsrfToken } from "@acme/lib/security";
+
 import {
   Button,
   Input,
@@ -18,8 +22,6 @@ import {
   TableRow,
   Textarea,
 } from "@/components/atoms/shadcn";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
 type ReceiveResult =
   | { ok: true; duplicate: boolean; report: StockInflowReport; event: StockInflowEvent }
@@ -283,10 +285,11 @@ export default function StockInflowsClient({
           }
           const mergedAttrs: Record<string, string> = { ...row.variantAttributes };
           const extraAttrs = parseVariantAttributesJson(row.extraVariantJson);
-          if (extraAttrs.ok === false) {
+          if (!extraAttrs.ok && "error" in extraAttrs) {
             setError(`Row ${idx + 1}: ${extraAttrs.error}`);
             return;
           }
+          if (!extraAttrs.ok) return;
           for (const [key, value] of Object.entries(extraAttrs.value)) {
             if (mergedAttrs[key] && mergedAttrs[key] !== value) {
               setError(`Row ${idx + 1}: variant attribute '${key}' is set twice with different values.`);
@@ -323,9 +326,13 @@ export default function StockInflowsClient({
           setError("Request failed.");
           return;
         }
-        if (json.ok === false) {
+        if (!json.ok && "message" in json) {
           setError(json.message || "Request failed.");
           setResult(json);
+          return;
+        }
+        if (!json.ok) {
+          setError("Request failed.");
           return;
         }
 
@@ -382,16 +389,18 @@ export default function StockInflowsClient({
 
         <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Input
-            label="Idempotency key"
-            value={idempotencyKey}
-            onChange={(e) => setIdempotencyKey(e.target.value)}
-            description="If you submit the same key twice, we’ll return the original receipt instead of double-receiving."
-          />
+          <div className="space-y-1">
+            <Input
+              label="Idempotency key"
+              value={idempotencyKey}
+              onChange={(e) => setIdempotencyKey(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">If you submit the same key twice, we&apos;ll return the original receipt instead of double-receiving.</p>
+          </div>
           <Textarea
             label="Note (optional)"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value)}
             placeholder="Supplier, PO number, or context for this receipt…"
             className="min-h-[96px]"
           />
@@ -558,7 +567,7 @@ export default function StockInflowsClient({
                         <Textarea
                           aria-label={`Row ${idx + 1} additional variant attributes`}
                           value={row.extraVariantJson}
-                          onChange={(e) => setRow(idx, { extraVariantJson: e.target.value })}
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setRow(idx, { extraVariantJson: e.target.value })}
                           placeholder='Additional variant attributes as JSON (e.g. {"batch":"A1"})'
                           className="min-h-[72px]"
                         />

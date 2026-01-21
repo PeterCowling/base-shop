@@ -1,8 +1,10 @@
 import type { HeaderComponent } from "@acme/types";
+
 import { Input } from "../../atoms/shadcn";
-import { useArrayEditor } from "./useArrayEditor";
 import type { LogoVariants } from "../../organisms/types";
+
 import type { EditorProps } from "./EditorProps";
+import { useArrayEditor } from "./useArrayEditor";
 
 interface ExtendedHeaderComponent extends HeaderComponent {
   logoVariants?: LogoVariants;

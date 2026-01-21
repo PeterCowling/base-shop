@@ -6,25 +6,25 @@
   "linkLabel": "Come arrivare a Positano (guida alle opzioni)",
   "intro": "Tutti i modi realistici per raggiungere Positano, confrontati per stagione, budget, bagagli e orario di arrivo.",
   "toc": {
-    "onThisPage": "On this page",
-    "naples": "Via Naples",
+    "onThisPage": "In questa pagina",
+    "naples": "Via Napoli",
     "salerno": "Via Salerno",
-    "ferry": "Ferry (summer)",
-    "private": "Private transfer",
-    "faqs": "FAQs"
+    "ferry": "Traghetto (estate)",
+    "private": "Transfer privato",
+    "faqs": "Domande frequenti"
   },
   "labels": {
-    "whenHeading": "When to choose",
-    "cheapestHeading": "Cheapest route",
-    "seasonalHeading": "Seasonal notes"
+    "whenHeading": "Quando scegliere",
+    "cheapestHeading": "Percorso piu economico",
+    "seasonalHeading": "Note stagionali"
   },
   "sections": [
     {
       "id": "naples",
-      "title": "Via Naples",
+      "title": "Via Napoli",
       "body": [
         "Navetta aeroportuale per Sorrento + SITA per Positano (più economica), oppure treno per Sorrento + SITA.",
-        "Traduzione in arrivo."
+        "Estate: traghetti da Molo Beverello con mare calmo; controlla le cancellazioni."
       ]
     },
     {
@@ -32,28 +32,28 @@
       "title": "Via Salerno",
       "body": [
         "Train to Salerno; traghetto per Positano in stagione (adatto ai bagagli).",
-        "Traduzione in arrivo."
+        "Fuori stagione: bus via Amalfi; piu lento ma affidabile."
       ]
     },
     {
       "id": "private",
-      "title": "Private transfer",
+      "title": "Transfer privato",
       "body": [
-        "Traduzione in arrivo."
+        "Porta a porta; piu costoso ma piu facile per arrivi tardi o bagagli pesanti."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "What’s fastest in summer?",
+      "q": "Qual e la piu veloce in estate?",
       "a": [
-        "Traduzione in arrivo."
+        "Treno per Salerno + traghetto con mare calmo; evita il traffico stradale."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Dove devo scendere dal bus?",
       "a": [
-        "Traduzione in arrivo."
+        "Chiesa Nuova e la fermata con meno scale per Hostel Brikette (circa 80 m)."
       ]
     }
   ]

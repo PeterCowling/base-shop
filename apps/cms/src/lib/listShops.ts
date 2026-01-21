@@ -1,10 +1,11 @@
 // apps/cms/src/lib/listShops.ts
 
 import fs from "fs/promises";
-import { resolveDataRoot } from "@acme/platform-core/dataRoot";
-import { logger } from "@acme/shared-utils";
-import { validateShopName } from "@acme/platform-core/shops";
 import path from "path";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
+import { logger } from "@acme/lib/logger";
 
 export async function listShops(): Promise<string[]> {
   const shopsDir = resolveDataRoot();

@@ -1,10 +1,11 @@
 import fs from "fs/promises";
-import fs from "fs/promises";
-import * as dataRootModule from "@acme/platform-core/dataRoot";
-import { listShops, listShopSummaries } from "../listShops";
-import { logger } from "@acme/shared-utils";
 
-jest.mock("@acme/shared-utils", () => ({
+import * as dataRootModule from "@acme/platform-core/dataRoot";
+import { logger } from "@acme/lib/logger";
+
+import { listShops, listShopSummaries } from "../listShops";
+
+jest.mock("@acme/lib/logger", () => ({
   logger: { error: jest.fn() },
 }));
 

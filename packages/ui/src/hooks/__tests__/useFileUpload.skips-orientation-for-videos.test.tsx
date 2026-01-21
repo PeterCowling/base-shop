@@ -1,9 +1,12 @@
 // i18n-exempt: test file uses literal strings for clarity
-import { act, renderHook } from "@testing-library/react";
-import React from "react";
 import type { ChangeEvent } from "react";
+import React from "react";
+import { act, renderHook } from "@testing-library/react";
 
-jest.mock("@/components/atoms/shadcn", () => {
+import { useFileUpload } from "../useFileUpload";
+import { useImageOrientationValidation } from "../useImageOrientationValidation.ts";
+
+jest.mock("@acme/ui/components/atoms/shadcn", () => {
   type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
   const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
     <button ref={ref} {...props} />
@@ -15,9 +18,6 @@ jest.mock("@/components/atoms/shadcn", () => {
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));
-
-import { useImageOrientationValidation } from "../useImageOrientationValidation.ts";
-import { useFileUpload } from "../useFileUpload";
 
 const mockOrientation =
   useImageOrientationValidation as jest.MockedFunction<

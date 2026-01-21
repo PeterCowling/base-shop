@@ -1,5 +1,5 @@
-import { priceForDays, convertCurrency } from "../pricing";
 import type { CartState } from "../cart";
+import { convertCurrency,priceForDays } from "../pricing";
 
 /**
  * Aggregate rental and deposit totals for later bookkeeping.

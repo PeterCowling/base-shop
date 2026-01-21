@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 
-import { augmentDestinationSections } from "./transport";
 import {
   normalizeDestinationSections,
   normalizeExperienceGuides,
@@ -13,14 +12,15 @@ import {
   normalizeSorrentoContent,
   slugify,
 } from "./normalizers";
+import { INTRO_INTRO_KEY } from "./styles";
+import { augmentDestinationSections } from "./transport";
 import type {
   AugmentedDestinationSection,
   DestinationSection,
+  ExperienceGuidesContent,
   HeaderContent,
   RomeTable,
-  ExperienceGuidesContent,
 } from "./types";
-import { INTRO_INTRO_KEY } from "./styles";
 
 export type HowToGetHereContent = {
   t: TFunction<"howToGetHere">;

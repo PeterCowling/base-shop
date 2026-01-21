@@ -4,12 +4,22 @@ import type { TFunction } from "i18next";
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
 import type RelatedGuides from "@/components/guides/RelatedGuides";
 import type { RelatedItem } from "@/components/guides/RelatedGuides";
-import type GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-import type { AppLanguage } from "@/i18n.config";
+import type GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
 import type { GuideSection } from "@/data/guides.index";
-import type { GuideKey } from "@/routes.guides-helpers";
+import type { AppLanguage } from "@/i18n.config";
 import type { BuildCfImageOptions } from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+
+export type GuideSeoGenericContentOptions = Record<string, unknown> & {
+  showToc?: boolean;
+  sectionTopExtras?: Record<string, ReactNode>;
+  sectionBottomExtras?: Record<string, ReactNode>;
+  /** Optional override for the FAQs section heading level. */
+  faqHeadingLevel?: 2 | 3;
+  /** When true, suppress GenericContent intro text. */
+  suppressIntro?: boolean;
+};
 
 export interface OgImageConfig {
   path: string;
@@ -56,6 +66,7 @@ export interface GuideSeoTemplateContext {
   intro: string[];
   faqs: NormalisedFaq[];
   toc: TocItem[];
+  renderGenericContent?: boolean;
   ogImage: { url: string; width: number; height: number };
   article: { title: string; description: string };
   canonicalUrl: string;
@@ -103,13 +114,7 @@ export interface GuideSeoTemplateProps {
   twitterCardDefault?: string;
   buildHowToSteps?: (context: GuideSeoTemplateContext) => HowToPayload | null | undefined;
   buildTocItems?: (context: GuideSeoTemplateContext) => TocItem[] | null | undefined;
-  genericContentOptions?: {
-    showToc?: boolean;
-    sectionTopExtras?: Record<string, ReactNode>;
-    sectionBottomExtras?: Record<string, ReactNode>;
-    /** Optional override for the FAQs section heading level. */
-    faqHeadingLevel?: 2 | 3;
-  };
+  genericContentOptions?: GuideSeoGenericContentOptions;
   /** When true (default), allow StructuredTocBlock to fall back to EN ToC title when localized title is blank. */
   fallbackToEnTocTitle?: boolean;
   renderGenericContent?: boolean;

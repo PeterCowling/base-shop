@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const coverageCodeSchema: z.ZodEnum<["scuff", "tear", "lost"]>;
 export declare const coverageRuleSchema: z.ZodObject<{
     fee: z.ZodNumber;

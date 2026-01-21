@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { localeSchema, pageComponentSchema, type PageComponent } from "./page";
+
 import type { Locale } from "./constants";
+import { localeSchema, type PageComponent,pageComponentSchema } from "./page";
 
 export type NavItem = {
   label: string;

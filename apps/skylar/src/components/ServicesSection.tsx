@@ -1,9 +1,10 @@
 'use client';
 
-import { Grid } from "@/components/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
-import type { Locale } from "@/lib/locales";
+
+import { Grid } from "@/components/primitives/Grid";
 import { joinClasses } from "@/lib/joinClasses";
+import type { Locale } from "@/lib/locales";
 
 const SERVICE_KEYS = [
   "services.list.design",

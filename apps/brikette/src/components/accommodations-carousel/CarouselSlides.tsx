@@ -2,9 +2,9 @@
 /* ────────────────────────────────────────────────────────────────
    Room carousel – Static grid fallback + Swiper variant
 ---------------------------------------------------------------- */
-import { ArrowLeft, ArrowRight as ArrowRightIcon } from "lucide-react";
-import { memo, useCallback, useEffect, useRef, useState, type ComponentType } from "react";
+import { type ComponentType,memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ArrowLeft, ArrowRight as ArrowRightIcon } from "lucide-react";
 import type { SwiperProps, SwiperSlideProps } from "swiper/react";
 
 import { Grid, Section } from "@acme/ui/atoms";
@@ -22,31 +22,25 @@ interface SwiperBundle {
 
 function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesProps): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
-  const { t } = useTranslation("roomsPage", translationOptions);
+  const { t, i18n, ready } = useTranslation("roomsPage", translationOptions);
+  const activeLanguage = lang ?? i18n.language;
+  const hasBundle = i18n.hasResourceBundle(activeLanguage, "roomsPage");
+  if (!ready || !hasBundle) {
+    return <></>;
+  }
 
   /* ------------------------- state & refs ------------------------- */
   const [swiperBundle, setSwiperBundle] = useState<SwiperBundle | null>(null);
-  const [cardHeight, setCardHeight] = useState<number>();
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  const [cardHeight, setCardHeight] = useState<number | undefined>(undefined);
 
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
-  const itemRefs = useRef<(HTMLElement | null)[]>([]);
   // removed custom classnames for prev/next; Swiper refs handle navigation
-
-  /* ------------------ equalise card heights ----------------------- */
-  const recalcHeights = useCallback(() => {
-    const max = Math.max(0, ...itemRefs.current.map((el) => el?.offsetHeight ?? 0));
-    if (max && max !== cardHeight) setCardHeight(max);
-  }, [cardHeight]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    recalcHeights();
-    window.addEventListener("resize", recalcHeights);
-    return () => window.removeEventListener("resize", recalcHeights);
-  }, [recalcHeights]);
+  const slideNodesRef = useRef<Record<string, HTMLElement | null>>({});
+  const slideRefCallbacks = useRef<Record<string, (node: HTMLElement | null) => void>>({});
+  const measureRafIdRef = useRef<number | null>(null);
 
   /* -------------- lazy‑load Swiper (only in browser) -------------- */
   useEffect(() => {
@@ -79,6 +73,51 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
     })();
   }, []);
 
+  const measureSlideHeights = useCallback(() => {
+    const nodes = roomsData
+      .map((room) => slideNodesRef.current[room.id])
+      .filter((node): node is HTMLElement => Boolean(node));
+
+    if (nodes.length !== roomsData.length) return;
+
+    const nextHeight = nodes.reduce((max, node) => Math.max(max, node.offsetHeight), 0);
+    setCardHeight(nextHeight > 0 ? nextHeight : undefined);
+  }, [roomsData]);
+
+  const scheduleHeightMeasure = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (measureRafIdRef.current !== null) {
+      window.cancelAnimationFrame(measureRafIdRef.current);
+    }
+    measureRafIdRef.current = window.requestAnimationFrame(() => {
+      measureRafIdRef.current = null;
+      measureSlideHeights();
+    });
+  }, [measureSlideHeights]);
+
+  useEffect(() => {
+    scheduleHeightMeasure();
+    return () => {
+      if (measureRafIdRef.current !== null && typeof window !== "undefined") {
+        window.cancelAnimationFrame(measureRafIdRef.current);
+      }
+    };
+  }, [scheduleHeightMeasure, swiperBundle]);
+
+  const getSlideRef = useCallback(
+    (roomId: string) => {
+      const cached = slideRefCallbacks.current[roomId];
+      if (cached) return cached;
+      const refCallback = (node: HTMLElement | null) => {
+        slideNodesRef.current[roomId] = node;
+        if (node) scheduleHeightMeasure();
+      };
+      slideRefCallbacks.current[roomId] = refCallback;
+      return refCallback;
+    },
+    [scheduleHeightMeasure]
+  );
+
   /* Swiper event hook */
   const onSwiperInit = useCallback((sw: import("swiper").Swiper) => {
     setAtStart(sw.isBeginning);
@@ -96,6 +135,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
 
   const baseBtn = combineClasses(
     "group",
+    "inline-flex",
     "rounded-full",
     "p-3",
     "shadow-md",
@@ -141,6 +181,8 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
 
   const hideArrows = !swiperBundle;
 
+  const heightProps = cardHeight !== undefined ? { height: cardHeight } : {};
+
   /* --------------------------- fallback grid ---------------------- */
   const StaticList = (
     <Grid
@@ -149,16 +191,14 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
       columns={{ base: 1, sm: 2, lg: 3, "2xl": 4 }}
       gap={6}
     >
-      {roomsData.map((room, idx) => (
+      {roomsData.map((room) => (
         <li key={room.id} className="flex">
           <SlideItem
-            ref={(el) => {
-              itemRefs.current[idx] = el;
-            }}
+            ref={getSlideRef(room.id)}
             item={room}
             openModalForRate={openModalForRate}
+            {...heightProps}
             {...(lang !== undefined ? { lang } : {})}
-            {...(cardHeight !== undefined ? { height: cardHeight } : {})}
           />
         </li>
       ))}
@@ -178,9 +218,9 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
           480: { slidesPerView: 1.35 },
           640: { slidesPerView: 1.6 },
           768: { slidesPerView: 1.9 },
-          1024: { slidesPerView: 2.5 },
-          1280: { slidesPerView: 3.2 },
-          1536: { slidesPerView: 4 },
+          1024: { slidesPerView: 2.2 },
+          1280: { slidesPerView: 2.8 },
+          1536: { slidesPerView: 3.2 },
         }}
         navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
         onBeforeInit={(sw) => {
@@ -191,19 +231,15 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
           };
           onSwiperInit(sw);
         }}
-        onBreakpoint={recalcHeights}
-        onResize={recalcHeights}
       >
-        {roomsData.map((room, idx) => (
+        {roomsData.map((room) => (
           <SwiperSlide key={room.id} className="flex h-full">
             <SlideItem
-              ref={(el) => {
-                itemRefs.current[idx] = el;
-              }}
+              ref={getSlideRef(room.id)}
               item={room}
               openModalForRate={openModalForRate}
+              {...heightProps}
               {...(lang !== undefined ? { lang } : {})}
-              {...(cardHeight !== undefined ? { height: cardHeight } : {})}
             />
           </SwiperSlide>
         ))}
@@ -213,7 +249,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
 
   /* ----------------------------- render --------------------------- */
   return (
-    <Section>
+    <Section padding="none" className="px-4 py-6 sm:py-8">
       <div className="flex items-center gap-4 sm:gap-5 md:gap-6">
         {/* Prev arrow */}
         <button

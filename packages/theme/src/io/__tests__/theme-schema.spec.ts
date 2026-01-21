@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-raw-color -- TEST-123: test fixtures use literal hex strings to validate schemas */
+ 
 import { parseTheme, themeLibrarySchema } from "../theme-schema";
 
 describe("themeLibrarySchema", () => {

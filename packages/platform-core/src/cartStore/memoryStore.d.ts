@@ -1,5 +1,6 @@
-import type { CartState } from "../cart";
 import type { SKU } from "@acme/types";
+
+import type { CartState } from "../cart";
 import type { CartStore } from "../cartStore";
 /** In-memory implementation of CartStore */
 export declare class MemoryCartStore implements CartStore {

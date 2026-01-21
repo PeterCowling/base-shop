@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ShopProvidersSection from './ShopProvidersSection';
 
 const providers = [

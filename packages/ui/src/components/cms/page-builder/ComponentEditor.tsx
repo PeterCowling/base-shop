@@ -1,25 +1,28 @@
 // packages/ui/src/components/cms/page-builder/ComponentEditor.tsx
 "use client";
 
-import type { PageComponent, HistoryState } from "@acme/types";
-import type { EditorFlags } from "./panels/layout/types";
 import { memo } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "../../atoms/shadcn";
-import LayoutPanel from "./panels/LayoutPanel";
+
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";
-import TimelinePanel from "./panels/TimelinePanel";
+import type { EditorFlags } from "./panels/layout/types";
+import LayoutPanel from "./panels/LayoutPanel";
 import LottieControls from "./panels/LottieControls";
+import TimelinePanel from "./panels/TimelinePanel";
 import StylePanel from "./StylePanel";
 import useComponentInputs from "./useComponentInputs";
 import useComponentResize from "./useComponentResize";
 import { resolveIssueLabel } from "./utils/issuePath";
-import { useTranslations } from "@acme/i18n";
 
 interface Issue {
   path: Array<string | number>;

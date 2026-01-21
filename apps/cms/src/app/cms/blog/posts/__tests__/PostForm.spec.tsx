@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import PostForm from "@cms/app/cms/blog/posts/PostForm.client";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 jest.mock("react-dom", () => ({
   useFormState: (_action: any, init: any) => [init, jest.fn()],
@@ -61,11 +61,11 @@ describe("PostForm", () => {
 
     render(<PostForm action={async () => ({})} submitLabel="Save" />);
 
-    fireEvent.change(screen.getByLabelText(/Title/), {
+    fireEvent.change(screen.getByLabelText("Title"), {
       target: { value: "My Post" },
     });
 
-    expect(screen.getByLabelText(/Slug/)).toHaveValue("my-post");
+    expect(screen.getByLabelText("Slug")).toHaveValue("my-post");
 
     await act(async () => {
       jest.advanceTimersByTime(300);
@@ -73,7 +73,8 @@ describe("PostForm", () => {
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
-    expect(await screen.findByText(/Slug already exists/i)).toBeInTheDocument();
+    expect(await screen.findByText("Slug already exists")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
   });
 });
+

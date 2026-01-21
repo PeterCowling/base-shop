@@ -1,7 +1,9 @@
-import { jest } from "@jest/globals";
-import type { NextRequest } from "next/server";
-import path from "node:path";
 import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { jest } from "@jest/globals";
+
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
 jest.doMock("@acme/platform-core/analytics", () => ({

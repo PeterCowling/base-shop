@@ -1,11 +1,11 @@
 // src/routes/guides/how-to-get-to-positano.breadcrumb.ts
-import { BASE_URL } from "@/config/site";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+import { BASE_URL } from "@/config/site";
 import { guideNamespace, guideSlug } from "@/routes.guides-helpers";
 
+import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { GUIDE_KEY } from "./how-to-get-to-positano.constants";
 import { safeString } from "./how-to-get-to-positano.normalizers";
-import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { getGuidesTranslator, getHeaderTranslator } from "./how-to-get-to-positano.translators";
 
 export function buildBreadcrumb(context: GuideSeoTemplateContext): BreadcrumbList {

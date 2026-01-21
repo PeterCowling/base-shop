@@ -1,6 +1,6 @@
-export {};
+import { logger,readFile, resetReverseLogisticsMocks } from "../src/__tests__/reverseLogisticsTestHelpers";
 
-import { readFile, resetReverseLogisticsMocks, logger } from "../src/__tests__/reverseLogisticsTestHelpers";
+export {};
 
 jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
 

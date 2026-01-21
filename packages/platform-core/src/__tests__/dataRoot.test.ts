@@ -1,7 +1,7 @@
 /** @jest-environment node */
 
-import * as path from "node:path";
 import type { PathLike } from "node:fs";
+import * as path from "node:path";
 
 describe("resolveDataRoot", () => {
   const originalEnv = process.env.DATA_ROOT;

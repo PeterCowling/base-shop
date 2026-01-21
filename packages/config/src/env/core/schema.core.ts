@@ -1,9 +1,12 @@
 import { z } from "zod";
+
 import { authEnvSchema } from "@acme/config/env/auth";
+
 import { emailEnvSchema } from "../email.schema.js";
+
 import { AUTH_TTL_META_SYMBOL } from "./constants.js";
-import { coreEnvPreprocessedSchema } from "./schema.preprocess.js";
 import { depositReleaseEnvRefinement } from "./refinement.deposit.js";
+import { coreEnvPreprocessedSchema } from "./schema.preprocess.js";
 
 export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((
   env: unknown,

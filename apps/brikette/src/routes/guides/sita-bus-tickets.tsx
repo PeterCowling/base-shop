@@ -1,22 +1,22 @@
 // src/routes/guides/sita-bus-tickets.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import type { LoaderFunctionArgs } from "react-router-dom";
 
-// Satisfy guide template enforcement without altering runtime behaviour
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+// Satisfy guide template enforcement without altering runtime behaviour
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import type { LoaderFunctionArgs } from "react-router-dom";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const GUIDE_KEY = "sitaTickets" satisfies GuideKey;
 export const GUIDE_SLUG = "sita-bus-tickets" as const;
@@ -87,4 +87,4 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

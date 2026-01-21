@@ -1,9 +1,10 @@
 import type Stripe from "stripe";
-import { markRefunded } from "../orders/refunds";
+
 import {
-  extractSessionIdFromCharge,
   type ChargeWithInvoice,
+  extractSessionIdFromCharge,
 } from "../internal/helpers/risk";
+import { markRefunded } from "../orders/refunds";
 
 export default async function chargeRefunded(
   shop: string,

@@ -1,7 +1,11 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
 import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+
+import { extractStageMSummary } from "./stageMHelpers";
+import StageMSummaryCard from "./StageMSummary";
 import type {
   CandidateDetail,
   CandidateDetailStrings,
@@ -10,8 +14,6 @@ import type {
   StageMKind,
   StageRun,
 } from "./types";
-import StageMSummaryCard from "./StageMSummary";
-import { extractStageMSummary } from "./stageMHelpers";
 
 type RunnerStatus = {
   runnerId?: string | null;
@@ -58,6 +60,7 @@ export default function StageMQueueCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const [runnerStatus, setRunnerStatus] = useState<RunnerStatus | null>(null);
   const [runnerStatusLoading, setRunnerStatusLoading] = useState(false);
   const [form, setForm] = useState<StageMFormState>({
@@ -332,7 +335,7 @@ export default function StageMQueueCard({
   );
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-m">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageM.label}
@@ -346,7 +349,18 @@ export default function StageMQueueCard({
         strings={strings.stageM}
         notAvailable={strings.notAvailable}
       />
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={queueStageM}>
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={queueStageM}>
         <label className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageM.kindLabel}
           <select
@@ -537,6 +551,7 @@ export default function StageMQueueCard({
           </button>
         </Cluster>
       </form>
+      ) : null}
     </section>
   );
 }

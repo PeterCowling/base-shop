@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Section from "@/components/Section";
+
 import PageHeader from "@/components/PageHeader";
+import Section from "@/components/Section";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
 import { buildMetadata } from "@/lib/seo";

@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { baseComponentSchema, type PageComponentBase } from "../base";
 
 export interface TestimonialSliderComponent extends PageComponentBase {

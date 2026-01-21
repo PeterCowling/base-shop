@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { savePage } from "@acme/platform-core/repositories/pages";
+import { savePage } from "@acme/platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 
 /**

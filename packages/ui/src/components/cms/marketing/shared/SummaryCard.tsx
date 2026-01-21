@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { Card, CardContent, Tag, type TagProps } from "../../../atoms/shadcn";
+
 import { cn } from "../../../../utils/style";
 import { Grid, Inline, Stack } from "../../../atoms/primitives";
+import { Card, CardContent, Tag, type TagProps } from "../../../atoms/shadcn";
 
 export interface SummaryMetricBadge {
   label: string;

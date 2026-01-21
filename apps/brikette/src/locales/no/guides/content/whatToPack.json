@@ -10,7 +10,7 @@
   "sections": [
     {
       "id": "footwear",
-      "title": "Footwear",
+      "title": "Fottøy",
       "body": [
         "Gripende sko for trapper og fotturer; sandaler med slitebane for strender.",
         "Unngå glatte såler - baner kan være bratte og polerte."
@@ -18,15 +18,15 @@
     },
     {
       "id": "layers",
-      "title": "Layers & sun",
+      "title": "Lag og sol",
       "body": [
         "Lette lag for kvelder; lue og SPF for middagstur.",
-        "A light rain jacket in shoulder months."
+        "En lett regnjakke i skuldersesongen."
       ]
     },
     {
       "id": "bags",
-      "title": "Bags & luggage",
+      "title": "Bager og bagasje",
       "body": [
         "Ryggsekker slår store kofferter for trapper; holde verdisaker i nærheten.",
         "Ta med en påfyllbar flaske; markeder selger store flasker for påfyll."
@@ -39,13 +39,13 @@
   ],
   "faqs": [
     {
-      "q": "Can I buy everything locally?",
+      "q": "Kan jeg kjøpe alt lokalt?",
       "a": [
         "Ja, men høysesongprisene hopper – pakk det viktigste for å unngå påslag."
       ]
     },
     {
-      "q": "Do I need to bring a bathrobe?",
+      "q": "Må jeg ta med en badekåpe?",
       "a": [
         "De fleste overnattingssteder leverer håndklær; pakk en lett deksel bare hvis du foretrekker en til stranden."
       ]

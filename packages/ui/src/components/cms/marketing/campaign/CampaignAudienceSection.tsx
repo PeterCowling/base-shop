@@ -1,11 +1,13 @@
 "use client";
 
-import { Card, CardContent, Checkbox, Textarea } from "../../../atoms/shadcn";
-import { Grid } from "../../../atoms/primitives";
 import { useTranslations } from "@acme/i18n";
+
+import { Grid } from "../../../atoms/primitives";
+import { Card, CardContent, Checkbox, Textarea } from "../../../atoms/shadcn";
+
 import {
-  campaignChannelOptions,
   type CampaignChannel,
+  campaignChannelOptions,
   type CampaignFormValues,
 } from "./types";
 import type {

@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import * as fs from "fs/promises";
 import * as os from "os";
 import * as path from "path";
@@ -6,6 +7,9 @@ let GET: typeof import("../route").GET;
 let POST: typeof import("../route").POST;
 let PATCH: typeof import("../route").PATCH;
 let DELETE: typeof import("../route").DELETE;
+
+// Helper to create NextRequest from URL
+const req = (url: string, init?: RequestInit) => new NextRequest(url, init as any);
 
 describe("globals route", () => {
   let tmpRoot: string;
@@ -21,7 +25,7 @@ describe("globals route", () => {
   });
 
   it("GET 400 when shop missing", async () => {
-    const res = await GET(new Request("http://test/api/globals"));
+    const res = await GET(req("http://test/api/globals"));
     expect(res.status).toBe(400);
   });
 
@@ -30,30 +34,30 @@ describe("globals route", () => {
     const item = { globalId: "g1", label: "Hero", createdAt: Date.now(), template: { id: "x", type: "Section" } };
 
     // create
-    let res = await POST(new Request(`http://test/api/globals?shop=${shop}`, { method: "POST", body: JSON.stringify({ item }) }));
+    let res: any = await POST(req(`http://test/api/globals?shop=${shop}`, { method: "POST", body: JSON.stringify({ item }) }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
 
     // read
-    res = await GET(new Request(`http://test/api/globals?shop=${shop}`));
+    res = await GET(req(`http://test/api/globals?shop=${shop}`));
     expect(res.status).toBe(200);
     const list = (await res.json()) as any[];
     expect(list.length).toBe(1);
     expect(list[0].globalId).toBe("g1");
 
     // patch
-    res = await PATCH(new Request(`http://test/api/globals?shop=${shop}`, { method: "PATCH", body: JSON.stringify({ globalId: "g1", patch: { label: "Hero A" } }) }));
+    res = await PATCH(req(`http://test/api/globals?shop=${shop}`, { method: "PATCH", body: JSON.stringify({ globalId: "g1", patch: { label: "Hero A" } }) }));
     expect(res.status).toBe(200);
     const updated = await res.json();
     expect(updated.label).toBe("Hero A");
 
     // delete
-    res = await DELETE(new Request(`http://test/api/globals?shop=${shop}&id=g1`, { method: "DELETE" }));
+    res = await DELETE(req(`http://test/api/globals?shop=${shop}&id=g1`, { method: "DELETE" }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
 
     // empty
-    res = await GET(new Request(`http://test/api/globals?shop=${shop}`));
+    res = await GET(req(`http://test/api/globals?shop=${shop}`));
     const after = (await res.json()) as any[];
     expect(after.length).toBe(0);
   });

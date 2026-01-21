@@ -1,5 +1,6 @@
+import { getLocaleFromParams, type LangRouteParams, type Locale,LOCALES } from "@/lib/locales";
 import { createTranslator, getMessages } from "@/lib/messages";
-import { LOCALES, getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
+
 import { ChineseProductsPage } from "./components/ChineseProductsPage";
 import { EnglishProductsPage } from "./components/EnglishProductsPage";
 import { StandardProductsPage } from "./components/StandardProductsPage";

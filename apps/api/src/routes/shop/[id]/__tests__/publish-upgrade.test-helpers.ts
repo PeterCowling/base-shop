@@ -2,14 +2,16 @@ import { jest } from "@jest/globals";
 import path from "path";
 import jwt from "jsonwebtoken";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   logger: { warn: jest.fn() },
+}));
+jest.mock("@acme/lib/context", () => ({
   withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
 }));
 jest.mock("fs", () => ({ readFileSync: jest.fn(), writeFileSync: jest.fn() }));
 jest.mock("child_process", () => ({ spawn: jest.fn() }));
 
-import { logger } from "@acme/shared-utils";
+import { logger } from "@acme/lib/logger";
 import { readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 

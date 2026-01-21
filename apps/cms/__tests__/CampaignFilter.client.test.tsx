@@ -1,9 +1,10 @@
 /* eslint-env jest */
 
-import { render, screen, fireEvent } from "@testing-library/react";
-import { CampaignFilter } from "../src/app/cms/dashboard/[shop]/components/CampaignFilter.client";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import type { ReadonlyURLSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import { CampaignFilter } from "../src/app/cms/dashboard/[shop]/components/CampaignFilter.client";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),

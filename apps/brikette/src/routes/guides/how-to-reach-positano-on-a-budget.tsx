@@ -1,14 +1,15 @@
 // src/routes/guides/how-to-reach-positano-on-a-budget.tsx
-import { memo, type ComponentType } from "react";
+import { type ComponentType,memo } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
 
-import GuideSeoTemplate from "./_GuideSeoTemplate";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
+import { IS_TEST } from "@/config/env";
 import type { AppLanguage } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { IS_TEST } from "@/config/env";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 
+import GuideSeoTemplate from "./_GuideSeoTemplate";
+import { renderArticleLead } from "./how-to-reach-positano-on-a-budget.articleLead";
 import {
   ALSO_HELPFUL_TAGS,
   GUIDE_KEY as CONST_GUIDE_KEY,
@@ -23,7 +24,6 @@ import {
   guideFaqFallback,
 } from "./how-to-reach-positano-on-a-budget.schema";
 import type { GuideTemplateProps } from "./how-to-reach-positano-on-a-budget.types";
-import { renderArticleLead } from "./how-to-reach-positano-on-a-budget.articleLead";
 
 const GUIDE_TEMPLATE_PROPS: GuideTemplateProps = {
   guideKey: CONST_GUIDE_KEY,

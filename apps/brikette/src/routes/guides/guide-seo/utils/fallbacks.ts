@@ -1,7 +1,7 @@
 /* eslint-disable ds/no-hardcoded-copy -- DEV-1790: Structured guide fallbacks rely on static copy */
+import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import type { AppLanguage } from "@/i18n.config";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 export type FallbackTranslator = (key: string, options?: unknown) => unknown;

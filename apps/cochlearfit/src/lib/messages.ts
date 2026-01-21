@@ -8,7 +8,7 @@ export async function loadMessages(locale: Locale): Promise<Messages> {
   try {
     const localized = (
       await import(
-        /* webpackInclude: /(en|it)\.json$/ */
+        /* webpackInclude: /(en|it|es|de)\.json$/ */
         `../../i18n/${locale}.json`
       )
     ).default as Messages;

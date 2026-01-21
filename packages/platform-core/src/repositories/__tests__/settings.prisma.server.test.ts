@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import type { Settings } from "../settings.json.server";
 
 const prismaMock = {

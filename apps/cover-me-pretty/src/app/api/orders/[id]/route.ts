@@ -10,7 +10,7 @@ import {
 import { NextResponse } from "next/server";
 import shop from "../../../../../shop.json";
 
-// @auth relies on Node APIs, so use Node runtime
+// @acme/auth relies on Node APIs, so use Node runtime
 export const runtime = "nodejs";
 
 export async function GET(

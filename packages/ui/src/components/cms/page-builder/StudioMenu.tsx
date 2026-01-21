@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { Popover, PopoverTrigger, PopoverContent, Tooltip } from "../../atoms";
-import { Button } from "../../atoms/shadcn";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
+import { Button } from "../../atoms/shadcn";
 
 export default function StudioMenu({ shop }: { shop?: string | null }) {
   // i18n-exempt — Editor navigation labels; not part of the storefront

@@ -5,6 +5,15 @@
 /* 1.  Stub the RBAC store **before** importing authOptions                   */
 /* -------------------------------------------------------------------------- */
 
+/* -------------------------------------------------------------------------- */
+/* 2.  Imports                                                                */
+/* -------------------------------------------------------------------------- */
+
+import type { Account, AuthOptions,Profile, Session, User  } from "next-auth";
+import type { AdapterUser } from "next-auth/adapters";
+import type { JWT } from "next-auth/jwt";
+import type { CredentialsConfig } from "next-auth/providers/credentials";
+
 const rbacStorePath = require.resolve("../src/lib/server/rbacStore");
 const { ROLE_PERMISSIONS } = require("@acme/auth/permissions");
 
@@ -21,13 +30,7 @@ jest.doMock(rbacStorePath, () => ({
 process.env.CART_COOKIE_SECRET = "test";
 process.env.EMAIL_FROM = "test@example.com";
 
-/* -------------------------------------------------------------------------- */
-/* 2.  Imports                                                                */
-/* -------------------------------------------------------------------------- */
-
-import type { Account, Profile, Session, User, NextAuthOptions } from "next-auth";
-import type { JWT } from "next-auth/jwt";
-import type { CredentialsConfig } from "next-auth/providers/credentials";
+type NextAuthOptions = AuthOptions;
 
 /* -------------------------------------------------------------------------- */
 /* 3.  Helpers                                                                */
@@ -52,7 +55,7 @@ beforeAll(async () => {
   (process.env as Record<string, string>).NODE_ENV = "development";
   const mod = await import("../src/auth/options");
   authOptions = mod.authOptions;
-  const provider = authOptions.providers.find(isCredentialsProvider);
+  const provider = authOptions.providers?.find(isCredentialsProvider);
   if (!provider) {
     throw new Error("Credentials provider not found in authOptions");
   }
@@ -93,11 +96,12 @@ describe("authOptions (Credentials provider)", () => {
   });
 
   it("jwt callback forwards role onto the token", async () => {
-    const viewerUser: User & { role: string } = {
+    const viewerUser = {
       id: "viewer-id",
       email: "viewer@example.com",
       role: "viewer",
-    };
+      emailVerified: null,
+    } as User & { role: string };
 
     const token = await authOptions.callbacks!.jwt!.call(null, {
       token: {} as JWT,
@@ -115,7 +119,7 @@ describe("authOptions (Credentials provider)", () => {
 
     const returnedToken = await authOptions.callbacks!.jwt!.call(null, {
       token: originalToken,
-      user: undefined,
+      user: undefined as unknown as User,
       account: null as Account | null,
       profile: {} as Profile,
       isNewUser: false,
@@ -126,13 +130,13 @@ describe("authOptions (Credentials provider)", () => {
   });
 
   it("session callback exposes role to the client session", async () => {
-    const baseSession: Session = {
+    const baseSession = {
       user: {} as User,
       expires: new Date(Date.now() + 86_400_000).toISOString(),
-    };
+    } as Session;
 
     const adminToken = { role: "admin" } as JWT & { role: string };
-    const dummyUser = { id: "u", email: "x@example.com" } as User;
+    const dummyUser: AdapterUser = { id: "u", email: "x@example.com", emailVerified: null, role: "admin" };
 
     const session = await authOptions.callbacks!.session!.call(null, {
       session: baseSession,
@@ -148,12 +152,12 @@ describe("authOptions (Credentials provider)", () => {
   });
 
   it("session callback without token role leaves session.user unmodified", async () => {
-    const baseSession: Session = {
+    const baseSession = {
       user: {} as User,
       expires: new Date(Date.now() + 86_400_000).toISOString(),
-    };
+    } as Session;
     const token = {} as JWT;
-    const dummyUser = { id: "u", email: "x@example.com" } as User;
+    const dummyUser: AdapterUser = { id: "u", email: "x@example.com", emailVerified: null, role: "viewer" };
 
     const session = await authOptions.callbacks!.session!.call(null, {
       session: baseSession,
@@ -164,6 +168,6 @@ describe("authOptions (Credentials provider)", () => {
     });
 
     expect(session).toBe(baseSession);
-    expect("role" in session.user).toBe(false);
+    expect("role" in (session as Session & { user: User }).user).toBe(false);
   });
 });

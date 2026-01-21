@@ -1,13 +1,14 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+
+import type { ActionResult } from "../components/actionResult";
+import { ROLE_DETAILS } from "../components/roleDetails";
 import RbacManagementPanel, {
   type InviteUserAction,
   type SaveUserAction,
 } from "../rbac/RbacManagementPanel.client";
-import { ROLE_DETAILS } from "../components/roleDetails";
-import type { ActionResult } from "../components/actionResult";
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");

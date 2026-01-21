@@ -1,13 +1,14 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/GuideMonthsItemListStructuredData.tsx
 import { memo, useMemo } from "react";
-import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePathname } from "next/navigation";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideAbsoluteUrl } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import i18n from "@/i18n";
 
 type MonthEntry = { name: string; note: string };
 
@@ -19,7 +20,7 @@ interface Props {
 
 function GuideMonthsItemListStructuredData({ guideKey, name, canonicalUrl }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("guides", { lng: lang });
 
   const json = useMemo(() => {

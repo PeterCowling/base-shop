@@ -1,6 +1,6 @@
 // src/components/guides/ProsConsTable.tsx
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 type Row = { title: string; pros: string[]; cons: string[]; href?: string };
 type Props = { rows: Row[]; className?: string };
@@ -24,8 +24,8 @@ function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
                 <strong>
                   {r.href ? (
                     <Link
-                      to={r.href}
-                      prefetch="intent"
+                      href={r.href}
+                      prefetch={true}
                       className="text-brand-primary underline-offset-4 transition hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40 dark:text-brand-secondary"
                     >
                       {r.title}

@@ -1,11 +1,13 @@
 // packages/ui/src/components/templates/StoreLocatorTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
-import { StoreLocatorTemplate } from './StoreLocatorTemplate';
-import { makeStateStory } from '../../story-utils/createStories';
-import type { Store } from './StoreLocatorTemplate';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, userEvent, within } from '@storybook/test';
+
+import { makeStateStory } from '../../story-utils/createStories';
+
+import type { Store } from './StoreLocatorTemplate';
+import { StoreLocatorTemplate } from './StoreLocatorTemplate';
 
 const stores: Store[] = [
   { id: 'sf', name: 'San Francisco', address: '123 Market St, SF, CA', lat: 37.7749, lng: -122.4194 },

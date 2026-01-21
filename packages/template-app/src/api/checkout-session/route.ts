@@ -1,30 +1,31 @@
 // packages/template-app/src/api/checkout-session/route.ts
+import { type NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
+import { ulid } from "ulid";
+
+import { getCustomerSession } from "@acme/auth";
+import { coreEnv } from "@acme/config/env/core";
 import {
   CART_COOKIE,
-  decodeCartCookie,
   type CartState,
+  decodeCartCookie,
 } from "@acme/platform-core/cartCookie";
 import { getCart } from "@acme/platform-core/cartStore";
-import {
-  convertCurrency,
-  getPricing,
-} from "@acme/platform-core/pricing";
 import {
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
 } from "@acme/platform-core/checkout/session";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
 import {
   cartToInventoryRequests,
   validateInventoryAvailability,
 } from "@acme/platform-core/inventoryValidation";
-import { coreEnv } from "@acme/config/env/core";
+import {
+  convertCurrency,
+  getPricing,
+} from "@acme/platform-core/pricing";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { getCustomerSession } from "@acme/auth";
-import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
-import { NextRequest, NextResponse } from "next/server";
-import type Stripe from "stripe";
-import { ulid } from "ulid";
 
 export const runtime = "nodejs";
 

@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 const HEAD_TAGS = new Set(["h1", "h2", "h3", "h4", "h5", "h6", "p"]);

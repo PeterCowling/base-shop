@@ -1,7 +1,7 @@
+import { Content, type ContentProps } from "../organisms/Content";
+import { Footer, type FooterProps } from "../organisms/Footer";
 import { Header, type HeaderProps } from "../organisms/Header";
 import { SideNav, type SideNavProps } from "../organisms/SideNav";
-import { Footer, type FooterProps } from "../organisms/Footer";
-import { Content, type ContentProps } from "../organisms/Content";
 
 import type { AppShellProps } from "./AppShell";
 

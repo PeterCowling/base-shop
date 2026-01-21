@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
-import { FilterBar, type Filters, type FilterDefinition } from "./index";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { FilterBar, type FilterDefinition,type Filters } from "./index";
 
 const definitions: FilterDefinition[] = [
   { name: "category", label: "Category", type: "select", options: ["Shoes", "Shirts", "Accessories"] },

@@ -1,4 +1,5 @@
 /** @jest-environment node */
+export {};
 
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 // Ensure email environment variables are present for tests that import the

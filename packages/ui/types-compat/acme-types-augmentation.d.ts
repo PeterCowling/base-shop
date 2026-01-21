@@ -23,6 +23,12 @@ declare module "@acme/types" {
     [k: string]: any;
   }
 
+  export interface CartLine {
+    sku: SKU;
+    qty: number;
+    [k: string]: any;
+  }
+
   export interface PublishLocation {
     id: string;
     slug?: string;
@@ -89,7 +95,12 @@ declare module "@acme/types" {
   export type TestimonialsComponent = PageComponentBase;
   export type ValuePropsComponent = PageComponentBase;
   export type VideoBlockComponent = PageComponentBase;
-  export type UpgradeComponent = PageComponentBase;
+  export interface UpgradeComponent {
+    file: string;
+    componentName: string;
+    oldChecksum?: string | null;
+    newChecksum: string;
+  }
   export type PopupModalComponent = PageComponentBase;
 
   /** Forms */

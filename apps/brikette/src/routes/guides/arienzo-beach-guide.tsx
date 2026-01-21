@@ -1,23 +1,24 @@
 // src/routes/guides/arienzo-beach-guide.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { defineGuideRoute } from "./defineGuideRoute";
-import type { GuideSeoTemplateProps } from "./guide-seo/types";
-import {
-  getGuideManifestEntry,
-  guideAreaToSlugKey,
-  type GuideAreaSlugKey,
-} from "./guide-manifest";
+import type { LinksFunction, MetaFunction } from "react-router";
 
 import ImageGallery from "@/components/guides/ImageGallery";
+import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import {
+  getGuideManifestEntry,
+  type GuideAreaSlugKey,
+  guideAreaToSlugKey,
+} from "./guide-manifest";
+import type { GuideSeoTemplateProps } from "./guide-seo/types";
 
 export const handle = { tags: ["beaches", "positano", "tips"] };
 
@@ -39,7 +40,6 @@ const OG_IMAGE = {
 const GALLERY_SOURCES = [
   "/img/guides/arienzo-beach/image1.jpg",
   "/img/guides/arienzo-beach/image2.jpg",
-  "/img/guides/arienzo-beach/image3.jpg",
 ] as const;
 
 const manifestEntry = getGuideManifestEntry(GUIDE_KEY);
@@ -81,17 +81,16 @@ function buildArienzoGalleryExtras(
     context.translateGuides,
     `content.${GUIDE_KEY}.gallery.secondaryCaption`,
   );
-  const fallbackAlt = translateWithFallback(context.translateGuides, `content.${GUIDE_KEY}.gallery.tertiaryAlt`);
-  const fallbackCaption = translateWithFallback(
-    context.translateGuides,
-    `content.${GUIDE_KEY}.gallery.tertiaryCaption`,
-  );
 
   const items = [
-    { src: buildCfImageUrl(GALLERY_SOURCES[0], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: primaryAlt, caption: primaryCaption },
-    { src: buildCfImageUrl(GALLERY_SOURCES[1], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: secondaryAlt, caption: secondaryCaption },
-    { src: buildCfImageUrl(GALLERY_SOURCES[2], { width: 1200, height: 800, quality: 85, format: "auto" }), alt: fallbackAlt, caption: fallbackCaption },
-  ].filter((item) => item.alt && item.caption);
+    { src: GALLERY_SOURCES[0], alt: primaryAlt, caption: primaryCaption },
+    { src: GALLERY_SOURCES[1], alt: secondaryAlt, caption: secondaryCaption },
+  ]
+    .filter((item) => item.src && item.alt && item.caption)
+    .map((item) => ({
+      ...item,
+      src: buildCfImageUrl(item.src, { width: 1200, height: 800, quality: 85, format: "auto" }),
+    }));
 
   if (items.length === 0) return null;
   return (

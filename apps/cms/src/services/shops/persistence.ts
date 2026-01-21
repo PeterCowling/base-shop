@@ -1,7 +1,7 @@
 import {
+  diffHistory,
   getShopSettings,
   saveShopSettings,
-  diffHistory,
 } from "@acme/platform-core/repositories/settings.server";
 import {
   getShopById,

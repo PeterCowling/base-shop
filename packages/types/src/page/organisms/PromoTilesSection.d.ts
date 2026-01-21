@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface PromoTilesSectionComponent extends PageComponentBase {
     type: "PromoTilesSection";
     density?: "editorial" | "utilitarian";

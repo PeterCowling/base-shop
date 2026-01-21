@@ -1,6 +1,7 @@
+import { IS_TEST } from "@/config/env";
+
 import { DOMAIN } from "../config";
 import { normaliseBrowserOrigin } from "../utils/origin";
-import { IS_TEST } from "@/config/env";
 
 const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);
 
@@ -40,7 +41,7 @@ const getOrigin = (): string => {
   // the document element for stability within a single runtime session.
   if (rawBrowserOrigin) {
     const browserOrigin = normaliseBrowserOrigin(rawBrowserOrigin);
-    if (isLoopbackOrigin(browserOrigin)) {
+    if (isLoopbackOrigin(browserOrigin) && !IS_TEST) {
       return DOMAIN;
     }
     if (root) root.setAttribute("data-origin", browserOrigin);

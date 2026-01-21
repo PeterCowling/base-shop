@@ -1,18 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+
 import {
-  FacilitiesModal,
-  OffersModal,
-  LanguageModal,
   BookingModal2,
-  ContactModal,
-  LocationModal,
-  type FacilitiesModalCategory,
-  type LanguageOption,
   type BookingModal2Copy,
+  ContactModal,
   type ContactModalCopy,
+  FacilitiesModal,
+  type FacilitiesModalCategory,
+  LanguageModal,
+  type LanguageOption,
+  LocationModal,
   type LocationModalCopy,
+  OffersModal,
 } from "@acme/ui/organisms/modals";
 
 const categories: FacilitiesModalCategory[] = [
@@ -53,7 +53,7 @@ const contactCopy: ContactModalCopy = {
 
 describe("Modal primitives integration", () => {
   it("closes FacilitiesModal via footer button", async () => {
-    const handleClose = vi.fn();
+    const handleClose = jest.fn();
     render(
       <FacilitiesModal
         isOpen
@@ -71,8 +71,8 @@ describe("Modal primitives integration", () => {
   });
 
   it("invokes reserve handler in OffersModal", async () => {
-    const handleReserve = vi.fn();
-    const handleClose = vi.fn();
+    const handleReserve = jest.fn();
+    const handleClose = jest.fn();
     render(
       <OffersModal
         isOpen
@@ -93,8 +93,8 @@ describe("Modal primitives integration", () => {
   });
 
   it("selects a language option", async () => {
-    const handleSelect = vi.fn();
-    const handleClose = vi.fn();
+    const handleSelect = jest.fn();
+    const handleClose = jest.fn();
     render(
       <LanguageModal
         isOpen
@@ -115,8 +115,8 @@ describe("Modal primitives integration", () => {
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
   it("confirms secondary booking modal", async () => {
-    const onConfirm = vi.fn();
-    const onCancel = vi.fn();
+    const onConfirm = jest.fn();
+    const onCancel = jest.fn();
     render(
       <BookingModal2
         isOpen
@@ -124,9 +124,9 @@ describe("Modal primitives integration", () => {
         checkIn="2025-05-01"
         checkOut="2025-05-03"
         adults={2}
-        onCheckInChange={vi.fn()}
-        onCheckOutChange={vi.fn()}
-        onAdultsChange={vi.fn()}
+        onCheckInChange={jest.fn()}
+        onCheckOutChange={jest.fn()}
+        onAdultsChange={jest.fn()}
         onConfirm={onConfirm}
         onCancel={onCancel}
       />,
@@ -141,7 +141,7 @@ describe("Modal primitives integration", () => {
   });
 
   it("renders location iframe when open", async () => {
-    const handleClose = vi.fn();
+    const handleClose = jest.fn();
     render(
       <LocationModal
         isOpen
@@ -157,7 +157,7 @@ describe("Modal primitives integration", () => {
   });
 
   it("reveals contact email", async () => {
-    const handleClose = vi.fn();
+    const handleClose = jest.fn();
     render(
       <ContactModal
         isOpen

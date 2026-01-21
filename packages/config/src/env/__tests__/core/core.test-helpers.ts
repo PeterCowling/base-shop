@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
-import { z } from "zod";
+import { type z } from "zod";
+
 import {
   coreEnvBaseSchema,
   coreEnvSchema,

@@ -1,22 +1,25 @@
 // apps/cms/src/app/cms/shop/[shop]/page.tsx
 
-import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
+import { checkShopExists } from "@acme/platform-core";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
+import type { ConfiguratorProgress } from "@acme/types";
 import { Button, StatCard } from "@acme/ui/components/atoms";
 import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
 import { CmsBuildHero } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero
-import UpgradeButton from "./UpgradeButton";
-import RollbackCard from "./RollbackCard";
-import CreationStatus from "./CreationStatus";
-import UpgradeState from "./UpgradeState";
-import HealthDetails from "./HealthDetails";
-import ReRunSmokeButton from "../ReRunSmokeButton.client";
-import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
+
 import { deriveShopHealth } from "../../../lib/shopHealth";
-import type { ConfiguratorProgress } from "@acme/types";
-import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
+import ReRunSmokeButton from "../ReRunSmokeButton.client";
+
+import CreationStatus from "./CreationStatus";
+import HealthDetails from "./HealthDetails";
+import RollbackCard from "./RollbackCard";
+import UpgradeButton from "./UpgradeButton";
+import UpgradeState from "./UpgradeState";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");

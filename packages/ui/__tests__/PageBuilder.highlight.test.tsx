@@ -1,10 +1,12 @@
+import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+import CanvasItem from "../src/components/cms/page-builder/CanvasItem";
+import PageBuilder from "../src/components/cms/PageBuilder";
+
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
 }));
-import PageBuilder from "../src/components/cms/PageBuilder";
-import CanvasItem from "../src/components/cms/page-builder/CanvasItem";
-import React from "react";
 
 type Page = any; // use 'any' to simplify
 
@@ -87,6 +89,7 @@ describe("PageBuilder drag highlight", () => {
           viewport="desktop"
           snapPosition={null}
           zoom={1}
+          showComments={false}
           showBaseline={false}
           baselineStep={8}
         />

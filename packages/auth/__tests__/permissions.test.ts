@@ -1,5 +1,5 @@
-import { PERMISSIONS, isPermission } from "../src/types/permissions";
 import { hasPermission, ROLE_PERMISSIONS } from "../src/permissions";
+import { isPermission,PERMISSIONS } from "../src/types/permissions";
 
 describe("isPermission", () => {
   for (const perm of PERMISSIONS) {

@@ -1,13 +1,15 @@
-import PageHeader from "@/components/PageHeader";
-import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+
 import {
   computeSensitivities,
   computeStageK,
   money,
   type StageKInput,
 } from "@acme/pipeline-engine";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+
+import PageHeader from "@/components/PageHeader";
+import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
 
 const horizonDays = 120;
 const unitsPlanned = 500;

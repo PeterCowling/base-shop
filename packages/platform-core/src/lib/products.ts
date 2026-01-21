@@ -1,5 +1,5 @@
 export {
-  PRODUCTS,
-  getProductBySlug,
   getProductById,
+  getProductBySlug,
+  PRODUCTS,
 } from "../products";

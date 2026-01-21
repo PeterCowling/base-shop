@@ -1,13 +1,15 @@
 "use client"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: Next.js directive string
 import * as React from "react";
-import { cn } from "../../utils/style";
-import { Button } from "../atoms/shadcn";
-import { Price } from "../atoms/Price";
-import type { SKU } from "@acme/types";
+
 import { useTranslations } from "@acme/i18n";
-import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
+import type { SKU } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+
+import { cn } from "../../utils/style";
+import { Price } from "../atoms/Price";
+import { Button } from "../atoms/shadcn";
 
 export interface StickyAddToCartBarProps extends React.HTMLAttributes<HTMLDivElement> {
   product: SKU;

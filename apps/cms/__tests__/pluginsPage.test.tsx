@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import PluginsPage from "../src/app/cms/plugins/page";
 
 jest.mock("@acme/platform-core/plugins", () => ({
   loadPlugins: jest.fn(),
@@ -12,8 +15,6 @@ jest.mock("next/link", () => ({
     <a href={href}>{children}</a>
   ),
 }));
-
-import PluginsPage from "../src/app/cms/plugins/page";
 
 describe("PluginsPage", () => {
   it("toggles plugin config textarea and updates state", async () => {

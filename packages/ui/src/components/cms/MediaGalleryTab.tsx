@@ -1,16 +1,18 @@
-import { Card, CardContent } from "../atoms/shadcn";
+import type { ReactNode } from "react";
 import Image from "next/image";
-import { IconButton } from "../atoms";
-import { Grid } from "../atoms/primitives";
-import type { MediaItem } from "@acme/types";
-import { useTranslations } from "@acme/i18n";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   Cross2Icon,
   DragHandleDots2Icon,
 } from "@radix-ui/react-icons";
-import type { ReactNode } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+
+import { IconButton } from "../atoms";
+import { Grid } from "../atoms/primitives";
+import { Card, CardContent } from "../atoms/shadcn";
 
 interface MediaGalleryTabProps {
   uploader: ReactNode;

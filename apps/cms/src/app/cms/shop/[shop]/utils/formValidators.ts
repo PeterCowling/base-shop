@@ -1,1 +1,1 @@
-export { jsonFieldHandler, type ErrorSetter } from '@acme/shared-utils';
+export { type ErrorSetter,jsonFieldHandler } from '@acme/lib/json';

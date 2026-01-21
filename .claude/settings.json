@@ -1,4 +1,22 @@
 {
+  "model": "sonnet",
+  "mcpServers": {
+    "base-shop": {
+      "command": "node",
+      "args": ["./packages/mcp-server/dist/index.js"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      }
+    },
+    "cloudflare": {
+      "command": "node",
+      "args": ["./packages/mcp-cloudflare/dist/index.js"],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}",
+        "CLOUDFLARE_ACCOUNT_ID": "${CLOUDFLARE_ACCOUNT_ID}"
+      }
+    }
+  },
   "hooks": {
     "preToolCall": [
       {

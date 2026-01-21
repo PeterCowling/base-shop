@@ -1,18 +1,20 @@
 "use client";
 
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { CodeBlock } from "@acme/ui/components/molecules";
-import DataTable from "@acme/ui/components/cms/DataTable";
 import { resetThemeOverride } from "@cms/actions/shops.server";
-import type { Locale } from "@acme/types";
+
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
+import type { Locale } from "@acme/types";
+import DataTable from "@acme/ui/components/cms/DataTable";
+import { CodeBlock } from "@acme/ui/components/molecules";
 
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import type { ThemeTokenRow } from "../lib/pageSections";
 import {
   createThemeTokenColumns,
   themeTokenRowClassName,
 } from "../tableMappers";
-import type { ThemeTokenRow } from "../lib/pageSections";
 
 interface ConfigurationOverviewProps {
   readonly shop: string;

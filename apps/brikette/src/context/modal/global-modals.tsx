@@ -3,18 +3,17 @@
 /*  Global modal switcher component                                           */
 /* -------------------------------------------------------------------------- */
 
-import { Suspense, memo } from "react";
+import { memo,Suspense } from "react";
 
-import { Loader } from "./Loader";
-import { useModal } from "./hooks";
-
-import { OffersGlobalModal } from "./global-modals/OffersModal";
-import { BookingGlobalModal } from "./global-modals/BookingModal";
 import { Booking2GlobalModal } from "./global-modals/Booking2Modal";
-import { LocationGlobalModal } from "./global-modals/LocationModal";
+import { BookingGlobalModal } from "./global-modals/BookingModal";
 import { ContactGlobalModal } from "./global-modals/ContactModal";
 import { FacilitiesGlobalModal } from "./global-modals/FacilitiesModal";
 import { LanguageGlobalModal } from "./global-modals/LanguageModal";
+import { LocationGlobalModal } from "./global-modals/LocationModal";
+import { OffersGlobalModal } from "./global-modals/OffersModal";
+import { useModal } from "./hooks";
+import { Loader } from "./Loader";
 
 export const GlobalModals = memo(function GlobalModals() {
   const { activeModal } = useModal();

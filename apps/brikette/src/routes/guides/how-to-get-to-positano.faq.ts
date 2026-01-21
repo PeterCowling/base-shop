@@ -1,11 +1,13 @@
 // src/routes/guides/how-to-get-to-positano.faq.ts
 import type { TFunction } from "i18next";
-import { stripGuideLinkTokens } from "./utils/linkTokens";
+
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+
 import { GUIDE_KEY } from "./how-to-get-to-positano.constants";
 import { normaliseFaqs } from "./how-to-get-to-positano.normalizers";
-import type { GuideFaq } from "./how-to-get-to-positano.types";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 import { getGuidesTranslator } from "./how-to-get-to-positano.translators";
+import type { GuideFaq } from "./how-to-get-to-positano.types";
+import { stripGuideLinkTokens } from "./utils/linkTokens";
 
 const sanitizeFaqs = (faqs: GuideFaq[]): NormalizedFaqEntry[] =>
   faqs.map(({ q, a }) => ({

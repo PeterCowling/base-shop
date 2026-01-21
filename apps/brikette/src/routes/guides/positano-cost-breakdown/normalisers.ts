@@ -1,5 +1,6 @@
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 import type { TFunction } from "i18next";
+
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import { GUIDE_KEY } from "./constants";
 import type { FaqItem, Section } from "./types";

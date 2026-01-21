@@ -1,23 +1,27 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { LOCALES, useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
+import { track } from "@acme/telemetry";
 import type { Locale, Page, PageComponent } from "@acme/types";
-import { apiRequest } from "../../lib/api";
-import { useState } from "react";
+import { CmsInlineHelpBanner } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
+
 import { Toast } from "@/components/atoms";
+import { Button } from "@/components/atoms/shadcn";
+import PageBuilder from "@/components/cms/PageBuilder";
+
 import type { PageInfo } from "../../../wizard/schema";
 import { toPageInfo } from "../../../wizard/utils/page-utils";
+import useStepCompletion from "../../hooks/useStepCompletion";
+import { apiRequest } from "../../lib/api";
+
 import PageLayoutSelector from "./PageLayoutSelector";
 import PageMetaForm from "./PageMetaForm";
 import useNewPageState from "./useNewPageState";
 import usePagesLoader from "./usePagesLoader";
-import useStepCompletion from "../../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import { track } from "@acme/telemetry";
-import { CmsInlineHelpBanner } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;

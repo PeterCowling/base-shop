@@ -1,6 +1,8 @@
-import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { Stack } from "@acme/ui/components/atoms/primitives";
+
+import PageHeader from "@/components/PageHeader";
+
 import ArtifactsClient from "./ArtifactsClient";
 import type { ArtifactsStrings } from "./types";
 
@@ -37,6 +39,20 @@ export default async function ArtifactsPage() {
     actions: {
       open: t("pipeline.artifacts.actions.open"),
       viewCandidate: t("pipeline.artifacts.actions.viewCandidate"),
+    },
+    stageLabels: {
+      P: t("pipeline.home.stageRail.stage.preSelection"),
+      M: t("pipeline.candidate.section.stageM.label"),
+      A: t("pipeline.candidate.section.stageA.label"),
+      T: t("pipeline.candidate.section.stageT.label"),
+      S: t("pipeline.candidate.section.stageS.label"),
+      N: t("pipeline.candidate.section.stageN.label"),
+      D: t("pipeline.candidate.section.stageD.label"),
+      B: t("pipeline.candidate.section.stageB.label"),
+      C: t("pipeline.candidate.section.stageC.label"),
+      K: t("pipeline.candidate.section.stageK.label"),
+      R: t("pipeline.candidate.section.stageR.label"),
+      L: t("pipeline.nav.launches.label"),
     },
     notAvailable: t("pipeline.common.notAvailable"),
   };

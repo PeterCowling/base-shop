@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering to avoid SSG issues with context providers
+export const dynamic = 'force-dynamic';
+
 /**
  * Staff Check-in Code Lookup Page
  *
@@ -11,36 +14,8 @@
 import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
-
-// Simple translation function until i18n is set up
-const translations: Record<string, string> = {
-  'staffLookup.back': 'Back',
-  'staffLookup.title': 'Staff Lookup',
-  'staffLookup.subtitle': 'Look up guest check-in details',
-  'staffLookup.placeholder': 'Enter check-in code',
-  'staffLookup.loading': 'Looking up...',
-  'staffLookup.errors.codeNotFound': 'Code not found',
-  'staffLookup.errors.codeExpired': 'Code has expired',
-  'staffLookup.errors.lookupFailed': 'Lookup failed',
-  'staffLookup.tryAgain': 'Please try again',
-  'staffLookup.guestName': 'Guest Name',
-  'staffLookup.room': 'Room',
-  'staffLookup.nights': 'Nights',
-  'staffLookup.dates': 'Dates',
-  'staffLookup.eta': 'Expected Arrival',
-  'staffLookup.payment': 'Payment Due',
-  'stay.night': 'night',
-  'stay.nights': 'nights',
-  'cash.cityTax.label': 'City Tax',
-  'cash.deposit.label': 'Deposit',
-  'cash.total': 'Total Due',
-  'eta.methods.bus': 'Bus',
-  'eta.methods.ferry': 'Ferry',
-  'eta.methods.taxi': 'Taxi',
-  'eta.methods.car': 'Car',
-};
-const t = (key: string) => translations[key] || key;
 
 interface StaffCheckInView {
   guestName: string;
@@ -76,6 +51,7 @@ function formatEtaWindow(window: string | null): string {
 function StaffLookupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useTranslation('PreArrival');
   const { role, user } = usePinAuth();
 
   const codeFromUrl = searchParams.get('code') ?? '';

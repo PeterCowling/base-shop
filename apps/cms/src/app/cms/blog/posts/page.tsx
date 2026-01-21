@@ -1,11 +1,12 @@
 // apps/cms/src/app/cms/blog/posts/page.tsx
 
 import Link from "next/link";
-import { formatTimestamp } from "@acme/date-utils";
-import { Button } from "@acme/ui/components/atoms";
 import { getPosts } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@acme/platform-core/shops";
+
+import { formatTimestamp } from "@acme/date-utils";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+import { Button } from "@acme/ui/components/atoms";
 
 export default async function BlogPostsPage(props: {
   searchParams?: Promise<{ shopId?: string }>;
@@ -14,6 +15,7 @@ export default async function BlogPostsPage(props: {
   const shopId = sp?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
+  if (!shop) return <p>Shop not found.</p>;
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     return (

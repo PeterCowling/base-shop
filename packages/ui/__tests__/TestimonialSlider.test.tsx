@@ -1,4 +1,5 @@
-import { render, screen, act, fireEvent } from "@testing-library/react";
+import { act, fireEvent,render, screen } from "@testing-library/react";
+
 import TestimonialSlider from "../src/components/cms/blocks/TestimonialSlider";
 
 describe("TestimonialSlider", () => {

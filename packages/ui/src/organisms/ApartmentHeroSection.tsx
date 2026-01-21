@@ -1,13 +1,15 @@
 // packages/ui/src/organisms/ApartmentHeroSection.tsx
-import { CfHeroImage } from "@/atoms/CfHeroImage";
-import { Button } from "../atoms/Button";
-import { Section } from "../atoms/Section";
-import { useModal } from "@/context/ModalContext";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { i18nConfig } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@acme/ui/shared";
+import Link from "next/link";
+
+import { useModal } from "@acme/ui/context/ModalContext";
+import { i18nConfig } from "@acme/ui/i18n.config";
+
+import { Button } from "../atoms/Button";
+import { CfHeroImage } from "../atoms/CfHeroImage";
+import { Section } from "../atoms/Section";
+import { resolveBookingCtaLabel } from "../shared";
 
 const APARTMENT_HERO_IMAGE_SRC = "/img/facade.avif";
 
@@ -53,7 +55,7 @@ function ApartmentHeroSection({ bookingUrl, lang }: HeroSectionProps): JSX.Eleme
       <div aria-hidden className="hero-gradient-overlay" />
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <Section as="div" padding="none" className="hero-panel max-w-md space-y-4 text-center text-white">
+        <Section as="div" padding="none" className="hero-panel max-w-md space-y-4 px-6 text-center text-white">
           <h2 className="text-3xl font-bold sm:text-4xl">{t("heroTitle")}</h2>
           <p className="mx-auto text-sm sm:text-base">{t("heroIntro")}</p>
           {(() => {
@@ -61,7 +63,7 @@ function ApartmentHeroSection({ bookingUrl, lang }: HeroSectionProps): JSX.Eleme
               return (
                 <Button asChild className="cta-light dark:cta-dark">
                   {bookingUrl.startsWith("/") ? (
-                    <Link to={bookingUrl}>{ctaLabel}</Link>
+                    <Link href={bookingUrl}>{ctaLabel}</Link>
                   ) : (
                     <a href={bookingUrl}>{ctaLabel}</a>
                   )}

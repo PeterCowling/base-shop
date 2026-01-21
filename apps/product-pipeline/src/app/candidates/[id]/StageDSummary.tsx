@@ -1,9 +1,11 @@
 "use client";
 
 import { Grid } from "@acme/ui/components/atoms/primitives";
+
 import { formatCurrency } from "@/lib/format";
-import type { CandidateDetailStrings, StageDAssetReadiness } from "./types";
+
 import type { StageDSummary } from "./stageDHelpers";
+import type { CandidateDetailStrings, StageDAssetReadiness } from "./types";
 
 function formatCents(value: string | null | undefined, fallback: string): string {
   if (!value) return fallback;

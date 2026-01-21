@@ -1,17 +1,20 @@
 // Breadcrumb JSON-LD and canonical/hreflang are emitted by templates
-import { getThemeInitScript } from "@/utils/themeInit";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
-import { type SupportedLanguage, isSupportedLanguage } from "../config";
+
+import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
+import { GA_MEASUREMENT_ID, IS_PROD, NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
+import { buildBreadcrumb, buildLinks as buildCanonicalLinks } from "@/utils/seo";
+import { getThemeInitScript } from "@/utils/themeInit";
+
+import { isSupportedLanguage,type SupportedLanguage } from "../config";
 import i18n from "../i18n";
-import { i18nConfig, type AppLanguage } from "../i18n.config";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
+
 import { HeadBoundary } from "./boundaries";
-import { getOrigin, getPathname } from "./environment";
+import { getOrigin, getPathname, isTestEnvironment } from "./environment";
 import { RouterBodyPlaceholders, RouterHeadPlaceholders } from "./routerPlaceholders";
 import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "./theme";
-import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
-import { buildBreadcrumb, buildLinks as buildCanonicalLinks } from "@/utils/seo";
-import { GA_MEASUREMENT_ID, IS_PROD, NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 // Removed runtime UA-sniffing font preloads; fonts are now preloaded via root links
 
 function Layout({ children }: { children: React.ReactNode }): React.JSX.Element {
@@ -68,11 +71,15 @@ function Layout({ children }: { children: React.ReactNode }): React.JSX.Element 
   // synchronous DOM mutation above to set attributes.
   /* c8 ignore stop */
 
-  // Canonical/hreflang + breadcrumb: emit at the document level for tests and
-  // non-framework contexts. Route templates also export meta()/links() which
-  // the framework consumes in production builds.
-  const canonicalLinks = buildCanonicalLinks({ lang, origin, path: pathname });
-  const breadcrumb = buildBreadcrumb({ lang, origin, path: pathname, title: "", homeLabel: "" });
+  // Canonical/hreflang + breadcrumb: emit at the document level only for tests.
+  // Route templates export meta()/links() for production builds.
+  const shouldEmitFallbackHead = isTestEnvironment;
+  const canonicalLinks = shouldEmitFallbackHead
+    ? buildCanonicalLinks({ lang, origin, path: pathname })
+    : [];
+  const breadcrumb = shouldEmitFallbackHead
+    ? buildBreadcrumb({ lang, origin, path: pathname, title: "", homeLabel: "" })
+    : undefined;
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -101,16 +108,18 @@ function Layout({ children }: { children: React.ReactNode }): React.JSX.Element 
           {/* Static assets are linked via Root links() function */}
 
           {/* Canonical + hreflang (also provided by routes) */}
-          {canonicalLinks.map((l) => (
-            <link key={`${l.rel}-${l.href}-${l.hrefLang ?? ""}`} rel={l.rel} href={l.href} {...(l.hrefLang ? { hrefLang: l.hrefLang } : {})} />
-          ))}
+          {shouldEmitFallbackHead
+            ? canonicalLinks.map((l) => (
+                <link key={`${l.rel}-${l.href}-${l.hrefLang ?? ""}`} rel={l.rel} href={l.href} {...(l.hrefLang ? { hrefLang: l.hrefLang } : {})} />
+              ))
+            : null}
 
           <HeadBoundary>
             <RouterHeadPlaceholders />
           </HeadBoundary>
 
           {/* Breadcrumb JSON-LD (lightweight; routes also provide more specific graphs) */}
-          <BreadcrumbStructuredData breadcrumb={breadcrumb} />
+          {breadcrumb ? <BreadcrumbStructuredData breadcrumb={breadcrumb} /> : null}
 
           <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
 

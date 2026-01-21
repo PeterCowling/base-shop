@@ -1,5 +1,5 @@
-import { ensureStringArray } from "@/utils/i18nContent";
 import { GUIDE_KEYS, type GuideKey } from "@/routes.guides-helpers";
+import { ensureStringArray } from "@/utils/i18nContent";
 
 export type BeachListItem = { name: string; note: string };
 export type GalleryCopy = { alt: string; caption: string };

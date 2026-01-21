@@ -1,13 +1,14 @@
 import { useMemo, useRef } from "react";
-
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
+
 import i18n from "@/i18n";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { debugGuide } from "@/utils/debug";
 import { DEFAULT_TWITTER_CARD } from "@/utils/headConstants";
-import { translateStringWithFallback } from "./translations";
+
 import type { GuideTranslationSuite } from "./translations";
+import { translateStringWithFallback } from "./translations";
 
 type HookI18n = { getFixedT?: (lng: string, ns?: string) => TFunction };
 

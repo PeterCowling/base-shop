@@ -1,8 +1,9 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import forms from "@tailwindcss/forms";
 import containerQueries from "@tailwindcss/container-queries";
+import forms from "@tailwindcss/forms";
+
 import logicalProps from "./plugins/logical-props.js";
 
 const __filename = fileURLToPath(import.meta.url);

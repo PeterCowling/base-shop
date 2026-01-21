@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect } from "react";
-import { DEFAULT_LOCALE, LOCALES, type Locale } from "@/lib/locales";
+
+import { DEFAULT_LOCALE, type Locale,LOCALES } from "@/lib/locales";
 import { getTranslatorForLocale } from "@/lib/messages";
+
 import styles from "./page.module.css";
 
 const SUPPORTED_LOCALES = new Set<Locale>(LOCALES);

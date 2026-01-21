@@ -1,7 +1,8 @@
 import type { AppLanguage } from "../../i18n.config";
-import { getSlug } from "../../utils/slug";
 import type { GuideManifestEntry } from "../../routes/guides/guide-manifest";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "../../routes/guides/guide-manifest";
+import { getSlug } from "../../utils/slug";
+
 import type { GuideKey } from "./keys";
 import { GUIDE_KEYS } from "./keys";
 
@@ -59,6 +60,10 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
 };
 
 export function guideNamespaceKey(key: GuideKey): "experiences" | "howToGetHere" | "assistance" {
+  const override = GUIDE_BASE_KEY_OVERRIDES[key];
+  if (override) {
+    return override;
+  }
   const manifestEntry = getGuideManifestEntry(key);
   if (manifestEntry) {
     const primary = guideAreaToSlugKey(manifestEntry.primaryArea);
@@ -66,7 +71,7 @@ export function guideNamespaceKey(key: GuideKey): "experiences" | "howToGetHere"
       return primary;
     }
   }
-  return GUIDE_BASE_KEY_OVERRIDES[key] ?? "experiences";
+  return "experiences";
 }
 
 export function guideNamespace(
@@ -99,6 +104,11 @@ export function publishedGuideKeysByBase(
       : undefined;
 
   for (const key of GUIDE_KEYS as GuideKey[]) {
+    const override = GUIDE_BASE_KEY_OVERRIDES[key];
+    if (override) {
+      groups[override].push(key);
+      continue;
+    }
     const manifestEntry = manifestLookup?.[key];
     const status =
       statusMap?.[key] ??

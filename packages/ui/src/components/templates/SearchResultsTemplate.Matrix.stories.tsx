@@ -1,11 +1,14 @@
 // packages/ui/src/components/templates/SearchResultsTemplate.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
 import FilterBar from '@acme/platform-core/components/shop/FilterBar';
 import type { SKU } from '@acme/types';
-import { SearchResultsTemplate } from './SearchResultsTemplate';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { SearchResultsTemplate } from './SearchResultsTemplate';
 // Interaction test helpers removed to avoid optional dependency during docs build.
 
 const products: SKU[] = [

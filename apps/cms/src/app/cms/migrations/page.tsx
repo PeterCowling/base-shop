@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { TranslationsProvider } from "@acme/i18n/Translations";
+
 import en from "@acme/i18n/en.json";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+
+import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
 
 export default async function MigrationsPage() {
   const t = await getTranslations("en");

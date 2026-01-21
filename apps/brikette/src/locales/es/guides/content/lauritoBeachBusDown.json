@@ -5,16 +5,14 @@
   },
   "linkLabel": "Bus to Laurito Beach",
   "lead": {
-    "shareLabel": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
     "figures": [
       {
         "alt": "Parada de autobús Chiesa Nuova junto al Bar Internazionale",
-        "caption": "Chiesa Nuova – Bar Internazionale stop"
+        "caption": "Parada Chiesa Nuova – Bar Internazionale"
       },
       {
         "alt": "Escalera de bajada a Playa Laurito (señalizada)",
-        "caption": "Signposted stairs down to Laurito"
+        "caption": "Escaleras señalizadas hacia Laurito"
       }
     ]
   },
@@ -61,7 +59,7 @@
     },
     {
       "id": "walk-down",
-      "title": "Walk down to the beach",
+      "title": "Baja a la playa a pie",
       "body": [
         "Step off at the Laurito stop beside the stairway down to the beach access road.",
         "Walk a few metres back in the direction the bus came from and look for the signposted staircase on the seaward side.",

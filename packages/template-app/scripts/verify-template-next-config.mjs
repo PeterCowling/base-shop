@@ -56,11 +56,11 @@ function findNextConfigFile() {
     );
     process.exit(1);
   }
-  console.log("Found config:", path.relative(repoRoot, cfgPath));
+  console.info("Found config:", path.relative(repoRoot, cfgPath));
 
   try {
     await import(pathToFileURL(cfgPath).href); // import the template’s config (runs dev-defaults first)
-    console.log("✓ Template next.config imported successfully");
+    console.info("✓ Template next.config imported successfully");
   } catch (e) {
     console.error("✗ Failed to import template next.config");
     console.error(e?.url || e?.message || e);

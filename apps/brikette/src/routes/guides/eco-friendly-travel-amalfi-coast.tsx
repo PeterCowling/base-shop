@@ -1,18 +1,19 @@
 // src/routes/guides/eco-friendly-travel-amalfi-coast.tsx
+import type { LinksFunction, MetaFunction } from "react-router";
+
+import TableOfContents from "@/components/guides/TableOfContents";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl, guideHref } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry } from "./guide-manifest";
-import TableOfContents from "@/components/guides/TableOfContents";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { toAppLanguage } from "@/utils/lang";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import type { GuideKey } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import { guideAbsoluteUrl, guideHref } from "@/routes.guides-helpers";
-import type { LinksFunction, MetaFunction } from "react-router";
 import getFallbackLanguage from "./utils/getFallbackLanguage";
 
 type GuideLinksArgs = Parameters<LinksFunction>[0];
@@ -133,7 +134,11 @@ function renderManualFallback(context: GuideSeoTemplateContext): JSX.Element | n
   const { intro, sections, toc, faqs, faqsTitle } = fallback;
 
   const hasContent =
-    intro.length > 0 || sections.length > 0 || faqs.length > 0 || (faqsTitle && faqsTitle.length > 0);
+    intro.length > 0 ||
+    sections.length > 0 ||
+    toc.length > 0 ||
+    faqs.length > 0 ||
+    (faqsTitle && faqsTitle.length > 0);
   if (!hasContent) return null;
 
   const resolvedFaqsTitle = faqs.length
@@ -268,7 +273,7 @@ function buildManualFallbackContent(context: GuideSeoTemplateContext): ManualFal
 
   const faqsTitle = resolveStringValue("faqsTitle");
 
-  if (intro.length === 0 && sections.length === 0 && faqs.length === 0 && faqsTitle.length === 0) {
+  if (intro.length === 0 && sections.length === 0 && toc.length === 0 && faqs.length === 0 && faqsTitle.length === 0) {
     return null;
   }
 

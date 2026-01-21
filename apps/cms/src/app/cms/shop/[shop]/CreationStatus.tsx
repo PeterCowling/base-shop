@@ -13,7 +13,7 @@ export default async function CreationStatus({ shop }: { shop: string }) {
     return null;
   }
 
-  const state = readShopCreationState(safeId);
+  const state = await readShopCreationState(safeId);
   if (!state) return null;
 
   const { status, lastError } = state;

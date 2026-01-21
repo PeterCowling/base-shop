@@ -1,8 +1,10 @@
 import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
-import { Logo } from "../Logo";
 
 import useViewport from "../../../hooks/useViewport";
+import { Logo } from "../Logo";
+
 jest.mock("../../../hooks/useViewport");
 const mockedUseViewport = useViewport as jest.Mock;
 const sources = {

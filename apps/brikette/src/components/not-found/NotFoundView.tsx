@@ -1,25 +1,25 @@
 // src/components/not-found/NotFoundView.tsx
+"use client";
 import { Fragment, memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { LinksFunction, MetaDescriptor } from "react-router";
 
 import { Button } from "@acme/ui/atoms/Button";
 import { AppLink as Link } from "@acme/ui/atoms/Link";
 
+import Page from "@/components/common/Page";
+import { BASE_URL } from "@/config/site";
 import * as ModalCtx from "@/context/ModalContext";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { getSlug } from "@/utils/slug";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
-import type { LinksFunction, MetaDescriptor } from "react-router";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
-
-import Page from "@/components/common/Page";
 
 function NotFoundView() {
   const data = safeUseLoaderData<{
@@ -148,16 +148,24 @@ function NotFoundView() {
       {process.env.NODE_ENV === "test" && (
         <Fragment>
           {(fallbackHeadDescriptors ?? []).map((d, i) => {
-            const titleMaybe = (d as { title?: string }).title;
+            const descriptor = d as Record<string, string | undefined>;
+            const titleMaybe = descriptor["title"];
             if (typeof titleMaybe === "string" && titleMaybe) {
               return <title key={`t-${i}`}>{titleMaybe}</title>;
             }
-            const { key: _k, ...rest } = d as Record<string, string | undefined> & { key?: string };
-            return <meta key={`m-${i}`} {...(rest as Record<string, string | undefined>)} />;
+            const tagName = descriptor["tagName"];
+            if (tagName === "link") {
+              const { ["tagName"]: _ignored, ["key"]: _key, ...rest } = descriptor;
+              return <link key={`m-${i}`} {...rest} />;
+            }
+            const { ["key"]: _k, ["tagName"]: _tag, ...rest } = descriptor;
+            return <meta key={`m-${i}`} {...rest} />;
           })}
           {(fallbackHeadLinks ?? []).map((l, i) => {
-            const { key: linkKey, ...rest } = l as unknown as Record<string, string | undefined> & { key?: string };
-            return <link key={`l-${i}-${linkKey ?? ""}`} {...(rest as Record<string, string | undefined>)} />;
+            const descriptor = l as unknown as Record<string, string | undefined> & { key?: string };
+            const linkKey = descriptor["key"];
+            const { ["key"]: _ignored, ...rest } = descriptor;
+            return <link key={`l-${i}-${linkKey ?? ""}`} {...rest} />;
           })}
         </Fragment>
       )}

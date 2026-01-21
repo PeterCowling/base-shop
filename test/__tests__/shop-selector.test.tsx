@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { HttpResponse } from "msw";
 import { rest, server } from "../msw/server";
 
 const pushMock = jest.fn();
@@ -10,13 +9,13 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-jest.mock("../../packages/ui/src/components/atoms/shadcn", () => {
+jest.mock("../../packages/ui/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Select: ({ value, onValueChange, children, "data-cy": dataCy }: any) => (
+    Select: ({ value, onValueChange, children }: any) => (
       <select
-        data-cy={dataCy}
+        data-testid="select"
         defaultValue={value}
         onChange={(e) => onValueChange(e.target.value)}
       >
@@ -36,12 +35,14 @@ jest.mock("../../packages/ui/src/components/atoms/shadcn", () => {
   };
 });
 
-import ShopSelector from "../../packages/ui/src/components/cms/ShopSelector";
+import ShopSelector from "../../packages/ui/components/cms/ShopSelector";
 
 describe("ShopSelector", () => {
   beforeEach(() => {
     server.use(
-      rest.get("/api/shops", () => HttpResponse.json(["demo", "other"]))
+      rest.get("/api/shops", (_req, res, ctx) =>
+        res(ctx.json(["demo", "other"]))
+      )
     );
     pushMock.mockReset();
     window.history.pushState({}, "", "/cms/shop/demo?lang=en");
@@ -49,7 +50,7 @@ describe("ShopSelector", () => {
 
   it("navigates to selected shop dashboard", async () => {
     render(<ShopSelector />);
-    const select = await screen.findByTestId("shop-select");
+    const select = await screen.findByTestId("select");
     await userEvent.selectOptions(select, "other");
     expect((select as HTMLSelectElement).value).toBe("other");
   });

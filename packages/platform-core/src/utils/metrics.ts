@@ -1,5 +1,5 @@
-import { logger } from "./logger";
 import type { LogMeta } from "./logger";
+import { logger } from "./logger";
 
 export type MetricStatus = "success" | "failure" | "skipped" | "invalid-config";
 

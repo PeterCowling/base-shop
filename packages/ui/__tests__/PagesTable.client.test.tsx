@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import PagesTable from "../src/components/cms/PagesTable";
+
 import type { Page } from "@acme/types";
+
+import PagesTable from "../src/components/cms/PagesTable";
 
 const pages: Page[] = [
   {

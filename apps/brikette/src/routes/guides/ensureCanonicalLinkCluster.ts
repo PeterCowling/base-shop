@@ -3,9 +3,9 @@ import type { LinksFunction } from "react-router";
 
 import { BASE_URL } from "@/config/site";
 import { guideSlug } from "@/routes.guides-helpers";
+import { toAppLanguage } from "@/utils/lang";
 import { buildRouteLinks } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import { toAppLanguage } from "@/utils/lang";
 
 import { guideAreaToSlugKey, type GuideManifestEntry } from "./guide-manifest";
 

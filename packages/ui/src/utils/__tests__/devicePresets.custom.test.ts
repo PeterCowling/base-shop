@@ -1,6 +1,6 @@
 /* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
-import { getCustomDevicePresets, saveCustomDevicePresets, getAllDevicePresets, findDevicePresetById, CUSTOM_DEVICES_KEY } from "../devicePresets";
 import type { DevicePreset } from "../devicePresets";
+import { CUSTOM_DEVICES_KEY,findDevicePresetById, getAllDevicePresets, getCustomDevicePresets, saveCustomDevicePresets } from "../devicePresets";
 
 describe("custom device presets", () => {
   beforeEach(() => {

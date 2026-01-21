@@ -1,17 +1,17 @@
 // src/routes/guides/positano-parking.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
 import type { LinksFunction } from "react-router";
 
 import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["transport", "car", "positano", "parking"] };
 
@@ -58,4 +58,4 @@ const links: LinksFunction = (...args: Parameters<LinksFunction>) => {
 };
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };

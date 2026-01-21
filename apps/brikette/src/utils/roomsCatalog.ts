@@ -5,15 +5,15 @@
 
 import roomsData, { type RoomId } from "@/data/roomsData";
 import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { loadI18nNs } from "@/utils/loadI18nNs";
-import type { RoomAmenity } from "@/types/machine-layer/ml";
-import type { LocalizedRoom, RoomCopy } from "@/rooms/types";
-export type { LocalizedRoom, RoomCopy } from "@/rooms/types";
-
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- LINT-1007 [ttl=2026-12-31] JSON import uses build-time resolveJsonModule
 // @ts-ignore - resolveJsonModule provides types for the fallback bundle
 import EN_ROOMS_PAGE from "@/locales/en/roomsPage.json";
+import type { LocalizedRoom, RoomCopy } from "@/rooms/types";
+import type { RoomAmenity } from "@/types/machine-layer/ml";
+import { loadI18nNs } from "@/utils/loadI18nNs";
+
+export type { LocalizedRoom, RoomCopy } from "@/rooms/types";
 
 type RoomsPageNamespace = typeof EN_ROOMS_PAGE;
 type RoomsDictionary = RoomsPageNamespace["rooms"];

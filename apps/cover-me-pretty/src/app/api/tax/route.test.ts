@@ -2,8 +2,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { POST } from "./route";
 
-jest.mock("@shared-utils", () => ({ parseJsonBody: jest.fn() }));
-const parseJsonBody = jest.requireMock("@shared-utils")
+jest.mock("@acme/lib/http/server", () => ({ parseJsonBody: jest.fn() }));
+const parseJsonBody = jest.requireMock("@acme/lib/http/server")
   .parseJsonBody as jest.Mock;
 
 jest.mock("@acme/platform-core/tax", () => ({ calculateTax: jest.fn() }));

@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/QAModule.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { QAModule } from './QAModule';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { QAModule } from './QAModule';
 
 const meta: Meta<typeof QAModule> = {
   title: 'Organisms/Q&A Module/Matrix',

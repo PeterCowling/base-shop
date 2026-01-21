@@ -18,10 +18,11 @@
  * @see docs/plans/integrated-secrets-workflow-plan.md
  */
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-04: CLI script with path from CLI args */
-/* eslint-disable ds/no-hardcoded-copy -- SEC-04: CLI-only script, not user-facing UI */
+ 
 
 import { existsSync, readFileSync } from "node:fs";
-import { validateDeployEnv, isPlaceholder } from "@config/env-schema";
+
+import { isPlaceholder,validateDeployEnv } from "@acme/config/env-schema";
 
 const envFile = process.argv[2];
 

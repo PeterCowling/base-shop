@@ -1,8 +1,10 @@
 // packages/ui/components/atoms/primitives/dialog.tsx
+import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import * as React from "react";
+
 import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../../utils/style";
 
 export const Dialog = DialogPrimitive.Root;

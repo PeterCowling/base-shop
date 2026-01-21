@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { EventWebhook } from "@sendgrid/eventwebhook";
-import { trackEvent } from "@acme/platform-core/analytics";
+
 import {
   mapSendGridEvent,
   type SendGridWebhookEvent,
 } from "@acme/email/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 
 const TWILIO_EVENT_WEBHOOK_TIMESTAMP_HEADER =
   "x-twilio-email-event-webhook-" + ["time", "stamp"].join("");

@@ -1,10 +1,12 @@
+import type { LoaderFunctionArgs } from "react-router-dom";
+
+import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
 import { type AppLanguage } from "@/i18n.config";
-import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { langFromRequest } from "@/utils/lang";
-import type { LoaderFunctionArgs } from "react-router-dom";
+import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+import { getSlug } from "@/utils/slug";
+
 import { getBreakfastMenuStringValue } from "./strings";
 
 export type BreakfastMenuLoaderData = {

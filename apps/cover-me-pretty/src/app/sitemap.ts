@@ -3,7 +3,7 @@ import { getShopSettings } from "@acme/platform-core/repositories/settings.serve
 import { readRepo as readProducts } from "@acme/platform-core/repositories/products.server";
 import { loadCoreEnv } from "@acme/config/env/core";
 import type { ProductPublication } from "@acme/types";
-import { nowIso } from "@acme/date-utils";
+import { nowIso } from "@date-utils";
 import { getConfig as getSanityConfig, type BlogPost } from "@acme/sanity";
 import { listPosts } from "@acme/platform-core/repositories/blog.server";
 

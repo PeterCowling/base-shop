@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
 import type { Stats } from "@cms/lib/dashboardData";
+
+import { useTranslations } from "@acme/i18n";
+
+import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 
 type ShopOverviewCardProps = {
   stats: Stats;

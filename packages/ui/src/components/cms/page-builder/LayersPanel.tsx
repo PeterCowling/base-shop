@@ -1,17 +1,20 @@
 "use client";
 
-import { DndContext, useSensor, useSensors, PointerSensor, KeyboardSensor, DragEndEvent } from "@dnd-kit/core";
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useMemo, useState } from "react";
-import type { EditorFlags } from "./state/layout/types";
-import { isHiddenForViewport } from "./state/layout/utils";
-import { applyDesktopOrderAcrossBreakpoints } from "./utils/applyDesktopOrder";
+import { DndContext, type DragEndEvent,KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+
+import { useTranslations } from "@acme/i18n";
+
 import { Cluster } from "../../atoms/primitives/Cluster";
+
+import type { LayerNode,LayersPanelProps } from "./LayersPanel.types";
 import { LayerList } from "./LayersPanelList";
 import { RootDropZone } from "./LayersPanelRootDropZone";
+import type { EditorFlags } from "./state/layout/types";
+import { isHiddenForViewport } from "./state/layout/utils";
 import { useSelectionHandlers } from "./useLayerSelectionHandlers";
-import type { LayersPanelProps, LayerNode } from "./LayersPanel.types";
-import { useTranslations } from "@acme/i18n";
+import { applyDesktopOrderAcrossBreakpoints } from "./utils/applyDesktopOrder";
 
 export default function LayersPanel({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", crossNotices = true }: LayersPanelProps) {
   const t = useTranslations();

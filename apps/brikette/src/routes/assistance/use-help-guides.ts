@@ -1,9 +1,10 @@
 // src/routes/assistance/use-help-guides.ts
 import { useMemo } from "react";
+
+import { IS_PROD } from "@/config/env";
 import { HELP_GUIDES } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideNamespace } from "@/routes.guides-helpers";
-import { IS_PROD } from "@/config/env";
 
 export function useHelpGuides(lang: AppLanguage) {
   return useMemo(() => {

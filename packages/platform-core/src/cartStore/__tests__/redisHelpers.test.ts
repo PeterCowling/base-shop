@@ -1,11 +1,11 @@
 import { jest } from "@jest/globals";
 
 import {
-  withFallback,
-  expireBoth,
-  skuKey,
-  serialize,
   deserialize,
+  expireBoth,
+  serialize,
+  skuKey,
+  withFallback,
 } from "../redisHelpers";
 
 describe("redisHelpers", () => {

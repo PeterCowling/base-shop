@@ -1,8 +1,10 @@
 "use client";
 
 import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+
 import { formatNumber, formatPercent } from "@/lib/format";
-import type { LaunchPlan, LaunchesStrings } from "./types";
+
+import type { LaunchesStrings,LaunchPlan } from "./types";
 
 export default function LaunchPlansList({
   plans,

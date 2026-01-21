@@ -1,12 +1,14 @@
 // packages/ui/src/components/cms/page-builder/panels/content/MinMaxItems.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
-import { Input } from "../../../../atoms/shadcn";
+import type { PageComponent } from "@acme/types";
+
 import { Tooltip } from "../../../../atoms";
-import type { ContentComponent, HandleInput, OnChange } from "./types";
+import { Input } from "../../../../atoms/shadcn";
+
 import { nonNegative } from "./helpers";
+import type { ContentComponent, HandleInput, OnChange } from "./types";
 
 interface Props {
   component: PageComponent;

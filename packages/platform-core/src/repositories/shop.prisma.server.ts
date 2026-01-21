@@ -1,6 +1,6 @@
 import "server-only";
 
-import { shopSchema, type Shop } from "@acme/types";
+import { type Shop,shopSchema } from "@acme/types";
 
 import { prisma } from "../db";
 

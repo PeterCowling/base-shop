@@ -1,3 +1,7 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import Library from "../src/components/cms/media/Library";
+
 function createShadcnStub() {
   const React = require("react");
   return {
@@ -38,8 +42,6 @@ jest.mock("../src/components/cms/MediaFileList", () => ({
   __esModule: true,
   default: (props: any) => mockMediaFileList(props),
 }));
-import { render, fireEvent, screen } from "@testing-library/react";
-import Library from "../src/components/cms/media/Library";
 
 beforeEach(() => {
   mockMediaFileList.mockClear();

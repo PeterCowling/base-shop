@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 import type { LaunchCheckResult } from "@acme/types";
 
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
@@ -33,7 +35,7 @@ beforeEach(() => {
 });
 
 const makeRequest = () =>
-  new Request("http://test.local/cms/api/launch-status/demo", {
+  new NextRequest("http://test.local/cms/api/launch-status/demo", {
     method: "GET",
   });
 

@@ -1,8 +1,10 @@
 // React 19 requires this flag to silence act warnings in tests
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
-
-import { render, screen, act } from "@testing-library/react";
+import { act,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import NewWizardPage from "../page";
+
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 const mockUseParams = jest.fn();
 const mockCreateDraft = jest.fn();
@@ -57,8 +59,6 @@ jest.mock("../components/PreviewPane", () => ({
   __esModule: true,
   default: PreviewPaneMock,
 }));
-
-import NewWizardPage from "../page";
 
 describe("NewWizardPage", () => {
   const shop = "test-shop";

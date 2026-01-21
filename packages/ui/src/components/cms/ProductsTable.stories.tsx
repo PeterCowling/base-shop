@@ -1,5 +1,7 @@
-import type { ProductPublication } from "@acme/types";
 import type { Meta, StoryObj } from "@storybook/nextjs";
+
+import type { ProductPublication } from "@acme/types";
+
 import ProductsTable from "./ProductsTable.client";
 
 const rows: ProductPublication[] = [

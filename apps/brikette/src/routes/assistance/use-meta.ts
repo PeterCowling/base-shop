@@ -1,8 +1,10 @@
 // src/routes/assistance/use-meta.ts
 import { useMemo } from "react";
-import type { TFunction, i18n as I18nInstance } from "i18next";
-import { coerceMetaValue } from "./utils";
+import type { i18n as I18nInstance,TFunction } from "i18next";
+
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
+
+import { coerceMetaValue } from "./utils";
 
 const ENGLISH_META_DEFAULTS = {
   title:

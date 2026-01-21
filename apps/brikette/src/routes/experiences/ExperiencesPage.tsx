@@ -1,11 +1,13 @@
 /* src/routes/experiences/ExperiencesPage.tsx */
 import { Fragment, memo } from "react";
+
 import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
+
+import { GuideCollectionSection } from "./components/_GuideCollectionSection";
+import { HeroSection } from "./components/_HeroSection";
 import { CtaSection } from "./components/CtaSection";
 import { ExperiencesGrid } from "./components/ExperiencesGrid";
 import { FaqSection } from "./components/FaqSection";
-import { GuideCollectionSection } from "./components/_GuideCollectionSection";
-import { HeroSection } from "./components/_HeroSection";
 import { useExperiencesPageContent } from "./useExperiencesPageContent";
 
 // Memoize the collection section at module scope so its identity is stable
@@ -23,12 +25,14 @@ function ExperiencesPageComponent() {
     guideCollectionCopy,
     guideCollectionId,
     clearFilterHref,
+    filterParam,
     filterTag,
     faqTitle,
     faqEntries,
     cta,
     ctaLinks,
   } = useExperiencesPageContent();
+  const totalGuideCount = experienceGuides.length;
 
   return (
     <Fragment>
@@ -44,7 +48,9 @@ function ExperiencesPageComponent() {
               id={collection.id}
               lang={meta.lang}
               guides={collection.guides}
+              totalCount={totalGuideCount}
               filterTag={filterTag}
+              filterParam={filterParam}
               clearFilterHref={clearFilterHref}
               copy={collection.copy}
               showFilters={collection.showFilters ?? index === 0}
@@ -55,9 +61,12 @@ function ExperiencesPageComponent() {
             id={guideCollectionId}
             lang={meta.lang}
             guides={experienceGuides}
+            totalCount={totalGuideCount}
             filterTag={filterTag}
+            filterParam={filterParam}
             clearFilterHref={clearFilterHref}
             copy={guideCollectionCopy}
+            showFilters={filterParam !== "tag"}
           />
         )}
         <FaqSection title={faqTitle} entries={faqEntries} />

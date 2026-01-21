@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 const RISK_CLASSES = new Set(["truncate", "overflow-hidden", "text-ellipsis", "whitespace-nowrap"]);

@@ -89,38 +89,6 @@
     "empty": "我们尚未推出与 {{tag}} 相关的体验指南，尝试其他标签或取消筛选。",
     "clearFilter": "显示全部体验指南",
     "cardCta": "探索“{{guideTitle}}”体验指南",
-    "directionsLabel": "交通指南",
-    "directionLinks": {
-      "capriDayTrip": {
-        "positanoCapriFerry": "波西塔诺 → 卡普里渡轮",
-        "capriPositanoFerry": "卡普里 → 波西塔诺渡轮"
-      },
-      "positanoAmalfi": {
-        "positanoAmalfiBus": "波西塔诺 → 阿马尔菲巴士",
-        "amalfiPositanoBus": "阿马尔菲 → 波西塔诺巴士",
-        "positanoAmalfiFerry": "波西塔诺 → 阿马尔菲渡轮（季节性）",
-        "amalfiPositanoFerry": "阿马尔菲 → 波西塔诺渡轮（季节性）"
-      },
-      "positanoRavello": {
-        "positanoRavelloBus": "波西塔诺 → 拉韦洛巴士",
-        "ravelloPositanoBus": "拉韦洛 → 波西塔诺巴士",
-        "positanoRavelloFerryBus": "波西塔诺 → 拉韦洛渡轮 + 巴士"
-      },
-      "naplesPositano": {
-        "naplesCenterTrainBus": "那不勒斯市中心 → 波西塔诺（火车 + 巴士）",
-        "naplesCenterPositanoFerry": "那不勒斯市中心 → 波西塔诺渡轮",
-        "naplesAirportPositanoBus": "那不勒斯机场 → 波西塔诺巴士",
-        "positanoNaplesCenterBusTrain": "波西塔诺 → 那不勒斯市中心（巴士 + 火车）",
-        "positanoNaplesCenterFerry": "波西塔诺 → 那不勒斯渡轮",
-        "positanoNaplesAirportBus": "波西塔诺 → 那不勒斯机场巴士"
-      },
-      "salernoPositano": {
-        "salernoPositanoBus": "萨莱诺 → 波西塔诺巴士",
-        "salernoPositanoFerry": "萨莱诺 → 波西塔诺渡轮（季节性）",
-        "positanoSalernoBus": "波西塔诺 → 萨莱诺巴士",
-        "positanoSalernoFerry": "波西塔诺 → 萨莱诺渡轮（季节性）"
-      }
-    },
     "filterHeading": "筛选体验指南",
     "filterDescription": "选择标签以缩小我们重点展示的体验内容。",
     "grouped": {

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[924115],{924115:e=>{e.exports=JSON.parse('{"title":"Nuestra Ubicaci\xf3n","inputLabel":"Ingrese su ubicaci\xf3n actual:","inputPlaceholder":"p.ej. N\xe1poles, Italia o direcci\xf3n completa","getDirections":"Obtener direcciones","justShowMap":"Mostrar solo mapa","close":"Cerrar modal"}')}}]);

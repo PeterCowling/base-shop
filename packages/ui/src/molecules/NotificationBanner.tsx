@@ -1,12 +1,13 @@
 // Copied from src/components/header/NotificationBanner.tsx
-import { useSetBannerRef } from "@/context/NotificationBannerContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { translatePath } from "@/utils/translate-path";
-import { X } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
+import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
+
+import { useSetBannerRef } from "@acme/ui/context/NotificationBannerContext";
+import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
+import type { AppLanguage } from "@acme/ui/i18n.config";
+import { translatePath } from "@acme/ui/utils/translate-path";
 
 type NotificationBannerCopy = {
   message?: string;
@@ -53,7 +54,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const { t, ready } = useTranslation("notificationBanner", { lng: lang });
-  const navigate = useNavigate();
+  const router = useRouter();
   const setBannerRef = useSetBannerRef();
   const [isVisible, setIsVisible] = useState(true);
   const rawMessage = useMemo(() => (ready ? (t("message") as string) || "" : ""), [t, ready]);
@@ -101,7 +102,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
 
     let alive = true;
     // Fallback: dynamically import the JSON for this language
-    import(`@/locales/${lang}/notificationBanner.json`)
+    import(`../locales/${lang}/notificationBanner.json`)
       .then((mod) => {
         if (!alive) return;
         const localeModule = mod as NotificationBannerLocaleModule;
@@ -130,7 +131,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     // re-run when lang changes or i18n function identity toggles
   }, [lang, rawMessage, rawCta, rawOpenLabel]);
 
-  const openDeals = useCallback(() => navigate(`/${lang}/${translatePath("deals", lang)}`), [navigate, lang]);
+  const openDeals = useCallback(() => router.push(`/${lang}/${translatePath("deals", lang)}`), [router, lang]);
   const close = useCallback(() => {
     setIsVisible(false);
     localStorage.setItem("bannerHidden", "true");

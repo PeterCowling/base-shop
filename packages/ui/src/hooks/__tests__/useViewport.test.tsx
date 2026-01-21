@@ -1,5 +1,6 @@
 // packages/ui/src/hooks/__tests__/useViewport.test.tsx
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useViewport from "../useViewport";
 
 // i18n-exempt: test suite name

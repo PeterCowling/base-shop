@@ -1,23 +1,22 @@
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import { BASE_URL } from "@/config/site";
 import { guideNamespace } from "@/routes.guides-helpers";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 import { getSlug } from "@/utils/slug";
 
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
-
-import { stripGuideLinkTokens } from "./utils/linkTokens";
+import { GUIDE_KEY, GUIDE_SLUG } from "./how-to-reach-positano-on-a-budget.constants";
 import { buildGuideExtras } from "./how-to-reach-positano-on-a-budget.extras";
 import {
-  safeString,
   normaliseFaqs,
+  safeString,
 } from "./how-to-reach-positano-on-a-budget.normalisers";
-import type { GuideFaq, GuideSeoTemplateContext } from "./how-to-reach-positano-on-a-budget.types";
 import {
   getGuidesTranslator,
   getHeaderTranslator,
   resolveTranslatorString,
 } from "./how-to-reach-positano-on-a-budget.translators";
-import { GUIDE_KEY, GUIDE_SLUG } from "./how-to-reach-positano-on-a-budget.constants";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import type { GuideFaq, GuideSeoTemplateContext } from "./how-to-reach-positano-on-a-budget.types";
+import { stripGuideLinkTokens } from "./utils/linkTokens";
 
 function extractCanonicalSegments(canonicalUrl: string): string[] | null {
   const candidate = safeString(canonicalUrl);

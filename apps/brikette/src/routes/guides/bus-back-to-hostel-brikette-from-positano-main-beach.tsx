@@ -1,23 +1,22 @@
 // src/routes/guides/bus-back-to-hostel-brikette-from-positano-main-beach.tsx
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey, type GuideAreaSlugKey } from "./guide-manifest";
-
-import { CfImage } from "@/components/images/CfImage";
-import i18n from "@/i18n";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
 import type { LinksFunction, MetaFunction } from "react-router";
 
+import { CfImage } from "@/components/images/CfImage";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import EN_POSITANO_RETURN_GUIDE from "@/locales/en/guides/content/positanoMainBeachBusBack.json";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, type GuideAreaSlugKey,guideAreaToSlugKey } from "./guide-manifest";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 export const handle = { tags: ["beaches", "bus", "stairs", "positano"] };
 

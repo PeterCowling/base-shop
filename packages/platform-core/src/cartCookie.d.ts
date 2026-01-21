@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { type z } from "zod";
+
 export type { CartLine, CartState } from "./cart";
 export declare const CART_COOKIE = "__Host-CART_ID";
 /**

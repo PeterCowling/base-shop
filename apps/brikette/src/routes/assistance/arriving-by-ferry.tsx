@@ -1,6 +1,7 @@
 // src/routes/assistance/arriving-by-ferry.tsx
-import { makeArticleClientLoader, makeArticlePage, makeArticleMeta, makeArticleLinks } from "./_ArticleFactory";
 import AssistanceFaqJsonLd from "@/components/seo/AssistanceFaqJsonLd";
+
+import { makeArticleClientLoader, makeArticleLinks,makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
 
 // i18n-exempt -- I18N-TECHDEBT [ttl=2026-12-31] Assistance article identifier used for content lookups; UI copy lives in locale bundles
 const ARTICLE_KEY = "arrivingByFerry" as const;

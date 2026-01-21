@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const aiCatalogFieldSchema: z.ZodEnum<["id", "title", "description", "price", "media"]>;
 export declare const aiCatalogConfigSchema: z.ZodObject<{
     enabled: z.ZodBoolean;

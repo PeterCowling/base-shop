@@ -1,17 +1,18 @@
 // src/routes/NotFound.tsx
+import { type LinksFunction,type MetaFunction } from "react-router";
+import { type LoaderFunctionArgs } from "react-router-dom";
+
+import NotFoundView from "@/components/not-found/NotFoundView";
+import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { langParamSchema } from "@/types/loaderSchemas";
-import { validateOrThrow } from "@/utils/validate";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { type MetaFunction, type LinksFunction } from "react-router";
-import { type LoaderFunctionArgs } from "react-router-dom";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
-import NotFoundView from "@/components/not-found/NotFoundView";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { validateOrThrow } from "@/utils/validate";
 
 const OG_IMAGE_SOURCE = "/img/positano-panorama.avif" as const;
 

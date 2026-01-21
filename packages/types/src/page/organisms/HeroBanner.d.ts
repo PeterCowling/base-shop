@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface HeroBannerComponent extends PageComponentBase {
     type: "HeroBanner";
     slides?: {

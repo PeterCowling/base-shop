@@ -1,10 +1,13 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 import { Toast } from "../../../atoms";
 import type {
   AsyncSubmissionHandler,
   ValidationErrors,
 } from "../shared";
+
 import { SegmentBuilderWizardLayout } from "./SegmentBuilderWizardLayout";
 import { SegmentDetailsStep } from "./SegmentDetailsStep";
 import { SegmentReviewStep } from "./SegmentReviewStep";
@@ -14,7 +17,6 @@ import {
   type SegmentPreviewData,
 } from "./types";
 import { useSegmentBuilderWizard } from "./useSegmentBuilderWizard";
-import { useTranslations } from "@acme/i18n";
 
 interface SegmentBuilderWizardProps {
   initialDefinition?: Partial<SegmentDefinition>;

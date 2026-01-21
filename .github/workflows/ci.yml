@@ -81,6 +81,8 @@ jobs:
         run: pnpm run docs:lint
       - name: Plans lint
         run: pnpm run plans:lint
+      - name: Agent manifest validation
+        run: node scripts/validate-agent-manifest.js
 
   typecheck:
     name: Typecheck
@@ -161,6 +163,21 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
+
+      # ADMIN-04: Decrypt SOPS secrets before build
+      - name: Decrypt secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          environment: production
+
+      # ADMIN-05: Validate environment before deploy
+      - name: Validate deploy environment
+        run: |
+          chmod +x scripts/validate-deploy-env.sh
+          ./scripts/validate-deploy-env.sh
+        shell: bash
+
       - name: Build
         run: pnpm build
       - name: Deploy to staging

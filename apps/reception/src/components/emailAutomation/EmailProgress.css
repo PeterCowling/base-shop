@@ -1,0 +1,16 @@
+/* Remove occupant instantly (no fade), but animate others to "move up" */
+
+/* .instant-* classes for item entering/exiting instantly */
+.instant-enter,
+.instant-enter-active,
+.instant-exit,
+.instant-exit-active {
+  opacity: 1; /* No fade effect */
+  transform: translateY(0); /* We don't move the item itself */
+}
+
+/* This ensures that when the item is removed, the other items
+   which shift position get an animated transform. */
+.instant-move {
+  transition: transform 300ms ease;
+}

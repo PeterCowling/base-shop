@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import UnpublishButton from "@cms/app/cms/blog/posts/UnpublishButton.client";
+import { fireEvent,render, screen } from "@testing-library/react";
 
 const mockUnpublish = jest.fn();
 
@@ -9,7 +9,7 @@ jest.mock("@cms/actions/blog.server", () => ({
 
 const mockUseFormState = jest.fn((action: any, init: any) => [init, action]);
 jest.mock("react-dom", () => ({
-  useFormState: (...args: any[]) => mockUseFormState(...args),
+  useFormState: (...args: [any, any]) => mockUseFormState(...args),
 }));
 
 jest.mock("@acme/ui", () => ({

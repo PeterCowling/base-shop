@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
+import { render, screen } from "@testing-library/react";
+
 import Button from "../../blocks/Button";
+import Block from "../Block";
 
 const blockRegistryMock = {
   Foo: {
@@ -22,8 +24,6 @@ const blockRegistryMock = {
 jest.mock("../../blocks", () => ({
   blockRegistry: blockRegistryMock,
 }));
-
-import Block from "../Block";
 
 describe("Block", () => {
   it.each([
@@ -61,12 +61,12 @@ describe("Block", () => {
         component={{
           id: "8",
           type: "Text" as any,
-          text: { en: "Hello", fr: "Bonjour" },
+          text: { en: "Hello", de: "Hallo" },
         }}
-        locale="fr"
+        locale="de"
       />,
     );
-    expect(screen.getByText("Bonjour")).toBeInTheDocument();
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
   });
 
   it("returns null for unknown component type", () => {

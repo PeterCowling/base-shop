@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within, waitFor, act } from "@testing-library/react";
+
 import type { ComponentProps } from "react";
-import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 import { updateShop } from "@cms/actions/shops.server";
-import { savePreset, deletePreset } from "../src/app/cms/shop/[shop]/themes/page";
+import { act,fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+
+import { deletePreset,savePreset } from "../src/app/cms/shop/[shop]/themes/page";
+import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
@@ -15,7 +17,7 @@ jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
 jest.mock(
   "@/components/cms/StyleEditor",
   () => {
-    const React = require("react");
+    const React = require("react") as typeof import("react");
     function MockStyleEditor({
       tokens = {},
       baseTokens = {},
@@ -89,7 +91,7 @@ jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
   ),
 }));
 
-export { fireEvent, render, screen, within, waitFor, act };
+export { act,fireEvent, render, screen, waitFor, within };
 
 export const mockUpdateShop = updateShop as jest.Mock;
 export const mockSavePreset = savePreset as jest.Mock;
@@ -98,11 +100,11 @@ export const mockDeletePreset = deletePreset as jest.Mock;
 // Use a type alias rather than an empty interface extending a supertype
 export type RenderOptions = Partial<ComponentProps<typeof ThemeEditor>>;
 
-export function renderThemeEditor(options: RenderOptions = {}) {
+export function renderThemeEditor(options: RenderOptions = {}): ReturnType<typeof render> {
   const defaultProps: ComponentProps<typeof ThemeEditor> = {
     shop: "test",
     themes: ["base"],
-    tokensByTheme: { base: { "--color-bg": "#ffffff" } }, // eslint-disable-line ds/no-raw-color -- TEST: fixture uses literal color value
+    tokensByTheme: { base: { "--color-bg": "#ffffff" } },
     initialTheme: "base",
     initialOverrides: {},
     presets: [],

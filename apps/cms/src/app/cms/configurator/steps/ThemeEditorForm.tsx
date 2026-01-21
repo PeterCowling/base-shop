@@ -1,14 +1,15 @@
 "use client";
 
-import { Button } from "@acme/ui/components/atoms/shadcn";
-import StyleEditor from "@acme/ui/components/cms/StyleEditor";
-import { getContrast } from "@acme/ui/components/cms";
-import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
-import ThemeSpectrum from "@acme/ui/components/cms/ThemeSpectrum";
-import ColorThemeSelector from "./ColorThemeSelector";
 import { useTranslations } from "@acme/i18n";
 import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { Button } from "@acme/ui/components/atoms/shadcn";
+import { getContrast } from "@acme/ui/components/cms";
+import StyleEditor from "@acme/ui/components/cms/StyleEditor";
+import ThemeSpectrum from "@acme/ui/components/cms/ThemeSpectrum";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
+
+import ColorThemeSelector from "./ColorThemeSelector";
 
 const MIN_CONTRAST = 4.5;
 
@@ -43,26 +44,9 @@ export default function ThemeEditorForm({
   onReset,
 }: ThemeEditorFormProps): React.JSX.Element {
   const t = useTranslations();
-  const themeLabel = String(t("cms.theme.selectTheme"));
-  const resolvedThemeLabel =
-    themeLabel === "cms.theme.selectTheme" ? "Theme" : themeLabel;
   return (
     <div className="space-y-4">
-      <label className="flex flex-col gap-1">
-        <span>{resolvedThemeLabel}</span>
-        <select
-          className="border p-2"
-          name="themeId"
-          value={_theme}
-          onChange={(e) => _onThemeChange(e.target.value)}
-        >
-          {_themes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </label>
+      {/* Theme select removed per request; Color Themes picker remains below */}
 
       {/* Prebuilt color theme picker — moved here for prominence under theme select */}
       <ColorThemeSelector

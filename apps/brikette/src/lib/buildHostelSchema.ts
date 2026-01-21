@@ -1,6 +1,7 @@
 // src/lib/jsonld/buildHostelSchema.ts
-import type { HostelRoomOffer, HostelSchema, Room } from "@/types/schema";
 import { z } from "zod";
+
+import type { HostelRoomOffer, HostelSchema, Room } from "@/types/schema";
 
 const roomInputSchema = z.object({
   sku: z.string(),

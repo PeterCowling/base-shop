@@ -1,10 +1,13 @@
 /* i18n-exempt file -- test titles and UI copy are asserted literally */
+import "@testing-library/jest-dom";
+import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom";
-import { WishlistTemplate, type WishlistItem } from "../WishlistTemplate";
+
 import { TranslationsProvider } from "@acme/i18n";
-import "../../../../../../test/resetNextMocks";
+
+import { type WishlistItem,WishlistTemplate } from "../WishlistTemplate";
 
 jest.mock("../../atoms/Price", () => ({
   Price: ({ amount }: { amount: number | string }) => (

@@ -1,7 +1,8 @@
 import TableOfContents from "@/components/guides/TableOfContents";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
-import type { Translator } from "../../types";
+
 import type { GuideTranslationSuite } from "../../translations";
+import type { Translator } from "../../types";
 
 interface Props {
   guideKey: string;

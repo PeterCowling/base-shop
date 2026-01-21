@@ -1,5 +1,8 @@
-import { render, fireEvent } from "@testing-library/react";
 import type { ComponentProps } from "react";
+import { fireEvent,render } from "@testing-library/react";
+
+import { mapThemeTokenRows } from "../lib/pageSections";
+import ShopThemeSection from "../sections/ShopThemeSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -13,9 +16,6 @@ const resetThemeOverride = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({
   resetThemeOverride,
 }));
-
-import ShopThemeSection from "../sections/ShopThemeSection";
-import { mapThemeTokenRows } from "../lib/pageSections";
 
 describe("ShopThemeSection", () => {
   it("renders values, highlights changes, resets overrides, and serializes info", () => {

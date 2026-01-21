@@ -1,7 +1,28 @@
-import { LOCALES, type Locale } from "./constants";
 import { z } from "zod";
+
+import {
+  CONTENT_LOCALES,
+  LOCALES,
+  type Locale,
+  UI_LOCALES,
+} from "./constants";
 import type { MediaItem } from "./MediaItem";
 
+/**
+ * Schema for ContentLocale (expanded locale set for content translation).
+ * I18N-PIPE-00: Use for content fields that support the full locale set.
+ */
+export const contentLocaleSchema = z.enum(CONTENT_LOCALES);
+
+/**
+ * Schema for UiLocale (locales with full UI translation bundles).
+ * I18N-PIPE-00: Use for UI-only locale settings.
+ */
+export const uiLocaleSchema = z.enum(UI_LOCALES);
+
+/**
+ * @deprecated Use contentLocaleSchema or uiLocaleSchema instead.
+ */
 export const localeSchema = z.enum(LOCALES);
 
 /** Runtime validator + compile-time source of truth */

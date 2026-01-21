@@ -1,8 +1,10 @@
 /* src/routes/experiences/components/ExperiencesMeta.tsx */
-import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { Fragment } from "react";
+
+import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { BASE_URL } from "@/config/site";
 import { getSlug } from "@/utils/slug";
+
 import {
   JSON_LD_MIME_TYPE,
   META_DESCRIPTION_NAME,

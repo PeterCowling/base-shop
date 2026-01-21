@@ -1,9 +1,11 @@
-import * as fs from "fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolvePluginEntry, importByType } from "../src/plugins/resolvers";
-import { logger } from "../src/utils";
 import { pathToFileURL } from "node:url";
+
+import * as fs from "fs/promises";
+
+import { importByType,resolvePluginEntry } from "../src/plugins/resolvers";
+import { logger } from "../src/utils";
 
 jest.mock("fs/promises", () => {
   const actual = jest.requireActual("fs/promises");

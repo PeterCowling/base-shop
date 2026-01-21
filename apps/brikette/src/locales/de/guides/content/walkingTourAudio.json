@@ -12,7 +12,7 @@
   "toc": [
     {
       "href": "#route",
-      "label": "Route"
+      "label": "Strecke"
     },
     {
       "href": "#listen",
@@ -20,13 +20,13 @@
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "Häufige Fragen"
     }
   ],
   "sections": [
     {
       "id": "route",
-      "title": "Route",
+      "title": "Strecke",
       "body": [
         "Starte an der Bushaltestelle Chiesa Nuova → Pause an den Aussichtspunkten der Via Pasitea → schlängle dich durch die Gassen → Ziel an der Spiaggia Grande.",
         "Nimm dir Zeit auf den Terrassen, bleib dabei aber aufmerksam für Einheimische und Porter, die die Treppen für Lieferungen nutzen."
@@ -41,7 +41,7 @@
       ]
     }
   ],
-  "faqHeading": "FAQs",
+  "faqHeading": "Häufige Fragen",
   "faqs": [
     {
       "q": "Ist die Runde steil?",

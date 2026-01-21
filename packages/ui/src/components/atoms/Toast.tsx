@@ -1,7 +1,10 @@
 "use client";
 import * as React from "react";
-import { cn } from "../../utils/style";
+
 import { useTranslations } from "@acme/i18n";
+
+import { cn } from "../../utils/style";
+
 import { Inline } from "./primitives/Inline";
 
 type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";

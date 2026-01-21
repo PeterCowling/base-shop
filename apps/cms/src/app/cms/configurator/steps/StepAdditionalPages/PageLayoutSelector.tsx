@@ -1,3 +1,7 @@
+import { ulid } from "ulid";
+
+import type { PageComponent } from "@acme/types";
+
 import {
   Select,
   SelectContent,
@@ -5,8 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { ulid } from "ulid";
-import type { PageComponent } from "@acme/types";
 
 interface Props {
   pageTemplates: Array<{

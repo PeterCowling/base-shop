@@ -1,25 +1,24 @@
 // src/routes/guides/cheap-eats-in-positano.tsx
+import type { LinksFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+
+import { BASE_URL } from "@/config/site";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
-
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
 import { CheapEatsArticle } from "@/routes/guides/cheapEatsInPositano/CheapEatsArticle";
 import CheapEatsMetaBridge from "@/routes/guides/cheapEatsInPositano/CheapEatsMetaBridge";
 import { useCheapEatsContent } from "@/routes/guides/cheapEatsInPositano/useCheapEatsContent";
-
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import type { LinksFunction } from "react-router";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export const handle = { tags: ["cuisine", "positano", "budgeting"] };
 

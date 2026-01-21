@@ -1,10 +1,10 @@
 // Focus: input validation for sendCampaignEmail
 
+import { cleanupEnv,resetMocks, setupEnv } from "./sendCampaignTestUtils";
+
 jest.mock("../config", () => ({
   getDefaultSender: () => "from@example.com",
 }));
-
-import { resetMocks, setupEnv, cleanupEnv } from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (validation)", () => {
   beforeEach(() => {

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
+import { type ChangeEvent, type FormEvent,useCallback, useState } from "react";
+import { updateDeposit } from "@cms/actions/shops.server";
+
+import { FormField } from "@acme/ui/components/molecules";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
-import { FormField } from "@acme/ui/components/molecules";
-import { updateDeposit } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";

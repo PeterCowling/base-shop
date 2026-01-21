@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
-import { Tag } from "../../../atoms";
-import { PreviewPanel } from "../shared";
-import { Inline, Stack } from "../../../atoms/primitives";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Tag } from "../../../atoms";
+import { Inline, Stack } from "../../../atoms/primitives";
+import { PreviewPanel } from "../shared";
+
 import type { CampaignPreviewData } from "./types";
 
 export interface CampaignPreviewPanelProps {

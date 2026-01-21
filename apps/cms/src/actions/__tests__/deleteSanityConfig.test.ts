@@ -1,5 +1,10 @@
 /** @jest-environment node */
 
+import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
+import { setSanityConfig } from "@acme/platform-core/shops";
+
+import { deleteSanityConfig } from "../deleteSanityConfig";
+
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
@@ -12,10 +17,6 @@ jest.mock("@acme/platform-core/repositories/shop.server", () => ({
 jest.mock("@acme/platform-core/shops", () => ({
   setSanityConfig: jest.fn(),
 }));
-
-import { deleteSanityConfig } from "../deleteSanityConfig";
-import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
-import { setSanityConfig } from "@acme/platform-core/shops";
 
 describe("deleteSanityConfig", () => {
   beforeEach(() => {

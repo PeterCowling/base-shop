@@ -5,6 +5,7 @@
 
 import type { Room } from "@/data/roomsData";
 import type { RateCalendar } from "@/types/rates";
+
 import { getPriceForDate } from "./pricing";
 
 /**

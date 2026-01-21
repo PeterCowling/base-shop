@@ -1,4 +1,4 @@
-declare module "@auth" {
+declare module "@acme/auth" {
   export type SessionRecord = {
     id?: string;
     device?: string;

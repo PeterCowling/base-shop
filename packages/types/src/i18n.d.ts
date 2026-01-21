@@ -1,4 +1,5 @@
 import type { Locale } from "./constants";
+
 export type LocalizedString = Readonly<Partial<Record<Locale, string>>>;
 export type KeyRef = Readonly<{
     type: "key";

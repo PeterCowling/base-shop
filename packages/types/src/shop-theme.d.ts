@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export declare const shopThemeSchema: z.ZodObject<{
     themeId: z.ZodString;
     themeDefaults: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;

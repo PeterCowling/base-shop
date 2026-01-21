@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { DashboardTemplate } from "./DashboardTemplate";
 
 const meta: Meta<typeof DashboardTemplate> = {

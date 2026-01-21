@@ -1,9 +1,12 @@
-import { Card, CardContent } from "../atoms/shadcn";
-import { Chip } from "../atoms";
-import PublishShopsSelector from "./PublishShopsSelector";
 import { useMemo } from "react";
-import { Inline } from "../atoms/primitives/Inline";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Chip } from "../atoms";
+import { Inline } from "../atoms/primitives/Inline";
+import { Card, CardContent } from "../atoms/shadcn";
+
+import PublishShopsSelector from "./PublishShopsSelector";
 
 interface PublishShopsTabProps {
   selectedIds: string[];

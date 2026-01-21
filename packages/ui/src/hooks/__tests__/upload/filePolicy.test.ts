@@ -1,6 +1,7 @@
 /* i18n-exempt file -- test titles and messages are developer-facing */
-import { validateFilePolicy, firstFileFromChange } from "../../upload/filePolicy";
 import type React from "react";
+
+import { firstFileFromChange,validateFilePolicy } from "../../upload/filePolicy";
 
 describe("validateFilePolicy", () => {
   it("returns undefined for valid image under size limit", () => {

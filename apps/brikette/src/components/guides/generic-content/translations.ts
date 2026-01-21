@@ -1,6 +1,6 @@
 // src/components/guides/generic-content/translations.ts
-import type { GenericContentTranslator } from "./types";
 import { toTrimmedString } from "./strings";
+import type { GenericContentTranslator } from "./types";
 
 export function resolveLabelFallback(t: GenericContentTranslator, key: string): string | undefined {
   const value = toTrimmedString(t(key));

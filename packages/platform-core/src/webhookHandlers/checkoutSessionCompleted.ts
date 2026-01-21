@@ -1,5 +1,8 @@
 import type Stripe from "stripe";
+
 import { stripe } from "@acme/stripe";
+
+import { commitInventoryHold } from "../inventoryHolds";
 import { addOrder } from "../orders/creation";
 import { updateRisk } from "../orders/risk";
 import { getShopSettings } from "../repositories/settings.server";
@@ -9,11 +12,23 @@ export default async function checkoutSessionCompleted(
   event: Stripe.Event,
 ): Promise<void> {
   const session = event.data.object as Stripe.Checkout.Session;
+  // display_items is a legacy Checkout field, so keep a local type until migrated.
+  type LegacyDisplayItem = {
+    custom?: { name?: string | null } | null;
+    quantity?: number | null;
+  };
+  const displayItems = (
+    session as Stripe.Checkout.Session & { display_items?: LegacyDisplayItem[] }
+  ).display_items;
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expectedReturnDate = session.metadata?.returnDate || undefined;
   const customerId = session.metadata?.internal_customer_id || undefined;
   const orderId = session.metadata?.order_id || undefined;
   const cartId = session.metadata?.cart_id || undefined;
+  const inventoryHoldId =
+    typeof session.metadata?.inventory_reservation_id === "string"
+      ? session.metadata.inventory_reservation_id.trim()
+      : undefined;
 
   const currency =
     typeof session.currency === "string" ? session.currency.toUpperCase() : undefined;
@@ -44,6 +59,22 @@ export default async function checkoutSessionCompleted(
       ? session.customer
       : session.metadata?.stripe_customer_id || undefined;
 
+  const lineItems = Array.isArray(displayItems)
+    ? displayItems.flatMap((item: LegacyDisplayItem) => {
+        const sku =
+          typeof item.custom?.name === "string" ? item.custom.name : undefined;
+        if (!sku) return [];
+        const qty = typeof item.quantity === "number" ? item.quantity : 1;
+        return [
+          {
+            sku,
+            variantAttributes: {},
+            quantity: qty,
+          },
+        ];
+      })
+    : undefined;
+
   await addOrder({
     orderId,
     shop,
@@ -60,7 +91,13 @@ export default async function checkoutSessionCompleted(
     cartId,
     stripePaymentIntentId: piId,
     stripeCustomerId,
+    ...(lineItems ? { lineItems } : {}),
   });
+
+  // Commit inventory hold to finalize the stock decrement
+  if (inventoryHoldId) {
+    await commitInventoryHold({ shopId: shop, holdId: inventoryHoldId });
+  }
 
   const settings = await getShopSettings(shop);
   const threshold = settings.luxuryFeatures.fraudReviewThreshold;

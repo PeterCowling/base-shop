@@ -1,5 +1,6 @@
-import { Button } from "../../../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import { Button } from "../../../../atoms/shadcn";
 
 interface LinkedGlobalNoticeProps {
   globalId?: string;

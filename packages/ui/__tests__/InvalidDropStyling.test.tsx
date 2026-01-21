@@ -1,7 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import EditableCanvas from "../src/components/cms/page-builder/EditableCanvas";
+
 import BlockChildren from "../src/components/cms/page-builder/BlockChildren";
+import EditableCanvas from "../src/components/cms/page-builder/EditableCanvas";
 
 describe("Invalid drop styling", () => {
   it("canvas shows danger ring when invalid", () => {
@@ -26,6 +27,7 @@ describe("Invalid drop styling", () => {
         viewport="desktop"
         snapPosition={null}
         zoom={1}
+        showComments={false}
         showBaseline={false}
         baselineStep={8}
         dropAllowed={false}

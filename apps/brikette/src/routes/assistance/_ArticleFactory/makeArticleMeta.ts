@@ -1,15 +1,18 @@
 // src/routes/assistance/_ArticleFactory/makeArticleMeta.ts
 import type { MetaFunction } from "react-router";
-import { getSlug } from "@/utils/slug";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { i18nConfig } from "@/i18n.config";
+
+import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
+import { buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import { resolveCanonicalAssistancePath } from "../resolveCanonicalPath";
+
 import { DEFAULT_TWITTER_CARD, OG_IMAGE_DIMENSIONS, OG_IMAGE_TRANSFORM } from "./constants";
 import { resolveMeta } from "./metaUtils";
-import { buildRouteMeta } from "@/utils/routeHead";
-import { BASE_URL } from "@/config/site";
-import { resolveCanonicalAssistancePath } from "../resolveCanonicalPath";
 
 export function makeArticleMeta(namespace: string): MetaFunction {
   return ({ data, location }) => {
@@ -29,7 +32,9 @@ export function makeArticleMeta(namespace: string): MetaFunction {
       fallbackPath,
       locationPathname: location?.pathname ?? null,
     });
-    const url = `${BASE_URL}${path}`;
+    const origin =
+      typeof window !== "undefined" && window.location?.origin ? window.location.origin : BASE_URL;
+    const url = `${origin}${path}`;
     return buildRouteMeta({
       lang,
       title,

@@ -54,6 +54,10 @@
     "Steep stairway down to a tiny shingle beach beneath the bridge.",
     "No services on site: bring water, snacks, sun protection, and cash for emergency taxis."
   ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Guide prices are between 5 and 10 euros."
+  ],
   "tipsTitle": "Quick tips",
   "tips": [
     "Review our %LINK:positanoBeaches|beaches overview% to pair Fiordo di Furore with another swim spot on the same day.",
@@ -67,5 +71,9 @@
     "Space on the beach is tight and shade arrives quickly in the afternoon."
   ],
   "faqsTitle": "Fiordo di Furore FAQs",
-  "faqs": []
+  "faqs": [],
+  "sectionFigure": {
+    "alt": "Fiordo di Furore bridge above the cove",
+    "caption": "The narrow inlet sits beneath the arched bridge."
+  }
 }

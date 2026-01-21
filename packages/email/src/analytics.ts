@@ -1,20 +1,23 @@
 import "server-only";
+
 import { trackEvent } from "@acme/platform-core/analytics";
-import { getCampaignStore } from "./storage";
-import { SendgridProvider } from "./providers/sendgrid";
+
 import { ResendProvider } from "./providers/resend";
+import { SendgridProvider } from "./providers/sendgrid";
 import type { CampaignProvider } from "./providers/types";
-import { emptyStats, type CampaignStats } from "./stats";
-export {
-  mapSendGridStats,
-  mapResendStats,
-  normalizeProviderStats,
-  emptyStats,
-} from "./stats";
+import { type CampaignStats,emptyStats } from "./stats";
+import { getCampaignStore } from "./storage";
+
 export type {
   CampaignStats,
-  SendGridStatsResponse,
   ResendStatsResponse,
+  SendGridStatsResponse,
+} from "./stats";
+export {
+  emptyStats,
+  mapResendStats,
+  mapSendGridStats,
+  normalizeProviderStats,
 } from "./stats";
 
 export type EmailEventType =

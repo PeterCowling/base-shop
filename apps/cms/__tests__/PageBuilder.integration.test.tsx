@@ -1,6 +1,7 @@
-import { render, screen, within, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { act } from "react";
+import { render, screen, waitFor,within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import PageBuilder from "../src/components/cms/PageBuilder";
 
 let dndHandlers: any = {};
@@ -152,13 +153,13 @@ describe.skip("PageBuilder integration (legacy mocked)", () => {
     // New sidebar groups styling under "Design" instead of a separate "Style" accordion
     await user.click(screen.getByText("Design"));
     const fgInput = screen.getByLabelText("cms.style.foreground");
-    // eslint-disable-next-line ds/no-raw-color
+     
     await user.type(fgInput, "#123456");
     await act(async () => {});
-    // eslint-disable-next-line ds/no-raw-color
+     
     expect(fgInput).toHaveValue("#123456");
     const blockEl = await screen.findByTestId(`block-${firstId}`);
-    // eslint-disable-next-line ds/no-raw-color
+     
     expect(blockEl).toHaveStyle({ color: "#123456" });
 
     const undo = screen.getByRole("button", { name: "Undo" });

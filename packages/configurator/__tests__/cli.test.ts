@@ -86,31 +86,31 @@ describe("configurator CLI", () => {
   });
 
   it("prints usage for unknown command", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
     await run("foo");
 
     expect(spawnSyncMock).not.toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(infoSpy).toHaveBeenCalledWith(
       "Usage: pnpm configurator <dev|build|deploy>"
     );
     expect(exitSpy).toHaveBeenCalledWith(1);
-    logSpy.mockRestore();
+    infoSpy.mockRestore();
   });
 
   it("prints usage when no command is provided", async () => {
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
     process.argv = ["node", "configurator"];
     await import("../src/index");
 
     expect(spawnSyncMock).not.toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(infoSpy).toHaveBeenCalledWith(
       "Usage: pnpm configurator <dev|build|deploy>"
     );
     expect(exitSpy).toHaveBeenCalledWith(1);
 
-    logSpy.mockRestore();
+    infoSpy.mockRestore();
   });
 
   it("exits when required env vars are missing", async () => {

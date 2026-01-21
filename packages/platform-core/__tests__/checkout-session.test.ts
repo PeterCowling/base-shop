@@ -1,10 +1,12 @@
 // packages/platform-core/__tests__/checkout-session.test.ts
-import { PRODUCTS } from "../src/products/index";
-import { createCheckoutSession } from "../src/checkout/session";
 import * as dateUtils from "@acme/date-utils";
-import { getTaxRate } from "../src/tax";
-import { findCoupon } from "../src/coupons";
+import { stripe } from "@acme/stripe";
+
 import { trackEvent } from "../src/analytics";
+import { createCheckoutSession } from "../src/checkout/session";
+import { findCoupon } from "../src/coupons";
+import { PRODUCTS } from "../src/products/index";
+import { getTaxRate } from "../src/tax";
 
 jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
@@ -24,8 +26,6 @@ jest.mock("../src/coupons", () => ({
 }));
 
 jest.mock("../src/analytics", () => ({ trackEvent: jest.fn() }));
-
-import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 beforeEach(() => {

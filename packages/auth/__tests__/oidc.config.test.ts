@@ -1,5 +1,8 @@
 import { describe, expect, it } from "@jest/globals";
 
+import { loadKeycloakConfig } from "../src/keycloak/config";
+import { loadOidcConfig } from "../src/oidc/config";
+
 jest.mock("@acme/config/env/auth", () => ({
   authEnv: {
     OAUTH_ISSUER: "https://auth.example.com/realms/base-shop",
@@ -9,9 +12,6 @@ jest.mock("@acme/config/env/auth", () => ({
     OAUTH_ENFORCE_PKCE: false,
   },
 }));
-
-import { loadOidcConfig } from "../src/oidc/config";
-import { loadKeycloakConfig } from "../src/keycloak/config";
 
 describe("OIDC config", () => {
   it("builds redirect URIs and respects PKCE settings", () => {

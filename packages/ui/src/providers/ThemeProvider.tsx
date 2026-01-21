@@ -1,7 +1,8 @@
 // src/providers/ThemeProvider.tsx
 // -----------------------------------------------------------------
-import { Theme } from "@/types/theme";
 import React, { createContext, useCallback, useEffect, useMemo, useReducer } from "react";
+
+import { type Theme } from "@acme/ui/types/theme";
 
 /* ———————————————————————————————————————————————
      ▪ STATE / ACTION TYPES
@@ -105,16 +106,19 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     writeStoredTheme(state.theme);
   }, [state.theme]);
 
-  /* 5 ▪ Apply / remove `.theme-dark` on <html> */
+  /* 5 ▪ Apply / remove `.dark` on <html> */
   useEffect(() => {
     const root = document.documentElement;
     const dark = state.theme === "dark";
 
-    root.classList.toggle("theme-dark", dark);
+    root.classList.toggle("dark", dark);
   }, [state.theme]);
 
   /* 6 ▪ Helpers */
   const setTheme = useCallback((next: Theme) => {
+    if (import.meta.env.DEV) {
+      console.info("[ThemeProvider] setTheme", next);
+    }
     dispatch({ type: "SET_THEME", theme: next });
   }, []);
 

@@ -1,5 +1,8 @@
 import { jest } from "@jest/globals";
 
+import * as service from "../../services/shops";
+import * as actions from "../shops.server";
+
 jest.mock("../../services/shops", () => ({
   updateShop: jest.fn(),
   getSettings: jest.fn(),
@@ -16,9 +19,6 @@ jest.mock("../../services/shops", () => ({
   updateStockAlert: jest.fn(),
   resetThemeOverride: jest.fn(),
 }));
-
-import * as actions from "../shops.server";
-import * as service from "../../services/shops";
 
 describe("shops.server actions", () => {
   const fd = new FormData();

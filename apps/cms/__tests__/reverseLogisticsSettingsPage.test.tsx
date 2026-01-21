@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
-import React from "react";
+
+import type React from "react";
 import { render, screen } from "@testing-library/react";
+
+import ReverseLogisticsSettingsPage from "../src/app/cms/shop/[shop]/settings/reverse-logistics/page";
 
 const getSettings = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ getSettings }));
@@ -10,8 +13,6 @@ jest.mock("next/dynamic", () => {
   MockEditor.displayName = "MockEditor";
   return () => MockEditor;
 });
-
-import ReverseLogisticsSettingsPage from "../src/app/cms/shop/[shop]/settings/reverse-logistics/page";
 
 describe("ReverseLogisticsSettingsPage", () => {
   it("renders editor with settings", async () => {

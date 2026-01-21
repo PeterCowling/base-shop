@@ -5,16 +5,17 @@
 // server when the user first needs any price data.
 // -----------------------------------------------------------------------------
 
-import type { RateCalendar } from "@/types/rates";
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
+
+import type { RateCalendar } from "@acme/ui/types/rates";
 
 interface RatesState {
   rates: RateCalendar | null;

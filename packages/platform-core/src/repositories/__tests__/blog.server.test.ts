@@ -1,15 +1,16 @@
 import type { SanityConfig } from "@acme/plugin-sanity";
+import { mutate, query, slugExists } from "@acme/plugin-sanity";
+
 import {
-  listPosts,
-  getPost,
   createPost,
-  updatePost,
-  publishPost,
-  unpublishPost,
   deletePost,
+  getPost,
+  listPosts,
+  publishPost,
   slugExists as slugExistsExported,
+  unpublishPost,
+  updatePost,
 } from "../blog.server";
-import { query, mutate, slugExists } from "@acme/plugin-sanity";
 
 jest.mock("@acme/plugin-sanity", () => ({
   __esModule: true,

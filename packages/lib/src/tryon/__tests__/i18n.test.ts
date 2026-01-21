@@ -1,3 +1,5 @@
+import { t } from "../i18n";
+
 jest.mock(
   "@acme/i18n/en.json",
   () => ({
@@ -15,8 +17,6 @@ jest.mock(
   }),
   { virtual: true }
 );
-
-import { t } from "../i18n";
 
 describe("t", () => {
   it("returns the translated string when present", () => {

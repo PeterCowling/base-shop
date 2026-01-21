@@ -1,9 +1,9 @@
 import TableOfContents from "@/components/guides/TableOfContents";
-import { debugGuide } from "@/utils/debug";
-import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
-import type { TFunction } from "@/utils/i18nSafe";
-import i18nApp from "@/i18n";
 import type { GuideKey } from "@/guides/slugs";
+import i18nApp from "@/i18n";
+import { debugGuide } from "@/utils/debug";
+import type { TFunction } from "@/utils/i18nSafe";
+import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
 interface Props {
   translations: { tGuides: TFunction };

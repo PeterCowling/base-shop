@@ -1,8 +1,8 @@
+import { validateShopName } from "@acme/platform-core/shops";
+
 jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),
 }));
-
-import { validateShopName } from "@acme/platform-core/shops";
 
 const fetchMock = jest.fn();
 

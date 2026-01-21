@@ -1,14 +1,14 @@
 // src/routes/guides/cheapEatsInPositano/CheapEatsArticle.tsx
-import TableOfContents from "@/components/guides/TableOfContents";
 import ImageGallery from "@/components/guides/ImageGallery";
+import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@/components/images/CfImage";
 
 import {
+  type CheapEatsArticleData,
   FAQ_SECTION_ID,
   GALLERY_SECTION_ID,
   HERO_IMAGE_PATH,
   RECOMMENDATIONS_SECTION_ID,
-  type CheapEatsArticleData,
 } from "./constants";
 import { getTableOfContentsItems } from "./getTableOfContentsItems";
 

@@ -1,181 +1,23 @@
-export type ProductImportItemInput = {
-  sku: string;
-  title?: string;
-  description?: string;
-  price?: number;
-  currency?: string;
-  status?: string;
-  media_urls?: string[];
-  publish_shops?: string[];
-  [key: string]: string | number | string[] | undefined;
-};
+import { LOCALES } from "@acme/types";
 
-type ParseResult =
-  | { ok: true; items: ProductImportItemInput[] }
-  | { ok: false; error: string };
-
-const LIST_SPLIT_RE = /[|;,]/;
-
-function parseListValue(value: string): string[] {
-  return value
-    .split(LIST_SPLIT_RE)
-    .map((entry) => entry.trim())
-    .filter(Boolean);
-}
-
-function parseCsvLine(line: string): string[] {
-  const out: string[] = [];
-  let current = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i += 1) {
-    const char = line[i];
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
-      continue;
-    }
-
-    if (char === "," && !inQuotes) {
-      out.push(current);
-      current = "";
-      continue;
-    }
-
-    current += char;
+export function createIdempotencyKey(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
   }
-
-  out.push(current);
-  return out;
-}
-
-export function parseCsvToItems(csv: string): ParseResult {
-  const lines = csv
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (!lines.length) {
-    return { ok: false, error: "CSV file is empty." };
-  }
-
-  const headers = parseCsvLine(lines[0]).map((header) => header.trim());
-  if (!headers.length || !headers.some((header) => header === "sku")) {
-    return { ok: false, error: "CSV must include a 'sku' column." };
-  }
-
-  const items: ProductImportItemInput[] = [];
-
-  for (let i = 1; i < lines.length; i += 1) {
-    const cells = parseCsvLine(lines[i]);
-    const item: ProductImportItemInput = { sku: "" };
-    let hasData = false;
-
-    headers.forEach((key, idx) => {
-      const raw = cells[idx] ?? "";
-      const value = raw.trim();
-      if (!value) return;
-      hasData = true;
-
-      if (key === "title_en") {
-        if (!item.title) item.title = value;
-        return;
-      }
-      if (key === "description_en") {
-        if (!item.description) item.description = value;
-        return;
-      }
-      if (key === "media_urls" || key === "publish_shops") {
-        item[key] = parseListValue(value);
-        return;
-      }
-      if (key === "price") {
-        const parsed = Number(value);
-        if (!Number.isFinite(parsed)) {
-          return;
-        }
-        item.price = parsed;
-        return;
-      }
-
-      item[key] = value;
-    });
-
-    if (!hasData) continue;
-    item.sku = (item.sku ?? "").trim();
-    if (!item.sku) {
-      return { ok: false, error: `Row ${i + 1} is missing a sku.` };
-    }
-
-    items.push(item);
-  }
-
-  if (!items.length) {
-    return { ok: false, error: "No valid items found in the CSV." };
-  }
-
-  return { ok: true, items };
-}
-
-export function parseItemsJson(raw: string): ParseResult {
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return { ok: false, error: "Invalid JSON." };
-  }
-
-  if (!Array.isArray(parsed)) {
-    return { ok: false, error: "JSON must be an array of items." };
-  }
-
-  const items: ProductImportItemInput[] = [];
-  for (let i = 0; i < parsed.length; i += 1) {
-    const entry = parsed[i];
-    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
-      return { ok: false, error: `Item ${i + 1} must be an object.` };
-    }
-    const record = entry as Record<string, unknown>;
-    const sku = typeof record.sku === "string" ? record.sku.trim() : "";
-    if (!sku) {
-      return { ok: false, error: `Item ${i + 1} is missing a sku.` };
-    }
-    items.push({ ...(record as ProductImportItemInput), sku });
-  }
-
-  if (!items.length) {
-    return { ok: false, error: "Add at least one item." };
-  }
-
-  return { ok: true, items };
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 export function exampleItemsJson(): string {
   return JSON.stringify(
     [
       {
-        sku: "sample-001",
-        title: "Sample product",
-        description: "A starter product for import testing.",
-        price: 49,
+        sku: "example-sku",
+        title: { en: "Example product" },
+        description: { en: "Short description" },
+        price: 1999,
         currency: "EUR",
         status: "draft",
-        media_urls: ["https://cdn.example.com/sample-001.jpg"],
-        publish_shops: ["brikette"],
-      },
-      {
-        sku: "sample-002",
-        title: "Sample product two",
-        description: "Second sample item with pricing and media.",
-        price: 89,
-        currency: "EUR",
-        status: "active",
-        media_urls: ["https://cdn.example.com/sample-002.jpg"],
-        publish_shops: ["brikette"],
+        media: ["/uploads/your-shop/example.png"],
       },
     ],
     null,
@@ -183,9 +25,149 @@ export function exampleItemsJson(): string {
   );
 }
 
-export function createIdempotencyKey(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
+function parseCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === "\"") {
+        if (line[i + 1] === "\"") {
+          current += "\"";
+          i += 1;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += ch;
+      }
+      continue;
+    }
+    if (ch === "\"") {
+      inQuotes = true;
+      continue;
+    }
+    if (ch === ",") {
+      out.push(current);
+      current = "";
+      continue;
+    }
+    current += ch;
   }
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  out.push(current);
+  return out.map((cell) => cell.trim());
+}
+
+function parseCsvRows(csv: string): Array<Record<string, string>> {
+  const lines = csv
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim());
+  if (!headers.length) return [];
+  const rows: Array<Record<string, string>> = [];
+  for (const line of lines.slice(1)) {
+    const cells = parseCsvLine(line);
+    const row: Record<string, string> = {};
+    for (const [idx, header] of headers.entries()) {
+      row[header] = cells[idx] ?? "";
+    }
+    rows.push(row);
+  }
+  return rows;
+}
+
+function splitList(raw: string): string[] {
+  const trimmed = raw.trim();
+  if (!trimmed) return [];
+  const sep = trimmed.includes("|") ? "|" : trimmed.includes(";") ? ";" : ",";
+  return trimmed
+    .split(sep)
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+function buildTranslatedFromCsvRow(
+  row: Record<string, string>,
+  prefix: "title" | "description",
+): string | Record<string, string> | undefined {
+  const keyed: Record<string, string> = {};
+  for (const locale of LOCALES) {
+    const value = row[`${prefix}_${locale}`];
+    if (typeof value === "string" && value.trim()) keyed[locale] = value.trim();
+  }
+  if (Object.keys(keyed).length) return keyed;
+  const flat = row[prefix];
+  if (typeof flat === "string" && flat.trim()) return flat.trim();
+  return undefined;
+}
+
+export function parseCsvToItems(
+  csv: string,
+): { ok: true; items: unknown[] } | { ok: false; error: string } {
+  const rows = parseCsvRows(csv);
+  if (!rows.length) {
+    return { ok: false, error: "CSV must include a header row and at least one data row." };
+  }
+
+  const items = rows.map((row) => {
+    const item: Record<string, unknown> = {};
+
+    const id = row.id?.trim();
+    if (id) item.id = id;
+
+    const sku = row.sku?.trim();
+    if (sku) item.sku = sku;
+
+    const title = buildTranslatedFromCsvRow(row, "title");
+    if (title !== undefined) item.title = title;
+
+    const description = buildTranslatedFromCsvRow(row, "description");
+    if (description !== undefined) item.description = description;
+
+    const priceRaw = row.price?.trim();
+    if (priceRaw) {
+      const price = Number(priceRaw);
+      if (Number.isFinite(price)) {
+        item.price = Math.trunc(price);
+      }
+    }
+
+    const currency = row.currency?.trim();
+    if (currency) item.currency = currency;
+
+    const status = row.status?.trim();
+    if (status) item.status = status;
+
+    const publishShops = row.publishShops?.trim() ?? row.publish_shops?.trim();
+    if (publishShops) item.publishShops = splitList(publishShops);
+
+    const mediaUrls = row.media?.trim() ?? row.mediaUrls?.trim() ?? row.media_urls?.trim();
+    if (mediaUrls) item.media = splitList(mediaUrls);
+
+    return item;
+  });
+
+  return { ok: true, items };
+}
+
+export function parseItemsJson(
+  raw: string,
+): { ok: true; items: unknown[] } | { ok: false; error: string } {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return { ok: false, error: "Items must be valid JSON." };
+  }
+  if (Array.isArray(parsed)) return { ok: true, items: parsed };
+  if (parsed && typeof parsed === "object") {
+    const items = (parsed as { items?: unknown }).items;
+    if (Array.isArray(items)) {
+      return { ok: true, items };
+    }
+  }
+  return { ok: false, error: "Items JSON must be an array (or an object with an 'items' array)." };
 }

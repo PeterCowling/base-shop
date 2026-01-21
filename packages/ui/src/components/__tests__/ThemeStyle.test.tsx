@@ -1,5 +1,6 @@
 // packages/ui/src/components/__tests__/ThemeStyle.test.tsx
 import { render, screen } from "@testing-library/react";
+
 import ThemeStyle from "../ThemeStyle";
 
 describe("ThemeStyle", () => {

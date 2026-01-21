@@ -1,6 +1,6 @@
-import Head from "next/head";
 import type { ReactNode } from "react";
 import type { LinkDescriptor, MetaDescriptor } from "react-router";
+import Head from "next/head";
 
 type RouteHeadProps = {
   meta?: MetaDescriptor[];
@@ -37,7 +37,10 @@ const renderLinks = (links: LinkDescriptor[]): ReactNode[] =>
   links.map((link, index) => {
     const { rel, href, hrefLang } = link;
     const key = `${rel ?? "link"}-${href ?? ""}-${hrefLang ?? ""}-${index}`;
-    const { key: _key, ...rest } = link as Record<string, string | undefined> & { key?: string };
+    const { key: _key, tagName: _tagName, ...rest } = link as Record<string, string | undefined> & {
+      key?: string;
+      tagName?: string;
+    };
     return <link key={key} {...rest} />;
   });
 

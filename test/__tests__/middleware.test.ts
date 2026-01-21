@@ -16,7 +16,7 @@ describe("middleware security headers", () => {
       "require-corp",
     );
     expect(response.headers.get("Content-Security-Policy")).toBe(
-      "default-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "default-src 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'",
     );
     expect(response.headers.get("Strict-Transport-Security")).toBe(
       "max-age=31536000; includeSubDomains; preload",

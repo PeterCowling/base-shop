@@ -2,8 +2,8 @@
 // src/components/seo/ArticleStructuredData.tsx
 import { memo, useMemo } from "react";
 
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildArticlePayload } from "@/utils/seo/jsonld";
 
 import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";

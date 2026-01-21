@@ -1,8 +1,8 @@
 // apps/cms/src/app/api/auth/[...nextauth]/route.ts
-import { authOptions } from "@cms/auth/options";
-import NextAuth from "next-auth";
-import { RateLimiterMemory } from "rate-limiter-flexible";
 import type { NextRequest } from "next/server";
+import NextAuth from "next-auth";
+import { authOptions } from "@cms/auth/options";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 export const runtime = "nodejs";
 

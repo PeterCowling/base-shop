@@ -1,9 +1,10 @@
-import { stripGuideLinkTokens } from "./utils/linkTokens";
+import type { AppLanguage } from "@/i18n.config";
+
+import { GUIDE_KEY } from "./porter-service-positano.constants";
 import { normaliseFaqs } from "./porter-service-positano.normalisers";
 import { getGuidesTranslator } from "./porter-service-positano.translators";
-import { GUIDE_KEY } from "./porter-service-positano.constants";
 import type { GuideFaq } from "./porter-service-positano.types";
-import type { AppLanguage } from "@/i18n.config";
+import { stripGuideLinkTokens } from "./utils/linkTokens";
 
 const STRUCTURED_FAQ_FALLBACK_LOCALES = new Set<AppLanguage>(["es"]);
 

@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
-import { ComponentEditor, saveLibraryStrict, type LibraryItem } from "@acme/page-builder-ui";
+
 import { useTranslations } from "@acme/i18n";
+import { ComponentEditor, type LibraryItem,saveLibraryStrict } from "@acme/page-builder-ui";
 import { validateComponentRules } from "@acme/platform-core/validation/componentRules";
+import type { PageComponent } from "@acme/types";
 
 export default function ComponentEditorClient() {
   const t = useTranslations();

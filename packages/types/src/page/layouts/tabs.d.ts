@@ -1,6 +1,8 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
 import type { PageComponent } from "../page";
+
 export interface TabsComponent extends PageComponentBase {
     type: "Tabs";
     labels?: string[];

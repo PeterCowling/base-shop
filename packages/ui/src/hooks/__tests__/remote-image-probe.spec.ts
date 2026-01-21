@@ -1,5 +1,6 @@
 /* i18n-exempt file -- test titles and messages are developer-facing */
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import useRemoteImageProbe from "../useRemoteImageProbe";
 
 describe("useRemoteImageProbe", () => {

@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/LiveChatWidget.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { LiveChatWidget } from './LiveChatWidget';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { LiveChatWidget } from './LiveChatWidget';
 
 const meta: Meta<typeof LiveChatWidget> = {
   title: 'Organisms/Live Chat Widget/Matrix',

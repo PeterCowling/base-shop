@@ -2,19 +2,22 @@
 // i18n-exempt file -- PB-238: Builder-only panel with limited microcopy
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Suspense } from "react";
-import { useTranslations } from "@acme/i18n";
-import editorRegistry from "../editorRegistry";
-import type { EditorProps } from "../EditorProps";
 import type { ComponentType, LazyExoticComponent } from "react";
+import { Suspense } from "react";
+
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Grid } from "../../../atoms/primitives";
+import type { EditorProps } from "../EditorProps";
+import editorRegistry from "../editorRegistry";
+
+import AlignmentControls from "./content/AlignmentControls";
+import ColumnsControls from "./content/ColumnsControls";
+import { getContentSuggestions } from "./content/contentSuggestions";
+import GapControls from "./content/GapControls";
 import MinMaxItems from "./content/MinMaxItems";
 import ResponsiveItems from "./content/ResponsiveItems";
-import ColumnsControls from "./content/ColumnsControls";
-import GapControls from "./content/GapControls";
-import AlignmentControls from "./content/AlignmentControls";
-import { getContentSuggestions } from "./content/contentSuggestions";
-import { Grid } from "../../../atoms/primitives";
 
 interface Props {
   component: PageComponent;

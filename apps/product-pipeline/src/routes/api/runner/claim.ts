@@ -1,11 +1,13 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/runner/claim.ts
 
-import type { D1PreparedStatement, PipelineEventContext } from "../_lib/types";
 import { z } from "zod";
+
 import type { RunnerJob, StageMJobInput } from "@/lib/pipeline/runner-contract";
+
 import { getDb, nowIso, type PipelineEnv, type StageRunRow } from "../_lib/db";
 import { errorResponse, jsonResponse } from "../_lib/response";
+import type { D1PreparedStatement, PipelineEventContext } from "../_lib/types";
 
 const bodySchema = z.object({
   runnerId: z.string().min(1),

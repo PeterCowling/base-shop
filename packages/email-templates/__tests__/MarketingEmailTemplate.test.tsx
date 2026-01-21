@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render } from "@testing-library/react";
+
 import { MarketingEmailTemplate } from "@acme/email-templates";
 
 describe("MarketingEmailTemplate", () => {
@@ -98,6 +99,7 @@ describe("MarketingEmailTemplate", () => {
     expect(container.querySelector(".bg-muted.p-6.text-center")).toBeNull();
   });
   it("throws when headline is missing or empty", () => {
+    // @ts-expect-error: testing runtime validation when headline is missing
     expect(() => render(<MarketingEmailTemplate content={<p />} />)).toThrow(
       "headline and content are required",
     );

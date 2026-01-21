@@ -1,7 +1,8 @@
+import type { i18n, TFunction } from "i18next";
+
 import type { GuideKey } from "@/routes.guides-helpers";
 import type { NormalizedFaqEntry, RawFaqEntry } from "@/utils/buildFaqJsonLd";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
-import type { i18n, TFunction } from "i18next";
 
 export function normalizeFaqFallback(raw: unknown): NormalizedFaqEntry[] {
   try {

@@ -1,6 +1,8 @@
 import "../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import ProductRowActions from "../src/components/cms/products/ProductRowActions";
 
 describe("ProductRowActions", () => {

@@ -1,8 +1,10 @@
 "use client";
-import type { DatasetComponent } from "@acme/types/page/layouts/dataset";
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
-import type { EditorProps } from "./EditorProps";
 import { useTranslations } from "@acme/i18n";
+import type { DatasetComponent } from "@acme/types/page/layouts/dataset";
+
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
+
+import type { EditorProps } from "./EditorProps";
 
 // i18n-exempt — admin-only builder UI; labels and placeholders are not end-user copy
 

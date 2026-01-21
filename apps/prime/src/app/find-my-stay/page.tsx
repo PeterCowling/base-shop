@@ -33,12 +33,9 @@ export default function FindMyStayPage() {
         return;
       }
 
-      const data = await response.json() as { redirectUrl?: string };
-      if (!data.redirectUrl) {
-        setError('We could not open your portal. Please try again.');
-        return;
-      }
-      window.location.href = data.redirectUrl;
+      const data = await response.json();
+      // Redirect to check-in page with the code
+      window.location.href = `/staff-lookup?code=${data.checkInCode}`;
     } catch (err) {
       setError('Connection error. Please try again.');
     } finally {

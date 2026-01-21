@@ -1,14 +1,14 @@
 {
   "meta": {
-    "title": "Værelsesbooking — Vilkår og Betingelser | Hostel Brikette",
-    "description": "Officielle vilkår for værelsesbooking: booking, afbestilling, ind-/udtjekning, betalinger, omsorgspligt og politikker."
+    "title": "Bookingvilkår | Hostel Brikette",
+    "description": "Bookingvilkår for Hostel Brikette om reservationer, betalinger, afbestillinger, depositum, ansvar og privatliv."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Værelsesbooking",
-    "pageSubtitle": "Vilkår og Betingelser"
+    "pageTitle": "Hostel Brikette — Bookingvilkår",
+    "pageSubtitle": "Bookingvilkår"
   },
   "toc": {
-    "title": "Indholdsfortegnelse",
+    "title": "Indhold",
     "aria": "Indholdsfortegnelse"
   },
   "footer": {
@@ -17,334 +17,164 @@
   },
   "sections": {
     "s1": {
-      "title": "1. Definitioner og fortolkning",
+      "title": "1. Parter og definitioner",
       "body": [
-        "1.1 ‘Vilkår og betingelser’ — de vilkår, der er anført i dette dokument.",
-        "1.2 ‘Hostellet’, ‘vi’, ‘os’ — Skylar SRL, registreret adresse: Via Guglielmo Marconi 358, 84017 Positano (SA), Italien.",
-        "1.3 ‘Du’, ‘din’, ‘gæst’ — enhver person, der indsender en Anmodning om Værelsesbooking, er Officiel hostelgæst, er Midlertidig gæst, er ansat, arrangør, gruppeleder eller anden tredjepart.",
-        "1.4 ‘Anmodning om Værelsesbooking’ — anmodning om at booke ophold på Hostellet i henhold til disse vilkår; indsendt af dig eller din OTA. Kun Hostellet og autoriserede OTA’er må sælge senge; uautoriseret videresalg medfører afslag eller annullering af bekræftede bookinger.",
-        "1.5 ‘Fællesarealer’ — udpegede områder i Hostellet, der er tilgængelige for både Officielle gæster og Midlertidige gæster (indgang/lobby, fælles terrasse, fælles bade).",
-        "1.6 ‘Kortholder’ — indehaver af det kreditkort, der er angivet i bookinganmodningen.",
-        "1.7 ‘Modbud’ — variant af en bookinganmodning. Første modbud gives af Hostellet; yderligere kan følge.",
-        "1.8 ‘Bekræftet værelsesbooking’ — retsligt bindende aftale, når Hostellet accepterer anmodningen eller du accepterer modbuddet; omfatter faciliteter, ydelser og disse vilkår.",
-        "1.9 ‘No Show’ — status når en eller flere berettigede gæster ikke tjekker ind inden udløbet af Officiel indtjekningstid på første dag.",
-        "1.10 ‘No Show‑gebyr’ — gebyr ved no show eller aflysning uden for Afbestillingsfristen; højeste af ‘første nats pris’ eller ‘ikke‑refunderbart depositum’.",
-        "1.11 ‘Afbestillingsanmodning’ — anmodning om at afbestille en bekræftet værelsesbooking.",
-        "1.12 ‘Afbestillingsfrist’ — påkrævet varsel i timer; hvis angivet i dage, omregnes dette (f.eks. 3 dage = 72 timer).",
-        "1.13 ‘Administrationsgebyr for afbestilling’ — gebyr for behandling af afbestillingsanmodningen, efter aftalt takst.",
-        "1.14 ‘Hostellets officielle e‑mailadresse’ — hostelpositano@gmail.com.",
-        "1.15 ‘Bekræftet afbestilling’ — skriftlig bekræftelse fra den officielle e‑mail om, at afbestillingen er gennemført.",
-        "1.16 ‘Anmodning om Bookingændring’ — anmodning om ændring af en bekræftet booking (delvis aflysning eller ændring af start-/slutdato).",
-        "1.17 ‘Bekræftet bookingændring’ — skriftlig bekræftelse af, at ændringen er gennemført.",
-        "1.18 ‘Angivet e‑mailadresse’ — adressen anført i bookinganmodningen; anvendes til al korrespondance. Du er ansvarlig for korrekthed og læsning.",
-        "1.19 ‘Anmodning om Forlængelse’ — anmodning om at forlænge en bekræftet booking.",
-        "1.20 ‘Bekræftet forlængelse’ — skriftlig bekræftelse af, at forlængelsen er gennemført.",
-        "1.21 ‘Indtjekningsanmodning’ — anmodning om at påbegynde indtjekning ved ankomst.",
-        "1.22 ‘Officiel indtjekningstid’ — 15:00–22:00 på ankomstdagen.",
-        "1.23 ‘Officiel hostelgæst’ — person der har gennemført indtjekning.",
-        "1.24 ‘Tildelt værelse’ — det specifikke værelse, der er tildelt den officielle gæst (adgang kun hertil).",
-        "1.25 ‘Hostellets værelser’ — private værelser og sovesale, kun for officielle gæster.",
-        "1.26 ‘Sengetøj’ — sæt udleveret ved indtjekning (pudebetræk, lagen, underlagen, håndklæde).",
-        "1.27 ‘Værelsesopgradering’ — tildeling af et dyrere værelse end det bookede (kun pris anvendes som kriterium).",
-        "1.28 ‘Nøglekort (Keycard)’ — plastkort mod depositum, kodet til at åbne dør til tildelt værelse.",
-        "1.29 ‘Forudgodkendelse’ — midlertidig reservation af et beløb på kortholderens kort uden straksdebitering.",
-        "1.30 ‘Udtjekning’ — sker kun når sengetøj og nøglekort er returneret, og alle ejendele er fjernet fra værelset.",
-        "1.31 ‘Mindreårig’ — person under 18 år i Italien.",
-        "1.32 ‘Vederlagsfri tjeneste’ — ydelse uden for bookingens omfang, som kan tilbydes gratis (f.eks. morgenmad, drikkevarer, Wi‑Fi, bagageopbevaring, køleopbevaring), med egne vilkår.",
-        "1.33 ‘Midlertidig gæst’ — person med adgang kun til Fællesarealer efter ID‑kontrol; status kan kun gives af personalet.",
-        "1.34 ‘Accepterede betalingsmetoder’ — Visa/MasterCard; bankoverførsel kun fra selskab. AmEx/PayPal m.fl. accepteres ikke. Kontanter i euro.",
-        "1.35 ‘Forudbetalte ikke‑refunderbare bookinger’ — nedsat pris mod fuld forudbetaling; aldrig refunderbare.",
-        "1.36 ‘Først til mølle vælger seng’ — ingen faste senge i sovesal; gæsten vælger blandt ledige og kan skifte ved ny ledighed.",
-        "1.37 ‘Bookingtype’ — forudbetalt/ikke‑refunderbar eller refunderbar.",
-        "1.38 ‘Refunderbare bookinger’ — standardtakst med fleksible vilkår (dato/varighed kan justeres; mildere afbestillingsregler jf. plan).",
-        "1.39 ‘Legitimationsdokument’ — pas, nationalt ID, kørekort eller militært ID (kun originaler).",
-        "1.40 ‘Alvorlig mangel’ — mangel der væsentligt påvirker opholdet (f.eks. ødelagt seng, usikker temperatur, ingen adgang, manglende vand).",
-        "1.41 ‘OTA’ — autoriseret online rejsebureau (f.eks. Hostelworld.com, Booking.com)."
+        "Ikrafttrædelsesdato: 2026-01-09.",
+        "Gælder: alle bookinger på Hostel Brikette og, hvor relevant, besøgende på stedet.",
+        "Hvis du har booket via en OTA, kan OTA’en også have egne platformsvilkår. Disse Bookingvilkår regulerer overnatningsaftalen mellem dig og Skylar SRL for dit ophold på Hostel Brikette, i det omfang det er tilladt i henhold til gældende lov.",
+        "1.1 Hvem vi er — Skylar SRL (\"vi\", \"os\", \"vores\") driver Hostel Brikette. Registreret adresse: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Ejendomsadresse: Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italy. Officiel e‑mail: hostelpositano@gmail.com. Website: https://hostel-positano.com.",
+        "1.2 \"Bookingvilkår\" — Dette dokument.",
+        "1.3 \"Husregler\" — Det separate dokument med Hostel Brikette Husregler, gældende for dit ophold og indarbejdet i overnatningsaftalen.",
+        "1.4 \"Booker\" — Personen, der indsender en Bookingforespørgsel, og i hvis navn Bookingen foretages.",
+        "1.5 \"Gæst\" — Person, der overnatter under en Bekræftet booking.",
+        "1.6 \"Besøgende\" — Person, der kun må opholde sig i fællesområderne i henhold til Husreglerne og som ikke overnatter (i nogle lokaler benævnt \"Temporary Guest\").",
+        "1.7 \"Kortindehaver\" — Ejeren af betalingskortet, som bruges til at betale eller garantere en Booking.",
+        "1.8 \"Bookingforespørgsel\" — Anmodning om at reservere overnatning på Hostel Brikette via vores Website eller en autoriseret OTA.",
+        "1.9 \"Bekræftet booking\" — En Bookingforespørgsel, vi har accepteret skriftligt (herunder via e‑mail eller bekræftelse/besked på OTA‑platformen), hvilket skaber en bindende overnatningsaftale.",
+        "1.10 \"OTA\" — Online rejsebureau autoriseret af os til at tilbyde vores senge/værelser (f.eks. Hostelworld.com og Booking.com).",
+        "1.11 \"Pristype\" — Prisreglerne knyttet til en Booking, såsom Refunderbar pris eller Ikke‑refunderbar pris, som vist ved booking og i din Bekræftede booking.",
+        "1.12 \"Ikke‑refunderbar pris\" — Rabatteret eller begrænset pris, der kræver fuld betaling ved booking og ikke refunderes, medmindre loven kræver det.",
+        "1.13 \"Refunderbar pris\" — Pris, der kan tillade afbestillinger eller ændringer i henhold til reglerne vist ved booking og i din Bekræftede booking.",
+        "1.14 \"Officielt check‑in‑vindue\" — 15:00 til 22:00 på ankomstdagen, medmindre din Bekræftede booking angiver andet.",
+        "1.15 \"No Show\" — En gæst, der ikke fuldfører check‑in inden udløbet af det Officielle check‑in‑vindue på ankomstdagen og ikke har fået vores skriftlige godkendelse til senere ankomst.",
+        "1.16 \"Sen afbestilling\" — Afbestilling anmodet efter den gældende afbestillingsfrist for Pristypen.",
+        "1.17 \"Ophør ved misligholdelse\" — Vi afslutter et ophold (eller afviser fortsat overnatning) på grund af brud på Husreglerne eller disse Bookingvilkår.",
+        "1.18 \"Forhåndsautorisering\" — Midlertidig reservation af midler på et betalingskort uden øjeblikkelig hævning.",
+        "1.19 \"Sikkerhedsdepositum\" — Depositum eller forhåndsautorisering, der tilbageholdes for at dække beløb, der skyldes i henhold til disse Bookingvilkår eller Husreglerne (f.eks. skader, bøder, ubetalte gebyrer), som beskrevet i afsnit 5.",
+        "1.20 \"Fællesområder\" — Udpegede fællesområder som beskrevet i Husreglerne (og udelukker gæsteværelser/sovesale, medmindre det udtrykkeligt fremgår).",
+        "1.21 \"Alvorlig mangel\" — En mangel ved overnatningen eller faciliteter, der væsentligt påvirker opholdet (eksempler: ødelagt seng, manglende vand, ingen adgang til værelset), vurderet rimeligt af os.",
+        "1.22 Fortolkning — \"Skriftligt\" omfatter e‑mail og beskeder via OTA‑platformen.",
+        "1.23 Tider og frister er i lokal tid, medmindre andet er angivet.",
+        "1.24 Ved konflikt mellem disse Bookingvilkår og Husreglerne om økonomiske forhold har Bookingvilkårene forrang; ved adfærd og drift på stedet har Husreglerne forrang."
       ]
     },
     "s2": {
-      "title": "2. Bookinganmodninger",
+      "title": "2. Bookingforespørgsler, autoriserede kanaler og aftaleindgåelse",
       "body": [
-        "2.1 Indsendelse — kun skriftligt via OTA eller websted; mundtlige drøftelser er vejledende. Ved indsendelse accepterer du vilkårene og bekræfter datakorrekthed.",
-        "2.2 Behandling — påbegyndes efter modtaget depositum/forudgodkendelse/betaling. Kortholder skal verificeres; ved afvigelse kræves skriftligt samtykke til debitering til den officielle e‑mail; ellers afslag.",
-        "2.3 Afslag — Hostellet kan afslå enhver anmodning uden begrundelse.",
-        "2.4 Omfang — maks. 7 nætter og grupper op til 5 personer; derover behandles som flere bookinger.",
-        "2.5 Modbud — ved manglende tilgængelighed sender vi alternativer til angivet e‑mail; accept udløser forsøg på betaling/forudgodkendelse.",
-        "2.6 Forudbetalt ikke‑refunderbar — udtrykkelig accept kan kræves; manglende accept = annullering. Op til tre betalingsforsøg.",
-        "2.7 Bekræftelse — booking er bekræftet, når vi sender e‑mail (referencenummer, ankomstdato, varighed m.m.) til den angivne adresse. Du skal kontrollere oplysningerne og melde fejl til den officielle e‑mail.",
-        "2.9 Antal gæster — 1 pr. enkeltseng; op til 2 pr. dobbeltseng; lejligheder efter annonceret kapacitet. Overbelægning er ikke muligt.",
-        "2.9 Omfang af faciliteter — inkluderer sengetøj og nøglekort pr. person, adgang til brusefaciliteter og varmt vand på angivne tidspunkter samt Fællesarealer. Øvrige ydelser er vederlagsfri med egne vilkår.",
-        "2.10 Økonomisk ansvar — Kortholderen er ansvarlig for booking og ekstra omkostninger (skader, ekstra rengøring, gebyrer, overtrædelse af udtjekningspolitik m.v.).",
-        "2.11 Fordeling af værelser/senge — hver person tildeles et værelse. I sovesale gælder først til mølle; grupper kan opdeles.",
-        "2.12 Opgraderinger — kan tildeles mod betaling eller af kapacitetsmæssige grunde; manglende betaling kan medføre tilbageførsel til oprindelig type."
+        "2.1 Autoriserede bookingkanaler og forbud mod videresalg — Bookinger skal foretages via vores Website eller en autoriseret OTA. Uautoriseret videresalg af vores indkvarteringskapacitet er forbudt. Vi kan afvise eller annullere forespørgsler, som vi med rimelighed vurderer indebærer uautoriseret videresalg eller svig.",
+        "2.2 Sådan bliver en booking bekræftet — En Booking bliver først en Bekræftet booking, når vi sender skriftlig bekræftelse (via e‑mail, OTA‑bekræftelse eller OTA‑beskeder). Indtil da er samtaler (inklusive personligt eller telefonisk) kun informative.",
+        "2.3 Afslag på bookingforespørgsler — Vi kan afslå en Bookingforespørgsel, når det er nødvendigt for lovlig drift, sikkerhed, kapacitets-/lagerbegrænsninger, manglende verificering eller betaling, mistanke om svig eller brud på disse Bookingvilkår eller Husreglerne. Vi afviser ikke bookinger på ulovlige diskriminationsgrundlag.",
+        "2.4 Korrekte oplysninger og kommunikation — Booker skal give korrekte kontaktoplysninger (inklusive en overvåget e‑mail). Vi sender væsentlige bookingmeddelelser til de angivne oplysninger. Hvis du bookede via en OTA, kan vi kommunikere via OTA‑beskedsystemet og/eller e‑mail.",
+        "2.5 Verifikation, svigforebyggelse og autorisationer — Vi kan kræve identitets- og/eller betalingsverifikation for at forebygge svig (herunder bekræftelse af at Kortindehaver godkender opkrævninger). Hvis den krævede verifikation ikke leveres inden for rimelig tid, kan vi afvise Bookingforespørgslen eller annullere Bookingen (og anvende de gældende gebyrregler, hvis den allerede var Bekræftet).",
+        "2.6 Grænser for bookingsstørrelse — Medmindre andet er aftalt skriftligt, gælder: maksimum opholdslængde pr. Booking: 7 nætter; maksimum gruppestørrelse pr. Booking: 5 personer. Større forespørgsler kan struktureres som flere bookinger. Gebyrregler gælder pr. Booking, medmindre vi skriftligt bekræfter andet.",
+        "2.7 Ikke‑overdragelighed — Bookinger kan ikke overdrages. Booker‑navn kan ikke ændres uden vores skriftlige godkendelse. Gæster på en Booking kan kun ændres med vores skriftlige godkendelse og med forbehold for ID‑verifikation og kapacitetsregler."
       ]
     },
     "s3": {
-      "title": "3. Alder og tilgængelighed",
+      "title": "3. Priser, inkluderet og værelsestildeling",
       "body": [
-        "3.1 Tilgængelighed — kontakt os før booking ved særlige behov. Bygningen har trapper og ingen portertjeneste. Støjende soveudstyr kun i private værelser.",
-        "3.2 Selvstændighed — vi yder ikke løbende pleje; kan du ikke klare dig selvstændigt, annulleres bookingen.",
-        "3.3 Mindreårige — i Italien må mindreårige ikke rejse alene. 16 år og derunder: kun private værelser med værge 18+. 17 år: sovesal kun med ledsager 18+ i samme værelse og dokumenteret værgemål; ellers annullering."
+        "3.1 Hvad er inkluderet — Medmindre din Bekræftede booking angiver andet, omfatter indkvarteringen: en seng/et værelse pr. Gæst for de bookede nætter; standardlinned ved check‑in (se Husreglerne); adgang til Fællesområder under opholdet; adgang til fælles bad/brusere efter eventuelle opslag. Eventuelle ekstra tjenester (f.eks. morgenmad, drikkevarer, Wi‑Fi, bagageopbevaring, køleopbevaring) kan være gratis eller mod betaling og kan være underlagt særskilte vilkår meddelt på stedet eller på Website.",
+        "3.2 Værelses- og sengetildeling — Vi tildeler værelsestyper ud fra din Bekræftede booking. I sovesale tildeles senge normalt efter først‑til‑mølle, medmindre vi angiver andet. Gruppebookinger kan blive delt mellem værelser afhængigt af tilgængelighed.",
+        "3.3 Opgraderinger — Hvis vi tilbyder en opgradering, kan den være: betalt (med skriftligt samtykke og gennemført betaling) eller operationel (midlertidig placering i et andet værelse af hensyn til inventar). Hvis en betalt opgradering ikke kan gennemføres, kan vi tilbageføre Bookingen til den oprindelige værelsestype (med forbehold for tilgængelighed)."
       ]
     },
     "s4": {
-      "title": "4. Tredjepartsprocesser og betalinger",
+      "title": "4. Betalinger, depositum og forhåndsautoriseringer",
       "body": [
-        "Ved booking via tredjeparts betalingsbehandler (OTA) gennemføres betalingen på dennes platform efter egne vilkår.",
-        "Betalinger til tredjepart er underlagt jeres aftale; Hostellet kontrollerer ikke disse processer.",
-        "Vi modtager ingen del af disse betalinger og kan ikke holdes ansvarlige for sådanne bookinger.",
-        "Det er dit ansvar at sikre, at betalingen er gennemført og bookingen bekræftet før ankomst.",
-        "Spørgsmål om betaling via OTA rettes direkte til udbyderen."
+        "4.1 Accepterede betalingsmetoder — Accepterede betalingsmetoder er: Visa og Mastercard; kontanter i EUR; bankoverførsel kun fra registrerede virksomheder.",
+        "4.2 Hvornår betaling forfalder — Betalingstidspunkt afhænger af Pristype og bookingkanal. Ikke‑refunderbar pris: fuld betaling ved booking (eller ved bekræftelse, hvis vi behandler manuelt). Refunderbar pris: betaling kan være ved booking, ved check‑in eller inden for en angivet frist; vi kan kræve forhåndsautorisering/garanti. Din Bekræftede booking angiver betalingsregler og tidspunkt for din Pristype.",
+        "4.3 Betalinger via OTA — Hvis du booker via en OTA, kan betalingen blive opkrævet af: OTA’en (som merchant of record) eller Skylar SRL (som merchant of record). Merchant of record og den gældende refusionsproces vil fremgå af din bookingbekræftelse og/eller OTA‑booking­side. Når OTA’en er merchant of record, håndteres refusioner (hvis relevant) af OTA’en efter deres procedurer.",
+        "4.4 Deposita og forudbetalinger — Hvis vi tager et depositum eller en forudbetaling, afhænger om det er refunderbart af Pristypen og afbestillingsreglerne vist ved booking og i din Bekræftede booking. Vi betragter ikke alle deposita som automatisk ikke‑refunderbare, medmindre dette er udtrykkeligt angivet for den Pristype.",
+        "4.5 Forhåndsautoriseringer — Vi kan forhåndsautorisere et betalingskort for beløb, der er i overensstemmelse med indkvarteringsprisen, reglen om Sikkerhedsdepositum (afsnit 5) og/eller omkostninger, der rimeligt forventes under Bookingen (f.eks. sen afbestilling, no show, skader). En forhåndsautorisering er ikke en endelig opkrævning. Frigivelsestid afhænger af kortudsteder og behandlende bank."
       ]
     },
     "s5": {
-      "title": "5. Depositum og forudgodkendelser",
+      "title": "5. Sikkerhedsdepositum og sikring",
       "body": [
-        "5.1 Depositum — kan kræves for at sikre bookingen; beløb afhænger af bookingtype. For forudbetalte ikke‑refunderbare kræves 100%. Alle indbetalte depositum til Hostellet er ikke‑refunderbare; manglende opkrævning = afslag.",
-        "5.2 Forudgodkendelser — kan kræves efter aftalt pris/vilkår; hvis ikke muligt, afslag på anmodningen."
+        "5.1 Regel for sikkerhedsdepositum — Vi kan kræve et sikkerhedsdepositum for opholdets varighed på én nat pr. Gæst, som forhåndsautorisering eller kontant depositum (tilladte metoder kan variere lokalt).",
+        "5.2 Brug af sikkerhedsdepositum — Vi kan anvende hele eller dele af sikkerhedsdepositumet til beløb, der skyldes efter disse Bookingvilkår eller Husreglerne, herunder: ubetalt ophold eller forlængelser; skader eller manglende genstande; rengøringsgebyrer ved overdreven snavs; sanktioner for alvorlige brud på Husreglerne (hvor tilladt); erstatning af nøglekort/linned, hvor relevant. Hvis omkostningerne overstiger sikkerhedsdepositumet, er du ansvarlig for restbeløbet.",
+        "5.3 Hvis vi ikke kan få sikkerhedsdepositum — Hvis vi ikke kan opnå sikkerhedsdepositum via forhåndsautorisering, kan vi acceptere kontanter eller anden acceptabel metode, eller en anden gæst/kortindehaver kan stille det. Hvis der ikke stilles et acceptabelt sikkerhedsdepositum, kan vi nægte check‑in og behandle Bookingen i henhold til No Show-/afbestillingsreglerne for Pristypen."
       ]
     },
     "s6": {
-      "title": "6. No Show‑gebyrer",
+      "title": "6. Afbestillinger, ændringer, No Show, tidlig afrejse",
       "body": [
-        "Udebliver du på ankomstdagen, markeres bookingen som No Show og gebyr opkræves.",
-        "Gælder pr. bekræftet booking; forskellige frister kan påvirke udfald."
+        "6.1 Sådan anmodes om ændringer eller afbestilling — Alle afbestillings- eller ændringsanmodninger skal ske skriftligt til hostelpositano@gmail.com eller via OTA‑beskedsystemet (hvis booket via OTA). Vi anbefaler at bruge samme kanal, som du bookede igennem.",
+        "6.2 Sådan måles frister — Medmindre din Bekræftede booking angiver andet: frister måles i lokal tid og regnes baglæns fra 15:00 på den planlagte ankomstdato.",
+        "6.3 Afbestillingsregler og gebyrer — Afbestillingsgebyrer (hvis nogen), refusionsberettigelse (hvis nogen) og frister afhænger af Pristype og bookingkanal og fremgår ved booking, i din Bekræftede booking og i Bilag A (Pris- og gebyrskema).",
+        "6.4 Ændringer og forlængelser — En ændringsanmodning kan behandles som en afbestilling af den oprindelige Booking og oprettelse af en ny Booking, afhængigt af tilgængelighed og Pristype. Forlængelser er afhængige af tilgængelighed og behandles som en ny bookingperiode (som kan have en anden Pristype). Vi bekræfter godkendte ændringer skriftligt. Indtil bekræftelse gælder den oprindelige Booking.",
+        "6.5 No Show — Hvis en Booking bliver No Show, gælder gebyrer i henhold til Pristypen og Bilag A. For Ikke‑refunderbare priser betyder det normalt ingen refusion.",
+        "6.6 Tidlig afrejse og ubrugte nætter — Hvis du rejser tidligt efter check‑in, giver det ikke automatisk refusion. Eventuel refusion, kredit eller frafald (hvis relevant) styres af Pristype, af om vi har bekræftet en ændring/afbestilling skriftligt, og af ufravigelige krav i gældende lov.",
+        "6.7 Ophør ved misligholdelse (udsættelse / afvisning af fortsat ophold) — Hvis vi afslutter dit ophold på grund af et alvorligt brud på disse Bookingvilkår eller Husreglerne: kan du blive pålagt at forlade stedet straks; du kan fortsat være ansvarlig for gebyrer for ubrugte nætter i det omfang loven tillader det og i overensstemmelse med Pristypen; vi kan anvende sikkerhedsdepositumet til skyldige beløb og/eller debitere kortindehaver. Ophør ved misligholdelse er ikke et \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Afbestillinger",
+      "title": "7. Check‑in‑krav (berettigelse, ID og betaling)",
       "body": [
-        "Kun skriftlige afbestillinger til den officielle e‑mail accepteres.",
-        "Fristen beregnes fra modtagelse af din e‑mail til 00:01 på ankomstdagen.",
-        "Administrationsgebyr kan pålægges (standard 15% af bookingprisen minus allerede betalte tredjepartsprovisioner).",
-        "Ved accept sender vi bekræftelse via e‑mail; indtil da er bookingen gyldig.",
-        "Booking kan annulleres uden anmodning, hvis: du ikke tjekker ind før receptionens lukketid første dag; du tjekker ud før tid; du overtræder regler.",
-        "Ny booking efter annullering er afhængig af kapacitet.",
-        "Afbestillinger efter frist behandles som No Show og kan udløse gebyr."
+        "7.1 Check‑in‑vindue og sen ankomst — Check‑in er tilgængelig 15:00–22:00. Hvis du forventer sen ankomst, skal du anmode om instruktioner i forvejen. Selvbetjent check‑in er efter vores skøn og kan kræve vellykket ID‑ og betalingsverifikation på forhånd.",
+        "7.2 Identifikation — Hver gæst skal fremvise gyldigt originalt ID ved check‑in som krævet for registrering og sikkerhed. Accepterede ID’er (eksempelliste): pas, nationalt ID‑kort, kørekort, militært ID (kun originale dokumenter). Lokale versioner bør inkludere eventuelle obligatoriske datafelter. Hvis en gæst ikke kan fremvise gyldigt ID inden 22:00 på ankomstdatoen, kan vi nægte check‑in og anvende No Show/Sen afbestilling‑regler for Pristypen.",
+        "7.3 Restbetaling ved check‑in — Eventuelt udestående beløb skal betales, før check‑in afsluttes.",
+        "7.4 Alder og mindreårige (politik) — Booker skal være mindst 18 år. Gæster under 18 (\"Mindreårige\") kan være begrænset til private værelser og/eller kræve en ledsagende voksen og dokumentation for værgemål, som angivet i Husreglerne og/eller den Bekræftede booking."
       ]
     },
     "s8": {
-      "title": "8. Ændring af bekræftede bookinger",
+      "title": "8. Mangler, vedligeholdelse og afhjælpning",
       "body": [
-        "Vi erstatter bekræftede bookinger med nye frem for at ændre dem.",
-        "Send ændringsanmodninger inden for frist til den officielle e‑mail; underlagt tilgængelighed og øvrige vilkår.",
-        "Ændring af opholdslængde behandles både som ændring og som afbestilling eller forlængelse.",
-        "Forlængelser behandles som nye bookinger.",
-        "Forlader du før tid uden bekræftet afbestilling, anses den oprindelige booking for opfyldt.",
-        "Alle ændringer er afhængige af tilgængelighed."
+        "8.1 Rapportering — Gæster skal rapportere mangler eller vedligeholdelsesproblemer så hurtigt som rimeligt muligt, så vi kan undersøge.",
+        "8.2 Håndtering og prioritering — Vi prioriterer reparationer efter påvirkning og sikkerhed.",
+        "8.3 Alvorlige mangler — Hvis vi bekræfter en Alvorlig mangel og ikke kan afhjælpe den inden for rimelig tid, kan vi (hvor det er relevant og under forbehold for tilgængelighed) flytte dig til et alternativt værelse/indkvartering, give en forholdsmæssig justering for berørte nætter og/eller give anden afhjælpning, der kræves af gældende lov."
       ]
     },
     "s9": {
-      "title": "9. Ikke‑overdragelighed",
+      "title": "9. Skader, ekstra rengøring og væggelus (gebyrer)",
       "body": [
-        "Bookinganmodninger og bekræftede bookinger kan ikke overdrages, hverken helt eller delvist.",
-        "Hver booking skal forblive i den oprindelige bookers navn under hele opholdet.",
-        "Forsøg på indtjekning med overdraget booking medfører økonomisk ansvar og kan annulleres straks.",
-        "Forsøg på at ændre tildelt gæstenavn kan ligeledes medføre annullering."
+        "9.1 Skader og tab — Hvis du beskadiger ejendom eller forårsager tab, er du ansvarlig for rimelige reparations-/erstatningsomkostninger og rimelige administrative omkostninger, med forbehold for gældende lov. Vi kan debitere kortindehaver og/eller anvende sikkerhedsdepositumet. Personalepriser (hvis anvendt): Director 50 €/t, Manager 35 €/t, Staff 25 €/t.",
+        "9.2 Væggelus — Hvis vi med rimelighed fastslår (baseret på inspektion og beviser), at en gæst har bragt væggelus ind, kan vi opkræve rimelige direkte afhjælpningsomkostninger og dokumenterbare tab, underlagt gældende lov. Se Husreglerne for gæstens påkrævede adfærd (rapportering, inddæmningstrin)."
       ]
     },
     "s10": {
-      "title": "10. Forudbetalte ikke‑refunderbare",
+      "title": "10. Personlige ejendele og opbevaring",
       "body": [
-        "Fuld betaling kræves ved booking; mislykket betaling = annullering.",
-        "Ingen refundering ved No Show.",
-        "Forlængelser vurderes efter dette dokument."
+        "Gæster er ansvarlige for deres ejendele. Når vi tilbyder skabe/safer eller opbevaring som service, er tilgængelighed og regler beskrevet i Husreglerne og/eller separate opbevaringsvilkår.",
+        "Intet i disse Bookingvilkår udelukker eller begrænser ansvar, hvor en sådan udelukkelse/begrænsning ikke er tilladt i henhold til gældende lov."
       ]
     },
     "s11": {
-      "title": "11. Ankomst",
+      "title": "11. Ansvar",
       "body": [
-        "11.1 Indtjekningsanmodning — alle gæster skal legitimere sig og påbegynde indtjekning ved ankomst.",
-        "11.2 Tidlig ankomst — adgang før 10:30 på dagen er ikke mulig.",
-        "11.3 Ankomst 10:30–15:00 — kan efter skøn give status som Midlertidig gæst; bagageopbevaring kan tilbydes på særskilte vilkår.",
-        "11.3 Indtjekningsvindue — standardindtjekning i den Officielle indtjekningstid (15:00–22:00).",
-        "11.5 Sen ankomst — reception lukker 22:00; selvbetjeningsinstruktioner kan tilsendes. Manglende modtagelse/efterlevelse eller forkerte kontaktoplysninger er dit ansvar."
+        "11.1 Ufravigelig lov — Intet i disse Bookingvilkår begrænser eller udelukker vores ansvar, hvor det ikke kan begrænses eller udelukkes efter gældende lov.",
+        "11.2 Omfang — Med forbehold for afsnit 11.1 er vi ansvarlige for at levere indkvartering og tjenester, der er inkluderet i din Bekræftede booking. Vi er ikke ansvarlige for problemer forårsaget af dit brud på disse Bookingvilkår eller Husreglerne, af tredjeparter uden for vores kontrol (herunder OTA’er, betalingsbehandlere, transportører) eller af hændelser uden for vores rimelige kontrol (force majeure), i det omfang loven tillader det.",
+        "11.3 Tabstyper og ansvarsloft (hvor tilladt) — Med forbehold for afsnit 11.1 og i det omfang gældende lov tillader: vi er ikke ansvarlige for indirekte eller følgeskader, og vores samlede ansvar i forbindelse med Bookingen er begrænset til det samlede beløb, der er betalt til os for indkvarteringsdelen af den Bekræftede booking."
       ]
     },
     "s12": {
-      "title": "12. Indtjekning",
+      "title": "12. Privatliv og CCTV",
       "body": [
-        "12.1 Nødvendighed — kan indtjekning ikke fuldføres, nægtes den og bookingen annulleres (No Show).",
-        "12.2 ID — gyldigt originalt ID kræves pr. gæst (fornavn, efternavn, fødested, statsborgerskab, fødselsdato, ID‑nummer). Manglende fremvisning inden 22:00 dag 1 = No Show.",
-        "12.2 Restbeløb — eventuelt restbeløb skal betales med accepteret metode før indtjekningen afsluttes; ellers No Show.",
-        "12.3 Depositum for nøglekort/sengetøj — 10 € kontant ved indtjekning; refusion ved udtjekning mod returnering."
+        "12.1 Privatlivserklæring — Vi behandler personoplysninger i overensstemmelse med vores privatlivspolitik på https://hostel-positano.com/privacy-policy. Den beskriver, hvad vi indsamler, hvorfor, retsgrundlag (hvor relevant), opbevaring og hvordan rettigheder udøves.",
+        "12.2 CCTV i offentlige områder — Vi anvender CCTV i visse offentlige områder af ejendommen af hensyn til sikkerhed, tryghed og svigforebyggelse. CCTV: er skiltet på stedet, tilgås kun af autoriseret personale, kan deles med myndigheder hvor det kræves eller tillades ved lov, og opbevares i 30 dage, medmindre en længere periode kræves til hændelsesundersøgelse eller ved lov. For spørgsmål om CCTV eller dataanmodninger: hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Sikringsbeløb (safeguarding)",
+      "title": "13. Website‑information og tredjepartslinks",
       "body": [
-        "Vi kan sikre et beløb svarende til én nat pr. person under opholdet (forudgodkendelse eller kontant).",
-        "Beløbet kan anvendes til bøder/gebyrer/forlængelser i henhold til politikker.",
-        "Kan beløbet ikke sikres, kan andet gruppemedlem stille det eller kontant indbetales; ellers annullering."
+        "Vi bestræber os på at holde Website‑information korrekt, men kan opdatere indhold. Fotos kan være illustrative. Tredjepartslinks gives for bekvemmelighed; vi er ikke ansvarlige for tredjepartsindhold."
       ]
     },
     "s14": {
-      "title": "14. Omsorgspligt",
+      "title": "14. Sundhed og sikkerhed",
       "body": [
-        "Gæster skal respektere andre, undgå skader og følge reglerne. Overtrædelser kan medføre øjeblikkelig annullering (No Show‑politik) og/eller bortvisning uden refusion.",
-        "Omkostninger/bøder som følge af dine handlinger kan opkræves; lovbrud rapporteres efter behov.",
-        "Overtrædelser kan medføre øjeblikkelig annullering (No Show‑politik kan gælde) og/eller bortvisning uden refusion."
+        "Gæster bør handle ansvarligt i forhold til smitsomme sygdomme. Refusionsregler følger Pristypen, medmindre ufravigelig lov kræver andet. Vi anbefaler rejseforsikring."
       ]
     },
     "s15": {
-      "title": "15. Mangler og skader",
+      "title": "15. Kampagner og kuponer",
       "body": [
-        "15.1 Anmeld mangler straks.",
-        "15.2 Indsatser prioriteres efter påvirkning på opholdet.",
-        "15.3 Alvorlige mangler — vi forsøger udbedring; hvis umuligt, tilbydes alternativt ophold eller forholdsmæssig refusion efter prisforskel/resterende nætter.",
-        "15.4 Ikke‑anmeldte mangler — kan omfattes af skade/tablspoliti.",
-        "15.5 Skader — vi kan forudgodkende eller opkræve depositum. Refusion netto efter omkostninger. Overstigende omkostninger (materialer/arbejde/administration) faktureres. Overarbejde: Direktør 50 €/t, Manager 35 €/t, Personale 25 €/t."
+        "Kuponer, hvor de tilbydes, gælder kun som angivet (f.eks. kun Website) og kan have yderligere vilkår, der vises sammen med kampagnen."
       ]
     },
     "s16": {
-      "title": "16. Væggelus (bed bugs)",
+      "title": "16. Gældende lov og værneting",
       "body": [
-        "Vi forebygger og fjerner angreb hurtigst muligt. Ved angreb kan du holdes ansvarlig for tab, inkl. mistet indtægt, krav fra andre gæster samt rengøring/skadedyrsbekæmpelse.",
-        "Hvis du tidligere har boet et sted med væggelus, oplys ved indtjekning og desinficér dine ejendele.",
-        "Tjek ejendele før indtjekning og rapportér straks mistanke."
+        "Disse Bookingvilkår er underlagt italiensk lov, og tvister skal anlægges ved domstole i Italien, med forbehold for eventuelle ufravigelige forbrugerjurisdiktionsregler i gæstens bopæl."
       ]
     },
     "s17": {
-      "title": "17. Personlige ejendele og sikkerhed",
+      "title": "Bilag A — Pris- og gebyrskema",
       "body": [
-        "Gæster er ansvarlige for egne ejendele. Hostellet er ikke ansvarligt for tab/skade/tyveri, medmindre loven kræver det.",
-        "Skabe/safe kan stilles til rådighed; ansvar forbliver hos gæsten.",
-        "Efterladte ting bortskaffes 30 dage efter udtjekning.",
-        "Farlige/ulovlige genstande eller genstande i strid med alkoholbevilling er forbudt og kan konfiskeres eller indrapporteres."
-      ]
-    },
-    "s18": {
-      "title": "18. Identifikation og sikkerhedsforanstaltninger",
-      "body": [
-        "Af sikkerhedshensyn skal gæster bære udleveret sikkerhedsarmbånd og fremvise gyldig legitimation på forlangende.",
-        "Manglende efterlevelse kan medføre bortvisning uden kompensation.",
-        "Tab/skade skal straks anmeldes; mindre udskiftningsgebyr kan pålægges."
-      ]
-    },
-    "s19": {
-      "title": "19. CCTV‑overvågning",
-      "body": [
-        "Kameraer er installeret i fællesarealer for gæsters og ejendommes sikkerhed.",
-        "Optagelser opbevares sikkert, kun tilgængeligt for autoriseret ledelse, og kan deles med myndigheder ved behov.",
-        "CCTV garanterer ikke fuld sikkerhed; ved accept samtykker du til denne brug."
-      ]
-    },
-    "s20": {
-      "title": "20. Midlertidige gæster",
-      "body": [
-        "Status tildeles efter Hostellettets eget skøn.",
-        "Midlertidige gæster har kun adgang til Fællesarealer; værelser er forbudt.",
-        "Officielle gæster kan ikke tildele denne status til andre.",
-        "Anmodninger kan modtages 09:00–23:00 på åbningsdage.",
-        "Vi forbeholder os retten til at afvise/tilbagekalde status når som helst."
-      ]
-    },
-    "s21": {
-      "title": "21. Uregistrerede personer",
-      "body": [
-        "Lovgivningen kræver registrering af alle personer, der opholder sig på ejendommen (inkl. Midlertidige gæster).",
-        "Konstateres uregistreret person på værelset, kan standardværelsespris pr. person samt administrativt gebyr svarende til to gange standardprisen opkræves.",
-        "Uregistreret person skal tjekke ind og følge standardprocedurer; ellers kan politiet kontaktes.",
-        "Manglende indrapportering kan medføre annullering af booking (No Show‑politik)."
-      ]
-    },
-    "s22": {
-      "title": "22. Udtjekning",
-      "body": [
-        "Officiel udtjekningstid: 07:30–10:30.",
-        "Efter udtjekning må du ikke gå ind på værelset eller efterlade ejendele.",
-        "Følg ‘Efter udtjekning’‑vilkårene i dette dokument."
-      ]
-    },
-    "s23": {
-      "title": "23. Tidlig udtjekning",
-      "body": [
-        "Hvis du skal ud før 07:30, kontakt receptionen aftenen før for at arrangere tidlig udtjekning og kontant tilbagebetaling af nøglekortdepositum.",
-        "Manglende returnering af nøglekort medfører fortabelse af depositum; tilbagebetaling kun kontant, personligt.",
-        "Tilbagebetaling via overførsel m.v. tilbydes ikke."
-      ]
-    },
-    "s24": {
-      "title": "24. Sen udtjekning",
-      "body": [
-        "Kun med forudgående skriftlig aftale, udtjekning senest 12:00.",
-        "Discretionær tjeneste afhængig af belægning; skriftlig bekræftelse kræves.",
-        "Pris 40 €; tildeles efter først til mølle."
-      ]
-    },
-    "s25": {
-      "title": "25. Manglende udtjekning",
-      "body": [
-        "Ved manglende udtjekning rettidigt kan vi fjerne ejendele fra værelset uden ansvar.",
-        "Forsøg på adgang til gæsteområder efter tid kan behandles som sikkerhedsbrud.",
-        "Ejendele kan overføres til lokal porter/opbevaring; gebyrer efter leverandørens satser."
-      ]
-    },
-    "s26": {
-      "title": "26. Efter udtjekning",
-      "body": [
-        "Når udtjekning er gennemført, anses bookingen for opfyldt uanset resterende nætter.",
-        "Du bliver Midlertidig gæst indtil 15:30.",
-        "Efter anmodning kan vi registrere dig til bagageopbevaring efter skøn og særskilte vilkår."
-      ]
-    },
-    "s27": {
-      "title": "27. Alkohol",
-      "body": [
-        "Som licenseret virksomhed er indtagelse af alkohol købt uden for hostellet ikke tilladt.",
-        "Alkohol kan opbevares og udleveres ved udtjekning eller når forbrug uden for ejendommen er sikret.",
-        "Overtrædelse kan medføre øjeblikkelig annullering (No Show‑politik)."
-      ]
-    },
-    "s28": {
-      "title": "28. Ændring af vilkår",
-      "body": [
-        "Disse vilkår udgør hele aftalen mellem dig og Hostellet og erstatter tidligere aftaler (skriftlige/mundtlige).",
-        "Vi forbeholder os retten til at ændre vilkårene til enhver tid."
-      ]
-    },
-    "s29": {
-      "title": "29. Ansvarsbegrænsning",
-      "body": [
-        "Vores ansvar er begrænset til de ydelser/poster, der er angivet her.",
-        "Samlet ansvar overstiger ikke det beløb, du har betalt for bookingen.",
-        "Vi er ikke ansvarlige for tab/skade af personlige ejendele, medmindre loven kræver det.",
-        "Vi er ikke ansvarlige for indirekte/konsekvens/økonomisk tab eller tab af fortjeneste/omdømme/mulighed, også ved uagtsomhed eller force majeure.",
-        "Vi tilbyder sikker opbevaring for værdigenstande uden økonomisk ansvar.",
-        "Vi kan flytte genstande under rengøring uden varsel."
-      ]
-    },
-    "s30": {
-      "title": "30. Gældende lov",
-      "body": [
-        "Disse vilkår er underlagt italiensk ret; søgsmål anlægges ved italienske domstole."
-      ]
-    },
-    "s31": {
-      "title": "31. Website‑information",
-      "body": [
-        "Vi bestræber os på korrekte oplysninger på websitet, men påtager os ikke ansvar for fejl/udeladelser og kan ændre website og indhold uden varsel.",
-        "Visse billeder afspejler generel stil og svarer ikke nødvendigvis nøjagtigt til produkt/aspekt.",
-        "Alt indhold (tekst, billeder, varemærker) tilhører Hostellet og må ikke anvendes uden skriftlig tilladelse.",
-        "Links til tredjepart gives for bekvemmelighed; vi er ikke ansvarlige for indhold eller brug.",
-        "Se privatlivspolitikken for oplysninger om, hvordan vi beskytter dit privatliv.",
-        "Vi forbeholder os retten til at ændre websitet og dets indhold til enhver tid uden varsel."
-      ]
-    },
-    "s32": {
-      "title": "32. Sundheds- og sikkerhedspolitik",
-      "body": [
-        "Gæster, der nyligt kan have været udsat for smitsom sygdom, skal handle ansvarligt.",
-        "Forudbetalte ikke‑refunderbare bookinger forbliver ikke‑refunderbare i sådanne tilfælde.",
-        "Vi anbefaler rejseforsikring mod uforudsete hændelser, herunder sygdom eller manglende mulighed for at rejse."
-      ]
-    },
-    "s33": {
-      "title": "33. Kuponer",
-      "body": [
-        "Vi kan udstede kampagnekuponer fra tid til anden.",
-        "Kuponer er kun gyldige for bookinger via vores officielle website (hostel-positano.com).",
-        "Hver kupon kan være underlagt særlige vilkår ud over disse."
+        "Dette bilag skal være i overensstemmelse med det, der vises ved booking.",
+        "A1. Ikke‑refunderbar pris (forudbetalt) — Betaling: 100 % ved booking/bekræftelse. Afbestilling: ingen refusion (medmindre loven kræver det). No Show: ingen refusion. Ændringer: behandles som ny booking; pris/takst kan variere; afhænger af tilgængelighed.",
+        "A2. Refunderbar pris (kun garanti) — Betaling: ved check‑in (eller inden for et angivet forud‑vindue), men vi kan forhåndsautorisere ved booking. Gratis afbestilling: op til 72 timer før 15:00 på ankomstdatoen. Gebyr for sen afbestilling: det højeste af første nat eller et eventuelt ikke‑refunderbart depositum, plus evt. administrativt afbestillingsgebyr. No Show‑gebyr: det højeste af første nat eller et eventuelt ikke‑refunderbart depositum.",
+        "A3. Administrativt afbestillingsgebyr — 5 € pr. booking, vist ved booking og gentaget i bekræftelses‑e‑mailen."
       ]
     }
   }

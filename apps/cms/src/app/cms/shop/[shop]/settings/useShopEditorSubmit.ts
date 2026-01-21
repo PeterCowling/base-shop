@@ -1,12 +1,14 @@
-import { FormEvent, useState } from "react";
-import { useTranslations } from "@acme/i18n/Translations";
-import en from "@acme/i18n/en.json";
-import type { ChangeEvent } from "react";
-import type { Provider } from "@acme/configurator/providers";
-import type { Shop } from "@acme/types";
+import { type ChangeEvent, type FormEvent,useState } from "react";
 import { shopSchema } from "@cms/actions/schemas";
 import { updateShop } from "@cms/actions/shops.server";
+
+import type { Provider } from "@acme/configurator/providers";
+import en from "@acme/i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
+import type { Shop } from "@acme/types";
+
 import type { MappingRow } from "@/hooks/useMappingRows";
+
 import type { ThemeTokenRow } from "./lib/pageSections";
 
 export interface MappingRowsController {

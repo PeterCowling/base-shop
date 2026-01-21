@@ -1,11 +1,12 @@
-import type { AppLanguage } from "../../i18n.config";
 import { BASE_URL } from "../../config/site";
+import type { AppLanguage } from "../../i18n.config";
 import { getSlug } from "../../utils/slug";
-import { GUIDE_SLUGS } from "./slugs";
-import { GUIDE_SLUG_OVERRIDES } from "./overrides";
-import { GUIDE_SLUG_FALLBACKS, GUIDE_COMPONENT_OVERRIDES } from "./components";
+
+import { GUIDE_COMPONENT_OVERRIDES,GUIDE_SLUG_FALLBACKS } from "./components";
 import type { GuideKey } from "./keys";
 import { guideNamespace } from "./namespaces";
+import { GUIDE_SLUG_OVERRIDES } from "./overrides";
+import { GUIDE_SLUGS } from "./slugs";
 
 function fallbackSlugFromKey(key: GuideKey): string {
   return key

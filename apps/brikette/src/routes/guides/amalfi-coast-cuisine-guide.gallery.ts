@@ -6,8 +6,8 @@ import { ensureArray } from "@/utils/i18nContent";
 
 import {
   GALLERY_SOURCES,
-  GUIDE_KEY,
   type GalleryTranslation,
+  GUIDE_KEY,
 } from "./amalfi-coast-cuisine-guide.constants";
 import type { EnglishFallbacks } from "./amalfi-coast-cuisine-guide.fallbacks";
 

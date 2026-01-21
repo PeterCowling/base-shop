@@ -1,4 +1,18 @@
 // packages/template-app/__tests__/checkout-session.success.test.ts
+import { coreEnv } from "@acme/config/env/core";
+import { calculateRentalDays } from "@acme/date-utils";
+import { encodeCartCookie } from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
+import { createCheckoutSession } from "@acme/platform-core/checkout/session";
+import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
+import { PRODUCTS } from "@acme/platform-core/products";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { stripe } from "@acme/stripe";
+
+import { POST } from "../src/api/checkout-session/route";
+
+import { createRequest } from "./checkout-session.helpers";
+
 jest.mock("next/server", () => ({
   NextResponse: { json: (data: any, init?: ResponseInit) => new Response(JSON.stringify(data), init) },
 }));
@@ -36,18 +50,6 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({ getCustomerProfile: j
 jest.mock("@acme/platform-core/identity", () => ({
   getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
 }));
-
-import { createRequest } from "./checkout-session.helpers";
-import { stripe } from "@acme/stripe";
-import { createCheckoutSession } from "@acme/platform-core/checkout/session";
-import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
-import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { getCart } from "@acme/platform-core/cartStore";
-import { coreEnv } from "@acme/config/env/core";
-import { encodeCartCookie } from "@acme/platform-core/cartCookie";
-import { PRODUCTS } from "@acme/platform-core/products";
-import { calculateRentalDays } from "@acme/date-utils";
-import { POST } from "../src/api/checkout-session/route";
 
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const createCheckoutSessionMock = createCheckoutSession as jest.Mock;

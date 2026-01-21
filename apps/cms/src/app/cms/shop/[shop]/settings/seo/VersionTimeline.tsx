@@ -1,6 +1,16 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/VersionTimeline.tsx
 "use client";
 
+import { useEffect, useState } from "react";
+import { revertSeo } from "@cms/actions/shops.server";
+
+import { formatTimestamp } from "@acme/date-utils";
+import en from "@acme/i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
+import type { SettingsDiffEntry } from "@acme/platform-core/repositories/settings.server";
+import { diffHistory } from "@acme/platform-core/repositories/settings.server";
+import { CodeBlock } from "@acme/ui/components/molecules";
+
 import {
   Button,
   Dialog,
@@ -8,14 +18,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms/shadcn";
-import { revertSeo } from "@cms/actions/shops.server";
-import type { SettingsDiffEntry } from "@acme/platform-core/repositories/settings.server";
-import { diffHistory } from "@acme/platform-core/repositories/settings.server";
-import { formatTimestamp } from "@acme/date-utils";
-import { CodeBlock } from "@acme/ui/components/molecules";
-import { useEffect, useState } from "react";
-import { useTranslations } from "@acme/i18n/Translations";
-import en from "@acme/i18n/en.json";
 
 interface VersionTimelineProps {
   /** Shop identifier */

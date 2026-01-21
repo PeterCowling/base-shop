@@ -1,17 +1,20 @@
 // apps/cms/src/app/cms/configurator/ConfiguratorContext.tsx
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
-import type { NavItem } from "../wizard/schema";
+import React, { createContext, useCallback,useContext, useEffect, useRef, useState } from "react";
+
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
+
 import {
-  configuratorStateSchema,
   type ConfiguratorState,
+  configuratorStateSchema,
+  type NavItem,
   type StepStatus,
 } from "../wizard/schema";
-import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
+
 import ConfiguratorStatusBar from "./ConfiguratorStatusBar";
+import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import { calculateConfiguratorProgress } from "./lib/progress";
-import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 
 export interface ConfiguratorContextValue {
   state: ConfiguratorState;

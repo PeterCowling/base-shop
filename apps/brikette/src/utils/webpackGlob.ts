@@ -6,18 +6,23 @@ type RequireContext = {
   (id: string): unknown;
 };
 
-export type WebpackRequire = NodeRequire & {
-  context?: (path: string, recursive: boolean, pattern: RegExp) => RequireContext;
+type WebpackContextFactory = (
+  path: string,
+  options: { recursive?: boolean; regExp?: RegExp }
+) => RequireContext;
+
+const { webpackContext } = import.meta as { webpackContext?: WebpackContextFactory };
+
+export const supportsWebpackGlob = typeof webpackContext === "function";
+
+export const getWebpackContext = (
+  path: string,
+  recursive: boolean,
+  pattern: RegExp
+): RequireContext | undefined => {
+  if (typeof webpackContext !== "function") return undefined;
+  return webpackContext(path, { recursive, regExp: pattern });
 };
-
-declare const __webpack_require__: WebpackRequire | undefined;
-
-const hasWebpackRequire =
-  typeof __webpack_require__ === "function" ||
-  (typeof globalThis !== "undefined" &&
-    typeof (globalThis as { __webpack_require__?: unknown }).__webpack_require__ === "function");
-
-export const supportsWebpackGlob = hasWebpackRequire;
 
 type GlobOptions = {
   prefix?: string;

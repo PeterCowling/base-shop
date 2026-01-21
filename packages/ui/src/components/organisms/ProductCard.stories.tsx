@@ -1,9 +1,12 @@
 // i18n-exempt -- Storybook demo copy and labels
 import { type Meta, type StoryObj } from "@storybook/nextjs";
-import { ProductBadge } from "../atoms/ProductBadge";
-import { ProductCard } from "./ProductCard";
+
 import type { SKU } from "@acme/types";
+
 import { Cover } from "../atoms/primitives/Cover";
+import { ProductBadge } from "../atoms/ProductBadge";
+
+import { ProductCard } from "./ProductCard";
 
 const product: SKU = {
   id: "1",

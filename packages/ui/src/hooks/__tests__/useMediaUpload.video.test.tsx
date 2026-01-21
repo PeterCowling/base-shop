@@ -7,17 +7,19 @@ describe("useMediaUpload (video thumbnail path)", () => {
 
   afterEach(() => {
     URL.createObjectURL = originalCreate;
+    document.createElement = originalCreateEl;
     jest.resetModules();
   });
 
   test("creates thumbnail from video via canvas", async () => {
     jest.doMock("../useFileUpload", () => ({
-      useFileUpload: () => ({ pendingFile: new File([1], "v.mp4", { type: "video/mp4" }) }),
+      useFileUpload: () => ({ pendingFile: new File([""], "v.mp4", { type: "video/mp4" }) }),
     }));
     const { default: useMediaUpload } = await import("../useMediaUpload");
 
     // Stub object URL
     URL.createObjectURL = jest.fn(() => "blob:video");
+
     // Fake video + canvas
     const fakeVideo: any = {
       preload: "metadata",
@@ -34,10 +36,11 @@ describe("useMediaUpload (video thumbnail path)", () => {
       getContext: () => ({ drawImage: jest.fn() }),
       toDataURL: () => "data:video-thumb",
     };
-    document.createElement = (tag: string) => {
+    document.createElement = ((tag: string) => {
       if (tag === "video") return fakeVideo as any;
+      if (tag === "canvas") return fakeCanvas as any;
       return originalCreateEl.call(document, tag) as any;
-    };
+    }) as typeof document.createElement;
 
     const { result } = renderHook(() => useMediaUpload({ shop: "s", requiredOrientation: "landscape" } as any));
 

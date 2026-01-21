@@ -1,6 +1,7 @@
-import type { TryOnGenerator, TryOnProvider } from "../types";
 import type { ProviderResponse } from "@acme/types/tryon";
+
 import { t } from "../../i18n";
+import type { TryOnGenerator, TryOnProvider } from "../types";
 
 async function postJson(url: string, body: unknown, headers: Record<string, string>): Promise<Response> {
   return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) });

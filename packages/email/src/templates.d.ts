@@ -1,4 +1,5 @@
 import "server-only";
+
 import type { ReactNode } from "react";
 /**
  * Register or replace a template by ID.

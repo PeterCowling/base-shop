@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
 
 const mockUpdateAiCatalog = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateAiCatalog: mockUpdateAiCatalog }));
@@ -48,8 +51,6 @@ jest.mock("@/components/atoms/shadcn", () => {
     DialogTitle: ({ children }: any) => <h2>{children}</h2>,
   };
 });
-
-import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
 
 describe("AiCatalogSettings", () => {
   beforeEach(() => {

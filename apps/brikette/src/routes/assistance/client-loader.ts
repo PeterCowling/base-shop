@@ -1,11 +1,12 @@
+import type { LoaderFunctionArgs } from "react-router-dom";
+
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { assistanceSlugSchema } from "@/types/loaderSchemas";
-import { validateOrThrow } from "@/utils/validate";
-import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
 import enAssistanceSection from "@/locales/en/assistanceSection.json";
-import type { LoaderFunctionArgs } from "react-router-dom";
+import { assistanceSlugSchema } from "@/types/loaderSchemas";
+import { langFromRequest } from "@/utils/lang";
+import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
+import { validateOrThrow } from "@/utils/validate";
 
 const ASSISTANCE_NAMESPACES = [
   "assistanceSection",

@@ -1,8 +1,8 @@
 import "server-only";
 
 import { prisma } from "../db";
-import { resolveRepo } from "./repoResolver";
 
+import { resolveRepo } from "./repoResolver";
 import type {
   Settings,
   SettingsDiffEntry,

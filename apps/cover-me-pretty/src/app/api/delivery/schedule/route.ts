@@ -4,7 +4,7 @@ import "@acme/zod-utils/initZod";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import shop from "../../../../../shop.json";
 
 // This route reads shop settings via `getShopSettings`, which touches the

@@ -1,5 +1,7 @@
 // packages/ui/src/hooks/tryon/__tests__/useTryOnAnalytics.test.tsx
 import { act, renderHook, waitFor } from "@testing-library/react";
+
+import { getTryOnCtx, logTryOnEvent,setTryOnCtx } from "../analytics";
 import type { UseTryOnAnalyticsOptions } from "../useTryOnAnalytics";
 import { useTryOnAnalytics } from "../useTryOnAnalytics";
 
@@ -14,8 +16,6 @@ jest.mock("../analytics", () => ({
   setTryOnCtx: jest.fn(),
   logTryOnEvent: jest.fn().mockResolvedValue(undefined),
 }));
-
-import { getTryOnCtx, setTryOnCtx, logTryOnEvent } from "../analytics";
 
 describe("useTryOnAnalytics", () => { // i18n-exempt: test titles
   const mockGetTryOnCtx = getTryOnCtx as jest.MockedFunction<typeof getTryOnCtx>;

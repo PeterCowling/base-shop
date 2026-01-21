@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { act,fireEvent, render, screen } from "@testing-library/react";
+
 import HeroBanner from "../HeroBanner.client";
 
 // Mock next/image to render a plain img without passing Next-only boolean props

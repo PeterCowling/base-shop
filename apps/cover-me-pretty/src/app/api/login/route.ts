@@ -10,7 +10,7 @@ import {
 } from "@acme/auth";
 import type { Role } from "@acme/auth/types/roles";
 import { z } from "zod";
-import { parseJsonBody } from "@acme/shared-utils";
+import { parseJsonBody } from "@acme/lib/http/server";
 import { createRateLimiter } from "@acme/auth/rateLimiter";
 import { authEnv } from "@acme/config/env/auth";
 

@@ -1,9 +1,9 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/artifacts/download.ts
 
-import type { PipelineEventContext } from "../_lib/types";
 import { getEvidenceBucket, type PipelineEnv } from "../_lib/db";
 import { errorResponse } from "../_lib/response";
+import type { PipelineEventContext } from "../_lib/types";
 
 export const onRequestGet = async ({
   request,

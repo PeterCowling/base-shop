@@ -1,8 +1,9 @@
-import { saveSanityConfig } from "../src/actions/saveSanityConfig";
-import { verifyCredentials } from "@acme/plugin-sanity";
-import { setupSanityBlog } from "../src/actions/setupSanityBlog";
 import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
 import { setSanityConfig } from "@acme/platform-core/shops";
+import { verifyCredentials } from "@acme/plugin-sanity";
+
+import { saveSanityConfig } from "../src/actions/saveSanityConfig";
+import { setupSanityBlog } from "../src/actions/setupSanityBlog";
 
 jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),

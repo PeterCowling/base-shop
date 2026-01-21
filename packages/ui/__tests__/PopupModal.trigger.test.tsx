@@ -1,5 +1,6 @@
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import PopupModal from "../src/components/cms/blocks/PopupModal";
 
 describe("PopupModal triggers", () => {

@@ -1,11 +1,11 @@
-import {
-  normalizeQuantity,
-  flattenInventoryItem,
-  expandInventoryItem,
-  computeAvailability,
-  applyInventoryBatch,
-} from "@acme/platform-core/utils/inventory";
 import type { InventoryItem } from "@acme/platform-core/types/inventory";
+import {
+  applyInventoryBatch,
+  computeAvailability,
+  expandInventoryItem,
+  flattenInventoryItem,
+  normalizeQuantity,
+} from "@acme/platform-core/utils/inventory";
 import type { RawInventoryItem } from "@acme/types";
 
 describe("normalizeQuantity", () => {

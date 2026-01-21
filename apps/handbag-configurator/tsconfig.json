@@ -1,0 +1,73 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": false,
+    "noImplicitAny": false,
+    "allowJs": false,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "useUnknownInCatchVariables": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": [
+        "src/*",
+        "dist/*"
+      ],
+      "@acme/product-configurator": [
+        "../../packages/product-configurator/dist/index.d.ts"
+      ],
+      "@acme/product-configurator/*": [
+        "../../packages/product-configurator/dist/*"
+      ],
+      "@acme/ui/atoms": [
+        "../../packages/ui/dist/components/atoms/index.d.ts"
+      ],
+      "@acme/ui/atoms/*": [
+        "../../packages/ui/dist/components/atoms/*"
+      ],
+      "@i18n": [
+        "../../packages/i18n/dist/index.d.ts"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/dist/index.d.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
+      "three-stdlib": [
+        "src/types/three-stdlib.d.ts"
+      ]
+    },
+    "jsx": "preserve",
+    "strictNullChecks": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    ".next/types/server.d.ts",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [
+    {
+      "path": "../../packages/product-configurator"
+    },
+    {
+      "path": "../../packages/ui"
+    }
+  ]
+}

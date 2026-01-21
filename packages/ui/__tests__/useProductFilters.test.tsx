@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
+
 import { useProductFilters } from "../src/hooks/useProductFilters";
 
 type Row = { title: string | Record<string, string>; sku?: string; status?: "active" | "draft" };

@@ -1,3 +1,3 @@
-export * from "./shop";
-export * from "./pdp";
 export * from "./blog";
+export * from "./pdp";
+export * from "./shop";

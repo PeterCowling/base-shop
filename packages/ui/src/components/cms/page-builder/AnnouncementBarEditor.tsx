@@ -1,7 +1,9 @@
 import type { AnnouncementBarComponent } from "@acme/types";
-import type { EditorProps } from "./EditorProps";
+
 import { Input } from "../../atoms/shadcn";
 import LocalizedTextInput from "../LocalizedTextInput";
+
+import type { EditorProps } from "./EditorProps";
 
 type Props = EditorProps<AnnouncementBarComponent>;
 

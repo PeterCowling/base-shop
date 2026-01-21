@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
-import ExperimentGate from './ExperimentGate';
 import { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
+
+import ExperimentGate from './ExperimentGate';
 
 function Harness() {
   const [enabled, setEnabled] = useState(true);

@@ -1,10 +1,13 @@
 // src/routes/assistance/naples-airport-bus.tsx
-import { makeArticleClientLoader, makeArticlePage, makeArticleMeta, makeArticleLinks } from "./_ArticleFactory";
-import { Section } from "@acme/ui/atoms/Section";
-import { getSlug } from "@/utils/slug";
-import { Link } from "react-router-dom";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+
+import { Section } from "@acme/ui/atoms/Section";
+
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { getSlug } from "@/utils/slug";
+
+import { makeArticleClientLoader, makeArticleLinks,makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
 
 export const clientLoader = makeArticleClientLoader("naplesAirportBus");
 export { clientLoader as loader };

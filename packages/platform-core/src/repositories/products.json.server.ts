@@ -3,10 +3,13 @@ import "server-only";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { ulid } from "ulid";
+
+import { nowIso } from "@acme/date-utils";
+
+import { DATA_ROOT } from "../dataRoot";
 import type { ProductPublication } from "../products/index";
 import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
-import { nowIso } from "@acme/date-utils";
+
 import type { ProductsRepository } from "./products.types";
 
 function filePath(shop: string): string {

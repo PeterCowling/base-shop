@@ -1,27 +1,30 @@
 /* src/routes/breakfast-menu.tsx
    Internal page for the public breakfast menu (replacing Google Doc link). */
+import "./breakfast-menu/structured-data";
+
 import { Fragment, memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
-import { BASE_URL } from "@/config/site";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { formatBreakfastMenuPrice, type BreakfastMenuItemKey } from "@/data/menuPricing";
+import type { LinksFunction,MetaFunction } from "react-router";
+
 import { Section } from "@acme/ui/atoms/Section";
 
-import { createBreakfastMenuStrings } from "./breakfast-menu/strings";
-import { createMenuGraph } from "./breakfast-menu/menu-graph";
-import { JSON_LD_MIME, STRUCTURED_DATA_ID } from "./breakfast-menu/constants";
 import BreakfastMenuStructuredData from "@/components/seo/BreakfastMenuStructuredData";
-import { MenuRow } from "./breakfast-menu/_MenuRow";
-import "./breakfast-menu/structured-data";
-import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+import { BASE_URL } from "@/config/site";
+import { type BreakfastMenuItemKey,formatBreakfastMenuPrice } from "@/data/menuPricing";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { getSlug } from "@/utils/slug";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
+import { MenuRow } from "./breakfast-menu/_MenuRow";
+import { JSON_LD_MIME, STRUCTURED_DATA_ID } from "./breakfast-menu/constants";
 import type { BreakfastMenuLoaderData } from "./breakfast-menu/loader";
+import { createMenuGraph } from "./breakfast-menu/menu-graph";
+import { createBreakfastMenuStrings } from "./breakfast-menu/strings";
 
 export { clientLoader } from "./breakfast-menu/loader";
 
@@ -94,8 +97,8 @@ export default memo(function BreakfastMenuPage() {
 
   const fallbackHeadLinks = useMemo(() => {
     if (process.env.NODE_ENV !== "test") return undefined;
-    return buildRouteLinks({ lang, path });
-  }, [lang, path]);
+    return buildRouteLinks({ lang, path, url });
+  }, [lang, path, url]);
 
   useApplyFallbackHead(fallbackHeadDescriptors as unknown as ReturnType<typeof buildRouteMeta>, fallbackHeadLinks);
 

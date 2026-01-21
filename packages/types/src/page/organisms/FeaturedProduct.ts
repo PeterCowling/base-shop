@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { baseComponentSchema, type PageComponentBase } from "../base";
+
 import { skuSchema } from "../../Product";
+import { baseComponentSchema, type PageComponentBase } from "../base";
 
 const featuredProductSchema = skuSchema.extend({
   badges: z

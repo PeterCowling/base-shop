@@ -2,17 +2,19 @@
 
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { useTranslations } from "@acme/i18n";
-import {
-  defaultEmailScheduleValues,
-  type EmailScheduleFormValues,
-  type EmailSchedulePreviewData,
-} from "../types";
+
 import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
   type ValidationErrors,
 } from "../../shared";
+import {
+  defaultEmailScheduleValues,
+  type EmailScheduleFormValues,
+  type EmailSchedulePreviewData,
+} from "../types";
 
 export type EmailScheduleField = keyof EmailScheduleFormValues;
 export type EmailScheduleErrors = ValidationErrors<EmailScheduleField>;

@@ -1,12 +1,14 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/SectionSettings.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
-import { Tooltip } from "../../../../atoms";
-import UnitInput from "./UnitInput";
-import { isOverridden } from "./helpers";
 import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
+import { Tooltip } from "../../../../atoms";
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
+import { isOverridden } from "./helpers";
+import UnitInput from "./UnitInput";
 
 interface Props {
   component: PageComponent;

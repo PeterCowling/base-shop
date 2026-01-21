@@ -3,10 +3,11 @@
 /* ─────────────────────────────────────────────────────────────
    JSON-LD for the landing page
 ---------------------------------------------------------------- */
+import { memo, useMemo } from "react";
+
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildHomeGraph } from "@/utils/schema";
-import { memo, useMemo } from "react";
 
 function HomeStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();

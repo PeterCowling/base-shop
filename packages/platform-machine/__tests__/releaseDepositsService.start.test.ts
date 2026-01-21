@@ -1,13 +1,14 @@
 import { logger } from "@acme/platform-core/utils";
+
 import {
-  resetReleaseDepositsEnv,
-  restoreOriginalEnv,
+  createRefund,
+  markRefunded,
   readdir,
   readFile,
-  retrieve,
-  createRefund,
   readOrders,
-  markRefunded,
+  resetReleaseDepositsEnv,
+  restoreOriginalEnv,
+  retrieve,
 } from "./helpers/releaseDepositsSetup";
 
 let service: typeof import("@acme/platform-machine");
@@ -109,7 +110,7 @@ describe("startDepositReleaseService", () => {
 
     const startPromise = service.startDepositReleaseService();
 
-    const flush = () => new Promise((r) => setTimeout(r, 0));
+    const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
     await flush();
     expect(readOrders).toHaveBeenCalledTimes(2);
@@ -236,7 +237,7 @@ describe("startDepositReleaseService", () => {
       releaseSpy,
       logSpy,
     );
-    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(releaseSpy).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith("deposit release failed", {
       shopId: "shop1",
@@ -263,7 +264,7 @@ describe("startDepositReleaseService", () => {
       if (running[shop]) overlaps++;
       running[shop] = true;
       const start = Date.now();
-      await new Promise((r) => setTimeout(r, 20));
+      await new Promise((resolve) => setTimeout(resolve, 20));
       metrics.durations.push(Date.now() - start);
       metrics.memory.push(process.memoryUsage().heapUsed);
       running[shop] = false;
@@ -321,7 +322,7 @@ describe("startDepositReleaseService", () => {
       undefined,
       releaseSpy,
     );
-    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(releaseSpy).toHaveBeenCalled();
     expect(errorSpy).toHaveBeenCalledWith("deposit release failed", {
       shopId: "shop1",

@@ -1,19 +1,22 @@
-import { findCoupon } from "../coupons";
-import { trackEvent } from "../analytics";
-import { getTaxRate } from "../tax";
+import { createHash } from "crypto";
+import type Stripe from "stripe";
+
 import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
+
+import { trackEvent } from "../analytics";
 import type { CartState } from "../cart";
-import type Stripe from "stripe";
-import { createHash } from "crypto";
+import { findCoupon } from "../coupons";
+import { incrementOperationalError } from "../shops/health";
+import { getTaxRate } from "../tax";
+import { recordMetric } from "../utils";
+
 import {
   buildLineItemsForItem,
   buildSaleLineItemsForItem,
 } from "./lineItems";
-import { computeTotals, computeSaleTotals } from "./totals";
 import { buildCheckoutMetadata } from "./metadata";
-import { recordMetric } from "../utils";
-import { incrementOperationalError } from "../shops/health";
+import { computeSaleTotals,computeTotals } from "./totals";
 
 export interface CreateCheckoutSessionOptions {
   /**

@@ -1,13 +1,14 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import Section from "@/components/Section";
-import PageHeader from "@/components/PageHeader";
-import ProductGrid from "@/components/ProductGrid";
+import Link from "next/link";
+
 import Grid from "@/components/layout/Grid";
 import Stack from "@/components/layout/Stack";
+import PageHeader from "@/components/PageHeader";
+import ProductGrid from "@/components/ProductGrid";
+import Section from "@/components/Section";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
-import { getProducts } from "@/lib/catalog";
 import { withLocale } from "@/lib/routes";
 import { buildMetadata } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
@@ -53,7 +54,7 @@ export default async function HomePage({
   const locale = resolveLocale(resolved?.lang);
   const messages = await loadMessages(locale);
   const t = createTranslator(messages);
-  const products = getProducts();
+  const products = await listCochlearfitProducts(locale);
 
   return (
     <div className="space-y-4">

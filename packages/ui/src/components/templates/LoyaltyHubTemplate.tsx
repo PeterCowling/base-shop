@@ -1,10 +1,12 @@
 import * as React from "react";
+
+import { useTranslations } from "@acme/i18n";
+
 import { cn } from "../../utils/style";
 import type { Column } from "../organisms/DataTable";
 import { DataTable } from "../organisms/DataTable";
 import type { StatItem } from "../organisms/StatsGrid";
 import { StatsGrid } from "../organisms/StatsGrid";
-import { useTranslations } from "@acme/i18n";
 
 export interface LoyaltyProgress {
   current: number;

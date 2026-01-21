@@ -1,5 +1,5 @@
-import type { CartAction, CartItem, CartState } from "@/types/cart";
 import { clampQuantity, MIN_QTY } from "@/lib/quantity";
+import type { CartAction, CartItem, CartState } from "@/types/cart";
 
 export const initialCartState: CartState = {
   items: [],

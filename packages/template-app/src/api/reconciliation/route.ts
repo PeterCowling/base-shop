@@ -1,5 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
-import { NextRequest, NextResponse } from "next/server";
+
+import { type NextRequest, NextResponse } from "next/server";
+
 import { importExternalOrder } from "@acme/platform-core/orders/externalImport";
 
 export const runtime = "nodejs";

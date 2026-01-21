@@ -1,18 +1,18 @@
 // src/routes/guides/traveling-as-a-couple-in-hostels.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
+import type { LinksFunction } from "react-router";
 
-import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
-
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import type { LinksFunction } from "react-router";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
 
 export type _GuideSeoTemplateContext = GuideSeoTemplateContext;
 

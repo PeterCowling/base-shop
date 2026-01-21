@@ -5,6 +5,7 @@
    Breadcrumb JSON-LD — hydration-safe, no other schema
 ---------------------------------------------------------------- */
 import { memo, useMemo } from "react";
+
 import { buildBreadcrumbList } from "@/utils/seo/jsonld";
 
 /** Minimal BreadcrumbList shape we generate in `utils/seo.ts` */

@@ -61,7 +61,7 @@ describe("analytics providers", () => {
   test("uses console provider when configured", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(logSpy).toHaveBeenCalledWith(
@@ -106,7 +106,7 @@ describe("analytics providers", () => {
   test("caches resolved providers", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     await trackEvent(shop, { type: "page_view", page: "about" });

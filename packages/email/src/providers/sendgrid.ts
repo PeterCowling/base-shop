@@ -1,16 +1,20 @@
 import "server-only"; // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+
 import sgMail from "@sendgrid/mail";
+
+import { logger } from "@acme/lib/logger";
+
+import { getDefaultSender } from "../config";
 import type { CampaignOptions } from "../send";
-import { ProviderError } from "./types";
-import type { CampaignProvider } from "./types";
-import { hasProviderErrorFields } from "./error";
 import {
-  mapSendGridStats,
   type CampaignStats,
+  mapSendGridStats,
   type SendGridStatsResponse,
 } from "../stats";
-import { getDefaultSender } from "../config";
-import { logger } from "@acme/shared-utils";
+
+import { hasProviderErrorFields } from "./error";
+import type { CampaignProvider } from "./types";
+import { ProviderError } from "./types";
 
 const apiKey = process.env.SENDGRID_API_KEY;
 const marketingKey = process.env.SENDGRID_MARKETING_KEY || apiKey;

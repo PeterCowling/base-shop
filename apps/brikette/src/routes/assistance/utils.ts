@@ -1,11 +1,12 @@
 // src/routes/assistance/utils.ts
+import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import { articleSlug } from "@/routes.assistance-helpers";
+
+import type { HubLinkContent } from "./assistance-hub-links";
 import type { HelpArticleKey } from "./constants";
 import { DEFAULT_ARTICLE_KEY } from "./constants";
-import { articleSlug } from "@/routes.assistance-helpers";
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
-import type { HubLinkContent } from "./assistance-hub-links";
 
 export function isSupportedLanguage(value: unknown): value is AppLanguage {
   return (

@@ -2,7 +2,9 @@
 
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
+
 import type { CartState } from "@acme/platform-core/cartCookie";
+
 import CheckoutPage from "../src/app/[lang]/checkout/page";
 
 jest.mock("next/headers", () => ({

@@ -4,9 +4,10 @@ Reusable application templates and block implementations for storefronts (for ex
 
 See:
 
+- `docs/cms/content-template-standards.md` – **naming conventions, ID patterns, i18n rules, and category assignments**.
 - `docs/architecture.md` – package layering and public surfaces.
 - `docs/platform-vs-apps.md` – platform vs apps responsibilities and public API.
-- `docs/historical/cms-research.md` (§“Templates/prefabs and evolution”) – target API for templates and scaffolding (historical research log).
+- `docs/historical/cms-research.md` (§"Templates/prefabs and evolution") – target API for templates and scaffolding (historical research log).
 
 Templates should compose domain behaviour from `@acme/platform-core` and UI from `@acme/ui` via their documented public exports, without importing from internal `src/` paths.
 
@@ -47,22 +48,24 @@ Templates are plain `TemplateDescriptor` objects that describe a page layout usi
 1. **Define the descriptor**
 
    - Add a new entry to `corePageTemplates` in `packages/templates/src/corePageTemplates.ts`.
-   - Use an id that scopes the template (for example `core.page.home.hero-and-grid`) and reference existing block types:
+   - Follow the [content template standards](../../docs/cms/content-template-standards.md) for naming, categories, and i18n.
 
    ```ts
    import type { TemplateDescriptor } from "@acme/page-builder-core";
 
    export const corePageTemplates: TemplateDescriptor[] = [
      {
-       id: "core.page.home.hero-and-grid",
+       id: "core.page.home.hero-and-grid", // ID: <origin>.<kind>.<page-type>.<variant>
        version: "1.0.0",
        kind: "page",
-       label: "Home – hero and grid",
-       category: "Hero",
+       label: "Home – hero and grid", // i18n-exempt -- TPL-001: template metadata
+       description: "Hero banner with featured products grid.", // i18n-exempt -- TPL-001: template metadata
+       category: "Commerce", // Commerce for product-focused pages
        pageType: "marketing",
+       previewImage: "/templates/home-hero-and-grid.svg",
        components: [
-         { id: "hero", type: "HeroBanner" },
-         { id: "grid", type: "ProductGrid", mode: "collection" },
+         { id: "hero", type: "HeroBanner" }, // Component ID: <context>-<block-type>
+         { id: "home-grid", type: "ProductGrid", mode: "collection" },
        ],
        origin: "core",
      },

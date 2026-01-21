@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ProductCard } from "../src/components/organisms/ProductCard";
+
 import { useCart } from "@acme/platform-core/contexts/CartContext";
+
+import { ProductCard } from "../src/components/organisms/ProductCard";
 
 jest.mock("@acme/platform-core/contexts/CartContext");
 

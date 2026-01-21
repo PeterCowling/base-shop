@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import SeoLanguageTabs from './SeoLanguageTabs';
+
 import type { Locale } from '@acme/types';
+
+import SeoLanguageTabs from './SeoLanguageTabs';
 
 type SeoRecord = {
   title: string;

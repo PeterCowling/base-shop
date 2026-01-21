@@ -2,11 +2,13 @@
 
 import React, { useMemo } from "react";
 import Link from "next/link";
+
 import { useTranslations } from "@acme/i18n";
-import { useLocale } from "@/contexts/LocaleContext";
-import { withLocale } from "@/lib/routes";
+
 import Container from "@/components/layout/Container";
 import Stack from "@/components/layout/Stack";
+import { useLocale } from "@/contexts/LocaleContext";
+import { withLocale } from "@/lib/routes";
 import { SUPPORT_EMAIL, SUPPORT_PHONE } from "@/lib/site";
 
 type FooterLink = {

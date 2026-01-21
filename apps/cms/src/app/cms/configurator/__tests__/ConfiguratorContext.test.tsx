@@ -1,5 +1,7 @@
+import type { ReactElement } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import { ConfiguratorProvider, useConfigurator } from "../ConfiguratorContext";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
@@ -7,7 +9,7 @@ jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   useLayout: () => ({ setConfiguratorProgress: jest.fn() }),
 }));
 
-function TestComponent(): JSX.Element {
+function TestComponent(): ReactElement {
   const { update, markStepComplete, state } = useConfigurator();
   return (
     <>

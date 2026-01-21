@@ -1,14 +1,15 @@
 /* eslint-env jest */
 
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import React, { useState } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import {
   STORAGE_KEY,
   useConfiguratorPersistence,
 } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 import {
-  configuratorStateSchema,
   type ConfiguratorState,
+  configuratorStateSchema,
 } from "../src/app/cms/wizard/schema";
 
 jest.mock("next/navigation", () => ({

@@ -1,6 +1,8 @@
 // apps/cms/src/app/cms/plugins/page.tsx
-import { loadPlugins } from "@acme/platform-core/plugins";
 import Link from "next/link";
+
+import { loadPlugins } from "@acme/platform-core/plugins";
+
 import PluginList from "./PluginList.client";
 
 // This page performs runtime filesystem discovery; avoid prerender during build.

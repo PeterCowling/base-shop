@@ -1,10 +1,12 @@
 import { TranslationsProvider } from "@acme/i18n";
-import { LOCALES, resolveLocale } from "@/lib/locales";
-import { loadMessages } from "@/lib/messages";
-import { LocaleProvider } from "@/contexts/LocaleContext";
-import { CartProvider } from "@/contexts/cart/CartContext";
+
 import Shell from "@/components/layout/Shell";
 import LocalePreferenceSync from "@/components/LocalePreferenceSync";
+import { CartProvider } from "@/contexts/cart/CartContext";
+import { LocaleProvider } from "@/contexts/LocaleContext";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
+import { LOCALES, resolveLocale } from "@/lib/locales";
+import { loadMessages } from "@/lib/messages";
 
 export const dynamicParams = false;
 
@@ -22,11 +24,12 @@ export default async function LocaleLayout({
   const resolved = await params;
   const locale = resolveLocale(resolved?.lang);
   const messages = await loadMessages(locale);
+  const products = await listCochlearfitProducts(locale);
 
   return (
     <LocaleProvider locale={locale}>
       <TranslationsProvider messages={messages}>
-        <CartProvider>
+        <CartProvider products={products}>
           <LocalePreferenceSync />
           <Shell>{children}</Shell>
         </CartProvider>

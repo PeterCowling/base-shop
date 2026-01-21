@@ -1,6 +1,7 @@
 /* i18n-exempt file -- UI-000: Only non-user-facing literals (class names, separators, HTML attributes). Labels are provided via props. */
-import Link from "next/link";
 import * as React from "react";
+import Link from "next/link";
+
 import { cn } from "../../utils/style";
 import { Inline } from "../atoms/primitives/Inline";
 

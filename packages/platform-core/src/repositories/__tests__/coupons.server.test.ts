@@ -1,16 +1,31 @@
+import { promises as fs } from "fs";
+import * as path from "path";
+
+import {
+  getCouponByCode,
+  readCouponRepo,
+  writeCouponRepo,
+} from "../coupons.server";
+
 const DATA_ROOT = "/data/shops";
 
 jest.mock("../../dataRoot", () => ({
   DATA_ROOT,
 }));
 
-const files = new Map<string, string>();
+// Use globalThis to store test files - this avoids Jest hoisting issues
+declare global {
+  // eslint-disable-next-line no-var
+  var __couponsTestFiles: Map<string, string> | undefined;
+}
+globalThis.__couponsTestFiles = new Map<string, string>();
 
 jest.mock("fs", () => {
   return {
     promises: {
       readFile: jest.fn(async (p: string) => {
-        const data = files.get(p);
+        const files = globalThis.__couponsTestFiles;
+        const data = files?.get(p);
         if (data === undefined) {
           const err = new Error("not found") as NodeJS.ErrnoException;
           err.code = "ENOENT";
@@ -19,27 +34,22 @@ jest.mock("fs", () => {
         return data;
       }),
       writeFile: jest.fn(async (p: string, data: string) => {
-        files.set(p, data);
+        globalThis.__couponsTestFiles?.set(p, data);
       }),
       rename: jest.fn(async (tmp: string, dest: string) => {
-        const data = files.get(tmp);
+        const files = globalThis.__couponsTestFiles;
+        const data = files?.get(tmp);
         if (data === undefined) throw new Error("missing");
-        files.set(dest, data);
-        files.delete(tmp);
+        files?.set(dest, data);
+        files?.delete(tmp);
       }),
       mkdir: jest.fn(async () => {}),
-      __files: files,
+      get __files() {
+        return globalThis.__couponsTestFiles;
+      },
     },
   };
 });
-
-import { promises as fs } from "fs";
-import * as path from "path";
-import {
-  readCouponRepo,
-  writeCouponRepo,
-  getCouponByCode,
-} from "../coupons.server";
 
 const shop = "demo";
 const file = path.join(DATA_ROOT, shop, "coupons.json");
@@ -52,7 +62,11 @@ const memfs = (fs as any).__files as Map<string, string>;
 describe("coupon repository", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    memfs.clear();
+    globalThis.__couponsTestFiles?.clear();
+  });
+
+  afterAll(() => {
+    delete globalThis.__couponsTestFiles;
   });
 
   it("readCouponRepo returns empty array when file missing", async () => {
@@ -61,14 +75,14 @@ describe("coupon repository", () => {
   });
 
   it("readCouponRepo returns empty array when JSON invalid", async () => {
-    memfs.set(file, "not json");
+    globalThis.__couponsTestFiles?.set(file, "not json");
     await expect(readCouponRepo(shop)).resolves.toEqual([]);
     expect(readFile).toHaveBeenCalledWith(file, "utf8");
   });
 
   it("getCouponByCode is case-insensitive and null when absent", async () => {
     const coupons = [{ code: "SAVE10", discountPercent: 10 }];
-    memfs.set(file, JSON.stringify(coupons));
+    globalThis.__couponsTestFiles?.set(file, JSON.stringify(coupons));
     await expect(getCouponByCode(shop, "save10")).resolves.toEqual(coupons[0]);
     await expect(getCouponByCode(shop, "missing")).resolves.toBeNull();
   });
@@ -88,15 +102,15 @@ describe("coupon repository", () => {
       "utf8",
     );
     expect(rename).toHaveBeenCalledWith(tmp, file);
-    expect(memfs.get(file)).toEqual(JSON.stringify(coupons, null, 2));
-    expect(memfs.has(tmp)).toBe(false);
+    expect(globalThis.__couponsTestFiles?.get(file)).toEqual(JSON.stringify(coupons, null, 2));
+    expect(globalThis.__couponsTestFiles?.has(tmp)).toBe(false);
     nowSpy.mockRestore();
   });
 });
 
 it("sanitizes shop name in file path", async () => {
   jest.clearAllMocks();
-  memfs.clear();
+  globalThis.__couponsTestFiles?.clear();
   jest.doMock("../../shops/index", () => ({
     validateShopName: () => "evil",
   }));

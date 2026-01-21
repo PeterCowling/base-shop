@@ -1,4 +1,5 @@
 import type { HistoryState, PageComponent } from "@acme/types";
+
 export type ExportedComponent = PageComponent & {
     /**
      * CSS-only visibility mapping at runtime.

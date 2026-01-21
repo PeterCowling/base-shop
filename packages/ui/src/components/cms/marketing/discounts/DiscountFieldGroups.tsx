@@ -1,3 +1,5 @@
+import { useTranslations } from "@acme/i18n";
+
 import {
   Card,
   CardContent,
@@ -9,12 +11,12 @@ import {
   SelectValue,
   Textarea,
 } from "../../../atoms/shadcn";
-import { useTranslations } from "@acme/i18n";
-import { type DiscountFormValues, type DiscountType } from "./types";
+
 import {
   type DiscountErrors,
   type DiscountFormUpdater,
 } from "./hooks/useDiscountFormState";
+import { type DiscountFormValues, type DiscountType } from "./types";
 
 interface DiscountFieldGroupProps {
   values: DiscountFormValues;

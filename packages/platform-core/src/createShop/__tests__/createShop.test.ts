@@ -26,6 +26,10 @@ describe("createShop", () => {
         enableEditorial: false,
         enableSubscriptions: false,
         pages: [{ slug: "home", blocks: [] }],
+        // LAUNCH-23: new optional fields
+        favicon: undefined,
+        seo: undefined,
+        requiredPages: undefined,
       }),
     }));
 
@@ -72,6 +76,10 @@ describe("createShop", () => {
         enableEditorial: false,
         enableSubscriptions: false,
         pages: [],
+        // LAUNCH-23: new optional fields
+        favicon: undefined,
+        seo: undefined,
+        requiredPages: undefined,
       }),
     }));
 
@@ -90,5 +98,80 @@ describe("createShop", () => {
 
     expect(deployShopMock).toHaveBeenCalledWith("shop-deploy", undefined, expect.anything());
     expect(result).toEqual(implResult);
+  });
+
+  test("LAUNCH-23: persists favicon, seo, and requiredPages to shop data", async () => {
+    const create = jest.fn().mockResolvedValue({});
+    const createMany = jest.fn().mockResolvedValue({});
+    jest.doMock("../../db", () => ({ prisma: { shop: { create }, page: { createMany } } }));
+
+    const validateShopName = jest.fn((s: string) => s);
+    jest.doMock("../../shops", () => ({ validateShopName }));
+
+    const testFavicon = "https://example.com/favicon.ico";
+    const testSeo = {
+      title: "Test Shop",
+      description: "A test shop",
+      canonicalBase: "https://example.com",
+    };
+    const testRequiredPages = {
+      home: "template-home-v1",
+      shop: "template-shop-v1",
+      about: "template-about-v1",
+    };
+
+    jest.doMock("../schema", () => ({
+      prepareOptions: (_id: string, _opts: any) => ({
+        name: "Demo Shop",
+        theme: "base",
+        themeOverrides: {},
+        navItems: [],
+        analytics: { enabled: false },
+        shipping: [],
+        tax: "taxjar",
+        payment: [],
+        sanityBlog: false,
+        enableEditorial: false,
+        enableSubscriptions: false,
+        pages: [],
+        // LAUNCH-23: populated optional fields
+        favicon: testFavicon,
+        seo: testSeo,
+        requiredPages: testRequiredPages,
+      }),
+    }));
+
+    jest.doMock("../themeUtils", () => ({ loadTokens: () => ({}) }));
+
+    const ensureDir = jest.fn();
+    const writeJSON = jest.fn();
+    jest.doMock("../fsUtils", () => ({ ensureDir, writeJSON }));
+
+    const { createShop } = require("../createShop") as typeof import("../createShop");
+    await createShop("shop-with-branding", {} as any, { deploy: false });
+
+    // Verify the shop data includes the LAUNCH-23 fields
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          id: "shop-with-branding",
+          data: expect.objectContaining({
+            favicon: testFavicon,
+            seo: testSeo,
+            requiredPages: testRequiredPages,
+          }),
+        }),
+      })
+    );
+
+    // Verify the JSON file also includes the fields
+    expect(writeJSON).toHaveBeenCalledWith(
+      expect.stringContaining("shop.json"),
+      expect.objectContaining({
+        favicon: testFavicon,
+        seo: testSeo,
+        requiredPages: testRequiredPages,
+      })
+    );
   });
 });

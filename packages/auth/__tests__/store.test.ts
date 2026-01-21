@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import type { SessionStore } from "../src/store";
 
 describe("createSessionStore", () => {

@@ -1,6 +1,7 @@
 // src/routes/guides/luggage-storage-positano.breadcrumb.ts
-import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import type { TFunction } from "i18next";
+
+import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 
 import { resolveLuggageStorageString } from "./luggage-storage-positano.strings";
 

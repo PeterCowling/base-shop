@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import type { HTMLAttributeReferrerPolicy } from "react";
+import { Link } from "react-router-dom";
 
-import { CfImage } from "@/components/images/CfImage";
 import TableOfContents from "@/components/guides/TableOfContents";
+import { CfImage } from "@/components/images/CfImage";
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
@@ -74,9 +74,10 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
       ) : null}
 
       {sections.map((section) => {
-        const isDuplicateOfGeneric = Array.isArray(context.sections)
-          ? context.sections.some((s) => s?.id === section.id)
-          : false;
+        const isDuplicateOfGeneric =
+          (context.renderGenericContent ?? true) &&
+          Array.isArray(context.sections) &&
+          context.sections.some((s) => s?.id === section.id);
         if (isDuplicateOfGeneric) return null;
 
         return (

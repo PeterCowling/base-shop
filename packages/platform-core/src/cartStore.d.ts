@@ -1,6 +1,8 @@
-import { Redis } from "@upstash/redis";
-import type { CartState } from "./cart";
+import { type Redis } from "@upstash/redis";
+
 import type { SKU } from "@acme/types";
+
+import type { CartState } from "./cart";
 /** Abstraction for cart storage backends */
 export interface CartStore {
     createCart(): Promise<string>;

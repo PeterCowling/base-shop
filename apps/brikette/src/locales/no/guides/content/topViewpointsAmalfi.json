@@ -5,28 +5,28 @@
   },
   "linkLabel": "De beste utsiktspunktene på Amalfikysten",
   "intro": [
-    "Finn ut de beste utsiktspunktene rundt Amalfikysten for soloppgang, golden hour og nattbilder."
+    "Finn ut de beste utsiktspunktene rundt Amalfikysten for soloppgang, gyllen time og nattbilder."
   ],
   "sections": [
     {
       "id": "positano",
-      "title": "Positano classics",
+      "title": "Positano-klassikere",
       "body": [
         "Via Cristoforo Colombo og terrassen nær Hotel Marincanto gir lagdelt utsikt over landsbyen – ta bilder ved soloppgang for mykt lys.",
-        "La Tagliata-terrassen i Nocelle vender mot Li Galli-øyene; bestill middag for solnedgang eller besøk etter å ha gått på Path of the Gods."
+        "La Tagliata-terrassen i Nocelle vender mot Li Galli-øyene; bestill middag for solnedgang eller besøk etter å ha gått på Gudestien."
       ]
     },
     {
       "id": "ravello",
-      "title": "Ravello terraces",
+      "title": "Ravello-terrasser",
       "body": [
         "Villa Rufolos konsertscene har utsikt over kysten; morgenlyset treffer kuplene best.",
-        "Villa Cimbrones Infinity Terrace rammer inn kysten med marmorstatuer – statuer tillatt, men hold bena smale for å unngå å blokkere andre."
+        "Villa Cimbrones Infinity Terrace rammer inn kysten med marmorstatuer – stativ er tillatt, men hold bena smale for å unngå å blokkere andre."
       ]
     },
     {
       "id": "road",
-      "title": "Roadside panoramas",
+      "title": "Panoramaer langs veien",
       "body": [
         "Stopp ved Belvedere di Laurito mellom Positano og Praiano for feiende bilder; hold deg bak rekkverket for sikkerhets skyld.",
         "SS163 mellom Amalfi og Minori har signerte utsiktspunkter - bruk busser til å hoppe mellom dem hvis du foretrekker å ikke kjøre."
@@ -39,15 +39,15 @@
   ],
   "faqs": [
     {
-      "q": "Can I fly a drone?",
+      "q": "Kan jeg fly drone?",
       "a": [
         "Droneflyvninger er sterkt begrenset langs Amalfikysten. Sjekk ENAC-regler og lokale ordinanser; bøter er høye for uautoriserte flyvninger."
       ]
     },
     {
-      "q": "What time is best for sunset photos?",
+      "q": "Hvilket tidspunkt er best for solnedgangsbilder?",
       "a": [
-        "Golden hour starter omtrent en time før solnedgang (rundt 19:00 i juli). Kom 30 minutter for tidlig for å sette opp og sikre deg plass."
+        "Gyllen time starter omtrent en time før solnedgang (rundt 19:00 i juli). Kom 30 minutter for tidlig for å sette opp og sikre deg plass."
       ]
     }
   ]

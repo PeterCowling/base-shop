@@ -1,0 +1,36 @@
+/* File: src/components/roomgrid/RoomGrid.module.css */
+
+/* Wrapper class to scope global overrides for the room grid */
+.roomGridWrapper {
+  /* This wrapper provides a scope for all the global style overrides */
+}
+
+/* Hide the entire "info" column */
+.hideInfoColumn :global(.rvg-info) {
+  display: none !important;
+}
+
+/* Improve column widths for the title column */
+.roomGridWrapper :global(.rvg-title) {
+  min-width: 150px;
+  padding: 0.5rem;
+}
+
+/* Improve column widths for day cells */
+.roomGridWrapper :global(.rvg-cell) {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  max-width: 50px;
+}
+
+/* Revise SVG rectangle dimensions within .day containers to 48px by 48px */
+.roomGridWrapper :global(.day) svg {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+.roomGridWrapper :global(.day) svg rect {
+  width: 48px !important;
+  height: 48px !important;
+}

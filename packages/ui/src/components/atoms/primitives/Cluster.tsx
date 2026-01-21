@@ -1,6 +1,7 @@
 // packages/ui/src/components/atoms/primitives/Cluster.tsx
-import { cn } from "../../../utils/style/cn";
 import type { HTMLAttributes } from "react";
+
+import { cn } from "../../../utils/style/cn";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   gap?: 1 | 2 | 3 | 4 | 5 | 6;

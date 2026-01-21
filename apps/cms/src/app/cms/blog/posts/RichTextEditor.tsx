@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Button, Input } from "@acme/ui/components/atoms";
-import { ImagePicker } from "@acme/page-builder-ui";
+import { useCallback,useEffect, useState } from "react";
 import Image from "next/image";
 import {
   EditorProvider,
@@ -11,11 +9,15 @@ import {
   usePortableTextEditor,
 } from "@portabletext/editor";
 import { EventListenerPlugin } from "@portabletext/editor/plugins";
-import type { PortableTextBlock } from "./schema";
-import { schema, renderBlock } from "./schema";
-import type { SKU } from "@acme/types";
-import { formatCurrency } from "@acme/shared-utils";
+
 import { useTranslations } from "@acme/i18n";
+import { ImagePicker } from "@acme/page-builder-ui";
+import { formatCurrency } from "@acme/lib/format";
+import type { SKU } from "@acme/types";
+import { Button, Input } from "@acme/ui/components/atoms";
+
+import type { PortableTextBlock } from "./schema";
+import { renderBlock,schema } from "./schema";
 
 function Toolbar() {
   const t = useTranslations();

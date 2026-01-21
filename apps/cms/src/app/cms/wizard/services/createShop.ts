@@ -1,8 +1,9 @@
 "use client";
 
-import { createShopOptionsSchema } from "@acme/platform-core/createShop/schema";
 import type { DeployStatusBase } from "@acme/platform-core/createShop/deployTypes";
-import { validateShopName } from "@acme/platform-core/shops";
+import { createShopOptionsSchema } from "@acme/platform-core/createShop/schema";
+import { validateShopName } from "@acme/platform-core/shops/client";
+
 import type { WizardState } from "../schema";
 
 interface SerializedNavItem {

@@ -1,5 +1,7 @@
 import type { PageComponent } from "@acme/types";
+
 import { type ParentKind } from "./placement";
+
 export type ValidationIssue = {
     path: Array<string | number>;
     message: string;

@@ -1,4 +1,4 @@
-import { getCsrfToken } from '@acme/shared-utils/src/getCsrfToken';
+import { getCsrfToken } from '@acme/lib/security';
 
 describe('getCsrfToken on server', () => {
   it('returns header token', () => {
@@ -28,6 +28,7 @@ describe('getCsrfToken on server', () => {
   it('returns undefined without request', () => {
     const originalDocument = globalThis.document;
     const originalRandomUUID = (globalThis.crypto as any).randomUUID;
+    // @ts-expect-error simulate server environment without document
     (globalThis as any).document = undefined;
     (globalThis.crypto as any).randomUUID = jest.fn();
     try {

@@ -1,8 +1,8 @@
-const listShops = jest.fn();
+const listShopSummaries = jest.fn();
 
-jest.mock("../../../../lib/listShops", () => ({ listShops }));
+jest.mock("../../../../lib/listShops", () => ({ listShopSummaries }));
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   logger: { error: jest.fn() },
 }));
 
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("GET", () => {
   it("returns list of shops", async () => {
-    listShops.mockResolvedValue([{ id: "s1", name: "s1" }]);
+    listShopSummaries.mockResolvedValue([{ id: "s1", name: "s1" }]);
     const res = await GET();
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual([{ id: "s1", name: "s1" }]);
@@ -26,11 +26,13 @@ describe("GET", () => {
 
   it("logs error and returns 500 when listShops fails", async () => {
     const err = new Error("fail");
-    listShops.mockRejectedValue(err);
-    const { logger } = await import("@acme/shared-utils");
+    listShopSummaries.mockRejectedValue(err);
+    const { logger } = await import("@acme/lib/logger");
     const res = await GET();
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "fail" });
     expect(logger.error).toHaveBeenCalledWith("[api/shops:GET] error", { error: err });
   });
 });
+
+export {};

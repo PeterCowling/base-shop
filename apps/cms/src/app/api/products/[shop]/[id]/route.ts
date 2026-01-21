@@ -1,13 +1,19 @@
 // apps/cms/src/app/api/products/[shop]/[id]/route.ts
 import "@acme/zod-utils/initZod";
 
-import { getProductById } from "@acme/platform-core/repositories/json.server";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import { z } from "zod";
+
+import { getProductById } from "@acme/platform-core/repositories/json.server";
+
+import { ResponseSchemas,validateResponse } from "@/lib/server/queryValidation";
 
 const ParamsSchema = z
   .object({ shop: z.string(), id: z.string() })
   .strict();
+
+const productSchema = z.record(z.unknown());
+const productErrorSchema = ResponseSchemas.error;
 
 export async function GET(
   _req: NextRequest,
@@ -15,10 +21,18 @@ export async function GET(
 ) {
   const parsed = ParamsSchema.safeParse(await context.params);
   if (!parsed.success)
-    return NextResponse.json({ error: "Invalid params" }, { status: 400 });
+    return validateResponse(
+      { error: "Invalid params" },
+      productErrorSchema,
+      { status: 400 }
+    );
   const { shop, id } = parsed.data;
   const product = await getProductById(shop, id);
   if (!product)
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(product);
+    return validateResponse(
+      { error: "Not found" },
+      productErrorSchema,
+      { status: 404 }
+    );
+  return validateResponse(product, productSchema);
 }

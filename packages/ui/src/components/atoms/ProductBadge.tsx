@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { cn } from "../../utils/style";
 
 export interface ProductBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {

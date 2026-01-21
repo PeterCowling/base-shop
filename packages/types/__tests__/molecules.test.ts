@@ -1,17 +1,17 @@
 import {
   announcementBarComponentSchema,
-  valuePropsComponentSchema,
-  reviewsCarouselComponentSchema,
   contactFormComponentSchema,
-  newsletterSignupComponentSchema,
-  searchBarComponentSchema,
-  mapBlockComponentSchema,
-  videoBlockComponentSchema,
-  faqBlockComponentSchema,
   countdownTimerComponentSchema,
-  socialLinksComponentSchema,
+  faqBlockComponentSchema,
+  mapBlockComponentSchema,
+  newsletterSignupComponentSchema,
+  reviewsCarouselComponentSchema,
+  searchBarComponentSchema,
   socialFeedComponentSchema,
+  socialLinksComponentSchema,
   socialProofComponentSchema,
+  valuePropsComponentSchema,
+  videoBlockComponentSchema,
 } from "../src/page/molecules";
 
 describe("molecules schemas", () => {

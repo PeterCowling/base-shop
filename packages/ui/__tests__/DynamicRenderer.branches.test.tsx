@@ -1,4 +1,11 @@
 // Focused branch coverage for DynamicRenderer
+import { render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import { blockRegistry } from "../src/components/cms/blocks";
+import DynamicRenderer from "../src/components/DynamicRenderer";
+
 jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
   ensureScrollStyles: jest.fn(),
   ensureAnimationStyles: jest.fn(),
@@ -14,11 +21,6 @@ jest.mock("../src/components/cms/lightbox", () => ({
   ensureLightboxStyles: jest.fn(),
   initLightbox: jest.fn(),
 }));
-
-import { render, screen } from "@testing-library/react";
-import DynamicRenderer from "../src/components/DynamicRenderer";
-import { blockRegistry } from "../src/components/cms/blocks";
-import type { PageComponent } from "@acme/types";
 
 describe("DynamicRenderer branchy paths", () => {
   it("skips blocks marked hidden", () => {
@@ -43,7 +45,7 @@ describe("DynamicRenderer branchy paths", () => {
 
   it("applies classes, dataset, hover/static transform, grid and zIndex", () => {
     const spy = jest
-      .spyOn(blockRegistry.Text, "component")
+      .spyOn(blockRegistry.Text as any, "component")
       .mockImplementation(({ children }: any) => <div data-cy="inner">{children}</div>);
 
     const id = "blk1";

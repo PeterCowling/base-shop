@@ -4,7 +4,8 @@
 /* -------------------------------------------------------------------------- */
 
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] lazy import specifiers are not user-facing */
-import { lazy, type ComponentType } from "react";
+import { type ComponentType,lazy } from "react";
+
 import type {
   BookingModal2Props as UIBookingModal2Props,
   BookingModalProps as UIBookingModalProps,

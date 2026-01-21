@@ -1,10 +1,11 @@
 // packages/ui/components/templates/AccountDashboardTemplate.stories.tsx
 
-import { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 
 import type { Column } from "../organisms/DataTable";
 import type { StatItem } from "../organisms/StatsGrid";
+
 import {
   AccountDashboardTemplate,
   type AccountDashboardTemplateProps,

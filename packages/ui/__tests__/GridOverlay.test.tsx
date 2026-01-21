@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import GridOverlay from "../src/components/cms/page-builder/GridOverlay";
 
 describe("GridOverlay", () => {
@@ -13,7 +14,9 @@ describe("GridOverlay", () => {
 
   test.each(cases)("renders %s columns", ({ gridCols, expected }) => {
     const { container } = render(<GridOverlay gridCols={gridCols} />);
-    const grid = container.firstChild as HTMLElement;
+    // GridOverlay wraps the grid in a relative container div
+    const wrapper = container.firstChild as HTMLElement;
+    const grid = wrapper.querySelector('[data-cy="pb-grid-overlay"]') as HTMLElement;
 
     expect(grid.children).toHaveLength(expected);
     expect(grid).toHaveStyle(`grid-template-columns: repeat(${expected}, 1fr)`);

@@ -1,8 +1,9 @@
 // file path: src/components/rooms/RoomImage.tsx
-import { CfCardImage } from "@/components/images/CfCardImage";
-import { KeyboardEvent, memo, MouseEvent, useCallback } from "react";
+import { type KeyboardEvent, memo, type MouseEvent, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+
+import { CfCardImage } from "@/components/images/CfCardImage";
 
 /* Legacy → canonical path helper */
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");

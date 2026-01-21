@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import type React from "react";
+import { useState } from "react";
+import { ulid } from "ulid";
+
 import {
   Button,
   Select,
@@ -10,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { ulid } from "ulid";
 
 interface TemplateNavItem {
   label: string;

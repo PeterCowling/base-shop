@@ -1,6 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
+
 import { ThemeProvider } from "../ThemeContext";
+
 import { ThemeDisplay } from "./themeTestUtils";
 
 describe("ThemeContext: still renders when localStorage.setItem throws", () => {

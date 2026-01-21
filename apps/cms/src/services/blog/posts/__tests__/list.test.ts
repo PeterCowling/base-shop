@@ -28,8 +28,8 @@ describe("getPosts", () => {
 
     const config = { id: "config" } as any;
     const posts = [{ id: "a" }] as any;
-    getConfig.mockResolvedValue(config);
-    listPosts.mockResolvedValue(posts);
+    (getConfig as jest.Mock).mockResolvedValue(config);
+    (listPosts as jest.Mock).mockResolvedValue(posts);
 
     const result = await getPosts("shop123");
 
@@ -49,7 +49,7 @@ describe("getPosts", () => {
     );
 
     const error = new Error("failed");
-    getConfig.mockRejectedValue(error);
+    (getConfig as jest.Mock).mockRejectedValue(error);
 
     await expect(getPosts("shop123")).rejects.toThrow(error);
     expect(ensureCanRead).toHaveBeenCalled();

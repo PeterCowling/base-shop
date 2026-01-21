@@ -1,22 +1,23 @@
 // src/routes/guides/groceries-and-pharmacies-positano.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
-import { getGuideManifestEntry } from "./guide-manifest";
+import type { LinksFunction, MetaFunction } from "react-router";
 
 import ImageGallery from "@/components/guides/ImageGallery";
 import GuideSectionsItemListStructuredData from "@/components/seo/GuideSectionsItemListStructuredData";
-import i18n from "@/i18n";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref, guideAbsoluteUrl, guideSlug } from "@/routes.guides-helpers";
 import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import type { LinksFunction, MetaFunction } from "react-router";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl, guideHref, guideSlug } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule for guides routes without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
 import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { ensureCanonicalLinkCluster } from "./ensureCanonicalLinkCluster";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 const resolveLangFromLinksArgs = (
   args: Parameters<LinksFunction>[0] | undefined,

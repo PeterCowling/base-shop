@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Házirend | Hostel Brikette",
+    "description": "Hostel Brikette házirendje a viselkedésről, látogatókról, csendes időszakról, biztonságról, belépőkártyákról és helyszíni szabályokról."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Házirend",
+    "pageSubtitle": "Házirend"
+  },
+  "toc": {
+    "title": "Tartalom",
+    "aria": "Tartalomjegyzék"
+  },
+  "footer": {
+    "end": "A dokumentum vége.",
+    "backToTop": "Vissza a tetejére"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Tiszteletteljes magatartás és biztonság",
+      "body": [
+        "Érvényes: minden Vendégre és Látogatóra a területen.",
+        "Ez a Házirend a szállás-szerződés részét képezi. A szabályszegés a szállásról való eltávolítást és/vagy Szerződésszegés miatti megszüntetést vonhat maga után a Foglalási feltételek szerint.",
+        "1.1 A személyzettel és más Vendégekkel tisztelettel bánjon. Zaklatás, fenyegetés, erőszak vagy diszkriminatív magatartás nem megengedett.",
+        "1.2 Kövesse a személyzet biztonsággal és üzemeltetéssel kapcsolatos utasításait.",
+        "1.3 Ne rongálja meg a tulajdont, és ne zavarja a biztonsági berendezéseket."
+      ]
+    },
+    "s2": {
+      "title": "2. Csendes időszak és zaj",
+      "body": [
+        "2.1 Csendes időszak: 23:45–08:00. Csendes időszakban: tartsa alacsonyan a zajt a szobákban és a Közös területeken; tilos a hangos zene/hangszóró; telefonhívásokat a hálórészeken kívül intézzen.",
+        "2.2 Ha ismételten zavar másokat, kérhetjük, hogy a Foglalási feltételek szerint hagyja el a szállást."
+      ]
+    },
+    "s3": {
+      "title": "3. Látogatók / Ideiglenes vendégek (csak Közös területek)",
+      "body": [
+        "3.1 Látogatók csak a mi mérlegelésünk szerint és kizárólag a Közös területeken engedélyezettek. Látogatók nem tartózkodhatnak vendégszobákban/dormokban.",
+        "3.2 Látogatási idő (ha engedélyezett): 10:30–23:00, az üzemeltetési igények függvényében.",
+        "3.3 A látogatóknak eredeti személyazonosító okmányt kell bemutatniuk és be kell tartaniuk a biztonsági intézkedéseket (pl. karkötők/szalagok, ha használatosak).",
+        "3.4 A Vendégek nem „hozhatnak fel” Látogatókat a szobákba. A nem regisztrált személyek szobába juttatása súlyos szabálysértés."
+      ]
+    },
+    "s4": {
+      "title": "4. Nem regisztrált személyek",
+      "body": [
+        "4.1 Csak regisztrált Vendégek éjszakázhatnak.",
+        "4.2 Ha nem regisztrált személyt találunk szobában vagy éjszakázóként: kérhetjük az azonnali bejelentkezést/regisztrációt (ha lehetséges) vagy a távozást, és a Foglalási feltételek szerint díjat számíthatunk fel (Biztonsági letét és károk/díjak), a jogszabályok keretei között."
+      ]
+    },
+    "s5": {
+      "title": "5. Bejelentkezés és érkezés",
+      "body": [
+        "5.1 Hivatalos bejelentkezési időablak: 15:00–22:00.",
+        "5.2 Érkezés nyitás előtt: ha 10:30 előtt érkezik, előfordulhat, hogy nem tud belépni.",
+        "5.3 A nyitás és a bejelentkezés között (saját mérlegelésünk szerint) engedhetjük: várakozást kijelölt területeken, Látogatók/Ideiglenes vendégek Közös területekhez való hozzáférését és/vagy poggyászmegőrzést külön feltételek mellett."
+      ]
+    },
+    "s6": {
+      "title": "6. Azonosítási követelmények (helyszínen)",
+      "body": [
+        "6.1 A Vendégeknek és Látogatóknak kérésre érvényes eredeti okmányt kell bemutatniuk a biztonság és regisztráció érdekében.",
+        "6.2 Az okmány bemutatásának megtagadása esetén távozásra kérhetjük."
+      ]
+    },
+    "s7": {
+      "title": "7. Belépőkártyák, karkötők/biztonsági szalagok és beléptetés",
+      "body": [
+        "7.1 A belépőkártyák és/vagy kódok személyesek. Ne ossza meg őket.",
+        "7.2 Ha biztonsági szalagot használunk, azt a területen viselni kell, és kérésre fel kell mutatni.",
+        "7.3 Elveszett/sérült kártyákat vagy szalagokat azonnal jelenteni kell. A csere díja (ha van) a helyszínen ki van írva és/vagy a Foglalási feltételekben szerepel."
+      ]
+    },
+    "s8": {
+      "title": "8. Ágynemű és letétek",
+      "body": [
+        "8.1 Ágyneműt Vendégenként biztosítunk (a bejelentkezéskor ismertetettek szerint).",
+        "8.2 Ha letétet kérünk (pl. belépőkártya/ágynemű letét 10 €), azt a kijelentkezési folyamat szerint visszatérítjük, feltéve, hogy a kiadott tételek visszakerülnek, és a Foglalási feltételek szerinti levonások megengedettek."
+      ]
+    },
+    "s9": {
+      "title": "9. Dorm etikett és ágyválasztás",
+      "body": [
+        "9.1 A dorm ágyakat érkezési sorrendben lehet választani, ha másként nincs jelezve.",
+        "9.2 Másik elérhető ágyra csak a személyzet engedélyével és más Vendégek zavarása nélkül lehet átköltözni.",
+        "9.3 Tartsa rendben a saját alvóterét, és ne tároljon tárgyakat mások helyén."
+      ]
+    },
+    "s10": {
+      "title": "10. Alkohol szabályzat",
+      "body": [
+        "10.1 Ha a Hostel Brikette engedéllyel működik és megtiltjuk a kívülről hozott alkoholt: a Vendégek nem hozhatnak be külsőleg vásárolt alkoholt. Ha külső alkohol kerül elő, a személyzet kérheti annak eltávolítását vagy megőrzését kijelentkezésig (ahol megengedett).",
+        "10.2 Ismétlődő vagy súlyos szabálysértés esetén Szerződésszegés miatti megszüntetés és eltávolítás alkalmazható a Foglalási feltételek szerint."
+      ]
+    },
+    "s11": {
+      "title": "11. Illegális vagy veszélyes tárgyak",
+      "body": [
+        "11.1 Illegális drogok, fegyverek és veszélyes tárgyak tiltottak.",
+        "11.2 A tiltott tárgyakat a jogszabályok által megengedett módon lefoglalhatjuk és/vagy a hatóságok felé jelenthetjük."
+      ]
+    },
+    "s12": {
+      "title": "12. Ágyi poloskák (Vendég kötelességei)",
+      "body": [
+        "12.1 Ha ágyi poloskát gyanít, azonnal jelezze. Ne váltson szobát/ágyat, és ne vigyen ágyneműt vagy textíliákat a szálláson belül személyzeti utasítás nélkül.",
+        "12.2 Elképzelhető, hogy elkülönítési lépéseket kell követnie (csomagolás, mosás) a terjedés megakadályozására.",
+        "12.3 A mentesítés költségei a Foglalási feltételek szerint kerülnek kiszámításra, és bizonyítékokon, illetve a vonatkozó jogon alapulnak."
+      ]
+    },
+    "s13": {
+      "title": "13. Kijelentkezés, késői kijelentkezés és tárgyak",
+      "body": [
+        "13.1 Kijelentkezési idő: 07:30–10:30, kivéve, ha írásban engedélyezett késői kijelentkezésre jogosult.",
+        "13.2 A késői kijelentkezés (ha elérhető) elérhetőséghez és írásos megerősítéshez kötött, 12:00-ig érvényes és EUR 40 díjú.",
+        "13.3 Ha nem jelentkezik ki időben, akkor: biztonságosan összecsomagolhatjuk és tárolhatjuk a tárgyait; korlátozhatjuk a szobák/Guest-only területek hozzáférését; a Foglalási feltételek szerint díjat számíthatunk fel.",
+        "13.4 El nem vitt tárgyak: az ott hagyott tárgyakat 30 napig megőrizhetjük, majd a jogszabályoknak megfelelően selejtezhetjük vagy adományozhatjuk."
+      ]
+    },
+    "s14": {
+      "title": "14. Érvényesítés",
+      "body": [
+        "14.1 Kisebb szabálysértések esetén figyelmeztetést adhatunk.",
+        "14.2 Súlyos vagy ismétlődő szabálysértések eltávolítást és Szerződésszegés miatti megszüntetést vonhatnak maguk után a Foglalási feltételek szerint.",
+        "14.3 Ha díjak merülnek fel (károk, extra takarítás, díjak), azokat a Foglalási feltételek szerint kezeljük."
+      ]
+    }
+  }
+}

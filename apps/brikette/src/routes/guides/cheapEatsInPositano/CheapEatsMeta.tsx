@@ -3,7 +3,7 @@ import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
 import GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
 
-import { GUIDE_KEY, JSON_LD_TYPE, type CheapEatsMetaData } from "./constants";
+import { type CheapEatsMetaData,GUIDE_KEY, JSON_LD_TYPE } from "./constants";
 
 export function CheapEatsMeta({ title, description, hero, breadcrumb, itemListJson }: CheapEatsMetaData) {
   const dateModified = new Date().toISOString().slice(0, 10);

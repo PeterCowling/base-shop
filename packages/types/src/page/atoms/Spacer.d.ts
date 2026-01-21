@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { type PageComponentBase } from "../base";
+
 export interface SpacerComponent extends PageComponentBase {
     type: "Spacer";
     /** Amount of vertical whitespace */

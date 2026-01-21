@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[423368],{423368:e=>{e.exports=JSON.parse('{"title":"موقعنا","inputLabel":"أدخل موقعك الحالي:","inputPlaceholder":"مثال: نابولي، إيطاليا أو العنوان الكامل","getDirections":"احصل على الاتجاهات","justShowMap":"عرض الخريطة فقط","close":"إغلاق النافذة"}')}}]);

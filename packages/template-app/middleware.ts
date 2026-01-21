@@ -1,6 +1,6 @@
 // packages/template-app/middleware.ts
 
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url);

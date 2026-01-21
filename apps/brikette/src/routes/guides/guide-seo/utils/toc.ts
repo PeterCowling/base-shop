@@ -1,8 +1,9 @@
-import type { TocItem, NormalisedSection, NormalisedFaq } from "../types";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { getOptionalString as getOptionalStringUnsafe } from "@/utils/i18nSafe";
-import type { TFunction } from "@/utils/i18nSafe";
 import i18nApp from "@/i18n";
+import type { GuideKey } from "@/routes.guides-helpers";
+import type { TFunction } from "@/utils/i18nSafe";
+import { getOptionalString as getOptionalStringUnsafe } from "@/utils/i18nSafe";
+
+import type { NormalisedFaq,NormalisedSection, TocItem } from "../types";
 
 type TranslatorLike =
   | ((key: string, ...rest: unknown[]) => unknown)

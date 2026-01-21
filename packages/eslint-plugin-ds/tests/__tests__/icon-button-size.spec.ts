@@ -1,4 +1,5 @@
 import { RuleTester } from "eslint";
+
 import rule from "../../src/rules/icon-button-size";
 
 (globalThis as any).structuredClone =

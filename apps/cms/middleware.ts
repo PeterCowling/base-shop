@@ -1,9 +1,9 @@
 // middleware.ts (moved from repo root)
 
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 import { createHeadersObject } from "next-secure-headers";
-import helmet from "helmet";
 import crypto from "crypto";
+import helmet from "helmet";
 
 export function middleware(request: NextRequest) {
   // Per-request CSP nonce (used by analytics loader)

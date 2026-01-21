@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 import type { InventoryItem } from "../src/types/inventory";
 
 jest.mock("../src/repositories/inventory.server", () => ({

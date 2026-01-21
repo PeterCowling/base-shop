@@ -18,7 +18,7 @@ describe("ai/segment route", () => {
   it("validates body and returns {} when provider missing", async () => {
     const body = { imageUrl: "https://r2.example/obj.png", idempotencyKey: "8a074e68-1234-4abc-9def-aaaaaaaaaaaa" };
     const req = asNextJson(body);
-    const res = await POST(req as unknown as Request);
+    const res = await POST(req);
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({});

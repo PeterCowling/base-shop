@@ -1,7 +1,8 @@
-import { prepareOptions, createShopOptionsSchema as baseCreateShopOptionsSchema, type CreateShopOptions } from "./schema";
-import type { DeployShopResult } from "./deployTypes";
-import type { ShopConfig, Environment } from "@acme/types";
+import type { Environment,ShopConfig } from "@acme/types";
+
 import { type ShopDeploymentAdapter } from "./deploymentAdapter";
+import type { DeployShopResult } from "./deployTypes";
+import { type CreateShopOptions,type createShopOptionsSchema as baseCreateShopOptionsSchema, prepareOptions } from "./schema";
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
@@ -35,8 +36,9 @@ export declare function createShopFromConfig(id: string, config: ShopConfig, opt
     env?: Environment;
 }): Promise<DeployShopResult>;
 export { prepareOptions };
-export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";
-export type { DeployStatusBase, DeployShopResult } from "./deployTypes";
-export { ensureTemplateExists, copyTemplate, readFile, writeFile, } from "./fsUtils";
-export { loadTokens, loadBaseTokens } from "./themeUtils";
-export { type ShopDeploymentAdapter, CloudflareDeploymentAdapter, defaultDeploymentAdapter, } from "./deploymentAdapter";
+export { CloudflareDeploymentAdapter, defaultDeploymentAdapter,type ShopDeploymentAdapter,  } from "./deploymentAdapter";
+export type { DeployShopResult,DeployStatusBase } from "./deployTypes";
+export { copyTemplate, ensureTemplateExists, readFile, writeFile, } from "./fsUtils";
+export type { CreateShopOptions, NavItem, PageConfig, PreparedCreateShopOptions, RequiredPageSlug, SeoConfig } from "./schema";
+export { REQUIRED_PAGES_BASIC } from "./schema";
+export { loadBaseTokens,loadTokens } from "./themeUtils";

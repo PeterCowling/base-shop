@@ -1,7 +1,9 @@
+import { useEffect, useMemo, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
-import { useEffect, useMemo, useState } from "react";
+
 import type { Page, PageComponent } from "@acme/types";
+
 import PageBuilder from "./page-builder/PageBuilder";
 import type { PageBuilderProps } from "./page-builder/PageBuilder.types";
 
@@ -283,7 +285,7 @@ function PageBuilderPerfProbe(props: PageBuilderProps & { blocksCount: number })
     const end = typeof performance !== "undefined" ? performance.now() : Date.now();
     const duration = end - start;
     setRenderMs(duration);
-    // eslint-disable-next-line no-console
+     
     console.info(`[PB perf] Rendered ${props.blocksCount} blocks in ${duration.toFixed(1)}ms`);
   }, [props.blocksCount, start]);
 

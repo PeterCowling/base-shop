@@ -1,12 +1,14 @@
 // apps/cms/src/app/layout.tsx
-import { CartProvider } from "@/contexts/CartContext";
-import { CurrencyProvider } from "@/contexts/CurrencyContext";
-import { initTheme } from "@acme/platform-core/utils";
 import "@acme/zod-utils/initZod";
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import "./globals.css";
+import { initTheme } from "@acme/platform-core/utils";
+
+import { CartProvider } from "@/contexts/CartContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 
 const geistSans = Geist({
   subsets: ["latin"],

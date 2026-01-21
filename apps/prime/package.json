@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@acme/next-config": "workspace:*",
+    "@acme/ui": "workspace:*",
     "@headlessui/react": "^2.2.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -21,9 +22,11 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-i18next": "^15.5.3",
-    "zod": "^3.25.73"
+    "zod": "^3.25.73",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@tailwindcss/postcss": "^4.1.7",
     "@types/node": "^22.10.6",
     "@types/react": "^19.1.8",

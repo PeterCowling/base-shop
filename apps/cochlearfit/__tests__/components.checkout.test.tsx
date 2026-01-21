@@ -1,11 +1,13 @@
 import React from "react";
+import * as navigation from "next/navigation";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import * as navigation from "next/navigation";
+
 import CheckoutPanel from "@/components/checkout/CheckoutPanel";
 import ThankYouPanel from "@/components/checkout/ThankYouPanel";
-import { renderWithProviders } from "./testUtils";
 import { createCheckoutSession, fetchCheckoutSession } from "@/lib/checkout";
+
+import { renderWithProviders } from "./testUtils";
 
 jest.mock("@/lib/checkout", () => ({
   createCheckoutSession: jest.fn(),

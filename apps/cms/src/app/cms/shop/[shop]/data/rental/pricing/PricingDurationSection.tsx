@@ -1,6 +1,8 @@
-import { Button, Input } from "@/components/atoms/shadcn";
 import { type ChangeEvent } from "react";
+
 import { useTranslations } from "@acme/i18n";
+
+import { Button, Input } from "@/components/atoms/shadcn";
 
 import { type DurationDraft } from "./usePricingFormState";
 

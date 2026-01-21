@@ -1,15 +1,16 @@
+import type { LinksFunction } from "react-router";
+
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
 import type {} from "@/routes/guides/_GuideSeoTemplate";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry } from "./guide-manifest";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { BASE_URL } from "@/config/site";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { toAppLanguage } from "@/utils/lang";
-import type { LinksFunction } from "react-router";
 
 export const handle = { tags: ["culture", "amalfi", "stories"] };
 

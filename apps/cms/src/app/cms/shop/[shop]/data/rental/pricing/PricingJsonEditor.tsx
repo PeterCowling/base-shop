@@ -1,5 +1,6 @@
-import { Button, Textarea } from "@/components/atoms/shadcn";
 import { type ChangeEvent } from "react";
+
+import { Button, Textarea } from "@/components/atoms/shadcn";
 
 interface Props {
   draft: string;

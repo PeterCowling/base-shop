@@ -1,21 +1,22 @@
 // src/routes/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage.tsx
-import { makeHowToGuidePage } from "./makeHowToGuidePage";
-import type { MetaFunction, LinksFunction } from "react-router";
+import type { LinksFunction,MetaFunction } from "react-router";
+
 import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideSlug } from "@/routes.guides-helpers";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
 
-import * as breadcrumb from "./ferryDockToBrikette/breadcrumb";
 import * as articleLead from "./ferryDockToBrikette/_articleLead";
-import * as guideFaqFallback from "./ferryDockToBrikette/guideFaqFallback";
-import * as guideExtras from "./ferryDockToBrikette/guideExtras";
+import * as breadcrumb from "./ferryDockToBrikette/breadcrumb";
 import * as constants from "./ferryDockToBrikette/constants";
-import * as selectors from "./ferryDockToBrikette/selectors";
+import * as guideExtras from "./ferryDockToBrikette/guideExtras";
+import * as guideFaqFallback from "./ferryDockToBrikette/guideFaqFallback";
 import * as loader from "./ferryDockToBrikette/loader";
+import * as selectors from "./ferryDockToBrikette/selectors";
+import { makeHowToGuidePage } from "./makeHowToGuidePage";
 
 const { component: FerryDockToBrikette, loader: clientLoader } = makeHowToGuidePage({
   modules: {

@@ -1,8 +1,10 @@
-import clsx from "clsx";
 import { memo, useCallback, useId } from "react";
 import { useTranslation } from "react-i18next";
-import type { PreferenceKey } from "./types";
+import clsx from "clsx";
+
 import { Cluster, Inline } from "../ui";
+
+import type { PreferenceKey } from "./types";
 
 interface DecisionPillsProps {
   selected: ReadonlySet<PreferenceKey>;

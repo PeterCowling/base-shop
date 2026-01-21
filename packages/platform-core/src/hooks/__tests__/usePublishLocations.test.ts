@@ -1,8 +1,10 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
-import { fetchJson } from "@acme/shared-utils";
-import { usePublishLocations, loadPublishLocations } from "../usePublishLocations";
+import { act, renderHook, waitFor } from "@testing-library/react";
 
-jest.mock("@acme/shared-utils", () => ({
+import { fetchJson } from "@acme/lib/http";
+
+import { loadPublishLocations,usePublishLocations } from "../usePublishLocations";
+
+jest.mock("@acme/lib/http", () => ({
   fetchJson: jest.fn(),
 }));
 
@@ -11,7 +13,7 @@ const mockFetchJson = fetchJson as jest.MockedFunction<typeof fetchJson>;
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 const originalError = console.error;
-let consoleErrorSpy: jest.SpiedFunction<typeof console.error> | undefined;
+let consoleErrorSpy: jest.SpyInstance | undefined;
 beforeAll(() => {
   consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
     if (typeof msg === "string" && msg.includes("not wrapped in act")) {

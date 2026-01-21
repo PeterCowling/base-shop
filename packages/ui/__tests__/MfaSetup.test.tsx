@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import MfaSetup from "../src/components/account/MfaSetup";
 
 describe("MfaSetup", () => {

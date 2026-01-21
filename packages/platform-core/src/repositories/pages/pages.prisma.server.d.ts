@@ -1,5 +1,7 @@
 import "server-only";
+
 import { type Page } from "@acme/types";
+
 export declare function getPages(shop: string): Promise<Page[]>;
 export declare function savePage(shop: string, page: Page, previous?: Page): Promise<Page>;
 export declare function deletePage(shop: string, id: string): Promise<void>;

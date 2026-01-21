@@ -1,6 +1,9 @@
 import "server-only";
+
 import type { InventoryItem } from "../types/inventory";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+
+import type { InventoryMutateFn,InventoryRepository } from "./inventory.types";
+
 export declare const inventoryRepository: InventoryRepository;
 export { variantKey } from "../types/inventory";
 export declare function readInventoryMap(shop: string): Promise<Record<string, InventoryItem>>;

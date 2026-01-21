@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Gavitella Beach Guide",
+    "title": "Gavitella-strandguide",
     "description": "Planlegg en solnedgangsvennlig dag på strandklubbene La Gavitella og One Fire i Praiano med transport, reservasjoner og returtips."
   },
-  "linkLabel": "Gavitella Beach Guide",
+  "linkLabel": "Gavitella-strandguide",
   "intro": [
     "Gavitella-bukten i Praiano vender mot vest og byr på lang ettermiddagssol og gyldne utsikter mot Positano og Capri ved solnedgang. To lidoer — La Gavitella og One Fire — deler den smale strandstripen ved siden av en kompakt offentlig del hugget ut i fjellet.",
     "Forvent en kuratert opplevelse der reservasjon er normen: de bratte trappene begrenser mengden folk, klubbene koordinerer båtskyss og kveldene handler om sjømatmiddager eller sunset-fester med DJ."
@@ -19,11 +19,11 @@
     },
     {
       "href": "#gavitella-club",
-      "label": "La Gavitella Beach Club"
+      "label": "La Gavitella strandklubb"
     },
     {
       "href": "#one-fire",
-      "label": "One Fire Beach Club"
+      "label": "One Fire strandklubb"
     },
     {
       "href": "#amenities",
@@ -49,7 +49,7 @@
     },
     {
       "id": "gavitella-club",
-      "title": "La Gavitella Beach Club",
+      "title": "La Gavitella strandklubb",
       "body": [
         "La Gavitella handler om lange lunsjer, aperitivi og en båttur i solnedgang rundt Li Galli-øyene. Kjøkkenet fokuserer på sesongens sjømat — crudo-fat, paccheri med lokal fisk og desserter der sitron spiller hovedrollen.",
         "Gi beskjed om transportbehov når du reserverer: staben koordinerer tenderbåter for middagsgjester og kan oppbevare bagasjen mens du svømmer før aperitif-cruiset."
@@ -57,7 +57,7 @@
     },
     {
       "id": "one-fire",
-      "title": "One Fire Beach Club",
+      "title": "One Fire strandklubb",
       "body": [
         "One Fire er Amalfikystens feststrand, kjent for ettermiddagenes vannmelonritual, DJ-sett og publikumskoreografi som treffer solnedgangen perfekt.",
         "Bestill solsenger eller cabana via WhatsApp — depositum er vanlig i juli og august. Når havet spiller på lag, henter båtene deres grupper fra Positano og frakter dem tilbake etter at musikken stilner."

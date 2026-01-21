@@ -16,7 +16,7 @@
 
     /* ───── language / module target ───── */
     "module": "esnext",
-    "target": "ES2017",
+    "target": "ES2022",
     "moduleResolution": "bundler",
 
     /* ───── Node typings only ───── */
@@ -34,6 +34,7 @@
         "packages/types/src/*",
         "packages/types/src/*/index.ts"
       ],
+      "@config/env-schema": ["packages/config/env-schema.ts"],
       "@config/src/env": ["packages/config/src/env/index.ts"],
       "@config/src/*": ["packages/config/src/*"]
     },

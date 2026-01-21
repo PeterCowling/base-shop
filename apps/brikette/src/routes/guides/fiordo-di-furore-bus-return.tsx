@@ -1,16 +1,16 @@
 // src/routes/guides/fiordo-di-furore-bus-return.tsx
 import { memo, useCallback } from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
 
-import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
-
-import { OG_IMAGE, GUIDE_KEY as ROUTE_GUIDE_KEY, GUIDE_SLUG as ROUTE_GUIDE_SLUG } from "./fiordo-di-furore-bus-return/constants";
-import { createGuideFaqFallback } from "./fiordo-di-furore-bus-return/guideFaqFallback";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { guideHref, guideAbsoluteUrl } from "@/routes.guides-helpers";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl,guideHref } from "@/routes.guides-helpers";
+import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+
+import { GUIDE_KEY as ROUTE_GUIDE_KEY, GUIDE_SLUG as ROUTE_GUIDE_SLUG,OG_IMAGE } from "./fiordo-di-furore-bus-return/constants";
+import { createGuideFaqFallback } from "./fiordo-di-furore-bus-return/guideFaqFallback";
 
 export const handle = { tags: ["beaches", "bus", "amalfi"] };
 

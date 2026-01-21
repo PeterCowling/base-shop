@@ -1,10 +1,11 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/AssistanceFaqJsonLd.tsx
 import { memo, useMemo } from "react";
-import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { usePathname } from "next/navigation";
+
 import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
 
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
 
 function AssistanceFaqJsonLd({ ns }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t } = useTranslation(ns, { lng: lang });
   const raw = t("faq.items", { returnObjects: true }) as unknown;
 

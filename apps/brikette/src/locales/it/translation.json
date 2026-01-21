@@ -29,9 +29,5 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
-  },
-  "accessibility": {
-    "skipToMain": "Vai al contenuto principale",
-    "skipToNav": "Vai alla navigazione"
   }
 }

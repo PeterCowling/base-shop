@@ -1,31 +1,28 @@
 // src/routes/guides/sim-esim-and-atms-positano.tsx
+import RelatedGuides from "@/components/guides/RelatedGuides";
+import { BASE_URL } from "@/config/site";
+import i18n from "@/i18n";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import type {} from "@/routes/guides/_GuideSeoTemplate";
+import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
+import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
+import { ensureStringArray } from "@/utils/i18nContent";
+import { toAppLanguage } from "@/utils/lang";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+import { getWebpackContext, supportsWebpackGlob, webpackContextToRecord } from "@/utils/webpackGlob";
+
 import { defineGuideRoute } from "./defineGuideRoute";
 import { getGuideManifestEntry, guideAreaToSlugKey } from "./guide-manifest";
-
-import RelatedGuides from "@/components/guides/RelatedGuides";
-import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { ensureStringArray } from "@/utils/i18nContent";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
-import { toAppLanguage } from "@/utils/lang";
-import { getSlug } from "@/utils/slug";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE as OG_DIMENSIONS } from "@/utils/headConstants";
-import i18n from "@/i18n";
 import type { GuideSeoTemplateContext } from "./guide-seo/types";
-import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import { supportsWebpackGlob, type WebpackRequire, webpackContextToRecord } from "@/utils/webpackGlob";
-
-declare const require: WebpackRequire | undefined;
 
 export const GUIDE_KEY = "simsAtms" as const satisfies GuideKey;
 export const GUIDE_SLUG = "sim-esim-and-atms-positano" as const;
 
-const GUIDE_FALLBACK_CONTEXT =
-  supportsWebpackGlob && typeof require === "function" && typeof require.context === "function"
-    ? require.context("../../locales", true, /guidesFallback\\.json$/)
-    : undefined;
+const GUIDE_FALLBACK_CONTEXT = supportsWebpackGlob
+  ? getWebpackContext("../../locales", true, /guidesFallback\\.json$/)
+  : undefined;
 const GUIDE_FALLBACK_BUNDLES: Record<string, unknown> =
   webpackContextToRecord<{
     default?: Record<string, unknown>;
@@ -87,7 +84,7 @@ const { Component, clientLoader, meta, links } = defineGuideRoute(manifestEntry,
 });
 
 export default Component;
-export { clientLoader, meta, links };
+export { clientLoader, links,meta };
 
 function renderFallbackIntro(context: GuideSeoTemplateContext): JSX.Element | null {
   if (hasStructuredIntro(context)) {

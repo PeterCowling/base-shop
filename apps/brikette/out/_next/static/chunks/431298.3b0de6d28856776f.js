@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[431298],{431298:e=>{e.exports=JSON.parse('{"home":"Főoldal","guides":"\xdatmutat\xf3k"}')}}]);

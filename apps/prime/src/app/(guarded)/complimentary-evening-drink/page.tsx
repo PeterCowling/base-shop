@@ -1,4 +1,6 @@
 import { GlassWater } from 'lucide-react';
+// Force dynamic rendering to avoid SSG issues with context providers
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 
 export default function ComplimentaryEveningDrinkPage() {

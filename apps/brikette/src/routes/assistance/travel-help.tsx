@@ -1,13 +1,16 @@
 // src/routes/assistance/travel-help.tsx
-import { makeArticleClientLoader, makeArticleLinks, makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
-import HowToReachPositanoStructuredData from "@/components/seo/HowToReachPositanoStructuredData";
-import TravelHelpStructuredData from "@/components/seo/TravelHelpStructuredData";
-import { Section } from "@acme/ui/atoms/Section";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { getSlug } from "@/utils/slug";
+
+import { Section } from "@acme/ui/atoms/Section";
+
+import HowToReachPositanoStructuredData from "@/components/seo/HowToReachPositanoStructuredData";
+import TravelHelpStructuredData from "@/components/seo/TravelHelpStructuredData";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { articleSlug } from "@/routes.assistance-helpers";
+import { getSlug } from "@/utils/slug";
+
+import { makeArticleClientLoader, makeArticleLinks, makeArticleMeta, makeArticlePage } from "./_ArticleFactory";
 
 function AssistanceArrivingByFerryLink(): JSX.Element {
   const lang = useCurrentLanguage();

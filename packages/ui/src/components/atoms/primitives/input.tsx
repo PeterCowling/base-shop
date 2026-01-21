@@ -3,9 +3,11 @@
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — no user-facing copy; only prop-driven labels/errors
 
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
-import { Inline } from "./Inline";
 import { FormField } from "../FormField";
+
+import { Inline } from "./Inline";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Props
@@ -89,6 +91,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       props.value !== undefined
         ? String(props.value).length > 0
         : Boolean(props.defaultValue);
+    const required = props.required;
+    const formClassName = wrapperClassName;
 
     /* ------------------------------------------------------------------ *
      *  Render
@@ -106,8 +110,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         }
         description={description}
         error={error}
-        required={props.required}
-        className={wrapperClassName}
+        {...(required !== undefined ? { required } : {})}
+        {...(formClassName !== undefined ? { className: formClassName } : {})}
         // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
         input={({ id: controlId, describedBy, ariaInvalid }) =>
           floatingLabel ? (
@@ -165,4 +169,4 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input"; // i18n-exempt: component displayName, not user-facing
+Input.displayName = "Input";

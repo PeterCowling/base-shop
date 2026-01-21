@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { useRouter } from "next/navigation";
+import { act,fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import useStepCompletion from "@/app/cms/configurator/hooks/useStepCompletion";
+import type { DeployInfo } from "@/app/cms/wizard/services/deployShop";
+import { getDeployStatus } from "@/app/cms/wizard/services/deployShop";
+
 import StepHosting from "../src/app/cms/configurator/steps/StepHosting";
 
 jest.useFakeTimers();
@@ -22,10 +28,6 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-import { getDeployStatus } from "@/app/cms/wizard/services/deployShop";
-import useStepCompletion from "@/app/cms/configurator/hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-
 const markComplete = jest.fn();
 (useStepCompletion as jest.Mock).mockReturnValue([false, markComplete]);
 const push = jest.fn();
@@ -33,7 +35,7 @@ const push = jest.fn();
 
 function renderWithState() {
   const Wrapper = () => {
-    const [deployInfo, setDeployInfo] = React.useState({
+    const [deployInfo, setDeployInfo] = React.useState<DeployInfo | null>({
       status: "pending",
       domainStatus: "pending",
     });
@@ -162,8 +164,8 @@ describe("StepHosting", () => {
     let resolveDeploy: () => void;
     const deploy = jest.fn(
       () =>
-        new Promise<void>((res) => {
-          resolveDeploy = res;
+        new Promise<void>((resolve) => {
+          resolveDeploy = resolve;
         })
     );
 

@@ -1,8 +1,10 @@
 // packages/ui/components/atoms/primitives/button.tsx
-/* eslint-disable ds/no-hardcoded-copy -- CHORE-0000: primitives contain only class tokens and no user-facing copy */
+ 
 "use client";
 import * as React from "react";
+
 import { cn } from "../../../utils/style";
+
 import { Slot } from "./slot";
 
 /* -------------------------------------------------------------------------- */
@@ -157,7 +159,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       classesByTone[effTone][effColor],
       // Ensure legacy expectations for specific variants
       variant === "outline" && "border-input",
-      variant === "ghost" && effColor === "accent" && "hover:bg-accent",
+      variant === "ghost" &&
+        effColor === "accent" &&
+        "hover:bg-accent hover:text-accent-foreground",
       variant === "destructive" && "bg-destructive",
       iconOnly && (size === "lg" ? "h-11 w-11" : size === "sm" ? "h-9 w-9" : "h-10 w-10") + " p-0 justify-center",
       isLoading && "cursor-progress opacity-70",

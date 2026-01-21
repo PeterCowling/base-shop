@@ -1,6 +1,7 @@
-import clsx from "clsx";
-import { memo, type ComponentType } from "react";
+import { type ComponentType,memo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
+
 import type { ScoreResult } from "./types";
 
 type DecisionSummaryProps = {

@@ -1,7 +1,8 @@
 // src/routes/api/quote.ts
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { listNights, findNightlyPrices, cityTaxFor } from "@/lib/rates";
+
 import roomsData from "@/data/roomsData";
+import { cityTaxFor,findNightlyPrices, listNights } from "@/lib/rates";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

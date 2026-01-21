@@ -1,5 +1,7 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
 import { OrderTrackingTimeline } from "../src/components/organisms/OrderTrackingTimeline";
 
 describe("OrderTrackingTimeline", () => {

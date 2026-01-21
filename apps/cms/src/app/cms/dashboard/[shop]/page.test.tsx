@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
+import { buildMetrics } from "@cms/lib/analytics";
+import { render, screen } from "@testing-library/react";
+
 import { listEvents, readAggregates } from "@acme/platform-core/repositories/analytics.server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { buildMetrics } from "@cms/lib/analytics";
 
 jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn(),
@@ -69,7 +70,7 @@ it("renders campaign filter and charts", async () => {
 
   const { default: Page } = await import("./page");
   render(
-    await Page({ params: { shop: "s1" }, searchParams: {} })
+    await Page({ params: Promise.resolve({ shop: "s1" }), searchParams: {} })
   );
 
   expect(screen.getByText("Dashboard: s1")).toBeInTheDocument();

@@ -1,4 +1,6 @@
  
+import { asNextJson } from "@acme/test-utils";
+
 jest.mock("@acme/auth", () => ({
   requirePermission: jest.fn(),
 }));
@@ -6,8 +8,6 @@ jest.mock("@acme/auth", () => ({
 jest.mock("child_process", () => ({
   spawnSync: jest.fn(),
 }));
-
-import { asNextJson } from "@acme/test-utils";
 
 describe("upgrade-shop API route", () => {
   let requirePermission: jest.Mock;

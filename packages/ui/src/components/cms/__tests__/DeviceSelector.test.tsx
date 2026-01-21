@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import DeviceSelector from "../DeviceSelector";
+
 import { devicePresets } from "../../../utils/devicePresets";
-import { useState } from "react";
+import DeviceSelector from "../DeviceSelector";
 
 describe("DeviceSelector", () => {
   beforeAll(() => {

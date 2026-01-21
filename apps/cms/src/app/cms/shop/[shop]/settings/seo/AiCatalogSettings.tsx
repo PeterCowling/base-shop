@@ -1,6 +1,11 @@
 "use client";
 
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { type ChangeEvent,type FormEvent, useState } from "react";
+import { updateAiCatalog } from "@cms/actions/shops.server";
+
+import { formatTimestamp } from "@acme/date-utils";
+import { useTranslations } from "@acme/i18n";
+import type { AiCatalogField } from "@acme/types";
 
 import { Toast, Tooltip } from "@/components/atoms";
 import {
@@ -8,16 +13,12 @@ import {
   Card,
   CardContent,
   Checkbox,
-  Input,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  Input,
 } from "@/components/atoms/shadcn";
-import { updateAiCatalog } from "@cms/actions/shops.server";
-import { formatTimestamp } from "@acme/date-utils";
-import type { AiCatalogField } from "@acme/types";
-import { useTranslations } from "@acme/i18n";
 
 const ALL_FIELDS: AiCatalogField[] = [
   "id",

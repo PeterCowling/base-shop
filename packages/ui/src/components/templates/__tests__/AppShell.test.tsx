@@ -1,7 +1,10 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { AppShell } from "../AppShell";
+
+import { render, screen } from "@testing-library/react";
+
 import { useLayout } from "@acme/platform-core";
+
+import { AppShell } from "../AppShell";
 
 // Mock Layout and Theme providers and useLayout hook
 jest.mock("@acme/platform-core", () => ({

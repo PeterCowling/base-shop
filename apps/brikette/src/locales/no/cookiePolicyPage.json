@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Informasjonskapselpolicy | Hostel Brikette",
+    "description": "Hvordan Hostel Brikette bruker informasjonskapsler og lignende teknologier på nettstedet vårt, og hvilke valg du har."
+  },
+  "headings": {
+    "pageTitle": "Informasjonskapselpolicy",
+    "subtitle": "Informasjonskapsler, lokal lagring og tredjepartstjenester"
+  },
+  "lastUpdated": {
+    "label": "Sist oppdatert",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "På denne siden",
+    "aria": "Innholdsfortegnelse for informasjonskapselpolicy"
+  },
+  "sections": {
+    "intro": {
+      "title": "Oversikt",
+      "body": [
+        "Denne informasjonskapselpolicyen forklarer hva informasjonskapsler er, om vi bruker dem på dette nettstedet, og hvordan tredjepartstjenester kan bruke informasjonskapsler når du samhandler med innholdet deres."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Hva informasjonskapsler er",
+      "body": [
+        "Informasjonskapsler er små tekstfiler som nettsteder kan lagre på enheten din for å huske informasjon mellom besøk. Lignende teknologier inkluderer lokal lagring og øktlagring i nettleseren din."
+      ]
+    },
+    "ourUse": {
+      "title": "Slik bruker vi informasjonskapsler på dette nettstedet",
+      "body": [
+        "Vi prøver å holde bruken av informasjonskapsler på et minimum. Når det er mulig, bruker vi nettleserlagring (lokal lagring) for enkle preferanser i stedet for informasjonskapsler.",
+        "Hvis vi innfører informasjonskapsler i fremtiden (for eksempel for nødvendig sikkerhet, analyse eller innebygde tjenester), vil vi oppdatere denne policyen."
+      ]
+    },
+    "localStorage": {
+      "title": "Lokal lagring (preferanser)",
+      "body": [
+        "Lokal lagring gjør at nettstedet kan huske enkelte preferanser på enheten din. For eksempel kan det brukes til å beholde grensesnittpreferanser mellom sider.",
+        "Du kan tømme lokal lagring i innstillingene til nettleseren din."
+      ]
+    },
+    "thirdParties": {
+      "title": "Tredjepartstjenester",
+      "body": [
+        "Noen lenker eller innebygde opplevelser kan leveres av tredjeparter (for eksempel kart eller bestillingsleverandører). Disse tredjepartene kan sette informasjonskapsler eller bruke lignende teknologier i henhold til sine egne retningslinjer.",
+        "Når du følger en lenke til et tredjepartsnettsted, gjelder deres personvern- og informasjonskapselpolicyer."
+      ]
+    },
+    "choices": {
+      "title": "Dine valg",
+      "body": [
+        "De fleste nettlesere lar deg blokkere eller slette informasjonskapsler og rydde nettsteddata som lokal lagring. Å blokkere enkelte teknologier kan påvirke funksjonaliteten.",
+        "Du kan også bruke privat nettlesing eller nettleserutvidelser for å begrense sporing."
+      ]
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": [
+        "Hvis du har spørsmål om denne informasjonskapselpolicyen, kontakt oss på {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Tilbake til toppen"
+  }
+}

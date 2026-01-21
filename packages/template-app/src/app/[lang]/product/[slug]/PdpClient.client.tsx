@@ -1,13 +1,14 @@
 // packages/template-app/src/app/[lang]/product/[slug]/PdpClient.tsx
 "use client";
 
+import { useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
 import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
-import { Price } from "@acme/ui/components/atoms/Price";
 import type { SKU } from "@acme/types";
-import { useState } from "react";
-import { useTranslations } from "@acme/i18n";
+import { Price } from "@acme/ui/components/atoms/Price";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const t = useTranslations();

@@ -1,4 +1,5 @@
 import type { Page } from "@acme/types";
+
 import { diffPage, mergeDefined, parsePageDiffHistory } from "../pageHistory";
 
 describe("diffPage", () => {

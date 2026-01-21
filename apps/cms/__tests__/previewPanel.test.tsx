@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import PreviewPanel from "../src/app/cms/shop/[shop]/settings/seo/PreviewPanel";
 
 describe("PreviewPanel", () => {

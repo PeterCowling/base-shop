@@ -1,13 +1,15 @@
 // packages/ui/src/components/cms/page-builder/panels/content/AlignmentControls.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+import type { PageComponent } from "@acme/types";
+
 import { Tooltip } from "../../../../atoms";
-import type { ContentComponent, HandleInput } from "./types";
-import { isOverridden } from "./helpers";
 import { Grid, Inline } from "../../../../atoms/primitives";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+
+import { isOverridden } from "./helpers";
+import type { ContentComponent, HandleInput } from "./types";
 
 interface Props {
   component: PageComponent;

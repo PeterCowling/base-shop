@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { fetchJson } from "@acme/shared-utils";
 
-jest.mock("@acme/shared-utils", () => ({ fetchJson: jest.fn() }));
+import { fetchJson } from "@acme/lib/http";
+
+jest.mock("@acme/lib/http", () => ({ fetchJson: jest.fn() }));
 
 jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");

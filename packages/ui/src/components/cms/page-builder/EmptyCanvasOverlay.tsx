@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "../../atoms/shadcn";
 import { Cluster } from "../../atoms/primitives/Cluster";
+import { Button } from "../../atoms/shadcn";
 
 // i18n-exempt — Editor-only helper overlay; copy is minimal and non-user facing
 /* i18n-exempt */

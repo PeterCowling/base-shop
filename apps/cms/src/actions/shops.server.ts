@@ -3,23 +3,23 @@
 // apps/cms/src/actions/shops.server.ts
 
 import {
-  updateShop as serviceUpdateShop,
-  getSettings as serviceGetSettings,
-  updateSeo as serviceUpdateSeo,
   generateSeo as serviceGenerateSeo,
+  getSettings as serviceGetSettings,
+  resetThemeOverride as serviceResetThemeOverride,
   revertSeo as serviceRevertSeo,
   setFreezeTranslations as serviceSetFreezeTranslations,
+  type Shop,
+  type ShopSettings,
+  updateAiCatalog as serviceUpdateAiCatalog,
   updateCurrencyAndTax as serviceUpdateCurrencyAndTax,
   updateDeposit as serviceUpdateDeposit,
   updateLateFee as serviceUpdateLateFee,
-  updateReverseLogistics as serviceUpdateReverseLogistics,
-  updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
-  updateAiCatalog as serviceUpdateAiCatalog,
+  updateReverseLogistics as serviceUpdateReverseLogistics,
+  updateSeo as serviceUpdateSeo,
+  updateShop as serviceUpdateShop,
   updateStockAlert as serviceUpdateStockAlert,
-  resetThemeOverride as serviceResetThemeOverride,
-  type Shop,
-  type ShopSettings,
+  updateUpsReturns as serviceUpdateUpsReturns,
 } from "../services/shops";
 
 export async function updateShop(
@@ -30,7 +30,7 @@ export async function updateShop(
 }
 
 export async function getSettings(shop: string): Promise<ShopSettings> {
-  return serviceGetSettings(shop);
+  return serviceGetSettings(shop) as unknown as ShopSettings;
 }
 
 export async function updateSeo(

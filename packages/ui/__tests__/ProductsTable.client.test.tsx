@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProductsTable from "../src/components/cms/ProductsTable.client";
+
+import { formatCurrency } from "@acme/lib/format";
 import type { ProductPublication } from "@acme/types";
-import { formatCurrency } from "@acme/shared-utils";
+
+import ProductsTable from "../src/components/cms/ProductsTable.client";
 
 const products: ProductPublication[] = [
   {

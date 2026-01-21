@@ -1,6 +1,10 @@
 // apps/cms/__tests__/seoProgressPanel.test.tsx
 /* eslint-env jest */
 
+import { render, screen, within } from "@testing-library/react";
+
+import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel";
+
 const readSeoAuditsMock = jest.fn();
 const listEventsMock = jest.fn();
 const useTranslations = jest.fn();
@@ -43,9 +47,6 @@ jest.mock("@/components/atoms/shadcn", () => ({
   TableHead: ({ children, ...props }: any) => <th {...props}>{children}</th>,
   TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
 }));
-
-import { render, screen, within } from "@testing-library/react";
-import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel";
 
 beforeEach(() => {
   jest.clearAllMocks();

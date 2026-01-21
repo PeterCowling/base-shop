@@ -1,21 +1,24 @@
 "use client";
 
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
-import { Tooltip } from "../../atoms";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { getShopFromPath } from "@acme/shared-utils";
 import { z } from "zod";
+
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
 import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
-import { presetList, presetCategories, type PresetDef, type PresetCategory } from "./presets.data";
-import { getPalettePreview } from "./previewImages";
-import { Inline } from "../../atoms/primitives/Inline";
+
+import { Tooltip } from "../../atoms";
 import { Grid } from "../../atoms/primitives/Grid";
-import useThemeSignature from "./hooks/useThemeSignature";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Button,Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+
 import { getBuiltInSections } from "./builtInSections.data";
-import { useTranslations } from "@acme/i18n";
+import useThemeSignature from "./hooks/useThemeSignature";
+import { presetCategories, type PresetCategory,type PresetDef, presetList } from "./presets.data";
+import { getPalettePreview } from "./previewImages";
 
 interface Props {
   onInsert: (component: PageComponent) => void;

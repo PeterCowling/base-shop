@@ -1,11 +1,12 @@
 // src/routes/guides/how-to-get-to-positano.article-lead.tsx
-import TableOfContents from "@/components/guides/TableOfContents";
 import { Section as UiSection } from "@acme/ui/atoms/Section";
 
-import { renderGuideLinkTokens } from "./utils/linkTokens";
+import TableOfContents from "@/components/guides/TableOfContents";
+
 import type { GuideSeoTemplateContext } from "./_GuideSeoTemplate";
 import { HowToGetToPositanoStructuredDataPreview } from "./how-to-get-to-positano.additional-scripts";
 import type { GuideExtras } from "./how-to-get-to-positano.types";
+import { renderGuideLinkTokens } from "./utils/linkTokens";
 
 export function renderArticleLead(
   context: GuideSeoTemplateContext,

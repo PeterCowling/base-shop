@@ -28,4 +28,8 @@
 
 const createJestPreset = require("./packages/config/jest.preset.cjs");
 
-module.exports = createJestPreset();
+module.exports = {
+  ...createJestPreset(),
+  watch: false,
+  watchAll: false,
+};

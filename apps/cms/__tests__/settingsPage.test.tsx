@@ -1,6 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, screen, within } from "@testing-library/react";
+
 import React from "react";
+import { render, screen, within } from "@testing-library/react";
+
+import SettingsPage from "../src/app/cms/shop/[shop]/settings/page";
+
+import { __setMockSession } from "~test/mocks/next-auth";
 
 // Mock dependencies before importing the page
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
@@ -17,10 +22,7 @@ jest.mock("@/components/atoms/shadcn", () => ({
   Card: ({ children }: any) => <div>{children}</div>,
   CardContent: ({ children }: any) => <div>{children}</div>,
 }));
-import { __setMockSession } from "next-auth";
 jest.mock("next/dynamic", () => () => () => null);
-
-import SettingsPage from "../src/app/cms/shop/[shop]/settings/page";
 
 describe("Shop settings page", () => {
   it("shows default and override tokens with reset button", async () => {
@@ -33,10 +35,10 @@ describe("Shop settings page", () => {
     mockReadShop.mockResolvedValue({
       themeId: "base",
       themeDefaults: {
-        "--color-bg": "#ffffff", // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literal color
-        "--color-primary": "#00f", // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literal color
+        "--color-bg": "#ffffff",  
+        "--color-primary": "#00f",  
       },
-      themeOverrides: { "--color-bg": "#000000" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literal color
+      themeOverrides: { "--color-bg": "#000000" },  
       catalogFilters: [],
       filterMappings: {},
     });
@@ -57,12 +59,12 @@ describe("Shop settings page", () => {
     expect(screen.getByText("Reverse logistics")).toBeInTheDocument();
 
     const bgRow = screen.getByText("--color-bg").closest("tr")!;
-    expect(within(bgRow).getByText("#ffffff")).toBeInTheDocument(); // eslint-disable-line ds/no-raw-color -- TEST-123: asserting literal color text
-    expect(within(bgRow).getByText("#000000")).toBeInTheDocument(); // eslint-disable-line ds/no-raw-color -- TEST-123: asserting literal color text
+    expect(within(bgRow).getByText("#ffffff")).toBeInTheDocument();  
+    expect(within(bgRow).getByText("#000000")).toBeInTheDocument();  
     expect(within(bgRow).getByRole("button", { name: /reset/i })).toBeInTheDocument();
 
     const primaryRow = screen.getByText("--color-primary").closest("tr")!;
-    expect(within(primaryRow).getByText("#00f")).toBeInTheDocument(); // eslint-disable-line ds/no-raw-color -- TEST-123: asserting literal color text
+    expect(within(primaryRow).getByText("#00f")).toBeInTheDocument();  
     expect(within(primaryRow).queryByRole("button", { name: /reset/i })).toBeNull();
   });
 });

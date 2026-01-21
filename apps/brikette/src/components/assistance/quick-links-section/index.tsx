@@ -1,13 +1,13 @@
-import { memo } from "react";
 import type { JSX } from "react";
+import { memo } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
-import { Grid, Section } from "./layout";
 import { buildQuickLinksJsonLd } from "./jsonLd";
-import type { AssistanceQuickLinksProps } from "./types";
+import { Grid, Section } from "./layout";
 import { useAssistanceTranslations } from "./translations";
+import type { AssistanceQuickLinksProps } from "./types";
 import { useContactCta } from "./useContactCta";
 import { useQuickLinksWithHref, useResolvedQuickLinks } from "./useQuickLinks";
 
@@ -71,8 +71,8 @@ function AssistanceQuickLinksSection({ lang }: AssistanceQuickLinksProps): JSX.E
           {quickLinksWithHref.map((item) => (
             <Link
               key={item.slug}
-              to={item.href}
-              prefetch="intent"
+              href={item.href}
+              prefetch={true}
               className={clsx(
                 "group",
                 "block",

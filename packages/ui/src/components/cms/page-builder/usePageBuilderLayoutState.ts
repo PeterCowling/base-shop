@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+
 import useReducedMotion from "../../../hooks/useReducedMotion";
+
+import useCommandPalette from "./hooks/useCommandPalette";
+import useDevToolsToggle from "./hooks/useDevToolsToggle";
 import useDndA11y from "./hooks/useDndA11y";
 import usePaletteState from "./hooks/usePaletteState";
-import useDevToolsToggle from "./hooks/useDevToolsToggle";
-import useCommandPalette from "./hooks/useCommandPalette";
 import useSpacePanning from "./hooks/useSpacePanning";
 import type { PageBuilderLayoutProps } from "./PageBuilderLayout.types";
 

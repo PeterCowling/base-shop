@@ -1,8 +1,10 @@
 import { jest } from "@jest/globals";
 
-const originalFetch = global.fetch;
+import { __setMockSession } from "~test/mocks/next-auth";
 
-import { __setMockSession } from "next-auth";
+type MockFn = jest.Mock;
+
+const originalFetch = global.fetch;
 async function loadMediaProbeRoute(session: unknown = { user: {} }) {
   __setMockSession(session as any);
   jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
@@ -64,7 +66,7 @@ describe("media route", () => {
   });
 
   it("DELETE returns success when params provided", async () => {
-    const mockDelete = jest.fn().mockResolvedValue(undefined);
+    const mockDelete = (jest.fn() as unknown as MockFn).mockResolvedValue(undefined);
     jest.doMock("@cms/actions/media.server", () => ({
       listMedia: jest.fn(),
       uploadMedia: jest.fn(),
@@ -91,10 +93,8 @@ describe("media probe route", () => {
   });
 
   it("returns 415 for unsupported media type", async () => {
-    (global as any).fetch = jest
-      .fn()
-      .mockResolvedValue(
-        new Response(null, {
+    (global as any).fetch = (jest.fn() as unknown as MockFn).mockResolvedValue(
+      new Response(null, {
           status: 200,
           headers: { "content-type": "text/plain" },
         }),

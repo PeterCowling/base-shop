@@ -1,6 +1,14 @@
 import "@testing-library/jest-dom";
+
+import type { ReadonlyURLSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { render, screen } from "@testing-library/react";
-import { __setMockToken, __resetMockToken } from "next-auth/jwt";
+
+// Import modules after mocks so Next.js internals aren't executed
+import NotFound from "../src/app/not-found";
+import { middleware } from "../src/middleware";
+
+import { __resetMockToken,__setMockToken } from "~test/mocks/next-auth-jwt";
 
 const translations = {
   "notFound.title": "404 – Page not found",
@@ -24,19 +32,14 @@ jest.mock("@acme/i18n/useTranslations.server", () => ({
 // Stub Zod initializer to avoid top-level await in CommonJS tests
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/logger", () => ({
   logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+}));
+jest.mock("@acme/lib/context", () => ({
   withRequestContext: (_ctx: unknown, fn: () => unknown) => fn(),
 }));
-
-// Import modules after mocks so Next.js internals aren't executed
-import { middleware } from "../src/middleware";
-import NotFound from "../src/app/not-found";
 // Require instead of ESM import to avoid hoisting issues with jest.mock
 const AccessDenied = require("../src/app/403/page").default;
-
-import type { ReadonlyURLSearchParams } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
 const mockSearch = useSearchParams as jest.MockedFunction<
   typeof useSearchParams

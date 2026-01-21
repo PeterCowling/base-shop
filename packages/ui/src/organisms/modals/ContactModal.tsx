@@ -1,11 +1,12 @@
 import {
+  type KeyboardEvent as ReactKeyboardEvent,
   memo,
+  type MouseEvent as ReactMouseEvent,
   useCallback,
   useEffect,
-  type KeyboardEvent as ReactKeyboardEvent,
-  type MouseEvent as ReactMouseEvent,
 } from "react";
-import { ModalPanel, ModalFooterButton } from "./primitives";
+
+import { ModalFooterButton,ModalPanel } from "./primitives";
 import type { ContactModalCopy } from "./types";
 
 const CONTACT_MODAL_TITLE_ID = "contact-modal-title";

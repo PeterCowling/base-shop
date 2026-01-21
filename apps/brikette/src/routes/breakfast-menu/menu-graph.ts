@@ -1,6 +1,6 @@
 import {
-  getBreakfastMenuPriceAmount,
   type BreakfastMenuItemKey,
+  getBreakfastMenuPriceAmount,
 } from "@/data/menuPricing";
 import type { AppLanguage } from "@/i18n.config";
 

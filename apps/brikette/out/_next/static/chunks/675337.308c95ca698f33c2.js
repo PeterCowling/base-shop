@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[675337],{675337:s=>{s.exports=JSON.parse('{"seo":{"title":"살레르노 vs 나폴리: 어느 도착지가 좋을까?","description":"계절과 시간대에 따라 어떤 도시가 더 빠르고 저렴한지 비교합니다."},"linkLabel":"살레르노 vs 나폴리 도착 비교","intro":[],"sections":[],"faqs":[]}')}}]);

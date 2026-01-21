@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentProps } from "react";
+
 import ProductDetail from "@/components/ProductDetail";
 import { withErrorBoundary } from "@/hoc/withErrorBoundary";
 

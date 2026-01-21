@@ -14,7 +14,7 @@ jest.mock("@acme/platform-core/contexts/ThemeContext", () => {
     useLayout: () => ({}),
   };
 });
-jest.mock("@platform-core", () => {
+jest.mock("@acme/platform-core", () => {
   const React = require("react");
   return {
     __esModule: true,

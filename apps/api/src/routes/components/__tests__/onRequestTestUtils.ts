@@ -8,7 +8,7 @@ import { vol } from 'memfs';
 import jwt from 'jsonwebtoken';
 import { validateShopName } from '@acme/lib';
 import { onRequest } from '../[shopId]';
-import { logger } from '@acme/shared-utils';
+import { logger } from '@acme/lib/logger';
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;

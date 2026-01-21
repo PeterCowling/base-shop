@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
-import { getPost } from '../../../src/services/blog/posts/get';
 import { ensureCanRead } from '../../../src/actions/common/auth';
+import { getPost } from '../../../src/services/blog/posts/get';
 
 jest.mock('../../../src/actions/common/auth', () => ({
   ensureCanRead: jest.fn(),

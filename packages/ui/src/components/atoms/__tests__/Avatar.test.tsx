@@ -1,5 +1,7 @@
 import "../../../../../../test/resetNextMocks";
+
 import { render, screen } from "@testing-library/react";
+
 import { Avatar } from "../Avatar";
 
 describe("Avatar", () => {
@@ -13,7 +15,7 @@ describe("Avatar", () => {
   });
 
   it("renders fallback content when no src is provided", () => {
-    render(<Avatar alt="Jane" fallback="FB" />);
+    render(<Avatar src="" alt="Jane" fallback="FB" />);
     const fallbackEl = screen.getByText("FB");
     expect(fallbackEl).toBeInTheDocument();
     expect(fallbackEl).toHaveClass("bg-muted");
@@ -25,7 +27,7 @@ describe("Avatar", () => {
   });
 
   it("displays first initial from alt when no fallback is provided", () => {
-    render(<Avatar alt="John Doe" />);
+    render(<Avatar src="" alt="John Doe" />);
     expect(screen.getByText("J")).toBeInTheDocument();
   });
 
@@ -58,11 +60,11 @@ describe("Avatar", () => {
         margin="m-2"
       />
     );
-    const props = spy.mock.calls[0][0];
-    expect(props.width).toBe(64);
-    expect(props.height).toBe(64);
-    expect(typeof props.width).toBe("number");
-    expect(typeof props.height).toBe("number");
+    const props = spy.mock.calls[0]?.[0] as { width?: number; height?: number } | undefined;
+    expect(props?.width).toBe(64);
+    expect(props?.height).toBe(64);
+    expect(typeof props?.width).toBe("number");
+    expect(typeof props?.height).toBe("number");
 
     const img = screen.getByAltText("User avatar");
     expect(img).toHaveClass("p-4");

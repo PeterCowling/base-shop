@@ -1,8 +1,9 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
+
 import {
   CurrencyProvider,
   useCurrency,
-} from "../../../../../packages/platform-core/src/contexts/CurrencyContext";
+} from "@acme/platform-core/contexts/CurrencyContext";
 
 // React 19 requires this flag for `act` to suppress environment warnings
 ;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;

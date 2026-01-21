@@ -91,7 +91,7 @@
       "title": "Para familias"
     },
     "faq": {
-      "label": "FAQs",
+      "label": "Preguntas frecuentes",
       "title": "Preguntas frecuentes de viaje"
     },
     "ferragosto": {
@@ -99,8 +99,8 @@
       "title": "Ferragosto en Positano"
     },
     "ferry": {
-      "label": "Ferry",
-      "title": "Guías de ferris"
+      "label": "Ferri",
+      "title": "Guías de ferri"
     },
     "free": {
       "label": "Gratis",
@@ -217,8 +217,8 @@
       "title": "Guías de Sorrento"
     },
     "souvenirs": {
-      "label": "Souvenirs",
-      "title": "Souvenirs y compras"
+      "label": "Recuerdos",
+      "title": "Recuerdos y compras"
     },
     "stairs": {
       "label": "Menos escaleras",

@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import type { CartState } from "../src/cart";
 
 const cart: CartState = {

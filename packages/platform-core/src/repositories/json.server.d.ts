@@ -11,11 +11,11 @@
 import type { Shop } from "@acme/types";
 
 export declare function readShop(shop: string): Promise<Shop>;
-export { getShopSettings as readSettings } from "./settings.server";
-export * from "./products.server";
 export * from "./inventory.server";
 export * from "./pricing.server";
+export * from "./products.server";
 export * from "./returnLogistics.server";
-export { diffHistory, getShopSettings, saveShopSettings, } from "./settings.server";
 export type { SettingsDiffEntry } from "./settings.server";
+export { getShopSettings as readSettings } from "./settings.server";
+export { diffHistory, getShopSettings, saveShopSettings, } from "./settings.server";
 export { getShopById, updateShopInRepo } from "./shop.server";

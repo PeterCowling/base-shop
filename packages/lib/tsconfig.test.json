@@ -2,18 +2,26 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["jest", "node"],
-    "composite": true,
-    "declaration": true,
-    "declarationMap": false,
-    "declarationDir": ".ts-jest",
-    "noEmit": false,
-    "noEmitOnError": false,
-    "rootDir": ".",
-    "outDir": ".ts-jest",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "esModuleInterop": true
+    "typeRoots": ["../../node_modules/@types", "../../node_modules"],
+    "noEmit": true,
+    "rootDir": "../..",
+    "baseUrl": "..",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "paths": {
+      "@acme/config": ["config/dist/index.d.ts"],
+      "@acme/config/*": ["config/dist/*"],
+      "@acme/platform-core": ["platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["platform-core/dist/*"],
+      "@acme/zod-utils": ["zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["zod-utils/dist/*"],
+      "@acme/i18n": ["i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["i18n/dist/*"]
+    }
   },
-  "include": ["src/**/*", "__tests__/**/*"],
+  "include": ["src/**/*", "__tests__/**/*", "jest-globals.d.ts", "../../packages/i18n/dist/**/*.json"],
   "exclude": []
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
 
 type PendingSummaryPanelProps = {
   headingId: string;

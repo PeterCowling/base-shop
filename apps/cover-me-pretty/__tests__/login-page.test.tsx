@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginPage from "../src/app/login/page";
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   getCsrfToken: () => "TOKEN",
 }));
 

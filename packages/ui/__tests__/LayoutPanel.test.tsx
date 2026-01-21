@@ -1,3 +1,9 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import type { PageComponent } from "@acme/types";
+
+import LayoutPanel from "../src/components/cms/page-builder/panels/LayoutPanel";
+
 jest.mock("../src/components/atoms/shadcn", () => {
   const React = require("react");
   return {
@@ -19,9 +25,6 @@ jest.mock("../src/components/atoms/shadcn", () => {
     ),
   };
 });
-import { render, fireEvent, screen } from "@testing-library/react";
-import LayoutPanel from "../src/components/cms/page-builder/panels/LayoutPanel";
-import type { PageComponent } from "@acme/types";
 
 test("updates width via handleResize", () => {
   const component: PageComponent = { id: "1", type: "Image" } as any;

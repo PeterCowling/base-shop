@@ -1,8 +1,10 @@
 // packages/ui/src/components/organisms/CategoryCard.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { CategoryCard, type Category } from './CategoryCard';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { type Category,CategoryCard } from './CategoryCard';
 
 const category: Category = {
   id: 'outerwear',

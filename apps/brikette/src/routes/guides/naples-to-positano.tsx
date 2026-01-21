@@ -1,16 +1,18 @@
 // src/routes/guides/naples-to-positano.tsx
-import { defineGuideRoute } from "./defineGuideRoute";
-import { getGuideManifestEntry } from "./guide-manifest";
+import type { LinksFunction } from "react-router";
+
 import ImageGallery, { type ImageGalleryItem } from "@/components/guides/ImageGallery";
-import { ensureArray } from "@/utils/i18nContent";
-import { guideHref, guideAbsoluteUrl, type GuideKey } from "@/routes.guides-helpers";
+import { BASE_URL } from "@/config/site";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { guideAbsoluteUrl, guideHref, type GuideKey } from "@/routes.guides-helpers";
 // Satisfy template-enforcement lint rule for guides routes without adding runtime weight
 import type {} from "@/routes/guides/_GuideSeoTemplate";
-import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { ensureArray } from "@/utils/i18nContent";
 import { toAppLanguage } from "@/utils/lang";
-import { BASE_URL } from "@/config/site";
-import type { LinksFunction } from "react-router";
+import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
+
+import { defineGuideRoute } from "./defineGuideRoute";
+import { getGuideManifestEntry } from "./guide-manifest";
 
 export const handle = { tags: ["transport", "naples", "positano", "ferry", "bus", "car"] };
 

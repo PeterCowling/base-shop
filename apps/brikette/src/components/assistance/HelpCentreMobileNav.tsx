@@ -1,23 +1,26 @@
 /* file path: src/components/assistance/HelpCentreMobileNav.tsx */
 /* Mobile drawer – visible below lg (1024 px) */
 
-import { memo, useCallback, useMemo, type ReactNode } from "react";
-import clsx from "clsx";
+import { memo, type ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+
 import HelpCentreMobileNavUI, {
   type AssistanceMobileNavItem,
   type HelpCentreMobileNavCopy,
 } from "@acme/ui/organisms/HelpCentreMobileNav";
+
 import { useBannerHeightOrZero } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import assistanceFallback from "@/locales/en/assistanceCommon.json";
 import type { HelpArticleKey } from "@/routes.assistance-helpers";
 // Namespace import to handle partial test mocks gracefully
 import * as assistance from "@/routes.assistance-helpers";
 import { getSlug } from "@/utils/slug";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import assistanceFallback from "@/locales/en/assistanceCommon.json";
 
 /* ── helpers ─────────────────────────────────────────────────── */
 type CurrentKey = HelpArticleKey;
@@ -69,7 +72,7 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
   const { open, toggle } = useHelpDrawer();
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
-  const { pathname } = useLocation();
+  const pathname = usePathname() ?? "";
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
   const bannerHeight = useBannerHeightOrZero();
 
@@ -136,7 +139,7 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
       children: ReactNode;
     }) => (
       <Link
-        to={item.href}
+        href={item.href}
         aria-current={item.isActive ? "page" : undefined}
         className={clsx(
           "flex",

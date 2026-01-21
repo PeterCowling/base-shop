@@ -1,4 +1,5 @@
 import type { Rule } from "eslint";
+
 import { extractFromJsxAttribute } from "../utils/classParser.js";
 
 const ALLOW_COMPONENTS = new Set(["Modal", "Popover", "Toast", "SkipLink"]);

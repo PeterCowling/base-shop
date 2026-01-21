@@ -1,5 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
+import { createOidcAuthFlowStore } from "../src/oidc/flowStore";
+
 jest.mock("@acme/config/env/core", () => ({
   coreEnv: {
     SESSION_STORE_PROVIDER: undefined,
@@ -8,8 +10,6 @@ jest.mock("@acme/config/env/core", () => ({
     UPSTASH_REDIS_REST_TOKEN: undefined,
   },
 }));
-
-import { createOidcAuthFlowStore } from "../src/oidc/flowStore";
 
 describe("OidcAuthFlowStore", () => {
   it("stores and retrieves flow records in memory", async () => {

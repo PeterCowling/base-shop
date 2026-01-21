@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { type PageComponentBase } from "../base";
+
 import { type SKU } from "../../Product";
+import { type PageComponentBase } from "../base";
+
 export interface ProductComparisonComponent extends PageComponentBase {
     type: "ProductComparison";
     skus?: SKU[];

@@ -630,9 +630,9 @@
     "domain": "Dashboard / Upgrade"
   },
   {
-    "path": "docs/plans/e2e-ownership-consolidation-plan.md",
+    "path": "docs/historical/plans/e2e-ownership-consolidation-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -648,9 +648,9 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/integrated-secrets-workflow-plan.md",
+    "path": "docs/plans/archive/integrated-secrets-workflow-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Repo"
   },
   {
@@ -660,15 +660,15 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/launch-shop-pipeline-plan.md",
+    "path": "docs/plans/archive/launch-shop-pipeline-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/lint-warnings-mission-control-brikette-scripts-plan.md",
+    "path": "docs/plans/archive/lint-warnings-mission-control-brikette-scripts-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Platform"
   },
   {
@@ -678,9 +678,9 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/nextjs-15-3-6-upgrade-plan.md",
+    "path": "docs/plans/archive/nextjs-15-3-6-upgrade-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Platform"
   },
   {
@@ -690,9 +690,9 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/post-deploy-health-checks-mandatory-plan.md",
+    "path": "docs/plans/archive/post-deploy-health-checks-mandatory-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Repo"
   },
   {
@@ -732,9 +732,9 @@
     "domain": "Reception"
   },
   {
-    "path": "docs/plans/reception-login-ui-improvement-plan.md",
+    "path": "docs/plans/archive/reception-login-ui-improvement-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Reception"
   },
   {

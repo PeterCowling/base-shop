@@ -1,13 +1,16 @@
 "use client";
 
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/shadcn";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
+import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
+
 import { Switch, Toast } from "@/components/atoms";
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/shadcn";
+
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
-import { useTranslations } from "@acme/i18n";
 
 export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?: string; nextStepId?: string }) {
   const { state, update } = useConfigurator();
@@ -31,7 +34,7 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
           <div className="flex items-center gap-3">
             <Switch
               checked={tracking}
-              onChange={(e) => update("inventoryTracking", (e.target as HTMLInputElement).checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => update("inventoryTracking", e.target.checked)}
               aria-label={t("cms.inventory.toggleAria") as string}
             />
             <span className="text-sm text-muted-foreground">{t("cms.inventory.enableTrackingHelp")}</span>

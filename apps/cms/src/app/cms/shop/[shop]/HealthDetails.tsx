@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/HealthDetails.tsx
 
-import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 import { validateShopName } from "@acme/platform-core/shops";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 
 export const revalidate = 0;
 
@@ -115,7 +115,7 @@ export default async function HealthDetails({ shop }: { shop: string }) {
         <div className="mt-3 space-y-1">
           <p className="font-medium text-foreground">Signals contributing to status:</p>
           <ul className="list-disc space-y-0.5 pl-5 text-muted-foreground">
-            {summary.reasons.map((reason, idx) => (
+            {summary.reasons.map((reason: { code: string; message: string }, idx: number) => (
               <li key={`${reason.code}-${idx}`}>{reason.message}</li>
             ))}
           </ul>

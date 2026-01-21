@@ -1,20 +1,22 @@
 // src/routes/guides/money-saving-tips-amalfi-coast-transport.tsx
 import { memo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import type { MetaFunction, LinksFunction } from "react-router";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import type { GuideKey } from "@/routes.guides-helpers";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+
 import { BASE_URL } from "@/config/site";
-import { getSlug } from "@/utils/slug";
-import { guideSlug } from "@/routes.guides-helpers";
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import { OG_IMAGE as OG_DIMS } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 
 export const handle = { tags: ["budgeting", "transport", "tips"] };
 

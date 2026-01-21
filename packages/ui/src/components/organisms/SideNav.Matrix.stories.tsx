@@ -2,8 +2,10 @@
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, within } from '@storybook/test';
-import { SideNav } from './SideNav';
+
 import { makeStateStory } from '../../story-utils/createStories';
+
+import { SideNav } from './SideNav';
 
 const meta: Meta<typeof SideNav> = {
   title: 'Organisms/Side Nav/Matrix',

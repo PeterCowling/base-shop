@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +25,8 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
+      // Ensure @acme/ui alias is available for this app if not inherited
+      "@acme/ui": path.resolve(__dirname, "../../packages/ui/dist"),
     };
     return config;
   },

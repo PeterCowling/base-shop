@@ -4,6 +4,17 @@
 /* -------------------------------------------------------------------------- */
 /*  Declare mocks FIRST, then import the component 🛠️                         */
 /* -------------------------------------------------------------------------- */
+/*  Now that modules are mocked, import React‑Testing‑Library & the component */
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+
+import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
+
 const diffHistoryMock = jest.fn();
 const revertSeoMock = jest.fn();
 
@@ -13,16 +24,6 @@ jest.mock("@acme/platform-core/repositories/settings.server", () => ({
 jest.mock("@cms/actions/shops.server", () => ({
   revertSeo: (...a: unknown[]) => revertSeoMock(...a),
 }));
-
-/*  Now that modules are mocked, import React‑Testing‑Library & the component */
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
 
 beforeEach(() => {
   jest.clearAllMocks();

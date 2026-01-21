@@ -1,14 +1,16 @@
 // packages/platform-core/src/cartStore.ts
-import { loadCoreEnv } from "@acme/config/env/core";
-import type { SKU, RentalLineItem } from "@acme/types";
 import type { Redis } from "@upstash/redis";
+
+import { loadCoreEnv } from "@acme/config/env/core";
+import type { RentalLineItem,SKU } from "@acme/types";
+
 import type { CartState } from "./cart";
-import { MemoryCartStore } from "./cartStore/memoryStore";
-import { RedisCartStore } from "./cartStore/redisStore";
 import {
   CloudflareDurableObjectCartStore,
   type DurableObjectNamespace,
 } from "./cartStore/cloudflareDurableStore";
+import { MemoryCartStore } from "./cartStore/memoryStore";
+import { RedisCartStore } from "./cartStore/redisStore";
 
 /** Abstraction for cart storage backends */
 export interface CartStore {

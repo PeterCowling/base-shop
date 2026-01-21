@@ -1,16 +1,18 @@
 "use client";
 
-import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
-import { Tooltip } from "../../atoms";
-import { Inline, Stack } from "../../atoms/primitives";
 import { useEffect, useState } from "react";
-import { Spinner } from "../../atoms";
 import { CheckIcon, RotateCounterClockwiseIcon, UpdateIcon } from "@radix-ui/react-icons";
-import VersionsPanel from "./VersionsPanel";
-import type { PageComponent, HistoryState } from "@acme/types";
+
 import { useTranslations } from "@acme/i18n";
-import { DialogDescription } from "../../atoms/shadcn/Dialog";
+import type { HistoryState,PageComponent } from "@acme/types";
+
+import { Spinner,Tooltip  } from "../../atoms";
+import { Inline, Stack } from "../../atoms/primitives";
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../atoms/shadcn/AlertDialog";
+import { DialogDescription } from "../../atoms/shadcn/Dialog";
+
+import VersionsPanel from "./VersionsPanel";
 
 interface Props {
   canUndo: boolean;

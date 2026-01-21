@@ -1,20 +1,22 @@
 import "server-only";
 
-import { LOCALES } from "@acme/i18n";
+import { z } from "zod";
+
+import { nowIso } from "@acme/date-utils";
+import { LOCALES } from "@acme/i18n/locales";
 import {
-  shopSettingsSchema,
   type Locale,
   type ShopSettings,
+  shopSettingsSchema,
 } from "@acme/types";
-import { z } from "zod";
+
 import { validateShopName } from "../shops/index";
-import { nowIso } from "@acme/date-utils";
 import {
+  appendToShop,
   ensureShopDir,
   readFromShop,
-  writeToShop,
-  appendToShop,
   renameInShop,
+  writeToShop,
 } from "../utils/safeFs";
 
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];

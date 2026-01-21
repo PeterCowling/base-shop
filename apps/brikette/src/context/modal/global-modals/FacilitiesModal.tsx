@@ -6,11 +6,12 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { FacilitiesModalCategory, FacilitiesModalCopy } from "@acme/ui/organisms/modals";
+
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 
 import { useModal } from "../hooks";
 import { FacilitiesModal } from "../lazy-modals";
-import type { FacilitiesModalCategory, FacilitiesModalCopy } from "@acme/ui/organisms/modals";
 
 export function FacilitiesGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();

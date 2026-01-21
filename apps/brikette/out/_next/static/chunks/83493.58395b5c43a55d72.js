@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[83493],{83493:e=>{e.exports=JSON.parse('{"bookNow":"Забронировать","reserveNow":"Забронировать сейчас","checkAvailability":"Проверить наличие","directBookingPerks":"Преимущества прямого бронирования","bestPriceGuaranteed":"Гарантия лучшей цены","openBarMenu":"Открыть меню бара"}')}}]);

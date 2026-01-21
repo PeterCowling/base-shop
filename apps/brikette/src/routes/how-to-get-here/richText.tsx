@@ -1,9 +1,9 @@
 import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
+import { resolveRichTextParts } from "./normalizers";
 import { externalLinkClass } from "./styles";
 import type { DestinationLink, RichText } from "./types";
-import { resolveRichTextParts } from "./normalizers";
 
 function resolveHref(link: DestinationLink, basePath: string) {
   if (link.internal && !link.href.startsWith("/")) {

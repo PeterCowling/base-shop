@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import TemplateSelector from "../TemplateSelector";
 
 jest.mock("@acme/ui/components/atoms", () => {

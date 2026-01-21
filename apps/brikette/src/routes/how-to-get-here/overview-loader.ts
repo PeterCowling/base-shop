@@ -1,8 +1,9 @@
-import i18n from "@/i18n";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
 import type { LoaderFunctionArgs } from "react-router-dom";
+
+import i18n from "@/i18n";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 import type { OverviewLoaderData } from "./types";
 

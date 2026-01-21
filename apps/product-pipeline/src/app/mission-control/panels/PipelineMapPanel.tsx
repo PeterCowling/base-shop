@@ -1,11 +1,10 @@
 "use client";
 
-import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
 import { useEffect, useMemo, useState } from "react";
+import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+
 import PipelineMap2D from "./PipelineMap2D";
 import PipelineMap3D from "./PipelineMap3D";
-import type { PipelineStage } from "./pipelineMapConfig";
 
 type MapMode = "2d" | "3d";
 
@@ -27,8 +26,8 @@ function supportsWebGL(): boolean {
 function getPrefersReducedMotion(): boolean {
   if (typeof window === "undefined") return false;
   if (!("matchMedia" in window)) return false;
-  const query = "(prefers-reduced-motion" + ": reduce)";
-  return window.matchMedia(query).matches;
+  // eslint-disable-next-line ds/no-hardcoded-copy -- PP-001 media query string, not user-facing
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 function readStoredMode(): MapMode | null {
@@ -59,9 +58,6 @@ export default function PipelineMapPanel({
     hint: string;
     mode2d: string;
     mode3d: string;
-    webglUnavailable: string;
-    runsLabel: string;
-    nodeLabels: Record<PipelineStage, string>;
   };
   stageCounts: Record<string, number>;
 }) {
@@ -99,17 +95,15 @@ export default function PipelineMapPanel({
         </Stack>
         <div className="flex flex-wrap items-center gap-2">
           <span className="pp-chip">{strings.hint}</span>
+{/* eslint-disable ds/no-hardcoded-copy -- PP-001 CSS class strings, not user-facing copy */}
           <div className="inline-flex items-center gap-1 rounded-full border border-border-1 bg-surface-2 p-1 text-xs">
             <button
               type="button"
-              className={cn(
-                "rounded-full",
-                "px-3",
-                "py-1",
-                "font-semibold",
-                effectiveMode === "2d" ? "bg-primary" : "text-foreground/70",
-                effectiveMode === "2d" ? "text-primary-foreground" : "hover:bg-surface-3",
-              )}
+              className={`rounded-full px-3 py-1 font-semibold ${
+                effectiveMode === "2d"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground/70 hover:bg-surface-3"
+              }`}
               onClick={() => setMode("2d")}
               aria-pressed={effectiveMode === "2d"}
             >
@@ -117,37 +111,29 @@ export default function PipelineMapPanel({
             </button>
             <button
               type="button"
-              className={cn(
-                "rounded-full",
-                "px-3",
-                "py-1",
-                "font-semibold",
-                effectiveMode === "3d" ? "bg-primary" : "text-foreground/70",
-                effectiveMode === "3d" ? "text-primary-foreground" : "hover:bg-surface-3",
-                "disabled:cursor-not-allowed",
-                "disabled:opacity-50",
-              )}
+              className={`rounded-full px-3 py-1 font-semibold ${
+                effectiveMode === "3d"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground/70 hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
+              }`}
               onClick={() => setMode("3d")}
               aria-pressed={effectiveMode === "3d"}
               disabled={!can3d}
-              title={!can3d ? strings.webglUnavailable : undefined}
+              // i18n-exempt -- PP-001 [ttl=2027-01-01] internal admin tool tooltip
+              title={!can3d ? "WebGL not available" : undefined}
             >
               {strings.mode3d}
             </button>
           </div>
+          {/* eslint-enable ds/no-hardcoded-copy */}
         </div>
       </Cluster>
 
       <div className="mt-6">
         {effectiveMode === "3d" ? (
-          <PipelineMap3D
-            stageCounts={stageCounts}
-            reduceMotion={prefersReducedMotion}
-            labels={strings.nodeLabels}
-            runsLabel={strings.runsLabel}
-          />
+          <PipelineMap3D stageCounts={stageCounts} reduceMotion={prefersReducedMotion} />
         ) : (
-          <PipelineMap2D stageCounts={stageCounts} labels={strings.nodeLabels} />
+          <PipelineMap2D stageCounts={stageCounts} />
         )}
       </div>
     </section>

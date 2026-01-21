@@ -2,6 +2,7 @@
 import type { TFunction } from "i18next";
 
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
+
 import { resolveLuggageStorageString } from "./luggage-storage-positano.strings";
 
 type TocEntry = { href: string; label: string };

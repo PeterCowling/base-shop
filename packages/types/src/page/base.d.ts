@@ -1,8 +1,11 @@
 import { z } from "zod";
+
 import type { Translated } from "../Product";
+
 import type { LayoutProps } from "./layout";
 import type { PositioningProps } from "./positioning";
 import type { SpacingProps } from "./spacing";
+
 export type PageStatus = "draft" | "published";
 export interface SeoMeta {
     title: Translated;

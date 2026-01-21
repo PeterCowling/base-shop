@@ -1,26 +1,28 @@
 import {
-  AlignLeftIcon,
-  AlignRightIcon,
-  AlignTopIcon,
   AlignBottomIcon,
   AlignCenterHorizontallyIcon,
   AlignCenterVerticallyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  AlignTopIcon,
   ColumnSpacingIcon,
   RowSpacingIcon,
 } from "@radix-ui/react-icons";
 
+import type { PageComponent } from "@acme/types";
+
 import { Button } from "../../../../atoms/shadcn";
 import {
-  alignLeft,
-  alignRight,
-  alignTop,
   alignBottom,
   alignCenterX,
   alignCenterY,
+  alignLeft,
+  alignRight,
+  alignTop,
   distributeHorizontal,
   distributeVertical,
 } from "../../state/layout/geometry";
-import type { PageComponent } from "@acme/types";
+
 import type { PageBuilderDispatch, Viewport } from "./types";
 
 interface MultiSelectionAlignmentControlsProps {

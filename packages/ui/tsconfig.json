@@ -20,6 +20,8 @@
       "@/*": ["src/*"],
       "@acme/ui": ["./src/index", "./dist/index.d.ts"],
       "@acme/ui/*": ["./src/*", "./dist/*"],
+      "@acme/design-system": ["../design-system/src/index", "../design-system/dist/index.d.ts"],
+      "@acme/design-system/*": ["../design-system/src/*", "../design-system/dist/*"],
       "@acme/platform-core": ["../platform-core/src/index", "../platform-core/dist/index.d.ts"],
       "@acme/platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
       "@platform-core": ["../platform-core/src/index", "../platform-core/dist/index.d.ts"],
@@ -51,13 +53,13 @@
       "@acme/page-builder-core/*": [
         "../page-builder-core/src/*",
         "../page-builder-core/dist/*"
-      ],
-      "react-router": ["types-compat/react-router"],
-      "react-router-dom": ["types-compat/react-router-dom"],
-      "react-router/dom": ["types-compat/react-router-dom"]
+      ]
     }
   },
   "references": [
+    {
+      "path": "../design-system"
+    },
     {
       "path": "../platform-core"
     },

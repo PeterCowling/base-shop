@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { ConfiguratorProgress, getSteps, getStepsMap, stepIndex, getStepTrackMeta } from "../steps";
-import { useConfigurator } from "../ConfiguratorContext";
-import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Alert, Tag } from "@acme/ui/components/atoms";
-import { cn } from "@acme/ui/utils/style";
-import type { ConfiguratorStep } from "../types";
+
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
+import { Alert, Tag } from "@acme/ui/components/atoms";
+import { cn } from "@acme/ui/utils/style";
+
+import { Card, CardContent } from "@/components/atoms/shadcn";
+
+import { useConfigurator } from "../ConfiguratorContext";
+import { ConfiguratorProgress, getSteps, getStepsMap, getStepTrackMeta,stepIndex } from "../steps";
+import type { ConfiguratorStep } from "../types";
 
 interface Props {
   stepId: string;

@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { TranslationsProvider, useTranslations } from "../src/Translations";
 import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
+
+import { TranslationsProvider, useTranslations } from "../src/Translations";
 
 describe("TranslationsProvider and useTranslations", () => {
   function Show({ tKey }: { tKey: string }): React.JSX.Element {

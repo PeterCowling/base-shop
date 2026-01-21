@@ -1,22 +1,26 @@
 /** @jest-environment node */
 
+import { File as NodeFile } from 'node:buffer';
+
 import path from 'path';
-import { File } from 'node:buffer';
+
+import {
+  deleteMediaFile,
+  inferMediaType,
+  listMediaFiles,
+  uploadMediaFile,
+} from '../media/mediaFileService';
 
 import {
   fsMock,
-  writeJsonFileMock,
-  sharpMetadataMock,
-  ulidMock,
   resetMediaMocks,
   restoreMediaMocks,
+  sharpMetadataMock,
+  ulidMock,
+  writeJsonFileMock,
 } from './media.test.mocks';
-import {
-  listMediaFiles,
-  uploadMediaFile,
-  deleteMediaFile,
-  inferMediaType,
-} from '../media/mediaFileService';
+// Cast to globalThis.File since buffer.File lacks webkitRelativePath
+const File = NodeFile as unknown as typeof globalThis.File;
 
 describe('mediaFileService', () => {
   beforeEach(resetMediaMocks);

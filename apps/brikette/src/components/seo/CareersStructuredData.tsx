@@ -1,12 +1,14 @@
+"use client";
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/CareersStructuredData.tsx
-import { BASE_URL } from "@/config/site";
-import { WEBSITE_ID, buildHotelNode } from "@/utils/schema";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { getSlug } from "@/utils/slug";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
+import { buildHotelNode,WEBSITE_ID } from "@/utils/schema";
+import { getSlug } from "@/utils/slug";
 
 function CareersStructuredData({ lang }: { lang?: AppLanguage }): JSX.Element {
   const fallbackLang = useCurrentLanguage();

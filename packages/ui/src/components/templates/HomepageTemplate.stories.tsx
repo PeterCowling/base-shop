@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+
 import { HomepageTemplate } from "./HomepageTemplate";
 
 const meta: Meta<typeof HomepageTemplate> = {

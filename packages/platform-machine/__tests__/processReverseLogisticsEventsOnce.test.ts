@@ -1,18 +1,18 @@
-export {};
-
 import {
+  logger,
+  markAvailable,
+  markCleaning,
+  markQa,
+  markReceived,
+  markRepair,
   readdir,
   readFile,
-  unlink,
-  markReceived,
-  markCleaning,
-  markRepair,
-  markQa,
-  markAvailable,
-  reverseLogisticsEvents,
-  logger,
   resetReverseLogisticsMocks,
+  reverseLogisticsEvents,
+  unlink,
 } from "../src/__tests__/reverseLogisticsTestHelpers";
+
+export {};
 
 jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
 

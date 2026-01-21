@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] reads repo-local resources. */
-import path from "node:path";
 import { existsSync } from "node:fs";
+import path from "node:path";
 
 import { GALLERY_IMAGE_SOURCES } from "../src/routes/guides/day-trip-capri-from-positano/constants";
 

@@ -1,12 +1,15 @@
 // packages/ui/components/organisms/OrderSummary.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
-import OrderSummary from './OrderSummary';
-import { makeStateStory } from '../../story-utils/createStories';
-import type { CartLine } from '@acme/types/Cart';
-import { CurrencyProvider, useCurrency } from '@acme/platform-core/contexts/CurrencyContext';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, within } from '@storybook/test';
+
+import { CurrencyProvider, useCurrency } from '@acme/platform-core/contexts/CurrencyContext';
+import type { CartLine } from '@acme/types/Cart';
+
+import { makeStateStory } from '../../story-utils/createStories';
+
+import OrderSummary from './OrderSummary';
 
 const meta: Meta<typeof OrderSummary> = {
   title: 'Organisms/Order Summary/Matrix',

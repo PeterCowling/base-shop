@@ -1,8 +1,10 @@
 import "server-only";
-import { readSegments, analyticsMTime, SegmentCache, cacheTtl } from "./storage";
-import { createContact, addToList, listSegments } from "./providers";
+
 import type { SegmentDef } from "./filters";
-export { createContact, addToList, listSegments, readSegments, analyticsMTime, SegmentCache, cacheTtl };
+import { addToList, createContact, listSegments } from "./providers";
+import { analyticsMTime, cacheTtl,readSegments, SegmentCache } from "./storage";
+
+export { addToList, analyticsMTime, cacheTtl,createContact, listSegments, readSegments, SegmentCache };
 export type { SegmentDef };
 export declare function resolveSegment(shop: string, id: string): Promise<string[]>;
 //# sourceMappingURL=index.d.ts.map

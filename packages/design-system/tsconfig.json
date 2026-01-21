@@ -1,0 +1,47 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "declarationMap": true,
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom", "node", "jest", "@testing-library/jest-dom"],
+    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@acme/design-system": ["./src/index", "./dist/index.d.ts"],
+      "@acme/design-system/*": ["./src/*", "./dist/*"],
+      "@acme/i18n": ["../i18n/src/index", "../i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
+      "@acme/platform-core": ["../platform-core/src/index", "../platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
+      "@acme/lib": ["../lib/src/index", "../lib/dist/index.d.ts"],
+      "@acme/lib/*": ["../lib/src/*", "../lib/dist/*"],
+      "@acme/types": ["../types/src/index", "../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/src/*", "../types/dist/*"]
+    }
+  },
+  "references": [
+    { "path": "../i18n" },
+    { "path": "../platform-core" },
+    { "path": "../lib" },
+    { "path": "../types" }
+  ],
+  "include": ["src", "src/**/*.json"],
+  "exclude": [
+    "__tests__",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*"
+  ]
+}

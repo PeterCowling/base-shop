@@ -1,0 +1,11 @@
+{
+  "provider": "custom",
+  "minRating": 0,
+  "showAggregate": true,
+  "emitJsonLd": true,
+  "items": [
+    { "id": "r1", "author": "Alice", "rating": 5, "title": "Great", "body": "Loved it", "createdAt": "2025-01-01" },
+    { "id": "r2", "author": "Bob", "rating": 4, "title": "Solid", "body": "Pretty good", "createdAt": "2025-02-10" }
+  ]
+}
+

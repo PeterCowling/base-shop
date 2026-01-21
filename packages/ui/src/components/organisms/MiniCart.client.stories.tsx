@@ -1,9 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { MiniCart } from "./MiniCart.client";
-import type { SKU } from "@acme/types";
+import type { Meta, StoryObj } from "@storybook/react";
+
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import type { SKU } from "@acme/types";
+
+import { MiniCart } from "./MiniCart.client";
 
 const sku1: SKU = {
   id: "sku-1",

@@ -2,11 +2,12 @@
 // This renders nothing and exists purely so we can attach
 // stable `${lang}-guide-${key}` ids to the route manifest
 // without publishing duplicate public pages.
-import * as React from "react";
-import type { MetaFunction, LinksFunction } from "react-router";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import type * as React from "react";
+import type { LinksFunction,MetaFunction } from "react-router";
+
 import { BASE_URL } from "@/config/site";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 
 export default function ManifestSentinel(): React.ReactElement | null {
   return null;

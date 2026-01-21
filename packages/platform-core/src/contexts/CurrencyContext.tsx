@@ -2,13 +2,13 @@
 
 import {
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useState,
-  type ReactNode,
 } from "react";
 
-export type Currency = "EUR" | "USD" | "GBP";
+export type Currency = "AUD" | "EUR" | "USD" | "GBP";
 
 const DEFAULT_CURRENCY: Currency = "EUR";
 const LS_KEY = "PREFERRED_CURRENCY";
@@ -41,13 +41,20 @@ export function readInitial(): Currency {
   if (!win) return DEFAULT_CURRENCY;
   try {
     const stored = win.localStorage.getItem(LS_KEY) as Currency | null;
-    if (stored === "EUR" || stored === "USD" || stored === "GBP") return stored;
+    if (stored === "AUD" || stored === "EUR" || stored === "USD" || stored === "GBP") {
+      return stored;
+    }
   } catch {}
   return DEFAULT_CURRENCY;
 }
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currency, setCurrency] = useState<Currency>(readInitial);
+  const [currency, setCurrency] = useState<Currency>(DEFAULT_CURRENCY);
+
+  useEffect(() => {
+    const initial = readInitial();
+    setCurrency((prev) => (prev === initial ? prev : initial));
+  }, []);
 
   useEffect(() => {
     const win = resolveWindow();

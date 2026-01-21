@@ -1,23 +1,25 @@
 // src/routes/guides/positano-cost-vs-other-beach-destinations.tsx
 import { memo } from "react";
-import TableOfContents from "@/components/guides/TableOfContents";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction, MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
+
+import TableOfContents from "@/components/guides/TableOfContents";
+import { BASE_URL } from "@/config/site";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import type { LinksFunction, MetaFunction } from "react-router";
-import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import { OG_IMAGE } from "@/utils/headConstants";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
 import { useGuideTranslations } from "./guide-seo/translations";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import type { AppLanguage } from "@/i18n.config";
 
 export const handle = { tags: ["comparison", "cost", "positano"] };
 
@@ -140,8 +142,8 @@ function PositanoCostComparison(): JSX.Element {
                 // 1) Ask the guide translator with fallbacks (localized → localized fallback → EN)
                 const viaTranslator = ctx.translateGuides(key) as unknown;
                 try {
-                  if (process.env["DEBUG_TOC"] === "1") {
-                    console.log('[%s toc:%s]', GUIDE_KEY, 'lookup', { key, viaTranslator });
+                  if (process.env.NODE_ENV !== "production" && process.env["DEBUG_TOC"] === "1") {
+                    console.info("[%s toc:%s]", GUIDE_KEY, "lookup", { key, viaTranslator });
                   }
                 } catch { /* noop */ }
                 text = pick(viaTranslator) ?? '';
@@ -151,8 +153,8 @@ function PositanoCostComparison(): JSX.Element {
                 try {
                   const viaEn = guidesEn(key) as unknown;
                   try {
-                    if (process.env["DEBUG_TOC"] === "1") {
-                      console.log('[%s toc:%s]', GUIDE_KEY, 'en', { key, viaEn });
+                    if (process.env.NODE_ENV !== "production" && process.env["DEBUG_TOC"] === "1") {
+                      console.info("[%s toc:%s]", GUIDE_KEY, "en", { key, viaEn });
                     }
                   } catch { /* noop */ }
                   text = pick(viaEn) ?? '';

@@ -2,12 +2,12 @@
 Type: Plan
 Status: Active
 Domain: Platform
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-01-20
 Relates-to charter: none
 Created: 2026-01-16
 Created-by: Codex
-Last-updated: 2026-01-16
-Last-updated-by: Codex
+Last-updated: 2026-01-20
+Last-updated-by: Claude
 ---
 
 # No-Hardcoded-Copy Non-UI Exemptions Plan
@@ -26,8 +26,25 @@ The `ds/no-hardcoded-copy` rule is flagging strings that are not customer-facing
 - Keep enforcement intact for user-facing copy.
 - Encode exemptions in lint settings or rule heuristics rather than per-file comments.
 
+## Current State (audited 2026-01-20, updated after COPY-01)
+
+**Implemented exemptions in eslint.config.mjs:**
+- [x] `apps/brikette/scripts/**` - CLI scripts exempted
+- [x] `packages/ui/**` - Temporary broad exemption
+- [x] `packages/lib/**`, `packages/editorial/**` - Package exemptions
+- [x] `packages/mcp-*/**` - MCP packages exempted
+- [x] Test files (`test/msw/**`, `test/shims/**`, Cypress support)
+- [x] `**/components/seo/**` - SEO components (SEO-315)
+- [x] `**/*StructuredData*.{ts,tsx,js,jsx}` - Structured data files
+- [x] `**/utils/seo*.{ts,tsx,js,jsx}` - SEO utilities
+- [x] `**/utils/schema/**` - Schema utilities
+- [x] `**/locales/**/*.stub/**` - Locale stub fixtures
+- [x] `scripts/**` - Root scripts directory
+
+**All path exemptions are now implemented.** COPY-02 can proceed to remove redundant inline disables.
+
 ## Plan
-1. Update `ds/no-hardcoded-copy` to ignore non-copy attribute values (`data-*`, `type`, `id`, etc.) and utility class lists in non-JSX contexts.
+1. ~~Update `ds/no-hardcoded-copy` to ignore non-copy attribute values~~ (done via rule config)
 2. Add ESLint path-based exemptions for non-UI surfaces:
    - `**/components/seo/**`
    - `**/*StructuredData*.*`
@@ -46,6 +63,26 @@ The `ds/no-hardcoded-copy` rule is flagging strings that are not customer-facing
 - Run targeted lint checks for touched files/paths when needed.
 - Spot-check remaining `eslint-disable ds/no-hardcoded-copy` annotations to ensure they still have value.
 
-## Active tasks
+## Completed tasks
 
-- **COPY-01** - Implement path exemptions in eslint.config.mjs
+- [x] **COPY-01** - Add missing path exemptions to eslint.config.mjs
+  - Completed: 2026-01-20
+  - Added exemptions for:
+    - `**/components/seo/**/*.{ts,tsx,js,jsx}`
+    - `**/*StructuredData*.{ts,tsx,js,jsx}`
+    - `**/utils/seo*.{ts,tsx,js,jsx}`
+    - `**/utils/schema/**/*.{ts,tsx,js,jsx}`
+    - `**/locales/**/*.stub/**/*.{ts,tsx,js,jsx}`
+    - `scripts/**/*.{ts,tsx,js,jsx}`
+  - Verified: ESLint now reports "Unused eslint-disable directive" in exempted paths
+
+- [x] **COPY-02** - Remove redundant inline disables in linted paths
+  - Completed: 2026-01-20
+  - Fixed: `scripts/src/secrets/materialize.ts`, `scripts/src/secrets/validate-ci.ts`
+  - Note: Brikette files (SEO, locale stubs) are in global ignores (`apps/brikette/**`), so they aren't linted. Inline disables there are harmless but can be cleaned up opportunistically.
+
+## Notes
+
+- 26 inline disables remain in `apps/brikette/src/components/seo/` - harmless due to global ignore
+- 28 inline disables remain in `apps/brikette/src/locales/guides.stub/` - harmless due to global ignore
+- When brikette is un-ignored in the future, the path exemptions will apply and `eslint --fix` can auto-remove these

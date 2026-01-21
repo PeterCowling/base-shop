@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MfaChallenge from "../MfaChallenge";
+
 import { TranslationsProvider } from "@acme/i18n";
+
+import MfaChallenge from "../MfaChallenge";
 
 const messages = {
   "account.mfa.input.placeholder": "Enter MFA code",
@@ -9,7 +11,7 @@ const messages = {
   "account.mfa.error.invalid": "Invalid code",
 } as const;
 
-jest.mock("@acme/shared-utils", () => ({
+jest.mock("@acme/lib/security", () => ({
   __esModule: true,
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));

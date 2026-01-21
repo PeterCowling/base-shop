@@ -1,6 +1,8 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import VariantSelector from "@/components/VariantSelector";
+
 import { renderWithProviders } from "./testUtils";
 
 describe("VariantSelector", () => {

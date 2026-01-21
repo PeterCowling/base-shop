@@ -1,90 +1,20 @@
-export { Button, type ButtonProps } from "./primitives/button";
-export {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  type AccordionProps,
-  type AccordionItemProps,
-  type AccordionTriggerProps,
-  type AccordionContentProps,
-} from "./primitives/accordion";
-export { Card, CardContent } from "./primitives/card";
-export { Checkbox, type CheckboxProps } from "./primitives/checkbox";
-export {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-} from "./primitives/dialog";
-export { Input, type InputProps } from "./primitives/input";
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "./primitives/select";
-export {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./primitives/table";
-export { Textarea, type TextareaProps } from "./primitives/textarea";
-export {
-  Drawer,
-  DrawerTrigger,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerContent,
-  type DrawerContentProps,
-} from "./primitives/drawer";
-export { OverlayScrim } from "./primitives/overlayScrim";
-export { ARViewer } from "./ARViewer";
-export { Avatar } from "./Avatar";
-export { Chip } from "./Chip";
-export { IconButton } from "./IconButton";
-export { ColorSwatch } from "./ColorSwatch";
-export { FileSelector } from "./FileSelector";
-export { Icon } from "./Icon";
-export { LineChart } from "./LineChart";
-export { Loader, Loader as Spinner } from "./Loader";
-export { Logo } from "./Logo";
-export { PaginationDot } from "./PaginationDot";
-export {
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  PopoverTrigger,
-} from "./Popover";
-export { Price } from "./Price";
-export { ProductBadge } from "./ProductBadge";
-export { Progress } from "./Progress";
-export { Radio } from "./Radio";
-export { RatingStars } from "./RatingStars";
-export { Skeleton } from "./Skeleton";
-export { StatCard } from "./StatCard";
-export { StockStatus } from "./StockStatus";
-export { Switch } from "./Switch";
-export { Tag, type TagProps } from "./Tag";
-export { Toast } from "./Toast";
-export { Alert } from "./Alert";
-export { LinkText, type LinkTextProps } from "./LinkText";
-export { Tooltip } from "./Tooltip";
-export { VideoPlayer } from "./VideoPlayer";
-export { ZoomImage } from "./ZoomImage";
-export { FormField } from "./FormField";
-export { SelectField } from "./SelectField";
+"use client";
+
+/**
+ * @deprecated Import from '@acme/design-system/atoms' or '@acme/design-system/primitives' instead.
+ * This barrel re-exports from @acme/design-system for backward compatibility.
+ */
+
+// Show deprecation warning in development
+if (process.env.NODE_ENV === "development") {
+  console.warn(
+    "[@acme/ui] Importing from '@acme/ui/atoms' or '@acme/ui/components/atoms' is deprecated. " +
+    "Please import from '@acme/design-system/atoms' or '@acme/design-system/primitives' instead."
+  );
+}
+
+// Re-export atoms from design-system
+export * from "@acme/design-system/atoms";
+
+// Re-export primitives from design-system (for backward compat - previously exported from this barrel)
+export * from "@acme/design-system/primitives";

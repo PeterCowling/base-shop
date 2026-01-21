@@ -1,18 +1,19 @@
-import routes from "@/routes";
+import type { LinkDescriptor, MetaDescriptor } from "react-router";
 import type { RouteConfigEntry } from "@react-router/dev/routes";
-import { i18nConfig } from "@/i18n.config";
+
+import { BASE_URL } from "@/config/site";
 import roomsData from "@/data/roomsData";
 import { TAGS_SUMMARY } from "@/data/tags.index";
-import { BASE_URL } from "@/config/site";
-import type { LinkDescriptor, MetaDescriptor } from "react-router";
+import { i18nConfig } from "@/i18n.config";
+import routes from "@/routes";
 
-import { routeModules } from "./route-modules";
 import type { RouteModule } from "./route-module-types";
+import { routeModules } from "./route-modules";
 import {
   isRedirectResult,
-  locationFromUrl,
   type LoaderFunctionArgs,
   type Location,
+  locationFromUrl,
   type RouterState,
 } from "./router-state";
 
@@ -336,7 +337,7 @@ export const resolveRoute = async (
     if (!loader) {
       throw new Error(`Missing route module for ${match.file}`);
     }
-    const routeModule = await loader();
+    const routeModule = (await loader()) as RouteModule;
     const loadFn = routeModule.clientLoader ?? routeModule.loader;
     let data: unknown;
     if (loadFn) {

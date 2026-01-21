@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import Presets from "../src/components/cms/style/Presets";
 import presetData from "../src/components/cms/style/presets.json";
 

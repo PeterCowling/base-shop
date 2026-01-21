@@ -2,9 +2,10 @@
 /* eslint-env jest */
 
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
-import WizardPreview from "../src/app/cms/wizard/WizardPreview";
+import { act,render, screen } from "@testing-library/react";
+
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import WizardPreview from "../src/app/cms/wizard/WizardPreview";
 
 jest.mock("./../src/app/cms/wizard/usePreviewTokens", () => ({
   __esModule: true,

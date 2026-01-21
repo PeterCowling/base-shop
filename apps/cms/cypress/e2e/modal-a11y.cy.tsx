@@ -1,14 +1,16 @@
 import '@testing-library/cypress/add-commands';
 import 'cypress-plugin-tab';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import PopupModal from '../../../../packages/ui/src/components/cms/blocks/PopupModal';
-import { ProductQuickView } from '../../../../packages/ui/src/components/overlays/ProductQuickView';
+
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
+  DialogTrigger,
 } from '../../../../packages/ui/src/components/atoms/primitives/dialog';
+import PopupModal from '../../../../packages/ui/src/components/cms/blocks/PopupModal';
+import { ProductQuickView } from '../../../../packages/ui/src/components/overlays/ProductQuickView';
 
 describe('Modal accessibility', () => {
   it('PopupModal traps focus and restores on close', () => {

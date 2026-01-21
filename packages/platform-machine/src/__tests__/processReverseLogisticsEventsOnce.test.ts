@@ -1,20 +1,21 @@
 /** @jest-environment node */
 import path from "node:path";
+
+import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
+
 import {
-  readdir,
-  readFile,
-  unlink,
+  logger,
   markAvailable,
   markCleaning,
   markQa,
   markReceived,
   markRepair,
-  reverseLogisticsEvents,
-  logger,
+  readdir,
+  readFile,
   resetReverseLogisticsMocks,
+  reverseLogisticsEvents,
+  unlink,
 } from "./reverseLogisticsTestHelpers";
-
-import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
 
 describe("processReverseLogisticsEventsOnce", () => {
   beforeEach(() => {

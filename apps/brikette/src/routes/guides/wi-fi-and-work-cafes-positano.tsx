@@ -1,28 +1,30 @@
 // src/routes/guides/wi-fi-and-work-cafes-positano.tsx
 import { memo, useMemo } from "react";
-import GuideSeoTemplate from "./_GuideSeoTemplate";
+import type { LinksFunction,MetaFunction } from "react-router";
 import type { LoaderFunctionArgs } from "react-router-dom";
-import i18n from "@/i18n";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { langFromRequest } from "@/utils/lang";
-import { ensureGuideContent } from "@/utils/ensureGuideContent";
-import type { GuideKey } from "@/routes.guides-helpers";
+
 import ImageGallery from "@/components/guides/ImageGallery";
 import TableOfContents from "@/components/guides/TableOfContents";
-import { useGuideTranslations } from "./guide-seo/translations";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { ensureStringArray } from "@/utils/i18nContent";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
 import { BASE_URL } from "@/config/site";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
-import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
-import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
-import type { MetaFunction, LinksFunction } from "react-router";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import type { GuideKey } from "@/routes.guides-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import type { NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
-import type { GuideSeoTemplateContext } from "./guide-seo/types";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
+import { ensureStringArray } from "@/utils/i18nContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
+import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
+
+import GuideSeoTemplate from "./_GuideSeoTemplate";
+import { useGuideTranslations } from "./guide-seo/translations";
+import type { GuideSeoTemplateContext } from "./guide-seo/types";
 
 export const handle = { tags: ["connectivity", "digital-nomads", "positano"] };
 

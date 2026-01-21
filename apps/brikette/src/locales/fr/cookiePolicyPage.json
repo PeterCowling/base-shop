@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Politique relative aux cookies | Hostel Brikette",
+    "description": "Comment Hostel Brikette utilise les cookies et des technologies similaires sur notre site web, et quels choix s'offrent à vous."
+  },
+  "headings": {
+    "pageTitle": "Politique relative aux cookies",
+    "subtitle": "Cookies, stockage local et services tiers"
+  },
+  "lastUpdated": {
+    "label": "Dernière mise à jour",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "Sur cette page",
+    "aria": "Table des matières de la politique relative aux cookies"
+  },
+  "sections": {
+    "intro": {
+      "title": "Aperçu",
+      "body": [
+        "Cette politique relative aux cookies explique ce que sont les cookies, si nous les utilisons sur ce site web et comment des services tiers peuvent utiliser des cookies lorsque vous interagissez avec leur contenu."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Ce que sont les cookies",
+      "body": [
+        "Les cookies sont de petits fichiers texte que les sites web peuvent stocker sur votre appareil pour mémoriser des informations entre les visites. Des technologies similaires incluent le stockage local et le stockage de session dans votre navigateur."
+      ]
+    },
+    "ourUse": {
+      "title": "Comment nous utilisons les cookies sur ce site web",
+      "body": [
+        "Nous cherchons à limiter les cookies au minimum. Lorsque c'est possible, nous utilisons le stockage du navigateur (stockage local) pour des préférences simples plutôt que des cookies.",
+        "Si nous introduisons des cookies à l'avenir (par exemple pour la sécurité essentielle, l'analyse ou des services intégrés), nous mettrons à jour cette politique."
+      ]
+    },
+    "localStorage": {
+      "title": "Stockage local (préférences)",
+      "body": [
+        "Le stockage local permet au site web de mémoriser certaines préférences sur votre appareil. Par exemple, il peut être utilisé pour conserver vos préférences d'interface entre les pages.",
+        "Vous pouvez effacer le stockage local via les paramètres de votre navigateur."
+      ]
+    },
+    "thirdParties": {
+      "title": "Services tiers",
+      "body": [
+        "Certains liens ou contenus intégrés peuvent être fournis par des tiers (par exemple, des cartes ou des fournisseurs de réservation). Ces tiers peuvent déposer des cookies ou utiliser des technologies similaires selon leurs propres politiques.",
+        "Lorsque vous suivez un lien vers un site tiers, leurs politiques de confidentialité et de cookies s'appliquent."
+      ]
+    },
+    "choices": {
+      "title": "Vos choix",
+      "body": [
+        "La plupart des navigateurs permettent de bloquer ou supprimer les cookies et d'effacer des données de site telles que le stockage local. Bloquer certaines technologies peut affecter la fonctionnalité.",
+        "Vous pouvez aussi utiliser la navigation privée ou des extensions de navigateur pour limiter le suivi."
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "body": [
+        "Si vous avez des questions sur cette politique relative aux cookies, contactez-nous à {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Retour en haut"
+  }
+}

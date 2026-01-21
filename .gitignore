@@ -71,6 +71,7 @@ yarn-error.log*
 **/coverage/
 **/.ts-jest/
 .lighthouseci/
+**/storybook-static/
 packages/types/src/**/*.js
 packages/types/src/**/*.d.ts.map
 

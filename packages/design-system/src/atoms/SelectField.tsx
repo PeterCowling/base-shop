@@ -1,8 +1,5 @@
 import * as React from "react";
 
-import { cn } from "../utils/style";
-
-import { FormField } from "./FormField";
 import {
   Select,
   SelectContent,
@@ -12,6 +9,9 @@ import {
   type SelectTriggerProps,
   SelectValue,
 } from "../primitives/select";
+import { cn } from "../utils/style";
+
+import { FormField } from "./FormField";
 
 export interface SelectFieldOption {
   value: string;
@@ -59,7 +59,7 @@ export function SelectField({
       error={error}
       {...(isRequired !== undefined ? { required: isRequired } : {})}
       {...(fieldClassName !== undefined ? { className: fieldClassName } : {})}
-      // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: inline render prop keeps Select wired to FormField ids for accessibility
+       
       input={({ id, describedBy, ariaInvalid }) => (
         <Select {...rootProps}>
           <SelectTrigger

@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { ProductBadge } from "../atoms/ProductBadge";
+
 export interface SustainabilityBadge {
     label: string;
     variant?: React.ComponentProps<typeof ProductBadge>["variant"];

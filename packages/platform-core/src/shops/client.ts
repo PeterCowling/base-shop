@@ -7,23 +7,23 @@
  */
 
 export {
-  // Validation
-  SHOP_NAME_RE,
-  validateShopName,
+  getDomain,
+  getEditorialBlog,
+  getSanityConfig,
+  getShopAppPackage,
   // Shop ID helpers
   getShopAppSlug,
-  getShopAppPackage,
   getShopWorkflowName,
   normalizeShopId,
-  type ShopIdTarget,
+  type SanityBlogConfig,
+  setDomain,
+  setEditorialBlog,
+  setSanityConfig,
   // Shop types and utilities
   type Shop,
-  type SanityBlogConfig,
+  // Validation
+  SHOP_NAME_RE,
   type ShopDomain,
-  getSanityConfig,
-  setSanityConfig,
-  getEditorialBlog,
-  setEditorialBlog,
-  getDomain,
-  setDomain,
+  type ShopIdTarget,
+  validateShopName,
 } from "./universal";

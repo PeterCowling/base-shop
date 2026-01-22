@@ -64,7 +64,7 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       <div
         ref={ref}
         className={cn(WRAPPER_CLASSES, classes, className)}
-        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: box props produce inline sizing when needed
+         
         style={mergedStyle}
         {...props}
       >

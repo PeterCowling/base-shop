@@ -5,11 +5,11 @@ import { authOptions } from "@cms/auth/options";
 
 import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
-import { checkShopExists } from "@acme/platform-core";
 import {
   listStockInflows,
   receiveStockInflow,
 } from "@acme/platform-core/repositories/stockInflows.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 export const runtime = "nodejs";
 

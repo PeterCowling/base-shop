@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { XA_PRODUCTS } from "../../lib/demoData";
-import { XA_CATEGORY_LABELS, isCategoryAllowed } from "../../lib/xaCatalog";
+import { isCategoryAllowed,XA_CATEGORY_LABELS } from "../../lib/xaCatalog";
 
 export default function JewelryPage() {
   if (!isCategoryAllowed("jewelry")) notFound();

@@ -14,7 +14,7 @@ export * from "./primitives";
 export * from "./utils/style";
 
 // Types
-export * from "./types/viewport";
+export type * from "./types/viewport";
 
 // Shadcn - only export the custom Button wrapper (primitives already exported above)
 export { Button as ShadcnButton, type ButtonProps as ShadcnButtonProps } from "./shadcn/Button";

@@ -22,7 +22,7 @@ export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
         role={role ?? "status"}
         aria-label={label}
         aria-live="polite"
-        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: loader diameter is runtime-configurable; inline size keeps SVG centered without bespoke classes
+         
         style={{
           width: dimension,
           height: dimension,

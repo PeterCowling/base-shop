@@ -2,8 +2,8 @@
 import * as React from "react";
 import Link from "next/link";
 
-import { cn } from "../utils/style";
 import { Inline } from "../primitives/Inline";
+import { cn } from "../utils/style";
 
 export interface BreadcrumbItem {
   label: React.ReactNode;

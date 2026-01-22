@@ -1,8 +1,8 @@
-import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, jest } from "@jest/globals";
+import { act, renderHook } from "@testing-library/react";
 
-import { useXaListingFilters } from "../useXaListingFilters";
 import type { XaProduct } from "../demoData";
+import { useXaListingFilters } from "../useXaListingFilters";
 
 const pushMock = jest.fn();
 let searchParams = new URLSearchParams();

@@ -13,6 +13,22 @@ import { siteConfig } from "../../../lib/siteConfig";
 
 const LAST_UPDATED = "29 December 2025";
 
+function NeedHelpCard(props: { contactInline: React.ReactNode }) {
+  return (
+    <div className="rounded-lg border border-border-2 bg-surface-2/50 p-4">
+      <div className="text-base font-semibold text-foreground">Need help?</div>
+      <p className="mt-2">
+        If you have questions about paying with cryptocurrency (availability, failed payments, or
+        refunds), contact us via the{" "}
+        <Link className="underline text-foreground" href="/pages/contact-us">
+          contact page
+        </Link>
+        {props.contactInline}.
+      </p>
+    </div>
+  );
+}
+
 export default function CryptocurrencyPaymentPage() {
   const brandName = siteConfig.brandName;
   const contactEmail =
@@ -23,6 +39,7 @@ export default function CryptocurrencyPaymentPage() {
       {contactEmail}
     </a>
   ) : null;
+  const contactInline = contactEmailLink ? <> or email {contactEmailLink}</> : null;
 
   return (
     <main className="sf-content">
@@ -211,23 +228,13 @@ export default function CryptocurrencyPaymentPage() {
                   <Link className="underline text-foreground" href="/pages/contact-us">
                     contact page
                   </Link>
-                  {contactEmailLink ? <> or email {contactEmailLink}</> : null}.
+                  {contactInline}.
                 </p>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
 
-          <div className="rounded-lg border border-border-2 bg-surface-2/50 p-4">
-            <div className="text-base font-semibold text-foreground">Need help?</div>
-            <p className="mt-2">
-              If you have questions about paying with cryptocurrency (availability, failed payments,
-              or refunds), contact us via the{" "}
-              <Link className="underline text-foreground" href="/pages/contact-us">
-                contact page
-              </Link>
-              {contactEmailLink ? <> or email {contactEmailLink}</> : null}.
-            </p>
-          </div>
+          <NeedHelpCard contactInline={contactInline} />
         </div>
       </Section>
     </main>

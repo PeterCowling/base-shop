@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { renderHook, waitFor } from "@testing-library/react";
 
-import { useXaProductSearch } from "../useXaProductSearch";
 import type { XaProduct } from "../../demoData";
+import { useXaProductSearch } from "../useXaProductSearch";
 
 const searchProductsMock = jest.fn();
 

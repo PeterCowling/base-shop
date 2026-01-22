@@ -106,8 +106,14 @@ function looksLikeCssClasses(value: string): boolean {
   if (tokens.length === 0) return false;
   // Each token should look like a CSS utility class (kebab-case, may include modifiers like hover:, md:, etc.)
   // Pattern: optional modifiers (word:) followed by kebab-case identifiers with optional brackets/parentheses
-  const cssTokenPattern = /^(?:[a-z0-9]+:)*[a-z0-9_\-\[\]\(\)\/\.!]+$/i;
+  const cssTokenPattern = /^(?:[a-z0-9_\-\[\]=]+:)*[a-z0-9_\-\[\]\(\)\/\.!]+$/i;
   return tokens.every((token) => cssTokenPattern.test(token));
+}
+
+function hasUtilityClassSyntax(value: string): boolean {
+  const tokens = value.trim().split(/\s+/).filter(Boolean);
+  if (tokens.length < 2) return false;
+  return tokens.some((token) => /[:\-\/\[\]\(\)\.!]/.test(token));
 }
 
 /** Check if node is inside a CSS helper function call like cn(), clsx(), etc. */
@@ -127,6 +133,27 @@ function isInsideCssHelper(node: any): boolean {
     p = p.parent;
   }
   return false;
+}
+
+function isConsoleCallStringLiteral(node: any): boolean {
+  const parent = node.parent;
+  if (!parent || parent.type !== "CallExpression") return false;
+  const { callee } = parent;
+  if (!callee || callee.type !== "MemberExpression") return false;
+  if (callee.object?.type !== "Identifier" || callee.object.name !== "console") return false;
+  const method = callee.property?.type === "Identifier" ? callee.property.name : null;
+  if (!method) return false;
+  return ["log", "info", "warn", "error", "debug"].includes(method);
+}
+
+function isErrorMessageLiteral(node: any): boolean {
+  const parent = node.parent;
+  if (!parent) return false;
+  if (parent.type !== "CallExpression" && parent.type !== "NewExpression") return false;
+  const callee = parent.callee;
+  if (!callee || callee.type !== "Identifier" || callee.name !== "Error") return false;
+  const args = parent.arguments ?? [];
+  return args[0] === node;
 }
 
 /** Default properties that are always non-user-facing */
@@ -175,6 +202,13 @@ const rule: Rule.RuleModule = {
       ...(options.ignoreProperties ?? []),
     ]);
 
+    const filename = typeof context.getFilename === "function" ? context.getFilename() : "";
+    // Declaration files contain many non-copy string literals (keys, unions) and
+    // shouldn't be treated as user-facing copy.
+    if (filename.endsWith(".d.ts")) {
+      return {};
+    }
+
     const sc = (context as any).sourceCode || context.getSourceCode();
     const EXEMPT_FILE_RE = /i18n-exempt\s+file\s*--\s*([A-Z]{2,}-\d+)(?:[^\S\r\n]+ttl=\d{4}-\d{2}-\d{2})?/;
     const fileExempt = (sc.getAllComments?.() ?? []).some((c: any) => EXEMPT_FILE_RE.test(String(c.value || "")));
@@ -198,59 +232,76 @@ const rule: Rule.RuleModule = {
       return false;
     }
 
+    function shouldIgnoreLiteral(node: any, strValue: string): boolean {
+      // Check configurable ignore patterns
+      if (isIgnoredByPattern(strValue)) return true;
+
+      // Check if this is a property assignment we should ignore
+      if (isIgnoredPropertyAssignment(node)) return true;
+
+      const p = node.parent;
+      // Ignore directive prologues like "use client", "use server", "use strict"
+      if (p?.type === "ExpressionStatement" && (p as any).directive) return true;
+
+      // Ignore module specifiers in import/export declarations
+      if (
+        p?.type === "ImportDeclaration" ||
+        p?.type === "ExportAllDeclaration" ||
+        (p?.type === "ExportNamedDeclaration" && (p as any).source)
+      ) {
+        return true;
+      }
+
+      // Ignore log messages; these are not user-facing UI copy and are often
+      // intentionally stable for diagnostics.
+      if (isConsoleCallStringLiteral(node)) return true;
+
+      // Ignore Error(...) / new Error(...) messages (these are generally developer-facing).
+      if (isErrorMessageLiteral(node)) return true;
+
+      if (hasExemptComment(context, node)) return true;
+
+      // Ignore within allowed a11y attributes
+      if (p?.type === "JSXAttribute") {
+        const name = p.name?.name as string | undefined;
+        if (isA11yAttr(name)) return true;
+        // Non-user-facing attribute literals
+        if (name === "role") return true;
+        if (name === "href") return true;
+        if (name === "viewBox" || name === "width" || name === "height" || name === "d" || name === "fill")
+          return true;
+        if (name === "rel") return true;
+        // Non-copy attributes to ignore
+        if (name === "class" || name === "className") return true;
+      }
+
+      // Heuristic: ignore CSS/utility-like strings in non-JSX contexts
+      if (p?.type !== "JSXAttribute") {
+        // Ignore token-y strings without whitespace (e.g., bg-bg, text-foreground)
+        if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(strValue)) return true;
+        if (strValue.startsWith("/") || /:\/\//.test(strValue)) return true;
+        if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(strValue)) return true; // MIME types
+        if (/^var\(--[a-z0-9\-]+\)$/i.test(strValue)) return true;
+        if (/^(hsl|hsla|rgb|rgba)\(/i.test(strValue)) return true;
+        if (/var\(/i.test(strValue)) return true;
+        // Ignore space-separated CSS class strings inside cn(), clsx(), etc.
+        if (isInsideCssHelper(node) && looksLikeCssClasses(strValue)) return true;
+        // Also ignore obvious CSS utility class lists stored in constants.
+        if (looksLikeCssClasses(strValue) && hasUtilityClassSyntax(strValue)) return true;
+      }
+
+      if (isWrappedByT(node)) return true;
+      if (isTrivial(strValue)) return true;
+
+      return false;
+    }
+
     return {
       Literal(node: any) {
         if (fileExempt) return;
         if (typeof node.value !== "string") return;
         const strValue = String(node.value);
-
-        // Check configurable ignore patterns
-        if (isIgnoredByPattern(strValue)) return;
-
-        // Check if this is a property assignment we should ignore
-        if (isIgnoredPropertyAssignment(node)) return;
-
-        // Ignore module specifiers in import/export declarations
-        const p = node.parent;
-        // Ignore directive prologues like "use client", "use server", "use strict"
-        if (p?.type === "ExpressionStatement" && (p as any).directive) {
-          return;
-        }
-        if (
-          p?.type === "ImportDeclaration" ||
-          p?.type === "ExportAllDeclaration" ||
-          (p?.type === "ExportNamedDeclaration" && (p as any).source)
-        ) {
-          return;
-        }
-        if (hasExemptComment(context, node)) return;
-        // Ignore within allowed a11y attributes
-        const parent = node.parent;
-        if (parent?.type === "JSXAttribute") {
-          const name = parent.name?.name as string | undefined;
-          if (isA11yAttr(name)) return;
-          // Non-user-facing attribute literals
-          if (name === "role") return;
-          if (name === "href") return;
-          if (name === "viewBox" || name === "width" || name === "height" || name === "d" || name === "fill") return;
-          if (name === "rel") return;
-          // Non-copy attributes to ignore
-          if (name === "class" || name === "className") return;
-        }
-        // Heuristic: ignore CSS/utility-like strings in non-JSX contexts
-        if (parent?.type !== "JSXAttribute") {
-          // Ignore token-y strings without whitespace (e.g., bg-bg, text-foreground)
-          if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(strValue)) return;
-          if (strValue.startsWith("/") || /:\/\//.test(strValue)) return;
-          if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(strValue)) return; // MIME types
-          if (/^var\(--[a-z0-9\-]+\)$/i.test(strValue)) return;
-          if (/^(hsl|hsla|rgb|rgba)\(/i.test(strValue)) return;
-          if (/var\(/i.test(strValue)) return;
-          // Ignore space-separated CSS class strings inside cn(), clsx(), etc.
-          if (isInsideCssHelper(node) && looksLikeCssClasses(strValue)) return;
-        }
-        if (isWrappedByT(node)) return;
-        if (isTrivial(strValue)) return;
+        if (shouldIgnoreLiteral(node, strValue)) return;
         context.report({ node, messageId: "hardcodedCopy" });
       },
       JSXText(node: any) {

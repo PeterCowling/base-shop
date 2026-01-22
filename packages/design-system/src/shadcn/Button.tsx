@@ -4,10 +4,10 @@
 
 import * as React from "react";
 
-import { cn } from "../utils/style";
 import type { ButtonProps as BaseButtonProps } from "../primitives/button";
 import { Button as BaseButton } from "../primitives/button";
 import { Slot } from "../primitives/slot";
+import { cn } from "../utils/style";
 
 export interface ButtonProps
   extends Omit<BaseButtonProps, "variant" | "size"> {

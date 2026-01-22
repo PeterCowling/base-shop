@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { formatPrice } from "@acme/lib/format";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { cn } from "../utils/style";
 

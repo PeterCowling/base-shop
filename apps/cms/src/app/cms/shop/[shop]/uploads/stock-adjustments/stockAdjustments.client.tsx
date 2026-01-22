@@ -1,15 +1,16 @@
 /* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- COM-0001 [ttl=2026-12-31] MVP stock adjustment UI pending DS refactor */
+/* i18n-exempt file -- COM-0001 ttl=2026-12-31 */
 
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getCsrfToken } from "@acme/lib/security";
 import type {
   StockAdjustmentEvent,
   StockAdjustmentReport,
 } from "@acme/platform-core/types/stockAdjustments";
-import { getCsrfToken } from "@acme/lib/security";
 
 import {
   Button,
@@ -28,6 +29,8 @@ import {
   Textarea,
 } from "@/components/atoms/shadcn";
 
+import { useInventorySnapshot } from "../useInventorySnapshot.client";
+
 type AdjustmentResult =
   | { ok: true; duplicate: boolean; report: StockAdjustmentReport; event: StockAdjustmentEvent }
   | { ok: false; code: string; message: string; details?: unknown };
@@ -41,15 +44,6 @@ type DraftItem = {
   inventoryKey?: string;
   reason: string;
 };
-
-type InventoryRow = {
-  sku: string;
-  productId: string;
-  quantity: number;
-  variantAttributes: Record<string, string>;
-};
-
-type InventoryRowWithKey = InventoryRow & { key: string };
 
 const reasons = [
   { value: "correction", label: "Correction" },
@@ -102,14 +96,6 @@ function emptyRow(): DraftItem {
   };
 }
 
-function buildInventoryKey(item: InventoryRow): string {
-  const variantPart = Object.entries(item.variantAttributes)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`)
-    .join("|");
-  return `${item.sku}::${variantPart || "no-variant"}`;
-}
-
 function normalizeVariantAttributes(attrs: Record<string, string>) {
   return Object.fromEntries(
     Object.entries(attrs)
@@ -143,55 +129,7 @@ export default function StockAdjustmentsClient({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AdjustmentResult | null>(null);
-  const [inventory, setInventory] = useState<InventoryRowWithKey[]>([]);
-  const [inventoryError, setInventoryError] = useState<string | null>(null);
-  const [inventoryLoading, setInventoryLoading] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    async function loadInventory() {
-      setInventoryLoading(true);
-      setInventoryError(null);
-      try {
-        const res = await fetch(`/api/data/${shop}/inventory/export?format=json`);
-        if (!res.ok) {
-          const message = res.status === 403 ? "Missing inventory permission" : "Unable to load inventory snapshot.";
-          throw new Error(message);
-        }
-        const json = (await res.json()) as Record<string, unknown>[];
-        const rows: InventoryRowWithKey[] = json
-          .map((item) => {
-            const variantAttributes = Object.fromEntries(
-              Object.entries(item)
-                .filter(([k]) => k.startsWith("variant."))
-                .map(([k, v]) => [k.slice("variant.".length), String(v)]),
-            );
-            const sku = String(item.sku ?? "").trim();
-            const productId = String(item.productId ?? "").trim();
-            const quantity = Number(item.quantity ?? 0);
-            if (!sku || !productId || !Number.isFinite(quantity)) return null;
-            const row: InventoryRow = { sku, productId, quantity, variantAttributes };
-            return { ...row, key: buildInventoryKey(row) };
-          })
-          .filter((row): row is InventoryRowWithKey => Boolean(row));
-        if (!cancelled) {
-          setInventory(rows);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setInventoryError((err as Error).message);
-        }
-      } finally {
-        if (!cancelled) {
-          setInventoryLoading(false);
-        }
-      }
-    }
-    loadInventory();
-    return () => {
-      cancelled = true;
-    };
-  }, [shop]);
+  const { inventory, inventoryError, inventoryLoading } = useInventorySnapshot(shop);
 
   const normalizedItems = useMemo(() => {
     return items

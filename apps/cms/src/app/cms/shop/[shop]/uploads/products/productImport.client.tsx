@@ -5,11 +5,11 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getCsrfToken } from "@acme/lib/security";
 import type {
   ProductImportEvent,
   ProductImportReport,
 } from "@acme/platform-core/types/productImport";
-import { getCsrfToken } from "@acme/lib/security";
 
 import {
   Button,

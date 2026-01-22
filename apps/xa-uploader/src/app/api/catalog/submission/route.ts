@@ -1,14 +1,13 @@
-import { Readable } from "node:stream";
 import type { Readable as NodeReadable } from "node:stream";
+import { Readable } from "node:stream";
 
-/* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] API responses pending i18n */
 import { NextResponse } from "next/server";
 
-import { hasUploaderSession } from "../../../../lib/uploaderAuth";
-import { listCatalogDrafts } from "../../../../lib/catalogCsv";
 import { slugify } from "../../../../lib/catalogAdminSchema";
+import { listCatalogDrafts } from "../../../../lib/catalogCsv";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { buildSubmissionZipStream } from "../../../../lib/submissionZip";
+import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
 

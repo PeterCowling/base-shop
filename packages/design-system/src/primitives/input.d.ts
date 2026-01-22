@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /** Optional label displayed above or floating */
     label?: React.ReactNode;

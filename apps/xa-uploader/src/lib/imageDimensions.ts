@@ -80,6 +80,52 @@ function parseJpegDimensions(buf: Buffer): ImageDimensions | null {
   return null;
 }
 
+type WebpChunkParseResult =
+  | { kind: "skip" }
+  | { kind: "invalid" }
+  | { kind: "dimensions"; width: number; height: number };
+
+function parseWebpChunk(
+  buf: Buffer,
+  chunkType: string,
+  chunkSize: number,
+  dataOffset: number,
+): WebpChunkParseResult {
+  if (chunkType === "VP8X") {
+    if (chunkSize < 10 || dataOffset + 10 > buf.length) return { kind: "invalid" };
+    const widthMinus1 = buf.readUIntLE(dataOffset + 4, 3);
+    const heightMinus1 = buf.readUIntLE(dataOffset + 7, 3);
+    const width = widthMinus1 + 1;
+    const height = heightMinus1 + 1;
+    if (!width || !height) return { kind: "invalid" };
+    return { kind: "dimensions", width, height };
+  }
+
+  if (chunkType === "VP8 ") {
+    if (chunkSize < 10 || dataOffset + 10 > buf.length) return { kind: "invalid" };
+    const startCode = buf.subarray(dataOffset + 3, dataOffset + 6);
+    if (startCode[0] !== 0x9d || startCode[1] !== 0x01 || startCode[2] !== 0x2a) {
+      return { kind: "invalid" };
+    }
+    const width = buf.readUInt16LE(dataOffset + 6) & 0x3fff;
+    const height = buf.readUInt16LE(dataOffset + 8) & 0x3fff;
+    if (!width || !height) return { kind: "invalid" };
+    return { kind: "dimensions", width, height };
+  }
+
+  if (chunkType === "VP8L") {
+    if (chunkSize < 5 || dataOffset + 5 > buf.length) return { kind: "invalid" };
+    if (buf[dataOffset] !== 0x2f) return { kind: "invalid" };
+    const bits = buf.readUInt32LE(dataOffset + 1);
+    const width = (bits & 0x3fff) + 1;
+    const height = ((bits >> 14) & 0x3fff) + 1;
+    if (!width || !height) return { kind: "invalid" };
+    return { kind: "dimensions", width, height };
+  }
+
+  return { kind: "skip" };
+}
+
 function parseWebpDimensions(buf: Buffer): ImageDimensions | null {
   if (!isWebpStart(buf)) return null;
 
@@ -90,34 +136,10 @@ function parseWebpDimensions(buf: Buffer): ImageDimensions | null {
     const dataOffset = offset + 8;
     if (dataOffset + chunkSize > buf.length) break;
 
-    if (chunkType === "VP8X") {
-      if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
-      const widthMinus1 = buf.readUIntLE(dataOffset + 4, 3);
-      const heightMinus1 = buf.readUIntLE(dataOffset + 7, 3);
-      const width = widthMinus1 + 1;
-      const height = heightMinus1 + 1;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
-    }
-
-    if (chunkType === "VP8 ") {
-      if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
-      const startCode = buf.subarray(dataOffset + 3, dataOffset + 6);
-      if (startCode[0] !== 0x9d || startCode[1] !== 0x01 || startCode[2] !== 0x2a) return null;
-      const width = buf.readUInt16LE(dataOffset + 6) & 0x3fff;
-      const height = buf.readUInt16LE(dataOffset + 8) & 0x3fff;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
-    }
-
-    if (chunkType === "VP8L") {
-      if (chunkSize < 5 || dataOffset + 5 > buf.length) return null;
-      if (buf[dataOffset] !== 0x2f) return null;
-      const bits = buf.readUInt32LE(dataOffset + 1);
-      const width = (bits & 0x3fff) + 1;
-      const height = ((bits >> 14) & 0x3fff) + 1;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
+    const parsedChunk = parseWebpChunk(buf, chunkType, chunkSize, dataOffset);
+    if (parsedChunk.kind === "invalid") return null;
+    if (parsedChunk.kind === "dimensions") {
+      return { format: "webp", width: parsedChunk.width, height: parsedChunk.height };
     }
 
     offset = dataOffset + chunkSize + (chunkSize % 2);

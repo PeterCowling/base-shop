@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { cn } from "../utils/style";
-
 import {
   Dialog,
   DialogContent,
@@ -13,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../primitives/dialog";
+import { cn } from "../utils/style";
 
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;

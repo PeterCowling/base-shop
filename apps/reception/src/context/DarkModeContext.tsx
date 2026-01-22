@@ -7,7 +7,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { getDatabase, ref, get, update } from "firebase/database";
+import { get, getDatabase, ref, update } from "firebase/database";
+
 import { AuthContext } from "./AuthContext";
 
 type ThemeMode = "light" | "dark";
@@ -167,13 +168,11 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
-    if (mode === "dark") {
-      root.classList.add("dark");
-      body.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-      body.classList.remove("dark");
-    }
+    const isDark = mode === "dark";
+    root.classList.toggle("theme-dark", isDark);
+    root.classList.toggle("dark", isDark);
+    body.classList.toggle("dark", isDark);
+    root.style.colorScheme = isDark ? "dark" : "light";
     root.dataset.theme = mode;
     body.dataset.theme = mode;
     writePreference(GLOBAL_STORAGE_KEY, mode);

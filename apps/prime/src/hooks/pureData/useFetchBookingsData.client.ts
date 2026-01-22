@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-// File: /src/hooks/pureData/useFetchBookingsData.ts
+// File: /src/hooks/pureData/useFetchBookingsData.client.ts
 
 /*
   Explanation:
@@ -9,13 +9,16 @@
   - A `refetch` function is provided so that consuming components can trigger a manual refresh.
 */
 
-import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
-import { useCallback, useEffect, useState } from 'react';
-import { useFirebaseDatabase } from '../../services/useFirebase';
-import { bookingOccupantDataSchema, type BookingOccupantData } from '../../utils/bookingsSchemas';
-import { zodErrorToString } from '../../utils/zodErrorToString';
-import useUuid from '../useUuid';
+import { get, ref } from "@/services/firebase";
+import logger from "@/utils/logger";
+import { useCallback, useEffect, useState } from "react";
+import { useFirebaseDatabase } from "../../services/useFirebase";
+import {
+  bookingOccupantDataSchema,
+  type BookingOccupantData,
+} from "../../utils/bookingsSchemas";
+import { zodErrorToString } from "../../utils/zodErrorToString";
+import useUuid from "../useUuid";
 
 export interface BookingDetails extends BookingOccupantData {
   reservationCode: string;
@@ -46,7 +49,7 @@ export function useFetchBookingsData(): UseFetchBookingsDataReturn {
         return;
       }
 
-      const bookingsRef = ref(database, 'bookings');
+      const bookingsRef = ref(database, "bookings");
       if (!cancelled?.current) setIsLoading(true);
 
       try {
@@ -85,7 +88,7 @@ export function useFetchBookingsData(): UseFetchBookingsDataReturn {
           setError(occupantError);
         }
       } catch (err) {
-        logger.error('Error fetching bookings data:', err);
+        logger.error("Error fetching bookings data:", err);
         if (!cancelled?.current) setError(err);
       } finally {
         if (!cancelled?.current) setIsLoading(false);

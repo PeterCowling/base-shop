@@ -7,8 +7,8 @@ import { authOptions } from "@cms/auth/options";
 
 import { canWrite } from "@acme/auth";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
 import { getPages } from "@acme/platform-core/repositories/pages/index.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import type { Page } from "@acme/types";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";

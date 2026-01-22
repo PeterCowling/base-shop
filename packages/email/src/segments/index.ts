@@ -1,8 +1,8 @@
 import "server-only";
 
+import { logger } from "@acme/lib/logger";
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
-import { logger } from "@acme/lib/logger";
 
 import { matches } from "./filters";
 import { addToList, createContact, listSegments } from "./providers";

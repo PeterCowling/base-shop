@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { ImageProps } from "next/image";
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy fade image pending accessibility/i18n overhaul */
 import Image from "next/image";
-import type { ImageProps } from "next/image";
 
 import { cn } from "@acme/ui/utils/style";
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface PaymentMethod {
     value: string;
     label: string;
@@ -14,6 +15,6 @@ export interface PaymentMethodSelectorProps extends Omit<React.HTMLAttributes<HT
  */
 export declare function PaymentMethodSelector({ methods, value, onChange, className, ...props }: PaymentMethodSelectorProps): import("react/jsx-runtime").JSX.Element;
 export declare namespace PaymentMethodSelector {
-    var displayName: string;
+    let displayName: string;
 }
 //# sourceMappingURL=PaymentMethodSelector.d.ts.map

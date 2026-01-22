@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- XA-0001 [ttl=2026-12-31] filesystem-backed access store pending security/i18n overhaul */
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import crypto from "node:crypto";
 
 import { normalizeInviteCode, resolveInviteHashSecret } from "./stealth";
 
@@ -287,4 +287,4 @@ export function isInviteActive(invite: InviteRecord) {
   return !invite.revokedAt && !isInviteExpired(invite) && hasInviteCapacity(invite);
 }
 
-export type { AccessRequest, InviteRecord, StoreMode, AccessStore };
+export type { AccessRequest, AccessStore,InviteRecord, StoreMode };

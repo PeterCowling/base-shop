@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { toXaSearchDoc, xaMiniSearchProcessTerm } from "../xaSearchConfig";
 import type { XaProduct } from "../../demoData";
+import { toXaSearchDoc, xaMiniSearchProcessTerm } from "../xaSearchConfig";
 
 const makeProduct = (overrides: Partial<XaProduct>): XaProduct => {
   const { taxonomy, ...rest } = overrides;

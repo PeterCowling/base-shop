@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import { getShopFromPath } from "@acme/lib/shop";
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 
 import type {
   ProductSaveResult,

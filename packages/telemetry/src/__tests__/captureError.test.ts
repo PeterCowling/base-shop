@@ -1,5 +1,5 @@
 // packages/telemetry/src/__tests__/captureError.test.ts
-import { jest, describe, it, expect, beforeEach, afterEach } from "@jest/globals";
+import { afterEach,beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import { sanitizeContext } from "../sanitize";
 

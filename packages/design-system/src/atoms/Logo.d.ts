@@ -1,5 +1,5 @@
-import { type ImageProps } from "next/image";
 import * as React from "react";
+import { type ImageProps } from "next/image";
 
 type Viewport = "desktop" | "tablet" | "mobile";
 interface LogoSource {

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { XA_PRODUCTS } from "../../lib/demoData";
-import { XA_DEPARTMENTS, formatLabel } from "../../lib/xaCatalog";
+import { formatLabel,XA_DEPARTMENTS } from "../../lib/xaCatalog";
 import type { XaDepartment } from "../../lib/xaTypes";
 
 export default async function NewInPage({

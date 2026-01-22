@@ -4,8 +4,8 @@ import { authOptions } from "@cms/auth/options";
 
 import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
-import { checkShopExists } from "@acme/platform-core";
 import { listStockInflows } from "@acme/platform-core/repositories/stockInflows.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import type { StockInflowEvent } from "@acme/platform-core/types/stockInflows";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";

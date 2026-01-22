@@ -75,7 +75,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
             boxClasses,
             className
           )}
-          // eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline sizing relies on numeric props; utility classes cannot cover arbitrary values
+           
           style={inlineDimensions}
           >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}

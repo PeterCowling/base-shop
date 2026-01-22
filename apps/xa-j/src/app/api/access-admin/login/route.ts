@@ -5,8 +5,8 @@ import {
   setAdminCookie,
   validateAdminToken,
 } from "../../../../lib/accessAdmin";
-import { resolveAccessCookieSecret } from "../../../../lib/stealth";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { resolveAccessCookieSecret } from "../../../../lib/stealth";
 
 export const runtime = "edge";
 

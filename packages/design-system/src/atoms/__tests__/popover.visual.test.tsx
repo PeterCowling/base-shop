@@ -4,8 +4,8 @@ import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
 import { Button } from "../../primitives/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
 
 describe("Popover visuals", () => {
   it("uses panel surface and border tokens", async () => {

@@ -1,11 +1,11 @@
 import Link from "next/link";
 
+import { Grid } from "@acme/ui/atoms/Grid";
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy service center content pending design/i18n overhaul */
 import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Breadcrumbs } from "@acme/ui/components/molecules";
 import { Button } from "@acme/ui/components/atoms";
 import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Breadcrumbs } from "@acme/ui/components/molecules";
 
 import { siteConfig } from "../../lib/siteConfig";
 import { toWhatsappHref } from "../../lib/support";

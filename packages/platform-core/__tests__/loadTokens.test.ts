@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
-import fs from "fs";
 
 jest.mock("../src/themeTokens", () => ({
+  baseTokens: { baseOnly: "base", shared: "base" },
   loadThemeTokensNode: jest.fn(),
 }));
 
@@ -19,14 +19,6 @@ describe("loadTokens", () => {
   });
 
   it("combines base and theme token maps with theme overriding", () => {
-    jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
-      const file = String(p);
-      if (file.endsWith("tokens.ts")) {
-        return "export const tokens = { baseOnly: { light: 'base' }, shared: { light: 'base' } };";
-      }
-      return "";
-    });
-
     (themeTokens.loadThemeTokensNode as jest.Mock).mockReturnValue({
       themeOnly: "theme",
       shared: "theme",
@@ -40,4 +32,3 @@ describe("loadTokens", () => {
     });
   });
 });
-

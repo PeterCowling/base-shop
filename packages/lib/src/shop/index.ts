@@ -4,9 +4,9 @@ export {
   getOrCreateRequestId,
   getRequestIdFromHeaders,
   getShopIdFromHeaders,
-  requireShopIdFromHeaders,
-  stripSpoofableShopHeaders,
   REQUEST_ID_HEADER,
+  requireShopIdFromHeaders,
   SHOP_ID_HEADER,
   type ShopContext,
+  stripSpoofableShopHeaders,
 } from "./shopContext";

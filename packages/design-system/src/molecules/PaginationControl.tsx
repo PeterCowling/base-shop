@@ -3,9 +3,8 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
+import { Button,Inline  } from "../primitives";
 import { cn } from "../utils/style";
-import { Inline } from "../primitives";
-import { Button } from "../primitives";
 
 export interface PaginationControlProps
   extends React.HTMLAttributes<HTMLDivElement> {

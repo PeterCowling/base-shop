@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { cn } from "../utils/style";
 import { ProductBadge } from "../atoms/ProductBadge";
+import { cn } from "../utils/style";
 
 export interface SustainabilityBadge {
   label: string;

@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 
-import { XaProductListing } from "./XaProductListing.client";
 import { XA_PRODUCTS } from "../lib/demoData";
-import { XA_CATEGORY_LABELS, filterByCategory, filterByDepartment, formatLabel } from "../lib/xaCatalog";
+import { filterByCategory, filterByDepartment, formatLabel,XA_CATEGORY_LABELS } from "../lib/xaCatalog";
 import type { XaCategory, XaDepartment } from "../lib/xaTypes";
+
+import { XaProductListing } from "./XaProductListing.client";
 
 export function XaDepartmentListing({
   department,

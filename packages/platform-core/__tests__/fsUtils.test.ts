@@ -29,11 +29,11 @@ describe('fsUtils', () => {
     expect(mod.repoRoot()).toBe('/workspace/base-shop');
   });
 
-  it('listThemes returns names of all theme directories', async () => {
+  it('listThemes returns names of valid theme packages', async () => {
     vol.fromJSON(
       {
-        '/workspace/base-shop/packages/themes/base/index.ts': '',
-        '/workspace/base-shop/packages/themes/extra/index.ts': '',
+        '/workspace/base-shop/packages/themes/base/src/tokens.css': '',
+        '/workspace/base-shop/packages/themes/extra/src/tokens.css': '',
         '/workspace/base-shop/packages/themes/legacy/index.ts': '',
         '/workspace/base-shop/packages/themes/file.txt': 'not a dir',
       },
@@ -41,7 +41,7 @@ describe('fsUtils', () => {
     );
     const mod = await import('../src/createShop/fsUtils');
     const themes = mod.listThemes().sort();
-    expect(themes).toEqual(['base', 'extra', 'legacy']);
+    expect(themes).toEqual(['base', 'extra']);
   });
 
   it('listThemes returns empty array when readdir fails', async () => {

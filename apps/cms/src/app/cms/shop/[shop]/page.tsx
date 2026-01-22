@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 import type { ConfiguratorProgress } from "@acme/types";
 import { Button, StatCard } from "@acme/ui/components/atoms";

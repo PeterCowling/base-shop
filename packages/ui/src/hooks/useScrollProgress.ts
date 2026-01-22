@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === "development") {
   );
 }
 
-export { useScrollProgress, type ScrollProgress } from "@acme/design-system/hooks/useScrollProgress";
+export { type ScrollProgress,useScrollProgress } from "@acme/design-system/hooks/useScrollProgress";

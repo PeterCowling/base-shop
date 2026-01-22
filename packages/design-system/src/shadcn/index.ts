@@ -1,5 +1,7 @@
 // shadcn-style components - re-exports from primitives plus custom implementations
 
+export { Progress, type ProgressProps } from "../atoms/Progress";
+export { Tag, type TagProps } from "../atoms/Tag";
 export {
   Accordion,
   AccordionContent,
@@ -60,6 +62,4 @@ export {
   TableRow,
 } from "../primitives/table";
 export { Textarea, type TextareaProps } from "../primitives/textarea";
-export { Progress, type ProgressProps } from "../atoms/Progress";
-export { Tag, type TagProps } from "../atoms/Tag";
 export { Button, type ButtonProps } from "./Button";

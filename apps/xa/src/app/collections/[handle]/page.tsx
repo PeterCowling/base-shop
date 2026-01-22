@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 
 import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_COLLECTIONS, XA_PRODUCTS } from "../../../lib/demoData";

@@ -2,12 +2,11 @@
 
 import * as React from "react";
 
-import type { XaCartState } from "../lib/xaCart";
-import { cartLineId, cartReservedQtyForSkuExcluding } from "../lib/xaCart";
+import type { XaProduct } from "../lib/demoData";
 import { getSoldQty } from "../lib/inventoryStore";
 import { readJson, writeJson } from "../lib/storage";
-
-import type { XaProduct } from "../lib/demoData";
+import type { XaCartState } from "../lib/xaCart";
+import { cartLineId, cartReservedQtyForSkuExcluding } from "../lib/xaCart";
 
 type Action =
   | { type: "add"; sku: XaProduct; size?: string; qty?: number }

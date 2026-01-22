@@ -1,13 +1,13 @@
 export { SHOP_NAME_RE, validateShopName } from "./validateShopName";
 
 // Migrated from @acme/shared-utils - universal exports
-export * from "./format";
-export * from "./string";
 export * from "./array";
-export * from "./json";
+export * from "./format";
 export * from "./http";
+export * from "./json";
 export * from "./security";
 export * from "./shop";
+export * from "./string";
 /**
  * Re-export Zod helpers from their module files rather than the package
  * root.  The root of @acme/zod-utils lacks a compiled index.d.ts, which

@@ -1,4 +1,5 @@
 import "server-only";
+
 export interface LogMeta {
     [key: string]: unknown;
 }

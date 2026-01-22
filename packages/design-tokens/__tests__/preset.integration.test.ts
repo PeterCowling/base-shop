@@ -10,10 +10,10 @@ try {
 
 const itFn = resolveConfig ? it : it.skip;
 
-describe("design tokens preset integration", () => {
-  itFn("resolves preset with tailwind", async () => {
-    const module = await import("../src/index.ts");
-    const preset = module.default;
+  describe("design tokens preset integration", () => {
+    itFn("resolves preset with tailwind", async () => {
+    const presetModule = await import("../src/index.ts");
+    const preset = presetModule.default;
 
     // Skip if no default export (implementation uses named exports only)
     if (!preset) {
@@ -38,5 +38,5 @@ describe("design tokens preset integration", () => {
     expect(config.theme?.boxShadow?.sm).toBe("var(--shadow-sm)");
     expect(config.theme?.boxShadow?.md).toBe("var(--shadow-md)");
     expect(config.theme?.boxShadow?.lg).toBe("var(--shadow-lg)");
+    });
   });
-});

@@ -21,8 +21,8 @@ import {
 } from "@radix-ui/react-icons";
 
 import { useTranslations } from "@acme/i18n";
-import { features } from "@acme/platform-core/features";
 import { getShopFromPath } from "@acme/lib/shop";
+import { features } from "@acme/platform-core/features";
 
 export interface CmsNavItem {
   href: string; // base href without /cms prefix

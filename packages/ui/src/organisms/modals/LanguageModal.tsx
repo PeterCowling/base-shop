@@ -2,6 +2,8 @@ import { type ComponentPropsWithoutRef,Fragment, memo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
+import type { Theme } from "../../types/theme";
+
 import { ModalContainer, ModalFooterButton,ModalOverlay, ModalPanel } from "./primitives";
 import type { LanguageModalCopy, LanguageOption } from "./types";
 
@@ -72,7 +74,7 @@ export interface LanguageModalProps {
   readonly onSelect: (code: string) => void;
   readonly onClose: () => void;
   readonly copy: LanguageModalCopy;
-  readonly theme?: "light" | "dark";
+  readonly theme?: Theme;
   readonly testId?: string;
 }
 
@@ -90,12 +92,17 @@ function LanguageModal({
   onSelect,
   onClose,
   copy,
-  theme = "light",
+  theme = "system",
   testId = DEFAULT_TEST_ID,
 }: LanguageModalProps): JSX.Element | null {
   if (!isOpen) return null;
 
-  const themeClass = theme === "dark" ? "lang-dark" : "lang-light";
+  const isDark =
+    theme === "dark" ||
+    (theme === "system" &&
+      typeof document !== "undefined" &&
+      document.documentElement.classList.contains("theme-dark"));
+  const themeClass = isDark ? "lang-dark" : "lang-light";
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

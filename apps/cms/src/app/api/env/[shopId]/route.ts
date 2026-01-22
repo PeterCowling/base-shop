@@ -8,9 +8,9 @@ import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 
+import { parseJsonBody } from "@acme/lib/http/server";
 import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/platform-core/shops";
-import { parseJsonBody } from "@acme/lib/http/server";
 
 const schema = z.record(z.string(), z.string());
 

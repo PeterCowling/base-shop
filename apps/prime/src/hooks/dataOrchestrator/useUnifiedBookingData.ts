@@ -16,7 +16,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { BagStorageRecord } from '../../types/bagStorage';
-import type { BookingDetails } from '../pureData/useFetchBookingsData';
+import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import type { CityTaxOccupantRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type { FinancialsRoomRecord } from '../../types/financialsRoom';

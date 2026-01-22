@@ -1,6 +1,9 @@
 /** @jest-environment node */
 
 // Import setup first to ensure mocks are registered before importing orders
+import * as orders from "../../src/orders";
+
+import { createOrder } from "./orderFactory";
 import {
   incrementSubscriptionUsage,
   nowIsoMock,
@@ -8,10 +11,6 @@ import {
   trackOrder,
   ulidMock,
 } from "./setup";
-
-import * as orders from "../../src/orders";
-
-import { createOrder } from "./orderFactory";
 
 const { listOrders, addOrder, getOrdersForCustomer, readOrders } = orders;
 

@@ -44,6 +44,7 @@ const PATTERNS = {
 
   // Phone numbers - international format, US format, and common variations
   phone:
+    // eslint-disable-next-line security/detect-unsafe-regex -- digit groups and separators are fixed-width; used for tokenization only
     /(?:\+\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}(?:[-.\s]?\d{2,4})?/g,
 
   // i18next interpolations: {{var}}, {{var, format}}
@@ -70,16 +71,6 @@ function buildTokenPlaceholder(type: TokenType, seq: number): string {
 /**
  * Parse a token placeholder string back to type and sequence.
  */
-function parseTokenPlaceholder(
-  placeholder: string
-): { type: TokenType; seq: number } | null {
-  const match = placeholder.match(/⟦T([A-Z])(\d{3})⟧/);
-  if (!match) return null;
-  return {
-    type: match[1] as TokenType,
-    seq: parseInt(match[2], 10),
-  };
-}
 
 /**
  * Escape any pre-existing token-like patterns in the text.
@@ -246,9 +237,14 @@ function tokenizeGlossaryTerms(
     // Build regex for the term
     const escapedSource = source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const flags = caseSensitive ? "g" : "gi";
-    const pattern = matchWholeWord
-      ? new RegExp(`\\b${escapedSource}\\b`, flags)
-      : new RegExp(escapedSource, flags);
+    let pattern: RegExp;
+    if (matchWholeWord) {
+      // eslint-disable-next-line security/detect-non-literal-regexp -- `escapedSource` is regex-escaped above
+      pattern = new RegExp(`\\b${escapedSource}\\b`, flags);
+    } else {
+      // eslint-disable-next-line security/detect-non-literal-regexp -- `escapedSource` is regex-escaped above
+      pattern = new RegExp(escapedSource, flags);
+    }
 
     result = result.replace(pattern, (match) => {
       const metadata: GlossaryTokenMetadata = {
@@ -381,6 +377,7 @@ export function tokenizeHtmlTags(
   ) => string
 ): string {
   // Match HTML tags (opening, closing, and self-closing)
+  // eslint-disable-next-line security/detect-unsafe-regex -- negated character classes avoid catastrophic backtracking
   const htmlTagPattern = /<\/?([a-zA-Z][a-zA-Z0-9]*)\s*([^>]*)?\/?>/g;
 
   return text.replace(htmlTagPattern, (match, tagName, attributes) => {

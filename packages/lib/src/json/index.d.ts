@@ -1,2 +1,2 @@
-export { jsonFieldHandler, type ErrorSetter } from "./jsonFieldHandler";
+export { type ErrorSetter,jsonFieldHandler } from "./jsonFieldHandler";
 //# sourceMappingURL=index.d.ts.map

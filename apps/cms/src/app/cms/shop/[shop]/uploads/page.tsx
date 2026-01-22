@@ -6,7 +6,7 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid as DSGrid, Stack } from "@acme/ui/components/atoms/primitives";
 

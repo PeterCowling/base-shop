@@ -2,6 +2,7 @@ import { useState } from "react";
 import { type Meta, type StoryObj } from "@storybook/nextjs";
 
 import { Stack } from "../primitives/Stack";
+
 import { Radio, type RadioProps } from "./Radio";
 
 type GroupProps = RadioProps & { selectedIndex: number };

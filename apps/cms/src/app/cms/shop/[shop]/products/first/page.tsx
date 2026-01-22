@@ -5,7 +5,7 @@ import { createMinimalFirstProduct } from "@cms/actions/products.server";
 
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { Alert, Tag } from "@acme/ui/components/atoms";
 import { Grid } from "@acme/ui/components/atoms/primitives";
 import { Button, Card, CardContent, Input } from "@acme/ui/components/atoms/shadcn";

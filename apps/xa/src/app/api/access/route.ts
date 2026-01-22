@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 
 import {
-  ACCESS_COOKIE_NAME,
-  normalizeInviteCode,
-  resolveInviteCodes,
-  resolveAccessCookieSecret,
-} from "../../../lib/stealth";
-import { createAccessToken } from "../../../lib/accessTokens";
-import {
   findValidInvite,
   isInviteActive,
   listInvites,
   registerInviteUse,
 } from "../../../lib/accessStore";
+import { createAccessToken } from "../../../lib/accessTokens";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../lib/rateLimit";
+import {
+  ACCESS_COOKIE_NAME,
+  normalizeInviteCode,
+  resolveAccessCookieSecret,
+  resolveInviteCodes,
+} from "../../../lib/stealth";
 
 export const runtime = "edge";
 
@@ -27,6 +27,20 @@ function resolveNextPath(value: string | null) {
   return trimmed;
 }
 
+function redirectAccess(args: {
+  requestUrl: string;
+  error: string;
+  next: string;
+  limit: ReturnType<typeof rateLimit>;
+}) {
+  const url = new URL("/access", args.requestUrl);
+  url.searchParams.set("error", args.error);
+  if (args.next && args.next !== "/") url.searchParams.set("next", args.next);
+  const response = NextResponse.redirect(url, 303);
+  applyRateLimitHeaders(response.headers, args.limit);
+  return response;
+}
+
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request);
   const limit = rateLimit({
@@ -35,11 +49,12 @@ export async function POST(request: Request) {
     max: 10,
   });
   if (!limit.allowed) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "rate_limited");
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectAccess({
+      requestUrl: request.url,
+      error: "rate_limited",
+      next: "/",
+      limit,
+    });
   }
 
   const form = await request.formData();
@@ -50,12 +65,7 @@ export async function POST(request: Request) {
   const normalizedCode = normalizeInviteCode(code);
 
   if (!code) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "missing");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectAccess({ requestUrl: request.url, error: "missing", next, limit });
   }
 
   if (!secret) {
@@ -80,12 +90,12 @@ export async function POST(request: Request) {
   if (!valid) {
     const { invites } = await listInvites();
     const hasActiveInvites = invites.some(isInviteActive) || codes.length > 0;
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", hasActiveInvites ? "invalid" : "closed");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectAccess({
+      requestUrl: request.url,
+      error: hasActiveInvites ? "invalid" : "closed",
+      next,
+      limit,
+    });
   }
 
   const nowSeconds = Math.floor(Date.now() / 1000);
@@ -93,12 +103,7 @@ export async function POST(request: Request) {
   const inviteExpiry = inviteExpiresAt ? Math.floor(Date.parse(inviteExpiresAt) / 1000) : null;
   const exp = inviteExpiry ? Math.min(inviteExpiry, defaultExpiry) : defaultExpiry;
   if (exp <= nowSeconds) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "invalid");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectAccess({ requestUrl: request.url, error: "invalid", next, limit });
   }
 
   const token = await createAccessToken(

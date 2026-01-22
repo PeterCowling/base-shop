@@ -13,8 +13,8 @@ import { loadStripe } from "@stripe/stripe-js";
 
 import { isoDateInNDays } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
-import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { fetchJson } from "@acme/lib/http";
+import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { Alert, Button } from "../atoms";
 

@@ -8,7 +8,7 @@
 import logger from '@/utils/logger';
 import { useMemo } from 'react';
 import type { BagStorageRecord } from '../../types/bagStorage';
-import type { BookingDetails } from '../pureData/useFetchBookingsData';
+import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import type { CityTaxOccupantRecord, CityTaxRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type {

@@ -32,7 +32,7 @@ export function CmsCommandPalette() {
   const toggleTheme = useCallback(() => {
     const root = document.documentElement;
     const isDark = root.classList.contains("theme-dark");
-    const next = isDark ? "base" : "dark";
+    const next = isDark ? "light" : "dark";
     try {
       localStorage.setItem("theme", next);
     } catch {}

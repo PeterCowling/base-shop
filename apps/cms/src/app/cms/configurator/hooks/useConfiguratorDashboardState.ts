@@ -6,10 +6,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
+import { getCsrfToken } from "@acme/lib/security";
 import { REQUIRED_CONFIG_CHECK_STEPS } from "@acme/platform-core/configurator";
 import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 import type { DeployShopResult } from "@acme/platform-core/createShop/deployTypes";
-import { getCsrfToken } from "@acme/lib/security";
 import { track } from "@acme/telemetry";
 import type { ConfiguratorProgress as ServerConfiguratorProgress , Environment } from "@acme/types";
 

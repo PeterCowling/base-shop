@@ -1,4 +1,5 @@
 import * as React from "react";
+
 type LegacyVariant = "default" | "outline" | "ghost" | "destructive";
 type ButtonTone = "solid" | "soft" | "outline" | "ghost" | "quiet";
 type ButtonColor = "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";

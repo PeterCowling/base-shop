@@ -1,14 +1,17 @@
-import * as React from "react";
+/* eslint-disable security/detect-non-literal-fs-filename, security/detect-non-literal-require -- smoke test enumerates fixtures/routes dynamically */
+
 import fs from "node:fs";
 import path from "node:path";
-import { render } from "@testing-library/react";
+
+import * as React from "react";
 import { describe, expect, it, jest } from "@jest/globals";
+import { render } from "@testing-library/react";
 
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { XA_BRANDS, XA_PRODUCTS } from "../../lib/demoData";
-import { XA_EDITS } from "../../lib/xaEdits";
 import { XA_SUBCATEGORIES } from "../../lib/xaCatalog";
+import { XA_EDITS } from "../../lib/xaEdits";
 
 const redirectMock = jest.fn();
 const notFoundMock = jest.fn();
@@ -208,8 +211,8 @@ describe("XA pages", () => {
     redirectMock.mockClear();
     notFoundMock.mockClear();
     const rel = path.relative(appRoot, filePath);
-    const module = require(filePath) as { default?: (props?: any) => unknown };
-    const Page = module.default;
+    const presetModule = require(filePath) as { default?: (props?: any) => unknown };
+    const Page = presetModule.default;
     expect(Page).toBeDefined();
 
     if (!Page) return;

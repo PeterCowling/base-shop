@@ -14,6 +14,59 @@ export interface FormFieldProps {
     | ((args: { id: string; describedBy?: string; ariaInvalid?: boolean }) => React.ReactNode);
 }
 
+type InputElement = React.ReactElement<Record<string, unknown>>;
+
+function joinDescribedBy(parts: Array<string | undefined>): string | undefined {
+  const joined = parts.filter(Boolean).join(" ");
+  return joined.length > 0 ? joined : undefined;
+}
+
+function extractExistingAria(inputElement: InputElement | null): {
+  describedBy?: string;
+  ariaInvalid?: string | boolean;
+} {
+  if (!inputElement) return {};
+
+  const ariaDescribedBy = inputElement.props["aria-describedby"];
+  const describedBy = typeof ariaDescribedBy === "string" ? ariaDescribedBy : undefined;
+
+  const ariaInvalid = inputElement.props["aria-invalid"];
+  const ariaInvalidValue =
+    typeof ariaInvalid === "boolean" || typeof ariaInvalid === "string"
+      ? ariaInvalid
+      : undefined;
+
+  return { describedBy, ariaInvalid: ariaInvalidValue };
+}
+
+function renderFormFieldInput(args: {
+  input: FormFieldProps["input"];
+  inputElement: InputElement | null;
+  controlId: string;
+  describedBy?: string;
+  hasError: boolean;
+  existingAriaInvalid?: string | boolean;
+}): React.ReactNode {
+  if (typeof args.input === "function") {
+    const renderArgs: { id: string; describedBy?: string; ariaInvalid?: boolean } = {
+      id: args.controlId,
+    };
+    if (args.describedBy) renderArgs.describedBy = args.describedBy;
+    if (args.hasError) renderArgs.ariaInvalid = true;
+    return args.input(renderArgs);
+  }
+
+  if (!args.inputElement) {
+    return args.input;
+  }
+
+  return React.cloneElement(args.inputElement, {
+    id: args.controlId,
+    "aria-describedby": args.describedBy,
+    "aria-invalid": args.existingAriaInvalid ?? (args.hasError || undefined),
+  });
+}
+
 /**
  * Lightweight form field wrapper to standardize label/description/error wiring.
  * Clones the provided input element and wires `id` and `aria-describedby`.
@@ -32,36 +85,23 @@ export function FormField({
   const descriptionId = description ? `${controlId}-description` : undefined;
   const errorId = error ? `${controlId}-error` : undefined;
 
-  const inputElement = React.isValidElement<Record<string, unknown>>(input) ? input : null;
-  const inputProps = inputElement?.props;
-  const inputDescribedBy =
-    typeof inputProps?.["aria-describedby"] === "string"
-      ? (inputProps["aria-describedby"] as string)
-      : undefined;
-  const inputAriaInvalid =
-    typeof inputProps?.["aria-invalid"] === "boolean" ||
-    typeof inputProps?.["aria-invalid"] === "string"
-      ? (inputProps["aria-invalid"] as string | boolean)
-      : undefined;
-
-  const describedBy = [descriptionId, errorId, inputDescribedBy]
-    .filter(Boolean)
-    .join(" ") || undefined;
-
-  const renderedInput =
-    typeof input === "function"
-      ? input({
-          id: controlId,
-          ...(describedBy ? { describedBy } : {}),
-          ...(error ? { ariaInvalid: true } : {}),
-        })
-      : inputElement
-        ? React.cloneElement(inputElement, {
-            id: controlId,
-            "aria-describedby": describedBy,
-            "aria-invalid": inputAriaInvalid ?? (Boolean(error) || undefined),
-          })
-        : input;
+  const inputElement = React.isValidElement<Record<string, unknown>>(input)
+    ? (input as InputElement)
+    : null;
+  const existingAria = extractExistingAria(inputElement);
+  const describedBy = joinDescribedBy([
+    descriptionId,
+    errorId,
+    existingAria.describedBy,
+  ]);
+  const renderedInput = renderFormFieldInput({
+    input,
+    inputElement,
+    controlId,
+    describedBy,
+    hasError: Boolean(error),
+    existingAriaInvalid: existingAria.ariaInvalid,
+  });
 
   return (
     <div className={cn("space-y-1", className)}>

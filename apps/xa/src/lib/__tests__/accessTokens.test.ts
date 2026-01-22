@@ -1,5 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { webcrypto } from "node:crypto";
+
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import { createAccessToken, verifyAccessToken } from "../accessTokens";
 

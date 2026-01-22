@@ -2,8 +2,8 @@
 
 import { XA_PRODUCTS, type XaProduct } from "../demoData";
 
-import { readXaSearchCache, writeXaSearchCache, type XaSearchIndexJson } from "./xaSearchDb";
 import { toXaSearchDoc } from "./xaSearchConfig";
+import { readXaSearchCache, writeXaSearchCache, type XaSearchIndexJson } from "./xaSearchDb";
 import { buildXaSearchIndex, loadXaSearchIndex, searchXaIndex } from "./xaSearchWorkerClient";
 
 type XaSearchSyncResponse = {

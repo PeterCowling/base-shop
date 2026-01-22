@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface PromoCodeInputProps extends React.HTMLAttributes<HTMLFormElement> {
     onApply?: (code: string) => void;
     loading?: boolean;

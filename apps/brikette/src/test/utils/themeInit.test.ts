@@ -51,33 +51,33 @@ describe("getThemeInitScript", () => {
   it("applies the stored dark theme", () => {
     localStorage.setItem("theme", "dark");
     runScript({ prefersDark: false });
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
   });
 
   it("applies the stored light theme even if prefers dark", () => {
     localStorage.setItem("theme", "light");
     runScript({ prefersDark: true });
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
   });
 
   it("applies dark theme if no stored theme and prefers-color-scheme is dark", () => {
     runScript({ prefersDark: true });
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
   });
 
   it("applies light theme if no stored theme and prefers-color-scheme is light", () => {
     runScript({ prefersDark: false });
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
   });
 
   it("defaults to light when matchMedia is missing", () => {
     runScript({ hasMatchMedia: false });
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
   });
 
   it("defaults to light when matchMedia throws", () => {
     runScript({ matchMediaThrows: true });
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
   });
 
   it("outputs a self-invoking script string", () => {

@@ -6,8 +6,8 @@ import path from "path";
 import { z } from "zod";
 
 import { validateShopName } from "@acme/lib";
-import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { parseJsonBody } from "@acme/lib/http/server";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { type Segment,segmentSchema } from "@acme/types";
 
 import { writeJsonFile } from "@/lib/server/jsonIO";

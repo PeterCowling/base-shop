@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import {
   CONTENT_LOCALES,
-  LOCALES,
   type Locale,
+  LOCALES,
   UI_LOCALES,
 } from "./constants";
 import type { MediaItem } from "./MediaItem";

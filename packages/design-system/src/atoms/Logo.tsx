@@ -32,6 +32,43 @@ export interface LogoProps
   srcSet?: string;
 }
 
+function buildSrcSet(args: {
+  baseSrc?: ImageProps["src"];
+  baseWidth?: number;
+  sources?: Partial<Record<Viewport, LogoSource>>;
+  providedSrcSet?: string;
+}): string | undefined {
+  if (args.providedSrcSet) return args.providedSrcSet;
+
+  const entries: Array<[string, number | undefined]> = [];
+
+  const addEntry = (src: ImageProps["src"] | undefined, width: unknown) => {
+    if (typeof src !== "string") return;
+    if (entries.some(([existing]) => existing === src)) return;
+    entries.push([src, typeof width === "number" ? width : undefined]);
+  };
+
+  addEntry(args.baseSrc, args.baseWidth);
+
+  const sources = args.sources;
+  if (sources) {
+    const viewportOrder: Viewport[] = ["mobile", "tablet", "desktop"];
+    for (const viewportKey of viewportOrder) {
+      const variant = sources[viewportKey];
+      if (!variant) continue;
+      addEntry(variant.src, variant.width);
+    }
+  }
+
+  if (entries.length === 0) return undefined;
+
+  return entries
+    .map(([url, widthDescriptor]) =>
+      widthDescriptor ? `${url} ${widthDescriptor}w` : url,
+    )
+    .join(", ");
+}
+
 export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
   (
     {
@@ -60,48 +97,12 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       return <span className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
-    // Avoid arbitrary Tailwind values; rely on width/height props instead
-
-    const srcSetEntries: Array<[string, number | undefined]> = [];
-
-    const appendEntry = (
-      url: unknown,
-      width: unknown,
-    ): url is string => {
-      if (typeof url !== "string") {
-        return false;
-      }
-
-      if (srcSetEntries.some(([existing]) => existing === url)) {
-        return true;
-      }
-
-      const widthDescriptor =
-        typeof width === "number" ? width : undefined;
-      srcSetEntries.push([url, widthDescriptor]);
-      return true;
-    };
-
-    appendEntry(src, typeof defaultWidth === "number" ? defaultWidth : undefined);
-
-    if (sources) {
-      const viewportOrder: Viewport[] = ["mobile", "tablet", "desktop"];
-      for (const viewportKey of viewportOrder) {
-        const variant = sources[viewportKey];
-        if (!variant) continue;
-        appendEntry(variant.src, variant.width);
-      }
-    }
-
-    const computedSrcSet =
-      providedSrcSet ??
-      (srcSetEntries.length > 0
-        ? srcSetEntries
-            .map(([url, widthDescriptor]) =>
-              widthDescriptor ? `${url} ${widthDescriptor}w` : url,
-            )
-            .join(", ")
-        : undefined);
+    const computedSrcSet = buildSrcSet({
+      baseSrc: src,
+      baseWidth: typeof defaultWidth === "number" ? defaultWidth : undefined,
+      sources,
+      providedSrcSet,
+    });
 
     const imageProps: LogoImageProps = {
       ...props,

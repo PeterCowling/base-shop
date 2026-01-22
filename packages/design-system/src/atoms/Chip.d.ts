@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { TagProps } from "./Tag";
+
 export interface ChipProps extends TagProps {
     onRemove?: () => void;
 }

@@ -131,9 +131,58 @@ function submissionKeyFor(prefix: string, iat: number, nonce: string): string {
   return `${safePrefix}${date}/incoming.${nonce}.zip`;
 }
 
-async function handleUpload(request: Request, env: Env, token: string): Promise<Response> {
+function getUploadTokenSecret(env: Env): string | null {
   const secret = typeof env.UPLOAD_TOKEN_SECRET === "string" ? env.UPLOAD_TOKEN_SECRET : "";
-  if (!secret || secret.length < 32) {
+  return secret && secret.length >= 32 ? secret : null;
+}
+
+function getMaxBytes(env: Env): number {
+  const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
+  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
+}
+
+function isContentLengthOverLimit(headers: Headers, maxBytes: number): boolean {
+  const contentLengthRaw = headers.get("content-length");
+  if (!contentLengthRaw) return false;
+  const size = Number(contentLengthRaw);
+  return Number.isFinite(size) && size > maxBytes;
+}
+
+function getSafeSubmissionId(headers: Headers): string | undefined {
+  const raw = headers.get("x-xa-submission-id") || "";
+  const submissionId = raw.trim();
+  return submissionId && /^[a-zA-Z0-9_-]{8,128}$/.test(submissionId) ? submissionId : undefined;
+}
+
+async function resolveUploadBody(
+  request: Request,
+  maxBytes: number,
+): Promise<ReadableStream<Uint8Array> | ArrayBuffer | Response> {
+  if (!request.body) {
+    return json({ ok: false }, 400);
+  }
+
+  const hasWebStream =
+    typeof (request.body as unknown as { pipeThrough?: unknown })?.pipeThrough === "function";
+
+  if (hasWebStream) {
+    return limitBytesStream(request.body, maxBytes);
+  }
+
+  try {
+    const buffer = await request.arrayBuffer();
+    if (buffer.byteLength > maxBytes) {
+      return json({ ok: false }, 413);
+    }
+    return buffer;
+  } catch {
+    return json({ ok: false }, 400);
+  }
+}
+
+async function handleUpload(request: Request, env: Env, token: string): Promise<Response> {
+  const secret = getUploadTokenSecret(env);
+  if (!secret) {
     return json({ ok: false }, 503);
   }
 
@@ -146,29 +195,12 @@ async function handleUpload(request: Request, env: Env, token: string): Promise<
     return json({ ok: false }, 401);
   }
 
-  const maxBytes = (() => {
-    const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
-    return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
-  })();
-
-  const contentLengthRaw = request.headers.get("content-length");
-  if (contentLengthRaw) {
-    const size = Number(contentLengthRaw);
-    if (Number.isFinite(size) && size > maxBytes) {
-      return json({ ok: false }, 413);
-    }
-  }
-
-  if (!request.body) {
-    return json({ ok: false }, 400);
-  }
+  const maxBytes = getMaxBytes(env);
+  if (isContentLengthOverLimit(request.headers, maxBytes)) return json({ ok: false }, 413);
 
   const objectKey = submissionKeyFor(env.R2_PREFIX || DEFAULT_PREFIX, verified.iat, verified.nonce);
 
-  const submissionIdRaw = request.headers.get("x-xa-submission-id") || "";
-  const submissionId = submissionIdRaw.trim();
-  const safeSubmissionId =
-    submissionId && /^[a-zA-Z0-9_-]{8,128}$/.test(submissionId) ? submissionId : "";
+  const safeSubmissionId = getSafeSubmissionId(request.headers);
 
   const existing = await env.SUBMISSIONS_BUCKET.head(objectKey);
   if (existing) {
@@ -176,24 +208,11 @@ async function handleUpload(request: Request, env: Env, token: string): Promise<
   }
 
   const contentType = request.headers.get("content-type") || "application/zip";
-  let uploadBody: ReadableStream<Uint8Array> | ArrayBuffer;
-  const hasWebStream =
-    typeof (request.body as unknown as { pipeThrough?: unknown })?.pipeThrough === "function";
-  if (hasWebStream) {
-    uploadBody = limitBytesStream(request.body, maxBytes);
-  } else {
-    try {
-      uploadBody = await request.arrayBuffer();
-    } catch {
-      return json({ ok: false }, 400);
-    }
-    if (uploadBody.byteLength > maxBytes) {
-      return json({ ok: false }, 413);
-    }
-  }
+  const uploadBodyOrResponse = await resolveUploadBody(request, maxBytes);
+  if (uploadBodyOrResponse instanceof Response) return uploadBodyOrResponse;
 
   try {
-    await env.SUBMISSIONS_BUCKET.put(objectKey, uploadBody, {
+    await env.SUBMISSIONS_BUCKET.put(objectKey, uploadBodyOrResponse, {
       httpMetadata: { contentType },
       customMetadata: {
         tokenVersion: TOKEN_VERSION,

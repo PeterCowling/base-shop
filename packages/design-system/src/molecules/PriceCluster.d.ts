@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface PriceClusterProps extends React.HTMLAttributes<HTMLDivElement> {
     price: number;
     compare?: number;

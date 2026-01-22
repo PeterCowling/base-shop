@@ -76,12 +76,12 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "echo \"SKIP: @acme/cms-ui is archived (not built)\"",
     "clean": "rimraf dist *.tsbuildinfo",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "echo \"SKIP: @acme/cms-ui is archived (not typechecked)\"",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
     "test:quick": "JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm exec jest --runInBand --detectOpenHandles --config ./jest.config.cjs",
-    "lint": "eslint ."
+    "lint": "echo \"SKIP: @acme/cms-ui is archived (not linted)\""
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

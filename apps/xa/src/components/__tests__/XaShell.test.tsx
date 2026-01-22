@@ -1,9 +1,9 @@
 import * as React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { fireEvent,render, screen } from "@testing-library/react";
 
-import { XaShell } from "../XaShell";
 import { siteConfig } from "../../lib/siteConfig";
+import { XaShell } from "../XaShell";
 
 const setThemeMock = jest.fn();
 let themeValue = "base";

@@ -4,8 +4,8 @@
 
 import { useEffect, useState } from "react";
 
-import type { VariantPricing } from "@acme/platform-core/types/variants";
 import { getCsrfToken } from "@acme/lib/security";
+import type { VariantPricing } from "@acme/platform-core/types/variants";
 
 import {
   Button,

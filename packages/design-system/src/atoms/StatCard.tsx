@@ -1,8 +1,7 @@
 import * as React from "react";
 
-import { cn } from "../utils/style";
-
 import { Card, CardContent } from "../primitives/card";
+import { cn } from "../utils/style";
 
 export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;

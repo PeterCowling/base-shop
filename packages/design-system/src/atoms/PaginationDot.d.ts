@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface PaginationDotProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     active?: boolean;
     /** Tailwind size token used for width/height classes */

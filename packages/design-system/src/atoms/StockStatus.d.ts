@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface StockStatusProps extends React.HTMLAttributes<HTMLSpanElement> {
     inStock: boolean;
     labelInStock?: string;

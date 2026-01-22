@@ -1,10 +1,10 @@
 import * as React from "react";
-import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { render, screen } from "@testing-library/react";
 
-import { XaProductCard } from "../XaProductCard";
 import type { XaProduct } from "../../lib/demoData";
 import { getAvailableStock } from "../../lib/inventoryStore";
+import { XaProductCard } from "../XaProductCard";
 
 const dispatchMock = jest.fn().mockResolvedValue(undefined);
 const wishlistDispatchMock = jest.fn();

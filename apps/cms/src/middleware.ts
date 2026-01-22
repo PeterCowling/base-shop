@@ -9,11 +9,11 @@ import type { IncomingMessage, ServerResponse } from "http";
 
 import { canRead, canWrite } from "@acme/auth/rbac";
 import type { Role } from "@acme/auth/types";
-import { logger } from "@acme/lib/logger";
 import {
   type RequestContext,
   withRequestContext,
 } from "@acme/lib/context";
+import { logger } from "@acme/lib/logger";
 
 import { authSecret } from "./auth/secret";
 // Avoid importing @acme/auth/session in middleware (Edge) because it pulls in

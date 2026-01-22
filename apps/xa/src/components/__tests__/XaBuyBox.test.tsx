@@ -1,6 +1,7 @@
 import * as React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import type { XaProduct } from "../../lib/demoData";
 
 const dispatchMock = jest.fn().mockResolvedValue(undefined);

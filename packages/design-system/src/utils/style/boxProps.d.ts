@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface BoxOptions {
     width?: string | number;
     height?: string | number;

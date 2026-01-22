@@ -1,5 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
+import type { XaProduct } from "../demoData";
+import { ALL_FILTER_KEYS } from "../xaFilters";
 import {
   cloneFilterValues,
   createEmptyFilterValues,
@@ -7,8 +9,6 @@ import {
   sortProducts,
   toNumber,
 } from "../xaListingUtils";
-import { ALL_FILTER_KEYS } from "../xaFilters";
-import type { XaProduct } from "../demoData";
 
 const makeProduct = (overrides: Partial<XaProduct>): XaProduct => ({
   id: "01ARZ3NDEKTSV4RRFFQ69G5FA0",

@@ -34,8 +34,8 @@ describe("design tokens preset", () => {
 
   it("exports preset configuration", async () => {
     jest.resetModules();
-    const module = await import("../src/index.ts");
-    const preset = module.default;
+    const presetModule = await import("../src/index.ts");
+    const preset = presetModule.default;
 
     // Skip test if no default export (implementation uses named exports only)
     if (!preset) {

@@ -2,15 +2,15 @@
 // Supported locales
 // Source of truth comes from @acme/types/constants to keep packages consistent.
 import {
-  type ContentLocale as BaseContentLocale,
   CONTENT_LOCALES as BASE_CONTENT_LOCALES,
+  type ContentLocale as BaseContentLocale,
   isContentLocale as baseIsContentLocale,
   isUiLocale as baseIsUiLocale,
   type Locale as BaseLocale,
   LOCALES as BASE_LOCALES,
   normalizeContentLocale as baseNormalizeContentLocale,
-  type UiLocale as BaseUiLocale,
   UI_LOCALES as BASE_UI_LOCALES,
+  type UiLocale as BaseUiLocale,
 } from "@acme/types/constants";
 
 // =============================================================================

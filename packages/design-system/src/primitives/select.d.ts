@@ -1,5 +1,6 @@
-import * as SelectPrimitive from "@radix-ui/react-select";
 import * as React from "react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+
 export declare const Select: React.FC<SelectPrimitive.SelectProps>;
 export type SelectProps = SelectPrimitive.SelectProps;
 export declare const SelectGroup: React.ForwardRefExoticComponent<SelectPrimitive.SelectGroupProps & React.RefAttributes<HTMLDivElement>>;

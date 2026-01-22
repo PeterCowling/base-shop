@@ -12,10 +12,10 @@ import { authOptions } from "@cms/auth/options";
 
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
 import type { ProductPublication } from "@acme/platform-core/products";
 import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { readRepo } from "@acme/platform-core/repositories/json.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { track } from "@acme/telemetry";
 import { Alert, Progress, Tag } from "@acme/ui/components/atoms";
 import { Inline } from "@acme/ui/components/atoms/primitives";

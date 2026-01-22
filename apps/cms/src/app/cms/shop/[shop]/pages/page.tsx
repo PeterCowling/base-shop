@@ -2,7 +2,7 @@
 
 import { notFound, redirect } from "next/navigation";
 
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 interface Params {
   shop: string;

@@ -1,9 +1,17 @@
 import { revalidatePath } from "next/cache";
 
+import { listThemes } from "@acme/platform-core/createShop";
+import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
 import type { Locale, Shop, ShopSettings } from "@acme/types";
 
-import { authorize, fetchSettings, fetchShop, persistSettings,persistShop } from "./helpers";
-import { buildThemeData, mergeThemePatch,removeThemeToken } from "./theme";
+import {
+  authorize,
+  fetchSettings,
+  fetchShop,
+  persistSettings,
+  persistShop,
+} from "./helpers";
+import { buildThemeData, mergeThemePatch, removeThemeToken } from "./theme";
 import { parseShopForm } from "./validation";
 
 export async function updateShop(
@@ -51,6 +59,7 @@ export async function updateShop(
 export async function patchTheme(
   shop: string,
   patch: {
+    themeId?: string;
     themeOverrides?: Record<string, string>;
     themeDefaults?: Record<string, string>;
   },
@@ -58,16 +67,38 @@ export async function patchTheme(
   await authorize();
   const current = await fetchShop(shop);
   if (!current) throw new Error(`Shop ${shop} not found`);
-  const { themeDefaults, overrides, themeTokens } = mergeThemePatch(
+
+  if (patch.themeId && patch.themeId !== current.themeId) {
+    const availableThemes = listThemes();
+    if (!availableThemes.includes(patch.themeId)) {
+      throw new Error(`Theme ${patch.themeId} not found`);
+    }
+    const themeDefaults = {
+      ...baseTokens,
+      ...(await loadThemeTokens(patch.themeId)),
+    } as Record<string, string>;
+    const themeOverrides = {};
+    const themeTokens = { ...themeDefaults } as Record<string, string>;
+    const saved = await persistShop(shop, {
+      id: current.id,
+      themeId: patch.themeId,
+      themeDefaults,
+      themeOverrides,
+      themeTokens,
+    });
+    return { shop: saved as unknown as Shop };
+  }
+
+  const merged = mergeThemePatch(
     current,
     patch.themeOverrides ?? {},
     patch.themeDefaults ?? {},
   );
   const saved = await persistShop(shop, {
     id: current.id,
-    themeDefaults,
-    themeOverrides: overrides,
-    themeTokens,
+    themeDefaults: merged.themeDefaults,
+    themeOverrides: merged.overrides,
+    themeTokens: merged.themeTokens,
   });
   return { shop: saved as unknown as Shop };
 }

@@ -1,6 +1,8 @@
 import "server-only";
+
 import { NextResponse } from "next/server";
 import { type ZodSchema } from "zod";
+
 export type ParseJsonResult<T> = {
     success: true;
     data: T;

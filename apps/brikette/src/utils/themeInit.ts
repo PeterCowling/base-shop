@@ -7,13 +7,17 @@
 export const getThemeInitScript = (): string =>
   `(function () {
     var KEY="theme";
-    var stored=localStorage.getItem(KEY);
-    var fallback="light";
+    var theme="system";
     try {
-      fallback=typeof window.matchMedia==="function"&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
-    } catch (_) {
-      fallback="light";
+      theme=localStorage.getItem(KEY)||"system";
+    } catch (_) {}
+    var isDark=theme==="dark";
+    if(theme==="system"){
+      try{
+        isDark=typeof window.matchMedia==="function"&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+      }catch(_){isDark=false;}
     }
-    var theme=stored||fallback;
-    document.documentElement.classList.toggle("dark",theme==="dark");
+    document.documentElement.classList.toggle("theme-dark",isDark);
+    document.documentElement.classList.toggle("dark",isDark);
+    try{document.documentElement.style.colorScheme=isDark?"dark":"light";}catch(_){}
   })();`;

@@ -50,6 +50,8 @@ export {
   DropdownMenuTrigger,
   Input,
   type InputProps,
+  Progress,
+  type ProgressProps,
   Select,
   SelectContent,
   SelectGroup,
@@ -64,12 +66,10 @@ export {
   TableHead,
   TableHeader,
   TableRow,
-  Textarea,
-  type TextareaProps,
-  Progress,
-  type ProgressProps,
   Tag,
   type TagProps,
+  Textarea,
+  type TextareaProps,
 } from "@acme/design-system";
 
 // Button comes from shadcn directory specifically

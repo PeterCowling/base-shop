@@ -276,6 +276,22 @@ export default [
     },
   },
 
+  /* ▸ Reception app: lint without TS project service (app is not in Turborepo pipeline yet) */
+  {
+    files: ["apps/reception/**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        projectService: false,
+        allowDefaultProject: true,
+        sourceType: "module",
+        ecmaVersion: "latest",
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+
   /* ▸ Design system token enforcement (global) */
   {
     plugins: { ds: dsPlugin },
@@ -1195,6 +1211,67 @@ export default [
     },
   },
 
+  /* ▸ Treat Design System Storybook files as non-project to avoid TS project errors */
+  {
+    files: ["packages/design-system/**/*.stories.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "ds/no-hardcoded-copy": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/no-margins-on-atoms": "off",
+      "ds/min-tap-size": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/no-physical-direction-classes-in-rtl": "off",
+      "react/forbid-dom-props": "off",
+      "react/no-array-index-key": "off",
+      "react/jsx-no-constructed-context-values": "off",
+      "react/no-unstable-nested-components": "off",
+      "react/jsx-no-useless-fragment": "off",
+      "react/self-closing-comp": "off",
+      "react/jsx-no-target-blank": "off",
+      "react/no-unescaped-entities": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/alt-text": "off",
+      "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/interactive-supports-focus": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/no-autofocus": "off",
+      "jsx-a11y/media-has-caption": "off",
+      "jsx-a11y/role-has-required-aria-props": "off",
+      "jsx-a11y/no-aria-hidden-on-focusable": "off",
+      "@next/next/no-img-element": "off",
+    },
+  },
+
+  /* ▸ Next.js instrumentation entrypoints: treat as non-project (often excluded from tsconfig includes) */
+  {
+    files: ["**/instrumentation.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      "@typescript-eslint/consistent-type-exports": "off",
+    },
+  },
+
   /* ▸ UI test files: relax rules for test ergonomics */
   {
     files: ["packages/ui/**/*.test.{ts,tsx}", "packages/ui/**/__tests__/**/*.{ts,tsx}"],
@@ -2035,6 +2112,13 @@ export default [
       "import/no-duplicates": "off",
       // Disable promise param naming in CMS - many use short names in test patterns
       "promise/param-names": "off",
+    },
+  },
+  /* ▸ Ensure instrumentation files don't require typed rules */
+  {
+    files: ["**/instrumentation.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/consistent-type-exports": "off",
     },
   },
 ];

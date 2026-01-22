@@ -8,27 +8,27 @@
 
 // Re-export all universal utilities
 export {
-  SHOP_NAME_RE,
-  validateShopName,
-  getShopAppSlug,
+  getDomain,
+  getEditorialBlog,
+  getSanityConfig,
   getShopAppPackage,
+  getShopAppSlug,
   getShopWorkflowName,
   normalizeShopId,
-  type ShopIdTarget,
-  type Shop,
   type SanityBlogConfig,
-  type ShopDomain,
-  getSanityConfig,
-  setSanityConfig,
-  getEditorialBlog,
-  setEditorialBlog,
-  getDomain,
   setDomain,
+  setEditorialBlog,
+  setSanityConfig,
+  type Shop,
+  SHOP_NAME_RE,
+  type ShopDomain,
+  type ShopIdTarget,
+  validateShopName,
 } from "./universal";
 
 // Server-only exports
-export { incrementOperationalError } from "./health";
 export { checkShopExists } from "./checkShopExists.server";
+export { incrementOperationalError } from "./health";
 
 // Tier definitions (LAUNCH-29)
 export {

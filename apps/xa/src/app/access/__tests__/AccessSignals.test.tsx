@@ -1,6 +1,6 @@
 import * as React from "react";
-import { act, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import { act, render, screen } from "@testing-library/react";
 
 import AccessSignals from "../AccessSignals.client";
 

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
 import { useTranslations as serverT } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
 import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { Tag } from "@acme/ui/components/atoms";
 import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
 import { cn } from "@acme/ui/utils/style";

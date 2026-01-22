@@ -1,10 +1,12 @@
 /* File: src/hooks/components/checkin/useKeycardData.ts */
 
 import { useMemo } from "react";
+
 import {
-  SimpleTransaction,
+  type SimpleTransaction,
   simpleTransactionSchema,
 } from "../../schemas/simpleTransactionSchema";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 export default function useKeycardData(bookingRef: string, occupantId: string) {

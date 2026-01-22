@@ -1,21 +1,22 @@
 /* File: /src/components/man/Alloggiati.tsx */
-import { FC, memo, useEffect, useMemo, useState } from "react";
+import { type FC, memo, useEffect, useMemo, useState } from "react";
 
-import DateSelectorCI from "./DateSelectorAllo";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useAlloggiatiLogs from "../../hooks/data/useAlloggiatiLogs";
 import { useCheckins } from "../../hooks/data/useCheckins";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import { useAlloggiatiSender } from "../../hooks/mutations/useAlloggiatiSender";
 import useSaveAlloggiatiResult from "../../hooks/mutations/useSaveAlloggiatiResult";
-import { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../types/hooks/data/guestDetailsData";
 import {
-  getItalyIsoString,
   formatDate,
-  subDays,
+  getItalyIsoString,
   parseLocalDate,
+  subDays,
 } from "../../utils/dateUtils";
-import { AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
+import { type AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
+
+import DateSelectorCI from "./DateSelectorAllo";
 
 interface OccupantData {
   reservationCode: string;
@@ -278,9 +279,9 @@ const AlloggiatiComponent: FC = () => {
           <table className="table-auto w-full border border-gray-400 text-sm dark:border-darkSurface">
             <thead className="bg-gray-100 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
               <tr>
-                <th className="py-2 px-3 text-left">Occupant ID</th>
-                <th className="py-2 px-3 text-left">Reservation Code</th>
-                <th className="py-2 px-3 text-left">NAME</th>
+                <th className="py-2 px-3 text-start">Occupant ID</th>
+                <th className="py-2 px-3 text-start">Reservation Code</th>
+                <th className="py-2 px-3 text-start">NAME</th>
                 <th className="py-2 px-3 text-center">
                   <button
                     onClick={handleToggleAll}

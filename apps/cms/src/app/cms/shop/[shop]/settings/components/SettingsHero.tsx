@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-import { track } from "@acme/telemetry";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 import {
   CmsBuildHero,
   CmsSettingsSnapshot,
   type CmsSettingsSnapshotRow,
-} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 
 import type { SnapshotItem } from "../lib/pageSections";
 

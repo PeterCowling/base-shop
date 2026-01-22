@@ -185,7 +185,45 @@ These items primarily affect:
   - Known test secrets are allowlisted
   - Real secrets trigger PR failure
 
-### ADMIN-07: Rotate Exposed Secrets (Security P0)
+### ADMIN-07: Deploy Firebase Security Rules Fix (Security P0)
+
+- **Status**: ☐
+- **Priority**: P0 (SECURITY CRITICAL)
+- **Estimated effort**: Small (administrative)
+- **Scope**:
+
+  **Context**: On 2026-01-21, two critical Firebase security vulnerabilities were fixed in code:
+  - **Critical #2**: Root-level rules had `auth != null || now < 1819007200000` allowing unauthenticated access until 2027
+  - **Critical #3**: Role checks used hardcoded array indices (`roles/0`, `roles/1`, `roles/2`) that could be bypassed
+
+  The fix changes role storage from array (`['owner', 'staff']`) to map (`{ owner: true, staff: true }`).
+
+  **Files created**:
+  - `apps/prime/database.rules.json` — New secure Firebase rules
+  - `apps/prime/scripts/migrate-user-roles.ts` — Data migration script
+
+  **Deployment steps**:
+  1. **Run data migration first** (before deploying rules, or existing users lose access):
+     ```bash
+     cd apps/prime
+     FIREBASE_SERVICE_ACCOUNT_KEY=/path/to/service-account.json npx tsx scripts/migrate-user-roles.ts --dry-run
+     # Review output carefully, then run without --dry-run to apply
+     FIREBASE_SERVICE_ACCOUNT_KEY=/path/to/service-account.json npx tsx scripts/migrate-user-roles.ts
+     ```
+  2. **Deploy new rules** to Firebase Console:
+     - Go to Firebase Console → Realtime Database → Rules
+     - Copy contents of `apps/prime/database.rules.json`
+     - Paste and publish
+
+- **Dependencies**: Firebase Console access, service account key
+- **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) Critical #2 and #3
+- **Definition of done**:
+  - All existing user profiles migrated to new role format
+  - New rules deployed to Firebase Console
+  - Unauthenticated requests to Firebase are rejected
+  - Users with appropriate roles can still access their data
+
+### ADMIN-08: Rotate Exposed Secrets (Security P0)
 
 - **Status**: ☐
 - **Priority**: P0 (SECURITY CRITICAL)
@@ -207,7 +245,57 @@ These items primarily affect:
   - New secrets are only in encrypted SOPS files
   - `.gitignore` updated to prevent `.env` commits
 
-### ADMIN-08: Create CMS Cloudflare Pages Project
+### ADMIN-09: Deploy Product-Pipeline API Key Authentication (Security P1)
+
+- **Status**: ☐
+- **Priority**: P1 (SECURITY)
+- **Estimated effort**: Small (administrative)
+- **Scope**:
+
+  **Context**: On 2026-01-21, API key authentication was added to all product-pipeline endpoints (High #12 fix). The code is complete but requires deployment configuration.
+
+  **Files changed**:
+  - `apps/product-pipeline/src/lib/auth.ts` — API key validation module
+  - `apps/product-pipeline/src/lib/api-context.ts` — Auth middleware in `withPipelineContext`
+  - `apps/product-pipeline/src/routes/api/_lib/db.ts` — Environment type updates
+  - `apps/product-pipeline/wrangler.toml` — Documentation for API key config
+
+  **Deployment steps**:
+  1. **Generate a secure API key**:
+     ```bash
+     openssl rand -base64 32
+     ```
+  2. **Set the API key as a Cloudflare secret** (for each environment):
+     ```bash
+     # For production
+     wrangler secret put PIPELINE_API_KEY --env production
+
+     # For staging (if applicable)
+     wrangler secret put PIPELINE_API_KEY --env staging
+     ```
+  3. **Set `PIPELINE_ENV` appropriately**:
+     - In `wrangler.toml` or Cloudflare dashboard, set:
+       - Staging: `PIPELINE_ENV=staging`
+       - Production: `PIPELINE_ENV=production`
+     - Dev mode (`PIPELINE_ENV=dev`) allows unauthenticated requests
+  4. **Update all clients** that call product-pipeline APIs to include the key:
+     ```
+     Authorization: Bearer <your-api-key>
+     # or
+     X-API-Key: <your-api-key>
+     ```
+  5. **Document the API key** in your secrets manager (1Password, etc.)
+
+- **Dependencies**: Cloudflare account access
+- **Reference**: [docs/security-audit-2026-01.md](../security-audit-2026-01.md) High #12
+- **Definition of done**:
+  - `PIPELINE_API_KEY` secret set in staging and production
+  - `PIPELINE_ENV` set to non-dev value in staging and production
+  - Unauthenticated requests return 401
+  - Authenticated requests with valid key succeed
+  - All internal services/scripts updated to include API key
+
+### ADMIN-10: Create CMS Cloudflare Pages Project
 
 - **Status**: ☐
 - **Priority**: P2
@@ -228,7 +316,7 @@ These items primarily affect:
   - Preview URLs generated for PRs
   - Production URL accessible
 
-### ADMIN-09: Add Dependency Audit to CI
+### ADMIN-11: Add Dependency Audit to CI
 
 - **Status**: ☐
 - **Priority**: P2
@@ -248,7 +336,7 @@ These items primarily affect:
   - CI fails if high/critical vulnerabilities exist
   - Weekly audit runs and creates issues for new vulnerabilities
 
-### ADMIN-10: Document GitHub Environment Requirements
+### ADMIN-12: Document GitHub Environment Requirements
 
 - **Status**: ☐
 - **Priority**: P2
@@ -273,7 +361,8 @@ These items primarily affect:
 
 | Task | Type | Blocker For |
 |------|------|-------------|
-| ADMIN-07 | Security | All production deploys |
+| ADMIN-07 | Security | Firebase access (DEPLOY ASAP) |
+| ADMIN-08 | Security | All production deploys |
 | ADMIN-01 | Performance | Nothing (but improves DX) |
 | ADMIN-02 | Infrastructure | ADMIN-03 |
 | ADMIN-03 | Infrastructure | CI deployments |
@@ -285,14 +374,15 @@ These items primarily affect:
 | ADMIN-04 | CI | Encrypted secrets in prod |
 | ADMIN-05 | CI | Safe deployments |
 | ADMIN-06 | Security | PR safety |
+| ADMIN-09 | Security | Product-pipeline production |
 
 ### Phase 3: Polish (Medium-term)
 
 | Task | Type | Blocker For |
 |------|------|-------------|
-| ADMIN-08 | Infrastructure | CMS production |
-| ADMIN-09 | Security | Ongoing safety |
-| ADMIN-10 | Documentation | Onboarding |
+| ADMIN-10 | Infrastructure | CMS production |
+| ADMIN-11 | Security | Ongoing safety |
+| ADMIN-12 | Documentation | Onboarding |
 
 ---
 
@@ -300,6 +390,10 @@ These items primarily affect:
 
 After completing all tasks, verify:
 
+- [ ] Firebase rules deployed and reject unauthenticated requests (ADMIN-07)
+- [ ] All existing Firebase user profiles migrated to map-based roles (ADMIN-07)
+- [ ] Product-pipeline API key configured in staging/production (ADMIN-09)
+- [ ] Product-pipeline unauthenticated requests return 401 (ADMIN-09)
 - [ ] `pnpm turbo build` shows remote cache hits in CI
 - [ ] `wrangler d1 list` shows real database IDs
 - [ ] `wrangler kv:namespace list` shows real namespace IDs
@@ -327,3 +421,5 @@ After completing all tasks, verify:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-01-19 | Claude (Opus 4.5) | Initial plan created from infrastructure audit |
+| 2026-01-21 | Claude (Opus 4.5) | Added ADMIN-07 (Firebase security rules deployment). Renumbered ADMIN-08 through ADMIN-11. Firebase rules fix (Critical #2 and #3) implemented in code, awaiting deployment. |
+| 2026-01-21 | Claude (Opus 4.5) | Added ADMIN-09 (Product-pipeline API key deployment). Renumbered ADMIN-10 through ADMIN-12. Product-pipeline auth fix (High #12) implemented in code, awaiting deployment configuration. |

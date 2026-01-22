@@ -4,7 +4,7 @@
 import React, { Fragment, memo, useMemo } from "react";
 
 import type { AppLanguage } from "@/i18n.config";
-import { getOrigin, getPathname } from "@/root/environment";
+import { getOrigin, getPathname } from "@/utils/env-helpers";
 import { buildLinks,pageHead  } from "@/utils/seo";
 
 type OgImage = { src: string; width?: number | string; height?: number | string; alt?: string };

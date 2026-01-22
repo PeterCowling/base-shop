@@ -19,7 +19,7 @@
  *   7. Prints next steps
  */
 import { execSync, spawnSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { copyFileSync,existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import * as readline from "node:readline";
 

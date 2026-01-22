@@ -5,9 +5,8 @@ import type { FC, HTMLAttributes } from "react";
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 
+import { RatingSummary } from "@acme/design-system/molecules/RatingSummary";
 import { useTranslations } from "@acme/i18n";
-
-import { RatingSummary } from "../../molecules/RatingSummary";
 
 import Testimonials, { type Testimonial } from "./Testimonials";
 

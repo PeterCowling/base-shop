@@ -12,14 +12,14 @@ const SnapLine = ({ x = null, y = null }: Props) => {
       {x !== null && (
         <div
           className="pointer-events-none absolute top-0 bottom-0 w-px bg-primary"
-          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for snap overlay
+           
           style={{ left: x }}
         />
       )}
       {y !== null && (
         <div
           className="pointer-events-none absolute start-0 end-0 h-px bg-primary"
-          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for snap overlay
+           
           style={{ top: y }}
         />
       )}

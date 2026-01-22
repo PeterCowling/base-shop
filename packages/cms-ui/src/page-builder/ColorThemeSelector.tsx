@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
-import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
 import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import { Inline as DSInline } from "@acme/design-system/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
 
 import data from "./color-themes.json";
 
@@ -47,12 +46,12 @@ const UsagePreview = ({ mode, palette }: { mode: "Light" | "Dark"; palette: Reco
       <div className="mb-1 text-xs text-muted-foreground">{mode}</div>
       <div
         className="space-y-2"
-        // eslint-disable-next-line react/forbid-dom-props -- PB-0002: theme preview requires dynamic background/text colors
+         
         style={{ backgroundColor: `hsl(${bg})`, color: `hsl(${fg})` }}
       >
         <div
           className="rounded border p-2"
-          // eslint-disable-next-line react/forbid-dom-props -- PB-0002: theme preview requires dynamic border color
+           
           style={{ borderColor: `hsl(${muted})` }}
         >
           <div className="text-sm font-medium">{/* i18n-exempt -- TECH-000 [ttl=2025-10-28] preview-only text */}Card title</div>
@@ -60,7 +59,7 @@ const UsagePreview = ({ mode, palette }: { mode: "Light" | "Dark"; palette: Reco
           <DSInline className="mt-2" gap={2}>
             <span
               className="rounded px-2 py-1 text-xs"
-              // eslint-disable-next-line react/forbid-dom-props -- PB-0002: dynamic button colors from palette
+               
               style={{ backgroundColor: `hsl(${primary})`, color: `hsl(${primaryFg})` }}
             >
               {/* i18n-exempt -- TECH-000 [ttl=2025-10-28] preview-only text */}
@@ -68,7 +67,7 @@ const UsagePreview = ({ mode, palette }: { mode: "Light" | "Dark"; palette: Reco
             </span>
             <span
               className="rounded px-2 py-1 text-xs"
-              // eslint-disable-next-line react/forbid-dom-props -- PB-0002: dynamic badge colors from palette
+               
               style={{ backgroundColor: `hsl(${accent})`, color: accentText }}
             >
               {/* i18n-exempt -- TECH-000 [ttl=2025-10-28] preview-only text */}
@@ -76,7 +75,7 @@ const UsagePreview = ({ mode, palette }: { mode: "Light" | "Dark"; palette: Reco
             </span>
             <span
               className="rounded px-2 py-1 text-xs"
-              // eslint-disable-next-line react/forbid-dom-props -- PB-0002: dynamic chip colors from palette
+               
               style={{ backgroundColor: `hsl(${muted})`, color: mutedText }}
             >
               {/* i18n-exempt -- TECH-000 [ttl=2025-10-28] preview-only text */}
@@ -90,7 +89,7 @@ const UsagePreview = ({ mode, palette }: { mode: "Light" | "Dark"; palette: Reco
           <div
             key={s.key}
             className="h-4 w-full rounded"
-            // eslint-disable-next-line react/forbid-dom-props -- PB-0002: dynamic swatch background and optional border
+             
             style={{
               backgroundColor: `hsl(${s.v})`,
               border: i === 1 ? "1px solid hsl(var(--color-fg) / 0.125)" : undefined,

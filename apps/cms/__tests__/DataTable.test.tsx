@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import DataTable, { type Column } from "@acme/ui/components/cms/DataTable";
+import DataTable, { type Column } from "@acme/cms-ui/DataTable";
 
 interface Row {
   id: number;

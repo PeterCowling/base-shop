@@ -12,9 +12,8 @@ import {
   TokensIcon,
 } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Tooltip } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
 
 import { DesignMenuContent } from "./DesignMenu";
 import type GridSettings from "./GridSettings";

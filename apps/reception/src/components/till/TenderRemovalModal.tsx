@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { z } from "zod";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
   RemovalDestination,
@@ -19,7 +20,7 @@ export interface TenderRemovalModalProps {
 const tenderRemovalSchema = z.object({
   amount: z.number().positive(),
   removalType: z.enum(["SAFE_DROP", "BANK_DROP", "LIFT"]),
-  destination: z.enum(["SAFE", "BANK"]),
+  destination: z.enum(["SAFE", "BANK"]).optional(),
 });
 
 function TenderRemovalModalBase({
@@ -50,7 +51,7 @@ function TenderRemovalModalBase({
       );
       return;
     }
-    onConfirm(parsed.data);
+    onConfirm(parsed.data as TenderRemovalRecord);
   }, [amount, removalType, destination, onConfirm]);
 
   /** ---------- Direct PIN entry (inline) -------------------------------- */
@@ -79,7 +80,7 @@ function TenderRemovalModalBase({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-error-main"
+            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
           >
             &times;
           </button>
@@ -94,13 +95,13 @@ function TenderRemovalModalBase({
             <input
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-36 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >
@@ -111,7 +112,7 @@ function TenderRemovalModalBase({
 
             {removalType !== "SAFE_DROP" && (
               <select
-                className="w-32 rounded border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+                className="w-32 rounded border px-2 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
                 value={destination}
                 onChange={(e) =>
                   setDestination(e.target.value as RemovalDestination)

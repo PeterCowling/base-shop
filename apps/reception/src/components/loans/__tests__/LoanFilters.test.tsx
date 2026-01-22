@@ -1,8 +1,11 @@
 import "@testing-library/jest-dom";
+
+import { type ComponentProps,useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState, type ComponentProps } from "react";
+
 import type DateSelType from "../DateSel";
+import { LoanFilters } from "../LoanFilters";
 
 // Mock loan-related hooks for determinism
 jest.mock("../../../hooks/data/useLoans", () => ({
@@ -15,9 +18,6 @@ jest.mock("../../../context/LoanDataContext", () => ({
 
 /* eslint-disable no-var */
 var capturedProps: ComponentProps<typeof DateSelType> | null;
-/* eslint-enable no-var */
-
-import { LoanFilters } from "../LoanFilters";
 
 jest.mock("../DateSel", () => {
   return {

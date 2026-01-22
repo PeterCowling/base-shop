@@ -1,12 +1,13 @@
 // File: /src/components/common/AlertModal.tsx
 import { memo } from "react";
 import {
-  ExclamationCircleIcon,
   CheckCircleIcon,
-  InformationCircleIcon,
+  ExclamationCircleIcon,
   ExclamationTriangleIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
-import { Cluster } from "@acme/ui/components/atoms/primitives";
+
+import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 export type AlertType = "info" | "success" | "warning" | "error";

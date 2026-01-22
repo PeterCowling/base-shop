@@ -3,7 +3,8 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { makeStateStory } from '../../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
+
 import { DatasetProvider } from '../data/DataContext';
 
 import Repeater from './Repeater';

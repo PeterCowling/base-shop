@@ -3,7 +3,8 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { Grid, Section } from "@acme/ui/atoms";
+import { Grid } from "@acme/ui/atoms";
+import { Section } from "@acme/ui/atoms";
 import { translatePath } from "@acme/ui/utils/translate-path";
 
 import { Cluster } from "@/components/ui/flex";

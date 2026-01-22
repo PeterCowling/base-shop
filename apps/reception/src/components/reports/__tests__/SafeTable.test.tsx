@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
 import type { Column } from "../SafeTable";
 import { SafeTable } from "../SafeTable";
 

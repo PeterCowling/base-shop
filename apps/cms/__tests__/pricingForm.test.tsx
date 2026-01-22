@@ -15,7 +15,7 @@ jest.mock("@acme/platform-core/repositories/pricing.server", () => ({
 }));
 
 jest.mock(
-  "@acme/ui/components/atoms/shadcn",
+  "@acme/design-system/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Textarea: (props: any) => <textarea {...props} />,

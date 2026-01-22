@@ -1,7 +1,5 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-
 import {
   Select,
   SelectContent,
@@ -9,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import { openSelectOnMouseDown } from "./helpers";
 import type { InteractionsProps } from "./types";

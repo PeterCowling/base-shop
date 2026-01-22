@@ -1,10 +1,12 @@
 import "@testing-library/jest-dom";
+
+import type { ReactNode } from "react";
 import { act } from "react";
 import { render, screen } from "@testing-library/react";
+
 import type { AggregatedOrder } from "../../../../types/bar/BarTypes";
-import OrderTakingContainer from "../OrderTakingContainer";
 import type { SelectCoffeeOrTeaModalProps } from "../modal/SelectCoffeeOrTeaModal";
-import type { ReactNode } from "react";
+import OrderTakingContainer from "../OrderTakingContainer";
 
 // capture props passed to OrderTakingScreen so we can trigger callbacks
 interface CapturedScreenProps {

@@ -1,6 +1,6 @@
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import type { AnalyticsSummaryCardProps } from "@acme/ui/components/cms/marketing/shared/AnalyticsSummaryCard";
-import { AnalyticsSummaryCard } from "@acme/ui/components/cms/marketing/shared/AnalyticsSummaryCard";
+import type { AnalyticsSummaryCardProps } from "@acme/cms-ui/marketing/shared/AnalyticsSummaryCard";
+import { AnalyticsSummaryCard } from "@acme/cms-ui/marketing/shared/AnalyticsSummaryCard";
+import { Grid } from "@acme/design-system/primitives";
 
 export interface MarketingSummaryCardsProps {
   cards: AnalyticsSummaryCardProps[];

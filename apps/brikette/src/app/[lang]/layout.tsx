@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { getOrigin } from "@/root/environment";
+import { getOrigin } from "@/utils/env-helpers";
 
 import ClientLayout from "./ClientLayout";
 

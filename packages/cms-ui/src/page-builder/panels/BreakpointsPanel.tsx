@@ -2,9 +2,8 @@
 
 import { useMemo, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Button, DialogContent, DialogHeader, DialogTitle, Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 export type Breakpoint = { id: string; label: string; min?: number; max?: number };
 

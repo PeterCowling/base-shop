@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import {
   Button,
   Input,
@@ -14,6 +12,8 @@ import {
   SelectValue,
   Textarea,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+
 import LinkPicker from "../../LinkPicker";
 
 import { openSelectOnMouseDown } from "./helpers";

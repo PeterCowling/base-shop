@@ -8,7 +8,7 @@ const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({ useRouter: () => ({ push: pushMock }) }));
 
 // Mock UI components
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
   const Select = ({ children }: any) => <div>{children}</div>;
@@ -28,7 +28,7 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   const Dialog = ({ children }: any) => <div>{children}</div>;
   const DialogContent = ({ children }: any) => <div>{children}</div>;

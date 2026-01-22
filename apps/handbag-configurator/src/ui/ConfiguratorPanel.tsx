@@ -9,7 +9,7 @@ import type {
 import {
   Card,
   CardContent,
-} from "@acme/ui/atoms";
+} from "@acme/design-system/shadcn";
 import type { KeyboardEvent } from "react";
 import { useMemo } from "react";
 import { useModeStore } from "../viewer/state/modeStore";

@@ -1,11 +1,11 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
 import {
   CmsBuildHero,
   type CmsMetricTile,
   CmsMetricTiles,
-} from "@acme/ui/components/cms";
+} from "@acme/cms-ui";
+import { useTranslations } from "@acme/i18n";
 
 import type { ConfiguratorHeroData } from "../hooks/useConfiguratorDashboardState";
 

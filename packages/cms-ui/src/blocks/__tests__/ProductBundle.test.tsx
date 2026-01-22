@@ -8,7 +8,7 @@ import ProductBundle, { getRuntimeProps } from "../ProductBundle";
 
 configure({ testIdAttribute: "data-testid" });
 
-jest.mock("../../../atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   Price: ({ amount, className }: { amount: number; className?: string }) => (
     <span data-testid="price" className={className}>
       {amount}

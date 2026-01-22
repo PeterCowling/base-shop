@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { ensureShopAccess } from "@cms/actions/common/auth";
 import { getSettings } from "@cms/actions/shops.server";
 import fs from "fs/promises";
 import path from "path";
@@ -7,6 +8,7 @@ import { env } from "@acme/config";
 import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { readSeoAudits } from "@acme/platform-core/repositories/seoAudit.server";
+import { safeWebhookFetch } from "@acme/platform-core/utils";
 
 type LocaleSeo = { title?: string; description?: string; structuredData?: string };
 type SeoSettings = {
@@ -109,6 +111,19 @@ function buildIssues(shop: string, settings: SeoSettings, events: AnalyticsEvent
 export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as { shop?: string };
   const shop = body.shop || "default";
+
+  // Require shop access to trigger SEO notifications
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json(
+      { error: message === "Forbidden" ? "Forbidden" : "Unauthorized" },
+      { status }
+    );
+  }
+
   const webhook = String(env?.SEO_NOTIFY_WEBHOOK ?? process.env.SEO_NOTIFY_WEBHOOK ?? "");
   if (!webhook) {
     return NextResponse.json({ error: "SEO_NOTIFY_WEBHOOK not configured" }, { status: 500 });
@@ -171,12 +186,13 @@ export async function sendNotificationForShop(
     while (attempt < 3) {
       attempt += 1;
       try {
-        const res = await fetch(webhook, {
+        // Use safeWebhookFetch to prevent SSRF attacks
+        const result = await safeWebhookFetch(webhook, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error(`Webhook returned ${res.status}`);
+        if (!result.ok) throw new Error(result.error || `Webhook returned error`);
         LAST_NOTIFIED.set(shop, now);
         return true;
       } catch (err) {

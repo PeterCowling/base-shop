@@ -1,6 +1,6 @@
 /* src/types/hooks/data/roomsByDateData.ts */
 
-import { z } from "zod";
+import { type z } from "zod";
 
 import type {
   roomByDateBookingSchema,

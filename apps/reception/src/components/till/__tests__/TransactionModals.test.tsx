@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { Transaction } from "../../../types/component/Till";
+import TransactionModals from "../TransactionModals";
 
 const sample: Transaction = { txnId: "t1", amount: 10 };
 
@@ -30,8 +33,6 @@ jest.mock("../EditTransactionModal", () => ({
     </div>
   ),
 }));
-
-import TransactionModals from "../TransactionModals";
 
 describe("TransactionModals", () => {
   it("renders delete modal and clears state on close", async () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+import { Grid, Inline, Stack } from "@acme/design-system/primitives";
 
 import { resolveArtifactHref } from "@/app/artifacts/types";
 

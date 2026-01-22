@@ -1,5 +1,6 @@
 // src/hooks/utilities/__tests__/useCheckinsModes.test.ts
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 
 import useCheckinsModes from "../useCheckinsModes";

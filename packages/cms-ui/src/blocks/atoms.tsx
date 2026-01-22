@@ -97,7 +97,7 @@ export const Image = memo(function Image({
     return (
       <div
         className="relative w-full overflow-hidden"
-        /* eslint-disable-next-line react/forbid-dom-props -- ABC-123: dynamic CSS `aspect-ratio` requires style; utility classes can't express arbitrary runtime ratios */
+         
         style={numeric ? ({ aspectRatio: numeric } as React.CSSProperties) : undefined}
       >
         <NextImage

@@ -98,11 +98,11 @@ export default function GridAreasEditor({ value, columns, rows, onChange }: Prop
       <div className="rounded border p-2">
         <Grid gap={0} className="gap-px" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
           {Array.from({ length: rws }).map((_, y) => (
-            // eslint-disable-next-line react/no-array-index-key -- PB-2416: grid rows addressed by coordinate, not reordered
+             
             <React.Fragment key={`row-${y}`}>
               {Array.from({ length: cols }).map((__, x) => (
                 <button
-                  // eslint-disable-next-line react/no-array-index-key -- PB-2416: grid cells addressed by coordinate, not reordered
+                   
                   key={`cell-${y}-${x}`}
                   type="button"
                   className="bg-muted/40 hover:bg-muted rounded p-2 text-center text-xs min-h-10 min-w-10"

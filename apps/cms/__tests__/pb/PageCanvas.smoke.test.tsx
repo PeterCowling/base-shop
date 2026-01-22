@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import type { Locale } from "@acme/i18n/locales";
 // Target under test (UI package source)
-import PageCanvas from "@acme/ui/components/cms/page-builder/PageCanvas";
+import PageCanvas from "@acme/cms-ui/page-builder/PageCanvas";
+import type { Locale } from "@acme/i18n/locales";
 
 // Stub heavy editable canvas subtree to avoid deep dependencies while
 // still executing PageCanvas branching and prop plumbing.

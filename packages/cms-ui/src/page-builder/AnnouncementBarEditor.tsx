@@ -1,6 +1,6 @@
+import { Input } from "@acme/design-system/shadcn";
 import type { AnnouncementBarComponent } from "@acme/types";
 
-import { Input } from "@acme/design-system/shadcn";
 import LocalizedTextInput from "../LocalizedTextInput";
 
 import type { EditorProps } from "./EditorProps";

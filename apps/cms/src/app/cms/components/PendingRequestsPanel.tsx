@@ -5,8 +5,8 @@ import type { PendingUser } from "@cms/actions/accounts.server";
 import { approveAccount } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 
 import { Toast } from "@/components/atoms";
 import {

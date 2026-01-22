@@ -1,6 +1,6 @@
 import type { Locale } from "@acme/i18n/locales";
-import { type FooterLink } from "../../organisms/Footer";
-import type { LogoVariants } from "../../organisms/types";
+import { type FooterLink } from "@acme/ui/components/organisms/Footer";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 interface Props {
     links?: FooterLink[];
     logoVariants?: LogoVariants;

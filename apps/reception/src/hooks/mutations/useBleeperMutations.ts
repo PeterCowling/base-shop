@@ -1,10 +1,10 @@
 /* File: /src/hooks/mutations/useBleeperMutations.ts */
 
-import { ref, set } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { BleeperResult } from "../../types/bar/BleeperTypes";
+import { type BleeperResult } from "../../types/bar/BleeperTypes";
 
 export function useBleeperMutations() {
   const database = useFirebaseDatabase();

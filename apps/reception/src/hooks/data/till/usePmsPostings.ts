@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import {
-  PmsPosting,
+  type PmsPosting,
   pmsPostingsSchema,
 } from "../../../types/hooks/data/pmsPostingData";
 

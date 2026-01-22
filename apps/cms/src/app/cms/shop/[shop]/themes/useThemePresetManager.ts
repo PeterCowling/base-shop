@@ -1,6 +1,8 @@
 "use client";
 
-import { type ChangeEvent,useState } from "react";
+import { type ChangeEvent, useState } from "react";
+
+import { patchShopTheme } from "../../../wizard/services/patchTheme";
 
 import { useThemePresets } from "./useThemePresets";
 
@@ -50,6 +52,11 @@ export function useThemePresetManager({
     setTheme(newTheme);
     setOverrides({});
     setThemeDefaults(tokensByThemeState[newTheme]);
+    if (!presetThemes.includes(newTheme)) {
+      void patchShopTheme(shop, { themeId: newTheme }).catch((err) => {
+        console.error(err);
+      });
+    }
   };
 
   return {
@@ -67,4 +74,3 @@ export function useThemePresetManager({
     handleThemeChange,
   };
 }
-

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import ExtensionPayModal from "../ExtensionPayModal";
 
 const updateMock = jest.fn();
 const toastMock = jest.fn();
@@ -38,8 +41,6 @@ jest.mock("../../../../utils/toastUtils", () => ({
   __esModule: true,
   showToast: (...args: [string, string]) => toastMock(...args),
 }));
-
-import ExtensionPayModal from "../ExtensionPayModal";
 
 const defaultProps = {
   fullName: "Alice Smith",

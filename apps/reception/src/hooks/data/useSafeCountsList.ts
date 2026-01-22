@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import { safeCountsSchema } from "../../schemas/safeCountSchema";
-import { SafeCount } from "../../types/hooks/data/safeCountData";
+import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
  * Reads all SafeCount records from /safeCounts in real time.
@@ -28,10 +29,9 @@ export function useSafeCountsList() {
     }
     const result = safeCountsSchema.safeParse(data);
     if (result.success) {
-      const mapped = Object.entries(result.data).map(([id, value]) => ({
-        id,
-        ...value,
-      }));
+      const mapped: SafeCount[] = Object.entries(result.data).flatMap(
+        ([id, value]) => (value ? [{ id, ...value }] : [])
+      );
       setSafeCounts(mapped);
     } else {
       setError(result.error);

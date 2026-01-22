@@ -5,8 +5,8 @@ import { useEffect,useState } from "react";
 import { useFormState } from "react-dom";
 import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
 
+import { Toast } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
-import { Toast } from "@acme/ui/components/atoms";
 
 import { Button } from "@/components/atoms/shadcn";
 

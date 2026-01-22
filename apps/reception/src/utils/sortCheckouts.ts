@@ -1,5 +1,5 @@
 // File: /src/utils/sortCheckouts.ts
-import { Guest } from "../components/checkout/CheckoutTable";
+import { type Guest } from "../components/checkout/CheckoutTable";
 
 /**
  * Sort check-out data by grouping each bookingRef, sorting occupant rows

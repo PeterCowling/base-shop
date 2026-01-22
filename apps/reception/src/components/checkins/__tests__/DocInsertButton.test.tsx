@@ -1,10 +1,11 @@
 // src/components/checkins/__tests__/DocInsertButton.test.tsx
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import DocInsertButton from "../DocInsertButton";
 import type { CheckInRow } from "../../../types/component/CheckinRow";
+import DocInsertButton from "../DocInsertButton";
 
 // Mock next/navigation
 const pushMock = jest.fn();

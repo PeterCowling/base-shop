@@ -2,12 +2,11 @@
 
 import * as React from "react";
 
+import { LinkText } from "@acme/design-system/atoms";
+import { Price } from "@acme/design-system/atoms/Price";
+import { Grid as GridPrimitive } from "@acme/design-system/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
 import type { RentalOrder } from "@acme/types";
-
-import { LinkText } from "../../atoms";
-import { Price } from "../../atoms/Price";
-import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
 
 type OrderSummary = { id: string; total: number; date: string; status?: string };
 

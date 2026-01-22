@@ -1,13 +1,5 @@
 /* src/types/hooks/data/activitiesData.ts */
 
-/**
- * Represents data for a single activity record.
- *
- * Example:
- *   code: 1,                               // Numeric code indicating the type of event (e.g., 1 for check-in, 21 for a specific system action)
- *   timestamp: "2024-02-19T08:00:00.000Z",   // When the activity occurred (ISO 8601 format)
- *   who: "System"                          // Entity responsible for the activity (e.g., "System" or a staff name)
- */
 export interface Activity {
   code: number;
   timestamp?: string;

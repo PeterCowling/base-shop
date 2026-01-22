@@ -1,20 +1,21 @@
 /* src/components/till/CloseShiftForm.tsx */
 
-import { memo, useCallback, useEffect, useRef, useState, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo,useRef, useState } from "react";
 import { z } from "zod";
 
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { settings } from "../../constants/settings";
 import { useAuth } from "../../context/AuthContext";
 import useShiftProgress, {
-  ShiftProgress,
+  type ShiftProgress,
   useAutoSaveShiftProgress,
 } from "../../hooks/utilities/useShiftProgress";
-import { CloseShiftFormProps } from "../../types/component/Till";
+import { type CloseShiftFormProps } from "../../types/component/Till";
 import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
 import PinEntryModal from "../common/PinEntryModal";
+
 import { CreditCardReceiptCheck } from "./CreditCardReceiptCheck";
 import { KeycardCountForm } from "./KeycardCountForm";
 import StepProgress from "./StepProgress";

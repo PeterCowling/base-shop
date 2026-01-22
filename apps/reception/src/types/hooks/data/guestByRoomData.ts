@@ -1,15 +1,8 @@
 // File: /src/types/hooks/data/guestByRoomData.ts
 
-/**
- * Represents the room allocation data for a single occupant within the "guestByRoom" node.
- *
- *   allocated: "6", // The room number currently assigned
- *   booked: "6"    // The room number originally booked
- */
-export interface GuestByRoomRecord {
-  allocated: string;
-  booked: string;
-}
+import type { GuestByRoomRecord } from "../../../schemas/guestByRoomSchema";
+
+export type { GuestByRoomRecord };
 
 /**
  * A map of occupantId -> GuestByRoomRecord.

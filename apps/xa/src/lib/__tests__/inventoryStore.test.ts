@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
+import type { XaProduct } from "../demoData";
 import {
   getAvailableStock,
   getSoldQty,
@@ -7,7 +8,6 @@ import {
   recordSale,
 } from "../inventoryStore";
 import type { XaCartState } from "../xaCart";
-import type { XaProduct } from "../demoData";
 
 const SOLD_KEY = "XA_INVENTORY_SOLD_V1";
 

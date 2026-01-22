@@ -41,28 +41,28 @@ async function renderProductPage(product: XaProduct, products: XaProduct[], conf
   jest.doMock("next/navigation", () => ({
     notFound: () => notFoundMock(),
   }));
-  jest.doMock("@acme/ui/atoms/Section", () => {
+  jest.doMock("@acme/design-system/atoms/Section", () => {
     const React = require("react");
     return {
       Section: ({ children }: { children: React.ReactNode }) =>
         React.createElement("section", null, children),
     };
   });
-  jest.doMock("@acme/ui/atoms/Grid", () => {
+  jest.doMock("@acme/design-system/atoms/Grid", () => {
     const React = require("react");
     return {
       Grid: ({ children }: { children: React.ReactNode }) =>
         React.createElement("div", null, children),
     };
   });
-  jest.doMock("@acme/ui/components/molecules", () => {
+  jest.doMock("@acme/design-system/molecules", () => {
     const React = require("react");
     return {
       Breadcrumbs: ({ items }: { items: Array<{ label: string }> }) =>
         React.createElement("nav", null, items.map((item) => item.label).join(" / ")),
     };
   });
-  jest.doMock("@acme/ui/components/atoms", () => {
+  jest.doMock("@acme/design-system/atoms", () => {
     const React = require("react");
     return {
       Button: ({ children }: { children: React.ReactNode }) =>

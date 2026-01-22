@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, configure } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import type AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
-import type { PriceProps } from "@acme/ui/components/atoms/Price";
+import type { PriceProps } from "@acme/design-system/atoms/Price";
 import type { SKU } from "@acme/types";
 configure({ testIdAttribute: "data-testid" });
 import PdpClient from "./PdpClient.client";
@@ -25,7 +25,7 @@ jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => ({
   default: () => <div data-testid="image-gallery" />,
 }));
 
-jest.mock("@acme/ui/components/atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   __esModule: true,
   Price: ({ amount }: PriceProps) => <span>{amount}</span>,
 }));

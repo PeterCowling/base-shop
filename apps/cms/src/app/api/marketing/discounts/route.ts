@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { ensureRole } from "@cms/actions/common/auth";
+import { ensureRole, ensureShopReadAccess } from "@cms/actions/common/auth";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -56,6 +56,19 @@ async function requireAdmin() {
 
 export async function GET(req: NextRequest) {
   const shop = getShop(req);
+
+  // Require shop read access to view discount codes
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json(
+      { error: message === "Forbidden" ? "Forbidden" : "Unauthorized" },
+      { status }
+    );
+  }
+
   const [discounts, events] = await Promise.all([
     readDiscounts(shop),
     listEvents(),

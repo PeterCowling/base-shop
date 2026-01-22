@@ -2,11 +2,11 @@
 
 import { resetThemeOverride } from "@cms/actions/shops.server";
 
+import DataTable from "@acme/cms-ui/DataTable";
+import { CodeBlock } from "@acme/design-system/molecules";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
 import type { Locale } from "@acme/types";
-import DataTable from "@acme/ui/components/cms/DataTable";
-import { CodeBlock } from "@acme/ui/components/molecules";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

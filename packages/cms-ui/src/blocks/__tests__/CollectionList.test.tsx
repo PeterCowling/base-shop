@@ -4,7 +4,7 @@ import CollectionList, {
   type CollectionListProps,
 } from "../CollectionList";
 
-jest.mock("../../../organisms/CategoryCard", () => ({
+jest.mock("@acme/ui/components/organisms/CategoryCard", () => ({
   CategoryCard: ({ category }: { category: { id: string } }) => (
     <div data-testid={`category-${category.id}`} />
   ),

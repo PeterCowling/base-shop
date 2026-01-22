@@ -1,18 +1,19 @@
 import React, {
-  FocusEvent,
-  KeyboardEvent,
+  type FocusEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useState,
 } from "react";
 
-import AutoComplete from "./AutoComplete";
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
 import {
   countries,
   municipalities,
 } from "../../checkins/docInsert/DocInsertData";
+
+import AutoComplete from "./AutoComplete";
 
 interface Row2Props {
   occupantDetails: OccupantDetails;

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { CreditSlip } from "../../../types/component/Till";
+import { type CreditSlip } from "../../../types/component/Till";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
 /**

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import {
@@ -10,7 +11,6 @@ import {
   type Page,
   type PageComponent,
 } from "@acme/types";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
 
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
 import { Button } from "@/components/atoms/shadcn";

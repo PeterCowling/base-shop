@@ -9,7 +9,7 @@ import type { MediaItem } from "@acme/types";
 
 import MediaManager from "../MediaManager";
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react") as typeof import("react");
   const passthrough = (name: string, tag = "div") => {
     const Comp = React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>

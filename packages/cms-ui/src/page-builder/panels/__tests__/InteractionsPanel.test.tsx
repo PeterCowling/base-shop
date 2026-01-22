@@ -29,7 +29,7 @@ jest.mock("@acme/i18n", () => ({
     }[key] ?? key),
 }));
 
-jest.mock("../../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   let id = 0;
   return {
     __esModule: true,

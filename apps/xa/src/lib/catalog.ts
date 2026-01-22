@@ -1,4 +1,5 @@
 import type { SKU } from "@acme/types";
+
 import { XA_PRODUCTS } from "./demoProducts";
 
 export type Brand = { handle: string; name: string };

@@ -212,7 +212,6 @@
     { "path": "../../packages/platform-machine" },
     { "path": "../../packages/auth" },
     { "path": "../../packages/lib" },
-    { "path": "../../packages/shared-utils" },
     { "path": "../../packages/types" },
     { "path": "../../packages/date-utils" },
     { "path": "../../packages/themes/base" },

@@ -1,6 +1,6 @@
 /* src/types/hooks/data/bookingsData.ts */
 
-import { BookingNotes } from "./bookingNotesData";
+import { type BookingNotes } from "./bookingNotesData";
 
 /**
  * Represents booking details for a single occupant under a booking reference.

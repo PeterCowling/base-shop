@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { showToast } from "../../../utils/toastUtils";
+import Search, { getActivityLevel } from "../Search";
 
 jest.mock("../BookingSearchTable", () => ({
   __esModule: true,
@@ -24,9 +28,6 @@ jest.mock("../../../hooks/client/useBookingSearchClient", () => ({
   __esModule: true,
   default: (...args: unknown[]) => bookingSearchClientMock(...args),
 }));
-
-import Search, { getActivityLevel } from "../Search";
-import { showToast } from "../../../utils/toastUtils";
 
 const showToastMock = showToast as unknown as jest.Mock;
 

@@ -1,4 +1,5 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
+
 import ActionDropdown from "./ActionDropdown";
 
 interface ActionButtonsProps {
@@ -117,7 +118,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
         </>
       )}
       {userName === "Pete" && (
-        <div className="flex items-center gap-2 dark:bg-darkSurface dark:text-darkAccentGreen sm:ml-auto">
+        <div className="flex items-center gap-2 dark:bg-darkSurface dark:text-darkAccentGreen sm:ms-auto">
           <label
             className="text-sm font-semibold dark:text-darkAccentGreen"
             htmlFor="drawerLimit"

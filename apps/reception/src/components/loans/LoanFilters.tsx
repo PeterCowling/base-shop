@@ -1,4 +1,5 @@
-import { memo, ReactElement } from "react";
+import { memo, type ReactElement } from "react";
+
 import DateSelector from "./DateSel";
 
 interface LoanFiltersProps {

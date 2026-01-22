@@ -46,7 +46,7 @@ describe("Product detail page", () => {
         { title: "Blog", excerpt: "Ex", slug: "b1", products: ["p1"] },
       ]),
     }));
-    jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
+    jest.mock("@acme/cms-ui/blocks/BlogListing", () => ({
       __esModule: true,
       default: jest.fn(() => null),
     }));
@@ -66,7 +66,7 @@ describe("Product detail page", () => {
     const { default: Page } = await import("../src/app/[lang]/product/[slug]/page");
     const element = await Page({ params: { slug: "p1", lang: "en" } });
     render(element);
-    const BlogListing = (await import("@acme/ui/components/cms/blocks/BlogListing")).default as jest.Mock;
+    const BlogListing = (await import("@acme/cms-ui/blocks/BlogListing")).default as jest.Mock;
     const PdpClient = (await import("../src/app/[lang]/product/[slug]/PdpClient.client")).default as jest.Mock;
     expect(BlogListing).toHaveBeenCalled();
     expect(BlogListing.mock.calls[0][0]).toEqual({

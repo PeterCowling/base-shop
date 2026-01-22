@@ -1,10 +1,11 @@
-import { get, ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { get, ref, update } from "firebase/database";
+
+import { useFirebaseDatabase } from "../../services/useFirebase";
+import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
+import { type FinancialsRoomData } from "../../types/hooks/data/financialsRoomData";
 
 import useFinancialsRoomMutations from "./useFinancialsRoomMutations";
-import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
-import { FinancialsRoomData } from "../../types/hooks/data/financialsRoomData";
 
 export default function useDeleteTransaction() {
   const database = useFirebaseDatabase();

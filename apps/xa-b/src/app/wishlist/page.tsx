@@ -4,9 +4,9 @@ import { useMemo } from "react";
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy wishlist page pending i18n overhaul */
 import Link from "next/link";
 
-import { Grid as LayoutGrid } from "@acme/ui/atoms/Grid";
-import { Section } from "@acme/ui/atoms/Section";
-import { Button } from "@acme/ui/components/atoms";
+import { Button } from "@acme/design-system/atoms";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaProductCard } from "../../components/XaProductCard";
 import { useWishlist } from "../../contexts/XaWishlistContext";

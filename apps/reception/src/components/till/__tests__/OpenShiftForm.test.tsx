@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { OpenShiftForm } from "../OpenShiftForm";
 
 jest.mock("../../../hooks/mutations/useCCReceiptConfirmations", () => ({
   useCCReceiptConfirmations: () => ({ confirmReceipt: jest.fn() }),
@@ -19,8 +22,6 @@ jest.mock("../../../constants/settings", () => ({
     tillMaxLimit: 2000,
   },
 }));
-
-import { OpenShiftForm } from "../OpenShiftForm";
 
 beforeEach(() => {
   localStorage.clear();

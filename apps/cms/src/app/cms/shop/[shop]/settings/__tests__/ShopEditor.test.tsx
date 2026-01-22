@@ -64,7 +64,7 @@ jest.mock(
   { virtual: true },
 );
 
-jest.mock("@acme/ui/components/cms/DataTable", () => ({
+jest.mock("@acme/cms-ui/DataTable", () => ({
   __esModule: true,
   default: ({ rows }: any) => (
     <div data-testid="data-table">{rows.length} rows</div>

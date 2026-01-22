@@ -1,14 +1,16 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import { act } from "react";
+
 import type { ComponentProps } from "react";
+import { act } from "react";
+import { render, screen } from "@testing-library/react";
+
 import type { CategoryType } from "../../../../types/bar/BarTypes";
+import type IcedCoffeeSweetnessModal from "../modal/IcedCoffeeSweetnessModal";
+import type MixerModal from "../modal/MixerModal";
+import type SelectCoffeeOrTeaModal from "../modal/SelectCoffeeOrTeaModal";
+import type WithMilkModal from "../modal/WithMilkModal";
 import OrderTakingContainer from "../OrderTakingContainer";
 import type OrderTakingScreen from "../OrderTakingScreen";
-import type MixerModal from "../modal/MixerModal";
-import type WithMilkModal from "../modal/WithMilkModal";
-import type IcedCoffeeSweetnessModal from "../modal/IcedCoffeeSweetnessModal";
-import type SelectCoffeeOrTeaModal from "../modal/SelectCoffeeOrTeaModal";
 
 type OrderTakingScreenProps = ComponentProps<typeof OrderTakingScreen>;
 type MixerModalProps = ComponentProps<typeof MixerModal>;

@@ -5,7 +5,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 
 import { Sidebar } from "@acme/design-system/primitives/Sidebar";
 import { Checkbox, Input, Select, SelectContent, SelectItem,SelectTrigger, SelectValue, Textarea } from "@acme/design-system/shadcn";
-import useLocalStrings from "../hooks/useLocalStrings";
+import useLocalStrings from "@acme/ui/components/cms/page-builder/hooks/useLocalStrings";
 
 import type { PageItem } from "./types";
 

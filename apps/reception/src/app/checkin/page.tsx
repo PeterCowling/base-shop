@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import Checkin from "@/components/checkins/CheckinsTable";
+import Providers from "@/components/Providers";
 
 export default function CheckinPage() {
   return (

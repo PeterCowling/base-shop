@@ -81,6 +81,9 @@ export function middleware(request: NextRequest) {
     if (mv && /^https?:\/\//.test(mv)) scriptExtra.push(new URL(mv).origin);
     else if (!mv) scriptExtra.push("https://unpkg.com");
   } catch {}
+  // Build font sources - allow Google Fonts if used
+  const fontExtra: string[] = ["https://fonts.gstatic.com"];
+
   const csp = [
     "default-src 'self'",
     "base-uri 'self'",
@@ -89,10 +92,14 @@ export function middleware(request: NextRequest) {
     "frame-ancestors 'none'",
     // GA4 script + our inline init guarded by nonce
     `script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com ${scriptExtra.join(' ')}`,
+    // Styles: allow nonce for inline styles injected by Next.js, Google Fonts CSS
+    `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
+    // Fonts: allow Google Fonts + data URIs for embedded fonts
+    `font-src 'self' data: ${fontExtra.join(" ")}`,
     // Allow GA beacons
     `connect-src 'self' https://www.google-analytics.com ${connectExtra.join(" ")}`,
     // Allow GA pixel requests + R2 public origin
-    `img-src 'self' data: https://www.google-analytics.com ${imgExtra.join(" ")}`,
+    `img-src 'self' data: blob: https://www.google-analytics.com ${imgExtra.join(" ")}`,
   ].join("; ");
   response.headers.set("Content-Security-Policy", csp);
 

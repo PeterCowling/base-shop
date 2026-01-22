@@ -6,7 +6,7 @@
 import { memo, useEffect, useMemo } from "react";
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import i18n from "@/i18n";

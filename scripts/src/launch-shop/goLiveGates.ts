@@ -19,8 +19,8 @@ import { join } from "node:path";
 
 import type { LaunchConfig } from "@acme/platform-core/createShop";
 import {
-  REQUIRED_PAGES_BASIC,
   REQUIRED_LEGAL_PAGES,
+  REQUIRED_PAGES_BASIC,
 } from "@acme/platform-core/createShop";
 import { prisma } from "@acme/platform-core/db";
 
@@ -597,7 +597,7 @@ async function runE2ETests(
 
     // Parse Cypress JSON output
     const cypressResultPath = `${testResultsPath}.cypress.json`;
-    let tests: E2ETestResult["tests"] = [];
+    const tests: E2ETestResult["tests"] = [];
     let passedCount = 0;
     let failedCount = 0;
 

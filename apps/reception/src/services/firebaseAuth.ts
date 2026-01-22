@@ -3,18 +3,18 @@
  * Handles authentication and user profile loading.
  */
 
+import type { FirebaseApp } from "firebase/app";
 import {
+  type Auth,
   getAuth,
-  signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
   sendPasswordResetEmail as firebaseSendPasswordResetEmail,
-  type Auth,
+  signInWithEmailAndPassword,
+  signOut,
   type User as FirebaseUser,
 } from "firebase/auth";
-import { ref, get } from "firebase/database";
 import type { Database } from "firebase/database";
-import type { FirebaseApp } from "firebase/app";
+import { get,ref } from "firebase/database";
 
 import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
 import { userProfileSchema } from "../types/domains/userDomain";

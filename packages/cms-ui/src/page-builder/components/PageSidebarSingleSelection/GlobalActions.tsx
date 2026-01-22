@@ -1,9 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+
 import type { GlobalItem } from "../../libraryStore";
 import GlobalsPicker from "../GlobalsPicker";
 

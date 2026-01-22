@@ -1,23 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "@acme/i18n";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { SKU } from "@acme/types";
+
 import {
   Button,
   Checkbox,
-  Cluster,
-  Grid,
-  Inline,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acme/ui/components/atoms";
-import { Breadcrumbs, type BreadcrumbItem } from "@acme/ui/components/molecules";
+} from "@acme/design-system/atoms";
+import { type BreadcrumbItem,Breadcrumbs } from "@acme/design-system/molecules";
+import { Cluster, Grid, Inline } from "@acme/design-system/primitives";
+import { useTranslations } from "@acme/i18n";
+import type { SKU } from "@acme/types";
 import { FilterDrawer, StorefrontProductCard } from "@acme/ui/components/organisms";
+
 import { estimateCompareAt, productHref } from "@/lib/catalog";
 
 type SortKey =

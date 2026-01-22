@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { renderHook, waitFor } from "@testing-library/react";
 
-import useBookingSearchClient from "../useBookingSearchClient";
-import { getMaxActivityCode } from "../bookingSearchUtils";
 import { ActivityCode } from "../../../constants/activities";
+import { getMaxActivityCode } from "../bookingSearchUtils";
+import useBookingSearchClient from "../useBookingSearchClient";
 
 // ---- Mock data ----
 const bookings = {

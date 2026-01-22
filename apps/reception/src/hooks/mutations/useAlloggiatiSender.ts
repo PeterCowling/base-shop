@@ -6,9 +6,9 @@
 import { useCallback, useState } from "react";
 
 import { sendAlloggiatiRecordsToGoogleScript } from "../../services/alloggiatiService";
-import { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
-import { useConstructAlloggiatiRecord } from "../../utils/constructAlloggiatiRecord";
-import { AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
+import { type OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+import { type AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
+import { useConstructAlloggiatiRecord } from "../utils/useConstructAlloggiatiRecord";
 
 interface UseAlloggiatiSenderResult {
   isLoading: boolean;

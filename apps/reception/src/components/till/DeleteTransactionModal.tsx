@@ -1,7 +1,7 @@
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
 
 import useDeleteTransaction from "../../hooks/mutations/useDeleteTransaction";
-import { Transaction } from "../../types/component/Till";
+import { type Transaction } from "../../types/component/Till";
 
 interface DeleteTransactionModalProps {
   transaction: Transaction;

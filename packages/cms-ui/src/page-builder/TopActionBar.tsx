@@ -2,10 +2,9 @@
 
 import React from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Spinner,Tooltip  } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   onSave: () => void;

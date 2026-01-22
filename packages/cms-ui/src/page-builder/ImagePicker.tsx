@@ -4,10 +4,6 @@
 import { type ChangeEvent,memo, useEffect, useState } from "react";
 import Image from "next/image";
 
-import { useTranslations } from "@acme/i18n";
-import type { MediaItem } from "@acme/types";
-
-import useFileUpload from "@acme/ui/hooks/useFileUpload";
 import { Loader } from "@acme/design-system/atoms/Loader";
 import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import {
@@ -19,6 +15,9 @@ import {
   DialogTrigger,
   Input,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
+import useFileUpload from "@acme/ui/hooks/useFileUpload";
 
 import useMediaLibrary from "./useMediaLibrary";
 

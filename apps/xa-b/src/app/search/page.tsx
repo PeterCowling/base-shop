@@ -6,8 +6,8 @@ import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Input } from "@acme/ui/components/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Input } from "@acme/design-system/atoms";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { useXaProductSearch } from "../../lib/search/useXaProductSearch";

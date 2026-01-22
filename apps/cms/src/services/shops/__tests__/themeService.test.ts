@@ -14,6 +14,15 @@ import {
 } from "../theme";
 import { patchTheme, resetThemeOverride,updateShop } from "../themeService";
 
+jest.mock("@acme/platform-core/createShop", () => ({
+  listThemes: jest.fn().mockReturnValue(["base", "bcd"]),
+}));
+
+jest.mock("@acme/platform-core/themeTokens", () => ({
+  baseTokens: { base: "z" },
+  loadThemeTokens: jest.fn().mockResolvedValue({ a: "1" }),
+}));
+
 jest.mock("../helpers", () => ({
   authorize: jest.fn(),
   fetchShop: jest.fn(),
@@ -41,6 +50,12 @@ const mockBuildThemeData = buildThemeData as jest.Mock;
 const mockMergeThemePatch = mergeThemePatch as jest.Mock;
 const mockRemoveThemeToken = removeThemeToken as jest.Mock;
 const mockRevalidatePath = revalidatePath as jest.Mock;
+const { listThemes } = require("@acme/platform-core/createShop") as {
+  listThemes: jest.Mock;
+};
+const { loadThemeTokens } = require("@acme/platform-core/themeTokens") as {
+  loadThemeTokens: jest.Mock;
+};
 
 describe("theme service", () => {
   let consoleErrorSpy: jest.SpyInstance | undefined;
@@ -142,6 +157,38 @@ describe("theme service", () => {
     );
     expect(mockPersistShop).toHaveBeenCalledWith("test", savedShop);
     expect(result.shop).toEqual(savedShop);
+  });
+
+  it("persists base theme selection by setting themeId and resetting tokens", async () => {
+    const current = {
+      id: "test",
+      themeId: "base",
+      themeDefaults: { x: "old" },
+      themeOverrides: { y: "override" },
+    };
+    mockFetchShop.mockResolvedValue(current);
+    const savedShop = {
+      id: "test",
+      themeId: "bcd",
+      themeDefaults: { base: "z", a: "1" },
+      themeOverrides: {},
+      themeTokens: { base: "z", a: "1" },
+    };
+    mockPersistShop.mockResolvedValue(savedShop);
+    const result = await patchTheme("test", { themeId: "bcd" });
+    expect(listThemes).toHaveBeenCalled();
+    expect(loadThemeTokens).toHaveBeenCalledWith("bcd");
+    expect(mockPersistShop).toHaveBeenCalledWith("test", savedShop);
+    expect(result.shop).toEqual(savedShop);
+  });
+
+  it("rejects unknown base themes", async () => {
+    const current = { id: "test", themeId: "base" };
+    mockFetchShop.mockResolvedValue(current);
+    listThemes.mockReturnValueOnce(["base"]);
+    await expect(patchTheme("test", { themeId: "does-not-exist" })).rejects.toThrow(
+      "Theme does-not-exist not found",
+    );
   });
 
   it("removes theme token and revalidates path", async () => {

@@ -1,7 +1,7 @@
 // File: /Users/petercowling/reception/src/components/loans/LoanableItemSelector.tsx
-import React, { memo, ReactElement, useCallback } from "react";
+import React, { memo, type ReactElement, useCallback } from "react";
 
-import { LoanItem, LoanMethod } from "../../types/hooks/data/loansData";
+import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
  * Props for the component that:

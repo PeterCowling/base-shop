@@ -62,7 +62,7 @@ export const ColorSwatch = React.forwardRef<
         aria-pressed={selected}
         aria-label={resolvedAriaLabel}
         aria-labelledby={ariaLabelledBy}
-        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: swatch color + size come from runtime data and require inline style
+         
         style={mergedStyle}
         {...props}
       />

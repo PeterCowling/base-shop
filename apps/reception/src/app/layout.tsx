@@ -1,10 +1,11 @@
 // apps/reception/src/app/layout.tsx
+import "./globals.css";
+
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 
-import "./globals.css";
-import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import OfflineIndicator from "@/components/OfflineIndicator";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 const inter = Inter({
   subsets: ["latin"],

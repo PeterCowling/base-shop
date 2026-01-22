@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
 
 import { extractStageRSummary } from "./stageRHelpers";
 import { extractStageSSummary } from "./stageSHelpers";

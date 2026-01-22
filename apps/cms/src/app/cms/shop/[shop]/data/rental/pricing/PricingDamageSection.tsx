@@ -1,7 +1,7 @@
 import { type ChangeEvent } from "react";
 
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
-import { cn } from "@acme/ui/utils/style";
 
 import { Button, Input } from "@/components/atoms/shadcn";
 

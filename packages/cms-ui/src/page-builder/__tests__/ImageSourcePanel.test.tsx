@@ -15,7 +15,7 @@ const useTranslationsMock = useTranslations as jest.MockedFunction<typeof useTra
 const probe = jest.fn();
 let probeState = { loading: false, error: "", valid: true };
 
-jest.mock("../../../../hooks/useRemoteImageProbe", () => ({
+jest.mock("@acme/ui/hooks/useRemoteImageProbe", () => ({
   __esModule: true,
   default: () => ({ probe, ...probeState }),
 }));

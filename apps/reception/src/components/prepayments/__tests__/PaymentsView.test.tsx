@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+
 import React from "react";
+import { render, screen } from "@testing-library/react";
 
 import type { BookingPaymentItem } from "../BookingPaymentsLists";
 import type { PrepaymentsViewProps } from "../PrepaymentsView";
+import PrepaymentsView from "../PrepaymentsView";
 
 // Mock BookingPaymentsLists to expose counts and totals
 jest.mock("../BookingPaymentsLists", () => {
@@ -25,8 +27,6 @@ jest.mock("../BookingPaymentsLists", () => {
     },
   };
 });
-
-import PrepaymentsView from "../PrepaymentsView";
 
 const item = (overrides: Partial<BookingPaymentItem>): BookingPaymentItem => ({
   bookingRef: "REF",

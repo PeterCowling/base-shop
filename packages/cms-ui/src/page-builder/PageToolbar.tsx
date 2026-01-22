@@ -4,15 +4,14 @@
 import React, { useEffect } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-import type { Locale } from "@acme/i18n/locales";
-
-import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip,Tooltip as UITooltip  } from "@acme/design-system/atoms";
 // Avoid useRouter to keep this component usable in test/standalone environments
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Button, Dialog, DialogContent, DialogTrigger,Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import DeviceSelector from "@acme/ui/components/DeviceSelector";
+import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
 
 import { DesignMenuContent } from "./DesignMenu";
 import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
@@ -29,7 +28,7 @@ export interface PageToolbarProps {
   isValid: boolean | null;
   breakpoints?: Breakpoint[];
   setBreakpoints?: (list: Breakpoint[]) => void;
-  extraDevices?: import("../../../utils/devicePresets").DevicePreset[];
+  extraDevices?: import("@acme/ui/utils/devicePresets").DevicePreset[];
   // Editing size control (px) for current viewport
   editingSizePx?: number | null;
   setEditingSizePx?: (px: number | null) => void;
@@ -55,7 +54,7 @@ const PageToolbar = ({
   isValid,
   breakpoints,
   setBreakpoints,
-  extraDevices,
+  extraDevices: _extraDevices,
   editingSizePx,
   setEditingSizePx,
   pagesNav,
@@ -155,13 +154,10 @@ const PageToolbar = ({
         <div className="flex items-center gap-2 shrink-0">
           <DeviceSelector
             deviceId={deviceId}
-            onChange={(id: string) => {
+            setDeviceId={(id: string) => {
               setDeviceId(id);
               setOrientation("portrait");
             }}
-            showLegacyButtons
-            compact
-            extraDevices={extraDevices}
           />
           {/* Zoom control removed per requirements */}
           {/* Breakpoints overflow: three-dot menu next to device selector */}

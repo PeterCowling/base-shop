@@ -1,8 +1,9 @@
 // packages/ui/src/components/cms/page-builder/MoreMenu.tsx
 "use client";
 
-import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { Button } from "@acme/design-system/shadcn";
 
 interface Item {
   label: string;

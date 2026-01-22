@@ -3,11 +3,11 @@
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import {
   getProductById,
   readSettings,
 } from "@acme/platform-core/repositories/json.server";
-import { Card, CardContent } from "@acme/ui/components/atoms/shadcn";
 
 import ProductEditHero from "./ProductEditHero.client";
 

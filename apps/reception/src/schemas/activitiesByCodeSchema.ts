@@ -5,18 +5,8 @@ export const activityByCodeDataSchema = z.object({
   who: z.string(),
 });
 
-export const occupantActivitiesByCodeSchema = z.record(
-  activityByCodeDataSchema
-);
+export const occupantActivitiesByCodeSchema = z.record(activityByCodeDataSchema);
 
 export const activitiesByCodeForOccupantSchema = z.record(
   occupantActivitiesByCodeSchema
 );
-
-export type ActivityByCodeData = z.infer<typeof activityByCodeDataSchema>;
-export type OccupantActivitiesByCode = z.infer<
-  typeof occupantActivitiesByCodeSchema
->;
-export type ActivitiesByCodeForOccupant = z.infer<
-  typeof activitiesByCodeForOccupantSchema
->;

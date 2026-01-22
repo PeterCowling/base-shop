@@ -1,24 +1,26 @@
 /* i18n-exempt file -- OPS-3400 CLI-only shop bootstrap prompts; developer-facing copy [ttl=2026-12-31] */
-import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
+
+import { type CreateShopOptions,listThemes } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
+
 import { applyPageTemplate } from "./apply-page-template";
-import {
-  prompt,
-  selectProviders,
-  selectOption,
-  promptUrl,
-  promptEmail,
-  promptNavItems,
-  promptPages,
-} from "./utils/prompts";
-import { promptThemeOverrides } from "./utils/theme";
-import { createShopAndSeed } from "./shop/init";
-import type { CreateShopOptions } from "@acme/platform-core/createShop";
-import { listDirNames, loadTemplateDefaults } from "./utils/templates";
 import { initShopArgs } from "./cli/initShopArgs";
 import { collectPluginEnv } from "./env/collectPluginEnv";
 import { writeEnvFiles } from "./env/writeEnvFiles";
+import { createShopAndSeed } from "./shop/init";
+import {
+  prompt,
+  promptEmail,
+  promptNavItems,
+  promptPages,
+  promptUrl,
+  selectOption,
+  selectProviders,
+} from "./utils/prompts";
+import { listDirNames, loadTemplateDefaults } from "./utils/templates";
+import { promptThemeOverrides } from "./utils/theme";
 
 export async function initShop(): Promise<void> {
   const {
@@ -72,7 +74,7 @@ export async function initShop(): Promise<void> {
       : await prompt("Shop type (sale or rental) [sale]: ", "sale"));
   const type: "sale" | "rental" =
     String(typeAns).toLowerCase() === "rental" ? "rental" : "sale";
-  const themes = listDirNames(join(rootDir, "packages", "themes"));
+  const themes = listThemes();
   const theme =
     config.theme && themes.includes(config.theme)
       ? config.theme

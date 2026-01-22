@@ -2,10 +2,9 @@
 
 import { type ChangeEvent,type ReactElement } from "react";
 
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { Input } from "../../atoms/shadcn";
+import type { TokenInfo } from "@acme/ui/hooks/useTokenEditor";
 
 interface TextTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];

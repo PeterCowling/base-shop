@@ -1,6 +1,55 @@
 "use client";
 
-// Core atoms (excluding primitives and shadcn, which are in separate top-level directories)
+// Core atoms - presentation components without domain logic
+// Note: this module also re-exports a small set of common primitives for
+// compatibility with existing import patterns. Prefer `@acme/design-system/shadcn`
+// (and `@acme/design-system/primitives` for layout utilities) for new usage.
+
+export {
+  Accordion,
+  AccordionContent,
+  type AccordionContentProps,
+  AccordionItem,
+  type AccordionItemProps,
+  type AccordionProps,
+  AccordionTrigger,
+  type AccordionTriggerProps,
+} from "../primitives/accordion";
+export { Button, type ButtonProps } from "../primitives/button";
+export { Card, CardContent } from "../primitives/card";
+export { Checkbox, type CheckboxProps } from "../primitives/checkbox";
+export {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "../primitives/dialog";
+export { Input, type InputProps } from "../primitives/input";
+export { OverlayScrim } from "../primitives/overlayScrim";
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "../primitives/select";
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../primitives/table";
+export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Alert } from "./Alert";
 export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
@@ -28,6 +77,7 @@ export { ProductBadge } from "./ProductBadge";
 export { Progress, type ProgressProps } from "./Progress";
 export { Radio } from "./Radio";
 export { RatingStars } from "./RatingStars";
+export { Section, type SectionProps } from "./Section";
 export { SelectField } from "./SelectField";
 export { Skeleton } from "./Skeleton";
 export { StatCard } from "./StatCard";
@@ -38,6 +88,3 @@ export { Toast } from "./Toast";
 export { Tooltip } from "./Tooltip";
 export { VideoPlayer } from "./VideoPlayer";
 export { ZoomImage } from "./ZoomImage";
-
-// Re-export primitives from the dedicated directory (added after UI-09)
-// TODO: These will be added when primitives are moved in UI-09

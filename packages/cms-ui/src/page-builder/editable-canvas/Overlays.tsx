@@ -99,7 +99,7 @@ export default function Overlays(props: OverlaysProps) {
       {dropRect && (
         <div className="relative">
           {/* Dynamic positioning requires inline style for left/top/size */}
-          {/* eslint-disable-next-line react/forbid-dom-props -- TECH-000 dynamic rect overlay positioning */}
+          { }
           <div className="pointer-events-none absolute rounded border-2 border-primary/50 bg-primary/10" style={{ left: dropRect.left, top: dropRect.top, width: dropRect.width, height: dropRect.height }} />
         </div>
       )}
@@ -134,7 +134,7 @@ export default function Overlays(props: OverlaysProps) {
       {marquee.active && marquee.rect && (
         <div className="relative">
           {/* Dynamic positioning requires inline style for left/top/size */}
-          {/* eslint-disable-next-line react/forbid-dom-props -- TECH-000 dynamic marquee overlay positioning */}
+          { }
           <div className="pointer-events-none absolute rounded border-2 border-primary/40 bg-primary/10" style={{ left: marquee.rect.left, top: marquee.rect.top, width: marquee.rect.width, height: marquee.rect.height }} aria-hidden />
         </div>
       )}

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useMemo } from "react";
 
-import { ScreenType } from "../../types/bar/BarTypes";
+import { type ScreenType } from "../../types/bar/BarTypes";
 
 /* -------------------------------------------------------------------------- *
  *                                TYPE DEFS                                   *

@@ -1,6 +1,7 @@
 import { memo, type ReactNode } from "react";
 
 import type { ModalName } from "../types/ModalName";
+
 import AppModals from "./AppModals";
 import DarkModeToggle from "./common/DarkModeToggle";
 

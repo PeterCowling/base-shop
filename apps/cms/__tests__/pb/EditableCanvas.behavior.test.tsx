@@ -1,7 +1,7 @@
 import React, { createRef } from "react";
 import { fireEvent,render, screen } from "@testing-library/react";
 
-import EditableCanvas from "@acme/ui/components/cms/page-builder/EditableCanvas";
+import EditableCanvas from "@acme/cms-ui/page-builder/EditableCanvas";
 
 // Mocks for DnD kit - keep DOM simple
 jest.mock(require.resolve("@dnd-kit/sortable"), () => ({

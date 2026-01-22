@@ -4,14 +4,14 @@ import type { TFunction } from "i18next";
 
 import { HeaderSection } from "@/routes/how-to-get-here/components/HeaderSection";
 
-jest.mock("@acme/ui/atoms/Grid", () => ({
+jest.mock("@acme/design-system/primitives", () => ({
   Grid: ({ as: Component = "div", children, ...props }: any) => {
     const { columns: _columns, gap: _gap, ...rest } = props;
     return <Component data-testid="grid" {...rest}>{children}</Component>;
   },
 }));
 
-jest.mock("@acme/ui/atoms/CfImage", () => ({
+jest.mock("@acme/design-system/atoms/CfImage", () => ({
   CfImage: ({ alt }: { alt: string }) => <img data-testid="hero-image" alt={alt} />,
 }));
 

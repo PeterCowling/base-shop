@@ -1,17 +1,17 @@
 // File: /Users/petercowling/reception/src/components/loans/LoanModal.tsx
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, {
   memo,
-  ReactElement,
+  type ReactElement,
   useCallback,
   useEffect,
   useMemo,
   useState,
 } from "react";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { LoanItem, LoanMethod } from "../../types/hooks/data/loansData";
+import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
  * Occupant shape for the modal.
@@ -212,7 +212,7 @@ function LoanModalComponent({
                 min={1}
                 max={maxCount || 99}
                 onChange={handleCountChange}
-                className="border rounded px-2 py-1 w-20 mr-2"
+                className="border rounded px-2 py-1 w-20 me-2"
               />
               {maxCount !== undefined && mode === "return" && (
                 <span className="text-sm text-gray-600 dark:text-darkAccentGreen">(Max: {maxCount})</span>

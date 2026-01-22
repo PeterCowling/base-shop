@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
 import { showToast } from "../../../utils/toastUtils";
-const showToastMock = showToast as unknown as jest.Mock;
-
 import { KeycardCountForm } from "../KeycardCountForm";
+
+jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
+const showToastMock = showToast as unknown as jest.Mock;
 
 describe("KeycardCountForm", () => {
   beforeEach(() => {

@@ -13,7 +13,7 @@ import {
   LocationModal,
   type LocationModalCopy,
   OffersModal,
-} from "@acme/ui/organisms/modals";
+} from "..";
 
 const categories: FacilitiesModalCategory[] = [
   { title: "General", items: ["Wi-Fi", "Breakfast"] },

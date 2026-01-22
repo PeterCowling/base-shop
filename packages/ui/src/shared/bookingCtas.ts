@@ -1,6 +1,6 @@
 import type { TFunction } from "i18next";
 
-import { i18nConfig } from "@acme/ui/i18n.config";
+import { i18nConfig } from "../i18n.config";
 
 const BOOKING_TOKEN_KEYS = ["reserveNow", "bookNow"] as const;
 const PRIMARY_CTA_TOKEN_KEY = "checkAvailability" as const;

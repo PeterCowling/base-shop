@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { salesOrderSchema } from "../../../schemas/salesOrderSchema";
-import { SalesOrder } from "../../../types/bar/BarTypes";
+import type { SalesOrder } from "../../../types/bar/BarTypes";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
 export function useSalesOrders() {
@@ -38,7 +38,7 @@ export function useSalesOrders() {
 
       const res = salesOrderSchema.safeParse({ ...orderData, orderKey: key });
       if (res.success) {
-        loaded.push(res.data);
+        loaded.push(res.data as SalesOrder);
       } else {
         setError(res.error);
       }

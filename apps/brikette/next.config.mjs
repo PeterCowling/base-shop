@@ -63,18 +63,7 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
-      "react-router": path.resolve(__dirname, "src", "compat", "react-router.tsx"),
-      "react-router-dom": path.resolve(__dirname, "src", "compat", "react-router-dom.tsx"),
-      "react-router/dom": path.resolve(__dirname, "src", "compat", "react-router-dom.tsx"),
-      "@react-router/dev/routes": path.resolve(__dirname, "src", "compat", "react-router-dev-routes.ts"),
     };
-
-    if (context.isServer) {
-      config.resolve.alias = {
-        ...(config.resolve.alias ?? {}),
-        "react-i18next": path.resolve(__dirname, "src", "compat", "react-i18next-server.tsx"),
-      };
-    }
 
     // The brikette app still has a few Node-only helpers (fs loaders, createRequire).
     // Those are guarded at runtime, but webpack needs explicit "no polyfill" fallbacks

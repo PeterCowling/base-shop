@@ -12,10 +12,10 @@ import {
   TokensIcon,
 } from "@radix-ui/react-icons";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
-import { Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
 
 import type { ConfiguratorState } from "../../wizard/schema";
 import { getStepTrackMeta } from "../steps";

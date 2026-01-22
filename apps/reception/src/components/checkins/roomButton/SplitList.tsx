@@ -1,12 +1,14 @@
 // File: /src/components/checkins/roomButton/SplitList.tsx
 
+import { memo } from "react";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo } from "react";
+
 import type {
   PaymentSplit,
   PaymentType,
 } from "../../../types/component/roomButton/types";
+
 import PaymentSplitRow from "./PaymentSplitRow";
 
 interface SplitListProps {

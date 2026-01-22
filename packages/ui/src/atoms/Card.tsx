@@ -1,26 +1,62 @@
-/* i18n-exempt file -- ABC-123 [ttl=2026-12-31] class names are not user-facing */
-import React from "react";
-import clsx from "clsx";
+"use client";
+/**
+ * @deprecated Import Card, CardHeader, CardContent, CardFooter from "@acme/design-system/primitives" instead.
+ * This shim exists for backward compatibility and will be removed in a future release.
+ */
 
+import {
+  Card as DesignSystemCard,
+  CardContent as DesignSystemCardContent,
+  CardFooter as DesignSystemCardFooter,
+  CardHeader as DesignSystemCardHeader,
+} from "@acme/design-system/primitives";
+
+// Warn once per session to avoid log spam
+const WARN_KEY = "__acme_ui_card_deprecation_warned__";
+
+function warnDeprecation(): void {
+  if (process.env.NODE_ENV !== "development") return;
+  if (typeof window === "undefined" || typeof sessionStorage === "undefined") return;
+
+  try {
+    if (!sessionStorage.getItem(WARN_KEY)) {
+      console.warn(
+        "[@acme/ui] Card is deprecated. Import from @acme/design-system/primitives instead. " +
+          "See docs/plans/ui-architecture-consolidation-plan.md for migration guidance."
+      );
+      sessionStorage.setItem(WARN_KEY, "1");
+    }
+  } catch {
+    // Storage disabled or quota exceeded — ignore
+  }
+}
+
+// Re-export design-system components with deprecation warning on first use
 export type CardProps = React.HTMLAttributes<HTMLDivElement>;
-
-export const Card: React.FC<CardProps> = ({ className, ...rest }) => (
-  <div className={clsx("rounded-lg border border-gray-200 bg-white shadow-sm", className)} {...rest} />
-);
-
 export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
-export const CardHeader: React.FC<CardHeaderProps> = ({ className, ...rest }) => (
-  <div className={clsx("p-4 border-b border-gray-100", className)} {...rest} />
-);
-
 export type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
-export const CardContent: React.FC<CardContentProps> = ({ className, ...rest }) => (
-  <div className={clsx("p-4", className)} {...rest} />
-);
-
 export type CardFooterProps = React.HTMLAttributes<HTMLDivElement>;
-export const CardFooter: React.FC<CardFooterProps> = ({ className, ...rest }) => (
-  <div className={clsx("p-3 border-t border-gray-100", className)} {...rest} />
-);
 
-export default Object.assign(Card, { Header: CardHeader, Content: CardContent, Footer: CardFooter });
+export const Card: React.FC<CardProps> = (props) => {
+  warnDeprecation();
+  return <DesignSystemCard {...props} />;
+};
+
+export const CardHeader: React.FC<CardHeaderProps> = (props) => {
+  return <DesignSystemCardHeader {...props} />;
+};
+
+export const CardContent: React.FC<CardContentProps> = (props) => {
+  return <DesignSystemCardContent {...props} />;
+};
+
+export const CardFooter: React.FC<CardFooterProps> = (props) => {
+  return <DesignSystemCardFooter {...props} />;
+};
+
+// Support legacy Object.assign pattern: Card.Header, Card.Content, Card.Footer
+export default Object.assign(Card, {
+  Header: CardHeader,
+  Content: CardContent,
+  Footer: CardFooter,
+});

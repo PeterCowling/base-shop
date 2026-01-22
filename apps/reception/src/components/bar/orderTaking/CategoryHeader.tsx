@@ -1,8 +1,8 @@
 // src/components/bar/orderTaking/CategoryHeader.tsx
 
-import React, { FC, useCallback, useMemo } from "react";
+import React, { type FC, useCallback, useMemo } from "react";
 
-import { CategoryType } from "../../../types/bar/BarTypes";
+import { type CategoryType } from "../../../types/bar/BarTypes";
 
 /* ──────────────────────────────────────────────────────────────────────
  * Category Palette

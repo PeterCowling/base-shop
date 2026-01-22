@@ -6,8 +6,8 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
+import { Chip } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
-import { Chip } from "@acme/ui/components/atoms";
 
 export default function AccessDenied() {
   return (

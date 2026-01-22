@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 const readFile = jest.fn();
 const writeFile = jest.fn();
 const mkdir = jest.fn();

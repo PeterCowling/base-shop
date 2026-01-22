@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect } from "react";
+import { type FC, memo, useCallback, useEffect } from "react";
 
 import useArchiveCheckedOutGuests from "../../../hooks/mutations/useArchiveCheckedOutGuests";
 import useArchiveEligibleBookings from "../../../hooks/mutations/useArchiveEligibleBookings";

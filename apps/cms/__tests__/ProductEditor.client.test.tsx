@@ -8,7 +8,7 @@ import ProductEditor from "../src/app/cms/shop/[shop]/products/[id]/edit/Product
 const updateProduct = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({ updateProduct }));
 let receivedProps: any;
-jest.mock("@acme/ui/components/cms/ProductEditorForm", () => {
+jest.mock("@acme/cms-ui/ProductEditorForm", () => {
   const ProductEditorFormMock = (props: any) => {
     receivedProps = props;
     return <div data-testid="form" />;

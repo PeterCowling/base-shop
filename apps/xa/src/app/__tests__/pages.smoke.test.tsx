@@ -1,14 +1,15 @@
-import * as React from "react";
 import fs from "node:fs";
 import path from "node:path";
-import { render } from "@testing-library/react";
+
+import * as React from "react";
 import { describe, expect, it, jest } from "@jest/globals";
+import { render } from "@testing-library/react";
 
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { XA_BRANDS, XA_PRODUCTS } from "../../lib/demoData";
-import { XA_EDITS } from "../../lib/xaEdits";
 import { XA_SUBCATEGORIES } from "../../lib/xaCatalog";
+import { XA_EDITS } from "../../lib/xaEdits";
 
 const redirectMock = jest.fn();
 const notFoundMock = jest.fn();

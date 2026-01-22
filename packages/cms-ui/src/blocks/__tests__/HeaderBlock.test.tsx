@@ -12,7 +12,7 @@ jest.mock("next/image", () => {
 });
 
 let viewport: "desktop" | "mobile" = "desktop";
-jest.mock("../../../organisms/Header", () => {
+jest.mock("@acme/ui/components/organisms/Header", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -29,11 +29,11 @@ jest.mock("../../../organisms/Header", () => {
   };
 });
 
-jest.mock("../../../../hooks/useViewport", () => {
+jest.mock("@acme/ui/hooks/useViewport", () => {
   return () => viewport;
 });
 
-const { Header } = require("../../../organisms/Header") as { Header: jest.Mock };
+const { Header } = require("@acme/ui/components/organisms/Header") as { Header: jest.Mock };
 
 describe("HeaderBlock", () => {
   afterEach(() => {

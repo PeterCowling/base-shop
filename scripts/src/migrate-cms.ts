@@ -9,9 +9,11 @@
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { CliEnvSchema } from "./types/env";
-import type { CliEnv } from "./types/env";
+
 import fetch from "cross-fetch";
+
+import type { CliEnv } from "./types/env";
+import { CliEnvSchema } from "./types/env";
 
 let env: CliEnv;
 try {

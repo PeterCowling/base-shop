@@ -57,7 +57,7 @@ export function FileSelector({
       error={error}
       {...(required !== undefined ? { required } : {})}
       className={cn("space-y-2", className)}
-      // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: render prop must stay inline to receive FormField-provided aria wiring
+       
       input={({ id: controlId, describedBy: fieldDescribedBy, ariaInvalid }) => (
         <>
           <input

@@ -4,8 +4,8 @@
 import Link from "next/link";
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
-import { cn } from "@acme/ui/utils/style";
 
 // Tooltip not required in compact progress UI
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/atoms/shadcn";

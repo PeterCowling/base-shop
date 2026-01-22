@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/design-system/shadcn";
 
 import useStepCompletion from "../hooks/useStepCompletion";
 

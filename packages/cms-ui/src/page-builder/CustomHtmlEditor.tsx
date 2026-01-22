@@ -1,6 +1,5 @@
-import type { CustomHtmlComponent } from "@acme/types";
-
 import { Textarea } from "@acme/design-system/shadcn";
+import type { CustomHtmlComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import useComponentInputs from "./useComponentInputs";

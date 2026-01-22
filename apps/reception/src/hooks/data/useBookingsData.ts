@@ -1,7 +1,8 @@
 /* src/hooks/data/useBookingsData.ts */
 
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,11 +11,10 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
 
 import { firebaseBookingsSchema } from "../../schemas/bookingsSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FirebaseBookings } from "../../types/hooks/data/bookingsData";
+import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
 
 /**
  * Defines the return structure for the useBookings hook.

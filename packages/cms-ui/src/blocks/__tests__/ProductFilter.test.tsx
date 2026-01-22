@@ -1,6 +1,7 @@
 import { fireEvent,render, screen } from "@testing-library/react";
 
-import { useProductFilters } from "../../../../hooks/useProductFilters";
+import { useProductFilters } from "@acme/ui/hooks/useProductFilters";
+
 import ProductFilter from "../ProductFilter";
 
 const pushMock = jest.fn();
@@ -11,7 +12,7 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => searchParams,
 }));
 
-jest.mock("../../../../hooks/useProductFilters", () => ({
+jest.mock("@acme/ui/hooks/useProductFilters", () => ({
   useProductFilters: jest.fn(),
 }));
 

@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react";
 import type { PageComponent } from "@acme/page-builder-core";
-import type { BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
+import type { BlogPost } from "@acme/cms-ui/blocks/BlogListing";
 
-jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
+jest.mock("@acme/cms-ui/blocks/BlogListing", () => ({
   __esModule: true,
   default: jest.fn(() => null),
 }));
@@ -13,7 +13,7 @@ jest.mock("@acme/ui/components/DynamicRenderer", () => ({
 }));
 
 import Home from "../src/app/[lang]/page.client";
-import BlogListing from "@acme/ui/components/cms/blocks/BlogListing";
+import BlogListing from "@acme/cms-ui/blocks/BlogListing";
 import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
 
 describe("Home page client", () => {

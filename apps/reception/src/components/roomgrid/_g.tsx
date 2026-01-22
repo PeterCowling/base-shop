@@ -1,5 +1,7 @@
 // src/component/roomgrid/g.tsx
 
+import "./rvg.css";
+
 import type { TGridProps } from "./components/Grid";
 import { Grid } from "./components/Grid";
 import { THEME } from "./constants/theme";
@@ -22,8 +24,6 @@ import type { TMainContext } from "./interfaces/mainContext.interface";
 import type { TReservedPeriod } from "./interfaces/reservedPeriod";
 import type { TRow } from "./interfaces/row";
 import type { TTheme } from "./interfaces/theme.interface";
-
-import "./rvg.css";
 
 function ReservationGrid<TCustomStatus extends string = never>(
   props: TGridProps<TCustomStatus>

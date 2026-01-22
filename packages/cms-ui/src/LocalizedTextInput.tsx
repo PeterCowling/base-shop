@@ -2,13 +2,11 @@
 
 import { type ChangeEvent,useEffect, useMemo, useState } from "react";
 
+import { Button,Card, CardContent, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { LOCALES } from "@acme/i18n/locales";
-
-import { Button,Card, CardContent, Input } from "../atoms/shadcn";
-
-import LocaleContentAccordion, { type LocalePanelConfig } from "./LocaleContentAccordion";
+import LocaleContentAccordion, { type LocalePanelConfig } from "@acme/ui/components/cms/LocaleContentAccordion";
 
 interface Props {
   label?: string;

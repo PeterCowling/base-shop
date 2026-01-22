@@ -1,6 +1,6 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy policy copy pending design/i18n overhaul */
 import Link from "next/link";
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/design-system/atoms/Section";
 import { siteConfig } from "../../../lib/siteConfig";
 
 const LAST_UPDATED = "29 December 2025";

@@ -15,39 +15,39 @@
 
 // Re-export core OKLCH functions from @acme/lib
 // Note: hexToRgb/rgbToHex are not re-exported here to avoid collision with colorUtils
-export {
-  // Types
-  type OklchColor,
-  type RgbTuple,
-  // Core conversions
-  hexToOklch,
-  oklchToHex,
-  srgbToOklch,
-  oklchToSrgb,
-  // Perceptual operations
-  deltaE,
-  areDistinguishable,
-  // Gradient/interpolation
-  interpolateOklch,
-  generateGradientStops,
-  // Gamut mapping
-  isInSrgbGamut,
+import {
   clampToSrgbGamut,
-  // WCAG contrast (accessibility)
-  relativeLuminance,
-  wcagContrast,
+  hexToOklch,
   meetsWcagAA,
   meetsWcagAAA,
+  type OklchColor,
+  oklchToHex,
+  wcagContrast,
 } from "@acme/lib";
 
-import {
-  type OklchColor,
+export {
+  areDistinguishable,
+  clampToSrgbGamut,
+  // Perceptual operations
+  deltaE,
+  generateGradientStops,
+  // Core conversions
   hexToOklch,
-  oklchToHex,
-  wcagContrast,
+  // Gradient/interpolation
+  interpolateOklch,
+  // Gamut mapping
+  isInSrgbGamut,
   meetsWcagAA,
   meetsWcagAAA,
-  clampToSrgbGamut,
+  // Types
+  type OklchColor,
+  oklchToHex,
+  oklchToSrgb,
+  // WCAG contrast (accessibility)
+  relativeLuminance,
+  type RgbTuple,
+  srgbToOklch,
+  wcagContrast,
 } from "@acme/lib";
 
 // ============================================================================

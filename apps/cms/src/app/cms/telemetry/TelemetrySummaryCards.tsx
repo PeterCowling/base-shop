@@ -1,4 +1,4 @@
-import { Grid } from "@acme/ui/components/atoms/primitives";
+import { Grid } from "@acme/design-system/primitives";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

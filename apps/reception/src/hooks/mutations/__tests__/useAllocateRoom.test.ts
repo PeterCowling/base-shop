@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook, waitFor } from "@testing-library/react";
 
 import type { ToastMessageType } from "../../../utils/toastUtils";
+import useAllocateRoom, { isUpgrade } from "../useAllocateRoom";
 
 interface MockUser {
   user_name: string;
@@ -30,8 +32,6 @@ jest.mock("../../../utils/toastUtils", () => ({
   showToast: (message: string, type: ToastMessageType) =>
     toastMock(message, type),
 }));
-
-import useAllocateRoom, { isUpgrade } from "../useAllocateRoom";
 
 const baseParams = {
   occupantId: "occ1",

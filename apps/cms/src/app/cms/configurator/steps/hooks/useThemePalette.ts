@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
+import type { TokenMap } from "@acme/cms-ui/hooks/useTokenEditor";
 
 import { useConfigurator } from "../../ConfiguratorContext";
 import { STORAGE_KEY } from "../../hooks/useConfiguratorPersistence";

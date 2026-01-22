@@ -3,9 +3,9 @@
 import { useCallback, useMemo } from "react";
 
 import {
-  CategoryType,
-  ProductRow,
-  ProductsDataMap,
+  type CategoryType,
+  type ProductRow,
+  type ProductsDataMap,
 } from "../../../types/bar/BarTypes";
 
 /**

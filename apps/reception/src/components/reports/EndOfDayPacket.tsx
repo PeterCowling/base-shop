@@ -1,17 +1,5 @@
 /* src/components/reports/EndOfDayPacket.tsx */
-import React, { useRef, useEffect, useState } from "react";
-
-import { SafeTable, type Column } from "./SafeTable";
-import SmallSpinner from "../search/SmallSpinner";
-import DailyTotals from "./DailyTotals";
-import SafeTableSection from "./SafeTableSection";
-import VarianceSummary from "./VarianceSummary";
-
-import { DISCREPANCY_LIMIT } from "../../constants/cash";
-import { TillDataProvider } from "../../context/TillDataContext";
-import { SafeDataProvider } from "../../context/SafeDataContext";
-import { useEndOfDayReportData } from "../../hooks/data/useEndOfDayReportData";
-import { useFirebaseDatabase } from "../../services/useFirebase";
+import React, { useEffect, useRef, useState } from "react";
 import {
   endAt as fbEndAt,
   get,
@@ -20,15 +8,27 @@ import {
   ref,
   startAt as fbStartAt,
 } from "firebase/database";
-import type { SafeCount } from "../../types/hooks/data/safeCountData";
+
+import { DISCREPANCY_LIMIT } from "../../constants/cash";
+import { SafeDataProvider } from "../../context/SafeDataContext";
+import { TillDataProvider } from "../../context/TillDataContext";
+import { useEndOfDayReportData } from "../../hooks/data/useEndOfDayReportData";
+import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
-import { formatEuro } from "../../utils/format";
+import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import {
+  formatEnGbDateTimeFromIso,
   getItalyIsoString,
   subDays,
-  formatEnGbDateTimeFromIso,
 } from "../../utils/dateUtils";
+import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
+import SmallSpinner from "../search/SmallSpinner";
+
+import DailyTotals from "./DailyTotals";
+import { type Column,SafeTable } from "./SafeTable";
+import SafeTableSection from "./SafeTableSection";
+import VarianceSummary from "./VarianceSummary";
 
 interface EndOfDayPacketProps {
   /**
@@ -283,9 +283,9 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
               <thead>
                 <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-left border-b">Time</th>
-                  <th className="p-2 text-left border-b">Action</th>
-                  <th className="p-2 text-left border-b">Missing</th>
+                  <th className="p-2 text-start border-b">Time</th>
+                  <th className="p-2 text-start border-b">Action</th>
+                  <th className="p-2 text-start border-b">Missing</th>
                 </tr>
               </thead>
               <tbody>
@@ -476,10 +476,10 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
               <thead>
                 <tr className="bg-gray-100 dark:bg-darkSurface">
-                  <th className="p-2 text-left border-b">Time</th>
-                  <th className="p-2 text-left border-b">Slip #</th>
-                  <th className="p-2 text-left border-b">User</th>
-                  <th className="p-2 text-left border-b">Amount</th>
+                  <th className="p-2 text-start border-b">Time</th>
+                  <th className="p-2 text-start border-b">Slip #</th>
+                  <th className="p-2 text-start border-b">User</th>
+                  <th className="p-2 text-start border-b">Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -523,9 +523,9 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                 <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
                   <thead>
                     <tr className="bg-gray-100 dark:bg-darkSurface">
-                      <th className="p-2 text-left border-b">Time</th>
-                      <th className="p-2 text-left border-b">User</th>
-                      <th className="p-2 text-left border-b">Amount</th>
+                      <th className="p-2 text-start border-b">Time</th>
+                      <th className="p-2 text-start border-b">User</th>
+                      <th className="p-2 text-start border-b">Amount</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -553,8 +553,8 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                 <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
                   <thead>
                     <tr className="bg-gray-100 dark:bg-darkSurface">
-                      <th className="p-2 text-left border-b">User</th>
-                      <th className="p-2 text-left border-b">Total</th>
+                      <th className="p-2 text-start border-b">User</th>
+                      <th className="p-2 text-start border-b">Total</th>
                     </tr>
                   </thead>
                   <tbody>

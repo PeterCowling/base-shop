@@ -1,5 +1,5 @@
 /* src/types/IconModalProps.ts */
-import { User } from "../domains/userDomain";
+import { type User } from "../domains/userDomain";
 
 /**
  * Props for components that display an icon-triggered modal.

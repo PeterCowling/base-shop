@@ -1,21 +1,24 @@
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+
 import type { ReactNode } from "react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 
 import type { CardIrregularity } from "../../../types/hooks/data/cardIrregularityData";
 import type { KeycardDiscrepancy } from "../../../types/hooks/data/keycardDiscrepancyData";
-import { getItalyIsoString } from "../../../utils/dateUtils";
 import type { SafeCount } from "../../../types/hooks/data/safeCountData";
+import { getItalyIsoString } from "../../../utils/dateUtils";
+import { showToast } from "../../../utils/toastUtils";
+import EndOfDayPacket, { EndOfDayPacketContent } from "../EndOfDayPacket";
 import type { Column } from "../SafeTable";
 import SafeTableSection from "../SafeTableSection";
+
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
-import { showToast } from "../../../utils/toastUtils";
 const toastMock = showToast as unknown as jest.Mock;
 
 const mockUseEndOfDayReportData = jest.fn();
 const mockTillDataProvider = jest.fn();
 const mockSafeDataProvider = jest.fn();
-var getMock: jest.Mock;
+let getMock: jest.Mock;
 
 const openingSnap = {
   exists: () => true,
@@ -77,8 +80,6 @@ jest.mock("firebase/database", () => {
 jest.mock("../../../hooks/data/useEndOfDayReportData", () => ({
   useEndOfDayReportData: (date: Date) => mockUseEndOfDayReportData(date),
 }));
-
-import EndOfDayPacket, { EndOfDayPacketContent } from "../EndOfDayPacket";
 
 const baseReturn = {
   targetDateStr: "2024-01-01",

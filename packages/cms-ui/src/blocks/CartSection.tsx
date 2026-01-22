@@ -2,11 +2,10 @@
 
 import * as React from "react";
 
+import { Grid as GridPrimitive } from "@acme/design-system/primitives/Grid";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-import { Button } from "../../atoms";
-import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
-import OrderSummary from "../../organisms/OrderSummary";
+import OrderSummary from "@acme/ui/components/organisms/OrderSummary";
 
 export interface CartSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   showPromo?: boolean;

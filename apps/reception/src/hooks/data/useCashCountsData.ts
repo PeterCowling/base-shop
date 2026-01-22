@@ -1,7 +1,8 @@
 /* src/hooks/data/useCashCountsData.ts */
 
+import { useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,14 +11,14 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useMemo, useState } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import { cashCountsSchema } from "../../schemas/cashCountSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CashCount } from "../../types/hooks/data/cashCountData";
-import { showToast } from "../../utils/toastUtils";
+import type { CashCount } from "../../types/hooks/data/cashCountData";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { showToast } from "../../utils/toastUtils";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
  * Parameters to configure the cash count query. Each property corresponds
@@ -105,9 +106,9 @@ export function useCashCountsData(params: UseCashCountsDataParams = {}): {
         return; // keep previous cashCounts
       }
 
-      const entries = Object.values(result.data).sort((a, b) =>
-        a.timestamp.localeCompare(b.timestamp)
-      );
+      const entries: CashCount[] = Object.values(result.data)
+        .flatMap((entry) => (entry ? [entry] : []))
+        .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
       setCashCounts(entries);
       setError(null);
       setLoading(false);

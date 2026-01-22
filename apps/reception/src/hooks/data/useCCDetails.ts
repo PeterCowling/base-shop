@@ -1,8 +1,10 @@
 /* src/hook/data/useCCDetails.ts */
 
 import { useEffect, useMemo, useState } from "react";
+
 import { ccDataSchema } from "../../schemas/ccDataSchema";
 import type { CCData } from "../../types/hooks/data/ccData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**

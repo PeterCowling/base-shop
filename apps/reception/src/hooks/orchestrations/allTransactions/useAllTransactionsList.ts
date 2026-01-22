@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-import { FinancialTransaction } from "../../../types/hooks/data/allFinancialTransaction";
+import { type FinancialTransaction } from "../../../types/hooks/data/allFinancialTransaction";
 import useFirebaseSubscription from "../../data/useFirebaseSubscription";
 
 /**

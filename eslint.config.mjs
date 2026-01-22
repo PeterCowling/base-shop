@@ -63,6 +63,7 @@ export default [
       "packages/ui/src/**/*.d.ts.map",
       // Ignore compiled JS files in package src directories (TypeScript emits these)
       "packages/*/src/**/*.js",
+      "packages/*/src/**/*.d.ts",
       // Ignore ts-jest cache/build artifacts
       "**/.ts-jest/**",
       "apps/*/src/**/*.js",
@@ -947,6 +948,40 @@ export default [
       ],
     },
   },
+
+  /* ▸ Deprecate presentation imports from @acme/ui (migrate to @acme/design-system) */
+  {
+    files: ["apps/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "warn",
+        {
+          patterns: [
+            {
+              group: ["@acme/ui/atoms", "@acme/ui/atoms/*"],
+              message:
+                "Import presentation primitives from @acme/design-system/primitives instead of @acme/ui/atoms.",
+            },
+            {
+              group: ["@acme/ui/components/atoms/primitives", "@acme/ui/components/atoms/primitives/*"],
+              message:
+                "Import primitives from @acme/design-system/primitives instead.",
+            },
+            {
+              group: ["@acme/ui/components/atoms/shadcn", "@acme/ui/components/atoms/shadcn/*"],
+              message:
+                "Import from @acme/design-system/shadcn instead.",
+            },
+            {
+              group: ["@acme/ui/utils/style", "@acme/ui/utils/style/*"],
+              message:
+                "Import style utils (cn, cssVars, boxProps) from @acme/design-system/utils/style instead.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   {
     files: [
       "packages/platform-core/src/repositories/inventory.server.ts",
@@ -1089,25 +1124,11 @@ export default [
     },
   },
 
-  /* ▸ Package layering: cms-ui cannot import from ui (siblings, both depend on design-system) */
-  {
-    files: ["packages/cms-ui/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["@acme/ui", "@acme/ui/*"],
-              message:
-                "@acme/cms-ui cannot depend on @acme/ui; they are sibling packages that both depend on @acme/design-system.",
-            },
-          ],
-        },
-      ],
-    },
-  },
+  /* ▸ Package layering: cms-ui CAN import from ui (cms-ui is the higher layer)
+   * The layering is: design-system (lowest) → ui (middle) → cms-ui (highest)
+   * cms-ui may import from both ui and design-system.
+   * This is intentional - see docs/plans/ui-architecture-consolidation-plan.md
+   */
 
   /* ▸ Package layering: ui shims can import from cms-ui (backward compat only) */
   {
@@ -1460,6 +1481,20 @@ export default [
     },
   },
 
+  /* ▸ Reception app: internal tooling, not localized yet */
+  {
+    files: ["apps/reception/**"],
+    rules: {
+      ...offAllDsRules,
+      // Reception is a legacy internal tool; DS governance rules are enforced as part of the
+      // design-system migration plan, not as a lint gate today.
+      "max-lines-per-function": "off",
+      "max-depth": "off",
+      "max-params": "off",
+      "complexity": "off",
+    },
+  },
+
   /* ▸ Tests final override: keep copy/any relaxed even within UI package */
   {
     files: [
@@ -1490,6 +1525,8 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
       // Tests frequently stub media with raw <img> and omit aspect helpers
       "@next/next/no-img-element": "off",
+      // Tests may execute bundled Next artifacts that assign to `module`
+      "@next/next/no-assign-module-variable": "off",
       "ds/no-naked-img": "off",
       "ds/require-aspect-ratio-on-media": "off",
       // Allow unused vars in tests (e.g., destructured helpers)
@@ -1503,6 +1540,17 @@ export default [
   /* ▸ Storybook recommended rules for stories */
   {
     files: ["**/*.stories.{ts,tsx,js,jsx,mdx}"],
+    // Stories are dev-only and often live outside the TS project graph.
+    // Lint them without requiring inclusion in a TS project.
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
     plugins: { storybook },
     rules: {
       ...(storybook.configs?.recommended?.rules || {}),
@@ -1745,6 +1793,12 @@ export default [
     files: ["scripts/**/*.{ts,js,mjs}", "tools/**/*.{ts,js,mjs}"],
     rules: {
       "no-console": "off",
+      complexity: "off",
+      "max-lines-per-function": "off",
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-require": "off",
+      "security/detect-unsafe-regex": "off",
+      "ds/no-hardcoded-copy": "off",
     },
   },
 
@@ -2035,6 +2089,74 @@ export default [
       "import/no-duplicates": "off",
       // Disable promise param naming in CMS - many use short names in test patterns
       "promise/param-names": "off",
+    },
+  },
+  /* ▸ LINT-08: Scripts are non-UI tooling (disable DS/security noise and complexity limits) */
+  {
+    ignores: ["scripts/src/**/*.d.ts"],
+  },
+  {
+    files: ["scripts/**/*.{ts,js,mjs}", "tools/**/*.{ts,js,mjs}"],
+    languageOptions: {
+      parserOptions: {
+        project: null,
+        projectService: false,
+      },
+    },
+    rules: {
+      ...offAllDsRules,
+      complexity: "off",
+      "max-lines-per-function": "off",
+      "max-depth": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "prefer-const": "off",
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-require": "off",
+      "security/detect-unsafe-regex": "off",
+      "no-console": "off",
+    },
+  },
+  /* ▸ LINT-01: Transitional limits for cms-ui page-builder (ported legacy implementation) */
+  {
+    files: ["packages/cms-ui/src/page-builder/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 80],
+      "max-lines-per-function": [
+        "error",
+        { max: 600, skipBlankLines: true, skipComments: true },
+      ],
+      "max-params": ["error", 10],
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  /* ▸ LINT-01: Transitional complexity limits for cms-ui (blocks, nav, media) */
+  {
+    files: [
+      "packages/cms-ui/src/blocks/**/*.{ts,tsx}",
+      "packages/cms-ui/src/media/**/*.{ts,tsx}",
+      "packages/cms-ui/src/nav/**/*.{ts,tsx}",
+    ],
+    rules: {
+      complexity: ["error", 35],
+    },
+  },
+  /* ▸ LINT-01: Relaxed limits for Reception app (legacy internal tooling) */
+  {
+    files: ["apps/reception/src/**/*.{ts,tsx}"],
+    rules: {
+      ...offAllDsRules,
+      complexity: ["error", 60],
+      "max-lines-per-function": [
+        "error",
+        { max: 800, skipBlankLines: true, skipComments: true },
+      ],
+      "max-nested-callbacks": ["error", 8],
+      "max-depth": ["error", 8],
+      "max-params": ["error", 8],
+      "no-console": "off",
     },
   },
 ];

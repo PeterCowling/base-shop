@@ -1,15 +1,15 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- XAUP-0001 [ttl=2026-12-31] temp paths derived from validated inputs */
 import { spawn } from "node:child_process";
-import path from "node:path";
 import fs from "node:fs/promises";
+import path from "node:path";
 
 import { NextResponse } from "next/server";
 
-import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
-import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { resolveStorefrontCatalogPaths } from "../../../../lib/catalogStorefront.server";
+import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
+import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
 

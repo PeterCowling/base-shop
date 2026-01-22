@@ -2,7 +2,8 @@
 import { useCallback } from "react";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
-import { AggregatedOrder } from "../../../../types/bar/BarTypes";
+import { type AggregatedOrder } from "../../../../types/bar/BarTypes";
+
 import ModalContainer from "./ModalContainer";
 
 export interface SelectCoffeeOrTeaModalProps {

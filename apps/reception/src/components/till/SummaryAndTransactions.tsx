@@ -1,5 +1,7 @@
 import type { FC } from "react";
+
 import type { Transaction } from "../../types/component/Till";
+
 import { ShiftSummary } from "./ShiftSummary";
 import TransactionTable from "./TransactionTable";
 

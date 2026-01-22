@@ -2,7 +2,7 @@
 import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../types/hooks/data/guestDetailsData";
 
 /**
  * Mutation Hook:

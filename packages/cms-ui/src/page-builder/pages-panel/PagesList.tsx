@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Button, Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import { PagesListItem } from "./PagesListItem";
 import type { PageItem } from "./types";

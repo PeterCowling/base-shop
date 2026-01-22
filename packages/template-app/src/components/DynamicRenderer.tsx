@@ -4,6 +4,18 @@
 import * as React from "react";
 import NextImage, { type ImageProps } from "next/image";
 
+import { ensureLightboxStyles, initLightbox } from "@acme/cms-ui";
+import BlogListing from "@acme/cms-ui/blocks/BlogListing";
+import ContactForm from "@acme/cms-ui/blocks/ContactForm";
+import ContactFormWithMap from "@acme/cms-ui/blocks/ContactFormWithMap";
+import Gallery from "@acme/cms-ui/blocks/Gallery";
+import HeaderCart from "@acme/cms-ui/blocks/HeaderCart";
+import HeroBanner from "@acme/cms-ui/blocks/HeroBanner";
+import Section from "@acme/cms-ui/blocks/Section";
+import Testimonials from "@acme/cms-ui/blocks/Testimonials";
+import TestimonialSlider from "@acme/cms-ui/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@acme/design-system/primitives/textarea";
+import { cssVars } from "@acme/design-system/utils/style/cssVars";
 import type { Locale } from "@acme/i18n/locales";
 import type { type BlockTypeId,buildBlockRegistry, coreBlockDescriptors,HistoryState,PageComponent  } from "@acme/page-builder-core";
 import { applyTextThemeToOverrides,extractTextThemes } from "@acme/page-builder-ui";
@@ -11,20 +23,8 @@ import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { Textarea as TextBlock } from "@acme/ui/components/atoms/primitives/textarea";
-import { ensureLightboxStyles, initLightbox } from "@acme/ui/components/cms";
-import BlogListing from "@acme/ui/components/cms/blocks/BlogListing";
-import ContactForm from "@acme/ui/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@acme/ui/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@acme/ui/components/cms/blocks/Gallery";
-import HeaderCart from "@acme/ui/components/cms/blocks/HeaderCart";
-import HeroBanner from "@acme/ui/components/cms/blocks/HeroBanner";
-import Section from "@acme/ui/components/cms/blocks/Section";
-import Testimonials from "@acme/ui/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@acme/ui/components/cms/blocks/TestimonialSlider";
 import ReviewsCarousel from "@acme/ui/components/home/ReviewsCarousel";
 import { ValueProps } from "@acme/ui/components/home/ValueProps";
-import { cssVars } from "@acme/ui/utils/style/cssVars";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks

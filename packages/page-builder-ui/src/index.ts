@@ -4,6 +4,29 @@
 
 import type { ComponentProps } from "react";
 
+import DragHandleInternal from "@acme/cms-ui/page-builder/DragHandle";
+import {
+  clearLibrary as uiClearLibrary,
+  type GlobalItem as UiGlobalItem,
+  type LibraryItem as UiLibraryItem,
+  listGlobals as uiListGlobals,
+  listGlobalsForPage as uiListGlobalsForPage,
+  // Local library and globals store used by the builder.
+  listLibrary as uiListLibrary,
+  removeGlobal as uiRemoveGlobal,
+  removeGlobalForPage as uiRemoveGlobalForPage,
+  removeLibrary as uiRemoveLibrary,
+  saveGlobal as uiSaveGlobal,
+  saveGlobalForPage as uiSaveGlobalForPage,
+  saveLibrary as uiSaveLibrary,
+  saveLibraryStrict as uiSaveLibraryStrict,
+  syncFromServer as uiSyncLibraryFromServer,
+  updateGlobal as uiUpdateGlobal,
+  updateGlobalForPage as uiUpdateGlobalForPage,
+  updateLibrary as uiUpdateLibrary,
+} from "@acme/cms-ui/page-builder/libraryStore";
+import SizeControlsInternal from "@acme/cms-ui/page-builder/panels/layout/SizeControls";
+import PreviewRendererInternal from "@acme/cms-ui/page-builder/PreviewRenderer";
 import type { BlockRegistryEntry as UiBlockRegistryEntry } from "@acme/ui";
 import {
   applyTextThemeToOverrides,
@@ -34,29 +57,6 @@ import {
   // State and interaction hooks
   usePageBuilderState as uiUsePageBuilderState,
 } from "@acme/ui";
-import DragHandleInternal from "@acme/ui/components/cms/page-builder/DragHandle";
-import {
-  clearLibrary as uiClearLibrary,
-  type GlobalItem as UiGlobalItem,
-  type LibraryItem as UiLibraryItem,
-  listGlobals as uiListGlobals,
-  listGlobalsForPage as uiListGlobalsForPage,
-  // Local library and globals store used by the builder.
-  listLibrary as uiListLibrary,
-  removeGlobal as uiRemoveGlobal,
-  removeGlobalForPage as uiRemoveGlobalForPage,
-  removeLibrary as uiRemoveLibrary,
-  saveGlobal as uiSaveGlobal,
-  saveGlobalForPage as uiSaveGlobalForPage,
-  saveLibrary as uiSaveLibrary,
-  saveLibraryStrict as uiSaveLibraryStrict,
-  syncFromServer as uiSyncLibraryFromServer,
-  updateGlobal as uiUpdateGlobal,
-  updateGlobalForPage as uiUpdateGlobalForPage,
-  updateLibrary as uiUpdateLibrary,
-} from "@acme/ui/components/cms/page-builder/libraryStore";
-import SizeControlsInternal from "@acme/ui/components/cms/page-builder/panels/layout/SizeControls";
-import PreviewRendererInternal from "@acme/ui/components/cms/page-builder/PreviewRenderer";
 
 export { applyTextThemeToOverrides,extractTextThemes };
 

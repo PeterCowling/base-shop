@@ -1,5 +1,5 @@
 // src/components/emailAutomation/BookingRefChip.tsx
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
 
 import { showToast } from "../../utils/toastUtils";
 
@@ -57,7 +57,7 @@ const BookingRefChipComponent: FC<BookingRefChipProps> = ({ bookingRef }) => {
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2"></i>
-      <span className="ml-8">{bookingRef}</span>
+      <span className="ms-8">{bookingRef}</span>
     </button>
   );
 };

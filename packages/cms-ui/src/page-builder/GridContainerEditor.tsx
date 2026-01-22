@@ -2,10 +2,9 @@
 
 import React from "react";
 
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
 
 import type { EditorProps } from "./EditorProps";
 import GridAreasEditor from "./GridAreasEditor";

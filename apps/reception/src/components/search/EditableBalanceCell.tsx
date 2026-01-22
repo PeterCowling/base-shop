@@ -1,8 +1,8 @@
 // /Users/petercowling/reception/src/components/bookingSearch/EditableBalanceCell.tsx
 import React, {
-  ChangeEvent,
-  FocusEvent,
-  KeyboardEvent,
+  type ChangeEvent,
+  type FocusEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useRef,

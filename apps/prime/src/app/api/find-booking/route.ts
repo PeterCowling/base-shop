@@ -47,14 +47,27 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
 
 /**
  * Get client IP from request headers.
+ * Prioritizes trusted CDN headers over spoofable ones.
+ *
+ * Priority order:
+ * 1. CF-Connecting-IP - Set by Cloudflare, cannot be spoofed by clients
+ * 2. X-Real-IP - Set by reverse proxy (if trusted)
+ * 3. X-Forwarded-For - Can be spoofed, only use as fallback
  */
 function getClientIp(request: Request): string {
+  // CF-Connecting-IP is set by Cloudflare and cannot be spoofed by clients
+  const cfIp = request.headers.get('cf-connecting-ip');
+  if (cfIp) return cfIp;
+
+  // X-Real-IP is typically set by trusted reverse proxies
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp) return realIp;
+
+  // X-Forwarded-For can be spoofed - only use as fallback
   const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) {
-    return forwarded.split(',')[0].trim();
-  }
-  // Fallback - in Vercel/Cloudflare this header is set
-  return request.headers.get('x-real-ip') || 'unknown';
+  if (forwarded) return forwarded.split(',')[0].trim();
+
+  return 'unknown';
 }
 
 /**

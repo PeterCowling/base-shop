@@ -1,6 +1,6 @@
 // /src/components/bookingSearch/FilterBar.tsx
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import React from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 export interface FilterBarProps {
   firstName: string;

@@ -1,14 +1,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-jest.mock("@acme/ui/components/atoms/shadcn", () =>
+jest.mock("@acme/design-system/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 jest.mock("../../atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 
-jest.mock("@acme/ui/hooks/useMediaUpload", () => ({
+jest.mock("../../../hooks/useMediaUpload", () => ({
   __esModule: true,
   useMediaUpload: () => ({
     pendingFile: null,

@@ -1,18 +1,19 @@
 // File: /src/components/checkins/EmailBookingButton.tsx
 
+import { memo, useCallback, useMemo } from "react";
 import {
   faThLarge, // grid-style icon commonly used to indicate an “app”
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo, useCallback, useMemo } from "react";
 
-import CustomTooltip from "./tooltip/CustomTooltip";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useBookingEmail from "../../services/useBookingEmail";
-import { Activity } from "../../types/hooks/data/activitiesData";
-import { showToast } from "../../utils/toastUtils";
+import { type Activity } from "../../types/hooks/data/activitiesData";
 import { formatEnGbDateTime } from "../../utils/dateUtils";
+import { showToast } from "../../utils/toastUtils";
+
+import CustomTooltip from "./tooltip/CustomTooltip";
 
 interface EmailBookingButtonProps {
   bookingRef: string;

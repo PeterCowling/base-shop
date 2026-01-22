@@ -12,7 +12,7 @@ jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
 
 // Capture Text block props to verify className merge (stackStrategy branch)
 const textMock = jest.fn((props: any) => <div data-testid="text" data-class={props.className} />);
-jest.mock("@acme/ui/components/atoms/primitives/textarea", () => ({
+jest.mock("@acme/design-system/primitives/textarea", () => ({
   Textarea: (props: any) => textMock(props),
 }));
 

@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import type { CheckInRow } from "../../types/component/CheckinRow";
 import { sortCheckinsData } from "../sortCheckins";
 

@@ -1,9 +1,10 @@
 /* File: src/components/bar/sales/Ticket.tsx */
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
+
+import { useOrderAgeColor } from "../../../hooks/orchestrations/bar/actions/clientActions/useOrderAgeColor";
+import { type SalesOrder } from "../../../types/bar/BarTypes";
 
 import TicketItems from "./TicketItems";
-import { useOrderAgeColor } from "../../../hooks/orchestrations/bar/actions/clientActions/useOrderAgeColor";
-import { SalesOrder } from "../../../types/bar/BarTypes";
 
 interface Props {
   order: SalesOrder;

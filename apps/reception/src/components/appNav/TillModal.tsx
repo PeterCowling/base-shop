@@ -2,8 +2,8 @@
 
 import { memo } from "react";
 
-import { withIconModal, type IconModalProps } from "../../hoc/withIconModal";
-import { ModalAction } from "../../types/component/ModalAction";
+import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
+import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
   {

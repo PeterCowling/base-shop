@@ -1,8 +1,9 @@
 import { useMemo } from "react";
+
 import { settings } from "../../../constants/settings";
-import { CreditSlip, Transaction } from "../../../types/component/Till";
-import { CashCount } from "../../../types/hooks/data/cashCountData";
-import { SafeCount } from "../../../types/hooks/data/safeCountData";
+import { type CreditSlip, type Transaction } from "../../../types/component/Till";
+import { type CashCount } from "../../../types/hooks/data/cashCountData";
+import { type SafeCount } from "../../../types/hooks/data/safeCountData";
 import { toEpochMillis } from "../../../utils/dateUtils";
 
 interface Params {

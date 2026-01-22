@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
-import React from "react";
 
-import { useTillShifts } from "../useTillShifts";
+import React from "react";
+import { renderHook } from "@testing-library/react";
+
 import { TillShiftProvider } from "../TillShiftProvider";
 import { useTillShiftActions } from "../useTillShiftActions";
+import { useTillShifts } from "../useTillShifts";
 
 jest.mock("../useTillShifts");
 const mockedUseTillShifts = jest.mocked(useTillShifts);

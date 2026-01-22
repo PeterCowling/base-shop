@@ -1,9 +1,9 @@
 /* File: /src/services/firebase.ts */
 
-import { FirebaseApp, getApp, getApps, initializeApp } from "firebase/app";
-import { Database, getDatabase } from "firebase/database";
-import { Firestore, getFirestore } from "firebase/firestore";
 import { useMemo } from "react";
+import { type FirebaseApp, getApp, getApps, initializeApp } from "firebase/app";
+import { type Database, getDatabase } from "firebase/database";
+import { type Firestore, getFirestore } from "firebase/firestore";
 
 import { firebaseEnvSchema } from "../schemas/firebaseEnvSchema";
 import type { FirebaseConfig } from "../types/FirebaseConfig";

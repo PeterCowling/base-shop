@@ -4,7 +4,7 @@
 import { isValidElement, memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { RoomCard as UiRoomCard } from "@acme/ui/molecules/RoomCard";
+import { RoomCard as UiRoomCard } from "@acme/ui/molecules";
 import type { FacilityKey } from "@acme/ui/types/facility";
 import type {
   RoomCardAction,

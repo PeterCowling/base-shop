@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import BookingNotesButton from "../BookingNotesButton";
 
 jest.mock("../BookingNotesModal", () => ({
   __esModule: true,
   default: () => <div data-testid="notes-modal" />,
 }));
-
-import BookingNotesButton from "../BookingNotesButton";
 
 describe("BookingNotesButton", () => {
   it("opens notes modal on click", async () => {

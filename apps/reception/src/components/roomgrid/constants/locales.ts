@@ -1,6 +1,6 @@
 // src/constants/locales.ts
 
-import { TLocales } from "../interfaces/locale.interface";
+import { type TLocales } from "../interfaces/locale.interface";
 
 /**
  * A dictionary of locale abbreviations for days.

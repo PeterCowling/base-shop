@@ -1,8 +1,10 @@
-import { validateShopName } from "@acme/platform-core/shops";
-import type { CreateShopOptions } from "@acme/platform-core/createShop";
 import { createRequire } from "node:module";
-import { resolve, extname } from "path";
+
 import { readFileSync } from "fs";
+import { extname,resolve } from "path";
+
+import type { CreateShopOptions } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
 
 const PAYMENT_PROVIDERS = ["stripe", "paypal"] as const;
 const SHIPPING_PROVIDERS = ["dhl", "ups", "premier-shipping"] as const;

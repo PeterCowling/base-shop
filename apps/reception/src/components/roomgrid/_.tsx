@@ -1,6 +1,6 @@
 // src/components/roomgrid/DropCell.tsx
 
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { useDrop } from "react-dnd";
 
 interface DropCellProps {

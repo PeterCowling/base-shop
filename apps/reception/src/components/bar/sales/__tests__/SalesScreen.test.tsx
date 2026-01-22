@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import type { SalesOrder } from "../../../../types/bar/BarTypes";
 
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import type { SalesOrder } from "../../../../types/bar/BarTypes";
 import SalesScreen from "../SalesScreen";
 
 // ---- Mocks ------------------------------------------------------------
@@ -17,15 +18,16 @@ const {
   setMock,
   removeMock,
   refMock,
-} = return {
+} = (() => {
+  return {
     removeItemsMock: jest.fn(),
     removeSingleItemMock: jest.fn(),
     setBleeperAvailabilityMock: jest.fn(),
     setMock: jest.fn().mockResolvedValue(null),
     removeMock: jest.fn().mockResolvedValue(null),
-    refMock: jest.fn((db: unknown, path: string) => ({ db, path),
+    refMock: jest.fn((db: unknown, path: string) => ({ db, path })),
   };
-});
+})();
 
 jest.mock("../../../../hooks/data/bar/useSalesOrders", () => ({
   useSalesOrders: () => ({ orders: ordersMock, loading: loadingMock, error: errorMock }),

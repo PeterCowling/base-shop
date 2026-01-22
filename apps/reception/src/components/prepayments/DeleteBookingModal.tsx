@@ -1,6 +1,6 @@
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
 
-import { PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
+import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import useDeleteBooking from "../../hooks/mutations/useDeleteBooking";
 
 interface DeleteBookingModalProps {

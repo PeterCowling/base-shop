@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 
+import { Alert, Tag } from "@acme/design-system/atoms";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Alert, Tag } from "@acme/ui/components/atoms";
-import { cn } from "@acme/ui/utils/style";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

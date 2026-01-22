@@ -1,8 +1,8 @@
 /* eslint-disable ds/no-raw-color -- XA-0001 [ttl=2026-12-31] XA theme palette uses raw swatches pending tokenization */
-import { XA_BRANDS, XA_PRODUCTS } from "./demoData";
 import type { XaProduct } from "./demoData";
-import type { XaCategory, XaDepartment } from "./xaTypes";
+import { XA_BRANDS, XA_PRODUCTS } from "./demoData";
 import { siteConfig } from "./siteConfig";
+import type { XaCategory, XaDepartment } from "./xaTypes";
 
 export function formatLabel(value: string): string {
   return value

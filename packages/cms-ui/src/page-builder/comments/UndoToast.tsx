@@ -1,8 +1,7 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Toast } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
 
 import type { Thread } from "./types";
 

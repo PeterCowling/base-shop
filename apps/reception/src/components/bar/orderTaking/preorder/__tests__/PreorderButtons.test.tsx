@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import PreorderButtons from "../PreorderButtons";
 
 /* ------------------------------------------------------------------ */
 /*  Mocks                                                             */
@@ -65,8 +68,6 @@ jest.mock("../../../../../utils/dateUtils", async () => {
     getItalyLocalTimeHHMM: () => "09:15",
   };
 });
-
-import PreorderButtons from "../PreorderButtons";
 
 function setupSnapshotWithOrder() {
   onValueMock.mockImplementation((ref, cb) => {

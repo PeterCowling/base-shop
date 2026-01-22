@@ -1,6 +1,7 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { withModalBackground } from "../../hoc/withModalBackground";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+
 import { useAuth } from "../../context/AuthContext";
+import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
 
 export interface PasswordReauthModalProps {

@@ -1,16 +1,17 @@
 // /Users/petercowling/reception/src/hooks/data/useRoomsByDate.ts
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   onValue,
   orderByKey,
   query,
   ref,
   startAt,
-  Unsubscribe,
+  type Unsubscribe,
 } from "firebase/database";
-import { useEffect, useMemo, useRef, useState } from "react";
+
 import { roomsByDateSchema } from "../../schemas/roomsByDateSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { RoomsByDate } from "../../types/hooks/data/roomsByDateData";

@@ -40,7 +40,7 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
           {(variant === "full" || variant === "half") && (
             <g
               className="fill-warning"
-              // eslint-disable-next-line react/forbid-dom-props -- UI-2610: half-star clip requires inline style for partial fill
+               
               style={
                 variant === "half"
                   ? { clipPath: "inset(0 50% 0 0)" } // i18n-exempt -- UI-2610: CSS value for clip-path

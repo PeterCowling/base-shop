@@ -1,4 +1,4 @@
-import { type Slide } from "../../home/HeroBanner.client";
+import { type Slide } from "@acme/ui/home/HeroBanner.client";
 interface Props {
     slides?: Slide[];
     minItems?: number;

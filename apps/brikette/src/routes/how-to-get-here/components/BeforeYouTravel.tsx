@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import type { TFunction } from "i18next";
 import { AlertTriangle, Clock, Luggage, MapPin,Ship } from "lucide-react";
 
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Grid } from "@acme/ui/atoms";
 
 import { Inline } from "../ui";
 

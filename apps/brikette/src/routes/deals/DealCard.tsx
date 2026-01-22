@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import clsx from "clsx";
 
-import { Button } from "@acme/ui/atoms/Button";
+import { Button } from "@acme/design-system/primitives";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import type { AppLanguage } from "@/i18n.config";
@@ -151,14 +151,12 @@ function DealCard({
         ) : null}
 
         {termsLabel.trim().length > 0 ? (
-          <Inline
-            as={Link}
-            to={termsHref}
-            prefetch="intent"
+          <Link
+            href={termsHref}
             className="min-h-11 min-w-11 text-sm font-medium text-brand-primary underline-offset-4 hover:text-brand-bougainvillea focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           >
             {termsLabel}
-          </Inline>
+          </Link>
         ) : null}
       </Stack>
     </article>

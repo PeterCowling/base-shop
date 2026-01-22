@@ -5,10 +5,10 @@
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect } from "react";
 
+import { cssVars } from "@acme/design-system/utils/style";
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent } from "@acme/page-builder-core";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { cssVars } from "@acme/ui/utils/style";
 
 import { blockRegistry, type BlockType } from "./cms/blocks";
 import type { BlockRegistryEntry } from "./cms/blocks/types";

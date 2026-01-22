@@ -729,4 +729,4 @@ main().catch((err) => {
   process.exit(1);
 });
 
-export { parseArgs, resolveBaseUrl, runSmokeTests, runFullTests };
+export { parseArgs, resolveBaseUrl, runFullTests,runSmokeTests };

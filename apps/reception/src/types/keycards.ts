@@ -1,5 +1,10 @@
 // src/types/keycards.ts
 
+/* ------------------------------------------------------------------ */
+/* Helper functions to convert between UI selections and LoanMethod   */
+/* ------------------------------------------------------------------ */
+import { type LoanMethod } from "./hooks/data/loansData";
+
 export enum KeycardPayType {
   CASH = "CASH",
   DOCUMENT = "DOCUMENT",
@@ -23,11 +28,6 @@ export interface KeycardIssuePayload {
   cardCount: number;
   docType: DocumentType;
 }
-
-/* ------------------------------------------------------------------ */
-/* Helper functions to convert between UI selections and LoanMethod   */
-/* ------------------------------------------------------------------ */
-import { LoanMethod } from "./hooks/data/loansData";
 
 /**
  * Convert a pair of UI selections (payType & docType) into the LoanMethod used

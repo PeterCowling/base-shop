@@ -4,12 +4,20 @@ import type { PipelineEnv } from "@/routes/api/_lib/db";
 import { errorResponse } from "@/routes/api/_lib/response";
 import type { PipelineEventContext } from "@/routes/api/_lib/types";
 
+import { type AuthEnv, validateApiKey } from "./auth";
+
 type Params = Record<string, string>;
+
+export type PipelineContextOptions = {
+  /** Skip API key validation for this endpoint */
+  skipAuth?: boolean;
+};
 
 export async function withPipelineContext<ParamShape extends Params>(
   request: Request,
   params: ParamShape,
   handler: (context: PipelineEventContext<PipelineEnv, ParamShape>) => Promise<Response>,
+  options: PipelineContextOptions = {},
 ): Promise<Response> {
   const context = getOptionalRequestContext();
   if (!context?.env) {
@@ -18,9 +26,19 @@ export async function withPipelineContext<ParamShape extends Params>(
     });
   }
 
+  const env = context.env as AuthEnv;
+
+  // Validate API key unless explicitly skipped
+  if (!options.skipAuth) {
+    const authError = validateApiKey(request, env);
+    if (authError) {
+      return authError;
+    }
+  }
+
   const eventContext = {
     request,
-    env: context.env as PipelineEnv,
+    env: env as PipelineEnv,
     params,
   } as unknown as PipelineEventContext<PipelineEnv, ParamShape>;
 

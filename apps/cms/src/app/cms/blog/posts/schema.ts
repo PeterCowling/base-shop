@@ -10,7 +10,7 @@ import {
   useEditor,
 } from "@portabletext/editor";
 
-import { Button } from "@acme/ui/components/atoms";
+import { Button } from "@acme/design-system/shadcn";
 
 import { InvalidProductContext } from "./invalidProductContext";
 import ProductPreview from "./ProductPreview";

@@ -1,8 +1,10 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+
 import React from "react";
+import { render, screen } from "@testing-library/react";
+
+import { type CategoryType } from "../../../../types/bar/BarTypes";
 import CategoryHeader from "../CategoryHeader";
-import { CategoryType } from "../../../../types/bar/BarTypes";
 
 describe("CategoryHeader", () => {
   it("applies contrasting text colours in light and dark mode", () => {

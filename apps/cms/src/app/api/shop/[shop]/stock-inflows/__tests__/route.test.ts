@@ -1,5 +1,5 @@
 const checkShopExists = jest.fn();
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   checkShopExists: (...args: any[]) => checkShopExists(...args),
 }));
 

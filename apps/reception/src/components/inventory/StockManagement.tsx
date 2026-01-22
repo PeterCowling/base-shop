@@ -4,15 +4,15 @@ import {
   STOCK_ADJUSTMENT_REAUTH_THRESHOLD,
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
 } from "../../constants/stock";
-import PasswordReauthModal from "../common/PasswordReauthModal";
 import { useAuth } from "../../context/AuthContext";
-import { Permissions, canAccess } from "../../lib/roles";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
 import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
 import { useInventoryItemsMutations } from "../../hooks/mutations/useInventoryItemsMutations";
 import { useInventoryLedgerMutations } from "../../hooks/mutations/useInventoryLedgerMutations";
+import { canAccess,Permissions } from "../../lib/roles";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import { showToast } from "../../utils/toastUtils";
+import PasswordReauthModal from "../common/PasswordReauthModal";
 
 type StockAction =
   | "receive"
@@ -309,7 +309,14 @@ function StockManagement() {
     await finalizeLedgerEntry(pending);
   };
 
-  const escapeCsvCell = (value: string) => `"${value.replace(/"/g, '""')}"`;
+  const escapeCsvCell = (value: string) => {
+    let str = value;
+    // Prevent formula injection - Excel/Sheets treat these as formula starters
+    if (/^[=+\-@\t\r]/.test(str)) {
+      str = `'${str}`;
+    }
+    return `"${str.replace(/"/g, '""')}"`;
+  };
 
   const buildCsv = (headers: string[], rows: string[][]) =>
     [headers.join(","), ...rows.map((row) => row.map(escapeCsvCell).join(","))].join(

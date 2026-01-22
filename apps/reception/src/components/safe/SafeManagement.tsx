@@ -1,25 +1,26 @@
 import { Fragment, memo, useEffect, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
-import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useSafeData } from "../../context/SafeDataContext";
 import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions";
+import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useCashCounts } from "../../hooks/useCashCounts";
 import { useKeycardTransfer } from "../../hooks/useKeycardTransfer";
-import ReturnKeycardsModal from "../till/ReturnKeycardsModal";
+import type { SafeCount } from "../../types/hooks/data/safeCountData";
+import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
+import { getErrorMessage } from "../../utils/errorMessage";
+import { showToast } from "../../utils/toastUtils";
+import { runTransaction } from "../../utils/transaction";
 import { ExchangeNotesForm } from "../till/ExchangeNotesForm";
-import { SafeDepositForm } from "./SafeDepositForm";
+import ReturnKeycardsModal from "../till/ReturnKeycardsModal";
+
 import { BankDepositForm } from "./BankDepositForm";
 import { PettyCashForm } from "./PettyCashForm";
+import { SafeDepositForm } from "./SafeDepositForm";
 import { SafeOpenForm } from "./SafeOpenForm";
-import { SafeResetForm } from "./SafeResetForm";
 import { SafeReconcileForm } from "./SafeReconcileForm";
+import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
-import type { SafeCount } from "../../types/hooks/data/safeCountData";
-import { showToast } from "../../utils/toastUtils";
-import { getErrorMessage } from "../../utils/errorMessage";
-import { runTransaction } from "../../utils/transaction";
-import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 
 function SafeManagement(): JSX.Element {
   const {
@@ -88,7 +89,7 @@ function SafeManagement(): JSX.Element {
     try {
       await runTransaction(steps);
       setShowDeposit(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record deposit.", "error");
     }
   };
@@ -106,7 +107,7 @@ function SafeManagement(): JSX.Element {
         { run: () => recordFloatEntry(amount) },
       ]);
       setShowWithdrawal(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record withdrawal.", "error");
     }
   };
@@ -145,7 +146,7 @@ function SafeManagement(): JSX.Element {
 
       await runTransaction(steps);
       setShowExchange(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record exchange.", "error");
     }
   };
@@ -166,7 +167,7 @@ function SafeManagement(): JSX.Element {
         },
       ]);
       setShowOpen(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record opening.", "error");
     }
   };
@@ -193,7 +194,7 @@ function SafeManagement(): JSX.Element {
         },
       ]);
       setShowReset(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record reset.", "error");
     }
   };
@@ -227,7 +228,7 @@ function SafeManagement(): JSX.Element {
         },
       ]);
       setShowReconcile(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record reconciliation.", "error");
     }
   };
@@ -255,7 +256,7 @@ function SafeManagement(): JSX.Element {
     try {
       await runTransaction(steps);
       setShowBankDeposit(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record bank deposit.", "error");
     }
   };
@@ -264,7 +265,7 @@ function SafeManagement(): JSX.Element {
     try {
       await recordPettyWithdrawal(amount);
       setShowPettyCash(false);
-    } catch (error) {
+    } catch {
       showToast("Failed to record petty cash withdrawal.", "error");
     }
   };
@@ -495,12 +496,12 @@ function SafeManagement(): JSX.Element {
             >
               <thead className="bg-gray-100 dark:bg-darkSurface">
                 <tr>
-                  <th className="text-left p-2 border-b">Timestamp</th>
-                  <th className="text-left p-2 border-b">Type</th>
-                  <th className="text-left p-2 border-b">Amount/Count</th>
-                  <th className="text-left p-2 border-b">Keycards</th>
-                  <th className="text-left p-2 border-b">User</th>
-                  <th className="text-left p-2 border-b">Details</th>
+                  <th className="text-start p-2 border-b">Timestamp</th>
+                  <th className="text-start p-2 border-b">Type</th>
+                  <th className="text-start p-2 border-b">Amount/Count</th>
+                  <th className="text-start p-2 border-b">Keycards</th>
+                  <th className="text-start p-2 border-b">User</th>
+                  <th className="text-start p-2 border-b">Details</th>
                 </tr>
               </thead>
               <tbody>

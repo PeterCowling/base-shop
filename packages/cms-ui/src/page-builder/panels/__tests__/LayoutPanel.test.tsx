@@ -3,7 +3,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 
 import LayoutPanel from "../LayoutPanel";
 
-jest.mock("../../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   let id = 0;
   return {
@@ -51,7 +51,7 @@ jest.mock("../../../../atoms/shadcn", () => {
   };
 });
 
-jest.mock("../../../../atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   __esModule: true,
   Tooltip: ({ children }: any) => <span>{children}</span>,
 }));

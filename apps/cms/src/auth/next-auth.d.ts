@@ -10,11 +10,12 @@ export type { Role };
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: { role: Role } & DefaultSession["user"];
+    user: { role: Role; allowedShops?: string[] } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
     role: Role;
+    allowedShops?: string[];
   }
 }
 
@@ -27,5 +28,6 @@ declare module "next-auth/adapters" {
 declare module "next-auth/jwt" {
   interface JWT {
     role: Role;
+    allowedShops?: string[];
   }
 }

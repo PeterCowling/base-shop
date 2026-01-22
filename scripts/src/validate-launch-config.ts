@@ -8,7 +8,7 @@
  *   pnpm validate-launch-config profiles/shops/acme-sale.json
  */
 import { existsSync, readFileSync } from "node:fs";
-import { resolve, relative } from "node:path";
+import { relative,resolve } from "node:path";
 
 interface ValidationResult {
   valid: boolean;

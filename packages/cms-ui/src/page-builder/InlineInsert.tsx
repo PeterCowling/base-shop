@@ -4,15 +4,15 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
 
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+
 import {
   atomRegistry,
   containerRegistry,

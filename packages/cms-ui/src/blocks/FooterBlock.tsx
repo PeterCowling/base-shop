@@ -1,7 +1,6 @@
 import type { Locale } from "@acme/i18n/locales";
-
-import { Footer, type FooterLink } from "../../organisms/Footer";
-import type { LogoVariants } from "../../organisms/types";
+import { Footer, type FooterLink } from "@acme/ui/components/organisms/Footer";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 
 import SocialLinks, { type SocialLinksProps } from "./SocialLinks";
 

@@ -20,7 +20,7 @@ jest.mock("@acme/ui/utils/devicePresets", () => ({
   ],
 }));
 
-jest.mock("@acme/ui/hooks/usePreviewDevice", () => ({
+jest.mock("@acme/cms-ui/hooks/usePreviewDevice", () => ({
   usePreviewDevice: () => ["phone", jest.fn()],
 }));
 

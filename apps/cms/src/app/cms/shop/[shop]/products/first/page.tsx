@@ -3,12 +3,12 @@
 import { redirect } from "next/navigation";
 import { createMinimalFirstProduct } from "@cms/actions/products.server";
 
+import { Alert, Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
-import { Alert, Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { Button, Card, CardContent, Input } from "@acme/ui/components/atoms/shadcn";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 interface Params {
   shop: string;

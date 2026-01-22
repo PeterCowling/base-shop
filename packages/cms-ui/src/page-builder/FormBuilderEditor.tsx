@@ -1,7 +1,4 @@
 "use client";
-import { useTranslations } from "@acme/i18n";
-import type { FormField, FormFieldOption } from "@acme/types";
-
 import {
   Button,
   Input,
@@ -11,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { FormField, FormFieldOption } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 
@@ -50,7 +49,7 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
   return (
     <div className="space-y-2">
       {fields.map((field: FormField, idx: number) => (
-        // eslint-disable-next-line react/no-array-index-key -- PB-2416: Form fields lack stable ids in schema
+         
         <div key={idx} className="space-y-1 rounded border p-2">
           <Select
             value={field.type}

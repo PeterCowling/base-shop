@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { occupantDetailsSchema } from "../occupantDetailsSchema";
 
 describe("occupantDetailsSchema", () => {

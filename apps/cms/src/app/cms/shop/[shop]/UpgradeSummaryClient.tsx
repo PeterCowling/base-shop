@@ -1,7 +1,7 @@
 "use client";
 
+import DataTable, { type Column } from "@acme/cms-ui/DataTable";
 import { useTranslations } from "@acme/i18n";
-import DataTable, { type Column } from "@acme/ui/components/cms/DataTable";
 
 interface ComponentChange {
   name: string;

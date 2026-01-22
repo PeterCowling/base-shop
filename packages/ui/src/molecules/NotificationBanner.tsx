@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 
-import { useSetBannerRef } from "@acme/ui/context/NotificationBannerContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { translatePath } from "@acme/ui/utils/translate-path";
+import { useSetBannerRef } from "../context/NotificationBannerContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { translatePath } from "../utils/translate-path";
 
 type NotificationBannerCopy = {
   message?: string;

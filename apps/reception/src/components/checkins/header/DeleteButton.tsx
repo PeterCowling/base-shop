@@ -1,5 +1,5 @@
 /* File: src/components/checkins/header/DeleteButton.tsx */
-import { FC, memo, MouseEventHandler } from "react";
+import { type FC, memo, type MouseEventHandler } from "react";
 
 /**
  * This component renders a small delete icon button.

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Block from "@acme/ui/components/cms/page-builder/Block";
+import Block from "@acme/cms-ui/page-builder/Block";
 
 // The registry-backed path will just render null if unknown; verify Text path
 // and navigate wrapper behavior for non-text with clickAction + href.

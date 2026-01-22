@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { barOrderSchema, type BarOrder } from "../../../schemas/barOrderSchema";
+import { barOrderSchema } from "../../../schemas/barOrderSchema";
 import type { UnconfirmedSalesOrder } from "../../../types/bar/BarTypes";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
@@ -19,7 +19,7 @@ export function useUnconfirmedBarOrderData(): {
     data,
     loading,
     error: subError,
-  } = useFirebaseSubscription<BarOrder>("barOrders/unconfirmed");
+  } = useFirebaseSubscription<UnconfirmedSalesOrder>("barOrders/unconfirmed");
 
   const [error, setError] = useState<unknown>(subError);
 
@@ -31,7 +31,7 @@ export function useUnconfirmedBarOrderData(): {
     if (!data) return null;
     const res = barOrderSchema.safeParse(data);
     if (res.success) {
-      return res.data;
+      return res.data as UnconfirmedSalesOrder;
     }
     setError(res.error);
     return null;

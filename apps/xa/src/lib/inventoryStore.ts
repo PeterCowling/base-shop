@@ -1,7 +1,7 @@
 import type { XaProduct } from "./demoData";
+import { readJson, writeJson } from "./storage";
 import type { XaCartState } from "./xaCart";
 import { cartReservedQtyForSku } from "./xaCart";
-import { readJson, writeJson } from "./storage";
 
 const SOLD_KEY = "XA_INVENTORY_SOLD_V1";
 

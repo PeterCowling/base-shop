@@ -7,7 +7,8 @@ import { loadCoreEnv } from "@acme/config/env/core";
 import { variantKey } from "../repositories/inventory.server";
 import { getShopSettings } from "../repositories/settings.server";
 import type { InventoryItem } from "../types/inventory";
-import { ensureShopDir,readFromShop, writeToShop } from "../utils/safeFs";
+import { ensureShopDir, readFromShop, writeToShop } from "../utils/safeFs";
+import { safeWebhookFetch } from "../utils/safeWebhook";
 
 import { type EmailService, getEmailService } from "./emailService";
 
@@ -96,14 +97,15 @@ export async function checkAndAlert(
   }
 
   if (webhook) {
-    try {
-      await fetch(webhook, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ shop, items: lowItems, subject, body }),
-      });
-    } catch (err) {
-      console.error("Failed to send stock alert webhook", err); // i18n-exempt -- CORE-1011 non-UX log message
+    const result = await safeWebhookFetch(webhook, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ shop, items: lowItems, subject, body }),
+      timeout: 5000,
+      retries: 2,
+    });
+    if (!result.ok) {
+      console.error("Failed to send stock alert webhook:", result.error); // i18n-exempt -- CORE-1011 non-UX log message
     }
   }
 

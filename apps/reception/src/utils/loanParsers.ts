@@ -1,4 +1,4 @@
-import { LoanItem, LoanMethod, TxType } from "../types/hooks/data/loansData";
+import { type LoanItem, type LoanMethod, type TxType } from "../types/hooks/data/loansData";
 
 /**
  * Helper to parse raw string into our strict LoanItem.

@@ -1,68 +1,69 @@
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
+function setCssVar(vars: Record<string, string>, name: string, token?: string): void {
+  if (!token) return;
+  vars[name] = `var(${token})`;
+}
+
+function applyColors(vars: Record<string, string>, color?: StyleOverrides["color"]): void {
+  if (!color) return;
+  setCssVar(vars, "--color-bg", color.bg);
+  setCssVar(vars, "--color-fg", color.fg);
+  setCssVar(vars, "--color-border", color.border);
+}
+
+function applyTypography(
+  vars: Record<string, string>,
+  typography?: StyleOverrides["typography"],
+): void {
+  if (!typography) return;
+  setCssVar(vars, "--font-family", typography.fontFamily);
+  setCssVar(vars, "--font-size", typography.fontSize);
+  setCssVar(vars, "--font-weight", typography.fontWeight);
+  setCssVar(vars, "--line-height", typography.lineHeight);
+}
+
+function applyTypographyVariant(
+  vars: Record<string, string>,
+  prefix: "desktop" | "tablet" | "mobile",
+  typography?: { fontSize?: string; lineHeight?: string },
+): void {
+  if (!typography) return;
+  setCssVar(vars, `--font-size-${prefix}`, typography.fontSize);
+  setCssVar(vars, `--line-height-${prefix}`, typography.lineHeight);
+}
+
+function applyEffects(vars: Record<string, string>, effects?: StyleOverrides["effects"]): void {
+  if (!effects) return;
+  if (effects.borderRadius) vars.borderRadius = effects.borderRadius;
+  if (effects.boxShadow) vars.boxShadow = effects.boxShadow;
+  if (effects.opacity) vars.opacity = effects.opacity;
+  if (effects.backdropFilter) vars.backdropFilter = effects.backdropFilter;
+  const filterVal = (effects as unknown as { filter?: string }).filter;
+  if (filterVal) vars.filter = filterVal;
+  if (effects.outline) vars.outline = effects.outline;
+  if (effects.outlineOffset) vars.outlineOffset = effects.outlineOffset;
+  if (effects.borderTop) vars.borderTop = effects.borderTop;
+  if (effects.borderRight) vars.borderRight = effects.borderRight;
+  if (effects.borderBottom) vars.borderBottom = effects.borderBottom;
+  if (effects.borderLeft) vars.borderLeft = effects.borderLeft;
+
+  const transformParts: string[] = [];
+  if (effects.transformRotate) transformParts.push(`rotate(${effects.transformRotate})`);
+  if (effects.transformScale) transformParts.push(`scale(${effects.transformScale})`);
+  if (effects.transformSkewX) transformParts.push(`skewX(${effects.transformSkewX})`);
+  if (effects.transformSkewY) transformParts.push(`skewY(${effects.transformSkewY})`);
+  if (transformParts.length) vars["--pb-static-transform"] = transformParts.join(" ");
+}
+
 export function cssVars(overrides?: StyleOverrides): Record<string, string> {
   if (!overrides) return {};
   const vars: Record<string, string> = {};
-  if (overrides.color) {
-    if (overrides.color.bg)
-      vars["--color-bg"] = `var(${overrides.color.bg})`;
-    if (overrides.color.fg)
-      vars["--color-fg"] = `var(${overrides.color.fg})`;
-    if (overrides.color.border)
-      vars["--color-border"] = `var(${overrides.color.border})`;
-  }
-  if (overrides.typography) {
-    if (overrides.typography.fontFamily)
-      vars["--font-family"] = `var(${overrides.typography.fontFamily})`;
-    if (overrides.typography.fontSize)
-      vars["--font-size"] = `var(${overrides.typography.fontSize})`;
-    if (overrides.typography.fontWeight)
-      vars["--font-weight"] = `var(${overrides.typography.fontWeight})`;
-    if (overrides.typography.lineHeight)
-      vars["--line-height"] = `var(${overrides.typography.lineHeight})`;
-  }
-  // Per-breakpoint typography variants. These are mapped via builder.css
-  if (overrides.typographyDesktop) {
-    if (overrides.typographyDesktop.fontSize)
-      vars["--font-size-desktop"] = `var(${overrides.typographyDesktop.fontSize})`;
-    if (overrides.typographyDesktop.lineHeight)
-      vars["--line-height-desktop"] = `var(${overrides.typographyDesktop.lineHeight})`;
-  }
-  if (overrides.typographyTablet) {
-    if (overrides.typographyTablet.fontSize)
-      vars["--font-size-tablet"] = `var(${overrides.typographyTablet.fontSize})`;
-    if (overrides.typographyTablet.lineHeight)
-      vars["--line-height-tablet"] = `var(${overrides.typographyTablet.lineHeight})`;
-  }
-  if (overrides.typographyMobile) {
-    if (overrides.typographyMobile.fontSize)
-      vars["--font-size-mobile"] = `var(${overrides.typographyMobile.fontSize})`;
-    if (overrides.typographyMobile.lineHeight)
-      vars["--line-height-mobile"] = `var(${overrides.typographyMobile.lineHeight})`;
-  }
-  // Effects: we return direct CSS properties where appropriate.
-  if (overrides.effects) {
-    const fx = overrides.effects;
-    if (fx.borderRadius) vars["borderRadius"] = fx.borderRadius;
-    if (fx.boxShadow) vars["boxShadow"] = fx.boxShadow;
-    if (fx.opacity) vars["opacity"] = fx.opacity;
-    if (fx.backdropFilter) vars["backdropFilter"] = fx.backdropFilter;
-    // Standard foreground filter
-    const filterVal = (fx as unknown as { filter?: string }).filter;
-    if (filterVal) vars["filter"] = filterVal;
-    if (fx.outline) vars["outline"] = fx.outline;
-    if (fx.outlineOffset) vars["outlineOffset"] = fx.outlineOffset;
-    if (fx.borderTop) vars["borderTop"] = fx.borderTop;
-    if (fx.borderRight) vars["borderRight"] = fx.borderRight;
-    if (fx.borderBottom) vars["borderBottom"] = fx.borderBottom;
-    if (fx.borderLeft) vars["borderLeft"] = fx.borderLeft;
-    // Compose transform into a custom var which can be applied by wrappers
-    const parts: string[] = [];
-    if (fx.transformRotate) parts.push(`rotate(${fx.transformRotate})`);
-    if (fx.transformScale) parts.push(`scale(${fx.transformScale})`);
-    if (fx.transformSkewX) parts.push(`skewX(${fx.transformSkewX})`);
-    if (fx.transformSkewY) parts.push(`skewY(${fx.transformSkewY})`);
-    if (parts.length) vars["--pb-static-transform"] = parts.join(" ");
-  }
+  applyColors(vars, overrides.color);
+  applyTypography(vars, overrides.typography);
+  applyTypographyVariant(vars, "desktop", overrides.typographyDesktop);
+  applyTypographyVariant(vars, "tablet", overrides.typographyTablet);
+  applyTypographyVariant(vars, "mobile", overrides.typographyMobile);
+  applyEffects(vars, overrides.effects);
   return vars;
 }

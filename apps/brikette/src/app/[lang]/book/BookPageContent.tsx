@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import roomsData from "@/data/roomsData";
 import i18n from "@/i18n";

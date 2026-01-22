@@ -23,6 +23,17 @@ For universal agent rules, see [AGENTS.md](AGENTS.md).
 - **Styling:** Tailwind CSS 4 with design tokens
 - **Deployment:** Cloudflare Pages
 
+## Model Usage Policy
+
+**Always use sonnet** as the default model for all sub-agents and delegated tasks.
+
+If a task appears too complex for sonnet (e.g., highly nuanced architectural decisions, multi-layered reasoning across many domains, or tasks requiring exceptional depth), **pause and ask the user** before proceeding. Do not silently escalate to opus.
+
+Examples of when to escalate:
+- Complex cross-cutting architectural refactors affecting 5+ packages
+- Subtle concurrency or race condition analysis
+- Tasks requiring deep reasoning about business logic across multiple bounded contexts
+
 ## Monorepo Structure
 
 ```
@@ -59,7 +70,9 @@ Apps (apps/*)
     ↓
 CMS-only packages (@acme/cms-marketing, @acme/configurator)
     ↓
-@acme/ui (design system)
+@acme/ui (domain UI - shop components, CMS editor)
+    ↓
+@acme/design-system (presentation primitives)
     ↓
 @acme/platform-core (domain logic, persistence)
     ↓
@@ -70,6 +83,28 @@ Low-level libraries (@acme/types, @acme/date-utils, etc.)
 - Apps in other packages
 - Internal package paths (use exports map only)
 - Higher layers from lower layers
+
+### UI Import Rules
+
+**Presentation primitives** (Button, Card, Input, etc.) should be imported from `@acme/design-system`:
+
+```typescript
+// ✅ Good - use design-system for presentation
+import { Button, Card } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
+
+// ❌ Deprecated - don't use ui for primitives
+import { Button } from "@acme/ui/atoms";
+import { cn } from "@acme/ui/utils/style";
+```
+
+**Domain components** (checkout, shop-specific, CMS editor) remain in `@acme/ui`:
+
+```typescript
+// ✅ Good - use ui for domain components
+import { CheckoutForm } from "@acme/ui/components/checkout";
+import { ProductCard } from "@acme/ui/components/organisms";
+```
 
 ## Important Patterns
 
@@ -138,6 +173,7 @@ pnpm --filter @acme/platform-core exec prisma db seed
 4. **Use targeted tests** — Never run `pnpm test` unfiltered
 5. **ESM vs CJS in Jest** — If a test or imported file throws ESM parsing errors (`Cannot use import statement outside a module`, `import.meta`), rerun with `JEST_FORCE_CJS=1` to force the CommonJS preset.
 6. **Validate before commit** — `pnpm typecheck && pnpm lint`
+7. **Handle audit limits gracefully** — When hitting context/scope limits during planning or exploration, don't just stop. Document what's done, what remains, and how to resume efficiently. See [AGENTS.md § Handling Audit Limits](AGENTS.md#handling-audit-limits).
 
 ## Workflow Prompts
 

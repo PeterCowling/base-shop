@@ -1,16 +1,16 @@
 // File: /Users/petercowling/reception/src/components/checkins/StatusButton.tsx
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { memo, useCallback, useMemo, useState } from "react";
+import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBed,
   faClock,
   faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo, useCallback, useMemo, useState } from "react";
 
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
-import { CheckInRow } from "../../types/component/CheckinRow";
+import { type CheckInRow } from "../../types/component/CheckinRow";
 
 /**
  * Known activity codes for display hints

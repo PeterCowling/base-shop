@@ -1,8 +1,11 @@
 import "@testing-library/jest-dom";
-import { render, waitFor } from "@testing-library/react";
+
 import { act } from "react";
-import type { PrepaymentsViewProps } from "../PrepaymentsView";
+import { render, waitFor } from "@testing-library/react";
+
 import type { BookingPaymentItem } from "../BookingPaymentsLists";
+import PrepaymentsContainer from "../PrepaymentsContainer";
+import type { PrepaymentsViewProps } from "../PrepaymentsView";
 
 let capturedProps: PrepaymentsViewProps | null = null;
 
@@ -65,8 +68,6 @@ jest.mock("../../../context/AuthContext", () => ({
 jest.mock("../../../utils/generateTransactionId", () => ({
   generateTransactionId: () => "txn123",
 }));
-
-import PrepaymentsContainer from "../PrepaymentsContainer";
 
 const sampleData = [
   {

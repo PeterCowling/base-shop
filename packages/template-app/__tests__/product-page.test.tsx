@@ -34,7 +34,7 @@ jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => {
   return AddToCartButtonMock;
 });
 
-jest.mock("@acme/ui/components/atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   Price: ({ amount }: { amount: number }) => <span data-testid="price">{amount}</span>,
 }));
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));

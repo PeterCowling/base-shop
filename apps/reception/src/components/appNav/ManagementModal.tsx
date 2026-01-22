@@ -1,6 +1,6 @@
 /* File: /src/components/appNav/ManagementModal.tsx */
 import { withIconModal } from "../../hoc/withIconModal";
-import { ModalAction } from "../../types/component/ModalAction";
+import { type ModalAction } from "../../types/component/ModalAction";
 
 const actions: ModalAction[] = [
   {

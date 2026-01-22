@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ulid } from "ulid";
 
+import { getShopFromPath } from "@acme/lib/shop";
 import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
-import { getShopFromPath } from "@acme/lib/shop";
 import type { HistoryState,PageComponent } from "@acme/types";
 
 import { type GlobalItem,listGlobals, listGlobalsForPage, saveGlobal, saveGlobalForPage, updateGlobal, updateGlobalForPage } from "../libraryStore";

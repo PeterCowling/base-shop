@@ -1,16 +1,16 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
+
 import React from "react";
+import { renderHook } from "@testing-library/react";
 
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
+import { SafeDataProvider, useSafeData } from "../SafeDataContext";
 
 const mockUseSafeLogic = jest.fn();
 
 jest.mock("../../hooks/useSafeLogic", () => ({
   useSafeLogic: (params?: unknown) => mockUseSafeLogic(params),
 }));
-
-import { SafeDataProvider, useSafeData } from "../SafeDataContext";
 
 const baseReturn = () => ({
   safeCounts: [] as SafeCount[],

@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
-import { Button } from "@acme/ui/components/atoms";
+import { Button } from "@acme/design-system/shadcn";
 import DeviceSelector from "@acme/ui/components/common/DeviceSelector";
 import { usePreviewDevice } from "@acme/ui/hooks";
 import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";

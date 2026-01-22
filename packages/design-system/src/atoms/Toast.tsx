@@ -3,9 +3,8 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
-import { cn } from "../utils/style";
-
 import { Inline } from "../primitives/Inline";
+import { cn } from "../utils/style";
 
 type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";
 type ToastTone = "soft" | "solid";

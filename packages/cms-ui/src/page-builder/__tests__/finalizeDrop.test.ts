@@ -1,4 +1,4 @@
-import { finalizeDrop } from "../hooks/dnd/finalizeDrop";
+import { finalizeDrop } from "@acme/ui/hooks/dnd/finalizeDrop";
 
 describe("finalizeDrop", () => {
   it("corrects move index when moving down within same parent", () => {

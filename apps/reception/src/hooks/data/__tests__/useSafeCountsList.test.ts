@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
 
+import { showToast } from "../../../utils/toastUtils";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 import { useSafeCountsList } from "../useSafeCountsList";
 
 jest.mock("../useFirebaseSubscription");
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
-import { showToast } from "../../../utils/toastUtils";
 
 const mockedSub = jest.mocked(useFirebaseSubscription);
 const showToastMock = showToast as unknown as jest.Mock;

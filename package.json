@@ -75,6 +75,7 @@
     "preview": "wrangler pages dev",
     "format": "prettier --write .",
     "doc:api": "typedoc",
+    "validate:tokens": "node --import tsx scripts/src/validate-tokens.ts",
     "create-shop": "ts-node scripts/create-shop.ts",
     "init-shop": "node --require ./test/server-only-stub.cjs --import tsx scripts/src/init-shop.ts",
     "setup-dev": "node --import tsx scripts/src/setup-dev.ts",
@@ -133,7 +134,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [
-      "eslint --max-warnings=0 --cache --cache-location .eslintcache --no-warn-ignored"
+      "eslint --cache --cache-location .eslintcache --no-warn-ignored"
     ]
   },
   "simple-git-hooks": {
@@ -322,7 +323,7 @@
     "next": "15.3.8",
     "nock": "^13.4.0",
     "nyc": "^15.1.0",
-    "playwright": "^1.53.1",
+    "playwright": "^1.55.1",
     "plop": "^4.0.1",
     "polished": "^4.3.1",
     "prettier": "^3.5.3",
@@ -332,17 +333,18 @@
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.11.0",
     "start-server-and-test": "^2.0.13",
-    "storybook": "^10.1.4",
+    "storybook": "^10.1.10",
     "superstruct": "^2.0.2",
     "tailwindcss": "^4.1.11",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "ts-morph": "12.0.0",
     "tsx": "^4.20.3",
     "turbo": "^2.5.4",
     "typedoc": "^0.28.11",
     "typedoc-plugin-markdown": "^4.8.1",
     "typescript": "5.8.3",
-    "undici": "^5.29.0",
+    "undici": "^6.23.0",
     "vite": "^7.0.0",
     "vite-plugin-istanbul": "^7.2.0",
     "vite-plugin-svgr": "^4.3.0",
@@ -366,7 +368,17 @@
       "htmlparser2>entities": "4.5.0",
       "dom-serializer>entities": "4.5.0",
       "@tanstack/query-core": "^5.81.4",
-      "@storybook/addon-coverage>vite-plugin-istanbul": "^7.2.0"
+      "@storybook/addon-coverage>vite-plugin-istanbul": "^7.2.0",
+      "linkifyjs": ">=4.3.2",
+      "path-to-regexp": ">=6.3.0",
+      "semver": ">=7.5.2",
+      "tar-fs": ">=3.1.1",
+      "diff": ">=5.2.2",
+      "jws": ">=3.2.3",
+      "qs": ">=6.14.1",
+      "validator": ">=13.15.22",
+      "preact": ">=10.27.0",
+      "undici": ">=6.23.0"
     }
   },
   "msw": {

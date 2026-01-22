@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import PaymentSplitRow from "../roomButton/PaymentSplitRow";
 import type { PaymentSplit } from "../../../types/component/roomButton/types";
+import PaymentSplitRow from "../roomButton/PaymentSplitRow";
 
 describe("PaymentSplitRow", () => {
   it("handles amount change and pay type toggle", async () => {

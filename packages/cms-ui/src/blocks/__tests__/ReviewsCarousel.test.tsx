@@ -2,12 +2,12 @@ import { render } from "@testing-library/react";
 
 import CmsReviewsCarousel from "../ReviewsCarousel";
 
-jest.mock("../../../home/ReviewsCarousel", () => ({
+jest.mock("@acme/ui/home/ReviewsCarousel", () => ({
   __esModule: true,
   default: jest.fn(() => <div data-testid="reviews-carousel" />),
 }));
 
-const mockReviewsCarousel = jest.requireMock("../../../home/ReviewsCarousel")
+const mockReviewsCarousel = jest.requireMock("@acme/ui/home/ReviewsCarousel")
   .default as jest.Mock;
 
 describe("CmsReviewsCarousel", () => {

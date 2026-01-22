@@ -1,12 +1,12 @@
 // File: /src/libs/reservation-grid/src/lib/utils/buildData.ts
 
-import type { TGridCell, TGridRow } from "../../../interfaces/grid.interface";
 import {
+  formatItalyDate,
   generateDateRange,
   isToday,
   isWeekend,
-  formatItalyDate,
 } from "../../../../../utils/dateUtils";
+import type { TGridCell, TGridRow } from "../../../interfaces/grid.interface";
 
 /**
  * Builds an array of day objects between start and end dates (inclusive).

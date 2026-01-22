@@ -3,7 +3,7 @@
 import { Fragment } from "react";
 import type { Metadata } from "next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import { getTranslations, resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";

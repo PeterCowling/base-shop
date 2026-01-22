@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+import useRoomsByDate from "../useRoomsByDate";
 
 jest.mock("../../../services/useFirebase", () => ({
   useFirebaseDatabase: () => ({}),
@@ -24,8 +27,6 @@ jest.mock("firebase/database", () => {
     }),
   };
 });
-
-import useRoomsByDate from "../useRoomsByDate";
 
 afterEach(() => {
   jest.clearAllMocks();

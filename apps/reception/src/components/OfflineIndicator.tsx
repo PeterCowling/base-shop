@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { WifiIcon } from "@heroicons/react/24/solid";
+
 import { useOnlineStatus } from "../lib/offline/useOnlineStatus";
 
 /**

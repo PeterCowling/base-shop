@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
 /** List immediate child directory names of a given path. */

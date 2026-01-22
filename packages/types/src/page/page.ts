@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { localeSchema } from "../Product";
+
 import type { Locale } from "../constants";
+import { localeSchema } from "../Product";
 
 import {
   buttonComponentSchema,

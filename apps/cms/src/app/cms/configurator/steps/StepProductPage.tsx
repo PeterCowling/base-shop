@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Toast } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { type Page, type PageComponent } from "@acme/types";
-import { Toast } from "@acme/ui/components/atoms";
-import { Button } from "@acme/ui/components/atoms/shadcn";
 
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";

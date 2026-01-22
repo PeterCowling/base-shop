@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import Extension from "@/components/man/Extension";
+import Providers from "@/components/Providers";
 
 export default function ExtensionPage() {
   return (

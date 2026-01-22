@@ -14,4 +14,4 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Re-export everything from design-system atoms
-export * from "@acme/design-system/atoms";
+export * from "@acme/ui/atoms";

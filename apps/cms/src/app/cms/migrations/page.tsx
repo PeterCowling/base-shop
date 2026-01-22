@@ -1,9 +1,9 @@
 import Link from "next/link";
 
+import { Grid } from "@acme/design-system/primitives";
 import en from "@acme/i18n/en.json";
 import { TranslationsProvider } from "@acme/i18n/Translations";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Grid } from "@acme/ui/components/atoms/primitives";
 
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
 

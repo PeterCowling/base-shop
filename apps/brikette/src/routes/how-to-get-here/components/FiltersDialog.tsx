@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/primitives";
 
 import { clearFiltersButtonClass, getFilterButtonClass } from "../styles";
 import { TRANSPORT_MODE_ICONS } from "../transport";

@@ -1,15 +1,7 @@
 // src/components/bar/orderTaking/preorder/PreorderButtons.tsx
 
 import {
-  DataSnapshot,
-  getDatabase,
-  off,
-  onValue,
-  ref,
-  remove,
-} from "firebase/database";
-import {
-  FC,
+  type FC,
   memo,
   useCallback,
   useEffect,
@@ -17,6 +9,14 @@ import {
   useRef,
   useState,
 } from "react";
+import {
+  type DataSnapshot,
+  getDatabase,
+  off,
+  onValue,
+  ref,
+  remove,
+} from "firebase/database";
 
 import { useAuth } from "../../../../context/AuthContext";
 import { useBleepersData } from "../../../../hooks/data/bar/useBleepersData";

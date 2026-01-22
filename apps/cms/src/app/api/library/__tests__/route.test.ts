@@ -1,3 +1,10 @@
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 const listLibrary = jest.fn();
 const saveLibraryItem = jest.fn();
 const updateLibraryItem = jest.fn();

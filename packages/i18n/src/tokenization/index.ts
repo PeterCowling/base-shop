@@ -9,11 +9,11 @@
 
 // Main content filter entry point
 export {
+  type ContentFilterOptions,
   DEFAULT_MAX_STRING_LENGTH,
   filterContent,
   filterContentBatch,
   needsTokenization,
-  type ContentFilterOptions,
 } from "./content-filter.js";
 
 // PII scanner

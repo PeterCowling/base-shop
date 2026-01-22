@@ -1,5 +1,5 @@
 // src/components/guides/GuideFaqSection.tsx
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 export type GuideFaq = {
   question: string;

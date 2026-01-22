@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { CmsInlineHelpBanner } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
 import { LOCALES, useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { track } from "@acme/telemetry";
 import type { Locale, Page, PageComponent } from "@acme/types";
-import { CmsInlineHelpBanner } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
 
 import { Toast } from "@/components/atoms";
 import { Button } from "@/components/atoms/shadcn";

@@ -4,18 +4,17 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowRight, BusFront, ConciergeBell, Sparkles, Star, Waves } from "lucide-react";
 
-import hotel from "@acme/ui/config/hotel";
-import { useOptionalModal } from "@acme/ui/context/ModalContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { i18nConfig } from "@acme/ui/i18n.config";
-// buildCfImageUrl is available via CfHeroImage internally
-import { translatePath } from "@acme/ui/utils/translate-path";
-
 import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
+import hotel from "../config/hotel";
+import { useOptionalModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
 import { resolveSharedToken } from "../shared";
+// buildCfImageUrl is available via CfHeroImage internally
+import { translatePath } from "../utils/translate-path";
 
 const heroOriginal = "/img/landing-xl.webp";
 

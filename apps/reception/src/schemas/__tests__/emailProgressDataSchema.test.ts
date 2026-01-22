@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import type { EmailProgressData } from "../emailProgressDataSchema";
 import { EmailProgressDataSchema } from "../emailProgressDataSchema";
 

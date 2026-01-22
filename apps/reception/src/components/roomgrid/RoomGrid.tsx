@@ -11,12 +11,13 @@
  * ⚠️ Ensure event callbacks match the data schema.
  */
 
-import { ReservationGrid } from "@daminort/reservation-grid";
 import type { FC } from "react";
 import { memo, useCallback, useMemo, useState } from "react";
+import { ReservationGrid } from "@daminort/reservation-grid";
 
 import type { GridReservationRow } from "../../hooks/data/roomgrid/useGridData";
 import type { MyLocalStatus } from "../../types/MyLocalStatus";
+
 import BookingDetailsModal from "./BookingDetailsModal";
 import { statusColors } from "./constants/statusColors";
 import styles from "./RoomGrid.module.css";

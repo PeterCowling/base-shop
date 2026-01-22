@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives/Grid";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives/Grid";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

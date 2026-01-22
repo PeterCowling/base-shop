@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { fireEvent,render, screen } from "@testing-library/react";
 
 import { Grid } from "../components/Grid";
 import { Header } from "../components/Header";
 import { Row } from "../components/Row";
-import { MainProvider, initialValue } from "../context";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { initialValue,MainProvider } from "../context";
 
 // Helper to render components with context
 const renderWithProvider = (

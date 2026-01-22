@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { formatCreditCardNumber, splitExpiry } from "../creditCardUtils";
 
 describe("formatCreditCardNumber", () => {

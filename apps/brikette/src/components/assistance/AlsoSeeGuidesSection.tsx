@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";

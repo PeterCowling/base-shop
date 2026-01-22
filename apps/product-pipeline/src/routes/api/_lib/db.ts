@@ -14,6 +14,10 @@ export type PipelineEnv = {
   PIPELINE_STAGE_M_CAPTURE_PROFILES_AMAZON?: string;
   PIPELINE_STAGE_M_CAPTURE_PROFILES_TAOBAO?: string;
   PIPELINE_QUEUE?: Queue;
+  /** API key for authenticating requests. Set as Cloudflare secret. */
+  PIPELINE_API_KEY?: string;
+  /** Environment mode: "dev" allows unauthenticated requests */
+  PIPELINE_ENV?: string;
 };
 
 export type LeadRow = {

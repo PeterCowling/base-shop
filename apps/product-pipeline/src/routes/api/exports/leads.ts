@@ -27,7 +27,12 @@ function parseIdsParam(value: string | null, max: number): string[] {
 
 function csvEscape(value: unknown): string {
   if (value === null || value === undefined) return "";
-  const str = String(value);
+  let str = String(value);
+  // Prevent formula injection by prefixing dangerous characters with single quote
+  // Excel/Google Sheets interpret =, +, -, @, \t, \r as formula starters
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
   if (/[",\n]/.test(str)) {
     return `"${str.replace(/"/g, '""')}"`;
   }

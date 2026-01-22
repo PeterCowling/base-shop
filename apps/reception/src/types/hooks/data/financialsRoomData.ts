@@ -1,11 +1,11 @@
 // File: src/types/hooks/data/financialsRoomData.ts
 
-import { z } from "zod";
+import { type z } from "zod";
 
 import {
-  financialsRoomDataSchema,
-  financialsRoomSchema,
-  roomTransactionSchema,
+  type financialsRoomDataSchema,
+  type financialsRoomSchema,
+  type roomTransactionSchema,
 } from "../../../schemas/financialsRoomSchema";
 
 export type RoomTransaction = z.infer<typeof roomTransactionSchema>;

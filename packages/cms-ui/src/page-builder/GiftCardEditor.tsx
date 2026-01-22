@@ -1,7 +1,6 @@
+import { Input, Textarea } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { GiftCardBlockComponent } from "@acme/types";
-
-import { Input, Textarea } from "@acme/design-system/shadcn";
 
 import type { EditorProps } from "./EditorProps";
 

@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 
 import useAllFinancialTransactionsData from "../useAllFinancialTransactionsData";
@@ -67,7 +68,7 @@ describe("useAllFinancialTransactionsData", () => {
     const { result } = renderHook(() => useAllFinancialTransactionsData());
 
     act(() => {
-      errorCb && errorCb("fail");
+      if (errorCb) errorCb("fail");
     });
 
     expect(result.current.allFinancialTransactions).toEqual({});

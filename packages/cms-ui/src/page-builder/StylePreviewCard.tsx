@@ -63,7 +63,7 @@ export default function StylePreviewCard({ effects, hoverScale, hoverOpacity }: 
         <div
           className="mx-auto w-full sm:w-80 rounded bg-background p-4"
           // Dynamic visual preview requires inline styles
-          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: effect preview relies on dynamic CSS properties
+           
           style={simulated}
         >
           <div className="text-sm font-semibold">{t("cms.builder.preview.sampleTitle")}</div>

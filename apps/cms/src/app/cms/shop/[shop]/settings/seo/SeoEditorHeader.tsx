@@ -1,8 +1,8 @@
 "use client";
 
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
 import { useTranslations } from "@acme/i18n";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
 
 import { Tooltip } from "@/components/atoms";
 

@@ -6,7 +6,7 @@ import type { ImageOrientation } from "@acme/types";
 
 import { useFileUpload } from "../useFileUpload";
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
   const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
     <button ref={ref} {...props} />

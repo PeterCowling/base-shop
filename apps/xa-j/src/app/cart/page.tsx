@@ -13,9 +13,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@acme/ui/components/atoms";
-import { Section } from "@acme/ui/atoms/Section";
-import { QuantityInput } from "@acme/ui/components/molecules";
+} from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { QuantityInput } from "@acme/design-system/molecules";
 
 import { useCart } from "../../contexts/XaCartContext";
 

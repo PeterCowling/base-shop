@@ -2,10 +2,13 @@
 "use client";
 import { Fragment, memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import type { LinksFunction, MetaDescriptor } from "react-router";
 
-import { Button } from "@acme/ui/atoms/Button";
-import { AppLink as Link } from "@acme/ui/atoms/Link";
+// Local types replacing react-router imports (used only for test head fallback)
+type MetaDescriptor = Record<string, string | undefined>;
+type LinkDescriptor = Record<string, string | undefined> & { key?: string };
+
+import { Button } from "@acme/design-system/primitives";
+import { AppLink as Link } from "@acme/ui/atoms";
 
 import Page from "@/components/common/Page";
 import { BASE_URL } from "@/config/site";
@@ -17,16 +20,15 @@ import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
 import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
-import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
 import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
+type LoaderData = { lang?: AppLanguage; title?: string; desc?: string };
+
 function NotFoundView() {
-  const data = safeUseLoaderData<{
-    lang: AppLanguage;
-    title: string;
-    desc: string;
-  }>();
+  // In App Router, there's no loader data - use fallbacks
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const data = undefined as LoaderData | undefined;
 
   const fallbackLang = i18nConfig.fallbackLng as AppLanguage;
   const docLang =
@@ -136,9 +138,9 @@ function NotFoundView() {
     }) as MetaDescriptor[];
   }, [lang, data?.title, data?.desc]);
 
-  const fallbackHeadLinks = useMemo<ReturnType<LinksFunction> | undefined>(() => {
+  const fallbackHeadLinks = useMemo<LinkDescriptor[] | undefined>(() => {
     if (process.env.NODE_ENV !== "test") return undefined;
-    return buildRouteLinks();
+    return buildRouteLinks() as LinkDescriptor[];
   }, []);
 
   useApplyFallbackHead(fallbackHeadDescriptors, fallbackHeadLinks);

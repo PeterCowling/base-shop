@@ -3,22 +3,22 @@
 import { useEffect, useMemo, useState } from "react";
 
 import {
-  CheckInRow,
+  type CheckInRow,
   checkInRowSchema,
 } from "../../../types/component/CheckinRow";
-import { Activity } from "../../../types/hooks/data/activitiesData";
-import { FirebaseBookingOccupant } from "../../../types/hooks/data/bookingsData";
-import type { Financials } from "../../../types/domains/booking_old";
 import type { OccupantDateOfBirth } from "../../../types/component/dob";
+import type { Financials } from "../../../types/domains/booking_old";
+import { type Activity } from "../../../types/hooks/data/activitiesData";
+import { type FirebaseBookingOccupant } from "../../../types/hooks/data/bookingsData";
 import {
-  OccupantLoanData,
+  type OccupantLoanData,
 } from "../../../types/hooks/data/loansData";
+import { getCurrentIsoTimestamp, parseYMD } from "../../../utils/dateUtils";
 import {
   parseLoanItem,
   parseLoanMethod,
   parseTxType,
 } from "../../../utils/loanParsers";
-import { getCurrentIsoTimestamp, parseYMD } from "../../../utils/dateUtils";
 import useActivitiesByCodeData from "../../data/useActivitiesByCodeData";
 import useActivitiesData from "../../data/useActivitiesData";
 import useBookings from "../../data/useBookingsData";

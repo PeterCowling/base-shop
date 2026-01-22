@@ -10,19 +10,104 @@ import {
   useState,
 } from "react";
 
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
 import {
   type TokenInfo,
   type TokenMap,
   useTokenEditor,
-} from "../../../hooks/useTokenEditor";
-import { Input } from "../../atoms/shadcn";
+} from "@acme/ui/hooks/useTokenEditor";
 
 import { ColorToken } from "./ColorToken";
 import { FontToken } from "./FontToken";
 import { RangeToken } from "./RangeToken";
 import { TextToken } from "./TextToken";
+
+type TokenEditorApi = ReturnType<typeof useTokenEditor>;
+
+function notifyTokenChanged(key: string) {
+  try {
+    window.dispatchEvent(
+      new CustomEvent("pb:tokens-changed", { detail: { keys: [key] } })
+    );
+  } catch {}
+}
+
+function capitalizeGroupLabel(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function renderTokenInput({
+  info,
+  tokens,
+  baseTokens,
+  setToken,
+  onRenameToken,
+  onReplaceColor,
+  showExtras,
+  monoFonts,
+  sansFonts,
+  googleFonts,
+  handleUpload,
+  setGoogleFont,
+}: {
+  info: TokenInfo;
+  tokens: TokenMap;
+  baseTokens: TokenMap;
+  setToken: (key: string, value: string) => void;
+  onRenameToken: TokensProps["onRenameToken"];
+  onReplaceColor: TokensProps["onReplaceColor"];
+  showExtras: boolean;
+  monoFonts: TokenEditorApi["monoFonts"];
+  sansFonts: TokenEditorApi["sansFonts"];
+  googleFonts: TokenEditorApi["googleFonts"];
+  handleUpload: TokenEditorApi["handleUpload"];
+  setGoogleFont: TokenEditorApi["setGoogleFont"];
+}): ReactElement {
+  if (info.key.startsWith("--color")) {
+    const { key: tokenKey, ...rest } = info;
+    return (
+      <ColorToken
+        key={tokenKey}
+        tokenKey={tokenKey}
+        {...rest}
+        tokens={tokens}
+        baseTokens={baseTokens}
+        setToken={setToken}
+        onRenameToken={onRenameToken}
+        onReplaceColor={onReplaceColor}
+        showExtras={showExtras}
+      />
+    );
+  }
+
+  if (info.key.startsWith("--font")) {
+    const { key: tokenKey, ...rest } = info;
+    const options = tokenKey.includes("mono") ? monoFonts : sansFonts;
+    const type: "mono" | "sans" = tokenKey.includes("mono") ? "mono" : "sans";
+    return (
+      <FontToken
+        key={tokenKey}
+        tokenKey={tokenKey}
+        {...rest}
+        options={options}
+        type={type}
+        googleFonts={googleFonts}
+        setToken={setToken}
+        handleUpload={handleUpload}
+        setGoogleFont={setGoogleFont}
+      />
+    );
+  }
+
+  if (/px$/.test(info.value)) {
+    const { key: tokenKey, ...rest } = info;
+    return <RangeToken key={tokenKey} tokenKey={tokenKey} {...rest} setToken={setToken} />;
+  }
+
+  const { key: tokenKey, ...rest } = info;
+  return <TextToken key={tokenKey} tokenKey={tokenKey} {...rest} setToken={setToken} />;
+}
 
 interface TokensProps {
   tokens: TokenMap;
@@ -69,9 +154,7 @@ export default function Tokens({
   // Wrap setToken to broadcast token changes for live preview regeneration
   const setTokenAndNotify = (key: string, value: string) => {
     setToken(key, value);
-    try {
-      window.dispatchEvent(new CustomEvent("pb:tokens-changed", { detail: { keys: [key] } }));
-    } catch {}
+    notifyTokenChanged(key);
   };
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -152,65 +235,6 @@ export default function Tokens({
     setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const renderInput = (info: TokenInfo) => {
-    if (info.key.startsWith("--color")) {
-      const { key: tokenKey, ...rest } = info;
-      return (
-        <ColorToken
-          key={tokenKey}
-          tokenKey={tokenKey}
-          {...rest}
-          tokens={tokens}
-          baseTokens={baseTokens}
-          setToken={setTokenAndNotify}
-          onRenameToken={onRenameToken}
-          onReplaceColor={onReplaceColor}
-          showExtras={showExtras}
-        />
-      );
-    }
-
-    if (info.key.startsWith("--font")) {
-      const { key: tokenKey, ...rest } = info;
-      const options = tokenKey.includes("mono") ? monoFonts : sansFonts;
-      const type: "mono" | "sans" = tokenKey.includes("mono") ? "mono" : "sans";
-      return (
-        <FontToken
-          key={tokenKey}
-          tokenKey={tokenKey}
-          {...rest}
-          options={options}
-          type={type}
-          googleFonts={googleFonts}
-          setToken={setTokenAndNotify}
-          handleUpload={handleUpload}
-          setGoogleFont={setGoogleFont}
-        />
-      );
-    }
-
-    if (/px$/.test(info.value)) {
-      const { key: tokenKey, ...rest } = info;
-      return (
-        <RangeToken
-          key={tokenKey}
-          tokenKey={tokenKey}
-          {...rest}
-          setToken={setTokenAndNotify}
-        />
-      );
-    }
-
-    const { key: tokenKey, ...rest } = info;
-    return (
-      <TextToken
-        key={tokenKey}
-        tokenKey={tokenKey}
-        {...rest}
-        setToken={setTokenAndNotify}
-      />
-    );
-  };
   const filteredGroups = useMemo(() => {
     const lower = search.toLowerCase();
     const f: Record<string, TokenInfo[]> = {};
@@ -222,8 +246,6 @@ export default function Tokens({
     });
     return f;
   }, [groups, search]);
-
-  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   return (
     <div
@@ -248,12 +270,27 @@ export default function Tokens({
             className="flex w-full items-center justify-between font-medium min-h-10 min-w-10"
             onClick={() => toggleGroup(prefix)}
           >
-            <span>{capitalize(prefix)}</span>
+            <span>{capitalizeGroupLabel(prefix)}</span>
             <span>{openGroups[prefix] ? "−" : "+"}</span>
           </button>
           {openGroups[prefix] && (
             <div className="space-y-2">
-              {list.map((t) => renderInput(t))}
+              {list.map((info) =>
+                renderTokenInput({
+                  info,
+                  tokens,
+                  baseTokens,
+                  setToken: setTokenAndNotify,
+                  onRenameToken,
+                  onReplaceColor,
+                  showExtras,
+                  monoFonts,
+                  sansFonts,
+                  googleFonts,
+                  handleUpload,
+                  setGoogleFont,
+                })
+              )}
               {prefix === "font" && (
                 <div className="flex items-center gap-2 pt-2">
                   <Input

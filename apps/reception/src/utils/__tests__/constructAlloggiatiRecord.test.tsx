@@ -1,22 +1,14 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
-import type { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
-import { useConstructAlloggiatiRecord } from "../constructAlloggiatiRecord";
 
-jest.mock("../useComuneCodes", () => ({
-  useComuneCodes: () => ({
-    getComuneInfo: jest.fn().mockReturnValue(["500123456", "RM"]),
-  }),
+import type { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+import { constructAlloggiatiRecord } from "../constructAlloggiatiRecord";
+
+jest.mock("../comuneCodes", () => ({
+  getComuneInfo: jest.fn().mockReturnValue(["500123456", "RM"]),
 }));
 
 describe("constructAlloggiatiRecord", () => {
   it("builds a fixed length record string", () => {
-    jest.useFakeTimers();
-    // Freeze time so the "yesterday" logic is predictable
-    jest.setSystemTime(new Date("2024-02-20T08:00:00Z"));
-
-    const { result } = renderHook(() => useConstructAlloggiatiRecord());
-
     const occupant: OccupantDetails = {
       firstName: "Mario",
       lastName: "Rossi",
@@ -28,7 +20,7 @@ describe("constructAlloggiatiRecord", () => {
       document: { type: "passport", number: "AA1111111" },
     };
 
-    const record = result.current.constructAlloggiatiRecord(occupant);
+    const record = constructAlloggiatiRecord(occupant, { arrivalDateDdMmYyyy: "19/02/2024" });
 
     function safePad(value: string, length: number) {
       const trimmed = value.substring(0, length);
@@ -54,7 +46,5 @@ describe("constructAlloggiatiRecord", () => {
 
     expect(record.length).toBe(168);
     expect(record).toBe(expected);
-
-    jest.useRealTimers();
   });
 });

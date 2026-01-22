@@ -1,14 +1,14 @@
 /* src/types/domains/booking_old.ts */
-import { Activity } from "../hooks/data/activitiesData";
-import { CityTaxData } from "../hooks/data/cityTaxData";
-import { FinancialsRoomData } from "../hooks/data/financialsRoomData";
-import { GuestByRoomRecord } from "../hooks/data/guestByRoomData";
+import { type Activity } from "../hooks/data/activitiesData";
+import { type CityTaxData } from "../hooks/data/cityTaxData";
+import { type FinancialsRoomData } from "../hooks/data/financialsRoomData";
+import { type GuestByRoomRecord } from "../hooks/data/guestByRoomData";
 import {
-  BookingOccupantDetails,
-  OccupantDetails,
+  type BookingOccupantDetails,
+  type OccupantDetails,
 } from "../hooks/data/guestDetailsData";
-import { LoanTransaction } from "../hooks/data/loansData";
-import { PreorderData } from "../hooks/data/preorderData";
+import { type LoanTransaction } from "../hooks/data/loansData";
+import { type PreorderData } from "../hooks/data/preorderData";
 
 /**
  * Provide an alias for FinancialsRoomData so you can import `Financials`.

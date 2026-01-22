@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+
 import type { CheckInRow } from "../../types/component/CheckinRow";
 
 export default function useCheckinsModes() {

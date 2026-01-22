@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import DocInsertPage from "@/components/checkins/docInsert/DocInsertPage";
+import Providers from "@/components/Providers";
 
 export default function DocInsertRoutePage() {
   return (

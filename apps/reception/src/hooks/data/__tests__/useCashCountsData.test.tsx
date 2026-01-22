@@ -4,9 +4,16 @@
 /* ------------------------------------------------------------------ */
 
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
 import { cashCountsSchema } from "../../../schemas/cashCountSchema";
 import { getErrorMessage } from "../../../utils/errorMessage";
+import { showToast } from "../../../utils/toastUtils";
+/* ------------------------------------------------------------------ */
+/*  Imports under test (after mocks)                                   */
+/* ------------------------------------------------------------------ */
+import { useCashCountsData, useSingleCashCount } from "../useCashCountsData";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist‑safe mock placeholders                                       */
@@ -78,12 +85,6 @@ jest.mock("firebase/database", () => {
     ),
   };
 });
-
-/* ------------------------------------------------------------------ */
-/*  Imports under test (after mocks)                                   */
-/* ------------------------------------------------------------------ */
-import { useCashCountsData, useSingleCashCount } from "../useCashCountsData";
-import { showToast } from "../../../utils/toastUtils";
 const showToastMock = showToast as unknown as jest.Mock;
 
 /* ------------------------------------------------------------------ */

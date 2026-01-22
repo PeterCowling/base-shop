@@ -1,4 +1,4 @@
-import type { TokenMap } from "../../../hooks/useTokenEditor";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
 import { ReactElement } from "react";
 interface PresetsProps {
     tokens: TokenMap;

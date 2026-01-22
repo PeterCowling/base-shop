@@ -3,7 +3,7 @@
 import { useMemo,useState } from "react";
 import { useRouter } from "next/navigation";
 
-import DeviceSelector from "@acme/ui/components/cms/DeviceSelector";
+import DeviceSelector from "@acme/cms-ui/DeviceSelector";
 import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 
 import NavTemplateSelector from "@/app/cms/configurator/components/NavTemplateSelector";

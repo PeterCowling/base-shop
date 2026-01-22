@@ -1,10 +1,10 @@
 import { act,renderHook } from "@testing-library/react";
 
-import { autoScroll } from "../hooks/dnd/autoscroll";
-import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
+import usePageBuilderDnD from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderDnD";
+import { autoScroll } from "@acme/ui/hooks/dnd/autoscroll";
 
 // Mock autoscroll to capture calls
-jest.mock("../hooks/dnd/autoscroll", () => ({
+jest.mock("@acme/ui/hooks/dnd/autoscroll", () => ({
   __esModule: true,
   autoScroll: jest.fn(),
   AUTOSCROLL_EDGE_PX: 16,

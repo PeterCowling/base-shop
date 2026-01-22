@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { timingSafeEqual } from "crypto";
+
+import SafeDepositForm from "../SafeDepositForm";
 
 // Static mock for AuthContext
 const validPassword = "validpass";
@@ -21,8 +24,6 @@ jest.mock("../../../context/AuthContext", () => ({
     reauthenticate: mockReauthenticate,
   }),
 }));
-
-import SafeDepositForm from "../SafeDepositForm";
 
 describe("SafeDepositForm", () => {
   beforeEach(() => {

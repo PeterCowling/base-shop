@@ -1,5 +1,5 @@
 /* /src/types/component/CheckinRow.ts */
-import { z } from "zod";
+import { type z } from "zod";
 
 import { checkInRowSchema } from "../../schemas/checkInRowSchema";
 

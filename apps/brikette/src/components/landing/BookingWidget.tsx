@@ -5,7 +5,8 @@ import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useMemo, useR
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
-import { Grid, Section } from "@acme/ui/atoms";
+import { Grid } from "@acme/ui/atoms";
+import { Section } from "@acme/ui/atoms";
 import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 

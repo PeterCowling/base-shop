@@ -1,8 +1,9 @@
 // src/components/till/CreditCardReceiptCheck.tsx
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
+
 import { useCCReceiptConfirmations } from "../../hooks/mutations/useCCReceiptConfirmations";
-import { Transaction } from "../../types/component/Till";
+import { type Transaction } from "../../types/component/Till";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 
 interface CreditCardReceiptCheckProps {

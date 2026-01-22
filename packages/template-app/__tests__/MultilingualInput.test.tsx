@@ -1,8 +1,8 @@
 /** @jest-environment jsdom */
 import { fireEvent,render, screen } from "@testing-library/react";
 
+import MultilingualFields from "@acme/cms-ui/MultilingualFields";
 import type { Locale } from "@acme/i18n";
-import MultilingualFields from "@acme/ui/components/cms/MultilingualFields";
 
 describe("MultilingualInput", () => {
   it("calls onChange with correct locale key/value", () => {

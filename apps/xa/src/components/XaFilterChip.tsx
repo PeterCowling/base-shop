@@ -4,7 +4,7 @@
 
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-import { Tag } from "@acme/ui/components/atoms";
+import { Tag } from "@acme/design-system/atoms";
 
 export function XaFilterChip({
   label,

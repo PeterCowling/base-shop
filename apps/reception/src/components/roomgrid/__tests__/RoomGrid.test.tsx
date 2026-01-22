@@ -1,8 +1,11 @@
 import "@testing-library/jest-dom";
+
+import type { TClickCellEventData } from "@daminort/reservation-grid";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { GridReservationRow } from "../../../hooks/data/roomgrid/useGridData";
-import type { TClickCellEventData } from "@daminort/reservation-grid";
+import RoomGrid from "../RoomGrid";
 
 /* -------------------------------------------------------------------------- */
 /* Mock ReservationGrid                                                       */
@@ -44,8 +47,6 @@ jest.mock("../BookingDetailsModal", () => ({
     </div>
   ),
 }));
-
-import RoomGrid from "../RoomGrid";
 
 /* -------------------------------------------------------------------------- */
 /* Test data                                                                  */

@@ -7,24 +7,25 @@
 
 import {
   addDays as dfAddDays,
-  subDays as dfSubDays,
-  format as dfFormat,
   endOfMonth,
+  format as dfFormat,
   parse,
   parseISO,
   startOfMonth,
+  subDays as dfSubDays,
 } from "date-fns";
 
-import type {
-  TDateStatus,
-  TDayType,
-} from "../components/roomgrid/interfaces/grid.interface";
 import type {
   TDaysRange,
   TDaysRangeOptions,
 } from "../components/roomgrid/interfaces/daysRange.interface";
+import type {
+  TDateStatus,
+  TDayType,
+} from "../components/roomgrid/interfaces/grid.interface";
 import type { TLocale } from "../components/roomgrid/interfaces/locale.interface";
 import type { Period } from "../types/dndTypes";
+import type { Activity } from "../types/hooks/data/activitiesData";
 
 /* -------------------------------------------------------------------------- */
 /*                               BASIC HELPERS                                */
@@ -568,15 +569,6 @@ export function sameItalyDate(
   const normalize = (input: string | number | Date) =>
     getItalyIsoString(new Date(input)).slice(0, 10);
   return normalize(a) === normalize(b);
-}
-
-/* -------------------------------------------------------------------------- */
-/*                         ACTIVITY‑LIST UTILITIES                            */
-/* -------------------------------------------------------------------------- */
-
-interface Activity {
-  code: number;
-  timestamp?: string;
 }
 
 /**

@@ -1,10 +1,9 @@
-/* eslint-disable ds/absolute-parent-guard -- PB-0001: menu trigger is absolutely positioned within the editor canvas; the positioned ancestor lives in BlockItem */
+ 
 "use client";
-
-import { useTranslations } from "@acme/i18n";
 
 import { Tooltip } from "@acme/design-system/atoms";
 import { Button as MenuButton,DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import type { Action } from "./state";
 

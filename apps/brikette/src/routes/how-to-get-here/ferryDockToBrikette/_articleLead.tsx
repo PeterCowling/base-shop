@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@/components/images/CfImage";
@@ -47,8 +47,8 @@ function renderInlineLinks(
           parts.push(
             <Link
               key={key}
-              to={guideHref(context.lang, guideKey as GuideKey)}
-              prefetch="intent"
+              href={guideHref(context.lang, guideKey as GuideKey)}
+              prefetch={true}
               className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
             >
               {label}
@@ -65,8 +65,8 @@ function renderInlineLinks(
       parts.push(
         <Link
           key={key}
-          to={href}
-          prefetch="intent"
+          href={href}
+          prefetch={true}
           className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
         >
           {label}
@@ -223,7 +223,7 @@ export function renderArticleLead(
               <li className="leading-relaxed">
                 {kneesDockPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "chiesaNuovaArrivals")}
+                  href={guideHref(context.lang, "chiesaNuovaArrivals")}
                   className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesDockLinkText}
@@ -235,7 +235,7 @@ export function renderArticleLead(
               <li className="leading-relaxed">
                 {kneesPorterPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "porterServices")}
+                  href={guideHref(context.lang, "porterServices")}
                   className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesPorterLinkText}

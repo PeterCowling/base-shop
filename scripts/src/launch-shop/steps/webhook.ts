@@ -6,11 +6,12 @@
  */
 
 import Stripe from "stripe";
+
 import {
-  findExistingEndpoint,
   createEndpoint,
-  updateEndpoint,
   DEFAULT_WEBHOOK_EVENTS,
+  findExistingEndpoint,
+  updateEndpoint,
 } from "../../register-stripe-webhook";
 
 // ============================================================

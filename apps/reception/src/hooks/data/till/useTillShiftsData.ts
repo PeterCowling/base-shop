@@ -1,18 +1,18 @@
+import { useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   limitToLast,
   onValue,
   orderByChild,
   query,
   ref,
 } from "firebase/database";
-import { useEffect, useMemo, useState } from "react";
 
-import { useFirebaseDatabase } from "../../../services/useFirebase";
 import { tillShiftsSchema } from "../../../schemas/tillShiftSchema";
+import { useFirebaseDatabase } from "../../../services/useFirebase";
 import type { TillShift } from "../../../types/hooks/data/tillShiftData";
-import { showToast } from "../../../utils/toastUtils";
 import { getErrorMessage } from "../../../utils/errorMessage";
+import { showToast } from "../../../utils/toastUtils";
 
 export interface UseTillShiftsDataParams {
   limitToLast?: number;
@@ -45,7 +45,7 @@ export function useTillShiftsData(params: UseTillShiftsDataParams = {}) {
         return;
       }
 
-      const entries = Object.entries(result.data)
+      const entries = Object.entries(result.data as Record<string, TillShift>)
         .map(([id, value]) => ({
           ...value,
           id,

@@ -5,9 +5,9 @@
 import * as React from "react";
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 import { findOrdersByNumberAndEmail, orderTotal } from "../../../lib/ordersStore";
 
@@ -100,7 +100,7 @@ export default function TrackingOrderPage() {
                       <Price amount={r.total} />
                     </TableCell>
                     <TableCell className="text-end">
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" asChild>
                         <Link href={`/account/orders/${r.order}`}>View</Link>
                       </Button>
                     </TableCell>

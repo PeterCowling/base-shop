@@ -4,21 +4,20 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useModal } from "@acme/ui/context/ModalContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { useTheme } from "@acme/ui/hooks/useTheme";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { i18nConfig } from "@acme/ui/i18n.config";
-import { buildNavLinks, type TranslateFn } from "@acme/ui/utils/buildNavLinks";
-import { translatePath } from "@acme/ui/utils/translate-path";
-
 import { Button } from "../atoms/Button";
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useTheme } from "../hooks/useTheme";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
 import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
 import { resolvePrimaryCtaLabel } from "../shared";
 import type { SlugMap } from "../slug-map";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
+import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
     “?url” lets Vite keep the file name stable in development

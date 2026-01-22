@@ -1,9 +1,7 @@
 /* File: /src/components/checkins/CityTaxPaymentButton.tsx */
-import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  MouseEvent,
   memo,
+  type MouseEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -11,17 +9,20 @@ import {
   useState,
 } from "react";
 import ReactDOM from "react-dom";
+import { faCreditCard, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import useCityTaxAmount from "./useCityTaxAmount";
-import { useCityTaxPayment } from "./useCityTaxPayment";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
 import useCityTaxMutation from "../../../hooks/mutations/useCityTaxMutation";
-import { CheckInRow } from "../../../types/component/CheckinRow";
-import { PayType } from "../../../types/domains/cityTaxDomain";
+import { type CheckInRow } from "../../../types/component/CheckinRow";
+import { type PayType } from "../../../types/domains/cityTaxDomain";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
 import { showToast } from "../../../utils/toastUtils";
 import SmallSpinner from "../../search/SmallSpinner";
+
+import useCityTaxAmount from "./useCityTaxAmount";
+import { useCityTaxPayment } from "./useCityTaxPayment";
 
 interface CityTaxPaymentButtonProps {
   booking: CheckInRow; // occupant-level type
@@ -309,16 +310,16 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
           >
             <button
               onClick={handleMenuItemClickCash}
-              className="w-full text-left px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
+              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
             >
-              <FontAwesomeIcon icon={faMoneyBill} className="mr-2" />
+              <FontAwesomeIcon icon={faMoneyBill} className="me-2" />
               CASH
             </button>
             <button
               onClick={handleMenuItemClickCC}
-              className="w-full text-left px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
+              className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-gray-100"
             >
-              <FontAwesomeIcon icon={faCreditCard} className="mr-2" />
+              <FontAwesomeIcon icon={faCreditCard} className="me-2" />
               CC
             </button>
           </div>,

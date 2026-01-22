@@ -1,7 +1,6 @@
-import type { FooterComponent } from "@acme/types";
-
 import { Input } from "@acme/design-system/shadcn";
-import type { LogoVariants } from "@acme/ui/organisms/types";
+import type { FooterComponent } from "@acme/types";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 
 import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";

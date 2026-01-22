@@ -1,15 +1,15 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { validateShopName } from "@acme/platform-core/shops";
 import {
   CmsBuildHero,
   CmsInlineHelpBanner,
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
-} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsInlineHelpBanner, CmsLaunchChecklist
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsInlineHelpBanner, CmsLaunchChecklist
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { validateShopName } from "@acme/platform-core/shops";
 
 interface UpgradeComponent {
   file: string;

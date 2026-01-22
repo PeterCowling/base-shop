@@ -16,19 +16,11 @@ jest.mock("@acme/ui/context/ModalContext", () => ({
   useModal: () => ({ openModal }),
 }));
 
-jest.mock("@acme/ui/atoms/Link", () => ({
+jest.mock("@acme/ui/atoms", () => ({
   AppLink: ({ children, ...props }: { children?: ReactNode }) => <a {...props}>{children}</a>,
   default: ({ children, ...props }: { children?: ReactNode }) => <a {...props}>{children}</a>,
   Link: ({ children, ...props }: { children?: ReactNode }) => <a {...props}>{children}</a>,
 }));
-
-jest.mock("react-router-dom", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-router-dom")>();
-  return {
-    ...actual,
-    useLoaderData: () => ({ lang: "en", title: "t", desc: "d" }),
-  };
-});
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({

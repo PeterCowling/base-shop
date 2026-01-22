@@ -4,7 +4,6 @@ import { memo } from "react";
 
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent, TextComponent } from "@acme/types";
-
 import type { DevicePreset } from "@acme/ui/utils/devicePresets";
 
 import BlockItem from "./BlockItem";

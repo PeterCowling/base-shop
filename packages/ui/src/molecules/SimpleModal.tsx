@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react'
 
-import { cn } from '@acme/ui/utils/style/cn'
+import { cn } from '@acme/design-system/utils/style/cn'
 
 export interface SimpleModalProps {
   /** Whether modal is open */

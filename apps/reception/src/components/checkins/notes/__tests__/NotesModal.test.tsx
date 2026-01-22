@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import BookingNotesModal from "../BookingNotesModal";
 
 const addNote = jest.fn();
 const updateNote = jest.fn();
@@ -37,8 +40,6 @@ jest.mock("../../../../utils/dateUtils", async () => {
     formatEnGbDateTimeFromIso: () => "formatted",
   };
 });
-
-import BookingNotesModal from "../BookingNotesModal";
 
 describe("BookingNotesModal", () => {
   beforeEach(() => {

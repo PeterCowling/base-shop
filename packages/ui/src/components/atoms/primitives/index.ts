@@ -1,17 +1,5 @@
-// packages/ui/components/atoms/primitives/index.ts
-export * from "./accordion";
-export * from "./button";
-export * from "./card";
-export * from "./checkbox";
-export * from "./Cluster";
-export * from "./Cover";
-export * from "./dialog";
-export * from "./dropdown-menu";
-export * from "./Grid";
-export * from "./Inline";
-export * from "./input";
-export * from "./select";
-export * from "./Sidebar";
-export * from "./Stack";
-export * from "./table";
-export * from "./textarea";
+/**
+ * @deprecated Import primitives from "@acme/design-system/primitives" instead.
+ * This barrel re-export exists for backward compatibility and will be removed.
+ */
+export * from "@acme/design-system/primitives";

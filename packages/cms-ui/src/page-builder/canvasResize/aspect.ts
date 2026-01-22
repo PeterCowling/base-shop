@@ -1,18 +1,30 @@
 import type { Handle } from "./types";
 
-export function applyAspectRatio(
-  constrain: boolean,
-  handle: Handle,
-  ratio: number | null,
-  w: number,
-  h: number,
-  dx: number,
-  dy: number,
-  startL: number,
-  startT: number,
-  left: number,
-  top: number
-) {
+export function applyAspectRatio({
+  constrain,
+  handle,
+  ratio,
+  w,
+  h,
+  dx,
+  dy,
+  startL,
+  startT,
+  left,
+  top,
+}: {
+  constrain: boolean;
+  handle: Handle;
+  ratio: number | null;
+  w: number;
+  h: number;
+  dx: number;
+  dy: number;
+  startL: number;
+  startT: number;
+  left: number;
+  top: number;
+}) {
   let newW = w;
   let newH = h;
   let newLeft = left;
@@ -41,4 +53,3 @@ export function applyAspectRatio(
   }
   return { newW, newH, left: newLeft, top: newTop };
 }
-

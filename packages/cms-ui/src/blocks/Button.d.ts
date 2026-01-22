@@ -1,4 +1,4 @@
-import { Button as UIButton } from "../../atoms/shadcn";
+import { Button as UIButton } from "@acme/design-system/shadcn";
 export interface ButtonProps {
     /** Text displayed inside the button */
     label?: string;

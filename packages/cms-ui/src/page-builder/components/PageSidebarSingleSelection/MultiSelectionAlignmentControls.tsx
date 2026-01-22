@@ -9,9 +9,9 @@ import {
   RowSpacingIcon,
 } from "@radix-ui/react-icons";
 
+import { Button } from "@acme/design-system/shadcn";
 import type { PageComponent } from "@acme/types";
 
-import { Button } from "@acme/design-system/shadcn";
 import {
   alignBottom,
   alignCenterX,

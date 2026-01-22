@@ -1,16 +1,16 @@
 // File: /src/hooks/mutations/useActivitiesMutations.ts
 
-import { get, ref, update } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import useEmailGuest from "../../services/useEmailGuest";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
-  ActivityDataInput,
-  ActivityResult,
+  type ActivityDataInput,
+  type ActivityResult,
 } from "../../types/domains/activitiesDomain";
-import { Activity } from "../../types/hooks/data/activitiesData";
+import { type Activity } from "../../types/hooks/data/activitiesData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 
 /**

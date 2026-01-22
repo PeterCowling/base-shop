@@ -1,12 +1,13 @@
 // src/components/checkins/header/CheckinsHeader.tsx
 
-import { FC, MouseEventHandler } from "react";
+import { type FC, type MouseEventHandler } from "react";
+
+import { useAuth } from "../../../context/AuthContext";
 
 import ArchiveButton from "./ArchiveButton";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import NewBookingButton from "./NewBookingButton";
-import { useAuth } from "../../../context/AuthContext";
 
 /**
  * CheckinsHeader renders a header row with the "CHECKINS" title centered.

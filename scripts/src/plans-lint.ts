@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- DOCS-2402: CLI walks repo docs tree; paths are workspace-derived and not user input */
+ 
 /* i18n-exempt file -- ENG-2402 CLI-only plan lint output, not user-facing UI [ttl=2026-12-31] */
 import { promises as fs } from "fs";
 import path from "path";

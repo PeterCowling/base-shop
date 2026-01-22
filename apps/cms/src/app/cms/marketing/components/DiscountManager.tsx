@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import {
   Button,
   Card,
@@ -15,8 +16,7 @@ import {
   TableHeader,
   TableRow,
   Textarea,
-} from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
+} from "@acme/design-system/shadcn";
 
 import type { ActionResult } from "../../components/actionResult";
 

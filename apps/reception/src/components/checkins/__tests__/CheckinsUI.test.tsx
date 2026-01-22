@@ -1,6 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+/* ------------------------------------------------------------------ */
+/*  Components under test                                             */
+/* ------------------------------------------------------------------ */
+import type { Activity } from "../../../schemas/activitySchema";
+import DateSelector from "../DateSelector";
+import StatusButton from "../StatusButton";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist-safe mock placeholders                                      */
@@ -39,13 +47,6 @@ jest.mock("react-day-picker", () => ({
   ),
   getDefaultClassNames: () => ({ root: "", chevron: "" }),
 }));
-
-/* ------------------------------------------------------------------ */
-/*  Components under test                                             */
-/* ------------------------------------------------------------------ */
-import DateSelector from "../DateSelector";
-import StatusButton from "../StatusButton";
-import type { Activity } from "../../../schemas/activitySchema";
 
 function formatDateForInput(dateStr: string): string {
   const date = new Date(dateStr);

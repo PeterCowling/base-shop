@@ -1,8 +1,9 @@
 /* src/hook/data/usePreorder.ts */
 import { useMemo } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import type { PreorderState } from "../../types/hooks/data/preorderData";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
  * Data Hook: Retrieves the entire "preorder" node from Firebase.

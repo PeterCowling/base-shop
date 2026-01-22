@@ -7,17 +7,18 @@
 
 import { memo, useCallback, useState } from "react";
 import {
-  XMarkIcon,
   ArrowDownTrayIcon,
   TrashIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
-import ConfirmCancelModal from "./ConfirmCancelModal";
-import useBulkBookingActions, {
-  CsvExportRow,
-} from "../../hooks/mutations/useBulkBookingActions";
-import { hasAnyRole } from "../../lib/roles";
-import { Permissions } from "../../lib/roles";
+
 import { useAuth } from "../../context/AuthContext";
+import useBulkBookingActions, {
+  type CsvExportRow,
+} from "../../hooks/mutations/useBulkBookingActions";
+import { hasAnyRole , Permissions } from "../../lib/roles";
+
+import ConfirmCancelModal from "./ConfirmCancelModal";
 
 interface BulkActionsToolbarProps {
   selectedCount: number;
@@ -84,7 +85,7 @@ function BulkActionsToolbar({
           <button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-darkSurface dark:text-darkAccentGreen dark:ring-gray-600 dark:hover:bg-gray-700"
+            className="inline-flex min-h-9 items-center gap-2 rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-gray-300 hover:bg-gray-50 dark:bg-darkSurface dark:text-darkAccentGreen focus-visible:dark:ring-gray-600 dark:hover:bg-gray-700"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
             Export CSV

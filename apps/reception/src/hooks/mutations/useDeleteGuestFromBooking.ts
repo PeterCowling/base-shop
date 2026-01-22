@@ -1,10 +1,11 @@
 // File: /src/hooks/mutations/useDeleteGuestFromBooking.ts
 
-import { get, ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { get, ref, update } from "firebase/database";
+
+import { useFirebaseDatabase } from "../../services/useFirebase";
 
 import useActivitiesMutations from "./useActivitiesMutations";
-import { useFirebaseDatabase } from "../../services/useFirebase";
 
 /**
  * Minimal type for the bookings node at:

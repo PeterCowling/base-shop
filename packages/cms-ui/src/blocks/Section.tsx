@@ -2,7 +2,7 @@
 import type { HTMLAttributes,ReactNode } from "react";
 import { useMemo } from "react";
 
-import useInView from "../../../hooks/useInView";
+import useInView from "@acme/ui/hooks/useInView";
 
 import ShapeDivider from "./ShapeDivider";
 
@@ -184,7 +184,7 @@ export default function Section({
   const TRANSITION_CLASS = "transition-all duration-700 ease-out will-change-transform";
   const aosClass = animateOnScroll ? (inView ? AOS_VISIBLE : AOS_HIDDEN) : undefined;
   const extraProps = domProps as React.HTMLAttributes<HTMLDivElement>;
-  /* eslint-disable react/forbid-dom-props -- DS-0003: Section consumes CMS-driven visual styles (padding, bg, overlay) that require dynamic inline style to render correctly across themes. */
+   
   return (
     <div
       {...extraProps}
@@ -217,9 +217,9 @@ export default function Section({
       ) : null}
       
       {backgroundVideoUrl ? (
-        // eslint-disable-next-line ds/absolute-parent-guard -- DS-0001: Parent has dynamic 'relative' class via array join; rule cannot statically resolve.
+         
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- DS-0004: Decorative background video; not user-facing content, captions not applicable. */}
+          { }
           <video
             className="h-full w-full object-cover"
             data-aspect="16/9"
@@ -236,7 +236,7 @@ export default function Section({
       ) : null}
       
       {backgroundOverlay ? (
-        // eslint-disable-next-line ds/absolute-parent-guard -- DS-0001: Parent has dynamic 'relative' class via array join; rule cannot statically resolve.
+         
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: backgroundOverlay }} />
       ) : null}
       
@@ -264,5 +264,5 @@ export default function Section({
       ) : null}
     </div>
   );
-  /* eslint-enable react/forbid-dom-props */
+   
 }

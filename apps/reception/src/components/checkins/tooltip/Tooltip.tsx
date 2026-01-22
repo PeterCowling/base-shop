@@ -1,6 +1,8 @@
 /* File: /src/components/checkins/Tooltip.tsx */
 import { memo } from "react";
+
 import type { MealPlan } from "../../../types/hooks/data/mealPlan";
+
 import CustomTooltip from "./CustomTooltip";
 
 interface Room {

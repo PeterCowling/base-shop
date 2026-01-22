@@ -6,9 +6,10 @@ import { useFormState } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 
+import { Switch, Toast } from "@acme/design-system/atoms";
+import { Button, Input, Textarea } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import { slugify } from "@acme/lib/string";
-import { Button, Input, Switch, Textarea, Toast } from "@acme/ui/components/atoms";
 
 import {
   InvalidProductProvider,

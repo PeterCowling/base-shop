@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Re-export all molecules from design-system
 export {
+  AccordionMolecule,
   type BreadcrumbItem,
   Breadcrumbs,
   CodeBlock,
@@ -30,5 +31,4 @@ export {
   RatingSummary,
   SearchBar,
   SustainabilityBadgeCluster,
-  AccordionMolecule,
 } from "@acme/design-system/molecules";

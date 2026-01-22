@@ -6,16 +6,18 @@
  * across a date range with customizable status colors.
  */
 
+import "./rvg.css";
+
 import type { ReactElement } from "react";
 import { memo, useMemo } from "react";
 
 import { createDaysRange } from "../../utils/dateUtils";
-import type { TDaysRange } from "./interfaces/daysRange.interface";
-import type { TLocale, TLocaleKey } from "./interfaces/locale.interface";
+
 import { LOCALES } from "./constants/locales";
 import { GridCell } from "./GridCell";
+import type { TDaysRange } from "./interfaces/daysRange.interface";
+import type { TLocale, TLocaleKey } from "./interfaces/locale.interface";
 import type { TReservedPeriod } from "./interfaces/reservedPeriod";
-import "./rvg.css";
 
 /* -------------------------------------------------------------------------- */
 /*                                   TYPES                                    */

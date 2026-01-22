@@ -1,11 +1,11 @@
 "use client";
 
+import type { XaSearchDoc } from "./xaSearchConfig";
+import type { XaSearchIndexJson } from "./xaSearchDb";
 import type {
   XaSearchWorkerRequest,
   XaSearchWorkerResponse,
 } from "./xaSearchProtocol";
-import type { XaSearchDoc } from "./xaSearchConfig";
-import type { XaSearchIndexJson } from "./xaSearchDb";
 
 type PendingRequest = {
   resolve: (value: XaSearchWorkerResponse) => void;

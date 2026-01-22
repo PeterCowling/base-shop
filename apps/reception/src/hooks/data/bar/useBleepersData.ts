@@ -1,9 +1,9 @@
 /* File: /src/hooks/data/bar/useBleepersData.ts */
-import { DatabaseReference, get, ref, set } from "firebase/database";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { type DatabaseReference, get, ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../services/useFirebase";
-import { BleepersState } from "../../../types/bar/BleeperTypes";
+import { type BleepersState } from "../../../types/bar/BleeperTypes";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
 /**

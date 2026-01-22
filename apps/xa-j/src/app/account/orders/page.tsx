@@ -4,8 +4,8 @@
 import Link from "next/link";
 import * as React from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/ui/components/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
 import { orderTotal, readOrders } from "../../../lib/ordersStore";
 

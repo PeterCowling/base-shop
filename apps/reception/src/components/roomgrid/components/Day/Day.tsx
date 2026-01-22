@@ -1,6 +1,5 @@
 import type { FC } from "react";
 
-import type { TDayProps } from "./Day.interface";
 import {
   Intersection,
   SingleDisabled,
@@ -11,6 +10,8 @@ import {
 } from "../../components/Days";
 import type { TDayType } from "../../interfaces/grid.interface";
 import type { TDaysProps } from "../Days/Days.interface";
+
+import type { TDayProps } from "./Day.interface";
 
 const days: Partial<Record<TDayType, FC<TDaysProps>>> = {
   "single.free": SingleFree,

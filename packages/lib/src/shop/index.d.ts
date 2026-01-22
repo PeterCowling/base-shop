@@ -1,4 +1,4 @@
 export { getShopFromPath } from "./getShopFromPath";
 export { replaceShopInPath } from "./replaceShopInPath";
-export { getOrCreateRequestId, getRequestIdFromHeaders, getShopIdFromHeaders, requireShopIdFromHeaders, stripSpoofableShopHeaders, REQUEST_ID_HEADER, SHOP_ID_HEADER, type ShopContext, } from "./shopContext";
+export { getOrCreateRequestId, getRequestIdFromHeaders, getShopIdFromHeaders, REQUEST_ID_HEADER, requireShopIdFromHeaders, SHOP_ID_HEADER, type ShopContext,stripSpoofableShopHeaders,  } from "./shopContext";
 //# sourceMappingURL=index.d.ts.map

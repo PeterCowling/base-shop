@@ -4,8 +4,8 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useSetBannerRef } from "@acme/ui/context/NotificationBannerContext";
-import enDeals from "@acme/ui/locales/en/dealsPage.json";
+import { useSetBannerRef } from "../context/NotificationBannerContext";
+import enDeals from "../locales/en/dealsPage.json";
 
 type TranslationParams = Record<string, string | number>;
 

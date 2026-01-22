@@ -1,6 +1,7 @@
 // /src/types/hooks/data/guestDetailsData.ts
 
-import { z } from "zod";
+import { type z } from "zod";
+
 import type {
   bookingOccupantDetailsSchema,
   guestsDetailsSchema,

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { AnalyticsSummaryCardProps } from "@acme/ui/components/cms/marketing";
+import type { AnalyticsSummaryCardProps } from "@acme/cms-ui/marketing";
 
 import { clampPercent, formatPercent, type MarketingTool,marketingTools } from "../lib/marketingOverview";
 

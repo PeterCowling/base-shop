@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { formatEuro } from "../format";
 
 describe("formatEuro", () => {

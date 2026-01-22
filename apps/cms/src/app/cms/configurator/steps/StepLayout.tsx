@@ -5,10 +5,10 @@ import { type ReactNode,useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import { Cluster,Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
-import { Cluster,Inline } from "@acme/ui/components/atoms/primitives";
 
 import { Alert, Spinner,Toast } from "@/components/atoms";
 import { Button } from "@/components/atoms/shadcn";

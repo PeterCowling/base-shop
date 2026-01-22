@@ -3,7 +3,7 @@
 
 import React from 'react'
 
-import { cn } from '@acme/ui/utils/style/cn'
+import { cn } from '@acme/design-system/utils/style/cn'
 
 export interface StatusChipProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** Status variant determines color scheme */

@@ -5,7 +5,7 @@
 import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 import AmenitiesSection from "@acme/ui/organisms/ApartmentAmenitiesSection";
 import DetailsSection from "@acme/ui/organisms/ApartmentDetailsSection";
 import HeroSection from "@acme/ui/organisms/ApartmentHeroSection";

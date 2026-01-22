@@ -1,9 +1,9 @@
 import * as React from "react";
-import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "@jest/globals";
+import { act, renderHook } from "@testing-library/react";
 
-import { CartProvider, useCart } from "../XaCartContext";
 import type { XaProduct } from "../../lib/demoData";
+import { CartProvider, useCart } from "../XaCartContext";
 
 const makeProduct = (id: string, stock = 2): XaProduct => ({
   id,

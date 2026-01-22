@@ -1,10 +1,9 @@
 "use client";
 
+import { Checkbox, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 import type { CarouselContainerComponent } from "@acme/types/page/layouts/carousel-container";
-
-import { Checkbox, Input } from "@acme/design-system/shadcn";
 
 interface Props {
   component: CarouselContainerComponent;

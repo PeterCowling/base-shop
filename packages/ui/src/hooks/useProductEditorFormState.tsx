@@ -10,7 +10,8 @@ import {
 
 import type { Locale } from "@acme/i18n/locales";
 import type { ProductPublication } from "@acme/types";
-import { buildProductFormData } from "@acme/ui/utils/buildProductFormData";
+
+import { buildProductFormData } from "../utils/buildProductFormData";
 
 import { type ProductWithVariants,useProductInputs } from "./useProductInputs";
 import { useProductMediaManager } from "./useProductMediaManager";

@@ -1,4 +1,5 @@
 import { type NextRequest,NextResponse } from "next/server";
+import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
 import path from "path";
 
 import { readJsonFile, withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
@@ -41,6 +42,13 @@ export async function GET(
   context: { params: Promise<{ shop: string; pageId: string }> },
 ) {
   const { shop, pageId } = await context.params;
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
   const store = await readStore();
   const threads = store[shop]?.[pageId] ?? [];
   return NextResponse.json(threads);
@@ -50,8 +58,15 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string; pageId: string }> },
 ) {
-  try {
   const { shop, pageId } = await context.params;
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  try {
     const body = await req.json();
     const { componentId, text, assignedTo, pos } = body ?? {};
     if (!componentId || typeof componentId !== "string") {

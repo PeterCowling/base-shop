@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import KeycardDepositMenu from "../keycardButton/KeycardDepositMenu";
 import { DocumentType, KeycardPayType } from "../../../types/keycards";
+import KeycardDepositMenu from "../keycardButton/KeycardDepositMenu";
 
 describe("KeycardDepositMenu", () => {
   it("renders and handles confirm & mouse leave", async () => {

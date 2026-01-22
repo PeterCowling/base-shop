@@ -1,7 +1,7 @@
 import { act,renderHook } from "@testing-library/react";
 
+import useViewport from "@acme/ui/hooks/useViewport";
 import type { DevicePreset } from "@acme/ui/utils/devicePresets";
-import useViewport from "../hooks/useViewport";
 
 describe("useViewport", () => {
   const desktop: DevicePreset = {

@@ -1,6 +1,6 @@
 // /src/types/domains/cityTaxDomain.ts
 
-import { CityTaxData } from "../hooks/data/cityTaxData";
+import { type CityTaxData } from "../hooks/data/cityTaxData";
 
 /**
  * Payment types for occupant's city tax.

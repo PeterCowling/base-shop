@@ -10,39 +10,51 @@ Last-reviewed: 2025-12-02
 Selecting a base theme resets overrides and reloads its default tokens:
 
 ```tsx
-// apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx
+// apps/cms/src/app/cms/shop/[shop]/themes/useThemePresetManager.ts
 const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-  const next = e.target.value;
-  setTheme(next);
+  const newTheme = e.target.value;
+  setTheme(newTheme);
   setOverrides({});
-  setThemeDefaults(tokensByThemeState[next]);
-  schedulePreviewUpdate(tokensByThemeState[next]);
+  setThemeDefaults(tokensByThemeState[newTheme]);
+  if (!presetThemes.includes(newTheme)) {
+    void patchShopTheme(shop, { themeId: newTheme });
+  }
 };
 ```
 
-Theme selection also persists `themeId` and new defaults to the shop so subsequent sessions stay aligned with the selected theme.
+When the selection is a built-in theme (not a saved preset), the server persists `themeId` and resets `themeDefaults`/`themeOverrides` so subsequent sessions load the correct base theme:
+
+- `apps/cms/src/services/shops/themeService.ts` (`patchTheme()` handles `themeId` changes)
+- `apps/cms/src/app/api/shops/[shop]/theme/route.ts` (PATCH forwards `themeId`)
 
 ## Element overrides
 
 Each override merges with the current theme and updates the preview:
 
 ```tsx
-// apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx
-const handleOverrideChange =
-  (key: string, defaultValue: string) => (value: string) => {
-    setOverrides((prev) => {
-      const next = { ...prev };
-      if (!value || value === defaultValue) {
-        delete next[key];
-      } else {
-        next[key] = value;
-      }
-      const merged = { ...tokensByThemeState[theme], ...next };
-      schedulePreviewUpdate(merged);
-      return next;
-    });
-  };
+// apps/cms/src/app/cms/shop/[shop]/themes/useThemeTokenSync.ts
+const handleOverrideChange = (key: string, defaultValue: string) => (value: string) => {
+  setOverrides((prev) => {
+    const next = { ...prev } as Record<string, string>;
+    const patch: Record<string, string> = {};
+
+    if (!value || value === defaultValue) {
+      delete next[key];
+      patch[key] = defaultValue;
+    } else {
+      next[key] = value;
+      patch[key] = value;
+    }
+
+    scheduleSave(patch);
+    return next;
+  });
+};
 ```
+
+The Theme Editor:
+- Debounces persistence via `patchShopTheme()` so edits don’t spam the server.
+- Cancels pending saves if you change base theme, so old overrides don’t leak into the newly-selected theme.
 
 ## Persistence
 

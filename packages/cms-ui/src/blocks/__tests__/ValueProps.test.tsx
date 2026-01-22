@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 
 import CmsValueProps from "../ValueProps";
 
-jest.mock("../../../home/ValueProps", () => {
+jest.mock("@acme/ui/home/ValueProps", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -12,7 +12,7 @@ jest.mock("../../../home/ValueProps", () => {
   };
 });
 
-const { ValueProps: MockValueProps } = require("../../../home/ValueProps") as {
+const { ValueProps: MockValueProps } = require("@acme/ui/home/ValueProps") as {
   ValueProps: jest.Mock;
 };
 

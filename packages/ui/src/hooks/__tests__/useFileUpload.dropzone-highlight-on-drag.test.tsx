@@ -15,7 +15,7 @@ function createShadcnStub() {
   return { Button };
 }
 
-jest.mock("@acme/ui/components/atoms/shadcn", createShadcnStub);
+jest.mock("@acme/design-system/shadcn", createShadcnStub);
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(() => ({ actual: "landscape", isValid: true })),

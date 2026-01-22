@@ -41,18 +41,6 @@
       "@ui/*": [
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
-      ],
-      "react-router": [
-        "src/compat/react-router.tsx"
-      ],
-      "react-router-dom": [
-        "src/compat/react-router-dom.tsx"
-      ],
-      "react-router/dom": [
-        "src/compat/react-router-dom.tsx"
-      ],
-      "@react-router/dev/routes": [
-        "src/compat/react-router-dev-routes.ts"
       ]
     },
     "jsx": "preserve",

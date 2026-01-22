@@ -98,15 +98,15 @@ export function createAuthOptions(
 
           if (ok && user) {
             /* Strip the password before returning */
-             
-            const { password: _pw, ...safeUser } = user;
+
+            const { password: _pw, allowedShops, ...safeUser } = user;
             const r = roles[user.id];
             const role = Array.isArray(r) ? (r[0] as Role) : (r as Role);
 
             // i18n-exempt — log/info string
             logger.info("[auth] login success", { userId: user.id, role });
 
-            return { ...safeUser, role };
+            return { ...safeUser, role, allowedShops };
           }
 
           // i18n-exempt — log/warn string
@@ -122,11 +122,12 @@ export function createAuthOptions(
     callbacks: {
       async jwt({ token, user }) {
         if (user) {
-          const u = user as typeof user & { role: Role };
+          const u = user as typeof user & { role: Role; allowedShops?: string[] };
           // i18n-exempt — log/debug string
           logger.debug("[auth] jwt assign role", { role: u.role });
-          const t = token as JWT & { role: Role } & { id?: string };
+          const t = token as JWT & { role: Role; allowedShops?: string[] } & { id?: string };
           t.role = u.role;
+          t.allowedShops = u.allowedShops;
           // Ensure we keep a stable identifier available to session callback
           // NextAuth typically sets `sub` from user.id, but we mirror on `id` too.
           // next-auth's `user` can be `User | AdapterUser`; safely access id
@@ -137,12 +138,15 @@ export function createAuthOptions(
       },
 
       async session({ session, token }) {
-        const role = (token as JWT & { role?: Role }).role;
+        const t = token as JWT & { role?: Role; allowedShops?: string[] };
         // i18n-exempt — log/debug string
-        logger.debug("[auth] session role", { role });
+        logger.debug("[auth] session role", { role: t.role });
 
-        if (role) {
-          (session.user as typeof session.user & { role: Role }).role = role;
+        if (t.role) {
+          (session.user as typeof session.user & { role: Role }).role = t.role;
+        }
+        if (t.allowedShops) {
+          (session.user as typeof session.user & { allowedShops?: string[] }).allowedShops = t.allowedShops;
         }
         // Propagate a user id into the session so API routes can identify
         // per-user configurator state.

@@ -3,15 +3,17 @@
 
 import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
+import { readEnvFile } from "@acme/platform-core/configurator";
 import {
   createShop,
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
-import { readEnvFile } from "@acme/platform-core/configurator";
 import type { ProviderInfo } from "@acme/platform-core/createShop/listProviders";
+
+import { applyPageTemplate } from "../apply-page-template";
 import type { Flags } from "../cli/parseQuickstartArgs";
 import { seedShop } from "../seedShop";
-import { applyPageTemplate } from "../apply-page-template";
 
 export async function createShopAndSeed(
   prefixedId: string,

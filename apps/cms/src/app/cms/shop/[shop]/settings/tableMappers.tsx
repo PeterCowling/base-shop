@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import type { Column } from "@acme/ui/components/cms/DataTable";
+import type { Column } from "@acme/cms-ui/DataTable";
 
 import type { ThemeTokenRow } from "./lib/pageSections";
 

@@ -5,17 +5,16 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import type { Room } from "@acme/ui/data/roomsData";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { useRoomPricing } from "@acme/ui/hooks/useRoomPricing";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { toAppLanguage } from "@acme/ui/utils/lang";
-import { getSlug } from "@acme/ui/utils/slug";
-
 import { Button } from "../atoms/Button";
 import { CfCardImage } from "../atoms/CfCardImage";
 import { Cluster } from "../components/atoms/primitives/Cluster";
+import type { Room } from "../data/roomsData";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useRoomPricing } from "../hooks/useRoomPricing";
+import type { AppLanguage } from "../i18n.config";
 import { resolveSharedToken } from "../shared";
+import { toAppLanguage } from "../utils/lang";
+import { getSlug } from "../utils/slug";
 
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");
 const PRICE_LOADING_TEST_ID = "price-loading";

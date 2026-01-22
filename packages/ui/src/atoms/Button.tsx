@@ -1,67 +1,140 @@
-// Copied from src/components/ui/Button.tsx to localize atom source
-/* -------------------------------------------------------------------------- */
-/*  Tailwind-powered button (variant + size + asChild)                        */
-/*  • Compatible with React 19 automatic JSX runtime                          */
-/*  • Framework-mode friendly: no runtime CSS generation                      */
-/* -------------------------------------------------------------------------- */
+"use client";
+/**
+ * @deprecated Import Button from "@acme/design-system/primitives" instead.
+ * This shim exists for backward compatibility and will be removed in a future release.
+ */
 
-/* i18n-exempt file -- ABC-123 [ttl=2026-12-31] class names and internal variants are not user-facing */
-import { cloneElement, type ElementType, forwardRef, isValidElement, memo } from "react";
+import * as React from "react";
 
-import type { ButtonProps, ButtonSize, ButtonVariant, SlotProps } from "@acme/ui/types/button";
+import { Button as DesignSystemButton } from "@acme/design-system/primitives";
 
-/** Tiny clsx clone (zero-dependency) */
-const clsx = (...classes: Array<string | false | null | undefined>): string =>
-  classes.filter(Boolean).join(" ");
+import type { ButtonSize, ButtonVariant } from "../types/button";
 
-const composeClasses = ({ variant, size }: { variant: ButtonVariant; size: ButtonSize }) => {
-  const base =
-    "inline-flex items-center justify-center font-medium transition " +
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary " +
-    "disabled:opacity-40 disabled:pointer-events-none dark:text-gray-800";
+// Combined props: legacy API + design-system API for smooth migration
+type ButtonTone = "solid" | "soft" | "outline" | "ghost" | "quiet";
+type ButtonColor = "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";
 
-  const variants: Record<ButtonVariant, string> = {
-    default: "bg-brand-secondary text-brand-text hover:bg-brand-primary/90",
-    outline: "border border-brand-primary text-brand-primary hover:bg-brand-primary/10",
-  };
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+  /** Legacy variant prop (default/outline/ghost/secondary/destructive) */
+  variant?: ButtonVariant;
+  /** Legacy size prop (default/sm/lg/icon) */
+  size?: ButtonSize;
+  /** Design-system color prop */
+  color?: ButtonColor;
+  /** Design-system tone prop */
+  tone?: ButtonTone;
+  /** Legacy ariaLabel prop - use aria-label instead */
+  ariaLabel?: string;
+  /** Render as child element */
+  asChild?: boolean;
+  /** Leading icon node */
+  leadingIcon?: React.ReactNode;
+  /** Trailing icon node */
+  trailingIcon?: React.ReactNode;
+  /** Icon size */
+  iconSize?: "sm" | "md" | "lg";
+  /** Render as icon-only button */
+  iconOnly?: boolean;
+}
 
-  const sizes: Record<ButtonSize, string> = {
-    default: "h-11 px-4 py-2 rounded-md text-sm",
-    icon: "h-11 w-11 rounded-full",
-  };
+// Warn once per session to avoid log spam
+const WARN_KEY = "__acme_ui_button_deprecation_warned__";
 
-  return clsx(base, variants[variant], sizes[size]);
+function warnDeprecation(): void {
+  if (process.env.NODE_ENV !== "development") return;
+  if (typeof window === "undefined" || typeof sessionStorage === "undefined") return;
+
+  try {
+    if (!sessionStorage.getItem(WARN_KEY)) {
+      console.warn(
+        "[@acme/ui] Button is deprecated. Import from @acme/design-system/primitives instead. " +
+          "See docs/plans/ui-architecture-consolidation-plan.md for migration guidance."
+      );
+      sessionStorage.setItem(WARN_KEY, "1");
+    }
+  } catch {
+    // Storage disabled or quota exceeded — ignore
+  }
+}
+
+// Map legacy variant to design-system variant
+const variantMap: Record<ButtonVariant, "default" | "outline" | "ghost" | "destructive"> = {
+  default: "default",
+  outline: "outline",
+  ghost: "ghost",
+  secondary: "default", // secondary maps to default with soft tone
+  destructive: "destructive",
 };
 
-const Slot = forwardRef<HTMLElement, SlotProps>(function Slot({ children, ...props }, ref) {
-  if (!isValidElement(children)) {
-    return null;
+// Map legacy size to design-system size
+function mapSize(size: ButtonSize): { size?: "sm" | "md" | "lg"; iconOnly?: boolean } {
+  switch (size) {
+    case "default":
+      return { size: "md" };
+    case "sm":
+      return { size: "sm" };
+    case "lg":
+      return { size: "lg" };
+    case "icon":
+      return { size: "md", iconOnly: true };
   }
+}
 
-  return cloneElement(children, {
-    ...props,
-    className: clsx(children.props.className, props.className),
-    ref,
-  });
-});
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      variant = "default",
+      size = "default",
+      color,
+      tone,
+      ariaLabel,
+      asChild,
+      className,
+      children,
+      leadingIcon,
+      trailingIcon,
+      iconSize,
+      iconOnly: iconOnlyProp,
+      ...rest
+    },
+    ref
+  ) {
+    warnDeprecation();
 
-const ButtonInner = forwardRef<HTMLElement, ButtonProps>(function Button(
-  { variant = "default", size = "default", asChild = false, className = "", ariaLabel, ...props },
-  ref
-) {
-  const Comp: ElementType = asChild ? Slot : "button";
+    const mappedVariant = variantMap[variant];
+    const { size: mappedSize, iconOnly: iconOnlyFromSize } = mapSize(size);
 
-  return (
-    <Comp
-      ref={ref as never}
-      className={clsx(composeClasses({ variant, size }), className)}
-      aria-label={ariaLabel}
-      {...props}
-    />
-  );
-});
+    // Determine tone: explicit tone > secondary variant mapping > undefined
+    const effectiveTone = tone ?? (variant === "secondary" ? "soft" : undefined);
 
-export const Button = memo(ButtonInner);
+    // Determine iconOnly: explicit prop > size="icon" mapping
+    const effectiveIconOnly = iconOnlyProp ?? iconOnlyFromSize;
+
+    return (
+      <DesignSystemButton
+        ref={ref}
+        variant={mappedVariant}
+        color={color}
+        tone={effectiveTone}
+        size={mappedSize}
+        iconOnly={effectiveIconOnly}
+        asChild={asChild}
+        className={className}
+        aria-label={ariaLabel}
+        leadingIcon={leadingIcon}
+        trailingIcon={trailingIcon}
+        iconSize={iconSize}
+        {...rest}
+      >
+        {children}
+      </DesignSystemButton>
+    );
+  }
+);
+
 Button.displayName = "Button";
 
 export default Button;
+
+// Re-export types for backwards compatibility
+export type { ButtonSize, ButtonVariant } from "../types/button";

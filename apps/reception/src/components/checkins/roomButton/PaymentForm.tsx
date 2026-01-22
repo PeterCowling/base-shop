@@ -1,25 +1,26 @@
 // File: /src/components/checkins/roomButton/PaymentForm.tsx
 
 import {
-  faCreditCard,
-  faMoneyBill,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  MouseEvent,
   memo,
+  type MouseEvent,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
 import ReactDOM from "react-dom";
+import {
+  faCreditCard,
+  faMoneyBill,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import type {
   PaymentSplit,
   PaymentType,
 } from "../../../types/component/roomButton/types";
+
 import PaymentDropdown from "./PaymentDropdown";
 
 interface PaymentFormProps {

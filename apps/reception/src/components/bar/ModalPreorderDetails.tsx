@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 
 import { useCompletedOrder } from "../../hooks/data/bar/useCompletedOrder";
-import {
-  PlacedPreorder,
-  usePlacedPreorder,
-} from "../../hooks/data/bar/usePlacedPreorder";
+import { usePlacedPreorder } from "../../hooks/data/bar/usePlacedPreorder";
+import type { PlacedPreorder } from "../../types/bar/BarTypes";
 import {
   addDays,
   formatDate,
-  parseLocalDate,
   formatMonthNameDay,
+  parseLocalDate,
 } from "../../utils/dateUtils";
 
 // ----------------------------------------------------------------

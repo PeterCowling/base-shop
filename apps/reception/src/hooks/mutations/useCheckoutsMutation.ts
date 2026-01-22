@@ -1,10 +1,10 @@
 /* src/hooks/mutations/useCheckoutsMutation.ts */
 
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CheckoutData } from "../../types/hooks/data/checkoutsData";
+import { type CheckoutData } from "../../types/hooks/data/checkoutsData";
 
 /**
  * Mutation Hook that handles creating or updating occupant check-out data

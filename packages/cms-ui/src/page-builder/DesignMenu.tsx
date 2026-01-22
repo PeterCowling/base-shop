@@ -3,10 +3,9 @@
 
 import React from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
 import { Button, Dialog, DialogTrigger } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
 import ThemePanel from "./ThemePanel";

@@ -1,7 +1,6 @@
 import type { Dispatch } from "react";
 
 import type { HistoryState } from "@acme/types";
-
 import type { UploadProgress } from "@acme/ui/hooks/useFileUpload";
 
 import { buildToolbarProps } from "./buildProps";

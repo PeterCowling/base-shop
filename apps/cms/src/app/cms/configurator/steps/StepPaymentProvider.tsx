@@ -4,8 +4,8 @@ import { type ChangeEvent,useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { type Provider,providersByType } from "@acme/configurator/providers";
+import { Cluster,Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Cluster,Inline } from "@acme/ui/components/atoms/primitives";
 
 import {
   Button,

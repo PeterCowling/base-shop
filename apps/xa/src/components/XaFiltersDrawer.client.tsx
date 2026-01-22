@@ -4,8 +4,8 @@
 
 import * as React from "react";
 
-import { Button, Checkbox, Input } from "@acme/ui/components/atoms";
-import { OverlayScrim } from "@acme/ui/components/atoms";
+import { Button, Checkbox, Input } from "@acme/design-system/atoms";
+import { OverlayScrim } from "@acme/design-system/primitives";
 import {
   Drawer,
   DrawerContent,
@@ -13,8 +13,8 @@ import {
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
-} from "@acme/ui/components/atoms/primitives/drawer";
-import { Grid as LayoutGrid } from "@acme/ui/atoms/Grid";
+} from "@acme/design-system/primitives/drawer";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 
 import {
   XA_COLOR_SWATCHES,

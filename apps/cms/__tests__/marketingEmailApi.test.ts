@@ -8,6 +8,15 @@ import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 
 type MockFn = jest.Mock;
 
+// Mock auth to avoid pulling in the full auth chain
+jest.doMock("@cms/actions/common/auth", () => ({
+  __esModule: true,
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureCanRead: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 jest.doMock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),

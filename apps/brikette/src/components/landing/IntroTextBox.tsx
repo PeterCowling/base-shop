@@ -1,6 +1,6 @@
 // src/components/landing/IntroTextBox.tsx
 
-import { type FC, memo, useMemo } from "react";
+import React, { type FC, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -31,7 +31,7 @@ function extractTitleParts(resource: unknown) {
   } as const;
 }
 
-type ContainerProps = JSX.IntrinsicElements["div"];
+type ContainerProps = React.ComponentProps<"div">;
 function Container({ className, ...props }: ContainerProps): JSX.Element {
   return (
     <div
@@ -41,12 +41,12 @@ function Container({ className, ...props }: ContainerProps): JSX.Element {
   );
 }
 
-type StackProps = JSX.IntrinsicElements["div"];
+type StackProps = React.ComponentProps<"div">;
 function Stack({ className, ...props }: StackProps): JSX.Element {
   return <div className={clsx("flex", "flex-col", className)} {...props} />;
 }
 
-type InlineProps = JSX.IntrinsicElements["div"];
+type InlineProps = React.ComponentProps<"div">;
 function Inline({ className, ...props }: InlineProps): JSX.Element {
   return <div className={clsx("flex", "items-center", className)} {...props} />;
 }

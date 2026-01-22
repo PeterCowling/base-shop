@@ -2,8 +2,8 @@
 "use client";
 import type { ChangeEvent,MutableRefObject } from "react";
 
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 import { Input } from "@/components/atoms/shadcn";
 

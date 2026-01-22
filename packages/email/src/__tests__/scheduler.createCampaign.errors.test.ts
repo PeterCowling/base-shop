@@ -1,18 +1,19 @@
 // Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
+import { createCampaign } from "../scheduler";
+
+import {
+  emitSend,
+  sendCampaignEmail,
+  setupTest,
+  shop,
+  teardown,
+} from "./testUtils";
+
 jest.mock("@acme/i18n/useTranslations.server", () => ({
   useTranslations: jest.fn(() =>
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
-
-import {
-  setupTest,
-  teardown,
-  shop,
-  sendCampaignEmail,
-  emitSend,
-} from "./testUtils";
-import { createCampaign } from "../scheduler";
 
 describe("createCampaign – error handling", () => {
   let ctx: ReturnType<typeof setupTest>;

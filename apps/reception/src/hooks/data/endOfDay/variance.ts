@@ -79,7 +79,6 @@ export function calculateSafeVariance({
   endingSafeBalance,
   safeInflowsTotal,
   safeOutflowsTotal,
-  bankWithdrawalsTotal,
   tenderRemovalTotal,
   drawerToSafeExchangesTotal,
   safeToDrawerExchangesTotal,

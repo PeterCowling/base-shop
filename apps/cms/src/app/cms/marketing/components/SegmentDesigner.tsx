@@ -3,10 +3,10 @@
 import { useMemo, useState } from "react";
 import { z } from "zod";
 
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Cluster,Grid, Inline } from "@acme/design-system/primitives";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
-import { Cluster,Grid, Inline } from "@acme/ui/components/atoms/primitives";
-import { FormField } from "@acme/ui/components/molecules";
 
 import type { ActionResult } from "../../components/actionResult";
 

@@ -1,4 +1,4 @@
-import HeroBanner, { type Slide } from "../../home/HeroBanner.client";
+import HeroBanner, { type Slide } from "@acme/ui/home/HeroBanner.client";
 
 interface Props {
   slides?: Slide[];

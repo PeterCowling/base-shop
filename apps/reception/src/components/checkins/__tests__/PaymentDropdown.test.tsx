@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import PaymentDropdown from "../roomButton/PaymentDropdown";
 import type { PaymentSplit } from "../../../types/component/roomButton/types";
+import PaymentDropdown from "../roomButton/PaymentDropdown";
 
 describe("PaymentDropdown", () => {
   it("triggers confirm and closes on mouse leave", async () => {

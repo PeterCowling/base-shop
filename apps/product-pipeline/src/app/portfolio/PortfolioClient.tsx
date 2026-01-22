@@ -2,7 +2,7 @@
 
 import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
 

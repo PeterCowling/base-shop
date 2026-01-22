@@ -1,8 +1,9 @@
 /* i18n-exempt file -- OPS-4201 CLI-only rollback helper; messages are developer-facing [ttl=2026-12-31] */
-/* eslint-disable security/detect-non-literal-fs-filename -- OPS-4201 Paths stay under the workspace root and use validated shop ids */
+ 
+import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { spawnSync } from "node:child_process";
+
 import { validateShopName } from "@acme/lib";
 
 function run(cmd: string, args: string[], cwd: string): void {

@@ -2,12 +2,13 @@
 
 import React, { useMemo, useState } from "react";
 
-import ModalPreorderDetails from "./ModalPreorderDetails";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useBookingsData from "../../hooks/data/useBookingsData";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useGuestsByBooking from "../../hooks/data/useGuestsByBooking";
 import usePreorder from "../../hooks/data/usePreorder";
+
+import ModalPreorderDetails from "./ModalPreorderDetails";
 
 interface NightData {
   breakfast?: string;
@@ -97,8 +98,8 @@ const TableSection: React.FC<TableSectionProps> = ({
   return (
     <section className="space-y-4">
       <h2 className="text-xl font-semibold text-primary-main dark:text-darkAccentGreen">{title}</h2>
-      <div className="max-h-[60vh] overflow-auto rounded-lg shadow ring-1 ring-info-main dark:bg-darkSurface">
-        <table className="min-w-[40rem] w-full table-auto text-left text-sm">
+      <div className="max-h-[60vh] overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-info-main dark:bg-darkSurface">
+        <table className="min-w-[40rem] w-full table-auto text-start text-sm">
           <thead
             className={`sticky top-0 bg-${accentBase} text-white uppercase ${accent === 'error' ? 'dark:bg-darkAccentOrange' : 'dark:bg-darkSurface'}`}
           >

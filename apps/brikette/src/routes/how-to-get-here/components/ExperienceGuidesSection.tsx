@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Grid } from "@acme/ui/atoms";
 
 import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
@@ -90,8 +90,8 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
             <li key={item.guideKey} className="h-full">
               <Stack
                 as={Link}
-                prefetch="intent"
-                to={href}
+                prefetch={true}
+                href={href}
                 className="group flex h-full flex-col justify-between rounded-2xl border border-brand-outline/30 bg-brand-surface/80 p-5 text-start shadow-sm transition hover:border-brand-primary/40 hover:shadow-md dark:border-brand-outline/20 dark:bg-brand-surface/70"
               >
                 <Stack className="gap-3">

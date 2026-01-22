@@ -7,7 +7,7 @@ import {
   isValidElement,
 } from "react";
 
-import { cn } from "@acme/ui/utils/style";
+import { cn } from "@acme/design-system/utils/style";
 
 import { Progress, Tag } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";

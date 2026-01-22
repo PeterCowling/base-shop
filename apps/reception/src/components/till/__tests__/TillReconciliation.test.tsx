@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import type { Transaction } from "../../../types/component/Till";
+import TillReconciliation from "../TillReconciliation";
 
 jest.mock("../ActionButtons", () => ({ __esModule: true, default: () => <div /> }));
 jest.mock("../FormsContainer", () => ({ __esModule: true, default: () => <div data-testid="forms" /> }));
@@ -79,8 +82,6 @@ jest.mock("../../../hooks/client/till/useTillReconciliationUI", () => ({
 jest.mock("../../../hooks/useTillReconciliationLogic", () => ({
   useTillReconciliationLogic: () => ({})
 }));
-
-import TillReconciliation from "../TillReconciliation";
 
 describe("TillReconciliation", () => {
   it("requires login when user missing", () => {

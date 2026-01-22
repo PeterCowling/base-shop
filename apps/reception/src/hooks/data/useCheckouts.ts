@@ -1,7 +1,8 @@
 /* src/hooks/data/useCheckouts.ts */
 
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,11 +11,10 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
 
 import { checkoutsSchema } from "../../schemas/checkoutSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { Checkouts } from "../../types/hooks/data/checkoutsData";
+import { type Checkouts } from "../../types/hooks/data/checkoutsData";
 
 /**
  * Data Hook that subscribes to the "checkouts" node

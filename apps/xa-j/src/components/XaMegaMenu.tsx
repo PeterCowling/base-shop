@@ -4,8 +4,8 @@
 
 import Link from "next/link";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@acme/ui/components/atoms";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { XaFadeImage } from "./XaFadeImage";
 import { XA_PRODUCTS } from "../lib/demoData";

@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------
 import { useParams,usePathname } from "next/navigation";
 
-import { type AppLanguage,i18nConfig } from "@acme/ui/i18n.config";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
 
 export function useCurrentLanguage(): AppLanguage {
   // 1) Parse from current URL pathname (most stable)

@@ -2,9 +2,8 @@
 
 import * as React from "react";
 
+import { Price } from "@acme/design-system/atoms/Price";
 import type { SKU } from "@acme/types";
-
-import { Price } from "../../atoms/Price";
 
 export interface PDPDetailsSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   product: SKU;

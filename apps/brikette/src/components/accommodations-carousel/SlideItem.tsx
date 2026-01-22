@@ -15,7 +15,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@acme/ui/atoms";
+import { Button } from "@acme/design-system/primitives";
 import { resolveSharedToken } from "@acme/ui/shared";
 
 import { CfCardImage } from "@/components/images/CfCardImage";

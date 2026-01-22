@@ -109,19 +109,19 @@ export default function useCanvasResize({
         top = startT + dy;
       }
       // Maintain aspect ratio when Shift is held
-      const ar = applyAspectRatio(
-        e.shiftKey,
+      const ar = applyAspectRatio({
+        constrain: e.shiftKey,
         handle,
         ratio,
-        newW,
-        newH,
+        w: newW,
+        h: newH,
         dx,
         dy,
         startL,
         startT,
         left,
-        top
-      );
+        top,
+      });
       newW = ar.newW;
       newH = ar.newH;
       left = ar.left;

@@ -1,4 +1,4 @@
-import { User, usersRecordSchema } from "../types/domains/userDomain";
+import { type User, usersRecordSchema } from "../types/domains/userDomain";
 
 let users: Record<string, User> = {};
 try {

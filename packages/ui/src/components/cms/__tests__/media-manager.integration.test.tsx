@@ -7,7 +7,7 @@ import type { MediaItem } from "@acme/types";
 import Library from "../media/Library";
 import MediaManager from "../MediaManager";
 
-jest.mock("@acme/ui/hooks/useMediaUpload", () => {
+jest.mock("../../../hooks/useMediaUpload", () => {
   const React = require("react");
   return {
     useMediaUpload: jest.fn((options: any) => {

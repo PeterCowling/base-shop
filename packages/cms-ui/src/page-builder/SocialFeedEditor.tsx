@@ -1,6 +1,5 @@
-import type { SocialFeedComponent } from "@acme/types";
-
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import type { SocialFeedComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

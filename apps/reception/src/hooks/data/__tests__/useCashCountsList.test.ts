@@ -1,21 +1,23 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
 import { cashCountsSchema } from "../../../schemas/cashCountSchema";
 import { getErrorMessage } from "../../../utils/errorMessage";
-
+import { showToast } from "../../../utils/toastUtils";
 import { useCashCountsList } from "../useCashCountsList";
 
-/* eslint-disable no-var */
+ 
 let subData: Record<string, unknown> | null = null;
 let subError: unknown = null;
-/* eslint-enable no-var */
+ 
 
 jest.mock("../useFirebaseSubscription", () => ({
   __esModule: true,
   default: () => ({ data: subData, loading: false, error: subError }),
 }));
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
-import { showToast } from "../../../utils/toastUtils";
+
 const showToastMock = showToast as unknown as jest.Mock;
 
 describe("useCashCountsList", () => {

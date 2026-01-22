@@ -2,8 +2,8 @@ import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
+import { Inline, Stack } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 import { Tooltip } from "@/components/atoms";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";

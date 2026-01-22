@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@acme/ui/atoms";
+import { Switch } from "@acme/design-system/atoms";
 import { useModeStore } from "../viewer/state/modeStore";
 import { ThemeToggle } from "./ThemeToggle";
 

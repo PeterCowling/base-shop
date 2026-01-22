@@ -1,9 +1,9 @@
 import Link from "next/link";
 
+import { Grid } from "@acme/design-system/primitives/Grid";
+import { Sidebar } from "@acme/design-system/primitives/Sidebar";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
-import { Grid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Sidebar } from "@acme/ui/components/atoms/primitives/Sidebar";
 
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
 

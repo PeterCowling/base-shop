@@ -5,7 +5,7 @@
 import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";

@@ -1,7 +1,7 @@
 /* src/hooks/mutations/useShiftEventsMutations.ts */
 
-import { push, ref, set } from "firebase/database";
 import { useCallback, useMemo } from "react";
+import { push, ref, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";

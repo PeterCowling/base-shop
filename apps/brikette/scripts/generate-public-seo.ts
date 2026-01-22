@@ -4,9 +4,10 @@ import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { listDirectionPaths, listLocalizedPaths } from "@/compat/route-runtime";
 import { BASE_URL } from "@/config/site";
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
+import { type AppLanguage, i18nConfig } from "@/i18n.config";
+import { listAppRouterUrls } from "@/routing/routeInventory";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
@@ -111,11 +112,16 @@ const syncSchemaAssets = async (): Promise<void> => {
   );
 };
 
+// Direction paths use /directions/:slug prefix (Cloudflare _redirects)
+const listDirectionPaths = (): string[] =>
+  Object.keys(howToGetHereRoutes.routes).map((slug) => `/directions/${slug}`);
+
 const main = async (): Promise<void> => {
   await ensureDir(PUBLIC_DIR);
   await syncSchemaAssets();
 
-  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listLocalizedPaths()]);
+  // Use App Router URL inventory as source of truth for sitemap
+  const sitemapXml = buildSitemapXml(["/", ...listDirectionPaths(), ...listAppRouterUrls()]);
   await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), sitemapXml, "utf8");
 
   const sitemapIndexXml = buildSitemapIndexXml();

@@ -4,9 +4,9 @@ import { useCallback, useMemo, useState, useTransition } from "react";
 import type { PendingUser } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
 
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
 import { Toast, Tooltip } from "@/components/atoms";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";

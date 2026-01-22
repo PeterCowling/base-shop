@@ -3,7 +3,8 @@ import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { MapPin } from "lucide-react";
 
-import { Grid, Section } from "@acme/ui/atoms";
+import { Grid } from "@acme/ui/atoms";
+import { Section } from "@acme/ui/atoms";
 
 import { CfImage } from "@/components/images/CfImage";
 import { Cluster, Inline, Stack } from "@/components/ui/flex";

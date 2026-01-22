@@ -1,13 +1,13 @@
 "use client";
 
+import { getContrast } from "@acme/cms-ui";
+import type { TokenMap } from "@acme/cms-ui/hooks/useTokenEditor";
+import StyleEditor from "@acme/cms-ui/StyleEditor";
+import ThemeSpectrum from "@acme/cms-ui/ThemeSpectrum";
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
-import { Button } from "@acme/ui/components/atoms/shadcn";
-import { getContrast } from "@acme/ui/components/cms";
-import StyleEditor from "@acme/ui/components/cms/StyleEditor";
-import ThemeSpectrum from "@acme/ui/components/cms/ThemeSpectrum";
-import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
 
 import ColorThemeSelector from "./ColorThemeSelector";
 

@@ -20,7 +20,7 @@ jest.mock("../../style/Tokens", () => ({
   ),
 }));
 jest.mock("../ColorThemeSelector", () => ({ __esModule: true, default: () => <div /> }));
-jest.mock("../../../atoms/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
+jest.mock("@acme/design-system/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
 
 describe("ThemePanel rename/replace tokens", () => {
   beforeEach(() => {

@@ -1,6 +1,5 @@
-import type { SocialLinksComponent } from "@acme/types";
-
 import { Input } from "@acme/design-system/shadcn";
+import type { SocialLinksComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import useComponentInputs from "./useComponentInputs";

@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import DateSelectorAllo from "../DateSelectorAllo";
 
 const useAuthMock = jest.fn();
 jest.mock("../../../context/AuthContext", () => ({
   useAuth: useAuthMock,
 }));
-
-import DateSelectorAllo from "../DateSelectorAllo";
 
 describe("DateSelectorAllo", () => {
   const onDateChange = jest.fn();

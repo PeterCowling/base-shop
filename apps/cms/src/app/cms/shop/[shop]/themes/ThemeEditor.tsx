@@ -1,10 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx
 
 "use client";
+import { CmsInlineHelpBanner } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import { CmsInlineHelpBanner } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
 
 import { Alert } from "@/components/atoms";
 import { Button } from "@/components/atoms/shadcn";

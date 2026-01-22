@@ -1,4 +1,5 @@
 import type { ModalName } from "../types/ModalName";
+
 import ManagementModal from "./appNav/ManagementModal";
 import ManModal from "./appNav/ManModal";
 import OperationsModal from "./appNav/OperationsModal";

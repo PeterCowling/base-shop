@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import { renderRichText, resolveHref } from "../richText";
 import { RomeTravelPlanner } from "../rome/RomeTravelPlanner";
@@ -53,7 +53,7 @@ export function RomeSection({
                   <tr key={`${option.route.label}-${resolvedRouteHref}`} className="align-top">
                     <th scope="row" className="p-4 text-sm font-semibold">
                       {option.route.internal ? (
-                        <Link className={externalLinkClass} prefetch="intent" to={resolvedRouteHref}>
+                        <Link className={externalLinkClass} prefetch={true} href={resolvedRouteHref}>
                           {option.route.label}
                         </Link>
                       ) : (

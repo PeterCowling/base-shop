@@ -47,7 +47,7 @@ export default function ImageSlider({
 
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- DS-0007: Carousel region handles ArrowLeft/ArrowRight keys for better UX */}
+      { }
       <div
         className="relative"
         data-lightbox-root={openInLightbox ? group : undefined}

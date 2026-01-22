@@ -1,9 +1,8 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 
+import { Checkbox } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { GalleryComponent } from "@acme/types";
-
-import { Checkbox } from "@acme/design-system/shadcn";
 
 import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";

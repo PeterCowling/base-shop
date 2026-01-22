@@ -5,8 +5,8 @@ import { memo, type ReactNode,useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { CheckCircle, XCircle } from "lucide-react";
 
+import { Button } from "@acme/design-system/primitives";
 import { Section as LayoutSection } from "@acme/ui/atoms";
-import { Button } from "@acme/ui/atoms/Button";
 
 import { CfImage } from "@/components/images/CfImage";
 import { useModal } from "@/context/ModalContext";

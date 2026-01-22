@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { toast } from "react-toastify";
 
-import { showToast, ToastMessageType } from "../toastUtils";
+import { showToast, type ToastMessageType } from "../toastUtils";
 
 jest.mock("react-toastify", () => {
   const toastFn = jest.fn();

@@ -1,7 +1,5 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-
 import {
   Button,
   DropdownMenu,
@@ -12,6 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+
 import type { PresencePeer } from "../collab/usePresence";
 
 export function CommentsToolbar(props: {
@@ -58,7 +58,7 @@ export function CommentsToolbar(props: {
             )}
             {peers.slice(0, 6).map((p) => (
               <DropdownMenuItem key={p.id} disabled className="gap-2">
-                {/* eslint-disable-next-line react/forbid-dom-props -- LINT-0000: dynamic peer color badge */}
+                { }
                 <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
                 <span className="truncate">{p.label}</span>
               </DropdownMenuItem>

@@ -4,10 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
 
+import { Grid, Inline, Stack } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
 import type { PageComponent } from "@acme/types";
-import { Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 import {
   Dialog,

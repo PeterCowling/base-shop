@@ -1,9 +1,10 @@
 // src/libs/reservation-grid/src/lib/interfaces/mainContext.interface.ts (or similar)
+// Import the payload type definition correctly
+import type { ReservationMovePayload } from "../../../types/dndTypes";
+
 import type { TClickCellEventData } from "./grid.interface";
 import type { TLocale, TLocaleKey } from "./locale.interface";
 import type { TTheme } from "./theme.interface";
-// Import the payload type definition correctly
-import type { ReservationMovePayload } from "../../../types/dndTypes";
 
 export interface TMainContext<TCustomStatus extends string = never> {
   start: string;

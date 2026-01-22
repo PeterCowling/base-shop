@@ -3,20 +3,20 @@ import { act,fireEvent, render as rtlRender, screen, waitFor } from "@testing-li
 
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
+import * as tokenEditor from "@acme/ui/hooks/useTokenEditor";
+import { hexToHsl } from "@acme/ui/utils/colorUtils";
 
-import type { TokenMap } from "../../../../hooks/useTokenEditor";
-import * as tokenEditor from "../../../../hooks/useTokenEditor";
-import { hexToHsl } from "../../../../utils/colorUtils";
 import Presets from "../Presets";
 import Tokens from "../Tokens";
 
-jest.mock("../../../atoms/shadcn", () => {
-  const actual = jest.requireActual("../../../atoms/shadcn");
+jest.mock("@acme/design-system/shadcn", () => {
+  const actual = jest.requireActual("@acme/design-system/shadcn");
   return {
     ...actual,
-    // eslint-disable-next-line react/jsx-no-useless-fragment -- DX-0004: test doubles pass through children unchanged
+     
     DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    // eslint-disable-next-line react/jsx-no-useless-fragment -- DX-0004: test doubles pass through children unchanged
+     
     DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     DropdownMenuItem: ({

@@ -1,4 +1,4 @@
-import { Logo } from "@acme/ui/components/atoms";
+import { Logo } from "@acme/design-system/atoms";
 
 interface ShopPreviewProps {
   logos: Record<string, string>;

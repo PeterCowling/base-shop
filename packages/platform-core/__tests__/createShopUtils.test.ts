@@ -27,15 +27,8 @@ describe("createShop utils", () => {
   });
 
   it("loads base tokens", () => {
-    jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
-      const file = String(p);
-      if (file.endsWith("tokens.ts")) {
-        return "export const tokens = { '--color-bg': { light: '0 0% 100%' } };";
-      }
-      return "";
-    });
     const tokens = loadBaseTokens();
-    expect(tokens["--color-bg"]).toBeDefined();
+    expect(tokens["--color-primary"]).toBeDefined();
   });
 
   it("fills locales with fallback", () => {

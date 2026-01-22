@@ -4,8 +4,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import type { SKU } from '@acme/types';
-
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import StickyBuyBar from './StickyBuyBar';
 

@@ -1,4 +1,5 @@
-import { memo, useRef, useState } from "react";
+import { memo, useState } from "react";
+
 import { showToast } from "../../utils/toastUtils";
 import { PasswordReauthInline } from "../common/PasswordReauthInline";
 

@@ -1,11 +1,10 @@
 // packages/ui/src/components/cms/page-builder/panels/content/ColumnsControls.tsx
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
-
 import { Tooltip } from "@acme/design-system/atoms";
 import { Button,Input  } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
 
 import { isOverridden, nonNegative } from "./helpers";
 import type { ContentComponent, HandleInput } from "./types";

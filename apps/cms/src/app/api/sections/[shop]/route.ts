@@ -24,7 +24,8 @@ export async function GET(
       .map((t) => t.trim().toLowerCase())
       .filter(Boolean);
     const pageRaw = parseInt(url.searchParams.get("page") || "", 10);
-    const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 0;
+    // Cap page at 1000 to prevent resource exhaustion attacks
+    const page = Number.isFinite(pageRaw) && pageRaw > 0 ? Math.min(pageRaw, 1000) : 0;
     const pageSizeRaw = parseInt(url.searchParams.get("pageSize") || "0", 10) || 0;
     // Allow larger result sets to support shops with many sections
     const pageSize = page > 0 ? Math.min(500, Math.max(1, pageSizeRaw || 24)) : 0;

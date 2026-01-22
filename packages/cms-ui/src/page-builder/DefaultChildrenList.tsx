@@ -4,7 +4,6 @@
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent } from "@acme/types";
-
 import type { DevicePreset } from "@acme/ui/utils/devicePresets";
 
 import CanvasItem from "./CanvasItem";

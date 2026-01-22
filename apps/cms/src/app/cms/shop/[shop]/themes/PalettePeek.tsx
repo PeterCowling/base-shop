@@ -2,9 +2,9 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Popover, PopoverContent, PopoverTrigger } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import MicroScenes from "../../../wizard/MicroScenes";
 

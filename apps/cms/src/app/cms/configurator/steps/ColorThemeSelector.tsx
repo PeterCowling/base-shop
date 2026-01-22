@@ -3,8 +3,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Grid, Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Grid, Inline } from "@acme/ui/components/atoms/primitives";
 
 import type { TokenMap } from "../../wizard/tokenUtils";
 

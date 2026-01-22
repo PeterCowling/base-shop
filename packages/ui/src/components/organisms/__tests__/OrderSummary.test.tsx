@@ -6,7 +6,7 @@ import { formatPrice } from "@acme/lib/format";
 
 import OrderSummary from "../OrderSummary";
 
-jest.mock("@acme/ui/hooks/useCart", () => ({
+jest.mock("../../../hooks/useCart", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 

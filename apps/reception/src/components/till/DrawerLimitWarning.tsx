@@ -8,7 +8,7 @@ interface DrawerLimitWarningProps {
 const DrawerLimitWarning: FC<DrawerLimitWarningProps> = ({ show, onLift }) => {
   if (!show) return null;
   return (
-    <div className="text-warning-main text-lg font-semibold flex items-center gap-2 self-end text-right sm:ml-auto dark:text-darkAccentGreen">
+    <div className="text-warning-main text-lg font-semibold flex items-center gap-2 self-end text-end sm:ms-auto dark:text-darkAccentGreen">
       Cash exceeds drawer limit.
       <button
         onClick={onLift}

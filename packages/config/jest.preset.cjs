@@ -77,8 +77,29 @@ function createJestPreset(options = {}) {
   // Note: baseModuleNameMapper is spread AFTER tsPaths so explicit mappings
   // (e.g., @acme/types -> src/*.ts) take precedence over tsconfig paths
   // that may point to dist/ without file extensions.
+  //
+  // IMPORTANT: We filter out catch-all patterns from tsPaths that conflict with
+  // specific patterns in baseModuleNameMapper. Jest matches patterns in object
+  // key order, and catch-alls like "^@acme/lib/(.*)$" must come AFTER specific
+  // patterns like "^@acme/lib/logger$" to work correctly.
+  const catchAllPatterns = new Set(
+    Object.keys(tsPaths).filter(k => k.includes("(.*)"))
+  );
+  const specificPatterns = new Set(
+    Object.keys(baseModuleNameMapper).filter(k => !k.includes("(.*)"))
+  );
+  // Remove catch-all patterns from tsPaths that have specific overrides in baseModuleNameMapper
+  const filteredTsPaths = Object.fromEntries(
+    Object.entries(tsPaths).filter(([key]) => {
+      if (!catchAllPatterns.has(key)) return true;
+      // Check if any specific pattern in baseModuleNameMapper would match the same prefix
+      const prefix = key.replace(/\(\.\*\)\$$/, "");
+      const hasSpecificOverride = [...specificPatterns].some(sp => sp.startsWith(prefix));
+      return !hasSpecificOverride;
+    })
+  );
   let moduleNameMapper = {
-    ...tsPaths,
+    ...filteredTsPaths,
     ...baseModuleNameMapper,
     // Use resolved React paths to ensure a single instance across tests
     "^react$": reactPath,

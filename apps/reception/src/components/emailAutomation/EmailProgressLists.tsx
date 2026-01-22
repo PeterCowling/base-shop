@@ -1,3 +1,5 @@
+import "./EmailProgress.css";
+
 import React, {
   useCallback,
   useEffect,
@@ -7,21 +9,14 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import type { EmailProgressData } from "../../schemas/emailProgressDataSchema";
 import { showToast } from "../../utils/toastUtils";
+
 import ArrivalDateChip from "./ArrivalDateChip";
 import BookingRefChip from "./BookingRefChip";
-import "./EmailProgress.css";
 import TimeElapsedChip from "./TimeElapsedChip";
 
-export interface EmailProgressListItem {
-  occupantId: string;
-  bookingRef: string;
-  occupantName: string;
-  occupantEmail: string;
-  hoursElapsed: number | null;
-  currentCode: number;
-  arrivalDate?: string;
-}
+export type EmailProgressListItem = EmailProgressData & { arrivalDate?: string };
 
 export interface EmailProgressListsProps {
   emailData: EmailProgressListItem[];

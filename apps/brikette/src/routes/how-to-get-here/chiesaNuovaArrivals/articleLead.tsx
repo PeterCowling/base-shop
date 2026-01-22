@@ -1,5 +1,5 @@
 import type { HTMLAttributeReferrerPolicy } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import TableOfContents from "@/components/guides/TableOfContents";
 import { CfImage } from "@/components/images/CfImage";
@@ -167,7 +167,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
               <li className="leading-relaxed">
                 {kneesDockPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "ferryDockToBrikette")}
+                  href={guideHref(context.lang, "ferryDockToBrikette")}
                   className="font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesDockLinkText}
@@ -179,7 +179,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
               <li className="leading-relaxed">
                 {kneesPorterPrefix}{" "}
                 <Link
-                  to={guideHref(context.lang, "porterServices")}
+                  href={guideHref(context.lang, "porterServices")}
                   className="font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
                 >
                   {kneesPorterLinkText}

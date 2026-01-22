@@ -2,7 +2,7 @@
 
 // src/app/[lang]/experiences/tags/[tag]/GuidesTagContent.tsx
 // Client component for guide tag page
-import { memo, useEffect, useMemo } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -23,9 +23,9 @@ type Props = {
   tag: string;
 };
 
-const Section = (props: JSX.IntrinsicElements["section"]) => <section {...props} />;
-const Grid = (props: JSX.IntrinsicElements["ul"]) => <ul {...props} />;
-const Inline = (props: JSX.IntrinsicElements["ul"]) => <ul {...props} />;
+const Section = (props: React.ComponentProps<"section">) => <section {...props} />;
+const Grid = (props: React.ComponentProps<"ul">) => <ul {...props} />;
+const Inline = (props: React.ComponentProps<"ul">) => <ul {...props} />;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

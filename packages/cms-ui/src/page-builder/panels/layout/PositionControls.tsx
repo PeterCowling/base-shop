@@ -1,11 +1,10 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/PositionControls.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-
 import { Tooltip } from "@acme/design-system/atoms";
 import { Button,Select, SelectContent, SelectItem, SelectTrigger, SelectValue  } from "@acme/design-system/shadcn";
-import useLocalStrings from "../../hooks/useLocalStrings";
+import type { PageComponent } from "@acme/types";
+import useLocalStrings from "@acme/ui/components/cms/page-builder/hooks/useLocalStrings";
 
 import UnitInput from "./UnitInput";
 

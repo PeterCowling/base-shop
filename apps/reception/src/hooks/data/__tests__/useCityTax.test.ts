@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+import useCityTax from "../useCityTax";
 
 /* eslint-disable no-var */
 var cb: ((snap: unknown) => void) | null = null;
@@ -36,8 +39,6 @@ jest.mock("firebase/database", () => {
     }),
   };
 });
-
-import useCityTax from "../useCityTax";
 
 describe("useCityTax", () => {
   afterEach(() => {

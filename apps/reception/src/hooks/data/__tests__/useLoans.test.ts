@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+import useLoans from "../useLoans";
 
 /* eslint-disable no-var */
 var mockUseLoanData: jest.Mock;
@@ -9,8 +12,6 @@ jest.mock("../../../context/LoanDataContext", () => {
   mockUseLoanData = jest.fn();
   return { useLoanData: mockUseLoanData };
 });
-
-import useLoans from "../useLoans";
 
 describe("useLoans", () => {
   afterEach(() => jest.clearAllMocks());

@@ -1,6 +1,5 @@
+import { Button as UIButton } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-import { Button as UIButton } from "../../atoms/shadcn";
 
 export interface ButtonProps {
   /** Text displayed inside the button */

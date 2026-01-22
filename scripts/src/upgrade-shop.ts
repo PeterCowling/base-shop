@@ -1,21 +1,23 @@
 // scripts/src/upgrade-shop.ts
 /* i18n-exempt file -- OPS-3210 CLI-only upgrade helper; messages are developer-facing and not user-facing UI [ttl=2026-12-31] */
-/* eslint-disable security/detect-non-literal-fs-filename -- OPS-3210: paths are confined to the workspace using a validated shop slug; no HTTP input [ttl=2026-12-31] */
+ 
+import { createHash,randomBytes } from "node:crypto";
 import {
   cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
-  unlinkSync,
-  renameSync,
   readFileSync,
+  renameSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import * as path from "node:path";
-import { randomBytes, createHash } from "node:crypto";
+
+import type { Page, ShopMetadata } from "@acme/types";
+
 import { getComponentNameMap } from "./component-names";
 import { generateExampleProps } from "./generate-example-props";
-import type { Page, ShopMetadata } from "@acme/types";
 
 const SLUG_PATTERN = /^[a-z0-9-]+$/;
 

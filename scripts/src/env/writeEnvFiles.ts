@@ -1,5 +1,6 @@
 import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import { readEnvFile, validateShopEnv } from "@acme/platform-core/configurator";
 
 interface WriteEnvFilesParams {

@@ -1,5 +1,5 @@
 // File: src/utils/sortCheckins.ts
-import { CheckInRow } from "../types/component/CheckinRow";
+import { type CheckInRow } from "../types/component/CheckinRow";
 
 /**
 Sort the check‑in rows so that all occupants belonging to the same booking

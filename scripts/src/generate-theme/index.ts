@@ -12,15 +12,16 @@
 
 import * as path from 'path';
 import { parseArgs } from 'util';
+
 import {
   generatePalette,
-  validateAccessibility,
   hexToHsl,
   hslToCssValue,
   hslToHex,
+  validateAccessibility,
 } from './palette';
-import { generateTheme, validateThemeName, themeExists, ThemeConfig } from './scaffold';
-import { validateTheme, formatValidationResult } from './validate';
+import { generateTheme, type ThemeConfig,themeExists, validateThemeName } from './scaffold';
+import { formatValidationResult,validateTheme } from './validate';
 
 interface CliArgs {
   name?: string;

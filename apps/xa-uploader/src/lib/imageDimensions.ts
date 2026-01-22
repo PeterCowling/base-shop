@@ -80,6 +80,48 @@ function parseJpegDimensions(buf: Buffer): ImageDimensions | null {
   return null;
 }
 
+function parseWebpVp8xDimensions(buf: Buffer, dataOffset: number, chunkSize: number): ImageDimensions | null {
+  if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
+  const widthMinus1 = buf.readUIntLE(dataOffset + 4, 3);
+  const heightMinus1 = buf.readUIntLE(dataOffset + 7, 3);
+  const width = widthMinus1 + 1;
+  const height = heightMinus1 + 1;
+  if (!width || !height) return null;
+  return { format: "webp", width, height };
+}
+
+function parseWebpVp8Dimensions(buf: Buffer, dataOffset: number, chunkSize: number): ImageDimensions | null {
+  if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
+  const startCode = buf.subarray(dataOffset + 3, dataOffset + 6);
+  if (startCode[0] !== 0x9d || startCode[1] !== 0x01 || startCode[2] !== 0x2a) return null;
+  const width = buf.readUInt16LE(dataOffset + 6) & 0x3fff;
+  const height = buf.readUInt16LE(dataOffset + 8) & 0x3fff;
+  if (!width || !height) return null;
+  return { format: "webp", width, height };
+}
+
+function parseWebpVp8lDimensions(buf: Buffer, dataOffset: number, chunkSize: number): ImageDimensions | null {
+  if (chunkSize < 5 || dataOffset + 5 > buf.length) return null;
+  if (buf[dataOffset] !== 0x2f) return null;
+  const bits = buf.readUInt32LE(dataOffset + 1);
+  const width = (bits & 0x3fff) + 1;
+  const height = ((bits >> 14) & 0x3fff) + 1;
+  if (!width || !height) return null;
+  return { format: "webp", width, height };
+}
+
+function parseWebpChunkDimensions(
+  buf: Buffer,
+  chunkType: string,
+  dataOffset: number,
+  chunkSize: number,
+): ImageDimensions | null {
+  if (chunkType === "VP8X") return parseWebpVp8xDimensions(buf, dataOffset, chunkSize);
+  if (chunkType === "VP8 ") return parseWebpVp8Dimensions(buf, dataOffset, chunkSize);
+  if (chunkType === "VP8L") return parseWebpVp8lDimensions(buf, dataOffset, chunkSize);
+  return null;
+}
+
 function parseWebpDimensions(buf: Buffer): ImageDimensions | null {
   if (!isWebpStart(buf)) return null;
 
@@ -90,35 +132,8 @@ function parseWebpDimensions(buf: Buffer): ImageDimensions | null {
     const dataOffset = offset + 8;
     if (dataOffset + chunkSize > buf.length) break;
 
-    if (chunkType === "VP8X") {
-      if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
-      const widthMinus1 = buf.readUIntLE(dataOffset + 4, 3);
-      const heightMinus1 = buf.readUIntLE(dataOffset + 7, 3);
-      const width = widthMinus1 + 1;
-      const height = heightMinus1 + 1;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
-    }
-
-    if (chunkType === "VP8 ") {
-      if (chunkSize < 10 || dataOffset + 10 > buf.length) return null;
-      const startCode = buf.subarray(dataOffset + 3, dataOffset + 6);
-      if (startCode[0] !== 0x9d || startCode[1] !== 0x01 || startCode[2] !== 0x2a) return null;
-      const width = buf.readUInt16LE(dataOffset + 6) & 0x3fff;
-      const height = buf.readUInt16LE(dataOffset + 8) & 0x3fff;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
-    }
-
-    if (chunkType === "VP8L") {
-      if (chunkSize < 5 || dataOffset + 5 > buf.length) return null;
-      if (buf[dataOffset] !== 0x2f) return null;
-      const bits = buf.readUInt32LE(dataOffset + 1);
-      const width = (bits & 0x3fff) + 1;
-      const height = ((bits >> 14) & 0x3fff) + 1;
-      if (!width || !height) return null;
-      return { format: "webp", width, height };
-    }
+    const parsed = parseWebpChunkDimensions(buf, chunkType, dataOffset, chunkSize);
+    if (parsed) return parsed;
 
     offset = dataOffset + chunkSize + (chunkSize % 2);
   }

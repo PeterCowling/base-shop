@@ -1,8 +1,9 @@
 'use client'
 
 import { useMemo } from 'react'
-import { DollarSign, Users, TrendingUp, AlertTriangle } from 'lucide-react'
-import { Grid } from '@acme/ui/atoms'
+import { AlertTriangle,DollarSign, TrendingUp, Users } from 'lucide-react'
+
+import { Grid } from "@acme/design-system/atoms/Grid";
 import { MetricsCard } from '@acme/ui/operations'
 
 interface Transaction {
@@ -96,7 +97,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
 
   if (loading) {
     return (
-      <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-4">
+      <Grid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
@@ -108,7 +109,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
   }
 
   return (
-    <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-4">
+    <Grid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
       <MetricsCard
         label="Today's Revenue"
         value={formatEuro(metrics.todayRevenue)}

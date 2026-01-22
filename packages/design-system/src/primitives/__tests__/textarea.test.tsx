@@ -18,12 +18,15 @@ describe("Textarea", () => {
       <Textarea label="Notes" className="custom" />
     );
     const wrapper = container.firstChild as HTMLElement;
-    const [label, textarea] = wrapper.children;
 
-    expect(label.tagName).toBe("LABEL");
+    // FormField wrapper structure: label is rendered by FormField, textarea is nested
+    const label = wrapper.querySelector("label");
+    const textarea = wrapper.querySelector("textarea");
+
+    expect(label).not.toBeNull();
     expect(label).toHaveTextContent("Notes");
-    expect(label).toHaveClass("mb-1", "block", "text-sm", "font-medium");
-    expect(textarea.tagName).toBe("TEXTAREA");
+    expect(label).toHaveClass("text-sm", "font-medium", "text-foreground");
+    expect(textarea).not.toBeNull();
     expect(textarea).toHaveClass("min-h-[6rem]", "custom");
   });
 
@@ -45,8 +48,10 @@ describe("Textarea", () => {
         onBlur={handleBlur}
       />
     );
-    const wrapper = container.firstChild as HTMLElement;
-    const [textarea, label] = wrapper.children;
+
+    // Floating label: FormField wraps a div containing textarea + label
+    const textarea = container.querySelector("textarea")!;
+    const label = container.querySelector("label")!;
 
     expect(label).toHaveClass("absolute", "top-2", "left-3");
     expect(label).not.toHaveClass("-translate-y-3", "text-xs");
@@ -68,7 +73,8 @@ describe("Textarea", () => {
 
     const error = screen.getByText("Required");
     expect(error).toHaveClass("text-danger");
-    expect(error).toHaveAttribute("data-token", "--color-danger");
+    // FormField renders error as <p className="text-sm text-danger"> with role="alert"
+    expect(error).toHaveAttribute("role", "alert");
   });
 
   it("toggles aria-invalid when error prop changes", () => {

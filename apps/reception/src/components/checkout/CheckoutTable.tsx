@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import { LoanMethod } from "../../types/hooks/data/loansData";
-import { sortCheckoutsData } from "../../utils/sortCheckouts";
+import { type LoanMethod } from "../../types/hooks/data/loansData";
 import { formatDdMm } from "../../utils/dateUtils";
+import { sortCheckoutsData } from "../../utils/sortCheckouts";
 
 /**
  * Minimal shape needed for each loan to be displayed in the checkout table.
@@ -238,7 +238,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                             )
                           }
                           aria-label={`Remove ${loanTitle}`}
-                          className="inline-flex items-center px-1 mr-1 text-gray-700 hover:text-black transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
+                          className="inline-flex items-center px-1 me-1 text-gray-700 hover:text-black transition-colors duration-200 dark:text-darkAccentGreen dark:hover:text-darkAccentGreen"
                           title={loanTitle}
                         >
                           <i className={iconClass} aria-hidden="true" />

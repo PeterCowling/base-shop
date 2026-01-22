@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+import { useSafeKeycardCount } from "../useSafeKeycardCount";
 
 /* eslint-disable no-var */
 var mockedSub: jest.Mock;
@@ -31,8 +34,6 @@ jest.mock("../../../services/logSettingChange", () => {
   logMock = jest.fn(() => Promise.resolve());
   return { logSettingChange: logMock };
 });
-
-import { useSafeKeycardCount } from "../useSafeKeycardCount";
 
 describe("useSafeKeycardCount", () => {
   afterEach(() => jest.clearAllMocks());

@@ -1,5 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+import { endAt,orderByChild, startAt } from "firebase/database";
+
+import { showToast } from "../../../utils/toastUtils";
+import { useSafeCountsData } from "../useSafeCountsData";
 
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
 
@@ -36,10 +41,6 @@ jest.mock("firebase/database", () => {
     ),
   };
 });
-
-import { showToast } from "../../../utils/toastUtils";
-import { orderByChild, startAt, endAt } from "firebase/database";
-import { useSafeCountsData } from "../useSafeCountsData";
 
 const showToastMock = showToast as unknown as jest.Mock;
 const orderByChildMock = orderByChild as unknown as jest.Mock;

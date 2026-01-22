@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import { track } from "@acme/telemetry";
-
 import useContrastWarnings from "@acme/ui/hooks/useContrastWarnings";
+
 import StylePanel from "../StylePanel";
 
 const translations: Record<string, string> = {};
@@ -11,7 +11,7 @@ jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => translations[key] || key,
 }));
 
-jest.mock("../../../../hooks/useContrastWarnings");
+jest.mock("@acme/ui/hooks/useContrastWarnings");
 
 jest.mock("@acme/telemetry", () => ({
   track: jest.fn(),

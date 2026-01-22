@@ -5,7 +5,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import { GUIDE_SLUG_LOOKUP_BY_LANG } from "@/guides/slugs/lookups";
 import { guideNamespace } from "@/guides/slugs/namespaces";

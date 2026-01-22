@@ -1,10 +1,11 @@
 // File: /src/components/loans/LoansTable.tsx
-import { memo, ReactElement, useCallback, useMemo, useState } from "react";
+import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
+
+import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 import { GuestRow } from "./GuestRow";
 import { KeycardsModal } from "./KeycardsModal";
 import { LoanModal } from "./LoanModal";
-import { LoanItem, LoanMethod } from "../../types/hooks/data/loansData";
 
 interface TableGuest {
   occupantId: string;
@@ -172,10 +173,10 @@ function LoansTableComponent({
         <table className="min-w-full border-collapse text-sm">
           <thead>
             <tr className="bg-gray-200 dark:bg-darkSurface">
-              <th className="p-2 text-left border-b">Booking Ref</th>
-              <th className="p-2 text-left border-b">Guest Name</th>
-              <th className="p-2 text-left border-b">New Loan</th>
-              <th className="p-2 text-left border-b">Change Existing Loan</th>
+              <th className="p-2 text-start border-b">Booking Ref</th>
+              <th className="p-2 text-start border-b">Guest Name</th>
+              <th className="p-2 text-start border-b">New Loan</th>
+              <th className="p-2 text-start border-b">Change Existing Loan</th>
             </tr>
           </thead>
           <tbody>

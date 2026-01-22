@@ -1,10 +1,10 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy contact-us content pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Button } from "@acme/ui/components/atoms";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { siteConfig } from "../../../lib/siteConfig";
 import { ContactUsEnquiryForm } from "./ContactUsEnquiryForm";

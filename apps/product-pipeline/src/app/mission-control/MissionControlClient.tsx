@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
 
 import AchievementsPanel from "./panels/AchievementsPanel";
 import BattleLogPanel from "./panels/BattleLogPanel";

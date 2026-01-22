@@ -3,12 +3,12 @@
 import dynamic from "next/dynamic";
 import { getSettings } from "@cms/actions/shops.server";
 
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { PRODUCTS } from "@acme/platform-core/products";
 import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { readRepo } from "@acme/platform-core/repositories/products.server";
 import { readSeoAudits } from "@acme/platform-core/repositories/seoAudit.server";
 import type { ProductPublication } from "@acme/types";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
 import { Chip } from "@/components/atoms/Chip";
 

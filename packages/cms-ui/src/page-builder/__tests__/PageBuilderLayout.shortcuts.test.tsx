@@ -23,8 +23,8 @@ jest.mock("@dnd-kit/core", () => ({
   },
 }));
 
-jest.mock("../../../atoms", () => {
-  const actual = jest.requireActual("../../../atoms");
+jest.mock("@acme/design-system/atoms", () => {
+  const actual = jest.requireActual("@acme/design-system/atoms");
   return {
     __esModule: true,
     ...actual,
@@ -99,7 +99,7 @@ jest.mock("../ErrorBoundary", () => ({
   default: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-jest.mock("../../../../hooks/useReducedMotion", () => ({
+jest.mock("@acme/ui/hooks/useReducedMotion", () => ({
   __esModule: true,
   default: () => false,
 }));
@@ -114,12 +114,12 @@ jest.mock("../CommandPalette", () => ({
   default: () => null,
 }));
 
-jest.mock("../hooks/useDndA11y", () => ({
+jest.mock("@acme/ui/hooks/useDndA11y", () => ({
   __esModule: true,
   default: () => ({}),
 }));
 
-jest.mock("../hooks/usePaletteState", () => {
+jest.mock("@acme/ui/hooks/usePaletteState", () => {
   const React = require("react");
   const usePaletteState = () => {
     const [showPalette, setShowPalette] = React.useState(true);
@@ -129,17 +129,17 @@ jest.mock("../hooks/usePaletteState", () => {
   return { __esModule: true, default: usePaletteState };
 });
 
-jest.mock("../hooks/useDevToolsToggle", () => ({
+jest.mock("@acme/ui/hooks/useDevToolsToggle", () => ({
   __esModule: true,
   default: () => ({ showDevTools: false }),
 }));
 
-jest.mock("../hooks/useCommandPalette", () => ({
+jest.mock("@acme/ui/hooks/useCommandPalette", () => ({
   __esModule: true,
   default: () => ({ open: false, setOpen: jest.fn() }),
 }));
 
-jest.mock("../hooks/useSpacePanning", () => ({
+jest.mock("@acme/ui/hooks/useSpacePanning", () => ({
   __esModule: true,
   default: () => ({ onPointerDown: jest.fn() }),
 }));

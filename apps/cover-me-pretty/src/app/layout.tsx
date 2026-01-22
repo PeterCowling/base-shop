@@ -6,10 +6,10 @@ import { initTheme } from "@acme/platform-core/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ConsentSection from "@acme/ui/components/cms/blocks/ConsentSection";
-import AnalyticsPixelsSection from "@acme/ui/components/cms/blocks/AnalyticsPixelsSection";
-import StructuredDataSection from "@acme/ui/components/cms/blocks/StructuredDataSection";
-import RentalDemoProvider from "@acme/ui/components/cms/blocks/RentalDemoProvider.client";
+import ConsentSection from "@acme/cms-ui/blocks/ConsentSection";
+import AnalyticsPixelsSection from "@acme/cms-ui/blocks/AnalyticsPixelsSection";
+import StructuredDataSection from "@acme/cms-ui/blocks/StructuredDataSection";
+import RentalDemoProvider from "@acme/cms-ui/blocks/RentalDemoProvider.client";
 
 /**
  * Root layout for the Shop app.

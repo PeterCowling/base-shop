@@ -1,9 +1,9 @@
 // Copied from src/components/images/CfImage.tsx
 import { createElement, type CSSProperties,memo, useMemo } from "react";
 
-import { type PRESETS } from "@acme/ui/config/imagePresets";
-import { useResponsiveImage } from "@acme/ui/hooks/useResponsiveImage";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+import { type PRESETS } from "../config/imagePresets";
+import { useResponsiveImage } from "../hooks/useResponsiveImage";
+import buildCfImageUrl from "../lib/buildCfImageUrl";
 
 export interface CfImageProps extends React.ComponentPropsWithoutRef<"img"> {
   src: string;

@@ -1,6 +1,5 @@
 // src/utils/slug.ts
-import type { AppLanguage } from "@acme/ui/i18n.config";
-
+import type { AppLanguage } from "../i18n.config";
 import { type SlugMap,SLUGS } from "../slug-map";
 
 import { toAppLanguage } from "./lang";

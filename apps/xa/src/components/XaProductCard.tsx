@@ -5,10 +5,10 @@
 import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { IconButton, Price } from "@acme/ui/components/atoms";
-import { ProductBadge } from "@acme/ui/components/atoms";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { IconButton, Price } from "@acme/design-system/atoms";
+import { ProductBadge } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { XaFadeImage } from "./XaFadeImage";
 import type { XaProduct } from "../lib/demoData";
 import { useCart } from "../contexts/XaCartContext";

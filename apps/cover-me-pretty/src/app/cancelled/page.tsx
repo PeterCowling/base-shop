@@ -4,7 +4,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import Section from "@acme/ui/components/cms/blocks/Section";
+import Section from "@acme/cms-ui/blocks/Section";
 import { useTranslations } from "@acme/i18n";
 
 /**

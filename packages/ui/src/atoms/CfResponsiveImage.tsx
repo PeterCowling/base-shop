@@ -1,7 +1,7 @@
 // Copied from src/components/images/CfResponsiveImage.tsx
 import { type FC,memo } from "react";
 
-import { type PRESETS } from "@acme/ui/config/imagePresets";
+import { type PRESETS } from "../config/imagePresets";
 
 import { CfImage, type CfImageProps } from "./CfImage";
 

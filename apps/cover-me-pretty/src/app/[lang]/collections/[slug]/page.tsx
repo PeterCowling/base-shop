@@ -1,4 +1,4 @@
-import CollectionSectionServer from "@acme/ui/components/cms/blocks/CollectionSection.server";
+import CollectionSectionServer from "@acme/cms-ui/blocks/CollectionSection.server";
 
 export const revalidate = 60;
 

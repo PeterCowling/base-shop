@@ -17,4 +17,5 @@ export const salesOrderSchema = z.object({
   items: z.array(salesOrderItemSchema),
 });
 
+export type SalesOrderItem = z.infer<typeof salesOrderItemSchema>;
 export type SalesOrder = z.infer<typeof salesOrderSchema>;

@@ -43,6 +43,30 @@ jobs:
               - 'packages/i18n/**'
               - 'packages/shared-utils/**'
 
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Audit dependencies
+        run: |
+          echo "::group::Running pnpm audit"
+          pnpm audit --audit-level=high 2>&1 | tee audit-report.txt || true
+          echo "::endgroup::"
+
+          # Fail if HIGH or CRITICAL vulnerabilities found
+          if grep -q "high\|critical" audit-report.txt; then
+            echo "::error::HIGH or CRITICAL vulnerabilities found in dependencies"
+            echo "Run 'pnpm audit' locally to see details"
+            exit 1
+          fi
+          echo "No HIGH or CRITICAL vulnerabilities found"
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -83,6 +107,8 @@ jobs:
         run: pnpm run plans:lint
       - name: Agent manifest validation
         run: node scripts/validate-agent-manifest.js
+      - name: Token validation
+        run: pnpm validate:tokens
 
   typecheck:
     name: Typecheck

@@ -1,9 +1,9 @@
 import type { FormEvent } from "react";
 
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/design-system/shadcn";
 import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
 import { useTranslations } from "@acme/i18n";
-import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
 
 import type {
   FormErrors,

@@ -180,7 +180,7 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
             <div
               ref={containerRef}
               className="relative w-full overflow-hidden bg-muted"
-              /* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic aspectRatio/minHeight required for preview container sizing */
+               
               style={
                 aspectRatio
                   ? ({ aspectRatio: String(aspectRatio) } as React.CSSProperties)
@@ -204,7 +204,7 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
               {/* Focal point marker */}
               <div
                 className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-foreground bg-primary shadow"
-                /* eslint-disable-next-line react/forbid-dom-props -- PB-2416: focal marker needs dynamic left/top positioning */
+                 
                 style={{ left: `${focal.x * 100}%`, top: `${focal.y * 100}%` }}
                 aria-hidden
               />

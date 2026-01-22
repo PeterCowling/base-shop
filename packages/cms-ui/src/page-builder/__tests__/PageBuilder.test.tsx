@@ -28,7 +28,7 @@ jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
 jest.mock("@acme/lib/shop", () => ({ getShopFromPath: () => "shop" }));
 jest.mock("@acme/i18n/locales", () => ({ locales: ["en"] }));
 
-jest.mock("../hooks/useFileDrop", () => ({
+jest.mock("@acme/ui/hooks/useFileDrop", () => ({
   __esModule: true,
   default: () => ({
     dragOver: false,
@@ -44,12 +44,12 @@ const pageBuilderDnDMock = jest.fn((_args: unknown) => ({
   insertIndex: 0,
   activeType: null,
 }));
-jest.mock("../hooks/usePageBuilderDnD", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/usePageBuilderDnD", () => ({
   __esModule: true,
   default: (args: unknown) => pageBuilderDnDMock(args),
 }));
 
-jest.mock("../hooks/usePageBuilderControls", () => {
+jest.mock("@acme/ui/hooks/usePageBuilderControls", () => {
   const React = require("react");
   const useControls = () => {
     const [showGrid, setShowGrid] = React.useState(false);
@@ -82,7 +82,7 @@ jest.mock("../hooks/usePageBuilderControls", () => {
   return { __esModule: true, default: useControls };
 });
 
-jest.mock("../hooks/usePageBuilderSave", () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/usePageBuilderSave", () => ({
   __esModule: true,
   default: () => ({
     handlePublish: jest.fn(),
@@ -91,7 +91,7 @@ jest.mock("../hooks/usePageBuilderSave", () => ({
   }),
 }));
 
-jest.mock("../hooks/usePageBuilderState", () => ({
+jest.mock("@acme/ui/hooks/usePageBuilderState", () => ({
   __esModule: true,
   default: () => ({
     state: { past: [], present: [], future: [], gridCols: 4 },

@@ -1,4 +1,4 @@
-import { type NextRequest,NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@cms/auth/options";
 import { format as formatCsv } from "fast-csv";
@@ -7,6 +7,28 @@ import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
 import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { flattenInventoryItem } from "@acme/platform-core/utils/inventory";
+
+/**
+ * Sanitize cell values for CSV formula injection protection.
+ * Prefixes values starting with =, +, -, @, \t, \r with a single quote.
+ */
+function sanitizeCsvValue(value: unknown): string {
+  if (value === null || value === undefined) return "";
+  const str = String(value);
+  // Prevent formula injection - Excel/Sheets treat these as formula starters
+  if (/^[=+\-@\t\r]/.test(str)) {
+    return `'${str}`;
+  }
+  return str;
+}
+
+function sanitizeRow(row: Record<string, unknown>): Record<string, string> {
+  const sanitized: Record<string, string> = {};
+  for (const [key, value] of Object.entries(row)) {
+    sanitized[key] = sanitizeCsvValue(value);
+  }
+  return sanitized;
+}
 
 export async function GET(
   req: NextRequest,
@@ -18,7 +40,7 @@ export async function GET(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-  const { shop } = await context.params;
+    const { shop } = await context.params;
     const items = await inventoryRepository.read(shop);
     const format = new URL(req.url).searchParams.get("format");
     if (format === "csv") {
@@ -29,7 +51,7 @@ export async function GET(
           .on("error", reject)
           .on("data", (c) => chunks.push(c.toString()))
           .on("end", () => resolve(chunks.join("")));
-        items.map(flattenInventoryItem).forEach((i: Record<string, unknown>) => stream.write(i));
+        items.map(flattenInventoryItem).map(sanitizeRow).forEach((i) => stream.write(i));
         stream.end();
       });
       return new Response(csv, {

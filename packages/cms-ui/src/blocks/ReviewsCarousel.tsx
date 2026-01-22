@@ -1,4 +1,4 @@
-import ReviewsCarousel, { type Review } from "../../home/ReviewsCarousel";
+import ReviewsCarousel, { type Review } from "@acme/ui/home/ReviewsCarousel";
 
 interface Props {
   reviews?: Review[];

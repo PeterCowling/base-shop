@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import useBookings from "../../hooks/data/useBookingsData";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
-import { FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
+import { type FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
 import { isDateWithinRange } from "../../utils/dateUtils";
 
 /* -------------------------------------------------------------------------

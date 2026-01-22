@@ -1,9 +1,11 @@
-import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { memo, useCallback, useEffect, useState } from "react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
-import { Denomination, DENOMINATIONS } from "../../types/component/Till";
+import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
 import { DenominationInput } from "../till/DenominationInput";
+
 import { DifferenceBadge } from "./DifferenceBadge";
 
 export interface CashCountingFormProps {

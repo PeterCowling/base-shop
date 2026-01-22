@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
+import { Alert, Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives/Grid";
+import { Sidebar } from "@acme/design-system/primitives/Sidebar";
+import { Stack } from "@acme/design-system/primitives/Stack";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import type { ReturnAuthorization } from "@acme/types";
-import { Alert, Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Sidebar } from "@acme/ui/components/atoms/primitives/Sidebar";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
-import { cn } from "@acme/ui/utils/style";
 
 import {
   Button,

@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { useTokenColors } from "../../../../hooks/useTokenColors";
-import type { TokenMap } from "../../../../hooks/useTokenEditor";
-import { hexToHsl } from "../../../../utils/colorUtils";
+import { useTokenColors } from "@acme/ui/hooks/useTokenColors";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
+import { hexToHsl } from "@acme/ui/utils/colorUtils";
+
 import { ColorToken } from "../ColorToken";
 
-jest.mock("../../../../hooks/useTokenColors");
+jest.mock("@acme/ui/hooks/useTokenColors");
 const mockedUseTokenColors =
   useTokenColors as jest.MockedFunction<typeof useTokenColors>;
 

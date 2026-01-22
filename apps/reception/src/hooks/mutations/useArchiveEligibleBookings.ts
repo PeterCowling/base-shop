@@ -1,6 +1,6 @@
-import { get, ref } from "firebase/database";
 import { useCallback, useEffect, useState } from "react";
 import { flushSync } from "react-dom";
+import { get, ref } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { getLocalToday } from "../../utils/dateUtils";

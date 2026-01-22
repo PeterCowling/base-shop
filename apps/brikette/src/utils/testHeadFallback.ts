@@ -4,8 +4,9 @@
 // Helper to inject head tags directly into document.head during tests
 // Useful when route meta()/links() aren't wired through a framework router.
 import { useEffect, useLayoutEffect } from "react";
-import type { LinksFunction, MetaDescriptor } from "react-router";
 
+// Local types replacing react-router imports
+type MetaDescriptor = Record<string, string | undefined>;
 type LinkDescriptor = Record<string, string | undefined>;
 
 const ATTRIBUTE_NAME_OVERRIDES: Record<string, string> = {
@@ -166,7 +167,7 @@ export function applyLinkDescriptor(descriptor: LinkDescriptor): Cleanup | undef
 
 export function applyHeadDescriptors(
   meta: MetaDescriptor[] | undefined | null,
-  links: ReturnType<LinksFunction> | undefined | null,
+  links: LinkDescriptor[] | undefined | null,
 ): Cleanup | undefined {
   if (typeof document === "undefined") return undefined;
   const cleanups: Cleanup[] = [];
@@ -200,11 +201,11 @@ const useBrowserLayoutEffect = typeof window !== "undefined" ? useLayoutEffect :
 
 export function useApplyFallbackHead(
   meta: MetaDescriptor[] | undefined,
-  links: ReturnType<LinksFunction> | undefined,
+  links: LinkDescriptor[] | undefined,
 ): void {
   useBrowserLayoutEffect(() => {
     if (process.env.NODE_ENV !== "test") return;
-    const extractedLinks: ReturnType<LinksFunction> = [];
+    const extractedLinks: LinkDescriptor[] = [];
     const filteredMeta = (meta ?? []).flatMap((descriptor) => {
       if (
         descriptor &&
@@ -214,7 +215,7 @@ export function useApplyFallbackHead(
       ) {
         const descriptorRecord = descriptor as Record<string, string | undefined>;
         const { ["tagName"]: _ignored, ...rest } = descriptorRecord;
-        extractedLinks.push(rest as ReturnType<LinksFunction>[number]);
+        extractedLinks.push(rest as LinkDescriptor);
         return [];
       }
       return [descriptor as MetaDescriptor];

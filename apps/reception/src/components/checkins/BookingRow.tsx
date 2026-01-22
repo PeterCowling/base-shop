@@ -1,11 +1,12 @@
 /* File: src/components/checkins/BookingRow.tsx */
 
-import React, { FC, memo, useCallback, useMemo, useState } from "react";
+import React, { type FC, memo, useCallback, useMemo, useState } from "react";
 
 import useBookingNotes from "../../hooks/data/useBookingNotes";
 import useKeycardInfo from "../../hooks/data/useKeycardInfo";
 import useRoomAllocation from "../../hooks/utilities/useRoomAllocation";
-import { CheckInRow } from "../../types/component/CheckinRow";
+import { type CheckInRow } from "../../types/component/CheckinRow";
+
 import BookingRowView from "./view/BookingRow";
 
 /**

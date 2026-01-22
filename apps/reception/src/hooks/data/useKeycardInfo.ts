@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import useOccupantLoans from "../../components/loans/useOccupantLoans";
 import type {
   LoanMethod,

@@ -3,12 +3,11 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { useModal } from "@acme/ui/context/ModalContext";
-import { i18nConfig } from "@acme/ui/i18n.config";
-
 import { Button } from "../atoms/Button";
 import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Section } from "../atoms/Section";
+import { useModal } from "../context/ModalContext";
+import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
 
 const APARTMENT_HERO_IMAGE_SRC = "/img/facade.avif";

@@ -2,6 +2,7 @@
   "name": "@apps/dashboard",
   "private": true,
   "dependencies": {
+    "@acme/design-system": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "lucide-react": "^0.511.0"
   },

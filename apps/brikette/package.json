@@ -7,11 +7,13 @@
     "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
     "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
     "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
-    "pretypecheck": "pnpm --filter @acme/telemetry clean && pnpm --filter @acme/telemetry build",
+    "pretypecheck": "pnpm --filter @acme/telemetry build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --passWithNoTests"
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests",
+    "generate:url-fixtures": "cd /tmp && npx tsx $OLDPWD/scripts/generate-url-fixtures.ts"
   },
   "dependencies": {
+    "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",

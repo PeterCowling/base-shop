@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import useGroupingActions from "../hooks/useGroupingActions";
+import useGroupingActions from "@acme/ui/components/cms/page-builder/hooks/useGroupingActions";
 
 jest.mock("ulid", () => ({ ulid: () => "gid" }));
 

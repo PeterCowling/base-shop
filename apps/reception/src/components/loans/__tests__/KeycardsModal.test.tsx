@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { KeycardsModal } from "../KeycardsModal";
 
 /* eslint-disable no-var */
 var useOccupantLoansMock: jest.Mock;
@@ -19,8 +22,6 @@ jest.mock("../../../context/LoanDataContext", () => ({
   __esModule: true,
   useLoanData: () => loanDataMock,
 }));
-
-import { KeycardsModal } from "../KeycardsModal";
 
 const occupant = {
   guestId: "g1",

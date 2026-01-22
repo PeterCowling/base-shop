@@ -22,9 +22,10 @@
  *   --manifest-path <p> Path to write manifest (default: data/shops/<shop>/imageDimensions.json)
  *   --concurrency <n>   Max concurrent uploads (default: 3)
  */
-import { existsSync, readdirSync, statSync, readFileSync } from "node:fs";
-import { writeFile, mkdir } from "node:fs/promises";
-import { join, basename, extname, relative, resolve, dirname } from "node:path";
+import { existsSync, readdirSync, readFileSync,statSync } from "node:fs";
+import { mkdir,writeFile } from "node:fs/promises";
+import { basename, dirname,extname, join, relative, resolve } from "node:path";
+
 import { minimatch } from "minimatch";
 
 // ============================================================
@@ -470,7 +471,7 @@ async function uploadBatch(
   const results: UploadResult[] = [];
   let uploaded = 0;
   let failed = 0;
-  let skipped = 0;
+  const skipped = 0;
 
   // Process in batches for concurrency control
   const batches: ImageFile[][] = [];

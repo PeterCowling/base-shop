@@ -25,7 +25,7 @@
  *   --verbose             Verbose output
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync,readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 // ============================================================
@@ -667,9 +667,9 @@ main().catch((err) => {
 });
 
 export {
-  parseArgs,
-  loadShopConfigs,
-  executeCheck,
-  runMonitorCycle,
   DEFAULT_CHECKS,
+  executeCheck,
+  loadShopConfigs,
+  parseArgs,
+  runMonitorCycle,
 };

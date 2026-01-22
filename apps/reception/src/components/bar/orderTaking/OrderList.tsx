@@ -1,9 +1,10 @@
 // src/components/bar/orderTaking/OrderList.tsx
 
-import React, { FC, useCallback, useState } from "react";
+import React, { type FC, useCallback, useState } from "react";
+
+import { type AggregatedOrder } from "../../../types/bar/BarTypes";
 
 import PayModal from "./modal/PayModal";
-import { AggregatedOrder } from "../../../types/bar/BarTypes";
 
 interface OrderListProps {
   orders: AggregatedOrder[];
@@ -49,8 +50,8 @@ const OrderList: FC<OrderListProps> = React.memo(
             <table className="w-full flex-1 border-separate border-spacing-0">
               <thead className="sticky top-0 z-10 bg-primary-main/95 backdrop-blur-md dark:bg-darkAccentGreen dark:text-darkBg">
                 <tr className="text-sm font-semibold uppercase tracking-wider text-white">
-                  <th className="px-4 py-2 text-left">Product</th>
-                  <th className="px-4 py-2 text-right">Total&nbsp;€</th>
+                  <th className="px-4 py-2 text-start">Product</th>
+                  <th className="px-4 py-2 text-end">Total&nbsp;€</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-200 dark:divide-darkBg">
@@ -63,7 +64,7 @@ const OrderList: FC<OrderListProps> = React.memo(
                     <td className="whitespace-pre-wrap px-4 py-2">
                       {o.count > 1 ? `${o.count}× ${o.product}` : o.product}
                     </td>
-                    <td className="px-4 py-2 text-right font-medium tabular-nums">
+                    <td className="px-4 py-2 text-end font-medium tabular-nums">
                       {(o.count * o.price).toFixed(2)}
                     </td>
                   </tr>

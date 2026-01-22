@@ -23,19 +23,19 @@ function docsPath(target: string): string {
 
 async function readDocsDir(dir: string) {
   const normalized = docsPath(dir);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DOCS-2101 path is normalized and confined to docs/
+   
   return fs.readdir(normalized, { withFileTypes: true });
 }
 
 async function readDocFile(filePath: string) {
   const normalized = docsPath(filePath);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DOCS-2101 path is normalized and confined to docs/
+   
   return fs.readFile(normalized, "utf8");
 }
 
 async function writeDocFile(filePath: string, content: string) {
   const normalized = docsPath(filePath);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DOCS-2101 path is normalized and confined to docs/
+   
   return fs.writeFile(normalized, content, "utf8");
 }
 

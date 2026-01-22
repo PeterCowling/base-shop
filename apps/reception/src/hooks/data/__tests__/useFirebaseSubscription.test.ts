@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 import { z } from "zod";
 
 import { getErrorMessage } from "../../../utils/errorMessage";
 import { showToast } from "../../../utils/toastUtils";
+import useFirebaseSubscription from "../useFirebaseSubscription";
 
 interface MockSnapshot {
   exists: () => boolean;
@@ -32,7 +34,6 @@ jest.mock("../../../utils/toastUtils", () => {
   return { showToast: toastMock };
 });
 
-import useFirebaseSubscription from "../useFirebaseSubscription";
 const toastMock = showToast as unknown as jest.Mock;
 
 describe("useFirebaseSubscription", () => {

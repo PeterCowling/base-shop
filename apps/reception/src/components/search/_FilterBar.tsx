@@ -41,7 +41,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={firstName}
           onChange={(e) => onFilterChange("firstName", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
@@ -55,7 +55,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={lastName}
           onChange={(e) => onFilterChange("lastName", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
@@ -69,7 +69,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={bookingRef}
           onChange={(e) => onFilterChange("bookingRef", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
@@ -82,7 +82,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           id="status"
           value={status}
           onChange={(e) => onFilterChange("status", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         >
           <option value="">All</option>
           {Object.entries(activityCodes).map(([code, text]) => (
@@ -102,7 +102,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           id="nonRefundable"
           value={nonRefundable}
           onChange={(e) => onFilterChange("nonRefundable", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         >
           <option value="">All</option>
           <option value="true">Non-Refundable Only</option>
@@ -120,7 +120,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="date"
           value={date}
           onChange={(e) => onFilterChange("date", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 
@@ -134,7 +134,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           type="text"
           value={roomNumber}
           onChange={(e) => onFilterChange("roomNumber", e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
         />
       </div>
 

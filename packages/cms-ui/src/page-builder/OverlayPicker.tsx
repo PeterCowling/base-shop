@@ -3,10 +3,9 @@
 
 import { useEffect, useId,useMemo, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
-import { ColorInput, hslToRgb } from "../ColorInput";
+import { useTranslations } from "@acme/i18n";
+import { ColorInput, hslToRgb } from "@acme/ui/components/cms/ColorInput";
 
 interface OverlayPickerProps {
   value?: string;

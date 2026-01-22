@@ -1,6 +1,6 @@
 "use client";
 
-import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
 
 import { formatNumber } from "@/lib/format";
 

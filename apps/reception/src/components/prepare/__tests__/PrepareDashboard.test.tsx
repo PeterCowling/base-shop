@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+
 import React from "react";
+import { render, screen } from "@testing-library/react";
 
 interface LoadOpts {
   prepareData?: Partial<ReturnType<typeof defaultPrepareData>>;

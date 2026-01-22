@@ -1,6 +1,6 @@
 // src/components/roomgrid/BookingDraggable.tsx
 
-import { FC } from "react";
+import { type FC } from "react";
 import { useDrag } from "react-dnd";
 
 interface BookingDraggableProps {

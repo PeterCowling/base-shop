@@ -1,5 +1,6 @@
 import { memo, useState } from "react";
 import { z } from "zod";
+
 import { showToast } from "../../utils/toastUtils";
 import { DifferenceBadge } from "../common/DifferenceBadge";
 import { FormActionButtons } from "../common/FormActionButtons";
@@ -52,7 +53,7 @@ export const KeycardCountForm = memo(function KeycardCountForm({
           className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
         />
       </div>
-      <div className="text-sm text-warning-main text-right mb-2 dark:text-darkAccentGreen">
+      <div className="text-sm text-warning-main text-end mb-2 dark:text-darkAccentGreen">
         Expected: {expectedCount} &nbsp;
         <DifferenceBadge value={diff} />
       </div>

@@ -1,9 +1,11 @@
 // src/components/forms/PettyCashForm.tsx
 import { memo, useCallback, useState } from "react";
+
 import { useAuth } from "../../context/AuthContext";
 import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import { PinLoginInline } from "../common/PinLoginInline";
+
 import { safeTransactionFormSchema } from "./schemas";
 
 export interface PettyCashFormProps {
@@ -59,7 +61,7 @@ export const PettyCashForm = memo(function PettyCashForm({
           {/* Close button */}
           <button
             onClick={handleCancel}
-            className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-error-main"
+            className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
             aria-label="Close"
           >
             &times;
@@ -75,7 +77,7 @@ export const PettyCashForm = memo(function PettyCashForm({
             <input
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-32 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
               placeholder="Amount"
               value={amount}
               onChange={handleAmountChange}

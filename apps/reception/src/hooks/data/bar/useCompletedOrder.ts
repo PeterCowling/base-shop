@@ -1,11 +1,11 @@
 // src/hooks/data/bar/useCompletedOrder.ts
 
-import { get, ref } from "firebase/database";
 import { useEffect, useState } from "react";
+import { get, ref } from "firebase/database";
 
 import { salesOrderSchema } from "../../../schemas/salesOrderSchema";
 import { useFirebaseDatabase } from "../../../services/useFirebase";
-import { SalesOrder } from "../../../types/bar/BarTypes";
+import type { SalesOrder } from "../../../types/bar/BarTypes";
 
 type UseCompletedOrderReturn = {
   data: SalesOrder | null;
@@ -40,7 +40,7 @@ export function useCompletedOrder(
         if (snap.exists()) {
           const res = salesOrderSchema.safeParse(snap.val());
           if (res.success) {
-            setData(res.data);
+            setData(res.data as SalesOrder);
           } else {
             setError(res.error);
             setData(null);

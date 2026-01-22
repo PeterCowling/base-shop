@@ -1,13 +1,13 @@
 export { SHOP_NAME_RE, validateShopName } from "./validateShopName";
 
 // Migrated from @acme/shared-utils - universal exports
-export * from "./format";
-export * from "./string";
 export * from "./array";
-export * from "./json";
+export * from "./format";
 export * from "./http";
+export * from "./json";
 export * from "./security";
 export * from "./shop";
+export * from "./string";
 /**
  * Re-export Zod helpers from their module files rather than the package
  * root.  The root of @acme/zod-utils lacks a compiled index.d.ts, which
@@ -130,3 +130,175 @@ export {
   stemmedTokenizer,
   type Tokenizer,
 } from "./math/search/bm25";
+
+// Geometry utilities (vectors, rectangles, matrices)
+export {
+  // Vector2 arithmetic
+  add,
+  // Vector3 operations
+  add3,
+  // Vector2 angles
+  angle,
+  angleBetween,
+  area,
+  type Bounds,
+  boundsFromRect,
+  // Rectangle properties
+  center,
+  clampPoint,
+  // Rectangle tests
+  containsPoint,
+  containsRect,
+  corners,
+  cross,
+  cross2D,
+  // Matrix decomposition
+  decompose,
+  determinant,
+  distance,
+  distance3,
+  distanceSquared,
+  distanceSquared3,
+  div,
+  div3,
+  // Vector2 products
+  dot,
+  dot3,
+  expand,
+  fromTransform,
+  // Matrix constants
+  IDENTITY,
+  identity,
+  // Rectangle operations
+  intersection,
+  intersects,
+  inverse,
+  // Vector2 interpolation & projection
+  lerpVec2,
+  lerpVec3,
+  // Vector2 magnitude
+  magnitude,
+  magnitude3,
+  magnitudeSquared,
+  magnitudeSquared3,
+  // Matrix types
+  type Matrix3x3,
+  mul,
+  mul3,
+  // Matrix operations
+  multiply,
+  negate,
+  negate3,
+  normalize,
+  normalize3,
+  normalizeRect,
+  perimeter,
+  perpendicular,
+  project,
+  // Rectangle types
+  type Rect,
+  // Rectangle construction
+  rect,
+  rectFromBounds,
+  rectFromCenter,
+  rectFromPoints,
+  rectsEqual,
+  reflect,
+  rotate,
+  rotateVec2,
+  scale,
+  scaleRect,
+  skew,
+  sub,
+  sub3,
+  type TransformComponents,
+  // Matrix application
+  transformPoint,
+  transformVector,
+  // Matrix construction
+  translate,
+  translateRect,
+  transpose,
+  union,
+  UNIT_X,
+  UNIT_X3,
+  UNIT_Y,
+  UNIT_Y3,
+  UNIT_Z3,
+  // Vector construction
+  vec2,
+  vec3,
+  // Vector types
+  type Vector2,
+  type Vector3,
+  // Vector constants
+  ZERO2,
+  ZERO3,
+} from "./math/geometry";
+
+// Statistics utilities
+export {
+  coefOfVariation,
+  // Correlation
+  covariance,
+  Histogram,
+  type HistogramBin,
+  iqr,
+  kurtosis,
+  max,
+  mean,
+  median,
+  min,
+  mode,
+  normalizeArray,
+  // Classes
+  OnlineStats,
+  type OnlineStatsState,
+  pearson,
+  percentile,
+  quartiles,
+  range,
+  skewness,
+  spearman,
+  stddev,
+  // Descriptive statistics
+  sum,
+  variance,
+  zScore,
+} from "./math/statistics";
+
+// Random utilities (seeded PRNG, sampling)
+export {
+  exponentialSample,
+  hashSeed,
+  normalSample,
+  poissonSample,
+  ReservoirSampler,
+  SeededRandom,
+  type SeededRandomState,
+  uniformSample,
+} from "./math/random";
+
+// Financial utilities (markup, margin, discounts, rounding)
+export {
+  addTax,
+  type AmortizationRow,
+  amortizationSchedule,
+  applyDiscount,
+  compoundInterest,
+  discountAmount,
+  discountPercent,
+  futureValue,
+  installmentAmount,
+  margin,
+  markup,
+  presentValue,
+  priceFromMargin,
+  priceFromMarkup,
+  removeTax,
+  roundCurrency,
+  roundDownToIncrement,
+  roundToNearest,
+  roundUpToIncrement,
+  taxAmount,
+} from "./math/financial";

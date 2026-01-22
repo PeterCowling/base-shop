@@ -10,7 +10,7 @@ import {
   occupantDetailsBaseSchema,
   occupantDocumentSchema,
 } from "../../../schemas/occupantDetailsSchema";
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 export const occupantRequiredSchema = occupantDetailsBaseSchema
   .pick({

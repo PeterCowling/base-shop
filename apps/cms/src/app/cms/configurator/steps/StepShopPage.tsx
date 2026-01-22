@@ -5,25 +5,24 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ulid } from "ulid";
 
-import { useTranslations } from "@acme/i18n";
-import { fillLocales } from "@acme/i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
+import { Toast } from "@acme/design-system/atoms";
+import { Cluster,Inline } from "@acme/design-system/primitives";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
- Toast } from "@acme/ui/components/atoms";
-import { Cluster,Inline } from "@acme/ui/components/atoms/primitives";
-import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acme/ui/components/atoms/shadcn";
+} from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import type { Page, PageComponent } from "@acme/types";
 
 import PageBuilder from "@/components/cms/PageBuilder";
 

@@ -1,4 +1,5 @@
 import { type NextRequest,NextResponse } from "next/server";
+import { ensureShopAccess } from "@cms/actions/common/auth";
 import path from "path";
 
 import { readJsonFile, withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
@@ -32,8 +33,15 @@ export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shop: string; pageId: string; commentId: string }> },
 ) {
+  const { shop, pageId, commentId } = await context.params;
   try {
-    const { shop, pageId, commentId } = await context.params;
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  try {
     const body = await req.json();
     const { action, text, resolved, assignedTo, pos } = body ?? {};
 
@@ -70,8 +78,15 @@ export async function DELETE(
   _req: NextRequest,
   context: { params: Promise<{ shop: string; pageId: string; commentId: string }> },
 ) {
+  const { shop, pageId, commentId } = await context.params;
   try {
-    const { shop, pageId, commentId } = await context.params;
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  try {
     await withFileLock(STORE_PATH, async () => {
       const store = await readStore();
       const list = store[shop]?.[pageId];

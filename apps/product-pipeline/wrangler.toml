@@ -17,3 +17,7 @@ binding = "PIPELINE_QUEUE"
 
 [vars]
 PIPELINE_ENV = "dev"
+# PIPELINE_API_KEY is set via Cloudflare secrets, not in this file.
+# To set: wrangler secret put PIPELINE_API_KEY
+# In production, this key is required for all API requests.
+# In dev mode (PIPELINE_ENV=dev), unauthenticated requests are allowed.

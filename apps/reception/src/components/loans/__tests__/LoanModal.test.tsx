@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { LoanModal } from "../LoanModal";
 
 // Mock loan-related hooks for determinism
 jest.mock("../../../hooks/data/useLoans", () => ({
@@ -10,8 +13,6 @@ jest.mock("../../../hooks/data/useLoans", () => ({
 jest.mock("../../../context/LoanDataContext", () => ({
   useLoanData: () => ({ loans: {}, loading: false, error: null }),
 }));
-
-import { LoanModal } from "../LoanModal";
 
 const occupant = {
   guestId: "G1",

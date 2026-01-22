@@ -38,16 +38,35 @@ export const writeOperationLimiter: RateLimiter = createRateLimiter({
 });
 
 /**
- * Helper to get client IP from request headers
- * Respects X-Forwarded-For for proxied requests
+ * Helper to get client IP from request headers.
+ * Prioritizes trusted CDN headers over spoofable ones.
+ *
+ * Priority order:
+ * 1. CF-Connecting-IP - Set by Cloudflare, cannot be spoofed by clients
+ * 2. X-Real-IP - Set by reverse proxy (if trusted)
+ * 3. X-Forwarded-For - Can be spoofed, only use as fallback
  */
 export function getClientIp(req: Request): string {
+  // CF-Connecting-IP is set by Cloudflare and cannot be spoofed by clients
+  const cfIp = req.headers.get("cf-connecting-ip");
+  if (cfIp) {
+    return cfIp;
+  }
+
+  // X-Real-IP is typically set by trusted reverse proxies
+  const realIp = req.headers.get("x-real-ip");
+  if (realIp) {
+    return realIp;
+  }
+
+  // X-Forwarded-For can be spoofed - only use as fallback
   const forwarded = req.headers.get("x-forwarded-for");
   if (forwarded) {
     // Take first IP from comma-separated list
     return forwarded.split(",")[0]?.trim() || "unknown";
   }
-  return req.headers.get("x-real-ip") || "unknown";
+
+  return "unknown";
 }
 
 /**

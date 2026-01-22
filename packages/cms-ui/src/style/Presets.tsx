@@ -4,8 +4,7 @@
 import { type ReactElement } from "react";
 
 import { useTranslations } from "@acme/i18n";
-
-import type { TokenMap } from "../../../hooks/useTokenEditor";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
 
 import presetData from "./presets.json";
 

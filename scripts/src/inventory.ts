@@ -7,7 +7,7 @@ import { parseArgs } from "node:util";
 
 async function importInventory(shop: string, file: string, base: string): Promise<void> {
   const sourcePath = resolve(file);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2401: developer-supplied CLI path normalized locally; not from HTTP input
+   
   const buf = await readFile(sourcePath);
   const contentType = sourcePath.endsWith(".csv") ? "text/csv" : "application/json";
   const form = new FormData();
@@ -37,7 +37,7 @@ async function exportInventory(shop: string, file: string, base: string): Promis
     throw new Error(`${prefix}: ${res.status} ${text}`);
   }
   const data = Buffer.from(await res.arrayBuffer());
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2401: developer-supplied CLI path normalized locally; not from HTTP input
+   
   await writeFile(targetPath, data);
   console.log(`Saved inventory to ${targetPath}`);
 }

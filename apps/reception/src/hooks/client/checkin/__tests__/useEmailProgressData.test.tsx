@@ -1,6 +1,21 @@
 // File: src/hooks/client/checkin/__tests__/useEmailProgressData.test.tsx
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+/* ------------------------------------------------------------------ */
+/*  Import constants and the hook under test                           */
+/* ------------------------------------------------------------------ */
+import { EMAIL_CODES } from "../../../../constants/emailCodes";
+/* ------------------------------------------------------------------ */
+/*  Import mocked modules to access the jest.fn instances                */
+/* ------------------------------------------------------------------ */
+import useActivitiesByCodeData from "../../../data/useActivitiesByCodeData";
+import useActivitiesData from "../../../data/useActivitiesData";
+import useBookingsData from "../../../data/useBookingsData";
+import useFinancialsRoom from "../../../data/useFinancialsRoom";
+import useGuestDetails from "../../../data/useGuestDetails";
+import useEmailProgressData from "../useEmailProgressData";
 
 /* ------------------------------------------------------------------ */
 /*  Register data‑hook mocks first – hoist‑safe for Vitest            */
@@ -11,26 +26,11 @@ jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
 jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
 jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
 
-/* ------------------------------------------------------------------ */
-/*  Import mocked modules to access the jest.fn instances                */
-/* ------------------------------------------------------------------ */
-import useActivitiesByCodeData from "../../../data/useActivitiesByCodeData";
-import useActivitiesData from "../../../data/useActivitiesData";
-import useBookingsData from "../../../data/useBookingsData";
-import useFinancialsRoom from "../../../data/useFinancialsRoom";
-import useGuestDetails from "../../../data/useGuestDetails";
-
 const useActivitiesDataMock = jest.mocked(useActivitiesData);
 const useActivitiesByCodeDataMock = jest.mocked(useActivitiesByCodeData);
 const useBookingsMock = jest.mocked(useBookingsData);
 const useFinancialsRoomMock = jest.mocked(useFinancialsRoom);
 const useGuestDetailsMock = jest.mocked(useGuestDetails);
-
-/* ------------------------------------------------------------------ */
-/*  Import constants and the hook under test                           */
-/* ------------------------------------------------------------------ */
-import { EMAIL_CODES } from "../../../../constants/emailCodes";
-import useEmailProgressData from "../useEmailProgressData";
 
 /* ------------------------------------------------------------------ */
 /*  Test fixtures                                                     */

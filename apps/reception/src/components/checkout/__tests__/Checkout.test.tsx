@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import Checkout from "../Checkout";
 
 // --- hoist-safe mock placeholders -----------------------------
 /* eslint-disable no-var */
@@ -93,8 +96,6 @@ jest.mock("../../../hooks/mutations/useAllTransactionsMutations", () => {
   addToAllTransactionsMock = jest.fn();
   return { default: () => ({ addToAllTransactions: addToAllTransactionsMock }) };
 });
-
-import Checkout from "../Checkout";
 
 const financials = {
   balance: 0,

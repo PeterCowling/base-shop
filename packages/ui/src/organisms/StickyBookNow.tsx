@@ -4,11 +4,10 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
 
-import { i18nConfig } from "@acme/ui/i18n.config";
-import { getDatePlusTwoDays, getTodayIso } from "@acme/ui/utils/dateUtils";
-
 import { Section } from "../atoms/Section";
+import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
+import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 const STICKY_CTA_STORAGE_KEY = "sticky-cta-dismissed";
 

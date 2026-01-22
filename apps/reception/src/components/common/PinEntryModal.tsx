@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
+
 import PinInput from "./PinInput";
 
 export interface PinEntryModalProps {

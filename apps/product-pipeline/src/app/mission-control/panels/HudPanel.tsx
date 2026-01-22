@@ -1,6 +1,6 @@
 "use client";
 
-import { Cluster, Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Grid, Inline, Stack } from "@acme/design-system/primitives";
 
 import type { GameState } from "../types";
 

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { hasAdminSession } from "../../../../lib/accessAdmin";
 import { loadAccessStore } from "../../../../lib/accessStore";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const authenticated = await hasAdminSession(request);

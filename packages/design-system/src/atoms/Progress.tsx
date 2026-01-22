@@ -25,7 +25,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
-        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: consumers may pass inline style overrides for layout contexts
+         
         style={style}
         {...props}
       >
@@ -40,7 +40,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
               "bg-primary h-full transition-all", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
             )}
             data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
-            // eslint-disable-next-line react/forbid-dom-props -- UI-2610: progress width is derived from value at runtime
+             
             style={{ width }}
           />
         </div>

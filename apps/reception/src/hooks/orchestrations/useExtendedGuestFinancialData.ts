@@ -1,8 +1,8 @@
 // File: /src/hooks/dataOrchestrations/useExtendedGuestFinancialData.ts
 import { useMemo } from "react";
 
-import { Guest } from "../../types/component/bookingSearch";
-import { RoomTransaction } from "../../types/hooks/data/financialsRoomData";
+import { type Guest } from "../../types/component/bookingSearch";
+import { type RoomTransaction } from "../../types/hooks/data/financialsRoomData";
 import useFinancialsRoom from "../data/useFinancialsRoom";
 
 /**

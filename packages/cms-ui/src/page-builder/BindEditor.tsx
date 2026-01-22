@@ -1,9 +1,8 @@
 "use client";
 
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-
-import { Input } from "@acme/design-system/shadcn";
 
 type BindComponent = PageComponent & {
   prop?: string;

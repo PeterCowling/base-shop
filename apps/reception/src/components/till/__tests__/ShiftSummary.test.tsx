@@ -1,9 +1,10 @@
 /* src/components/till/__tests__/ShiftSummary.test.tsx */
 
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 
-import { ShiftSummaryProps } from "../../../types/component/Till";
+import { type ShiftSummaryProps } from "../../../types/component/Till";
 import { ShiftSummary } from "../ShiftSummary";
 
 /**

@@ -1,9 +1,15 @@
 import "@testing-library/jest-dom";
+
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import type { OccupantDetails } from "../../../../types/hooks/data/guestDetailsData";
+// ------------------------------------------------------------------
+// Component under test (imported after mocks)
+// ------------------------------------------------------------------
+import DocInsertPage from "../DocInsertPage";
+import Row1 from "../row1";
 
 // ------------------------------------------------------------------
 // Mocks
@@ -78,12 +84,6 @@ jest.mock("../occupantCompleteHelpers", () => ({
 jest.mock("../../../../utils/toastUtils", () => ({
   showToast: showToastMock,
 }));
-
-// ------------------------------------------------------------------
-// Component under test (imported after mocks)
-// ------------------------------------------------------------------
-import DocInsertPage from "../DocInsertPage";
-import Row1 from "../row1";
 
 // ------------------------------------------------------------------
 // Test suites

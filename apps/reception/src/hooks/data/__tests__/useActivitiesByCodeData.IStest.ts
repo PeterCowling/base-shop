@@ -3,6 +3,9 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+/* Import the hook under test AFTER mocks are in place */
+import useActivitiesByCodeData from "../useActivitiesByCodeData";
+
 vi.mock("../../../services/useFirebase", () => ({
   // Overwrite every export we need; nothing inside will execute `getDatabase`
   useFirebaseDatabase: () => ({}),
@@ -49,9 +52,6 @@ vi.mock("firebase/database", () => {
     getDatabase,
   };
 });
-
-/* Import the hook under test AFTER mocks are in place */
-import useActivitiesByCodeData from "../useActivitiesByCodeData";
 
 afterEach(() => {
   vi.clearAllMocks();

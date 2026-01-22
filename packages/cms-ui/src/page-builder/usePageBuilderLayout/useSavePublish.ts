@@ -1,11 +1,11 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 import type { HistoryState,PageComponent } from "@acme/types";
+import useKeyboardShortcuts from "@acme/ui/components/cms/page-builder/hooks/useKeyboardShortcuts";
+import usePageBuilderSave from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderSave";
+import usePublishWithValidation from "@acme/ui/components/cms/page-builder/hooks/usePublishWithValidation";
+import { useToastState } from "@acme/ui/components/cms/page-builder/hooks/useToastState";
 
-import useKeyboardShortcuts from "../hooks/useKeyboardShortcuts";
-import usePageBuilderSave from "../hooks/usePageBuilderSave";
-import usePublishWithValidation from "../hooks/usePublishWithValidation";
-import { useToastState } from "../hooks/useToastState";
 import type { PageBuilderProps } from "../PageBuilder.types";
 
 interface SavePublishInput {

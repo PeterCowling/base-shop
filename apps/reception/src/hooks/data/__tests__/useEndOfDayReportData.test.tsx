@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
 
+import { SafeDataProvider } from "../../../context/SafeDataContext";
 import type { CardIrregularity } from "../../../types/hooks/data/cardIrregularityData";
 import type { CashDiscrepancy } from "../../../types/hooks/data/cashDiscrepancyData";
 import type { KeycardDiscrepancy } from "../../../types/hooks/data/keycardDiscrepancyData";
@@ -38,7 +40,6 @@ jest.mock("../../useSafeLogic", () => ({
   useSafeLogic: () => mockUseSafeLogic(),
 }));
 
-import { SafeDataProvider } from "../../../context/SafeDataContext";
 const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <SafeDataProvider>{children}</SafeDataProvider>
 );

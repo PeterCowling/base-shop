@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 
-import { useTranslations } from "@acme/i18n";
-
 import useReducedMotion from "@acme/design-system/hooks/useReducedMotion";
+import { useTranslations } from "@acme/i18n";
 
 import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
 import type { ComponentType } from "./defaults";

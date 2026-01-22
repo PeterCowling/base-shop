@@ -1,0 +1,25 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "../..",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.json",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "middleware.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    ".next",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
+}

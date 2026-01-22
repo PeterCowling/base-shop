@@ -1,10 +1,11 @@
-import clsx from "../../../../utils/clsx";
 import type { FC } from "react";
 
-import type { THeaderProps } from "./Header.interface";
+import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";
 import { useDaysRange } from "../../hooks";
 import type { TDaysRange } from "../../interfaces/daysRange.interface";
+
+import type { THeaderProps } from "./Header.interface";
 
 const Header: FC<THeaderProps> = ({ title, info }) => {
   const {

@@ -77,8 +77,8 @@ describe("ProductGrid.client", () => {
     let resolve: (value: unknown) => void;
     (fetchCollection as jest.Mock).mockImplementationOnce(
       () =>
-        new Promise((r) => {
-          resolve = r;
+        new Promise((_resolve) => {
+          resolve = _resolve;
         })
     );
 

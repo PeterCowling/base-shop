@@ -25,17 +25,18 @@
  */
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
-import { join, extname, resolve } from "node:path";
+import { extname, join, resolve } from "node:path";
+
 import { minimatch } from "minimatch";
 
 import {
-  processImageBatch,
-  validateImage,
-  generateImageManifest,
   DEFAULT_SIZE_PRESETS,
   DEFAULT_VALIDATION_RULES,
+  generateImageManifest,
   type ImageSizePreset,
   type ImageValidationRules,
+  processImageBatch,
+  validateImage,
 } from "@acme/platform-core/media";
 
 import { ensureRuntime } from "./runtime";
@@ -351,4 +352,4 @@ if (process.argv[1]?.includes("process-images")) {
   });
 }
 
-export { parseArgs, discoverFiles };
+export { discoverFiles,parseArgs };

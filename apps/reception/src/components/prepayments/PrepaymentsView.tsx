@@ -1,8 +1,10 @@
 import { memo } from "react";
-import { PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
+
+import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import DeleteButton from "../checkins/header/DeleteButton";
+
 import BookingPaymentsLists, {
-  BookingPaymentItem,
+  type BookingPaymentItem,
 } from "./BookingPaymentsLists";
 import DeleteBookingModal from "./DeleteBookingModal";
 import EntryDialog from "./EntryDialogue";
@@ -96,7 +98,7 @@ function PrepaymentsView({
                 <input
                   id="filterInput"
                   type="text"
-                  className="w-full border border-gray-400 rounded px-3 py-1 focus:outline-none focus:ring-1 focus:ring-primary-main font-body dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                  className="w-full border border-gray-400 rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-body dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e) => setFilterText(e.target.value)}
@@ -125,7 +127,7 @@ function PrepaymentsView({
                 aria-live="polite"
               >
                 <div className="w-8 h-8 border-4 border-gray-400 border-t-primary-main rounded-full animate-spin dark:border-darkSurface" />
-                <p className="ml-2 text-gray-600 dark:text-darkAccentGreen">Loading prepayment data...</p>
+                <p className="ms-2 text-gray-600 dark:text-darkAccentGreen">Loading prepayment data...</p>
               </div>
             )}
 

@@ -1,5 +1,5 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy reviews page pending design/i18n overhaul */
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/design-system/atoms/Section";
 
 export default function ReviewsPage() {
   return (

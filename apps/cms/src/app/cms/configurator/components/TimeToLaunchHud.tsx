@@ -1,7 +1,7 @@
 "use client";
 
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import type { TimeToLaunchData } from "../hooks/dashboard/types";
 

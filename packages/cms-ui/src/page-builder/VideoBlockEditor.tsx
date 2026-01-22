@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import { useTranslations } from "@acme/i18n";
-import type { VideoBlockComponent } from "@acme/types";
-
 import { Grid } from "@acme/design-system/primitives";
 import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { VideoBlockComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import useMediaLibrary from "./useMediaLibrary";
@@ -69,7 +68,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
         </DialogContent>
       </Dialog>
       {src && (
-        // eslint-disable-next-line jsx-a11y/media-has-caption -- PB-VIDEO-0002: Captions track not modeled yet; follow-up to extend schema and provide <track kind="captions" />
+         
         <video src={src} controls className="w-full max-h-64" data-aspect="16/9" />
       )}
       <div className="flex items-center gap-2">

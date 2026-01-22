@@ -15,7 +15,7 @@ import {
   useState,
 } from "react";
 
-import type { RateCalendar } from "@acme/ui/types/rates";
+import type { RateCalendar } from "../types/rates";
 
 interface RatesState {
   rates: RateCalendar | null;

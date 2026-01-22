@@ -2,6 +2,23 @@ import * as React from "react";
 
 import { cn } from "../utils/style";
 
+function readAriaStringProp(props: unknown, name: string): string | undefined {
+  if (!props || typeof props !== "object") return undefined;
+  const value = (props as Record<string, unknown>)[name];
+  return typeof value === "string" ? value : undefined;
+}
+
+function readAriaInvalid(props: unknown): string | boolean | undefined {
+  if (!props || typeof props !== "object") return undefined;
+  const value = (props as Record<string, unknown>)["aria-invalid"];
+  return typeof value === "boolean" || typeof value === "string" ? value : undefined;
+}
+
+function buildDescribedBy(ids: Array<string | undefined>): string | undefined {
+  const value = ids.filter(Boolean).join(" ");
+  return value.length > 0 ? value : undefined;
+}
+
 export interface FormFieldProps {
   id?: string;
   label?: React.ReactNode;
@@ -33,35 +50,30 @@ export function FormField({
   const errorId = error ? `${controlId}-error` : undefined;
 
   const inputElement = React.isValidElement<Record<string, unknown>>(input) ? input : null;
-  const inputProps = inputElement?.props;
-  const inputDescribedBy =
-    typeof inputProps?.["aria-describedby"] === "string"
-      ? (inputProps["aria-describedby"] as string)
-      : undefined;
-  const inputAriaInvalid =
-    typeof inputProps?.["aria-invalid"] === "boolean" ||
-    typeof inputProps?.["aria-invalid"] === "string"
-      ? (inputProps["aria-invalid"] as string | boolean)
-      : undefined;
+  const inputProps = inputElement?.props as unknown;
+  const inputDescribedBy = readAriaStringProp(inputProps, "aria-describedby");
+  const inputAriaInvalid = readAriaInvalid(inputProps);
+  const describedBy = buildDescribedBy([descriptionId, errorId, inputDescribedBy]);
 
-  const describedBy = [descriptionId, errorId, inputDescribedBy]
-    .filter(Boolean)
-    .join(" ") || undefined;
+  const renderedInput = (() => {
+    if (typeof input === "function") {
+      return input({
+        id: controlId,
+        ...(describedBy ? { describedBy } : {}),
+        ...(error ? { ariaInvalid: true } : {}),
+      });
+    }
 
-  const renderedInput =
-    typeof input === "function"
-      ? input({
-          id: controlId,
-          ...(describedBy ? { describedBy } : {}),
-          ...(error ? { ariaInvalid: true } : {}),
-        })
-      : inputElement
-        ? React.cloneElement(inputElement, {
-            id: controlId,
-            "aria-describedby": describedBy,
-            "aria-invalid": inputAriaInvalid ?? (Boolean(error) || undefined),
-          })
-        : input;
+    if (inputElement) {
+      return React.cloneElement(inputElement, {
+        id: controlId,
+        "aria-describedby": describedBy,
+        "aria-invalid": inputAriaInvalid ?? (Boolean(error) || undefined),
+      });
+    }
+
+    return input;
+  })();
 
   return (
     <div className={cn("space-y-1", className)}>

@@ -1,12 +1,12 @@
 /* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] API responses pending i18n */
 import { NextResponse } from "next/server";
 
-import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 import {
   deleteCatalogProduct,
   getCatalogDraftBySlug,
 } from "../../../../../lib/catalogCsv";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
+import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
 

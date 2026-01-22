@@ -8,13 +8,28 @@
  */
 import type { LaunchConfig } from "@acme/platform-core/createShop";
 import { getShopAppSlug } from "@acme/platform-core/shops";
-import { loadAndValidateConfig, runPreflight } from "./launch-shop/preflight";
+
 import {
-  runGoLiveGates,
   formatGateResults,
   type GoLiveGatesResult,
+  runGoLiveGates,
 } from "./launch-shop/goLiveGates";
-import { runScaffold } from "./launch-shop/steps/scaffold";
+import { loadAndValidateConfig, runPreflight } from "./launch-shop/preflight";
+import {
+  checkResumeability,
+  createCheckpoint,
+  formatCheckpointStatus,
+  getStepIndex,
+  hashConfig,
+  type LaunchCheckpoint,
+  loadCheckpoint,
+  markLaunchCompleted,
+  markLaunchFailed,
+  markStepCompleted,
+  prepareForResume,
+  saveCheckpoint,
+  shouldSkipStep,
+} from "./launch-shop/state";
 import { runCiSetup } from "./launch-shop/steps/ci-setup";
 import {
   commitChanges,
@@ -22,41 +37,27 @@ import {
   triggerAndWaitForDeploy,
 } from "./launch-shop/steps/deploy";
 import {
-  runSmokeTests,
-  waitForUrlReachable,
+  generateLaunchId,
+  generateReport,
+  printExecutionPlan,
+} from "./launch-shop/steps/report";
+import { runScaffold } from "./launch-shop/steps/scaffold";
+import {
   parseConfigSmokeChecks,
+  runSmokeTests,
   type SmokeCheckResult,
+  waitForUrlReachable,
 } from "./launch-shop/steps/smoke";
 import {
   runWebhookStep,
   type WebhookRegistrationResult,
 } from "./launch-shop/steps/webhook";
-import {
-  generateLaunchId,
-  generateReport,
-  printExecutionPlan,
-} from "./launch-shop/steps/report";
-import {
-  hashConfig,
-  loadCheckpoint,
-  createCheckpoint,
-  saveCheckpoint,
-  markStepCompleted,
-  markLaunchFailed,
-  markLaunchCompleted,
-  checkResumeability,
-  shouldSkipStep,
-  prepareForResume,
-  formatCheckpointStatus,
-  getStepIndex,
-  type LaunchCheckpoint,
-} from "./launch-shop/state";
 import type {
+  LaunchError,
   LaunchOptions,
   LaunchResult,
   LaunchStep,
   StepResult,
-  LaunchError,
 } from "./launch-shop/types";
 
 /**

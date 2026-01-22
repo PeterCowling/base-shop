@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
-import { cn } from "../utils/style";
 import { Button, Input } from "../primitives";
+import { cn } from "../utils/style";
 
 export interface PromoCodeInputProps
   extends React.HTMLAttributes<HTMLFormElement> {

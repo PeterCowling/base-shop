@@ -3,15 +3,14 @@
 
 import { memo } from "react";
 
-import { useTranslations } from "@acme/i18n";
-import type { HistoryState,PageComponent } from "@acme/types";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
 
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";

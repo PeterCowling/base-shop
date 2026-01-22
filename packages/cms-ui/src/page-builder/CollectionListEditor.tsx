@@ -1,7 +1,6 @@
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { CollectionListComponent } from "@acme/types";
-
-import { Input } from "@acme/design-system/shadcn";
 
 import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";

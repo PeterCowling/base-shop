@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ensureShopAccess, ensureShopReadAccess } from "@cms/actions/common/auth";
 import {
   deleteMedia,
   getMediaOverview,
@@ -49,12 +50,22 @@ function parseTagsValue(value: unknown): string[] | null | undefined {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
-  const summaryParam = url.searchParams.get("summary");
-  const wantsSummary =
-    summaryParam !== null && summaryParam !== "false" && summaryParam !== "0";
   if (!shop) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
+
+  try {
+    await ensureShopReadAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
+  const summaryParam = url.searchParams.get("summary");
+  const wantsSummary =
+    summaryParam !== null && summaryParam !== "false" && summaryParam !== "0";
+
   try {
     if (wantsSummary) {
       const overview = await getMediaOverview(shop);
@@ -77,12 +88,22 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
-  const orientation =
-    (url.searchParams.get("orientation") as "portrait" | "landscape" | null) ??
-    "landscape";
   if (!shop) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
+
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
+  const orientation =
+    (url.searchParams.get("orientation") as "portrait" | "landscape" | null) ??
+    "landscape";
+
   try {
     const data = await req.formData();
     const item = await uploadMedia(shop, data, orientation);
@@ -105,6 +126,15 @@ export async function DELETE(req: Request) {
   if (!shop || !file) {
     return NextResponse.json({ error: "Missing params" }, { status: 400 });
   }
+
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
   try {
     await deleteMedia(shop, file);
     return NextResponse.json({ success: true });
@@ -124,6 +154,14 @@ export async function PATCH(req: Request) {
   const shop = url.searchParams.get("shop");
   if (!shop) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  }
+
+  try {
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
   }
 
   let payload: unknown;

@@ -1,6 +1,11 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 
+import RoomImage from "../atoms/RoomImage";
+import VisuallyHidden from "../atoms/VisuallyHidden";
+import { Stack } from "../components/atoms/primitives/Stack";
+import { resolveAssetPath } from "../shared/media";
+import { ROOM_CARD_TEST_IDS } from "../shared/testIds";
 import type {
   RoomCardAction,
   RoomCardFacility,
@@ -8,13 +13,7 @@ import type {
   RoomCardImageLabels,
   RoomCardPrice,
   RoomCardProps,
-} from "@acme/ui/types/roomCard";
-
-import RoomImage from "../atoms/RoomImage";
-import VisuallyHidden from "../atoms/VisuallyHidden";
-import { Stack } from "../components/atoms/primitives/Stack";
-import { resolveAssetPath } from "../shared/media";
-import { ROOM_CARD_TEST_IDS } from "../shared/testIds";
+} from "../types/roomCard";
 
 export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "inline-flex",

@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import useAutoSave from "../hooks/useAutoSave";
+import useAutoSave from "@acme/ui/hooks/useAutoSave";
 
 describe("useAutoSave", () => {
   beforeEach(() => {

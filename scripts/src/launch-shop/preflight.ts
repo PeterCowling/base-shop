@@ -5,17 +5,20 @@
  */
 import { execSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
+
 import {
+  type LaunchConfig,
   launchConfigSchema,
   REQUIRED_LEGAL_PAGES,
-  type LaunchConfig,
 } from "@acme/platform-core/createShop";
 import { getShopAppSlug } from "@acme/platform-core/shops";
-import { validateThemeSelection, getAvailableThemeIds } from "@acme/platform-core/themeRegistry";
+import { getAvailableThemeIds,validateThemeSelection } from "@acme/platform-core/themeRegistry";
+
 import { ensureRuntime } from "../runtime";
+
 import {
-  getRequiredGitHubSecrets,
   type DeployTargetType,
+  getRequiredGitHubSecrets,
 } from "./required-secrets";
 import type { PreflightResult } from "./types";
 

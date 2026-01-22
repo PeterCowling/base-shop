@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
 import type { GridReservationRow } from "../../../hooks/data/roomgrid/useGridData";
 import { formatDate } from "../../../utils/dateUtils";
+import RoomGrid from "../RoomGrid";
 
 // Mock ReservationGrid to render rows and cells based on props
 jest.mock("@daminort/reservation-grid", () => ({
@@ -26,8 +29,6 @@ jest.mock("@daminort/reservation-grid", () => ({
     );
   },
 }));
-
-import RoomGrid from "../RoomGrid";
 
 describe("RoomGrid cell layout", () => {
   it("renders a cell for each day in the range", () => {

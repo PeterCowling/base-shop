@@ -1,11 +1,12 @@
-import { ref, set } from "firebase/database";
 import { useCallback } from "react";
+import { ref, set } from "firebase/database";
 import { z } from "zod";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
-import { useFirebaseDatabase } from "../../services/useFirebase";
 import { useAuth } from "../../context/AuthContext";
 import { logSettingChange } from "../../services/logSettingChange";
+import { useFirebaseDatabase } from "../../services/useFirebase";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 export function useCashDrawerLimit() {
   const { data: limit, loading, error } = useFirebaseSubscription<number>(

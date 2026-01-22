@@ -1,8 +1,10 @@
 // File: src/hooks/data/useRoomStatus.ts
 
 import { useEffect, useState } from "react";
+
 import { roomStatusSchema } from "../../schemas/roomStatusSchema";
 import type { SingleRoomStatus } from "../../types/hooks/data/roomStatusData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**

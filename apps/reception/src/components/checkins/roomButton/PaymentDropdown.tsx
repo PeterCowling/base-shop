@@ -1,9 +1,9 @@
 // File: /src/components/checkins/roomButton/PaymentDropdown.tsx
 import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
+  type Dispatch,
   memo,
+  type MouseEvent,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
@@ -13,6 +13,7 @@ import type {
   PaymentSplit,
   PaymentType,
 } from "../../../types/component/roomButton/types";
+
 import SplitList from "./SplitList";
 
 interface PaymentDropdownProps {

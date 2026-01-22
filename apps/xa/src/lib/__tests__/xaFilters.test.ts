@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { collectFacetValues, getFilterConfigs } from "../xaFilters";
 import type { XaProduct } from "../demoData";
+import { collectFacetValues, getFilterConfigs } from "../xaFilters";
 
 const baseProduct = (overrides: Partial<XaProduct>): XaProduct => {
   const { taxonomy, ...rest } = overrides;

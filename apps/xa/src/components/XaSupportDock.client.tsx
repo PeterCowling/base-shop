@@ -10,15 +10,16 @@ import { Cross1Icon } from "@radix-ui/react-icons";
 import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappTextHref } from "../lib/support";
 
-import { IconButton, OverlayScrim } from "@acme/ui/components/atoms";
+import { IconButton } from "@acme/design-system/atoms";
+import { OverlayScrim } from "@acme/design-system/primitives";
 import {
   Drawer,
   DrawerContent,
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
-} from "@acme/ui/components/atoms/primitives/drawer";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+} from "@acme/design-system/primitives/drawer";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 import { useCart } from "../contexts/XaCartContext";

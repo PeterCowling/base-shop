@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { FallbackLng, FallbackLngObjList } from "i18next";
 import { Bus, MapPin } from "lucide-react";
 
-import { useModal } from "@acme/ui/context/ModalContext";
+import { useModal } from "../context/ModalContext";
 
 function LocationInline({ lang }: { lang?: string }): JSX.Element {
   const { t, i18n } = useTranslation("modals", { lng: lang });

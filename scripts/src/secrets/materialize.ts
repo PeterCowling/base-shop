@@ -11,7 +11,7 @@
  *
  * @see docs/plans/integrated-secrets-workflow-plan.md
  */
-/* eslint-disable security/detect-non-literal-fs-filename -- SEC-04: CLI script with controlled paths derived from app options */
+ 
  
 import { execSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";

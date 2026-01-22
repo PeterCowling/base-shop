@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+// ---------------------------------------------------------------
+import Alloggiati from "../Alloggiati";
 
 // --- Mock components and hooks ----------------------------------
 jest.mock("../DateSelectorAllo", () => ({
@@ -57,9 +61,6 @@ jest.mock("../../../utils/dateUtils", async () => {
     getItalyIsoString: () => "2024-05-02T09:00:00Z",
   };
 });
-
-// ---------------------------------------------------------------
-import Alloggiati from "../Alloggiati";
 
 describe("Alloggiati", () => {
   const defaultCheckins = {

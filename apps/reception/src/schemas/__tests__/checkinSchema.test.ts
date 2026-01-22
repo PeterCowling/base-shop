@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { checkinDataSchema, checkinsSchema } from "../checkinSchema";
 
 // Test suite for the schemas modelling the "checkins" node

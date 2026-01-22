@@ -3,10 +3,9 @@
 import { type ChangeEvent, type FormEvent,useCallback, useState } from "react";
 import { updateDeposit } from "@cms/actions/shops.server";
 
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
+import { Toast } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";

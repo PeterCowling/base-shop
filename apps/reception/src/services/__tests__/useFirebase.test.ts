@@ -1,7 +1,18 @@
 // src/services/__tests__/useFirebase.test.ts
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
 import type { FirebaseApp } from "firebase/app";
+
+/* ------------------------------------------------------------------ */
+/*  Import hooks AFTER mocks are in place                              */
+/* ------------------------------------------------------------------ */
+import {
+  useFirebaseApp,
+  useFirebaseConfig,
+  useFirebaseDatabase,
+  useFirebaseFirestore,
+} from "../useFirebase";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist‑safe holders (declare with `var`, no assignment here)        */
@@ -40,16 +51,6 @@ jest.mock("firebase/firestore", () => {
   getFirestoreMock = jest.fn(() => ({ fs: true }));
   return { getFirestore: getFirestoreMock };
 });
-
-/* ------------------------------------------------------------------ */
-/*  Import hooks AFTER mocks are in place                              */
-/* ------------------------------------------------------------------ */
-import {
-  useFirebaseApp,
-  useFirebaseConfig,
-  useFirebaseDatabase,
-  useFirebaseFirestore,
-} from "../useFirebase";
 
 /* ------------------------------------------------------------------ */
 /*  Tests                                                              */

@@ -1,10 +1,11 @@
 import { memo } from "react";
 
+import type { Transaction } from "../../types/component/Till";
+import { formatItalyDateTimeFromIso } from "../../utils/dateUtils";
+
 import CopyBookingRefPill from "./CopyBookingRefPill";
 import CopyOccupantIdPill from "./CopyOccupantIdPill";
 import { formatItemCategory, summariseDescription } from "./helpers";
-import type { Transaction } from "../../types/component/Till";
-import { formatItalyDateTimeFromIso } from "../../utils/dateUtils";
 
 export interface TransactionTableProps {
   transactions: Transaction[];
@@ -27,31 +28,31 @@ const TransactionTable = memo(function TransactionTable({
     <table className="min-w-full border-collapse text-xs sm:text-sm md:text-base dark:text-darkAccentGreen">
       <thead>
         <tr>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             TIMESTAMP
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             AMOUNT
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             METHOD
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             TYPE
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             STAFF
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             ITEM CATEGORY
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             OCCUPANT
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             BOOKING
           </th>
-          <th className="sticky top-0 z-10 text-left p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
+          <th className="sticky top-0 z-10 text-start p-3 border-b border-gray-400 dark:border-darkSurface dark:bg-darkSurface">
             DESCRIPTION
           </th>
         </tr>

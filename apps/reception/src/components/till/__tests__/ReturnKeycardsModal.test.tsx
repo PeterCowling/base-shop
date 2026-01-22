@@ -1,10 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { timingSafeEqual } from "crypto";
 
-jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
 import { showToast } from "../../../utils/toastUtils";
+import ReturnKeycardsModal from "../ReturnKeycardsModal";
+
+jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
 const showToastMock = showToast as unknown as jest.Mock;
 
 // Static mock for AuthContext
@@ -25,8 +28,6 @@ jest.mock("../../../context/AuthContext", () => ({
     reauthenticate: mockReauthenticate,
   }),
 }));
-
-import ReturnKeycardsModal from "../ReturnKeycardsModal";
 
 afterEach(() => {
   jest.clearAllMocks();

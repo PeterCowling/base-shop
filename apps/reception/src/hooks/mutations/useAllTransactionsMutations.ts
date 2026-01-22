@@ -1,10 +1,10 @@
 /* src/hooks/mutations/useAllTransactionsMutations.ts */
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
+import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
 import { getItalyIsoString } from "../../utils/dateUtils";
 
 /**

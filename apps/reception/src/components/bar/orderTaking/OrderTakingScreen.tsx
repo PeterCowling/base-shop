@@ -1,11 +1,13 @@
 // /src/components/bar/orderTaking/OrderTakingScreen.tsx
 
-import React, { FC } from "react";
+import React, { type FC } from "react";
+
 import {
-  AggregatedOrder,
-  CategoryType,
-  Product,
+  type AggregatedOrder,
+  type CategoryType,
+  type Product,
 } from "../../../types/bar/BarTypes";
+
 import CategoryHeader from "./CategoryHeader";
 import OrderList from "./OrderList";
 import PaymentSection from "./PaymentSection";

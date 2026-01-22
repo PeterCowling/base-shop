@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
-import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 import {
   CatalogCsvConflictError,
   listCatalogDrafts,
   upsertCatalogDraft,
 } from "../../../../lib/catalogCsv";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
+import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
 

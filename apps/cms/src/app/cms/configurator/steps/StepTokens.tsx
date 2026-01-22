@@ -3,8 +3,8 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import presetData from "@acme/cms-ui/style/presets.json";
 import { useTranslations } from "@acme/i18n";
-import presetData from "@acme/ui/components/cms/style/presets.json";
 
 import { Button } from "@/components/atoms/shadcn";
 import type { ConfiguratorStepProps } from "@/types/configurator";

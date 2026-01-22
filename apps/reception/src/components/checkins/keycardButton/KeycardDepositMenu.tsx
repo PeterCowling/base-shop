@@ -2,9 +2,10 @@
 
 import React, { memo, useCallback } from "react";
 
+import { type DocumentType, KeycardPayType } from "../../../types/keycards";
+
 import DocumentTypeSelector from "./DocumentTypeSelector";
 import PaymentMethodSelector from "./PaymentMethodSelector";
-import { DocumentType, KeycardPayType } from "../../../types/keycards";
 
 interface KeycardDepositMenuProps {
   menuOpen: boolean;

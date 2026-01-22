@@ -1,21 +1,22 @@
 // File: src/hooks/data/roomgrid/useGridData.ts
 
 import { useCallback, useMemo } from "react";
+
+import { statusColors } from "../../../components/roomgrid/constants/statusColors";
+import type { TRow } from "../../../components/roomgrid/interfaces/row";
+import type { MyLocalStatus } from "../../../types/MyLocalStatus";
 import {
   dateRangesOverlap,
   generateDateRange,
   sortByDateAsc,
   toEpochMillis,
 } from "../../../utils/dateUtils";
+import useRoomConfigs from "../../client/checkin/useRoomConfigs";
 
 import useActivitiesData, { type IActivity } from "./useActivitiesData";
 import useBookingsData from "./useBookingsData";
 import useGuestByRoomData from "./useGuestByRoomData";
 import useGuestsDetailsData from "./useGuestsDetailsData";
-import { statusColors } from "../../../components/roomgrid/constants/statusColors";
-import type { TRow } from "../../../components/roomgrid/interfaces/row";
-import type { MyLocalStatus } from "../../../types/MyLocalStatus";
-import useRoomConfigs from "../../client/checkin/useRoomConfigs";
 
 /** TPeriod uses MyLocalStatus only. */
 export type TPeriod = {

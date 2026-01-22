@@ -4,11 +4,11 @@ import { useMemo } from "react";
 
 import { EMAIL_CODES } from "../../../constants/emailCodes";
 import {
-  EmailProgressData,
+  type EmailProgressData,
   EmailProgressDataSchema,
 } from "../../../schemas/emailProgressDataSchema";
-import { ActivityByCodeData } from "../../../types/hooks/data/activitiesByCodeData";
-import { Activity } from "../../../types/hooks/data/activitiesData";
+import { type ActivityByCodeData } from "../../../types/hooks/data/activitiesByCodeData";
+import { type Activity } from "../../../types/hooks/data/activitiesData";
 import {
   computeHoursElapsed,
   findTimestampForCode,

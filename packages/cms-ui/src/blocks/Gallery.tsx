@@ -2,12 +2,11 @@
 import { useId } from "react";
 import Image from "next/image";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
 import type { TranslatableText } from "@acme/types/i18n";
-
-import { Grid as DSGrid } from "../../atoms/primitives";
 
 export type GalleryImage = { src: string; alt?: TranslatableText; caption?: TranslatableText };
 

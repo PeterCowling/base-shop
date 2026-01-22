@@ -4,8 +4,8 @@
 
 import * as React from "react";
 
-import { cn } from "../utils/style";
 import { FormField } from "../atoms/FormField";
+import { cn } from "../utils/style";
 
 import { Inline } from "./Inline";
 
@@ -112,7 +112,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         error={error}
         {...(required !== undefined ? { required } : {})}
         {...(formClassName !== undefined ? { className: formClassName } : {})}
-        // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
+         
         input={({ id: controlId, describedBy, ariaInvalid }) =>
           floatingLabel ? (
             <div className="relative">

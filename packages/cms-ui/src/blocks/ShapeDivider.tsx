@@ -45,7 +45,7 @@ export default function ShapeDivider({ position, preset, color = "currentColor",
     lineHeight: 0,
   } as React.CSSProperties;
 
-  /* eslint-disable react/forbid-dom-props -- DS-0005: Inline style required to position SVG divider absolutely with dynamic height and orientation. */
+   
   return (
     <div aria-hidden style={style}>
       <svg
@@ -60,5 +60,5 @@ export default function ShapeDivider({ position, preset, color = "currentColor",
       </svg>
     </div>
   );
-  /* eslint-enable react/forbid-dom-props */
+   
 }

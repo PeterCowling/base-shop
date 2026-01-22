@@ -1,12 +1,18 @@
-import React, { createRef, RefObject, useMemo } from "react";
-import type { KeyboardEvent } from "react";
+import "./Prepayments.css";
+
+import React, {
+  createRef,
+  type KeyboardEvent,
+  type RefObject,
+  useMemo,
+} from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 import BookingRefChipPrepayComponent from "./BookingRefChipPrepay";
 import CheckInDateChip from "./CheckInDateChip";
 import HoursChip from "./HoursChip";
 import MarkAsFailedButton from "./MarkAsFailedButton";
 import MarkAsPaidButton from "./MarkAsPaidButton";
-import "./Prepayments.css";
 
 const SECTION_TITLES = [
   "Agreed to Terms and Conditions",
@@ -181,7 +187,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             }
                           }
                         }}
-                        className="w-full text-left cursor-pointer transition-colors p-4 rounded hover:bg-gray-50 dark:hover:bg-darkSurface font-body flex flex-wrap items-center justify-between gap-3"
+                        className="w-full text-start cursor-pointer transition-colors p-4 rounded hover:bg-gray-50 dark:hover:bg-darkSurface font-body flex flex-wrap items-center justify-between gap-3"
                       >
                         {/* Left side: Check-In Date, Booking Ref, Guest Name */}
                         <div className="flex flex-wrap items-center gap-3">

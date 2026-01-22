@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import clsx from "clsx";
 
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
@@ -52,7 +52,7 @@ export function renderLink(
 ) {
   if (target.type === "internal") {
     return (
-      <Link key={key} to={target.to} prefetch="intent" className={LINK_CLASSNAME}>
+      <Link key={key} href={target.to} prefetch={true} className={LINK_CLASSNAME}>
         {children}
       </Link>
     );

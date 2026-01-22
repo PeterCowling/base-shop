@@ -21,7 +21,7 @@ jest.mock("../useMediaLibrary", () => ({
   }),
 }));
 
-jest.mock("@acme/ui/hooks/useFileUpload", () => () => ({
+jest.mock("../../../../hooks/useFileUpload", () => () => ({
   pendingFile: null,
   altText: "",
   setAltText: jest.fn(),

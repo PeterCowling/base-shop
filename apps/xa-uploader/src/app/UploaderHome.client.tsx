@@ -4,8 +4,8 @@
 
 import type { CSSProperties } from "react";
 
-import { LanguageToggle } from "../components/LanguageToggle.client";
 import CatalogConsole from "../components/catalog/CatalogConsole.client";
+import { LanguageToggle } from "../components/LanguageToggle.client";
 import { UploaderI18nProvider, useUploaderI18n } from "../lib/uploaderI18n.client";
 
 import styles from "./uploader.module.css";

@@ -1,5 +1,5 @@
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
 
 import {
   computeSensitivities,

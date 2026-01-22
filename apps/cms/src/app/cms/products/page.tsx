@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/products/page.tsx
 
-import { Tag } from "@acme/ui/components/atoms";
+import { Tag } from "@acme/design-system/atoms";
 
 import { listShops } from "../../../lib/listShops";
 

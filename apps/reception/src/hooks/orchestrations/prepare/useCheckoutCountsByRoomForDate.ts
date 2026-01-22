@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { useGuestByRoom } from "./useGuestByRoom";
 import {
   addDays,
   getItalyLocalTimeHHMM,
@@ -10,6 +9,8 @@ import {
   parseLocalDate,
 } from "../../../utils/dateUtils";
 import { useCheckouts } from "../../data/useCheckouts";
+
+import { useGuestByRoom } from "./useGuestByRoom";
 
 /**
  * Data Orchestrator Hook:

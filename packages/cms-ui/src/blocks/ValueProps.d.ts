@@ -1,4 +1,4 @@
-import { type ValuePropItem } from "../../home/ValueProps";
+import { type ValuePropItem } from "@acme/ui/home/ValueProps";
 interface Props {
     items?: ValuePropItem[];
     minItems?: number;

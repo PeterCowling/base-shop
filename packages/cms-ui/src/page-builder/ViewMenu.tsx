@@ -3,9 +3,9 @@
 
 import type { ComponentProps } from "react";
 
+import { Popover, PopoverContent, PopoverTrigger, Switch, Tooltip } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-import { Button, Popover, PopoverContent, PopoverTrigger, Switch, Tooltip } from "@acme/design-system/atoms";
 
 import type GridSettings from "./GridSettings";
 

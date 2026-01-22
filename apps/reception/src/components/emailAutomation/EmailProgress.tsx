@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { type ChangeEvent, useMemo, useState } from "react";
 
-import EmailProgressLists from "./EmailProgressLists";
 import useEmailProgressData, {
-  EmailProgressData,
+  type EmailProgressData,
 } from "../../hooks/client/checkin/useEmailProgressData";
 import useEmailProgressActions from "../../hooks/orchestrations/emailAutomation/useEmailProgressActions";
+
+import EmailProgressLists from "./EmailProgressLists";
 
 interface EmailProgressProps {
   /**
@@ -81,7 +82,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
                 <input
                   id="filterInput"
                   type="text"
-                  className="w-full border border-primary-light rounded px-3 py-1 focus:outline-none focus:ring-1 focus:ring-primary-main"
+                  className="w-full border border-primary-light rounded px-3 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main"
                   placeholder="Type to filter..."
                   value={filterText}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>

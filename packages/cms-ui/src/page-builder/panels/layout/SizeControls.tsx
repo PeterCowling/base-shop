@@ -1,12 +1,11 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/SizeControls.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
-
 import { Tooltip } from "@acme/design-system/atoms";
-import IconButton from "../../../../atoms/IconButton";
+import IconButton from "@acme/design-system/atoms/IconButton";
 import { Button } from "@acme/design-system/shadcn";
-import useLocalStrings from "../../hooks/useLocalStrings";
+import type { PageComponent } from "@acme/types";
+import useLocalStrings from "@acme/ui/components/cms/page-builder/hooks/useLocalStrings";
 
 import { isOverridden } from "./helpers";
 import UnitInput from "./UnitInput";

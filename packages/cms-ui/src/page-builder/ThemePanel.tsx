@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
+import { DialogContent, DialogTitle } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import { getShopFromPath } from "@acme/lib/shop";
-
 import { type TokenMap } from "@acme/ui/hooks/useTokenEditor";
-import { DialogContent, DialogTitle } from "@acme/design-system/shadcn";
+
 import Tokens from "../style/Tokens";
 
 import ColorThemeSelector from "./ColorThemeSelector";

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { LoanedItemsList } from "../LoanedItemsList";
 
 /* eslint-disable no-var */
 var useOccupantLoansMock: jest.Mock;
@@ -10,8 +13,6 @@ jest.mock("../useOccupantLoans", () => {
   useOccupantLoansMock = jest.fn();
   return { __esModule: true, default: useOccupantLoansMock };
 });
-
-import { LoanedItemsList } from "../LoanedItemsList";
 
 const guest = {
   guestId: "g1",

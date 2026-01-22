@@ -1,7 +1,12 @@
 /* File: src/hooks/data/prepare/__tests__/useCheckinsByDate.test.tsx */
 
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+// Import the hook under test after mocks have been registered. Because
+// Jest hoists `jest.mock` calls, the mocked versions above will be used.
+import useCheckinsByDate from "../useCheckinsByDate";
 
 /**
  * Unit tests for useCheckinsByDate. These tests verify that the hook
@@ -41,7 +46,7 @@ jest.mock("../../useFirebaseSubscription", () => ({
   // The mock itself is defined below and will be populated before the hook
   // under test is imported.
   default: (...args: Parameters<typeof firebaseSubscriptionMock>) =>
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+     
     firebaseSubscriptionMock(...args),
 }));
 
@@ -70,10 +75,6 @@ jest.mock("firebase/database", () => {
     ),
   };
 });
-
-// Import the hook under test after mocks have been registered. Because
-// Jest hoists `jest.mock` calls, the mocked versions above will be used.
-import useCheckinsByDate from "../useCheckinsByDate";
 
 // Clean up between each test. Reset mocks and shared state so that tests
 // don't leak into one another.

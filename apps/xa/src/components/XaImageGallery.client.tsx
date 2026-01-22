@@ -3,8 +3,8 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy gallery pending design/i18n overhaul */
 
 import * as React from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/ui/components/atoms";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 
 import { XaFadeImage } from "./XaFadeImage";
 import type { XaProduct } from "../lib/demoData";

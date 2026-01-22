@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
 
 import type { SuppliersStrings,SupplierSummary } from "./types";
 

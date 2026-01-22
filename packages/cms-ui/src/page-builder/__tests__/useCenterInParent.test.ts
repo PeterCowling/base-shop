@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import useCenterInParent from "../hooks/useCenterInParent";
+import useCenterInParent from "@acme/ui/components/cms/page-builder/hooks/useCenterInParent";
 
 describe("useCenterInParent", () => {
   it("centers allowed absolute children and respects locked editor flags", () => {

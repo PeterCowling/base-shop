@@ -4,14 +4,13 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { ulid } from "ulid";
 
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
-import type { SectionTemplate } from "@acme/types/section/template";
-
 import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import { Inline as DSInline } from "@acme/design-system/primitives/Inline";
 import { Stack as DSStack } from "@acme/design-system/primitives/Stack";
 import { Button, Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
+import type { SectionTemplate } from "@acme/types/section/template";
 
 import { getBuiltInSections } from "./builtInSections.data";
 import type { ComponentType } from "./defaults";

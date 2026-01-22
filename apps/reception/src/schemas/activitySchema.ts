@@ -5,5 +5,3 @@ export const activitySchema = z.object({
   timestamp: z.string().optional(),
   who: z.string(),
 });
-
-export type Activity = z.infer<typeof activitySchema>;

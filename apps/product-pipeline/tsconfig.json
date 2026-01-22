@@ -41,6 +41,18 @@
       ],
       "@acme/pipeline-engine/*": [
         "../../packages/pipeline-engine/dist/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/dist/index.d.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/dist/*"
+      ],
+      "@acme/design-system": [
+        "../../packages/design-system/dist/index.d.ts"
+      ],
+      "@acme/design-system/*": [
+        "../../packages/design-system/dist/*"
       ]
     },
     "types": ["node", "react", "react-dom", "three"],

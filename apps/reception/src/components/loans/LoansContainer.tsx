@@ -1,21 +1,24 @@
+import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 import { get, ref } from "firebase/database";
-import { memo, ReactElement, useCallback, useMemo, useState } from "react";
+
 import { useLoanData } from "../../context/LoanDataContext";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
-  LoanItem,
-  LoanMethod,
-  LoanTransaction,
+  type LoanItem,
+  type LoanMethod,
+  type LoanTransaction,
 } from "../../types/hooks/data/loansData";
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
+
 import { LoanFilters } from "./LoanFilters";
 import { LoansTable } from "./LoansTable";
 import { getDepositForItem } from "./LoanUtils";
 import { useGuestLoanData } from "./useGuestLoanData";
+
 function LoansContainer({ username }: { username: string }): ReactElement {
   const [selectedDate, setSelectedDate] = useState<string>(getLocalToday());
   const [guestFilter, setGuestFilter] = useState("");

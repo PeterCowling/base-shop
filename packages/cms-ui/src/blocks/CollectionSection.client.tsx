@@ -3,11 +3,10 @@
 import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Sidebar } from "@acme/design-system/primitives/Sidebar";
 import { useTranslations } from "@acme/i18n";
 import type { SKU } from "@acme/types";
-
-import { Grid as DSGrid } from "../../atoms/primitives/Grid";
-import { Sidebar } from "../../atoms/primitives/Sidebar";
 
 import ProductFilter, { type FacetConfig } from "./ProductFilter";
 

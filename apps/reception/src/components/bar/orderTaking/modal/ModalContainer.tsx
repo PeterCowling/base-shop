@@ -1,5 +1,5 @@
 /* File: src/components/bar/modal/ModalContainer.tsx */
-import React, { FC, memo } from "react";
+import React, { type FC, memo } from "react";
 
 /**
  * Simple container for modal content.

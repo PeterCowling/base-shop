@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import type { OccupantDetails } from "../../../../types/hooks/data/guestDetailsData";
 import {
   occupantIsComplete,

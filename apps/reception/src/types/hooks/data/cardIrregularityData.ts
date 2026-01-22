@@ -1,10 +1,9 @@
 /* src/types/hooks/data/cardIrregularityData.ts */
 
-export interface CardIrregularity {
-  user: string;
-  timestamp: string;
-  action: "reconcile" | "close";
-  missingCount: number;
-}
+import type {
+  CCReceiptIrregularities,
+  CCReceiptIrregularity,
+} from "../../../schemas/ccReceiptIrregularitySchema";
 
-export type CardIrregularities = Record<string, CardIrregularity> | null;
+export type CardIrregularity = CCReceiptIrregularity;
+export type CardIrregularities = CCReceiptIrregularities;

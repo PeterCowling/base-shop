@@ -2,7 +2,7 @@
 import React, { memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-import { CheckInRow } from "../../types/component/CheckinRow";
+import { type CheckInRow } from "../../types/component/CheckinRow";
 
 /**
  * Determine whether the occupant’s document data is
@@ -85,7 +85,7 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
       title={title}
     >
       <i className="fas fa-passport" />
-      <span className="ml-2">Doc</span>
+      <span className="ms-2">Doc</span>
     </button>
   );
 };

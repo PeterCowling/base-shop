@@ -29,7 +29,8 @@ export async function GET(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("[api/orders] GET error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: "Failed to fetch order" }, { status: 500 }); // i18n-exempt -- generic error
   }
 }
 
@@ -81,6 +82,7 @@ export async function PATCH(
     }
     return NextResponse.json({ order });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("[api/orders] PATCH error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: "Failed to update order" }, { status: 500 }); // i18n-exempt -- generic error
   }
 }

@@ -1,16 +1,16 @@
 /* File: src/hooks/data/prepare/useCheckinsByDate.ts */
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   onValue,
   orderByKey,
   query,
   ref,
   startAt,
-  Unsubscribe,
+  type Unsubscribe,
 } from "firebase/database";
-import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFirebaseDatabase } from "../../../services/useFirebase";
 import useFirebaseSubscription from "../useFirebaseSubscription";
@@ -177,7 +177,7 @@ export default function useCheckinsByDate(
 
     // Callback when an error occurs
     const handleError = (err: unknown): void => {
-      // eslint-disable-next-line no-console
+       
       console.error("useCheckinsByDate => /checkins error:", err);
       setCheckinsError(err);
       setCheckinsLoading(false);

@@ -1,14 +1,7 @@
 // src/components/checkins/KeycardButton/KeycardDepositButton.tsx
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBan,
-  faFileAlt,
-  faMoneyBill,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   memo,
-  MouseEvent,
+  type MouseEvent,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -17,15 +10,21 @@ import {
   useState,
 } from "react";
 import ReactDOM from "react-dom";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBan,
+  faFileAlt,
+  faMoneyBill,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import KeycardDepositMenu from "./KeycardDepositMenu";
 import { useLoanData } from "../../../context/LoanDataContext";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
-import { CheckInRow } from "../../../types/component/CheckinRow";
+import { type CheckInRow } from "../../../types/component/CheckinRow";
 import {
-  LoanMethod,
-  LoanTransaction,
+  type LoanMethod,
+  type LoanTransaction,
 } from "../../../types/hooks/data/loansData";
 import {
   DocumentType,
@@ -37,6 +36,8 @@ import { getItalyIsoString } from "../../../utils/dateUtils";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
 import { showToast } from "../../../utils/toastUtils";
 import useOccupantLoans from "../../loans/useOccupantLoans";
+
+import KeycardDepositMenu from "./KeycardDepositMenu";
 
 interface KeycardDepositButtonProps {
   booking: CheckInRow;
@@ -359,7 +360,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             : "Confirm keycard deposit"
         }
       >
-        <span className="ml-2 hidden md:inline">Keycard</span>
+        <span className="ms-2 hidden md:inline">Keycard</span>
       </button>
 
       {/* Dropdown menu (portal) */}

@@ -2,7 +2,7 @@
 
 import { memo, useMemo } from "react";
 
-import { ShiftSummaryProps } from "../../types/component/Till";
+import { type ShiftSummaryProps } from "../../types/component/Till";
 import { formatEnGbDateTime } from "../../utils/dateUtils";
 
 /**
@@ -135,7 +135,7 @@ interface StatProps {
 const Stat = memo<StatProps>(function Stat({ label, value }) {
   return (
     <div className="flex items-start">
-      <dt className="mr-1 font-medium text-gray-600 dark:text-darkAccentGreen">
+      <dt className="me-1 font-medium text-gray-600 dark:text-darkAccentGreen">
         {label}:
       </dt>
       <dd className="text-gray-900 dark:text-darkAccentGreen">{value}</dd>

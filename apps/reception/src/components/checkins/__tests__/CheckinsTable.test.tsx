@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-/* eslint-disable react-hooks/rules-of-hooks */
+
+import type { CheckInRow } from "../../../types/component/CheckinRow";
+ 
 
 // Suppress native alert calls in jsdom
 globalThis.alert = jest.fn();
-
-import type { CheckInRow } from "../../../types/component/CheckinRow";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist-safe mock placeholders                                      */
@@ -82,18 +83,18 @@ async function loadTable() {
   }));
 
   jest.doMock("../../../hooks/utilities/useCheckinsModes", () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+     
     const React: typeof import("react") = require("react");
     return {
       __esModule: true,
       default: () => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+         
         const [isEditMode, setIsEditMode] = React.useState(false);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+         
         const [isDeleteMode, setIsDeleteMode] = React.useState(false);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+         
         const [isAddGuestMode, setIsAddGuestMode] = React.useState(false);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
+         
         const [showArchiveModal, setShowArchiveModal] = React.useState(false);
         return {
           isEditMode,

@@ -3,13 +3,12 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { Price } from "@acme/design-system/atoms/Price";
 import { useTranslations } from "@acme/i18n";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-
-import { Price } from "../../atoms/Price";
-import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";
+import { ProductVariantSelector } from "@acme/ui/components/organisms/ProductVariantSelector";
 
 import { fetchCollection } from "./products/fetchCollection";
 

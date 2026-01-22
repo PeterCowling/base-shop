@@ -104,14 +104,14 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
   const top = Math.max(0, Math.round((H - box.h) / 2));
 
   return (
-    /* eslint-disable ds/absolute-parent-guard -- PB-2415: Overlay mounts next to the media element inside a positioned container provided by the editor canvas. The positioned ancestor lives outside this component. */
+     
     <div ref={wrapRef} className="pointer-events-none absolute inset-0 select-none">
       {/* Dim entire canvas region rather than using a raw shadow ring (DS tokenized color) */}
       <div className="absolute inset-0 bg-foreground/35" aria-hidden="true" />
       {/* Crop rectangle (centered) */}
       <div
         className="absolute border-2 border-primary/90"
-        // eslint-disable-next-line react/forbid-dom-props -- PB-2419: crop rectangle requires dynamic absolute positioning (left/top/width/height)
+         
         style={{ left, top, width: box.w, height: box.h }}
       >
         {/* Handles */}
@@ -147,6 +147,6 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
         </div>
       </div>
     </div>
-    /* eslint-enable ds/absolute-parent-guard */
+     
   );
 }

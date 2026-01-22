@@ -5,15 +5,14 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { z } from "zod";
 
-import { useTranslations } from "@acme/i18n";
-import { getShopFromPath } from "@acme/lib/shop";
-import type { PageComponent } from "@acme/types";
-import type { SectionTemplate } from "@acme/types/section/template";
-
 import { Tooltip } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/primitives/Grid";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Button,Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import { getShopFromPath } from "@acme/lib/shop";
+import type { PageComponent } from "@acme/types";
+import type { SectionTemplate } from "@acme/types/section/template";
 
 import { getBuiltInSections } from "./builtInSections.data";
 import useThemeSignature from "./hooks/useThemeSignature";

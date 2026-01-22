@@ -1,5 +1,6 @@
 /* File: /src/hoc/withModalBackground.tsx */
-import { ComponentType, ReactElement } from "react";
+import { type ComponentType, type ReactElement } from "react";
+
 import { SimpleModal } from "@acme/ui/molecules";
 
 /**

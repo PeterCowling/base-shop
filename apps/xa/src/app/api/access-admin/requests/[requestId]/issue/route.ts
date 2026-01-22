@@ -8,7 +8,7 @@ import {
   updateAccessRequest,
 } from "../../../../../../lib/accessStore";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 function summarizeInvite(invite: {
   id: string;

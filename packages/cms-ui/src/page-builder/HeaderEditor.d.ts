@@ -1,5 +1,5 @@
 import type { HeaderComponent } from "@acme/types";
-import type { LogoVariants } from "@acme/ui/organisms/types";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 interface ExtendedHeaderComponent extends HeaderComponent {
     logoVariants?: LogoVariants;
     shopName?: string;

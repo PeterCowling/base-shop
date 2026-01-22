@@ -1,7 +1,5 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-
 import {
   Input,
   Select,
@@ -10,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+
 import { easingPresets } from "../EasingPresets";
 
 import { openSelectOnMouseDown } from "./helpers";

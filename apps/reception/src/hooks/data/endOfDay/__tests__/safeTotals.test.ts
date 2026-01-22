@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import type { SafeCount } from "../../../../types/hooks/data/safeCountData";
 import { calculateSafeTotals } from "../safeTotals";
 

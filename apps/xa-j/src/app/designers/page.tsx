@@ -4,10 +4,10 @@ import * as React from "react";
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy designers page pending i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Breadcrumbs } from "@acme/ui/components/molecules";
-import { Input } from "@acme/ui/components/atoms";
+import { Input } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Breadcrumbs } from "@acme/design-system/molecules";
 
 import { XA_BRANDS } from "../../lib/demoData";
 

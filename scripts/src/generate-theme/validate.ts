@@ -6,10 +6,11 @@
 
 import * as fs from 'fs/promises';
 import * as path from 'path';
+
 import {
-  hexToRgb,
   contrastRatio,
-  RGBColor,
+  hexToRgb,
+  type RGBColor,
 } from './palette';
 
 // Required token keys that all themes must define

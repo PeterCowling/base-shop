@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+
 import enTranslations from "@acme/i18n/en.json";
 import { readEnvFile } from "@acme/platform-core/configurator";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
@@ -83,7 +84,7 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
         : join(rootDir, "profiles", `${profileArg}.json`);
     const resolvedProfilePath = resolve(rootDir, profilePath);
     try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-3205: CLI reads a developer-provided profile path resolved against the workspace, not HTTP input [ttl=2026-12-31]
+       
       const raw = readFileSync(resolvedProfilePath, "utf8");
       config = JSON.parse(raw);
     } catch (err) {
@@ -102,7 +103,7 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
     }
     const resolvedConfigPath = resolve(rootDir, configPath);
     try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-3205: CLI reads a developer-provided config path resolved against the workspace, not HTTP input [ttl=2026-12-31]
+       
       const raw = readFileSync(resolvedConfigPath, "utf8");
       const fileConfig = JSON.parse(raw);
       config = { ...config, ...fileConfig };

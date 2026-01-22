@@ -1,8 +1,7 @@
 "use client";
 
-import type { RepeaterComponent } from "@acme/types/page/layouts/repeater";
-
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import type { RepeaterComponent } from "@acme/types/page/layouts/repeater";
 
 import type { EditorProps } from "./EditorProps";
 

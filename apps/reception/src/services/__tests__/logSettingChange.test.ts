@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import type { Database } from "firebase/database";
+
+import { logSettingChange } from "../logSettingChange";
 
 /* eslint-disable no-var */
 var refMock: jest.Mock;
@@ -19,8 +22,6 @@ jest.mock("../../utils/dateUtils", () => {
   dateMock = jest.fn(() => "2024-01-01T00:00:00Z");
   return { getItalyIsoString: dateMock };
 });
-
-import { logSettingChange } from "../logSettingChange";
 
 describe("logSettingChange", () => {
   afterEach(() => jest.clearAllMocks());

@@ -4,9 +4,8 @@
 import React from "react";
 import { BellIcon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
 
 export default function NotificationsBell({ shop, pageId }: { shop?: string | null; pageId?: string | null }) {
   const t = useTranslations();

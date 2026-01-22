@@ -10,11 +10,11 @@ import {
 } from "@portabletext/editor";
 import { EventListenerPlugin } from "@portabletext/editor/plugins";
 
+import { Button, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { ImagePicker } from "@acme/page-builder-ui";
 import { formatCurrency } from "@acme/lib/format";
+import { ImagePicker } from "@acme/page-builder-ui";
 import type { SKU } from "@acme/types";
-import { Button, Input } from "@acme/ui/components/atoms";
 
 import type { PortableTextBlock } from "./schema";
 import { renderBlock,schema } from "./schema";

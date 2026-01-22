@@ -1,5 +1,3 @@
-import type { PopupModalComponent } from "@acme/types";
-
 import {
   Input,
   Select,
@@ -9,6 +7,7 @@ import {
   SelectValue,
   Textarea,
 } from "@acme/design-system/shadcn";
+import type { PopupModalComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

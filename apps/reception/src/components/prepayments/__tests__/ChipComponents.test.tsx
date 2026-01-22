@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import { showToast } from "../../../utils/toastUtils";
-const showToastMock = showToast as unknown as jest.Mock;
-
-import HoursChip from "../HoursChip";
 import BookingRefChipPrepay from "../BookingRefChipPrepay";
 import CheckInDateChip from "../CheckInDateChip";
+import HoursChip from "../HoursChip";
+
+jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
+const showToastMock = showToast as unknown as jest.Mock;
 
 describe("HoursChip", () => {
   it("renders N/A when hours are null", () => {

@@ -1,5 +1,5 @@
-import { getDatabase, ref, remove, set, update } from "firebase/database";
 import { useCallback } from "react";
+import { getDatabase, ref, remove, set, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { getItalyIsoString } from "../../utils/dateUtils";

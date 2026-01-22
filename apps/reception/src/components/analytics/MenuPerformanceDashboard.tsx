@@ -1,5 +1,7 @@
 // File: src/components/analytics/MenuPerformanceDashboard.tsx
 
+import React, { useMemo } from "react";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 import {
   ArcElement,
   BarElement,
@@ -13,8 +15,6 @@ import {
   Tooltip,
 } from "chart.js";
 import dayjs from "dayjs";
-import React, { useMemo } from "react";
-import { Bar, Doughnut, Line } from "react-chartjs-2";
 
 // Rename the default import to avoid ESLint `import/no-named-as-default` rule
 import useProductsHook from "../../hooks/data/bar/useProducts";

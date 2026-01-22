@@ -4,7 +4,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 import ImageEditor from "../ImageEditor";
 
 // Mock shadcn dialog
-jest.mock("../../../atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   __esModule: true,
   Dialog: ({ children, open, onOpenChange }: any) => (open ? <div>{children}</div> : null),
   DialogContent: ({ children }: any) => <div role="dialog">{children}</div>,

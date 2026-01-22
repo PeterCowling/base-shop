@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
+
 import React from "react";
+import { renderHook } from "@testing-library/react";
 
 import { TillShiftProvider } from "../TillShiftProvider";
 import { useTillAlerts } from "../useTillAlerts";

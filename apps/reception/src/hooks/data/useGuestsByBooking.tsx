@@ -1,6 +1,7 @@
 /* src/hooks/data/useGuestsByBooking.tsx */
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -9,7 +10,7 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
+
 import { guestsByBookingSchema } from "../../schemas/guestsByBookingSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { GuestsByBooking } from "../../types/hooks/data/guestsByBookingData";

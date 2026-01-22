@@ -1,7 +1,7 @@
 "use client";
 import type { ReactNode } from "react";
 
-import { cn } from "../../../../utils/style";
+import { cn } from "@acme/design-system/utils/style";
 
 export interface StackFlexProps {
   children?: ReactNode;
@@ -69,7 +69,7 @@ export default function StackFlex({
   return (
     <div
       className={cn("flex", className)}
-      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic flexbox properties computed at runtime */
+       
       style={{
         flexDirection: effDirection,
         flexWrap: wrap ? "wrap" : "nowrap",

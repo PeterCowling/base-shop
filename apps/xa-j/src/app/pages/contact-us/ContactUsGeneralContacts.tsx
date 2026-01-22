@@ -1,8 +1,8 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy contact copy pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Button } from "@acme/ui/components/atoms";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { siteConfig } from "../../../lib/siteConfig";
 

@@ -591,13 +591,13 @@ if (process.argv[1]?.includes("register-stripe-webhook")) {
 }
 
 export {
-  parseArgs,
-  findExistingEndpoint,
   createEndpoint,
-  updateEndpoint,
-  deleteEndpoint,
-  listEndpoints,
   DEFAULT_WEBHOOK_EVENTS,
+  deleteEndpoint,
+  findExistingEndpoint,
+  listEndpoints,
+  parseArgs,
   type RegisterOptions,
   type RegistrationResult,
+  updateEndpoint,
 };

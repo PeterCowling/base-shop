@@ -4,9 +4,12 @@
 /* ------------------------------------------------------------------ */
 
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 
 import type { SalesOrder } from "../../../../../../types/bar/BarTypes";
+// Import the hook under test AFTER registering mocks
+import { useOrderActions } from "../useOrderActions";
 
 /* ------------------------------------------------------------------ */
 /*  Mock holders — use `var` to avoid TDZ issues with hoisted mocks   */
@@ -39,9 +42,6 @@ jest.mock("firebase/database", () => {
 jest.mock("../../../../../../services/useFirebase", () => ({
   useFirebaseDatabase: () => ({}),
 }));
-
-// Import the hook under test AFTER registering mocks
-import { useOrderActions } from "../useOrderActions";
 
 /* ------------------------------------------------------------------ */
 /*  Helper to create a DataSnapshot‑like object                        */

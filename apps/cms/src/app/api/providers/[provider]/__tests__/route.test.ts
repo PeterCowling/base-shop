@@ -10,6 +10,13 @@ const writeFile = jest.fn();
 jest.mock("fs", () => ({ promises: { mkdir, writeFile } }));
 jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
 
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 let GET: typeof import("../route").GET;
 
 beforeAll(async () => {

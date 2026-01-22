@@ -1,7 +1,7 @@
 /* src/components/payments/prepayments/CheckInDateChip.tsx */
 
-import dayjs from "dayjs";
 import React from "react";
+import dayjs from "dayjs";
 
 export interface CheckInDateChipProps {
   checkInDate?: string;

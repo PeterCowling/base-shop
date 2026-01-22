@@ -14,10 +14,10 @@ export * from "./primitives";
 export * from "./utils/style";
 
 // Types
-export * from "./types/viewport";
+export type * from "./types/viewport";
 
-// Shadcn - only export the custom Button wrapper (primitives already exported above)
-export { Button as ShadcnButton, type ButtonProps as ShadcnButtonProps } from "./shadcn/Button";
+// Note: Button and Dialog components are re-exported from atoms for backwards compatibility.
+// For direct shadcn access, use @acme/design-system/shadcn
 
 // Hooks
 export { default as useViewport } from "./hooks/useViewport";

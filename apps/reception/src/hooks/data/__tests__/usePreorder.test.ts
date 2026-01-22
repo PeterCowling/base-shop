@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+import usePreorder from "../usePreorder";
 
 /* eslint-disable no-var */
 var mockedSub: jest.Mock;
@@ -9,8 +12,6 @@ jest.mock("../useFirebaseSubscription", () => {
   mockedSub = jest.fn();
   return { default: mockedSub };
 });
-
-import usePreorder from "../usePreorder";
 
 describe("usePreorder", () => {
   afterEach(() => jest.clearAllMocks());

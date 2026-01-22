@@ -1,38 +1,38 @@
 "use client";
 
-import { memo, useState, useCallback } from "react";
+import { memo, useCallback,useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBars,
-  faTimes,
-  faCashRegister,
-  faUserCheck,
-  faSignOutAlt,
-  faDoorOpen,
-  faHandHolding,
+  faBed,
+  faBoxes,
   faCalendarPlus,
-  faShieldAlt,
-  faTools,
-  faStream,
+  faCarrot,
+  faCashRegister,
   faChartArea,
-  faFileAlt,
+  faChartBar,
+  faChartLine,
+  faChartPie,
   faClipboardList,
   faCreditCard,
-  faToggleOn,
-  faSearch,
   faDatabase,
-  faBoxes,
-  faCarrot,
-  faChartLine,
-  faChartBar,
-  faChartPie,
-  faBed,
+  faDoorOpen,
+  faFileAlt,
+  faHandHolding,
   faHome,
+  faSearch,
+  faShieldAlt,
+  faSignOutAlt,
+  faStream,
+  faTimes,
+  faToggleOn,
+  faTools,
+  faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Permissions, canAccess } from "../../lib/roles";
+import { canAccess,Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 
 interface NavItem {

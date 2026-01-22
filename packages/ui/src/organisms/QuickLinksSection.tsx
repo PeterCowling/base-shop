@@ -4,10 +4,9 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { BedDouble, BookOpen, MapPin, Sparkles } from "lucide-react";
 
-import type { AppLanguage } from "@acme/ui/i18n.config";
-
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
+import type { AppLanguage } from "../i18n.config";
 
 export interface QuickLink {
   label: string;

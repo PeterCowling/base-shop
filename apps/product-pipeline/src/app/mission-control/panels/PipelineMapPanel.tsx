@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import PipelineMap2D from "./PipelineMap2D";
 import PipelineMap3D from "./PipelineMap3D";

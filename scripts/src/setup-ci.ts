@@ -7,7 +7,9 @@
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import { envSchema } from "@config/src/env";
+
 import {
   getShopAppPackage,
   getShopAppSlug,
@@ -26,13 +28,13 @@ const appSlug = getShopAppSlug(shopId);
 const appPackage = getShopAppPackage(shopId);
 
 const envPath = join("apps", appSlug, ".env");
-// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
+ 
 if (!existsSync(envPath)) {
   console.error(`Missing ${envPath}`); // i18n-exempt -- ENG-2001 developer-facing missing env file message [ttl=2026-12-31]
   process.exit(1);
 }
 
-// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
+ 
 const envRaw = readFileSync(envPath, "utf8");
 const env: Record<string, string> = {};
 for (const line of envRaw.split(/\n+/)) {
@@ -209,6 +211,6 @@ jobs:
           RETRY_DELAY: "6"
 `;
 
-// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: wfPath is workspace-relative under .github/workflows; script is CLI-only
+ 
 writeFileSync(wfPath, workflow);
 console.log(`Created workflow ${wfPath}`);

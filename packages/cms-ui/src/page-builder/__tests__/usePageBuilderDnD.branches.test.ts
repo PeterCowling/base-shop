@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
+import usePageBuilderDnD from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderDnD";
 
 describe("usePageBuilderDnD branch coverage", () => {
   it("returns early when activator is not a pointer event", () => {

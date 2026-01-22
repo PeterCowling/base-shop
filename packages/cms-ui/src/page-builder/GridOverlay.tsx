@@ -1,4 +1,4 @@
-/* eslint-disable react/forbid-dom-props -- PB-2416: grid overlay needs dynamic inline styles */
+ 
 
 import type { CSSProperties } from "react";
 
@@ -33,7 +33,7 @@ const GridOverlay = ({ gridCols, gutter, baselineStep }: Props) => {
         style={style}
       >
         {Array.from({ length: cols }).map((_, i) => (
-          // eslint-disable-next-line react/no-array-index-key -- PB-2416: column order fixed, purely decorative
+           
           <div key={i} className="border-muted-foreground/40 border-l border-dashed" />
         ))}
       </div>
@@ -43,4 +43,4 @@ const GridOverlay = ({ gridCols, gutter, baselineStep }: Props) => {
 
 export default GridOverlay;
 
-/* eslint-enable react/forbid-dom-props */
+ 

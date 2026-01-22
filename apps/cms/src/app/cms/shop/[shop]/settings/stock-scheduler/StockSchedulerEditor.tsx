@@ -3,12 +3,11 @@
 import { type ChangeEvent, type FormEvent,useMemo, useState } from "react";
 import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
 
+import DataTable from "@acme/cms-ui/DataTable";
+import { Toast } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n/Translations";
-import DataTable from "@acme/ui/components/cms/DataTable";
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";

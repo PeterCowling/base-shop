@@ -5,13 +5,12 @@ import Link from "next/link";
 import clsx from "clsx";
 import FocusTrap, { type FocusTrapProps } from "focus-trap-react";
 
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { i18nConfig } from "@acme/ui/i18n.config";
-import { buildNavLinks, type TranslateFn } from "@acme/ui/utils/buildNavLinks";
-
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
 import { LanguageSwitcher } from "../molecules/LanguageSwitcher";
 import { ThemeToggle } from "../molecules/ThemeToggle";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
 
 interface Props {
   menuOpen: boolean;

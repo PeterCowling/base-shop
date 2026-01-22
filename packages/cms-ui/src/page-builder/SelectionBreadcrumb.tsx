@@ -2,10 +2,9 @@
 
 import React, { useMemo } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-
-import { Inline } from "@acme/design-system/primitives";
 
 interface Props {
   components: PageComponent[];

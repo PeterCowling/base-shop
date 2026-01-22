@@ -211,7 +211,16 @@ export function listThemes(): string[] {
       const themesDir = join(root, "packages", "themes");
       const entries = readdirSync(themesDir, { withFileTypes: true });
       return entries
-        .filter((e) => e.isDirectory())
+        .filter((e) => {
+          if (!e.isDirectory()) return false;
+          // A "theme package" must ship an importable tokens.css file.
+          // This keeps selection surfaces from offering incomplete placeholder dirs
+          // (for example, cached build artifacts without source).
+          return (
+            existsSync(join(themesDir, e.name, "src", "tokens.css")) ||
+            existsSync(join(themesDir, e.name, "tokens.css"))
+          );
+        })
         .map((e) => e.name);
     } catch {
       /* try next root */

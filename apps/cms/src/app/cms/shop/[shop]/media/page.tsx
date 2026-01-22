@@ -7,8 +7,8 @@ import {
   updateMediaMetadata,
 } from "@cms/actions/media.server";
 
-import { checkShopExists } from "@acme/platform-core";
-import MediaManager from "@acme/ui/components/cms/MediaManager";
+import MediaManager from "@acme/cms-ui/MediaManager";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 import MediaOverviewHero from "./components/MediaOverviewHero";
 

@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
 
-import { cn } from "../utils/style";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
+import { cn } from "../utils/style";
 
 export interface PriceClusterProps
   extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 
 import {
-  ACCESS_COOKIE_NAME,
-  normalizeInviteCode,
-  resolveInviteCodes,
-  resolveAccessCookieSecret,
-} from "../../../lib/stealth";
-import { createAccessToken } from "../../../lib/accessTokens";
-import {
   findValidInvite,
   isInviteActive,
   listInvites,
   registerInviteUse,
 } from "../../../lib/accessStore";
+import { createAccessToken } from "../../../lib/accessTokens";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../lib/rateLimit";
+import {
+  ACCESS_COOKIE_NAME,
+  normalizeInviteCode,
+  resolveAccessCookieSecret,
+  resolveInviteCodes,
+} from "../../../lib/stealth";
 
 export const runtime = "edge";
 
@@ -27,6 +27,37 @@ function resolveNextPath(value: string | null) {
   return trimmed;
 }
 
+function shouldAttachNext(next: string) {
+  return Boolean(next && next !== "/");
+}
+
+function redirectToAccess({
+  request,
+  limit,
+  error,
+  next,
+}: {
+  request: Request;
+  limit: ReturnType<typeof rateLimit>;
+  error: string;
+  next?: string;
+}) {
+  const url = new URL("/access", request.url);
+  url.searchParams.set("error", error);
+  if (next && shouldAttachNext(next)) url.searchParams.set("next", next);
+  const response = NextResponse.redirect(url, 303);
+  applyRateLimitHeaders(response.headers, limit);
+  return response;
+}
+
+function resolveExpirySeconds(nowSeconds: number, inviteExpiresAt: string | undefined) {
+  const defaultExpiry = nowSeconds + MAX_AGE_SECONDS;
+  if (!inviteExpiresAt) return defaultExpiry;
+  const parsed = Math.floor(Date.parse(inviteExpiresAt) / 1000);
+  if (!Number.isFinite(parsed)) return defaultExpiry;
+  return Math.min(parsed, defaultExpiry);
+}
+
 export async function POST(request: Request) {
   const requestIp = getRequestIp(request);
   const limit = rateLimit({
@@ -35,11 +66,7 @@ export async function POST(request: Request) {
     max: 10,
   });
   if (!limit.allowed) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "rate_limited");
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectToAccess({ request, limit, error: "rate_limited" });
   }
 
   const form = await request.formData();
@@ -50,12 +77,7 @@ export async function POST(request: Request) {
   const normalizedCode = normalizeInviteCode(code);
 
   if (!code) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "missing");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectToAccess({ request, limit, error: "missing", next });
   }
 
   if (!secret) {
@@ -80,25 +102,18 @@ export async function POST(request: Request) {
   if (!valid) {
     const { invites } = await listInvites();
     const hasActiveInvites = invites.some(isInviteActive) || codes.length > 0;
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", hasActiveInvites ? "invalid" : "closed");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectToAccess({
+      request,
+      limit,
+      error: hasActiveInvites ? "invalid" : "closed",
+      next,
+    });
   }
 
   const nowSeconds = Math.floor(Date.now() / 1000);
-  const defaultExpiry = nowSeconds + MAX_AGE_SECONDS;
-  const inviteExpiry = inviteExpiresAt ? Math.floor(Date.parse(inviteExpiresAt) / 1000) : null;
-  const exp = inviteExpiry ? Math.min(inviteExpiry, defaultExpiry) : defaultExpiry;
+  const exp = resolveExpirySeconds(nowSeconds, inviteExpiresAt);
   if (exp <= nowSeconds) {
-    const url = new URL("/access", request.url);
-    url.searchParams.set("error", "invalid");
-    if (next && next !== "/") url.searchParams.set("next", next);
-    const response = NextResponse.redirect(url, 303);
-    applyRateLimitHeaders(response.headers, limit);
-    return response;
+    return redirectToAccess({ request, limit, error: "invalid", next });
   }
 
   const token = await createAccessToken(

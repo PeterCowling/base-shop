@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CheckInRow } from "../../types/component/CheckinRow";
-import { Activity } from "../../types/hooks/data/activitiesData";
-import { FirebaseBookings } from "../../types/hooks/data/bookingsData";
+
+import { type CheckInRow } from "../../types/component/CheckinRow";
+import { type Activity } from "../../types/hooks/data/activitiesData";
+import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
 import {
   addDays,
   formatDate,
-  subDays,
   parseLocalDate,
+  subDays,
 } from "../../utils/dateUtils";
 import { buildCheckinRows } from "../orchestrations/checkin/buildCheckinRows";
+
 import useActivitiesByCodeData from "./useActivitiesByCodeData";
 import useActivitiesData from "./useActivitiesData";
 import useBookings from "./useBookingsData";

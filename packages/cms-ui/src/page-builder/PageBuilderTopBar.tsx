@@ -1,12 +1,11 @@
 import type { ComponentProps, ReactNode } from "react";
 import { CheckIcon, CopyIcon,ReloadIcon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
-
 import { Tooltip as SmallTooltip,Tooltip  } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
 
 import type GridSettings from "./GridSettings";
 import HistoryControls from "./HistoryControls";

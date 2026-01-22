@@ -1,8 +1,16 @@
-import { type NextRequest,NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
+import argon2 from "argon2";
 import crypto from "crypto";
 import path from "path";
 
-import { readJsonFile, withFileLock,writeJsonFile } from "@/lib/server/jsonIO";
+import { readJsonFile, withFileLock, writeJsonFile } from "@/lib/server/jsonIO";
+
+/** Default TTL for preview links: 24 hours */
+const DEFAULT_TTL_MS = 24 * 60 * 60 * 1000;
+const TTL_MS = process.env.PREVIEW_LINK_TTL_HOURS
+  ? parseInt(process.env.PREVIEW_LINK_TTL_HOURS, 10) * 60 * 60 * 1000
+  : DEFAULT_TTL_MS;
 
 type PreviewLink = {
   id: string; // same as token for simplicity
@@ -11,6 +19,7 @@ type PreviewLink = {
   pageId: string;
   versionId: string;
   createdAt: string;
+  expiresAt: string;
   passwordHash?: string;
 };
 
@@ -29,14 +38,19 @@ async function writeStore(store: Store): Promise<void> {
   await writeJsonFile(STORE_PATH, store);
 }
 
-function hashPassword(pw: string): string {
-  return crypto.createHash("sha256").update(pw).digest("hex");
-}
-
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string; pageId: string; versionId: string }> },
 ) {
+  // Require authenticated user
+  try {
+    await ensureAuthorized();
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+
   try {
     const { shop, pageId, versionId } = await context.params;
     const body = await req.json().catch(() => ({}));
@@ -44,6 +58,11 @@ export async function POST(
 
     const token = crypto.randomBytes(16).toString("hex");
     const createdAt = new Date().toISOString();
+    const expiresAt = new Date(Date.now() + TTL_MS).toISOString();
+
+    // Use Argon2id for password hashing (more secure than SHA-256)
+    const passwordHash = password ? await argon2.hash(password) : undefined;
+
     const link: PreviewLink = {
       id: token,
       token,
@@ -51,7 +70,8 @@ export async function POST(
       pageId,
       versionId,
       createdAt,
-      passwordHash: password ? hashPassword(password) : undefined,
+      expiresAt,
+      passwordHash,
     };
 
     await withFileLock(STORE_PATH, async () => {

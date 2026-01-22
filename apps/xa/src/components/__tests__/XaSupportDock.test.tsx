@@ -1,6 +1,7 @@
 import * as React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 import { beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import { siteConfig } from "../../lib/siteConfig";
 
 let cartState: Record<string, { qty: number; sku: { title?: string } }> = {};

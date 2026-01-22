@@ -1,9 +1,8 @@
 "use client";
 import type { ChangeEvent } from "react";
 
-import type { PricingTableComponent } from "@acme/types";
-
 import { Button, Input, Textarea } from "@acme/design-system/shadcn";
+import type { PricingTableComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 
@@ -42,7 +41,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
   return (
     <div className="space-y-2">
       {plans.map((plan: Plan, i: number) => (
-        // eslint-disable-next-line react/no-array-index-key -- LINT-1002: plans have no stable id in schema; index is acceptable for editor-only list
+         
         <div key={i} className="space-y-1 rounded border p-2">
           <Input
             value={plan.title ?? ""}

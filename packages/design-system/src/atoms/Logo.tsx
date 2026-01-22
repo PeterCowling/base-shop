@@ -14,6 +14,44 @@ interface LogoSource {
   height?: number;
 }
 
+function computeSrcSet({
+  src,
+  sources,
+  defaultWidth,
+  providedSrcSet,
+}: {
+  src?: ImageProps["src"];
+  sources?: Partial<Record<Viewport, LogoSource>>;
+  defaultWidth: number;
+  providedSrcSet?: string;
+}): string | undefined {
+  if (providedSrcSet) return providedSrcSet;
+
+  const entries: Array<[string, number | undefined]> = [];
+
+  const appendEntry = (url: unknown, width: unknown): void => {
+    if (typeof url !== "string") return;
+    if (entries.some(([existing]) => existing === url)) return;
+    entries.push([url, typeof width === "number" ? width : undefined]);
+  };
+
+  appendEntry(src, defaultWidth);
+
+  const viewportOrder: Viewport[] = ["mobile", "tablet", "desktop"];
+  for (const viewportKey of viewportOrder) {
+    const variant = sources?.[viewportKey];
+    if (!variant) continue;
+    appendEntry(variant.src, variant.width);
+  }
+
+  if (entries.length === 0) return undefined;
+  return entries
+    .map(([url, widthDescriptor]) =>
+      widthDescriptor ? `${url} ${widthDescriptor}w` : url,
+    )
+    .join(", ");
+}
+
 // Exclude `alt` so we can supply it explicitly without duplicate-prop errors
 type LogoImageProps = Omit<ImageProps, "alt"> & { srcSet?: string };
 
@@ -60,48 +98,12 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       return <span className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
-    // Avoid arbitrary Tailwind values; rely on width/height props instead
-
-    const srcSetEntries: Array<[string, number | undefined]> = [];
-
-    const appendEntry = (
-      url: unknown,
-      width: unknown,
-    ): url is string => {
-      if (typeof url !== "string") {
-        return false;
-      }
-
-      if (srcSetEntries.some(([existing]) => existing === url)) {
-        return true;
-      }
-
-      const widthDescriptor =
-        typeof width === "number" ? width : undefined;
-      srcSetEntries.push([url, widthDescriptor]);
-      return true;
-    };
-
-    appendEntry(src, typeof defaultWidth === "number" ? defaultWidth : undefined);
-
-    if (sources) {
-      const viewportOrder: Viewport[] = ["mobile", "tablet", "desktop"];
-      for (const viewportKey of viewportOrder) {
-        const variant = sources[viewportKey];
-        if (!variant) continue;
-        appendEntry(variant.src, variant.width);
-      }
-    }
-
-    const computedSrcSet =
-      providedSrcSet ??
-      (srcSetEntries.length > 0
-        ? srcSetEntries
-            .map(([url, widthDescriptor]) =>
-              widthDescriptor ? `${url} ${widthDescriptor}w` : url,
-            )
-            .join(", ")
-        : undefined);
+    const computedSrcSet = computeSrcSet({
+      src,
+      sources,
+      defaultWidth: defaultWidth,
+      providedSrcSet,
+    });
 
     const imageProps: LogoImageProps = {
       ...props,

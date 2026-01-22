@@ -1,6 +1,6 @@
 // src/components/bar/orderTaking/PaymentSection.tsx
 
-import React, { FC, useCallback, useMemo } from "react";
+import React, { type FC, useCallback, useMemo } from "react";
 
 import { useBleepersData } from "../../../hooks/data/bar/useBleepersData";
 
@@ -55,13 +55,13 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
             value={displayNumber}
             onChange={handleChange}
             placeholder='Leave blank for "go"'
-            className="w-full rounded-md border border-stone-300 bg-white/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus:ring-2 focus:ring-primary-main/40 dark:bg-darkBg dark:text-darkAccentGreen"
+            className="w-full rounded-md border border-stone-300 bg-white/60 py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main/40 dark:bg-darkBg dark:text-darkAccentGreen"
           />
         </div>
 
         {/* ─────── Total ─────── */}
         <p
-          className="text-right text-2xl font-extrabold tracking-tight text-stone-900 tabular-nums dark:text-darkAccentGreen"
+          className="text-end text-2xl font-extrabold tracking-tight text-stone-900 tabular-nums dark:text-darkAccentGreen"
           aria-live="polite"
         >
           Total:&nbsp;{totalPrice.toFixed(2)}&nbsp;€

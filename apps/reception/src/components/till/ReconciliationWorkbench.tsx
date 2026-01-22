@@ -6,7 +6,7 @@ import { z } from "zod";
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
 import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
-import { CashCount } from "../../types/hooks/data/cashCountData";
+import { type CashCount } from "../../types/hooks/data/cashCountData";
 import { showToast } from "../../utils/toastUtils";
 
 /* -------------------------------------------------------------------------- */
@@ -119,11 +119,11 @@ const ReconciliationWorkbenchContent = memo(
         <table className="w-full border-collapse text-sm dark:text-darkAccentGreen">
           <thead className="bg-gray-100 dark:bg-darkSurface">
             <tr className="dark:border-darkSurface">
-              <th className="p-2 text-left border dark:border-darkSurface">Source</th>
-              <th className="p-2 text-right border dark:border-darkSurface">Cash</th>
-              <th className="p-2 text-right border dark:border-darkSurface">CC</th>
-              <th className="p-2 text-right border dark:border-darkSurface">Cash Δ</th>
-              <th className="p-2 text-right border dark:border-darkSurface">CC Δ</th>
+              <th className="p-2 text-start border dark:border-darkSurface">Source</th>
+              <th className="p-2 text-end border dark:border-darkSurface">Cash</th>
+              <th className="p-2 text-end border dark:border-darkSurface">CC</th>
+              <th className="p-2 text-end border dark:border-darkSurface">Cash Δ</th>
+              <th className="p-2 text-end border dark:border-darkSurface">CC Δ</th>
             </tr>
           </thead>
 
@@ -131,8 +131,8 @@ const ReconciliationWorkbenchContent = memo(
             {/* POS Totals */}
             <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
               <td className="p-2">POS Totals</td>
-              <td className="p-2 text-right">{format(safePosCashTotal)}</td>
-              <td className="p-2 text-right">{format(safePosCcTotal)}</td>
+              <td className="p-2 text-end">{format(safePosCashTotal)}</td>
+              <td className="p-2 text-end">{format(safePosCcTotal)}</td>
               <td className="p-2" />
               <td className="p-2" />
             </tr>
@@ -147,7 +147,7 @@ const ReconciliationWorkbenchContent = memo(
               >
                 {format(safeDrawerTotal)}
               </td>
-              <td className="p-2 text-right text-gray-600 dark:text-darkAccentGreen">-</td>
+              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
               <td
                 className={`p-2 text-right ${diffClass(
                   safeDrawerTotal - safePosCashTotal
@@ -161,8 +161,8 @@ const ReconciliationWorkbenchContent = memo(
             {/* PMS Postings */}
             <tr className="border-b dark:border-darkSurface dark:bg-darkSurface">
               <td className="p-2">PMS Postings</td>
-              <td className="p-2 text-right">{format(safePmsCashTotal)}</td>
-              <td className="p-2 text-right">{format(safePmsCcTotal)}</td>
+              <td className="p-2 text-end">{format(safePmsCashTotal)}</td>
+              <td className="p-2 text-end">{format(safePmsCcTotal)}</td>
               <td
                 className={`p-2 text-right ${diffClass(
                   safePmsCashTotal - safePosCashTotal
@@ -182,8 +182,8 @@ const ReconciliationWorkbenchContent = memo(
             {/* Terminal Batch */}
             <tr className="dark:bg-darkSurface dark:border-darkSurface">
               <td className="p-2">Terminal Batch</td>
-              <td className="p-2 text-right text-gray-600 dark:text-darkAccentGreen">-</td>
-              <td className="p-2 text-right">{format(safeTerminalTotal)}</td>
+              <td className="p-2 text-end text-gray-600 dark:text-darkAccentGreen">-</td>
+              <td className="p-2 text-end">{format(safeTerminalTotal)}</td>
               <td className="p-2" />
               <td
                 className={`p-2 text-right ${diffClass(

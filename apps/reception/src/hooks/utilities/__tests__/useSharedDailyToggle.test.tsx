@@ -1,7 +1,14 @@
 // src/hooks/utilities/__tests__/useSharedDailyToggle.test.tsx
 
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+/* ------------------------------------------------------------------ */
+/*  Imports that rely on the mocked firebase module                   */
+/* ------------------------------------------------------------------ */
+import type { DataSnapshot } from "firebase/database";
+
+import useSharedDailyToggle from "../useSharedDailyToggle";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist‑safe mocks for firebase/database                            */
@@ -48,12 +55,6 @@ jest.mock("firebase/database", () => {
     off: offMock,
   };
 });
-
-/* ------------------------------------------------------------------ */
-/*  Imports that rely on the mocked firebase module                   */
-/* ------------------------------------------------------------------ */
-import type { DataSnapshot } from "firebase/database";
-import useSharedDailyToggle from "../useSharedDailyToggle";
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                         */

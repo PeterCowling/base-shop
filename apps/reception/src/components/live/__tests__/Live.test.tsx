@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 
 async function loadComponent(transactions: Array<{ id: string; text: string }>) {

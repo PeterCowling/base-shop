@@ -3,8 +3,8 @@
 // Detects browser language via navigator.languages and redirects to best match
 import type { Metadata } from "next";
 
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Section } from "@acme/ui/atoms/Section";
+import { Grid } from "@acme/ui/atoms";
+import { Section } from "@acme/ui/atoms";
 
 import { BASE_URL } from "@/config/site";
 import { i18nConfig } from "@/i18n.config";

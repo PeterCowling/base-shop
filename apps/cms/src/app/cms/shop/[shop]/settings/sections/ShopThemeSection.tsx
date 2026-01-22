@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { resetThemeOverride } from "@cms/actions/shops.server";
 
+import DataTable from "@acme/cms-ui/DataTable";
 import { useTranslations } from "@acme/i18n";
-import DataTable from "@acme/ui/components/cms/DataTable";
 
 import { Button } from "@/components/atoms/shadcn";
 

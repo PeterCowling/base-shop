@@ -5,51 +5,12 @@
     "baseUrl": ".",
     "rootDir": "../..",
     "paths": {
-      "@/*": ["./src/*"],
-      "@ui": [
-        "../../packages/ui/dist",
-        "../../packages/ui/src"
-      ],
-      "@ui/*": [
-        "../../packages/ui/dist/*",
-        "../../packages/ui/src/*"
-      ],
-      "@i18n": [
-        "../../packages/i18n/src/index.ts",
-        "../../packages/i18n/dist/index"
-      ],
-      "@i18n/*": [
-        "../../packages/i18n/src/*",
-        "../../packages/i18n/dist/*"
-      ],
-      "@acme/i18n": [
-        "../../packages/i18n/src/index.ts",
-        "../../packages/i18n/dist/index"
-      ],
-      "@acme/i18n/*": [
-        "../../packages/i18n/src/*",
-        "../../packages/i18n/dist/*"
-      ],
-      "@platform-core": [
-        "../../packages/platform-core/src/index.ts",
-        "../../packages/platform-core/dist/index"
-      ],
-      "@platform-core/*": [
-        "../../packages/platform-core/src/*",
-        "../../packages/platform-core/dist/*"
-      ],
-      "@acme/platform-core": [
-        "../../packages/platform-core/src/index.ts",
-        "../../packages/platform-core/dist/index"
-      ],
-      "@acme/platform-core/*": [
-        "../../packages/platform-core/src/*",
-        "../../packages/platform-core/dist/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
     "next-env.d.ts",
+    "instrumentation.ts",
     "middleware.ts",
     "src/**/*",
     "src/**/*.json",

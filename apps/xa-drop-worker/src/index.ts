@@ -131,66 +131,82 @@ function submissionKeyFor(prefix: string, iat: number, nonce: string): string {
   return `${safePrefix}${date}/incoming.${nonce}.zip`;
 }
 
+function resolveMaxBytes(env: Env): number {
+  const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
+  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
+}
+
+function validateContentLength(headers: Headers, maxBytes: number): Response | null {
+  const contentLengthRaw = headers.get("content-length");
+  if (!contentLengthRaw) return null;
+  const size = Number(contentLengthRaw);
+  if (!Number.isFinite(size)) return null;
+  return size > maxBytes ? json({ ok: false }, 413) : null;
+}
+
+function safeSubmissionIdFrom(headers: Headers): string | undefined {
+  const submissionIdRaw = headers.get("x-xa-submission-id") || "";
+  const submissionId = submissionIdRaw.trim();
+  return submissionId && /^[a-zA-Z0-9_-]{8,128}$/.test(submissionId) ? submissionId : undefined;
+}
+
+async function verifyTokenOrRespond(token: string, secret: string): Promise<VerifiedToken | Response> {
+  try {
+    return await verifyUploadToken(token, secret);
+  } catch (err) {
+    const code = err instanceof Error ? err.message : "invalid_token";
+    if (code === "expired") return json({ ok: false }, 410);
+    return json({ ok: false }, 401);
+  }
+}
+
+async function readUploadBody(
+  request: Request,
+  maxBytes: number,
+): Promise<ReadableStream<Uint8Array> | ArrayBuffer | Response> {
+  if (!request.body) return json({ ok: false }, 400);
+
+  const hasWebStream =
+    typeof (request.body as unknown as { pipeThrough?: unknown })?.pipeThrough === "function";
+  if (hasWebStream) {
+    return limitBytesStream(request.body, maxBytes);
+  }
+
+  let uploadBody: ArrayBuffer;
+  try {
+    uploadBody = await request.arrayBuffer();
+  } catch {
+    return json({ ok: false }, 400);
+  }
+  return uploadBody.byteLength > maxBytes ? json({ ok: false }, 413) : uploadBody;
+}
+
 async function handleUpload(request: Request, env: Env, token: string): Promise<Response> {
   const secret = typeof env.UPLOAD_TOKEN_SECRET === "string" ? env.UPLOAD_TOKEN_SECRET : "";
   if (!secret || secret.length < 32) {
     return json({ ok: false }, 503);
   }
 
-  let verified: VerifiedToken;
-  try {
-    verified = await verifyUploadToken(token, secret);
-  } catch (err) {
-    const code = err instanceof Error ? err.message : "invalid_token";
-    if (code === "expired") return json({ ok: false }, 410);
-    return json({ ok: false }, 401);
-  }
+  const verified = await verifyTokenOrRespond(token, secret);
+  if (verified instanceof Response) return verified;
 
-  const maxBytes = (() => {
-    const raw = typeof env.MAX_BYTES === "string" ? Number(env.MAX_BYTES) : NaN;
-    return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_MAX_BYTES;
-  })();
-
-  const contentLengthRaw = request.headers.get("content-length");
-  if (contentLengthRaw) {
-    const size = Number(contentLengthRaw);
-    if (Number.isFinite(size) && size > maxBytes) {
-      return json({ ok: false }, 413);
-    }
-  }
-
-  if (!request.body) {
-    return json({ ok: false }, 400);
-  }
+  const maxBytes = resolveMaxBytes(env);
+  const lengthError = validateContentLength(request.headers, maxBytes);
+  if (lengthError) return lengthError;
 
   const objectKey = submissionKeyFor(env.R2_PREFIX || DEFAULT_PREFIX, verified.iat, verified.nonce);
-
-  const submissionIdRaw = request.headers.get("x-xa-submission-id") || "";
-  const submissionId = submissionIdRaw.trim();
-  const safeSubmissionId =
-    submissionId && /^[a-zA-Z0-9_-]{8,128}$/.test(submissionId) ? submissionId : "";
+  const safeSubmissionId = safeSubmissionIdFrom(request.headers);
 
   const existing = await env.SUBMISSIONS_BUCKET.head(objectKey);
   if (existing) {
     return json({ ok: false }, 409);
   }
 
+  const uploadBodyOrError = await readUploadBody(request, maxBytes);
+  if (uploadBodyOrError instanceof Response) return uploadBodyOrError;
+
   const contentType = request.headers.get("content-type") || "application/zip";
-  let uploadBody: ReadableStream<Uint8Array> | ArrayBuffer;
-  const hasWebStream =
-    typeof (request.body as unknown as { pipeThrough?: unknown })?.pipeThrough === "function";
-  if (hasWebStream) {
-    uploadBody = limitBytesStream(request.body, maxBytes);
-  } else {
-    try {
-      uploadBody = await request.arrayBuffer();
-    } catch {
-      return json({ ok: false }, 400);
-    }
-    if (uploadBody.byteLength > maxBytes) {
-      return json({ ok: false }, 413);
-    }
-  }
+  const uploadBody = uploadBodyOrError;
 
   try {
     await env.SUBMISSIONS_BUCKET.put(objectKey, uploadBody, {

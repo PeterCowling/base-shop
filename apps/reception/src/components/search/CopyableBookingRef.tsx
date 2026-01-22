@@ -1,6 +1,6 @@
 // /src/components/bookingSearch/CopyableBookingRef.tsx
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/solid";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/solid";
 
 /**
  * Display a booking reference that copies itself to clipboard on click.

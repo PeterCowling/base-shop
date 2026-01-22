@@ -8,7 +8,7 @@ const translations: Record<string, string> = {
 };
 const translate = (key: string) => translations[key] ?? key;
 
-jest.mock("@acme/ui/components/atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   Button: ({ children, ...props }: any) => (
     <button {...props}>{children}</button>
   ),
@@ -19,7 +19,7 @@ jest.mock("@acme/ui/components/atoms", () => ({
     </label>
   ),
 }));
-jest.mock("@acme/ui/components/cms/page-builder", () => ({
+jest.mock("@acme/cms-ui/page-builder", () => ({
   ImagePicker: ({ children }: any) => <div>{children}</div>,
 }));
 jest.mock("next/image", () => ({

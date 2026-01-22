@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { usePageBuilderState } from "../hooks/usePageBuilderState";
+import { usePageBuilderState } from "@acme/ui/hooks/usePageBuilderState";
 
 function setupDom() {
   // Canvas element used for unit step (Alt + Arrow)

@@ -3,13 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { resolveText } from "@acme/i18n/resolveText";
 import { getShopFromPath } from "@acme/lib/shop";
 import type { TranslatableText } from "@acme/types/i18n";
-
-import { Input } from "../../atoms/shadcn";
 
 interface Result {
   slug: string;

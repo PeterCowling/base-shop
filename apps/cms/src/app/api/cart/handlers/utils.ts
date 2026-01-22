@@ -38,9 +38,11 @@ export const errorResponse = (message: string, status: number) =>
   NextResponse.json({ error: message }, { status });
 
 export const serverError = (label: string, err: unknown) => {
+  // Log full error server-side for debugging
   console.error(`[api/cart:${label}] error`, err);
+  // Return generic error to client to prevent information disclosure
   return NextResponse.json(
-    { ok: false, error: (err as Error).message },
+    { ok: false, error: "An unexpected error occurred" }, // i18n-exempt -- generic server error
     { status: 500 },
   );
 };

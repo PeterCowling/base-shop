@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import CommentsToolbar from "../comments/CommentsToolbar";
 
 // Mock the atoms/shadcn primitives to simple DOM controls so we can drive menu actions reliably
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (props: any) => <button {...props} />;
   const Wrap = (p: any) => <div {...p} />;
   const Trigger = (p: any) => <div>{p.children}</div>;

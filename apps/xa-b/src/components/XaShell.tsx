@@ -14,12 +14,12 @@ import {
 } from "@radix-ui/react-icons";
 
 import AnnouncementBar from "@acme/ui/components/organisms/AnnouncementBar";
-import { Section } from "@acme/ui/atoms/Section";
-import { CurrencySwitcher } from "@acme/ui/components/molecules";
-import { Input } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { CurrencySwitcher } from "@acme/design-system/molecules";
+import { Input } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
+import { Grid } from "@acme/design-system/atoms/Grid";
 
 import { XaMegaMenu } from "./XaMegaMenu";
 import { XaSupportDock } from "./XaSupportDock.client";

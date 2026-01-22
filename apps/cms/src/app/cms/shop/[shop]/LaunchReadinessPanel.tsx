@@ -3,10 +3,10 @@
 // Displays a launch readiness checklist on the shop dashboard.
 // Helps operators validate all required configuration before going live.
 
+import { CmsLaunchChecklist, type CmsLaunchChecklistItem } from "@acme/cms-ui";
+import { Tag } from "@acme/design-system/atoms";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 import type { ConfiguratorProgress } from "@acme/types";
-import { Tag } from "@acme/ui/components/atoms";
-import { CmsLaunchChecklist, type CmsLaunchChecklistItem } from "@acme/ui/components/cms";
 
 import {
   buildLaunchChecklist,

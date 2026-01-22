@@ -5,8 +5,8 @@
 
 import dayjs from "dayjs";
 
-import type { Room } from "@acme/ui/data/roomsData";
-import type { RateCalendar } from "@acme/ui/types/rates";
+import type { Room } from "../data/roomsData";
+import type { RateCalendar } from "../types/rates";
 
 /**
  * Priority lookup for nightly rate on a given date.

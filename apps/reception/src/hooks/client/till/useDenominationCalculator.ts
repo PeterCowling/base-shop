@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import { Denomination } from "../../../types/component/Till";
+import { type Denomination } from "../../../types/component/Till";
 
 /**
  * Custom hook for counting currency denominations.

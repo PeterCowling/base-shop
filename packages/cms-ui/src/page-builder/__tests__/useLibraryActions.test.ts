@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import useLibraryActions from "../hooks/useLibraryActions";
+import useLibraryActions from "@acme/ui/components/cms/page-builder/hooks/useLibraryActions";
 
 jest.mock("next/navigation", () => ({ usePathname: () => "/cms/shop/demo" }));
 jest.mock("../libraryStore", () => ({

@@ -1,5 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import type { TDayType } from "../../../interfaces/grid.interface";
+import { Day } from "../Day";
 
 jest.mock("../../Days", () => ({
   __esModule: true,
@@ -10,9 +14,6 @@ jest.mock("../../Days", () => ({
   SingleEnd: () => <div>END</div>,
   Intersection: () => <div>INTERSECTION</div>,
 }));
-
-import { Day } from "../Day";
-import type { TDayType } from "../../../interfaces/grid.interface";
 
 describe("Day", () => {
   it("renders specific component based on type", () => {

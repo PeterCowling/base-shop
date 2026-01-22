@@ -2,9 +2,8 @@ import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-import hotel from "@acme/ui/config/hotel";
-
 import { Inline } from "../components/atoms/primitives/Inline";
+import hotel from "../config/hotel";
 
 type Props = { className?: string; lang?: string };
 

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { LoansTable } from "../LoansTable";
 
 jest.mock("../useOccupantLoans", () => ({
   __esModule: true,
@@ -12,8 +15,6 @@ jest.mock("../KeycardsModal", () => ({
   KeycardsModal: () => <div data-testid="keycards-modal" />,
   default: () => <div data-testid="keycards-modal" />,
 }));
-
-import { LoansTable } from "../LoansTable";
 
 const guest = {
   occupantId: "g1",

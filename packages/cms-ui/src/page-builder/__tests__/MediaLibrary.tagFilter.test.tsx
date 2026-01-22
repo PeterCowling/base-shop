@@ -4,7 +4,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 import MediaLibrary from "../MediaLibrary";
 
 // Provide a simple atoms/shadcn mock for Selects
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (p: any) => <button {...p} />;
   const Input = (p: any) => <input {...p} />;
   const Wrap = (p: any) => <div>{p.children}</div>;

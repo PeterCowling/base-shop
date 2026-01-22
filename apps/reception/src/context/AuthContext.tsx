@@ -10,16 +10,16 @@ import React, {
   useState,
 } from "react";
 
-import type { User, UserRole } from "../types/domains/userDomain";
+import { hasAnyRole, isPrivileged } from "../lib/roles";
 import {
   getFirebaseAuth,
+  type LoginResult,
   loginWithEmailPassword,
   logout as firebaseLogout,
   subscribeToAuthState,
-  type LoginResult,
 } from "../services/firebaseAuth";
 import { useFirebaseApp, useFirebaseDatabase } from "../services/useFirebase";
-import { hasAnyRole, isPrivileged } from "../lib/roles";
+import type { User, UserRole } from "../types/domains/userDomain";
 
 export type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 

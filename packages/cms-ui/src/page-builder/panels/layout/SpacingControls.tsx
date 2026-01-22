@@ -1,10 +1,9 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/SpacingControls.tsx
 "use client";
 
+import { Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-
-import { Input } from "@acme/design-system/shadcn";
 
 import { cssError, isOverridden } from "./helpers";
 

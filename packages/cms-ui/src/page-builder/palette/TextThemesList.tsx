@@ -2,9 +2,9 @@
 
 import type { CSSProperties } from "react";
 
+import { Inline, Stack } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 
-import { Inline, Stack } from "@acme/design-system/primitives";
 import type { TextTheme } from "../textThemes";
 
 interface Props {
@@ -33,7 +33,7 @@ export default function TextThemesList({ textThemes, buildPreviewStyle, onApply 
             <Stack gap={1}>
               <span className="font-medium">{theme.label}</span>
               {/* Preview requires inline style from theme builder */}
-              {/* eslint-disable-next-line react/forbid-dom-props -- TECH-000 theme preview styles are dynamic */}
+              { }
               <span aria-hidden="true" className="truncate" style={buildPreviewStyle(theme)}>
                 {t("cms.builder.textThemes.sample")}
               </span>

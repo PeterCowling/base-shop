@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  FormEvent,
+  type FormEvent,
   memo,
   useCallback,
   useEffect,
@@ -10,14 +10,14 @@ import {
   useState,
 } from "react";
 
-import { useAuth, type AuthStatus } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useDarkMode } from "../context/DarkModeContext";
-import { useFirebaseApp } from "../services/useFirebase";
+import { readJson, removeItem,writeJson } from "../lib/offline/storage";
 import {
   getFirebaseAuth,
   sendPasswordResetEmail,
 } from "../services/firebaseAuth";
-import { readJson, writeJson, removeItem } from "../lib/offline/storage";
+import { useFirebaseApp } from "../services/useFirebase";
 import type { DevicePin } from "../types/domains/userDomain";
 
 const DEVICE_PIN_KEY = "reception:devicePin";
@@ -326,7 +326,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+                className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
               />
             </div>
 
@@ -339,7 +339,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             <button
               type="submit"
               disabled={resetStatus === "sending"}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-offset-gray-900"
+              className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </button>
@@ -348,7 +348,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <div className="mt-6">
             <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
               <p className="text-sm text-green-800 dark:text-green-300">
-                If an account exists for {resetEmail}, you'll receive an email shortly.
+                If an account exists for {resetEmail}, you&apos;ll receive an email shortly.
               </p>
             </div>
           </div>
@@ -393,14 +393,14 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           />
         </div>
 
         <button
           type="button"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-900"
+          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
         >
           Skip for now
         </button>
@@ -438,7 +438,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest text-gray-900 placeholder:text-base placeholder:tracking-normal focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           />
         </div>
 
@@ -455,7 +455,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <button
           type="button"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-900"
+          className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus-visible:dark:focus:ring-offset-gray-900"
         >
           Sign in with email instead
         </button>
@@ -495,7 +495,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+            className="mt-1.5 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
           />
         </div>
 
@@ -524,12 +524,12 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-10 text-gray-900 focus:border-indigo-500 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-500 dark:hover:text-gray-300 dark:focus:ring-offset-gray-900"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -554,7 +554,7 @@ function Login({ onLoginSuccess }: LoginProps) {
         <button
           type="submit"
           disabled={isSubmitting || status === "loading"}
-          className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-offset-gray-900"
+          className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus-visible:dark:focus:ring-offset-gray-900"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </button>
@@ -571,7 +571,7 @@ function ProductLogo() {
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500">
         <span className="text-lg font-bold text-white">R</span>
       </div>
-      <span className="ml-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <span className="ms-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
         Reception
       </span>
     </div>
@@ -609,7 +609,7 @@ function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
           onClick={toggleDark}
           aria-pressed={dark}
           aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          className="absolute right-4 top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 dark:focus:ring-offset-gray-900"
+          className="absolute right-4 top-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-indigo-500 focus-visible:focus:ring-offset-2 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 focus-visible:dark:focus:ring-offset-gray-900"
         >
           {dark ? (
             <SunIcon className="h-5 w-5" />

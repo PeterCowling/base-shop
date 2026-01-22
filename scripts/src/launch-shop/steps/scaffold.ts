@@ -3,10 +3,12 @@
  * Scaffold step: invoke init-shop to create the shop structure.
  */
 import { spawnSync } from "node:child_process";
-import { writeFileSync, unlinkSync, existsSync, rmSync } from "node:fs";
+import { existsSync, rmSync,unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import type { LaunchConfig } from "@acme/platform-core/createShop";
 import { getShopAppSlug } from "@acme/platform-core/shops";
+
 import { LaunchError } from "../types";
 
 export interface ScaffoldOptions {

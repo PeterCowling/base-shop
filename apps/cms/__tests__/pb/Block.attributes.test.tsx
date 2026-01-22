@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Block from "@acme/ui/components/cms/page-builder/Block";
+import Block from "@acme/cms-ui/page-builder/Block";
 
 // Mock block registry to a minimal set
 jest.mock(require.resolve("@acme/ui/components/cms/blocks"), () => ({

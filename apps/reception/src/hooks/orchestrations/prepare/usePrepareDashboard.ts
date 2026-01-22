@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo } from "react";
 
-import type { RoomsByDate } from "../../../types/hooks/data/roomsByDateData";
 import type { Activities } from "../../../types/hooks/data/activitiesData";
+import type { RoomsByDate } from "../../../types/hooks/data/roomsByDateData";
 import type {
   Cleanliness,
   SingleRoomStatus,
@@ -12,8 +12,8 @@ import {
   getItalyIsoString,
   getLocalToday,
   getLocalYyyyMmDd,
-  parseLocalDate,
   isToday,
+  parseLocalDate,
   subDays,
   toEpochMillis,
 } from "../../../utils/dateUtils";
@@ -22,6 +22,7 @@ import useGuestByRoom from "../../data/useGuestByRoom"; //
 import useRoomsByDate from "../../data/useRoomsByDate";
 import useRoomStatusData from "../../data/useRoomStatus"; //
 import useRoomStatusMutations from "../../mutations/useRoomStatusMutations";
+
 import { useActivitiesData } from "./useActivitiesData";
 
 /**

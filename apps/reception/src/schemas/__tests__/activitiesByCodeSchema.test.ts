@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { activitiesByCodeForOccupantSchema } from "../activitiesByCodeSchema";
 
 describe("activitiesByCodeForOccupantSchema", () => {

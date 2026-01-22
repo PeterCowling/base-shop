@@ -33,6 +33,41 @@ Use this prompt when starting a new feature or multi-file change.
    - Include acceptance criteria
    - If the plan is derived from an audit, include a short "Findings / Gaps" section (or link the audit doc)
 
+### Handling Audit Limits
+
+When audit/exploration work hits a limit (context window, time, scope), **do not simply stop**. Instead:
+
+1. **Pause and document** — Write a `## Pending Audit Work` section in the plan
+2. **Be specific** — Include enough detail that resuming is faster than starting fresh:
+   - What areas/files were already examined
+   - What areas remain unexplored
+   - Specific questions that need answering
+   - Search patterns or entry points for resumption
+3. **Mark partial findings** — Tag incomplete items with `(partial)` or `(needs-verification)`
+4. **Estimate remaining scope** — e.g., "~15 more files in `packages/ui/`" or "3 remaining subsystems"
+
+**Example `Pending Audit Work` section:**
+
+```markdown
+## Pending Audit Work
+
+**Completed:**
+- Reviewed all files in `packages/platform-core/src/cart/`
+- Mapped cart → pricing → inventory flow
+
+**Remaining:**
+- [ ] `packages/platform-core/src/orders/` — not yet examined
+- [ ] Verify `calculateShipping()` handles edge cases (file: `shipping.ts:45-120`)
+- [ ] Check integration between `OrderService` and external payment adapters
+
+**Resumption hints:**
+- Start with `grep -r "OrderService" packages/` to find all consumers
+- Key file: `packages/platform-core/src/orders/index.ts` — exports map
+- Open question: Does `refund()` handle partial refunds? (see `returns.ts`)
+```
+
+This ensures future sessions can pick up efficiently rather than re-auditing completed areas.
+
 ### Plan Template
 
 ```markdown
@@ -68,6 +103,20 @@ Last-updated-by: <same format>
 
 ## Notes
 - <Dependencies, risks, open questions>
+
+## Pending Audit Work (if applicable)
+<!-- Include this section when audit/exploration hit limits -->
+
+**Completed:**
+- <Areas/files already examined>
+
+**Remaining:**
+- [ ] <Area not yet examined>
+- [ ] <Specific verification needed> (file: `path:lines`)
+
+**Resumption hints:**
+- <Search patterns, key files, entry points>
+- <Open questions to investigate>
 ```
 
 ### Output

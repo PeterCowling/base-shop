@@ -1,10 +1,10 @@
 /* src/hooks/mutations/useCheckinMutation.ts */
 
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CheckinData } from "../../types/hooks/data/checkinData";
+import { type CheckinData } from "../../types/hooks/data/checkinData";
 
 /**
  * Mutation Hook that handles creating or updating occupant check-in data

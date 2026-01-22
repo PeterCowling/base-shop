@@ -1,13 +1,13 @@
 /* src/hooks/data/useCompletedTasks.ts */
 
-import { ref, set } from "firebase/database";
 import { useCallback } from "react";
+import { ref, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
-  CompletedTaskField,
-  CompletedTaskFlags,
+  type CompletedTaskField,
+  type CompletedTaskFlags,
 } from "../../types/hooks/data/completedTasksData";
 
 /**

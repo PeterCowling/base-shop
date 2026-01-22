@@ -1,11 +1,11 @@
 /* src/hooks/mutations/useCashDiscrepanciesMutations.ts */
 
-import { push, ref, set } from "firebase/database";
 import { useCallback, useMemo } from "react";
+import { push, ref, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CashDiscrepancy } from "../../types/hooks/data/cashDiscrepancyData";
+import { type CashDiscrepancy } from "../../types/hooks/data/cashDiscrepancyData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 
 /**

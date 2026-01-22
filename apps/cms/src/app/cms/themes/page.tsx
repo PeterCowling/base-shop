@@ -1,9 +1,9 @@
 // apps/cms/src/app/cms/themes/page.tsx
 
+import { Tag } from "@acme/design-system/atoms";
 import en from "@acme/i18n/en.json";
 import { TranslationsProvider } from "@acme/i18n/Translations";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Tag } from "@acme/ui/components/atoms";
 
 import { listShops } from "../../../lib/listShops";
 

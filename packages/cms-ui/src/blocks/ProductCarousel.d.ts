@@ -1,4 +1,4 @@
-import { type ProductCarouselProps as BaseProps } from "../../organisms/ProductCarousel";
+import { type ProductCarouselProps as BaseProps } from "@acme/ui/components/organisms/ProductCarousel";
 import type { SKU } from "@acme/types";
 export interface CmsProductCarouselProps extends Omit<BaseProps, "products"> {
     skus?: SKU[];

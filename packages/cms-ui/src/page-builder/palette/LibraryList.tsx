@@ -1,6 +1,7 @@
 "use client";
 
 import { Inline, Stack } from "@acme/design-system/primitives";
+
 import LibraryPaletteItem from "../LibraryPaletteItem";
 import type { LibraryItem } from "../libraryStore";
 

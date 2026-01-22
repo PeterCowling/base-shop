@@ -2,11 +2,10 @@
 
 import type { CSSProperties } from "react";
 
+import { Stack } from "@acme/design-system/primitives/Stack";
+import { cn } from "@acme/design-system/utils/style/cn";
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent } from "@acme/types";
-
-import { cn } from "@acme/design-system/utils/style/cn";
-import { Stack } from "@acme/design-system/primitives/Stack";
 
 import Block from "./Block";
 import { isHiddenForViewport } from "./state/layout/utils";

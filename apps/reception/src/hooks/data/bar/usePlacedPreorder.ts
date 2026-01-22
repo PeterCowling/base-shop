@@ -1,10 +1,10 @@
 // src/hooks/data/usePlacedPreorder.ts
-import { get, ref } from "firebase/database";
 import { useEffect, useState } from "react";
+import { get, ref } from "firebase/database";
 
 import { placedPreorderSchema } from "../../../schemas/placedPreorderSchema";
 import { useFirebaseDatabase } from "../../../services/useFirebase";
-import type { SalesOrderItem } from "../../../types/bar/BarTypes";
+import type { PlacedPreorder } from "../../../types/bar/BarTypes";
 /**
  * Provides a simplified way to fetch an existing placed preorder from either:
  *   - barOrders/breakfastPreorders/<monthName>/<dayStr>/<txnId>
@@ -13,11 +13,6 @@ import type { SalesOrderItem } from "../../../types/bar/BarTypes";
  * In real code, you’ll want more robust parameter handling (you need monthName, dayStr, etc.).
  * For demonstration, we assume you already know them or pass them in.
  */
-export interface PlacedPreorder {
-  preorderTime: string;
-  items: SalesOrderItem[];
-}
-
 export interface UsePlacedPreorderReturn {
   data: PlacedPreorder | null;
   loading: boolean;
@@ -56,7 +51,7 @@ export function usePlacedPreorder(
         if (snap.exists()) {
           const res = placedPreorderSchema.safeParse(snap.val());
           if (res.success) {
-            setData(res.data);
+            setData(res.data as PlacedPreorder);
             setError(null);
           } else {
             setError(res.error.message);

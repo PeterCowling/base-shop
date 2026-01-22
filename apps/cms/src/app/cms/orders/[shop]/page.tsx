@@ -1,12 +1,12 @@
 // apps/cms/src/app/cms/orders/[shop]/page.tsx
 import Link from "next/link";
 
+import { Progress, Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { markRefunded,markReturned, readOrders } from "@acme/platform-core/orders";
 import type { RentalOrder } from "@acme/types";
-import { Progress,Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
 
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 

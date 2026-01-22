@@ -1,3 +1,5 @@
+import { hashSeed as libHashSeed, SeededRandom } from "@acme/lib";
+
 export type PipelineStage = "P" | "M" | "S" | "K" | "L";
 
 export type PipelineMapNode = {
@@ -28,21 +30,22 @@ export function normalizeCount(value: number | undefined): number {
   return value;
 }
 
+/**
+ * Hash a string to a numeric seed for deterministic random generation.
+ * @see hashSeed from @acme/lib/math/random
+ */
 export function hashSeed(input: string): number {
-  let hash = 2166136261;
-  for (let i = 0; i < input.length; i += 1) {
-    hash ^= input.charCodeAt(i);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
+  return libHashSeed(input);
 }
 
+/**
+ * Create a deterministic random number generator from a seed.
+ * Returns a function that produces values in [0, 1) with each call.
+ * @see SeededRandom from @acme/lib/math/random
+ */
 export function lcg(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state = (Math.imul(1664525, state) + 1013904223) >>> 0;
-    return state / 4294967296;
-  };
+  const rng = new SeededRandom(seed);
+  return () => rng.next();
 }
 
 export function tokenCountForStage(count: number): number {

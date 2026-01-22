@@ -13,3 +13,7 @@ export { logger } from "./logger";
 export type { MetricLabels,MetricStatus } from "./metrics";
 export { recordMetric } from "./metrics";
 export { replaceShopInPath } from "./replaceShopInPath";
+export type { SafeErrorCode, SafeErrorResponse } from "./safeError";
+export { isSafeErrorMessage, safeErrorJson, sanitizeError } from "./safeError";
+export type { SafeWebhookOptions, SafeWebhookResult } from "./safeWebhook";
+export { isPrivateURL, safeWebhookFetch } from "./safeWebhook";

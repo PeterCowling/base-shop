@@ -31,8 +31,9 @@ export async function POST(req: NextRequest) {
     const tax = await calculateTax(body);
     return NextResponse.json({ tax });
   } catch (err) {
+    console.error("[api/tax] calculateTax error:", err); // i18n-exempt -- server log
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to calculate tax" }, // i18n-exempt -- generic error
       { status: 500 }
     );
   }

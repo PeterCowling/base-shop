@@ -3,10 +3,10 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
-import { Tag } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";

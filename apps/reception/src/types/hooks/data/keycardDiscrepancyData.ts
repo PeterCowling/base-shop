@@ -1,7 +1,6 @@
-export interface KeycardDiscrepancy {
-  user: string;
-  timestamp: string;
-  amount: number;
-}
+import type {
+  KeycardDiscrepancies,
+  KeycardDiscrepancy,
+} from "../../../schemas/keycardDiscrepancySchema";
 
-export type KeycardDiscrepancies = Record<string, KeycardDiscrepancy> | null;
+export type { KeycardDiscrepancies, KeycardDiscrepancy };

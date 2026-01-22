@@ -1,11 +1,10 @@
 "use client";
 import React, { useRef, useState } from "react";
 
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Button } from "@acme/design-system/shadcn";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
-
-import { cn } from "../../../../utils/style";
-import { Inline } from "../../../atoms/primitives/Inline";
-import { Button } from "../../../atoms/shadcn";
 
 export interface CarouselContainerProps {
   children?: React.ReactNode;
@@ -124,7 +123,7 @@ export default function CarouselContainer({
           <div
             key={key}
             className="snap-start"
-            /* eslint-disable-next-line react/forbid-dom-props -- ABC-123: computed flex-basis requires inline style; not expressible via static classes */
+             
             style={{ flex: `0 0 calc(${100 / effSlides}% - ${typeof effGap === 'string' ? effGap : '0px'})` }}
           >
             {child}

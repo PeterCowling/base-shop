@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Database } from "firebase/database";
-import { useOnlineStatus } from "./useOnlineStatus";
-import { syncPendingWrites, type SyncResult } from "./syncManager";
+
 import { getPendingWriteCount } from "./receptionDb";
+import { syncPendingWrites, type SyncResult } from "./syncManager";
+import { useOnlineStatus } from "./useOnlineStatus";
 
 export interface UseOfflineSyncOptions {
   database: Database | null;

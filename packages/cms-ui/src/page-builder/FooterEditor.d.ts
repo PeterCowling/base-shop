@@ -1,5 +1,5 @@
 import type { FooterComponent } from "@acme/types";
-import type { LogoVariants } from "@acme/ui/organisms/types";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 interface ExtendedFooterComponent extends FooterComponent {
     logoVariants?: LogoVariants;
     shopName?: string;

@@ -1,9 +1,9 @@
-import { push, ref, set } from "firebase/database";
 import { useCallback, useMemo } from "react";
+import { push, ref, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CCReceiptIrregularity } from "../../types/hooks/data/ccIrregularityData";
+import { type CCReceiptIrregularity } from "../../types/hooks/data/ccIrregularityData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 
 export function useCCIrregularitiesMutations() {

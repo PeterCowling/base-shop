@@ -1,14 +1,13 @@
 "use client";
-/* eslint-disable react/forbid-dom-props -- LINT-1006: PreviewPane requires inline styles for device frame and token variables */
+ 
 
 import { type CSSProperties,useMemo } from "react";
 
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent } from "@acme/types";
-
-import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 import DeviceSelector from "@acme/ui/components/DeviceSelector";
 import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
+import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 
 import usePreviewTokens from "./hooks/usePreviewTokens";
 import useViewport from "./hooks/useViewport";
@@ -21,7 +20,7 @@ interface Props {
   onChange: (id: string) => void;
   editor?: HistoryState["editor"];
   /** Optional extra devices from page breakpoints */
-  extraDevices?: import("../../../utils/devicePresets").DevicePreset[];
+  extraDevices?: import("@acme/ui/utils/devicePresets").DevicePreset[];
 }
 
 const PreviewPane = ({ components, locale, deviceId, onChange, editor, extraDevices = [] }: Props) => {
@@ -55,9 +54,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor, extraDevi
     <div className="flex flex-col gap-2 shrink-0">
       <DeviceSelector
         deviceId={deviceId}
-        onChange={onChange}
-        showLegacyButtons
-        extraDevices={extraDevices}
+        setDeviceId={onChange}
       />
       <div
         className={`${frameClass[previewViewport]} shrink-0`}

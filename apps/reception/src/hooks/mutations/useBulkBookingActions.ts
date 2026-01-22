@@ -6,8 +6,10 @@
  */
 
 import { useCallback, useState } from "react";
-import useDeleteBooking from "./useDeleteBooking";
+
 import { showToast } from "../../utils/toastUtils";
+
+import useDeleteBooking from "./useDeleteBooking";
 
 export interface BulkActionResult {
   success: string[];
@@ -33,10 +35,16 @@ export interface CsvExportRow {
 }
 
 /**
- * Escapes a CSV field value, handling quotes and commas.
+ * Escapes a CSV field value, handling quotes, commas, and formula injection.
+ * Prefixes values starting with =, +, -, @, \t, \r with a single quote
+ * to prevent Excel/Sheets formula injection attacks.
  */
 function escapeCsvField(value: string | number): string {
-  const str = String(value);
+  let str = String(value);
+  // Prevent formula injection - Excel/Sheets treat these as formula starters
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
   if (str.includes(",") || str.includes('"') || str.includes("\n")) {
     return `"${str.replace(/"/g, '""')}"`;
   }

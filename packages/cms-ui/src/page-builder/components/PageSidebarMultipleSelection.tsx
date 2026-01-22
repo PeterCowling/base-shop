@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-import type { HistoryState,PageComponent } from "@acme/types";
-
 import { Tooltip } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/shadcn";
-import useCenterInParent from "../hooks/useCenterInParent";
-import useGroupingActions from "../hooks/useGroupingActions";
-import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
+import useCenterInParent from "@acme/ui/components/cms/page-builder/hooks/useCenterInParent";
+import useGroupingActions from "@acme/ui/components/cms/page-builder/hooks/useGroupingActions";
+import useStyleClipboardActions from "@acme/ui/components/cms/page-builder/hooks/useStyleClipboardActions";
+
 import type { Action } from "../state";
 import { alignBottom, alignCenterX, alignCenterY, alignLeft, alignRight, alignTop, distributeHorizontal, distributeVertical } from "../state/layout/geometry";
 

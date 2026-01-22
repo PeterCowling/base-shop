@@ -2,13 +2,14 @@
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import useBookingSearchClient from "../../hooks/client/useBookingSearchClient";
+import { type BookingSearchRow, type Guest } from "../../types/component/bookingSearch";
+import { showToast } from "../../utils/toastUtils";
+
 import BookingSearchTable from "./BookingSearchTable";
 import FilterBar from "./FilterBar";
 import FinancialTransactionSearch from "./FinancialTransactionSearch";
 import SmallSpinner from "./SmallSpinner";
-import useBookingSearchClient from "../../hooks/client/useBookingSearchClient";
-import { BookingSearchRow, Guest } from "../../types/component/bookingSearch";
-import { showToast } from "../../utils/toastUtils";
 
 /**
  * Maps each numeric activity code to a descriptive text label.

@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 
 import { withModalBackground } from "../../../hoc/withModalBackground";
+import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import useCityTaxMutation from "../../../hooks/mutations/useCityTaxMutation";
-import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
+import { type CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
 import { addDays, formatDate, parseLocalDate } from "../../../utils/dateUtils";
 import { roundDownTo50Cents } from "../../../utils/moneyUtils";
 import { showToast } from "../../../utils/toastUtils";
 import ModalContainer from "../../bar/orderTaking/modal/ModalContainer";
-import { CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
 
 type ExtendType = "single" | "all";
 
@@ -147,7 +147,7 @@ function ExtensionPayModalBase({
       }
       showToast("Extension saved", "success");
       onClose();
-    } catch (err) {
+    } catch {
       showToast("Error extending booking", "error");
     } finally {
       setIsSaving(false);

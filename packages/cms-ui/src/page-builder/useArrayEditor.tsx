@@ -2,9 +2,8 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useRef } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Button, Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import ImagePicker from "./ImagePicker";
 

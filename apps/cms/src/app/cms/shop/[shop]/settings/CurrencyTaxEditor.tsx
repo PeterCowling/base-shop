@@ -3,7 +3,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { updateCurrencyAndTax } from "@cms/actions/shops.server";
 
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/design-system/shadcn";
 
 interface Props {
   shop: string;

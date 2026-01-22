@@ -1,8 +1,10 @@
 // File: /src/hooks/data/useBagStorageData.ts
 
 import { useEffect, useState } from "react";
+
 import { bagStorageSchema } from "../../schemas/bagStorageSchema";
-import { BagStorage } from "../../types/hooks/data/bagStorageData";
+import { type BagStorage } from "../../types/hooks/data/bagStorageData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
@@ -36,7 +38,7 @@ function useBagStorageData() {
     }
     const res = bagStorageSchema.safeParse(data);
     if (res.success) {
-      setBagStorage(res.data);
+      setBagStorage(res.data as BagStorage);
       setError(null);
     } else {
       setError(res.error);

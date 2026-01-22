@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { occupantDetailsSchema } from "./occupantDetailsSchema";
 
 export const bookingOccupantDetailsSchema = z.record(occupantDetailsSchema);

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@acme/ui/components/atoms/primitives";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@acme/design-system/primitives";
 
 import Upgrade from "../Upgrade";
 

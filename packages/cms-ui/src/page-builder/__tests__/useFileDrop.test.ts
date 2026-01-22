@@ -1,10 +1,10 @@
 import { act, renderHook } from "@testing-library/react";
 
-import useFileDrop from "../hooks/useFileDrop";
+import useFileDrop from "@acme/ui/hooks/useFileDrop";
 
 const mockOnDrop = jest.fn();
 
-jest.mock("../../../../hooks/useFileUpload", () => ({
+jest.mock("@acme/ui/hooks/useFileUpload", () => ({
   __esModule: true,
   default: ({ onUploaded }: any) => ({
     onDrop: (...args: any[]) => {

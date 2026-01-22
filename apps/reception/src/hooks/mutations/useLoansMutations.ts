@@ -1,12 +1,13 @@
-import { get, ref, remove, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { get, ref, remove, update } from "firebase/database";
+
+import { useAuth } from "../../context/AuthContext";
+import { useFirebaseDatabase } from "../../services/useFirebase";
+import { type LoanMethod, type LoanTransaction } from "../../types/hooks/data/loansData";
+import { generateTransactionId } from "../../utils/generateTransactionId";
 
 import useActivitiesMutations from "./useActivitiesMutations";
 import useAllTransactions from "./useAllTransactionsMutations";
-import { useAuth } from "../../context/AuthContext";
-import { useFirebaseDatabase } from "../../services/useFirebase";
-import { LoanMethod, LoanTransaction } from "../../types/hooks/data/loansData";
-import { generateTransactionId } from "../../utils/generateTransactionId";
 
 /**
  * Mutation Hook:

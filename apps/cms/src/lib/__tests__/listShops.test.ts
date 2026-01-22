@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 
-import * as dataRootModule from "@acme/platform-core/dataRoot";
 import { logger } from "@acme/lib/logger";
+import * as dataRootModule from "@acme/platform-core/dataRoot";
 
 import { listShops, listShopSummaries } from "../listShops";
 

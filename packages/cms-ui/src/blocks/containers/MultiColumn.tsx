@@ -1,7 +1,7 @@
 "use client";
 import type { ReactNode } from "react";
 
-import { cn } from "../../../../utils/style";
+import { cn } from "@acme/design-system/utils/style";
 
 export interface MultiColumnProps {
   children?: ReactNode;
@@ -80,7 +80,7 @@ export default function MultiColumn({
   return (
     <div
       className={cn("grid", className)}
-      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic grid columns/gaps computed at runtime */
+       
       style={{
         gridTemplateColumns: `repeat(${effColumns}, minmax(0, 1fr))`,
         gap: effGap,

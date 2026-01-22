@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe("Blog listing page", () => {
   test("renders posts when blog enabled", async () => {
-    jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
+    jest.mock("@acme/cms-ui/blocks/BlogListing", () => ({
       __esModule: true,
       default: jest.fn(() => null),
     }));
@@ -32,7 +32,7 @@ describe("Blog listing page", () => {
       "../src/app/[lang]/blog/page"
     );
     const BlogListing = (
-      await import("@acme/ui/components/cms/blocks/BlogListing")
+      await import("@acme/cms-ui/blocks/BlogListing")
     ).default as jest.Mock;
     await BlogPage({ params: { lang: "en" } });
     expect(BlogListing).toHaveBeenCalledWith(

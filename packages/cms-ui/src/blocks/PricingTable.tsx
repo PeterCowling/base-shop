@@ -1,5 +1,5 @@
 /* i18n-exempt file -- DS-1028 class names and iconless UI; all user copy is provided via props (CMS) [ttl=2026-12-31] */
-import { cn } from "../../../utils/style/cn";
+import { cn } from "@acme/design-system/utils/style";
 
 export interface Plan {
   title: string;

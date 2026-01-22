@@ -1,5 +1,12 @@
 import { NextRequest } from "next/server";
 
+// Mock auth to avoid pulling in the full auth chain
+jest.mock("@cms/actions/common/auth", () => ({
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+  ensureShopReadAccess: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+}));
+
 // Mock JSON IO with in-memory store and no real file system
 const mem: { data?: any } = {};
 jest.mock("@/lib/server/jsonIO", () => ({

@@ -6,7 +6,7 @@ import { renderWithProviders } from "@tests/renderers";
 
 import CareersHero from "@/components/careers/CareersHero";
 
-jest.mock("@acme/ui/atoms/Button", () => ({
+jest.mock("@acme/design-system/primitives", () => ({
   Button: ({ children, ...props }: ComponentPropsWithoutRef<"button">) => (
     <button type="button" {...props}>
       {children}

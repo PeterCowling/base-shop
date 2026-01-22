@@ -1,13 +1,13 @@
 // src/components/docInsert/row1.tsx
 import React, {
-  ChangeEvent,
+  type ChangeEvent,
   memo,
   useCallback,
   useEffect,
   useState,
 } from "react";
 
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 /**
  * Restrict occupantDetails to only the fields Row1 actually handles.

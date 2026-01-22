@@ -1,5 +1,6 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+
 import { getShopAppSlug, getShopWorkflowName } from "@acme/platform-core/shops";
 
 const rootDir = process.cwd();

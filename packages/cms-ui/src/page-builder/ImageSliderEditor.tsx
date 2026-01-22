@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 
-import type { ImageSliderComponent } from "@acme/types";
-
 import { Button, Checkbox,Input } from "@acme/design-system/shadcn";
+import type { ImageSliderComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import ImagePicker from "./ImagePicker";

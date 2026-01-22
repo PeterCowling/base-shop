@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, memo, useCallback, useState } from "react";
+import { type FC, type KeyboardEvent, memo, useCallback, useState } from "react";
 
 import useBookingNotes from "../../../hooks/data/useBookingNotes";
 import useBookingNotesMutation from "../../../hooks/mutations/useBookingNotesMutation";
@@ -100,7 +100,7 @@ const BookingNotesModal: FC<Props> = ({ bookingRef, onClose }) => {
                 </>
               ) : (
                 <div className="flex justify-between items-start">
-                  <div className="whitespace-pre-wrap break-words mr-2">
+                  <div className="whitespace-pre-wrap break-words me-2">
                     {note.text}
                   </div>
                   <div className="flex gap-2">

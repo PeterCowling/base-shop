@@ -5,14 +5,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { LOCALES, useTranslations } from "@acme/i18n";
-import type { ConfiguratorProgress,Locale  } from "@acme/types";
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import {
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
-} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+import { Button, Input } from "@acme/design-system/shadcn";
+import { LOCALES, useTranslations } from "@acme/i18n";
+import type { ConfiguratorProgress,Locale  } from "@acme/types";
 import { type DevicePreset,devicePresets } from "@acme/ui/utils/devicePresets";
 
 import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";

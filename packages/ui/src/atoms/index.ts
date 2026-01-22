@@ -9,7 +9,7 @@ export * from "./FacilityIcon";
 export * from "./Grid";
 export * from "./IconButton";
 export * from "./Link";
-export * from "./RatingsBar";
+export { default as RatingsBar } from "./RatingsBar";
 export * from "./RoomImage";
 export * from "./Section";
 export * from "./Spinner";

@@ -9,11 +9,11 @@ import React, {
 
 import useFirebaseSubscription from "../hooks/data/useFirebaseSubscription";
 import useLoansMutations from "../hooks/mutations/useLoansMutations";
-import { loanTransactionSchema, loansSchema } from "../schemas/loansSchema";
+import { loansSchema,loanTransactionSchema } from "../schemas/loansSchema";
 import {
-  LoanMethod,
-  LoanTransaction,
-  Loans,
+  type LoanMethod,
+  type Loans,
+  type LoanTransaction,
 } from "../types/hooks/data/loansData";
 import { showToast } from "../utils/toastUtils";
 

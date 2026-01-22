@@ -2,10 +2,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Button } from "@acme/ui/components/atoms";
-import Accordion from "@acme/ui/components/molecules/Accordion";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Button } from "@acme/design-system/atoms";
+import Accordion from "@acme/design-system/molecules/Accordion";
 import { siteConfig } from "../../lib/siteConfig";
 
 type FaqItem = {

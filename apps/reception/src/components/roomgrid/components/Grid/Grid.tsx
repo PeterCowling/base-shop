@@ -9,6 +9,7 @@ import type { TTheme } from "../../interfaces/theme.interface";
 import { styleUtils } from "../Day/utils/styleUtils";
 import { Header } from "../Header";
 import { Row as VisualRow } from "../Row";
+
 import type { TGridProps } from "./Grid.interface";
 
 function Grid<TCustomStatus extends string = never>(

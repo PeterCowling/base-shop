@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Bookings } from "../../../types/domains/booking_old";
+import { type Bookings } from "../../../types/domains/booking_old";
 
 export interface Payment {
   amount: number;

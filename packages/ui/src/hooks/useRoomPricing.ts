@@ -6,11 +6,10 @@
 
 import { useMemo } from "react";
 
-import { useRates } from "@acme/ui/context/RatesContext";
-import type { Room } from "@acme/ui/data/roomsData";
-import { getToday } from "@acme/ui/utils/dateUtils";
-
+import { useRates } from "../context/RatesContext";
+import type { Room } from "../data/roomsData";
 import { getPriceForDate } from "../rooms/pricing";
+import { getToday } from "../utils/dateUtils";
 
 export interface RoomPricing {
   lowestPrice?: number;

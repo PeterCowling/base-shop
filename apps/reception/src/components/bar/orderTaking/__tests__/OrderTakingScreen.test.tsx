@@ -1,9 +1,11 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
 import {
-  AggregatedOrder,
-  CategoryType,
-  Product,
+  type AggregatedOrder,
+  type CategoryType,
+  type Product,
 } from "../../../../types/bar/BarTypes";
 import OrderTakingScreen from "../OrderTakingScreen";
 

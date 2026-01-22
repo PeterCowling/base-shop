@@ -1,10 +1,9 @@
 "use client";
 
 import type { Provider } from "@acme/configurator/providers";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Card, CardContent, Checkbox } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
 
 export type ShopProvidersSectionErrors = Partial<
   Record<"trackingProviders", string[]>

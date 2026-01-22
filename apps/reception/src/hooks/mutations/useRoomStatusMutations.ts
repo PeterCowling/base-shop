@@ -1,6 +1,6 @@
 /* File: src/hooks/mutations/useRoomStatusMutations.ts */
-import { ref, remove, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, remove, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { SingleRoomStatus } from "../../types/hooks/data/roomStatusData";

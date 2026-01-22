@@ -49,5 +49,6 @@ When overrides push key foreground/background pairs below the WCAG AA target, th
 ## Implementation references
 
 - **Theme Editor** – [`apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx`](../apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx)
+- **CMS inline help pattern** – [`docs/cms/shop-build-ui-patterns.md`](./cms/shop-build-ui-patterns.md) (see `CmsInlineHelpBanner`)
 - **Live preview** – [`apps/cms/src/app/cms/configurator/steps/ThemeEditorForm.tsx`](../apps/cms/src/app/cms/configurator/steps/ThemeEditorForm.tsx)
 - **Server actions** – [`apps/cms/src/actions/shops.server.ts`](../apps/cms/src/actions/shops.server.ts)

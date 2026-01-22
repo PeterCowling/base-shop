@@ -3,7 +3,7 @@ import { captureError } from "@acme/telemetry";
 export async function register(): Promise<void> {
   // i18n-exempt: instrumentation logging only
   if (process.env.NODE_ENV === "development") {
-    console.log("[instrumentation] XA error tracking enabled");
+    console.info("[instrumentation] XA error tracking enabled");
   }
 
   // Capture uncaught exceptions

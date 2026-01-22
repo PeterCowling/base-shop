@@ -3,10 +3,12 @@
  * Deploy step: commit, push, trigger workflow, and wait for completion.
  */
 import { execSync } from "node:child_process";
-import { existsSync, readFileSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync,readFileSync } from "node:fs";
+
 import type { LaunchConfig } from "@acme/platform-core/createShop";
-import { getShopWorkflowName, getShopAppSlug } from "@acme/platform-core/shops";
-import { LaunchError, type DeployResult } from "../types";
+import { getShopAppSlug,getShopWorkflowName } from "@acme/platform-core/shops";
+
+import { type DeployResult,LaunchError } from "../types";
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

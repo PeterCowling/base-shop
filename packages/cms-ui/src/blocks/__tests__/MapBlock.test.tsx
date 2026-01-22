@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 
 import MapBlock from "../MapBlock";
 
-jest.mock("../../../organisms/StoreLocatorMap", () => {
+jest.mock("@acme/ui/components/organisms/StoreLocatorMap", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -16,7 +16,7 @@ jest.mock("../../../organisms/StoreLocatorMap", () => {
   };
 });
 
-const { StoreLocatorMap } = require("../../../organisms/StoreLocatorMap") as {
+const { StoreLocatorMap } = require("@acme/ui/components/organisms/StoreLocatorMap") as {
   StoreLocatorMap: jest.Mock;
 };
 

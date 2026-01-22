@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { showToast } from "../../../utils/toastUtils";
 import EmailProgressLists, {
   type EmailProgressListItem,
 } from "../EmailProgressLists";
 
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
-
-import { showToast } from "../../../utils/toastUtils";
 
 const sampleData: EmailProgressListItem[] = [
   {

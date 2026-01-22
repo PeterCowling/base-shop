@@ -1,14 +1,14 @@
 import { buildMetrics } from "@cms/lib/analytics";
 
+import { Progress } from "@acme/design-system/atoms";
+import { formatPrice } from "@acme/lib/format";
 import type { AnalyticsAggregates,AnalyticsEvent } from "@acme/platform-core/analytics";
 import {
   listEvents,
   readAggregates,
 } from "@acme/platform-core/repositories/analytics.server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import { formatPrice } from "@acme/lib/format";
 import type { Shop } from "@acme/types";
-import { Progress } from "@acme/ui/components/atoms";
 
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";

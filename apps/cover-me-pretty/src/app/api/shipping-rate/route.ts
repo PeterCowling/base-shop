@@ -72,8 +72,9 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(rate);
   } catch (err) {
+    console.error("[api/shipping-rate] error:", err); // i18n-exempt -- server log
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to calculate shipping rate" }, // i18n-exempt -- generic error
       { status: 500 }
     );
   }

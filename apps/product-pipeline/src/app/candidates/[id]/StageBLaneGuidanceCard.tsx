@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@acme/ui/components/atoms/primitives";
+import { Stack } from "@acme/design-system/primitives";
 
 import type { CandidateDetailStrings } from "./types";
 

@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 
-import { validateShopName } from "@acme/platform-core/shops";
 import { getShopFromPath } from "@acme/lib/shop";
+import { validateShopName } from "@acme/platform-core/shops";
 
 import * as depositService from "../releaseDepositsService";
 

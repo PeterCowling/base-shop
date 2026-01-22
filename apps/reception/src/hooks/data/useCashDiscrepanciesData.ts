@@ -1,8 +1,10 @@
 /* src/hooks/data/useCashDiscrepanciesData.ts */
 
 import { useMemo } from "react";
+
 import { cashDiscrepanciesSchema } from "../../schemas/cashDiscrepancySchema";
-import { CashDiscrepancy } from "../../types/hooks/data/cashDiscrepancyData";
+import type { CashDiscrepancy } from "../../types/hooks/data/cashDiscrepancyData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
@@ -21,7 +23,10 @@ export function useCashDiscrepanciesData() {
     }
     const result = cashDiscrepanciesSchema.safeParse(data);
     if (result.success) {
-      return { entries: Object.values(result.data), error: subError };
+      const entries: CashDiscrepancy[] = Object.values(result.data).flatMap((entry) =>
+        entry ? [entry] : []
+      );
+      return { entries, error: subError };
     }
     return { entries: [] as CashDiscrepancy[], error: result.error };
   }, [data, subError]);

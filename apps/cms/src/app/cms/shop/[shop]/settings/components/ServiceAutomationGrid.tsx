@@ -1,7 +1,7 @@
 import Link from "next/link";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

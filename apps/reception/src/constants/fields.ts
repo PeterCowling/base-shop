@@ -1,1 +1,1 @@
-export const TIMESTAMP_KEY: "timestamp" = "timestamp";
+export const TIMESTAMP_KEY = "timestamp" as const;

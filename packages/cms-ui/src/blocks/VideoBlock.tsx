@@ -3,7 +3,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { VideoPlayer } from "../../atoms/VideoPlayer";
+import { VideoPlayer } from "@acme/design-system/atoms/VideoPlayer";
 
 interface Props {
   /** Source URL of the video */

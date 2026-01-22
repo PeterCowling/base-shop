@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@cms/auth/options";
 
-import { checkShopExists } from "@acme/platform-core";
 import {
   readSettings,
   readShop,
 } from "@acme/platform-core/repositories/json.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import type { Locale } from "@acme/types";
 
 import AdminTools from "./components/AdminTools";

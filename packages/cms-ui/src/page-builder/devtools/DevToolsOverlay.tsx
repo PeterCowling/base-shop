@@ -1,11 +1,10 @@
 "use client";
 
-/* eslint-disable react/forbid-dom-props -- PB-2419: PB-DEVTOOLS dynamic overlay positioning requires inline styles (left/top/width/height). Dev-only, safe. */
+ 
 import React, { useEffect, useRef, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
-
-import { AUTOSCROLL_EDGE_PX } from "../hooks/usePageBuilderDnD";
+import { AUTOSCROLL_EDGE_PX } from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderDnD";
 
 type Props = {
   /** Optional scroll container to draw autoscroll thresholds. If omitted, tries to infer. */

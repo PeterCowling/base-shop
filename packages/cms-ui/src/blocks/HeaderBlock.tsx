@@ -1,7 +1,6 @@
 import type { Locale } from "@acme/i18n/locales";
-
-import { Header, type NavSection } from "../../organisms/Header";
-import type { LogoVariants } from "../../organisms/types";
+import { Header, type NavSection } from "@acme/ui/components/organisms/Header";
+import type { LogoVariants } from "@acme/ui/components/organisms/types";
 
 interface Props {
   nav?: NavSection[];

@@ -3,12 +3,11 @@
 
 import { memo, useState } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
-
-import { Inline } from "../../atoms/primitives";
-import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
-import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
+import type { CategoryCollectionTemplateProps } from "@acme/ui/components/templates/CategoryCollectionTemplate";
+import { CategoryCollectionTemplate } from "@acme/ui/components/templates/CategoryCollectionTemplate";
 
 import type { BlockRegistryEntry } from "./types";
 

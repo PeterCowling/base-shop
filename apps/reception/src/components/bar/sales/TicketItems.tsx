@@ -1,7 +1,7 @@
 /* File: src/components/bar/sales/TicketItems.tsx */
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
 
-import { SalesOrder } from "../../../types/bar/BarTypes";
+import { type SalesOrder } from "../../../types/bar/BarTypes";
 
 interface Props {
   order: SalesOrder;

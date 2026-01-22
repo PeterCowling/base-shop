@@ -4,9 +4,9 @@ import Link from "next/link";
 import { getPosts } from "@cms/actions/blog.server";
 
 import { formatTimestamp } from "@acme/date-utils";
+import { Button } from "@acme/design-system/shadcn";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
 import { getSanityConfig } from "@acme/platform-core/shops";
-import { Button } from "@acme/ui/components/atoms";
 
 export default async function BlogPostsPage(props: {
   searchParams?: Promise<{ shopId?: string }>;

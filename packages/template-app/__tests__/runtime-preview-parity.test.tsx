@@ -52,7 +52,7 @@ async function setupPreviewFixture() {
       NEXT_PUBLIC_SHOP_ID: shopId,
     },
   }));
-  jest.doMock("@acme/ui/hooks/usePreviewDevice", () => ({
+  jest.doMock("@acme/cms-ui/hooks/usePreviewDevice", () => ({
     usePreviewDevice: () => ["desktop", jest.fn()],
   }));
   jest.doMock("@acme/ui/components/DeviceSelector", () => ({

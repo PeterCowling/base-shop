@@ -5,9 +5,8 @@
 import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import RatingsBar from "@acme/ui/atoms/RatingsBar";
-import { Section } from "@acme/ui/atoms/Section";
-import { DirectBookingPerks } from "@acme/ui/molecules/DirectBookingPerks";
+import { RatingsBar, Section } from "@acme/ui/atoms";
+import { DirectBookingPerks } from "@acme/ui/molecules";
 import RoomsSection from "@acme/ui/organisms/RoomsSection";
 
 import AlsoHelpful from "@/components/common/AlsoHelpful";

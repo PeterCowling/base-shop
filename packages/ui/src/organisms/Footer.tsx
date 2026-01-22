@@ -4,15 +4,14 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Facebook, Instagram } from "lucide-react";
 
-import { CONTACT_EMAIL } from "@acme/ui/config/hotel";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import type { AppLanguage } from "@acme/ui/i18n.config";
-import { i18nConfig } from "@acme/ui/i18n.config";
-import { buildNavLinks, type TranslateFn } from "@acme/ui/utils/buildNavLinks";
-
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
+import { CONTACT_EMAIL } from "../config/hotel";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import type { AppLanguage } from "../i18n.config";
+import { i18nConfig } from "../i18n.config";
 import { SLUGS } from "../slug-map";
+import { buildNavLinks, type TranslateFn } from "../utils/buildNavLinks";
 
 const CURRENT_YEAR = new Date().getFullYear();
 

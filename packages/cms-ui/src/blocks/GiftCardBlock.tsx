@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
+import { Price } from "@acme/design-system/atoms/Price";
+import { Inline,Stack } from "@acme/design-system/primitives";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import type { SKU } from "@acme/types";
-
-import { Price } from "../../atoms/Price";
-import { Inline,Stack } from "../../atoms/primitives";
 
 interface Props {
   denominations?: number[];

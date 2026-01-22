@@ -50,7 +50,7 @@ jest.mock("../ThemeEditorForm", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   return {
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,

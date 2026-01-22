@@ -7,7 +7,8 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight as ArrowRightIcon } from "lucide-react";
 import type { SwiperProps, SwiperSlideProps } from "swiper/react";
 
-import { Grid, Section } from "@acme/ui/atoms";
+import { Grid } from "@acme/ui/atoms";
+import { Section } from "@acme/ui/atoms";
 
 import type { CarouselSlidesProps } from "./CarouselSlides.types";
 import SlideItem from "./SlideItem";

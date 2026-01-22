@@ -1,6 +1,24 @@
 // File: src/hooks/client/checkin/__tests__/usePrepaymentData.test.tsx
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+/* ------------------------------------------------------------------ */
+/*  Import mocked modules *after* registration to access the spies     */
+/* ------------------------------------------------------------------ */
+import useActivitiesByCodeData from "../../../data/useActivitiesByCodeData";
+import useActivitiesData from "../../../data/useActivitiesData";
+import useBookingsData from "../../../data/useBookingsData";
+import useCCDetails from "../../../data/useCCDetails";
+import useFinancialsRoom from "../../../data/useFinancialsRoom";
+import useGuestDetails from "../../../data/useGuestDetails";
+/* ------------------------------------------------------------------ */
+/*  Import the hook under test – mocks are already in place            */
+/* ------------------------------------------------------------------ */
+import usePrepaymentData, {
+  computeHoursElapsed,
+  findEarliestTimestampForCode,
+} from "../usePrepaymentData";
 
 /* ------------------------------------------------------------------ */
 /*  Register mocks first – Jest hoists `jest.mock` calls               */
@@ -13,16 +31,6 @@ jest.mock("../../../data/useCCDetails", () => ({ default: jest.fn() }));
 jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
 jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
 
-/* ------------------------------------------------------------------ */
-/*  Import mocked modules *after* registration to access the spies     */
-/* ------------------------------------------------------------------ */
-import useActivitiesByCodeData from "../../../data/useActivitiesByCodeData";
-import useActivitiesData from "../../../data/useActivitiesData";
-import useBookingsData from "../../../data/useBookingsData";
-import useCCDetails from "../../../data/useCCDetails";
-import useFinancialsRoom from "../../../data/useFinancialsRoom";
-import useGuestDetails from "../../../data/useGuestDetails";
-
 /* Typed references to the mocked functions */
 const useActivityByCodeMock = jest.mocked(useActivitiesByCodeData);
 const useActivitiesMock = jest.mocked(useActivitiesData);
@@ -30,14 +38,6 @@ const useBookingsMock = jest.mocked(useBookingsData);
 const useCCDetailsMock = jest.mocked(useCCDetails);
 const useFinancialsRoomMock = jest.mocked(useFinancialsRoom);
 const useGuestDetailsMock = jest.mocked(useGuestDetails);
-
-/* ------------------------------------------------------------------ */
-/*  Import the hook under test – mocks are already in place            */
-/* ------------------------------------------------------------------ */
-import usePrepaymentData, {
-  computeHoursElapsed,
-  findEarliestTimestampForCode,
-} from "../usePrepaymentData";
 
 /* ------------------------------------------------------------------ */
 /*  Shared mock return data                                           */

@@ -1,4 +1,5 @@
-import { CashCount } from "../../../types/hooks/data/cashCountData";
+import { type CashCount } from "../../../types/hooks/data/cashCountData";
+
 export { findOpenShift } from "../../../utils/shiftUtils";
 
 export function getLastClose(cashCounts: CashCount[]): CashCount | undefined {

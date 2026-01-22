@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import usePageBuilderSave from "../hooks/usePageBuilderSave";
+import usePageBuilderSave from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderSave";
 
 describe("usePageBuilderSave", () => {
   const basePage: any = {

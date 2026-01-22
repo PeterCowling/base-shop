@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
 import type { Ticket } from "../../../../types/bar/BarTypes";
 import useFirebaseSubscription from "../../useFirebaseSubscription";
 import { useSalesData } from "../useSalesData";

@@ -8,7 +8,7 @@ import type {
   Money,
   RoomCategory,
   SeasonalPrice,
-} from "@acme/ui/types/machine-layer/ml.ts";
+} from "../types/machine-layer/ml.ts";
 
 /* ─── helpers & local types ──────────────────────────────────────────── */
 export type RoomId =

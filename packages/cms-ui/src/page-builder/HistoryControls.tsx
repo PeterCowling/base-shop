@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { CheckIcon, RotateCounterClockwiseIcon, UpdateIcon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-import type { HistoryState,PageComponent } from "@acme/types";
-
 import { Spinner,Tooltip  } from "@acme/design-system/atoms";
 import { Inline, Stack } from "@acme/design-system/primitives";
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@acme/design-system/shadcn/AlertDialog";
 import { DialogDescription } from "@acme/design-system/shadcn/Dialog";
+import { useTranslations } from "@acme/i18n";
+import type { HistoryState,PageComponent } from "@acme/types";
 
 import VersionsPanel from "./VersionsPanel";
 

@@ -118,7 +118,7 @@ const BlockItem = memo(function BlockItemComponent({
       : "");
 
   return (
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- PB-2461: Canvas item must handle click/contextmenu/keyboard to support selection & DnD
+       
       <div
       ref={dnd.setNodeRef}
       onClick={(event) => onSelect(selectableId, event)}
@@ -148,7 +148,7 @@ const BlockItem = memo(function BlockItemComponent({
         viewport,
         t: t as unknown as (key: string, vars?: Record<string, unknown>) => string,
       })}
-      /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: editor canvas item uses dynamic inline positioning/transforms during interactions */
+       
       style={style}
       className={wrapperClass}
     >
@@ -166,7 +166,7 @@ const BlockItem = memo(function BlockItemComponent({
         }}
       />
       {effLocked && (
-        // eslint-disable-next-line ds/absolute-parent-guard -- PB-2460: Positioned under relative parent; rule mis-detects due to dynamic class concatenation.
+         
         <div className="absolute end-1 top-1 text-xs" title={t("Locked") as string} aria-hidden>
           <LockClosedIcon />
         </div>

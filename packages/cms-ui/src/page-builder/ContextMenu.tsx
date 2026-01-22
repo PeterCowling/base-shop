@@ -101,7 +101,7 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
     <div className="relative">
       <div
         className="absolute min-w-40 overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-elevation-2"
-        // eslint-disable-next-line react/forbid-dom-props -- DEV-0000: dynamic absolute positioning requires inline style for x/y
+         
         style={style}
         role="menu"
         data-pb-contextmenu

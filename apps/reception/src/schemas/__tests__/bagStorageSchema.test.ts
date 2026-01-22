@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { bagStorageSchema } from "../bagStorageSchema";
 
 describe("bagStorageSchema", () => {
@@ -18,7 +19,7 @@ describe("bagStorageSchema", () => {
   it("fails when optedIn is not boolean", () => {
     expect(() =>
       bagStorageSchema.parse({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         abc: { optedIn: "true" as any },
       })
     ).toThrow();

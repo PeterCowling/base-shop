@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "@acme/ui/components/atoms/primitives";
+import { Grid } from "@acme/design-system/primitives";
 
 import type { StageTSummary } from "./stageTHelpers";
 import type { CandidateDetailStrings } from "./types";

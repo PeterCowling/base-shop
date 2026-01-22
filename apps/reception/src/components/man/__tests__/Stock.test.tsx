@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import Stock from "../Stock";
 
 const useProductsMock = jest.fn();
 jest.mock("../../../hooks/data/bar/useProducts", () => ({
   useProducts: useProductsMock,
 }));
-
-import Stock from "../Stock";
 
 describe("Stock", () => {
   beforeEach(() => {

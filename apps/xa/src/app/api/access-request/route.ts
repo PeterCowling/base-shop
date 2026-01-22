@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { createAccessRequest } from "../../../lib/accessStore";
 import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../lib/rateLimit";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 function sanitize(value: unknown, max: number) {
   if (typeof value !== "string") return "";

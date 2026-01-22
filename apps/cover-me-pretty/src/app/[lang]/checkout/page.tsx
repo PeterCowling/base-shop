@@ -1,7 +1,7 @@
 // apps/cover-me-pretty/src/app/[lang]/checkout/page.tsx
 
 import { Locale, resolveLocale } from "@acme/i18n/locales";
-import Section from "@acme/ui/components/cms/blocks/Section";
+import Section from "@acme/cms-ui/blocks/Section";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   CART_COOKIE,

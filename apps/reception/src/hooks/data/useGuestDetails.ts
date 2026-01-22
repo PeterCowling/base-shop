@@ -1,6 +1,7 @@
 /* src/hooks/data/useGuestDetails.ts */
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -9,13 +10,13 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
+
 import { occupantRequiredSchema } from "../../components/checkins/docInsert/occupantCompleteHelpers";
 import { occupantDetailsSchema } from "../../schemas/occupantDetailsSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
-  BookingOccupantDetails,
-  GuestsDetails,
+  type BookingOccupantDetails,
+  type GuestsDetails,
 } from "../../types/hooks/data/guestDetailsData";
 
 interface RawDOB {

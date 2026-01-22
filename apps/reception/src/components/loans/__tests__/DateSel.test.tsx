@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { formatDateForInput } from "../../../utils/dateUtils";
+import DateSel from "../DateSel";
 
 // Mock loan-related hooks for determinism
 jest.mock("../../../hooks/data/useLoans", () => ({
@@ -10,9 +14,6 @@ jest.mock("../../../hooks/data/useLoans", () => ({
 jest.mock("../../../context/LoanDataContext", () => ({
   useLoanData: () => ({ loans: {}, loading: false, error: null }),
 }));
-
-import DateSel from "../DateSel";
-import { formatDateForInput } from "../../../utils/dateUtils";
 
 describe("DateSel", () => {
   it("calls onDateChange for quick selections", async () => {

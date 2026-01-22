@@ -17,7 +17,7 @@
  * Part of SEC-04 in the Integrated Secrets Workflow Plan.
  * @see docs/plans/integrated-secrets-workflow-plan.md
  */
-/* eslint-disable security/detect-non-literal-fs-filename -- SEC-04: CLI script with path from CLI args */
+ 
  
 
 import { existsSync, readFileSync } from "node:fs";

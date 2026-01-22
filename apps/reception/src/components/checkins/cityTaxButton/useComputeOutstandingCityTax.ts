@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 
-import { CityTaxRecord, PayType } from "../../../types/hooks/data/cityTaxData";
+import { type CityTaxRecord, type PayType } from "../../../types/hooks/data/cityTaxData";
 
 /**
  * Client hook that returns a function for computing

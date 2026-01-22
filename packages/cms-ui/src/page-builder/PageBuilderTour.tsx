@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-nonlayered-zindex -- PB-000: Guided tour overlay needs custom layering without DS layered components */
+ 
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -148,7 +148,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
       {rect && (
         <>
           {/* PB-2419: dynamic geometry for highlight overlay */}
-          {/* eslint-disable react/forbid-dom-props -- PB-2419: highlight overlay requires dynamic geometry */}
+          { }
           <div
             aria-hidden
             style={{
@@ -164,12 +164,12 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               transition: "top 0.1s, left 0.1s, width 0.1s, height 0.1s",
             }}
           />
-          {/* eslint-enable react/forbid-dom-props */}
+          { }
         </>
       )}
 
       {/* Tooltip card */}
-      {/* eslint-disable react/forbid-dom-props -- PB-2419: dynamic top/left/width positioning */}
+      { }
       <div className="fixed z-50 rounded-lg border border-border bg-surface-1 text-foreground shadow-xl p-3" style={tipStyle}>
         <div className="font-semibold mb-2">
           {t("pb.tour.stepXofY", { current: Math.min(active + 1, steps.length), total: steps.length })}
@@ -218,7 +218,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
           </div>
         </div>
       </div>
-      {/* eslint-enable react/forbid-dom-props */}
+      { }
     </div>
   );
 }

@@ -16,16 +16,17 @@ import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useLoans from "../../hooks/data/useLoans";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
-import { FirebaseBookings } from "../../types/hooks/data/bookingsData";
-import { LoanItem, LoanMethod } from "../../types/hooks/data/loansData";
+import { useCheckoutsMutation } from "../../hooks/mutations/useCheckoutsMutation";
+import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
+import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
 import { getDepositForItem } from "../loans/LoanUtils";
+
 import type { Guest } from "./CheckoutTable";
 import CheckoutTable from "./CheckoutTable";
 import DateSelector from "./DaySelector";
-import { useCheckoutsMutation } from "../../hooks/mutations/useCheckoutsMutation";
 
 type CheckoutProps = {
   debug?: boolean;

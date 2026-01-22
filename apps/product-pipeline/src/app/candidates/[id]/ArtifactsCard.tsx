@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Stack } from "@acme/ui/components/atoms/primitives";
+import { Stack } from "@acme/design-system/primitives";
 
 import type { Artifact, CandidateDetailStrings } from "./types";
 import { resolveArtifactHref, safeTimestamp } from "./types";

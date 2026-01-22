@@ -175,7 +175,7 @@ export default function Repeater({
   return (
     <div
       className={className}
-      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic grid columns/gaps computed at runtime */
+       
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${effColumns}, minmax(0, 1fr))`,
@@ -189,13 +189,13 @@ export default function Repeater({
       ))}
       {baseList.length > visible ? (
         mode === "infinite" ? (
-          // eslint-disable-next-line react/forbid-dom-props -- UI-2610: dynamic grid-column based on computed column count
+           
           <div ref={sentinelRef} style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }} aria-hidden />
         ) : (
           <button
             type="button"
             onClick={() => setVisible((v) => Math.min(baseList.length, v + Math.max(1, increment)))}
-            /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: dynamic grid-column based on computed column count */
+             
             style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }}
           >
             Load more

@@ -39,6 +39,7 @@ config.setupFilesAfterEnv = [
 ];
 
 // Ensure "@/..." resolves to cms-ui sources
+// Map sibling packages to their source directories for Jest testing
 config.moduleNameMapper = {
   ...(config.moduleNameMapper || {}),
   "^@/(.*)$": "<rootDir>/src/$1",
@@ -46,6 +47,8 @@ config.moduleNameMapper = {
   "^@acme/cms-ui/(.*)$": "<rootDir>/src/$1",
   "^@acme/design-system$": "<rootDir>/../design-system/src/index",
   "^@acme/design-system/(.*)$": "<rootDir>/../design-system/src/$1",
+  "^@acme/ui$": "<rootDir>/../ui/src/index",
+  "^@acme/ui/(.*)$": "<rootDir>/../ui/src/$1",
 };
 
 // Transform additional ESM dependencies

@@ -37,7 +37,7 @@ export function CommentsPinsLayer({
             key={t.id}
             type="button"
             className={`pointer-events-auto absolute -translate-y-1/2 translate-x-1/2 rounded-full border px-2 py-1 text-xs shadow ${t.resolved ? "bg-primary/40" : "bg-secondary/40"}`}
-            // eslint-disable-next-line react/forbid-dom-props -- LINT-0000: dynamic absolute positioning requires inline left/top
+             
             style={{ left: pinLeft, top: pinTop, cursor: "grab" }}
             onMouseDown={(e) => { if (e.button === 0) { onStartDrag(t.id); e.preventDefault(); e.stopPropagation(); } }}
             onClick={() => onOpen(t.id)}
@@ -59,7 +59,7 @@ export function CommentsPinsLayer({
             <div
               key={`badge-${cid}`}
               className="pointer-events-none absolute h-5 w-5 -translate-y-1/2 translate-x-1/2 rounded-full bg-destructive/100 text-center text-xs leading-5 text-foreground"
-              // eslint-disable-next-line react/forbid-dom-props -- LINT-0000: dynamic absolute positioning requires inline left/top
+               
               style={{ left: comp.left + comp.width - 6, top: comp.top + 6 }}
               title={`${count} unresolved comments`}
             >

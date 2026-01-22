@@ -1,9 +1,8 @@
 // packages/ui/src/components/cms/page-builder/EffectsEditor.tsx
 "use client";
 
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-
 import { Input } from "@acme/design-system/shadcn";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 // i18n-exempt — Editor-only field labels
 /* i18n-exempt */
 const t = (s: string) => s;

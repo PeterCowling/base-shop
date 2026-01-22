@@ -1,6 +1,7 @@
 // File: src/hooks/data/useGuestByRoom.ts
 
 import React from "react";
+
 import type { GuestByRoom } from "../../../types/hooks/data/guestByRoomData";
 import useFirebaseSubscription from "../../data/useFirebaseSubscription";
 

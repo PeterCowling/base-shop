@@ -1,1 +1,1 @@
-export * from "./viewport";
+export type * from "./viewport";

@@ -1,13 +1,13 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy how-to content pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/design-system/atoms/Section";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function HowToShopPage() {

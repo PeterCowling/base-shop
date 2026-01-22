@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -18,7 +19,7 @@ async function loadComp({
     }
   });
   jest.doMock("../../../hooks/mutations/useDeleteTransaction", () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+     
     const React: typeof import("react") = require("react");
     const useDeleteTransaction = () => {
       const [loading, setLoading] = React.useState(initialLoading);

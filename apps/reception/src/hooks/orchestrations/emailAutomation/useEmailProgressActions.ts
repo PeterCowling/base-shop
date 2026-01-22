@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
-import type { ActivityResult } from "../../../types/domains/activitiesDomain";
-import { Activity } from "../../../types/hooks/data/activitiesData";
 import { ActivityCode } from "../../../constants/activities";
+import type { ActivityResult } from "../../../types/domains/activitiesDomain";
+import { type Activity } from "../../../types/hooks/data/activitiesData";
 import useActivitiesData from "../../data/useActivitiesData";
 import useBookings from "../../data/useBookingsData";
 import useActivitiesMutations from "../../mutations/useActivitiesMutations";

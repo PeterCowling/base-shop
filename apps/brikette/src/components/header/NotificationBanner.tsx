@@ -5,7 +5,7 @@
 import type { KeyboardEvent } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
@@ -114,7 +114,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const lang = explicitLang ?? fallbackLang;
   const { t, ready } = useTranslation("notificationBanner", { lng: lang });
   const { t: tModals } = useTranslation("modals", { lng: lang });
-  const navigate = useNavigate();
+  const router = useRouter();
   const setBannerRef = useSetBannerRef();
   const [isVisible, setIsVisible] = useState(true);
   const dismissButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -200,8 +200,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   }, [lang, rawMessage, rawCta, rawOpenLabel]);
 
   const openDeals = useCallback(
-    () => navigate(`/${lang}/${translatePath("deals", lang)}`),
-    [navigate, lang]
+    () => router.push(`/${lang}/${translatePath("deals", lang)}`),
+    [router, lang]
   );
 
   const close = useCallback(() => {

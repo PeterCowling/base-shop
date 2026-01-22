@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import type { TokenMap } from "../../../../hooks/useTokenEditor";
+import type { TokenMap } from "@acme/ui/hooks/useTokenEditor";
+
 import Presets from "../Presets";
 
 describe("Presets", () => {

@@ -38,8 +38,9 @@ export async function POST(req: NextRequest) {
     await writeLibrary(themes);
     return NextResponse.json(parsed, { status: 201 });
   } catch (err) {
+    console.error("[api/themes] POST error:", err);
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to create theme" },
       { status: 400 },
     );
   }

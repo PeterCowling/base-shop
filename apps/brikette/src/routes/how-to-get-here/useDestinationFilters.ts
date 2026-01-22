@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { DIRECTION_ORDER, TRANSPORT_MODE_ORDER } from "./transport";
 import type {
@@ -66,7 +66,19 @@ export type DestinationFiltersState = {
 export function useDestinationFilters(
   sections: AugmentedDestinationSection[],
 ): DestinationFiltersState {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const rawSearchParams = useSearchParams();
+  // Provide a fallback empty URLSearchParams if null (e.g., during SSR or Suspense)
+  const searchParams = rawSearchParams ?? new URLSearchParams();
+  const setSearchParams = useCallback((params: URLSearchParams, options?: { replace?: boolean }) => {
+    const search = params.toString();
+    const url = search ? `?${search}` : window.location.pathname;
+    if (options?.replace) {
+      router.replace(url);
+    } else {
+      router.push(url);
+    }
+  }, [router]);
 
   const availableTransportModes = useMemo(
     () =>

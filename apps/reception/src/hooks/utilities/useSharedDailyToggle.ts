@@ -7,10 +7,12 @@
 // calendar day.  React state is used to keep the local UI in sync with
 // Firebase.  Listeners are cleaned up on unmount to prevent memory leaks.
 
-import { getDatabase, off, onValue, ref, set } from "firebase/database";
 import { useCallback, useEffect, useState } from "react";
-import { scheduleDailyReset } from "./scheduleDailyReset";
+import { getDatabase, off, onValue, ref, set } from "firebase/database";
+
 import { getLocalToday, isToday } from "../../utils/dateUtils";
+
+import { scheduleDailyReset } from "./scheduleDailyReset";
 
 // Shape of the data stored in Firebase: a date string and a boolean value.
 interface StoredData {

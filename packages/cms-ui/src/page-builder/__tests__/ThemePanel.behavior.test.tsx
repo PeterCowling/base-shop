@@ -16,7 +16,7 @@ jest.mock("@acme/lib/shop", () => ({ __esModule: true, getShopFromPath: () => "a
 jest.mock("../ColorThemeSelector", () => ({ __esModule: true, default: ({ onChange }: any) => <button onClick={() => onChange({ "--color.brand": "#111111" })}>Change</button> }));
 
 // Mock shadcn bits used by dialog variant
-jest.mock("../../../atoms/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
+jest.mock("@acme/design-system/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
 
 describe("ThemePanel behavior", () => {
   beforeEach(() => {

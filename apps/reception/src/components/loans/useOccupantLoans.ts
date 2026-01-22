@@ -5,7 +5,7 @@
 import { useMemo } from "react";
 
 import { useLoanData } from "../../context/LoanDataContext";
-import { OccupantLoanData } from "../../types/hooks/data/loansData";
+import { type OccupantLoanData } from "../../types/hooks/data/loansData";
 
 interface UseOccupantLoansResult {
   occupantLoans: OccupantLoanData | null;

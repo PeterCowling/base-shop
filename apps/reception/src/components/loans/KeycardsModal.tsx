@@ -1,8 +1,9 @@
-import { memo, ReactElement, useCallback, useMemo, useState } from "react";
+import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
+
+import { useLoanData } from "../../context/LoanDataContext";
+import { type LoanMethod } from "../../types/hooks/data/loansData";
 
 import useOccupantLoans from "./useOccupantLoans";
-import { useLoanData } from "../../context/LoanDataContext";
-import { LoanMethod } from "../../types/hooks/data/loansData";
 
 interface Occupant {
   guestId: string;

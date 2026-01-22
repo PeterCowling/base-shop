@@ -1,9 +1,8 @@
-import { get, ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { get, ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { getLocalToday } from "../../utils/dateUtils";
-
 
 interface CheckoutRecord {
   reservationCode?: string;
@@ -12,6 +11,49 @@ interface CheckoutRecord {
 
 interface CheckoutsNode {
   [dateKey: string]: Record<string, CheckoutRecord>;
+}
+
+type OccupantCheckoutMap = Record<string, { bookingRef: string; dateKey: string }>;
+
+function buildArchiveCandidates(checkouts: CheckoutsNode, today: string) {
+  const occupantMap: OccupantCheckoutMap = {};
+  const bookingGroups: Record<
+    string,
+    { earliestDate: string; occupantIds: string[] }
+  > = {};
+
+  for (const [dateKey, occMap] of Object.entries(checkouts)) {
+    if (dateKey >= today) continue;
+    for (const [occId, rec] of Object.entries(occMap)) {
+      const bookingRef = rec?.reservationCode;
+      if (!bookingRef) {
+        continue;
+      }
+
+      occupantMap[occId] = { bookingRef, dateKey };
+
+      const existing = bookingGroups[bookingRef];
+      if (existing) {
+        if (dateKey < existing.earliestDate) {
+          existing.earliestDate = dateKey;
+        }
+        existing.occupantIds.push(occId);
+        continue;
+      }
+
+      bookingGroups[bookingRef] = {
+        earliestDate: dateKey,
+        occupantIds: [occId],
+      };
+    }
+  }
+
+  const sortedBookings = Object.entries(bookingGroups)
+    .filter(([, data]) => data.earliestDate < today)
+    .sort((a, b) => a[1].earliestDate.localeCompare(b[1].earliestDate))
+    .slice(0, 50);
+
+  return { occupantMap, sortedBookings };
 }
 
 /**
@@ -44,44 +86,10 @@ export default function useArchiveCheckedOutGuests() {
       }
 
       const checkouts = checkoutsSnap.val() as CheckoutsNode;
-      const occupantMap: Record<
-        string,
-        { bookingRef: string; dateKey: string }
-      > = {};
-      const bookingGroups: Record<
-        string,
-        { earliestDate: string; occupantIds: string[] }
-      > = {};
-
-      for (const [dateKey, occMap] of Object.entries(checkouts)) {
-        if (dateKey >= today) continue;
-        for (const [occId, rec] of Object.entries(occMap)) {
-          const bookingRef = rec?.reservationCode;
-          if (!bookingRef) {
-            continue;
-          }
-
-          occupantMap[occId] = { bookingRef, dateKey };
-
-          if (bookingGroups[bookingRef]) {
-            const group = bookingGroups[bookingRef];
-            if (dateKey < group.earliestDate) {
-              group.earliestDate = dateKey;
-            }
-            group.occupantIds.push(occId);
-          } else {
-            bookingGroups[bookingRef] = {
-              earliestDate: dateKey,
-              occupantIds: [occId],
-            };
-          }
-        }
-      }
-
-      const sortedBookings = Object.entries(bookingGroups)
-        .filter(([, data]) => data.earliestDate < today)
-        .sort((a, b) => a[1].earliestDate.localeCompare(b[1].earliestDate))
-        .slice(0, 50);
+      const { occupantMap, sortedBookings } = buildArchiveCandidates(
+        checkouts,
+        today
+      );
 
       if (!sortedBookings.length) {
         setLoading(false);

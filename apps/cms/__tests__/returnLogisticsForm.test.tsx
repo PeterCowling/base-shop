@@ -15,7 +15,7 @@ jest.mock("@acme/platform-core/repositories/returnLogistics.server", () => ({
   readReturnLogistics: (...args: any[]) => mockReadReturnLogistics(...args),
 }));
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
   Input: (props: any) => <input {...props} />,
   Checkbox: ({ onCheckedChange, ...props }: any) => (

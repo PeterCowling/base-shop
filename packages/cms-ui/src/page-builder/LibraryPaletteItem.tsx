@@ -5,9 +5,8 @@ import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Tooltip } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
 
 import type { LibraryItem } from "./libraryStore";
 
@@ -77,7 +76,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       aria-pressed={isDragging}
       aria-describedby="pb-drag-instructions"
       title={t('pb.library.dragToInsert') as string}
-      // eslint-disable-next-line react/forbid-dom-props -- PB-2419: dnd-kit requires dynamic transform style during drag
+       
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
     >

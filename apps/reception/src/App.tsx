@@ -2,19 +2,18 @@
 
 import {
   memo,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import CustomToastContainer from "./components/appNav/CustomToastContainer";
 import AuthenticatedApp from "./components/AuthenticatedApp";
-import Login from "./components/Login";
 import LoadingSpinner from "./components/LoadingSpinner";
-
+import Login from "./components/Login";
 import { useAuth } from "./context/AuthContext";
 import useInactivityLogout from "./hooks/client/useInactivityLogoutClient";
 import { useFirebaseDatabase } from "./services/useFirebase";

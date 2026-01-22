@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import { Cluster, Stack } from "@/components/ui/flex";
 import type { AppLanguage } from "@/i18n.config";

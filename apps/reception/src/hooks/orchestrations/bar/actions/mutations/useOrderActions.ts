@@ -15,8 +15,8 @@
  * entire order was removed from the `sales` node.
  */
 
-import { get, ref, remove, update } from "firebase/database";
 import { useCallback } from "react";
+import { get, ref, remove, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
 import type {

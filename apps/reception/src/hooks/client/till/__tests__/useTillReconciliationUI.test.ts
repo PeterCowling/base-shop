@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 
+import type { Transaction } from "../../../../types/component/Till";
 import { useCashDrawerLimit } from "../../../data/useCashDrawerLimit";
 import { useTillReconciliationUI } from "../useTillReconciliationUI";
-import type { Transaction } from "../../../../types/component/Till";
 
 jest.mock("../../../data/useCashDrawerLimit");
 

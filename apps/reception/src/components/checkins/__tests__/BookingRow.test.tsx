@@ -1,9 +1,14 @@
 // src/components/checkins/__tests__/BookingRow.test.tsx
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { CheckInRow } from "../../../types/component/CheckinRow";
+/* ------------------------------------------------------------------ */
+/*  Component under test (imported after mocks)                        */
+/* ------------------------------------------------------------------ */
+import BookingRow from "../BookingRow";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist‑safe mock placeholders                                       */
@@ -85,11 +90,6 @@ jest.mock("../notes/BookingNotesModal", () => ({
     </div>
   ),
 }));
-
-/* ------------------------------------------------------------------ */
-/*  Component under test (imported after mocks)                        */
-/* ------------------------------------------------------------------ */
-import BookingRow from "../BookingRow";
 
 /* ------------------------------------------------------------------ */
 /*  Fixtures                                                           */

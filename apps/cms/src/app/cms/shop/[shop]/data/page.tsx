@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Grid as DSGrid, Stack } from "@acme/design-system/primitives";
 import { useTranslations as serverT } from "@acme/i18n/useTranslations.server";
-import { Tag } from "@acme/ui/components/atoms";
-import { Grid as DSGrid, Stack } from "@acme/ui/components/atoms/primitives";
 
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 

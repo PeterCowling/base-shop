@@ -20,14 +20,16 @@
  */
 
 import { existsSync, readFileSync } from "node:fs";
+
 import { getShopBaseUrl } from "@acme/platform-core/shops/url";
 import type { Environment } from "@acme/types";
+
 import {
-  runSmokeTests,
-  runExtendedSmokeTests,
-  waitForUrlReachable,
   parseConfigSmokeChecks,
+  runExtendedSmokeTests,
+  runSmokeTests,
   type SmokeTestResult,
+  waitForUrlReachable,
 } from "../steps/smoke";
 
 interface CliArgs {

@@ -1,9 +1,9 @@
 // File: /src/components/checkins/DeleteConfirmationModal.tsx
 
-import { FC, memo, useCallback } from "react";
+import { type FC, memo, useCallback } from "react";
 
 import useDeleteGuestFromBooking from "../../../hooks/mutations/useDeleteGuestFromBooking";
-import { CheckInRow } from "../../../types/component/CheckinRow";
+import { type CheckInRow } from "../../../types/component/CheckinRow";
 
 /**
  * DeleteConfirmationModal:

@@ -4,7 +4,8 @@
 import { useFormState } from "react-dom";
 import { publishPost } from "@cms/actions/blog.server";
 
-import { Button, Toast } from "@acme/ui/components/atoms";
+import { Toast } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
 
 import type { FormState } from "./PostForm.client";
 

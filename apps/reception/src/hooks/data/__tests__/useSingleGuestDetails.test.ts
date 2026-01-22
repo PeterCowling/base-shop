@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+import useSingleGuestDetails from "../useSingleGuestDetails";
 
 // Mutable references used by the mocked useFirebaseSubscription implementation.
 // They store the data that will be returned to the hook under test.
@@ -29,8 +32,6 @@ jest.mock("firebase/database", () => ({
   ref: jest.fn(),
   update: jest.fn(),
 }));
-
-import useSingleGuestDetails from "../useSingleGuestDetails";
 
 describe("useSingleGuestDetails", () => {
   afterEach(() => {

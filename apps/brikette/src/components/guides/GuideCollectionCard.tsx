@@ -5,7 +5,7 @@ import clsx from "clsx";
 import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
-import { GUIDE_DIRECTION_LINKS } from "@/routes/experiences/guideDirectionLinks";
+import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import { getSlug } from "@/utils/slug";
 
 const CARD_CLASSES = [

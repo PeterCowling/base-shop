@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+
+import { type KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
-import { KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
 
 export function useKeycardTransfersData() {
   const { data, loading, error } = useFirebaseSubscription<

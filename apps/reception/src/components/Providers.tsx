@@ -2,9 +2,9 @@
 
 import type { ReactNode } from "react";
 
+import App from "@/App";
 import { AuthProvider } from "@/context/AuthContext";
 import { DarkModeProvider } from "@/context/DarkModeContext";
-import App from "@/App";
 
 interface ProvidersProps {
   children: ReactNode;

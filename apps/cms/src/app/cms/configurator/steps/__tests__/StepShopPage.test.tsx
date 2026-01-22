@@ -30,7 +30,7 @@ jest.mock("next/image", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
   Button.displayName = "MockButton";
@@ -60,7 +60,7 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   const Dialog = ({ open, children }: any) => (open ? <div>{children}</div> : null);
   Dialog.displayName = "MockDialog";

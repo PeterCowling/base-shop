@@ -2,11 +2,10 @@
 
 import type { MouseEvent } from "react";
 
-import { useTranslations } from "@acme/i18n";
-import type { Locale } from "@acme/i18n/locales";
-
 import { Button as UIButton } from "@acme/design-system/shadcn";
 import type { ButtonProps as UIButtonProps } from "@acme/design-system/shadcn/Button";
+import { useTranslations } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 
 import type { InlineTextApi } from "./useInlineText";
 

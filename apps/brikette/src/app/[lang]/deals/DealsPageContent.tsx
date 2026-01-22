@@ -7,7 +7,8 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 
-import { Button, Grid, Section } from "@acme/ui/atoms";
+import { Button } from "@acme/design-system/primitives";
+import { Grid, Section } from "@acme/ui/atoms";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
 import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
@@ -220,7 +221,7 @@ function DealsPageContent({ lang }: Props) {
 
       {/* CTA */}
       <Section padding="default" className="text-center">
-        <Button onClick={() => openBooking({ kind: "standard" })} size="default">
+        <Button onClick={() => openBooking({ kind: "standard" })} size="md">
           {(ft("cta.book") as string) || "Book Now"}
         </Button>
       </Section>

@@ -4,8 +4,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import { z } from 'zod';
 
 import type { Locale } from '@acme/i18n/locales';
-
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import NewsletterSignup from './NewsletterSignup';
 import fixture from './NewsletterSignup.fixtures.json';

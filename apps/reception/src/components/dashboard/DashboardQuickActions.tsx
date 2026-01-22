@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import {
-  Plus,
-  UserPlus,
-  UserMinus,
+  Coffee,
   FileText,
   Grid3x3,
-  Coffee,
   Lock,
+  UserMinus,
+  UserPlus,
 } from 'lucide-react'
+
 import { QuickActionBar } from '@acme/ui/operations'
 
 /**

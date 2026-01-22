@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
+
+import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
 
-import BookingModal from "../BookingModal";
 import type { CheckInRow } from "../../../../types/component/CheckinRow";
+import BookingModal from "../BookingModal";
 
 const updateBookingDates = jest.fn();
 jest.mock("../../../../hooks/mutations/useChangeBookingDatesMutator", () => ({

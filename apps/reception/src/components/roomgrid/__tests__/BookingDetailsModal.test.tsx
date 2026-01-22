@@ -1,6 +1,12 @@
 import "@testing-library/jest-dom";
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+/* ------------------------------------------------------------------ */
+/*  Component under test (imported after mocks)                        */
+/* ------------------------------------------------------------------ */
+import BookingDetailsModal from "../BookingDetailsModal";
 
 /* ------------------------------------------------------------------ */
 /*  Hoist-safe mock placeholders                                      */
@@ -36,11 +42,6 @@ jest.mock("../../../hooks/client/checkin/useRoomConfigs", () => {
   roomConfigsMock = jest.fn();
   return { default: () => roomConfigsMock() };
 });
-
-/* ------------------------------------------------------------------ */
-/*  Component under test (imported after mocks)                        */
-/* ------------------------------------------------------------------ */
-import BookingDetailsModal from "../BookingDetailsModal";
 
 /* ------------------------------------------------------------------ */
 /*  Test data                                                          */

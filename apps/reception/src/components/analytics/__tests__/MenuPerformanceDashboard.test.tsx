@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import MenuPerformanceDashboard from "../MenuPerformanceDashboard";
 
 jest.mock("../../../hooks/data/bar/useProducts", () => ({
   __esModule: true,
@@ -67,8 +70,6 @@ jest.mock("chart.js", () => ({
   Title: {},
   Tooltip: {},
 }));
-
-import MenuPerformanceDashboard from "../MenuPerformanceDashboard";
 
 afterEach(() => {
   jest.restoreAllMocks();

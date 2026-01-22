@@ -3,13 +3,13 @@
    Updated to reference UnconfirmedSalesOrder from BarTypes.
    ------------------------------------------------------------------ */
 
-import { get, ref, set } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { get, ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
 import {
-  SalesOrderItem,
-  UnconfirmedSalesOrder,
+  type SalesOrderItem,
+  type UnconfirmedSalesOrder,
 } from "../../../../../types/bar/BarTypes";
 
 interface UseUpdateItemInOrderProps {

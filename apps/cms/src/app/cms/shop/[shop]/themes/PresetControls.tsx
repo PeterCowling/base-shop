@@ -2,8 +2,8 @@
 "use client";
 import type { ChangeEvent } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import { Button, Input } from "@/components/atoms/shadcn";
 

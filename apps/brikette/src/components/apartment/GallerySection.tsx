@@ -1,5 +1,5 @@
 // src/components/apartment/GallerySection.tsx
-import { memo, useId } from "react";
+import React, { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -11,7 +11,7 @@ const IMAGES = [
   "/img/hostel-communal-terrace-lush-view.webp",
 ] as const;
 
-type GridProps = JSX.IntrinsicElements["div"];
+type GridProps = React.ComponentProps<"div">;
 function Grid({ className, ...rest }: GridProps): JSX.Element {
   return <div className={clsx("grid", "gap-4", "sm:grid-cols-3", className)} {...rest} />;
 }

@@ -5,6 +5,7 @@
 
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
 
@@ -20,13 +21,26 @@ import { translatePath } from "@/utils/translate-path";
 import { type AppLanguage,CORE_LAYOUT_NAMESPACES, i18nConfig } from "../constants";
 import { useModal } from "../hooks";
 import { LanguageModal } from "../lazy-modals";
-import { useSafeLocation, useSafeNavigate } from "../navigation";
 
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
-  const { theme } = useTheme();
-  const navigate = useSafeNavigate();
-  const location = useSafeLocation();
+  const { isDark } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // Build a location-like object for compatibility
+  const location = useMemo(() => ({
+    pathname: pathname ?? "/",
+    search: searchParams?.toString() ? `?${searchParams.toString()}` : "",
+    hash: typeof window !== "undefined" ? window.location.hash : "",
+  }), [pathname, searchParams]);
+  const navigate = useCallback((path: string, options?: { replace?: boolean }) => {
+    if (options?.replace) {
+      router.replace(path);
+    } else {
+      router.push(path);
+    }
+  }, [router]);
 
   const { t: tModals, i18n, ready: modalsReady } = useTranslation("modals");
 
@@ -164,7 +178,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       currentCode={curLang}
       onSelect={(code) => changeLanguage(code as AppLanguage)}
       copy={languageCopy}
-      theme={theme}
+      theme={isDark ? "dark" : "light"}
     />
   );
 }

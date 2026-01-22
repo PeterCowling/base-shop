@@ -1,13 +1,15 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import type { PaymentSplit } from "../../../types/component/roomButton/types";
+import PaymentForm from "../roomButton/PaymentForm";
+
 jest.mock("react-dom", async () => {
   const actual = jest.requireActual("react-dom");
   return { ...actual, createPortal: (node: unknown) => node };
 });
-
-import PaymentForm from "../roomButton/PaymentForm";
-import type { PaymentSplit } from "../../../types/component/roomButton/types";
 
 describe("PaymentForm", () => {
   it("shows amount and opens dropdown", async () => {

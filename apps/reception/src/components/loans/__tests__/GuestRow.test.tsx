@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom";
+
+import { type ComponentProps } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type ComponentProps } from "react";
+
+import { GuestRow } from "../GuestRow";
 import type LoanableItemSelectorType from "../LoanableItemSelector";
 import type LoanedItemsListType from "../LoanedItemsList";
 
@@ -31,8 +34,6 @@ jest.mock("../useOccupantLoans", () => {
   useOccupantLoansMock = jest.fn();
   return { __esModule: true, default: useOccupantLoansMock };
 });
-
-import { GuestRow } from "../GuestRow";
 
 describe("GuestRow", () => {
   const guest = {

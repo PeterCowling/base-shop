@@ -2,8 +2,8 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import useInsertHandlers from "@acme/ui/components/cms/page-builder/hooks/useInsertHandlers";
 
-import useInsertHandlers from "../hooks/useInsertHandlers";
 import type { Action } from "../state";
 import useMediaLibraryListener from "../useMediaLibraryListener";
 

@@ -1,25 +1,29 @@
 // src/routes/guides/_GuideSeoTemplate.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- DEV-000 [ttl=2099-12-31] Template helper (_-prefixed) not shipped as a route. It intentionally contains placeholders, broad typing, and debug strings. Suppress to reduce IDE noise per src/routes/AGENTS.md; real routes must not rely on these disables. */
-import { isValidElement,memo, useContext, useEffect, useMemo, useRef } from "react";
-import { UNSAFE_DataRouterStateContext } from "react-router";
+import { isValidElement, memo, useEffect, useMemo, useRef } from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
-import TableOfContents from "@/components/guides/TableOfContents";
 import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { debugGuide } from "@/utils/debug";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
-import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
-import type { GuideRouteLoaderData } from "./defineGuideRoute";
 import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "./guide-manifest";
+import type { AppLanguage } from "@/i18n.config";
+
+// Local type definition (was from deleted defineGuideRoute.tsx)
+type GuideRouteLoaderData = {
+  lang: AppLanguage;
+  guide: GuideManifestEntry["key"];
+  status: GuideManifestEntry["status"];
+  checklist: ChecklistSnapshot | GuideChecklistItem[];
+} & Record<string, unknown>;
 import {
   buildGuideChecklist,
   getGuideManifestEntry,
@@ -51,6 +55,17 @@ import {
   type StructuredFallback,
 } from "./guide-seo/utils/fallbacks";
 import { resolveGuideOgType } from "./guide-seo/utils/resolveOgType";
+import {
+  shouldSuppressGenericForGuide,
+  isOffSeasonLongStayGuide,
+  isPositanoBeachesGuide,
+  needsExplicitTocTrue,
+  needsExplicitTocFalse,
+  isWhatToPackGuide,
+} from "./guide-seo/utils/templatePolicies";
+import { useHasLocalizedResources } from "./guide-seo/useHasLocalizedResources";
+import { useFallbackTocSuppression } from "./guide-seo/useFallbackTocSuppression";
+import { computeManualStructuredFallback } from "./guide-seo/components/ManualStructuredFallback";
 
 // Cache additional head scripts by guide + lang to avoid duplicate
 // invocations across incidental remounts (e.g., StrictMode) in tests.
@@ -123,31 +138,13 @@ function GuideSeoTemplate({
   const t = translations.tGuides;
   const hookI18n: any = (translations as any)?.i18n;
   const { guidesEn, translateGuides } = translations;
-  const routerState = useContext(UNSAFE_DataRouterStateContext);
-  type RouteMatch = { route?: { id?: string } } & { data?: unknown };
-  const matches = (routerState?.matches ?? []) as RouteMatch[];
-  const activeMatch = matches.length > 0 ? matches[matches.length - 1] : undefined;
-  const location = routerState?.location;
-  const canonicalPathname =
-    typeof location?.pathname === "string" && location.pathname.length > 0
-      ? location.pathname
-      : undefined;
-  const loaderData = (() => {
-    const fromMatch = activeMatch?.data as Partial<GuideRouteLoaderData> | undefined;
-    if (fromMatch) return fromMatch;
-    const routeId = activeMatch?.route?.id;
-    if (!routeId) return undefined;
-    const store = routerState?.loaderData as
-      | Record<string, Partial<GuideRouteLoaderData>>
-      | undefined;
-    return store ? store[routeId] : undefined;
-  })();
+  // In App Router, use browser APIs for pathname (no React Router context)
+  const canonicalPathname = typeof window !== "undefined" ? window.location?.pathname : undefined;
+  // No loader data in App Router - props are passed directly
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const loaderData = undefined as Partial<GuideRouteLoaderData> | undefined;
   const requestedLang = (() => {
-    const value = loaderData?.lang;
-    if (typeof value === "string" && value.trim().length > 0) {
-      return value;
-    }
-    const path = location?.pathname;
+    const path = canonicalPathname;
     if (typeof path === "string") {
       const match = path.match(/^\/([a-z]{2,3})(?:\b|\/)/i);
       if (match) {
@@ -205,7 +202,7 @@ function GuideSeoTemplate({
     if (!manifestEntry) return undefined;
     return `/${lang}/draft/${resolveDraftPathSegment(manifestEntry)}`;
   }, [lang, manifestEntry]);
-  const isDraftRoute = Boolean(location?.pathname?.includes("/draft/"));
+  const isDraftRoute = Boolean(canonicalPathname?.includes("/draft/"));
   const shouldShowEditorialPanel = Boolean(manifestEntry) && (isDraftRoute || resolvedStatus !== "live");
 
   const hasStructuredLocalInitial = useMemo(
@@ -238,74 +235,11 @@ function GuideSeoTemplate({
     suppressEnglishStructuredWhenUnlocalized: Boolean(preferManualWhenUnlocalized),
   });
   const targetLocale = (requestedLang ?? lang)?.trim().toLowerCase();
-  const hasLocalizedResourcesForRequested = useMemo(() => {
-    if (!targetLocale || targetLocale === "en") {
-      return hasLocalizedContent;
-    }
-    const normalizeString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
-    const isMeaningful = (value: unknown, placeholder: string): boolean => {
-      const normalized = normalizeString(value);
-      if (!normalized) return false;
-      if (normalized === placeholder) return false;
-      if (normalized === guideKey) return false;
-      if (normalized.startsWith(`${placeholder}.`)) return false;
-      if (normalized.toLowerCase() === "traduzione in arrivo") return false;
-      return true;
-    };
-    try {
-      const intro = getGuideResource<unknown>(targetLocale, `content.${guideKey}.intro`, { includeFallback: false });
-      const hasIntro = ensureStringArray(intro).some((entry) =>
-        isMeaningful(entry, `content.${guideKey}.intro`),
-      );
-      if (hasIntro) return true;
-    } catch {
-      /* noop */
-    }
-    try {
-      const sections = getGuideResource<unknown>(targetLocale, `content.${guideKey}.sections`, {
-        includeFallback: false,
-      });
-      const hasSections = ensureArray(sections).some((entry) => {
-        if (Array.isArray(entry)) {
-          return ensureStringArray(entry).some((value) =>
-            isMeaningful(value, `content.${guideKey}.sections`),
-          );
-        }
-        if (!entry || typeof entry !== "object") return false;
-        const record = entry as Record<string, unknown> & { list?: unknown };
-        if (isMeaningful(record["title"], `content.${guideKey}.sections`)) return true;
-        const bodyCandidates = [
-          ...ensureStringArray(record["body"]),
-          ...ensureStringArray(record["items"]),
-          ...ensureStringArray(record["list"]),
-        ];
-        return bodyCandidates.some((value) => isMeaningful(value, `content.${guideKey}.sections`));
-      });
-      if (hasSections) return true;
-    } catch {
-      /* noop */
-    }
-    try {
-      const faqs = getGuideResource<unknown>(targetLocale, `content.${guideKey}.faqs`, { includeFallback: false });
-      const faqsLegacy = getGuideResource<unknown>(targetLocale, `content.${guideKey}.faq`, {
-        includeFallback: false,
-      });
-      const hasFaqs = (input: unknown): boolean => {
-        const entries = ensureArray<{ q?: unknown; question?: unknown; a?: unknown; answer?: unknown }>(input);
-        return entries.some((faq) => {
-          if (!faq || typeof faq !== "object") return false;
-          const question = normalizeString(faq.q ?? faq.question);
-          if (!isMeaningful(question, `content.${guideKey}.faqs`)) return false;
-          const answers = ensureStringArray(faq.a ?? faq.answer).map((value) => normalizeString(value));
-          return answers.some((answer) => answer.length > 0);
-        });
-      };
-      if (hasFaqs(faqs) || hasFaqs(faqsLegacy)) return true;
-    } catch {
-      /* noop */
-    }
-    return hasLocalizedContent;
-  }, [targetLocale, guideKey, hasLocalizedContent]);
+  const hasLocalizedResourcesForRequested = useHasLocalizedResources({
+    targetLocale,
+    guideKey,
+    hasLocalizedContent,
+  });
   const localizedContentKey = manifestEntry?.contentKey ?? guideKey;
   const fallbackInjectedForLocale = Boolean(
     targetLocale && localizedContentKey && isGuideContentFallback(targetLocale, localizedContentKey),
@@ -587,140 +521,23 @@ function GuideSeoTemplate({
     suppressUnlocalizedFallback: suppressUnlocalizedToc,
   });
 
-  const localizedFallbackTocSuppressed = useMemo(() => {
-    if (hasLocalizedContent) return false;
-    const hasMeaningfulEnglishArray = (value: unknown): boolean => Array.isArray(value) && value.length > 0;
-    const englishHasFallbackSections = (value: unknown): boolean => {
-      if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-      const record = value as Record<string, unknown>;
-      if (hasMeaningfulEnglishArray(record["toc"])) return true;
-      const sections = record["sections"];
-      if (!Array.isArray(sections)) return false;
-      return sections.some((section) => {
-        if (!section || typeof section !== "object") return false;
-        const entry = section as Record<string, unknown>;
-        const bodyValue = entry["body"];
-        const itemsValue = entry["items"];
-        const body = Array.isArray(bodyValue)
-          ? bodyValue
-          : Array.isArray(itemsValue)
-          ? itemsValue
-          : [];
-        return body.some((paragraph) => typeof paragraph === "string" && paragraph.trim().length > 0);
-      });
-    };
-
-    const resolveEnglishValue = (key: string): unknown => {
-      try {
-        return guidesEn?.(key, { returnObjects: true } as const);
-      } catch {
-        return undefined;
-      }
-    };
-
-    try {
-      const translator = translateGuides as
-        | ((key: string, options?: Record<string, unknown>) => unknown)
-        | undefined;
-      if (typeof translator !== "function") return false;
-      const checkEmptyArray = (value: unknown): boolean => Array.isArray(value) && value.length === 0;
-      const options = { returnObjects: true } as const;
-      const primaryKey = `content.${guideKey}.toc` as const;
-      const compactKey = `${guideKey}.toc` as const;
-      const englishTocHasItems = hasMeaningfulEnglishArray(resolveEnglishValue(primaryKey))
-        || hasMeaningfulEnglishArray(resolveEnglishValue(compactKey));
-
-      if (checkEmptyArray(translator(primaryKey, options)) && !englishTocHasItems) {
-        return true;
-      }
-      if (checkEmptyArray(translator(compactKey, options)) && !englishTocHasItems) {
-        return true;
-      }
-
-      const fallbackRaw = translator(`content.${guideKey}.fallback`, options);
-      if (fallbackRaw && typeof fallbackRaw === "object" && !Array.isArray(fallbackRaw)) {
-        const record = fallbackRaw as Record<string, unknown>;
-        const englishFallbackHasContent = englishHasFallbackSections(resolveEnglishValue(`content.${guideKey}.fallback`));
-        if (checkEmptyArray(record["toc"]) && !englishFallbackHasContent) {
-          return true;
-        }
-        const fallbackSections = record["sections"];
-        if (Array.isArray(fallbackSections) && fallbackSections.length === 0 && !englishFallbackHasContent) {
-          return true;
-        }
-      }
-    } catch {
-      /* noop */
-    }
-    return false;
-  }, [guideKey, guidesEn, hasLocalizedContent, translateGuides]);
+  const localizedFallbackTocSuppressed = useFallbackTocSuppression({
+    guideKey,
+    guidesEn,
+    hasLocalizedContent,
+    translateGuides,
+  });
 
   const manualStructuredFallback = useMemo(
-    () => {
-      if (!preferManualWhenUnlocalized || suppressUnlocalizedFallback) {
-        return { node: null, hasContent: false } as const;
-      }
-      try {
-        if (translatorProvidedEmptyStructured) {
-          return { node: null, hasContent: false } as const;
-        }
-        if (hasLocalizedContent) return { node: null, hasContent: false } as const;
-        if (!fallbackStructured) return { node: null, hasContent: false } as const;
-        const intro = Array.isArray(fallbackStructured.intro)
-          ? (fallbackStructured.intro as unknown[])
-              .map((paragraph) => (typeof paragraph === "string" ? paragraph.trim() : ""))
-              .filter((text) => text.length > 0)
-          : [];
-        const sections = Array.isArray(fallbackStructured.sections)
-          ? (fallbackStructured.sections as Array<Record<string, unknown>>)
-              .map((section, idx) => {
-                if (!section || typeof section !== "object") return null;
-                const idRaw = typeof section["id"] === "string" ? section["id"].trim() : "";
-                const id = idRaw.length > 0 ? idRaw : `s-${idx}`;
-                const title = typeof section["title"] === "string" ? section["title"].trim() : "";
-                const body = Array.isArray(section["body"])
-                  ? (section["body"] as unknown[])
-                      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
-                      .filter((text) => text.length > 0)
-                  : [];
-                if (title.length === 0 && body.length === 0) return null;
-                return { id, title, body };
-              })
-              .filter((value): value is { id: string; title: string; body: string[] } => value != null)
-          : [];
-        if (intro.length === 0 && sections.length === 0) {
-          return { node: null, hasContent: false } as const;
-        }
-        const tocItems = sections
-          .map((section) => ({ href: `#${section.id}`, label: section.title || section.id }))
-          .filter((item) => item.label.length > 0);
-        return {
-          node: (
-            <>
-              {intro.length > 0 ? (
-                <div className="space-y-4">
-                  {intro.map((paragraph, idx) => (
-                    <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`)}</p>
-                  ))}
-                </div>
-              ) : null}
-              {tocItems.length > 0 ? <TableOfContents items={tocItems} /> : null}
-              {sections.map((section, idxSection) => (
-                <section key={`${section.id}-${idxSection}`} id={section.id} className="scroll-mt-28 space-y-4">
-                  {section.title ? <h2 className="text-xl font-semibold">{section.title}</h2> : null}
-                  {section.body.map((paragraph, index) => (
-                    <p key={index}>{renderGuideLinkTokens(paragraph, lang, `section-${section.id}-${index}`)}</p>
-                  ))}
-                </section>
-              ))}
-            </>
-          ),
-          hasContent: true,
-        } as const;
-      } catch {
-        return { node: null, hasContent: false } as const;
-      }
-    },
+    () =>
+      computeManualStructuredFallback({
+        fallback: fallbackStructured,
+        hasLocalizedContent,
+        preferManualWhenUnlocalized,
+        suppressUnlocalizedFallback,
+        translatorProvidedEmptyStructured,
+        lang: lang as any,
+      }),
     [
       fallbackStructured,
       hasLocalizedContent,
@@ -753,13 +570,9 @@ function GuideSeoTemplate({
       if (typeof (base as any).showToc !== "undefined") {
         return applyOverride(base as NonNullable<typeof genericContentOptions>);
       }
-      // Template test coverage: for the Positano travel tips guide, allow
-      // GenericContent to render its own ToC even when a custom builder
-      // provides items. This keeps the _GuideSeoTemplate.test.tsx expectation
-      // (showToc:true) stable without impacting routes which either set an
-      // explicit preference or rely on default suppression when custom ToC
-      // items exist.
-      if ((guideKey as any) === ("travelTipsFirstTime" as any)) {
+      // Template test coverage: for specific guides, allow GenericContent to
+      // render its own ToC even when a custom builder provides items.
+      if (needsExplicitTocTrue(guideKey)) {
         return applyOverride({ ...(base as any), showToc: true } as NonNullable<typeof genericContentOptions>);
       }
       // When a custom builder yielded items, suppress GenericContent's ToC to
@@ -768,11 +581,8 @@ function GuideSeoTemplate({
       const hasCustomItems = Array.isArray(structuredTocItems) && structuredTocItems.length > 0;
       return applyOverride({ ...base, showToc: !hasCustomItems } as NonNullable<typeof genericContentOptions>);
     }
-    // Route-specific: for etiquetteItalyAmalfi, prefer rendering the ToC via
-    // the template-level block (StructuredTocBlock) and suppress
-    // GenericContent's ToC. This keeps tests deterministic where
-    // GenericContent is mocked and avoids duplicate ToCs at runtime.
-    if ((guideKey as any) === ("etiquetteItalyAmalfi" as any)) {
+    // Route-specific: for specific guides, suppress GenericContent's ToC.
+    if (needsExplicitTocFalse(guideKey)) {
       return applyOverride({ ...base, showToc: false } as NonNullable<typeof genericContentOptions>);
     }
     return applyOverride(base as NonNullable<typeof genericContentOptions>);
@@ -930,7 +740,7 @@ function GuideSeoTemplate({
               like the Amalfi town guide surface curated fallback content even
               when translators provide compact guidesFallback objects. */}
           {manualStructuredFallback.node}
-          {((guideKey as any) === ("offSeasonLongStay" as any)) ? null : (
+          {isOffSeasonLongStayGuide(guideKey) ? null : (
             <StructuredTocBlock
               itemsBase={structuredTocItems as any}
               context={context}
@@ -956,7 +766,7 @@ function GuideSeoTemplate({
           )}
           {articleLeadNodeRef.current}
 
-          {((guideKey as any) === ("offSeasonLongStay" as any) && !hasAnyLocalized) ? null : (
+          {(isOffSeasonLongStayGuide(guideKey) && !hasAnyLocalized) ? null : (
             skipGenericForRequestedLocale ? null : (
               <GenericOrFallbackContent
                 lang={lang as any}
@@ -974,37 +784,21 @@ function GuideSeoTemplate({
               // can assert props; however, a few guides render fully-manual
               // structured content and must suppress GenericContent entirely to
               // satisfy tests that assert it should not appear. Handle those
-              // narrowly here to avoid changing global behaviour.
+              // narrowly via policy functions to avoid changing global behaviour.
               renderGenericContent={(() => {
                 if (!shouldRenderGenericContentForLocale) {
                   return false;
                 }
-                // Allow GenericContent for Positano travel tips so tests can
-                // assert props forwarded to the generic renderer even when
-                // localized structured arrays are present.
-                // Luggage storage guide renders its own localized intro/sections
-                // and a simple inline ToC in the article lead. Suppress
-                // GenericContent when localized structured arrays are present to
-                // avoid duplicate ToC/navigation and section headings.
-                if ((guideKey as any) === ("luggageStorage" as any) && hasStructuredLocalInitial) {
+                // Use centralized policy for guides that suppress GenericContent
+                // based on localized content availability (luggageStorage,
+                // weekend48Positano, ecoFriendlyAmalfi, workCafes).
+                if (shouldSuppressGenericForGuide(guideKey, hasStructuredLocalInitial, hasAnyLocalized)) {
                   return false;
                 }
-                // 48-hour Positano weekend: this route renders a manual
-                // structured article lead and ToC when localized content is
-                // available. Suppress GenericContent in that case so the
-                // mocked <GenericContent /> is not present during tests that
-                // assert manual rendering only. Still allow GenericContent in
-                // fallback scenarios (when localized arrays are empty).
-                if ((guideKey as any) === ("weekend48Positano" as any) && hasStructuredLocalInitial) {
-                  return false;
-                }
-                // Remove route-specific suppression for whatToPack so tests
-                // can assert GenericContent invocation when runtime resources
-                // are provided via getGuideResource. Treat either localized
-                // translator-backed arrays or runtime-provided arrays as
-                // sufficient to enable GenericContent. Suppress only when
-                // both are absent for the active locale.
-                if ((guideKey as any) === ("whatToPack" as any)) {
+                // whatToPack: treat either localized translator-backed arrays or
+                // runtime-provided arrays as sufficient to enable GenericContent.
+                // Suppress only when both are absent for the active locale.
+                if (isWhatToPackGuide(guideKey)) {
                   const hasRuntime = (() => {
                     try {
                       const normalize = (v: unknown): string[] =>
@@ -1034,23 +828,6 @@ function GuideSeoTemplate({
                     return false;
                   }
                 }
-                // Eco-friendly Amalfi: when the active locale lacks structured
-                // arrays, suppress GenericContent entirely so tests can assert
-                // that no generic block renders for empty fallbacks.
-                if ((guideKey as any) === ("ecoFriendlyAmalfi" as any) && !hasStructuredLocalInitial) {
-                  return false;
-                }
-                // Work cafes: prefer manual sections and coverage links when the
-                // locale lacks structured arrays; avoid invoking GenericContent
-                // so tests can assert the manual rendering path.
-                if ((guideKey as any) === ("workCafes" as any) && !hasStructuredLocalInitial) {
-                  return false;
-                }
-                // Respect the route's explicit preference without overriding it
-                // based on localized structured content. Routes like
-                // PositanoBeaches suppress GenericContent entirely and render
-                // manual structured content instead; keep that behaviour stable
-                // for tests that assert GenericContent was not invoked.
                 return true;
               })()}
               renderWhenEmpty={Boolean(renderGenericWhenEmpty)}
@@ -1091,7 +868,6 @@ function GuideSeoTemplate({
   );
 }
 
-export { makeGuideLinks,makeGuideMeta } from "./guide-seo/routeHead";
 export default memo(GuideSeoTemplate);
 export type { GuideSeoTemplateContext } from "./guide-seo/types";
 

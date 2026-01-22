@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { render } from "@testing-library/react";
+
+import VarianceHeatMap from "../VarianceHeatMap";
 
 jest.mock("../../../hooks/data/useCashCountsData", () => ({
   useCashCountsData: () => ({
@@ -11,8 +14,6 @@ jest.mock("../../../hooks/data/useCashCountsData", () => ({
     error: null,
   }),
 }));
-
-import VarianceHeatMap from "../VarianceHeatMap";
 
 describe("VarianceHeatMap", () => {
   it("applies dark mode classes", () => {

@@ -4,7 +4,7 @@ import { act,fireEvent, render, screen } from "@testing-library/react";
 import StepShopDetails from "../StepShopDetails";
 
 // mocks for UI components
-jest.mock("@acme/ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Input: ({ "data-cy": dataCy, ...props }: any) => (
     <input data-testid={dataCy} data-cy={dataCy} {...props} />
@@ -26,7 +26,7 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
-jest.mock("@acme/ui/components/cms/page-builder/ImagePicker", () => ({
+jest.mock("@acme/cms-ui/page-builder/ImagePicker", () => ({
   __esModule: true,
   default: ({ children }: any) => <div>{children}</div>,
 }));

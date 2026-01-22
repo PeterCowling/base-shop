@@ -1,11 +1,11 @@
 /* File: /src/components/checkins/KeycardButton/DocumentTypeSelector.tsx */
+import React, { memo } from "react";
 import {
   faDriversLicense,
   faIdCard,
   faPassport,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { memo } from "react";
 
 import { DocumentType } from "../../../types/keycards";
 

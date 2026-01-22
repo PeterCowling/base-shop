@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram } from "lucide-react";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";

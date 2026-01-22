@@ -17,7 +17,7 @@ jest.mock("../products/fetchCollection", () => ({
   fetchCollection: jest.fn(),
 }));
 
-jest.mock("../../../organisms/ProductCarousel", () => ({
+jest.mock("@acme/ui/components/organisms/ProductCarousel", () => ({
   ProductCarousel: ({ products }: { products: unknown[] }) => (
     <div data-testid="carousel">{JSON.stringify(products)}</div>
   ),
@@ -70,8 +70,8 @@ describe("CmsProductCarousel", () => {
     let resolve: (value: unknown) => void;
     (fetchCollection as jest.Mock).mockImplementationOnce(
       () =>
-        new Promise((r) => {
-          resolve = r;
+        new Promise((_resolve) => {
+          resolve = _resolve;
         })
     );
 
@@ -91,4 +91,3 @@ describe("getRuntimeProps", () => {
     expect(getRuntimeProps()).toEqual({ products: PRODUCTS });
   });
 });
-

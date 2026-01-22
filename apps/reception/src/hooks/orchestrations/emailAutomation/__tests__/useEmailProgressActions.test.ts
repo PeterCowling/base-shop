@@ -1,7 +1,11 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+import { ActivityCode } from "../../../../constants/activities";
 import type { Activities } from "../../../../types/hooks/data/activitiesData";
 import type { FirebaseBookings } from "../../../../types/hooks/data/bookingsData";
+import useEmailProgressActions from "../useEmailProgressActions";
 
 let activities: Activities;
 let bookings: FirebaseBookings;
@@ -16,9 +20,6 @@ jest.mock("../../../data/useActivitiesData", () => ({
 jest.mock("../../../data/useBookingsData", () => ({
   default: () => ({ bookings }),
 }));
-
-import useEmailProgressActions from "../useEmailProgressActions";
-import { ActivityCode } from "../../../../constants/activities";
 
 const bookingRef = "BOOK1";
 

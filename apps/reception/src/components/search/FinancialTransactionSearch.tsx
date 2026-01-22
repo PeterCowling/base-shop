@@ -48,7 +48,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="number"
             value={filters.amount}
             onChange={(e) => handleChange("amount", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
@@ -61,7 +61,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.itemCategory}
             onChange={(e) => handleChange("itemCategory", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
@@ -74,7 +74,7 @@ function FinancialTransactionSearch(): JSX.Element {
             type="text"
             value={filters.userName}
             onChange={(e) => handleChange("userName", e.target.value)}
-            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
           />
         </div>
 
@@ -102,19 +102,19 @@ function FinancialTransactionSearch(): JSX.Element {
           <table className="table-fixed w-full border-collapse">
             <thead className="bg-gray-100 sticky top-0 dark:bg-darkSurface">
               <tr>
-                <th className="border-b border-gray-400 py-2 px-3 text-left dark:border-darkSurface dark:text-darkAccentGreen">
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Amount
                 </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-left dark:border-darkSurface dark:text-darkAccentGreen">
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Category
                 </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-left dark:border-darkSurface dark:text-darkAccentGreen">
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   User
                 </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-left dark:border-darkSurface dark:text-darkAccentGreen">
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Description
                 </th>
-                <th className="border-b border-gray-400 py-2 px-3 text-left dark:border-darkSurface dark:text-darkAccentGreen">
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Timestamp
                 </th>
               </tr>

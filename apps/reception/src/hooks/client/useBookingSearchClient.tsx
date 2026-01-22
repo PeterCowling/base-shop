@@ -5,18 +5,19 @@ import useActivitiesData from "../../hooks/data/useActivitiesData";
 import useFinancialsRoom from "../../hooks/data/useFinancialsRoom";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import {
-  BookingSearchRow,
-  UseBookingSearchDataParams,
-  UseBookingSearchDataResult,
+  type BookingSearchRow,
+  type UseBookingSearchDataParams,
+  type UseBookingSearchDataResult,
 } from "../../types/component/bookingSearch";
-import {
-  buildBookingSearchRows,
-  getMaxActivityCode,
-} from "./bookingSearchUtils";
 import useBookings from "../data/useBookingsData";
 import { useCheckins } from "../data/useCheckins";
 import { useCheckouts } from "../data/useCheckouts";
 import useGuestByRoom from "../data/useGuestByRoom";
+
+import {
+  buildBookingSearchRows,
+  getMaxActivityCode,
+} from "./bookingSearchUtils";
 
 /**
  * Client hook that aggregates bookings, guests, financials, activities, check-ins/outs,

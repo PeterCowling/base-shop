@@ -3,10 +3,9 @@ import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
 import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
-
-import { Inline } from "../../atoms/primitives/Inline";
 
 const CATEGORY_QUERY_PARAM = "category"; // i18n-exempt -- TECH-4821 [ttl=2026-01-01] — URL search parameter key
 

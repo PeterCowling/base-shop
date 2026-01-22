@@ -1,5 +1,5 @@
 /* File: src/components/checkins/header/EditButton.tsx */
-import { FC, memo, MouseEventHandler } from "react";
+import { type FC, memo, type MouseEventHandler } from "react";
 
 /**
  * This component renders a small edit icon button.

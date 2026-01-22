@@ -1,20 +1,7 @@
 // File: src/hooks/orchestrations/checkin/__tests__/useCheckinsData.test.ts
 import "@testing-library/jest-dom";
-import { renderHook, waitFor } from "@testing-library/react";
 
-/* ------------------------------------------------------------------ */
-/*  Module mocks – declared first so Vitest can safely hoist them     */
-/*  (no references to outer‑scope variables inside the factory)       */
-/* ------------------------------------------------------------------ */
-jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useCityTax", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useLoans", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useCheckins", () => ({ useCheckins: jest.fn() }));
-jest.mock("../../../data/useGuestByRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesByCodeData", () => ({ default: jest.fn() }));
+import { renderHook, waitFor } from "@testing-library/react";
 
 /* ------------------------------------------------------------------ */
 /*  Import mocked modules *after* registration so we can access       */
@@ -30,6 +17,24 @@ import useFinancialsRoom from "../../../data/useFinancialsRoom";
 import useGuestByRoom from "../../../data/useGuestByRoom";
 import useGuestDetails from "../../../data/useGuestDetails";
 import useLoans from "../../../data/useLoans";
+/* ------------------------------------------------------------------ */
+/*  Import the hook under test *after* mocks are in place             */
+/* ------------------------------------------------------------------ */
+import useCheckinsData from "../useCheckinsData";
+
+/* ------------------------------------------------------------------ */
+/*  Module mocks – declared first so Vitest can safely hoist them     */
+/*  (no references to outer‑scope variables inside the factory)       */
+/* ------------------------------------------------------------------ */
+jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useCityTax", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useLoans", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useActivitiesData", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useCheckins", () => ({ useCheckins: jest.fn() }));
+jest.mock("../../../data/useGuestByRoom", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useActivitiesByCodeData", () => ({ default: jest.fn() }));
 
 /* Typed references to the mocked functions */
 const useBookingsMock = jest.mocked(useBookingsData);
@@ -41,11 +46,6 @@ const useActivitiesMock = jest.mocked(useActivitiesData);
 const useCheckinsMock = jest.mocked(useCheckinsHook);
 const useGuestByRoomMock = jest.mocked(useGuestByRoom);
 const useActivitiesByCodeMock = jest.mocked(useActivitiesByCodeData);
-
-/* ------------------------------------------------------------------ */
-/*  Import the hook under test *after* mocks are in place             */
-/* ------------------------------------------------------------------ */
-import useCheckinsData from "../useCheckinsData";
 
 /* ------------------------------------------------------------------ */
 /*  Shared mock data                                                  */

@@ -1,8 +1,7 @@
 "use client";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { DatasetComponent } from "@acme/types/page/layouts/dataset";
-
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "@acme/design-system/shadcn";
 
 import type { EditorProps } from "./EditorProps";
 

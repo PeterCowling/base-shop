@@ -1,5 +1,7 @@
 /* i18n-exempt file -- PP-1100 Stage M HTML parsing [ttl=2026-06-30] */
 
+import { median as libMedian } from "@acme/lib/math/statistics";
+
 import type { StageMItem, StageMJobInput, StageMOutput } from "./types";
 
 const DEFAULT_MAX_RESULTS = 20;
@@ -41,14 +43,13 @@ function parseBoolean(value: unknown): boolean | null {
   return null;
 }
 
+/**
+ * Wrapper around library median that returns null for empty arrays.
+ * @see {@link libMedian} from @acme/lib/math/statistics
+ */
 function computeMedian(values: number[]): number | null {
-  if (values.length === 0) return null;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  if (sorted.length % 2 === 0) {
-    return (sorted[mid - 1] + sorted[mid]) / 2;
-  }
-  return sorted[mid];
+  const result = libMedian(values);
+  return Number.isNaN(result) ? null : result;
 }
 
 function uniqueNumbers(values: number[]): number[] {

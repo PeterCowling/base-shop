@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { HistoryState,PageComponent } from "@acme/types";
-
-import { Button } from "@acme/design-system/shadcn";
 
 import PreviewPane from "./PreviewPane";
 import type { VersionEntry } from "./versions-panel/api";

@@ -3,13 +3,14 @@
  * Handles Firebase mutations queued while offline.
  */
 
-import { ref, set, update, remove } from "firebase/database";
 import type { Database } from "firebase/database";
+import { ref, remove,set, update } from "firebase/database";
+
 import {
-  getPendingWrites,
-  removePendingWrite,
   addPendingWrite,
+  getPendingWrites,
   type PendingWrite,
+  removePendingWrite,
 } from "./receptionDb";
 
 export interface SyncResult {

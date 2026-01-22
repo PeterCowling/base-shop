@@ -8,9 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
-} from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+} from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { contactPreferences, countries, queryTypes } from "./content";
 

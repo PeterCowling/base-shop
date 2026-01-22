@@ -2,7 +2,7 @@
 "use client";
 import { useTranslations } from "@acme/i18n";
 import type { TryOnPhase } from "@acme/ui/hooks/tryon/state";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 export function TryOnStepper({ phase }: { phase: TryOnPhase }) {
   const t = useTranslations();

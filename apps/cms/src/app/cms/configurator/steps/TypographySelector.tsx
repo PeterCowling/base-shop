@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import presetData from "@acme/cms-ui/style/presets.json";
+import Tokens from "@acme/cms-ui/style/Tokens";
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline as DSInline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Inline as DSInline } from "@acme/ui/components/atoms/primitives/Inline";
-import presetData from "@acme/ui/components/cms/style/presets.json";
-import Tokens from "@acme/ui/components/cms/style/Tokens";
 
 import type { TokenMap } from "../../wizard/tokenUtils";
 

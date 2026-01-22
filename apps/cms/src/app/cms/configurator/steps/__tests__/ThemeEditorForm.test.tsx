@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import ThemeEditorForm from "../ThemeEditorForm";
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Select: ({ value, onValueChange, children, ...props }: any) => (
     <select
@@ -23,7 +23,7 @@ jest.mock("@acme/ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
-jest.mock("@acme/ui/components/cms/StyleEditor", () => ({
+jest.mock("@acme/cms-ui/StyleEditor", () => ({
   __esModule: true,
   default: ({ onChange }: any) => (
     <button onClick={() => onChange({ token: "value" })}>MockStyleEditor</button>
@@ -40,7 +40,7 @@ jest.mock("../ColorThemeSelector", () => ({
 }));
 
 const getContrastMock = jest.fn((fg: string, bg: string) => (fg === "low" || bg === "low" ? 1 : 5));
-jest.mock("@acme/ui/components/cms", () => ({
+jest.mock("@acme/cms-ui", () => ({
   getContrast: (...args: [string, string]) => getContrastMock(...args),
 }));
 

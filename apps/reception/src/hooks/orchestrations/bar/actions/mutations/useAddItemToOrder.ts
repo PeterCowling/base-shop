@@ -4,8 +4,8 @@
    This prevents the error when passing a null category.
    ------------------------------------------------------------------ */
 
-import { get, ref, set } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { get, ref, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
 

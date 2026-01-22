@@ -1,12 +1,12 @@
 /* File: src/hooks/data/useFirebaseSubscription.ts */
 
-import { DataSnapshot, off, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
-import type { ZodSchema } from "zod";
+import { type DataSnapshot, off, onValue, ref } from "firebase/database";
+import type { ZodTypeAny } from "zod";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { showToast } from "../../utils/toastUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { showToast } from "../../utils/toastUtils";
 
 /**
  * Hook to subscribe to a Firebase Realtime Database path. Returns the
@@ -24,7 +24,7 @@ import { getErrorMessage } from "../../utils/errorMessage";
  */
 export default function useFirebaseSubscription<T>(
   path: string,
-  schema?: ZodSchema<T>
+  schema?: ZodTypeAny
 ) {
   const database = useFirebaseDatabase();
   const [data, setData] = useState<T | null>(null);
@@ -53,7 +53,7 @@ export default function useFirebaseSubscription<T>(
           setLoading(false);
           return; // keep previous data
         }
-        setData(parsed.data);
+        setData(parsed.data as T);
       } else {
         setData(snap.val() as T);
       }

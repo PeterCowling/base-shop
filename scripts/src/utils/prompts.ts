@@ -1,5 +1,6 @@
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
+
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
 export async function prompt(question: string, def = ""): Promise<string> {

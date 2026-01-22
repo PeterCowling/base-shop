@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ZoomIn } from "lucide-react";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/ui/components/atoms";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
 import { Grid } from "@acme/ui/atoms";
 
 import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";

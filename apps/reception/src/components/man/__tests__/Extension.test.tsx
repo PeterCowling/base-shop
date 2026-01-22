@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import Extension from "../Extension";
 
 jest.mock("../modals/ExtensionPayModal", () => ({
   __esModule: true,
@@ -61,8 +64,6 @@ jest.mock("../../../utils/dateUtils", async () => {
     isToday: (d: string) => d === "2024-05-02",
   };
 });
-
-import Extension from "../Extension";
 
 describe("Extension", () => {
   beforeEach(() => {

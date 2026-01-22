@@ -1,6 +1,8 @@
 /* i18n-exempt file -- PP-1100 internal pipeline API [ttl=2026-06-30] */
 // apps/product-pipeline/src/routes/api/dashboard/index.ts
 
+import { median as libMedian } from "@acme/lib/math/statistics";
+
 import { getDb, type PipelineEnv } from "../_lib/db";
 import { jsonResponse } from "../_lib/response";
 import type { PipelineEventContext } from "../_lib/types";
@@ -48,17 +50,13 @@ function parseNumber(value: unknown): number | null {
   return null;
 }
 
+/**
+ * Wrapper around library median that returns null for empty arrays.
+ * @see {@link libMedian} from @acme/lib/math/statistics
+ */
 function median(values: number[]): number | null {
-  if (values.length === 0) return null;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  if (sorted.length % 2 === 0) {
-    const left = sorted[mid - 1];
-    const right = sorted[mid];
-    if (left === undefined || right === undefined) return null;
-    return (left + right) / 2;
-  }
-  return sorted[mid] ?? null;
+  const result = libMedian(values);
+  return Number.isNaN(result) ? null : result;
 }
 
 export const onRequestGet = async ({

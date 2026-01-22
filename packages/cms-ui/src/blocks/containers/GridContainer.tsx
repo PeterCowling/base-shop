@@ -1,7 +1,7 @@
 "use client";
 import type { ReactNode } from "react";
 
-import { cn } from "../../../../utils/style";
+import { cn } from "@acme/design-system/utils/style";
 
 export interface GridContainerProps {
   children?: ReactNode;
@@ -86,7 +86,7 @@ export default function GridContainer({
   return (
     <div
       className={cn("grid", className)}
-      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic grid requires inline template/areas/gaps computed at runtime */
+       
       style={{
         // Explicitly set display to ensure JSDOM exposes it via inline styles in tests
         display: "grid",

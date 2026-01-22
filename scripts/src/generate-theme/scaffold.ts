@@ -7,16 +7,17 @@
 
 import * as fs from 'fs/promises';
 import * as path from 'path';
+
 import {
-  ColorPalette,
-  HSLColor,
-  generatePalette,
+  type ColorPalette,
   generateAccentColor,
+  generatePalette,
+  harmonizeSemanticColor,
+  hexToHsl,
+  HSLColor,
   hslToCssValue,
   hslToHex,
   SEMANTIC_COLORS,
-  harmonizeSemanticColor,
-  hexToHsl,
 } from './palette';
 
 export interface ThemeConfig {

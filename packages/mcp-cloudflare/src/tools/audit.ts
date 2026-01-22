@@ -225,8 +225,7 @@ function auditPerformance(settings: Map<string, ZoneSettings>): PerformanceRecom
       setting: "Early Hints",
       current: "Off",
       recommended: "On",
-      // eslint-disable-next-line ds/no-raw-font -- false positive: "times" is not a font
-      reason: "Early Hints (103) can improve page load times.",
+      reason: "Early Hints (103) can improve page load performance.",
     });
   }
 
@@ -266,8 +265,7 @@ function auditPerformance(settings: Map<string, ZoneSettings>): PerformanceRecom
       setting: "Auto Minify",
       current: `${disabled.join(", ")} disabled`,
       recommended: "Enable all",
-      // eslint-disable-next-line ds/no-raw-font -- false positive: "times" is not a font
-      reason: "Minification reduces file sizes and improves load times.",
+      reason: "Minification reduces file sizes and improves load performance.",
     });
   }
 

@@ -2,6 +2,7 @@
 import * as React from "react";
 import { cookies } from "next/headers";
 
+import Section from "@acme/cms-ui/blocks/Section";
 import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 import { useTranslations } from "@acme/i18n/Translations";
@@ -17,7 +18,6 @@ import { convertCurrency,priceForDays } from "@acme/platform-core/pricing";
 import { getProductById } from "@acme/platform-core/products";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
-import Section from "@acme/ui/components/cms/blocks/Section";
 
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";

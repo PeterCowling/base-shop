@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
 import {
   Accordion,
   AccordionContent,
@@ -8,7 +7,8 @@ import {
   AccordionTrigger,
   Card,
   CardContent,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import MappingListField, {
   type MappingListFieldErrors,

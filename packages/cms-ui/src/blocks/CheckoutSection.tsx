@@ -3,8 +3,7 @@
 import * as React from "react";
 
 import { useTranslations } from "@acme/i18n";
-
-import CheckoutForm from "../../checkout/CheckoutForm";
+import CheckoutForm from "@acme/ui/components/checkout/CheckoutForm";
 
 type CheckoutLocale = "en" | "de" | "it" | "es";
 

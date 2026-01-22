@@ -1,5 +1,7 @@
 import type { FC } from "react";
+
 import type { Transaction } from "../../types/component/Till";
+
 import DeleteTransactionModal from "./DeleteTransactionModal";
 import EditTransactionModal from "./EditTransactionModal";
 

@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Toast } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
+import { median as libMedian, percentile as libPercentile } from "@acme/lib/math/statistics";
 import type { TelemetryEvent } from "@acme/telemetry";
-import { Toast } from "@acme/ui/components/atoms";
 
 import { TelemetryFiltersPanel } from "./TelemetryFiltersPanel";
 import { TelemetryHeader } from "./TelemetryHeader";
@@ -74,19 +75,11 @@ export function TelemetryAnalyticsView({
       })
       .filter((v): v is number => v !== null)
       .sort((a, b) => a - b);
-    const percentile = (p: number) => {
-      if (!durations.length) return null;
-      const idx = Math.min(
-        durations.length - 1,
-        Math.floor((p / 100) * durations.length),
-      );
-      return durations[idx];
-    };
-    const median =
-      durations.length > 0
-        ? durations[Math.floor(durations.length / 2)]
-        : null;
-    const p90 = percentile(90);
+    // Use library functions for statistics
+    const medianVal = libMedian(durations);
+    const median = Number.isNaN(medianVal) ? null : medianVal;
+    const p90Val = durations.length > 0 ? libPercentile(durations, 90) : NaN;
+    const p90 = Number.isNaN(p90Val) ? null : p90Val;
     return { median, p90 };
   }, [filteredEvents]);
 

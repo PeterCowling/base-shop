@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import type { StageBQuoteBasketMeta } from "./stageBHelpers";
 import type { CandidateDetailStrings } from "./types";

@@ -2,18 +2,17 @@
 
 import { type ReactElement } from "react";
 
-import { useTranslations } from "@acme/i18n";
-
-import { useTokenColors } from "../../../hooks/useTokenColors";
-import type { TokenInfo, TokenMap } from "../../../hooks/useTokenEditor";
-import { hexToHsl, isHex } from "../../../utils/colorUtils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../../atoms/shadcn";
-import { ColorInput } from "../index";
+} from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import { ColorInput } from "@acme/ui/components/cms/ColorInput";
+import { useTokenColors } from "@acme/ui/hooks/useTokenColors";
+import type { TokenInfo, TokenMap } from "@acme/ui/hooks/useTokenEditor";
+import { hexToHsl, isHex } from "@acme/ui/utils/colorUtils";
 
 interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;

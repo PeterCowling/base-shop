@@ -762,15 +762,27 @@
     "domain": "Brikette Guides"
   },
   {
-    "path": "docs/plans/theming-audit-2026-01-plan.md",
+    "path": "docs/plans/archive/theming-audit-2026-01-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/plans/design-system-plan.md",
     "type": "Plan",
     "status": "Active",
-    "domain": "Theming"
+    "domain": "Design System"
+  },
+  {
+    "path": "docs/plans/archive/ui-architecture-consolidation-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform/UI"
   },
   {
     "path": "docs/plans/ui-lint-remediation-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Complete",
     "domain": "Platform"
   },
   {
@@ -778,6 +790,18 @@
     "type": "Plan",
     "status": "Historical",
     "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/ui-package-split-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform/UI"
+  },
+  {
+    "path": "docs/plans/ci-test-parallelization-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CI/Infrastructure"
   },
   {
     "path": "docs/plans/xa-coverage-80-plan.md",

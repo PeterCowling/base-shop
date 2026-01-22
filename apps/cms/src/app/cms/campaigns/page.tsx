@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import { Toast } from "@acme/ui/components/atoms";
+import { Toast } from "@acme/design-system/atoms";
 
 import type { ActionResult, ActionStatus } from "../components/actionResult";
 import CampaignSender, {

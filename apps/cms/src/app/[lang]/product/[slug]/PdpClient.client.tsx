@@ -4,11 +4,11 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
+import { Price } from "@acme/design-system/atoms/Price";
 import ImageGallery from "@acme/platform-core/components/pdp/ImageGallery";
 import SizeSelector from "@acme/platform-core/components/pdp/SizeSelector";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import type { SKU } from "@acme/types";
-import { Price } from "@acme/ui/components/atoms/Price";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const [size, setSize] = useState<string | null>(null);

@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+import { useCashDrawerLimit } from "../useCashDrawerLimit";
 
 /* eslint-disable no-var */
 var mockedSub: jest.Mock;
@@ -31,8 +34,6 @@ jest.mock("../../../services/logSettingChange", () => {
   logMock = jest.fn(() => Promise.resolve());
   return { logSettingChange: logMock };
 });
-
-import { useCashDrawerLimit } from "../useCashDrawerLimit";
 
 describe("useCashDrawerLimit", () => {
   afterEach(() => jest.clearAllMocks());

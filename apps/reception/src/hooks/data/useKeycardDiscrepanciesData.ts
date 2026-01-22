@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+
 import { keycardDiscrepanciesSchema } from "../../schemas/keycardDiscrepancySchema";
-import { KeycardDiscrepancy } from "../../types/hooks/data/keycardDiscrepancyData";
+import type { KeycardDiscrepancy } from "../../types/hooks/data/keycardDiscrepancyData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 export function useKeycardDiscrepanciesData() {
@@ -16,7 +18,10 @@ export function useKeycardDiscrepanciesData() {
     }
     const result = keycardDiscrepanciesSchema.safeParse(data);
     if (result.success) {
-      return { entries: Object.values(result.data), error: subError };
+      const entries: KeycardDiscrepancy[] = Object.values(result.data).flatMap((entry) =>
+        entry ? [entry] : []
+      );
+      return { entries, error: subError };
     }
     return { entries: [] as KeycardDiscrepancy[], error: result.error };
   }, [data, subError]);

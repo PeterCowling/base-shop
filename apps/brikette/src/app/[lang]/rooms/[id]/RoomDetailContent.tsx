@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
-import { DirectBookingPerks } from "@acme/ui/molecules/DirectBookingPerks";
+import { DirectBookingPerks } from "@acme/ui/molecules";
 import StickyBookNow from "@acme/ui/organisms/StickyBookNow";
 
 import LocationInline from "@/components/booking/LocationInline";

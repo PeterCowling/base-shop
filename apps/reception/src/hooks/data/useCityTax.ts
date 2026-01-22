@@ -1,7 +1,8 @@
 // /src/hooks/data/useCityTax.ts
 
+import { useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,12 +11,11 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useMemo, useState } from "react";
 
 import { cityTaxDataSchema } from "../../schemas/cityTaxSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { UseCityTaxResult } from "../../types/domains/cityTaxDomain";
-import { CityTaxData } from "../../types/hooks/data/cityTaxData";
+import { type UseCityTaxResult } from "../../types/domains/cityTaxDomain";
+import { type CityTaxData } from "../../types/hooks/data/cityTaxData";
 
 export interface UseCityTaxParams {
   startAt?: string;

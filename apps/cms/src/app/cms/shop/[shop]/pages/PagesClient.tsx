@@ -8,9 +8,9 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 
+import { PagesTable } from "@acme/cms-ui";
 import { fetchJson } from "@acme/lib/http";
 import type { Page } from "@acme/types";
-import { PagesTable } from "@acme/ui/components/cms";
 
 interface Props {
   shop: string;

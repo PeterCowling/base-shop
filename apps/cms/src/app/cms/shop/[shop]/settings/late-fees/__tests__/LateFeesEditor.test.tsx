@@ -21,7 +21,7 @@ jest.mock("../../../../../../../services/shops/validation", () => ({
   parseLateFeeForm,
 }));
 jest.mock(
-  "@acme/ui/components/atoms/shadcn",
+  "@acme/design-system/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Checkbox: ({ onCheckedChange, ...props }: any) => (

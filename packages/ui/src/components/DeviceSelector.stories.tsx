@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { getLegacyPreset } from '@acme/ui/utils/devicePresets';
+import { getLegacyPreset } from '../utils/devicePresets';
 
 import DeviceSelector from './DeviceSelector';
 

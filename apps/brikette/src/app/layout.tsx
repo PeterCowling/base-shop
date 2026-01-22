@@ -8,7 +8,7 @@ import type { Metadata, Viewport } from "next";
 
 import { NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
-import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "@/root/theme";
+import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "@/utils/theme-constants";
 import { getThemeInitScript } from "@/utils/themeInit";
 
 // Determine if noindex should be applied (staging/preview environments)

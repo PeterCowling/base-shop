@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { formatItemCategory, summariseDescription } from "../helpers";
 
 describe("formatItemCategory", () => {

@@ -4,13 +4,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { CmsBuildHero } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero
+import { StatCard } from "@acme/design-system/atoms";
+import { Grid as DSGrid } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
 import type { ConfiguratorProgress } from "@acme/types";
-import { Button, StatCard } from "@acme/ui/components/atoms";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
-import { CmsBuildHero } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero
 
 import { deriveShopHealth } from "../../../lib/shopHealth";
 import ReRunSmokeButton from "../ReRunSmokeButton.client";

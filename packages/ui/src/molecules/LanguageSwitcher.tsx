@@ -1,10 +1,10 @@
 // Copied from src/components/header/LanguageSwitcher.tsx
 import { memo } from "react";
 
-import { useModal } from "@acme/ui/context/ModalContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { useTheme } from "@acme/ui/hooks/useTheme";
-import type { AppLanguage } from "@acme/ui/i18n.config";
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useTheme } from "../hooks/useTheme";
+import type { AppLanguage } from "../i18n.config";
 
 const LABELS: Record<AppLanguage, string> = {
   de: "Deutsch",

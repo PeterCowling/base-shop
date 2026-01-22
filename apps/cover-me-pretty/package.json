@@ -9,23 +9,25 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
+    "@acme/cms-ui": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
+    "@acme/design-system": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
-    "@acme/next-config": "workspace:*",
-    "@acme/sanity": "workspace:*",
     "@acme/lib": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/page-builder-core": "workspace:*",
+    "@acme/sanity": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
-    "@acme/page-builder-core": "workspace:*",
     "@acme/zod-utils": "workspace:^",
     "@themes/base": "workspace:*",
+    "aws4fetch": "^1.0.20",
     "qrcode": "^1.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "aws4fetch": "^1.0.20"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "next": "^15.3.8"

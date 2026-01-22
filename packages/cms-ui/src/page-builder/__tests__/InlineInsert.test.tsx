@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import InlineInsert from "../InlineInsert";
 
 // Lightweight mock of Popover primitives used by InlineInsert
-jest.mock("../../../atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,

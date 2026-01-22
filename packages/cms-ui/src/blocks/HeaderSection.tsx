@@ -2,13 +2,12 @@
 
 import React from "react";
 
+import LanguageSwitcher from "@acme/design-system/molecules/LanguageSwitcher";
+import { Cluster, Cover } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { resolveLocale } from "@acme/i18n/locales";
 import { getBreadcrumbs } from "@acme/platform-core/router/breadcrumbs";
-
-import ExperimentGate from "../../ab/ExperimentGate";
-import { Cluster, Cover } from "../../atoms/primitives";
-import LanguageSwitcher from "../../molecules/LanguageSwitcher";
+import ExperimentGate from "@acme/ui/components/ab/ExperimentGate";
 
 import AnnouncementBar from "./AnnouncementBarBlock";
 import CurrencySelector from "./CurrencySelector";

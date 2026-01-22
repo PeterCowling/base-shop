@@ -3,10 +3,10 @@
 import { useCallback } from "react";
 import Link from "next/link";
 
+import { Chip } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Chip } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import { Button } from "@acme/ui/components/atoms/shadcn";
 
 interface HeroProps {
   shop: string;

@@ -3,10 +3,10 @@
 
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import { Loader, Tag } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Loader, Tag } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import { useConfigurator } from "./ConfiguratorContext";
 import { useGuidedTour } from "./GuidedTour";

@@ -25,27 +25,27 @@ function Stock() {
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr className="bg-gray-200 dark:bg-darkSurface">
-                <th className="p-2 border-b text-left">Item</th>
-                <th className="p-2 border-b text-right">Expected</th>
-                <th className="p-2 border-b text-right">Add Purchase</th>
-                <th className="p-2 border-b text-right">Add Re-count</th>
-                <th className="p-2 border-b text-right">Remove Leakage</th>
+                <th className="p-2 border-b text-start">Item</th>
+                <th className="p-2 border-b text-end">Expected</th>
+                <th className="p-2 border-b text-end">Add Purchase</th>
+                <th className="p-2 border-b text-end">Add Re-count</th>
+                <th className="p-2 border-b text-end">Remove Leakage</th>
               </tr>
             </thead>
             <tbody>
               {productNames.map((name) => (
                 <tr key={name}>
                   <td className="p-2 border-b">{name}</td>
-                  <td className="p-2 border-b text-right">
+                  <td className="p-2 border-b text-end">
                     <input type="number" className="w-20 border p-1" />
                   </td>
-                  <td className="p-2 border-b text-right">
+                  <td className="p-2 border-b text-end">
                     <input type="number" className="w-20 border p-1" />
                   </td>
-                  <td className="p-2 border-b text-right">
+                  <td className="p-2 border-b text-end">
                     <input type="number" className="w-20 border p-1" />
                   </td>
-                  <td className="p-2 border-b text-right">
+                  <td className="p-2 border-b text-end">
                     <input type="number" className="w-20 border p-1" />
                   </td>
                 </tr>

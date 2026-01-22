@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { CmsLaunchChecklist, type CmsLaunchStatus } from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
+import { Inline } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import { CmsLaunchChecklist, type CmsLaunchStatus } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
-import { cn } from "@acme/ui/utils/style";
 
 import { type TagProps,Tooltip } from "@/components/atoms";
 

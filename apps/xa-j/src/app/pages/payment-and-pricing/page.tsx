@@ -1,5 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- XA-123 [ttl=2026-12-31] XA marketing copy pending localization */
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/design-system/atoms/Section";
+
 import { siteConfig } from "../../../lib/siteConfig";
 
 export default function PaymentAndPricingPage() {

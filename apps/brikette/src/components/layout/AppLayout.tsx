@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useLayoutEffect } from "react";
 
-import { NotificationBanner } from "@acme/ui/molecules/NotificationBanner";
+import { NotificationBanner } from "@acme/ui/molecules";
 import { Header } from "@acme/ui/organisms/Header";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -16,8 +16,8 @@ import i18n from "@/i18n";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { APP_I18N_NAMESPACES } from "@/i18n.namespaces";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { InlineBoundary } from "@/root/boundaries";
-import { isTestEnvironment } from "@/root/environment";
+import { InlineBoundary } from "@/components/common/InlineBoundary";
+import { isTestEnvironment } from "@/utils/env-helpers";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import prefetchInteractiveBundles from "@/utils/prefetchInteractive";
 
@@ -89,7 +89,7 @@ function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
     void prefetchInteractiveBundles();
   }, []);
 
-  const isTest = isTestEnvironment;
+  const isTest = isTestEnvironment();
   const RatesWrapper = isTest
     ? ({ children: wrapperChildren }: { children: React.ReactNode }) => <>{wrapperChildren}</>
     : RatesProvider;

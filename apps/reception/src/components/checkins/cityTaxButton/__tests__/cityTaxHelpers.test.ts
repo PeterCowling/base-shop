@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook, waitFor } from "@testing-library/react";
 
+import useCityTax from "../../../../hooks/data/useCityTax";
 import type { CityTaxRecord } from "../../../../types/hooks/data/cityTaxData";
 import useCityTaxAmount from "../useCityTaxAmount";
 import { useCityTaxPayment } from "../useCityTaxPayment";
-import useCityTax from "../../../../hooks/data/useCityTax";
 
 jest.mock("../../../../hooks/data/useCityTax");
 

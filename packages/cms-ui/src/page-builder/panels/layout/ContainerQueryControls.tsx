@@ -1,11 +1,10 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/ContainerQueryControls.tsx
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-import type { PageComponent } from "@acme/types";
-
 import { Tooltip } from "@acme/design-system/atoms";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { PageComponent } from "@acme/types";
 
 interface Props {
   component: PageComponent;

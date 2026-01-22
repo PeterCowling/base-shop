@@ -1,5 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi, afterEach } from "vitest";
+import { afterEach,describe, expect, it, vi } from "vitest";
+
+import useActivitiesData from "../useActivitiesData";
 
 vi.mock("../../../services/useFirebase", () => ({
   useFirebaseDatabase: () => ({}),
@@ -18,8 +20,6 @@ vi.mock("firebase/database", () => ({
     ...args: unknown[]
   ) => onValueMock(...(args as [unknown, unknown, unknown])),
 }));
-
-import useActivitiesData from "../useActivitiesData";
 
 type Snap = { exists: () => boolean; val: () => unknown };
 

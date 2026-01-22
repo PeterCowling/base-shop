@@ -12,15 +12,15 @@
  * 4. Writing to profiles/shops/<shopId>.json
  */
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { dirname,join } from "node:path";
 
-import { launchConfigSchema, type LaunchConfig } from "@acme/platform-core/createShop";
-import { validateShopName } from "@acme/platform-core/shops";
+import { type LaunchConfig,launchConfigSchema } from "@acme/platform-core/createShop";
 import { listThemes } from "@acme/platform-core/createShop/fsUtils";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import { validateShopName } from "@acme/platform-core/shops";
 
 import { ensureRuntime } from "./runtime";
-import { prompt, selectOption, selectProviders, promptUrl, promptEmail } from "./utils/prompts";
+import { prompt, promptEmail,promptUrl, selectOption, selectProviders } from "./utils/prompts";
 import { listDirNames } from "./utils/templates";
 
 // ============================================================
@@ -437,4 +437,4 @@ if (process.argv[1]?.includes("generate-launch-config")) {
   });
 }
 
-export { parseArgs, assembleConfig, validateConfig };
+export { assembleConfig, parseArgs, validateConfig };

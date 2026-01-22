@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { useTranslations } from "@acme/i18n";
-import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
 
 import { Switch, Toast } from "@/components/atoms";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/shadcn";

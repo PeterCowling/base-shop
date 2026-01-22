@@ -1,9 +1,4 @@
 // /src/components/bookingSearch/BookingSearchTable.tsx
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/solid";
 import React, {
   Fragment,
   useCallback,
@@ -11,19 +6,25 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
+
+import useActivitiesData from "../../hooks/data/useActivitiesData";
+import type { CsvExportRow } from "../../hooks/mutations/useBulkBookingActions";
+import useExtendedGuestFinancialData from "../../hooks/orchestrations/useExtendedGuestFinancialData";
+import { type Guest } from "../../types/component/bookingSearch";
+import { type Activity } from "../../types/hooks/data/activitiesData";
+import { type RoomTransaction } from "../../types/hooks/data/financialsRoomData";
+import { showToast } from "../../utils/toastUtils";
 
 import BulkActionsToolbar from "./BulkActionsToolbar";
 import CopyableBookingRef from "./CopyableBookingRef";
 import EditableBalanceCell from "./EditableBalanceCell";
 import SmallSpinner from "./SmallSpinner";
 import SortableHeader from "./SortableHeader";
-import useActivitiesData from "../../hooks/data/useActivitiesData";
-import useExtendedGuestFinancialData from "../../hooks/orchestrations/useExtendedGuestFinancialData";
-import { Guest } from "../../types/component/bookingSearch";
-import { Activity } from "../../types/hooks/data/activitiesData";
-import { RoomTransaction } from "../../types/hooks/data/financialsRoomData";
-import { showToast } from "../../utils/toastUtils";
-import type { CsvExportRow } from "../../hooks/mutations/useBulkBookingActions";
 
 export interface BookingSearchTableProps {
   guests: Guest[];
@@ -270,7 +271,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                   aria-label="Select all rows"
                 />
               </th>
@@ -309,7 +310,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               currentField={sortBy}
               ascending={ascending}
               onSort={handleHeaderClick}
-              className="text-right"
+              className="text-end"
             />
             <SortableHeader
               label="Paid"
@@ -317,7 +318,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               currentField={sortBy}
               ascending={ascending}
               onSort={handleHeaderClick}
-              className="text-right"
+              className="text-end"
             />
             <SortableHeader
               label="Adjust"
@@ -325,7 +326,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
               currentField={sortBy}
               ascending={ascending}
               onSort={handleHeaderClick}
-              className="text-right"
+              className="text-end"
             />
           </tr>
         </thead>
@@ -347,7 +348,7 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleRowSelection(guest.bookingRef)}
-                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
+                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus-visible:focus:ring-blue-500 dark:border-gray-600 dark:bg-darkSurface"
                         aria-label={`Select booking ${guest.bookingRef}`}
                       />
                     </td>
@@ -402,12 +403,12 @@ const BookingSearchTable: React.FC<BookingSearchTableProps> = ({
                   />
 
                   {/* Paid */}
-                  <td className="px-3 py-2 text-right">
+                  <td className="px-3 py-2 text-end">
                     €{guest.totalPaid.toFixed(2)}
                   </td>
 
                   {/* Adjust */}
-                  <td className="px-3 py-2 text-right">
+                  <td className="px-3 py-2 text-end">
                     €{guest.totalAdjust.toFixed(2)}
                   </td>
                 </tr>

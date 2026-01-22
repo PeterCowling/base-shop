@@ -3,9 +3,9 @@ import path from "node:path";
 
 import {
   DEFAULT_STOREFRONT as DEFAULT_STOREFRONT_VALUE,
-  XA_CATALOG_STOREFRONTS as XA_CATALOG_STOREFRONTS_VALUE,
-  parseStorefront as parseStorefrontValue,
   getStorefrontConfig as getStorefrontConfigValue,
+  parseStorefront as parseStorefrontValue,
+  XA_CATALOG_STOREFRONTS as XA_CATALOG_STOREFRONTS_VALUE,
 } from "./catalogStorefront.ts";
 import type {
   XaCatalogStorefront,

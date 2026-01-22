@@ -4,7 +4,7 @@ import { LOCALES } from "@acme/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
-import BlogListing, { type BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
+import BlogListing, { type BlogPost } from "@acme/cms-ui/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";

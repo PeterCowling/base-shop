@@ -26,7 +26,7 @@ export function SafeTable<T>({
       <thead>
         <tr className="bg-gray-100 dark:bg-darkSurface">
           {columns.map((col) => (
-            <th key={col.header} className="p-2 text-left border-b">
+            <th key={col.header} className="p-2 text-start border-b">
               {col.header}
             </th>
           ))}

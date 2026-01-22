@@ -1,10 +1,11 @@
 // File: src/hooks/data/useActivitiesByCodeData.ts
 
-import { DataSnapshot, onValue, ref } from "firebase/database";
 import { useCallback, useEffect, useState } from "react";
+import { type DataSnapshot, onValue, ref } from "firebase/database";
+
 import { activitiesByCodeForOccupantSchema } from "../../schemas/activitiesByCodeSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { ActivitiesByCodeForOccupant } from "../../types/hooks/data/activitiesByCodeData";
+import { type ActivitiesByCodeForOccupant } from "../../types/hooks/data/activitiesByCodeData";
 
 function isEqual(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -56,7 +57,7 @@ export default function useActivitiesByCodeData({
         return;
       }
 
-      const transformed = result.data;
+      const transformed = result.data as ActivitiesByCodeForOccupant;
 
       setActivitiesByCodes((prev) => {
         const current = prev[codeStr] ?? {};

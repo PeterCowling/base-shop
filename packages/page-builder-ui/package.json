@@ -22,6 +22,7 @@
     }
   },
   "dependencies": {
+    "@acme/cms-ui": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/ui": "workspace:*"
   },

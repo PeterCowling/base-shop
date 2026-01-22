@@ -2,10 +2,10 @@
 
 import { useCallback, useState } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import { type PricingMatrix } from "@acme/types";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
 
 import { Tag,Toast } from "@/components/atoms";
 import { Button, Input } from "@/components/atoms/shadcn";

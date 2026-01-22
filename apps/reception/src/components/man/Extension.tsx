@@ -1,7 +1,6 @@
 // src/components/Extension.tsx
 import React, { useCallback, useMemo, useState } from "react";
 
-import ExtensionPayModal from "./modals/ExtensionPayModal";
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
 import useBookings from "../../hooks/data/useBookingsData";
@@ -9,7 +8,7 @@ import useCityTax from "../../hooks/data/useCityTax";
 import useFinancialsRoom from "../../hooks/data/useFinancialsRoom";
 import useGuestByRoom from "../../hooks/data/useGuestByRoom";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
-import { FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
+import { type FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
 import {
   addDays,
   computeNightsRange,
@@ -20,6 +19,8 @@ import {
   parseLocalDate,
 } from "../../utils/dateUtils";
 import { roundDownTo50Cents } from "../../utils/moneyUtils";
+
+import ExtensionPayModal from "./modals/ExtensionPayModal";
 
 interface ExtensionRow {
   occupantId: string;
@@ -342,23 +343,23 @@ function Extension() {
                     <thead>
                       <tr className="bg-gray-200 dark:bg-darkSurface">
                         <th
-                          className="p-2 border-b text-left cursor-pointer"
+                          className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("roomNumber")}
                         >
                           Room
                           {sortField === "roomNumber" && (sortAsc ? " ↑" : " ↓")}
                         </th>
                         <th
-                          className="p-2 border-b text-left cursor-pointer"
+                          className="p-2 border-b text-start cursor-pointer"
                           onClick={() => handleSort("fullName")}
                         >
                           Guest
                           {sortField === "fullName" && (sortAsc ? " ↑" : " ↓")}
                         </th>
-                        <th className="p-2 border-b text-left">Check-in</th>
-                        <th className="p-2 border-b text-left">Check-out</th>
-                        <th className="p-2 border-b text-right">Price</th>
-                        <th className="p-2 border-b text-right">Nights</th>
+                        <th className="p-2 border-b text-start">Check-in</th>
+                        <th className="p-2 border-b text-start">Check-out</th>
+                        <th className="p-2 border-b text-end">Price</th>
+                        <th className="p-2 border-b text-end">Nights</th>
                         <th className="p-2 border-b text-center">Pay</th>
                       </tr>
                     </thead>
@@ -372,7 +373,7 @@ function Extension() {
                           <td className="p-2 border-b">{r.fullName}</td>
                           <td className="p-2 border-b">{r.checkInDate}</td>
                           <td className="p-2 border-b">{r.checkOutDate}</td>
-                          <td className="p-2 border-b text-right">
+                          <td className="p-2 border-b text-end">
                             {roundDownTo50Cents(r.nightlyRate).toLocaleString(
                               "it-IT",
                               {
@@ -381,7 +382,7 @@ function Extension() {
                               }
                             )}
                           </td>
-                          <td className="p-2 border-b text-right">
+                          <td className="p-2 border-b text-end">
                             <input
                               type="number"
                               min="1"

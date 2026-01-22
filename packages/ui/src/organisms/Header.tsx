@@ -1,10 +1,11 @@
 // Copied from src/components/header/Header.tsx
 import { forwardRef, type HTMLAttributes, memo, useState } from "react";
 
-import { useBannerHeightOrZero } from "@acme/ui/context/NotificationBannerContext";
-import { useScrollProgress } from "@acme/ui/hooks/useScrollProgress";
-import { useTheme } from "@acme/ui/hooks/useTheme";
-import type { AppLanguage } from "@acme/ui/i18n.config";
+import { useScrollProgress } from "@acme/design-system/hooks/useScrollProgress";
+
+import { useBannerHeightOrZero } from "../context/NotificationBannerContext";
+import { useTheme } from "../hooks/useTheme";
+import type { AppLanguage } from "../i18n.config";
 
 import DesktopHeader from "./DesktopHeader";
 import MobileMenu from "./MobileMenu";

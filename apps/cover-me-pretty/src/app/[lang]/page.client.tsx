@@ -3,7 +3,7 @@
 
 import DynamicRenderer from "@acme/ui/components/DynamicRenderer";
 import type { PageComponent } from "@acme/page-builder-core";
-import BlogListing, { type BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
+import BlogListing, { type BlogPost } from "@acme/cms-ui/blocks/BlogListing";
 import type { Locale } from "@acme/i18n/locales";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";

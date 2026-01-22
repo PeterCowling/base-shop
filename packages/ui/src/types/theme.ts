@@ -9,7 +9,6 @@
  * User-selectable theme setting.
  * - 'light'   → force light UI
  * - 'dark'    → force dark UI
- * The OS preference is respected only on first load if no
- * choice was previously stored.
+ * - 'system'  → follow OS preference
  */
-export type Theme = "light" | "dark";
+export type Theme = "light" | "dark" | "system";

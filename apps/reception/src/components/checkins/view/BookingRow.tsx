@@ -1,5 +1,7 @@
-import React, { FC } from "react";
-import { CheckInRow } from "../../../types/component/CheckinRow";
+import React, { type FC } from "react";
+
+import { type CheckInRow } from "../../../types/component/CheckinRow";
+import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
 import CityTaxPaymentButton from "../cityTaxButton/CityTaxPaymentButton";
 import DocInsertButton from "../DocInsertButton";
@@ -140,7 +142,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         <div className="flex justify-center items-center">
           <EmailBookingButton
             bookingRef={booking.bookingRef}
-            activities={booking.activities}
+            activities={(booking.activities ?? []) as Activity[]}
             isFirstForBooking={Boolean(booking.isFirstForBooking)}
           />
         </div>

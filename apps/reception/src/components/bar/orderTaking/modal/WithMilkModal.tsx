@@ -1,8 +1,9 @@
 /* File: src/bar/orderTaking/modal/WithMilkModal.tsx */
 import React, { useCallback } from "react";
 
-import ModalContainer from "./ModalContainer";
 import { withModalBackground } from "../../../../hoc/withModalBackground";
+
+import ModalContainer from "./ModalContainer";
 
 export interface WithMilkModalProps {
   productName: string;

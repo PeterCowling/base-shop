@@ -5,15 +5,14 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
-
+import { Button, Input, Price, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../../contexts/XaCartContext";
-import { createOrder } from "../../lib/ordersStore";
 import { recordSale } from "../../lib/inventoryStore";
+import { createOrder } from "../../lib/ordersStore";
 
 export default function CheckoutPage() {
   const router = useRouter();

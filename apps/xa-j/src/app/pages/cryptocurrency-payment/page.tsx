@@ -1,13 +1,13 @@
 /* eslint-disable ds/no-hardcoded-copy, ds/no-physical-direction-classes-in-rtl, ds/container-widths-only-at, ds/min-tap-size -- XA-123 [ttl=2026-12-31] XA marketing copy pending localization */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { siteConfig } from "../../../lib/siteConfig";
 
@@ -15,24 +15,14 @@ const LAST_UPDATED = "29 December 2025";
 
 export default function CryptocurrencyPaymentPage() {
   const brandName = siteConfig.brandName;
-  const contactEmail =
-    siteConfig.showContactInfo && siteConfig.supportEmail ? siteConfig.supportEmail : "";
-
-  const contactEmailLink = contactEmail ? (
-    <a className="underline" href={`mailto:${contactEmail}`}>
-      {contactEmail}
-    </a>
-  ) : null;
+  const contactEmail = siteConfig.showContactInfo && siteConfig.supportEmail ? siteConfig.supportEmail : "";
+  const contactEmailLink = contactEmail ? <a className="underline" href={`mailto:${contactEmail}`}>{contactEmail}</a> : null;
 
   return (
     <main className="sf-content">
       <Section padding="wide">
         <h1 className="text-2xl font-semibold">Cryptocurrency payments</h1>
-        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
-          Where available, you can pay for orders on {brandName} using cryptocurrency. Crypto payments
-          are processed through a third-party payment provider. We do not store your wallet keys or
-          have access to your funds.
-        </p>
+        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">Where available, you can pay for orders on {brandName} using cryptocurrency. Crypto payments are processed through a third-party payment provider. We do not store your wallet keys or have access to your funds.</p>
         <p className="mt-1 text-xs text-muted-foreground">Last updated: {LAST_UPDATED}</p>
       </Section>
 

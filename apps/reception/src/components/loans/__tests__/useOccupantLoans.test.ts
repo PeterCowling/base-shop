@@ -1,6 +1,9 @@
 // src/components/loans/__tests__/useOccupantLoans.test.ts
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
+import useOccupantLoans from "../useOccupantLoans";
 
 // ---------- hoist‑safe mock placeholder ---------------------------
 /* eslint-disable no-var */
@@ -12,8 +15,6 @@ jest.mock("../../../context/LoanDataContext", () => {
   useLoanDataMock = jest.fn();
   return { useLoanData: () => useLoanDataMock() };
 });
-
-import useOccupantLoans from "../useOccupantLoans";
 
 const sampleLoans = {
   BOOK1: {

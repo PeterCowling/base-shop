@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/shadcn";
 
 import type { CampaignMetrics } from "./useEmailCampaignComposer";
 

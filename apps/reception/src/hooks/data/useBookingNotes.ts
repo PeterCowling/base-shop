@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import { bookingNotesSchema } from "../../schemas/bookingNoteSchema";
-import { BookingNotes } from "../../types/hooks/data/bookingNotesData";
+import { type BookingNotes } from "../../types/hooks/data/bookingNotesData";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 export interface UseBookingNotesResult {
   notes: BookingNotes;

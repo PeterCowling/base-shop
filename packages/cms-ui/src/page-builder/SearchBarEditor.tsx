@@ -1,6 +1,5 @@
-import type { SearchBarComponent } from "@acme/types";
-
 import { Input } from "@acme/design-system/shadcn";
+import type { SearchBarComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

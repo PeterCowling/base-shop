@@ -5,17 +5,16 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import type { XaCartState } from "./xaCart";
 import type { XaProduct } from "./demoData";
-import type { XaCategory } from "./xaTypes";
+import { getAvailableStock } from "./inventoryStore";
+import type { XaCartState } from "./xaCart";
 import {
   ALL_FILTER_KEYS,
   collectFacetValues,
-  getFilterConfigs,
   type FilterKey,
+  getFilterConfigs,
   type SortKey,
 } from "./xaFilters";
-import { getAvailableStock } from "./inventoryStore";
 import {
   cloneFilterValues,
   createEmptyFilterValues,
@@ -23,6 +22,7 @@ import {
   sortProducts,
   toNumber,
 } from "./xaListingUtils";
+import type { XaCategory } from "./xaTypes";
 
 type UseXaListingFiltersArgs = {
   products: XaProduct[];
@@ -31,6 +31,243 @@ type UseXaListingFiltersArgs = {
   cart: XaCartState;
   filtersOpen: boolean;
 };
+
+type FilterValues = ReturnType<typeof createEmptyFilterValues>;
+
+type AppliedChip = { label: string; onRemove: () => void };
+
+function buildAppliedValues(query: URLSearchParams): FilterValues {
+  const out = createEmptyFilterValues();
+  for (const key of ALL_FILTER_KEYS) {
+    out[key] = new Set(query.getAll(getFilterParam(key)));
+  }
+  return out;
+}
+
+function resolveReferenceTimestamp(products: XaProduct[]) {
+  const timestamps = products
+    .map((product) => new Date(product.createdAt).getTime())
+    .filter((value) => Number.isFinite(value));
+  return timestamps.length ? Math.max(...timestamps) : Date.now();
+}
+
+function resolveNewInDays(appliedWindow: string | null, appliedNewIn: boolean) {
+  const windowDays = appliedWindow === "day" ? 1 : appliedWindow === "week" ? 7 : null;
+  return windowDays ?? (appliedNewIn ? 30 : null);
+}
+
+function filterAndSortProducts({
+  products,
+  cart,
+  filterConfigs,
+  appliedValues,
+  appliedInStock,
+  appliedSale,
+  appliedWindow,
+  appliedNewIn,
+  appliedMin,
+  appliedMax,
+  referenceTimestamp,
+  sort,
+}: {
+  products: XaProduct[];
+  cart: XaCartState;
+  filterConfigs: ReturnType<typeof getFilterConfigs>;
+  appliedValues: FilterValues;
+  appliedInStock: boolean;
+  appliedSale: boolean;
+  appliedWindow: string | null;
+  appliedNewIn: boolean;
+  appliedMin: number | null;
+  appliedMax: number | null;
+  referenceTimestamp: number;
+  sort: SortKey;
+}) {
+  const newInDays = resolveNewInDays(appliedWindow, appliedNewIn);
+
+  const out = products.filter((product) => {
+    if (appliedInStock && getAvailableStock(product, cart) <= 0) return false;
+    if (appliedSale && (!product.compareAtPrice || product.compareAtPrice <= product.price)) return false;
+
+    if (newInDays) {
+      const productTime = new Date(product.createdAt).getTime();
+      const delta = referenceTimestamp - productTime;
+      if (delta > newInDays * 24 * 60 * 60 * 1000) return false;
+    }
+
+    if (typeof appliedMin === "number" && product.price < appliedMin) return false;
+    if (typeof appliedMax === "number" && product.price > appliedMax) return false;
+
+    for (const config of filterConfigs) {
+      const selected = appliedValues[config.key];
+      if (!selected || selected.size === 0) continue;
+      const values = config.accessor(product);
+      if (!values.some((value) => selected.has(value))) return false;
+    }
+
+    return true;
+  });
+
+  return sortProducts(out, sort);
+}
+
+function applyDraftFiltersToQuery({
+  searchParamsString,
+  draftValues,
+  draftInStock,
+  draftSale,
+  draftNewIn,
+  draftMin,
+  draftMax,
+}: {
+  searchParamsString: string;
+  draftValues: FilterValues;
+  draftInStock: boolean;
+  draftSale: boolean;
+  draftNewIn: boolean;
+  draftMin: string;
+  draftMax: string;
+}) {
+  const next = new URLSearchParams(searchParamsString);
+  for (const key of ALL_FILTER_KEYS) {
+    next.delete(getFilterParam(key));
+  }
+  for (const key of ALL_FILTER_KEYS) {
+    for (const value of Array.from(draftValues[key])) {
+      next.append(getFilterParam(key), value);
+    }
+  }
+
+  if (draftInStock) next.set("availability", "in-stock");
+  else next.delete("availability");
+
+  if (draftSale) next.set("sale", "1");
+  else next.delete("sale");
+
+  if (draftNewIn) next.set("new-in", "1");
+  else next.delete("new-in");
+  if (!draftNewIn) next.delete("window");
+
+  const min = draftMin.trim();
+  const max = draftMax.trim();
+  if (min) next.set("price[min]", min);
+  else next.delete("price[min]");
+  if (max) next.set("price[max]", max);
+  else next.delete("price[max]");
+
+  return next;
+}
+
+function clearAppliedFiltersFromQuery(searchParamsString: string) {
+  const next = new URLSearchParams(searchParamsString);
+  for (const key of ALL_FILTER_KEYS) {
+    next.delete(getFilterParam(key));
+  }
+  next.delete("availability");
+  next.delete("sale");
+  next.delete("new-in");
+  next.delete("window");
+  next.delete("price[min]");
+  next.delete("price[max]");
+  return next;
+}
+
+function removeFilterValueFromQuery(searchParamsString: string, key: FilterKey, value: string) {
+  const next = new URLSearchParams(searchParamsString);
+  const values = new Set(next.getAll(getFilterParam(key)));
+  values.delete(value);
+  next.delete(getFilterParam(key));
+  for (const item of values) next.append(getFilterParam(key), item);
+  return next;
+}
+
+function removeQueryKey(searchParamsString: string, key: string) {
+  const next = new URLSearchParams(searchParamsString);
+  next.delete(key);
+  return next;
+}
+
+function removePriceRangeFromQuery(searchParamsString: string) {
+  const next = new URLSearchParams(searchParamsString);
+  next.delete("price[min]");
+  next.delete("price[max]");
+  return next;
+}
+
+function buildAppliedChips({
+  filterConfigs,
+  appliedValues,
+  appliedInStock,
+  appliedSale,
+  appliedNewIn,
+  appliedWindow,
+  appliedMin,
+  appliedMax,
+  searchParamsString,
+  setQuery,
+}: {
+  filterConfigs: ReturnType<typeof getFilterConfigs>;
+  appliedValues: FilterValues;
+  appliedInStock: boolean;
+  appliedSale: boolean;
+  appliedNewIn: boolean;
+  appliedWindow: string | null;
+  appliedMin: number | null;
+  appliedMax: number | null;
+  searchParamsString: string;
+  setQuery: (next: URLSearchParams) => void;
+}): AppliedChip[] {
+  const chips: AppliedChip[] = [];
+  for (const config of filterConfigs) {
+    const values = appliedValues[config.key];
+    if (!values?.size) continue;
+    for (const value of values) {
+      chips.push({
+        label: `${config.label}: ${config.formatValue(value)}`,
+        onRemove: () => setQuery(removeFilterValueFromQuery(searchParamsString, config.key, value)),
+      });
+    }
+  }
+
+  if (appliedInStock) {
+    chips.push({
+      label: "In stock",
+      onRemove: () => setQuery(removeQueryKey(searchParamsString, "availability")),
+    });
+  }
+
+  if (appliedSale) {
+    chips.push({
+      label: "Sale",
+      onRemove: () => setQuery(removeQueryKey(searchParamsString, "sale")),
+    });
+  }
+
+  if (appliedNewIn && !appliedWindow) {
+    chips.push({
+      label: "New in",
+      onRemove: () => setQuery(removeQueryKey(searchParamsString, "new-in")),
+    });
+  }
+
+  if (appliedWindow) {
+    const windowLabel = appliedWindow === "day" ? "Today" : "This week";
+    chips.push({
+      label: `New in: ${windowLabel}`,
+      onRemove: () => setQuery(removeQueryKey(searchParamsString, "window")),
+    });
+  }
+
+  if (typeof appliedMin === "number" || typeof appliedMax === "number") {
+    const rangeLabel = `${appliedMin ?? 0}-${appliedMax ?? ""}`.replace(/-$/, "+");
+    chips.push({
+      label: `Price: ${rangeLabel}`,
+      onRemove: () => setQuery(removePriceRangeFromQuery(searchParamsString)),
+    });
+  }
+
+  return chips;
+}
 
 export function useXaListingFilters({
   products,
@@ -45,13 +282,7 @@ export function useXaListingFilters({
   const queryKey = searchParams.toString();
   const query = React.useMemo(() => new URLSearchParams(queryKey), [queryKey]);
 
-  const appliedValues = React.useMemo(() => {
-    const out = createEmptyFilterValues();
-    for (const key of ALL_FILTER_KEYS) {
-      out[key] = new Set(query.getAll(getFilterParam(key)));
-    }
-    return out;
-  }, [query]);
+  const appliedValues = React.useMemo(() => buildAppliedValues(query), [query]);
 
   const appliedAvailability = query.get("availability") ?? null;
   const appliedInStock = appliedAvailability === "in-stock";
@@ -92,41 +323,24 @@ export function useXaListingFilters({
   );
 
   const referenceTimestamp = React.useMemo(() => {
-    const timestamps = products
-      .map((product) => new Date(product.createdAt).getTime())
-      .filter((value) => Number.isFinite(value));
-    return timestamps.length ? Math.max(...timestamps) : Date.now();
+    return resolveReferenceTimestamp(products);
   }, [products]);
 
   const filteredProducts = React.useMemo(() => {
-    const min = appliedMin;
-    const max = appliedMax;
-    const windowDays = appliedWindow === "day" ? 1 : appliedWindow === "week" ? 7 : null;
-    const newInDays = windowDays ?? (appliedNewIn ? 30 : null);
-
-    const out = products.filter((product) => {
-      if (appliedInStock && getAvailableStock(product, cart) <= 0) return false;
-      if (appliedSale) {
-        if (!product.compareAtPrice || product.compareAtPrice <= product.price) return false;
-      }
-      if (newInDays) {
-        const productTime = new Date(product.createdAt).getTime();
-        const delta = referenceTimestamp - productTime;
-        if (delta > newInDays * 24 * 60 * 60 * 1000) return false;
-      }
-      if (typeof min === "number" && product.price < min) return false;
-      if (typeof max === "number" && product.price > max) return false;
-
-      for (const config of filterConfigs) {
-        const selected = appliedValues[config.key];
-        if (!selected || selected.size === 0) continue;
-        const values = config.accessor(product);
-        if (!values.some((value) => selected.has(value))) return false;
-      }
-      return true;
+    return filterAndSortProducts({
+      products,
+      cart,
+      filterConfigs,
+      appliedValues,
+      appliedInStock,
+      appliedSale,
+      appliedWindow,
+      appliedNewIn,
+      appliedMin,
+      appliedMax,
+      referenceTimestamp,
+      sort,
     });
-
-    return sortProducts(out, sort);
   }, [
     appliedInStock,
     appliedSale,
@@ -177,123 +391,35 @@ export function useXaListingFilters({
     setDraftMax("");
   };
 
-  const applyFilters = () => {
-    const next = new URLSearchParams(searchParams.toString());
-    for (const key of ALL_FILTER_KEYS) {
-      next.delete(getFilterParam(key));
-    }
-    for (const key of ALL_FILTER_KEYS) {
-      for (const value of Array.from(draftValues[key])) {
-        next.append(getFilterParam(key), value);
-      }
-    }
-    if (draftInStock) next.set("availability", "in-stock");
-    else next.delete("availability");
+  const applyFilters = () =>
+    setQuery(
+      applyDraftFiltersToQuery({
+        searchParamsString: searchParams.toString(),
+        draftValues,
+        draftInStock,
+        draftSale,
+        draftNewIn,
+        draftMin,
+        draftMax,
+      }),
+    );
 
-    if (draftSale) next.set("sale", "1");
-    else next.delete("sale");
-
-    if (draftNewIn) next.set("new-in", "1");
-    else next.delete("new-in");
-    if (!draftNewIn) next.delete("window");
-
-    if (draftMin.trim()) next.set("price[min]", draftMin.trim());
-    else next.delete("price[min]");
-    if (draftMax.trim()) next.set("price[max]", draftMax.trim());
-    else next.delete("price[max]");
-
-    setQuery(next);
-  };
-
-  const clearAppliedFilters = () => {
-    const next = new URLSearchParams(searchParams.toString());
-    for (const key of ALL_FILTER_KEYS) {
-      next.delete(getFilterParam(key));
-    }
-    next.delete("availability");
-    next.delete("sale");
-    next.delete("new-in");
-    next.delete("window");
-    next.delete("price[min]");
-    next.delete("price[max]");
-    setQuery(next);
-  };
-
-  const removeFilterValue = (key: FilterKey, value: string) => {
-    const next = new URLSearchParams(searchParams.toString());
-    const values = new Set(next.getAll(getFilterParam(key)));
-    values.delete(value);
-    next.delete(getFilterParam(key));
-    for (const item of values) next.append(getFilterParam(key), item);
-    setQuery(next);
-  };
+  const clearAppliedFilters = () =>
+    setQuery(clearAppliedFiltersFromQuery(searchParams.toString()));
 
   const appliedChips = React.useMemo(() => {
-    const chips: Array<{ label: string; onRemove: () => void }> = [];
-    for (const config of filterConfigs) {
-      const values = appliedValues[config.key];
-      if (!values?.size) continue;
-      for (const value of values) {
-        chips.push({
-          label: `${config.label}: ${config.formatValue(value)}`,
-          onRemove: () => removeFilterValue(config.key, value),
-        });
-      }
-    }
-    if (appliedInStock) {
-      chips.push({
-        label: "In stock",
-        onRemove: () => {
-          const next = new URLSearchParams(searchParams.toString());
-          next.delete("availability");
-          setQuery(next);
-        },
-      });
-    }
-    if (appliedSale) {
-      chips.push({
-        label: "Sale",
-        onRemove: () => {
-          const next = new URLSearchParams(searchParams.toString());
-          next.delete("sale");
-          setQuery(next);
-        },
-      });
-    }
-    if (appliedNewIn && !appliedWindow) {
-      chips.push({
-        label: "New in",
-        onRemove: () => {
-          const next = new URLSearchParams(searchParams.toString());
-          next.delete("new-in");
-          setQuery(next);
-        },
-      });
-    }
-    if (appliedWindow) {
-      const windowLabel = appliedWindow === "day" ? "Today" : "This week";
-      chips.push({
-        label: `New in: ${windowLabel}`,
-        onRemove: () => {
-          const next = new URLSearchParams(searchParams.toString());
-          next.delete("window");
-          setQuery(next);
-        },
-      });
-    }
-    if (typeof appliedMin === "number" || typeof appliedMax === "number") {
-      const rangeLabel = `${appliedMin ?? 0}-${appliedMax ?? ""}`.replace(/-$/, "+");
-      chips.push({
-        label: `Price: ${rangeLabel}`,
-        onRemove: () => {
-          const next = new URLSearchParams(searchParams.toString());
-          next.delete("price[min]");
-          next.delete("price[max]");
-          setQuery(next);
-        },
-      });
-    }
-    return chips;
+    return buildAppliedChips({
+      filterConfigs,
+      appliedValues,
+      appliedInStock,
+      appliedSale,
+      appliedNewIn,
+      appliedWindow,
+      appliedMin,
+      appliedMax,
+      searchParamsString: searchParams.toString(),
+      setQuery,
+    });
   }, [
     appliedInStock,
     appliedNewIn,
@@ -304,7 +430,6 @@ export function useXaListingFilters({
     appliedValues,
     filterConfigs,
     searchParams,
-    removeFilterValue,
     setQuery,
   ]);
 

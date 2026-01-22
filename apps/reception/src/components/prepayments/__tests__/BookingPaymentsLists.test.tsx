@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import BookingPaymentsLists, { BookingPaymentItem } from "../BookingPaymentsLists";
+
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import BookingPaymentsLists, { type BookingPaymentItem } from "../BookingPaymentsLists";
 
 describe("BookingPaymentsLists", () => {
   const baseItem: BookingPaymentItem = {

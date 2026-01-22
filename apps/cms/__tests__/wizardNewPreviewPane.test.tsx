@@ -23,7 +23,7 @@ const previewRendererMock = jest.fn((props: PreviewRendererProps) => {
   return <div data-testid="preview-renderer" />;
 });
 
-jest.mock("@acme/ui/components/cms/page-builder/PreviewRenderer", () => ({
+jest.mock("@acme/cms-ui/page-builder/PreviewRenderer", () => ({
   __esModule: true,
   default: (props: PreviewRendererProps) => previewRendererMock(props),
 }));

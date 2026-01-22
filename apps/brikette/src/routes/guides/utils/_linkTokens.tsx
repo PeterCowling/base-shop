@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
@@ -28,7 +28,7 @@ export function renderGuideLinkTokens(value: string | null | undefined, lang: Ap
     } else if (previousNode != null) {
       nodes.push(" ");
     }
-    nodes.push(<Link key={`${keyBase}-link-${linkIndex}`} to={href}>{label}</Link>);
+    nodes.push(<Link key={`${keyBase}-link-${linkIndex}`} href={href}>{label}</Link>);
     linkIndex += 1;
   };
 

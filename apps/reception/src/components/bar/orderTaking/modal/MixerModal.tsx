@@ -1,8 +1,9 @@
 /* File: src/componnents/bar/orderTaking/modal/MixerModal.tsx */
-import React, { FC, useCallback } from "react";
+import React, { type FC, useCallback } from "react";
+
+import { withModalBackground } from "../../../../hoc/withModalBackground";
 
 import ModalContainer from "./ModalContainer";
-import { withModalBackground } from "../../../../hoc/withModalBackground";
 
 interface MixerModalProps {
   onSelect: (mixer: string) => void;

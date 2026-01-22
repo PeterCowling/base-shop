@@ -4,11 +4,10 @@ import type React from "react";
 import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 
-import { getCsrfToken } from "@acme/lib/security";
-
 import { LinkText } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 import { Button, Input, Textarea } from "@acme/design-system/shadcn";
+import { getCsrfToken } from "@acme/lib/security";
 
 import type { CommentThread } from "./CommentsDrawer";
 

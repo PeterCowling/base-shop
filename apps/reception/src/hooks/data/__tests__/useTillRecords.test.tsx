@@ -1,9 +1,12 @@
 // src/hooks/data/__tests__/useTillRecords.test.tsx
 /* eslint-disable no-var */
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 import { ZodError } from "zod";
+
 import { tillRecordMapSchema } from "../../../schemas/tillRecordSchema";
+import useTillRecords from "../useTillRecords";
 
 type Snap = {
   exists: () => boolean;
@@ -47,8 +50,6 @@ jest.mock("firebase/database", () => {
     update: updateMock,
   };
 });
-
-import useTillRecords from "../useTillRecords";
 
 describe("useTillRecords", () => {
   afterEach(() => {

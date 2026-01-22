@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { hasAdminSession } from "../../../../../../lib/accessAdmin";
 import { revokeInvite } from "../../../../../../lib/accessStore";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 function summarizeInvite(invite: {
   id: string;

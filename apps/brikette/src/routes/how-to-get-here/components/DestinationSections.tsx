@@ -1,6 +1,6 @@
 import type { TFunction } from "i18next";
 
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Grid } from "@acme/ui/atoms";
 
 import { TRANSPORT_MODE_ORDER } from "../transport";
 import type { AugmentedDestinationSection, RouteDirection, TransportMode } from "../types";

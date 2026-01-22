@@ -4,13 +4,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { getShopFromPath } from "@acme/lib/shop";
-
-import { type TokenMap } from "@acme/ui/hooks/useTokenEditor";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Dialog, DialogContent, DialogTitle } from "@acme/design-system/shadcn";
+import { getShopFromPath } from "@acme/lib/shop";
+import { type TokenMap } from "@acme/ui/hooks/useTokenEditor";
+
 import presetData from "../style/presets.json";
 
 import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
@@ -230,13 +230,13 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
             </Inline>
             <div className="space-y-2">
               <div className="text-xs text-foreground">{t("Heading 1 (H1–H3)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
-              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+              { }
               <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
               <div className="mt-3 text-xs text-foreground">{t("Heading 2 (H4–H6)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
-              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+              { }
               <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
               <div className="mt-3 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
-              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+              { }
               <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
             </div>
           </div>
@@ -287,13 +287,13 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                     )}
                     <div className="space-y-1">
                       <div className="text-xs text-foreground">{t("Heading 1")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
-                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+                      { }
                       <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
                       <div className="mt-2 text-xs text-foreground">{t("Heading 2")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
-                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+                      { }
                       <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
                       <div className="mt-2 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
-                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
+                      { }
                       <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
                     </div>
                   </div>

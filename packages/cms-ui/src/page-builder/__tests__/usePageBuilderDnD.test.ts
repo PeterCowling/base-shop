@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
+import usePageBuilderDnD from "@acme/ui/components/cms/page-builder/hooks/usePageBuilderDnD";
 
 describe("usePageBuilderDnD", () => {
   it("handleDragMove updates insertIndex and snap position", () => {

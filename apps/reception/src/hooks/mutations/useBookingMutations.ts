@@ -1,9 +1,9 @@
 /* src/hooks/mutations/useSaveBooking.ts */
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
+import { type FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
 
 /**
  * Defines the return shape for the useSaveBooking hook.

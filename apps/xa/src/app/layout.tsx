@@ -1,19 +1,21 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import { ThemeProvider } from "@acme/platform-core/contexts/ThemeContext";
 
-import { XaShell } from "../components/XaShell";
 import { XaServiceWorkerRegistration } from "../components/XaServiceWorkerRegistration.client";
+import { XaShell } from "../components/XaShell";
 import { CartProvider } from "../contexts/XaCartContext";
 import { WishlistProvider } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 
-export const runtime = "edge";
+// XA-LAUNCH: Disabled edge runtime due to document not defined errors
+// TODO: Identify and fix module-level document usage for Cloudflare Workers deployment
+// export const runtime = "edge";
 
 const atelierSans = Work_Sans({
   subsets: ["latin"],

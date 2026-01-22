@@ -4,10 +4,10 @@ import { authOptions } from "@cms/auth/options";
 
 import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
-import { checkShopExists } from "@acme/platform-core";
+import { Tag } from "@acme/design-system/atoms";
 import { readVariants } from "@acme/platform-core/repositories/variants.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 import { type VariantPricing,variantPricingSchema } from "@acme/platform-core/types/variants";
-import { Tag } from "@acme/ui/components/atoms";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

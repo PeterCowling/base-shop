@@ -1,7 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
-// eslint-disable-next-line import/namespace
 import * as firebaseDatabase from "firebase/database";
+
+import useFirebaseSubscription from "../../hooks/data/useFirebaseSubscription";
+import {
+  FirebaseSubscriptionCacheProvider,
+  useFirebaseSubscriptionCache,
+} from "../FirebaseSubscriptionCache";
 
 interface SnapshotMock {
   exists: () => boolean;
@@ -24,11 +30,6 @@ interface FirebaseDatabaseMock {
   __listeners: Map<string, Listener>;
 }
 
-import useFirebaseSubscription from "../../hooks/data/useFirebaseSubscription";
-import {
-  FirebaseSubscriptionCacheProvider,
-  useFirebaseSubscriptionCache,
-} from "../FirebaseSubscriptionCache";
 const firebaseDb = firebaseDatabase as unknown as FirebaseDatabaseMock;
 const { off, onValue, ref } = firebaseDb;
 
@@ -152,7 +153,7 @@ describe("FirebaseSubscriptionCache", () => {
     if (!hookListenerError) throw new Error("listener not found");
     act(() => {
       const { errCb } = hookListenerError;
-      errCb && errCb("err");
+      if (errCb) errCb("err");
     });
     rerender();
     expect(result.current.error).toBe("err");

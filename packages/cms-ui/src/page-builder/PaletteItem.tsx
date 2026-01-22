@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable react/forbid-dom-props -- LINT-1001: dnd-kit requires inline transform for drag sorting */
+ 
 
 import { memo, useCallback, useMemo,useState } from "react";
 import Image from "next/image";

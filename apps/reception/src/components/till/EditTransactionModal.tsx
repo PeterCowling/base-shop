@@ -1,8 +1,8 @@
-import { FC, memo, useCallback, useState } from "react";
+import { type FC, memo, useCallback, useState } from "react";
 import { z } from "zod";
 
 import useEditTransaction from "../../hooks/mutations/useEditTransaction";
-import { Transaction } from "../../types/component/Till";
+import { type Transaction } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
 
 const editSchema = z.object({

@@ -3,7 +3,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { z } from 'zod';
 
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import RentalAvailabilitySection from './RentalAvailabilitySection';
 import fixture from './RentalAvailabilitySection.fixtures.json';

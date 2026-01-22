@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import SplitList from "../roomButton/SplitList";
 import type { PaymentSplit } from "../../../types/component/roomButton/types";
+import SplitList from "../roomButton/SplitList";
 
 describe("SplitList", () => {
   it("handles adding and removing rows", async () => {

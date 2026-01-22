@@ -3,11 +3,11 @@
 import { type FormEvent, useState } from "react";
 import clsx from "clsx";
 
+import { Tag } from "@acme/design-system/atoms/Tag";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/types";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
-import { Tag } from "@acme/ui/components/atoms/Tag";
 
 import { Alert, Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";

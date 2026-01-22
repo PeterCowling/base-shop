@@ -6,6 +6,8 @@ import { mkdir, readFile } from "node:fs/promises";
 import { basename, extname, resolve } from "node:path";
 import readline from "node:readline";
 
+import { median as libMedian } from "@acme/lib/math/statistics";
+
 import type {
   RunnerArtifact,
   RunnerClaimResponse,
@@ -345,14 +347,14 @@ function parseBoolean(value: unknown): boolean | null {
   return null;
 }
 
+/**
+ * Wrapper around library median that returns null for empty arrays
+ * (matching the original behavior expected by callers).
+ * @see {@link libMedian} from @acme/lib/math/statistics
+ */
 function computeMedian(values: number[]): number | null {
-  if (values.length === 0) return null;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  if (sorted.length % 2 === 0) {
-    return (sorted[mid - 1] + sorted[mid]) / 2;
-  }
-  return sorted[mid];
+  const result = libMedian(values);
+  return Number.isNaN(result) ? null : result;
 }
 
 function uniqueNumbers(values: number[]): number[] {

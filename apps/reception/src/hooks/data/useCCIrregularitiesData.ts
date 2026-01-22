@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+
 import { ccReceiptIrregularitiesSchema } from "../../schemas/ccReceiptIrregularitySchema";
-import { CCReceiptIrregularity } from "../../types/hooks/data/ccIrregularityData";
+import type { CCReceiptIrregularity } from "../../types/hooks/data/ccIrregularityData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 export function useCCIrregularitiesData() {
@@ -16,7 +18,10 @@ export function useCCIrregularitiesData() {
     }
     const result = ccReceiptIrregularitiesSchema.safeParse(data);
     if (result.success) {
-      return { entries: Object.values(result.data), error: subError };
+      const entries: CCReceiptIrregularity[] = Object.values(result.data).flatMap(
+        (entry) => (entry ? [entry] : [])
+      );
+      return { entries, error: subError };
     }
     return { entries: [] as CCReceiptIrregularity[], error: result.error };
   }, [data, subError]);

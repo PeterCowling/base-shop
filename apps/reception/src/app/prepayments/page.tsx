@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import Prepayments from "@/components/prepayments/PrepaymentsContainer";
+import Providers from "@/components/Providers";
 
 export default function PrepaymentsPage() {
   return (

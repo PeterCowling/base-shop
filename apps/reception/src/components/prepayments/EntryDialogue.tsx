@@ -1,8 +1,8 @@
 // src/components/EntryDialogue.tsx (or EntryDialog.tsx)
 
 import React, {
-  ChangeEvent,
-  ClipboardEvent,
+  type ChangeEvent,
+  type ClipboardEvent,
   useCallback,
   useEffect,
   useState,
@@ -210,7 +210,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
                 type="text" // Use text to allow formatted input
                 inputMode="numeric" // Hint for mobile keyboards
                 autoComplete="cc-number"
-                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen" // Use mono font for CC
+                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen" // Use mono font for CC
                 placeholder="XXXX XXXX XXXX XXXX"
                 value={cardNumber}
                 onChange={handleCreditCardChange}
@@ -232,7 +232,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
                 type="text" // Use text to allow formatting like "MM/YY"
                 inputMode="numeric"
                 autoComplete="cc-exp"
-                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+                className="w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-main font-mono text-lg dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
                 placeholder="MM/YY"
                 value={expiryDate}
                 onChange={handleExpiryChange}

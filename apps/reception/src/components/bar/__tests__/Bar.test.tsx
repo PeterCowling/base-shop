@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import Bar from "../Bar";
 
 // Mock useAuth to provide a user so HeaderControls renders
 jest.mock("../../../context/AuthContext", () => ({
@@ -25,8 +28,6 @@ jest.mock("../CompScreen", () => ({
   __esModule: true,
   default: () => <div>Comp Screen</div>,
 }));
-
-import Bar from "../Bar";
 
 describe("Bar", () => {
   afterEach(() => {

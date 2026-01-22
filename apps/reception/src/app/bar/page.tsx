@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import BarRoot from "@/components/bar/Bar";
+import Providers from "@/components/Providers";
 
 export default function BarPage() {
   return (

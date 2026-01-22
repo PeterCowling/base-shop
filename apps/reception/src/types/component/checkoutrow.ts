@@ -1,6 +1,6 @@
 // /Users/petercowling/reception/src/types/component/checkoutrow.ts
-import { FinancialsRoomData } from "../hooks/data/financialsRoomData";
-import { LoanTransaction } from "../hooks/data/loansData";
+import { type FinancialsRoomData } from "../hooks/data/financialsRoomData";
+import { type LoanTransaction } from "../hooks/data/loansData";
 
 /**
  * Represents an activity related to the checkout process.

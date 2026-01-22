@@ -1,10 +1,13 @@
 import * as React from "react";
-import { render } from "@testing-library/react";
 import { describe, expect, it, jest } from "@jest/globals";
+import { render } from "@testing-library/react";
+
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { CartProvider } from "../../contexts/XaCartContext";
 import { WishlistProvider } from "../../contexts/XaWishlistContext";
-import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import type { XaProduct } from "../../lib/demoData";
+import { collectFacetValues,getFilterConfigs } from "../../lib/xaFilters";
 import { XaBuyBox } from "../XaBuyBox.client";
 import { XaDepartmentLanding } from "../XaDepartmentLanding";
 import { XaDepartmentListing } from "../XaDepartmentListing";
@@ -15,14 +18,12 @@ import { XaFiltersDrawer } from "../XaFiltersDrawer.client";
 import { XaImageGallery } from "../XaImageGallery.client";
 import { XaMegaMenu } from "../XaMegaMenu";
 import { XaProductCard } from "../XaProductCard";
-import { XaProductListing as XaProductListingClient } from "../XaProductListing.client";
 import { XaProductListing } from "../XaProductListing";
+import { XaProductListing as XaProductListingClient } from "../XaProductListing.client";
 import { XaServiceWorkerRegistration } from "../XaServiceWorkerRegistration.client";
 import { XaShell } from "../XaShell";
 import { XaSizeGuideDialog } from "../XaSizeGuideDialog.client";
 import { XaSupportDock } from "../XaSupportDock.client";
-import type { XaProduct } from "../../lib/demoData";
-import { getFilterConfigs, collectFacetValues } from "../../lib/xaFilters";
 
 const pushMock = jest.fn();
 

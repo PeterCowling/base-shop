@@ -1,7 +1,7 @@
 // src/components/docInsert/DOBSection.tsx
 import React, {
-  ChangeEvent,
-  FocusEvent,
+  type ChangeEvent,
+  type FocusEvent,
   useCallback,
   useEffect,
   useState,
@@ -9,7 +9,7 @@ import React, {
 
 import { useAuth } from "../../../context/AuthContext";
 import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
 
 interface DOBSectionProps {

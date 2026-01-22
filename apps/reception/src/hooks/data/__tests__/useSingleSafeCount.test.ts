@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
-import type { SafeCount } from "../../../types/hooks/data/safeCountData";
 
+import { renderHook } from "@testing-library/react";
+
+import type { SafeCount } from "../../../types/hooks/data/safeCountData";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 import { useSingleSafeCount } from "../useSafeCountsData";
 

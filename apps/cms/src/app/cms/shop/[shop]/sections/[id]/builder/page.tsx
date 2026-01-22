@@ -3,12 +3,12 @@
 import dynamic from "next/dynamic";
 import { updateSectionAction } from "@cms/actions/sections/update";
 
+import type SectionBuilderComponent from "@acme/cms-ui/SectionBuilder";
 import { getSections } from "@acme/platform-core/repositories/sections/index.server";
 import type { SectionTemplate } from "@acme/types";
-import type SectionBuilderComponent from "@acme/ui/components/cms/SectionBuilder";
 
 type SectionBuilderProps = React.ComponentProps<typeof SectionBuilderComponent>;
-const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@acme/ui/components/cms/SectionBuilder"));
+const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@acme/cms-ui/SectionBuilder"));
 void SectionBuilder;
 
 export const revalidate = 0;

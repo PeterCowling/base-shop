@@ -3,7 +3,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 
 import MediaLibrary from "../MediaLibrary";
 // Mock shadcn primitives to avoid Radix Select validation
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (p: any) => <button {...p} />;
   const Input = (p: any) => <input {...p} />;
   const Wrap = (p: any) => <div>{p.children}</div>;

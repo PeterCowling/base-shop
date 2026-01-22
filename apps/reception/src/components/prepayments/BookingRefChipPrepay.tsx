@@ -1,5 +1,5 @@
 // src/components/payments/prepayments/BookingRefChipPrepay.tsx
-import { FC, KeyboardEvent, memo, useCallback } from "react";
+import { type FC, type KeyboardEvent, memo, useCallback } from "react";
 
 import { showToast } from "../../utils/toastUtils";
 
@@ -53,7 +53,7 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
       aria-label={`Copy booking reference ${bookingRef}`}
     >
       <i className="fas fa-copy absolute left-2 top-1/2 transform -translate-y-1/2"></i>
-      <span className="ml-8">{bookingRef}</span>
+      <span className="ms-8">{bookingRef}</span>
     </span>
   );
 };

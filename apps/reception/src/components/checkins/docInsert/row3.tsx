@@ -1,15 +1,16 @@
 // src/components/guestDetails/Row3.tsx
-import { ChevronDown } from "lucide-react";
 import React, {
-  ChangeEvent,
-  KeyboardEvent,
+  type ChangeEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useState,
 } from "react";
+import { ChevronDown } from "lucide-react";
+
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 import DOBSection from "./DOBSection";
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
 interface SnackbarState {
   open: boolean;

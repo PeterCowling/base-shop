@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
-import { buildBookingSearchRows } from "../bookingSearchUtils";
+
 import { ActivityCode } from "../../../constants/activities";
+import { buildBookingSearchRows } from "../bookingSearchUtils";
 
 const bookings = {
   BR1: {

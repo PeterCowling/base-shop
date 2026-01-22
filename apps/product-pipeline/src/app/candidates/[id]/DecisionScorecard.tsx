@@ -3,7 +3,7 @@
 /* eslint-disable ds/no-hardcoded-copy, ds/no-nonlayered-zindex, ds/enforce-layout-primitives, ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Product pipeline UI awaiting design/i18n refactor */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { resolveStageLabel } from "@/lib/stage-labels";

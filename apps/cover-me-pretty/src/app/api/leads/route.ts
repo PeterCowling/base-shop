@@ -6,6 +6,7 @@ import path from "node:path";
 import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/platform-core/shops";
 import { getShopSettings } from "@acme/platform-core/repositories/shops.server";
+import { safeWebhookFetch } from "@acme/platform-core/utils";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -64,34 +65,26 @@ export async function POST(req: NextRequest) {
     /* swallow storage failures so UX is unaffected */
   }
 
-  // Optional forwarder (e.g., ESP/CRM webhook)
+  // Optional forwarder (e.g., ESP/CRM webhook) with SSRF protection
   const endpoint = settings?.leadCapture?.endpoint;
-    if (endpoint) {
-      const payload = JSON.stringify(entry);
-      const headers = { "Content-Type": "application/json" };
-      let lastError: unknown;
-      for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers,
-          body: payload,
-        });
-        if (res.ok) break;
-        lastError = new Error(`lead forward failed ${res.status}`);
-      } catch (err) {
-        lastError = err;
-      }
-      await new Promise((r) => setTimeout(r, 150 * (attempt + 1)));
-    }
-    if (lastError) {
+  if (endpoint) {
+    const result = await safeWebhookFetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry),
+      timeout: 5000,
+      retries: 2,
+    });
+
+    if (!result.ok) {
       try {
         // eslint-disable-next-line security/detect-non-literal-fs-filename -- SHOP-3204 log path uses validated shop + resolveDataRoot [ttl=2026-06-30]
         await fs.appendFile(
           path.join(dir, "lead-webhook-errors.log"),
           JSON.stringify({
             endpoint,
-            error: (lastError as Error).message ?? String(lastError),
+            error: result.error ?? "Unknown error",
+            attempts: result.attempts,
             entry,
             ts: new Date().toISOString(),
           }) + "\n",

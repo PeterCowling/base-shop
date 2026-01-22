@@ -1,7 +1,7 @@
 import { type ChangeEvent } from "react";
 
+import { Grid } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
-import { Grid } from "@acme/ui/components/atoms/primitives";
 
 import { Card, CardContent, Checkbox, Input } from "@/components/atoms/shadcn";
 

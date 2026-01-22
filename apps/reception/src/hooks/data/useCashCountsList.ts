@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import { cashCountsSchema } from "../../schemas/cashCountSchema";
-import { CashCount } from "../../types/hooks/data/cashCountData";
-import { showToast } from "../../utils/toastUtils";
+import type { CashCount } from "../../types/hooks/data/cashCountData";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { showToast } from "../../utils/toastUtils";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
  * Reads all CashCount records from /cashCounts in real time.
@@ -28,7 +29,10 @@ export function useCashCountsList() {
     }
     const result = cashCountsSchema.safeParse(data);
     if (result.success) {
-      setCashCounts(Object.values(result.data));
+      const entries: CashCount[] = Object.values(result.data).flatMap((entry) =>
+        entry ? [entry] : []
+      );
+      setCashCounts(entries);
     } else {
       setError(result.error);
       showToast(getErrorMessage(result.error), "error");

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
+import type { XaProduct } from "../demoData";
 import {
   filterByCategory,
   filterByDepartment,
@@ -11,7 +12,6 @@ import {
   isCategoryAllowed,
   isDepartmentAllowed,
 } from "../xaCatalog";
-import type { XaProduct } from "../demoData";
 
 const makeProduct = (overrides: Partial<XaProduct>): XaProduct => {
   const { taxonomy, ...rest } = overrides;

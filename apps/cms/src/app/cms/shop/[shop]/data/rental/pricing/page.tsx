@@ -1,14 +1,14 @@
 import { notFound } from "next/navigation";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Grid } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import en from "@acme/i18n/en.json";
 import { TranslationsProvider } from "@acme/i18n/Translations";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
-import { readPricing } from "@acme/platform-core/repositories/pricing.server";
 import { formatNumber } from "@acme/lib/format";
-import { Tag } from "@acme/ui/components/atoms";
-import { Grid } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
+import { readPricing } from "@acme/platform-core/repositories/pricing.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

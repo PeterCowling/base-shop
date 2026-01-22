@@ -3,7 +3,7 @@
 import type { ComponentProps } from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { getContrast, suggestContrastColor } from "@acme/ui/components/cms";
+import { getContrast, suggestContrastColor } from "@acme/cms-ui";
 
 import ColorInput from "../ColorInput";
 
@@ -18,7 +18,7 @@ jest.mock(
 );
 
 // Mock Tooltip
-jest.mock("@acme/ui/components/atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   Tooltip: ({ children }: { children: React.ReactNode; text: string }) => <>{children}</>,
 }));
 

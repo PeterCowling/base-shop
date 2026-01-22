@@ -1,8 +1,8 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy edits page pending i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Grid } from "@acme/design-system/atoms/Grid";
 
 import { XA_EDITS } from "../../lib/xaEdits";
 

@@ -1,4 +1,4 @@
-import { beforeEach,describe, expect, it, jest } from "@jest/globals";
+import { beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import type { OidcConfig } from "../src/oidc/config";
 
@@ -73,8 +73,16 @@ jest.mock("../src/oidc/flowStore", () => ({
   createOidcAuthFlowStore: async () => globalThis.__oidcFlowTestStore,
 }));
 
-// Import after mocks are set up
-import { beginOidcLogin, buildOidcLogoutUrl,completeOidcLogin } from "../src/oidc";
+let beginOidcLogin: typeof import("../src/oidc").beginOidcLogin;
+let buildOidcLogoutUrl: typeof import("../src/oidc").buildOidcLogoutUrl;
+let completeOidcLogin: typeof import("../src/oidc").completeOidcLogin;
+
+beforeAll(async () => {
+  const oidc = await import("../src/oidc");
+  beginOidcLogin = oidc.beginOidcLogin;
+  buildOidcLogoutUrl = oidc.buildOidcLogoutUrl;
+  completeOidcLogin = oidc.completeOidcLogin;
+});
 
 describe("OIDC login flow", () => {
   beforeEach(() => {

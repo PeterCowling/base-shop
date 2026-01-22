@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
+import { Toast } from "@acme/design-system/atoms";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Button, Card, CardContent, Toast } from "@acme/ui/components/atoms";
 
 interface RollbackCardProps {
   shop: string;

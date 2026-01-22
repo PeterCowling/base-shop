@@ -41,9 +41,13 @@ config.setupFilesAfterEnv = [
 ];
 
 // Ensure "@/..." resolves to UI sources instead of the CMS alias in base config.
+// Also map @acme/design-system to its source for Jest testing
+const designSystemRoot = path.resolve(__dirname, "../design-system/src");
 config.moduleNameMapper = {
   ...(config.moduleNameMapper || {}),
   "^@/(.*)$": "<rootDir>/src/$1",
+  "^@acme/design-system$": path.join(designSystemRoot, "index"),
+  "^@acme/design-system/(.*)$": path.join(designSystemRoot, "$1"),
 };
 
 // Transform additional ESM dependencies used by MSW in this package

@@ -1,8 +1,9 @@
 /* File: src/components/bar/orderTaking/modal/IcedCoffeeSweetnessModal.tsx */
 import { useCallback } from "react";
 
-import ModalContainer from "./ModalContainer";
 import { withModalBackground } from "../../../../hoc/withModalBackground";
+
+import ModalContainer from "./ModalContainer";
 
 export interface IcedCoffeeSweetnessModalProps {
   productName: string;

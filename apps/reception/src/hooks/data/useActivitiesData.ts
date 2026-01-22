@@ -1,7 +1,8 @@
 // File: /src/hooks/data/useActivitiesData.ts
 
+import { useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,12 +11,12 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useMemo, useState } from "react";
 
 import { activitySchema } from "../../schemas/activitySchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import {
+import type {
   Activities,
+  Activity,
   ActivityData,
 } from "../../types/hooks/data/activitiesData";
 
@@ -59,7 +60,7 @@ export default function useActivitiesData(
           Object.entries(acts || {}).forEach(([actId, act]) => {
             const res = activitySchema.safeParse(act);
             if (res.success) {
-              parsedActs[actId] = res.data;
+              parsedActs[actId] = res.data as Activity;
             } else {
               setError(res.error);
             }

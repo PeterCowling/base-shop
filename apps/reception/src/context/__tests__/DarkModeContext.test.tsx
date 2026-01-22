@@ -1,14 +1,23 @@
+import "@testing-library/jest-dom";
 
-const firebaseMocks = const mockGet = jest.fn(() =>
+import React from "react";
+import { act, renderHook, waitFor } from "@testing-library/react";
+
+import { AuthContext } from "../AuthContext";
+import { DarkModeProvider, useDarkMode } from "../DarkModeContext";
+
+const firebaseMocks = (() => {
+  const mockGet = jest.fn(() =>
     Promise.resolve({
       exists: () => false,
       val: () => null,
+    })
   );
   const mockUpdate = jest.fn(() => Promise.resolve());
   const mockGetDatabase = jest.fn(() => ({}));
   const mockRef = jest.fn(() => ({}));
   return { mockGet, mockUpdate, mockGetDatabase, mockRef };
-});
+})();
 
 jest.mock("firebase/database", () => ({
   getDatabase: firebaseMocks.mockGetDatabase,
@@ -18,13 +27,6 @@ jest.mock("firebase/database", () => ({
 }));
 
 const { mockGet, mockUpdate, mockGetDatabase, mockRef } = firebaseMocks;
-
-import "@testing-library/jest-dom";
-import { act, renderHook, waitFor } from "@testing-library/react";
-import React from "react";
-
-import { DarkModeProvider, useDarkMode } from "../DarkModeContext";
-import { AuthContext } from "../AuthContext";
 
 const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <DarkModeProvider>{children}</DarkModeProvider>

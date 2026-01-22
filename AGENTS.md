@@ -9,6 +9,26 @@ Last-reviewed: 2026-01-20
 
 This is the universal runbook for AI agents (Claude, Codex, etc.) working in Base-Shop.
 
+## No Shortcuts — Core Principle
+
+**Always do what's best for the long term. Never take a convenient shortcut that creates tech debt.**
+
+This applies to all decisions: architecture, implementation, testing, error handling, naming, documentation. When faced with a choice between "quick fix" and "proper solution," choose the proper solution.
+
+Examples of prohibited shortcuts:
+- Suppressing type errors instead of fixing root causes
+- Skipping tests to ship faster
+- Copy-pasting code instead of extracting shared logic
+- Hardcoding values that should be configurable
+- Adding `// TODO: fix later` without a plan to actually fix it
+- Ignoring edge cases because "it probably won't happen"
+- Using `any` types to silence TypeScript
+- Commenting out broken code instead of removing/fixing it
+
+**The only exception:** The user explicitly instructs you to take a shortcut. If you're uncertain whether something constitutes acceptable pragmatism vs. tech debt, **ask the user** before proceeding.
+
+When you identify that the "right" solution requires significantly more work, explain the tradeoff and let the user decide — don't silently choose the shortcut.
+
 ## Commands
 
 | Task | Command |
@@ -110,7 +130,22 @@ Error: Cannot use import statement outside a module
 - Plans live in `docs/plans/<name>-plan.md`
 - Never delete — archive to `docs/historical/plans/`
 - Required metadata: Type, Status, Domain, Last-reviewed, Relates-to charter
-- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it’s not in Plan format), create/update one in the most appropriate location (default: `docs/plans/`; CMS threads: `docs/cms-plan/`) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
+- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/`; CMS threads: `docs/cms-plan/`) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
+
+### Handling Audit Limits
+
+When audit/exploration work hits a limit (context, time, scope), **do not simply stop**:
+
+1. **Pause and document** — Add a `## Pending Audit Work` section to the plan
+2. **Be specific** — Include enough detail to accelerate resumption:
+   - Areas/files already examined
+   - Areas remaining unexplored
+   - Specific questions needing answers
+   - Search patterns or entry points for resumption
+3. **Mark partial findings** — Tag incomplete items with `(partial)` or `(needs-verification)`
+4. **Estimate remaining scope** — e.g., "~15 more files" or "3 subsystems"
+
+This ensures future sessions pick up efficiently rather than re-auditing completed work.
 
 Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 

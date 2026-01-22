@@ -1,12 +1,11 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { useMediaUpload } from "@acme/ui/hooks/useMediaUpload";
-
+import { useMediaUpload } from "../../../../hooks/useMediaUpload";
 import UploadPanel from "../UploadPanel";
 
-jest.mock("@acme/ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("../../../../hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const Input = React.forwardRef(function InputMock(
     props: any,

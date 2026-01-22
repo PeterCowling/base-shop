@@ -1,6 +1,6 @@
 // /src/components/bar/orderTaking/OrderTakingContainer.tsx
 
-import { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { type FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "../../../context/AuthContext";
 import { useBleepersData } from "../../../hooks/data/bar/useBleepersData";
@@ -9,16 +9,17 @@ import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutation
 import { useAddItemToOrder } from "../../../hooks/orchestrations/bar/actions/mutations/useAddItemToOrder";
 import { useBarOrder } from "../../../hooks/orchestrations/bar/actions/mutations/useBarOrder";
 import {
-  AggregatedOrder,
-  CategoryType,
-  Product,
+  type AggregatedOrder,
+  type CategoryType,
+  type Product,
 } from "../../../types/bar/BarTypes";
-import OrderTakingScreen from "./OrderTakingScreen";
+import { getItalyLocalTimeHHMM } from "../../../utils/dateUtils";
+
 import IcedCoffeeSweetnessModal from "./modal/IcedCoffeeSweetnessModal";
 import MixerModal from "./modal/MixerModal";
 import SelectCoffeeOrTeaModal from "./modal/SelectCoffeeOrTeaModal";
 import WithMilkModal from "./modal/WithMilkModal";
-import { getItalyLocalTimeHHMM } from "../../../utils/dateUtils";
+import OrderTakingScreen from "./OrderTakingScreen";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                            */

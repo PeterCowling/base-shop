@@ -5,8 +5,8 @@ import Image from "next/image";
 
 import { useTranslations } from "@acme/i18n";
 
-import { cn } from "../utils/style";
 import { Cover,Inline } from "../primitives";
+import { cn } from "../utils/style";
 
 export type MediaType = "image" | "video" | "360" | "model";
 

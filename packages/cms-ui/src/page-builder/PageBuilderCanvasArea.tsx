@@ -76,11 +76,11 @@ const PageBuilderCanvasArea = ({
           className="relative max-h-full overflow-auto overscroll-contain min-h-0"
           onPointerDown={onPointerDown}
         >
-          {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: canvas zoom uses dynamic inline transform for accuracy */}
+          { }
           <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
             <div
               className={`${frameClass[viewport]} shrink-0`}
-              /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: dynamic frame sizing from toolbar requires inline style */
+               
               style={viewportStyle}
               data-tour="canvas"
               data-viewport={viewport}

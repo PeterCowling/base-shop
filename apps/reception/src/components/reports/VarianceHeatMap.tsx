@@ -59,7 +59,7 @@ export default function VarianceHeatMap() {
         <tbody>
           {users.map((user) => (
             <tr key={user} className="text-center">
-              <td className="p-2 border text-left font-medium dark:border-darkSurface">
+              <td className="p-2 border text-start font-medium dark:border-darkSurface">
                 {user}
               </td>
               {shiftLabels.map((label, idx) => {

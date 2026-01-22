@@ -1,8 +1,8 @@
 /* File: /src/components/appNav/ManModal.tsx */
 import { memo } from "react";
 
-import { withIconModal, type IconModalProps } from "../../hoc/withIconModal";
-import { ModalAction } from "../../types/component/ModalAction";
+import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
+import { type ModalAction } from "../../types/component/ModalAction";
 
 /**
  * Defines the actions for the "Man" modal. All users can open this modal,

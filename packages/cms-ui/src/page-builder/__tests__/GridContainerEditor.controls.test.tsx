@@ -4,7 +4,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 import GridContainerEditor from "../GridContainerEditor";
 
 // Simplify shadcn inputs/selects to plain controls
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (p: any) => <button {...p} />;
   const Input = ({ label, ...p }: any) => (
     <label>

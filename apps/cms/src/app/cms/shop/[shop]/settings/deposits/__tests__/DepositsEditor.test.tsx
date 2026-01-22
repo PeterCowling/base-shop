@@ -51,7 +51,7 @@ jest.mock("@/components/atoms", () => ({
   ),
 }));
 jest.mock(
-  "@acme/ui/components/atoms/shadcn",
+  "@acme/design-system/shadcn",
   () => ({
     Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,

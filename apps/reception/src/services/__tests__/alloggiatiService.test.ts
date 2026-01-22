@@ -1,13 +1,14 @@
 // src/services/__tests__/sendAlloggiatiService.test.ts
 
 import "@testing-library/jest-dom";
+
 import { sendAlloggiatiRecordsToGoogleScript } from "../alloggiatiService";
 
 // Utility to clean up any JSONP callbacks left on the window
 function cleanupJSONPCallbacks(): void {
   Object.keys(window).forEach((k) => {
     if (k.startsWith("jsonpCallback_")) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       delete (window as any)[k];
     }
   });
@@ -67,7 +68,7 @@ describe("sendAlloggiatiRecordsToGoogleScript", () => {
     };
 
     // Trigger the JSONP callback
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (window as any)[cbName](response);
 
     const result = await promise;
@@ -75,7 +76,7 @@ describe("sendAlloggiatiRecordsToGoogleScript", () => {
     expect(result).toEqual(response.resultDetails);
 
     // Callback removed and script detached
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     expect((window as any)[cbName]).toBeUndefined();
     expect((scriptEl as HTMLScriptElement).parentNode).toBeNull();
   });
@@ -98,7 +99,7 @@ describe("sendAlloggiatiRecordsToGoogleScript", () => {
     );
 
     // Callback removed and script detached
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     expect((window as any)[cbName]).toBeUndefined();
     expect((scriptEl as HTMLScriptElement).parentNode).toBeNull();
   });
@@ -114,13 +115,13 @@ describe("sendAlloggiatiRecordsToGoogleScript", () => {
     ).searchParams.get("callback") as string;
 
     const invalid = { foo: "bar" };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     (window as any)[cbName](invalid);
 
     await expect(promise).rejects.toThrow(/Invalid response format/);
 
     // Callback removed and script detached
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     expect((window as any)[cbName]).toBeUndefined();
     expect((scriptEl as HTMLScriptElement).parentNode).toBeNull();
   });

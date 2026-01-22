@@ -1,16 +1,17 @@
 /* src/hooks/components/prepayments/usePrepaymentData.ts */
 
 import { useMemo } from "react";
-import { Activity } from "../../../types/hooks/data/activitiesData";
+
+import { type Activity } from "../../../types/hooks/data/activitiesData";
 import type { OccupantDetails as GuestOccupantDetails } from "../../../types/hooks/data/occupantDetails";
-import { RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
+import { type RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
+import { computeHoursElapsed, toEpochMillis } from "../../../utils/dateUtils";
 import useActivityByCode from "../../data/useActivitiesByCodeData";
 import useActivities from "../../data/useActivitiesData";
 import useBookings from "../../data/useBookingsData";
 import useCCDetails from "../../data/useCCDetails";
 import useFinancialsRoom from "../../data/useFinancialsRoom";
 import useGuestDetails from "../../data/useGuestDetails";
-import { computeHoursElapsed, toEpochMillis } from "../../../utils/dateUtils";
 
 export { computeHoursElapsed } from "../../../utils/dateUtils";
 

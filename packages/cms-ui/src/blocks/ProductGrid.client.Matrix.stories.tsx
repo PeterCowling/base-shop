@@ -6,8 +6,7 @@ import { z } from 'zod';
 
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import type { SKU } from '@acme/types';
-
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import ProductGrid from './ProductGrid.client';
 import fixture from './ProductGrid.client.fixtures.json';

@@ -8,8 +8,8 @@ import type {
   ReactElement,
 } from "react";
 
-export type ButtonVariant = "default" | "outline";
-export type ButtonSize = "default" | "icon";
+export type ButtonVariant = "default" | "outline" | "ghost" | "secondary" | "destructive";
+export type ButtonSize = "default" | "icon" | "sm" | "lg";
 
 export interface ButtonSharedProps {
   variant?: ButtonVariant;

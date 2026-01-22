@@ -10,21 +10,21 @@ import {
 } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
 
-import type { Locale } from "@acme/i18n/locales";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { checkShopExists } from "@acme/platform-core";
-import type { ProductPublication } from "@acme/platform-core/products";
-import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
-import { readRepo } from "@acme/platform-core/repositories/json.server";
-import { track } from "@acme/telemetry";
-import { Alert, Progress, Tag } from "@acme/ui/components/atoms";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 import {
   CmsBuildHero,
   CmsLaunchChecklist,
   CmsMetricTiles,
-} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
-import ProductsTable from "@acme/ui/components/cms/ProductsTable.client";
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
+import ProductsTable from "@acme/cms-ui/ProductsTable.client";
+import { Alert, Progress, Tag } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+import type { Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import type { ProductPublication } from "@acme/platform-core/products";
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
+import { readRepo } from "@acme/platform-core/repositories/json.server";
+import { checkShopExists } from "@acme/platform-core/shops";
+import { track } from "@acme/telemetry";
 
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 

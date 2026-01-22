@@ -2,16 +2,15 @@
 
 import { useMemo } from "react";
 
-import { useTranslations } from "@acme/i18n";
-import type { Shop } from "@acme/types";
-import { FormField } from "@acme/ui/components/molecules";
-
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import {
   Card,
   CardContent,
   Checkbox,
   Input,
-} from "@/components/atoms/shadcn";
+} from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { Shop } from "@acme/types";
 
 import type { IdentityField, LuxuryFeatureKey } from "../useShopEditorSubmit";
 

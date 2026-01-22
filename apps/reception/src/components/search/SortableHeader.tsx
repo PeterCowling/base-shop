@@ -1,11 +1,12 @@
 // /src/components/bookingSearch/SortableHeader.tsx
+import React from "react";
 import {
   ChevronDownIcon,
   ChevronUpDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
+
 import clsx from "../../utils/clsx";
-import React from "react";
 
 export interface SortableHeaderProps {
   /** Display label (already i18n‑translated) */

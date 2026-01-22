@@ -1,5 +1,6 @@
 import React from "react";
-import { CheckInRow } from "../../../types/component/CheckinRow";
+
+import { type CheckInRow } from "../../../types/component/CheckinRow";
 import BookingRow from "../BookingRow";
 import DateSelector from "../DateSelector";
 import ArchiveConfirmationModal from "../header/ArchiveConfirmationModal";
@@ -80,7 +81,7 @@ const CheckinsTableView: React.FC<Props> = ({
           username={username}
         />
         {roomsReady ? (
-          <span className="ml-4 text-green-600 font-semibold dark:text-darkAccentGreen">
+          <span className="ms-4 text-green-600 font-semibold dark:text-darkAccentGreen">
             Rooms are Set
           </span>
         ) : (

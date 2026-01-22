@@ -130,6 +130,11 @@ export interface UnconfirmedSalesOrder {
   items: SalesOrderItem[];
 }
 
+export interface PlacedPreorder {
+  preorderTime: string;
+  items: SalesOrderItem[];
+}
+
 /**
  * Backwards alias used by some older hooks.
  * Equivalent to UnconfirmedSalesOrder.

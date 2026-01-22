@@ -1,8 +1,7 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
-
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import type { PageComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

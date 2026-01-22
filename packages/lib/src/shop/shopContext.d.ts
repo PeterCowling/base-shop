@@ -1,4 +1,5 @@
 import type { EnvLabel } from "../context/types";
+
 export declare const SHOP_ID_HEADER = "x-shop-id";
 export declare const REQUEST_ID_HEADER = "x-request-id";
 export type ShopContext = {

@@ -1,6 +1,6 @@
 import {
-  ChangeEvent,
-  KeyboardEvent,
+  type ChangeEvent,
+  type KeyboardEvent,
   memo,
   useCallback,
   useEffect,

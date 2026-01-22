@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 
+import { Alert } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 import type { Shop } from "@acme/types";
-import { Alert } from "@acme/ui/components/atoms";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 

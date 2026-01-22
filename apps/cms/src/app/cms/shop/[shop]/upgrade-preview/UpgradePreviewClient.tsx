@@ -4,16 +4,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
-import { useTranslations } from "@acme/i18n";
-import type { UpgradeComponent } from "@acme/types/upgrade";
-import { Button, Card, CardContent, Skeleton } from "@acme/ui/components/atoms";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives";
 import {
   CmsInlineHelpBanner,
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
-} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner, CmsLaunchChecklist
+} from "@acme/cms-ui"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner, CmsLaunchChecklist
+import { Skeleton } from "@acme/design-system/atoms";
+import { Grid as DSGrid } from "@acme/design-system/primitives";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import type { UpgradeComponent } from "@acme/types/upgrade";
 import ComponentPreview from "@acme/ui/components/ComponentPreview";
 
 interface Summary {

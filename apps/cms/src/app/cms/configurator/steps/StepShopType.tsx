@@ -2,9 +2,9 @@
 
 import { CheckIcon } from "@radix-ui/react-icons";
 
+import { Cluster } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Cluster } from "@acme/ui/components/atoms/primitives";
-import { Button } from "@acme/ui/components/atoms/shadcn";
 
 import type { ConfiguratorStepProps } from "@/types/configurator";
 

@@ -1,4 +1,4 @@
-/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, jsx-a11y/no-noninteractive-element-interactions, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index, custom interactions, and dynamic inline styles for runtime positioning */
+ 
 "use client";
 
 import { useCallback, useEffect, useState } from "react";

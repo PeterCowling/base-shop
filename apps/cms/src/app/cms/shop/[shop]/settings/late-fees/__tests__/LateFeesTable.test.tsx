@@ -12,7 +12,7 @@ jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   readOrders: (...args: unknown[]) => readOrders(...args),
 }));
 
-jest.mock("@acme/ui/components/cms/DataTable", () => ({
+jest.mock("@acme/cms-ui/DataTable", () => ({
   __esModule: true,
   default: (props: unknown) => DataTable(props),
 }));

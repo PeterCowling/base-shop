@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { singleRoomStatusSchema } from "../roomStatusSchema";
 
 describe("singleRoomStatusSchema", () => {

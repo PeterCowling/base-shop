@@ -3,12 +3,11 @@
 
 import * as React from "react";
 
+import { Price } from "@acme/design-system/atoms/Price";
 import { useTranslations } from "@acme/i18n";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 import type { CartLine } from "@acme/types/Cart";
-
-import { Price } from "../../atoms/Price";
-import { MiniCart } from "../../organisms/MiniCart.client";
+import { MiniCart } from "@acme/ui/components/organisms/MiniCart.client";
 
 export interface HeaderCartProps {
   /** Whether to show the textual cart label next to the icon. */

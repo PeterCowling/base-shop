@@ -3,9 +3,8 @@
 import { type ReactElement } from "react";
 
 import { useTranslations } from "@acme/i18n";
-
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { RangeInput } from "../index";
+import { RangeInput } from "@acme/ui/components/cms/RangeInput";
+import type { TokenInfo } from "@acme/ui/hooks/useTokenEditor";
 
 interface RangeTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];

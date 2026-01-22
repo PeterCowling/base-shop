@@ -170,8 +170,9 @@ export async function POST(req: NextRequest) {
     await provider.schedulePickup(region, date, window, carrier);
     return NextResponse.json({ ok: true });
   } catch (err) {
+    console.error("[api/delivery] schedulePickup error:", err); // i18n-exempt -- server log
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to schedule pickup" }, // i18n-exempt -- generic error
       { status: 400 }
     );
   }

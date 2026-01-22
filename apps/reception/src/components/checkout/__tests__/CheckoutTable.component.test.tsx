@@ -1,9 +1,11 @@
 // src/components/checkout/__tests__/CheckoutTable.component.test.tsx
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { Guest } from "../CheckoutTable";
+import CheckoutTable from "../CheckoutTable";
 
 // ------------ hoist‑safe declaration ---------------------------
 /* eslint-disable no-var */
@@ -17,8 +19,6 @@ jest.mock("../../../utils/sortCheckouts", () => {
     sortCheckoutsData: (...args: unknown[]) => sortCheckoutsDataMock(...args),
   };
 });
-
-import CheckoutTable from "../CheckoutTable";
 
 describe("CheckoutTable component", () => {
   beforeEach(() => {

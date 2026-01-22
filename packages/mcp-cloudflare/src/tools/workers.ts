@@ -270,12 +270,11 @@ export async function handleWorkersTool(name: string, args: unknown) {
           expiresAt: tail.expires_at,
           usage: {
             note: "Connect to the WebSocket URL to receive real-time logs",
-            // eslint-disable-next-line ds/no-raw-font -- false positive: "timestamp" is not a font
-            format: "Messages are JSON with: timestamp, event, logs, exceptions, outcome",
+            format: "Messages are JSON with: ts, event, logs, exceptions, outcome",
             example: {
-              timestamp: 1234567890,
+              ts: 1234567890,
               outcome: "ok",
-              logs: [{ level: "log", message: ["Hello, World!"], timestamp: 1234567890 }],
+              logs: [{ level: "log", message: ["Hello, World!"], ts: 1234567890 }],
             },
           },
         });

@@ -4,9 +4,8 @@ import { useMemo, useState } from "react";
 import { DndContext, type DragEndEvent,KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Cluster } from "@acme/design-system/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
 
 import type { LayerNode,LayersPanelProps } from "./LayersPanel.types";
 import { LayerList } from "./LayersPanelList";

@@ -1,12 +1,15 @@
 // src/routing/routeInventory.ts
 // Enumerates all valid App Router URLs without depending on src/compat/*
 // This module is used by URL coverage tests and generateStaticParams
+//
+// IMPORTANT: Keep imports minimal to avoid env config dependencies in tests.
+// Prefer direct JSON imports and simple data files over complex modules.
 
 import { GUIDES_INDEX } from "@/data/guides.index";
+import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
 import { ARTICLE_KEYS, articleSlug } from "@/routes.assistance-helpers";
 import { guideSlug } from "@/routes.guides-helpers";
 import type { SlugKey } from "@/types/slugs";
@@ -79,8 +82,10 @@ export function listAppRouterUrls(): string[] {
     }
 
     // Dynamic: How to get here routes
+    // Read directly from JSON to avoid env config dependency chain
     const howToSlug = getSlug("howToGetHere", lang);
-    for (const slug of listHowToSlugs()) {
+    const howToSlugs = Object.keys(howToGetHereRoutes.routes);
+    for (const slug of howToSlugs) {
       urls.push(`/${lang}/${howToSlug}/${slug}`);
     }
 
@@ -109,7 +114,7 @@ export function getUrlCounts(): Record<string, number> {
     rooms: langCount * roomsData.length,
     guides: langCount * GUIDES_INDEX.filter((g) => g.status === "published").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
-    howToGetHere: langCount * listHowToSlugs().length,
+    howToGetHere: langCount * Object.keys(howToGetHereRoutes.routes).length,
     assistance: langCount * ARTICLE_KEYS.length,
     total: listAppRouterUrls().length,
   };

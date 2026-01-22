@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import PagesPanel from "../PagesPanel";
 
 // Mocks
-jest.mock("../../../atoms/primitives/drawer", () => ({
+jest.mock("@acme/design-system/primitives/drawer", () => ({
   __esModule: true,
   Drawer: ({ children, open }: any) => (open ? <div>{children}</div> : null),
   DrawerPortal: ({ children }: any) => <div>{children}</div>,
@@ -13,7 +13,7 @@ jest.mock("../../../atoms/primitives/drawer", () => ({
   DrawerTitle: ({ children }: any) => <div>{children}</div>,
   DrawerDescription: ({ children }: any) => <div>{children}</div>,
 }));
-jest.mock("../../../atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
+jest.mock("@acme/design-system/atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
 
 describe("PagesPanel success paths", () => {
   beforeEach(() => {

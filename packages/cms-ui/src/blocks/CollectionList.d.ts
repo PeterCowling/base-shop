@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Category } from "../../organisms/CategoryCard";
+import { Category } from "@acme/ui/components/organisms/CategoryCard";
 export interface CollectionListProps extends React.HTMLAttributes<HTMLDivElement> {
     collections: Category[];
     /** Minimum number of tiles to show at once */

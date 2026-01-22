@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../atoms/shadcn";
+} from "@acme/design-system/shadcn";
 
 interface FAQItem {
   question: string;

@@ -1,7 +1,6 @@
 // packages/ui/src/components/cms/page-builder/SocialProofEditor.tsx
-import type { SocialProofComponent } from "@acme/types";
-
 import { Input } from "@acme/design-system/shadcn";
+import type { SocialProofComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

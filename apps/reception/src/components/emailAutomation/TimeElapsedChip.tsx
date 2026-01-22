@@ -1,6 +1,6 @@
 /* src/components/emailAutomation/TimeElapsedChip.tsx */
 
-import { FC } from "react";
+import { type FC } from "react";
 
 export interface TimeElapsedChipProps {
   hoursElapsed: number;

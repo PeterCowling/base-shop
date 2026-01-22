@@ -2,7 +2,7 @@
 import { memo } from "react";
 import { Archive, Bath, BedDouble, Eye, HelpCircle, Home, KeyRound, type LucideIcon,Sun, Users } from "lucide-react";
 
-import type { FacilityKey } from "@acme/ui/types/facility";
+import type { FacilityKey } from "../types/facility";
 
 const iconMap: Record<FacilityKey, LucideIcon> = {
   privateRoom: Home,

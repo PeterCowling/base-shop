@@ -1,11 +1,11 @@
 // File: /src/orchestrations/barOrder/actions/mutations/useConfirmOrder.ts
 
-import { get, ref, remove, set } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { get, ref, remove, set } from "firebase/database";
 
 import useAllTransactions from "../../../../../hooks/mutations/useAllTransactionsMutations";
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
-import { SalesOrder, SalesOrderItem } from "../../../../../types/bar/BarTypes";
+import { type SalesOrder, type SalesOrderItem } from "../../../../../types/bar/BarTypes";
 import { generateTransactionId } from "../../../../../utils/generateTransactionId";
 import useIngredients from "../../../../data/inventory/useIngredients";
 

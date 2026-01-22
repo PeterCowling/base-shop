@@ -5,7 +5,7 @@ import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
-import { Button } from "@acme/ui/atoms/Button";
+import { Button } from "@acme/design-system/primitives";
 
 import { CfHeroImage } from "@/components/images/CfHeroImage";
 import { useModal } from "@/context/ModalContext";

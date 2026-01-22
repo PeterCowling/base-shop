@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import type { Guest } from "../../components/checkout/CheckoutTable";
 import { sortCheckoutsData } from "../sortCheckouts";
 

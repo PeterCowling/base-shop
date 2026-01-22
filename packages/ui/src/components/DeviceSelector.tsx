@@ -4,7 +4,7 @@
 import { useMemo } from "react";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 
-import { type DevicePreset, getAllDevicePresets,getLegacyPreset } from "@acme/ui/utils/devicePresets";
+import { type DevicePreset, getAllDevicePresets,getLegacyPreset } from "../utils/devicePresets";
 
 import {
   Button,

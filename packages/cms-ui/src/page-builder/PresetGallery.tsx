@@ -1,12 +1,11 @@
 // packages/ui/src/components/cms/page-builder/PresetGallery.tsx
 "use client";
-/* eslint-disable react/forbid-dom-props -- LINT-1005: preview tiles require inline style to reflect preset values */
+ 
 
 import type { CSSProperties } from "react";
 
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-
 import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 export interface PresetItem {
   id: string;

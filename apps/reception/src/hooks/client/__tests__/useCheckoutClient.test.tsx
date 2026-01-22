@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
+
 import { type Loans } from "../../../types/hooks/data/loansData";
 import useCheckoutClient from "../useCheckoutClient";
 

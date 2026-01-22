@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import RoomsGrid from "../RoomsGrid";
 
 jest.useFakeTimers({ toFake: ["Date"] });
 jest.setSystemTime(new Date("2025-01-02"));
@@ -33,8 +36,6 @@ jest.mock("../RoomGrid", () => ({
   __esModule: true,
   default: (props: RoomGridProps) => mockRoomGrid(props),
 }));
-
-import RoomsGrid from "../RoomsGrid";
 
 afterAll(() => {
   jest.useRealTimers();

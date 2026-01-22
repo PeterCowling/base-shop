@@ -2,8 +2,8 @@
 
 import type { ChangeEvent, RefObject } from "react";
 
-import { Tag } from "@acme/ui/components/atoms";
-import { cn } from "@acme/ui/utils/style";
+import { Tag } from "@acme/design-system/atoms";
+import { cn } from "@acme/design-system/utils/style";
 
 import { Button } from "@/components/atoms/shadcn";
 

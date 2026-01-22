@@ -2,13 +2,12 @@
 
 import * as React from "react";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-
-import { Grid as DSGrid } from "../../atoms/primitives/Grid";
-import { Inline } from "../../atoms/primitives/Inline";
-import { ProductCard } from "../../organisms/ProductCard";
+import { ProductCard } from "@acme/ui/components/organisms/ProductCard";
 
 export interface CrossSellRules {
   seedId?: string;

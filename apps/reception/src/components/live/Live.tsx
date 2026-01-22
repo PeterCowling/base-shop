@@ -1,8 +1,9 @@
 import { memo } from "react";
-import SummaryAndTransactions from "../till/SummaryAndTransactions";
+
 import { TillDataProvider } from "../../context/TillDataContext";
-import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
+import { useTillReconciliationLogic } from "../../hooks/useTillReconciliationLogic";
+import SummaryAndTransactions from "../till/SummaryAndTransactions";
 
 function LiveInner() {
   const ui = useTillReconciliationUI();

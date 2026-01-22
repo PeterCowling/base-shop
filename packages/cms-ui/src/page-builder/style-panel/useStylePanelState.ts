@@ -2,8 +2,8 @@ import { useCallback, useMemo } from "react";
 
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
+import usePreviewTokens from "@acme/ui/components/cms/page-builder/hooks/usePreviewTokens";
 
-import usePreviewTokens from "../hooks/usePreviewTokens";
 import { defaultEffectPresets } from "../style/effectPresets";
 import { getStyleClipboard, setStyleClipboard } from "../style/styleClipboard";
 import useCustomPresets from "../style/useCustomPresets";

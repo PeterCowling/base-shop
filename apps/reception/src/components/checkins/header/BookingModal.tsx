@@ -1,8 +1,8 @@
 // src/components/checkins/BookingModal.tsx
 import React, {
-  ChangeEvent,
-  FC,
-  KeyboardEvent,
+  type ChangeEvent,
+  type FC,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -10,7 +10,7 @@ import React, {
 } from "react";
 
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
-import { CheckInRow } from "../../../types/component/CheckinRow";
+import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { parseYMD } from "../../../utils/dateUtils";
 
 /**
@@ -183,7 +183,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
 
           {/* Editable Check-in Date */}
           <div className="mb-2">
-            <label htmlFor="check-in-date" className="font-semibold mr-2">
+            <label htmlFor="check-in-date" className="font-semibold me-2">
               Check-in Date:
             </label>
             <input
@@ -197,7 +197,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
 
           {/* Editable Check-out Date */}
           <div className="mb-2">
-            <label htmlFor="check-out-date" className="font-semibold mr-2">
+            <label htmlFor="check-out-date" className="font-semibold me-2">
               Check-out Date:
             </label>
             <input
@@ -212,7 +212,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
           {/* Extension Price Input (Only visible if isExtended) */}
           {isExtended && (
             <div className="mb-2">
-              <label htmlFor="extension-price" className="font-semibold mr-2">
+              <label htmlFor="extension-price" className="font-semibold me-2">
                 Extension Charge:
               </label>
               <input

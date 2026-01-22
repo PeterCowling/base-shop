@@ -1,8 +1,7 @@
 import { deleteMedia } from "@cms/actions/media.server";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { useImageOrientationValidation } from "@acme/ui/hooks/useImageOrientationValidation";
-
+import { useImageOrientationValidation } from "../../../hooks/useImageOrientationValidation";
 import MediaManager from "../MediaManager";
 
 jest.mock("@cms/actions/media.server", () => ({
@@ -99,14 +98,14 @@ function createShadcnStub() {
   };
 }
 
-jest.mock("@acme/ui/components/atoms/shadcn", () =>
+jest.mock("@acme/design-system/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 jest.mock("../../atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 
-jest.mock("@acme/ui/hooks/useImageOrientationValidation");
+jest.mock("../../../hooks/useImageOrientationValidation");
 
 const mockHook = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation

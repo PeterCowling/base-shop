@@ -1,10 +1,11 @@
-import { memo, ReactElement, useCallback, useMemo } from "react";
+import { memo, type ReactElement, useCallback, useMemo } from "react";
+
+import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
 // Rename the default imports to avoid ESLint conflicts
 import LoanableItemSelectorComp from "./LoanableItemSelector";
 import LoanedItemsListComp from "./LoanedItemsList";
 import useOccupantLoans from "./useOccupantLoans";
-import { LoanItem, LoanMethod } from "../../types/hooks/data/loansData";
 
 /**
  * Simplified occupant interface for a single row.

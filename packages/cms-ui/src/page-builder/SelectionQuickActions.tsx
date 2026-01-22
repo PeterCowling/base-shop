@@ -1,11 +1,10 @@
-/* eslint-disable ds/absolute-parent-guard -- PB-0001: overlay anchors to positioned canvas ancestor */
+ 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 
-import type { PageComponent } from "@acme/types";
-
 import { Button } from "@acme/design-system/shadcn";
+import type { PageComponent } from "@acme/types";
 
 import useGroupingActions from "./hooks/useGroupingActions";
 import type { Action } from "./state";
@@ -102,7 +101,7 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
       ref={bubbleRef}
       className="absolute -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
       // Position is dynamic; inline style is necessary here
-      // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic left/top are required for canvas overlay
+       
       style={{ left: pos.left, top: pos.top }}
     >
       <div className="flex flex-wrap items-center gap-1">

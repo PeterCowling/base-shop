@@ -1,8 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ModalAction } from "../../../types/component/ModalAction";
+
 import type { IconModalProps } from "../../../types/component/IconModalProps";
+import type { ModalAction } from "../../../types/component/ModalAction";
+import ManagementModal from "../ManagementModal";
+import ManModal from "../ManModal";
+import OperationsModal from "../OperationsModal";
+import TillModal from "../TillModal";
 
 /* eslint-disable no-var */
 var withIconModalMock: jest.Mock;
@@ -28,11 +34,6 @@ jest.mock("../../../hoc/withIconModal", () => {
 
   return { withIconModal: withIconModalMock };
 });
-
-import OperationsModal from "../OperationsModal";
-import ManagementModal from "../ManagementModal";
-import ManModal from "../ManModal";
-import TillModal from "../TillModal";
 
 const user = { email: "test@example.com", user_name: "Pete" };
 

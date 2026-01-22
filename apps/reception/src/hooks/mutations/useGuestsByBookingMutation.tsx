@@ -1,7 +1,8 @@
 // src/hook/mutations/useGuestsByBookingMutation.tsx
 import { useCallback } from "react";
+
 import { guestsByBookingSchema } from "../../schemas/guestsByBookingSchema";
-import { GuestsByBooking } from "../../types/hooks/data/guestsByBookingData";
+import { type GuestsByBooking } from "../../types/hooks/data/guestsByBookingData";
 
 /**
  * Mutation hook responsible for updating (create/update/delete) data

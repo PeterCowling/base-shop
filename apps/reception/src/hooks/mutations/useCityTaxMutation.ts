@@ -1,10 +1,10 @@
 /* File: /src/hooks/mutations/useCityTaxMutation.ts */
 
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { CityTaxRecord } from "../../types/hooks/data/cityTaxData";
+import { type CityTaxRecord } from "../../types/hooks/data/cityTaxData";
 
 interface UseCityTaxMutationResult {
   saveCityTax: (

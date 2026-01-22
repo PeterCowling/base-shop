@@ -1,6 +1,5 @@
-import type { LookbookComponent } from "@acme/types";
-
 import { Button, Input } from "@acme/design-system/shadcn";
+import type { LookbookComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import ImagePicker from "./ImagePicker";

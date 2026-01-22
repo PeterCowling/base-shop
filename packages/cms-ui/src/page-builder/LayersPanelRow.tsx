@@ -5,9 +5,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { EyeClosedIcon, EyeOpenIcon, LockClosedIcon, LockOpen2Icon } from "@radix-ui/react-icons";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Inline } from "@acme/design-system/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 import type { LayerNode } from "./LayersPanel.types";
 
@@ -41,7 +40,7 @@ export function LayersPanelRow({ node, index, parentId, selected, onSelect, onTo
   return (
     <div
       ref={setNodeRef}
-      // eslint-disable-next-line react/forbid-dom-props -- PB-123 DnD requires inline transform/transition for smooth dragging
+       
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={rowClass}
       onClick={(e) => onSelect(node.id, e)}

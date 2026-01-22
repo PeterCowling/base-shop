@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+
 import type { CheckInRow } from "../../types/component/CheckinRow";
 import { confirmAndAllocateRoom } from "../../utils/confirmAndAllocateRoom";
 import useAllocateRoom from "../mutations/useAllocateRoom";

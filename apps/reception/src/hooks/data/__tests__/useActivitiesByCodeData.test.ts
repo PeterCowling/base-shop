@@ -1,7 +1,13 @@
 // src/hooks/data/__tests__/useActivitiesByCodeData.test.ts
 
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
+/* ------------------------------------------------------------------ */
+/*  Import under test (after mocks)                                   */
+/* ------------------------------------------------------------------ */
+import useActivitiesByCodeData from "../useActivitiesByCodeData";
 
 
 /* ------------------------------------------------------------------ */
@@ -50,11 +56,6 @@ jest.mock("firebase/database", () => {
   );
   return { ref: refMock, onValue: onValueMock };
 });
-
-/* ------------------------------------------------------------------ */
-/*  Import under test (after mocks)                                   */
-/* ------------------------------------------------------------------ */
-import useActivitiesByCodeData from "../useActivitiesByCodeData";
 
 /* ------------------------------------------------------------------ */
 /*  Tests                                                             */

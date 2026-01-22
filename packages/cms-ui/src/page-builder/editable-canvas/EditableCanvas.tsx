@@ -4,12 +4,13 @@ import { useMemo } from "react";
 import { rectSortingStrategy,SortableContext } from "@dnd-kit/sortable";
 
 import { cn } from "@acme/design-system/utils/style";
+import useDimLockedSelection from "@acme/ui/components/cms/page-builder/hooks/useDimLockedSelection";
+import useGroupingActions from "@acme/ui/components/cms/page-builder/hooks/useGroupingActions";
+import useRulerProps from "@acme/ui/components/cms/page-builder/hooks/useRulerProps";
+import useSelectionGrouping from "@acme/ui/components/cms/page-builder/hooks/useSelectionGrouping";
+import useSelectionPositions from "@acme/ui/components/cms/page-builder/hooks/useSelectionPositions";
+
 import usePresence from "../collab/usePresence";
-import useDimLockedSelection from "../hooks/useDimLockedSelection";
-import useGroupingActions from "../hooks/useGroupingActions";
-import useRulerProps from "../hooks/useRulerProps";
-import useSelectionGrouping from "../hooks/useSelectionGrouping";
-import useSelectionPositions from "../hooks/useSelectionPositions";
 import SelectionQuickActions from "../SelectionQuickActions";
 import useMarqueeSelect from "../useMarqueeSelect";
 
@@ -104,11 +105,11 @@ export default function EditableCanvas(props: Props) {
 
   return (
     <SortableContext items={visibleComponents.map((c) => c.id)} strategy={rectSortingStrategy}>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- PB-2419: Canvas root needs pointer/drag listeners for marquee and DnD; not keyboard-activatable */}
+      { }
       <div
         id="canvas"
         ref={assignCanvasRef}
-        // eslint-disable-next-line react/forbid-dom-props -- PB-2419: containerStyle is dynamic (sizing/position) and confined to editor canvas
+         
         style={containerStyle}
         role="list"
         aria-label={t("Canvas")}

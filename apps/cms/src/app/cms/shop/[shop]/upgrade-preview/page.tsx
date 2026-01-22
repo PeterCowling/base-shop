@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { requirePermission } from "@acme/auth";
-import { checkShopExists } from "@acme/platform-core";
+import { checkShopExists } from "@acme/platform-core/shops";
 
 import UpgradePreviewClient from "./UpgradePreviewClient";
 

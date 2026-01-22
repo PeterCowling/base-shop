@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
-import { cn } from "../../../utils/style";
-import { type Category, CategoryCard } from "../../organisms/CategoryCard";
+import { cn } from "@acme/design-system/utils/style";
+import { type Category, CategoryCard } from "@acme/ui/components/organisms/CategoryCard";
 
 export interface CollectionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "style"> {
   collections: Category[];

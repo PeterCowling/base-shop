@@ -7,9 +7,9 @@
  *                    [--mode preview|production] [--validate | --dry-run]
  *                    [--force] [--allow-dirty-git]
  */
-import { ensureRuntime } from "./runtime";
-import { launchShop } from "./launchShop";
 import { parseLaunchArgs } from "./launch-shop/cli/parseLaunchArgs";
+import { launchShop } from "./launchShop";
+import { ensureRuntime } from "./runtime";
 
 ensureRuntime();
 

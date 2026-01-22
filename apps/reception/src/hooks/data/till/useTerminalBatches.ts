@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import {
-  TerminalBatch,
+  type TerminalBatch,
   terminalBatchesSchema,
 } from "../../../types/hooks/data/terminalBatchData";
 

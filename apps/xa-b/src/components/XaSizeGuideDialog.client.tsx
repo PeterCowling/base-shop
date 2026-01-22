@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
 
 export function XaSizeGuideDialog({ copy }: { copy: string }) {
   return (

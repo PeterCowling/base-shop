@@ -4,7 +4,7 @@ import { act,fireEvent, render, screen } from "@testing-library/react";
 import PagesPanel from "../PagesPanel";
 
 // Shadcn basic mocks
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (p: any) => <button {...p} />;
   const Input = (p: any) => <input {...p} />;
   const Textarea = (p: any) => <textarea {...p} />;
@@ -32,7 +32,7 @@ jest.mock("../../../atoms/shadcn", () => {
 });
 
 // Mock drawer primitives to remove Radix behaviors
-jest.mock("../../../atoms/primitives/drawer", () => ({
+jest.mock("@acme/design-system/primitives/drawer", () => ({
   __esModule: true,
   Drawer: ({ children, open }: any) => (open ? <div>{children}</div> : null),
   DrawerPortal: ({ children }: any) => <div>{children}</div>,
@@ -42,7 +42,7 @@ jest.mock("../../../atoms/primitives/drawer", () => ({
 }));
 
 // Mock OverlayScrim from atoms to avoid Radix Dialog overlay usage
-jest.mock("../../../atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
+jest.mock("@acme/design-system/atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
 
 describe("PagesPanel – load, reorder, save, toggle, add, saveDraft", () => {
   beforeEach(() => {

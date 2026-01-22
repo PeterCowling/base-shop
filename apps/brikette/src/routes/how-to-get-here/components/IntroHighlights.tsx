@@ -1,7 +1,7 @@
 import { Trans } from "react-i18next";
 import type { TFunction } from "i18next";
 
-import { Grid } from "@acme/ui/atoms/Grid";
+import { Grid } from "@acme/ui/atoms";
 
 import { CONTACT_EMAIL } from "@/config/hotel";
 

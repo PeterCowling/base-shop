@@ -1,16 +1,17 @@
 /* File: src/components/bar/orderTaking/modal/PayModal.tsx */
 
 import {
-  ChangeEvent,
+  type ChangeEvent,
   memo,
-  MouseEvent,
-  ReactElement,
+  type MouseEvent,
+  type ReactElement,
   useCallback,
   useState,
 } from "react";
 
-import ModalContainer from "./ModalContainer";
 import { withModalBackground } from "../../../../hoc/withModalBackground";
+
+import ModalContainer from "./ModalContainer";
 
 /**
  * PayModalProps:

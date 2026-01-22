@@ -1,8 +1,7 @@
 "use client";
 
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Switch } from "@/components/atoms";
+import { Switch } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 import { ErrorChips } from "./ErrorChips";
 

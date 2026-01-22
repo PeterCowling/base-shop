@@ -1,0 +1,28 @@
+{
+  "name": "@apps/reception",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3020",
+    "build": "next build",
+    "start": "next start -p 3020",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests"
+  },
+  "dependencies": {
+    "@acme/design-system": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@heroicons/react": "^2.2.0",
+    "dayjs": "^1.11.13",
+    "framer-motion": "^12.0.0",
+    "next": "^15.3.8",
+    "react": "19.1.0",
+    "react-day-picker": "^9.10.0",
+    "react-dom": "19.1.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-transition-group": "^4.4.5",
+    "react-toastify": "^11.0.5",
+    "sweetalert2": "^11.22.2"
+  }
+}

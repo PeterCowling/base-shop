@@ -1,8 +1,9 @@
-import { get, ref } from "firebase/database";
 import { useCallback, useState } from "react";
+import { get, ref } from "firebase/database";
+
+import { useFirebaseDatabase } from "../../services/useFirebase";
 
 import useDeleteGuestFromBooking from "./useDeleteGuestFromBooking";
-import { useFirebaseDatabase } from "../../services/useFirebase";
 
 interface UseDeleteBookingReturn {
   deleteBooking: (bookingRef: string) => Promise<void>;

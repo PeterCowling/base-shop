@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@acme/design-system/primitives";
+
 import type { ComponentType } from "../defaults";
 import type { PaletteCategoryDefinition } from "../paletteData";
 import PaletteItem from "../PaletteItem";

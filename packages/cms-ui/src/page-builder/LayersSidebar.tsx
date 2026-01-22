@@ -23,7 +23,7 @@ interface Props {
 const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelectIds, dispatch, editor, viewport, crossNotices = true }: Props) => (
   <>
     {/* i18n-exempt -- test selector attribute */}
-    {/* eslint-disable-next-line react/forbid-dom-props -- PB-123 dynamic width for resizable sidebar; test selector attribute */}
+    { }
     <aside className="shrink-0" style={{ width }} data-cy="pb-layers-left">
       <div className="p-2">
         <LayersPanel

@@ -1,5 +1,5 @@
 /* File: src/components/checkins/header/ArchiveButton.tsx */
-import { FC, memo, MouseEventHandler } from "react";
+import { type FC, memo, type MouseEventHandler } from "react";
 
 /**
  * This component renders a small archive icon button.
@@ -41,7 +41,7 @@ const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
         />
       </svg>
       {typeof eligibleCount === "number" && (
-        <span className="ml-1 text-sm text-yellow-700">{`Archive (${eligibleCount})`}</span>
+        <span className="ms-1 text-sm text-yellow-700">{`Archive (${eligibleCount})`}</span>
       )}
     </button>
   );

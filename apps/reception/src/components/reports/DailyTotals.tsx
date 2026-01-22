@@ -1,5 +1,6 @@
 /* src/components/reports/DailyTotals.tsx */
 import React from "react";
+
 import { formatEuro } from "../../utils/format";
 
 interface DailyTotalsProps {

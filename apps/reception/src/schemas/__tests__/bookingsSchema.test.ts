@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { firebaseBookingSchema } from "../bookingsSchema";
 
 describe("firebaseBookingSchema", () => {

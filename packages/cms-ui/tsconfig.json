@@ -18,14 +18,20 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@acme/cms-ui": ["./src/index", "./dist/index.d.ts"],
-      "@acme/cms-ui/*": ["./src/*", "./dist/*"],
-      "@acme/design-system": ["../design-system/src/index", "../design-system/dist/index.d.ts"],
-      "@acme/design-system/*": ["../design-system/src/*", "../design-system/dist/*"],
-      "@acme/page-builder-core": ["../page-builder-core/src/index.ts", "../page-builder-core/dist/index.d.ts"],
-      "@acme/page-builder-core/*": ["../page-builder-core/src/*", "../page-builder-core/dist/*"],
-      "@acme/types": ["../types/src/index", "../types/dist/index.d.ts"],
-      "@acme/types/*": ["../types/src/*", "../types/dist/*"]
+      "@acme/cms-ui": ["./src/index.ts"],
+      "@acme/cms-ui/*": ["./src/*"],
+      "@acme/design-system": ["../design-system/dist/index.d.ts"],
+      "@acme/design-system/*": ["../design-system/dist/*"],
+      "@acme/ui": ["../ui/dist/index.d.ts"],
+      "@acme/ui/*": ["../ui/dist/*"],
+      "@acme/platform-core": ["../platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../platform-core/dist/*"],
+      "@acme/page-builder-core": ["../page-builder-core/dist/index.d.ts"],
+      "@acme/page-builder-core/*": ["../page-builder-core/dist/*"],
+      "@acme/types": ["../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/dist/*"],
+      "@acme/telemetry": ["../telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["../telemetry/dist/*"]
     }
   },
   "references": [

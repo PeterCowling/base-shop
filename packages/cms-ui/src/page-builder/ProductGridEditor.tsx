@@ -1,6 +1,5 @@
-import type { ProductGridComponent } from "@acme/types";
-
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "@acme/design-system/shadcn";
+import type { ProductGridComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import useComponentInputs from "./useComponentInputs";

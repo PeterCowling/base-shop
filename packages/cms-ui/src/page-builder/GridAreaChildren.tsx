@@ -1,11 +1,10 @@
 "use client";
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState,PageComponent } from "@acme/types";
-
 import type { DevicePreset } from "@acme/ui/utils/devicePresets";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
 
 import CanvasItem from "./CanvasItem";
 import InlineInsert from "./InlineInsert";

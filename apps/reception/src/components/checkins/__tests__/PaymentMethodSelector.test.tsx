@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
+
+import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
 
-import PaymentMethodSelector from "../keycardButton/PaymentMethodSelector";
 import { KeycardPayType } from "../../../types/keycards";
+import PaymentMethodSelector from "../keycardButton/PaymentMethodSelector";
 
 function Wrapper() {
   const [payType, setPayType] = useState<KeycardPayType>(KeycardPayType.CASH);

@@ -1,13 +1,13 @@
-import clsx from "../../../../utils/clsx";
-import type { Identifier } from "dnd-core";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import type { Identifier } from "dnd-core";
 
 import {
   ItemTypes,
-  ReservationDragItem,
-  ReservationMovePayload,
+  type ReservationDragItem,
+  type ReservationMovePayload,
 } from "../../../../types/dndTypes";
+import clsx from "../../../../utils/clsx";
 import { dateUtils } from "../../../../utils/dateUtils";
 import type { TDaysRange } from "../../interfaces/daysRange.interface";
 import type { TDateStatus, TDayType } from "../../interfaces/grid.interface";

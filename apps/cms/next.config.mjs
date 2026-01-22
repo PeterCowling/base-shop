@@ -278,10 +278,7 @@ const nextConfig = {
       }
     });
 
-    const sharedUtilsPinoSymlink = path.resolve(
-      __dirname,
-      "../../packages/shared-utils/node_modules/pino",
-    );
+    const libPinoSymlink = path.resolve(__dirname, "../../packages/lib/node_modules/pino");
 
     // Turbopack keeps `resolve.symlinks` disabled for better pnpm support, but
     // that prevents it from following the symlinked copy of `pino` to the
@@ -289,8 +286,8 @@ const nextConfig = {
     // and Node bundles can resolve them without needing to mutate pnpm's lock
     // file during development.
 
-    if (existsSync(sharedUtilsPinoSymlink)) {
-      const pinoRealDir = realpathSync(sharedUtilsPinoSymlink);
+    if (existsSync(libPinoSymlink)) {
+      const pinoRealDir = realpathSync(libPinoSymlink);
       const pinoDepsRoot = path.dirname(pinoRealDir);
       const pinoRuntimeDeps = [
         "atomic-sleep",

@@ -118,7 +118,7 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
         onDragMove={dndContext.onDragMove || (() => {})}
         onDragEnd={dndContext.onDragEnd || (() => {})}
       >
-        {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: layout container consumes computed inline styles from builder state */}
+        { }
         <div className="flex gap-4 min-h-0" style={style}>
           <PageBuilderTour {...tourProps} />
           <PageBuilderLeftPanel

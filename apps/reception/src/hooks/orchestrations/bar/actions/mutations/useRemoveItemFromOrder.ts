@@ -4,8 +4,8 @@
    to be called with zero arguments. Also remain fully typed to avoid `any`.
    ------------------------------------------------------------------ */
 
-import { get, ref, remove, set } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { get, ref, remove, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
 

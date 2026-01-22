@@ -1,6 +1,7 @@
 import { act,renderHook } from "@testing-library/react";
 
-import usePageBuilderControls from "../hooks/usePageBuilderControls";
+import usePageBuilderControls from "@acme/ui/hooks/usePageBuilderControls";
+
 import { STATUS } from "../PageBuilderTour";
 
 describe("usePageBuilderControls", () => {

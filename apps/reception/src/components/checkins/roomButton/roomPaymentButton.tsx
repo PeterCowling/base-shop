@@ -1,8 +1,8 @@
 // File: /src/components/checkins/roomButton/roomPaymentButton.tsx
 
 import {
-  MouseEvent,
   memo,
+  type MouseEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -12,21 +12,21 @@ import {
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
 import useFinancialsRoomMutations from "../../../hooks/mutations/useFinancialsRoomMutations";
-import { CheckInRow } from "../../../types/component/CheckinRow";
-import { Bookings } from "../../../types/domains/booking_old";
-import {
-  FinancialsRoomData,
-  RoomTransaction,
-} from "../../../types/hooks/data/financialsRoomData";
-import { getItalyIsoString } from "../../../utils/dateUtils";
-import { generateTransactionId } from "../../../utils/generateTransactionId";
-import { showToast } from "../../../utils/toastUtils";
-import PaymentForm from "./PaymentForm";
-
+import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type {
   PaymentSplit,
   PaymentType,
 } from "../../../types/component/roomButton/types";
+import { type Bookings } from "../../../types/domains/booking_old";
+import {
+  type FinancialsRoomData,
+  type RoomTransaction,
+} from "../../../types/hooks/data/financialsRoomData";
+import { getItalyIsoString } from "../../../utils/dateUtils";
+import { generateTransactionId } from "../../../utils/generateTransactionId";
+import { showToast } from "../../../utils/toastUtils";
+
+import PaymentForm from "./PaymentForm";
 
 /**
  * Safely computes the outstanding amount given a financials object.
@@ -304,7 +304,7 @@ function RoomPaymentButton({ booking }: RoomPaymentButtonProps) {
         }
         showToast("Room payment successful!", "success");
         setPaymentComplete(true);
-      } catch (err) {
+      } catch {
         showToast("Error confirming room payment.", "error");
       } finally {
         setButtonDisabled(false);

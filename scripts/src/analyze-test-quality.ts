@@ -14,7 +14,7 @@
  *   pnpm analyze-test-quality packages/config    # Analyze by path
  */
 
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 
 // ============================================================================

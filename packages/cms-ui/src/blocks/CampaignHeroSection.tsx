@@ -3,10 +3,9 @@
 import * as React from "react";
 
 import { getTimeRemaining,parseTargetDate } from "@acme/date-utils";
-
-import ExperimentGate from "../../ab/ExperimentGate";
-import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
-import { Stack } from "../../atoms/primitives/Stack";
+import { Grid as GridPrimitive } from "@acme/design-system/primitives/Grid";
+import { Stack } from "@acme/design-system/primitives/Stack";
+import ExperimentGate from "@acme/ui/components/ab/ExperimentGate";
 
 import { Image as DSImage } from "./atoms";
 import CountdownTimer from "./CountdownTimer";

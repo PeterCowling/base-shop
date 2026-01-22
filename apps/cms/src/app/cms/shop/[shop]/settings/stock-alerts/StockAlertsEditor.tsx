@@ -8,11 +8,10 @@ import {
 } from "react";
 import { updateStockAlert } from "@cms/actions/shops.server";
 
+import { Toast } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n/Translations";
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Toast } from "@/components/atoms";
-import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
 
 import { ErrorChips } from "../components/ErrorChips";
 import {

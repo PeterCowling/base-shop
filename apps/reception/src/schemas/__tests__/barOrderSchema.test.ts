@@ -1,6 +1,7 @@
 
 import "@testing-library/jest-dom";
-import { barOrderSchema, type BarOrder } from "../barOrderSchema";
+
+import { type BarOrder,barOrderSchema } from "../barOrderSchema";
 import { salesOrderItemSchema } from "../salesOrderSchema";
 
 describe("barOrderSchema", () => {

@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
+import useStyleClipboardActions from "@acme/ui/components/cms/page-builder/hooks/useStyleClipboardActions";
 
 jest.mock("../style/styleClipboard", () => ({
   __esModule: true,

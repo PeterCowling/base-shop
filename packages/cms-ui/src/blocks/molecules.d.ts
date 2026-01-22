@@ -1,5 +1,5 @@
 import type { Locale } from "@acme/i18n/locales";
-import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
+import type { CategoryCollectionTemplateProps } from "@acme/ui/components/templates/CategoryCollectionTemplate";
 export interface NewsletterFormProps {
     action?: string;
     method?: string;

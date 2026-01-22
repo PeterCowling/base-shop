@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import { CalendarCheck, CalendarClock, CalendarX } from "lucide-react";
-import { Grid } from "@acme/ui/components/atoms/primitives";
+
+import { Grid } from "@acme/design-system/primitives";
 import { MetricsCard } from "@acme/ui/operations";
 
 import { useAuth } from "../../context/AuthContext";
@@ -10,6 +11,7 @@ import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTra
 import { useCheckins } from "../../hooks/data/useCheckins";
 import { useCheckouts } from "../../hooks/data/useCheckouts";
 import { addDays, formatItalyDate, getLocalToday, getLocalYyyyMmDd } from "../../utils/dateUtils";
+
 import { DashboardMetrics } from "./DashboardMetrics";
 import { DashboardQuickActions } from "./DashboardQuickActions";
 

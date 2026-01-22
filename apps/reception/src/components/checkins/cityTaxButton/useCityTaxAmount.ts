@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import useComputeOutstandingCityTax from "./useComputeOutstandingCityTax";
 import useCityTax from "../../../hooks/data/useCityTax";
-import { PayType } from "../../../types/domains/cityTaxDomain";
-import { CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
+import { type PayType } from "../../../types/domains/cityTaxDomain";
+import { type CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
+
+import useComputeOutstandingCityTax from "./useComputeOutstandingCityTax";
 
 /**
  * Client hook that combines:

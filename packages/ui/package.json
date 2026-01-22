@@ -18,6 +18,10 @@
       "types": "./dist/components/atoms/index.d.ts",
       "import": "./dist/components/atoms/index.js"
     },
+    "./atoms/*": {
+      "types": "./dist/atoms/*.d.ts",
+      "import": "./dist/atoms/*.js"
+    },
     "./components/cms/blocks/CollectionSection.server": {
       "types": "./dist/components/cms/blocks/CollectionSection.server.d.ts",
       "import": "./dist/components/cms/blocks/CollectionSection.server.js"
@@ -255,14 +259,6 @@
       "import": "./dist/components/templates/*.js"
     },
     "./components/*.json": "./dist/components/*.json",
-    "./atoms": {
-      "types": "./dist/atoms/index.d.ts",
-      "import": "./dist/atoms/index.js"
-    },
-    "./atoms/*": {
-      "types": "./dist/atoms/*.d.ts",
-      "import": "./dist/atoms/*.js"
-    },
     "./molecules": {
       "types": "./dist/molecules/index.d.ts",
       "import": "./dist/molecules/index.js"
@@ -332,7 +328,15 @@
       "types": "./dist/lib/*.d.ts",
       "import": "./dist/lib/*.js"
     },
-    "./locales/*": "./dist/locales/*"
+    "./locales/*": "./dist/locales/*",
+    "./story-utils/*": {
+      "types": "./dist/story-utils/*.d.ts",
+      "import": "./dist/story-utils/*.js"
+    },
+    "./home/*": {
+      "types": "./dist/components/home/*.d.ts",
+      "import": "./dist/components/home/*.js"
+    }
   },
   "scripts": {
     "build": "tsc -b",

@@ -52,7 +52,7 @@ jest.mock("@/components/cms/ProductPageBuilder", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   const MockToast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
   MockToast.displayName = "MockToast";
@@ -62,7 +62,7 @@ jest.mock("@acme/ui/components/atoms", () => {
   };
 });
 
-jest.mock("@acme/ui/components/atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
   const MockButton = ({ children, onClick, ...props }: any) => (
     <button onClick={onClick} {...props}>{children}</button>

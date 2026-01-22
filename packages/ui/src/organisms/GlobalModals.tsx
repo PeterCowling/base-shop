@@ -11,13 +11,12 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 
-import hotel from "@acme/ui/config/hotel";
-import { useModal } from "@acme/ui/context/ModalContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { type AppLanguage,i18nConfig } from "@acme/ui/i18n.config";
-import { getDatePlusTwoDays } from "@acme/ui/utils/dateUtils";
-
+import hotel from "../config/hotel";
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel, resolveSharedToken } from "../shared";
+import { getDatePlusTwoDays } from "../utils/dateUtils";
 
 import type {
   BookingGuestOption,

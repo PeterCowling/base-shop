@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import CompScreen from "../CompScreen";
 
 // hoisted mocks to avoid ReferenceError when mocking
 const useActivitiesByCodeDataMock = jest.fn();
@@ -32,8 +35,6 @@ jest.mock("../ModalPreorderDetails", () => ({
     <div data-testid="modal">{JSON.stringify(preorder)}</div>
   ),
 }));
-
-import CompScreen from "../CompScreen";
 
 describe("CompScreen preorder modal", () => {
   afterEach(() => {

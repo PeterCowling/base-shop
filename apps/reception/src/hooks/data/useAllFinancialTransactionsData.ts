@@ -1,7 +1,8 @@
 // File: /src/hooks/data/useAllFinancialTransactionsData.ts
 
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,13 +11,12 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { financialTransactionSchema } from "../../schemas/financialTransactionSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
-  AllFinancialTransactions,
-  FinancialTransaction,
+  type AllFinancialTransactions,
+  type FinancialTransaction,
 } from "../../types/hooks/data/allFinancialTransaction";
 /**
  * A pure data hook that reads the full /allFinancialTransactions node.
@@ -72,7 +72,7 @@ export default function useAllFinancialTransactionsData({
         for (const [key, value] of Object.entries(raw)) {
           const parsed = financialTransactionSchema.safeParse(value);
           if (parsed.success) {
-            valid[key] = parsed.data;
+            valid[key] = parsed.data as FinancialTransaction;
           } else {
             errs.push(parsed.error);
           }

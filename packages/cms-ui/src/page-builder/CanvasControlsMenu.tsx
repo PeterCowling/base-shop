@@ -1,9 +1,9 @@
 // packages/ui/src/components/cms/page-builder/CanvasControlsMenu.tsx
 "use client";
 
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "@acme/design-system/atoms";
 
 import GridSettings from "./GridSettings";
 

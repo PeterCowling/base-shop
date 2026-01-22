@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { ccReceiptConfirmationSchema } from "../ccReceiptConfirmationSchema";
 
 describe("ccReceiptConfirmationSchema", () => {

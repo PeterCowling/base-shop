@@ -1,4 +1,4 @@
-import { Database, push, ref, set } from "firebase/database";
+import { type Database, push, ref, set } from "firebase/database";
 
 import { getItalyIsoString } from "../utils/dateUtils";
 

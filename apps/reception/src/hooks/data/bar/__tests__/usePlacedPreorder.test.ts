@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { renderHook, waitFor } from "@testing-library/react";
+
+import { usePlacedPreorder } from "../usePlacedPreorder";
 
 const getMock = jest.fn();
 const refMock = jest.fn((..._args: unknown[]) => ({}));
@@ -13,8 +16,6 @@ jest.mock("firebase/database", () => ({
   ref: (...args: unknown[]) => refMock(...args),
   get: (...args: unknown[]) => getMock(...args),
 }));
-
-import { usePlacedPreorder } from "../usePlacedPreorder";
 
 function snap(val: unknown) {
   return {

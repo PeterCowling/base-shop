@@ -2,8 +2,8 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import type { Locale } from "@acme/i18n/locales";
-
 import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
+
 import HistoryControls from "../HistoryControls";
 import PageToolbar from "../PageToolbar";
 

@@ -1,8 +1,9 @@
 /* src/components/reports/SafeTableSection.tsx */
 import React from "react";
 
-import { SafeTable, type Column } from "./SafeTable";
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
+
+import { type Column,SafeTable } from "./SafeTable";
 
 interface SafeTableSectionProps {
   title: string;

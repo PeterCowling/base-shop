@@ -1,8 +1,9 @@
 // src/components/bar/Bar.tsx
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { type FC, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
-import { ScreenType } from "../../types/bar/BarTypes";
+import { type ScreenType } from "../../types/bar/BarTypes";
+
 import CompScreenComponent from "./CompScreen";
 import HeaderControls from "./HeaderControls";
 import OrderTakingContainer from "./orderTaking/OrderTakingContainer";

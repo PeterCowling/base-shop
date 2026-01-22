@@ -1,5 +1,5 @@
 // src/components/booking/DirectBookingPerks.tsx
-import { memo, useId, useMemo } from "react";
+import React, { memo, useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
@@ -15,7 +15,7 @@ interface Props {
   lang?: string;
 }
 
-type SectionProps = JSX.IntrinsicElements["section"];
+type SectionProps = React.ComponentProps<"section">;
 const SECTION_BASE_CLASS = ["mx-auto", "w-full"] as const;
 function Section({ className, ...props }: SectionProps): JSX.Element {
   return <section className={clsx(SECTION_BASE_CLASS, className)} {...props} />;

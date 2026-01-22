@@ -1,4 +1,4 @@
-/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex -- PB-0001: handle overlays an absolutely positioned canvas and is editor-only */
+ 
 "use client";
 
 type Props = {

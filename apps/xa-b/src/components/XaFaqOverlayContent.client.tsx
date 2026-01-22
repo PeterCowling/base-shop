@@ -9,7 +9,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
 
 type QaItem = {
   question: string;

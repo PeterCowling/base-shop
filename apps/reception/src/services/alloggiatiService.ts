@@ -5,7 +5,7 @@
 
 import { z } from "zod";
 
-import { AlloggiatiResultDetail } from "../utils/parseAlloggiatiResponse";
+import { type AlloggiatiResultDetail } from "../utils/parseAlloggiatiResponse";
 
 const GASResponseItemSchema = z.object({
   recordNumber: z.string(),

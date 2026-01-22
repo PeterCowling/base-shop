@@ -1,6 +1,6 @@
+import { memo, useState } from "react";
 import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo, useState } from "react";
 
 import BookingNotesModal from "./BookingNotesModal";
 

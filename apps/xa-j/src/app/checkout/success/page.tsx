@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Button } from "@acme/ui/components/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Button } from "@acme/design-system/atoms";
 
 import { findOrderByNumber } from "../../../lib/ordersStore";
 

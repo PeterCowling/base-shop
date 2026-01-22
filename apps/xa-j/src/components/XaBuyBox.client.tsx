@@ -7,8 +7,8 @@ import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
-import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/ui/components/atoms";
-import { PriceCluster } from "@acme/ui/components/molecules";
+import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
+import { PriceCluster } from "@acme/design-system/molecules";
 
 import { XA_PRODUCTS } from "../lib/demoData";
 import type { XaProduct } from "../lib/demoData";

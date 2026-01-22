@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import type { Guest } from "../../../types/component/bookingSearch";
+import BookingSearchTable from "../BookingSearchTable";
 
 /* eslint-disable no-var */
 var extDataMock: jest.Mock;
@@ -37,9 +41,6 @@ jest.mock("../../../hooks/data/useActivitiesData", () => {
     default: (...args: unknown[]) => activitiesMock(...args),
   };
 });
-
-import BookingSearchTable from "../BookingSearchTable";
-import type { Guest } from "../../../types/component/bookingSearch";
 
 describe("BookingSearchTable", () => {
   beforeEach(() => {

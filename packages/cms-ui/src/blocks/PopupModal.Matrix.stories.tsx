@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, userEvent, within } from '@storybook/test';
 import { z } from 'zod';
 
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import PopupModal from './PopupModal';
 import fixture from './PopupModal.fixtures.json';

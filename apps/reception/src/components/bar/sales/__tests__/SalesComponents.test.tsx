@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import type { SalesOrder } from "../../../../types/bar/BarTypes";
 
+import { render, screen } from "@testing-library/react";
+
+import type { SalesOrder } from "../../../../types/bar/BarTypes";
 import SalesScreen from "../SalesScreen";
 import Ticket from "../Ticket";
 import TicketItems from "../TicketItems";

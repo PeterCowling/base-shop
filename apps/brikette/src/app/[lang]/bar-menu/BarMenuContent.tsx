@@ -5,7 +5,7 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { BASE_URL } from "@/config/site";

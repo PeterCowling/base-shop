@@ -1,6 +1,6 @@
 import { act,renderHook } from "@testing-library/react";
 
-import usePageBuilderControls from "../hooks/usePageBuilderControls";
+import usePageBuilderControls from "@acme/ui/hooks/usePageBuilderControls";
 
 describe("usePageBuilderControls – extras", () => {
   const base = { gridCols: 12, breakpoints: [{ id: "sm", label: "Small", min: 360 }, { id: "lg", label: "Large", max: 1280 }] } as any;

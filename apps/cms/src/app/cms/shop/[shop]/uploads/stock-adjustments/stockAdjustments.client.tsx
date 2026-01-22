@@ -1,15 +1,15 @@
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- COM-0001 [ttl=2026-12-31] MVP stock adjustment UI pending DS refactor */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind, max-lines-per-function -- COM-0001 [ttl=2026-12-31] MVP stock adjustment UI pending DS refactor */
 
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getCsrfToken } from "@acme/lib/security";
 import type {
   StockAdjustmentEvent,
   StockAdjustmentReport,
 } from "@acme/platform-core/types/stockAdjustments";
-import { getCsrfToken } from "@acme/lib/security";
 
 import {
   Button,

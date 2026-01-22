@@ -9,7 +9,7 @@ jest.mock("next/navigation", () => ({ __esModule: true, usePathname: () => "/cms
 jest.mock("@acme/lib/shop", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
 jest.mock("../../style/Tokens", () => ({ __esModule: true, default: ({ onRenameToken }: any) => <button onClick={() => onRenameToken("--color.brand", "--color.primary")}>Rename token</button> }));
 jest.mock("../ColorThemeSelector", () => ({ __esModule: true, default: () => <div /> }));
-jest.mock("../../../atoms/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
+jest.mock("@acme/design-system/shadcn", () => ({ __esModule: true, DialogContent: ({ children }: any) => <div>{children}</div>, DialogTitle: ({ children }: any) => <div>{children}</div> }));
 
 describe("ThemePanel rename conflict cancel", () => {
   beforeEach(() => {

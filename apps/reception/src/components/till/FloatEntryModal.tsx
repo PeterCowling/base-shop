@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from "react";
 import { z } from "zod";
+
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
@@ -59,7 +60,7 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-error-main"
+            className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full bg-error-main text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
           >
             &times;
           </button>
@@ -74,7 +75,7 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
             <input
               type="number"
               inputMode="decimal"
-              className="w-60  rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
+              className="w-60 rounded border px-3 py-2 text-sm focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main dark:bg-darkBg dark:text-darkAccentGreen"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}

@@ -1,8 +1,8 @@
 // File: src/components/prepare/CleaningPriorityTable.tsx
 
-import { FC, memo } from "react";
+import { type FC, memo } from "react";
 
-import { Cleanliness } from "../../types/hooks/data/roomStatusData";
+import { type Cleanliness } from "../../types/hooks/data/roomStatusData";
 
 /**
  * Each table row includes a room number, occupant count,
@@ -93,7 +93,7 @@ const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
                       color={isDirty ? "red" : "green"}
                     />
                     {isToday && isDirty && (
-                      <span className="ml-2 text-red-500 font-semibold">
+                      <span className="ms-2 text-red-500 font-semibold">
                         (Needs cleaning)
                       </span>
                     )}

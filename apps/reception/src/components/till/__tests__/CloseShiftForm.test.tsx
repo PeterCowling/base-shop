@@ -1,8 +1,12 @@
 import "@testing-library/jest-dom";
+
+import { useState } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+
+import { DISCREPANCY_LIMIT } from "../../../constants/cash";
 import PinInput from "../../common/PinInput";
+import { CloseShiftForm } from "../CloseShiftForm";
 
 jest.mock("../../common/PinEntryModal", () => ({
   __esModule: true,
@@ -56,9 +60,6 @@ jest.mock("../../../constants/settings", () => ({
     tillMaxLimit: 2000,
   },
 }));
-
-import { CloseShiftForm } from "../CloseShiftForm";
-import { DISCREPANCY_LIMIT } from "../../../constants/cash";
 
 beforeEach(() => {
   localStorage.clear();

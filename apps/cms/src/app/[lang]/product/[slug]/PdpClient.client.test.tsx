@@ -21,7 +21,7 @@ jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => ({
   default: () => <div data-testid="image-gallery" />,
 }));
 
-jest.mock("@acme/ui/components/atoms/Price", () => ({
+jest.mock("@acme/design-system/atoms/Price", () => ({
   __esModule: true,
   Price: ({ amount }: any) => <span>{amount}</span>,
 }));

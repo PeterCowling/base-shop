@@ -4,9 +4,9 @@ import { useContext, useMemo } from "react";
 import Image from "next/image";
 import { z } from "zod";
 
+import { Button, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import { ImagePicker } from "@acme/page-builder-ui";
-import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 
 import type { ConfiguratorStepProps } from "@/types/configurator";
 

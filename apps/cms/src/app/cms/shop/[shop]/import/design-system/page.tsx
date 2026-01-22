@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
+import { Progress } from "@acme/design-system/atoms";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import { track } from "@acme/telemetry";
-import { Button, Card, CardContent, Progress } from "@acme/ui/components/atoms";
 
 export default function DesignSystemImportPage() {
   const params = useParams<{ shop: string }>();

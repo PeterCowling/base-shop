@@ -1,5 +1,5 @@
 // src/types/components/AutoComplete.ts
-import React from "react";
+import type React from "react";
 
 export interface AutoCompleteProps {
   /** An optional id for the input (helps with label accessibility) */

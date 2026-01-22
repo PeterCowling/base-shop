@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-import { Ticket } from "../../../types/bar/BarTypes";
+import { type Ticket } from "../../../types/bar/BarTypes";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
 /**

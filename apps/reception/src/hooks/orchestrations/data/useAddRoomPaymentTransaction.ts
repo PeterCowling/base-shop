@@ -1,15 +1,15 @@
 // src/hooks/orchestrations/data/useAddRoomPaymentTransaction.ts
-import { ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
+import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../services/useFirebase";
 import {
-  FinancialsRoom,
-  FinancialsRoomData,
+  type FinancialsRoom,
+  type FinancialsRoomData,
 } from "../../../types/hooks/data/financialsRoomData";
-import { RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
-import { generateTransactionId } from "../../../utils/generateTransactionId";
+import { type RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
 import { getCurrentIsoTimestamp } from "../../../utils/dateUtils";
+import { generateTransactionId } from "../../../utils/generateTransactionId";
 import useAllTransactions from "../../mutations/useAllTransactionsMutations";
 
 /**

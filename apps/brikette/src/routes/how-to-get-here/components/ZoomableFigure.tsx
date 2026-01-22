@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/primitives";
 
 import { CfImage } from "@/components/images/CfImage";
 

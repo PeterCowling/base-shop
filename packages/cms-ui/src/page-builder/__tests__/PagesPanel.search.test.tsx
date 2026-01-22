@@ -3,7 +3,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 
 import PagesPanel from "../PagesPanel";
 
-jest.mock("../../../atoms/primitives/drawer", () => ({
+jest.mock("@acme/design-system/primitives/drawer", () => ({
   __esModule: true,
   Drawer: ({ children, open }: any) => (open ? <div>{children}</div> : null),
   DrawerPortal: ({ children }: any) => <div>{children}</div>,
@@ -11,7 +11,7 @@ jest.mock("../../../atoms/primitives/drawer", () => ({
   DrawerTitle: ({ children }: any) => <div>{children}</div>,
   DrawerDescription: ({ children }: any) => <div>{children}</div>,
 }));
-jest.mock("../../../atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
+jest.mock("@acme/design-system/atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
 
 describe("PagesPanel search filter", () => {
   beforeEach(() => {

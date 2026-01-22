@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import EntryDialog from "../EntryDialogue";
 
 describe("EntryDialog", () => {

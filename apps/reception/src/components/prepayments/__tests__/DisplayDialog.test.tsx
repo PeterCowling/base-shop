@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import DisplayDialog from "../DisplayDialogue";
 
 jest.mock("../MarkAsPaidButton", () => ({
   __esModule: true,
@@ -13,8 +16,6 @@ jest.mock("../MarkAsFailedButton", () => ({
     <button onClick={onSuccess}>failed</button>
   ),
 }));
-
-import DisplayDialog from "../DisplayDialogue";
 
 describe("DisplayDialog", () => {
   const baseBooking = {

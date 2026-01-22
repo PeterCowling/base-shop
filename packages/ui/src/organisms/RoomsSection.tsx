@@ -5,16 +5,15 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { useModal } from "@acme/ui/context/ModalContext";
-import { roomsData } from "@acme/ui/data/roomsData";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { getDatePlusTwoDays, getTodayIso } from "@acme/ui/utils/dateUtils";
-
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
+import { useModal } from "../context/ModalContext";
+import { roomsData } from "../data/roomsData";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
+import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
   const fallbackLang = useCurrentLanguage();

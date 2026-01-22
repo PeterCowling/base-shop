@@ -94,7 +94,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
               aria-labelledby="cms-theme-label"
               checked={isDark}
               onChange={(e) => {
-                const next = e.currentTarget.checked ? "dark" : "base";
+                const next = e.currentTarget.checked ? "dark" : "light";
                 try {
                   localStorage.setItem("theme", next);
                 } catch {}

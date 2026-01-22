@@ -1,11 +1,6 @@
-export interface CCReceiptIrregularity {
-  user: string;
-  timestamp: string;
-  action: "reconcile" | "close";
-  missingCount: number;
-}
+import type {
+  CCReceiptIrregularities,
+  CCReceiptIrregularity,
+} from "../../../schemas/ccReceiptIrregularitySchema";
 
-export type CCReceiptIrregularities = Record<
-  string,
-  CCReceiptIrregularity
-> | null;
+export type { CCReceiptIrregularities, CCReceiptIrregularity };

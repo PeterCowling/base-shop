@@ -1,6 +1,7 @@
 "use client";
 
 import { Inline, Stack } from "@acme/design-system/primitives";
+
 import type { ComponentType } from "../defaults";
 import type { PaletteMeta } from "../palette.types";
 import { defaultIcon } from "../paletteData";

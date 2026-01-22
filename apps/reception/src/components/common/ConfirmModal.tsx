@@ -4,7 +4,8 @@ import {
   ExclamationTriangleIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
-import { Cluster } from "@acme/ui/components/atoms/primitives";
+
+import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 export type ConfirmVariant = "default" | "danger";

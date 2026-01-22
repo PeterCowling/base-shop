@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import MapBlockEditor from "../MapBlockEditor";
 
-jest.mock("../../../atoms/shadcn", () => ({
+jest.mock("@acme/design-system/shadcn", () => ({
   __esModule: true,
   // Omit non-DOM props like labelSuffix to avoid warnings
   Input: ({ label, labelSuffix: _labelSuffix, ...props }: any) => {

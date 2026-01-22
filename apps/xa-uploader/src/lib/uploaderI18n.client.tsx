@@ -3,8 +3,8 @@
 import * as React from "react";
 
 import {
-  UPLOADER_DEFAULT_LOCALE,
   getUploaderMessage,
+  UPLOADER_DEFAULT_LOCALE,
   type UploaderLocale,
   type UploaderMessageKey,
 } from "./uploaderI18n";

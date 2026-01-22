@@ -1,9 +1,9 @@
 import * as React from "react";
-import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "@jest/globals";
+import { act, renderHook } from "@testing-library/react";
 
-import { useWishlist, WishlistProvider } from "../XaWishlistContext";
 import type { XaProduct } from "../../lib/demoData";
+import { useWishlist, WishlistProvider } from "../XaWishlistContext";
 
 const makeProduct = (id: string): XaProduct => ({
   id,

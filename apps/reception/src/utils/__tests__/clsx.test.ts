@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import clsx from "../clsx";
 
 describe("clsx", () => {

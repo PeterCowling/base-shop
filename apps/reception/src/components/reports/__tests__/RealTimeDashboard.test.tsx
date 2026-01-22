@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import RealTimeDashboard from "../RealTimeDashboard";
 
 jest.mock("../../../hooks/data/useAllFinancialTransactionsData", () => ({
   __esModule: true,
@@ -49,8 +52,6 @@ jest.mock("chart.js", () => ({
   Chart: { register: jest.fn() },
   registerables: [],
 }));
-
-import RealTimeDashboard from "../RealTimeDashboard";
 
 describe("RealTimeDashboard", () => {
   afterEach(() => {

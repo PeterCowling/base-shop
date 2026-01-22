@@ -2,10 +2,10 @@
 import "server-only";
 
 import { requirePermission } from "@acme/auth";
+import Section from "@acme/cms-ui/blocks/Section";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { listSectionHistory } from "@acme/platform-core/repositories/sections/sections.json.server";
 import type { SectionTemplate } from "@acme/types";
-import Section from "@acme/ui/components/cms/blocks/Section";
 
 export const dynamic = "force-dynamic";
 

@@ -1,4 +1,3 @@
-import { DataSnapshot, off, onValue, ref } from "firebase/database";
 import React, {
   createContext,
   useCallback,
@@ -8,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { type DataSnapshot, off, onValue, ref } from "firebase/database";
 
 import { useFirebaseDatabase } from "../services/useFirebase";
 

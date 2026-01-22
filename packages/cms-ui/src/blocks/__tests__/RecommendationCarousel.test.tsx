@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 
 import CmsRecommendationCarousel, { getRuntimeProps } from "../RecommendationCarousel";
 
-jest.mock("../../../organisms/RecommendationCarousel", () => {
+jest.mock("@acme/ui/components/organisms/RecommendationCarousel", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -14,7 +14,7 @@ jest.mock("@acme/platform-core/products/index", () => ({
   PRODUCTS: [{ id: "1" }, { id: "2" }],
 }));
 
-const { RecommendationCarousel: MockCarousel } = require("../../../organisms/RecommendationCarousel") as {
+const { RecommendationCarousel: MockCarousel } = require("@acme/ui/components/organisms/RecommendationCarousel") as {
   RecommendationCarousel: jest.Mock;
 };
 

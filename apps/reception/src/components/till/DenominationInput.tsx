@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 
-import { Denomination, DENOMINATIONS } from "../../types/component/Till";
+import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
 
 export interface DenominationInputProps {
   denomCounts: number[];

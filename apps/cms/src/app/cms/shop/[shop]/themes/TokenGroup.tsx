@@ -3,9 +3,9 @@
 import type { MutableRefObject } from "react";
 import clsx from "clsx";
 
+import { Grid as DSGrid } from "@acme/design-system/primitives/Grid";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n/Translations";
-import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
-import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 import { hslToHex, isHex, isHsl } from "@acme/ui/utils/colorUtils";
 
 import OverrideField from "./OverrideField";

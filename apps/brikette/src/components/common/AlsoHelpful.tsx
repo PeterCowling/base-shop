@@ -1,5 +1,5 @@
 // src/components/common/AlsoHelpful.tsx
-import { memo, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
@@ -38,13 +38,13 @@ function normaliseForAria(value: unknown): string {
   return joined.replace(/\s+/g, " ").replace(/[\s,.;:]+$/, "").trim();
 }
 
-type SectionProps = JSX.IntrinsicElements["section"];
+type SectionProps = React.ComponentProps<"section">;
 const SECTION_BASE_CLASSES = ["mx-auto", "mt-16", "max-w-5xl", "px-4", "sm:px-6", "lg:px-0"] as const;
 function Section({ className, ...props }: SectionProps): JSX.Element {
   return <section className={clsx(SECTION_BASE_CLASSES, className)} {...props} />;
 }
 
-type GridProps = JSX.IntrinsicElements["ul"];
+type GridProps = React.ComponentProps<"ul">;
 const GRID_BASE_CLASSES = ["grid", "sm:grid-cols-2", "lg:grid-cols-3"] as const;
 function Grid({ className, ...props }: GridProps): JSX.Element {
   return <ul className={clsx(GRID_BASE_CLASSES, className)} {...props} />;

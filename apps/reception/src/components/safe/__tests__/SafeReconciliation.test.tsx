@@ -1,8 +1,12 @@
 /* eslint-disable no-var */
 import "@testing-library/jest-dom";
+
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+
+import { SafeDataProvider } from "../../../context/SafeDataContext";
+import SafeReconciliation from "../SafeReconciliation";
 
 // mock placeholders
 var recordReconcile: jest.Mock;
@@ -99,9 +103,6 @@ jest.mock("../BankDepositForm", () => ({
     </button>
   ),
 }));
-
-import SafeReconciliation from "../SafeReconciliation";
-import { SafeDataProvider } from "../../../context/SafeDataContext";
 
 describe("SafeReconciliation", () => {
   beforeEach(() => {

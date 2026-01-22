@@ -79,7 +79,7 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
   return (
     <div className="pointer-events-none relative inset-0" data-cy={DATA_CY_RULERS_OVERLAY}>
       <div className="absolute inset-0">
-        {/* eslint-disable react/forbid-dom-props -- PB-2419 PB-UI: dynamic repeating-linear-gradient requires inline style */}
+        { }
         <div
         aria-hidden
         className="absolute start-0 end-0 h-5"
@@ -87,8 +87,8 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
           backgroundImage: `repeating-linear-gradient(to right, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to right, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
         />
-        {/* eslint-enable react/forbid-dom-props */}
-        {/* eslint-disable react/forbid-dom-props -- PB-2419 PB-UI: dynamic repeating-linear-gradient requires inline style */}
+        { }
+        { }
         <div
         aria-hidden
         className="absolute top-0 bottom-0 w-5"
@@ -96,16 +96,16 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
           backgroundImage: `repeating-linear-gradient(to bottom, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to bottom, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
         />
-        {/* eslint-enable react/forbid-dom-props */}
+        { }
       {/* Label every 100px */}
         {labelsX.map((x) => (
-          // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic left offset for ruler labels
+           
           <div key={`lx-${x}`} className="absolute top-0 text-xs text-muted-foreground" style={{ left: x + 2 }}>
             {x}
           </div>
         ))}
         {labelsY.map((y) => (
-          // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic top offset for ruler labels
+           
           <div key={`ly-${y}`} className="absolute start-0 text-xs text-muted-foreground" style={{ top: y + 2 }}>
             {y}
           </div>
@@ -113,14 +113,14 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
         {safeWidth != null && safeLeft != null && safeWidth > 0 && (
           <div aria-hidden className="absolute inset-y-0">
             {/* Unsafe zones tint */}
-            {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
+            { }
             <div className="bg-destructive/100/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
-            {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
+            { }
             <div className="bg-destructive/100/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
             {/* Safe zone */}
             <div
               className="bg-primary/5 absolute inset-y-0 border-x border-primary/40"
-              // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic left/width for safe zone overlay
+               
               style={{ left: safeLeft, width: safeWidth }}
             />
             <div

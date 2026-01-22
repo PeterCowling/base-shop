@@ -45,7 +45,8 @@ export async function GET(
 
     return NextResponse.json(result);
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/pages] GET error:", err);
+    return NextResponse.json({ error: "Failed to fetch pages" }, { status: 400 });
   }
 }
 
@@ -85,6 +86,7 @@ export async function POST(
     if (result.errors) return NextResponse.json({ errors: result.errors }, { status: 400 });
     return NextResponse.json(result.page as Page, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    console.error("[api/pages] POST error:", err);
+    return NextResponse.json({ error: "Failed to create page" }, { status: 400 });
   }
 }

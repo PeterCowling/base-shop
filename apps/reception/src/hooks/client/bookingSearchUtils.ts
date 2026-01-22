@@ -1,12 +1,12 @@
-import { Activity, Activities } from "../../types/hooks/data/activitiesData";
 import { ActivityCode } from "../../constants/activities";
+import { type BookingSearchRow } from "../../types/component/bookingSearch";
+import { type Activities,type Activity } from "../../types/hooks/data/activitiesData";
 import type { FirebaseBookingOccupant, FirebaseBookings } from "../../types/hooks/data/bookingsData";
-import { FinancialsRoom, FinancialsRoomData, RoomTransaction } from "../../types/hooks/data/financialsRoomData";
-import { GuestsDetails } from "../../types/hooks/data/guestDetailsData";
-import { Checkins } from "../../types/hooks/data/checkinData";
-import { Checkouts } from "../../types/hooks/data/checkoutsData";
-import { GuestByRoom } from "../../types/hooks/data/guestByRoomData";
-import { BookingSearchRow } from "../../types/component/bookingSearch";
+import { type Checkins } from "../../types/hooks/data/checkinData";
+import { type Checkouts } from "../../types/hooks/data/checkoutsData";
+import { type FinancialsRoom, type FinancialsRoomData, type RoomTransaction } from "../../types/hooks/data/financialsRoomData";
+import { type GuestByRoom } from "../../types/hooks/data/guestByRoomData";
+import { type GuestsDetails } from "../../types/hooks/data/guestDetailsData";
 
 /** Priority mapping for determining the highest-priority code in a set of activities. */
 const ACTIVITY_PRIORITY: Record<number, number> = {

@@ -1,10 +1,12 @@
 // File: /src/hooks/data/useSingleGuestDetails.ts
 
-import { ref, update } from "firebase/database";
 import { useCallback, useMemo, useState } from "react";
+import { ref, update } from "firebase/database";
+
 import { occupantDetailsSchema } from "../../schemas/occupantDetailsSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+import { type OccupantDetails } from "../../types/hooks/data/guestDetailsData";
+
 import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**

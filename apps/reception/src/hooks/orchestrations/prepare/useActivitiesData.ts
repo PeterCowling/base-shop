@@ -1,9 +1,11 @@
 /* File: src/hooks/orchestrations/prepare/useActivitiesData.ts */
 
 import React from "react";
+
 import { activitySchema } from "../../../schemas/activitySchema";
-import {
+import type {
   Activities,
+  Activity,
   ActivityData,
 } from "../../../types/hooks/data/activitiesData";
 import useFirebaseSubscription from "../../data/useFirebaseSubscription";
@@ -38,7 +40,7 @@ export function useActivitiesData() {
         ([id, a]) => {
           const res = activitySchema.safeParse(a);
           if (res.success) {
-            actMap[id] = res.data;
+            actMap[id] = res.data as Activity;
           } else {
             setError(res.error);
           }

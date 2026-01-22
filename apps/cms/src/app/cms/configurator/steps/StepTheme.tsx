@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Cluster } from "@acme/ui/components/atoms/primitives";
-import { Button } from "@acme/ui/components/atoms/shadcn";
+import { Cluster } from "@acme/design-system/primitives";
+import { Button } from "@acme/design-system/shadcn";
 
 import type { ConfiguratorStepProps } from "@/types/configurator";
 

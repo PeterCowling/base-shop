@@ -1,6 +1,7 @@
 // File: /src/components/search/ConfirmCancelModal.tsx
 import { memo, useCallback, useState } from "react";
-import { XMarkIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { ExclamationTriangleIcon,XMarkIcon } from "@heroicons/react/24/solid";
+
 import { SimpleModal } from "@acme/ui/molecules";
 
 interface ConfirmCancelModalProps {

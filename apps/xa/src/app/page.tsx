@@ -3,9 +3,9 @@ import Link from "next/link";
 import type { SVGProps } from "react";
 import { ChatBubbleIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Button } from "@acme/ui/components/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Button } from "@acme/design-system/atoms";
 
 import { XaFadeImage } from "../components/XaFadeImage";
 import { XaProductCard } from "../components/XaProductCard";

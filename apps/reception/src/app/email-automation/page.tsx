@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import EmailProgress from "@/components/emailAutomation/EmailProgress";
+import Providers from "@/components/Providers";
 
 export default function EmailAutomationPage() {
   return (

@@ -8,8 +8,8 @@ import { readRbac } from "@cms/lib/server/rbacStore";
 
 import type { Permission } from "@acme/auth";
 import { PERMISSIONS } from "@acme/auth/types/permissions";
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import { Button } from "@/components/atoms/shadcn";
 

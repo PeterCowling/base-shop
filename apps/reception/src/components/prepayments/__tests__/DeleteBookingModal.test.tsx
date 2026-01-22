@@ -1,15 +1,16 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
+
 import React from "react";
+import { render } from "@testing-library/react";
+
+import type { PrepaymentData } from "../../../hooks/client/checkin/usePrepaymentData";
+import DeleteBookingModal from "../DeleteBookingModal";
 
 // Mock the deletion hook to avoid AuthContext dependency
 jest.mock("../../../hooks/mutations/useDeleteBooking", () => ({
   __esModule: true,
   default: () => ({ deleteBooking: jest.fn(), loading: false, error: null }),
 }));
-
-import DeleteBookingModal from "../DeleteBookingModal";
-import type { PrepaymentData } from "../../../hooks/client/checkin/usePrepaymentData";
 
 const booking: PrepaymentData = {
   bookingRef: "ABC",

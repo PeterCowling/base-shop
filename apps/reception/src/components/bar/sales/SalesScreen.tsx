@@ -1,12 +1,13 @@
 /* File: src/components/bar/sales/SalesScreen.tsx */
+import React, { type FC, useCallback, useMemo, useState } from "react";
 import { ref, remove, set } from "firebase/database";
-import React, { FC, useCallback, useMemo, useState } from "react";
 
 import { useSalesOrders } from "../../../hooks/data/bar/useSalesOrders";
 import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutations";
 import { useOrderActions } from "../../../hooks/orchestrations/bar/actions/mutations/useOrderActions";
 import { useFirebaseDatabase } from "../../../services/useFirebase";
-import { SalesOrder } from "../../../types/bar/BarTypes";
+import { type SalesOrder } from "../../../types/bar/BarTypes";
+
 import TicketList from "./TicketList";
 
 /** Converts "HH:mm" ➜ minutes since 00‑00 for easy sorting */
@@ -66,7 +67,7 @@ const SalesScreen: FC = React.memo(() => {
         setLastRemovedOrder(order);
         if (order.bleepNumber !== "go") {
           const num = Number(order.bleepNumber);
-          !Number.isNaN(num) && setBleeperAvailability(num, true);
+          if (!Number.isNaN(num)) setBleeperAvailability(num, true);
         }
       });
     },
@@ -81,7 +82,7 @@ const SalesScreen: FC = React.memo(() => {
         setLastRemovedOrder(order);
         if (order.bleepNumber !== "go") {
           const num = Number(order.bleepNumber);
-          !Number.isNaN(num) && setBleeperAvailability(num, true);
+          if (!Number.isNaN(num)) setBleeperAvailability(num, true);
         }
       });
     },

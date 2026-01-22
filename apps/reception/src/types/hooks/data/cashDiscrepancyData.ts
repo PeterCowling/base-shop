@@ -1,9 +1,8 @@
 // src/types/hooks/data/cashDiscrepancyData.ts
 
-export interface CashDiscrepancy {
-  user: string;
-  timestamp: string;
-  amount: number;
-}
+import type {
+  CashDiscrepancies,
+  CashDiscrepancy,
+} from "../../../schemas/cashDiscrepancySchema";
 
-export type CashDiscrepancies = Record<string, CashDiscrepancy> | null;
+export type { CashDiscrepancies, CashDiscrepancy };

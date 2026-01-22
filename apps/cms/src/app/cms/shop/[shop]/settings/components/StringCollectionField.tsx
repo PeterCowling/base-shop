@@ -1,8 +1,7 @@
 "use client";
 
-import { FormField } from "@acme/ui/components/molecules";
-
-import { Button, Input } from "@/components/atoms/shadcn";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
+import { Button, Input } from "@acme/design-system/shadcn";
 
 import { ErrorChips } from "./ErrorChips";
 

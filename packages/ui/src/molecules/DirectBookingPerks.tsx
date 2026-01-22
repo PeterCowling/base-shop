@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Coffee, Percent, Wine } from "lucide-react";
 
-import { toAppLanguage } from "@acme/ui/utils/lang";
-import { getSlug } from "@acme/ui/utils/slug";
-
 import { Section } from "../atoms/Section";
+import { toAppLanguage } from "../utils/lang";
+import { getSlug } from "../utils/slug";
 
 interface Props {
   limit?: number;

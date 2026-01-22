@@ -3,10 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 
-import { useTranslations } from "@acme/i18n";
-import { diffPage, type TemplateDescriptor } from "@acme/page-builder-core";
-import type { Page } from "@acme/types";
-
 import { Grid } from "@acme/design-system/primitives/Grid";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
@@ -25,6 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
+import { diffPage, type TemplateDescriptor } from "@acme/page-builder-core";
+import type { Page } from "@acme/types";
 
 let telemetryTrack: (name: string, payload?: Record<string, unknown>) => void = () => {};
 // Optional telemetry hook; noop when unavailable (storybook/tests).

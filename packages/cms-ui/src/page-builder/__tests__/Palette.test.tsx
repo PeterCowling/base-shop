@@ -19,7 +19,7 @@ jest.mock("../libraryStore", () => {
 });
 
 // Preview tokens to yield one text theme
-jest.mock("../hooks/usePreviewTokens", () => () => ({
+jest.mock("@acme/ui/components/cms/page-builder/hooks/usePreviewTokens", () => () => ({
   "--text-heading-font-size": "18px",
   "--text-heading-line-height": "24px",
   "--text-heading-desktop-font-size": "24px",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_BRANDS, XA_PRODUCTS } from "../../../lib/demoData";

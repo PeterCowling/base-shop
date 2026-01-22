@@ -90,7 +90,7 @@ export async function run(argv = process.argv): Promise<void> {
       };
       campaigns.push(item);
       await writeCampaigns(shop, campaigns);
-      console.log(t("email.cli.campaign.create.result", { id: item.id }));
+      console.info(t("email.cli.campaign.create.result", { id: item.id }));
     });
 
   campaign
@@ -98,7 +98,7 @@ export async function run(argv = process.argv): Promise<void> {
     .argument("<shop>")
     .action(async (shop) => {
       const campaigns = await readCampaigns(shop);
-      console.log(JSON.stringify(campaigns, null, 2));
+      console.info(JSON.stringify(campaigns, null, 2));
     });
 
   campaign
@@ -107,7 +107,7 @@ export async function run(argv = process.argv): Promise<void> {
     .action(async () => {
       const { sendDueCampaigns } = await import("./scheduler");
       await sendDueCampaigns();
-      console.log(t("email.cli.campaign.send.result"));
+      console.info(t("email.cli.campaign.send.result"));
     });
 
   await program.parseAsync(argv);

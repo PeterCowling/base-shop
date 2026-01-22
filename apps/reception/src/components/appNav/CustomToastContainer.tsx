@@ -1,7 +1,9 @@
 /* /src/components/CustomToastContainer.tsx */
-import { FC } from "react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { type FC } from "react";
+import { ToastContainer } from "react-toastify";
+
 import { useDarkMode } from "../../context/DarkModeContext";
 
 /**

@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/blocks/MapBlock.tsx
 "use client";
 
-import { StoreLocatorMap } from "../../organisms/StoreLocatorMap";
+import { StoreLocatorMap } from "@acme/ui/components/organisms/StoreLocatorMap";
 
 interface Props {
   /** Latitude for the map centre */

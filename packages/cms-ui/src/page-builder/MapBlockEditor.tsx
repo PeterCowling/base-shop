@@ -1,6 +1,5 @@
-import type { MapBlockComponent } from "@acme/types";
-
 import { Input } from "@acme/design-system/shadcn";
+import type { MapBlockComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 

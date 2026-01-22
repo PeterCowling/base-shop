@@ -1,7 +1,8 @@
 /* src/hooks/data/useSafeCountsData.ts */
 
+import { useEffect, useMemo, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,15 +11,15 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useMemo, useState } from "react";
 
-import useFirebaseSubscription from "./useFirebaseSubscription";
 import { safeCountsSchema } from "../../schemas/safeCountSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { SafeCount } from "../../types/hooks/data/safeCountData";
+import type { SafeCount } from "../../types/hooks/data/safeCountData";
+import { parseYMD } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
-import { parseYMD } from "../../utils/dateUtils";
+
+import useFirebaseSubscription from "./useFirebaseSubscription";
 
 /**
  * Fetches and listens in real time to all SafeCount records from
@@ -73,10 +74,9 @@ export function useSafeCountsData(params: UseSafeCountsDataParams = {}) {
         return; // keep previous safeCounts
       }
 
-      const entries = Object.entries(result.data).map(([id, value]) => ({
-        id,
-        ...value,
-      }));
+      const entries: SafeCount[] = Object.entries(result.data).flatMap(
+        ([id, value]) => (value ? [{ id, ...value }] : [])
+      );
       entries.sort((a, b) => {
         const ta = parseYMD(a.timestamp);
         const tb = parseYMD(b.timestamp);

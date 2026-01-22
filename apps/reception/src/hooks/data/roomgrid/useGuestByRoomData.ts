@@ -1,6 +1,7 @@
 /** /src/hooks/data/guestByRoom/useGuestByRoomData.ts */
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -9,7 +10,6 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
 
 import { useFirebaseDatabase } from "../../../services/useFirebase";
 

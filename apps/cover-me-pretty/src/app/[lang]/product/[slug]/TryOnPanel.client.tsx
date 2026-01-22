@@ -6,7 +6,7 @@ import { UploaderSurface } from "@acme/ui/components/upload/UploaderSurface";
 import type { ImageOrientation } from "@acme/types";
 import { useTryOnController } from "@acme/ui/hooks/tryon/useTryOnController";
 import { tryonMeta } from "../../../../lib/tryonMeta";
-import { ARViewer } from "@acme/ui/components/atoms/ARViewer";
+import { ARViewer } from "@acme/design-system/atoms/ARViewer";
 import { RecommendationCarousel } from "@acme/ui/components/organisms";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 import { ComparePreview } from "./ComparePreview";

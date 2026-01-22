@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Grid as DSGrid, Inline } from "@acme/design-system/primitives";
+import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { Button, Card, CardContent, Tag } from "@acme/ui/components/atoms";
-import { Grid as DSGrid, Inline } from "@acme/ui/components/atoms/primitives";
 
 import { listShops } from "../../../lib/listShops";
 

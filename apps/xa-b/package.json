@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+    "@acme/design-system": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/platform-core": "workspace:*",
-    "@acme/lib": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
     "@acme/types": "workspace:*",

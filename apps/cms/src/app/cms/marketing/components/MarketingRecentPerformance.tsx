@@ -1,8 +1,9 @@
 import Link from "next/link";
 
+import { Tag } from "@acme/design-system/atoms";
+import { Cluster,Grid, Inline } from "@acme/design-system/primitives";
+import { Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-import { Card, CardContent, Tag } from "@acme/ui/components/atoms";
-import { Cluster,Grid, Inline } from "@acme/ui/components/atoms/primitives";
 
 import type { MarketingRecentPerformanceItem } from "./useMarketingOverview";
 

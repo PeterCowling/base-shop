@@ -1,7 +1,8 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
 
-import { ColorSwatch } from "./ColorSwatch";
 import { Inline } from "../primitives/Inline";
+
+import { ColorSwatch } from "./ColorSwatch";
 
 const meta: Meta<typeof ColorSwatch> = {
   title: "Atoms/ColorSwatch",

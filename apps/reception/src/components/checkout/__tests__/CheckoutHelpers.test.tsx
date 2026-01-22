@@ -1,6 +1,6 @@
 
-import { getLoanIconClass, getLoanTitle } from "../CheckoutTable";
 import { formatDdMm } from "../../../utils/dateUtils";
+import { getLoanIconClass, getLoanTitle } from "../CheckoutTable";
 
 describe("formatDdMm", () => {
   it("formats ISO date to DD/MM", () => {

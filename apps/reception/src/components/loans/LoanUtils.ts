@@ -1,4 +1,4 @@
-import { LoanItem } from "../../types/hooks/data/loansData";
+import { type LoanItem } from "../../types/hooks/data/loansData";
 
 export function getDepositForItem(item: LoanItem): number {
   switch (item) {

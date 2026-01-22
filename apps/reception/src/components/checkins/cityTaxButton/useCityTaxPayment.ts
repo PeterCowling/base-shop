@@ -2,8 +2,8 @@
 
 import { useCallback } from "react";
 
-import { CityTaxTransaction } from "../../../types/domains/cityTaxDomain";
-import { CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
+import { type CityTaxTransaction } from "../../../types/domains/cityTaxDomain";
+import { type CityTaxRecord } from "../../../types/hooks/data/cityTaxData";
 import { getCurrentIsoTimestamp } from "../../../utils/dateUtils";
 
 interface CityTaxPaymentResult {

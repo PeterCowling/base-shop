@@ -5,8 +5,7 @@ import { delay,http, HttpResponse } from 'msw';
 import { z } from 'zod';
 
 import { PRODUCTS } from '@acme/platform-core/products/index';
-
-import { makeStateStory } from '../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import ShowcaseSection from './ShowcaseSection';
 import fixture from './ShowcaseSection.fixtures.json';

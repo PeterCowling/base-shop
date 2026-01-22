@@ -1,9 +1,10 @@
 /* File: src/components/bar/sales/TicketList.tsx */
+import { type FC, memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FC, memo } from "react";
+
+import { type SalesOrder } from "../../../types/bar/BarTypes";
 
 import Ticket from "./Ticket";
-import { SalesOrder } from "../../../types/bar/BarTypes";
 
 interface Props {
   orders: SalesOrder[];

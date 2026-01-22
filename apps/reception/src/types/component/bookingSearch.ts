@@ -1,7 +1,7 @@
 // src/types/component/bookingSearch.ts
 
-import { Activity } from "../hooks/data/activitiesData";
-import { FinancialsRoomData } from "../hooks/data/financialsRoomData";
+import { type Activity } from "../hooks/data/activitiesData";
+import { type FinancialsRoomData } from "../hooks/data/financialsRoomData";
 
 /**
  * Represents a simplified Guest for booking search display.

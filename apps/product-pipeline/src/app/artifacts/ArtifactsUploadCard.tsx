@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent,useCallback, useEffect, useState } from "react";
-import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { formatStageRunLabel } from "@/lib/stage-labels";
 

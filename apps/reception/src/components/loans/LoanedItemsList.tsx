@@ -1,13 +1,14 @@
 // File: /src/components/loans/LoanedItemsList.tsx
 
-import { memo, ReactElement, useCallback, useMemo } from "react";
+import { memo, type ReactElement, useCallback, useMemo } from "react";
+
+import {
+  type LoanItem,
+  type LoanMethod,
+  type LoanTransaction,
+} from "../../types/hooks/data/loansData";
 
 import useOccupantLoans from "./useOccupantLoans";
-import {
-  LoanItem,
-  LoanMethod,
-  LoanTransaction,
-} from "../../types/hooks/data/loansData";
 
 interface LoanedItemsListProps {
   occupantId: string; // occupantId alone is not enough if we need bookingRef. We'll see the hook below.

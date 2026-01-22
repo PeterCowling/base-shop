@@ -14,8 +14,8 @@ import { useAuth } from "../../context/AuthContext";
 import {
   buildQuickDateRange,
   formatDateForInput,
-  parseDate,
   getWeekdayShortLabel,
+  parseDate,
 } from "../../utils/dateUtils";
 
 interface DateSelectorProps {
@@ -106,7 +106,7 @@ export default function DateSelectorCI({
       <div className="relative">
         <button
           ref={toggleRef}
-          className="px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-main text-sm"
+          className="px-3 py-2 border rounded focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-main text-sm"
           onClick={() => setIsCalendarOpen((prev) => !prev)}
         >
           {selectedDate ? formatDateForInput(selectedDate) : "Select a date"}

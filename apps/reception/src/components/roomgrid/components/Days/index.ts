@@ -8,8 +8,8 @@ import { SingleStart } from './SingleStart';
 export {
   Intersection,
   SingleDisabled,
-  SingleFree,
   SingleEnd,
+  SingleFree,
   SingleFull,
   SingleStart,
 };

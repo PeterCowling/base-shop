@@ -6,8 +6,7 @@ import * as nav from "next/navigation";
 
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-
-import { useProductFilters } from "../../../hooks/useProductFilters";
+import { useProductFilters } from "@acme/ui/hooks/useProductFilters";
 
 const t = (s: string) => s;
 

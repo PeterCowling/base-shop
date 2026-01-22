@@ -4,7 +4,7 @@ import { fireEvent,render, screen } from "@testing-library/react";
 import PositionControls from "../panels/layout/PositionControls";
 
 // Mock shadcn Select to simple DOM
-jest.mock("../../../atoms/shadcn", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const Btn = (p: any) => <button {...p} />;
   const Wrap = (p: any) => <div>{p.children}</div>;
   const Trigger = (p: any) => <button {...p}>{p.children}</button>;

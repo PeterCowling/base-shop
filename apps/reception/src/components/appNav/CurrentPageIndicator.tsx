@@ -1,32 +1,32 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
-  faCashRegister,
-  faUserCheck,
-  faDoorOpen,
-  faHandHolding,
+  faBed,
+  faBoxes,
   faCalendarPlus,
-  faShieldAlt,
-  faTools,
-  faStream,
+  faCarrot,
+  faCashRegister,
   faChartArea,
-  faFileAlt,
+  faChartBar,
+  faChartLine,
+  faChartPie,
   faClipboardList,
   faCreditCard,
-  faToggleOn,
-  faSearch,
   faDatabase,
-  faBoxes,
-  faCarrot,
-  faChartLine,
-  faChartBar,
-  faChartPie,
-  faBed,
+  faDoorOpen,
+  faFileAlt,
+  faHandHolding,
   faHome,
+  faSearch,
+  faShieldAlt,
+  faStream,
+  faToggleOn,
+  faTools,
+  faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface RouteInfo {
   label: string;

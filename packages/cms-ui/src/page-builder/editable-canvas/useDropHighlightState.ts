@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import useDropHighlight from "../hooks/useDropHighlight";
+import useDropHighlight from "@acme/ui/components/cms/page-builder/hooks/useDropHighlight";
 
 export function useDropHighlightState(params: Parameters<typeof useDropHighlight>[0]) {
   const { dropRect: dropRectLocal, handleDragOver, clearHighlight } = useDropHighlight(params);

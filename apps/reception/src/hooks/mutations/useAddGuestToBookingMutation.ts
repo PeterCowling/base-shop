@@ -43,8 +43,8 @@
  *   - Must be wrapped in try/catch for UI error handling and to handle concurrency.
  */
 
-import { Database, get, ref, update } from "firebase/database";
 import { useCallback } from "react";
+import { type Database, get, ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";

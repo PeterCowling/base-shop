@@ -1,7 +1,7 @@
 "use client";
 
-import Providers from "@/components/Providers";
 import IngredientStock from "@/components/inventory/IngredientStock";
+import Providers from "@/components/Providers";
 
 export default function IngredientStockPage() {
   return (

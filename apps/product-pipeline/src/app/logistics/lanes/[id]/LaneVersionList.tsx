@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { Cluster, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { formatNumber, formatPercent } from "@/lib/format";
 

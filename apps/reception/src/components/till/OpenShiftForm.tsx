@@ -4,14 +4,15 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { settings } from "../../constants/settings";
-import { OpenShiftFormProps } from "../../types/component/Till";
-import { showToast } from "../../utils/toastUtils";
-import { CashCountingForm } from "../common/CashCountingForm";
-import { CreditCardReceiptCheck } from "./CreditCardReceiptCheck";
 import useShiftProgress, {
   type ShiftProgress,
   useAutoSaveShiftProgress,
 } from "../../hooks/utilities/useShiftProgress";
+import { type OpenShiftFormProps } from "../../types/component/Till";
+import { showToast } from "../../utils/toastUtils";
+import { CashCountingForm } from "../common/CashCountingForm";
+
+import { CreditCardReceiptCheck } from "./CreditCardReceiptCheck";
 
 const calcBreakdownTotal = (breakdown: Record<string, number>): number =>
   Object.entries(breakdown).reduce(
@@ -151,7 +152,7 @@ export const OpenShiftForm = memo(function OpenShiftForm({
           />
         )}
         {showPrevious && (
-          <div className="text-sm text-info-main text-right mt-4 dark:text-darkAccentGreen">
+          <div className="text-sm text-info-main text-end mt-4 dark:text-darkAccentGreen">
             <div className="mb-2">
               Previous count was €{previousFinalCash.toFixed(2)}
             </div>

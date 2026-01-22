@@ -1,5 +1,5 @@
+import { Tag } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
-import { Tag } from "@acme/ui/components/atoms";
 
 import type { TelemetrySummaryRow } from "./telemetryUtils";
 

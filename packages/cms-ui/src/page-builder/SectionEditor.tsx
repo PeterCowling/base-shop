@@ -3,9 +3,8 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import type { PageComponent } from "@acme/types";
-
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import type { PageComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import usePreviewTokens from "./hooks/usePreviewTokens";

@@ -3,7 +3,7 @@
 /**
  * Represents the options used to create a day range.
  */
-import { TLocale } from "./locale.interface";
+import { type TLocale } from "./locale.interface";
 
 export interface TDaysRangeOptions {
   start: string;

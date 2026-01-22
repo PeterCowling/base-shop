@@ -1,5 +1,5 @@
-import { parseArgs, ParsedArgs } from "../utils/args";
-import { listProviders, listPlugins, PluginMeta } from "../utils/providers";
+import { parseArgs, type ParsedArgs } from "../utils/args";
+import { listPlugins, listProviders, type PluginMeta } from "../utils/providers";
 
 export type ProviderMeta = { id: string; envVars: readonly string[]; name?: string; packageName?: string };
 

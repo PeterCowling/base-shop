@@ -68,20 +68,6 @@ function buildTokenPlaceholder(type: TokenType, seq: number): string {
 }
 
 /**
- * Parse a token placeholder string back to type and sequence.
- */
-function parseTokenPlaceholder(
-  placeholder: string
-): { type: TokenType; seq: number } | null {
-  const match = placeholder.match(/⟦T([A-Z])(\d{3})⟧/);
-  if (!match) return null;
-  return {
-    type: match[1] as TokenType,
-    seq: parseInt(match[2], 10),
-  };
-}
-
-/**
  * Escape any pre-existing token-like patterns in the text.
  */
 function escapeExistingTokens(text: string): {

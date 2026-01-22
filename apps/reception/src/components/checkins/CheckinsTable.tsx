@@ -1,18 +1,20 @@
 // src/components/checkins/CheckinsTable.tsx
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
 import { useAuth } from "../../context/AuthContext";
 import useCheckinsTableData from "../../hooks/data/useCheckinsTableData";
 import useAddGuestToBookingMutation from "../../hooks/mutations/useAddGuestToBookingMutation";
 import useArchiveEligibleCount from "../../hooks/mutations/useArchiveEligibleCount";
 import useCheckinsModes from "../../hooks/utilities/useCheckinsModes";
 import useSharedDailyToggle from "../../hooks/utilities/useSharedDailyToggle";
-import { CheckInRow } from "../../types/component/CheckinRow";
+import { type CheckInRow } from "../../types/component/CheckinRow";
+import { getLocalToday } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
 import { sortCheckinsData } from "../../utils/sortCheckins";
-import { getLocalToday } from "../../utils/dateUtils";
-import CheckinsTableView from "./view/CheckinsTable";
 import { showToast } from "../../utils/toastUtils";
+
+import CheckinsTableView from "./view/CheckinsTable";
 
 /**
  * Main Checkins Table Controller

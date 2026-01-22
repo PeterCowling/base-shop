@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
-import { buildCheckinRows, parseOccupantLoanData } from "../buildCheckinRows";
-import type { Loans } from "../../../../types/hooks/data/loansData";
+
 import type { CityTaxRecord } from "../../../../types/hooks/data/cityTaxData";
+import type { Loans } from "../../../../types/hooks/data/loansData";
+import { buildCheckinRows, parseOccupantLoanData } from "../buildCheckinRows";
 
 /** Tests for parseOccupantLoanData */
 describe("parseOccupantLoanData", () => {

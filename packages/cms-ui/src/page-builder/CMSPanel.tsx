@@ -2,11 +2,10 @@
 
 import React, { useMemo, useState } from "react";
 
-import type { PageComponent } from "@acme/types";
-
 import { OverlayScrim } from "@acme/design-system/primitives";
 import { Drawer, DrawerContent, DrawerDescription, DrawerPortal,DrawerTitle } from "@acme/design-system/primitives/drawer";
 import { Button, Input } from "@acme/design-system/shadcn";
+import type { PageComponent } from "@acme/types";
 
 // i18n-exempt — editor-only panel; copy pending i18n wiring
 /* i18n-exempt */

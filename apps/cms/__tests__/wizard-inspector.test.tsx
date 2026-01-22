@@ -7,7 +7,7 @@ import ThemeSelector from "../src/app/cms/shop/[shop]/themes/ThemeSelector";
 import PreviewDeviceSelector from "../src/app/cms/wizard/PreviewDeviceSelector";
 import WizardPreview from "../src/app/cms/wizard/WizardPreview";
 
-jest.mock("@acme/ui/components/atoms", () => ({
+jest.mock("@acme/design-system/atoms", () => ({
   Button: (props: any) => <button {...props} />,
 }));
 

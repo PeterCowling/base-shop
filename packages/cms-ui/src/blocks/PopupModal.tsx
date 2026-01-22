@@ -4,7 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import DOMPurify from "dompurify";
 import { createFocusTrap } from "focus-trap";
 
-import { Dialog, DialogContent, DialogDescription,DialogTitle } from "../../atoms";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@acme/design-system/shadcn";
 
 interface Props {
   width?: string;

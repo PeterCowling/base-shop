@@ -65,7 +65,7 @@ const progressMock = jest.fn(
   ),
 );
 
-jest.mock("@acme/ui/components/atoms", () => {
+jest.mock("@acme/design-system/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -81,7 +81,7 @@ jest.mock("@acme/ui/components/atoms", () => {
   };
 });
 
-jest.mock("@acme/ui/components/cms", () => {
+jest.mock("@acme/cms-ui", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -127,7 +127,7 @@ jest.mock("@/components/atoms/shadcn", () => {
 const productsTableMock = jest.fn((props: any) => (
   <div data-testid="products-table" data-shop={props.shop} />
 ));
-jest.mock("@acme/ui/components/cms/ProductsTable.client", () => ({
+jest.mock("@acme/cms-ui/ProductsTable.client", () => ({
   __esModule: true,
   default: productsTableMock,
 }));

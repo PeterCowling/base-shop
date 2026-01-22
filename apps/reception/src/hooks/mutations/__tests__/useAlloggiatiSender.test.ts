@@ -1,11 +1,13 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
-import { OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
+
+import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { useAlloggiatiSender } from "../useAlloggiatiSender";
 
 // Mock constructAlloggiatiRecord hook
 const constructMock = jest.fn();
-jest.mock("../../../utils/constructAlloggiatiRecord", () => ({
+jest.mock("../../utils/useConstructAlloggiatiRecord", () => ({
   useConstructAlloggiatiRecord: () => ({
     constructAlloggiatiRecord: constructMock,
   }),
@@ -19,7 +21,7 @@ function mockJsonpSuccess(response: unknown) {
       const url = new URL(el.src);
       const cb = url.searchParams.get("callback");
       if (cb) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         (window as any)[cb](response);
       }
       return el;

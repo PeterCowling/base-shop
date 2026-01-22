@@ -4,9 +4,9 @@
 
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Button, Input } from "@acme/ui/components/atoms";
-import { FormField } from "@acme/ui/components/molecules";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Button, Input } from "@acme/design-system/atoms";
+import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 
 export default function LoginPage() {
   return (

@@ -1,31 +1,32 @@
 // File: /src/hooks/client/useCheckoutClient.ts
 import { useMemo } from "react";
 
-import { CheckoutRow } from "../../types/component/checkoutrow";
+import { type CheckoutRow } from "../../types/component/checkoutrow";
 import {
-  ActivitiesByCode,
-  ActivityByCodeData,
+  type ActivitiesByCode,
+  type ActivityByCodeData,
 } from "../../types/hooks/data/activitiesByCodeData";
 import {
-  Activities,
-  Activity,
-  ActivityData,
+  type Activities,
+  type Activity,
+  type ActivityData,
 } from "../../types/hooks/data/activitiesData";
 import {
-  FirebaseBookingOccupant,
-  FirebaseBookings,
+  type FirebaseBookingOccupant,
+  type FirebaseBookings,
 } from "../../types/hooks/data/bookingsData";
-import { Checkouts } from "../../types/hooks/data/checkoutsData";
+import { type Checkouts } from "../../types/hooks/data/checkoutsData";
 import {
-  FinancialsRoom,
-  FinancialsRoomData,
+  type FinancialsRoom,
+  type FinancialsRoomData,
 } from "../../types/hooks/data/financialsRoomData";
-import { GuestsDetails } from "../../types/hooks/data/guestDetailsData";
+import type { GuestByRoom } from "../../types/hooks/data/guestByRoomData";
+import { type GuestsDetails } from "../../types/hooks/data/guestDetailsData";
 import {
-  LoanItem,
-  LoanMethod,
-  Loans,
-  LoanTransaction,
+  type LoanItem,
+  type LoanMethod,
+  type Loans,
+  type LoanTransaction,
 } from "../../types/hooks/data/loansData";
 import { parseYMD } from "../../utils/dateUtils";
 /**
@@ -37,17 +38,6 @@ export interface OccupantBookingData {
   roomNumbers?: (string | number)[];
 }
 export type BookingsMap = Record<string, Record<string, OccupantBookingData>>;
-
-/**
- * New type representing the guest-by-room mapping.
- */
-export type GuestByRoom = Record<
-  string,
-  {
-    allocated: string;
-    booked: string;
-  }
->;
 
 
 function isFirebaseBookingOccupant(
@@ -72,7 +62,7 @@ interface UseCheckoutClientParams {
   activities: Activities | null;
   activitiesByCodes: ActivitiesByCode | null;
   checkouts: Checkouts;
-  guestByRoom: GuestByRoom | null;
+  guestByRoom: GuestByRoom;
   startDate?: string;
   endDate?: string;
   loading: boolean;
@@ -101,7 +91,8 @@ function useCheckoutClient({
       return [];
     }
 
-    const code14Activities = activitiesByCodes?.["14"] ?? {};
+    const code14Activities: Record<string, Record<string, ActivityByCodeData>> =
+      activitiesByCodes?.["14"] ?? {};
     const rows: CheckoutRow[] = [];
 
     Object.entries(bookings).forEach(([bookingRef, occupantsMap]) => {

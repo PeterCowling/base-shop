@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Cluster, Inline, Stack } from "@acme/ui/components/atoms/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency } from "@/lib/format";
 import { formatStageStatus } from "@/lib/stage-labels";

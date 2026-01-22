@@ -1,6 +1,7 @@
 /* File: /src/hoc/withIconModal.tsx */
 import { useRouter } from "next/navigation";
-import { ModalAction } from "../types/component/ModalAction";
+
+import { type ModalAction } from "../types/component/ModalAction";
 
 interface WithIconModalConfig {
   label: string;

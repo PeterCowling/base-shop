@@ -2,13 +2,13 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import { useTranslations } from "@acme/i18n/Translations";
 import {
-  Button,
   Popover,
   PopoverAnchor,
   PopoverContent,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n/Translations";
 
 interface Props {
   inspectMode?: boolean;

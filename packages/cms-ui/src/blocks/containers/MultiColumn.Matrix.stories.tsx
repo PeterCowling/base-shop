@@ -2,7 +2,7 @@
 
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { makeStateStory } from '../../../../story-utils/createStories';
+import { makeStateStory } from '@acme/ui/story-utils/createStories';
 
 import MultiColumn from './MultiColumn';
 

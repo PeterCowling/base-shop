@@ -1,6 +1,8 @@
 import type { FC } from "react";
+
 import type { Transaction } from "../../types/component/Till";
 import type { TenderRemovalRecord } from "../../types/finance";
+
 import { CloseShiftForm } from "./CloseShiftForm";
 import { ExchangeNotesForm } from "./ExchangeNotesForm";
 import { FloatEntryModal } from "./FloatEntryModal";

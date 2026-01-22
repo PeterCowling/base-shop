@@ -10,9 +10,9 @@ import {
   VideoIcon,
 } from "@radix-ui/react-icons";
 
+import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
-import { Inline } from "@acme/ui/components/atoms/primitives";
 
 import {
   Button,

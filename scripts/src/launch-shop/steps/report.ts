@@ -3,12 +3,14 @@
  * Report step: generate launch report after deployment.
  */
 import { execSync } from "node:child_process";
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join } from "node:path";
 import { createHash } from "node:crypto";
+import { existsSync,mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
 import type { LaunchConfig } from "@acme/platform-core/createShop";
 import { getShopAppSlug } from "@acme/platform-core/shops";
-import type { LaunchReport, StepResult, DeployResult, GoLiveGateResult } from "../types";
+
+import type { DeployResult, GoLiveGateResult,LaunchReport, StepResult } from "../types";
 
 export interface GenerateReportParams {
   launchId: string;

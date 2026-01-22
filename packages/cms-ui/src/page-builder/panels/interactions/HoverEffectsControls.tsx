@@ -1,8 +1,7 @@
 "use client";
 
-import { useTranslations } from "@acme/i18n";
-
 import { Input } from "@acme/design-system/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 import type { InteractionsProps } from "./types";
 

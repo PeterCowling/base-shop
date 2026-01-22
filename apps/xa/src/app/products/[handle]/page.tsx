@@ -1,10 +1,10 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy product detail content pending design/i18n overhaul */
 import { notFound } from "next/navigation";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Grid } from "@acme/ui/atoms/Grid";
-import { Breadcrumbs } from "@acme/ui/components/molecules";
-import { Button } from "@acme/ui/components/atoms";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Grid } from "@acme/design-system/atoms/Grid";
+import { Breadcrumbs } from "@acme/design-system/molecules";
+import { Button } from "@acme/design-system/atoms";
 
 import { XaBuyBox } from "../../../components/XaBuyBox.client";
 import { XaImageGallery } from "../../../components/XaImageGallery.client";

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
-import { Section } from "@acme/ui/atoms/Section";
+import { Section } from "@acme/ui/atoms";
 import ArticleSection from "@acme/ui/organisms/AssistanceArticleSection";
 
 import i18n from "@/i18n";

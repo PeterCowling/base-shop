@@ -1,8 +1,8 @@
 /* File: src/components/bar/orderTaking/ProductGrid.tsx */
-import React, { FC, useCallback, useMemo } from "react";
+import React, { type FC, useCallback, useMemo } from "react";
 
 import useGridColumns from "../../../hooks/orchestrations/bar/actions/clientActions/useGridColumns";
-import { Product, ProductGridProps } from "../../../types/bar/BarTypes";
+import { type Product, type ProductGridProps } from "../../../types/bar/BarTypes";
 
 interface ProductItemProps {
   product: Product;

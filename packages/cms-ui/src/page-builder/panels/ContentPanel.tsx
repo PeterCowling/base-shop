@@ -5,10 +5,10 @@
 import type { ComponentType, LazyExoticComponent } from "react";
 import { Suspense } from "react";
 
+import { Grid } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 
-import { Grid } from "@acme/design-system/primitives";
 import type { EditorProps } from "../EditorProps";
 import editorRegistry from "../editorRegistry";
 

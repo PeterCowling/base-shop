@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
+import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
+
 import BookingRef from "./BookingRef";
 import { occupantIsComplete } from "./occupantCompleteHelpers";
 import Row1 from "./row1";
 import Row2 from "./row2";
 import Row3 from "./row3";
-import useSingleGuestDetails from "../../../hooks/data/useSingleGuestDetails";
-import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 
 interface SnackbarState {
   open: boolean;
@@ -122,7 +123,7 @@ const DocInsertPage: React.FC = () => {
           onClick={handleBack}
           className="inline-flex items-center px-3 py-2 bg-primary-main text-white rounded hover:bg-primary-dark transition-colors"
         >
-          <span className="mr-2">&larr;</span>
+          <span className="me-2">&larr;</span>
           Back
         </button>
       </div>
@@ -163,7 +164,7 @@ const DocInsertPage: React.FC = () => {
             }`}
         >
           <span>{snackbar.message}</span>
-          <button onClick={closeSnackbar} className="ml-4 font-bold">
+          <button onClick={closeSnackbar} className="ms-4 font-bold">
             ×
           </button>
         </div>

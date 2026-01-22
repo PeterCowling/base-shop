@@ -1,10 +1,10 @@
 /* File: /src/hooks/orchestrations/bar/actions/mutations/useUpdateItemInOrder.ts */
 
-import { doc, updateDoc } from "firebase/firestore";
 import { useCallback, useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
 
 import { useFirebaseFirestore } from "../../../services/useFirebase";
-import { BarOrder } from "../../../types/bar/BarTypes";
+import { type BarOrder } from "../../../types/bar/BarTypes";
 
 /**
  * Mutator Hook:

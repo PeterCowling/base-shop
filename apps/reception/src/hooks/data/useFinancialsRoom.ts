@@ -1,6 +1,7 @@
 /* src/hooks/data/useFinancialsRoom.ts */
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -10,11 +11,10 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
 
 import { financialsRoomSchema } from "../../schemas/financialsRoomSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FinancialsRoom } from "../../types/hooks/data/financialsRoomData";
+import { type FinancialsRoom } from "../../types/hooks/data/financialsRoomData";
 
 export interface UseFinancialsRoomParams {
   startAt?: string;

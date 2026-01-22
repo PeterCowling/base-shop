@@ -1,12 +1,14 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import FormsContainer from "../FormsContainer";
+
 import type {
-  Transaction,
-  OpenShiftFormProps,
   CloseShiftFormProps,
+  OpenShiftFormProps,
+  Transaction,
 } from "../../../types/component/Till";
+import FormsContainer from "../FormsContainer";
 
 jest.mock("../OpenShiftForm", () => ({
   OpenShiftForm: ({

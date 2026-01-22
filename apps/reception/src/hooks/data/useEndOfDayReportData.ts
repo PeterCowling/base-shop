@@ -2,33 +2,34 @@
 
 import { useMemo } from "react";
 
-import { useTillData } from "../../context/TillDataContext";
-import { useCashDiscrepanciesData } from "./useCashDiscrepanciesData";
-import { useCCIrregularitiesData } from "./useCCIrregularitiesData";
-import { useKeycardDiscrepanciesData } from "./useKeycardDiscrepanciesData";
-import { useKeycardTransfersData } from "./useKeycardTransfersData";
 import { useSafeData } from "../../context/SafeDataContext";
+import { useTillData } from "../../context/TillDataContext";
 import type { CreditSlip } from "../../types/component/Till";
-import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import type { CardIrregularity } from "../../types/hooks/data/cardIrregularityData";
 import type { CashDiscrepancy } from "../../types/hooks/data/cashDiscrepancyData";
 import type { KeycardDiscrepancy } from "../../types/hooks/data/keycardDiscrepancyData";
 import type { KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
-import { partitionSafeCountsByType } from "../../utils/partitionSafeCountsByType";
+import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import {
+  endOfDayIso,
   getItalyIsoString,
   parseYMD,
   sameItalyDate,
   startOfDayIso,
-  endOfDayIso,
 } from "../../utils/dateUtils";
-import { calculateSafeTotals } from "./endOfDay/safeTotals";
+import { partitionSafeCountsByType } from "../../utils/partitionSafeCountsByType";
+
 import { calculateKeycardTransfers } from "./endOfDay/keycardTransfers";
+import { calculateSafeTotals } from "./endOfDay/safeTotals";
 import {
   calculateCashVariance,
   calculateKeycardVariance,
   calculateSafeVariance,
 } from "./endOfDay/variance";
+import { useCashDiscrepanciesData } from "./useCashDiscrepanciesData";
+import { useCCIrregularitiesData } from "./useCCIrregularitiesData";
+import { useKeycardDiscrepanciesData } from "./useKeycardDiscrepanciesData";
+import { useKeycardTransfersData } from "./useKeycardTransfersData";
 
 export interface SafeTableData {
   rows: SafeCount[];
@@ -337,7 +338,7 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
       if (c.type === "close" && typeof c.count === "number") {
         closing = c.count;
       }
-      const isFloatEntry = c.type === "float" || c.type === "floatEntry";
+      const isFloatEntry = c.type === "float";
       if (isFloatEntry && typeof c.amount === "number") {
         float += c.amount;
       }
@@ -423,12 +424,12 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
     return priorEntry && typeof priorEntry.count === "number"
       ? priorEntry.count
       : midnightBalance;
-  }, [getSafeBalanceAt, safeCounts, targetDateStr]);
+  }, [date, getSafeBalanceAt, safeCounts, targetDateStr]);
 
   const endingSafeBalance = useMemo(
     () =>
       getSafeBalanceAt(new Date(endOfDayIso(date)).getTime()),
-    [getSafeBalanceAt, targetDateStr]
+    [date, getSafeBalanceAt]
   );
   const {
     safeVariance,
@@ -576,4 +577,3 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
 }
 
 export default useEndOfDayReportData;
-

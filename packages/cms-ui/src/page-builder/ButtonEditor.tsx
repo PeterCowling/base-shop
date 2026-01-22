@@ -1,7 +1,5 @@
 import type { FormEvent } from "react";
 
-import type { ButtonComponent } from "@acme/types";
-
 import {
   Input,
   Select,
@@ -10,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@acme/design-system/shadcn";
+import type { ButtonComponent } from "@acme/types";
 
 import type { EditorProps } from "./EditorProps";
 import useComponentInputs from "./useComponentInputs";

@@ -4,9 +4,9 @@
 
 import { useState } from "react";
 
-import { Grid as LayoutGrid } from "@acme/ui/atoms/Grid";
-import { Section } from "@acme/ui/atoms/Section";
-import { Breadcrumbs } from "@acme/ui/components/molecules";
+import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Breadcrumbs } from "@acme/design-system/molecules";
 import {
   Button,
   Select,
@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@acme/ui/components/atoms";
+} from "@acme/design-system/atoms";
 
 import { XaProductCard } from "./XaProductCard";
 import { XaFiltersDrawer } from "./XaFiltersDrawer.client";

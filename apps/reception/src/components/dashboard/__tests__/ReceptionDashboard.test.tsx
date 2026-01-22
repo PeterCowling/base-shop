@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
+import ReceptionDashboard from "../ReceptionDashboard";
 
 jest.mock("../../../context/AuthContext", () => ({
   useAuth: () => ({ user: { displayName: "Pete", email: "pete@example.com" } }),
@@ -43,8 +46,6 @@ jest.mock("../../../utils/dateUtils", () => ({
 jest.mock("../DashboardQuickActions", () => ({
   DashboardQuickActions: () => <div>Quick Actions</div>,
 }));
-
-import ReceptionDashboard from "../ReceptionDashboard";
 
 describe("ReceptionDashboard", () => {
   it("renders the dashboard overview", () => {

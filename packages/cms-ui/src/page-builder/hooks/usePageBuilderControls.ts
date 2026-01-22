@@ -5,9 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { HistoryState } from "@acme/types";
 import type { Locale as PageBuilderLocale } from "@acme/types/constants";
-
 import { usePreviewDevice } from "@acme/ui/hooks";
 import { type DevicePreset, devicePresets, findDevicePresetById,getLegacyPreset } from "@acme/ui/utils/devicePresets";
+
 import { type CallBackProps, STATUS,type Step } from "../PageBuilderTour";
 import type { Action } from "../state";
 

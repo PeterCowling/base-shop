@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
-
 import {
   ProductCarousel as BaseCarousel,
   type ProductCarouselProps as BaseProps,
-} from "../../organisms/ProductCarousel";
+} from "@acme/ui/components/organisms/ProductCarousel";
 
 import { fetchCollection } from "./products/fetchCollection";
 

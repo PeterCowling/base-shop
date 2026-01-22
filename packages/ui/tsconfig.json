@@ -76,9 +76,6 @@
       "path": "../lib"
     },
     {
-      "path": "../shared-utils"
-    },
-    {
       "path": "../date-utils"
     },
     {

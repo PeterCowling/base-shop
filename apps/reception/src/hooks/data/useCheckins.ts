@@ -1,7 +1,8 @@
 /* src/hooks/data/useCheckins.ts */
 
+import { useEffect, useState } from "react";
 import {
-  DataSnapshot,
+  type DataSnapshot,
   endAt,
   limitToFirst,
   onValue,
@@ -11,11 +12,10 @@ import {
   ref,
   startAt,
 } from "firebase/database";
-import { useEffect, useState } from "react";
 
 import { checkinsSchema } from "../../schemas/checkinSchema";
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { Checkins } from "../../types/hooks/data/checkinData";
+import { type Checkins } from "../../types/hooks/data/checkinData";
 
 /**
  * Data Hook that subscribes to the "checkins" node

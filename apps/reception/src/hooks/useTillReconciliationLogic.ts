@@ -1,13 +1,15 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useEffect,useState } from "react";
+
 import type { TenderRemovalRecord } from "../types/finance";
 import { showToast } from "../utils/toastUtils";
+import { runTransaction } from "../utils/transaction";
+
 import { useTillShifts } from "./client/till/useTillShifts";
 import { useCashDrawerLimit } from "./data/useCashDrawerLimit";
 import { useSafeKeycardCount } from "./data/useSafeKeycardCount";
 import { useCashCounts } from "./useCashCounts";
-import { useSafeLogic } from "./useSafeLogic";
 import { useKeycardTransfer } from "./useKeycardTransfer";
-import { runTransaction } from "../utils/transaction";
+import { useSafeLogic } from "./useSafeLogic";
 
 export interface TillReconciliationUIControls {
   closeCashForms: () => void;
@@ -116,7 +118,7 @@ export function useTillReconciliationLogic(
           },
           { run: () => recordFloatEntry(amount) },
         ]);
-      } catch (error) {
+      } catch {
         showToast("Failed to confirm float.", "error");
       }
     },
@@ -156,7 +158,7 @@ export function useTillReconciliationLogic(
 
         await runTransaction(steps);
         ui.setShowExchangeForm(false);
-      } catch (error) {
+      } catch {
         showToast("Failed to record exchange.", "error");
       }
     },
@@ -193,7 +195,7 @@ export function useTillReconciliationLogic(
           },
         ]);
         ui.setShowTenderRemovalForm(false);
-      } catch (error) {
+      } catch {
         showToast("Failed to record tender removal.", "error");
       }
     },

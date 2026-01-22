@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 import { ChevronRight } from "lucide-react";
@@ -263,7 +263,7 @@ function RouteCardGroupBase({
           const classes = clsx(ROUTE_VARIANT_LINK_CLASS, isActive ? ROUTE_VARIANT_ACTIVE_CLASS : null);
 
           return route.internal ? (
-            <Link key={href} to={href} prefetch="intent" className={classes}>
+            <Link key={href} href={href} prefetch={true} className={classes}>
               <span className="min-w-0">
                 <span className="block truncate">{label}</span>
                 {route.facts?.duration || route.facts?.cost ? (

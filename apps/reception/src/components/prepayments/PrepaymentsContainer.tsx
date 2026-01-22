@@ -3,16 +3,17 @@ import { memo, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
 import usePrepaymentData, {
-  PrepaymentData,
+  type PrepaymentData,
 } from "../../hooks/client/checkin/usePrepaymentData";
 import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import useCCDetailsMutations from "../../hooks/mutations/useCCDetailsMutations";
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
-import { generateTransactionId } from "../../utils/generateTransactionId";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
-import { BookingPaymentItem } from "./BookingPaymentsLists";
-import PrepaymentsView, { PaymentStatus } from "./PrepaymentsView";
+import { generateTransactionId } from "../../utils/generateTransactionId";
+
+import { type BookingPaymentItem } from "./BookingPaymentsLists";
+import PrepaymentsView, { type PaymentStatus } from "./PrepaymentsView";
 
 interface PrepaymentsContainerProps {
   setMessage: (message: string) => void;

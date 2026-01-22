@@ -172,6 +172,20 @@ If behaviour or visuals in this doc contradict the code, treat the code as canon
 
 ## 6. Summary: reuse vs bespoke
 
+### 6.0 Component/block → surfaces/routes matrix (CMS-BUILD-06 view)
+
+This is the “at-a-glance” matrix view of which concrete UI components and Page Builder blocks underpin each major build surface (pre‑launch Configurator + initial post‑launch editing).
+
+| Component / block | Surfaces (routes) | Primary entrypoints |
+|---|---|---|
+| `CmsBuildHero` | Configurator dashboard (`/cms/configurator`), Settings (`/cms/shop/[shop]/settings`), Products (`/cms/shop/[shop]/products`), Edit preview (`/cms/shop/[shop]/edit-preview`) | `packages/ui/src/components/cms/CmsBuildHero.tsx`, `apps/cms/src/app/cms/configurator/components/ConfiguratorHero.tsx`, `apps/cms/src/app/cms/shop/[shop]/settings/components/SettingsHero.tsx`, `apps/cms/src/app/cms/shop/[shop]/products/page.tsx` |
+| `CmsMetricTiles` | Configurator dashboard (`/cms/configurator`), Products (`/cms/shop/[shop]/products`) | `packages/ui/src/components/cms/CmsMetricTiles.tsx`, `apps/cms/src/app/cms/configurator/components/ConfiguratorHero.tsx`, `apps/cms/src/app/cms/shop/[shop]/products/page.tsx` |
+| `CmsLaunchChecklist` | Configurator dashboard (`/cms/configurator`), Configurator Summary step, Products (`/cms/shop/[shop]/products`), Edit preview (`/cms/shop/[shop]/edit-preview`) | `packages/ui/src/components/cms/CmsLaunchChecklist.tsx`, `apps/cms/src/app/cms/configurator/components/LaunchPanel.tsx`, `apps/cms/src/app/cms/configurator/steps/StepSummary.tsx`, `apps/cms/src/app/cms/shop/[shop]/products/page.tsx`, `apps/cms/src/app/cms/shop/[shop]/edit-preview/EditPreviewPage.tsx` |
+| `CmsSettingsSnapshot` | Settings (`/cms/shop/[shop]/settings`) | `packages/ui/src/components/cms/CmsSettingsSnapshot.tsx`, `apps/cms/src/app/cms/shop/[shop]/settings/components/SettingsHero.tsx` |
+| `CmsInlineHelpBanner` | Theme Editor (`/cms/shop/[shop]/themes`), Additional Pages step, Edit preview (`/cms/shop/[shop]/edit-preview`) | `packages/ui/src/components/cms/CmsInlineHelpBanner.tsx`, `apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx`, `apps/cms/src/app/cms/configurator/steps/StepAdditionalPages/StepAdditionalPages.tsx`, `apps/cms/src/app/cms/shop/[shop]/edit-preview/EditPreviewPage.tsx` |
+| Page Builder `blockRegistry` + `DynamicRenderer` (blocks) | Page Builder in Configurator steps + Pages editor surfaces (e.g. Additional Pages step and `/cms/pages/*`); runtime rendering via DynamicRenderer | `packages/ui/src/components/cms/blocks/index.ts`, `packages/ui/src/components/DynamicRenderer.tsx`, `packages/ui/src/components/cms/page-builder/PageBuilder.tsx` |
+| `ProductsTable` | Products (`/cms/shop/[shop]/products`) | `packages/ui/src/components/cms/ProductsTable.client.tsx`, `apps/cms/src/app/cms/shop/[shop]/products/page.tsx` |
+
 From this audit:
 
 - **Strong reuse of atoms/primitives**

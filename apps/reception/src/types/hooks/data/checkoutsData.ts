@@ -1,6 +1,6 @@
 /* src/types/hooks/data/checkoutsData.ts */
 
-import { z } from "zod";
+import { type z } from "zod";
 
 import type {
   checkoutDataSchema,

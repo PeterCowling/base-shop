@@ -1,16 +1,17 @@
-import { CheckInRow, checkInRowSchema } from "../../../types/component/CheckinRow";
-import {
-  FirebaseBookingOccupant,
-  FirebaseBookings,
-} from "../../../types/hooks/data/bookingsData";
+import { type CheckInRow, checkInRowSchema } from "../../../types/component/CheckinRow";
+import type { OccupantDateOfBirth } from "../../../types/component/dob";
 import type { Financials } from "../../../types/domains/booking_old";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
-import type { Loans, OccupantLoanData } from "../../../types/hooks/data/loansData";
-import type { GuestsDetails } from "../../../types/hooks/data/guestDetailsData";
+import {
+  type FirebaseBookingOccupant,
+  type FirebaseBookings,
+} from "../../../types/hooks/data/bookingsData";
 import type { CityTaxData } from "../../../types/hooks/data/cityTaxData";
-import type { OccupantDateOfBirth } from "../../../types/component/dob";
-import { parseLoanItem, parseLoanMethod, parseTxType } from "../../../utils/loanParsers";
+import type { GuestByRoomData } from "../../../types/hooks/data/guestByRoomData";
+import type { GuestsDetails } from "../../../types/hooks/data/guestDetailsData";
+import type { Loans, OccupantLoanData } from "../../../types/hooks/data/loansData";
 import { getCurrentIsoTimestamp, parseYMD } from "../../../utils/dateUtils";
+import { parseLoanItem, parseLoanMethod, parseTxType } from "../../../utils/loanParsers";
 
 /**
  * Safely parse raw occupant loan data from Firebase into an OccupantLoanData shape.
@@ -76,7 +77,7 @@ export interface BuildRowsParams {
   loans?: Loans;
   activities?: Record<string, Record<string, Activity>>;
   codeActivitiesMap?: Record<string, Activity[]>;
-  guestByRoom?: Record<string, { allocated: string; booked: string }>;
+  guestByRoom?: GuestByRoomData | null;
   checkins?: Record<string, Record<string, { timestamp?: string }>>;
   startDate: string;
   endDate: string;
@@ -223,4 +224,3 @@ export function buildCheckinRows({
 
   return { rows: Object.values(groupedByBooking).flat(), error: validationError };
 }
-

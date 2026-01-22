@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 
-import { CategoryList,NewsletterForm, PromoBanner } from "../molecules";
+import { CategoryList,NewsletterForm, PromoBanner } from "@acme/design-system/molecules";
 
 const mockCategoryCollectionTemplate = jest.fn((_props: unknown) => null);
 
-jest.mock("../../../templates/CategoryCollectionTemplate", () => ({
+jest.mock("@acme/ui/components/templates/CategoryCollectionTemplate", () => ({
   __esModule: true,
   CategoryCollectionTemplate: (props: unknown) => mockCategoryCollectionTemplate(props),
 }));

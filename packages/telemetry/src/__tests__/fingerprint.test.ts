@@ -1,5 +1,5 @@
 // packages/telemetry/src/__tests__/fingerprint.test.ts
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 
 import { generateFingerprint, trimStack } from "../fingerprint";
 

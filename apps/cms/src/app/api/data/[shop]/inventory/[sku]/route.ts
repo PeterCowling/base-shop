@@ -1,5 +1,5 @@
 import { type NextRequest,NextResponse } from "next/server";
-import { ensureRole } from "@cms/actions/common/auth";
+import { ensureShopAccess } from "@cms/actions/common/auth";
 
 import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
@@ -8,8 +8,15 @@ export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ shop: string; sku: string }> },
 ) {
+  const { shop, sku } = await context.params;
   try {
-    await ensureRole(["admin", "ShopAdmin"]);
+    await ensureShopAccess(shop);
+  } catch (err) {
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 401;
+    return NextResponse.json({ error: message === "Forbidden" ? "Forbidden" : "Unauthorized" }, { status });
+  }
+  try {
     const body = await req.json();
     const parsed = inventoryItemSchema.partial().safeParse(body);
     if (!parsed.success) {
@@ -18,7 +25,6 @@ export async function PATCH(
         { status: 400 },
       );
     }
-    const { shop, sku } = await context.params;
     const patch = parsed.data;
     const variantAttributes = patch.variantAttributes ?? {};
     const updated = await inventoryRepository.update(

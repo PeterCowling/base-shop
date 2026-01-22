@@ -2,10 +2,10 @@
 
 import type { ChangeEvent } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/types";
-import { Inline } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
 
 import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms/shadcn";

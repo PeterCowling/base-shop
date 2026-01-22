@@ -1,8 +1,8 @@
 "use client";
 import { type ReactNode,useState } from "react";
 
-import { Inline } from "../../../components/atoms/primitives/Inline";
-import { cn } from "../../../utils/style";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { cn } from "@acme/design-system/utils/style";
 
 export interface TabsBlockProps {
   /** Labels for each tab */

@@ -4,9 +4,8 @@
 
 import { useMemo } from "react";
 
-import type { PageComponent } from "@acme/types";
-
 import { Button, Checkbox,Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/shadcn";
+import type { PageComponent } from "@acme/types";
 
 import { easingPresets } from "./EasingPresets";
 

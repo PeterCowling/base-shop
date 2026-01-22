@@ -23,18 +23,18 @@
  *   --verbose             Verbose output
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { join, dirname } from "node:path";
 import { execSync } from "node:child_process";
+import { existsSync, mkdirSync,readFileSync, writeFileSync } from "node:fs";
+import { dirname,join } from "node:path";
 
 import {
-  SECRET_REGISTRY,
-  getSecretDefinition,
-  getRequiredSecretsForShop,
-  validateSecret,
   generateSecretValue,
   generateSessionSecret,
+  getRequiredSecretsForShop,
+  getSecretDefinition,
+  SECRET_REGISTRY,
   type SecretDefinition,
+  validateSecret,
 } from "@acme/platform-core/secrets";
 
 // ============================================================
@@ -623,4 +623,4 @@ main().catch((err) => {
   process.exit(1);
 });
 
-export { parseArgs, loadExistingSecrets, getSecretStatuses, generateMissingSecrets };
+export { generateMissingSecrets,getSecretStatuses, loadExistingSecrets, parseArgs };

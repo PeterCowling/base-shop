@@ -1,13 +1,16 @@
 // src/components/safe/__tests__/SafeManagement.test.tsx
 /* eslint-disable no-var */
 import "@testing-library/jest-dom";
+
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import { AuthContext } from "../../../context/AuthContext";
-import type { SafeCount } from "../../../types/hooks/data/safeCountData";
+import { SafeDataProvider } from "../../../context/SafeDataContext";
 import type { User } from "../../../types/domains/userDomain";
+import type { SafeCount } from "../../../types/hooks/data/safeCountData";
+import SafeManagement from "../SafeManagement";
 
 // placeholders for mocks
 var updateCount: jest.Mock;
@@ -370,9 +373,6 @@ jest.mock("../../till/ReturnKeycardsModal", () => ({
     </div>
   ),
 }));
-
-import { SafeDataProvider } from "../../../context/SafeDataContext";
-import SafeManagement from "../SafeManagement";
 
 const authValue: {
   user: User;

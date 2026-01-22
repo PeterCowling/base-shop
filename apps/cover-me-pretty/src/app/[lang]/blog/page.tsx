@@ -1,4 +1,4 @@
-import BlogListing from "@acme/ui/components/cms/blocks/BlogListing";
+import BlogListing from "@acme/cms-ui/blocks/BlogListing";
 import { notFound } from "next/navigation";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";

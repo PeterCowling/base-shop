@@ -1,10 +1,11 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from "@testing-library/react";
 
-import { useShiftCalculations } from "../useShiftCalculations";
-import type { Transaction, CreditSlip } from "../../../../types/component/Till";
+import type { CreditSlip,Transaction } from "../../../../types/component/Till";
 import type { CashCount } from "../../../../types/hooks/data/cashCountData";
 import type { SafeCount } from "../../../../types/hooks/data/safeCountData";
+import { useShiftCalculations } from "../useShiftCalculations";
 
 const shiftOpen = new Date("2023-01-01T10:00:00Z");
 

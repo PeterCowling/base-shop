@@ -5,11 +5,10 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-import { useModal } from "@acme/ui/context/ModalContext";
-import { useCurrentLanguage } from "@acme/ui/hooks/useCurrentLanguage";
-import { useTheme } from "@acme/ui/hooks/useTheme";
-import { type AppLanguage,i18nConfig } from "@acme/ui/i18n.config";
-
+import { useModal } from "../context/ModalContext";
+import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
+import { useTheme } from "../hooks/useTheme";
+import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon

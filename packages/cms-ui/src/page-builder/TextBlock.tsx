@@ -4,15 +4,6 @@ import { memo, useCallback, useRef } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import DOMPurify from "dompurify";
 
-import { type Locale,locales as supportedLocales } from "@acme/i18n/locales";
-import type {
-  HistoryState,
-  PageComponent,
-  TextComponent as BaseTextComponent,
-} from "@acme/types";
-import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-
-import { cssVars } from "@acme/design-system/utils/style/cssVars";
 import {
   Button,
   DropdownMenu,
@@ -20,6 +11,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@acme/design-system/shadcn";
+import { cssVars } from "@acme/design-system/utils/style/cssVars";
+import { type Locale,locales as supportedLocales } from "@acme/i18n/locales";
+import type {
+  HistoryState,
+  PageComponent,
+  TextComponent as BaseTextComponent,
+} from "@acme/types";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 import type { Action } from "./state";
 import type { EditorFlags as EditorFlagsLocal } from "./state/layout/types";

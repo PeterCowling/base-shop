@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { calculateDiscrepancy } from "../cashUtils";
 
 describe("calculateDiscrepancy", () => {

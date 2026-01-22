@@ -1,9 +1,9 @@
-import { get, ref, update } from "firebase/database";
 import { useCallback, useState } from "react";
 import { flushSync } from "react-dom";
+import { get, ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
-import { FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
+import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
 
 export default function useEditTransaction() {
   const database = useFirebaseDatabase();

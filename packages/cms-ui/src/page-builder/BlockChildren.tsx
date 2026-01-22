@@ -144,7 +144,7 @@ export default function BlockChildren({
         data-tab-titles={isTabbed && slots ? JSON.stringify(slots.map((s) => s.title)) : undefined}
       >
         {effGridEnabled && (
-          // eslint-disable-next-line ds/absolute-parent-guard -- PB-2460: Grid overlay positioned under relative parent; rule mis-detects due to dynamic class concatenation.
+           
           <div className="absolute inset-0"><GridOverlay gridCols={effGridCols} gutter={effGutter} /></div>
         )}
         {/* top-of-container placeholder when targeting index 0 */}

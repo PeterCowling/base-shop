@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
+
 import useShiftProgress, {
-  ShiftProgress,
+  type ShiftProgress,
   useAutoSaveShiftProgress,
 } from "../useShiftProgress";
 

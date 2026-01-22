@@ -4,9 +4,8 @@
 import type { ChangeEvent, ReactElement } from "react";
 
 import { useTranslations } from "@acme/i18n";
-
-import type { TokenInfo } from "../../../hooks/useTokenEditor";
-import { FontSelect } from "../FontSelect";
+import { FontSelect } from "@acme/ui/components/cms/FontSelect";
+import type { TokenInfo } from "@acme/ui/hooks/useTokenEditor";
 
 interface FontTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;
@@ -68,7 +67,7 @@ export function FontToken({
         >
           <option value="">{t("cms.style.googleFonts") as string}</option>
           {googleFonts.map((f: string) => (
-            // eslint-disable-next-line react/forbid-dom-props -- DX-0003: Inline font preview on <option> requires style
+             
             <option key={f} value={f} style={{ fontFamily: f }}>
               {f}
             </option>

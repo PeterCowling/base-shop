@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { XaDepartmentListing } from "../../../../components/XaDepartmentListing";
-import { XA_SUBCATEGORIES, isCategoryAllowed, isDepartmentAllowed } from "../../../../lib/xaCatalog";
+import { isCategoryAllowed, isDepartmentAllowed,XA_SUBCATEGORIES } from "../../../../lib/xaCatalog";
 
 export default async function KidsBagsTypePage({
   params,

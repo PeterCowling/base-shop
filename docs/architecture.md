@@ -140,3 +140,71 @@ Shared packages expose a deliberately small public surface:
 - Apps and feature packages must never import from `@acme/*/src/**`. Instead, they should use `@acme/<package>` or documented subpaths such as `@acme/platform-core/cart` or `@acme/ui` components as exported in each package’s `exports`.
 
 When adding new capabilities, decide first which layer owns the behaviour (domain in `platform-core`, UI in `ui`, CMS glue in `cms-marketing`/configurator, PB logic in the PB packages, or app‑specific glue in apps). Then add or extend a public API at that layer and consume it from higher layers instead of reaching into internal modules.
+
+## UI Package Architecture
+
+The UI packages follow a three-tier layering model:
+
+```mermaid
+graph TD
+    CmsUI["@acme/cms-ui (CMS-specific)"]
+    UI["@acme/ui (domain components)"]
+    DS["@acme/design-system (presentation primitives)"]
+
+    CmsUI --> UI
+    CmsUI --> DS
+    UI --> DS
+```
+
+### `@acme/design-system` (foundation / presentation layer)
+
+The canonical source for presentation-only components with no domain logic:
+- **Primitives**: `@acme/design-system/primitives` (Button, Card, Input, etc.)
+- **Atoms**: `@acme/design-system/atoms` (Alert, Avatar, Chip, etc.)
+- **Molecules**: `@acme/design-system/molecules` (Breadcrumbs, SearchBar, etc.)
+- **Shadcn wrappers**: `@acme/design-system/shadcn` (shadcn/ui components)
+- **Presentation hooks**: `@acme/design-system/hooks` (useViewport, useReducedMotion)
+- **Style utilities**: `@acme/design-system/utils/style` (cn, cssVars, boxProps)
+
+This package **must not** import from `@acme/ui` or `@acme/cms-ui`.
+
+### `@acme/ui` (domain layer)
+
+Contains domain-specific components and compatibility shims:
+- Domain components (checkout flows, product displays, etc.)
+- Domain hooks and contexts (cart, pricing, rates)
+- Page Builder components (`@acme/ui/components/cms/page-builder/*`)
+- Compatibility shims that delegate to `@acme/design-system`
+
+This package **must not** import from `@acme/cms-ui`.
+
+### `@acme/cms-ui` (CMS/editor layer)
+
+CMS-specific editor components and page builder UI:
+- Block editors and section components
+- Page builder panels and toolbars
+- Style token editors
+
+This package may import from both `@acme/ui` and `@acme/design-system`.
+
+### Import Guidelines
+
+**Prefer design-system for presentation primitives:**
+```ts
+// ✅ Good - canonical imports
+import { Button } from "@acme/design-system/primitives";
+import { cn } from "@acme/design-system/utils/style";
+import { useViewport } from "@acme/design-system/hooks";
+
+// ⚠️ Deprecated - will trigger ESLint warnings
+import { Button } from "@acme/ui/atoms";
+import { cn } from "@acme/ui/utils/style";
+```
+
+**Use @acme/ui for domain components:**
+```ts
+import { CheckoutForm } from "@acme/ui/components/checkout/CheckoutForm";
+import { ProductCard } from "@acme/ui/components/organisms/ProductCard";
+```
+
+For the full migration plan, see [docs/plans/ui-architecture-consolidation-plan.md](plans/ui-architecture-consolidation-plan.md).

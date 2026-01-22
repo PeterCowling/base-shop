@@ -49,8 +49,9 @@ export async function PATCH(
     await writeLibrary(themes);
     return NextResponse.json(parsed);
   } catch (err) {
+    console.error("[api/themes] PATCH error:", err);
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Failed to update theme" },
       { status: 400 },
     );
   }

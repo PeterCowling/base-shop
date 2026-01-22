@@ -1,8 +1,8 @@
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy not-found page pending design/i18n overhaul */
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms/Section";
-import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Section } from "@acme/design-system/atoms/Section";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 export default function NotFound() {
   return (

@@ -15,6 +15,7 @@ export const cashCountSchema = z.object({
   denomBreakdown: z.record(z.number()).optional(),
   keycardCount: z.number().optional(),
   amount: z.number().optional(),
+  shiftId: z.string().optional(),
 });
 
 export const cashCountsSchema = z.record(cashCountSchema);

@@ -16,7 +16,7 @@ export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
       <div
         ref={ref}
         className={cn(
-          "animate-spin rounded-full border-2 border-current border-t-transparent",
+          "animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent",
           className
         )}
         role={role ?? "status"}

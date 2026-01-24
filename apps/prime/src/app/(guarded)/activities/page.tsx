@@ -1,7 +1,8 @@
-// Force dynamic rendering to avoid SSG issues with context providers
-export const dynamic = 'force-dynamic';
+'use client';
 
-import ActivitiesClient from './ActivitiesClient';
+import dynamic from 'next/dynamic';
+
+const ActivitiesClient = dynamic(() => import('./ActivitiesClient'), { ssr: false });
 
 export default function ActivitiesPage() {
   return <ActivitiesClient />;

@@ -13,6 +13,11 @@ export const tillShiftSchema = z.object({
   closingKeycards: z.number().optional(),
   closeDifference: z.number().optional(),
   closeType: z.enum(["close", "reconcile"]).optional(),
+  varianceSignoffRequired: z.boolean().optional(),
+  signedOffBy: z.string().optional(),
+  signedOffByUid: z.string().optional(),
+  signedOffAt: z.string().optional(),
+  varianceNote: z.string().optional(),
 });
 
 export const tillShiftsSchema = z.record(tillShiftSchema);

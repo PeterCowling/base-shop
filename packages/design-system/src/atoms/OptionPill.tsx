@@ -17,7 +17,7 @@ export const OptionPill = React.forwardRef<HTMLButtonElement, OptionPillProps>(
         type={type}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility class names only
-          "inline-flex min-h-11 items-center justify-center rounded-full border px-4 text-sm font-semibold transition",
+          "inline-flex min-h-11 items-center justify-center rounded-full border px-4 text-sm font-semibold transition-colors transition-shadow motion-reduce:transition-none",
           // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           "focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60",
           selected
@@ -35,4 +35,3 @@ export const OptionPill = React.forwardRef<HTMLButtonElement, OptionPillProps>(
 );
 
 OptionPill.displayName = "OptionPill";
-

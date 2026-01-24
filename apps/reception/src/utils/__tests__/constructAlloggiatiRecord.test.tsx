@@ -4,11 +4,11 @@ import type { OccupantDetails } from "../../types/hooks/data/guestDetailsData";
 import { constructAlloggiatiRecord } from "../constructAlloggiatiRecord";
 
 jest.mock("../comuneCodes", () => ({
-  getComuneInfo: jest.fn().mockReturnValue(["500123456", "RM"]),
+  getComuneInfo: jest.fn().mockResolvedValue(["500123456", "RM"]),
 }));
 
 describe("constructAlloggiatiRecord", () => {
-  it("builds a fixed length record string", () => {
+  it("builds a fixed length record string", async () => {
     const occupant: OccupantDetails = {
       firstName: "Mario",
       lastName: "Rossi",
@@ -20,7 +20,7 @@ describe("constructAlloggiatiRecord", () => {
       document: { type: "passport", number: "AA1111111" },
     };
 
-    const record = constructAlloggiatiRecord(occupant, { arrivalDateDdMmYyyy: "19/02/2024" });
+    const record = await constructAlloggiatiRecord(occupant, { arrivalDateDdMmYyyy: "19/02/2024" });
 
     function safePad(value: string, length: number) {
       const trimmed = value.substring(0, length);

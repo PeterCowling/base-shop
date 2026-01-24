@@ -3,7 +3,7 @@
 import type { ReactElement } from "react";
 
 import { Alert, Button } from "../../components/atoms";
-import { Inline } from "../../components/atoms/primitives";
+import { Inline } from "../../components/atoms/primitives/Inline";
 
 export type CmsInlineHelpTone = "info" | "warning";
 

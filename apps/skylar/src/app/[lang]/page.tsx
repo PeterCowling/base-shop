@@ -22,7 +22,7 @@ export default async function HomePage({ params }: { params?: Promise<LangRouteP
   const isZh = lang === "zh";
   const isEn = lang === "en";
   const baseCard = ["rounded-3xl", "border", "p-6", "md:p-8"];
-  const zhCard = ["border-accent/60", "bg-zinc-900/60", "text-zinc-100"];
+  const zhCard = ["border-accent/60", "bg-panel/60", "text-fg"];
   const enCard = ["border-border", "bg-panel", "text-fg"];
   const linkBase = [
     "inline-flex",
@@ -61,7 +61,7 @@ export default async function HomePage({ params }: { params?: Promise<LangRouteP
             <p className="font-display text-3xl uppercase skylar-heading-tracking">
               {translator("realEstate.heading")}
             </p>
-            <p className={`mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`}>
+            <p className="mt-4 font-body text-base leading-6 text-muted-foreground">
               {translator("realEstate.intro")}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">

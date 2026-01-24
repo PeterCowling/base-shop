@@ -1,7 +1,7 @@
 /* file path: src/components/assistance/HelpCentreMobileNav.tsx */
 /* Mobile drawer – visible below lg (1024 px) */
 
-import { memo, type ReactNode, useCallback, useMemo } from "react";
+import { memo, type ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -76,13 +76,13 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
   const bannerHeight = useBannerHeightOrZero();
 
-  const fallbackT = useMemo(() => {
+  const fallbackT = (() => {
     try {
       return i18n.getFixedT(FALLBACK_LANGUAGE, "assistanceCommon");
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const translate = useCallback(
     (key: string, fallbackFactory?: (rawKey: string) => string): string => {
@@ -101,36 +101,29 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
     [fallbackT, t],
   );
 
-  const copy = useMemo<HelpCentreMobileNavCopy>(
-    () => ({
-      openLabel: translate("openSidebar"),
-      closeLabel: translate("closeSidebar"),
-      navLabel: translate("mobileSidebarLabel"),
-      hintLabel: translate("mobileHint"),
-    }),
-    [translate],
-  );
+  const copy: HelpCentreMobileNavCopy = {
+    openLabel: translate("openSidebar"),
+    closeLabel: translate("closeSidebar"),
+    navLabel: translate("mobileSidebarLabel"),
+    hintLabel: translate("mobileHint"),
+  };
 
-  const items = useMemo<AssistanceMobileNavItem[]>(() => {
-    const root = `/${lang}/${getSlug("assistance", lang)}`;
+  const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-    type AssistanceModule = typeof assistance;
-    const keys: readonly HelpArticleKey[] =
-      ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-    const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-    const articles = keys.map((key) => {
-      const slug = toSlug ? toSlug(lang, key) : String(key);
-      const href = `${root}/${slug}`;
-      return {
-        key,
-        label: translate(`nav.${key}`, humanizeKey),
-        href,
-        isActive: currentKey === key || pathname === href,
-      } satisfies AssistanceMobileNavItem;
-    });
-
-    return articles;
-  }, [currentKey, lang, pathname, translate]);
+  type AssistanceModule = typeof assistance;
+  const keys: readonly HelpArticleKey[] =
+    ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
+  const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
+  const items: AssistanceMobileNavItem[] = keys.map((key) => {
+    const slug = toSlug ? toSlug(lang, key) : String(key);
+    const href = `${root}/${slug}`;
+    return {
+      key,
+      label: translate(`nav.${key}`, humanizeKey),
+      href,
+      isActive: currentKey === key || pathname === href,
+    } satisfies AssistanceMobileNavItem;
+  });
 
   const renderLink = useCallback(
     ({ item, highlighted: _highlighted, children }: {

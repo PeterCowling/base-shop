@@ -6,7 +6,7 @@
 
 /* 0 ▪ Imports
    ------------------------------------------------------------------ */
-@import "@themes/base/src/tokens.css";
+@import "@themes/base/tokens.css";
 @import "../../../../packages/ui/src/styles/builder.css";
 @import "./fonts.css"; /* font-faces with font-display: optional */
 @import "tailwindcss" source("../..");

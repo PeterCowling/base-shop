@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 import {
   type AsyncSubmissionHandler,
@@ -25,11 +26,6 @@ export interface CampaignFormMessages {
 type CampaignField = keyof CampaignFormValues;
 
 export type CampaignErrors = ValidationErrors<CampaignField>;
-
-export interface CampaignFormToastState {
-  open: boolean;
-  message: string;
-}
 
 export type CampaignFormUpdater = <K extends CampaignField>(
   field: K,
@@ -92,11 +88,9 @@ interface UseCampaignFormResult {
   values: CampaignFormValues;
   errors: CampaignErrors;
   status: SubmissionStatus;
-  toast: CampaignFormToastState;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   updateValue: CampaignFormUpdater;
   toggleChannel: (channel: CampaignChannel) => void;
-  dismissToast: () => void;
 }
 
 export function useCampaignForm({
@@ -118,10 +112,7 @@ export function useCampaignForm({
   const [internalErrors, setInternalErrors] = useState<CampaignErrors>({});
   const [internalStatus, setInternalStatus] =
     useState<SubmissionStatus>("idle");
-  const [toast, setToast] = useState<CampaignFormToastState>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [dismissedServerErrors, setDismissedServerErrors] = useState<
     Set<CampaignField>
   >(new Set());
@@ -171,14 +162,6 @@ export function useCampaignForm({
     [onStatusChange, statusProp]
   );
 
-  const showToast = useCallback((message: string) => {
-    setToast({ open: true, message });
-  }, []);
-
-  const dismissToast = useCallback(() => {
-    setToast((prev) => ({ ...prev, open: false }));
-  }, []);
-
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -188,13 +171,13 @@ export function useCampaignForm({
 
       if (Object.keys(nextErrors).length > 0) {
         markStatus("error");
-        showToast(messages?.validation ?? (ts("campaign.validation.reviewFields") as string));
+        toast.error(messages?.validation ?? (ts("campaign.validation.reviewFields") as string));
         return;
       }
 
       if (!onSubmit) {
         markStatus("success");
-        showToast(messages?.success ?? (ts("campaign.draftSavedLocally") as string));
+        toast.success(messages?.success ?? (ts("campaign.draftSavedLocally") as string));
         return;
       }
 
@@ -202,17 +185,17 @@ export function useCampaignForm({
         markStatus("submitting");
         await onSubmit(values);
         markStatus("success");
-        showToast(messages?.success ?? (ts("campaign.savedSuccessfully") as string));
+        toast.success(messages?.success ?? (ts("campaign.savedSuccessfully") as string));
       } catch (error) {
         markStatus("error");
         const fallback =
           error instanceof Error
             ? error.message
             : messages?.error ?? (ts("campaign.saveFailed") as string);
-        showToast(messages?.error ?? fallback);
+        toast.error(messages?.error ?? fallback);
       }
     },
-    [markStatus, messages, onSubmit, sections, showToast, ts, values]
+    [markStatus, messages, onSubmit, sections, toast, ts, values]
   );
 
   const dismissServerError = useCallback((field: CampaignField) => {
@@ -262,11 +245,9 @@ export function useCampaignForm({
     values,
     errors,
     status,
-    toast,
     handleSubmit,
     updateValue,
     toggleChannel,
-    dismissToast,
   };
 }
 

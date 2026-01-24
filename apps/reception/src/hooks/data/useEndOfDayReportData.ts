@@ -18,6 +18,10 @@ import {
   startOfDayIso,
 } from "../../utils/dateUtils";
 import { partitionSafeCountsByType } from "../../utils/partitionSafeCountsByType";
+import {
+  isCorrectionTransaction,
+  isVoidedTransaction,
+} from "../../utils/transactionUtils";
 
 import { calculateKeycardTransfers } from "./endOfDay/keycardTransfers";
 import { calculateSafeTotals } from "./endOfDay/safeTotals";
@@ -92,6 +96,13 @@ export interface EndOfDayReportData {
   safeVariance: number;
   safeVarianceMismatch: boolean;
   safeInflowsMismatch: boolean;
+  correctionSummary: {
+    total: number;
+    netAmount: number;
+    reversalCount: number;
+    replacementCount: number;
+    adjustmentCount: number;
+  };
 }
 
 export function useEndOfDayReportData(date: Date): EndOfDayReportData {
@@ -134,6 +145,50 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
     error: safeError,
   } = useSafeData();
 
+  const activeTransactions = useMemo(
+    () => transactions.filter((t) => !isVoidedTransaction(t)),
+    [transactions]
+  );
+
+  const correctionTransactions = useMemo(
+    () =>
+      activeTransactions.filter(
+        (t) =>
+          t.timestamp &&
+          sameItalyDate(t.timestamp, targetDateStr) &&
+          isCorrectionTransaction(t)
+      ),
+    [activeTransactions, targetDateStr]
+  );
+
+  const correctionSummary = useMemo(() => {
+    let total = 0;
+    let netAmount = 0;
+    let reversalCount = 0;
+    let replacementCount = 0;
+    let adjustmentCount = 0;
+
+    correctionTransactions.forEach((t) => {
+      total += 1;
+      netAmount += t.amount ?? 0;
+      if (t.correctionKind === "reversal") {
+        reversalCount += 1;
+      } else if (t.correctionKind === "replacement") {
+        replacementCount += 1;
+      } else if (t.correctionKind === "adjustment") {
+        adjustmentCount += 1;
+      }
+    });
+
+    return {
+      total,
+      netAmount,
+      reversalCount,
+      replacementCount,
+      adjustmentCount,
+    };
+  }, [correctionTransactions]);
+
   const isLoading =
     tillLoading ||
     cashDiscLoading ||
@@ -146,7 +201,7 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
     let cash = 0;
     let card = 0;
     let other = 0;
-    for (const t of transactions) {
+    for (const t of activeTransactions) {
       if (t.timestamp && !sameItalyDate(t.timestamp, targetDateStr)) continue;
       const method = t.method?.toLowerCase();
       if (method === "cash") {
@@ -158,7 +213,7 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
       }
     }
     return { cash, card, other };
-  }, [transactions, targetDateStr]);
+  }, [activeTransactions, targetDateStr]);
 
   const {
     bankDrops: todaysBankDrops,
@@ -299,10 +354,10 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
 
   const keycardTransactions = useMemo(
     () =>
-      transactions.filter(
+      activeTransactions.filter(
         (t) => t.timestamp && sameItalyDate(t.timestamp, targetDateStr)
       ),
-    [transactions, targetDateStr]
+    [activeTransactions, targetDateStr]
   );
 
   const keycardsLoaned = useMemo(
@@ -573,6 +628,7 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
     safeVariance,
     safeVarianceMismatch,
     safeInflowsMismatch,
+    correctionSummary,
   };
 }
 

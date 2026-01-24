@@ -52,15 +52,19 @@ describe("ThemeContext: uses system and reacts to changes", () => {
     expect(getByTestId("theme").textContent).toBe("system");
     expect(document.documentElement.style.colorScheme).toBe("dark");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "system");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
     expect(setItem).toHaveBeenCalledWith("theme", "system");
 
     act(() => listener({ matches: false } as MediaQueryListEvent));
 
     expect(document.documentElement.style.colorScheme).toBe("light");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(getByTestId("theme").textContent).toBe("system");
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "system");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
     expect(setItem).toHaveBeenCalledWith("theme", "system");
-    expect(setItem).toHaveBeenCalledTimes(2);
   });
 });
-

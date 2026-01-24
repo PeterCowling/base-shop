@@ -4,7 +4,6 @@ import { jsonInventoryRepository } from "../inventory.json.server";
 
 // Use globalThis to avoid Jest mock hoisting issues
 declare global {
-  // eslint-disable-next-line no-var
   var __inventoryTestCheckAndAlert: jest.Mock | undefined;
 }
 globalThis.__inventoryTestCheckAndAlert = jest.fn();

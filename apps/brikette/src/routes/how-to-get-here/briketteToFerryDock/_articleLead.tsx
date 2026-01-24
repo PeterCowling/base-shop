@@ -1,19 +1,17 @@
-import { Fragment, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import Link from "next/link";
 
 import TableOfContents from "@/components/guides/TableOfContents";
 import i18n from "@/i18n";
-import { guideHref, type GuideKey } from "@/routes.guides-helpers";
+import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
 import { ZoomableFigure } from "../components/ZoomableFigure";
+import { INLINE_LINK_CLASSES, renderInlineLinks } from "../renderInlineLinks";
 
 import { createGuideLabelReader } from "./labels";
 import type { GuideExtras } from "./types";
 
-const inlineLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
-
-const GUIDE_SCHEME_PREFIX = "guide:" as const;
 const FIGURE_PATTERN = /^\s*\[\[figure:([a-z0-9-]+)\]\]\s*$/i;
 
 const FIGURES = {
@@ -72,92 +70,6 @@ const FIGURES = {
     aspect: "16/9",
   },
 } as const;
-
-function renderInlineLinks(
-  value: string,
-  keyPrefix: string,
-  context: GuideSeoTemplateContext,
-): ReactNode {
-  inlineLinkPattern.lastIndex = 0;
-  let match: RegExpExecArray | null;
-  let lastIndex = 0;
-  const parts: ReactNode[] = [];
-
-  while ((match = inlineLinkPattern.exec(value))) {
-    if (match.index > lastIndex) {
-      const textSegment = value.slice(lastIndex, match.index);
-      if (textSegment) {
-        parts.push(<Fragment key={`${keyPrefix}-text-${match.index}`}>{textSegment}</Fragment>);
-      }
-    }
-
-    const labelRaw = match[1];
-    const hrefRaw = match[2];
-    if (!labelRaw || !hrefRaw) {
-      lastIndex = inlineLinkPattern.lastIndex;
-      continue;
-    }
-    const label = labelRaw.trim();
-    const href = hrefRaw.trim();
-    const key = `${keyPrefix}-link-${match.index}`;
-
-    if (href.startsWith(GUIDE_SCHEME_PREFIX)) {
-      const guideKey = href.slice(GUIDE_SCHEME_PREFIX.length).trim();
-        if (guideKey.length > 0) {
-          parts.push(
-            <Link
-              key={key}
-              href={guideHref(context.lang, guideKey as GuideKey)}
-              prefetch={true}
-              className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-            >
-              {label}
-            </Link>,
-          );
-      } else {
-        parts.push(
-          <Fragment key={key}>
-            {label}
-          </Fragment>,
-        );
-      }
-    } else if (href.startsWith("/")) {
-      parts.push(
-        <Link
-          key={key}
-          href={href}
-          prefetch={true}
-          className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-        >
-          {label}
-        </Link>,
-      );
-    } else {
-      parts.push(
-        <a
-          key={key}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
-        >
-          {label}
-        </a>,
-      );
-    }
-
-    lastIndex = inlineLinkPattern.lastIndex;
-  }
-
-  if (lastIndex < value.length) {
-    const textSegment = value.slice(lastIndex);
-    if (textSegment) {
-      parts.push(<Fragment key={`${keyPrefix}-text-${lastIndex}`}>{textSegment}</Fragment>);
-    }
-  }
-
-  return parts.length > 0 ? parts : value;
-}
 
 export function renderArticleLead(
   context: GuideSeoTemplateContext,
@@ -294,7 +206,7 @@ export function renderArticleLead(
                 {kneesDockPrefix}{" "}
                 <Link
                   href={guideHref(context.lang, "chiesaNuovaArrivals")}
-                  className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
+                  className={INLINE_LINK_CLASSES}
                 >
                   {kneesDockLinkText}
                 </Link>
@@ -306,7 +218,7 @@ export function renderArticleLead(
                 {kneesPorterPrefix}{" "}
                 <Link
                   href={guideHref(context.lang, "porterServices")}
-                  className="inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
+                  className={INLINE_LINK_CLASSES}
                 >
                   {kneesPorterLinkText}
                 </Link>

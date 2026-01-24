@@ -3,13 +3,15 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-async function loadComp() {
-  jest.resetModules();
-  const env = import.meta.env as Record<string, string | undefined>;
-  env.VITE_USERS_JSON = JSON.stringify({ "111111": { email: "e", user_name: "u" } });
+jest.mock("../../common/PasswordReauthInline", () => ({
+  __esModule: true,
+  default: ({ onSubmit, submitLabel }: { onSubmit: () => void; submitLabel?: string }) => (
+    <button onClick={onSubmit}>{submitLabel ?? "Confirm"}</button>
+  ),
+}));
 
+async function loadComp() {
   const mod = await import("../ExchangeNotesForm");
-  delete env.VITE_USERS_JSON;
   return mod.default;
 }
 
@@ -30,10 +32,7 @@ describe("ExchangeNotesForm", () => {
     const inInput = screen.getByLabelText("€10 notes");
     await userEvent.type(inInput, "2");
 
-    const digits = screen.getAllByLabelText(/PIN digit/);
-    for (const input of digits) {
-      await userEvent.type(input, "1");
-    }
+    await userEvent.click(screen.getByRole("button", { name: /confirm exchange/i }));
 
     expect(onConfirm).toHaveBeenCalledWith(
       { "20": 1 },
@@ -48,10 +47,7 @@ describe("ExchangeNotesForm", () => {
     const onConfirm = jest.fn();
     render(<Comp onConfirm={onConfirm} onCancel={jest.fn()} />);
 
-    const digits = screen.getAllByLabelText(/PIN digit/);
-    for (const input of digits) {
-      await userEvent.type(input, "1");
-    }
+    await userEvent.click(screen.getByRole("button", { name: /confirm exchange/i }));
 
     expect(onConfirm).not.toHaveBeenCalled();
   });
@@ -63,9 +59,6 @@ describe("ExchangeNotesForm", () => {
     const heading = screen.getByRole("heading", { name: /exchange notes/i });
     const container = heading.closest("div.relative") as HTMLElement;
     expect(container).toHaveClass("dark:bg-darkSurface");
-    expect(screen.getAllByLabelText(/PIN digit/)[0]).toHaveClass(
-      "dark:text-darkAccentGreen"
-    );
     document.documentElement.classList.remove("dark");
   });
 

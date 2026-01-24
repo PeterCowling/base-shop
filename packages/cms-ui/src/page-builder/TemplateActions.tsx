@@ -27,6 +27,7 @@ import type { Page } from "@acme/types";
 
 let telemetryTrack: (name: string, payload?: Record<string, unknown>) => void = () => {};
 // Optional telemetry hook; noop when unavailable (storybook/tests).
+// i18n-exempt -- DS-1234 [ttl=2026-06-30] module specifier, not user copy
 void import("@acme/telemetry")
   .then((mod) => {
     telemetryTrack = mod.track;
@@ -46,6 +47,210 @@ interface PreviewState {
   diffKeys: string[];
   beforeCount: number;
   afterCount: number;
+}
+
+interface FilterRowProps {
+  search: string;
+  setSearch: (value: string) => void;
+  filterKind: TemplateDescriptor["kind"] | "all";
+  setFilterKind: (value: TemplateDescriptor["kind"] | "all") => void;
+  filterCategory: TemplateDescriptor["category"] | "all";
+  setFilterCategory: (value: TemplateDescriptor["category"] | "all") => void;
+  filterPageType: NonNullable<TemplateDescriptor["pageType"]> | "all";
+  setFilterPageType: (value: NonNullable<TemplateDescriptor["pageType"]> | "all") => void;
+  categories: TemplateDescriptor["category"][];
+  pageTypes: NonNullable<TemplateDescriptor["pageType"]>[];
+  slotFragmentKind: TemplateDescriptor["kind"];
+  t: ReturnType<typeof useTranslations>;
+}
+
+function FilterRow({
+  search,
+  setSearch,
+  filterKind,
+  setFilterKind,
+  filterCategory,
+  setFilterCategory,
+  filterPageType,
+  setFilterPageType,
+  categories,
+  pageTypes,
+  slotFragmentKind,
+  t,
+}: FilterRowProps) {
+  return (
+    <Inline gap={2}>
+      <Input
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder={t("cms.builder.templates.search")}
+        aria-label={t("cms.builder.templates.searchLabel")}
+        className="flex-1 min-w-56"
+      />
+      <Select value={filterKind} onValueChange={(v) => setFilterKind(v as typeof filterKind)}>
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder={t("cms.builder.templates.kind")} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">{t("cms.builder.templates.kind.all")}</SelectItem>
+          <SelectItem value="page">{t("cms.builder.templates.kind.page")}</SelectItem>
+          <SelectItem value="section">{t("cms.builder.templates.kind.section")}</SelectItem>
+          <SelectItem value={slotFragmentKind}>{t("cms.builder.templates.kind.slotFragment")}</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select value={filterCategory} onValueChange={(v) => setFilterCategory(v as typeof filterCategory)}>
+        <SelectTrigger className="w-40">
+          <SelectValue placeholder={t("cms.builder.templates.category")} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">{t("cms.builder.presets.category.all")}</SelectItem>
+          {categories.map((c) => (
+            <SelectItem key={c} value={c}>
+              {c}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {pageTypes.length > 0 && (
+        <Select value={filterPageType} onValueChange={(v) => setFilterPageType(v as typeof filterPageType)}>
+          <SelectTrigger className="w-40">
+            <SelectValue placeholder={t("cms.builder.templates.usage")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t("cms.builder.presets.category.all")}</SelectItem>
+            {pageTypes.map((p) => (
+              <SelectItem key={p} value={p}>
+                {p}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    </Inline>
+  );
+}
+
+interface TemplateGridProps {
+  filtered: TemplateDescriptor[];
+  selectedTemplate: TemplateDescriptor | null;
+  templateCardBase: string;
+  templateCardSelected: string;
+  onSelect: (template: TemplateDescriptor) => void;
+  t: ReturnType<typeof useTranslations>;
+}
+
+function TemplateGrid({
+  filtered,
+  selectedTemplate,
+  templateCardBase,
+  templateCardSelected,
+  onSelect,
+  t,
+}: TemplateGridProps) {
+  return (
+    <Grid cols={1} gap={3} className="sm:grid-cols-2 lg:grid-cols-3">
+      {filtered.map((tpl) => {
+        const isSelected = tpl.id === selectedTemplate?.id;
+        const templateCardClass = `${templateCardBase}${isSelected ? ` ${templateCardSelected}` : ""}`;
+        return (
+          <button
+            key={tpl.id}
+            type="button"
+            data-selected={isSelected ? "true" : undefined}
+            className={templateCardClass}
+            aria-pressed={isSelected}
+            onClick={() => onSelect(tpl)}
+            data-cy={`template-${tpl.id}`}
+          >
+            {tpl.previewImage ? (
+              <Image
+                src={tpl.previewImage}
+                alt={`${tpl.label} preview`}
+                width={480}
+                height={320}
+                className="h-32 w-full rounded-t-lg object-cover"
+              />
+            ) : (
+              <Inline gap={0} alignY="center" wrap={false} className="h-32 w-full justify-center rounded-t-lg bg-muted text-xs text-muted-foreground">
+                {t("cms.builder.templates.noPreview")}
+              </Inline>
+            )}
+            <div className="flex flex-1 flex-col gap-2 p-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+                  {tpl.category}
+                </span>
+                <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+                  {tpl.kind}
+                </span>
+                {tpl.pageType && (
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+                    {tpl.pageType}
+                  </span>
+                )}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold">{tpl.label}</p>
+                {tpl.description && (
+                  <p className="line-clamp-2 text-xs text-muted-foreground">{tpl.description}</p>
+                )}
+              </div>
+            </div>
+          </button>
+        );
+      })}
+      {filtered.length === 0 && (
+        <div className="col-span-full rounded-lg border border-border/50 bg-muted/30 p-4 text-sm text-muted-foreground">
+          {t("cms.builder.templates.emptyFiltered")}
+        </div>
+      )}
+    </Grid>
+  );
+}
+
+interface PreviewPanelProps {
+  preview: PreviewState | null;
+  t: ReturnType<typeof useTranslations>;
+}
+
+function PreviewPanel({ preview, t }: PreviewPanelProps) {
+  if (!preview) return null;
+  return (
+    <div className="rounded-lg border border-border/50 bg-muted/30 p-4">
+      <Inline gap={3} alignY="start" className="flex-wrap">
+        {preview.template.previewImage && (
+          <Image
+            src={preview.template.previewImage}
+            alt={`${preview.template.label} preview`}
+            width={240}
+            height={160}
+            className="h-32 w-40 rounded object-cover"
+          />
+        )}
+        <Stack gap={2} className="min-w-60 text-sm">
+          <div>
+            <p className="font-semibold">{preview.template.label}</p>
+            {preview.template.description && (
+              <p className="text-muted-foreground">{preview.template.description}</p>
+            )}
+          </div>
+          <ul className="space-y-1">
+            <li>
+              {t("cms.builder.templates.blockDelta", {
+                from: String(preview.beforeCount),
+                to: String(preview.afterCount),
+              })}
+            </li>
+            <li>
+              {t("cms.builder.templates.changedFields", {
+                fields: preview.diffKeys.length ? preview.diffKeys.join(", ") : t("cms.builder.templates.noDiff"),
+              })}
+            </li>
+          </ul>
+        </Stack>
+      </Inline>
+    </div>
+  );
 }
 
 export default function TemplateActions({
@@ -78,7 +283,7 @@ export default function TemplateActions({
   const slotFragmentKind = "slot-fragment" as TemplateDescriptor["kind"]; // i18n-exempt -- DS-3472 template kind identifier, not UI copy [ttl=2026-12-31]
   const templateActionsTriggerCy = "template-actions-trigger"; // i18n-exempt -- DS-3472 test id hook, not user copy [ttl=2026-12-31]
   const templateCardBase =
-    "relative flex flex-col rounded-lg border border-border/60 bg-surface-1 text-start shadow-sm transition hover:shadow-md min-h-10 min-w-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"; // i18n-exempt -- DS-3472 style tokens for card layout, not user copy [ttl=2026-12-31]
+    "relative flex flex-col rounded-lg border border-border/60 bg-surface-1 text-start shadow-sm transition hover:shadow-md min-h-11 min-w-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"; // i18n-exempt -- DS-3472 style tokens for card layout, not user copy [ttl=2026-12-31]
   const templateCardSelected = "border-primary shadow-md"; // i18n-exempt -- DS-3472 selected card styling, not user copy [ttl=2026-12-31]
 
   useEffect(() => {
@@ -184,166 +389,39 @@ export default function TemplateActions({
             </DialogDescription>
           </DialogHeader>
           <Stack gap={3}>
-            <Inline gap={2}>
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={t("cms.builder.templates.search")}
-                aria-label={t("cms.builder.templates.searchLabel")}
-                className="flex-1 min-w-56"
-              />
-              <Select
-                value={filterKind}
-                onValueChange={(v) => setFilterKind(v as typeof filterKind)}
-              >
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder={t("cms.builder.templates.kind")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("cms.builder.templates.kind.all")}</SelectItem>
-                  <SelectItem value="page">{t("cms.builder.templates.kind.page")}</SelectItem>
-                  <SelectItem value="section">{t("cms.builder.templates.kind.section")}</SelectItem>
-                  <SelectItem value={slotFragmentKind}>
-                    {t("cms.builder.templates.kind.slotFragment")}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <Select
-                value={filterCategory}
-                onValueChange={(v) => setFilterCategory(v as typeof filterCategory)}
-              >
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder={t("cms.builder.templates.category")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("cms.builder.presets.category.all")}</SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c} value={c}>{c}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {pageTypes.length > 0 && (
-                <Select
-                  value={filterPageType}
-                  onValueChange={(v) => setFilterPageType(v as typeof filterPageType)}
-                >
-                  <SelectTrigger className="w-40">
-                    <SelectValue placeholder={t("cms.builder.templates.usage")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t("cms.builder.presets.category.all")}</SelectItem>
-                    {pageTypes.map((p) => (
-                      <SelectItem key={p} value={p}>{p}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </Inline>
-            <Grid cols={1} gap={3} className="sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((tpl) => {
-                const isSelected = tpl.id === selectedTemplate?.id;
-                const templateCardClass = `${templateCardBase}${isSelected ? ` ${templateCardSelected}` : ""}`;
-                return (
-                  <button
-                    key={tpl.id}
-                    type="button"
-                    data-selected={isSelected ? "true" : undefined}
-                    className={templateCardClass}
-                    aria-pressed={isSelected}
-                    onClick={() => {
-                      setSelectedId(tpl.id);
-                      telemetryTrack("pb_template_select", {
-                        templateId: tpl.id,
-                        kind: tpl.kind,
-                        category: tpl.category,
-                        pageType: tpl.pageType,
-                        origin: tpl.origin,
-                        pageId: currentPage.id,
-                      });
-                    }}
-                    data-cy={`template-${tpl.id}`}
-                  >
-                    {tpl.previewImage ? (
-                      <Image
-                        src={tpl.previewImage}
-                        alt={`${tpl.label} preview`}
-                        width={480}
-                        height={320}
-                        className="h-32 w-full rounded-t-lg object-cover"
-                      />
-                    ) : (
-                      <Inline gap={0} alignY="center" wrap={false} className="h-32 w-full justify-center rounded-t-lg bg-muted text-xs text-muted-foreground">
-                        {t("cms.builder.templates.noPreview")}
-                      </Inline>
-                    )}
-                    <div className="flex flex-1 flex-col gap-2 p-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-                          {tpl.category}
-                        </span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-                          {tpl.kind}
-                        </span>
-                        {tpl.pageType && (
-                          <span className="rounded-full bg-muted px-2 py-0.5 text-xs uppercase tracking-wide text-muted-foreground">
-                            {tpl.pageType}
-                          </span>
-                        )}
-                      </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">{tpl.label}</p>
-                      {tpl.description && (
-                        <p className="line-clamp-2 text-xs text-muted-foreground">{tpl.description}</p>
-                      )}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-              {filtered.length === 0 && (
-                <div className="col-span-full rounded-lg border border-border/50 bg-muted/30 p-4 text-sm text-muted-foreground">
-                  {t("cms.builder.templates.emptyFiltered")}
-                </div>
-              )}
-            </Grid>
-            {preview && (
-              <div className="rounded-lg border border-border/50 bg-muted/30 p-4">
-                <Inline gap={3} alignY="start" className="flex-wrap">
-                  {preview.template.previewImage && (
-                    <Image
-                      src={preview.template.previewImage}
-                      alt={`${preview.template.label} preview`}
-                      width={240}
-                      height={160}
-                      className="h-32 w-40 rounded object-cover"
-                    />
-                  )}
-                  <Stack gap={2} className="min-w-60 text-sm">
-                    <div>
-                      <p className="font-semibold">{preview.template.label}</p>
-                      {preview.template.description && (
-                        <p className="text-muted-foreground">{preview.template.description}</p>
-                      )}
-                    </div>
-                    <ul className="space-y-1">
-                      <li>
-                        {t("cms.builder.templates.blockDelta", {
-                          from: String(preview.beforeCount),
-                          to: String(preview.afterCount),
-                        })}
-                      </li>
-                      <li>
-                        {t("cms.builder.templates.changedFields", {
-                          fields: preview.diffKeys.length
-                            ? preview.diffKeys.join(", ")
-                            : t("cms.builder.templates.noDiff"),
-                        })}
-                      </li>
-                    </ul>
-                  </Stack>
-                </Inline>
-              </div>
-            )}
+            <FilterRow
+              search={search}
+              setSearch={setSearch}
+              filterKind={filterKind}
+              setFilterKind={setFilterKind}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
+              filterPageType={filterPageType}
+              setFilterPageType={setFilterPageType}
+              categories={categories}
+              pageTypes={pageTypes}
+              slotFragmentKind={slotFragmentKind}
+              t={t}
+            />
+            <TemplateGrid
+              filtered={filtered}
+              selectedTemplate={selectedTemplate ?? null}
+              templateCardBase={templateCardBase}
+              templateCardSelected={templateCardSelected}
+              onSelect={(tpl) => {
+                setSelectedId(tpl.id);
+                telemetryTrack("pb_template_select", {
+                  templateId: tpl.id,
+                  kind: tpl.kind,
+                  category: tpl.category,
+                  pageType: tpl.pageType,
+                  origin: tpl.origin,
+                  pageId: currentPage.id,
+                });
+              }}
+              t={t}
+            />
+            <PreviewPanel preview={preview} t={t} />
           </Stack>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>

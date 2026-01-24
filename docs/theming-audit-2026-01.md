@@ -83,7 +83,7 @@ Each item includes the source doc and the intended code location for verificatio
 10) Dark mode model
     - Requirement: Hybrid system preference + `html.theme-dark` override; init via `localStorage('theme')` with `light|dark|system`.
     - Source: `docs/typography-and-color.md`, `README.md`
-    - Intended code: `packages/platform-core/src/utils/initTheme.ts`, base theme CSS (`packages/themes/base/src/tokens.css`)
+    - Intended code: `packages/platform-core/src/utils/initTheme.ts`, base theme CSS (`@themes/base/tokens.css`)
     - Status: ✅ Implemented
     - Evidence: `packages/platform-core/src/utils/initTheme.ts`, `packages/ui/src/providers/ThemeProvider.tsx`, `tailwind.config.mjs`
     - Notes: `.theme-dark` is now applied consistently (ThemeProvider + initTheme + Tailwind). ThemeProvider supports `system` and normalizes legacy stored `base` → `light`.
@@ -91,17 +91,17 @@ Each item includes the source doc and the intended code location for verificatio
 11) Token sources + generated CSS
     - Requirement: Base tokens in `packages/themes/base/src/tokens.ts`; generated CSS in `tokens.css`, `tokens.dynamic.css`, `tokens.static.css`.
     - Source: `docs/typography-and-color.md`, `docs/design-system-handbook.md`
-    - Intended code: `packages/themes/base/src/tokens.ts`, `packages/themes/base/src/tokens.css`, `scripts/src/build-tokens.mjs`
+    - Intended code: `packages/themes/base/src/tokens.ts`, `@themes/base/tokens.css`, `scripts/src/build-tokens.mjs`
     - Status: ✅ Implemented
-    - Evidence: `packages/themes/base/src/tokens.ts`, `packages/themes/base/src/tokens.css`, `scripts/src/build-tokens.mjs`, `package.json` (script: `build:tokens`)
+    - Evidence: `packages/themes/base/src/tokens.ts`, `@themes/base/tokens.css`, `scripts/src/build-tokens.mjs`, `package.json` (script: `build:tokens`)
 
 12) Theme overrides packages
-    - Requirement: Theme packages provide overrides in `packages/themes/*/src/tokens.css`; optional `tailwind-tokens.ts`.
+    - Requirement: Theme packages provide overrides in `@themes/*/tokens.css`; optional `tailwind-tokens.ts`.
     - Source: `docs/typography-and-color.md`, `docs/design-system-handbook.md`
-    - Intended code: `packages/themes/*/src/tokens.css`, `packages/themes/*/src/tailwind-tokens.ts`
+    - Intended code: `@themes/*/tokens.css`, `packages/themes/*/src/tailwind-tokens.ts`
     - Status: ✅ Implemented
-    - Evidence: `packages/themes/{base,bcd,brandx,dark}/src/tokens.css`, `packages/themes/{bcd,brandx,dark}/src/tailwind-tokens.ts`, `packages/platform-core/src/createShop/fsUtils.ts` (`listThemes()` filters to theme packages with tokens.css)
-    - Notes: Non-theme directories under `packages/themes/*` (for example caches or fixtures without `src/tokens.css`) are excluded from selection/validation.
+    - Evidence: `packages/themes/{base,bcd,brandx,dark}/tokens.css`, `packages/themes/{bcd,brandx,dark}/src/tailwind-tokens.ts`, `packages/platform-core/src/createShop/fsUtils.ts` (`listThemes()` filters to theme packages with tokens.css)
+    - Notes: Non-theme directories under `packages/themes/*` (for example caches or fixtures without `tokens.css`) are excluded from selection/validation.
 
 13) Tailwind integration
     - Requirement: Tailwind preset exposes token-backed utilities; dark mode is `class` with `.theme-dark`.

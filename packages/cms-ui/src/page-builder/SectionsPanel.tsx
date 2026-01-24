@@ -35,6 +35,224 @@ interface Props {
 
 const DATA_CY_SECTIONS_PANEL = "pb-sections-panel";
 
+interface DemoPresetProps {
+  onInsert: (component: PageComponent) => void;
+  t: ReturnType<typeof useTranslations>;
+}
+
+function DemoPresets({ onInsert, t }: DemoPresetProps) {
+  return (
+    <div className="px-2 pb-2">
+      <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.demoPresets")}</div>
+      <DSInline gap={1} className="flex-wrap">
+        {/* i18n-exempt */}
+        <button
+          type="button"
+          className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
+          onClick={() =>
+            onInsert(
+              cloneWithIds({
+                id: ulid(),
+                type: "Section",
+                children: [
+                  { id: ulid(), type: "Text", text: t("cms.builder.sections.presets.titlePlusButton.text") },
+                  { id: ulid(), type: "Button", label: t("cms.builder.cta"), href: "/shop" },
+                ],
+              } as unknown as PageComponent)
+            )
+          }
+        >
+          {t("cms.builder.sections.presets.titleCta")}
+        </button>
+        <button
+          type="button"
+          className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
+          onClick={() =>
+            onInsert(
+              cloneWithIds({
+                id: ulid(),
+                type: "Section",
+                children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }],
+              } as unknown as PageComponent)
+            )
+          }
+        >
+          {t("cms.builder.sections.presets.imageHero")}
+        </button>
+      </DSInline>
+    </div>
+  );
+}
+
+interface BuiltInGroupsProps {
+  builtInSections: ReturnType<typeof getBuiltInSections>;
+  allowedTypes?: Set<ComponentType>;
+  onInsert: (component: PageComponent) => void;
+  t: ReturnType<typeof useTranslations>;
+}
+
+function BuiltInGroups({ builtInSections, allowedTypes, onInsert, t }: BuiltInGroupsProps) {
+  const groups: Record<string, typeof builtInSections> = {};
+  for (const s of builtInSections) {
+    if (!isAllowedTemplate(s.build(), allowedTypes)) continue;
+    const key = s.previewType.startsWith("HeaderSection")
+      ? String(t("cms.builder.sections.groups.headers"))
+      : s.previewType.startsWith("FooterSection")
+        ? String(t("cms.builder.sections.groups.footers"))
+        : String(t("cms.builder.sections.groups.essentials"));
+    (groups[key] ||= []).push(s);
+  }
+  const order = [
+    String(t("cms.builder.sections.groups.headers")),
+    String(t("cms.builder.sections.groups.footers")),
+    String(t("cms.builder.sections.groups.essentials")),
+  ] as const;
+  const orderedGroups = order.filter((k) => Array.isArray(groups[k]) && groups[k]!.length > 0);
+
+  return (
+    <div className="px-2 pb-2">
+      <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.builtin")}</div>
+      {orderedGroups.map((k) => (
+        <div key={k} className="mb-2">
+          <div className="mb-1 text-xs font-medium text-muted-foreground">{k}</div>
+          <DSGrid cols={1} gap={2}>
+            {groups[k]!.map((p) => {
+              const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
+              const labelNode = p.labelKey ? t(p.labelKey) : p.label ?? "";
+              const descNode = p.descriptionKey ? t(p.descriptionKey) : p.description ?? "";
+              const titleText = String(p.labelKey ? t(p.labelKey) : p.label ?? "");
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  className="rounded border p-1 text-start hover:bg-muted min-h-11 min-w-11"
+                  title={titleText}
+                  onClick={() => {
+                    const candidate = cloneWithIds(p.build());
+                    if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                    onInsert(candidate);
+                  }}
+                >
+                  <div className="relative w-full aspect-video">
+                    <Image src={resolvedPreview} alt="" fill className="rounded border bg-muted object-cover" aria-hidden />
+                  </div>
+                  <div className="mt-1 truncate text-xs" title={titleText}>
+                    {labelNode}
+                  </div>
+                  {Boolean(p.descriptionKey || p.description) && (
+                    <div className="truncate text-xs text-muted-foreground" title={String(descNode)}>
+                      {descNode}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </DSGrid>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+interface SectionsListProps {
+  items: SectionTemplate[];
+  loading: boolean;
+  hasMore: boolean;
+  allowedTypes?: Set<ComponentType>;
+  onInsert: (component: PageComponent) => void;
+  onInsertLinked?: (item: { globalId: string; label: string; component: PageComponent }) => void;
+  onLoadMore: () => void;
+  t: ReturnType<typeof useTranslations>;
+}
+
+function SectionsList({
+  items,
+  loading,
+  hasMore,
+  allowedTypes,
+  onInsert,
+  onInsertLinked,
+  onLoadMore,
+  t,
+}: SectionsListProps) {
+  return (
+    <DSStack
+      gap={2}
+      className="overflow-auto p-2"
+      style={{ maxHeight: /* i18n-exempt -- DS-1234 [ttl=2026-06-30] */ "calc(100svh - 6rem)" }}
+    >
+      {items.length === 0 && !loading && (
+        <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>
+      )}
+      {items
+        .filter((s) => isAllowedTemplate(s.template as unknown as PageComponent, allowedTypes))
+        .map((s) => (
+          <div key={s.id} className="space-y-1 rounded border p-2">
+            <div className="truncate text-sm font-medium">{s.label}</div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">{s.status}</div>
+            {s.thumbnail ? (
+              <div className="relative mt-1 aspect-video overflow-hidden rounded border bg-muted">
+                <Image src={s.thumbnail} alt="" fill className="object-cover" aria-hidden data-aspect="16/9" />
+              </div>
+            ) : (
+              <div className="mt-1 aspect-video rounded border bg-muted/40" />
+            )}
+            {Array.isArray(s.tags) && s.tags.length > 0 && (
+              <DSInline className="mt-1" gap={1}>
+                {s.tags.map((tag) => (
+                  <span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </DSInline>
+            )}
+            <div className="flex items-center gap-2 pt-1">
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 min-w-11 px-2 text-xs"
+                onClick={() => {
+                  const candidate = cloneWithIds(s.template);
+                  if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                  onInsert(candidate);
+                }}
+              >
+                {t("cms.builder.sections.insertCopy")}
+              </Button>
+              {onInsertLinked && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-11 min-w-11 px-2 text-xs"
+                  onClick={() => {
+                    const candidate = cloneWithIds(s.template);
+                    if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                    onInsertLinked({ globalId: s.id, label: s.label, component: candidate });
+                  }}
+                >
+                  {t("cms.builder.sections.insertLinked")}
+                </Button>
+              )}
+            </div>
+          </div>
+        ))}
+      {(loading || hasMore) && (
+        <div className="p-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 min-w-11 px-2 text-xs w-full"
+            disabled={loading}
+            onClick={onLoadMore}
+          >
+            {loading ? t("cms.builder.loading") : hasMore ? t("cms.builder.loadMore") : t("cms.builder.loaded")}
+          </Button>
+        </div>
+      )}
+    </DSStack>
+  );
+}
+
 function collectTypes(node: PageComponent): Set<ComponentType> {
   const types = new Set<ComponentType>();
   const walk = (n: PageComponent) => {
@@ -143,154 +361,28 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("cms.builder.sections.search.placeholder") as string} aria-label={t("cms.builder.sections.search.aria") as string} />
       </div>
       {/* Demo presets area (simple flow) */}
-      <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.demoPresets")}</div>
-        <DSInline gap={1} className="flex-wrap">
-          {/* i18n-exempt */}
-          <button
-            type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
-            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: t("cms.builder.sections.presets.titlePlusButton.text") }, { id: ulid(), type: "Button", label: t("cms.builder.cta"), href: "/shop" }] } as unknown as PageComponent))}
-          >
-            {t("cms.builder.sections.presets.titleCta")}
-          </button>
-          <button
-            type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
-            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as unknown as PageComponent))}
-          >
-            {t("cms.builder.sections.presets.imageHero")}
-          </button>
-        </DSInline>
-      </div>
+      <DemoPresets onInsert={onInsert} t={t} />
       {/* Built-in section groups (replaces tag chips) */}
-      <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.builtin")}</div>
-        {(() => {
-          const groups: Record<string, typeof builtInSections> = {};
-          for (const s of builtInSections) {
-            if (!isAllowedTemplate(s.build(), allowedTypes)) continue;
-            const key = s.previewType.startsWith("HeaderSection")
-              ? String(t("cms.builder.sections.groups.headers"))
-              : s.previewType.startsWith("FooterSection")
-                ? String(t("cms.builder.sections.groups.footers"))
-                : String(t("cms.builder.sections.groups.essentials"));
-            (groups[key] ||= []).push(s);
-          }
-          const order = [String(t("cms.builder.sections.groups.headers")), String(t("cms.builder.sections.groups.footers")), String(t("cms.builder.sections.groups.essentials"))] as const;
-          return order
-            .filter((k) => Array.isArray(groups[k]) && groups[k]!.length > 0)
-            .map((k) => (
-              <div key={k} className="mb-2">
-                <div className="mb-1 text-xs font-medium text-muted-foreground">{k}</div>
-                <DSGrid cols={1} gap={2}>
-                  {groups[k]!.map((p) => {
-                    const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
-                    const labelNode = p.labelKey ? t(p.labelKey) : (p.label ?? "");
-                    const descNode = p.descriptionKey ? t(p.descriptionKey) : (p.description ?? "");
-                    const titleText = String(p.labelKey ? t(p.labelKey) : (p.label ?? ""));
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        className="rounded border p-1 text-start hover:bg-muted min-h-10 min-w-10"
-                        title={titleText}
-                        onClick={() => {
-                          const candidate = cloneWithIds(p.build());
-                          if (!isAllowedTemplate(candidate, allowedTypes)) return;
-                          onInsert(candidate);
-                        }}
-                      >
-                        <div className="relative w-full aspect-video">
-                          <Image src={resolvedPreview} alt="" fill className="rounded border bg-muted object-cover" aria-hidden />
-                        </div>
-                        <div className="mt-1 truncate text-xs" title={titleText}>{labelNode}</div>
-                        {Boolean(p.descriptionKey || p.description) && (
-                          <div className="truncate text-xs text-muted-foreground" title={String(descNode)}>{descNode}</div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </DSGrid>
-              </div>
-            ));
-        })()}
-      </div>
-      { }
-      <DSStack gap={2} className="overflow-auto p-2" style={{ maxHeight: "calc(100svh - 6rem)" }}>
-        {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>}
-        {items
-          .filter((s) => isAllowedTemplate(s.template as unknown as PageComponent, allowedTypes))
-          .map((s) => (
-          <div key={s.id} className="space-y-1 rounded border p-2">
-            <div className="truncate text-sm font-medium">{s.label}</div>
-            <div className="text-xs uppercase tracking-wide text-muted-foreground">{s.status}</div>
-            {/* Thumbnail preview */}
-            {s.thumbnail ? (
-              <div className="relative mt-1 aspect-video overflow-hidden rounded border bg-muted">
-                <Image src={s.thumbnail} alt="" fill className="object-cover" aria-hidden data-aspect="16/9" />
-              </div>
-            ) : (
-              <div className="mt-1 aspect-video rounded border bg-muted/40" />
-            )}
-            {/* Tags */}
-            {Array.isArray(s.tags) && s.tags.length > 0 && (
-              <DSInline className="mt-1" gap={1}>
-                {s.tags.map((t) => (
-                  <span key={t} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
-                    {t}
-                  </span>
-                ))}
-              </DSInline>
-            )}
-            <div className="flex items-center gap-2 pt-1">
-              <Button
-                type="button"
-                variant="outline"
-                className="min-h-10 min-w-10 px-2 text-xs"
-                onClick={() => {
-                  const candidate = cloneWithIds(s.template);
-                  if (!isAllowedTemplate(candidate, allowedTypes)) return;
-                  onInsert(candidate);
-                }}
-              >
-                {t("cms.builder.sections.insertCopy")}
-              </Button>
-              {onInsertLinked && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-10 min-w-10 px-2 text-xs"
-                  onClick={() => {
-                    const candidate = cloneWithIds(s.template);
-                    if (!isAllowedTemplate(candidate, allowedTypes)) return;
-                    onInsertLinked({ globalId: s.id, label: s.label, component: candidate });
-                  }}
-                >
-                  {t("cms.builder.sections.insertLinked")}
-                </Button>
-              )}
-            </div>
-          </div>
-        ))}
-        {(loading || hasMore) && (
-          <div className="p-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="min-h-10 px-2 text-xs w-full"
-              disabled={loading}
-              onClick={() => {
-                if (loading) return;
-                setPage((p) => p + 1);
-                load(false);
-              }}
-            >
-              {loading ? t("cms.builder.loading") : hasMore ? t("cms.builder.loadMore") : t("cms.builder.loaded")}
-            </Button>
-          </div>
-        )}
-      </DSStack>
+      <BuiltInGroups
+        builtInSections={builtInSections}
+        allowedTypes={allowedTypes}
+        onInsert={onInsert}
+        t={t}
+      />
+      <SectionsList
+        items={items}
+        loading={loading}
+        hasMore={hasMore}
+        allowedTypes={allowedTypes}
+        onInsert={onInsert}
+        onInsertLinked={onInsertLinked}
+        onLoadMore={() => {
+          if (loading) return;
+          setPage((p) => p + 1);
+          load(false);
+        }}
+        t={t}
+      />
     </aside>
   );
 }

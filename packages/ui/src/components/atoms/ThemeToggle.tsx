@@ -134,7 +134,7 @@ export const ThemeToggle = React.forwardRef<HTMLDivElement, ThemeToggleProps>(
               onClick={() => onThemeChange(value)}
               className={cn(
                 // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-                "inline-flex h-full items-center justify-center rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                "inline-flex h-full items-center justify-center rounded-md transition-colors transition-shadow motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
                 buttonPaddingClasses[size],
                 isActive
                   ? // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names

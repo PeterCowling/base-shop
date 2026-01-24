@@ -15,9 +15,28 @@ jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
 }));
 
+const mockToastMessages: { type: string; message: string }[] = [];
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => ({
+    success: (message: string) => { mockToastMessages.push({ type: "success", message }); },
+    error: (message: string) => { mockToastMessages.push({ type: "error", message }); },
+    warning: (message: string) => { mockToastMessages.push({ type: "warning", message }); },
+    info: (message: string) => { mockToastMessages.push({ type: "info", message }); },
+    loading: (message: string) => { mockToastMessages.push({ type: "loading", message }); },
+    dismiss: () => {},
+    update: () => {},
+    promise: async (p: Promise<unknown>) => p,
+  }),
+}));
+
 const updateShopMock = updateShop as jest.MockedFunction<typeof updateShop>;
 
 describe("useShopEditorSubmit — client validation", () => {
+  beforeEach(() => {
+    mockToastMessages.length = 0;
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -54,18 +73,10 @@ describe("useShopEditorSubmit — client validation", () => {
         "All locale overrides require key and valid locale",
       ],
     });
-    expect(result.current.toast).toEqual({
-      open: true,
-      status: "error",
-      message: "Please resolve the highlighted validation issues.",
-    });
+    expect(mockToastMessages).toContainEqual(
+      expect.objectContaining({ type: "error", message: expect.stringMatching(/resolve.*validation/i) }),
+    );
     expect(result.current.saving).toBe(false);
     expect(updateShopMock).not.toHaveBeenCalled();
-
-    act(() => {
-      result.current.closeToast();
-    });
-    expect(result.current.toast.open).toBe(false);
   });
 });
-

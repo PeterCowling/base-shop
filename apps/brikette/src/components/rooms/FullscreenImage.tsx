@@ -1,5 +1,5 @@
 // src/components/rooms/FullscreenImage.tsx
-import { type ComponentPropsWithoutRef, type KeyboardEvent, memo, useCallback, useMemo } from "react";
+import { type ComponentPropsWithoutRef, type KeyboardEvent, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -45,18 +45,13 @@ function FullscreenImage({ src, alt, onClose, lang }: FullscreenImageProps): JSX
   );
 
   /* ─────────────────────────── image sources ─────────────────────────── */
-  const resolvedSrc = useMemo(() => resolveAsset(src), [src]);
+  const resolvedSrc = resolveAsset(src);
 
   /* ────────────────────────── intrinsic dims ─────────────────────────── */
-  const { width: origW, height: origH } = useMemo(() => {
-    /* Dimensions are looked up once per src & memoised in getIntrinsicSize. */
-    return getIntrinsicSize(resolvedSrc) ?? { width: 0, height: 0 };
-  }, [resolvedSrc]);
+  /* Dimensions are looked up once per src & memoised in getIntrinsicSize. */
+  const { width: origW, height: origH } = getIntrinsicSize(resolvedSrc) ?? { width: 0, height: 0 };
 
-  const aspectRatio = useMemo(() => {
-    if (origW && origH) return `${origW}/${origH}`;
-    return "16/9";
-  }, [origW, origH]);
+  const aspectRatio = origW && origH ? `${origW}/${origH}` : "16/9";
 
   /* ────────────────────────────── render ─────────────────────────────── */
   return (

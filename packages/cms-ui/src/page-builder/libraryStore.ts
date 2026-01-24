@@ -60,12 +60,15 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, init);
   const isJson = (res.headers.get("content-type") || "").includes("application/json");
   if (!res.ok) {
-    let detail: any = undefined;
+    let detail: unknown = undefined;
     try {
       detail = isJson ? await res.json() : undefined;
     } catch {}
-    const message = (detail && detail.error) || `Request failed: ${res.status}`;
-    const err: any = new Error(message);
+    const message =
+      detail && typeof detail === "object" && "error" in detail
+        ? String((detail as { error?: unknown }).error ?? `Request failed: ${res.status}`)
+        : `Request failed: ${res.status}`;
+    const err = new Error(message) as Error & { data?: unknown };
     if (detail) err.data = detail;
     throw err;
   }

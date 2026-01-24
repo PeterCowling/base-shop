@@ -13,14 +13,14 @@ export function useInventoryRecipesMutations() {
   const { user } = useAuth();
 
   const saveRecipe = useCallback(
-    async (productName: string, recipe: InventoryRecipe): Promise<void> => {
+    async (itemId: string, recipe: InventoryRecipe): Promise<void> => {
       if (!user) {
         showToast("Not authorized. Please log in.", "error");
         return;
       }
-      const trimmedName = productName.trim();
-      if (!trimmedName) {
-        showToast("Product name is required.", "error");
+      const trimmedId = itemId.trim();
+      if (!trimmedId) {
+        showToast("Inventory item ID is required.", "error");
         return;
       }
       const result = inventoryRecipeSchema.safeParse(recipe);
@@ -28,23 +28,23 @@ export function useInventoryRecipesMutations() {
         showToast(getErrorMessage(result.error), "error");
         return;
       }
-      await set(ref(database, `inventory/recipes/${trimmedName}`), result.data);
+      await set(ref(database, `inventory/recipes/${trimmedId}`), result.data);
     },
     [database, user]
   );
 
   const removeRecipe = useCallback(
-    async (productName: string): Promise<void> => {
+    async (recipeId: string): Promise<void> => {
       if (!user) {
         showToast("Not authorized. Please log in.", "error");
         return;
       }
-      const trimmedName = productName.trim();
-      if (!trimmedName) {
-        showToast("Product name is required.", "error");
+      const trimmedId = recipeId.trim();
+      if (!trimmedId) {
+        showToast("Recipe ID is required.", "error");
         return;
       }
-      await remove(ref(database, `inventory/recipes/${trimmedName}`));
+      await remove(ref(database, `inventory/recipes/${trimmedId}`));
     },
     [database, user]
   );

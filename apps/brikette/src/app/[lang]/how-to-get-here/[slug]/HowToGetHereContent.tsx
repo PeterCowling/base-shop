@@ -2,7 +2,7 @@
 
 // src/app/[lang]/how-to-get-here/[slug]/HowToGetHereContent.tsx
 // Client component for how-to-get-here dynamic route
-import { Fragment, type ReactNode,useMemo } from "react";
+import { Fragment, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/ui/atoms";
@@ -97,22 +97,19 @@ export default function HowToGetHereContent({
   const hero =
     (contentRecord["hero"] as Record<string, unknown> | undefined) ??
     (contentRecord["header"] as Record<string, unknown> | undefined);
-  const callouts = useMemo(() => {
+  const callouts: Array<[string, unknown]> = (() => {
     const entries: Array<[string, unknown]> = [];
     if (contentRecord["tip"]) entries.push(["tip", contentRecord["tip"]]);
     if (contentRecord["cta"]) entries.push(["cta", contentRecord["cta"]]);
     if (contentRecord["aside"]) entries.push(["aside", contentRecord["aside"]]);
     return entries;
-  }, [contentRecord]);
+  })();
 
-  const context: RenderContext = useMemo(
-    () => ({
-      definition,
-      content,
-      context: { lang, howToSlug, guidesSlug },
-    }),
-    [definition, content, lang, howToSlug, guidesSlug]
-  );
+  const context: RenderContext = {
+    definition,
+    content,
+    context: { lang, howToSlug, guidesSlug },
+  };
 
   const sections = getSections(definition, content);
   const sectionNodes = sections
@@ -124,9 +121,9 @@ export default function HowToGetHereContent({
   // Prefer English fallback from the galleries namespace instead of inline default strings
   const tGalleriesEn = i18n.getFixedT?.("en", "howToGetHere");
   const galleriesDefaultAlt = (() => {
-    const raw = t("galleries.defaultAlt") as unknown as string;
+    const raw: unknown = t("galleries.defaultAlt");
     if (typeof raw === "string" && raw.trim() && raw !== "galleries.defaultAlt") return raw;
-    const fallback = tGalleriesEn ? (tGalleriesEn("galleries.defaultAlt") as unknown as string) : undefined;
+    const fallback: unknown = tGalleriesEn ? tGalleriesEn("galleries.defaultAlt") : undefined;
     return typeof fallback === "string" && fallback.trim() ? fallback : "defaultAlt";
   })();
 
@@ -148,32 +145,32 @@ export default function HowToGetHereContent({
   const fromUrl = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("preview") : null;
   const showPreview = !isPublished && !!previewToken && fromUrl === previewToken;
 
-  const howToSteps = useMemo(() => extractSteps(content) ?? null, [content]);
+  const howToSteps = extractSteps(content) ?? null;
 
-  const breadcrumb: BreadcrumbList = useMemo(() => {
+  const breadcrumb: BreadcrumbList = (() => {
     const home = `${BASE_URL}/${lang}`;
     const base = `${BASE_URL}/${lang}/${howToSlug}`;
     const title = (() => {
       const direct = heroTitle || (metaTitle ?? "");
       if (direct && String(direct).trim()) return String(direct);
-      const fromNs = (ready ? t("breadcrumbs.itemTitleFallback") : "breadcrumbs.itemTitleFallback") as unknown as string;
+      const fromNs: unknown = ready ? t("breadcrumbs.itemTitleFallback") : "breadcrumbs.itemTitleFallback";
       if (typeof fromNs === "string" && fromNs.trim() && fromNs !== "breadcrumbs.itemTitleFallback") return fromNs;
       const tHowToEn = i18n.getFixedT?.("en", "howToGetHere");
-      const fallback = tHowToEn ? (tHowToEn("breadcrumbs.itemTitleFallback") as unknown as string) : undefined;
+      const fallback: unknown = tHowToEn ? tHowToEn("breadcrumbs.itemTitleFallback") : undefined;
       return typeof fallback === "string" && fallback.trim() ? fallback : "breadcrumbs.itemTitleFallback";
     })();
     const homeLabel = (() => {
-      const raw = (headerReady ? tHeader("home") : "home") as unknown as string;
+      const raw: unknown = headerReady ? tHeader("home") : "home";
       if (typeof raw === "string" && raw.trim() && raw !== "header:home" && raw !== "home") return raw;
       const tHeaderEn = i18n.getFixedT?.("en", "header");
-      const fallback = tHeaderEn ? (tHeaderEn("home") as unknown as string) : undefined;
+      const fallback: unknown = tHeaderEn ? tHeaderEn("home") : undefined;
       return typeof fallback === "string" && fallback.trim() ? fallback : "home";
     })();
     const sectionLabel = (() => {
-      const raw = (headerReady ? tHeader("howToGetHere") : "howToGetHere") as unknown as string;
+      const raw: unknown = headerReady ? tHeader("howToGetHere") : "howToGetHere";
       if (typeof raw === "string" && raw.trim() && raw !== "header:howToGetHere") return raw;
       const tHeaderEn = i18n.getFixedT?.("en", "header");
-      const fallback = tHeaderEn ? (tHeaderEn("howToGetHere") as unknown as string) : undefined;
+      const fallback: unknown = tHeaderEn ? tHeaderEn("howToGetHere") : undefined;
       return typeof fallback === "string" && fallback.trim() ? fallback : "howToGetHere";
     })();
     return {
@@ -186,7 +183,7 @@ export default function HowToGetHereContent({
         { "@type": "ListItem", position: 3, name: title, item: canonicalUrl },
       ],
     } as BreadcrumbList;
-  }, [canonicalUrl, headerReady, heroTitle, howToSlug, lang, metaTitle, ready, t, tHeader]);
+  })();
 
   return (
     <Fragment>

@@ -8,12 +8,9 @@ import React, {
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
-import {
-  countries,
-  municipalities,
-} from "../../checkins/docInsert/DocInsertData";
 
 import AutoComplete from "./AutoComplete";
+import { useDocInsertData } from "./useDocInsertData";
 
 interface Row2Props {
   occupantDetails: OccupantDetails;
@@ -39,6 +36,8 @@ type Row2FieldName = "placeOfBirth" | "citizenship" | "municipality";
  *    until the new value is successfully saved.
  */
 function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
+  const { countries, municipalities } = useDocInsertData();
+
   // Local text states
   const [placeOfBirth, setPlaceOfBirth] = useState("");
   const [citizenship, setCitizenship] = useState("");
@@ -108,7 +107,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   const isValidCountry = useCallback((value: string) => {
     const lower = value.trim().toLowerCase();
     return countries.some((c) => c.toLowerCase() === lower);
-  }, []);
+  }, [countries]);
 
   // Mark fields as "unsaved" when the user changes them
   const handlePlaceOfBirthChange = useCallback((val: string) => {

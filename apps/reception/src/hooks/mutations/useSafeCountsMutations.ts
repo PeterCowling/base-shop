@@ -9,6 +9,7 @@ import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type SafeCount, type SafeCountType } from "../../types/hooks/data/safeCountData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { getStoredShiftId } from "../../utils/shiftId";
 import { showToast } from "../../utils/toastUtils";
 
 import {
@@ -58,6 +59,7 @@ export function useSafeCountsMutations() {
           keycardCount,
           keycardDifference,
           direction,
+          shiftId: getStoredShiftId() ?? undefined,
         };
 
         const parsed = safeCountSchema.safeParse(newCount);
@@ -107,6 +109,7 @@ export function useSafeCountsMutations() {
           type: "opening",
           count,
           keycardCount,
+          shiftId: getStoredShiftId() ?? undefined,
         };
 
         const parsed = safeCountSchema.safeParse(newCount);
@@ -145,6 +148,7 @@ export function useSafeCountsMutations() {
           keycardCount,
           keycardDifference,
           denomBreakdown,
+          shiftId: getStoredShiftId() ?? undefined,
         };
 
         const parsed = safeCountSchema.safeParse(newCount);

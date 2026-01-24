@@ -11,6 +11,7 @@ jest.mock("../FormsContainer", () => ({ __esModule: true, default: () => <div da
 jest.mock("../TransactionModals", () => ({ __esModule: true, default: () => <div /> }));
 jest.mock("../AddKeycardsModal", () => ({ __esModule: true, default: () => <div /> }));
 jest.mock("../ReturnKeycardsModal", () => ({ __esModule: true, default: () => <div /> }));
+jest.mock("../TillShiftHistory", () => ({ __esModule: true, default: () => <div /> }));
 jest.mock("../DrawerLimitWarning", () => ({
   __esModule: true,
   default: ({

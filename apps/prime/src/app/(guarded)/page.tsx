@@ -1,8 +1,8 @@
 'use client';
-// Force dynamic rendering to avoid SSG issues with context providers
-export const dynamic = 'force-dynamic';
 
-import HomePage from '../../components/homepage/HomePage';
+import dynamic from 'next/dynamic';
+
+const HomePage = dynamic(() => import('../../components/homepage/HomePage'), { ssr: false });
 
 /**
  * Guarded Home Page

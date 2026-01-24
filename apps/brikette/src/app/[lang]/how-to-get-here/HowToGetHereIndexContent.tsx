@@ -2,12 +2,12 @@
 
 // src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx
 // Client component for how-to-get-here index page
-import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/ui/atoms";
 
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTravel";
 import { DestinationSections } from "@/routes/how-to-get-here/components/DestinationSections";
@@ -28,7 +28,6 @@ import type {
 } from "@/routes/how-to-get-here/types";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 type Props = {
   lang: AppLanguage;
@@ -87,15 +86,7 @@ function pickBestLink(
 
 function HowToGetHereIndexContent({ lang }: Props) {
   const { t } = useTranslation("howToGetHere", { lng: lang });
-
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["howToGetHere", "guides"]);
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({ lang, namespaces: ["howToGetHere", "guides"] });
 
   const content = useHowToGetHereContent(lang);
   const filtersState = useDestinationFilters(content.sections);
@@ -114,7 +105,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
     setSelection(sel);
   }, []);
 
-  const jumpToItems = useMemo<JumpToItem[]>(() => {
+  const jumpToItems: JumpToItem[] = (() => {
     const items: JumpToItem[] = [
       { id: INTRO_SECTION_ID, label: (t("jumpTo.arrival") as string) || "Arrival Help" },
     ];
@@ -130,9 +121,9 @@ function HowToGetHereIndexContent({ lang }: Props) {
       label: (t("jumpTo.experiences") as string) || "Experiences",
     });
     return items;
-  }, [content.sections, t]);
+  })();
 
-  const activeFilters = useMemo<ActiveFilterChip[]>(() => {
+  const activeFilters: ActiveFilterChip[] = (() => {
     const chips: ActiveFilterChip[] = [];
     if (destinationFilter && destinationFilter !== "all") {
       chips.push({
@@ -156,7 +147,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
       });
     }
     return chips;
-  }, [destinationFilter, transportFilter, directionFilter]);
+  })();
 
   return (
     <Fragment>

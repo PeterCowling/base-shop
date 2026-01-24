@@ -32,8 +32,8 @@ describe('fsUtils', () => {
   it('listThemes returns names of valid theme packages', async () => {
     vol.fromJSON(
       {
-        '/workspace/base-shop/packages/themes/base/src/tokens.css': '',
-        '/workspace/base-shop/packages/themes/extra/src/tokens.css': '',
+        '/workspace/base-shop/packages/themes/base/tokens.css': '',
+        '/workspace/base-shop/packages/themes/extra/tokens.css': '',
         '/workspace/base-shop/packages/themes/legacy/index.ts': '',
         '/workspace/base-shop/packages/themes/file.txt': 'not a dir',
       },

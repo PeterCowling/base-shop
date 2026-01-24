@@ -85,7 +85,7 @@ OUTPUT:
   Creates a theme package at packages/themes/<name>/ with:
   - src/tailwind-tokens.ts  Token overrides
   - src/index.ts            Package exports
-  - src/tokens.css          CSS custom properties
+  - tokens.css              CSS custom properties
   - __tests__/contrast.test.ts  Accessibility tests
   - package.json            Package configuration
   - tsconfig.json           TypeScript configuration

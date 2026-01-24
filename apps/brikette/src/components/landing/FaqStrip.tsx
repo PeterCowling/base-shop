@@ -1,5 +1,5 @@
 // src/components/landing/FaqStrip.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -21,11 +21,11 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
   const { t, ready } = useTranslation("faq", translationOptions);
   const resolvedLang = toAppLanguage(lang);
-  const items = useMemo(() => {
-    if (!ready) return [] as FaqItem[];
+  const items: FaqItem[] = (() => {
+    if (!ready) return [];
     const raw = t("items", { returnObjects: true }) as unknown;
     return Array.isArray(raw) ? (raw as FaqItem[]).slice(0, 4) : [];
-  }, [ready, t]);
+  })();
 
   if (!items.length) return null;
 

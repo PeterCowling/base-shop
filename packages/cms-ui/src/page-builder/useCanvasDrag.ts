@@ -1,16 +1,19 @@
 "use client";
-import { useEffect,useRef, useState } from "react";
+import type { Dispatch, RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import type { CaptureRef } from "./canvasResize/pointerCapture";
+import { releasePointerCaptureSafe, setPointerCaptureSafe } from "./canvasResize/pointerCapture";
 import { snapToGrid } from "./gridSnap";
 import type { Action } from "./state";
 import useGuides from "./useGuides";
 
 interface Options {
   componentId: string;
-  dispatch: React.Dispatch<Action>;
+  dispatch: Dispatch<Action>;
   gridEnabled?: boolean;
   gridCols: number;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
   disabled?: boolean;
   leftKey?: string;
   topKey?: string;
@@ -19,162 +22,271 @@ interface Options {
   zoom?: number;
 }
 
-export default function useCanvasDrag({
-  componentId,
-  dispatch,
-  gridEnabled = false,
-  gridCols,
-  containerRef,
-  disabled = false,
-  leftKey = "left",
-  topKey = "top",
+interface DragState {
+  originalL: number;
+  originalT: number;
+  width: number;
+  height: number;
+  dx: number;
+  dy: number;
+}
+
+function applyAxisLock(
+  dx: number,
+  dy: number,
+  shiftKey: boolean,
+  axisLockRef: React.MutableRefObject<null | "x" | "y">
+) {
+  if (!shiftKey) {
+    axisLockRef.current = null;
+    return { dx, dy };
+  }
+  if (axisLockRef.current === null) {
+    axisLockRef.current = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
+  }
+  return axisLockRef.current === "x" ? { dx, dy: 0 } : { dx: 0, dy };
+}
+
+function applySiblingSnap(
+  state: DragState,
+  siblingEdgesRef: React.MutableRefObject<{ vertical: number[]; horizontal: number[] }>,
+  threshold: number
+) {
+  let newL = state.originalL;
+  let newT = state.originalT;
+  let guideX: number | null = null;
+  let guideY: number | null = null;
+  let distX: number | null = null;
+  let distY: number | null = null;
+  for (const edge of siblingEdgesRef.current.vertical) {
+    const leftDist = Math.abs(state.originalL - edge);
+    const rightDist = Math.abs(state.originalL + state.width - edge);
+    if (leftDist <= threshold && (distX === null || leftDist < distX)) {
+      newL = edge;
+      guideX = edge;
+      distX = leftDist;
+    }
+    if (rightDist <= threshold && (distX === null || rightDist < distX)) {
+      newL = edge - state.width;
+      guideX = edge;
+      distX = rightDist;
+    }
+  }
+  for (const edge of siblingEdgesRef.current.horizontal) {
+    const topDist = Math.abs(state.originalT - edge);
+    const bottomDist = Math.abs(state.originalT + state.height - edge);
+    if (topDist <= threshold && (distY === null || topDist < distY)) {
+      newT = edge;
+      guideY = edge;
+      distY = topDist;
+    }
+    if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
+      newT = edge - state.height;
+      guideY = edge;
+      distY = bottomDist;
+    }
+  }
+  return { newL, newT, guideX, guideY, distX, distY };
+}
+
+function applyGridSnap({
+  newL,
+  newT,
+  gridEnabled,
+  unit,
+  threshold,
+  guideX,
+  guideY,
+  distX,
+  distY,
+}: {
+  newL: number;
+  newT: number;
+  gridEnabled: boolean;
+  unit: number | null;
+  threshold: number;
+  guideX: number | null;
+  guideY: number | null;
+  distX: number | null;
+  distY: number | null;
+}) {
+  if (!gridEnabled || !unit) {
+    return { newL, newT, guideX, guideY, distX, distY };
+  }
+  const snappedL = snapToGrid(newL, unit);
+  const snappedT = snapToGrid(newT, unit);
+  const gridDistX = Math.abs(snappedL - newL);
+  const gridDistY = Math.abs(snappedT - newT);
+  let nextGuideX = guideX;
+  let nextGuideY = guideY;
+  let nextDistX = distX;
+  let nextDistY = distY;
+  if (gridDistX <= threshold && (nextDistX === null || gridDistX < nextDistX)) {
+    nextGuideX = snappedL;
+    nextDistX = gridDistX;
+  }
+  if (gridDistY <= threshold && (nextDistY === null || gridDistY < nextDistY)) {
+    nextGuideY = snappedT;
+    nextDistY = gridDistY;
+  }
+  return {
+    newL: snappedL,
+    newT: snappedT,
+    guideX: nextGuideX,
+    guideY: nextGuideY,
+    distX: nextDistX,
+    distY: nextDistY,
+  };
+}
+
+function buildDockedPatch({
+  newL,
+  newT,
+  width,
+  height,
+  parent,
   dockX,
   dockY,
-  zoom = 1,
-}: Options) {
-  const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
-    null
-  );
-  const [moving, setMoving] = useState(false);
+  leftKey,
+  topKey,
+}: {
+  newL: number;
+  newT: number;
+  width: number;
+  height: number;
+  parent: HTMLElement | null;
+  dockX?: "left" | "right" | "center";
+  dockY?: "top" | "bottom" | "center";
+  leftKey: string;
+  topKey: string;
+}) {
+  const parentWidth = parent?.offsetWidth ?? 0;
+  const parentHeight = parent?.offsetHeight ?? 0;
+  const hasParentWidth = parentWidth > 0;
+  const hasParentHeight = parentHeight > 0;
+  const horizontalCapacity = hasParentWidth ? Math.max(0, parentWidth - width) : null;
+  const verticalCapacity = hasParentHeight ? Math.max(0, parentHeight - height) : null;
+  const useRight = dockX === "right" && !!horizontalCapacity;
+  const useBottom = dockY === "bottom" && !!verticalCapacity;
+  if (parent) {
+    if (hasParentWidth) {
+      const maxL = horizontalCapacity ?? 0;
+      newL = maxL > 0 ? Math.min(Math.max(0, newL), maxL) : Math.max(newL, 0);
+    }
+    if (hasParentHeight) {
+      const maxT = verticalCapacity ?? 0;
+      newT = maxT > 0 ? Math.min(Math.max(0, newT), maxT) : Math.max(newT, 0);
+    }
+  }
+  const patch: Record<string, string> = {};
+  if (useRight && parent) {
+    const right = Math.round(Math.max(0, parentWidth - (newL + width)));
+    patch.right = `${right}px`;
+  } else {
+    patch[leftKey] = `${Math.round(newL)}px`;
+  }
+  if (useBottom && parent) {
+    const bottom = Math.round(Math.max(0, parentHeight - (newT + height)));
+    patch.bottom = `${bottom}px`;
+  } else {
+    patch[topKey] = `${Math.round(newT)}px`;
+  }
+  return { patch, newL, newT };
+}
+
+interface DragListenerOptions {
+  moving: boolean;
+  moveRef: React.MutableRefObject<{ x: number; y: number; l: number; t: number } | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
+  zoom: number;
+  gridEnabled: boolean;
+  gridCols: number;
+  leftKey: string;
+  topKey: string;
+  dockX?: "left" | "right" | "center";
+  dockY?: "top" | "bottom" | "center";
+  componentId: string;
+  dispatch: Dispatch<Action>;
+  setGuides: (guides: { x: number | null; y: number | null }) => void;
+  siblingEdgesRef: React.MutableRefObject<{ vertical: number[]; horizontal: number[] }>;
+  setCurrent: Dispatch<React.SetStateAction<{ left: number; top: number; width: number; height: number }>>;
+  setMoving: Dispatch<React.SetStateAction<boolean>>;
+  setDistances: Dispatch<React.SetStateAction<{ x: number | null; y: number | null }>>;
+  axisLockRef: React.MutableRefObject<null | "x" | "y">;
+  captureRef: React.MutableRefObject<CaptureRef["current"]>;
+}
+
+function useDragListeners({
+  moving,
+  moveRef,
+  containerRef,
+  zoom,
+  gridEnabled,
+  gridCols,
+  leftKey,
+  topKey,
+  dockX,
+  dockY,
+  componentId,
+  dispatch,
+  setGuides,
+  siblingEdgesRef,
+  setCurrent,
+  setMoving,
+  setDistances,
+  axisLockRef,
+  captureRef,
+}: DragListenerOptions) {
   const rafRef = useRef<number | null>(null);
   const lastEventRef = useRef<PointerEvent | null>(null);
-  const axisLockRef = useRef<null | 'x' | 'y'>(null);
-  const captureRef = useRef<{ el: Element | null; id: number | null }>({ el: null, id: null });
-  const [current, setCurrent] = useState({
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0,
-  });
-  const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
-    containerRef
-  );
-  const [distances, setDistances] = useState<{ x: number | null; y: number | null }>(
-    { x: null, y: null }
-  );
-
   useEffect(() => {
     if (!moving) return;
     const processMove = (e: PointerEvent) => {
       if (!moveRef.current || !containerRef.current) return;
-      let dx = (e.clientX - moveRef.current.x) / Math.max(zoom, 0.0001);
-      let dy = (e.clientY - moveRef.current.y) / Math.max(zoom, 0.0001);
-      // Axis lock: when Shift is held, lock to the dominant axis for the current drag session
-      if (e.shiftKey) {
-        if (axisLockRef.current === null) {
-          axisLockRef.current = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-        }
-        if (axisLockRef.current === 'x') dy = 0; else dx = 0;
-      } else {
-        axisLockRef.current = null;
-      }
+      const dxBase = (e.clientX - moveRef.current.x) / Math.max(zoom, 0.0001);
+      const dyBase = (e.clientY - moveRef.current.y) / Math.max(zoom, 0.0001);
+      const { dx, dy } = applyAxisLock(dxBase, dyBase, e.shiftKey, axisLockRef);
       const originalL = moveRef.current.l + dx;
       const originalT = moveRef.current.t + dy;
-      let newL = originalL;
-      let newT = originalT;
+      const { offsetWidth: width, offsetHeight: height } = containerRef.current;
       const threshold = 10;
-      let guideX: number | null = null;
-      let guideY: number | null = null;
-      let distX: number | null = null;
-      let distY: number | null = null;
-      const { offsetWidth: width, offsetHeight: height } =
-        containerRef.current;
-      for (const edge of siblingEdgesRef.current.vertical) {
-        const leftDist = Math.abs(originalL - edge);
-        const rightDist = Math.abs(originalL + width - edge);
-        if (leftDist <= threshold && (distX === null || leftDist < distX)) {
-          newL = edge;
-          guideX = edge;
-          distX = leftDist;
-        }
-        if (rightDist <= threshold && (distX === null || rightDist < distX)) {
-          newL = edge - width;
-          guideX = edge;
-          distX = rightDist;
-        }
-      }
-      for (const edge of siblingEdgesRef.current.horizontal) {
-        const topDist = Math.abs(originalT - edge);
-        const bottomDist = Math.abs(originalT + height - edge);
-        if (topDist <= threshold && (distY === null || topDist < distY)) {
-          newT = edge;
-          guideY = edge;
-          distY = topDist;
-        }
-        if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
-          newT = edge - height;
-          guideY = edge;
-          distY = bottomDist;
-        }
-      }
+      const siblingSnap = applySiblingSnap(
+        { originalL, originalT, width, height, dx, dy },
+        siblingEdgesRef,
+        threshold
+      );
       const parentEl = containerRef.current.parentElement;
       const unit = parentEl ? parentEl.offsetWidth / gridCols : null;
-      if (gridEnabled && unit) {
-        const snappedL = snapToGrid(newL, unit);
-        const snappedT = snapToGrid(newT, unit);
-        const gridDistX = Math.abs(snappedL - newL);
-        const gridDistY = Math.abs(snappedT - newT);
-        newL = snappedL;
-        newT = snappedT;
-        if (gridDistX <= threshold && (distX === null || gridDistX < distX)) {
-          guideX = snappedL;
-          distX = gridDistX;
-        }
-        if (gridDistY <= threshold && (distY === null || gridDistY < distY)) {
-          guideY = snappedT;
-          distY = gridDistY;
-        }
-      }
-      // Compute docked offsets when docking is enabled
-      const parent = containerRef.current.parentElement;
-      const parentWidth = parent?.offsetWidth ?? 0;
-      const parentHeight = parent?.offsetHeight ?? 0;
-      const hasParentWidth = parentWidth > 0;
-      const hasParentHeight = parentHeight > 0;
-      const horizontalCapacity = hasParentWidth ? Math.max(0, parentWidth - width) : null;
-      const verticalCapacity = hasParentHeight ? Math.max(0, parentHeight - height) : null;
-      const useRight = dockX === "right" && !!horizontalCapacity;
-      const useBottom = dockY === "bottom" && !!verticalCapacity;
-      // Restrict to parent bounds when a parent exists with measurable bounds
-      if (parent) {
-        if (hasParentWidth) {
-          const maxL = horizontalCapacity ?? 0;
-          if (maxL > 0) {
-            newL = Math.min(Math.max(0, newL), maxL);
-          } else {
-            newL = Math.max(newL, 0);
-          }
-        }
-        if (hasParentHeight) {
-          const maxT = verticalCapacity ?? 0;
-          if (maxT > 0) {
-            newT = Math.min(Math.max(0, newT), maxT);
-          } else {
-            newT = Math.max(newT, 0);
-          }
-        }
-      }
-      const patch: Record<string, string> = {};
-      if (useRight && parent) {
-        const right = Math.round(Math.max(0, parentWidth - (newL + width)));
-        patch.right = `${right}px`;
-      } else {
-        patch[leftKey] = `${Math.round(newL)}px`;
-      }
-      if (useBottom && parent) {
-        const bottom = Math.round(Math.max(0, parentHeight - (newT + height)));
-        patch.bottom = `${bottom}px`;
-      } else {
-        patch[topKey] = `${Math.round(newT)}px`;
-      }
-      type ResizeAction = import("./state/layout/types").ResizeAction;
-      dispatch({ type: "resize", id: componentId, ...patch } as ResizeAction);
-      setCurrent({ left: newL, top: newT, width, height });
-      setGuides({
-        x: guideX !== null ? guideX - newL : null,
-        y: guideY !== null ? guideY - newT : null,
+      const gridSnap = applyGridSnap({
+        newL: siblingSnap.newL,
+        newT: siblingSnap.newT,
+        gridEnabled,
+        unit,
+        threshold,
+        guideX: siblingSnap.guideX,
+        guideY: siblingSnap.guideY,
+        distX: siblingSnap.distX,
+        distY: siblingSnap.distY,
       });
-      setDistances({ x: distX, y: distY });
+      const docked = buildDockedPatch({
+        newL: gridSnap.newL,
+        newT: gridSnap.newT,
+        width,
+        height,
+        parent: containerRef.current.parentElement,
+        dockX,
+        dockY,
+        leftKey,
+        topKey,
+      });
+      type ResizeAction = import("./state/layout/types").ResizeAction;
+      dispatch({ type: "resize", id: componentId, ...docked.patch } as ResizeAction);
+      setCurrent({ left: docked.newL, top: docked.newT, width, height });
+      setGuides({
+        x: gridSnap.guideX !== null ? gridSnap.guideX - docked.newL : null,
+        y: gridSnap.guideY !== null ? gridSnap.guideY - docked.newT : null,
+      });
+      setDistances({ x: gridSnap.distX, y: gridSnap.distY });
     };
     const handleMove = (e: PointerEvent) => {
       lastEventRef.current = e;
@@ -195,13 +307,7 @@ export default function useCanvasDrag({
       setMoving(false);
       setGuides({ x: null, y: null });
       setDistances({ x: null, y: null });
-      // Release pointer capture if held
-      try {
-        if (captureRef.current?.el && captureRef.current?.id != null) {
-          (captureRef.current.el as unknown as { releasePointerCapture?: (id: number) => void }).releasePointerCapture?.(captureRef.current.id);
-        }
-      } catch {}
-      captureRef.current = { el: null, id: null };
+      releasePointerCaptureSafe(captureRef as CaptureRef);
       if (rafRef.current != null) {
         try { cancelAnimationFrame(rafRef.current); } catch {}
         rafRef.current = null;
@@ -218,20 +324,88 @@ export default function useCanvasDrag({
       window.removeEventListener("blur", stop);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef, zoom, dockX, dockY, leftKey, topKey]);
+  }, [
+    moving,
+    componentId,
+    dispatch,
+    gridEnabled,
+    gridCols,
+    setGuides,
+    siblingEdgesRef,
+    containerRef,
+    zoom,
+    dockX,
+    dockY,
+    leftKey,
+    topKey,
+    setCurrent,
+    setMoving,
+    setDistances,
+    axisLockRef,
+    captureRef,
+    moveRef,
+  ]);
+}
+
+export default function useCanvasDrag({
+  componentId,
+  dispatch,
+  gridEnabled = false,
+  gridCols,
+  containerRef,
+  disabled = false,
+  leftKey = "left",
+  topKey = "top",
+  dockX,
+  dockY,
+  zoom = 1,
+}: Options) {
+  const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
+    null
+  );
+  const [moving, setMoving] = useState(false);
+  const axisLockRef = useRef<null | "x" | "y">(null);
+  const captureRef = useRef<CaptureRef["current"]>({ el: null, id: null });
+  const [current, setCurrent] = useState({
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0,
+  });
+  const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
+    containerRef
+  );
+  const [distances, setDistances] = useState<{ x: number | null; y: number | null }>(
+    { x: null, y: null }
+  );
+
+  useDragListeners({
+    moving,
+    moveRef,
+    containerRef,
+    zoom,
+    gridEnabled,
+    gridCols,
+    leftKey,
+    topKey,
+    dockX,
+    dockY,
+    componentId,
+    dispatch,
+    setGuides,
+    siblingEdgesRef,
+    setCurrent,
+    setMoving,
+    setDistances,
+    axisLockRef,
+    captureRef,
+  });
 
   const startDrag = (e: React.PointerEvent) => {
     if (disabled) return;
     const el = containerRef.current;
     if (!el) return;
-    // Capture pointer to keep events consistent during drag (skip in tests for JSDOM compatibility)
-    try {
-      const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test";
-      if (!isTest) {
-        (e.target as Element)?.setPointerCapture?.(e.pointerId);
-        captureRef.current = { el: e.target as Element, id: e.pointerId };
-      }
-    } catch {}
+    setPointerCaptureSafe(e, captureRef as CaptureRef);
     moveRef.current = {
       x: e.clientX,
       y: e.clientY,

@@ -7,7 +7,8 @@
     "start": "next start -p 3020",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests"
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests",
+    "test:rules": "pnpm dlx firebase-tools@13.35.1 emulators:exec --only database --project reception-rules-test --config ../../firebase.json \"MSW_DISABLE=1 pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests -- src/rules/__tests__/databaseRules.test.ts\""
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
@@ -15,14 +16,15 @@
     "@heroicons/react": "^2.2.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.0.0",
+    "lucide-react": "^0.540.0",
     "next": "^15.3.8",
-    "react": "19.1.0",
+    "react": "19.2.1",
     "react-day-picker": "^9.10.0",
-    "react-dom": "19.1.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-transition-group": "^4.4.5",
+    "react-dom": "19.2.1",
     "react-toastify": "^11.0.5",
+    "react-transition-group": "^4.4.5",
     "sweetalert2": "^11.22.2"
   }
 }

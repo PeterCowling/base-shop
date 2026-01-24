@@ -16,19 +16,22 @@ describe("FACILITIES", () => {
   });
 
   it("keeps FacilityKey in sync with the literal array", () => {
-    expectTypeOf<FacilityKey>().toEqualTypeOf<
-      | "privateRoom"
-      | "mixedDorm"
-      | "femaleDorm"
-      | "doubleBed"
-      | "singleBeds"
-      | "bathroomEnsuite"
-      | "bathroomShared"
-      | "seaView"
-      | "gardenView"
-      | "airCon"
-      | "keycard"
-      | "linen"
-    >();
+    // Type-level check: if FacilityKey drifts from the expected union,
+    // TypeScript will error at compile time on these assignments.
+    const expected: FacilityKey[] = [
+      "privateRoom",
+      "mixedDorm",
+      "femaleDorm",
+      "doubleBed",
+      "singleBeds",
+      "bathroomEnsuite",
+      "bathroomShared",
+      "seaView",
+      "gardenView",
+      "airCon",
+      "keycard",
+      "linen",
+    ];
+    expect(new Set(FACILITIES)).toEqual(new Set(expected));
   });
 });

@@ -11,7 +11,6 @@ jest.mock("../../dataRoot", () => ({
 // Use globalThis to store test files - this avoids Jest hoisting issues
 // because the mock factory can safely access globalThis at runtime
 declare global {
-  // eslint-disable-next-line no-var
   var __analyticsServerTestFiles: Map<string, string> | undefined;
 }
 globalThis.__analyticsServerTestFiles = new Map<string, string>();
@@ -39,7 +38,6 @@ const readdirMock = fs.readdir as jest.Mock;
 const readFileMock = fs.readFile as jest.Mock;
 
 // Import the mocked validateShopName from the mocked module
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { validateShopName } = require("../../shops") as { validateShopName: jest.Mock };
 
 beforeEach(() => {
@@ -129,4 +127,3 @@ describe("readAggregates", () => {
     });
   });
 });
-

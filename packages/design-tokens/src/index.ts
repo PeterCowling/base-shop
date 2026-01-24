@@ -9,6 +9,7 @@ import { operationsTokens } from './contexts/operations'
 export * from './core/colors'
 export * from './core/spacing'
 export * from './core/typography'
+export * from './core/z-index'
 
 export { consumerTokens, hospitalityTokens,operationsTokens }
 

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import { useAuth } from "../../../context/AuthContext";
+import { useDialog } from "../../../context/DialogContext";
 import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
@@ -39,6 +40,7 @@ function DOBSection({
   saveField,
 }: DOBSectionProps): JSX.Element {
   const { user } = useAuth();
+  const { showConfirm } = useDialog();
 
   const [yyyy, setYyyy] = useState("");
   const [mm, setMm] = useState("");
@@ -121,7 +123,7 @@ function DOBSection({
    * On blur, if all fields are filled, validate. If invalid, revert unless user is in ALLOWED_OVERRIDE_USERS and confirms override.
    */
   const handleBlur = useCallback(
-    (_e: FocusEvent<HTMLInputElement>) => {
+    async (_e: FocusEvent<HTMLInputElement>) => {
       if (!yyyy || !mm || !dd) return;
 
       const errorMsg = validateDOB(yyyy, mm, dd);
@@ -137,9 +139,11 @@ function DOBSection({
 
         // If user is allowed an override, prompt for confirmation.
         if (canOverride) {
-          const confirmed = window.confirm(
-            `Override invalid date?\n\n${errorMsg}`
-          );
+          const confirmed = await showConfirm({
+            title: "Override invalid date?",
+            message: errorMsg,
+            confirmLabel: "Override",
+          });
           if (!confirmed) {
             revertDOB();
             return;
@@ -169,7 +173,7 @@ function DOBSection({
           setBgSuccess(false);
         });
     },
-    [yyyy, mm, dd, validateDOB, user?.user_name, saveField, revertDOB]
+    [yyyy, mm, dd, validateDOB, user?.user_name, saveField, revertDOB, showConfirm]
   );
 
   return (

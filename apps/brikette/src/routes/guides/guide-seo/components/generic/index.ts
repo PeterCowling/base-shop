@@ -57,6 +57,7 @@ export {
   shouldPreserveTranslatorWhenLocalized,
   shouldSkipFallbacksWhenUnlocalized,
   shouldForceGenericWhenUnlocalized,
+  requiresStructuredEnForForceGeneric,
   needsLegacySecondArgInvocation,
   allowsStructuredArraysWhenLocalized,
 } from "./guidePolicies";

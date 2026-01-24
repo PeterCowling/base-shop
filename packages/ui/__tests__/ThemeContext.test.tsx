@@ -43,7 +43,9 @@ describe("ThemeContext", () => {
     fireEvent.click(screen.getByText("dark"));
     expect(span.textContent).toBe("dark");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
-    expect(spy).toHaveBeenLastCalledWith("theme", "dark");
+    expect(spy).toHaveBeenCalledWith("theme-mode", "dark");
+    expect(spy).toHaveBeenCalledWith("theme-name", "base");
+    expect(spy).toHaveBeenCalledWith("theme", "dark");
   });
 
   it("uses saved theme from localStorage", () => {

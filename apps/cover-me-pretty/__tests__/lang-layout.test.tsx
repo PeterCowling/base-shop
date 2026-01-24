@@ -56,11 +56,6 @@ jest.mock("@acme/i18n/Translations", () => ({
   ),
 }));
 
-jest.mock("@acme/ui/components/ThemeStyle", () => ({
-  __esModule: true,
-  default: () => <div data-cy="theme-style" />,
-}));
-
 describe("[lang] layout", () => {
   beforeAll(async () => {
     ({ default: LocaleLayout, generateMetadata } = await import(

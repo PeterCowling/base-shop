@@ -378,7 +378,11 @@ const authValue: {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 } = {
-  user: { email: "pete@example.com", user_name: "pete" },
+  user: {
+    email: "pete@example.com",
+    user_name: "pete",
+    roles: ["manager"],
+  },
   setUser: jest.fn(),
 };
 

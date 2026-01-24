@@ -25,6 +25,28 @@ export interface Transaction {
   docType?: string;
   /** Indicates that this transaction relates to a keycard. */
   isKeycard?: boolean;
+  /** Till shift identifier (if available). */
+  shiftId?: string;
+  /** Correction metadata. */
+  sourceTxnId?: string;
+  correctionReason?: string;
+  correctionKind?: "reversal" | "replacement" | "adjustment";
+  correctedBy?: string;
+  correctedByUid?: string;
+  correctedShiftId?: string;
+  /** Void metadata. */
+  voidedAt?: string;
+  voidedBy?: string;
+  voidedByUid?: string;
+  voidReason?: string;
+  voidedShiftId?: string;
+}
+
+export interface VarianceSignoff {
+  signedOffBy: string;
+  signedOffByUid?: string;
+  signedOffAt: string;
+  varianceNote: string;
 }
 
 /**
@@ -102,7 +124,9 @@ export interface CloseShiftFormProps {
     countedCash: number,
     countedKeycards: number,
     allReceiptsConfirmed: boolean,
-    breakdown: Record<string, number>
+    breakdown: Record<string, number>,
+    varianceSignoff?: VarianceSignoff,
+    varianceSignoffRequired?: boolean
   ) => void;
   onCancel: () => void;
 }

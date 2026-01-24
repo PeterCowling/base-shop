@@ -163,7 +163,7 @@ export function useShopEditorForm({
     tokenRows,
   };
 
-  const { saving, errors, toast, closeToast, onSubmit } = useShopEditorSubmit({
+  const { saving, errors, onSubmit } = useShopEditorSubmit({
     shop,
     identity,
     localization,
@@ -178,8 +178,6 @@ export function useShopEditorForm({
     setTrackingProviders,
     saving,
     errors,
-    toast,
-    closeToast,
     filterMappings: filterMappings.rows,
     addFilterMapping: filterMappings.add,
     updateFilterMapping: filterMappings.update,

@@ -16,7 +16,9 @@ Last-reviewed: 2025-12-02
 - Pre-commit hooks (`simple-git-hooks`) run check-only ESLint on staged files via `lint-staged --no-stash`:
   - Partially staged files are blocked (to prevent unstaged hunks being staged under lint-staged 15.x behavior).
   - Reproduce the hook locally without committing: `pnpm lint:staged`.
-- Pre-push runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching) to catch type errors before remote CI churn.
+- Pre-commit also runs `pnpm typecheck` and `pnpm lint` to catch issues before they land in git history.
+- Pre-commit runs `pnpm validate:agent-context` to warn on agent context drift (digest size, CLAUDE size, and duplicated 3-line blocks between always-on files).
+- Pre-push runs `pnpm typecheck` and `pnpm lint` to catch issues before remote CI churn.
 
 ## Tests and CI gating
 

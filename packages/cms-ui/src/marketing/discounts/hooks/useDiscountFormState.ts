@@ -3,6 +3,7 @@
 import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 import {
   type AsyncSubmissionHandler,
@@ -32,11 +33,6 @@ export type DiscountFormUpdater = <K extends DiscountField>(
   value: DiscountFormValues[K]
 ) => void;
 
-interface DiscountToastState {
-  open: boolean;
-  message: string;
-}
-
 function validate(values: DiscountFormValues): DiscountErrors {
   const t = (s: string) => s; // i18n-exempt: pure validation helper; hook adds i18n to surfaced messages
   const errors: DiscountErrors = {};
@@ -57,10 +53,8 @@ export interface DiscountFormState {
   values: DiscountFormValues;
   errors: DiscountErrors;
   status: SubmissionStatus;
-  toast: DiscountToastState;
   update: DiscountFormUpdater;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
-  dismissToast: () => void;
 }
 
 export function useDiscountFormState({
@@ -77,7 +71,7 @@ export function useDiscountFormState({
   });
   const [internalErrors, setInternalErrors] = useState<DiscountErrors>({});
   const [status, setStatus] = useState<SubmissionStatus>("idle");
-  const [toast, setToast] = useState<DiscountToastState>({ open: false, message: "" });
+  const toast = useToast();
 
   useEffect(() => {
     setValues({ ...defaultDiscountValues, ...defaultValues });
@@ -102,10 +96,6 @@ export function useDiscountFormState({
     });
   }, []);
 
-  const dismissToast = useCallback(() => {
-    setToast((prev: DiscountToastState) => ({ ...prev, open: false }));
-  }, []);
-
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -118,17 +108,14 @@ export function useDiscountFormState({
       if (Object.keys(nextErrors).length > 0) {
         setStatus("error");
         onStatusChange?.("error");
-        setToast({
-          open: true,
-          message: t("Resolve the highlighted issues before continuing.") as string,
-        });
+        toast.error(t("Resolve the highlighted issues before continuing.") as string);
         return;
       }
 
       if (!onSubmit) {
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: t("Discount draft saved.") as string });
+        toast.success(t("Discount draft saved.") as string);
         return;
       }
 
@@ -138,25 +125,23 @@ export function useDiscountFormState({
         await onSubmit(values);
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: t("Discount saved.") as string });
+        toast.success(t("Discount saved.") as string);
       } catch (error) {
         setStatus("error");
         onStatusChange?.("error");
         const fallback =
           error instanceof Error ? error.message : (t("Unable to save discount.") as string);
-        setToast({ open: true, message: fallback });
+        toast.error(fallback);
       }
     },
-    [onStatusChange, onSubmit, t, values]
+    [onStatusChange, onSubmit, t, toast, values]
   );
 
   return {
     values,
     errors,
     status,
-    toast,
     update,
     handleSubmit,
-    dismissToast,
   };
 }

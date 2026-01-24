@@ -2,7 +2,7 @@
 
 // src/app/[lang]/assistance/AssistanceIndexContent.tsx
 // Client component for assistance landing page
-import { type ComponentProps,memo, useMemo } from "react";
+import { type ComponentProps, memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
@@ -49,20 +49,20 @@ const Cluster = ({ className, ...props }: ContainerProps) => (
 function AssistanceIndexContent({ lang }: Props): JSX.Element {
   const { t, i18n, ready } = useTranslation("assistanceSection", { lng: lang });
   const { t: tGuides, i18n: guidesI18n } = useTranslation("guides", { lng: lang });
-  const guidesEnT = useMemo<TFunction>(() => {
+  const guidesEnT: TFunction = (() => {
     const maybeFixed =
       typeof guidesI18n?.getFixedT === "function" ? guidesI18n.getFixedT("en", "guides") : undefined;
     return typeof maybeFixed === "function" ? (maybeFixed as TFunction) : (tGuides as TFunction);
-  }, [guidesI18n, tGuides]);
+  })();
 
   const heroIntroKey = "heroIntro" as const;
   const heroIntroRaw = t(heroIntroKey) as string;
   const heroIntro = heroIntroRaw && heroIntroRaw !== heroIntroKey ? heroIntroRaw : (t("amaParagraph1") as string);
 
-  const bookingOptions = useMemo<Partial<Record<BookingLinkKey, string>>>(() => {
+  const bookingOptions: Partial<Record<BookingLinkKey, string>> = (() => {
     if (!ready) return {};
     return (t("bookingOptions", { returnObjects: true }) as Partial<Record<BookingLinkKey, string>>) || {};
-  }, [t, ready]);
+  })();
 
   return (
     <>

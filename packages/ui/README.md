@@ -29,25 +29,14 @@ CMS-only packages (@acme/cms-marketing, @acme/configurator)
 Low-level libraries (@acme/types, @acme/date-utils, etc.)
 ```
 
-## Deprecated Presentation Imports
+## Presentation Imports
 
-**Presentation primitives should be imported from `@acme/design-system`, not `@acme/ui`.**
-
-The following import paths are deprecated for presentation components:
+**Presentation primitives must be imported from `@acme/design-system`, not `@acme/ui`.**
 
 ```ts
-// ❌ Deprecated
-import { Button } from "@acme/ui/atoms";
-import { Button } from "@acme/ui/atoms/Button";
-import { Card } from "@acme/ui/components/atoms/primitives";
-import { cn } from "@acme/ui/utils/style";
-
-// ✅ Use design-system instead
 import { Button, Card } from "@acme/design-system/primitives";
 import { cn } from "@acme/design-system/utils/style";
 ```
-
-These deprecated paths now delegate to `@acme/design-system` via shims for backward compatibility, but new code should use design-system directly.
 
 ## Valid @acme/ui Imports
 
@@ -70,9 +59,8 @@ import { ModalProvider, useModal } from "@acme/ui/context/modal";
 ```
 packages/ui/
 ├── src/
-│   ├── atoms/           # Shims to design-system (deprecated)
 │   ├── components/
-│   │   ├── atoms/       # Domain atoms + shims
+│   │   ├── atoms/       # Domain atoms (design-system primitives re-exported as needed)
 │   │   ├── molecules/   # Domain molecules
 │   │   ├── organisms/   # Domain organisms
 │   │   ├── templates/   # Page templates
@@ -81,7 +69,7 @@ packages/ui/
 │   │   └── shop/        # Shop-specific components
 │   ├── hooks/           # Domain hooks
 │   ├── context/         # Domain contexts
-│   └── utils/           # Shims to design-system (deprecated)
+│   └── utils/           # Domain utilities
 ```
 
 ## Related Documentation

@@ -7,11 +7,17 @@
     "build": "next build",
     "start": "next start -p 3015",
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "jest --config jest.config.cjs --passWithNoTests"
   },
   "dependencies": {
+    "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
     "@acme/ui": "workspace:*",
+    "@themes/base": "workspace:*",
+    "@themes/prime": "workspace:*",
+    "@tanstack/react-query": "^5.62.0",
     "@headlessui/react": "^2.2.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -19,8 +25,8 @@
     "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.511.0",
     "next": "^15.3.8",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
     "react-i18next": "^15.5.3",
     "zod": "^3.25.73",
     "bcryptjs": "^2.4.3"

@@ -5,8 +5,8 @@ import { fireEvent,render, screen } from "@testing-library/react";
 import { siteConfig } from "../../lib/siteConfig";
 import { XaShell } from "../XaShell";
 
-const setThemeMock = jest.fn();
-let themeValue = "base";
+const setModeMock = jest.fn();
+let isDarkValue = false;
 let cartState: Record<string, { qty: number }> = {};
 let wishlistState: string[] = [];
 
@@ -18,8 +18,8 @@ jest.mock("../XaSupportDock.client", () => ({
   XaSupportDock: () => <div data-testid="support-dock" />,
 }));
 
-jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
-  useTheme: () => ({ theme: themeValue, setTheme: setThemeMock }),
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  useThemeMode: () => ({ isDark: isDarkValue, setMode: setModeMock }),
 }));
 
 jest.mock("../../contexts/XaCartContext", () => ({
@@ -56,8 +56,8 @@ const mutableConfig = siteConfig as unknown as {
 beforeEach(() => {
   cartState = {};
   wishlistState = [];
-  themeValue = "base";
-  setThemeMock.mockClear();
+  isDarkValue = false;
+  setModeMock.mockClear();
   mutableConfig.showContactInfo = true;
   mutableConfig.showSocialLinks = true;
   mutableConfig.whatsappNumber = "+00 000 000 000";
@@ -84,12 +84,7 @@ describe("XaShell", () => {
   });
 
   it("toggles theme when system preference is active", () => {
-    themeValue = "system";
-    window.matchMedia = jest.fn().mockReturnValue({
-      matches: true,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-    });
+    isDarkValue = true;
 
     render(
       <XaShell>
@@ -99,7 +94,7 @@ describe("XaShell", () => {
 
     const toggle = screen.getByLabelText("Switch to light mode");
     fireEvent.click(toggle);
-    expect(setThemeMock).toHaveBeenCalledWith("base");
+    expect(setModeMock).toHaveBeenCalledWith("light");
   });
 
   it("omits support UI when links are disabled", () => {

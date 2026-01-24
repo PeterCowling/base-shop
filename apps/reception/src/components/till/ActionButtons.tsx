@@ -1,4 +1,8 @@
-import { type FC, useState } from "react";
+import { type FC, useMemo, useState } from "react";
+
+import { canAccess, Permissions } from "../../lib/roles";
+import type { User } from "../../types/domains/userDomain";
+import PasswordReauthModal from "../common/PasswordReauthModal";
 
 import ActionDropdown from "./ActionDropdown";
 
@@ -6,7 +10,7 @@ interface ActionButtonsProps {
   shiftOpenTime: Date | null;
   isTillOverMax: boolean;
   isDrawerOverLimit: boolean;
-  userName: string;
+  user: User;
   drawerLimitInput: string;
   setDrawerLimitInput: (val: string) => void;
   updateLimit: (val: number) => void;
@@ -24,7 +28,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   shiftOpenTime,
   isTillOverMax,
   isDrawerOverLimit: _isDrawerOverLimit,
-  userName,
+  user,
   drawerLimitInput,
   setDrawerLimitInput,
   updateLimit,
@@ -38,9 +42,36 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   handleLiftClick,
 }) => {
   const [openId, setOpenId] = useState<string | null>(null);
-  const canManageCash = ["pete", "serena", "cristiana"].includes(
-    userName.toLowerCase()
+  const [showDrawerReauth, setShowDrawerReauth] = useState(false);
+  const [pendingDrawerLimit, setPendingDrawerLimit] = useState<number | null>(
+    null
   );
+  const canManageCash = useMemo(
+    () => canAccess(user, Permissions.TILL_ACCESS),
+    [user]
+  );
+  const canManageDrawerLimit = useMemo(
+    () => canAccess(user, Permissions.MANAGEMENT_ACCESS),
+    [user]
+  );
+
+  const handleDrawerLimitSubmit = () => {
+    const nextLimit = Number(drawerLimitInput) || 0;
+    setPendingDrawerLimit(nextLimit);
+    setShowDrawerReauth(true);
+  };
+
+  const handleDrawerLimitConfirm = async () => {
+    if (pendingDrawerLimit === null) return;
+    await updateLimit(pendingDrawerLimit);
+    setPendingDrawerLimit(null);
+    setShowDrawerReauth(false);
+  };
+
+  const handleDrawerLimitCancel = () => {
+    setPendingDrawerLimit(null);
+    setShowDrawerReauth(false);
+  };
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row">
@@ -117,7 +148,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
           />
         </>
       )}
-      {userName === "Pete" && (
+      {canManageDrawerLimit && (
         <div className="flex items-center gap-2 dark:bg-darkSurface dark:text-darkAccentGreen sm:ms-auto">
           <label
             className="text-sm font-semibold dark:text-darkAccentGreen"
@@ -131,8 +162,22 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             className="border rounded p-1 w-24 dark:bg-darkBg dark:text-darkAccentGreen"
             value={drawerLimitInput}
             onChange={(e) => setDrawerLimitInput(e.target.value)}
-            onBlur={() => updateLimit(Number(drawerLimitInput) || 0)}
           />
+          <button
+            type="button"
+            onClick={handleDrawerLimitSubmit}
+            className="px-3 py-1 rounded bg-primary-main text-white hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
+          >
+            Update
+          </button>
+          {showDrawerReauth && (
+            <PasswordReauthModal
+              title="Confirm drawer limit"
+              instructions="Enter your password to update the cash drawer limit."
+              onSuccess={handleDrawerLimitConfirm}
+              onCancel={handleDrawerLimitCancel}
+            />
+          )}
         </div>
       )}
     </div>

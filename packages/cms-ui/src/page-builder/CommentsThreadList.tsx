@@ -161,7 +161,7 @@ export default function CommentsThreadList({
                 >
                   <button
                     type="button"
-                    className="block w-full min-h-10 min-w-10 cursor-pointer text-start"
+                    className="block w-full min-h-11 min-w-11 cursor-pointer text-start"
                     onClick={() => onSelect(thr.id)}
                   >
                   {/** i18n-exempt */}

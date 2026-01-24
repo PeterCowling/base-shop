@@ -3,9 +3,9 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { Button } from "../atoms/Button";
 import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Section } from "../atoms/Section";
+import { Button } from "../components/atoms/shadcn";
 import { useModal } from "../context/ModalContext";
 import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";

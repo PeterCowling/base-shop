@@ -15,11 +15,239 @@ import presetData from "../style/presets.json";
 
 import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 
+type PairPreset = { id: string; name: string; tags?: string[]; tokens: Record<string, string> };
+
 interface Props {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   /** Render mode: dialog (default) or sidebar inline panel */
   variant?: "dialog" | "sidebar";
+}
+
+interface FontsPanelContentProps {
+  t: (s: string) => string;
+  currentBody: string;
+  currentH1: string;
+  currentH2: string;
+  headingSample: string;
+  bodySample: string;
+  sizeH1: number;
+  sizeH2: number;
+  sizeBody: number;
+  setHeadingSample: (value: string) => void;
+  setBodySample: (value: string) => void;
+  setSizeH1: (value: number) => void;
+  setSizeH2: (value: number) => void;
+  setSizeBody: (value: number) => void;
+  firstFamilyFromStack: (stack: string | undefined) => string | null;
+  filteredPairs: PairPreset[];
+  allTags: string[];
+  tagFilter: string;
+  setTagFilter: (value: string) => void;
+  applyPairing: (preset: PairPreset) => void;
+  ensureGoogle: (name: string | null | undefined) => void;
+  googleFamilies: Set<string>;
+}
+
+function FontsPanelContent({
+  t,
+  currentBody,
+  currentH1,
+  currentH2,
+  headingSample,
+  bodySample,
+  sizeH1,
+  sizeH2,
+  sizeBody,
+  setHeadingSample,
+  setBodySample,
+  setSizeH1,
+  setSizeH2,
+  setSizeBody,
+  firstFamilyFromStack,
+  filteredPairs,
+  allTags,
+  tagFilter,
+  setTagFilter,
+  applyPairing,
+  ensureGoogle,
+  googleFamilies,
+}: FontsPanelContentProps) {
+  return (
+    <div className="space-y-6 p-3">
+      <div className="text-sm font-semibold">{t("Typography")}</div>
+      <p className="text-sm text-muted-foreground">
+        {t("Choose three fonts: Body, Heading 1 (H1–H3), Heading 2 (H4–H6). Previews render in the actual fonts.")}
+      </p>
+
+      <div className="rounded border bg-surface-2 p-4">
+        <Inline wrap alignY="end" className="mb-3 gap-4">
+          <label className="text-xs">
+            {t("Heading sample")}
+            <input
+              className="ms-2 h-8 w-60 rounded border px-2 text-sm"
+              value={headingSample}
+              onChange={(e) => setHeadingSample(e.target.value)}
+            />
+          </label>
+          <label className="text-xs">
+            {t("Body sample")}
+            <input
+              className="ms-2 h-8 w-60 rounded border px-2 text-sm"
+              value={bodySample}
+              onChange={(e) => setBodySample(e.target.value)}
+            />
+          </label>
+          <label className="text-xs">
+            {t("H1 size")}
+            <input
+              className="ms-2 align-middle"
+              type="range"
+              min={20}
+              max={64}
+              value={sizeH1}
+              onChange={(e) => setSizeH1(Number(e.target.value))}
+            />
+          </label>
+          <label className="text-xs">
+            {t("H2 size")}
+            <input
+              className="ms-2 align-middle"
+              type="range"
+              min={16}
+              max={40}
+              value={sizeH2}
+              onChange={(e) => setSizeH2(Number(e.target.value))}
+            />
+          </label>
+          <label className="text-xs">
+            {t("Body size")}
+            <input
+              className="ms-2 align-middle"
+              type="range"
+              min={12}
+              max={24}
+              value={sizeBody}
+              onChange={(e) => setSizeBody(Number(e.target.value))}
+            />
+          </label>
+        </Inline>
+        <div className="space-y-2">
+          <div className="text-xs text-foreground">
+            {t("Heading 1 (H1–H3)")}{" "}
+            <span className="ms-2 align-middle text-xs text-foreground/70">
+              {firstFamilyFromStack(currentH1) || ""}
+            </span>
+          </div>
+          <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>
+            {headingSample}
+          </div>
+          <div className="mt-3 text-xs text-foreground">
+            {t("Heading 2 (H4–H6)")}{" "}
+            <span className="ms-2 align-middle text-xs text-foreground/70">
+              {firstFamilyFromStack(currentH2) || ""}
+            </span>
+          </div>
+          <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>
+            {headingSample}
+          </div>
+          <div className="mt-3 text-xs text-foreground">
+            {t("Body")}{" "}
+            <span className="ms-2 align-middle text-xs text-foreground/70">
+              {firstFamilyFromStack(currentBody) || ""}
+            </span>
+          </div>
+          <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>
+            {bodySample}
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Cluster alignY="center" justify="between">
+          <h3 className="text-sm font-semibold">{t("Suggested Pairings")}</h3>
+          <Inline alignY="center" className="text-xs gap-2">
+            <label className="text-foreground">{t("Tag")}</label>
+            <select
+              className="rounded border border-border-2 bg-input p-1 text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
+              value={tagFilter}
+              onChange={(e) => setTagFilter(e.target.value)}
+            >
+              <option value="">{t("All")}</option>
+              {allTags.map((tag) => (
+                <option key={tag} value={tag}>
+                  {tag}
+                </option>
+              ))}
+            </select>
+          </Inline>
+        </Cluster>
+        <DSGrid cols={1} gap={3}>
+          {filteredPairs.map((p) => {
+            const body = p.tokens["--font-body"] || currentBody;
+            const h1 = p.tokens["--font-heading-1"] || body;
+            const h2 = p.tokens["--font-heading-2"] || body;
+            [body, h1, h2].forEach((stack) => {
+              const name = firstFamilyFromStack(stack);
+              if (name && googleFamilies.has(name)) ensureGoogle(name);
+            });
+            return (
+              <div key={p.id} className="rounded border bg-surface-2 p-3">
+                <Cluster className="mb-1 gap-2" alignY="center" justify="between">
+                  <div className="truncate text-sm font-medium">{p.name}</div>
+                  <button
+                    type="button"
+                    className="min-h-11 min-w-11 rounded border border-border-2 bg-surface-3 px-3 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
+                    onClick={() => applyPairing(p)}
+                  >
+                    {t("Use pairing")}
+                  </button>
+                </Cluster>
+                {p.tags && p.tags.length > 0 && (
+                  <Cluster wrap className="mb-2 gap-1 text-xs text-foreground/80">
+                    {p.tags.map((tag) => (
+                      <span key={tag} className="rounded border border-border-2 bg-surface-3 px-1">
+                        {tag}
+                      </span>
+                    ))}
+                  </Cluster>
+                )}
+                <div className="space-y-1">
+                  <div className="text-xs text-foreground">
+                    {t("Heading 1")}{" "}
+                    <span className="ms-2 align-middle text-xs text-foreground/70">
+                      {firstFamilyFromStack(h1) || ""}
+                    </span>
+                  </div>
+                  <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>
+                    {headingSample}
+                  </div>
+                  <div className="mt-2 text-xs text-foreground">
+                    {t("Heading 2")}{" "}
+                    <span className="ms-2 align-middle text-xs text-foreground/70">
+                      {firstFamilyFromStack(h2) || ""}
+                    </span>
+                  </div>
+                  <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>
+                    {headingSample}
+                  </div>
+                  <div className="mt-2 text-xs text-foreground">
+                    {t("Body")}{" "}
+                    <span className="ms-2 align-middle text-xs text-foreground/70">
+                      {firstFamilyFromStack(body) || ""}
+                    </span>
+                  </div>
+                  <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>
+                    {bodySample}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </DSGrid>
+      </div>
+    </div>
+  );
 }
 
 export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: Props) {
@@ -177,7 +405,6 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
   const [sizeH2, setSizeH2] = useState(24);
   const [sizeBody, setSizeBody] = useState(16);
 
-  type PairPreset = { id: string; name: string; tags?: string[]; tokens: Record<string, string> };
   const pairings = useMemo(() => (presetData as unknown as PairPreset[]).filter((p) => p.id.startsWith("type-")), []);
   const [tagFilter, setTagFilter] = useState<string>("");
   const allTags = useMemo(() => {
@@ -203,107 +430,30 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
   }, [applyTokens, ensureGoogle, firstFamilyFromStack, googleFamilies]);
 
   const content = (
-    <div className="space-y-6 p-3">
-      <div className="text-sm font-semibold">{t("Typography")}</div>
-      <p className="text-sm text-muted-foreground">
-        {t("Choose three fonts: Body, Heading 1 (H1–H3), Heading 2 (H4–H6). Previews render in the actual fonts.")}
-      </p>
-
-          {/* Current selection preview */}
-          <div className="rounded border bg-surface-2 p-4">
-            <Inline wrap alignY="end" className="mb-3 gap-4">
-              <label className="text-xs">{t("Heading sample")}
-                <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
-              </label>
-              <label className="text-xs">{t("Body sample")}
-                <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
-              </label>
-              <label className="text-xs">{t("H1 size")}
-                <input className="ms-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
-              </label>
-              <label className="text-xs">{t("H2 size")}
-                <input className="ms-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
-              </label>
-              <label className="text-xs">{t("Body size")}
-                <input className="ms-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
-              </label>
-            </Inline>
-            <div className="space-y-2">
-              <div className="text-xs text-foreground">{t("Heading 1 (H1–H3)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
-              { }
-              <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">{t("Heading 2 (H4–H6)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
-              { }
-              <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
-              { }
-              <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
-            </div>
-          </div>
-
-          {/* Suggested pairings */}
-          <div className="space-y-2">
-            <Cluster alignY="center" justify="between">
-              <h3 className="text-sm font-semibold">{t("Suggested Pairings")}</h3>
-              <Inline alignY="center" className="text-xs gap-2">
-                <label className="text-foreground">{t("Tag")}</label>
-                <select
-                  className="rounded border border-border-2 bg-input p-1 text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
-                  value={tagFilter}
-                  onChange={(e) => setTagFilter(e.target.value)}
-                >
-                  <option value="">{t("All")}</option>
-                  {allTags.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-              </Inline>
-            </Cluster>
-            <DSGrid cols={1} gap={3}>
-              {filteredPairs.map((p) => {
-                const body = p.tokens["--font-body"] || currentBody;
-                const h1 = p.tokens["--font-heading-1"] || body;
-                const h2 = p.tokens["--font-heading-2"] || body;
-                [body, h1, h2].forEach((stack) => {
-                  const name = firstFamilyFromStack(stack);
-                  if (name && googleFamilies.has(name)) ensureGoogle(name);
-                });
-                return (
-                  <div key={p.id} className="rounded border bg-surface-2 p-3">
-                    <Cluster className="mb-1 gap-2" alignY="center" justify="between">
-                      <div className="truncate text-sm font-medium">{p.name}</div>
-                      <button
-                        type="button"
-                        className="min-h-10 min-w-10 rounded border border-border-2 bg-surface-3 px-3 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
-                        onClick={() => applyPairing(p)}
-                      >
-                        {t("Use pairing")}
-                      </button>
-                    </Cluster>
-                    {p.tags && p.tags.length > 0 && (
-                      <Cluster wrap className="mb-2 gap-1 text-xs text-foreground/80">
-                        {p.tags.map((t) => <span key={t} className="rounded border border-border-2 bg-surface-3 px-1">{t}</span>)}
-                      </Cluster>
-                    )}
-                    <div className="space-y-1">
-                      <div className="text-xs text-foreground">{t("Heading 1")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
-                      { }
-                      <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">{t("Heading 2")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
-                      { }
-                      <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
-                      { }
-                      <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </DSGrid>
-          </div>
-
-          {/* Fine-tune removed per request */}
-    </div>
+    <FontsPanelContent
+      t={t}
+      currentBody={currentBody}
+      currentH1={currentH1}
+      currentH2={currentH2}
+      headingSample={headingSample}
+      bodySample={bodySample}
+      sizeH1={sizeH1}
+      sizeH2={sizeH2}
+      sizeBody={sizeBody}
+      setHeadingSample={setHeadingSample}
+      setBodySample={setBodySample}
+      setSizeH1={setSizeH1}
+      setSizeH2={setSizeH2}
+      setSizeBody={setSizeBody}
+      firstFamilyFromStack={firstFamilyFromStack}
+      filteredPairs={filteredPairs}
+      allTags={allTags}
+      tagFilter={tagFilter}
+      setTagFilter={setTagFilter}
+      applyPairing={applyPairing}
+      ensureGoogle={ensureGoogle}
+      googleFamilies={googleFamilies}
+    />
   );
 
   if (variant === "sidebar") {

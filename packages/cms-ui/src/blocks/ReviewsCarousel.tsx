@@ -1,17 +1,4 @@
-import ReviewsCarousel, { type Review } from "@acme/ui/home/ReviewsCarousel";
+"use client";
 
-interface Props {
-  reviews?: Review[];
-  minItems?: number;
-  maxItems?: number;
-}
-
-export default function CmsReviewsCarousel({
-  reviews = [],
-  minItems,
-  maxItems,
-}: Props) {
-  const list = reviews.slice(0, maxItems ?? reviews.length);
-  if (!list.length || list.length < (minItems ?? 0)) return null;
-  return <ReviewsCarousel reviews={list} />;
-}
+export { default } from "@acme/ui/components/cms/blocks/ReviewsCarousel";
+export * from "@acme/ui/components/cms/blocks/ReviewsCarousel";

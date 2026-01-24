@@ -14,7 +14,9 @@ var getMock: jest.Mock;
 var setMock: jest.Mock;
 var removeMock: jest.Mock;
 var addTxnMock: jest.Mock;
-var decIngMock: jest.Mock;
+var addLedgerEntryMock: jest.Mock;
+var inventoryItemsMock: jest.Mock;
+var inventoryRecipesMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("firebase/database", () => {
@@ -35,11 +37,22 @@ jest.mock("../../../../../../services/useFirebase", () => ({
   useFirebaseDatabase: () => database,
 }));
 
-jest.mock("../../../../../../hooks/data/inventory/useIngredients", () => ({
-  default: () => ({ decrementIngredient: decIngMock }),
+jest.mock("../../../../../../hooks/data/inventory/useInventoryItems", () => {
+  inventoryItemsMock = jest.fn();
+  return { __esModule: true, default: () => inventoryItemsMock() };
+});
+
+jest.mock("../../../../../../hooks/data/inventory/useInventoryRecipes", () => {
+  inventoryRecipesMock = jest.fn();
+  return { __esModule: true, default: () => inventoryRecipesMock() };
+});
+
+jest.mock("../../../../../../hooks/mutations/useInventoryLedgerMutations", () => ({
+  useInventoryLedgerMutations: () => ({ addLedgerEntry: addLedgerEntryMock }),
 }));
 
 jest.mock("../../../../../../hooks/mutations/useAllTransactionsMutations", () => ({
+  __esModule: true,
   default: () => ({ addToAllTransactions: addTxnMock }),
 }));
 
@@ -54,7 +67,9 @@ function snap(val: unknown) {
 beforeEach(() => {
   database = {};
   addTxnMock = jest.fn();
-  decIngMock = jest.fn();
+  addLedgerEntryMock = jest.fn();
+  inventoryItemsMock = jest.fn();
+  inventoryRecipesMock = jest.fn();
   refMock.mockClear();
   getMock.mockReset();
   setMock.mockReset();
@@ -70,6 +85,24 @@ describe("useConfirmOrder", () => {
       })
     );
 
+    inventoryItemsMock.mockReturnValue({
+      items: [
+        { id: "menu-1", name: "Beer", unit: "unit", openingCount: 0, category: "menu" },
+        { id: "ing-1", name: "Hops", unit: "g", openingCount: 0, category: "ingredient" },
+      ],
+      itemsById: {
+        "menu-1": { id: "menu-1", name: "Beer", unit: "unit", openingCount: 0, category: "menu" },
+        "ing-1": { id: "ing-1", name: "Hops", unit: "g", openingCount: 0, category: "ingredient" },
+      },
+      loading: false,
+      error: null,
+    });
+    inventoryRecipesMock.mockReturnValue({
+      recipes: { "menu-1": { items: { "ing-1": 2 } } },
+      loading: false,
+      error: null,
+    });
+
     const { result } = renderHook(() =>
       useConfirmOrder({ getCategoryTypeByProductName: () => "cat" })
     );
@@ -83,7 +116,13 @@ describe("useConfirmOrder", () => {
       expect.objectContaining({ orderKey: "txn1" })
     );
     expect(removeMock).toHaveBeenCalledWith({ path: "barOrders/unconfirmed" });
-    expect(decIngMock).toHaveBeenCalledWith("Beer", 1);
+    expect(addLedgerEntryMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        itemId: "ing-1",
+        type: "sale",
+        quantity: -2,
+      })
+    );
     expect(addTxnMock).toHaveBeenCalledWith(
       "txn1-0",
       expect.objectContaining({ bookingRef: "1", description: "Beer" })

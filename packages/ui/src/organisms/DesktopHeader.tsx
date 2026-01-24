@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Button } from "../atoms/Button";
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
+import { Button } from "../components/atoms/shadcn";
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useTheme } from "../hooks/useTheme";

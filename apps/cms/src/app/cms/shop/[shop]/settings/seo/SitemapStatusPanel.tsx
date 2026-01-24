@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 
 import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
-import { Skeleton, Toast } from "@/components/atoms";
+import { Skeleton } from "@/components/atoms";
 import { Button,Card, CardContent } from "@/components/atoms/shadcn";
 
 type Status = {
@@ -18,10 +19,10 @@ type Status = {
 
 export default function SitemapStatusPanel() {
   const t = useTranslations();
+  const toast = useToast();
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
   const [rebuilding, setRebuilding] = useState(false);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
   const router = useRouter();
 
   const load = async () => {
@@ -47,15 +48,14 @@ export default function SitemapStatusPanel() {
       const res = await fetch("/api/seo/sitemap-status", { method: "POST" });
       const json = (await res.json()) as Status;
       setStatus((prev) => ({ ...(prev ?? {}), rebuild: { status: res.status, detail: json?.rebuild?.detail } }));
-      setToast({
-        open: true,
-        message: res.ok
-          ? String(t("Sitemap rebuild triggered in deploy pipeline"))
-          : String(t("Failed to trigger sitemap rebuild")),
-      });
+      if (res.ok) {
+        toast.success(String(t("Sitemap rebuild triggered in deploy pipeline")));
+      } else {
+        toast.error(String(t("Failed to trigger sitemap rebuild")));
+      }
       router.refresh();
     } catch {
-      setToast({ open: true, message: String(t("Failed to trigger sitemap rebuild")) });
+      toast.error(String(t("Failed to trigger sitemap rebuild")));
     } finally {
       setRebuilding(false);
     }
@@ -118,11 +118,6 @@ export default function SitemapStatusPanel() {
           )}
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-      />
     </>
   );
 }

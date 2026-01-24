@@ -283,8 +283,8 @@ export default [
     rules: {
       "ds/no-raw-color": "error",
       "ds/no-raw-font": "error",
-      // Scope the strict Tailwind color check to CMS to avoid breaking other apps
-      "ds/no-raw-tailwind-color": "off",
+      // Baseline raw Tailwind palette usage repo-wide; stricter enforcement in CMS
+      "ds/no-raw-tailwind-color": "warn",
       // Governance: require ticketed eslint-disable justifications (baseline warn; overridden later per scope)
       "ds/require-disable-justification": "warn",
     },
@@ -306,6 +306,18 @@ export default [
       "ds/no-raw-tailwind-color": "error",
       // Prevent low-contrast hero patterns (phase in as a warning first)
       "ds/no-hero-primary-foreground": "warn",
+    },
+  },
+
+  /* ▸ Design-system motion safety: ban transition-all in DS + mirrored atoms */
+  {
+    files: [
+      "packages/design-system/src/**/*.{ts,tsx}",
+      "packages/ui/src/components/atoms/**/*.{ts,tsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-transition-all": "error",
     },
   },
 
@@ -2112,6 +2124,7 @@ export default [
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/consistent-type-exports": "off",
       "prefer-const": "off",
       "security/detect-non-literal-fs-filename": "off",
       "security/detect-non-literal-require": "off",

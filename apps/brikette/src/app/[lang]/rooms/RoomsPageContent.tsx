@@ -2,7 +2,7 @@
 
 // src/app/[lang]/rooms/RoomsPageContent.tsx
 // Client component for rooms listing page
-import { Fragment, memo, useEffect } from "react";
+import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { RatingsBar, Section } from "@acme/ui/atoms";
@@ -11,9 +11,8 @@ import RoomsSection from "@acme/ui/organisms/RoomsSection";
 
 import AlsoHelpful from "@/components/common/AlsoHelpful";
 import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { preloadI18nNamespaces,preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 type Props = {
   lang: AppLanguage;
@@ -22,21 +21,14 @@ type Props = {
 function RoomsPageContent({ lang }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
+  usePagePreload({
+    lang,
+    namespaces: ["roomsPage", "assistanceCommon"],
+    optionalNamespaces: ["ratingsBar", "modals", "guides"],
+  });
 
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["roomsPage", "assistanceCommon"]);
-      await preloadI18nNamespaces(lang, ["ratingsBar", "modals", "guides"], {
-        optional: true,
-      });
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
-
-  const pageTitle = (t("title") as string) || "Rooms";
-  const pageSubtitle = (t("subtitle") as string) || "";
+  const pageTitle = t("hero.heading", { defaultValue: "Our rooms" }) as string;
+  const pageSubtitle = t("hero.subheading", { defaultValue: "" }) as string;
 
   return (
     <Fragment>

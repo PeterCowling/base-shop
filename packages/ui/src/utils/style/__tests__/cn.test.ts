@@ -10,9 +10,9 @@ describe("cn", () => {
   });
 
   it("dedupes design-token color utilities with later overrides", () => {
-    const merged = cn("bg-primary text-primary-foreground", "bg-black text-white");
-    expect(merged).toContain("bg-black");
-    expect(merged).toContain("text-white");
+    const merged = cn("bg-primary text-primary-foreground", "bg-foreground text-background");
+    expect(merged).toContain("bg-foreground");
+    expect(merged).toContain("text-background");
     expect(merged).not.toContain("bg-primary");
     expect(merged).not.toContain("text-primary-foreground");
   });

@@ -5,6 +5,8 @@
 
 import { memo,Suspense } from "react";
 
+import { InlineBoundary } from "@/components/common/InlineBoundary";
+
 import { Booking2GlobalModal } from "./global-modals/Booking2Modal";
 import { BookingGlobalModal } from "./global-modals/BookingModal";
 import { ContactGlobalModal } from "./global-modals/ContactModal";
@@ -20,15 +22,17 @@ export const GlobalModals = memo(function GlobalModals() {
   if (!activeModal) return null;
 
   return (
-    <Suspense fallback={<Loader />}>
-      {activeModal === "offers" && <OffersGlobalModal />}
-      {activeModal === "booking" && <BookingGlobalModal />}
-      {activeModal === "booking2" && <Booking2GlobalModal />}
-      {activeModal === "location" && <LocationGlobalModal />}
-      {activeModal === "contact" && <ContactGlobalModal />}
-      {activeModal === "facilities" && <FacilitiesGlobalModal />}
-      {activeModal === "language" && <LanguageGlobalModal />}
-    </Suspense>
+    <InlineBoundary label="GlobalModals">
+      <Suspense fallback={<Loader />}>
+        {activeModal === "offers" && <OffersGlobalModal />}
+        {activeModal === "booking" && <BookingGlobalModal />}
+        {activeModal === "booking2" && <Booking2GlobalModal />}
+        {activeModal === "location" && <LocationGlobalModal />}
+        {activeModal === "contact" && <ContactGlobalModal />}
+        {activeModal === "facilities" && <FacilitiesGlobalModal />}
+        {activeModal === "language" && <LanguageGlobalModal />}
+      </Suspense>
+    </InlineBoundary>
   );
 });
 

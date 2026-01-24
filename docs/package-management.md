@@ -21,4 +21,6 @@ Use these `package.json` scripts for day‑to‑day development:
 - `pnpm quickstart-shop` – scaffolds a new shop with optional seeding for rapid demos.
 
 ## Reproducible builds
-The workspace pins transitive dependencies via `pnpm` **overrides** and compiles a curated list of native modules listed in `onlyBuiltDependencies`. These settings ensure consistent, reproducible builds across environments.
+The workspace uses `onlyBuiltDependencies` to compile a curated list of native modules, and `pnpm.overrides` exclusively for transitive security patches (sub-dependencies no workspace package directly declares). Direct workspace dependencies are aligned by declaring the same version in each `package.json`.
+
+See [dependency-policy.md](dependency-policy.md) for the full version alignment policy and CI enforcement details.

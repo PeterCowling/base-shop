@@ -114,7 +114,7 @@ export default function UpgradePreviewPage() {
       </button>
 
       {error && (
-        <p role="alert" className="text-red-600">
+        <p role="alert" className="text-danger">
           {error}
         </p>
       )}

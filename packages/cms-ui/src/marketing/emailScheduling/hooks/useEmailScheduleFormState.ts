@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 import {
   type AsyncSubmissionHandler,
@@ -19,11 +20,6 @@ import {
 export type EmailScheduleField = keyof EmailScheduleFormValues;
 export type EmailScheduleErrors = ValidationErrors<EmailScheduleField>;
 
-export interface EmailScheduleToastState {
-  open: boolean;
-  message: string;
-}
-
 export interface UseEmailScheduleFormStateOptions {
   defaultValues?: Partial<EmailScheduleFormValues>;
   validationErrors?: EmailScheduleErrors;
@@ -36,13 +32,11 @@ export interface EmailScheduleFormState {
   values: EmailScheduleFormValues;
   errors: EmailScheduleErrors;
   status: SubmissionStatus;
-  toast: EmailScheduleToastState;
   updateValue: <K extends EmailScheduleField>(
     key: K,
     value: EmailScheduleFormValues[K]
   ) => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
-  dismissToast: () => void;
 }
 
 function validate(values: EmailScheduleFormValues, t: (k: string) => string): EmailScheduleErrors {
@@ -76,10 +70,7 @@ export function useEmailScheduleFormState({
   });
   const [internalErrors, setInternalErrors] = useState<EmailScheduleErrors>({});
   const [status, setStatus] = useState<SubmissionStatus>("idle");
-  const [toast, setToast] = useState<EmailScheduleToastState>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
 
   useEffect(() => {
     setValues({ ...defaultEmailScheduleValues, ...defaultValues });
@@ -122,10 +113,6 @@ export function useEmailScheduleFormState({
     []
   );
 
-  const dismissToast = useCallback(() => {
-    setToast((prev) => ({ ...prev, open: false }));
-  }, []);
-
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -137,17 +124,14 @@ export function useEmailScheduleFormState({
       if (Object.keys(nextErrors).length > 0) {
         setStatus("error");
         onStatusChange?.("error");
-        setToast({
-          open: true,
-          message: t("emailScheduling.toast.resolveHighlighted"),
-        });
+        toast.error(t("emailScheduling.toast.resolveHighlighted"));
         return;
       }
 
       if (!onSubmit) {
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: t("emailScheduling.toast.draftSaved") });
+        toast.success(t("emailScheduling.toast.draftSaved"));
         return;
       }
 
@@ -157,25 +141,23 @@ export function useEmailScheduleFormState({
         await onSubmit(values);
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: t("emailScheduling.toast.emailScheduled") });
+        toast.success(t("emailScheduling.toast.emailScheduled"));
       } catch (error) {
         setStatus("error");
         onStatusChange?.("error");
         const fallback =
           error instanceof Error ? error.message : t("emailScheduling.toast.schedulingFailed");
-        setToast({ open: true, message: fallback });
+        toast.error(fallback);
       }
     },
-    [values, onSubmit, onStatusChange, t]
+    [values, onSubmit, onStatusChange, t, toast]
   );
 
   return {
     values,
     errors,
     status,
-    toast,
     updateValue,
     handleSubmit,
-    dismissToast,
   };
 }

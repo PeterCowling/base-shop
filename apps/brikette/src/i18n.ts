@@ -6,10 +6,10 @@
 // - Plain Node (scripts/tests)→ fs fallback inside the backend
 // -----------------------------------------------------------------------------
 
-import { initReactI18next } from "react-i18next";
 import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 
+import { asResourceKey } from "./utils/i18n-types";
 import { i18nConfig } from "./i18n.config";
 // Seed critical assistance article namespaces for English to avoid hydration
 // drift on direct loads of help articles before lazy bundles resolve.
@@ -31,6 +31,32 @@ import { getGuidesBundle } from "./locales/guides";
 import { loadGuidesNamespaceFromImports } from "./locales/guides.imports";
 import { loadLocaleResource } from "./locales/locale-loader";
 // (blog namespace removed)
+
+// react-i18next must not be imported in React Server Components (the server
+// runtime can expose a React build without createContext). Guard on the React
+// API surface before requiring the plugin.
+type I18nextModule = import("i18next").Module;
+let initReactI18next: I18nextModule | null = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires -- runtime feature detection
+  const react = require("react") as { createContext?: unknown };
+  if (typeof react.createContext === "function") {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires -- runtime-only require
+    const reactI18next = require("react-i18next") as { initReactI18next?: unknown };
+    const candidate = reactI18next.initReactI18next as unknown;
+    if (
+      candidate &&
+      typeof candidate === "object" &&
+      "type" in (candidate as Record<string, unknown>) &&
+      "init" in (candidate as Record<string, unknown>) &&
+      typeof (candidate as { init?: unknown }).init === "function"
+    ) {
+      initReactI18next = candidate as I18nextModule;
+    }
+  }
+} catch {
+  initReactI18next = null;
+}
 
 /*---------------------------------------------------------------*
  | Environment detection                                          |
@@ -82,7 +108,7 @@ i18n.use(
           // eslint-disable-next-line no-console -- Localised debug helper for guide coverage tests
           console.log(`[i18n] using guides override for ${lng}`);
         }
-        cb(null, overrideBundle as import("i18next").ResourceKey);
+        cb(null, asResourceKey(overrideBundle));
         return;
       }
     }
@@ -95,7 +121,7 @@ i18n.use(
         const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
         const fromFs = loadGuidesNamespaceFromFs(lng);
         if (fromFs) {
-          cb(null, fromFs as import("i18next").ResourceKey);
+          cb(null, asResourceKey(fromFs));
           return;
         }
       } catch {
@@ -106,13 +132,13 @@ i18n.use(
     if (ns === "guides") {
       const bundle = getGuidesBundle(lng);
       if (bundle) {
-        cb(null, bundle as import("i18next").ResourceKey);
+        cb(null, asResourceKey(bundle));
         return;
       }
       try {
         const imported = await loadGuidesNamespaceFromImports(lng);
         if (imported) {
-          cb(null, imported as import("i18next").ResourceKey);
+          cb(null, asResourceKey(imported));
           return;
         }
       } catch {
@@ -124,7 +150,7 @@ i18n.use(
     try {
       const data = await loadLocaleResource(lng, ns);
       if (typeof data !== "undefined") {
-        cb(null, data as import("i18next").ResourceKey);
+        cb(null, asResourceKey(data));
         return;
       }
     } catch {
@@ -139,7 +165,7 @@ i18n.use(
           const { loadGuidesNamespaceFromFs } = await import("@/locales/_guides/node-loader");
           const bundle = loadGuidesNamespaceFromFs(lng);
           if (bundle) {
-            cb(null, bundle as import("i18next").ResourceKey);
+            cb(null, asResourceKey(bundle));
             return;
           }
         }
@@ -179,16 +205,15 @@ i18n.use(
     }
 
     // 3) Graceful empty object
-    console.warn(`[i18n] ${lng}/${ns}.json not found – falling back to empty object`);
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`[i18n] ${lng}/${ns}.json not found – falling back to empty object`);
+    }
     cb(null, {});
   })
 )
   // Some tests mock `react-i18next` without exporting `initReactI18next`.
   // Guard by falling back to a no-op plugin so i18n can still initialise.
-  .use(
-    (((initReactI18next as unknown) as import("i18next").Module) ||
-      ({ type: "3rdParty", init() {} } as import("i18next").Module))
-  )
+  .use(initReactI18next ?? ({ type: "3rdParty", init() {} } as import("i18next").Module))
   .init({
     ...i18nConfig,
     // Ensure components re-render both when the language changes
@@ -207,23 +232,23 @@ i18n.use(
     resources: (() => {
       const base: Record<string, import("i18next").ResourceLanguage> = {
         en: {
-          translation: EN_TRANSLATION as unknown as import("i18next").ResourceKey,
-          footer: EN_FOOTER as unknown as import("i18next").ResourceKey,
+          translation: asResourceKey(EN_TRANSLATION),
+          footer: asResourceKey(EN_FOOTER),
           // Assistance (help) article namespaces: seed English bundles to
           // guarantee immediate availability on hydration. Other languages
           // continue to load lazily via the backend.
-          ageAccessibility: EN_ASSIST_AGE as unknown as import("i18next").ResourceKey,
-          bookingBasics: EN_ASSIST_BOOKING as unknown as import("i18next").ResourceKey,
-          changingCancelling: EN_ASSIST_CHANGE as unknown as import("i18next").ResourceKey,
-          checkinCheckout: EN_ASSIST_CHECKIN as unknown as import("i18next").ResourceKey,
-          defectsDamages: EN_ASSIST_DEFECTS as unknown as import("i18next").ResourceKey,
-          depositsPayments: EN_ASSIST_DEPOSITS as unknown as import("i18next").ResourceKey,
-          rules: EN_ASSIST_RULES as unknown as import("i18next").ResourceKey,
-          legal: EN_ASSIST_LEGAL as unknown as import("i18next").ResourceKey,
-          security: EN_ASSIST_SECURITY as unknown as import("i18next").ResourceKey,
-          arrivingByFerry: EN_ASSIST_ARRIVE_FERRY as unknown as import("i18next").ResourceKey,
-          naplesAirportBus: EN_ASSIST_AIRPORT_BUS as unknown as import("i18next").ResourceKey,
-          travelHelp: EN_ASSIST_TRAVEL_HELP as unknown as import("i18next").ResourceKey,
+          ageAccessibility: asResourceKey(EN_ASSIST_AGE),
+          bookingBasics: asResourceKey(EN_ASSIST_BOOKING),
+          changingCancelling: asResourceKey(EN_ASSIST_CHANGE),
+          checkinCheckout: asResourceKey(EN_ASSIST_CHECKIN),
+          defectsDamages: asResourceKey(EN_ASSIST_DEFECTS),
+          depositsPayments: asResourceKey(EN_ASSIST_DEPOSITS),
+          rules: asResourceKey(EN_ASSIST_RULES),
+          legal: asResourceKey(EN_ASSIST_LEGAL),
+          security: asResourceKey(EN_ASSIST_SECURITY),
+          arrivingByFerry: asResourceKey(EN_ASSIST_ARRIVE_FERRY),
+          naplesAirportBus: asResourceKey(EN_ASSIST_AIRPORT_BUS),
+          travelHelp: asResourceKey(EN_ASSIST_TRAVEL_HELP),
           // (blog namespace removed)
           dealsPage: {
             // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON
@@ -248,7 +273,7 @@ i18n.use(
       };
 
       for (const [lang, label] of Object.entries(TRANSPORT_TAG_LABELS)) {
-        const seed = createGuidesTagsSeed(label) as import("i18next").ResourceKey;
+        const seed = asResourceKey(createGuidesTagsSeed(label));
         const target = (base[lang] ??= {});
         (target as Record<string, import("i18next").ResourceKey>)["guides.tags"] = seed;
       }

@@ -1,7 +1,7 @@
 // src/components/landing/BookingWidget.tsx
 "use client";
 
-import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
@@ -102,10 +102,7 @@ const BookingWidget = memo(function BookingWidget({
   const router = useRouter();
   const pathname = usePathname();
   const hasHydrated = useRef(false);
-  const { dateFormat, placeholder, inputLocale } = useMemo(
-    () => resolveBookingDateFormat(lang),
-    [lang]
-  );
+  const { dateFormat, placeholder, inputLocale } = resolveBookingDateFormat(lang);
 
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -153,23 +150,17 @@ const BookingWidget = memo(function BookingWidget({
     }
   }, [checkIn, checkOut, guests, searchParams, router, pathname]);
 
-  const invalidRange = useMemo(() => {
+  const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;
     if (!isValidDate(checkIn, dateFormat) || !isValidDate(checkOut, dateFormat)) return false;
     return getDateParts(checkOut, dateFormat) <= getDateParts(checkIn, dateFormat);
-  }, [checkIn, checkOut, dateFormat]);
+  })();
 
-  const fallbackAvailabilityLabel = useMemo(
-    () => tModals("booking.buttonAvailability") as string,
-    [tModals]
-  );
-  const checkAvailabilityLabel = useMemo(() => {
-    return (
-      resolvePrimaryCtaLabel(tTokens, {
-        fallback: () => fallbackAvailabilityLabel,
-      }) ?? fallbackAvailabilityLabel
-    );
-  }, [fallbackAvailabilityLabel, tTokens]);
+  const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
+  const checkAvailabilityLabel =
+    resolvePrimaryCtaLabel(tTokens, {
+      fallback: () => fallbackAvailabilityLabel,
+    }) ?? fallbackAvailabilityLabel;
 
   const handleCheckInChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setCheckIn(event.target.value);

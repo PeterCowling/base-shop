@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -33,53 +33,36 @@ function DealCard({
   onOpenBooking,
   referenceDate,
 }: DealCardProps): JSX.Element {
-  const startDate = useMemo(() => isoDateToLocalStart(deal.startDate), [deal.startDate]);
-  const endDate = useMemo(() => isoDateToLocalStart(deal.endDate), [deal.endDate]);
-  const includeYear = useMemo(
-    () => shouldIncludeYear(referenceDate, startDate, endDate),
-    [referenceDate, startDate, endDate],
-  );
-  const dateRange = useMemo(
-    () => formatDateRange(lang, startDate, endDate, referenceDate),
-    [lang, startDate, endDate, referenceDate],
-  );
-  const percentLabel = useMemo(() => formatPercent(lang, deal.discountPct), [deal.discountPct, lang]);
-  const cardTitle = useMemo(
-    () => translate("dealCard.savePercent", { percent: percentLabel }),
-    [percentLabel, translate],
-  );
+  const startDate = isoDateToLocalStart(deal.startDate);
+  const endDate = isoDateToLocalStart(deal.endDate);
+  const includeYear = shouldIncludeYear(referenceDate, startDate, endDate);
+  const dateRange = formatDateRange(lang, startDate, endDate, referenceDate);
+  const percentLabel = formatPercent(lang, deal.discountPct);
+  const cardTitle = translate("dealCard.savePercent", { percent: percentLabel });
+  const startLabel = formatMonthDay(lang, startDate, { includeYear });
+  const endLabel = formatMonthDay(lang, endDate, { includeYear });
 
-  const startLabel = useMemo(
-    () => formatMonthDay(lang, startDate, { includeYear }),
-    [lang, startDate, includeYear],
-  );
-  const endLabel = useMemo(
-    () => formatMonthDay(lang, endDate, { includeYear }),
-    [lang, endDate, includeYear],
-  );
+  const primaryCta = status === "upcoming"
+    ? translate("dealCard.cta.applyDeal")
+    : status === "active"
+      ? translate("dealCard.cta.bookDirect")
+      : null;
 
-  const primaryCta = useMemo(() => {
-    if (status === "upcoming") return translate("dealCard.cta.applyDeal");
-    if (status === "active") return translate("dealCard.cta.bookDirect");
-    return null;
-  }, [status, translate]);
+  const statusLine = status === "upcoming"
+    ? translate("dealCard.status.upcoming", { startDate: startLabel })
+    : null;
 
-  const statusLine = useMemo(() => {
-    if (status === "upcoming") return translate("dealCard.status.upcoming", { startDate: startLabel });
-    return null;
-  }, [startLabel, status, translate]);
-  const expiredMessage = useMemo(() => {
-    if (status === "expired") return translate("expired.message", { endedOn: endLabel });
-    return null;
-  }, [endLabel, status, translate]);
+  const expiredMessage = status === "expired"
+    ? translate("expired.message", { endedOn: endLabel })
+    : null;
 
-  const badges = useMemo(() => {
+  const badges = (() => {
     const out = [translate("dealCard.badges.autoApplied")];
     if (deal.rules.directOnly) {
       out.push(translate("dealCard.badges.directOnly"));
     }
     return out.filter((item) => item.trim().length > 0);
-  }, [deal.rules.directOnly, translate]);
+  })();
 
   const handleOpenDeal = useCallback(() => {
     onOpenBooking({ kind: "deal", dealId: deal.id });

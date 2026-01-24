@@ -1,8 +1,8 @@
 import { memo, useState } from "react";
 
 import { showToast } from "../../utils/toastUtils";
-import { FormActionButtons } from "../common/FormActionButtons";
 import FormContainer from "../common/FormContainer";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -52,11 +52,19 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         value={keycards}
         onChange={(e) => setKeycards(e.target.value)}
       />
-      <FormActionButtons
-        onCancel={onCancel}
-        onConfirm={handleConfirm}
-        confirmClassName="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark dark:bg-darkAccentGreen dark:text-darkBg"
-      />
+      <div className="mt-4 flex flex-col gap-3">
+        <PasswordReauthInline
+          onSubmit={handleConfirm}
+          submitLabel="Confirm opening"
+        />
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 rounded bg-info-main text-white hover:bg-info-dark dark:bg-darkSurface dark:text-darkAccentOrange"
+        >
+          Cancel
+        </button>
+      </div>
     </FormContainer>
   );
 });

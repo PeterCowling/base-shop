@@ -21,9 +21,9 @@ export default function ServicesSection({ lang }: ServicesSectionProps) {
   const isZh = lang === "zh";
   const isIt = lang === "it";
   const cardBase = ["rounded-2xl", "p-5", "transition", "hover:shadow-lg"];
-  const cardPanelZh = ["border-accent/50", "bg-zinc-900/50", "text-zinc-100"];
+  const cardPanelZh = ["border-accent/50", "bg-panel/50", "text-fg"];
   const cardPanelEn = ["border-border", "bg-panel", "text-fg"];
-  const introColor = isZh ? "text-zinc-200" : "text-muted-foreground";
+  const introColor = "text-muted-foreground";
 
   if (isIt) {
     return (

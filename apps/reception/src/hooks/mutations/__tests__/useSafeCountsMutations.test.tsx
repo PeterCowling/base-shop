@@ -62,6 +62,7 @@ describe("useSafeCountsMutations", () => {
       denomBreakdown: { "5": 2 },
       keycardCount: 1,
       keycardDifference: 0,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(2, "ref2", {
       user: "bob",
@@ -71,6 +72,7 @@ describe("useSafeCountsMutations", () => {
       denomBreakdown: { "2": 1 },
       keycardCount: undefined,
       keycardDifference: undefined,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(3, "ref3", {
       user: "bob",
@@ -80,6 +82,7 @@ describe("useSafeCountsMutations", () => {
       denomBreakdown: { "10": 2 },
       keycardCount: 2,
       keycardDifference: 1,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(4, "ref4", {
       user: "bob",
@@ -89,6 +92,7 @@ describe("useSafeCountsMutations", () => {
       denomBreakdown: { "1": 7 },
       keycardCount: undefined,
       keycardDifference: undefined,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(5, "ref5", {
       user: "bob",
@@ -99,6 +103,7 @@ describe("useSafeCountsMutations", () => {
       keycardCount: undefined,
       keycardDifference: undefined,
       direction: "drawerToSafe",
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(6, "ref6", {
       user: "bob",
@@ -108,6 +113,7 @@ describe("useSafeCountsMutations", () => {
       denomBreakdown: undefined,
       keycardCount: undefined,
       keycardDifference: undefined,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(7, "ref7", {
       user: "bob",
@@ -115,6 +121,7 @@ describe("useSafeCountsMutations", () => {
       type: "opening",
       count: 300,
       keycardCount: 3,
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(8, "ref8", {
       user: "bob",
@@ -125,6 +132,7 @@ describe("useSafeCountsMutations", () => {
       keycardCount: 2,
       keycardDifference: -1,
       denomBreakdown: { "50": 2 },
+      shiftId: undefined,
     });
     expect(setMock).toHaveBeenNthCalledWith(9, "ref9", {
       user: "bob",
@@ -134,6 +142,7 @@ describe("useSafeCountsMutations", () => {
       keycardCount: 4,
       keycardDifference: 1,
       denomBreakdown: { "50": 4 },
+      shiftId: undefined,
     });
   });
 

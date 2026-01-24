@@ -173,12 +173,13 @@ const CheckinsTable: React.FC = () => {
             lastName: "Created",
           }
         );
-        alert(
-          `New guest added successfully to booking: ${booking.bookingRef}.`
+        showToast(
+          `New guest added successfully to booking: ${booking.bookingRef}.`,
+          "success"
         );
       } catch (err: unknown) {
         console.error("Error adding guest to booking:", err);
-        alert("Failed to add a guest to this booking. Please try again.");
+        showToast("Failed to add a guest to this booking. Please try again.", "error");
       } finally {
         toggleAddGuestMode();
       }

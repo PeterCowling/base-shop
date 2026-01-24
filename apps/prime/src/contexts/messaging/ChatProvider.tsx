@@ -17,6 +17,7 @@ import {
   endBefore,
   equalTo,
   get,
+  limitToFirst,
   limitToLast,
   off,
   onChildAdded,
@@ -36,6 +37,7 @@ import type { ActivityInstance } from '../../types/messenger/activity';
 import type { Message } from '../../types/messenger/chat';
 
 const PAGE_SIZE = 50;
+const ACTIVITIES_PAGE_SIZE = 20;
 
 interface ChatState {
   activities: Record<string, ActivityInstance>;
@@ -46,6 +48,8 @@ interface ChatContextValue extends ChatState {
   currentChannelId: string | null;
   setCurrentChannelId: (id: string | null) => void;
   loadOlderMessages: (channelId: string) => Promise<void>;
+  loadMoreActivities: () => void;
+  hasMoreActivities: boolean;
 }
 
 type ChatAction =
@@ -123,6 +127,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
   const db = useFirebaseDatabase();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [currentChannelId, setCurrentChannelId] = useState<string | null>(null);
+  const [activitiesLimit, setActivitiesLimit] = useState(ACTIVITIES_PAGE_SIZE);
+  const [hasMoreActivities, setHasMoreActivities] = useState(false);
 
   const prevStatusRef = useRef<Record<string, ActivityInstance['status']>>({});
 
@@ -179,20 +185,25 @@ export function ChatProvider({ children }: ChatProviderProps) {
   );
 
   useEffect(() => {
+    // OPT-04: Paginate activities query to prevent downloading all records
     const q = query(
       ref(db, `${MSG_ROOT}/activities/instances`),
       orderByChild('status'),
       startAt('live'),
       endAt('upcoming'),
+      limitToFirst(activitiesLimit),
     );
 
     const unsubValue = onValue(q, (snap) => {
       const raw = (snap.val() ?? {}) as Record<string, ActivityInstance>;
-      const filtered = Object.fromEntries(
-        Object.entries(raw)
-          .filter(([, a]) => ['live', 'upcoming'].includes((a as ActivityInstance).status))
-          .map(([id, a]) => [id, { ...a, id }]),
-      ) as Record<string, ActivityInstance>;
+      const entries = Object.entries(raw)
+        .filter(([, a]) => ['live', 'upcoming'].includes((a as ActivityInstance).status))
+        .map(([id, a]) => [id, { ...a, id }] as const);
+
+      const filtered = Object.fromEntries(entries) as Record<string, ActivityInstance>;
+
+      // Track whether there might be more activities beyond the current limit
+      setHasMoreActivities(entries.length >= activitiesLimit);
 
       const prev = prevStatusRef.current;
       Object.entries(filtered).forEach(([id, act]) => {
@@ -215,7 +226,11 @@ export function ChatProvider({ children }: ChatProviderProps) {
       off(q);
       unsubValue();
     };
-  }, [db, postInitialMessages, removeSystemMessages]);
+  }, [db, activitiesLimit, postInitialMessages, removeSystemMessages]);
+
+  const loadMoreActivities = useCallback(() => {
+    setActivitiesLimit((prev) => prev + ACTIVITIES_PAGE_SIZE);
+  }, []);
 
   const messageListenerRef = useRef<(() => void) | null>(null);
 
@@ -319,6 +334,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
     currentChannelId,
     setCurrentChannelId,
     loadOlderMessages,
+    loadMoreActivities,
+    hasMoreActivities,
   };
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }

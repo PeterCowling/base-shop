@@ -11,6 +11,11 @@ import {
   submitEvent,
 } from "./helpers/shopEditorSubmitTestUtils";
 
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn(), update: jest.fn(), promise: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
+
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
 }));
@@ -84,11 +89,7 @@ describe("useShopEditorSubmit — success flow", () => {
     ).toHaveBeenCalledWith([{ key: "banner", value: "it" }]);
 
     expect(result.current.errors).toEqual({});
-    expect(result.current.toast).toEqual({
-      open: true,
-      status: "success",
-      message: "Shop settings saved successfully.",
-    });
+    expect(mockToast.success).toHaveBeenCalledWith("Shop settings saved successfully.");
     expect(result.current.saving).toBe(false);
   });
 });

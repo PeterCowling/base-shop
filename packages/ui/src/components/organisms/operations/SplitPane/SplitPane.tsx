@@ -348,7 +348,7 @@ export function SplitPane({
             ? "h-full cursor-col-resize"
             : "w-full cursor-row-resize",
           disabled && "pointer-events-none opacity-50",
-          isResizing && "bg-blue-500",
+          isResizing && "bg-primary",
           handleClassName
         )}
         style={{
@@ -366,7 +366,7 @@ export function SplitPane({
             isHorizontal
               ? "w-full bg-slate-200 group-hover:bg-slate-300"
               : "h-full bg-slate-200 group-hover:bg-slate-300",
-            isResizing && "bg-blue-500"
+            isResizing && "bg-primary"
           )}
         />
         {/* Larger hit area */}

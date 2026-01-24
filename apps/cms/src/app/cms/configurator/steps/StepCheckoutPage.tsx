@@ -7,8 +7,8 @@ import { Tag } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
-import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 
 import TemplateSelector from "../components/TemplateSelector";
@@ -106,7 +106,7 @@ export default function StepCheckoutPage({
   const [pageSummary, setPageSummary] = useState<CheckoutPageSummary | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("checkout-page");
   const router = useRouter();
 
@@ -163,13 +163,13 @@ export default function StepCheckoutPage({
         if (!hasTemplate && data.templateId) {
           setLayout?.(data.templateId);
         }
-        setToast({ open: true, message: String(t("cms.configurator.shopPage.draftSaved")) });
+        toast.success(String(t("cms.configurator.shopPage.draftSaved")));
         return data;
       }
       if (error) setError(error);
       return null;
     },
-    [currentShopId, hasTemplate, layout, setLayout, setPageId, t],
+    [currentShopId, hasTemplate, layout, setLayout, setPageId, t, toast],
   );
 
   const selectedTemplate = templates.find((tpl) => tpl.id === layout);
@@ -351,11 +351,6 @@ export default function StepCheckoutPage({
         </div>
       </div>
 
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

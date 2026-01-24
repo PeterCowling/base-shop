@@ -2,7 +2,7 @@
 
 // src/app/[lang]/assistance/[article]/AssistanceArticleContent.tsx
 // Client component for assistance article pages
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -25,7 +25,7 @@ type Props = {
 function AssistanceArticleContent({ lang, articleKey, namespace }: Props) {
   const { t: tNamespace, ready } = useTranslation(namespace, { lng: lang });
   const { t: tGuides } = useTranslation("guides", { lng: lang });
-  const guidesEnT = useMemo<TFunction>(() => i18n.getFixedT("en", "guides") as TFunction, []);
+  const guidesEnT = i18n.getFixedT("en", "guides") as TFunction;
 
   const resolveGuideLabel = (key: string): string => {
     const current = tGuides(key, { defaultValue: key }) as unknown;

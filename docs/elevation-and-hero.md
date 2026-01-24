@@ -27,8 +27,8 @@ Guidance:
 - Featured panels: `shadow-elevation-5`
 
 Tokens live in:
-- `packages/themes/base/src/tokens.css`
-- `packages/themes/dark/src/tokens.css`
+- `@themes/base/tokens.css`
+- `@themes/dark/tokens.css`
 - App-specific overrides: `apps/cms/src/app/cms.tokens.css`
 
 ## Hero contrast

@@ -1,31 +1,4 @@
 "use client";
 
-import React from "react";
-
-import { useTranslations } from "@acme/i18n";
-import { type Currency,useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
-
-export type CurrencySelectorProps = React.HTMLAttributes<HTMLDivElement>;
-
-export default function CurrencySelector({ className, ...rest }: CurrencySelectorProps) {
-  const t = useTranslations();
-  const [currency, setCurrency] = useCurrency();
-  // i18n-exempt: ISO currency codes are not translatable copy
-  const options: Currency[] = ["EUR", "USD", "GBP"];
-  const CURRENCY_SELECT_ID = "currency-select"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — technical id, not user copy
-  return (
-    <div className={className} {...rest}>
-      <label className="sr-only" htmlFor={CURRENCY_SELECT_ID}>{t("currency.label")}</label>
-      <select
-        id={CURRENCY_SELECT_ID}
-        value={currency}
-        onChange={(e) => setCurrency(e.target.value as Currency)}
-        className="rounded-lg border border-border bg-card text-foreground px-4 py-2 text-base shadow-sm pr-10 appearance-none min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      >
-        {options.map((opt) => (
-          <option key={opt} value={opt}>{opt}</option>
-        ))}
-      </select>
-    </div>
-  );
-}
+export { default } from "@acme/ui/components/cms/blocks/CurrencySelector";
+export * from "@acme/ui/components/cms/blocks/CurrencySelector";

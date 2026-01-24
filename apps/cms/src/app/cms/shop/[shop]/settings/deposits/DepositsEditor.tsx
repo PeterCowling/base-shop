@@ -3,7 +3,6 @@
 import { type ChangeEvent, type FormEvent,useCallback, useState } from "react";
 import { updateDeposit } from "@cms/actions/shops.server";
 
-import { Toast } from "@acme/design-system/atoms";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
@@ -36,9 +35,6 @@ export default function DepositsEditor({ shop, initial }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<DepositResult>({
       action: (formData) => updateDeposit(shop, formData),
@@ -154,13 +150,6 @@ export default function DepositsEditor({ shop, initial }: Props) {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

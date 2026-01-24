@@ -24,6 +24,10 @@ export const themeRegistryEntrySchema = z
     previewUrl: z.string().url().optional(),
     /** Whether this theme is available for new shops */
     available: z.boolean().default(true),
+    /** Show in rapid-launch wizard */
+    rapidLaunch: z.boolean().optional(),
+    /** Sort order within rapid-launch wizard */
+    rapidLaunchOrder: z.number().int().optional(),
     /** Theme tier (which shop tiers can use it) */
     tier: z.enum(["basic", "standard", "enterprise"]).default("basic"),
     /** When the theme was added to registry */

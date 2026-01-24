@@ -113,22 +113,22 @@ describe('BulkActions', () => {
   });
 
   describe('Variants', () => {
-    it('renders default variant with blue styling', () => {
+    it('renders default variant with info styling', () => {
       const actions = [{ id: 'export', label: 'Export', onClick: jest.fn(), variant: 'default' as const }];
 
       render(<BulkActions {...defaultProps} actions={actions} />);
 
       const button = screen.getByText('Export');
-      expect(button).toHaveClass('bg-blue-600');
+      expect(button).toHaveClass('bg-info');
     });
 
-    it('renders danger variant with red styling', () => {
+    it('renders danger variant with danger styling', () => {
       const actions = [{ id: 'delete', label: 'Delete', onClick: jest.fn(), variant: 'danger' as const }];
 
       render(<BulkActions {...defaultProps} actions={actions} />);
 
       const button = screen.getByText('Delete');
-      expect(button).toHaveClass('bg-red-600');
+      expect(button).toHaveClass('bg-danger');
     });
 
     it('defaults to default variant when variant not specified', () => {
@@ -137,7 +137,7 @@ describe('BulkActions', () => {
       render(<BulkActions {...defaultProps} actions={actions} />);
 
       const button = screen.getByText('Export');
-      expect(button).toHaveClass('bg-blue-600');
+      expect(button).toHaveClass('bg-info');
     });
   });
 

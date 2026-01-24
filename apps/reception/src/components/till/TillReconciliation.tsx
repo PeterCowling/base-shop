@@ -10,6 +10,7 @@ import AddKeycardsModal from "./AddKeycardsModal";
 import DrawerLimitWarning from "./DrawerLimitWarning";
 import FormsContainer from "./FormsContainer";
 import ReturnKeycardsModal from "./ReturnKeycardsModal";
+import TillShiftHistory from "./TillShiftHistory";
 import TransactionModals from "./TransactionModals";
 
 /**
@@ -47,7 +48,7 @@ function TillReconciliation(): JSX.Element {
           shiftOpenTime={props.shiftOpenTime}
           isTillOverMax={props.isTillOverMax}
           isDrawerOverLimit={props.isDrawerOverLimit}
-          userName={props.user.user_name}
+          user={props.user}
           drawerLimitInput={props.drawerLimitInput}
           setDrawerLimitInput={props.setDrawerLimitInput}
           updateLimit={props.updateLimit}
@@ -104,6 +105,7 @@ function TillReconciliation(): JSX.Element {
           setTxnToDelete={props.setTxnToDelete}
           setTxnToEdit={props.setTxnToEdit}
         />
+        <TillShiftHistory />
         {props.showAddKeycardModal && (
           <AddKeycardsModal
             onConfirm={props.confirmAddKeycard}

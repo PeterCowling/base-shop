@@ -1,7 +1,7 @@
 // src/components/rooms/RoomCard.tsx
 // Adapter that composes app-specific data/hooks and renders the shared UI RoomCard.
 
-import { isValidElement, memo, useCallback, useMemo, useState } from "react";
+import { isValidElement, memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { RoomCard as UiRoomCard } from "@acme/ui/molecules";
@@ -128,32 +128,28 @@ export default memo(function RoomCard({
   const baseKey = `rooms.${room.id}`;
   const fallbackLanguage = (i18nConfig.fallbackLng ?? "en") as string;
 
-  const checkIn = useMemo(() => checkInProp ?? getTodayIso(), [checkInProp]);
-  const checkOut = useMemo(() => checkOutProp ?? getDatePlusTwoDays(checkIn), [checkOutProp, checkIn]);
+  const checkIn = checkInProp ?? getTodayIso();
+  const checkOut = checkOutProp ?? getDatePlusTwoDays(checkIn);
   const adults = adultsProp ?? 1;
 
-  const facilities = useMemo<FacilityKey[]>(() => {
+  const facilities: FacilityKey[] = (() => {
     if (!ready) return [];
     const raw = t(`${baseKey}.facilities`, { returnObjects: true });
     return Array.isArray(raw) ? (raw as FacilityKey[]) : [];
-  }, [t, baseKey, ready]);
+  })();
 
   const renderFacilityIcon = useCallback<FacilityIconRenderer>(
     ({ facility }) => <FacilityIcon facility={facility} />,
     []
   );
 
-  const facilityItems = useMemo<RoomCardFacility[]>(() => {
-    return buildFacilities(facilities, t, renderFacilityIcon);
-  }, [facilities, renderFacilityIcon, t]);
+  const facilityItems = buildFacilities(facilities, t, renderFacilityIcon);
 
-  const isDorm = useMemo(() => {
-    return facilities.some((facility) => facility === "mixedDorm" || facility === "femaleDorm");
-  }, [facilities]);
+  const isDorm = facilities.some((facility) => facility === "mixedDorm" || facility === "femaleDorm");
 
   const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room);
 
-  const price: RoomCardPrice = useMemo(() => {
+  const price: RoomCardPrice = (() => {
     const loadingLabel = ready ? (t("loadingPrice") as string) : "";
     const formatted =
       !priceLoading && lowestPrice !== undefined
@@ -169,7 +165,7 @@ export default memo(function RoomCard({
       ...(soldOut ? { soldOutLabel: t("rooms.soldOut") as string } : {}),
       ...(isDorm ? { info: t("priceNotes.dorm") as string } : {}),
     };
-  }, [isDorm, lowestPrice, priceLoading, soldOut, t, ready]);
+  })();
 
   const openNonRefundable = useCallback(() => {
     openModal("booking2", {
@@ -202,15 +198,12 @@ export default memo(function RoomCard({
     [tTokens, tokensReady]
   );
 
-  const baseLabel = useMemo(() => {
-    return (
-      resolveToken("reserveNow") ??
-      resolveToken("bookNow") ??
-      resolveToken("reserveNow", fallbackLanguage) ??
-      resolveToken("bookNow", fallbackLanguage) ??
-      ""
-    );
-  }, [resolveToken, fallbackLanguage]);
+  const baseLabel =
+    resolveToken("reserveNow") ??
+    resolveToken("bookNow") ??
+    resolveToken("reserveNow", fallbackLanguage) ??
+    resolveToken("bookNow", fallbackLanguage) ??
+    "";
 
   const resolveSuffix = useCallback(
     (
@@ -261,7 +254,7 @@ export default memo(function RoomCard({
     [baseLabel, fallbackLanguage, resolveSuffix, t, ready]
   );
 
-  const actions = useMemo<RoomCardAction[]>(() => {
+  const actions: RoomCardAction[] = (() => {
     if (!ready) return [];
     const rawNonRef = coerceString(t("checkRatesNonRefundable")).trim();
     const rawFlexible = coerceString(t("checkRatesFlexible")).trim();
@@ -280,7 +273,7 @@ export default memo(function RoomCard({
         disabled: soldOut,
       },
     ];
-  }, [buildLabel, openFlexible, openNonRefundable, soldOut, t, ready]);
+  })();
 
   const handleFullscreenRequest = useCallback((payload: RoomCardFullscreenRequest) => {
     runInTestAct(() => {
@@ -296,7 +289,7 @@ export default memo(function RoomCard({
 
   const title = t(`${baseKey}.title`) as string;
   const imageAlt = t("roomImage.photoAlt", { room: title }) as string;
-  const imageLabels = useMemo<RoomCardImageLabels>(() => {
+  const imageLabels: RoomCardImageLabels = (() => {
     if (!ready) {
       return { enlarge: "", prevAria: "", nextAria: "", empty: "" };
     }
@@ -306,7 +299,7 @@ export default memo(function RoomCard({
       nextAria: t("roomImage.nextAria") as string,
       empty: t("roomImage.noImage", { defaultValue: "No image available" }) as string,
     };
-  }, [t, ready]);
+  })();
 
   return (
     <>

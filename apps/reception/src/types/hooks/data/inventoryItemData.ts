@@ -8,7 +8,6 @@ export interface InventoryItem {
   reorderThreshold?: number;
   category?: string;
   active?: boolean;
-  recipeMap?: Record<string, number>;
 }
 
 export type InventoryItems = Record<string, InventoryItem> | null;

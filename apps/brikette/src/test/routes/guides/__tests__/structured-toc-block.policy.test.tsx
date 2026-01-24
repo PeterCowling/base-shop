@@ -5,21 +5,25 @@ import { cleanup, render, screen } from "@testing-library/react";
 import StructuredTocBlock from "@/routes/guides/guide-seo/components/StructuredTocBlock";
 import type { GuideSeoTemplateContext, NormalisedSection, TocItem } from "@/routes/guides/guide-seo/types";
 
-const getFixedTMock = jest.fn(( => (key: string) => {
-    if (key === "content.etiquetteItalyAmalfi.toc.title") return "Outline";
-    return key;
-  }),
-);
-
 jest.mock("@/i18n", () => ({
+  __esModule: true,
   default: {
-    getFixedT: getFixedTMock,
+    getFixedT: jest.fn(),
   },
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const i18nMock = require("@/i18n").default as { getFixedT: jest.Mock };
+const getFixedTMock = i18nMock.getFixedT;
+getFixedTMock.mockImplementation(() => (key: string) => {
+  if (key === "content.etiquetteItalyAmalfi.toc.title") return "Outline";
+  return key;
+});
+
 jest.mock("@/routes/guides/guide-seo/components/StructuredToc", () => ({
+  __esModule: true,
   default: ({ title }: { title?: string }) => (
-    <div data-testid="structured-toc" data-title={title ?? ""} />
+    <div data-cy="structured-toc" data-title={title ?? ""} />
   ),
 }));
 

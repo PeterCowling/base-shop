@@ -414,15 +414,15 @@ export function ComboBox<T = string>({
         className={`
           flex w-full items-center justify-between gap-2 rounded-lg border bg-white transition-colors
           ${sizeClasses[size]}
-          ${isOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-gray-300'}
+          ${isOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-border'}
           ${disabled ? 'cursor-not-allowed bg-gray-100 opacity-60' : 'hover:border-gray-400'}
-          ${error ? 'border-red-500' : ''}
+          ${error ? 'border-danger' : ''}
           dark:bg-slate-800 dark:border-slate-600
           ${isOpen ? 'dark:border-blue-400 dark:ring-blue-400/20' : ''}
           ${disabled ? 'dark:bg-slate-900' : 'dark:hover:border-slate-500'}
         `}
       >
-        <span className={`flex-1 truncate text-left ${!hasValue ? 'text-gray-500' : 'text-gray-900 dark:text-slate-100'}`}>
+        <span className={`flex-1 truncate text-left ${!hasValue ? 'text-muted-foreground' : 'text-gray-900 dark:text-slate-100'}`}>
           {hasValue ? (
             renderValue ? (
               renderValue(multiple ? selectedOptions : selectedOptions[0])
@@ -437,7 +437,7 @@ export function ComboBox<T = string>({
                   </span>
                 ))}
                 {selectedOptions.length > 3 && (
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     +{selectedOptions.length - 3} more
                   </span>
                 )}
@@ -489,7 +489,7 @@ export function ComboBox<T = string>({
                   value={query}
                   onChange={handleSearchChange}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-md border border-gray-300 bg-transparent py-1.5 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-blue-400"
+                  className="w-full rounded-md border border-border bg-transparent py-1.5 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-blue-400"
                 />
               </div>
             </div>
@@ -503,14 +503,14 @@ export function ComboBox<T = string>({
             className="max-h-60 overflow-y-auto py-1"
           >
             {flatOptions.length === 0 ? (
-              <li className="px-3 py-2 text-center text-sm text-gray-500 dark:text-slate-400">
+              <li className="px-3 py-2 text-center text-sm text-muted-foreground dark:text-slate-400">
                 {loading ? 'Loading...' : emptyMessage}
               </li>
             ) : grouped ? (
               Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <React.Fragment key={group || 'ungrouped'}>
                   {group && (
-                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
+                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground dark:text-slate-400">
                       {group}
                     </li>
                   )}
@@ -544,7 +544,7 @@ export function ComboBox<T = string>({
 
           {/* Selection info for multiple */}
           {multiple && maxSelections && (
-            <div className="border-t border-gray-200 px-3 py-2 text-xs text-gray-500 dark:border-slate-700 dark:text-slate-400">
+            <div className="border-t border-gray-200 px-3 py-2 text-xs text-muted-foreground dark:border-slate-700 dark:text-slate-400">
               {selectedOptions.length} / {maxSelections} selected
             </div>
           )}
@@ -603,7 +603,7 @@ function OptionItem<T>({
         <div
           className={`
             flex h-4 w-4 items-center justify-center rounded border
-            ${selected ? 'border-blue-500 bg-blue-500' : 'border-gray-300 dark:border-slate-600'}
+            ${selected ? 'border-blue-500 bg-blue-500' : 'border-border dark:border-slate-600'}
           `}
         >
           {selected && <Check className="h-3 w-3 text-white" />}
@@ -620,7 +620,7 @@ function OptionItem<T>({
               {option.label}
             </div>
             {option.description && (
-              <div className="truncate text-xs text-gray-500 dark:text-slate-400">
+              <div className="truncate text-xs text-muted-foreground dark:text-slate-400">
                 {option.description}
               </div>
             )}

@@ -6,16 +6,16 @@ import ThemeToggle from "../ThemeToggle";
 
 const setThemeMock = jest.fn();
 
-jest.mock("@acme/platform-core/contexts/ThemeContext", () => {
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => {
   const React = require("react");
   return {
-    useTheme: () => {
-      const [theme, setThemeState] = React.useState("base");
-      const setTheme = (t: string) => {
+    useThemeMode: () => {
+      const [mode, setModeState] = React.useState("light");
+      const setMode = (t: string) => {
         setThemeMock(t);
-        setThemeState(t);
+        setModeState(t);
       };
-      return { theme, setTheme };
+      return { mode, setMode };
     },
   };
 });
@@ -40,7 +40,7 @@ describe("ThemeToggle", () => {
     const button = screen.getByRole("button");
     await user.click(button);
 
-    // From "base", next theme should be "dark"
+    // From "light", next theme should be "dark"
     expect(setThemeMock).toHaveBeenCalledWith("dark");
   });
 });

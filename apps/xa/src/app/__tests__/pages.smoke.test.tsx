@@ -50,9 +50,13 @@ jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  useTheme: () => ({ theme: "base", setTheme: jest.fn() }),
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  useThemeMode: () => ({ isDark: false, setMode: jest.fn() }),
+}));
+
+jest.mock("@acme/platform-core/contexts/ShopThemeContext", () => ({
+  ShopThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useShopTheme: () => ({ themeName: "base", setThemeName: jest.fn() }),
 }));
 
 jest.mock("../../lib/search/useXaProductSearch", () => ({

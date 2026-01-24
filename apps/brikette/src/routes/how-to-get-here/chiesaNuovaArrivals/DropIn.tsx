@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
 import appI18n from "@/i18n";
@@ -108,7 +108,7 @@ export type ChiesaNuovaArrivalDropInProps = {
 };
 
 function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.Element | null {
-  const { context, extras } = useMemo(() => buildGuideExtras(lang), [lang]);
+  const { context, extras } = buildGuideExtras(lang);
   const translateGuides = context.translateGuides;
   const fallbackGuides = appI18n.getFixedT("en", "guides") as GenericContentTranslator;
 
@@ -125,9 +125,7 @@ function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.
     fallbackDescription,
   );
 
-  const extrasWithoutToc = useMemo(() => {
-    return { ...extras, tocItems: [] } satisfies GuideExtras;
-  }, [extras]);
+  const extrasWithoutToc = { ...extras, tocItems: [] } satisfies GuideExtras;
 
   if (!heading) {
     return null;

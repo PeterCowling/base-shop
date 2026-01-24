@@ -1,7 +1,7 @@
 // apps/cover-me-pretty/src/app/layout.tsx
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
-import { ThemeProvider } from "@acme/platform-core/contexts/ThemeContext";
+import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
 import { initTheme } from "@acme/platform-core/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -53,7 +53,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <CartProvider>
-          <ThemeProvider>
+        <ShopThemeProvider>
             <CurrencyProvider>
               {/* Demo rental provider wiring; safe no-op without consumers */}
               <RentalDemoProvider />
@@ -64,7 +64,7 @@ export default function RootLayout({
               <StructuredDataSection breadcrumbs />
               <div className="sf-content">{children}</div>
             </CurrencyProvider>
-          </ThemeProvider>
+        </ShopThemeProvider>
         </CartProvider>
       </body>
     </html>

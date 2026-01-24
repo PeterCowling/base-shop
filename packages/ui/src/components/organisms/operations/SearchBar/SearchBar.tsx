@@ -164,7 +164,7 @@ export function SearchBar({
       <div
         className={`
           relative flex items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm transition-colors
-          ${isFocused ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-gray-300'}
+          ${isFocused ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-border'}
           ${disabled ? 'cursor-not-allowed opacity-50' : ''}
           dark:bg-darkSurface dark:border-darkSurface
           ${isFocused ? 'dark:border-darkAccentGreen dark:ring-darkAccentGreen/20' : ''}
@@ -187,7 +187,7 @@ export function SearchBar({
         />
 
         {shortcutHint && !hasValue && !isFocused && (
-          <kbd className="hidden rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 text-xs font-semibold text-gray-600 sm:inline-block dark:border-darkBg dark:bg-darkBg dark:text-gray-400">
+          <kbd className="hidden rounded border border-border bg-gray-100 px-1.5 py-0.5 text-xs font-semibold text-gray-600 sm:inline-block dark:border-darkBg dark:bg-darkBg dark:text-gray-400">
             {shortcutHint}
           </kbd>
         )}

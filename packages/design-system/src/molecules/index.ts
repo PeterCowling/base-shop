@@ -1,6 +1,8 @@
 export { type BreadcrumbItem,default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CodeBlock } from "./CodeBlock";
 export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
+export { createSelectionColumn, DataGrid, type DataGridProps } from "./DataGrid";
+export { DatePicker, type DatePickerProps } from "./DatePicker";
 // FormFieldMolecule to avoid collision with atoms FormField
 export { FormField as FormFieldMolecule } from "./FormField";
 export { Image360Viewer } from "./Image360Viewer";

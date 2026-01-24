@@ -1,4 +1,4 @@
-import { memo, useCallback, useId, useMemo, useState } from "react";
+import { memo, useCallback, useId, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
@@ -42,11 +42,11 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
   const [arrival, setArrival] = useState<ArrivalWindow>("evening");
   const [preference, setPreference] = useState<RoutePreference | null>(null);
 
-  const placeOptions = useMemo(() => {
+  const placeOptions = (() => {
     const list = [...places];
     list.sort((a, b) => a.name.localeCompare(b.name));
     return list;
-  }, [places]);
+  })();
 
   const submit = useCallback(() => {
     if (!placeId) {
@@ -62,39 +62,33 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
     onSubmit({ placeId, arrival, preference });
   }, [arrival, onSubmit, placeId, placeSelectId, preference]);
 
-  const arrivalChoices: Array<{ key: ArrivalWindow; label: string }> = useMemo(
-    () => [
-      {
-        key: "daytime",
-        label: t("routePicker.arrival.daytime", { defaultValue: "Daytime" }),
-      },
-      {
-        key: "evening",
-        label: t("routePicker.arrival.evening", { defaultValue: "Evening" }),
-      },
-      {
-        key: "late-night",
-        label: t("routePicker.arrival.lateNight", { defaultValue: "Late-night" }),
-      },
-    ],
-    [t],
-  );
+  const arrivalChoices: Array<{ key: ArrivalWindow; label: string }> = [
+    {
+      key: "daytime",
+      label: t("routePicker.arrival.daytime", { defaultValue: "Daytime" }),
+    },
+    {
+      key: "evening",
+      label: t("routePicker.arrival.evening", { defaultValue: "Evening" }),
+    },
+    {
+      key: "late-night",
+      label: t("routePicker.arrival.lateNight", { defaultValue: "Late-night" }),
+    },
+  ];
 
-  const preferenceChoices: Array<{ key: RoutePreference; label: string }> = useMemo(
-    () => [
-      { key: "fastest", label: t("routePicker.preferences.fastest", { defaultValue: "Fastest" }) },
-      { key: "cheapest", label: t("routePicker.preferences.cheapest", { defaultValue: "Cheapest" }) },
-      {
-        key: "least-walking",
-        label: t("routePicker.preferences.leastWalking", { defaultValue: "Least walking" }),
-      },
-      {
-        key: "luggage-friendly",
-        label: t("routePicker.preferences.luggageFriendly", { defaultValue: "Most luggage-friendly" }),
-      },
-    ],
-    [t],
-  );
+  const preferenceChoices: Array<{ key: RoutePreference; label: string }> = [
+    { key: "fastest", label: t("routePicker.preferences.fastest", { defaultValue: "Fastest" }) },
+    { key: "cheapest", label: t("routePicker.preferences.cheapest", { defaultValue: "Cheapest" }) },
+    {
+      key: "least-walking",
+      label: t("routePicker.preferences.leastWalking", { defaultValue: "Least walking" }),
+    },
+    {
+      key: "luggage-friendly",
+      label: t("routePicker.preferences.luggageFriendly", { defaultValue: "Most luggage-friendly" }),
+    },
+  ];
 
   return (
     <section

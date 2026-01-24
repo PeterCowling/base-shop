@@ -6,6 +6,7 @@ import type { Provider } from "@acme/configurator/providers";
 import en from "@acme/i18n/en.json";
 import { useTranslations } from "@acme/i18n/Translations";
 import type { Shop } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
 import type { MappingRow } from "@/hooks/useMappingRows";
 
@@ -66,13 +67,6 @@ export interface ShopEditorOverridesSection {
   readonly tokenRows: ThemeTokenRow[];
 }
 
-export type ToastStatus = "success" | "error";
-
-export interface ToastState {
-  readonly open: boolean;
-  readonly status: ToastStatus;
-  readonly message: string;
-}
 
 export const buildStringMapping = (rows: MappingRow[]): Record<string, string> =>
   Object.fromEntries(
@@ -111,15 +105,7 @@ export function useShopEditorSubmit({
   };
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const [toast, setToast] = useState<ToastState>({
-    open: false,
-    status: "success",
-    message: "",
-  });
-
-  const closeToast = () => {
-    setToast((previous) => ({ ...previous, open: false }));
-  };
+  const toast = useToast();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -155,11 +141,7 @@ export function useShopEditorSubmit({
     }
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setToast({
-        open: true,
-        status: "error",
-        message: String(t("cms.shop.settings.validation.resolveIssues")),
-      });
+      toast.error(String(t("cms.shop.settings.validation.resolveIssues")));
       setSaving(false);
       return;
     }
@@ -192,11 +174,7 @@ export function useShopEditorSubmit({
     });
     if (!parsed.success) {
       setErrors(parsed.error.flatten().fieldErrors);
-      setToast({
-        open: true,
-        status: "error",
-        message: String(t("cms.shop.settings.validation.resolveIssues")),
-      });
+      toast.error(String(t("cms.shop.settings.validation.resolveIssues")));
       setSaving(false);
       return;
     }
@@ -204,13 +182,7 @@ export function useShopEditorSubmit({
       const result = await updateShop(shop, fd);
       if (result.errors) {
         setErrors(result.errors);
-        setToast({
-          open: true,
-          status: "error",
-          message: String(
-            t("cms.shop.settings.save.error")
-          ),
-        });
+        toast.error(String(t("cms.shop.settings.save.error")));
       } else if (result.shop) {
         identity.setInfo(result.shop);
         providers.setTrackingProviders(
@@ -241,25 +213,17 @@ export function useShopEditorSubmit({
           ),
         );
         setErrors({});
-        setToast({
-          open: true,
-          status: "success",
-          message: String(t("cms.shop.settings.save.success")),
-        });
+        toast.success(String(t("cms.shop.settings.save.success")));
       }
     } catch (error) {
       console.error(error);
-      setToast({
-        open: true,
-        status: "error",
-        message: String(t("cms.shop.settings.save.exception")),
-      });
+      toast.error(String(t("cms.shop.settings.save.exception")));
     } finally {
       setSaving(false);
     }
   };
 
-  return { saving, errors, toast, closeToast, onSubmit } as const;
+  return { saving, errors, onSubmit } as const;
 }
 
 export default useShopEditorSubmit;

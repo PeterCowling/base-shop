@@ -1,6 +1,6 @@
 "use client";
 
-import { Textarea, type TextareaProps } from '@acme/ui';
+import { Textarea, type TextareaProps } from '@acme/design-system/primitives';
 import React from 'react';
 
 export type PrimeTextareaProps = TextareaProps;

@@ -8,7 +8,7 @@ import { z } from "zod";
 import { Tooltip } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/primitives/Grid";
 import { Inline } from "@acme/design-system/primitives/Inline";
-import { Button,Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
+import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
 import { getShopFromPath } from "@acme/lib/shop";
 import type { PageComponent } from "@acme/types";
@@ -26,6 +26,144 @@ interface Props {
   onOpenChange?: (open: boolean) => void;
   /** When true, do not render the trigger button; control externally via open/onOpenChange */
   hideTrigger?: boolean;
+}
+
+interface PresetsModalContentProps {
+  t: ReturnType<typeof useTranslations>;
+  search: string;
+  setSearch: (value: string) => void;
+  category: PresetCategory | "All";
+  setCategory: (value: PresetCategory | "All") => void;
+  loadError: string;
+  builtInsFiltered: ReturnType<typeof getBuiltInSections>;
+  byCategory: Map<string, PresetDef[]>;
+  onInsert: (component: PageComponent) => void;
+  themeSig: string;
+}
+
+function PresetsModalContent({
+  t,
+  search,
+  setSearch,
+  category,
+  setCategory,
+  loadError,
+  builtInsFiltered,
+  byCategory,
+  onInsert,
+  themeSig,
+}: PresetsModalContentProps) {
+  return (
+    <>
+      <DialogTitle>{t("cms.builder.presets.sectionLibrary.title")}</DialogTitle>
+      <DialogDescription>{t("cms.builder.presets.sectionLibrary.description")}</DialogDescription>
+      {loadError && (
+        <div className="rounded border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
+          {loadError}
+        </div>
+      )}
+      <Inline alignY="center" gap={2} className="py-2">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("cms.builder.presets.search.placeholder") as string}
+          className="flex-1 rounded border p-2 text-sm"
+          aria-label={t("cms.builder.presets.search.aria") as string}
+        />
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value as PresetCategory | "All")}
+          className="rounded border p-2 text-sm"
+          aria-label={t("cms.builder.presets.category.aria") as string}
+        >
+          <option value="All">{t("cms.builder.presets.category.all")}</option>
+          {presetCategories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </Inline>
+      {builtInsFiltered.length > 0 && (
+        <div className="mb-4">
+          <div className="mb-2 text-sm font-semibold">{t("cms.builder.presets.builtIn.title")}</div>
+          <Grid cols={2} gap={4}>
+            {builtInsFiltered.map((p) => {
+              const resolvedPreview =
+                p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  className="rounded border p-2 text-start hover:bg-accent min-h-11 min-w-11"
+                  onClick={() => onInsert(p.build())}
+                >
+                  <Image
+                    src={resolvedPreview}
+                    alt=""
+                    width={300}
+                    height={160}
+                    className="w-full rounded"
+                    {...(typeof resolvedPreview === "string" && resolvedPreview.startsWith("data:")
+                      ? { unoptimized: true }
+                      : {})}
+                  />
+                  <div className="mt-2 font-medium">{p.label}</div>
+                  {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
+                </button>
+              );
+            })}
+          </Grid>
+        </div>
+      )}
+
+      {presetCategories.map((c) => {
+        const items = byCategory.get(c) || [];
+        if (items.length === 0) return null;
+        return (
+          <div key={c} className="mb-4">
+            <div className="mb-2 text-sm font-semibold">{c}</div>
+            <Grid cols={2} gap={4}>
+              {items.map((p) => {
+                void themeSig;
+                const resolvedPreview =
+                  p.preview === "/window.svg"
+                    ? getPalettePreview(p.previewType || "Section")
+                    : p.preview;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    className="rounded border p-2 text-start hover:bg-accent min-h-11 min-w-11"
+                    onClick={() => onInsert(p.build())}
+                  >
+                    <Image
+                      src={resolvedPreview}
+                      alt=""
+                      width={300}
+                      height={160}
+                      className="w-full rounded"
+                      {...(typeof resolvedPreview === "string" && resolvedPreview.startsWith("data:")
+                        ? { unoptimized: true }
+                        : {})}
+                    />
+                    <div className="mt-2 font-medium">{p.label}</div>
+                    {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
+                  </button>
+                );
+              })}
+            </Grid>
+          </div>
+        );
+      })}
+      {Array.from(byCategory.values()).every((arr) => (arr || []).length === 0) && (
+        <div className="rounded border bg-muted/30 p-4 text-sm text-muted-foreground">
+          {t("cms.builder.presets.empty")}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, hideTrigger = false }: Props) {
@@ -177,90 +315,18 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         </DialogTrigger>
       )}
       <DialogContent>
-        <DialogTitle>{t("cms.builder.presets.sectionLibrary.title")}</DialogTitle>
-        <DialogDescription>{t("cms.builder.presets.sectionLibrary.description")}</DialogDescription>
-        {loadError && (
-          <div className="rounded border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
-            {loadError}
-          </div>
-        )}
-        <Inline alignY="center" gap={2} className="py-2">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("cms.builder.presets.search.placeholder") as string}
-            className="flex-1 rounded border p-2 text-sm"
-            aria-label={t("cms.builder.presets.search.aria") as string}
-          />
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as PresetCategory | "All")}
-            className="rounded border p-2 text-sm"
-            aria-label={t("cms.builder.presets.category.aria") as string}
-          >
-            <option value="All">{t("cms.builder.presets.category.all")}</option>
-            {presetCategories.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </Inline>
-        {/* Built-in Sections (variants) */}
-        {builtInsFiltered.length > 0 && (
-          <div className="mb-4">
-            <div className="mb-2 text-sm font-semibold">{t("cms.builder.presets.builtIn.title")}</div>
-            <Grid cols={2} gap={4}>
-              {builtInsFiltered.map((p) => {
-                const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    className="rounded border p-2 text-start hover:bg-accent min-h-10 min-w-10"
-                    onClick={() => onInsert(p.build())}
-                  >
-                    <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />
-                    <div className="mt-2 font-medium">{p.label}</div>
-                    {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
-                  </button>
-                );
-              })}
-            </Grid>
-          </div>
-        )}
-
-        {presetCategories.map((c) => {
-          const items = byCategory.get(c) || [];
-          if (items.length === 0) return null;
-          return (
-            <div key={c} className="mb-4">
-              <div className="mb-2 text-sm font-semibold">{c}</div>
-              <Grid cols={2} gap={4}>
-                {items.map((p) => {
-                  // Recompute generator output when theme signature changes
-                  void themeSig;
-                  const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType || "Section") : p.preview;
-                  return (
-                  <button
-                     key={p.id}
-                     type="button"
-                     className="rounded border p-2 text-start hover:bg-accent min-h-10 min-w-10"
-                     onClick={() => onInsert(p.build())}
-                   >
-                    <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />
-                     <div className="mt-2 font-medium">{p.label}</div>
-                     {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
-                   </button>
-                  );})}
-              </Grid>
-            </div>
-          );
-        })}
-        {Array.from(byCategory.values()).every((arr) => (arr || []).length === 0) && (
-          <div className="rounded border bg-muted/30 p-4 text-sm text-muted-foreground">
-            {t("cms.builder.presets.empty")}
-          </div>
-        )}
+        <PresetsModalContent
+          t={t}
+          search={search}
+          setSearch={setSearch}
+          category={category}
+          setCategory={setCategory}
+          loadError={loadError}
+          builtInsFiltered={builtInsFiltered}
+          byCategory={byCategory}
+          onInsert={onInsert}
+          themeSig={themeSig}
+        />
       </DialogContent>
     </Dialog>
   );

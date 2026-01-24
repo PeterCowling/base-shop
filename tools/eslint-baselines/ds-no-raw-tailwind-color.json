@@ -1,0 +1,356 @@
+{
+  "ruleId": "ds/no-raw-tailwind-color",
+  "generatedAt": "2026-01-23T10:43:26.834Z",
+  "violations": [
+    {
+      "filePath": "apps/dashboard/src/pages/shops/[id].tsx",
+      "line": 156,
+      "column": 45,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-green-700'"
+    },
+    {
+      "filePath": "apps/dashboard/src/pages/shops/[id].tsx",
+      "line": 156,
+      "column": 64,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-700'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/page.tsx",
+      "line": 25,
+      "column": 39,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/60'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/page.tsx",
+      "line": 25,
+      "column": 57,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/page.tsx",
+      "line": 64,
+      "column": 72,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/products/components/StandardProductsPage.tsx",
+      "line": 141,
+      "column": 71,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/products/components/StandardProductsPage.tsx",
+      "line": 151,
+      "column": 63,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/products/components/StandardProductsPage.tsx",
+      "line": 168,
+      "column": 70,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/products/components/StandardProductsPage.tsx",
+      "line": 52,
+      "column": 38,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/60'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/products/components/StandardProductsPage.tsx",
+      "line": 52,
+      "column": 56,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/real-estate/components/DefaultRealEstatePage.tsx",
+      "line": 174,
+      "column": 40,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/60'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/real-estate/components/DefaultRealEstatePage.tsx",
+      "line": 174,
+      "column": 58,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/real-estate/components/DefaultRealEstatePage.tsx",
+      "line": 193,
+      "column": 62,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/real-estate/components/DefaultRealEstatePage.tsx",
+      "line": 195,
+      "column": 66,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/app/[lang]/real-estate/components/DefaultRealEstatePage.tsx",
+      "line": 228,
+      "column": 24,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 21,
+      "column": 19,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/70'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 21,
+      "column": 57,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 36,
+      "column": 42,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-900'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 37,
+      "column": 29,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-slate-900'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 37,
+      "column": 45,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-white'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 56,
+      "column": 26,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200/70'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 81,
+      "column": 22,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200/70'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/HeroSection.tsx",
+      "line": 91,
+      "column": 22,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/PeopleCard.tsx",
+      "line": 22,
+      "column": 29,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/80'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/PeopleCard.tsx",
+      "line": 23,
+      "column": 28,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/ServicesSection.tsx",
+      "line": 24,
+      "column": 44,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-zinc-900/50'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/ServicesSection.tsx",
+      "line": 24,
+      "column": 62,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-100'"
+    },
+    {
+      "filePath": "apps/skylar/src/components/ServicesSection.tsx",
+      "line": 26,
+      "column": 29,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-zinc-200'"
+    },
+    {
+      "filePath": "packages/template-app/src/app/[lang]/product/[slug]/PdpClient.client.tsx",
+      "line": 24,
+      "column": 22,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-gray-700'"
+    },
+    {
+      "filePath": "packages/template-app/src/app/account/returns/ReturnForm.tsx",
+      "line": 129,
+      "column": 30,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
+    },
+    {
+      "filePath": "packages/template-app/src/app/edit-preview/page.tsx",
+      "line": 118,
+      "column": 43,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
+    },
+    {
+      "filePath": "packages/template-app/src/app/returns/mobile/Scanner.tsx",
+      "line": 134,
+      "column": 30,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
+    },
+    {
+      "filePath": "packages/template-app/src/app/upgrade-preview/page.tsx",
+      "line": 117,
+      "column": 35,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 131,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'ring-white/40'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 223,
+      "column": 49,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-black/85'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 26,
+      "column": 21,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-black/85'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 34,
+      "column": 21,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-white'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 52,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-white/15'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 56,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-white'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 97,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-white/25'"
+    },
+    {
+      "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
+      "line": 98,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-white/10'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
+      "line": 417,
+      "column": 66,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-gray-300'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
+      "line": 419,
+      "column": 21,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-red-500'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
+      "line": 425,
+      "column": 67,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-gray-500'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/SearchBar/SearchBar.tsx",
+      "line": 167,
+      "column": 75,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-gray-300'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/SplitPane/SplitPane.tsx",
+      "line": 351,
+      "column": 25,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-blue-500'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/SplitPane/SplitPane.tsx",
+      "line": 369,
+      "column": 27,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-blue-500'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx",
+      "line": 206,
+      "column": 25,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-green-600'"
+    },
+    {
+      "filePath": "packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx",
+      "line": 219,
+      "column": 25,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-green-600'"
+    },
+    {
+      "filePath": "packages/ui/src/organisms/modals/primitives.tsx",
+      "line": 19,
+      "column": 3,
+      "messageId": "noRawTw",
+      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-black/60'"
+    }
+  ]
+}

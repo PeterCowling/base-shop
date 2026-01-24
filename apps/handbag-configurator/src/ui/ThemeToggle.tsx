@@ -1,62 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Theme = "base" | "dark";
-
-const THEME_KEY = "theme";
-
-const readStoredTheme = (): Theme => {
-  if (typeof window === "undefined") return "base";
-  try {
-    return window.localStorage?.getItem(THEME_KEY) === "dark" ? "dark" : "base";
-  } catch {
-    return "base";
-  }
-};
-
-const applyTheme = (theme: Theme) => {
-  const root = document.documentElement;
-  const dark = theme === "dark";
-  root.classList.toggle("theme-dark", dark);
-  try {
-    root.style.colorScheme = dark ? "dark" : "light";
-  } catch {
-    // ignore unsupported browsers
-  }
-};
+import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 
 type ThemeToggleProps = {
   className?: string;
 };
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<Theme>("base");
-
-  useEffect(() => {
-    const initial = readStoredTheme();
-    setTheme(initial);
-    applyTheme(initial);
-    try {
-      if (!window.localStorage?.getItem(THEME_KEY)) {
-        window.localStorage?.setItem(THEME_KEY, initial);
-      }
-    } catch {
-      // ignore storage failures
-    }
-  }, []);
-
-  const isDark = theme === "dark";
+  const { isDark, setMode } = useThemeMode();
 
   const toggleTheme = () => {
-    const next = isDark ? "base" : "dark";
-    setTheme(next);
-    applyTheme(next);
-    try {
-      window.localStorage?.setItem(THEME_KEY, next);
-    } catch {
-      // ignore storage failures
-    }
+    setMode(isDark ? "light" : "dark");
   };
 
   return (

@@ -11,6 +11,9 @@ var useInventoryItemsMock: jest.Mock;
 var useInventoryLedgerMock: jest.Mock;
 var useInventoryItemsMutationsMock: jest.Mock;
 var useInventoryLedgerMutationsMock: jest.Mock;
+var useProductsMock: jest.Mock;
+var useInventoryRecipesMock: jest.Mock;
+var useInventoryRecipesMutationsMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("../../../context/AuthContext", () => ({
@@ -33,12 +36,22 @@ jest.mock("../../common/PasswordReauthModal", () => ({
 
 jest.mock("../../../hooks/data/inventory/useInventoryItems", () => {
   useInventoryItemsMock = jest.fn();
-  return { default: useInventoryItemsMock };
+  return { __esModule: true, default: useInventoryItemsMock };
 });
 
 jest.mock("../../../hooks/data/inventory/useInventoryLedger", () => {
   useInventoryLedgerMock = jest.fn();
-  return { default: useInventoryLedgerMock };
+  return { __esModule: true, default: useInventoryLedgerMock };
+});
+
+jest.mock("../../../hooks/data/bar/useProducts", () => {
+  useProductsMock = jest.fn();
+  return { __esModule: true, useProducts: useProductsMock, default: useProductsMock };
+});
+
+jest.mock("../../../hooks/data/inventory/useInventoryRecipes", () => {
+  useInventoryRecipesMock = jest.fn();
+  return { __esModule: true, default: useInventoryRecipesMock };
 });
 
 jest.mock("../../../hooks/mutations/useInventoryItemsMutations", () => {
@@ -49,6 +62,11 @@ jest.mock("../../../hooks/mutations/useInventoryItemsMutations", () => {
 jest.mock("../../../hooks/mutations/useInventoryLedgerMutations", () => {
   useInventoryLedgerMutationsMock = jest.fn();
   return { useInventoryLedgerMutations: useInventoryLedgerMutationsMock };
+});
+
+jest.mock("../../../hooks/mutations/useInventoryRecipesMutations", () => {
+  useInventoryRecipesMutationsMock = jest.fn();
+  return { useInventoryRecipesMutations: useInventoryRecipesMutationsMock };
 });
 
 const baseItem = {
@@ -75,12 +93,18 @@ const baseLedgerReturn = {
 beforeEach(() => {
   useInventoryItemsMock.mockReturnValue(baseItemsReturn);
   useInventoryLedgerMock.mockReturnValue(baseLedgerReturn);
+  useProductsMock.mockReturnValue({ allProducts: [] });
+  useInventoryRecipesMock.mockReturnValue({ recipes: {}, loading: false, error: null });
   useInventoryItemsMutationsMock.mockReturnValue({
     createInventoryItem: jest.fn(),
     saveInventoryItem: jest.fn(),
   });
   useInventoryLedgerMutationsMock.mockReturnValue({
     addLedgerEntry: jest.fn(),
+  });
+  useInventoryRecipesMutationsMock.mockReturnValue({
+    saveRecipe: jest.fn(),
+    removeRecipe: jest.fn(),
   });
 });
 
@@ -304,11 +328,11 @@ describe("StockManagement", () => {
       ],
     });
 
-    const createObjectUrlSpy = vi
+    const createObjectUrlSpy = jest
       .spyOn(URL, "createObjectURL")
       .mockReturnValue("blob:ledger");
     const revokeSpy = jest.spyOn(URL, "revokeObjectURL").mockImplementation(() => undefined);
-    const clickSpy = vi
+    const clickSpy = jest
       .spyOn(HTMLAnchorElement.prototype, "click")
       .mockImplementation(() => undefined);
 
@@ -341,11 +365,11 @@ describe("StockManagement", () => {
       ],
     });
 
-    const createObjectUrlSpy = vi
+    const createObjectUrlSpy = jest
       .spyOn(URL, "createObjectURL")
       .mockReturnValue("blob:variance");
     const revokeSpy = jest.spyOn(URL, "revokeObjectURL").mockImplementation(() => undefined);
-    const clickSpy = vi
+    const clickSpy = jest
       .spyOn(HTMLAnchorElement.prototype, "click")
       .mockImplementation(() => undefined);
 

@@ -9,8 +9,9 @@ import { Cluster,Inline } from "@acme/design-system/primitives";
 import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
-import { Alert, Spinner,Toast } from "@/components/atoms";
+import { Alert, Spinner } from "@/components/atoms";
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 
@@ -37,10 +38,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
     shopId,
   } = state;
   const themeStyle = useThemeLoader();
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("layout");
   const router = useRouter();
   const [headerSaving, setHeaderSaving] = useState(false);
@@ -134,7 +132,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               if (data) {
                 setHeaderPageId(data.id);
                 setHeaderSaved(true);
-                setToast({ open: true, message: String(t("cms.layout.headerSaved")) });
+                toast.success(String(t("cms.layout.headerSaved")));
               } else if (error) {
                 setHeaderError(error);
               }
@@ -195,7 +193,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               if (data) {
                 setFooterPageId(data.id);
                 setFooterSaved(true);
-                setToast({ open: true, message: String(t("cms.layout.footerSaved")) });
+                toast.success(String(t("cms.layout.footerSaved")));
               } else if (error) {
                 setFooterError(error);
               }
@@ -237,11 +235,6 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           {t("cms.configurator.actions.saveReturn")}
         </Button>
       </Cluster>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </fieldset>
   );
 }

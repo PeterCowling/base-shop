@@ -14,6 +14,7 @@ import {
   type Product,
 } from "../../../types/bar/BarTypes";
 import { getItalyLocalTimeHHMM } from "../../../utils/dateUtils";
+import { showToast } from "../../../utils/toastUtils";
 
 import IcedCoffeeSweetnessModal from "./modal/IcedCoffeeSweetnessModal";
 import MixerModal from "./modal/MixerModal";
@@ -196,7 +197,7 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
           }
 
           if (caffeinatedItems.length === 0) {
-            alert("There are no caffeinated items to attach this milk to.");
+            showToast("There are no caffeinated items to attach this milk to.", "warning");
             return;
           }
 

@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import useProductsHook from "../../hooks/data/bar/useProducts";
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
 import type { FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
+import { isVoidedTransaction } from "../../utils/transactionUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -63,7 +64,9 @@ function MenuPerformanceDashboard(): React.ReactElement {
 
   const transactions: FinancialTransaction[] = useMemo(() => {
     if (!allFinancialTransactions) return [];
-    return Object.values(allFinancialTransactions);
+    return Object.values(allFinancialTransactions).filter(
+      (txn) => !isVoidedTransaction(txn)
+    );
   }, [allFinancialTransactions]);
 
   /** Total revenue and profit aggregated by category */

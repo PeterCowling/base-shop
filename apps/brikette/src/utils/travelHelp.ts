@@ -73,7 +73,7 @@ const importTravelHelpResource = async (
     const travelHelpModule = await import(`../locales/${lang}/travelHelp.json`);
     return travelHelpModule.default as TravelHelpResource;
   } catch (err) {
-    if (process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV === "development") {
       console.warn(`⚠️  Missing travelHelp resource for ${lang}:`, err);
     }
     return undefined;

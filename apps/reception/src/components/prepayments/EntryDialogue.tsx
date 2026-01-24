@@ -10,6 +10,7 @@ import React, {
 
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
+import { showToast } from "../../utils/toastUtils";
 
 interface PaymentInfo {
   cardNumber: string;
@@ -114,7 +115,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
       expiry: expiryDate,
     });
     if (!result.success) {
-      alert(result.error.errors[0]?.message ?? "Invalid card details");
+      showToast(result.error.errors[0]?.message ?? "Invalid card details", "error");
       return;
     }
 

@@ -10,7 +10,7 @@
    dots without us re-serialising 100-plus KB of data.
 ---------------------------------------------------------------- */
 
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -62,58 +62,56 @@ function RoomsStructuredData(): JSX.Element {
   /* Build the JSON only once per render to avoid extra work */
   const lang = useCurrentLanguage();
   const pageUrl = `${BASE_URL}/${lang}/${getSlug("rooms", lang)}`;
-  const json = useMemo(() => {
-    const fallbackLang = resolveFallbackLanguage();
-    const localizedRooms = getRoomsCatalog(lang, { fallbackLang });
-    const offerNodes = localizedRooms.map((room) => {
-      const offer = buildOffer({
-        sku: room.sku,
-        name: room.title,
-        description: room.description,
-        price: room.basePrice.amount,
-        validFrom: resolveValidFrom(room),
-        images: toAbsoluteImages(room.imagesRaw),
-      });
-      return { ...offer, inLanguage: lang };
-    });
-
-    const roomNodes = localizedRooms.map((room) => ({
-      "@type": "HotelRoom",
-      "@id": `${ROOM_PREFIX}${room.sku}`,
-      inLanguage: lang,
+  const fallbackLang = resolveFallbackLanguage();
+  const localizedRooms = getRoomsCatalog(lang, { fallbackLang });
+  const offerNodes = localizedRooms.map((room) => {
+    const offer = buildOffer({
+      sku: room.sku,
       name: room.title,
       description: room.description,
-      occupancy: { "@type": "QuantitativeValue", value: room.occupancy ?? 1, unitCode: "C62" },
-      amenityFeature: room.amenities.map((amenity) => ({
-        "@type": "LocationFeatureSpecification",
-        name: amenity.name,
-        value: true,
-      })),
-      bed: { "@type": "BedDetails", numberOfBeds: room.occupancy ?? 1 },
-      image: toAbsoluteImages(room.imagesRaw),
-    }));
-
-    const catalog = {
-      "@type": "OfferCatalog",
-      "@id": CATALOG_ID,
-      inLanguage: lang,
-      url: pageUrl,
-      isPartOf: { "@id": WEBSITE_ID },
-      mainEntityOfPage: pageUrl,
-      name: "Rooms & Rates",
-      numberOfItems: offerNodes.length,
-      itemListElement: offerNodes.map((offer, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: { "@id": offer["@id"] ?? `${OFFER_PREFIX}${localizedRooms[index]?.sku}` },
-      })),
-    };
-
-    return JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [catalog, ...roomNodes, ...offerNodes],
+      price: room.basePrice.amount,
+      validFrom: resolveValidFrom(room),
+      images: toAbsoluteImages(room.imagesRaw),
     });
-  }, [lang, pageUrl]);
+    return { ...offer, inLanguage: lang };
+  });
+
+  const roomNodes = localizedRooms.map((room) => ({
+    "@type": "HotelRoom",
+    "@id": `${ROOM_PREFIX}${room.sku}`,
+    inLanguage: lang,
+    name: room.title,
+    description: room.description,
+    occupancy: { "@type": "QuantitativeValue", value: room.occupancy ?? 1, unitCode: "C62" },
+    amenityFeature: room.amenities.map((amenity) => ({
+      "@type": "LocationFeatureSpecification",
+      name: amenity.name,
+      value: true,
+    })),
+    bed: { "@type": "BedDetails", numberOfBeds: room.occupancy ?? 1 },
+    image: toAbsoluteImages(room.imagesRaw),
+  }));
+
+  const catalog = {
+    "@type": "OfferCatalog",
+    "@id": CATALOG_ID,
+    inLanguage: lang,
+    url: pageUrl,
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntityOfPage: pageUrl,
+    name: "Rooms & Rates",
+    numberOfItems: offerNodes.length,
+    itemListElement: offerNodes.map((offer, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: { "@id": offer["@id"] ?? `${OFFER_PREFIX}${localizedRooms[index]?.sku}` },
+    })),
+  };
+
+  const json = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [catalog, ...roomNodes, ...offerNodes],
+  });
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

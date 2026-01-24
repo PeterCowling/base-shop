@@ -5,6 +5,12 @@
  *
  * Aggregates all the raw data fetching hooks for occupant data.
  * This hook is responsible ONLY for fetching - no transformation.
+ *
+ * OPT-03: Implements phased loading to reduce initial page load queries:
+ *   Phase 1 (primary): bookings + completedTasks — fires immediately
+ *   Phase 2 (secondary): loans, guestByRoom, preorders, bagStorage — deferred
+ *     until bookings data resolves
+ *   Dependent: guestDetails, financials, cityTax — naturally waits for bookingRef
  */
 
 import { useCallback } from 'react';
@@ -67,7 +73,9 @@ export interface OccupantDataSources {
 }
 
 export function useOccupantDataSources(): OccupantDataSources {
-  // 1) Bookings (primary data source)
+  // ── Phase 1: Primary data (fires immediately) ──────────────────────────
+
+  // 1) Bookings (primary data source — everything depends on this)
   const {
     bookingsData,
     isLoading: isBookingsLoading,
@@ -75,21 +83,23 @@ export function useOccupantDataSources(): OccupantDataSources {
     refetch: refetchBookingsData,
   } = useFetchBookingsData();
 
+  // 7) Completed tasks (real-time via onValue, independent of bookings)
+  const {
+    occupantTasks,
+    isLoading: isTasksLoading,
+    isError: tasksError,
+  } = useFetchCompletedTasks();
+
+  // ── Phase 2: Secondary data (deferred until bookings resolves) ─────────
+  const secondaryEnabled = !!bookingsData;
+
   // 2) Loans
   const {
     data: loansData,
     isLoading: isLoansLoading,
     error: loansError,
     refetch: refetchLoansData,
-  } = useFetchLoans();
-
-  // 3) Guest details (depends on reservationCode)
-  const {
-    data: guestDetailsData,
-    isLoading: isGuestDetailsLoading,
-    error: guestDetailsError,
-    refetch: refetchGuestDetails,
-  } = useFetchGuestDetails(bookingsData?.reservationCode || '');
+  } = useFetchLoans({ enabled: secondaryEnabled });
 
   // 4) Guest room allocation
   const {
@@ -97,15 +107,7 @@ export function useOccupantDataSources(): OccupantDataSources {
     isLoading: isGuestRoomLoading,
     error: guestRoomError,
     refetch: refetchGuestByRoom,
-  } = useFetchGuestByRoom();
-
-  // 5) Financials (depends on reservationCode)
-  const {
-    data: financialsData,
-    isLoading: isFinancialsLoading,
-    error: financialsError,
-    refetch: refetchFinancialsRoom,
-  } = useFetchFinancialsRoom(bookingsData?.reservationCode || '');
+  } = useFetchGuestByRoom({ enabled: secondaryEnabled });
 
   // 6) Preorders
   const {
@@ -115,29 +117,41 @@ export function useOccupantDataSources(): OccupantDataSources {
     refetch: refetchPreordersData,
   } = useFetchPreordersData();
 
-  // 7) Completed tasks (real-time via onValue, no refetch needed)
-  const {
-    occupantTasks,
-    isLoading: isTasksLoading,
-    isError: tasksError,
-  } = useFetchCompletedTasks();
-
-  // 8) City tax (depends on reservationCode)
-  const {
-    data: cityTaxData,
-    isLoading: isCityTaxLoading,
-    error: cityTaxError,
-    refetch: refetchCityTax,
-  } = useFetchCityTax(bookingsData?.reservationCode || '');
-
   // 9) Bag storage
   const {
     bagStorageData,
     isLoading: isBagStorageLoading,
     error: bagStorageError,
-  } = useFetchBagStorageData();
+  } = useFetchBagStorageData({ enabled: secondaryEnabled });
 
-  // Aggregate refetch (except tasks which is real-time)
+  // ── Dependent: Requires bookingRef from bookings ───────────────────────
+  const bookingRef = bookingsData?.reservationCode || '';
+
+  // 3) Guest details
+  const {
+    data: guestDetailsData,
+    isLoading: isGuestDetailsLoading,
+    error: guestDetailsError,
+    refetch: refetchGuestDetails,
+  } = useFetchGuestDetails(bookingRef);
+
+  // 5) Financials
+  const {
+    data: financialsData,
+    isLoading: isFinancialsLoading,
+    error: financialsError,
+    refetch: refetchFinancialsRoom,
+  } = useFetchFinancialsRoom(bookingRef);
+
+  // 8) City tax
+  const {
+    data: cityTaxData,
+    isLoading: isCityTaxLoading,
+    error: cityTaxError,
+    refetch: refetchCityTax,
+  } = useFetchCityTax(bookingRef);
+
+  // ── Aggregate refetch (except tasks which is real-time) ────────────────
   const refetch = useCallback(async () => {
     await Promise.all([
       refetchBookingsData?.(),
@@ -158,15 +172,17 @@ export function useOccupantDataSources(): OccupantDataSources {
     refetchCityTax,
   ]);
 
-  // Combine loading states
+  // Primary loading: only bookings + tasks needed for initial render
+  const isPrimaryLoading = isBookingsLoading || isTasksLoading;
+
+  // Full loading: all sources (used for isInitialSyncComplete in unified hook)
   const isLoading =
-    isBookingsLoading ||
+    isPrimaryLoading ||
     isLoansLoading ||
     isGuestDetailsLoading ||
     isGuestRoomLoading ||
     isFinancialsLoading ||
     isPreordersLoading ||
-    isTasksLoading ||
     isCityTaxLoading ||
     isBagStorageLoading;
 

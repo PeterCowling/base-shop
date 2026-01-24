@@ -48,7 +48,7 @@ describe('brandx theme tokens', () => {
   });
 
   test('css contains token variables', () => {
-    const cssPath = path.join(__dirname, '..', 'src', 'tokens.css');
+    const cssPath = path.join(__dirname, '..', 'tokens.css');
     const css = fs.readFileSync(cssPath, 'utf8');
     for (const key of expectedKeys) {
       expect(css).toContain(key);

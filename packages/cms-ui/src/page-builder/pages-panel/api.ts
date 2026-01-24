@@ -26,7 +26,11 @@ export async function createPage(shop: string, title: string): Promise<PageItem 
   return (await res.json()) as PageItem;
 }
 
-export async function patchPage(shop: string, id: string, body: Partial<PageItem> & { seo?: any; visibility?: any; slug?: string; updatedAt?: string }): Promise<{ ok: boolean; status: number; item?: PageItem }> {
+export async function patchPage(
+  shop: string,
+  id: string,
+  body: Partial<PageItem> & { seo?: PageItem["seo"]; visibility?: PageItem["visibility"]; slug?: string; updatedAt?: string },
+): Promise<{ ok: boolean; status: number; item?: PageItem }> {
   const res = await fetch(`/cms/api/pages/${shop}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -59,4 +63,3 @@ function normalizePageItem(p: unknown): PageItem {
     updatedAt: raw["updatedAt"] as string | undefined,
   } satisfies PageItem;
 }
-

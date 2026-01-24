@@ -1,4 +1,10 @@
+import { getItalyTimestampCompact } from "./dateUtils";
+
 export const SHIFT_ID_STORAGE_KEY = "reception.currentShiftId";
+
+export function generateShiftId(): string {
+  return `shift_${getItalyTimestampCompact(new Date())}`;
+}
 
 export function getStoredShiftId(): string | null {
   if (typeof window === "undefined") return null;

@@ -1,16 +1,2 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-
-import CheckoutSection from "./CheckoutSection";
-
-const meta: Meta<typeof CheckoutSection> = {
-  title: "CMS Blocks/CheckoutSection",
-  component: CheckoutSection,
-  args: {
-    showWallets: true,
-    showBNPL: true,
-  },
-};
-export default meta;
-
-export const Default: StoryObj<typeof CheckoutSection> = {};
-
+export { default } from "@acme/ui/components/cms/blocks/CheckoutSection.stories";
+export * from "@acme/ui/components/cms/blocks/CheckoutSection.stories";

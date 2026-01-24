@@ -226,9 +226,8 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
 // Ensure every entry has an explicit status (default to 'published')
 export const GUIDES_INDEX: GuideMeta[] = (GUIDES_INDEX_BASE as GuideMeta[]).map((g) => ({
   ...g,
-  // Default all experiences and assistance (help) to draft unless explicitly overridden.
-  // Individual guides can opt-in to publish via an explicit status.
-  status: g.status ?? (g.section === "experiences" || g.section === "help" ? "draft" : "published"),
+  // Default to published unless explicitly overridden.
+  status: g.status ?? "published",
 }));
 
 const HELP_GUIDE_SECTION = "help" satisfies GuideSection;

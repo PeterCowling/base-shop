@@ -21,6 +21,13 @@ const config = [
       "ds/no-hardcoded-copy": "off",
     },
   },
+  // Generated type compat stubs are not user-facing UI copy
+  {
+    files: ["types-compat/**/*.d.ts"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
   {
     files: [
       "src/**/__tests__/**",

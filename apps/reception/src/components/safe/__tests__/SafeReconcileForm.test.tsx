@@ -1,59 +1,45 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-async function loadComp() {
-  jest.resetModules();
-  const getUserByPin = jest.fn((pin: string) => {
-    if (pin === "111111") return { user_name: "alice", email: "a@test" };
-    if (pin === "222222") return { user_name: "bob", email: "b@test" };
-    return null;
-  });
-  jest.doMock("../../../utils/getUserByPin", () => ({ getUserByPin }));
-  jest.doMock("../../../context/AuthContext", () => ({
-    useAuth: () => ({ user: { user_name: "alice", email: "a@test" } }),
-    AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  }));
-  const mod = await import("../SafeReconcileForm");
-  const { AuthProvider } = await import("../../../context/AuthContext");
-  return { Comp: mod.default, AuthProvider, getUserByPin };
-}
+import SafeReconcileForm from "../SafeReconcileForm";
 
-async function loadCompBlind() {
-  jest.resetModules();
-  const env = import.meta.env as Record<string, string | undefined>;
-  env.VITE_BLIND_CLOSE = "true";
-  const getUserByPin = jest.fn((pin: string) => {
-    if (pin === "111111") return { user_name: "alice", email: "a@test" };
-    if (pin === "222222") return { user_name: "bob", email: "b@test" };
-    return null;
-  });
-  jest.doMock("../../../utils/getUserByPin", () => ({ getUserByPin }));
-  jest.doMock("../../../context/AuthContext", () => ({
-    useAuth: () => ({ user: { user_name: "alice", email: "a@test" } }),
-    AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  }));
-  const mod = await import("../SafeReconcileForm");
-  const { AuthProvider } = await import("../../../context/AuthContext");
-  delete env.VITE_BLIND_CLOSE;
-  return { Comp: mod.default, AuthProvider, getUserByPin };
-}
+let blindCloseEnabled = false;
+
+jest.mock("../../../constants/settings", () => ({
+  settings: {
+    get blindClose() {
+      return blindCloseEnabled;
+    },
+    blindOpen: false,
+    cashDrawerLimit: 1000,
+    pinRequiredAboveLimit: false,
+    tillMaxLimit: 2000,
+  },
+}));
+
+jest.mock("../../common/PasswordReauthInline", () => ({
+  __esModule: true,
+  default: ({ onSubmit }: { onSubmit: () => void }) => (
+    <button onClick={onSubmit}>Confirm</button>
+  ),
+}));
 
 describe("SafeReconcileForm", () => {
+  beforeEach(() => {
+    blindCloseEnabled = false;
+  });
+
   it("computes breakdown and calls confirm", async () => {
-    const { Comp, AuthProvider } = await loadComp();
     const onConfirm = jest.fn();
     render(
-      <AuthProvider>
-        <Comp
-          expectedSafe={100}
-          expectedKeycards={1}
-          onConfirm={onConfirm}
-          onCancel={jest.fn()}
-        />
-      </AuthProvider>
+      <SafeReconcileForm
+        expectedSafe={100}
+        expectedKeycards={1}
+        onConfirm={onConfirm}
+        onCancel={jest.fn()}
+      />
     );
 
     const input = screen.getByLabelText(/€50 notes/);
@@ -61,10 +47,7 @@ describe("SafeReconcileForm", () => {
     const cardInput = screen.getByLabelText(/keycards counted/i);
     await userEvent.type(cardInput, "1");
 
-    const digits = screen.getAllByLabelText(/PIN digit/);
-    for (const d of digits) {
-      await userEvent.type(d, "1");
-    }
+    await userEvent.click(screen.getByRole("button", { name: /confirm/i }));
 
     expect(onConfirm).toHaveBeenCalledWith(
       100,
@@ -76,16 +59,14 @@ describe("SafeReconcileForm", () => {
   });
 
   it("reveals expected cash when blind close is enabled", async () => {
-    const { Comp, AuthProvider } = await loadCompBlind();
+    blindCloseEnabled = true;
     render(
-      <AuthProvider>
-        <Comp
-          expectedSafe={100}
-          expectedKeycards={0}
-          onConfirm={jest.fn()}
-          onCancel={jest.fn()}
-        />
-      </AuthProvider>
+      <SafeReconcileForm
+        expectedSafe={100}
+        expectedKeycards={0}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />
     );
 
     expect(screen.queryByText(/Expected cash:/)).not.toBeInTheDocument();
@@ -101,23 +82,18 @@ describe("SafeReconcileForm", () => {
   });
 
   it("applies dark mode styles", async () => {
-    const { Comp, AuthProvider } = await loadComp();
     render(
       <div className="dark">
-        <AuthProvider>
-          <Comp
-            expectedSafe={100}
-            expectedKeycards={0}
-            onConfirm={jest.fn()}
-            onCancel={jest.fn()}
-          />
-        </AuthProvider>
+        <SafeReconcileForm
+          expectedSafe={100}
+          expectedKeycards={0}
+          onConfirm={jest.fn()}
+          onCancel={jest.fn()}
+        />
       </div>
     );
     const heading = screen.getByRole("heading", { name: /reconcile safe/i });
     const container = heading.closest("div.relative") as HTMLElement;
     expect(container).toHaveClass("dark:bg-darkSurface");
-    const digits = screen.getAllByLabelText(/PIN digit/);
-    expect(digits[0]).toHaveClass("bg-gray-200", { exact: false });
   });
 });

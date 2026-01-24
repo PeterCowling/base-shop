@@ -137,6 +137,11 @@ jest.mock("../../../../hooks/mutations/useBleeperMutations", () => ({
   useBleeperMutations: () => ({ setBleeperAvailability }),
 }));
 
+const mockShowToast = jest.fn();
+jest.mock("../../../../utils/toastUtils", () => ({
+  showToast: (...args: unknown[]) => mockShowToast(...args),
+}));
+
 jest.mock("../../../../hooks/data/bar/useProducts", () => ({
   useProducts: () => ({
     getProductsByCategory,
@@ -334,19 +339,17 @@ describe("OrderTakingContainer", () => {
   );
 });
 
-  it("alerts when no caffeinated item available", () => {
+  it("shows toast when no caffeinated item available", () => {
   getSubCat.mockReturnValue("milkAddOn");
-  const alertSpy = jest.fn();
-  const originalAlert = window.alert;
-  window.alert = alertSpy as unknown as typeof window.alert;
+  mockShowToast.mockClear();
   render(<OrderTakingContainer menuType="nonalcoholic" />);
   act(() => {
     getCapturedProps().onAddProduct("Oat Milk", 1);
   });
-  expect(alertSpy).toHaveBeenCalledWith(
-    "There are no caffeinated items to attach this milk to."
+  expect(mockShowToast).toHaveBeenCalledWith(
+    "There are no caffeinated items to attach this milk to.",
+    "warning"
   );
-    window.alert = originalAlert;
   });
 
   it("renders error banner when add item fails", () => {

@@ -2,7 +2,7 @@
 
 // src/app/[lang]/deals/DealsPageContent.tsx
 // Client component for deals page
-import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
@@ -13,14 +13,13 @@ import { Grid, Section } from "@acme/ui/atoms";
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
 import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
 import { useOptionalModal } from "@/context/ModalContext";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { formatDateRange, formatPercent, isoDateToLocalStart } from "@/routes/deals/dates";
 import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 type Props = {
   lang: AppLanguage;
@@ -33,15 +32,7 @@ const DIRECT_BOOKING_PERKS_ID = "direct-booking-perks";
 function DealsPageContent({ lang }: Props) {
   const { t } = useTranslation("dealsPage", { lng: lang });
   const { openModal } = useOptionalModal();
-
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["dealsPage"]);
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({ lang, namespaces: ["dealsPage"] });
 
   const { translate: ft, perks, labels } = useDealContent(lang);
   const perksLinkLabel = typeof labels.perksLinkLabel === "string" ? labels.perksLinkLabel : "";
@@ -64,31 +55,20 @@ function DealsPageContent({ lang }: Props) {
     setNow(Date.now());
   }, []);
 
-  const referenceDate = useMemo(() => new Date(now), [now]);
+  const referenceDate = new Date(now);
 
-  const dealsWithStatus = useMemo(() => {
-    return DEALS.map((deal) => ({
-      deal,
-      status: getDealStatus(deal, referenceDate),
-    }));
-  }, [referenceDate]);
+  const dealsWithStatus = DEALS.map((deal) => ({
+    deal,
+    status: getDealStatus(deal, referenceDate),
+  }));
 
   // Get terms label and href for deal cards
   const termsLabel = typeof labels.termsLabel === "string" ? labels.termsLabel : "";
   const termsHref = `/${lang}/terms`;
 
-  const activeDeals = useMemo(
-    () => dealsWithStatus.filter((entry) => entry.status === "active"),
-    [dealsWithStatus]
-  );
-  const upcomingDeals = useMemo(
-    () => dealsWithStatus.filter((entry) => entry.status === "upcoming"),
-    [dealsWithStatus]
-  );
-  const expiredDeals = useMemo(
-    () => dealsWithStatus.filter((entry) => entry.status === "expired"),
-    [dealsWithStatus]
-  );
+  const activeDeals = dealsWithStatus.filter((entry) => entry.status === "active");
+  const upcomingDeals = dealsWithStatus.filter((entry) => entry.status === "upcoming");
+  const expiredDeals = dealsWithStatus.filter((entry) => entry.status === "expired");
 
   const [showExpired, setShowExpired] = useState(false);
 

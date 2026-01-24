@@ -5,7 +5,7 @@ Domain: Repo
 Last-reviewed: 2026-01-20
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-20
+Last-updated: 2026-01-24
 Last-updated-by: Claude Opus 4.5
 ---
 
@@ -92,6 +92,12 @@ git remote -v  # If empty or unreachable, commits are local-only
 | Missing dependency | Note in plan; don't attempt workarounds |
 | Can't run tests | Note which tests need running; don't skip validation intent |
 
+## Type Intelligence (MCP)
+
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
+
+Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
+
 ## Output Expectations
 
 When network is unavailable, end sessions with:
@@ -114,47 +120,89 @@ Next steps for human:
 Co-Authored-By: Codex <noreply@openai.com>
 ```
 
-## Using Skills
+## Feature Workflow (Fact-Find → Plan → Build → Re-Plan)
 
-Codex can use the same skills as Claude Code. Skills are structured workflow templates that provide step-by-step guidance for common tasks.
+Codex follows the same confidence-gated workflow as Claude Code. Since Codex has no skill loader or slash commands, invoke each phase by reading the skill file and following its instructions.
 
-### How to Use Skills
+### The Loop
 
-1. **Find the right skill**: Check `.agents/skills/manifest.yaml` for available skills
-2. **Read the skill file**: Skills live in `.agents/skills/<category>/<name>.md`
-3. **Follow the workflow**: Each skill has step-by-step instructions
+```
+┌─────────────┐     ┌──────────────┐     ┌───────────────┐
+│  fact-find   │────▶│ plan-feature  │────▶│ build-feature  │
+│             │     │              │     │               │
+│ Audit repo  │     │ Tasks with   │     │ Only builds   │
+│ Map impact  │     │ confidence % │     │ tasks ≥80%    │
+│ Resolve Qs  │     │ per task     │     │               │
+└─────────────┘     └──────────────┘     └───────┬───────┘
+       ▲                    ▲                     │
+       │              ┌─────┴─────┐               │
+       └──────────────│  re-plan   │◀──────────────┘
+                      │            │  confidence <80%
+                      └────────────┘
+```
 
-### Most Useful Skills for Codex
+### How to Invoke Each Phase
+
+| Phase | Action | Skill file |
+|-------|--------|-----------|
+| Fact-find | Read and follow | `.claude/skills/fact-find/SKILL.md` |
+| Plan | Read and follow | `.claude/skills/plan-feature/SKILL.md` |
+| Build | Read and follow | `.claude/skills/build-feature/SKILL.md` |
+| Re-plan | Read and follow | `.claude/skills/re-plan/SKILL.md` |
+
+### Confidence System
+
+Each task gets a confidence percentage (0-100%) based on three dimensions:
+
+| Dimension | Question |
+|-----------|----------|
+| **Implementation** | Do we know exactly how to write correct code? |
+| **Approach** | Is this the best long-term solution? |
+| **Impact** | Do we fully understand what this touches and won't break? |
+
+Overall confidence = minimum of the three.
+
+**Thresholds:**
+- **80%+** → Build the task
+- **60-79%** → Build with caution, flag risks
+- **Below 60%** → Do NOT build. Re-plan first.
+
+### Open Questions Policy
+
+When uncertain about the right approach:
+1. **First**: investigate the repo (read code, trace dependencies, check tests)
+2. **Second**: search externally if it's a knowledge gap
+3. **Third**: select the best long-term solution based on evidence
+4. **Only then**: ask the user if genuinely unable to determine the answer
+
+### Example Session
+
+```
+1. Read `.claude/skills/fact-find/SKILL.md`
+2. Audit the affected codebase areas, produce a brief
+3. Read `.claude/skills/plan-feature/SKILL.md`
+4. Create plan at `docs/plans/<feature>-plan.md` with confidence scores
+5. If all tasks ≥80%:
+   - Read `.claude/skills/build-feature/SKILL.md`
+   - Build tasks one at a time
+6. If any task <80%:
+   - Read `.claude/skills/re-plan/SKILL.md`
+   - Investigate, update confidence, loop back to step 5
+```
+
+### Other Available Skills
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
-| `plan-feature` | Create detailed implementation plans | `.agents/skills/workflows/plan-feature.md` |
-| `build-feature` | Implement tasks from an approved plan | `.agents/skills/workflows/build-feature.md` |
-
-### Example Invocation
-
-When starting a new feature:
-1. Read `.agents/skills/workflows/plan-feature.md`
-2. Follow the "Planning Mode" instructions
-3. Create a plan in `docs/plans/<feature>-plan.md`
-
-When implementing:
-1. Read `.agents/skills/workflows/build-feature.md`
-2. Follow the "Building Mode" instructions
-3. Work through tasks one at a time
-
-### Skill Discovery
-
-The manifest at `.agents/skills/manifest.yaml` lists all available skills with:
-- `name`: Skill identifier
-- `description`: What it does
-- `triggers`: When to use it
-- `path`: Where to find it (or `location` if not yet migrated)
+| `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
+| `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
+| `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
+| `session-reflection` | Capture learnings after work | `.claude/skills/session-reflection/SKILL.md` |
 
 ## What Stays the Same
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use `.agents/skills/workflows/plan-feature.md` and `build-feature.md` patterns
+- Use the fact-find → plan → build → re-plan loop (see above)
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes

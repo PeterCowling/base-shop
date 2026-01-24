@@ -126,7 +126,7 @@ export default function ReturnForm({
           ) : null}
         </p>
       )}
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
     </div>
   );
 }

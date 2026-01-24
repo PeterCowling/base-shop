@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/FaqStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import type { FallbackLng } from "i18next";
 
@@ -64,35 +64,33 @@ function FaqStructuredData(): JSX.Element {
     fallbackLang = resolveFallbackLanguage(fallbackLangOption, lang);
   }
 
-  const getResourceBundle = useMemo(() => {
+  const getResourceBundle = (lng: string): FaqResource | undefined => {
     if (!i18n) {
-      return () => undefined;
+      return undefined;
     }
 
-    return (lng: string): FaqResource | undefined => {
-      const namespaceFromData = i18n.getDataByLanguage?.(lng)?.["faq"];
-      if (namespaceFromData && typeof namespaceFromData === "object") {
-        return namespaceFromData as FaqResource;
-      }
+    const namespaceFromData = i18n.getDataByLanguage?.(lng)?.["faq"];
+    if (namespaceFromData && typeof namespaceFromData === "object") {
+      return namespaceFromData as FaqResource;
+    }
 
-      const bundle = i18n.getResourceBundle?.(lng, "faq");
-      if (bundle && typeof bundle === "object") {
-        return bundle as FaqResource;
-      }
+    const bundle = i18n.getResourceBundle?.(lng, "faq");
+    if (bundle && typeof bundle === "object") {
+      return bundle as FaqResource;
+    }
 
-      const storeResource = i18n.services?.resourceStore?.data?.[lng]?.["faq"];
-      if (storeResource && typeof storeResource === "object") {
-        return storeResource as FaqResource;
-      }
+    const storeResource = i18n.services?.resourceStore?.data?.[lng]?.["faq"];
+    if (storeResource && typeof storeResource === "object") {
+      return storeResource as FaqResource;
+    }
 
-      return undefined;
-    };
-  }, [i18n]);
+    return undefined;
+  };
 
   const resource = getResourceBundle(lang);
   const fallbackResource = fallbackLang ? getResourceBundle(fallbackLang) : undefined;
 
-  const items = useMemo(() => parseFaqResource(resource, fallbackResource), [resource, fallbackResource]);
+  const items = parseFaqResource(resource, fallbackResource);
 
   const data = {
     "@context": "https://schema.org",

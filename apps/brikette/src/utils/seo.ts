@@ -76,7 +76,7 @@ for (const lng of SUPPORTED_LANGS_SAFE as readonly AppLanguage[]) {
   assistanceArticleLookup[lng] = {} as Record<string, string>;
 }
 Object.keys(ARTICLE_SLUGS).forEach((k) => {
-  const key = k as unknown as string; // HelpArticleKey at runtime
+  const key = k; // HelpArticleKey at runtime — Object.keys returns string[]
   for (const lng of SUPPORTED_LANGS_SAFE as readonly AppLanguage[]) {
     const slug = ARTICLE_SLUGS_BY_KEY[key]?.[lng] ?? ARTICLE_SLUGS_BY_KEY[key]?.en;
     if (typeof slug === "string" && slug) {

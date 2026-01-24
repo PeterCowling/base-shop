@@ -15,7 +15,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     const clampedValue = Number.isFinite(value)
       ? Math.min(100, Math.max(0, value))
       : 0;
-    const width = `${clampedValue}%`;
+    const scale = clampedValue / 100;
 
     return (
       <div
@@ -25,7 +25,6 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         aria-valuenow={clampedValue}
         aria-valuemin={0}
         aria-valuemax={100}
-         
         style={style}
         {...props}
       >
@@ -37,11 +36,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         >
           <div
             className={cn(
-              "bg-primary h-full transition-all", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+              "bg-primary h-full origin-left scale-x-0 transition-transform motion-reduce:transition-none", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
             )}
             data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
-             
-            style={{ width }}
+            style={{ transform: `scaleX(${scale})` }}
           />
         </div>
         {label ? (

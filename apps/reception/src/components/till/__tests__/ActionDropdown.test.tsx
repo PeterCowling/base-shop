@@ -3,7 +3,12 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { User } from "../../../types/domains/userDomain";
 import ActionButtons from "../ActionButtons";
+
+jest.mock("../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
 
 const noop = jest.fn();
 
@@ -12,14 +17,19 @@ function renderButtons(
   {
     handleKeycardCountClick = noop,
     shiftOpenTime = new Date(),
-  }: { handleKeycardCountClick?: () => void; shiftOpenTime?: Date | null } = {}
+    roles = ["staff"],
+  }: {
+    handleKeycardCountClick?: () => void;
+    shiftOpenTime?: Date | null;
+    roles?: User["roles"];
+  } = {}
 ) {
   render(
     <ActionButtons
       shiftOpenTime={shiftOpenTime}
       isTillOverMax={false}
       isDrawerOverLimit={false}
-      userName={name}
+      user={{ user_name: name, email: `${name}@test.com`, roles }}
       drawerLimitInput=""
       setDrawerLimitInput={noop}
       updateLimit={noop}
@@ -53,14 +63,14 @@ describe("ActionDropdown", () => {
   });
 
   it("shows only the shift dropdown for unauthorized users", () => {
-    renderButtons("Bob");
+    renderButtons("Bob", { roles: ["viewer"] });
     expect(screen.getByRole("button", { name: "Shift" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Cash" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Keycards" })).toBeNull();
   });
 
-  it("allows case-insensitive matching for authorized users", () => {
-    renderButtons("serena");
+  it("shows cash actions for staff roles", () => {
+    renderButtons("serena", { roles: ["staff"] });
     expect(screen.getByRole("button", { name: "Cash" })).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Keycards" })

@@ -123,7 +123,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       <div
         ref={ref}
         className={cn(
-          "fixed z-50 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+          "fixed z-toast rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
           PLACEMENT_CLASSES[placement],
           bgClass,
           fgClass,
@@ -142,7 +142,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
               <button
                 type="button"
                 onClick={onAction}
-                className="text-sm font-semibold underline underline-offset-2 decoration-current inline-flex min-h-11 min-w-11 items-center justify-center px-2" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+                className="text-sm font-semibold underline underline-offset-2 decoration-current inline-flex min-h-11 min-w-11 items-center justify-center px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
                 data-token={tokenFg}
               >
                 {actionLabel}
@@ -152,7 +152,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
               <button
                 type="button"
                 onClick={onClose}
-                className="ms-1 font-bold inline-flex min-h-11 min-w-11 items-center justify-center" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+                className="ms-1 font-bold inline-flex min-h-11 min-w-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
                 data-token={tokenFg}
                 aria-label={closeLabel}
               >

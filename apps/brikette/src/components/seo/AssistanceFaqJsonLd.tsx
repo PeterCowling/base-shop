@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/AssistanceFaqJsonLd.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 
@@ -18,8 +18,8 @@ function AssistanceFaqJsonLd({ ns }: Props): JSX.Element | null {
   const { t } = useTranslation(ns, { lng: lang });
   const raw = t("faq.items", { returnObjects: true }) as unknown;
 
-  const url = useMemo(() => `${BASE_URL}${pathname}`, [pathname]);
-  const payload = useMemo(() => buildFaqJsonLd(lang, url, raw), [lang, raw, url]);
+  const url = `${BASE_URL}${pathname}`;
+  const payload = buildFaqJsonLd(lang, url, raw);
 
   // Emit an explicit empty FAQPage payload when translations are missing or invalid
   // to keep test expectations stable and downstream parsers resilient.

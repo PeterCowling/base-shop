@@ -11,7 +11,7 @@
  * - Pace: relaxed or active
  */
 
-import { Button } from '@acme/ui';
+import { Button } from '@acme/design-system/primitives';
 import logger from '@/utils/logger';
 import { Check, Moon, Sparkles, Sun, Users, Zap } from 'lucide-react';
 import { FC, useCallback, useState } from 'react';

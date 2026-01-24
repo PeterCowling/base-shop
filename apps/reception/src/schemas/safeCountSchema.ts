@@ -31,6 +31,7 @@ export const safeCountSchema = z.object({
   denomBreakdown: z
     .union([denomBreakdownSchema, exchangeBreakdownSchema])
     .optional(),
+  shiftId: z.string().optional(),
 })
   .refine(
     (data) => data.amount === undefined || data.amount > 0,

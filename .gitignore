@@ -36,10 +36,17 @@ apps/cms/dist/
 **/.turbo/
 
 # ---------------------------
+# Generated documentation
+# ---------------------------
+docs/api/
+
+# ---------------------------
 # Misc
 # ---------------------------
 .DS_Store
 .eslintcache
+.cache/
+/tmp/
 .worktrees/
 *.pem
 *.tsbuildinfo
@@ -85,3 +92,6 @@ packages/types/src/**/*.d.ts.map
 # Worker status files (ephemeral coordination, gitignored)
 .agents/status/*
 !.agents/status/.gitkeep
+
+# VS Code MCP port sentinel (ephemeral)
+.vscode/.mcp-port

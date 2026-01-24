@@ -14,6 +14,11 @@ export interface TillShift {
   closingKeycards?: number;
   closeDifference?: number;
   closeType?: "close" | "reconcile";
+  varianceSignoffRequired?: boolean;
+  signedOffBy?: string;
+  signedOffByUid?: string;
+  signedOffAt?: string;
+  varianceNote?: string;
 }
 
 export type TillShifts = Record<string, TillShift> | null;

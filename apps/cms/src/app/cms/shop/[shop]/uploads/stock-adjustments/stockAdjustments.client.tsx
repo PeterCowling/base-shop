@@ -1,4 +1,4 @@
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind, max-lines-per-function -- COM-0001 [ttl=2026-12-31] MVP stock adjustment UI pending DS refactor */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- COM-0001 [ttl=2026-12-31] MVP stock adjustment UI pending DS refactor */
 
 "use client";
 
@@ -129,20 +129,7 @@ function isSameVariant(
   return true;
 }
 
-export default function StockAdjustmentsClient({
-  shop,
-  recent,
-}: {
-  shop: string;
-  recent: StockAdjustmentEvent[];
-}) {
-  const router = useRouter();
-  const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
-  const [note, setNote] = useState("");
-  const [items, setItems] = useState<DraftItem[]>(() => [emptyRow()]);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<AdjustmentResult | null>(null);
+function useInventorySnapshot(shop: string) {
   const [inventory, setInventory] = useState<InventoryRowWithKey[]>([]);
   const [inventoryError, setInventoryError] = useState<string | null>(null);
   const [inventoryLoading, setInventoryLoading] = useState(false);
@@ -155,7 +142,10 @@ export default function StockAdjustmentsClient({
       try {
         const res = await fetch(`/api/data/${shop}/inventory/export?format=json`);
         if (!res.ok) {
-          const message = res.status === 403 ? "Missing inventory permission" : "Unable to load inventory snapshot.";
+          const message =
+            res.status === 403
+              ? "Missing inventory permission"
+              : "Unable to load inventory snapshot.";
           throw new Error(message);
         }
         const json = (await res.json()) as Record<string, unknown>[];
@@ -192,6 +182,82 @@ export default function StockAdjustmentsClient({
       cancelled = true;
     };
   }, [shop]);
+
+  return { inventory, inventoryError, inventoryLoading };
+}
+
+function InventorySnapshotNotice({
+  loading,
+  error,
+}: {
+  loading: boolean;
+  error: string | null;
+}) {
+  if (loading) {
+    return <p className="text-sm text-muted-foreground">Loading inventory snapshot…</p>;
+  }
+  if (error) {
+    return <p className="text-sm text-danger-foreground">Inventory snapshot unavailable: {error}</p>;
+  }
+  return null;
+}
+
+function SchemaGuardrailsCard() {
+  return (
+    <div className="rounded-2xl border border-border/10 bg-surface-1 p-4">
+      <h3 className="text-sm font-semibold">Schema & guardrails</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Each row is a quantity <span className="font-medium">delta</span> (positive or negative). Select an existing
+        inventory row to avoid mismatched variants and see the current quantity.
+      </p>
+      <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+        <li><span className="font-medium text-foreground">sku</span>: variant SKU (required)</li>
+        <li><span className="font-medium text-foreground">productId</span>: stable product id (required)</li>
+        <li><span className="font-medium text-foreground">quantity</span>: non-zero integer (negative allowed)</li>
+        <li><span className="font-medium text-foreground">reason</span>: choose a reason (required)</li>
+        <li><span className="font-medium text-foreground">variantAttributes</span>: structured fields (Size, Color, etc). Use JSON for new keys.</li>
+      </ul>
+    </div>
+  );
+}
+
+function LineItemsHeader({
+  busy,
+  onAddRow,
+}: {
+  busy: boolean;
+  onAddRow: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="space-y-1">
+        <h3 className="text-sm font-semibold">Line items</h3>
+        <p className="text-xs text-muted-foreground">
+          Pick an existing inventory row to auto-fill sku/product/variants, or type a new variant intentionally.
+        </p>
+      </div>
+      <Button type="button" variant="outline" className="h-9 rounded-xl" onClick={onAddRow} disabled={busy}>
+        Add row
+      </Button>
+    </div>
+  );
+}
+
+export default function StockAdjustmentsClient({
+  shop,
+  recent,
+}: {
+  shop: string;
+  recent: StockAdjustmentEvent[];
+}) {
+  const router = useRouter();
+  const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
+  const [note, setNote] = useState("");
+  const [items, setItems] = useState<DraftItem[]>(() => [emptyRow()]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<AdjustmentResult | null>(null);
+  const { inventory, inventoryError, inventoryLoading } = useInventorySnapshot(shop);
 
   const normalizedItems = useMemo(() => {
     return items
@@ -423,39 +489,12 @@ export default function StockAdjustmentsClient({
           />
         </div>
 
-        <div className="rounded-2xl border border-border/10 bg-surface-1 p-4">
-          <h3 className="text-sm font-semibold">Schema & guardrails</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Each row is a quantity <span className="font-medium">delta</span> (positive or negative). Select an existing
-            inventory row to avoid mismatched variants and see the current quantity.
-          </p>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-            <li><span className="font-medium text-foreground">sku</span>: variant SKU (required)</li>
-            <li><span className="font-medium text-foreground">productId</span>: stable product id (required)</li>
-            <li><span className="font-medium text-foreground">quantity</span>: non-zero integer (negative allowed)</li>
-            <li><span className="font-medium text-foreground">reason</span>: choose a reason (required)</li>
-            <li><span className="font-medium text-foreground">variantAttributes</span>: structured fields (Size, Color, etc). Use JSON for new keys.</li>
-          </ul>
-        </div>
+        <SchemaGuardrailsCard />
       </div>
 
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h3 className="text-sm font-semibold">Line items</h3>
-            <p className="text-xs text-muted-foreground">
-              Pick an existing inventory row to auto-fill sku/product/variants, or type a new variant intentionally.
-            </p>
-          </div>
-          <Button type="button" variant="outline" className="h-9 rounded-xl" onClick={addRow} disabled={busy}>
-            Add row
-          </Button>
-        </div>
-        {inventoryLoading ? (
-          <p className="text-sm text-muted-foreground">Loading inventory snapshot…</p>
-        ) : inventoryError ? (
-          <p className="text-sm text-danger-foreground">Inventory snapshot unavailable: {inventoryError}</p>
-        ) : null}
+        <LineItemsHeader busy={busy} onAddRow={addRow} />
+        <InventorySnapshotNotice loading={inventoryLoading} error={inventoryError} />
         <div className="overflow-hidden rounded-2xl border border-border/10 bg-surface-1">
           <Table>
             <TableHeader>

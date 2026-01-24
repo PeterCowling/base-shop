@@ -8,12 +8,17 @@ import Search, { getActivityLevel } from "../Search";
 
 jest.mock("../BookingSearchTable", () => ({
   __esModule: true,
-  default: () => <div data-testid="booking-table">table</div>,
+  default: () => <div data-cy="booking-table">table</div>,
 }));
 
 jest.mock("../FinancialTransactionSearch", () => ({
   __esModule: true,
-  default: () => <div data-testid="tx-search">transactions</div>,
+  default: () => <div data-cy="tx-search">transactions</div>,
+}));
+
+jest.mock("../FinancialTransactionAuditSearch", () => ({
+  __esModule: true,
+  default: () => <div data-cy="audit-search">audits</div>,
 }));
 
 jest.mock("../SmallSpinner", () => ({
@@ -52,6 +57,15 @@ describe("Search component", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /transactions/i }));
     await waitFor(() => expect(screen.getByTestId("tx-search")).toBeInTheDocument());
+  });
+
+  it("switches to audit tab", async () => {
+    render(<Search />);
+
+    await userEvent.click(screen.getByRole("button", { name: /audits/i }));
+    await waitFor(() =>
+      expect(screen.getByTestId("audit-search")).toBeInTheDocument()
+    );
   });
 
   it("triggers data fetch when filters change", async () => {

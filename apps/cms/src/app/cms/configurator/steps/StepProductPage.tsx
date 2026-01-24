@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/shadcn";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { type Page, type PageComponent } from "@acme/types";
@@ -46,11 +44,6 @@ export default function StepProductPage({
   shopId,
   themeStyle,
 }: Props): React.JSX.Element {
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
-
   const {
     saveDraft,
     publishPage,
@@ -63,7 +56,6 @@ export default function StepProductPage({
     productPageId,
     setProductPageId: (v: string) => setProductPageId(v),
     setProductComponents,
-    setToast,
   });
 
   const [, markComplete] = useStepCompletion("product-page");
@@ -125,11 +117,6 @@ export default function StepProductPage({
           Save & return
         </Button>
       </div>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

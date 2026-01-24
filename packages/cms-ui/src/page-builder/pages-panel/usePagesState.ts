@@ -110,7 +110,7 @@ export function usePagesState(open: boolean, shop: string) {
     const sel = selected;
     if (!sel) return;
     try {
-      const body = {
+      const body: Parameters<typeof patchPage>[2] = {
         updatedAt: sel.updatedAt || new Date().toISOString(),
         slug: sel.slug,
         visibility: sel.visibility ?? "public",
@@ -119,7 +119,7 @@ export function usePagesState(open: boolean, shop: string) {
           description: sel.seo?.description || {},
           noindex: !!sel.seo?.noindex,
         },
-      } as any;
+      };
       const res = await patchPage(shop, sel.id, body);
       if (res.ok && res.item) {
         setPages((prev) => prev.map((it) => (it.id === res.item!.id ? { ...it, ...res.item! } : it)));

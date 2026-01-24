@@ -1,6 +1,5 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/TravelHelpStructuredData.tsx
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { BASE_URL } from "@/config/site";
@@ -77,10 +76,7 @@ export default function TravelHelpStructuredData() {
   const resource = getResourceBundle(lang);
   const fallbackResource = getResourceBundle(fallbackLang);
 
-  const travelHelp = useMemo(
-    () => parseTravelHelpResource(resource, fallbackResource),
-    [resource, fallbackResource],
-  );
+  const travelHelp = parseTravelHelpResource(resource, fallbackResource);
 
   const faqData = {
     "@context": "https://schema.org",

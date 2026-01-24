@@ -13,6 +13,18 @@ export interface RoomTransaction {
    */
   type?: "charge" | "payment" | "refund" | string;
   bookingRef?: string;
+  shiftId?: string;
+  sourceTxnId?: string;
+  correctionReason?: string;
+  correctionKind?: "reversal" | "replacement" | "adjustment";
+  correctedBy?: string;
+  correctedByUid?: string;
+  correctedShiftId?: string;
+  voidedAt?: string;
+  voidedBy?: string;
+  voidedByUid?: string;
+  voidReason?: string;
+  voidedShiftId?: string;
 }
 
 /**

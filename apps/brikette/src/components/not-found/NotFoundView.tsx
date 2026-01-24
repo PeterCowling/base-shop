@@ -1,6 +1,6 @@
 // src/components/not-found/NotFoundView.tsx
 "use client";
-import { Fragment, memo, useCallback, useMemo } from "react";
+import { Fragment, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 // Local types replacing react-router imports (used only for test head fallback)
@@ -71,7 +71,7 @@ function NotFoundView() {
     return trimmed && trimmed !== fallbackKey ? trimmed : undefined;
   };
 
-  const fallbackReserveLabel = useMemo(() => {
+  const fallbackReserveLabel = (() => {
     const tFallbackTokens = i18n.getFixedT(fallbackLang, "_tokens");
     const tFallbackNotFound = i18n.getFixedT(fallbackLang, "notFoundPage");
     const tFallbackTranslation = i18n.getFixedT(fallbackLang, "translation");
@@ -85,9 +85,9 @@ function NotFoundView() {
     );
 
     return reserve ?? book ?? buttonFallback ?? translationFallback;
-  }, [fallbackLang]);
+  })();
 
-  const reserveLabel = useMemo(() => {
+  const reserveLabel = (() => {
     const reserve = sanitiseLabel(tTokens("reserveNow") as string, "reserveNow");
     const book = sanitiseLabel(tTokens("bookNow") as string, "bookNow");
     const buttonFallback = sanitiseLabel(t("buttonReserve") as string, "buttonReserve");
@@ -98,22 +98,22 @@ function NotFoundView() {
     );
 
     return reserve ?? book ?? buttonFallback ?? translationFallback ?? fallbackReserveLabel ?? fallbackTranslation;
-  }, [t, tTokens, tTranslation, fallbackReserveLabel, fallbackLang]);
+  })();
 
-  const reserveAriaLabel = useMemo(() => {
+  const reserveAriaLabel = (() => {
     const fallback = t("buttonReserve") as string;
     if (fallback && fallback.trim() && fallback !== "buttonReserve") {
       return fallback;
     }
     return reserveLabel;
-  }, [reserveLabel, t]);
+  })();
 
   const handleReserve = useCallback(() => {
     openModal("booking");
   }, [openModal]);
 
   // During tests, apply head tags to document.head to keep assertions simple
-  const fallbackHeadDescriptors = useMemo<MetaDescriptor[] | undefined>(() => {
+  const fallbackHeadDescriptors: MetaDescriptor[] | undefined = (() => {
     if (process.env.NODE_ENV !== "test") return undefined;
     const path = `/${lang}/404`;
     const url = `${BASE_URL}${path}`;
@@ -136,12 +136,12 @@ function NotFoundView() {
       image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
       isPublished: false,
     }) as MetaDescriptor[];
-  }, [lang, data?.title, data?.desc]);
+  })();
 
-  const fallbackHeadLinks = useMemo<LinkDescriptor[] | undefined>(() => {
+  const fallbackHeadLinks: LinkDescriptor[] | undefined = (() => {
     if (process.env.NODE_ENV !== "test") return undefined;
     return buildRouteLinks() as LinkDescriptor[];
-  }, []);
+  })();
 
   useApplyFallbackHead(fallbackHeadDescriptors, fallbackHeadLinks);
 

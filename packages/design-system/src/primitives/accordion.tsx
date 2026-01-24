@@ -164,7 +164,7 @@ export const AccordionTrigger = forwardRef<
       onClick={handleClick}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors",
+        "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors motion-reduce:transition-none",
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
@@ -176,7 +176,7 @@ export const AccordionTrigger = forwardRef<
         aria-hidden
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "h-4 w-4 shrink-0 transition-transform duration-200",
+          "h-4 w-4 shrink-0 transition-transform duration-200 motion-reduce:transition-none",
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           isOpen ? "rotate-180" : "rotate-0",
         )}

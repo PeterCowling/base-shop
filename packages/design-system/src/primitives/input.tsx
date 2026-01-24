@@ -137,7 +137,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     <label
                       htmlFor={controlId}
                       className={cn(
-                        "text-muted-foreground pointer-events-none transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                        "text-muted-foreground pointer-events-none transition-colors transition-transform motion-reduce:transition-none", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                         (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                       )}
                     >

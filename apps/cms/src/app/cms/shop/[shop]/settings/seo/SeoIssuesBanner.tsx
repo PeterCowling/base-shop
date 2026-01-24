@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { Toast } from "@/components/atoms";
+import { useToast } from "@acme/ui/operations";
 
 interface Issue {
   id: string;
@@ -18,11 +18,8 @@ interface Props {
 }
 
 export default function SeoIssuesBanner({ shop, issues }: Props) {
+  const toast = useToast();
   const [sending, setSending] = useState(false);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
 
   const sendReminder = async () => {
     setSending(true);
@@ -35,9 +32,9 @@ export default function SeoIssuesBanner({ shop, issues }: Props) {
       if (!res.ok) {
         throw new Error(`status ${res.status}`);
       }
-      setToast({ open: true, message: "Reminder sent" });
+      toast.success("Reminder sent");
     } catch {
-      setToast({ open: true, message: "Failed to send reminder" });
+      toast.error("Failed to send reminder");
     } finally {
       setSending(false);
     }
@@ -75,7 +72,6 @@ export default function SeoIssuesBanner({ shop, issues }: Props) {
           ))}
         </ul>
       </div>
-      <Toast open={toast.open} message={toast.message} onClose={() => setToast({ ...toast, open: false })} />
     </>
   );
 }

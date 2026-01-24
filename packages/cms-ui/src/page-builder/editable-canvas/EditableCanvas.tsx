@@ -23,6 +23,22 @@ import { useDropHighlightState } from "./useDropHighlightState";
 import { useGroupEvents } from "./useGroupEvents";
 import { useVisibleComponents } from "./useVisibleComponents";
 
+const getCanvasClassName = (
+  dragging: boolean,
+  dropAllowed: boolean | null | undefined,
+  isCanvasOver: boolean,
+) => cn(
+  // i18n-exempt: CSS utility classes
+  "relative mx-auto flex flex-col gap-4 rounded border", // i18n-exempt -- PB-2419 utility class names
+  (dragging || isCanvasOver) && (
+    (dropAllowed === false)
+      // i18n-exempt: CSS utility classes
+      ? "ring-2 ring-danger border-danger cursor-not-allowed" // i18n-exempt -- PB-2419 utility class names
+      // i18n-exempt: CSS utility classes
+      : "ring-2 ring-primary" // i18n-exempt -- PB-2419 utility class names
+  )
+);
+
 export default function EditableCanvas(props: Props) {
   const {
     components,
@@ -94,10 +110,10 @@ export default function EditableCanvas(props: Props) {
         if (!allowed.has(id)) return;
         if (!p) return;
         const action: import("../state/layout/types").ResizeAction = { type: "resize", id };
-        if (p.left !== undefined) { (action as any)[leftKey] = p.left; (action as any).left = p.left; }
-        if (p.top !== undefined) { (action as any)[topKey] = p.top; (action as any).top = p.top; }
-        if (p.width !== undefined) { (action as any)[widthKey] = p.width; (action as any).width = p.width; }
-        if (p.height !== undefined) { (action as any)[heightKey] = p.height; (action as any).height = p.height; }
+        if (p.left !== undefined) { action[leftKey] = p.left; action.left = p.left; }
+        if (p.top !== undefined) { action[topKey] = p.top; action.top = p.top; }
+        if (p.width !== undefined) { action[widthKey] = p.width; action.width = p.width; }
+        if (p.height !== undefined) { action[heightKey] = p.height; action.height = p.height; }
         dispatch(action);
       });
     }
@@ -124,17 +140,7 @@ export default function EditableCanvas(props: Props) {
         onDragOver={handleDragOver}
         onDragLeave={clearHighlight}
         onDragEnd={clearHighlight}
-        className={cn(
-          // i18n-exempt: CSS utility classes
-          "relative mx-auto flex flex-col gap-4 rounded border", // i18n-exempt -- PB-2419 utility class names
-          (dragOver || isCanvasOver) && (
-            (dropAllowed === false)
-              // i18n-exempt: CSS utility classes
-              ? "ring-2 ring-danger border-danger cursor-not-allowed" // i18n-exempt -- PB-2419 utility class names
-              // i18n-exempt: CSS utility classes
-              : "ring-2 ring-primary" // i18n-exempt -- PB-2419 utility class names
-          )
-        )}
+        className={getCanvasClassName(dragOver, dropAllowed, !!isCanvasOver)}
       >
         <Overlays
           components={components}

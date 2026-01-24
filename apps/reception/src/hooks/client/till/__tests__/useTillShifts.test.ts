@@ -11,6 +11,8 @@ var cashDiscrepancies: CashDiscrepancy[];
 var addCashCount: jest.Mock;
 var addKeycardDiscrepancy: jest.Mock;
 var addShiftEvent: jest.Mock;
+var recordShiftOpen: jest.Mock;
+var recordShiftClose: jest.Mock;
 
 jest.mock("../../../../context/AuthContext", () => ({
   useAuth: () => ({ user: { user_name: "Alice" } }),
@@ -63,6 +65,13 @@ jest.mock("../../../mutations/useShiftEventsMutations", () => ({
   useShiftEventsMutations: () => ({ addShiftEvent }),
 }));
 
+jest.mock("../../../mutations/useTillShiftsMutations", () => ({
+  useTillShiftsMutations: () => ({
+    recordShiftOpen,
+    recordShiftClose,
+  }),
+}));
+
 var showToastMock: jest.Mock;
 /* eslint-enable no-var */
 jest.mock("../../../../utils/toastUtils", () => ({
@@ -75,7 +84,12 @@ beforeEach(() => {
   addCashCount = jest.fn();
   addKeycardDiscrepancy = jest.fn();
   addShiftEvent = jest.fn();
+  recordShiftOpen = jest.fn();
+  recordShiftClose = jest.fn();
   showToastMock = jest.fn();
+  if (typeof window !== "undefined") {
+    window.localStorage.clear();
+  }
 });
 
 afterEach(() => {
@@ -100,7 +114,13 @@ describe("useTillShifts", () => {
       { "50": 2 },
       2
     );
-    expect(addShiftEvent).toHaveBeenCalledWith("open", 100, 2, 100);
+    expect(addShiftEvent).toHaveBeenCalledWith(
+      "open",
+      100,
+      2,
+      100,
+      expect.any(String)
+    );
     expect(result.current.shiftOpenTime).not.toBeNull();
     expect(result.current.shiftOwner).toBe("Alice");
   });
@@ -127,7 +147,13 @@ describe("useTillShifts", () => {
       { "50": 2 },
       0
     );
-    expect(addShiftEvent).toHaveBeenCalledWith("close", 100, 0, 0);
+    expect(addShiftEvent).toHaveBeenCalledWith(
+      "close",
+      100,
+      0,
+      0,
+      expect.any(String)
+    );
     expect(result.current.shiftOpenTime).toBeNull();
   });
 
@@ -148,7 +174,13 @@ describe("useTillShifts", () => {
     expect(addCashCount).toHaveBeenCalledTimes(2);
     expect(addCashCount.mock.calls[0][0]).toBe("reconcile");
     expect(addCashCount.mock.calls[1][0]).toBe("opening");
-    expect(addShiftEvent).toHaveBeenCalledWith("reconcile", 120, 0, 20);
+    expect(addShiftEvent).toHaveBeenCalledWith(
+      "reconcile",
+      120,
+      0,
+      20,
+      expect.any(String)
+    );
     expect(result.current.openingCash).toBe(120);
   });
 

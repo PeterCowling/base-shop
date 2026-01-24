@@ -3,7 +3,7 @@
 /* ─────────────────────────────────────────────────────────────
    JSON-LD for the landing page
 ---------------------------------------------------------------- */
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -12,10 +12,7 @@ import { buildHomeGraph } from "@/utils/schema";
 function HomeStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();
   const pageUrl = `${BASE_URL}/${lang}`;
-  const homeGraphString = useMemo(
-    () => JSON.stringify(buildHomeGraph(pageUrl, lang)),
-    [pageUrl, lang]
-  );
+  const homeGraphString = JSON.stringify(buildHomeGraph(pageUrl, lang));
   return (
     <script
       type="application/ld+json"

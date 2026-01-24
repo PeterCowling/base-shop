@@ -63,7 +63,7 @@
     "prepare": "pnpm run build:stubs",
     "build:stubs": "node ./scripts/generate-env-stubs.mjs",
     "build": "tsc -b",
-    "dev": "tsc -p tsconfig.json -w",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "jest packages/config/__tests__ packages/config/src/env/__tests__ --passWithNoTests --runInBand --config jest.config.cjs",
     "fix:env": "node ./scripts/fix-config-env.mjs",

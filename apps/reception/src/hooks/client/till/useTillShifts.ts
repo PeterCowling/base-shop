@@ -6,9 +6,15 @@ import { MONTHLY_DISCREPANCY_LIMIT } from "../../../constants/cash";
 import { settings } from "../../../constants/settings";
 import { useAuth } from "../../../context/AuthContext";
 import { useTillData } from "../../../context/TillDataContext";
+import type { VarianceSignoff } from "../../../types/component/Till";
 import type { Booking } from "../../../types/domains/bookingsDomain";
 import { calculateDiscrepancy } from "../../../utils/cashUtils";
 import { startOfMonthLocal, toEpochMillis } from "../../../utils/dateUtils";
+import {
+  generateShiftId,
+  getStoredShiftId,
+  setStoredShiftId,
+} from "../../../utils/shiftId";
 import { showToast } from "../../../utils/toastUtils";
 import useBookings from "../../data/useBookingsData";
 import { useCashDiscrepanciesData } from "../../data/useCashDiscrepanciesData";
@@ -19,6 +25,7 @@ import { useCashDiscrepanciesMutations } from "../../mutations/useCashDiscrepanc
 import { useCCIrregularitiesMutations } from "../../mutations/useCCIrregularitiesMutations";
 import { useKeycardDiscrepanciesMutations } from "../../mutations/useKeycardDiscrepanciesMutations";
 import { useShiftEventsMutations } from "../../mutations/useShiftEventsMutations";
+import { useTillShiftsMutations } from "../../mutations/useTillShiftsMutations";
 
 import { findOpenShift, getLastClose } from "./shiftUtils";
 import { useShiftCalculations } from "./useShiftCalculations";
@@ -44,6 +51,7 @@ export function useTillShifts() {
   const { limit: cashDrawerLimit } = useCashDrawerLimit();
   const { addKeycardDiscrepancy } = useKeycardDiscrepanciesMutations();
   const { addShiftEvent } = useShiftEventsMutations();
+  const { recordShiftOpen, recordShiftClose } = useTillShiftsMutations();
 
   // Map occupantId -> occupant record for quick lookups
   const occupantsById = useMemo<Record<string, Booking>>(() => {
@@ -64,6 +72,9 @@ export function useTillShifts() {
   // Local ephemeral state
   const [shiftOpenTime, setShiftOpenTime] = useState<Date | null>(null);
   const [shiftOwner, setShiftOwner] = useState<string | null>(null);
+  const [currentShiftId, setCurrentShiftId] = useState<string | null>(() =>
+    getStoredShiftId()
+  );
   const [previousShiftCloseTime, setPreviousShiftCloseTime] =
     useState<Date | null>(null);
   const [openingCash, setOpeningCash] = useState<number>(0);
@@ -87,13 +98,21 @@ export function useTillShifts() {
       setShiftOwner(openShift.user);
       setOpeningCash(openShift.count ?? 0);
       setOpeningKeycards(openShift.keycardCount ?? 0);
+      if (openShift.shiftId && openShift.shiftId !== currentShiftId) {
+        setStoredShiftId(openShift.shiftId);
+        setCurrentShiftId(openShift.shiftId);
+      }
     } else {
       setShiftOpenTime(null);
       setShiftOwner(null);
       setOpeningCash(0);
       setOpeningKeycards(0);
+      if (currentShiftId) {
+        setStoredShiftId(null);
+        setCurrentShiftId(null);
+      }
     }
-  }, [cashCounts]);
+  }, [cashCounts, currentShiftId]);
 
   const lastCloseCashCount = useMemo(() => {
     const lastClose = getLastClose(cashCounts);
@@ -236,6 +255,10 @@ export function useTillShifts() {
       );
       const keycardDifference = openingKeycards - previousKeycards;
 
+      const shiftId = generateShiftId();
+      setStoredShiftId(shiftId);
+      setCurrentShiftId(shiftId);
+
       // 4. Write to /cashCounts
       addCashCount(
         "opening",
@@ -245,6 +268,10 @@ export function useTillShifts() {
         denomBreakdown,
         openingKeycards
       );
+      recordShiftOpen(shiftId, {
+        openingCash: calculatedCash,
+        openingKeycards,
+      });
       if (keycardDifference !== 0) {
         addKeycardDiscrepancy(keycardDifference);
       }
@@ -266,7 +293,7 @@ export function useTillShifts() {
       setFinalCashCount(0);
       setFinalKeycardCount(0);
       setShowOpenShiftForm(false);
-      addShiftEvent("open", calculatedCash, openingKeycards, difference);
+      addShiftEvent("open", calculatedCash, openingKeycards, difference, shiftId);
 
       // Track the last close timestamp (for next shift)
       if (lastClose) {
@@ -283,7 +310,9 @@ export function useTillShifts() {
       addCashDiscrepancy,
       addKeycardDiscrepancy,
       addShiftEvent,
+      recordShiftOpen,
       monthlyDiscrepancyCount,
+      setCurrentShiftId,
       setShowOpenShiftForm,
     ]
   );
@@ -361,7 +390,9 @@ export function useTillShifts() {
       countedCash: number,
       countedKeycards: number,
       allReceiptsConfirmed: boolean,
-      denomBreakdown: Record<string, number> = {}
+      denomBreakdown: Record<string, number> = {},
+      varianceSignoff?: VarianceSignoff,
+      varianceSignoffRequired?: boolean
     ) => {
       if (!user) {
         showToast("Not authorized. Please log in.", "error");
@@ -380,10 +411,22 @@ export function useTillShifts() {
         return;
       }
 
+      const existingShiftId = currentShiftId ?? getStoredShiftId();
+      const closeShiftId = existingShiftId ?? generateShiftId();
+      if (!existingShiftId) {
+        setStoredShiftId(closeShiftId);
+        setCurrentShiftId(closeShiftId);
+      }
+
       const difference = calculateDiscrepancy(
         countedCash,
         expectedCashAtClose
       );
+
+      if (varianceSignoffRequired && !varianceSignoff) {
+        showToast("Manager sign-off is required before closing this shift.", "error");
+        return;
+      }
 
       if (action === "close") {
         addCashCount(
@@ -394,6 +437,24 @@ export function useTillShifts() {
           denomBreakdown,
           countedKeycards
         );
+        recordShiftClose(closeShiftId, {
+          closingCash: countedCash,
+          closingKeycards: countedKeycards,
+          closeDifference: difference,
+          closeType: "close",
+          varianceSignoffRequired,
+          signedOffBy: varianceSignoff?.signedOffBy,
+          signedOffByUid: varianceSignoff?.signedOffByUid,
+          signedOffAt: varianceSignoff?.signedOffAt,
+          varianceNote: varianceSignoff?.varianceNote,
+        });
+        addShiftEvent(
+          "close",
+          countedCash,
+          countedKeycards,
+          difference,
+          closeShiftId
+        );
       } else {
         addCashCount(
           "reconcile",
@@ -403,6 +464,28 @@ export function useTillShifts() {
           denomBreakdown,
           countedKeycards
         );
+        recordShiftClose(closeShiftId, {
+          closingCash: countedCash,
+          closingKeycards: countedKeycards,
+          closeDifference: difference,
+          closeType: "reconcile",
+          varianceSignoffRequired,
+          signedOffBy: varianceSignoff?.signedOffBy,
+          signedOffByUid: varianceSignoff?.signedOffByUid,
+          signedOffAt: varianceSignoff?.signedOffAt,
+          varianceNote: varianceSignoff?.varianceNote,
+        });
+        addShiftEvent(
+          "reconcile",
+          countedCash,
+          countedKeycards,
+          difference,
+          closeShiftId
+        );
+
+        const nextShiftId = generateShiftId();
+        setStoredShiftId(nextShiftId);
+        setCurrentShiftId(nextShiftId);
         addCashCount(
           "opening",
           countedCash,
@@ -411,6 +494,10 @@ export function useTillShifts() {
           denomBreakdown,
           countedKeycards
         );
+        recordShiftOpen(nextShiftId, {
+          openingCash: countedCash,
+          openingKeycards: countedKeycards,
+        });
       }
       if (difference !== 0) {
         addCashDiscrepancy(difference);
@@ -432,6 +519,8 @@ export function useTillShifts() {
         setShiftOpenTime(null);
         setShiftOwner(null);
         setShowCloseShiftForm(false);
+        setStoredShiftId(null);
+        setCurrentShiftId(null);
       } else {
         setOpeningCash(countedCash);
         setOpeningKeycards(countedKeycards);
@@ -440,7 +529,6 @@ export function useTillShifts() {
         setShowCloseShiftForm(false);
       }
 
-      addShiftEvent(action, countedCash, countedKeycards, difference);
     },
     [
       user,
@@ -453,8 +541,12 @@ export function useTillShifts() {
       addCCIrregularity,
       addKeycardDiscrepancy,
       addShiftEvent,
+      currentShiftId,
+      recordShiftClose,
+      recordShiftOpen,
       expectedKeycardsAtClose,
       setShowCloseShiftForm,
+      setCurrentShiftId,
     ]
   );
 

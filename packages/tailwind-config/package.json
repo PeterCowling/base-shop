@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "pnpm exec jest --config ./jest.config.cjs"

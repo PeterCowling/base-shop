@@ -14,7 +14,6 @@ jest.mock("../../dataRoot", () => ({
 
 // Use globalThis to store test files - this avoids Jest hoisting issues
 declare global {
-  // eslint-disable-next-line no-var
   var __settingsTestFiles: Map<string, string> | undefined;
 }
 globalThis.__settingsTestFiles = new Map<string, string>();
@@ -348,6 +347,5 @@ describe("settings.server sequential repository usage", () => {
     expect(repo.diffHistory).toHaveBeenCalledWith("shop");
   });
 });
-
 
 

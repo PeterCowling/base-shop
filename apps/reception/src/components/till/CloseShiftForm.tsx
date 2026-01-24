@@ -1,24 +1,26 @@
 /* src/components/till/CloseShiftForm.tsx */
 
-import { memo, useCallback, useEffect, useMemo,useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { settings } from "../../constants/settings";
 import { useAuth } from "../../context/AuthContext";
+import { useVarianceThresholds } from "../../hooks/data/useVarianceThresholds";
 import useShiftProgress, {
   type ShiftProgress,
   useAutoSaveShiftProgress,
 } from "../../hooks/utilities/useShiftProgress";
-import { type CloseShiftFormProps } from "../../types/component/Till";
-import { getUserByPin } from "../../utils/getUserByPin";
+import { getUserDisplayName } from "../../lib/roles";
+import { type CloseShiftFormProps, type VarianceSignoff } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
-import PinEntryModal from "../common/PinEntryModal";
+import PasswordReauthModal from "../common/PasswordReauthModal";
 
 import { CreditCardReceiptCheck } from "./CreditCardReceiptCheck";
 import { KeycardCountForm } from "./KeycardCountForm";
 import StepProgress from "./StepProgress";
+import VarianceSignoffModal from "./VarianceSignoffModal";
 
 const calcBreakdownTotal = (breakdown: Record<string, number>): number =>
   Object.entries(breakdown).reduce(
@@ -68,6 +70,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
   );
 
   const { user } = useAuth();
+  const { thresholds } = useVarianceThresholds();
 
   const [recountRequired, setRecountRequired] = useState(false);
   const [countedCash, setCountedCash] = useState(saved?.cash ?? 0);
@@ -75,13 +78,38 @@ export const CloseShiftForm = memo(function CloseShiftForm({
   const [denomBreakdown, setDenomBreakdown] = useState<Record<string, number>>({});
 
   const diff = countedCash - expectedCashAtClose;
+  const keycardDiff = countedKeycards - expectedKeycardsAtClose;
 
-  const [showPinModal, setShowPinModal] = useState(false);
+  const [showReauthModal, setShowReauthModal] = useState(false);
+  const [showVarianceSignoff, setShowVarianceSignoff] = useState(false);
+  const [varianceSignoff, setVarianceSignoff] = useState<VarianceSignoff | null>(
+    null
+  );
 
+  const cashVarianceThreshold = thresholds.cash ?? DISCREPANCY_LIMIT;
+  const keycardVarianceThreshold = thresholds.keycards;
+  const varianceRequiresSignoff =
+    !isReconcile &&
+    (Math.abs(diff) > cashVarianceThreshold ||
+      (typeof keycardVarianceThreshold === "number" &&
+        Math.abs(keycardDiff) > keycardVarianceThreshold));
+
+  useEffect(() => {
+    if (!varianceRequiresSignoff && varianceSignoff) {
+      setVarianceSignoff(null);
+    }
+  }, [varianceRequiresSignoff, varianceSignoff]);
 
   const finishConfirm = () => {
     progressStore.clear();
-    onConfirm(countedCash, countedKeycards, allReceiptsConfirmed, denomBreakdown);
+    onConfirm(
+      countedCash,
+      countedKeycards,
+      allReceiptsConfirmed,
+      denomBreakdown,
+      varianceSignoff ?? undefined,
+      varianceRequiresSignoff
+    );
   };
 
   const handleConfirm = () => {
@@ -101,19 +129,24 @@ export const CloseShiftForm = memo(function CloseShiftForm({
     }
     if (isReconcile) {
       finishConfirm();
-    } else {
-      setShowPinModal(true);
+      return;
     }
+    if (varianceRequiresSignoff && !varianceSignoff) {
+      setShowVarianceSignoff(true);
+      return;
+    }
+    setShowReauthModal(true);
   };
 
-  const handlePinSubmit = (pin: string): boolean => {
-    const current = getUserByPin(pin);
-    if (!user) return false;
-
-    if (!current || current.user_name !== user.user_name) return false;
-    setShowPinModal(false);
+  const handleReauthSuccess = () => {
+    setShowReauthModal(false);
     finishConfirm();
-    return true;
+  };
+
+  const handleVarianceSignoff = (signoff: VarianceSignoff) => {
+    setVarianceSignoff(signoff);
+    setShowVarianceSignoff(false);
+    setShowReauthModal(true);
   };
 
   const handleStep0Next = () => {
@@ -143,6 +176,9 @@ export const CloseShiftForm = memo(function CloseShiftForm({
     ) => {
       setCountedCash(cash);
       setDenomBreakdown(breakdown);
+      if (varianceSignoff) {
+        setVarianceSignoff(null);
+      }
       if (firstUpdate.current) {
         firstUpdate.current = false;
       } else if (settings.blindClose && !showExpected) {
@@ -152,7 +188,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
         setRecountRequired(false);
       }
     },
-    [recountRequired, showExpected]
+    [recountRequired, showExpected, varianceSignoff]
   );
 
   const saveProgress = () => {
@@ -179,11 +215,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
   return (
     <>
-      <StepProgress
-        step={step}
-        onStepChange={setStep}
-        userName={user?.user_name}
-      />
+      <StepProgress step={step} onStepChange={setStep} user={user} />
       {step === 0 && (
         <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
           <button
@@ -257,17 +289,26 @@ export const CloseShiftForm = memo(function CloseShiftForm({
         </div>
       )}
 
-      {showPinModal && (
-        <PinEntryModal
-          title="Confirm PIN"
-          instructions="Enter your staff PIN to close the shift."
-          onSubmit={handlePinSubmit}
-          onCancel={() => setShowPinModal(false)}
-          hideCancel
+      {showReauthModal && (
+        <PasswordReauthModal
+          title="Confirm shift close"
+          instructions="Enter your password to close the shift."
+          onSuccess={handleReauthSuccess}
+          onCancel={() => setShowReauthModal(false)}
         />
       )}
 
-      {step === 2 && !showPinModal && (
+      {showVarianceSignoff && !showReauthModal && (
+        <VarianceSignoffModal
+          shiftOwnerName={getUserDisplayName(user)}
+          shiftOwnerUid={user?.uid}
+          varianceAmount={diff}
+          onConfirm={handleVarianceSignoff}
+          onCancel={() => setShowVarianceSignoff(false)}
+        />
+      )}
+
+      {step === 2 && !showReauthModal && (
         <div className="relative dark:bg-darkSurface dark:text-darkAccentGreen">
           <button
             onClick={onCancel}
@@ -279,6 +320,9 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             <KeycardCountForm
               expectedCount={expectedKeycardsAtClose}
               onConfirm={(count) => {
+                if (varianceSignoff) {
+                  setVarianceSignoff(null);
+                }
                 setCountedKeycards(count);
                 handleConfirm();
               }}

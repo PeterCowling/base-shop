@@ -40,23 +40,8 @@ type SectionExtra = PageComponent & {
 };
 type Props = EditorProps<SectionExtra>;
 
-export default function SectionEditor({ component, onChange }: Props) {
-  // i18n-exempt — internal editor labels
-  /* i18n-exempt */
-  const t = (s: string) => s;
-  const [imgEditorOpen, setImgEditorOpen] = useState(false);
-  const previewTokens = usePreviewTokens();
-  const textThemes = extractTextThemes(previewTokens);
-  const editState = useMemo<ImageEditState>(() => ({
-    cropAspect: undefined,
-    focalPoint: component.backgroundFocalPoint ?? { x: 0.5, y: 0.5 },
-  }), [component.backgroundFocalPoint]);
-
-  const handle = useCallback(<K extends keyof SectionExtra>(field: K, value: SectionExtra[K]) => {
-    onChange({ [field]: value } as Partial<SectionExtra>);
-  }, [onChange]);
-
-  const initialFilter = (() => {
+function useFilterValue(component: SectionExtra, onChange: (patch: Partial<SectionExtra>) => void) {
+  const initialFilter = useMemo(() => {
     try {
       const raw = component.styles as string | undefined;
       if (!raw) return undefined;
@@ -65,90 +50,149 @@ export default function SectionEditor({ component, onChange }: Props) {
     } catch {
       return undefined;
     }
-  })();
+  }, [component.styles]);
 
-  const applyFilter = useCallback((filter: string | undefined) => {
-    try {
-      const raw = component.styles as string | undefined;
-      const base = raw ? (JSON.parse(String(raw)) as Record<string, unknown>) : {};
-      const next = { ...base, effects: { ...(base.effects ?? {}), filter } };
-      handle("styles", JSON.stringify(next));
-    } catch {
-      const next = { effects: { filter } };
-      handle("styles", JSON.stringify(next));
-    }
-  }, [component, handle]);
+  const applyFilter = useCallback(
+    (filter: string | undefined) => {
+      try {
+        const raw = component.styles as string | undefined;
+        const base = raw ? (JSON.parse(String(raw)) as Record<string, unknown>) : {};
+        const next = { ...base, effects: { ...(base.effects ?? {}), filter } };
+        onChange({ styles: JSON.stringify(next) });
+      } catch {
+        const next = { effects: { filter } };
+        onChange({ styles: JSON.stringify(next) });
+      }
+    },
+    [component.styles, onChange]
+  );
 
+  return { initialFilter, applyFilter };
+}
+
+interface TextThemeSectionProps {
+  component: SectionExtra;
+  textThemes: TextTheme[];
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function TextThemeSection({ component, textThemes, onChange, t }: TextThemeSectionProps) {
   return (
-    <div className="space-y-2">
-      {/* Section typography + height */}
-      <div className="grid grid-cols-2 gap-2">
-        <Select
-          value={component.textTheme ?? ""}
-          onValueChange={(v) => handle("textTheme", (v || undefined) as string | undefined)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder={t("Text theme")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">{t("Default")}</SelectItem>
-            {textThemes.map((t: TextTheme) => (
-              <SelectItem key={t.id} value={t.id}>{t.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          value={component.heightPreset ?? ""}
-          onValueChange={(v) => handle("heightPreset", (v || undefined) as SectionExtra["heightPreset"] | undefined)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder={t("Height preset")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="auto">{t("Auto")}</SelectItem>
-            <SelectItem value="compact">{t("Compact")}</SelectItem>
-            <SelectItem value="standard">{t("Standard")}</SelectItem>
-            <SelectItem value="tall">{t("Tall")}</SelectItem>
-            <SelectItem value="full">{t("Full screen")}</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="grid grid-cols-3 gap-2">
-        <Input
-          label={t("Min height")}
-          placeholder={t("e.g. 480px or 80svh")}
-          value={component.minHeight ?? ""}
-          onChange={(e) => handle("minHeight", (e.target.value || undefined))}
-        />
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => handle("minHeight", "100svh")}
-          title={t("Set full viewport height")}
-        >{t("Full (100svh)")}</Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => handle("minHeight", undefined)}
-          title={t("Clear minimum height")}
-        >{t("Clear min")}</Button>
-      </div>
-      {/* Background image */}
+    <Select
+      value={component.textTheme ?? ""}
+      onValueChange={(v) => onChange({ textTheme: (v || undefined) as string | undefined })}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder={t("Text theme")} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="">{t("Default")}</SelectItem>
+        {textThemes.map((theme) => (
+          <SelectItem key={theme.id} value={theme.id}>
+            {theme.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+interface HeightSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function HeightSection({ component, onChange, t }: HeightSectionProps) {
+  return (
+    <Select
+      value={component.heightPreset ?? ""}
+      onValueChange={(v) =>
+        onChange({ heightPreset: (v || undefined) as SectionExtra["heightPreset"] | undefined })
+      }
+    >
+      <SelectTrigger>
+        <SelectValue placeholder={t("Height preset")} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="auto">{t("Auto")}</SelectItem>
+        <SelectItem value="compact">{t("Compact")}</SelectItem>
+        <SelectItem value="standard">{t("Standard")}</SelectItem>
+        <SelectItem value="tall">{t("Tall")}</SelectItem>
+        <SelectItem value="full">{t("Full screen")}</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
+interface MinHeightSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function MinHeightSection({ component, onChange, t }: MinHeightSectionProps) {
+  return (
+    <div className="grid grid-cols-3 gap-2">
+      <Input
+        label={t("Min height")}
+        placeholder={t("e.g. 480px or 80svh")}
+        value={component.minHeight ?? ""}
+        onChange={(e) => onChange({ minHeight: e.target.value || undefined })}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => onChange({ minHeight: "100svh" })}
+        title={t("Set full viewport height")}
+      >
+        {t("Full (100svh)")}
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => onChange({ minHeight: undefined })}
+        title={t("Clear minimum height")}
+      >
+        {t("Clear min")}
+      </Button>
+    </div>
+  );
+}
+
+interface BackgroundImageSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  onOpenEditor: () => void;
+  t: (s: string) => string;
+}
+
+function BackgroundImageSection({ component, onChange, onOpenEditor, t }: BackgroundImageSectionProps) {
+  return (
+    <>
       <div className="flex items-start gap-2">
         <Input
           label={t("Background image URL")}
           value={component.backgroundImageUrl ?? ""}
-          onChange={(e) => handle("backgroundImageUrl", (e.target.value || undefined))}
+          onChange={(e) => onChange({ backgroundImageUrl: e.target.value || undefined })}
           placeholder="https://..."
         />
-        <Button type="button" variant="outline" disabled={!((component.backgroundImageUrl ?? ""))} onClick={() => setImgEditorOpen(true)}>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={!component.backgroundImageUrl}
+          onClick={onOpenEditor}
+        >
           {t("Focal")}
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-2">
         <Select
           value={component.backgroundSize ?? ""}
-          onValueChange={(v) => handle("backgroundSize", (v || undefined) as SectionExtra["backgroundSize"] | undefined)}
+          onValueChange={(v) =>
+            onChange({ backgroundSize: (v || undefined) as SectionExtra["backgroundSize"] | undefined })
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder={t("Size")} />
@@ -161,7 +205,9 @@ export default function SectionEditor({ component, onChange }: Props) {
         </Select>
         <Select
           value={component.backgroundRepeat ?? ""}
-          onValueChange={(v) => handle("backgroundRepeat", (v || undefined) as SectionExtra["backgroundRepeat"] | undefined)}
+          onValueChange={(v) =>
+            onChange({ backgroundRepeat: (v || undefined) as SectionExtra["backgroundRepeat"] | undefined })
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder={t("Repeat")} />
@@ -175,7 +221,9 @@ export default function SectionEditor({ component, onChange }: Props) {
         </Select>
         <Select
           value={component.backgroundAttachment ?? ""}
-          onValueChange={(v) => handle("backgroundAttachment", (v || undefined) as SectionExtra["backgroundAttachment"] | undefined)}
+          onValueChange={(v) =>
+            onChange({ backgroundAttachment: (v || undefined) as SectionExtra["backgroundAttachment"] | undefined })
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder={t("Attachment")} />
@@ -191,28 +239,51 @@ export default function SectionEditor({ component, onChange }: Props) {
         <label className="text-xs font-semibold text-muted-foreground">{t("Overlay")}</label>
         <OverlayPicker
           value={component.backgroundOverlay ?? undefined}
-          onChange={(val) => handle("backgroundOverlay", (val || undefined))}
+          onChange={(val) => onChange({ backgroundOverlay: val || undefined })}
         />
       </div>
+    </>
+  );
+}
 
-      {/* Background video */}
+interface BackgroundVideoSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function BackgroundVideoSection({ component, onChange, t }: BackgroundVideoSectionProps) {
+  return (
+    <>
       <Input
         label={t("Background video URL")}
         value={component.backgroundVideoUrl ?? ""}
-        onChange={(e) => handle("backgroundVideoUrl", (e.target.value || undefined))}
+        onChange={(e) => onChange({ backgroundVideoUrl: e.target.value || undefined })}
         placeholder={t("cms.builder.section.videoUrl.placeholder")}
       />
       <div className="grid grid-cols-3 gap-2">
         <Input
           label={t("Poster")}
           value={component.backgroundVideoPoster ?? ""}
-          onChange={(e) => handle("backgroundVideoPoster", (e.target.value || undefined))}
+          onChange={(e) => onChange({ backgroundVideoPoster: e.target.value || undefined })}
         />
         <Select
-          value={(component.backgroundVideoLoop ?? undefined) === undefined ? "" : (component.backgroundVideoLoop ? "1" : "0")}
-          onValueChange={(v) => handle("backgroundVideoLoop", v === "__default__" ? undefined : (v === "" ? undefined : v === "1"))}
+          value={
+            (component.backgroundVideoLoop ?? undefined) === undefined
+              ? ""
+              : component.backgroundVideoLoop
+                ? "1"
+                : "0"
+          }
+          onValueChange={(v) =>
+            onChange({
+              backgroundVideoLoop: v === "__default__" ? undefined : v === "" ? undefined : v === "1",
+            })
+          }
         >
-          <SelectTrigger><SelectValue placeholder={t("Loop")} /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue placeholder={t("Loop")} />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="__default__">{t("Default")}</SelectItem>
             <SelectItem value="1">{t("true")}</SelectItem>
@@ -220,10 +291,22 @@ export default function SectionEditor({ component, onChange }: Props) {
           </SelectContent>
         </Select>
         <Select
-          value={(component.backgroundVideoMuted ?? undefined) === undefined ? "" : (component.backgroundVideoMuted ? "1" : "0")}
-          onValueChange={(v) => handle("backgroundVideoMuted", v === "__default__" ? undefined : (v === "" ? undefined : v === "1"))}
+          value={
+            (component.backgroundVideoMuted ?? undefined) === undefined
+              ? ""
+              : component.backgroundVideoMuted
+                ? "1"
+                : "0"
+          }
+          onValueChange={(v) =>
+            onChange({
+              backgroundVideoMuted: v === "__default__" ? undefined : v === "" ? undefined : v === "1",
+            })
+          }
         >
-          <SelectTrigger><SelectValue placeholder={t("Muted")} /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue placeholder={t("Muted")} />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="__default__">{t("Default")}</SelectItem>
             <SelectItem value="1">{t("true")}</SelectItem>
@@ -231,114 +314,262 @@ export default function SectionEditor({ component, onChange }: Props) {
           </SelectContent>
         </Select>
       </div>
+    </>
+  );
+}
 
-      {/* Section parallax */}
-      <Input
-        label={t("Parallax")}
-        type="number"
-        step="0.05"
-        min="-5"
-        max="5"
-        value={component.sectionParallax ?? ""}
-        onChange={(e) => handle("sectionParallax", (e.target.value === "" ? undefined : Number(e.target.value)))}
-        placeholder={t("0.2")}
+interface ParallaxSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function ParallaxSection({ component, onChange, t }: ParallaxSectionProps) {
+  return (
+    <Input
+      label={t("Parallax")}
+      type="number"
+      step="0.05"
+      min="-5"
+      max="5"
+      value={component.sectionParallax ?? ""}
+      onChange={(e) =>
+        onChange({ sectionParallax: e.target.value === "" ? undefined : Number(e.target.value) })
+      }
+      placeholder={t("0.2")}
+    />
+  );
+}
+
+interface EqualizeSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function EqualizeSection({ component, onChange, t }: EqualizeSectionProps) {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      <Button
+        type="button"
+        variant={component.equalizeInnerHeights ? "default" : "outline"}
+        onClick={() => onChange({ equalizeInnerHeights: !component.equalizeInnerHeights })}
+        title={t("Make inner children share equal heights (grid auto-rows: 1fr)")}
+      >
+        {t("Equalize inner heights")}
+      </Button>
+    </div>
+  );
+}
+
+interface ShapeSectionProps {
+  component: SectionExtra;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  t: (s: string) => string;
+}
+
+function ShapeSection({ component, onChange, t }: ShapeSectionProps) {
+  return (
+    <div className="mt-4 grid grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <label className="text-xs font-semibold text-muted-foreground">{t("Top shape")}</label>
+        <div className="grid grid-cols-2 gap-2">
+          <Select
+            value={component.topShapePreset ?? ""}
+            onValueChange={(v) =>
+              onChange({ topShapePreset: (v || undefined) as SectionExtra["topShapePreset"] | undefined })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t("Preset")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="wave">{t("wave")}</SelectItem>
+              <SelectItem value="tilt">{t("tilt")}</SelectItem>
+              <SelectItem value="curve">{t("curve")}</SelectItem>
+              <SelectItem value="mountain">{t("mountain")}</SelectItem>
+              <SelectItem value="triangle">{t("triangle")}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Input
+            label={t("Color")}
+            value={component.topShapeColor ?? ""}
+            onChange={(e) => onChange({ topShapeColor: e.target.value || undefined })}
+            placeholder="var(--token)"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <Input
+            label={t("Height (px)")}
+            type="number"
+            min="0"
+            value={component.topShapeHeight ?? ""}
+            onChange={(e) =>
+              onChange({ topShapeHeight: e.target.value === "" ? undefined : Number(e.target.value) })
+            }
+          />
+          <Select
+            value={(component.topShapeFlipX ?? undefined) === undefined ? "" : component.topShapeFlipX ? "1" : "0"}
+            onValueChange={(v) =>
+              onChange({ topShapeFlipX: v === "__default__" ? undefined : v === "" ? undefined : v === "1" })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t("Flip X")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__default__">{t("default")}</SelectItem>
+              <SelectItem value="1">{t("true")}</SelectItem>
+              <SelectItem value="0">{t("false")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <label className="text-xs font-semibold text-muted-foreground">{t("Bottom shape")}</label>
+        <div className="grid grid-cols-2 gap-2">
+          <Select
+            value={component.bottomShapePreset ?? ""}
+            onValueChange={(v) =>
+              onChange({ bottomShapePreset: (v || undefined) as SectionExtra["bottomShapePreset"] | undefined })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t("Preset")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="wave">{t("wave")}</SelectItem>
+              <SelectItem value="tilt">{t("tilt")}</SelectItem>
+              <SelectItem value="curve">{t("curve")}</SelectItem>
+              <SelectItem value="mountain">{t("mountain")}</SelectItem>
+              <SelectItem value="triangle">{t("triangle")}</SelectItem>
+            </SelectContent>
+          </Select>
+          <Input
+            label={t("Color")}
+            value={component.bottomShapeColor ?? ""}
+            onChange={(e) => onChange({ bottomShapeColor: e.target.value || undefined })}
+            placeholder="var(--token)"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <Input
+            label={t("Height (px)")}
+            type="number"
+            min="0"
+            value={component.bottomShapeHeight ?? ""}
+            onChange={(e) =>
+              onChange({ bottomShapeHeight: e.target.value === "" ? undefined : Number(e.target.value) })
+            }
+          />
+          <Select
+            value={
+              (component.bottomShapeFlipX ?? undefined) === undefined ? "" : component.bottomShapeFlipX ? "1" : "0"
+            }
+            onValueChange={(v) =>
+              onChange({ bottomShapeFlipX: v === "__default__" ? undefined : v === "" ? undefined : v === "1" })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t("Flip X")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__default__">{t("default")}</SelectItem>
+              <SelectItem value="1">{t("true")}</SelectItem>
+              <SelectItem value="0">{t("false")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface ImageEditorSectionProps {
+  open: boolean;
+  onClose: () => void;
+  component: SectionExtra;
+  editState: ImageEditState;
+  initialFilter: string | undefined;
+  onChange: (patch: Partial<SectionExtra>) => void;
+  onApplyFilter: (filter: string | undefined) => void;
+}
+
+function ImageEditorSection({
+  open,
+  onClose,
+  component,
+  editState,
+  initialFilter,
+  onChange,
+  onApplyFilter,
+}: ImageEditorSectionProps) {
+  if (!open || !component.backgroundImageUrl) return null;
+  return (
+    <ImageEditor
+      open={open}
+      src={component.backgroundImageUrl}
+      initial={editState}
+      initialFilter={initialFilter}
+      onClose={onClose}
+      onApply={(next) => {
+        onChange({ backgroundFocalPoint: next.focalPoint || { x: 0.5, y: 0.5 } });
+      }}
+      onApplyFilter={onApplyFilter}
+    />
+  );
+}
+
+export default function SectionEditor({ component, onChange }: Props) {
+  // i18n-exempt — internal editor labels
+  /* i18n-exempt */
+  const t = (s: string) => s;
+  const [imgEditorOpen, setImgEditorOpen] = useState(false);
+  const previewTokens = usePreviewTokens();
+  const textThemes = extractTextThemes(previewTokens);
+  const editState = useMemo<ImageEditState>(() => ({
+    cropAspect: undefined,
+    focalPoint: component.backgroundFocalPoint ?? { x: 0.5, y: 0.5 },
+  }), [component.backgroundFocalPoint]);
+  const { initialFilter, applyFilter } = useFilterValue(component, onChange);
+
+  return (
+    <div className="space-y-2">
+      {/* Section typography + height */}
+      <div className="grid grid-cols-2 gap-2">
+        <TextThemeSection component={component} textThemes={textThemes} onChange={onChange} t={t} />
+        <HeightSection component={component} onChange={onChange} t={t} />
+      </div>
+      <MinHeightSection component={component} onChange={onChange} t={t} />
+      {/* Background image */}
+      <BackgroundImageSection
+        component={component}
+        onChange={onChange}
+        onOpenEditor={() => setImgEditorOpen(true)}
+        t={t}
       />
 
+      {/* Background video */}
+      <BackgroundVideoSection component={component} onChange={onChange} t={t} />
+
+      {/* Section parallax */}
+      <ParallaxSection component={component} onChange={onChange} t={t} />
+
       {/* Inner layout helpers */}
-      <div className="grid grid-cols-2 gap-2">
-        <Button
-          type="button"
-          variant={component.equalizeInnerHeights ? "default" : "outline"}
-          onClick={() => handle("equalizeInnerHeights", !component.equalizeInnerHeights)}
-          title={t("Make inner children share equal heights (grid auto-rows: 1fr)")}
-        >
-          {t("Equalize inner heights")}
-        </Button>
-      </div>
+      <EqualizeSection component={component} onChange={onChange} t={t} />
 
       {/* Shape dividers */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-muted-foreground">{t("Top shape")}</label>
-          <div className="grid grid-cols-2 gap-2">
-            <Select
-              value={component.topShapePreset ?? ""}
-              onValueChange={(v) => handle("topShapePreset", (v || undefined) as SectionExtra["topShapePreset"] | undefined)}
-            >
-              <SelectTrigger><SelectValue placeholder={t("Preset")} /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="wave">{t("wave")}</SelectItem>
-                <SelectItem value="tilt">{t("tilt")}</SelectItem>
-                <SelectItem value="curve">{t("curve")}</SelectItem>
-                <SelectItem value="mountain">{t("mountain")}</SelectItem>
-                <SelectItem value="triangle">{t("triangle")}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input label={t("Color")} value={component.topShapeColor ?? ""} onChange={(e) => handle("topShapeColor", (e.target.value || undefined))} placeholder="var(--token)" />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Input label={t("Height (px)")} type="number" min="0" value={component.topShapeHeight ?? ""} onChange={(e) => handle("topShapeHeight", (e.target.value === "" ? undefined : Number(e.target.value)))} />
-            <Select
-              value={(component.topShapeFlipX ?? undefined) === undefined ? "" : (component.topShapeFlipX ? "1" : "0")}
-              onValueChange={(v) => handle("topShapeFlipX", v === "__default__" ? undefined : (v === "" ? undefined : v === "1"))}
-            >
-              <SelectTrigger><SelectValue placeholder={t("Flip X")} /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__default__">{t("default")}</SelectItem>
-                <SelectItem value="1">{t("true")}</SelectItem>
-                <SelectItem value="0">{t("false")}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-muted-foreground">{t("Bottom shape")}</label>
-          <div className="grid grid-cols-2 gap-2">
-            <Select
-              value={component.bottomShapePreset ?? ""}
-              onValueChange={(v) => handle("bottomShapePreset", (v || undefined) as SectionExtra["bottomShapePreset"] | undefined)}
-            >
-              <SelectTrigger><SelectValue placeholder={t("Preset")} /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="wave">{t("wave")}</SelectItem>
-                <SelectItem value="tilt">{t("tilt")}</SelectItem>
-                <SelectItem value="curve">{t("curve")}</SelectItem>
-                <SelectItem value="mountain">{t("mountain")}</SelectItem>
-                <SelectItem value="triangle">{t("triangle")}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input label={t("Color")} value={component.bottomShapeColor ?? ""} onChange={(e) => handle("bottomShapeColor", (e.target.value || undefined))} placeholder="var(--token)" />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Input label={t("Height (px)")} type="number" min="0" value={component.bottomShapeHeight ?? ""} onChange={(e) => handle("bottomShapeHeight", (e.target.value === "" ? undefined : Number(e.target.value)))} />
-            <Select
-              value={(component.bottomShapeFlipX ?? undefined) === undefined ? "" : (component.bottomShapeFlipX ? "1" : "0")}
-              onValueChange={(v) => handle("bottomShapeFlipX", v === "__default__" ? undefined : (v === "" ? undefined : v === "1"))}
-            >
-              <SelectTrigger><SelectValue placeholder={t("Flip X")} /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__default__">{t("default")}</SelectItem>
-                <SelectItem value="1">{t("true")}</SelectItem>
-                <SelectItem value="0">{t("false")}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </div>
+      <ShapeSection component={component} onChange={onChange} t={t} />
 
-      {imgEditorOpen && component.backgroundImageUrl ? (
-        <ImageEditor
-          open={imgEditorOpen}
-          src={component.backgroundImageUrl}
-          initial={editState}
-          initialFilter={initialFilter}
-          onClose={() => setImgEditorOpen(false)}
-          onApply={(next) => {
-            handle("backgroundFocalPoint", next.focalPoint || { x: 0.5, y: 0.5 });
-          }}
-          onApplyFilter={applyFilter}
-        />
-      ) : null}
+      <ImageEditorSection
+        open={imgEditorOpen}
+        onClose={() => setImgEditorOpen(false)}
+        component={component}
+        editState={editState}
+        initialFilter={initialFilter}
+        onChange={onChange}
+        onApplyFilter={applyFilter}
+      />
     </div>
   );
 }

@@ -35,6 +35,21 @@ export interface FinancialTransaction {
   docType?: string;
   /** Indicates that this transaction relates to a keycard. */
   isKeycard?: boolean;
+  /** Associates the transaction with a till shift. */
+  shiftId?: string;
+  /** Correction metadata. */
+  sourceTxnId?: string;
+  correctionReason?: string;
+  correctionKind?: "reversal" | "replacement" | "adjustment";
+  correctedBy?: string;
+  correctedByUid?: string;
+  correctedShiftId?: string;
+  /** Void metadata. */
+  voidedAt?: string;
+  voidedBy?: string;
+  voidedByUid?: string;
+  voidReason?: string;
+  voidedShiftId?: string;
 }
 
 /**

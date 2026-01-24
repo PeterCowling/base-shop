@@ -1,6 +1,6 @@
 
 import "@testing-library/jest-dom";
-import { getThemeInitScript } from "@/utils/themeInit";
+import { initTheme } from "@acme/platform-core/utils";
 
 type RunScriptOptions = {
   prefersDark?: boolean;
@@ -38,7 +38,7 @@ function runScript({
     delete (window as unknown as Record<string, unknown>).matchMedia;
   }
 
-  new Function(getThemeInitScript())();
+  new Function(initTheme)();
 }
 
 beforeEach(() => {
@@ -47,15 +47,15 @@ beforeEach(() => {
   jest.restoreAllMocks();
 });
 
-describe("getThemeInitScript", () => {
+describe("initTheme", () => {
   it("applies the stored dark theme", () => {
-    localStorage.setItem("theme", "dark");
+    localStorage.setItem("theme-mode", "dark");
     runScript({ prefersDark: false });
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
   });
 
   it("applies the stored light theme even if prefers dark", () => {
-    localStorage.setItem("theme", "light");
+    localStorage.setItem("theme-mode", "light");
     runScript({ prefersDark: true });
     expect(document.documentElement.classList.contains("theme-dark")).toBe(false);
   });
@@ -81,7 +81,7 @@ describe("getThemeInitScript", () => {
   });
 
   it("outputs a self-invoking script string", () => {
-    const script = getThemeInitScript();
+    const script = initTheme;
     expect(typeof script).toBe("string");
     expect(script).toMatch(/^\(function\s\(\)/);
     expect(script).toContain("localStorage.getItem");

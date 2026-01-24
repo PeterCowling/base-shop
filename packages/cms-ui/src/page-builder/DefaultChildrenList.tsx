@@ -70,9 +70,16 @@ export default function DefaultChildrenList({
               data-placeholder
               className={
                 (dropAllowed === false
-                  ? "border-danger bg-danger/10 ring-2 ring-danger"
-                  : "border-primary bg-primary/10 ring-2 ring-primary") +
-                " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none" // i18n-exempt: utility class names
+                  ? (
+                    // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+                    "border-danger bg-danger/10 ring-2 ring-danger"
+                  )
+                  : (
+                    // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+                    "border-primary bg-primary/10 ring-2 ring-primary"
+                  )) +
+                // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+                " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
               }
             />
           )}
@@ -88,7 +95,8 @@ export default function DefaultChildrenList({
 
           <InlineInsert
             index={i}
-            context="child" /* i18n-exempt: internal builder context label */
+            // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+            context="child"
             containerType={component.type}
             onInsert={(newComponent, index) => {
               const insertAt = toUnderlyingIndex(index);
@@ -130,15 +138,23 @@ export default function DefaultChildrenList({
           data-placeholder
           className={
             (dropAllowed === false
-              ? "border-danger bg-danger/10 ring-2 ring-danger"
-              : "border-primary bg-primary/10 ring-2 ring-primary") +
-            " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none" // i18n-exempt: utility class names
+              ? (
+                // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+                "border-danger bg-danger/10 ring-2 ring-danger"
+              )
+              : (
+                // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+                "border-primary bg-primary/10 ring-2 ring-primary"
+              )) +
+            // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+            " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
           }
         />
       )}
       <InlineInsert
         index={visibleChildren.length}
-        context="child" /* i18n-exempt: internal builder context label */
+        // i18n-exempt -- DS-1234 [ttl=2026-06-30]
+        context="child"
         containerType={component.type}
         onInsert={(newComponent, index) => {
           const insertAt = toUnderlyingIndex(index);

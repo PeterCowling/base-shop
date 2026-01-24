@@ -4,17 +4,16 @@ import {
   memo,
   type MouseEvent,
   useCallback,
-  useEffect,
-  useRef,
   useState,
 } from "react";
-import ReactDOM from "react-dom";
 import {
   faCreditCard,
   faMoneyBill,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 
 import type {
   PaymentSplit,
@@ -47,64 +46,14 @@ function PaymentForm({
   isDisabled,
 }: PaymentFormProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [menuPosition, setMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const hideMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const menuPositionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (menuOpen) {
-      setMenuVisible(true);
-    } else {
-      hideMenuTimeoutRef.current = setTimeout(
-        () => setMenuVisible(false),
-        200
-      );
-    }
-    return () => {
-      if (hideMenuTimeoutRef.current) {
-        clearTimeout(hideMenuTimeoutRef.current);
-      }
-    };
-  }, [menuOpen]);
-
-  const handleMenuToggle = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      if (!menuOpen && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        setMenuPosition({
-          top: rect.bottom + window.scrollY,
-          left: rect.left + window.scrollX,
-        });
-      } else {
-        if (menuPositionTimeoutRef.current) {
-          clearTimeout(menuPositionTimeoutRef.current);
-        }
-        menuPositionTimeoutRef.current = setTimeout(
-          () => setMenuPosition(null),
-          200
-        );
-      }
-      setMenuOpen((prev) => !prev);
+  const handleOpenChange = useCallback(
+    (next: boolean) => {
+      if (isDisabled) return;
+      setMenuOpen(next);
     },
-    [menuOpen]
+    [isDisabled]
   );
-
-  useEffect(() => {
-    return () => {
-      if (hideMenuTimeoutRef.current) {
-        clearTimeout(hideMenuTimeoutRef.current);
-      }
-      if (menuPositionTimeoutRef.current) {
-        clearTimeout(menuPositionTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const getPayTypeIcon = useCallback(() => {
     if (splitPayments.length === 1) {
@@ -139,26 +88,26 @@ function PaymentForm({
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (
-    <>
+    <Popover open={menuOpen} onOpenChange={handleOpenChange}>
       <div className="relative flex items-center">
-        <button
-          ref={buttonRef}
-          onClick={handleMenuToggle}
-          disabled={isDisabled}
-          style={{ height: "55px" }}
-          className={`px-4 flex items-center justify-center focus:outline-none transition-colors rounded-l ${leftButtonClass}`}
-          title={
-            isDisabled
-              ? "Payment not possible (already paid)"
-              : "Click to split/change payment"
-          }
-        >
-          <FontAwesomeIcon
-            icon={getPayTypeIcon()}
-            size="lg"
-            title={getPayTypeTooltip()}
-          />
-        </button>
+        <PopoverTrigger asChild>
+          <button
+            disabled={isDisabled}
+            style={{ height: "55px" }}
+            className={`px-4 flex items-center justify-center focus:outline-none transition-colors rounded-l ${leftButtonClass}`}
+            title={
+              isDisabled
+                ? "Payment not possible (already paid)"
+                : "Click to split/change payment"
+            }
+          >
+            <FontAwesomeIcon
+              icon={getPayTypeIcon()}
+              size="lg"
+              title={getPayTypeTooltip()}
+            />
+          </button>
+        </PopoverTrigger>
         <button
           onClick={handleImmediatePayment}
           disabled={isDisabled}
@@ -173,25 +122,18 @@ function PaymentForm({
         </button>
       </div>
 
-      {menuVisible &&
-        menuPosition &&
-        ReactDOM.createPortal(
-          <PaymentDropdown
-            menuOpen={menuOpen}
-            menuPosition={menuPosition}
-            splitPayments={splitPayments}
-            handleAmountChange={handleAmountChange}
-            handleSetPayType={handleSetPayType}
-            handleAddPaymentRow={handleAddPaymentRow}
-            handleRemovePaymentRow={handleRemovePaymentRow}
-            handleImmediatePayment={handleImmediatePayment}
-            isDisabled={isDisabled}
-            setMenuOpen={setMenuOpen}
-            setMenuPosition={setMenuPosition}
-          />,
-          document.body
-        )}
-    </>
+      <PopoverContent align="start" sideOffset={6} className="p-0">
+        <PaymentDropdown
+          splitPayments={splitPayments}
+          handleAmountChange={handleAmountChange}
+          handleSetPayType={handleSetPayType}
+          handleAddPaymentRow={handleAddPaymentRow}
+          handleRemovePaymentRow={handleRemovePaymentRow}
+          handleImmediatePayment={handleImmediatePayment}
+          isDisabled={isDisabled}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
 

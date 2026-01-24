@@ -10,6 +10,7 @@ packages:
   - "functions"
   - "scripts"
   - "__tests__"
+  - "tools/vscode-mcp-server"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

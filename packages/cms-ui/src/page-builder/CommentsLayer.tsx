@@ -9,7 +9,7 @@ import type { PageComponent } from "@acme/types";
 import usePresence from "./collab/usePresence";
 import CommentsPinsLayer from "./comments/CommentsPinsLayer";
 import CommentsToolbar from "./comments/CommentsToolbar";
-import type { Thread } from "./comments/types";
+import type { PositionsMap, Thread } from "./comments/types";
 import UndoToast from "./comments/UndoToast";
 import useAltClickCreate from "./comments/useAltClickCreate";
 import { useCommentsApi } from "./comments/useCommentsApi";
@@ -26,6 +26,37 @@ interface Props {
   selectedIds: string[];
   onSelectIds?: (ids: string[]) => void;
 }
+
+const findComponentType = (list: PageComponent[], id: string): string | null => {
+  for (const c of list) {
+    if (c.id === id) return c.type ?? null;
+    const children = (c as unknown as { children?: PageComponent[] }).children;
+    if (Array.isArray(children)) {
+      const type = findComponentType(children, id);
+      if (type) return type;
+    }
+  }
+  return null;
+};
+
+const buildComponentOptions = (
+  components: PageComponent[],
+  threads: Thread[],
+  positions: React.RefObject<PositionsMap>,
+) => {
+  const openCounts = new Map<string, number>();
+  threads.forEach((t) => openCounts.set(t.componentId, (openCounts.get(t.componentId) ?? 0) + (t.resolved ? 0 : 1)));
+  const ids = Object.keys(positions.current);
+  return ids.map((id) => {
+    const type = findComponentType(components, id);
+    const cnt = openCounts.get(id) ?? 0;
+    // i18n-exempt: internal builder label formatting
+    const suffix = cnt ? ` (${cnt} open)` : "";
+    // i18n-exempt: internal builder label fallback
+    const base = type ? `${type}` : "Component";
+    return { id, label: `${base} • ${id.slice(-4)}${suffix}` };
+  });
+};
 
 export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds, onSelectIds }: Props) {
   const t = useTranslations();
@@ -188,6 +219,10 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   useAltClickCreate(canvasRef, createThread, load);
 
   const visibleThreads = useMemo(() => threads.filter((t) => showResolved || !t.resolved), [threads, showResolved]);
+  const componentsOptions = useMemo(
+    () => buildComponentOptions(components, threads, positions),
+    [components, threads, positions],
+  );
 
   return (
     <div className="relative">
@@ -233,32 +268,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         onAssign={(id, who) => assign(id, who)}
         onDelete={(id) => del(id)}
         onJumpTo={(componentId) => jumpTo(componentId)}
-        componentsOptions={(() => {
-          const openCounts = new Map<string, number>();
-          threads.forEach((t) => openCounts.set(t.componentId, (openCounts.get(t.componentId) ?? 0) + (t.resolved ? 0 : 1)));
-          // helper to find type by id (avoid `any`)
-          const findType = (list: PageComponent[], id: string): string | null => {
-            for (const c of list) {
-              if (c.id === id) return c.type ?? null;
-              const children = (c as unknown as { children?: PageComponent[] }).children;
-              if (Array.isArray(children)) {
-                const t = findType(children, id);
-                if (t) return t;
-              }
-            }
-            return null;
-          };
-          const ids = Object.keys(positions.current);
-          return ids.map((id) => {
-            const type = findType(components, id);
-            const cnt = openCounts.get(id) ?? 0;
-            // i18n-exempt: internal builder label formatting
-            const suffix = cnt ? ` (${cnt} open)` : "";
-            // i18n-exempt: internal builder label fallback
-            const base = type ? `${type}` : "Component";
-            return { id, label: `${base} • ${id.slice(-4)}${suffix}` };
-          });
-        })()}
+        componentsOptions={componentsOptions}
         onCreate={async (componentId, text, assignedTo) => {
           const { ok, json } = await createThread(componentId, text, { assignedTo: assignedTo ?? undefined });
           await load();

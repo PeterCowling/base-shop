@@ -27,32 +27,16 @@ export default function Presets({
   onChange,
 }: PresetsProps): ReactElement {
   const t = useTranslations();
-   
-  const PRESET_SELECT_CLASS = "rounded border p-1";
-   
-  const PLACEHOLDER_P_CLASS = "text-sm text-muted";
   const applyPreset = (id: string) => {
     const preset = presetList?.find((p) => p.id === id);
     if (preset) {
       onChange({ ...tokens, ...preset.tokens });
       // Heuristically load Google Fonts for known families to keep previews WYSIWYG
        
-      const googleFamilies = new Set([
-        "Inter",
-        "Space Grotesk",
-        "Playfair Display",
-        "Lato",
-        "Source Sans 3",
-        "Montserrat",
-        "Rubik",
-        "Work Sans",
-        "Nunito",
-        "Quicksand",
-        "Open Sans",
-        "Roboto",
-        "Merriweather",
-        "Poppins",
-      ]);
+      const googleFamilies = new Set(
+        // i18n-exempt -- DS-1234 [ttl=2026-06-30] font family list
+        "Inter|Space Grotesk|Playfair Display|Lato|Source Sans 3|Montserrat|Rubik|Work Sans|Nunito|Quicksand|Open Sans|Roboto|Merriweather|Poppins".split("|")
+      );
        
       const injectGoogle = (name: string) => {
         const id = `google-font-${name}`;
@@ -79,23 +63,26 @@ export default function Presets({
   };
 
   if (presetList.length === 0) {
-     
     return (
-      <p className={PLACEHOLDER_P_CLASS} data-cy="presets-placeholder">
+      <p className="text-sm text-muted" data-cy={
+        // i18n-exempt -- DS-1234 [ttl=2026-06-30] test id
+        "presets-placeholder"
+      }>
         {t("cms.style.presets.none") as string}
       </p>
     );
-     
   }
 
-   
   return (
     <div className="flex items-center gap-2 text-sm">
       <label className="flex items-center gap-2">
         <span>{t("cms.style.presets.label") as string}</span>
         <select
-          data-cy="preset-select"
-          className={PRESET_SELECT_CLASS}
+          data-cy={
+            // i18n-exempt -- DS-1234 [ttl=2026-06-30] test id
+            "preset-select"
+          }
+          className="rounded border p-1"
           defaultValue=""
           onChange={(e) => applyPreset(e.target.value)}
         >
@@ -112,12 +99,11 @@ export default function Presets({
       <button
         type="button"
         data-cy="preset-reset"
-        className="rounded border px-2 py-1 min-h-10 min-w-10"
+        className="rounded border px-2 py-1 min-h-11 min-w-11"
         onClick={resetTokens}
       >
         {t("common.default") as string}
       </button>
     </div>
   );
-   
 }

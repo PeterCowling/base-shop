@@ -1,13 +1,5 @@
 // File: /src/components/checkins/roomButton/PaymentDropdown.tsx
-import {
-  type Dispatch,
-  memo,
-  type MouseEvent,
-  type SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { memo, type MouseEvent } from "react";
 
 import type {
   PaymentSplit,
@@ -17,8 +9,6 @@ import type {
 import SplitList from "./SplitList";
 
 interface PaymentDropdownProps {
-  menuOpen: boolean;
-  menuPosition: { top: number; left: number } | null;
   splitPayments: PaymentSplit[];
   handleAmountChange: (index: number, newAmount: string) => void;
   handleSetPayType: (index: number, newPayType: PaymentType) => void;
@@ -28,20 +18,12 @@ interface PaymentDropdownProps {
     event: MouseEvent<HTMLButtonElement>
   ) => Promise<void>;
   isDisabled: boolean;
-  setMenuOpen: Dispatch<SetStateAction<boolean>>;
-  setMenuPosition: Dispatch<
-    SetStateAction<{ top: number; left: number } | null>
-  >;
 }
 
 /**
- * Dropdown component for managing multiple split payments.
- * - Row 0 is the "base" row (computed from original total minus the sum of others).
- * - Rows 1..N can be added/removed.
+ * Dropdown content for managing multiple split payments.
  */
 function PaymentDropdown({
-  menuOpen,
-  menuPosition,
   splitPayments,
   handleAmountChange,
   handleSetPayType,
@@ -49,40 +31,9 @@ function PaymentDropdown({
   handleRemovePaymentRow,
   handleImmediatePayment,
   isDisabled,
-  setMenuOpen,
-  setMenuPosition,
 }: PaymentDropdownProps) {
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // When mouse leaves, close dropdown
-  const handleMouseLeave = useCallback(() => {
-    setMenuOpen(false);
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-    }
-    closeTimeoutRef.current = setTimeout(() => setMenuPosition(null), 200);
-  }, [setMenuOpen, setMenuPosition]);
-
-  useEffect(() => {
-    return () => {
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
-      }
-    };
-  }, []);
-
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: menuPosition?.top ?? 0,
-        left: menuPosition?.left ?? 0,
-      }}
-      className={`z-50 mt-1 w-72 border border-gray-400 rounded shadow-lg p-3 bg-white dark:bg-darkSurface dark:text-darkAccentGreen
-        transition-opacity duration-200 transform-gpu
-        ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="w-72 p-3">
       <SplitList
         splitPayments={splitPayments}
         isDisabled={isDisabled}

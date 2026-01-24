@@ -1,47 +1,22 @@
-import React, { useMemo } from "react";
+import React from "react";
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost";
+import { Button as DSButton } from "@acme/design-system/primitives";
+
+type ButtonVariant = "primary" | "outline" | "ghost";
+
+type ButtonProps = Omit<React.ComponentProps<typeof DSButton>, "color" | "tone" | "variant"> & {
+  variant?: ButtonVariant;
 };
-type ButtonVariant = NonNullable<ButtonProps["variant"]>;
 
-const Button = React.memo(function Button({
-  variant = "primary",
-  className,
-  ...props
-}: ButtonProps) {
-  const classes = useMemo(() => {
-    const base = [
-      "inline-flex",
-      "min-h-12",
-      "items-center",
-      "justify-center",
-      "rounded-full",
-      "px-5",
-      "text-sm",
-      "font-semibold",
-      "tracking-wide",
-      "transition",
-      "focus-visible:focus-ring",
-      "disabled:cursor-not-allowed",
-      "disabled:opacity-60",
-    ];
-    const variants: Record<ButtonVariant, string[]> = {
-      primary: ["bg-primary", "text-primary-foreground", "hover:bg-accent"],
-      outline: [
-        "border",
-        "border-border-1",
-        "text-foreground",
-        "hover:border-primary/70",
-        "hover:text-accent",
-      ],
-      ghost: ["text-foreground", "hover:text-accent"],
-    };
-    const variantClass = variants[variant];
-    return [...base, ...variantClass, className].filter(Boolean).join(" ");
-  }, [className, variant]);
+const VARIANT_MAP: Record<ButtonVariant, { color: "primary"; tone: "solid" | "outline" | "ghost" }> = {
+  primary: { color: "primary", tone: "solid" },
+  outline: { color: "primary", tone: "outline" },
+  ghost: { color: "primary", tone: "ghost" },
+};
 
-  return <button {...props} className={classes} />;
+const Button = React.memo(function Button({ variant = "primary", ...props }: ButtonProps) {
+  const { color, tone } = VARIANT_MAP[variant];
+  return <DSButton {...props} color={color} tone={tone} />;
 });
 
 export default Button;

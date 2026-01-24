@@ -1,5 +1,7 @@
 import type { TrackFn } from "./types";
 
+export type { TrackFn };
+
 let telemetryTrack: TrackFn = () => {};
 
 // i18n-exempt -- ABC-123 [ttl=2099-12-31]: module specifier, not user-facing copy

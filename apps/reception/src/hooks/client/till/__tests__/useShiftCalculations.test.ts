@@ -2,9 +2,9 @@ import "@testing-library/jest-dom";
 
 import { renderHook } from "@testing-library/react";
 
-import type { CreditSlip,Transaction } from "../../../../types/component/Till";
-import type { CashCount } from "../../../../types/hooks/data/cashCountData";
-import type { SafeCount } from "../../../../types/hooks/data/safeCountData";
+import { type CreditSlip, type Transaction } from "../../../../types/component/Till";
+import { type CashCount } from "../../../../types/hooks/data/cashCountData";
+import { type SafeCount } from "../../../../types/hooks/data/safeCountData";
 import { useShiftCalculations } from "../useShiftCalculations";
 
 const shiftOpen = new Date("2023-01-01T10:00:00Z");
@@ -164,5 +164,72 @@ describe("useShiftCalculations", () => {
     expect(result.current.keycardsLoaned).toBe(2);
     expect(result.current.keycardsReturned).toBe(1);
   });
-});
 
+  it("excludes voided transactions from totals and keycard counts", () => {
+    const voidedAt = "2023-01-01T12:45:00Z";
+    const voidedTxns: Transaction[] = [
+      {
+        txnId: "c1",
+        timestamp: "2023-01-01T11:00:00Z",
+        amount: 50,
+        method: "CASH",
+        type: "Sale",
+      },
+      {
+        txnId: "c2",
+        timestamp: "2023-01-01T11:30:00Z",
+        amount: 20,
+        method: "CASH",
+        type: "Sale",
+        voidedAt,
+        voidReason: "Mistake",
+      },
+      {
+        txnId: "cc1",
+        timestamp: "2023-01-01T12:00:00Z",
+        amount: 30,
+        method: "CC",
+        type: "Sale",
+      },
+      {
+        txnId: "cc2",
+        timestamp: "2023-01-01T12:15:00Z",
+        amount: 10,
+        method: "CC",
+        type: "Sale",
+        voidedAt,
+      },
+      {
+        txnId: "k1",
+        timestamp: "2023-01-01T12:30:00Z",
+        amount: 0,
+        type: "Loan",
+        count: 2,
+        isKeycard: true,
+        voidedAt,
+      },
+      {
+        txnId: "k2",
+        timestamp: "2023-01-01T12:40:00Z",
+        amount: 0,
+        type: "Loan",
+        count: 1,
+        isKeycard: true,
+      },
+    ];
+
+    const { result } = renderHook(() =>
+      useShiftCalculations({
+        ...baseParams,
+        transactions: voidedTxns,
+        creditSlips: [],
+        cashCounts: [],
+        safeCounts: [],
+      })
+    );
+
+    expect(result.current.netCash).toBe(50);
+    expect(result.current.netCC).toBe(30);
+    expect(result.current.keycardsLoaned).toBe(1);
+  });
+});

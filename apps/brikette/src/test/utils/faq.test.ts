@@ -24,6 +24,12 @@ const defineFaqMock = (lang: string, resource: FaqResource | undefined) => {
   }));
 };
 
+const makeImporter = (
+  resources: Record<string, FaqResource | undefined>,
+): FaqResourceImporter => {
+  return async (lang: string) => resources[lang];
+};
+
 describe("parseFaqResource", () => {
   beforeEach(() => {
     jest.resetModules();

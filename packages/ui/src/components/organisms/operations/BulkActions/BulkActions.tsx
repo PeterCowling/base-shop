@@ -74,20 +74,20 @@ export function BulkActions({
 
   return (
     <div
-      className={`flex items-center justify-between gap-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-900 dark:bg-blue-950 ${positionClasses[position]} ${className}`}
+      className={`flex items-center justify-between gap-4 rounded-lg border border-info/30 bg-info-soft px-4 py-3 dark:border-info/50 dark:bg-info-soft/20 ${positionClasses[position]} ${className}`}
       role="toolbar"
       aria-label="Bulk actions"
     >
       {/* Selection info */}
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+        <span className="text-sm font-medium text-fg">
           {selectedCount} {selectedCount === 1 ? 'item' : 'items'} selected
           {totalCount !== undefined && ` of ${totalCount}`}
         </span>
 
         <button
           onClick={onClearSelection}
-          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-blue-700 transition-colors hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-900"
+          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-info-fg transition-colors hover:bg-info-soft"
           aria-label="Clear selection"
         >
           <X className="h-3 w-3" />
@@ -103,9 +103,9 @@ export function BulkActions({
 
           const variantClasses = {
             default:
-              'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400 dark:bg-blue-700 dark:hover:bg-blue-600',
+              'bg-info text-info-foreground hover:bg-info/90 disabled:bg-info/50',
             danger:
-              'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400 dark:bg-red-700 dark:hover:bg-red-600',
+              'bg-danger text-danger-foreground hover:bg-danger/90 disabled:bg-danger/50',
           };
 
           return (
@@ -113,7 +113,7 @@ export function BulkActions({
               key={action.id}
               onClick={action.onClick}
               disabled={isDisabled}
-              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-slate-800 ${
+              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-info focus:ring-offset-2 focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 ${
                 variantClasses[action.variant || 'default']
               }`}
             >

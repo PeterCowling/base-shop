@@ -25,6 +25,7 @@ import noRawSpacing from "./rules/no-raw-spacing.js";
 import noRawTailwindColor from "./rules/no-raw-tailwind-color.js";
 import noRawTypography from "./rules/no-raw-typography.js";
 import noRawZindex from "./rules/no-raw-zindex.js";
+import noTransitionAll from "./rules/no-transition-all.js";
 import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
 import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
 import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
@@ -44,6 +45,7 @@ export const rules = {
   "no-raw-radius": noRawRadius,
   "no-raw-shadow": noRawShadow,
   "no-raw-zindex": noRawZindex,
+  "no-transition-all": noTransitionAll,
   "no-arbitrary-tailwind": noArbitraryTailwind,
   "no-important": noImportant,
   "no-negative-margins": noNegativeMargins,

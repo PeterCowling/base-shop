@@ -46,7 +46,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
                   handleInput("src", m.url);
                   setOpen(false);
                 }}
-                className="relative aspect-square min-w-10 min-h-10"
+                className="relative aspect-square min-w-11 min-h-11"
               >
                 <video
                   src={m.url}

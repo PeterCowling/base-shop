@@ -18,17 +18,17 @@ const ensureSetThemeMock = () => {
 };
 
 jest.mock(
-  "@acme/platform-core/contexts/ThemeContext",
+  "@acme/platform-core/contexts/ThemeModeContext",
   () => {
     const React = require("react");
     return {
-      useTheme: () => {
-        const [theme, setThemeState] = React.useState("base");
-        const setTheme = (t: string) => {
+      useThemeMode: () => {
+        const [mode, setModeState] = React.useState("light");
+        const setMode = (t: string) => {
           ensureSetThemeMock()(t);
-          setThemeState(t);
+          setModeState(t);
         };
-        return { theme, setTheme };
+        return { mode, setMode };
       },
     };
   },

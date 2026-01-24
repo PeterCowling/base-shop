@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/GuidesTagsStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -84,20 +84,13 @@ function GuidesTagsStructuredData({
 }: GuidesTagsStructuredDataProps): JSX.Element | null {
   const lang = useCurrentLanguage();
 
-  const dictionary = useMemo(() => buildTagDictionary([lang]), [lang]);
-  const definedTermJson = useMemo(
-    () => buildDefinedTermSetJson(dictionary, lang, tag),
-    [dictionary, lang, tag],
-  );
+  const dictionary = buildTagDictionary([lang]);
+  const definedTermJson = buildDefinedTermSetJson(dictionary, lang, tag);
   const hasDefinedTerms = definedTermJson.length > 0;
-  const collectionJson = useMemo(
-    () =>
-      buildCollectionJson(lang, pageUrl, name, description, items, {
-        includeAbout: hasDefinedTerms,
-        ...(tag ? { tag } : {}),
-      }),
-    [lang, pageUrl, name, description, items, tag, hasDefinedTerms],
-  );
+  const collectionJson = buildCollectionJson(lang, pageUrl, name, description, items, {
+    includeAbout: hasDefinedTerms,
+    ...(tag ? { tag } : {}),
+  });
 
   if (!definedTermJson && !collectionJson) {
     return null;

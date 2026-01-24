@@ -17,7 +17,7 @@ Use this file as the global checklist for working in the Skylar SRL monorepo.
 
 > **⚠️ INCIDENT REFERENCE: On Jan 14, 2026, `git reset --hard` to an old commit destroyed 8 apps.**
 > The agent tried to "fix" a confusing git state by resetting. All work since Dec 29 was lost.
-> Recovery took days. See `docs/RECOVERY-PLAN-2026-01-14.md` for details.
+> Recovery took days. See `docs/historical/RECOVERY-PLAN-2026-01-14.md` for details.
 > **THESE RULES EXIST TO PREVENT THIS FROM HAPPENING AGAIN.**
 
 These rules protect work from being lost. Agents MUST follow them automatically without user prompting.
@@ -366,7 +366,7 @@ git push origin HEAD
 1. STOP — don't run more commands
 2. Run `git status` and `git log --oneline -10`
 3. Share output with user
-4. Consult `docs/RECOVERY-PLAN-2026-01-14.md` for recovery procedures
+4. Consult `docs/historical/RECOVERY-PLAN-2026-01-14.md` for recovery procedures
 
 ### Git is in a confusing state (merge conflicts, stash issues, etc.)
 

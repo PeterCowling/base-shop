@@ -40,33 +40,33 @@ const sizeStyles = {
   },
 }
 
-// Status-specific color mappings using CSS variables from operations context
+// Status-specific color mappings using semantic tokens
 const roomStatusStyles: Record<RoomStatus, string> = {
-  available: 'bg-[var(--status-available)] ring-[var(--status-available)]',
-  occupied: 'bg-[var(--status-occupied)] ring-[var(--status-occupied)]',
-  cleaning: 'bg-[var(--status-cleaning)] ring-[var(--status-cleaning)]',
-  maintenance: 'bg-[var(--status-maintenance)] ring-[var(--status-maintenance)]',
+  available: 'bg-success ring-success',
+  occupied: 'bg-info ring-info',
+  cleaning: 'bg-warning ring-warning',
+  maintenance: 'bg-danger ring-danger',
 }
 
 const stockStatusStyles: Record<StockStatus, string> = {
-  low: 'bg-[var(--stock-low)] ring-[var(--stock-low)]',
-  ok: 'bg-[var(--stock-ok)] ring-[var(--stock-ok)]',
-  high: 'bg-[var(--stock-high)] ring-[var(--stock-high)]',
+  low: 'bg-warning ring-warning',
+  ok: 'bg-success ring-success',
+  high: 'bg-info ring-info',
 }
 
 const orderStatusStyles: Record<OrderStatus, string> = {
-  pending: 'bg-yellow-500 ring-yellow-500',
-  processing: 'bg-blue-500 ring-blue-500',
-  completed: 'bg-green-500 ring-green-500',
-  cancelled: 'bg-red-500 ring-red-500',
+  pending: 'bg-warning ring-warning',
+  processing: 'bg-info ring-info',
+  completed: 'bg-success ring-success',
+  cancelled: 'bg-danger ring-danger',
 }
 
 const generalStatusStyles: Record<GeneralStatus, string> = {
-  success: 'bg-green-500 ring-green-500',
-  warning: 'bg-yellow-500 ring-yellow-500',
-  error: 'bg-red-500 ring-red-500',
-  info: 'bg-blue-500 ring-blue-500',
-  neutral: 'bg-gray-500 ring-gray-500',
+  success: 'bg-success ring-success',
+  warning: 'bg-warning ring-warning',
+  error: 'bg-danger ring-danger',
+  info: 'bg-info ring-info',
+  neutral: 'bg-muted ring-muted',
 }
 
 const roomStatusLabels: Record<RoomStatus, string> = {
@@ -114,7 +114,7 @@ function getStatusStyle(
     return generalStatusStyles[status as GeneralStatus]
   }
   // Default fallback
-  return 'bg-gray-500 ring-gray-500'
+  return 'bg-muted ring-muted'
 }
 
 function getStatusLabel(
@@ -197,14 +197,14 @@ export function StatusIndicator({
     <span
       className={cn(
         'inline-flex items-center rounded-full font-medium',
-        'bg-gray-100 dark:bg-gray-800',
+        'bg-surface-2',
         sizes.container,
         sizes.text,
         className
       )}
     >
       <span className={cn('inline-block rounded-full', statusStyle, sizes.dot)} />
-      <span className="text-gray-700 dark:text-gray-200">{statusLabel}</span>
+      <span className="text-muted-foreground">{statusLabel}</span>
     </span>
   )
 }

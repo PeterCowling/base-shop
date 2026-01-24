@@ -1,15 +1,21 @@
 "use client";
 
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { createContext, type ReactNode, useCallback, useContext, useMemo } from "react";
 
-export type Theme = "base" | "dark" | "brandx" | "system";
+import { ShopThemeProvider, useShopTheme } from "./ShopThemeContext";
+import { useThemeMode } from "./ThemeModeContext";
+import {
+  type LegacyTheme,
+  legacyThemeFrom,
+  normalizeLegacyTheme,
+  normalizeThemeMode,
+  normalizeThemeName,
+  splitLegacyTheme,
+  THEME_MODE_KEY,
+  THEME_NAME_KEY,
+} from "./themeStorage";
+
+export type Theme = LegacyTheme;
 
 interface ThemeContextValue {
   theme: Theme;
@@ -21,7 +27,14 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 export function getSavedTheme(): Theme | null {
   if (typeof window === "undefined") return null;
   try {
-    return window.localStorage.getItem("theme") as Theme | null;
+    const storedMode = normalizeThemeMode(window.localStorage.getItem(THEME_MODE_KEY));
+    const storedName = normalizeThemeName(window.localStorage.getItem(THEME_NAME_KEY));
+    if (storedMode || storedName) {
+      return legacyThemeFrom(storedMode ?? "system", storedName ?? "base");
+    }
+    const legacy = normalizeLegacyTheme(window.localStorage.getItem("theme"));
+    if (legacy) return legacyThemeFrom(legacy.mode ?? "light", legacy.name ?? "base");
+    return null;
   } catch {
     return null;
   }
@@ -38,62 +51,28 @@ export function getSystemTheme(): Theme {
   }
 }
 
-function getInitialTheme(): Theme {
-  const stored = getSavedTheme();
-  if (stored) return stored;
-  return "system";
+function ThemeContextBridge({ children }: { children: ReactNode }) {
+  const { mode, setMode } = useThemeMode();
+  const { themeName, setThemeName } = useShopTheme();
+
+  const theme = useMemo<Theme>(() => legacyThemeFrom(mode, themeName), [mode, themeName]);
+
+  const setTheme = useCallback((next: Theme) => {
+    const { mode: nextMode, name: nextName } = splitLegacyTheme(next);
+    setMode(nextMode);
+    setThemeName(nextName);
+  }, [setMode, setThemeName]);
+
+  const value = useMemo<ThemeContextValue>(() => ({ theme, setTheme }), [theme, setTheme]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
-  const [systemTheme, setSystemTheme] = useState<Theme>(getSystemTheme());
-
-  useLayoutEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("theme-dark", "theme-brandx");
-
-    const applied = theme === "system" ? systemTheme : theme;
-    root.style.colorScheme = applied === "dark" ? "dark" : "light";
-    if (applied === "dark") root.classList.add("theme-dark");
-    if (applied === "brandx") root.classList.add("theme-brandx");
-    try {
-      window.localStorage.setItem("theme", theme);
-    } catch {
-      /* no-op */
-    }
-  }, [theme, systemTheme]);
-
-  useEffect(() => {
-    if (theme !== "system") return;
-    let mq: MediaQueryList | null = null;
-    const update = (e: MediaQueryList | MediaQueryListEvent) =>
-      setSystemTheme(e.matches ? "dark" : "base");
-    try {
-      mq = window.matchMedia("(prefers-color-scheme: dark)"); // i18n-exempt -- media query string, not user-facing copy
-      update(mq);
-      mq.addEventListener("change", update);
-      return () => mq?.removeEventListener("change", update);
-    } catch {
-      setSystemTheme("base");
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    const handler = (e: StorageEvent) => {
-      if (e.key === "theme" && e.newValue) {
-        setTheme(e.newValue as Theme);
-      }
-    };
-    window.addEventListener("storage", handler);
-    return () => {
-      window.removeEventListener("storage", handler);
-    };
-  }, [setTheme]);
-
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ShopThemeProvider>
+      <ThemeContextBridge>{children}</ThemeContextBridge>
+    </ShopThemeProvider>
   );
 }
 

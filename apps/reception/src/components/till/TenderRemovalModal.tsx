@@ -7,14 +7,14 @@ import type {
   RemovalType,
   TenderRemovalRecord,
 } from "../../types/finance";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
-import PinInput from "../common/PinInput";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 export interface TenderRemovalModalProps {
   onConfirm: (record: TenderRemovalRecord) => void;
   onClose: () => void;
+  pinRequiredForTenderRemoval?: boolean;
 }
 
 const tenderRemovalSchema = z.object({
@@ -26,11 +26,11 @@ const tenderRemovalSchema = z.object({
 function TenderRemovalModalBase({
   onConfirm,
   onClose,
+  pinRequiredForTenderRemoval = false,
 }: TenderRemovalModalProps) {
   const [amount, setAmount] = useState<string>("");
   const [removalType, setRemovalType] = useState<RemovalType>("SAFE_DROP");
   const [destination, setDestination] = useState<RemovalDestination>("SAFE");
-  const [pinError, setPinError] = useState<boolean>(false);
 
   /** ---------- Effects --------------------------------------------------- */
   useEffect(() => {
@@ -53,23 +53,6 @@ function TenderRemovalModalBase({
     }
     onConfirm(parsed.data as TenderRemovalRecord);
   }, [amount, removalType, destination, onConfirm]);
-
-  /** ---------- Direct PIN entry (inline) -------------------------------- */
-  const handlePinChange = useCallback(
-    (val: string) => {
-      if (val.length !== 6) {
-        setPinError(false);
-        return;
-      }
-      if (!getUserByPin(val)) {
-        setPinError(true);
-        return;
-      }
-      setPinError(false);
-      handleConfirm();
-    },
-    [handleConfirm]
-  );
 
   /** ---------- UI -------------------------------------------------------- */
   return (
@@ -124,14 +107,22 @@ function TenderRemovalModalBase({
             )}
           </div>
 
-          {/* PIN */}
+          {/* Confirmation */}
           <div className="mt-6 flex flex-col items-center gap-4">
-            <PinInput
-              onChange={handlePinChange}
-              placeholder="PIN"
-              title="Confirm PIN"
-            />
-            {pinError && <p className="text-sm text-error-main">Invalid PIN</p>}
+            {pinRequiredForTenderRemoval ? (
+              <PasswordReauthInline
+                onSubmit={handleConfirm}
+                submitLabel="Confirm removal"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={handleConfirm}
+                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg"
+              >
+                Confirm removal
+              </button>
+            )}
           </div>
         </div>
       </ModalContainer>

@@ -35,12 +35,6 @@ jest.mock(
 jest.mock("@/components/atoms", () => ({
   __esModule: true,
   Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-  Toast: ({ open, message, className, ...props }: any) =>
-    open ? (
-      <div role="status" className={className} {...props}>
-        {message}
-      </div>
-    ) : null,
 }));
 
 describe("PremierDeliveryEditor", () => {

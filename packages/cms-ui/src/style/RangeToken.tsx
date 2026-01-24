@@ -2,6 +2,7 @@
 
 import { type ReactElement } from "react";
 
+import { cn } from "@acme/design-system/utils/style/cn";
 import { useTranslations } from "@acme/i18n";
 import { RangeInput } from "@acme/ui/components/cms/RangeInput";
 import type { TokenInfo } from "@acme/ui/hooks/useTokenEditor";
@@ -20,11 +21,11 @@ export function RangeToken({
 }: RangeTokenProps): ReactElement {
   const t = useTranslations();
    
-  const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
+  const overrideClasses = cn(isOverridden && "border-s-2 border-s-info ps-2");
   return (
     <label
       data-token-key={tokenKey}
-      className={`flex flex-wrap items-center gap-2 text-sm ${overrideClasses}`}
+      className={cn("flex flex-wrap items-center gap-2 text-sm", overrideClasses)}
       data-token={isOverridden ? "--color-info" : undefined}
     >
       <span className="basis-40 shrink-0">{tokenKey}</span>
@@ -32,7 +33,7 @@ export function RangeToken({
       {isOverridden && (
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+          className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
           onClick={() => setToken(tokenKey, defaultValue ?? "")}
         >
           {t("common.reset") as string}

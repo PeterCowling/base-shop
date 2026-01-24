@@ -56,7 +56,7 @@ describe("normaliseGuideLinks", () => {
 
     expect(result).toEqual([{ key: "portoMap" }]);
 
-    jest.doUnmock("@/routes.guides-helpers");
+    jest.resetModules();
   });
 
   it("falls back to shape validation when no keys are provided", async () => {
@@ -71,6 +71,6 @@ describe("normaliseGuideLinks", () => {
 
     expect(result).toEqual([{ key: "summerBoat" }]);
 
-    jest.doUnmock("@/routes.guides-helpers");
+    jest.resetModules();
   });
 });

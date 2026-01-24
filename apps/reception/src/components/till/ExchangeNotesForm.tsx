@@ -5,10 +5,9 @@ import {
   useDenominationCalculator,
 } from "../../hooks/client/till/useDenominationCalculator";
 import { DENOMINATIONS } from "../../types/component/Till";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import FormContainer from "../common/FormContainer";
-import PinInput from "../common/PinInput";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { DenominationInput } from "./DenominationInput";
 
@@ -54,9 +53,6 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
 
   const isValid = exchangeNotesFormSchema.safeParse({ outTotal, inTotal }).success;
 
-  const [, setPin] = useState("");
-  const [pinError, setPinError] = useState(false);
-
   const mapCounts = (counts: number[]): Record<string, number> => {
     const result: Record<string, number> = {};
     CASH_DENOMS.forEach((d, idx) => {
@@ -79,19 +75,6 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
     const outMap = mapCounts(outCounts);
     const inMap = mapCounts(inCounts);
     onConfirm(outMap, inMap, direction, outTotal);
-  };
-
-  const handlePinChange = (val: string) => {
-    setPin(val);
-    if (val.length === 6) {
-      if (!getUserByPin(val)) {
-        setPinError(true);
-        return;
-      }
-      setPinError(false);
-      setPin("");
-      handleConfirm();
-    }
   };
 
   const title = direction === "drawerToSafe" ? "From Drawer" : "From Safe";
@@ -150,8 +133,10 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
           </div>
         )}
         <div className="mt-4 flex flex-col items-center gap-2">
-          <PinInput onChange={handlePinChange} placeholder="PIN" title="Confirm PIN" />
-          {pinError && <div className="text-error-main text-sm">Invalid PIN</div>}
+          <PasswordReauthInline
+            onSubmit={handleConfirm}
+            submitLabel="Confirm exchange"
+          />
         </div>
       </FormContainer>
     </>

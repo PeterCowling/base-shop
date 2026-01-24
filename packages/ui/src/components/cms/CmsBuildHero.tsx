@@ -3,7 +3,8 @@
 import type { ReactNode } from "react";
 
 import { Button } from "../../components/atoms";
-import { Grid, Inline } from "../../components/atoms/primitives";
+import { Grid } from "../../components/atoms/primitives/Grid";
+import { Inline } from "../../components/atoms/primitives/Inline";
 import { cn } from "../../utils/style";
 
 export type CmsBuildHeroTone = "build" | "operate" | "upgrade";

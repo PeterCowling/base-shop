@@ -1,38 +1,28 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
 import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
 } from "@acme/email-templates";
+import { useToast } from "@acme/ui/operations";
 
-import type { ActionResult, ActionStatus } from "../../components/actionResult";
+import type { ActionResult } from "../../components/actionResult";
 import EmailCampaignComposer, {
   type EmailCampaignComposerProps,
 } from "../components/EmailCampaignComposer";
 
-type ToastState = { open: boolean; status: ActionStatus; message: string };
-
-const defaultToast: ToastState = { open: false, status: "success", message: "" };
-
 export default function EmailMarketingPage() {
-  const [toast, setToast] = useState<ToastState>(defaultToast);
+  const toast = useToast();
 
   const showToast = useCallback((result: ActionResult) => {
-    setToast({ open: true, status: result.status, message: result.message });
-  }, []);
-
-  const closeToast = useCallback(() => {
-    setToast((current) => ({ ...current, open: false }));
-  }, []);
-
-  const toastClassName = useMemo(() => {
-    return toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
-  }, [toast.status]);
+    if (result.status === "error") {
+      toast.error(result.message);
+    } else {
+      toast.success(result.message);
+    }
+  }, [toast]);
 
   const loadSegments = useCallback<EmailCampaignComposerProps["loadSegments"]>(
     async (shop: string) => {
@@ -107,13 +97,6 @@ export default function EmailMarketingPage() {
         loadCampaigns={loadCampaigns}
         submitCampaign={submitCampaign}
         onNotify={showToast}
-      />
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
       />
     </div>
   );

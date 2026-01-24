@@ -1,6 +1,5 @@
 "use client";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/shadcn";
 import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
@@ -45,7 +44,7 @@ export function DiscountForm({
   busy,
 }: DiscountFormProps) {
   const t = useTranslations();
-  const { values, errors, status, toast, update, handleSubmit, dismissToast } =
+  const { values, errors, status, update, handleSubmit } =
     useDiscountFormState({
       defaultValues,
       validationErrors,
@@ -67,7 +66,6 @@ export function DiscountForm({
           {status === "submitting" ? t("Saving…") : submitLabel ?? t("Save discount")}
         </Button>
       </div>
-      <Toast open={toast.open} message={toast.message} onClose={dismissToast} />
     </form>
   );
 }

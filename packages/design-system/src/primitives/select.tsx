@@ -21,7 +21,7 @@ export const SelectTrigger = React.forwardRef<
     className={cn(
       "flex h-10 w-full items-center justify-between rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       "placeholder:text-muted-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      "focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       className
     )}
     {...props}
@@ -77,7 +77,7 @@ export const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pe-2 ps-8 text-sm text-fg outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      "hover:bg-surface-3 focus:bg-accent focus:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "hover:bg-surface-3 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       className
     )}
     {...props}

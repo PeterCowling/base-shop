@@ -38,6 +38,12 @@ TypeScript project references stitch the workspace together:
 
 Following these steps keeps the TypeScript setup consistent across the repo.
 
+## VS Code TypeScript version
+
+VS Code should use the workspace TypeScript SDK so editor diagnostics match `pnpm typecheck` as closely as possible. The repo pins this in `.vscode/settings.json` with `typescript.tsdk: "node_modules/typescript/lib"`.
+
+If VS Code still shows the bundled TypeScript version, run: "TypeScript: Select TypeScript Version" and choose "Use Workspace Version".
+
 ## Casting to index signatures safely
 
 When you need to access ad‑hoc properties on a strongly typed object (e.g., treat a union as a `Record<string, unknown>` for dynamic keys), cast through `unknown` first so TypeScript does not reject potentially unsafe conversions:

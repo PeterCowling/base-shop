@@ -15,7 +15,6 @@ jest.mock("../../dataRoot", () => ({
 
 // Use globalThis to store test files - this avoids Jest hoisting issues
 declare global {
-  // eslint-disable-next-line no-var
   var __couponsTestFiles: Map<string, string> | undefined;
 }
 globalThis.__couponsTestFiles = new Map<string, string>();

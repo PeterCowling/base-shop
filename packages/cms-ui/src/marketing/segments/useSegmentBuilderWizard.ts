@@ -2,6 +2,7 @@ import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 import type {
   AsyncSubmissionHandler,
@@ -27,11 +28,6 @@ interface UseSegmentBuilderWizardOptions {
   onPreviewChange?: (preview: SegmentPreviewData) => void;
 }
 
-interface ToastState {
-  open: boolean;
-  message: string;
-}
-
 export interface UseSegmentBuilderWizardReturn {
   steps: StepDefinition[];
   stepIndex: number;
@@ -48,8 +44,6 @@ export interface UseSegmentBuilderWizardReturn {
   handleDetailsSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleRulesNext: () => void;
   handleFinish: () => Promise<void>;
-  toast: ToastState;
-  closeToast: () => void;
 }
 
 
@@ -112,7 +106,7 @@ export function useSegmentBuilderWizard({
   const [stepIndex, setStepIndex] = useState(0);
   const [status, setStatus] = useState<SubmissionStatus>("idle");
   const [errors, setErrors] = useState<SegmentValidationErrors>({});
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
+  const toast = useToast();
 
   useEffect(() => {
     setDefinition(buildDefinition(initialDefinition));
@@ -179,16 +173,14 @@ export function useSegmentBuilderWizard({
       }
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length > 0) {
-        setToast({
-          open: true,
-          message:
-            nextErrors.name ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? "",
-        });
+        toast.error(
+          nextErrors.name ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? ""
+        );
         return;
       }
       goToStep(stepIndex + 1);
     },
-    [definition.name, goToStep, stepIndex, t]
+    [definition.name, goToStep, stepIndex, t, toast]
   );
 
   const handleRulesNext = useCallback(() => {
@@ -204,42 +196,37 @@ export function useSegmentBuilderWizard({
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
-      setToast({
-        open: true,
-        message:
-          nextErrors.rules ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? "",
-      });
+      toast.error(
+        nextErrors.rules ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? ""
+      );
       return;
     }
     // Move directly to the Review step once rules are valid,
     // independent of current index.
     const reviewIndex = wizardSteps.findIndex((s) => s.id === "review");
     goToStep(reviewIndex === -1 ? stepIndex + 1 : reviewIndex);
-  }, [definition.rules, goToStep, stepIndex, t, wizardSteps]);
+  }, [definition.rules, goToStep, stepIndex, t, toast, wizardSteps]);
 
   const handleFinish = useCallback(async () => {
     if (status === "submitting") return;
     if (!onSubmit) {
-      setToast({
-        open: true,
-        message: t("cms.marketing.segmentWizard.success.readyToActivate") as string,
-      });
+      toast.success(t("cms.marketing.segmentWizard.success.readyToActivate") as string);
       return;
     }
     try {
       setStatus("submitting");
       await onSubmit(definition);
       setStatus("success");
-      setToast({ open: true, message: t("cms.marketing.segmentWizard.success.created") as string });
+      toast.success(t("cms.marketing.segmentWizard.success.created") as string);
     } catch (error) {
       setStatus("error");
       const fallback =
         error instanceof Error
           ? error.message
           : (t("cms.marketing.segmentWizard.errors.createFailed") as string);
-      setToast({ open: true, message: fallback });
+      toast.error(fallback);
     }
-  }, [definition, onSubmit, status, t]);
+  }, [definition, onSubmit, status, t, toast]);
 
   const derivedErrors = useMemo(
     () => ({ ...errors, ...(validationErrors ?? {}) }),
@@ -247,10 +234,6 @@ export function useSegmentBuilderWizard({
   );
 
   const currentStep = wizardSteps[stepIndex];
-
-  const closeToast = useCallback(() => {
-    setToast((prev) => ({ ...prev, open: false }));
-  }, []);
 
   // Expose a stable API object so external holders of the reference
   // always observe the latest values after re-renders.
@@ -270,8 +253,6 @@ export function useSegmentBuilderWizard({
   apiRef.current.handleDetailsSubmit = handleDetailsSubmit;
   apiRef.current.handleRulesNext = handleRulesNext;
   apiRef.current.handleFinish = handleFinish;
-  apiRef.current.toast = toast;
-  apiRef.current.closeToast = closeToast;
 
   return apiRef.current as UseSegmentBuilderWizardReturn;
 }

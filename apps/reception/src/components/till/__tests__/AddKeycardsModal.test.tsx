@@ -7,6 +7,10 @@ import { timingSafeEqual } from "crypto";
 import { showToast } from "../../../utils/toastUtils";
 import AddKeycardsModal from "../AddKeycardsModal";
 
+jest.mock("../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
 jest.mock("../../../utils/toastUtils", () => ({ showToast: jest.fn() }));
 const showToastMock = showToast as unknown as jest.Mock;
 
@@ -51,7 +55,7 @@ describe("AddKeycardsModal", () => {
     // Enter password
     const passwordInput = screen.getByPlaceholderText(/Password/i);
     await userEvent.type(passwordInput, "validpass");
-    const submitButton = screen.getByRole("button", { name: /Add Keycards/i });
+    const submitButton = screen.getByRole("button", { name: /Confirm add/i });
     await userEvent.click(submitButton);
 
     await waitFor(() => expect(onConfirm).toHaveBeenCalledWith(3));
@@ -67,7 +71,7 @@ describe("AddKeycardsModal", () => {
     // Enter password
     const passwordInput = screen.getByPlaceholderText(/Password/i);
     await userEvent.type(passwordInput, "validpass");
-    const submitButton = screen.getByRole("button", { name: /Add Keycards/i });
+    const submitButton = screen.getByRole("button", { name: /Confirm add/i });
     await userEvent.click(submitButton);
 
     await waitFor(() => {
@@ -89,7 +93,7 @@ describe("AddKeycardsModal", () => {
     // Enter wrong password
     const passwordInput = screen.getByPlaceholderText(/Password/i);
     await userEvent.type(passwordInput, "wrongpass");
-    const submitButton = screen.getByRole("button", { name: /Add Keycards/i });
+    const submitButton = screen.getByRole("button", { name: /Confirm add/i });
     await userEvent.click(submitButton);
 
     await waitFor(() => {

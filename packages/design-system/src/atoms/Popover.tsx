@@ -33,7 +33,7 @@ export const PopoverContent = React.forwardRef<
           align={align}
           className={cn(
             // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-            "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
+            "bg-panel text-foreground z-popover rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
             className
           )}
           style={safeStyle}
@@ -51,7 +51,7 @@ export const PopoverContent = React.forwardRef<
       align={align}
       className={cn(
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
+        "bg-panel text-foreground z-popover rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
         className
       )}
       style={safeStyle}

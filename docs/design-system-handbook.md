@@ -67,8 +67,8 @@ Tokens are CSS custom properties using HSL numeric tuples for colors and raw sta
 
 **Token Sources:**
 - Base catalogue: `packages/themes/base/src/tokens.ts`
-- Generated CSS: `packages/themes/base/src/tokens.css`
-- Theme overrides: `packages/themes/*/src/tokens.css`
+- Generated CSS: `@themes/base/tokens.css`
+- Theme overrides: `@themes/*/tokens.css`
 - Exported map: `packages/design-tokens/src/exportedTokenMap.ts`
 
 ### Token Categories

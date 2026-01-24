@@ -5,6 +5,7 @@ import { Chart, registerables } from "chart.js";
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
 import { useCashCountsData } from "../../hooks/data/useCashCountsData";
 import { extractItalyDate,formatItalyDateFromIso } from "../../utils/dateUtils";
+import { isVoidedTransaction } from "../../utils/transactionUtils";
 
 Chart.register(...registerables);
 
@@ -32,7 +33,9 @@ export default function RealTimeDashboard(): JSX.Element {
 
   const transactions = useMemo(() => {
     if (!allFinancialTransactions) return [];
-    return Object.values(allFinancialTransactions);
+    return Object.values(allFinancialTransactions).filter(
+      (txn) => !isVoidedTransaction(txn)
+    );
   }, [allFinancialTransactions]);
 
   const salesTotals = useMemo(() => {

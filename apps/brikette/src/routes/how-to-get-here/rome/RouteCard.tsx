@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Cluster } from "../ui";
@@ -14,7 +14,7 @@ function RouteCardBase({ route }: RouteCardProps) {
   const { t, ready } = useTranslation("howToGetHere");
   const [open, setOpen] = useState(false);
 
-  const tags = useMemo(() => (ready ? route.tagsKeys.map((key) => t(key)) : []), [ready, route.tagsKeys, t]);
+  const tags = ready ? route.tagsKeys.map((key) => t(key)) : [];
   const toggle = useCallback(() => {
     setOpen((prev) => !prev);
   }, []);

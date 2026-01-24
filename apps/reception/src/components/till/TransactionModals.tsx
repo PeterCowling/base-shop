@@ -2,8 +2,8 @@ import type { FC } from "react";
 
 import type { Transaction } from "../../types/component/Till";
 
-import DeleteTransactionModal from "./DeleteTransactionModal";
 import EditTransactionModal from "./EditTransactionModal";
+import VoidTransactionModal from "./VoidTransactionModal";
 
 interface TransactionModalsProps {
   txnToDelete: Transaction | null;
@@ -20,7 +20,7 @@ const TransactionModals: FC<TransactionModalsProps> = ({
 }) => (
   <>
     {txnToDelete && (
-      <DeleteTransactionModal
+      <VoidTransactionModal
         transaction={txnToDelete}
         onClose={() => setTxnToDelete(null)}
       />

@@ -37,6 +37,10 @@ export const providerTemplateSchema = z.object({
   supportedCountries: z.array(z.string()).optional(),
   /** Director-approved for Basic tier */
   directorApproved: z.boolean().default(false),
+  /** Show in rapid-launch wizard */
+  rapidLaunch: z.boolean().optional(),
+  /** Sort order within rapid-launch wizard */
+  rapidLaunchOrder: z.number().int().optional(),
   /** Template origin */
   origin: z.enum(["core", "custom"]).default("core"),
 });
@@ -88,6 +92,8 @@ export const paymentProviderTemplates: ProviderTemplate[] = [
       "IE", "PT", "PL", "CZ", "HU", "RO", "BG", "HR", "SK", "SI",
     ],
     directorApproved: true,
+    rapidLaunch: true,
+    rapidLaunchOrder: 1,
     origin: "core",
   },
   {
@@ -129,6 +135,7 @@ export const paymentProviderTemplates: ProviderTemplate[] = [
       "AU", "NZ", "CA", "JP", "SG", "HK",
     ],
     directorApproved: false, // Requires additional setup
+    rapidLaunch: false,
     origin: "core",
   },
   {
@@ -165,6 +172,7 @@ export const paymentProviderTemplates: ProviderTemplate[] = [
       "AU", "NZ", "CA", "JP", "SG", "HK", "BR", "MX",
     ],
     directorApproved: true,
+    rapidLaunch: false,
     origin: "core",
   },
 ];
@@ -204,6 +212,8 @@ export const shippingProviderTemplates: ProviderTemplate[] = [
       "AU", "NZ", "CA", "JP", "SG", "HK", "CN", "KR", "IN", "BR",
     ],
     directorApproved: true,
+    rapidLaunch: true,
+    rapidLaunchOrder: 1,
     origin: "core",
   },
   {
@@ -348,6 +358,8 @@ export const taxProviderTemplates: ProviderTemplate[] = [
       "tax.regions",
     ],
     directorApproved: true,
+    rapidLaunch: true,
+    rapidLaunchOrder: 1,
     origin: "core",
   },
 ];
@@ -385,6 +397,34 @@ export function getDirectorApprovedTemplates(
   return allProviderTemplates.filter(
     (t) => t.directorApproved && (!category || t.category === category)
   );
+}
+
+export function getRapidLaunchTemplates(
+  category?: "payment" | "shipping" | "tax"
+): ProviderTemplate[] {
+  const scoped = allProviderTemplates.filter(
+    (t) => !category || t.category === category
+  );
+  const rapid = scoped.filter((t) => t.rapidLaunch);
+  if (rapid.length > 0) {
+    return [...rapid].sort(
+      (a, b) => (a.rapidLaunchOrder ?? Number.POSITIVE_INFINITY) - (b.rapidLaunchOrder ?? Number.POSITIVE_INFINITY)
+    );
+  }
+  if (scoped.length > 0) {
+    // i18n-exempt -- DS-1234 [ttl=2026-12-31] — developer warning only
+    console.warn(
+      `[rapid-launch] No provider templates tagged for ${category ?? "any"}; falling back to first available.`,
+    );
+  }
+  return scoped;
+}
+
+export function pickRapidLaunchTemplate(
+  category: "payment" | "shipping" | "tax"
+): ProviderTemplate | undefined {
+  const templates = getRapidLaunchTemplates(category);
+  return templates[0];
 }
 
 export function validateProviderTemplate(

@@ -1,34 +1,24 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
+import { useToast } from "@acme/ui/operations";
 
-import type { ActionResult, ActionStatus } from "../components/actionResult";
+import type { ActionResult } from "../components/actionResult";
 import SegmentDesigner, {
   type SegmentDesignerProps,
 } from "../marketing/components/SegmentDesigner";
 
-type ToastState = { open: boolean; status: ActionStatus; message: string };
-
-const defaultToast: ToastState = { open: false, status: "success", message: "" };
-
 export default function SegmentBuilder() {
-  const [toast, setToast] = useState<ToastState>(defaultToast);
+  const toast = useToast();
 
   const showToast = useCallback((result: ActionResult) => {
-    setToast({ open: true, status: result.status, message: result.message });
-  }, []);
-
-  const closeToast = useCallback(() => {
-    setToast((current) => ({ ...current, open: false }));
-  }, []);
-
-  const toastClassName = useMemo(() => {
-    return toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
-  }, [toast.status]);
+    if (result.status === "error") {
+      toast.error(result.message);
+    } else {
+      toast.success(result.message);
+    }
+  }, [toast]);
 
   const saveSegment = useCallback<SegmentDesignerProps["saveSegment"]>(async (payload) => {
     try {
@@ -60,13 +50,6 @@ export default function SegmentBuilder() {
   return (
     <div className="space-y-6 p-6">
       <SegmentDesigner saveSegment={saveSegment} onNotify={showToast} />
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </div>
   );
 }

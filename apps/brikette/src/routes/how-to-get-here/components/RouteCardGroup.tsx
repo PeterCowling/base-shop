@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
@@ -114,7 +114,7 @@ function FactsPills({
   facts: RouteFacts | undefined;
   modes: TransportMode[];
 }) {
-  const pills = useMemo(() => {
+  const pills = (() => {
     const items: Array<{ label: string; value: string }> = [];
     const duration = facts?.duration?.trim();
     const cost = facts?.cost?.trim();
@@ -129,7 +129,7 @@ function FactsPills({
     if (seasonality) items.push({ label: t("routeCard.seasonality", { defaultValue: "Season" }), value: seasonality });
 
     return items.slice(0, 5);
-  }, [facts, modes, t]);
+  })();
 
   if (pills.length === 0) return null;
 
@@ -173,7 +173,7 @@ function RouteCardGroupBase({
   const hasTo = toRoutes.length > 0;
   const hasFrom = fromRoutes.length > 0;
 
-  const defaultDirection: RouteDirection = useMemo(() => {
+  const defaultDirection: RouteDirection = (() => {
     if (highlightedRouteSlug) {
       if (toRoutes.some((route) => route.href === highlightedRouteSlug)) return "to";
       if (fromRoutes.some((route) => route.href === highlightedRouteSlug)) return "from";
@@ -184,7 +184,7 @@ function RouteCardGroupBase({
     }
     if (hasTo) return "to";
     return "from";
-  }, [fromRoutes, hasFrom, hasTo, highlightedRouteSlug, preferredDirection, toRoutes]);
+  })();
 
   const [direction, setDirection] = useState<RouteDirection>(defaultDirection);
   useEffect(() => {

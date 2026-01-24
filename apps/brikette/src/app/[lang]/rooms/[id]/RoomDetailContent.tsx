@@ -2,7 +2,7 @@
 
 // src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
-import { type ComponentProps, type ComponentPropsWithoutRef,Fragment, useMemo } from "react";
+import { type ComponentProps, type ComponentPropsWithoutRef, Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -28,10 +28,7 @@ type Props = {
 export default function RoomDetailContent({ lang, id }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang });
   const { t: tGuides } = useTranslation("guides", { lng: lang });
-  const guidesEnT = useMemo<TFunction>(
-    () => i18n.getFixedT("en", "guides") as TFunction,
-    []
-  );
+  const guidesEnT = i18n.getFixedT("en", "guides") as TFunction;
   const { t: tRoomsPageDetail } = useTranslation("pages.rooms", { lng: lang });
   const { t: tRoomDetail } = useTranslation("rooms", { lng: lang });
   const room = roomsData.find((r) => r.id === id)!;

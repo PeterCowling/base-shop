@@ -1,5 +1,5 @@
 // src/components/landing/LocationMiniBlock.tsx
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { MapPin } from "lucide-react";
 
@@ -22,11 +22,8 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
   const { openModal } = useOptionalModal();
   const address = t("heroSection.address");
 
-  const mapsUrl = useMemo(() => {
-    const { streetAddress, postalCode, addressLocality } = hotel.address;
-    const query = `${streetAddress}, ${postalCode} ${addressLocality}`;
-    return `https://www.google.com/maps/place/${encodeURIComponent(query)}`;
-  }, []);
+  const { streetAddress, postalCode, addressLocality } = hotel.address;
+  const mapsUrl = `https://www.google.com/maps/place/${encodeURIComponent(`${streetAddress}, ${postalCode} ${addressLocality}`)}`;
 
   const handleDirections = useCallback(() => {
     openModal("location", { hostelAddress: address });

@@ -8,6 +8,7 @@ import { showToast } from "../../utils/toastUtils";
 
 import BookingSearchTable from "./BookingSearchTable";
 import FilterBar from "./FilterBar";
+import FinancialTransactionAuditSearch from "./FinancialTransactionAuditSearch";
 import FinancialTransactionSearch from "./FinancialTransactionSearch";
 import SmallSpinner from "./SmallSpinner";
 
@@ -83,9 +84,9 @@ function getActivityLevel(activities: BookingSearchRow["activities"]): string {
 }
 
 function Search(): JSX.Element {
-  const [activeTab, setActiveTab] = useState<"bookings" | "transactions">(
-    "bookings"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "bookings" | "transactions" | "audits"
+  >("bookings");
   const [filters, setFilters] = useState({
     firstName: "",
     lastName: "",
@@ -178,6 +179,10 @@ function Search(): JSX.Element {
     setActiveTab("transactions");
   }, []);
 
+  const setAuditsTab = useCallback(() => {
+    setActiveTab("audits");
+  }, []);
+
   const errorMessage = useMemo(() => {
     if (!error) return null;
     return error instanceof Error ? error.message : String(error);
@@ -209,6 +214,14 @@ function Search(): JSX.Element {
           } dark:bg-darkSurface dark:text-darkAccentGreen`}
         >
           Transactions
+        </button>
+        <button
+          onClick={setAuditsTab}
+          className={`px-4 py-1 rounded ${
+            activeTab === "audits" ? "bg-blue-600 text-white" : "bg-gray-200"
+          } dark:bg-darkSurface dark:text-darkAccentGreen`}
+        >
+          Audits
         </button>
       </div>
 
@@ -245,6 +258,7 @@ function Search(): JSX.Element {
       )}
 
       {activeTab === "transactions" && <FinancialTransactionSearch />}
+      {activeTab === "audits" && <FinancialTransactionAuditSearch />}
     </>
   );
 }

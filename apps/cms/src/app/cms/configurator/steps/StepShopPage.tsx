@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ulid } from "ulid";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Cluster,Inline } from "@acme/design-system/primitives";
 import {
   Button,
@@ -23,6 +22,7 @@ import {
 import { useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
 import PageBuilder from "@/components/cms/PageBuilder";
 
@@ -94,10 +94,7 @@ export default function StepShopPage({
   // Always call hooks unconditionally; then choose value
   const loadedStyle = useThemeLoader();
   const style = themeStyle ?? loadedStyle;
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("shop-page");
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -267,7 +264,7 @@ export default function StepShopPage({
           setIsSaving(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.shopPage.draftSaved")) });
+            toast.success(String(t("cms.configurator.shopPage.draftSaved")));
           } else if (error) {
             setSaveError(error);
           }
@@ -283,7 +280,7 @@ export default function StepShopPage({
           setIsPublishing(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: String(t("cms.configurator.shopPage.pagePublished")) });
+            toast.success(String(t("cms.configurator.shopPage.pagePublished")));
           } else if (error) {
             setPublishError(error);
           }
@@ -317,11 +314,6 @@ export default function StepShopPage({
           </Button>
         )}
       </Cluster>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

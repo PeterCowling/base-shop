@@ -84,7 +84,7 @@ export { StatCard } from "./StatCard";
 export { StockStatus } from "./StockStatus";
 export { Switch } from "./Switch";
 export { Tag, type TagProps } from "./Tag";
-export { Toast } from "./Toast";
+export { Toast, type ToastProps } from "./Toast";
 export { Tooltip } from "./Tooltip";
 export { VideoPlayer } from "./VideoPlayer";
 export { ZoomImage } from "./ZoomImage";

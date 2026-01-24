@@ -3,7 +3,7 @@
 /*  Contact modal container                                                   */
 /* -------------------------------------------------------------------------- */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { ContactModalCopy } from "@acme/ui/organisms/modals";
@@ -18,7 +18,7 @@ export function ContactGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
   const lang = useCurrentLanguage();
 
-  const { t: tModals, ready: modalsReady } = useTranslation("modals", { lng: lang });
+  const { t: tModals } = useTranslation("modals", { lng: lang });
 
   const [contactEmail, setContactEmail] = useState("");
 
@@ -31,18 +31,13 @@ export function ContactGlobalModal(): JSX.Element | null {
     }
   }, []);
 
-  const contactCopy = useMemo<ContactModalCopy>(() => {
-    const base: ContactModalCopy = {
-      title: tModals("contact.title"),
-      description: tModals("contact.description"),
-      revealEmail: tModals("contact.revealEmail"),
-      closeLabel: tModals("contact.close"),
-      footerButton: tModals("contact.buttonClose"),
-    };
-    if (!modalsReady) return { ...base };
-    return base;
-  }, [modalsReady, tModals]);
+  const contactCopy: ContactModalCopy = {
+    title: tModals("contact.title"),
+    description: tModals("contact.description"),
+    revealEmail: tModals("contact.revealEmail"),
+    closeLabel: tModals("contact.close"),
+    footerButton: tModals("contact.buttonClose"),
+  };
 
   return <ContactModal isOpen onClose={closeModal} copy={contactCopy} email={contactEmail} />;
 }
-

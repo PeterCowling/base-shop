@@ -68,6 +68,7 @@ describe("useShiftEventsMutations", () => {
       cashCount: 100,
       keycardCount: 2,
       difference: 5,
+      shiftId: undefined,
     });
   });
 
@@ -83,4 +84,3 @@ describe("useShiftEventsMutations", () => {
     expect(setMock).not.toHaveBeenCalled();
   });
 });
-

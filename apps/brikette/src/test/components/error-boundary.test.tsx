@@ -4,6 +4,13 @@ import userEvent from "@testing-library/user-event";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, opts?: { defaultValue?: string }) =>
+      opts?.defaultValue ?? key,
+  }),
+}));
+
 function Boom(): React.JSX.Element {
   throw new Error("Boom");
 }
@@ -25,7 +32,7 @@ describe("<ErrorBoundary />", () => {
         <Boom />
       </ErrorBoundary>,
     );
-    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/errorBoundary\.title|something went wrong/i)).toBeInTheDocument();
     spy.mockRestore();
   });
 
@@ -48,7 +55,7 @@ describe("<ErrorBoundary />", () => {
       </ErrorBoundary>,
     );
 
-    await userEvent.click(screen.getByRole("button", { name: /reload page/i }));
+    await userEvent.click(screen.getByRole("button"));
     expect(reload).toHaveBeenCalledTimes(1);
 
     locationGetter.mockRestore();

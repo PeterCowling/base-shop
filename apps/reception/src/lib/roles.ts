@@ -47,17 +47,17 @@ export function isStaff(user: User | null): boolean {
 
 // Permission definitions for different features
 export const Permissions = {
-  // Till operations - owners and developers only
-  TILL_ACCESS: ["owner", "developer"] as UserRole[],
+  // Till operations - staff + management
+  TILL_ACCESS: ["owner", "developer", "admin", "manager", "staff"] as UserRole[],
 
-  // Management dashboard - owners and developers only
-  MANAGEMENT_ACCESS: ["owner", "developer"] as UserRole[],
+  // Management dashboard - privileged roles
+  MANAGEMENT_ACCESS: ["owner", "developer", "admin", "manager"] as UserRole[],
 
   // Room allocation - owners, developers, and designated staff
   ROOM_ALLOCATION: ["owner", "developer"] as UserRole[],
 
-  // Safe operations - all staff with PIN verification
-  SAFE_ACCESS: ["owner", "developer", "staff"] as UserRole[],
+  // Safe operations - staff + management
+  SAFE_ACCESS: ["owner", "developer", "admin", "manager", "staff"] as UserRole[],
 
   // Basic operations - all staff
   OPERATIONS_ACCESS: ["owner", "developer", "staff"] as UserRole[],
@@ -68,14 +68,14 @@ export const Permissions = {
   // Alloggiati - owners and developers only
   ALLOGGIATI_ACCESS: ["owner", "developer"] as UserRole[],
 
-  // Stock management - owners and developers only
-  STOCK_ACCESS: ["owner", "developer"] as UserRole[],
+  // Stock management - managers and above
+  STOCK_ACCESS: ["owner", "developer", "admin", "manager"] as UserRole[],
 
-  // Statistics - owners and developers only
-  STATISTICS_ACCESS: ["owner", "developer"] as UserRole[],
+  // Statistics - managers and above
+  STATISTICS_ACCESS: ["owner", "developer", "admin", "manager"] as UserRole[],
 
-  // Bulk actions (cancel, email) - owners and developers only
-  BULK_ACTIONS: ["owner", "developer"] as UserRole[],
+  // Bulk actions (cancel, email) - managers and above
+  BULK_ACTIONS: ["owner", "developer", "admin", "manager"] as UserRole[],
 } as const;
 
 // Check if user can access a feature

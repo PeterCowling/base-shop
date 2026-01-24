@@ -3,6 +3,7 @@
 
 import type { ChangeEvent, ReactElement } from "react";
 
+import { cn } from "@acme/design-system/utils/style/cn";
 import { useTranslations } from "@acme/i18n";
 import { FontSelect } from "@acme/ui/components/cms/FontSelect";
 import type { TokenInfo } from "@acme/ui/hooks/useTokenEditor";
@@ -31,11 +32,11 @@ export function FontToken({
 }: FontTokenProps): ReactElement {
   const t = useTranslations();
    
-  const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
+  const overrideClasses = cn(isOverridden && "border-s-2 border-s-info ps-2");
   return (
     <label
       data-token-key={tokenKey}
-      className={`flex flex-col gap-1 text-sm ${overrideClasses}`}
+      className={cn("flex flex-col gap-1 text-sm", overrideClasses)}
       data-token={isOverridden ? "--color-info" : undefined}
     >
       <span className="flex flex-wrap items-center gap-2 min-w-0">
@@ -50,7 +51,7 @@ export function FontToken({
         {isOverridden && (
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10" /* i18n-exempt -- DX-0002: utility classes are not user copy */
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11" /* i18n-exempt -- DX-0002: utility classes are not user copy */
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
             {t("common.reset") as string}

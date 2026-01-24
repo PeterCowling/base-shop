@@ -1,20 +1,9 @@
 {
   "model": "claude-sonnet-4-5-20250929",
   "mcpServers": {
-    "base-shop": {
-      "command": "node",
-      "args": ["./packages/mcp-server/dist/index.js"],
-      "env": {
-        "DATABASE_URL": "${DATABASE_URL}"
-      }
-    },
-    "cloudflare": {
-      "command": "node",
-      "args": ["./packages/mcp-cloudflare/dist/index.js"],
-      "env": {
-        "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}",
-        "CLOUDFLARE_ACCOUNT_ID": "${CLOUDFLARE_ACCOUNT_ID}"
-      }
+    "ts-language": {
+      "type": "url",
+      "url": "http://127.0.0.1:59238/mcp"
     }
   },
   "hooks": {
@@ -72,6 +61,18 @@
         "match": "--no-verify",
         "action": "deny",
         "message": "BLOCKED: '--no-verify' is prohibited. Do not bypass git hooks. Fix the underlying issue instead. See AGENTS.md."
+      },
+      {
+        "tool": "Bash",
+        "match": "SKIP_SIMPLE_GIT_HOOKS=1",
+        "action": "deny",
+        "message": "BLOCKED: SKIP_SIMPLE_GIT_HOOKS=1 is prohibited. Do not bypass git hooks. Fix the underlying issue instead. See AGENTS.md."
+      },
+      {
+        "tool": "Bash",
+        "match": "SKIP_GIT_HOOKS=1",
+        "action": "deny",
+        "message": "BLOCKED: SKIP_GIT_HOOKS=1 is prohibited. Do not bypass git hooks. Fix the underlying issue instead. See AGENTS.md."
       }
     ]
   },

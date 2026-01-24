@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 import { Button } from "@acme/design-system/shadcn";
 import { cn } from "@acme/design-system/utils/style";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 import { StepIndicator } from "../shared";
 import {
@@ -93,9 +93,7 @@ export function CampaignWizard({
   );
   const [stepIndex, setStepIndex] = useState(0);
   const [status, setStatus] = useState<SubmissionStatus>("idle");
-  const [toast, setToast] = useState<{ open: boolean; message: string }>(
-    { open: false, message: "" }
-  );
+  const toast = useToast();
 
   useEffect(() => {
     setValues({ ...defaultCampaignValues, ...initialValues });
@@ -149,12 +147,9 @@ export function CampaignWizard({
   const handleFinish = async () => {
     if (status === "submitting") return;
     if (!onSubmit) {
-      setToast({
-        open: true,
-        message:
-          messages?.complete ??
-          (t("campaign.wizard.completed") as string),
-      });
+      toast.success(
+        messages?.complete ?? (t("campaign.wizard.completed") as string)
+      );
       return;
     }
 
@@ -162,21 +157,16 @@ export function CampaignWizard({
       setStatus("submitting");
       await onSubmit(values);
       setStatus("success");
-      setToast({
-        open: true,
-        message:
-          messages?.complete ?? (t("campaign.wizard.submitted") as string),
-      });
+      toast.success(
+        messages?.complete ?? (t("campaign.wizard.submitted") as string)
+      );
     } catch (error) {
       setStatus("error");
       const fallback =
         error instanceof Error
           ? error.message
           : messages?.error ?? (t("campaign.wizard.unable") as string);
-      setToast({
-        open: true,
-        message: messages?.error ?? fallback,
-      });
+      toast.error(messages?.error ?? fallback);
     }
   };
 
@@ -256,11 +246,6 @@ export function CampaignWizard({
         />
       )}
 
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
-      />
     </div>
   );
 }

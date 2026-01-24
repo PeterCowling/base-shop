@@ -76,7 +76,7 @@ const importFaqResource = async (lang: string): Promise<FaqResource | undefined>
     const faqModule = await import(`../locales/${lang}/faq.json`);
     return faqModule.default as FaqResource;
   } catch (err) {
-    if (process.env.NODE_ENV !== "test") console.warn(`⚠️  Missing FAQ resource for ${lang}:`, err);
+    if (process.env.NODE_ENV === "development") console.warn(`⚠️  Missing FAQ resource for ${lang}:`, err);
     return undefined;
   }
 };

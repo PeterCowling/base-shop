@@ -3,6 +3,7 @@ import PlanChoice from "@/components/guides/PlanChoice";
 import RelatedGuides from "@/components/guides/RelatedGuides";
 import TagChips from "@/components/guides/TagChips";
 import TransportNotice from "@/components/guides/TransportNotice";
+import { shouldOmitRelatedGuidesLang } from "@/config/guide-overrides";
 import type { AppLanguage } from "@/i18n.config";
 
 import type { AlsoHelpfulConfig,RelatedGuidesConfig } from "../types";
@@ -35,6 +36,7 @@ export default function FooterWidgets({
   alsoHelpful,
   tGuides,
 }: FooterWidgetsProps): JSX.Element {
+  const omitRelatedGuidesLang = shouldOmitRelatedGuidesLang(guideKey);
   const planTitle = (() => {
     try {
       const raw = tGuides(`content.${guideKey}.planChoiceTitle`) as unknown;
@@ -59,7 +61,7 @@ export default function FooterWidgets({
         // For the beach-hopping route, tests expect RelatedGuides to be
         // invoked without an explicit lang prop (component should derive it
         // internally). Keep passing lang for all other routes.
-        guideKey === 'beachHoppingAmalfi' ? (
+        omitRelatedGuidesLang ? (
           <RelatedGuides {...relatedGuides} />
         ) : (
           <RelatedGuides lang={lang} {...relatedGuides} />

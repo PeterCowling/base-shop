@@ -9,7 +9,7 @@
  * All opt-ins are optional - users can skip entirely.
  */
 
-import { Button } from '@acme/ui';
+import { Button } from '@acme/design-system/primitives';
 import logger from '@/utils/logger';
 import { Calendar, MessageCircle, Map, Users } from 'lucide-react';
 import { FC, useCallback, useState } from 'react';

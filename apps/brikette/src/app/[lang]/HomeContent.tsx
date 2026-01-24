@@ -2,7 +2,10 @@
 
 // src/app/[lang]/HomeContent.tsx
 // Client component for home page
-import { Fragment, memo, Suspense, useCallback, useEffect, useMemo } from "react";
+import "swiper/css";
+import "swiper/css/navigation";
+
+import { Fragment, memo, Suspense, useCallback } from "react";
 import dynamic from "next/dynamic";
 
 import { Section } from "@acme/ui/atoms";
@@ -19,16 +22,15 @@ import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
 import { useOptionalModal } from "@/context/ModalContext";
 import { type Room,roomsData } from "@/data/roomsData";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { preloadI18nNamespaces,preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 // Lazy load heavy components
 const IntroTextBox = dynamic(() => import("@/components/landing/IntroTextBox"), {
   ssr: false,
   loading: () => null,
 });
-const CarouselSlides = dynamic(() => import("@/components/accommodations-carousel/CarouselSlides"), {
+const CarouselSlides = dynamic(() => import("@acme/ui/organisms/CarouselSlides"), {
   ssr: false,
   loading: () => null,
 });
@@ -39,23 +41,11 @@ type Props = {
 
 function HomeContent({ lang }: Props) {
   const { openModal } = useOptionalModal();
-
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, [
-        "landingPage",
-        "guides",
-        "testimonials",
-        "faq",
-      ]);
-      await preloadI18nNamespaces(lang, ["_tokens", "roomsPage", "ratingsBar", "modals"], {
-        optional: true,
-      });
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({
+    lang,
+    namespaces: ["landingPage", "guides", "testimonials", "faq"],
+    optionalNamespaces: ["_tokens", "roomsPage", "ratingsBar", "modals"],
+  });
 
   const handleReserve = useCallback(() => {
     openModal("booking");
@@ -70,7 +60,7 @@ function HomeContent({ lang }: Props) {
   );
 
   // Rooms data for carousel
-  const roomsForCarousel = useMemo<Room[]>(() => roomsData.slice(0, 6), []);
+  const roomsForCarousel = roomsData.slice(0, 6);
 
   return (
     <Fragment>

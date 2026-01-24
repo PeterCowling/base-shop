@@ -8,8 +8,8 @@ import { LOCALES, useTranslations } from "@acme/i18n";
 import { fillLocales } from "@acme/i18n/fillLocales";
 import { track } from "@acme/telemetry";
 import type { Locale, Page, PageComponent } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
-import { Toast } from "@/components/atoms";
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 
@@ -40,10 +40,7 @@ export default function StepAdditionalPages({
 }: Props): React.JSX.Element {
   const safePages = Array.isArray(pages) ? pages : [];
   const languages = LOCALES as readonly Locale[];
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
+  const toast = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const t = useTranslations();
@@ -76,7 +73,6 @@ export default function StepAdditionalPages({
     adding,
     draftId: newDraftId,
     setComponents: setNewComponents,
-    setToast,
   });
 
   return (
@@ -156,7 +152,7 @@ export default function StepAdditionalPages({
               setIsSaving(false);
               if (data) {
                 setNewDraftId(data.id);
-                setToast({ open: true, message: "Draft saved" });
+                toast.success("Draft saved");
               } else if (error) {
                 setSaveError(error);
               }
@@ -217,11 +213,6 @@ export default function StepAdditionalPages({
           Save & return
         </Button>
       </div>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { DIRECTION_ORDER, TRANSPORT_MODE_ORDER } from "./transport";
@@ -80,56 +80,45 @@ export function useDestinationFilters(
     }
   }, [router]);
 
-  const availableTransportModes = useMemo(
-    () =>
-      TRANSPORT_MODE_ORDER.filter((mode) =>
-        sections.some((section) => section.links.some((link) => link.transportModes.includes(mode))),
-      ),
-    [sections],
+  const availableTransportModes = TRANSPORT_MODE_ORDER.filter((mode) =>
+    sections.some((section) => section.links.some((link) => link.transportModes.includes(mode))),
   );
 
-  const availableDirections = useMemo(() => {
+  const availableDirections = (() => {
     const present = new Set<RouteDirection>();
     sections.forEach((section) => {
       section.links.forEach((link) => present.add(link.direction));
     });
     return DIRECTION_ORDER.filter((direction) => present.has(direction));
-  }, [sections]);
+  })();
 
-  const totalRoutes = useMemo(
-    () => sections.reduce((count, section) => count + section.links.length, 0),
-    [sections],
-  );
+  const totalRoutes = sections.reduce((count, section) => count + section.links.length, 0);
 
-  const availableDestinations = useMemo(
-    () =>
-      sections.map((section) => ({
-        id: section.id,
-        name: section.name,
-      })),
-    [sections],
-  );
+  const availableDestinations = sections.map((section) => ({
+    id: section.id,
+    name: section.name,
+  }));
 
-  const transportFilter = useMemo<TransportFilter>(() => {
+  const transportFilter: TransportFilter = (() => {
     const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.transport));
     if (!raw) return "all";
     if (!isTransportMode(raw)) return "all";
     return availableTransportModes.includes(raw) ? raw : "all";
-  }, [availableTransportModes, searchParams]);
+  })();
 
-  const directionFilter = useMemo<DirectionFilter>(() => {
+  const directionFilter: DirectionFilter = (() => {
     const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.direction));
     if (!raw) return "all";
     if (!isRouteDirection(raw)) return "all";
     return availableDirections.includes(raw) ? raw : "all";
-  }, [availableDirections, searchParams]);
+  })();
 
-  const destinationFilter = useMemo<DestinationFilter>(() => {
+  const destinationFilter: DestinationFilter = (() => {
     const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.destination));
     if (!raw) return "all";
     const present = availableDestinations.some((destination) => destination.id === raw);
     return present ? raw : "all";
-  }, [availableDestinations, searchParams]);
+  })();
 
   const setTransportFilter = useCallback(
     (filter: TransportFilter) => {
@@ -161,7 +150,7 @@ export function useDestinationFilters(
     [searchParams, setSearchParams],
   );
 
-  const filteredSections = useMemo(() => {
+  const filteredSections = (() => {
     const matchesTransport = (link: AugmentedDestinationLink) =>
       transportFilter === "all" || link.transportModes.includes(transportFilter);
     const matchesDirection = (link: AugmentedDestinationLink) =>
@@ -178,7 +167,7 @@ export function useDestinationFilters(
         return { ...section, links: filteredLinks };
       })
       .filter((section) => section.links.length > 0);
-  }, [sections, transportFilter, directionFilter, destinationFilter]);
+  })();
 
   const hasActiveFilters =
     transportFilter !== "all" || directionFilter !== "all" || destinationFilter !== "all";

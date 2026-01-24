@@ -67,6 +67,28 @@ jobs:
           fi
           echo "No HIGH or CRITICAL vulnerabilities found"
 
+  dep-alignment:
+    name: Dependency Alignment
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check dependency version alignment
+        run: node scripts/check-dep-alignment.mjs
+
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Check dependency licenses
+        run: node scripts/check-licenses.mjs
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -99,6 +121,8 @@ jobs:
         run: pnpm lint
       - name: Lint (JSON report)
         run: pnpm run lint:json || true
+      - name: Lint (raw Tailwind color baseline)
+        run: pnpm run lint:no-raw-tailwind-color:check
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint
@@ -109,6 +133,12 @@ jobs:
         run: node scripts/validate-agent-manifest.js
       - name: Token validation
         run: pnpm validate:tokens
+      - name: Token drift report
+        run: pnpm tokens:drift
+      - name: Token drift check
+        run: pnpm tokens:drift:check
+      - name: Token contrast validation
+        run: pnpm tokens:contrast:check
 
   typecheck:
     name: Typecheck
@@ -145,11 +175,29 @@ jobs:
         with:
           files: ./coverage/lcov.info
 
+  storybook-visual:
+    name: Storybook Visual Regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint, typecheck]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Install Playwright browser
+        run: pnpm exec playwright install chromium
+      - name: Visual regression (themes/modes)
+        run: pnpm run storybook:visual
+
   build:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [lint, typecheck, test]
+    needs: [lint, typecheck, test, storybook-visual]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo

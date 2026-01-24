@@ -1,4 +1,4 @@
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind, max-lines-per-function -- COM-0001 [ttl=2026-12-31] MVP stock inflow UI pending DS refactor */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- COM-0001 [ttl=2026-12-31] MVP stock inflow UI pending DS refactor */
 
 "use client";
 
@@ -114,20 +114,7 @@ function isSameVariant(
   return true;
 }
 
-export default function StockInflowsClient({
-  shop,
-  recent,
-}: {
-  shop: string;
-  recent: StockInflowEvent[];
-}) {
-  const router = useRouter();
-  const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
-  const [note, setNote] = useState("");
-  const [items, setItems] = useState<DraftItem[]>(() => [emptyRow()]);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<ReceiveResult | null>(null);
+function useInventorySnapshot(shop: string) {
   const [inventory, setInventory] = useState<InventoryRowWithKey[]>([]);
   const [inventoryError, setInventoryError] = useState<string | null>(null);
   const [inventoryLoading, setInventoryLoading] = useState(false);
@@ -177,6 +164,25 @@ export default function StockInflowsClient({
       cancelled = true;
     };
   }, [shop]);
+
+  return { inventory, inventoryError, inventoryLoading };
+}
+
+export default function StockInflowsClient({
+  shop,
+  recent,
+}: {
+  shop: string;
+  recent: StockInflowEvent[];
+}) {
+  const router = useRouter();
+  const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
+  const [note, setNote] = useState("");
+  const [items, setItems] = useState<DraftItem[]>(() => [emptyRow()]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<ReceiveResult | null>(null);
+  const { inventory, inventoryError, inventoryLoading } = useInventorySnapshot(shop);
 
   const normalizedItems = useMemo(() => {
     return items

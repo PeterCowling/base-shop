@@ -1,8 +1,9 @@
-import { memo, useState } from "react";
+import { memo, useRef, useState } from "react";
 
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
 import { DifferenceBadge } from "../common/DifferenceBadge";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -23,6 +24,7 @@ export const SafeResetForm = memo(function SafeResetForm({
   onCancel,
 }: SafeResetFormProps) {
   const [countedKeycards, setCountedKeycards] = useState(0);
+  const submitRef = useRef<(() => void) | undefined>(undefined);
 
   const handleConfirm = (
     cash: number,
@@ -55,10 +57,18 @@ export const SafeResetForm = memo(function SafeResetForm({
       onConfirm={handleConfirm}
       onCancel={onCancel}
       onChange={(_, cards) => setCountedKeycards(cards)}
+      hideConfirm
+      submitRef={submitRef}
     >
       <div className="mt-4 flex flex-col items-end text-info-main text-sm">
         <div>Expected keycards: {currentKeycards}</div>
         <DifferenceBadge value={countedKeycards - currentKeycards} />
+      </div>
+      <div className="mt-4">
+        <PasswordReauthInline
+          onSubmit={() => submitRef.current?.()}
+          submitLabel="Confirm reset"
+        />
       </div>
     </CashCountingForm>
   );

@@ -67,7 +67,7 @@ export function StepIndicator({
               key={step.id}
               type="button"
               onClick={() => onStepSelect(index, step)}
-              className="appearance-none border-0 bg-transparent p-0 min-h-10 min-w-10"
+              className="appearance-none border-0 bg-transparent p-0 min-h-11 min-w-11 size-11"
             >
               {tag}
             </button>

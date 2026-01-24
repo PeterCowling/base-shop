@@ -1,27 +1,51 @@
 import "@testing-library/jest-dom";
 
-import { useState } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { DISCREPANCY_LIMIT } from "../../../constants/cash";
-import PinInput from "../../common/PinInput";
 import { CloseShiftForm } from "../CloseShiftForm";
 
-jest.mock("../../common/PinEntryModal", () => ({
+const mockUseVarianceThresholds = jest.fn();
+
+jest.mock("../../common/PasswordReauthModal", () => ({
   __esModule: true,
-  default: function MockPinEntryModal({
-    onSubmit,
+  default: function MockPasswordReauthModal({
+    onSuccess,
   }: {
-    onSubmit: (pin: string) => void;
-    hideCancel?: boolean;
+    onSuccess: () => void;
+    onCancel: () => void;
   }) {
-    const [pin, setPin] = useState("");
+    return <button onClick={onSuccess}>Confirm</button>;
+  },
+}));
+
+jest.mock("../VarianceSignoffModal", () => ({
+  __esModule: true,
+  default: function MockVarianceSignoffModal({
+    onConfirm,
+  }: {
+    onConfirm: (signoff: {
+      signedOffBy: string;
+      signedOffByUid?: string;
+      signedOffAt: string;
+      varianceNote: string;
+    }) => void;
+    onCancel: () => void;
+  }) {
     return (
-      <div>
-        <PinInput onChange={setPin} />
-        <button onClick={() => onSubmit(pin)}>Confirm</button>
-      </div>
+      <button
+        onClick={() =>
+          onConfirm({
+            signedOffBy: "manager",
+            signedOffByUid: "uid-1",
+            signedOffAt: "2024-01-01T10:00:00Z",
+            varianceNote: "ok",
+          })
+        }
+      >
+        Manager Signoff
+      </button>
     );
   },
 }));
@@ -35,15 +59,6 @@ jest.mock("../../../hooks/mutations/useCCReceiptConfirmations", () => ({
 }));
 
 let blindClose = false;
-const getUserByPinMock = jest.fn((pin: string) => {
-  if (pin === "111111") return { user_name: "alice", email: "a@test" };
-  if (pin === "222222") return { user_name: "bob", email: "b@test" };
-  return null;
-});
-
-jest.mock("../../../utils/getUserByPin", () => ({
-  getUserByPin: (pin: string) => getUserByPinMock(pin),
-}));
 
 jest.mock("../../../context/AuthContext", () => ({
   useAuth: () => ({ user: { user_name: "alice", email: "a@test" } }),
@@ -61,10 +76,18 @@ jest.mock("../../../constants/settings", () => ({
   },
 }));
 
+jest.mock("../../../hooks/data/useVarianceThresholds", () => ({
+  useVarianceThresholds: () => mockUseVarianceThresholds(),
+}));
+
 beforeEach(() => {
   localStorage.clear();
   blindClose = false;
-  getUserByPinMock.mockClear();
+  mockUseVarianceThresholds.mockReturnValue({
+    thresholds: { cash: 1000, keycards: undefined },
+    loading: false,
+    error: null,
+  });
 });
 
 describe("CloseShiftForm", () => {
@@ -95,14 +118,16 @@ describe("CloseShiftForm", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /go/i }));
 
-    const digits = await screen.findAllByLabelText(/PIN digit/);
-    for (const d of digits) {
-      await userEvent.type(d, "1");
-    }
     await userEvent.click(screen.getByRole("button", { name: /^confirm$/i }));
 
-    expect(onConfirm).toHaveBeenCalledWith(10, 0, false, { "10": count });
-    expect(getUserByPinMock).toHaveBeenCalledWith("111111");
+    expect(onConfirm).toHaveBeenCalledWith(
+      10,
+      0,
+      false,
+      { "10": count },
+      undefined,
+      false
+    );
   });
 
   it("reconciles a shift without manager or witness", async () => {
@@ -124,7 +149,14 @@ describe("CloseShiftForm", () => {
     await userEvent.click(screen.getByRole("button", { name: /go/i }));
     await screen.findByText(/please recount/i);
     await userEvent.click(screen.getByRole("button", { name: /go/i }));
-    expect(onConfirm).toHaveBeenCalledWith(150, 0, true, { "50": 3 });
+    expect(onConfirm).toHaveBeenCalledWith(
+      150,
+      0,
+      true,
+      { "50": 3 },
+      undefined,
+      false
+    );
   });
 
   it("reveals expected cash when blind close is enabled", async () => {
@@ -185,6 +217,48 @@ describe("CloseShiftForm", () => {
     );
   });
 
+  it("requires manager sign-off when variance exceeds threshold", async () => {
+    mockUseVarianceThresholds.mockReturnValue({
+      thresholds: { cash: 0, keycards: undefined },
+      loading: false,
+      error: null,
+    });
+    const onConfirm = jest.fn();
+
+    render(
+      <CloseShiftForm
+        ccTransactionsFromThisShift={[]}
+        expectedCashAtClose={0}
+        expectedKeycardsAtClose={0}
+        variant="close"
+        onConfirm={onConfirm}
+        onCancel={jest.fn()}
+      />
+    );
+
+    await userEvent.type(screen.getByLabelText(/€10 notes/), "1");
+    await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    await userEvent.click(screen.getByRole("button", { name: /next/i }));
+    await userEvent.click(screen.getByRole("button", { name: /go/i }));
+
+    await userEvent.click(screen.getByRole("button", { name: /manager signoff/i }));
+    await userEvent.click(screen.getByRole("button", { name: /^confirm$/i }));
+
+    expect(onConfirm).toHaveBeenCalledWith(
+      10,
+      0,
+      true,
+      { "10": 1 },
+      {
+        signedOffBy: "manager",
+        signedOffByUid: "uid-1",
+        signedOffAt: "2024-01-01T10:00:00Z",
+        varianceNote: "ok",
+      },
+      true
+    );
+  });
+
   it("applies dark mode styles", async () => {
     document.documentElement.classList.add("dark");
     render(
@@ -204,4 +278,3 @@ describe("CloseShiftForm", () => {
     document.documentElement.classList.remove("dark");
   });
 });
-

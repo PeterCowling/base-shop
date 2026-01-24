@@ -24,13 +24,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
-    "dev": "tsc -p tsconfig.json -w",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest packages/zod-utils/src/__tests__ --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
   },
   "dependencies": {
-    "zod": "^3.23.8"
+    "zod": "^3.25.73"
   },
   "module": "./dist/index.js"
 }

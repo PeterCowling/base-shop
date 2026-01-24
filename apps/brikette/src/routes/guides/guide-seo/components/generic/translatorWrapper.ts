@@ -6,6 +6,7 @@
 import type { TFunction } from "i18next";
 
 import i18n from "@/i18n";
+import { tagTranslator } from "@/utils/i18n-types";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
 import { shouldPreserveTranslatorWhenLocalized } from "./guidePolicies";
@@ -333,17 +334,12 @@ export function withTranslator(
     });
 
     // Tag wrapped translator for test assertions
-    try {
-      const langTag = hasLocalizedContent
-        ? lang
-        : englishFallbackAllowed
-        ? "en"
-        : lang;
-      (wrapped as unknown as Record<string, unknown>).__lang = langTag;
-      (wrapped as unknown as Record<string, unknown>).__namespace = "guides";
-    } catch {
-      /* noop */
-    }
+    const langTag = hasLocalizedContent
+      ? lang
+      : englishFallbackAllowed
+      ? "en"
+      : lang;
+    tagTranslator(wrapped, langTag, "guides");
 
     return { ...obj, t: wrapped };
   } catch {

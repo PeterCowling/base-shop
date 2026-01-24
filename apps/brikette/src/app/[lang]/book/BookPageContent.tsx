@@ -3,7 +3,7 @@
 // src/app/[lang]/book/BookPageContent.tsx
 // Client component for book page - migrated from routes/book.tsx
 import type React from "react";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -11,10 +11,9 @@ import { useSearchParams } from "next/navigation";
 import { Section } from "@acme/ui/atoms";
 
 import roomsData from "@/data/roomsData";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { getSlug } from "@/utils/slug";
 
 type Props = {
@@ -73,15 +72,7 @@ function BookPageContent({ lang }: Props) {
     null | { items: { sku: string; plan: "flex" | "nr"; confirmUrl: string }[]; resultUrl: string }
   >(null);
   const [pending, setPending] = useState<string | null>(null);
-
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["bookPage", "translation"]);
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({ lang, namespaces: ["bookPage", "translation"] });
 
   const checkin = searchParams?.get("checkin") ?? getTodayIso();
   const checkout = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkin);
@@ -89,18 +80,15 @@ function BookPageContent({ lang }: Props) {
   const adults = parseIntSafe(searchParams?.get("adults") ?? null, defaultAdultsForSku(sku));
   const children = parseIntSafe(searchParams?.get("children") ?? null, 0);
 
-  const octorateHref = useMemo(
-    () => buildOctorateLink(checkin, checkout, adults, children, searchParams ?? new URLSearchParams()),
-    [checkin, checkout, adults, children, searchParams]
-  );
+  const octorateHref = buildOctorateLink(checkin, checkout, adults, children, searchParams ?? new URLSearchParams());
 
-  const orderedRooms = useMemo(() => {
+  const orderedRooms = (() => {
     const list = [...roomsData];
     if (sku) {
       list.sort((a, b) => (a.sku === sku ? -1 : b.sku === sku ? 1 : 0));
     }
     return list;
-  }, [sku]);
+  })();
 
   const handleConfirmClick = useCallback(
     async (

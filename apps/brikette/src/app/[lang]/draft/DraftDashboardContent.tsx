@@ -3,13 +3,13 @@
 // src/app/[lang]/draft/DraftDashboardContent.tsx
 // Client component for draft dashboard - migrated from routes/guides/draft.index.tsx
 /* eslint-disable ds/no-hardcoded-copy -- TECH-DEBT-000 [ttl=2025-12-31] Editorial dashboard copy awaiting i18n coverage */
-import { memo, useEffect, useMemo } from "react";
+import { memo } from "react";
 import Link from "next/link";
 
 import { Section } from "@acme/ui/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
 import {
@@ -21,7 +21,6 @@ import {
   resolveDraftPathSegment,
 } from "@/routes/guides/guide-manifest";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { getSlug } from "@/utils/slug";
 
 type Props = {
@@ -71,24 +70,17 @@ function buildSummary(entry: GuideManifestEntry): DraftGuideSummary {
 }
 
 function DraftDashboardContent({ lang }: Props) {
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["guides"]);
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({ lang, namespaces: ["guides"] });
 
-  const guides = useMemo(() => listGuideManifestEntries().map(buildSummary), []);
+  const guides = listGuideManifestEntries().map(buildSummary);
 
-  const sortedGuides = useMemo(() => {
+  const sortedGuides = (() => {
     return [...guides].sort((a, b) => {
       if (a.status === b.status) return a.slug.localeCompare(b.slug);
       const order: DraftGuideStatus[] = ["draft", "review", "live"];
       return order.indexOf(a.status) - order.indexOf(b.status);
     });
-  }, [guides]);
+  })();
 
   return (
     <Section as="main" className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">

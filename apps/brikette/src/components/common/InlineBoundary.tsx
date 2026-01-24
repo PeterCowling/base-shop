@@ -3,8 +3,10 @@
 
 import React from "react";
 
+import { IS_DEV } from "@/config/env";
+
 type BoundaryState = { hasError: boolean };
-type BoundaryProps = { children: React.ReactNode };
+type BoundaryProps = { children: React.ReactNode; label?: string };
 
 class InlineBoundary extends React.Component<BoundaryProps, BoundaryState> {
   constructor(props: BoundaryProps) {
@@ -16,7 +18,9 @@ class InlineBoundary extends React.Component<BoundaryProps, BoundaryState> {
     return { hasError: true };
   }
 
-  override componentDidCatch() {}
+  override componentDidCatch(error: unknown) {
+    if (IS_DEV) console.debug("[InlineBoundary]", this.props.label ?? "unnamed", error);
+  }
 
   override render() {
     if (this.state.hasError) return null;

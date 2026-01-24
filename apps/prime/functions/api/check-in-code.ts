@@ -1,8 +1,15 @@
 /**
  * CF Pages Function: /api/check-in-code
  *
- * GET: Retrieves check-in code for a booking
- * POST: Generates a new check-in code for a booking
+ * GET: Retrieve existing check-in code for a guest UUID
+ * POST: Generate a new check-in code for a guest UUID (with collision detection)
+ *
+ * Code format: "BRK-XXXXX" (5 alphanumeric chars after prefix)
+ * Expiry: 48 hours after checkout date
+ *
+ * Firebase paths:
+ *   checkInCodes/byCode/{code} — staff lookup by code
+ *   checkInCodes/byUuid/{uuid} — guest lookup by UUID
  */
 
 import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
@@ -12,45 +19,61 @@ interface Env {
   CF_FIREBASE_API_KEY?: string;
 }
 
-interface CheckInCode {
+interface CheckInCodeRecord {
   code: string;
-  bookingId: string;
-  createdAt: string;
-  expiresAt: string;
+  uuid: string;
+  createdAt: number;
+  expiresAt: number;
 }
 
+const CODE_PREFIX = 'BRK-';
+const CODE_LENGTH = 5;
+const CODE_EXPIRY_HOURS_AFTER_CHECKOUT = 48;
+const MAX_COLLISION_ATTEMPTS = 10;
+
+/** Characters excluding confusing ones (0, O, 1, I, L) */
+const CODE_CHARACTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+
 function generateCode(): string {
-  // Generate 6 character alphanumeric code
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
-  for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  for (let i = 0; i < CODE_LENGTH; i++) {
+    code += CODE_CHARACTERS.charAt(Math.floor(Math.random() * CODE_CHARACTERS.length));
   }
-  return code;
+  return `${CODE_PREFIX}${code}`;
+}
+
+function calculateExpiry(checkOutDate: string): number {
+  try {
+    const checkOut = new Date(checkOutDate);
+    return checkOut.getTime() + CODE_EXPIRY_HOURS_AFTER_CHECKOUT * 60 * 60 * 1000;
+  } catch {
+    // Default to 7 days from now if checkout date is invalid
+    return Date.now() + 7 * 24 * 60 * 60 * 1000;
+  }
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
-  const bookingId = url.searchParams.get('bookingId');
+  const uuid = url.searchParams.get('uuid');
 
-  if (!bookingId) {
-    return errorResponse('bookingId parameter is required', 400);
+  if (!uuid) {
+    return errorResponse('uuid parameter is required', 400);
   }
 
   try {
     const firebase = new FirebaseRest(env);
-    const checkInCode = await firebase.get<CheckInCode>(`checkInCodes/${bookingId}`);
+    const record = await firebase.get<CheckInCodeRecord>(`checkInCodes/byUuid/${uuid}`);
 
-    if (!checkInCode) {
-      return errorResponse('No check-in code found for this booking', 404);
+    if (!record) {
+      return jsonResponse({ code: null });
     }
 
     // Check if expired
-    if (new Date(checkInCode.expiresAt) < new Date()) {
-      return errorResponse('Check-in code has expired', 410);
+    if (record.expiresAt && record.expiresAt < Date.now()) {
+      return jsonResponse({ code: null, expired: true });
     }
 
-    return jsonResponse({ code: checkInCode.code });
+    return jsonResponse({ code: record.code, expiresAt: record.expiresAt });
   } catch (error) {
     console.error('Error fetching check-in code:', error);
     return errorResponse('Failed to fetch check-in code', 500);
@@ -59,36 +82,57 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
-    const body = await request.json() as { bookingId: string };
+    const body = await request.json() as { uuid?: string; checkOutDate?: string };
 
-    if (!body.bookingId) {
-      return errorResponse('bookingId is required', 400);
+    if (!body.uuid) {
+      return errorResponse('uuid is required', 400);
+    }
+
+    if (!body.checkOutDate) {
+      return errorResponse('checkOutDate is required', 400);
     }
 
     const firebase = new FirebaseRest(env);
 
-    // Generate new code
-    const code = generateCode();
-    const now = new Date();
-    const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    // Check if code already exists and is not expired
+    const existing = await firebase.get<CheckInCodeRecord>(`checkInCodes/byUuid/${body.uuid}`);
+    if (existing && existing.expiresAt > Date.now()) {
+      return jsonResponse({ code: existing.code, expiresAt: existing.expiresAt, existing: true });
+    }
 
-    const checkInCode: CheckInCode = {
+    // Generate new code with collision detection
+    let code: string;
+    let attempts = 0;
+
+    do {
+      code = generateCode();
+      attempts++;
+
+      const existingCode = await firebase.get<CheckInCodeRecord>(`checkInCodes/byCode/${code}`);
+      if (!existingCode) {
+        break; // Code is unique
+      }
+
+      if (attempts >= MAX_COLLISION_ATTEMPTS) {
+        return errorResponse('Failed to generate unique code', 500);
+      }
+    } while (true);
+
+    const now = Date.now();
+    const expiresAt = calculateExpiry(body.checkOutDate);
+
+    const record: CheckInCodeRecord = {
       code,
-      bookingId: body.bookingId,
-      createdAt: now.toISOString(),
-      expiresAt: expiresAt.toISOString(),
+      uuid: body.uuid,
+      createdAt: now,
+      expiresAt,
     };
 
-    // Save code by bookingId for lookup by booking
-    await firebase.set(`checkInCodes/${body.bookingId}`, checkInCode);
+    // Write to both indexes
+    await firebase.set(`checkInCodes/byCode/${code}`, record);
+    await firebase.set(`checkInCodes/byUuid/${body.uuid}`, record);
 
-    // Also save reverse lookup by code
-    await firebase.set(`checkInCodesByCode/${code}`, {
-      bookingId: body.bookingId,
-      expiresAt: expiresAt.toISOString(),
-    });
-
-    return jsonResponse({ code });
+    return jsonResponse({ code, expiresAt, created: true });
   } catch (error) {
     console.error('Error generating check-in code:', error);
     return errorResponse('Failed to generate check-in code', 500);

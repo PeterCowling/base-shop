@@ -1,6 +1,6 @@
 // src/components/landing/IntroTextBox.tsx
 
-import React, { type FC, memo, useMemo } from "react";
+import React, { type FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -71,14 +71,11 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
   const titleParts = extractTitleParts(resource);
 
   /* --- Body paragraphs (HTML from i18n) ------------------------------ */
-  const paragraphs = useMemo(
-    () => [
-      { id: "p1", content: t("introSection.paragraph1") },
-      { id: "p2", content: t("introSection.paragraph2") },
-      { id: "p3", content: t("introSection.paragraph3") },
-    ],
-    [t]
-  );
+  const paragraphs = [
+    { id: "p1", content: t("introSection.paragraph1") },
+    { id: "p2", content: t("introSection.paragraph2") },
+    { id: "p3", content: t("introSection.paragraph3") },
+  ];
 
   return (
     <section

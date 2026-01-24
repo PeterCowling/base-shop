@@ -1,11 +1,9 @@
 import { memo, useRef, useState } from "react";
 
 import { settings } from "../../constants/settings";
-import { useAuth } from "../../context/AuthContext";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -50,7 +48,6 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
     }
   };
 
-  const { user } = useAuth();
   const submitRef = useRef<(() => void) | undefined>(undefined);
 
   const handleConfirm = (
@@ -69,14 +66,6 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
     const difference = cash - expectedSafe;
     const cardDiff = cards - expectedKeycards;
     onConfirm(cash, difference, cards, cardDiff, map);
-  };
-
-  const handlePinSubmit = (pin: string): boolean => {
-    const current = getUserByPin(pin);
-    if (!user) return false;
-    if (!current || current.user_name !== user.user_name) return false;
-    submitRef.current?.();
-    return true;
   };
 
   return (
@@ -108,7 +97,10 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
           submitRef={submitRef}
         >
           <div className="mb-5 mt-[30px]">
-            <PinLoginInline onSubmit={handlePinSubmit} />
+            <PasswordReauthInline
+              onSubmit={() => submitRef.current?.()}
+              submitLabel="Confirm reconcile"
+            />
           </div>
         </CashCountingForm>
       </div>

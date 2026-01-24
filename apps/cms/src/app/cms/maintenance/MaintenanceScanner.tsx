@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 
-import { Toast } from "@/components/atoms";
+import { useToast } from "@acme/ui/operations";
+
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 
 import { runMaintenanceCheck } from "./scan.server";
@@ -12,14 +13,9 @@ interface MaintenanceScannerProps {
   initial: FlaggedItem[];
 }
 
-type ToastState = {
-  open: boolean;
-  message: string;
-};
-
 export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
   const [items, setItems] = useState(initial);
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
+  const toast = useToast();
   const [isPending, startTransition] = useTransition();
   const shouldFocusResults = useRef(false);
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -47,19 +43,17 @@ export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
       try {
         const next = await runMaintenanceCheck();
         setItems(next);
-        setToast({
-          open: true,
-          message:
-            next.length === 0
-              ? "Scan complete. No issues found."
-              : `Scan complete. Found ${next.length} ${next.length === 1 ? "issue" : "issues"}.`,
-        });
+        toast.success(
+          next.length === 0
+            ? "Scan complete. No issues found."
+            : `Scan complete. Found ${next.length} ${next.length === 1 ? "issue" : "issues"}.`,
+        );
       } catch (error) {
         const message =
           error instanceof Error
             ? error.message
             : "Maintenance scan failed. Try again later.";
-        setToast({ open: true, message });
+        toast.error(message);
       }
     });
   };
@@ -104,12 +98,6 @@ export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
             ))
           )}
         </div>
-        <Toast
-          open={toast.open}
-          message={toast.message}
-          onClose={() => setToast({ open: false, message: "" })}
-          role="status"
-        />
       </CardContent>
     </Card>
   );

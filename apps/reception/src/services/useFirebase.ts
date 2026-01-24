@@ -12,23 +12,22 @@ import type { FirebaseConfig } from "../types/FirebaseConfig";
  * Client Hook (Pure Data Hook):
  * Returns the Firebase configuration based on environment variables.
  */
+export function getFirebaseConfigFromEnv(): FirebaseConfig {
+  const env = firebaseEnvSchema.parse(process.env);
+  return {
+    apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    databaseURL: env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+    measurementId: env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  };
+}
+
 export function useFirebaseConfig(): FirebaseConfig {
-  const config = useMemo<FirebaseConfig>(() => {
-    const env = firebaseEnvSchema.parse(process.env);
-    const envConfig: FirebaseConfig = {
-      apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
-      authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-      projectId: env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      storageBucket: env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-      appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
-      databaseURL: env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
-      measurementId: env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-    };
-
-    return envConfig;
-  }, []);
-
+  const config = useMemo<FirebaseConfig>(() => getFirebaseConfigFromEnv(), []);
   return config;
 }
 

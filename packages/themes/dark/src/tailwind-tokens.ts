@@ -18,6 +18,8 @@ export const tokens = {
   "--color-warning-fg": "40 90% 96%",
   "--color-info": "210 90% 35%",
   "--color-info-fg": "210 90% 96%",
+  "--color-link": "220 80% 70%",
+  "--color-link-dark": "220 80% 70%",
   "--color-muted": "0 0% 60%",
   "--color-muted-fg": "0 0% 92%",
   "--color-muted-border": "0 0% 40%",

@@ -43,8 +43,8 @@
     "@types/busboy": "^1.5.4",
     "cross-env": "^7.0.3",
     "next": "15.3.8",
-    "react": "19.2.0-canary-3fbfb9ba-20250409",
-    "react-dom": "19.2.0-canary-3fbfb9ba-20250409",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
     "supertest": "^6.3.3"
   }
 }

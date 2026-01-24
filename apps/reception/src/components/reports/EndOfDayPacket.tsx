@@ -1,5 +1,5 @@
 /* src/components/reports/EndOfDayPacket.tsx */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   endAt as fbEndAt,
   get,
@@ -12,13 +12,17 @@ import {
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { SafeDataProvider } from "../../context/SafeDataContext";
 import { TillDataProvider } from "../../context/TillDataContext";
+import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
 import { useEndOfDayReportData } from "../../hooks/data/useEndOfDayReportData";
+import { useVarianceThresholds } from "../../hooks/data/useVarianceThresholds";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import {
+  endOfDayIso,
   formatEnGbDateTimeFromIso,
   getItalyIsoString,
+  startOfDayIso,
   subDays,
 } from "../../utils/dateUtils";
 import { formatEuro } from "../../utils/format";
@@ -107,7 +111,27 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
       safeVariance,
       safeVarianceMismatch,
       safeInflowsMismatch,
+      correctionSummary,
     } = useEndOfDayReportData(date);
+    const { thresholds } = useVarianceThresholds();
+    const { shifts, loading: shiftsLoading, error: shiftsError } =
+      useTillShiftsRange({
+        orderByChild: "closedAt",
+        startAt: startOfDayIso(date),
+        endAt: endOfDayIso(date),
+      });
+    const cashVarianceThreshold = thresholds.cash ?? DISCREPANCY_LIMIT;
+    const pendingVarianceSignoffs = useMemo(
+      () =>
+        shifts.filter((shift) => {
+          if (!shift.closedAt) return false;
+          if (shift.closeType === "reconcile") return false;
+          const diff = shift.closeDifference ?? 0;
+          if (Math.abs(diff) <= cashVarianceThreshold) return false;
+          return !shift.signedOffAt;
+        }),
+      [shifts, cashVarianceThreshold]
+    );
 
     const drawerInflows = safeInflowsTotal - bankWithdrawals.total;
 
@@ -272,6 +296,31 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         </h2>
 
         <DailyTotals totals={totals} />
+        <section>
+          <h3 className="text-xl font-semibold mb-2">Corrections</h3>
+          {correctionSummary.total === 0 ? (
+            <p className="italic text-sm text-gray-600 dark:text-darkAccentGreen">
+              No corrections recorded.
+            </p>
+          ) : (
+            <div className="space-y-1 text-sm">
+              <p>
+                <strong>Entries:</strong> {correctionSummary.total}
+              </p>
+              <p>
+                <strong>Net impact:</strong>{" "}
+                {formatEuro(correctionSummary.netAmount)}
+              </p>
+              <p>
+                <strong>Reversals:</strong> {correctionSummary.reversalCount}{" "}
+                <strong>Replacements:</strong>{" "}
+                {correctionSummary.replacementCount}{" "}
+                <strong>Adjustments:</strong>{" "}
+                {correctionSummary.adjustmentCount}
+              </p>
+            </div>
+          )}
+        </section>
 
         <section>
           <h3 className="text-xl font-semibold mb-2">
@@ -577,6 +626,59 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
               )}
             </div>
           </div>
+        </section>
+
+        <section>
+          <h3 className="text-xl font-semibold mb-2">Variance Sign-offs</h3>
+          <p className="text-sm text-gray-600 dark:text-darkAccentGreen">
+            Threshold: €{cashVarianceThreshold.toFixed(2)} (cash variance)
+          </p>
+          {shiftsLoading && (
+            <p className="italic text-sm text-gray-600 dark:text-darkAccentGreen">
+              Loading variance sign-offs...
+            </p>
+          )}
+          {shiftsError && (
+            <p className="text-error-main text-sm">
+              Error loading variance sign-offs.
+            </p>
+          )}
+          {!shiftsLoading && !shiftsError && pendingVarianceSignoffs.length === 0 && (
+            <p className="italic text-sm text-gray-600 dark:text-darkAccentGreen">
+              No pending variance sign-offs.
+            </p>
+          )}
+          {!shiftsLoading && !shiftsError && pendingVarianceSignoffs.length > 0 && (
+            <table className="min-w-full border border-gray-400 text-sm dark:border-darkSurface">
+              <thead>
+                <tr className="bg-gray-100 dark:bg-darkSurface">
+                  <th className="p-2 text-start border-b">Shift ID</th>
+                  <th className="p-2 text-start border-b">Closed</th>
+                  <th className="p-2 text-start border-b">Closed By</th>
+                  <th className="p-2 text-start border-b">Variance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingVarianceSignoffs.map((shift) => (
+                  <tr
+                    key={shift.shiftId}
+                    className="odd:bg-gray-50 dark:odd:bg-darkSurface"
+                  >
+                    <td className="p-2">{shift.shiftId}</td>
+                    <td className="p-2">
+                      {shift.closedAt
+                        ? formatEnGbDateTimeFromIso(shift.closedAt)
+                        : "-"}
+                    </td>
+                    <td className="p-2">{shift.closedBy ?? "-"}</td>
+                    <td className="p-2 text-error-main font-semibold">
+                      {shift.closeDifference ?? 0}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </section>
 
         <VarianceSummary

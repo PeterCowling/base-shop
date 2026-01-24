@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "test": "JEST_FORCE_CJS=1 jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."

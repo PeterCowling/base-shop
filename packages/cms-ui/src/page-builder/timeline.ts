@@ -68,6 +68,43 @@ function seqPlay(el: HTMLElement, cfg: TimelineConfig) {
 
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
 
+function clamp01(value: number) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function findSegment(steps: Array<NonNullable<TimelineConfig["steps"]>[number]>, progress: number) {
+  let start = steps[0];
+  let end = steps[steps.length - 1];
+  for (let i = 0; i < steps.length - 1; i++) {
+    const atA = steps[i].at as number;
+    const atB = steps[i + 1].at as number;
+    if (progress >= atA && progress <= atB) {
+      start = steps[i];
+      end = steps[i + 1];
+      break;
+    }
+  }
+  return { start, end };
+}
+
+function interpolateStep(
+  a: NonNullable<TimelineConfig["steps"]>[number],
+  b: NonNullable<TimelineConfig["steps"]>[number],
+  t: number
+) {
+  const interpolateNumber = (from?: number, to?: number, fallback = 0) => {
+    if (typeof from !== "number" && typeof to !== "number") return undefined;
+    return lerp(from ?? fallback, to ?? fallback, t);
+  };
+  return {
+    opacity: interpolateNumber(a.opacity, b.opacity, 1),
+    x: interpolateNumber(a.x, b.x, 0),
+    y: interpolateNumber(a.y, b.y, 0),
+    scale: interpolateNumber(a.scale, b.scale, 1),
+    rotate: interpolateNumber(a.rotate, b.rotate, 0),
+  } as NonNullable<TimelineConfig["steps"]>[number];
+}
+
 function scrollBind(el: HTMLElement, cfg: TimelineConfig) {
   if (!cfg.steps || cfg.steps.length === 0) return;
   // Normalize and sort by `at`
@@ -77,28 +114,12 @@ function scrollBind(el: HTMLElement, cfg: TimelineConfig) {
   const onScroll = () => {
     const rect = el.getBoundingClientRect();
     const vh = window.innerHeight || 1;
-    // Compute progress: 0 when bottom off-screen, 1 when top reaches top
-    const enter = Math.max(0, Math.min(1, 1 - rect.top / vh));
-    const progress = Math.max(0, Math.min(1, enter));
-    // Find segment
-    let a = steps[0];
-    let b = steps[steps.length - 1];
-    for (let i = 0; i < steps.length - 1; i++) {
-      if (progress >= (steps[i].at as number) && progress <= (steps[i + 1].at as number)) {
-        a = steps[i];
-        b = steps[i + 1];
-        break;
-      }
-    }
-    const span = Math.max(1e-6, (b.at as number) - (a.at as number));
-    const t = Math.max(0, Math.min(1, (progress - (a.at as number)) / span));
-    const cur = {
-      opacity: (typeof a.opacity === "number" || typeof b.opacity === "number") ? lerp(a.opacity ?? 1, b.opacity ?? 1, t) : undefined,
-      x: (typeof a.x === "number" || typeof b.x === "number") ? lerp(a.x ?? 0, b.x ?? 0, t) : undefined,
-      y: (typeof a.y === "number" || typeof b.y === "number") ? lerp(a.y ?? 0, b.y ?? 0, t) : undefined,
-      scale: (typeof a.scale === "number" || typeof b.scale === "number") ? lerp(a.scale ?? 1, b.scale ?? 1, t) : undefined,
-      rotate: (typeof a.rotate === "number" || typeof b.rotate === "number") ? lerp(a.rotate ?? 0, b.rotate ?? 0, t) : undefined,
-    } as NonNullable<TimelineConfig["steps"]>[number];
+    const enter = clamp01(1 - rect.top / vh);
+    const progress = clamp01(enter);
+    const { start, end } = findSegment(steps, progress);
+    const span = Math.max(1e-6, (end.at as number) - (start.at as number));
+    const t = clamp01((progress - (start.at as number)) / span);
+    const cur = interpolateStep(start, end, t);
     el.style.transitionProperty = ""; // direct drive
     el.style.transitionDuration = "";
     el.style.transitionTimingFunction = "";

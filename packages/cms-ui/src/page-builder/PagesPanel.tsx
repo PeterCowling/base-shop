@@ -1,1 +1,1 @@
-export { default } from "./pages-panel/PagesPanel";
+export { default } from "@acme/ui/components/cms/page-builder/pages-panel/PagesPanel";

@@ -106,6 +106,13 @@ export const tokens = {
   "--shadow-lg": {
     light: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   },
+  // Elevation scale (light/dark tuned)
+  "--elevation-0": { light: "none", dark: "none" },
+  "--elevation-1": { light: "0 1px 2px rgba(0, 0, 0, 0.06)", dark: "0 1px 2px rgba(0, 0, 0, 0.14)" },
+  "--elevation-2": { light: "0 2px 6px rgba(0, 0, 0, 0.10)", dark: "0 2px 6px rgba(0, 0, 0, 0.18)" },
+  "--elevation-3": { light: "0 4px 12px rgba(0, 0, 0, 0.14)", dark: "0 4px 12px rgba(0, 0, 0, 0.24)" },
+  "--elevation-4": { light: "0 8px 24px rgba(0, 0, 0, 0.18)", dark: "0 8px 24px rgba(0, 0, 0, 0.30)" },
+  "--elevation-5": { light: "0 12px 36px rgba(0, 0, 0, 0.22)", dark: "0 12px 36px rgba(0, 0, 0, 0.36)" },
   // Gradient tokens (used by bg-hero utility)
   "--gradient-hero-from": { light: "234 89% 60%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   "--gradient-hero-via": { light: "270 83% 60%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]

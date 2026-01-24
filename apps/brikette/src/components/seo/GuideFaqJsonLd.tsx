@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/GuideFaqJsonLd.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { BASE_URL } from "@/config/site";
@@ -24,7 +24,7 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
   const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : undefined;
   const { t } = useTranslation("guides", { lng: lang });
   const faqsRaw = t(`content.${guideKey}.faqs`, { returnObjects: true }) as unknown;
-  const faqsResolved = useMemo(() => {
+  const faqsResolved = (() => {
     if (Array.isArray(faqsRaw)) return faqsRaw;
     const fromStore = getGuideResource<unknown>(lang, `content.${guideKey}.faqs`);
     if (fromStore !== undefined && fromStore !== null) return fromStore;
@@ -33,16 +33,16 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
       if (fromEn !== undefined && fromEn !== null) return fromEn;
     }
     return faqsRaw;
-  }, [faqsRaw, guideKey, lang]);
+  })();
 
-  const canonicalUrl = useMemo(() => {
+  const canonicalUrl = (() => {
     if (typeof pathname === "string" && pathname.length > 0) {
       return `${BASE_URL}${pathname}`;
     }
     return guideAbsoluteUrl(lang, guideKey);
-  }, [guideKey, lang, pathname]);
+  })();
 
-  const faqJson = useMemo(() => {
+  const faqJson = (() => {
     const fromTranslations = buildFaqJsonLd(lang, canonicalUrl, faqsResolved);
     if (fromTranslations && fromTranslations.length > 0) {
       return fromTranslations;
@@ -65,7 +65,7 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
     } catch {
       return "";
     }
-  }, [canonicalUrl, faqsResolved, fallback, lang]);
+  })();
 
   if (!faqJson) {
     return null;

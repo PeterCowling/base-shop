@@ -1,6 +1,5 @@
 "use client";
 
-import { Toast } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
 import type {
@@ -53,8 +52,6 @@ export function SegmentBuilderWizard({
     handleDetailsSubmit,
     handleRulesNext,
     handleFinish,
-    toast,
-    closeToast,
   } = useSegmentBuilderWizard({
     initialDefinition,
     onSubmit,
@@ -105,7 +102,6 @@ export function SegmentBuilderWizard({
         />
       )}
 
-      <Toast open={toast.open} message={toast.message} onClose={closeToast} />
     </SegmentBuilderWizardLayout>
   );
 }

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import type { Transaction } from "../../types/component/Till";
+import type { Transaction, VarianceSignoff } from "../../types/component/Till";
 import type { TenderRemovalRecord } from "../../types/finance";
 
 import { CloseShiftForm } from "./CloseShiftForm";
@@ -36,7 +36,9 @@ interface FormsContainerProps {
     countedCash: number,
     countedKeycards: number,
     allReceiptsConfirmed: boolean,
-    breakdown: Record<string, number>
+    breakdown: Record<string, number>,
+    varianceSignoff?: VarianceSignoff,
+    varianceSignoffRequired?: boolean
   ) => void;
   confirmKeycardReconcile: (counted: number) => void;
   confirmFloat: (amount: number) => Promise<void>;
@@ -65,6 +67,7 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
     showFloatForm,
     showExchangeForm,
     showTenderRemovalForm,
+    pinRequiredForTenderRemoval,
     lastCloseCashCount,
     expectedCashAtClose,
     expectedKeycardsAtClose,
@@ -109,13 +112,15 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
       {showCloseShiftForm && shiftOpenTime && (
         <CloseShiftForm
           ccTransactionsFromThisShift={ccTransactionsFromThisShift}
-          onConfirm={(cash, keys, receipts, breakdown) =>
+          onConfirm={(cash, keys, receipts, breakdown, signoff, signoffRequired) =>
             confirmShiftClose(
               closeShiftFormVariant,
               cash,
               keys,
               receipts,
-              breakdown
+              breakdown,
+              signoff,
+              signoffRequired
             )
           }
           onCancel={() => setShowCloseShiftForm(false)}
@@ -135,6 +140,7 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
         <TenderRemovalModal
           onConfirm={handleTenderRemoval}
           onClose={() => setShowTenderRemovalForm(false)}
+          pinRequiredForTenderRemoval={pinRequiredForTenderRemoval}
         />
       )}
     </>

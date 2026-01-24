@@ -2,8 +2,6 @@
 
 import { useTranslations } from "@acme/i18n";
 
-import { Toast } from "@/components/atoms";
-
 import { ConfiguratorHero } from "./components/ConfiguratorHero";
 import ConfiguratorStepList from "./components/ConfiguratorStepList";
 import { ButtonElement } from "./components/DashboardPrimitives";
@@ -20,8 +18,6 @@ export default function ConfiguratorDashboard() {
     skipStep,
     resetStep,
     onStepClick,
-    toast,
-    dismissToast,
     heroData,
     trackProgress,
     launchPanelData,
@@ -86,13 +82,6 @@ export default function ConfiguratorDashboard() {
         </div>
       </section>
 
-      {toast.open && (
-        <Toast
-          open={toast.open}
-          message={toast.message}
-          onClose={dismissToast}
-        />
-      )}
     </div>
   );
 }

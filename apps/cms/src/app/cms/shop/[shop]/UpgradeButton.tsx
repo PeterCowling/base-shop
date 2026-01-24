@@ -3,15 +3,10 @@
 
 import { useMemo, useState } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
-
-type ToastState = {
-  open: boolean;
-  message: string;
-};
+import { useToast } from "@acme/ui/operations";
 
 function parseErrorMessage(data: unknown, fallback: string) {
   if (typeof data === "object" && data !== null && "error" in data) {
@@ -25,10 +20,8 @@ function parseErrorMessage(data: unknown, fallback: string) {
 
 export default function UpgradeButton({ shop }: { shop: string }) {
   const t = useTranslations();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
-
-  const closeToast = () => setToast((state) => ({ ...state, open: false }));
 
   const ctaCopy = useMemo(
     () => ({
@@ -42,7 +35,6 @@ export default function UpgradeButton({ shop }: { shop: string }) {
 
   async function handleClick() {
     setLoading(true);
-    setToast((state) => ({ ...state, open: false }));
     try {
       const res = await fetch("/api/upgrade-shop", {
         method: "POST",
@@ -55,7 +47,7 @@ export default function UpgradeButton({ shop }: { shop: string }) {
         throw new Error(parseErrorMessage(data, ctaCopy.failure));
       }
 
-      setToast({ open: true, message: ctaCopy.success });
+      toast.success(ctaCopy.success);
       window.location.href = `/cms/shop/${shop}/upgrade-preview`;
     } catch (err) {
       const message =
@@ -64,7 +56,7 @@ export default function UpgradeButton({ shop }: { shop: string }) {
           : ctaCopy.failure;
       // i18n-exempt -- LOG-1001 [ttl=2026-12-31] console log only, not user-facing copy
       console.error("Upgrade failed", err);
-      setToast({ open: true, message });
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -92,10 +84,7 @@ export default function UpgradeButton({ shop }: { shop: string }) {
               variant="ghost"
               disabled={loading}
               onClick={() =>
-                setToast({
-                  open: true,
-                  message: String(t("cms.upgrade.stepsBackground")),
-                })
+                toast.info(String(t("cms.upgrade.stepsBackground")))
               }
             >
               {t("cms.upgrade.viewSteps")}
@@ -103,13 +92,6 @@ export default function UpgradeButton({ shop }: { shop: string }) {
           </Inline>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        onClose={closeToast}
-        message={toast.message}
-        role="status"
-        aria-live="polite"
-      />
     </>
   );
 }

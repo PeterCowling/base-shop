@@ -2,7 +2,9 @@ import { useCallback, useState, useTransition } from "react";
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
 
-import type { ActionResult, ActionStatus } from "../../components/actionResult";
+import { useToast } from "@acme/ui/operations";
+
+import type { ActionResult } from "../../components/actionResult";
 import type { RoleDetail } from "../../components/roleDetails";
 
 export type UserTag = { variant: "success" | "warning"; label: string };
@@ -45,7 +47,6 @@ type UseUserRoleSelectionsOptions = {
   users: UserWithRoles[];
   roleDetails: Record<Role, RoleDetail>;
   onSaveUser: SaveUserAction;
-  showToast: (status: ActionStatus, message: string) => void;
 };
 
 type UseUserRoleSelectionsResult = {
@@ -64,8 +65,8 @@ export function useUserRoleSelections({
   users,
   roleDetails,
   onSaveUser,
-  showToast,
 }: UseUserRoleSelectionsOptions): UseUserRoleSelectionsResult {
+  const toast = useToast();
   const [knownUsers, setKnownUsers] = useState<UserWithRoles[]>(() => [...users]);
   const [selections, setSelections] = useState<SelectionState>(() =>
     createSelectionState(users)
@@ -159,8 +160,7 @@ export function useUserRoleSelections({
     (user: UserWithRoles) => {
       const selected = selections[user.id] ?? [];
       if (selected.length === 0) {
-        showToast(
-          "error",
+        toast.error(
           `Assign at least one role before saving changes for ${user.name}.`
         );
         return;
@@ -170,12 +170,14 @@ export function useUserRoleSelections({
       startSaveTransition(() => {
         onSaveUser({ id: user.id, roles: selected })
           .then((result) => {
-            showToast(result.status, result.message);
             if (result.status === "success") {
+              toast.success(result.message);
               setInitialSelections((prev) => ({
                 ...prev,
                 [user.id]: [...selected],
               }));
+            } else {
+              toast.error(result.message);
             }
           })
           .catch((error: unknown) => {
@@ -183,14 +185,14 @@ export function useUserRoleSelections({
               error instanceof Error
                 ? error.message
                 : "Failed to update user roles.";
-            showToast("error", message);
+            toast.error(message);
           })
           .finally(() => {
             setPendingUserId((current) => (current === user.id ? null : current));
           });
       });
     },
-    [onSaveUser, selections, showToast]
+    [onSaveUser, selections, toast]
   );
 
   const isUserSaving = useCallback(

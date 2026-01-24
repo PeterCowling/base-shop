@@ -4,6 +4,11 @@ import { act,fireEvent, render, screen } from "@testing-library/react";
 
 import { type DiscountFormState,useDiscountFormState } from "../useDiscountFormState";
 
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
+
 function Harness({
   defaults,
   onSubmit,
@@ -13,7 +18,7 @@ function Harness({
   onSubmit?: Parameters<typeof useDiscountFormState>[0]["onSubmit"];
   onStatus?: Parameters<typeof useDiscountFormState>[0]["onStatusChange"];
 }) {
-  const { values, errors, status, toast, update, handleSubmit }: DiscountFormState = useDiscountFormState({
+  const { values, errors, status, update, handleSubmit }: DiscountFormState = useDiscountFormState({
     defaultValues: defaults,
     onSubmit,
     onStatusChange: onStatus,
@@ -22,7 +27,6 @@ function Harness({
     <form onSubmit={(e: FormEvent<HTMLFormElement>) => void handleSubmit(e)}>
       <div data-cy="code-error">{errors.code || ""}</div>
       <div data-cy="status">{status}</div>
-      <div data-cy="toast" aria-live="polite">{toast.open ? toast.message : ""}</div>
       <input
         aria-label="code"
         value={values.code}
@@ -34,6 +38,10 @@ function Harness({
 }
 
 describe("useDiscountFormState", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("validates and shows toast on error, then clears a field error on update", async () => {
     const onStatus = jest.fn();
     render(<Harness onStatus={onStatus} />);
@@ -47,7 +55,7 @@ describe("useDiscountFormState", () => {
     expect(onStatus).toHaveBeenCalledWith("validating");
     expect(onStatus).toHaveBeenCalledWith("error");
     expect(screen.getByTestId("code-error").textContent).toMatch(/promo code/i);
-    expect(screen.getByTestId("toast").textContent).toMatch(/Resolve the highlighted issues/i);
+    expect(mockToast.error).toHaveBeenCalledWith(expect.stringMatching(/Resolve the highlighted issues/i));
 
     // Update clears that specific field error
     fireEvent.change(screen.getByLabelText("code"), { target: { value: "SAVE10" } });
@@ -64,7 +72,7 @@ describe("useDiscountFormState", () => {
 
     expect(screen.getByTestId("status").textContent).toBe("success");
     expect(onStatus).toHaveBeenCalledWith("success");
-    expect(screen.getByTestId("toast").textContent).toMatch(/draft saved/i);
+    expect(mockToast.success).toHaveBeenCalledWith(expect.stringMatching(/draft saved/i));
   });
 
   test("onSubmit resolves ➜ success toast", async () => {
@@ -82,7 +90,7 @@ describe("useDiscountFormState", () => {
     });
     expect(ok).toHaveBeenCalled();
     expect(screen.getByTestId("status").textContent).toBe("success");
-    expect(screen.getByTestId("toast").textContent).toMatch(/Discount saved/i);
+    expect(mockToast.success).toHaveBeenCalledWith(expect.stringMatching(/Discount saved/i));
   });
 
   test("onSubmit rejects ➜ error toast", async () => {
@@ -98,6 +106,6 @@ describe("useDiscountFormState", () => {
     });
     expect(fail).toHaveBeenCalled();
     expect(screen.getByTestId("status").textContent).toBe("error");
-    expect(screen.getByTestId("toast").textContent).toMatch(/Boom|Unable to save discount/i);
+    expect(mockToast.error).toHaveBeenCalledWith(expect.stringMatching(/Boom/i));
   });
 });

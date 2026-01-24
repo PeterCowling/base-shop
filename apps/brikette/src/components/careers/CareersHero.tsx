@@ -1,7 +1,7 @@
 "use client";
 
 // src/components/careers/CareersHero.tsx
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
@@ -27,7 +27,7 @@ function CareersHero({ lang }: CareersHeroProps): JSX.Element {
   const { t, i18n } = useTranslation(NAMESPACES, translationOptions);
   const { t: fallbackT } = useTranslation(NAMESPACES, { lng: FALLBACK_LANGUAGE });
 
-  const fixedEnglishT = useMemo<TFunction | null>(() => {
+  const fixedEnglishT: TFunction | null = (() => {
     if (typeof i18n.getFixedT !== "function") {
       return null;
     }
@@ -37,7 +37,7 @@ function CareersHero({ lang }: CareersHeroProps): JSX.Element {
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const resolve = useCallback(
     (key: string): string => {

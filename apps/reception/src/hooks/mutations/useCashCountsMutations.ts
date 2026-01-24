@@ -9,6 +9,7 @@ import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type CashCount, type CashCountType } from "../../types/hooks/data/cashCountData";
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { getStoredShiftId } from "../../utils/shiftId";
 import { showToast } from "../../utils/toastUtils";
 
 import {
@@ -58,6 +59,7 @@ export function useCashCountsMutations() {
           amount,
           denomBreakdown,
           keycardCount,
+          shiftId: getStoredShiftId() ?? undefined,
         };
 
         const result = cashCountSchema.safeParse(newCount);

@@ -13,7 +13,6 @@
   "include": ["src/**/*"],
   "references": [
     { "path": "../i18n" },
-    { "path": "../page-builder-core" },
-    { "path": "../ui" }
+    { "path": "../page-builder-core" }
   ]
 }

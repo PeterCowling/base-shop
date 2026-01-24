@@ -35,7 +35,7 @@ pnpm generate-theme --validate-theme dark
 
 The CLI generates an 11-shade color palette (50-950) with WCAG 2.1 AA contrast validation and creates a complete theme package at `packages/themes/<name>/` with:
 - Token definitions (`src/tailwind-tokens.ts`)
-- CSS custom properties (`src/tokens.css`)
+- CSS custom properties (`tokens.css`)
 - Automated contrast tests (`__tests__/contrast.test.ts`)
 - Documentation with palette swatches (`README.md`)
 

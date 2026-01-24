@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/page-builder/ImagePicker.tsx
 "use client";
 
-import { type ChangeEvent,memo, useEffect, useState } from "react";
+import { type ChangeEvent, memo, useEffect, useState } from "react";
 import Image from "next/image";
 
 import { Loader } from "@acme/design-system/atoms/Loader";
@@ -26,8 +26,77 @@ export interface ImagePickerProps {
   children: React.ReactNode;
 }
 
+type TranslationFn = ReturnType<typeof useTranslations>;
+
+interface MediaGridProps {
+  loading: boolean;
+  mediaError: string | null;
+  media: MediaItem[];
+  onSelect: (url: string) => void;
+  onClose: () => void;
+  t: TranslationFn;
+  dangerToken: string;
+}
+
+function MediaGrid({
+  loading,
+  mediaError,
+  media,
+  onSelect,
+  onClose,
+  t,
+  dangerToken,
+}: MediaGridProps) {
+  const images = media.filter((item) => item.type === "image");
+
+  if (loading) {
+    return (
+      <div className="col-span-3 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (mediaError) {
+    return (
+      <p className="text-danger col-span-3 text-sm" data-token={dangerToken}>
+        {mediaError}
+      </p>
+    );
+  }
+
+  if (images.length === 0) {
+    return (
+      <p className="text-muted-foreground col-span-3 text-sm">
+        {/* i18n-exempt -- CMS empty state */}
+        {t("cms.media.picker.empty")}
+      </p>
+    );
+  }
+
+  return images.map((item) => (
+    <button
+      key={item.url}
+      type="button"
+      onClick={() => {
+        onSelect(item.url);
+        onClose();
+      }}
+      className="relative aspect-square min-h-11 min-w-11"
+    >
+      <Image
+        src={item.url}
+        alt={item.altText || t("cms.media.picker.mediaAltFallback")}
+        fill
+        className="object-cover"
+      />
+    </button>
+  ));
+}
+
 function ImagePicker({ onSelect, children }: ImagePickerProps) {
   const t = useTranslations();
+  const dangerToken = "--color-danger";
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -75,12 +144,13 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
     void loadMedia(q);
   };
 
+  const orientationLabel = actual ?? "";
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-full space-y-4">
-        {/* i18n-exempt -- CMS dialog title */}
-        <DialogTitle>Select image</DialogTitle>
+        <DialogTitle>{t("cms.media.picker.title")}</DialogTitle>
         <DialogDescription className="sr-only">
           {/* i18n-exempt -- CMS dialog description for screen readers */}
           {t("cms.media.picker.description")}
@@ -95,8 +165,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
           />
           {pendingFile && isValid && (
             <Button type="button" onClick={handleUpload}>
-              {/* i18n-exempt -- CMS action label */}
-              Upload
+              {t("cms.media.picker.upload")}
             </Button>
           )}
         </div>
@@ -104,7 +173,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
           <div className="relative w-full overflow-hidden rounded" data-aspect="16/9">
             <Image
               src={previewUrl}
-              alt="preview"
+              alt={t("cms.media.picker.previewAlt")}
               fill
               className="object-cover"
               unoptimized
@@ -113,8 +182,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-foreground/50 text-foreground">
                 <Loader className="mb-2" />
                 <span className="text-xs">
-                  {/* i18n-exempt -- temporary upload progress text */}
-                  Uploading… {progress.done}/{progress.total}
+                  {t("cms.media.picker.uploading", { done: progress.done, total: progress.total })}
                 </span>
               </div>
             )}
@@ -124,62 +192,36 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
           <Input
             value={altText}
             onChange={(e) => setAltText(e.target.value)}
-            // i18n-exempt -- field placeholder in CMS
-            placeholder="Alt text"
+            placeholder={t("cms.media.picker.altPlaceholder")}
           />
         )}
         {pendingFile && isValid !== null && (
           <p className="text-sm">
-            {/* i18n-exempt -- admin validation helper copy */}
             {isValid
-              ? `Image orientation is ${actual}`
-              : `Selected image is ${actual}; please upload a landscape image.`}
+              ? t("cms.media.picker.orientationValid", { orientation: orientationLabel })
+              : t("cms.media.picker.orientationInvalid", { orientation: orientationLabel })}
           </p>
         )}
         {uploadError && (
-           
-          <p className="text-sm text-danger" data-token="--color-danger">{uploadError}</p>
+          <p className="text-sm text-danger" data-token={dangerToken}>{uploadError}</p>
         )}
         <Input
           value={search}
           onChange={handleSearch}
-          // i18n-exempt -- search placeholder in CMS
           placeholder={t("cms.media.picker.search.placeholder")}
         />
         {/* Media grid */}
         <div className="max-h-64 overflow-auto">
           <DSGrid cols={3} gap={2}>
-            {loading && (
-              <div className="col-span-3 flex items-center justify-center">
-                <Loader />
-              </div>
-            )}
-            {!loading && mediaError && (
-               
-              <p className="text-danger col-span-3 text-sm" data-token="--color-danger">{mediaError}</p>
-            )}
-            {!loading && !mediaError &&
-              media
-                .filter((m) => m.type === "image")
-                .map((m) => (
-                  <button
-                    key={m.url}
-                    type="button"
-                    onClick={() => {
-                      onSelect(m.url);
-                      setOpen(false);
-                    }}
-                    className="relative aspect-square min-h-10 min-w-10"
-                  >
-                    <Image src={m.url} alt={m.altText || "media"} fill className="object-cover" />
-                  </button>
-                ))}
-            {!loading && !mediaError && media.filter((m) => m.type === "image").length === 0 && (
-              <p className="text-muted-foreground col-span-3 text-sm">
-                {/* i18n-exempt -- CMS empty state */}
-                {t("cms.media.picker.empty")}
-              </p>
-            )}
+            <MediaGrid
+              loading={loading}
+              mediaError={mediaError ?? null}
+              media={media}
+              onSelect={onSelect}
+              onClose={() => setOpen(false)}
+              t={t}
+              dangerToken={dangerToken}
+            />
           </DSGrid>
         </div>
       </DialogContent>

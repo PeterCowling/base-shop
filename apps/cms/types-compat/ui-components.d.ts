@@ -154,72 +154,6 @@ declare module "@/components/atoms/shadcn" {
   export const toast: (options: any) => void;
 }
 
-declare module "@acme/ui/components/atoms" {
-  export * from "@/components/atoms/shadcn";
-  export const Spinner: React.FC<any>;
-  export const Price: React.FC<any>;
-  export const Icon: React.FC<any>;
-  export const Image: React.FC<any>;
-  export const Link: React.FC<any>;
-  export const Chip: React.FC<any>;
-  export const Loader: React.FC<any>;
-  export const Logo: React.FC<any>;
-  export const StatCard: React.FC<any>;
-  export const LineChart: React.FC<any>;
-  export const PopoverAnchor: React.FC<any>;
-  export interface TagProps {
-    children?: React.ReactNode;
-    [k: string]: any;
-  }
-}
-
-declare module "@/components/atoms" {
-  export * from "@/components/atoms/shadcn";
-  export const Spinner: React.FC<any>;
-  export const Price: React.FC<any>;
-  export const Icon: React.FC<any>;
-  export const Image: React.FC<any>;
-  export const Link: React.FC<any>;
-  export const Chip: React.FC<any>;
-  export const Loader: React.FC<any>;
-  export const Logo: React.FC<any>;
-  export const StatCard: React.FC<any>;
-  export const LineChart: React.FC<any>;
-  export const PopoverAnchor: React.FC<any>;
-  export interface TagProps {
-    children?: React.ReactNode;
-    [k: string]: any;
-  }
-}
-
-declare module "@acme/ui/components/atoms/primitives" {
-  export * from "@/components/atoms/shadcn";
-  export const Sidebar: React.FC<any>;
-}
-
-declare module "@acme/ui/components/atoms/primitives/Inline" {
-  const Inline: React.FC<any>;
-  export default Inline;
-  export { Inline };
-}
-
-declare module "@acme/ui/components/atoms/primitives/Grid" {
-  const Grid: React.FC<any>;
-  export default Grid;
-  export { Grid };
-}
-
-declare module "@acme/ui/components/atoms/primitives/Stack" {
-  const Stack: React.FC<any>;
-  export default Stack;
-  export { Stack };
-}
-
-declare module "@acme/ui/components/atoms/primitives/Cluster" {
-  const Cluster: React.FC<any>;
-  export default Cluster;
-  export { Cluster };
-}
 
 declare module "@acme/ui/components/atoms/Tag" {
   const Tag: React.FC<any>;
@@ -236,25 +170,6 @@ declare module "@acme/ui/components/atoms/Toast" {
   export const Toaster: React.FC<any>;
 }
 
-declare module "@acme/ui/components/atoms/shadcn" {
-  export * from "@/components/atoms/shadcn";
-}
-
-declare module "@acme/ui/components/molecules" {
-  export const DataTable: React.FC<any>;
-  export const Pagination: React.FC<any>;
-  export const SearchInput: React.FC<any>;
-  export const DatePicker: React.FC<any>;
-  export const DateRangePicker: React.FC<any>;
-  export const FileUpload: React.FC<any>;
-  export const ImageUpload: React.FC<any>;
-  export const RichTextEditor: React.FC<any>;
-  export const ColorPicker: React.FC<any>;
-  export const Combobox: React.FC<any>;
-  export const MultiSelect: React.FC<any>;
-  export const FormField: React.FC<any>;
-  export const CodeBlock: React.FC<any>;
-}
 
 declare module "@acme/ui/components/cms" {
   export const PageBuilder: React.FC<any>;
@@ -363,15 +278,9 @@ declare module "@/components/devicePresets" {
 }
 
 declare module "@acme/ui" {
-  export * from "@acme/ui/components/atoms";
-  export * from "@acme/ui/components/cms";
-  export * from "@acme/ui/components/molecules";
-}
-
-declare module "@acme/ui" {
-  export * from "@acme/ui/components/atoms";
-  export * from "@acme/ui/components/cms";
-  export * from "@acme/ui/components/molecules";
+  export * from "@acme/ui/components";
+  export * from "@acme/ui/hooks";
+  export * from "@acme/ui/utils";
 }
 
 declare module "@acme/ui/utils/devicePresets" {

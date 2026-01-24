@@ -134,10 +134,6 @@
       "types": "./dist/components/cms/blocks/TestimonialSlider.d.ts",
       "import": "./dist/components/cms/blocks/TestimonialSlider.js"
     },
-    "./components/atoms/primitives/textarea": {
-      "types": "./dist/components/atoms/primitives/textarea.d.ts",
-      "import": "./dist/components/atoms/primitives/textarea.js"
-    },
     "./utils/style/cssVars": {
       "types": "./dist/utils/style/cssVars.d.ts",
       "import": "./dist/utils/style/cssVars.js"
@@ -194,10 +190,6 @@
       "types": "./dist/components/atoms/*.d.ts",
       "import": "./dist/components/atoms/*.js"
     },
-    "./components/atoms/primitives/*": {
-      "types": "./dist/components/atoms/primitives/*.d.ts",
-      "import": "./dist/components/atoms/primitives/*.js"
-    },
     "./utils/*": {
       "types": "./dist/utils/*.d.ts",
       "import": "./dist/utils/*.js"
@@ -205,14 +197,6 @@
     "./hooks/*": {
       "types": "./dist/hooks/*.d.ts",
       "import": "./dist/hooks/*.js"
-    },
-    "./components/atoms": {
-      "types": "./dist/components/atoms/index.d.ts",
-      "import": "./dist/components/atoms/index.js"
-    },
-    "./components/atoms/primitives": {
-      "types": "./dist/components/atoms/primitives/index.d.ts",
-      "import": "./dist/components/atoms/primitives/index.js"
     },
     "./utils/style": {
       "types": "./dist/utils/style/index.d.ts",
@@ -222,14 +206,6 @@
       "types": "./dist/utils/style/*.d.ts",
       "import": "./dist/utils/style/*.js"
     },
-    "./components/atoms/shadcn": {
-      "types": "./dist/components/atoms/shadcn/index.d.ts",
-      "import": "./dist/components/atoms/shadcn/index.js"
-    },
-    "./components/atoms/shadcn/*": {
-      "types": "./dist/components/atoms/shadcn/*.d.ts",
-      "import": "./dist/components/atoms/shadcn/*.js"
-    },
     "./components": {
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js"
@@ -237,10 +213,6 @@
     "./components/*": {
       "types": "./dist/components/*.d.ts",
       "import": "./dist/components/*.js"
-    },
-    "./components/molecules": {
-      "types": "./dist/components/molecules/index.d.ts",
-      "import": "./dist/components/molecules/index.js"
     },
     "./components/molecules/*": {
       "types": "./dist/components/molecules/*.d.ts",
@@ -340,6 +312,7 @@
   },
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",

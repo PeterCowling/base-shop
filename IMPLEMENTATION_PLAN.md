@@ -28,8 +28,9 @@ Last-updated-by: Claude
 | Plan | Status | Notes |
 |------|--------|-------|
 | [CI & Deploy Roadmap](docs/plans/ci-deploy/ci-and-deploy-roadmap.md) | Active | CMS deploy + CI path filters |
-| [Ralph Methodology Adoption](docs/plans/ralph-methodology-adoption-plan.md) | Active | Close out doc/workflow consolidation |
+| [Ralph Methodology Adoption](docs/historical/plans/ralph-methodology-adoption-plan.md) | Active | Close out doc/workflow consolidation |
 | [Agent Git Instruction Updates](docs/plans/agent-git-instructions-update-plan.md) | Active | PR + CI + staging expectations |
+| [Agent Language Intelligence (TypeScript in VS Code)](docs/plans/agent-language-intelligence-plan.md) | Draft | Shared TS diagnostics/types for Claude + Codex |
 | [UI Lint Remediation](docs/plans/ui-lint-remediation-plan.md) | Complete | @acme/ui 0 warnings (100% reduction from 1477) |
 | [No-Hardcoded-Copy Exemptions](docs/plans/no-hardcoded-copy-non-ui-exemptions-plan.md) | Complete | All path exemptions implemented |
 
@@ -37,9 +38,9 @@ Last-updated-by: Claude
 
 | Track | Plans | Notes |
 |-------|-------|-------|
-| Prime | [Prime Next.js Port](docs/plans/prime-nextjs-port-plan.md), [Prime Optimization](docs/plans/prime-optimization-plan.md), [Prime Improvement](docs/plans/prime-improvement-plan.md), [Prime Pre-Arrival](docs/plans/prime-pre-arrival-plan.md) | Improvement and pre-arrival depend on the port stability |
-| Reception | [Reception Next.js Migration](docs/plans/reception-nextjs-migration-plan.md), [Functionality Improvements](docs/plans/reception-functionality-improvements-plan.md), [Stock + Cash Control](docs/plans/reception-stock-cash-control-plan.md) | Auth/roles flow is a prerequisite for most work. Login UI plan completed (archived). |
-| Brikette | [Translation Coverage Fix](docs/plans/brikette-translation-coverage-plan.md), [Brikette Improvement Plan](docs/plans/brikette-improvement-plan.md) | Improvement plan needs Plan-format metadata |
+| Prime | [Prime Next.js Port](docs/historical/plans/prime-nextjs-port-plan.md), [Prime Optimization](docs/historical/plans/prime-optimization-plan.md), [Prime Improvement](docs/historical/plans/prime-improvement-plan.md), [Prime Pre-Arrival](docs/historical/plans/prime-pre-arrival-plan.md) | Improvement and pre-arrival depend on the port stability |
+| Reception | [Reception Next.js Migration](docs/plans/archive/reception-nextjs-migration-plan.md), [Functionality Improvements](docs/plans/archive/reception-functionality-improvements-plan.md), [Stock + Cash Control](docs/plans/reception-stock-cash-control-plan-v2.md) | Auth/roles flow is a prerequisite for most work. Login UI plan completed (archived). |
+| Brikette | [Translation Coverage Fix](docs/plans/brikette-translation-coverage-plan.md), [Brikette Improvement Plan](docs/plans/archive/brikette-improvement-plan.md) | Improvement plan needs Plan-format metadata |
 | Commerce | [Handbag Configurator](docs/plans/handbag-configurator-implementation-plan.md) | Scoped to current monorepo scaffolds |
 | XA | [XA Client Readiness](docs/plans/xa-client-readiness-plan.md), [XA 80% Coverage](docs/plans/xa-coverage-80-plan.md) | Member rewards storefront - preparing for client review |
 
@@ -58,10 +59,10 @@ Last-updated-by: Claude
 | [Lint Warnings: MC + Brikette Scripts](docs/plans/archive/lint-warnings-mission-control-brikette-scripts-plan.md) | 2026-01-20 | All tasks verified complete |
 | [E2E Ownership Consolidation](docs/historical/plans/e2e-ownership-consolidation-plan.md) | 2026-01-17 | One suite, one owner, one workflow |
 | [Lint-Staged Autostash Avoidance](docs/historical/plans/lint-staged-autostash-avoidance-plan.md) | 2026-01-17 | Archived plan |
-| [Jest Preset Consolidation](docs/plans/jest-preset-consolidation-plan.md) | 2026-01-16 | Completed |
-| [Monorepo ESLint Standardization](docs/plans/monorepo-eslint-standardization-plan.md) | 2026-01-15 | Completed |
-| [UI Package Build Tooling](docs/plans/ui-package-build-tooling-plan.md) | 2026-01-15 | Completed |
-| [Structured ToC Block Refactor](docs/plans/structured-toc-block-plan.md) | 2026-01-15 | Completed |
+| [Jest Preset Consolidation](docs/historical/plans/jest-preset-consolidation-plan.md) | 2026-01-16 | Completed |
+| [Monorepo ESLint Standardization](docs/historical/plans/monorepo-eslint-standardization-plan.md) | 2026-01-15 | Completed |
+| [UI Package Build Tooling](docs/historical/plans/ui-package-build-tooling-plan.md) | 2026-01-15 | Completed |
+| [Structured ToC Block Refactor](docs/historical/plans/structured-toc-block-plan.md) | 2026-01-15 | Completed |
 
 ---
 

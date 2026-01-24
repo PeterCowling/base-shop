@@ -58,8 +58,8 @@ jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
-  useTheme: () => ({ theme: "base", setTheme: jest.fn() }),
+jest.mock("@acme/platform-core/contexts/ThemeModeContext", () => ({
+  useThemeMode: () => ({ isDark: false, setMode: jest.fn() }),
 }));
 
 const makeProduct = (overrides: Partial<XaProduct>): XaProduct => {

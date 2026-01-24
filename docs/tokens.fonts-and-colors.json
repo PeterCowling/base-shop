@@ -115,7 +115,7 @@
   ],
   "selectionFlow": {
     "sourceDefaults": "packages/themes/base/src/tokens.ts",
-    "themeOverrides": "packages/themes/*/src/tokens.css",
+    "themeOverrides": "@themes/*/tokens.css",
     "shopOverrides": "stored per shop and injected by ThemeStyle",
     "runtime": [
       "Resolve defaults + theme + shop overrides",

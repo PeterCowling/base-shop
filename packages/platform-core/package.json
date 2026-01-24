@@ -200,6 +200,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs",
     "lint": "eslint .",
@@ -218,6 +219,7 @@
     "@acme/plugin-sanity": "workspace:^",
     "@acme/lib": "workspace:^",
     "@acme/stripe": "workspace:^",
+    "@acme/templates": "workspace:^",
     "@acme/types": "workspace:^",
     "@portabletext/react": "^3.2.1",
     "@themes/base": "workspace:^",

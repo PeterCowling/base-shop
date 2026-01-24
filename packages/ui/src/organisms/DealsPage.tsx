@@ -3,10 +3,10 @@ import { Fragment, memo, type ReactNode,useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Coffee, Percent, Wine } from "lucide-react";
 
-import { Card, CardContent } from "../atoms/Card";
 import { AppLink as Link } from "../atoms/Link";
 import { Section } from "../atoms/Section";
 import { Stack } from "../components/atoms/primitives/Stack";
+import { Card, CardContent } from "../components/atoms/shadcn";
 import DealsStructuredData from "../components/seo/DealsStructuredData";
 import { useModal } from "../context/ModalContext";
 import { type AppLanguage,i18nConfig } from "../i18n.config";

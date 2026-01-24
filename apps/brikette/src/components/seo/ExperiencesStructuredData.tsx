@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/ExperiencesStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 
@@ -81,7 +81,7 @@ function ExperiencesStructuredData(): JSX.Element | null {
   const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("experiencesPage", { lng: lang });
 
-  const json = useMemo(() => {
+  const json = (() => {
     if (!ready) return "";
     const name = translateOrFallback(t, lang, "meta.title", FALLBACK_NAME);
     const primaryDescription = translateOrFallback(t, lang, "hero.description", FALLBACK_HERO_DESCRIPTION, {
@@ -148,7 +148,7 @@ function ExperiencesStructuredData(): JSX.Element | null {
       isPartOf: { "@id": WEBSITE_ID },
       about: { "@id": HOTEL_ID },
     });
-  }, [lang, pathname, t, ready]);
+  })();
 
   if (!json) {
     return null;

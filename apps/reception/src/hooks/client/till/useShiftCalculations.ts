@@ -19,6 +19,9 @@ interface Params {
   cashDrawerLimit?: number;
 }
 
+const isVoidedTransaction = (txn: Transaction) =>
+  Boolean(txn.voidedAt || txn.voidedBy || txn.voidReason || txn.voidedShiftId);
+
 export function useShiftCalculations({
   transactions,
   creditSlips,
@@ -39,6 +42,11 @@ export function useShiftCalculations({
     });
   }, [transactions, shiftOpenTime]);
 
+  const activeTransactions = useMemo(
+    () => filteredTransactions.filter((txn) => !isVoidedTransaction(txn)),
+    [filteredTransactions]
+  );
+
   const creditSlipsThisShift = useMemo(() => {
     if (!shiftOpenTime) return [] as CreditSlip[];
     return creditSlips.filter(
@@ -53,11 +61,11 @@ export function useShiftCalculations({
 
   const cashTxns = useMemo(
     () =>
-      filteredTransactions.filter(
+      activeTransactions.filter(
         (t) =>
           (t.method === "CASH" || t.method === "cash") && t.type !== "PAYMENT"
       ),
-    [filteredTransactions]
+    [activeTransactions]
   );
 
   const salesCash = useMemo(
@@ -83,44 +91,44 @@ export function useShiftCalculations({
 
   const netCC = useMemo(
     () =>
-      filteredTransactions
+      activeTransactions
         .filter(
           (t) =>
             (t.method === "CC" || t.method === "card") && t.type !== "PAYMENT"
         )
         .reduce((sum, t) => sum + t.amount, 0),
-    [filteredTransactions]
+    [activeTransactions]
   );
 
   const docDepositsCount = useMemo(() => {
     const docMethods = ["PASSPORT", "LICENSE", "ID"];
-    return filteredTransactions.filter(
+    return activeTransactions.filter(
       (t) => docMethods.includes(t.method || "") && t.type === "Refund"
     ).length;
-  }, [filteredTransactions]);
+  }, [activeTransactions]);
 
   const docReturnsCount = useMemo(
     () =>
-      filteredTransactions.filter(
+      activeTransactions.filter(
         (t) => t.method === "DOCUMENT" && t.type === "loanReturn"
       ).length,
-    [filteredTransactions]
+    [activeTransactions]
   );
 
   const keycardsLoaned = useMemo(
     () =>
-      filteredTransactions
+      activeTransactions
         .filter((t) => t.type === "Loan" && t.isKeycard)
         .reduce((sum, t) => sum + (t.count || 0), 0),
-    [filteredTransactions]
+    [activeTransactions]
   );
 
   const keycardsReturned = useMemo(
     () =>
-      filteredTransactions
+      activeTransactions
         .filter((t) => t.type === "Refund" && t.isKeycard)
         .reduce((sum, t) => sum + (t.count || 0), 0),
-    [filteredTransactions]
+    [activeTransactions]
   );
 
   const floatEntryTotal = useMemo(
@@ -247,6 +255,7 @@ export function useShiftCalculations({
   const ccTransactionsFromLastShift = useMemo<Transaction[]>(() => {
     if (!previousShiftCloseTime) return [];
     return transactions.filter((t) => {
+      if (isVoidedTransaction(t)) return false;
       const isCard = t.method === "CC" || t.method === "card";
       if (!isCard || !t.timestamp || t.amount === 0) return false;
       const txnTime = toEpochMillis(t.timestamp);
@@ -260,6 +269,7 @@ export function useShiftCalculations({
   const ccTransactionsFromThisShift = useMemo<Transaction[]>(() => {
     if (!shiftOpenTime) return [];
     return transactions.filter((t) => {
+      if (isVoidedTransaction(t)) return false;
       const isCard = t.method === "CC" || t.method === "card";
       if (!isCard || !t.timestamp || t.amount === 0) return false;
       const txnTime = toEpochMillis(t.timestamp);

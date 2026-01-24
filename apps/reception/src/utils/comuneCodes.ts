@@ -1,7 +1,3 @@
-import comuniData from "../data/comuni.json";
-
-type ComuneEntry = (typeof comuniData)[number];
-
 export type ComuneInfo = readonly [code: string, province: string];
 
 const UNKNOWN_INFO: ComuneInfo = ["Unknown", "Unknown"];
@@ -10,23 +6,28 @@ function normalizeComuneName(value: string): string {
   return value.trim().toLowerCase();
 }
 
-function buildComuneInfoMap(entries: readonly ComuneEntry[]): Map<string, ComuneInfo> {
-  const map = new Map<string, ComuneInfo>();
+// Module-level cache — built once on first call, then reused.
+let comuneMapPromise: Promise<Map<string, ComuneInfo>> | null = null;
 
-  for (const entry of entries) {
-    const key = normalizeComuneName(entry.commune);
-    if (!key) continue;
-    if (map.has(key)) continue;
-    map.set(key, [entry.code, entry.province]);
+function loadComuneMap(): Promise<Map<string, ComuneInfo>> {
+  if (!comuneMapPromise) {
+    comuneMapPromise = import("../data/comuni.json").then((mod) => {
+      const entries = (mod.default ?? mod) as Array<{ commune: string; code: string; province: string }>;
+      const map = new Map<string, ComuneInfo>();
+      for (const entry of entries) {
+        const key = normalizeComuneName(entry.commune);
+        if (!key || map.has(key)) continue;
+        map.set(key, [entry.code, entry.province]);
+      }
+      return map;
+    });
   }
-
-  return map;
+  return comuneMapPromise;
 }
 
-const COMUNE_INFO_BY_NAME = buildComuneInfoMap(comuniData);
-
-export function getComuneInfo(comuneName: string): ComuneInfo {
+export async function getComuneInfo(comuneName: string): Promise<ComuneInfo> {
   const normalized = normalizeComuneName(comuneName);
   if (!normalized) return UNKNOWN_INFO;
-  return COMUNE_INFO_BY_NAME.get(normalized) ?? UNKNOWN_INFO;
+  const map = await loadComuneMap();
+  return map.get(normalized) ?? UNKNOWN_INFO;
 }

@@ -1,12 +1,12 @@
 import { fireEvent, render } from "@testing-library/react";
 
-import { ThemeProvider, useTheme } from "@acme/platform-core/contexts/ThemeContext";
+import { ThemeModeProvider, useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 
 function Toggle() {
-  const { theme, setTheme } = useTheme();
+  const { mode, setMode } = useThemeMode();
   return (
-    <button onClick={() => setTheme(theme === "dark" ? "base" : "dark")} data-cy="toggle">
-      {theme}
+    <button onClick={() => setMode(mode === "dark" ? "light" : "dark")} data-cy="toggle">
+      {mode}
     </button>
   );
 }
@@ -19,24 +19,23 @@ beforeEach(() => {
 
 describe("ThemeContext", () => {
   it("restores theme from localStorage on mount", () => {
-    window.localStorage.setItem("theme", "dark");
+    window.localStorage.setItem("theme-mode", "dark");
     render(
-      <ThemeProvider>
+      <ThemeModeProvider>
         <Toggle />
-      </ThemeProvider>
+      </ThemeModeProvider>
     );
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
   });
 
   it("toggles theme, applies class and persists to localStorage", () => {
     const { getByTestId } = render(
-      <ThemeProvider>
+      <ThemeModeProvider>
         <Toggle />
-      </ThemeProvider>
+      </ThemeModeProvider>
     );
     fireEvent.click(getByTestId("toggle"));
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
-    expect(window.localStorage.getItem("theme")).toBe("dark");
+    expect(window.localStorage.getItem("theme-mode")).toBe("dark");
   });
 });
-

@@ -1,18 +1,24 @@
-import { type FC } from "react";
+import { type FC, useMemo } from "react";
+
+import { canAccess, Permissions } from "../../lib/roles";
+import type { User } from "../../types/domains/userDomain";
 
 interface StepProgressProps {
   step: number;
   onStepChange: (n: number) => void;
-  userName?: string;
+  user?: User | null;
 }
 
 const labels = ["Cash", "Receipts", "Keycards"];
 
-const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, userName }) => {
-  const isPete = userName?.toLowerCase() === "pete";
+const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, user }) => {
+  const canOverride = useMemo(
+    () => canAccess(user ?? null, Permissions.MANAGEMENT_ACCESS),
+    [user]
+  );
 
   const handleClick = (index: number) => {
-    if (index < step || (isPete && index > step)) {
+    if (index < step || (canOverride && index > step)) {
       onStepChange(index);
     }
   };
@@ -21,7 +27,7 @@ const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, userName }) =
     <ol className="flex justify-between mb-4" aria-label="Closing progress">
       {labels.map((label, index) => {
         const active = index === step;
-        const clickable = index < step || (isPete && index > step);
+        const clickable = index < step || (canOverride && index > step);
         return (
           <li key={label} className="flex flex-1 flex-col items-center">
             <button

@@ -2,20 +2,19 @@
 
 // src/app/[lang]/experiences/ExperiencesPageContent.tsx
 // Client component for experiences listing page
-import { Fragment, memo, useEffect, useMemo } from "react";
+import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
-import type { TFunction } from "i18next";
 
 import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
 import { resolveGuideTopicId } from "@/data/guideTopics";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { guideSlug } from "@/routes.guides-helpers";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags/resolvers";
+import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 type Props = {
   lang: AppLanguage;
@@ -32,22 +31,9 @@ function ExperiencesPageContent({ lang }: Props) {
   const searchParams = useSearchParams();
   const { t, ready } = useTranslation("experiencesPage", { lng: lang });
   const { t: tGuides } = useTranslation("guides", { lng: lang });
+  usePagePreload({ lang, namespaces: ["experiencesPage", "guides"], optional: true });
 
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["experiencesPage", "guides"], {
-        optional: true,
-      });
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
-
-  const experiencesEnT = useMemo<TFunction>(
-    () => i18n.getFixedT("en", "experiencesPage") as TFunction,
-    []
-  );
+  const experiencesEnT = useEnglishFallback("experiencesPage");
 
   // Parse filter params
   const topicParam = searchParams?.get("topic") ?? null;
@@ -57,32 +43,30 @@ function ExperiencesPageContent({ lang }: Props) {
   const resolvedTopicId = resolveGuideTopicId(normalizedFilterParam);
 
   // Get filtered guides
-  const experienceGuides = useMemo(() => {
+  const experienceGuides = (() => {
     const allGuides = getExperienceGuides();
     if (!resolvedTopicId && !normalizedFilterParam) return allGuides;
     const filterTag = resolvedTopicId ?? normalizedFilterParam;
     return allGuides.filter((g) => g.tags.includes(filterTag));
-  }, [normalizedFilterParam, resolvedTopicId]);
+  })();
 
   const clearFilterHref = `/${lang}/${getSlug("experiences", lang)}`;
 
   // Hero content
-  const heroTitle =
-    (t("hero.title") as string) ||
-    (experiencesEnT("hero.title", { defaultValue: "Experiences" }) as string);
-  const heroSubtitle =
-    (t("hero.subtitle") as string) ||
-    (experiencesEnT("hero.subtitle", { defaultValue: "" }) as string);
+  const heroTitle = resolveLabel(t, "hero.title",
+    resolveLabel(experiencesEnT, "hero.title", "Experiences")
+  );
+  const heroSubtitle = resolveLabel(t, "hero.subtitle",
+    resolveLabel(experiencesEnT, "hero.subtitle", "")
+  );
 
   // Collection labels
-  const collectionTitle =
-    (t("guideCollection.title") as string) ||
-    (experiencesEnT("guideCollection.title", {
-      defaultValue: "Travel Guides",
-    }) as string);
-  const collectionSubtitle =
-    (t("guideCollection.subtitle") as string) ||
-    (experiencesEnT("guideCollection.subtitle", { defaultValue: "" }) as string);
+  const collectionTitle = resolveLabel(t, "guideCollection.title",
+    resolveLabel(experiencesEnT, "guideCollection.title", "Travel Guides")
+  );
+  const collectionSubtitle = resolveLabel(t, "guideCollection.subtitle",
+    resolveLabel(experiencesEnT, "guideCollection.subtitle", "")
+  );
 
   // Get localized link labels for guides
   const getGuideLabel = (guide: GuideMeta): string => {

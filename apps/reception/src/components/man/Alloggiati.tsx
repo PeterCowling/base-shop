@@ -15,6 +15,7 @@ import {
   subDays,
 } from "../../utils/dateUtils";
 import { type AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
+import { showToast } from "../../utils/toastUtils";
 
 import DateSelectorCI from "./DateSelectorAllo";
 
@@ -198,7 +199,7 @@ const AlloggiatiComponent: FC = () => {
         }));
 
       if (occupantDataToSend.length === 0) {
-        alert("No occupant details available to send.");
+        showToast("No occupant details available to send.", "warning");
         return;
       }
 

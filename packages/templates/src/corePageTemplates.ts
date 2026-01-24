@@ -374,7 +374,7 @@ export const corePageTemplates: TemplateDescriptor[] = [
       {
         id: "about-mission",
         type: "Text",
-        text: { en: "Our mission is to provide exceptional products and service to our customers." }, // i18n-exempt -- TPL-001: placeholder content
+        text: { en: "At {{shopName}}, our mission is to provide exceptional products and service to our customers." }, // i18n-exempt -- TPL-001: placeholder content
       },
       {
         id: "about-values",
@@ -403,6 +403,53 @@ export const corePageTemplates: TemplateDescriptor[] = [
         title: { en: "Get in touch" }, // i18n-exempt -- TPL-001: placeholder content
         ctaLabel: { en: "Contact us" }, // i18n-exempt -- TPL-001: placeholder content
         ctaHref: "/contact",
+      },
+    ],
+    origin: "core",
+  },
+  {
+    id: "core.page.contact.default",
+    version: "1.0.0",
+    kind: "page",
+    label: "Contact page", // i18n-exempt -- TPL-001: template metadata
+    description:
+      "Contact page with hero, contact details, and a simple contact form.", // i18n-exempt -- TPL-001: template metadata
+    category: "Features",
+    pageType: "marketing",
+    previewImage: "/templates/contact-default.svg",
+    components: [
+      {
+        id: "contact-hero",
+        type: "HeroBanner",
+        slides: [
+          {
+            src: "/images/hero-placeholder.jpg",
+            alt: "Contact us hero", // i18n-exempt -- TPL-001: placeholder alt
+            headlineKey: "contact.hero.headline",
+            ctaKey: "contact.hero.cta",
+          },
+        ],
+      },
+      {
+        id: "contact-intro",
+        type: "Text",
+        text: { en: "We'd love to hear from you. Use the form below or reach out via email." }, // i18n-exempt -- TPL-001: placeholder content
+      },
+      {
+        id: "contact-form",
+        type: "ContactForm",
+      },
+      {
+        id: "contact-details",
+        type: "Text",
+        text: { en: "Support: support@example.com" }, // i18n-exempt -- TPL-001: placeholder content
+      },
+      {
+        id: "contact-cta",
+        type: "Callout",
+        title: { en: "Looking for quick answers?" }, // i18n-exempt -- TPL-001: placeholder content
+        ctaLabel: { en: "Visit the FAQ" }, // i18n-exempt -- TPL-001: placeholder content
+        ctaHref: "/faq",
       },
     ],
     origin: "core",
@@ -954,6 +1001,228 @@ export const corePageTemplates: TemplateDescriptor[] = [
   },
 ] satisfies TemplateDescriptor[];
 
+// ============================================================
+// LEGAL BUNDLES (LAUNCH-27)
+// Director-approved legal document sets for Basic tier shops
+// ============================================================
+
+export interface LegalDocumentSection {
+  heading: string;
+  body: string;
+}
+
+export interface LegalDocument {
+  title: string;
+  sections: LegalDocumentSection[];
+}
+
+export interface ConsentConfig {
+  id: string;
+  label: string;
+  description?: string;
+  regions?: string[];
+}
+
+export interface VatConfig {
+  id: string;
+  label: string;
+  description?: string;
+  /** VAT rate as a decimal (e.g. 0.2 for 20%) */
+  rate?: number;
+  /** Prices displayed include VAT */
+  inclusive?: boolean;
+  registrationNumber?: string;
+}
+
+export interface LegalBundle {
+  id: string;
+  name: string;
+  approved: boolean;
+  rapidLaunch?: boolean;
+  rapidLaunchOrder?: number;
+  documents: {
+    terms: LegalDocument;
+    privacy: LegalDocument;
+    accessibility: LegalDocument;
+    returns: LegalDocument;
+    consent: ConsentConfig;
+    vat: VatConfig;
+  };
+}
+
+export const legalBundles: LegalBundle[] = [
+  {
+    id: "core.legal.bundle.standard",
+    name: "Standard Legal Bundle", // i18n-exempt -- TPL-001: template metadata
+    approved: true,
+    rapidLaunch: true,
+    rapidLaunchOrder: 1,
+    documents: {
+      terms: {
+        title: "Terms of Service", // i18n-exempt -- TPL-001: placeholder content
+        sections: [
+          {
+            heading: "Definitions", // i18n-exempt -- TPL-001: placeholder content
+            body: "\"Service\" refers to the website and all services provided. \"User\" refers to any person accessing the Service. \"Content\" refers to all materials available on the Service.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Account registration", // i18n-exempt -- TPL-001: placeholder content
+            body: "To access certain features, you may need to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "User obligations", // i18n-exempt -- TPL-001: placeholder content
+            body: "You agree to use the Service lawfully and not to engage in any activity that interferes with or disrupts the Service. You will not attempt to gain unauthorized access to any systems or networks.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Payments and refunds", // i18n-exempt -- TPL-001: placeholder content
+            body: "All prices are displayed in the applicable currency. Payment is due at the time of purchase. Refunds are subject to our Returns Policy.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Intellectual property", // i18n-exempt -- TPL-001: placeholder content
+            body: "All content on the Service, including text, graphics, logos, and software, is the property of the company or its licensors and is protected by intellectual property laws.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Limitation of liability", // i18n-exempt -- TPL-001: placeholder content
+            body: "To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Governing law", // i18n-exempt -- TPL-001: placeholder content
+            body: "These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which the company is registered, without regard to conflict of law principles.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Changes to terms", // i18n-exempt -- TPL-001: placeholder content
+            body: "We reserve the right to modify these Terms at any time. Changes will be effective when posted. Continued use of the Service after changes constitutes acceptance.", // i18n-exempt -- TPL-001: placeholder content
+          },
+        ],
+      },
+      privacy: {
+        title: "Privacy Policy", // i18n-exempt -- TPL-001: placeholder content
+        sections: [
+          {
+            heading: "Who is responsible for your data?", // i18n-exempt -- TPL-001: placeholder content
+            body: "The data controller is [Company Name]. For privacy inquiries, contact us at [email address].", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "What personal data do we collect?", // i18n-exempt -- TPL-001: placeholder content
+            body: "We collect information you provide directly (name, email, address, payment details) and automatically (IP address, device information, browsing behavior via cookies).", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "How do we use your data?", // i18n-exempt -- TPL-001: placeholder content
+            body: "We use your data to: process orders and payments, communicate with you about your account, improve our services, comply with legal obligations, and with your consent, send marketing communications.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Legal basis for processing (GDPR)", // i18n-exempt -- TPL-001: placeholder content
+            body: "We process data based on: contract performance, legal obligations, legitimate interests (improving services, fraud prevention), and your consent where required.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Who do we share data with?", // i18n-exempt -- TPL-001: placeholder content
+            body: "We share data with: payment processors, shipping providers, analytics services, and legal authorities when required. We do not sell your personal data.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "How long do we keep your data?", // i18n-exempt -- TPL-001: placeholder content
+            body: "We retain data only as long as necessary for the purposes described, or as required by law. Account data is kept while your account is active. Transaction records are kept for legal compliance periods.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Your rights", // i18n-exempt -- TPL-001: placeholder content
+            body: "You have the right to: access your data, correct inaccuracies, request deletion, restrict processing, data portability, and withdraw consent. Contact us to exercise these rights.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "International transfers", // i18n-exempt -- TPL-001: placeholder content
+            body: "Some service providers may process data outside your country. We use appropriate safeguards (standard contractual clauses) for international transfers.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Changes to this policy", // i18n-exempt -- TPL-001: placeholder content
+            body: "We may update this policy periodically. The latest version will always be available on this page with the effective date.", // i18n-exempt -- TPL-001: placeholder content
+          },
+        ],
+      },
+      accessibility: {
+        title: "Accessibility Statement", // i18n-exempt -- TPL-001: placeholder content
+        sections: [
+          {
+            heading: "Our commitment", // i18n-exempt -- TPL-001: placeholder content
+            body: "We strive to meet the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards. Our team works to ensure our website is perceivable, operable, understandable, and robust for all users.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Measures we take", // i18n-exempt -- TPL-001: placeholder content
+            body: "We include accessibility as part of our design process, provide text alternatives for images, ensure keyboard navigation, maintain sufficient color contrast, and test with assistive technologies.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Known limitations", // i18n-exempt -- TPL-001: placeholder content
+            body: "While we strive for full accessibility, some older content or third-party integrations may not yet meet all standards. We are actively working to address these issues.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Assistive technology compatibility", // i18n-exempt -- TPL-001: placeholder content
+            body: "Our website is designed to be compatible with screen readers, voice recognition software, and other assistive technologies. We test with NVDA, VoiceOver, and JAWS.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Feedback and contact", // i18n-exempt -- TPL-001: placeholder content
+            body: "If you encounter accessibility barriers or have suggestions for improvement, please contact us. We take all feedback seriously and will work to resolve issues promptly.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Formal complaints", // i18n-exempt -- TPL-001: placeholder content
+            body: "If you are not satisfied with our response to your accessibility concern, you may escalate to the relevant enforcement body in your jurisdiction.", // i18n-exempt -- TPL-001: placeholder content
+          },
+        ],
+      },
+      returns: {
+        title: "Shipping & Returns", // i18n-exempt -- TPL-001: placeholder content
+        sections: [
+          {
+            heading: "Shipping", // i18n-exempt -- TPL-001: placeholder content
+            body: "Free standard shipping on orders over €50. Standard delivery: 3-5 business days. Express shipping available for an additional fee.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Returns", // i18n-exempt -- TPL-001: placeholder content
+            body: "Items can be returned within 30 days of delivery. Items must be unused, in original packaging, with all tags attached. Sale items may have different return conditions.", // i18n-exempt -- TPL-001: placeholder content
+          },
+          {
+            heading: "Warranty", // i18n-exempt -- TPL-001: placeholder content
+            body: "Products come with a 1-year warranty against manufacturing defects. Warranty does not cover normal wear and tear or damage from misuse.", // i18n-exempt -- TPL-001: placeholder content
+          },
+        ],
+      },
+      consent: {
+        id: "core.consent.standard",
+        label: "Standard cookie consent", // i18n-exempt -- TPL-001: placeholder content
+        description:
+          "Display a consent banner for analytics and marketing cookies with opt-in controls.", // i18n-exempt -- TPL-001: placeholder content
+        regions: ["EU", "UK", "US-CA"],
+      },
+      vat: {
+        id: "core.vat.standard",
+        label: "Standard VAT disclosure", // i18n-exempt -- TPL-001: placeholder content
+        description:
+          "Prices include VAT where required. VAT invoices available on request.", // i18n-exempt -- TPL-001: placeholder content
+        rate: 0.2,
+        inclusive: true,
+        registrationNumber: "[VAT_NUMBER]",
+      },
+    },
+  },
+];
+
+export function getRapidLaunchLegalBundles(): LegalBundle[] {
+  const rapid = legalBundles.filter((bundle) => bundle.rapidLaunch);
+  if (rapid.length > 0) {
+    return [...rapid].sort(
+      (a, b) => (a.rapidLaunchOrder ?? Number.POSITIVE_INFINITY) - (b.rapidLaunchOrder ?? Number.POSITIVE_INFINITY),
+    );
+  }
+  if (legalBundles.length > 0) {
+    // i18n-exempt -- DS-1234 [ttl=2026-12-31] — developer warning only
+    console.warn(
+      // i18n-exempt -- DS-1234 [ttl=2026-12-31] — developer warning only
+      "[rapid-launch] No legal bundles tagged; falling back to first available.",
+    );
+  }
+  return legalBundles;
+}
+
+export function pickRapidLaunchLegalBundle(): LegalBundle | undefined {
+  return getRapidLaunchLegalBundles()[0];
+}
+
 export const homePageTemplates: TemplateDescriptor[] = corePageTemplates.filter(
   (tpl) => tpl.id.startsWith("core.page.home."),
 );
@@ -970,6 +1239,9 @@ export const checkoutPageTemplates: TemplateDescriptor[] =
 
 export const aboutPageTemplates: TemplateDescriptor[] =
   corePageTemplates.filter((tpl) => tpl.id.startsWith("core.page.about."));
+
+export const contactPageTemplates: TemplateDescriptor[] =
+  corePageTemplates.filter((tpl) => tpl.id.startsWith("core.page.contact."));
 
 export const faqPageTemplates: TemplateDescriptor[] =
   corePageTemplates.filter((tpl) => tpl.id.startsWith("core.page.faq."));

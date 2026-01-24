@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 
 import { formatTimestamp } from "@acme/date-utils";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
-import { Skeleton, Toast, Tooltip } from "@/components/atoms";
+import { Skeleton, Tooltip } from "@/components/atoms";
 import {
   Button,
   Card,
@@ -27,12 +28,10 @@ interface AuditRecord {
 
 export default function SeoAuditPanel({ shop }: { shop: string }) {
   const t = useTranslations();
+  const toast = useToast();
   const [history, setHistory] = useState<AuditRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>(
-    { open: false, message: "" },
-  );
   const router = useRouter();
 
   useEffect(() => {
@@ -65,15 +64,15 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
 
   const runAudit = async () => {
     setRunning(true);
-    setToast({ open: true, message: String(t("Audit started")) });
+    toast.info(String(t("Audit started")));
     try {
       const res = await fetch(`/api/seo/audit/${shop}`, { method: "POST" });
       const record: AuditRecord = await res.json();
       setHistory((prev) => [...prev, record]);
-      setToast({ open: true, message: String(t("Audit completed")) });
+      toast.success(String(t("Audit completed")));
       router.refresh();
     } catch {
-      setToast({ open: true, message: String(t("Audit failed")) });
+      toast.error(String(t("Audit failed")));
     } finally {
       setRunning(false);
     }
@@ -167,11 +166,6 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
           ) : null}
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-      />
     </>
   );
 }

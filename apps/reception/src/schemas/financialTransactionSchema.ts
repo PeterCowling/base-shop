@@ -14,6 +14,18 @@ export const financialTransactionSchema = z.object({
   nonRefundable: z.boolean().optional(),
   docType: z.string().optional(),
   isKeycard: z.boolean().optional(),
+  shiftId: z.string().optional(),
+  sourceTxnId: z.string().optional(),
+  correctionReason: z.string().optional(),
+  correctionKind: z.string().optional(),
+  correctedBy: z.string().optional(),
+  correctedByUid: z.string().optional(),
+  correctedShiftId: z.string().optional(),
+  voidedAt: z.string().optional(),
+  voidedBy: z.string().optional(),
+  voidedByUid: z.string().optional(),
+  voidReason: z.string().optional(),
+  voidedShiftId: z.string().optional(),
 });
 
 export type FinancialTransaction = z.infer<typeof financialTransactionSchema>;

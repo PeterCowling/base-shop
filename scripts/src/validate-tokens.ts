@@ -52,12 +52,34 @@ const REQUIRED_TOKENS = [
   "--ring-width",
   "--ring-offset-width",
 
-  // Typography
+  // Typography (font families)
   "--font-sans",
   "--font-mono",
   "--font-body",
   "--font-heading-1",
   "--font-heading-2",
+
+  // Typography scale (font sizes)
+  "--text-xs",
+  "--text-sm",
+  "--text-base",
+  "--text-lg",
+  "--text-xl",
+  "--text-2xl",
+  "--text-3xl",
+
+  // Font weights
+  "--font-weight-light",
+  "--font-weight-normal",
+  "--font-weight-medium",
+  "--font-weight-semibold",
+  "--font-weight-bold",
+
+  // Line heights
+  "--leading-none",
+  "--leading-tight",
+  "--leading-normal",
+  "--leading-relaxed",
 
   // Spacing (core scale)
   "--space-0",
@@ -81,6 +103,14 @@ const REQUIRED_TOKENS = [
   "--elevation-1",
   "--elevation-2",
   "--elevation-3",
+
+  // Z-index (DECISION-08)
+  "--z-base",
+  "--z-modal-backdrop",
+  "--z-modal",
+  "--z-popover",
+  "--z-tooltip",
+  "--z-toast",
 ];
 
 // Warning tokens - recommended but not required
@@ -107,6 +137,16 @@ const RECOMMENDED_TOKENS = [
   "--target-min-aa",
   "--target-hig",
   "--target-material",
+  // Extended typography
+  "--text-4xl",
+  "--text-5xl",
+  "--leading-snug",
+  "--leading-loose",
+  // Extended z-index
+  "--z-dropdown",
+  "--z-sticky",
+  "--z-fixed",
+  "--z-max",
 ];
 
 interface TokenValidationResult {
@@ -121,6 +161,15 @@ interface TokenValidationResult {
 // Themes that must define ALL required tokens (not layered on base)
 const BASE_THEMES = ["base"];
 
+function getThemeName(themePath: string): string {
+  const dir = path.dirname(themePath);
+  const parent = path.basename(dir);
+  if (parent === "src") {
+    return path.basename(path.dirname(dir));
+  }
+  return parent;
+}
+
 function extractTokensFromCSS(cssContent: string): string[] {
   const tokens: string[] = [];
   // Match CSS custom property definitions: --token-name: value;
@@ -134,7 +183,7 @@ function extractTokensFromCSS(cssContent: string): string[] {
 }
 
 function validateTheme(themePath: string): TokenValidationResult {
-  const themeName = path.basename(path.dirname(path.dirname(themePath)));
+  const themeName = getThemeName(themePath);
   const cssContent = fs.readFileSync(themePath, "utf-8");
   const definedTokens = extractTokensFromCSS(cssContent);
   const isBaseTheme = BASE_THEMES.includes(themeName);
@@ -169,15 +218,16 @@ function main(): void {
 
   if (fs.existsSync(themesDir)) {
     for (const themeDir of fs.readdirSync(themesDir)) {
-      const tokensPath = path.join(themesDir, themeDir, "src/tokens.css");
-      if (fs.existsSync(tokensPath)) {
-        themePaths.push(tokensPath);
+      const rootTokens = path.join(themesDir, themeDir, "tokens.css");
+      if (fs.existsSync(rootTokens)) {
+        themePaths.push(rootTokens);
+        continue;
       }
     }
   }
 
   if (themePaths.length === 0) {
-    console.log("⚠️  No theme packages found at packages/themes/*/src/tokens.css");
+    console.log("⚠️  No theme packages found at packages/themes/*/tokens.css");
     process.exit(0);
   }
 
@@ -227,7 +277,7 @@ function main(): void {
   if (hasErrors) {
     console.log("❌ Validation FAILED - missing required tokens\n");
     console.log("Add the missing tokens to your theme's tokens.css file.");
-    console.log("See packages/themes/base/src/tokens.css for reference.\n");
+    console.log("See @themes/base/tokens.css for reference.\n");
     process.exit(1);
   } else if (hasWarnings) {
     console.log("✅ Validation PASSED with warnings\n");

@@ -7,6 +7,8 @@ import { authOptions } from "@cms/auth/options";
 
 import { LayoutProvider } from "@acme/platform-core/contexts/LayoutContext";
 
+import { CmsNotificationProvider } from "../CmsNotificationProvider";
+
 import LayoutClient from "./LayoutClient.client";
 import CmsSessionProvider from "./SessionProvider.client";
 
@@ -16,7 +18,9 @@ export default async function CmsLayout({ children }: { children: ReactNode }) {
   return (
     <LayoutProvider>
       <CmsSessionProvider session={session}>
-        <LayoutClient role={session?.user.role}>{children}</LayoutClient>
+        <LayoutClient role={session?.user.role}>
+          <CmsNotificationProvider>{children}</CmsNotificationProvider>
+        </LayoutClient>
       </CmsSessionProvider>
     </LayoutProvider>
   );

@@ -1,15 +1,4 @@
-interface Props {
-  /** Thickness of the divider */
-  height?: string;
-}
+"use client";
 
-export default function Divider({ height = "1px" }: Props) {
-  return (
-    <div
-      aria-hidden="true"
-      className="w-full bg-border"
-       
-      style={{ height }}
-    />
-  );
-}
+export { default } from "@acme/ui/components/cms/blocks/Divider";
+export * from "@acme/ui/components/cms/blocks/Divider";

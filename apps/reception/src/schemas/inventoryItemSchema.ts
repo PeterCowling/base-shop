@@ -7,7 +7,6 @@ export const inventoryItemSchema = z.object({
   reorderThreshold: z.number().optional(),
   category: z.string().optional(),
   active: z.boolean().optional(),
-  recipeMap: z.record(z.number()).optional(),
 });
 
 export const inventoryItemsSchema = z.record(inventoryItemSchema);

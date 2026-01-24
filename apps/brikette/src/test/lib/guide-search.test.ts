@@ -12,7 +12,7 @@ describe("GuideSearchService", () => {
 
   // Sample guides for testing
   const sampleGuides: GuideMeta[] = [
-    { key: "positanoBeaches" as never, tags: ["beaches", "positano"], section: "experiences" },
+    { key: "positanoBeaches" as never, tags: ["beach", "beaches", "positano"], section: "experiences" },
     { key: "pathOfTheGods" as never, tags: ["hiking", "stairs", "positano"], section: "experiences" },
     { key: "howToGetToPositano" as never, tags: ["transport", "decision", "positano"], section: "help" },
     { key: "capriDayTrip" as never, tags: ["day-trip", "capri", "ferry"], section: "experiences" },

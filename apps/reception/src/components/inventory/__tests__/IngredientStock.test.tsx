@@ -12,7 +12,7 @@ var useIngredientsMock: jest.Mock;
 
 jest.mock("../../../hooks/data/inventory/useIngredients", () => {
   useIngredientsMock = jest.fn();
-  return { default: useIngredientsMock };
+  return { __esModule: true, default: useIngredientsMock };
 });
 
 describe("IngredientStock", () => {
@@ -27,6 +27,9 @@ describe("IngredientStock", () => {
       loading: true,
       error: null,
       updateIngredient: jest.fn(),
+      legacyIngredients: {},
+      migrateLegacyIngredients: jest.fn(),
+      migrationComplete: false,
     });
 
     render(<IngredientStock />);
@@ -39,6 +42,9 @@ describe("IngredientStock", () => {
       loading: false,
       error: new Error("fail"),
       updateIngredient: jest.fn(),
+      legacyIngredients: {},
+      migrateLegacyIngredients: jest.fn(),
+      migrationComplete: false,
     });
 
     render(<IngredientStock />);
@@ -49,12 +55,15 @@ describe("IngredientStock", () => {
     const updateMock = jest.fn();
     useIngredientsMock.mockReturnValue({
       ingredients: {
-        Flour: { name: "Flour", quantity: 10 },
-        Sugar: { name: "Sugar", quantity: 5 },
+        Flour: { id: "ing-1", name: "Flour", unit: "kg", quantity: 10 },
+        Sugar: { id: "ing-2", name: "Sugar", unit: "kg", quantity: 5 },
       },
       loading: false,
       error: null,
       updateIngredient: updateMock,
+      legacyIngredients: {},
+      migrateLegacyIngredients: jest.fn(),
+      migrationComplete: false,
     });
 
     render(<IngredientStock />);
@@ -75,6 +84,9 @@ describe("IngredientStock", () => {
       loading: false,
       error: null,
       updateIngredient: jest.fn(),
+      legacyIngredients: {},
+      migrateLegacyIngredients: jest.fn(),
+      migrationComplete: false,
     });
 
     render(

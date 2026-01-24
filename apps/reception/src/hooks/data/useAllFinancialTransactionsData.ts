@@ -33,6 +33,10 @@ export interface UseAllFinancialTransactionsParams {
   amount?: string;
   itemCategory?: string;
   userName?: string;
+  bookingRef?: string;
+  shiftId?: string;
+  reason?: string;
+  sourceTxnId?: string;
   skip?: boolean;
   orderByChild?: string;
   startAt?: string | number;
@@ -44,6 +48,10 @@ export default function useAllFinancialTransactionsData({
   amount = "",
   itemCategory = "",
   userName = "",
+  bookingRef = "",
+  shiftId = "",
+  reason = "",
+  sourceTxnId = "",
   skip = false,
   orderByChild: orderChild,
   startAt: startVal,
@@ -141,19 +149,54 @@ export default function useAllFinancialTransactionsData({
 
     return Object.entries(allFinancialTransactions).filter(([_, txn]) => {
       if (amount && txn.amount !== Number(amount)) return false;
-      if (
-        itemCategory &&
-        !txn.itemCategory.toLowerCase().includes(itemCategory.toLowerCase())
-      )
-        return false;
-      if (
-        userName &&
-        !txn.user_name.toLowerCase().includes(userName.toLowerCase())
-      )
-        return false;
+      if (itemCategory) {
+        const category = txn.itemCategory ?? "";
+        if (!category.toLowerCase().includes(itemCategory.toLowerCase())) {
+          return false;
+        }
+      }
+      if (userName) {
+        const name = txn.user_name ?? "";
+        if (!name.toLowerCase().includes(userName.toLowerCase())) {
+          return false;
+        }
+      }
+      if (bookingRef) {
+        const refVal = txn.bookingRef ?? "";
+        if (!refVal.toLowerCase().includes(bookingRef.toLowerCase())) {
+          return false;
+        }
+      }
+      if (shiftId) {
+        const shift = txn.shiftId ?? "";
+        if (!shift.toLowerCase().includes(shiftId.toLowerCase())) {
+          return false;
+        }
+      }
+      if (sourceTxnId) {
+        const source = txn.sourceTxnId ?? "";
+        if (!source.toLowerCase().includes(sourceTxnId.toLowerCase())) {
+          return false;
+        }
+      }
+      if (reason) {
+        const combinedReason = `${txn.voidReason ?? ""} ${txn.correctionReason ?? ""}`.trim();
+        if (!combinedReason.toLowerCase().includes(reason.toLowerCase())) {
+          return false;
+        }
+      }
       return true;
     });
-  }, [allFinancialTransactions, amount, itemCategory, userName]);
+  }, [
+    allFinancialTransactions,
+    amount,
+    itemCategory,
+    userName,
+    bookingRef,
+    shiftId,
+    reason,
+    sourceTxnId,
+  ]);
 
   return {
     allFinancialTransactions,

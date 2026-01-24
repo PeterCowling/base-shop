@@ -512,7 +512,13 @@ describe("dateUtils", () => {
     it("returns first day of the month at local midnight", () => {
       const input = new Date("2024-06-15T12:34:56Z");
       const result = startOfMonthLocal(input);
-      expect(result.toISOString()).toBe("2024-06-01T00:00:00.000Z");
+      expect(result.getFullYear()).toBe(2024);
+      expect(result.getMonth()).toBe(5); // June = 5
+      expect(result.getDate()).toBe(1);
+      expect(result.getHours()).toBe(0);
+      expect(result.getMinutes()).toBe(0);
+      expect(result.getSeconds()).toBe(0);
+      expect(result.getMilliseconds()).toBe(0);
     });
   });
 
@@ -648,7 +654,10 @@ describe("dateUtils2", () => {
   describe("msUntilNextMidnight", () => {
     it("calculates milliseconds until next midnight", () => {
       jest.useFakeTimers();
-      jest.setSystemTime(new Date("2024-01-01T22:00:00Z"));
+      // Set to 22:00 local time (2 hours before local midnight)
+      const now = new Date();
+      now.setHours(22, 0, 0, 0);
+      jest.setSystemTime(now);
       expect(msUntilNextMidnight()).toBe(2 * 60 * 60 * 1000);
       jest.useRealTimers();
     });
@@ -668,9 +677,15 @@ describe("dateUtils2", () => {
   describe("endOfDayLocal, startOfDayIso, endOfDayIso, isOnOrBefore", () => {
     it("provides day boundary helpers", () => {
       const date = new Date("2024-01-01T10:00:00Z");
-      expect(endOfDayLocal(date).toISOString()).toBe(
-        "2024-01-01T23:59:59.999Z",
-      );
+      const eod = endOfDayLocal(date);
+      // endOfDayLocal returns 23:59:59.999 in local time on the same local date
+      expect(eod.getFullYear()).toBe(date.getFullYear());
+      expect(eod.getMonth()).toBe(date.getMonth());
+      expect(eod.getDate()).toBe(date.getDate());
+      expect(eod.getHours()).toBe(23);
+      expect(eod.getMinutes()).toBe(59);
+      expect(eod.getSeconds()).toBe(59);
+      expect(eod.getMilliseconds()).toBe(999);
       expect(startOfDayIso(date)).toBe("2024-01-01T00:00:00.000+00:00");
       expect(endOfDayIso(date)).toBe("2024-01-01T23:59:59.999+00:00");
       expect(

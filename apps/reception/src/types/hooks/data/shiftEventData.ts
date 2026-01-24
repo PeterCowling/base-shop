@@ -7,7 +7,7 @@ export interface ShiftEventData {
   cashCount: number;
   keycardCount: number;
   difference?: number;
+  shiftId?: string;
 }
 
 export type ShiftEvents = Record<string, ShiftEventData> | null;
-

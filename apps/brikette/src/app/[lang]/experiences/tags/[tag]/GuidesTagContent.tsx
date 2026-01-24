@@ -2,7 +2,7 @@
 
 // src/app/[lang]/experiences/tags/[tag]/GuidesTagContent.tsx
 // Client component for guide tag page
-import React, { memo, useEffect, useMemo } from "react";
+import React, { memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -32,6 +32,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 const FALLBACK_LANG = i18nConfig.fallbackLng as AppLanguage;
+const EN_GUIDES = getGuidesBundle("en");
 
 function fallbackSlugFromKey(key: GuideMeta["key"]): string {
   return key
@@ -63,13 +64,7 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
   const { t: tTags } = useTranslation("guides.tags", { lng: lang });
 
-  const items = useMemo<GuideMeta[]>(() => {
-    if (!tag) {
-      return [];
-    }
-    const filtered = GUIDES_INDEX.filter((guide) => guide.tags.includes(tag));
-    return filtered;
-  }, [tag]);
+  const items: GuideMeta[] = tag ? GUIDES_INDEX.filter((guide) => guide.tags.includes(tag)) : [];
 
   const shouldNoIndex = items.length < 3;
 
@@ -95,18 +90,18 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
     };
   }, [shouldNoIndex]);
 
-  const summary = useMemo(() => TAGS_SUMMARY.find((s) => s.tag === tag), [tag]);
+  const summary = TAGS_SUMMARY.find((s) => s.tag === tag);
 
   // Prefer i18n intro when available; otherwise fall back to English
   const i18nIntro = t(`tags.intros.${tag}`);
-  const enIntroFromI18n = useMemo(() => {
+  const enIntroFromI18n = (() => {
     if (!tag || !ready) return undefined;
     const value = i18n?.getResource?.(FALLBACK_LANG, "guides", `tags.intros.${tag}`);
     return typeof value === "string" && value.trim().length > 0 ? value : undefined;
-  }, [i18n, ready, tag]);
+  })();
 
-  const enGuides = useMemo<GuidesNamespace | undefined>(() => getGuidesBundle("en"), []);
-  const enIntro = useMemo(() => {
+  const enGuides: GuidesNamespace | undefined = EN_GUIDES;
+  const enIntro = (() => {
     if (!enGuides || !tag) return undefined;
     const tagsSection = (enGuides as { tags?: unknown }).tags;
     if (!isRecord(tagsSection)) return undefined;
@@ -114,7 +109,7 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
     if (!isRecord(intros)) return undefined;
     const value = (intros as Record<string, unknown>)[tag];
     return typeof value === "string" ? value : undefined;
-  }, [enGuides, tag]);
+  })();
 
   const customIntro = i18nIntro && i18nIntro !== `tags.intros.${tag}` ? i18nIntro : enIntroFromI18n ?? enIntro;
   const hasCustomIntro = Boolean(customIntro && customIntro.length > 0);
@@ -127,13 +122,13 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const descI18n = tTags(descKey);
 
   type Translator = TFunction;
-  const fallbackGuidesT = useMemo<Translator>(() => {
+  const fallbackGuidesT: Translator = (() => {
     const fixed = i18n?.getFixedT?.(FALLBACK_LANG, "guides");
     if (fixed) {
       return fixed as Translator;
     }
     return ((key: string) => key) as unknown as Translator;
-  }, [i18n]);
+  })();
 
   const guidesSlug = getSlug("guides", lang);
   const guidesBasePath = `/${lang}/${guidesSlug}`;
@@ -144,7 +139,7 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const resolvedTitle = (titleI18n && titleI18n !== titleKey ? titleI18n : tagMeta?.title) ?? tag;
   const resolvedDescription = (descI18n && descI18n !== descKey ? descI18n : tagMeta?.description) ?? "";
 
-  const resolvedGuides = useMemo(() => {
+  const resolvedGuides = (() => {
     if (!items.length)
       return [] as Array<{
         key: GuideMeta["key"];
@@ -187,16 +182,12 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
         structuredUrl,
       };
     });
-  }, [fallbackGuidesT, guidesBasePath, items, lang, ready, t]);
+  })();
 
-  const structuredItems = useMemo<GuidesTagListItem[]>(
-    () =>
-      resolvedGuides.map(({ structuredUrl, label }) => ({
-        url: structuredUrl,
-        name: label,
-      })),
-    [resolvedGuides]
-  );
+  const structuredItems: GuidesTagListItem[] = resolvedGuides.map(({ structuredUrl, label }) => ({
+    url: structuredUrl,
+    name: label,
+  }));
 
   return (
     <>

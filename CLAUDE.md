@@ -7,192 +7,43 @@ Last-reviewed: 2026-01-20
 
 # Claude Coding Assistant Guide
 
-This document helps Claude navigate and work effectively within this monorepo.
-For universal agent rules, see [AGENTS.md](AGENTS.md).
+Short Claude-specific guidance for Base-Shop. For universal rules and commands, see `AGENTS.md`.
+For repo layout, invariants, and doc pointers, see `PROJECT_DIGEST.md`.
 
-## Project Overview
+## Project Snapshot
 
-**Base-Shop** is a multilingual, hybrid-rendered e-commerce platform built with Next.js 15 and React 19. It's a Turborepo monorepo using pnpm workspaces.
+Base-Shop is a multilingual, hybrid-rendered e-commerce platform built with Next.js 15 and React 19.
+Monorepo: Turborepo + pnpm workspaces.
 
 ### Key Technologies
-- **Framework:** Next.js 15 (App Router), React 19
-- **Package Manager:** pnpm 10.12.1
-- **Database:** PostgreSQL + Prisma ORM
-- **Build System:** Turborepo
-- **Testing:** Jest, Cypress, Playwright
-- **Styling:** Tailwind CSS 4 with design tokens
-- **Deployment:** Cloudflare Pages
+- Next.js 15 (App Router), React 19
+- TypeScript, Prisma, PostgreSQL
+- Tailwind CSS 4
+- Jest, Cypress, Playwright
+- Cloudflare Pages
 
 ## Model Usage Policy
 
-**Always use sonnet** as the default model for all sub-agents and delegated tasks.
+Always use **sonnet** as the default model for all sub-agents and delegated tasks.
+If a task appears too complex for sonnet (multi-package architecture, deep reasoning, or subtle concurrency),
+pause and ask the user before escalating.
 
-If a task appears too complex for sonnet (e.g., highly nuanced architectural decisions, multi-layered reasoning across many domains, or tasks requiring exceptional depth), **pause and ask the user** before proceeding. Do not silently escalate to opus.
+## Workflow
 
-Examples of when to escalate:
-- Complex cross-cutting architectural refactors affecting 5+ packages
-- Subtle concurrency or race condition analysis
-- Tasks requiring deep reasoning about business logic across multiple bounded contexts
+Feature flow: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%).
 
-## Monorepo Structure
+## Type Intelligence (MCP)
 
-```
-base-shop/
-├── apps/                    # Applications (cms, brikette, skylar, etc.)
-├── packages/               # Shared packages
-│   ├── platform-core/      # Domain logic, persistence, cart, pricing
-│   ├── ui/                 # Design system and UI components
-│   ├── config/             # Shared configuration
-│   └── ...                 # auth, i18n, email, stripe, etc.
-├── docs/                   # Documentation
-├── scripts/                # Build and utility scripts
-└── __tests__/              # Test fixtures and data
-```
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
 
-## Architecture Principles
+Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 
-### UI Layer Hierarchy (Atomic Design)
+## Deep Dives
 
-Components follow a strict layering model. **Higher layers may only import from lower layers:**
-
-1. **Atoms** (`packages/ui/components/atoms/`) - Button, Input
-2. **Molecules** (`packages/ui/components/molecules/`) - Compositions of atoms
-3. **Organisms** (`packages/ui/components/organisms/`) - Complex interface sections
-4. **Templates** (`packages/ui/components/templates/`) - Page layouts
-5. **Pages** (`apps/*/src/app/`) - Next.js route components
-
-**Import Rule:** Atoms → Molecules → Organisms → Templates → Pages (one direction only)
-
-### Package Layering
-
-```
-Apps (apps/*)
-    ↓
-CMS-only packages (@acme/cms-marketing, @acme/configurator)
-    ↓
-@acme/ui (domain UI - shop components, CMS editor)
-    ↓
-@acme/design-system (presentation primitives)
-    ↓
-@acme/platform-core (domain logic, persistence)
-    ↓
-Low-level libraries (@acme/types, @acme/date-utils, etc.)
-```
-
-**Never import from:**
-- Apps in other packages
-- Internal package paths (use exports map only)
-- Higher layers from lower layers
-
-### UI Import Rules
-
-**Presentation primitives** (Button, Card, Input, etc.) should be imported from `@acme/design-system`:
-
-```typescript
-// ✅ Good - use design-system for presentation
-import { Button, Card } from "@acme/design-system/primitives";
-import { cn } from "@acme/design-system/utils/style";
-
-// ❌ Deprecated - don't use ui for primitives
-import { Button } from "@acme/ui/atoms";
-import { cn } from "@acme/ui/utils/style";
-```
-
-**Domain components** (checkout, shop-specific, CMS editor) remain in `@acme/ui`:
-
-```typescript
-// ✅ Good - use ui for domain components
-import { CheckoutForm } from "@acme/ui/components/checkout";
-import { ProductCard } from "@acme/ui/components/organisms";
-```
-
-## Important Patterns
-
-### Importing from Workspace Packages
-```typescript
-// ✅ Good - use package exports
-import { getShop } from '@acme/platform-core'
-import { Button } from '@acme/ui'
-
-// ❌ Bad - don't import from src
-import { getShop } from '@acme/platform-core/src/internal/shops'
-```
-
-### shadcn/ui Components
-```typescript
-// Import shadcn components from atoms/shadcn
-import { Button } from '@/components/atoms/shadcn'
-
-// Alias when using alongside in-house atoms
-import { Button } from '@/components/atoms'
-import { Button as ShButton } from '@/components/atoms/shadcn'
-```
-
-### Client-Only Code (App Router)
-```typescript
-'use client'
-
-export function ClientComponent() {
-  // Can use window, localStorage, etc.
-}
-```
-
-## Key File Locations
-
-| Category | Location |
-|----------|----------|
-| Architecture | `docs/architecture.md` |
-| Database schema | `packages/platform-core/prisma/schema.prisma` |
-| Test fixtures | `__tests__/data/shops/` |
-| Environment vars | `docs/.env.reference.md` |
-
-## Common Commands
-
-```bash
-# Development
-pnpm --filter @apps/cms dev
-pnpm typecheck:watch
-
-# Testing (always targeted - see AGENTS.md)
-pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx
-
-# Building
-pnpm build
-pnpm --filter @acme/platform-core build
-
-# Database
-pnpm prisma:generate
-pnpm --filter @acme/platform-core exec prisma db seed
-```
-
-## When Working on Code
-
-1. **Read before editing** — Don't assume structure
-2. **Follow existing patterns** — Check similar code first
-3. **Respect layer hierarchy** — Check `docs/architecture.md`
-4. **Use targeted tests** — Never run `pnpm test` unfiltered
-5. **ESM vs CJS in Jest** — If a test or imported file throws ESM parsing errors (`Cannot use import statement outside a module`, `import.meta`), rerun with `JEST_FORCE_CJS=1` to force the CommonJS preset.
-6. **Validate before commit** — `pnpm typecheck && pnpm lint`
-7. **Handle audit limits gracefully** — When hitting context/scope limits during planning or exploration, don't just stop. Document what's done, what remains, and how to resume efficiently. See [AGENTS.md § Handling Audit Limits](AGENTS.md#handling-audit-limits).
-
-## Workflow Prompts
-
-For structured workflows, use:
-- `.agents/skills/workflows/plan-feature.md` — Planning mode
-- `.agents/skills/workflows/build-feature.md` — Building mode
-
-For the full skill system, see `.agents/README.md` and `.agents/skills/manifest.yaml`.
-
-## Quick Reference
-
-| Need | Location |
-|------|----------|
-| Git rules | [AGENTS.md](AGENTS.md) |
-| Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
-| Plan schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
-| Architecture | [docs/architecture.md](docs/architecture.md) |
-| Troubleshooting | [docs/troubleshooting.md](docs/troubleshooting.md) |
+- Architecture and layering: `docs/architecture.md`
+- Plan schema: `docs/AGENTS.docs.md`
+- Testing policy: `docs/testing-policy.md`
 
 ---
 
-**Previous version:** [docs/historical/CLAUDE-2026-01-17-pre-ralph.md](docs/historical/CLAUDE-2026-01-17-pre-ralph.md)
+**Previous version:** `docs/historical/CLAUDE-2026-01-17-pre-ralph.md`

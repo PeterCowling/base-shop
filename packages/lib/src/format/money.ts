@@ -72,7 +72,6 @@ export function toMinor(inputMajor: string | number, currency: string): number {
     str = inputMajor.trim();
   }
 
-  // eslint-disable-next-line security/detect-unsafe-regex -- bounded decimal parser for currency input
   const match = /^([+-])?(\d+)(?:\.(\d+))?$/.exec(str);
   if (!match) {
     throw new TypeError("Expected a numeric string");

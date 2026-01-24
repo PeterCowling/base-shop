@@ -37,13 +37,14 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       false
     );
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
   });
 
   it("applies dark theme from localStorage", () => {
     Object.defineProperty(window, "localStorage", {
       configurable: true,
       value: {
-        getItem: () => "dark",
+        getItem: (key: string) => (key === "theme-mode" ? "dark" : null),
       },
     });
     Object.defineProperty(window, "matchMedia", {
@@ -58,6 +59,7 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       true
     );
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(
       false
     );
@@ -67,7 +69,7 @@ describe("initTheme", () => {
     Object.defineProperty(window, "localStorage", {
       configurable: true,
       value: {
-        getItem: () => "brandx",
+        getItem: (key: string) => (key === "theme-name" ? "brandx" : null),
       },
     });
     Object.defineProperty(window, "matchMedia", {
@@ -82,6 +84,7 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       false
     );
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(
       true
     );
@@ -91,7 +94,7 @@ describe("initTheme", () => {
     Object.defineProperty(window, "localStorage", {
       configurable: true,
       value: {
-        getItem: () => "system",
+        getItem: (key: string) => (key === "theme-mode" ? "system" : null),
       },
     });
     Object.defineProperty(window, "matchMedia", {
@@ -106,6 +109,7 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       true
     );
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(
       false
     );
@@ -115,7 +119,7 @@ describe("initTheme", () => {
     Object.defineProperty(window, "localStorage", {
       configurable: true,
       value: {
-        getItem: () => "system",
+        getItem: (key: string) => (key === "theme-mode" ? "system" : null),
       },
     });
     Object.defineProperty(window, "matchMedia", {
@@ -130,6 +134,7 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       false
     );
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(
       false
     );

@@ -1,19 +1,2 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-
-import StoreLocatorSection from "./StoreLocatorSection";
-
-const meta: Meta<typeof StoreLocatorSection> = {
-  title: "CMS Blocks/StoreLocatorSection",
-  component: StoreLocatorSection,
-  args: {
-    enableGeolocation: false,
-    stores: [
-      { id: "a", label: "ACME Central", lat: 37.7749, lng: -122.4194, address: "123 Market St" },
-      { id: "b", label: "ACME Mission", lat: 37.7599, lng: -122.4148, address: "456 Valencia St" },
-    ],
-  },
-};
-export default meta;
-
-export const Default: StoryObj<typeof StoreLocatorSection> = {};
-
+export { default } from "@acme/ui/components/cms/blocks/StoreLocatorSection.stories";
+export * from "@acme/ui/components/cms/blocks/StoreLocatorSection.stories";

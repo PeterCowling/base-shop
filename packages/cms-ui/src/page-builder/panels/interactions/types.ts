@@ -1,12 +1,4 @@
-import type { PageComponent } from "@acme/types";
-
-export type HandleInput = <K extends keyof PageComponent>(
-  field: K,
-  value: PageComponent[K],
-) => void;
-
-export interface InteractionsProps {
-  component: PageComponent;
-  handleInput: HandleInput;
-}
-
+export type {
+  HandleInput,
+  InteractionsProps,
+} from "@acme/ui/components/cms/page-builder/panels/interactions/types";

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "License compliance policy for proprietary commercial software. All production dependencies must use permissive licenses only.",
+  "allowed": [
+    "MIT",
+    "ISC",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "Apache-2.0",
+    "0BSD",
+    "Unlicense",
+    "BlueOak-1.0.0",
+    "CC0-1.0",
+    "CC-BY-3.0",
+    "CC-BY-4.0",
+    "Python-2.0",
+    "Zlib",
+    "WTFPL",
+    "MIT-0",
+    "MPL-2.0",
+    "Artistic-2.0"
+  ],
+  "devOnly": [
+    "LGPL-2.1",
+    "LGPL-2.1-only",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0",
+    "LGPL-3.0-only",
+    "LGPL-3.0-or-later"
+  ],
+  "exceptions": {
+    "node.extend": {
+      "license": "(MIT OR GPL-2.0)",
+      "reason": "SPDX OR expression — MIT is chosen per disjunctive license rules",
+      "resolvedAs": "MIT"
+    },
+    "thirty-two": {
+      "license": "Unknown",
+      "reason": "LICENSE.txt contains standard MIT text; package.json missing SPDX field",
+      "resolvedAs": "MIT"
+    },
+    "@vercel/gatsby-plugin-vercel-builder": {
+      "license": "Unknown",
+      "reason": "LICENSE file contains Apache-2.0; part of github.com/vercel/vercel monorepo; package.json missing SPDX field",
+      "resolvedAs": "Apache-2.0"
+    },
+    "starkbank-ecdsa": {
+      "license": "MIT License",
+      "reason": "Non-standard SPDX identifier; 'MIT License' is the full name of the MIT license",
+      "resolvedAs": "MIT"
+    },
+    "@img/sharp-libvips-darwin-arm64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    },
+    "@img/sharp-libvips-darwin-x64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    },
+    "@img/sharp-libvips-linux-arm64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    },
+    "@img/sharp-libvips-linux-x64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    },
+    "@img/sharp-libvips-linuxmusl-arm64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    },
+    "@img/sharp-libvips-linuxmusl-x64": {
+      "license": "LGPL-3.0-or-later",
+      "reason": "Pre-built native binary; dynamically linked per LGPL terms; sharp itself is MIT",
+      "resolvedAs": "LGPL-3.0-or-later (dynamic linking exemption)"
+    }
+  }
+}

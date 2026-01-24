@@ -46,6 +46,9 @@ function calculateFinancials(
   let totalAdjust = 0;
 
   Object.values(transactions).forEach((txn) => {
+    if (txn.voidedAt || txn.voidedBy || txn.voidReason) {
+      return;
+    }
     switch (txn.type) {
       case "charge":
         totalDue += txn.amount;

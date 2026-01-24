@@ -2,10 +2,9 @@ import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 export interface AddKeycardsModalProps {
   onConfirm: (count: number) => Promise<void>;
@@ -18,20 +17,15 @@ function AddKeycardsModalBase({ onConfirm, onCancel }: AddKeycardsModalProps) {
   const [countInput, setCountInput] = useState<string>("");
 
   /** ---------- Callbacks ------------------------------------------------- */
-  const handlePinSubmit = useCallback(
-    async (pin: string): Promise<boolean> => {
+  const handleReauthSubmit = useCallback(async () => {
       const parsed = countSchema.safeParse({ count: Number(countInput) });
       if (!parsed.success) {
         showToast("Count must be a positive integer", "error");
-        return true;
+        return;
       }
-      if (!getUserByPin(pin)) return false;
       await onConfirm(parsed.data.count);
       setCountInput("");
-      return true;
-    },
-    [countInput, onConfirm]
-  );
+    }, [countInput, onConfirm]);
 
   /** ---------- UI -------------------------------------------------------- */
   return (
@@ -63,7 +57,10 @@ function AddKeycardsModalBase({ onConfirm, onCancel }: AddKeycardsModalProps) {
 
         {/* PIN */}
         <div className="mt-6">
-          <PinLoginInline onSubmit={handlePinSubmit} />
+          <PasswordReauthInline
+            onSubmit={handleReauthSubmit}
+            submitLabel="Confirm add"
+          />
         </div>
       </div>
     </ModalContainer>

@@ -101,7 +101,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 <label
                   htmlFor={controlId}
                   className={cn(
-                    "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                    "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-colors transition-transform motion-reduce:transition-none", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                     (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                   )}
                 >

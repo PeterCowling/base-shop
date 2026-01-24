@@ -2,7 +2,18 @@
  * Template-level guide-specific policies.
  *
  * Centralizes guide-specific rendering decisions for _GuideSeoTemplate.
+ * All policies are driven by the declarative config in guide-overrides.ts.
  */
+import {
+  getExplicitTocValue,
+  hasRuntimeContentFallback,
+  shouldSuppressGenericWhenStructured,
+  shouldSuppressGenericWhenUnstructured,
+  shouldSuppressGenericWhenUnlocalized as configSuppressGenericWhenUnlocalized,
+  shouldSuppressGenericForRequestedLocale,
+  shouldSuppressTocBlock,
+} from "@/config/guide-overrides";
+import type { GuideKey } from "@/guides/slugs";
 
 /**
  * Check if GenericContent should be suppressed for a specific guide.
@@ -10,66 +21,55 @@
 export function shouldSuppressGenericForGuide(
   guideKey: string,
   hasStructuredLocalInitial: boolean,
-  hasAnyLocalized: boolean,
+  _hasAnyLocalized: boolean,
 ): boolean {
-  // Luggage storage guide renders its own localized intro/sections
-  // and a simple inline ToC in the article lead.
-  if (guideKey === "luggageStorage" && hasStructuredLocalInitial) {
+  if (shouldSuppressGenericWhenStructured(guideKey) && hasStructuredLocalInitial) {
     return true;
   }
-
-  // 48-hour Positano weekend: this route renders a manual
-  // structured article lead and ToC when localized content is available.
-  if (guideKey === "weekend48Positano" && hasStructuredLocalInitial) {
+  if (shouldSuppressGenericWhenUnstructured(guideKey) && !hasStructuredLocalInitial) {
     return true;
   }
-
-  // Eco-friendly Amalfi: when the active locale lacks structured
-  // arrays, suppress GenericContent entirely.
-  if (guideKey === "ecoFriendlyAmalfi" && !hasStructuredLocalInitial) {
-    return true;
-  }
-
-  // Work cafes: prefer manual sections and coverage links when the
-  // locale lacks structured arrays.
-  if (guideKey === "workCafes" && !hasStructuredLocalInitial) {
-    return true;
-  }
-
   return false;
 }
 
 /**
- * Check if off-season long stay guide specific logic applies.
+ * Check if the guide should suppress StructuredTocBlock rendering.
  */
 export function isOffSeasonLongStayGuide(guideKey: string): boolean {
-  return guideKey === "offSeasonLongStay";
+  return shouldSuppressTocBlock(guideKey);
 }
 
 /**
- * Check if Positano beaches guide specific logic applies.
- */
-export function isPositanoBeachesGuide(guideKey: string): boolean {
-  return guideKey === "positanoBeaches";
-}
-
-/**
- * Check if the guide needs special ToC handling (travelTipsFirstTime).
+ * Check if the guide needs special ToC handling (explicit showToc: true).
  */
 export function needsExplicitTocTrue(guideKey: string): boolean {
-  return guideKey === "travelTipsFirstTime";
+  return getExplicitTocValue(guideKey as GuideKey) === true;
 }
 
 /**
- * Check if the guide needs ToC suppression (etiquetteItalyAmalfi).
+ * Check if the guide needs ToC suppression (explicit showToc: false).
  */
 export function needsExplicitTocFalse(guideKey: string): boolean {
-  return guideKey === "etiquetteItalyAmalfi";
+  return getExplicitTocValue(guideKey as GuideKey) === false;
 }
 
 /**
- * Check if the guide is "whatToPack" which has special runtime content handling.
+ * Check if the guide has runtime-provided content arrays.
  */
 export function isWhatToPackGuide(guideKey: string): boolean {
-  return guideKey === "whatToPack";
+  return hasRuntimeContentFallback(guideKey);
+}
+
+/**
+ * Check if the guide should suppress GenericOrFallbackContent when unlocalized.
+ */
+export function shouldSuppressGenericWhenUnlocalized(guideKey: string): boolean {
+  return configSuppressGenericWhenUnlocalized(guideKey);
+}
+
+/**
+ * Check if the guide should suppress GenericContent for the requested locale.
+ */
+export function shouldSkipGenericForRequestedLocale(guideKey: string): boolean {
+  return shouldSuppressGenericForRequestedLocale(guideKey);
 }

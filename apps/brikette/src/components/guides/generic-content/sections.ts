@@ -27,13 +27,16 @@ export function resolveSections(
   const sectionCounter = new Map<string, number>();
 
   const baseSectionLabel = tocOverrides.labels.get("section");
+  // Legacy data may include fields not in the Section type
+  type LegacySection = Section & { paragraphs?: unknown; list?: unknown; links?: unknown };
   return sections.map((section, index) => {
+    const legacy = section as LegacySection;
     // Derive a stable id while preserving semantics expected by tests:
     // - string ids are used as-is (trimmed)
     // - numeric ids are preserved verbatim (e.g. id: 42 -> "42")
     // - when id is missing but a title exists, generate an id from the title
     //   and include the section in the ToC
-    const val = (section as unknown as { id?: unknown }).id;
+    const val = section.id as unknown;
     const rawId = (() => {
       if (typeof val === 'string') return toTrimmedString(val);
       if (typeof val === 'number' && Number.isFinite(val)) return String(val);
@@ -56,14 +59,12 @@ export function resolveSections(
     const bodyParts: string[] = [];
     const bodyArray = toStringArray(section.body);
     if (bodyArray.length > 0) bodyParts.push(...bodyArray);
-    const paragraphsArray = toStringArray(
-      (section as unknown as { paragraphs?: unknown }).paragraphs,
-    );
+    const paragraphsArray = toStringArray(legacy.paragraphs);
     if (paragraphsArray.length > 0) bodyParts.push(...paragraphsArray);
-    const listArray = toStringArray((section as unknown as { list?: unknown }).list);
+    const listArray = toStringArray(legacy.list);
     if (listArray.length > 0) bodyParts.push(...listArray);
     try {
-      const rawLinks = (section as unknown as { links?: unknown }).links;
+      const rawLinks = legacy.links;
       if (Array.isArray(rawLinks)) {
         const isGuideKeyShape = (val: string): boolean => {
           if (!val || val.length < 2) return false;

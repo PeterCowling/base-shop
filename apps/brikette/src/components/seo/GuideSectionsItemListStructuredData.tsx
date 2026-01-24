@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/GuideSectionsItemListStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 
@@ -22,7 +22,7 @@ function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: P
   const pathname = usePathname() ?? "";
   const { t, ready } = useTranslation("guides", { lng: lang });
 
-  const json = useMemo(() => {
+  const json = (() => {
     if (!ready) return "";
     // Prefer raw structured sections from the translator
     const raw = t(`content.${guideKey}.sections`, { returnObjects: true }) as unknown;
@@ -125,7 +125,7 @@ function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: P
       name: title,
       itemListElement: items,
     });
-  }, [canonicalUrl, guideKey, lang, name, pathname, t, ready]);
+  })();
 
   if (!json) return null;
 

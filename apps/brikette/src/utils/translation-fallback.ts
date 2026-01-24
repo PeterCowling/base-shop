@@ -1,6 +1,8 @@
 // apps/brikette/src/utils/translation-fallback.ts
 // Consolidated translation fallback utilities
 
+import { useMemo } from "react";
+
 import type { TFunction } from "i18next";
 
 import i18n from "@/i18n";
@@ -147,4 +149,36 @@ export function normalizeToSupportedLang(raw: string | undefined): AppLanguage |
   const base = trimmed.split("-")[0];
   if (!base) return undefined;
   return isAppLanguage(base) ? base : undefined;
+}
+
+/**
+ * React hook that memoizes an English fallback translator for a namespace.
+ * Replaces the repeated pattern:
+ * ```
+ * const fallback = useMemo(() => i18n.getFixedT("en", "guides") as TFunction, []);
+ * ```
+ */
+export function useEnglishFallback(namespace: string): TFunction | undefined {
+  return useMemo(() => getEnglishFallbackTranslator(namespace), [namespace]);
+}
+
+/**
+ * Resolve a translation key to a string with an inline fallback.
+ * Replaces the repeated pattern:
+ * ```
+ * (t("key", { defaultValue: "Fallback" }) as string) ?? "Fallback"
+ * ```
+ */
+export function resolveLabel(
+  t: TFunction | ((...args: unknown[]) => unknown) | undefined,
+  key: string,
+  fallback: string
+): string {
+  if (!t) return fallback;
+  try {
+    const value = (t as TFunction)(key, { defaultValue: fallback });
+    return typeof value === "string" && value.length > 0 ? value : fallback;
+  } catch {
+    return fallback;
+  }
 }

@@ -157,7 +157,7 @@ Multiple worktrees on one machine can exhaust resources:
 | `docs/git-safety.md` | 408 | Full git safety guide | **KEEP** as canonical |
 | `docs/git-hooks.md` | 314 | Hook documentation | **KEEP** as canonical |
 | `docs/incident-prevention.md` | 90 | Protection layers summary | **KEEP** as canonical |
-| `docs/RECOVERY-PLAN-2026-01-14.md` | 1841 | Incident details | **KEEP** in place |
+| `docs/historical/RECOVERY-PLAN-2026-01-14.md` | 1841 | Incident details | **KEEP** in place |
 | `docs/plans/` | 27 files | Per-feature plans | **KEEP** — this IS the task state |
 | `docs/historical/plans/` | 3 files | Archived plans | **KEEP** as archive |
 | `.claude/prompts/` | 11 files | Workflow prompts (agent-agnostic) | **EXTEND** with plan/build modes |
@@ -200,7 +200,7 @@ After consolidation, each topic has ONE canonical location:
 |-------|-------------------|-----------------|
 | Git safety rules | `docs/git-safety.md` | AGENTS.md (brief), CLAUDE.md |
 | Git hooks config | `docs/git-hooks.md` | AGENTS.md |
-| Incident details | `docs/RECOVERY-PLAN-2026-01-14.md` | docs/git-safety.md |
+| Incident details | `docs/historical/RECOVERY-PLAN-2026-01-14.md` | docs/git-safety.md |
 | Protection layers | `docs/incident-prevention.md` | AGENTS.md |
 | Testing policy | `docs/testing-policy.md` (NEW) | AGENTS.md (brief), CLAUDE.md, `__tests__/docs/testing.md` |
 | Plan metadata schema | `docs/AGENTS.docs.md` § "Plan docs follow a shared pattern" | AGENTS.md, plan templates |

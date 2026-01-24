@@ -6,6 +6,7 @@ import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useCashCounts } from "../../hooks/useCashCounts";
 import { useKeycardTransfer } from "../../hooks/useKeycardTransfer";
+import { canAccess, Permissions } from "../../lib/roles";
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
@@ -38,7 +39,7 @@ function SafeManagement(): JSX.Element {
     error,
   } = useSafeData();
   const { user } = useAuth();
-  const isPete = user?.user_name.toLowerCase() === "pete";
+  const canOpenSafe = canAccess(user ?? null, Permissions.MANAGEMENT_ACCESS);
   const { count: safeKeycards, updateCount: updateSafeKeycards } =
     useSafeKeycardCount();
   const { addCashCount, recordFloatEntry } = useCashCounts();
@@ -364,7 +365,7 @@ function SafeManagement(): JSX.Element {
         </p>
         <div className="space-y-4">
           <div className="flex gap-2 flex-wrap">
-            {isPete && (
+            {canOpenSafe && (
               <button
                 onClick={() => setShowOpen(true)}
                 className="px-4 py-2 bg-primary-main text-white rounded hover:bg-primary-dark"

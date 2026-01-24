@@ -109,7 +109,7 @@ function ActivityCard({ activity, isLive }: ActivityCardProps) {
 
 export default function ActivitiesClient() {
   const { t } = useTranslation('Activities');
-  const { activities } = useChat();
+  const { activities, hasMoreActivities, loadMoreActivities } = useChat();
 
   // Sort and categorize activities
   const { liveActivities, upcomingActivities } = useMemo(() => {
@@ -184,6 +184,19 @@ export default function ActivitiesClient() {
                   ))}
                 </div>
               </section>
+            )}
+
+            {/* Load more button */}
+            {hasMoreActivities && (
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={loadMoreActivities}
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
+                >
+                  {t('actions.loadMore', 'Load more activities')}
+                </button>
+              </div>
             )}
           </div>
         ) : (

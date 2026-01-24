@@ -271,7 +271,7 @@ function generatePackageJson(themeName: string): string {
       private: true,
       type: 'module',
       version: '0.0.0',
-      files: ['dist', 'src/tokens.css'],
+      files: ['dist', 'tokens.css'],
       main: './dist/src/tailwind-tokens.js',
       module: './dist/src/tailwind-tokens.js',
       types: './dist/src/tailwind-tokens.d.ts',
@@ -286,7 +286,7 @@ function generatePackageJson(themeName: string): string {
           import: './dist/src/tailwind-tokens.js',
           require: './dist/src/tailwind-tokens.js',
         },
-        './tokens.css': './src/tokens.css',
+        './tokens.css': './tokens.css',
       },
       sideEffects: false,
       scripts: {
@@ -525,7 +525,7 @@ export async function generateTheme(
   files.push(indexPath);
 
   // tokens.css
-  const tokensCssPath = path.join(outputPath, 'src', 'tokens.css');
+  const tokensCssPath = path.join(outputPath, 'tokens.css');
   await fs.writeFile(tokensCssPath, generateTokensCssFile(tokens));
   files.push(tokensCssPath);
 

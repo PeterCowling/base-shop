@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 import { median as libMedian, percentile as libPercentile } from "@acme/lib/math/statistics";
 import type { TelemetryEvent } from "@acme/telemetry";
+import { useToast } from "@acme/ui/operations";
 
 import { TelemetryFiltersPanel } from "./TelemetryFiltersPanel";
 import { TelemetryHeader } from "./TelemetryHeader";
@@ -33,22 +33,19 @@ export function TelemetryAnalyticsView({
   onReload,
 }: TelemetryAnalyticsViewProps) {
   const t = useTranslations();
+  const toast = useToast();
   const [filters, setFilters] = useState<TelemetryFilters>({
     name: "",
     start: "",
     end: "",
   });
   const [activePreset, setActivePreset] = useState<string>("all");
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: "",
-  });
 
   useEffect(() => {
     if (error) {
-      setToast({ open: true, message: error });
+      toast.error(error);
     }
-  }, [error]);
+  }, [error, toast]);
 
   const filteredEvents = useMemo(
     () => filterTelemetryEvents(events, filters),
@@ -141,12 +138,9 @@ export function TelemetryAnalyticsView({
     if (!preset) return;
     setActivePreset(presetId);
     setFilters((prev) => ({ ...prev, ...preset.apply() }));
-    setToast({
-      open: true,
-      message: String(
-        t("cms.telemetry.presetApplied", { preset: preset.label }) as string,
-      ),
-    });
+    toast.success(String(
+      t("cms.telemetry.presetApplied", { preset: preset.label }) as string,
+    ));
   }
 
   function handleFiltersChange(partial: Partial<TelemetryFilters>) {
@@ -156,13 +150,6 @@ export function TelemetryAnalyticsView({
 
   return (
     <div className="space-y-6">
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={() => setToast((current) => ({ ...current, open: false }))}
-        role="status"
-        aria-live="assertive"
-      />
       <TelemetryHeader onReload={onReload} />
       <TelemetrySummaryCards metrics={heroMetrics} />
       <TelemetryFiltersPanel

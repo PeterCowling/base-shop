@@ -1,14 +1,7 @@
 {
   "contextFiles": [
-    "CLAUDE.md",
     "AGENTS.md",
-    "README.md",
-    "docs/architecture.md",
-    "docs/development.md",
-    "docs/AGENTS.docs.md",
-    "docs/INDEX_FOR_CLAUDE.md",
-    ".agents/README.md",
-    ".agents/skills/manifest.yaml"
+    "PROJECT_DIGEST.md"
   ],
   "ignorePatterns": [
     "**/.next/**",

@@ -3,18 +3,27 @@
 // so apps and CMS code never reach into internal src/** paths.
 export const version = "0.0.0-dev";
 
+// Core template groups + legal bundles.
+export type {
+  ConsentConfig,
+  LegalBundle,
+  LegalDocument,
+  LegalDocumentSection,
+  VatConfig,
+} from "./corePageTemplates";
 export {
-  // Additional page template groups
   aboutPageTemplates,
   accessibilityPageTemplates,
-  // Core template groups
   checkoutPageTemplates,
+  contactPageTemplates,
   cookiePageTemplates,
   corePageTemplates,
   faqPageTemplates,
+  getRapidLaunchLegalBundles,
   homePageTemplates,
-  // Legal & Compliance templates (LAUNCH-27)
+  legalBundles,
   legalPageTemplates,
+  pickRapidLaunchLegalBundle,
   privacyPageTemplates,
   productPageTemplates,
   returnsPageTemplates,
@@ -31,7 +40,9 @@ export {
   getProviderTemplate,
   getProviderTemplatesByCategory,
   getProviderTemplatesByProvider,
+  getRapidLaunchTemplates,
   paymentProviderTemplates,
+  pickRapidLaunchTemplate,
   type ProviderTemplate,
   providerTemplateSchema,
   shippingProviderTemplates,

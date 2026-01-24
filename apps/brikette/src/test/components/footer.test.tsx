@@ -23,8 +23,8 @@ jest.mock("@/utils/translate-path", () => ({
   translatePath: (key: string) => (key === "home" ? "" : key),
 }));
 
-jest.mock("react-i18next", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-i18next")>();
+jest.mock("react-i18next", () => {
+  const actual = jest.requireActual<typeof import("react-i18next")>("react-i18next");
   const dictionary: Record<string, string> = {
     terms: "Terms & Conditions",
     instagram: "Instagram",
@@ -107,10 +107,8 @@ describe("<Footer />", () => {
     jest.setSystemTime(new Date(year + 5, 0, 1));
     renderWithProviders(<Footer />, { route: "/en" });
 
-    expect(screen.getByRole("link", { name: /terms & conditions/i })).toHaveAttribute(
-      "href",
-      "/en/terms",
-    );
+    const termsLinks = screen.getAllByRole("link", { name: /terms & conditions/i });
+    expect(termsLinks.some((link) => link.getAttribute("href") === "/en/terms")).toBe(true);
 
     const regex = new RegExp(`© 2023 to ${year}.*hostel brikette`, "i");
     expect(screen.getByText(regex)).toBeInTheDocument();

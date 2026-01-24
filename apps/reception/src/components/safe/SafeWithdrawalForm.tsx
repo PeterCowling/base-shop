@@ -1,10 +1,8 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 
-import { useAuth } from "../../context/AuthContext";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -21,7 +19,6 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
   onCancel,
 }: SafeWithdrawalFormProps) {
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
   const submitRef = useRef<(() => void) | undefined>(undefined);
 
   const handleConfirm = async (
@@ -42,18 +39,6 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
     }
   };
 
-  const handlePinSubmit = useCallback(
-    (pin: string): boolean => {
-      const current = getUserByPin(pin);
-      if (!user || !current || current.user_name !== user.user_name) {
-        return false;
-      }
-      submitRef.current?.();
-      return true;
-    },
-    [user]
-  );
-
   return (
     <CashCountingForm
       idPrefix="safeWithdrawal_"
@@ -69,7 +54,10 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
       submitRef={submitRef}
     >
       <div className="mt-5">
-        <PinLoginInline onSubmit={handlePinSubmit} />
+        <PasswordReauthInline
+          onSubmit={() => submitRef.current?.()}
+          submitLabel="Confirm withdrawal"
+        />
         {error && (
           <p className="mt-2 text-error-main" role="alert">
             {error}

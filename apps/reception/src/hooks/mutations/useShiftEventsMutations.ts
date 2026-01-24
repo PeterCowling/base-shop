@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { ShiftEventData } from "../../types/hooks/data/shiftEventData";
 import { getItalyIsoString } from "../../utils/dateUtils";
+import { getStoredShiftId } from "../../utils/shiftId";
 import { showToast } from "../../utils/toastUtils";
 
 /**
@@ -21,7 +22,8 @@ export function useShiftEventsMutations() {
       action: ShiftEventData["action"],
       cashCount: number,
       keycardCount: number,
-      difference?: number
+      difference?: number,
+      shiftId?: string
     ): Promise<void> => {
       if (!user) {
         console.error("No user is logged in; cannot add shift event.");
@@ -37,6 +39,7 @@ export function useShiftEventsMutations() {
           cashCount,
           keycardCount,
           difference,
+          shiftId: shiftId ?? getStoredShiftId() ?? undefined,
         } as ShiftEventData);
       } catch (error) {
         console.error("Error writing shift event:", error);
@@ -48,4 +51,3 @@ export function useShiftEventsMutations() {
 
   return useMemo(() => ({ addShiftEvent }), [addShiftEvent]);
 }
-

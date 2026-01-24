@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useFirebaseDatabase } from "../services/useFirebase";
 import type { KeycardTransfer } from "../types/hooks/data/keycardTransferData";
 import { getItalyIsoString } from "../utils/dateUtils";
+import { getStoredShiftId } from "../utils/shiftId";
 
 export function useKeycardTransfer() {
   const database = useFirebaseDatabase();
@@ -21,6 +22,7 @@ export function useKeycardTransfer() {
         timestamp: getItalyIsoString(),
         count,
         direction,
+        shiftId: getStoredShiftId() ?? undefined,
       };
       await set(newRef, data);
     },

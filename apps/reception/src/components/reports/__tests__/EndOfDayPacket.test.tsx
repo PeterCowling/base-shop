@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 
+import { DISCREPANCY_LIMIT } from "../../../constants/cash";
 import type { CardIrregularity } from "../../../types/hooks/data/cardIrregularityData";
 import type { KeycardDiscrepancy } from "../../../types/hooks/data/keycardDiscrepancyData";
 import type { SafeCount } from "../../../types/hooks/data/safeCountData";
@@ -18,7 +19,9 @@ const toastMock = showToast as unknown as jest.Mock;
 const mockUseEndOfDayReportData = jest.fn();
 const mockTillDataProvider = jest.fn();
 const mockSafeDataProvider = jest.fn();
-let getMock: jest.Mock;
+const mockUseTillShiftsRange = jest.fn();
+const mockUseVarianceThresholds = jest.fn();
+const getMock = jest.fn();
 
 const openingSnap = {
   exists: () => true,
@@ -32,6 +35,17 @@ const resetSnap = {
   exists: () => true,
   val: () => ({ id1: { type: "safeReset" } }),
 };
+
+async function renderEndOfDayPacket(element: ReactElement) {
+  let result: ReturnType<typeof render> | undefined;
+  await act(async () => {
+    result = render(element);
+  });
+  if (!result) {
+    throw new Error("Failed to render EndOfDayPacket");
+  }
+  return result;
+}
 
 jest.mock("../../../context/TillDataContext", () => ({
   TillDataProvider: ({
@@ -66,7 +80,6 @@ jest.mock("../../../services/useFirebase", () => ({
 }));
 
 jest.mock("firebase/database", () => {
-  getMock = jest.fn();
   return {
     ref: jest.fn((db: unknown, path: string) => ({ path })),
     query: jest.fn((refObj: unknown, ...rest: unknown[]) => ({ ref: refObj, rest })),
@@ -79,6 +92,14 @@ jest.mock("firebase/database", () => {
 
 jest.mock("../../../hooks/data/useEndOfDayReportData", () => ({
   useEndOfDayReportData: (date: Date) => mockUseEndOfDayReportData(date),
+}));
+
+jest.mock("../../../hooks/data/till/useTillShiftsRange", () => ({
+  useTillShiftsRange: (params: unknown) => mockUseTillShiftsRange(params),
+}));
+
+jest.mock("../../../hooks/data/useVarianceThresholds", () => ({
+  useVarianceThresholds: () => mockUseVarianceThresholds(),
 }));
 
 const baseReturn = {
@@ -129,6 +150,13 @@ const baseReturn = {
   safeVariance: 0,
   safeVarianceMismatch: false,
   safeInflowsMismatch: false,
+  correctionSummary: {
+    total: 0,
+    netAmount: 0,
+    reversalCount: 0,
+    replacementCount: 0,
+    adjustmentCount: 0,
+  },
 };
 
 beforeEach(() => {
@@ -136,6 +164,18 @@ beforeEach(() => {
   mockUseEndOfDayReportData.mockClear();
   mockTillDataProvider.mockClear();
   mockSafeDataProvider.mockClear();
+  mockUseTillShiftsRange.mockClear();
+  mockUseVarianceThresholds.mockClear();
+  mockUseTillShiftsRange.mockReturnValue({
+    shifts: [],
+    loading: false,
+    error: null,
+  });
+  mockUseVarianceThresholds.mockReturnValue({
+    thresholds: { cash: DISCREPANCY_LIMIT },
+    loading: false,
+    error: null,
+  });
   getMock.mockReset();
   toastMock.mockReset();
 });
@@ -191,6 +231,23 @@ describe("EndOfDayPacketContent", () => {
     expect(screen.getByText("Cash:").parentElement?.textContent).toContain("€30.00");
     expect(screen.getByText("Card:").parentElement?.textContent).toContain("€40.00");
     expect(screen.getByText("Other:").parentElement?.textContent).toContain("€50.00");
+  });
+
+  it("renders correction summary when corrections exist", () => {
+    mockUseEndOfDayReportData.mockReturnValue({
+      ...baseReturn,
+      correctionSummary: {
+        total: 2,
+        netAmount: -5,
+        reversalCount: 1,
+        replacementCount: 1,
+        adjustmentCount: 0,
+      },
+    });
+    render(<EndOfDayPacketContent date={new Date("2024-01-01T00:00:00Z")} />);
+    expect(screen.getByText("Corrections")).toBeInTheDocument();
+    expect(screen.getByText(/Entries:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Net impact:/i)).toBeInTheDocument();
   });
 
   it("renders keycard discrepancies with totals", () => {
@@ -294,6 +351,35 @@ describe("EndOfDayPacketContent", () => {
     expect(screen.getByText("bob")).toBeInTheDocument();
   });
 
+  it("shows pending variance sign-offs", () => {
+    mockUseTillShiftsRange.mockReturnValue({
+      shifts: [
+        {
+          shiftId: "shift-1",
+          openedAt: "2024-01-01T08:00:00Z",
+          openedBy: "Alice",
+          closedAt: "2024-01-01T12:00:00Z",
+          closedBy: "Alice",
+          closeDifference: 20,
+          closeType: "close",
+        },
+      ],
+      loading: false,
+      error: null,
+    });
+    mockUseVarianceThresholds.mockReturnValue({
+      thresholds: { cash: 5 },
+      loading: false,
+      error: null,
+    });
+
+    render(<EndOfDayPacketContent date={new Date("2024-01-01T00:00:00Z")} />);
+
+    expect(screen.getByText("Variance Sign-offs")).toBeInTheDocument();
+    expect(screen.getByText("shift-1")).toBeInTheDocument();
+    expect(screen.getByText("20")).toBeInTheDocument();
+  });
+
   it("renders safe resets section", () => {
     mockUseEndOfDayReportData.mockReturnValue({
       ...baseReturn,
@@ -366,7 +452,7 @@ describe("EndOfDayPacket", () => {
   it("passes Italian date range to providers", async () => {
     getMock.mockImplementation(async () => openingSnap);
     const date = new Date("2024-02-10T12:00:00Z");
-    render(<EndOfDayPacket date={date} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     expect(mockTillDataProvider.mock.calls[0][0].reportDate).toBe(date);
 
@@ -385,7 +471,7 @@ describe("EndOfDayPacket", () => {
   it("uses correct range on DST start", async () => {
     getMock.mockImplementation(async () => openingSnap);
     const date = new Date("2024-03-31T12:00:00Z");
-    render(<EndOfDayPacket date={date} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     const safeProps = mockSafeDataProvider.mock.calls[0][0];
     const italyDate = getItalyIsoString(date).slice(0, 10);
@@ -399,7 +485,7 @@ describe("EndOfDayPacket", () => {
   it("uses correct range on DST end", async () => {
     getMock.mockImplementation(async () => openingSnap);
     const date = new Date("2024-10-27T12:00:00Z");
-    render(<EndOfDayPacket date={date} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     const safeProps = mockSafeDataProvider.mock.calls[0][0];
     const italyDate = getItalyIsoString(date).slice(0, 10);
@@ -413,7 +499,7 @@ describe("EndOfDayPacket", () => {
   it("allows custom safe lookback period", async () => {
     getMock.mockImplementation(async () => openingSnap);
     const date = new Date("2024-02-10T12:00:00Z");
-    render(<EndOfDayPacket date={date} safeLookbackDays={3} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} safeLookbackDays={3} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     const safeProps = mockSafeDataProvider.mock.calls[0][0];
     const customLookback = new Date(date.getTime() - 3 * dayMs);
@@ -428,7 +514,7 @@ describe("EndOfDayPacket", () => {
       .mockImplementationOnce(async () => openingSnap)
       .mockImplementation(async () => openingSnap);
     const date = new Date("2024-02-10T12:00:00Z");
-    render(<EndOfDayPacket date={date} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     const safeProps = mockSafeDataProvider.mock.calls[0][0];
     const lookback = new Date(date.getTime() - 14 * dayMs);
@@ -444,7 +530,7 @@ describe("EndOfDayPacket", () => {
       .mockImplementationOnce(async () => resetSnap)
       .mockImplementation(async () => resetSnap);
     const date = new Date("2024-02-10T12:00:00Z");
-    render(<EndOfDayPacket date={date} />);
+    await renderEndOfDayPacket(<EndOfDayPacket date={date} />);
     await waitFor(() => expect(mockSafeDataProvider).toHaveBeenCalled());
     const safeProps = mockSafeDataProvider.mock.calls[0][0];
     const lookback = new Date(date.getTime() - 28 * dayMs);
@@ -455,7 +541,7 @@ describe("EndOfDayPacket", () => {
 
   it("does not recompute data on parent re-render", async () => {
     getMock.mockResolvedValue(openingSnap);
-    const { rerender } = render(<EndOfDayPacket />);
+    const { rerender } = await renderEndOfDayPacket(<EndOfDayPacket />);
     await waitFor(() => expect(mockUseEndOfDayReportData).toHaveBeenCalledTimes(1));
     act(() => {
       rerender(<EndOfDayPacket />);
@@ -467,7 +553,7 @@ describe("EndOfDayPacket", () => {
     getMock.mockRejectedValue(new Error("fail"));
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
     try {
-      render(<EndOfDayPacket />);
+      await renderEndOfDayPacket(<EndOfDayPacket />);
       await waitFor(() =>
         expect(toastMock).toHaveBeenCalledWith(
           "Failed to load safe data for report",
@@ -490,7 +576,7 @@ describe("SafeTableSection", () => {
       { user: "u1", timestamp: "2024-01-01T10:00:00Z", type: "deposit" },
       { user: "u2", timestamp: "2024-01-01T10:00:00Z", type: "withdrawal" },
     ];
-    const spy = vi
+    const spy = jest
       .spyOn(console, "error")
       .mockImplementation(() => undefined);
 

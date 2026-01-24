@@ -7,7 +7,9 @@ import useAllTransactions from "../../../../../hooks/mutations/useAllTransaction
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
 import { type SalesOrder, type SalesOrderItem } from "../../../../../types/bar/BarTypes";
 import { generateTransactionId } from "../../../../../utils/generateTransactionId";
-import useIngredients from "../../../../data/inventory/useIngredients";
+import useInventoryItems from "../../../../data/inventory/useInventoryItems";
+import useInventoryRecipes from "../../../../data/inventory/useInventoryRecipes";
+import { useInventoryLedgerMutations } from "../../../../mutations/useInventoryLedgerMutations";
 
 interface BarOrderItem {
   product: string;
@@ -43,11 +45,74 @@ export function useConfirmOrder(props: UseConfirmOrderProps) {
   const [removingItem, setRemovingItem] = useState<string | null>(null);
 
   const database = useFirebaseDatabase();
-  const { decrementIngredient } = useIngredients();
+  const { items, itemsById } = useInventoryItems();
+  const { recipes } = useInventoryRecipes();
+  const { addLedgerEntry } = useInventoryLedgerMutations();
   const { addToAllTransactions } = useAllTransactions();
   const orderRef = useMemo(
     () => ref(database, "barOrders/unconfirmed"),
     [database]
+  );
+
+  const recordIngredientUsage = useCallback(
+    async (saleItems: SalesOrderItem[], txnId: string): Promise<void> => {
+      const missingProducts: string[] = [];
+      const missingRecipes: string[] = [];
+      const missingIngredients: string[] = [];
+
+      for (const itm of saleItems) {
+        const productName = itm.product;
+        const productItem = items.find(
+          (entry) =>
+            entry.name.toLowerCase() === productName.toLowerCase() &&
+            (entry.category ?? "").toLowerCase() !== "ingredient"
+        );
+
+        if (!productItem?.id) {
+          missingProducts.push(productName);
+          continue;
+        }
+
+        const recipe = recipes[productItem.id];
+        if (!recipe) {
+          missingRecipes.push(productName);
+          continue;
+        }
+
+        for (const [ingredientId, quantityPerUnit] of Object.entries(
+          recipe.items
+        )) {
+          const ingredient = itemsById[ingredientId];
+          if (!ingredient) {
+            missingIngredients.push(ingredientId);
+            continue;
+          }
+          const qty = Math.abs(quantityPerUnit) * (itm.count ?? 1);
+          if (!qty) continue;
+          await addLedgerEntry({
+            itemId: ingredientId,
+            type: "sale",
+            quantity: -qty,
+            reference: `${txnId}:${productName}`,
+            unit: ingredient.unit,
+            note: "bar sale",
+          });
+        }
+      }
+
+      if (
+        missingProducts.length > 0 ||
+        missingRecipes.length > 0 ||
+        missingIngredients.length > 0
+      ) {
+        console.warn("Missing recipe mappings", {
+          missingProducts,
+          missingRecipes,
+          missingIngredients,
+        });
+      }
+    },
+    [addLedgerEntry, items, itemsById, recipes]
   );
 
   /**
@@ -103,10 +168,8 @@ export function useConfirmOrder(props: UseConfirmOrderProps) {
         // 4) Remove unconfirmed (entire node)
         await remove(orderRef);
 
-        // Update ingredient stock levels
-        for (const itm of finalItems) {
-          await decrementIngredient(itm.product, itm.count);
-        }
+        // Update ingredient stock levels via recipes
+        await recordIngredientUsage(finalItems, txnId);
 
         // 5) Log each item in /allFinancialTransactions
         for (let i = 0; i < finalItems.length; i++) {
@@ -138,7 +201,7 @@ export function useConfirmOrder(props: UseConfirmOrderProps) {
       database,
       addToAllTransactions,
       getCategoryTypeByProductName,
-      decrementIngredient,
+      recordIngredientUsage,
     ]
   );
 
@@ -192,10 +255,8 @@ export function useConfirmOrder(props: UseConfirmOrderProps) {
         // Write the sale to the final path
         await set(newOrderRef, finalOrder);
 
-        // Update ingredient stock levels
-        for (const itm of finalItems) {
-          await decrementIngredient(itm.product, itm.count);
-        }
+        // Update ingredient stock levels via recipes
+        await recordIngredientUsage(finalItems, txnId);
 
         // Log each item in /allFinancialTransactions
         for (let i = 0; i < finalItems.length; i++) {
@@ -228,7 +289,7 @@ export function useConfirmOrder(props: UseConfirmOrderProps) {
       database,
       addToAllTransactions,
       getCategoryTypeByProductName,
-      decrementIngredient,
+      recordIngredientUsage,
     ]
   );
 

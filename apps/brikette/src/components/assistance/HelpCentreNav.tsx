@@ -1,7 +1,7 @@
 /* file path: src/components/assistance/HelpCentreNav.tsx */
 /* Desktop drawer – visible from ≥ lg (1024 px) */
 
-import { memo, type ReactNode, useCallback, useMemo } from "react";
+import { memo, type ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -58,13 +58,13 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
   const pathname = usePathname();
   const { t, i18n } = useTranslation("assistanceCommon", { lng: lang });
 
-  const fallbackT = useMemo(() => {
+  const fallbackT = (() => {
     try {
       return i18n.getFixedT("en", "assistanceCommon");
     } catch {
       return null;
     }
-  }, [i18n]);
+  })();
 
   const translate = useCallback(
     (key: string, fallback: () => string): string => {
@@ -85,28 +85,21 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
 
   const openLabel = translate("openSidebar", () => defaultLabel("openSidebar"));
   const closeLabel = translate("closeSidebar", () => defaultLabel("closeSidebar"));
-  const sidebarLabel = useMemo(
-    () => translate("sidebarLabel", () => defaultLabel("sidebarLabel")),
-    [translate],
-  );
+  const sidebarLabel = translate("sidebarLabel", () => defaultLabel("sidebarLabel"));
 
-  const items = useMemo(() => {
-    const root = `/${lang}/${getSlug("assistance", lang)}`;
+  const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-    type AssistanceModule = typeof assistance;
-    const keys: readonly HelpArticleKey[] =
-      ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-    const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-    const articles = keys.map((key) => ({
-      key,
-      label: translate(`nav.${key}`, () => defaultLabel(key)),
-      href: `${root}/${toSlug ? toSlug(lang, key) : String(key)}`,
-      icon: ICONS[key],
-      isActive: currentKey === key,
-    }));
-
-    return articles;
-  }, [currentKey, lang, translate]);
+  type AssistanceModule = typeof assistance;
+  const keys: readonly HelpArticleKey[] =
+    ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
+  const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
+  const items = keys.map((key) => ({
+    key,
+    label: translate(`nav.${key}`, () => defaultLabel(key)),
+    href: `${root}/${toSlug ? toSlug(lang, key) : String(key)}`,
+    icon: ICONS[key],
+    isActive: currentKey === key,
+  }));
 
   const linkClasses = useCallback(
     (highlighted: boolean): string =>

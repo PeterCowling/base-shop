@@ -77,17 +77,129 @@ export interface CommentsThreadDetailsProps {
   shop: string;
 }
 
-export default function CommentsThreadDetails({
-  thread,
-  people,
-  onToggleResolved,
-  onAssign,
-  onAddMessage,
-  onDelete,
-  onJumpTo,
-  shop,
-}: CommentsThreadDetailsProps) {
+function EmptyThreadState() {
+  return (
+    <div className="hidden h-full w-full items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
+      <div>
+        <div className="mb-2 text-base font-medium">{t("Select a thread")}</div>
+        <div>{t("Choose a comment from the list to view details.")}</div>
+      </div>
+    </div>
+  );
+}
+
+interface ThreadHeaderProps {
+  thread: CommentThread;
+  onToggleResolved: (id: string, resolved: boolean) => Promise<void> | void;
+  onDelete?: (id: string) => Promise<void> | void;
+  onJumpTo?: (componentId: string) => void;
+}
+
+function ThreadHeader({ thread, onToggleResolved, onDelete, onJumpTo }: ThreadHeaderProps) {
+  return (
+    <div className="flex items-center gap-2 border-b p-3">
+      <div className="flex-1 min-w-0 truncate text-sm">
+        <span className="text-muted-foreground">{t("Component:")}</span>{" "}
+        <code className="text-xs">{thread.componentId}</code>
+      </div>
+      {onJumpTo && (
+        <Button
+          variant="outline"
+          className="px-3 text-xs min-h-11 min-w-11"
+          onClick={() => onJumpTo(thread.componentId)}
+        >
+          {t("Jump")}
+        </Button>
+      )}
+      {onDelete && (
+        <Button
+          variant="outline"
+          className="px-3 text-xs min-h-11 min-w-11"
+          onClick={async () => {
+            if (confirm(t("Delete this thread?"))) {
+              await onDelete(thread.id);
+            }
+          }}
+        >
+          {t("Delete")}
+        </Button>
+      )}
+      <label className="ms-1 flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={thread.resolved}
+          onChange={(e) => onToggleResolved(thread.id, e.target.checked)}
+        />
+        {t("Resolved")}
+      </label>
+    </div>
+  );
+}
+
+interface AssignInputProps {
+  threadId: string;
+  people: string[];
+  onAssign: (id: string, assignee: string | null) => Promise<void> | void;
+}
+
+function AssignInput({ threadId, people, onAssign }: AssignInputProps) {
   const [assignTo, setAssignTo] = useState("");
+  return (
+    <Inline gap={2} className="border-b p-2">
+      {/* i18n-exempt */}
+      {(() => {
+        const LIST_ID = "comment-people" as const;
+        return (
+          <>
+            <Input
+              /* i18n-exempt */
+              placeholder={t("Assign to (name or email)")}
+              className="h-8 text-sm"
+              value={assignTo}
+              onChange={(e) => setAssignTo(e.target.value)}
+              onBlur={() => void onAssign(threadId, assignTo || null)}
+              list={LIST_ID}
+            />
+            <datalist id={LIST_ID}>
+              {people.map((p) => (
+                <option key={p} value={p} />
+              ))}
+            </datalist>
+          </>
+        );
+      })()}
+    </Inline>
+  );
+}
+
+interface ThreadMessagesProps {
+  thread: CommentThread;
+}
+
+function ThreadMessages({ thread }: ThreadMessagesProps) {
+  return (
+    <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
+      {thread.messages.map((m) => (
+        <div key={m.id} className="rounded border p-2">
+          <div className="mb-1 text-xs text-muted-foreground">{formatTime(m.ts)}</div>
+          <div className="break-words">{renderMessage(m.text)}</div>
+        </div>
+      ))}
+      {thread.messages.length === 0 && (
+        <div className="text-muted-foreground">{t("No messages")}</div>
+      )}
+    </div>
+  );
+}
+
+interface ThreadComposerProps {
+  threadId: string;
+  people: string[];
+  shop: string;
+  onAddMessage: (id: string, text: string) => Promise<void> | void;
+}
+
+function ThreadComposer({ threadId, people, shop, onAddMessage }: ThreadComposerProps) {
   const [draft, setDraft] = useState("");
   const [mentionOpen, setMentionOpen] = useState(false);
   const [mentionQuery, setMentionQuery] = useState("");
@@ -99,17 +211,6 @@ export default function CommentsThreadDetails({
   }, [mentionOpen, mentionQuery, people]);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
-
-  if (!thread) {
-    return (
-      <div className="hidden h-full w-full items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
-        <div>
-          <div className="mb-2 text-base font-medium">{t("Select a thread")}</div>
-          <div>{t("Choose a comment from the list to view details.")}</div>
-        </div>
-      </div>
-    );
-  }
 
   function handleDraftChange(value: string) {
     setDraft(value);
@@ -191,116 +292,95 @@ export default function CommentsThreadDetails({
     }
   }
 
-  const thr = thread as CommentThread;
-
   async function handleSend() {
     if (!draft.trim()) return;
-    await onAddMessage(thr.id, draft.trim());
+    await onAddMessage(threadId, draft.trim());
     setDraft("");
   }
+
   return (
-    <div className="hidden h-full w-full flex-col md:flex">
-      <div className="flex items-center gap-2 border-b p-3">
-        <div className="flex-1 min-w-0 truncate text-sm">
-          <span className="text-muted-foreground">{t("Component:")}</span> <code className="text-xs">{thr.componentId}</code>
-        </div>
-        {onJumpTo && (
-          <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => onJumpTo(thr.componentId)}>
-            {t("Jump")}
-          </Button>
-        )}
-        {onDelete && (
-          <Button
-            variant="outline"
-            className="px-3 text-xs min-h-10 min-w-10"
-            onClick={async () => {
-              if (confirm(t("Delete this thread?"))) {
-                await onDelete(thr.id);
-              }
-            }}
-          >
-            {t("Delete")}
-          </Button>
-        )}
-        <label className="ms-1 flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={thr.resolved} onChange={(e) => onToggleResolved(thr.id, e.target.checked)} />
-          {t("Resolved")}
-        </label>
-      </div>
-      <Inline gap={2} className="border-b p-2">
-        {/* i18n-exempt */}
-        {(() => { const LIST_ID = "comment-people" as const; return (<>
-        <Input
-          /* i18n-exempt */
-          placeholder={t("Assign to (name or email)")}
-          className="h-8 text-sm"
-          value={assignTo}
-          onChange={(e) => setAssignTo(e.target.value)}
-          onBlur={() => void onAssign(thr.id, assignTo || null)}
-          list={LIST_ID}
+    <div className="border-t p-2">
+      <div className="relative">
+        <Textarea
+          placeholder={uploading ? t("Uploading image...") : t("Reply (type @ to mention, paste image to attach)")}
+          value={draft}
+          onChange={(e) => handleDraftChange(e.target.value)}
+          onPaste={onPaste}
+          onKeyDown={onKeyDown}
+          disabled={uploading}
+          className="min-h-20 pr-24"
         />
-        <datalist id={LIST_ID}>
-          {people.map((p) => (
-            <option key={p} value={p} />
-          ))}
-        </datalist>
-        </>); })()}
-      </Inline>
-      <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
-        {thr.messages.map((m) => (
-          <div key={m.id} className="rounded border p-2">
-            <div className="mb-1 text-xs text-muted-foreground">{formatTime(m.ts)}</div>
-            <div className="break-words">{renderMessage(m.text)}</div>
+        {mentionOpen && mentionMatches.length > 0 && (
+          <div className="absolute bottom-2 start-2 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
+            {mentionMatches.map((p, idx) => (
+              <button
+                key={p}
+                type="button"
+                className={`w-full cursor-pointer px-2 py-1 text-left hover:bg-surface-3 ${idx === mentionIndex ? "bg-surface-3" : ""}`}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
+                onClick={() => {
+                  insertMention(p);
+                }}
+              >
+                @{p}
+              </button>
+            ))}
           </div>
-        ))}
-        {thr.messages.length === 0 && (
-          <div className="text-muted-foreground">{t("No messages")}</div>
         )}
-      </div>
-      <div className="border-t p-2">
-        <div className="relative">
-          <Textarea
-            placeholder={uploading ? t("Uploading image...") : t("Reply (type @ to mention, paste image to attach)")}
-            value={draft}
-            onChange={(e) => handleDraftChange(e.target.value)}
-            onPaste={onPaste}
-            onKeyDown={onKeyDown}
-            disabled={uploading}
-            className="min-h-20 pr-24"
-          />
-          {mentionOpen && mentionMatches.length > 0 && (
-            <div className="absolute bottom-2 start-2 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
-              {mentionMatches.map((p, idx) => (
-                <button
-                  key={p}
-                  type="button"
-                  className={`w-full cursor-pointer px-2 py-1 text-left hover:bg-surface-3 ${idx === mentionIndex ? "bg-surface-3" : ""}`}
-                  onMouseDown={(e) => {
-                    // Prevent textarea blur before click fires
-                    e.preventDefault();
-                  }}
-                  onClick={() => {
-                    insertMention(p);
-                  }}
-                >
-                  @{p}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="pointer-events-none absolute end-2 top-2 flex gap-2">
-            <div className="pointer-events-auto">
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files && e.target.files[0] && void uploadScreenshot(e.target.files[0])} />
-              <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => fileRef.current?.click()}>
-                {t("Attach")}
-              </Button>
-            </div>
-            <Button variant="default" className="px-3 text-xs min-h-10 min-w-10" onClick={() => void handleSend()} disabled={!draft.trim()}>
-              {t("Send")}
+        <div className="pointer-events-none absolute end-2 top-2 flex gap-2">
+          <div className="pointer-events-auto">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => e.target.files && e.target.files[0] && void uploadScreenshot(e.target.files[0])}
+            />
+            <Button variant="outline" className="px-3 text-xs min-h-11 min-w-11" onClick={() => fileRef.current?.click()}>
+              {t("Attach")}
             </Button>
           </div>
+          <Button
+            variant="default"
+            className="px-3 text-xs min-h-11 min-w-11"
+            onClick={() => void handleSend()}
+            disabled={!draft.trim()}
+          >
+            {t("Send")}
+          </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+export default function CommentsThreadDetails({
+  thread,
+  people,
+  onToggleResolved,
+  onAssign,
+  onAddMessage,
+  onDelete,
+  onJumpTo,
+  shop,
+}: CommentsThreadDetailsProps) {
+  if (!thread) {
+    return <EmptyThreadState />;
+  }
+
+  return (
+    <div className="hidden h-full w-full flex-col md:flex">
+      <ThreadHeader
+        thread={thread}
+        onToggleResolved={onToggleResolved}
+        onDelete={onDelete}
+        onJumpTo={onJumpTo}
+      />
+      <AssignInput threadId={thread.id} people={people} onAssign={onAssign} />
+      <ThreadMessages thread={thread} />
+      <ThreadComposer threadId={thread.id} people={people} shop={shop} onAddMessage={onAddMessage} />
     </div>
   );
 }

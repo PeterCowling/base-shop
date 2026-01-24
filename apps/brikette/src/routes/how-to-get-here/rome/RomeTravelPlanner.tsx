@@ -1,4 +1,4 @@
-import { memo, useCallback, useId, useMemo, useState } from "react";
+import { memo, useCallback, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -89,13 +89,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
   const directionLabelId = useId();
 
   const { routes, top } = useRomeRouteFilter({ direction, selected });
-  const visibleRoutes = useMemo(() => {
-    if (!top) {
-      return routes;
-    }
-
-    return routes.filter((route) => route.id !== top.route.id);
-  }, [routes, top]);
+  const visibleRoutes = !top ? routes : routes.filter((route) => route.id !== top.route.id);
   const isFromRome = direction === "from-rome";
 
   return (

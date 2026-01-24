@@ -1,5 +1,4 @@
 "use client";
 
-export { default } from "./editable-canvas/EditableCanvas";
-export type { Props } from "./editable-canvas/types";
-
+export type { Props } from "@acme/ui/components/cms/page-builder/EditableCanvas";
+export { default } from "@acme/ui/components/cms/page-builder/EditableCanvas";

@@ -44,44 +44,46 @@ const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <SafeDataProvider>{children}</SafeDataProvider>
 );
 
-describe("useEndOfDayReportData", () => {
-  beforeEach(() => {
-    mockUseTillData.mockReturnValue({
-      transactions: [],
-      cashCounts: [],
-      creditSlips: [],
-      loading: false,
-      error: null,
-    });
-    mockUseCashDiscrepanciesData.mockReturnValue({
-      cashDiscrepancies: [] as CashDiscrepancy[],
-      loading: false,
-      error: null,
-    });
-    mockUseKeycardDiscrepanciesData.mockReturnValue({
-      keycardDiscrepancies: [] as KeycardDiscrepancy[],
-      loading: false,
-      error: null,
-    });
-    mockUseCCIrregularitiesData.mockReturnValue({
-      ccIrregularities: [] as CardIrregularity[],
-      loading: false,
-      error: null,
-    });
-    mockUseKeycardTransfersData.mockReturnValue({
-      transfers: [],
-      loading: false,
-      error: null,
-    });
-    mockUseSafeLogic.mockReturnValue({
-      safeCounts: [],
-      getSafeBalanceAt: mockGetSafeBalanceAt,
-      loading: false,
-      error: null,
-    });
-    mockGetSafeBalanceAt.mockReset();
-    mockGetSafeBalanceAt.mockReturnValue(0);
+const setupDefaultMocks = () => {
+  mockUseTillData.mockReturnValue({
+    transactions: [],
+    cashCounts: [],
+    creditSlips: [],
+    loading: false,
+    error: null,
   });
+  mockUseCashDiscrepanciesData.mockReturnValue({
+    cashDiscrepancies: [] as CashDiscrepancy[],
+    loading: false,
+    error: null,
+  });
+  mockUseKeycardDiscrepanciesData.mockReturnValue({
+    keycardDiscrepancies: [] as KeycardDiscrepancy[],
+    loading: false,
+    error: null,
+  });
+  mockUseCCIrregularitiesData.mockReturnValue({
+    ccIrregularities: [] as CardIrregularity[],
+    loading: false,
+    error: null,
+  });
+  mockUseKeycardTransfersData.mockReturnValue({
+    transfers: [],
+    loading: false,
+    error: null,
+  });
+  mockUseSafeLogic.mockReturnValue({
+    safeCounts: [],
+    getSafeBalanceAt: mockGetSafeBalanceAt,
+    loading: false,
+    error: null,
+  });
+  mockGetSafeBalanceAt.mockReset();
+  mockGetSafeBalanceAt.mockReturnValue(0);
+};
+
+describe("useEndOfDayReportData - cash", () => {
+  beforeEach(setupDefaultMocks);
 
   it("calculates expected closing cash and variance", () => {
     mockUseTillData.mockReturnValue({
@@ -120,7 +122,7 @@ describe("useEndOfDayReportData", () => {
         {
           user: "u",
           timestamp: "2024-01-01T10:30:01Z",
-          type: "floatEntry",
+          type: "float",
           amount: 20,
         },
         {
@@ -132,7 +134,7 @@ describe("useEndOfDayReportData", () => {
         {
           user: "u",
           timestamp: "2024-01-01T12:30:01Z",
-          type: "floatEntry",
+          type: "float",
           amount: 30,
         },
         { user: "u", timestamp: "2024-01-01T22:00:00Z", type: "close", count: 100 },
@@ -222,6 +224,139 @@ describe("useEndOfDayReportData", () => {
     expect(result.current.totals.cash).toBe(30);
     expect(result.current.totals.card).toBe(70);
     expect(result.current.totals.other).toBe(50);
+  });
+
+  it("excludes voided transactions from totals", () => {
+    mockUseTillData.mockReturnValue({
+      transactions: [
+        { method: "cash", amount: 10, timestamp: "2024-01-01T10:00:00Z" },
+        {
+          method: "cash",
+          amount: 25,
+          timestamp: "2024-01-01T11:00:00Z",
+          voidedAt: "2024-01-01T11:05:00Z",
+          voidReason: "Mistake",
+        },
+        {
+          method: "card",
+          amount: 30,
+          timestamp: "2024-01-01T12:00:00Z",
+          voidedBy: "u",
+        },
+        { method: "voucher", amount: 40, timestamp: "2024-01-01T13:00:00Z" },
+      ],
+      cashCounts: [],
+      creditSlips: [],
+      loading: false,
+      error: null,
+    });
+
+    const { result } = renderHook(() =>
+      useEndOfDayReportData(new Date("2024-01-01T00:00:00Z")),
+      { wrapper }
+    );
+
+    expect(result.current.totals.cash).toBe(10);
+    expect(result.current.totals.card).toBe(0);
+    expect(result.current.totals.other).toBe(40);
+  });
+
+  it("summarizes corrections for the report date", () => {
+    mockUseTillData.mockReturnValue({
+      transactions: [
+        {
+          amount: -10,
+          timestamp: "2024-01-01T09:00:00Z",
+          correctionKind: "reversal",
+          sourceTxnId: "txn-1",
+        },
+        {
+          amount: 12,
+          timestamp: "2024-01-01T09:05:00Z",
+          correctionKind: "replacement",
+          sourceTxnId: "txn-1",
+        },
+        {
+          amount: -2,
+          timestamp: "2024-01-01T09:10:00Z",
+          correctionKind: "adjustment",
+          sourceTxnId: "txn-2",
+        },
+        {
+          amount: 5,
+          timestamp: "2024-01-02T09:10:00Z",
+          correctionKind: "replacement",
+          sourceTxnId: "txn-3",
+        },
+        {
+          amount: 7,
+          timestamp: "2024-01-01T09:20:00Z",
+          correctionKind: "replacement",
+          sourceTxnId: "txn-4",
+          voidedAt: "2024-01-01T09:21:00Z",
+        },
+      ],
+      cashCounts: [],
+      creditSlips: [],
+      loading: false,
+      error: null,
+    });
+
+    const { result } = renderHook(() =>
+      useEndOfDayReportData(new Date("2024-01-01T00:00:00Z")),
+      { wrapper }
+    );
+
+    expect(result.current.correctionSummary.total).toBe(3);
+    expect(result.current.correctionSummary.netAmount).toBe(0);
+    expect(result.current.correctionSummary.reversalCount).toBe(1);
+    expect(result.current.correctionSummary.replacementCount).toBe(1);
+    expect(result.current.correctionSummary.adjustmentCount).toBe(1);
+  });
+
+  it("ignores voided keycard loans in expected keycards", () => {
+    mockUseTillData.mockReturnValue({
+      transactions: [
+        {
+          type: "Loan",
+          isKeycard: true,
+          count: 1,
+          timestamp: "2024-01-01T10:00:00Z",
+        },
+        {
+          type: "Loan",
+          isKeycard: true,
+          count: 2,
+          timestamp: "2024-01-01T10:30:00Z",
+          voidedAt: "2024-01-01T10:35:00Z",
+        },
+      ],
+      cashCounts: [
+        {
+          user: "u",
+          timestamp: "2024-01-01T00:00:00Z",
+          type: "opening",
+          keycardCount: 5,
+        },
+        {
+          user: "u",
+          timestamp: "2024-01-01T22:00:00Z",
+          type: "close",
+          keycardCount: 4,
+        },
+      ],
+      creditSlips: [],
+      loading: false,
+      error: null,
+    });
+
+    const { result } = renderHook(() =>
+      useEndOfDayReportData(new Date("2024-01-01T00:00:00Z")),
+      { wrapper }
+    );
+
+    expect(result.current.expectedKeycards).toBe(4);
+    expect(result.current.keycardVariance).toBe(0);
   });
 
   it("includes only records on the report date around midnight", () => {
@@ -437,6 +572,11 @@ describe("useEndOfDayReportData", () => {
     expect(result.current.expectedCash).toBeCloseTo(130);
     expect(result.current.variance).toBeCloseTo(0);
   });
+
+});
+
+describe("useEndOfDayReportData - keycards", () => {
+  beforeEach(setupDefaultMocks);
 
   it("computes keycard counts and variance", () => {
     mockUseTillData.mockReturnValue({
@@ -710,6 +850,11 @@ describe("useEndOfDayReportData", () => {
     ]);
     expect(result.current.keycardDiscrepancyTotal).toBe(1);
   });
+
+});
+
+describe("useEndOfDayReportData - safe balances", () => {
+  beforeEach(setupDefaultMocks);
 
   it("uses same-day safe entry for beginning balance when available", () => {
     mockUseTillData.mockReturnValue({

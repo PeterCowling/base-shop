@@ -226,7 +226,7 @@ function renderSpinner({
   return (
     <span
       className={cn(
-        "me-2 inline-flex animate-spin rounded-full border-2 border-current border-t-transparent",
+        "me-2 inline-flex animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent",
         iconDimensionClass(iconSize),
       )}
       aria-hidden="true"

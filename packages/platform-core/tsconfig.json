@@ -33,6 +33,10 @@
         "../page-builder-core/src/*",
         "../page-builder-core/dist/*"
       ],
+      "@acme/templates": [
+        "../templates/dist/index.d.ts"
+      ],
+      "@acme/templates/*": ["../templates/dist/*"],
 
       "@acme/lib": [
         "../lib/src/index.ts",
@@ -74,7 +78,8 @@
     { "path": "../zod-utils" },
     { "path": "../email-templates" },
     { "path": "../plugins/sanity" },
-    { "path": "../page-builder-core" }
+    { "path": "../page-builder-core" },
+    { "path": "../templates" }
   ],
   "files": ["../../packages/types/src/global.d.ts"]
 }

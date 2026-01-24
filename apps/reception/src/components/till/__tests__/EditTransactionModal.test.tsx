@@ -4,26 +4,34 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { Transaction } from "../../../types/component/Till";
+import EditTransactionModal from "../EditTransactionModal";
 
-interface Loaded {
-  Comp: React.ComponentType<{ transaction: Transaction; onClose: () => void }>;
-  editTransaction: jest.Mock;
-}
+const correctTransaction = jest.fn();
+let hookError: unknown = null;
 
-async function loadComponent(error: unknown = null): Promise<Loaded> {
-  jest.resetModules();
-  const editTransaction = jest.fn();
-  jest.doMock("../../../hooks/mutations/useEditTransaction", () => ({
-    __esModule: true,
-    default: () => ({ editTransaction, loading: false, error }),
-  }));
-  const mod = await import("../EditTransactionModal");
-  return { Comp: mod.default, editTransaction };
-}
+jest.mock("../../../hoc/withModalBackground", () => ({
+  withModalBackground: (Comp: React.ComponentType) => Comp,
+}));
+
+jest.mock("../../../hooks/mutations/useCorrectTransaction", () => ({
+  __esModule: true,
+  default: () => ({ correctTransaction, loading: false, error: hookError }),
+}));
+
+jest.mock("../../common/PasswordReauthInline", () => ({
+  __esModule: true,
+  default: ({ onSubmit, submitLabel }: { onSubmit: () => void; submitLabel?: string }) => (
+    <button onClick={onSubmit}>{submitLabel ?? "Confirm"}</button>
+  ),
+}));
 
 describe("EditTransactionModal", () => {
+  beforeEach(() => {
+    correctTransaction.mockReset();
+    hookError = null;
+  });
+
   it("submits updated values", async () => {
-    const { Comp, editTransaction } = await loadComponent();
     const onClose = jest.fn();
     const txn = {
       txnId: "t1",
@@ -32,7 +40,7 @@ describe("EditTransactionModal", () => {
       itemCategory: "bar",
       description: "beer",
     };
-    render(<Comp transaction={txn} onClose={onClose} />);
+    render(<EditTransactionModal transaction={txn} onClose={onClose} />);
 
     const amountInput = screen.getByLabelText(/amount/i);
     await userEvent.clear(amountInput);
@@ -50,21 +58,30 @@ describe("EditTransactionModal", () => {
     await userEvent.clear(descInput);
     await userEvent.type(descInput, "lunch");
 
-    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+    const reasonInput = screen.getByLabelText(/correction reason/i);
+    await userEvent.type(reasonInput, "Fix typo");
 
-    expect(editTransaction).toHaveBeenCalledWith("t1", {
-      amount: 20,
-      method: "card",
-      itemCategory: "food",
-      description: "lunch",
-    });
+    await userEvent.click(
+      screen.getByRole("button", { name: /record correction/i })
+    );
+
+    expect(correctTransaction).toHaveBeenCalledWith(
+      "t1",
+      {
+        amount: 20,
+        method: "card",
+        itemCategory: "food",
+        description: "lunch",
+      },
+      "Fix typo"
+    );
     expect(onClose).toHaveBeenCalled();
   });
 
   it("displays error message when hook returns error", async () => {
-    const { Comp } = await loadComponent(new Error("boom"));
+    hookError = new Error("boom");
     const txn = { txnId: "t1", amount: 10 };
-    render(<Comp transaction={txn} onClose={jest.fn()} />);
+    render(<EditTransactionModal transaction={txn} onClose={jest.fn()} />);
 
     expect(
       screen.getByText(/an error occurred\. please try again\./i)
@@ -72,7 +89,6 @@ describe("EditTransactionModal", () => {
   });
 
   it("shows default values from transaction", async () => {
-    const { Comp } = await loadComponent();
     const txn = {
       txnId: "t2",
       amount: 5.5,
@@ -80,7 +96,7 @@ describe("EditTransactionModal", () => {
       itemCategory: "bar",
       description: "coke",
     };
-    render(<Comp transaction={txn} onClose={jest.fn()} />);
+    render(<EditTransactionModal transaction={txn} onClose={jest.fn()} />);
 
     expect(screen.getByLabelText(/amount/i)).toHaveValue("5.5");
     expect(screen.getByLabelText(/method/i)).toHaveValue("card");

@@ -7,9 +7,25 @@ jest.mock("../../../lib/api", () => ({
   apiRequest: (...args: any[]) => apiRequest(...args),
 }));
 
+const mockToastMessages: { type: string; message: string }[] = [];
+jest.mock("@acme/ui/operations", () => ({
+  __esModule: true,
+  useToast: () => ({
+    success: (message: string) => { mockToastMessages.push({ type: "success", message }); },
+    error: (message: string) => { mockToastMessages.push({ type: "error", message }); },
+    warning: (message: string) => { mockToastMessages.push({ type: "warning", message }); },
+    info: (message: string) => { mockToastMessages.push({ type: "info", message }); },
+    loading: (message: string) => { mockToastMessages.push({ type: "loading", message }); },
+    dismiss: () => {},
+    update: () => {},
+    promise: async (p: Promise<unknown>) => p,
+  }),
+}));
+
 describe("useProductPageData", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockToastMessages.length = 0;
     const store: Record<string, string> = {};
     const localStorageMock = {
       getItem: jest.fn((key: string) => store[key] ?? null),
@@ -43,14 +59,12 @@ describe("useProductPageData", () => {
     });
     const setProductPageId = jest.fn();
     const setProductComponents = jest.fn();
-    const setToast = jest.fn();
     renderHook(() =>
       useProductPageData({
         shopId: "shop",
         productPageId: null,
         setProductPageId,
         setProductComponents,
-        setToast,
       }),
     );
     await waitFor(() => expect(setProductPageId).toHaveBeenCalledWith("p1"));
@@ -68,21 +82,21 @@ describe("useProductPageData", () => {
       .mockResolvedValueOnce({ data: null, error: "save error" });
     const setProductPageId = jest.fn();
     const setProductComponents = jest.fn();
-    const setToast = jest.fn();
     const { result } = renderHook(() =>
       useProductPageData({
         shopId: "shop",
         productPageId: null,
         setProductPageId,
         setProductComponents,
-        setToast,
       }),
     );
     await act(async () => {
       await result.current.saveDraft(new FormData());
     });
     expect(setProductPageId).toHaveBeenCalledWith("1");
-    expect(setToast).toHaveBeenCalledWith({ open: true, message: "Draft saved" });
+    expect(mockToastMessages).toContainEqual(
+      expect.objectContaining({ type: "success", message: "Draft saved" }),
+    );
     await act(async () => {
       await result.current.saveDraft(new FormData());
     });
@@ -96,25 +110,24 @@ describe("useProductPageData", () => {
       .mockResolvedValueOnce({ data: null, error: "publish error" });
     const setProductPageId = jest.fn();
     const setProductComponents = jest.fn();
-    const setToast = jest.fn();
     const { result } = renderHook(() =>
       useProductPageData({
         shopId: "shop",
         productPageId: null,
         setProductPageId,
         setProductComponents,
-        setToast,
       }),
     );
     await act(async () => {
       await result.current.publishPage(new FormData());
     });
     expect(setProductPageId).toHaveBeenCalledWith("2");
-    expect(setToast).toHaveBeenCalledWith({ open: true, message: "Page published" });
+    expect(mockToastMessages).toContainEqual(
+      expect.objectContaining({ type: "success", message: "Page published" }),
+    );
     await act(async () => {
       await result.current.publishPage(new FormData());
     });
     expect(result.current.publishError).toBe("publish error");
   });
 });
-

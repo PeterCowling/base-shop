@@ -105,7 +105,7 @@ None - this plan is historical/completed.
 - `AGENTS.md` (Git safety rules; no `--no-verify`)
 - `docs/git-safety.md`
 - `docs/git-hooks.md`
-- `docs/RECOVERY-PLAN-2026-01-14.md`
+- `docs/historical/RECOVERY-PLAN-2026-01-14.md`
 
 ## Completion Summary
 - Pre-commit runs a mandatory partial-staging guard before `lint-staged --no-stash`, eliminating lint-staged backup stashes in the hook path.

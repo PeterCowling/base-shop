@@ -2,7 +2,7 @@
 
 /* eslint-disable -- XA-0001 [ttl=2026-12-31] legacy XA shell pending design/i18n overhaul */
 
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode } from "react";
 import Link from "next/link";
 import {
   BackpackIcon,
@@ -34,7 +34,7 @@ import {
   formatLabel,
   getCategoryHref,
 } from "../lib/xaCatalog";
-import { useTheme } from "@acme/platform-core/contexts/ThemeContext";
+import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 
 export function XaShell({ children }: { children: ReactNode }) {
   const whatsappHref = siteConfig.showSocialLinks
@@ -46,29 +46,11 @@ export function XaShell({ children }: { children: ReactNode }) {
   const cartCount = Object.values(cart).reduce((sum, line) => sum + line.qty, 0);
   const [wishlist] = useWishlist();
   const wishlistCount = wishlist.length;
-  const { theme, setTheme } = useTheme();
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, setMode } = useThemeMode();
   const categoryLinks = XA_ALLOWED_CATEGORIES.map((category) => ({
     label: XA_CATEGORY_LABELS[category],
     href: getCategoryHref(category),
   }));
-
-  useEffect(() => {
-    if (theme === "dark") {
-      setIsDark(true);
-      return;
-    }
-    if (theme === "base") {
-      setIsDark(false);
-      return;
-    }
-    if (typeof window === "undefined") return;
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const update = () => setIsDark(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, [theme]);
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -120,7 +102,7 @@ export function XaShell({ children }: { children: ReactNode }) {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => setTheme(isDark ? "base" : "dark")}
+                    onClick={() => setMode(isDark ? "light" : "dark")}
                     className="inline-flex min-h-11 min-w-11 items-center justify-center"
                     aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
                     title={isDark ? "Light mode" : "Dark mode"}

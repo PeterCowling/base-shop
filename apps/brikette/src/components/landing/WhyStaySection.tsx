@@ -1,5 +1,5 @@
 // src/components/landing/WhyStaySection.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Compass, Sparkles, Users } from "lucide-react";
 
@@ -19,11 +19,11 @@ const ICONS = [Sparkles, Users, Compass] as const;
 const WhyStaySection = memo(function WhyStaySection({ lang }: { lang?: AppLanguage }): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t, ready } = useTranslation("landingPage", translationOptions);
-  const items = useMemo(() => {
-    if (!ready) return [] as HighlightItem[];
+  const items: HighlightItem[] = (() => {
+    if (!ready) return [];
     const raw = t("whyStaySection.items", { returnObjects: true }) as unknown;
     return Array.isArray(raw) ? (raw as HighlightItem[]) : [];
-  }, [ready, t]);
+  })();
 
   if (!items.length) return null;
 

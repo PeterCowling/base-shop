@@ -3,8 +3,6 @@
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
 
-import { Toast } from "@/components/atoms";
-
 import type { RoleDetail } from "../components/roleDetails";
 
 import InviteUserForm from "./InviteUserForm";
@@ -43,9 +41,6 @@ export default function RbacManagementPanel({
     resetInviteForm,
     submitInvite,
     isInviting,
-    toast,
-    toastClassName,
-    closeToast,
     getInviteHelperText,
   } = useRbacManagementPanel({
     users,
@@ -82,14 +77,6 @@ export default function RbacManagementPanel({
         onToggleRole={toggleInviteRole}
         onSubmit={submitInvite}
         onReset={resetInviteForm}
-      />
-
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        className={toastClassName}
-        onClose={closeToast}
-        role="status"
       />
     </div>
   );

@@ -51,7 +51,7 @@ describe('base theme tokens', () => {
   });
 
   test('css contains token variables', () => {
-    const cssDir = path.join(__dirname, '..', 'src');
+    const cssDir = path.join(__dirname, '..');
     const cssFiles = ['tokens.css', 'tokens.dynamic.css']
       .map((f) => path.join(cssDir, f))
       .filter(fs.existsSync);

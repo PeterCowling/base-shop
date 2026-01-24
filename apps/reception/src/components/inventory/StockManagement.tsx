@@ -5,10 +5,13 @@ import {
   STOCK_SHRINKAGE_ALERT_THRESHOLD,
 } from "../../constants/stock";
 import { useAuth } from "../../context/AuthContext";
+import useProductsHook from "../../hooks/data/bar/useProducts";
 import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
 import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
+import useInventoryRecipes from "../../hooks/data/inventory/useInventoryRecipes";
 import { useInventoryItemsMutations } from "../../hooks/mutations/useInventoryItemsMutations";
 import { useInventoryLedgerMutations } from "../../hooks/mutations/useInventoryLedgerMutations";
+import { useInventoryRecipesMutations } from "../../hooks/mutations/useInventoryRecipesMutations";
 import { canAccess,Permissions } from "../../lib/roles";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import { showToast } from "../../utils/toastUtils";
@@ -41,10 +44,13 @@ const defaultActionState: ActionState = {
 function StockManagement() {
   const { user } = useAuth();
   const canManageStock = canAccess(user, Permissions.STOCK_ACCESS);
+  const { allProducts } = useProductsHook();
   const { items, itemsById, loading, error } = useInventoryItems();
   const { entries } = useInventoryLedger();
+  const { recipes } = useInventoryRecipes();
   const { createInventoryItem } = useInventoryItemsMutations();
   const { addLedgerEntry } = useInventoryLedgerMutations();
+  const { saveRecipe, removeRecipe } = useInventoryRecipesMutations();
   const [actionState, setActionState] = useState<Record<string, ActionState>>({});
   const [newItem, setNewItem] = useState({
     name: "",
@@ -67,6 +73,41 @@ function StockManagement() {
     () => buildInventorySnapshot(itemsById, entries),
     [itemsById, entries]
   );
+
+  const productItemIdByName = useMemo(() => {
+    return items.reduce<Record<string, string>>((acc, item) => {
+      if (!item.id) return acc;
+      if ((item.category ?? "").toLowerCase() === "ingredient") return acc;
+      acc[item.name.toLowerCase()] = item.id;
+      return acc;
+    }, {});
+  }, [items]);
+
+  const missingRecipeItems = useMemo(() => {
+    const missingItems: string[] = [];
+    const missingInventory: string[] = [];
+    allProducts
+      .filter((product) => product.price > 0)
+      .forEach((product) => {
+        if (product.categoryType === "Other") return;
+        const itemId = productItemIdByName[product.name.toLowerCase()];
+        if (!itemId) {
+          missingInventory.push(product.name);
+          return;
+        }
+        if (!recipes[itemId]) {
+          missingItems.push(product.name);
+        }
+      });
+    return {
+      missingItems: missingItems.sort(),
+      missingInventory: missingInventory.sort(),
+    };
+  }, [allProducts, productItemIdByName, recipes]);
+
+  const legacyRecipes = useMemo(() => {
+    return Object.keys(recipes).filter((key) => !itemsById[key]);
+  }, [recipes, itemsById]);
 
   const lowStockItems = useMemo(() => {
     return items
@@ -192,6 +233,42 @@ function StockManagement() {
       reorderThreshold: "",
       category: "",
     });
+  };
+
+  const handleMigrateLegacyRecipes = async () => {
+    if (legacyRecipes.length === 0) return;
+    if (
+      !window.confirm(
+        `Migrate ${legacyRecipes.length} legacy recipe keys to inventory item IDs?`
+      )
+    ) {
+      return;
+    }
+
+    let migrated = 0;
+    let skipped = 0;
+    for (const legacyKey of legacyRecipes) {
+      const matchingItem = items.find(
+        (item) => item.name.toLowerCase() === legacyKey.toLowerCase()
+      );
+      if (!matchingItem?.id) {
+        skipped += 1;
+        continue;
+      }
+      const recipe = recipes[legacyKey];
+      if (!recipe) {
+        skipped += 1;
+        continue;
+      }
+      await saveRecipe(matchingItem.id, recipe);
+      await removeRecipe(legacyKey);
+      migrated += 1;
+    }
+
+    showToast(
+      `Recipes migrated: ${migrated}, skipped: ${skipped}`,
+      migrated > 0 ? "success" : "warning"
+    );
   };
 
   const finalizeLedgerEntry = async (pending: {
@@ -410,6 +487,43 @@ function StockManagement() {
           Track inventory with ledger-based movements and accountability.
         </p>
       </div>
+
+      {(missingRecipeItems.missingItems.length > 0 ||
+        missingRecipeItems.missingInventory.length > 0 ||
+        legacyRecipes.length > 0) && (
+        <section className="border border-warning-main rounded p-4 bg-warning-light/10">
+          <h2 className="text-xl font-semibold mb-2 text-warning-main">
+            Recipe Coverage Warnings
+          </h2>
+          {missingRecipeItems.missingInventory.length > 0 && (
+            <p className="text-sm mb-2">
+              Missing inventory items for{" "}
+              {missingRecipeItems.missingInventory.length} menu products.
+            </p>
+          )}
+          {missingRecipeItems.missingItems.length > 0 && (
+            <p className="text-sm mb-2">
+              Missing recipes for {missingRecipeItems.missingItems.length} menu
+              products with inventory items.
+            </p>
+          )}
+          {legacyRecipes.length > 0 && (
+            <div className="mt-3 text-sm">
+              <p className="mb-2">
+                {legacyRecipes.length} recipe entries are still keyed by product
+                name. Migrate them to inventory item IDs.
+              </p>
+              <button
+                type="button"
+                className="px-3 py-1 rounded bg-warning-main text-white hover:bg-warning-dark"
+                onClick={handleMigrateLegacyRecipes}
+              >
+                Migrate Legacy Recipes
+              </button>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="border border-gray-200 rounded p-4 dark:border-darkBorder">
         <h2 className="text-xl font-semibold mb-3">Add Inventory Item</h2>

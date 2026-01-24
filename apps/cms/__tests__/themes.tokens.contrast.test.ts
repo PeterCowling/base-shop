@@ -11,15 +11,25 @@ function parseTokens(filePath: string): Record<string, Hsl> {
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test helper reads theme token files by computed path
   const src = readFileSync(filePath, "utf8");
   const map: Record<string, Hsl> = {};
-  const re = /--([a-z0-9-]+):\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%/gi;
+
+  const re = /--([a-z0-9-]+):\s*([^;]+);/gi;
+
+  function parseHsl(rawValue: string): Hsl | null {
+    const match = rawValue.match(/([\d.]+)\s+([\d.]+)%\s+([\d.]+)%/);
+    if (!match) return null;
+    const [, h, s, l] = match;
+    return { h: Number(h), s: Number(s) / 100, l: Number(l) / 100 };
+  }
 
   function parseBlock(block: string, suffix: string | null) {
     re.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = re.exec(block))) {
-      const [, name, h, s, l] = m;
+      const [, name, value] = m;
+      const parsed = parseHsl(value);
+      if (!parsed) continue;
       const key = suffix ? `${name}${suffix}` : name;
-      map[key] = { h: Number(h), s: Number(s) / 100, l: Number(l) / 100 };
+      map[key] = parsed;
     }
   }
 
@@ -60,7 +70,7 @@ function hslToHex(hsl: Hsl): string {
 
 describe("All themes – token contrast safety", () => {
   const ccc = new ColorContrastChecker();
-  const themes = ["base", "bcd", "brandx", "dark"] as const;
+  const themes = ["base", "bcd", "brandx", "dark", "prime"] as const;
   const pairs: [string, string][] = [
     ["color-fg", "color-bg"],
     ["color-primary-fg", "color-primary"],
@@ -72,7 +82,7 @@ describe("All themes – token contrast safety", () => {
   ];
 
   it.each(themes)("%s: AA (4.5:1) for core pairs (light/dark when available)", (theme) => {
-    const tokensPath = join(__dirname, "..", "..", "..", "packages", "themes", theme, "src", "tokens.css");
+    const tokensPath = join(__dirname, "..", "..", "..", "packages", "themes", theme, "tokens.css");
     const tokens = parseTokens(tokensPath);
     for (const [fgVar, bgVar] of pairs) {
       const fg = tokens[fgVar];

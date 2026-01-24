@@ -1,6 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/ArticleStructuredData.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -35,38 +35,23 @@ function ArticleStructuredData({
   const rawPathname = routerPathname ?? fallbackPath;
   const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : "/";
 
-  const fallbackModified = useMemo(() => new Date().toISOString().slice(0, 10), []);
-  const canonicalUrl = useMemo(() => `${BASE_URL}${pathname}`, [pathname]);
-  const payload = useMemo(() => {
-    const img = image || `${BASE_URL}/img/hostel-communal-terrace-lush-view.webp`;
-    return (
-      buildArticlePayload({
-        headline,
-        description,
-        lang,
-        url: canonicalUrl,
-        image: img,
-        datePublished: datePublished || fallbackModified,
-        dateModified: dateModified || fallbackModified,
-        authorName,
-        publisherName,
-        publisherLogoUrl,
-      }) || undefined
-    );
-  }, [
-    authorName,
-    canonicalUrl,
-    dateModified,
-    datePublished,
-    description,
-    headline,
-    image,
-    lang,
-    publisherLogoUrl,
-    publisherName,
-    fallbackModified,
-  ]);
-  const json = useMemo(() => (payload ? JSON.stringify(payload) : ""), [payload]);
+  const fallbackModified = new Date().toISOString().slice(0, 10);
+  const canonicalUrl = `${BASE_URL}${pathname}`;
+  const img = image || `${BASE_URL}/img/hostel-communal-terrace-lush-view.webp`;
+  const payload =
+    buildArticlePayload({
+      headline,
+      description,
+      lang,
+      url: canonicalUrl,
+      image: img,
+      datePublished: datePublished || fallbackModified,
+      dateModified: dateModified || fallbackModified,
+      authorName,
+      publisherName,
+      publisherLogoUrl,
+    }) || undefined;
+  const json = payload ? JSON.stringify(payload) : "";
   return (
     <script
       type="application/ld+json"

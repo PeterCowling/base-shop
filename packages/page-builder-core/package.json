@@ -8,6 +8,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

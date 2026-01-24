@@ -211,15 +211,15 @@ export default function Tokens({
 
   useEffect(() => {
     if (!focusToken) return;
-    const el = containerRef.current?.querySelector(
-      `[data-token-key="${focusToken}"]`
-    ) as HTMLElement | null;
+    // i18n-exempt -- DS-1234 [ttl=2026-06-30] CSS selector literal
+    const selector = `[data-token-key="${focusToken}"]`;
+    const el = containerRef.current?.querySelector(selector) as HTMLElement | null;
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
       el.classList.add("ring-2", "ring-info");
       el.dataset.token = "--color-info";
       const input = el.querySelector<HTMLElement>(
-         
+        // i18n-exempt -- DS-1234 [ttl=2026-06-30] selector literal
         "input, select, textarea, button"
       );
       input?.focus();
@@ -267,7 +267,7 @@ export default function Tokens({
         <div key={prefix} className="space-y-2">
           <button
             type="button"
-            className="flex w-full items-center justify-between font-medium min-h-10 min-w-10"
+            className="flex w-full items-center justify-between font-medium min-h-11 min-w-11"
             onClick={() => toggleGroup(prefix)}
           >
             <span>{capitalizeGroupLabel(prefix)}</span>
@@ -302,7 +302,7 @@ export default function Tokens({
                   />
                   <button
                     type="button"
-                    className="rounded border px-2 py-1 min-h-10 min-w-10"
+                    className="rounded border px-2 py-1 min-h-11 min-w-11"
                     onClick={addCustomFont}
                   >
                     {t("common.add") as string}

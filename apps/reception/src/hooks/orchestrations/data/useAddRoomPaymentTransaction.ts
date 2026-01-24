@@ -10,6 +10,7 @@ import {
 import { type RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
 import { getCurrentIsoTimestamp } from "../../../utils/dateUtils";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
+import { getStoredShiftId } from "../../../utils/shiftId";
 import useAllTransactions from "../../mutations/useAllTransactionsMutations";
 
 /**
@@ -86,6 +87,7 @@ export default function useAddRoomPaymentTransaction(
           timestamp: getCurrentIsoTimestamp(),
           type: type || (amount >= 0 ? "payment" : "refund"),
           nonRefundable,
+          shiftId: getStoredShiftId() ?? undefined,
         };
 
         // Prepare the updates for Firebase under "/financialsRoom"

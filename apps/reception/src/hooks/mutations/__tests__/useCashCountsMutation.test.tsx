@@ -88,6 +88,7 @@ describe("useCashCountsMutations", () => {
       amount: undefined,
       denomBreakdown: { "50": 2 },
       keycardCount: 1,
+      shiftId: undefined,
     });
   });
 
@@ -114,6 +115,7 @@ describe("useCashCountsMutations", () => {
       amount: undefined,
       denomBreakdown: undefined,
       keycardCount: 5,
+      shiftId: undefined,
     });
   });
 
@@ -145,6 +147,7 @@ describe("useCashCountsMutations", () => {
       amount: 20,
       denomBreakdown: undefined,
       keycardCount: undefined,
+      shiftId: undefined,
     });
   });
 

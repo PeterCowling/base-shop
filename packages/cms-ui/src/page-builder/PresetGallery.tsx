@@ -52,7 +52,7 @@ export default function PresetGallery({ title, presets, onApply }: { title: stri
           <button
             key={p.id}
             type="button"
-            className="rounded border p-2 text-start hover:bg-accent/30 min-h-10 min-w-10"
+            className="rounded border p-2 text-start hover:bg-accent/30 min-h-11 min-w-11"
             onClick={() => onApply(p.id)}
             title={p.label}
             aria-label={`Apply ${p.label}`}

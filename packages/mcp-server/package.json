@@ -30,7 +30,7 @@
     "@acme/platform-core": "workspace:^",
     "@acme/config": "workspace:^",
     "@acme/zod-utils": "workspace:^",
-    "zod": "^3.24.2"
+    "zod": "^3.25.73"
   },
   "devDependencies": {
     "tsx": "^4.19.0",

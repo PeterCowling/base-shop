@@ -3,7 +3,7 @@
 import type { ReactElement } from "react";
 
 import { Button, Tag } from "../../components/atoms";
-import { Inline } from "../../components/atoms/primitives";
+import { Inline } from "../../components/atoms/primitives/Inline";
 import { cn } from "../../utils/style";
 
 export type CmsLaunchStatus = "complete" | "warning" | "error" | "pending";

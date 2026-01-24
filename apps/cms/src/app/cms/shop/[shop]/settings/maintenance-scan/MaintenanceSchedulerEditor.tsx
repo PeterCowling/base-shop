@@ -3,7 +3,6 @@
 import { type ChangeEvent, type FormEvent,useState } from "react";
 import { updateMaintenanceSchedule } from "@cms/actions/maintenance.server";
 
-import { Toast } from "@acme/design-system/atoms";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
@@ -18,9 +17,6 @@ export default function MaintenanceSchedulerEditor() {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
   } = useSettingsSaveForm<void>({
     action: async (formData) => {
@@ -91,13 +87,6 @@ export default function MaintenanceSchedulerEditor() {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

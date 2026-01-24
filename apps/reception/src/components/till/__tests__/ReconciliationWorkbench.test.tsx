@@ -2,138 +2,110 @@ import "@testing-library/jest-dom";
 
 import { render, screen, waitFor, within } from "@testing-library/react";
 
+import ReconciliationWorkbench from "../ReconciliationWorkbench";
+
 const toastMock = jest.fn();
 jest.mock("../../../utils/toastUtils", () => ({
   showToast: (...args: [string, string]) => toastMock(...args),
 }));
 
-async function loadComp() {
-  jest.resetModules();
+let tillData = {
+  transactions: [
+    { txnId: "t1", amount: 50, method: "CASH" },
+    { txnId: "t2", amount: 20, method: "CASH" },
+    { txnId: "t3", amount: 200, method: "CC" },
+  ],
+  cashCounts: [
+    {
+      user: "tester",
+      timestamp: "2024-01-01T10:00:00Z",
+      type: "close",
+      count: 70,
+      difference: 0,
+    },
+  ],
+  creditSlips: [],
+  isShiftOpen: true,
+  loading: false,
+  error: null,
+};
 
-  const useTillDataMock = jest.fn().mockReturnValue({
-    transactions: [
-      { txnId: "t1", amount: 50, method: "CASH" },
-      { txnId: "t2", amount: 20, method: "CASH" },
-      { txnId: "t3", amount: 200, method: "CC" },
-    ],
-    cashCounts: [
-      {
-        user: "tester",
-        timestamp: "2024-01-01T10:00:00Z",
-        type: "close",
-        count: 70,
-        difference: 0,
-      },
-    ],
-    creditSlips: [],
-    isShiftOpen: true,
-    loading: false,
-    error: null,
-  });
+let pmsPostings = {
+  postings: [
+    { amount: 65, method: "CASH" },
+    { amount: 215, method: "CC" },
+  ],
+  loading: false,
+  error: null,
+};
 
-  const usePmsPostingsMock = jest.fn().mockReturnValue({
-    postings: [
-      { amount: 65, method: "CASH" },
-      { amount: 215, method: "CC" },
-    ],
-    loading: false,
-    error: null,
-  });
+let terminalBatches = {
+  batches: [{ amount: 200 }],
+  loading: false,
+  error: null,
+};
 
-  const useTerminalBatchesMock = jest.fn().mockReturnValue({
-    batches: [{ amount: 200 }],
-    loading: false,
-    error: null,
-  });
+jest.mock("../../../context/TillDataContext", () => ({
+  __esModule: true,
+  TillDataProvider: ({
+    children,
+  }: {
+    children: React.ReactNode;
+    reportDate?: Date;
+  }) => <>{children}</>,
+  useTillData: () => tillData,
+}));
 
-  jest.doMock("../../../context/TillDataContext", () => ({
-    __esModule: true,
-    TillDataProvider: ({
-      children,
-    }: {
-      children: React.ReactNode;
-      reportDate?: Date;
-    }) => <>{children}</>,
-    useTillData: useTillDataMock,
-  }));
+jest.mock("../../../hooks/data/till/usePmsPostings", () => ({
+  __esModule: true,
+  default: () => pmsPostings,
+}));
 
-  jest.doMock("../../../hooks/data/till/usePmsPostings", () => ({
-    __esModule: true,
-    default: usePmsPostingsMock,
-  }));
-
-  jest.doMock("../../../hooks/data/till/useTerminalBatches", () => ({
-    __esModule: true,
-    default: useTerminalBatchesMock,
-  }));
-
-  const mod = await import("../ReconciliationWorkbench");
-  return mod.default;
-}
-
-async function loadCompInvalid() {
-  jest.resetModules();
-
-  const useTillDataMock = jest.fn().mockReturnValue({
-    transactions: [
-      { txnId: "t1", amount: -50, method: "CASH" },
-      { txnId: "t2", amount: 20, method: "CASH" },
-    ],
-    cashCounts: [
-      {
-        user: "tester",
-        timestamp: "2024-01-01T10:00:00Z",
-        type: "close",
-        count: 70,
-        difference: 0,
-      },
-    ],
-    creditSlips: [],
-    isShiftOpen: true,
-    loading: false,
-    error: null,
-  });
-
-  const usePmsPostingsMock = jest.fn().mockReturnValue({
-    postings: [],
-    loading: false,
-    error: null,
-  });
-
-  const useTerminalBatchesMock = jest.fn().mockReturnValue({
-    batches: [],
-    loading: false,
-    error: null,
-  });
-
-  jest.doMock("../../../context/TillDataContext", () => ({
-    __esModule: true,
-    TillDataProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    useTillData: useTillDataMock,
-  }));
-
-  jest.doMock("../../../hooks/data/till/usePmsPostings", () => ({
-    __esModule: true,
-    default: usePmsPostingsMock,
-  }));
-
-  jest.doMock("../../../hooks/data/till/useTerminalBatches", () => ({
-    __esModule: true,
-    default: useTerminalBatchesMock,
-  }));
-
-  const mod = await import("../ReconciliationWorkbench");
-  return mod.default;
-}
+jest.mock("../../../hooks/data/till/useTerminalBatches", () => ({
+  __esModule: true,
+  default: () => terminalBatches,
+}));
 
 describe("ReconciliationWorkbench", () => {
   beforeEach(() => {
     toastMock.mockReset();
+    tillData = {
+      transactions: [
+        { txnId: "t1", amount: 50, method: "CASH" },
+        { txnId: "t2", amount: 20, method: "CASH" },
+        { txnId: "t3", amount: 200, method: "CC" },
+      ],
+      cashCounts: [
+        {
+          user: "tester",
+          timestamp: "2024-01-01T10:00:00Z",
+          type: "close",
+          count: 70,
+          difference: 0,
+        },
+      ],
+      creditSlips: [],
+      isShiftOpen: true,
+      loading: false,
+      error: null,
+    };
+    pmsPostings = {
+      postings: [
+        { amount: 65, method: "CASH" },
+        { amount: 215, method: "CC" },
+      ],
+      loading: false,
+      error: null,
+    };
+    terminalBatches = {
+      batches: [{ amount: 200 }],
+      loading: false,
+      error: null,
+    };
   });
 
   it("renders totals and difference styling", async () => {
-    const Comp = await loadComp();
-    render(<Comp />);
+    render(<ReconciliationWorkbench />);
 
     const posRow = screen.getByText("POS Totals").closest("tr") as HTMLElement;
     expect(within(posRow).getByText("€70.00")).toBeInTheDocument();
@@ -165,9 +137,8 @@ describe("ReconciliationWorkbench", () => {
   });
 
   it("applies dark mode table styles", async () => {
-    const Comp = await loadComp();
     document.documentElement.classList.add("dark");
-    const { container } = render(<Comp />);
+    const { container } = render(<ReconciliationWorkbench />);
     const thead = container.querySelector("thead") as HTMLElement;
     expect(thead).toHaveClass("dark:bg-darkSurface");
     const posRow = screen.getByText("POS Totals").closest("tr") as HTMLElement;
@@ -176,8 +147,36 @@ describe("ReconciliationWorkbench", () => {
   });
 
   it("handles invalid totals gracefully", async () => {
-    const Comp = await loadCompInvalid();
-    render(<Comp />);
+    tillData = {
+      transactions: [
+        { txnId: "t1", amount: -50, method: "CASH" },
+        { txnId: "t2", amount: 20, method: "CASH" },
+      ],
+      cashCounts: [
+        {
+          user: "tester",
+          timestamp: "2024-01-01T10:00:00Z",
+          type: "close",
+          count: 70,
+          difference: 0,
+        },
+      ],
+      creditSlips: [],
+      isShiftOpen: true,
+      loading: false,
+      error: null,
+    };
+    pmsPostings = {
+      postings: [],
+      loading: false,
+      error: null,
+    };
+    terminalBatches = {
+      batches: [],
+      loading: false,
+      error: null,
+    };
+    render(<ReconciliationWorkbench />);
 
     const posRow = screen.getByText("POS Totals").closest("tr") as HTMLElement;
     expect(within(posRow).getAllByText("€0.00")[0]).toBeInTheDocument();

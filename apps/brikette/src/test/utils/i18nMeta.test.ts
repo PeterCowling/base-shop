@@ -2,24 +2,27 @@
 import "@testing-library/jest-dom";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
 
-const { translatorMap, hasResourceBundle, getFixedT } = {
-  const map = new Map<string, (key: string => unknown>();
-  return {
-    translatorMap: map,
-    hasResourceBundle: jest.fn((lang: string, ns: string) => map.has(`${lang}:${ns}`)),
-    getFixedT: jest.fn(
-      (lang: string, ns: string) => map.get(`${lang}:${ns}`) ?? ((key: string) => key),
-    ),
-  };
-});
+const translatorMap = new Map<string, (key: string) => unknown>();
 
 jest.mock("@/i18n", () => ({
   __esModule: true,
   default: {
-    hasResourceBundle,
-    getFixedT,
+    hasResourceBundle: jest.fn(),
+    getFixedT: jest.fn(),
   },
 }));
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const i18nMock = require("@/i18n").default as {
+  hasResourceBundle: jest.Mock;
+  getFixedT: jest.Mock;
+};
+const { hasResourceBundle, getFixedT } = i18nMock;
+
+hasResourceBundle.mockImplementation((lang: string, ns: string) => translatorMap.has(`${lang}:${ns}`));
+getFixedT.mockImplementation(
+  (lang: string, ns: string) => translatorMap.get(`${lang}:${ns}`) ?? ((key: string) => key),
+);
 
 const setTranslations = (
   lang: string,

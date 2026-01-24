@@ -105,6 +105,18 @@ pnpm --filter @acme/<name> test -- path/to/file.test.ts --runInBand --coverage=f
 JEST_FORCE_CJS=1 pnpm --filter @acme/<name> test -- path/to/file.test.ts --runInBand --coverage=false
 ```
 
+### Changed-Test Helper
+
+Use the helper before running step-by-step commands above:
+
+```bash
+pnpm run test:changed -- --dir packages/<name> --filter @acme/<name>
+```
+
+The helper records SHA-256 hashes in `.cache/test-status.json` and only reruns suites whose test files have changed (new files are treated as changed automatically). Add `--force` the first time for a package or if you reset the cache.
+
+If a helper run fails, fix the failure, rerun the same helper command, then continue with the normal file-by-file sweep.
+
 ### For `@apps/api` (Special Handling)
 
 ```bash
@@ -168,6 +180,8 @@ While running tests, look for these improvement opportunities:
 - [ ] Phase 3: Middle-Tier Packages
 - [ ] Phase 4: Applications
 - [ ] Phase 5: Integration & Root Tests
+
+**Cache note (2026-01-24):** Seeded the changed-test cache for Phase 1 packages plus `@acme/config`, `@acme/lib`, and `@acme/platform-core` without re-running tests (explicit user instruction). The sweep should continue at `@acme/ui` when resuming.
 
 ### Metrics to Track
 - Total files run: 301 (95 + 126 + 37 + 43)

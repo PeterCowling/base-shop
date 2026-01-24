@@ -3,35 +3,34 @@
 import type { ComponentType, KeyboardEvent } from "react";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
-import { type Theme,useTheme } from "@acme/platform-core/contexts/ThemeContext";
+import { useThemeMode } from "@acme/platform-core/contexts/ThemeModeContext";
 // Minimal local translator to satisfy lint without runtime changes
 const t = (s: string) => s;
 
-const themes: Theme[] = ["base", "dark", "system"];
+const themes = ["light", "dark", "system"] as const;
+type ThemeMode = typeof themes[number];
 
-const labels: Record<Theme, string> = {
-  base: "Light",
+const labels: Record<ThemeMode, string> = {
+  light: "Light",
   dark: "Dark",
   system: "System",
-  brandx: "BrandX", // unused but satisfy type
 };
 
-const icons: Record<Theme, ComponentType> = {
-  base: SunIcon,
+const icons: Record<ThemeMode, ComponentType> = {
+  light: SunIcon,
   dark: MoonIcon,
   system: DesktopIcon,
-  brandx: SunIcon,
 };
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { mode, setMode } = useThemeMode();
 
-  const current = theme as Theme;
+  const current = mode;
   const next = themes[(themes.indexOf(current) + 1) % themes.length];
   const Icon = icons[current];
 
   const toggleTheme = () => {
-    setTheme(next);
+    setMode(next);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
@@ -53,7 +52,7 @@ export default function ThemeToggle() {
         <Icon />
       </button>
       <span aria-live="polite" className="sr-only">
-        {t(`${labels[current as keyof typeof labels]} theme selected`)}
+        {t(`${labels[current]} theme selected`)}
       </span>
     </div>
   );

@@ -22,7 +22,7 @@ Domain: Operations
 │  └─ Requires PR and passing CI; auto-merge on green             │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 2: Git Hooks (local)                                     │
-│  └─ pre-push blocks force push; pre-commit blocks secrets       │
+│  └─ pre-commit blocks secrets + runs checks; pre-push blocks force push + runs checks │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 1: Documentation (AGENTS.md, CLAUDE.md)                  │
 │  └─ Rules for AI agents to follow                               │
@@ -89,7 +89,7 @@ These commands are blocked by one or more protection layers:
 - [Git Safety Guide](./git-safety.md) - Full documentation
 - [AGENTS.md](../AGENTS.md) - AI agent rules
 - [Git Hooks](./git-hooks.md) - Hook configuration
-- [Recovery Plan](./RECOVERY-PLAN-2026-01-14.md) - Incident details
+- [Recovery Plan](./historical/RECOVERY-PLAN-2026-01-14.md) - Incident details
 
 ---
 

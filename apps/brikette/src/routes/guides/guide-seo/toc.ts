@@ -1,6 +1,8 @@
 // src/routes/guides/guide-seo/toc.ts
 import type { TOptions } from "i18next";
 
+import { IS_DEV } from "@/config/env";
+
 import type { GuideSeoTemplateContext, TocItem } from "./types";
 
 type Options = {
@@ -117,8 +119,8 @@ function buildFromTranslator(ctx: GuideSeoTemplateContext): TocItem[] {
           if (typeof ctx.translateGuides === 'function') {
             return ctx.translateGuides(`content.${ctx.guideKey}.toc`, opts) as unknown;
           }
-        } catch {
-          /* noop */
+        } catch (err) {
+          if (IS_DEV) console.debug("[toc] translateGuides toc", err);
         }
         return undefined;
       })();
@@ -175,8 +177,8 @@ function buildFromTranslator(ctx: GuideSeoTemplateContext): TocItem[] {
         .map((s) => ({ href: `#${s.id!.trim()}`, label: s.title!.trim() } satisfies TocItem));
       return dedupeTocItems(items.concat(extras));
       }
-    } catch {
-      void 0; // no-op: missing localized toc is acceptable
+    } catch (err) {
+      if (IS_DEV) console.debug("[toc] localized toc", err);
     }
   if (explicitEmptyPrimary) return [];
   // Only probe fallback sources when the active locale lacks structured
@@ -200,8 +202,8 @@ function buildFromTranslator(ctx: GuideSeoTemplateContext): TocItem[] {
       }
       const items = sanitiseItems(fb as unknown, ctx.sections);
       if (items.length > 0) return dedupeTocItems(items);
-    } catch {
-      void 0; // no-op: fallback toc not available
+    } catch (err) {
+      if (IS_DEV) console.debug("[toc] fallback toc", err);
     }
     if (explicitEmptyFallback) return [];
   }
@@ -246,8 +248,8 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
       ) {
         hasFaqs = true;
       }
-    } catch {
-      /* noop */
+    } catch (err) {
+      if (IS_DEV) console.debug("[toc] hasFaqs check", err);
     }
   }
   if (!hasFaqs) return list;
@@ -259,13 +261,13 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
     try {
       const rLocal = ctx.translator(`content.${ctx.guideKey}.faqsTitle`) as unknown;
       if (isMeaningfulString(rLocal) && rLocal !== `content.${ctx.guideKey}.faqsTitle`) return rLocal.trim();
-    } catch { /* noop */ }
+    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle local", err); }
     try {
       const rEn = typeof ctx.translateGuides === "function"
         ? (ctx.translateGuides(`content.${ctx.guideKey}.faqsTitle`) as unknown)
         : undefined;
       if (isMeaningfulString(rEn) && rEn !== `content.${ctx.guideKey}.faqsTitle`) return rEn.trim();
-    } catch { /* noop */ }
+    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle EN", err); }
     // When localized structured content exists, avoid probing per‑guide
     // keys that might trigger fallback translators. Prefer a generic
     // localized FAQs label or a simple default.
@@ -273,7 +275,7 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
       try {
         const l1 = ctx.translator("labels.faqsHeading") as unknown;
         if (isMeaningfulString(l1) && l1 !== "labels.faqsHeading") return l1.trim();
-      } catch { /* noop */ }
+      } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading", err); }
       return "FAQs";
     }
     // Unlocalized path: consult per‑guide labels and fallbacks.
@@ -285,7 +287,7 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
         rawTitle.trim() !== ctx.guideKey
       )
         return rawTitle.trim();
-    } catch { void 0; }
+    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle unlocalized", err); }
     try {
       const rawTitleEn = typeof ctx.translateGuides === "function"
         ? (ctx.translateGuides(`content.${ctx.guideKey}.faqsTitle`) as unknown)
@@ -296,7 +298,7 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
         rawTitleEn.trim() !== ctx.guideKey
       )
         return rawTitleEn.trim();
-    } catch { void 0; }
+    } catch (err) { if (IS_DEV) console.debug("[toc] faqsTitle EN unlocalized", err); }
     // 0) Prefer per‑guide fallback label when provided
     try {
       const rawLocal = ctx.translator(`content.${ctx.guideKey}.fallback.faqLabel`) as unknown;
@@ -306,7 +308,7 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
         rawLocal.trim() !== ctx.guideKey
       )
         return rawLocal.trim();
-    } catch { void 0; }
+    } catch (err) { if (IS_DEV) console.debug("[toc] fallback.faqLabel local", err); }
     if (ctx.lang !== 'en') {
       try {
         const rawEn = typeof ctx.translateGuides === "function"
@@ -318,26 +320,26 @@ function maybeAppendFaq(ctx: GuideSeoTemplateContext, items: TocItem[]): TocItem
           rawEn.trim() !== ctx.guideKey
         )
           return rawEn.trim();
-      } catch { void 0; }
+      } catch (err) { if (IS_DEV) console.debug("[toc] fallback.faqLabel EN", err); }
     }
     try {
       const raw = ctx.translator(`content.${ctx.guideKey}.toc.faqs`) as unknown;
       if (isMeaningfulString(raw) && raw !== `content.${ctx.guideKey}.toc.faqs`) return raw.trim();
-    } catch {
-      void 0; // no-op: fallback to default label
+    } catch (err) {
+      if (IS_DEV) console.debug("[toc] faqsTitle toc.faqs", err);
     }
     // Prefer a localized generic FAQs heading label when available
     try {
       const l1 = ctx.translator("labels.faqsHeading") as unknown;
       if (isMeaningfulString(l1) && l1 !== "labels.faqsHeading") return l1.trim();
-    } catch { void 0; }
+    } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading label", err); }
     if (!ctx.hasLocalizedContent) {
       try {
         const l2 = typeof ctx.translateGuides === "function"
           ? (ctx.translateGuides("labels.faqsHeading") as unknown)
           : undefined;
         if (isMeaningfulString(l2) && l2 !== "labels.faqsHeading") return (l2 as string).trim();
-      } catch { void 0; }
+      } catch (err) { if (IS_DEV) console.debug("[toc] faqsHeading EN", err); }
     }
     return "FAQs";
   })();

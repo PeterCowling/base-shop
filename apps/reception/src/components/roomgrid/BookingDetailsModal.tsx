@@ -10,6 +10,7 @@
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 
+import { useDialog } from "../../context/DialogContext";
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGuestByRoomData from "../../hooks/data/roomgrid/useGuestByRoomData";
 import useBookings from "../../hooks/data/useBookingsData";
@@ -39,6 +40,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
   bookingDetails,
   onClose,
 }) => {
+  const { showConfirm } = useDialog();
   const { allocateRoomIfAllowed } = useAllocateRoom();
   const { bookings } = useBookings({
     startAt: bookingDetails.bookingRef,
@@ -57,9 +59,12 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
     const occMap = bookings?.[bookingDetails.bookingRef];
     if (!occMap) return;
 
-    const confirmMove = window.confirm(
-      `Move all ${Object.keys(occMap).length} guests to room "${targetRoom}"?`
-    );
+    const guestCount = Object.keys(occMap).length;
+    const confirmMove = await showConfirm({
+      title: "Move guests",
+      message: `Move all ${guestCount} guests to room "${targetRoom}"?`,
+      confirmLabel: "Move",
+    });
     if (!confirmMove) return;
 
     for (const occupantId of Object.keys(occMap)) {
@@ -84,6 +89,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
     bookingDetails.date,
     bookings,
     guestByRoomData,
+    showConfirm,
     targetRoom,
     onClose,
   ]);

@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import type { TFunction } from "i18next";
 import { AlertTriangle, Clock, Luggage, MapPin,Ship } from "lucide-react";
 
@@ -13,56 +13,53 @@ export type BeforeYouTravelProps = {
 };
 
 function BeforeYouTravelBase({ t }: BeforeYouTravelProps) {
-  const items = useMemo<ChecklistItem[]>(
-    () => [
-      {
-        key: "stairs",
-        title: t("beforeTravel.items.stairs.title", { defaultValue: "Positano basics: stairs + luggage" }),
-        body: t("beforeTravel.items.stairs.body", {
-          defaultValue:
-            "Expect steps even for short walks. Pack light, and consider porters if you’re arriving via the port.",
-        }),
-        Icon: Luggage,
-      },
-      {
-        key: "ferries",
-        title: t("beforeTravel.items.ferries.title", { defaultValue: "Ferry season + cancellations" }),
-        body: t("beforeTravel.items.ferries.body", {
-          defaultValue:
-            "Most ferries are seasonal and can cancel due to wind. Always check operator updates before you travel.",
-        }),
-        Icon: Ship,
-      },
-      {
-        key: "late",
-        title: t("beforeTravel.items.late.title", { defaultValue: "Late arrivals" }),
-        body: t("beforeTravel.items.late.body", {
-          defaultValue:
-            "Evening/late-night options are limited. If you’re delayed, message us early so we can suggest the best fallback.",
-        }),
-        Icon: Clock,
-      },
-      {
-        key: "taxis",
-        title: t("beforeTravel.items.taxis.title", { defaultValue: "Taxis + exact address" }),
-        body: t("beforeTravel.items.taxis.body", {
-          defaultValue:
-            "Some lanes can’t be reached by car. Use the exact address and aim for the closest drop-off near Chiesa Nuova.",
-        }),
-        Icon: MapPin,
-      },
-      {
-        key: "tickets",
-        title: t("beforeTravel.items.tickets.title", { defaultValue: "Tickets" }),
-        body: t("beforeTravel.items.tickets.body", {
-          defaultValue:
-            "Buy bus tickets before boarding when possible (tabacchi/newsstands). Keep change and ID handy in peak season.",
-        }),
-        Icon: AlertTriangle,
-      },
-    ],
-    [t],
-  );
+  const items: ChecklistItem[] = [
+    {
+      key: "stairs",
+      title: t("beforeTravel.items.stairs.title", { defaultValue: "Positano basics: stairs + luggage" }),
+      body: t("beforeTravel.items.stairs.body", {
+        defaultValue:
+          "Expect steps even for short walks. Pack light, and consider porters if you’re arriving via the port.",
+      }),
+      Icon: Luggage,
+    },
+    {
+      key: "ferries",
+      title: t("beforeTravel.items.ferries.title", { defaultValue: "Ferry season + cancellations" }),
+      body: t("beforeTravel.items.ferries.body", {
+        defaultValue:
+          "Most ferries are seasonal and can cancel due to wind. Always check operator updates before you travel.",
+      }),
+      Icon: Ship,
+    },
+    {
+      key: "late",
+      title: t("beforeTravel.items.late.title", { defaultValue: "Late arrivals" }),
+      body: t("beforeTravel.items.late.body", {
+        defaultValue:
+          "Evening/late-night options are limited. If you’re delayed, message us early so we can suggest the best fallback.",
+      }),
+      Icon: Clock,
+    },
+    {
+      key: "taxis",
+      title: t("beforeTravel.items.taxis.title", { defaultValue: "Taxis + exact address" }),
+      body: t("beforeTravel.items.taxis.body", {
+        defaultValue:
+          "Some lanes can’t be reached by car. Use the exact address and aim for the closest drop-off near Chiesa Nuova.",
+      }),
+      Icon: MapPin,
+    },
+    {
+      key: "tickets",
+      title: t("beforeTravel.items.tickets.title", { defaultValue: "Tickets" }),
+      body: t("beforeTravel.items.tickets.body", {
+        defaultValue:
+          "Buy bus tickets before boarding when possible (tabacchi/newsstands). Keep change and ID handy in peak season.",
+      }),
+      Icon: AlertTriangle,
+    },
+  ];
 
   return (
     <section className="rounded-3xl border border-brand-outline/20 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/30 dark:bg-brand-surface/60">

@@ -50,10 +50,10 @@ function formatDob(occupant: OccupantDetails): string {
   return `${safeDD}/${safeMM}/${safeYYYY}`;
 }
 
-export function constructAlloggiatiRecord(
+export async function constructAlloggiatiRecord(
   occupant: OccupantDetails,
   { arrivalDateDdMmYyyy, nights = "1" }: ConstructAlloggiatiRecordOptions,
-): string {
+): Promise<string> {
   const OSPITE_SINGOLO = "16";
 
   const mappedGender = mapGender(occupant.gender);
@@ -69,7 +69,7 @@ export function constructAlloggiatiRecord(
   let finalComuneProvince = "Unknown";
   if (placeOfBirthRaw.trim().toLowerCase() === "italy") {
     const municipality = occupant.municipality?.trim() || "Unknown";
-    const [comuneCode, comuneProvince] = getComuneInfo(municipality);
+    const [comuneCode, comuneProvince] = await getComuneInfo(municipality);
     finalComuneCode = comuneCode;
     finalComuneProvince = comuneProvince;
   }

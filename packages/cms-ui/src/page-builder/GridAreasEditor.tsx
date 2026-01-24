@@ -105,7 +105,7 @@ export default function GridAreasEditor({ value, columns, rows, onChange }: Prop
                    
                   key={`cell-${y}-${x}`}
                   type="button"
-                  className="bg-muted/40 hover:bg-muted rounded p-2 text-center text-xs min-h-10 min-w-10"
+                  className="bg-muted/40 hover:bg-muted rounded p-2 text-center text-xs min-h-11 min-w-11"
                   onClick={() => paint(y, x)}
                   title={`Row ${y + 1}, Col ${x + 1}`}
                 >

@@ -86,7 +86,9 @@ describe("FormsContainer", () => {
       200,
       2,
       true,
-      { b: 1 }
+      { b: 1 },
+      undefined,
+      undefined
     );
     await userEvent.click(screen.getByText("cancel-close"));
     expect(props.setShowCloseShiftForm).toHaveBeenCalledWith(false);

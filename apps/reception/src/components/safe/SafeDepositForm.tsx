@@ -1,10 +1,8 @@
-import { memo, useCallback, useRef } from "react";
+import { memo, useRef } from "react";
 
-import { useAuth } from "../../context/AuthContext";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -24,7 +22,6 @@ export const SafeDepositForm = memo(function SafeDepositForm({
   onConfirm,
   onCancel,
 }: SafeDepositFormProps) {
-  const { user } = useAuth();
   const submitRef = useRef<(() => void) | undefined>(undefined);
 
   const handleConfirm = (
@@ -44,18 +41,6 @@ export const SafeDepositForm = memo(function SafeDepositForm({
     onConfirm(cash, keycardCount, cards, breakdown);
   };
 
-  const handlePinSubmit = useCallback(
-    (pin: string): boolean => {
-      const current = getUserByPin(pin);
-      if (!user || !current || current.user_name !== user.user_name) {
-        return false;
-      }
-      submitRef.current?.();
-      return true;
-    },
-    [user]
-  );
-
   return (
     <CashCountingForm
       idPrefix="safeDeposit_"
@@ -73,11 +58,13 @@ export const SafeDepositForm = memo(function SafeDepositForm({
       submitRef={submitRef}
     >
       <div className="mt-5">
-        <PinLoginInline onSubmit={handlePinSubmit} />
+        <PasswordReauthInline
+          onSubmit={() => submitRef.current?.()}
+          submitLabel="Confirm deposit"
+        />
       </div>
     </CashCountingForm>
   );
 });
 
 export default SafeDepositForm;
-

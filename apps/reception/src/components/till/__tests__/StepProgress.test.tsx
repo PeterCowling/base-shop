@@ -9,7 +9,13 @@ describe("StepProgress", () => {
   it("allows navigating back", async () => {
     const user = userEvent.setup();
     const onChange = jest.fn();
-    render(<StepProgress step={2} onStepChange={onChange} userName="Bob" />);
+    render(
+      <StepProgress
+        step={2}
+        onStepChange={onChange}
+        user={{ user_name: "Bob", email: "bob@test.com", roles: ["staff"] }}
+      />
+    );
     await user.click(screen.getByRole("button", { name: "1" }));
     expect(onChange).toHaveBeenCalledWith(0);
   });
@@ -17,7 +23,13 @@ describe("StepProgress", () => {
   it("prevents forward navigation for non-Pete", async () => {
     const user = userEvent.setup();
     const onChange = jest.fn();
-    render(<StepProgress step={0} onStepChange={onChange} userName="Bob" />);
+    render(
+      <StepProgress
+        step={0}
+        onStepChange={onChange}
+        user={{ user_name: "Bob", email: "bob@test.com", roles: ["staff"] }}
+      />
+    );
     await user.click(screen.getByRole("button", { name: "2" }));
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -25,7 +37,17 @@ describe("StepProgress", () => {
   it("allows forward navigation for Pete", async () => {
     const user = userEvent.setup();
     const onChange = jest.fn();
-    render(<StepProgress step={0} onStepChange={onChange} userName="Pete" />);
+    render(
+      <StepProgress
+        step={0}
+        onStepChange={onChange}
+        user={{
+          user_name: "Pete",
+          email: "pete@test.com",
+          roles: ["manager"],
+        }}
+      />
+    );
     await user.click(screen.getByRole("button", { name: "2" }));
     expect(onChange).toHaveBeenCalledWith(1);
   });

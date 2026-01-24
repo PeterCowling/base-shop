@@ -1,5 +1,5 @@
 // src/components/footer/Footer.tsx
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram } from "lucide-react";
@@ -27,22 +27,22 @@ const SAFE_BOTTOM_PADDING_STYLE = {
 const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
-  const normalizedI18nLang = useMemo(() => {
+  const normalizedI18nLang = (() => {
     const raw = i18n.language?.toLowerCase();
     if (!raw) return undefined;
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
-  }, [i18n.language]);
+  })();
   const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
   const { t: tFooter } = useTranslation("footer", { lng: lang });
   const rawPathname = usePathname();
   const pathname = rawPathname ?? "";
-  const mapUrl = useMemo(() => {
+  const mapUrl = (() => {
     const googleMaps = hotel.sameAs.find((link) => link.includes("maps.google.com"));
     if (googleMaps) return googleMaps;
     const query = encodeURIComponent(`${hotel.name.en} ${hotel.address.streetAddress}`);
     return `https://maps.google.com/?q=${query}`;
-  }, []);
+  })();
   const linkClasses = useCallback(
     (small = false, isActive = false): string => {
       const sizeClass = small ? "text-sm" : "text-base";
@@ -130,126 +130,114 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
     },
     [pathname, lang],
   );
-  const addressLines = useMemo(
-    () => [
-      hotel.address.streetAddress,
-      `${hotel.address.postalCode} ${hotel.address.addressLocality}`,
-      tFooter("addressCountry", { lng: lang }) as string,
-    ],
-    [lang, tFooter],
-  );
-  const legalLinks = useMemo<FooterLink[]>(
-    () => [
-      {
-        key: "terms",
-        label: tFooter("terms", { lng: lang }) as string,
-        href: `/${lang}/${getSlug("terms", lang)}`,
-      },
-      {
-        key: "houseRules",
-        label: tFooter("houseRules", { lng: lang }) as string,
-        href: `/${lang}/${getSlug("houseRules", lang)}`,
-      },
-      {
-        key: "privacy",
-        label: tFooter("privacy", { lng: lang }) as string,
-        href: `/${lang}/${getSlug("privacyPolicy", lang)}`,
-      },
-      {
-        key: "cookies",
-        label: tFooter("cookies", { lng: lang }) as string,
-        href: `/${lang}/${getSlug("cookiePolicy", lang)}`,
-      },
-    ],
-    [lang, tFooter],
-  );
+  const addressLines = [
+    hotel.address.streetAddress,
+    `${hotel.address.postalCode} ${hotel.address.addressLocality}`,
+    tFooter("addressCountry", { lng: lang }) as string,
+  ];
+  const legalLinks: FooterLink[] = [
+    {
+      key: "terms",
+      label: tFooter("terms", { lng: lang }) as string,
+      href: `/${lang}/${getSlug("terms", lang)}`,
+    },
+    {
+      key: "houseRules",
+      label: tFooter("houseRules", { lng: lang }) as string,
+      href: `/${lang}/${getSlug("houseRules", lang)}`,
+    },
+    {
+      key: "privacy",
+      label: tFooter("privacy", { lng: lang }) as string,
+      href: `/${lang}/${getSlug("privacyPolicy", lang)}`,
+    },
+    {
+      key: "cookies",
+      label: tFooter("cookies", { lng: lang }) as string,
+      href: `/${lang}/${getSlug("cookiePolicy", lang)}`,
+    },
+  ];
 
-  const navGroups = useMemo<FooterGroup[]>(
-    () => [
-      {
-        key: "explore",
-        heading: tFooter("exploreHeading", { lng: lang }) as string,
-        links: [
-          {
-            key: "rooms",
-            label: tFooter("rooms", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("rooms", lang)}`,
-          },
-          {
-            key: "experiences",
-            label: tFooter("experiences", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("experiences", lang)}`,
-          },
-          {
-            key: "deals",
-            label: tFooter("deals", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("deals", lang)}`,
-          },
-        ],
-      },
-      {
-        key: "info",
-        heading: tFooter("infoHeading", { lng: lang }) as string,
-        links: [
-          {
-            key: "howToGetHere",
-            label: tFooter("howToGetHere", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("howToGetHere", lang)}`,
-          },
-          {
-            key: "assistance",
-            label: tFooter("assistance", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("assistance", lang)}`,
-          },
-          {
-            key: "faq",
-            label: tFooter("faq", { lng: lang }) as string,
-            href: guideHref(lang, "travelFaqsAmalfi"),
-          },
-          {
-            key: "checkinCheckout",
-            label: tFooter("checkinCheckout", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "checkinCheckout")}`,
-          },
-          {
-            key: "houseRules",
-            label: tFooter("houseRules", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "rules")}`,
-          },
-          {
-            key: "cancellationPolicy",
-            label: tFooter("cancellationPolicy", { lng: lang }) as string,
-            href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "changingCancelling")}`,
-          },
-        ],
-      },
-      {
-        key: "legal",
-        heading: tFooter("legalHeading", { lng: lang }) as string,
-        links: legalLinks,
-      },
-    ],
-    [lang, tFooter, legalLinks],
-  );
-  const socialLinks = useMemo<FooterLink[]>(
-    () => [
-      {
-        key: "instagram",
-        label: tFooter("instagram", { lng: lang }) as string,
-        href: "https://www.instagram.com/brikettepositano",
-        external: true,
-        newTab: true,
-      },
-      {
-        key: "facebook",
-        label: tFooter("facebook", { lng: lang }) as string,
-        href: "https://www.facebook.com/hostelbrikette",
-        external: true,
-        newTab: true,
-      },
-    ],
-    [lang, tFooter],
-  );
+  const navGroups: FooterGroup[] = [
+    {
+      key: "explore",
+      heading: tFooter("exploreHeading", { lng: lang }) as string,
+      links: [
+        {
+          key: "rooms",
+          label: tFooter("rooms", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("rooms", lang)}`,
+        },
+        {
+          key: "experiences",
+          label: tFooter("experiences", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("experiences", lang)}`,
+        },
+        {
+          key: "deals",
+          label: tFooter("deals", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("deals", lang)}`,
+        },
+      ],
+    },
+    {
+      key: "info",
+      heading: tFooter("infoHeading", { lng: lang }) as string,
+      links: [
+        {
+          key: "howToGetHere",
+          label: tFooter("howToGetHere", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("howToGetHere", lang)}`,
+        },
+        {
+          key: "assistance",
+          label: tFooter("assistance", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("assistance", lang)}`,
+        },
+        {
+          key: "faq",
+          label: tFooter("faq", { lng: lang }) as string,
+          href: guideHref(lang, "travelFaqsAmalfi"),
+        },
+        {
+          key: "checkinCheckout",
+          label: tFooter("checkinCheckout", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "checkinCheckout")}`,
+        },
+        {
+          key: "houseRules",
+          label: tFooter("houseRules", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "rules")}`,
+        },
+        {
+          key: "cancellationPolicy",
+          label: tFooter("cancellationPolicy", { lng: lang }) as string,
+          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "changingCancelling")}`,
+        },
+      ],
+    },
+    {
+      key: "legal",
+      heading: tFooter("legalHeading", { lng: lang }) as string,
+      links: legalLinks,
+    },
+  ];
+  const socialLinks: FooterLink[] = [
+    {
+      key: "instagram",
+      label: tFooter("instagram", { lng: lang }) as string,
+      href: "https://www.instagram.com/brikettepositano",
+      external: true,
+      newTab: true,
+    },
+    {
+      key: "facebook",
+      label: tFooter("facebook", { lng: lang }) as string,
+      href: "https://www.facebook.com/hostelbrikette",
+      external: true,
+      newTab: true,
+    },
+  ];
 
   const backToTopLabel = tFooter("backToTop", { lng: lang }) as string;
   const copyright = tFooter("copyright", { lng: lang, year: CURRENT_YEAR }) as string;

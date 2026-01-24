@@ -153,7 +153,7 @@ function StepIndicator({
                     (isActive
                       ? "border-blue-600 bg-blue-600 text-white"
                       : isCompleted
-                      ? "border-green-600 bg-green-600 text-white"
+                      ? "border-green-600 bg-success text-white"
                       : isVisited
                       ? "border-gray-300 bg-white text-gray-500 group-hover:border-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400"
                       : "border-gray-200 bg-white text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600")
@@ -203,7 +203,7 @@ function StepIndicator({
                   className={
                     "ml-4 h-0.5 flex-1 " +
                     (completedSteps.has(index)
-                      ? "bg-green-600"
+                      ? "bg-success"
                       : "bg-gray-200 dark:bg-gray-700")
                   }
                   aria-hidden="true"
@@ -216,7 +216,7 @@ function StepIndicator({
                   className={
                     "absolute left-5 top-10 h-full w-0.5 -translate-x-1/2 " +
                     (completedSteps.has(index)
-                      ? "bg-green-600"
+                      ? "bg-success"
                       : "bg-gray-200 dark:bg-gray-700")
                   }
                   aria-hidden="true"

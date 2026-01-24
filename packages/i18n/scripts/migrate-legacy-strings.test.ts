@@ -45,12 +45,10 @@ describeFn("migrate-legacy-strings CLI", () => {
     const file = path.join(tmpDir, "page.json");
 
     const original = { title: "Hello", other: "keep" };
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(file, JSON.stringify(original, null, 2), "utf8");
 
     const { logs } = await runCli(["--path", file, "--dry-run"]);
 
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const after = JSON.parse(fs.readFileSync(file, "utf8")) as unknown;
     expect(after).toEqual(original);
 
@@ -67,7 +65,6 @@ describeFn("migrate-legacy-strings CLI", () => {
       path.join(os.tmpdir(), "i18n-migrate-dir-")
     );
     const root = path.join(tmpDir, "pages");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.mkdirSync(root);
 
     const file = path.join(root, "page.json");
@@ -82,12 +79,10 @@ describeFn("migrate-legacy-strings CLI", () => {
       },
       list: ["First", { title: "Inner" }],
     };
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(file, JSON.stringify(original, null, 2), "utf8");
 
     await runCli(["--path", root, "--write"]);
 
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const after = JSON.parse(fs.readFileSync(file, "utf8")) as any;
 
     expect(after.title).toEqual({

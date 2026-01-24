@@ -54,12 +54,6 @@ jest.mock(
   "@/components/atoms",
   () => ({
     __esModule: true,
-    Toast: ({ message, open, ...props }: any) =>
-      open ? (
-        <div data-testid="toast" {...props}>
-          {message}
-        </div>
-      ) : null,
   }),
   { virtual: true },
 );
@@ -109,7 +103,7 @@ describe("ShopEditor", () => {
     jest.clearAllMocks();
   });
 
-  it("renders sections, toast, and section errors from the form state", () => {
+  it("renders sections and section errors from the form state", () => {
     const filterMappings = createMappingController([
       { key: "color", value: "attributes.color" },
     ]);
@@ -195,12 +189,6 @@ describe("ShopEditor", () => {
         catalogFilters: info.catalogFilters,
         setCatalogFilters: jest.fn(),
       },
-      toast: {
-        open: true,
-        status: "error",
-        message: "Validation issues",
-      },
-      closeToast: jest.fn(),
       onSubmit: jest.fn(),
     } as any);
 
@@ -228,9 +216,6 @@ describe("ShopEditor", () => {
     sectionKeys.forEach((key) => {
       expect(renderedSections).toContain(key);
     });
-
-    const toast = screen.getByText("Validation issues");
-    expect(toast).toHaveClass("bg-destructive");
 
     expect(screen.getByText("Shop name is required")).toBeInTheDocument();
     expect(

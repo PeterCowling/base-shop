@@ -17,8 +17,8 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` | Block secrets, block partial staging, run linting without backup stashes |
-| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` | Block force pushes; run typecheck before pushing |
+| `pre-commit` | `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` | Block secrets, block partial staging, lint staged files, then run typecheck + lint |
+| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Block force pushes; run typecheck + lint before pushing |
 
 ---
 
@@ -29,6 +29,8 @@ The pre-commit hook runs checks before allowing a commit:
 1. **Environment File Check** - Prevents accidental commits of sensitive credential files
 2. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
 3. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
+4. **Typecheck** - Runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching)
+5. **Lint** - Runs `pnpm lint` (Turbo lint tasks)
 
 #### Environment File Protection
 
@@ -104,7 +106,7 @@ This operation would:
   - Potentially lose commits from other contributors
   - Break other developers' local branches
 
-Reference: docs/RECOVERY-PLAN-2026-01-14.md
+Reference: docs/historical/RECOVERY-PLAN-2026-01-14.md
 
 If this must be done (emergency only):
   1. Create a backup: git branch backup-$(date +%Y%m%d-%H%M%S)
@@ -114,7 +116,7 @@ If this must be done (emergency only):
 
 ### Why This Exists
 
-On January 14, 2026, destructive git commands caused significant data loss. This hook is one of several protection layers to prevent similar incidents. See [RECOVERY-PLAN-2026-01-14.md](./RECOVERY-PLAN-2026-01-14.md) for details.
+On January 14, 2026, destructive git commands caused significant data loss. This hook is one of several protection layers to prevent similar incidents. See [RECOVERY-PLAN-2026-01-14.md](./historical/RECOVERY-PLAN-2026-01-14.md) for details.
 
 ### Emergency Bypass
 
@@ -134,8 +136,8 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 
 ```json
 "simple-git-hooks": {
-  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash",
-  "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck"
+  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint",
+  "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
 }
 ```
 
@@ -269,7 +271,7 @@ rm test.env.example
 - [Git Safety Guide](./git-safety.md) - Comprehensive git safety documentation
 - [AGENTS.md](../AGENTS.md) - Git safety rules for AI agents
 - [Environment Variables Reference](./.env.reference.md)
-- [Recovery Plan](./RECOVERY-PLAN-2026-01-14.md) - Jan 14, 2026 incident details
+- [Recovery Plan](./historical/RECOVERY-PLAN-2026-01-14.md) - Jan 14, 2026 incident details
 - [.gitignore](../.gitignore)
 - [simple-git-hooks GitHub](https://github.com/toplenboren/simple-git-hooks)
 - [lint-staged GitHub](https://github.com/lint-staged/lint-staged)

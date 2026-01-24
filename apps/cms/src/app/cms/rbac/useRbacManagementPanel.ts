@@ -1,8 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
 
-import type { ActionResult, ActionStatus } from "../components/actionResult";
 import type { RoleDetail } from "../components/roleDetails";
 
 import {
@@ -15,10 +13,6 @@ import {
   type UserTag,
   useUserRoleSelections,
 } from "./hooks/useUserRoleSelections";
-
-type ToastState = ActionResult & { open: boolean };
-
-const DEFAULT_TOAST: ToastState = { open: false, status: "success", message: "" };
 
 type UseRbacManagementPanelOptions = {
   users: UserWithRoles[];
@@ -42,31 +36,8 @@ type UseRbacManagementPanelResult = {
   resetInviteForm: () => void;
   submitInvite: () => void;
   isInviting: boolean;
-  toast: ToastState;
-  toastClassName: string;
-  closeToast: () => void;
   getInviteHelperText: () => string;
 };
-
-function useToastState() {
-  const [toast, setToast] = useState<ToastState>(DEFAULT_TOAST);
-
-  const showToast = useCallback((status: ActionStatus, message: string) => {
-    setToast({ open: true, status, message });
-  }, []);
-
-  const closeToast = useCallback(() => {
-    setToast((current) => ({ ...current, open: false }));
-  }, []);
-
-  const toastClassName = useMemo(() => {
-    return toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
-  }, [toast.status]);
-
-  return { toast, toastClassName, showToast, closeToast };
-}
 
 export function useRbacManagementPanel({
   users,
@@ -74,8 +45,6 @@ export function useRbacManagementPanel({
   onSaveUser,
   onInvite,
 }: UseRbacManagementPanelOptions): UseRbacManagementPanelResult {
-  const { toast, toastClassName, showToast, closeToast } = useToastState();
-
   const {
     users: managedUsers,
     getSelectedRoles,
@@ -90,7 +59,6 @@ export function useRbacManagementPanel({
     users,
     roleDetails,
     onSaveUser,
-    showToast,
   });
 
   const {
@@ -104,7 +72,6 @@ export function useRbacManagementPanel({
   } = useInviteUserForm({
     roleDetails,
     onInvite,
-    showToast,
     onInviteSuccess: syncUser,
   });
 
@@ -123,9 +90,6 @@ export function useRbacManagementPanel({
     resetInviteForm,
     submitInvite,
     isInviting,
-    toast,
-    toastClassName,
-    closeToast,
     getInviteHelperText,
   };
 }

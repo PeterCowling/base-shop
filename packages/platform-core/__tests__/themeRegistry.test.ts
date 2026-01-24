@@ -64,7 +64,7 @@ describe("Theme Registry (LAUNCH-24)", () => {
     });
 
     it("builds entry for incomplete theme with defaults", () => {
-      // dummy theme has no package.json, so it gets default values
+      // dummy theme is a test fixture and should remain unavailable
       const entry = buildThemeEntry("dummy");
 
       expect(entry.id).toBe("dummy");

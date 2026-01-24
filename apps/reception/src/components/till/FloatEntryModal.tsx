@@ -2,10 +2,9 @@ import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
-import PinInput from "../common/PinInput";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 export interface FloatEntryModalProps {
   onConfirm: (amount: number) => void;
@@ -20,8 +19,6 @@ const floatEntryModalSchema = z.object({
 function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
   const [amount, setAmount] = useState<string>("");
 
-  const [pinError, setPinError] = useState<boolean>(false);
-
   /** ---------- Helpers --------------------------------------------------- */
   const handleConfirm = useCallback(() => {
     const result = floatEntryModalSchema.safeParse({
@@ -33,23 +30,6 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
     }
     onConfirm(result.data.amount);
   }, [amount, onConfirm]);
-
-  /** ---------- Direct PIN entry ----------------------------------------- */
-  const handlePinChange = useCallback(
-    (val: string) => {
-      if (val.length !== 6) {
-        setPinError(false);
-        return;
-      }
-      if (!getUserByPin(val)) {
-        setPinError(true);
-        return;
-      }
-      setPinError(false);
-      handleConfirm();
-    },
-    [handleConfirm]
-  );
 
   /** ---------- UI -------------------------------------------------------- */
   return (
@@ -84,12 +64,10 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
 
           {/* PIN */}
           <div className="mt-6 flex flex-col items-center gap-4">
-            <PinInput
-              onChange={handlePinChange}
-              placeholder="PIN"
-              title="Confirm PIN"
+            <PasswordReauthInline
+              onSubmit={handleConfirm}
+              submitLabel="Confirm change"
             />
-            {pinError && <p className="text-sm text-error-main">Invalid PIN</p>}
           </div>
         </div>
       </ModalContainer>

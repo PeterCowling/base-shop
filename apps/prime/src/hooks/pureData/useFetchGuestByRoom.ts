@@ -1,30 +1,24 @@
 'use client';
 
-/* File: /src/hooks/data/pure/useFetchGuestByRoom.ts
-   Explanation:
-   - The data fetching logic is centralized into the `loadData` callback.
-   - A `refetch` function is added to support manual data reloading.
-*/
+// File: /src/hooks/pureData/useFetchGuestByRoom.ts
+// OPT-02/03: React Query with deferred loading support.
 
+import { useQuery } from '@tanstack/react-query';
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
-import { useCallback, useEffect, useState } from 'react';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestByRoom } from '../../types/guestByRoom';
 import useUuid from '../useUuid';
 
 /**
- * Helper function to fetch occupant data from "guestByRoom/{occupantId}".
- * Returns an object in the shape: { [occupantId]: occupantRecord }.
+ * Fetch occupant data from "guestByRoom/{occupantId}".
+ * Returns { [occupantId]: occupantRecord }.
  */
 async function fetchGuestByRoom(
   occupantId: string,
   database: Database,
 ): Promise<GuestByRoom> {
-  if (!occupantId) {
-    return {};
-  }
   try {
     const snapshot = await get(ref(database, `guestByRoom/${occupantId}`));
     if (!snapshot.exists()) {
@@ -38,60 +32,26 @@ async function fetchGuestByRoom(
   }
 }
 
-export function useFetchGuestByRoom() {
+interface UseFetchGuestByRoomOptions {
+  enabled?: boolean;
+}
+
+export function useFetchGuestByRoom(options: UseFetchGuestByRoomOptions = {}) {
+  const { enabled = true } = options;
   const occupantId = useUuid();
   const database = useFirebaseDatabase();
-  const [data, setData] = useState<GuestByRoom>({});
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const loadData = useCallback(
-    async (cancelled?: { current: boolean }): Promise<void> => {
-      if (!occupantId) {
-        if (!cancelled?.current) {
-          setData({});
-          setError(null);
-          setIsLoading(false);
-        }
-        return;
-      }
-      if (!cancelled?.current) setIsLoading(true);
-      try {
-        const result = await fetchGuestByRoom(occupantId, database);
-        if (!cancelled?.current) {
-          setData(result);
-          setError(null);
-        }
-      } catch (err: unknown) {
-        if (!cancelled?.current) {
-          setError(err instanceof Error ? err : new Error('Unknown error'));
-        }
-      } finally {
-        if (!cancelled?.current) setIsLoading(false);
-      }
-    },
-    [occupantId, database],
-  );
-
-  useEffect(() => {
-    const state = { current: false };
-    loadData(state).catch(() => {
-      /* Error is handled in loadData */
-    });
-    return () => {
-      state.current = true;
-    };
-  }, [loadData]);
-
-  const refetch = useCallback(async (): Promise<void> => {
-    await loadData();
-  }, [loadData]);
+  const { data, error, isLoading, refetch: rqRefetch } = useQuery({
+    queryKey: ['guestByRoom', occupantId],
+    queryFn: () => fetchGuestByRoom(occupantId!, database),
+    enabled: enabled && !!occupantId,
+  });
 
   return {
-    data,
-    error,
+    data: data ?? null,
+    error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch,
+    refetch: async () => { await rqRefetch(); },
   };
 }

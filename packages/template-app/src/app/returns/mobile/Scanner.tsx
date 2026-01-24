@@ -131,7 +131,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
         </div>
       )}
       {result && allowedZips.length === 0 && <p>{t("returns.scanner.processing")}</p>}
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
     </div>
   );
 }

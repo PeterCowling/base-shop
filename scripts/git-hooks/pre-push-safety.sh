@@ -42,7 +42,7 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     echo "You are attempting to push a history rewrite to: ${remote_ref#refs/heads/}" >&2
     echo "" >&2
     echo "This would overwrite remote history and can destroy work." >&2
-    echo "Reference: docs/RECOVERY-PLAN-2026-01-14.md" >&2
+    echo "Reference: docs/historical/RECOVERY-PLAN-2026-01-14.md" >&2
     echo "" >&2
     exit 1
   fi

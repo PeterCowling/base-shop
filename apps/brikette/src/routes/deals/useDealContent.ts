@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { AppLanguage } from "@/i18n.config";
@@ -38,25 +37,14 @@ export function useDealContent(lang: AppLanguage): DealsPageContent {
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { t: tTokensEn, ready: tokensEnReady } = useTranslation("_tokens", { lng: "en" });
 
-  const translate = useMemo(() => {
-    if (!ready && !readyEn) {
-      return createFallbackTranslator(tEn, tEn);
-    }
-    return createFallbackTranslator(t, tEn);
-  }, [t, tEn, ready, readyEn]);
-  const resolveToken = useMemo(() => {
-    if (!tokensReady && !tokensEnReady) {
-      return createTokenResolver(tTokensEn, tTokensEn);
-    }
-    return createTokenResolver(tTokens, tTokensEn);
-  }, [tTokens, tTokensEn, tokensReady, tokensEnReady]);
+  const translate =
+    !ready && !readyEn ? createFallbackTranslator(tEn, tEn) : createFallbackTranslator(t, tEn);
+  const resolveToken =
+    !tokensReady && !tokensEnReady
+      ? createTokenResolver(tTokensEn, tTokensEn)
+      : createTokenResolver(tTokens, tTokensEn);
 
-  const perks = useMemo(() => {
-    if (!ready && !readyEn) {
-      return buildPerksList(tEn, tEn);
-    }
-    return buildPerksList(t, tEn);
-  }, [t, tEn, ready, readyEn]);
+  const perks = !ready && !readyEn ? buildPerksList(tEn, tEn) : buildPerksList(t, tEn);
   const directBookingPerksLabel = resolveToken("directBookingPerks");
   const perksHeading = resolvePerksHeading(directBookingPerksLabel, translate);
   const perksIntro = translate("perksIntro");

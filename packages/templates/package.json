@@ -7,6 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
@@ -21,8 +22,7 @@
   },
   "dependencies": {
     "@acme/i18n": "workspace:*",
-    "@acme/page-builder-core": "workspace:*",
-    "@acme/ui": "workspace:*"
+    "@acme/page-builder-core": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.8"

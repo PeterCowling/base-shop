@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Work_Sans } from "next/font/google";
 
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
-import { ThemeProvider } from "@acme/platform-core/contexts/ThemeContext";
+import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
+import { initTheme } from "@acme/platform-core/utils";
 
 import { XaServiceWorkerRegistration } from "../components/XaServiceWorkerRegistration.client";
 import { XaShell } from "../components/XaShell";
@@ -77,16 +78,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     .join(" ");
 
   return (
-    <html lang="en" className={htmlClassName}>
+    <html lang="en" className={htmlClassName} suppressHydrationWarning>
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <script dangerouslySetInnerHTML={{ __html: initTheme }} />
+      </head>
       <body className="min-h-dvh bg-background text-foreground antialiased">
         <CartProvider>
           <WishlistProvider>
-            <ThemeProvider>
+          <ShopThemeProvider>
               <CurrencyProvider>
                 <XaServiceWorkerRegistration />
                 <XaShell>{children}</XaShell>
               </CurrencyProvider>
-            </ThemeProvider>
+          </ShopThemeProvider>
           </WishlistProvider>
         </CartProvider>
       </body>

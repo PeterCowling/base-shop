@@ -144,7 +144,7 @@ This creates a fully functional theme package at `packages/themes/<name>/` with:
 |------|---------|
 | `src/tailwind-tokens.ts` | Token overrides for Tailwind integration |
 | `src/index.ts` | Package exports |
-| `src/tokens.css` | CSS custom properties for direct import |
+| `tokens.css` | CSS custom properties for direct import |
 | `__tests__/contrast.test.ts` | Automated WCAG contrast validation |
 | `README.md` | Documentation with color palette swatches |
 

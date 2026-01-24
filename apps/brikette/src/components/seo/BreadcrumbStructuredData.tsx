@@ -4,7 +4,7 @@
 /* ─────────────────────────────────────────────────────────────
    Breadcrumb JSON-LD — hydration-safe, no other schema
 ---------------------------------------------------------------- */
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { buildBreadcrumbList } from "@/utils/seo/jsonld";
 
@@ -29,7 +29,7 @@ function BreadcrumbStructuredData(props: BreadcrumbStructuredDataProps): JSX.Ele
   // Serialize once; render as a direct <script> tag so the markup stays
   // valid in <head>. Using a span wrapper triggers hydration warnings in
   // tests that mount the root document outside a router context.
-  const markup = useMemo(() => {
+  const markup = (() => {
     if ("breadcrumb" in props) {
       return JSON.stringify(props.breadcrumb);
     }
@@ -38,7 +38,7 @@ function BreadcrumbStructuredData(props: BreadcrumbStructuredDataProps): JSX.Ele
       ...(props.lang ? { lang: props.lang } : {}),
     });
     return payload ? JSON.stringify(payload) : "";
-  }, [props]);
+  })();
 
   if (!markup) return null;
   return (

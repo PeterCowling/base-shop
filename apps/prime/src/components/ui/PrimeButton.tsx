@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, type ButtonProps } from '@acme/ui';
-import classNames from 'classnames';
+import { Button, type ButtonProps } from '@acme/design-system/primitives';
+import { cn } from '@acme/design-system/utils/style';
 
 type PrimeButtonIntent = 'primary' | 'secondary';
 
@@ -22,7 +22,7 @@ export function PrimeButton({
   return (
     <Button
       {...props}
-      className={classNames(intentClasses[intent], className)}
+      className={cn(intentClasses[intent], className)}
     />
   );
 }

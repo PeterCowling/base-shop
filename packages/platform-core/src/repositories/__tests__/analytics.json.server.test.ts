@@ -9,7 +9,6 @@ jest.mock("../../dataRoot", () => ({ DATA_ROOT: "/data/root" }));
 // Use globalThis to store test files - this avoids Jest hoisting issues
 // because the mock factory can safely access globalThis at runtime
 declare global {
-  // eslint-disable-next-line no-var
   var __analyticsTestFiles: Map<string, string> | undefined;
 }
 globalThis.__analyticsTestFiles = new Map<string, string>();

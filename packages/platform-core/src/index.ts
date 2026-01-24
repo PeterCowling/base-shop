@@ -4,5 +4,7 @@
 export {};
 export * from "./contexts/CurrencyContext";
 export * from "./contexts/LayoutContext";
+export * from "./contexts/ShopThemeContext";
 export * from "./contexts/ThemeContext";
+export * from "./contexts/ThemeModeContext";
 export * from "./profile";

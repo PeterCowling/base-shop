@@ -1,4 +1,10 @@
 import TableOfContents from "@/components/guides/TableOfContents";
+import {
+  getContentAlias,
+  getContentKey,
+  shouldMergeAliasFaqs,
+  shouldSuppressFallbackStructuredWhenManualEn,
+} from "@/config/guide-overrides";
 import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
 
@@ -27,6 +33,8 @@ export default function RenderFallbackStructured({
   preferManualWhenUnlocalized,
 }: Props): JSX.Element {
   const tFb: FallbackTranslator | undefined = fallback?.translator;
+  const aliasKey = getContentAlias(guideKey);
+  const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
 
   // Suppress EN structured fallbacks entirely for the eco‑friendly Amalfi
   // guide when the route prefers manual handling for unlocalized locales.
@@ -39,7 +47,7 @@ export default function RenderFallbackStructured({
       preferManualWhenUnlocalized &&
       lang === 'en' &&
       fallback?.source === 'guidesEn' &&
-      guideKey === 'ecoFriendlyAmalfi'
+      shouldSuppressFallbackStructuredWhenManualEn(guideKey)
     ) {
       return <></>;
     }
@@ -49,7 +57,7 @@ export default function RenderFallbackStructured({
   // matching the transformation used by buildStructuredFallback. This allows
   // reading alternate keys such as content.amalfiCoastPublicTransportGuide.*
   // when the primary guideKey lacks structured arrays.
-  const legacyKey = guideKey === 'publicTransportAmalfi' ? 'amalfiCoastPublicTransportGuide' : guideKey;
+  const legacyKey = getContentKey(guideKey);
 
   const tocTitleFb = (() => {
     try {
@@ -124,13 +132,13 @@ export default function RenderFallbackStructured({
     }
 
     let base: unknown = explicitArray.length > 0 ? explicitArray : legacyArray;
-    // Special-case: interrail alias may provide fallback ToC under the alias key.
-    // Prefer guidesFallback (tFb) for curated fallbacks; only fall back to the
+    // Alias guides may provide fallback ToC under the alias key. Prefer
+    // guidesFallback (tFb) for curated fallbacks; only fall back to the
     // localized guides translator when explicitly provided there.
-    if (guideKey === 'interrailAmalfi' && (!Array.isArray(base) || (Array.isArray(base) && base.length === 0))) {
+    if (aliasKey && mergeAliasFaqs && (!Array.isArray(base) || (Array.isArray(base) && base.length === 0))) {
       try {
         // Prefer curated fallback under guidesFallback
-        const aliasFb = tFb?.(`content.interrailItalyRailPassAmalfiCoast.toc`, { returnObjects: true }) as unknown;
+        const aliasFb = tFb?.(`content.${aliasKey}.toc`, { returnObjects: true }) as unknown;
         if (Array.isArray(aliasFb) && aliasFb.length > 0) base = aliasFb;
       } catch {
         /* noop */
@@ -138,7 +146,7 @@ export default function RenderFallbackStructured({
       if (!Array.isArray(base) || base.length === 0) {
         try {
           // Fallback: allow localized guides ns to provide the alias ToC if present
-          const aliasLocal = t(`content.interrailItalyRailPassAmalfiCoast.toc`, { returnObjects: true }) as unknown;
+          const aliasLocal = t(`content.${aliasKey}.toc`, { returnObjects: true }) as unknown;
           if (Array.isArray(aliasLocal) && aliasLocal.length > 0) base = aliasLocal;
         } catch {
           /* noop */
@@ -331,13 +339,13 @@ export default function RenderFallbackStructured({
       const label = (() => {
         try {
           const k1 = `content.${guideKey}.faqsTitle` as const;
-          const raw = tFb?.(k1) as unknown as string;
+          const raw: unknown = tFb?.(k1);
           const s = typeof raw === 'string' ? raw.trim() : '';
           if (s && s !== k1) return s;
         } catch { /* noop */ }
         try {
           const k2 = `${guideKey}.faqsTitle` as const;
-          const raw = tFb?.(k2) as unknown as string;
+          const raw: unknown = tFb?.(k2);
           const s = typeof raw === 'string' ? raw.trim() : '';
           if (s && s !== k2) return s;
         } catch { /* noop */ }
@@ -377,7 +385,7 @@ export default function RenderFallbackStructured({
   const fallbackFaqHeading = (() => {
     try {
       const k1 = `content.${guideKey}.faqsTitle` as const;
-      const raw = tFb?.(k1) as unknown as string;
+      const raw: unknown = tFb?.(k1);
       const s = typeof raw === "string" ? raw.trim() : "";
       if (s && s !== k1) return s;
     } catch {
@@ -385,36 +393,36 @@ export default function RenderFallbackStructured({
     }
     try {
       const k2 = `${guideKey}.faqsTitle` as const;
-      const raw = tFb?.(k2) as unknown as string;
+      const raw: unknown = tFb?.(k2);
       const s = typeof raw === "string" ? raw.trim() : "";
       if (s && s !== k2) return s;
     } catch {
       /* ignore – fall back to default translator key */
     }
-    // Interrail alias: allow faqsTitle under the alias key in guidesFallback
-    if (guideKey === 'interrailAmalfi') {
+    // Alias guides: allow faqsTitle under the alias key in guidesFallback
+    if (aliasKey && mergeAliasFaqs) {
       try {
-        const kAlias = 'content.interrailItalyRailPassAmalfiCoast.faqsTitle' as const;
-        const raw = tFb?.(kAlias) as unknown as string;
+        const kAlias = `content.${aliasKey}.faqsTitle` as const;
+        const raw: unknown = tFb?.(kAlias);
         const s = typeof raw === 'string' ? raw.trim() : '';
         if (s && s !== kAlias) return s;
       } catch { /* noop */ }
       try {
-        const kAlias2 = 'interrailItalyRailPassAmalfiCoast.faqsTitle' as const;
-        const raw = tFb?.(kAlias2) as unknown as string;
+        const kAlias2 = `${aliasKey}.faqsTitle` as const;
+        const raw: unknown = tFb?.(kAlias2);
         const s = typeof raw === 'string' ? raw.trim() : '';
         if (s && s !== kAlias2) return s;
       } catch { /* noop */ }
     }
     try {
       const k3 = `content.${legacyKey}.faqsTitle` as const;
-      const raw = tFb?.(k3) as unknown as string;
+      const raw: unknown = tFb?.(k3);
       const s = typeof raw === "string" ? raw.trim() : "";
       if (s && s !== k3) return s;
     } catch { /* noop */ }
     try {
       const k4 = `${legacyKey}.faqsTitle` as const;
-      const raw = tFb?.(k4) as unknown as string;
+      const raw: unknown = tFb?.(k4);
       const s = typeof raw === "string" ? raw.trim() : "";
       if (s && s !== k4) return s;
     } catch { /* noop */ }

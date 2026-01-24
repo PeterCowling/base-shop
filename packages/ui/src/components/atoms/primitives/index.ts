@@ -1,5 +1,19 @@
-/**
- * @deprecated Import primitives from "@acme/design-system/primitives" instead.
- * This barrel re-export exists for backward compatibility and will be removed.
- */
-export * from "@acme/design-system/primitives";
+export * from "./accordion";
+export * from "./button";
+export * from "./card";
+export * from "./checkbox";
+export { Cluster } from "./Cluster";
+export { Cover } from "./Cover";
+export * from "./dialog";
+export * from "./drawer";
+export * from "./dropdown-menu";
+export { Grid } from "./Grid";
+export { Inline } from "./Inline";
+export * from "./input";
+export * from "./overlayScrim";
+export * from "./select";
+export { Sidebar } from "./Sidebar";
+export * from "./slot";
+export { Stack } from "./Stack";
+export * from "./table";
+export * from "./textarea";

@@ -2,18 +2,13 @@
 
 import { useState } from "react";
 
-import { Toast } from "@acme/design-system/atoms";
 import { Button, Card, CardContent } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
 interface RollbackCardProps {
   shop: string;
 }
-
-type ToastState = {
-  open: boolean;
-  message: string;
-};
 
 function extractErrorMessage(data: unknown, fallback: string) {
   if (typeof data === "object" && data !== null && "error" in data) {
@@ -28,14 +23,11 @@ function extractErrorMessage(data: unknown, fallback: string) {
 
 export default function RollbackCard({ shop }: RollbackCardProps) {
   const t = useTranslations();
+  const toast = useToast();
   const [submitting, setSubmitting] = useState(false);
-  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
-
-  const closeToast = () => setToast((state) => ({ ...state, open: false }));
 
   async function handleRollback() {
     setSubmitting(true);
-    setToast((state) => ({ ...state, open: false }));
     try {
       const res = await fetch(`/api/shop/${shop}/rollback`, { method: "POST" });
 
@@ -44,17 +36,14 @@ export default function RollbackCard({ shop }: RollbackCardProps) {
         throw new Error(extractErrorMessage(data, t("cms.rollback.error") as string));
       }
 
-      setToast({
-        open: true,
-        message: t("cms.rollback.success") as string,
-      });
+      toast.success(t("cms.rollback.success") as string);
     } catch (err) {
       const message =
         err instanceof Error && err.message.trim().length > 0
           ? err.message
           : (t("cms.rollback.error") as string);
       console.error(t("cms.rollback.error"), err);
-      setToast({ open: true, message });
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -81,13 +70,6 @@ export default function RollbackCard({ shop }: RollbackCardProps) {
           </Button>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        onClose={closeToast}
-        message={toast.message}
-        role="status"
-        aria-live="polite"
-      />
     </>
   );
 }

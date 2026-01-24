@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
@@ -108,7 +108,7 @@ export function HowToToolbar({
 }: HowToToolbarProps) {
   const offset = useHeaderStickyOffset();
 
-  const resultsLabel = useMemo(() => t("filters.resultsCount", { count: resultsCount }), [resultsCount, t]);
+  const resultsLabel = t("filters.resultsCount", { count: resultsCount });
 
   const clearChip = useCallback(
     (key: ActiveFilterChip["key"]) => {

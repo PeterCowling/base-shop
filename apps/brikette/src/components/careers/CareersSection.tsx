@@ -1,7 +1,7 @@
 "use client";
 
 // src/components/careers/CareersSection.tsx
-import { memo, type ReactNode,useMemo } from "react";
+import { memo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { CheckCircle, XCircle } from "lucide-react";
 
@@ -88,8 +88,8 @@ function CareersSection({ lang }: { lang?: string }): JSX.Element {
   const { openModal } = useModal();
 
   /* text arrays */
-  const requirementsList = useMemo(() => getStringArray(t, "careersSection.requirementsList"), [t]);
-  const notGoodFitList = useMemo(() => getStringArray(t, "careersSection.notGoodFitList"), [t]);
+  const requirementsList = getStringArray(t, "careersSection.requirementsList");
+  const notGoodFitList = getStringArray(t, "careersSection.notGoodFitList");
 
   const handleApplyClick = (): void => openModal("contact");
 

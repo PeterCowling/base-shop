@@ -115,7 +115,7 @@ export default function EditPreviewPage() {
       >
         {publishing ? t("edit.publishing") : t("edit.approveAndPublish")}
       </button>
-      {error && <p role="alert" className="text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-danger">{error}</p>}
     </div>
   );
 }

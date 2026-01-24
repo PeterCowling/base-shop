@@ -7,6 +7,7 @@ import { Button,Dialog, DialogContent, DialogDescription, DialogTitle, DialogTri
 import { useTranslations } from "@acme/i18n";
 import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import type { PageComponent } from "@acme/types";
 
 import { clearLibrary, type LibraryItem,listLibrary, saveLibrary, syncFromServer } from "./libraryStore";
 
@@ -60,18 +61,37 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
     }
   }, [items, refresh, shop, translate]);
 
+  const parseImportedItems = useCallback(async (file: File): Promise<LibraryItem[]> => {
+    const text = await file.text();
+    const parsed = JSON.parse(text) as unknown;
+    if (Array.isArray(parsed)) return parsed as LibraryItem[];
+    if (typeof parsed === "object" && parsed !== null && "items" in (parsed as Record<string, unknown>)) {
+      const items = (parsed as { items?: unknown }).items;
+      if (Array.isArray(items)) return items as LibraryItem[];
+    }
+    return [];
+  }, []);
+
+  const validateTemplates = useCallback(
+    (templates: PageComponent[]) => {
+      const pre = validateTemplateCreation(templates, rootPlacementOptions());
+      if (pre.ok === false) {
+        throw new Error(
+          [translate("cms.library.importValidationFailed"), ...(pre.errors || [])]
+            .filter(Boolean)
+            .join("\n")
+        );
+      }
+    },
+    [translate]
+  );
+
   const handleImportFiles = useCallback(async (files: FileList | null) => {
     if (!files || !files.length) return;
     setBusy(true);
     try {
       const f = files[0];
-      const text = await f.text();
-      const parsed = JSON.parse(text) as unknown;
-      const inItems: LibraryItem[] = Array.isArray(parsed)
-        ? (parsed as LibraryItem[])
-        : (typeof parsed === "object" && parsed !== null && "items" in (parsed as Record<string, unknown>) && Array.isArray((parsed as { items?: unknown }).items))
-          ? ((parsed as { items: LibraryItem[] }).items)
-          : [];
+      const inItems = await parseImportedItems(f);
       if (!inItems.length) throw new Error(translate("cms.library.importInvalid"));
       const clones = inItems.map((item) => {
         const clone = { ...item } as LibraryItem;
@@ -82,17 +102,11 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       });
       // Preflight validate all incoming templates as ROOT placement
       for (const it of clones) {
-        const templates = (it.templates && Array.isArray(it.templates)) ? it.templates : (it.template ? [it.template] : []);
+        const templates: PageComponent[] = (it.templates && Array.isArray(it.templates))
+          ? it.templates
+          : (it.template ? [it.template] : []);
         if (templates.length) {
-          const pre = validateTemplateCreation(templates as any, rootPlacementOptions());
-          if (pre.ok === false) {
-            throw new Error([
-              translate("cms.library.importValidationFailed"),
-              ...(pre.errors || []),
-            ]
-              .filter(Boolean)
-              .join("\n"));
-          }
+          validateTemplates(templates);
         }
       }
       if (shop) {
@@ -118,7 +132,7 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
-  }, [shop, onAfterChange, refresh, translate]);
+  }, [shop, onAfterChange, refresh, translate, parseImportedItems, validateTemplates]);
 
   const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

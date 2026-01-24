@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
-import { Switch, Toast } from "@/components/atoms";
+import { Switch } from "@/components/atoms";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/shadcn";
 
 import { useConfigurator } from "../ConfiguratorContext";
@@ -15,7 +15,7 @@ import useStepCompletion from "../hooks/useStepCompletion";
 export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?: string; nextStepId?: string }) {
   const { state, update } = useConfigurator();
   const t = useTranslations();
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
+  const toast = useToast();
   const [, markComplete] = useStepCompletion("inventory");
   const router = useRouter();
 
@@ -85,7 +85,7 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
           data-cy="save-return"
           onClick={() => {
             markComplete(true);
-            setToast({ open: true, message: String(t("cms.inventory.saved")) });
+            toast.success(String(t("cms.inventory.saved")));
             router.push("/cms/configurator");
           }}
         >
@@ -99,7 +99,6 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
         )}
       </Cluster>
 
-      <Toast open={toast.open} onClose={() => setToast((t) => ({ ...t, open: false }))} message={toast.message} />
     </div>
   );
 }

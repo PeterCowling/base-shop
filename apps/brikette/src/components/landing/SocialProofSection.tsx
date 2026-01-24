@@ -1,5 +1,5 @@
 // src/components/landing/SocialProofSection.tsx
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Star } from "lucide-react";
 
@@ -28,11 +28,11 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
   const { t: tTestimonials, ready } = useTranslation("testimonials", translationOptions);
   const ratings = hotel.ratings ?? [];
 
-  const featured = useMemo(() => {
-    if (!ready) return [] as Testimonial[];
+  const featured: Testimonial[] = (() => {
+    if (!ready) return [];
     const raw = tTestimonials("hostelworld.featured", { returnObjects: true }) as unknown;
     return Array.isArray(raw) ? (raw as Testimonial[]).slice(0, 2) : [];
-  }, [ready, tTestimonials]);
+  })();
 
   if (!ratings.length && !featured.length) return null;
 

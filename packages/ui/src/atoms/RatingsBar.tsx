@@ -1,3 +1,5 @@
+"use client"; // i18n-exempt: Next.js directive string, not user-facing copy
+
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
@@ -23,7 +25,7 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
     initials: "HW",
     translationKey: "hostelworld",
     defaultLabel: "Hostelworld",
-    badgeTextClass: "text-black/85",
+    badgeTextClass: "text-foreground/85",
   },
   "Booking.com": {
     url: "https://www.booking.com/hotel/it/hostel-brikette.en-gb.html",
@@ -31,7 +33,7 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
     initials: "B",
     translationKey: "booking",
     defaultLabel: "Booking.com",
-    badgeTextClass: "text-white",
+    badgeTextClass: "text-background",
   },
 };
 
@@ -49,11 +51,11 @@ const PANEL_CLASSES = [
   "overflow-hidden",
   "rounded-3xl",
   "border",
-  "border-white/15",
+  "border-background/15",
   "bg-[linear-gradient(135deg,var(--color-brand-gradient-start)_0%,var(--color-brand-gradient-mid)_45%,var(--color-brand-gradient-end)_100%)]",
   "px-5",
   "py-6",
-  "text-white",
+  "text-background",
   "shadow-2xl",
   "transition-colors",
   "duration-300",
@@ -94,8 +96,8 @@ const LINK_BASE_CLASSES = [
   "gap-3",
   "rounded-2xl",
   "border",
-  "border-white/25",
-  "bg-white/10",
+  "border-background/25",
+  "bg-background/10",
   "px-4",
   "py-3",
   "text-left",
@@ -103,12 +105,12 @@ const LINK_BASE_CLASSES = [
   "transition",
   "duration-200",
   "hover:-translate-y-0.5",
-  "hover:bg-white/15",
+  "hover:bg-background/15",
   "hover:no-underline",
   "hover:shadow-lg",
   "focus-visible:outline-none",
   "focus-visible:ring-2",
-  "focus-visible:ring-white/70",
+  "focus-visible:ring-background/70",
   "focus-visible:ring-offset-2",
   "focus-visible:ring-offset-transparent",
   "dark:border-brand-outline/35",
@@ -128,7 +130,7 @@ const BADGE_BASE_CLASSES = [
   "shadow-md",
   "shadow-black/10",
   "ring-1",
-  "ring-white/40",
+  "ring-background/40",
   "transition",
   "duration-200",
   "group-hover:scale-105",
@@ -175,7 +177,7 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
         <div aria-hidden="true" className={clsx(PANEL_OVERLAY_CLASSES)} />
         <div className={clsx(PANEL_CONTENT_CLASSES)}>
           <div className="flex flex-col gap-4">
-            <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-white/80 backdrop-blur-sm dark:border-brand-outline/40 dark:bg-brand-surface/10 dark:text-brand-surface/80">
+            <span className="inline-flex items-center gap-2 self-start rounded-full border border-background/25 bg-background/10 px-3 py-1 text-xs font-semibold text-background/80 backdrop-blur-sm dark:border-brand-outline/40 dark:bg-brand-surface/10 dark:text-brand-surface/80">
               <span aria-hidden="true" className="text-sm leading-none">★</span>
               {t("reviewed")}
             </span>
@@ -220,36 +222,36 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
                       className={clsx(
                         BADGE_BASE_CLASSES,
                         badgeBgClass,
-                        meta?.badgeTextClass ?? "text-black/85",
+                        meta?.badgeTextClass ?? "text-foreground/85",
                       )}
                     >
                       {meta?.initials ?? r.provider[0]}
                     </span>
-                    <span className="text-lg font-semibold tabular-nums text-white transition duration-200 sm:text-xl dark:text-brand-surface">
+                    <span className="text-lg font-semibold tabular-nums text-background transition duration-200 sm:text-xl dark:text-brand-surface">
                       {r.value.toFixed(1)}
                     </span>
-                    <span className="text-sm font-medium text-white/90 transition duration-200 dark:text-brand-surface/90">
+                    <span className="text-sm font-medium text-background/90 transition duration-200 dark:text-brand-surface/90">
                       {providerLabel}
                     </span>
-                    <span className="hidden items-center gap-2 text-sm text-white/75 md:inline-flex dark:text-brand-surface/75">
-                      <span aria-hidden="true" className="text-white/50 dark:text-brand-surface/50">
+                    <span className="hidden items-center gap-2 text-sm text-background/75 md:inline-flex dark:text-brand-surface/75">
+                      <span aria-hidden="true" className="text-background/50 dark:text-brand-surface/50">
                         •
                       </span>
                       <span>{reviewText}</span>
                     </span>
-                    <span className="text-xs text-white/70 md:hidden dark:text-brand-surface/70">{reviewText}</span>
+                    <span className="text-xs text-background/70 md:hidden dark:text-brand-surface/70">{reviewText}</span>
                   </a>
                 );
               })}
             </Inline>
           </div>
 
-	          <div className="flex flex-col gap-2 text-sm text-white/80 md:items-end md:text-end dark:text-brand-surface/70">
-	            <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/70 dark:border-brand-outline/35 dark:bg-brand-surface/10 dark:text-brand-surface/70">
+	          <div className="flex flex-col gap-2 text-sm text-background/80 md:items-end md:text-end dark:text-brand-surface/70">
+	            <span className="inline-block rounded-full border border-background/20 bg-background/10 px-3 py-1 text-xs font-medium text-background/70 dark:border-brand-outline/35 dark:bg-brand-surface/10 dark:text-brand-surface/70">
 	              {lastCheckedLabel}
 	            </span>
             <time
-              className="text-base font-semibold text-white dark:text-brand-surface"
+              className="text-base font-semibold text-background dark:text-brand-surface"
               dateTime={LAST_UPDATED}
             >
               {localizedDate}

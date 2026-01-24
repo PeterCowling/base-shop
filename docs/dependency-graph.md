@@ -67,10 +67,10 @@ flowchart TB
     subgraph Themes["Themes (@themes/*)"]
         themes-base["@themes/base"]
         themes-prime["@themes/prime"]
-        themes-skylar["@themes/skylar"]
-        themes-cochlearfit["@themes/cochlearfit"]
+        themes-brandx["@themes/brandx"]
         themes-bcd["@themes/bcd"]
         themes-dark["@themes/dark"]
+        themes-dummy["@themes/dummy"]
     end
 
     %% Layer 2 dependencies

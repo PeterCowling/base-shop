@@ -1,4 +1,5 @@
 import TableOfContents from "@/components/guides/TableOfContents";
+import { getContentAlias } from "@/config/guide-overrides";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
 import type { GuideTranslationSuite } from "../../translations";
@@ -13,7 +14,7 @@ interface Props {
 }
 
 /**
- * Route-specific alias handling for interrailAmalfi → interrailItalyRailPassAmalfiCoast
+ * Alias handling for guides with a configured contentAlias.
  * Returns a structured fallback block when alias arrays are present.
  */
 export default function RenderInterrailAlias({
@@ -23,16 +24,17 @@ export default function RenderInterrailAlias({
   showTocWhenUnlocalized,
   suppressTocTitle,
 }: Props): JSX.Element | null {
-  if (guideKey !== "interrailAmalfi") return null;
+  const aliasKey = getContentAlias(guideKey);
+  if (!aliasKey) return null;
   try {
     const aliasIntroRaw = translations.tGuides?.(
-      `content.interrailItalyRailPassAmalfiCoast.intro`,
+      `content.${aliasKey}.intro`,
       { returnObjects: true },
     ) as unknown;
     const aliasIntro = Array.isArray(aliasIntroRaw) ? ensureStringArray(aliasIntroRaw) : [];
 
     const aliasSectionsRaw = translations.tGuides?.(
-      `content.interrailItalyRailPassAmalfiCoast.sections`,
+      `content.${aliasKey}.sections`,
       { returnObjects: true },
     ) as unknown;
     const aliasSectionsArr = ensureArray<{ id?: string; title?: string; body?: unknown; items?: unknown }>(
@@ -49,7 +51,7 @@ export default function RenderInterrailAlias({
       .filter((x): x is { id: string; title: string; body: string[] } => x != null);
 
     const aliasFaqsRaw = translations.tGuides?.(
-      `content.interrailItalyRailPassAmalfiCoast.faqs`,
+      `content.${aliasKey}.faqs`,
       { returnObjects: true },
     ) as unknown;
     const aliasFaqsArr = ensureArray<{ q?: string; a?: unknown }>(aliasFaqsRaw)
@@ -69,11 +71,11 @@ export default function RenderInterrailAlias({
       if (aliasFaqsArr.length > 0 && !items.some((i) => i.href === "#faqs")) {
         const label = ((): string => {
           try {
-            const raw = translations.tGuides?.(
-              "content.interrailItalyRailPassAmalfiCoast.toc.faqs",
-            ) as unknown as string;
+            const raw: unknown = translations.tGuides?.(
+              `content.${aliasKey}.toc.faqs`,
+            );
             const s = typeof raw === "string" ? raw.trim() : "";
-            if (s.length > 0 && s !== "content.interrailItalyRailPassAmalfiCoast.toc.faqs") return s;
+            if (s.length > 0 && s !== `content.${aliasKey}.toc.faqs`) return s;
           } catch {
             /* noop */
           }
@@ -111,11 +113,11 @@ export default function RenderInterrailAlias({
         {aliasFaqsArr.length > 0 ? (
           <section id="faqs" className="space-y-4">
             <h2 className="text-xl font-semibold">
-              {translations.tGuides?.("content.interrailItalyRailPassAmalfiCoast.toc.faqs")
-                ? (translations.tGuides(
-                    "content.interrailItalyRailPassAmalfiCoast.toc.faqs",
-                  ) as unknown as string)
-                : (t("labels.faqsHeading", { defaultValue: "FAQs" }) as string)}
+              {translations.tGuides?.(`content.${aliasKey}.toc.faqs`)
+                ? String(translations.tGuides(
+                    `content.${aliasKey}.toc.faqs`,
+                  ))
+                : ((t("labels.faqsHeading", { defaultValue: "FAQs" }) as string) ?? "FAQs")}
             </h2>
             <div className="space-y-3">
               {aliasFaqsArr.map((f, i) => (

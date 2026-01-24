@@ -1,17 +1,17 @@
 "use client";
 
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useState, useTransition } from "react";
 import type { PendingUser } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
 
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
+import { useToast } from "@acme/ui/operations";
 
-import { Toast, Tooltip } from "@/components/atoms";
+import { Tooltip } from "@/components/atoms";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 
-import type { ActionResult, ActionStatus } from "../components/actionResult";
 import type { RoleDetail } from "../components/roleDetails";
 
 interface ApprovePayload {
@@ -20,17 +20,9 @@ interface ApprovePayload {
   roles: Role[];
 }
 
-export type ApproveAction = (payload: ApprovePayload) => Promise<ActionResult>;
-
-type ToastState = ActionResult & { open: boolean };
+export type ApproveAction = (payload: ApprovePayload) => Promise<{ status: "success" | "error"; message: string }>;
 
 type SelectionState = Record<string, Role[]>;
-
-const DEFAULT_TOAST: ToastState = {
-  open: false,
-  status: "success",
-  message: "",
-};
 
 function normalizeSelections(requests: PendingUser[]): SelectionState {
   return requests.reduce<SelectionState>((acc, request) => {
@@ -53,21 +45,13 @@ export default function AccountRequestsPanel({
   onApprove,
 }: AccountRequestsPanelProps) {
   const t = useTranslations();
+  const toast = useToast();
   const [items, setItems] = useState<PendingUser[]>(() => [...requests]);
   const [selections, setSelections] = useState<SelectionState>(() =>
     normalizeSelections(requests)
   );
   const [pendingId, setPendingId] = useState<string | null>(null);
-  const [toast, setToast] = useState<ToastState>(DEFAULT_TOAST);
   const [isPending, startTransition] = useTransition();
-
-  const showToast = useCallback((status: ActionStatus, message: string) => {
-    setToast({ open: true, status, message });
-  }, []);
-
-  const closeToast = useCallback(() => {
-    setToast((current) => ({ ...current, open: false }));
-  }, []);
 
   const toggleRole = useCallback(
     (requestId: string, role: Role) => {
@@ -87,8 +71,7 @@ export default function AccountRequestsPanel({
     (request: PendingUser) => {
       const selected = selections[request.id] ?? [];
       if (selected.length === 0) {
-        showToast(
-          "error",
+        toast.error(
           String(
             t("cms.accounts.requests.toast.selectRoleBeforeApprove", {
               name: request.name,
@@ -102,9 +85,11 @@ export default function AccountRequestsPanel({
       startTransition(() => {
         onApprove({ id: request.id, name: request.name, roles: selected })
           .then((result) => {
-            showToast(result.status, result.message);
             if (result.status === "success") {
+              toast.success(result.message);
               setItems((prev) => prev.filter((item) => item.id !== request.id));
+            } else {
+              toast.error(result.message);
             }
           })
           .catch((error: unknown) => {
@@ -112,14 +97,14 @@ export default function AccountRequestsPanel({
               error instanceof Error
                 ? error.message
                 : String(t("cms.accounts.requests.toast.approveFailedRequest"));
-            showToast("error", message);
+            toast.error(message);
           })
           .finally(() => {
             setPendingId((current) => (current === request.id ? null : current));
           });
       });
     },
-    [onApprove, selections, showToast, t]
+    [onApprove, selections, toast, t]
   );
 
   const helperFor = useCallback(
@@ -140,13 +125,6 @@ export default function AccountRequestsPanel({
     [roleDetails, selections, t]
   );
 
-  const toastClassName = useMemo(() => {
-    const v = toast.status === "error"
-      ? "bg-destructive text-destructive-foreground" // i18n-exempt -- CMS-2615: class token string; not user copy [ttl=2026-01-01]
-      : "bg-success text-success-fg"; // i18n-exempt -- CMS-2615: class token string; not user copy [ttl=2026-01-01]
-    return v;
-  }, [toast.status]);
-
   if (items.length === 0) {
     return (
       <div className="space-y-4">
@@ -159,13 +137,6 @@ export default function AccountRequestsPanel({
             <p>{t("cms.accounts.requests.empty.desc")}</p>
           </CardContent>
         </Card>
-        <Toast
-          open={toast.open}
-          message={toast.message}
-          className={toastClassName}
-          onClose={closeToast}
-          role="status"
-        />
       </div>
     );
   }
@@ -266,13 +237,6 @@ export default function AccountRequestsPanel({
           </Card>
         );
       })}
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        className={toastClassName}
-        onClose={closeToast}
-        role="status"
-      />
     </div>
   );
 }

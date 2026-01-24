@@ -188,9 +188,12 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
 
 - **Header fields**
   - `Type: Plan`
-  - `Status: Active | Frozen | Superseded`
+  - `Status: Draft | Active | Frozen | Complete | Superseded`
   - `Domain: <Domain>`
   - `Relates-to charter: <charter file or anchor>`
+  - Optional lifecycle pointers:
+    - `Supersedes: <path>` (when this plan replaces another)
+    - `Superseded-by: <path>` (only on the superseded plan)
 
 - **Conventions**
   - Tasks have explicit IDs and checkboxes:
@@ -203,6 +206,12 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
     - Definition of done.
 
 Plans are the source of truth for **status**, not for **exact behaviour** (that is code + Contracts).
+
+- **Lifecycle and archiving**
+  - **Current / maintained plans:** keep in `docs/plans/` (or the domain’s plan directory, like `docs/cms-plan/`).
+  - **Completed (still useful) plans:** move to `docs/plans/archive/` and set `Status: Complete`.
+  - **Superseded plans:** move to `docs/historical/plans/` and set `Status: Superseded` with a `Superseded-by: ...` pointer.
+  - **Filename stability:** prefer keeping the canonical plan path stable; when you need disambiguation, append `-superseded-YYYY-MM-DD` (preferred) rather than adding `-v2` to the current plan.
 
 #### 3.1.4 Research / Log / Guide
 

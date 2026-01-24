@@ -2,6 +2,7 @@
 import { useMemo } from "react";
 
 import type { GenericContentTranslator } from "@/components/guides/GenericContent";
+import { getGuideOverrideValue } from "@/config/guide-overrides";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import getFallbackLanguage from "@/routes/guides/utils/getFallbackLanguage";
@@ -150,8 +151,8 @@ export function useGuideContent({
       return tGuides as GenericContentTranslator;
     }
 
-    // Coverage-specific nuance: for sunsetViewpoints, prefer the active locale
-    if (guideKey === "sunsetViewpoints") {
+    // When configured, prefer the active locale translator
+    if (getGuideOverrideValue(guideKey as GuideKey, "useActiveTranslatorWhenUnlocalized")) {
       return tGuides as GenericContentTranslator;
     }
 

@@ -23,6 +23,16 @@ let initialized = false;
 const cleanupFns: Array<() => void> = [];
 const instances = new WeakMap<HTMLElement, LottieInstance>();
 
+function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch {
+    return false;
+  }
+}
+
 async function loadLottie(): Promise<LottieModule> {
   const mod = await import("lottie-web");
   return (mod.default || mod) as unknown as LottieModule;
@@ -48,6 +58,7 @@ export function initLottie(root?: HTMLElement) {
   if (typeof window === "undefined" || typeof document === "undefined") return;
   if (initialized) return;
   initialized = true;
+  const reduceMotion = prefersReducedMotion();
 
   const scan = async (scope?: ParentNode) => {
     const container = scope || root || document;
@@ -66,12 +77,18 @@ export function initLottie(root?: HTMLElement) {
       const inst = lottie.loadAnimation({
         container: containerEl,
         renderer: "svg",
-        loop,
-        autoplay: autoplay && trigger !== "scroll",
+        loop: reduceMotion ? false : loop,
+        autoplay: !reduceMotion && autoplay && trigger !== "scroll",
         path: url,
       });
       try { inst.setSpeed?.(speed); } catch { /* noop */ }
       instances.set(el, inst);
+
+      if (reduceMotion) {
+        try { inst.stop?.(); } catch {}
+        try { inst.goToAndStop?.(0, true); } catch {}
+        continue;
+      }
 
       if (trigger === "hover") {
         const enter = () => { try { inst.goToAndPlay?.(0, true); } catch {} };

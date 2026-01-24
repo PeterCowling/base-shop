@@ -26,6 +26,38 @@ export interface ThemePanelProps {
   variant?: "dialog" | "sidebar";
 }
 
+interface ThemePanelContentProps {
+  t: ReturnType<typeof useTranslations>;
+  tokens: TokenMap;
+  baseTokens: TokenMap;
+  onChange: (next: TokenMap) => void;
+  onRenameToken: (oldKey: string, nextKey: string) => void;
+  onReplaceColor: (tokenKey: string, nextValue: string) => void;
+}
+
+function ThemePanelContent({
+  t,
+  tokens,
+  baseTokens,
+  onChange,
+  onRenameToken,
+  onReplaceColor,
+}: ThemePanelContentProps) {
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">{t("cms.builder.themePanel.helper")}</p>
+      <ColorThemeSelector tokens={tokens} baseTokens={baseTokens} onChange={onChange} />
+      <Tokens
+        tokens={tokens}
+        baseTokens={baseTokens}
+        onChange={onChange}
+        onRenameToken={onRenameToken}
+        onReplaceColor={onReplaceColor}
+      />
+    </div>
+  );
+}
+
 export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   const t = useTranslations();
   const pathname = usePathname() ?? "";
@@ -218,14 +250,8 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
     return (
       <div className="space-y-3 p-3">
         <div className="text-sm font-semibold">{t("cms.theme.label")}</div>
-        <p className="text-sm text-muted-foreground">{t("cms.builder.themePanel.helper")}</p>
-        {/* Prebuilt color theme selector (light/dark paired) */}
-        <ColorThemeSelector
-          tokens={tokens}
-          baseTokens={baseTokens}
-          onChange={handleTokensChange}
-        />
-        <Tokens
+        <ThemePanelContent
+          t={t}
           tokens={tokens}
           baseTokens={baseTokens}
           onChange={handleTokensChange}
@@ -240,22 +266,14 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   return (
     <DialogContent className="w-full">
       <DialogTitle>{t("cms.theme.label")}</DialogTitle>
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">{t("cms.builder.themePanel.helper")}</p>
-        {/* Optional: include color theme selector in dialog as well */}
-        <ColorThemeSelector
-          tokens={tokens}
-          baseTokens={baseTokens}
-          onChange={handleTokensChange}
-        />
-        <Tokens
-          tokens={tokens}
-          baseTokens={baseTokens}
-          onChange={handleTokensChange}
-          onRenameToken={handleRenameToken}
-          onReplaceColor={handleReplaceColor}
-        />
-      </div>
+      <ThemePanelContent
+        t={t}
+        tokens={tokens}
+        baseTokens={baseTokens}
+        onChange={handleTokensChange}
+        onRenameToken={handleRenameToken}
+        onReplaceColor={handleReplaceColor}
+      />
     </DialogContent>
   );
 }

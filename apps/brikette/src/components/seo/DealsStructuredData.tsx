@@ -3,7 +3,7 @@
    src/components/seo/DealsStructuredData.tsx
    JSON-LD for the current deal (Google travel carousel)
 ---------------------------------------------------------------- */
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -14,12 +14,10 @@ import { getSlug } from "@/utils/slug";
 function DealsStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();
   const pageUrl = `${BASE_URL}/${lang}/${getSlug("deals", lang)}`;
-  const now = useMemo(() => new Date(), []);
-  const currentDeal = useMemo(() => {
-    return DEALS.find((deal) => getDealStatus(deal, now) !== "expired") ?? null;
-  }, [now]);
+  const now = new Date();
+  const currentDeal = DEALS.find((deal) => getDealStatus(deal, now) !== "expired") ?? null;
 
-  const jsonLd = useMemo(() => {
+  const jsonLd = (() => {
     if (!currentDeal) return null;
     /* ── constants reused across locales ───────────────────────── */
     const availabilityStarts = currentDeal.startDate;
@@ -83,7 +81,7 @@ function DealsStructuredData(): JSX.Element | null {
     };
 
     return JSON.stringify(data);
-  }, [currentDeal, lang, pageUrl]);
+  })();
 
   if (!jsonLd) return null;
 

@@ -2,10 +2,12 @@
 
 // src/app/[lang]/experiences/[slug]/GuideContent.tsx
 // Client component for guide pages (App Router version)
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
+import { IS_DEV } from "@/config/env";
+import { GuideBoundary } from "@/components/guides/GuideBoundary";
 import PlanChoiceAnalytics from "@/components/guides/PlanChoiceAnalytics";
 import type { GuideSection } from "@/data/guides.index";
 import i18n from "@/i18n";
@@ -14,6 +16,7 @@ import type { GuideKey } from "@/routes.guides-helpers";
 import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
 import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { getSlug } from "@/utils/slug";
+import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 type Props = {
   lang: AppLanguage;
@@ -23,26 +26,34 @@ type Props = {
 
 function GuideContent({ lang, guideKey, section }: Props) {
   const { t } = useTranslation("guides", { lng: lang });
+  const [loadError, setLoadError] = useState(false);
 
   // Preload guide namespaces on mount
   useEffect(() => {
+    let cancelled = false;
     const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["guides", "guidesFallback"], {
-        fallbackOptional: false,
-      });
-      await preloadNamespacesWithFallback(lang, ["guides.tags"], {
-        optional: true,
-        fallbackOptional: true,
-      });
-      await i18n.changeLanguage(lang);
+      try {
+        await preloadNamespacesWithFallback(lang, ["guides", "guidesFallback"], {
+          fallbackOptional: false,
+        });
+        await preloadNamespacesWithFallback(lang, ["guides.tags"], {
+          optional: true,
+          fallbackOptional: true,
+        });
+        await i18n.changeLanguage(lang);
+      } catch (err) {
+        if (IS_DEV) console.debug("[GuideContent] namespace load failed", guideKey, err);
+        if (!cancelled) setLoadError(true);
+      }
     };
     void loadNamespaces();
-  }, [lang]);
+    return () => { cancelled = true; };
+  }, [lang, guideKey]);
 
-  const fallbackGuides = useMemo(() => i18n.getFixedT("en", "guides"), []);
-  const backLabel = t("labels.backLink", {
-    defaultValue: fallbackGuides("labels.backLink", { defaultValue: "Back" }) as string,
-  }) as string;
+  const fallbackGuides = useEnglishFallback("guides");
+  const backLabel = resolveLabel(t, "labels.backLink",
+    resolveLabel(fallbackGuides, "labels.backLink", "Back")
+  );
 
   // Resolve section base path
   const sectionSlug = section === "help" ? getSlug("assistance", lang) : getSlug("guides", lang);
@@ -61,7 +72,15 @@ function GuideContent({ lang, guideKey, section }: Props) {
         {backLabel}
       </Link>
       <PlanChoiceAnalytics />
-      <GuideSeoTemplate guideKey={guideKey} metaKey={metaKey} />
+      {loadError ? (
+        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-6 text-center text-neutral-600">
+          <p className="text-sm">This content could not be loaded. Please try refreshing the page.</p>
+        </div>
+      ) : (
+        <GuideBoundary guideKey={guideKey}>
+          <GuideSeoTemplate guideKey={guideKey} metaKey={metaKey} />
+        </GuideBoundary>
+      )}
     </div>
   );
 }

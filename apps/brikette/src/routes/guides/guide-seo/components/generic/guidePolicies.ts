@@ -50,6 +50,11 @@ export interface GuideRenderPolicy {
    * Allow structured arrays to render even when localized content exists.
    */
   allowStructuredArraysWhenLocalized?: boolean;
+
+  /**
+   * Require EN structured arrays before forcing GenericContent when unlocalized.
+   */
+  forceGenericRequiresStructuredEn?: boolean;
 }
 
 /**
@@ -77,6 +82,7 @@ export const GUIDE_RENDER_POLICIES: Record<string, GuideRenderPolicy> = {
   // Invoke GenericContent when EN fallback exists
   avoidCrowdsPositano: {
     forceGenericWhenUnlocalized: true,
+    forceGenericRequiresStructuredEn: true,
   },
 
   // Fast-path GenericContent for unlocalized scenarios
@@ -190,4 +196,11 @@ export function needsLegacySecondArgInvocation(guideKey: string): boolean {
  */
 export function allowsStructuredArraysWhenLocalized(guideKey: string): boolean {
   return GUIDE_RENDER_POLICIES[guideKey]?.allowStructuredArraysWhenLocalized === true;
+}
+
+/**
+ * Check if forced GenericContent requires EN structured arrays.
+ */
+export function requiresStructuredEnForForceGeneric(guideKey: string): boolean {
+  return GUIDE_RENDER_POLICIES[guideKey]?.forceGenericRequiresStructuredEn === true;
 }

@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@acme/design-system/shadcn";
+import { cn } from "@acme/design-system/utils/style/cn";
 import { useTranslations } from "@acme/i18n";
 import { ColorInput } from "@acme/ui/components/cms/ColorInput";
 import { useTokenColors } from "@acme/ui/hooks/useTokenColors";
@@ -91,14 +92,14 @@ export function ColorToken({
   // Advanced menu disabled on this screen to avoid ref thrash in nested menus
 
    
-  const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
+  const overrideClasses = cn(isOverridden && "border-s-2 border-s-info ps-2");
   // i18n-exempt: DS token reference, not user-facing copy
   const DANGER_TOKEN = "--color-danger";
 
   return (
     <label
       data-token-key={tokenKey}
-      className={`flex flex-col gap-1 text-sm ${overrideClasses}`}
+      className={cn("flex flex-col gap-1 text-sm", overrideClasses)}
       data-token={isOverridden ? "--color-info" : undefined}
     >
       <span className="flex flex-wrap items-center gap-2 min-w-0">
@@ -108,7 +109,7 @@ export function ColorToken({
           {showExtras && supportsEyeDropper && (
             <button
               type="button"
-              className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+              className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
               onClick={() => void handleEyeDropper()}
             >
               {t("cms.style.eyedropper") as string}
@@ -120,7 +121,7 @@ export function ColorToken({
                 <button
                   type="button"
                   aria-label={`${t("cms.style.moreActions") as string} ${tokenKey}`}
-                  className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+                  className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
                 >
                   •••
                 </button>
@@ -143,10 +144,10 @@ export function ColorToken({
         {isOverridden && (
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
-          {t("actions.reset") as string}
+            {t("actions.reset") as string}
           </button>
         )}
         {/* Advanced menu hidden for stability */}

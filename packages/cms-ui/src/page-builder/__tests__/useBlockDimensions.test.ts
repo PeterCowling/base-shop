@@ -27,51 +27,53 @@ describe("useBlockDimensions", () => {
   } as unknown as PageComponent;
 
   it.each([
-    [
-      "desktop",
-      "widthDesktop",
-      "heightDesktop",
-      "marginDesktop",
-      "paddingDesktop",
-      "200px",
-      "100px",
-      "m-2",
-      "p-2",
-    ],
-    [
-      "tablet",
-      "widthTablet",
-      "heightTablet",
-      "marginTablet",
-      "paddingTablet",
-      "150px",
-      "80px",
-      "m-3",
-      "p-3",
-    ],
-    [
-      "mobile",
-      "widthMobile",
-      "heightMobile",
-      "marginMobile",
-      "paddingMobile",
-      "120px",
-      "60px",
-      "m-4",
-      "p-4",
-    ],
+    {
+      viewport: "desktop",
+      widthKey: "widthDesktop",
+      heightKey: "heightDesktop",
+      marginKey: "marginDesktop",
+      paddingKey: "paddingDesktop",
+      widthVal: "200px",
+      heightVal: "100px",
+      marginVal: "m-2",
+      paddingVal: "p-2",
+    },
+    {
+      viewport: "tablet",
+      widthKey: "widthTablet",
+      heightKey: "heightTablet",
+      marginKey: "marginTablet",
+      paddingKey: "paddingTablet",
+      widthVal: "150px",
+      heightVal: "80px",
+      marginVal: "m-3",
+      paddingVal: "p-3",
+    },
+    {
+      viewport: "mobile",
+      widthKey: "widthMobile",
+      heightKey: "heightMobile",
+      marginKey: "marginMobile",
+      paddingKey: "paddingMobile",
+      widthVal: "120px",
+      heightVal: "60px",
+      marginVal: "m-4",
+      paddingVal: "p-4",
+    },
   ])(
     "returns keys and values for %s viewport",
     (
-      viewport,
-      widthKey,
-      heightKey,
-      marginKey,
-      paddingKey,
-      widthVal,
-      heightVal,
-      marginVal,
-      paddingVal,
+      {
+        viewport,
+        widthKey,
+        heightKey,
+        marginKey,
+        paddingKey,
+        widthVal,
+        heightVal,
+        marginVal,
+        paddingVal,
+      }
     ) => {
       const { result } = renderHook(() =>
         useBlockDimensions({ component, viewport: viewport as "mobile" | "desktop" | "tablet" })
@@ -110,4 +112,3 @@ describe("useBlockDimensions", () => {
     });
   });
 });
-

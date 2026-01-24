@@ -40,9 +40,9 @@ export function useAlloggiatiSender(): UseAlloggiatiSenderResult {
         setIsLoading(true);
         setError(null);
 
-        // Construct occupant record strings using the function obtained from the hook
-        const occupantRecords = occupants.map(
-          (occ) => constructAlloggiatiRecord(occ) // Now this function is correctly obtained
+        // Construct occupant record strings (async — comuni.json is lazy-loaded)
+        const occupantRecords = await Promise.all(
+          occupants.map((occ) => constructAlloggiatiRecord(occ))
         );
 
         // Send to Google Apps Script (SOAP behind the scenes)

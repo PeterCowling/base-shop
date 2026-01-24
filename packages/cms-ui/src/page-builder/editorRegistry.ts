@@ -1,17 +1,15 @@
-import type { ComponentType,LazyExoticComponent } from "react";
+import type { ComponentType } from "react";
 import { lazy } from "react";
 
-import type { EditorProps } from "./EditorProps";
+import type { AnyEditor, EditorProps } from "./EditorProps";
 
 // Helper to coerce lazy modules to the shared EditorProps
-// We intentionally use `any` here to allow heterogeneous editor prop types.
 const lazyEditor = (
-  loader: () => Promise<any>,
-): LazyExoticComponent<ComponentType<any>> =>
-  lazy(loader) as unknown as LazyExoticComponent<ComponentType<any>>;
+  loader: () => Promise<{ default: ComponentType<EditorProps> }>,
+): AnyEditor => lazy(loader) as unknown as AnyEditor;
 
-// Heterogeneous editors with distinct, specific props; keep as `any` to avoid brittle unions.
-const editorRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
+// Heterogeneous editors with distinct, specific props; all conform to EditorProps contract.
+const editorRegistry: Record<string, AnyEditor> = {
   ContactForm: lazyEditor(() => import("./ContactFormEditor")),
   Gallery: lazyEditor(() => import("./GalleryEditor")),
   Image: lazyEditor(() => import("./ImageBlockEditor")),
@@ -66,7 +64,7 @@ if (process.env.NODE_ENV === "test") {
     .then(({ default: Btn }) => {
       editorRegistry.Button = lazy(
         () => Promise.resolve({ default: Btn })
-      ) as unknown as LazyExoticComponent<ComponentType<EditorProps>>;
+      ) as unknown as AnyEditor;
     })
     .catch(() => {});
 }

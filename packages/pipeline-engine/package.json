@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
+    "dev": "tsc -b --watch",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

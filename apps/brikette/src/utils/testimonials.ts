@@ -57,7 +57,7 @@ const importTestimonialsResource = async (lang: string): Promise<TestimonialReso
     const testimonialModule = await import(`../locales/${lang}/testimonials.json`);
     return testimonialModule.default as TestimonialResource;
   } catch (err) {
-    if (process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV === "development") {
       console.warn(`⚠️  Missing testimonials resource for ${lang}:`, err);
     }
     return undefined;

@@ -1,16 +1,12 @@
+import { baseConfig } from '@acme/next-config';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed output: 'export' because app has API routes
-  // that are incompatible with static export
+  ...baseConfig,
+  // Trailing slashes required for Cloudflare Pages static routing
   trailingSlash: true,
-  images: {
-    unoptimized: true,
-  },
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  experimental: {
-    // Enable if needed for specific features
   },
 };
 

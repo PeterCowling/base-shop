@@ -2,10 +2,9 @@ import { memo, useCallback, useState } from "react";
 import { z } from "zod";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 export interface ReturnKeycardsModalProps {
   onConfirm: (count: number) => Promise<void>;
@@ -17,20 +16,15 @@ const countSchema = z.object({ count: z.number().int().positive() });
 function ReturnKeycardsModalBase({ onConfirm, onCancel }: ReturnKeycardsModalProps) {
   const [countInput, setCountInput] = useState("");
 
-  const handlePinSubmit = useCallback(
-    async (pin: string): Promise<boolean> => {
+  const handleReauthSubmit = useCallback(async () => {
       const parsed = countSchema.safeParse({ count: Number(countInput) });
       if (!parsed.success) {
         showToast("Count must be a positive integer", "error");
-        return false;
+        return;
       }
-      if (!getUserByPin(pin)) return false;
       await onConfirm(parsed.data.count);
       setCountInput("");
-      return true;
-    },
-    [countInput, onConfirm]
-  );
+    }, [countInput, onConfirm]);
 
   return (
     <ModalContainer widthClasses="w-120">
@@ -54,7 +48,10 @@ function ReturnKeycardsModalBase({ onConfirm, onCancel }: ReturnKeycardsModalPro
           />
         </label>
         <div className="mt-6">
-          <PinLoginInline onSubmit={handlePinSubmit} />
+          <PasswordReauthInline
+            onSubmit={handleReauthSubmit}
+            submitLabel="Confirm return"
+          />
         </div>
       </div>
     </ModalContainer>

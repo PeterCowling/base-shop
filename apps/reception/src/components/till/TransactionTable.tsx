@@ -62,10 +62,15 @@ const TransactionTable = memo(function TransactionTable({
           const displayDate = t.timestamp
             ? formatItalyDateTimeFromIso(t.timestamp)
             : "No timestamp";
+          const isVoided = Boolean(
+            t.voidedAt || t.voidedBy || t.voidReason || t.voidedShiftId
+          );
+          const isCorrection = Boolean(t.sourceTxnId || t.correctionKind);
           const rowBg =
             index % 2 === 0
               ? "bg-white dark:bg-darkBg"
               : "bg-gray-50 dark:bg-darkSurface";
+          const rowTextClass = isVoided ? "opacity-60 line-through" : "";
           const category = t.type === "barSale" ? "Bar Sale" : t.itemCategory;
           const summary = summariseDescription(t.description);
           if (summary === null) return null;
@@ -81,7 +86,7 @@ const TransactionTable = memo(function TransactionTable({
               }
               className={`${rowBg} border-b border-gray-400 dark:border-darkSurface hover:bg-gray-100$${
                 isDeleteMode || isEditMode ? " cursor-pointer" : ""
-              }`}
+              } ${rowTextClass}`}
             >
               <td className="p-3">{displayDate}</td>
               <td className="p-3">
@@ -95,6 +100,7 @@ const TransactionTable = memo(function TransactionTable({
                   </span>
                 )}
               </td>
+              <td className="p-3">{t.method || "-"}</td>
               <td className="p-3">{t.type || "-"}</td>
               <td className="p-3">{t.user_name || shiftOwner || "-"}</td>
               <td className="p-3 whitespace-pre-line">
@@ -120,6 +126,18 @@ const TransactionTable = memo(function TransactionTable({
               </td>
               <td className="p-3 whitespace-pre-line">
                 {summary ? summary.split(/\s+/).join("\n") : "-"}
+                {isVoided && (
+                  <div className="text-[11px] text-error-main no-underline">
+                    VOIDED{t.voidReason ? `: ${t.voidReason}` : ""}
+                  </div>
+                )}
+                {isCorrection && (
+                  <div className="text-[11px] text-warning-main no-underline">
+                    CORRECTION
+                    {t.correctionKind ? ` (${t.correctionKind})` : ""}
+                    {t.correctionReason ? `: ${t.correctionReason}` : ""}
+                  </div>
+                )}
               </td>
             </tr>
           );

@@ -16,7 +16,7 @@ import { mount as cypressMount } from 'cypress/react';
 import { TranslationsProvider } from '@acme/i18n';
 import type { Messages } from '@acme/i18n/Translations';
 import { LayoutProvider } from '@acme/platform-core/contexts/LayoutContext';
-import { ThemeProvider } from '@acme/platform-core/contexts/ThemeContext';
+import { ShopThemeProvider } from '@acme/platform-core/contexts/ShopThemeContext';
 
 // Router stub provider is exported from our Vite alias for 'next/navigation'
 import type { RouterStubState } from '~test/shims/next-navigation-ct';
@@ -79,11 +79,11 @@ declare global {
 function Providers({ children }: { children: React.ReactNode }) {
   const [client] = React.useState(() => new QueryClient());
   return (
-    <ThemeProvider>
+    <ShopThemeProvider>
       <LayoutProvider>
         <QueryClientProvider client={client}>{children}</QueryClientProvider>
       </LayoutProvider>
-    </ThemeProvider>
+    </ShopThemeProvider>
   );
 }
 

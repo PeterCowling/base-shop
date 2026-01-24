@@ -1,0 +1,4 @@
+# Cloudflare Pages SPA-style routing for dynamic paths
+# Serves the static page for any subpath under these routes
+/checkin/* /checkin/index.html 200
+/staff-lookup/* /staff-lookup/index.html 200

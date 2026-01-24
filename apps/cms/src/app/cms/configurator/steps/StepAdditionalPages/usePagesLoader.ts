@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
+import { useToast } from "@acme/ui/operations";
 
 import type { PageInfo } from "../../../wizard/schema";
 import { toPageInfo } from "../../../wizard/utils/page-utils";
@@ -15,7 +16,6 @@ interface Params {
   adding: boolean;
   draftId: string | null;
   setComponents: (v: PageComponent[]) => void;
-  setToast: (v: { open: boolean; message: string }) => void;
 }
 
 export default function usePagesLoader({
@@ -24,8 +24,9 @@ export default function usePagesLoader({
   adding,
   draftId,
   setComponents,
-  setToast,
 }: Params) {
+  const toast = useToast();
+
   useEffect(() => {
     if (!shopId) return;
     (async () => {
@@ -49,10 +50,10 @@ export default function usePagesLoader({
           });
         }
       } else if (error) {
-        setToast({ open: true, message: error });
+        toast.error(error);
       }
     })();
-  }, [shopId, setPages, setToast]);
+  }, [shopId, setPages, toast]);
 
   useEffect(() => {
     if (!adding || !draftId || !shopId) return;
@@ -78,9 +79,9 @@ export default function usePagesLoader({
           }
         }
       } else if (error) {
-        setToast({ open: true, message: error });
+        toast.error(error);
       }
     })();
-  }, [adding, draftId, shopId, setComponents, setToast]);
+  }, [adding, draftId, shopId, setComponents, toast]);
 }
 

@@ -8,7 +8,6 @@ jest.mock("../../dataRoot", () => ({ DATA_ROOT }));
 
 // Use globalThis to store test files - this avoids Jest hoisting issues
 declare global {
-  // eslint-disable-next-line no-var
   var __shopJsonTestFiles: Map<string, string> | undefined;
 }
 globalThis.__shopJsonTestFiles = new Map<string, string>();
@@ -43,7 +42,6 @@ jest.mock("fs", () => {
 jest.mock("../../shops/index", () => ({ validateShopName: jest.fn((s: string) => s) }));
 
 // Import the mocked validateShopName from the mocked module
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { validateShopName } = require("../../shops/index") as { validateShopName: jest.Mock };
 
 describe("shop.json.server", () => {
@@ -195,4 +193,3 @@ describe("shop.json.server", () => {
     await expect(getShopJson("nope")).rejects.toThrow(/not found/);
   });
 });
-

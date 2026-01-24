@@ -176,7 +176,7 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
           >
             <DSInline className="mb-2 justify-between" gap={2}>
               <div className="truncate text-sm font-medium">{theme.name}</div>
-              <button type="button" className="rounded border px-3 py-1 text-xs min-h-10 min-w-10" onClick={() => applyTheme(theme)}>
+              <button type="button" className="rounded border px-3 py-1 text-xs min-h-11 min-w-11" onClick={() => applyTheme(theme)}>
                 {t("cms.builder.colorThemes.useTheme")}
               </button>
             </DSInline>

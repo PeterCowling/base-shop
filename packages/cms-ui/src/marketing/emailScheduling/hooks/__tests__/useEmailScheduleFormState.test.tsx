@@ -3,6 +3,11 @@ import { act,render } from "@testing-library/react";
 
 import { type EmailScheduleFormState,useEmailScheduleFormState } from "../useEmailScheduleFormState";
 
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
+
 function renderHookUI(opts?: Parameters<typeof useEmailScheduleFormState>[0]) {
   let api: EmailScheduleFormState | null = null;
   function Harness() {
@@ -14,13 +19,17 @@ function renderHookUI(opts?: Parameters<typeof useEmailScheduleFormState>[0]) {
 }
 
 describe("useEmailScheduleFormState", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("validates required fields and shows toast on error", async () => {
     const get = renderHookUI();
     await act(async () => {
       await get().handleSubmit({ preventDefault: () => {} } as any);
     });
     expect(get().status).toBe("error");
-    expect(get().toast.open).toBe(true);
+    expect(mockToast.error).toHaveBeenCalled();
     // set values clears specific errors and recomputes preview
     const onStatus = jest.fn();
     const get2 = renderHookUI({ onStatusChange: onStatus });
@@ -38,7 +47,7 @@ describe("useEmailScheduleFormState", () => {
     // Expect success path reached
     expect(get2().status).toBe("success");
     expect(onStatus).toHaveBeenCalledWith("success");
-    expect(get2().toast.open).toBe(true);
+    expect(mockToast.success).toHaveBeenCalled();
   });
 
   it("passes values to onSubmit and handles failure", async () => {
@@ -51,6 +60,6 @@ describe("useEmailScheduleFormState", () => {
     const get2 = renderHookUI({ defaultValues: { subject: "Hi", sendDate: "2025-01-01", sendTime: "09:00", timezone: "UTC", segment: "all" }, onSubmit: fail });
     await act(async () => { await get2().handleSubmit({ preventDefault: () => {} } as any); });
     expect(get2().status).toBe("error");
-    expect(get2().toast.open).toBe(true);
+    expect(mockToast.error).toHaveBeenCalled();
   });
 });

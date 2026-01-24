@@ -40,26 +40,36 @@ describe("ThemeContext: applies/removes classes and persists on change", () => {
     expect(getByTestId("theme").textContent).toBe("system");
     expect(document.documentElement.className).toBe("");
     expect(document.documentElement.style.colorScheme).toBe("light");
-    expect(setItem).toHaveBeenLastCalledWith("theme", "system");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "system");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
+    expect(setItem).toHaveBeenCalledWith("theme", "system");
 
     act(() => changeTheme("brandx"));
     expect(getByTestId("theme").textContent).toBe("brandx");
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(true);
     expect(document.documentElement.style.colorScheme).toBe("light");
-    expect(setItem).toHaveBeenLastCalledWith("theme", "brandx");
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "light");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "brandx");
+    expect(setItem).toHaveBeenCalledWith("theme", "brandx");
 
     act(() => changeTheme("dark"));
     expect(getByTestId("theme").textContent).toBe("dark");
     expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(false);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(document.documentElement.style.colorScheme).toBe("dark");
-    expect(setItem).toHaveBeenLastCalledWith("theme", "dark");
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "dark");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
+    expect(setItem).toHaveBeenCalledWith("theme", "dark");
 
     act(() => changeTheme("base"));
     expect(getByTestId("theme").textContent).toBe("base");
     expect(document.documentElement.className).toBe("");
     expect(document.documentElement.style.colorScheme).toBe("light");
-    expect(setItem).toHaveBeenLastCalledWith("theme", "base");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(setItem).toHaveBeenCalledWith("theme-mode", "light");
+    expect(setItem).toHaveBeenCalledWith("theme-name", "base");
+    expect(setItem).toHaveBeenCalledWith("theme", "base");
   });
 });
-

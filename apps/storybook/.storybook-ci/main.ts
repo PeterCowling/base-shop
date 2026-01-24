@@ -81,6 +81,13 @@ const config: StorybookConfig = {
     };
 
     config.resolve = { ...resolve, alias: aliases };
+    const existingExtensionAlias = config.resolve.extensionAlias ?? {};
+    config.resolve.extensionAlias = {
+      ...existingExtensionAlias,
+      ".js": [".ts", ".tsx", ".js"],
+      ".jsx": [".tsx", ".jsx"],
+    };
+    config.resolve.extensions = [".ts", ".tsx", ".js", ".jsx", ".json"];
 
     const existingFallback = (config.resolve?.fallback ?? {}) as Record<string, false | string>;
     config.resolve.fallback = {

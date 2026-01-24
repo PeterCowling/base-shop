@@ -3,7 +3,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { updatePremierDelivery } from "@cms/actions/shops.server";
 
-import { Toast } from "@acme/design-system/atoms";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 
@@ -88,9 +87,6 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     saving,
     errors,
     handleSubmit,
-    toast,
-    toastClassName,
-    closeToast,
   } = useSettingsSaveForm<PremierDeliveryResult>({
     action: submitPremierDelivery,
     successMessage: "Premier delivery settings saved.",
@@ -237,13 +233,6 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
               </Button>
             </div>
           </form>
-          <Toast
-            open={toast.open}
-            message={toast.message}
-            onClose={closeToast}
-            className={toastClassName}
-            role="status"
-          />
         </CardContent>
       </Card>
   );

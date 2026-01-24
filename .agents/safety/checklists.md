@@ -134,7 +134,7 @@ If something went wrong:
 1. **Don't panic** — Most things are recoverable
 2. **Stop making changes** — Avoid compounding the problem
 3. **Check reflog**: `git reflog` shows recent HEAD movements
-4. **Read the skill**: `.agents/skills/safety/git-recovery.md`
+4. **Read the skill**: `.claude/skills/git-recovery/SKILL.md`
 5. **Ask for help**: Share `git status` and `git log` output
 
 ### Never Do

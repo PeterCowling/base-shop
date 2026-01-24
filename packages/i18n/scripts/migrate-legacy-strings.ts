@@ -98,15 +98,12 @@ function migrateValue(key: string, v: Json, includeKeys: string[]): { changed: b
 }
 
 function walkFiles(rootPath: string): string[] {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- INTL-202: CLI input validated and resolved within this script
   const stat = fs.statSync(rootPath);
   if (stat.isFile()) return [rootPath];
   const files: string[] = [];
   function walk(dir: string) {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- INTL-202: directory derived from validated rootPath
     for (const entry of fs.readdirSync(dir)) {
       const p = path.join(dir, entry);
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- INTL-202: path constructed from safe parent and entry
       const s = fs.statSync(p);
       if (s.isDirectory()) walk(p);
       else if (s.isFile() && entry.endsWith('.json')) files.push(p);
@@ -122,14 +119,12 @@ function main() {
   const results: Change[] = [];
   for (const file of files) {
     try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- INTL-202: iterating validated JSON files discovered under rootPath
       const orig = fs.readFileSync(file, 'utf8');
       const json = JSON.parse(orig) as Json;
       const { changed, next } = migrateValue('', json, includeKeys);
       if (changed) {
         results.push({ file, changes: 1 });
         if (write) {
-          // eslint-disable-next-line security/detect-non-literal-fs-filename -- INTL-202: writing back to same validated file path
           fs.writeFileSync(file, JSON.stringify(next, null, 2) + '\n', 'utf8');
         }
       }

@@ -216,7 +216,7 @@ In addition to the root exports, the following are treated as public for layout/
 - `@acme/ui/components/ThemeStyle` — server component that injects theme tokens and fonts for a shop.
 - `@acme/ui/components/cms/ShopChooser` — CMS shop chooser.
 - Layout primitives used by CMS and dashboards:
-  - `@acme/ui/components/atoms/primitives` (for example `Grid`, `Stack`, `Inline`, `Sidebar`).
+  - `@acme/design-system/primitives` (for example `Grid`, `Stack`, `Inline`, `Sidebar`).
 - Layout shell components for storefronts:
   - `@acme/ui/components/layout/Header`
   - `@acme/ui/components/layout/Footer`

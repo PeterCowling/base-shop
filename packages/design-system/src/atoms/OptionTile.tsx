@@ -32,7 +32,7 @@ export const OptionTile = React.forwardRef<HTMLButtonElement, OptionTileProps>(
         type={type}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility class names only
-          "group relative rounded-2xl border bg-surface-2 p-2 text-start transition",
+          "group relative rounded-2xl border bg-surface-2 p-2 text-start transition-colors transition-shadow motion-reduce:transition-none",
           // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           "focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60",
           selected
@@ -50,7 +50,7 @@ export const OptionTile = React.forwardRef<HTMLButtonElement, OptionTileProps>(
             aria-hidden
             className={cn(
               // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-              "pointer-events-none absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full border bg-surface-1 shadow-elevation-1 transition",
+              "pointer-events-none absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full border bg-surface-1 shadow-elevation-1 transition-opacity transition-shadow motion-reduce:transition-none",
               selected
                 ? // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                   "border-border-3 opacity-100"

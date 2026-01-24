@@ -58,7 +58,12 @@ export function discoverThemes(): string[] {
   try {
     const entries = readdirSync(themesDir, { withFileTypes: true });
     return entries
-      .filter((e) => e.isDirectory() && !e.name.startsWith("."))
+      .filter(
+        (e) =>
+          e.isDirectory() &&
+          !e.name.startsWith(".") &&
+          existsSync(join(themesDir, e.name, "package.json"))
+      )
       .map((e) => e.name);
   } catch {
     return [];
@@ -70,7 +75,7 @@ export function discoverThemes(): string[] {
  */
 function readThemePackageJson(
   themeId: string
-): { name: string; version: string; description?: string } | null {
+): { name: string; version: string; description?: string; rapidLaunch?: boolean; rapidLaunchOrder?: number } | null {
   const root = repoRoot();
   const pkgPath = join(root, "packages", "themes", themeId, "package.json");
 
@@ -84,15 +89,31 @@ function readThemePackageJson(
       name?: string;
       version?: string;
       description?: string;
+      rapidLaunch?: boolean;
+      rapidLaunchOrder?: number;
+      acmeTheme?: {
+        rapidLaunch?: boolean;
+        rapidLaunchOrder?: number;
+      };
     };
+    const rapidLaunch = pkg.acmeTheme?.rapidLaunch ?? pkg.rapidLaunch;
+    const rapidLaunchOrder = pkg.acmeTheme?.rapidLaunchOrder ?? pkg.rapidLaunchOrder;
     return {
       name: pkg.name ?? `@themes/${themeId}`,
       version: pkg.version ?? "0.0.0",
       description: pkg.description,
+      rapidLaunch,
+      rapidLaunchOrder,
     };
   } catch {
     return null;
   }
+}
+
+function hasTokensCss(themeId: string): boolean {
+  const root = repoRoot();
+  const tokensPath = join(root, "packages", "themes", themeId, "tokens.css");
+  return existsSync(tokensPath);
 }
 
 /**
@@ -111,9 +132,11 @@ export function buildThemeEntry(themeId: string): ThemeRegistryEntry {
     version: pkgInfo?.version ?? "0.0.0",
     brandColor: DEFAULT_BRAND_COLORS[themeId] ?? DEFAULT_FALLBACK_BRAND_COLOR,
     tags: [],
-    available: true,
+    available: hasTokensCss(themeId),
     tier: "basic",
     createdAt: new Date().toISOString(),
+    rapidLaunch: pkgInfo?.rapidLaunch,
+    rapidLaunchOrder: pkgInfo?.rapidLaunchOrder,
   };
 
   // Apply default tags based on theme name
@@ -165,6 +188,36 @@ export function isValidTheme(themeId: string): boolean {
 export function getThemeEntry(themeId: string): ThemeRegistryEntry | null {
   const registry = buildThemeRegistry();
   return registry.themes.find((t) => t.id === themeId) ?? null;
+}
+
+function sortRapidLaunchThemes(entries: ThemeRegistryEntry[]): ThemeRegistryEntry[] {
+  return [...entries].sort((a, b) => {
+    const orderA = a.rapidLaunchOrder ?? Number.POSITIVE_INFINITY;
+    const orderB = b.rapidLaunchOrder ?? Number.POSITIVE_INFINITY;
+    if (orderA !== orderB) return orderA - orderB;
+    const createdA = a.createdAt ?? "";
+    const createdB = b.createdAt ?? "";
+    if (createdA !== createdB) return createdA.localeCompare(createdB);
+    return a.id.localeCompare(b.id);
+  });
+}
+
+export function getRapidLaunchThemes(): ThemeRegistryEntry[] {
+  const registry = buildThemeRegistry();
+  const available = registry.themes.filter((t) => t.available);
+  const rapid = available.filter((t) => t.rapidLaunch);
+  if (rapid.length > 0) {
+    return sortRapidLaunchThemes(rapid);
+  }
+  if (available.length > 0) {
+    // i18n-exempt -- DS-1234 [ttl=2026-12-31] — developer warning only
+    console.warn("[rapid-launch] No themes tagged; falling back to first available theme.");
+  }
+  return sortRapidLaunchThemes(available);
+}
+
+export function pickRapidLaunchTheme(): ThemeRegistryEntry | null {
+  return getRapidLaunchThemes()[0] ?? null;
 }
 
 /**

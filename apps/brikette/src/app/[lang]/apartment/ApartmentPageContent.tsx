@@ -2,7 +2,7 @@
 
 // src/app/[lang]/apartment/ApartmentPageContent.tsx
 // Client component for apartment page - migrated from routes/apartment.tsx
-import { Fragment, memo, useEffect } from "react";
+import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/ui/atoms";
@@ -13,9 +13,8 @@ import HighlightsSection from "@acme/ui/organisms/ApartmentHighlightsSection";
 
 import GallerySection from "@/components/apartment/GallerySection";
 import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
-import i18n from "@/i18n";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 
 type Props = {
   lang: AppLanguage;
@@ -23,15 +22,7 @@ type Props = {
 
 function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
-
-  // Preload namespaces
-  useEffect(() => {
-    const loadNamespaces = async () => {
-      await preloadNamespacesWithFallback(lang, ["apartmentPage"]);
-      await i18n.changeLanguage(lang);
-    };
-    void loadNamespaces();
-  }, [lang]);
+  usePagePreload({ lang, namespaces: ["apartmentPage"] });
 
   return (
     <Fragment>

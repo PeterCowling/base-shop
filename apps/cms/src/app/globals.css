@@ -3,7 +3,7 @@
 @config "../../../../tailwind.config.mjs";
 
 /* Import base theme first for layout primitives; override colors/fonts below */
-@import "../../../../packages/themes/base/src/tokens.css";
+@import "@themes/base/tokens.css";
 /* CMS-only tokens to prevent base theme bleed-through */
 @import "./cms.tokens.css";
 @import "../../../../packages/ui/src/styles/builder.css";

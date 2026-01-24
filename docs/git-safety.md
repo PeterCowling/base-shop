@@ -7,7 +7,7 @@ Last-reviewed: 2026-01-17
 
 > **⚠️ CRITICAL:** On January 14, 2026, a `git reset --hard` command destroyed 8 applications worth of work.
 > Recovery took days. This guide exists to prevent that from ever happening again.
-> See [RECOVERY-PLAN-2026-01-14.md](./RECOVERY-PLAN-2026-01-14.md) for incident details.
+> See [RECOVERY-PLAN-2026-01-14.md](./historical/RECOVERY-PLAN-2026-01-14.md) for incident details.
 
 ---
 
@@ -170,8 +170,11 @@ Git hooks run automatically before commits and pushes:
 | `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret env files |
 | `pre-commit` | [no-partially-staged.js](../scripts/git-hooks/no-partially-staged.js) | Blocks partially staged files before lint-staged runs |
 | `pre-commit` | `lint-staged --no-stash` | Runs check-only linting on staged files without backup stashes |
+| `pre-commit` | `pnpm typecheck` | Runs typecheck before committing |
+| `pre-commit` | `pnpm lint` | Runs lint before committing |
 | `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks non-fast-forward pushes to protected branches |
 | `pre-push` | `pnpm typecheck` | Runs typecheck before pushing |
+| `pre-push` | `pnpm lint` | Runs lint before pushing |
 
 **Setup:**
 ```bash
@@ -402,7 +405,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - [CLAUDE.md](../CLAUDE.md) - Project-specific Claude instructions
 - [Git Hooks](./git-hooks.md) - Hook configuration details
 - [Contributing](./contributing.md) - Contribution guidelines
-- [Recovery Plan](./RECOVERY-PLAN-2026-01-14.md) - Jan 14 incident details
+- [Recovery Plan](./historical/RECOVERY-PLAN-2026-01-14.md) - Jan 14 incident details
 
 ---
 

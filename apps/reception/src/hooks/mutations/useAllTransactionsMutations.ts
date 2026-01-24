@@ -1,11 +1,12 @@
 /* src/hooks/mutations/useAllTransactionsMutations.ts */
 import { useCallback, useState } from "react";
-import { ref, update } from "firebase/database";
+import { get, ref, update } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
 import { getItalyIsoString } from "../../utils/dateUtils";
+import { getStoredShiftId } from "../../utils/shiftId";
 
 /**
  * A hook for writing/updating financial transaction records in:
@@ -41,21 +42,57 @@ export default function useAllTransactions() {
         return;
       }
 
-      // Build a Partial<FinancialTransaction> so optional fields are not strictly required
-      const payload: Partial<FinancialTransaction> = {
-        ...transactionData,
-        user_name: user.user_name ?? "system",
-        timestamp: getItalyIsoString(),
-      };
-
       try {
-        await update(ref(database), {
-          [`allFinancialTransactions/${transactionId}`]: payload,
-        });
-
-        const successMsg = `Successfully wrote to allFinancialTransactions/${transactionId}`;
-        console.log(successMsg, payload);
-        setSuccess(successMsg);
+        const existingSnap = await get(
+          ref(database, `allFinancialTransactions/${transactionId}`)
+        );
+        if (existingSnap.exists()) {
+          const allowedFields = new Set([
+            "voidedAt",
+            "voidedBy",
+            "voidedByUid",
+            "voidReason",
+            "voidedShiftId",
+          ]);
+          const payloadEntries = Object.entries(transactionData);
+          const hasDisallowed = payloadEntries.some(
+            ([key]) => !allowedFields.has(key)
+          );
+          if (hasDisallowed) {
+            const errMsg =
+              "Refusing to overwrite existing transaction. Use void/correction flows.";
+            console.error(errMsg);
+            setError(errMsg);
+            return;
+          }
+          if (payloadEntries.length === 0) {
+            return;
+          }
+          const updatePayload: Record<string, unknown> = {};
+          payloadEntries.forEach(([key, value]) => {
+            updatePayload[`allFinancialTransactions/${transactionId}/${key}`] =
+              value;
+          });
+          await update(ref(database), updatePayload);
+          const successMsg = `Updated void fields on allFinancialTransactions/${transactionId}`;
+          console.log(successMsg, updatePayload);
+          setSuccess(successMsg);
+          return;
+        } else {
+          // Build a Partial<FinancialTransaction> so optional fields are not strictly required
+          const payload: Partial<FinancialTransaction> = {
+            ...transactionData,
+            user_name: user.user_name ?? "system",
+            timestamp: getItalyIsoString(),
+            shiftId: transactionData.shiftId ?? getStoredShiftId() ?? undefined,
+          };
+          await update(ref(database), {
+            [`allFinancialTransactions/${transactionId}`]: payload,
+          });
+          const successMsg = `Successfully wrote to allFinancialTransactions/${transactionId}`;
+          console.log(successMsg, payload);
+          setSuccess(successMsg);
+        }
       } catch (err) {
         console.error(
           "Failed to write transaction to allFinancialTransactions:",

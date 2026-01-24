@@ -18,9 +18,9 @@ This document explains how font and colour selection works across the Base‑Sho
 
 - Base token catalogue: `packages/themes/base/src/tokens.ts`
   - Colour, spacing, radius, shadow, and typography keys. Colours are HSL components like `"220 90% 56%"` consumed as `hsl(var(--color-primary))`.
-- Generated stylesheets: `packages/themes/base/src/tokens.css`, `packages/themes/base/src/tokens.dynamic.css`, `packages/themes/base/src/tokens.static.css`
+- Generated stylesheets: `@themes/base/tokens.css`, `packages/themes/base/tokens.dynamic.css`, `packages/themes/base/tokens.static.css`
   - Produced by `pnpm build:tokens` (`scripts/src/build-tokens.mjs`).
-- Theme overrides (examples): `packages/themes/dark/src/tokens.css`, `packages/themes/brandx/src/tokens.css`
+- Theme overrides (examples): `@themes/dark/tokens.css`, `@themes/brandx/tokens.css`
   - Some themes also expose a `tailwind-tokens.ts` used by the build script to emit CSS.
 - Machine-readable export of variable names: `packages/design-tokens/src/exportedTokenMap.ts`
 
@@ -136,7 +136,7 @@ This document explains how font and colour selection works across the Base‑Sho
 - Design tokens preset: `packages/design-tokens/src/index.ts`
 - Design tokens plugin: `packages/design-tokens/index.ts`
 - Base tokens (source of truth): `packages/themes/base/src/tokens.ts`
-- Generated base CSS: `packages/themes/base/src/tokens.css`
-- Theme overrides: `packages/themes/*/src/tokens.css`
+- Generated base CSS: `@themes/base/tokens.css`
+- Theme overrides: `@themes/*/tokens.css`
 - Runtime injector (tokens + fonts): `packages/ui/src/components/ThemeStyle.tsx`
 - Theme init (dark/class): `packages/platform-core/src/utils/initTheme.ts`

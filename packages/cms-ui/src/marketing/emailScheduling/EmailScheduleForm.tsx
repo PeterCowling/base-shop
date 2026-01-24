@@ -1,6 +1,5 @@
 "use client";
 
-import { Toast } from "@acme/design-system/atoms";
 import {
   Button,
   Card,
@@ -53,10 +52,8 @@ export function EmailScheduleForm({
     values,
     errors,
     status,
-    toast,
     updateValue,
     handleSubmit,
-    dismissToast,
   } = useEmailScheduleFormState({
     defaultValues,
     validationErrors,
@@ -137,7 +134,6 @@ export function EmailScheduleForm({
         </Button>
       </div>
 
-      <Toast open={toast.open} message={toast.message} onClose={dismissToast} />
     </form>
   );
 }

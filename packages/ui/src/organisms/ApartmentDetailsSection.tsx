@@ -4,9 +4,8 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Check } from "lucide-react";
 
-import { Button } from "../atoms/Button";
-import { Card, CardContent } from "../atoms/Card";
 import { Heading } from "../atoms/Typography";
+import { Button, Card, CardContent } from "../components/atoms/shadcn";
 import { useModal } from "../context/ModalContext";
 import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";

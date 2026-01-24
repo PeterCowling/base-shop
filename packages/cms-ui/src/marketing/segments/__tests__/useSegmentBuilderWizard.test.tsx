@@ -3,6 +3,11 @@ import { act,render } from "@testing-library/react";
 
 import { useSegmentBuilderWizard, type UseSegmentBuilderWizardReturn } from "../useSegmentBuilderWizard";
 
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
+
 function renderHookUI(props?: Parameters<typeof useSegmentBuilderWizard>[0]) {
   let api: UseSegmentBuilderWizardReturn | null = null;
   function Harness() {
@@ -14,6 +19,10 @@ function renderHookUI(props?: Parameters<typeof useSegmentBuilderWizard>[0]) {
 }
 
 describe("useSegmentBuilderWizard", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("initializes with defaults and updates preview on changes", () => {
     const get = renderHookUI();
     const api = get();
@@ -35,7 +44,7 @@ describe("useSegmentBuilderWizard", () => {
     // submit with empty name → error + toast
     act(() => api.handleDetailsSubmit({ preventDefault: () => {} } as any));
     expect(api.errors.name).toBeTruthy();
-    expect(api.toast.open).toBe(true);
+    expect(mockToast.error).toHaveBeenCalled();
     // set name and resubmit advances step
     act(() => api.updateDefinition({ name: "LTV 500+" }));
     act(() => api.handleDetailsSubmit({ preventDefault: () => {} } as any));
@@ -68,20 +77,22 @@ describe("useSegmentBuilderWizard", () => {
     const getA = renderHookUI();
     const apiA = getA();
     await act(async () => { await apiA.handleFinish(); });
-    expect(apiA.toast.open).toBe(true);
-    expect(apiA.toast.message).toMatch(/ready to activate/i);
+    expect(mockToast.success).toHaveBeenCalledWith(expect.stringMatching(/ready to activate/i));
 
+    jest.clearAllMocks();
     const onSubmitOk = jest.fn().mockResolvedValue(undefined);
     const getB = renderHookUI({ onSubmit: onSubmitOk });
     const apiB = getB();
     await act(async () => { await apiB.handleFinish(); });
     expect(apiB.status).toBe("success");
+    expect(mockToast.success).toHaveBeenCalled();
 
+    jest.clearAllMocks();
     const onSubmitErr = jest.fn().mockRejectedValue(new Error("boom"));
     const getC = renderHookUI({ onSubmit: onSubmitErr });
     const apiC = getC();
     await act(async () => { await apiC.handleFinish(); });
     expect(apiC.status).toBe("error");
-    expect(apiC.toast.open).toBe(true);
+    expect(mockToast.error).toHaveBeenCalled();
   });
 });

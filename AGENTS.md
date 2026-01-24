@@ -82,10 +82,9 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-Planning prompt: `.agents/skills/workflows/plan-feature.md`
-Building prompt: `.agents/skills/workflows/build-feature.md`
+**Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
 
-**Skill system**: See `.agents/README.md` for the full skill catalog and usage guide.
+Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 
 ## Progressive Context Loading
 
@@ -93,10 +92,9 @@ When you encounter errors or unfamiliar situations, load additional context on-d
 
 ### Protocol
 
-1. **Check the manifest first**: `.agents/skills/manifest.yaml` lists skills with `triggers` — error patterns that indicate when a skill is relevant
-2. **Match your error to triggers**: If you see an error like `Cannot use import statement outside a module`, search the manifest for matching triggers
-3. **Load the skill**: Read the corresponding skill file (e.g., `.agents/skills/testing/jest-esm-issues.md`)
-4. **Follow the workflow**: Each skill has step-by-step instructions
+1. **Check available skills**: Skills live in `.claude/skills/<name>/SKILL.md` — each has a `description` field listing when to use it
+2. **Match your error to a skill**: If you see a relevant error pattern, read the corresponding skill
+3. **Follow the workflow**: Each skill has step-by-step instructions
 
 ### Example
 
@@ -104,17 +102,16 @@ When you encounter errors or unfamiliar situations, load additional context on-d
 Error: Cannot use import statement outside a module
 ```
 
-1. Search manifest → find `jest-esm-issues` skill with matching trigger
-2. Read `.agents/skills/testing/jest-esm-issues.md`
-3. Apply the fix: `JEST_FORCE_CJS=1 pnpm --filter <pkg> test -- path/to/file.test.ts`
+1. Read `.claude/skills/jest-esm-issues/SKILL.md`
+2. Apply the fix: `JEST_FORCE_CJS=1 pnpm --filter <pkg> test -- path/to/file.test.ts`
 
 ### Available Troubleshooting Skills
 
 | Error Pattern | Skill | Location |
 |---------------|-------|----------|
-| `Cannot use import statement outside a module` | jest-esm-issues | `.agents/skills/testing/jest-esm-issues.md` |
-| `git status` confusing / lost commits | git-recovery | `.agents/skills/safety/git-recovery.md` |
-| `ERESOLVE` / peer dependency errors | dependency-conflicts | `.agents/skills/domain/dependency-conflicts.md` |
+| `Cannot use import statement outside a module` | jest-esm-issues | `.claude/skills/jest-esm-issues/SKILL.md` |
+| `git status` confusing / lost commits | git-recovery | `.claude/skills/git-recovery/SKILL.md` |
+| `ERESOLVE` / peer dependency errors | dependency-conflicts | `.claude/skills/dependency-conflicts/SKILL.md` |
 
 ### When to Ask vs. When to Load Context
 
@@ -127,8 +124,14 @@ Error: Cannot use import statement outside a module
 
 ## Plan Documentation
 
-- Plans live in `docs/plans/<name>-plan.md`
-- Never delete — archive to `docs/historical/plans/`
+- **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow `docs/plans/<name>-plan.md`.
+- **Completed (but still useful) plans** live in `docs/plans/archive/`.
+- **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
+- **When superseding a plan (v2, rewrites, etc.)**
+  - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).
+  - Move the prior plan to `docs/historical/plans/` and update its header to `Status: Superseded`.
+  - Add a forward pointer in the superseded plan header: `Superseded-by: <path-to-new-plan>`.
+  - If you must disambiguate filenames, append a date (preferred) like `-superseded-YYYY-MM-DD` rather than adding `-v2` to the current plan.
 - Required metadata: Type, Status, Domain, Last-reviewed, Relates-to charter
 - **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/`; CMS threads: `docs/cms-plan/`) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
 
@@ -172,6 +175,8 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
+| MCP TypeScript intelligence | See `docs/ide/agent-language-intelligence-guide.md` |
+| Asked to check types | Use MCP TypeScript tools first; `pnpm typecheck` remains the validation gate |
 
 ## Session Reflection (Optional)
 
@@ -183,7 +188,7 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Read `.agents/skills/workflows/session-reflection.md`
+1. Use `/session-reflection` (or read `.claude/skills/session-reflection/SKILL.md`)
 2. Create a learning file in `.agents/learnings/`
 3. Note problems, patterns that worked, skill gaps, tooling ideas
 
@@ -201,7 +206,7 @@ For comprehensive guidance, see:
 | Git hooks | [docs/git-hooks.md](docs/git-hooks.md) |
 | Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
 | Plan metadata schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
-| Incident details | [docs/RECOVERY-PLAN-2026-01-14.md](docs/RECOVERY-PLAN-2026-01-14.md) |
+| Incident details | [docs/historical/RECOVERY-PLAN-2026-01-14.md](docs/historical/RECOVERY-PLAN-2026-01-14.md) |
 | Incident prevention | [docs/incident-prevention.md](docs/incident-prevention.md) |
 
 **Previous version:** [docs/historical/AGENTS-2026-01-17-pre-ralph.md](docs/historical/AGENTS-2026-01-17-pre-ralph.md)

@@ -31,8 +31,8 @@
     "@acme/sanity": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/ui": "workspace:*",
-    "react": "workspace:^",
-    "react-dom": "workspace:^"
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
   },
   "devDependencies": {
     "next": "^15.3.8"

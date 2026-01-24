@@ -251,7 +251,7 @@ JEST_FORCE_CJS=1 pnpm --filter <pkg> test -- path/to/file.test.ts
 - `import.meta` errors appear
 - Transform errors despite correct config
 
-**Reference:** See `.agents/skills/testing/jest-esm-issues.md` for detailed workflow.
+**Reference:** See `.claude/skills/jest-esm-issues/SKILL.md` for detailed workflow.
 
 ---
 

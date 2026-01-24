@@ -1,5 +1,5 @@
 // src/components/booking/DirectBookingPerks.tsx
-import React, { memo, useId, useMemo } from "react";
+import React, { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
@@ -58,13 +58,13 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   useTranslation("_tokens", translationOptions);
   useTranslation("dealsPage", translationOptions);
   const headingId = useId();
-  const perks = useMemo(() => {
+  const perks = (() => {
     const raw = t("dealsPage:perksList", { returnObjects: true });
     if (!Array.isArray(raw)) return [];
     return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
-  }, [t]);
+  })();
 
-  const heading = useMemo(() => {
+  const heading = (() => {
     const activeLanguage = (lang && lang.trim()) || i18n.language || i18n.languages?.[0];
 
     if (typeof activeLanguage === "string" && activeLanguage.trim()) {
@@ -80,13 +80,10 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
     }
 
     return FALLBACK_HEADING;
-  }, [i18n, lang]);
+  })();
 
   const resolvedLang = toAppLanguage(lang);
-  const termsHref = useMemo(
-    () => `/${resolvedLang}/${getSlug("terms", resolvedLang)}`,
-    [resolvedLang]
-  );
+  const termsHref = `/${resolvedLang}/${getSlug("terms", resolvedLang)}`;
   const introCopy = t("dealsPage:perksIntro", { defaultValue: FALLBACK_INTRO }) as string;
   const guaranteeCopy = t("dealsPage:perksGuarantee", {
     defaultValue: FALLBACK_GUARANTEE,

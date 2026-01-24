@@ -96,6 +96,65 @@ export const pageInfoSchema = z
 // slug & components are required (components defaults to [])
 
 /* -------------------------------------------------------------------------- */
+/*  Rapid-launch derived content schema                                       */
+/* -------------------------------------------------------------------------- */
+
+const rapidLaunchPageTypeSchema = z.enum([
+  "home",
+  "category",
+  "product",
+  "about",
+  "contact",
+  "faq",
+  "shipping-returns",
+  "terms",
+  "privacy",
+  "accessibility",
+]);
+
+export const rapidLaunchNavItemSchema = z.lazy(() =>
+  z
+    .object({
+      label: z.string(),
+      url: z.string(),
+      children: z.array(rapidLaunchNavItemSchema).optional(),
+    })
+    .strict(),
+);
+
+export type RapidLaunchNavItem = z.infer<typeof rapidLaunchNavItemSchema>;
+
+export const rapidLaunchDerivedPageSchema = z
+  .object({
+    type: rapidLaunchPageTypeSchema,
+    slug: z.string(),
+    templateId: z.string(),
+    components: z.array(pageComponentSchema).default([]),
+    seo: z.object({
+      title: z.string().default(""),
+      description: z.string().default(""),
+    }),
+    warnings: z.array(z.string()).default([]),
+  })
+  .strict();
+
+export const rapidLaunchReviewSchema = z
+  .object({
+    inputHash: z.string(),
+    derivedAt: z.string().optional(),
+    derivationDurationMs: z.number().int().optional(),
+    warningCount: z.number().int().optional(),
+    pages: z.array(rapidLaunchDerivedPageSchema).default([]),
+    navigation: z
+      .object({
+        header: z.array(rapidLaunchNavItemSchema).default([]),
+        footer: z.array(rapidLaunchNavItemSchema).default([]),
+      })
+      .strict(),
+  })
+  .strict();
+
+/* -------------------------------------------------------------------------- */
 /*  Wizard‑state schema                                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -107,6 +166,8 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     /* ------------ Wizard progress & identity ------------ */
     shopId: z.string().optional().default(""),
     storeName: z.string().optional().default(""),
+    locale: localeSchema.optional().default(LOCALES[0]),
+    currency: z.string().optional().default("EUR"),
     logo: z
       .union([z.string(), z.record(z.string(), z.string())])
       .optional()
@@ -120,6 +181,9 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     type: z.enum(["sale", "rental"]).optional().default("sale"),
     completed: z.record(stepStatusSchema).optional().default({}),
     billingProvider: z.string().optional().default(""),
+    paymentTemplateId: z.string().optional().default(""),
+    shippingTemplateId: z.string().optional().default(""),
+    taxTemplateId: z.string().optional().default(""),
 
     /* ------------------- SEO fields --------------------- */
     pageTitle: localeRecordSchema
@@ -129,6 +193,7 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
       .optional()
       .default(() => defaultLocaleRecord("")),
     socialImage: z.string().optional().default(""),
+    favicon: z.string().optional().default(""),
 
     /* ------------- Global component pools --------------- */
     components: z.array(pageComponentSchema).default([]),
@@ -163,6 +228,8 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     lowStockThreshold: z.number().int().min(0).optional().default(5),
     backorderPolicy: z.enum(["deny", "notify", "allow"]).optional().default("deny"),
     defaultStockLocation: z.string().optional().default("main"),
+    rapidLaunchProductIds: z.array(z.string()).optional().default([]),
+    rapidLaunchReview: rapidLaunchReviewSchema.optional(),
 
     /* ------------------- Navigation --------------------- */
     navItems: z
@@ -175,6 +242,8 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     /* ---------------- Miscellaneous --------------------- */
     domain: z.string().optional().default(""),
     categoriesText: z.string().optional().default(""),
+    legalBundleId: z.string().optional().default(""),
+    consentTemplateId: z.string().optional().default(""),
   })
   .merge(
     themeSettingsSchema.extend({

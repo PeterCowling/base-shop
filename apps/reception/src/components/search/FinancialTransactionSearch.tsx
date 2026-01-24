@@ -7,6 +7,10 @@ function FinancialTransactionSearch(): JSX.Element {
     amount: "",
     itemCategory: "",
     userName: "",
+    bookingRef: "",
+    shiftId: "",
+    reason: "",
+    sourceTxnId: "",
   });
 
   const [searchTriggered, setSearchTriggered] = useState(false);
@@ -18,6 +22,10 @@ function FinancialTransactionSearch(): JSX.Element {
             amount: filters.amount,
             itemCategory: filters.itemCategory,
             userName: filters.userName,
+            bookingRef: filters.bookingRef,
+            shiftId: filters.shiftId,
+            reason: filters.reason,
+            sourceTxnId: filters.sourceTxnId,
           }
         : { skip: true }
     );
@@ -78,6 +86,58 @@ function FinancialTransactionSearch(): JSX.Element {
           />
         </div>
 
+        <div className="flex flex-col">
+          <label htmlFor="bookingRef" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+            Booking Ref:
+          </label>
+          <input
+            id="bookingRef"
+            type="text"
+            value={filters.bookingRef}
+            onChange={(e) => handleChange("bookingRef", e.target.value)}
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="shiftId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+            Shift ID:
+          </label>
+          <input
+            id="shiftId"
+            type="text"
+            value={filters.shiftId}
+            onChange={(e) => handleChange("shiftId", e.target.value)}
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="sourceTxnId" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+            Source Txn ID:
+          </label>
+          <input
+            id="sourceTxnId"
+            type="text"
+            value={filters.sourceTxnId}
+            onChange={(e) => handleChange("sourceTxnId", e.target.value)}
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="reason" className="font-semibold text-gray-700 dark:text-darkAccentGreen">
+            Reason:
+          </label>
+          <input
+            id="reason"
+            type="text"
+            value={filters.reason}
+            onChange={(e) => handleChange("reason", e.target.value)}
+            className="border border-gray-400 rounded px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen"
+          />
+        </div>
+
         <button
           onClick={handleSearch}
           className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors dark:bg-darkSurface dark:text-darkAccentGreen"
@@ -112,6 +172,21 @@ function FinancialTransactionSearch(): JSX.Element {
                   User
                 </th>
                 <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                  Booking
+                </th>
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                  Shift
+                </th>
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                  Source Txn
+                </th>
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                  Status
+                </th>
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
+                  Reason
+                </th>
+                <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
                   Description
                 </th>
                 <th className="border-b border-gray-400 py-2 px-3 text-start dark:border-darkSurface dark:text-darkAccentGreen">
@@ -135,6 +210,25 @@ function FinancialTransactionSearch(): JSX.Element {
                     </td>
                     <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.user_name}
+                    </td>
+                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      {txn.bookingRef ?? "-"}
+                    </td>
+                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      {txn.shiftId ?? "-"}
+                    </td>
+                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      {txn.sourceTxnId ?? "-"}
+                    </td>
+                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      {txn.voidedAt
+                        ? "Void"
+                        : txn.correctionKind
+                        ? `Correction (${txn.correctionKind})`
+                        : "-"}
+                    </td>
+                    <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
+                      {txn.voidReason ?? txn.correctionReason ?? "-"}
                     </td>
                     <td className="border-b border-gray-400 py-2 px-3 dark:border-darkSurface dark:text-darkAccentGreen">
                       {txn.description}

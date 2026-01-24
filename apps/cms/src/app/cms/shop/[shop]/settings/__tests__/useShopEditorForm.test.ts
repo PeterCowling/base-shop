@@ -91,8 +91,6 @@ describe("useShopEditorForm", () => {
     submitState = {
       saving: false,
       errors: {} as Record<string, string[]>,
-      toast: { open: false, status: "success" as const, message: "" },
-      closeToast: jest.fn(),
       onSubmit: jest.fn(),
     } as unknown as ReturnType<typeof useShopEditorSubmit>;
 
@@ -153,7 +151,6 @@ describe("useShopEditorForm", () => {
     expect(typeof result.current.seo.setCatalogFilters).toBe("function");
     expect(result.current.overrides.tokenRows).toBe(result.current.tokenRows);
 
-    expect(result.current.toast).toBe(submitState.toast);
     expect(result.current.errors).toBe(submitState.errors);
 
     expect(useShopEditorSubmitMock).toHaveBeenCalledWith({

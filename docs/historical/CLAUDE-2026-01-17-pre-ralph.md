@@ -144,7 +144,7 @@ git rebase -i       # Can lose commits
 
 **If user requests these:** REFUSE and offer safe alternatives from `AGENTS.md`.
 
-**Reference incident (2026-01-14):** `git reset --hard` deleted 8 apps. Recovery took days. See `docs/RECOVERY-PLAN-2026-01-14.md`.
+**Reference incident (2026-01-14):** `git reset --hard` deleted 8 apps. Recovery took days. See `docs/historical/RECOVERY-PLAN-2026-01-14.md`.
 
 #### Other Preservation Rules
 
@@ -766,6 +766,6 @@ These shortcuts created technical debt that now needs proper plans to resolve:
 - 2026-01-16: Added Deployment section with staging/production workflow (Claude Opus 4.5)
 - 2026-01-15: Added "Systemic Issues: Plan-First Approach" section (Claude Opus 4.5)
 
-**Incident Reference:** See `docs/RECOVERY-PLAN-2026-01-14.md` for why destructive commands are prohibited.
+**Incident Reference:** See `docs/historical/RECOVERY-PLAN-2026-01-14.md` for why destructive commands are prohibited.
 
 For questions or clarifications, check the extensive documentation in `docs/` or ask the user.

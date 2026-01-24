@@ -11,6 +11,7 @@ import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTra
 import { useCheckins } from "../../hooks/data/useCheckins";
 import { useCheckouts } from "../../hooks/data/useCheckouts";
 import { addDays, formatItalyDate, getLocalToday, getLocalYyyyMmDd } from "../../utils/dateUtils";
+import { isVoidedTransaction } from "../../utils/transactionUtils";
 
 import { DashboardMetrics } from "./DashboardMetrics";
 import { DashboardQuickActions } from "./DashboardQuickActions";
@@ -31,7 +32,9 @@ export default function ReceptionDashboard() {
 
   const transactions = useMemo(() => {
     if (!allFinancialTransactions) return [];
-    return Object.values(allFinancialTransactions);
+    return Object.values(allFinancialTransactions).filter(
+      (txn) => !isVoidedTransaction(txn)
+    );
   }, [allFinancialTransactions]);
 
   const arrivalsToday = useMemo(() => {

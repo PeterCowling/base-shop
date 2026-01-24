@@ -1,10 +1,8 @@
 // src/components/forms/PettyCashForm.tsx
 import { memo, useCallback, useState } from "react";
 
-import { useAuth } from "../../context/AuthContext";
-import { getUserByPin } from "../../utils/getUserByPin";
 import { showToast } from "../../utils/toastUtils";
-import { PinLoginInline } from "../common/PinLoginInline";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 import { safeTransactionFormSchema } from "./schemas";
 
@@ -18,7 +16,6 @@ export const PettyCashForm = memo(function PettyCashForm({
   onCancel,
 }: PettyCashFormProps) {
   const [amount, setAmount] = useState<string>("");
-  const { user } = useAuth();
 
   /** ---------- Handlers -------------------------------------------------- */
   const handleCancel = useCallback(() => {
@@ -31,25 +28,17 @@ export const PettyCashForm = memo(function PettyCashForm({
     []
   );
 
-  const handlePinSubmit = useCallback(
-    async (pin: string): Promise<boolean> => {
+  const handleReauthSubmit = useCallback(async () => {
       const amt = parseFloat(amount);
       const result = safeTransactionFormSchema.safeParse({ amount: amt });
       if (!result.success) {
         showToast("Please enter valid values", "error");
-        return false;
+        return;
       }
-
-      const current = getUserByPin(pin);
-      if (!user || !current || current.user_name !== user.user_name)
-        return false;
 
       onConfirm(amt);
       setAmount("");
-      return true;
-    },
-    [amount, user, onConfirm]
-  );
+    }, [amount, onConfirm]);
 
   /** ---------- UI -------------------------------------------------------- */
   return (
@@ -84,9 +73,12 @@ export const PettyCashForm = memo(function PettyCashForm({
             />
           </div>
 
-          {/* PIN login */}
+          {/* Reauth */}
           <div className="mt-6">
-            <PinLoginInline onSubmit={handlePinSubmit} />
+            <PasswordReauthInline
+              onSubmit={handleReauthSubmit}
+              submitLabel="Confirm withdrawal"
+            />
           </div>
         </div>
       </div>

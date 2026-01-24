@@ -1,13 +1,12 @@
-// Copied from src/components/accommodations-carousel/SlideItem.tsx
 /* eslint-disable react/forbid-dom-props -- UI-1000 [ttl=2026-12-31] dynamic slide height uses inline style */
 import { type CSSProperties, type ForwardedRef,forwardRef, memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "../atoms/Button";
 import { CfCardImage } from "../atoms/CfCardImage";
 import { Cluster } from "../components/atoms/primitives/Cluster";
+import { Button } from "../components/atoms/shadcn";
 import type { Room } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useRoomPricing } from "../hooks/useRoomPricing";

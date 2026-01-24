@@ -1,10 +1,9 @@
 "use client";
 
-import { type ChangeEvent, type FormEvent,useMemo, useState } from "react";
+import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
 
 import DataTable from "@acme/cms-ui/DataTable";
-import { Toast } from "@acme/design-system/atoms";
 import { FormFieldMolecule as FormField } from "@acme/design-system/molecules";
 import { Button, Card, CardContent, Input } from "@acme/design-system/shadcn";
 import { useTranslations } from "@acme/i18n/Translations";
@@ -40,9 +39,6 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
     errors,
     setErrors,
     submit,
-    toast,
-    toastClassName,
-    closeToast,
     announceError,
     } = useSettingsSaveForm<void>({
       action: async (formData) => {
@@ -135,13 +131,6 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
           </div>
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
     </>
   );
 }

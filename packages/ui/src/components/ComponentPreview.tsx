@@ -71,7 +71,22 @@ export default function ComponentPreview<
   const [showNew, setShowNew] = useState(true);
 
   useEffect(() => {
-    const basePath = `@acme/ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
+    const normalizedPath = component.file.replace(/\.[jt]sx?$/, "");
+    const segments = normalizedPath.split("/");
+    const primary = segments[0] ?? "";
+    const rest = segments.slice(1).join("/");
+    const basePath = (() => {
+      if (primary === "atoms" && segments[1] === "shadcn") {
+        const shadcnRest = segments.slice(2).join("/");
+        return shadcnRest
+          ? `@acme/design-system/shadcn/${shadcnRest}`
+          : "@acme/design-system/shadcn";
+      }
+      if (primary === "atoms" || primary === "molecules" || primary === "primitives") {
+        return rest ? `@acme/design-system/${primary}/${rest}` : `@acme/design-system/${primary}`;
+      }
+      return `@acme/ui/components/${normalizedPath}`;
+    })();
     const load = async (p: string) => {
       if (
         typeof globalThis !== "undefined" &&

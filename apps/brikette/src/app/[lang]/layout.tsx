@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { getOrigin } from "@/utils/env-helpers";
-
 import ClientLayout from "./ClientLayout";
 
 type Props = {
@@ -22,10 +20,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   const dir = validLang === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={validLang} dir={dir} data-origin={getOrigin()} suppressHydrationWarning>
-      <body className="antialiased">
-        <ClientLayout lang={validLang as AppLanguage}>{children}</ClientLayout>
-      </body>
-    </html>
+    <ClientLayout lang={validLang as AppLanguage} dir={dir}>
+      {children}
+    </ClientLayout>
   );
 }

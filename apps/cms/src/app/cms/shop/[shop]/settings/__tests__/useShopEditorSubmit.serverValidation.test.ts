@@ -11,6 +11,11 @@ import {
   submitEvent,
 } from "./helpers/shopEditorSubmitTestUtils";
 
+const mockToast = { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn(), update: jest.fn(), promise: jest.fn() };
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => mockToast,
+}));
+
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
 }));
@@ -58,12 +63,9 @@ describe("useShopEditorSubmit — server validation errors", () => {
       expect.any(FormData),
     );
     expect(result.current.errors).toEqual({ name: ["Required"] });
-    expect(result.current.toast).toEqual({
-      open: true,
-      status: "error",
-      message:
-        "We couldn't save your changes. Please review the errors and try again.",
-    });
+    expect(mockToast.error).toHaveBeenCalledWith(
+      "We couldn't save your changes. Please review the errors and try again.",
+    );
     expect(result.current.saving).toBe(false);
   });
 });

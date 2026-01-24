@@ -11,7 +11,6 @@ import {
 
 import { CampaignAudienceSection } from "./CampaignAudienceSection";
 import { CampaignBasicsSection } from "./CampaignBasicsSection";
-import { CampaignFormToast } from "./CampaignFormToast";
 import { CampaignScheduleSection } from "./CampaignScheduleSection";
 import {
   type CampaignFormSectionId,
@@ -61,11 +60,9 @@ export function CampaignForm({
     values,
     errors,
     status,
-    toast,
     handleSubmit,
     updateValue,
     toggleChannel,
-    dismissToast,
   } = useCampaignForm({
     defaultValues,
     sections,
@@ -135,11 +132,6 @@ export function CampaignForm({
         </div>
       </div>
 
-      <CampaignFormToast
-        open={toast.open}
-        message={toast.message}
-        onClose={dismissToast}
-      />
     </form>
   );
 }

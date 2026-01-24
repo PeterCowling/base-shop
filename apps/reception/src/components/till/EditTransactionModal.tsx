@@ -1,9 +1,10 @@
 import { type FC, memo, useCallback, useState } from "react";
 import { z } from "zod";
 
-import useEditTransaction from "../../hooks/mutations/useEditTransaction";
+import useCorrectTransaction from "../../hooks/mutations/useCorrectTransaction";
 import { type Transaction } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
+import PasswordReauthInline from "../common/PasswordReauthInline";
 
 const editSchema = z.object({
   amount: z.number(),
@@ -29,7 +30,8 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
   const [description, setDescription] = useState<string>(
     transaction.description || ""
   );
-  const { editTransaction, loading, error } = useEditTransaction();
+  const [reason, setReason] = useState<string>("");
+  const { correctTransaction, loading, error } = useCorrectTransaction();
 
   const handleSave = useCallback(async () => {
     const validation = editSchema.safeParse({
@@ -45,23 +47,54 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
       );
       return;
     }
+    if (!reason.trim()) {
+      showToast("Correction reason is required", "error");
+      return;
+    }
 
-    await editTransaction(transaction.txnId, validation.data);
+    const {
+      amount: parsedAmount,
+      method: parsedMethod,
+      itemCategory: parsedItemCategory,
+      description: parsedDescription,
+    } =
+      validation.data;
+    if (
+      parsedAmount === undefined ||
+      parsedMethod === undefined ||
+      parsedItemCategory === undefined ||
+      parsedDescription === undefined
+    ) {
+      showToast("Invalid transaction data", "error");
+      return;
+    }
+
+    await correctTransaction(
+      transaction.txnId,
+      {
+        amount: parsedAmount,
+        method: parsedMethod,
+        itemCategory: parsedItemCategory,
+        description: parsedDescription,
+      },
+      reason.trim()
+    );
     onClose();
   }, [
     amount,
     method,
     itemCategory,
     description,
+    reason,
     transaction.txnId,
-    editTransaction,
+    correctTransaction,
     onClose,
   ]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="bg-white w-full max-w-sm p-6 rounded shadow-lg dark:bg-darkSurface dark:text-darkAccentGreen">
-        <h2 className="text-lg font-semibold mb-4">Edit Transaction</h2>
+        <h2 className="text-lg font-semibold mb-4">Record Correction</h2>
 
         <label className="block mb-2">
           <span className="text-sm font-semibold">Amount</span>
@@ -103,25 +136,32 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
           />
         </label>
 
+        <label className="block mb-4">
+          <span className="text-sm font-semibold">Correction Reason</span>
+          <textarea
+            className="w-full border rounded p-2 text-gray-900"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            rows={3}
+          />
+        </label>
+
         {Boolean(error) && (
           <p className="text-red-500 text-sm mb-2">
             An error occurred. Please try again.
           </p>
         )}
 
-        <div className="flex justify-end space-x-3">
+        <div className="flex flex-col gap-3">
+          <PasswordReauthInline
+            onSubmit={handleSave}
+            submitLabel={loading ? "Saving..." : "Record correction"}
+          />
           <button
             onClick={onClose}
             className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-darkSurface dark:text-darkAccentGreen"
           >
             Cancel
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={loading}
-            className="px-4 py-2 rounded bg-primary-main hover:bg-primary-dark text-white"
-          >
-            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

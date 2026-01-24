@@ -296,10 +296,32 @@ export function useProducts() {
     [data]
   );
 
+  const allProducts = useMemo(() => {
+    const products: {
+      name: string;
+      price: number;
+      categoryType: CategoryType | null;
+    }[] = [];
+    for (const numericKey in data) {
+      const num = parseInt(numericKey, 10);
+      const rows = data[num] ?? [];
+      const categoryType = categoryIdToType[num] ?? null;
+      rows.forEach((row) => {
+        products.push({
+          name: row[0],
+          price: row[2],
+          categoryType,
+        });
+      });
+    }
+    return products;
+  }, [data, categoryIdToType]);
+
   return {
     getProductCategory2,
     getCategoryTypeByProductName,
     getProductsByCategory,
+    allProducts,
   };
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, type InputProps } from '@acme/ui';
+import { Input, type InputProps } from '@acme/design-system/primitives';
 import React from 'react';
 
 export type PrimeInputProps = InputProps;

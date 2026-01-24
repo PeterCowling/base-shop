@@ -101,7 +101,7 @@ export default function HeadSection({
         try {
           const fixed: TFunction | undefined =
             (i18n as unknown as { getFixedT?: (lng: string, ns?: string) => TFunction | undefined })
-              .getFixedT?.(_lang as unknown as string, "translation");
+              .getFixedT?.(String(_lang), "translation");
           const pick = (v: unknown, expectedKey: string) => {
             const s = typeof v === "string" ? v.trim() : "";
             if (!s) return undefined;

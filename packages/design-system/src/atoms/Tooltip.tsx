@@ -39,6 +39,7 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => {
       onBlur: mergeHandlers(child.props.onBlur, hide),
       onMouseEnter: mergeHandlers(child.props.onMouseEnter, show),
       onMouseLeave: mergeHandlers(child.props.onMouseLeave, hide),
+      className: cn(child.props.className, "focus-visible:focus-ring"),
       "aria-describedby": open
         ? [describedBy, tooltipId].filter(Boolean).join(" ")
         : describedBy,
@@ -55,6 +56,7 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => {
         role="button"
         aria-describedby={open ? tooltipId : undefined}
         tabIndex={0}
+        className="focus-visible:focus-ring"
       >
         {children}
       </span>
@@ -77,7 +79,7 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => {
         data-state={open ? "open" : "closed"}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "bg-fg text-bg pointer-events-none absolute top-full z-50 mt-2 whitespace-nowrap rounded px-2 py-1 text-xs shadow-md transition-opacity",
+          "bg-fg text-bg pointer-events-none absolute top-full z-tooltip mt-2 whitespace-nowrap rounded px-2 py-1 text-xs shadow-md transition-opacity motion-reduce:transition-none",
           open ? "opacity-100" : "opacity-0",
         )}
       >

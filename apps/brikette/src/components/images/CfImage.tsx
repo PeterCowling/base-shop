@@ -3,7 +3,7 @@
    Cloudflare Images <CfImage/> – TS-safe width handling
    --------------------------------------------------------------------------*/
 
-import { createElement, type CSSProperties,memo, useMemo } from "react";
+import { createElement, type CSSProperties, memo } from "react";
 
 import { type PRESETS } from "@/config/imagePresets";
 import { useResponsiveImage } from "@/hooks/useResponsiveImage";
@@ -71,7 +71,7 @@ function CfImageBase({
   const { srcSet, sizes, dims } = useResponsiveImage(responsiveOptions);
 
   /* 2️⃣  Resolve numeric width & height for URL + attributes ---------------*/
-  const { numericWidth, widthAttribute } = useMemo(() => {
+  const { numericWidth, widthAttribute } = (() => {
     if (typeof htmlWidth === "number") {
       return { numericWidth: htmlWidth, widthAttribute: htmlWidth };
     }
@@ -82,9 +82,9 @@ function CfImageBase({
       }
     }
     return { numericWidth: dims.width, widthAttribute: dims.width };
-  }, [htmlWidth, dims.width]);
+  })();
 
-  const { numericHeight, heightAttribute } = useMemo(() => {
+  const { numericHeight, heightAttribute } = (() => {
     if (typeof htmlHeight === "number") {
       return { numericHeight: htmlHeight, heightAttribute: htmlHeight };
     }
@@ -99,13 +99,13 @@ function CfImageBase({
       return { numericHeight: derived, heightAttribute: derived };
     }
     return { numericHeight: dims.height, heightAttribute: dims.height };
-  }, [htmlHeight, dims.height, dims.width, numericWidth]);
+  })();
 
   /* 3️⃣  High-priority fetch hint (supported only in modern Chromium) ------*/
   const fetchPriority: "high" | undefined = priority ? "high" : undefined;
 
   /* 4️⃣  Normalise aspect-ratio for DS lint rules -------------------------*/
-  const aspectRatio = useMemo(() => {
+  const aspectRatio = (() => {
     const width = typeof numericWidth === "number" ? numericWidth : undefined;
     const height = typeof numericHeight === "number" ? numericHeight : undefined;
     if (!width || !height || width <= 0 || height <= 0) return undefined;
@@ -123,19 +123,13 @@ function CfImageBase({
     };
     const divisor = gcd(roundWidth, roundHeight);
     return `${roundWidth / divisor}:${roundHeight / divisor}`;
-  }, [numericHeight, numericWidth]);
+  })();
 
   /* 5️⃣  Pre-declared format sources for <picture/> ------------------------*/
-  const sources = useMemo(
-    () => {
-      const formats = sourceFormats ?? DEFAULT_SOURCE_FORMATS;
-      return formats.map((fmt) => ({
-        type: fmt === "jpeg" ? "image/jpeg" : `image/${fmt}`,
-        fmt,
-      }));
-    },
-    [sourceFormats]
-  );
+  const sources = (sourceFormats ?? DEFAULT_SOURCE_FORMATS).map((fmt) => ({
+    type: fmt === "jpeg" ? "image/jpeg" : `image/${fmt}`,
+    fmt,
+  }));
 
   /* 6️⃣  Render ------------------------------------------------------------*/
   const { style: inlineStyle, ["data-aspect"]: dataAspectAttr, ...imgRestProps } =

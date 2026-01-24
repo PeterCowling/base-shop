@@ -1,17 +1,2 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-
-import ThankYouSection from "./ThankYouSection";
-
-const meta: Meta<typeof ThankYouSection> = {
-  title: "CMS Blocks/ThankYouSection",
-  component: ThankYouSection,
-  args: {
-    headline: "Thank you",
-    message: "We’ve emailed your receipt.",
-    recommendationPreset: "featured",
-  },
-};
-export default meta;
-
-export const Default: StoryObj<typeof ThankYouSection> = {};
-
+export { default } from "@acme/ui/components/cms/blocks/ThankYouSection.stories";
+export * from "@acme/ui/components/cms/blocks/ThankYouSection.stories";

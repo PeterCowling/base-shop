@@ -8,15 +8,15 @@ import TransactionModals from "../TransactionModals";
 
 const sample: Transaction = { txnId: "t1", amount: 10 };
 
-jest.mock("../DeleteTransactionModal", () => ({
+jest.mock("../VoidTransactionModal", () => ({
   __esModule: true,
   default: ({
     onClose,
     transaction,
   }: { onClose: () => void; transaction: Transaction }) => (
     <div>
-      <span>del-{transaction.txnId}</span>
-      <button onClick={onClose}>close-del</button>
+      <span>void-{transaction.txnId}</span>
+      <button onClick={onClose}>close-void</button>
     </div>
   ),
 }));
@@ -45,8 +45,8 @@ describe("TransactionModals", () => {
         setTxnToEdit={jest.fn()}
       />
     );
-    expect(screen.getByText("del-t1")).toBeInTheDocument();
-    await userEvent.click(screen.getByText("close-del"));
+    expect(screen.getByText("void-t1")).toBeInTheDocument();
+    await userEvent.click(screen.getByText("close-void"));
     expect(setDel).toHaveBeenCalledWith(null);
   });
 

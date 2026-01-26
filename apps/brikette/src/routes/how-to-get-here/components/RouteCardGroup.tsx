@@ -5,7 +5,6 @@ import type { TFunction } from "i18next";
 import { ChevronRight } from "lucide-react";
 
 import { resolveHref } from "../richText";
-import { getFilterButtonClass } from "../styles";
 import { TRANSPORT_MODE_ICONS, TRANSPORT_MODE_ORDER } from "../transport";
 import type { AugmentedDestinationLink, RouteDirection, RouteFacts, TransportMode } from "../types";
 import { Cluster, Inline } from "../ui";
@@ -40,6 +39,53 @@ const ROUTE_GROUP_CARD_HIGHLIGHT_CLASS = [
   "ring-offset-brand-surface",
   "dark:ring-brand-secondary",
   "dark:ring-offset-brand-surface/70",
+].join(" ");
+
+// Segmented control for direction toggle - more prominent than regular filter buttons
+const DIRECTION_TOGGLE_CONTAINER_CLASS = [
+  "inline-flex",
+  "items-center",
+  "rounded-xl",
+  "border",
+  "border-brand-outline/20",
+  "bg-brand-bg/60",
+  "p-1",
+  "dark:border-brand-outline/30",
+  "dark:bg-brand-surface/30",
+].join(" ");
+
+const DIRECTION_TOGGLE_BASE_CLASS = [
+  "min-h-11",
+  "min-w-11",
+  "px-4",
+  "py-2",
+  "text-sm",
+  "font-semibold",
+  "rounded-lg",
+  "transition",
+  "duration-150",
+  "focus-visible:outline",
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-brand-primary",
+  "dark:focus-visible:outline-brand-secondary",
+].join(" ");
+
+const DIRECTION_TOGGLE_ACTIVE_CLASS = [
+  "bg-brand-primary",
+  "text-brand-bg",
+  "shadow-sm",
+  "dark:bg-brand-secondary",
+  "dark:text-brand-text",
+].join(" ");
+
+const DIRECTION_TOGGLE_INACTIVE_CLASS = [
+  "text-brand-text/70",
+  "hover:text-brand-heading",
+  "hover:bg-brand-surface/50",
+  "dark:text-brand-text/60",
+  "dark:hover:text-brand-text",
+  "dark:hover:bg-brand-surface/40",
 ].join(" ");
 
 const ROUTE_VARIANT_LINK_CLASS = [
@@ -240,11 +286,18 @@ function RouteCardGroupBase({
         </div>
 
         {hasTo && hasFrom ? (
-          <div className="flex items-center gap-2">
+          <div
+            className={DIRECTION_TOGGLE_CONTAINER_CLASS}
+            role="group"
+            aria-label={t("routeCard.direction.label", { defaultValue: "Direction" })}
+          >
             <button
               type="button"
               onClick={() => setDirection("to")}
-              className={getFilterButtonClass(direction === "to")}
+              className={clsx(
+                DIRECTION_TOGGLE_BASE_CLASS,
+                direction === "to" ? DIRECTION_TOGGLE_ACTIVE_CLASS : DIRECTION_TOGGLE_INACTIVE_CLASS
+              )}
               aria-pressed={direction === "to"}
             >
               {t("routeCard.direction.to", { defaultValue: "To hostel" })}
@@ -252,7 +305,10 @@ function RouteCardGroupBase({
             <button
               type="button"
               onClick={() => setDirection("from")}
-              className={getFilterButtonClass(direction === "from")}
+              className={clsx(
+                DIRECTION_TOGGLE_BASE_CLASS,
+                direction === "from" ? DIRECTION_TOGGLE_ACTIVE_CLASS : DIRECTION_TOGGLE_INACTIVE_CLASS
+              )}
               aria-pressed={direction === "from"}
             >
               {t("routeCard.direction.from", { defaultValue: "From hostel" })}

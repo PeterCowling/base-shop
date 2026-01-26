@@ -2,7 +2,7 @@ import type { TFunction } from "i18next";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
-import { getFilterButtonClass, HERO_IMAGE_SRC } from "../styles";
+import { HERO_IMAGE_SRC } from "../styles";
 import type { HeaderContent } from "../types";
 
 import { RoutePicker, type RoutePickerSelection } from "./RoutePicker";
@@ -13,7 +13,6 @@ export type HeaderSectionProps = {
   t: TFunction<"howToGetHere">;
   places: Array<{ id: string; name: string }>;
   onRoutePick: (selection: RoutePickerSelection) => void;
-  onOpenFilters: () => void;
 };
 
 export function HeaderSection({
@@ -22,7 +21,6 @@ export function HeaderSection({
   t,
   places,
   onRoutePick,
-  onOpenFilters,
 }: HeaderSectionProps) {
   return (
     <header className="relative overflow-hidden rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-primary/10 via-brand-outline/10 to-brand-surface p-8 shadow-lg dark:border-brand-outline/30 dark:from-brand-secondary/10 dark:via-brand-surface/40 dark:to-brand-surface/70">
@@ -41,22 +39,8 @@ export function HeaderSection({
           <p className="mt-4 text-base leading-relaxed text-brand-text/90 dark:text-brand-text/90">
             {header.description}
           </p>
-          <div className="mt-6 space-y-3">
+          <div className="mt-6">
             <RoutePicker t={t} places={places} onSubmit={onRoutePick} />
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={onOpenFilters}
-                className={getFilterButtonClass(false)}
-              >
-                {t("filters.editLabel", { defaultValue: "Edit filters" })}
-              </button>
-              <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
-                {t("filters.shareHint", {
-                  defaultValue: "Filters are reflected in the URL for easy sharing.",
-                })}
-              </p>
-            </div>
           </div>
         </div>
         <figure className="relative overflow-hidden rounded-3xl border border-brand-outline/10 bg-brand-surface/70 p-2 shadow-md backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/60">

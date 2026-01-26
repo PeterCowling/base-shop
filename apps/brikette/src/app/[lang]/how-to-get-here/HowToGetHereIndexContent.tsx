@@ -154,7 +154,6 @@ function HowToGetHereIndexContent({ lang }: Props) {
         t={t}
         places={content.sections.map((s) => ({ id: s.id, name: s.name }))}
         onRoutePick={handleRoutePick}
-        onOpenFilters={() => setFiltersDialogOpen(true)}
       />
 
       {/* Toolbar */}

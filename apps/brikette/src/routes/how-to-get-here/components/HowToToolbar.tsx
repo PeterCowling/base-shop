@@ -59,7 +59,7 @@ const ACTIVE_FILTER_CHIP_CLASS = [
   "text-xs",
 ].join(" ");
 
-function useHeaderStickyOffset(headerSelector = DEFAULT_HEADER_SELECTOR): number {
+export function useHeaderStickyOffset(headerSelector = DEFAULT_HEADER_SELECTOR): number {
   const [offset, setOffset] = useState(DEFAULT_FALLBACK_OFFSET);
 
   useEffect(() => {

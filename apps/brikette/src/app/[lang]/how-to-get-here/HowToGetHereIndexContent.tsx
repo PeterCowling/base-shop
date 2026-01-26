@@ -18,14 +18,12 @@ import {
   type ActiveFilterChip,
   HowToToolbar,
   type JumpToItem,
+  useHeaderStickyOffset,
 } from "@/routes/how-to-get-here/components/HowToToolbar";
 import { IntroHighlights } from "@/routes/how-to-get-here/components/IntroHighlights";
 import { RomeSection } from "@/routes/how-to-get-here/components/RomeSection";
 import type { RoutePickerSelection } from "@/routes/how-to-get-here/components/RoutePicker";
-import type {
-  AugmentedDestinationLink,
-  TransportMode,
-} from "@/routes/how-to-get-here/types";
+import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -37,53 +35,6 @@ type Props = {
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
-
-function scoreTransportMode(
-  mode: TransportMode,
-  preference: RoutePickerSelection["preference"]
-): number {
-  switch (preference) {
-    case "fastest":
-      return mode === "car" ? 0 : mode === "ferry" ? 1 : mode === "train" ? 2 : mode === "bus" ? 3 : 4;
-    case "cheapest":
-      return mode === "walk" ? 0 : mode === "bus" ? 1 : mode === "train" ? 2 : mode === "ferry" ? 3 : 4;
-    case "least-walking":
-      return mode === "car" ? 0 : mode === "train" ? 1 : mode === "bus" ? 2 : mode === "ferry" ? 3 : 4;
-    case "luggage-friendly":
-      return mode === "car" ? 0 : mode === "train" ? 1 : mode === "bus" ? 2 : mode === "ferry" ? 3 : 4;
-    default:
-      return 0;
-  }
-}
-
-function pickBestLink(
-  links: AugmentedDestinationLink[],
-  selection: RoutePickerSelection
-): AugmentedDestinationLink | null {
-  const candidates = links.filter((link) => link.direction === "to");
-  const pool = candidates.length > 0 ? candidates : links;
-
-  let best: AugmentedDestinationLink | null = null;
-  let bestScore = Number.POSITIVE_INFINITY;
-
-  for (const link of pool) {
-    const modeScore = link.transportModes.reduce(
-      (sum, mode) => sum + scoreTransportMode(mode, selection.preference),
-      0
-    );
-    const transferPenalty = Math.max(0, link.transportModes.length - 1) * 2;
-    const lateNightPenalty =
-      selection.arrival === "late-night" && link.transportModes.includes("ferry") ? 10 : 0;
-    const score = modeScore + transferPenalty + lateNightPenalty;
-
-    if (score < bestScore) {
-      bestScore = score;
-      best = link;
-    }
-  }
-
-  return best;
-}
 
 function HowToGetHereIndexContent({ lang }: Props) {
   const { t } = useTranslation("howToGetHere", { lng: lang });
@@ -101,11 +52,39 @@ function HowToGetHereIndexContent({ lang }: Props) {
   } = filtersState;
 
   const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
-  const [selection, setSelection] = useState<RoutePickerSelection | null>(null);
+  const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
+  const stickyOffset = useHeaderStickyOffset();
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
-    setSelection(sel);
-  }, []);
+    // Find the section matching the selected place
+    const section = content.sections.find((s) => s.id === sel.placeId);
+    if (!section) return;
+
+    // Find the best route for the selection
+    const bestLink = pickBestLink(section.links, sel);
+    if (!bestLink) return;
+
+    // Set highlighted route
+    setHighlightedRouteSlug(bestLink.href);
+
+    // Scroll to the route anchor with offset for sticky toolbar
+    // Use requestAnimationFrame to ensure DOM is updated
+    requestAnimationFrame(() => {
+      const anchorId = `route-${bestLink.href}`;
+      const element = document.getElementById(anchorId);
+      if (element) {
+        // Get the parent article (route card group) for better scroll target
+        const card = element.closest("article");
+        const scrollTarget = card ?? element;
+
+        scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Adjust for sticky toolbar offset after smooth scroll starts
+        setTimeout(() => {
+          window.scrollBy({ top: -(stickyOffset + 16), behavior: "smooth" });
+        }, 50);
+      }
+    });
+  }, [content.sections, stickyOffset]);
 
   const jumpToItems: JumpToItem[] = (() => {
     const items: JumpToItem[] = [
@@ -205,7 +184,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         showEmptyState={filtersState.hasActiveFilters && filtersState.filteredSections.length === 0}
         t={t}
         internalBasePath={content.internalBasePath}
-        highlightedRouteSlug={null}
+        highlightedRouteSlug={highlightedRouteSlug}
         preferredDirection={directionFilter !== "all" ? directionFilter : null}
         onOpenFilters={() => setFiltersDialogOpen(true)}
         onClearFilters={clearFilters}

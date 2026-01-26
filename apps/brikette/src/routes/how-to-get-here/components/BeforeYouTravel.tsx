@@ -60,7 +60,10 @@ function BeforeYouTravelBase({ t }: BeforeYouTravelProps) {
   ];
 
   return (
-    <section className="rounded-3xl border border-brand-outline/20 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/30 dark:bg-brand-surface/60">
+    <section
+      id="before-you-travel"
+      className="scroll-mt-28 rounded-3xl border border-brand-outline/20 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/30 dark:bg-brand-surface/60"
+    >
       <h2 className="text-xl font-semibold text-brand-heading dark:text-brand-text">
         {t("beforeTravel.title", { defaultValue: "Before you travel" })}
       </h2>

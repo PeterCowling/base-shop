@@ -1,11 +1,15 @@
 import { Trans } from "react-i18next";
+import clsx from "clsx";
 import type { TFunction } from "i18next";
+import { AlertTriangle } from "lucide-react";
 
 import { CONTACT_EMAIL } from "@/config/hotel";
 
 import { IntroHighlightCard } from "../IntroHighlightCard";
 import { SEA_HORSE_SHUTTLE_URL } from "../styles";
 import { Cluster, Inline } from "../ui";
+
+const LATE_NIGHT_EMPHASIS_CLASS = "ring-2 ring-brand-primary ring-offset-2 ring-offset-brand-secondary dark:ring-brand-secondary";
 
 const ACTION_BUTTON_CLASS = [
   "inline-flex",
@@ -65,9 +69,11 @@ export type IntroHighlightsProps = {
   taxiEyebrow: string;
   taxiContact: string;
   shuttleEyebrow: string;
+  /** When true, adds visual emphasis to the taxi card (for late-night arrivals) */
+  isLateNight?: boolean;
 };
 
-export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttleEyebrow }: IntroHighlightsProps) {
+export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttleEyebrow, isLateNight = false }: IntroHighlightsProps) {
   const normalizePhone = (value: string) => value.replace(/[^\d+]/g, "").trim();
   const phone = normalizePhone(taxiContact);
   const whatsappNumber = phone.replace(/^\+/, "");
@@ -90,8 +96,11 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
 
   return (
     <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-secondary">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-base leading-relaxed">
-        <IntroHighlightCard eyebrow={taxiEyebrow}>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 text-base leading-relaxed">
+        <IntroHighlightCard
+          eyebrow={taxiEyebrow}
+          className={clsx(isLateNight && LATE_NIGHT_EMPHASIS_CLASS)}
+        >
           <p>
             <Trans
               i18nKey={`${introKey}.taxi`}
@@ -166,6 +175,29 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               defaultValue: "Best for: delays · ferry cancellations · late check-in",
             })}
           </p>
+        </IntroHighlightCard>
+
+        <IntroHighlightCard eyebrow={t(`${introKey}.tipsEyebrow`, { defaultValue: "Travel tips" })}>
+          <Inline as="div" className="items-start gap-2">
+            <AlertTriangle aria-hidden className="mt-0.5 size-5 shrink-0 text-brand-heading/70" />
+            <ul className="list-none space-y-2 p-0 text-sm">
+              <li>
+                {t(`${introKey}.tipStairs`, {
+                  defaultValue: "Positano has stairs everywhere — pack light!",
+                })}
+              </li>
+              <li>
+                {t(`${introKey}.tipFerries`, {
+                  defaultValue: "Ferries can cancel due to weather. Check before you go.",
+                })}
+              </li>
+            </ul>
+          </Inline>
+          <Cluster as="div" className="mt-4">
+            <a className={ACTION_BUTTON_CLASS} href="#before-you-travel">
+              {t(`${introKey}.tipsCta`, { defaultValue: "See all tips" })}
+            </a>
+          </Cluster>
         </IntroHighlightCard>
       </div>
     </div>

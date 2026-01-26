@@ -113,9 +113,12 @@ function HowToGetHereIndexContent({ lang }: Props) {
 
   const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
+  const [isLateNight, setIsLateNight] = useState(false);
   const stickyOffset = useHeaderStickyOffset();
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
+    // Track if user selected late-night arrival for taxi emphasis
+    setIsLateNight(sel.arrival === "late-night");
     // Find the section matching the selected place
     const section = content.sections.find((s) => s.id === sel.placeId);
     if (!section) return;
@@ -234,6 +237,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
           taxiEyebrow={content.taxiEyebrow}
           taxiContact={content.taxiContact}
           shuttleEyebrow={content.shuttleEyebrow}
+          isLateNight={isLateNight}
         />
       </Section>
 

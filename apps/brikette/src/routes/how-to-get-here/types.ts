@@ -148,6 +148,7 @@ export type InlineListProps = ComponentPropsWithoutRef<"ul">;
 
 export type IntroHighlightCardProps = PropsWithChildren<{
   eyebrow: string;
+  className?: string;
 }>;
 
 export type OverviewLoaderData = {

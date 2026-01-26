@@ -5,7 +5,7 @@
 import { Fragment, memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -28,6 +28,7 @@ import type {
 } from "@/routes/how-to-get-here/types";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
+import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 type Props = {
   lang: AppLanguage;
@@ -87,6 +88,7 @@ function pickBestLink(
 function HowToGetHereIndexContent({ lang }: Props) {
   const { t } = useTranslation("howToGetHere", { lng: lang });
   usePagePreload({ lang, namespaces: ["howToGetHere", "guides"] });
+  const fallbackT = useEnglishFallback("howToGetHere");
 
   const content = useHowToGetHereContent(lang);
   const filtersState = useDestinationFilters(content.sections);
@@ -107,18 +109,33 @@ function HowToGetHereIndexContent({ lang }: Props) {
 
   const jumpToItems: JumpToItem[] = (() => {
     const items: JumpToItem[] = [
-      { id: INTRO_SECTION_ID, label: (t("jumpTo.arrival") as string) || "Arrival Help" },
+      {
+        id: INTRO_SECTION_ID,
+        label: resolveLabel(
+          t,
+          "jumpTo.arrival",
+          resolveLabel(fallbackT, "jumpTo.arrival", "Arrival help"),
+        ),
+      },
     ];
     for (const section of content.sections) {
       items.push({ id: section.id, label: section.name });
     }
     items.push({
       id: ROME_SECTION_ID,
-      label: (t("jumpTo.rome") as string) || "Rome",
+      label: resolveLabel(
+        t,
+        "jumpTo.rome",
+        resolveLabel(fallbackT, "jumpTo.rome", "Rome"),
+      ),
     });
     items.push({
       id: EXPERIENCE_SECTION_ID,
-      label: (t("jumpTo.experiences") as string) || "Experiences",
+      label: resolveLabel(
+        t,
+        "jumpTo.experiences",
+        resolveLabel(fallbackT, "jumpTo.experiences", "Experiences"),
+      ),
     });
     return items;
   })();
@@ -197,10 +214,12 @@ function HowToGetHereIndexContent({ lang }: Props) {
       {/* Rome Section */}
       <Section id={ROME_SECTION_ID} padding="default">
         <RomeSection
+          t={t}
           showRomePlanner={content.showRomePlanner}
           romeTitle={content.romeTitle}
           romeDescription={content.romeDescription}
           romeTable={content.romeTable}
+          romeImage={content.romeImage}
           internalBasePath={content.internalBasePath}
         />
       </Section>

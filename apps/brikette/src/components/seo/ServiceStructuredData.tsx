@@ -1,9 +1,13 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/ServiceStructuredData.tsx
 import { memo } from "react";
 import { usePathname } from "next/navigation";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type MonetaryAmount = {
   price: string;
@@ -41,7 +45,7 @@ function ServiceStructuredData({
   const pathname = usePathname() ?? "";
 
   const resolvedLang = inLanguage ?? lang;
-  const resolvedUrl = url ?? `https://hostel-positano.com${pathname}`;
+  const resolvedUrl = url ?? buildCanonicalUrl(BASE_URL, pathname);
 
   const offerPayload = Array.isArray(offers)
     ? offers
@@ -74,7 +78,7 @@ function ServiceStructuredData({
         }))
     : [];
 
-  const json = JSON.stringify({
+  const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "Service",
     inLanguage: resolvedLang,

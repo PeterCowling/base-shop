@@ -2,6 +2,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+
 import { parseJsonBody } from "@acme/lib/http/server";
 
 export const runtime = "edge";
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
   const ok = await sendToGA({ shop, ...data });
   if (!ok) {
     // Best-effort: keep edge-only; log minimal info
-    try { console.log('tryon.analytics', { shop, type: data.type, productId: data.productId }); } catch {}
+    try { console.info('tryon.analytics', { shop, type: data.type, productId: data.productId }); } catch {}
   }
   return NextResponse.json({ ok: true });
 }

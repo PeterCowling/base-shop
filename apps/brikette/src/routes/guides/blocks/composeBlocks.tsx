@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- DEV-1823 [ttl=2026-12-31] Guide block composer uses literal module patterns and fallbacks. */
+ 
 /*
  * DEV-1823: Block composer relies on fallback strings pending locale coverage, and this helper file does not
  * represent a route module with direct SEO exports.
@@ -8,15 +8,15 @@
 import type { GuideManifestEntry } from "../guide-manifest";
 
 import {
-  BlockAccumulator,
-  type TemplateFragment,
-  applyHeroBlock,
+  applyAlsoHelpfulBlock,
   applyFaqBlock,
   applyGalleryBlock,
-  applyServiceSchemaBlock,
   applyGenericContentBlock,
-  applyAlsoHelpfulBlock,
+  applyHeroBlock,
   applyJsonLdBlock,
+  applyServiceSchemaBlock,
+  BlockAccumulator,
+  type TemplateFragment,
 } from "./handlers";
 import type { GuideBlockDeclaration } from "./types";
 

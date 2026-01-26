@@ -3,9 +3,8 @@
  */
 import type { AppLanguage } from "@/i18n.config";
 
-import type { Translator } from "../types";
-
 import { translateStringWithFallback } from "../translations";
+import type { Translator } from "../types";
 
 interface DescriptionResolverParams {
   metaKey: string;

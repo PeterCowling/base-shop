@@ -1,3 +1,5 @@
+import { debugGuide } from "@/utils/debug";
+
 import type {
   GuideSeoTemplateContext,
   NormalisedFaq,
@@ -6,11 +8,13 @@ import type {
   Translator,
 } from "../types";
 import type { StructuredFallback } from "../utils/fallbacks";
+import { logStructuredToc } from "../utils/logging";
 import { normalizeTocForDisplay, resolveFaqTitle } from "../utils/toc";
+
 import {
   getStructuredTocOverride,
-  resolveTocTitleText,
   resolveTocTitleProp,
+  resolveTocTitleText,
   shouldSuppressToc,
 } from "./structured-toc";
 import {
@@ -22,8 +26,6 @@ import {
   MinimalUnlocalizedIntro,
   MinimalUnlocalizedSections,
 } from "./structured-toc/StructuredTocSections";
-import { debugGuide } from "@/utils/debug";
-import { logStructuredToc } from "../utils/logging";
 
 interface StructuredTocBlockProps {
   itemsBase: TocItem[] | null | undefined;

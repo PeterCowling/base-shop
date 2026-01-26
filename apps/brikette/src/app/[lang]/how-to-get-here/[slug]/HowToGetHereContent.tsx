@@ -5,7 +5,7 @@
 import { Fragment, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, { type BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
@@ -195,7 +195,7 @@ export default function HowToGetHereContent({
       />
 
       <PreviewBanner visible={showPreview} label={t("preview.notPublished")} />
-      <Section as="div" padding="wide" className="max-w-5xl text-brand-text dark:text-brand-surface">
+      <Section as="div" padding="wide" className="max-w-5xl text-brand-text dark:text-brand-text">
         <div className="space-y-10">
           {hero ? (
             <header className="rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80">
@@ -204,11 +204,11 @@ export default function HowToGetHereContent({
                   {hero["eyebrow"] as ReactNode}
                 </p>
               ) : null}
-              <h1 className="mt-3 text-3xl font-bold text-brand-heading dark:text-brand-surface">
+              <h1 className="mt-3 text-3xl font-bold text-brand-heading dark:text-brand-text">
                 {hero["title"] as ReactNode}
               </h1>
               {hero["description"] ? (
-                <p className="mt-3 text-base leading-relaxed text-brand-text/80 dark:text-brand-surface/80">
+                <p className="mt-3 text-base leading-relaxed text-brand-text/80 dark:text-brand-text/80">
                   {hero["description"] as ReactNode}
                 </p>
               ) : null}

@@ -1,9 +1,13 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // /src/components/seo/HowToReachPositanoStructuredData.tsx
 import { memo } from "react";
 import { usePathname } from "next/navigation";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
+
+import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type StepContent = {
   name: string;
@@ -87,8 +91,6 @@ type HowToLocale = keyof typeof HOW_TO_LOCALE_COPY;
 const DEFAULT_LOCALE: HowToLocale = "en";
 const DEFAULT_COPY = HOW_TO_LOCALE_COPY[DEFAULT_LOCALE];
 
-const HOST_URL = "https://hostel-positano.com";
-
 const hasOwn = <Obj extends Record<PropertyKey, unknown>, Key extends PropertyKey>(
   obj: Obj,
   key: Key
@@ -126,11 +128,11 @@ function HowToReachPositanoStructuredData(): JSX.Element {
     ...(s.image ? { image: s.image } : {}),
   }));
 
-  const json = JSON.stringify({
+  const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "HowTo",
     inLanguage: lang,
-    url: `${HOST_URL}${pathname}`,
+    url: buildCanonicalUrl(BASE_URL, pathname),
     totalTime: "PT2H30M",
     estimatedCost: {
       "@type": "MonetaryAmount",

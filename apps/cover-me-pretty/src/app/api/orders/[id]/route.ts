@@ -1,5 +1,7 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/orders/[id]/route.ts
+import { NextResponse } from "next/server";
+
 import { getCustomerSession } from "@acme/auth";
 import {
   getOrdersForCustomer,
@@ -7,7 +9,7 @@ import {
   markDelivered,
   refundOrder,
 } from "@acme/platform-core/orders";
-import { NextResponse } from "next/server";
+
 import shop from "../../../../../shop.json";
 
 // @acme/auth relies on Node APIs, so use Node runtime

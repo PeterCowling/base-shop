@@ -1,4 +1,5 @@
 import { type ComponentPropsWithoutRef, memo } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
@@ -83,9 +84,9 @@ function LanguageModal({
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
           className="layer-modal-panel pointer-events-auto transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200"
         >
-          <h3 className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
+          <DialogTitle className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
             {copy.title}
-          </h3>
+          </DialogTitle>
 
           <Cluster>
             {options.map(({ code, label }) => (

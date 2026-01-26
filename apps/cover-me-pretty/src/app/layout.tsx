@@ -1,15 +1,17 @@
 // apps/cover-me-pretty/src/app/layout.tsx
+import "./globals.css";
+
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+
+import AnalyticsPixelsSection from "@acme/cms-ui/blocks/AnalyticsPixelsSection";
+import ConsentSection from "@acme/cms-ui/blocks/ConsentSection";
+import RentalDemoProvider from "@acme/cms-ui/blocks/RentalDemoProvider.client";
+import StructuredDataSection from "@acme/cms-ui/blocks/StructuredDataSection";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
 import { initTheme } from "@acme/platform-core/utils";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import ConsentSection from "@acme/cms-ui/blocks/ConsentSection";
-import AnalyticsPixelsSection from "@acme/cms-ui/blocks/AnalyticsPixelsSection";
-import StructuredDataSection from "@acme/cms-ui/blocks/StructuredDataSection";
-import RentalDemoProvider from "@acme/cms-ui/blocks/RentalDemoProvider.client";
 
 /**
  * Root layout for the Shop app.

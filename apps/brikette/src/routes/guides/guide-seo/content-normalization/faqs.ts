@@ -3,9 +3,8 @@
  */
 import { ensureStringArray } from "@/utils/i18nContent";
 
-import type { NormalisedFaq } from "../types";
-
 import { isPlaceholderString } from "../content-detection/placeholders";
+import type { NormalisedFaq } from "../types";
 
 /**
  * Flatten nested FAQ entries into a flat array.

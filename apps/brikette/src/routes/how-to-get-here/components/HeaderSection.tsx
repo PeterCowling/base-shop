@@ -1,8 +1,6 @@
 import type { TFunction } from "i18next";
 
-import { Grid } from "@acme/ui/atoms";
-
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 
 import { getFilterButtonClass, HERO_IMAGE_SRC } from "../styles";
 import type { HeaderContent } from "../types";
@@ -32,15 +30,15 @@ export function HeaderSection({
         aria-hidden
         className="pointer-events-none absolute -right-16 top-1/2 size-72 -translate-y-1/2 rounded-full bg-brand-primary/20 blur-3xl dark:bg-brand-secondary/25"
       />
-      <Grid columns={{ base: 1, lg: 2 }} gap={10} className="relative items-start">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 relative items-start">
         <div>
-          <span className="tracking-eyebrow rounded-full border border-brand-outline/10 bg-brand-surface/70 px-3 py-1 text-xs font-semibold uppercase text-brand-secondary shadow-sm backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/50 dark:text-brand-surface/80">
+          <span className="tracking-eyebrow rounded-full border border-brand-outline/10 bg-brand-surface/70 px-3 py-1 text-xs font-semibold uppercase text-brand-secondary shadow-sm backdrop-blur dark:border-brand-outline/30 dark:bg-brand-surface/50 dark:text-brand-text/80">
             {header.eyebrow}
           </span>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight text-brand-heading dark:text-brand-surface">
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-brand-heading dark:text-brand-text">
             {header.title}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-brand-text/90 dark:text-brand-surface/90">
+          <p className="mt-4 text-base leading-relaxed text-brand-text/90 dark:text-brand-text/90">
             {header.description}
           </p>
           <div className="mt-6 space-y-3">
@@ -53,7 +51,7 @@ export function HeaderSection({
               >
                 {t("filters.editLabel", { defaultValue: "Edit filters" })}
               </button>
-              <p className="text-sm text-brand-text/70 dark:text-brand-surface/70">
+              <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
                 {t("filters.shareHint", {
                   defaultValue: "Filters are reflected in the URL for easy sharing.",
                 })}
@@ -71,7 +69,7 @@ export function HeaderSection({
             priority
           />
         </figure>
-      </Grid>
+      </div>
 
     </header>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+
 import { Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency } from "@/lib/format";

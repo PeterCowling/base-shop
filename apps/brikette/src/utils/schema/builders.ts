@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
+ 
 // src/utils/schema/builders.ts
 // -----------------------------------------------------------------------------
 // Build page-level JSON-LD graphs from the rooms catalogue
@@ -127,6 +127,14 @@ function buildRoom(room: LocalizedRoom): HotelRoom {
 }
 
 export function buildOffer(input: OfferInput): Offer {
+  const priceSpecification = {
+    "@type": "UnitPriceSpecification",
+    price: input.price,
+    priceCurrency: "EUR",
+    unitCode: "NI",
+    ...(input.validFrom ? { validFrom: input.validFrom } : {}),
+  };
+
   return {
     "@type": "Offer",
     "@id": `${BASE_URL}#offer-${input.sku}`,
@@ -135,15 +143,9 @@ export function buildOffer(input: OfferInput): Offer {
     itemOffered: { "@id": `${BASE_URL}#room-${input.sku}` },
     sku: input.sku,
     price: input.price,
-    priceSpecification: {
-      "@type": "UnitPriceSpecification",
-      price: input.price,
-      priceCurrency: "EUR",
-      unitCode: "NI",
-      validFrom: input.validFrom,
-    },
+    priceSpecification,
     priceCurrency: "EUR",
-    availabilityStarts: input.validFrom,
+    ...(input.validFrom ? { availabilityStarts: input.validFrom } : {}),
     availability: "https://schema.org/InStock",
     potentialAction: {
       "@type": "ReserveAction",
@@ -159,6 +161,22 @@ export function buildOffer(input: OfferInput): Offer {
     image: input.images.slice(0, 4),
   };
 }
+
+const isIsoDate = (input: unknown): input is string =>
+  typeof input === "string" && /^\d{4}-\d{2}-\d{2}$/u.test(input);
+
+const resolveValidFrom = (room: LocalizedRoom): string | undefined => {
+  const seasonalStarts = room.seasonalPrices
+    ?.map((entry) => entry?.start)
+    .filter(isIsoDate)
+    .sort();
+
+  if (seasonalStarts && seasonalStarts.length > 0) {
+    return seasonalStarts[0] ?? undefined;
+  }
+
+  return undefined;
+};
 
 export function buildHomeGraph(pageUrl?: string, lang = "en"): HotelGraph {
   const hotel = buildHotelNode({
@@ -176,7 +194,7 @@ export function buildHomeGraph(pageUrl?: string, lang = "en"): HotelGraph {
       name: room.title,
       description: room.description,
       price: room.basePrice.amount,
-      validFrom: "2025-10-19",
+      validFrom: resolveValidFrom(room),
       images: pickRelativeImagePaths(room),
     })
   );

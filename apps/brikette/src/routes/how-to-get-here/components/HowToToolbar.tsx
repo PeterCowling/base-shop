@@ -31,6 +31,8 @@ type ToolbarFiltersState = Pick<
 const DEFAULT_HEADER_SELECTOR = 'header[role="banner"]';
 const DEFAULT_FALLBACK_OFFSET = 72;
 const DEFAULT_GAP = 12;
+const LARGE_SCREEN_BREAKPOINT = 1024;
+const LARGE_SCREEN_GAP = 0;
 
 const TOOLBAR_CLASS = [
   "sticky",
@@ -67,8 +69,10 @@ function useHeaderStickyOffset(headerSelector = DEFAULT_HEADER_SELECTOR): number
     if (!header) return;
 
     const update = (): void => {
-      const { bottom } = header.getBoundingClientRect();
-      setOffset(Math.max(0, bottom) + DEFAULT_GAP);
+      const rect = header.getBoundingClientRect();
+      const measuredBottom = Math.max(rect.bottom, header.offsetHeight);
+      const gap = window.innerWidth >= LARGE_SCREEN_BREAKPOINT ? LARGE_SCREEN_GAP : DEFAULT_GAP;
+      setOffset(Math.max(0, measuredBottom) + gap);
     };
 
     update();
@@ -134,7 +138,7 @@ export function HowToToolbar({
     >
       <Cluster as="div" className="items-center justify-between gap-3">
         <Cluster as="div" className="min-w-0 items-center gap-2">
-          <span className="text-sm font-semibold text-brand-heading dark:text-brand-surface">
+          <span className="text-sm font-semibold text-brand-heading dark:text-brand-text">
             {resultsLabel}
           </span>
           {activeFilters.length ? (
@@ -180,7 +184,7 @@ export function HowToToolbar({
                 <a className={anchorLinkClass} href={`#${item.id}`}>
                   {item.label}
                   {typeof item.count === "number" ? (
-                    <span className="ms-1 text-brand-heading/70 dark:text-brand-surface/70">
+                    <span className="ms-1 text-brand-heading/70 dark:text-brand-text/70">
                       ({item.count})
                     </span>
                   ) : null}

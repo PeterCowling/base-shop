@@ -1,9 +1,10 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import type { ProductAssetProceduralOpen } from "@acme/product-configurator";
 import { useEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+
+import type { ProductAssetProceduralOpen } from "@acme/product-configurator";
 
 type BagAnimationControllerProps = {
   scene?: THREE.Object3D | null;

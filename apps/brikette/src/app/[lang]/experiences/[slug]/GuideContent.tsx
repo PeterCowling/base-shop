@@ -6,25 +6,23 @@ import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { IS_DEV } from "@/config/env";
 import { GuideBoundary } from "@/components/guides/GuideBoundary";
 import PlanChoiceAnalytics from "@/components/guides/PlanChoiceAnalytics";
-import type { GuideSection } from "@/data/guides.index";
+import { IS_DEV } from "@/config/env";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
+import { guideNamespace } from "@/routes.guides-helpers";
 import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
 import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
-import { getSlug } from "@/utils/slug";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 type Props = {
   lang: AppLanguage;
   guideKey: GuideKey;
-  section: GuideSection;
 };
 
-function GuideContent({ lang, guideKey, section }: Props) {
+function GuideContent({ lang, guideKey }: Props) {
   const { t } = useTranslation("guides", { lng: lang });
   const [loadError, setLoadError] = useState(false);
 
@@ -55,9 +53,8 @@ function GuideContent({ lang, guideKey, section }: Props) {
     resolveLabel(fallbackGuides, "labels.backLink", "Back")
   );
 
-  // Resolve section base path
-  const sectionSlug = section === "help" ? getSlug("assistance", lang) : getSlug("guides", lang);
-  const listingPath = `/${lang}/${sectionSlug}`;
+  const base = guideNamespace(lang, guideKey);
+  const listingPath = `/${lang}/${base.baseSlug}`;
 
   // Use guideKey as metaKey (GuideMeta doesn't have metaKey override)
   const metaKey = guideKey;

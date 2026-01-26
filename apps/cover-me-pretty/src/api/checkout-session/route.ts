@@ -2,15 +2,25 @@
 // apps/cover-me-pretty/src/app/api/checkout-session/route.ts
 import "@acme/zod-utils/initZod";
 
-import { CART_COOKIE, decodeCartCookie, type CartState } from "@acme/platform-core/cartCookie";
-import { getCart } from "@acme/platform-core/cartStore";
+import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type Stripe from "stripe";
+import { ulid } from "ulid";
+import { z } from "zod";
+
 import { getCustomerSession } from "@acme/auth";
-import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
+import { CART_COOKIE, type CartState,decodeCartCookie } from "@acme/platform-core/cartCookie";
+import { getCart } from "@acme/platform-core/cartStore";
 import {
   createCheckoutSession,
   INSUFFICIENT_STOCK_ERROR,
 } from "@acme/platform-core/checkout/session";
+import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { getOrCreateStripeCustomerId } from "@acme/platform-core/identity";
 import {
   createInventoryHold,
   InventoryHoldInsufficientError,
@@ -19,17 +29,11 @@ import {
   cartToInventoryRequests,
   validateInventoryAvailability,
 } from "@acme/platform-core/inventoryValidation";
-import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
-import shop from "../../../shop.json";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { shippingSchema, billingSchema } from "@acme/platform-core/schemas/address";
-import type Stripe from "stripe";
 import { addOrder } from "@acme/platform-core/orders/creation";
-import { resolveDataRoot } from "@acme/platform-core/dataRoot";
-import path from "node:path";
-import { promises as fs } from "node:fs";
-import { ulid } from "ulid";
+import { convertCurrency, getPricing } from "@acme/platform-core/pricing";
+import { billingSchema,shippingSchema } from "@acme/platform-core/schemas/address";
+
+import shop from "../../../shop.json";
 
 export const runtime = "nodejs";
 

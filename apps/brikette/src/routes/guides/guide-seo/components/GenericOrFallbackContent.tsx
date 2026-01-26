@@ -11,16 +11,16 @@ import type { StructuredFallback } from "../utils/fallbacks";
 
 import RenderManualObject from "./fallback/RenderManualObject";
 import {
-  hasStructuredLocal as probeHasStructuredLocal,
-  hasStructuredEn as probeHasStructuredEn,
-  manualFallbackHasMeaningfulContent,
   computeHasStructuredEn,
-  hasRuntimeStructuredContent,
-  hasExplicitLocalizedContent,
   getLocalizedManualFallback,
+  hasExplicitLocalizedContent,
+  hasRuntimeStructuredContent,
+  hasStructuredEn as probeHasStructuredEn,
+  hasStructuredLocal as probeHasStructuredLocal,
+  manualFallbackHasMeaningfulContent,
   resolveTargetLocale,
-  shouldSkipWhenPureEmpty,
   shouldSkipFallbacksWhenUnlocalized,
+  shouldSkipWhenPureEmpty,
 } from "./generic";
 import { renderFallbackContent } from "./generic-or-fallback/renderFallbackContent";
 import { renderPrimaryContent } from "./generic-or-fallback/renderPrimaryContent";

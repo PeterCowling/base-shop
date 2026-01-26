@@ -1,12 +1,13 @@
 "use client";
 
-import { OrbitControls } from "@react-three/drei";
-import type { OrbitControlsProps } from "@react-three/drei";
 import type { ComponentType } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
+import type { OrbitControlsProps } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+
 import { useCameraFocusStore } from "../state/cameraStore";
 
 export type FrameBounds = {

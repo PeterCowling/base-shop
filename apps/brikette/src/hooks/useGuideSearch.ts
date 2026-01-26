@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { GUIDES_INDEX, type GuideMeta } from "@/data/guides.index";
+import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
 import {
   getGuideSearchService,
   type GuideSearchResult,

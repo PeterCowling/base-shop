@@ -10,8 +10,6 @@ import i18n from "@/i18n";
 
 import type { GuideSeoTemplateContext, TocItem } from "../../types";
 import type { StructuredFallback } from "../../utils/fallbacks";
-import { renderGenericFastPaths } from "./renderGenericFastPaths";
-import { renderStructuredFallback } from "./renderStructuredFallback";
 import {
   allowsEmptyRender,
   applyIntroSuppression,
@@ -22,11 +20,14 @@ import {
   hasManualStringFallback,
   makeBaseGenericProps,
   needsLegacySecondArgInvocation,
+  preparePropsForRender,
+  resolveEnglishTranslator,
   shouldRenderGenericContent as decideShouldRenderGeneric,
   withTranslator,
-  resolveEnglishTranslator,
-  preparePropsForRender,
 } from "../generic";
+
+import { renderGenericFastPaths } from "./renderGenericFastPaths";
+import { renderStructuredFallback } from "./renderStructuredFallback";
 
 const MemoGenericContent = memo(GenericContent as any);
 
@@ -154,7 +155,7 @@ export function renderPrimaryContent(params: {
   // MAIN GENERIC CONTENT RENDERING PATH
   // ========================================================================
 
-  let hasStructured = hasStructuredLocal || hasStructuredEnEffective;
+  const hasStructured = hasStructuredLocal || hasStructuredEnEffective;
 
   if (renderGenericContent) {
     // preferGenericWhenFallback fast-path

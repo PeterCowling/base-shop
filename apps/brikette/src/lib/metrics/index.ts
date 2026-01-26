@@ -8,22 +8,21 @@
  */
 
 export {
+  getAllLatencyStats,
+  getLatencyStats,
+  getLatencyTracker,
+  type LatencyStats,
   LatencyTracker,
   type LatencyTrackerConfig,
-  type LatencyStats,
-  getLatencyTracker,
   recordLatency,
-  getLatencyStats,
-  getAllLatencyStats,
 } from "./latency-tracker";
-
 export {
+  detectTrend,
+  getSmoothedMetric,
+  getTrendMetric,
+  movingAverage,
   SmoothedMetric,
   type SmoothedMetricConfig,
   TrendMetric,
   type TrendMetricConfig,
-  movingAverage,
-  detectTrend,
-  getSmoothedMetric,
-  getTrendMetric,
 } from "./smoothed-metrics";

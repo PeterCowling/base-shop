@@ -6,4 +6,4 @@
 // are available in this API route.
 export const runtime = "nodejs";
 
-export { GET, POST, PATCH, DELETE, PUT } from "../../../api/cart/route";
+export { DELETE, GET, PATCH, POST, PUT } from "../../../api/cart/route";

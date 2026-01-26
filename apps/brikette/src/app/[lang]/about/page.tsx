@@ -3,12 +3,12 @@
 import { Fragment } from "react";
 import type { Metadata } from "next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { getTranslations, resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import { getSlug } from "@/utils/slug";
 

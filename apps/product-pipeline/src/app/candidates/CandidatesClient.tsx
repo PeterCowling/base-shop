@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+
 import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency } from "@/lib/format";
@@ -577,9 +578,9 @@ export default function CandidatesClient({
             <span
               className={`text-xs ${
                 bulkMessage.tone === "error"
-                  ? "text-red-600"
+                  ? "text-danger"
                   : bulkMessage.tone === "success"
-                    ? "text-emerald-600"
+                    ? "text-success"
                     : "text-foreground/60"
               }`}
             >

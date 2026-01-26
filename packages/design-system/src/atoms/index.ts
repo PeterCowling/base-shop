@@ -17,7 +17,10 @@ export {
 } from "../primitives/accordion";
 export { Button, type ButtonProps } from "../primitives/button";
 export { Card, CardContent } from "../primitives/card";
-export { Checkbox, type CheckboxProps } from "../primitives/checkbox";
+export {
+  Checkbox,
+  type CheckboxProps,
+} from "../primitives/checkbox";
 export {
   Dialog,
   DialogContent,
@@ -29,6 +32,7 @@ export {
   DialogTitle,
   DialogTrigger,
 } from "../primitives/dialog";
+export { Grid } from "../primitives/Grid";
 export { Input, type InputProps } from "../primitives/input";
 export { OverlayScrim } from "../primitives/overlayScrim";
 export {

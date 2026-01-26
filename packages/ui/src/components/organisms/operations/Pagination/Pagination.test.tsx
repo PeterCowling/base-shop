@@ -202,7 +202,7 @@ describe('Pagination', () => {
       render(<Pagination {...defaultProps} currentPage={11} pageSize={20} totalItems={205} totalPages={11} />);
 
       expect(screen.getByText('201')).toBeInTheDocument();
-      expect(screen.getByText('205')).toBeInTheDocument();
+      expect(screen.getAllByText('205')).toHaveLength(2);
     });
   });
 

@@ -1,11 +1,11 @@
 /**
  * Block handlers for guide composition.
  */
+export { applyAlsoHelpfulBlock } from "./alsoHelpfulBlock";
 export { BlockAccumulator, type TemplateFragment } from "./BlockAccumulator";
-export { applyHeroBlock } from "./heroBlock";
 export { applyFaqBlock } from "./faqBlock";
 export { applyGalleryBlock } from "./galleryBlock";
-export { applyServiceSchemaBlock } from "./serviceSchemaBlock";
 export { applyGenericContentBlock } from "./genericContentBlock";
-export { applyAlsoHelpfulBlock } from "./alsoHelpfulBlock";
+export { applyHeroBlock } from "./heroBlock";
 export { applyJsonLdBlock } from "./jsonLdBlock";
+export { applyServiceSchemaBlock } from "./serviceSchemaBlock";

@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { DatePicker } from "@acme/design-system/molecules";
@@ -173,12 +174,12 @@ function BookingModal({
           </button>
 
           <header className="mb-8">
-            <h2
+            <DialogTitle
               id={BOOKING_MODAL_TITLE_ID}
               className="text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.2)]"
             >
               {copy.title}
-            </h2>
+            </DialogTitle>
             <p className="mt-2 text-brand-text/70">{copy.subTitle}</p>
           </header>
 

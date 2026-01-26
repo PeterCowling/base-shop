@@ -174,10 +174,10 @@ function SlideItemBase(
         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
       />
 
-      <div className="flex h-full w-full flex-1 flex-col gap-4 p-6">
+      <div className="flex h-full w-full flex-col gap-3 p-4 sm:p-6 md:flex-1">
         <header>
           <h3 className="break-words text-lg font-bold uppercase tracking-wide">{t(`rooms.${item.id}.title`)}</h3>
-          <p className="mt-2 break-words text-sm leading-relaxed text-brand-text/70 line-clamp-2">
+          <p className="mt-2 break-words text-sm leading-relaxed text-brand-text/70 line-clamp-2 hidden sm:block">
             {t(`rooms.${item.id}.bed_intro`)}
           </p>
         </header>
@@ -194,11 +194,11 @@ function SlideItemBase(
             ))}
           </Cluster>
           {detailParts.length ? (
-            <p className="text-sm text-brand-text/80 line-clamp-2">{detailParts.join(" · ")}</p>
+            <p className="text-sm text-brand-text/80 line-clamp-2 hidden sm:block">{detailParts.join(" · ")}</p>
           ) : null}
         </div>
 
-        <div className="mt-auto flex flex-col gap-3">
+        <div className="md:mt-auto flex flex-col gap-3">
 
           {priceLoading ? (
             <div

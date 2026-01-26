@@ -1,6 +1,15 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/delivery/route.ts
 import "@acme/zod-utils/initZod";
+
+import fs from "node:fs";
+import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
+import { parseJsonBody } from "@acme/lib/http/server";
 import {
   initPlugins,
   type PaymentPayload,
@@ -10,11 +19,7 @@ import {
   type WidgetComponent,
   type WidgetProps,
 } from "@acme/platform-core/plugins";
-import { parseJsonBody } from "@acme/lib/http/server";
-import { NextRequest, NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
-import { z } from "zod";
+
 import shop from "../../../../shop.json";
 
 // Ensure Node runtime (we use node path/fs)

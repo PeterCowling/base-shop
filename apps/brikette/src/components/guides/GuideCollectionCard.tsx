@@ -2,23 +2,25 @@
 import Link from "next/link";
 import clsx from "clsx";
 
+import { CfImage } from "@acme/ui/atoms/CfImage";
+
+import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
-import { guideSlug } from "@/routes.guides-helpers";
-import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
+import { guideHref } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
+// Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [
   "group",
   "flex",
   "h-full",
   "flex-col",
-  "justify-between",
+  "overflow-hidden",
   "rounded-xl",
   "border",
   "border-brand-outline/40",
   "bg-brand-surface",
-  "p-4",
   "shadow-sm",
   "transition",
   "hover:border-brand-primary/60",
@@ -28,40 +30,36 @@ const CARD_CLASSES = [
   "dark:hover:border-brand-secondary/70",
 ] as const;
 
+// Thumbnail image container
+const THUMBNAIL_CLASSES = [
+  "relative",
+  "aspect-[16/9]",
+  "w-full",
+  "overflow-hidden",
+] as const;
+
+// Content area with padding
+const CONTENT_CLASSES = [
+  "flex",
+  "flex-1",
+  "flex-col",
+  "justify-between",
+  "p-4",
+] as const;
+
 const SUMMARY_CLASSES = [
   "mt-2",
   "text-sm",
   "leading-snug",
   "text-brand-paragraph",
   "text-pretty",
-  "dark:text-brand-muted-dark",
-] as const;
-
-const TAG_CLASSES = [
-  "mt-3",
-  "flex",
-  "flex-wrap",
-  "gap-2",
-  "text-xs",
-  "font-medium",
-  "text-brand-muted",
-  "dark:text-brand-muted-dark",
-] as const;
-
-const TAG_BADGE_CLASSES = [
-  "rounded-full",
-  "bg-brand-surface/60",
-  "px-2",
-  "py-1",
-  "leading-none",
-  "tracking-wide",
-  "text-brand-primary",
-  "dark:bg-brand-text/20",
-  "dark:text-brand-secondary",
+  "dark:text-brand-muted",
+  // Limit to 3 lines for consistent card height
+  "line-clamp-3",
 ] as const;
 
 const CTA_BUTTON_CLASSES = [
-  "mt-6",
+  "mt-4",
   "inline-block",
   "w-fit",
   "max-w-full",
@@ -100,7 +98,7 @@ const DIRECTION_LABEL_CLASSES = [
   "uppercase",
   "tracking-[0.3em]",
   "text-brand-muted",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
 ] as const;
 const DIRECTION_PILL_CLASSES = [
   "inline-flex",
@@ -129,6 +127,8 @@ interface GuideCollectionCardProps {
   summary?: string;
   ctaLabel?: string;
   directionsLabel?: string;
+  thumbnailSrc?: string;
+  thumbnailAlt?: string;
 }
 
 export const GuideCollectionCard = ({
@@ -138,59 +138,66 @@ export const GuideCollectionCard = ({
   summary,
   ctaLabel,
   directionsLabel,
+  thumbnailSrc,
+  thumbnailAlt,
 }: GuideCollectionCardProps): JSX.Element => {
-  // Always link under the Guides base for UI consistency
-  const base = getSlug("guides", lang);
-  const slug = guideSlug(lang, guide.key);
-  const href = `/${lang}/${base}/${slug}`;
+  const href = guideHref(lang, guide.key);
   const howToBase = `/${lang}/${getSlug("howToGetHere", lang)}`;
   const directionLinks = GUIDE_DIRECTION_LINKS[guide.key];
 
   return (
     <article className={clsx(CARD_CLASSES)}>
-      <div>
-        <h3 className="text-base font-semibold text-brand-heading dark:text-brand-surface">
-          {ctaLabel ? (
-            <Link href={href} prefetch={true} className="hover:underline">
-              {label}
-            </Link>
-          ) : (
-            <span>{label}</span>
-          )}
-        </h3>
-        {summary ? <p className={clsx(SUMMARY_CLASSES)}>{summary}</p> : null}
-        {guide.tags.length ? (
-          <div className={clsx(TAG_CLASSES)} aria-label="Tags">
-            {guide.tags.map((tag) => (
-              <span key={tag} className={clsx(TAG_BADGE_CLASSES)}>
-                #{tag}
-              </span>
-            ))}
-          </div>
-        ) : null}
-        {directionLinks?.length && directionsLabel ? (
-          <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
-            <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
-            <div className="flex flex-wrap gap-2">
-              {directionLinks.map((link) => (
-                <Link
-                  key={`${guide.key}-${link.slug}`}
-                  href={`${howToBase}/${link.slug}`}
-                  prefetch={true}
-                  className={clsx(DIRECTION_PILL_CLASSES)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
-      {ctaLabel ? (
-        <Link href={href} prefetch={true} className={clsx(CTA_BUTTON_CLASSES)}>
-          {ctaLabel}
+      {/* Thumbnail image */}
+      {thumbnailSrc ? (
+        <Link href={href} prefetch={true} className={clsx(THUMBNAIL_CLASSES)}>
+          <CfImage
+            src={thumbnailSrc}
+            preset="thumb"
+            alt={thumbnailAlt || label}
+            className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+            width={400}
+            height={225}
+          />
         </Link>
       ) : null}
+
+      {/* Content */}
+      <div className={clsx(CONTENT_CLASSES)}>
+        <div>
+          <h3 className="text-base font-semibold text-brand-heading dark:text-brand-heading">
+            {ctaLabel ? (
+              <Link href={href} prefetch={true} className="hover:underline">
+                {label}
+              </Link>
+            ) : (
+              <span>{label}</span>
+            )}
+          </h3>
+          {summary ? <p className={clsx(SUMMARY_CLASSES)}>{summary}</p> : null}
+          {directionLinks?.length && directionsLabel ? (
+            <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
+              <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
+              <div className="flex flex-wrap gap-2">
+                {directionLinks.map((link) => (
+                  <Link
+                    key={`${guide.key}-${link.slug}`}
+                    href={`${howToBase}/${link.slug}`}
+                    prefetch={true}
+                    className={clsx(DIRECTION_PILL_CLASSES)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+        {ctaLabel ? (
+          <Link href={href} prefetch={true} className={clsx(CTA_BUTTON_CLASSES)}>
+            {ctaLabel}
+          </Link>
+        ) : null}
+      </div>
     </article>
   );
 };

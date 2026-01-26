@@ -1,28 +1,22 @@
 // src/components/footer/FooterNav.tsx
 import { memo } from "react";
-import Link from "next/link";
-
-import { Grid } from "@acme/ui/atoms";
-
-import { EXTERNAL_REL } from "./footerConstants";
+import { FooterTextLink } from "./FooterLinks";
 import type { FooterGroup } from "./footerTypes";
 
 type FooterNavProps = {
   navGroups: FooterGroup[];
-  linkClasses: (small?: boolean, isActive?: boolean) => string;
   isActiveLink: (href: string) => boolean;
   prefetch?: boolean;
 };
 
 const FooterNav = memo(function FooterNav({
   navGroups,
-  linkClasses,
   isActiveLink,
   prefetch,
 }: FooterNavProps): JSX.Element {
   return (
     <nav aria-label="Footer navigation">
-      <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap={6}>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {navGroups.map((group) => (
           <div key={group.key} className="space-y-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/70 dark:text-brand-text/70">
@@ -33,32 +27,23 @@ const FooterNav = memo(function FooterNav({
                 const isActive = !link.external && isActiveLink(link.href);
                 return (
                   <li key={link.key}>
-                    {link.external ? (
-                    <a
+                    <FooterTextLink
                       href={link.href}
-                      target={link.newTab ? "_blank" : undefined}
-                      rel={link.newTab ? EXTERNAL_REL : undefined}
-                      className={linkClasses(true)}
+                      external={link.external}
+                      newTab={link.newTab}
+                      prefetch={prefetch}
+                      isActive={isActive}
+                      size="sm"
                     >
                       {link.label}
-                    </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        prefetch={prefetch}
-                        aria-current={isActive ? "page" : undefined}
-                        className={linkClasses(true, isActive)}
-                      >
-                        {link.label}
-                      </Link>
-                    )}
+                    </FooterTextLink>
                   </li>
                 );
               })}
             </ul>
           </div>
         ))}
-      </Grid>
+      </div>
     </nav>
   );
 });

@@ -1,8 +1,6 @@
 import { Trans } from "react-i18next";
 import type { TFunction } from "i18next";
 
-import { Grid } from "@acme/ui/atoms";
-
 import { CONTACT_EMAIL } from "@/config/hotel";
 
 import { IntroHighlightCard } from "../IntroHighlightCard";
@@ -30,7 +28,7 @@ const ACTION_BUTTON_CLASS = [
   "focus-visible:outline-offset-2",
   "focus-visible:outline-brand-primary",
   "dark:bg-brand-surface/40",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
   "dark:hover:bg-brand-surface/50",
   "dark:focus-visible:outline-brand-secondary",
 ].join(" ");
@@ -92,7 +90,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
 
   return (
     <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-secondary">
-      <Grid gap={6} columns={{ base: 1, md: 3 }} className="text-base leading-relaxed">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-base leading-relaxed">
         <IntroHighlightCard eyebrow={taxiEyebrow}>
           <p>
             <Trans
@@ -114,7 +112,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               </a>
             ) : null}
           </Cluster>
-          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-surface/80">
+            <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
             {t(`${introKey}.taxiBestFor`, {
               defaultValue: "Best for: late arrivals · heavy luggage · fastest option",
             })}
@@ -144,7 +142,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               {t(`${introKey}.shuttleCta`, { defaultValue: "Book shuttle" })}
             </a>
           </Cluster>
-          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-surface/80">
+          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
             {t(`${introKey}.shuttleBestFor`, {
               defaultValue: "Best for: airport arrivals · shared transfer · planning ahead",
             })}
@@ -163,13 +161,13 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               {t(`${introKey}.emailCta`, { defaultValue: "Email reception" })}
             </a>
           </Cluster>
-          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-surface/80">
+          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
             {t(`${introKey}.helpBestFor`, {
               defaultValue: "Best for: delays · ferry cancellations · late check-in",
             })}
           </p>
         </IntroHighlightCard>
-      </Grid>
+      </div>
     </div>
   );
 }

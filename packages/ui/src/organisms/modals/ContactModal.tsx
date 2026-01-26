@@ -1,9 +1,9 @@
 import { memo, useCallback } from "react";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
 import type { ContactModalCopy } from "./types";
 
-const CONTACT_MODAL_TITLE_ID = "contact-modal-title";
 const DEFAULT_TEST_ID = "contact-modal";
 
 const CLOSE_BUTTON_CLASSNAMES = [
@@ -62,7 +62,6 @@ function ContactModal({
       onClose={onClose}
       testId={testId}
       overlayClassName="flex items-center justify-center"
-      ariaLabelledBy={CONTACT_MODAL_TITLE_ID}
     >
       <ModalPanel
         widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full max-w-md"}
@@ -72,13 +71,10 @@ function ContactModal({
           <CloseIcon />
         </button>
 
-        <h2
-          id={CONTACT_MODAL_TITLE_ID}
-          className="mb-4 text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]"
-        >
+        <DialogTitle className="mb-4 text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
           {copy.title}
-        </h2>
-        <p className="mb-6 text-brand-text/80">{copy.description}</p>
+        </DialogTitle>
+        <DialogDescription className="mb-6 text-brand-text/80">{copy.description}</DialogDescription>
 
         <button
           type="button"

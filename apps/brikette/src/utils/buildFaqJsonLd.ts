@@ -15,6 +15,21 @@ export type NormalizedFaqEntry = {
   answer: string[];
 };
 
+export type FaqJsonLd = {
+  "@context": "https://schema.org";
+  "@type": "FAQPage";
+  inLanguage: string;
+  url: string;
+  mainEntity: Array<{
+    "@type": "Question";
+    name: string;
+    acceptedAnswer: {
+      "@type": "Answer";
+      text: string;
+    };
+  }>;
+};
+
 export function normalizeFaqEntries(raw: unknown): NormalizedFaqEntry[] {
   return ensureArray<RawFaqEntry>(raw)
     .map((entry) => {
@@ -40,14 +55,14 @@ export function faqEntriesToJsonLd(
   lang: string,
   url: string,
   entries: NormalizedFaqEntry[]
-): string {
+): FaqJsonLd | null {
   // Emit nothing when there are no entries to avoid empty FAQPage payloads.
   // Consumers use an empty string as a signal to skip injecting a <script> tag.
   const safeEntries = Array.isArray(entries) ? entries : [];
   if (safeEntries.length === 0) {
-    return "";
+    return null;
   }
-  return JSON.stringify({
+  return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: lang,
@@ -60,9 +75,9 @@ export function faqEntriesToJsonLd(
         text: answer.join("\n\n"),
       },
     })),
-  });
+  };
 }
 
-export function buildFaqJsonLd(lang: string, url: string, raw: unknown): string {
+export function buildFaqJsonLd(lang: string, url: string, raw: unknown): FaqJsonLd | null {
   return faqEntriesToJsonLd(lang, url, normalizeFaqEntries(raw));
 }

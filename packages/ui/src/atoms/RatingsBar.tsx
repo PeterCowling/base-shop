@@ -25,7 +25,7 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
     initials: "HW",
     translationKey: "hostelworld",
     defaultLabel: "Hostelworld",
-    badgeTextClass: "text-foreground/85",
+    badgeTextClass: "text-brand-heading",
   },
   "Booking.com": {
     url: "https://www.booking.com/hotel/it/hostel-brikette.en-gb.html",
@@ -33,7 +33,7 @@ const RATING_SOURCES: Record<string, RatingSourceMeta> = {
     initials: "B",
     translationKey: "booking",
     defaultLabel: "Booking.com",
-    badgeTextClass: "text-background",
+    badgeTextClass: "text-brand-bg",
   },
 };
 
@@ -51,19 +51,19 @@ const PANEL_CLASSES = [
   "overflow-hidden",
   "rounded-3xl",
   "border",
-  "border-background/15",
+  "border-brand-outline/20",
   "bg-[linear-gradient(135deg,var(--color-brand-gradient-start)_0%,var(--color-brand-gradient-mid)_45%,var(--color-brand-gradient-end)_100%)]",
   "px-5",
   "py-6",
-  "text-background",
+  "text-brand-bg",
   "shadow-2xl",
   "transition-colors",
   "duration-300",
   "sm:px-8",
   "sm:py-8",
-  "dark:border-brand-outline/25",
+  "dark:border-brand-outline/30",
   "dark:bg-[linear-gradient(135deg,rgb(var(--rgb-brand-bg)_/_0.95)_0%,rgb(var(--rgb-brand-bg)_/_0.9)_55%,rgb(var(--rgb-brand-surface)_/_0.7)_100%)]",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
 ] as const;
 const PANEL_OVERLAY_CLASSES = [
   "pointer-events-none",
@@ -96,8 +96,8 @@ const LINK_BASE_CLASSES = [
   "gap-3",
   "rounded-2xl",
   "border",
-  "border-background/25",
-  "bg-background/10",
+  "border-brand-outline/30",
+  "bg-brand-bg/10",
   "px-4",
   "py-3",
   "text-left",
@@ -105,17 +105,17 @@ const LINK_BASE_CLASSES = [
   "transition",
   "duration-200",
   "hover:-translate-y-0.5",
-  "hover:bg-background/15",
+  "hover:bg-brand-bg/15",
   "hover:no-underline",
   "hover:shadow-lg",
   "focus-visible:outline-none",
   "focus-visible:ring-2",
-  "focus-visible:ring-background/70",
+  "focus-visible:ring-brand-bg/70",
   "focus-visible:ring-offset-2",
   "focus-visible:ring-offset-transparent",
-  "dark:border-brand-outline/35",
-  "dark:bg-brand-surface/10",
-  "dark:hover:bg-brand-surface/20",
+  "dark:border-brand-outline/40",
+  "dark:bg-brand-bg/5",
+  "dark:hover:bg-brand-bg/10",
   "dark:focus-visible:ring-brand-primary/50",
 ] as const;
 
@@ -130,12 +130,12 @@ const BADGE_BASE_CLASSES = [
   "shadow-md",
   "shadow-black/10",
   "ring-1",
-  "ring-background/40",
+  "ring-brand-bg/40",
   "transition",
   "duration-200",
   "group-hover:scale-105",
   "group-hover:shadow-lg",
-  "dark:ring-brand-outline/50",
+  "dark:ring-brand-bg/20",
 ] as const;
 
 const LAST_UPDATED = "2025-10-01"; // YYYY-MM-DD
@@ -177,7 +177,7 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
         <div aria-hidden="true" className={clsx(PANEL_OVERLAY_CLASSES)} />
         <div className={clsx(PANEL_CONTENT_CLASSES)}>
           <div className="flex flex-col gap-4">
-            <span className="inline-flex items-center gap-2 self-start rounded-full border border-background/25 bg-background/10 px-3 py-1 text-xs font-semibold text-background/80 backdrop-blur-sm dark:border-brand-outline/40 dark:bg-brand-surface/10 dark:text-brand-surface/80">
+            <span className="inline-flex items-center gap-2 self-start rounded-full border border-brand-outline/30 bg-brand-bg/10 px-3 py-1 text-xs font-semibold text-brand-bg/90 backdrop-blur-sm dark:border-brand-outline/40 dark:bg-brand-bg/5 dark:text-brand-text/80">
               <span aria-hidden="true" className="text-sm leading-none">★</span>
               {t("reviewed")}
             </span>
@@ -222,36 +222,36 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
                       className={clsx(
                         BADGE_BASE_CLASSES,
                         badgeBgClass,
-                        meta?.badgeTextClass ?? "text-foreground/85",
+                        meta?.badgeTextClass ?? "text-brand-bg",
                       )}
                     >
                       {meta?.initials ?? r.provider[0]}
                     </span>
-                    <span className="text-lg font-semibold tabular-nums text-background transition duration-200 sm:text-xl dark:text-brand-surface">
+                    <span className="text-lg font-semibold tabular-nums text-brand-bg transition duration-200 sm:text-xl dark:text-brand-text">
                       {r.value.toFixed(1)}
                     </span>
-                    <span className="text-sm font-medium text-background/90 transition duration-200 dark:text-brand-surface/90">
+                    <span className="text-sm font-medium text-brand-bg/95 transition duration-200 dark:text-brand-text/90">
                       {providerLabel}
                     </span>
-                    <span className="hidden items-center gap-2 text-sm text-background/75 md:inline-flex dark:text-brand-surface/75">
-                      <span aria-hidden="true" className="text-background/50 dark:text-brand-surface/50">
+                    <span className="hidden items-center gap-2 text-sm text-brand-bg/80 md:inline-flex dark:text-brand-text/75">
+                      <span aria-hidden="true" className="text-brand-bg/50 dark:text-brand-text/50">
                         •
                       </span>
                       <span>{reviewText}</span>
                     </span>
-                    <span className="text-xs text-background/70 md:hidden dark:text-brand-surface/70">{reviewText}</span>
+                    <span className="text-xs text-brand-bg/75 md:hidden dark:text-brand-text/70">{reviewText}</span>
                   </a>
                 );
               })}
             </Inline>
           </div>
 
-	          <div className="flex flex-col gap-2 text-sm text-background/80 md:items-end md:text-end dark:text-brand-surface/70">
-	            <span className="inline-block rounded-full border border-background/20 bg-background/10 px-3 py-1 text-xs font-medium text-background/70 dark:border-brand-outline/35 dark:bg-brand-surface/10 dark:text-brand-surface/70">
-	              {lastCheckedLabel}
-	            </span>
+          <div className="flex flex-col gap-2 text-sm text-brand-bg/80 md:items-end md:text-end dark:text-brand-text/70">
+            <span className="inline-block rounded-full border border-brand-outline/20 bg-brand-bg/10 px-3 py-1 text-xs font-medium text-brand-bg/80 dark:border-brand-outline/40 dark:bg-brand-bg/5 dark:text-brand-text/70">
+              {lastCheckedLabel}
+            </span>
             <time
-              className="text-base font-semibold text-background dark:text-brand-surface"
+              className="text-base font-semibold text-brand-bg dark:text-brand-text"
               dateTime={LAST_UPDATED}
             >
               {localizedDate}

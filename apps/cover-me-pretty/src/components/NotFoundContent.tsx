@@ -2,6 +2,7 @@
 "use client";
 
 import { memo, type ReactElement } from "react";
+
 import { useTranslations } from "@acme/i18n/Translations";
 
 function NotFoundContentInner(): ReactElement {

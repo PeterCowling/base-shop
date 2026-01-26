@@ -8,9 +8,9 @@ import type {
 import type { FallbackTranslator, StructuredFallback } from "../../utils/fallbacks";
 import { logStructuredToc } from "../../utils/logging";
 import { computeStructuredTocItems } from "../../utils/toc";
-
 import StructuredToc from "../StructuredToc";
-import { getStructuredTocOverride, resolveEnTitleFallback } from "./index";
+
+import { type getStructuredTocOverride, resolveEnTitleFallback } from "./index";
 
 export function LocalizedToc({
   items,

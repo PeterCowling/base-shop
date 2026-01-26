@@ -3,10 +3,10 @@
  */
 import type { AppLanguage } from "@/i18n.config";
 
+import { translateStringWithFallback } from "../translations";
 import type { Translator } from "../types";
 
 import { sanitizeMetaTitle } from "./sanitizers";
-import { translateStringWithFallback } from "../translations";
 
 interface TitleResolverParams {
   metaKey: string;

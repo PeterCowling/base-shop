@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 import { Grid, Stack } from "@acme/design-system/primitives";
 
 import AchievementsPanel from "./panels/AchievementsPanel";
@@ -9,6 +10,7 @@ import HudPanel from "./panels/HudPanel";
 import LoadoutPanel from "./panels/LoadoutPanel";
 import LootDropsPanel from "./panels/LootDropsPanel";
 import MissionsPanel from "./panels/MissionsPanel";
+import type { PipelineStage } from "./panels/pipelineMapConfig";
 import PipelineMapPanel from "./panels/PipelineMapPanel";
 import RunnerPanel from "./panels/RunnerPanel";
 import type { GameState, MissionActionResult, MissionLoadout, RunnerStatus } from "./types";
@@ -110,6 +112,7 @@ export default function MissionControlClient({
       hint: string;
       mode2d: string;
       mode3d: string;
+      nodes: Record<PipelineStage, string>;
     };
     achievements: Record<string, unknown>;
     battleLog: {

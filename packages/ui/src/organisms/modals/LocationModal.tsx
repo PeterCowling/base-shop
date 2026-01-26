@@ -1,10 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { ModalFrame, ModalPanel } from "./primitives";
 import type { LocationModalCopy } from "./types";
 
-const LOCATION_MODAL_TITLE_ID = "location-modal-title";
 const CURRENT_LOCATION_INPUT_ID = "current-location";
 const DEFAULT_TEST_ID = "location-modal";
 
@@ -60,7 +60,6 @@ function LocationModal({
       onClose={onClose}
       testId={testId}
       overlayClassName="pointer-coarse:p-6 bg-black/50 p-6 backdrop-blur-sm dark:bg-black/80"
-      ariaLabelledBy={LOCATION_MODAL_TITLE_ID}
     >
       <ModalPanel
         widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:max-w-xl"}
@@ -93,9 +92,9 @@ function LocationModal({
           ×
         </button>
 
-        <h2 id={LOCATION_MODAL_TITLE_ID} className="mb-4 text-2xl font-bold text-brand-heading">
+        <DialogTitle className="mb-4 text-2xl font-bold text-brand-heading">
           {copy.title}
-        </h2>
+        </DialogTitle>
 
         <div className="mb-4">
           <label htmlFor={CURRENT_LOCATION_INPUT_ID} className="mb-1 block font-semibold text-brand-text">

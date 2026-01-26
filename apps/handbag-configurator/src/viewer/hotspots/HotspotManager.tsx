@@ -1,16 +1,19 @@
 "use client";
 
-import { useFrame, useThree } from "@react-three/fiber";
-import type { ProductConfigSchema, ProductHotspotConfig } from "@acme/product-configurator";
 import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
+import { useFrame, useThree } from "@react-three/fiber";
+import type * as THREE from "three";
+
+import type { ProductConfigSchema, ProductHotspotConfig } from "@acme/product-configurator";
+
+import { useModeStore } from "../state/modeStore";
+
 import {
   computeVisibleHotspots,
   type HotspotAnchor,
   type HotspotRegionId,
   type VisibleHotspot,
 } from "./useHotspotVisibility";
-import { useModeStore } from "../state/modeStore";
 
 type HotspotManagerProps = {
   scene?: THREE.Object3D | null;

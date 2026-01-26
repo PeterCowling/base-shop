@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import { Fragment, memo, Suspense, useCallback } from "react";
 import dynamic from "next/dynamic";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 import HeroSection from "@acme/ui/organisms/LandingHeroSection";
 import QuickLinksSection from "@acme/ui/organisms/QuickLinksSection";
 
@@ -26,11 +26,23 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 
 // Lazy load heavy components
-const IntroTextBox = dynamic(() => import("@/components/landing/IntroTextBox"), {
+const IntroTextBox = dynamic(
+  () =>
+    import(
+      /* i18n-exempt -- BRK-001 [ttl=2026-12-31]: module name is not user copy */
+      "@/components/landing/IntroTextBox"
+    ),
+  {
   ssr: false,
   loading: () => null,
 });
-const CarouselSlides = dynamic(() => import("@acme/ui/organisms/CarouselSlides"), {
+const CarouselSlides = dynamic(
+  () =>
+    import(
+      /* i18n-exempt -- BRK-001 [ttl=2026-12-31]: module name is not user copy */
+      "@acme/ui/organisms/CarouselSlides"
+    ),
+  {
   ssr: false,
   loading: () => null,
 });
@@ -75,7 +87,7 @@ function HomeContent({ lang }: Props) {
       />
 
       {/* Booking Widget - uses useSearchParams, needs Suspense for static export */}
-      <Section padding="narrow" className="relative z-10 -mt-8">
+      <Section padding="narrow">
         <Suspense fallback={null}>
           <BookingWidget lang={lang} />
         </Suspense>

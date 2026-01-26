@@ -2,11 +2,14 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import "@acme/zod-utils/initZod";
 
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
+
 import { parseJsonBody } from "@acme/lib/http/server";
 import { setReturnTracking } from "@acme/platform-core/orders";
 import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

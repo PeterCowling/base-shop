@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import { Cluster, Stack } from "@acme/design-system/primitives";
 
 type Lead = {

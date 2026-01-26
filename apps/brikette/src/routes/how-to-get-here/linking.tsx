@@ -3,7 +3,7 @@ import Link from "next/link";
 import clsx from "clsx";
 
 import type { LinkBinding, LinkTarget } from "@/lib/how-to-get-here/definitions";
-import { guideHref } from "@/routes.guides-helpers";
+import { guideHref, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 
 import type { LinkContext, RenderContext } from "./types";
 
@@ -39,7 +39,13 @@ export function resolveLinkTarget(
     case "guide":
       return { type: "internal", to: guideHref(ctx.lang, target.guideKey) };
     case "guidesSlug":
-      return { type: "internal", to: `/${ctx.lang}/${ctx.guidesSlug}/${target.slug}` };
+      {
+        const key = resolveGuideKeyFromSlug(target.slug, ctx.lang);
+        if (key) {
+          return { type: "internal", to: guideHref(ctx.lang, key) };
+        }
+        return { type: "internal", to: `/${ctx.lang}/${ctx.guidesSlug}/${target.slug}` };
+      }
     default:
       return { type: "external", href: "#" };
   }

@@ -7,7 +7,7 @@ import type { TFunction } from "i18next";
 
 import { Button } from "@acme/design-system/primitives";
 
-import { CfHeroImage } from "@/components/images/CfHeroImage";
+import { CfHeroImage } from "@acme/ui/atoms/CfHeroImage";
 import { useModal } from "@/context/ModalContext";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getOptionalString } from "@/utils/translationFallbacks";

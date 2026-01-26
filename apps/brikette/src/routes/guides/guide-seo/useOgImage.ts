@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import buildCfImageUrl, { type BuildCfImageOptions } from "@/lib/buildCfImageUrl";
+import buildCfImageUrl, { type BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 
 import { DEFAULT_OG_IMAGE } from "./constants";
 import type { OgImageConfig } from "./types";
@@ -33,4 +33,3 @@ export function useOgImage(ogImage?: OgImageConfig): UseOgImageResult {
 
   return { ogImageConfig, ogImageUrl };
 }
-

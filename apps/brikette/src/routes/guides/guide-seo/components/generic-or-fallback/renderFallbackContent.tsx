@@ -6,6 +6,13 @@ import { debugGuide } from "@/utils/debug";
 
 import type { GuideSeoTemplateContext } from "../../types";
 import type { StructuredFallback } from "../../utils/fallbacks";
+import { renderAliasFaqsOnly } from "../fallback/renderAliasFaqsOnly";
+import RenderFallbackStructured from "../fallback/RenderFallbackStructured";
+import RenderInterrailAlias from "../fallback/RenderInterrailAlias";
+import RenderManualObject from "../fallback/RenderManualObject";
+import RenderManualParagraph from "../fallback/RenderManualParagraph";
+import RenderManualString from "../fallback/RenderManualString";
+import RenderStructuredArrays from "../fallback/RenderStructuredArrays";
 import {
   allowsStructuredArraysWhenLocalized,
   hasManualFallbackMeaningfulContent,
@@ -13,14 +20,6 @@ import {
   hasOnlyFaqs,
   resolveFallbackTranslator,
 } from "../generic";
-
-import RenderFallbackStructured from "../fallback/RenderFallbackStructured";
-import RenderInterrailAlias from "../fallback/RenderInterrailAlias";
-import RenderManualObject from "../fallback/RenderManualObject";
-import RenderManualParagraph from "../fallback/RenderManualParagraph";
-import RenderManualString from "../fallback/RenderManualString";
-import RenderStructuredArrays from "../fallback/RenderStructuredArrays";
-import { renderAliasFaqsOnly } from "../fallback/renderAliasFaqsOnly";
 
 export function renderFallbackContent(params: {
   lang: string;

@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { NAV_ITEMS, type NavKey } from "@/config/navItems";
 import type { AppLanguage } from "@/i18n.config";
 import { SLUGS } from "@/slug-map";

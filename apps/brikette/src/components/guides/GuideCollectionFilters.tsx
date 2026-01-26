@@ -3,8 +3,8 @@ import { useId } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
-import type { GuideFilterOption } from "./useGuideFilterOptions";
 import { GuideSearchBar } from "./GuideSearchBar";
+import type { GuideFilterOption } from "./useGuideFilterOptions";
 
 const FILTER_PANEL_CLASSES = [
   "mt-8",
@@ -31,13 +31,13 @@ const FILTER_HEADING_CLASSES = [
   "text-lg",
   "font-semibold",
   "text-brand-heading",
-  "dark:text-brand-surface",
+  "dark:text-brand-heading",
 ] as const;
 
 const FILTER_DESCRIPTION_CLASSES = [
   "text-sm",
   "text-brand-paragraph",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
 ] as const;
 
 const FILTER_LINK_WRAP_CLASSES = [
@@ -80,7 +80,7 @@ const FILTER_INACTIVE_CLASSES = [
   "hover:border-brand-primary/50",
   "hover:text-brand-primary",
   "dark:border-brand-outline/60",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
   "dark:hover:border-brand-secondary/60",
   "dark:hover:text-brand-secondary",
 ] as const;
@@ -94,7 +94,7 @@ const FILTER_COUNT_BADGE_CLASSES = [
   "font-semibold",
   "text-brand-muted",
   "dark:bg-brand-text/15",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
 ] as const;
 
 export interface GuideCollectionFiltersProps {

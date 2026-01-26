@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+
 import type { FC } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import UpgradePreviewPage from "./page";
 
 type ComponentPreviewProps = { component: { componentName: string } };

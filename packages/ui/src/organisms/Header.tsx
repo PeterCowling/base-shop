@@ -1,5 +1,5 @@
 // Copied from src/components/header/Header.tsx
-import { forwardRef, type HTMLAttributes, memo, useState } from "react";
+import { forwardRef, type HTMLAttributes, memo, useEffect, useState } from "react";
 
 import { useScrollProgress } from "@acme/design-system/hooks/useScrollProgress";
 
@@ -23,6 +23,24 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
   const { scrolled, mouseNearTop, progress } = useScrollProgress();
   const bannerHeight = useBannerHeightOrZero();
   const showHeader = !scrolled || mouseNearTop;
+
+  const [isLargeScreen, setIsLargeScreen] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= 1024;
+  });
+
+  useEffect(() => {
+    const update = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const headerVisible = showHeader || isLargeScreen;
   const barClass = theme === "dark" ? "progress-bar-dark" : "progress-bar-light";
 
   return (
@@ -43,7 +61,7 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
       >
         <MobileNav lang={lang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} bannerHeight={bannerHeight} />
         <div
-          className={`w-full bg-brand-bg/80 backdrop-blur shadow-inner dark:shadow-md transition-transform duration-300 motion-safe:transform-gpu ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
+          className={`w-full bg-brand-bg/80 backdrop-blur shadow-inner dark:shadow-md transition-transform duration-300 motion-safe:transform-gpu ${headerVisible ? "translate-y-0" : "-translate-y-full"}`}
         >
           <DesktopHeader lang={lang} />
         </div>

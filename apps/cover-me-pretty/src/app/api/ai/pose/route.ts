@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { AwsClient } from 'aws4fetch';
 import { z } from "zod";
+
 import { getProvider } from "@acme/lib/tryon";
 import { kvGet, kvPut } from "@acme/lib/tryon/kv";
-import { AwsClient } from 'aws4fetch';
 
 export const runtime = "edge";
 
@@ -91,7 +93,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const ms = Date.now() - t0;
     try {
       const host = new URL(imageUrl).host;
-      console.log("tryon.pose", { jobId: parsed.data.idempotencyKey, host, ms, ok: !resp.error });
+      console.info("tryon.pose", { jobId: parsed.data.idempotencyKey, host, ms, ok: !resp.error });
     } catch {}
     if (resp.error) return NextResponse.json({ error: resp.error }, { status: 502 });
     const url = resp.result?.url;

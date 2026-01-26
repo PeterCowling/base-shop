@@ -21,11 +21,13 @@ const stripProto = (u: string): string => u.replace(/^https?:\/\//, "").replace(
 type ViteEnv = Partial<Record<"DEV" | "SSR" | "SITE_ORIGIN" | "VITE_SITE_ORIGIN" | "VITE_SITE_DOMAIN", string | boolean>>;
 
 function getViteEnv(): ViteEnv | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- UI-1000 [ttl=2026-12-31] `import.meta.env` is untyped in some runtimes; narrow safely at call sites
-  return (typeof import.meta !== "undefined" && (import.meta as any).env)
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- UI-1000 [ttl=2026-12-31] `import.meta.env` is untyped in some runtimes; narrow safely at call sites
-      ((import.meta as any).env as ViteEnv)
-    : undefined;
+  try {
+    // eslint-disable-next-line no-eval -- UI-1000 [ttl=2026-12-31] eval avoids CJS parse errors for import.meta
+    const meta = eval("import.meta") as { env?: ViteEnv } | undefined;
+    return meta?.env;
+  } catch {
+    return undefined;
+  }
 }
 
 function isDevMode(): boolean {

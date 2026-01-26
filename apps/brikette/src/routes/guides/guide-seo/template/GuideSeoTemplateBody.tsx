@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
-import type { AppLanguage } from "@/i18n.config";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
+import { PREVIEW_TOKEN } from "@/config/env";
+import type { AppLanguage } from "@/i18n.config";
+import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
+import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
 
 import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "../../guide-manifest";
 import ArticleHeader from "../components/ArticleHeader";
@@ -159,6 +162,10 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     alwaysProvideFaqFallback,
     suppressFaqWhenUnlocalized,
   } = props;
+  const editUrl =
+    isGuideAuthoringEnabled() && PREVIEW_TOKEN
+      ? buildGuideEditUrl(lang, guideKey as any)
+      : undefined;
 
   return (
     <>
@@ -201,6 +208,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
               status={resolvedStatus}
               isDraftRoute={isDraftRoute}
               dashboardUrl={`/${lang}/draft`}
+              {...(editUrl ? { editUrl } : {})}
               {...(checklistSnapshot ? { checklist: checklistSnapshot as ChecklistSnapshot } : {})}
               {...(draftUrl ? { draftUrl } : {})}
             />

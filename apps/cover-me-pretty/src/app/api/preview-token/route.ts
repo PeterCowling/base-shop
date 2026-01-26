@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { requirePermission } from "@acme/auth";
 import { coreEnv as env } from "@acme/config/env/core";
 import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";

@@ -63,7 +63,7 @@ function RelatedGuides({
 
   return (
     <section className={sectionClassName}>
-      <h2 className="mb-3 text-lg font-semibold tracking-tight text-brand-heading dark:text-brand-surface">
+      <h2 className="mb-3 text-lg font-semibold tracking-tight text-brand-heading dark:text-brand-heading">
         {title ?? t(titleKey)}
       </h2>
       <ul className={listClassNameValue}>
@@ -75,10 +75,14 @@ function RelatedGuides({
               ? Guides.guideSlug(lang, key)
               : key.replace(/([a-z\d])([A-Z])/g, "$1-$2").replace(/_/g, "-").toLowerCase();
           // Prefer canonical helper when available to respect namespace routing.
+          const fallbackBase =
+            typeof Guides.guideNamespace === "function"
+              ? Guides.guideNamespace(lang, key).baseSlug
+              : getSlug("experiences", lang);
           const computedHref =
             typeof Guides.guideHref === "function"
               ? Guides.guideHref(lang, key)
-              : `/${lang}/${getSlug("guides", lang)}/${computedSlug}`;
+              : `/${lang}/${fallbackBase}/${computedSlug}`;
           return (
             <li key={computedSlug}>
               <Link

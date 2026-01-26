@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
 import type { ProductHotspotConfig } from "@acme/product-configurator";
 
 type HotspotOffsets = Record<string, { x: number; y: number }>;
@@ -22,7 +23,9 @@ export function useHotspotConfig(productId: string): HotspotConfigState {
       setStatus("loading");
       try {
         const res = await fetch(`/api/products/${productId}/hotspots`);
-        if (!res.ok) throw new Error("Failed to load hotspots");
+        if (!res.ok)
+          // i18n-exempt -- HAND-0003 [ttl=2026-12-31]: internal fetch error, not surfaced directly.
+          throw new Error("Failed to load hotspots");
         const data = (await res.json()) as ProductHotspotConfig;
         if (cancelled) return;
         setConfig(data);

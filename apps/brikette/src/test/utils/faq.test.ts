@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
+
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 
 import type { FaqResource, FaqResourceImporter } from "@/utils/faq";
 

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 import type { ProductConfigSchema } from "@acme/product-configurator";
 
 export type HotspotRegionId =

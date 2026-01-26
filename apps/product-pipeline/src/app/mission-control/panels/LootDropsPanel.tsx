@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { Grid, Inline, Stack } from "@acme/design-system/primitives";
 
 import { resolveArtifactHref } from "@/app/artifacts/types";
@@ -79,7 +80,7 @@ export default function LootDropsPanel({
                     {href && (
                       <a
                         href={href}
-                        className="rounded-full bg-primary px-3 py-1 font-semibold text-primary-foreground"
+                        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-primary px-3 py-1 font-semibold text-primary-foreground"
                         target="_blank"
                         rel="noreferrer"
                       >

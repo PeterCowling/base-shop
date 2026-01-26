@@ -1,7 +1,10 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
 import { requireShopIdFromHeaders } from "@acme/lib/shop";
 import { getOrderById } from "@acme/platform-core/orders";
+
 import shop from "../../../shop.json";
 
 export const runtime = "nodejs";

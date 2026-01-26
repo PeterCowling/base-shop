@@ -3,13 +3,17 @@ import Link from "next/link";
 import { renderRichText, resolveHref } from "../richText";
 import { RomeTravelPlanner } from "../rome/RomeTravelPlanner";
 import { externalLinkClass } from "../styles";
-import type { RomeTable } from "../types";
+import { ZoomableFigure } from "./ZoomableFigure";
+import type { DestinationSectionImage, RomeTable } from "../types";
+import type { TFunction } from "i18next";
 
 export type RomeSectionProps = {
   showRomePlanner: boolean;
   romeTitle: string;
   romeDescription: string;
   romeTable: RomeTable;
+  romeImage?: DestinationSectionImage;
+  t: TFunction<"howToGetHere">;
   internalBasePath: string;
 };
 
@@ -18,6 +22,8 @@ export function RomeSection({
   romeTitle,
   romeDescription,
   romeTable,
+  romeImage,
+  t,
   internalBasePath,
 }: RomeSectionProps) {
   if (showRomePlanner) {
@@ -26,15 +32,27 @@ export function RomeSection({
 
   return (
     <>
-      <h2 className="text-center text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+      <h2 className="text-center text-2xl font-semibold text-brand-heading dark:text-brand-text">
         {romeTitle}
       </h2>
       <p className="mt-4 text-center text-base leading-relaxed">{romeDescription}</p>
+      {romeImage ? (
+        <div className="mt-6 flex justify-center">
+          <ZoomableFigure
+            t={t}
+            src={romeImage.src}
+            alt={romeImage.alt}
+            caption={romeImage.caption}
+            preset="gallery"
+            aspect="4/3"
+          />
+        </div>
+      ) : null}
       <div className="mt-6 overflow-hidden rounded-2xl border border-brand-outline/20">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-brand-outline/40 text-start text-sm">
             <thead>
-              <tr className="text-brand-heading/80 dark:text-brand-surface/80">
+              <tr className="text-brand-heading/80 dark:text-brand-text/80">
                 <th scope="col" className="w-56 px-4 py-3 font-semibold">
                   {romeTable.headers.route}
                 </th>
@@ -67,7 +85,7 @@ export function RomeSection({
                         </a>
                       )}
                       {option.note ? (
-                        <div className="mt-3 text-xs font-normal text-brand-text/80 dark:text-brand-surface/70">
+                        <div className="mt-3 text-xs font-normal text-brand-text/80 dark:text-brand-text/70">
                           {renderRichText(option.note, internalBasePath)}
                         </div>
                       ) : null}

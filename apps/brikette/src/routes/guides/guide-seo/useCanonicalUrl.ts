@@ -6,8 +6,6 @@ import { BASE_URL } from "@/config/site";
 import * as Slugs from "@/guides/slugs";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
-import { slugify } from "@/utils/slugify";
 
 interface CanonicalUrlArgs {
   pathname?: string | null;
@@ -20,13 +18,14 @@ export function useCanonicalUrl({ pathname, lang, guideKey }: CanonicalUrlArgs):
     if (typeof pathname === "string" && pathname.length > 0) {
       return `${BASE_URL}${pathname}`;
     }
-    // Derive base slug via friendly helper
-    const baseSlug = getSlug("guides", lang);
-    type GuideSlugFn = (l: AppLanguage, k: GuideKey) => string;
-    const guideSlugFn: GuideSlugFn | undefined = (Slugs as { guideSlug?: GuideSlugFn }).guideSlug;
-    // Canonicalize to the English guide slug for stability across locales;
-    // the language segment remains the active locale.
-    const slug = typeof guideSlugFn === "function" ? guideSlugFn("en" as AppLanguage, guideKey) : slugify(String(guideKey));
-    return `${BASE_URL}/${lang}/${baseSlug}/${slug}`;
+    type GuideAbsFn = (l: AppLanguage, k: GuideKey) => string;
+    const guideAbsFn: GuideAbsFn | undefined = (Slugs as { guideAbsoluteUrl?: GuideAbsFn }).guideAbsoluteUrl;
+    if (typeof guideAbsFn === "function") {
+      return guideAbsFn(lang, guideKey);
+    }
+    type GuideHrefFn = (l: AppLanguage, k: GuideKey) => string;
+    const guideHrefFn: GuideHrefFn | undefined = (Slugs as { guideHref?: GuideHrefFn }).guideHref;
+    const href = typeof guideHrefFn === "function" ? guideHrefFn(lang, guideKey) : `/${lang}/${guideKey}`;
+    return `${BASE_URL}${href}`;
   }, [guideKey, lang, pathname]);
 }

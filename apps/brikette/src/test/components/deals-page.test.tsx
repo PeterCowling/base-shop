@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -23,7 +24,7 @@ jest.mock("@/components/deals/DealsPage", () => {
   };
 });
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 const DealsPage = require("@/components/deals/DealsPage").default;
 
 beforeEach(() => {

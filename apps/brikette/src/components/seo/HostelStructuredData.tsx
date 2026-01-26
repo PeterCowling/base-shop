@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/HostelStructuredData.tsx
 /*
    Minimal Hostel JSON-LD for the homepage
@@ -11,6 +11,7 @@ import { memo } from "react";
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildHotelNode, HOTEL_ID } from "@/utils/schema";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 function HostelStructuredData(): JSX.Element {
   const lang = useCurrentLanguage();
@@ -18,7 +19,7 @@ function HostelStructuredData(): JSX.Element {
   const base = buildHotelNode({ pageUrl, publisher: true });
   // Clone and adapt type to Hostel. Keep core descriptive fields.
   const hostel = { ...base, "@id": HOTEL_ID, "@type": "Hostel" } as Record<string, unknown>;
-  const json = JSON.stringify({ "@context": "https://schema.org", ...hostel });
+  const json = serializeJsonLdValue({ "@context": "https://schema.org", ...hostel });
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

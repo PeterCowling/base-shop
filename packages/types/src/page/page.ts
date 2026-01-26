@@ -253,8 +253,7 @@ export const historyStateSchema = z
             .optional(),
         })
       )
-      .default({})
-      .optional(),
+      .default({}),
   })
   .passthrough()
   .default({ past: [], present: [], future: [], gridCols: 12, editor: {} }) as unknown as z.ZodType<HistoryState>;

@@ -1,10 +1,12 @@
 // apps/cover-me-pretty/src/app/api/tax/route.ts
 import "@acme/zod-utils/initZod";
-import { calculateTax, type TaxCalculationRequest } from "@acme/platform-core/tax";
+
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+
 import { parseJsonBody } from "@acme/lib/http/server";
+import { calculateTax, type TaxCalculationRequest } from "@acme/platform-core/tax";
 
 // Tax calculations rely on platform-core functions that read from the
 // filesystem, which requires Node.js APIs. Use the Node.js runtime so these
@@ -31,10 +33,10 @@ export async function POST(req: NextRequest) {
     const tax = await calculateTax(body);
     return NextResponse.json({ tax });
   } catch (err) {
-    console.error("[api/tax] calculateTax error:", err); // i18n-exempt -- server log
+    console.error("[api/tax] calculateTax error:", err); // i18n-exempt -- ABC-361 ttl=2026-03-31
     return NextResponse.json(
-      { error: "Failed to calculate tax" }, // i18n-exempt -- generic error
-      { status: 500 }
+      { error: "Failed to calculate tax" }, // i18n-exempt -- ABC-357 ttl=2026-03-31
+      { status: 500 },
     );
   }
 }

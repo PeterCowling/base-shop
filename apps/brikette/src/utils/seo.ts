@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
+ 
 // /src/utils/seo.ts
 /* ────────────────────────────────────────────────────────────────
    SEO helpers – canonical, hreflang, breadcrumb, meta
@@ -8,7 +8,7 @@
 import React from "react";
 
 import { ARTICLE_SLUGS } from "@/article-slug-map";
-import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideSlug } from "@/guides/slugs";
+import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideNamespace,guideSlug } from "@/guides/slugs";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 // Use a namespace import to avoid hard failures when tests partially mock
 // the module without all named exports (e.g. ARTICLE_KEYS).
@@ -149,8 +149,14 @@ export function buildLinks({
   let articleKey: string | null = null;
   if (slugKey === "assistance" && afterFirst) {
     articleKey = assistanceArticleLookup[lang]?.[afterFirst] ?? null;
+    if (!articleKey) {
+      guideKey = guideLookup[lang]?.[afterFirst] ?? null;
+    }
   }
-  if ((slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") && afterFirst) {
+  if (
+    (slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
+    afterFirst
+  ) {
     guideKey = guideLookup[lang]?.[afterFirst] ?? null;
   }
 
@@ -161,7 +167,11 @@ export function buildLinks({
     .map((lng) => {
       const targetLang = lng as AppLanguage;
       // Translate the first slug segment into the target language when known
-      const translatedFirst = slugKey ? SLUGS[slugKey][targetLang] : firstSeg;
+      const translatedFirst = guideKey
+        ? guideNamespace(targetLang, guideKey).baseSlug
+        : slugKey
+        ? SLUGS[slugKey][targetLang]
+        : firstSeg;
       const translatedRest =
         articleKey !== null
           ? `/${
@@ -190,7 +200,11 @@ export function buildLinks({
   const defaultLang: AppLanguage =
     (fallbackLng as AppLanguage | undefined) ??
     ((Array.isArray(supportedLngs) && supportedLngs[0] ? supportedLngs[0] : "en") as AppLanguage);
-  const defFirst = slugKey ? SLUGS[slugKey][defaultLang] : firstSeg;
+  const defFirst = guideKey
+    ? guideNamespace(defaultLang, guideKey).baseSlug
+    : slugKey
+    ? SLUGS[slugKey][defaultLang]
+    : firstSeg;
   const defRest =
     articleKey !== null
       ? `/${(ARTICLE_SLUGS_BY_KEY[articleKey]?.[defaultLang] ?? ARTICLE_SLUGS_BY_KEY[articleKey]?.en ?? "")}`

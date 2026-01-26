@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
 const __filename = fileURLToPath(import.meta.url);

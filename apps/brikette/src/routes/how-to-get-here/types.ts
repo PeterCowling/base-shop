@@ -68,11 +68,13 @@ export type NormalizedDestinationSection = {
 export type SorrentoContent = {
   title?: string;
   links?: DestinationLink[] | Record<string, DestinationLink> | DestinationLink;
+  image?: DestinationSectionImage;
 };
 
 export type NormalizedSorrentoContent = {
   title: string;
   links: DestinationLink[];
+  image?: DestinationSectionImage;
 };
 
 export type AugmentedDestinationLink = DestinationLink & {

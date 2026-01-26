@@ -1,7 +1,10 @@
 "use client";
 
 import { Switch } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
+
 import { useModeStore } from "../viewer/state/modeStore";
+
 import { ThemeToggle } from "./ThemeToggle";
 
 type TopBarProps = {
@@ -15,15 +18,18 @@ export function TopBar({ productName }: TopBarProps) {
   const setBasicMode = useModeStore((state) => state.setBasicMode);
   const setBagOpen = useModeStore((state) => state.setBagOpen);
   const setHotspotConfigMode = useModeStore((state) => state.setHotspotConfigMode);
+  const t = useTranslations();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border-1 bg-surface-2">
-      <div className="mx-auto grid h-14 w-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center px-6 text-foreground">
-        <div className="flex items-center gap-3">
-          <ThemeToggle className="scale-90 opacity-80" />
-        </div>
+    <header className="sticky top-0 handbag-topbar border-b border-border-1 bg-surface-2">
+      <div className="handbag-topbar-inner handbag-topbar-grid h-14 items-center px-6 text-foreground">
+          <div className="flex items-center gap-3">
+            <div className="scale-90 opacity-80">
+              <ThemeToggle />
+            </div>
+          </div>
 
-        <div className="text-center text-sm font-semibold tracking-[0.24em] text-foreground/80">
+        <div className="text-center text-sm font-semibold handbag-tracking-title text-foreground/80">
           {productName}
         </div>
 
@@ -32,28 +38,34 @@ export function TopBar({ productName }: TopBarProps) {
             <Switch
               checked={hotspotConfigMode}
               onChange={(event) => setHotspotConfigMode(event.target.checked)}
-              aria-label="Toggle hotspot config mode"
+              aria-label={t("handbagConfigurator.controls.toggleHotspots")}
               className="scale-90"
             />
-            <span className="text-[11px] uppercase tracking-[0.3em]">Hotspots</span>
+            <span className="text-xs uppercase handbag-tracking-label">
+              {t("handbagConfigurator.controls.hotspots")}
+            </span>
           </label>
           <label className="flex items-center gap-2">
             <Switch
               checked={basicMode}
               onChange={(event) => setBasicMode(event.target.checked)}
-              aria-label="Toggle basic mode"
+              aria-label={t("handbagConfigurator.controls.toggleBasic")}
               className="scale-90"
             />
-            <span className="text-[11px] uppercase tracking-[0.3em]">Basic</span>
+            <span className="text-xs uppercase handbag-tracking-label">
+              {t("handbagConfigurator.controls.basic")}
+            </span>
           </label>
           <label className="flex items-center gap-2">
             <Switch
               checked={bagOpen}
               onChange={(event) => setBagOpen(event.target.checked)}
-              aria-label="Toggle bag open state"
+              aria-label={t("handbagConfigurator.controls.toggleBagOpen")}
               className="scale-90"
             />
-            <span className="text-[11px] uppercase tracking-[0.3em]">Opened</span>
+            <span className="text-xs uppercase handbag-tracking-label">
+              {t("handbagConfigurator.controls.opened")}
+            </span>
           </label>
         </div>
       </div>

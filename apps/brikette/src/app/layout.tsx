@@ -3,10 +3,11 @@ import "@/styles/global.css";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 
+import { initTheme } from "@acme/platform-core/utils";
+
 import { NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "@/utils/theme-constants";
-import { initTheme } from "@acme/platform-core/utils";
 
 // Determine if noindex should be applied (staging/preview environments)
 const shouldNoIndex =

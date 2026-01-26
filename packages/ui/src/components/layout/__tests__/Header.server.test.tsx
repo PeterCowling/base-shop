@@ -9,7 +9,7 @@ describe("layout/Header (server)", () => {
     delete process.env.NEXT_PUBLIC_DEFAULT_SHOP;
   });
 
-  test("resolves shopId from x-shop-id header when present", async () => {
+  test("falls back to default shop when no env override is present", async () => {
     const readShop = jest.fn(async () => ({
       navigation: [
         { label: { en: "Home", de: "Startseite" }, url: "/" },
@@ -42,7 +42,7 @@ describe("layout/Header (server)", () => {
     const Header = (await import("../Header")).default as (props: { lang: string }) => Promise<React.ReactElement>;
     render(await Header({ lang: "de" }));
 
-    expect(readShop).toHaveBeenCalledWith("shop-de");
+    expect(readShop).toHaveBeenCalledWith("default");
 
     const props = JSON.parse(screen.getByTestId("header-client").getAttribute("data-props") ?? "{}") as {
       nav?: Array<{ label: string }>;
@@ -50,7 +50,7 @@ describe("layout/Header (server)", () => {
     expect(props.nav?.[0]?.label).toBe("Startseite");
   });
 
-  test("falls back to NEXT_PUBLIC_SHOP_ID when no header is present", async () => {
+  test("uses NEXT_PUBLIC_SHOP_ID when provided", async () => {
     process.env.NEXT_PUBLIC_SHOP_ID = "shop-env";
     const readShop = jest.fn(async () => ({ navigation: [] }));
     jest.doMock("@acme/platform-core/repositories/json.server", () => ({ readShop }));
@@ -79,7 +79,7 @@ describe("layout/Header (server)", () => {
     expect(readShop).toHaveBeenCalledWith("shop-env");
   });
 
-  test("throws when neither header nor env provides a shop id", async () => {
+  test("does not throw when neither header nor env provides a shop id", async () => {
     const readShop = jest.fn(async () => ({ navigation: [] }));
     jest.doMock("@acme/platform-core/repositories/json.server", () => ({ readShop }));
 
@@ -97,7 +97,7 @@ describe("layout/Header (server)", () => {
     }));
 
     const Header = (await import("../Header")).default as (props: { lang: string }) => Promise<React.ReactElement>;
-    await expect(Header({ lang: "en" })).rejects.toThrow("Missing shop context");
-    expect(readShop).not.toHaveBeenCalled();
+    render(await Header({ lang: "en" }));
+    expect(readShop).toHaveBeenCalledWith("default");
   });
 });

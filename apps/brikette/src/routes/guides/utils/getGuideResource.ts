@@ -41,17 +41,20 @@ const getGuideResource = <T = unknown>(
   const instance = i18n as unknown as I18nRuntime;
   const effectiveLang = lang ?? (instance.language ?? getFallbackLanguage());
   const includeFallback = options?.includeFallback !== false;
+  const fb = getFallbackLanguage();
+
   // 1) Prefer direct i18next store access when available
   if (typeof instance.getResource === "function") {
     const localized = instance.getResource(effectiveLang, "guides", key) as T | null | undefined;
     if (localized === null) return null;
     if (typeof localized !== "undefined") return localized;
-    if (!includeFallback) return localized;
-    const fb = getFallbackLanguage();
-    if (effectiveLang !== fb) {
-      return instance.getResource(fb, "guides", key) as T | null | undefined;
+    // Only use English fallback if includeFallback is true
+    if (includeFallback && effectiveLang !== fb) {
+      const fromFb = instance.getResource(fb, "guides", key) as T | null | undefined;
+      if (typeof fromFb !== "undefined") return fromFb;
     }
-    return localized;
+    // Don't return early - fall through to try bundle strategies
+    // This handles the case where the i18n namespace hasn't loaded yet
   }
 
   // 2) Try react-i18next fixed translator (works with test mocks); honour returnObjects
@@ -70,7 +73,6 @@ const getGuideResource = <T = unknown>(
   const local = readFromBundle<T>(localBundle, key);
   if (typeof local !== "undefined") return local;
   if (!includeFallback) return undefined;
-  const fb = getFallbackLanguage();
   if (effectiveLang !== fb) {
     const enBundle = getGuidesBundle(fb);
     const fromEn = readFromBundle<T>(enBundle, key);

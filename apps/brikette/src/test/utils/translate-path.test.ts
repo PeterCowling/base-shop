@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import type { AppLanguage } from "@/i18n.config";
 import { SLUGS } from "@/slug-map";
 import type { SlugKey } from "@/types/slugs";

@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
+
 import { PRODUCTS } from "@acme/platform-core/products/index";
 
 export const runtime = "edge";

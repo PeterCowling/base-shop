@@ -79,14 +79,6 @@ export default [
       "apps/api/postcss.config.cjs",
       // Prime app: exempt while in early development
       "apps/prime/**",
-      // Handbag configurator: exempt while in early development
-      "apps/handbag-configurator/**",
-      // Cochlearfit: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
-      "apps/cochlearfit/**",
-      // Product-pipeline: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
-      "apps/product-pipeline/**",
-      // Cover-me-pretty: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
-      "apps/cover-me-pretty/**",
       // Brikette: exempt temporarily (tsconfig extends chain resolution issue with import resolver)
       "apps/brikette/**",
       // Cypress files: exempt from main linting (type-aware rules crash during init without project)
@@ -1619,6 +1611,7 @@ export default [
       "apps/cms/**/*.{ts,tsx,js,jsx,mdx}",
       "apps/dashboard/**/*.{ts,tsx,js,jsx,mdx}",
       "apps/cover-me-pretty/**/*.{ts,tsx,js,jsx,mdx}",
+      "apps/cochlearfit/**/*.{ts,tsx,js,jsx,mdx}",
       // Packages
       "packages/auth/**/*.{ts,tsx,js,jsx}",
       "packages/email/**/*.{ts,tsx,js,jsx}",
@@ -1948,6 +1941,24 @@ export default [
       ],
     },
   },
+  /* ▸ LINT-01: Relaxed limits for cover-me-pretty (tenant prototype runtime) */
+  {
+    files: ["apps/cover-me-pretty/src/**/*.{ts,tsx}"],
+    rules: {
+      complexity: ["error", 45],
+      "max-lines-per-function": [
+        "error",
+        { max: 400, skipBlankLines: true, skipComments: true },
+      ],
+    },
+  },
+  /* ▸ Cochlearfit policy copy: length rules are not helpful */
+  {
+    files: ["apps/cochlearfit/src/components/policies/**/*.{ts,tsx}"],
+    rules: {
+      "max-lines-per-function": "off",
+    },
+  },
   /* ▸ LINT-01: Relaxed limits for test files (describe/it nesting is normal) */
   {
     files: [
@@ -2056,6 +2067,17 @@ export default [
     files: ["packages/email/**/*.{ts,tsx}"],
     rules: {
       complexity: ["error", 25],
+    },
+  },
+  /* ▸ LINT-01: Product-pipeline is large; ease max-lines/complexity enforcement until refactor */
+  {
+    files: ["apps/product-pipeline/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      complexity: ["error", 70],
+      "max-lines-per-function": [
+        "error",
+        { max: 700, skipBlankLines: true, skipComments: true },
+      ],
     },
   },
   /* ▸ Workaround: Disable import resolver rules for dashboard (tsconfig extends path issue) */
@@ -2170,6 +2192,73 @@ export default [
       "max-depth": ["error", 8],
       "max-params": ["error", 8],
       "no-console": "off",
+    },
+  },
+  {
+    files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx,mjs,cjs}"],
+    rules: {
+      complexity: "off",
+      "max-lines-per-function": "off",
+      "security/detect-non-literal-fs-filename": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "ds/no-raw-color": "off",
+    },
+  },
+  {
+    files: [
+      "apps/handbag-configurator/src/app/**/*.{ts,tsx}",
+      "apps/handbag-configurator/src/ui/**/*.{ts,tsx}",
+    ],
+    ignores: ["apps/handbag-configurator/src/app/api/**"],
+    rules: {
+      "ds/no-hardcoded-copy": [
+        "error",
+        {
+          ignorePatterns: [
+            "radial-gradient",
+            "linear-gradient",
+            "repeating-linear-gradient",
+            "repeating-radial-gradient",
+            "rgba\\(",
+            "Validation request failed",
+            "Request failed",
+          ],
+        },
+      ],
+      "ds/no-raw-color": "error",
+      "ds/no-raw-font": "error",
+      "ds/no-raw-typography": "error",
+      "ds/no-arbitrary-tailwind": "error",
+    },
+  },
+  {
+    files: ["apps/handbag-configurator/src/viewer/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": [
+        "error",
+        {
+          ignorePatterns: [
+            "radial-gradient",
+            "linear-gradient",
+            "repeating-linear-gradient",
+            "repeating-radial-gradient",
+            "rgba\\(",
+            "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
+          ],
+        },
+      ],
+      "ds/no-raw-color": "off",
+      "ds/no-raw-font": "off",
+      "ds/absolute-parent-guard": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/no-nonlayered-zindex": "off",
+    },
+  },
+  {
+    files: ["apps/handbag-configurator/src/app/api/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
     },
   },
 ];

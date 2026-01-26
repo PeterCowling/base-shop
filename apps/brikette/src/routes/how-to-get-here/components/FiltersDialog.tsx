@@ -1,6 +1,7 @@
 import type { TFunction } from "i18next";
 
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -201,13 +202,15 @@ export function FiltersDialog({
               {t("filters.clearLabel")}
             </button>
           ) : null}
-          <button
+          <Button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-base font-semibold text-brand-bg shadow-sm transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary dark:bg-brand-secondary dark:text-brand-text dark:hover:bg-brand-secondary/90 dark:focus-visible:outline-brand-secondary"
+            color="primary"
+            tone="solid"
+            className="rounded-xl"
           >
             {t("filters.dialog.done", { defaultValue: "Done" })}
-          </button>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

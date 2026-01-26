@@ -24,9 +24,7 @@ describe("CategoryCollectionTemplate", () => {
     );
 
     const wrapper = container.firstChild as HTMLDivElement;
-    expect(wrapper.style.gridTemplateColumns).toBe(
-      "repeat(4, minmax(0, 1fr))"
-    );
+    expect(wrapper).toHaveClass("grid-cols-4");
 
     expect(CategoryCard as unknown as jest.Mock).toHaveBeenCalledTimes(categories.length);
     categories.forEach((c) => {
@@ -34,4 +32,3 @@ describe("CategoryCollectionTemplate", () => {
     });
   });
 });
-

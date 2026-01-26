@@ -10,10 +10,12 @@
     "pretypecheck": "pnpm --filter @acme/telemetry build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests",
-    "generate:url-fixtures": "cd /tmp && npx tsx $OLDPWD/scripts/generate-url-fixtures.ts"
+    "generate:url-fixtures": "cd /tmp && npx tsx $OLDPWD/scripts/generate-url-fixtures.ts",
+    "gen:translation-stub": "cd /tmp && npx tsx $OLDPWD/scripts/generate-translation-stub.ts"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
+    "@acme/guides-core": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",
@@ -22,7 +24,7 @@
     "dayjs": "^1.11.13",
     "i18next": "^24.2.3",
     "i18next-resources-to-backend": "^1.2.1",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.540.0",
     "next": "^15.3.8",
     "react": "19.2.1",
     "react-datepicker": "^8.3.0",

@@ -40,6 +40,14 @@
         "packages/editorial/src/*",
         "packages/editorial/dist/*"
       ],
+      "@acme/design-system": [
+        "packages/design-system/src/index.ts",
+        "packages/design-system/dist/index.d.ts"
+      ],
+      "@acme/design-system/*": [
+        "packages/design-system/src/*",
+        "packages/design-system/dist/*"
+      ],
       "@acme/platform-machine": [
         "packages/platform-machine/src/index.ts",
         "packages/platform-machine/dist/index.d.ts"

@@ -1,9 +1,11 @@
 // apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts
 import { NextResponse } from "next/server";
+
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import type { OrderStep } from "@acme/ui/components/organisms/OrderTrackingTimeline";
+
 import shop from "../../../../../../shop.json";
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 type ProviderEvent = { key: string; date?: string; complete: boolean };
 const providerEventKeys: Record<string, ProviderEvent[]> = {

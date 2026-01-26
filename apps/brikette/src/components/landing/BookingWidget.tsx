@@ -3,10 +3,10 @@
 
 import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { usePathname,useRouter, useSearchParams } from "next/navigation";
 
-import { Grid } from "@acme/ui/atoms";
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
 import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 
@@ -156,7 +156,9 @@ const BookingWidget = memo(function BookingWidget({
     return getDateParts(checkOut, dateFormat) <= getDateParts(checkIn, dateFormat);
   })();
 
-  const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
+  const fallbackAvailabilityLabel =
+    (tModals("booking.buttonAvailability", { defaultValue: "Check availability" }) as string) ??
+    "Check availability";
   const checkAvailabilityLabel =
     resolvePrimaryCtaLabel(tTokens, {
       fallback: () => fallbackAvailabilityLabel,
@@ -203,12 +205,12 @@ const BookingWidget = memo(function BookingWidget({
       ref={sectionRef}
       className="relative -translate-y-4 scroll-mt-24 sm:-translate-y-8 lg:-translate-y-10"
     >
-      <Section as="div" padding="none" className="max-w-6xl px-6">
-        <div className="rounded-2xl border border-black/10 bg-white/95 p-4 shadow-lg backdrop-blur md:p-6 dark:border-white/10 dark:bg-brand-text/90">
-          <Grid columns={{ base: 1, md: 12 }} gap={4} className="md:items-end">
+      <Section as="div" padding="none" className="max-w-5xl px-4">
+        <div className="rounded-2xl border border-black/10 bg-white/95 p-3 shadow-lg backdrop-blur dark:border-white/10 dark:bg-brand-text/90">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
             <label
               htmlFor={BOOKING_FIELD_IDS.checkIn}
-              className="flex flex-col gap-2 text-sm font-semibold text-brand-heading md:col-span-4"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-4"
             >
               {tModals("booking.checkInLabel")}
               <input
@@ -226,7 +228,7 @@ const BookingWidget = memo(function BookingWidget({
 
             <label
               htmlFor={BOOKING_FIELD_IDS.checkOut}
-              className="flex flex-col gap-2 text-sm font-semibold text-brand-heading md:col-span-4"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-4"
             >
               {tModals("booking.checkOutLabel")}
               <input
@@ -243,7 +245,7 @@ const BookingWidget = memo(function BookingWidget({
 
             <label
               htmlFor={BOOKING_FIELD_IDS.guests}
-              className="flex flex-col gap-2 text-sm font-semibold text-brand-heading md:col-span-2"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-2"
             >
               {tModals("booking.guestsLabel")}
               <input
@@ -257,14 +259,17 @@ const BookingWidget = memo(function BookingWidget({
               />
             </label>
 
-            <button
+            <Button
               type="button"
               onClick={handleSubmit}
-              className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-lg transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary md:col-span-2"
+              color="accent"
+              tone="solid"
+              size="lg"
+              className="w-full rounded-full md:col-span-2"
             >
               {checkAvailabilityLabel}
-            </button>
-          </Grid>
+            </Button>
+          </div>
           {showError ? (
             <p className="mt-3 text-sm text-brand-bougainvillea" role="alert">
               {errorMessage}

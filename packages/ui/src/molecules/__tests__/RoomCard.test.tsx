@@ -35,7 +35,7 @@ function renderRoomCard(props?: Partial<RoomCardProps>) {
       {
         id: "wifi",
         label: "Fast Wi-Fi",
-        icon: <span data-testid="wifi-icon" />,
+        icon: <span data-cy="wifi-icon" />,
       },
     ],
     price: {

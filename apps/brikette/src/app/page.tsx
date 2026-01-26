@@ -3,8 +3,7 @@
 // Detects browser language via navigator.languages and redirects to best match
 import type { Metadata } from "next";
 
-import { Grid } from "@acme/ui/atoms";
-import { Section } from "@acme/ui/atoms";
+import { LinkText, Section } from "@acme/design-system/atoms";
 
 import { BASE_URL } from "@/config/site";
 import { i18nConfig } from "@/i18n.config";
@@ -64,23 +63,15 @@ export default function LanguageGatewayPage() {
       >
         {/* i18n-exempt -- LINT-1007 [ttl=2026-12-31] English-only gateway label */}
         <h1 className="text-xl font-semibold">Select a language</h1>
-        <Grid
-          as="ul"
-          columns={{ base: 2, sm: 3, md: 4 }}
-          gap={2}
-          className="mt-6 list-none p-0"
-        >
+        <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 list-none p-0">
           {supported.map((lng) => (
             <li key={lng}>
-              <a
-                className="inline-flex min-h-11 min-w-11 items-center justify-center text-brand-primary hover:underline"
-                href={`/${lng}`}
-              >
-                /{lng}
-              </a>
+              <LinkText asChild className="justify-center">
+                <a href={`/${lng}`}>/{lng}</a>
+              </LinkText>
             </li>
           ))}
-        </Grid>
+        </ul>
       </Section>
     </>
   );

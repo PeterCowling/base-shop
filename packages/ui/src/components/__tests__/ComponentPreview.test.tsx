@@ -44,10 +44,9 @@ describe("ComponentPreview", () => {
   });
 
   it("shows error boundary fallback when new component throws", async () => {
-    const consoleErrorMock = console.error as jest.MockedFunction<typeof console.error>;
-    const originalConsoleImpl = consoleErrorMock.getMockImplementation();
+    const originalConsoleError = console.error;
+    const consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});
     const initialCallCount = consoleErrorMock.mock.calls.length;
-    consoleErrorMock.mockImplementation(() => {});
 
     try {
       const Boom = () => {
@@ -82,8 +81,8 @@ describe("ComponentPreview", () => {
         newCalls.some(([, error]) => error instanceof Error && error.message === "boom"),
       ).toBe(true);
     } finally {
-      consoleErrorMock.mockImplementation(originalConsoleImpl ?? (() => {}));
+      consoleErrorMock.mockRestore();
+      console.error = originalConsoleError;
     }
   });
 });
-

@@ -71,7 +71,7 @@ describe("TemplateActions telemetry", () => {
       ),
     );
 
-    fireEvent.click(screen.getByText("Tpl One"));
+    fireEvent.click(screen.getByTestId("template-tpl-1"));
     expect(track).toHaveBeenCalledWith(
       "pb_template_select",
       expect.objectContaining({ templateId: "tpl-1", pageId: "page-1" }),

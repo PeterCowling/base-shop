@@ -2,8 +2,8 @@ import { useMemo } from "react";
 
 import i18n from "@/i18n";
 
-import { computeManualStructuredFallback } from "../components/ManualStructuredFallback";
 import type { ManualStructuredFallbackResult } from "../components/ManualStructuredFallback";
+import { computeManualStructuredFallback } from "../components/ManualStructuredFallback";
 import {
   buildStructuredFallback,
   type StructuredFallback,

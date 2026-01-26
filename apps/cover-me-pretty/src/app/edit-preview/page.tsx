@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import ComponentPreview from "@acme/ui/components/ComponentPreview";
 
 interface UpgradeComponent {
@@ -18,8 +20,6 @@ const exampleProps: Record<string, unknown> = {
     ],
   },
 };
-
-import { useTranslations } from "@acme/i18n";
 
 export default function EditPreviewPage() {
   const t = useTranslations();
@@ -123,7 +123,7 @@ export default function EditPreviewPage() {
       >
         {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}
       </button>
-      {error && <p role="alert" className="text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-danger">{error}</p>}
     </div>
   );
 }

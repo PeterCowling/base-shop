@@ -8,7 +8,7 @@ import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import type GuideFaqJsonLd from "@/components/seo/GuideFaqJsonLd";
 import type { GuideSection } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
-import type { BuildCfImageOptions } from "@/lib/buildCfImageUrl";
+import type { BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 export type GuideSeoGenericContentOptions = Record<string, unknown> & {

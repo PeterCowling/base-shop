@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 
@@ -12,8 +13,9 @@ jest.mock("@/i18n", () => ({
   },
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 const i18nMock = require("@/i18n").default as { getFixedT: jest.Mock };
+
 const getFixedTMock = i18nMock.getFixedT;
 getFixedTMock.mockImplementation(() => (key: string) => {
   if (key === "content.etiquetteItalyAmalfi.toc.title") return "Outline";

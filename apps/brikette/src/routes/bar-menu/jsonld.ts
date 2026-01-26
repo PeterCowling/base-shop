@@ -106,7 +106,7 @@ export const buildBarMenuStructuredData = ({
   fallbackTranslate,
   lang,
   url,
-}: BuildBarMenuStructuredDataArgs): string => {
+}: BuildBarMenuStructuredDataArgs): Record<string, unknown> => {
   const menuTitle = barMenuString("header.menuTitle");
   const menuTitleForJsonLd = menuTitle.replace(/,\s*(?=\d)/g, " ");
 
@@ -164,5 +164,5 @@ export const buildBarMenuStructuredData = ({
     hasMenuSection: sections,
   } as const;
 
-  return JSON.stringify(menuGraph);
+  return menuGraph;
 };

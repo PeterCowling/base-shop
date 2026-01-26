@@ -1,10 +1,14 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/delivery/schedule/route.ts
 import "@acme/zod-utils/initZod";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { NextRequest, NextResponse } from "next/server";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
+
 import { parseJsonBody } from "@acme/lib/http/server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+
 import shop from "../../../../../shop.json";
 
 // This route reads shop settings via `getShopSettings`, which touches the

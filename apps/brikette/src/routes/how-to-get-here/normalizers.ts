@@ -167,9 +167,12 @@ export function normalizeSorrentoContent(
   value: SorrentoContent | Record<string, unknown> | undefined,
 ): NormalizedSorrentoContent {
   if (isRecord(value) && "title" in value) {
+    const content = value as SorrentoContent;
+    const normalizedImage = isSectionImage(content.image) ? content.image : undefined;
     return {
-      title: (value as SorrentoContent).title ?? "",
-      links: normalizeToArray<DestinationLink>((value as SorrentoContent).links, isDestinationLink),
+      title: content.title ?? "",
+      links: normalizeToArray<DestinationLink>(content.links, isDestinationLink),
+      ...(normalizedImage ? { image: normalizedImage } : {}),
     } satisfies NormalizedSorrentoContent;
   }
 

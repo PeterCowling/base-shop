@@ -1,1 +1,1 @@
-export { Button as default, Button } from "@acme/design-system/primitives";
+export { Button,Button as default } from "@acme/design-system/primitives";

@@ -2,7 +2,6 @@
 // Consolidated translation fallback utilities
 
 import { useMemo } from "react";
-
 import type { TFunction } from "i18next";
 
 import i18n from "@/i18n";

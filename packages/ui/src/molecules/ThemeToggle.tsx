@@ -18,7 +18,7 @@ export const ThemeToggle = memo((): JSX.Element => {
       onClick={next}
       title={title}
       aria-label={ariaLabel}
-      className="btn-square-12 size-12 rounded-md border border-gray-200 transition dark:border-gray-700"
+      className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 px-4 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary dark:border-gray-700"
     >
       {!isDark ? (
         <Sun className="size-5" style={{ color: "var(--color-brand-secondary)" }} aria-hidden />

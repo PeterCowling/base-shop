@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import PipelineMap2D from "./PipelineMap2D";
 import PipelineMap3D from "./PipelineMap3D";
+import type { PipelineStage } from "./pipelineMapConfig";
 
 type MapMode = "2d" | "3d";
 
@@ -58,6 +60,7 @@ export default function PipelineMapPanel({
     hint: string;
     mode2d: string;
     mode3d: string;
+    nodes: Record<PipelineStage, string>;
   };
   stageCounts: Record<string, number>;
 }) {
@@ -131,9 +134,13 @@ export default function PipelineMapPanel({
 
       <div className="mt-6">
         {effectiveMode === "3d" ? (
-          <PipelineMap3D stageCounts={stageCounts} reduceMotion={prefersReducedMotion} />
+          <PipelineMap3D
+            stageCounts={stageCounts}
+            reduceMotion={prefersReducedMotion}
+            nodeLabels={strings.nodes}
+          />
         ) : (
-          <PipelineMap2D stageCounts={stageCounts} />
+          <PipelineMap2D stageCounts={stageCounts} nodeLabels={strings.nodes} />
         )}
       </div>
     </section>

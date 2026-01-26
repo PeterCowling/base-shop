@@ -32,7 +32,7 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
     next.delete("tag");
     for (const t of list) next.append("tag", t);
     const qs = next.toString();
-    return `/${lang}/${getSlug("guides", lang)}${qs ? `?${qs}` : ""}`;
+    return `/${lang}/${getSlug("experiences", lang)}${qs ? `?${qs}` : ""}`;
   }
 
   if (!tags.length) return null;
@@ -90,4 +90,3 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
 }
 
 export default memo(TagFilterBar);
-

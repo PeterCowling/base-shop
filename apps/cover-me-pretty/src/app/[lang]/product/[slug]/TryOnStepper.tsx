@@ -1,8 +1,8 @@
 /* i18n-exempt file -- I18N-123 try-on stepper; labels use i18n keys, className tokens are design-system utilities [ttl=2026-01-31] */
 "use client";
+import { Inline } from "@acme/design-system/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
 import type { TryOnPhase } from "@acme/ui/hooks/tryon/state";
-import { Inline } from "@acme/design-system/primitives/Inline";
 
 export function TryOnStepper({ phase }: { phase: TryOnPhase }) {
   const t = useTranslations();

@@ -11,8 +11,8 @@ describe("VideoPlayer", () => {
     expect(video).toBeInTheDocument();
     expect(video).toHaveAttribute("controls");
     expect(video).toHaveClass("w-full");
-    expect(video).toHaveClass("rounded-lg");
     expect(video).toHaveClass("rounded-md");
+    expect(video).not.toHaveClass("rounded-lg");
     expect(getByText("Captions are not available for this video.")).toBeInTheDocument();
   });
 });

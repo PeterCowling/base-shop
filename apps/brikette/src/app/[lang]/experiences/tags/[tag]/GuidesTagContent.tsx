@@ -13,7 +13,7 @@ import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
 import { TAGS_SUMMARY } from "@/data/tags.index";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getGuidesBundle, type GuidesNamespace } from "@/locales/guides";
-import { guideSlug } from "@/routes.guides-helpers";
+import { guideHref } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
@@ -33,32 +33,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 const FALLBACK_LANG = i18nConfig.fallbackLng as AppLanguage;
 const EN_GUIDES = getGuidesBundle("en");
-
-function fallbackSlugFromKey(key: GuideMeta["key"]): string {
-  return key
-    .replace(/([a-z\d])([A-Z])/g, "$1-$2")
-    .replace(/_/g, "-")
-    .toLowerCase();
-}
-
-function stripLangPrefix(slug: string | undefined, lang: string): string | undefined {
-  if (!slug) return undefined;
-  const trimmed = slug.trim();
-  if (!trimmed) return undefined;
-  const prefix = `${lang}-`;
-  if (trimmed.startsWith(prefix)) {
-    return trimmed.slice(prefix.length);
-  }
-  return trimmed;
-}
-
-function safeGuideSlug(lang: AppLanguage, key: GuideMeta["key"]): string | undefined {
-  try {
-    return guideSlug(lang, key);
-  } catch {
-    return undefined;
-  }
-}
 
 function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
@@ -130,11 +104,13 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
     return ((key: string) => key) as unknown as Translator;
   })();
 
-  const guidesSlug = getSlug("guides", lang);
-  const guidesBasePath = `/${lang}/${guidesSlug}`;
+  const experiencesSlug = getSlug("experiences", lang);
+  const tagsSlug = getSlug("guidesTags", lang);
+  const guidesBasePath = `/${lang}/${experiencesSlug}`;
+  const tagsBasePath = `${guidesBasePath}/${tagsSlug}`;
   const tagPath = tag
-    ? `${BASE_URL}${guidesBasePath}/tags/${encodeURIComponent(tag)}`
-    : `${BASE_URL}${guidesBasePath}/tags`;
+    ? `${BASE_URL}${tagsBasePath}/${encodeURIComponent(tag)}`
+    : `${BASE_URL}${tagsBasePath}`;
 
   const resolvedTitle = (titleI18n && titleI18n !== titleKey ? titleI18n : tagMeta?.title) ?? tag;
   const resolvedDescription = (descI18n && descI18n !== descKey ? descI18n : tagMeta?.description) ?? "";
@@ -148,32 +124,11 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
         structuredUrl: string;
       }>;
 
-    const toRelative = (slug: string | undefined): string | undefined => {
-      if (!slug) return undefined;
-      const trimmed = slug.trim();
-      if (!trimmed) return undefined;
-      return trimmed.startsWith("/") ? trimmed : `${guidesBasePath}/${trimmed}`;
-    };
-
     return items.map(({ key }) => {
       const fallbackLabel = getGuideLinkLabel(fallbackGuidesT, fallbackGuidesT, key);
       const label = ready ? getGuideLinkLabel(t, fallbackGuidesT, key) : fallbackLabel;
-      const usesFallback = label === fallbackLabel;
-
-      const localSlug = safeGuideSlug(lang as AppLanguage, key);
-      const fallbackSlug = stripLangPrefix(safeGuideSlug(FALLBACK_LANG, key), FALLBACK_LANG);
-      const fallbackFromKey = fallbackSlugFromKey(key);
-
-      const localRelative = toRelative(localSlug);
-      const fallbackRelative = toRelative(fallbackSlug);
-      const fallbackKeyRelative = fallbackFromKey !== key ? toRelative(fallbackFromKey) : undefined;
-
-      const href = localRelative ?? fallbackRelative ?? fallbackKeyRelative ?? "#";
-      const structuredRelative = usesFallback
-        ? fallbackRelative ?? fallbackKeyRelative ?? localRelative
-        : localRelative ?? fallbackRelative ?? fallbackKeyRelative;
-
-      const structuredUrl = structuredRelative ? `${BASE_URL}${structuredRelative}` : `${BASE_URL}${guidesBasePath}`;
+      const href = guideHref(lang, key);
+      const structuredUrl = `${BASE_URL}${href}`;
 
       return {
         key,
@@ -228,7 +183,7 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
               {top5.map(({ tag: tname, count }) => (
                 <li key={tname}>
                   <Link
-                    href={`/${lang}/${guidesSlug}/tags/${encodeURIComponent(tname)}`}
+                    href={`${tagsBasePath}/${encodeURIComponent(tname)}`}
                     className="inline-flex items-center rounded-full border border-slate-300 px-3 py-1 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
                   >
                     {tname}

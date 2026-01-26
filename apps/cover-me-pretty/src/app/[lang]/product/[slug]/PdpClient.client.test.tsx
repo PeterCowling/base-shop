@@ -1,12 +1,15 @@
 /** @jest-environment jsdom */
-import React from "react";
-import { render, screen, fireEvent, configure } from "@testing-library/react";
 import type { ComponentProps } from "react";
-import type AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import React from "react";
+import { configure,fireEvent, render, screen } from "@testing-library/react";
+
 import type { PriceProps } from "@acme/design-system/atoms/Price";
+import type AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import type { SKU } from "@acme/types";
-configure({ testIdAttribute: "data-testid" });
+
 import PdpClient from "./PdpClient.client";
+
+configure({ testIdAttribute: "data-testid" });
 
 const addToCartMock = jest.fn();
 

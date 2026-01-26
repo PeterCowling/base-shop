@@ -2,9 +2,8 @@ import type { ReactNode } from "react";
 import { ZoomIn } from "lucide-react";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
-import { Grid } from "@acme/ui/atoms";
 
-import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";
+import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
 import type { RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
@@ -36,7 +35,7 @@ export function renderGallery(
         key={gallery.key}
         className="space-y-6 rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80"
       >
-        <Grid as="ul" columns={{ base: 1, sm: 1, md: 2 }} gap={6} className="list-none p-0">
+        <ul className="grid grid-cols-1 gap-6 list-none p-0 sm:grid-cols-1 md:grid-cols-2">
           {gallery.items.map((item) => {
             const meta = itemsMeta?.[item.id] ?? {};
             return (
@@ -54,12 +53,12 @@ export function renderGallery(
                         />
                         <span
                           aria-hidden
-                          className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-surface"
+                          className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-text"
                         >
                           <ZoomIn className="size-4" />
                         </span>
                         {meta.caption ? (
-                          <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                          <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-text/80">
                             {meta.caption}
                           </figcaption>
                         ) : null}
@@ -86,7 +85,7 @@ export function renderGallery(
               </li>
             );
           })}
-        </Grid>
+        </ul>
       </section>
     );
   });

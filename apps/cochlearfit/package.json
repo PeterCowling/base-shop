@@ -7,7 +7,7 @@
     "start": "next start -p 3011",
     "preview": "OUTPUT_EXPORT=1 next build && python3 -m http.server 3011 --directory out",
     "preview:pages": "OUTPUT_EXPORT=1 next build && pnpm exec wrangler pages dev out --compatibility-flag=nodejs_compat --port 3011",
-    "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },

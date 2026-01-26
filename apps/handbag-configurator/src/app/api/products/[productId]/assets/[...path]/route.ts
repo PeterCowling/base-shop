@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -78,7 +79,6 @@ export async function GET(
     : "no-store";
 
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 path is validated and scoped to repo products
     const data = await readFile(filePath);
     return new NextResponse(data, {
       headers: {

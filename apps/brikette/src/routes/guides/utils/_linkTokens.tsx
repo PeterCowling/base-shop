@@ -50,7 +50,7 @@ export function renderGuideLinkTokens(value: string | null | undefined, lang: Ap
     if (tokenType === "LINK") {
       const guideKey = rawKey.trim() as GuideKey;
       if (guideKey.length > 0 && label.length > 0) {
-        const href = guideHref(lang, guideKey, { forceGuidesBase: true });
+        const href = guideHref(lang, guideKey);
         appendLink(href, label);
         lastIndex = match.index + token.length;
         continue;

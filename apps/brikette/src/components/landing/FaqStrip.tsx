@@ -3,8 +3,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { Grid } from "@acme/ui/atoms";
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 import { translatePath } from "@acme/ui/utils/translate-path";
 
 import { Cluster } from "@/components/ui/flex";
@@ -33,7 +32,7 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
     <section id="faq" className="py-12 scroll-mt-24">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
         <Cluster className="items-end justify-between gap-3">
-          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
             {tLanding("faqSection.title")}
           </h2>
           <Link
@@ -44,21 +43,21 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
           </Link>
         </Cluster>
 
-        <Grid as="ul" columns={{ base: 1, md: 2 }} gap={4} className="mt-6">
+        <ul className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 list-none">
           {items.map((item) => (
             <li
               key={item.question}
               className="rounded-2xl border border-brand-outline/30 bg-brand-bg p-4 shadow-sm dark:border-white/10 dark:bg-brand-surface"
             >
-              <h3 className="text-sm font-semibold text-brand-heading dark:text-brand-surface">
+              <h3 className="text-sm font-semibold text-brand-heading dark:text-brand-text">
                 {item.question}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-brand-text/70 dark:text-brand-surface/70">
+              <p className="mt-2 text-sm leading-relaxed text-brand-text/70 dark:text-brand-text/70">
                 {item.answer}
               </p>
             </li>
           ))}
-        </Grid>
+        </ul>
       </Section>
     </section>
   );

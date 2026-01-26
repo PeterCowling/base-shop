@@ -1,9 +1,12 @@
 /** @jest-environment node */
 
-import fs from "fs";
 import path from "node:path";
+
+import fs from "fs";
 import ts from "typescript";
+
 import type { Role } from "@acme/auth/types/roles";
+
 import { republishShop } from "../../../../../../../scripts/src/republish-shop";
 
 jest.setTimeout(15000);

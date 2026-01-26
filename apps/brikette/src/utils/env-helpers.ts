@@ -1,8 +1,8 @@
 // src/utils/env-helpers.ts
 // Environment helpers (moved from src/root/environment.ts)
 
-import { IS_TEST } from "@/config/env";
 import { DOMAIN } from "@/config";
+import { IS_TEST } from "@/config/env";
 import { normaliseBrowserOrigin } from "@/utils/origin";
 
 const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);

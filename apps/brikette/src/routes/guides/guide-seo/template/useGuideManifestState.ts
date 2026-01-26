@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 
 import { IS_DEV } from "@/config/env";
+import type { AppLanguage } from "@/i18n.config";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
 
 import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "../../guide-manifest";
 import { buildGuideChecklist, getGuideManifestEntry, resolveDraftPathSegment } from "../../guide-manifest";
-import type { AppLanguage } from "@/i18n.config";
 
 type LoaderData = {
   status?: GuideManifestEntry["status"];
@@ -71,8 +71,10 @@ export function useGuideManifestState(params: {
         return { status: status as ChecklistSnapshot["status"], items: candidate.items };
       }
     }
-    return manifestEntry ? buildGuideChecklist(manifestEntry) : undefined;
-  }, [loaderData?.checklist, loaderData?.status, manifestEntry]);
+    return manifestEntry
+      ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang })
+      : undefined;
+  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang]);
 
   const draftUrl = useMemo(() => {
     if (!manifestEntry) return undefined;

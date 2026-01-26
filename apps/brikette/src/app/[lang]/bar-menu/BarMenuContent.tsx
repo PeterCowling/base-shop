@@ -5,7 +5,8 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
 
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { BASE_URL } from "@/config/site";
@@ -50,7 +51,7 @@ export function BarMenuContent({ lang }: Props) {
 
   const path = `/${lang}/${getSlug("barMenu", lang)}`;
   const url = `${BASE_URL}${path}`;
-  const menuJson = buildBarMenuStructuredData({
+  const menuData = buildBarMenuStructuredData({
     barMenuString,
     getSectionNote,
     getItemNote,
@@ -64,7 +65,7 @@ export function BarMenuContent({ lang }: Props) {
 
   return (
     <Fragment>
-      <BarMenuStructuredData type={JSON_LD_MIME} json={menuJson} />
+      <BarMenuStructuredData type={JSON_LD_MIME} data={menuData} />
 
       <Section padding="none" className="mx-auto max-w-3xl px-4 py-10 lg:py-14">
         <header className="mb-8 text-center">
@@ -86,12 +87,9 @@ export function BarMenuContent({ lang }: Props) {
           ) : null}
           {introCta.trim() ? (
             <div className="mt-6 flex justify-center">
-              <a
-                href="#menuSections"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-2 text-base font-semibold text-brand-bg shadow-sm transition-colors hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-              >
-                {introCta}
-              </a>
+              <Button asChild color="primary" tone="solid" size="lg">
+                <a href="#menuSections">{introCta}</a>
+              </Button>
             </div>
           ) : null}
         </header>

@@ -3,6 +3,7 @@ import type { NextSeoProps } from "next-seo";
 import { coreEnv } from "@acme/config/env/core";
 import { type Locale,LOCALES } from "@acme/i18n/locales";
 import type { ShopSettings } from "@acme/types";
+import { serializeJsonLd } from "@acme/ui/lib/seo/serializeJsonLd";
 
 /** Minimal representation of a link tag for Next SEO */
 type LinkTag = {
@@ -261,6 +262,4 @@ export function getStructuredData(input: StructuredDataInput) {
   } as Record<string, unknown>;
 }
 
-export function serializeJsonLd(data: Record<string, unknown> | unknown[]) {
-  return JSON.stringify(data).replace(/</g, "\\u003c");
-}
+export { serializeJsonLd };

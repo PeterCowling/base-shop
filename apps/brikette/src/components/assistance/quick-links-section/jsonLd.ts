@@ -1,3 +1,5 @@
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/baseUrl";
 import type { AppLanguage } from "@/i18n.config";
 
@@ -6,12 +8,12 @@ import type { QuickLinkWithHref } from "./types";
 export function buildQuickLinksJsonLd(
   resolvedLang: AppLanguage,
   quickLinks: QuickLinkWithHref[],
-): string {
+): Record<string, unknown> | null {
   if (quickLinks.length === 0) {
-    return "";
+    return null;
   }
 
-  return JSON.stringify({
+  return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     inLanguage: resolvedLang,
@@ -20,7 +22,7 @@ export function buildQuickLinksJsonLd(
       position: index + 1,
       name: item.label,
       description: item.description,
-      url: `${BASE_URL}${item.href}`,
+      url: buildCanonicalUrl(BASE_URL, item.href),
     })),
-  });
+  };
 }

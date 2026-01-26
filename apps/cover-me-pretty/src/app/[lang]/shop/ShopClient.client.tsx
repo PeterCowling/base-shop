@@ -2,16 +2,17 @@
 
 "use client";
 
-import type { SKU } from "@acme/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 import FilterBar, {
   type FilterDefinition,
   type Filters,
 } from "@acme/platform-core/components/shop/FilterBar";
 import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
+import type { SKU } from "@acme/types";
 
 /**
  * ShopClient

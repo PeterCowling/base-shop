@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { Grid, Stack } from "@acme/design-system/primitives";
 
 import type { GameEvent } from "../types";

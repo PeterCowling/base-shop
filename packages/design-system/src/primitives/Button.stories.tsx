@@ -53,3 +53,11 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+export const AsChildLink: Story = {
+  render: (args) => (
+    <Button {...args} asChild tone="solid" color="primary">
+      <a href="/">Book now</a>
+    </Button>
+  ),
+};

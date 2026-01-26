@@ -5,10 +5,9 @@
 export type { GuideKey } from "./keys";
 export { ENGLISH_SLUGS, GUIDE_KEYS, GUIDE_KEYS_WITH_OVERRIDES } from "./keys";
 export { getGuideLinkLabels, isPlaceholderGuideLabel } from "./labels";
-export { GUIDE_SLUG_LOOKUP_BY_LANG } from "./lookups";
+export { GUIDE_SLUG_LOOKUP_BY_LANG } from "./urls";
 export { GUIDE_BASE_KEY_OVERRIDES, guideNamespace, publishedGuideKeysByBase } from "./namespaces";
 export { GUIDE_SLUG_OVERRIDES } from "./overrides";
-export { resolveGuideKeyFromSlug } from "./resolve";
+export { resolveGuideKeyFromSlug } from "./urls";
 export { GUIDE_SLUGS } from "./slugs";
-export { guideAbsoluteUrl,guideComponentPath, guideHref, guideSlug } from "./urls";
-
+export { guideAbsoluteUrl,guideComponentPath, guideHref, guidePath, guideSlug } from "./urls";

@@ -2,6 +2,7 @@
 "use client";
 
 import { type FormEvent,useCallback, useEffect, useMemo, useState } from "react";
+
 import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { extractStageMSummary } from "./stageMHelpers";
@@ -177,12 +178,11 @@ export default function StageMQueueCard({
     strings.stageM,
     strings.notAvailable,
   ]);
-  const runnerStatusTone =
-    runnerStatus && runnerStatus.stale === false
-      ? "text-emerald-600"
-      : runnerStatus && runnerStatus.stale
-        ? "text-amber-600"
-        : "text-foreground/60";
+  const runnerStatusTone = runnerStatus
+    ? runnerStatus.stale === false
+      ? "text-success"
+      : "text-warning"
+    : "text-foreground/60";
 
   const queueStageM = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {

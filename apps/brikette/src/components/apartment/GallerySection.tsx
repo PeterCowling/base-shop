@@ -3,7 +3,7 @@ import React, { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 
 const IMAGES = [
   "/img/interno1.webp",

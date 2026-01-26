@@ -16,7 +16,7 @@ type MissionsStrings = {
 };
 
 function resultTone(ok: boolean): string {
-  return ok ? "text-emerald-700" : "text-rose-700";
+  return ok ? "text-success" : "text-danger";
 }
 
 export default function MissionsPanel({
@@ -108,7 +108,7 @@ function MissionCard({
         <p className="text-xs text-foreground/60">{meta}</p>
         <button
           type="button"
-          className="mt-2 w-full rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+          className="mt-2 w-full min-h-11 min-w-11 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
           onClick={onClick}
           disabled={busy}
         >

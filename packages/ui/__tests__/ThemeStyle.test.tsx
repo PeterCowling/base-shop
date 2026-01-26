@@ -32,7 +32,7 @@ describe("ThemeStyle", () => {
       },
     } as any);
 
-    const element = await ThemeStyle({ shopId: "shop-123" });
+    const element = await ThemeStyle({ shopId: "shop-123", allowRemoteFonts: true });
     expect(mockReadShop).toHaveBeenCalledWith("shop-123");
     expect(element).not.toBeNull();
 

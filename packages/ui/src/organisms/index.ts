@@ -5,6 +5,7 @@ export * from "./ApartmentHighlightsSection";
 export * from "./ArrivingByFerrySection";
 export * from "./AssistanceAmaSection";
 export * from "./AssistanceArticleSection";
+export * from "./AssistanceQuickLinksSection";
 export * from "./CareersSection";
 export * from "./CarouselSlides";
 export * from "./DealsPage";

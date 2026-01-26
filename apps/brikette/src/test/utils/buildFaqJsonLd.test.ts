@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import {
   buildFaqJsonLd,
   faqEntriesToJsonLd,
@@ -23,15 +24,15 @@ describe("buildFaqJsonLd", () => {
   it("serializes entries into FAQPage JSON-LD and handles empty input", () => {
     const entries = [{ question: "How long?", answer: ["About 10 minutes."] }];
     const json = faqEntriesToJsonLd("en", "https://example.com", entries);
-    expect(json).toContain("\"@type\":\"FAQPage\"");
-    expect(json).toContain("About 10 minutes.");
-    expect(faqEntriesToJsonLd("en", "https://example.com", [])).toBe("");
+    expect(json).toEqual(expect.objectContaining({ "@type": "FAQPage" }));
+    expect(json?.mainEntity[0].acceptedAnswer.text).toContain("About 10 minutes.");
+    expect(faqEntriesToJsonLd("en", "https://example.com", [])).toBeNull();
   });
 
   it("provides a wrapper that pipes through normalization", () => {
     const raw = [{ q: "When?", a: ["Summer"] }];
     const json = buildFaqJsonLd("en", "https://example.com", raw);
-    expect(json).toContain("When?");
-    expect(json).toContain("Summer");
+    expect(json?.mainEntity[0].name).toContain("When?");
+    expect(json?.mainEntity[0].acceptedAnswer.text).toContain("Summer");
   });
 });

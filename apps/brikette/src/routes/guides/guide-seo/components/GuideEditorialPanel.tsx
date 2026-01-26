@@ -12,6 +12,7 @@ import type {
   GuideManifestEntry,
 } from "../../guide-manifest";
 import { CHECKLIST_LABELS } from "../../guide-manifest";
+import DiagnosticDetails from "./DiagnosticDetails";
 
 type GuideStatus = GuideManifestEntry["status"];
 
@@ -93,6 +94,7 @@ interface GuideEditorialPanelProps {
   draftUrl?: string;
   isDraftRoute?: boolean;
   dashboardUrl?: string;
+  editUrl?: string;
 }
 
 export default function GuideEditorialPanel({
@@ -102,6 +104,7 @@ export default function GuideEditorialPanel({
   draftUrl,
   isDraftRoute,
   dashboardUrl,
+  editUrl,
 }: GuideEditorialPanelProps): JSX.Element {
   const { t } = useTranslation("guides");
   const areaLabelKeyMap: Record<GuideArea, string> = {
@@ -138,6 +141,12 @@ export default function GuideEditorialPanel({
   const outstandingLabel = t("dev.editorialPanel.workflow.outstanding", { count: outstandingCount });
   const draftPathLabel = t("dev.editorialPanel.draftPath.label");
   const dashboardCta = t("dev.editorialPanel.draftPath.dashboardCta");
+  const editCtaKey = "dev.editorialPanel.draftPath.editCta";
+  const editCtaRaw = t(editCtaKey);
+  const editCta =
+    typeof editCtaRaw === "string" && editCtaRaw.trim().length > 0 && editCtaRaw !== editCtaKey
+      ? editCtaRaw
+      : "Edit guide content"; // i18n-exempt -- GUIDES-2470 authoring CTA fallback
   const publishHeading = t("dev.editorialPanel.publish.heading");
   const primaryLabel = t("dev.editorialPanel.publish.primary");
   const checklistHeading = t("dev.editorialPanel.checklist.heading");
@@ -196,6 +205,17 @@ export default function GuideEditorialPanel({
             </Inline>
           </div>
         ) : null}
+        {editUrl ? (
+          <div>
+            <Inline
+              as="a"
+              href={editUrl}
+              className="min-h-10 min-w-10 gap-2 text-xs font-semibold text-brand-secondary underline decoration-brand-secondary/40 underline-offset-4 transition-colors hover:text-brand-secondary/80"
+            >
+              {editCta}
+            </Inline>
+          </div>
+        ) : null}
 
         <Stack as="section" className="gap-2">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-text/70">
@@ -239,6 +259,14 @@ export default function GuideEditorialPanel({
             <Stack as="ul" className="gap-2">
               {checklist.items.map((item) => {
                 const label = CHECKLIST_LABELS[item.id] ?? item.id;
+                const isTranslationsIncomplete =
+                  item.id === "translations" &&
+                  item.status !== "complete" &&
+                  item.diagnostics?.translations;
+                const incompleteCount = isTranslationsIncomplete
+                  ? item.diagnostics?.translations?.missingLocales.length ?? 0
+                  : 0;
+
                 return (
                   <Inline
                     as="li"
@@ -250,6 +278,18 @@ export default function GuideEditorialPanel({
                       {item.note ? (
                         <p className="text-xs text-brand-text/75">{item.note}</p>
                       ) : null}
+                      {isTranslationsIncomplete && incompleteCount > 0 && (
+                        <div className="rounded-md border border-brand-terra/30 bg-brand-terra/10 p-2 text-xs text-brand-terra">
+                          <strong>Action required:</strong> {incompleteCount} locale{incompleteCount !== 1 ? "s" : ""} have incomplete translations.
+                          Expand details below to see which files need updates.
+                        </div>
+                      )}
+                      <DiagnosticDetails
+                        itemId={item.id}
+                        diagnostics={item.diagnostics}
+                        guideKey={manifest.key}
+                        manifest={manifest}
+                      />
                     </Stack>
                     <Inline
                       as="span"

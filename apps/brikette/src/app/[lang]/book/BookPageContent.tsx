@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { Section } from "@acme/ui/atoms";
+import { Button } from "@acme/design-system/primitives";
+import { LinkText, Section } from "@acme/design-system/atoms";
 
 import roomsData from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -182,13 +183,19 @@ function BookPageContent({ lang }: Props) {
                     <li>{t("flex.bullets.1")}</li>
                   </ul>
                   <div className="mt-3">
-                    <a
-                      className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-brand-primary px-4 py-2 text-brand-bg hover:opacity-90"
-                      href={octorateHref}
-                      onClick={(e) => handleConfirmClick(room.sku, "flex", e)}
+                    <Button
+                      asChild
+                      color="primary"
+                      tone="solid"
+                      aria-busy={pending === `${room.sku}:flex`}
                     >
-                      {pending === `${room.sku}:flex` ? t("checking") : t("cta.flex")}
-                    </a>
+                      <a
+                        href={octorateHref}
+                        onClick={(e) => handleConfirmClick(room.sku, "flex", e)}
+                      >
+                        {pending === `${room.sku}:flex` ? t("checking") : t("cta.flex")}
+                      </a>
+                    </Button>
                   </div>
                 </div>
 
@@ -199,13 +206,19 @@ function BookPageContent({ lang }: Props) {
                     <li>{t("nr.bullets.1")}</li>
                   </ul>
                   <div className="mt-3">
-                    <a
-                      className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-brand-secondary px-4 py-2 text-brand-heading hover:opacity-90"
-                      href={octorateHref}
-                      onClick={(e) => handleConfirmClick(room.sku, "nr", e)}
+                    <Button
+                      asChild
+                      color="accent"
+                      tone="solid"
+                      aria-busy={pending === `${room.sku}:nr`}
                     >
-                      {pending === `${room.sku}:nr` ? t("checking") : t("cta.nr")}
-                    </a>
+                      <a
+                        href={octorateHref}
+                        onClick={(e) => handleConfirmClick(room.sku, "nr", e)}
+                      >
+                        {pending === `${room.sku}:nr` ? t("checking") : t("cta.nr")}
+                      </a>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -221,9 +234,11 @@ function BookPageContent({ lang }: Props) {
                             <div className="font-semibold">{alt.sku.replace(/_/g, " ")}</div>
                             <div className="text-brand-text/70">{alt.plan === "flex" ? t("flex.title") : t("nr.title")}</div>
                           </div>
-                          <a className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-brand-primary px-4 py-2 text-brand-bg" href={alt.confirmUrl} rel="noopener noreferrer">
-                            {t("unavailable.bookThis")}
-                          </a>
+                          <Button asChild color="primary" tone="solid">
+                            <a href={alt.confirmUrl} rel="noopener noreferrer">
+                              {t("unavailable.bookThis")}
+                            </a>
+                          </Button>
                         </div>
                       ))}
                     </div>
@@ -231,9 +246,11 @@ function BookPageContent({ lang }: Props) {
                     <p className="mt-2 text-sm text-brand-text/80">{t("unavailable.none")}</p>
                   )}
                   <div className="mt-3">
-                    <a className="inline-flex min-h-11 min-w-11 items-center text-sm underline" href={alternatives?.resultUrl ?? octorateHref} rel="noopener noreferrer">
-                      {t("unavailable.seeAll")}
-                    </a>
+                    <LinkText asChild className="text-sm">
+                      <a href={alternatives?.resultUrl ?? octorateHref} rel="noopener noreferrer">
+                        {t("unavailable.seeAll")}
+                      </a>
+                    </LinkText>
                   </div>
                 </div>
               )}
@@ -255,9 +272,11 @@ function BookPageContent({ lang }: Props) {
       </div>
 
       <div className="mt-6 text-sm">
-        <Link href={`/${lang}/${getSlug("rooms", lang)}`} prefetch={true} className="inline-flex min-h-10 min-w-10 items-center underline">
-          {t("backToRooms")}
-        </Link>
+        <LinkText asChild>
+          <Link href={`/${lang}/${getSlug("rooms", lang)}`} prefetch={true}>
+            {t("backToRooms")}
+          </Link>
+        </LinkText>
       </div>
     </Section>
   );

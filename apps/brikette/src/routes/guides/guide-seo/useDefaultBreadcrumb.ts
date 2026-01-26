@@ -4,8 +4,7 @@ import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
+import { guideNamespace, guideSlug } from "@/routes.guides-helpers";
 import { slugify } from "@/utils/slugify";
 
 interface DefaultBreadcrumbArgs {
@@ -27,9 +26,9 @@ export function useDefaultBreadcrumb({
     // Localize the base segment so breadcrumbs reflect the active language
     const baseSlug = (() => {
       try {
-        return getSlug("guides", lang as AppLanguage);
+        return guideNamespace(lang as AppLanguage, guideKey).baseSlug;
       } catch {
-        return "guides";
+        return "experiences";
       }
     })();
     // Prefer locale-specific slugs for guide pages so breadcrumbs reflect

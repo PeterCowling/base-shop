@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import { Cluster, Inline, Sidebar, Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 import BuildStamp from "@/components/BuildStamp";
 import Container from "@/components/Container";

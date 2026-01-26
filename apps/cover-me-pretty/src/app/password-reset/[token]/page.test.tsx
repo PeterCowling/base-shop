@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import PasswordResetPage from "./page";
 import { useParams } from "next/navigation";
+import { fireEvent,render, screen } from "@testing-library/react";
+
+import PasswordResetPage from "./page";
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),

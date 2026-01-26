@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 
+import type { AppLanguage } from "@/i18n.config";
 import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
-
-import type { AppLanguage } from "@/i18n.config";
 
 import type { GuideManifestEntry } from "../../guide-manifest";
 import { resolveGuideOgType } from "../utils/resolveOgType";

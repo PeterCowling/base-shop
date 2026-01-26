@@ -134,9 +134,9 @@ function ChiesaNuovaArrivalDropIn({ lang }: ChiesaNuovaArrivalDropInProps): JSX.
   return (
     <section className="space-y-6 rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80">
       <header className="space-y-3">
-        <h2 className="text-3xl font-semibold text-brand-heading dark:text-brand-surface">{heading}</h2>
+        <h2 className="text-3xl font-semibold text-brand-heading dark:text-brand-text">{heading}</h2>
         {description ? (
-          <p className="text-base leading-relaxed text-brand-text/80 dark:text-brand-surface/80">{description}</p>
+          <p className="text-base leading-relaxed text-brand-text/80 dark:text-brand-text/80">{description}</p>
         ) : null}
       </header>
       <div className="space-y-10">

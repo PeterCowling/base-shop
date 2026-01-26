@@ -2,10 +2,8 @@ import type { ReactNode } from "react";
 import { ZoomIn } from "lucide-react";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
-import { Grid } from "@acme/ui/atoms";
-
-import { CfImage } from "@/components/images/CfImage";
-import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
+import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
 import { findPlaceholderBinding, type RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
@@ -165,7 +163,7 @@ export function renderSection(
     >
       {title ? (
         <header>
-          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">{title}</h2>
+          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">{title}</h2>
         </header>
       ) : null}
       {paragraphs}
@@ -188,10 +186,10 @@ export function renderSection(
             data-aspect="4/3"
           />
           {figure.caption ? (
-            <figcaption
-              id={figureCaptionId}
-              className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-surface/80"
-            >
+              <figcaption
+                id={figureCaptionId}
+                className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80"
+              >
               {figure.caption}
             </figcaption>
           ) : null}
@@ -305,7 +303,7 @@ function renderInlineGallery(path: string, ctx: RenderContext): ReactNode | null
 
   return (
     <div className="space-y-4">
-      <Grid as="ul" columns={{ base: 1, sm: 1, md: 2 }} gap={6} className="list-none p-0">
+      <ul className="grid grid-cols-1 gap-6 list-none p-0 sm:grid-cols-1 md:grid-cols-2">
         {gallery.items.map((item) => {
           const meta = itemsMeta?.[item.id];
           const altText = meta?.alt ?? meta?.caption ?? item.id;
@@ -324,12 +322,12 @@ function renderInlineGallery(path: string, ctx: RenderContext): ReactNode | null
                       />
                       <span
                         aria-hidden
-                        className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-surface"
+                        className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-text"
                       >
                         <ZoomIn className="size-4" />
                       </span>
                       {meta?.caption ? (
-                        <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                        <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-text/80">
                           {meta.caption}
                         </figcaption>
                       ) : null}
@@ -356,7 +354,7 @@ function renderInlineGallery(path: string, ctx: RenderContext): ReactNode | null
             </li>
           );
         })}
-      </Grid>
+      </ul>
     </div>
   );
 }

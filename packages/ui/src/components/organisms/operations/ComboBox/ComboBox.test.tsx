@@ -43,7 +43,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     expect(screen.getByRole('listbox')).toBeInTheDocument();
     expect(screen.getByText('United States')).toBeInTheDocument();
   });
@@ -59,7 +59,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     await user.type(screen.getByPlaceholderText('Search...'), 'united');
 
     expect(screen.getByText('United States')).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     await user.click(screen.getByText('Germany'));
 
     expect(handleChange).toHaveBeenCalledWith('de');
@@ -113,7 +113,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /United States/i }));
     await user.click(screen.getByText('Germany'));
 
     expect(handleChange).toHaveBeenCalledWith(['us', 'de']);
@@ -151,7 +151,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
@@ -182,7 +182,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     expect(screen.getByText('Roles')).toBeInTheDocument();
     expect(screen.getByText('Permissions')).toBeInTheDocument();
   });
@@ -202,7 +202,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /United States/i }));
     await user.click(screen.getByText('Germany'));
 
     // Should not be called because maxSelections is reached
@@ -222,7 +222,7 @@ describe('ComboBox', () => {
       />
     );
 
-    const button = screen.getByRole('button');
+    const button = screen.getByRole('button', { name: /select\.\.\./i });
     await user.click(button);
 
     // Press down arrow to highlight first option
@@ -245,10 +245,10 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     expect(screen.getByRole('listbox')).toBeInTheDocument();
 
-    fireEvent.keyDown(screen.getByRole('button').parentElement!, { key: 'Escape' });
+    fireEvent.keyDown(screen.getByRole('button', { name: /select\.\.\./i }).parentElement!, { key: 'Escape' });
 
     await waitFor(() => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
@@ -283,7 +283,7 @@ describe('ComboBox', () => {
       />
     );
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { name: /select\.\.\./i }));
     expect(screen.queryByPlaceholderText('Search...')).not.toBeInTheDocument();
   });
 });

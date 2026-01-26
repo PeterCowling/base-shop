@@ -7,23 +7,22 @@
  */
 
 export {
-  UniqueVisitorTracker,
-  type UniqueVisitorStore,
-  InMemoryUniqueVisitorStore,
-  getUniqueVisitorStore,
-  trackUniqueVisitor,
-  getUniqueVisitorCount,
-  getUniqueVisitorCountRange,
-} from "./unique-visitors";
-
-export {
-  TrendingService,
-  type TrendingServiceConfig,
   type ContentType,
-  type TrendingItem,
+  getTrendingGuides,
+  getTrendingSearches,
   getTrendingService,
   recordGuideView,
-  getTrendingGuides,
   recordSearchQuery,
-  getTrendingSearches,
+  type TrendingItem,
+  TrendingService,
+  type TrendingServiceConfig,
 } from "./trending";
+export {
+  getUniqueVisitorCount,
+  getUniqueVisitorCountRange,
+  getUniqueVisitorStore,
+  InMemoryUniqueVisitorStore,
+  trackUniqueVisitor,
+  type UniqueVisitorStore,
+  UniqueVisitorTracker,
+} from "./unique-visitors";

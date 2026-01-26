@@ -1,8 +1,9 @@
 
 import "@testing-library/jest-dom";
+
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { ARTICLE_KEYS, articleSlug } from "@/routes.assistance-helpers";
-import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
+import { type GuideKey,guideHref,guideNamespace,guideSlug } from "@/routes.guides-helpers";
 import { SLUGS } from "@/slug-map";
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 import { getSlug } from "@/utils/slug";
@@ -92,14 +93,16 @@ describe("buildLinks", () => {
     const baseLang: AppLanguage = "en";
     const frLang: AppLanguage = "fr";
     const itLang: AppLanguage = "it";
-    const page = buildLinks({ lang: baseLang, origin, path: "/en/guides/ferry-schedules" });
+    const page = buildLinks({ lang: baseLang, origin, path: guideHref(baseLang, guideKey) });
     const frPage = page.find((link) => link.hrefLang === "fr");
     const itPage = page.find((link) => link.hrefLang === "it");
+    const frBase = guideNamespace(frLang, guideKey).baseSlug;
+    const itBase = guideNamespace(itLang, guideKey).baseSlug;
     expect(frPage?.href).toBe(
-      `${origin}/${frLang}/${getSlug("guides", frLang)}/${guideSlug(frLang, guideKey)}`,
+      `${origin}/${frLang}/${frBase}/${guideSlug(frLang, guideKey)}`,
     );
     expect(itPage?.href).toBe(
-      `${origin}/${itLang}/${getSlug("guides", itLang)}/${guideSlug(itLang, guideKey)}`,
+      `${origin}/${itLang}/${itBase}/${guideSlug(itLang, guideKey)}`,
     );
   });
 

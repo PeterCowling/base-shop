@@ -1,5 +1,6 @@
 // src/components/apartment/DetailsSection.test.tsx
 import "@testing-library/jest-dom";
+
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -27,7 +28,7 @@ jest.mock("@/components/apartment/DetailsSection", () => {
   };
 });
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 const DetailsSection = require("@/components/apartment/DetailsSection").default;
 
 describe("Apartment DetailsSection", () => {

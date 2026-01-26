@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@acme/design-system/primitives";
 
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 
 export type ZoomableFigureProps = {
   t: TFunction<"howToGetHere">;
@@ -60,12 +60,12 @@ function ZoomableFigureBase({
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-surface"
+              className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-text"
             >
               <ZoomIn className="size-4" />
             </span>
             {caption ? (
-              <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+              <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-text/80">
                 {caption}
               </figcaption>
             ) : null}

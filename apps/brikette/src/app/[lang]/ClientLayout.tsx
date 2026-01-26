@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode,useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 
-import type { AppLanguage } from "@/i18n.config";
-import i18n from "@/i18n";
-import { getOrigin } from "@/utils/env-helpers";
 import AppLayout from "@/components/layout/AppLayout";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { getOrigin } from "@/utils/env-helpers";
 
 type Props = {
   lang: AppLanguage;

@@ -1,5 +1,6 @@
-import type { ProductConfigSchema } from "@acme/product-configurator";
 import { act, renderHook, waitFor } from "@testing-library/react";
+
+import type { ProductConfigSchema } from "@acme/product-configurator";
 
 import { useTieredProductAsset } from "../src/viewer/assets/useTieredProductAsset";
 

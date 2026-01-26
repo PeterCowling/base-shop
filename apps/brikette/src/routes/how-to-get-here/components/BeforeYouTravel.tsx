@@ -2,8 +2,6 @@ import { memo } from "react";
 import type { TFunction } from "i18next";
 import { AlertTriangle, Clock, Luggage, MapPin,Ship } from "lucide-react";
 
-import { Grid } from "@acme/ui/atoms";
-
 import { Inline } from "../ui";
 
 type ChecklistItem = { key: string; title: string; body: string; Icon: typeof MapPin };
@@ -63,14 +61,14 @@ function BeforeYouTravelBase({ t }: BeforeYouTravelProps) {
 
   return (
     <section className="rounded-3xl border border-brand-outline/20 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/30 dark:bg-brand-surface/60">
-      <h2 className="text-xl font-semibold text-brand-heading dark:text-brand-surface">
+      <h2 className="text-xl font-semibold text-brand-heading dark:text-brand-text">
         {t("beforeTravel.title", { defaultValue: "Before you travel" })}
       </h2>
-      <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-surface/70">
+      <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-text/70">
         {t("beforeTravel.subtitle", { defaultValue: "High-value reminders to avoid common mistakes." })}
       </p>
 
-      <Grid as="ul" columns={{ base: 1, md: 2 }} gap={4} className="mt-5 list-none p-0">
+      <ul className="mt-5 grid grid-cols-1 gap-4 list-none p-0 md:grid-cols-2">
         {items.map(({ key, title, body, Icon }) => (
           <li
             key={key}
@@ -81,15 +79,15 @@ function BeforeYouTravelBase({ t }: BeforeYouTravelProps) {
                 <Icon aria-hidden className="size-4" />
               </Inline>
               <div>
-                <p className="text-sm font-semibold text-brand-heading dark:text-brand-surface">{title}</p>
-                <p className="mt-1 text-sm leading-relaxed text-brand-text/80 dark:text-brand-surface/80">
+                <p className="text-sm font-semibold text-brand-heading dark:text-brand-text">{title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-brand-text/80 dark:text-brand-text/80">
                   {body}
                 </p>
               </div>
             </Inline>
           </li>
         ))}
-      </Grid>
+      </ul>
     </section>
   );
 }

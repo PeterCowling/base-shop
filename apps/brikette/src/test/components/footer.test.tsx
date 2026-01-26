@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { screen, within } from "@testing-library/react";
 import { renderWithProviders } from "@tests/renderers";
 
@@ -22,6 +23,20 @@ jest.mock("@/hooks/useCurrentLanguage", () => ({
 jest.mock("@/utils/translate-path", () => ({
   translatePath: (key: string) => (key === "home" ? "" : key),
 }));
+
+jest.mock(
+  "@acme/guides-core",
+  () => ({
+    createGuideUrlHelpers: () => ({
+      guidePath: jest.fn(),
+      guideHref: (lang: string, key: string) => `/${lang}/guides/${key}`,
+      guideAbsoluteUrl: jest.fn(),
+      resolveGuideKeyFromSlug: jest.fn(),
+      slugLookupsByLang: {},
+    }),
+  }),
+  { virtual: true },
+);
 
 jest.mock("react-i18next", () => {
   const actual = jest.requireActual<typeof import("react-i18next")>("react-i18next");

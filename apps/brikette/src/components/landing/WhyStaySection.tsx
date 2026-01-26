@@ -3,8 +3,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Compass, Sparkles, Users } from "lucide-react";
 
-import { Grid } from "@acme/ui/atoms";
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { Inline, Stack } from "@/components/ui/flex";
 import type { AppLanguage } from "@/i18n.config";
@@ -28,12 +27,12 @@ const WhyStaySection = memo(function WhyStaySection({ lang }: { lang?: AppLangua
   if (!items.length) return null;
 
   return (
-    <section id="why-stay" className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-text">
+    <section id="why-stay" className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-surface">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
-        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
           {t("whyStaySection.title")}
         </h2>
-        <Grid columns={{ base: 1, md: 3 }} gap={4} className="mt-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 mt-6">
           {items.map((item, index) => {
             const Icon = ICONS[index] ?? Sparkles;
             return (
@@ -47,16 +46,16 @@ const WhyStaySection = memo(function WhyStaySection({ lang }: { lang?: AppLangua
                 >
                   <Icon className="size-5" aria-hidden />
                 </Inline>
-                <h3 className="text-base font-semibold text-brand-heading dark:text-brand-surface">
+                <h3 className="text-base font-semibold text-brand-heading dark:text-brand-text">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-brand-text/70 dark:text-brand-surface/70">
+                <p className="text-sm leading-relaxed text-brand-text/70 dark:text-brand-text/70">
                   {item.text}
                 </p>
               </Stack>
             );
           })}
-        </Grid>
+        </div>
       </Section>
     </section>
   );

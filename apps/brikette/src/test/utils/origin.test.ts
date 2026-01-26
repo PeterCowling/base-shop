@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { normaliseBrowserOrigin } from "@/utils/origin";
 
 describe("normaliseBrowserOrigin", () => {

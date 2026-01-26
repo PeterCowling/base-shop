@@ -34,6 +34,7 @@ export interface ButtonProps
   iconSize?: "sm" | "md" | "lg";
   /** Render as square icon-only button (provide aria-label). */
   iconOnly?: boolean;
+  /** Render as a Slot-wrapped child element (note: loading spinner only renders on native button). */
   asChild?: boolean;
   /** Size scale for padding/height/typography. */
   size?: ButtonSize;

@@ -1,7 +1,6 @@
 import { getVariantById } from "@/lib/catalog";
 import type { CartItem, CartLineItem, CartState, CartTotals } from "@/types/cart";
-import type { CurrencyCode } from "@/types/product";
-import type { Product } from "@/types/product";
+import type { CurrencyCode, Product } from "@/types/product";
 
 export function getCartTotals(state: CartState, products: Product[]): CartTotals {
   let itemCount = 0;

@@ -1,128 +1,115 @@
+import { SECTION_IDS } from "@/components/policies/terms-sale-eu/sectionIds";
+import type { Translator } from "@/components/policies/terms-sale-eu/types";
 import { SUPPORT_EMAIL } from "@/lib/site";
 
 type TermsOfSaleEuPartCProps = {
   bulletClassName: string;
   linkClassName: string;
   sectionClassName: string;
+  t: Translator;
 };
+
+const liabilityBullets = [
+  "termsSale.liability.bullets.forceMajeure",
+  "termsSale.liability.bullets.carriers",
+];
 
 export default function TermsOfSaleEuPartC({
   bulletClassName,
   linkClassName,
   sectionClassName,
+  t,
 }: TermsOfSaleEuPartCProps) {
   return (
     <>
-      <section id="returns-address" className={sectionClassName}>
+      <section id={SECTION_IDS.returnsAddress} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          11) Returns address and instructions
+          {t("termsSale.returnsAddress.title")}
         </h2>
-        <p>Unless we instruct otherwise, returns should be sent to:</p>
+        <p>{t("termsSale.returnsAddress.body")}</p>
         <div className="rounded-3xl border border-border-1 bg-surface-2 p-5">
           <div className="space-y-1">
-            <div className="font-semibold text-foreground">Skylar SRL</div>
-            <div>Via Guglielmo Marconi 358</div>
-            <div>Positano, 84017</div>
-            <div>Italy</div>
+            <div className="font-semibold text-foreground">
+              {t("termsSale.returnsAddress.companyName")}
+            </div>
+            <div>{t("termsSale.returnsAddress.addressLine1")}</div>
+            <div>{t("termsSale.returnsAddress.addressLine2")}</div>
+            <div>{t("termsSale.returnsAddress.addressLine3")}</div>
           </div>
         </div>
-        <p>
-          We may provide additional instructions to ensure correct routing and efficient processing.
-        </p>
+        <p>{t("termsSale.returnsAddress.instructions")}</p>
       </section>
 
-      <section id="customer-service" className={sectionClassName}>
+      <section id={SECTION_IDS.customerService} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          12) Customer service and complaints
+          {t("termsSale.customerService.title")}
         </h2>
-        <p>
-          If you have a complaint, please contact customer support (see Section 1). We aim to respond within a reasonable time.
-        </p>
+        <p>{t("termsSale.customerService.body")}</p>
         <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          Online Dispute Resolution (ODR)
+          {t("termsSale.customerService.odr.heading")}
         </h3>
-        <p>
-          The EU’s former Online Dispute Resolution platform has been discontinued. If you need assistance with cross‑border consumer issues, you may consult EU consumer redress resources and your local consumer authority.
-        </p>
+        <p>{t("termsSale.customerService.odr.body")}</p>
       </section>
 
-      <section id="liability" className={sectionClassName}>
+      <section id={SECTION_IDS.liability} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          13) Limitation of liability
+          {t("termsSale.liability.title")}
         </h2>
-        <p>
-          Nothing in these Terms limits or excludes liability where it would be unlawful to do so, including liability for death or personal injury caused by negligence, fraud, or any non‑waivable consumer rights.
-        </p>
-        <p>Subject to the above:</p>
+        <p>{t("termsSale.liability.body")}</p>
+        <p>{t("termsSale.liability.subjectTo")}</p>
         <ul className={bulletClassName}>
-          <li>
-            We are not liable for losses caused by events beyond our reasonable control (see Force Majeure).
-          </li>
-          <li>
-            We are not responsible for delays or failures caused by carriers, provided we have dispatched the Goods as described.
-          </li>
+          {liabilityBullets.map((key) => (
+            <li key={key}>{t(key)}</li>
+          ))}
         </ul>
       </section>
 
-      <section id="force-majeure" className={sectionClassName}>
+      <section id={SECTION_IDS.forceMajeure} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          14) Force majeure
+          {t("termsSale.forceMajeure.title")}
         </h2>
-        <p>
-          We are not responsible for failure or delay in performing obligations due to events beyond our reasonable control, including (without limitation) carrier disruptions, strikes, severe weather, and other events outside our control.
-        </p>
+        <p>{t("termsSale.forceMajeure.body")}</p>
       </section>
 
-      <section id="governing-law" className={sectionClassName}>
+      <section id={SECTION_IDS.governingLaw} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          15) Governing law and jurisdiction
+          {t("termsSale.governingLaw.title")}
         </h2>
-        <p>
-          These Terms are governed by the laws of Italy, without prejudice to mandatory consumer protection rules that apply in your country of residence within the EU.
-        </p>
-        <p>
-          If you are a consumer, you may bring proceedings in the courts of your Member State of residence, where applicable, and we may be required to bring proceedings there as well.
-        </p>
+        <p>{t("termsSale.governingLaw.body1")}</p>
+        <p>{t("termsSale.governingLaw.body2")}</p>
       </section>
 
-      <section id="changes" className={sectionClassName}>
+      <section id={SECTION_IDS.changes} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          16) Changes to these Terms
+          {t("termsSale.changes.title")}
         </h2>
-        <p>
-          We may update these Terms from time to time. The version published on the Store at the time you place your Order applies to that Order.
-        </p>
+        <p>{t("termsSale.changes.body")}</p>
       </section>
 
-      <section id="annex-a" className={sectionClassName}>
+      <section id={SECTION_IDS.annexA} className={sectionClassName}>
         <h2 className="font-display text-2xl font-semibold text-foreground">
-          Annex A — Model withdrawal form
+          {t("termsSale.annex.title")}
         </h2>
-        <p>(Complete and return this form only if you wish to withdraw from the contract.)</p>
+        <p>{t("termsSale.annex.intro")}</p>
         <div className="rounded-3xl border border-border-1 bg-surface-2 p-5">
           <div className="space-y-2">
             <p>
-              To: Skylar SRL, Via Guglielmo Marconi 358, Positano, 84017, Italy —{" "}
+              {t("termsSale.annex.to")}{" "}
               <a className={linkClassName} href={`mailto:${SUPPORT_EMAIL}`}>
                 {SUPPORT_EMAIL}
               </a>
             </p>
-            <p>
-              I/We (*) hereby give notice that I/We (*) withdraw from my/our (*) contract of sale of the following goods:
-            </p>
-            <p>______________________________________________</p>
-            <p>Ordered on (*) / received on (*): ______________________________</p>
-            <p>Name of consumer(s): ______________________________</p>
-            <p>Address of consumer(s): ______________________________</p>
-            <p>
-              Signature of consumer(s) (only if this form is notified on paper): ______________________________
-            </p>
-            <p>Date: ______________________________</p>
-            <p className="text-xs text-muted-foreground">(*) Delete as appropriate.</p>
+            <p>{t("termsSale.annex.goodsLine")}</p>
+            <p>{t("termsSale.annex.underline")}</p>
+            <p>{t("termsSale.annex.orderedLine")}</p>
+            <p>{t("termsSale.annex.nameLine")}</p>
+            <p>{t("termsSale.annex.addressLine")}</p>
+            <p>{t("termsSale.annex.signatureLine")}</p>
+            <p>{t("termsSale.annex.dateLine")}</p>
+            <p className="text-xs text-muted-foreground">{t("termsSale.annex.note")}</p>
           </div>
         </div>
       </section>
     </>
   );
 }
-

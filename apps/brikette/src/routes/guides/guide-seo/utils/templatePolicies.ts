@@ -7,10 +7,10 @@
 import {
   getExplicitTocValue,
   hasRuntimeContentFallback,
-  shouldSuppressGenericWhenStructured,
-  shouldSuppressGenericWhenUnstructured,
-  shouldSuppressGenericWhenUnlocalized as configSuppressGenericWhenUnlocalized,
   shouldSuppressGenericForRequestedLocale,
+  shouldSuppressGenericWhenStructured,
+  shouldSuppressGenericWhenUnlocalized as configSuppressGenericWhenUnlocalized,
+  shouldSuppressGenericWhenUnstructured,
   shouldSuppressTocBlock,
 } from "@/config/guide-overrides";
 import type { GuideKey } from "@/guides/slugs";

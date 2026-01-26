@@ -119,7 +119,7 @@ export function renderCallout(path: string, value: unknown, ctx: RenderContext):
       className="rounded-3xl border border-brand-outline/30 bg-brand-primary/5 p-6 text-sm shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/10"
     >
       {label ? <p className="font-semibold uppercase tracking-widest text-brand-secondary">{label}</p> : null}
-      <p className="mt-2 leading-relaxed text-brand-text dark:text-brand-surface">{contentNode}</p>
+      <p className="mt-2 leading-relaxed text-brand-text dark:text-brand-text">{contentNode}</p>
     </aside>
   );
 }

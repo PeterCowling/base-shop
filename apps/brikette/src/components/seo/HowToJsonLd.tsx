@@ -1,8 +1,9 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/HowToJsonLd.tsx
 import { memo } from "react";
 
 import { buildHowToPayload } from "@/utils/seo/jsonld";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type HowToStep = { name: string; text?: string };
 
@@ -25,7 +26,7 @@ function HowToJsonLd({ lang, url, steps, totalTimeISO, estimatedCost }: HowToJso
       ...(estimatedCost ? { estimatedCost: { "@type": "MonetaryAmount", ...estimatedCost } } : {}),
     },
   });
-  const json = payload ? JSON.stringify(payload) : "";
+  const json = payload ? serializeJsonLdValue(payload) : "";
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

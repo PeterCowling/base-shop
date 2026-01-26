@@ -11,7 +11,7 @@ import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { ARTICLE_KEYS, articleSlug } from "@/routes.assistance-helpers";
-import { guideSlug } from "@/routes.guides-helpers";
+import { guidePath } from "@/routes.guides-helpers";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
@@ -61,12 +61,11 @@ export function listAppRouterUrls(): string[] {
       urls.push(`/${lang}/${roomsSlug}/${room.id}`);
     }
 
-    // Dynamic: Guides (experiences)
+    // Dynamic: Guides (namespace-aware)
     const experiencesSlug = getSlug("experiences", lang);
     const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "published");
     for (const guide of publishedGuides) {
-      const slug = guideSlug(lang, guide.key);
-      urls.push(`/${lang}/${experiencesSlug}/${slug}`);
+      urls.push(guidePath(lang, guide.key));
     }
 
     // Dynamic: Guide tags

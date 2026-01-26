@@ -1,21 +1,21 @@
 // src/utils/routeHead.ts
 // Local type definitions (no longer using react-router types)
-type MetaDescriptor = Record<string, string>;
-type LinkDescriptor = { rel: string; href: string; hrefLang?: string };
-type MetaFunction = () => MetaDescriptor[];
-type LinksFunction = () => LinkDescriptor[];
-
 import { PUBLIC_BASE_URL } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { getOrigin } from "@/utils/env-helpers";
 import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 // Use a namespace import so partial vi.mocks that only export a subset
 // of the SEO helpers (e.g. pageHead) don't throw at import time.
 import * as seo from "@/utils/seo";
 import { getSlug } from "@/utils/slug";
+
+type MetaDescriptor = Record<string, string>;
+type LinkDescriptor = { rel: string; href: string; hrefLang?: string };
+type MetaFunction = () => MetaDescriptor[];
+type LinksFunction = () => LinkDescriptor[];
 
 const FALLBACK_CANONICAL_ORIGIN = "https://hostel-positano.com";
 

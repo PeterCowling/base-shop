@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { slugify, slugifyWithFallback } from "@/utils/slugify";
 
 describe("slugify", () => {

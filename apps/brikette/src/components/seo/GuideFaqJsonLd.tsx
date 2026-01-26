@@ -1,7 +1,9 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideFaqJsonLd.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -10,6 +12,7 @@ import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { buildFaqJsonLd, type NormalizedFaqEntry } from "@/utils/buildFaqJsonLd";
 
 import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
+import FaqJsonLdScript from "./FaqJsonLdScript";
 
 interface GuideFaqJsonLdProps {
   guideKey: GuideKey;
@@ -37,47 +40,31 @@ function GuideFaqJsonLd({ guideKey, fallback }: GuideFaqJsonLdProps): JSX.Elemen
 
   const canonicalUrl = (() => {
     if (typeof pathname === "string" && pathname.length > 0) {
-      return `${BASE_URL}${pathname}`;
+      return buildCanonicalUrl(BASE_URL, pathname);
     }
     return guideAbsoluteUrl(lang, guideKey);
   })();
 
-  const faqJson = (() => {
-    const fromTranslations = buildFaqJsonLd(lang, canonicalUrl, faqsResolved);
-    if (fromTranslations && fromTranslations.length > 0) {
-      return fromTranslations;
-    }
+  const payload = buildFaqJsonLd(lang, canonicalUrl, faqsResolved);
 
-    if (!fallback) {
-      return "";
-    }
+  if (!fallback) {
+    return <FaqJsonLdScript data={payload} />;
+  }
 
-    // Try route-provided fallback for the active language; if that yields
-    // no entries, attempt EN explicitly as a last resort to satisfy tests
-    // that strip locale data entirely.
-    const primaryFallback = fallback(lang);
-    const primaryJson = buildFaqJsonLd(lang, canonicalUrl, primaryFallback);
-    if (primaryJson && primaryJson.length > 0) return primaryJson;
-
+  const fallbackPayload = (() => {
+    if (payload) return null;
     try {
+      const primaryFallback = fallback(lang);
+      const primaryPayload = buildFaqJsonLd(lang, canonicalUrl, primaryFallback);
+      if (primaryPayload) return primaryPayload;
       const enFallback = fallback("en");
       return buildFaqJsonLd(lang, canonicalUrl, enFallback);
     } catch {
-      return "";
+      return null;
     }
   })();
 
-  if (!faqJson) {
-    return null;
-  }
-
-  return (
-    <script
-      type="application/ld+json"
-      suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: faqJson }}
-    />
-  );
+  return <FaqJsonLdScript data={payload} fallback={fallbackPayload} />;
 }
 
 export default memo(GuideFaqJsonLd);

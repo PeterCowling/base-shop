@@ -3,11 +3,10 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import type { AppLanguage } from "@/i18n.config";
-import { guideSlug } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
+import { guideHref } from "@/routes.guides-helpers";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 function AlsoSeeGuidesSection({ lang }: { lang: AppLanguage }) {
@@ -21,13 +20,13 @@ function AlsoSeeGuidesSection({ lang }: { lang: AppLanguage }) {
 
   return (
     <Section padding="none" width="full" className="mb-10 mt-2 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <h2 className="mb-4 text-xl font-semibold tracking-tight text-brand-heading dark:text-brand-surface">
+      <h2 className="mb-4 text-xl font-semibold tracking-tight text-brand-heading dark:text-brand-text">
         {tGuides("labels.alsoSee")}
       </h2>
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
         <li>
           <Link
-            href={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "backpackerItineraries")}`}
+            href={guideHref(lang, "backpackerItineraries")}
             prefetch={true}
             className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
           >
@@ -36,7 +35,7 @@ function AlsoSeeGuidesSection({ lang }: { lang: AppLanguage }) {
         </li>
         <li>
           <Link
-            href={`/${lang}/${getSlug("guides", lang)}/${guideSlug(lang, "onlyHostel")}`}
+            href={guideHref(lang, "onlyHostel")}
             prefetch={true}
             className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
           >

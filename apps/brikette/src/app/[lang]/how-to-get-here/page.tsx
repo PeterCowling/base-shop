@@ -1,5 +1,6 @@
 // src/app/[lang]/how-to-get-here/page.tsx
 // How to get here index page - App Router version
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
@@ -40,5 +41,9 @@ export default async function HowToGetHereIndexPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  return <HowToGetHereIndexContent lang={validLang} />;
+  return (
+    <Suspense fallback={<div />}>
+      <HowToGetHereIndexContent lang={validLang} />
+    </Suspense>
+  );
 }

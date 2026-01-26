@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 /* /src/components/seo/SiteSearchStructuredData.tsx
    Emits the SearchAction JSON‑LD that powers Google’s
    “Search Hostel Brikette” auto‑suggest box.  */
@@ -8,6 +8,7 @@ import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import type { SearchActionSchema } from "@/types/seo";
 import { ORG_ID, WEBSITE_ID } from "@/utils/schema";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 /* Keep this component *tiny* so React can memo‑skip it. */
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 }
 
 function SiteSearchStructuredData({ lang }: Props): JSX.Element {
-  const json = JSON.stringify({
+  const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,

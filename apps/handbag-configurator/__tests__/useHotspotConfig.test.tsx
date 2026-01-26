@@ -1,5 +1,6 @@
-import type { ProductHotspotConfig } from "@acme/product-configurator";
 import { act, renderHook, waitFor } from "@testing-library/react";
+
+import type { ProductHotspotConfig } from "@acme/product-configurator";
 
 import { useHotspotConfig } from "../src/viewer/hotspots/useHotspotConfig";
 

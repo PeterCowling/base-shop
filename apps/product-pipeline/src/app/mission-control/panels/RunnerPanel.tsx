@@ -48,8 +48,8 @@ export default function RunnerPanel({
 
   const statusTone = runner
     ? runner.stale
-      ? "text-amber-600"
-      : "text-emerald-600"
+      ? "text-warning"
+      : "text-success"
     : "text-foreground/60";
 
   return (

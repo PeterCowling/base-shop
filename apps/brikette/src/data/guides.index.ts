@@ -149,7 +149,9 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
     tags: ["transport", "ravello", "positano", "bus", "ferry"],
   },
   { key: "sunsetViewpoints", section: "experiences", tags: ["photography", "viewpoints", "positano"] },
+  { key: "terraceSunsets", section: "experiences", tags: ["bar", "sunset", "hostel-life", "positano"] },
   { key: "simsAtms", section: "help", tags: ["connectivity", "logistics", "positano"] },
+  { key: "digitalConcierge", section: "help", tags: ["concierge", "assistance", "hostel-life", "positano"] },
   { key: "bestTimeToVisit", section: "help", tags: ["seasonal", "positano"] },
   { key: "boatTours", section: "experiences", tags: ["experiences", "boat"] },
   { key: "porterServices", section: "help", tags: ["porters", "logistics", "positano"] },
@@ -257,3 +259,59 @@ export const GUIDE_STATUS_BY_KEY = Object.freeze(
     GUIDES_INDEX.map((guide) => [guide.key, (guide as { status?: string }).status ?? "published"]),
   ),
 ) as Readonly<Record<GuideKey, "draft" | "review" | "published">>;
+
+// --- Guide Type Classification ---
+// Directions guides are about getting to/from places (routes, transport instructions)
+// Content guides are about the places/experiences themselves
+
+export type GuideType = "content" | "directions";
+
+/**
+ * Patterns that indicate a guide is about directions/routes rather than content
+ */
+const DIRECTIONS_PATTERNS = [
+  /^hostelBriketteTo/i,    // hostelBriketteTo* - directions from hostel
+  /ToBrikette$/i,          // *ToBrikette - directions back to hostel
+  /ToHostel$/i,            // *ToHostel - directions back to hostel
+  /WalkDown$/i,            // *WalkDown - walking route down
+  /WalkBack$/i,            // *WalkBack - walking route back
+  /BusDown$/i,             // *BusDown - bus route down
+  /BusBack$/i,             // *BusBack - bus route back
+  /BusReturn$/i,           // *BusReturn - bus return route
+  /FerryReturn$/i,         // *FerryReturn - ferry return route
+] as const;
+
+/**
+ * Determines if a guide is a directions guide based on its key
+ */
+export function isDirectionsGuide(guideKey: string): boolean {
+  return DIRECTIONS_PATTERNS.some((pattern) => pattern.test(guideKey));
+}
+
+/**
+ * Gets the guide type (content or directions) for a guide
+ */
+export function getGuideType(guide: GuideMeta): GuideType {
+  return isDirectionsGuide(guide.key) ? "directions" : "content";
+}
+
+/**
+ * Splits an array of guides into content guides and directions guides
+ */
+export function splitGuidesByType(guides: GuideMeta[]): {
+  contentGuides: GuideMeta[];
+  directionsGuides: GuideMeta[];
+} {
+  const contentGuides: GuideMeta[] = [];
+  const directionsGuides: GuideMeta[] = [];
+
+  for (const guide of guides) {
+    if (isDirectionsGuide(guide.key)) {
+      directionsGuides.push(guide);
+    } else {
+      contentGuides.push(guide);
+    }
+  }
+
+  return { contentGuides, directionsGuides };
+}

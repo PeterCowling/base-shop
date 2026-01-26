@@ -1,14 +1,17 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideMonthsItemListStructuredData.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
+
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { guideAbsoluteUrl } from "@/routes.guides-helpers";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type MonthEntry = { name: string; note: string };
 
@@ -54,15 +57,16 @@ function GuideMonthsItemListStructuredData({ guideKey, name, canonicalUrl }: Pro
 
     if (months.length === 0) return "";
 
-    const url = typeof canonicalUrl === "string" && canonicalUrl.length > 0
-      ? canonicalUrl
-      : typeof pathname === "string" && pathname.length > 0
-      ? `${BASE_URL}${pathname}`
-      : guideAbsoluteUrl(lang, guideKey);
+    const url =
+      typeof canonicalUrl === "string" && canonicalUrl.length > 0
+        ? canonicalUrl
+        : typeof pathname === "string" && pathname.length > 0
+          ? buildCanonicalUrl(BASE_URL, pathname)
+          : guideAbsoluteUrl(lang, guideKey);
 
     const title = typeof name === "string" && name.trim().length > 0 ? name : "";
 
-    return JSON.stringify({
+    return serializeJsonLdValue({
       "@context": "https://schema.org",
       "@type": "ItemList",
       inLanguage: lang,

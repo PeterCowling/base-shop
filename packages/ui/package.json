@@ -365,7 +365,7 @@
     "focus-trap-react": "^11.0.4",
     "fuse.js": "^7.1.0",
     "i18next": "^24.2.3",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.540.0",
     "tailwindcss": "^4",
     "react": ">=19 <20",
     "react-datepicker": "^8.3.0",

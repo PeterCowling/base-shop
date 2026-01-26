@@ -1,15 +1,18 @@
-import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { resolveLocale } from "@acme/i18n/locales";
+import { draftMode } from "next/headers";
+
 import BlogListing, {
   type BlogPost,
 } from "@acme/cms-ui/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
-import shop from "../../../../shop.json";
-import ShopClient from "./ShopClient.client";
+import { resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
-import { draftMode } from "next/headers";
+import { fetchPublishedPosts } from "@acme/sanity";
+import type { SKU } from "@acme/types";
+
+import shop from "../../../../shop.json";
+
+import ShopClient from "./ShopClient.client";
 
 export async function generateMetadata({
   params,

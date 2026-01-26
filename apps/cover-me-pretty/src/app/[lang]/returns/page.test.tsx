@@ -1,4 +1,14 @@
 // apps/cover-me-pretty/src/app/[lang]/returns/page.test.tsx
+import { renderToStaticMarkup } from "react-dom/server";
+
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import {
+  getReturnBagAndLabel,
+  getReturnLogistics,
+} from "@acme/platform-core/returnLogistics";
+
+import ReturnPolicyPage from "./page";
+
 jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: jest.fn(),
   getReturnBagAndLabel: jest.fn(),
@@ -6,14 +16,6 @@ jest.mock("@acme/platform-core/returnLogistics", () => ({
 jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
-
-import { renderToStaticMarkup } from "react-dom/server";
-import ReturnPolicyPage from "./page";
-import {
-  getReturnLogistics,
-  getReturnBagAndLabel,
-} from "@acme/platform-core/returnLogistics";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 describe("ReturnPolicyPage", () => {
   beforeEach(() => {

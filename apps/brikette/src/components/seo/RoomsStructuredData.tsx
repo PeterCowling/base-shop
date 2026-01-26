@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/RoomsStructuredData.tsx
 
 /* ─────────────────────────────────────────────────────────────
@@ -19,17 +19,12 @@ import { getRoomsCatalog, resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema/builders";
 import { WEBSITE_ID } from "@/utils/schema/types";
 import { getSlug } from "@/utils/slug";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 /** Constant slug used to build the @id for every offer. */
 const OFFER_PREFIX = `${BASE_URL}#offer-`;
 const ROOM_PREFIX = `${BASE_URL}#room-`;
 const CATALOG_ID = `${BASE_URL}#rooms-catalog`;
-/**
- * Fixed fallback date for offers without seasonal windows. Keeping it static
- * avoids hydration mismatches between the server and client renders.
- */
-const FALLBACK_VALID_FROM = "2025-01-01";
-
 function toAbsoluteImages(images: unknown): string[] {
   if (!Array.isArray(images)) return [];
   return images
@@ -45,17 +40,17 @@ const isIsoDate = (input: unknown): input is string =>
  * Use the earliest known seasonal start date to make the offer window explicit
  * without depending on the runtime clock.
  */
-const resolveValidFrom = (room: LocalizedRoom): string => {
+const resolveValidFrom = (room: LocalizedRoom): string | undefined => {
   const seasonalStarts = room.seasonalPrices
     ?.map((entry) => entry?.start)
     .filter(isIsoDate)
     .sort();
 
   if (seasonalStarts && seasonalStarts.length > 0) {
-    return seasonalStarts[0] ?? FALLBACK_VALID_FROM;
+    return seasonalStarts[0] ?? undefined;
   }
 
-  return FALLBACK_VALID_FROM;
+  return undefined;
 };
 
 function RoomsStructuredData(): JSX.Element {
@@ -108,7 +103,7 @@ function RoomsStructuredData(): JSX.Element {
     })),
   };
 
-  const json = JSON.stringify({
+  const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@graph": [catalog, ...roomNodes, ...offerNodes],
   });

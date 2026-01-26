@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import type { ProductHotspotConfig } from "@acme/product-configurator";
-import { useModeStore } from "../state/modeStore";
-import type { VisibleHotspot } from "./useHotspotVisibility";
+
 import { useCameraFocusStore } from "../state/cameraStore";
+import { useModeStore } from "../state/modeStore";
+
+import type { VisibleHotspot } from "./useHotspotVisibility";
 
 type HotspotOverlayProps = {
   hotspots: VisibleHotspot[];
@@ -12,13 +16,18 @@ type HotspotOverlayProps = {
   onPersistOffsets?: (offsets: Record<string, { x: number; y: number }>) => void;
 };
 
+const HOTSPOT_ACTIVE_CLASSES =
+  // i18n-exempt -- HAND-0005 [ttl=2026-12-31]: CSS utility string, not user copy.
+  "border-primary bg-primary text-primary-foreground";
+const HOTSPOT_INACTIVE_CLASSES =
+  // i18n-exempt -- HAND-0005 [ttl=2026-12-31]: CSS utility string, not user copy.
+  "border-primary/60 bg-panel text-primary hover:border-primary";
+
 function HotspotGlyph({ active }: { active: boolean }) {
   return (
     <span
       className={`relative flex h-7 w-7 items-center justify-center rounded-full border shadow-elevation-2 transition ${
-        active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-primary/60 bg-panel text-primary hover:border-primary"
+        active ? HOTSPOT_ACTIVE_CLASSES : HOTSPOT_INACTIVE_CLASSES
       }`}
     >
       <span className="relative flex h-4 w-4 items-center justify-center">
@@ -45,6 +54,7 @@ export function HotspotOverlay({
   hotspotConfig,
   onPersistOffsets,
 }: HotspotOverlayProps) {
+  const t = useTranslations();
   const focusOn = useCameraFocusStore((state) => state.setFocusPoint);
   const bagOpen = useModeStore((state) => state.bagOpen);
   const setBagOpen = useModeStore((state) => state.setBagOpen);
@@ -132,7 +142,7 @@ export function HotspotOverlay({
           <button
             key={hotspot.hotspotId}
             type="button"
-            className="group pointer-events-auto absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-150 ease-out active:scale-[0.98]"
+            className="min-h-11 min-w-11 group pointer-events-auto absolute z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-150 ease-out active:scale-95"
             style={{
               left: hotspot.screenX + offset.x,
               top: hotspot.screenY + offset.y,
@@ -163,7 +173,9 @@ export function HotspotOverlay({
               }
               openPanelForHotspot(hotspot.hotspotId, hotspot.regionId);
             }}
-            aria-label={`Customize ${hotspot.label}`}
+            aria-label={t("handbagConfigurator.hotspot.ariaLabel", {
+              label: hotspot.label,
+            })}
           >
             <HotspotGlyph active={isActive} />
           </button>
@@ -171,18 +183,18 @@ export function HotspotOverlay({
       })}
 
       {configMode ? (
-        <div className="pointer-events-auto fixed bottom-24 left-6 z-40 max-w-xs rounded-lg border border-border-1 bg-panel/95 p-3 text-[11px] text-muted-foreground shadow-elevation-2">
-          <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-[0.3em] text-foreground">
-            Hotspot config
+        <div className="pointer-events-auto fixed bottom-24 start-6 handbag-hotspot-panel rounded-lg border border-border-1 bg-panel/95 p-3 handbag-caption text-muted-foreground shadow-elevation-2">
+          <div className="flex items-center justify-between gap-2 uppercase handbag-tracking-label text-foreground">
+            <span>{t("handbagConfigurator.hotspot.configTitle")}</span>
             <button
               type="button"
-              className="text-[10px] uppercase tracking-[0.3em] text-primary"
+              className="uppercase handbag-tracking-label text-primary min-h-11 min-w-11"
               onClick={() => setConfigMode(false)}
             >
-              Done
+              {t("handbagConfigurator.hotspot.done")}
             </button>
           </div>
-          <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-[10px] text-muted-foreground">
+          <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap handbag-caption text-muted-foreground">
             {JSON.stringify(offsets, null, 2)}
           </pre>
         </div>

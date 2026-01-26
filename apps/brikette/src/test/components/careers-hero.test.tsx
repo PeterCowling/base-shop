@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import type { ComponentPropsWithoutRef } from "react";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -16,7 +17,7 @@ jest.mock("@acme/design-system/primitives", () => ({
 
 type HeroImageProps = ComponentPropsWithoutRef<"img"> & { priority?: boolean };
 
-jest.mock("@/components/images/CfHeroImage", () => ({
+jest.mock("@acme/ui/atoms/CfHeroImage", () => ({
   CfHeroImage: ({ priority: _priority, ...props }: HeroImageProps) => <img {...props} />,
 }));
 

@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import ShopIndexPage from "./page";
+
 import { fetchPublishedPosts } from "@acme/sanity";
+
+import ShopIndexPage from "./page";
 
 jest.mock("@acme/sanity", () => ({
   fetchPublishedPosts: jest.fn(),

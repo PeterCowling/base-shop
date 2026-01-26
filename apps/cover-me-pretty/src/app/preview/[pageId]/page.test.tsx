@@ -1,5 +1,9 @@
 import React, { type FC, type ReactElement } from "react";
 
+import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
+
+import PreviewPage from "./page";
+
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound: () => notFound() }));
 
@@ -20,9 +24,6 @@ jest.mock("@acme/ui/utils/devicePresets", () => ({
   ],
   getLegacyPreset: jest.fn((view: string) => ({ id: `${view}-id` })),
 }));
-
-import PreviewPage from "./page";
-import { getLegacyPreset } from "@acme/ui/utils/devicePresets";
 
 jest.mock("@acme/types", () => ({
   pageSchema: { parse: (data: unknown) => data },

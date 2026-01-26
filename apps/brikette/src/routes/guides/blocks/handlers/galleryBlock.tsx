@@ -2,7 +2,7 @@
  * Gallery block handler.
  */
 import ImageGallery from "@/components/guides/ImageGallery";
-import buildCfImageUrl, { type BuildCfImageOptions } from "@/lib/buildCfImageUrl";
+import buildCfImageUrl, { type BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";
 import type { GalleryBlockItem, GalleryBlockOptions } from "../types";

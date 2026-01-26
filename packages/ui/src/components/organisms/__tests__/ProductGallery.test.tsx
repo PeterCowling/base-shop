@@ -12,7 +12,7 @@ describe("ProductGallery media types", () => {
       { type: "image", src: "/a.jpg", alt: "A" },
     ];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("img")).toBeInTheDocument();
+    expect(container.querySelector("input[type=\"image\"]")).toBeInTheDocument();
   });
 
   it("renders video media", () => {
@@ -26,13 +26,13 @@ describe("ProductGallery media types", () => {
       { type: "360", src: "/360.jpg", frames: ["/1.jpg", "/2.jpg"] },
     ];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector(".touch-none img")).toBeInTheDocument();
+    expect(container.querySelector(".touch-none input[type=\"image\"]")).toBeInTheDocument();
   });
 
   it("renders model media", () => {
     const media: MediaItem[] = [{ type: "model", src: "/model.glb" }];
     const { container } = render(<ProductGallery media={media} />);
-    expect(container.querySelector("model-viewer")).toBeInTheDocument();
+    expect(container.querySelector("[role=\"status\"]")).toBeInTheDocument();
   });
 });
 

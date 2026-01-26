@@ -5,6 +5,10 @@ import { type PRESETS } from "../config/imagePresets";
 import { useResponsiveImage } from "../hooks/useResponsiveImage";
 import buildCfImageUrl from "../lib/buildCfImageUrl";
 
+type CfImageFormat = "avif" | "webp" | "jpeg";
+
+const DEFAULT_SOURCE_FORMATS: readonly CfImageFormat[] = ["avif", "webp", "jpeg"] as const;
+
 export interface CfImageProps extends React.ComponentPropsWithoutRef<"img"> {
   src: string;
   preset: keyof typeof PRESETS;
@@ -13,6 +17,7 @@ export interface CfImageProps extends React.ComponentPropsWithoutRef<"img"> {
   quality?: number;
   format?: "avif" | "webp" | "jpeg";
   fit?: "cover" | "contain";
+  sourceFormats?: readonly CfImageFormat[];
 }
 
 function CfImageBase({
@@ -25,6 +30,7 @@ function CfImageBase({
   fit,
   width: htmlWidth,
   height: htmlHeight,
+  sourceFormats,
   ...imgRest
 }: CfImageProps) {
   const { srcSet, sizes, dims } = useResponsiveImage({ src, preset, extra: { quality, format, fit } });
@@ -73,12 +79,12 @@ function CfImageBase({
   }, [numericHeight, numericWidth]);
 
   const sources = useMemo(
-    () => [
-      { type: "image/avif", fmt: "avif" },
-      { type: "image/webp", fmt: "webp" },
-      { type: "image/jpeg", fmt: "jpeg" },
-    ],
-    []
+    () =>
+      (sourceFormats ?? DEFAULT_SOURCE_FORMATS).map((fmt) => ({
+        type: fmt === "jpeg" ? "image/jpeg" : `image/${fmt}`,
+        fmt,
+      })),
+    [sourceFormats]
   );
 
   const { style: inlineStyle, ["data-aspect"]: dataAspectAttr, ...imgRestProps } =
@@ -90,10 +96,13 @@ function CfImageBase({
   const defaultImageStyle: CSSProperties = {
     display: "block",
     maxWidth: "100%",
+    height: "auto",
   };
 
+  const pictureStyle: CSSProperties = { display: "block", lineHeight: 0, width: "100%", height: "100%" };
+
   return (
-    <picture data-aspect={dataAspectAttr ?? aspectRatio} className="block h-full w-full">
+    <picture data-aspect={dataAspectAttr ?? aspectRatio} style={pictureStyle} className="block h-full w-full">
       {sources.map(({ type, fmt }) => (
         <source key={type} type={type} srcSet={srcSet.replace(/format=\w+/g, `format=${fmt}`)} sizes={sizes} />
       ))}

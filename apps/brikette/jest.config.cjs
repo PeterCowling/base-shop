@@ -75,7 +75,15 @@ newMapper["^@acme/ui/atoms/(.*)$"] = uiAtomsMock;
 // @acme/design-system sub-path exports (Jest doesn't support package.json "exports" field)
 const dsPrimitivesStub = path.resolve(__dirname, "src/test/__mocks__/design-system-primitives.ts");
 newMapper["^@acme/design-system/primitives$"] = dsPrimitivesStub;
+newMapper["^@acme/design-system/primitives/(.*)$"] = dsPrimitivesStub;
+newMapper["^@acme/design-system/atoms$"] = dsPrimitivesStub;
 newMapper["^@acme/design-system/atoms/(.*)$"] = dsPrimitivesStub;
+
+// @acme/guides-core (workspace package) - map to source for Jest
+newMapper["^@acme/guides-core$"] = path.resolve(
+  __dirname,
+  "../../packages/guides-core/src/index.ts"
+);
 
 // @tests/ alias for test utilities
 newMapper["^@tests/(.*)$"] = path.resolve(__dirname, "src/test/$1");

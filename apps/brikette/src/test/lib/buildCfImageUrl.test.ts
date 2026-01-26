@@ -10,7 +10,7 @@ afterEach(() => {
 describe("buildCfImageUrl", () => {
   it("returns raw path in DEV", async () => {
     Object.assign(import.meta.env, { DEV: true });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     expect(buildCfImageUrl("/img/cat.webp", { width: 100 })).toBe("/img/cat.webp");
   });
 
@@ -21,7 +21,7 @@ describe("buildCfImageUrl", () => {
       VITE_SITE_ORIGIN: "",
       SITE_ORIGIN: "",
     });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("/img/cat.webp", { width: 200 });
     expect(url).toMatch(/^https:\/\/hostel-positano.com\/cdn-cgi\/image\//);
     expect(url).toContain("width=200");
@@ -35,7 +35,7 @@ describe("buildCfImageUrl", () => {
       SSR: false,
       VITE_SITE_ORIGIN: "https://media.example",
     });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("/img/cat.webp", { height: 400 });
     expect(url.startsWith("https://media.example/cdn-cgi/image/")).toBe(true);
     expect(url).toContain("height=400");
@@ -43,14 +43,14 @@ describe("buildCfImageUrl", () => {
 
   it("uses hostOverride when passed", async () => {
     Object.assign(import.meta.env, { DEV: false, SSR: false, VITE_SITE_ORIGIN: "" });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("/img/cat.webp", { width: 1200 }, "img.host");
     expect(url.startsWith("https://img.host/cdn-cgi/image/")).toBe(true);
   });
 
   it("handles remote absolute URLs without stripping slashes", async () => {
     Object.assign(import.meta.env, { DEV: false, SSR: false, VITE_SITE_ORIGIN: "" });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const remote = "https://images.example.com/p/cat.webp";
     const url = buildCfImageUrl(remote, { width: 320 }, "assets.example");
     expect(url).toContain("/cdn-cgi/image/");
@@ -63,7 +63,7 @@ describe("buildCfImageUrl", () => {
       SSR: false,
       VITE_SITE_ORIGIN: "cdn.example",
     });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("/p/cat.webp", {
       width: 640,
       fit: "cover",
@@ -81,7 +81,7 @@ describe("buildCfImageUrl", () => {
   it("falls back to window.location.origin when no env or override is set", async () => {
     Object.assign(import.meta.env, { DEV: false, SSR: false, VITE_SITE_ORIGIN: "" });
     globalThis.window = { location: { origin: "https://preview.example" } } as Window;
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("/img/pic.jpg", { width: 320 });
     expect(url).toContain("/cdn-cgi/image/");
     expect(url).toContain("width=320");
@@ -89,7 +89,7 @@ describe("buildCfImageUrl", () => {
 
   it("tolerates malformed relative inputs without throwing", async () => {
     Object.assign(import.meta.env, { DEV: false, SSR: false, VITE_SITE_ORIGIN: "assets.example" });
-    const { default: buildCfImageUrl } = await import("@/lib/buildCfImageUrl");
+    const { default: buildCfImageUrl } = await import("@acme/ui/lib/buildCfImageUrl");
     const url = buildCfImageUrl("////img//cat.webp", { width: 200 });
     expect(url).toContain("https://assets.example/cdn-cgi/image/");
     expect(url).toContain("width=200");

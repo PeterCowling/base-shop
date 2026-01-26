@@ -6,14 +6,18 @@
 import { memo } from "react";
 import Link from "next/link";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
+import { PREVIEW_TOKEN } from "@/config/env";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
+import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
 import { guideSlug } from "@/routes.guides-helpers";
 import {
   buildGuideChecklist,
+  type ChecklistSnapshotItem,
   type ChecklistSnapshot,
   guideAreaToSlugKey,
   type GuideManifestEntry,
@@ -57,22 +61,46 @@ const AREA_LABELS: Record<GuideManifestEntry["primaryArea"], string> = {
   howToGetHere: "How to get here",
 };
 
-function buildSummary(entry: GuideManifestEntry): DraftGuideSummary {
+function formatOutstandingLabel(item: ChecklistSnapshotItem): string {
+  if (item.id === "translations" && item.diagnostics?.translations) {
+    const { completeLocales, totalLocales } = item.diagnostics.translations;
+    return `Translations: ${completeLocales.length}/${totalLocales} locales`;
+  }
+
+  if (item.id === "content" && item.diagnostics?.content) {
+    const missing: string[] = [];
+    if (!item.diagnostics.content.intro) missing.push("intro");
+    if (!item.diagnostics.content.sections) missing.push("sections");
+    if (missing.length > 0) return `Content: missing ${missing.join(" + ")}`;
+    return "Content: complete";
+  }
+
+  if (item.id === "faqs" && item.diagnostics?.faqs) {
+    return item.diagnostics.faqs.hasFaqs
+      ? `FAQs: ${item.diagnostics.faqs.count} items`
+      : "FAQs: missing";
+  }
+
+  return item.note ?? item.id;
+}
+
+function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideSummary {
   return {
     key: entry.key,
     slug: entry.slug,
     status: entry.status,
     areas: entry.areas,
     primaryArea: entry.primaryArea,
-    checklist: buildGuideChecklist(entry),
+    checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
     draftPath: resolveDraftPathSegment(entry),
   };
 }
 
 function DraftDashboardContent({ lang }: Props) {
   usePagePreload({ lang, namespaces: ["guides"] });
+  const canEdit = isGuideAuthoringEnabled() && Boolean(PREVIEW_TOKEN);
 
-  const guides = listGuideManifestEntries().map(buildSummary);
+  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, lang));
 
   const sortedGuides = (() => {
     return [...guides].sort((a, b) => {
@@ -92,6 +120,15 @@ function DraftDashboardContent({ lang }: Props) {
         <p className="text-sm text-brand-text/80">
           Every guide listed here can be previewed under the draft URL. Use the checklist to confirm
           translations, structured data, FAQs, and media are ready before promoting a guide to live.
+          {" "}
+          <a
+            href="https://github.com/anthropics/base-shop/blob/main/apps/brikette/docs/guide-translation-workflow.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-brand-primary underline decoration-brand-primary/40 underline-offset-2 hover:text-brand-primary/80"
+          >
+            Learn about the translation workflow →
+          </a>
         </p>
       </Stack>
 
@@ -164,7 +201,7 @@ function DraftDashboardContent({ lang }: Props) {
                             className="gap-2 text-sm text-brand-text/90"
                           >
                             <span className="h-2 w-2 rounded-full bg-brand-secondary" />
-                            {item.note ?? item.id}
+                            {formatOutstandingLabel(item)}
                           </Inline>
                         ))
                       )}
@@ -179,6 +216,15 @@ function DraftDashboardContent({ lang }: Props) {
                       >
                         Open draft
                       </Link>
+                      {canEdit ? (
+                        <Link
+                          href={buildGuideEditUrl(lang, guide.key)}
+                          prefetch={true}
+                          className="inline-flex rounded-md border border-brand-primary/30 bg-brand-primary/10 px-3 py-1 text-xs font-semibold text-brand-primary transition-colors hover:bg-brand-primary/15"
+                        >
+                          Edit content
+                        </Link>
+                      ) : null}
                       <Link
                         href={`/${lang}/${getSlug(
                           guideAreaToSlugKey(guide.primaryArea),

@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { FACILITIES, type FacilityKey } from "@/lib/facilities";
 
 describe("FACILITIES", () => {

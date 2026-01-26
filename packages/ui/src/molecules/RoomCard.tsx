@@ -82,6 +82,7 @@ function PriceBlock({ price }: { price?: RoomCardPrice }): JSX.Element | null {
     return (
       <>
         <p
+          data-cy={skeletonId}
           data-testid={skeletonId}
           aria-hidden="true"
           className="mb-1 min-h-5 w-20 animate-pulse rounded bg-brand-surface"

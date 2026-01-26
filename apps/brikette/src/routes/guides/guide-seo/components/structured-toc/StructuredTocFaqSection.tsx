@@ -1,5 +1,5 @@
 import type { Translator } from "../../types";
-import { resolveFaqTitle } from "../../utils/toc";
+import { type resolveFaqTitle } from "../../utils/toc";
 
 export function FaqSectionBlock({
   guideKey,

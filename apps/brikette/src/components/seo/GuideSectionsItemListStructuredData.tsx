@@ -1,13 +1,16 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/GuideSectionsItemListStructuredData.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { GuideKey } from "@/routes.guides-helpers";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type ListItem = { "@type": "ListItem"; position: number; name: string; description?: string };
 
@@ -114,10 +117,13 @@ function GuideSectionsItemListStructuredData({ guideKey, name, canonicalUrl }: P
 
     if (items.length === 0) return "";
 
-    const url = typeof canonicalUrl === "string" && canonicalUrl.length > 0 ? canonicalUrl : `${BASE_URL}${pathname}`;
+    const url =
+      typeof canonicalUrl === "string" && canonicalUrl.length > 0
+        ? canonicalUrl
+        : buildCanonicalUrl(BASE_URL, pathname);
     const title = typeof name === "string" && name.trim().length > 0 ? name : "";
 
-    return JSON.stringify({
+    return serializeJsonLdValue({
       "@context": "https://schema.org",
       "@type": "ItemList",
       inLanguage: lang,

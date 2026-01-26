@@ -1,8 +1,10 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+
 import { ShopThemeProvider } from "@acme/platform-core/contexts/ShopThemeContext";
 import { initTheme } from "@acme/platform-core/utils";
-import "./globals.css";
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
@@ -20,7 +22,7 @@ const body = Manrope({
 
 export const metadata: Metadata = {
   title:
-    "Handbag Configurator" /* i18n-exempt -- developer scaffold title */,
+    "Handbag Configurator" /* i18n-exempt -- HAND-001 developer scaffold title */,
 };
 
 export default function RootLayout({

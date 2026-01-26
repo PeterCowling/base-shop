@@ -5,6 +5,7 @@ export {
   guideAbsoluteUrl,
   guideComponentPath,
   guideHref,
+  guidePath,
   type GuideKey,
   guideNamespace,
   guideSlug,

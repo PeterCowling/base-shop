@@ -6,7 +6,7 @@
 
 import React from "react";
 
-import { IS_DEV } from "@/config/env";
+import { debugGuide } from "@/utils/debug";
 
 type BoundaryState = { hasError: boolean };
 type BoundaryProps = { children: React.ReactNode; guideKey?: string };
@@ -22,7 +22,9 @@ class GuideBoundary extends React.Component<BoundaryProps, BoundaryState> {
   }
 
   override componentDidCatch(error: unknown) {
-    if (IS_DEV) console.debug("[GuideBoundary]", this.props.guideKey ?? "unknown", error);
+    // Uses isGuideDebugEnabled() which respects IS_DEV, URL params (?debug=guides),
+    // and localStorage (debug:guides=1) for debugging in any environment
+    debugGuide("[GuideBoundary]", this.props.guideKey ?? "unknown", error);
   }
 
   override render() {

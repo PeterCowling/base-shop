@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from "@testing-library/react";
 
 import { useScrollProgress } from "@/hooks/useScrollProgress";

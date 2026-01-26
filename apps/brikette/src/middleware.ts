@@ -8,7 +8,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { i18nConfig, type AppLanguage } from "./i18n.config";
+import { type AppLanguage,i18nConfig } from "./i18n.config";
 import { SLUGS } from "./slug-map";
 
 type SlugKey = keyof typeof SLUGS;

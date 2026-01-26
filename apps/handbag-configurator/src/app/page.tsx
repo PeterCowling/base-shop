@@ -1,4 +1,6 @@
+import { useTranslations as loadServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { ProductConfigSchema } from "@acme/product-configurator";
+
 import { ConfiguratorPage } from "./ConfiguratorPage";
 
 const API_ORIGIN =
@@ -16,11 +18,15 @@ async function loadSchema() {
 export default async function Page() {
   let schema: ProductConfigSchema | null = null;
   let error: string | null = null;
+  const t = await loadServerTranslations("en");
   try {
     schema = await loadSchema();
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    error = `Schema fetch failed (${API_ORIGIN}). ${message}`;
+    const message = err instanceof Error ? err.message : t("handbagConfigurator.errors.unknownError");
+    error = t("handbagConfigurator.errors.schemaFetchFailed", {
+      origin: API_ORIGIN,
+      message,
+    });
   }
 
   return <ConfiguratorPage schema={schema} apiOrigin={API_ORIGIN} error={error} />;

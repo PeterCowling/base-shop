@@ -1,12 +1,16 @@
 // apps/cover-me-pretty/src/app/api/orders/create/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { ulid } from "ulid";
-import { addOrder } from "@acme/platform-core/orders/creation";
-import shop from "../../../../../shop.json";
-import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { ulid } from "ulid";
+import { z } from "zod";
+
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { addOrder } from "@acme/platform-core/orders/creation";
+
+import shop from "../../../../../shop.json";
 
 export const runtime = "nodejs";
 

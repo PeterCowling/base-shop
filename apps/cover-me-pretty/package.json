@@ -5,7 +5,7 @@
     "dev": "next dev -p 3004",
     "build": "pnpm exec next build",
     "start": "next start -p 3004",
-    "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache --max-warnings=0",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {

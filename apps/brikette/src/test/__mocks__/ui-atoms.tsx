@@ -18,12 +18,20 @@ export const RatingsBar = ({ rating, ...props }: any) => (
   <div data-testid="ratings-bar" data-rating={rating} {...props} />
 );
 
-export const CfImage = ({ alt, src, ...props }: any) => (
+export const CfImage = ({ alt, src, priority: _priority, ...props }: any) => (
   <img data-testid="cf-image" alt={alt} src={src} {...props} />
 );
 
-export const CfCardImage = ({ alt, src, ...props }: any) => (
+export const CfCardImage = ({ alt, src, priority: _priority, ...props }: any) => (
   <img data-testid="cf-card-image" alt={alt} src={src} {...props} />
+);
+
+export const CfHeroImage = ({ alt, src, priority: _priority, ...props }: any) => (
+  <img data-testid="cf-hero-image" alt={alt} src={src} {...props} />
+);
+
+export const CfResponsiveImage = ({ alt, src, priority: _priority, ...props }: any) => (
+  <img data-testid="cf-responsive-image" alt={alt} src={src} {...props} />
 );
 
 export const Spinner = ({ label, ...props }: any) => (

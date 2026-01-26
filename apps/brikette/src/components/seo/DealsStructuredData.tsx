@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 /* ────────────────────────────────────────────────────────────────
    src/components/seo/DealsStructuredData.tsx
    JSON-LD for the current deal (Google travel carousel)
@@ -10,6 +10,7 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { DEALS } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
 import { getSlug } from "@/utils/slug";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 function DealsStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();
@@ -80,7 +81,7 @@ function DealsStructuredData(): JSX.Element | null {
       ],
     };
 
-    return JSON.stringify(data);
+    return serializeJsonLdValue(data);
   })();
 
   if (!jsonLd) return null;

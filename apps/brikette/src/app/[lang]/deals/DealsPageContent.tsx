@@ -8,14 +8,15 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 
 import { Button } from "@acme/design-system/primitives";
-import { Grid, Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
 import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
 import { useOptionalModal } from "@/context/ModalContext";
 import { usePagePreload } from "@/hooks/usePagePreload";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { formatDateRange, formatPercent, isoDateToLocalStart } from "@/routes/deals/dates";
+import { formatMonthDay, formatPercent, isoDateToLocalStart, shouldIncludeYear } from "@/routes/deals/dates";
 import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
@@ -32,9 +33,13 @@ const DIRECT_BOOKING_PERKS_ID = "direct-booking-perks";
 function DealsPageContent({ lang }: Props) {
   const { t } = useTranslation("dealsPage", { lng: lang });
   const { openModal } = useOptionalModal();
-  usePagePreload({ lang, namespaces: ["dealsPage"] });
+  usePagePreload({ lang, namespaces: ["dealsPage", "_tokens"] });
 
   const { translate: ft, perks, labels } = useDealContent(lang);
+  const checkAvailabilityCta =
+    labels.checkAvailabilityLabel && labels.checkAvailabilityLabel !== "checkAvailability"
+      ? labels.checkAvailabilityLabel
+      : "Check Availability";
   const perksLinkLabel = typeof labels.perksLinkLabel === "string" ? labels.perksLinkLabel : "";
 
   const openBooking = useCallback(
@@ -72,8 +77,38 @@ function DealsPageContent({ lang }: Props) {
 
   const [showExpired, setShowExpired] = useState(false);
 
-  const pageTitle = (ft("hero.title") as string) || "Deals & Offers";
-  const pageSubtitle = (ft("hero.subtitle") as string) || "";
+  const percentValue = PRIMARY_DEAL.discountPct;
+  const percentLabel = formatPercent(lang, percentValue);
+  const percentNumberLabel = new Intl.NumberFormat(lang, { maximumFractionDigits: 0 }).format(percentValue);
+  const percentToken = (() => {
+    const titleTemplate = i18n.getResource(lang, "dealsPage", "title");
+    const promoTemplate = i18n.getResource(lang, "dealsPage", "promo");
+    const template = `${titleTemplate ?? ""} ${promoTemplate ?? ""}`;
+    return typeof template === "string" && template.includes("%") ? percentNumberLabel : percentLabel;
+  })();
+  const dealStart = isoDateToLocalStart(PRIMARY_DEAL.startDate);
+  const dealEnd = isoDateToLocalStart(PRIMARY_DEAL.endDate);
+  const includeYear = shouldIncludeYear(referenceDate, dealStart, dealEnd);
+  const dealFromLabel = formatMonthDay(lang, dealStart, { includeYear });
+  const dealToLabel = formatMonthDay(lang, dealEnd, { includeYear });
+
+  const heroTitle = t("hero.activeTitle", { percent: percentLabel, defaultValue: "" }) as string;
+  const heroSubtitle = t("hero.activeSubtitle", { percent: percentLabel, defaultValue: "" }) as string;
+  const defaultTitle =
+    (t("title", {
+      percent: percentToken,
+      from: dealFromLabel,
+      to: dealToLabel,
+      defaultValue: "Deals & Offers",
+    }) as string) || "Deals & Offers";
+  const defaultSubtitle =
+    (t("promo", {
+      percent: percentToken,
+      defaultValue: "Auto-applied at checkout. Direct bookings only.",
+    }) as string) || "Auto-applied at checkout. Direct bookings only.";
+
+  const pageTitle = heroTitle.trim().length > 0 ? heroTitle : defaultTitle;
+  const pageSubtitle = heroSubtitle.trim().length > 0 ? heroSubtitle : defaultSubtitle;
 
   return (
     <Fragment>
@@ -95,7 +130,7 @@ function DealsPageContent({ lang }: Props) {
           <h2 className="mb-6 text-2xl font-semibold text-brand-heading">
             {(ft("sections.active") as string) || "Current Deals"}
           </h2>
-          <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {activeDeals.map(({ deal, status }) => (
               <DealCard
                 key={deal.id}
@@ -109,7 +144,7 @@ function DealsPageContent({ lang }: Props) {
                 referenceDate={referenceDate}
               />
             ))}
-          </Grid>
+          </div>
         </Section>
       )}
 
@@ -119,7 +154,7 @@ function DealsPageContent({ lang }: Props) {
           <h2 className="mb-6 text-2xl font-semibold text-brand-heading">
             {(ft("sections.upcoming") as string) || "Coming Soon"}
           </h2>
-          <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {upcomingDeals.map(({ deal, status }) => (
               <DealCard
                 key={deal.id}
@@ -133,16 +168,16 @@ function DealsPageContent({ lang }: Props) {
                 referenceDate={referenceDate}
               />
             ))}
-          </Grid>
+          </div>
         </Section>
       )}
 
       {/* Direct Booking Perks */}
       <Section id={DIRECT_BOOKING_PERKS_ID} padding="default" className="bg-brand-surface">
         <h2 className="mb-6 text-center text-2xl font-semibold text-brand-heading">
-          {(ft("perks.title") as string) || "Why Book Direct"}
+          {labels.perksHeading || "Direct booking perks"}
         </h2>
-        <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={4}>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {perks.map((perk, index) => (
             <div
               key={index}
@@ -154,7 +189,7 @@ function DealsPageContent({ lang }: Props) {
               )}
             </div>
           ))}
-        </Grid>
+          </div>
       </Section>
 
       {/* Expired Deals (collapsible) */}
@@ -168,7 +203,7 @@ function DealsPageContent({ lang }: Props) {
             className="flex w-full items-center justify-between text-start"
           >
             <h2 className="text-xl font-semibold text-brand-heading">
-              {(ft("sections.expired") as string) || "Past Deals"}
+        {(ft("sections.expired") as string) || "Past Deals"}
             </h2>
             <ChevronDown
               className={clsx(
@@ -179,7 +214,7 @@ function DealsPageContent({ lang }: Props) {
           </button>
           {showExpired && (
             <div id={EXPIRED_DEALS_PANEL_ID} className="mt-6">
-              <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {expiredDeals.map(({ deal, status }) => (
                   <DealCard
                     key={deal.id}
@@ -193,7 +228,7 @@ function DealsPageContent({ lang }: Props) {
                     referenceDate={referenceDate}
                   />
                 ))}
-              </Grid>
+              </div>
             </div>
           )}
         </Section>
@@ -202,7 +237,7 @@ function DealsPageContent({ lang }: Props) {
       {/* CTA */}
       <Section padding="default" className="text-center">
         <Button onClick={() => openBooking({ kind: "standard" })} size="md">
-          {(ft("cta.book") as string) || "Book Now"}
+          {checkAvailabilityCta}
         </Button>
       </Section>
     </Fragment>

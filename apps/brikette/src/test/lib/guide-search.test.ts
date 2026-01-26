@@ -2,10 +2,10 @@
  * Tests for GuideSearchService
  */
 
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { beforeEach,describe, expect, it } from "@jest/globals";
 
-import { GuideSearchService } from "@/lib/search/guide-search";
 import type { GuideMeta } from "@/data/guides.index";
+import { GuideSearchService } from "@/lib/search/guide-search";
 
 describe("GuideSearchService", () => {
   let service: GuideSearchService;

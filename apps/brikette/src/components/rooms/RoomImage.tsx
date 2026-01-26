@@ -3,7 +3,7 @@ import { type KeyboardEvent, memo, type MouseEvent, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-import { CfCardImage } from "@/components/images/CfCardImage";
+import { CfCardImage } from "@acme/ui/atoms/CfCardImage";
 
 /* Legacy → canonical path helper */
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");

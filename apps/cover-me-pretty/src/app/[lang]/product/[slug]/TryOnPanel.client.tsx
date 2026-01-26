@@ -1,20 +1,22 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { SKU } from "@acme/types";
 import type React from "react";
-import { UploaderSurface } from "@acme/ui/components/upload/UploaderSurface";
-import type { ImageOrientation } from "@acme/types";
-import { useTryOnController } from "@acme/ui/hooks/tryon/useTryOnController";
-import { tryonMeta } from "../../../../lib/tryonMeta";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 import { ARViewer } from "@acme/design-system/atoms/ARViewer";
-import { RecommendationCarousel } from "@acme/ui/components/organisms";
+import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
+import type { ImageOrientation,SKU  } from "@acme/types";
+import { RecommendationCarousel } from "@acme/ui/components/organisms";
+import { UploaderSurface } from "@acme/ui/components/upload/UploaderSurface";
+import { useTryOnController } from "@acme/ui/hooks/tryon/useTryOnController";
+
+import { tryonMeta } from "../../../../lib/tryonMeta";
+
 import { ComparePreview } from "./ComparePreview";
+import { computeSmartAnchor,drawPreview } from "./PreviewUtils";
 import { SignedViewLink } from "./SignedViewLink";
 import { TryOnStepper } from "./TryOnStepper";
-import { useTranslations } from "@acme/i18n";
-import { drawPreview, computeSmartAnchor } from "./PreviewUtils";
-import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 interface Props { product: SKU }
 

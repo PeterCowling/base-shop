@@ -3,6 +3,8 @@
 // --------------------------------------------------------------------------
 import React, { Component, type ReactNode } from "react";
 
+import { Button } from "@acme/design-system/primitives";
+
 import { IS_DEV } from "@/config/env";
 import i18n from "@/i18n";
 
@@ -34,13 +36,9 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="p-8 text-center">
           <h1 className="mb-4 text-2xl font-semibold">{i18n.t("errorBoundary.title")}</h1>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 underline"
-          >
+          <Button type="button" onClick={() => window.location.reload()} tone="ghost" className="underline">
             {i18n.t("errorBoundary.reload")}
-          </button>
+          </Button>
         </div>
       );
     }

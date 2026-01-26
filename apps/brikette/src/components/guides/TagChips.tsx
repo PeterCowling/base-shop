@@ -26,13 +26,13 @@ const CHIP_CLASSES = [
   "focus-visible:outline-2",
   "focus-visible:outline-brand-primary/60",
   "dark:border-brand-outline/50",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
   "dark:hover:bg-brand-text/10",
 ] as const;
 
 const CHIP_PREFIX_CLASSES = [
   "text-brand-muted",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
 ] as const;
 
 type Props = {
@@ -49,7 +49,7 @@ function TagChips({ tags, className = "" }: Props): JSX.Element | null {
   return (
     <div className={clsx(WRAPPER_CLASSES, className)}>
       {list.map((tag) => {
-        const path = `/${lang}/${getSlug("guides", lang)}/tags/${encodeURIComponent(tag)}`;
+        const path = `/${lang}/${getSlug("experiences", lang)}/${getSlug("guidesTags", lang)}/${encodeURIComponent(tag)}`;
         const content = (
           <>
             <span className="sr-only">{`#${tag}`}</span>

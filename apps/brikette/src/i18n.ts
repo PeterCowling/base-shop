@@ -9,7 +9,6 @@
 import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-import { asResourceKey } from "./utils/i18n-types";
 import { i18nConfig } from "./i18n.config";
 // Seed critical assistance article namespaces for English to avoid hydration
 // drift on direct loads of help articles before lazy bundles resolve.
@@ -30,6 +29,7 @@ import EN_ASSIST_TRAVEL_HELP from "./locales/en/travelHelp.json";
 import { getGuidesBundle } from "./locales/guides";
 import { loadGuidesNamespaceFromImports } from "./locales/guides.imports";
 import { loadLocaleResource } from "./locales/locale-loader";
+import { asResourceKey } from "./utils/i18n-types";
 // (blog namespace removed)
 
 // react-i18next must not be imported in React Server Components (the server
@@ -38,10 +38,10 @@ import { loadLocaleResource } from "./locales/locale-loader";
 type I18nextModule = import("i18next").Module;
 let initReactI18next: I18nextModule | null = null;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires -- runtime feature detection
+   
   const react = require("react") as { createContext?: unknown };
   if (typeof react.createContext === "function") {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires -- runtime-only require
+     
     const reactI18next = require("react-i18next") as { initReactI18next?: unknown };
     const candidate = reactI18next.initReactI18next as unknown;
     if (

@@ -1,6 +1,8 @@
-import type { ProductConfigSchema, SelectionState } from "@acme/product-configurator";
 import { useEffect, useMemo } from "react";
-import * as THREE from "three";
+import type * as THREE from "three";
+
+import type { ProductConfigSchema, SelectionState } from "@acme/product-configurator";
+
 import { applyMaterialPreset } from "./materialPresets";
 
 type CompiledBinding = {

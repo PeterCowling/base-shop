@@ -1,8 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import { Environment } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef } from "react";
 import * as THREE from "three";
 
 const CAMERA_LIGHT_OFFSET = new THREE.Vector3(1.4, 1.0, 1.8);

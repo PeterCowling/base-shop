@@ -54,7 +54,7 @@ export const anchorLinkClass = [
   "focus-visible:outline-offset-2",
   "focus-visible:outline-brand-primary",
   "dark:bg-brand-outline/10",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
 ].join(" ");
 
 export const destinationLinkPillClass = [
@@ -84,7 +84,7 @@ export const destinationLinkPillClass = [
   "focus-visible:outline-brand-primary",
   "dark:border-brand-outline/30",
   "dark:bg-brand-surface/10",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
   "dark:hover:border-brand-secondary/40",
   "dark:hover:bg-brand-surface/20",
 ].join(" ");
@@ -118,7 +118,7 @@ const filterButtonActiveClass = [
   "ring-brand-primary/40",
   "dark:border-brand-secondary",
   "dark:bg-brand-secondary/30",
-  "dark:text-brand-secondary",
+  "dark:text-brand-text",
   "dark:ring-brand-secondary/40",
 ].join(" ");
 
@@ -130,7 +130,7 @@ const filterButtonInactiveClass = [
   "hover:bg-brand-primary/5",
   "dark:border-brand-outline/30",
   "dark:bg-brand-surface/40",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
   "dark:hover:border-brand-secondary/50",
   "dark:hover:bg-brand-surface/10",
 ].join(" ");
@@ -179,7 +179,7 @@ export const transportBadgeClass = [
   "hover:border-brand-primary/40",
   "dark:border-brand-outline/30",
   "dark:bg-brand-surface/50",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
   "dark:hover:border-brand-secondary/40",
 ].join(" ");
 

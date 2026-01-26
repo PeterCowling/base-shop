@@ -1,7 +1,10 @@
 // apps/cover-me-pretty/src/app/success/status/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { getShopIdFromRequest } from "@acme/platform-core/shopContext";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
 import { readOrders } from "@acme/platform-core/repositories/rentalOrders.server";
+import { getShopIdFromRequest } from "@acme/platform-core/shopContext";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

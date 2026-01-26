@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { Cluster,Grid, Stack } from "@acme/design-system/primitives";
 
 import type { CandidateDetailStrings, StageRun } from "./types";

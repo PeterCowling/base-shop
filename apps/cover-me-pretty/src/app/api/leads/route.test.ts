@@ -1,5 +1,6 @@
-import { POST } from "./route";
 import type { NextRequest } from "next/server";
+
+import { POST } from "./route";
 
 function mockRequest(body: unknown, opts?: { consent?: boolean }) {
   const consent = opts?.consent ?? true;

@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import { CheckCircle, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/primitives";
-import { Section as LayoutSection } from "@acme/ui/atoms";
+import { Section as LayoutSection } from "@acme/design-system/atoms";
 
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 import { useModal } from "@/context/ModalContext";
 
 /* ---------------------------------------------------------------------------

@@ -25,9 +25,10 @@ interface DealsPageProps {
   lang: AppLanguage;
   title: string;
   desc: string;
+  structuredData?: Record<string, unknown> | unknown[];
 }
 
-function DealsPage({ lang, title, desc }: DealsPageProps): JSX.Element {
+function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.Element {
   const { supportedLngs } = i18nConfig;
   const { t, ready } = useTranslation("dealsPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
@@ -124,7 +125,7 @@ function DealsPage({ lang, title, desc }: DealsPageProps): JSX.Element {
           <meta key={l} property={OG_LOCALE_ALTERNATE_PROPERTY} content={l} />
         ))}
 
-      <DealsStructuredData />
+      <DealsStructuredData data={structuredData} />
 
       <Section as="main" padding="none" className="max-w-3xl space-y-10 p-6 pt-34 text-center">
         <header className="space-y-4">

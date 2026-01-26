@@ -6,8 +6,7 @@ import { cartReducer, initialCartState } from "@/contexts/cart/cartReducer";
 import { loadCart, saveCart } from "@/contexts/cart/cartStorage";
 import { getCartTotals } from "@/lib/cart";
 import type { CartItem } from "@/types/cart";
-import type { Product } from "@/types/product";
-import type { CurrencyCode } from "@/types/product";
+import type { CurrencyCode, Product } from "@/types/product";
 
 type CartContextValue = {
   items: CartItem[];

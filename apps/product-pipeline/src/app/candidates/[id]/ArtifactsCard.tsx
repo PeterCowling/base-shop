@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { Stack } from "@acme/design-system/primitives";
 
 import type { Artifact, CandidateDetailStrings } from "./types";

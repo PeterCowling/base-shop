@@ -11,7 +11,7 @@ import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 import { GuideSeoTemplateBody } from "./guide-seo/template/GuideSeoTemplateBody";
 import { resolveShouldRenderGenericContent } from "./guide-seo/template/resolveShouldRenderGenericContent";
-import { useAdditionalScripts, resetAdditionalScriptsCache } from "./guide-seo/template/useAdditionalScripts";
+import { resetAdditionalScriptsCache,useAdditionalScripts } from "./guide-seo/template/useAdditionalScripts";
 import { useFallbackHead } from "./guide-seo/template/useFallbackHead";
 import { useGuideManifestState } from "./guide-seo/template/useGuideManifestState";
 import { useGuideSlotNodes } from "./guide-seo/template/useGuideSlotNodes";
@@ -25,14 +25,14 @@ import { useGuideBreadcrumb } from "./guide-seo/useGuideBreadcrumb";
 import { useGuideContent } from "./guide-seo/useGuideContent";
 import { useGuideMeta } from "./guide-seo/useGuideMeta";
 import { useGuideSeoContext } from "./guide-seo/useGuideSeoContext";
+import { useHasLocalizedResources } from "./guide-seo/useHasLocalizedResources";
 import { useHowToJson } from "./guide-seo/useHowToJson";
 import { useOgImage } from "./guide-seo/useOgImage";
 import { probeHasLocalizedStructuredContent } from "./guide-seo/utils/fallbacks";
 import {
-  shouldSuppressGenericWhenUnlocalized,
   shouldSkipGenericForRequestedLocale,
+  shouldSuppressGenericWhenUnlocalized,
 } from "./guide-seo/utils/templatePolicies";
-import { useHasLocalizedResources } from "./guide-seo/useHasLocalizedResources";
 
 function isUnresolvedGuideDescription(
   value: string,

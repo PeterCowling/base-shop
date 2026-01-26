@@ -1,15 +1,12 @@
 // src/components/footer/FooterLegalRow.tsx
 import { memo } from "react";
-import Link from "next/link";
-
 import { Cluster, Stack } from "@/components/ui/flex";
 
-import { EXTERNAL_REL } from "./footerConstants";
+import { FooterTextLink } from "./FooterLinks";
 import type { FooterLink } from "./footerTypes";
 
 type FooterLegalRowProps = {
   legalLinks: FooterLink[];
-  legalLinkClasses: (isActive?: boolean) => string;
   isActiveLink: (href: string) => boolean;
   prefetch?: boolean;
   copyright: string;
@@ -18,7 +15,6 @@ type FooterLegalRowProps = {
 
 const FooterLegalRow = memo(function FooterLegalRow({
   legalLinks,
-  legalLinkClasses,
   isActiveLink,
   prefetch,
   copyright,
@@ -39,25 +35,16 @@ const FooterLegalRow = memo(function FooterLegalRow({
                   •
                 </span>
               ) : null}
-              {link.external ? (
-                <a
-                  href={link.href}
-                  target={link.newTab ? "_blank" : undefined}
-                  rel={link.newTab ? EXTERNAL_REL : undefined}
-                  className={legalLinkClasses()}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  href={link.href}
-                  prefetch={prefetch}
-                  aria-current={isActive ? "page" : undefined}
-                  className={legalLinkClasses(isActive)}
-                >
-                  {link.label}
-                </Link>
-              )}
+              <FooterTextLink
+                href={link.href}
+                external={link.external}
+                newTab={link.newTab}
+                prefetch={prefetch}
+                isActive={isActive}
+                variant="legal"
+              >
+                {link.label}
+              </FooterTextLink>
             </li>
           );
         })}
@@ -67,13 +54,14 @@ const FooterLegalRow = memo(function FooterLegalRow({
         <span aria-hidden className="text-brand-bg/60 dark:text-brand-text/60">
           •
         </span>
-        <a
+        <FooterTextLink
           href="#top"
-          aria-label={backToTopLabel}
-          className={`${legalLinkClasses()} font-semibold`}
+          ariaLabel={backToTopLabel}
+          variant="legal"
+          className="font-semibold"
         >
           {backToTopLabel}
-        </a>
+        </FooterTextLink>
       </Cluster>
     </Stack>
   );

@@ -6,7 +6,7 @@
     "dev": "next dev -p 3016",
     "build": "next build",
     "start": "next start -p 3016",
-    "lint": "echo 'Lint temporarily disabled for handbag-configurator during early development'",
+    "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },

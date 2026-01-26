@@ -1,12 +1,12 @@
 // src/app/[lang]/book/page.tsx
 // Book page - App Router version
-import type { Metadata } from "next";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["bookPage"], { optional: true });
 
-  const title = (t("meta.title") as string) || "Book Your Stay";
-  const description = (t("meta.description") as string) || "";
+  const title = (t("meta.title") as string) ?? "";
+  const description = (t("meta.description") as string) ?? "";
 
   const bookSlug = getSlug("book", validLang);
   const path = `/${validLang}/${bookSlug}`;

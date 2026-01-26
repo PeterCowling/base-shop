@@ -1,8 +1,11 @@
 import type { ReactElement } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import CheckoutPage from "./page";
-import shop from "../../../../shop.json";
+import { fireEvent,render, screen } from "@testing-library/react";
+
 import type { DeliverySchedulerProps } from "@acme/ui/components/organisms/DeliveryScheduler";
+
+import shop from "../../../../shop.json";
+
+import CheckoutPage from "./page";
 
 const cookiesMock = jest.fn();
 jest.mock("next/headers", () => ({

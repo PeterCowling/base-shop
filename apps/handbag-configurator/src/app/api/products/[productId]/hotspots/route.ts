@@ -1,7 +1,9 @@
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
 import { NextResponse } from "next/server";
+
 import { SAFE_SEGMENT, sanitizeHotspots } from "./hotspotUtils";
 
 export const runtime = "nodejs";
@@ -57,7 +59,6 @@ export async function GET(
   const filePath = getHotspotsPath(productId);
 
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- path validated and scoped
     const data = await readFile(filePath, "utf8");
     return new NextResponse(data, {
       headers: {
@@ -103,7 +104,6 @@ export async function POST(
 
   const filePath = getHotspotsPath(productId);
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- path validated and scoped
     await writeFile(filePath, `${JSON.stringify(responseBody, null, 2)}\n`, "utf8");
     return NextResponse.json(responseBody, { status: 200 });
   } catch {

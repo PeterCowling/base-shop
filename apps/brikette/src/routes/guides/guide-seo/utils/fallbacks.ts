@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- DEV-1790: Structured guide fallbacks rely on static copy */
+ 
 import type { GuideKey } from "@/routes.guides-helpers";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
@@ -11,10 +11,10 @@ import {
 } from "./fallbacks/translatorCandidates";
 import type { FallbackTranslator, I18nLike, StructuredFallback } from "./fallbacks/types";
 
-export type { FallbackTranslator, StructuredFallback, StructuredSection } from "./fallbacks/types";
 export { buildStructuredFromTranslator } from "./fallbacks/buildStructuredFromTranslator";
-export { getFallbackTranslatorCandidates } from "./fallbacks/translatorCandidates";
 export { probeHasLocalizedStructuredContent } from "./fallbacks/probe";
+export { getFallbackTranslatorCandidates } from "./fallbacks/translatorCandidates";
+export type { FallbackTranslator, StructuredFallback, StructuredSection } from "./fallbacks/types";
 
 /**
  * Pick the first viable fallback translator and return structured fallback content.

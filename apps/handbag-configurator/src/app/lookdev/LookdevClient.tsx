@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { ViewerCanvas } from "../../viewer/ViewerCanvas";
+
+import { useTranslations } from "@acme/i18n";
+
 import { useModeStore } from "../../viewer/state/modeStore";
+import { ViewerCanvas } from "../../viewer/ViewerCanvas";
 
 export function LookdevClient() {
   const setMode = useModeStore((state) => state.setMode);
+  const t = useTranslations();
 
   useEffect(() => {
     setMode("showroom");
@@ -14,14 +18,17 @@ export function LookdevClient() {
   return (
     <div className="handbag-shell flex min-h-dvh flex-col">
       <header className="border-b border-border-1 px-6 py-4">
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Lookdev</p>
-        <h1 className="mt-2 text-3xl font-semibold">Material Lab</h1>
+        <p className="text-xs uppercase handbag-tracking-label text-muted-foreground">
+          {t("handbagConfigurator.lookdev.label")}
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold">
+          {t("handbagConfigurator.lookdev.title")}
+        </h1>
       </header>
       <div className="relative flex-1">
         <ViewerCanvas productId="bag-001" showLookdevObjects />
-        <div className="pointer-events-none absolute right-6 top-6 max-w-xs rounded-2xl border border-border-1 bg-panel/85 p-4 text-xs text-muted-foreground">
-          Leather, fabric, and hardware test objects share the same lighting as the
-          main viewer.
+        <div className="pointer-events-none absolute end-6 top-6 handbag-floating-note rounded-2xl border border-border-1 bg-panel/85 p-4 text-xs text-muted-foreground">
+          {t("handbagConfigurator.lookdev.description")}
         </div>
       </div>
     </div>

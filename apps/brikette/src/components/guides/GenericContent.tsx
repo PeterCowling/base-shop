@@ -1,18 +1,18 @@
 // src/components/guides/GenericContent.tsx
 import { Children, Fragment, type ReactNode } from "react";
 
-import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import i18n from "@/i18n";
 import {
   getContentAlias,
   getTocSectionFilter,
   shouldMergeAliasFaqs,
   shouldSuppressFaqOnlyToc,
 } from "@/config/guide-overrides";
+import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
+import { type GuideKey } from "@/routes.guides-helpers";
 import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import { debugGuide } from "@/utils/debug";
-import { type GuideKey } from "@/routes.guides-helpers";
 
 import { buildGenericContentData } from "./generic-content/buildContent";
 import { GenericContentFaqSection, resolveFaqsHeadingLabel } from "./generic-content/FaqSection";

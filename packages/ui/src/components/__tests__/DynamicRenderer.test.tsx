@@ -5,22 +5,6 @@ import type { PageComponent } from "@acme/types";
 
 import DynamicRenderer from "../DynamicRenderer";
 
-jest.mock("../cms/page-builder/scrollEffects", () => ({
-  ensureScrollStyles: jest.fn(),
-  ensureAnimationStyles: jest.fn(),
-  initScrollEffects: jest.fn(),
-}));
-jest.mock("../cms/page-builder/timeline", () => ({
-  initTimelines: jest.fn(),
-}));
-jest.mock("../cms/page-builder/lottie", () => ({
-  initLottie: jest.fn(),
-}));
-jest.mock("../cms/lightbox", () => ({
-  ensureLightboxStyles: jest.fn(),
-  initLightbox: jest.fn(),
-}));
-
 const ParentComp = jest.fn(({ children }: any) => (
   <div data-cy="parent">{children}</div>
 ));
@@ -51,6 +35,22 @@ const mockBlockRegistry = {
 };
 
 jest.mock("../cms/blocks", () => ({ blockRegistry: mockBlockRegistry }));
+
+jest.mock("../cms/page-builder/scrollEffects", () => ({
+  ensureScrollStyles: jest.fn(),
+  ensureAnimationStyles: jest.fn(),
+  initScrollEffects: jest.fn(),
+}));
+jest.mock("../cms/page-builder/timeline", () => ({
+  initTimelines: jest.fn(),
+}));
+jest.mock("../cms/page-builder/lottie", () => ({
+  initLottie: jest.fn(),
+}));
+jest.mock("../cms/lightbox", () => ({
+  ensureLightboxStyles: jest.fn(),
+  initLightbox: jest.fn(),
+}));
 
 describe("DynamicRenderer", () => {
   afterEach(() => {

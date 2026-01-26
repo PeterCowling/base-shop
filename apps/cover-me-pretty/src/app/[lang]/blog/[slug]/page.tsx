@@ -1,16 +1,18 @@
 /* i18n-exempt file -- ABC-123 blog SEO + editorial shell; uses translation keys or external Markdown, no direct UI copy literals [ttl=2026-01-31] */
-import { notFound } from "next/navigation";
-import type { PortableBlock } from "@acme/sanity";
-import { BlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
-import type { Shop } from "@acme/types";
-import shopJson from "../../../../../shop.json";
 import type { Metadata } from "next";
-import { getSeo } from "../../../util/seo";
-import { resolveLocale } from "@acme/i18n/locales";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
+import { notFound } from "next/navigation";
 import type { NextSeoProps } from "next-seo";
+
+import { resolveLocale } from "@acme/i18n/locales";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
+import { BlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import type { PortableBlock } from "@acme/sanity";
+import type { Shop } from "@acme/types";
+
+import shopJson from "../../../../../shop.json";
+import { articleJsonLd,JsonLdScript } from "../../../../lib/jsonld";
+import { getSeo } from "../../../util/seo";
 import { getBlogProvider } from "../provider";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;

@@ -29,7 +29,8 @@ describe("BlockResizer", () => {
         startSpacing={jest.fn()}
       />
     );
-    const corners = Array.from(container.children).slice(0, 4) as HTMLElement[];
+    const handles = Array.from(container.querySelectorAll('[role="button"]')) as HTMLElement[];
+    const corners = handles.slice(0, 4);
     const expectedHandles = ["nw", "ne", "sw", "se"] as const;
     corners.forEach((corner, idx) => {
       fireEvent.pointerDown(corner);
@@ -51,7 +52,7 @@ describe("BlockResizer", () => {
       />
     );
     // Skip 4 corner and 4 side resize handles; verify spacing handles only
-    const handles = Array.from(container.children).slice(8) as HTMLElement[];
+    const handles = Array.from(container.querySelectorAll('[role="button"]')).slice(8) as HTMLElement[];
     const expected: Array<
       ["margin" | "padding", "top" | "bottom" | "left" | "right"]
     > = [

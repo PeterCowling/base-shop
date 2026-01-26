@@ -1,11 +1,12 @@
 import Link from "next/link";
 
 import TableOfContents from "@/components/guides/TableOfContents";
-import { CfImage } from "@/components/images/CfImage";
+import { CfImage } from "@acme/ui/atoms/CfImage";
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
 import { INLINE_LINK_CLASSES, renderInlineLinks } from "../renderInlineLinks";
+
 import { createGuideLabelReader } from "./labels";
 import type { GuideExtras } from "./types";
 
@@ -77,7 +78,7 @@ export function renderArticleLead(
                     className="size-full object-cover"
                   />
                   {figure.caption ? (
-                    <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                    <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80">
                       {figure.caption}
                     </figcaption>
                   ) : null}
@@ -166,7 +167,7 @@ export function renderArticleLead(
                 key={index}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
-                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-surface">
+                <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
                   {faq.q}
                 </summary>
                 <div className="mt-3 space-y-3">

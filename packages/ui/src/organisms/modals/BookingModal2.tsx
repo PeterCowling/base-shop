@@ -2,6 +2,7 @@ import {
   type ChangeEvent,
   memo,
 } from "react";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 import { useCurrentLanguage } from "../../hooks/useCurrentLanguage";
 import { resolveBookingDateFormat } from "../../utils/bookingDateFormat";
@@ -9,7 +10,6 @@ import { resolveBookingDateFormat } from "../../utils/bookingDateFormat";
 import { ModalFrame } from "./primitives";
 import type { BookingModal2Copy } from "./types";
 
-const BOOKING_MODAL_2_TITLE_ID = "booking-modal-2-title";
 const DEFAULT_TEST_ID = "booking-modal-2";
 const CHECKIN_INPUT_ID = "booking2-checkIn";
 const CHECKOUT_INPUT_ID = "booking2-checkOut";
@@ -53,19 +53,14 @@ const BookingModal2 = memo(function BookingModal2({
       onClose={onCancel}
       testId={testId}
       overlayClassName="layer-modal-backdrop pointer-coarse:p-6 grid place-items-center bg-black/60 backdrop-blur-sm motion-safe:animate-fade-in dark:bg-black/80"
-      ariaLabelledBy={BOOKING_MODAL_2_TITLE_ID}
     >
       <div
         className="pointer-events-auto w-full rounded-2xl bg-brand-bg p-6 text-start shadow-2xl drop-shadow-brand-primary-10
                    sm:w-96 dark:bg-brand-text dark:text-brand-surface"
       >
-        <h2
-          id={BOOKING_MODAL_2_TITLE_ID}
-          className="mb-4 text-lg font-semibold text-brand-heading
-                     text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]"
-        >
+        <DialogTitle className="mb-4 text-lg font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
           {copy.title}
-        </h2>
+        </DialogTitle>
 
         <div className="space-y-4">
           <div className="flex flex-col space-y-1">

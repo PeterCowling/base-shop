@@ -1,15 +1,17 @@
 "use client";
 
-import { useLoader, useThree } from "@react-three/fiber";
-import type { ProductConfigSchema, SelectionState } from "@acme/product-configurator";
 import { Component, type ReactNode, Suspense, useEffect, useMemo, useState } from "react";
+import { useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
-import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
-import type { FrameBounds } from "../controls/CameraController";
+
+import type { ProductConfigSchema, SelectionState } from "@acme/product-configurator";
+
 import type { ResolvedPartAsset } from "../assets/useTieredProductAsset";
+import type { FrameBounds } from "../controls/CameraController";
 import { useMaterialBindings } from "../materials/useMaterialBindings";
 
 type PartScene = ResolvedPartAsset & {
@@ -44,6 +46,8 @@ type ComposedModelSceneProps = {
 };
 
 const TARGET_DIAMETER = 2.7;
+
+const DEBUG_LOG_PREFIX = "[handbag-debug]"; // i18n-exempt -- HAND-0002 [ttl=2026-12-31]: debug log tag, not user-facing copy.
 
 function configureGltfLoader(
   loader: GLTFLoader,
@@ -420,7 +424,7 @@ export function ComposedModelScene({
       composedChildNames: composedScene.children.map((child) => child.name),
       baseIsComposedChild: composedScene.children.includes(baseScene),
     };
-    console.info("[handbag-debug] gltf scene summary", info);
+    console.info(DEBUG_LOG_PREFIX, info);
     if (typeof window !== "undefined") {
       (window as Window & { __handbagDebug?: unknown }).__handbagDebug = {
         baseGltf,

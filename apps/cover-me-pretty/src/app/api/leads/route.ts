@@ -1,12 +1,16 @@
 // apps/cover-me-pretty/src/app/api/leads/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
 import { resolveDataRoot } from "@acme/platform-core/dataRoot";
-import { validateShopName } from "@acme/platform-core/shops";
 import { getShopSettings } from "@acme/platform-core/repositories/shops.server";
+import { validateShopName } from "@acme/platform-core/shops";
 import { safeWebhookFetch } from "@acme/platform-core/utils";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -83,7 +87,9 @@ export async function POST(req: NextRequest) {
           path.join(dir, "lead-webhook-errors.log"),
           JSON.stringify({
             endpoint,
-            error: result.error ?? "Unknown error",
+            error:
+              result.error ??
+              /* i18n-exempt -- ABC-123 ttl=2026-03-31 */ "Unknown error",
             attempts: result.attempts,
             entry,
             ts: new Date().toISOString(),

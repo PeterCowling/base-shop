@@ -132,7 +132,7 @@ export async function withGuideMocks(
 
   const renderRoute = async (opts: RenderOptions = {}) => {
     const lang = toAppLanguage(opts.lang ?? (i18n.language as string | undefined));
-    const route = opts.route ?? guideHref(lang, guideKey, { forceGuidesBase: true });
+    const route = opts.route ?? guideHref(lang, guideKey);
     const request = new Request(`http://localhost${route}`);
     let loaderData = opts.loaderData ?? undefined;
     if (typeof routeModule.clientLoader === "function") {

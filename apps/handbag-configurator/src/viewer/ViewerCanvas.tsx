@@ -1,12 +1,5 @@
 "use client";
 
-import { useProgress } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import type {
-  ProductConfigSchema,
-  ProductHotspotConfig,
-  SelectionState,
-} from "@acme/product-configurator";
 import {
   Component,
   type PointerEvent,
@@ -16,18 +9,39 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useProgress } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { useTieredProductAsset } from "./assets/useTieredProductAsset";
+
+import { useTranslations } from "@acme/i18n";
+import type {
+  ProductConfigSchema,
+  ProductHotspotConfig,
+  SelectionState,
+} from "@acme/product-configurator";
+
 import { BagAnimationController } from "./animation/BagAnimationController";
+import { useTieredProductAsset } from "./assets/useTieredProductAsset";
 import { CameraController, type FrameBounds } from "./controls/CameraController";
 import { HotspotManager } from "./hotspots/HotspotManager";
 import { HotspotOverlay } from "./hotspots/HotspotOverlay";
 import type { VisibleHotspot } from "./hotspots/useHotspotVisibility";
-import { configureRenderer } from "./rendering/rendererConfig";
+import { ComposedModelScene } from "./rendering/ComposedModelScene";
 import { LightingRig } from "./rendering/LightingRig";
 import { LookdevObjects } from "./rendering/LookdevObjects";
-import { ComposedModelScene } from "./rendering/ComposedModelScene";
+import { configureRenderer } from "./rendering/rendererConfig";
 import { useModeStore } from "./state/modeStore";
+
+const DEBUG_LOG_PREFIX = "[handbag-debug]"; // i18n-exempt -- HAND-0002 [ttl=2026-12-31]: debug log tag, not user-facing copy.
+const DEBUG_LABEL = "debug=1"; // i18n-exempt -- HAND-0006 [ttl=2026-12-31]: debug indicator text, not user copy.
+const DEBUG_MESHES_LABEL =
+  "meshes:"; // i18n-exempt -- HAND-0006 [ttl=2026-12-31]: debug metric label, not user copy.
+const DEBUG_VISIBLE_LABEL =
+  "visible:"; // i18n-exempt -- HAND-0006 [ttl=2026-12-31]: debug metric label, not user copy.
+const DEBUG_BOUNDS_LABEL =
+  "bounds:"; // i18n-exempt -- HAND-0006 [ttl=2026-12-31]: debug metric label, not user copy.
+const DEBUG_BOUNDS_EMPTY =
+  "empty"; // i18n-exempt -- HAND-0006 [ttl=2026-12-31]: placeholder status for bounds, not user copy.
 
 function DebugHelpers() {
   const axes = useMemo(() => new THREE.AxesHelper(1.5), []);
@@ -62,7 +76,7 @@ function LoadingOverlay({ label }: { label: string }) {
   const { active, progress } = useProgress();
   if (!active) return null;
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-xs uppercase tracking-[0.3em] text-white">
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-xs uppercase handbag-tracking-label text-white">
       {label} {Math.round(progress)}%
     </div>
   );
@@ -133,12 +147,22 @@ export function ViewerCanvas({
     ...(selections !== undefined ? { selections } : {}),
   });
   const activeModelUrl = modelOverrideUrl ?? modelUrl;
-  const activeParts = modelOverrideUrl ? [] : parts;
-  const activeAnimationMap = modelOverrideUrl ? undefined : animationMap;
-  const activeProceduralOpen = modelOverrideUrl ? undefined : proceduralOpen;
-  const activeHideBaseMeshPatterns = modelOverrideUrl
-    ? []
-    : hideBaseMeshPatterns;
+  const activeParts = useMemo(
+    () => (modelOverrideUrl ? [] : parts),
+    [modelOverrideUrl, parts],
+  );
+  const activeAnimationMap = useMemo(
+    () => (modelOverrideUrl ? undefined : animationMap),
+    [modelOverrideUrl, animationMap],
+  );
+  const activeProceduralOpen = useMemo(
+    () => (modelOverrideUrl ? undefined : proceduralOpen),
+    [modelOverrideUrl, proceduralOpen],
+  );
+  const activeHideBaseMeshPatterns = useMemo(
+    () => (modelOverrideUrl ? [] : hideBaseMeshPatterns),
+    [modelOverrideUrl, hideBaseMeshPatterns],
+  );
   const showTierControls = !hideTierControls && !modelOverrideUrl;
   const partsKey = useMemo(
     () =>
@@ -151,6 +175,7 @@ export function ViewerCanvas({
     [activeParts],
   );
   const errorKey = `${activeModelUrl}:${partsKey}`;
+  const t = useTranslations();
 
   const toggleTier = () => {
     if (!hdAllowed || modelOverrideUrl) return;
@@ -179,7 +204,7 @@ export function ViewerCanvas({
         boundsSize: "n/a",
       };
       setDebugInfo(nextInfo);
-      console.info("[handbag-debug] scene missing", nextInfo);
+      console.info(DEBUG_LOG_PREFIX, nextInfo);
       return;
     }
     let meshCount = 0;
@@ -199,10 +224,13 @@ export function ViewerCanvas({
       boundsSize: `${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)}`,
     };
     setDebugInfo(nextInfo);
-    console.info("[handbag-debug] scene info", nextInfo);
+    console.info(DEBUG_LOG_PREFIX, nextInfo);
   }, [debugMode, scene]);
 
-  const tierBadge = effectiveTier === "desktop" ? "HD Preview" : "Mobile Tier";
+  const tierBadge =
+    effectiveTier === "desktop"
+      ? t("handbagConfigurator.badge.hdPreview")
+      : t("handbagConfigurator.badge.mobileTier");
   const handleCanvasPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (hotspotConfigMode) return;
     if (!(event.target instanceof HTMLCanvasElement)) return;
@@ -223,7 +251,7 @@ export function ViewerCanvas({
       >
         <ModelErrorBoundary
           key={errorKey}
-          onError={() => setModelError("Model failed to load")}
+          onError={() => setModelError(t("handbagConfigurator.errors.modelLoadFailed"))}
         >
           <Suspense fallback={null}>
             <LightingRig hdriUrl={hdriUrl} />
@@ -277,52 +305,62 @@ export function ViewerCanvas({
           ? { onPersistOffsets: onPersistHotspotOffsets }
           : {})}
       />
-      <LoadingOverlay label="Loading model" />
+      <LoadingOverlay label={t("handbagConfigurator.overlay.loadingModel")} />
       {modelError ? (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/70 text-center text-xs uppercase tracking-[0.3em] text-white">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/70 text-center text-xs uppercase handbag-tracking-label text-white">
           {modelError}
         </div>
       ) : null}
       {debugMode ? (
         <div
-          className="pointer-events-none z-50 rounded-md px-3 py-2 text-[12px]"
+          className="pointer-events-none z-50 rounded-md px-3 py-2 text-xs"
           style={{
-            position: "fixed",
-            top: "72px",
-            left: "12px",
-            background: "rgba(0, 0, 0, 0.82)",
-            color: "#ffffff",
-            border: "1px solid rgba(255, 255, 255, 0.25)",
-            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
+            position: "fixed", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            top: "72px", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            left: "12px", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            background: "rgba(0, 0, 0, 0.82)", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            color: "#ffffff", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            border: "1px solid rgba(255, 255, 255, 0.25)", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
+            fontFamily:
+              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace", // i18n-exempt -- HAND-0007 [ttl=2026-12-31]: debug-only styling, not UI copy.
           }}
         >
-          <div>debug=1</div>
-          <div>meshes: {debugInfo?.meshCount ?? 0}</div>
-          <div>visible: {debugInfo?.visibleMeshCount ?? 0}</div>
-          <div>bounds: {debugInfo?.boundsEmpty ? "empty" : debugInfo?.boundsSize}</div>
+          <div>{DEBUG_LABEL}</div>
+          <div>
+            {DEBUG_MESHES_LABEL} {debugInfo?.meshCount ?? 0}
+          </div>
+          <div>
+            {DEBUG_VISIBLE_LABEL} {debugInfo?.visibleMeshCount ?? 0}
+          </div>
+          <div>
+            {DEBUG_BOUNDS_LABEL}{" "}
+            {debugInfo?.boundsEmpty ? DEBUG_BOUNDS_EMPTY : debugInfo?.boundsSize}
+          </div>
         </div>
       ) : null}
 
       {showTierControls ? (
-        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-          <div className="pointer-events-none flex items-center gap-3 rounded-full border border-border-1 bg-panel/85 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+        <div className="absolute bottom-6 start-6 end-6 flex items-center justify-between">
+          <div className="pointer-events-none flex items-center gap-3 rounded-full border border-border-1 bg-panel/85 px-4 py-2 text-xs uppercase handbag-tracking-label text-muted-foreground">
             <span>{tierBadge}</span>
           </div>
           <div className="pointer-events-auto flex items-center gap-3">
-            <button
-              type="button"
-              className="rounded-full border border-border-2 bg-surface-2/80 px-4 py-2 text-xs uppercase tracking-[0.2em] text-foreground transition hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
-              onClick={toggleTier}
-              disabled={!hdAllowed}
-              aria-disabled={!hdAllowed}
-            >
-              {effectiveTier === "desktop" ? "Use Mobile" : "HD Preview"}
-            </button>
+              <button
+                type="button"
+                className="min-h-11 min-w-11 rounded-full border border-border-2 bg-surface-2/80 px-4 py-2 text-xs uppercase handbag-tracking-tight text-foreground transition hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={toggleTier}
+                disabled={!hdAllowed}
+                aria-disabled={!hdAllowed}
+              >
+                {effectiveTier === "desktop"
+                  ? t("handbagConfigurator.button.useMobile")
+                  : t("handbagConfigurator.button.hdPreview")}
+              </button>
             <a
               href={posterUrl}
-              className="hidden rounded-full border border-border-1 bg-surface-2/70 px-3 py-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition hover:bg-surface-3 md:inline-flex"
+              className="hidden min-h-11 min-w-11 rounded-full border border-border-1 bg-surface-2/70 px-3 py-2 text-xs uppercase handbag-tracking-tight text-muted-foreground transition hover:bg-surface-3 md:inline-flex"
             >
-              Poster
+              {t("handbagConfigurator.button.poster")}
             </a>
           </div>
         </div>

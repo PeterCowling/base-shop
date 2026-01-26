@@ -31,7 +31,7 @@ describe("NavigationPreview", () => {
       <NavigationPreview items={[{ id: "1", label: "No URL", url: "" }]} />,
     );
     const link = getByRole("link", { name: "No URL" });
-    expect(link).toHaveAttribute("href", "");
+    expect(link).toHaveAttribute("href", "#");
   });
 
   it("does not render nested list for items without children", () => {

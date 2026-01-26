@@ -197,16 +197,16 @@ function GuideCollection({
   return (
     <section id={id} className={clsx(SECTION_CLASSES, sectionClassName)}>
       <div className="space-y-3">
-        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-heading">
           {heading}
         </h2>
         {description ? (
-          <p className="text-brand-paragraph dark:text-brand-muted-dark text-pretty text-base">
+          <p className="text-brand-paragraph dark:text-brand-muted text-pretty text-base">
             {description}
           </p>
         ) : null}
         {hasFilter && !hasResults && copy.emptyMessage ? (
-          <div className="text-brand-paragraph dark:text-brand-muted-dark rounded-lg border border-brand-outline/40 bg-brand-surface/60 p-4 text-sm dark:border-brand-outline/50 dark:bg-brand-text/10">
+          <div className="text-brand-paragraph dark:text-brand-muted rounded-lg border border-brand-outline/40 bg-brand-surface/60 p-4 text-sm dark:border-brand-outline/50 dark:bg-brand-text/10">
             <p>{copy.emptyMessage}</p>
             {showEmptyStateClearLink && clearFilterHref ? (
               <p className="mt-2">

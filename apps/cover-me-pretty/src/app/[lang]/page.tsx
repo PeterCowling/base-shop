@@ -1,11 +1,15 @@
-import type { PageComponent } from "@acme/page-builder-core";
 import { promises as fs } from "node:fs";
+
 import path from "path";
-import shop from "../../../shop.json";
-import Home from "./page.client";
-import { fetchPublishedPosts } from "@acme/sanity";
+
 import type { BlogPost } from "@acme/cms-ui/blocks/BlogListing";
-import { Locale, resolveLocale } from "@acme/i18n/locales";
+import { type Locale, resolveLocale } from "@acme/i18n/locales";
+import type { PageComponent } from "@acme/page-builder-core";
+import { fetchPublishedPosts } from "@acme/sanity";
+
+import shop from "../../../shop.json";
+
+import Home from "./page.client";
 
 async function loadComponents(): Promise<PageComponent[]> {
   try {

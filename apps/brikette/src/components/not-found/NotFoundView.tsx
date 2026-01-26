@@ -3,12 +3,8 @@
 import { Fragment, memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-// Local types replacing react-router imports (used only for test head fallback)
-type MetaDescriptor = Record<string, string | undefined>;
-type LinkDescriptor = Record<string, string | undefined> & { key?: string };
-
 import { Button } from "@acme/design-system/primitives";
-import { AppLink as Link } from "@acme/ui/atoms";
+import { AppLink as Link } from "@acme/ui/atoms/Link";
 
 import Page from "@/components/common/Page";
 import { BASE_URL } from "@/config/site";
@@ -16,18 +12,22 @@ import * as ModalCtx from "@/context/ModalContext";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
 import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";
 import { getSlug } from "@/utils/slug";
 import { useApplyFallbackHead } from "@/utils/testHeadFallback";
 
+// Local types replacing react-router imports (used only for test head fallback)
+type MetaDescriptor = Record<string, string | undefined>;
+type LinkDescriptor = Record<string, string | undefined> & { key?: string };
+
 type LoaderData = { lang?: AppLanguage; title?: string; desc?: string };
 
 function NotFoundView() {
   // In App Router, there's no loader data - use fallbacks
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+   
   const data = undefined as LoaderData | undefined;
 
   const fallbackLang = i18nConfig.fallbackLng as AppLanguage;

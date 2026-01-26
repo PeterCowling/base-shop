@@ -1,7 +1,9 @@
 /** @jest-environment node */
-import fs from "fs";
 import path from "node:path";
+
+import fs from "fs";
 import ts from "typescript";
+
 import { requirePermission } from "@acme/auth";
 
 jest.mock("@acme/auth", () => ({ requirePermission: jest.fn() }));

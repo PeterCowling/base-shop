@@ -1,21 +1,24 @@
 // apps/cover-me-pretty/src/app/[lang]/product/[slug]/page.tsx
 
-import { LOCALES } from "@acme/i18n";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
+
 import BlogListing, { type BlogPost } from "@acme/cms-ui/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
-import shop from "../../../../../shop.json";
-import PdpClient from "./PdpClient.client";
-import type { SKU, Locale } from "@acme/types";
+import { LOCALES } from "@acme/i18n";
 import { resolveLocale } from "@acme/i18n/locales";
-import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
-import { getSeo } from "../../../util/seo";
-import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { getShopSkuBySlug, listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { fetchPublishedPosts } from "@acme/sanity";
+import type { Locale,SKU } from "@acme/types";
+
+import shop from "../../../../../shop.json";
+import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
+import { getSeo } from "../../../util/seo";
+
+import PdpClient from "./PdpClient.client";
 
 async function getProduct(
   slug: string,

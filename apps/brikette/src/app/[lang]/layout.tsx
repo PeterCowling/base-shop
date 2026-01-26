@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
+
 import ClientLayout from "./ClientLayout";
 
 type Props = {

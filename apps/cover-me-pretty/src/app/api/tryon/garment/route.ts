@@ -1,6 +1,7 @@
 /* i18n-exempt file -- I18N-123 SSE diagnostics and machine-readable error tokens; UI/localization handled in client try-on controller [ttl=2026-01-31] */
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
+
 import { kvGet, kvPut } from "@acme/lib/tryon/kv";
 
 export const runtime = "edge";
@@ -152,7 +153,7 @@ export async function POST(req: NextRequest): Promise<Response> {
               ),
             );
             controller.close();
-            try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, status: res.status }); } catch {}
+            try { console.info('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, status: res.status }); } catch {}
             return;
           }
           if (ct.includes("text/event-stream") && res.body) {
@@ -163,7 +164,7 @@ export async function POST(req: NextRequest): Promise<Response> {
               if (value) controller.enqueue(value);
             }
             controller.close();
-            try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, proxied: true }); } catch {}
+            try { console.info('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, proxied: true }); } catch {}
             return;
           }
           // Non-SSE: accept JSON final as cache hit
@@ -187,7 +188,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             );
           }
           controller.close();
-          try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, proxied: false }); } catch {}
+          try { console.info('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, proxied: false }); } catch {}
           return;
         } catch (err) {
           const message =
@@ -203,7 +204,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             ),
           );
           controller.close();
-          try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, err: String(err?.message||err) }); } catch {}
+          try { console.info('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, err: String(err?.message||err) }); } catch {}
           return;
         }
       }
@@ -219,7 +220,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         controller.enqueue(
           encoder.encode(sseEvent("enhance", { progress: p })),
         );
-        await new Promise((r) => setTimeout(r, 150));
+        await new Promise((resolve) => setTimeout(resolve, 150));
       }
       const { sourceImageUrl } = parsed.data;
       controller.enqueue(
@@ -237,7 +238,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       } catch {}
       controller.close();
       try {
-        console.log("tryon.garment", {
+        console.info("tryon.garment", {
           jobId: idem,
           ms: Date.now() - t0,
           ok: true,

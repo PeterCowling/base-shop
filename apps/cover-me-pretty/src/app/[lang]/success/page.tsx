@@ -1,5 +1,6 @@
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import type { Locale } from "@acme/i18n";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+
 import SuccessAnalytics from "./SuccessAnalytics.client";
 
 export default async function Success({ params }: { params: { lang: Locale } }) {

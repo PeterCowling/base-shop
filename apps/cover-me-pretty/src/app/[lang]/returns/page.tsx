@@ -1,14 +1,15 @@
 // apps/cover-me-pretty/src/app/[lang]/returns/page.tsx
-import {
-  getReturnLogistics,
-  getReturnBagAndLabel,
-} from "@acme/platform-core/returnLogistics";
-import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import shop from "../../../../shop.json";
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { resolveLocale } from "@acme/i18n/locales";
-
 import type { Metadata } from "next";
+
+import { resolveLocale } from "@acme/i18n/locales";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import {
+  getReturnBagAndLabel,
+  getReturnLogistics,
+} from "@acme/platform-core/returnLogistics";
+
+import shop from "../../../../shop.json";
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const t = await getTranslations(resolveLocale(params.lang));

@@ -2,6 +2,8 @@ import { memo, useCallback, useId, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
+import { Button } from "@acme/design-system/primitives";
+
 import { getFilterButtonClass } from "../styles";
 import { Cluster } from "../ui";
 
@@ -97,10 +99,10 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
     >
       <div className="space-y-4">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-brand-heading dark:text-brand-surface">
+          <h2 className="text-xl font-semibold tracking-tight text-brand-heading dark:text-brand-text">
             {t("routePicker.title", { defaultValue: "Find the best route for your arrival" })}
           </h2>
-          <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-surface/70">
+          <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-text/70">
             {t("routePicker.subtitle", {
               defaultValue: "Answer two quick questions — we’ll jump you to the best match and highlight it.",
             })}
@@ -111,7 +113,7 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
           <div className="space-y-2">
             <label
               htmlFor={placeSelectId}
-              className="text-sm font-semibold text-brand-heading dark:text-brand-surface"
+              className="text-sm font-semibold text-brand-heading dark:text-brand-text"
             >
               {t("routePicker.placeLabel", { defaultValue: "Where are you coming from?" })}
             </label>
@@ -119,7 +121,7 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
               id={placeSelectId}
               value={placeId}
               onChange={(event) => setPlaceId(event.target.value)}
-              className="min-h-11 w-full rounded-xl border border-brand-outline/30 bg-brand-surface px-3 py-2 text-base text-brand-heading shadow-sm outline-none transition focus-visible:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/30 dark:border-brand-outline/40 dark:bg-brand-surface/40 dark:text-brand-surface dark:focus-visible:border-brand-secondary dark:focus-visible:ring-brand-secondary/30"
+              className="min-h-11 w-full rounded-xl border border-brand-outline/30 bg-brand-surface px-3 py-2 text-base text-brand-heading shadow-sm outline-none transition focus-visible:border-brand-primary focus-visible:ring-2 focus-visible:ring-brand-primary/30 dark:border-brand-outline/40 dark:bg-brand-surface/40 dark:text-brand-text dark:focus-visible:border-brand-secondary dark:focus-visible:ring-brand-secondary/30"
             >
               <option value="">
                 {t("routePicker.placePlaceholder", { defaultValue: "Select a starting point" })}
@@ -135,7 +137,7 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
           <fieldset className="space-y-2">
             <legend
               id={arrivalLegendId}
-              className="text-sm font-semibold text-brand-heading dark:text-brand-surface"
+              className="text-sm font-semibold text-brand-heading dark:text-brand-text"
             >
               {t("routePicker.arrivalLabel", { defaultValue: "When are you arriving?" })}
             </legend>
@@ -161,7 +163,7 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
         <fieldset className="space-y-2">
           <legend
             id={preferenceLegendId}
-            className="text-sm font-semibold text-brand-heading dark:text-brand-surface"
+            className="text-sm font-semibold text-brand-heading dark:text-brand-text"
           >
             {t("routePicker.preferencesLabel", { defaultValue: "Preferences" })}
           </legend>
@@ -192,14 +194,10 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
         </fieldset>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={submit}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-brand-primary px-5 py-2 text-base font-semibold text-brand-bg shadow-sm transition hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary dark:bg-brand-secondary dark:text-brand-text dark:hover:bg-brand-secondary/90 dark:focus-visible:outline-brand-secondary"
-          >
+          <Button type="button" onClick={submit} color="primary" tone="solid" className="rounded-xl">
             {t("routePicker.cta", { defaultValue: "Show my best route" })}
-          </button>
-          <p className="text-sm text-brand-text/70 dark:text-brand-surface/70">
+          </Button>
+          <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
             {t("routePicker.urlHint", {
               defaultValue: "Filters update the URL, so you can share the link.",
             })}
@@ -207,7 +205,7 @@ function RoutePickerBase({ t, places, onSubmit, className }: RoutePickerProps) {
         </div>
 
         {arrival === "late-night" ? (
-          <div className="rounded-xl border border-brand-outline/20 bg-brand-secondary/20 px-4 py-3 text-sm text-brand-heading dark:border-brand-outline/40 dark:bg-brand-secondary/20 dark:text-brand-surface">
+            <div className="rounded-xl border border-brand-outline/20 bg-brand-secondary/20 px-4 py-3 text-sm text-brand-heading dark:border-brand-outline/40 dark:bg-brand-secondary/20 dark:text-brand-text">
             {t("routePicker.lateNightHint", {
               defaultValue:
                 "Late-night arrivals are often easiest by taxi or shuttle — use the contact options below if buses/ferries are finished.",

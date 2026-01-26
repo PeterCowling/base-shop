@@ -7,7 +7,7 @@
 
 import { memo, useMemo } from "react";
 
-import { GUIDES_INDEX, type GuideMeta } from "@/data/guides.index";
+import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
 import { useGuideSearch } from "@/hooks/useGuideSearch";
 
 import GuideCollection from "./GuideCollection";
@@ -113,7 +113,7 @@ function GuideCollectionWithSearch({
           }}
         />
         {query.trim() && isReady && (
-          <p className="mt-2 text-sm text-brand-muted dark:text-brand-muted-dark">
+          <p className="mt-2 text-sm text-brand-muted dark:text-brand-muted">
             {displayGuides.length === 0
               ? "No guides found"
               : `Found ${displayGuides.length} guide${displayGuides.length === 1 ? "" : "s"}`}

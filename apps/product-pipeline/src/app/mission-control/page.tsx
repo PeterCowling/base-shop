@@ -1,5 +1,5 @@
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { Stack } from "@acme/design-system/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 import PageHeader from "@/components/PageHeader";
 
@@ -69,6 +69,13 @@ export default async function MissionControlPage() {
       hint: t("pipeline.missionControl.map.hint"),
       mode2d: t("pipeline.missionControl.map.mode2d"),
       mode3d: t("pipeline.missionControl.map.mode3d"),
+      nodes: {
+        P: t("pipeline.missionControl.map.nodes.P"),
+        M: t("pipeline.missionControl.map.nodes.M"),
+        S: t("pipeline.missionControl.map.nodes.S"),
+        K: t("pipeline.missionControl.map.nodes.K"),
+        L: t("pipeline.missionControl.map.nodes.L"),
+      },
     },
     achievements: {
       label: t("pipeline.missionControl.achievements.label"),

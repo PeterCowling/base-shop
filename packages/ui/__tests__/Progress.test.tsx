@@ -9,13 +9,12 @@ describe("Progress", () => {
       <Progress value={25} label="25%" />
     );
     const bar = container.querySelector("[data-token='--color-primary']") as HTMLElement;
-    expect(bar.style.width).toBe("25%");
+    expect(bar.style.transform).toBe("scaleX(0.25)");
     expect(screen.getByText("25%"));
 
     rerender(<Progress value={60} />);
     const bar2 = container.querySelector("[data-token='--color-primary']") as HTMLElement;
-    expect(bar2.style.width).toBe("60%");
+    expect(bar2.style.transform).toBe("scaleX(0.6)");
     expect(screen.queryByText(/%/)).toBeNull();
   });
 });
-

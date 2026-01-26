@@ -1,8 +1,11 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/EventStructuredData.tsx
 import { memo } from "react";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
+
 import { BASE_URL } from "@/config/site";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
 
@@ -38,7 +41,7 @@ function EventStructuredData({
   const routerPathname = useOptionalRouterPathname();
   const fallbackPath = normaliseWindowPath();
   const pathname = ensureLeadingSlash(path ?? routerPathname ?? fallbackPath ?? "/");
-  const json = JSON.stringify({
+  const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "Event",
     name,
@@ -58,7 +61,7 @@ function EventStructuredData({
     },
     image,
     description,
-    url: `${BASE_URL}${pathname}`,
+    url: buildCanonicalUrl(BASE_URL, pathname),
   });
   return (
     <script

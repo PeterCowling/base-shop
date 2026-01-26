@@ -1,7 +1,7 @@
 // src/components/guides/generic-content/buildContent.ts
+import { getContentAlias, shouldMergeAliasFaqs } from "@/config/guide-overrides";
 import i18n from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { getContentAlias, shouldMergeAliasFaqs } from "@/config/guide-overrides";
 import { debugGuide } from "@/utils/debug";
 import { allowEnglishGuideFallback } from "@/utils/guideFallbackPolicy";
 

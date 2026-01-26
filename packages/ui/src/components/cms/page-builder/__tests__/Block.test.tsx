@@ -1,28 +1,27 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import Button from "../../blocks/Button";
 import Block from "../Block";
 
-const blockRegistryMock = {
-  Foo: {
-    component: ({ style }: { style?: React.CSSProperties }) => (
-      // eslint-disable-next-line react/forbid-dom-props -- TEST-STYLE-PASS: verify style passthrough to DOM in unit test
-      <div data-cy="foo" style={style}>
-        Foo
-      </div>
-    ),
-  },
-  Bar: {
-    component: () => <div data-cy="bar">Bar</div>,
-  },
-  Button: {
-    component: Button,
-  },
-};
-
 jest.mock("../../blocks", () => ({
-  blockRegistry: blockRegistryMock,
+  blockRegistry: {
+    Foo: {
+      component: ({ style }: { style?: React.CSSProperties }) => (
+        // eslint-disable-next-line react/forbid-dom-props -- TEST-STYLE-PASS: verify style passthrough to DOM in unit test
+        <div data-cy="foo" style={style}>
+          Foo
+        </div>
+      ),
+    },
+    Bar: {
+      component: () => <div data-cy="bar">Bar</div>,
+    },
+    Button: {
+      component: ({ href }: { href?: string }) => (
+        <a href={href}>Button</a>
+      ),
+    },
+  },
 }));
 
 describe("Block", () => {

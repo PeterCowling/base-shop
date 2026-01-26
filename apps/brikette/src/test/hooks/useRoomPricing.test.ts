@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
-import { renderHook } from "@testing-library/react";
 
+import { renderHook } from "@testing-library/react";
 
 import { useRates } from "@/context/RatesContext";
 import roomsData from "@/data/roomsData";

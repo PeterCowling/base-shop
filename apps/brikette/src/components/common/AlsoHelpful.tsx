@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
 
+import { Section } from "@acme/design-system/atoms";
+
 import type { GuideSection } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
@@ -77,17 +79,8 @@ function normaliseForAria(value: unknown): string {
   return joined.replace(/\s+/g, " ").replace(/[\s,.;:]+$/, "").trim();
 }
 
-type SectionProps = React.ComponentProps<"section">;
 const SECTION_BASE_CLASSES = ["mx-auto", "mt-16", "max-w-5xl", "px-4", "sm:px-6", "lg:px-0"] as const;
-function Section({ className, ...props }: SectionProps): JSX.Element {
-  return <section className={clsx(SECTION_BASE_CLASSES, className)} {...props} />;
-}
-
-type GridProps = React.ComponentProps<"ul">;
 const GRID_BASE_CLASSES = ["grid", "sm:grid-cols-2", "lg:grid-cols-3"] as const;
-function Grid({ className, ...props }: GridProps): JSX.Element {
-  return <ul className={clsx(GRID_BASE_CLASSES, className)} {...props} />;
-}
 
 const CARD_SHARED_CLASSES = [
   "group",
@@ -131,6 +124,57 @@ const FEATURED_CARD_VARIANTS = [
   "dark:text-brand-heading",
   "dark:hover:bg-brand-secondary/35",
 ] as const;
+
+type AlsoHelpfulCardProps = {
+  href: string;
+  ariaLabel: string;
+  title: React.ReactNode;
+  ctaText: string;
+  variant?: "standard" | "featured";
+  titleClassName?: string;
+  prefetch?: boolean;
+};
+
+function AlsoHelpfulCard({
+  href,
+  ariaLabel,
+  title,
+  ctaText,
+  variant = "standard",
+  titleClassName,
+  prefetch,
+}: AlsoHelpfulCardProps): JSX.Element {
+  const variantClasses = variant === "featured" ? FEATURED_CARD_VARIANTS : STANDARD_CARD_VARIANTS;
+  return (
+    <Link
+      href={href}
+      prefetch={prefetch}
+      className={clsx(CARD_SHARED_CLASSES, variantClasses)}
+      aria-label={ariaLabel}
+    >
+      <span
+        className={clsx(
+          "text-base font-semibold leading-snug text-brand-heading",
+          titleClassName,
+        )}
+      >
+        {title}
+      </span>
+      <span className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-primary dark:text-brand-secondary">
+        <span>{ctaText}</span>
+        <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
+          <path
+            d="m7.5 5.5 5 4.5-5 4.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </Link>
+  );
+}
 
 type Props = {
   lang: AppLanguage;
@@ -200,7 +244,7 @@ function AlsoHelpful({
   if (!hasAny) return null;
 
   return (
-    <Section>
+    <Section padding="none" width="full" className={clsx(SECTION_BASE_CLASSES)}>
       <div className="relative isolate overflow-hidden rounded-3xl border border-brand-outline/30 bg-brand-surface/80 px-6 py-8 shadow-lg backdrop-blur dark:border-brand-outline/50 dark:bg-brand-bg/85">
         <div
           className="pointer-events-none absolute inset-y-0 end-0 w-40 bg-gradient-to-l from-brand-primary/10 to-transparent"
@@ -245,7 +289,7 @@ function AlsoHelpful({
             </div>
           </div>
 
-          <Grid className="gap-4">
+          <ul className={clsx(GRID_BASE_CLASSES, "gap-4")}>
             {related.map((key, index) => {
               const label = getGuideLinkLabel(guidesT, guidesEnT, key);
               const labelText = normaliseForAria(label);
@@ -253,28 +297,14 @@ function AlsoHelpful({
               const ariaLabel = ctaText.replace(/→/g, "to");
               return (
                 <li key={`${key}-${index}`} className="h-full">
-                  <Link
+                  <AlsoHelpfulCard
                     href={guideHref(lang, key)}
                     prefetch={true}
-                    className={clsx(CARD_SHARED_CLASSES, STANDARD_CARD_VARIANTS)}
-                    aria-label={ariaLabel}
-                  >
-                    <span className="text-base font-semibold leading-snug text-brand-heading dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary">
-                      {label}
-                    </span>
-                    <span className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-primary dark:text-brand-secondary">
-                      <span>{ctaText}</span>
-                      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
-                        <path
-                          d="m7.5 5.5 5 4.5-5 4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </Link>
+                    ariaLabel={ariaLabel}
+                    title={label}
+                    ctaText={ctaText}
+                    titleClassName="dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                  />
                 </li>
               );
             })}
@@ -292,32 +322,19 @@ function AlsoHelpful({
               const roomsAriaLabel = roomsCtaText.replace(/→/g, "to");
               return (
                 <li key="rooms" className="h-full">
-                  <Link
+                  <AlsoHelpfulCard
                     href={`/${lang}/${getSlug("rooms", lang)}`}
                     prefetch={true}
-                    className={clsx(CARD_SHARED_CLASSES, FEATURED_CARD_VARIANTS)}
-                    aria-label={roomsAriaLabel}
-                  >
-                    <span className="text-base font-semibold leading-snug text-brand-heading group-hover:text-brand-primary dark:group-hover:text-brand-secondary">
-                      {roomsLabel}
-                    </span>
-                    <span className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-primary dark:text-brand-secondary">
-                      <span>{roomsCtaText}</span>
-                      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
-                        <path
-                          d="m7.5 5.5 5 4.5-5 4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </Link>
+                    ariaLabel={roomsAriaLabel}
+                    title={roomsLabel}
+                    ctaText={roomsCtaText}
+                    variant="featured"
+                    titleClassName="group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                  />
                 </li>
               );
             })()}
-          </Grid>
+          </ul>
         </div>
       </div>
     </Section>

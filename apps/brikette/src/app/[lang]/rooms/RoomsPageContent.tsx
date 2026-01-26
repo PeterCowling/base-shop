@@ -5,7 +5,8 @@
 import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { RatingsBar, Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
+import { RatingsBar } from "@acme/ui/atoms";
 import { DirectBookingPerks } from "@acme/ui/molecules";
 import RoomsSection from "@acme/ui/organisms/RoomsSection";
 
@@ -34,6 +35,9 @@ function RoomsPageContent({ lang }: Props) {
     <Fragment>
       <RoomsStructuredData />
 
+      {/* Ratings Bar */}
+      <RatingsBar className="my-6" lang={lang} />
+
       {/* Page Header */}
       <Section padding="default" className="text-center">
         <h1 className="mb-4 text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl lg:text-5xl">
@@ -42,11 +46,6 @@ function RoomsPageContent({ lang }: Props) {
         {pageSubtitle && (
           <p className="mx-auto max-w-2xl text-lg text-brand-text/80">{pageSubtitle}</p>
         )}
-      </Section>
-
-      {/* Ratings Bar */}
-      <Section padding="narrow">
-        <RatingsBar />
       </Section>
 
       {/* Rooms Grid */}

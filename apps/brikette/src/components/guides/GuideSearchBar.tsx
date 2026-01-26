@@ -2,7 +2,7 @@
  * GuideSearchBar - Search input for guides with autocomplete suggestions
  */
 
-import { useCallback, useId, useRef, useState, useEffect } from "react";
+import { useCallback, useEffect,useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -30,8 +30,8 @@ const SEARCH_INPUT_CLASSES = [
   "focus:ring-brand-primary/20",
   "dark:border-brand-outline/60",
   "dark:bg-brand-text/10",
-  "dark:text-brand-surface",
-  "dark:placeholder:text-brand-muted-dark",
+  "dark:text-brand-heading",
+  "dark:placeholder:text-brand-muted",
   "dark:focus:border-brand-secondary",
   "dark:focus:ring-brand-secondary/20",
 ] as const;
@@ -45,7 +45,7 @@ const SEARCH_ICON_CLASSES = [
   "h-4",
   "w-4",
   "text-brand-muted",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
 ] as const;
 
 const SUGGESTIONS_CONTAINER_CLASSES = [
@@ -70,7 +70,7 @@ const SUGGESTION_ITEM_CLASSES = [
   "text-brand-paragraph",
   "hover:bg-brand-primary/10",
   "hover:text-brand-primary",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
   "dark:hover:bg-brand-secondary/20",
   "dark:hover:text-brand-secondary",
 ] as const;
@@ -87,7 +87,7 @@ const SUGGESTION_HINT_CLASSES = [
   "py-2",
   "text-xs",
   "text-brand-muted",
-  "dark:text-brand-muted-dark",
+  "dark:text-brand-muted",
   "italic",
 ] as const;
 

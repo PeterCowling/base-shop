@@ -1,10 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { useTokenEditor } from "@acme/cms-ui/hooks/useTokenEditor";
-
 import Tokens from "../src/components/cms/style/Tokens";
 
-jest.mock("@acme/cms-ui/hooks/useTokenEditor", () => ({ useTokenEditor: jest.fn() }));
+jest.mock("../src/hooks/useTokenEditor", () => ({ useTokenEditor: jest.fn() }));
 jest.mock("../src/components/cms/index", () => ({
   ColorInput: ({ value, onChange }: any) => (
     <input value={value} onChange={(e) => onChange(e.target.value)} />
@@ -15,11 +13,12 @@ jest.mock("../src/components/cms/index", () => ({
   suggestContrastColor: () => "",
 }));
 
-const mockEditor = useTokenEditor as jest.MockedFunction<typeof useTokenEditor>;
-
 test("updates token via setToken", () => {
+  const { useTokenEditor } = jest.requireMock(
+    "../src/hooks/useTokenEditor"
+  ) as { useTokenEditor: jest.Mock };
   const setToken = jest.fn();
-  mockEditor.mockReturnValue({
+  useTokenEditor.mockReturnValue({
      
     colors: [{ key: "--color-bg", value: "#fff", defaultValue: "#fff", isOverridden: false }],
     fonts: [],

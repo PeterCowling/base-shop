@@ -1,12 +1,15 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/ExperiencesStructuredData.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 
+import { buildCanonicalUrl } from "@acme/ui/lib/seo";
+
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { HOTEL_ID, WEBSITE_ID } from "@/utils/schema";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 const SECTION_KEYS = ["bar", "hikes", "concierge"] as const;
 type SectionKey = (typeof SECTION_KEYS)[number];
@@ -126,11 +129,11 @@ function ExperiencesStructuredData(): JSX.Element | null {
       return "";
     }
 
-    return JSON.stringify({
+    return serializeJsonLdValue({
       "@context": "https://schema.org",
       "@type": "ItemList",
       inLanguage: lang,
-      url: `${BASE_URL}${pathname}`,
+      url: buildCanonicalUrl(BASE_URL, pathname),
       itemListOrder: "https://schema.org/ItemListOrderAscending",
       name,
       description,

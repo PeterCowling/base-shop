@@ -1,5 +1,6 @@
 
 import "@testing-library/jest-dom";
+
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 
 const origin = "https://hostel-positano.com";

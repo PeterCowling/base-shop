@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
+ 
 // src/components/seo/RoomStructuredData.tsx
 import { memo } from "react";
 
@@ -6,6 +6,23 @@ import { BASE_URL } from "@/config/site";
 import type { Room as DataRoom } from "@/data/roomsData";
 import { getRoomsCatalog, type LocalizedRoom,resolveFallbackLanguage } from "@/utils/roomsCatalog";
 import { buildOffer } from "@/utils/schema";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+
+const isIsoDate = (input: unknown): input is string =>
+  typeof input === "string" && /^\d{4}-\d{2}-\d{2}$/u.test(input);
+
+const resolveValidFrom = (room: DataRoom): string | undefined => {
+  const seasonalStarts = room.seasonalPrices
+    ?.map((entry) => entry?.start)
+    .filter(isIsoDate)
+    .sort();
+
+  if (seasonalStarts && seasonalStarts.length > 0) {
+    return seasonalStarts[0] ?? undefined;
+  }
+
+  return undefined;
+};
 
 function pickImages(room: DataRoom): string[] {
   return Array.isArray(room.imagesRaw) ? room.imagesRaw.slice(0, 4).map((u) => `${BASE_URL}${u}`) : [];
@@ -60,11 +77,11 @@ function RoomStructuredData({ room, lang }: Props): JSX.Element {
     name: localizedRoom.title,
     description: localizedRoom.description,
     price: room.basePrice.amount,
-    validFrom: new Date().toISOString().slice(0, 10),
+    validFrom: resolveValidFrom(room),
     images: pickImages(room),
   });
 
-  const json = JSON.stringify({ "@context": "https://schema.org", "@graph": [hotelRoom, offer] });
+  const json = serializeJsonLdValue({ "@context": "https://schema.org", "@graph": [hotelRoom, offer] });
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

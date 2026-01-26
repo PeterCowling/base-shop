@@ -8,9 +8,10 @@ import { debugGuide } from "@/utils/debug";
 
 import type { Translator } from "../../types";
 import type { FallbackTranslator } from "../../utils/fallbacks";
+
 import {
-  resolveStructuredArrayContent,
   type GuidesTranslationsMinimal,
+  resolveStructuredArrayContent,
   type TocEntry,
 } from "./structuredArraysContent";
 import { resolveStructuredArrayFaqHeading, resolveStructuredArrayFaqs } from "./structuredArraysFaqs";

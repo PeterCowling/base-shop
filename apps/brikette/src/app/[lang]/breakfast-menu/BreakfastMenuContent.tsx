@@ -5,7 +5,8 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
 
 import BreakfastMenuStructuredData from "@/components/seo/BreakfastMenuStructuredData";
 import { BASE_URL } from "@/config/site";
@@ -69,12 +70,9 @@ export function BreakfastMenuContent({ lang }: Props) {
           ) : null}
           {introCta.trim() ? (
             <div className="mt-6 flex justify-center">
-              <a
-                href="#menuSections"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-2 text-base font-semibold text-brand-bg shadow-sm transition-colors hover:bg-brand-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-              >
-                {introCta}
-              </a>
+              <Button asChild color="primary" tone="solid" size="lg">
+                <a href="#menuSections">{introCta}</a>
+              </Button>
             </div>
           ) : null}
         </header>

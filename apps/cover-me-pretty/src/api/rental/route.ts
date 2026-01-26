@@ -1,6 +1,10 @@
 import "@acme/zod-utils/initZod";
 
-import { stripe } from "@acme/stripe";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
+import { parseJsonBody } from "@acme/lib/http/server";
 import { computeDamageFee } from "@acme/platform-core/pricing";
 import {
   addOrder,
@@ -8,11 +12,8 @@ import {
   readOrders,
 } from "@acme/platform-core/repositories/rentalOrders.server";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { stripe } from "@acme/stripe";
 import type { RentalOrder } from "@acme/types";
-
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { parseJsonBody } from "@acme/lib/http/server";
 
 export const runtime = "edge";
 

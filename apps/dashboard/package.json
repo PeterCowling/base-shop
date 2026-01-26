@@ -4,7 +4,7 @@
   "dependencies": {
     "@acme/design-system": "workspace:*",
     "@acme/telemetry": "workspace:*",
-    "lucide-react": "^0.511.0"
+    "lucide-react": "^0.540.0"
   },
   "scripts": {
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",

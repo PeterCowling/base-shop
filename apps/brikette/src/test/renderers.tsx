@@ -1,6 +1,6 @@
 // @tests/renderers - shared test rendering utilities
-import { render, type RenderOptions, type RenderResult } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
+import { render, type RenderOptions, type RenderResult } from "@testing-library/react";
 
 interface RenderWithProvidersOptions extends Omit<RenderOptions, "wrapper"> {
   route?: string;

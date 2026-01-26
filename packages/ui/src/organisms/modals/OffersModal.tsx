@@ -1,10 +1,9 @@
 import { memo } from "react";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
 import type { OffersModalCopy } from "./types";
 
-const OFFERS_MODAL_TITLE_ID = "offers-modal-title";
-const OFFERS_MODAL_DESCRIPTION_ID = "offers-modal-description";
 const DEFAULT_TEST_ID = "offers-modal";
 
 export interface OffersModalProps {
@@ -30,8 +29,6 @@ function OffersModal({
       onClose={onClose}
       testId={testId}
       overlayClassName="px-4 py-6"
-      ariaLabelledBy={OFFERS_MODAL_TITLE_ID}
-      ariaDescribedBy={OFFERS_MODAL_DESCRIPTION_ID}
     >
       <ModalPanel
         widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
@@ -46,16 +43,13 @@ function OffersModal({
           {copy.closeLabel}
         </button>
 
-        <h2 id={OFFERS_MODAL_TITLE_ID} className="mb-4 text-2xl font-semibold text-brand-primary"> 
+        <DialogTitle className="mb-4 text-2xl font-semibold text-brand-primary">
           {copy.title}
-        </h2>
+        </DialogTitle>
 
-        <p
-          id={OFFERS_MODAL_DESCRIPTION_ID}
-          className="mx-auto mb-4 text-pretty text-brand-text sm:w-80"
-        >
+        <DialogDescription className="mx-auto mb-4 text-pretty text-brand-text sm:w-80">
           {copy.description}
-        </p>
+        </DialogDescription>
 
         <ul className="mx-auto mb-6 list-inside list-disc space-y-1 text-start">
           {copy.perks.map((perk) => (

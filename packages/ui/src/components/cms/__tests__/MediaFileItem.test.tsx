@@ -152,10 +152,10 @@ describe("MediaFileItem", () => {
 
     await user.upload(fileInput, makeFile());
 
-    await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement"));
+    await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("nope"));
 
     expect(screen.getAllByText(/replacing media/i).length).toBeGreaterThan(0);
-    expect(screen.getByText("Failed to upload replacement")).toBeInTheDocument();
+    expect(screen.getByText("nope")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /media actions/i })).toBeDisabled();
 
     act(() => {

@@ -2,6 +2,7 @@
 "use client";
 
 import { useMemo } from "react";
+
 import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
 
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";

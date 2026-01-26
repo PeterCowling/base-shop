@@ -1,8 +1,8 @@
 /**
  * Hero block handler.
  */
-import CfImage from "@/components/images/CfImage";
-import buildCfImageUrl, { type BuildCfImageOptions } from "@/lib/buildCfImageUrl";
+import CfImage from "@acme/ui/atoms/CfImage";
+import buildCfImageUrl, { type BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";
 import type { HeroBlockOptions } from "../types";

@@ -1,6 +1,5 @@
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { Cluster, Grid, Stack } from "@acme/design-system/primitives";
-
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import {
   computeSensitivities,
   computeStageK,

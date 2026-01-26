@@ -12,7 +12,7 @@ import {
   Vector3,
 } from "three";
 
-import type { PipelineMapNode,PipelineStage } from "./pipelineMapConfig";
+import type { PipelineMapNode, PipelineStage } from "./pipelineMapConfig";
 import {
   hashSeed,
   lcg,
@@ -146,10 +146,12 @@ function Swarm({
 
 function StageNode({
   node,
+  label,
   reduceMotion,
   onNavigate,
 }: {
   node: WorldNode;
+  label: string;
   reduceMotion: boolean;
   onNavigate: () => void;
 }) {
@@ -210,11 +212,11 @@ function StageNode({
         <button
           type="button"
           onClick={onNavigate}
-          className="rounded-2xl border border-border-1 bg-surface-1 px-3 py-2 text-start text-xs shadow-md backdrop-blur"
+          className="min-h-11 min-w-11 rounded-2xl border border-border-1 bg-surface-1 px-3 py-2 text-start text-xs shadow-md backdrop-blur"
         >
           <div className="flex items-center gap-2">
             <span className="pp-chip">{node.stage}</span>
-            <span className="font-semibold text-foreground">{node.label}</span>
+            <span className="font-semibold text-foreground">{label}</span>
           </div>
 {/* eslint-disable-next-line ds/no-raw-typography, ds/no-arbitrary-tailwind -- PP-001 3D HUD label inside Three.js canvas */}
           <div className="mt-1 text-[11px] text-foreground/60">
@@ -230,9 +232,11 @@ function StageNode({
 function PipelineMapScene({
   stageCounts,
   reduceMotion,
+  nodeLabels,
 }: {
   stageCounts: Record<string, number>;
   reduceMotion: boolean;
+  nodeLabels: Record<PipelineStage, string>;
 }) {
   const router = useRouter();
 
@@ -316,6 +320,7 @@ function PipelineMapScene({
         <StageNode
           key={node.stage}
           node={node}
+          label={nodeLabels[node.stage] ?? node.stage}
           reduceMotion={reduceMotion}
           onNavigate={() => router.push(node.href)}
         />
@@ -339,9 +344,11 @@ function PipelineMapScene({
 export default function PipelineMap3D({
   stageCounts,
   reduceMotion = false,
+  nodeLabels,
 }: {
   stageCounts: Record<string, number>;
   reduceMotion?: boolean;
+  nodeLabels: Record<PipelineStage, string>;
 }) {
   return (
     <div className="pp-map">
@@ -351,7 +358,11 @@ export default function PipelineMap3D({
         dpr={[1, 1.6]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
-        <PipelineMapScene stageCounts={stageCounts} reduceMotion={reduceMotion} />
+        <PipelineMapScene
+          stageCounts={stageCounts}
+          reduceMotion={reduceMotion}
+          nodeLabels={nodeLabels}
+        />
       </Canvas>
     </div>
   );

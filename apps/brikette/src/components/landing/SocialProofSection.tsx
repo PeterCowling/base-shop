@@ -3,8 +3,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Star } from "lucide-react";
 
-import { Grid } from "@acme/ui/atoms";
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import hotel from "@/config/hotel";
@@ -39,18 +38,18 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
   const locale = lang ?? i18n.language ?? "en";
 
   return (
-    <section className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-text">
+    <section className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-surface">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
         <Stack className="gap-2">
-          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
             {tLanding("socialProof.title")}
           </h2>
-          <p className="text-sm text-brand-text/70 dark:text-brand-surface/70">
+          <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
             {tLanding("socialProof.subtitle")}
           </p>
         </Stack>
 
-        <Grid columns={{ base: 1, md: 2 }} gap={4} className="mt-6">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mt-6">
           <Stack className="gap-3">
             {ratings.map((rating) => {
               const key = SOURCE_KEYS[rating.provider];
@@ -65,14 +64,14 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
                   className="items-center justify-between rounded-2xl border border-brand-outline/30 bg-brand-bg px-4 py-3 shadow-sm dark:border-white/10 dark:bg-brand-surface"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-brand-heading dark:text-brand-surface">
+                    <p className="text-sm font-semibold text-brand-heading dark:text-brand-text">
                       {providerLabel}
                     </p>
-                    <p className="text-xs text-brand-text/70 dark:text-brand-surface/70">{reviewText}</p>
+                    <p className="text-xs text-brand-text/70 dark:text-brand-text/70">{reviewText}</p>
                   </div>
                   <Inline
                     as="span"
-                    className="gap-1 rounded-full bg-brand-surface/70 px-3 py-1 text-sm font-semibold text-brand-heading dark:bg-white/10 dark:text-brand-surface"
+                    className="gap-1 rounded-full bg-brand-surface/70 px-3 py-1 text-sm font-semibold text-brand-heading dark:bg-white/10 dark:text-brand-text"
                   >
                     <Star className="size-4 text-brand-secondary" aria-hidden />
                     {rating.value.toFixed(1)}
@@ -82,23 +81,23 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
             })}
           </Stack>
 
-          <Grid columns={{ base: 1, sm: 2 }} gap={4}>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             {featured.map((item, index) => (
               <Stack
                 key={`${item.text}-${index}`}
                 className="h-full gap-3 rounded-2xl border border-brand-outline/30 bg-white/80 p-5 shadow-sm dark:border-white/10 dark:bg-brand-surface"
               >
-                <Inline className="gap-2 text-sm font-semibold text-brand-heading dark:text-brand-surface">
+                <Inline className="gap-2 text-sm font-semibold text-brand-heading dark:text-brand-text">
                   <Star className="size-4 text-brand-secondary" aria-hidden />
                   {item.rating ? item.rating.toFixed(1) : "-"}
                 </Inline>
-                <p className="text-sm leading-relaxed text-brand-text/80 dark:text-brand-surface/80">
+                <p className="text-sm leading-relaxed text-brand-text/80 dark:text-brand-text/80">
                   &quot;{item.text}&quot;
                 </p>
               </Stack>
             ))}
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </Section>
     </section>
   );

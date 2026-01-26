@@ -69,7 +69,7 @@ const ROUTE_VARIANT_LINK_CLASS = [
   "focus-visible:outline-brand-primary",
   "dark:border-brand-outline/40",
   "dark:bg-brand-surface/30",
-  "dark:text-brand-surface",
+  "dark:text-brand-text",
   "dark:hover:border-brand-secondary/50",
   "dark:hover:bg-brand-surface/40",
   "dark:focus-visible:outline-brand-secondary",
@@ -87,11 +87,17 @@ function formatModesLabel(modes: TransportMode[], t: TFunction<"howToGetHere">):
   return ordered.map((mode) => t(`filters.transportModes.${mode}`)).join(" + ");
 }
 
-function resolveSeasonality(facts: RouteFacts | undefined, modes: TransportMode[]): string | null {
+function resolveSeasonality(
+  facts: RouteFacts | undefined,
+  modes: TransportMode[],
+  t: TFunction<"howToGetHere">,
+): string | null {
   const explicit = facts?.seasonality?.trim();
   if (explicit) return explicit;
-  if (modes.includes("ferry")) return "Seasonal";
-  return "Year-round";
+  if (modes.includes("ferry")) {
+    return t("routeCard.seasonalityValues.seasonal", { defaultValue: "Seasonal" });
+  }
+  return t("routeCard.seasonalityValues.yearRound", { defaultValue: "Year-round" });
 }
 
 function resolveLuggageIndicator(facts: RouteFacts | undefined, modes: TransportMode[]): 1 | 2 | 3 | null {
@@ -119,7 +125,7 @@ function FactsPills({
     const duration = facts?.duration?.trim();
     const cost = facts?.cost?.trim();
     const walking = facts?.walking?.trim();
-    const seasonality = resolveSeasonality(facts, modes);
+    const seasonality = resolveSeasonality(facts, modes, t);
     const luggage = resolveLuggageIndicator(facts, modes);
 
     if (duration) items.push({ label: t("routeCard.duration", { defaultValue: "Duration" }), value: duration });
@@ -141,8 +147,8 @@ function FactsPills({
     >
       {pills.map((pill) => (
         <li key={`${pill.label}-${pill.value}`}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand-outline/20 bg-brand-surface px-3 py-1.5 text-xs font-medium text-brand-heading shadow-sm dark:border-brand-outline/40 dark:bg-brand-surface/40 dark:text-brand-surface">
-            <span className="tracking-eyebrow text-xs font-semibold uppercase text-brand-heading/70 dark:text-brand-surface/70">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-outline/20 bg-brand-surface px-3 py-1.5 text-xs font-medium text-brand-heading shadow-sm dark:border-brand-outline/40 dark:bg-brand-surface/40 dark:text-brand-text">
+            <span className="tracking-eyebrow text-xs font-semibold uppercase text-brand-heading/70 dark:text-brand-text/70">
               {pill.label}
             </span>
             <span className="whitespace-nowrap">{pill.value}</span>
@@ -216,9 +222,9 @@ function RouteCardGroupBase({
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base font-semibold text-brand-heading dark:text-brand-surface">
-              {title}
-            </h3>
+          <h3 className="text-base font-semibold text-brand-heading dark:text-brand-text">
+            {title}
+          </h3>
             <Inline as="span" className="gap-1" aria-hidden>
               {group.modes.map((mode) => {
                 const Icon = TRANSPORT_MODE_ICONS[mode];
@@ -227,7 +233,7 @@ function RouteCardGroupBase({
             </Inline>
           </div>
           {summary ? (
-            <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-surface/80">{summary}</p>
+            <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-text/80">{summary}</p>
           ) : null}
 
           <FactsPills t={t} facts={primary?.facts} modes={group.modes} />
@@ -267,7 +273,7 @@ function RouteCardGroupBase({
               <span className="min-w-0">
                 <span className="block truncate">{label}</span>
                 {route.facts?.duration || route.facts?.cost ? (
-                  <span className="mt-0.5 block truncate text-xs font-medium text-brand-text/70 dark:text-brand-surface/70">
+                  <span className="mt-0.5 block truncate text-xs font-medium text-brand-text/70 dark:text-brand-text/70">
                     {[route.facts?.duration, route.facts?.cost].filter(Boolean).join(" · ")}
                   </span>
                 ) : null}

@@ -7,8 +7,6 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
-import { Dialog, DialogOverlay, DialogPortal } from "@acme/design-system/primitives";
-
 /** Shared frosted-glass overlay used by the modal suite. */
 export interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
   /** Include backdrop animations when motion is allowed. */
@@ -73,19 +71,20 @@ export function ModalFrame({
   if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogPortal>
-        <DialogOverlay className={clsx(OVERLAY_BASE, overlayClassName)} />
+    <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className={clsx(OVERLAY_BASE, overlayClassName)} />
         <DialogPrimitive.Content
           className={clsx(FRAME_BASE, contentClassName)}
           aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedBy}
+          data-cy={testId}
           data-testid={testId}
         >
           {children}
         </DialogPrimitive.Content>
-      </DialogPortal>
-    </Dialog>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 

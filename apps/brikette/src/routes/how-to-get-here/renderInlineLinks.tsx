@@ -1,6 +1,8 @@
 import { Fragment, type ReactNode } from "react";
 import Link from "next/link";
 
+import { LinkText } from "@acme/design-system/atoms";
+
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
@@ -10,7 +12,7 @@ export const GUIDE_SCHEME_PREFIX = "guide:" as const;
 
 /** Shared Tailwind classes for inline links in how-to-get-here article leads */
 export const INLINE_LINK_CLASSES =
-  "inline-flex min-h-11 min-w-11 items-center align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary" as const;
+  "align-middle font-medium text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary" as const;
 
 /**
  * Parse markdown-style inline links in a string and return React nodes.
@@ -51,14 +53,11 @@ export function renderInlineLinks(
       const guideKey = href.slice(GUIDE_SCHEME_PREFIX.length).trim();
       if (guideKey.length > 0) {
         parts.push(
-          <Link
-            key={key}
-            href={guideHref(context.lang, guideKey as GuideKey)}
-            prefetch={true}
-            className={INLINE_LINK_CLASSES}
-          >
-            {label}
-          </Link>,
+          <LinkText asChild key={key} className={INLINE_LINK_CLASSES}>
+            <Link href={guideHref(context.lang, guideKey as GuideKey)} prefetch={true}>
+              {label}
+            </Link>
+          </LinkText>,
         );
       } else {
         parts.push(
@@ -69,26 +68,19 @@ export function renderInlineLinks(
       }
     } else if (href.startsWith("/")) {
       parts.push(
-        <Link
-          key={key}
-          href={href}
-          prefetch={true}
-          className={INLINE_LINK_CLASSES}
-        >
-          {label}
-        </Link>,
+        <LinkText asChild key={key} className={INLINE_LINK_CLASSES}>
+          <Link href={href} prefetch={true}>
+            {label}
+          </Link>
+        </LinkText>,
       );
     } else {
       parts.push(
-        <a
-          key={key}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={INLINE_LINK_CLASSES}
-        >
-          {label}
-        </a>,
+        <LinkText asChild key={key} className={INLINE_LINK_CLASSES}>
+          <a href={href} target="_blank" rel="noopener noreferrer">
+            {label}
+          </a>
+        </LinkText>,
       );
     }
 

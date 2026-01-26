@@ -1,9 +1,12 @@
-import { NextResponse, type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
+
+import { INSUFFICIENT_STOCK_ERROR } from "@acme/platform-core/checkout/session";
 import {
   validateInventoryAvailability,
 } from "@acme/platform-core/inventoryValidation";
-import { INSUFFICIENT_STOCK_ERROR } from "@acme/platform-core/checkout/session";
+
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

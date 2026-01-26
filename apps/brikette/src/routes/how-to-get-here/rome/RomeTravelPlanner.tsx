@@ -49,8 +49,8 @@ const directionButtonActiveClass = [
 const directionButtonInactiveClass = [
   "text-brand-text/80",
   "hover:text-brand-heading",
-  "dark:text-brand-surface/80",
-  "dark:hover:text-brand-surface",
+  "dark:text-brand-text/80",
+  "dark:hover:text-brand-text",
 ];
 
 export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
@@ -96,10 +96,10 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
     <section className="space-y-6">
       <div className="relative isolate overflow-hidden rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-primary/10 via-brand-surface to-brand-surface p-6 shadow-lg dark:border-brand-outline/40 dark:from-brand-secondary/20 dark:via-brand-surface/40 dark:to-brand-surface/30">
         <header className="border-b border-brand-outline/10 pb-4 dark:border-brand-outline/30">
-          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
+          <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
             {t("romePlanner.title")}
           </h2>
-          <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-surface/70">
+          <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-text/70">
             {t("romePlanner.subtitle")}
           </p>
         </header>
@@ -107,7 +107,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
         <Cluster as="div" className="mt-4 items-center gap-3">
           <span
             id={directionLabelId}
-            className="text-sm font-medium text-brand-heading/80 dark:text-brand-surface/80"
+            className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
           >
             {t("romePlanner.directionPrompt")}
           </span>
@@ -155,7 +155,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
         </div>
       </div>
 
-      <p className="text-center text-xs text-brand-text/60 dark:text-brand-surface/60">
+      <p className="text-center text-xs text-brand-text/60 dark:text-brand-text/60">
         {t("romePlanner.disclaimer")}
       </p>
     </section>

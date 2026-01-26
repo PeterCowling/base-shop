@@ -1,6 +1,7 @@
-import type { ProductConfigSchema } from "@acme/product-configurator";
 import { renderHook, waitFor } from "@testing-library/react";
 import * as THREE from "three";
+
+import type { ProductConfigSchema } from "@acme/product-configurator";
 
 import { useMaterialBindings } from "../src/viewer/materials/useMaterialBindings";
 

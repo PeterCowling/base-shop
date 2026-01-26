@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram } from "lucide-react";
 
-import { Section } from "@acme/ui/atoms";
+import { Section } from "@acme/design-system/atoms";
 
 import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";
@@ -14,8 +14,8 @@ import { articleSlug } from "@/routes.assistance-helpers";
 import { guideHref } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
-import { EXTERNAL_REL } from "./footerConstants";
 import FooterLegalRow from "./FooterLegalRow";
+import { FooterIconLink, FooterTextLink } from "./FooterLinks";
 import FooterNav from "./FooterNav";
 import type { FooterGroup, FooterLink } from "./footerTypes";
 
@@ -33,7 +33,9 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   })();
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  // Prefer the route-provided language so footer copy tracks URL changes,
+  // even if the i18n instance hasn't updated yet.
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t: tFooter } = useTranslation("footer", { lng: lang });
   const rawPathname = usePathname();
   const pathname = rawPathname ?? "";
@@ -43,79 +45,6 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
     const query = encodeURIComponent(`${hotel.name.en} ${hotel.address.streetAddress}`);
     return `https://maps.google.com/?q=${query}`;
   })();
-  const linkClasses = useCallback(
-    (small = false, isActive = false): string => {
-      const sizeClass = small ? "text-sm" : "text-base";
-      return [
-        "inline-flex",
-        "min-h-[44px]",
-        "items-center",
-        "gap-2",
-        "font-medium",
-        sizeClass,
-        "text-brand-bg",
-        "underline",
-        "decoration-2",
-        "underline-offset-[0.2em]",
-        "decoration-current",
-        "transition-colors",
-        "hover:text-brand-secondary",
-        "hover:decoration-brand-secondary",
-        "focus-visible:outline",
-        "focus-visible:outline-2",
-        "focus-visible:outline-offset-4",
-        "focus-visible:outline-current",
-        "dark:text-brand-text",
-        isActive ? "font-semibold" : "",
-      ].join(" ");
-    },
-    [],
-  );
-  const legalLinkClasses = useCallback(
-    (isActive = false): string =>
-      [
-        "inline-flex",
-        "min-h-[44px]",
-        "items-center",
-        "text-sm",
-        "font-medium",
-        "text-brand-bg",
-        "no-underline",
-        "transition-colors",
-        "hover:underline",
-        "decoration-2",
-        "underline-offset-[0.2em]",
-        "decoration-current",
-        "hover:text-brand-secondary",
-        "hover:decoration-brand-secondary",
-        "focus-visible:outline",
-        "focus-visible:outline-2",
-        "focus-visible:outline-offset-4",
-        "focus-visible:outline-current",
-        "dark:text-brand-text",
-        isActive ? "font-semibold" : "",
-      ].join(" "),
-    [],
-  );
-  const iconLinkClasses = useCallback(
-    () =>
-      [
-        "inline-flex",
-        "size-11",
-        "items-center",
-        "justify-center",
-        "rounded-full",
-        "text-brand-bg",
-        "transition-colors",
-        "hover:text-brand-secondary",
-        "focus-visible:outline",
-        "focus-visible:outline-2",
-        "focus-visible:outline-offset-4",
-        "focus-visible:outline-current",
-        "dark:text-brand-text",
-      ].join(" "),
-    [],
-  );
   const brandName = hotel.name[lang] ?? hotel.name.en;
   const brandDescription = hotel.description[lang] ?? hotel.description.en;
   const isActiveLink = useCallback(
@@ -262,14 +191,9 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
                   </span>
                 ))}
               </address>
-              <a
-                href={mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClasses(true)}
-              >
+              <FooterTextLink href={mapUrl} external newTab size="sm">
                 {tFooter("mapLink", { lng: lang })}
-              </a>
+              </FooterTextLink>
             </div>
           </div>
 
@@ -282,13 +206,13 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
                 <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/70 dark:text-brand-text/70">
                   {tFooter("email", { lng: lang })}
                 </p>
-                <a
+                <FooterTextLink
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className={linkClasses(true)}
-                  aria-label={emailLinkLabel}
+                  size="sm"
+                  ariaLabel={emailLinkLabel}
                 >
                   {CONTACT_EMAIL}
-                </a>
+                </FooterTextLink>
                 <p className="text-sm text-brand-bg/80 dark:text-brand-text/80">{noPhoneNotice}</p>
               </div>
             </div>
@@ -300,16 +224,15 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
               <Cluster as="ul" className="items-center">
                 {socialLinks.map((link) => (
                   <li key={link.key}>
-                    <a
+                    <FooterIconLink
                       href={link.href}
-                      target={link.newTab ? "_blank" : undefined}
-                      rel={link.newTab ? EXTERNAL_REL : undefined}
-                      aria-label={link.label}
-                      className={iconLinkClasses()}
+                      external
+                      newTab={link.newTab}
+                      ariaLabel={link.label}
                     >
                       {link.key === "instagram" ? <Instagram className="size-5" aria-hidden /> : null}
                       {link.key === "facebook" ? <Facebook className="size-5" aria-hidden /> : null}
-                    </a>
+                    </FooterIconLink>
                   </li>
                 ))}
               </Cluster>
@@ -322,7 +245,6 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
         <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-6 py-6 md:py-7">
           <FooterNav
             navGroups={navGroups}
-            linkClasses={linkClasses}
             isActiveLink={isActiveLink}
             prefetch={FOOTER_PREFETCH}
           />
@@ -339,7 +261,6 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
         >
           <FooterLegalRow
             legalLinks={legalLinks}
-            legalLinkClasses={legalLinkClasses}
             isActiveLink={isActiveLink}
             prefetch={FOOTER_PREFETCH}
             copyright={copyright}

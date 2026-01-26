@@ -37,7 +37,7 @@ export interface Offer {
   price: number;
   priceSpecification: UnitPriceSpecification | unknown;
   priceCurrency: "EUR";
-  availabilityStarts: string;
+  availabilityStarts?: string;
   availability?: string;
   potentialAction?: ReserveAction;
   image: string[];
@@ -56,7 +56,7 @@ export interface OfferInput {
   name: string;
   description: string;
   price: number;
-  validFrom: string;
+  validFrom?: string;
   images: string[];
 }
 

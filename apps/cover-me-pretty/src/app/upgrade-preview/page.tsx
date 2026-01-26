@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { exampleProps } from "./example-props";
-import ComponentPreview from "@acme/ui/components/ComponentPreview";
+
 import { useTranslations } from "@acme/i18n";
+import ComponentPreview from "@acme/ui/components/ComponentPreview";
+
+import { exampleProps } from "./example-props";
 
 interface UpgradeComponent {
   file: string;
@@ -118,7 +120,7 @@ export default function UpgradePreviewPage() {
       >
         {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}
       </button>
-      {error && <p role="alert" className="text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-danger">{error}</p>}
     </div>
   );
 }

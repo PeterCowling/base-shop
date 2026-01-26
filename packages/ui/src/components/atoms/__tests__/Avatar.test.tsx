@@ -42,7 +42,7 @@ describe("Avatar", () => {
     );
     const img = screen.getByAltText("User avatar");
     expect(img).toHaveStyle({ width: "64px", height: "64px" });
-    expect(img).toHaveClass("rounded-full");
+    expect(img).not.toHaveClass("rounded-full");
     expect(img).toHaveClass("rounded-none");
   });
 

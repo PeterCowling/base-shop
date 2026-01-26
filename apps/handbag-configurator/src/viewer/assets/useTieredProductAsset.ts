@@ -1,12 +1,13 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+
 import type {
   AssetTier,
   ProductAssetManifest,
   ProductConfigSchema,
   SelectionState,
 } from "@acme/product-configurator";
-import { useEffect, useMemo, useState } from "react";
 
 export type TierPreference = "auto" | AssetTier;
 

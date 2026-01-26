@@ -1,16 +1,19 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
+import { useTranslations } from "@acme/i18n";
 import type {
   ProductConfigSchema,
   SelectionState,
   ValidateResponse,
 } from "@acme/product-configurator";
-import { useEffect, useRef, useState } from "react";
-import { ViewerCanvas } from "../viewer/ViewerCanvas";
-import { useHotspotConfig } from "../viewer/hotspots/useHotspotConfig";
-import { useModeStore } from "../viewer/state/modeStore";
+
 import { ConfiguratorPanel } from "../ui/ConfiguratorPanel";
 import { TopBar } from "../ui/TopBar";
+import { useHotspotConfig } from "../viewer/hotspots/useHotspotConfig";
+import { useModeStore } from "../viewer/state/modeStore";
+import { ViewerCanvas } from "../viewer/ViewerCanvas";
 
 type ConfiguratorPageProps = {
   schema: ProductConfigSchema | null;
@@ -31,6 +34,7 @@ function selectionsEqual(a: SelectionState, b: SelectionState) {
 export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageProps) {
   const closePanel = useModeStore((state) => state.closePanel);
   const clearActiveRegion = useModeStore((state) => state.clearActiveRegion);
+  const t = useTranslations();
 
   const [selections, setSelections] = useState<SelectionState>({});
   const handleColorOverrideRef = useRef(false);
@@ -166,7 +170,7 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
         />
 
         {error ? (
-          <div className="absolute left-6 top-6 max-w-sm rounded-2xl border border-danger/30 bg-danger-soft p-4 text-xs text-danger-foreground">
+          <div className="absolute start-6 top-6 handbag-alert rounded-2xl border border-danger/30 bg-danger-soft p-4 text-xs text-danger-foreground">
             {error}
           </div>
         ) : null}
@@ -180,29 +184,29 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
           {...(schema ? { schema } : {})}
         />
 
-        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-6 text-sm text-primary">
+        <div className="pointer-events-none absolute bottom-6 start-1/2 flex -translate-x-1/2 items-center gap-6 text-sm text-primary">
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
             onClick={handleDone}
           >
-            I&apos;m done
+            {t("handbagConfigurator.action.done")}
           </button>
-          <span className="h-6 w-px bg-border-1" aria-hidden="true" />
+        <span className="h-6 w-px bg-border-1" aria-hidden="true" />
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
             onClick={() => {}}
           >
-            Save/Share
+          {t("handbagConfigurator.action.saveShare")}
           </button>
-          <span className="h-6 w-px bg-border-1" aria-hidden="true" />
+        <span className="h-6 w-px bg-border-1" aria-hidden="true" />
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-11 min-w-11 rounded-md px-3 py-2 transition hover:text-primary/80"
             onClick={handleReset}
           >
-            Blank Bag
+            {t("handbagConfigurator.action.blankBag")}
           </button>
         </div>
       </div>

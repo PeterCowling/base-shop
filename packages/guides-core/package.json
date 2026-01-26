@@ -1,0 +1,25 @@
+{
+  "name": "@acme/guides-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b --watch",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "lint": "eslint ."
+  }
+}

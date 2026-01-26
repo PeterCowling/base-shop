@@ -403,14 +403,15 @@ export function ComboBox<T = string>({
       onKeyDown={handleKeyDown}
     >
       {/* Trigger Button */}
-      <button
-        type="button"
+      <div
+        role="button"
         id={id}
         onClick={() => !disabled && setIsOpen(!isOpen)}
-        disabled={disabled}
+        aria-disabled={disabled}
         aria-label={ariaLabel}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
+        tabIndex={disabled ? -1 : 0}
         className={`
           flex w-full items-center justify-between gap-2 rounded-lg border bg-white transition-colors
           ${sizeClasses[size]}
@@ -468,7 +469,7 @@ export function ComboBox<T = string>({
             className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           />
         </div>
-      </button>
+      </div>
 
       {/* Error message */}
       {error && (

@@ -12,16 +12,16 @@ function ProsConsBase({ prosKeys, consKeys }: ProsConsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div>
-        <div className="text-sm font-semibold text-brand-heading dark:text-brand-surface">{t("romePlanner.ui.pros")}</div>
-        <ul className="mt-1 list-disc pl-5 text-sm text-brand-text/80 dark:text-brand-surface/80">
+        <div className="text-sm font-semibold text-brand-heading dark:text-brand-text">{t("romePlanner.ui.pros")}</div>
+        <ul className="mt-1 list-disc pl-5 text-sm text-brand-text/80 dark:text-brand-text/80">
           {prosKeys.map((key) => (
             <li key={key}>{t(key)}</li>
           ))}
         </ul>
       </div>
       <div>
-        <div className="text-sm font-semibold text-brand-heading dark:text-brand-surface">{t("romePlanner.ui.cons")}</div>
-        <ul className="mt-1 list-disc pl-5 text-sm text-brand-text/80 dark:text-brand-surface/80">
+        <div className="text-sm font-semibold text-brand-heading dark:text-brand-text">{t("romePlanner.ui.cons")}</div>
+        <ul className="mt-1 list-disc pl-5 text-sm text-brand-text/80 dark:text-brand-text/80">
           {consKeys.map((key) => (
             <li key={key}>{t(key)}</li>
           ))}

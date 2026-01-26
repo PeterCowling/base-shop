@@ -124,12 +124,12 @@ describe("CartTemplate", () => {
       <CartTemplate cart={cart} onQtyChange={onQtyChange} onRemove={onRemove} />
     );
 
-    const img = container.querySelector("img");
+    const img = container.querySelector("input[type=\"image\"]");
     const video = container.querySelector("video");
-    expect(
-      decodeURIComponent(img!.getAttribute("src") || "")
-    ).toContain("/img1.jpg");
     expect(video).toHaveAttribute("src", "/vid1.mp4");
+    expect(
+      decodeURIComponent(img?.getAttribute("src") || "")
+    ).toContain("/img1.jpg");
 
     const incButtons = screen.getAllByRole("button", { name: "+" });
     await userEvent.click(incButtons[0]);

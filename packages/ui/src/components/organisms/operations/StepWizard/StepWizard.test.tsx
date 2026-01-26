@@ -275,9 +275,9 @@ describe("StepWizard", () => {
         const wizard = useWizard();
         return (
           <div>
-            <span data-testid="current-step">{wizard.currentStep}</span>
-            <span data-testid="is-first">{wizard.isFirstStep.toString()}</span>
-            <span data-testid="is-last">{wizard.isLastStep.toString()}</span>
+            <span data-cy="current-step">{wizard.currentStep}</span>
+            <span data-cy="is-first">{wizard.isFirstStep.toString()}</span>
+            <span data-cy="is-last">{wizard.isLastStep.toString()}</span>
           </div>
         );
       }

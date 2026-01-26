@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react";
 
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
-import { useTheme } from "../hooks/useTheme";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
 
@@ -40,11 +39,10 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { openModal } = useModal();
-  const { theme } = useTheme();
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const openBooking = useCallback(() => openModal("booking"), [openModal]);
-  const ctaClass = useMemo(() => (theme === "dark" ? "cta-dark" : "cta-light"), [theme]);
+  const ctaClass = "cta-dark";
   const primaryCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
       return FALLBACK_PRIMARY_CTA_LABEL;

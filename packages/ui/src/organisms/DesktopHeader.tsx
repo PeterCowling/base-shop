@@ -39,13 +39,12 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   }, [i18n.language]);
   const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
   useTranslation("header", { lng: lang });
-  useTranslation("_tokens", { lng: lang });
+  const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
-  const tokensT = useMemo(() => i18n.getFixedT(lang, "_tokens"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
-  const { theme } = useTheme();
   const { openModal } = useModal();
   const pathname = usePathname();
+  const { theme } = useTheme();
 
   const book = useCallback(() => openModal("booking"), [openModal]);
 
@@ -84,12 +83,12 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   );
 
   const { navLinks } = buildNavLinks(lang, navTranslate);
-  const ctaClass = theme === "dark" ? "cta-dark" : "cta-light";
+  const ctaClass = "cta-dark";
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const primaryCtaLabel = useMemo(
-    () => resolvePrimaryCtaLabel(tokensT, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL,
-    [tokensT]
-  );
+  const primaryCtaLabel = useMemo(() => {
+    if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
+    return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;
+  }, [tTokens, tokensReady]);
 
   return (
     <div className="hidden lg:block bg-header-gradient">

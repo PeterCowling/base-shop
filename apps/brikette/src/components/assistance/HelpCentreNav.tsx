@@ -114,7 +114,7 @@ function HelpCentreNav({ currentKey, className = "lg:w-80", lang: explicitLang }
         "pr-[40px]",
         highlighted
           ? ["font-semibold", "text-brand-primary", "dark:text-brand-secondary"]
-          : ["text-brand-text", "dark:text-brand-surface"],
+          : ["text-brand-text", "dark:text-brand-text"],
         "hover:bg-brand-surface/60",
         "dark:hover:bg-brand-text/60",
         "focus-visible:outline-none",

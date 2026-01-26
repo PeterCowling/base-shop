@@ -11,9 +11,9 @@ import type {
 } from "../../types";
 import type { StructuredFallback } from "../../utils/fallbacks";
 import { logStructuredToc } from "../../utils/logging";
-import { resolveFaqTitle } from "../../utils/toc";
+import { type resolveFaqTitle } from "../../utils/toc";
 
-import { getStructuredTocOverride } from "./index";
+import { type getStructuredTocOverride } from "./index";
 import { FaqSectionBlock } from "./StructuredTocFaqSection";
 
 export function MinimalLocalizedContent({

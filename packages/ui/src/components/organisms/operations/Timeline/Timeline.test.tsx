@@ -233,7 +233,7 @@ describe('Timeline', () => {
           id: '1',
           timestamp: new Date(),
           title: 'Event',
-          metadata: <div data-testid="custom-metadata">Custom content</div>,
+          metadata: <div data-cy="custom-metadata">Custom content</div>,
         },
       ];
       render(<Timeline events={events} />);

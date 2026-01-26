@@ -17,6 +17,7 @@ import { HeaderSection } from "@/routes/how-to-get-here/components/HeaderSection
 import {
   type ActiveFilterChip,
   HowToToolbar,
+  type JumpToGroup,
   type JumpToItem,
   useHeaderStickyOffset,
 } from "@/routes/how-to-get-here/components/HowToToolbar";
@@ -158,10 +159,11 @@ function HowToGetHereIndexContent({ lang }: Props) {
           "jumpTo.arrival",
           resolveLabel(fallbackT, "jumpTo.arrival", "Arrival help"),
         ),
+        group: "quick-actions" as JumpToGroup,
       },
     ];
     for (const section of content.sections) {
-      items.push({ id: section.id, label: section.name });
+      items.push({ id: section.id, label: section.name, group: "destinations" as JumpToGroup });
     }
     items.push({
       id: ROME_SECTION_ID,
@@ -170,6 +172,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         "jumpTo.rome",
         resolveLabel(fallbackT, "jumpTo.rome", "Rome"),
       ),
+      group: "utility" as JumpToGroup,
     });
     items.push({
       id: EXPERIENCE_SECTION_ID,
@@ -178,6 +181,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         "jumpTo.experiences",
         resolveLabel(fallbackT, "jumpTo.experiences", "Experiences"),
       ),
+      group: "utility" as JumpToGroup,
     });
     return items;
   })();

@@ -12,10 +12,14 @@ export type ActiveFilterChip = {
   value: string;
 };
 
+export type JumpToGroup = "quick-actions" | "destinations" | "utility";
+
 export type JumpToItem = {
   id: string;
   label: string;
   count?: number;
+  /** Used to add visual separators between groups */
+  group?: JumpToGroup;
 };
 
 type ToolbarFiltersState = Pick<
@@ -179,18 +183,30 @@ export function HowToToolbar({
       {jumpTo.length ? (
         <nav aria-label={jumpToLabel} className="mt-3 overflow-x-auto pb-1">
           <Inline as="ul" className="w-max gap-2">
-            {jumpTo.map((item) => (
-              <li key={item.id}>
-                <a className={anchorLinkClass} href={`#${item.id}`}>
-                  {item.label}
-                  {typeof item.count === "number" ? (
-                    <span className="ms-1 text-brand-heading/70 dark:text-brand-text/70">
-                      ({item.count})
-                    </span>
+            {jumpTo.map((item, index) => {
+              const prevGroup = index > 0 ? jumpTo[index - 1]?.group : undefined;
+              const showSeparator = item.group && prevGroup && item.group !== prevGroup;
+
+              return (
+                <li key={item.id} className="flex items-center gap-2">
+                  {showSeparator ? (
+                    <span
+                      role="separator"
+                      aria-hidden="true"
+                      className="h-4 w-px bg-brand-outline/30 dark:bg-brand-outline/40"
+                    />
                   ) : null}
-                </a>
-              </li>
-            ))}
+                  <a className={anchorLinkClass} href={`#${item.id}`}>
+                    {item.label}
+                    {typeof item.count === "number" ? (
+                      <span className="ms-1 text-brand-heading/70 dark:text-brand-text/70">
+                        ({item.count})
+                      </span>
+                    ) : null}
+                  </a>
+                </li>
+              );
+            })}
           </Inline>
         </nav>
       ) : null}

@@ -57,5 +57,22 @@
         "Snarveien går ned flere fly fra vandrerhjemmet før den bytter til en asfaltert bane. Bruk bussen for retur hvis du foretrekker å unngå å klatre opp igjen."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Rutekart og landemerker",
+    "items": [
+      {
+        "alt": "Kart for turen fra Hostel Brikette til Fornillo-stranden",
+        "caption": "Hostel Brikette til Fornillo (kart)"
+      },
+      {
+        "alt": "Sving inn på gangveien ved Hotel Posa Posa",
+        "caption": "Snarveiavkjøring til Fornillo"
+      },
+      {
+        "alt": "Rute fra Spiaggia Grande til Interno-bussholdeplassen",
+        "caption": "Returveien til Interno-bussen"
+      }
+    ]
+  }
 }

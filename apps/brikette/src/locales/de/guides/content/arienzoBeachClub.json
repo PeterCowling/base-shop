@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Arienzo Fotohighlights",
   "gallery": {
-    "title": "Arienzo Fotohighlights",
-    "items": [
-      {
-        "alt": "Terrassen des Arienzo Beach Club",
-        "caption": "Felsterrassen mit orangefarbenen Liegen"
-      },
-      {
-        "alt": "Anleger des Shuttlebootes von Arienzo",
-        "caption": "Shuttle-Boarding an der Spiaggia Grande"
-      },
-      {
-        "alt": "Treppen hinunter nach Arienzo",
-        "caption": "300 Stufen durch Zitronenterrassen"
-      }
-    ]
+    "primaryAlt": "Küste des Arienzo Beach und Klippenclub",
+    "primaryCaption": "Kiesstrand mit orangefarbenen Sonnenschirmen unter den Klippen",
+    "secondaryAlt": "Terrassenessen im Arienzo Beach Club",
+    "secondaryCaption": "Meerblick-Tische unter orange-weißen Sonnenschirmen"
   }
 }

@@ -8,7 +8,31 @@
   "title": "Spare {{percent}} % bei Aufenthalten vom {{from}} bis {{to}}",
   "promo": "Direkt buchen – dein {{percent}} %-Rabatt wird beim Checkout automatisch angewendet.",
   "dealCard": {
-    "savePercent": "{{percent}} sparen"
+    "savePercent": "{{percent}} sparen",
+    "stayDatesLabel": "Aufenthaltsdaten:",
+    "badges": {
+      "autoApplied": "Automatisch angewendet",
+      "directOnly": "Nur Direktbuchungen"
+    },
+    "cta": {
+      "bookDirect": "Direkt buchen",
+      "applyDeal": "Angebot anwenden"
+    },
+    "status": {
+      "upcoming": "Kommendes Angebot · Startet am {{startDate}}",
+      "expired": "Abgelaufen"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktuelles Angebot",
+    "activeTitle": "{{percent}} sparen",
+    "activeDatesLabel": "Aufenthaltsdaten:",
+    "activeSubtitle": "Automatisch beim Checkout angewendet. Nur Direktbuchungen."
+  },
+  "emptyState": {
+    "title": "Keine aktuellen Angebote",
+    "subtitle": "Buche direkt für den besten Preis und exklusive Vorteile.",
+    "secondaryCta": "Vorteile der Direktbuchung ansehen"
   },
   "status": {
     "banner": {

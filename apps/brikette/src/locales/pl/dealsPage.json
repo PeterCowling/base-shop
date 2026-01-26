@@ -8,7 +8,31 @@
   "title": "Oszczędź {{percent}}% na pobytach od {{from}} do {{to}}",
   "promo": "Rezerwuj bezpośrednio — zniżka {{percent}}% nalicza się automatycznie przy płatności.",
   "dealCard": {
-    "savePercent": "Oszczędź {{percent}}"
+    "savePercent": "Oszczędź {{percent}}",
+    "stayDatesLabel": "Terminy pobytu:",
+    "badges": {
+      "autoApplied": "Automatycznie naliczana",
+      "directOnly": "Tylko rezerwacje bezpośrednie"
+    },
+    "cta": {
+      "bookDirect": "Zarezerwuj bezpośrednio",
+      "applyDeal": "Zastosuj ofertę"
+    },
+    "status": {
+      "upcoming": "Nadchodząca oferta · Start {{startDate}}",
+      "expired": "Wygasła"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktualna oferta",
+    "activeTitle": "Oszczędź {{percent}}",
+    "activeDatesLabel": "Terminy pobytu:",
+    "activeSubtitle": "Automatycznie naliczana przy płatności. Tylko rezerwacje bezpośrednie."
+  },
+  "emptyState": {
+    "title": "Brak aktualnych ofert",
+    "subtitle": "Zarezerwuj bezpośrednio, aby uzyskać najlepszą cenę i korzyści.",
+    "secondaryCta": "Zobacz korzyści z rezerwacji bezpośredniej"
   },
   "status": {
     "banner": {

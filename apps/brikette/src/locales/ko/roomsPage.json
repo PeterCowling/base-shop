@@ -29,6 +29,41 @@
     "keycard": "키카드 출입",
     "linen": "침구 및 수건 제공"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "개인실",
+      "mixedDorm": "혼성 도미토리",
+      "femaleDorm": "여성 도미토리",
+      "femaleRoom": "여성 전용 객실"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "객실 내 욕실",
+      "bathroomPrivate": "전용 욕실",
+      "bathroomSharedFemale": "공용 욕실"
+    },
+    "sleeps": "최대 {{count}}명"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "더블베드 1개",
+      "threeSingleBedsThreeGuests": "싱글베드 3개",
+      "oneDormBedTwoGuests": "2층 침대 1개",
+      "threeDormBedsSixGuests": "2층 침대 3개",
+      "threeDormBedsPlusSingleSevenGuests": "2층 침대 3개 + 싱글 1개",
+      "fourDormBedsEightGuests": "2층 침대 4개"
+    },
+    "views": {
+      "seaViewTerrace": "바다 전망 테라스",
+      "seaViewExtraLargeTerrace": "바다 전망 테라스",
+      "gardenView": "정원 전망",
+      "courtyardView": "안뜰 전망",
+      "noView": "전망 없음"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "객실",
+    "perBed": "침대"
+  },
   "rooms": {
     "title": "객실 안내",
     "double_room": {

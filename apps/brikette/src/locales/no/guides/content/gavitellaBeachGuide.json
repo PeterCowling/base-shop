@@ -111,5 +111,31 @@
         "La Gavitella serverer middag på terrassen og kombinerer den ofte med en kort båttur. One Fire arrangerer sunset-fester som avsluttes rundt siste interno-buss. Bekreft transport tilbake med staben, så slipper du å klatre trappene i mørket."
       ]
     }
+  ],
+  "images": {
+    "overview": {
+      "alt": "Fugleperspektiv av Gavitella-bukten med de to strandklubbene",
+      "caption": "To strandklubber deler den smale bukten."
+    },
+    "gavitellaClub": {
+      "alt": "Middagsbord ved solnedgang på La Gavitella",
+      "caption": "Middager ved solnedgang med Li Galli-øyene i bakgrunnen."
+    },
+    "oneFire": {
+      "alt": "Knallfarget solsenger på One Fire strandklubb",
+      "caption": "One Fire er kjent for DJ-sett og vannmelonfester."
+    }
+  },
+  "essentialsTitle": "Dette kan du forvente",
+  "essentials": [
+    "SITA-buss fra Positano til Praiano (Piazza San Gennaro), deretter ~400 trapper ned.",
+    "Reservasjoner anbefales på La Gavitella og One Fire – drop-ins kan være vanskelig.",
+    "Bittesmå offentlig sone mellom klubbene; kom tidlig hvis du ikke booker solseng."
+  ],
+  "typicalCostsTitle": "Typiske kostnader",
+  "typicalCosts": [
+    "Solsengpakke på La Gavitella: €60–€100 for to personer avhengig av sesong.",
+    "Solsengpakke på One Fire: €50–€80 for to personer.",
+    "Middagsretter på klippeterrassen: €20–€35 per rett."
   ]
 }

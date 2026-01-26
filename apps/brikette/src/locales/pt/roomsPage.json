@@ -29,6 +29,41 @@
     "keycard": "Acesso com cartão",
     "linen": "Roupa de cama e toalha incluídas"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Quarto privado",
+      "mixedDorm": "Dormitório misto",
+      "femaleDorm": "Dormitório feminino",
+      "femaleRoom": "Quarto feminino"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Casa de banho privativa",
+      "bathroomPrivate": "Casa de banho privada",
+      "bathroomSharedFemale": "Casa de banho partilhada"
+    },
+    "sleeps": "Capacidade: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 cama de casal",
+      "threeSingleBedsThreeGuests": "3 camas individuais",
+      "oneDormBedTwoGuests": "1 beliche",
+      "threeDormBedsSixGuests": "3 beliches",
+      "threeDormBedsPlusSingleSevenGuests": "3 beliches + 1 individual",
+      "fourDormBedsEightGuests": "4 beliches"
+    },
+    "views": {
+      "seaViewTerrace": "Terraço com vista mar",
+      "seaViewExtraLargeTerrace": "Terraço com vista mar",
+      "gardenView": "Vista jardim",
+      "courtyardView": "Vista pátio",
+      "noView": "Sem vista"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "quarto",
+    "perBed": "cama"
+  },
   "rooms": {
     "title": "Os nossos quartos",
     "double_room": {

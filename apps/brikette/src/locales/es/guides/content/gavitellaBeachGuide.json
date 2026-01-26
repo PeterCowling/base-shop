@@ -72,6 +72,32 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "Vista aérea de la cala de la playa de Gavitella y los soláriums",
+      "caption": "Los dos clubes de playa comparten una plataforma estrecha excavada en el acantilado."
+    },
+    "gavitellaClub": {
+      "alt": "Mesa de cena en la terraza con vistas a la Costa Amalfitana al atardecer",
+      "caption": "Las cenas al atardecer de La Gavitella combinan vistas al mar con largos aperitivi."
+    },
+    "oneFire": {
+      "alt": "Sombrillas y tumbonas de color naranja brillante en One Fire Beach Club",
+      "caption": "One Fire es conocido por sus animadas tardes y el ambiente al atardecer con DJ."
+    }
+  },
+  "essentialsTitle": "Lo imprescindible",
+  "essentials": [
+    "Reserva con antelación en ambos clubes; los turnos del atardecer y los fines de semana se agotan primero.",
+    "Cuenta con más de 400 escalones de bajada desde la Piazza San Gennaro y un ascenso empinado a menos que uses la lanzadera interno.",
+    "Lleva escarpines para la plataforma rocosa y protector solar respetuoso con los arrecifes para el sol de la tarde."
+  ],
+  "typicalCostsTitle": "Costes habituales",
+  "typicalCosts": [
+    "Set de tumbona para dos en La Gavitella: 70–100 € según la temporada.",
+    "Cama de día o cabaña para dos en One Fire: 100–180 €, a menudo con depósito en temporada alta.",
+    "Añadido de lanzadera en barco (cuando disponible): 10–20 € por persona y trayecto."
+  ],
   "tipsTitle": "Consejos rápidos",
   "tips": [
     "Usa %LINK:positanoAmalfi|nuestra guía de transporte Positano ↔ Amalfi% para planificar el trayecto en SITA hasta la Piazza San Gennaro antes de enfrentarte a las 400 escaleras de bajada.",

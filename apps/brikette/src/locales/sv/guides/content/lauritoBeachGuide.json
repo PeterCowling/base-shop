@@ -75,6 +75,24 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "Laurito Beach-viken med strandklubbar längs strandlinjen",
+      "caption": "Lauritos klippomgärdade vik är lugnare och tystare än huvudstranden."
+    },
+    "layout": {
+      "alt": "Stranddäck och strandlinjelayout vid Laurito",
+      "caption": "Tre zoner delar viken: offentlig remsa, Villa Tre Villes däck och Da Adolfos terrass."
+    },
+    "treVille": {
+      "alt": "Villa Tre Ville beach club-solstolar och havsutsikt",
+      "caption": "Villa Tre Ville fokuserar på premiumsolstolar och concierge-service."
+    },
+    "daAdolfo": {
+      "alt": "Da Adolfo beach club brygga och sittplatsområde",
+      "caption": "Da Adolfos skyttelbåt släpper av gäster bredvid restaurangterrassen."
+    }
+  },
   "essentialsTitle": "What to expect",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",

@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Niezbędne rzeczy",
+  "essentials": [
+    "Krem z filtrem.",
+    "Ręcznik.",
+    "Okulary przeciwsłoneczne."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Bilet autobusowy: 10 euro."
+  ],
   "tipsTitle": "Extra tips",
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",

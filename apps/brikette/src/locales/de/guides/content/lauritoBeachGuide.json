@@ -1,126 +1,144 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "Laurito-Strand-Guide",
+    "description": "Wähle zwischen Da Adolfo und Tre Ville, erfahre, wie die Shuttle-Boote funktionieren, und plane einen entspannten Strandtag in Laurito."
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "Laurito-Strand-Guide",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "Laurito ist eine kleine Bucht zwischen Positano und Praiano. Zwei Strandclubs – Da Adolfo und Villa Tre Ville – dominieren die Küste und lassen nur einen schmalen öffentlichen Streifen übrig. Dafür erwarten dich nach Westen gerichtete Sonne, legendäre Mittagessen und eine ruhigere Atmosphäre als am Spiaggia Grande.",
+    "Nutze diesen Guide, um zu entscheiden, welcher Club zu dir passt, zu verstehen, wie die Wassertaxis funktionieren, und die Bus-und-Treppen-Route zurück zum Hostel Brikette zu planen."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "Warum Laurito besuchen"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Aufbau & Services"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "Villa Tre Ville Beach Club"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "Da Adolfo Beach Club"
     },
     {
       "href": "#logistics",
-      "label": "Logistics & getting back"
+      "label": "Logistik & Rückweg"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "title": "Warum sich Laurito lohnt",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "Laurito liegt etwas außerhalb von Positanos Zentrum, sodass es deutlich weniger voll ist als der Spiaggia Grande. Die Sonne scheint bis zum frühen Abend auf die Decks, das Wasser bleibt ruhig zum Schwimmen, und die Klippenkulisse sorgt für klassische Amalfiküsten-Fotos.",
+        "Du brauchst entweder eine bestätigte Reservierung oder Geduld für den winzigen freien Bereich, aber sobald du einen Platz hast, ist es einer der entspanntesten Orte in kurzer Entfernung vom Hostel Brikette."
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "Aufbau und wer was betreibt",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "Die Bucht teilt sich in drei Zonen. Ganz rechts liegt ein schmaler öffentlicher Bereich für alle, die ihr eigenes Handtuch mitbringen. Der Club von Villa Tre Ville belegt die mittleren Decks mit terrakottafarbenen Liegen, während Da Adolfo die linke Seite mit Holzliegen und der Restaurant-Terrasse betreibt.",
+        "Alle Gäste kommen per Boot oder über die steile Treppe von der SITA-Bushaltestelle. In Stoßzeiten musst du mit Wartezeiten rechnen, da beide Clubs den Zugang zum Großteil der Küste kontrollieren."
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "Villa Tre Ville Beach Club",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "Villa Tre Ville betreibt einen Boutique-Club mit wenigen Liegen, aufmerksamem Service und entsprechenden Preisen. Erwarte Premium-Daybed, À-la-carte-Essen und Prosecco, der dir an den Stuhl gebracht wird.",
+        "Reservierungen laufen über den Hotel-Concierge. Plätze können in der Hochsaison über 200 € für zwei Personen kosten, beinhalten aber Handtücher, Duschen und den Rückbootservice zur Spiaggia Grande.",
+        "Der späte Nachmittag ist besonders malerisch; das Personal organisiert oft Sunset-Spritz-Tastings vor dem letzten Shuttle zurück nach Positano."
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "Da Adolfo Beach Club",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "Da Adolfo ist berühmt für seinen gegrillten Mozzarella auf Zitronenblättern und die entspannte, bohème Atmosphäre. Eine Reservierung zu bekommen ist notorisch schwierig – sie antworten langsam, und tagesaktuelle Plätze gehen zuerst an Stammgäste.",
+        "Wenn du keine Reservierung bekommst, komm früh zur Spiaggia Grande und frag, ob du als Standby-Gast das Da-Adolfo-Wassertaxi nehmen kannst. Am Steg setzen die Mitarbeiter dich auf eine Warteliste für No-Shows.",
+        "Liegen-Pakete liegen bei etwa 50–70 € für zwei Personen inklusive Shuttle. Hauptgerichte beim Mittagessen kosten 18–26 € und die Küche hat bis zum späten Nachmittag geöffnet."
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "title": "Logistik, Tickets und Rückweg",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "Wassertaxis für beide Clubs fahren vom kleinen Steg an der Spiaggia Grande ab. Boote fahren in der Regel alle 30 Minuten ab 09:30 Uhr bis zum frühen Nachmittag, dann nehmen die Rückfahrten gegen 15:00 Uhr wieder auf. Behalte bei rauer See die Kreidetafel am Steg im Blick.",
+        "Bevorzugst du öffentliche Verkehrsmittel? Folge unserem %LINK:lauritoBeachBusDown|Bus-Guide% für die Hinfahrt und %LINK:lauritoBeachBusBack|Rückweg-Guide% für den Aufstieg. Kauf deine Bustickets, bevor du die Stadt verlässt – in Laurito gibt es keine Verkaufsstelle.",
+        "Auf dem Heimweg hält der Küstenbus Richtung Sorrent oder Positano neben dem Treppeneingang. Die Verbindungen werden nach 19:00 Uhr seltener, also bestätige die letzte Abfahrt oder plane Budget für ein Taxi ein, das du übers Hostel organisieren kannst."
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "Das erwartet dich",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "Reservierungen sind für beide Clubs im Sommer unerlässlich; Walk-ins klappen nur vor 10:00 Uhr.",
+    "Der winzige öffentliche Abschnitt füllt sich schnell – bring deinen eigenen Schirm und eine Matte mit.",
+    "Rückfahrtboote fahren am Nachmittag; halte den Bus als Backup für Abendpläne bereit."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typische Kosten",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "Da Adolfo Liegen-Set für zwei: 50–70 € inklusive Shuttle-Boot.",
+    "Villa Tre Ville Premium-Deck für zwei: 180–220 € mit Handtüchern und Concierge-Service.",
+    "Mittagessen-Hauptgerichte in beiden Clubs: 18–30 €, Cocktails 12–15 €, Wasser 3–4 €."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "Schnelle Tipps",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "Mach Screenshots deiner Bestätigungs-E-Mails – das Mobilsignal wird am Steg schwach.",
+    "Pack riff-sichere Sonnencreme und Wasserschuhe ein; die Küste besteht aus Kieseln und Felsplatten.",
+    "Vergleiche in unserem %LINK:beaches|Strandüberblick Positano% Laurito mit anderen Buchten."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "Gut zu wissen",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "Bei rauer See pausieren die Shuttle-Boote; das Personal schickt SMS-Updates, aber der Bus ist dann vielleicht dein einziger Rückweg.",
+    "Keine Geldautomaten oder Geschäfte in der Bucht – bring Bargeld oder Karten für Essen und Extras mit.",
+    "Die Treppe ist steil mit unebenen Stufen; plane Pausen ein und trag griffige Schuhe."
   ],
-  "faqsTitle": "Laurito FAQs",
+  "faqsTitle": "Laurito-FAQs",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "Brauche ich eine Reservierung?",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "Ja. Beide Clubs bevorzugen Gäste mit bestätigten Buchungen. Da Adolfo nimmt Standby-Besucher auf eine Warteliste, aber nur nachdem vorgebuchte Gäste platziert sind."
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "Kann ich den öffentlichen Bereich nutzen?",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "Du kannst, aber der Platz ist extrem begrenzt. Bring alles mit, was du brauchst, einschließlich Schatten und Wasser, und komm vor 09:30 Uhr, um dir einen Platz zu sichern."
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "Wie lange fahren die Boote?",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "Die meisten Rückfahrt-Shuttles enden im Sommer um 18:00 Uhr, in der Nebensaison früher. Bestätige immer bei Ankunft die letzte Abfahrt und speichere den Busfahrplan als Backup."
       ]
     }
   ],
   "gallery": {
     "alt": "Ufer des Laurito-Strands"
+  },
+  "images": {
+    "whyGo": {
+      "alt": "Bucht des Laurito-Strands mit Strandclubs entlang der Küste",
+      "caption": "Lauritos von Klippen umgebene Bucht ist ruhiger und entspannter als der Hauptstrand."
+    },
+    "layout": {
+      "alt": "Stranddecks und Küstenlayout in Laurito",
+      "caption": "Drei Zonen teilen sich die Bucht: öffentlicher Streifen, Villa Tre Ville Decks und Da Adolfo Terrasse."
+    },
+    "treVille": {
+      "alt": "Villa Tre Ville Strandclub-Liegen und Meerblick",
+      "caption": "Villa Tre Ville bietet Premium-Service und Sonnenuntergangs-Spritz-Tastings."
+    },
+    "daAdolfo": {
+      "alt": "Da Adolfo Terrasse mit gegrilltem Mozzarella-Gericht",
+      "caption": "Da Adolfos berühmter gegrillter Mozzarella auf Zitronenblättern."
+    }
   }
 }

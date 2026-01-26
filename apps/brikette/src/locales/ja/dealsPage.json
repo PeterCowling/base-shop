@@ -8,7 +8,31 @@
   "title": "{{from}}〜{{to}}のご滞在が{{percent}} %オフ",
   "promo": "直接予約で{{percent}} %割引。割引はチェックアウト時に自動適用されます。",
   "dealCard": {
-    "savePercent": "{{percent}}オフ"
+    "savePercent": "{{percent}}オフ",
+    "stayDatesLabel": "宿泊期間:",
+    "badges": {
+      "autoApplied": "自動適用",
+      "directOnly": "公式サイト限定"
+    },
+    "cta": {
+      "bookDirect": "直接予約する",
+      "applyDeal": "オファーを適用"
+    },
+    "status": {
+      "upcoming": "開催予定 · {{startDate}}開始",
+      "expired": "終了"
+    }
+  },
+  "hero": {
+    "activeLabel": "開催中のオファー",
+    "activeTitle": "{{percent}}オフ",
+    "activeDatesLabel": "宿泊期間:",
+    "activeSubtitle": "チェックアウト時に自動適用。公式サイトでの直接予約のみ。"
+  },
+  "emptyState": {
+    "title": "開催中のオファーはありません",
+    "subtitle": "最安料金と限定特典は直接予約で。",
+    "secondaryCta": "直接予約の特典を見る"
   },
   "status": {
     "banner": {

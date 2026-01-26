@@ -120,6 +120,24 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "Cala de la playa de Laurito con clubes de playa a lo largo de la orilla",
+      "caption": "La cala de Laurito, respaldada por acantilados, es más tranquila que la playa principal."
+    },
+    "layout": {
+      "alt": "Plataformas y distribución de la playa de Laurito",
+      "caption": "Tres zonas comparten la cala: franja pública, plataformas de Villa Tre Ville y terraza de Da Adolfo."
+    },
+    "treVille": {
+      "alt": "Tumbonas y vistas al mar del club de playa Villa Tre Ville",
+      "caption": "Villa Tre Ville se centra en tumbonas premium y servicio de conserjería."
+    },
+    "daAdolfo": {
+      "alt": "Muelle y zona de asientos del club de playa Da Adolfo",
+      "caption": "La lancha de Da Adolfo deja a los huéspedes junto a la terraza del restaurante."
+    }
+  },
   "gallery": {
     "alt": "Orilla de la playa de Laurito"
   }

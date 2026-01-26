@@ -17,15 +17,73 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Encontre a melhor rota para a sua chegada",
+    "subtitle": "Responda a duas perguntas rápidas — vamos direcionar você para a melhor opção e destacá-la.",
+    "placeLabel": "De onde você está vindo?",
+    "placePlaceholder": "Selecione um ponto de partida",
+    "arrivalLabel": "Quando você chega?",
+    "arrival": {
+      "daytime": "Durante o dia",
+      "evening": "À noite",
+      "lateNight": "De madrugada"
+    },
+    "preferencesLabel": "Preferências",
+    "preferences": {
+      "none": "Sem preferência",
+      "fastest": "Mais rápido",
+      "cheapest": "Mais barato",
+      "leastWalking": "Menos caminhada",
+      "luggageFriendly": "Mais adequado para bagagem"
+    },
+    "cta": "Mostrar minha melhor rota",
+    "urlHint": "Os filtros atualizam a URL, então você pode compartilhar o link.",
+    "lateNightHint": "Chegadas de madrugada costumam ser mais fáceis de táxi ou shuttle — use as opções de contato abaixo se ônibus/balsas já terminaram."
+  },
+  "routeCard": {
+    "factsLabel": "Detalhes da rota",
+    "duration": "Duração",
+    "cost": "Custo",
+    "walking": "A pé",
+    "luggage": "Bagagem",
+    "seasonality": "Época",
+    "seasonalityValues": {
+      "seasonal": "Sazonal",
+      "yearRound": "Todo o ano"
+    },
+    "cta": "Ver passo a passo",
+    "direction": {
+      "to": "Para o hostel",
+      "from": "Do hostel"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Ir para",
+    "arrival": "Ajuda na chegada",
+    "rome": "Roma",
+    "experiences": "Experiências"
   },
   "intro": {
     "taxi": "Para pedir um táxi, pode usar o WhatsApp para contactar o número seguinte em inglês ou italiano: <Strong>{{contact}}</Strong>.",
     "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Olá! Estou hospedado no Hostel Brikette. Gostaria de reservar um táxi para/de Positano. A minha hora de chegada é: ____",
+    "emailSubject": "Ajuda na chegada",
+    "emailBody": "Olá equipa do Hostel Brikette — chego hoje e preciso de ajuda para escolher a melhor forma de chegar. A minha hora estimada de chegada é: ____",
+    "whatsappCta": "Táxi via WhatsApp",
+    "callCta": "Ligar",
+    "taxiBestFor": "Ideal para: chegadas tardias · bagagem pesada · opção mais rápida",
+    "shuttleCta": "Reservar shuttle",
+    "shuttleBestFor": "Ideal para: chegadas ao aeroporto · transfer partilhado · planeamento antecipado",
+    "helpEyebrow": "Precisa de ajuda?",
+    "helpCopy": "Chega tarde ou com atrasos? Envie-nos mensagem para podermos planear o seu check-in e sugerir uma rota alternativa.",
+    "emailCta": "Enviar email para a receção",
+    "helpBestFor": "Ideal para: atrasos · cancelamentos de ferry · check-in tardio"
   },
   "destinations": {
     "filterLabel": "Place",
@@ -212,7 +270,17 @@
       }
     ]
   },
+  "lightbox": {
+    "titleFallback": "Imagem",
+    "openAria": "Abrir imagem",
+    "openAriaWithCaption": "Abrir imagem: {{caption}}"
+  },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Vista do Fórum Romano a partir do Museu Capitolino",
+      "caption": "O Fórum Romano e o Museu Capitolino"
+    },
     "title": "Roma",
     "description": "Siga as instruções do nosso guia escrito para chegar a Nápoles ou Salerno e, a partir daí, apanhe um comboio a partir de qualquer uma dessas cidades.",
     "table": {
@@ -371,6 +439,11 @@
     }
   },
   "sorrento": {
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Vista de Sorrento a partir da Piazza Tasso",
+      "caption": "Piazza Tasso em Sorrento"
+    },
     "title": "Sorrento",
     "links": [
       {
@@ -399,6 +472,7 @@
     "title": "Filter routes",
     "resultsCount": "Resultados: {{count}} rotas",
     "editLabel": "Editar filtros",
+    "shareHint": "Os filtros ficam refletidos na URL para facilitar o compartilhamento.",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

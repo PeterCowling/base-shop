@@ -89,5 +89,18 @@
     "Los acantilados bloquean el sol directo a media tarde, lo que es excelente para refrescarse, pero puede hacer frío en los días ventosos.",
     "La recepción móvil cae dentro del desfiladero; Descargue los horarios de los autobuses o las confirmaciones de la reserva de la cena con antelación."
   ],
-  "faqsTitle": "Preguntas frecuentes sobre Marina di Praia"
+  "faqsTitle": "Preguntas frecuentes sobre Marina di Praia",
+  "gallery": {
+    "title": "Recorrido fotográfico",
+    "items": [
+      {
+        "alt": "Vista de Marina di Praia con barcas y sombrillas en la orilla de guijarros.",
+        "caption": "La cala es estrecha, protegida por acantilados, y se mantiene más tranquila que las playas principales de Positano."
+      },
+      {
+        "alt": "Playa de guijarros con tumbonas azules y amarillas en Marina di Praia.",
+        "caption": "La sección de lido tiene la mayoría de las tumbonas, con una pequeña franja libre cerca del centro."
+      }
+    ]
+  }
 }

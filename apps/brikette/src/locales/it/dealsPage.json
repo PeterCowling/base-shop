@@ -8,7 +8,31 @@
   "title": "Risparmia {{percent}} % per soggiorni dal {{from}} al {{to}}",
   "promo": "Prenota direttamente e il tuo sconto del {{percent}} % viene applicato automaticamente al checkout.",
   "dealCard": {
-    "savePercent": "Risparmia {{percent}}"
+    "savePercent": "Risparmia {{percent}}",
+    "stayDatesLabel": "Date di soggiorno:",
+    "badges": {
+      "autoApplied": "Applicato automaticamente",
+      "directOnly": "Solo prenotazioni dirette"
+    },
+    "cta": {
+      "bookDirect": "Prenota in diretta",
+      "applyDeal": "Applica l'offerta"
+    },
+    "status": {
+      "upcoming": "Offerta in arrivo · Inizia il {{startDate}}",
+      "expired": "Scaduta"
+    }
+  },
+  "hero": {
+    "activeLabel": "Offerta attiva",
+    "activeTitle": "Risparmia {{percent}}",
+    "activeDatesLabel": "Date di soggiorno:",
+    "activeSubtitle": "Applicato automaticamente al checkout. Solo prenotazioni dirette."
+  },
+  "emptyState": {
+    "title": "Nessuna offerta attiva",
+    "subtitle": "Prenota direttamente per la migliore tariffa e vantaggi esclusivi.",
+    "secondaryCta": "Scopri i vantaggi della prenotazione diretta"
   },
   "status": {
     "banner": {

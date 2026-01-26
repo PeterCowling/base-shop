@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Ver la carta del bar de Hostel Brikette",
     "tertiaryCtaAria": "Enviar un mensaje a la conserjería digital de Hostel Brikette",
     "breakfastCta": "Ver el menú de desayuno",
-    "breakfastCtaAria": "Ver el menú de desayuno"
+    "breakfastCtaAria": "Ver el menú de desayuno",
+    "scrollNudge": "Explora por tipo de experiencia abajo"
   },
   "sections": {
     "bar": {
@@ -89,18 +90,75 @@
     "empty": "Aún no tenemos guías de experiencias para {{tag}}. Prueba con otra etiqueta o elimina el filtro.",
     "clearFilter": "Mostrar todas las guías de experiencias",
     "cardCta": "Explora la guía de experiencias {{guideTitle}}",
+    "directionsLabel": "Indicaciones",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Ferry Positano → Capri",
+        "capriPositanoFerry": "Ferry Capri → Positano"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi en bus",
+        "amalfiPositanoBus": "Amalfi → Positano en bus",
+        "positanoAmalfiFerry": "Ferry Positano → Amalfi (temporada)",
+        "amalfiPositanoFerry": "Ferry Amalfi → Positano (temporada)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Bus Positano → Ravello",
+        "ravelloPositanoBus": "Bus Ravello → Positano",
+        "positanoRavelloFerryBus": "Positano → Ravello ferry + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Nápoles centro → Positano (tren + bus)",
+        "naplesCenterPositanoFerry": "Ferry Nápoles centro → Positano",
+        "naplesAirportPositanoBus": "Bus aeropuerto de Nápoles → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoles centro (bus + tren)",
+        "positanoNaplesCenterFerry": "Ferry Positano → Nápoles",
+        "positanoNaplesAirportBus": "Bus Positano → aeropuerto de Nápoles"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Bus Salerno → Positano",
+        "salernoPositanoFerry": "Ferry Salerno → Positano (temporada)",
+        "positanoSalernoBus": "Bus Positano → Salerno",
+        "positanoSalernoFerry": "Ferry Positano → Salerno (temporada)"
+      }
+    },
     "filterHeading": "Filtrar guías de experiencias",
     "filterDescription": "Elige una etiqueta para acotar las experiencias destacadas.",
     "grouped": {
       "beaches": {
-        "guides": {
-        "heading": "Guías de playas",
-        "description": "Elige el tramo de arena adecuado y planifica tu día."
-        },
-        "directions": {
-        "heading": "Indicaciones a la playa",
-        "description": "Indicaciones paso a paso desde Hostel Brikette hasta la orilla."
-        }
+        "title": "Playas",
+        "description": "Elige el tramo de arena adecuado y planifica tu día.",
+        "imageAlt": "Playa de Positano con sombrillas de colores a lo largo de la costa"
+      },
+      "hiking": {
+        "title": "Rutas y senderos",
+        "description": "Recorridos a pie desde paseos suaves hasta excursiones de día completo.",
+        "imageAlt": "Excursionistas en el Sendero de los Dioses con vistas a la costa"
+      },
+      "day-trip": {
+        "title": "Excursiones de un día",
+        "description": "Capri, Amalfi, Ravello: cómo llegar y volver.",
+        "imageAlt": "Ferry acercándose a la isla de Capri"
+      },
+      "boat": {
+        "title": "Paseos en barco",
+        "description": "Alquiler privado, salidas en grupo y cruceros al atardecer.",
+        "imageAlt": "Barca tradicional en las aguas de la Costa Amalfitana"
+      },
+      "cuisine": {
+        "title": "Gastronomía",
+        "description": "Dónde comer bien sin gastar de más.",
+        "imageAlt": "Platos italianos frescos en una trattoria local"
+      },
+      "itinerary": {
+        "title": "Itinerarios",
+        "description": "Planes de varios días según la duración de tu viaje.",
+        "imageAlt": "Vista panorámica de la Costa Amalfitana desde arriba"
+      },
+      "more": {
+        "title": "Más guías",
+        "description": "Consejos de transporte, rincones fotogénicos y eventos locales.",
+        "imageAlt": "Autobús local serpenteando por la carretera de la Costa Amalfitana"
       }
     }
   }

@@ -267,5 +267,40 @@
   "landingImageAlt": "صورة افتتاحية لـ {{room}}",
   "priceNotes": {
     "dorm": "لكل ليلة ولكل ضيف. ضيف واحد في سرير بطابق."
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "غرفة خاصة",
+      "mixedDorm": "مهجع مختلط",
+      "femaleDorm": "مهجع إناث",
+      "femaleRoom": "غرفة للإناث"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "حمّام داخلي",
+      "bathroomPrivate": "حمّام خاص",
+      "bathroomSharedFemale": "حمّام مشترك"
+    },
+    "sleeps": "يستوعب: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "سرير مزدوج واحد",
+      "threeSingleBedsThreeGuests": "3 أسرّة مفردة",
+      "oneDormBedTwoGuests": "سرير بطابقين واحد",
+      "threeDormBedsSixGuests": "3 أسرّة بطابقين",
+      "threeDormBedsPlusSingleSevenGuests": "3 أسرّة بطابقين + سرير مفرد",
+      "fourDormBedsEightGuests": "4 أسرّة بطابقين"
+    },
+    "views": {
+      "seaViewTerrace": "شرفة بإطلالة بحرية",
+      "seaViewExtraLargeTerrace": "شرفة بإطلالة بحرية",
+      "gardenView": "إطلالة على الحديقة",
+      "courtyardView": "إطلالة على الفناء",
+      "noView": "بدون إطلالة"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "للغرفة",
+    "perBed": "للسرير"
   }
 }

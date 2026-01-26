@@ -17,15 +17,78 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Znajdź najlepszą trasę na swój przyjazd",
+    "subtitle": "Odpowiedz na dwa krótkie pytania — przeniesiemy Cię do najlepszego wyboru i wyróżnimy go.",
+    "placeLabel": "Skąd przyjeżdżasz?",
+    "placePlaceholder": "Wybierz punkt startowy",
+    "arrivalLabel": "Kiedy przyjeżdżasz?",
+    "arrival": {
+      "daytime": "W ciągu dnia",
+      "evening": "Wieczorem",
+      "lateNight": "Późną nocą"
+    },
+    "preferencesLabel": "Preferencje",
+    "preferences": {
+      "none": "Bez preferencji",
+      "fastest": "Najszybciej",
+      "cheapest": "Najtaniej",
+      "leastWalking": "Najmniej chodzenia",
+      "luggageFriendly": "Najbardziej przyjazne z bagażem"
+    },
+    "cta": "Pokaż najlepszą trasę",
+    "urlHint": "Filtry aktualizują URL, więc możesz udostępnić link.",
+    "lateNightHint": "Późne przyjazdy są często najłatwiejsze taksówką lub shuttle — użyj poniższych kontaktów, jeśli autobusy/promsy już nie kursują."
+  },
+  "routeCard": {
+    "factsLabel": "Informacje o trasie",
+    "duration": "Czas trwania",
+    "cost": "Koszt",
+    "walking": "Pieszo",
+    "luggage": "Bagaż",
+    "seasonality": "Sezon",
+    "seasonalityValues": {
+      "seasonal": "Sezonowo",
+      "yearRound": "Cały rok"
+    },
+    "cta": "Zobacz krok po kroku",
+    "direction": {
+      "to": "Do hostelu",
+      "from": "Z hostelu"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "lightbox": {
+    "titleFallback": "Zdjęcie",
+    "openAria": "Otwórz zdjęcie",
+    "openAriaWithCaption": "Otwórz zdjęcie: {{caption}}"
+  },
+  "jumpTo": {
+    "label": "Przejdź do",
+    "arrival": "Pomoc przy przyjeździe",
+    "rome": "Rzym",
+    "experiences": "Atrakcje"
   },
   "intro": {
     "taxi": "Aby zamówić taksówkę, napisz na WhatsApp pod poniższy numer – możesz użyć angielskiego albo włoskiego: <Strong>{{contact}}</Strong>.",
     "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Cześć! Zatrzymuję się w Hostel Brikette. Chciałbym zarezerwować taksówkę do/z Positano. Moja godzina przyjazdu to: ____",
+    "emailSubject": "Pomoc przy przyjeździe",
+    "emailBody": "Cześć, zespole Hostel Brikette — przyjeżdżam dziś i potrzebuję pomocy w wyborze najlepszego sposobu dojazdu. Moja planowana godzina przyjazdu to: ____",
+    "whatsappCta": "Taksówka na WhatsApp",
+    "callCta": "Zadzwoń",
+    "taxiBestFor": "Najlepsze dla: późne przyjazdy · ciężki bagaż · najszybsza opcja",
+    "shuttleCta": "Zarezerwuj shuttle",
+    "shuttleBestFor": "Najlepsze dla: przyloty na lotnisko · współdzielony transfer · planowanie z wyprzedzeniem",
+    "helpEyebrow": "Potrzebujesz pomocy?",
+    "helpCopy": "Przyjeżdżasz późno lub masz opóźnienia? Napisz do nas, abyśmy mogli zaplanować Twój check-in i zasugerować trasę awaryjną.",
+    "emailCta": "Wyślij e-mail do recepcji",
+    "helpBestFor": "Najlepsze dla: opóźnienia · odwołane promy · późny check-in"
   },
   "destinations": {
     "filterLabel": "Place",
@@ -214,6 +277,11 @@
   },
   "rome": {
     "title": "Rzym",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Forum Romanum widziane z Muzeów Kapitolińskich",
+      "caption": "Forum Romanum i Muzea Kapitolińskie"
+    },
     "description": "Skorzystaj z instrukcji w naszym przewodniku, aby dotrzeć do Neapolu lub Salerno, a następnie złap pociąg z jednego z tych miast.",
     "table": {
       "headers": {
@@ -372,6 +440,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-marina.jpg",
+      "alt": "Panoramiczny widok na Marina Grande w Sorrento",
+      "caption": "Marina Grande w Sorrento"
+    },
     "links": [
       {
         "label": "Sorrento → Positano autobusem",
@@ -427,6 +500,7 @@
     "title": "Filter routes",
     "resultsCount": "Wyniki: {{count}} trasy",
     "editLabel": "Edytuj filtry",
+    "shareHint": "Filtry są odzwierciedlone w URL dla łatwego udostępniania.",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

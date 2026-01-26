@@ -17,15 +17,73 @@
       "experienceRoutes": "مسارات التجارب"
     }
   },
+  "routePicker": {
+    "title": "اعثر على أفضل مسار لوصولك",
+    "subtitle": "أجب عن سؤالين سريعين — سنأخذك إلى أفضل تطابق ونبرزه.",
+    "placeLabel": "من أين ستأتي؟",
+    "placePlaceholder": "اختر نقطة الانطلاق",
+    "arrivalLabel": "متى ستصل؟",
+    "arrival": {
+      "daytime": "نهارًا",
+      "evening": "مساءً",
+      "lateNight": "ليلاً متأخرًا"
+    },
+    "preferencesLabel": "التفضيلات",
+    "preferences": {
+      "none": "بدون تفضيل",
+      "fastest": "الأسرع",
+      "cheapest": "الأرخص",
+      "leastWalking": "أقل مشيًا",
+      "luggageFriendly": "الأفضل مع الأمتعة"
+    },
+    "cta": "اعرض أفضل مسار لي",
+    "urlHint": "تقوم عوامل التصفية بتحديث الرابط، لذا يمكنك مشاركة الرابط.",
+    "lateNightHint": "الوصول المتأخر غالبًا يكون الأسهل عبر التاكسي أو الحافلة الصغيرة — استخدم خيارات التواصل أدناه إذا انتهت الحافلات/العبارات."
+  },
+  "routeCard": {
+    "factsLabel": "معلومات المسار",
+    "duration": "المدة",
+    "cost": "التكلفة",
+    "walking": "المشي",
+    "luggage": "الأمتعة",
+    "seasonality": "الموسم",
+    "seasonalityValues": {
+      "seasonal": "موسمي",
+      "yearRound": "طوال العام"
+    },
+    "cta": "عرض خطوة بخطوة",
+    "direction": {
+      "to": "إلى النُزل",
+      "from": "من النُزل"
+    }
+  },
   "preview": {
     "notPublished": "معاينة فقط - هذه الصفحة غير منشورة"
+  },
+  "jumpTo": {
+    "label": "الانتقال إلى",
+    "arrival": "مساعدة الوصول",
+    "rome": "روما",
+    "experiences": "تجارب"
   },
   "intro": {
     "taxi": "لطلب سيارة أجرة، يمكنك استخدام واتساب للتواصل مع الرقم التالي بالإنجليزية أو الإيطالية: <Strong>{{contact}}</Strong>.",
     "shuttle": "تفضّل خدمة نقل مشترك؟ توفر خدمة سيارات سي هورس رحلات جماعية. احجز مقعدًا عبر <Link>صفحتهم الرسمية لخدمة النقل</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette بسيارة أجرة",
-    "shuttleEyebrow": "Hostel Brikette بخدمة نقل"
+    "shuttleEyebrow": "Hostel Brikette بخدمة نقل",
+    "whatsappTemplate": "مرحبًا! سأقيم في Hostel Brikette. أود حجز سيارة أجرة إلى/من بوزيتانو. وقت وصولي هو: ____",
+    "emailSubject": "مساعدة الوصول",
+    "emailBody": "مرحبًا فريق Hostel Brikette — سأصل اليوم وأحتاج مساعدة في اختيار أفضل طريقة للوصول. وقت الوصول المتوقع هو: ____",
+    "whatsappCta": "تاكسي واتساب",
+    "callCta": "اتصل",
+    "taxiBestFor": "الأفضل لـ: الوصول المتأخر · الأمتعة الثقيلة · الخيار الأسرع",
+    "shuttleCta": "احجز خدمة النقل",
+    "shuttleBestFor": "الأفضل لـ: الوصول من المطار · نقل مشترك · التخطيط المسبق",
+    "helpEyebrow": "هل تحتاج مساعدة؟",
+    "helpCopy": "هل ستصل متأخرًا أو لديك تأخيرات؟ راسلنا لنخطط لتسجيل الوصول ونقترح مسارًا بديلًا.",
+    "emailCta": "راسل الاستقبال عبر البريد الإلكتروني",
+    "helpBestFor": "الأفضل لـ: التأخيرات · إلغاء العبارات · تسجيل وصول متأخر"
   },
   "destinations": {
     "filterLabel": "الوجهة",
@@ -214,6 +272,11 @@
   },
   "rome": {
     "title": "روما",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "المنتدى الروماني مرئي من متاحف كابيتولين",
+      "caption": "المنتدى الروماني ومتاحف كابيتولين"
+    },
     "description": "اتبع الإرشادات الواردة في دليلنا المكتوب للوصول إلى نابولي أو ساليرنو، ثم استقل قطارًا من إحدى هاتين المدينتين.",
     "table": {
       "headers": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "سورينتو",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "إطلالة على سورينتو من ساحة تاسو",
+      "caption": "سورينتو من ساحة تاسو"
+    },
     "links": [
       {
         "label": "من سورينتو بالحافلة",
@@ -399,6 +467,7 @@
     "title": "تصفية المسارات",
     "resultsCount": "النتائج: {{count}} مسار",
     "editLabel": "تعديل عوامل التصفية",
+    "shareHint": "تنعكس عوامل التصفية في الرابط لسهولة المشاركة.",
     "transportLabel": "نوع وسيلة النقل",
     "transportAll": "الكل",
     "transportModes": {
@@ -646,5 +715,10 @@
   },
   "galleries": {
     "defaultAlt": "صورة الاتجاهات"
+  },
+  "lightbox": {
+    "titleFallback": "صورة",
+    "openAria": "فتح الصورة",
+    "openAriaWithCaption": "فتح الصورة: {{caption}}"
   }
 }

@@ -8,7 +8,31 @@
   "title": "Poupe {{percent}} % em estadias de {{from}} a {{to}}",
   "promo": "Reserve diretamente e o seu desconto de {{percent}} % é aplicado automaticamente no checkout.",
   "dealCard": {
-    "savePercent": "Poupe {{percent}}"
+    "savePercent": "Poupe {{percent}}",
+    "stayDatesLabel": "Datas de estadia:",
+    "badges": {
+      "autoApplied": "Aplicado automaticamente",
+      "directOnly": "Apenas direto"
+    },
+    "cta": {
+      "bookDirect": "Reservar diretamente",
+      "applyDeal": "Aplicar oferta"
+    },
+    "status": {
+      "upcoming": "Em breve · Começa em {{startDate}}",
+      "expired": "Terminada"
+    }
+  },
+  "hero": {
+    "activeLabel": "Oferta ativa",
+    "activeTitle": "Poupe {{percent}}",
+    "activeDatesLabel": "Datas de estadia:",
+    "activeSubtitle": "Aplicado automaticamente no checkout. Apenas reservas diretas."
+  },
+  "emptyState": {
+    "title": "Sem ofertas ativas no momento",
+    "subtitle": "Reserve diretamente para obter as melhores tarifas e vantagens.",
+    "secondaryCta": "Ver vantagens da reserva direta"
   },
   "status": {
     "banner": {

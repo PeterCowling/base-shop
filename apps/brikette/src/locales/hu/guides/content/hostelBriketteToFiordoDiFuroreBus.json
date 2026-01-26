@@ -58,9 +58,19 @@
       ]
     }
   ],
-  "tipsTitle": "Extra tips",
+  "essentialsTitle": "Alapvető tudnivalók",
+  "essentials": [
+    "Napkrém.",
+    "Törölköző.",
+    "Napszemüveg."
+  ],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "Buszjegy: 10 euró."
+  ],
+  "tipsTitle": "Extra tippek",
   "tips": [
-    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
+    "Ellenőrizd a recepción kifüggesztett legfrissebb SITA-menetrendet indulás előtt, hogy tudd, mikor mennek a következő buszok.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
     "Mentse el a %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette visszaút kalauzát% visszaútjához.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."

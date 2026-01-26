@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Visualizza il menu del bar dell'Hostel Brikette",
     "tertiaryCtaAria": "Invia un messaggio al concierge digitale dell'Hostel Brikette",
     "breakfastCta": "Vedi il menu della colazione",
-    "breakfastCtaAria": "Vedi il menu della colazione"
+    "breakfastCtaAria": "Vedi il menu della colazione",
+    "scrollNudge": "Scopri le esperienze per categoria"
   },
   "sections": {
     "bar": {
@@ -93,14 +94,71 @@
     "filterDescription": "Scegli un tag per restringere le esperienze in evidenza.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Guide spiagge",
-          "description": "Scegli il tratto di spiaggia giusto e organizza la giornata."
-        },
-        "directions": {
-          "heading": "Indicazioni per le spiagge",
-          "description": "Indicazioni passo passo dall'Hostel Brikette fino alla spiaggia."
-        }
+        "title": "Spiagge",
+        "description": "Scegli il tratto di spiaggia giusto e pianifica la tua giornata.",
+        "imageAlt": "Spiaggia di Positano con ombrelloni colorati lungo la costa"
+      },
+      "hiking": {
+        "title": "Escursioni & Sentieri",
+        "description": "Itinerari che vanno da passeggiate facili a trekking giornalieri.",
+        "imageAlt": "Escursionista sul Sentiero degli Dei con vista sulla costa"
+      },
+      "day-trip": {
+        "title": "Gite di un giorno",
+        "description": "Capri, Amalfi, Ravello — come arrivarci e tornare.",
+        "imageAlt": "Traghetto diretto all'isola di Capri"
+      },
+      "boat": {
+        "title": "Uscite in barca",
+        "description": "Noleggi privati, tour di gruppo e crociere al tramonto.",
+        "imageAlt": "Barca tradizionale nelle acque della Costiera Amalfitana"
+      },
+      "cuisine": {
+        "title": "Gastronomia",
+        "description": "Dove mangiare bene senza spendere troppo.",
+        "imageAlt": "Piatti italiani freschi in una trattoria locale"
+      },
+      "itinerary": {
+        "title": "Itinerari",
+        "description": "Piani su più giorni in base alla durata del soggiorno.",
+        "imageAlt": "Vista panoramica della Costiera Amalfitana dalle alture"
+      },
+      "more": {
+        "title": "Altre guide",
+        "description": "Consigli sui trasporti, spot fotografici ed eventi locali.",
+        "imageAlt": "Autobus locale sulla strada costiera amalfitana"
+      }
+    },
+    "directionsLabel": "Indicazioni",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri in traghetto",
+        "capriPositanoFerry": "Capri → Positano in traghetto"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi in autobus",
+        "amalfiPositanoBus": "Amalfi → Positano in autobus",
+        "positanoAmalfiFerry": "Positano → Amalfi in traghetto (stagionale)",
+        "amalfiPositanoFerry": "Amalfi → Positano in traghetto (stagionale)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello in autobus",
+        "ravelloPositanoBus": "Ravello → Positano in autobus",
+        "positanoRavelloFerryBus": "Positano → Ravello traghetto + autobus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centro di Napoli → Positano (treno + autobus)",
+        "naplesCenterPositanoFerry": "Centro di Napoli → Positano in traghetto",
+        "naplesAirportPositanoBus": "Aeroporto di Napoli → Positano in autobus",
+        "positanoNaplesCenterBusTrain": "Positano → Centro di Napoli (autobus + treno)",
+        "positanoNaplesCenterFerry": "Positano → Napoli in traghetto",
+        "positanoNaplesAirportBus": "Positano → Aeroporto di Napoli in autobus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano in autobus",
+        "salernoPositanoFerry": "Salerno → Positano in traghetto (stagionale)",
+        "positanoSalernoBus": "Positano → Salerno in autobus",
+        "positanoSalernoFerry": "Positano → Salerno in traghetto (stagionale)"
       }
     }
   }

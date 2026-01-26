@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Moments photo d'Arienzo",
   "gallery": {
-    "title": "Moments photo d’Arienzo",
-    "items": [
-      {
-        "alt": "Terrasses du Arienzo Beach Club",
-        "caption": "Terrasses sur falaise avec transats orange"
-      },
-      {
-        "alt": "Embarcadère de la navette d’Arienzo",
-        "caption": "Embarquement de la navette à la Spiaggia Grande"
-      },
-      {
-        "alt": "Escaliers vers Arienzo",
-        "caption": "300 marches à travers les citronniers"
-      }
-    ]
+    "primaryAlt": "Côte de l'Arienzo Beach Club et club sur la falaise",
+    "primaryCaption": "Plage de galets avec parasols orange au pied des falaises",
+    "secondaryAlt": "Déjeuner en terrasse au Arienzo Beach Club",
+    "secondaryCaption": "Tables vue mer sous les parasols orange et blanc"
   }
 }

@@ -5,17 +5,9 @@
   },
   "hero": {
     "eyebrow": "Experiences",
-    "title": "Sunsets, slow mornings, and local know-how",
-    "description": "Pair your stay with terrace drinks, curated hikes, and a digital concierge that keeps you in the loop before you even arrive.",
-    "supporting": "Everything is open to registered guests; message us if you're travelling with friends staying elsewhere.",
-    "primaryCta": "Book your stay",
-    "secondaryCta": "Open the bar menu",
-    "breakfastCta": "View the breakfast menu",
-    "tertiaryCta": "Message the digital concierge",
-    "primaryCtaAria": "Book your stay at Hostel Brikette",
-    "secondaryCtaAria": "View the Hostel Brikette bar menu",
-    "breakfastCtaAria": "View the breakfast menu",
-    "tertiaryCtaAria": "Send a message to the Hostel Brikette digital concierge"
+    "title": "Make the Most of Your Time",
+    "description": "We've walked the trails, tested the transportation, and eaten at the trattorias. Our guides cover beach access, day hikes, boat trips, and budget-friendly eats—all updated for the current season. You get itineraries that actually work, not generic listicles.",
+    "scrollNudge": "Browse by experience type below"
   },
   "sections": {
     "bar": {
@@ -86,10 +78,20 @@
     "description": "Itineraries, hikes, boat days, and cultural picks curated by our team and guests.",
     "taggedHeading": "Experiences about {{tag}}",
     "taggedDescription": "These stories highlight {{tag}} moments. Clear the filter to explore everything.",
-    "empty": "We don’t have experience guides for {{tag}} yet. Try a different topic or remove the filter.",
+    "empty": "We don't have experience guides for {{tag}} yet. Try a different topic or remove the filter.",
     "clearFilter": "Show all experiences guides",
     "cardCta": "Explore the {{guideTitle}} experience guide",
     "directionsLabel": "Directions",
+    "sections": {
+      "content": {
+        "title": "Experience Guides",
+        "description": "In-depth guides about beaches, hikes, day trips, and things to do"
+      },
+      "directions": {
+        "title": "Getting There",
+        "description": "Step-by-step directions to and from the hostel"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri ferry",
@@ -125,14 +127,39 @@
     "filterDescription": "Pick a topic to narrow the experiences we highlight.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
-        },
-        "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
-        }
+        "title": "Beaches",
+        "description": "Find the right stretch of sand and plan your day.",
+        "imageAlt": "Positano beach with colorful umbrellas along the coastline"
+      },
+      "hiking": {
+        "title": "Hikes & Trails",
+        "description": "Walking routes from easy strolls to full-day treks.",
+        "imageAlt": "Hikers on the Path of the Gods trail with coastal views"
+      },
+      "day-trip": {
+        "title": "Day Trips",
+        "description": "Capri, Amalfi, Ravello—how to get there and back.",
+        "imageAlt": "Ferry approaching the island of Capri"
+      },
+      "boat": {
+        "title": "Boat Tours",
+        "description": "Private charters, group trips, and sunset cruises.",
+        "imageAlt": "Traditional boat on the Amalfi Coast waters"
+      },
+      "cuisine": {
+        "title": "Food & Drink",
+        "description": "Where to eat well without overpaying.",
+        "imageAlt": "Fresh Italian dishes at a local trattoria"
+      },
+      "itinerary": {
+        "title": "Itineraries",
+        "description": "Multi-day plans for different trip lengths.",
+        "imageAlt": "Scenic view of the Amalfi Coast from above"
+      },
+      "more": {
+        "title": "More Guides",
+        "description": "Transport tips, photography spots, and local events.",
+        "imageAlt": "Local bus winding along the Amalfi Coast road"
       }
     }
   }

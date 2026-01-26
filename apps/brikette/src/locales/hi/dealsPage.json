@@ -8,7 +8,31 @@
   "title": "{{from}} से {{to}} तक के ठहराव पर {{percent}}% बचत करें",
   "promo": "डायरेक्ट बुक करें — {{percent}}% छूट भुगतान के समय अपने आप लागू हो जाएगी।",
   "dealCard": {
-    "savePercent": "{{percent}} बचत"
+    "savePercent": "{{percent}} बचत",
+    "stayDatesLabel": "ठहराव की तिथियाँ:",
+    "badges": {
+      "autoApplied": "स्वचालित रूप से लागू",
+      "directOnly": "केवल डायरेक्ट बुकिंग"
+    },
+    "cta": {
+      "bookDirect": "सीधे बुक करें",
+      "applyDeal": "ऑफ़र लागू करें"
+    },
+    "status": {
+      "upcoming": "आने वाला · {{startDate}} से शुरू",
+      "expired": "समाप्त"
+    }
+  },
+  "hero": {
+    "activeLabel": "सक्रिय ऑफ़र",
+    "activeTitle": "{{percent}}% बचत करें",
+    "activeDatesLabel": "ठहराव की तिथियाँ:",
+    "activeSubtitle": "भुगतान के समय स्वचालित रूप से लागू। केवल सीधी बुकिंग।"
+  },
+  "emptyState": {
+    "title": "अभी कोई सक्रिय ऑफ़र नहीं",
+    "subtitle": "सर्वोत्तम दरों और लाभों के लिए सीधे बुक करें।",
+    "secondaryCta": "सीधी बुकिंग के लाभ देखें"
   },
   "status": {
     "banner": {

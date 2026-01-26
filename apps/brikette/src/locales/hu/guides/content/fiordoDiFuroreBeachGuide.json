@@ -67,5 +67,13 @@
     "A part szűkös, és a délutáni árnyék gyorsan lehűti a helyet."
   ],
   "faqsTitle": "Fiordo di Furore GYIK",
-  "faqs": []
+  "faqs": [],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "Az ármutatók 5 és 10 euró között mozognak."
+  ],
+  "sectionFigure": {
+    "alt": "Fiordo di Furore híd az öböl felett",
+    "caption": "A keskeny bejárat a boltíves híd alatt húzódik."
+  }
 }

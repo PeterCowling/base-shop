@@ -17,15 +17,73 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Hitta bästa rutten för din ankomst",
+    "subtitle": "Svara på två snabba frågor — vi hoppar till bästa matchen och markerar den.",
+    "placeLabel": "Varifrån kommer du?",
+    "placePlaceholder": "Välj en startpunkt",
+    "arrivalLabel": "När anländer du?",
+    "arrival": {
+      "daytime": "Dagstid",
+      "evening": "Kväll",
+      "lateNight": "Sent på natten"
+    },
+    "preferencesLabel": "Preferenser",
+    "preferences": {
+      "none": "Ingen preferens",
+      "fastest": "Snabbast",
+      "cheapest": "Billigast",
+      "leastWalking": "Minst gång",
+      "luggageFriendly": "Mest bagagevänligt"
+    },
+    "cta": "Visa min bästa rutt",
+    "urlHint": "Filtren uppdaterar URL:en så att du kan dela länken.",
+    "lateNightHint": "Sen ankomst är ofta enklast med taxi eller shuttle — använd kontaktalternativen nedan om bussar/färjor har slutat gå."
+  },
+  "routeCard": {
+    "factsLabel": "Rutfakta",
+    "duration": "Varaktighet",
+    "cost": "Kostnad",
+    "walking": "Till fots",
+    "luggage": "Bagage",
+    "seasonality": "Säsong",
+    "seasonalityValues": {
+      "seasonal": "Säsongsbetonat",
+      "yearRound": "Året runt"
+    },
+    "cta": "Se steg för steg",
+    "direction": {
+      "to": "Till vandrarhemmet",
+      "from": "Från vandrarhemmet"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Gå till",
+    "arrival": "Ankomsthjälp",
+    "rome": "Rom",
+    "experiences": "Upplevelser"
   },
   "intro": {
     "taxi": "Vill du boka taxi? Skicka ett WhatsApp-meddelande på engelska eller italienska till <Strong>{{contact}}</Strong>.",
     "shuttle": "Föredrar du shuttle? Sea Horse Car Service kör delade transfer. Boka en plats via deras <Link>officiella shuttlesida</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Hej! Jag bor på Hostel Brikette. Jag vill boka en taxi till/från Positano. Min ankomsttid är: ____",
+    "emailSubject": "Hjälp vid ankomst",
+    "emailBody": "Hej Hostel Brikette-teamet — jag kommer idag och behöver hjälp att välja bästa sättet att ta mig fram. Min beräknade ankomsttid är: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Ring",
+    "taxiBestFor": "Bäst för: sena ankomster · tungt bagage · snabbaste alternativet",
+    "shuttleCta": "Boka shuttle",
+    "shuttleBestFor": "Bäst för: ankomst till flygplats · delad transfer · planering i förväg",
+    "helpEyebrow": "Behöver du hjälp?",
+    "helpCopy": "Kommer du sent eller med förseningar? Skriv till oss så kan vi planera din incheckning och föreslå en alternativ rutt.",
+    "emailCta": "Mejla receptionen",
+    "helpBestFor": "Bäst för: förseningar · inställda färjor · sen incheckning"
   },
   "destinations": {
     "filterLabel": "Plats",
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Colosseum i Rom",
+      "caption": "Romerska forum och Kapitolinska museerna"
+    },
     "title": "Rom",
     "description": "Följ våra skriftliga guider till Neapel eller Salerno och ta sedan tåget vidare därifrån.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Hamnvy i Sorrento",
+      "caption": "Sorrento från Piazza Tasso"
+    },
     "links": [
       {
         "label": "Från Sorrento med buss",
@@ -399,6 +467,7 @@
     "title": "Filtrera rutter",
     "resultsCount": "Resultat: {{count}} rutter",
     "editLabel": "Redigera filter",
+    "shareHint": "Filtren speglas i URL:en för enkel delning.",
     "transportLabel": "Transporttyp",
     "transportAll": "Alla",
     "transportModes": {
@@ -646,5 +715,13 @@
   },
   "galleries": {
     "defaultAlt": "Directions photo"
+  },
+  "lightbox": {
+    "close": "Stäng",
+    "previous": "Föregående",
+    "next": "Nästa",
+    "titleFallback": "Bild",
+    "openAria": "Öppna bild",
+    "openAriaWithCaption": "Öppna bild: {{caption}}"
   }
 }

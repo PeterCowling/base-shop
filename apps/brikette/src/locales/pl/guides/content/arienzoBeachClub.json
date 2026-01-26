@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Arienzo – najciekawsze ujęcia",
   "gallery": {
-    "title": "Arienzo – najciekawsze ujęcia",
-    "items": [
-      {
-        "alt": "Tarasy Arienzo Beach Club",
-        "caption": "Nadbrzeżne platformy z pomarańczowymi leżakami"
-      },
-      {
-        "alt": "Pomost łodzi wahadłowej Arienzo",
-        "caption": "Wejście na shuttle przy Spiaggia Grande"
-      },
-      {
-        "alt": "Schody w dół do Arienzo",
-        "caption": "300 stopni wśród tarasów cytrynowych"
-      }
-    ]
+    "primaryAlt": "Tarasy Arienzo Beach Club",
+    "primaryCaption": "Nadbrzeżne platformy z pomarańczowymi leżakami",
+    "secondaryAlt": "Pomost łodzi wahadłowej Arienzo",
+    "secondaryCaption": "Wejście na shuttle przy Spiaggia Grande"
   }
 }

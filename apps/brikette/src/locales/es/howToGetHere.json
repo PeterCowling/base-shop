@@ -3,6 +3,11 @@
     "title": "Hostel Brikette - Lista de indicaciones de viaje",
     "description": "Indicaciones prácticas para llegar al Hostel Brikette desde Amalfi, Capri, Nápoles, Salerno, Ravello, Roma y Sorrento, con pros y contras del transporte."
   },
+  "lightbox": {
+    "titleFallback": "Imagen",
+    "openAria": "Abrir imagen",
+    "openAriaWithCaption": "Abrir imagen: {{caption}}"
+  },
   "header": {
     "eyebrow": "Hostel Brikette",
     "title": "Lista de indicaciones de viaje",
@@ -17,15 +22,73 @@
       "experienceRoutes": "Rutas de experiencias"
     }
   },
+  "routePicker": {
+    "title": "Encuentra la mejor ruta para tu llegada",
+    "subtitle": "Responde dos preguntas rápidas — te llevaremos al mejor resultado y lo resaltaremos.",
+    "placeLabel": "¿Desde dónde vienes?",
+    "placePlaceholder": "Selecciona un punto de partida",
+    "arrivalLabel": "¿Cuándo llegas?",
+    "arrival": {
+      "daytime": "Durante el día",
+      "evening": "Por la tarde",
+      "lateNight": "A última hora"
+    },
+    "preferencesLabel": "Preferencias",
+    "preferences": {
+      "none": "Sin preferencia",
+      "fastest": "Más rápida",
+      "cheapest": "Más barata",
+      "leastWalking": "Menos caminata",
+      "luggageFriendly": "Más cómoda con equipaje"
+    },
+    "cta": "Mostrar mi mejor ruta",
+    "urlHint": "Los filtros actualizan la URL, para que puedas compartir el enlace.",
+    "lateNightHint": "Las llegadas nocturnas suelen ser más fáciles en taxi o lanzadera: usa las opciones de contacto si ya no hay buses/ferries."
+  },
+  "routeCard": {
+    "factsLabel": "Datos de la ruta",
+    "duration": "Duración",
+    "cost": "Coste",
+    "walking": "A pie",
+    "luggage": "Equipaje",
+    "seasonality": "Temporada",
+    "seasonalityValues": {
+      "seasonal": "Estacional",
+      "yearRound": "Todo el año"
+    },
+    "cta": "Ver paso a paso",
+    "direction": {
+      "to": "Hacia el hostel",
+      "from": "Desde el hostel"
+    }
+  },
   "preview": {
     "notPublished": "Solo vista previa: esta página no está publicada"
+  },
+  "jumpTo": {
+    "label": "Ir a",
+    "arrival": "Ayuda para llegar",
+    "rome": "Roma",
+    "experiences": "Experiencias"
   },
   "intro": {
     "taxi": "Para solicitar un taxi, puedes usar WhatsApp y contactar con el siguiente número en inglés o italiano: <Strong>{{contact}}</Strong>.",
     "shuttle": "¿Prefieres un traslado? Sea Horse Car Service opera transportes compartidos. Reserva tu plaza en su <Link>página oficial del shuttle</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette en taxi",
-    "shuttleEyebrow": "Hostel Brikette en lanzadera"
+    "shuttleEyebrow": "Hostel Brikette en lanzadera",
+    "whatsappTemplate": "¡Hola! Me hospedo en Hostel Brikette. Quisiera reservar un taxi hacia/desde Positano. Mi hora de llegada es: ____",
+    "emailSubject": "Ayuda para la llegada",
+    "emailBody": "Hola equipo de Hostel Brikette — llego hoy y necesito ayuda para elegir la mejor forma de llegar. Mi hora estimada de llegada es: ____",
+    "whatsappCta": "Taxi por WhatsApp",
+    "callCta": "Llamar",
+    "taxiBestFor": "Ideal para: llegadas tardías · equipaje pesado · opción más rápida",
+    "shuttleCta": "Reservar shuttle",
+    "shuttleBestFor": "Ideal para: llegadas al aeropuerto · traslado compartido · planificar con antelación",
+    "helpEyebrow": "¿Necesitas ayuda?",
+    "helpCopy": "¿Llegas tarde o con retrasos? Escríbenos para que podamos planificar tu check-in y sugerirte una ruta alternativa.",
+    "emailCta": "Enviar correo a recepción",
+    "helpBestFor": "Ideal para: retrasos · cancelaciones de ferris · check-in tardío"
   },
   "destinations": {
     "filterLabel": "Lugar",
@@ -215,6 +278,11 @@
   "rome": {
     "title": "Roma",
     "description": "Sigue las indicaciones de nuestra guía escrita para llegar a Nápoles o Salerno y luego tomar un tren desde cualquiera de esas ciudades.",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Foro Romano visto desde los Museos Capitolinos",
+      "caption": "Foro Romano y Museos Capitolinos"
+    },
     "table": {
       "headers": {
         "route": "Ruta",
@@ -372,6 +440,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Vista de Sorrento desde Piazza Tasso",
+      "caption": "Sorrento desde Piazza Tasso"
+    },
     "links": [
       {
         "label": "Desde Sorrento en autobús",
@@ -399,6 +472,7 @@
     "title": "Filtrar rutas",
     "resultsCount": "Resultados: {{count}} rutas",
     "editLabel": "Editar filtros",
+    "shareHint": "Los filtros se reflejan en la URL para compartir fácilmente.",
     "transportLabel": "Tipo de transporte",
     "transportAll": "Todos",
     "transportModes": {

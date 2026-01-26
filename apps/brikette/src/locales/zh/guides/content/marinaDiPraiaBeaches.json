@@ -88,5 +88,18 @@
     "下午三点左右，悬崖会遮挡阳光直射，非常适合降温，但在大风天会感觉寒冷。",
     "峡谷内的移动信号接收能力下降；提前下载巴士时刻表或晚餐预订确认书。"
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQs",
+  "gallery": {
+    "title": "Marina di Praia 图集",
+    "items": [
+      {
+        "alt": "Marina di Praia 海湾全景，渔船与阳伞点缀海滩",
+        "caption": "海湾狭窄，被峭壁环绕，比波西塔诺主海滩更加宁静"
+      },
+      {
+        "alt": "Marina di Praia 海滩俱乐部的蓝黄躺椅",
+        "caption": "海滩俱乐部区域占据了大部分躺椅，中央靠近水边有小段免费区域"
+      }
+    ]
+  }
 }

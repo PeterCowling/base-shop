@@ -4,6 +4,41 @@
     "description": "Phòng đôi riêng nhìn ra biển và ký túc xá tiết kiệm: xem ảnh, tiện nghi và giá theo thời gian thực, sau đó đặt trực tiếp để có giá tốt nhất tại Hostel Brikette Positano.",
     "ogImageAlt": "Nội thất phòng ký túc xá"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Phòng riêng",
+      "mixedDorm": "Ký túc xá hỗn hợp",
+      "femaleDorm": "Ký túc xá nữ",
+      "femaleRoom": "Phòng nữ"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Phòng tắm trong phòng",
+      "bathroomPrivate": "Phòng tắm riêng",
+      "bathroomSharedFemale": "Phòng tắm chung"
+    },
+    "sleeps": "Sức chứa {{count}} người"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 giường đôi",
+      "threeSingleBedsThreeGuests": "3 giường đơn",
+      "oneDormBedTwoGuests": "1 giường tầng",
+      "threeDormBedsSixGuests": "3 giường tầng",
+      "threeDormBedsPlusSingleSevenGuests": "3 giường tầng + 1 giường đơn",
+      "fourDormBedsEightGuests": "4 giường tầng"
+    },
+    "views": {
+      "seaViewTerrace": "Sân thượng nhìn ra biển",
+      "seaViewExtraLargeTerrace": "Sân thượng nhìn ra biển",
+      "gardenView": "Hướng vườn",
+      "courtyardView": "Hướng sân trong",
+      "noView": "Không có tầm nhìn"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "phòng",
+    "perBed": "giường"
+  },
   "facilities": {
     "privateRoom": "Phòng riêng",
     "mixedDorm": "Ký túc xá hỗn hợp",

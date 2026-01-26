@@ -123,21 +123,11 @@
       ]
     }
   ],
+  "galleryHeading": "Arienzo fotós kedvcsináló",
   "gallery": {
-    "title": "Arienzo fotós kedvcsináló",
-    "items": [
-      {
-        "alt": "Arienzo Beach Club teraszai",
-        "caption": "Sziklákra épült fedélzetek és narancssárga napágyak"
-      },
-      {
-        "alt": "Arienzo vízitaxi móló",
-        "caption": "Vízitaxi beszállás a Spiaggia Grandéról"
-      },
-      {
-        "alt": "Lépcső az Arienzóhoz",
-        "caption": "300 lépcső citromligetek között"
-      }
-    ]
+    "primaryAlt": "Arienzo Beach part és sziklára épült klub",
+    "primaryCaption": "Kavicsos strand narancssárga napernyőkkel a sziklák alatt",
+    "secondaryAlt": "Terasz étkezés az Arienzo Beach Clubban",
+    "secondaryCaption": "Tengerre néző asztalok narancssárga-fehér napernyők alatt"
   }
 }

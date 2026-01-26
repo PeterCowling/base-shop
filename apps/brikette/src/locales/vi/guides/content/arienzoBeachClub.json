@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Khoảnh khắc Arienzo",
   "gallery": {
-    "title": "Khoảnh khắc Arienzo",
-    "items": [
-      {
-        "alt": "Các tầng sân thượng của Arienzo Beach Club",
-        "caption": "Deck trên vách đá với ghế tắm nắng màu cam"
-      },
-      {
-        "alt": "Bến thuyền shuttle của Arienzo",
-        "caption": "Lên shuttle tại Spiaggia Grande"
-      },
-      {
-        "alt": "Cầu thang xuống Arienzo",
-        "caption": "300 bậc thang giữa những thửa chanh"
-      }
-    ]
+    "primaryAlt": "Các tầng sân thượng của Arienzo Beach Club",
+    "primaryCaption": "Deck trên vách đá với ghế tắm nắng màu cam",
+    "secondaryAlt": "Bến thuyền shuttle của Arienzo",
+    "secondaryCaption": "Lên shuttle tại Spiaggia Grande"
   }
 }

@@ -17,15 +17,73 @@
       "experienceRoutes": "체험 루트"
     }
   },
+  "routePicker": {
+    "title": "도착에 가장 좋은 경로 찾기",
+    "subtitle": "간단한 두 가지 질문에 답하면 최적의 선택을 보여드리고 강조합니다.",
+    "placeLabel": "어디에서 오시나요?",
+    "placePlaceholder": "출발지를 선택하세요",
+    "arrivalLabel": "언제 도착하시나요?",
+    "arrival": {
+      "daytime": "낮",
+      "evening": "저녁",
+      "lateNight": "심야"
+    },
+    "preferencesLabel": "선호",
+    "preferences": {
+      "none": "선호 없음",
+      "fastest": "가장 빠름",
+      "cheapest": "가장 저렴함",
+      "leastWalking": "걷기 최소",
+      "luggageFriendly": "짐에 가장 편함"
+    },
+    "cta": "최적 경로 보기",
+    "urlHint": "필터가 URL에 반영되어 링크를 공유할 수 있습니다.",
+    "lateNightHint": "심야 도착은 택시나 셔틀이 가장 쉽습니다. 버스/페리가 끝났다면 아래 연락처 옵션을 이용하세요."
+  },
+  "routeCard": {
+    "factsLabel": "경로 정보",
+    "duration": "소요 시간",
+    "cost": "비용",
+    "walking": "도보",
+    "luggage": "짐",
+    "seasonality": "계절",
+    "seasonalityValues": {
+      "seasonal": "계절 운행",
+      "yearRound": "연중"
+    },
+    "cta": "단계별 보기",
+    "direction": {
+      "to": "호스텔로",
+      "from": "호스텔에서"
+    }
+  },
   "preview": {
     "notPublished": "미리보기 전용 - 이 페이지는 게시되지 않았습니다."
+  },
+  "jumpTo": {
+    "label": "이동",
+    "arrival": "도착 도움",
+    "rome": "로마",
+    "experiences": "체험"
   },
   "intro": {
     "taxi": "택시를 부르려면 WhatsApp으로 <Strong>{{contact}}</Strong> 번호에 영어 또는 이탈리아어로 연락하세요.",
     "shuttle": "셔틀을 원하신다면 Sea Horse Car Service의 합승 서비스를 이용하세요. <Link>공식 셔틀 페이지</Link>에서 좌석을 예약할 수 있습니다.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "택시로 Hostel Brikette",
-    "shuttleEyebrow": "셔틀로 Hostel Brikette"
+    "shuttleEyebrow": "셔틀로 Hostel Brikette",
+    "whatsappTemplate": "안녕하세요! Hostel Brikette에 숙박합니다. 포지타노행/포지타노발 택시를 예약하고 싶습니다. 도착 시간은: ____",
+    "emailSubject": "도착 도움",
+    "emailBody": "Hostel Brikette 팀께 — 오늘 도착 예정이며 가장 좋은 이동 방법을 선택하는 데 도움이 필요합니다. 예상 도착 시간은: ____",
+    "whatsappCta": "WhatsApp 택시",
+    "callCta": "전화하기",
+    "taxiBestFor": "추천: 늦은 도착 · 무거운 짐 · 가장 빠른 옵션",
+    "shuttleCta": "셔틀 예약",
+    "shuttleBestFor": "추천: 공항 도착 · 공유 이동 · 사전 계획",
+    "helpEyebrow": "도움이 필요하신가요?",
+    "helpCopy": "늦게 도착하거나 지연이 있나요? 체크인 일정을 잡고 대체 경로를 안내할 수 있도록 메시지 주세요.",
+    "emailCta": "리셉션에 이메일",
+    "helpBestFor": "추천: 지연 · 페리 취소 · 늦은 체크인"
   },
   "destinations": {
     "filterLabel": "지역",
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "카피톨리노 박물관에서 바라본 로마 포럼",
+      "caption": "로마 포럼과 카피톨리노 박물관"
+    },
     "title": "로마",
     "description": "작성된 안내에 따라 나폴리 또는 살레르노로 이동한 뒤, 두 도시 중 한 곳에서 기차를 이용하세요.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "소렌토",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "피아차 타소에서 바라본 소렌토 풍경",
+      "caption": "피아차 타소에서 본 소렌토"
+    },
     "links": [
       {
         "label": "소렌토 → 포지타노 (버스)",
@@ -399,6 +467,7 @@
     "title": "경로 필터",
     "resultsCount": "결과: {{count}}개 경로",
     "editLabel": "필터 편집",
+    "shareHint": "필터가 URL에 반영되어 쉽게 공유할 수 있습니다.",
     "transportLabel": "교통수단",
     "transportAll": "전체",
     "transportModes": {
@@ -646,5 +715,10 @@
   },
   "galleries": {
     "defaultAlt": "오시는 길 사진"
+  },
+  "lightbox": {
+    "titleFallback": "이미지",
+    "openAria": "이미지 열기",
+    "openAriaWithCaption": "이미지 열기: {{caption}}"
   }
 }

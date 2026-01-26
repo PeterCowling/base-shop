@@ -1,88 +1,98 @@
 {
   "seo": {
-    "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Schritt‑für‑Schritt von Hostel Brikette nach Fiordo di Furore mit dem SITA‑Bus: wo du Tickets kaufst und wie du zum Strand gelangst."
+    "title": "Hostel Brikette → Fiordo di Furore mit dem Bus",
+    "description": "Schritt-für-Schritt von Hostel Brikette nach Fiordo di Furore mit dem SITA-Bus: wo du Tickets kaufst und wie du zum Strand gelangst."
   },
-  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "linkLabel": "Hostel Brikette → Fiordo di Furore mit dem Bus",
   "intro": [
-    "Folgen Sie dieser Route, um mit dem SITA-Bus vom Hostel Brikette nach Fiordo di Furore zu reisen, ohne eine Haltestelle zu verpassen oder unvorbereitet anzukommen.",
-    "Am Fjord gibt es keine Ticketverkaufsstellen oder Geschäfte, daher decken diese Stufen die Tickets, die nächste Bushaltestelle und die Treppe ab, die zum Strand hinunterführt."
+    "Folge dieser Route, um mit dem SITA-Bus vom Hostel Brikette nach Fiordo di Furore zu reisen, ohne eine Haltestelle zu verpassen oder unvorbereitet anzukommen.",
+    "Am Fjord gibt es keine Ticketverkaufsstellen oder Geschäfte, daher deckt diese Anleitung die Tickets, die nächste Bushaltestelle und die Treppe ab, die zum Strand hinunterführt."
   ],
   "warningsTitle": "Bevor du das Hostel verlässt",
   "warnings": [
-    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
-    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+    "Wichtig: Kauf ein Hin- und Rückfahrtticket für den SITA-Bus in Positano – am Strand gibt es keine Möglichkeit, Tickets zu kaufen oder zu entwerten.",
+    "Wichtig: In der Hochsaison können Busse voll sein und die Haltestelle überspringen – plane extra Zeit ein, falls du auf den nächsten Bus warten musst."
   ],
   "sections": [
     {
       "id": "walk-to-bus-stop",
-      "title": "Walk to the Chiesa Nuova bus stop",
+      "title": "1. Geh zur nächsten Bushaltestelle",
       "body": [
-        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
-        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
-        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+        "Die nächste SITA-Haltestelle ist im Bereich Chiesa Nuova in Positano, etwa 140 Meter vom Hosteleingang entfernt.",
+        "Verlasse das Hostel durch den Haupteingang und geh die Treppen zur Straße hinunter. Biege links ab und laufe etwa 100 Meter.",
+        "Du siehst das Café/die Bar namens Bar Internazionale auf der linken Seite. Die Bushaltestelle ist direkt davor."
       ]
     },
     {
       "id": "buy-bus-tickets",
-      "title": "Buy round-trip bus tickets",
+      "title": "2. Kaufe Hin- und Rückfahrttickets",
       "body": [
-        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
-        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+        "Geh in die Bar Internazionale und kaufe SITA-Tickets nach Fiordo di Furore.",
+        "Je nach Tagespreis bekommst du eventuell Einzel- oder Rückfahrttickets angeboten – kauf auf jeden Fall ein Rückfahrtticket, damit du für die Rückfahrt versorgt bist."
       ]
     },
     {
       "id": "wait-for-bus",
-      "title": "Wait on the seaward side of the road",
+      "title": "3. Warte auf der Meerseite der Straße",
       "body": [
-        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
-        "Arrive early and give yourself time for a second bus in case the first one is already full."
+        "Überquere die Via Pasitea auf die gegenüberliegende Seite von der Bar und warte an der markierten SITA-Haltestelle.",
+        "Komm ein bisschen früher und plane Zeit für einen zweiten Bus ein, falls der erste schon voll ist."
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the SITA bus towards Amalfi",
+      "title": "4. Nimm den SITA-Bus Richtung Amalfi",
       "body": [
-        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
-        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
-        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+        "Steig in einen Bus Richtung Amalfi oder Agerola und sag dem Fahrer, dass du an der Haltestelle Fiordo di Furore aussteigen musst, damit er weiß, dass er halten soll.",
+        "Die Fahrt ist etwa 10,8 Kilometer (6,7 Meilen) lang; Zwischenstopps hängen davon ab, ob andere Fahrgäste sie anfordern.",
+        "Wenn du mobile Daten hast, kannst du die Haltestelle in Google Maps mit \"JH73+PQ Furore, Provinz Salerno\" finden."
       ]
     },
     {
       "id": "walk-to-beach",
-      "title": "Take the stairs down to the beach",
+      "title": "5. Geh die Treppen zum Strand hinunter",
       "body": [
-        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
-        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Benutzen Sie dieselbe Treppe, um zur Straße zurückzukehren, wenn Sie bereit sind zu gehen."
+        "Steig neben der Brücke aus, überquere die Straße und nimm die Treppe, die von der Straße weg zum Klippenpfad führt.",
+        "Folge der Treppe über die Brücke und steig dann die letzten Stufen hinunter zum Kiesstrand.",
+        "Benutze dieselbe Treppe, um zur Straße zurückzukehren, wenn du bereit bist zu gehen."
       ]
     }
   ],
-  "tipsTitle": "Extra tips",
+  "essentialsTitle": "Das Wichtigste",
+  "essentials": [
+    "Sonnencreme.",
+    "Handtuch.",
+    "Sonnenbrille."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "Busticket: 10 Euro."
+  ],
+  "tipsTitle": "Extra-Tipps",
   "tips": [
-    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
-    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Bewahren Sie den %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette Rückfahrtführer% für Ihre Rückreise auf.",
-    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+    "Prüfe vor dem Aufbruch den aktuellen SITA-Fahrplan an der Rezeption, damit du weißt, wann die nächsten Busse fahren.",
+    "Lies unseren %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore Strand-Guide% für Packtipps und was dich vor Ort erwartet.",
+    "Speichere den %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette Rückweg-Guide% für deine Rückreise.",
+    "Spring zum %LINK:positanoBeaches|Strandüberblick Positano%, um andere Badestellen für denselben Tag zu vergleichen."
   ],
   "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
-      "q": "Muss ich wirklich im Voraus ein Rückflugticket kaufen?",
+      "q": "Muss ich wirklich im Voraus ein Rückfahrtticket kaufen?",
       "a": [
-        "Ja. Fahrer erwarten entwertete SITA-Tickets und es gibt keine Automaten oder Geschäfte am Strand, also kaufen Sie beide Strecken in Positano, bevor Sie einsteigen."
+        "Ja. Fahrer erwarten entwertete SITA-Tickets und es gibt keine Automaten oder Geschäfte am Strand, also kaufe beide Strecken in Positano, bevor du einsteigst."
       ]
     },
     {
       "q": "Was soll ich tun, wenn der Bus bei der Ankunft voll ist?",
       "a": [
-        "Warten Sie auf den nächsten Liniendienst und behalten Sie den Fahrplan im Auge – in der Hochsaison ist es normal, dass ein oder zwei Busse vorbeifahren, bevor Plätze frei werden."
+        "Warte auf den nächsten Linienbus und behalte den Fahrplan im Auge – in der Hochsaison ist es normal, dass ein oder zwei Busse vorbeifahren, bevor Plätze frei werden."
       ]
     },
     {
       "q": "Wie erkenne ich die richtige Haltestelle?",
       "a": [
-        "Nachdem der Bus die Bogenbrücke über den Fjord überquert hat, hält er neben der Leitplanke. Achten Sie auf die Brückenansichten, achten Sie auf den Fahrer und verwenden Sie die PIN „JH73+PQ Furore“ von Google Maps als Backup."
+        "Nachdem der Bus die Bogenbrücke über den Fjord überquert hat, hält er neben der Leitplanke. Achte auf die Brückenansichten, hör auf den Fahrer und nutze die Google Maps PIN \"JH73+PQ Furore\" als Backup."
       ]
     }
   ]

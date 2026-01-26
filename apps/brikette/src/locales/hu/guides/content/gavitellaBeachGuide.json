@@ -72,6 +72,32 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "Gavitella Beach öblének légi felvétele a napozóteraszokkal",
+      "caption": "A két strandklub egy keskeny, sziklába vájt platformon osztozik."
+    },
+    "gavitellaClub": {
+      "alt": "Teraszasztal vacsorához az Amalfi-partra néző kilátással naplementekor",
+      "caption": "La Gavitella naplementés vacsorái tengeri panorámát és hosszú aperitivókat kínálnak."
+    },
+    "oneFire": {
+      "alt": "Élénk narancssárga napernyők és napágyak a One Fire Beach Clubban",
+      "caption": "A One Fire pezsgő délutánjairól és DJ-s naplemente-buliairól ismert."
+    }
+  },
+  "essentialsTitle": "Alapvető tudnivalók",
+  "essentials": [
+    "Mindkét klubba előre foglalj; a naplemente időpontok és hétvégék fogynak el először.",
+    "Számolj 400+ lépcsővel lefelé a Piazza San Gennaróból és meredek visszaúttal, kivéve ha az interno buszra ülsz.",
+    "Vigyél vízicipőt a sziklás platformhoz és korallbarát naptejet a késő délutáni napfényhez."
+  ],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "La Gavitella napágy-szett két főre: 70–100 € szezontól függően.",
+    "One Fire nappali ágy vagy kabana két főre: 100–180 €, gyakran előleggel főszezonban.",
+    "Csónaktranszfer pótdíj (ha elérhető): 10–20 € személyenként irányonként."
+  ],
   "tipsTitle": "Gyors tippek",
   "tips": [
     "Használd %LINK:positanoAmalfi|Positano ↔ Amalfi közlekedési útmutatónkat%, hogy megtervezd a SITA utat Piazza San Gennaro-ig, mielőtt nekivágnál a 400 lépcsőnek.",

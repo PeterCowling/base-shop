@@ -88,5 +88,18 @@
     "Klippene blokkerer for direkte sol midt på ettermiddagen - flott for å kjøle seg ned, men det kan føles kjølig på vindfulle dager.",
     "Mobilt mottak faller inne i juvet; last ned bussruter eller middagsbekreftelser på forhånd."
   ],
-  "faqsTitle": "Marina di Praia – ofte stilte spørsmål"
+  "faqsTitle": "Marina di Praia – ofte stilte spørsmål",
+  "gallery": {
+    "title": "Bildeoversikt",
+    "items": [
+      {
+        "alt": "Utsikt over Marina di Praia med båter og parasoller på rullesteinstranden.",
+        "caption": "Bukten er smal, beskyttet av klipper og roligere enn Positanos hovedstrender."
+      },
+      {
+        "alt": "Rullesteinstrand med blå og gule solsenger ved Marina di Praia.",
+        "caption": "Lido-delen har de fleste solsengene, med en liten gratis bit nærmere midten."
+      }
+    ]
+  }
 }

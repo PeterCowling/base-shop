@@ -17,15 +17,73 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "找到最适合你抵达的路线",
+    "subtitle": "回答两个简短问题，我们会跳转到最佳匹配并高亮显示。",
+    "placeLabel": "你从哪里出发？",
+    "placePlaceholder": "选择出发点",
+    "arrivalLabel": "你何时到达？",
+    "arrival": {
+      "daytime": "白天",
+      "evening": "晚上",
+      "lateNight": "深夜"
+    },
+    "preferencesLabel": "偏好",
+    "preferences": {
+      "none": "无偏好",
+      "fastest": "最快",
+      "cheapest": "最便宜",
+      "leastWalking": "最少步行",
+      "luggageFriendly": "最适合带行李"
+    },
+    "cta": "显示我的最佳路线",
+    "urlHint": "筛选会更新 URL，方便你分享链接。",
+    "lateNightHint": "深夜到达通常最方便的是出租车或接驳车——如果公交/渡轮已结束，请使用下面的联系方式。"
+  },
+  "routeCard": {
+    "factsLabel": "路线信息",
+    "duration": "用时",
+    "cost": "费用",
+    "walking": "步行",
+    "luggage": "行李",
+    "seasonality": "季节",
+    "seasonalityValues": {
+      "seasonal": "季节性",
+      "yearRound": "全年"
+    },
+    "cta": "查看步骤",
+    "direction": {
+      "to": "去旅舍",
+      "from": "从旅舍"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "跳转到",
+    "arrival": "到达帮助",
+    "rome": "罗马",
+    "experiences": "体验"
   },
   "intro": {
     "taxi": "若要预约出租车，可使用 WhatsApp 以英语或意大利语联系以下号码：<Strong>{{contact}}</Strong>。",
     "shuttle": "想搭乘接驳车？Sea Horse Car Service 提供多人共乘服务，可透过其 <Link>官方接驳预约页面</Link> 预订座位。",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "你好！我住在 Hostel Brikette。想预订往返波西塔诺的出租车。我的到达时间是：____",
+    "emailSubject": "到达协助",
+    "emailBody": "Hostel Brikette 团队你好——我今天到达，需要帮助选择最佳到达方式。我的预计到达时间是：____",
+    "whatsappCta": "WhatsApp 叫车",
+    "callCta": "拨打电话",
+    "taxiBestFor": "适合：深夜到达 · 行李重 · 最快捷选择",
+    "shuttleCta": "预订班车",
+    "shuttleBestFor": "适合：机场到达 · 拼车接送 · 提前规划",
+    "helpEyebrow": "需要帮助吗？",
+    "helpCopy": "晚到或有延误？给我们发消息，我们可以安排入住并建议备用路线。",
+    "emailCta": "给前台发邮件",
+    "helpBestFor": "适合：延误 · 渡轮取消 · 晚入住"
   },
   "destinations": {
     "filterLabel": "地点",
@@ -212,7 +270,17 @@
       }
     ]
   },
+  "lightbox": {
+    "titleFallback": "图片",
+    "openAria": "打开图片",
+    "openAriaWithCaption": "打开图片：{{caption}}"
+  },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "从卡比托利欧博物馆俯瞰罗马广场",
+      "caption": "罗马广场与卡比托利欧博物馆"
+    },
     "title": "罗马",
     "description": "先按照我们的文字指南前往那不勒斯或萨莱诺，再从其中任一城市搭乘火车。",
     "table": {
@@ -371,6 +439,11 @@
     }
   },
   "sorrento": {
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "从塔索广场俯瞰索伦托",
+      "caption": "塔索广场俯瞰索伦托"
+    },
     "title": "索伦托",
     "links": [
       {
@@ -399,6 +472,7 @@
     "title": "路线筛选",
     "resultsCount": "结果：{{count}} 条路线",
     "editLabel": "编辑筛选",
+    "shareHint": "筛选会反映到 URL，方便分享。",
     "transportLabel": "交通类别",
     "transportAll": "全部",
     "transportModes": {

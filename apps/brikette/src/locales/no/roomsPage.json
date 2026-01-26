@@ -267,5 +267,47 @@
   "landingImageAlt": "Forsidebilde av {{room}}",
   "priceNotes": {
     "dorm": "Per natt, per gjest. Én gjest per køyeseng."
+  },
+  "facts": {
+    "floor": "Etasje",
+    "type": {
+      "privateRoom": "Privat rom",
+      "mixedDorm": "Blandet sovesal",
+      "femaleDorm": "Kvinnerom",
+      "femaleRoom": "Rom kun for kvinner"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Eget bad",
+      "bathroomPrivate": "Privat bad",
+      "bathroomSharedFemale": "Delt bad"
+    },
+    "sleeps": "Sover {{count}}",
+    "view": "Utsikt",
+    "capacity": "Kapasitet"
+  },
+  "detailsLine": {
+    "floor": "Etasje {{floor}}",
+    "capacity": "Opptil {{count}} gjester",
+    "beds": {
+      "doubleBedForTwo": "1 dobbeltseng",
+      "threeSingleBedsThreeGuests": "3 enkeltsenger",
+      "oneDormBedTwoGuests": "1 køyeseng",
+      "threeDormBedsSixGuests": "3 køyesenger",
+      "threeDormBedsPlusSingleSevenGuests": "3 køyesenger + 1 enkeltseng",
+      "fourDormBedsEightGuests": "4 køyesenger"
+    },
+    "views": {
+      "seaViewTerrace": "Terrasse med havutsikt",
+      "seaViewExtraLargeTerrace": "Terrasse med havutsikt",
+      "gardenView": "Hageutsikt",
+      "courtyardView": "Utsikt mot gårdsrom",
+      "noView": "Ingen utsikt"
+    }
+  },
+  "priceUnits": {
+    "perNight": "/natt",
+    "perGuest": "/gjest",
+    "perRoom": "rom",
+    "perBed": "seng"
   }
 }

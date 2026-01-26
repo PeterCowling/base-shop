@@ -8,7 +8,31 @@
   "title": "وفّر {{percent}}٪ على الإقامات من {{from}} إلى {{to}}",
   "promo": "احجز مباشرة وسيتم تطبيق خصم {{percent}}٪ تلقائيًا عند الدفع.",
   "dealCard": {
-    "savePercent": "وفّر {{percent}}٪"
+    "savePercent": "وفّر {{percent}}٪",
+    "stayDatesLabel": "تواريخ الإقامة:",
+    "badges": {
+      "autoApplied": "يُطبَّق تلقائيًا",
+      "directOnly": "حجز مباشر فقط"
+    },
+    "cta": {
+      "bookDirect": "احجز مباشرة",
+      "applyDeal": "طبِّق العرض"
+    },
+    "status": {
+      "upcoming": "قادم · يبدأ في {{startDate}}",
+      "expired": "منتهي"
+    }
+  },
+  "hero": {
+    "activeLabel": "عرض ساري",
+    "activeTitle": "وفّر {{percent}}٪",
+    "activeDatesLabel": "تواريخ الإقامة:",
+    "activeSubtitle": "يُطبَّق تلقائيًا عند الدفع. الحجز المباشر فقط."
+  },
+  "emptyState": {
+    "title": "لا توجد عروض سارية حاليًا",
+    "subtitle": "احجز مباشرة للحصول على أفضل الأسعار والمزايا.",
+    "secondaryCta": "عرض مزايا الحجز المباشر"
   },
   "status": {
     "banner": {

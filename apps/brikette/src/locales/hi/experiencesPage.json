@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Hostel Brikette का बार मेन्यू देखें",
     "tertiaryCtaAria": "Hostel Brikette के डिजिटल कंसीयर्ज को संदेश भेजें",
     "breakfastCta": "ब्रेकफास्ट मेन्यू देखें",
-    "breakfastCtaAria": "ब्रेकफास्ट मेन्यू देखें"
+    "breakfastCtaAria": "ब्रेकफास्ट मेन्यू देखें",
+    "scrollNudge": "और जानें"
   },
   "sections": {
     "bar": {
@@ -88,11 +89,49 @@
     "taggedDescription": "ये कहानियाँ {{tag}} से जुड़े पलों को दिखाती हैं। सब देखने के लिए फ़िल्टर हटाएँ।",
     "empty": "{{tag}} के लिए अभी हमारे पास अनुभव गाइड नहीं हैं। कोई दूसरा टैग आज़माएँ या फ़िल्टर हटाएँ।",
     "clearFilter": "सभी अनुभव गाइड दिखाएँ",
-    "cardCta": "“{{guideTitle}}” अनुभव गाइड देखें",
+    "cardCta": "\"{{guideTitle}}\" अनुभव गाइड देखें",
     "filterHeading": "अनुभव गाइड फ़िल्टर करें",
     "filterDescription": "हम जिन अनुभवों को दिखाते हैं उन्हें सीमित करने के लिए टैग चुनें।",
+    "directionsLabel": "यहाँ कैसे पहुँचें",
+    "directionLinks": {
+      "walkFromHostel": "हॉस्टल से पैदल",
+      "busFromHostel": "बस से",
+      "returnWalk": "वापसी का रास्ता",
+      "capriDayTrip": {
+        "positanoCapriFerry": "पॉज़िटानो → कैप्री फ़ेरी",
+        "capriPositanoFerry": "कैप्री → पॉज़िटानो फ़ेरी"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "पॉज़िटानो → अमाल्फ़ी बस से",
+        "amalfiPositanoBus": "अमाल्फ़ी → पॉज़िटानो बस से",
+        "positanoAmalfiFerry": "पॉज़िटानो → अमाल्फ़ी फ़ेरी (मौसमी)",
+        "amalfiPositanoFerry": "अमाल्फ़ी → पॉज़िटानो फ़ेरी (मौसमी)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "पॉज़िटानो → रवेल्लो बस",
+        "ravelloPositanoBus": "रवेल्लो → पॉज़िटानो बस",
+        "positanoRavelloFerryBus": "पॉज़िटानो → रवेल्लो फ़ेरी + बस"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "नेपल्स शहर → पॉज़िटानो (ट्रेन + बस)",
+        "naplesCenterPositanoFerry": "नेपल्स शहर → पॉज़िटानो फ़ेरी",
+        "naplesAirportPositanoBus": "नेपल्स एयरपोर्ट → पॉज़िटानो बस",
+        "positanoNaplesCenterBusTrain": "पॉज़िटानो → नेपल्स शहर (बस + ट्रेन)",
+        "positanoNaplesCenterFerry": "पॉज़िटानो → नेपल्स फ़ेरी",
+        "positanoNaplesAirportBus": "पॉज़िटानो → नेपल्स एयरपोर्ट बस"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "सालेर्नो → पॉज़िटानो बस",
+        "salernoPositanoFerry": "सालेर्नो → पॉज़िटानो फ़ेरी (मौसमी)",
+        "positanoSalernoBus": "पॉज़िटानो → सालेर्नो बस",
+        "positanoSalernoFerry": "पॉज़िटानो → सालेर्नो फ़ेरी (मौसमी)"
+      }
+    },
     "grouped": {
       "beaches": {
+        "title": "बीच और तैराकी",
+        "description": "तैरने के लिए स्थान, बीच क्लब गाइड और तट तक पहुँचने के रास्ते।",
+        "imageAlt": "अमाल्फ़ी तट पर फ़िरोज़ी पानी वाले चट्टान के नीचे का खाड़ी",
         "guides": {
           "heading": "बीच गाइड",
           "description": "सही बीच चुनें और अपना दिन प्लान करें।"
@@ -101,6 +140,48 @@
           "heading": "बीच के लिए दिशाएँ",
           "description": "Hostel Brikette से बीच तक चरण-दर-चरण मार्गदर्शन।"
         }
+      },
+      "boat": {
+        "title": "बोट टूर और फ़ेरी",
+        "description": "बोट ट्रिप्स, फ़ेरी मार्ग और समुद्री दिवस के विचार।",
+        "imageAlt": "पॉज़िटानो के ऊपर समुद्र से सूर्यास्त का दृश्य",
+        "guides": {
+          "heading": "बोट गाइड",
+          "description": "टूर, रेंटल और फ़ेरी शेड्यूल।"
+        }
+      },
+      "cuisine": {
+        "title": "खाना और स्थानीय व्यंजन",
+        "description": "खाने के स्थान, बाज़ार और पाक अनुभव।",
+        "imageAlt": "समुद्र के किनारे पारंपरिक इतालवी भोजन",
+        "guides": {
+          "heading": "खाना गाइड",
+          "description": "सर्वोत्तम स्थानीय भोजन और व्यंजन।"
+        }
+      },
+      "day-trip": {
+        "title": "डे ट्रिप्स",
+        "description": "पॉज़िटानो से एक दिन की यात्राएँ — कैप्री, रवेल्लो, पॉम्पेई आदि।",
+        "imageAlt": "रवेल्लो की बालकनी से अमाल्फ़ी तट का पैनोरमिक दृश्य",
+        "guides": {
+          "heading": "डे ट्रिप गाइड",
+          "description": "एक दिन में जाने लायक यात्राएँ।"
+        }
+      },
+      "hiking": {
+        "title": "हाइक और ट्रेल्स",
+        "description": "आसान सैर से लेकर पूरे दिन की ट्रेक तक के रास्ते।",
+        "imageAlt": "तटीय दृश्यों के साथ पाथ ऑफ द गॉड्स ट्रेल पर हाइकर्स"
+      },
+      "itinerary": {
+        "title": "यात्रा कार्यक्रम",
+        "description": "विभिन्न यात्रा अवधियों के लिए कई दिनों की योजनाएँ।",
+        "imageAlt": "ऊपर से अमाल्फ़ी तट का मनोरम दृश्य"
+      },
+      "more": {
+        "title": "और गाइड्स",
+        "description": "परिवहन टिप्स, फोटोग्राफी स्पॉट्स और स्थानीय इवेंट्स।",
+        "imageAlt": "अमाल्फ़ी तट की सड़क पर घूमती स्थानीय बस"
       }
     }
   }

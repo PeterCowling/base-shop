@@ -75,7 +75,25 @@
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "images": {
+    "whyGo": {
+      "alt": "Laurito Beach öble a partvonalat szegélyező strandklubokkal",
+      "caption": "Laurito sziklafalakkal övezett öble nyugodtabb és csendesebb, mint a főstrand."
+    },
+    "layout": {
+      "alt": "Strandteraszok és partvonal elrendezése Lauritónál",
+      "caption": "Három zóna osztja meg az öblöt: nyilvános sáv, Villa Tre Ville teraszok és Da Adolfo terasz."
+    },
+    "treVille": {
+      "alt": "Villa Tre Ville strandklub napágyak és tengeri kilátás",
+      "caption": "A Villa Tre Ville prémium napágyakra és concierge-stílusú szolgáltatásra fókuszál."
+    },
+    "daAdolfo": {
+      "alt": "Da Adolfo strandklub móló és ülőrész",
+      "caption": "A Da Adolfo transzferhajója az éttermi terasznál teszi partra a vendégeket."
+    }
+  },
+  "essentialsTitle": "Mire számíts",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
     "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",

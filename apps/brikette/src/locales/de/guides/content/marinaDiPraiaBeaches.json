@@ -88,5 +88,18 @@
     "Die Klippen blockieren am Nachmittag die direkte Sonneneinstrahlung – ideal zum Abkühlen, aber an windigen Tagen kann es kühl sein.",
     "Der Mobilfunkempfang bricht in der Schlucht ein; Laden Sie vorab Busfahrpläne oder Buchungsbestätigungen für das Abendessen herunter."
   ],
-  "faqsTitle": "Marina-di-Praia-FAQs"
+  "faqsTitle": "Marina-di-Praia-FAQs",
+  "gallery": {
+    "title": "Fototour",
+    "items": [
+      {
+        "alt": "Blick auf Marina di Praia mit Fischerbooten und Sonnenschirmen am Kiesufer.",
+        "caption": "Die Bucht ist schmal, von Klippen geschützt, und ruhiger als Positanos Hauptstrände."
+      },
+      {
+        "alt": "Kiesstrand mit blauen und gelben Liegen in Marina di Praia.",
+        "caption": "Der Lido-Bereich hat die meisten Liegen, mit einem kleinen freien Streifen in der Mitte."
+      }
+    ]
+  }
 }

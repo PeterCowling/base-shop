@@ -4,6 +4,41 @@
     "description": "Prywatne dwuosobowe z widokiem na morze i budżetowe dormy: zobacz zdjęcia, udogodnienia i aktualne ceny, a następnie zarezerwuj bezpośrednio, aby uzyskać najlepszą ofertę.",
     "ogImageAlt": "Wnętrze wspólnego pokoju"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Pokój prywatny",
+      "mixedDorm": "Dorm mieszany",
+      "femaleDorm": "Dorm dla kobiet",
+      "femaleRoom": "Pokój dla kobiet"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Łazienka w pokoju",
+      "bathroomPrivate": "Prywatna łazienka",
+      "bathroomSharedFemale": "Wspólna łazienka"
+    },
+    "sleeps": "Dla {{count}} osób"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 łóżko podwójne",
+      "threeSingleBedsThreeGuests": "3 łóżka pojedyncze",
+      "oneDormBedTwoGuests": "1 łóżko piętrowe",
+      "threeDormBedsSixGuests": "3 łóżka piętrowe",
+      "threeDormBedsPlusSingleSevenGuests": "3 łóżka piętrowe + 1 pojedyncze",
+      "fourDormBedsEightGuests": "4 łóżka piętrowe"
+    },
+    "views": {
+      "seaViewTerrace": "Taras z widokiem na morze",
+      "seaViewExtraLargeTerrace": "Taras z widokiem na morze",
+      "gardenView": "Widok na ogród",
+      "courtyardView": "Widok na dziedziniec",
+      "noView": "Brak widoku"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "pokój",
+    "perBed": "łóżko"
+  },
   "facilities": {
     "privateRoom": "Pokój prywatny",
     "mixedDorm": "Dorm mieszany",

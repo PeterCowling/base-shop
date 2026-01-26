@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Visa Hostel Brikettes barmeny",
     "tertiaryCtaAria": "Skicka ett meddelande till Hostel Brikettes digitala conciergetjänst",
     "breakfastCta": "Se frukostmenyn",
-    "breakfastCtaAria": "Se frukostmenyn"
+    "breakfastCtaAria": "Se frukostmenyn",
+    "scrollNudge": "Läs mer"
   },
   "sections": {
     "bar": {
@@ -91,16 +92,96 @@
     "cardCta": "Utforska upplevelseguiden {{guideTitle}}",
     "filterHeading": "Filtrera upplevelseguider",
     "filterDescription": "Välj en tagg för att avgränsa upplevelserna vi lyfter fram.",
+    "directionsLabel": "Vägbeskrivning",
+    "directionLinks": {
+      "walkFromHostel": "Promenad från hostelet",
+      "busFromHostel": "Med buss",
+      "returnWalk": "Tillbakaväg",
+      "capriDayTrip": {
+        "positanoCapriFerry": "Färja Positano → Capri",
+        "capriPositanoFerry": "Färja Capri → Positano"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi med buss",
+        "amalfiPositanoBus": "Amalfi → Positano med buss",
+        "positanoAmalfiFerry": "Färja Positano → Amalfi (säsong)",
+        "amalfiPositanoFerry": "Färja Amalfi → Positano (säsong)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Buss Positano → Ravello",
+        "ravelloPositanoBus": "Buss Ravello → Positano",
+        "positanoRavelloFerryBus": "Positano → Ravello färja + buss"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Neapels centrum → Positano (tåg + buss)",
+        "naplesCenterPositanoFerry": "Färja Neapels centrum → Positano",
+        "naplesAirportPositanoBus": "Buss Neapels flygplats → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → Neapels centrum (buss + tåg)",
+        "positanoNaplesCenterFerry": "Färja Positano → Neapel",
+        "positanoNaplesAirportBus": "Buss Positano → Neapels flygplats"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Buss Salerno → Positano",
+        "salernoPositanoFerry": "Färja Salerno → Positano (säsong)",
+        "positanoSalernoBus": "Buss Positano → Salerno",
+        "positanoSalernoFerry": "Färja Positano → Salerno (säsong)"
+      }
+    },
     "grouped": {
       "beaches": {
+        "title": "Stränder och bad",
+        "description": "Badplatser, strandklubbguider och vägbeskrivningar till stranden.",
+        "imageAlt": "Klippvik med turkost vatten längs Amalfikusten",
         "guides": {
           "heading": "Strandguider",
           "description": "Välj rätt strandavsnitt och planera din dag."
         },
         "directions": {
           "heading": "Vägbeskrivning till stranden",
-          "description": "Steg‑för‑steg‑vägbeskrivning från Hostel Brikette ner till stranden."
+          "description": "Steg-för-steg-vägbeskrivning från Hostel Brikette ner till stranden."
         }
+      },
+      "boat": {
+        "title": "Båtresor och färjor",
+        "description": "Båtturer, färjerutter och idéer för en dag på havet.",
+        "imageAlt": "Solnedgång över havet sedd från Positano",
+        "guides": {
+          "heading": "Båtguider",
+          "description": "Turer, hyra och färjetidtabeller."
+        }
+      },
+      "cuisine": {
+        "title": "Mat och lokala specialiteter",
+        "description": "Restauranger, marknader och kulinariska upplevelser.",
+        "imageAlt": "Traditionell italiensk måltid vid havet",
+        "guides": {
+          "heading": "Matguider",
+          "description": "Den bästa lokala maten och specialiteterna."
+        }
+      },
+      "day-trip": {
+        "title": "Dagsutflykter",
+        "description": "Endagsutflykter från Positano — Capri, Ravello, Pompeji och mer.",
+        "imageAlt": "Panoramautsikt över Amalfikusten från balkong i Ravello",
+        "guides": {
+          "heading": "Utflyktsguider",
+          "description": "Utflykter värda en dag."
+        }
+      },
+      "hiking": {
+        "title": "Vandringar och leder",
+        "description": "Vandringsrutter från enkla promenader till heldagsturer.",
+        "imageAlt": "Vandrare på Gudarnas stig med kustutsikt"
+      },
+      "itinerary": {
+        "title": "Resplaner",
+        "description": "Flerdagarsplaner för olika reslängder.",
+        "imageAlt": "Pittoresk utsikt över Amalfikusten från höjden"
+      },
+      "more": {
+        "title": "Fler guider",
+        "description": "Transporttips, fotoplatser och lokala evenemang.",
+        "imageAlt": "Lokal buss som slingrar sig fram på Amalfivägarna"
       }
     }
   }

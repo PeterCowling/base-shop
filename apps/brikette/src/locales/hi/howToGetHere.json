@@ -17,15 +17,73 @@
       "experienceRoutes": "अनुभव रूट्स"
     }
   },
+  "routePicker": {
+    "title": "अपने आगमन के लिए सबसे बेहतर मार्ग खोजें",
+    "subtitle": "दो जल्दी सवालों के जवाब दें — हम आपको सबसे बेहतर विकल्प पर ले जाएंगे और उसे हाइलाइट करेंगे।",
+    "placeLabel": "आप कहाँ से आ रहे हैं?",
+    "placePlaceholder": "प्रारंभिक स्थान चुनें",
+    "arrivalLabel": "आप कब पहुँच रहे हैं?",
+    "arrival": {
+      "daytime": "दिन में",
+      "evening": "शाम",
+      "lateNight": "देर रात"
+    },
+    "preferencesLabel": "पसंद",
+    "preferences": {
+      "none": "कोई पसंद नहीं",
+      "fastest": "सबसे तेज़",
+      "cheapest": "सबसे सस्ता",
+      "leastWalking": "कम चलना",
+      "luggageFriendly": "सबसे बेहतर सामान-अनुकूल"
+    },
+    "cta": "मेरा सबसे बेहतर मार्ग दिखाएँ",
+    "urlHint": "फ़िल्टर URL अपडेट करते हैं, इसलिए आप लिंक साझा कर सकते हैं।",
+    "lateNightHint": "देर रात पहुँचने पर टैक्सी या शटल अक्सर सबसे आसान होती है — अगर बस/फेरी बंद हों तो नीचे दिए गए संपर्क विकल्प उपयोग करें।"
+  },
+  "routeCard": {
+    "factsLabel": "मार्ग की जानकारी",
+    "duration": "समय",
+    "cost": "लागत",
+    "walking": "पैदल",
+    "luggage": "सामान",
+    "seasonality": "मौसम",
+    "seasonalityValues": {
+      "seasonal": "मौसमी",
+      "yearRound": "साल भर"
+    },
+    "cta": "कदम‑दर‑कदम देखें",
+    "direction": {
+      "to": "होस्टल की ओर",
+      "from": "होस्टल से"
+    }
+  },
   "preview": {
     "notPublished": "केवल प्रीव्यू — यह पेज प्रकाशित नहीं है"
+  },
+  "jumpTo": {
+    "label": "पर जाएँ",
+    "arrival": "आगमन सहायता",
+    "rome": "रोम",
+    "experiences": "अनुभव"
   },
   "intro": {
     "taxi": "टैक्सी मंगाने के लिए आप व्हाट्सऐप पर अंग्रेज़ी या इतालवी में इस नंबर से संपर्क कर सकते हैं: <Strong>{{contact}}</Strong>।",
     "shuttle": "शटल पसंद करते हैं? Sea Horse Car Service साझा ट्रांसफ़र चलाती है। उनकी <Link>आधिकारिक शटल पेज</Link> पर सीट आरक्षित करें।",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "टैक्सी से Hostel Brikette",
-    "shuttleEyebrow": "शटल से Hostel Brikette"
+    "shuttleEyebrow": "शटल से Hostel Brikette",
+    "whatsappTemplate": "नमस्ते! मैं Hostel Brikette में ठहर रहा/रही हूँ। मैं पोसितानो के लिए/से टैक्सी बुक करना चाहता/चाहती हूँ। मेरा आगमन समय है: ____",
+    "emailSubject": "आगमन सहायता",
+    "emailBody": "नमस्ते Hostel Brikette टीम — मैं आज पहुंच रहा/रही हूँ और वहां पहुंचने के सर्वोत्तम तरीके के लिए मदद चाहिए। मेरा अनुमानित आगमन समय है: ____",
+    "whatsappCta": "WhatsApp टैक्सी",
+    "callCta": "कॉल करें",
+    "taxiBestFor": "सबसे उपयुक्त: देर से आगमन · भारी सामान · सबसे तेज विकल्प",
+    "shuttleCta": "शटल बुक करें",
+    "shuttleBestFor": "सबसे उपयुक्त: हवाई अड्डे पर आगमन · साझा ट्रांसफर · पहले से योजना",
+    "helpEyebrow": "मदद चाहिए?",
+    "helpCopy": "देर से पहुंच रहे हैं या देरी हो रही है? हमें संदेश भेजें ताकि हम आपका चेक-इन प्लान कर सकें और वैकल्पिक मार्ग सुझा सकें।",
+    "emailCta": "रिसेप्शन को ईमेल करें",
+    "helpBestFor": "सबसे उपयुक्त: देरी · फेरी रद्द होना · देर से चेक-इन"
   },
   "destinations": {
     "filterLabel": "स्थान",
@@ -214,6 +272,11 @@
   },
   "rome": {
     "title": "रोम",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "कैपिटोलिन संग्रहालयों से दिखाई देता रोमन फोरम",
+      "caption": "रोमन फोरम और कैपिटोलिन संग्रहालय"
+    },
     "description": "नेपल्स या सालर्नो पहुँचने के लिए हमारे लिखित गाइड में दिए गए निर्देशों का पालन करें, और फिर उन शहरों में से किसी से ट्रेन पकड़ें।",
     "table": {
       "headers": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "सोरेंटो",
+    "image": {
+      "src": "/img/directions/sorrento-marina.jpg",
+      "alt": "सोरेंटो मरीना ग्रांडे का पैनोरमिक दृश्य",
+      "caption": "सोरेंटो का मरीना ग्रांडे"
+    },
     "links": [
       {
         "label": "सोरेंटो से बस द्वारा",
@@ -399,6 +467,7 @@
     "title": "मार्ग फिल्टर करें",
     "resultsCount": "परिणाम: {{count}} मार्ग",
     "editLabel": "फ़िल्टर संपादित करें",
+    "shareHint": "फ़िल्टर URL में दिखते हैं ताकि साझा करना आसान हो।",
     "transportLabel": "परिवहन प्रकार",
     "transportAll": "सभी",
     "transportModes": {
@@ -646,5 +715,10 @@
   },
   "galleries": {
     "defaultAlt": "दिशाओं की फोटो"
+  },
+  "lightbox": {
+    "titleFallback": "छवि",
+    "openAria": "छवि खोलें",
+    "openAriaWithCaption": "छवि खोलें: {{caption}}"
   }
 }

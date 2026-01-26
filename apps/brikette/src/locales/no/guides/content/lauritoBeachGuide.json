@@ -122,5 +122,23 @@
   ],
   "gallery": {
     "alt": "Strandlinjen ved Laurito-stranden"
+  },
+  "images": {
+    "whyGo": {
+      "alt": "Laurito-bukten med strandklubber langs strandlinjen",
+      "caption": "Lauritos klippeomkransede bukt er roligere og mer avslappet enn hovedstranden."
+    },
+    "layout": {
+      "alt": "Stranddekk og strandlinjeoppsett ved Laurito",
+      "caption": "Tre soner deler bukten: offentlig stripe, Villa Tre Villes dekk og Da Adolfos terrasse."
+    },
+    "treVille": {
+      "alt": "Villa Tre Ville strandklubb-solsenger og havutsikt",
+      "caption": "Villa Tre Ville fokuserer på premium solsenger og concierge-service."
+    },
+    "daAdolfo": {
+      "alt": "Da Adolfo strandklubb brygge og sitteområde",
+      "caption": "Da Adolfos skyttelbåt slipper av gjester ved siden av restaurantterrassen."
+    }
   }
 }

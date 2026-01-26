@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Scatti da Arienzo",
   "gallery": {
-    "title": "Scatti da Arienzo",
-    "items": [
-      {
-        "alt": "Terrazze dell’Arienzo Beach Club",
-        "caption": "Deck a picco con lettini arancioni"
-      },
-      {
-        "alt": "Molo della navetta di Arienzo",
-        "caption": "Imbarco dello shuttle da Spiaggia Grande"
-      },
-      {
-        "alt": "Scala che porta ad Arienzo",
-        "caption": "300 gradini tra i limoneti"
-      }
-    ]
+    "primaryAlt": "Costa dell'Arienzo Beach Club e club sulla scogliera",
+    "primaryCaption": "Spiaggia di ciottoli con ombrelloni arancioni ai piedi delle scogliere",
+    "secondaryAlt": "Pranzo in terrazza all'Arienzo Beach Club",
+    "secondaryCaption": "Tavoli vista mare sotto ombrelloni arancioni e bianchi"
   }
 }

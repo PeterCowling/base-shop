@@ -8,7 +8,20 @@
   "title": "Ahorra un {{percent}} % en estancias del {{from}} al {{to}}",
   "promo": "Reserva directamente y tu descuento del {{percent}} % se aplica automáticamente al pagar.",
   "dealCard": {
-    "savePercent": "Ahorra {{percent}}"
+    "savePercent": "Ahorra {{percent}}",
+    "stayDatesLabel": "Fechas de estancia:",
+    "badges": {
+      "autoApplied": "Aplicado automáticamente",
+      "directOnly": "Solo reservas directas"
+    },
+    "cta": {
+      "bookDirect": "Reservar directo",
+      "applyDeal": "Aplicar oferta"
+    },
+    "status": {
+      "upcoming": "Próxima oferta · Empieza el {{startDate}}",
+      "expired": "Finalizada"
+    }
   },
   "status": {
     "banner": {
@@ -34,6 +47,17 @@
     "upcoming": "Próximas ofertas",
     "expired": "Ofertas finalizadas",
     "noneCurrent": "No hay ofertas vigentes en este momento."
+  },
+  "hero": {
+    "activeLabel": "Oferta actual",
+    "activeTitle": "Ahorra {{percent}}",
+    "activeDatesLabel": "Fechas de estancia:",
+    "activeSubtitle": "Aplicado automáticamente al pagar. Solo reservas directas."
+  },
+  "emptyState": {
+    "title": "Sin ofertas actuales",
+    "subtitle": "Reserva directo para obtener la mejor tarifa y ventajas.",
+    "secondaryCta": "Ver ventajas de reserva directa"
   },
   "chips": {
     "nonRefundable": "No reembolsable",

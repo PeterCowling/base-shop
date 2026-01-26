@@ -121,8 +121,13 @@
       ]
     }
   ],
+  "galleryHeading": "Galería de Arienzo",
   "gallery": {
     "title": "Momentos destacados de Arienzo",
+    "primaryAlt": "Orilla de la playa de Arienzo y club sobre el acantilado",
+    "primaryCaption": "Playa de guijarros con sombrillas naranjas bajo los acantilados",
+    "secondaryAlt": "Terraza gastronómica del Arienzo Beach Club",
+    "secondaryCaption": "Mesas con vistas al mar bajo sombrillas naranjas y blancas",
     "items": [
       {
         "alt": "Terrazas del Arienzo Beach Club",

@@ -88,5 +88,18 @@
     "Klify blokują bezpośrednie słońce do południa – świetnie nadają się do ochłodzenia, ale w wietrzne dni może być chłodno.",
     "Odbiór mobilny spada w wąwozie; pobierz wcześniej rozkłady jazdy autobusów lub potwierdzenia rezerwacji kolacji."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQs",
+  "gallery": {
+    "title": "Przewodnik fotograficzny",
+    "items": [
+      {
+        "alt": "Widok na Marina di Praia z łodziami i parasolami na kamienistym brzegu.",
+        "caption": "Zatoczka jest wąska, osłonięta klifami i spokojniejsza niż główne plaże Positano."
+      },
+      {
+        "alt": "Kamienista plaża z niebiesko-żółtymi leżakami w Marina di Praia.",
+        "caption": "Sekcja lido ma większość leżaków, z małą bezpłatną strefą bliżej środka."
+      }
+    ]
+  }
 }

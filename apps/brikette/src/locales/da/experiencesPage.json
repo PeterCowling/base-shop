@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Se Hostel Brikettes barmenu",
     "tertiaryCtaAria": "Send en besked til Hostel Brikettes digitale concierge",
     "breakfastCta": "Se morgenmenuen",
-    "breakfastCtaAria": "Se morgenmenuen"
+    "breakfastCtaAria": "Se morgenmenuen",
+    "scrollNudge": "Læs mere"
   },
   "sections": {
     "bar": {
@@ -91,8 +92,47 @@
     "cardCta": "Udforsk oplevelsesguiden {{guideTitle}}",
     "filterHeading": "Filtrér oplevelsesguides",
     "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
+    "directionsLabel": "Vejvisning",
+    "directionLinks": {
+      "walking": "Til fods",
+      "bus": "Med bus",
+      "ferry": "Med færge",
+      "combo": "Kombineret",
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri færge",
+        "capriPositanoFerry": "Capri → Positano færge"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi med bus",
+        "amalfiPositanoBus": "Amalfi → Positano med bus",
+        "positanoAmalfiFerry": "Positano → Amalfi færge (sæsonafhængig)",
+        "amalfiPositanoFerry": "Amalfi → Positano færge (sæsonafhængig)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello bus",
+        "ravelloPositanoBus": "Ravello → Positano bus",
+        "positanoRavelloFerryBus": "Positano → Ravello færge + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Napoli centrum → Positano (tog + bus)",
+        "naplesCenterPositanoFerry": "Napoli centrum → Positano færge",
+        "naplesAirportPositanoBus": "Napoli lufthavn → Positano bus",
+        "positanoNaplesCenterBusTrain": "Positano → Napoli centrum (bus + tog)",
+        "positanoNaplesCenterFerry": "Positano → Napoli færge",
+        "positanoNaplesAirportBus": "Positano → Napoli lufthavn bus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano bus",
+        "salernoPositanoFerry": "Salerno → Positano færge (sæsonafhængig)",
+        "positanoSalernoBus": "Positano → Salerno bus",
+        "positanoSalernoFerry": "Positano → Salerno færge (sæsonafhængig)"
+      }
+    },
     "grouped": {
       "beaches": {
+        "title": "Strandguides",
+        "description": "Vælg den rette strandstrækning og planlæg din dag.",
+        "imageAlt": "Billede af strand på Amalfikysten",
         "guides": {
           "heading": "Strandguides",
           "description": "Vælg den rette strandstrækning og planlæg din dag."
@@ -101,6 +141,36 @@
           "heading": "Vej til stranden",
           "description": "Trin-for-trin ruter fra Hostel Brikette ned til kysten."
         }
+      },
+      "boat": {
+        "title": "Bådture",
+        "description": "Udforsk grotter, bugter og naboøer fra havet.",
+        "imageAlt": "Traditionel gozzo-båd langs Amalfikysten"
+      },
+      "cuisine": {
+        "title": "Mad og drikke",
+        "description": "Madmarkeder, restauranttips og lokale specialiteter.",
+        "imageAlt": "Frisk fisk og citron serveret på Amalfikysten"
+      },
+      "day-trip": {
+        "title": "Dagsture",
+        "description": "Besøg Capri, Pompeji, Ravello og andre højdepunkter i nærheden.",
+        "imageAlt": "Udsigt over Capri fra havet"
+      },
+      "hiking": {
+        "title": "Vandreture",
+        "description": "Sentiero degli Dei, kyststier og strandstier.",
+        "imageAlt": "Vandrer på Guderuten med kystpanorama"
+      },
+      "itinerary": {
+        "title": "Rejseplaner",
+        "description": "Færdige planer for én til fem dage på Amalfikysten.",
+        "imageAlt": "Panoramaudsigt over Positano"
+      },
+      "more": {
+        "title": "Flere guides",
+        "description": "Praktiske tips, kultur og sæsonråd.",
+        "imageAlt": "Farverige huse i Positano"
       }
     }
   }

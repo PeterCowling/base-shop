@@ -88,5 +88,18 @@
     "Klipperne blokerer for direkte sol midt på eftermiddagen - fantastisk til at køle ned, men det kan føles køligt på blæsende dage.",
     "Mobil modtagelse dykker inde i kløften; download buskøreplaner eller middagsbestillingsbekræftelser på forhånd."
   ],
-  "faqsTitle": "FAQ om Marina di Praia"
+  "faqsTitle": "FAQ om Marina di Praia",
+  "gallery": {
+    "title": "Fotovisning",
+    "items": [
+      {
+        "alt": "Udsigt over Marina di Praia med både og parasoller på stenstranden.",
+        "caption": "Bugten er smal, beskyttet af klipper og roligere end Positanos hovedstrande."
+      },
+      {
+        "alt": "Stenstrand med blå og gule liggestole ved Marina di Praia.",
+        "caption": "Lido-sektionen har de fleste liggestole, med en lille fri strækning tættere på midten."
+      }
+    ]
+  }
 }

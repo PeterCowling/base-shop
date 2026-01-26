@@ -17,15 +17,73 @@
       "experienceRoutes": "Opplevelsesruter"
     }
   },
+  "routePicker": {
+    "title": "Finn den beste ruten for ankomsten din",
+    "subtitle": "Svar på to raske spørsmål — vi hopper til det beste alternativet og markerer det.",
+    "placeLabel": "Hvor kommer du fra?",
+    "placePlaceholder": "Velg et startpunkt",
+    "arrivalLabel": "Når ankommer du?",
+    "arrival": {
+      "daytime": "På dagtid",
+      "evening": "På kvelden",
+      "lateNight": "Sent på natten"
+    },
+    "preferencesLabel": "Preferanser",
+    "preferences": {
+      "none": "Ingen preferanse",
+      "fastest": "Raskest",
+      "cheapest": "Billigst",
+      "leastWalking": "Minst gange",
+      "luggageFriendly": "Mest bagasjevennlig"
+    },
+    "cta": "Vis min beste rute",
+    "urlHint": "Filtrene oppdaterer URL-en, så du kan dele lenken.",
+    "lateNightHint": "Sen ankomst er ofte enklest med taxi eller shuttle — bruk kontaktalternativene nedenfor hvis bussene/fergene har sluttet å gå."
+  },
+  "routeCard": {
+    "factsLabel": "Ruteinfo",
+    "duration": "Varighet",
+    "cost": "Pris",
+    "walking": "Til fots",
+    "luggage": "Bagasje",
+    "seasonality": "Sesong",
+    "seasonalityValues": {
+      "seasonal": "Sesongbasert",
+      "yearRound": "Hele året"
+    },
+    "cta": "Se trinn for trinn",
+    "direction": {
+      "to": "Til hostellet",
+      "from": "Fra hostellet"
+    }
+  },
   "preview": {
     "notPublished": "Kun forhåndsvisning – denne siden er ikke publisert"
+  },
+  "jumpTo": {
+    "label": "Gå til",
+    "arrival": "Ankomsthjelp",
+    "rome": "Roma",
+    "experiences": "Opplevelser"
   },
   "intro": {
     "taxi": "For å be om en taxi, kan du bruke WhatsApp til å kontakte følgende nummer på enten engelsk eller italiensk: <Strong>{{contact}}</Strong>.",
     "shuttle": "Foretrekker du skyttelbuss? Sea Horse Car Service kjører delte transporter. Reserver plass via deres <Link>offisielle skyttelsiden</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette med taxi",
-    "shuttleEyebrow": "Hostel Brikette med skyttel"
+    "shuttleEyebrow": "Hostel Brikette med skyttel",
+    "whatsappTemplate": "Hei! Jeg bor på Hostel Brikette. Jeg vil gjerne bestille en taxi til/fra Positano. Min ankomsttid er: ____",
+    "emailSubject": "Hjelp ved ankomst",
+    "emailBody": "Hei Hostel Brikette-team — jeg ankommer i dag og trenger hjelp til å velge beste måte å komme dit på. Min ETA er: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Ring",
+    "taxiBestFor": "Best for: sene ankomster · tung bagasje · raskeste alternativ",
+    "shuttleCta": "Bestill shuttle",
+    "shuttleBestFor": "Best for: flyplassankomster · delt transfer · planlegging i forkant",
+    "helpEyebrow": "Trenger du hjelp?",
+    "helpCopy": "Ankommer du sent eller med forsinkelser? Send oss en melding, så kan vi planlegge innsjekk og foreslå en alternativ rute.",
+    "emailCta": "Send e-post til resepsjonen",
+    "helpBestFor": "Best for: forsinkelser · fergeinnstillinger · sen innsjekk"
   },
   "destinations": {
     "filterLabel": "Sted",
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Colosseum i Roma",
+      "caption": "Forum Romanum og Kapitolmuseet"
+    },
     "title": "Roma",
     "description": "Følg instruksjonene som er gitt i vår skriftlige guide for å nå Napoli eller Salerno, og ta deretter et tog fra en av disse byene.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Utsikt over havnen i Sorrento",
+      "caption": "Sorrento fra Piazza Tasso"
+    },
     "links": [
       {
         "label": "Fra Sorrento med buss",
@@ -427,6 +495,7 @@
     "title": "Filtrer ruter",
     "resultsCount": "Resultater: {{count}} ruter",
     "editLabel": "Rediger filtre",
+    "shareHint": "Filtrene speiles i URL-en for enkel deling.",
     "transportLabel": "Transporttype",
     "transportAll": "Alle",
     "transportModes": {
@@ -674,5 +743,13 @@
   },
   "galleries": {
     "defaultAlt": "Bilde for veibeskrivelse"
+  },
+  "lightbox": {
+    "close": "Lukk",
+    "previous": "Forrige",
+    "next": "Neste",
+    "titleFallback": "Bilde",
+    "openAria": "Åpne bilde",
+    "openAriaWithCaption": "Åpne bilde: {{caption}}"
   }
 }

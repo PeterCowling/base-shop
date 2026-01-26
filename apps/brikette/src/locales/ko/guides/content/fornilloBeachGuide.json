@@ -96,6 +96,16 @@
       ]
     }
   ],
+  "essentialsTitle": "필수품",
+  "essentials": [
+    "자외선 차단제",
+    "선글라스",
+    "타월"
+  ],
+  "typicalCostsTitle": "예상 비용",
+  "typicalCosts": [
+    "라운저 대여, 식사, 음료 여부에 따라 0~50유로 정도입니다."
+  ],
   "tipsTitle": "빠른 팁",
   "tips": [
     "가장 빠른 하강을 위해서는 %LINK:hostelBriketteToFornilloBeach|지름길%을 따라 내려가세요(15~20분).",

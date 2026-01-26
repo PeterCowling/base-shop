@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Посмотреть барное меню Hostel Brikette",
     "tertiaryCtaAria": "Отправить сообщение цифровому консьержу Hostel Brikette",
     "breakfastCta": "Посмотреть меню завтраков",
-    "breakfastCtaAria": "Посмотреть меню завтраков"
+    "breakfastCtaAria": "Посмотреть меню завтраков",
+    "scrollNudge": "Прокрутите вниз, чтобы увидеть типы впечатлений"
   },
   "sections": {
     "bar": {
@@ -91,16 +92,73 @@
     "cardCta": "Изучите гид по впечатлениям «{{guideTitle}}»",
     "filterHeading": "Фильтр гидов по впечатлениям",
     "filterDescription": "Выберите тег, чтобы сузить подборку впечатлений.",
+    "directionsLabel": "Маршруты",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Позитано → Капри паром",
+        "capriPositanoFerry": "Капри → Позитано паром"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Позитано → Амальфи автобусом",
+        "amalfiPositanoBus": "Амальфи → Позитано автобусом",
+        "positanoAmalfiFerry": "Позитано → Амальфи паром (сезонный)",
+        "amalfiPositanoFerry": "Амальфи → Позитано паром (сезонный)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Позитано → Равелло автобус",
+        "ravelloPositanoBus": "Равелло → Позитано автобус",
+        "positanoRavelloFerryBus": "Позитано → Равелло паром + автобус"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Неаполь центр → Позитано (поезд + автобус)",
+        "naplesCenterPositanoFerry": "Неаполь центр → Позитано паром",
+        "naplesAirportPositanoBus": "Аэропорт Неаполя → Позитано автобус",
+        "positanoNaplesCenterBusTrain": "Позитано → Неаполь центр (автобус + поезд)",
+        "positanoNaplesCenterFerry": "Позитано → Неаполь паром",
+        "positanoNaplesAirportBus": "Позитано → Аэропорт Неаполя автобус"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Салерно → Позитано автобус",
+        "salernoPositanoFerry": "Салерно → Позитано паром (сезонный)",
+        "positanoSalernoBus": "Позитано → Салерно автобус",
+        "positanoSalernoFerry": "Позитано → Салерно паром (сезонный)"
+      }
+    },
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Гиды по пляжам",
-          "description": "Выберите подходящий пляж и спланируйте день."
-        },
-        "directions": {
-          "heading": "Как пройти к пляжу",
-          "description": "Пошаговые инструкции от Hostel Brikette до берега."
-        }
+        "title": "Пляжи",
+        "description": "Выберите подходящий пляж и спланируйте день.",
+        "imageAlt": "Пляж Позитано с разноцветными зонтиками вдоль берега"
+      },
+      "hiking": {
+        "title": "Походы и тропы",
+        "description": "Пешие маршруты от лёгких прогулок до полноценных походов.",
+        "imageAlt": "Туристы на Тропе богов с видом на побережье"
+      },
+      "day-trip": {
+        "title": "Однодневные поездки",
+        "description": "Капри, Амальфи, Равелло — как добраться и вернуться.",
+        "imageAlt": "Паром приближается к острову Капри"
+      },
+      "boat": {
+        "title": "Морские прогулки",
+        "description": "Частный чартер, групповые туры и закатные прогулки.",
+        "imageAlt": "Традиционная лодка в водах Амальфитанского побережья"
+      },
+      "cuisine": {
+        "title": "Еда и напитки",
+        "description": "Где вкусно поесть, не переплачивая.",
+        "imageAlt": "Свежие итальянские блюда в местной траттории"
+      },
+      "itinerary": {
+        "title": "Маршруты",
+        "description": "Многодневные планы для разной продолжительности поездки.",
+        "imageAlt": "Живописный вид на Амальфитанское побережье сверху"
+      },
+      "more": {
+        "title": "Другие гиды",
+        "description": "Советы по транспорту, места для фото и местные события.",
+        "imageAlt": "Местный автобус на извилистой дороге Амальфитанского побережья"
       }
     }
   }

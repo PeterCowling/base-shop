@@ -85,6 +85,32 @@
     "Gratiszonen kan försvinna när havet är stökigt — ha en reservplan för blåsiga dagar.",
     "Båtskjutsarna pausas så snart havet slår om, så bekräfta din retur innan kvällsevenemangen drar igång."
   ],
+  "images": {
+    "overview": {
+      "alt": "Flygvy över Gavitella-viken och soldäcken",
+      "caption": "De två strandklubbarna delar en smal plattform uthuggen i klippan."
+    },
+    "gavitellaClub": {
+      "alt": "Terrassmiddagsbord med utsikt över Amalfikusten vid solnedgång",
+      "caption": "La Gavitellas solnedgångsmiddagar kombinerar havsutsikt med långa aperitiver."
+    },
+    "oneFire": {
+      "alt": "Knallorangea paraplyer och solstolar vid One Fire Beach Club",
+      "caption": "One Fire är känt för livliga eftermiddagar och en DJ-styrd solnedgångsscen."
+    }
+  },
+  "essentialsTitle": "Det viktigaste",
+  "essentials": [
+    "Boka i förväg hos båda klubbarna; solnedgångsplatser och helger säljer slut först.",
+    "Räkna med 400+ trappsteg ner från Piazza San Gennaro och en brant retur om du inte tar internbussen.",
+    "Packa badskor för stenplattformen och revsäker solkräm för eftermiddagssolen."
+  ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "La Gavitella solstolspaket för två: 70–100 € beroende på säsong.",
+    "One Fire dagbädd eller cabana för två: 100–180 €, ofta med deposition under högsäsong.",
+    "Båtskjuts (när tillgänglig): 10–20 € per person enkel väg."
+  ],
   "faqsTitle": "Vanliga frågor om Gavitella",
   "faqs": [
     {

@@ -88,5 +88,18 @@
     "Các vách đá chắn ánh nắng trực tiếp vào giữa buổi chiều - rất tốt để hạ nhiệt nhưng có thể cảm thấy lạnh vào những ngày nhiều gió.",
     "Khả năng thu sóng di động chìm trong hẻm núi; tải trước lịch trình xe buýt hoặc xác nhận đặt chỗ ăn tối."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQs",
+  "gallery": {
+    "title": "Cảnh Marina di Praia",
+    "items": [
+      {
+        "alt": "Bãi biển và bến thuyền Marina di Praia",
+        "caption": "Bãi biển sỏi nằm trong hẻm núi giữa các vách đá"
+      },
+      {
+        "alt": "Nhà hàng ven bờ với đèn vào buổi tối",
+        "caption": "Các nhà hàng dọc lối đi sáng đèn lúc hoàng hôn"
+      }
+    ]
+  }
 }

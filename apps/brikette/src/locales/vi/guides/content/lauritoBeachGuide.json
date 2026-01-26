@@ -75,6 +75,24 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "Vịnh Laurito với các câu lạc bộ bãi biển dọc bờ",
+      "caption": "Vịnh được vách đá bao quanh của Laurito yên tĩnh hơn bãi biển chính"
+    },
+    "layout": {
+      "alt": "Các sân thượng và bờ biển Laurito",
+      "caption": "Vịnh chia thành ba khu: dải miễn phí, sân thượng Villa Tre Ville và bục Da Adolfo"
+    },
+    "treVille": {
+      "alt": "Bục của câu lạc bộ boutique Villa Tre Ville",
+      "caption": "Villa Tre Ville cung cấp ghế tắm nắng hạng sang và dịch vụ concierge"
+    },
+    "daAdolfo": {
+      "alt": "Bàn gỗ trước nhà hàng Da Adolfo",
+      "caption": "Da Adolfo nổi tiếng với mozzarella nướng trên lá chanh và không khí bohemian"
+    }
+  },
   "essentialsTitle": "What to expect",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",

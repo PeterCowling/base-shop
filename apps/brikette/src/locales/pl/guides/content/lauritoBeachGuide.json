@@ -75,6 +75,24 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "Zatoczka Laurito Beach z klubami plażowymi wzdłuż brzegu",
+      "caption": "Zatoczka Laurito pod klifami jest spokojniejsza i cichsza niż główna plaża."
+    },
+    "layout": {
+      "alt": "Tarasy plażowe i układ linii brzegowej w Laurito",
+      "caption": "Trzy strefy dzielą zatoczkę: publiczny pasek, tarasy Villa Tre Ville i taras Da Adolfo."
+    },
+    "treVille": {
+      "alt": "Leżaki beach clubu Villa Tre Ville z widokiem na morze",
+      "caption": "Villa Tre Ville skupia się na luksusowych leżakach i usługach concierge."
+    },
+    "daAdolfo": {
+      "alt": "Molo i strefa wypoczynkowa beach clubu Da Adolfo",
+      "caption": "Łódź wahadłowa Da Adolfo wysadza gości obok tarasu restauracji."
+    }
+  },
   "essentialsTitle": "What to expect",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",

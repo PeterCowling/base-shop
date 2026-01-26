@@ -72,6 +72,18 @@
       ]
     }
   ],
+  "essentialsTitle": "L'essentiel",
+  "essentials": [
+    "Réservez à l'avance pour les deux clubs ; les créneaux au coucher du soleil et les week-ends se vendent en premier.",
+    "Prévoyez plus de 400 marches pour descendre depuis la Piazza San Gennaro et une remontée raide, sauf si vous prenez la navette interno.",
+    "Emportez des chaussures d'eau pour la plateforme rocheuse et une crème solaire respectueuse des récifs pour le soleil de fin d'après-midi."
+  ],
+  "typicalCostsTitle": "Coûts habituels",
+  "typicalCosts": [
+    "Forfait transat La Gavitella pour deux : 70 à 100 € selon la saison.",
+    "Lit de jour ou cabane One Fire pour deux : 100 à 180 €, souvent avec arrhes en haute saison.",
+    "Navette bateau en supplément (si disponible) : 10 à 20 € par personne par trajet."
+  ],
   "tipsTitle": "Conseils rapides",
   "tips": [
     "Consultez %LINK:positanoAmalfi|notre guide de transport Positano ↔ Amalfi% pour planifier le trajet en SITA jusqu'à la Piazza San Gennaro avant d'affronter les 400 marches de descente.",
@@ -85,6 +97,20 @@
     "La zone libre peut disparaître lorsque la mer est agitée — gardez un plan B pour les journées venteuses.",
     "Les navettes en bateau s'interrompent quand la mer se lève, alors confirmez votre retour avant le début des événements au coucher du soleil."
   ],
+  "images": {
+    "overview": {
+      "alt": "Crique de la plage de Gavitella vue depuis les escaliers",
+      "caption": "La descente révèle les terrasses de La Gavitella et One Fire."
+    },
+    "gavitellaClub": {
+      "alt": "Transats et restaurant de La Gavitella Beach Club",
+      "caption": "Tables de restaurant et transats terre cuite avec vue sur Capri."
+    },
+    "oneFire": {
+      "alt": "Configuration du DJ et transats de One Fire Beach Club",
+      "caption": "Transats colorés et podium DJ pour les fêtes au coucher du soleil."
+    }
+  },
   "faqsTitle": "FAQ sur Gavitella",
   "faqs": [
     {

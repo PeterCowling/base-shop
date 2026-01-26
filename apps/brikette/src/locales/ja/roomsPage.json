@@ -29,6 +29,41 @@
     "keycard": "キー カード式ドア",
     "linen": "ベッドリネン・タオル付き"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "個室",
+      "mixedDorm": "男女混合ドミトリー",
+      "femaleDorm": "女性専用ドミトリー",
+      "femaleRoom": "女性専用ルーム"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "専用バスルーム",
+      "bathroomPrivate": "プライベートバスルーム",
+      "bathroomSharedFemale": "共用バスルーム"
+    },
+    "sleeps": "定員{{count}}名"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "ダブルベッド1台",
+      "threeSingleBedsThreeGuests": "シングルベッド3台",
+      "oneDormBedTwoGuests": "二段ベッド1台",
+      "threeDormBedsSixGuests": "二段ベッド3台",
+      "threeDormBedsPlusSingleSevenGuests": "二段ベッド3台＋シングル1台",
+      "fourDormBedsEightGuests": "二段ベッド4台"
+    },
+    "views": {
+      "seaViewTerrace": "海が見えるテラス",
+      "seaViewExtraLargeTerrace": "海が見えるテラス",
+      "gardenView": "ガーデンビュー",
+      "courtyardView": "中庭ビュー",
+      "noView": "眺望なし"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "1室",
+    "perBed": "1ベッド"
+  },
   "rooms": {
     "title": "客室",
     "double_room": {

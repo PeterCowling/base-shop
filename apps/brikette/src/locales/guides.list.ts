@@ -3,8 +3,9 @@
 // Enumerate available guides locales with a stable Vitest fallback.
 // -----------------------------------------------------------------------------
 
-import { i18nConfig } from "../i18n.config";
 import { isTestEnvironment } from "@/utils/env-helpers";
+
+import { i18nConfig } from "../i18n.config";
 
 import { getGuidesBundlesMap, getOverridesActiveFlag } from "./guides.state";
 

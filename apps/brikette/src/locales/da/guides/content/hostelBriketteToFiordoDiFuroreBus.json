@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Det vigtigste",
+  "essentials": [
+    "Solcreme.",
+    "Håndklæde.",
+    "Solbriller."
+  ],
+  "typicalCostsTitle": "Typiske omkostninger",
+  "typicalCosts": [
+    "Busbillet: 10 euro."
+  ],
   "tipsTitle": "Ekstra tips",
   "tips": [
     "Tjek den seneste SITA-køreplan, der er opslået i receptionen, før du tager af sted, så du ved, hvornår de næste busser kører.",

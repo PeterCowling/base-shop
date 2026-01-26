@@ -8,7 +8,40 @@
   "title": "Spar {{percent}} % på ophold fra {{from}} til {{to}}",
   "promo": "Book direkte – din {{percent}} % rabat trækkes automatisk ved betaling.",
   "dealCard": {
-    "savePercent": "Spar {{percent}}"
+    "savePercent": "Spar {{percent}}",
+    "stayDatesLabel": "Opholdsperiode:",
+    "badges": {
+      "autoApplied": "Trækkes automatisk",
+      "directOnly": "Kun direkte booking"
+    },
+    "cta": {
+      "bookDirect": "Book direkte",
+      "applyDeal": "Brug tilbuddet"
+    },
+    "status": {
+      "upcoming": "Kommende tilbud · Starter {{startDate}}",
+      "expired": "Udløbet"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktivt tilbud",
+    "activeTitle": "Spar {{percent}}",
+    "activeDatesLabel": "Opholdsperiode:",
+    "activeSubtitle": "Trækkes automatisk ved betaling. Kun direkte bookinger.",
+    "activeDescription": "Book direkte for at låse rabatten op – den trækkes automatisk ved betaling.",
+    "upcomingLabel": "Kommende tilbud",
+    "upcomingTitle": "Spar {{percent}} fra {{startDate}}",
+    "upcomingDescription": "Dette tilbud starter snart. Notér datoen og book direkte for at sikre rabatten.",
+    "expiredLabel": "Udløbet tilbud",
+    "expiredTitle": "Tilbuddet er afsluttet",
+    "expiredDescription": "Dette tilbud er ikke længere tilgængeligt. Se vores aktuelle tilbud nedenfor."
+  },
+  "emptyState": {
+    "title": "Ingen aktive tilbud",
+    "subtitle": "Book direkte for den bedste pris og fordele.",
+    "description": "Vi har ingen aktive tilbud lige nu, men kom tilbage snart eller book direkte for vores faste 10 % direkte-booking-rabat.",
+    "cta": "Se alle værelser",
+    "secondaryCta": "Se fordelene ved direkte booking"
   },
   "status": {
     "banner": {

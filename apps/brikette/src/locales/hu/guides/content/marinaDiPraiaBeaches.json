@@ -88,5 +88,18 @@
     "A sziklák a délután közepére eltakarják a közvetlen napfényt – kiválóan lehűtik, de szeles napokon hűvös lehet.",
     "A mobil vétel a szurdok belsejében süllyed; Előzetesen töltse le a buszmenetrendeket vagy a vacsorafoglalási visszaigazolásokat."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia GYIK",
+  "gallery": {
+    "title": "Fotós áttekintés",
+    "items": [
+      {
+        "alt": "Kilátás a Marina di Praiára csónakokkal és napernyőkkel a kavicsos parton.",
+        "caption": "Az öböl keskeny, sziklák védik, és nyugodtabb marad, mint Positano főstrandjai."
+      },
+      {
+        "alt": "Kavicsos strand kék-sárga napágyakkal a Marina di Praiánál.",
+        "caption": "A lido-szakaszon van a legtöbb napágy, a közepén egy kis szabad résszel."
+      }
+    ]
+  }
 }

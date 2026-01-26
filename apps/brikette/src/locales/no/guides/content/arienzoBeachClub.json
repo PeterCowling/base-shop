@@ -122,21 +122,11 @@
       ]
     }
   ],
+  "galleryHeading": "Bildehøydepunkter fra Arienzo",
   "gallery": {
-    "title": "Bildehøydepunkter fra Arienzo",
-    "items": [
-      {
-        "alt": "Terrassene ved Arienzo strandklubb",
-        "caption": "Dekker på klippen med oransje solsenger"
-      },
-      {
-        "alt": "Bryggen for Arienzos skyttelbåt",
-        "caption": "Gå om bord på skyttelen ved Spiaggia Grande"
-      },
-      {
-        "alt": "Trapper ned til Arienzo",
-        "caption": "300 trappetrinn gjennom sitronterasser"
-      }
-    ]
+    "primaryAlt": "Terrassene ved Arienzo strandklubb",
+    "primaryCaption": "Dekker på klippen med oransje solsenger",
+    "secondaryAlt": "Bryggen for Arienzos skyttelbåt",
+    "secondaryCaption": "Gå om bord på skyttelen ved Spiaggia Grande"
   }
 }

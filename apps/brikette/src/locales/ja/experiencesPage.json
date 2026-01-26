@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Hostel Briketteのバーメニューを見る",
     "tertiaryCtaAria": "Hostel Briketteのデジタルコンシェルジュにメッセージを送る",
     "breakfastCta": "朝食メニューを見る",
-    "breakfastCtaAria": "朝食メニューを見る"
+    "breakfastCtaAria": "朝食メニューを見る",
+    "scrollNudge": "下から体験タイプを選ぶ"
   },
   "sections": {
     "bar": {
@@ -91,16 +92,73 @@
     "cardCta": "「{{guideTitle}}」の体験ガイドを詳しく見る",
     "filterHeading": "体験ガイドを絞り込む",
     "filterDescription": "タグを選んで表示する体験を絞り込みます。",
+    "directionsLabel": "行き方",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "ポジターノ → カプリ（フェリー）",
+        "capriPositanoFerry": "カプリ → ポジターノ（フェリー）"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "ポジターノ → アマルフィ（バス）",
+        "amalfiPositanoBus": "アマルフィ → ポジターノ（バス）",
+        "positanoAmalfiFerry": "ポジターノ → アマルフィ（フェリー、季節運航）",
+        "amalfiPositanoFerry": "アマルフィ → ポジターノ（フェリー、季節運航）"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "ポジターノ → ラヴェッロ（バス）",
+        "ravelloPositanoBus": "ラヴェッロ → ポジターノ（バス）",
+        "positanoRavelloFerryBus": "ポジターノ → ラヴェッロ（フェリー＋バス）"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "ナポリ中心部 → ポジターノ（電車＋バス）",
+        "naplesCenterPositanoFerry": "ナポリ中心部 → ポジターノ（フェリー）",
+        "naplesAirportPositanoBus": "ナポリ空港 → ポジターノ（バス）",
+        "positanoNaplesCenterBusTrain": "ポジターノ → ナポリ中心部（バス＋電車）",
+        "positanoNaplesCenterFerry": "ポジターノ → ナポリ（フェリー）",
+        "positanoNaplesAirportBus": "ポジターノ → ナポリ空港（バス）"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "サレルノ → ポジターノ（バス）",
+        "salernoPositanoFerry": "サレルノ → ポジターノ（フェリー、季節運航）",
+        "positanoSalernoBus": "ポジターノ → サレルノ（バス）",
+        "positanoSalernoFerry": "ポジターノ → サレルノ（フェリー、季節運航）"
+      }
+    },
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "ビーチガイド",
-          "description": "自分に合うビーチを選び、1日の計画を立てましょう。"
-        },
-        "directions": {
-          "heading": "ビーチへの行き方",
-          "description": "Hostel Briketteから海岸までの手順を案内します。"
-        }
+        "title": "ビーチ",
+        "description": "自分に合うビーチを選び、1日の計画を立てましょう。",
+        "imageAlt": "ポジターノのビーチ沿いに並ぶカラフルなパラソル"
+      },
+      "hiking": {
+        "title": "ハイキング＆トレイル",
+        "description": "散歩コースから本格的なトレッキングまで。",
+        "imageAlt": "海岸の絶景を望む神々の道を歩くハイカー"
+      },
+      "day-trip": {
+        "title": "日帰り旅行",
+        "description": "カプリ、アマルフィ、ラヴェッロへの行き方と帰り方。",
+        "imageAlt": "カプリ島に近づくフェリー"
+      },
+      "boat": {
+        "title": "ボートツアー",
+        "description": "貸切チャーター、グループツアー、サンセットクルーズ。",
+        "imageAlt": "アマルフィ海岸を行く伝統的なボート"
+      },
+      "cuisine": {
+        "title": "グルメ",
+        "description": "お手頃価格でおいしい店を見つけよう。",
+        "imageAlt": "地元トラットリアの新鮮なイタリア料理"
+      },
+      "itinerary": {
+        "title": "モデルコース",
+        "description": "旅行日数に合わせたプラン例。",
+        "imageAlt": "上空から見たアマルフィ海岸の絶景"
+      },
+      "more": {
+        "title": "その他のガイド",
+        "description": "交通情報、フォトスポット、ローカルイベントなど。",
+        "imageAlt": "アマルフィ海岸沿いを走るローカルバス"
       }
     }
   }

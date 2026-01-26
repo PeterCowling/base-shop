@@ -43,19 +43,36 @@
     "Pianifica del tempo extra in spiaggia con la nostra %LINK:fornilloBeachGuide|Guida alle spiagge di Fornillo% e %LINK:positanoBeaches|Panoramica delle spiagge di Positano%.",
     "Scopri come questa passeggiata si inserisce in un viaggio completo nella panoramica dei viaggi di Positano."
   ],
-  "faqsTitle": "Route FAQs",
+  "faqsTitle": "Domande frequenti sul percorso",
   "faqs": [
     {
-      "q": "How long does the walk take?",
+      "q": "Quanto dura la camminata?",
       "a": [
-        "La maggior parte degli ospiti raggiunge Fornillo in 15-25 minuti a seconda del ritmo e delle soste fotografiche. Leaving earlier in the day keeps the stairs cooler."
+        "La maggior parte degli ospiti raggiunge Fornillo in 15-25 minuti a seconda del ritmo e delle soste fotografiche. Partire presto la mattina mantiene le scale più fresche."
       ]
     },
     {
-      "q": "Are there many stairs?",
+      "q": "Ci sono molte scale?",
       "a": [
         "La scorciatoia scende diverse rampe dall'ostello prima di passare su una strada asfaltata. Utilizza l'autobus per il ritorno se preferisci evitare di risalire."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Mappe del percorso e punti di riferimento",
+    "items": [
+      {
+        "alt": "Mappa del percorso a piedi dall'Hostel Brikette alla spiaggia di Fornillo",
+        "caption": "Hostel Brikette verso Fornillo (mappa)"
+      },
+      {
+        "alt": "Svolta verso il sentiero pedonale vicino all'Hotel Posa Posa",
+        "caption": "Scorciatoia per Fornillo, punto di svolta"
+      },
+      {
+        "alt": "Percorso da Spiaggia Grande alla fermata dell'autobus interno",
+        "caption": "Percorso di ritorno verso l'autobus interno"
+      }
+    ]
+  }
 }

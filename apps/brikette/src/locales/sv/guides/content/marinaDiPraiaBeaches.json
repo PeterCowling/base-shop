@@ -88,5 +88,18 @@
     "Klipporna blockerar direkt sol vid mitten av eftermiddagen - perfekt för att svalka dig men det kan kännas kyligt på blåsiga dagar.",
     "Mobil mottagning faller inne i ravinen; ladda ner busstidtabeller eller middagsbekräftelser i förväg."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Marina di Praia FAQs",
+  "gallery": {
+    "title": "Bildgenomgång",
+    "items": [
+      {
+        "alt": "Utsikt över Marina di Praia med båtar och paraplyer på stenstranden.",
+        "caption": "Viken är smal, skyddad av klippor och lugnare än Positanos huvudstränder."
+      },
+      {
+        "alt": "Stenstrand med blågula solstolar vid Marina di Praia.",
+        "caption": "Lidodelen har de flesta solstolarna, med en liten gratis bit närmare mitten."
+      }
+    ]
+  }
 }

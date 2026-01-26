@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Bildhöjdpunkter från Arienzo",
   "gallery": {
-    "title": "Bildhöjdpunkter från Arienzo",
-    "items": [
-      {
-        "alt": "Terrasserna vid Arienzo Beach Club",
-        "caption": "Klippdäck med orange solstolar"
-      },
-      {
-        "alt": "Bryggan för Arienzos shuttlebåt",
-        "caption": "Stig ombord på shuttlen vid Spiaggia Grande"
-      },
-      {
-        "alt": "Trappor ned till Arienzo",
-        "caption": "300 trappsteg genom citronterrasser"
-      }
-    ]
+    "primaryAlt": "Terrasserna vid Arienzo Beach Club",
+    "primaryCaption": "Klippdäck med orange solstolar",
+    "secondaryAlt": "Bryggan för Arienzos shuttlebåt",
+    "secondaryCaption": "Stig ombord på shuttlen vid Spiaggia Grande"
   }
 }

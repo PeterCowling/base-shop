@@ -72,6 +72,36 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "Góc nhìn từ trên xuống vịnh Gavitella với cả hai câu lạc bộ bãi biển",
+      "caption": "Vịnh quay hướng tây đón nắng đến cuối chiều"
+    },
+    "access": {
+      "alt": "Cầu thang đá dẫn xuống Gavitella từ Praiano",
+      "caption": "Khoảng 400 bậc thang len lỏi giữa các biệt thự và vườn chanh"
+    },
+    "gavitellaClub": {
+      "alt": "Sân tắm nắng và cầu cảng của La Gavitella",
+      "caption": "La Gavitella với nhà hàng hải sản và tàu hoàng hôn"
+    },
+    "oneFire": {
+      "alt": "Ghế tắm nắng rực rỡ và bục DJ của One Fire",
+      "caption": "One Fire mang đến năng lượng tiệc tùng và các set DJ hoàng hôn"
+    }
+  },
+  "essentialsTitle": "Điều cần biết",
+  "essentials": [
+    "Hai câu lạc bộ bãi biển (La Gavitella, One Fire) và một dải công cộng hẹp giữa chúng.",
+    "Xe buýt SITA đến Praiano rồi đi bộ ~400 bậc thang hoặc đặt tàu đưa đón từ Positano.",
+    "Đặt chỗ trước rất được khuyến khích — đặc biệt cho khung giờ hoàng hôn và cuối tuần."
+  ],
+  "typicalCostsTitle": "Chi phí tham khảo",
+  "typicalCosts": [
+    "Ghế tắm nắng La Gavitella: €40–€80/người tùy vị trí và mùa.",
+    "Cabana One Fire: €100–€200 cho nhóm, thường kèm tiền cọc vào cao điểm.",
+    "Bữa tối hải sản tại La Gavitella: €50–€80/người kèm rượu vang."
+  ],
   "tipsTitle": "Mẹo nhanh",
   "tips": [
     "Dùng %LINK:positanoAmalfi|hướng dẫn đi lại Positano ↔ Amalfi của chúng tôi% để lên kế hoạch chuyến SITA đến Piazza San Gennaro trước khi bước xuống 400 bậc thang.",

@@ -267,5 +267,40 @@
   "landingImageAlt": "Landing image of {{room}}",
   "priceNotes": {
     "dorm": "Per night, per guest. One guest in one bunk bed."
+  },
+  "facts": {
+    "type": {
+      "privateRoom": "Camera privata",
+      "mixedDorm": "Dormitorio misto",
+      "femaleDorm": "Dormitorio femminile",
+      "femaleRoom": "Camera femminile"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Bagno privato interno",
+      "bathroomPrivate": "Bagno privato",
+      "bathroomSharedFemale": "Bagno condiviso femminile"
+    },
+    "sleeps": "Posti letto: {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 letto matrimoniale",
+      "threeSingleBedsThreeGuests": "3 letti singoli",
+      "oneDormBedTwoGuests": "1 letto a castello (2 posti)",
+      "threeDormBedsSixGuests": "3 letti a castello (6 posti)",
+      "threeDormBedsPlusSingleSevenGuests": "3 letti a castello + 1 singolo (7 posti)",
+      "fourDormBedsEightGuests": "4 letti a castello (8 posti)"
+    },
+    "views": {
+      "seaViewTerrace": "Terrazza con vista mare",
+      "seaViewExtraLargeTerrace": "Terrazza XL con vista mare",
+      "gardenView": "Vista giardino",
+      "courtyardView": "Vista cortile",
+      "noView": "Senza vista"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "Camera",
+    "perBed": "Letto"
   }
 }

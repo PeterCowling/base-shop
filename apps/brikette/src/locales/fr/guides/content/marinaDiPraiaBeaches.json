@@ -88,5 +88,22 @@
     "Les falaises bloquent le soleil direct en milieu d’après-midi – idéales pour se rafraîchir, mais il peut faire froid les jours venteux.",
     "La réception mobile plonge à l’intérieur de la gorge ; téléchargez au préalable les horaires de bus ou les confirmations de réservation de dîner."
   ],
-  "faqsTitle": "FAQ Marina di Praia"
+  "faqsTitle": "FAQ Marina di Praia",
+  "gallery": {
+    "title": "Galerie Marina di Praia",
+    "items": [
+      {
+        "alt": "Plage de Marina di Praia entre les falaises",
+        "caption": "Galets et transats au pied des falaises"
+      },
+      {
+        "alt": "Restaurants à flanc de falaise à Marina di Praia",
+        "caption": "Il Pirata et Da Armandino surplombent la crique"
+      },
+      {
+        "alt": "Location de kayaks à Marina di Praia",
+        "caption": "Kayaks prêts pour explorer les grottes voisines"
+      }
+    ]
+  }
 }

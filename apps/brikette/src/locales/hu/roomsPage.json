@@ -29,6 +29,41 @@
     "keycard": "Beléptetés kártyával",
     "linen": "Ágynemű és törölköző biztosítva"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Privát szoba",
+      "mixedDorm": "Vegyes hálóterem",
+      "femaleDorm": "Női hálóterem",
+      "femaleRoom": "Női szoba"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Saját fürdő",
+      "bathroomPrivate": "Privát fürdőszoba",
+      "bathroomSharedFemale": "Közös fürdőszoba"
+    },
+    "sleeps": "{{count}} fő"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 franciaágy",
+      "threeSingleBedsThreeGuests": "3 egyszemélyes ágy",
+      "oneDormBedTwoGuests": "1 emeletes ágy",
+      "threeDormBedsSixGuests": "3 emeletes ágy",
+      "threeDormBedsPlusSingleSevenGuests": "3 emeletes + 1 egyszemélyes",
+      "fourDormBedsEightGuests": "4 emeletes ágy"
+    },
+    "views": {
+      "seaViewTerrace": "Tengerre néző terasz",
+      "seaViewExtraLargeTerrace": "Tengerre néző terasz",
+      "gardenView": "Kertre néző",
+      "courtyardView": "Udvarra néző",
+      "noView": "Nincs kilátás"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "szoba",
+    "perBed": "ágy"
+  },
   "rooms": {
     "title": "Szobáink",
     "double_room": {
@@ -266,6 +301,6 @@
   "loadingPrice": "Ár betöltése…",
   "landingImageAlt": "A(z) {{room}} nyitóképe",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Éjszakánként, vendégenként. Egy vendég egy emeletes ágyban."
   }
 }

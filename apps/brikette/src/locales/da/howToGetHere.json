@@ -17,15 +17,73 @@
       "experienceRoutes": "Oplevelsesruter"
     }
   },
+  "routePicker": {
+    "title": "Find den bedste rute til din ankomst",
+    "subtitle": "Svar på to hurtige spørgsmål — vi springer til det bedste match og fremhæver det.",
+    "placeLabel": "Hvor kommer du fra?",
+    "placePlaceholder": "Vælg et udgangspunkt",
+    "arrivalLabel": "Hvornår ankommer du?",
+    "arrival": {
+      "daytime": "Om dagen",
+      "evening": "Om aftenen",
+      "lateNight": "Sent om natten"
+    },
+    "preferencesLabel": "Præferencer",
+    "preferences": {
+      "none": "Ingen præference",
+      "fastest": "Hurtigst",
+      "cheapest": "Billigst",
+      "leastWalking": "Mindst gang",
+      "luggageFriendly": "Mest bagagevenlig"
+    },
+    "cta": "Vis min bedste rute",
+    "urlHint": "Filtrene opdaterer URL'en, så du kan dele linket.",
+    "lateNightHint": "Sen ankomst er ofte nemmest med taxi eller shuttle — brug kontaktmulighederne nedenfor, hvis busser/færger er sluttet."
+  },
+  "routeCard": {
+    "factsLabel": "Rutefakta",
+    "duration": "Varighed",
+    "cost": "Pris",
+    "walking": "Til fods",
+    "luggage": "Bagage",
+    "seasonality": "Sæson",
+    "seasonalityValues": {
+      "seasonal": "Sæsonbetonet",
+      "yearRound": "Hele året"
+    },
+    "cta": "Se trin for trin",
+    "direction": {
+      "to": "Til hostellet",
+      "from": "Fra hostellet"
+    }
+  },
   "preview": {
     "notPublished": "Kun forhåndsvisning – denne side er ikke publiceret"
+  },
+  "jumpTo": {
+    "label": "Gå til",
+    "arrival": "Ankomsthjælp",
+    "rome": "Rom",
+    "experiences": "Oplevelser"
   },
   "intro": {
     "taxi": "Hvis du vil bestille en taxa, kan du bruge WhatsApp til at kontakte dette nummer på engelsk eller italiensk: <Strong>{{contact}}</Strong>.",
     "shuttle": "Foretrækker du en shuttle? Sea Horse Car Service kører delte transfers. Reservér en plads via deres <Link>officielle shuttle-side</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette med taxa",
-    "shuttleEyebrow": "Hostel Brikette med shuttle"
+    "shuttleEyebrow": "Hostel Brikette med shuttle",
+    "whatsappTemplate": "Hej! Jeg bor på Hostel Brikette. Jeg vil gerne bestille en taxi til/fra Positano. Min ankomsttid er: ____",
+    "emailSubject": "Hjælp til ankomst",
+    "emailBody": "Hej Hostel Brikette-team — jeg ankommer i dag og har brug for hjælp til at vælge den bedste måde at komme frem på. Min forventede ankomsttid er: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Ring",
+    "taxiBestFor": "Bedst til: sene ankomster · tung bagage · hurtigste mulighed",
+    "shuttleCta": "Book shuttle",
+    "shuttleBestFor": "Bedst til: ankomster i lufthavnen · delt transfer · planlægning i god tid",
+    "helpEyebrow": "Brug for hjælp?",
+    "helpCopy": "Ankommer du sent eller har forsinkelser? Skriv til os, så vi kan planlægge din check-in og foreslå en alternativ rute.",
+    "emailCta": "Skriv til receptionen",
+    "helpBestFor": "Bedst til: forsinkelser · færgeaflysninger · sen check-in"
   },
   "destinations": {
     "filterLabel": "Sted",
@@ -175,7 +233,7 @@
             "internal": true
           },
           {
-          "label": "Salerno til Positano med færge",
+            "label": "Salerno til Positano med færge",
             "href": "salerno-positano-ferry",
             "internal": true
           },
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Colosseum i Rom",
+      "caption": "Forum Romanum og Kapitolmuseerne"
+    },
     "title": "Rom",
     "description": "Følg vejledningerne i vores skriftlige guide for at komme til Napoli eller Salerno, og tag derefter et tog fra en af disse byer.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Havneudsigt i Sorrento",
+      "caption": "Sorrento fra Piazza Tasso"
+    },
     "links": [
       {
         "label": "Fra Sorrento med bus",
@@ -399,6 +467,7 @@
     "title": "Filtrér ruter",
     "resultsCount": "Resultater: {{count}} ruter",
     "editLabel": "Rediger filtre",
+    "shareHint": "Filtrene afspejles i URL'en for nem deling.",
     "transportLabel": "Transporttype",
     "transportAll": "Alle",
     "transportModes": {
@@ -646,5 +715,13 @@
   },
   "galleries": {
     "defaultAlt": "Vejbeskrivelsesfoto"
+  },
+  "lightbox": {
+    "close": "Luk",
+    "previous": "Forrige",
+    "next": "Næste",
+    "titleFallback": "Billede",
+    "openAria": "Åbn billede",
+    "openAriaWithCaption": "Åbn billede: {{caption}}"
   }
 }

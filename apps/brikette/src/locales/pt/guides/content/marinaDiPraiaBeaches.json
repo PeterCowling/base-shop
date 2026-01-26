@@ -88,5 +88,18 @@
     "As falésias bloqueiam o sol direto no meio da tarde – ótimo para se refrescar, mas pode fazer frio em dias de vento.",
     "A recepção móvel mergulha dentro do desfiladeiro; baixe horários de ônibus ou confirmações de reserva de jantar com antecedência."
   ],
-  "faqsTitle": "Marina di Praia FAQs"
+  "faqsTitle": "Perguntas frequentes sobre Marina di Praia",
+  "gallery": {
+    "title": "Destaques de Marina di Praia",
+    "items": [
+      {
+        "alt": "Praia de seixos de Marina di Praia entre falésias",
+        "caption": "Marina di Praia é uma enseada escondida entre as rochas"
+      },
+      {
+        "alt": "Restaurantes à beira-mar em Marina di Praia",
+        "caption": "Restaurantes escavados nas falésias servem peixe fresco"
+      }
+    ]
+  }
 }

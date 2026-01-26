@@ -67,5 +67,13 @@
     "La plage est exiguë et l'ombre arrive rapidement dans l'après-midi."
   ],
   "faqsTitle": "FAQ sur le Fiordo di Furore",
-  "faqs": []
+  "faqs": [],
+  "typicalCostsTitle": "Coûts habituels",
+  "typicalCosts": [
+    "Les guides de sortie comptent généralement 5 à 10 €."
+  ],
+  "sectionFigure": {
+    "alt": "Pont au-dessus du Fiordo di Furore",
+    "caption": "La petite crique se niche sous le pont en arc."
+  }
 }

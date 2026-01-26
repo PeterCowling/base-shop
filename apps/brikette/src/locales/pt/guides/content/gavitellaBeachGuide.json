@@ -85,6 +85,32 @@
     "A área gratuita pode desaparecer com o mar agitado — tenha um plano reserva para os dias de vento.",
     "Os traslados de barco param quando o mar muda, então confirme a volta antes dos eventos ao pôr do sol."
   ],
+  "images": {
+    "overview": {
+      "alt": "Vista aérea da enseada de Gavitella ao pôr do sol",
+      "caption": "Gavitella voltada para oeste com vistas para Capri e Li Galli ao entardecer"
+    },
+    "gavitellaClub": {
+      "alt": "Terraço do La Gavitella Beach Club com espreguiçadeiras",
+      "caption": "La Gavitella oferece almoços refinados e cruzeiros ao pôr do sol"
+    },
+    "oneFire": {
+      "alt": "Espreguiçadeiras coloridas e palco de DJ do One Fire Beach Club",
+      "caption": "One Fire é a praia de festas da Costa Amalfitana"
+    }
+  },
+  "essentialsTitle": "O que esperar",
+  "essentials": [
+    "Desça na paragem Piazza San Gennaro em Praiano — cerca de 400 degraus irregulares até à enseada.",
+    "Dois beach clubs — La Gavitella e One Fire — com uma pequena faixa pública entre eles.",
+    "Reservas via WhatsApp essenciais em época alta para espreguiçadeiras e eventos ao pôr do sol."
+  ],
+  "typicalCostsTitle": "Custos típicos",
+  "typicalCosts": [
+    "Conjunto de espreguiçadeiras no La Gavitella para dois: €80–€150, com toalhas e serviço.",
+    "Espreguiçadeiras no One Fire para dois: €60–€100, com possível depósito em época alta.",
+    "Pratos principais ao almoço: €20–€35, cocktails €12–€16, água engarrafada €4–€5."
+  ],
   "faqsTitle": "Perguntas frequentes sobre Gavitella",
   "faqs": [
     {

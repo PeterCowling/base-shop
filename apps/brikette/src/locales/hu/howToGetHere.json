@@ -7,25 +7,83 @@
     "eyebrow": "Hostel Brikette",
     "title": "Utazási útvonalak listája",
     "description": "Használd ezt az útmutatót, hogy oda-vissza eljuss az Amalfi-parti úti célodhoz és a Hostel Brikette-hez.",
-    "heroAlt": "Stone steps framed by bougainvillea leading to Hostel Brikette's entrance",
+    "heroAlt": "Bugenvilleával szegélyezett kőlépcsők a Hostel Brikette bejáratához",
     "heroAltFallback": "Bugenvilleával szegélyezett kőlépcső",
-    "transportLabel": "Transport coverage",
+    "transportLabel": "Közlekedési lefedettség",
     "stats": {
-      "routes": "Door-to-door routes",
-      "destinations": "Local areas covered",
-      "transport": "Transport types",
-      "experienceRoutes": "Experience routes"
+      "routes": "Ajtótól ajtóig útvonalak",
+      "destinations": "Lefedett helyi területek",
+      "transport": "Közlekedési típusok",
+      "experienceRoutes": "Élmény útvonalak"
+    }
+  },
+  "routePicker": {
+    "title": "Találd meg a legjobb útvonalat az érkezésedhez",
+    "subtitle": "Válaszolj két gyors kérdésre — a legjobb találathoz ugrunk, és kiemeljük.",
+    "placeLabel": "Honnan érkezel?",
+    "placePlaceholder": "Válassz kiindulási pontot",
+    "arrivalLabel": "Mikor érkezel?",
+    "arrival": {
+      "daytime": "Nappal",
+      "evening": "Este",
+      "lateNight": "Késő éjjel"
+    },
+    "preferencesLabel": "Preferenciák",
+    "preferences": {
+      "none": "Nincs preferencia",
+      "fastest": "Leggyorsabb",
+      "cheapest": "Legolcsóbb",
+      "leastWalking": "Legkevesebb gyaloglás",
+      "luggageFriendly": "Leginkább csomagbarát"
+    },
+    "cta": "Mutasd a legjobb útvonalat",
+    "urlHint": "A szűrők frissítik az URL-t, így megoszthatod a linket.",
+    "lateNightHint": "A késő esti érkezés gyakran a legegyszerűbb taxival vagy shuttle-lel — használd az alábbi elérhetőségeket, ha a buszok/kompok már nem járnak."
+  },
+  "routeCard": {
+    "factsLabel": "Útvonal adatai",
+    "duration": "Időtartam",
+    "cost": "Költség",
+    "walking": "Gyalog",
+    "luggage": "Csomag",
+    "seasonality": "Szezon",
+    "seasonalityValues": {
+      "seasonal": "Szezonális",
+      "yearRound": "Egész évben"
+    },
+    "cta": "Lépésről lépésre",
+    "direction": {
+      "to": "A hostelhez",
+      "from": "A hosteltől"
     }
   },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Ugrás ide",
+    "arrival": "Érkezési segítség",
+    "rome": "Róma",
+    "experiences": "Élmények"
   },
   "intro": {
     "taxi": "Taxis rendeléséhez WhatsAppon írjon az alábbi számra angolul vagy olaszul: <Strong>{{contact}}</Strong>.",
     "shuttle": "Szeretne inkább transzfert? A Sea Horse Car Service megosztott transzfereket indít; foglaljon helyet az <Link>hivatalos shuttle oldalán</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Üdvözlöm! A Hostel Brikette-ben szállok meg. Taxit szeretnék foglalni Positanóba/Positanóból. Az érkezésem ideje: ____",
+    "emailSubject": "Segítség az érkezéshez",
+    "emailBody": "Üdvözlöm, Hostel Brikette csapat — ma érkezem, és segítségre van szükségem a legjobb út kiválasztásához. A várható érkezésem: ____",
+    "whatsappCta": "WhatsApp-taxi",
+    "callCta": "Hívás",
+    "taxiBestFor": "Legjobb: késői érkezések · nehéz csomag · leggyorsabb opció",
+    "shuttleCta": "Shuttle foglalása",
+    "shuttleBestFor": "Legjobb: repülőtéri érkezések · közös transzfer · előre tervezés",
+    "helpEyebrow": "Segítségre van szüksége?",
+    "helpCopy": "Későn érkezik vagy késések vannak? Írjon nekünk, hogy meg tudjuk tervezni a check-int és javasolhassunk egy tartalék útvonalat.",
+    "emailCta": "Írjon a recepciónak",
+    "helpBestFor": "Legjobb: késések · kompjárat‑törlések · késői check‑in"
   },
   "destinations": {
     "filterLabel": "Hely",
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "A római Forum a Capitoliumi Múzeumokból nézve",
+      "caption": "Római Forum és Capitoliumi Múzeumok"
+    },
     "title": "Róma",
     "description": "Kövesse írásos útmutatónkat, hogy eljusson Nápolyba vagy Salernóba, majd onnan vonattal utazzon tovább.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "Szorrento",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Kilátás Szorrentóra a Piazza Tassóról",
+      "caption": "Szorrento a Piazza Tassóról"
+    },
     "links": [
       {
         "label": "Szorrentóból busszal",
@@ -399,6 +467,7 @@
     "title": "Útvonalak szűrése",
     "resultsCount": "Találatok: {{count}} útvonal",
     "editLabel": "Szűrők szerkesztése",
+    "shareHint": "A szűrők megjelennek az URL-ben a könnyű megosztáshoz.",
     "transportLabel": "Közlekedési mód",
     "transportAll": "Összes",
     "transportModes": {
@@ -642,9 +711,14 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "Útbaigazítás"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "Útbaigazítás fotó"
+  },
+  "lightbox": {
+    "titleFallback": "Kép",
+    "openAria": "Kép megnyitása",
+    "openAriaWithCaption": "Kép megnyitása: {{caption}}"
   }
 }

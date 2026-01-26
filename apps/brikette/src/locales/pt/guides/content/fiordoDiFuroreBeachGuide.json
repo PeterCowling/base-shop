@@ -67,5 +67,15 @@
     "O espaço na praia é reduzido e a sombra chega rapidamente à tarde."
   ],
   "faqsTitle": "Perguntas frequentes sobre o Fiordo di Furore",
-  "faqs": []
+  "faqs": [],
+  "typicalCostsTitle": "Custos típicos",
+  "typicalCosts": [
+    "Bilhete de autocarro SITA de ida e volta: cerca de €5–€7 por pessoa.",
+    "Lanches numa carrinha sazonal: €3–€5, quando disponível.",
+    "Táxi de emergência para a estrada: €15–€25 para distâncias curtas."
+  ],
+  "sectionFigure": {
+    "alt": "Arco do Fiordo di Furore sobre águas esmeralda",
+    "caption": "A famosa ponte em arco que emoldura a enseada do Fiordo di Furore"
+  }
 }

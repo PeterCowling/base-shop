@@ -17,15 +17,73 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Найдите лучший маршрут для прибытия",
+    "subtitle": "Ответьте на два быстрых вопроса — мы покажем лучший вариант и выделим его.",
+    "placeLabel": "Откуда вы едете?",
+    "placePlaceholder": "Выберите пункт отправления",
+    "arrivalLabel": "Когда вы прибываете?",
+    "arrival": {
+      "daytime": "Днём",
+      "evening": "Вечером",
+      "lateNight": "Поздно ночью"
+    },
+    "preferencesLabel": "Предпочтения",
+    "preferences": {
+      "none": "Без предпочтений",
+      "fastest": "Самый быстрый",
+      "cheapest": "Самый дешёвый",
+      "leastWalking": "Меньше ходьбы",
+      "luggageFriendly": "Удобнее с багажом"
+    },
+    "cta": "Показать лучший маршрут",
+    "urlHint": "Фильтры обновляют URL, чтобы вы могли поделиться ссылкой.",
+    "lateNightHint": "Поздние прибытия чаще всего проще всего на такси или шаттле — используйте контакты ниже, если автобусы/паромы уже не ходят."
+  },
+  "routeCard": {
+    "factsLabel": "Сведения о маршруте",
+    "duration": "Длительность",
+    "cost": "Стоимость",
+    "walking": "Пешком",
+    "luggage": "Багаж",
+    "seasonality": "Сезон",
+    "seasonalityValues": {
+      "seasonal": "Сезонно",
+      "yearRound": "Круглый год"
+    },
+    "cta": "Посмотреть пошагово",
+    "direction": {
+      "to": "К хостелу",
+      "from": "От хостела"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Перейти к",
+    "arrival": "Помощь по прибытии",
+    "rome": "Рим",
+    "experiences": "Впечатления"
   },
   "intro": {
     "taxi": "Чтобы заказать такси, напишите в WhatsApp на номер <Strong>{{contact}}</Strong> на английском или итальянском языке.",
     "shuttle": "Нужен шаттл? Sea Horse Car Service организует совместные трансферы. Забронируйте место на их <Link>официальной странице шаттла</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Здравствуйте! Я остановился в Hostel Brikette. Хотел(а) бы заказать такси в/из Позитано. Мое время прибытия: ____",
+    "emailSubject": "Помощь по прибытии",
+    "emailBody": "Здравствуйте, команда Hostel Brikette — я приезжаю сегодня и мне нужна помощь, чтобы выбрать лучший способ добраться. Мое ориентировочное время прибытия: ____",
+    "whatsappCta": "Такси в WhatsApp",
+    "callCta": "Позвонить",
+    "taxiBestFor": "Лучше всего для: поздних прибытий · тяжелого багажа · самый быстрый вариант",
+    "shuttleCta": "Забронировать шаттл",
+    "shuttleBestFor": "Лучше всего для: прибытия в аэропорт · совместного трансфера · планирования заранее",
+    "helpEyebrow": "Нужна помощь?",
+    "helpCopy": "Приезжаете поздно или с задержками? Напишите нам, чтобы мы могли спланировать ваш заезд и предложить запасной маршрут.",
+    "emailCta": "Написать в ресепшен",
+    "helpBestFor": "Лучше всего для: задержек · отмены паромов · позднего заезда"
   },
   "destinations": {
     "filterLabel": "Локация",
@@ -213,6 +271,11 @@
     ]
   },
   "rome": {
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Римский форум с Капитолийских музеев",
+      "caption": "Римский форум и Капитолийские музеи"
+    },
     "title": "Рим",
     "description": "Следуйте письменным инструкциям, чтобы доехать до Неаполя или Салерно, а затем сядьте на поезд из любого из этих городов.",
     "table": {
@@ -372,6 +435,11 @@
   },
   "sorrento": {
     "title": "Сорренто",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "Вид на Сорренто с Пьяцца Тассо",
+      "caption": "Сорренто с Пьяцца Тассо"
+    },
     "links": [
       {
         "label": "Из Сорренто на автобусе",
@@ -399,6 +467,7 @@
     "title": "Фильтр маршрутов",
     "resultsCount": "Результатов: {{count}} маршрутов",
     "editLabel": "Изменить фильтры",
+    "shareHint": "Фильтры отражаются в URL для удобного обмена ссылкой.",
     "transportLabel": "Тип транспорта",
     "transportAll": "Все",
     "transportModes": {
@@ -646,5 +715,10 @@
   },
   "galleries": {
     "defaultAlt": "Directions photo"
+  },
+  "lightbox": {
+    "titleFallback": "Изображение",
+    "openAria": "Открыть изображение",
+    "openAriaWithCaption": "Открыть изображение: {{caption}}"
   }
 }

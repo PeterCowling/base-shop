@@ -17,15 +17,73 @@
       "experienceRoutes": "体験ルート"
     }
   },
+  "routePicker": {
+    "title": "到着に最適なルートを見つける",
+    "subtitle": "簡単な2つの質問に答えると、最適な候補を表示して強調します。",
+    "placeLabel": "どこから来ますか？",
+    "placePlaceholder": "出発地を選択",
+    "arrivalLabel": "いつ到着しますか？",
+    "arrival": {
+      "daytime": "昼間",
+      "evening": "夕方",
+      "lateNight": "深夜"
+    },
+    "preferencesLabel": "希望",
+    "preferences": {
+      "none": "希望なし",
+      "fastest": "最短",
+      "cheapest": "最安",
+      "leastWalking": "歩きが少ない",
+      "luggageFriendly": "荷物に優しい"
+    },
+    "cta": "最適なルートを表示",
+    "urlHint": "フィルターはURLに反映されるので、リンクを共有できます。",
+    "lateNightHint": "深夜の到着はタクシーやシャトルが最も簡単です。バスやフェリーが終わっている場合は下の連絡先をご利用ください。"
+  },
+  "routeCard": {
+    "factsLabel": "ルート情報",
+    "duration": "所要時間",
+    "cost": "費用",
+    "walking": "徒歩",
+    "luggage": "荷物",
+    "seasonality": "季節",
+    "seasonalityValues": {
+      "seasonal": "季節運行",
+      "yearRound": "通年"
+    },
+    "cta": "手順を見る",
+    "direction": {
+      "to": "ホステルへ",
+      "from": "ホステルから"
+    }
+  },
   "preview": {
     "notPublished": "プレビューのみ – このページは公開されていません"
+  },
+  "jumpTo": {
+    "label": "移動先",
+    "arrival": "到着サポート",
+    "rome": "ローマ",
+    "experiences": "体験"
   },
   "intro": {
     "taxi": "タクシーを手配する場合は、WhatsAppで次の番号に英語またはイタリア語で連絡できます: <Strong>{{contact}}</Strong>。",
     "shuttle": "シャトルをご希望ですか？Sea Horse Car Serviceが相乗り送迎を運行しています。<Link>公式シャトルページ</Link>から予約できます。",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "タクシーでHostel Briketteへ",
-    "shuttleEyebrow": "シャトルでHostel Briketteへ"
+    "shuttleEyebrow": "シャトルでHostel Briketteへ",
+    "whatsappTemplate": "こんにちは！Hostel Briketteに宿泊します。ポジターノ行き/発のタクシーを予約したいです。到着予定時刻は: ____",
+    "emailSubject": "到着のサポート",
+    "emailBody": "Hostel Briketteの皆さまへ — 本日到着予定で、最適な行き方の相談が必要です。到着予定時刻は: ____",
+    "whatsappCta": "WhatsAppでタクシー",
+    "callCta": "電話する",
+    "taxiBestFor": "おすすめ: 深夜到着 · 重い荷物 · 最速オプション",
+    "shuttleCta": "シャトルを予約",
+    "shuttleBestFor": "おすすめ: 空港到着 · 乗合送迎 · 事前計画",
+    "helpEyebrow": "お困りですか？",
+    "helpCopy": "到着が遅い、または遅延がありますか？チェックインの計画と代替ルートの提案のため、メッセージをください。",
+    "emailCta": "フロントにメールする",
+    "helpBestFor": "おすすめ: 遅延 · フェリー欠航 · レイトチェックイン"
   },
   "destinations": {
     "filterLabel": "場所",
@@ -212,8 +270,18 @@
       }
     ]
   },
+  "lightbox": {
+    "titleFallback": "画像",
+    "openAria": "画像を開く",
+    "openAriaWithCaption": "画像を開く: {{caption}}"
+  },
   "rome": {
     "title": "ローマ",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "カピトリーノ美術館から見たローマ・フォーラム",
+      "caption": "ローマ・フォーラムとカピトリーノ美術館"
+    },
     "description": "ガイドで案内している手順に従ってナポリまたはサレルノまで移動し、そこから列車に乗り換えてください。",
     "table": {
       "headers": {
@@ -372,6 +440,11 @@
   },
   "sorrento": {
     "title": "ソレント",
+    "image": {
+      "src": "/img/directions/sorrento-piazza-tasso.jpg",
+      "alt": "タッソ広場からのソレントの眺め",
+      "caption": "タッソ広場から見たソレント"
+    },
     "links": [
       {
         "label": "ソレント発（バス）",
@@ -399,6 +472,7 @@
     "title": "ルートを絞り込む",
     "resultsCount": "結果: {{count}} 件のルート",
     "editLabel": "フィルターを編集",
+    "shareHint": "フィルターはURLに反映されるため、簡単に共有できます。",
     "transportLabel": "交通手段",
     "transportAll": "すべて",
     "transportModes": {

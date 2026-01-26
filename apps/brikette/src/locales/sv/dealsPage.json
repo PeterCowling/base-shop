@@ -8,7 +8,31 @@
   "title": "Spara {{percent}} % på vistelser från {{from}} till {{to}}",
   "promo": "Boka direkt och din {{percent}} % rabatt dras automatiskt i kassan.",
   "dealCard": {
-    "savePercent": "Spara {{percent}}"
+    "savePercent": "Spara {{percent}}",
+    "stayDatesLabel": "Vistelseperiod:",
+    "badges": {
+      "autoApplied": "Dras automatiskt",
+      "directOnly": "Endast direktbokning"
+    },
+    "cta": {
+      "bookDirect": "Boka direkt",
+      "applyDeal": "Använd erbjudandet"
+    },
+    "status": {
+      "upcoming": "Kommande erbjudande · Startar {{startDate}}",
+      "expired": "Avslutat"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktivt erbjudande",
+    "activeTitle": "Spara {{percent}}",
+    "activeDatesLabel": "Vistelseperiod:",
+    "activeSubtitle": "Dras automatiskt i kassan. Endast direktbokningar."
+  },
+  "emptyState": {
+    "title": "Inga aktiva erbjudanden",
+    "subtitle": "Boka direkt för bästa pris och förmåner.",
+    "secondaryCta": "Se fördelar med direktbokning"
   },
   "status": {
     "banner": {

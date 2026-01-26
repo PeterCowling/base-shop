@@ -75,6 +75,24 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "海岸線に沿ってビーチクラブが並ぶラウリート・ビーチの入り江",
+      "caption": "崖に囲まれたラウリートの入り江は、メインビーチより穏やかで静かです。"
+    },
+    "layout": {
+      "alt": "ラウリートのビーチデッキと海岸線のレイアウト",
+      "caption": "入り江は3つのゾーンに分かれています：公共エリア、ヴィラ・トレ・ヴィッレのデッキ、ダ・アドルフォのテラス。"
+    },
+    "treVille": {
+      "alt": "ヴィラ・トレ・ヴィッレ・ビーチクラブのサンベッドと海の眺め",
+      "caption": "ヴィラ・トレ・ヴィッレはプレミアムなサンベッドとコンシェルジュスタイルのサービスが特徴です。"
+    },
+    "daAdolfo": {
+      "alt": "ダ・アドルフォ・ビーチクラブの桟橋と座席エリア",
+      "caption": "ダ・アドルフォのシャトルボートはレストランテラスの横にゲストを降ろします。"
+    }
+  },
   "essentialsTitle": "What to expect",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",

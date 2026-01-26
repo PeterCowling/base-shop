@@ -17,15 +17,73 @@
       "experienceRoutes": "Experience routes"
     }
   },
+  "routePicker": {
+    "title": "Tìm tuyến đường tốt nhất cho chuyến đến của bạn",
+    "subtitle": "Trả lời hai câu hỏi nhanh — chúng tôi sẽ đưa bạn đến lựa chọn phù hợp nhất và làm nổi bật.",
+    "placeLabel": "Bạn đến từ đâu?",
+    "placePlaceholder": "Chọn điểm xuất phát",
+    "arrivalLabel": "Bạn đến khi nào?",
+    "arrival": {
+      "daytime": "Ban ngày",
+      "evening": "Buổi tối",
+      "lateNight": "Khuya"
+    },
+    "preferencesLabel": "Ưu tiên",
+    "preferences": {
+      "none": "Không ưu tiên",
+      "fastest": "Nhanh nhất",
+      "cheapest": "Rẻ nhất",
+      "leastWalking": "Ít đi bộ",
+      "luggageFriendly": "Phù hợp hành lý nhất"
+    },
+    "cta": "Hiển thị tuyến tốt nhất",
+    "urlHint": "Bộ lọc sẽ cập nhật URL để bạn có thể chia sẻ liên kết.",
+    "lateNightHint": "Đến muộn thường dễ nhất bằng taxi hoặc shuttle — hãy dùng các tùy chọn liên hệ bên dưới nếu xe buýt/phà đã ngừng."
+  },
+  "routeCard": {
+    "factsLabel": "Thông tin tuyến",
+    "duration": "Thời gian",
+    "cost": "Chi phí",
+    "walking": "Đi bộ",
+    "luggage": "Hành lý",
+    "seasonality": "Mùa",
+    "seasonalityValues": {
+      "seasonal": "Theo mùa",
+      "yearRound": "Quanh năm"
+    },
+    "cta": "Xem từng bước",
+    "direction": {
+      "to": "Đến hostel",
+      "from": "Từ hostel"
+    }
+  },
   "preview": {
     "notPublished": "Preview only – this page is not published"
+  },
+  "jumpTo": {
+    "label": "Đi tới",
+    "arrival": "Hỗ trợ khi đến",
+    "rome": "Rome",
+    "experiences": "Trải nghiệm"
   },
   "intro": {
     "taxi": "Để gọi taxi, bạn có thể dùng WhatsApp liên hệ số sau bằng tiếng Anh hoặc tiếng Ý: <Strong>{{contact}}</Strong>.",
     "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "shuttleEyebrow": "Hostel Brikette by Shuttle",
+    "whatsappTemplate": "Xin chào! Tôi đang ở Hostel Brikette. Tôi muốn đặt taxi đi/đến Positano. Giờ đến của tôi là: ____",
+    "emailSubject": "Hỗ trợ khi đến",
+    "emailBody": "Xin chào đội ngũ Hostel Brikette — tôi đến hôm nay và cần hỗ trợ để chọn cách đi tốt nhất. Giờ đến dự kiến của tôi là: ____",
+    "whatsappCta": "Taxi WhatsApp",
+    "callCta": "Gọi",
+    "taxiBestFor": "Phù hợp nhất: đến muộn · hành lý nặng · lựa chọn nhanh nhất",
+    "shuttleCta": "Đặt shuttle",
+    "shuttleBestFor": "Phù hợp nhất: đến sân bay · xe chung · lên kế hoạch trước",
+    "helpEyebrow": "Cần hỗ trợ?",
+    "helpCopy": "Đến muộn hoặc bị trễ? Hãy nhắn cho chúng tôi để chúng tôi lên kế hoạch check-in và gợi ý lộ trình dự phòng.",
+    "emailCta": "Email lễ tân",
+    "helpBestFor": "Phù hợp nhất: trễ giờ · hủy phà · check-in muộn"
   },
   "destinations": {
     "filterLabel": "Place",
@@ -212,8 +270,18 @@
       }
     ]
   },
+  "lightbox": {
+    "titleFallback": "Hình ảnh",
+    "openAria": "Mở hình ảnh",
+    "openAriaWithCaption": "Mở hình ảnh: {{caption}}"
+  },
   "rome": {
     "title": "Rome",
+    "image": {
+      "src": "/img/directions/rome-forum.jpg",
+      "alt": "Đàn Forum La Mã nhìn từ Bảo tàng Capitoline",
+      "caption": "Đàn Forum La Mã và Bảo tàng Capitoline"
+    },
     "description": "Làm theo hướng dẫn trong bài viết để tới Naples hoặc Salerno, sau đó đón tàu từ một trong hai thành phố này.",
     "table": {
       "headers": {
@@ -372,6 +440,11 @@
   },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-marina.jpg",
+      "alt": "Toàn cảnh Marina Grande Sorrento",
+      "caption": "Marina Grande của Sorrento"
+    },
     "links": [
       {
         "label": "Từ Sorrento đến Positano bằng xe buýt",
@@ -399,6 +472,7 @@
     "title": "Filter routes",
     "resultsCount": "Kết quả: {{count}} tuyến",
     "editLabel": "Chỉnh sửa bộ lọc",
+    "shareHint": "Bộ lọc được phản ánh trong URL để dễ chia sẻ.",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

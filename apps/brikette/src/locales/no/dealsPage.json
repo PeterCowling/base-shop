@@ -8,7 +8,40 @@
   "title": "Spar {{percent}} % på opphold fra {{from}} til {{to}}",
   "promo": "Bestill direkte – rabatten på {{percent}} % blir automatisk trukket i kassen.",
   "dealCard": {
-    "savePercent": "Spar {{percent}}"
+    "savePercent": "Spar {{percent}}",
+    "stayDatesLabel": "Oppholdsperiode:",
+    "badges": {
+      "autoApplied": "Trekkes automatisk",
+      "directOnly": "Kun direktebestilling"
+    },
+    "cta": {
+      "bookDirect": "Bestill direkte",
+      "applyDeal": "Bruk tilbudet"
+    },
+    "status": {
+      "upcoming": "Kommende tilbud · Starter {{startDate}}",
+      "expired": "Utløpt"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktivt tilbud",
+    "activeTitle": "Spar {{percent}}",
+    "activeDatesLabel": "Oppholdsperiode:",
+    "activeSubtitle": "Trekkes automatisk ved kassen. Kun direktebestillinger.",
+    "activeDescription": "Bestill direkte for å låse opp rabatten – den trekkes automatisk ved kassen.",
+    "upcomingLabel": "Kommende tilbud",
+    "upcomingTitle": "Spar {{percent}} fra {{startDate}}",
+    "upcomingDescription": "Dette tilbudet starter snart. Merk deg datoen og bestill direkte for å sikre rabatten.",
+    "expiredLabel": "Utløpt tilbud",
+    "expiredTitle": "Tilbudet er avsluttet",
+    "expiredDescription": "Dette tilbudet er ikke lenger tilgjengelig. Se våre aktuelle tilbud nedenfor."
+  },
+  "emptyState": {
+    "title": "Ingen aktive tilbud",
+    "subtitle": "Bestill direkte for beste pris og fordeler.",
+    "description": "Vi har ingen aktive tilbud akkurat nå, men sjekk tilbake snart eller bestill direkte for vår faste 10 % direktebestillingsrabatt.",
+    "cta": "Se alle rom",
+    "secondaryCta": "Se fordelene ved direktebestilling"
   },
   "status": {
     "banner": {

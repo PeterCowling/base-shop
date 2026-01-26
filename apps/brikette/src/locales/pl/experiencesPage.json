@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Zobacz kartę baru Hostelu Brikette",
     "tertiaryCtaAria": "Wyślij wiadomość do concierge’a cyfrowego Hostelu Brikette",
     "breakfastCta": "Zobacz menu śniadaniowe",
-    "breakfastCtaAria": "Zobacz menu śniadaniowe"
+    "breakfastCtaAria": "Zobacz menu śniadaniowe",
+    "scrollNudge": "Dowiedz się więcej"
   },
   "sections": {
     "bar": {
@@ -88,11 +89,49 @@
     "taggedDescription": "Te historie podkreślają chwile związane z {{tag}}. Usuń filtr, aby zobaczyć wszystkie.",
     "empty": "Nie mamy jeszcze przewodników doświadczeń dla {{tag}}. Wybierz inny tag lub usuń filtr.",
     "clearFilter": "Pokaż wszystkie przewodniki doświadczeń",
-    "cardCta": "Odkryj przewodnik po doświadczeniach „{{guideTitle}}”",
+    "cardCta": "Odkryj przewodnik po doświadczeniach: {{guideTitle}}",
     "filterHeading": "Filtruj przewodniki po doświadczeniach",
     "filterDescription": "Wybierz tag, aby zawęzić wyróżniane doświadczenia.",
+    "directionsLabel": "Jak tu dotrzeć",
+    "directionLinks": {
+      "walkFromHostel": "Pieszo z hostelu",
+      "busFromHostel": "Autobusem",
+      "returnWalk": "Powrotna trasa",
+      "capriDayTrip": {
+        "positanoCapriFerry": "Prom Positano → Capri",
+        "capriPositanoFerry": "Prom Capri → Positano"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi autobusem",
+        "amalfiPositanoBus": "Amalfi → Positano autobusem",
+        "positanoAmalfiFerry": "Prom Positano → Amalfi (sezonowy)",
+        "amalfiPositanoFerry": "Prom Amalfi → Positano (sezonowy)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Autobus Positano → Ravello",
+        "ravelloPositanoBus": "Autobus Ravello → Positano",
+        "positanoRavelloFerryBus": "Positano → Ravello prom + autobus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centrum Neapolu → Positano (pociąg + autobus)",
+        "naplesCenterPositanoFerry": "Prom centrum Neapolu → Positano",
+        "naplesAirportPositanoBus": "Autobus lotnisko Neapol → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → centrum Neapolu (autobus + pociąg)",
+        "positanoNaplesCenterFerry": "Prom Positano → Neapol",
+        "positanoNaplesAirportBus": "Autobus Positano → lotnisko Neapol"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Autobus Salerno → Positano",
+        "salernoPositanoFerry": "Prom Salerno → Positano (sezonowy)",
+        "positanoSalernoBus": "Autobus Positano → Salerno",
+        "positanoSalernoFerry": "Prom Positano → Salerno (sezonowy)"
+      }
+    },
     "grouped": {
       "beaches": {
+        "title": "Plaże i pływanie",
+        "description": "Miejsca do pływania, przewodniki po klubach plażowych i trasy na brzeg.",
+        "imageAlt": "Skalista zatoka z turkusową wodą wzdłuż Wybrzeża Amalfitańskiego",
         "guides": {
           "heading": "Przewodniki po plażach",
           "description": "Wybierz odpowiedni odcinek plaży i zaplanuj swój dzień."
@@ -101,6 +140,48 @@
           "heading": "Dojazd na plażę",
           "description": "Instrukcje krok po kroku z Hostelu Brikette na brzeg."
         }
+      },
+      "boat": {
+        "title": "Rejsy i promy",
+        "description": "Wycieczki łodzią, trasy promowe i pomysły na dzień na morzu.",
+        "imageAlt": "Zachód słońca nad morzem widziany z Positano",
+        "guides": {
+          "heading": "Przewodniki po rejsach",
+          "description": "Wycieczki, wynajem i rozkłady promów."
+        }
+      },
+      "cuisine": {
+        "title": "Kuchnia i lokalne specjały",
+        "description": "Miejsca do jedzenia, targi i doświadczenia kulinarne.",
+        "imageAlt": "Tradycyjny włoski posiłek nad morzem",
+        "guides": {
+          "heading": "Przewodniki kulinarne",
+          "description": "Najlepsze lokalne jedzenie i specjały."
+        }
+      },
+      "day-trip": {
+        "title": "Wycieczki jednodniowe",
+        "description": "Jednodniowe wypady z Positano — Capri, Ravello, Pompeje i więcej.",
+        "imageAlt": "Panoramiczny widok na Wybrzeże Amalfitańskie z balkonu w Ravello",
+        "guides": {
+          "heading": "Przewodniki po wycieczkach",
+          "description": "Wyprawy warte jednego dnia."
+        }
+      },
+      "hiking": {
+        "title": "Wędrówki i szlaki",
+        "description": "Trasy piesze od łatwych spacerów po całodzienne trekingi.",
+        "imageAlt": "Turyści na Szlaku Bogów z widokami na wybrzeże"
+      },
+      "itinerary": {
+        "title": "Plany podróży",
+        "description": "Wielodniowe plany na różne długości wyjazdów.",
+        "imageAlt": "Malowniczy widok na Wybrzeże Amalfitańskie z góry"
+      },
+      "more": {
+        "title": "Więcej przewodników",
+        "description": "Wskazówki transportowe, miejsca do zdjęć i lokalne wydarzenia.",
+        "imageAlt": "Lokalny autobus wijący się po drodze Wybrzeża Amalfitańskiego"
       }
     }
   }

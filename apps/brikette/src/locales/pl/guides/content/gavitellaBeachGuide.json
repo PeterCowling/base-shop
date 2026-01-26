@@ -85,6 +85,32 @@
     "Przy wzburzonym morzu strefa bezpłatna może zniknąć — miej plan awaryjny na wietrzne dni.",
     "Transport łodzią jest wstrzymywany, gdy tylko morze się pogarsza, więc potwierdź powrót przed rozpoczęciem wieczornych wydarzeń."
   ],
+  "images": {
+    "overview": {
+      "alt": "Widok z lotu ptaka na zatoczkę Gavitella i tarasy słoneczne",
+      "caption": "Dwa beach cluby dzielą wąską platformę wyrzeźbioną w klifie."
+    },
+    "gavitellaClub": {
+      "alt": "Stolik kolacyjny na tarasie z widokiem na Wybrzeże Amalfitańskie o zachodzie słońca",
+      "caption": "Kolacje o zachodzie w La Gavitella łączą widoki na morze z długimi aperitivi."
+    },
+    "oneFire": {
+      "alt": "Jaskrawo pomarańczowe parasole i leżaki w One Fire Beach Club",
+      "caption": "One Fire słynie z żywych popołudni i scenerii zachodu prowadzonej przez DJ-a."
+    }
+  },
+  "essentialsTitle": "Niezbędne informacje",
+  "essentials": [
+    "Rezerwuj z wyprzedzeniem w obu klubach; sloty na zachód słońca i weekendy wyprzedają się najszybciej.",
+    "Licz się z ponad 400 schodami w dół od Piazza San Gennaro i stromym powrotem, chyba że skorzystasz z autobusu interno.",
+    "Spakuj buty do wody na skalistą platformę i krem z filtrem przyjazny rafom na popołudniowe słońce."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Zestaw leżaków w La Gavitella dla dwóch osób: 70–100 € w zależności od sezonu.",
+    "Łóżko dzienne lub cabana w One Fire dla dwóch osób: 100–180 €, często z zaliczką w szczycie sezonu.",
+    "Transport łodzią (jeśli dostępny): 10–20 € za osobę w każdą stronę."
+  ],
   "faqsTitle": "FAQ o Gavitelli",
   "faqs": [
     {

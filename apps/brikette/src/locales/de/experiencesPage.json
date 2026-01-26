@@ -15,7 +15,8 @@
     "primaryCtaAria": "Buche deinen Aufenthalt im Hostel Brikette",
     "secondaryCtaAria": "Übersetzung in Arbeit.",
     "breakfastCtaAria": "Frühstücksmenü ansehen",
-    "tertiaryCtaAria": "Sende eine Nachricht an den digitalen Concierge des Hostel Brikette"
+    "tertiaryCtaAria": "Sende eine Nachricht an den digitalen Concierge des Hostel Brikette",
+    "scrollNudge": "Entdecke Erlebnisse nach Kategorie"
   },
   "sections": {
     "bar": {
@@ -88,19 +89,76 @@
     "taggedDescription": "Diese Beiträge zeigen {{tag}}-Momente. Entferne den Filter, um alles zu sehen.",
     "empty": "Wir haben noch keine Erlebnis-Guides für {{tag}}. Wähle einen anderen Tag oder entferne den Filter.",
     "clearFilter": "Alle Erlebnis-Guides anzeigen",
-    "cardCta": "Entdecke den Erlebnisleitfaden „{{guideTitle}}“",
+    "cardCta": "Entdecke den Erlebnisleitfaden '{{guideTitle}}'",
+    "directionsLabel": "Wegbeschreibungen",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Fähre Positano → Capri",
+        "capriPositanoFerry": "Fähre Capri → Positano"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi mit dem Bus",
+        "amalfiPositanoBus": "Amalfi → Positano mit dem Bus",
+        "positanoAmalfiFerry": "Fähre Positano → Amalfi (saisonal)",
+        "amalfiPositanoFerry": "Fähre Amalfi → Positano (saisonal)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Bus Positano → Ravello",
+        "ravelloPositanoBus": "Bus Ravello → Positano",
+        "positanoRavelloFerryBus": "Positano → Ravello Fähre + Bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Neapel Zentrum → Positano (Zug + Bus)",
+        "naplesCenterPositanoFerry": "Fähre Neapel Zentrum → Positano",
+        "naplesAirportPositanoBus": "Bus Flughafen Neapel → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → Neapel Zentrum (Bus + Zug)",
+        "positanoNaplesCenterFerry": "Fähre Positano → Neapel",
+        "positanoNaplesAirportBus": "Bus Positano → Flughafen Neapel"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Bus Salerno → Positano",
+        "salernoPositanoFerry": "Fähre Salerno → Positano (saisonal)",
+        "positanoSalernoBus": "Bus Positano → Salerno",
+        "positanoSalernoFerry": "Fähre Positano → Salerno (saisonal)"
+      }
+    },
     "filterHeading": "Erlebnis-Guides filtern",
     "filterDescription": "Wähle ein Tag, um die hervorgehobenen Erlebnisse einzugrenzen.",
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strand-Guides",
-          "description": "Wähle den passenden Strandabschnitt und plane deinen Tag."
-        },
-        "directions": {
-          "heading": "Weg zum Strand",
-          "description": "Schritt-für-Schritt-Wegbeschreibung vom Hostel Brikette hinunter zur Küste."
-        }
+        "title": "Strände",
+        "description": "Finde den richtigen Strandabschnitt und plane deinen Tag.",
+        "imageAlt": "Strand von Positano mit bunten Sonnenschirmen entlang der Küste"
+      },
+      "hiking": {
+        "title": "Wanderungen & Wege",
+        "description": "Routen von entspannten Spaziergängen bis hin zu Ganztageswanderungen.",
+        "imageAlt": "Wanderer auf dem Götterpfad mit Küstenblick"
+      },
+      "day-trip": {
+        "title": "Tagesausflüge",
+        "description": "Capri, Amalfi, Ravello — wie du hinkommst und zurück.",
+        "imageAlt": "Fähre auf dem Weg zur Insel Capri"
+      },
+      "boat": {
+        "title": "Bootstouren",
+        "description": "Private Charter, Gruppenfahrten und Sunset-Cruises.",
+        "imageAlt": "Traditionelles Boot auf den Gewässern der Amalfiküste"
+      },
+      "cuisine": {
+        "title": "Essen & Trinken",
+        "description": "Wo du gut isst, ohne zu viel zu zahlen.",
+        "imageAlt": "Frische italienische Gerichte in einer lokalen Trattoria"
+      },
+      "itinerary": {
+        "title": "Reiserouten",
+        "description": "Mehrtägige Pläne für verschiedene Reisedauern.",
+        "imageAlt": "Panoramablick auf die Amalfiküste von oben"
+      },
+      "more": {
+        "title": "Weitere Guides",
+        "description": "Transporttipps, Fotospots und lokale Events.",
+        "imageAlt": "Lokaler Bus auf der Küstenstraße der Amalfiküste"
       }
     }
   }

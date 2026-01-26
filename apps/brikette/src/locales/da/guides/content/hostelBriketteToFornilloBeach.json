@@ -37,6 +37,23 @@
       ]
     }
   ],
+  "gallery": {
+    "title": "Rutekort og vartegn",
+    "items": [
+      {
+        "alt": "Kort over gåtur fra Hostel Brikette til Fornillo Beach",
+        "caption": "Hostel Brikette til Fornillo (kort)"
+      },
+      {
+        "alt": "Sving ind på gangstien ved Hotel Posa Posa",
+        "caption": "Fornillo-genvejen"
+      },
+      {
+        "alt": "Rute fra Spiaggia Grande til Interno-busstoppet",
+        "caption": "Returvej til Interno-bussen"
+      }
+    ]
+  },
   "tips": [
     "Kør Interno Positano-bussen tilbage op ad bakke for at undgå den stejle returstigning.",
     "Bær vand til trappeafsnittet - der er ingen butikker, før du når kysten.",

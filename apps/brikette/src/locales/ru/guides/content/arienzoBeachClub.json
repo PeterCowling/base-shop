@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Фото Arienzo Beach",
   "gallery": {
-    "title": "Фото Арьенцо",
-    "items": [
-      {
-        "alt": "Террасы Arienzo Beach Club",
-        "caption": "Скальные террасы с оранжевыми шезлонгами"
-      },
-      {
-        "alt": "Пирс шаттла Arienzo",
-        "caption": "Посадка на шаттл у Spiaggia Grande"
-      },
-      {
-        "alt": "Лестница к пляжу Arienzo",
-        "caption": "300 ступеней через лимонные террасы"
-      }
-    ]
+    "primaryAlt": "Берег пляжа Arienzo и клуб на скале",
+    "primaryCaption": "Галечный пляж с оранжевыми зонтами под скалами",
+    "secondaryAlt": "Ужин на террасе Arienzo Beach Club",
+    "secondaryCaption": "Столики с видом на море под оранжево-белыми зонтами"
   }
 }

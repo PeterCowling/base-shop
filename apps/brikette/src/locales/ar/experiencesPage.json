@@ -15,7 +15,8 @@
     "secondaryCtaAria": "اعرض قائمة بار Hostel Brikette",
     "tertiaryCtaAria": "أرسل رسالة إلى المساعد الرقمي لـHostel Brikette",
     "breakfastCta": "اعرض قائمة الإفطار",
-    "breakfastCtaAria": "اعرض قائمة الإفطار"
+    "breakfastCtaAria": "اعرض قائمة الإفطار",
+    "scrollNudge": "تصفّح أنواع التجارب أدناه"
   },
   "sections": {
     "bar": {
@@ -89,10 +90,45 @@
     "empty": "لا نملك بعد أدلة تجارب لـ{{tag}}. جرّب وسمًا آخر أو أزل الفلتر.",
     "clearFilter": "عرض جميع أدلة التجارب",
     "cardCta": "استكشف دليل التجارب «{{guideTitle}}»",
+    "directionsLabel": "الاتجاهات",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "بوزيتانو → كابري بالعبّارة",
+        "capriPositanoFerry": "كابري → بوزيتانو بالعبّارة"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "بوزيتانو → أمالفي بالحافلة",
+        "amalfiPositanoBus": "أمالفي → بوزيتانو بالحافلة",
+        "positanoAmalfiFerry": "بوزيتانو → أمالفي بالعبّارة (موسمي)",
+        "amalfiPositanoFerry": "أمالفي → بوزيتانو بالعبّارة (موسمي)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "بوزيتانو → رافيلو بالحافلة",
+        "ravelloPositanoBus": "رافيلو → بوزيتانو بالحافلة",
+        "positanoRavelloFerryBus": "بوزيتانو → رافيلو بالعبّارة + حافلة"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "وسط نابولي → بوزيتانو (قطار + حافلة)",
+        "naplesCenterPositanoFerry": "وسط نابولي → بوزيتانو بالعبّارة",
+        "naplesAirportPositanoBus": "مطار نابولي → بوزيتانو بالحافلة",
+        "positanoNaplesCenterBusTrain": "بوزيتانو → وسط نابولي (حافلة + قطار)",
+        "positanoNaplesCenterFerry": "بوزيتانو → نابولي بالعبّارة",
+        "positanoNaplesAirportBus": "بوزيتانو → مطار نابولي بالحافلة"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "ساليرنو → بوزيتانو بالحافلة",
+        "salernoPositanoFerry": "ساليرنو → بوزيتانو بالعبّارة (موسمي)",
+        "positanoSalernoBus": "بوزيتانو → ساليرنو بالحافلة",
+        "positanoSalernoFerry": "بوزيتانو → ساليرنو بالعبّارة (موسمي)"
+      }
+    },
     "filterHeading": "تصفية أدلة التجارب",
     "filterDescription": "اختر وسمًا لتضييق نطاق التجارب التي نعرضها.",
     "grouped": {
       "beaches": {
+        "title": "الشواطئ",
+        "description": "اختر الشاطئ المناسب وخطّط ليومك.",
+        "imageAlt": "شاطئ بوزيتانو بالمظلات الملونة على الساحل",
         "guides": {
           "heading": "أدلة الشواطئ",
           "description": "اختر الشاطئ المناسب وخطّط ليومك."
@@ -101,6 +137,36 @@
           "heading": "إرشادات الوصول إلى الشاطئ",
           "description": "إرشادات خطوة بخطوة من Hostel Brikette إلى الشاطئ."
         }
+      },
+      "hiking": {
+        "title": "المشي والتنزه",
+        "description": "مسارات من النزهات القصيرة إلى رحلات اليوم الكامل.",
+        "imageAlt": "مشاة على مسار الآلهة مع إطلالات ساحلية"
+      },
+      "day-trip": {
+        "title": "رحلات يومية",
+        "description": "كابري، أمالفي، رافيلو — كيفية الذهاب والعودة.",
+        "imageAlt": "عبّارة تقترب من جزيرة كابري"
+      },
+      "boat": {
+        "title": "جولات بالقارب",
+        "description": "قوارب خاصة، رحلات جماعية، وجولات غروب الشمس.",
+        "imageAlt": "قارب تقليدي في مياه ساحل أمالفي"
+      },
+      "cuisine": {
+        "title": "الطعام والشراب",
+        "description": "أين تأكل جيدًا دون إنفاق الكثير.",
+        "imageAlt": "أطباق إيطالية طازجة في تراتوريا محلية"
+      },
+      "itinerary": {
+        "title": "برامج الرحلات",
+        "description": "خطط لعدة أيام تناسب مدة إقامتك.",
+        "imageAlt": "منظر بانورامي لساحل أمالفي"
+      },
+      "more": {
+        "title": "المزيد من الأدلة",
+        "description": "نصائح النقل، أماكن التصوير، والفعاليات المحلية.",
+        "imageAlt": "حافلة محلية على طريق ساحل أمالفي"
       }
     }
   }

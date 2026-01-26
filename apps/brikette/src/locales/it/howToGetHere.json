@@ -17,15 +17,73 @@
       "experienceRoutes": "Percorsi esperienziali"
     }
   },
+  "routePicker": {
+    "title": "Trova il percorso migliore per il tuo arrivo",
+    "subtitle": "Rispondi a due rapide domande — ti porteremo alla scelta migliore e la evidenzieremo.",
+    "placeLabel": "Da dove arrivi?",
+    "placePlaceholder": "Seleziona un punto di partenza",
+    "arrivalLabel": "Quando arrivi?",
+    "arrival": {
+      "daytime": "Di giorno",
+      "evening": "Di sera",
+      "lateNight": "A tarda notte"
+    },
+    "preferencesLabel": "Preferenze",
+    "preferences": {
+      "none": "Nessuna preferenza",
+      "fastest": "Più veloce",
+      "cheapest": "Più economico",
+      "leastWalking": "Meno camminata",
+      "luggageFriendly": "Più adatto ai bagagli"
+    },
+    "cta": "Mostra il percorso migliore",
+    "urlHint": "I filtri aggiornano l’URL, così puoi condividere il link.",
+    "lateNightHint": "Gli arrivi notturni sono spesso più facili in taxi o navetta — usa i contatti qui sotto se bus/ferry sono terminati."
+  },
+  "routeCard": {
+    "factsLabel": "Dettagli del percorso",
+    "duration": "Durata",
+    "cost": "Costo",
+    "walking": "A piedi",
+    "luggage": "Bagagli",
+    "seasonality": "Stagione",
+    "seasonalityValues": {
+      "seasonal": "Stagionale",
+      "yearRound": "Tutto l'anno"
+    },
+    "cta": "Vedi passo per passo",
+    "direction": {
+      "to": "Verso l'ostello",
+      "from": "Dall'ostello"
+    }
+  },
   "preview": {
     "notPublished": "Solo anteprima – questa pagina non è pubblicata"
+  },
+  "jumpTo": {
+    "label": "Vai a",
+    "arrival": "Aiuto all'arrivo",
+    "rome": "Roma",
+    "experiences": "Esperienze"
   },
   "intro": {
     "taxi": "Per richiedere un taxi puoi usare WhatsApp per contattare il seguente numero, in inglese o in italiano: <Strong>{{contact}}</Strong>.",
     "shuttle": "Preferisci una navetta? Sea Horse Car Service offre trasferimenti condivisi. Prenota un posto sulla loro <Link>pagina ufficiale della navetta</Link>.",
     "taxiContact": "+39 379 125 6222",
     "taxiEyebrow": "Hostel Brikette in taxi",
-    "shuttleEyebrow": "Hostel Brikette in navetta"
+    "shuttleEyebrow": "Hostel Brikette in navetta",
+    "whatsappTemplate": "Ciao! Soggiorno all'Hostel Brikette. Vorrei prenotare un taxi da/per Positano. Il mio orario di arrivo è: ____",
+    "emailSubject": "Aiuto per l'arrivo",
+    "emailBody": "Ciao team di Hostel Brikette — arrivo oggi e ho bisogno di aiuto per scegliere il modo migliore per arrivare. Il mio orario previsto di arrivo è: ____",
+    "whatsappCta": "Taxi su WhatsApp",
+    "callCta": "Chiama",
+    "taxiBestFor": "Migliore per: arrivi tardivi · bagagli pesanti · opzione più veloce",
+    "shuttleCta": "Prenota navetta",
+    "shuttleBestFor": "Migliore per: arrivi in aeroporto · trasferimento condiviso · pianificazione anticipata",
+    "helpEyebrow": "Hai bisogno di aiuto?",
+    "helpCopy": "Arrivi tardi o hai dei ritardi? Scrivici così possiamo pianificare il check-in e suggerire un percorso alternativo.",
+    "emailCta": "Scrivi alla reception",
+    "helpBestFor": "Migliore per: ritardi · cancellazioni dei traghetti · check-in tardivo"
   },
   "destinations": {
     "filterLabel": "Luogo",
@@ -214,6 +272,11 @@
   },
   "rome": {
     "title": "Roma",
+    "image": {
+      "src": "/img/directions/rome-termini-station.jpg",
+      "alt": "Stazione Roma Termini, principale snodo ferroviario per Roma",
+      "caption": "Foro Romano e Musei Capitolini"
+    },
     "description": "Segui le indicazioni della nostra guida per raggiungere Napoli o Salerno e poi prendi un treno da una di queste città.",
     "table": {
       "headers": {
@@ -370,8 +433,21 @@
       ]
     }
   },
+  "lightbox": {
+    "titleFallback": "Immagine",
+    "openAria": "Apri immagine",
+    "openAriaWithCaption": "Apri immagine: {{caption}}",
+    "closeLabel": "Chiudi lightbox",
+    "prevLabel": "Immagine precedente",
+    "nextLabel": "Immagine successiva"
+  },
   "sorrento": {
     "title": "Sorrento",
+    "image": {
+      "src": "/img/directions/sorrento-positano-bus-sorrento-train-station.jpg",
+      "alt": "Stazione ferroviaria di Sorrento con autobus parcheggiati fuori",
+      "caption": "Sorrento da Piazza Tasso"
+    },
     "links": [
       {
         "label": "Da Sorrento in autobus",
@@ -399,6 +475,7 @@
     "title": "Filtra percorsi",
     "resultsCount": "Risultati: {{count}} itinerari",
     "editLabel": "Modifica filtri",
+    "shareHint": "I filtri si riflettono nell’URL per una condivisione semplice.",
     "transportLabel": "Tipo di trasporto",
     "transportAll": "Tutti",
     "transportModes": {

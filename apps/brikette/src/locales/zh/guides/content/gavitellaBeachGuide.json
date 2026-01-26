@@ -72,6 +72,32 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "加维泰拉海湾俯瞰与日落天际线",
+      "caption": "朝向西侧的加维泰拉，日落时分可眺望卡普里与 Li Galli 群岛"
+    },
+    "gavitellaClub": {
+      "alt": "La Gavitella 海滩俱乐部露台与躺椅",
+      "caption": "La Gavitella 提供精致午餐与日落巡游"
+    },
+    "oneFire": {
+      "alt": "One Fire 海滩俱乐部彩色躺椅与 DJ 台",
+      "caption": "One Fire 是阿马尔菲海岸知名的派对海滩"
+    }
+  },
+  "essentialsTitle": "行前须知",
+  "essentials": [
+    "从普拉亚诺圣杰纳罗广场站下车后，约 400 级不平整台阶通往海湾。",
+    "两家海滩俱乐部——La Gavitella 与 One Fire——中间夹着一小段公共区域。",
+    "旺季躺椅及日落活动需提前通过 WhatsApp 预订。"
+  ],
+  "typicalCostsTitle": "参考费用",
+  "typicalCosts": [
+    "La Gavitella 躺椅两人套餐：约 €80–€150，含毛巾与服务。",
+    "One Fire 躺椅两人：约 €60–€100，旺季可能需押金。",
+    "午餐主菜 €20–€35、鸡尾酒 €12–€16、瓶装水 €4–€5。"
+  ],
   "tipsTitle": "小贴士",
   "tips": [
     "使用 %LINK:positanoAmalfi|波西塔诺↔阿马尔菲交通指南% 提前安排前往圣杰纳罗广场的 SITA 行程，再去面对那 400 级台阶。",

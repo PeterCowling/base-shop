@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Tekintse meg a Hostel Brikette bárjának kínálatát",
     "tertiaryCtaAria": "Küldjön üzenetet a Hostel Brikette digitális concierge-ének",
     "breakfastCta": "Nézze meg a reggelimenüt",
-    "breakfastCtaAria": "Nézze meg a reggelimenüt"
+    "breakfastCtaAria": "Nézze meg a reggelimenüt",
+    "scrollNudge": "Böngésszen élménytípus szerint lent"
   },
   "sections": {
     "bar": {
@@ -91,16 +92,73 @@
     "cardCta": "Fedezd fel a {{guideTitle}} élménykalauzt",
     "filterHeading": "Élménykalauzok szűrése",
     "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
+    "directionsLabel": "Útbaigazítások",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri komp",
+        "capriPositanoFerry": "Capri → Positano komp"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi busszal",
+        "amalfiPositanoBus": "Amalfi → Positano busszal",
+        "positanoAmalfiFerry": "Positano → Amalfi komp (szezonális)",
+        "amalfiPositanoFerry": "Amalfi → Positano komp (szezonális)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello busz",
+        "ravelloPositanoBus": "Ravello → Positano busz",
+        "positanoRavelloFerryBus": "Positano → Ravello komp + busz"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Nápoly belváros → Positano (vonat + busz)",
+        "naplesCenterPositanoFerry": "Nápoly belváros → Positano komp",
+        "naplesAirportPositanoBus": "Nápolyi reptér → Positano busz",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoly belváros (busz + vonat)",
+        "positanoNaplesCenterFerry": "Positano → Nápoly komp",
+        "positanoNaplesAirportBus": "Positano → Nápolyi reptér busz"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano busz",
+        "salernoPositanoFerry": "Salerno → Positano komp (szezonális)",
+        "positanoSalernoBus": "Positano → Salerno busz",
+        "positanoSalernoFerry": "Positano → Salerno komp (szezonális)"
+      }
+    },
     "grouped": {
       "beaches": {
-        "guides": {
-          "heading": "Strandkalauzok",
-          "description": "Válassza ki a megfelelő partszakaszt, és tervezze meg a napját."
-        },
-        "directions": {
-          "heading": "Útbaigazítás a strandhoz",
-          "description": "Lépésről lépésre útbaigazítás a Hostel Brikette-től a partra."
-        }
+        "title": "Strandok",
+        "description": "Válaszd ki a megfelelő partszakaszt és tervezd meg a napodat.",
+        "imageAlt": "Positanói strand színes napernyőkkel a partvonal mentén"
+      },
+      "hiking": {
+        "title": "Túrák és ösvények",
+        "description": "Gyalogtúrák a könnyű sétáktól az egész napos kirándulásokig.",
+        "imageAlt": "Túrázók az Istenek Ösvényén tengerparti kilátással"
+      },
+      "day-trip": {
+        "title": "Egynapos kirándulások",
+        "description": "Capri, Amalfi, Ravello — hogyan juss el és vissza.",
+        "imageAlt": "Komp közelít Capri szigetéhez"
+      },
+      "boat": {
+        "title": "Hajótúrák",
+        "description": "Magáncharter, csoportos utak és naplementés hajózások.",
+        "imageAlt": "Hagyományos hajó az Amalfi-part vizein"
+      },
+      "cuisine": {
+        "title": "Étel és ital",
+        "description": "Hol ehetsz jól anélkül, hogy túlfizetnél.",
+        "imageAlt": "Friss olasz ételek egy helyi trattoriában"
+      },
+      "itinerary": {
+        "title": "Útitervek",
+        "description": "Többnapos tervek különböző utazási hosszakhoz.",
+        "imageAlt": "Festői kilátás az Amalfi-partra felülről"
+      },
+      "more": {
+        "title": "További kalauzok",
+        "description": "Közlekedési tippek, fotóhelyszínek és helyi események.",
+        "imageAlt": "Helyi busz kanyarog az Amalfi-parti úton"
       }
     }
   }

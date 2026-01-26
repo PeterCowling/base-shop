@@ -66,6 +66,15 @@
     "Bussar hoppar ibland över hållplatsen när de är fulla under högsäsong – planera gott om tid för hemresan.",
     "Platsen på stranden är begränsad och skuggan når ner tidigt på eftermiddagen."
   ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "SITA-buss tur och retur: cirka 10 €.",
+    "Inga faciliteter eller klubbar = inga avgifter utöver transport."
+  ],
+  "sectionFigure": {
+    "alt": "Utsikt över Fiordo di Furore från bron",
+    "caption": "Fjordens smaragdgröna vatten under den bågformade bron"
+  },
   "faqsTitle": "Vanliga frågor om Fiordo di Furore",
   "faqs": []
 }

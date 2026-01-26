@@ -96,6 +96,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Alapvető tudnivalók",
+  "essentials": [
+    "Napkrém",
+    "Napszemüveg",
+    "Törölköző"
+  ],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "0 és 50 euró között, attól függően, hogy bérelsz-e napágyat, eszel-e vagy iszol."
+  ],
   "tipsTitle": "Gyors tippek",
   "tips": [
     "Kövesse a __link0__ lefelé történő leereszkedést (15–20 perc).",

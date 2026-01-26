@@ -8,7 +8,31 @@
   "title": "在{{from}}至{{to}}期间入住立省 {{percent}} %",
   "promo": "直接预订，{{percent}} % 折扣在结账时自动应用。",
   "dealCard": {
-    "savePercent": "立省 {{percent}}"
+    "savePercent": "立省 {{percent}}",
+    "stayDatesLabel": "入住日期：",
+    "badges": {
+      "autoApplied": "自动应用",
+      "directOnly": "仅限直订"
+    },
+    "cta": {
+      "bookDirect": "直接预订",
+      "applyDeal": "应用优惠"
+    },
+    "status": {
+      "upcoming": "即将开始 · {{startDate}} 生效",
+      "expired": "已结束"
+    }
+  },
+  "hero": {
+    "activeLabel": "当前优惠",
+    "activeTitle": "立省 {{percent}}",
+    "activeDatesLabel": "入住日期：",
+    "activeSubtitle": "结账时自动应用。仅限官网直订。"
+  },
+  "emptyState": {
+    "title": "暂无进行中的优惠",
+    "subtitle": "直接预订可享受最优价格与专属礼遇。",
+    "secondaryCta": "查看直订优惠"
   },
   "status": {
     "banner": {

@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Bản dịch đang được chuẩn bị.",
     "tertiaryCtaAria": "Gửi tin nhắn cho trợ lý số Hostel Brikette",
     "breakfastCta": "Xem menu bữa sáng",
-    "breakfastCtaAria": "Xem menu bữa sáng"
+    "breakfastCtaAria": "Xem menu bữa sáng",
+    "scrollNudge": "Tìm hiểu thêm"
   },
   "sections": {
     "bar": {
@@ -91,8 +92,46 @@
     "cardCta": "Khám phá hướng dẫn trải nghiệm {{guideTitle}}",
     "filterHeading": "Lọc hướng dẫn trải nghiệm",
     "filterDescription": "Chọn thẻ để thu hẹp các trải nghiệm được nổi bật.",
+    "directionsLabel": "Cách đến đây",
+    "directionLinks": {
+      "walkFromHostel": "Đi bộ từ hostel",
+      "busFromHostel": "Đi xe buýt",
+      "returnWalk": "Đường về",
+      "capriDayTrip": {
+        "positanoCapriFerry": "Phà Positano → Capri",
+        "capriPositanoFerry": "Phà Capri → Positano"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi bằng xe buýt",
+        "amalfiPositanoBus": "Amalfi → Positano bằng xe buýt",
+        "positanoAmalfiFerry": "Phà Positano → Amalfi (theo mùa)",
+        "amalfiPositanoFerry": "Phà Amalfi → Positano (theo mùa)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Xe buýt Positano → Ravello",
+        "ravelloPositanoBus": "Xe buýt Ravello → Positano",
+        "positanoRavelloFerryBus": "Positano → Ravello phà + xe buýt"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Trung tâm Naples → Positano (tàu + xe buýt)",
+        "naplesCenterPositanoFerry": "Phà trung tâm Naples → Positano",
+        "naplesAirportPositanoBus": "Xe buýt sân bay Naples → Positano",
+        "positanoNaplesCenterBusTrain": "Positano → trung tâm Naples (xe buýt + tàu)",
+        "positanoNaplesCenterFerry": "Phà Positano → Naples",
+        "positanoNaplesAirportBus": "Xe buýt Positano → sân bay Naples"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Xe buýt Salerno → Positano",
+        "salernoPositanoFerry": "Phà Salerno → Positano (theo mùa)",
+        "positanoSalernoBus": "Xe buýt Positano → Salerno",
+        "positanoSalernoFerry": "Phà Positano → Salerno (theo mùa)"
+      }
+    },
     "grouped": {
       "beaches": {
+        "title": "Bãi biển & Bơi lội",
+        "description": "Địa điểm bơi lội, hướng dẫn câu lạc bộ bãi biển và đường đến bờ.",
+        "imageAlt": "Vịnh đá với làn nước ngọc lam dọc bờ biển Amalfi",
         "guides": {
           "heading": "Hướng dẫn bãi biển",
           "description": "Chọn bãi cát phù hợp và lên kế hoạch cho ngày của bạn."
@@ -101,6 +140,48 @@
           "heading": "Chỉ đường đến bãi biển",
           "description": "Hướng dẫn từng bước từ Hostel Brikette xuống bờ biển."
         }
+      },
+      "boat": {
+        "title": "Tour thuyền & Phà",
+        "description": "Chuyến thuyền, tuyến phà và ý tưởng cho ngày trên biển.",
+        "imageAlt": "Hoàng hôn trên biển nhìn từ Positano",
+        "guides": {
+          "heading": "Hướng dẫn thuyền",
+          "description": "Tour, thuê thuyền và lịch phà."
+        }
+      },
+      "cuisine": {
+        "title": "Ẩm thực & Đặc sản địa phương",
+        "description": "Địa điểm ăn uống, chợ và trải nghiệm ẩm thực.",
+        "imageAlt": "Bữa ăn Ý truyền thống bên bờ biển",
+        "guides": {
+          "heading": "Hướng dẫn ẩm thực",
+          "description": "Món ăn và đặc sản địa phương ngon nhất."
+        }
+      },
+      "day-trip": {
+        "title": "Chuyến đi trong ngày",
+        "description": "Chuyến đi một ngày từ Positano — Capri, Ravello, Pompeii và hơn thế nữa.",
+        "imageAlt": "Tầm nhìn toàn cảnh bờ biển Amalfi từ ban công Ravello",
+        "guides": {
+          "heading": "Hướng dẫn chuyến đi trong ngày",
+          "description": "Những chuyến đi đáng giá trong một ngày."
+        }
+      },
+      "hiking": {
+        "title": "Trekking & Đường mòn",
+        "description": "Các tuyến đi bộ từ dạo chơi nhẹ nhàng đến hành trình cả ngày.",
+        "imageAlt": "Những người trekking trên đường mòn Con Đường Của Các Vị Thần với tầm nhìn bờ biển"
+      },
+      "itinerary": {
+        "title": "Lịch trình",
+        "description": "Kế hoạch nhiều ngày cho các độ dài chuyến đi khác nhau.",
+        "imageAlt": "Tầm nhìn ngoạn mục của bờ biển Amalfi từ trên cao"
+      },
+      "more": {
+        "title": "Hướng dẫn khác",
+        "description": "Mẹo di chuyển, địa điểm chụp ảnh và sự kiện địa phương.",
+        "imageAlt": "Xe buýt địa phương uốn lượn trên con đường bờ biển Amalfi"
       }
     }
   }

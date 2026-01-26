@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "필수품",
+  "essentials": [
+    "자외선 차단제.",
+    "타월.",
+    "선글라스."
+  ],
+  "typicalCostsTitle": "예상 비용",
+  "typicalCosts": [
+    "버스 티켓: 10유로."
+  ],
   "tipsTitle": "추가 팁",
   "tips": [
     "출발 전에 리셉션에 게시된 최신 SITA 시간표를 확인해 다음 버스 시간을 파악하세요.",

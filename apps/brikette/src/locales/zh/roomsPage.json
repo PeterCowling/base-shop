@@ -29,6 +29,41 @@
     "keycard": "门卡进入",
     "linen": "提供床单和毛巾"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "私人房间",
+      "mixedDorm": "混合宿舍",
+      "femaleDorm": "女性宿舍",
+      "femaleRoom": "女性专用房"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "独立卫浴",
+      "bathroomPrivate": "私人浴室",
+      "bathroomSharedFemale": "共用浴室"
+    },
+    "sleeps": "可住 {{count}} 人"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 张双人床",
+      "threeSingleBedsThreeGuests": "3 张单人床",
+      "oneDormBedTwoGuests": "1 张上下铺",
+      "threeDormBedsSixGuests": "3 张上下铺",
+      "threeDormBedsPlusSingleSevenGuests": "3 张上下铺 + 1 张单人床",
+      "fourDormBedsEightGuests": "4 张上下铺"
+    },
+    "views": {
+      "seaViewTerrace": "海景露台",
+      "seaViewExtraLargeTerrace": "海景露台",
+      "gardenView": "花园景观",
+      "courtyardView": "中庭景观",
+      "noView": "无景观"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "每间",
+    "perBed": "每床位"
+  },
   "rooms": {
     "title": "我们的房间",
     "double_room": {

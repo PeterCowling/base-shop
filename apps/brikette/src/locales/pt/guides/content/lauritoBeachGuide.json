@@ -120,7 +120,25 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "Enseada de Laurito com clubes de praia ao longo da costa",
+      "caption": "A enseada de Laurito protegida pelas falésias é mais calma e tranquila que a praia principal."
+    },
+    "layout": {
+      "alt": "Terraços e linha de costa em Laurito",
+      "caption": "Três zonas partilham a enseada: faixa pública, terraços do Villa Tre Ville e esplanada do Da Adolfo."
+    },
+    "treVille": {
+      "alt": "Espreguiçadeiras e vista para o mar do Villa Tre Ville beach club",
+      "caption": "Villa Tre Ville oferece espreguiçadeiras premium e serviço de concierge."
+    },
+    "daAdolfo": {
+      "alt": "Cais e área de estar do Da Adolfo beach club",
+      "caption": "O barco shuttle do Da Adolfo deixa os hóspedes junto ao terraço do restaurante."
+    }
+  },
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "alt": "Linha de costa da praia de Laurito"
   }
 }

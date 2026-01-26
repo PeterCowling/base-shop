@@ -88,5 +88,22 @@
     "Le scogliere bloccano il sole diretto a metà pomeriggio: ottimo per rinfrescarsi, ma può fare freddo nelle giornate ventose.",
     "La ricezione mobile si immerge all'interno della gola; scarica in anticipo gli orari degli autobus o le conferme di prenotazione della cena."
   ],
-  "faqsTitle": "FAQ su Marina di Praia"
+  "faqsTitle": "FAQ su Marina di Praia",
+  "gallery": {
+    "title": "Galleria Marina di Praia",
+    "items": [
+      {
+        "alt": "Spiaggia di Marina di Praia tra le scogliere",
+        "caption": "Ciottoli e lettini ai piedi delle scogliere"
+      },
+      {
+        "alt": "Ristoranti a strapiombo a Marina di Praia",
+        "caption": "Il Pirata e Da Armandino affacciati sulla cala"
+      },
+      {
+        "alt": "Noleggio kayak a Marina di Praia",
+        "caption": "Kayak pronti per esplorare le grotte vicine"
+      }
+    ]
+  }
 }

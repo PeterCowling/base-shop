@@ -72,6 +72,32 @@
       ]
     }
   ],
+  "images": {
+    "overview": {
+      "alt": "Cala della spiaggia di Gavitella vista dalla scalinata",
+      "caption": "La discesa rivela le terrazze di La Gavitella e One Fire."
+    },
+    "gavitellaClub": {
+      "alt": "Lettini e ristorante de La Gavitella Beach Club",
+      "caption": "Tavoli del ristorante e lettini terracotta con vista su Capri."
+    },
+    "oneFire": {
+      "alt": "Configurazione DJ e lettini di One Fire Beach Club",
+      "caption": "Lettini colorati e pedana DJ per le feste al tramonto."
+    }
+  },
+  "essentialsTitle": "L'essenziale",
+  "essentials": [
+    "Prenota in anticipo per entrambi i club; le fasce del tramonto e i weekend si esauriscono per primi.",
+    "Calcola più di 400 gradini dalla piazza San Gennaro e una risalita ripida, a meno che tu non prenda la navetta interno.",
+    "Porta scarpette da scoglio per la piattaforma in pietra e crema solare reef-safe per il sole del tardo pomeriggio."
+  ],
+  "typicalCostsTitle": "Costi tipici",
+  "typicalCosts": [
+    "Set lettini La Gavitella per due: 70-100 € a seconda della stagione.",
+    "Daybed o cabana One Fire per due: 100-180 €, spesso con acconto nei mesi di punta.",
+    "Navetta in barca (se disponibile): 10-20 € a persona per tratta."
+  ],
   "tipsTitle": "Consigli rapidi",
   "tips": [
     "Usa %LINK:positanoAmalfi|la nostra guida ai trasporti Positano ↔ Amalfi% per programmare la corsa SITA fino a piazza San Gennaro prima di affrontare i 400 gradini in discesa.",

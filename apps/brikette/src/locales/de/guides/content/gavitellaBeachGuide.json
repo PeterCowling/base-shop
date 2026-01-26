@@ -1,4 +1,30 @@
 {
+  "images": {
+    "overview": {
+      "alt": "Luftaufnahme der Bucht Gavitella und der Sonnendecks",
+      "caption": "Die beiden Strandclubs teilen sich eine schmale Plattform, die in die Klippe gehauen ist."
+    },
+    "gavitellaClub": {
+      "alt": "Abendessen-Tisch auf der Terrasse mit Blick auf die Amalfiküste bei Sonnenuntergang",
+      "caption": "La Gavitellas Abendessen bei Sonnenuntergang kombiniert Meerblick mit langen Aperitivi."
+    },
+    "oneFire": {
+      "alt": "Leuchtend orangefarbene Sonnenschirme und Liegen im One Fire Beach Club",
+      "caption": "One Fire ist bekannt für lebhafte Nachmittage und DJ-begleitete Sonnenuntergangsstimmung."
+    }
+  },
+  "essentialsTitle": "Das erwartet dich",
+  "essentials": [
+    "SITA-Bus zur Piazza San Gennaro in Praiano, dann etwa 400 Stufen zum Strand hinunter.",
+    "Zwei Strandclubs (La Gavitella und One Fire) plus ein schmaler öffentlicher Streifen.",
+    "Nach Westen ausgerichtete Bucht für Sonnenuntergangsblick auf Positano und Capri."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "Liege bei La Gavitella: 40–60 € für zwei Personen mit Handtuch und Duschen.",
+    "One Fire Liege: 30–50 € je nach Saison, Cabanas höher.",
+    "Abendessen bei La Gavitella: 35–60 € pro Person inkl. Meeresfrüchte-Hauptgericht."
+  ],
   "seo": {
     "title": "Gavitella-Strand-Guide",
     "description": "Planen Sie einen sonnenuntergangsfreundlichen Tag in den Strandclubs La Gavitella und One Fire in Praiano mit Transport, Reservierungen und Tipps für die Rückkehr."

@@ -120,7 +120,25 @@
       ]
     }
   ],
+  "images": {
+    "whyGo": {
+      "alt": "悬崖环抱的拉乌里托海湾全景",
+      "caption": "拉乌里托比 Spiaggia Grande 更安静，午后阳光可持续到傍晚"
+    },
+    "layout": {
+      "alt": "拉乌里托海滩的三区布局示意",
+      "caption": "海湾分为公共区、Villa Tre Ville 与 Da Adolfo 三部分"
+    },
+    "treVille": {
+      "alt": "Villa Tre Ville 海滩俱乐部的躺椅与海景",
+      "caption": "Villa Tre Ville 提供精品级服务与日落巡游"
+    },
+    "daAdolfo": {
+      "alt": "Da Adolfo 码头与餐厅露台",
+      "caption": "接驳船会将客人送至 Da Adolfo 露台旁"
+    }
+  },
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "alt": "拉乌里托海滩海岸线"
   }
 }

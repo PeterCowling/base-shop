@@ -121,21 +121,11 @@
       ]
     }
   ],
+  "galleryHeading": "Destaques em fotos de Arienzo",
   "gallery": {
-    "title": "Destaques de Arienzo",
-    "items": [
-      {
-        "alt": "Terraços do Arienzo Beach Club",
-        "caption": "Decks na falésia com espreguiçadeiras laranja"
-      },
-      {
-        "alt": "Cais do barco shuttle de Arienzo",
-        "caption": "Embarque do shuttle na Spiaggia Grande"
-      },
-      {
-        "alt": "Escadas até Arienzo",
-        "caption": "300 degraus entre os limoeiros"
-      }
-    ]
+    "primaryAlt": "Praia de Arienzo com terraços e clube na falésia",
+    "primaryCaption": "Praia de seixos com chapéus-de-sol laranja ao pé das falésias",
+    "secondaryAlt": "Terraço para refeições no Arienzo Beach Club",
+    "secondaryCaption": "Mesas com vista para o mar sob chapéus laranja e branco"
   }
 }

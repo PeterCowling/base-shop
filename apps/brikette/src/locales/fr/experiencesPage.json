@@ -15,7 +15,8 @@
     "secondaryCtaAria": "Voir la carte du bar de l'Hostel Brikette",
     "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l'Hostel Brikette",
     "breakfastCta": "Voir le menu du petit-déjeuner",
-    "breakfastCtaAria": "Voir le menu du petit-déjeuner"
+    "breakfastCtaAria": "Voir le menu du petit-déjeuner",
+    "scrollNudge": "Découvrez les expériences par catégorie"
   },
   "sections": {
     "bar": {
@@ -125,14 +126,39 @@
     "filterDescription": "Choisissez une étiquette pour affiner les expériences mises en avant.",
     "grouped": {
       "beaches": {
-        "guides": {
-        "heading": "Guides des plages",
-        "description": "Choisissez la bonne portion de sable et planifiez votre journée."
-        },
-        "directions": {
-        "heading": "Itinéraires pour la plage",
-        "description": "Itinéraires pas à pas depuis Hostel Brikette jusqu'au rivage."
-        }
+        "title": "Plages",
+        "description": "Choisissez la bonne portion de sable et planifiez votre journée.",
+        "imageAlt": "Plage de Positano avec parasols colorés le long de la côte"
+      },
+      "hiking": {
+        "title": "Randonnées & Sentiers",
+        "description": "Itinéraires allant de promenades faciles à des randonnées sur la journée.",
+        "imageAlt": "Randonneur sur le Sentier des Dieux avec vue sur la côte"
+      },
+      "day-trip": {
+        "title": "Excursions d'une journée",
+        "description": "Capri, Amalfi, Ravello — comment s'y rendre et revenir.",
+        "imageAlt": "Ferry naviguant vers l'île de Capri"
+      },
+      "boat": {
+        "title": "Sorties en bateau",
+        "description": "Locations privées, sorties en groupe et croisières au coucher du soleil.",
+        "imageAlt": "Bateau traditionnel sur les eaux de la côte Amalfitaine"
+      },
+      "cuisine": {
+        "title": "Gastronomie",
+        "description": "Où bien manger sans trop dépenser.",
+        "imageAlt": "Plats italiens frais dans une trattoria locale"
+      },
+      "itinerary": {
+        "title": "Itinéraires",
+        "description": "Plans sur plusieurs jours selon la durée de votre séjour.",
+        "imageAlt": "Vue panoramique sur la côte Amalfitaine depuis les hauteurs"
+      },
+      "more": {
+        "title": "Autres guides",
+        "description": "Astuces transport, spots photo et événements locaux.",
+        "imageAlt": "Bus local sur la route côtière Amalfitaine"
       }
     }
   }

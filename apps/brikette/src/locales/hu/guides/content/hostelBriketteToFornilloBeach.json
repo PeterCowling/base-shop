@@ -37,6 +37,23 @@
       ]
     }
   ],
+  "gallery": {
+    "title": "Útvonaltérképek és fordulópontok",
+    "items": [
+      {
+        "alt": "Gyalogtérkép a Hostel Brikette-től a Fornillo Beachig",
+        "caption": "Hostel Brikette → Fornillo (térkép)"
+      },
+      {
+        "alt": "Fordulj be a gyalogos ösvényre a Hotel Posa Posa mellett",
+        "caption": "Fornillo rövidítés fordulója"
+      },
+      {
+        "alt": "Útvonal a Spiaggia Grandétól az interno busz megállóig",
+        "caption": "Visszaút az interno buszhoz"
+      }
+    ]
+  },
   "tips": [
     "A visszaúton ülj fel az Interno Positano buszra, így elkerülöd a meredek emelkedőt.",
     "Vigyél vizet a lépcsős szakaszra – a partig nincs bolt az út mentén.",

@@ -1,4 +1,39 @@
 {
+  "facts": {
+    "type": {
+      "privateRoom": "Chambre privée",
+      "mixedDorm": "Dortoir mixte",
+      "femaleDorm": "Dortoir féminin",
+      "femaleRoom": "Chambre féminine"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Salle de bain privée",
+      "bathroomPrivate": "Salle de bain privée",
+      "bathroomSharedFemale": "Salle de bain partagée"
+    },
+    "sleeps": "Couchages : {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 lit double",
+      "threeSingleBedsThreeGuests": "3 lits simples",
+      "oneDormBedTwoGuests": "1 lit superposé",
+      "threeDormBedsSixGuests": "3 lits superposés",
+      "threeDormBedsPlusSingleSevenGuests": "3 lits superposés + 1 lit simple",
+      "fourDormBedsEightGuests": "4 lits superposés"
+    },
+    "views": {
+      "seaViewTerrace": "Terrasse vue mer",
+      "seaViewExtraLargeTerrace": "Grande terrasse vue mer",
+      "gardenView": "Vue jardin",
+      "courtyardView": "Vue cour",
+      "noView": "Sans vue"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "chambre",
+    "perBed": "lit"
+  },
   "meta": {
     "title": "Chambres & Tarifs | Brikette Hostel Positano",
     "description": "Chambres doubles privées avec vue sur la mer et dortoirs économiques : découvrez photos, équipements et tarifs en direct, puis réservez en direct pour le meilleur prix au Brikette Hostel Positano.",

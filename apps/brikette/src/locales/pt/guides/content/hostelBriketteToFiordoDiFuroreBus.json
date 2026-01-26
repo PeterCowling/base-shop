@@ -65,7 +65,18 @@
     "Salve o %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette guia de retorno% para sua viagem de volta.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "essentialsTitle": "O que esperar",
+  "essentials": [
+    "Compre bilhetes de ida e volta em Positano — não há onde comprá-los no fiorde.",
+    "Avise o motorista que pretende sair no Fiordo di Furore para que ele pare.",
+    "Escadaria íngreme leva à praia de seixos sob o arco da ponte."
+  ],
+  "typicalCostsTitle": "Custos típicos",
+  "typicalCosts": [
+    "Bilhete de autocarro SITA de ida e volta: cerca de €5–€7 por pessoa.",
+    "Táxi de emergência até à estrada: €15–€25 para distâncias curtas."
+  ],
+  "faqsTitle": "Perguntas frequentes",
   "faqs": [
     {
       "q": "Eu realmente preciso comprar uma passagem de volta com antecedência?",

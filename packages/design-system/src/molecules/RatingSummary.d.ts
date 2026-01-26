@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface RatingSummaryProps extends React.HTMLAttributes<HTMLDivElement> {
     rating: number;
     count?: number;

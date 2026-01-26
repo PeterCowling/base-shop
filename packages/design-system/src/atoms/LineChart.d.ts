@@ -1,4 +1,5 @@
 import type { ChartData, ChartOptions } from "chart.js";
+
 export interface LineChartProps {
     data: ChartData<"line">;
     options?: ChartOptions<"line">;

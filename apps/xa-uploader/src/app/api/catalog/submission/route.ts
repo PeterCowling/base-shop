@@ -1,7 +1,6 @@
 import type { Readable as NodeReadable } from "node:stream";
 import { Readable } from "node:stream";
 
-/* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] API responses pending i18n */
 import { NextResponse } from "next/server";
 
 import { slugify } from "../../../../lib/catalogAdminSchema";

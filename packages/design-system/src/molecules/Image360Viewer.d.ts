@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface Image360ViewerProps extends React.HTMLAttributes<HTMLDivElement> {
     /** Ordered frame URLs forming the 360-degree sequence */
     frames: string[];

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 declare const icons: {
     readonly star: React.ForwardRefExoticComponent<import("@radix-ui/react-icons/dist/types").IconProps & React.RefAttributes<SVGSVGElement>>;
     readonly heart: React.ForwardRefExoticComponent<import("@radix-ui/react-icons/dist/types").IconProps & React.RefAttributes<SVGSVGElement>>;

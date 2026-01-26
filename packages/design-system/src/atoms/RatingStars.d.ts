@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
     rating: number;
     size?: number;

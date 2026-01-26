@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface QuantityInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
     value: number;
     min?: number;

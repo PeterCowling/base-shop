@@ -132,6 +132,39 @@ function createJestPreset(options = {}) {
   // Apply any additional module name mappings from options
   moduleNameMapper = { ...moduleNameMapper, ...additionalModuleNameMapper };
 
+  // Jest resolves `moduleNameMapper` entries in insertion order, and the first
+  // matching pattern wins. When we merge `tsconfig` path mappings with the
+  // monorepo mapper, catch-all patterns like `^@acme/lib/(.*)$` can end up
+  // earlier than specific overrides (e.g. `^@acme/lib/logger$`) due to object
+  // property overwrite semantics preserving insertion order. Reorder the
+  // resulting mapper so specific overrides are always evaluated first.
+  {
+    const libOverrides = {};
+    const libCatchAll = {};
+
+    for (const key of [
+      "^@acme/lib/logger$",
+      "^@acme/lib/context$",
+      "^@acme/lib/http/server$",
+    ]) {
+      if (key in moduleNameMapper) libOverrides[key] = moduleNameMapper[key];
+    }
+
+    const catchAllKey = "^@acme/lib/(.*)$";
+    if (catchAllKey in moduleNameMapper) {
+      libCatchAll[catchAllKey] = moduleNameMapper[catchAllKey];
+    }
+
+    if (Object.keys(libOverrides).length > 0 || Object.keys(libCatchAll).length > 0) {
+      const pruned = Object.fromEntries(
+        Object.entries(moduleNameMapper).filter(
+          ([key]) => !(key in libOverrides) && !(key in libCatchAll),
+        ),
+      );
+      moduleNameMapper = { ...libOverrides, ...pruned, ...libCatchAll };
+    }
+  }
+
   // Build coverage configuration
   const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
   const coveragePathIgnorePatterns = [

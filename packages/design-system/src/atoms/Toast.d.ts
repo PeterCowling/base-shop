@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
     open: boolean;
     onClose?: () => void;

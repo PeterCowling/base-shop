@@ -1,5 +1,6 @@
-import { type ImageProps } from "next/image";
 import * as React from "react";
+import { type ImageProps } from "next/image";
+
 export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
     /** Content to display when no image src is provided */
     fallback?: React.ReactNode;

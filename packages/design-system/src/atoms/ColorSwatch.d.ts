@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface ColorSwatchProps extends React.HTMLAttributes<HTMLButtonElement> {
     color: string;
     selected?: boolean;

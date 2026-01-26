@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
     /** High-level semantic color */
     color?: "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger" | "destructive";

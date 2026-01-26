@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+
 export interface AccordionItem {
     title: ReactNode;
     content: ReactNode;

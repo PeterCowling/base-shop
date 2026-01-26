@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export type MediaType = "image" | "video" | "360" | "model";
 export interface MediaItem {
     type: MediaType;

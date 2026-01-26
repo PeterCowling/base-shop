@@ -1,4 +1,5 @@
 import { type ButtonHTMLAttributes, type HTMLAttributes } from "react";
+
 type AccordionType = "single" | "multiple";
 export interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
     readonly type?: AccordionType;

@@ -1,3 +1,4 @@
+export { Accordion } from "./Accordion";
 export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
 export { FormField } from "./FormField";
@@ -12,5 +13,4 @@ export { QuantityInput } from "./QuantityInput";
 export { RatingSummary } from "./RatingSummary";
 export { SearchBar } from "./SearchBar";
 export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
-export { Accordion } from "./Accordion";
 //# sourceMappingURL=index.d.ts.map

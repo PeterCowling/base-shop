@@ -1,11 +1,14 @@
 import type { GuideKey } from "@/guides/slugs";
 import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { renderBodyBlocks } from "@/routes/guides/utils/linkTokens";
 import type { TFunction } from "@/utils/i18nSafe";
 
 interface Props {
   translations: { tGuides: TFunction };
   hookI18n?: { getFixedT?: (lng: string, ns: string) => TFunction | undefined };
   guideKey: GuideKey;
+  lang: AppLanguage;
 }
 
 /**
@@ -13,7 +16,7 @@ interface Props {
  * content.{guideKey}.fallbackParagraph. Falls back to EN when the localised
  * value is missing or looks like a placeholder key.
  */
-export default function RenderManualParagraph({ translations, hookI18n, guideKey }: Props): JSX.Element | null {
+export default function RenderManualParagraph({ translations, hookI18n, guideKey, lang }: Props): JSX.Element | null {
   const key = `content.${guideKey}.fallbackParagraph` as const;
 
   const pickMeaningful = (val: unknown): string => {
@@ -29,7 +32,7 @@ export default function RenderManualParagraph({ translations, hookI18n, guideKey
     if (local) {
       return (
         <div className="space-y-4">
-          <p>{local}</p>
+          {renderBodyBlocks([local], lang, `manual-paragraph-${guideKey}`)}
         </div>
       );
     }
@@ -47,7 +50,7 @@ export default function RenderManualParagraph({ translations, hookI18n, guideKey
     if (en) {
       return (
         <div className="space-y-4">
-          <p>{en}</p>
+          {renderBodyBlocks([en], lang, `manual-paragraph-${guideKey}`)}
         </div>
       );
     }

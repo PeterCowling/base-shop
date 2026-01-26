@@ -6,7 +6,7 @@
  */
 import TableOfContents from "@/components/guides/TableOfContents";
 import type { AppLanguage } from "@/i18n.config";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 
 import type { StructuredFallback } from "../utils/fallbacks";
 
@@ -100,11 +100,7 @@ export function computeManualStructuredFallback({
               className="scroll-mt-28 space-y-4"
             >
               {section.title ? <h2 className="text-xl font-semibold">{section.title}</h2> : null}
-              {section.body.map((paragraph, index) => (
-                <p key={index}>
-                  {renderGuideLinkTokens(paragraph, lang, `section-${section.id}-${index}`)}
-                </p>
-              ))}
+              {renderBodyBlocks(section.body, lang, `section-${section.id}`)}
             </section>
           ))}
         </>

@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 
 import { IS_DEV } from "@/config/env";
 import { getContentAlias } from "@/config/guide-overrides";
+import type { AppLanguage } from "@/i18n.config";
 import { debugGuide } from "@/utils/debug";
 
 import type { GuideSeoTemplateContext } from "../../types";
@@ -74,10 +75,10 @@ export function renderFallbackContent(params: {
   }
 
   // Manual string/paragraph fallbacks
-  const manualStringEarly = RenderManualString({ translations, hookI18n, guideKey });
+  const manualStringEarly = RenderManualString({ translations, hookI18n, guideKey, lang: lang as AppLanguage });
   if (manualStringEarly) return manualStringEarly as any;
 
-  const manualParagraphEarly = RenderManualParagraph({ translations, hookI18n, guideKey });
+  const manualParagraphEarly = RenderManualParagraph({ translations, hookI18n, guideKey, lang: lang as AppLanguage });
   if (manualParagraphEarly) return manualParagraphEarly as any;
 
   // Suppress fallback when manual fallback sanitizes to nothing
@@ -101,6 +102,7 @@ export function renderFallbackContent(params: {
 
   // Interrail alias block
   const aliasBlock = RenderInterrailAlias({
+    lang: lang as AppLanguage,
     guideKey,
     translations,
     t,
@@ -163,6 +165,7 @@ export function renderFallbackContent(params: {
       translations,
       hookI18n,
       guideKey,
+      lang: lang as AppLanguage,
       t,
       showTocWhenUnlocalized,
       ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),

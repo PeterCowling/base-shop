@@ -3,7 +3,7 @@ import { Children } from "react";
 import TableOfContents from "@/components/guides/TableOfContents";
 import { getContentAlias, shouldMergeAliasFaqs } from "@/config/guide-overrides";
 import type { AppLanguage } from "@/i18n.config";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { debugGuide } from "@/utils/debug";
 
 import type { Translator } from "../../types";
@@ -175,9 +175,7 @@ export default function RenderStructuredArrays({
               finalSections.map((s, index) => (
                 <section key={`${s.id}-${index}`} id={s.id} className="scroll-mt-28 space-y-4">
                   {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-                  {s.body.map((b, i) => (
-                    <p key={i}>{renderGuideLinkTokens(b, lang, `section-${s.id}-${i}`)}</p>
-                  ))}
+                  {renderBodyBlocks(s.body, lang, `section-${s.id}`)}
                 </section>
               )),
             )
@@ -198,9 +196,7 @@ export default function RenderStructuredArrays({
               {faqsCombined.map((f, i) => (
                 <details key={i}>
                   <summary role="button" className="font-medium">{f.q}</summary>
-                  {f.a.map((ans, j) => (
-                    <p key={j}>{renderGuideLinkTokens(ans, lang, `faq-${i}-${j}`)}</p>
-                  ))}
+                  {renderBodyBlocks(f.a, lang, `faq-${i}`)}
                 </details>
               ))}
             </div>

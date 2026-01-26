@@ -174,16 +174,17 @@ export default function GenericOrFallbackContent({
 
       if (hasManual) {
         manualFallbackExists = true;
-        return (
-          <RenderManualObject
-            translations={translations}
-            hookI18n={hookI18n}
-            guideKey={guideKey as any}
-            t={t as any}
-            showTocWhenUnlocalized={showTocWhenUnlocalized}
-            {...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {})}
-          />
-        ) as any;
+	        return (
+	          <RenderManualObject
+	            translations={translations}
+	            hookI18n={hookI18n}
+	            guideKey={guideKey as any}
+	            lang={lang as any}
+	            t={t as any}
+	            showTocWhenUnlocalized={showTocWhenUnlocalized}
+	            {...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {})}
+	          />
+	        ) as any;
       }
     } catch { /* noop */ }
   }
@@ -192,15 +193,16 @@ export default function GenericOrFallbackContent({
   if (!hasLocalizedContent && !suppressUnlocalizedFallback) {
     const allowEnglishManual = englishFallbackAllowed && !preferManualWhenUnlocalized;
     const shouldRenderManual = manualLocalMeaningful || (allowEnglishManual && manualEnMeaningful);
-    if (shouldRenderManual) {
-      const manualEarly = RenderManualObject({
-        translations,
-        hookI18n,
-        guideKey: guideKey as any,
-        t: t as any,
-        showTocWhenUnlocalized,
-        ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
-      });
+	    if (shouldRenderManual) {
+	      const manualEarly = RenderManualObject({
+	        translations,
+	        hookI18n,
+	        guideKey: guideKey as any,
+	        lang: lang as any,
+	        t: t as any,
+	        showTocWhenUnlocalized,
+	        ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
+	      });
       if (manualEarly) {
         manualFallbackExists = true;
         return manualEarly as any;

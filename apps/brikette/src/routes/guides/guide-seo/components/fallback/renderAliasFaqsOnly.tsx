@@ -1,5 +1,7 @@
 import type { TFunction } from "i18next";
 
+import type { AppLanguage } from "@/i18n.config";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
 import type { GuideSeoTemplateContext } from "../../types";
@@ -20,6 +22,8 @@ export function renderAliasFaqsOnly(params: {
   const { context, hasStructuredLocal, translations, tFb, guideKey, t, alias } = params;
 
   try {
+    const lang = (typeof context?.lang === "string" ? context.lang : "en") as AppLanguage;
+
     const localizedStructuredExists = (() => {
       if (hasStructuredLocal) return true;
       try {
@@ -107,21 +111,19 @@ export function renderAliasFaqsOnly(params: {
             <details
               key={`${faq.q}-${index}`}
               className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface/40 shadow-sm transition-shadow hover:shadow-md dark:border-brand-outline/40 dark:bg-brand-bg/60"
-            >
-              <summary
-                role="button"
-                className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl"
-              >
-                {faq.q}
-              </summary>
-              <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
-                {faq.a.map((answer, answerIndex) => (
-                  <p key={`${faq.q}-${answerIndex}`}>{answer}</p>
-                ))}
-              </div>
-            </details>
-          ))}
-        </div>
+	            >
+	              <summary
+	                role="button"
+	                className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl"
+	              >
+	                {renderGuideLinkTokens(faq.q, lang, `alias-faq-q-${index}`)}
+	              </summary>
+	              <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
+	                {renderBodyBlocks(faq.a, lang, `alias-faq-${index}`)}
+	              </div>
+	            </details>
+	          ))}
+	        </div>
       </section>
     ) as any;
   } catch {

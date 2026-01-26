@@ -5,7 +5,7 @@ import {
   shouldMergeAliasFaqs,
   shouldSuppressFallbackStructuredWhenManualEn,
 } from "@/config/guide-overrides";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
 
 import type { GuideSeoTemplateContext, TocItem, Translator } from "../../types";
@@ -447,20 +447,16 @@ export default function RenderFallbackStructured({
               <TableOfContents items={tocWithFaq} title={tocTitleFb} />
             )
         : null}
-      {meaningfulSections.length > 0
-        ? meaningfulSections.map((section) => (
-            <section key={section.id} id={section.id} className="scroll-mt-28 space-y-4">
-              {section.title ? (
-                <h2 className="text-xl font-semibold">{section.title}</h2>
-              ) : null}
-              {section.body.map((paragraph, index) => (
-                <p key={index}>
-                  {renderGuideLinkTokens(paragraph, context.lang, `section-${section.id}-${index}`)}
-                </p>
-              ))}
-            </section>
-          ))
-        : null}
+	      {meaningfulSections.length > 0
+	        ? meaningfulSections.map((section) => (
+	            <section key={section.id} id={section.id} className="scroll-mt-28 space-y-4">
+	              {section.title ? (
+	                <h2 className="text-xl font-semibold">{section.title}</h2>
+	              ) : null}
+	              {renderBodyBlocks(section.body, context.lang, `section-${section.id}`)}
+	            </section>
+	          ))
+	        : null}
       {fallbackFaqs.length > 0 ? (
         <section id="faqs" className="space-y-4">
           <h2 className="text-xl font-semibold">{fallbackFaqHeading}</h2>

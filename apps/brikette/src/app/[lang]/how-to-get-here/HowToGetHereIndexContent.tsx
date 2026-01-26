@@ -2,7 +2,7 @@
 
 // src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx
 // Client component for how-to-get-here index page
-import { Fragment, memo, useCallback, useState } from "react";
+import { Fragment, memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -47,9 +47,69 @@ function HowToGetHereIndexContent({ lang }: Props) {
     destinationFilter,
     transportFilter,
     directionFilter,
+    setDestinationFilter,
+    setTransportFilter,
+    setDirectionFilter,
     clearFilters,
     totalRoutes,
   } = filtersState;
+
+  // Compute suggested fixes when filters yield no results
+  // Order: most specific filter first (destination > transport > direction)
+  const suggestedFixes = useMemo(() => {
+    // Only compute if we have filters active and no results
+    if (!filtersState.hasActiveFilters || filtersState.filteredSections.length > 0) {
+      return [];
+    }
+
+    const fixes: Array<{ label: string; onClick: () => void }> = [];
+
+    // Suggest removing destination filter (most specific)
+    if (destinationFilter !== "all") {
+      const destinationName = content.sections.find((s) => s.id === destinationFilter)?.name ?? destinationFilter;
+      fixes.push({
+        label: t("filters.suggestion.removeDestination", {
+          destination: destinationName,
+          defaultValue: `Show all destinations`,
+        }),
+        onClick: () => setDestinationFilter("all"),
+      });
+    }
+
+    // Suggest removing transport filter
+    if (transportFilter !== "all") {
+      fixes.push({
+        label: t("filters.suggestion.removeTransport", {
+          mode: transportFilter,
+          defaultValue: `Show all transport modes`,
+        }),
+        onClick: () => setTransportFilter("all"),
+      });
+    }
+
+    // Suggest removing direction filter
+    if (directionFilter !== "all") {
+      fixes.push({
+        label: t("filters.suggestion.removeDirection", {
+          defaultValue: `Show both directions`,
+        }),
+        onClick: () => setDirectionFilter("all"),
+      });
+    }
+
+    return fixes;
+  }, [
+    filtersState.hasActiveFilters,
+    filtersState.filteredSections.length,
+    destinationFilter,
+    transportFilter,
+    directionFilter,
+    content.sections,
+    t,
+    setDestinationFilter,
+    setTransportFilter,
+    setDirectionFilter,
+  ]);
 
   const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
@@ -187,6 +247,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         preferredDirection={directionFilter !== "all" ? directionFilter : null}
         onOpenFilters={() => setFiltersDialogOpen(true)}
         onClearFilters={clearFilters}
+        suggestedFixes={suggestedFixes}
       />
 
       {/* Rome Section */}

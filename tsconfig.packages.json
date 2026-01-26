@@ -17,9 +17,11 @@
 
   "references": [
     { "path": "packages/types" },
+    { "path": "packages/guides-core" },
     { "path": "packages/platform-core" },
     { "path": "packages/platform-machine" },
     { "path": "packages/lib" },
+    { "path": "packages/eslint-plugin-ds" },
     { "path": "packages/page-builder-core" },
     { "path": "packages/page-builder-ui" },
     { "path": "packages/themes/base" },
@@ -37,6 +39,7 @@
     { "path": "packages/plugins/paypal" },
     { "path": "packages/plugins/premier-shipping" },
     { "path": "packages/plugins/sanity" },
+    { "path": "packages/product-configurator" },
     { "path": "packages/editorial" },
     { "path": "packages/templates" }
   ]

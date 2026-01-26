@@ -75,6 +75,7 @@ export function renderStructuredFallback(params: {
   ) {
     const aliasBlockEarly = RenderInterrailAlias({
       guideKey,
+      lang: context.lang,
       translations,
       t,
       showTocWhenUnlocalized,

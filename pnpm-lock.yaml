@@ -680,6 +680,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../../packages/platform-core
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../../packages/telemetry
@@ -689,6 +692,21 @@ importers:
       '@headlessui/react':
         specifier: ^2.2.3
         version: 2.2.9(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@tiptap/core':
+        specifier: ^2.24.0
+        version: 2.24.1(@tiptap/pm@2.24.1)
+      '@tiptap/extension-placeholder':
+        specifier: ^2.24.0
+        version: 2.27.2(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)
+      '@tiptap/pm':
+        specifier: ^2.24.0
+        version: 2.24.1
+      '@tiptap/react':
+        specifier: ^2.24.0
+        version: 2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@tiptap/starter-kit':
+        specifier: ^2.24.0
+        version: 2.24.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -704,6 +722,9 @@ importers:
       lucide-react:
         specifier: ^0.540.0
         version: 0.540.0(react@19.2.1)
+      markdown-it:
+        specifier: ^14.1.0
+        version: 14.1.0
       next:
         specifier: ^15.3.8
         version: 15.3.8(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -936,6 +957,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../../packages/platform-core
       '@acme/product-configurator':
         specifier: workspace:*
         version: link:../../packages/product-configurator
@@ -1209,6 +1233,9 @@ importers:
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
+      '@acme/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@acme/template-app':
         specifier: workspace:*
         version: link:../../packages/template-app
@@ -1615,6 +1642,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.3
         version: 1.2.3(@types/react@19.1.8)(react@19.2.1)
+      '@tanstack/react-table':
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       chart.js:
         specifier: ^4
         version: 4.5.0
@@ -1630,6 +1660,9 @@ importers:
       react-chartjs-2:
         specifier: ^5
         version: 5.3.0(chart.js@4.5.0)(react@19.2.1)
+      react-datepicker:
+        specifier: ^9.1.0
+        version: 9.1.0(date-fns-tz@3.2.0(date-fns@4.1.0))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-dom:
         specifier: '>=19 <20'
         version: 19.2.1(react@19.2.1)
@@ -1915,6 +1948,9 @@ importers:
       '@types/node':
         specifier: ^20.19.4
         version: 20.19.4
+      aws4fetch:
+        specifier: ^1.0.20
+        version: 1.0.20
       next:
         specifier: ^15.3.8
         version: 15.3.8(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -6336,11 +6372,22 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
+  '@tanstack/react-table@8.21.3':
+    resolution: {integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
   '@tanstack/react-virtual@3.13.13':
     resolution: {integrity: sha512-4o6oPMDvQv+9gMi8rE6gWmsOjtUZUYIJHv7EB+GblyYdi8U6OqLl8rhHWIUZSL1dUU2dPwTdTgybCKf9EjIrQg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
 
   '@tanstack/virtual-core@3.13.13':
     resolution: {integrity: sha512-uQFoSdKKf5S8k51W5t7b2qpfkyIbdHMzAn+AMQvHPxKUPeo1SsGaA4JRISQT87jm28b7z8OEqPcg1IOZagQHcA==}
@@ -6501,6 +6548,12 @@ packages:
     resolution: {integrity: sha512-aMGuxCmH/T3QrdydxjG3/NMbRbpY07m6Un3YqT+3ZKt9EHrhb5dhre2rATf5Zt062q8ex4ehSdwbExkMrKsE/A==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
+
+  '@tiptap/extension-placeholder@2.27.2':
+    resolution: {integrity: sha512-IjsgSVYJRjpAKmIoapU0E2R4E2FPY3kpvU7/1i7PUYisylqejSJxmtJPGYw0FOMQY9oxnEEvfZHMBA610tqKpg==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/pm': ^2.7.0
 
   '@tiptap/extension-strike@2.24.1':
     resolution: {integrity: sha512-nlynf0Eb7B7e40SSnzzhYItPV46VM/9bgXNDfTVhkwdcmVao5fX79QTZVi8OwvWGciRo0AvQkVXy+iqiD62hSg==}
@@ -13359,6 +13412,16 @@ packages:
     peerDependencies:
       react: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
+
+  react-datepicker@9.1.0:
+    resolution: {integrity: sha512-lOp+m5bc+ttgtB5MHEjwiVu4nlp4CvJLS/PG1OiOe5pmg9kV73pEqO8H0Geqvg2E8gjqTaL9eRhSe+ZpeKP3nA==}
+    peerDependencies:
+      date-fns-tz: ^3.0.0
+      react: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^16.9.0 || ^17 || ^18 || ^19 || ^19.0.0-rc
+    peerDependenciesMeta:
+      date-fns-tz:
+        optional: true
 
   react-day-picker@9.13.0:
     resolution: {integrity: sha512-euzj5Hlq+lOHqI53NiuNhCP8HWgsPf/bBAVijR50hNaY1XwjKjShAnIe8jm8RD2W9IJUvihDIZ+KrmqfFzNhFQ==}
@@ -20265,11 +20328,19 @@ snapshots:
       '@tanstack/query-core': 5.81.5
       react: 19.2.1
 
+  '@tanstack/react-table@8.21.3(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+    dependencies:
+      '@tanstack/table-core': 8.21.3
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+
   '@tanstack/react-virtual@3.13.13(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@tanstack/virtual-core': 3.13.13
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
+
+  '@tanstack/table-core@8.21.3': {}
 
   '@tanstack/virtual-core@3.13.13': {}
 
@@ -20427,6 +20498,11 @@ snapshots:
   '@tiptap/extension-paragraph@2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))':
     dependencies:
       '@tiptap/core': 2.24.1(@tiptap/pm@2.24.1)
+
+  '@tiptap/extension-placeholder@2.27.2(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)':
+    dependencies:
+      '@tiptap/core': 2.24.1(@tiptap/pm@2.24.1)
+      '@tiptap/pm': 2.24.1
 
   '@tiptap/extension-strike@2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))':
     dependencies:
@@ -28816,6 +28892,16 @@ snapshots:
       date-fns: 4.1.0
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
+
+  react-datepicker@9.1.0(date-fns-tz@3.2.0(date-fns@4.1.0))(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+    dependencies:
+      '@floating-ui/react': 0.27.16(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      clsx: 2.1.1
+      date-fns: 4.1.0
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+    optionalDependencies:
+      date-fns-tz: 3.2.0(date-fns@4.1.0)
 
   react-day-picker@9.13.0(react@19.2.1):
     dependencies:

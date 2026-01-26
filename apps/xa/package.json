@@ -18,6 +18,7 @@
     "@acme/platform-core": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
+    "@acme/telemetry": "workspace:*",
     "@acme/types": "workspace:*",
     "@acme/ui": "workspace:*",
     "@acme/zod-utils": "workspace:*",

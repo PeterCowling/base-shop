@@ -1,11 +1,14 @@
 import TableOfContents from "@/components/guides/TableOfContents";
 import { getContentAlias } from "@/config/guide-overrides";
+import type { AppLanguage } from "@/i18n.config";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
 import type { GuideTranslationSuite } from "../../translations";
 import type { Translator } from "../../types";
 
 interface Props {
+  lang: AppLanguage;
   guideKey: string;
   translations: Pick<GuideTranslationSuite, "tGuides">;
   t: Translator;
@@ -18,6 +21,7 @@ interface Props {
  * Returns a structured fallback block when alias arrays are present.
  */
 export default function RenderInterrailAlias({
+  lang,
   guideKey,
   translations,
   t,
@@ -91,7 +95,7 @@ export default function RenderInterrailAlias({
         {aliasIntro.length > 0 ? (
           <div className="space-y-4">
             {aliasIntro.map((p, idx) => (
-              <p key={idx}>{p}</p>
+              <p key={idx}>{renderGuideLinkTokens(p, lang, `alias-intro-${idx}`)}</p>
             ))}
           </div>
         ) : null}
@@ -105,9 +109,7 @@ export default function RenderInterrailAlias({
         {aliasSections.map((s) => (
           <section key={s.id} id={s.id} className="scroll-mt-28 space-y-4">
             {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-            {s.body.map((b, i) => (
-              <p key={i}>{b}</p>
-            ))}
+            {renderBodyBlocks(s.body, lang, `alias-section-${s.id}`)}
           </section>
         ))}
         {aliasFaqsArr.length > 0 ? (
@@ -123,9 +125,7 @@ export default function RenderInterrailAlias({
               {aliasFaqsArr.map((f, i) => (
                 <details key={i}>
                   <summary role="button" className="font-medium">{f.q}</summary>
-                  {f.a.map((ans, j) => (
-                    <p key={j}>{ans}</p>
-                  ))}
+                  {renderBodyBlocks(f.a, lang, `alias-faq-${i}`)}
                 </details>
               ))}
             </div>

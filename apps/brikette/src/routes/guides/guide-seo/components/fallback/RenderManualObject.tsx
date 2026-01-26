@@ -1,6 +1,8 @@
 import TableOfContents from "@/components/guides/TableOfContents";
 import type { GuideKey } from "@/guides/slugs";
 import i18nApp from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { debugGuide } from "@/utils/debug";
 import type { TFunction } from "@/utils/i18nSafe";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
@@ -9,6 +11,7 @@ interface Props {
   translations: { tGuides: TFunction };
   hookI18n?: { getFixedT?: (lng: string, ns: string) => TFunction | undefined };
   guideKey: GuideKey;
+  lang: AppLanguage;
   t: TFunction;
   showTocWhenUnlocalized: boolean;
   suppressTocTitle?: boolean;
@@ -20,6 +23,7 @@ export default function RenderManualObject({
   translations,
   hookI18n,
   guideKey,
+  lang,
   t,
   showTocWhenUnlocalized,
   suppressTocTitle,
@@ -188,13 +192,11 @@ export default function RenderManualObject({
 
     return (
       <>
-        {introEff.length > 0 ? (
-          <div className="space-y-4">
-            {introEff.map((p, idx) => (
-              <p key={idx}>{p}</p>
-            ))}
-          </div>
-        ) : null}
+	        {introEff.length > 0 ? (
+	          <div className="space-y-4">
+	            {renderBodyBlocks(introEff, lang, `manual-intro-${guideKey}`)}
+	          </div>
+	        ) : null}
         {tocItems.length > 0 && showTocWhenUnlocalized ? (
           suppressTocTitle ? (
             <TableOfContents items={tocItems} />
@@ -223,27 +225,25 @@ export default function RenderManualObject({
             })()
           )
         ) : null}
-        {sectionsEff.map((s) => (
-          <section key={s.id} id={s.id} className="scroll-mt-28 space-y-4">
-            {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
-            {s.body.map((b, i) => (
-              <p key={i}>{b}</p>
-            ))}
-          </section>
-        ))}
+	        {sectionsEff.map((s) => (
+	          <section key={s.id} id={s.id} className="scroll-mt-28 space-y-4">
+	            {s.title ? <h2 className="text-xl font-semibold">{s.title}</h2> : null}
+	            {renderBodyBlocks(s.body, lang, `manual-section-${s.id}`)}
+	          </section>
+	        ))}
         {faqLabel || faqSummary || faqAnswerArr.length > 0 ? (
           <section className="space-y-4">
-            {faqLabel ? <h2 className="text-xl font-semibold">{faqLabel}</h2> : null}
-            <div className="space-y-3">
-              <details>
-                <summary role="button" className="font-medium">{faqSummary || ""}</summary>
-                {faqAnswerArr.map((ans, idx) => (
-                  <p key={idx}>{ans}</p>
-                ))}
-              </details>
-            </div>
-          </section>
-        ) : null}
+	            {faqLabel ? <h2 className="text-xl font-semibold">{faqLabel}</h2> : null}
+	            <div className="space-y-3">
+	              <details>
+	                <summary role="button" className="font-medium">
+	                  {faqSummary ? renderGuideLinkTokens(faqSummary, lang, `manual-faq-summary-${guideKey}`) : ""}
+	                </summary>
+	                {renderBodyBlocks(faqAnswerArr, lang, `manual-faq-${guideKey}`)}
+	              </details>
+	            </div>
+	          </section>
+	        ) : null}
       </>
     );
   } catch {

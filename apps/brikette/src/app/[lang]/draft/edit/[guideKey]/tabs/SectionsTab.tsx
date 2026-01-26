@@ -8,7 +8,8 @@ import { Button } from "@acme/design-system/primitives";
 
 import { Inline, Stack } from "@/components/ui/flex";
 
-import { TextArea, TextInput } from "../components/FormFields";
+import { TextInput } from "../components/FormFields";
+import { RichTextEditor } from "../components/RichTextEditor";
 import type { TabProps } from "../types";
 
 type Section = {
@@ -16,21 +17,6 @@ type Section = {
   title?: string;
   body?: unknown[];
 };
-
-function normalizeBodyToString(body: unknown): string {
-  if (Array.isArray(body)) {
-    return body.filter((s) => typeof s === "string").join("\n\n");
-  }
-  if (typeof body === "string") return body;
-  return "";
-}
-
-function parseBodyFromString(value: string): string[] {
-  return value
-    .split("\n\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
 
 type SectionCardProps = {
   section: Section;
@@ -52,7 +38,6 @@ function SectionCard({
   onMoveDown,
 }: SectionCardProps) {
   const [expanded, setExpanded] = useState(true);
-  const bodyText = normalizeBodyToString(section.body);
 
   return (
     <div className="rounded-lg border border-brand-outline/30 bg-brand-surface p-4">
@@ -124,12 +109,13 @@ function SectionCard({
             onChange={(v) => onUpdate({ title: v || undefined })}
             placeholder="Section heading"
           />
-          <TextArea
+          <RichTextEditor
+            fieldId={`sections.${index}.body`}
             label="Body"
-            value={bodyText}
-            onChange={(v) => onUpdate({ body: parseBodyFromString(v) })}
+            value={section.body}
+            onChange={(next) => onUpdate({ body: next })}
             placeholder="Section content..."
-            rows={6}
+            allowedFormats={["bold", "italic", "bulletList", "link"]}
             hint="Separate paragraphs with blank lines"
           />
         </Stack>

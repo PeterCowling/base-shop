@@ -1,6 +1,8 @@
 // src/utils/buildFaqJsonLd.ts
 // Utilities for building FAQPage JSON-LD payloads from translation content.
 
+import { stripGuideMarkup } from "@/routes/guides/utils/linkTokens";
+
 import { ensureArray, ensureStringArray } from "./i18nContent";
 
 export type RawFaqEntry = {
@@ -62,12 +64,26 @@ export function faqEntriesToJsonLd(
   if (safeEntries.length === 0) {
     return null;
   }
+
+  const sanitized = safeEntries
+    .map((entry) => {
+      const question = stripGuideMarkup(entry.question).trim();
+      const answer = entry.answer
+        .map((value) => stripGuideMarkup(value).trim())
+        .filter((value) => value.length > 0);
+      if (question.length === 0 || answer.length === 0) return null;
+      return { question, answer };
+    })
+    .filter((value): value is { question: string; answer: string[] } => value !== null);
+
+  if (sanitized.length === 0) return null;
+
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: lang,
     url,
-    mainEntity: safeEntries.map(({ question, answer }) => ({
+    mainEntity: sanitized.map(({ question, answer }) => ({
       "@type": "Question",
       name: question,
       acceptedAnswer: {

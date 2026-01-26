@@ -35,4 +35,22 @@ describe("buildFaqJsonLd", () => {
     expect(json?.mainEntity[0].name).toContain("When?");
     expect(json?.mainEntity[0].acceptedAnswer.text).toContain("Summer");
   });
+
+  it("strips guide markup (tokens, emphasis markers, list bullets, and storage escapes)", () => {
+    const raw = [
+      {
+        q: "See %HOWTO:foo|How to get here% for details",
+        a: [
+          "Try **bold** and *italic*.",
+          "List:\n* one\n* two",
+          "Ordered: 1\\. Step",
+        ],
+      },
+    ];
+    const json = buildFaqJsonLd("en", "https://example.com", raw);
+    expect(json?.mainEntity[0].name).toBe("See How to get here for details");
+    expect(json?.mainEntity[0].acceptedAnswer.text).toContain("Try bold and italic.");
+    expect(json?.mainEntity[0].acceptedAnswer.text).toContain("List:\none\ntwo");
+    expect(json?.mainEntity[0].acceptedAnswer.text).toContain("Ordered: 1. Step");
+  });
 });

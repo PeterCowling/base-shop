@@ -11,7 +11,7 @@ import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import { type GuideKey } from "@/routes.guides-helpers";
-import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
+import { renderBodyBlocks, renderGuideLinkTokens } from "@/routes/guides/utils/linkTokens";
 import { debugGuide } from "@/utils/debug";
 
 import { buildGenericContentData } from "./generic-content/buildContent";
@@ -276,9 +276,7 @@ export default function GenericContent({
                 <div>{sectionTopExtras[section.id]}</div>
               ) : null}
               {Array.isArray(section.body)
-                ? section.body.map((paragraph, index) => (
-                    <p key={index}>{renderTokens(paragraph, `${guideKey}-section-${section.id}-${index}`)}</p>
-                  ))
+                ? renderBodyBlocks(section.body, lang, `${guideKey}-section-${section.id}`)
                 : null}
               {sectionBottomExtras?.[section.id] ? (
                 <div>{sectionBottomExtras[section.id]}</div>

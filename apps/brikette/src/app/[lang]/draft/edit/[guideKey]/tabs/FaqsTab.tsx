@@ -5,28 +5,14 @@ import { Button } from "@acme/design-system/primitives";
 
 import { Inline, Stack } from "@/components/ui/flex";
 
-import { TextArea, TextInput } from "../components/FormFields";
+import { TextInput } from "../components/FormFields";
+import { RichTextEditor } from "../components/RichTextEditor";
 import type { TabProps } from "../types";
 
 type Faq = {
   q?: string;
   a?: string | string[];
 };
-
-function normalizeAnswerToString(answer: unknown): string {
-  if (Array.isArray(answer)) {
-    return answer.filter((s) => typeof s === "string").join("\n\n");
-  }
-  if (typeof answer === "string") return answer;
-  return "";
-}
-
-function parseAnswerFromString(value: string): string[] {
-  return value
-    .split("\n\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
 
 type FaqCardProps = {
   faq: Faq;
@@ -36,8 +22,6 @@ type FaqCardProps = {
 };
 
 function FaqCard({ faq, index, onUpdate, onRemove }: FaqCardProps) {
-  const answerText = normalizeAnswerToString(faq.a);
-
   return (
     <div className="rounded-lg border border-brand-outline/30 bg-brand-surface p-4">
       <Inline className="mb-4 justify-between">
@@ -57,12 +41,13 @@ function FaqCard({ faq, index, onUpdate, onRemove }: FaqCardProps) {
           onChange={(v) => onUpdate({ q: v || undefined })}
           placeholder="What question does this answer?"
         />
-        <TextArea
+        <RichTextEditor
+          fieldId={`faqs.${index}.a`}
           label="Answer"
-          value={answerText}
-          onChange={(v) => onUpdate({ a: parseAnswerFromString(v) })}
+          value={faq.a}
+          onChange={(next) => onUpdate({ a: next })}
           placeholder="Provide a helpful, complete answer"
-          rows={4}
+          allowedFormats={["bold", "italic", "link"]}
           hint="Use blank lines to separate paragraphs"
         />
       </Stack>

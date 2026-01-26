@@ -24,12 +24,25 @@ type TokenParseResult =
       kind: "text";
       text: string;
       endIndex: number;
-    };
+};
 
-function sanitizeLinkLabel(value: string): string {
+function normalizeTokenLabel(value: string): string {
   // Token labels come from translation content, but we still normalize whitespace
   // so accidental newlines/tabs don't produce surprising inline layout.
   return value.replace(/\s+/gu, " ").trim();
+}
+
+/**
+ * Sanitize label for %LINK:key|label% token insertion.
+ */
+export function sanitizeLinkLabel(label: string): string {
+  return label
+    .replace(/%/gu, "")
+    .replace(/\|/gu, "-")
+    .replace(/\n/gu, " ")
+    .replace(/\s+/gu, " ")
+    .trim()
+    .slice(0, 100);
 }
 
 function isEscaped(text: string, index: number): boolean {
@@ -70,7 +83,7 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
 
   const tokenType = type.toUpperCase();
   const key = rawKey.trim();
-  const label = sanitizeLinkLabel(rawLabel);
+  const label = normalizeTokenLabel(rawLabel);
   if (key.length === 0 || label.length === 0) return null;
 
   if (tokenType === "LINK") {
@@ -105,7 +118,7 @@ function tryParseLegacyToken(text: string, startIndex: number, lang: AppLanguage
   const endIndex = i + 2;
 
   const key = rawKey.trim();
-  const label = sanitizeLinkLabel(rawLabel);
+  const label = normalizeTokenLabel(rawLabel);
   if (!key || !label) return null;
   const href = guideHref(lang, key as GuideKey);
   return { kind: "link", href, label, endIndex };
@@ -129,7 +142,7 @@ function tryParseMustacheToken(text: string, startIndex: number, lang: AppLangua
   const endIndex = i + 2;
 
   const key = rawKey.trim();
-  const label = sanitizeLinkLabel(rawLabel);
+  const label = normalizeTokenLabel(rawLabel);
   if (!key || !label) return null;
   const href = guideHref(lang, key as GuideKey);
   return { kind: "link", href, label, endIndex };
@@ -310,7 +323,7 @@ export function renderBodyBlocks(blocks: readonly string[] | null | undefined, l
     // Multi-line list block stored in a single array entry.
     const lines = block.split("\n").map((line) => line.trimEnd());
     const nonEmpty = lines.filter((line) => line.trim().length > 0);
-    const isListBlock = nonEmpty.length > 0 && nonEmpty.every((line) => BULLET_LINE.test(line));
+    const isListBlock = block.includes("\n") && nonEmpty.length > 0 && nonEmpty.every((line) => BULLET_LINE.test(line));
     if (isListBlock) {
       const listItems = nonEmpty.map((line) => line.replace(BULLET_LINE, "").trim()).filter((s) => s.length > 0);
       if (listItems.length > 0) {

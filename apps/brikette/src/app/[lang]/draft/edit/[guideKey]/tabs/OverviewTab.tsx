@@ -5,31 +5,10 @@ import { Stack } from "@/components/ui/flex";
 
 import FieldGroup from "../components/FieldGroup";
 import { TextArea, TextInput } from "../components/FormFields";
+import { RichTextEditor } from "../components/RichTextEditor";
 import type { TabProps } from "../types";
 
-/**
- * Normalize intro to string for editing.
- * Intro can be string, string[], or Record<string, unknown>.
- */
-function normalizeIntroToString(intro: unknown): string {
-  if (typeof intro === "string") return intro;
-  if (Array.isArray(intro)) return intro.filter((s) => typeof s === "string").join("\n\n");
-  return "";
-}
-
-/**
- * Parse edited intro string back to array format.
- */
-function parseIntroFromString(value: string): string[] {
-  return value
-    .split("\n\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
 export default function OverviewTab({ content, updateField }: TabProps) {
-  const introText = normalizeIntroToString(content.intro);
-
   return (
     <Stack className="gap-6">
       <FieldGroup label="SEO" description="Search engine optimization fields">
@@ -65,12 +44,13 @@ export default function OverviewTab({ content, updateField }: TabProps) {
       </FieldGroup>
 
       <FieldGroup label="Introduction" description="Opening content for the guide">
-        <TextArea
+        <RichTextEditor
+          fieldId="intro"
           label="Intro paragraphs"
-          value={introText}
-          onChange={(v) => updateField("intro", parseIntroFromString(v))}
+          value={content.intro}
+          onChange={(next) => updateField("intro", next)}
           placeholder="Write the introduction to your guide..."
-          rows={6}
+          allowedFormats={["bold", "italic", "link"]}
           hint="Separate paragraphs with blank lines. This appears at the top of the guide."
         />
       </FieldGroup>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+import { ChevronDown } from "lucide-react";
 
 import { anchorLinkClass, getFilterButtonClass } from "../styles";
 import { Cluster, Inline } from "../ui";
@@ -63,6 +64,29 @@ const ACTIVE_FILTER_CHIP_CLASS = [
   "text-xs",
 ].join(" ");
 
+const JUMP_TO_TOGGLE_CLASS = [
+  "inline-flex",
+  "items-center",
+  "gap-1.5",
+  "rounded-lg",
+  "px-3",
+  "py-1.5",
+  "text-sm",
+  "font-medium",
+  "text-brand-heading",
+  "transition",
+  "hover:bg-brand-surface/60",
+  "focus-visible:outline",
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-brand-primary",
+  "dark:text-brand-text",
+  "dark:hover:bg-brand-surface/40",
+  "dark:focus-visible:outline-brand-secondary",
+  // Hidden on lg screens (nav is always visible)
+  "lg:hidden",
+].join(" ");
+
 export function useHeaderStickyOffset(headerSelector = DEFAULT_HEADER_SELECTOR): number {
   const [offset, setOffset] = useState(DEFAULT_FALLBACK_OFFSET);
 
@@ -115,6 +139,18 @@ export function HowToToolbar({
   className,
 }: HowToToolbarProps) {
   const offset = useHeaderStickyOffset();
+
+  // Disclosure state for mobile jump-to nav
+  // Initialize expanded to avoid hydration mismatch (server always renders expanded)
+  // Then collapse on mobile after hydration via useEffect
+  const [jumpToExpanded, setJumpToExpanded] = useState(true);
+
+  useEffect(() => {
+    // Collapse on mobile after hydration
+    if (typeof window !== "undefined" && window.innerWidth < LARGE_SCREEN_BREAKPOINT) {
+      setJumpToExpanded(false);
+    }
+  }, []);
 
   const resultsLabel = t("filters.resultsCount", { count: resultsCount });
 
@@ -181,34 +217,60 @@ export function HowToToolbar({
       </Cluster>
 
       {jumpTo.length ? (
-        <nav aria-label={jumpToLabel} className="mt-3 overflow-x-auto pb-1">
-          <Inline as="ul" className="w-max gap-2">
-            {jumpTo.map((item, index) => {
-              const prevGroup = index > 0 ? jumpTo[index - 1]?.group : undefined;
-              const showSeparator = item.group && prevGroup && item.group !== prevGroup;
+        <div className="mt-3">
+          {/* Mobile disclosure toggle */}
+          <button
+            type="button"
+            onClick={() => setJumpToExpanded((prev) => !prev)}
+            aria-expanded={jumpToExpanded}
+            className={JUMP_TO_TOGGLE_CLASS}
+          >
+            <span>{t("jumpTo.toggleLabel", { defaultValue: "Jump to section" })}</span>
+            <ChevronDown
+              aria-hidden
+              className={clsx("size-4 transition-transform", jumpToExpanded && "rotate-180")}
+            />
+          </button>
 
-              return (
-                <li key={item.id} className="flex items-center gap-2">
-                  {showSeparator ? (
-                    <span
-                      role="separator"
-                      aria-hidden="true"
-                      className="h-4 w-px bg-brand-outline/30 dark:bg-brand-outline/40"
-                    />
-                  ) : null}
-                  <a className={anchorLinkClass} href={`#${item.id}`}>
-                    {item.label}
-                    {typeof item.count === "number" ? (
-                      <span className="ms-1 text-brand-heading/70 dark:text-brand-text/70">
-                        ({item.count})
-                      </span>
+          {/* Nav content - always visible on lg+, collapsible on mobile */}
+          <nav
+            aria-label={jumpToLabel}
+            className={clsx(
+              "overflow-x-auto pb-1",
+              // Always visible on lg+
+              "lg:block",
+              // Collapsible on mobile
+              jumpToExpanded ? "block" : "hidden lg:block"
+            )}
+          >
+            <Inline as="ul" className="w-max gap-2">
+              {jumpTo.map((item, index) => {
+                const prevGroup = index > 0 ? jumpTo[index - 1]?.group : undefined;
+                const showSeparator = item.group && prevGroup && item.group !== prevGroup;
+
+                return (
+                  <li key={item.id} className="flex items-center gap-2">
+                    {showSeparator ? (
+                      <span
+                        role="separator"
+                        aria-hidden="true"
+                        className="h-4 w-px bg-brand-outline/30 dark:bg-brand-outline/40"
+                      />
                     ) : null}
-                  </a>
-                </li>
-              );
-            })}
-          </Inline>
-        </nav>
+                    <a className={anchorLinkClass} href={`#${item.id}`}>
+                      {item.label}
+                      {typeof item.count === "number" ? (
+                        <span className="ms-1 text-brand-heading/70 dark:text-brand-text/70">
+                          ({item.count})
+                        </span>
+                      ) : null}
+                    </a>
+                  </li>
+                );
+              })}
+            </Inline>
+          </nav>
+        </div>
       ) : null}
     </div>
   );

@@ -1,11 +1,12 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: UI
 Relates-to charter: Brikette UX
 Created: 2026-01-26
 Last-reviewed: 2026-01-26
 Last-updated: 2026-01-26
+Completed: 2026-01-26
 Overall-confidence: 91%
 ---
 

@@ -13,6 +13,7 @@
   "dependencies": {
     "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
     "@acme/product-configurator": "workspace:*",
     "@acme/ui": "workspace:*",
     "@react-three/drei": "^10.7.7",

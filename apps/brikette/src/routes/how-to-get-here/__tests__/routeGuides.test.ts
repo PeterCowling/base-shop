@@ -1,6 +1,6 @@
 // src/routes/how-to-get-here/__tests__/routeGuides.test.ts
 // Tests for the how-to-get-here route guide canonical mapping.
-// Ensures the mapping stays in sync with routes.json.
+// Ensures the mapping stays in sync with routes.json and GUIDE_SLUG_OVERRIDES.
 
 import routesJson from "@/data/how-to-get-here/routes.json";
 import {
@@ -10,6 +10,10 @@ import {
   getHowToGetHereRouteTags,
   isHowToGetHereRouteGuideKey,
 } from "@/data/how-to-get-here/routeGuides";
+import { GUIDE_SLUG_OVERRIDES } from "@/guides/slugs/overrides";
+import { resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
 
 describe("routeGuides", () => {
   const routesJsonSlugs = Object.keys(routesJson.routes).sort();
@@ -125,6 +129,37 @@ describe("routeGuides", () => {
         expect(entry).toHaveProperty("tags");
         expect(typeof entry.slug).toBe("string");
         expect(Array.isArray(entry.tags)).toBe(true);
+      }
+    });
+  });
+
+  // TASK-02: GUIDE_SLUG_OVERRIDES integration
+  describe("GUIDE_SLUG_OVERRIDES integration (TASK-02)", () => {
+    it("every route guide key has a slug override entry", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        expect(GUIDE_SLUG_OVERRIDES[key]).toBeDefined();
+      }
+    });
+
+    it("slug overrides match the canonical slug from routeGuides", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const override = GUIDE_SLUG_OVERRIDES[key];
+        const canonicalSlug = getHowToGetHereRouteSlug(key);
+        // At minimum, the English slug should match
+        expect(override?.en).toBe(canonicalSlug);
+      }
+    });
+
+    it("resolveGuideKeyFromSlug resolves for all supported languages", () => {
+      const supportedLangs = i18nConfig.supportedLngs as AppLanguage[];
+
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const slug = getHowToGetHereRouteSlug(key);
+
+        for (const lang of supportedLangs) {
+          const resolved = resolveGuideKeyFromSlug(slug, lang);
+          expect(resolved).toBe(key);
+        }
       }
     });
   });

@@ -188,10 +188,7 @@ Located in `src/locales/{lang}/guides/content/`:
     "description": "Brief description for meta tags"
   },
   "linkLabel": "Short label for navigation",
-  "intro": {
-    "title": "Guide Title",
-    "body": "Introduction paragraph"
-  },
+  "intro": ["Paragraph one", "Paragraph two"],
   "sections": [
     {
       "id": "section-id",
@@ -205,8 +202,8 @@ Located in `src/locales/{lang}/guides/content/`:
   ],
   "faqs": [
     {
-      "question": "Question text?",
-      "answer": "Answer text"
+      "q": "Question text?",
+      "a": ["Answer text"]
     }
   ],
   "callouts": {
@@ -214,6 +211,54 @@ Located in `src/locales/{lang}/guides/content/`:
   }
 }
 ```
+
+#### Content Schema Validation
+
+Guide content is validated against a strict Zod schema (`src/routes/guides/content-schema.ts`) to ensure consistency and catch errors early.
+
+**Required fields:**
+- `seo.title` — Non-empty string for page title
+- `seo.description` — Non-empty string for meta description
+
+**Optional but validated when present:**
+- `intro` — Can be:
+  - Object: `{title: string, body: string | string[]}`
+  - Array: `["paragraph 1", "paragraph 2"]`
+  - String: `"single paragraph"`
+- `sections` — Array where each item requires:
+  - `id` — Unique identifier (kebab-case recommended)
+  - `title` — Section heading
+  - `body` — Optional string or array of strings
+  - `list` — Optional array of strings
+- `faqs` — Array where each item requires:
+  - `q` — Question string
+  - `a` — Answer (string or array of strings)
+- `callouts` — Record where values must be non-empty strings
+
+**Extra fields** are allowed via passthrough (e.g., `gallery`, `steps`, `essentialsTitle`) for flexibility.
+
+**Running validation:**
+```bash
+# Validate all guides across all locales
+pnpm validate-content
+
+# Validate specific locale
+pnpm validate-content --locale=en
+
+# Show detailed output
+pnpm validate-content --verbose
+
+# Fail on violations (for CI)
+pnpm validate-content --fail-on-violation
+```
+
+**Opt-out mechanism:**
+Add `"_schemaValidation": false` to a content JSON to skip validation (use sparingly for edge cases).
+
+**Validation reports:**
+- File paths with violations
+- Specific field errors (e.g., "seo.title is required")
+- Summary: total files, validated, skipped, violations
 
 ### SEO & Metadata
 

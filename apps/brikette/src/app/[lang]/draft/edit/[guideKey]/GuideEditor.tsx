@@ -37,8 +37,8 @@ export default function GuideEditor({
   initialLocale,
 }: Props) {
   const [selectedLocale, setSelectedLocale] = useState<AppLanguage>(initialLocale ?? lang);
-  const [content, setContent] = useState<GuideContentInput>({});
-  const [initialContent, setInitialContent] = useState<GuideContentInput>({});
+  const [content, setContent] = useState<Partial<GuideContentInput>>({});
+  const [initialContent, setInitialContent] = useState<Partial<GuideContentInput>>({});
   const [activeTab, setActiveTab] = useState<EditorTab>("overview");
   const [loadState, setLoadState] = useState<LoadState>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +84,7 @@ export default function GuideEditor({
           return;
         }
         const parsed = guideContentSchema.safeParse(data.content ?? {});
-        const validContent = parsed.success ? parsed.data : {};
+        const validContent: Partial<GuideContentInput> = parsed.success ? parsed.data : {};
         setContent(validContent);
         setInitialContent(validContent);
         setExists(Boolean(data.exists));
@@ -236,21 +236,21 @@ export default function GuideEditor({
           ) : (
             <>
               {activeTab === "overview" && (
-                <OverviewTab content={content} updateField={updateField} />
+                <OverviewTab content={content as GuideContentInput} updateField={updateField} />
               )}
               {activeTab === "sections" && (
-                <SectionsTab content={content} updateField={updateField} />
+                <SectionsTab content={content as GuideContentInput} updateField={updateField} />
               )}
               {activeTab === "faqs" && (
-                <FaqsTab content={content} updateField={updateField} />
+                <FaqsTab content={content as GuideContentInput} updateField={updateField} />
               )}
               {activeTab === "gallery" && (
-                <GalleryTab content={content} updateField={updateField} />
+                <GalleryTab content={content as GuideContentInput} updateField={updateField} />
               )}
               {activeTab === "raw" && (
                 <RawJsonTab
-                  content={content}
-                  setContent={setContent}
+                  content={content as GuideContentInput}
+                  setContent={setContent as React.Dispatch<React.SetStateAction<GuideContentInput>>}
                 />
               )}
             </>

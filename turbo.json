@@ -1,5 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "jest.coverage.cjs",
+    "jest.config.helpers.cjs",
+    "jest.moduleMapper.cjs",
+    "packages/config/jest.preset.cjs",
+    "packages/config/coverage-tiers.cjs",
+    "pnpm-lock.yaml"
+  ],
   "tasks": {
     "dev": {
       "cache": false,
@@ -31,6 +39,19 @@
     },
     "test": {
       "dependsOn": [],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "test/**",
+        "__tests__/**",
+        "package.json",
+        "tsconfig*.json",
+        "jest.config.*"
+      ],
       "outputs": [
         "coverage/**"
       ],

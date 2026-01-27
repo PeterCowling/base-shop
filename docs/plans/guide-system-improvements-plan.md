@@ -373,6 +373,32 @@ Key improvements:
   - Security check: _linkTokens.tsx lines 38-45 (isSafeUrl function)
   - Test reference: test/routes/guides/utils/linkTokens.test.tsx (13 passing tests)
 
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 48b0de34d3
+- **TDD cycle:**
+  - Tests written/completed: validate-links.test.ts (19 tests)
+  - All tests passed (test helpers included for validation logic)
+  - Unit tests cover token extraction, LINK/HOWTO/URL validation, suggestions
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette test -- validate-links.test.ts` — PASS (19/19 tests)
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm validate-links --locale=en` — 23 violations found (real issues)
+  - Ran: `pnpm validate-links` (all locales) — 220 violations / 889 tokens (75.3% pass rate)
+- **Documentation updated:**
+  - README.md: Added "Link Token Validation" section with token formats, validation commands, security checks
+- **Implementation notes:**
+  - Created validate-guide-links.ts script (389 lines) with token extraction and validation
+  - Token pattern from _linkTokens.tsx (line 9): `/%([A-Z]+):([^|%]+)\|([^%]+)%/g`
+  - Validation logic: LINK (guide key exists), HOWTO (slug exists), URL (protocol + security checks)
+  - Security checks: blocks javascript: and data: URLs, only allows http/https/mailto
+  - Smart suggestions: Levenshtein-like heuristic for close matches (e.g., "beaches" → "positanoBeaches")
+  - Real violations detected: 7 incorrect "beaches" refs, 17 invalid "how-to-get-here" HOWTO slugs
+  - Script loads guide keys from generate-guide-slugs.ts, HOWTO slugs from routes.json
+  - Added `validate-links` script to package.json
+  - No deviations from plan - all acceptance criteria met
+
 ---
 
 ### TASK-05: Integrate i18n coverage into CI

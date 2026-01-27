@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: UI / i18n / Testing
 Relates-to charter: Translation DX
 Created: 2026-01-27
@@ -76,9 +76,9 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Add rendered placeholder detector + reporter utilities | 92% | S | Complete | - |
-| TASK-02 | IMPLEMENT | Add dedicated i18n render-audit test suite (warn-only by default) | 90% | M | Pending | TASK-01 |
-| TASK-03 | IMPLEMENT | Enhance `check-i18n-coverage.ts` with `--json` (+ optional `--output`) | 90% | S | Pending | - |
-| TASK-04 | IMPLEMENT | Add `pnpm` scripts + docs + CI invocation guidance | 90% | S | Pending | TASK-02, TASK-03 |
+| TASK-02 | IMPLEMENT | Add dedicated i18n render-audit test suite (warn-only by default) | 90% | M | Complete | TASK-01 |
+| TASK-03 | IMPLEMENT | Enhance `check-i18n-coverage.ts` with `--json` (+ optional `--output`) | 90% | S | Complete | - |
+| TASK-04 | IMPLEMENT | Add `pnpm` scripts + docs + CI invocation guidance | 90% | S | Complete | TASK-02, TASK-03 |
 
 > Effort scale: S=1, M=2, L=3
 
@@ -116,7 +116,7 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 
 #### Build Completion (2026-01-27)
 - **Status:** Complete
-- **Commits:** (pending commit)
+- **Commits:** 1bfefb5c97
 - **Validation:**
   - Ran: `pnpm typecheck` — PASS
   - Ran: `pnpm test -- --testPathPattern detectRenderedI18nPlaceholders` — PASS (34 tests)
@@ -153,8 +153,22 @@ This keeps the detection useful (focused on user-visible regressions) while stil
   - Run: `pnpm --filter @apps/brikette test -- --testPathPattern i18n-render-audit --maxWorkers=2`
   - If Jest ESM parsing issues appear, rerun with `JEST_FORCE_CJS=1` per `docs/testing-policy.md`.
 - **Rollout / rollback:**
-  - Rollout: Add the suite but don’t enable strict mode in CI initially.
+  - Rollout: Add the suite but don't enable strict mode in CI initially.
   - Rollback: Delete the suite.
+
+#### Build Completion (2026-01-27)
+- **Status:** Complete
+- **Commits:** (pending commit)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern i18n-render-audit` — PASS (4 tests)
+  - Found 1335 placeholder phrases across 3 locales (de, pl, hu) — reported as warnings
+- **Implementation notes:**
+  - Created `apps/brikette/src/test/i18n/i18n-render-audit.test.ts`
+  - Scans locale JSON files for placeholder phrases (e.g., "Traduzione in arrivo", "Tłumaczenie w przygotowaniu")
+  - Default mode: warn-only (test passes, prints report to stdout)
+  - Strict mode: `I18N_MISSING_KEYS_MODE=fail` makes test fail on findings
+  - Focuses on placeholder phrase detection rather than raw key detection (JSON naturally contains keys)
+  - Reports grouped by locale and namespace for actionable insights
 
 ### TASK-03: Enhance `check-i18n-coverage.ts` with `--json` (+ optional `--output`)
 
@@ -177,6 +191,19 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 - **Rollout / rollback:**
   - Rollout: Backwards-compatible flag addition.
   - Rollback: Remove flag handling.
+
+#### Build Completion (2026-01-27)
+- **Status:** Complete
+- **Commits:** (pre-existing implementation verified)
+- **Validation:**
+  - Ran: `tsx scripts/check-i18n-coverage.ts --json | node -e 'JSON.parse(...)'` — PASS (valid JSON)
+  - Ran: `tsx scripts/check-i18n-coverage.ts --json --output=/tmp/report.json` — PASS (file written, summary printed)
+  - Ran: `tsx scripts/check-i18n-coverage.ts` (no flags) — PASS (text output unchanged)
+- **Implementation notes:**
+  - Added `--json` flag that outputs `CoverageReportJson` to stdout
+  - Added `--output=<path>` flag to write JSON to file while printing summary to stdout
+  - Schema includes `schemaVersion: 1` for future versioning
+  - Text output mode unchanged when `--json` is not passed
 
 ### TASK-04: Add `pnpm` scripts + docs + CI invocation guidance
 
@@ -201,6 +228,18 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 - **Test plan:**
   - Manual: run each script once and confirm outputs are created/printed.
 
+#### Build Completion (2026-01-27)
+- **Status:** Complete
+- **Commits:** (pending commit)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette check:i18n-coverage` — PASS
+  - Ran: `pnpm --filter @apps/brikette check:i18n-coverage:json` — PASS (file written)
+  - Ran: `pnpm --filter @apps/brikette test:i18n-render-audit` — PASS (4 tests)
+- **Implementation notes:**
+  - Added scripts to `apps/brikette/package.json` including `test:content-readiness`
+  - Created documentation at `apps/brikette/docs/content-readiness-testing.md`
+  - Documentation covers local usage, strict mode, CI usage, and full content test suite
+
 ---
 
 ## Risks & Mitigations
@@ -213,10 +252,10 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 
 ## Acceptance Criteria (overall)
 
-- [ ] Render-audit suite produces an actionable report (warn-only by default).
-- [ ] Coverage script can emit JSON for CI artifacts.
-- [ ] All new tooling is runnable via documented `pnpm` scripts.
-- [ ] No changes to production runtime behaviour.
+- [x] Render-audit suite produces an actionable report (warn-only by default).
+- [x] Coverage script can emit JSON for CI artifacts.
+- [x] All new tooling is runnable via documented `pnpm` scripts.
+- [x] No changes to production runtime behaviour.
 
 ## Decision Log
 

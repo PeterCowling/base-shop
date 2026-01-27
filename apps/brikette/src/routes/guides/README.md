@@ -260,6 +260,39 @@ Add `"_schemaValidation": false` to a content JSON to skip validation (use spari
 - Specific field errors (e.g., "seo.title is required")
 - Summary: total files, validated, skipped, violations
 
+#### Link Token Validation
+
+Link tokens are validated to ensure all internal and external links are correct and secure.
+
+**Token types:**
+- `%LINK:guideKey|Label%` — Internal guide link (validates guideKey exists in manifest)
+- `%HOWTO:slug|Label%` — How-to-get-here route link (validates slug exists in route definitions)
+- `%URL:https://example.com|Label%` — External URL (validates protocol and security)
+
+**Running link validation:**
+```bash
+# Validate all guides across all locales
+pnpm validate-links
+
+# Validate specific locale
+pnpm validate-links --locale=en
+
+# Show detailed output
+pnpm validate-links --verbose
+```
+
+**Link validation checks:**
+- **LINK tokens**: Validates guideKey exists in manifest; provides close-match suggestions
+- **HOWTO tokens**: Validates slug exists in route definitions or guide slugs
+- **URL tokens**: Security check (rejects javascript:, data: protocols); validates URL format
+- **Suggestions**: Provides "did you mean?" suggestions for typos (e.g., "beaches" → "positanoBeaches")
+
+**Validation reports:**
+- File paths with violations and line numbers
+- Token type, target, and error message
+- Suggested corrections for typos
+- Summary: total files, tokens found, violations
+
 ### SEO & Metadata
 
 Located in [`guide-seo/`](./guide-seo/):

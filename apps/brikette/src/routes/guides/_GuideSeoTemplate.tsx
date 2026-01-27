@@ -10,6 +10,7 @@ import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
 import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
+import { buildBlockTemplate } from "./blocks";
 import { GuideSeoTemplateBody } from "./guide-seo/template/GuideSeoTemplateBody";
 import { resolveShouldRenderGenericContent } from "./guide-seo/template/resolveShouldRenderGenericContent";
 import { resetAdditionalScriptsCache,useAdditionalScripts } from "./guide-seo/template/useAdditionalScripts";
@@ -140,6 +141,20 @@ function GuideSeoTemplate({
     canonicalPathname,
     preferManualWhenUnlocalized,
   });
+
+  // TASK-01: Wire manifest blocks into template
+  // When manifestEntry.blocks is non-empty, buildBlockTemplate() produces slot props/config
+  // that will be merged with explicit route props (explicit props have higher precedence).
+  const blockTemplate = useMemo(() => {
+    if (!manifestEntry?.blocks?.length) {
+      return { template: {}, warnings: [] };
+    }
+    const result = buildBlockTemplate(manifestEntry);
+    if (IS_DEV && result.warnings.length > 0) {
+      console.warn(`[GuideSeoTemplate] Block warnings for guide "${guideKey}":`, result.warnings);
+    }
+    return result;
+  }, [manifestEntry, guideKey]);
 
   const hasStructuredLocalInitial = useMemo(
     () =>
@@ -419,15 +434,27 @@ function GuideSeoTemplate({
   };
   const howToJson = useHowToJson(howToJsonArgs);
 
+  // TASK-01: Merge block template with explicit props
+  // Precedence: explicit route props > block-derived props > defaults
+  // Only apply block props if explicit props are undefined
+  const mergedArticleLead = articleLead !== undefined ? articleLead : blockTemplate.template.articleLead;
+  const mergedArticleExtras = articleExtras !== undefined ? articleExtras : blockTemplate.template.articleExtras;
+  const mergedAfterArticle = afterArticle !== undefined ? afterArticle : blockTemplate.template.afterArticle;
+  const mergedAdditionalScripts = additionalScripts !== undefined ? additionalScripts : blockTemplate.template.additionalScripts;
+  const mergedShowPlanChoice = showPlanChoice !== undefined ? showPlanChoice : (blockTemplate.template.showPlanChoice ?? true);
+  const mergedShowTransportNotice = showTransportNotice !== undefined ? showTransportNotice : (blockTemplate.template.showTransportNotice ?? true);
+  const mergedRelatedGuides = relatedGuides !== undefined ? relatedGuides : blockTemplate.template.relatedGuides;
+  const mergedAlsoHelpful = alsoHelpful !== undefined ? alsoHelpful : blockTemplate.template.alsoHelpful;
+
   const { articleLeadNode, articleExtrasNode, afterArticleNode } = useGuideSlotNodes({
     context,
-    articleLead,
-    articleExtras,
-    afterArticle,
+    articleLead: mergedArticleLead,
+    articleExtras: mergedArticleExtras,
+    afterArticle: mergedAfterArticle,
   });
 
   const additionalScriptsNode = useAdditionalScripts({
-    additionalScripts,
+    additionalScripts: mergedAdditionalScripts,
     context,
     guideKey,
     lang,
@@ -500,11 +527,11 @@ function GuideSeoTemplate({
       articleExtrasNode={articleExtrasNode}
       afterArticleNode={afterArticleNode}
       showTagChips={showTagChips}
-      showPlanChoice={showPlanChoice}
-      showTransportNotice={showTransportNotice}
-      relatedGuides={relatedGuides}
+      showPlanChoice={mergedShowPlanChoice}
+      showTransportNotice={mergedShowTransportNotice}
+      relatedGuides={mergedRelatedGuides}
       showRelatedWhenLocalized={showRelatedWhenLocalized}
-      alsoHelpful={alsoHelpful}
+      alsoHelpful={mergedAlsoHelpful}
       guideFaqFallback={guideFaqFallback}
       alwaysProvideFaqFallback={alwaysProvideFaqFallback}
       suppressFaqWhenUnlocalized={suppressFaqWhenUnlocalized}

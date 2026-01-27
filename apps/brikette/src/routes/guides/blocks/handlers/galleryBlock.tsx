@@ -2,6 +2,7 @@
  * Gallery block handler.
  */
 import ImageGallery from "@/components/guides/ImageGallery";
+import ZoomableImageGallery from "@/components/guides/ZoomableImageGallery";
 import buildCfImageUrl, { type BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";
@@ -99,10 +100,13 @@ export function applyGalleryBlock(acc: BlockAccumulator, options: GalleryBlockOp
       };
     });
 
+    // Conditionally use zoomable variant (TASK-03)
+    const GalleryComponent = options.zoomable === true ? ZoomableImageGallery : ImageGallery;
+
     return (
       <section className="space-y-4">
         {heading ? <h2 className="text-2xl font-semibold">{heading}</h2> : null}
-        <ImageGallery items={resolvedItems} />
+        <GalleryComponent items={resolvedItems} />
       </section>
     );
   });

@@ -83,6 +83,7 @@ const galleryBlockOptionsSchema = z
     source: z.string().min(1).optional(),
     contentKey: z.string().min(1).optional(),
     headingKey: z.string().min(1).optional(),
+    zoomable: z.boolean().optional(),
   })
   .strict()
   .superRefine((value, ctx) => {

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Dal centro di Napoli a Positano in treno e poi autobus | Hostel Brikette",
+    "description": "Istruzioni passo dopo passo per viaggiare dal centro di Napoli all'Hostel Brikette con il treno Circumvesuviana e l'autobus SITA, con consigli sui biglietti e foto dell'arrivo a Positano."
+  },
+  "intro": {
+    "title": "Centro di Napoli a Positano – Treno poi autobus",
+    "body": "Segui queste indicazioni per spostarti dal centro di Napoli all'Hostel Brikette con il treno Circumvesuviana per Sorrento e l'autobus SITA per Positano. La guida include consigli sui biglietti, suggerimenti sull'orario degli autobus e foto dell'arrivo finale in ostello."
+  },
+  "callouts": {
+    "tip": "Ti servono altre tratte? Esplora tutte le indicazioni d'arrivo nella %HOWTO:how-to-get-here|pagina Come arrivare%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica treno + autobus",
+      "body": "Questo percorso combina il treno Circumvesuviana dal centro di Napoli a Sorrento e l'autobus SITA per Positano: è l'opzione di trasporto pubblico più rapida dal centro città. Non copre il viaggio dall'aeroporto di Napoli."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Stazione ferroviaria di Napoli",
+      "body": "I treni Circumvesuviana per Sorrento partono dal livello inferiore della stazione Napoli Garibaldi (sotto Napoli Centrale). Acquista il biglietto prima di scendere ai binari, verifica da quale binario parte il tuo treno e sali in direzione Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Stazione ferroviaria di Sorrento",
+      "body": "Una volta arrivato a Sorrento, esci dalla stazione e compra il biglietto dell'autobus SITA al bar, all'edicola o in tabaccheria: a bordo non vengono venduti. La fermata SITA si trova ai piedi della scalinata fuori dalla stazione; attendi l'autobus diretto ad Amalfi e prosegui fino a Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Come leggere l'orario SITA",
+      "body": "L'orario degli autobus SITA può creare confusione: usa questi suggerimenti rapidi per individuare la corsa giusta:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Fermata degli autobus di Positano",
+      "list": [
+        "La fermata più vicina è Positano (Chiesa Nuova), a circa 140 metri (490 piedi) dall'ostello.",
+        "Si trova davanti al bar/caffè Bar Internazionale.",
+        "L'autobus ti lascia a livello strada: non servono lunghe scalinate per raggiungerci."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Percorso a piedi dalla fermata"
+    }
+  ]
+}

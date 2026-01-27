@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Từ trung tâm Naples đến Positano bằng tàu rồi xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana và xe buýt SITA, kèm mẹo mua vé và ảnh khi đến Positano."
+  },
+  "intro": {
+    "title": "Trung tâm Naples đến Positano – Tàu rồi xe buýt",
+    "body": "Làm theo hướng dẫn này để đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana đến Sorrento và xe buýt SITA tới Positano. Bài viết có mẹo mua vé, tư vấn đọc lịch xe buýt và ảnh đoạn đường cuối đến hostel."
+  },
+  "callouts": {
+    "tip": "Cần tuyến khác? Xem toàn bộ hướng dẫn đến nơi tại %HOWTO:how-to-get-here|trang Cách đến đây%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan tàu rồi xe buýt",
+      "body": "Hành trình này là phương án giao thông công cộng nhanh nhất từ trung tâm Naples: tàu Circumvesuviana tới Sorrento rồi xe buýt SITA đến Positano. Không áp dụng cho việc di chuyển từ sân bay Naples."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Ga tàu Naples",
+      "body": "Các chuyến Circumvesuviana đi Sorrento khởi hành từ tầng dưới của ga Napoli Garibaldi (bên dưới Napoli Centrale). Mua vé trước khi xuống sân ga, kiểm tra số đường ray tàu của bạn rồi lên chuyến hướng Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Ga Sorrento",
+      "body": "Đến Sorrento, ra khỏi ga và mua vé xe buýt SITA tại quán bar, sạp báo hoặc cửa hàng thuốc lá gần đó — xe buýt không bán vé. Điểm dừng SITA nằm ở chân cầu thang ngoài ga; đợi xe hướng Amalfi và đi đến Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Cách đọc lịch SITA",
+      "body": "Lịch xe buýt SITA có thể gây rối — dùng các gợi ý sau để tìm đúng chuyến:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Điểm dừng Positano",
+      "list": [
+        "Điểm gần nhất là Positano (Chiesa Nuova), cách hostel khoảng 140 mét (490 feet).",
+        "Nằm ngay trước quán Bar Internazionale.",
+        "Xe buýt trả khách ở mặt đường — không cần leo cầu thang dài để tới chúng tôi."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Đi bộ từ điểm dừng"
+    }
+  ]
+}

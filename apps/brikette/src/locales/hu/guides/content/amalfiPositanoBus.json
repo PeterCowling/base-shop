@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Amalfiból Positanóba busszal | Hostel Brikette",
+    "description": "SITA busz Amalfi és Positano között: felszállási pontok, jegytippek, menetrendi megjegyzések, és hol szálljon le a Hostel Brikette-hez (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfiból Positanóba – Busz (SITA Sud)",
+    "body": "Használja ezt az útmutatót, hogy SITA busszal utazzon Amalfiból Positanóba. Megmutatja, hol szálljon fel Amalfiban, hogyan érvényesítse a jegyet, miként olvassa a menetrendet, és hol szálljon le, hogy a legrövidebb legyen a séta a hostelhez."
+  },
+  "callouts": {
+    "aside": "Más közlekedési lehetőséget keres? Nyissa meg a %HOWTO:how-to-get-here|Hogyan juthat el hozzánk áttekintés% oldalt a kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "body": "A közvetlen SITA busz Amalfi és Positano között szezonban gyakran indul. Készüljön körülbelül egyórás, látványos tengerparti útra a forgalomtól függően."
+    },
+    {
+      "id": "boarding",
+      "title": "Felszállás Amalfiban"
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és menetrend",
+      "body": "Ellenőrizze a legfrissebb menetrendet a %URL:https://www.positano.com/en/bus-schedule|Positano.com% oldalon. Az alábbi megjegyzések segítenek helyesen olvasni a táblázatot."
+    }
+  ]
+}

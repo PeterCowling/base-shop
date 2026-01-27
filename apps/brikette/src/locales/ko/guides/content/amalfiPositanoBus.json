@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "아말피 → 포지타노 버스 | Hostel Brikette",
+    "description": "SITA 버스로 아말피에서 포지타노까지 이동하는 방법: 승차 위치, 티켓 팁, 시간표 확인, Hostel Brikette(키에사 누오바) 하차 안내."
+  },
+  "intro": {
+    "title": "아말피 → 포지타노 — 버스 (SITA Sud)",
+    "body": "이 가이드는 SITA 버스로 아말피에서 포지타노까지 이동할 때 필요한 승차 위치, 티켓 검표, 시간표 읽는 법, 호스텔까지 가장 짧은 도보 경로를 안내합니다."
+  },
+  "callouts": {
+    "aside": "다른 교통 수단이 필요하신가요? %HOWTO:how-to-get-here|오시는 길 개요%에서 페리, 택시, 복합 여정을 확인하세요."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "여정 개요",
+      "body": "성수기에는 아말피에서 포지타노로 가는 SITA 직행 버스가 자주 운행됩니다. 교통 상황에 따라 약 한 시간 동안 해안 풍경을 즐길 수 있습니다."
+    },
+    {
+      "id": "boarding",
+      "title": "아말피에서 승차하기"
+    },
+    {
+      "id": "tickets",
+      "title": "티켓과 시간표",
+      "body": "최신 시간표는 %URL:https://www.positano.com/en/bus-schedule|Positano.com%에서 확인하고 아래 안내를 참고해 표를 읽으세요."
+    }
+  ]
+}

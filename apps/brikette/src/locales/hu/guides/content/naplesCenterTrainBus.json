@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Nápoly központjából Positanóba vonattal, majd busszal | Hostel Brikette",
+    "description": "Lépésről lépésre bemutatjuk, hogyan juthatsz el Nápoly belvárosából a Hostel Brikette-hez a Circumvesuviana vonattal Szorrentóig, majd a SITA busszal Positanóba, jegyvásárlási tippekkel és positanói érkezési fotókkal."
+  },
+  "intro": {
+    "title": "Nápoly központjából Positanóba – vonat, majd busz",
+    "body": "Kövesd ezeket az útmutatókat, hogy Nápoly belvárosából a Circumvesuviana vonattal Szorrentóig, onnan pedig a SITA busszal Positanóba utazz a Hostel Brikette-hez. Az útmutató jegyvásárlási tanácsokat, menetrendi tippeket és fotókat is tartalmaz az érkezés utolsó szakaszáról."
+  },
+  "callouts": {
+    "tip": "Másik útvonal érdekel? Fedezd fel az összes érkezési útmutatót a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk oldalán%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Áttekintés: vonat, majd busz",
+      "body": "Ez az útvonal a leggyorsabb tömegközlekedési kombinációt írja le Nápoly belvárosából: a Circumvesuviana vonatot Szorrentóig, majd a SITA buszt Positanóig. A nápolyi repülőtérről induló utazást nem tartalmazza."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Nápolyi vasútállomás",
+      "body": "A Circumvesuviana Szorrentó felé induló járatai a Napoli Garibaldi állomás alsó szintjéről (a Napoli Centrale alatt) indulnak. Vásárold meg a jegyed, mielőtt leereszkedsz a peronokhoz, ellenőrizd, melyik vágányról indul a járatod, majd szállj fel a Szorrentó felé tartó vonatra."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Szorrento vasútállomás",
+      "body": "Szorrentóba érkezés után hagyd el az állomást, és vásárold meg SITA-buszjegyedet a közeli bárban, újságosnál vagy trafikban — a buszon nem árulnak jegyet. A SITA megálló közvetlenül az állomás előtti lépcső alján található; várd meg az Amalfi felé tartó buszt, és utazz vele Positanóba."
+    },
+    {
+      "id": "timetable",
+      "title": "A SITA-menetrend értelmezése",
+      "body": "A SITA busz menetrendje megtévesztő lehet — az alábbi gyors tippek segítenek megtalálni a megfelelő járatot:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positanói buszmegálló",
+      "list": [
+        "A legközelebbi megálló a Positano (Chiesa Nuova), nagyjából 140 méterre (490 lábra) a hosteltől.",
+        "A Bar Internazionale kávézó/bár előtt található.",
+        "A busz az útszinten tesz le — nem kell hosszú lépcsőkön felmenni hozzánk."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a buszmegállótól"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Neapel centrum till Positano med tåg och buss | Hostel Brikette",
+    "description": "Steg-för-steg-instruktioner för att resa från Neapel centrum till Hostel Brikette via Circumvesuviana-tåget och SITA-bussen, inklusive biljettips och foton från ankomsten i Positano."
+  },
+  "intro": {
+    "title": "Neapel centrum till Positano – tåg och sedan buss",
+    "body": "Följ de här anvisningarna för att resa från centrala Neapel till Hostel Brikette via Circumvesuviana-tåget till Sorrento och SITA-bussen till Positano. Guiden innehåller biljettips, råd om busstidtabellen och bilder av den sista sträckan fram till vandrarhemmet."
+  },
+  "callouts": {
+    "tip": "Behöver du andra rutter? Utforska hela uppsättningen ankomstvägar på sidan %HOWTO:how-to-get-here|Så tar du dig hit%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Översikt: tåg och sedan buss",
+      "body": "Den här resan täcker den snabbaste kollektivtrafikkombinationen från Neapel centrum: Circumvesuviana-tåget till Sorrento följt av SITA-bussen till Positano. Den omfattar inte resor från Neapels flygplats."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Tågstationen i Neapel",
+      "body": "Circumvesuviana-avgångar mot Sorrento går från nedre planet i stationen Napoli Garibaldi (under Napoli Centrale). Köp din biljett innan du går ner till plattformarna, kontrollera vilket spår din avgång använder och gå ombord på tåget mot Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Stationen i Sorrento",
+      "body": "När du anländer till Sorrento, gå ut från stationen och köp din SITA-biljett i baren, kiosken eller tobaksbutiken intill — biljetter säljs inte ombord. SITA-hållplatsen ligger längst ner förbi trappan utanför stationen; vänta på bussen mot Amalfi och åk den till Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Så läser du SITA-tidtabellen",
+      "body": "SITA:s busstidtabell kan vara svårtolkad — använd de här snabba tipsen för att hitta rätt tur:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busshållplatsen i Positano",
+      "list": [
+        "Den närmaste hållplatsen är Positano (Chiesa Nuova), cirka 140 meter (490 fot) från vandrarhemmet.",
+        "Den ligger utanför caféet/baren Bar Internazionale.",
+        "Bussen släpper av dig på gatunivå — inga långa trappor krävs för att nå oss."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Promenera från busshållplatsen"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Napoli sentrum til Positano med tog og buss | Hostel Brikette",
+    "description": "Trinnvis veiledning for å reise fra Napoli sentrum til Hostel Brikette via Circumvesuviana-toget og SITA-bussen, med billettips og bilder fra ankomsten i Positano."
+  },
+  "intro": {
+    "title": "Napoli sentrum til Positano – tog og buss",
+    "body": "Følg denne veiledningen for å reise fra Napoli sentrum til Hostel Brikette via Circumvesuviana-toget til Sorrento og SITA-bussen til Positano. Guiden inneholder billettips, råd om rutetabeller og bilder av den siste etappen frem til hostellet."
+  },
+  "callouts": {
+    "tip": "Trenger du andre ruter? Utforsk hele settet med ankomstbeskrivelser på %HOWTO:how-to-get-here|siden «Slik kommer du hit»%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Oversikt: tog og buss",
+      "body": "Denne reisen bruker den raskeste kombinasjonen av kollektivtransport fra Napoli sentrum: Circumvesuviana-toget til Sorrento etterfulgt av SITA-bussen til Positano. Den dekker ikke transport fra Napoli lufthavn."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Togstasjonen i Napoli",
+      "body": "Circumvesuviana-avgangene til Sorrento går fra underetasjen på stasjonen Napoli Garibaldi (under Napoli Centrale). Kjøp billetten før du går ned til plattformene, sjekk hvilket spor toget ditt bruker, og gå om bord i toget mot Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Togstasjonen i Sorrento",
+      "body": "Når du ankommer Sorrento, gå ut av stasjonen og kjøp SITA-billetten din i baren, aviskiosken eller tobakksbutikken i nærheten – billetter selges ikke på bussen. SITA-holdeplassen ligger nederst i trappen utenfor stasjonen; vent på bussen mot Amalfi og bli med til Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Slik leser du SITA-rutetabellen",
+      "body": "SITA-rutetabellen kan virke forvirrende – bruk disse raske tipsene for å finne riktig avgang:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busstoppet i Positano",
+      "list": [
+        "Det nærmeste stoppet er Positano (Chiesa Nuova), omtrent 140 meter fra hostellet.",
+        "Det ligger utenfor kafeen/baren Bar Internazionale.",
+        "Bussen slipper deg av på gatenivå – du slipper lange trapper for å komme til oss."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå fra busstoppet"
+    }
+  ]
+}

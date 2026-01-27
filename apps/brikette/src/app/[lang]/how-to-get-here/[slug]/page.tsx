@@ -146,7 +146,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Allowlist of migrated transport routes that should render via guide system
 const MIGRATED_ROUTE_SLUGS = new Set<string>([
+  "amalfi-positano-bus",
   "amalfi-positano-ferry",
+  "naples-airport-positano-bus",
+  "naples-center-train-bus",
+  "positano-amalfi-bus",
 ]);
 
 export default async function HowToGetHerePage({ params }: Props) {

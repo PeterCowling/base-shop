@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Naples Center to Positano by Train then Bus | Hostel Brikette",
+    "description": "Step-by-step instructions for travelling from Naples Centre to Hostel Brikette via the Circumvesuviana train and SITA bus, including ticket tips and Positano arrival photos."
+  },
+  "intro": {
+    "title": "Naples Center to Positano – Train then Bus",
+    "body": "Follow these directions to travel from central Naples to Hostel Brikette via the Circumvesuviana train to Sorrento and the SITA bus to Positano. The guide includes ticket tips, bus timetable advice, and photos of your final approach to the hostel."
+  },
+  "callouts": {
+    "tip": "Need other routes? Explore the full set of arrival directions on the %HOWTO:how-to-get-here|How to Get Here page%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Train then Bus overview",
+      "body": "This journey covers the fastest public transport combination from Naples Centre: the Circumvesuviana train to Sorrento followed by the SITA bus to Positano. It does not cover travel from Naples Airport."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Naples train station",
+      "body": "Circumvesuviana services to Sorrento depart from the lower level of Napoli Garibaldi station (beneath Napoli Centrale). Buy your ticket before heading down to the platforms, verify which track your service uses, and board the train towards Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Sorrento train station",
+      "body": "After arriving in Sorrento, exit the station and purchase your SITA bus ticket from the nearby bar, newsstand, or tobacco shop — tickets are not sold on the bus. The SITA stop sits at the bottom of the stairs outside the station; wait for the Amalfi-bound bus and ride it to Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Reading the SITA timetable",
+      "body": "The SITA bus schedule can be confusing — use these quick pointers to locate the correct service:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano bus stop",
+      "list": [
+        "The closest stop is Positano (Chiesa Nuova), approximately 140 metres (490 feet) from the hostel.",
+        "It sits outside the cafe/bar Bar Internazionale.",
+        "The bus drops you at road level — no long staircases are required to reach us."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk from the bus stop"
+    }
+  ]
+}

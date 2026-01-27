@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Sân bay Naples đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Từ sân bay Naples tới Positano bằng Curreri đến Sorrento rồi xe buýt SITA. Bao gồm vé, điểm dừng, mẹo đọc bảng giờ SITA và đường đi bộ tới Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sân bay Naples đến Positano — Xe buýt",
+    "body": "Hướng dẫn từng bước này đưa bạn từ sân bay Naples tới Positano bằng xe buýt Curreri tới Sorrento rồi tiếp tục xe buýt SITA tới Positano. Nội dung gồm vé, điểm chuyển tuyến, cách đọc bảng giờ SITA và đường đi bộ từ điểm dừng gần hostel nhất."
+  },
+  "callouts": {
+    "aside": "Cần mọi lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các tuyến thay thế."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan hành trình",
+      "body": "Đi xe buýt Curreri Viaggi thẳng từ sân bay Naples tới Sorrento, sau đó chuyển sang xe buýt SITA hướng Amalfi (xuống tại Positano – Chiesa Nuova). Mùa cao điểm hãy chừa thêm thời gian vì phải xếp hàng và xe có thể đông."
+    },
+    {
+      "id": "airport",
+      "title": "Sân bay Naples",
+      "list": [
+        "Rời khu đến và theo biển chỉ dẫn ra khu bến xe bên ngoài.",
+        "Mua vé Curreri Viaggi đi Sorrento (trực tuyến hoặc ngay tại bến).",
+        "Chờ tại bến cho chuyến xe tiếp theo đi Sorrento và lên xe khi tới."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Bến xe buýt Sorrento",
+      "list": [
+        "Xuống tại bến xe buýt chính của Sorrento (cùng vị trí với ga tàu).",
+        "Từ bến xe, bắt xe buýt SITA hướng Amalfi (tuyến này đi qua Positano).",
+        "Nếu cần, mua vé SITA tại quán bar hoặc sạp báo gần đó.",
+        "Khi lên xe, tài xế sẽ đóng dấu hoặc xé một góc vé — giữ vé suốt hành trình."
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "Bảng giờ SITA — cách đọc"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Điểm dừng Positano (Chiesa Nuova)",
+      "list": [
+        "Điểm dừng SITA gần nhất là Positano (Chiesa Nuova) trên Via G. Marconi.",
+        "Điểm dừng cách cửa vào hostel khoảng 140 mét (490 ft).",
+        "Điểm dừng nằm phía trước quán cà phê/bar Bar Internazionale."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Đi bộ từ điểm dừng tới hostel",
+      "body": "Mẹo: khi đến gần hostel, bạn sẽ thấy biển hiệu trên sân thượng tầng hai. Đi vượt qua biển, men theo khúc cua và tìm cầu thang bên phải đường để lên cửa chính.",
+      "list": [
+        "Đi bộ hơn 100 mét / 330 ft dọc Via G. Marconi.",
+        "Rẽ phải và đi theo cầu thang lên cửa chính của hostel."
+      ]
+    }
+  ]
+}

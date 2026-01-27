@@ -22,6 +22,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   travelHelp: "travel-help",
   // --- End assistance articles ---
 
+  amalfiPositanoBus: "amalfi-positano-bus",
   amalfiPositanoFerry: "amalfi-positano-ferry",
   amalfiTownGuide: "amalfi-town-guide",
   arienzoBeachBusBack: "bus-back-from-arienzo-beach",
@@ -85,6 +86,8 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   luggageStorage: "luggage-storage-positano",
   luminariaPraiano: "luminaria-di-san-domenico-praiano",
   marinaDiPraiaBeaches: "marina-di-praia-and-secluded-beaches",
+  naplesAirportPositanoBus: "naples-airport-positano-bus",
+  naplesCenterTrainBus: "naples-center-train-bus",
   naplesCityGuide: "naples-city-guide-for-amalfi-travelers",
   naplesPositano: "naples-to-positano",
   offbeatVillagesAmalfi: "offbeat-amalfi-coast-villages",
@@ -98,6 +101,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   petsAmalfi: "traveling-with-pets-amalfi-coast",
   photographyGuidePositano: "positano-photography-guide-best-spots",
   porterServices: "porter-service-positano",
+  positanoAmalfiBus: "positano-amalfi-bus",
   positanoAmalfi: "positano-to-amalfi",
   positanoBeaches: "positano-beaches",
   positanoBudget: "positano-on-a-budget",

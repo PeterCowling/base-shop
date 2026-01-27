@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Aeropuerto de Nápoles a Positano en autobús | Hostel Brikette",
+    "description": "Del Aeropuerto de Nápoles a Positano con el autobús Curreri hacia Sorrento y luego el autobús SITA. Billetes, paradas, consejos de horarios y cómo caminar hasta el Hostel Brikette."
+  },
+  "intro": {
+    "title": "Aeropuerto de Nápoles a Positano — Autobús",
+    "body": "Esta guía paso a paso te lleva del Aeropuerto de Nápoles a Positano utilizando el autobús Curreri hasta Sorrento y luego el autobús SITA hacia Positano. Incluye los billetes, dónde hacer el cambio, cómo leer el horario de SITA y cómo llegar al Hostel Brikette desde la parada más cercana."
+  },
+  "callouts": {
+    "aside": "¿Necesitas conocer todas las opciones de transporte? Abre el %HOWTO:how-to-get-here|Resumen de Cómo llegar% para ver ferris, taxis y rutas alternativas."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del trayecto",
+      "body": "Toma el autobús Curreri Viaggi directamente desde el Aeropuerto de Nápoles hasta Sorrento y luego transborda al autobús SITA con dirección a Amalfi (bájate en Positano – Chiesa Nuova). En temporada alta deja tiempo adicional por las colas y la afluencia en los servicios más populares."
+    },
+    {
+      "id": "airport",
+      "title": "Aeropuerto de Nápoles",
+      "list": [
+        "Sal de la zona de llegadas y sigue las señales hacia las paradas de autobús exteriores.",
+        "Compra un billete de Curreri Viaggi a Sorrento (en línea o en la parada).",
+        "Espera en la parada al próximo autobús hacia Sorrento y sube cuando llegue."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Estación de autobuses de Sorrento",
+      "list": [
+        "Baja en la estación principal de autobuses de Sorrento (en el mismo lugar que la estación de tren).",
+        "Desde la estación de autobuses, toma el autobús SITA hacia Amalfi (Positano está en esa ruta).",
+        "Si lo necesitas, compra un billete SITA en un bar o quiosco cercano.",
+        "Al subir, el conductor sellará o rasgará parcialmente tu billete; consérvalo durante todo el trayecto."
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "Horario de SITA: cómo leerlo"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Parada Positano (Chiesa Nuova)",
+      "list": [
+        "La parada de SITA más cercana es Positano (Chiesa Nuova) en Via G. Marconi.",
+        "Está aproximadamente a 140 metros (490 pies) de la entrada del hostal.",
+        "La parada está frente al café/bar Bar Internazionale."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Camina desde la parada hasta el hostal",
+      "body": "Consejo: al acercarte al hostal, verás nuestro letrero junto a la terraza del segundo piso. Pasa el letrero, sigue la curva y localiza las escaleras que suben desde el lado derecho de la carretera para llegar a la entrada principal.",
+      "list": [
+        "Camina poco más de 100 metros (330 pies) por Via G. Marconi.",
+        "Gira a la derecha y sigue las escaleras hasta la puerta principal del hostal."
+      ]
+    }
+  ]
+}

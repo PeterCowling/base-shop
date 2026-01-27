@@ -3547,6 +3547,118 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
     ],
   }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "amalfiPositanoBus",
+    slug: "amalfi-positano-bus",
+    contentKey: "amalfiPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "amalfiPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "aside", bodyKey: "callouts.aside" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesAirportPositanoBus",
+    slug: "naples-airport-positano-bus",
+    contentKey: "naplesAirportPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesAirportPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesCenterTrainBus",
+    slug: "naples-center-train-bus",
+    contentKey: "naplesCenterTrainBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesCenterTrainBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoAmalfiBus",
+    slug: "positano-amalfi-bus",
+    contentKey: "positanoAmalfiBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoAmalfiBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
 ];
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Neapol (centrum) do Positano pociągiem i autobusem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku dotyczące podróży z centrum Neapolu do Hostel Brikette kolejką Circumvesuviana i autobusem SITA, wraz z poradami biletowymi i zdjęciami z przyjazdu do Positano."
+  },
+  "intro": {
+    "title": "Neapol (centrum) do Positano – pociąg, a potem autobus",
+    "body": "Skorzystaj z tych wskazówek, aby dotrzeć z centrum Neapolu do Hostel Brikette kolejką Circumvesuviana do Sorrento i autobusem SITA do Positano. Przewodnik zawiera porady biletowe, wskazówki dotyczące rozkładów oraz zdjęcia końcowego podejścia do hostelu."
+  },
+  "callouts": {
+    "tip": "Szukasz innych tras? Sprawdź pełny zestaw wskazówek dojazdu na %HOWTO:how-to-get-here|stronie Jak do nas dotrzeć%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd: najpierw pociąg, potem autobus",
+      "body": "Ta trasa obejmuje najszybsze połączenie transportem publicznym z centrum Neapolu: kolejkę Circumvesuviana do Sorrento, a następnie autobus SITA do Positano. Nie obejmuje dojazdu z lotniska w Neapolu."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Dworzec kolejowy w Neapolu",
+      "body": "Pociągi Circumvesuviana do Sorrento odjeżdżają z dolnego poziomu stacji Napoli Garibaldi (pod Napoli Centrale). Kup bilet, zanim zejdziesz na perony, sprawdź numer toru dla swojego kursu i wsiądź do pociągu w kierunku Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Dworzec w Sorrento",
+      "body": "Po przyjeździe do Sorrento wyjdź ze stacji i kup bilet na autobus SITA w pobliskim barze, kiosku lub sklepie tytoniowym — w autobusie biletów nie sprzedaje się. Przystanek SITA znajduje się u podnóża schodów przed stacją; poczekaj na autobus w kierunku Amalfi i jedź nim do Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Jak czytać rozkład SITA",
+      "body": "Rozkład autobusów SITA potrafi być niejasny — skorzystaj z tych krótkich wskazówek, aby znaleźć właściwy kurs:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Przystanek autobusowy w Positano",
+      "list": [
+        "Najbliższym przystankiem jest Positano (Chiesa Nuova), około 140 metrów (490 stóp) od hostelu.",
+        "Znajduje się przed barem Bar Internazionale.",
+        "Autobus wysadza pasażerów na poziomie drogi — nie trzeba pokonywać długich schodów, aby do nas dotrzeć."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spacer od przystanku"
+    }
+  ]
+}

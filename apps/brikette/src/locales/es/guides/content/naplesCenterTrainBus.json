@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Centro de Nápoles a Positano en tren y autobús | Hostel Brikette",
+    "description": "Instrucciones paso a paso para viajar desde el centro de Nápoles al Hostel Brikette en tren Circumvesuviana y autobús SITA, con consejos sobre billetes y fotos de la llegada a Positano."
+  },
+  "intro": {
+    "title": "Centro de Nápoles a Positano – Tren y luego autobús",
+    "body": "Sigue estas indicaciones para viajar desde el centro de Nápoles hasta el Hostel Brikette en el tren Circumvesuviana hacia Sorrento y el autobús SITA a Positano. La guía incluye consejos sobre billetes, recomendaciones sobre el horario de autobuses y fotos de tu llegada final al hostal."
+  },
+  "callouts": {
+    "tip": "¿Necesitas otras rutas? Explora todas las indicaciones de llegada en la %HOWTO:how-to-get-here|página Cómo llegar%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del viaje en tren y autobús",
+      "body": "Este trayecto cubre la combinación de transporte público más rápida desde el centro de Nápoles: el tren Circumvesuviana a Sorrento seguido del autobús SITA a Positano. No incluye el viaje desde el Aeropuerto de Nápoles."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Estación de tren de Nápoles",
+      "body": "Los servicios de la Circumvesuviana hacia Sorrento salen del nivel inferior de la estación Napoli Garibaldi (debajo de Napoli Centrale). Compra el billete antes de bajar a los andenes, verifica qué vía utilizará tu servicio y aborda el tren con destino a Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Estación de tren de Sorrento",
+      "body": "Al llegar a Sorrento, sal de la estación y compra tu billete de autobús SITA en el bar, quiosco o estanco cercano — los billetes no se venden a bordo. La parada de SITA está al pie de las escaleras fuera de la estación; espera allí el autobús con destino a Amalfi y viaja hasta Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Cómo leer el horario de SITA",
+      "body": "El horario del autobús SITA puede resultar confuso; usa estos consejos rápidos para encontrar el servicio correcto:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Parada de autobús en Positano",
+      "list": [
+        "La parada más cercana es Positano (Chiesa Nuova), a unos 140 metros (490 pies) del hostal.",
+        "Está frente al café/bar Bar Internazionale.",
+        "El autobús te deja a nivel de calle; no necesitas bajar largas escaleras para llegar a nosotros."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Camina desde la parada de autobús"
+    }
+  ]
+}

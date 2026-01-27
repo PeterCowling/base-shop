@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Centre de Naples à Positano en train puis bus | Hostel Brikette",
+    "description": "Instructions étape par étape pour aller du centre de Naples à l'Hostel Brikette via le train Circumvesuviana et le bus SITA, avec des conseils sur les billets et des photos de l'arrivée à Positano."
+  },
+  "intro": {
+    "title": "Centre de Naples à Positano – Train puis bus",
+    "body": "Suivez ces indications pour voyager du centre de Naples à l'Hostel Brikette en prenant le train Circumvesuviana jusqu'à Sorrente puis le bus SITA vers Positano. Le guide inclut des conseils sur les billets, l'horaire des bus et des photos de votre approche finale de l'auberge."
+  },
+  "callouts": {
+    "tip": "Besoin d'autres itinéraires ? Explorez l'ensemble des directions d'arrivée sur la %HOWTO:how-to-get-here|page Comment venir%."
+  },
+  "sections": [
+    {
+      "id": "naplesStation",
+      "title": "Gare de Naples",
+      "body": "Les trains Circumvesuviana vers Sorrente partent du niveau inférieur de la gare Napoli Garibaldi (sous Napoli Centrale). Achetez votre billet avant de descendre sur les quais, vérifiez la voie de votre service et montez dans le train en direction de Sorrente."
+    },
+    {
+      "id": "overview",
+      "title": "Aperçu train puis bus",
+      "body": "Ce trajet couvre la combinaison de transports publics la plus rapide depuis le centre de Naples : le train Circumvesuviana jusqu'à Sorrente, suivi du bus SITA vers Positano. Il n'inclut pas le trajet depuis l'aéroport de Naples."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Arrêt de bus de Positano",
+      "list": [
+        "L'arrêt le plus proche est Positano (Chiesa Nuova), à environ 140 mètres (490 pieds) de l'auberge.",
+        "Il se situe devant le café/bar Bar Internazionale.",
+        "Le bus vous dépose au niveau de la route — pas besoin de longues volées d'escaliers pour nous rejoindre."
+      ]
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Gare de Sorrente",
+      "body": "Après votre arrivée à Sorrente, sortez de la gare et achetez votre billet de bus SITA au bar, au kiosque ou au bureau de tabac à proximité — les billets ne sont pas vendus à bord. L'arrêt SITA se trouve en bas des escaliers à l'extérieur de la gare ; attendez le bus en direction d'Amalfi et restez à bord jusqu'à Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Lire l'horaire SITA",
+      "body": "L'horaire des bus SITA peut prêter à confusion — voici quelques repères pour trouver le bon service :"
+    },
+    {
+      "id": "walk",
+      "title": "Marcher depuis l'arrêt de bus"
+    }
+  ]
+}

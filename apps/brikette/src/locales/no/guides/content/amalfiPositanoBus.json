@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Amalfi til Positano med buss | Hostel Brikette",
+    "description": "SITA-buss Amalfi til Positano: påstigningspunkter, billettips, notater til rutetabellen og hvor du går av for Hostel Brikette (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfi til Positano — buss (SITA Sud)",
+    "body": "Bruk denne guiden for å reise fra Amalfi til Positano med SITA-buss. Den dekker hvor du går om bord i Amalfi, billettvalidering, hvordan du leser rutetabellen og hvor du går av for den korteste turen til hostellet."
+  },
+  "callouts": {
+    "aside": "Trenger du flere transportalternativer? Åpne %HOWTO:how-to-get-here|oversikten Slik kommer du hit% for ferger, taxi og kombinerte reiser."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "body": "Den direkte SITA-bussen fra Amalfi til Positano går hyppig i sesongen. Regn med en naturskjønn kysttur på rundt en time, avhengig av trafikken."
+    },
+    {
+      "id": "boarding",
+      "title": "Hvor du går om bord i Amalfi"
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og rutetabell",
+      "body": "Sjekk siste rutetider på %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Bruk notatene nedenfor for å lese tabellen riktig."
+    }
+  ]
+}

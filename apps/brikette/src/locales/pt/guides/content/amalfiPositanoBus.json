@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Amalfi para Positano de autocarro | Hostel Brikette",
+    "description": "Autocarro SITA de Amalfi para Positano: pontos de embarque, dicas de bilhetes, notas sobre o horário e onde sair para o Hostel Brikette (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfi para Positano — Autocarro (SITA Sud)",
+    "body": "Use este guia para viajar de Amalfi para Positano no autocarro SITA. Explica onde embarcar em Amalfi, como validar bilhetes, ler o horário e onde descer para a caminhada mais curta até ao hostel."
+  },
+  "callouts": {
+    "aside": "Precisa de outras opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para itinerários de ferry, táxis e percursos combinados."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumo da viagem",
+      "body": "O autocarro direto da SITA entre Amalfi e Positano circula com frequência na alta temporada. Conte com um percurso costeiro panorâmico de cerca de uma hora, dependendo do trânsito."
+    },
+    {
+      "id": "boarding",
+      "title": "Onde embarcar em Amalfi"
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e horário",
+      "body": "Consulte o horário mais recente em %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Use as notas abaixo para ler a grelha corretamente."
+    }
+  ]
+}

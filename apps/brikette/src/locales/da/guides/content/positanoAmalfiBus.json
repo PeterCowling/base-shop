@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano til Amalfi med bus | Hostel Brikette",
+    "description": "Trin-for-trin-guide med SITA-bus fra Hostel Brikette til Amalfi, inkl. hvor du køber billetter, stoppestedet Chiesa Nuova og hvordan du læser køreplanen."
+  },
+  "intro": {
+    "title": "Positano til Amalfi – med SITA-bus",
+    "body": "Brug denne guide til en enkel busrejse fra Hostel Brikette til Amalfi. Busserne drives af SITA Sud og kører hyppigt i højsæsonen. Vi forklarer, hvor du køber billetter, hvordan du læser køreplanen, og præcis hvor du skal stige på i Positano."
+  },
+  "callouts": {
+    "tip": "Skal du bruge alle transportmuligheder? Åbn %HOWTO:how-to-get-here|oversigten Sådan kommer du hertil% for færge-, taxi- og kombinationsture."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Rejseoverblik",
+      "body": "Afsæt 45–60 minutter om sommeren afhængigt af trafik og køer. Stig på i Positano (Chiesa Nuova) for en direkte bus til Amalfi. I myldretiden er det en god idé at komme tidligt for at sikre en plads."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA og deres billetter",
+      "body": "Busserne drives af SITA (SITA Sud Srl). Køb billetter på forhånd hos kiosker eller tobaksbutikker. Vis billetten til chaufføren ved ombordstigning – den stemples eller rives som gyldighedsbevis. Behold billetten, indtil du er fremme i Amalfi."
+    },
+    {
+      "id": "timetable",
+      "title": "Sådan læser du SITA-køreplanen",
+      "body": "Den officielle køreplan viser stoppene som rækker og afgangene som bogstavkolonner. Find rækkerne for Positano og Amalfi i den samme bogstavkolonne for din rejsedag. Se den seneste køreplan på %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Rækkerne i den første kolonne viser hvert stop på ruten.",
+        "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
+        "Rejser du mandag til lørdag? Brug kolonnerne ‘F’ og ‘G’.",
+        "Rejser du søndag eller på en helligdag? Brug kolonnerne ‘G’ og ‘H’."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) busstoppested",
+      "list": [
+        "Det nærmeste SITA-stoppested er Positano (Chiesa Nuova) på Via G. Marconi.",
+        "Det ligger cirka 140 meter (490 fod) fra hostellets indgang.",
+        "Du venter udenfor caféen/baren ‘Bar Internazionale’."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå fra hostellet til stoppestedet",
+      "list": [
+        "Forlad hostellet, gå ned ad trapperne til hovedvejen og drej til venstre.",
+        "Følg Via G. Marconi i omkring 100 meter (330 fod).",
+        "Bar Internazionale ligger på venstre hånd; SITA-stoppet er lige udenfor."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Køb billet og vent på ombordstigning",
+      "list": [
+        "Køb en SITA-billet i baren eller den nærmeste kiosk (tabacchi).",
+        "Gå over på den modsatte side af vejen og stil dig i kø til bussen mod Amalfi.",
+        "Tjek, at bussens display viser ‘Amalfi’."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst til Amalfi",
+      "body": "De fleste afgange ender ved Amalfis busterminal nær havnen. Herfra kan du skifte til Ravello og Salerno eller udforske Amalfis historiske centrum til fods. Planlægger du hjemturen? Se %HOWTO:amalfi-positano-bus|Amalfi til Positano med bus%."
+    }
+  ]
+}

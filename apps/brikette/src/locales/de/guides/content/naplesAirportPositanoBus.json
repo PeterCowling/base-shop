@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Flughafen Neapel nach Positano mit dem Bus | Hostel Brikette",
+    "description": "Vom Flughafen Neapel nach Positano über den Curreri-Bus nach Sorrent und weiter mit dem SITA-Bus. Tickets, Haltestellen, Fahrplantipps und der Fußweg zum Hostel Brikette."
+  },
+  "intro": {
+    "title": "Flughafen Neapel nach Positano – Bus",
+    "body": "Dieser Schritt-für-Schritt-Leitfaden bringt dich vom Flughafen Neapel mit dem Curreri-Bus nach Sorrent und anschließend mit dem SITA-Bus nach Positano. Er erklärt Tickets, Umstieg, das Lesen des SITA-Fahrplans und wie du vom nächstgelegenen Stopp das Hostel Brikette erreichst."
+  },
+  "callouts": {
+    "aside": "Brauchst du alle Verkehrsoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und alternative Routen."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "body": "Nimm den Curreri-Viaggi-Bus direkt vom Flughafen Neapel nach Sorrent und steige dort in den SITA-Bus Richtung Amalfi um (aussteigen in Positano – Chiesa Nuova). Plane in der Hochsaison zusätzliche Zeit für Warteschlangen und volle Busse ein."
+    },
+    {
+      "id": "airport",
+      "title": "Flughafen Neapel",
+      "list": [
+        "Verlasse den Ankunftsbereich und folge den Schildern zu den Bushaltestellen draußen.",
+        "Kaufe ein Curreri-Viaggi-Ticket nach Sorrent (online oder direkt an der Haltestelle).",
+        "Warte am Steig auf den nächsten Bus nach Sorrent und steige ein, sobald er eintrifft."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Busbahnhof Sorrent",
+      "list": [
+        "Steige am Hauptbusbahnhof von Sorrent aus (gleicher Standort wie der Bahnhof).",
+        "Nimm vom Busbahnhof den SITA-Bus in Richtung Amalfi (Positano liegt auf dieser Strecke).",
+        "Falls nötig, kaufe ein SITA-Ticket in einer Bar oder einem Tabacchi in der Nähe.",
+        "Beim Einsteigen stempelt oder reißt der Fahrer dein Ticket an – bewahre es für die gesamte Fahrt auf."
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "SITA-Fahrplan – so liest du ihn"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle",
+      "list": [
+        "Die nächstgelegene SITA-Haltestelle ist Positano (Chiesa Nuova) in der Via G. Marconi.",
+        "Sie liegt etwa 140 Meter (490 Fuß) vom Hosteleingang entfernt.",
+        "Die Haltestelle befindet sich vor der Bar Internazionale."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Fußweg von der Haltestelle zum Hostel",
+      "body": "Tipp: Wenn du dich dem Hostel näherst, siehst du unser Schild auf Höhe der Terrasse im zweiten Stock. Gehe am Schild vorbei, folge der Kurve und nimm die Treppe, die auf der rechten Straßenseite nach oben führt, um den Haupteingang zu erreichen.",
+      "list": [
+        "Gehe etwas mehr als 100 Meter bzw. 330 Fuß die Via G. Marconi entlang.",
+        "Biege rechts ab und folge den Stufen hinauf zur Haupteingangstür des Hostels."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Da Amalfi a Positano in autobus | Hostel Brikette",
+    "description": "Autobus SITA da Amalfi a Positano: punti di partenza, consigli sui biglietti, note sugli orari e dove scendere per Hostel Brikette (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfi → Positano — Autobus (SITA Sud)",
+    "body": "Usa questa guida per spostarti da Amalfi a Positano con l'autobus SITA. Trovi informazioni su dove salire ad Amalfi, convalida del biglietto, come leggere l'orario e dove scendere per raggiungere l'ostello con la passeggiata più breve."
+  },
+  "callouts": {
+    "aside": "Cerchi altre opzioni di trasporto? Apri la %HOWTO:how-to-get-here|guida Come arrivare% per traghetti, taxi e itinerari misti."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "body": "L'autobus diretto SITA da Amalfi a Positano circola spesso in alta stagione. Preparati a un viaggio panoramico lungo la costa di circa un'ora, a seconda del traffico."
+    },
+    {
+      "id": "boarding",
+      "title": "Dove salire ad Amalfi"
+    },
+    {
+      "id": "tickets",
+      "title": "Biglietti e orari",
+      "body": "Consulta l'orario aggiornato su %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Usa le note qui sotto per leggere correttamente la tabella."
+    }
+  ]
+}

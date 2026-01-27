@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano vers Amalfi en bus | Hostel Brikette",
+    "description": "Itinéraire détaillé en bus SITA de l'Hostel Brikette à Amalfi, avec achat des billets, arrêt Chiesa Nuova et lecture des horaires."
+  },
+  "intro": {
+    "title": "Positano vers Amalfi – en bus SITA",
+    "body": "Suivez ce guide pour un trajet en bus simple de l'Hostel Brikette à Amalfi. Les bus sont opérés par SITA Sud et circulent fréquemment en haute saison. Nous détaillons où acheter les billets, comment lire les horaires et l'emplacement précis de l'embarquement à Positano."
+  },
+  "callouts": {
+    "tip": "Besoin de toutes les options de transport ? Ouvrez la page %HOWTO:how-to-get-here|Comment venir% pour les ferries, taxis et itinéraires combinés."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Amalfi",
+      "body": "La plupart des services terminent à la gare routière d'Amalfi près du port. De là, vous pouvez poursuivre vers Ravello ou Salerne, ou explorer à pied le centre historique d'Amalfi. Vous préparez le retour ? Consultez %HOWTO:amalfi-positano-bus|Amalfi vers Positano en bus%."
+    },
+    {
+      "id": "overview",
+      "title": "Vue d'ensemble du trajet",
+      "body": "Prévoyez 45 à 60 minutes en été selon la circulation et l'affluence. Montez à Positano (Chiesa Nuova) pour un bus direct vers Amalfi. Aux heures de pointe, arrivez en avance pour avoir une place assise."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Arrêt de bus Positano (Chiesa Nuova)",
+      "list": [
+        "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
+        "Il se trouve à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
+        "Vous attendrez devant le café-bar « Bar Internazionale »."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "SITA et ses billets",
+      "body": "Les bus sont opérés par SITA (SITA Sud Srl). Achetez vos billets à l'avance dans les kiosques à journaux ou les bureaux de tabac. Présentez le billet au conducteur en montant – il sera tamponné ou déchiré pour validation. Conservez-le jusqu'à votre arrivée à Amalfi."
+    },
+    {
+      "id": "timetable",
+      "title": "Lire l'horaire SITA",
+      "body": "L'horaire officiel liste les arrêts en lignes et les trajets en colonnes lettres. Faites correspondre les lignes Positano et Amalfi dans la même colonne pour votre jour de voyage. Consultez l'horaire le plus récent sur %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "La première colonne énumère chaque arrêt du parcours.",
+        "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Achetez votre billet et attendez l'embarquement",
+      "list": [
+        "Achetez un billet de bus SITA au bar ou au kiosque à journaux (tabacchi) à proximité.",
+        "Traversez de l'autre côté de la rue et faites la queue pour le bus en direction d'Amalfi.",
+        "Vérifiez que l'affichage du bus indique bien « Amalfi »."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Marche depuis l'auberge jusqu'à l'arrêt",
+      "list": [
+        "Sortez de l'auberge, descendez les marches jusqu'à la route principale et tournez à gauche.",
+        "Continuez sur la Via G. Marconi sur environ 100 mètres (330 pieds).",
+        "Le Bar Internazionale sera sur votre gauche ; l'arrêt SITA est juste devant."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Amalfi to Positano by Bus | Hostel Brikette",
+    "description": "SITA bus Amalfi to Positano: boarding points, ticket tips, timetable notes, and where to get off for Hostel Brikette (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfi to Positano — Bus (SITA Sud)",
+    "body": "Use this guide to travel from Amalfi to Positano by SITA bus. It covers where to board in Amalfi, ticket validation, how to read the timetable, and where to get off for the shortest walk to the hostel."
+  },
+  "callouts": {
+    "aside": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferries, taxis, and mixed itineraries."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "body": "The direct SITA bus from Amalfi to Positano runs frequently in season. Expect a scenic coastal ride of around an hour depending on traffic."
+    },
+    {
+      "id": "boarding",
+      "title": "Where to board in Amalfi"
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets and timetable",
+      "body": "Check the latest schedule on %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Use the notes below to read the grid correctly."
+    }
+  ]
+}

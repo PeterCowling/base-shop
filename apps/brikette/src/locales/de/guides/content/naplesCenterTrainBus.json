@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Neapel Zentrum nach Positano mit Zug und Bus | Hostel Brikette",
+    "description": "Schritt-für-Schritt-Anleitung von Neapel Zentrum zum Hostel Brikette mit der Circumvesuviana nach Sorrent und dem SITA-Bus, inklusive Tickettipps und Ankunftsfotos."
+  },
+  "intro": {
+    "title": "Neapel Zentrum nach Positano – Zug und Bus",
+    "body": "Folge diesen Wegbeschreibungen, um vom Zentrum Neapels über die Circumvesuviana nach Sorrent und mit dem SITA-Bus nach Positano zum Hostel Brikette zu fahren. Der Leitfaden enthält Tickettipps, Hinweise zum Fahrplan und Fotos deiner letzten Schritte zum Hostel."
+  },
+  "callouts": {
+    "tip": "Brauchst du andere Routen? Sieh dir alle Anreiseoptionen auf der %HOWTO:how-to-get-here|Übersichtsseite „So kommst du zu uns“% an."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Überblick: Zug und Bus",
+      "body": "Diese Strecke kombiniert die schnellsten öffentlichen Verkehrsmittel ab Neapel Zentrum: die Circumvesuviana nach Sorrent und den SITA-Bus nach Positano. Sie deckt nicht die Anreise vom Flughafen Neapel ab."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Bahnhof Neapel",
+      "body": "Die Circumvesuviana nach Sorrent fährt im Untergeschoss des Bahnhofs Napoli Garibaldi (unter Napoli Centrale) ab. Kaufe dein Ticket, bevor du zu den Gleisen hinuntergehst, prüfe das Gleis und steige in den Zug nach Sorrent."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Bahnhof Sorrent",
+      "body": "Nach deiner Ankunft in Sorrent verlässt du den Bahnhof und kaufst dein SITA-Busticket in der nahegelegenen Bar, im Kiosk oder Tabakladen – im Bus werden keine Tickets verkauft. Die SITA-Haltestelle befindet sich unten an der Treppe vor dem Bahnhof; nimm den Bus Richtung Amalfi und fahre bis Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Den SITA-Fahrplan lesen",
+      "body": "Der Fahrplan der SITA kann verwirrend sein – nutze diese kurzen Hinweise, um den richtigen Kurs zu finden:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Haltestelle Positano",
+      "list": [
+        "Die nächste Haltestelle ist Positano (Chiesa Nuova), etwa 140 Meter (490 Fuß) vom Hostel entfernt.",
+        "Sie befindet sich vor der Bar Internazionale.",
+        "Der Bus setzt dich auf Straßenniveau ab – lange Treppen sind nicht nötig, um zu uns zu gelangen."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Fußweg von der Bushaltestelle"
+    }
+  ]
+}

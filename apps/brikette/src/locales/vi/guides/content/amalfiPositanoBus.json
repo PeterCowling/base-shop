@@ -1,0 +1,29 @@
+{
+  "seo": {
+    "title": "Amalfi đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Xe buýt SITA từ Amalfi đến Positano: điểm đón, mẹo mua vé, lưu ý giờ chạy và điểm xuống gần Hostel Brikette (Chiesa Nuova)."
+  },
+  "intro": {
+    "title": "Amalfi đến Positano — Xe buýt (SITA Sud)",
+    "body": "Dùng hướng dẫn này để đi từ Amalfi đến Positano bằng xe buýt SITA. Bài viết nêu nơi lên xe ở Amalfi, cách xác thực vé, đọc thời khóa biểu và điểm xuống gần hostel nhất."
+  },
+  "callouts": {
+    "aside": "Cần lựa chọn di chuyển khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem phà, taxi và các hành trình kết hợp."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan hành trình",
+      "body": "Xe buýt SITA chạy thẳng từ Amalfi đến Positano hoạt động dày đặc trong mùa cao điểm. Hành trình ven biển mất khoảng một giờ tùy lưu lượng giao thông."
+    },
+    {
+      "id": "boarding",
+      "title": "Nơi lên xe tại Amalfi"
+    },
+    {
+      "id": "tickets",
+      "title": "Vé và thời gian biểu",
+      "body": "Kiểm tra lịch mới nhất trên %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Dùng các lưu ý dưới đây để đọc bảng giờ cho chính xác."
+    }
+  ]
+}

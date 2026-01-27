@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "那不勒斯机场乘巴士前往波西塔诺 | Hostel Brikette",
+    "description": "搭乘 Curreri 班车到索伦托，再换乘 SITA 巴士抵达波西塔诺：涵盖购票方式、上下车点、SITA 时刻表提示与前往 Hostel Brikette 的步行路线。"
+  },
+  "intro": {
+    "title": "那不勒斯机场 → 波西塔诺 — 巴士",
+    "body": "按照此分步指南，从那不勒斯机场搭乘 Curreri 班车前往索伦托，再换乘 SITA 巴士到波西塔诺。内容涵盖购票渠道、换乘地点、如何阅读 SITA 时刻表，以及从最近的车站步行至 Hostel Brikette 的方法。"
+  },
+  "callouts": {
+    "aside": "想掌握所有交通方式？请打开%HOWTO:how-to-get-here|“如何到达”总览%，了解渡轮、出租车与替代路线。"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "行程概览",
+      "body": "从那不勒斯机场直接搭乘 Curreri Viaggi 班车前往索伦托，再换乘开往阿马尔菲方向的 SITA 巴士（在波西塔诺 – Chiesa Nuova 下车）。旺季热门班次排队时间较长，请预留额外时间。"
+    },
+    {
+      "id": "airport",
+      "title": "那不勒斯机场",
+      "list": [
+        "离开到达大厅，按照指示牌前往户外巴士站。",
+        "购买前往索伦托的 Curreri Viaggi 车票（可在线或在站点购买）。",
+        "在站点等候下一班前往索伦托的巴士，车辆抵达后上车。"
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "索伦托巴士站",
+      "list": [
+        "在索伦托主巴士站下车（与火车站位于同一地点）。",
+        "从巴士站换乘开往阿马尔菲方向的 SITA 巴士（途中停靠波西塔诺）。",
+        "如需购票，可在附近的酒吧或报刊亭购买 SITA 车票。",
+        "上车时司机会在车票上盖章或撕角，请全程妥善保管。"
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "SITA 时刻表 — 阅读方法"
+    },
+    {
+      "id": "positanoStop",
+      "title": "波西塔诺（Chiesa Nuova）巴士站",
+      "list": [
+        "最近的 SITA 站位于 Via G. Marconi 的波西塔诺（Chiesa Nuova）。",
+        "距离旅舍入口约 140 米（约 490 英尺）。",
+        "车站就在 Bar Internazionale 咖啡吧外侧。"
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "从车站步行至旅舍",
+      "body": "小贴士：靠近旅舍时，可看到二层露台旁的旅舍招牌。经过招牌并沿道路转弯，右侧会出现一组台阶，上行即可抵达主入口。",
+      "list": [
+        "沿 Via G. Marconi 步行约 100 米（约 330 英尺）。",
+        "在右侧转上楼梯，走向旅舍正门。"
+      ]
+    }
+  ]
+}

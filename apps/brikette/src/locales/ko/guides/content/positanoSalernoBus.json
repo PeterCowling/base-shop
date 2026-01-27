@@ -1,0 +1,45 @@
+{
+  "seo": {
+    "title": "포지타노 → 살레르노 버스 – 단계별 안내",
+    "description": "호스텔 브리케테에서 살레르노까지 아말피 환승을 거치는 버스 이동: 승차 위치, 티켓 구매, 시간표 읽기, 아말피 환승 요령을 정리했습니다."
+  },
+  "intro": {},
+  "callouts": {
+    "tip": "다른 교통편이 필요하신가요? 페리, 택시, 혼합 일정은 %HOWTO:how-to-get-here|이동 가이드 총정리%에서 확인하세요."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "여정 개요"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA 버스 & 티켓"
+    },
+    {
+      "id": "timetable",
+      "title": "시간표 & 계획",
+      "body": "최신 시간표는 %URL:https://www.positano.com/en/bus-schedule|Positano.com%에서 확인하세요. 두 구간 모두 조회하고 아말피 환승 시간을 확보하세요."
+    },
+    {
+      "id": "positanoStop",
+      "title": "포지타노(Chiesa Nuova) 정류장"
+    },
+    {
+      "id": "walk",
+      "title": "호스텔에서 정류장까지 걷기"
+    },
+    {
+      "id": "wait",
+      "title": "티켓 구입 & 탑승 대기"
+    },
+    {
+      "id": "transfer",
+      "title": "아말피에서 환승"
+    },
+    {
+      "id": "arrival",
+      "title": "살레르노 도착"
+    }
+  ]
+}

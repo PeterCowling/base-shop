@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Sorrente vers Positano en bus | Hostel Brikette",
+    "description": "Itinéraire détaillé de Sorrente à Hostel Brikette via le bus SITA vers Positano (Chiesa Nuova) : billets, conseils d'horaires et marche finale jusqu'à l'auberge."
+  },
+  "intro": {
+    "title": "Sorrente vers Positano — Bus SITA",
+    "body": "Utilisez ce guide pour voyager de Sorrente à Positano. Vous prendrez le bus SITA Sud et descendrez à Positano (Chiesa Nuova), l'arrêt le plus proche de l'auberge. Nous couvrons l'essentiel des billets, comment lire l'horaire et comment rejoindre l'auberge depuis l'arrêt."
+  },
+  "callouts": {
+    "tip": "Besoin de toutes les options de transport ? %HOWTO:how-to-get-here|Vue d’ensemble Comment arriver% pour les ferries, informations sur les taxis et alternatives."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Positano (Chiesa Nuova)",
+      "list": [
+        "Deux arrêts SITA sont listés pour Positano : « Sponda » et « Chiesa Nuova ».",
+        "Pour l'auberge, « Positano (Chiesa Nuova) » est le bon arrêt sur la Via G. Marconi.",
+        "L'arrêt se trouve devant le café/bar « Bar Internazionale »."
+      ]
+    },
+    {
+      "id": "journey",
+      "title": "Aperçu du trajet",
+      "body": "Comptez 1 à 1,5 heure en haute saison. Les bus circulent fréquemment entre Sorrente et Positano. Achetez votre billet avant de monter et gardez-le prêt pour la validation."
+    },
+    {
+      "id": "tickets",
+      "title": "Billets et validation",
+      "body": "SITA (SITA Sud) exploite cette ligne. Achetez vos billets dans les maisons de presse ou tabacchi. Présentez votre billet au conducteur en montant ; conservez-le jusqu'à la fin du trajet. Validez-le avant utilisation lorsque c'est nécessaire."
+    },
+    {
+      "id": "timetable",
+      "title": "Lire l'horaire",
+      "list": [
+        "Les lignes de la première colonne listent chaque arrêt de bus sur le trajet.",
+        "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Marcher jusqu'à Hostel Brikette",
+      "list": [
+        "Parcourez un peu plus de 100 mètres (330 pieds) le long de la Via G. Marconi.",
+        "Repérez notre enseigne au-dessus de la terrasse du deuxième étage sur votre droite.",
+        "Tournez à droite et montez les marches pour atteindre la porte principale de l'auberge."
+      ]
+    }
+  ]
+}

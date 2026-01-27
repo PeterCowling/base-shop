@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Sorrento do Positano autobusem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku z Sorrento do Hostel Brikette autobusem SITA do Positano (Chiesa Nuova): bilety, wskazówki dotyczące rozkładów i dojście od przystanku."
+  },
+  "intro": {
+    "title": "Sorrento do Positano — autobus SITA",
+    "body": "Skorzystaj z tego przewodnika podczas podróży z Sorrento do Positano. Pojedziesz autobusem SITA Sud i wysiądziesz na przystanku Positano (Chiesa Nuova), najbliższym hostelu. Wyjaśniamy podstawy biletów, czytania rozkładu i dojścia od przystanku do hostelu."
+  },
+  "callouts": {
+    "tip": "Chcesz poznać wszystkie opcje transportu? Zobacz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć% z informacjami o promach, taksówkach i alternatywach."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Przegląd podróży",
+      "body": "W sezonie zaplanuj 1–1,5 godziny. Między Sorrento a Positano autobusy kursują często. Kup bilet przed wejściem i miej go gotowego do skasowania."
+    },
+    {
+      "id": "tickets",
+      "title": "Bilety i kasowanie",
+      "body": "Trasę obsługuje SITA (SITA Sud). Bilety kupisz w kioskach lub tabacchi. Przy wejściu okaż bilet kierowcy i zachowaj go do końca podróży. W miejscach wymagających stemplowania skasuj bilet przed użyciem."
+    },
+    {
+      "id": "timetable",
+      "title": "Jak czytać rozkład",
+      "list": [
+        "Wiersze w pierwszej kolumnie zawierają wszystkie przystanki na trasie.",
+        "Kolumny odpowiadają zaplanowanym kursom oznaczonym literami.",
+        "Podróż od poniedziałku do soboty? Korzystaj z kolumn “F” i “G”.",
+        "Podróż w niedzielę lub święto? Korzystaj z kolumn “G” i “H”."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Przyjazd do Positano (Chiesa Nuova)",
+      "list": [
+        "Dla Positano znajdują się dwa przystanki SITA: “Sponda” i “Chiesa Nuova”.",
+        "Do hostelu najdogodniejszy jest przystanek “Positano (Chiesa Nuova)” przy Via G. Marconi.",
+        "Przystanek znajduje się przed kawiarnią/barem “Bar Internazionale”."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spacer do Hostel Brikette",
+      "list": [
+        "Przejdź nieco ponad 100 metrów (330 stóp) wzdłuż Via G. Marconi.",
+        "Wypatruj naszego szyldu nad tarasem na drugim piętrze po prawej stronie.",
+        "Skręć w prawo na schody, aby dotrzeć do głównych drzwi hostelu."
+      ]
+    }
+  ]
+}

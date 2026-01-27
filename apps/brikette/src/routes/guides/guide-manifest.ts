@@ -4023,6 +4023,146 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
     ],
   }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSalernoBus",
+    slug: "positano-salerno-bus",
+    contentKey: "positanoSalernoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSalernoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoToNaplesDirectionsByFerry",
+    slug: "positano-to-naples-directions-by-ferry",
+    contentKey: "positanoToNaplesDirectionsByFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoToNaplesDirectionsByFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "salernoPositanoBus",
+    slug: "salerno-positano-bus",
+    contentKey: "salernoPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "salernoPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoPositanoBus",
+    slug: "sorrento-positano-bus",
+    contentKey: "sorrentoPositanoBus",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoPositanoBus", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "sorrentoPositanoFerry",
+    slug: "sorrento-positano-ferry",
+    contentKey: "sorrentoPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "sorrentoPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
 ];
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));

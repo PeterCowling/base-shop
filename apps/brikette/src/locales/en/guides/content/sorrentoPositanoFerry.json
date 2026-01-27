@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrento to Positano by Ferry | Hostel Brikette",
+    "description": "Step-by-step from Sorrento to Positano by ferry: tickets, departure tips, and getting from Positano’s port up to Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrento to Positano — Ferry",
+    "body": "Take a direct ferry from Sorrento’s Marina Piccola to Positano. This short guide covers where to buy tickets, when to queue, and what to do on arrival at Positano’s port to make the final leg up to Hostel Brikette easier."
+  },
+  "callouts": {
+    "tip": "Need every transport option? %HOWTO:how-to-get-here|How to Get Here overview% for buses, taxis, and mixed itineraries."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "list": [
+        "Allow roughly 45–60 minutes dock-to-dock in season.",
+        "Ferries are weather-dependent and can sell out at peak times.",
+        "Buying tickets a little early helps secure seats and smooth boarding."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Get to Sorrento’s port (Marina Piccola)",
+      "list": [
+        "Head to Sorrento’s Marina Piccola (ferry port) and follow signs to the ticket offices.",
+        "Check the next departure to Positano and confirm the operator (for example, Travelmar or NLG).",
+        "Purchase your ticket at the counter or online and proceed to the indicated gate."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Buy your ticket and board",
+      "list": [
+        "Arrive 15–20 minutes before departure to queue calmly.",
+        "Keep your ticket handy for inspection and follow crew instructions when boarding.",
+        "Secure luggage in the designated area and keep essentials with you."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Positano",
+      "list": [
+        "Disembark at Positano’s main dock (Spiaggia Grande).",
+        "Consider the official porter service at the pier for heavy bags (paid service).",
+        "To reach Hostel Brikette more easily, take the local Interno Bus uphill to “Chiesa Nuova” and walk a short distance to the hostel.",
+        "Alternatively, walk uphill via Via dei Mulini/Via G. Marconi, allowing extra time for the climb."
+      ]
+    }
+  ]
+}

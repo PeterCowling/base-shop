@@ -1,0 +1,45 @@
+{
+  "seo": {
+    "title": "波西塔诺前往萨莱诺的巴士指南",
+    "description": "提供从 Hostel Brikette 出发经阿马尔菲换乘巴士前往萨莱诺的完整步骤：上车地点、购票方式、时刻表解读与换乘提示。"
+  },
+  "intro": {},
+  "callouts": {
+    "tip": "想比较其他交通方式？请打开%HOWTO:how-to-get-here|“如何到达”总览%，了解渡轮、出租车与组合路线。"
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "行程概览"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA 巴士与车票"
+    },
+    {
+      "id": "timetable",
+      "title": "时刻表与规划",
+      "body": "请在%URL:https://www.positano.com/en/bus-schedule|Positano.com% 查看最新班次，为两段行程预留在阿马尔菲换乘的缓冲时间。"
+    },
+    {
+      "id": "positanoStop",
+      "title": "波西塔诺（Chiesa Nuova）巴士站"
+    },
+    {
+      "id": "walk",
+      "title": "从旅舍步行至车站"
+    },
+    {
+      "id": "wait",
+      "title": "购票并等候上车"
+    },
+    {
+      "id": "transfer",
+      "title": "在阿马尔菲换乘"
+    },
+    {
+      "id": "arrival",
+      "title": "抵达萨莱诺"
+    }
+  ]
+}

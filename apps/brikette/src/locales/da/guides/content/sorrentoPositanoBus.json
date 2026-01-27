@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Sorrento til Positano med bus | Hostel Brikette",
+    "description": "Trin for trin fra Sorrento til Hostel Brikette via SITA-bus til Positano (Chiesa Nuova): billetter, køreplanstips og den korte gåtur til hostellet."
+  },
+  "intro": {
+    "title": "Sorrento til Positano — SITA-bus",
+    "body": "Brug guiden, når du rejser fra Sorrento til Positano. Du tager SITA Sud-bussen og stiger af ved Positano (Chiesa Nuova), det nærmeste stoppested til hostellet. Vi gennemgår billettips, hvordan du læser køreplanen, og hvordan du går fra stoppet til hostellet."
+  },
+  "callouts": {
+    "tip": "Skal du se alle muligheder? Åbn %HOWTO:how-to-get-here|oversigten Sådan kommer du hertil% for færger, taxainfo og alternativer."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Rejseoverblik",
+      "body": "Sæt 1–1,5 time af i højsæsonen. Busser kører hyppigt mellem Sorrento og Positano. Køb billet før ombordstigning og hav den klar til validering."
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og validering",
+      "body": "SITA (SITA Sud) kører på denne rute. Køb billetter i kiosker eller tabacchi. Vis billetten til chaufføren, når du stiger på, og gem den til turen er slut. Hvor det kræves, skal du validere før brug."
+    },
+    {
+      "id": "timetable",
+      "title": "Sådan læser du køreplanen",
+      "list": [
+        "Rækkerne i første kolonne viser hvert busstoppested på ruten.",
+        "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
+        "Rejser du mandag til lørdag? Brug kolonne “F” og “G”.",
+        "Rejser du søndag eller på helligdage? Brug kolonne “G” og “H”."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst til Positano (Chiesa Nuova)",
+      "list": [
+        "Positano har to SITA-stoppesteder: “Sponda” og “Chiesa Nuova”.",
+        "Til hostellet er “Positano (Chiesa Nuova)” det rigtige stop på Via G. Marconi.",
+        "Stoppet ligger foran caféen/baren “Bar Internazionale”."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå til Hostel Brikette",
+      "list": [
+        "Gå lidt over 100 meter (330 fod) langs Via G. Marconi.",
+        "Hold øje med vores skilt over terrassen på anden sal til højre.",
+        "Drej til højre op ad trappen for at nå hostellets hoveddør."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "seo": {
+    "title": "Positano til Salerno med bus – trin for trin",
+    "description": "Dør-til-dør busvejledning fra Hostel Brikette til Salerno via Amalfi: hvor du stiger på, køber billetter, læser køreplaner og skifter i Amalfi."
+  },
+  "intro": {},
+  "callouts": {
+    "tip": "Har du brug for andre transportmuligheder? Åbn %HOWTO:how-to-get-here|Oversigten Sådan kommer du hertil% for færger, taxaer og kombinerede rejser."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Rejseoverblik"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA-busser og billetter"
+    },
+    {
+      "id": "timetable",
+      "title": "Køreplan og planlægning",
+      "body": "Tjek de seneste køreplaner på %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Slå begge strækninger op og planlæg tid til skiftet i Amalfi."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busstoppet Positano (Chiesa Nuova)"
+    },
+    {
+      "id": "walk",
+      "title": "Gå fra hostellet til stoppet"
+    },
+    {
+      "id": "wait",
+      "title": "Køb din billet og vent på ombordstigning"
+    },
+    {
+      "id": "transfer",
+      "title": "Skift bus i Amalfi"
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst til Salerno"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Позитано — Неаполь: маршрут на пароме | Hostel Brikette",
+    "description": "Пошаговые, удобные для печати инструкции от Hostel Brikette до порта Позитано и далее до Неаполя на пароме, с билетами и советами по прибытии."
+  },
+  "intro": {
+    "title": "Позитано — Неаполь — маршрут на пароме",
+    "body": "Подробные шаги, как дойти от Hostel Brikette до порта Позитано, купить билеты на паром и продолжить путь до Неаполя, включая сезонные примечания и подсказки по прибытии на Napoli Centrale."
+  },
+  "sections": [
+    {
+      "id": "journeyOverview",
+      "title": "Общий обзор поездки"
+    },
+    {
+      "id": "photoGuide",
+      "title": "Фотогид (для ориентира)"
+    },
+    {
+      "id": "walkToPort",
+      "title": "Как дойти до порта Позитано"
+    },
+    {
+      "id": "tickets",
+      "title": "Купите билеты и садитесь на паром"
+    },
+    {
+      "id": "arrival",
+      "title": "Прибытие в Неаполь"
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

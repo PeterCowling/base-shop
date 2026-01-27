@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Sorrento para Positano de autocarro | Hostel Brikette",
+    "description": "Passo a passo desde Sorrento até ao Hostel Brikette no autocarro SITA para Positano (Chiesa Nuova): bilhetes, dicas de horário e como chegar ao hostel a partir da paragem."
+  },
+  "intro": {
+    "title": "Sorrento para Positano — Autocarro SITA",
+    "body": "Use este guia para viajar de Sorrento para Positano. Vai apanhar o autocarro SITA Sud e sair em Positano (Chiesa Nuova), a paragem mais próxima do hostel. Explicamos como comprar bilhetes, ler o horário e chegar ao hostel a partir da paragem."
+  },
+  "callouts": {
+    "tip": "Precisa de todas as opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para ferries, táxis e alternativas."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Resumo da viagem",
+      "body": "Reserve 1 a 1,5 horas na época alta. Há autocarros frequentes entre Sorrento e Positano. Compre o bilhete antes de embarcar e mantenha-o à mão para validação."
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e validação",
+      "body": "A SITA (SITA Sud) opera esta rota. Compre bilhetes em quiosques ou tabacarias. Entregue o bilhete ao motorista ao embarcar; guarde-o até ao fim da viagem. Valide-o antes de usar, quando necessário."
+    },
+    {
+      "id": "timetable",
+      "title": "Como ler o horário",
+      "list": [
+        "As linhas da primeira coluna listam cada paragem ao longo do percurso.",
+        "As colunas correspondem às viagens programadas, identificadas por letras.",
+        "Vai viajar de segunda a sábado? Utilize as colunas “F” e “G”.",
+        "Vai viajar ao domingo ou feriado? Utilize as colunas “G” e “H”."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Chegada a Positano (Chiesa Nuova)",
+      "list": [
+        "Existem duas paragens SITA para Positano: “Sponda” e “Chiesa Nuova”.",
+        "Para o hostel, “Positano (Chiesa Nuova)” é a paragem correta na Via G. Marconi.",
+        "A paragem fica no exterior do café/bar “Bar Internazionale”."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Caminhada até ao Hostel Brikette",
+      "list": [
+        "Caminhe pouco mais de 100 metros pela Via G. Marconi.",
+        "Procure a nossa placa acima do terraço do segundo piso, do lado direito.",
+        "Vire à direita e suba as escadas para chegar à porta principal do hostel."
+      ]
+    }
+  ]
+}

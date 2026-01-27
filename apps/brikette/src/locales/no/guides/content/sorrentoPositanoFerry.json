@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrento til Positano med ferge | Hostel Brikette",
+    "description": "Steg-for-steg fra Sorrento til Positano med ferge: billetter, avgangstips og hvordan du kommer deg fra havnen i Positano opp til Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrento til Positano — ferge",
+    "body": "Ta en direkte ferge fra Sorrentos Marina Piccola til Positano. Denne korte guiden dekker hvor du kjøper billetter, når du bør stille deg i kø og hva du gjør ved ankomst i Positanos havn for å gjøre den siste etappen opp til Hostel Brikette enklere."
+  },
+  "callouts": {
+    "tip": "Trenger du alle transportalternativene? Se %HOWTO:how-to-get-here|oversikten «Slik kommer du hit»% for busser, taxier og kombinerte reiser."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "list": [
+        "Sett av omtrent 45–60 minutter kai-til-kai i sesongen.",
+        "Fergene er væravhengige og kan bli utsolgt i høysesong.",
+        "Å kjøpe billetter litt tidlig sikrer seter og gjør ombordstigningen smidigere."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Slik kommer du til havnen i Sorrento (Marina Piccola)",
+      "list": [
+        "Gå til Sorrentos Marina Piccola (fergehavnen) og følg skiltene til billettlukene.",
+        "Sjekk neste avgang til Positano og bekreft operatøren (for eksempel Travelmar eller NLG).",
+        "Kjøp billetten ved skranken eller på nett og gå til angitt gate."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Kjøp billett og gå om bord",
+      "list": [
+        "Kom 15–20 minutter før avgang slik at du kan stille deg i kø uten stress.",
+        "Hold billetten klar for kontroll og følg instruksjonene fra mannskapet når du går om bord.",
+        "Sett bagasje i det angitte området og ta med det viktigste med deg."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ved ankomst i Positano",
+      "list": [
+        "Gå i land på hovedkaien i Positano (Spiaggia Grande).",
+        "Vurder å bruke den offisielle portørtjenesten på brygga for tunge kofferter (betalt tjeneste).",
+        "For en enklere tur til Hostel Brikette kan du ta den lokale Interno-bussen opp til «Chiesa Nuova» og gå det siste stykket.",
+        "Alternativt kan du gå oppover Via dei Mulini/Via G. Marconi og sette av ekstra tid til stigningen."
+      ]
+    }
+  ]
+}

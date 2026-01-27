@@ -1,0 +1,45 @@
+{
+  "seo": {
+    "title": "Positano nach Salerno mit dem Bus – Schritt für Schritt",
+    "description": "Tür-zu-Tür-Anleitung vom Hostel Brikette nach Salerno über Amalfi: Wo du einsteigst, Tickets kaufst, Fahrpläne liest und in Amalfi umsteigst."
+  },
+  "intro": {},
+  "callouts": {
+    "tip": "Du brauchst andere Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reiseüberblick"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA-Busse und Tickets"
+    },
+    {
+      "id": "timetable",
+      "title": "Fahrplan und Planung",
+      "body": "Prüfe die aktuellen Zeiten auf %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Suche beide Etappen und plane Pufferzeit für den Umstieg in Amalfi ein."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle"
+    },
+    {
+      "id": "walk",
+      "title": "Zu Fuß vom Hostel zur Haltestelle"
+    },
+    {
+      "id": "wait",
+      "title": "Ticket kaufen und aufs Boarding warten"
+    },
+    {
+      "id": "transfer",
+      "title": "In Amalfi umsteigen"
+    },
+    {
+      "id": "arrival",
+      "title": "Ankunft in Salerno"
+    }
+  ]
+}

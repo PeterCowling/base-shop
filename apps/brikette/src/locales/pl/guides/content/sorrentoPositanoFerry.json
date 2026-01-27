@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrento do Positano promem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku z Sorrento do Positano promem: bilety, wskazówki dotyczące odprawy oraz jak dostać się z portu w Positano do Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrento do Positano — prom",
+    "body": "Popłyń bezpośrednim promem z Marina Piccola w Sorrento do Positano. Ten krótki przewodnik pokazuje, gdzie kupić bilety, kiedy ustawić się w kolejce oraz co zrobić po przypłynięciu do portu w Positano, aby łatwiej dotrzeć do Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Potrzebujesz wszystkich opcji transportu? Sprawdź %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć% z informacjami o autobusach, taksówkach i trasach łączonych."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd podróży",
+      "list": [
+        "W sezonie zaplanuj około 45–60 minut od przystani do przystani.",
+        "Promy zależą od pogody i w godzinach szczytu mogą być wyprzedane.",
+        "Zakup biletu z wyprzedzeniem zwiększa szanse na miejsce i ułatwia boarding."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Jak dotrzeć do portu w Sorrento (Marina Piccola)",
+      "list": [
+        "Udaj się do Marina Piccola w Sorrento i podążaj za oznaczeniami do kas biletowych.",
+        "Sprawdź najbliższy rejs do Positano i potwierdź operatora (np. Travelmar lub NLG).",
+        "Kup bilet w kasie lub online i przejdź do wskazanej bramki."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Kup bilet i wejdź na pokład",
+      "list": [
+        "Przyjdź 15–20 minut przed odpłynięciem, aby spokojnie ustawić się w kolejce.",
+        "Trzymaj bilet pod ręką do kontroli i stosuj się do poleceń załogi podczas wchodzenia na pokład.",
+        "Umieść bagaż w wyznaczonej strefie i zachowaj przy sobie najważniejsze rzeczy."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Przyjazd do Positano",
+      "list": [
+        "Wysiądź na głównym molo w Positano (Spiaggia Grande).",
+        "W przypadku ciężkich bagaży rozważ płatną, oficjalną usługę tragarzy na molo.",
+        "Aby łatwiej dotrzeć do Hostel Brikette, wsiądź w lokalny autobus Interno jadący pod górę do “Chiesa Nuova”, a następnie przejdź krótki odcinek pieszo.",
+        "Alternatywnie wejdź pod górę ulicami Via dei Mulini/Via G. Marconi, planując dodatkowy czas na podejście."
+      ]
+    }
+  ]
+}

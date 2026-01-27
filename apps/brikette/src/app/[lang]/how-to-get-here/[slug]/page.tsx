@@ -159,11 +159,16 @@ const MIGRATED_ROUTE_SLUGS = new Set<string>([
   "positano-naples-center-ferry",
   "positano-ravello-bus",
   "positano-ravello-ferry-bus",
+  "positano-salerno-bus",
   "positano-salerno-ferry",
   "positano-sorrento-bus",
   "positano-sorrento-ferry",
+  "positano-to-naples-directions-by-ferry",
   "ravello-positano-bus",
+  "salerno-positano-bus",
   "salerno-positano-ferry",
+  "sorrento-positano-bus",
+  "sorrento-positano-ferry",
 ]);
 
 export default async function HowToGetHerePage({ params }: Props) {

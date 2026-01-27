@@ -201,10 +201,11 @@ describe("routeGuides", () => {
       }
     });
 
-    it("all GUIDES_INDEX entries have section help", () => {
+    it("all GUIDES_INDEX entries have section howToGetHere", () => {
+      // Updated from "help" to "howToGetHere" as part of guide-system-unification TASK-02
       for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
         const entry = GUIDES_INDEX.find((g) => g.key === key);
-        expect(entry?.section).toBe("help");
+        expect(entry?.section).toBe("howToGetHere");
       }
     });
 
@@ -269,6 +270,37 @@ describe("routeGuides", () => {
     it("URL inventory has no duplicate URLs", () => {
       const urlSet = new Set(allUrls);
       expect(urlSet.size).toBe(allUrls.length);
+    });
+  });
+
+  // TASK-02 (guide-system-unification): GUIDES_INDEX.section alignment with guideNamespaceKey()
+  describe("GUIDES_INDEX section alignment (guide-system-unification TASK-02)", () => {
+    it("how-to-get-here route guide has section 'howToGetHere'", () => {
+      // Representative how-to-get-here route key
+      const entry = GUIDES_INDEX.find((g) => g.key === "amalfiPositanoBus");
+      expect(entry?.section).toBe("howToGetHere");
+    });
+
+    it("experiences guide has section 'experiences'", () => {
+      // Representative experiences key (default namespace)
+      const entry = GUIDES_INDEX.find((g) => g.key === "pathOfTheGods");
+      expect(entry?.section).toBe("experiences");
+    });
+
+    it("section matches guideNamespace baseKey for how-to-get-here routes", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const entry = GUIDES_INDEX.find((g) => g.key === key);
+        const namespace = guideNamespace("en", key as never);
+        expect(entry?.section).toBe(namespace.baseKey);
+      }
+    });
+
+    it("GUIDES_INDEX.section equals guideNamespaceKey() for all entries", () => {
+      // Core invariant: section is derived from guideNamespaceKey
+      for (const entry of GUIDES_INDEX) {
+        const namespace = guideNamespace("en", entry.key as never);
+        expect(entry.section).toBe(namespace.baseKey);
+      }
     });
   });
 });

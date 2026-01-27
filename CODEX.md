@@ -124,6 +124,8 @@ Co-Authored-By: Codex <noreply@openai.com>
 
 Codex follows the same confidence-gated workflow as Claude Code. Since Codex has no skill loader or slash commands, invoke each phase by reading the skill file and following its instructions.
 
+Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
+
 ### The Loop
 
 ```

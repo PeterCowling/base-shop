@@ -2,12 +2,12 @@
 Type: Plan
 Status: Active
 Domain: DevEx/Tooling
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-01-27
 Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-20
-Last-updated-by: Claude Opus 4.5 (MVP implementation complete)
+Last-updated: 2026-01-27
+Last-updated-by: Codex (doc updates: skills path + progressive disclosure pointers)
 ---
 
 # Agent Enhancement Plan
@@ -52,31 +52,33 @@ Key insight from external research: **Tools should be agent-first** — designed
 
 ### Claude Code Configuration
 - `.claude/settings.json` — Hooks, MCP servers, permissions
-- `.claude/prompts/*.md` — 12 skill templates
+- `.claude/skills/*/SKILL.md` — workflow skills
 - `CLAUDE.md` — Project architecture and patterns
 - `AGENTS.md` — Universal runbook (shared)
 
 ### Codex Configuration
 - `CODEX.md` — Thin overlay for network/timeout handling
-- References `AGENTS.md` and `.claude/prompts/`
+- References `AGENTS.md` and `.claude/skills/`
 - **No safety hooks** — Can run destructive commands
 - **No MCP access** — Can't use project MCP tools
 
 ### Skill Inventory (Current)
 ```
-.claude/prompts/
-├── plan-feature.md           ✅ Core workflow
-├── build-feature.md          ✅ Core workflow
-├── create-ui-component.md    ✅ Component creation
-├── add-component-tests.md    ✅ Testing
-├── add-form-validation.md    ✅ Forms
-├── add-e2e-test.md          ✅ E2E testing
-├── create-server-action.md   ✅ Next.js
-├── create-api-endpoint.md    ✅ API routes
-├── create-prisma-model.md    ✅ Database
-├── refactor-component.md     ✅ Refactoring
-├── apply-design-system.md    ✅ Design tokens
-└── migrate-to-app-router.md  ✅ Migration
+.claude/skills/
+├── fact-find/SKILL.md            ✅ Core workflow
+├── plan-feature/SKILL.md         ✅ Core workflow
+├── build-feature/SKILL.md        ✅ Core workflow
+├── re-plan/SKILL.md              ✅ Core workflow
+├── create-ui-component/SKILL.md  ✅ Component creation
+├── add-component-tests/SKILL.md  ✅ Testing
+├── add-form-validation/SKILL.md  ✅ Forms
+├── add-e2e-test/SKILL.md         ✅ E2E testing
+├── create-server-action/SKILL.md ✅ Next.js
+├── create-api-endpoint/SKILL.md  ✅ API routes
+├── create-prisma-model/SKILL.md  ✅ Database
+├── refactor-component/SKILL.md   ✅ Refactoring
+├── apply-design-system/SKILL.md  ✅ Design tokens
+└── migrate-to-app-router/SKILL.md ✅ Migration
 ```
 
 ## Critical Path (Execution Order)
@@ -210,16 +212,16 @@ Phases are thematic groupings; the critical path is the actual execution order a
     - No orphan skills (files in `skills/` not in manifest, excluding `TEMPLATE.md` and `README.md`)
     - YAML is valid
     - Required fields present (name, path, load)
-  - **Exception handling**: stub files in `.claude/prompts/` are not errors
+  - **Exception handling**: stub/redirect files in `.claude/skills/` are not errors
   - Add to existing CI workflow (`.github/workflows/ci.yml` exists)
   - Affects: `scripts/validate-agent-manifest.js` (new), `.github/workflows/ci.yml`
 
 - [x] **AGENT-05**: Migrate core skills to `.agents/`
   - **Scope**: Migrate only core workflow skills first (`plan-feature.md`, `build-feature.md`)
-  - **Remaining 10 skills**: Left in `.claude/prompts/` for now; migrate incrementally in follow-up tasks or leave in place if working
+  - **Remaining 10 skills**: Left in `.claude/skills/` for now; migrate incrementally in follow-up tasks or leave in place if working
   - Update references in `AGENTS.md`, `CODEX.md`, `CLAUDE.md`
   - **Backward compatibility strategy (no symlinks)**:
-    - Keep stub files in `.claude/prompts/` with this format:
+    - Keep stub files in `.claude/skills/` with this format:
       ```markdown
       # Moved
 
@@ -228,7 +230,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
       Please read the new location.
       ```
     - Avoids symlink issues on Windows/CI environments
-  - **README.md handling**: `.claude/prompts/README.md` stays in place (documents the prompts directory); add note about `.agents/` migration
+  - **Docs handling**: `.claude/HOW_TO_USE_SKILLS.md` stays in place (documents the skills system); add note about `.agents/` migration
   - Affects: Multiple files
 
 - [x] **AGENT-06**: Add skill reference section to CODEX.md
@@ -480,7 +482,7 @@ How we know this plan is working (qualitative, assessed quarterly by **DevEx**):
 | **Codex doesn't read `.agents/`** | AGENT-00 validates this before building infrastructure. Fallback: keep skills in repo root or embed in AGENTS.md. |
 | Codex ignores CODEX.md safety rules | Add rules to AGENTS.md as backup; both agents read it. Accept that documentation cannot enforce like hooks. |
 | Codex runs destructive command anyway | **Accepted risk** — documentation is best-effort. Optional wrapper scripts (AGENT-01b) provide enforcement if environment allows. |
-| Skill migration breaks existing workflows | Use stub files in `.claude/prompts/` with redirect instructions (no symlinks — Windows/CI safe) |
+| Skill migration breaks existing workflows | Use stub files in `.claude/skills/` with redirect instructions (no symlinks — Windows/CI safe) |
 | Manifest becomes stale | AGENT-04b adds CI validation; PRs fail if manifest references missing files |
 | Learnings/status files cause git conflicts | Gitignored by AGENT-03b; ephemeral local-only files |
 | Learnings accumulate indefinitely | Manual cleanup documented in README; no auto-delete (too complex) |
@@ -492,16 +494,16 @@ How we know this plan is working (qualitative, assessed quarterly by **DevEx**):
 
 If the `.agents/` migration causes problems:
 
-1. **Immediate**: Stub files in `.claude/prompts/` still work — agents can follow redirects or ignore them
-2. **Short-term**: Restore **original** skill files (not stubs) to `.claude/prompts/` from git history
-   - Use: `git checkout <commit-before-migration> -- .claude/prompts/plan-feature.md .claude/prompts/build-feature.md`
+1. **Immediate**: Stub files in `.claude/skills/` still work — agents can follow redirects or ignore them
+2. **Short-term**: Restore **original** skill files (not stubs) to `.claude/skills/` from git history
+   - Use: `git checkout <commit-before-migration> -- .claude/skills/plan-feature/SKILL.md .claude/skills/build-feature/SKILL.md`
 3. **Full rollback**:
    - `git rm -r .agents/`
-   - Restore original `.claude/prompts/` files from commit before migration (replaces stubs with originals)
+   - Restore original `.claude/skills/` files from commit before migration (replaces stubs with originals)
    - Revert changes to `AGENTS.md`, `CODEX.md`, `CLAUDE.md`, `.claude/config.json`
    - Remove AGENT-04b CI validation step
 
-**Decision point**: If AGENT-00 reveals Codex cannot read `.agents/`, abort Phase 2+ and keep skills in `.claude/prompts/`. Safety rules (Phase 1) can still proceed in AGENTS.md.
+**Decision point**: If AGENT-00 reveals Codex cannot read `.agents/`, abort Phase 2+ and keep skills in `.claude/skills/`. Safety rules (Phase 1) can still proceed in AGENTS.md.
 
 ## Notes
 
@@ -515,7 +517,7 @@ The `.claude/` directory is Claude Code-specific. OpenAI's Codex may not read it
 ### Backward Compatibility
 
 During migration:
-1. Keep stub files in `.claude/prompts/` that redirect to `.agents/skills/`
+1. Keep stub files in `.claude/skills/` that redirect to `.agents/skills/`
    - Example stub content: `# Moved to .agents/skills/workflows/plan-feature.md`
 2. Update documentation to reference new locations
 3. Remove stubs after confirming both agents use `.agents/` paths reliably

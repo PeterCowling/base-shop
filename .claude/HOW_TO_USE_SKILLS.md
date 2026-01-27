@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-The skills you've created are **prompt templates** that Claude can reference to follow your documented patterns consistently. Here's how to use them effectively.
+The skills in this repo are **workflow playbooks** (Markdown docs) that Claude can follow to apply your documented patterns consistently.
 
 ## Method 1: Direct Skill Reference (Recommended)
 
@@ -21,7 +21,7 @@ Simply mention the skill by name in your request to Claude:
 ```
 
 Claude will:
-1. Read the skill template from `.claude/prompts/`
+1. Read the skill doc from `.claude/skills/<skill>/SKILL.md`
 2. Follow the workflow defined in the skill
 3. Apply the patterns and conventions
 4. Run the quality checks
@@ -32,17 +32,17 @@ Claude can also infer which skill to use based on your request:
 
 ```
 "Create a Card component in packages/ui following atomic design"
-→ Claude uses: create-ui-component.md
+→ Claude uses: create-ui-component
 ```
 
 ```
 "Add a server action for creating products"
-→ Claude uses: create-server-action.md
+→ Claude uses: create-server-action
 ```
 
 ```
 "Write tests for the ProductCard component"
-→ Claude uses: add-component-tests.md
+→ Claude uses: add-component-tests
 ```
 
 ## Method 3: Combined Skills
@@ -71,7 +71,7 @@ Props: price (number), currency (string), discount (optional number)"
 ```
 
 **Claude will:**
-1. ✅ Read `.claude/prompts/create-ui-component.md`
+1. ✅ Read `.claude/skills/create-ui-component/SKILL.md`
 2. ✅ Create file in `packages/ui/components/atoms/price-tag/`
 3. ✅ Follow atomic design principles
 4. ✅ Use design tokens (no arbitrary values)
@@ -135,7 +135,7 @@ Password must be 8+ chars with uppercase, lowercase, and number."
 ```
 
 **Claude will:**
-1. ✅ Read `.claude/prompts/add-form-validation.md`
+1. ✅ Read `.claude/skills/add-form-validation/SKILL.md`
 2. ✅ Create Zod schema with specified rules
 3. ✅ Set up react-hook-form with zodResolver
 4. ✅ Add client-side validation
@@ -176,7 +176,7 @@ to the App Router. It fetches product data and has a review submission form."
 ```
 
 **Claude will:**
-1. ✅ Read `.claude/prompts/migrate-to-app-router.md`
+1. ✅ Read `.claude/skills/migrate-to-app-router/SKILL.md`
 2. ✅ Analyze the Pages Router file
 3. ✅ Create new App Router structure
 4. ✅ Convert data fetching to Server Components
@@ -202,7 +202,7 @@ Extract the filtering logic to a custom hook and split the ProductCard into smal
 ```
 
 **Claude will:**
-1. ✅ Read `.claude/prompts/refactor-component.md`
+1. ✅ Read `.claude/skills/refactor-component/SKILL.md`
 2. ✅ Read the current component
 3. ✅ Identify pain points
 4. ✅ Extract `useProductFilters` hook
@@ -267,8 +267,8 @@ and suggest improvements based on our conventions"
 
 Share skills with new team members:
 ```
-"New developer? Start by reading .claude/prompts/README.md
-to understand our development patterns"
+"New developer? Start by reading docs/agents/feature-workflow-guide.md
+and .claude/SKILLS_INDEX.md to understand our development patterns"
 ```
 
 ---
@@ -277,7 +277,7 @@ to understand our development patterns"
 
 ### 1. Skill Files are Markdown Templates
 
-Each `.md` file in `.claude/prompts/` contains:
+Each skill lives in `.claude/skills/<skill>/SKILL.md` and contains:
 - **Context**: When to use the skill
 - **Prerequisites**: What's needed
 - **Workflow**: Step-by-step instructions
@@ -485,7 +485,7 @@ with Server Components and proper data fetching"
 
 As you encounter new patterns:
 1. Document them as a new skill
-2. Add to `.claude/prompts/`
+2. Add as `.claude/skills/<skill>/SKILL.md` (new folder)
 3. Update `SKILLS_IMPLEMENTATION_STATUS.md`
 4. Reference the new skill in future work
 
@@ -493,7 +493,7 @@ As you encounter new patterns:
 
 ## Summary
 
-**Skills = Reusable Prompt Templates**
+**Skills = Reusable workflow playbooks**
 
 - Store your team's conventions and patterns
 - Ensure consistency across the codebase
@@ -503,4 +503,4 @@ As you encounter new patterns:
 
 **To use:** Just say `"Use [skill-name] to [task]"` and Claude will follow your documented patterns!
 
-**You now have 11 production-ready skills.** Start using them in your next Claude conversation to see the difference in code quality and consistency.
+Start using them in your next Claude conversation to see the difference in code quality and consistency.

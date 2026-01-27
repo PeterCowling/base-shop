@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Documentation
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-27
 
 # Quick Index for Claude
 
@@ -14,9 +14,12 @@ This is a fast-reference guide to help Claude navigate this monorepo efficiently
 - [CLAUDE.md](../CLAUDE.md) - Claude-specific context (~160 lines)
 - [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md) - Now/Next/Later index
 
-### Workflow Prompts
-- [.claude/prompts/plan-feature.md](../.claude/prompts/plan-feature.md) - Planning mode
-- [.claude/prompts/build-feature.md](../.claude/prompts/build-feature.md) - Building mode
+### Workflow (Progressive Disclosure)
+- [docs/agents/feature-workflow-guide.md](agents/feature-workflow-guide.md) - Short entrypoint (all agents)
+- [.claude/skills/fact-find/SKILL.md](../.claude/skills/fact-find/SKILL.md) - Fact-find mode
+- [.claude/skills/plan-feature/SKILL.md](../.claude/skills/plan-feature/SKILL.md) - Planning mode
+- [.claude/skills/build-feature/SKILL.md](../.claude/skills/build-feature/SKILL.md) - Building mode
+- [.claude/skills/re-plan/SKILL.md](../.claude/skills/re-plan/SKILL.md) - Re-plan mode
 
 ### Key Policies
 - [docs/testing-policy.md](testing-policy.md) - Testing rules (MANDATORY)

@@ -85,6 +85,16 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 **Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
+For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
+
+## Confidence Index (CI) Policy (Planning)
+
+In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+
+- **CI ≥90 is a motivation, not a quota.** Do not “raise CI” by deleting planned work or narrowing scope without an explicit user decision.
+- **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
+- **If CI <90:** keep the work, but add a clear **“What would make this ≥90%”** section (concrete actions/evidence that would raise confidence).
+- **Build gate still applies:** `/build-feature` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/re-plan`.
 
 ## Progressive Context Loading
 

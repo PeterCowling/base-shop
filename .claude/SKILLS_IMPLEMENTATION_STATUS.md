@@ -299,7 +299,7 @@ Real examples from this codebase...
 2. Fill in specific details
 3. Add real code examples from the repo
 4. Include quality checks
-5. Save to `.claude/prompts/`
+5. Save to `.claude/skills/<skill>/SKILL.md` (new folder)
 
 ### Option 2: Team Collaboration
 1. Assign skills to team members

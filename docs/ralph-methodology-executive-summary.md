@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-27
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
 
@@ -81,7 +81,7 @@ Benefit: faster orientation and less context thrash.
 
 - Planning mode: read and write a plan only.
 - Building mode: implement approved plan tasks, one per iteration.
-- Prompts: `.claude/prompts/plan-feature.md` and `.claude/prompts/build-feature.md`.
+- Skills: `.claude/skills/plan-feature/SKILL.md` and `.claude/skills/build-feature/SKILL.md`.
 
 ### 3) Ownership and Task Claiming
 

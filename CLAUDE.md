@@ -31,6 +31,7 @@ pause and ask the user before escalating.
 ## Workflow
 
 Feature flow: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%).
+Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ## Type Intelligence (MCP)
 

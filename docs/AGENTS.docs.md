@@ -194,6 +194,9 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
   - Optional lifecycle pointers:
     - `Supersedes: <path>` (when this plan replaces another)
     - `Superseded-by: <path>` (only on the superseded plan)
+  - Optional confidence metadata (recommended when using confidence-gated workflows):
+    - `Overall-confidence: <0–100%>`
+    - `Confidence-Method: <short description of rubric>`
 
 - **Conventions**
   - Tasks have explicit IDs and checkboxes:
@@ -204,6 +207,12 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
     - Implementation hints (optional).
     - Dependencies.
     - Definition of done.
+
+- **Confidence (CI) conventions**
+  - In Plans, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+  - **CI ≥90 is a motivation, not a quota.** Plans should preserve breadth; do not delete planned work just to raise CI.
+  - If a task’s CI is <90, include a short **“What would make this ≥90%”** note (evidence/tests/spike needed to raise confidence).
+  - Build/implementation should still be confidence-gated (for example: only implement tasks that are ≥80% confidence and unblocked).
 
 Plans are the source of truth for **status**, not for **exact behaviour** (that is code + Contracts).
 

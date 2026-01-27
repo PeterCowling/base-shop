@@ -24,6 +24,27 @@ on:
       project-name:
         required: false
         type: string
+      # GitHub "environment" name (used for URL display and any environment rules)
+      environment-name:
+        required: false
+        type: string
+        default: "production"
+      # GitHub "environment" URL displayed in the Actions UI
+      # (Useful when deploying preview branches or custom domains.)
+      environment-url:
+        required: false
+        type: string
+        default: ""
+      # Extra args for scripts/post-deploy-health-check.sh (e.g. "--staging")
+      healthcheck-args:
+        required: false
+        type: string
+        default: ""
+      # Optional override for the health check URL (e.g. custom domain)
+      healthcheck-base-url:
+        required: false
+        type: string
+        default: ""
 
     secrets:
       CLOUDFLARE_API_TOKEN:
@@ -81,8 +102,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
-      name: production
-      url: https://${{ inputs.project-name }}.pages.dev
+      name: ${{ inputs.environment-name }}
+      url: ${{ inputs.environment-url != '' && inputs.environment-url || format('https://{0}.pages.dev', inputs.project-name) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -124,9 +145,15 @@ jobs:
         if: success() && inputs.project-name != ''
         run: |
           chmod +x scripts/post-deploy-health-check.sh
-          ./scripts/post-deploy-health-check.sh ${{ inputs.project-name }}
+          ./scripts/post-deploy-health-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}
         shell: bash
+        # NOTE: keep these env vars here so all app deploys get consistent behavior.
+        # Apps can still override via the reusable-workflow inputs (BASE_URL) or by
+        # passing EXTRA_ROUTES/MAX_RETRIES/RETRY_DELAY in their caller workflow.
+        # (If you need per-app values, extend this reusable workflow rather than
+        # copy-pasting it.)
         env:
+          BASE_URL: ${{ inputs.healthcheck-base-url }}
           EXTRA_ROUTES: "/api/health"
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"

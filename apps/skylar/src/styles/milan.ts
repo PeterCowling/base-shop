@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: Milan theme tokens are CSS classnames, not user copy */
 export const MILAN_CLASSES = {
   panel: "milan-panel",
   panelAccent: "milan-panel milan-panel--accent",
@@ -18,4 +17,3 @@ export const MILAN_CLASSES = {
   personValue: "milan-person-card__value",
   footer: "milan-footer",
 };
-/* eslint-enable ds/no-hardcoded-copy */

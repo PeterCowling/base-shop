@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- XA-0001 [ttl=2026-12-31] legacy copy in crypto error messages pending i18n overhaul */
 type AccessTokenPayload = {
   kind: "invite" | "admin";
   exp: number;

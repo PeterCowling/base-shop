@@ -3771,6 +3771,118 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
     ],
   }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoCapriFerry",
+    slug: "positano-capri-ferry",
+    contentKey: "positanoCapriFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoCapriFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoAmalfiFerry",
+    slug: "positano-amalfi-ferry",
+    contentKey: "positanoAmalfiFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoAmalfiFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesCenterPositanoFerry",
+    slug: "naples-center-positano-ferry",
+    contentKey: "naplesCenterPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesCenterPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoSorrentoFerry",
+    slug: "positano-sorrento-ferry",
+    contentKey: "positanoSorrentoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoSorrentoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
 ];
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));

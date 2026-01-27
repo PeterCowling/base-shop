@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Từ Positano đến Amalfi bằng phà | Hostel Brikette",
+    "description": "Hành trình đi phà từ Positano đến Amalfi từng bước: mua vé, nơi lên tàu ở Spiaggia Grande, lịch chạy và những điều cần lưu ý khi đến nơi."
+  },
+  "intro": {
+    "title": "Positano đến Amalfi — Phà",
+    "body": "Làm theo các bước sau để đi từ Positano tới Amalfi bằng phà. Bạn sẽ tìm thấy mẹo mua vé, nơi lên tàu tại Positano, những điều cần lưu ý khi đến nơi và liên kết xem lịch trực tiếp."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan hành trình",
+      "list": [
+        "Các chuyến phà theo mùa nối Positano và Amalfi với khung cảnh biển tuyệt đẹp.",
+        "Lịch chạy thay đổi theo mùa và thời tiết; luôn kiểm tra lịch chạy trong ngày.",
+        "Vào cao điểm hãy chừa thêm thời gian để xếp hàng tại bến."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Vé và lịch chạy",
+      "body": "Kiểm tra giờ và giá mới nhất tại %URL:https://travelmar.it/en|Travelmar% và %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Lịch phà%.",
+      "list": [
+        "Mua vé trực tuyến trước mùa cao điểm hoặc tại quầy của hãng ngay bến tàu.",
+        "Đến trước giờ khởi hành 15–20 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu.",
+        "Giữ sẵn vé hoặc mã QR để nhân viên kiểm tra."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Lên tàu ở Positano",
+      "list": [
+        "Các chuyến khởi hành từ cầu cảng chính của Positano tại Spiaggia Grande.",
+        "Dọc bờ biển có các quầy của hãng; bảng thông tin hiển thị chuyến kế tiếp của từng hãng.",
+        "Kiểm tra bến chính xác trên vé; nhân viên sẽ hướng dẫn nếu bạn chưa chắc."
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Đến Amalfi",
+      "list": [
+        "Tàu cập bến các cầu cảng ven biển Amalfi gần Piazza Flavio Gioia.",
+        "Khu trung tâm lịch sử và đường dạo biển nằm ngay cạnh cảng.",
+        "Muốn đi tiếp bằng xe buýt (ví dụ Ravello hoặc Sorrento), theo biển chỉ tới điểm dừng SITA gần bờ biển."
+      ]
+    }
+  ]
+}

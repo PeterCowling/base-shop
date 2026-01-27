@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Centre de Naples vers Positano en ferry | Hostel Brikette",
+    "description": "Itinéraire pas à pas du centre de Naples à Positano en ferry : transfert vers le port, billets, embarquement et conseils à l'arrivée."
+  },
+  "intro": {
+    "title": "Centre de Naples vers Positano — Ferry",
+    "body": "Suivez ces indications pour voyager du centre de Naples à Positano entièrement par la mer. Ce guide couvre le court transfert depuis Napoli Centrale jusqu'au port, l'achat des billets de ferry, l'embarquement et ce à quoi vous attendre à l'arrivée au quai de Positano."
+  },
+  "callouts": {
+    "tip": "Vous cherchez d'autres trajets ou des solutions en cas de mer agitée ? Ouvrez la %HOWTO:how-to-get-here|présentation « How to Get Here »%."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Positano"
+    },
+    {
+      "id": "boarding",
+      "title": "Embarquement au port",
+      "body": "Arrivez au quai 20 à 30 minutes en avance pour échanger les bons de réservation si nécessaire et faire la queue pour embarquer. Suivez les consignes du personnel pour déposer vos bagages et faites attention aux mouvements de la passerelle avec la houle."
+    },
+    {
+      "id": "fallback",
+      "title": "Si les ferries sont annulés",
+      "body": "En cas d'annulation due à la météo ou à la mer, basculez sur l'itinéraire train + bus via Sorrente. C'est plus long mais disponible dans la plupart des conditions. Utilisez cette solution de rechange : %HOWTO:naples-center-train-bus|Centre de Naples → Positano en train puis bus%."
+    },
+    {
+      "id": "journey",
+      "title": "Aperçu du trajet",
+      "body": "Les ferries entre Naples et Positano circulent surtout au printemps et en été et peuvent être annulés en cas de mauvais temps. La durée totale est généralement de 1,5 à 2,5 heures selon le type de bateau et le temps d'attente au port."
+    },
+    {
+      "id": "tickets",
+      "title": "Billets de ferry et opérateurs"
+    },
+    {
+      "id": "transfer",
+      "title": "Rejoindre le port depuis Napoli Centrale",
+      "body": "Le transport en commun le plus rapide est le tram 1 depuis la Piazza Garibaldi jusqu'à Municipio (pour Molo Beverello) ou Marittima (pour Porta di Massa). Un taxi est également simple et abordable pour les groupes."
+    }
+  ]
+}

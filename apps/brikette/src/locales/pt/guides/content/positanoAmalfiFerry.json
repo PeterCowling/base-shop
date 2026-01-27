@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Positano para Amalfi de ferry | Hostel Brikette",
+    "description": "Passo a passo de Positano para Amalfi de ferry: bilhetes, onde embarcar na Spiaggia Grande, horários e o que esperar à chegada."
+  },
+  "intro": {
+    "title": "Positano para Amalfi — Ferry",
+    "body": "Siga estes passos para viajar de Positano para Amalfi de ferry. Encontre dicas sobre bilhetes, onde embarcar em Positano, o que esperar na chegada e ligações para horários atualizados."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumo da viagem",
+      "list": [
+        "Ferries sazonais ligam Positano e Amalfi com vistas costeiras panorâmicas.",
+        "Os serviços podem variar consoante a época e o estado do tempo; confirme sempre o horário do próprio dia.",
+        "Preveja tempo extra nos meses de maior procura para as filas no cais."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e horários",
+      "body": "Consulte horários e preços atualizados em %URL:https://travelmar.it/en|Travelmar% e %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Horários de ferry%.",
+      "list": [
+        "Compre bilhetes online com antecedência na época alta ou nos balcões dos operadores junto ao cais.",
+        "Chegue 15–20 minutos antes da partida para trocar vouchers e aguardar na fila de embarque.",
+        "Mantenha o bilhete ou o código QR acessível para as verificações da equipa."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Onde embarcar em Positano",
+      "list": [
+        "As partidas realizam-se no cais principal de Positano, na Spiaggia Grande.",
+        "Os balcões dos operadores alinham-se junto à marginal; a sinalização mostra a próxima partida de cada empresa.",
+        "Confirme o cais correto no seu bilhete; a equipa pode orientá-lo em caso de dúvida."
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Chegada a Amalfi",
+      "list": [
+        "Os barcos chegam aos cais à beira-mar de Amalfi, perto da Piazza Flavio Gioia.",
+        "O centro histórico e o passeio marítimo ficam imediatamente ao lado do porto.",
+        "Para autocarros seguintes (por exemplo, Ravello ou Sorrento), siga a sinalização para a paragem da SITA junto à marginal."
+      ]
+    }
+  ]
+}

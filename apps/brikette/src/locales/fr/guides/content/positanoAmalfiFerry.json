@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Positano vers Amalfi en ferry | Hostel Brikette",
+    "description": "Trajet détaillé en ferry de Positano à Amalfi : billets, embarquement à Spiaggia Grande, horaires et arrivée."
+  },
+  "intro": {
+    "title": "Positano vers Amalfi — ferry",
+    "body": "Suivez ces étapes pour voyager de Positano à Amalfi en ferry. Vous trouverez des conseils sur les billets, le point d'embarquement à Positano, ce qui vous attend à l'arrivée et des liens vers les horaires en direct."
+  },
+  "sections": [
+    {
+      "id": "amalfiArrival",
+      "title": "Arrivée à Amalfi",
+      "list": [
+        "Les bateaux accostent aux quais du front de mer d'Amalfi près de la Piazza Flavio Gioia.",
+        "Le centre historique et la promenade se trouvent juste à côté du port.",
+        "Pour les bus en correspondance (par exemple vers Ravello ou Sorrente), suivez les panneaux vers l'arrêt SITA près du front de mer."
+      ]
+    },
+    {
+      "id": "overview",
+      "title": "Vue d'ensemble du trajet",
+      "list": [
+        "Des ferries saisonniers relient Positano et Amalfi avec une vue panoramique sur la côte.",
+        "Les services varient selon la saison et la météo ; vérifiez toujours l'horaire le jour du départ.",
+        "Prévoyez du temps supplémentaire en haute saison pour les files d'attente sur la jetée."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Où embarquer à Positano",
+      "list": [
+        "Les départs se font depuis la jetée principale de Positano sur la Spiaggia Grande.",
+        "Les guichets des opérateurs bordent le front de mer ; la signalisation affiche le prochain départ pour chaque compagnie.",
+        "Vérifiez le bon quai sur votre billet ; le personnel peut vous orienter en cas de doute."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billets et horaires",
+      "body": "Consultez les derniers horaires et tarifs sur %URL:https://travelmar.it/en|Travelmar% et %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Horaires des ferries%.",
+      "list": [
+        "Achetez vos billets en ligne à l'avance en haute saison ou directement aux guichets des opérateurs sur le quai.",
+        "Arrivez 15 à 20 minutes avant le départ pour échanger vos bons et faire la queue pour l'embarquement.",
+        "Gardez votre billet ou code QR à portée de main pour les contrôles du personnel."
+      ]
+    }
+  ]
+}

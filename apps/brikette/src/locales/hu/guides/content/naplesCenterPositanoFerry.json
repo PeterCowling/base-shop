@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Nápoly központjából Positanóba komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a nápolyi belvárosból Positanóba tartó kompútról: átszállás a kikötőhöz, jegyek, beszállás és tippek az érkezéshez."
+  },
+  "intro": {
+    "title": "Nápoly központjából Positanóba — komp",
+    "body": "Használd ezeket az útmutatásokat, hogy teljes egészében tengeren utazz Nápoly belvárosából Positanóba. Az útmutató bemutatja a rövid utat a Napoli Centrale állomástól a kikötőig, a kompjegyek vásárlását, a beszállást és azt, mire számíts Positanó mólóján érkezéskor."
+  },
+  "callouts": {
+    "tip": "Más útvonalat keresel vagy tartalékot viharos tenger esetére? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Út áttekintése",
+      "body": "A Nápoly és Positano közötti kompok tavasszal és nyáron közlekednek a leggyakrabban, rossz idő esetén pedig törölhetik őket. Az utazás általában 1,5–2,5 órát vesz igénybe a hajó típusától és a kikötői várakozási időtől függően."
+    },
+    {
+      "id": "transfer",
+      "title": "Juss el a kikötőbe a Napoli Centrale állomástól",
+      "body": "A leggyorsabb tömegközlekedési megoldás az 1-es villamos a Piazza Garibaldiról a Municipio (Molo Beverello) vagy Marittima (Porta di Massa) megállóig. Csoportoknak a taxi is egyszerű és megfizethető."
+    },
+    {
+      "id": "tickets",
+      "title": "Kompjegyek és szolgáltatók"
+    },
+    {
+      "id": "boarding",
+      "title": "Beszállás a kikötőben",
+      "body": "Érkezz 20–30 perccel korábban a mólóra, hogy szükség esetén beválthasd a foglalási vouchereket, és beállhass a beszálláshoz. Kövesd a személyzet utasításait a csomagok elhelyezésénél, és figyelj a lépteidre, amikor a palló a hullámzással együtt mozog."
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Positanóba"
+    },
+    {
+      "id": "fallback",
+      "title": "Ha törlik a kompokat",
+      "body": "Ha az időjárás vagy a tenger állapota miatt törlik a járatokat, válts a Szorrentón át vezető vonat + busz útvonalra. Hosszabb, de a legtöbb körülmény között közlekedik. Tartalék útvonal: %HOWTO:naples-center-train-bus|Nápoly központja → Positano vonattal, majd busszal%."
+    }
+  ]
+}

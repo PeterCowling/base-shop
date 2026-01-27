@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Trung tâm Naples đến Positano bằng phà | Hostel Brikette",
+    "description": "Từng bước từ trung tâm Naples tới Positano bằng phà: chuyển từ ga tới cảng, mua vé, lên tàu và mẹo khi cập bến."
+  },
+  "intro": {
+    "title": "Trung tâm Naples đến Positano — Phà",
+    "body": "Làm theo chỉ dẫn này để đi từ trung tâm Naples tới Positano hoàn toàn bằng đường biển. Hướng dẫn gồm chuyển tuyến ngắn từ Napoli Centrale ra cảng, mua vé phà, quy trình lên tàu và những điều cần biết khi đến cầu cảng Positano."
+  },
+  "callouts": {
+    "tip": "Cần tuyến khác hoặc phương án dự phòng khi biển động? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Tổng quan hành trình",
+      "body": "Phà giữa Naples và Positano chạy dày vào mùa xuân – hè và có thể bị hủy khi thời tiết xấu. Tổng thời gian thường 1,5–2,5 giờ tùy loại tàu và thời gian chờ ở cảng."
+    },
+    {
+      "id": "transfer",
+      "title": "Ra cảng từ Napoli Centrale",
+      "body": "Phương tiện công cộng nhanh nhất là tàu điện Tram 1 từ Piazza Garibaldi tới Municipio (ra Molo Beverello) hoặc Marittima (ra Porta di Massa). Đi taxi cũng đơn giản và tiết kiệm cho nhóm."
+    },
+    {
+      "id": "tickets",
+      "title": "Vé phà và hãng khai thác"
+    },
+    {
+      "id": "boarding",
+      "title": "Lên tàu tại cảng",
+      "body": "Đến bến trước 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu. Làm theo hướng dẫn của nhân viên khi xếp hành lý và chú ý bước chân khi cầu dẫn lắc theo sóng."
+    },
+    {
+      "id": "arrival",
+      "title": "Đến Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Nếu phà bị hủy",
+      "body": "Nếu phà bị hủy do thời tiết hoặc tình trạng biển, hãy chuyển sang tuyến tàu + xe buýt qua Sorrento. Tuy lâu hơn nhưng hầu hết điều kiện đều chạy được. Phương án dự phòng: %HOWTO:naples-center-train-bus|Trung tâm Naples → Positano bằng tàu rồi xe buýt%."
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Positano to Amalfi by Ferry | Hostel Brikette",
+    "description": "Step-by-step ferry trip from Positano to Amalfi: tickets, where to board at Spiaggia Grande, schedules, and what to expect on arrival."
+  },
+  "intro": {
+    "title": "Positano to Amalfi — Ferry",
+    "body": "Follow these steps to travel from Positano to Amalfi by ferry. You’ll find tips on tickets, where to board in Positano, what to expect on arrival, and links to live schedules."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "list": [
+        "Seasonal ferries link Positano and Amalfi with scenic coastal views.",
+        "Services may vary by season and weather; always check the day-of schedule.",
+        "Allow extra time in peak months for queues at the pier."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets and schedules",
+      "body": "Check latest times and prices on %URL:https://travelmar.it/en|Travelmar% and %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Ferry schedules%.",
+      "list": [
+        "Buy tickets online in advance during high season or at operator booths by the pier.",
+        "Arrive 15–20 minutes before departure to exchange vouchers and queue for boarding.",
+        "Keep your ticket or QR code accessible for staff checks."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Where to board in Positano",
+      "list": [
+        "Departures are from Positano’s main pier on Spiaggia Grande.",
+        "Operator booths line the waterfront; signage shows the next departure for each company.",
+        "Confirm the correct pier on your ticket; staff can direct you if unsure."
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Arriving in Amalfi",
+      "list": [
+        "Boats arrive at Amalfi’s waterfront piers near Piazza Flavio Gioia.",
+        "The historic center and promenade are directly adjacent to the port.",
+        "For onward buses (e.g., Ravello or Sorrento), follow signs to the SITA stop near the waterfront."
+      ]
+    }
+  ]
+}

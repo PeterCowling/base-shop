@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Centro de Nápoles a Positano en ferry | Hostel Brikette",
+    "description": "Paso a paso desde el centro de Nápoles hasta Positano en ferry: traslado al puerto, billetes, embarque y consejos de llegada."
+  },
+  "intro": {
+    "title": "Centro de Nápoles a Positano — Ferry",
+    "body": "Utiliza estas indicaciones para viajar desde el centro de Nápoles hasta Positano completamente por mar. Esta guía cubre el corto traslado desde Napoli Centrale al puerto, la compra de billetes de ferry, el embarque y qué esperar al llegar al muelle de Positano."
+  },
+  "callouts": {
+    "tip": "¿Buscas otras rutas o planes alternativos en caso de mar picado? Abre la %HOWTO:how-to-get-here|guía general de Cómo llegar%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Resumen del viaje",
+      "body": "Los ferris entre Nápoles y Positano operan con mayor frecuencia en primavera y verano y pueden cancelarse con mal tiempo. El tiempo total de viaje suele ser de 1,5 a 2,5 horas, según el tipo de embarcación y las esperas en el puerto."
+    },
+    {
+      "id": "transfer",
+      "title": "Llegar al puerto desde Napoli Centrale",
+      "body": "El transporte público más rápido es el tranvía 1 desde Piazza Garibaldi hasta Municipio (para Molo Beverello) o Marittima (para Porta di Massa). Un taxi también es sencillo y económico para grupos."
+    },
+    {
+      "id": "tickets",
+      "title": "Billetes y operadores de ferry"
+    },
+    {
+      "id": "boarding",
+      "title": "Embarque en el puerto",
+      "body": "Llega al muelle 20–30 minutos antes para canjear cualquier vale de reserva si es necesario y hacer fila para el embarque. Sigue las instrucciones del personal para colocar el equipaje y vigila tus pasos cuando la pasarela se mueva con el oleaje."
+    },
+    {
+      "id": "arrival",
+      "title": "Llegada a Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Si se cancelan los ferris",
+      "body": "En caso de cancelaciones por condiciones meteorológicas o del mar, cambia a la ruta de tren y autobús vía Sorrento. Tarda más, pero funciona en la mayoría de las condiciones. Usa esta alternativa: %HOWTO:naples-center-train-bus|Centro de Nápoles → Positano en tren y luego en autobús%."
+    }
+  ]
+}

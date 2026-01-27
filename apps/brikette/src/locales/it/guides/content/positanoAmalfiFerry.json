@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Positano ad Amalfi in traghetto | Hostel Brikette",
+    "description": "Viaggio in traghetto da Positano ad Amalfi passo dopo passo: biglietti, imbarco alla Spiaggia Grande, orari e cosa aspettarsi all'arrivo."
+  },
+  "intro": {
+    "title": "Positano ad Amalfi — Traghetto",
+    "body": "Segui questi passaggi per viaggiare da Positano ad Amalfi in traghetto. Troverai consigli su biglietti, punto di imbarco a Positano, cosa ti aspetta all'arrivo e link agli orari aggiornati."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "list": [
+        "I traghetti stagionali collegano Positano e Amalfi offrendo viste spettacolari sulla costa.",
+        "Le corse variano in base alla stagione e al meteo: controlla sempre gli orari del giorno stesso.",
+        "Nei mesi di punta prevedi tempo extra per le code al molo."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Biglietti e orari",
+      "body": "Verifica orari e prezzi aggiornati su %URL:https://travelmar.it/en|Travelmar% e su %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Orari dei traghetti%.",
+      "list": [
+        "In alta stagione acquista i biglietti online in anticipo o alle biglietterie degli operatori sul molo.",
+        "Presentati 15-20 minuti prima della partenza per cambiare eventuali voucher e metterti in fila per l'imbarco.",
+        "Tieni il biglietto o il codice QR a portata di mano per i controlli del personale."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Dove imbarcarsi a Positano",
+      "list": [
+        "Le partenze avvengono dal molo principale di Positano sulla Spiaggia Grande.",
+        "Le biglietterie degli operatori costeggiano il lungomare; i cartelli indicano la prossima partenza per ciascuna compagnia.",
+        "Controlla sul biglietto il molo corretto; se hai dubbi il personale saprà indirizzarti."
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Arrivo ad Amalfi",
+      "list": [
+        "Le imbarcazioni attraccano ai moli sul lungomare di Amalfi vicino a Piazza Flavio Gioia.",
+        "Il centro storico e il lungomare sono proprio accanto al porto.",
+        "Per proseguire in autobus (ad esempio verso Ravello o Sorrento) segui le indicazioni per la fermata SITA vicino al lungomare."
+      ]
+    }
+  ]
+}

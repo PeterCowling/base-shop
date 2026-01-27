@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Da Napoli centro a Positano in traghetto | Hostel Brikette",
+    "description": "I passaggi dal centro di Napoli a Positano in traghetto: trasferimento al porto, biglietti, imbarco e suggerimenti per l'arrivo."
+  },
+  "intro": {
+    "title": "Napoli centro → Positano — Traghetto",
+    "body": "Segui queste indicazioni per viaggiare dal centro di Napoli a Positano interamente via mare. La guida copre il breve trasferimento da Napoli Centrale al porto, l'acquisto dei biglietti, l'imbarco e cosa aspettarsi all'arrivo al molo di Positano."
+  },
+  "callouts": {
+    "tip": "Cerchi altre tratte o un piano B in caso di mare mosso? Apri la %HOWTO:how-to-get-here|guida Come arrivare%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Panoramica del viaggio",
+      "body": "I traghetti tra Napoli e Positano sono più frequenti in primavera ed estate e possono essere cancellati in caso di maltempo. Il tempo totale di viaggio varia in genere tra 1,5 e 2,5 ore a seconda del tipo di imbarcazione e delle attese al porto."
+    },
+    {
+      "id": "transfer",
+      "title": "Raggiungere il porto da Napoli Centrale",
+      "body": "Il mezzo pubblico più rapido è il Tram 1 da Piazza Garibaldi verso Municipio (per Molo Beverello) o Marittima (per Porta di Massa). Un taxi è altrettanto semplice ed economico se viaggiate in gruppo."
+    },
+    {
+      "id": "tickets",
+      "title": "Biglietti e compagnie"
+    },
+    {
+      "id": "boarding",
+      "title": "Imbarco al porto",
+      "body": "Arriva al molo 20–30 minuti prima per convertire eventuali voucher e metterti in coda per l'imbarco. Segui le indicazioni del personale per il posizionamento dei bagagli e fai attenzione al movimento della passerella con il moto ondoso."
+    },
+    {
+      "id": "arrival",
+      "title": "Arrivo a Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Se i traghetti sono sospesi",
+      "body": "In caso di cancellazioni dovute a condizioni meteo o del mare, passa all'itinerario treno + autobus via Sorrento. Richiede più tempo ma funziona quasi sempre. Segui questo piano alternativo: %HOWTO:naples-center-train-bus|Napoli centro → Positano in treno e autobus%."
+    }
+  ]
+}

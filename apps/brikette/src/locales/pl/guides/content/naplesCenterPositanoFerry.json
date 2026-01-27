@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Centrum Neapolu do Positano promem | Hostel Brikette",
+    "description": "Instrukcja krok po kroku z centralnego Neapolu do Positano promem: dojazd do portu, bilety, wejście na pokład i wskazówki po przybyciu."
+  },
+  "intro": {
+    "title": "Centrum Neapolu → Positano — prom",
+    "body": "Skorzystaj z tych wskazówek, aby dotrzeć z centrum Neapolu do Positano wyłącznie drogą morską. Przewodnik obejmuje krótki transfer z Napoli Centrale do portu, zakup biletów promowych, procedurę wejścia na pokład oraz to, czego spodziewać się po przybyciu na molo w Positano."
+  },
+  "callouts": {
+    "tip": "Szukasz innych tras lub planu awaryjnego na wypadek sztormu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Przegląd podróży",
+      "body": "Promy między Neapolem a Positano kursują najczęściej wiosną i latem i mogą zostać odwołane przy złej pogodzie. Całkowita podróż trwa zwykle 1,5–2,5 godziny, w zależności od rodzaju jednostki i czasu oczekiwania w porcie."
+    },
+    {
+      "id": "transfer",
+      "title": "Dojazd do portu z Napoli Centrale",
+      "body": "Najszybszym transportem publicznym jest tramwaj 1 z Piazza Garibaldi do przystanku Municipio (dla Molo Beverello) lub Marittima (dla Porta di Massa). Dla grup wygodna i niedroga jest także taksówka."
+    },
+    {
+      "id": "tickets",
+      "title": "Bilety promowe i przewoźnicy"
+    },
+    {
+      "id": "boarding",
+      "title": "Wejście na pokład w porcie",
+      "body": "Przybądź na molo 20–30 minut wcześniej, aby w razie potrzeby wymienić vouchery i ustawić się w kolejce. Postępuj zgodnie z instrukcjami obsługi dotyczącymi bagażu i uważaj na trap, który może się poruszać przy fali."
+    },
+    {
+      "id": "arrival",
+      "title": "Przybycie do Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Gdy promy są odwołane",
+      "body": "Jeśli rejs zostanie anulowany z powodu pogody lub stanu morza, wybierz trasę pociąg + autobus przez Sorrento. Jest dłuższa, ale kursuje niemal w każdych warunkach. Skorzystaj z tej alternatywy: %HOWTO:naples-center-train-bus|Centrum Neapolu → Positano pociągiem i autobusem%."
+    }
+  ]
+}

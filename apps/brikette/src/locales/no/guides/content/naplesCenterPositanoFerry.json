@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Napoli sentrum til Positano med ferge | Hostel Brikette",
+    "description": "Trinn for trinn fra sentrale Napoli til Positano med ferge: transport til havnen, billetter, ombordstigning og tips ved ankomst."
+  },
+  "intro": {
+    "title": "Napoli sentrum til Positano — ferge",
+    "body": "Bruk disse veibeskrivelsene for å reise fra sentrum av Napoli til Positano kun med båt. Guiden dekker den korte overføringen fra Napoli Centrale til havnen, kjøp av fergebilletter, ombordstigning og hva du kan forvente når du kommer til Positanos brygge."
+  },
+  "callouts": {
+    "tip": "Ser du etter andre ruter eller alternativer i tilfelle grov sjø? Åpne %HOWTO:how-to-get-here|oversikten Slik kommer du hit%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reiseoversikt",
+      "body": "Ferger mellom Napoli og Positano går oftest om våren og sommeren og kan bli innstilt ved dårlig vær. Total reisetid er vanligvis 1,5–2,5 timer, avhengig av fartøytype og ventetid i havnen."
+    },
+    {
+      "id": "transfer",
+      "title": "Slik kommer du til havnen fra Napoli Centrale",
+      "body": "Den raskeste kollektivtransporten er trikk 1 fra Piazza Garibaldi til Municipio (for Molo Beverello) eller Marittima (for Porta di Massa). En taxi er også enkel og rimelig for grupper."
+    },
+    {
+      "id": "tickets",
+      "title": "Fergebilletter og operatører"
+    },
+    {
+      "id": "boarding",
+      "title": "Ombordstigning i havnen",
+      "body": "Kom til bryggen 20–30 minutter før avgang for å bytte eventuelle kuponger og stå i kø til ombordstigning. Følg personalets instruksjoner for plassering av bagasje og vær oppmerksom når landgangen beveger seg i bølgene."
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst i Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Hvis ferger blir innstilt",
+      "body": "Hvis avganger kanselleres på grunn av vær eller sjøforhold, bytt til tog- og bussruten via Sorrento. Den tar lengre tid, men går som regel i all slags vær. Bruk dette alternativet: %HOWTO:naples-center-train-bus|Napoli sentrum → Positano med tog og buss%."
+    }
+  ]
+}

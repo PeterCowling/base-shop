@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Naples Center to Positano by Ferry | Hostel Brikette",
+    "description": "Step-by-step from central Naples to Positano by ferry: port transfer, tickets, boarding, and arrival tips."
+  },
+  "intro": {
+    "title": "Naples Center to Positano — Ferry",
+    "body": "Use these directions to travel from central Naples to Positano entirely by sea. This guide covers the short transfer from Napoli Centrale to the port, buying ferry tickets, boarding, and what to expect on arrival at Positano’s pier."
+  },
+  "callouts": {
+    "tip": "Looking for other routes or backups in case of rough seas? Open the %HOWTO:how-to-get-here|How to Get Here overview%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Journey overview",
+      "body": "Ferries between Naples and Positano operate most frequently in spring and summer and may be cancelled in bad weather. Total travel time is typically 1.5–2.5 hours, depending on vessel type and waiting times at the port."
+    },
+    {
+      "id": "transfer",
+      "title": "Get to the port from Napoli Centrale",
+      "body": "The fastest public transport is Tram 1 from Piazza Garibaldi to Municipio (for Molo Beverello) or Marittima (for Porta di Massa). A taxi is also straightforward and inexpensive for groups."
+    },
+    {
+      "id": "tickets",
+      "title": "Ferry tickets and operators"
+    },
+    {
+      "id": "boarding",
+      "title": "Boarding at the port",
+      "body": "Arrive at the pier 20–30 minutes early to exchange any booking vouchers if required and to queue for boarding. Follow staff instructions for luggage placement and watch your step when the gangway moves with swell."
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "If ferries are cancelled",
+      "body": "In case of cancellations due to weather or sea conditions, switch to the rail and bus route via Sorrento. It takes longer but runs in most conditions. Use this fallback: %HOWTO:naples-center-train-bus|Naples Center → Positano by train then bus%."
+    }
+  ]
+}

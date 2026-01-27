@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Positano til Amalfi med ferge | Hostel Brikette",
+    "description": "Trinnvis fergetur fra Positano til Amalfi: billetter, hvor du går om bord ved Spiaggia Grande, rutetider og hva som venter ved ankomst."
+  },
+  "intro": {
+    "title": "Positano til Amalfi — ferge",
+    "body": "Følg disse trinnene for å reise fra Positano til Amalfi med ferge. Du får tips om billetter, hvor du går om bord i Positano, hva du kan forvente ved ankomst og lenker til oppdaterte rutetider."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "list": [
+        "Sesongbaserte ferger knytter Positano og Amalfi med naturskjønne kystutsikter.",
+        "Avgangene kan variere med sesong og vær; sjekk alltid dagens rutetid.",
+        "Sett av ekstra tid i høysesongen for kø ved brygga."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og rutetider",
+      "body": "Se oppdaterte tider og priser på %URL:https://travelmar.it/en|Travelmar% og %URL:https://www.positano.com/en/ferry-schedule|Positano.com — fergesruter%.",
+      "list": [
+        "Kjøp billetter på nett i høysesongen eller ved operatørbodene langs brygga.",
+        "Møt opp 15–20 minutter før avgang for å løse inn billetter og stille deg i kø.",
+        "Hold billetten eller QR-koden tilgjengelig for personalets kontroll."
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Hvor du går om bord i Positano",
+      "list": [
+        "Avgangene skjer fra Positanos hovedbrygge på Spiaggia Grande.",
+        "Operatørbodene ligger langs vannkanten; skilting viser neste avgang for hvert selskap.",
+        "Bekreft riktig brygge på billetten din; personalet hjelper deg hvis du er usikker."
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Ankomst i Amalfi",
+      "list": [
+        "Båtene legger til ved Amalfi-havnens brygger nær Piazza Flavio Gioia.",
+        "Det historiske sentrumet og promenaden ligger rett ved havnen.",
+        "For videre bussreise (f.eks. Ravello eller Sorrento), følg skiltene til SITA-holdeplassen ved vannkanten."
+      ]
+    }
+  ]
+}

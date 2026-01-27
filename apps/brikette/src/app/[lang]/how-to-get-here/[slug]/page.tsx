@@ -149,11 +149,15 @@ const MIGRATED_ROUTE_SLUGS = new Set<string>([
   "amalfi-positano-bus",
   "amalfi-positano-ferry",
   "naples-airport-positano-bus",
+  "naples-center-positano-ferry",
   "naples-center-train-bus",
   "positano-amalfi-bus",
+  "positano-amalfi-ferry",
+  "positano-capri-ferry",
   "positano-naples-airport-bus",
   "positano-naples-center-bus-train",
   "positano-sorrento-bus",
+  "positano-sorrento-ferry",
   "ravello-positano-bus",
 ]);
 

@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Neapel Zentrum nach Positano mit der Fähre | Hostel Brikette",
+    "description": "Schritt für Schritt von Neapels Zentrum nach Positano per Fähre: Transfer zum Hafen, Tickets, Boarding und Tipps zur Ankunft."
+  },
+  "intro": {
+    "title": "Neapel Zentrum nach Positano – Fähre",
+    "body": "Nutze diese Wegbeschreibung, um vom Zentrum Neapels vollständig auf dem Seeweg nach Positano zu reisen. Der Leitfaden erklärt den kurzen Transfer von Napoli Centrale zum Hafen, den Ticketkauf, das Boarding und was dich bei der Ankunft am Pier von Positano erwartet."
+  },
+  "callouts": {
+    "tip": "Du brauchst andere Routen oder einen Plan B bei rauer See? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“%."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reiseüberblick",
+      "body": "Fähren zwischen Neapel und Positano verkehren am häufigsten im Frühling und Sommer und können bei schlechtem Wetter ausfallen. Plane insgesamt etwa 1,5–2,5 Stunden ein, abhängig vom Schiffstyp und den Wartezeiten im Hafen."
+    },
+    {
+      "id": "transfer",
+      "title": "Vom Bahnhof zum Hafen",
+      "body": "Am schnellsten ist die Straßenbahn 1 von der Piazza Garibaldi zum Municipio (für Molo Beverello) bzw. Marittima (für Porta di Massa). Für Gruppen bietet sich auch ein Taxi an – unkompliziert und preiswert."
+    },
+    {
+      "id": "tickets",
+      "title": "Fährtickets und Betreiber"
+    },
+    {
+      "id": "boarding",
+      "title": "Boarding im Hafen",
+      "body": "Sei 20–30 Minuten vor Abfahrt am Pier, um ggf. Buchungsvoucher einzulösen und dich fürs Boarding anzustellen. Folge den Anweisungen des Personals zur Gepäckablage und pass auf, wenn sich die Gangway mit dem Wellengang bewegt."
+    },
+    {
+      "id": "arrival",
+      "title": "Ankunft in Positano"
+    },
+    {
+      "id": "fallback",
+      "title": "Wenn Fähren ausfallen",
+      "body": "Sollte das Wetter oder der Seegang Fahrten verhindern, wechsle auf die Zug-und-Bus-Route über Sorrent. Sie dauert länger, fährt aber bei fast allen Bedingungen. Nutze diesen Plan B: %HOWTO:naples-center-train-bus|Neapel Zentrum → Positano mit Zug und Bus%."
+    }
+  ]
+}

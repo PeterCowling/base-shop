@@ -5,13 +5,13 @@
 // IMPORTANT: Keep imports minimal to avoid env config dependencies in tests.
 // Prefer direct JSON imports and simple data files over complex modules.
 
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { GUIDES_INDEX } from "@/data/guides.index";
-import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
+import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { ARTICLE_KEYS, articleSlug } from "@/routes.assistance-helpers";
-import { guidePath } from "@/routes.guides-helpers";
+import { guidePath, guideSlug } from "@/routes.guides-helpers";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
@@ -80,18 +80,14 @@ export function listAppRouterUrls(): string[] {
       urls.push(`/${lang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`);
     }
 
-    // Dynamic: How to get here routes
-    // Read directly from JSON to avoid env config dependency chain
-    const howToSlug = getSlug("howToGetHere", lang);
-    const howToSlugs = Object.keys(howToGetHereRoutes.routes);
-    for (const slug of howToSlugs) {
-      urls.push(`/${lang}/${howToSlug}/${slug}`);
-    }
+    // NOTE: How-to-get-here routes are now enumerated via GUIDES_INDEX (TASK-04/TASK-05).
+    // They have section="help" but baseKey="howToGetHere", so guidePath() produces
+    // the correct URL format: /{lang}/how-to-get-here/{slug}
 
-    // Dynamic: Assistance articles
+    // Dynamic: Assistance guides (converted from legacy articles)
     const assistanceSlug = getSlug("assistance", lang);
-    for (const key of ARTICLE_KEYS) {
-      const slug = articleSlug(lang, key);
+    for (const key of ASSISTANCE_GUIDE_KEYS) {
+      const slug = guideSlug(lang, key);
       urls.push(`/${lang}/${assistanceSlug}/${slug}`);
     }
   }
@@ -111,10 +107,12 @@ export function getUrlCounts(): Record<string, number> {
     staticSections: langCount * STATIC_SECTIONS.length,
     draft: langCount,
     rooms: langCount * roomsData.length,
+    // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
     guides: langCount * GUIDES_INDEX.filter((g) => g.status === "published").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
-    howToGetHere: langCount * Object.keys(howToGetHereRoutes.routes).length,
-    assistance: langCount * ARTICLE_KEYS.length,
+    // howToGetHere now enumerated from guide key list (TASK-05)
+    howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,
+    assistance: langCount * ASSISTANCE_GUIDE_KEYS.length,
     total: listAppRouterUrls().length,
   };
 }

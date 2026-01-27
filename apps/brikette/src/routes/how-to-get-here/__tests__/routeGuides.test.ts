@@ -13,9 +13,10 @@ import {
 import { GUIDES_INDEX } from "@/data/guides.index";
 import { GUIDE_BASE_KEY_OVERRIDES, guideNamespace } from "@/guides/slugs/namespaces";
 import { GUIDE_SLUG_OVERRIDES } from "@/guides/slugs/overrides";
-import { resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
+import { guidePath, resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+import { listAppRouterUrls } from "@/routing/routeInventory";
 
 describe("routeGuides", () => {
   const routesJsonSlugs = Object.keys(routesJson.routes).sort();
@@ -229,6 +230,45 @@ describe("routeGuides", () => {
         expect(indexEntry?.tags).toEqual(expect.arrayContaining([...canonicalTags]));
         expect(canonicalTags).toEqual(expect.arrayContaining(indexEntry?.tags ?? []));
       }
+    });
+  });
+
+  // TASK-05: URL inventory integration
+  describe("URL inventory integration (TASK-05)", () => {
+    const supportedLangs = i18nConfig.supportedLngs as AppLanguage[];
+    const allUrls = listAppRouterUrls();
+
+    it("URL inventory includes all how-to-get-here routes", () => {
+      for (const lang of supportedLangs) {
+        for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+          const path = guidePath(lang, key as never);
+          expect(allUrls).toContain(path);
+        }
+      }
+    });
+
+    it("URL inventory has exactly 432 how-to-get-here route URLs (24 routes × 18 languages)", () => {
+      // Build set of expected URLs from guidePath for all routes
+      const expectedUrls = new Set<string>();
+      for (const lang of supportedLangs) {
+        for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+          expectedUrls.add(guidePath(lang, key as never));
+        }
+      }
+
+      // Verify count is exactly 24 × 18 = 432
+      expect(expectedUrls.size).toBe(24 * 18);
+
+      // Verify all expected URLs are in the inventory
+      const allUrlsSet = new Set(allUrls);
+      for (const url of expectedUrls) {
+        expect(allUrlsSet.has(url)).toBe(true);
+      }
+    });
+
+    it("URL inventory has no duplicate URLs", () => {
+      const urlSet = new Set(allUrls);
+      expect(urlSet.size).toBe(allUrls.length);
     });
   });
 });

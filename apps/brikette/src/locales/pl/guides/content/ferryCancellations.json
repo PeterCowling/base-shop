@@ -5,68 +5,68 @@
   },
   "linkLabel": "Odwołane promy i wzburzone morze",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Przygotuj kopię zapasową naziemną i monitoruj alerty na żywo, aby nadal nawiązywać połączenie."
+    "Wzburzone morze może zawiesić promy do i z Positano z niewielkim wyprzedzeniem.",
+    "Przygotuj kopię zapasową naziemną i monitoruj alerty na żywo, aby dalej dotrzeć do celu."
   ],
   "sections": [
     {
       "id": "monitoring",
-      "title": "Monitor live updates",
+      "title": "Monitoruj aktualizacje na żywo",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Sprawdzaj strony i aplikacje operatorów (Travelmar, NLG, Alilauro) oraz tablice informacyjne w porcie co 30 minut podczas wiatru.",
+        "Włącz alerty SMS/e-mail lub obserwuj lokalne kanały Telegram/media społecznościowe, by informacje o odwołaniach docierały nawet wtedy, gdy odejdziesz od brzegu."
       ]
     },
     {
       "id": "plan-b",
-      "title": "Tłumaczenie w przygotowaniu.",
+      "title": "Przesiądź się na ląd",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Gdy kursy przestają kursować, przesiądź się na autobusy i pociągi: SITA do Sorrento, potem Circumvesuviana do Neapolu/Pompejów, albo autobus przez Amalfi i regionalny pociąg z Salerno.",
+        "Zaplanuj co najmniej 60 minut zapasu przy ostatnich odjazdach dnia i potwierdź bilety przed wejściem na pokład."
       ]
     },
     {
       "id": "refunds",
-      "title": "Refunds & vouchers",
+      "title": "Zwroty i vouchery",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zanim opuścisz stanowisko, daj znać personelowi, czy wolisz najbliższy dostępny rejs czy kupon sezonowy."
+        "Zachowaj paragony i zrzut ekranu z powiadomieniem o odwołaniu, aby operator mógł przeprocesować zwrot, zmianę rezerwacji lub kredyty.",
+        "Zanim opuścisz stanowisko, daj znać personelowi, czy wolisz najbliższy dostępny rejs czy voucher sezonowy."
       ]
     },
     {
       "id": "overnight",
-      "title": "Managing overnight delays",
+      "title": "Jak radzić sobie z nocnymi opóźnieniami",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
+        "Powiadom miejsce noclegowe lub organizatora wycieczki zaraz po ogłoszeniu opóźnienia; wielu dostosuje check-in lub wyjazd, gdy zostanie wcześniej poinformowane.",
         "Zapytaj punkt informacyjny w porcie o wspólne taksówki, autobusy zastępcze lub przechowalnię bagażu, jeśli musisz poczekać do następnego ranka."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Sprawdź prognozę morską — wiatry powyżej 20 węzłów lub fala powyżej 1,5 m często przerywają rejsy.",
+    "Ubezpieczenie podróży obejmujące opóźnienia pogodowe pomaga zwrócić dodatkowe noclegi lub transfery zastępcze.",
+    "Poranne rejsy są najbardziej niezawodne; unikaj polegania na ostatnim statku dnia, gdy prognozowane są burze."
   ],
   "faqs": [
     {
       "q": "How do I know when sailings resume?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Personel kasy biletowej może również potwierdzić, czy kursuje następny statek, zanim opuścisz port."
+        "Odśwież stronę operatora lub kanały społecznościowe i słuchaj zapowiedzi głośnikowych w porcie — decyzje pojawiają się zwykle w ciągu 30 minut od planowanego odjazdu.",
+        "Personel kasy może też potwierdzić, czy następny statek kursuje, zanim opuścisz port."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Co się dzieje z moim biletem?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Pokaż paragon lub kod QR, by poprosić o zwrot, voucher lub zmianę na kolejny rejs.",
+        "Jeśli rezerwowałeś przez agencję online, podeślij jej zrzut ekranu odwołania w ciągu 24 godzin, by rozpoczęła proces zwrotu."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy któryś z promów kursuje w trudnych warunkach?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Nie — gdy Straż Przybrzeżna zamyka port, wszystkie odjazdy przestają kursować. Miej gotową alternatywę lądową.",
+        "Kilka prywatnych czarterów może płynąć przy umiarkowanych falach, ale są drogie i zależą od decyzji kapitana; przemyśl komfort i koszty."
       ]
     }
   ]

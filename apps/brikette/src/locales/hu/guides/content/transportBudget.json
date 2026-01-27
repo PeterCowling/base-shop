@@ -1,61 +1,61 @@
 {
   "seo": {
-    "title": "Közlekedés költséghatékonyan",
-    "description": "Busz- és kompbérletek, kedvezményes jegyek, mikor érdemes előre foglalni."
+    "title": "Pénztárcabarát közlekedés (Amalfi-part)",
+    "description": "Olcsó útvonalak és bérletek: mikor válaszd a buszt, a kompot vagy a shuttle-t, plusz tartalék tervek."
   },
-  "linkLabel": "Közlekedés költséghatékonyan",
+  "linkLabel": "Pénztárcabarát közlekedés",
   "intro": [
-    "A fordítás folyamatban van."
+    "Tartsd alacsonyan a közlekedési költségeket azzal, hogy különböző bérleteket, csúcsidőn kívüli indulásokat és közös transzfereket kombinálsz."
   ],
   "sections": [
     {
       "id": "passes",
-      "title": "Choose the right pass",
+      "title": "Válaszd ki a megfelelő bérletet",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használd az UNICO Costiera napi bérletet (12,40 €) a Sorrento és Salerno közötti korlátlan SITA buszokhoz — érvényesítsd az első utazásnál, és tartsd kéznél az ellenőrök számára.",
+        "Ha egy nap alatt két vagy több kompozás van tervben, hasonlítsd össze az olyan társaságok kombinált jegyeit, mint a Travelmar, amelyek kedvezményesen csomagolják az Amalfi és Positano közötti szakaszokat."
       ]
     },
     {
       "id": "combo-routes",
-      "title": "Combine modes smartly",
+      "title": "Kombináld okosan a jármódokat",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kösd össze az egyetlen komp szakaszt busszal, hogy megtartsd a kilátás élményét, de spórolj — reggel hajózz, visszafelé vegyél buszt, amikor az árak megemelkednek.",
+        "Oszd meg a taxit késő esti hazautazáskor, amikor a buszok megszűnnek; egy 80 eurós futam négy felé osztva gyorsabban megéri, mint órákig várni."
       ]
     },
     {
       "id": "advance",
-      "title": "Buy ahead when it helps",
+      "title": "Előre foglalj, ha érdemes",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Foglalj Trenitalia vagy Italo jegyeket Rómából/Neapolból korán a legjobb árért; a regionális kiegészítők Sorrentóig fix áron maradnak.",
+        "Foglalj online reptéri shuttle-eket (Curreri, Pintour), hogy biztosítsd a helyeket a csúcs hétvégéken."
       ]
     },
     {
       "id": "last-mile",
-      "title": "Last-mile savings",
+      "title": "Utolsó szakaszos megtakarítások",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Érkezéskor használd a SITA buszt a Chiesa Nuova megállóig, majd gyalogolj le a szállásodhoz ahelyett, hogy portást fogadnál — 15 perc alatt elérhető, könnyen manőverezhető csomaggal.",
+        "Használj poggyásztárolót a komp dokkjánál a késői kijelentkezés helyett — 7–10 € verhet egy extra taxit."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Utazz reggel 08:30 előtt vagy este 19:00 után, amikor csendesebbek a buszok, és könnyebben felszállhatsz.",
+    "Készíts képernyőmentést vagy nyomtasd ki a jegyeket; az ellenőrök a rossz térerővel dolgozó buszokon jönnek, így a letöltött vonalkód is elázás miatt leállhat."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Megéri bérletet venni szezonon kívül?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, ha egy nap több mint három utat tervezel. Egyébként fizess egyes jegyekért; a menetrend ritkásabb, de az árak alacsonyak maradnak."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Le kell-e érvényesíteni kompjegyeket?",
       "a": [
-        "A fordítás folyamatban van."
+        "A legtöbb szolgáltató QR-kódot olvas be digitálisan, de tarts nyomtatott példányt is magadnál, ha a nedvesség miatt a képernyő nem reagál."
       ]
     }
   ]

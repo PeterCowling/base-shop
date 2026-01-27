@@ -1,122 +1,134 @@
 {
   "seo": {
-    "title": "Positano útikalauz",
-    "description": "Látnivalók, strandok, logisztika és gyakorlati tippek a tartalmas látogatáshoz."
+    "title": "Positano utazási kalauz",
+    "description": "Mikor, hol és hogyan tölts egy napot Positanóban: érkezés, strandok, szállások és kötelező programok."
   },
-  "linkLabel": "Positano útikalauz",
+  "linkLabel": "Positano utazási kalauz",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Positano pompás, meredek utcáival, de könnyen bejárható. Íme egy útmutató, hogy mire figyelj, mit tegyél, és hogyan hozd ki a legtöbbet a napodból."
   ],
   "sections": [
     {
-      "id": "when",
-      "title": "When to visit",
+      "id": "arrivals",
+      "title": "Érkezés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A Chiesa Nuova megálló a legközelebb a hostelhez, de a belső buszok és kompok a tenger felől is megközelíthetők; vedd figyelembe a lépcsős utakat a csomagoknál.",
+        "Ha a komp szállít, tervezd oda- és visszautat úgy, hogy legyen tartalék az esetleges késésekkel szemben."
       ]
     },
     {
-      "id": "getting-around",
-      "title": "Getting around",
+      "id": "withinTown",
+      "title": "Positano belül",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használd a belső buszt és a gyalogútvonalakat, hogy a központi és felsőbb részeket össze tudd kapcsolni kompromisszumok nélkül.",
+        "A Fornillo és Spiaggia Grande közti sétányok könnyen megközelíthetők, de a meredek lépcsőket lassan vezesd be."
       ]
     },
     {
-      "id": "highlights",
-      "title": "Highlights",
+      "id": "ferries",
+      "title": "Kompozás",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Fűzd fel a komp-szolgáltatásokat a napi kirándulásokra, mert a lehetőségek Positano, Amalfi és Capri között kényelmesebbek és látványosabbak.",
+        "Foglalj előre csúcsszezonban, és számolj 20–30 perccel az indulás előtt."
       ]
     },
     {
-      "id": "stays",
-      "title": "Where to stay",
+      "id": "beaches",
+      "title": "Büszke partok",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Spiaggia Grande a fő strand, Fornillo a nyugodtabb terület, míg a Gavitella és Marina di Praia különleges naplementés élményeket kínál.",
+        "Ha több strandon szeretnél pihenni, használd a vízitaxit vagy vedd igénybe a helyi buszt, hogy elkerüld a lépcsőzést."
       ]
+    },
+    {
+      "id": "dayTrips",
+      "title": "Kirándulások",
+      "body": [
+        "Rövid kompozásokkal elérhető Capri vagy Amalfi, de a hegyekben tett szakaszok (Path of the Gods, Nocelle) is könnyen beépíthetők a napprogramodba.",
+        "Legyen nálad víz és naptej, különösen ha többet túrázol."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Positano színes házai a meredek ösvényről",
+      "caption": "Positano aranyóra alatt"
+    },
+    {
+      "alt": "Hegyoldali kilátás a városra tengerrel a távolban",
+      "caption": "Fotózd le a teljes települést a tenger felől"
     }
   ],
   "faqs": [
     {
-      "q": "Do I need a car?",
-      "a": [
-        "A fordítás folyamatban van."
-      ]
+      "question": "Hol érdemes lakni Positanóban?",
+      "answer": "A Chiesa Nuova környéke jó kiindulópont, mert közel van a fő buszmegállóhoz és a tengerparthoz."
     },
     {
-      "q": "How many days?",
-      "a": [
-        "A fordítás folyamatban van."
-      ]
+      "question": "Melyik napokon nem járnak kompok?",
+      "answer": "Ősztől tavasszal ritkábban; mindig nézd meg az aktuális menetrendet, és tervezz buszos alternatívát."
     }
   ],
   "fallback": {
     "intro": [
-      "A fordítás folyamatban van."
+      "Positano meredek, gyönyörű és főszezonban nagyon forgalmas. Ez az útmutató a gyakorlati döntésekre koncentrál: hol érdemes megszállni, mikor jönni, hogyan közlekedni, és mit érdemes valóban megnézni."
     ],
     "gallery": {
       "items": [
         {
-          "alt": "A fordítás folyamatban van.",
-          "caption": "A fordítás folyamatban van."
+          "alt": "Hostel terasz panorámával",
+          "caption": "Naplemente a teraszról — pár lépésre a Chiesa Nuova buszmegállótól."
         },
         {
-          "alt": "Positano panorama",
-          "caption": "A fordítás folyamatban van."
+          "alt": "Positano panoráma",
+          "caption": "Fornillo és a Spiaggia Grande gyalog elérhetők; számolj lépcsőkkel."
         }
       ]
     },
     "sections": {
       "whereToStay": {
-        "title": "Where to stay",
-        "body": "A fordítás folyamatban van."
+        "title": "Hol érdemes megszállni",
+        "body": "A <em>Chiesa Nuova</em> környékén kevesebb lépcső vár érkezéskor és távozáskor. A Hostel Brikette kb. 80 m-re van a megállótól, panorámás terasszal, megfizethető ágyakkal és privát szobákkal. A Spiaggia Grande körüli szállások látványosak, de több lépcsővel és magasabb árakkal járnak."
       },
       "whenToVisit": {
-        "title": "When to visit",
-        "body": "A fordítás folyamatban van."
+        "title": "Mikor érdemes jönni",
+        "body": "Nyáron pezsgő az élet, de zsúfolt; a vállszezon jobb arányt ad időjárás és nyugalom között. Nézd meg a részletes bontást a <linkBestTime>legjobb időpont Positano látogatására</linkBestTime> útmutatóban. A kompok szezonálisak, csúcsidőn kívül ritkulnak."
       },
       "gettingAround": {
-        "title": "Getting around",
-        "arrivals": "A fordítás folyamatban van.",
-        "withinTown": "A fordítás folyamatban van.",
-        "ferries": "A fordítás folyamatban van."
+        "title": "Közlekedés",
+        "arrivals": "<strong>Érkezés</strong>: kezdd a <linkHowTo>hogyan juss Positanóba</linkHowTo> döntési útmutatóval, majd mélyedj el a <linkNaples>Nápoly → Positano</linkNaples> és a <linkSalerno>Salerno → Positano</linkSalerno> útvonalakban.",
+        "withinTown": "<strong>Helyben</strong>: a buszok összekötik a <em>Chiesa Nuova</em>, <em>Sponda</em> és a strand környékét. A gyaloglás gyakori — tervezd úgy az útvonalaidat, hogy ne legyen felesleges lépcsőzés.",
+        "ferries": "<strong>Kompok</strong>: nézd meg a <linkFerries>kompmenetrendet</linkFerries>, és mindig számolj az időjárási változásokkal."
       },
       "thingsToDo": {
-        "title": "Things to do",
-        "beaches": "A fordítás folyamatban van.",
-        "pathOfTheGods": "A fordítás folyamatban van.",
-        "dayTrips": "A fordítás folyamatban van."
+        "title": "Látnivalók és programok",
+        "beaches": "<linkBeaches>Strandok</linkBeaches>: Spiaggia Grande a klasszikus kilátásért, Fornillo a nyugodtabb hangulatért, Arienzo pedig a sziklás panorámás fürdéshez.",
+        "pathOfTheGods": "<linkPath>Istenek ösvénye</linkPath> Nocelle vagy Bomerano felől a legszebb panorámákért.",
+        "dayTrips": "Egynapos kiruccanások: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> és <linkRavello>Ravello</linkRavello>."
       },
       "moneySavers": {
-        "title": "Money savers",
-        "eat": "A fordítás folyamatban van.",
-        "travel": "A fordítás folyamatban van.",
-        "stay": "A fordítás folyamatban van."
+        "title": "Spórolási tippek",
+        "eat": "Étkezz a <linkCheapEats>olcsó étkezési listánk</linkCheapEats> alapján, és vigyél újratölthető kulacsot.",
+        "travel": "Utazz csúcsidőn kívül; hasonlítsd össze a <linkBudgetArrival>kedvező érkezési lehetőségeket</linkBudgetArrival>.",
+        "stay": "Szállj meg <em>Chiesa Nuova</em> közelében, így kevesebb a porter díj és a lépcsőzés érkezéskor."
       }
     },
-    "tipsTitle": "Where to save",
-    "faqHeading": "FAQs",
+    "tipsTitle": "Hol spórolhatsz",
+    "tips": [
+      "Ha lehet, foglalj előre komp- és buszjegyet; az utolsó pillanatos jegyek drágábbak és el is fogynak.",
+      "Legyen nálad készpénz beach clubokhoz, porter borravalóhoz és gyors snackekhez — estére a városi ATM-ek gyakran kiürülnek.",
+      "Oszd meg a reptéri transzfert vagy használd az Amalfi-parti buszokat; a megosztott díjak csökkentik a költségeket."
+    ],
+    "faqHeading": "GYIK",
     "faqs": [
       {
-        "question": "A fordítás folyamatban van.",
-        "answer": "Igen. Használjon buszokat, tervezzen szelektíven kompokat, és összpontosítson ingyenes kilátókra és strandidőre."
+        "question": "Lehet Positanót költségvetésből is megoldani?",
+        "answer": "Igen. Használd a buszokat, tervezd tudatosan a kompokat, és koncentrálj az ingyenes kilátókra és a strandokra."
       },
       {
-        "question": "A fordítás folyamatban van.",
-        "answer": "A fordítás folyamatban van."
+        "question": "Hol érdemes bázist választani?",
+        "answer": "Kényelmes logisztikához a <em>Chiesa Nuova</em> környéke a legjobb. Strandhangulathoz a Spiaggia Grande közelebb van, de több lépcsővel számolj."
       }
-    ],
-    "tips": [
-      "Lehetőség szerint foglaljon előre kompokat és buszokat; a last minute jegyek drágábbak és elkelhetnek.",
-      "Vigyen magával készpénzt a tengerparti klubokba, a portás tippekre és a gyors harapnivalókra – a város ATM-jei gyakran kifogynak vacsora után.",
-      "Ossza meg a reptéri transzfert, vagy utazzon az Amalfi-parti buszokon; a viteldíjak megosztása csökkenti az érkezési költségeket."
     ]
   }
 }

@@ -1,61 +1,61 @@
 {
   "seo": {
-    "title": "Ferragosto Positanóban",
-    "description": "Az augusztus 15-i ünnep programjai, tűzijáték és közlekedési tippek."
+    "title": "Ferragosto Positanóban (Nagyboldogasszony napja)",
+    "description": "Mit várhatsz augusztus 15-én: tömegek, zárások, tűzijáték és közlekedési tippek."
   },
-  "linkLabel": "Ferragosto in Positano (Assumption Day)",
+  "linkLabel": "Ferragosto: augusztus 15. ünnepe Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Augusztus 15. Ferragostoja zsúfolt strandokat, tűzijátékot és változó menetrendeket hoz – tervezz előre, hogy az ünnep valóban ünnepi maradjon."
   ],
   "sections": [
     {
       "id": "expectations",
-      "title": "A fordítás folyamatban van.",
+      "title": "Mi várható a napon",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A boltok és kis élelmiszerüzletek korán bezárnak; szerezz be nassolnivalót és vizet még a 14-ei este folyamán.",
+        "9 óra után megtelik a strand, és a Spiaggia Grande mentén fokozódik a zene a hajnalig tartó tűzijáték felvezetésekor."
       ]
     },
     {
       "id": "bookings",
-      "title": "A fordítás folyamatban van.",
+      "title": "Foglalások és helyek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Foglalj asztalt és hajózást legalább egy héttel előre; sok hely előleg vagy bankkártyás garancia nélkül nem ad helyet ünnepi időszakra.",
+        "Erősítsd meg a portaszolgálatot 24 órával korábban, ha 15-én érkezel vagy indulsz – a csapatok szűkített műszakban működnek."
       ]
     },
     {
       "id": "beach-day",
-      "title": "Beach and swimming tips",
+      "title": "Strand- és úszótipp",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Hozd a saját napernyődet a közösségi részre; a lido napágyai gyorsan elfogynak, az árak pedig csúcsdíjakra ugranak.",
+        "Fürödj kora reggel vagy naplementekor, amikor a mentők tisztább rálátással dolgoznak; délben a tömeg megnehezíti az áramlatok megítélését."
       ]
     },
     {
       "id": "transport",
-      "title": "Transport backups",
+      "title": "Közlekedési alternatíva",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A SITA buszok ritkított ünnepi menetrend szerint közlekednek; nézd meg a kifüggesztett járatokat és sorban állj korán.",
+        "A kompok pillanatok alatt betelnek; foglald le oda-vissza jegyed az előző nap, és legyen tartalék buszterved, ha a tenger felkavarodik."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Ha a szobád a part felé néz, hozz füldugót – a tűzijáték és a zene a bemutató után 1 óra után is folytatódik.",
+    "Vigyél aprót a templomi adományládákhoz, ha részt veszel a Nagyboldogasszony napi misén; a kártyás fizetés ritka."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Egész nap zárva vannak a szupermarketek?",
       "a": [
-        "A fordítás folyamatban van."
+        "Sok bolt teljesen bezár, vagy csak rövid délelőtti nyitást tart. Vásárolj be a 14-e esti órákig."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Nézhetem a tűzijátékot a hostel teraszáról?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen – a teraszról tiszta rálátás nyílik a öbölre. Jöjj korán, foglald el a helyed, és hozz réteget a tengerparti szellő miatt."
       ]
     }
   ]

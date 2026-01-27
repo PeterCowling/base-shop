@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Positano rövid története",
-    "description": "Tömör áttekintés kereskedőkről, meredek utcákról és a turizmus felemelkedéséről."
+    "title": "Positano története röviden",
+    "description": "Positano múltja a kereskedőktől a hollywoodi felfedezésig."
   },
-  "linkLabel": "Positano rövid története",
+  "linkLabel": "Positano története röviden",
   "intro": [
-    "A fordítás folyamatban van."
+    "Ismerd meg Positano múltját – a tengeri gyökerektől a hollywoodi reflektorfényig –, hogy sétáid történelmi kontextust kapjanak."
   ],
   "sections": [
     {
       "id": "origins",
-      "title": "Origins & trade",
+      "title": "Kezdetek és kereskedelem",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Positano eredetileg egy római tengerparti villa központként indult; később középkorban kereskedők gyapjút exportáltak és fűszert importáltak Amalfi flottáján keresztül.",
+        "A part mentén álló őrtornyok a szaracén betörésekre figyelmeztettek; sok még ma is kilátóként szolgál."
       ]
     },
     {
       "id": "20th",
-      "title": "A fordítás folyamatban van.",
+      "title": "20. századi átalakulás",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A második világháború után olyan művészek és írók, mint Steinbeck, Positano báját hirdették, így a gazdaság a turizmus felé fordult.",
+        "Az 1950-es években épült utak összekötötték Positanót Olaszország többi részével, ami butikszállodák és nemzetközi vendégáradat megjelenését hozta."
       ]
     },
     {
       "id": "today",
-      "title": "Modern day",
+      "title": "A mai nap",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A turizmus ma is a város mozgatórugója, de kompkvótákkal és gyalogos zónákkal próbálnak kiegyensúlyozni a megőrzés és a látogatók között.",
+        "A helyi kézművesek továbbra is szandált és kerámiát készítenek, így a hagyományos mesterségek élnek a vendéglátás mellett."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Látogasd meg a Santa Maria Assunta alatti római villa múzeumát, ahol 1987-ben feltárt mozaikokat mutatnak be.",
+    "Keresd a Via dei Mulini menti történeti táblákat, amelyek fontos épületekhez kötődő adatokat írnak le."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hol tanulhatok többet helyben?",
       "a": [
-        "A fordítás folyamatban van."
+        "A MAR Positano múzeum régészeti és multimédiás kiállításai tökéletesek esős napokra."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Miért annyi lépcső van?",
       "a": [
-        "A fordítás folyamatban van."
+        "A város a meredek sziklaoldalhoz igazodva épült; a lépcsők váltották fel az utcákat a gyors közlekedés érdekében."
       ]
     }
   ]

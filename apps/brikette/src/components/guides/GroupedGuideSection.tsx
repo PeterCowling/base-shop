@@ -147,6 +147,7 @@ function GroupedGuideSection({
   directionsLabel,
   resolveSummary,
 }: GroupedGuideSectionProps): JSX.Element | null {
+  // Don't render section header if there are no guides (e.g., all guides in category are draft)
   if (!guides.length) return null;
 
   const guideCount = guides.length;

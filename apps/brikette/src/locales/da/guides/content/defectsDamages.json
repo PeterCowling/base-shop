@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Fejl og skader – guide",
+    "description": "Sådan rapporterer du fejl på værelset, vores håndtering af alvorlige problemer, regler for skadedepositum, gæstens ansvar og vigtig info om forebyggelse af væggelus."
+  },
+  "linkLabel": "Fejl og skader – guide",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Rapportér fejl",
+      "body": [
+        "Hvis du opdager et problem eller en fejl på værelset, så giv os besked med det samme. Et hurtigt tip fra dig hjælper os med hurtigt at håndtere og løse situationen."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Vurdering af fejl",
+      "body": [
+        "Når du har rapporteret en fejl, vurderer vi den straks og prioriterer vores indsats efter, hvor meget den påvirker dit ophold og din komfort."
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Håndtering af alvorlige fejl",
+      "body": [
+        "Hvis der opstår en alvorlig fejl, som ikke kan udbedres med det samme, tilbyder vi alternativ indkvartering. Er alternativet billigere end det værelse, du har booket, refunderer vi prisforskellen. Afviser du vores alternativ, kan du anmode om forholdsmæssig refundering for de resterende nætter."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Ikke‑rapporterede fejl",
+      "body": [
+        "Hvis vi finder et problem på dit værelse, som ikke er blevet rapporteret inden for rimelig tid, vurderer vi de eventuelle skader, og vores skadepolitik kan blive anvendt."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Skadepolitik",
+      "body": [
+        "Af hensyn til både din og vores sikkerhed kan vi foretage en forhåndsgodkendelse på dit kreditkort eller bede om et kontant depositum ved check-in for at dække mulige skader eller tab. Hvis du ikke kan stille depositum eller forhåndsgodkendelse, kan reservationen blive annulleret. Depositummet refunderes fuldt ud ved check-out, fratrukket eventuelle omkostninger til skader, tab, arbejdstid eller administration. Overstiger disse udgifter depositummet, hæfter du for det resterende beløb. Arbejdstid faktureres pr. time: Direktør (€50/time), Manager (€35/time) og Medarbejder (€25/time)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Politik for væggelus",
+      "body": [
+        "Vi arbejder proaktivt for at forebygge og håndtere væggelus. Hvis der findes væggelus på dit værelse under opholdet, kan du blive holdt ansvarlig for relaterede omkostninger som tabt bookingsindtægt, rengøring og skadedyrsbekæmpelse. Rapportér straks alle tegn på væggelus til personalet."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Forebyggelse af væggelus",
+      "body": [
+        "For at forebygge væggelus bedes du:",
+        "* Informere os ved check-in, hvis du for nylig har boet et sted med kendte problemer med væggelus.\n* Desinficere dine ejendele grundigt.\n* Gennemgå bagage og tøj nøje for væggelus, før du går ind på værelset."
+      ]
+    }
+  ]
+}

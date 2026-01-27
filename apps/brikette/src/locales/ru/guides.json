@@ -20,88 +20,169 @@
   },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Единственный хостел в Позитано",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Единственный хостел в Позитано",
+        "description": "Доступные койко-места в Позитано с панорамным видом и дружелюбной атмосферой."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Маршруты для бэкпекеров",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Маршруты для бэкпекеров на Амальфитанском побережье",
+        "description": "Практичные бюджетные маршруты на 2–7 дней без автомобиля."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Добраться до Позитано бюджетно",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Добраться до Позитано бюджетно",
+        "description": "Самые дешёвые способы добраться до Позитано на автобусе, поезде и пароме."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Расписание паромов",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Расписание паромов в Позитано",
+        "description": "Актуальные операторы паромов и сезонные расписания для Позитано."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Тропа богов: Полное руководство из Позитано",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Поход по Тропе богов",
+        "description": "Пошаговая инструкция для похода по Sentiero degli Dei из Позитано."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Тропа богов: Живописный маршрут на пароме",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Тропа богов через Амальфи (паром)",
+        "description": "Доплывите до Амальфи, на автобусе до Бомерано, затем поход по Тропе богов с указаниями обратного пути."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Тропа богов: Бюджетный маршрут на автобусе",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Тропа богов через Амальфи (автобус)",
+        "description": "Автобус SITA Sud до Бомерано, затем по нашему маршруту Тропы богов обратно к Позитано."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Тропа богов: Короткий маршрут из Ночелле",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Тропа богов через Ночелле",
+        "description": "Более короткий поход туда и обратно из Ночелле с указаниями возврата в Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Лучшие однодневные поездки: Капри, Амальфи, Помпеи и другие",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Однодневные поездки из Позитано",
+        "description": "Идеи для Амальфи, Равелло, Капри и Помпей с советами по времени и транспорту."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Гид по общественному транспорту Амальфитанского побережья",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Гид по общественному транспорту Амальфитанского побережья",
+        "description": "Как пользоваться автобусами и паромами на Амальфитанском побережье с проездными, расписанием и маршрутами."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Советы для первого посещения Позитано",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Советы для первого посещения Позитано",
+        "description": "Прибытие, багаж, оплата и связь — практические советы для первой поездки."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Что взять с собой на Амальфитанское побережье",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Что взять с собой на Амальфитанское побережье",
+        "description": "Сезонный список вещей для Позитано и Амальфитанского побережья."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Пляжи Позитано: Песок, солнце и секретные бухты"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Пляж Ариенцо: Бутиковый пляжный клуб Позитано"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Пляж Форнилло: Тихая альтернатива Позитано"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Пляж Лаурито: Скрытая жемчужина под скалами"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Пляж Гавителла: Место для закатного купания в Прайано"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Марина ди Прая: Живописная бухта между скалами"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Фьорд ди Фурore: Пляж фьорда под мостом"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Регина Джованна: Римские руины и природный бассейн"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Спьяджа Гранде: Знаковый главный пляж Позитано"
+    },
+    "sunriseHike": {
+      "linkLabel": "Поход на рассвете: Встретьте рассвет над Позитано"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Монте Комуне: Поход к высшей точке обзора Позитано"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Оставайтесь в форме в Позитано: Лестницы, тропы и пляжные тренировки"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Однодневная поездка на Капри: Островной побег из Позитано"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Капри без больших затрат"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Кемпинг на Амальфитанском побережье: Бюджетная альтернатива отелям"
+    },
+    "boatTours": {
+      "linkLabel": "Лодочные туры: От закатных круизов до частной аренды"
+    },
+    "cheapEats": {
+      "linkLabel": "Ешьте как местный: Лучшая бюджетная еда Позитано"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Где поесть в Позитано: От повседневного до праздничного"
+    },
+    "positanoDining": {
+      "linkLabel": "Лучшие рестораны Позитано рядом с Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Вкусы Позитано: Лимончелло, лимоны и местные ароматы"
+    },
+    "instagramSpots": {
+      "linkLabel": "Инстаграмный Позитано: Лучшие места и время для фото"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Закат в Позитано: Лучшие смотровые площадки для золотого часа"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Фестиваль Равелло: Классические концерты под звёздами"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Феррагосто: Празднование 15 августа в Позитано"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Люминария ди Прайано: Тысячи свечей освещают ночь"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Бесплатный аудиогид: Откройте скрытые истории Позитано"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Бесплатные развлечения в Позитано: Бюджетное веселье"
     }
   },
   "dev": {

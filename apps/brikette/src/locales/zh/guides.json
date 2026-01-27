@@ -20,88 +20,169 @@
   },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "波西塔诺唯一的青年旅舍",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "波西塔诺唯一的青年旅舍",
+        "description": "波西塔诺经济实惠的床位，拥有全景视野和友好氛围。"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "背包客行程",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "阿马尔菲海岸背包客行程",
+        "description": "2至7天无车的实用、预算优先路线。"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "经济实惠到达波西塔诺",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "经济实惠到达波西塔诺",
+        "description": "乘坐巴士、火车和渡轮到达波西塔诺的最便宜方式。"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "渡轮时刻表",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "波西塔诺渡轮时刻表",
+        "description": "波西塔诺最新的渡轮运营商和季节性时刻表。"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "众神之路：波西塔诺完整指南",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "徒步众神之路",
+        "description": "从波西塔诺徒步众神之路的详细说明。"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "众神之路：风景渡轮和徒步路线",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "经阿马尔菲的众神之路（渡轮）",
+        "description": "乘渡轮到阿马尔菲，坐巴士到博美拉诺，然后徒步众神之路并获取返程指引。"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "众神之路：经济巴士和徒步",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "经阿马尔菲的众神之路（巴士）",
+        "description": "乘坐SITA Sud巴士到博美拉诺，沿着众神之路返回波西塔诺。"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "众神之路：从诺切莱短途徒步",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "经诺切莱的众神之路",
+        "description": "从诺切莱出发的较短往返徒步，附返回Hostel Brikette的指引。"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "最佳一日游：卡普里、阿马尔菲、庞贝等",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "从波西塔诺出发的一日游",
+        "description": "阿马尔菲、拉韦洛、卡普里和庞贝的行程建议，附时间和交通提示。"
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "阿马尔菲海岸公共交通指南",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "阿马尔菲海岸公共交通指南",
+        "description": "如何在阿马尔菲海岸使用巴士和渡轮，包括通行证、时间和路线。"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "波西塔诺初访者旅行提示",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "波西塔诺初访者旅行提示",
+        "description": "到达、行李、支付和连接——首次旅行的实用建议。"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "阿马尔菲海岸携带物品",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "阿马尔菲海岸携带物品",
+        "description": "波西塔诺和阿马尔菲海岸的季节性打包清单。"
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "波西塔诺海滩：沙滩、阳光和秘密海湾"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "阿里恩佐海滩：波西塔诺的精品海滩俱乐部"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "福尔尼洛海滩：波西塔诺更安静的选择"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "劳里托海滩：悬崖下的隐藏宝藏"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "加维泰拉海滩：普拉亚诺的日落游泳点"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "普拉亚码头：悬崖间的壮观海湾"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "富罗雷峡湾：桥下的峡湾海滩"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "雷吉纳·乔万娜：罗马遗迹与天然泳池"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "大海滩：波西塔诺标志性的主海滩"
+    },
+    "sunriseHike": {
+      "linkLabel": "日出徒步：观看黎明照耀波西塔诺"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "科穆内山：徒步至波西塔诺最高观景点"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "在波西塔诺保持健身：楼梯、小径和海滩锻炼"
+    },
+    "capriDayTrip": {
+      "linkLabel": "卡普里一日游：从波西塔诺逃往小岛"
+    },
+    "capriOnABudget": {
+      "linkLabel": "省钱游卡普里"
+    },
+    "campingAmalfi": {
+      "linkLabel": "阿马尔菲海岸露营：酒店的经济替代选择"
+    },
+    "boatTours": {
+      "linkLabel": "游船之旅：日落巡航到私人包船"
+    },
+    "cheapEats": {
+      "linkLabel": "像当地人一样吃：波西塔诺最佳平价美食"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "波西塔诺用餐指南：从休闲到庆典"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette附近波西塔诺最佳餐厅"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "品味波西塔诺：柠檬酒、柠檬和本地风味"
+    },
+    "instagramSpots": {
+      "linkLabel": "波西塔诺网红打卡：最佳拍照点和时间"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "波西塔诺日落：金色时刻的最佳观景点"
+    },
+    "ravelloFestival": {
+      "linkLabel": "拉韦洛音乐节：星空下的古典音乐会"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "费拉戈斯托：波西塔诺的意大利8月15日庆典"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "普拉亚诺烛光节：数千支蜡烛照亮夜空"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "免费音频徒步导览：发现波西塔诺的隐藏故事"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "波西塔诺免费活动：经济实惠的乐趣"
     }
   },
   "dev": {

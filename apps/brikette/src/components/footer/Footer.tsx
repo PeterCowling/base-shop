@@ -10,8 +10,7 @@ import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { articleSlug } from "@/routes.assistance-helpers";
-import { guideHref } from "@/routes.guides-helpers";
+import { guideHref, guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import FooterLegalRow from "./FooterLegalRow";
@@ -131,17 +130,17 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
         {
           key: "checkinCheckout",
           label: tFooter("checkinCheckout", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "checkinCheckout")}`,
+          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "checkinCheckout")}`,
         },
         {
           key: "houseRules",
           label: tFooter("houseRules", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "rules")}`,
+          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "rules")}`,
         },
         {
           key: "cancellationPolicy",
           label: tFooter("cancellationPolicy", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${articleSlug(lang, "changingCancelling")}`,
+          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "changingCancelling")}`,
         },
       ],
     },

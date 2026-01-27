@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Guia de Depósitos e Pagamentos – Hostel Brikette, Positano",
+    "description": "Tudo sobre depósitos, métodos de pagamento, confirmações, alterações, cancelamentos e bloqueios de segurança ao reservar sua estadia."
+  },
+  "linkLabel": "Guia de Depósitos e Pagamentos – Hostel Brikette, Positano",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Como Enviar sua Solicitação",
+      "body": [
+        "Envie sua solicitação por uma OTA autorizada ou em nosso site; chats ou visitas sem reserva não contam. Ao clicar em \"Reservar\", você confirma que os dados estão corretos e aceita nossos Termos."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Processamento da Solicitação",
+      "body": [
+        "Só processamos após receber o depósito, pré‑autorização ou pagamento exigido por meio aceito. A reserva deve ter o nome do titular do cartão; se diferente, envie autorização por e‑mail antes do processamento."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Quando Podemos Recusar",
+      "body": [
+        "Podemos recusar a solicitação se o pagamento falhar, faltar informação ou houver violação dos Termos."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Limite por Solicitação",
+      "body": [
+        "Uma solicitação cobre até 7 noites consecutivas e 5 hóspedes. Para mais noites ou pessoas, envie solicitações separadas."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Se seu Quarto Não Estiver Disponível",
+      "body": [
+        "Se o quarto desejado estiver ocupado, enviaremos uma contra‑proposta por e‑mail. Aceite e efetue o pagamento ou pré‑autorização para garantir."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Reservas Pré‑pagas Não Reembolsáveis",
+      "body": [
+        "Tarifa pré‑paga é mais barata, mas exige pagamento total imediato. Tentaremos o cartão três vezes; se falhar, a solicitação será cancelada. Não há reembolso ou alteração."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "E‑mail de Confirmação",
+      "body": [
+        "Após o pagamento, enviamos e‑mail com referência, data de chegada, duração e extras. Confira e avise problemas imediatamente."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Quem Está Incluído",
+      "body": [
+        "Sua reserva inclui automaticamente:",
+        "* 1 hóspede por cama de solteiro\n* até 2 por cama de casal\n* até a capacidade anunciada do apartamento",
+        "Não acomodamos hóspedes extras acima do limite."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "O que Está Incluído",
+      "body": [
+        "Cada hóspede recebe:",
+        "* Roupa de cama limpa e chave\n* Uso de chuveiros compartilhados\n* Água quente nos horários (07:00‑10:30 & 17:00‑22:30)\n* Áreas comuns",
+        "Café da manhã, Wi‑Fi, guarda‑volumes etc. são cortesia com regras próprias."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Responsabilidade Financeira",
+      "body": [
+        "O titular do cartão na reserva é responsável por todas as cobranças: tarifas, danos, limpeza, multas. Saldos pendentes podem ser debitados no cartão."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Atribuição de Camas e Quartos",
+      "body": [
+        "Garantimos o tipo de cama e categoria reservados. Em dormitórios, você garante uma cama nessa categoria; não garantimos que o grupo fique no mesmo quarto. As camas são escolhidas por ordem de chegada."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Upgrades de Quarto",
+      "body": [
+        "Às vezes oferecemos upgrade gratuito ou pago. Se o upgrade gratuito se tornar inviável, retomamos a categoria original."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Pagamentos via Terceiros",
+      "body": [
+        "Em OTA, o pagamento segue as regras da plataforma; não recebemos seus dados de cartão. Verifique sempre se o pagamento foi concluído e se recebeu confirmação."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Depósitos de Reserva",
+      "body": [
+        "Algumas tarifas precisam de depósito. Tarifas pré‑pagas exigem 100% adiantado e não reembolsável. Falha no depósito cancela a solicitação."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Pré‑autorizações",
+      "body": [
+        "Em tarifas flexíveis podemos pré‑autorizar a primeira noite ou toda estadia. Falha = solicitação recusada."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Bloqueio de Segurança",
+      "body": [
+        "No check‑in podemos bloquear o valor de uma diária por hóspede. Se não for possível, aceitamos dinheiro ou cartão de outro hóspede; caso contrário, a reserva será cancelada."
+      ]
+    }
+  ]
+}

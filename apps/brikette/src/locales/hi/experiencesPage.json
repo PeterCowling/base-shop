@@ -93,6 +93,16 @@
     "filterHeading": "अनुभव गाइड फ़िल्टर करें",
     "filterDescription": "हम जिन अनुभवों को दिखाते हैं उन्हें सीमित करने के लिए टैग चुनें।",
     "directionsLabel": "यहाँ कैसे पहुँचें",
+    "sections": {
+      "content": {
+        "title": "अनुभव गाइड",
+        "description": "समुद्र तटों, ट्रेक, डे-ट्रिप्स और करने-योग्य चीज़ों पर विस्तृत गाइड"
+      },
+      "directions": {
+        "title": "कैसे पहुँचें",
+        "description": "होस्टल तक आने-जाने के लिए चरण-दर-चरण निर्देश"
+      }
+    },
     "directionLinks": {
       "walkFromHostel": "हॉस्टल से पैदल",
       "busFromHostel": "बस से",

@@ -5,37 +5,37 @@
   },
   "linkLabel": "Z Salerno do Positano: jak dojechać",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Z Salerno do Positano: prom jest najwygodniejszy w sezonie (zwłaszcza z bagażem), a autobus przez Amalfi kursuje przez cały rok jako tańsza alternatywa."
   ],
   "sections": [
     {
       "id": "ferry",
-      "title": "Tłumaczenie w przygotowaniu.",
+      "title": "Prom (polecany z bagażem)",
       "body": [
         "Wejście na pokład w Molo Manfredi/Concordia w zależności od operatora i zaplanowanie około godziny na wodzie, w zależności od warunków na morzu.",
-        "Tłumaczenie w przygotowaniu."
+        "Sprawdź stan morza i aktualny rozkład; miejsca szybko znikają weekendami — przyjdź wcześniej."
       ]
     },
     {
       "id": "bus",
-      "title": "Bus via Amalfi (year‑round)",
+      "title": "Autobus przez Amalfi (cały rok)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Pociąg do Amalfi (SITA) → przesiadka na linię do Positano; trasa dłuższa, ale dostępna poza sezonem.",
+        "Miej drobne, skasuj bilety i zostaw margines w Amalfi na sprawdzenie tablicy kolejnych odjazdów."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy prom jest pewny wiosną?",
       "a": [
-        "Tak, ale wczesnowiosenne burze mogą anulować usługi. Zawsze sprawdzaj w danym dniu."
+        "Tak, ale wczesnowiosenne burze potrafią odwołać kursy; zawsze sprawdzaj danego dnia."
       ]
     },
     {
-      "q": "Where to stow bags?",
+      "q": "Gdzie schować bagaż?",
       "a": [
-        "Używaj stojaków na promach; trzymaj przy sobie cenne rzeczy."
+        "Korzystaj ze stojaków na promach; cenne rzeczy trzymaj przy sobie."
       ]
     }
   ]

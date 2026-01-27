@@ -93,6 +93,16 @@
     "filterHeading": "Filtrera upplevelseguider",
     "filterDescription": "Välj en tagg för att avgränsa upplevelserna vi lyfter fram.",
     "directionsLabel": "Vägbeskrivning",
+    "sections": {
+      "content": {
+        "title": "Upplevelseguider",
+        "description": "Fördjupade guider om stränder, vandringar, dagsutflykter och saker att göra"
+      },
+      "directions": {
+        "title": "Så tar du dig dit",
+        "description": "Steg-för-steg-vägbeskrivningar till och från vandrarhemmet"
+      }
+    },
     "directionLinks": {
       "walkFromHostel": "Promenad från hostelet",
       "busFromHostel": "Med buss",

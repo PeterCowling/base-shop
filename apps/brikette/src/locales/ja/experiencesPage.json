@@ -93,6 +93,16 @@
     "filterHeading": "体験ガイドを絞り込む",
     "filterDescription": "タグを選んで表示する体験を絞り込みます。",
     "directionsLabel": "行き方",
+    "sections": {
+      "content": {
+        "title": "体験ガイド",
+        "description": "ビーチ、ハイキング、日帰り旅行、やることを網羅した詳しいガイド"
+      },
+      "directions": {
+        "title": "行き方",
+        "description": "ホステルへの行き方・戻り方をステップで案内"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "ポジターノ → カプリ（フェリー）",

@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Leitfaden zu Kautionen und Zahlungen – Hostel Brikette, Positano",
+    "description": "Ihr Nachschlagewerk zu Kautionen, Zahlungsarten, Buchungsbestätigungen, Änderungen, Stornierungen und Sicherheits­hinterlegungen bei einer Reservierung im Hostel Brikette."
+  },
+  "linkLabel": "Leitfaden zu Kautionen und Zahlungen – Hostel Brikette, Positano",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "So stellen Sie Ihre Buchungsanfrage",
+      "body": [
+        "Senden Sie Ihre Anfrage über eine autorisierte OTA oder direkt über unsere Website – reine Chats oder Walk-ins gelten nicht. Mit Klick auf „Buchen“ bestätigen Sie, dass alle Namen, Daten und Aufenthalts­dauer korrekt sind und dass Sie unsere AGB akzeptieren."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "So verarbeiten wir Ihre Anfrage",
+      "body": [
+        "Wir beginnen mit der Bearbeitung, sobald eine erforderliche Kaution, Vorautorisierung oder Zahlung über eine akzeptierte Methode eingegangen ist. Die Buchung muss auf den Namen des Karten­inhabers lauten. Ist der Zahler ein anderer, schicken Sie uns vorab eine kurze Autorisierung des Karten­inhabers."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Wann wir eine Anfrage ablehnen",
+      "body": [
+        "Ablehnungen sind selten, bleiben aber unser Recht, z. B. bei Zahlungs­fehlern, fehlenden Angaben oder Verstößen gegen unsere AGB."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Größen­beschränkung pro Anfrage",
+      "body": [
+        "Eine Anfrage darf bis zu 7 aufeinander­folgende Nächte und maximal 5 Gäste umfassen. Für längere Aufenthalte oder größere Gruppen senden Sie einfach mehrere Anfragen."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Falls Ihr Zimmer nicht verfügbar ist",
+      "body": [
+        "Ist Ihr Wunsch­zimmer belegt, erhalten Sie per Mail ein Gegen­angebot. Akzeptieren Sie und leisten Sie Zahlung oder Vor­autorisierung, um Ihre Reservierung zu sichern."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Vorausbezahlte, nicht erstattbare Tarife",
+      "body": [
+        "Vorausbezahlte, nicht erstattbare Tarife sind günstiger, erfordern aber sofort 100 % Zahlung. Wir versuchen die Karte bis zu dreimal; schlägt dies fehl, wird die Anfrage storniert. Keine Rückerstattung oder Änderung möglich."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Ihre Bestätigungs-E-Mail",
+      "body": [
+        "Nach erfolgreicher Zahlung senden wir eine Bestätigungs­mail mit Referenz, Anreise­datum, Aufenthalts­dauer und Extras. Prüfen Sie sie und melden Sie Unstimmigkeiten sofort."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Wer in der Buchung enthalten ist",
+      "body": [
+        "Ihre Buchung deckt automatisch ab:",
+        "* 1 Gast pro Einzelbett\n* bis zu 2 Gäste pro Doppelbett\n* bis zur beworbenen Kapazität einer gebuchten Wohnung",
+        "Zusätzliche Gäste über das Limit hinaus sind aus Sicherheits­gründen nicht möglich."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Leistungen Ihres Aufenthalts",
+      "body": [
+        "Alle Gäste erhalten:",
+        "* Frische Bettwäsche und Keycard\n* Nutzung der Gemeinschafts­duschen\n* Warmwasser zu den geplanten Zeiten (ca. 07:00–10:30 & 17:00–22:30)\n* Zugang zu Gemeinschafts­bereichen",
+        "Frühstück, WLAN, Gepäck­aufbewahrung u. a. sind kostenfrei, unterliegen aber eigenen einfachen Regeln."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Ihre finanzielle Verantwortung",
+      "body": [
+        "Der in der Buchung genannte Karten­inhaber haftet für alle Kosten – Zimmer, Schäden, Reinigungs­gebühren, Hausregel-Strafen. Offene Beträge können direkt auf die Karte gebucht werden."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Zuweisung von Betten und Zimmern",
+      "body": [
+        "Sie erhalten die gebuchte Bett- bzw. Zimmer­kategorie. In Schlafsälen sichern Sie sich ein Bett dieser Kategorie; wir können jedoch nicht garantieren, dass Gruppen im selben Zimmer untergebracht werden. Betten werden beim Check-in nach Eintreffen vergeben."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Zimmer-Upgrades",
+      "body": [
+        "Gelegentlich erhalten Sie kostenfreie Upgrades oder können kosten­pflichtig upgraden. Wird ein gratis Upgrade später unpraktisch, ziehen wir Sie in die ursprünglich gebuchte Kategorie zurück."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Zahlung über Drittanbieter",
+      "body": [
+        "Bei Buchungen über OTAs zahlen Sie nach deren Bedingungen; wir erhalten keine Karten­daten und haften nicht für Plattform-Probleme. Prüfen Sie stets, ob Zahlung und Bestätigung erfolgt sind."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Buchungskautionen",
+      "body": [
+        "Für einige Tarife ist eine Kaution nötig. Vorausbezahlte Tarife erfordern 100 % sofort. Kautionen sind nicht erstattbar; gelingt die Abbuchung nicht, wird die Anfrage automatisch annulliert."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Karten­vor­autorisierungen",
+      "body": [
+        "Bei flexiblen Tarifen können wir Ihre Karte für die erste Nacht oder den gesamten Aufenthalt vor­autorisieren. Scheitert dies, lehnen wir die Anfrage ab."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Unsere Sicherheits­hinterlegung",
+      "body": [
+        "Beim Check-in können wir eine Sicherheits­hinterlegung in Höhe einer Nacht pro Gast blocken. Ist dies nicht möglich, akzeptieren wir dieselbe Summe in bar oder die Karte eines Mitreisenden. Andernfalls müssen wir die Buchung leider stornieren."
+      ]
+    }
+  ]
+}

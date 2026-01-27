@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Modificare o Cancellare la tua Prenotazione all'Hostel Brikette di Positano",
+    "description": "Guida dettagliata su opzioni di cancellazione, politica di no-show, come modificare la prenotazione, regole di trasferibilità e prenotazioni prepagate non rimborsabili nell’unico ostello di Positano."
+  },
+  "linkLabel": "Modificare o Cancellare la tua Prenotazione all'Hostel Brikette di Positano",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "Addebiti per No-Show",
+      "body": [
+        "Se non effettui il check-in entro le 22:30 del primo giorno, la prenotazione verrà contrassegnata come «No-Show». Ti sarà addebitato l’importo maggiore tra la prima notte e il deposito non rimborsabile. Se hai più prenotazioni, ciascuna può avere propri termini di cancellazione e costi."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Politica di Cancellazione",
+      "body": [
+        "Invia ogni richiesta di cancellazione per iscritto al nostro indirizzo ufficiale (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Il periodo di cancellazione inizia al ricevimento dell’e-mail e termina alle 00:01 del giorno di arrivo previsto. La prenotazione resta valida finché non ricevi conferma dell’avvenuta cancellazione. È previsto un costo amministrativo – di norma il 15 % dell’importo (al netto delle commissioni di terzi). L’ostello può cancellare la prenotazione senza richiesta scritta se non effettui il check-in prima della chiusura, parti in anticipo senza avviso o violi il regolamento. Se il preavviso è insufficiente, si applicheranno costi equivalenti a un No-Show."
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Modificare Prenotazioni Confermate",
+      "body": [
+        "Le prenotazioni esistenti non possono essere modificate direttamente: vengono sostituite da nuove prenotazioni. Invia la richiesta di modifica entro il periodo di preavviso all’e-mail ufficiale. Riceverai una conferma quando la variazione sarà approvata. Tutte le modifiche sono soggette a disponibilità e condizioni. Accorciare o prolungare il soggiorno sarà trattato come cancellazione o estensione; ogni estensione è considerata una nuova prenotazione. Se lasci l'ostello prima della data di partenza senza conferma scritta, restano validi i termini originali."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Trasferibilità della Prenotazione",
+      "body": [
+        "La prenotazione deve restare a tuo nome per l’intera permanenza. Non è consentito trasferirla né cambiare il nominativo. Chiunque tenti di effettuare il check-in con una prenotazione trasferita vedrà la stessa annullata e tu sarai comunque responsabile dell’importo totale."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Prenotazioni Prepagate Non Rimborsabili",
+      "body": [
+        "Le prenotazioni prepagate non rimborsabili richiedono il pagamento completo al momento della prenotazione. Se il pagamento non va a buon fine, la prenotazione viene annullata automaticamente. Questi importi non sono rimborsabili nemmeno in caso di cancellazione o no-show. Qualsiasi estensione sarà gestita come nuova prenotazione non rimborsabile."
+      ]
+    }
+  ]
+}

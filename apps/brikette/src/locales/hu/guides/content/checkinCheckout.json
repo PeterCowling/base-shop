@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Teljes be‑ és kijelentkezési útmutató a positanoi Hostel Brikette-hez",
+    "description": "Lépésről lépésre útmutatás az érkezési időkről, személyazonosító dokumentumokról, csomagmegőrzésről, kauciókról és kijelentkezési támogatásról a positanoi Hostel Brikette-ben."
+  },
+  "linkLabel": "Teljes be‑ és kijelentkezési útmutató a positanoi Hostel Brikette-hez",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Bejelentkezési kérelem",
+      "body": [
+        "Érkezéskor keresd fel a recepciónkat, itt indítjuk a bejelentkezést és itt kapod meg a szobabeosztást."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Korai érkezés",
+      "body": [
+        "Ha a foglalás napján 10:30 előtt érkezel, a hostelbe még nem tudunk beengedni."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Déli érkezés",
+      "body": [
+        "10:30 és 15:00 között – előzetes jóváhagyással – ideiglenes vendégként léphetsz be. Ha van szabad kapacitás, kérhetsz poggyászmegőrzést, de ez külön szolgáltatás, saját feltételekkel."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Bejelentkezési idősáv",
+      "body": [
+        "A bejelentkezés minden nap 15:00 és 22:30 között zajlik a szokásos folyamat szerint."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Késői érkezés",
+      "body": [
+        "Ha 22:30 után érkeznél, elérhetőség függvényében önkiszolgáló késői check-in csomagot biztosíthatunk. Az instrukciókat a foglalásnál megadott elérhetőségre küldjük – ügyelj arra, hogy a készüléked feltöltve legyen és az adatok pontosak, mert téves információért nem tudunk felelősséget vállalni."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "A teljes bejelentkezési folyamat szükségessége",
+      "body": [
+        "Csak a teljes bejelentkezési folyamat elvégzése után léphetsz be a hostelbe. Ha ez nem sikerül, a foglalás törlődik és no-show-ként rögzítjük."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Személyazonosítás",
+      "body": [
+        "Érkezéskor eredeti, érvényes okmányt kell bemutatnod (útlevél, személyi igazolvány, jogosítvány vagy katonai igazolvány). Ha a bejelentkezés napján 22:30-ig nem mutatsz be érvényes igazolványt, a foglalást no-show-ként töröljük."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Hátralék rendezése",
+      "body": [
+        "A bejelentkezés befejezése előtt minden hátralékot rendezni kell elfogadott fizetési móddal. Ha ez nem történik meg, a foglalást töröljük és no-show státuszt kap."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Kaució kártyáért és ágyneműért",
+      "body": [
+        "Check-in során 10 € készpénzes kauciót kérünk a kulcskártyáért és az ágyneműért. A teljes összeget készpénzben visszaadjuk kijelentkezéskor, amint mindkettőt leadod. Bankkártyát ehhez a kaucióhoz nem tudunk elfogadni."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Kijelentkezési idősáv",
+      "body": [
+        "A kijelentkezés 7:30 és 10:30 között történik. Ezután nem léphetsz vissza a szobába, és nem hagyhatsz ott személyes tárgyat."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Korai kijelentkezés",
+      "body": [
+        "Ha 7:30 előtt indulsz, előző este a recepción egyeztess a korai kijelentkezésről, hogy készpénzben visszakapd a kauciót. Ha személyzet visszaigazolása nélkül hagyod itt a kulcskártyát, a kauciót elveszíted."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Késői kijelentkezés",
+      "body": [
+        "Késői kijelentkezést nem tudunk biztosítani; 10:30-ig be kell fejezni a kijelentkezést."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Elmaradt kijelentkezés",
+      "body": [
+        "Ha az előírt időpontig nem hagyod el a szobát, felelősségvállalás nélkül eltávolíthatjuk a csomagodat. Szükség esetén helyi hordárszolgálatnál tároljuk a saját költségedre. Jogosulatlan visszatérés biztonsági incidensnek minősül."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Kijelentkezés után",
+      "body": [
+        "A kijelentkezéssel a foglalás lezárul. A hostel területén ideiglenes vendégként 15:30-ig maradhatsz. Poggyászmegőrzést kérhetsz, ha van hely, külön feltételek mellett."
+      ]
+    }
+  ]
+}

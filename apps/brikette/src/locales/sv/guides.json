@@ -20,88 +20,169 @@
   },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Det enda vandrarhemmet i Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Det enda vandrarhemmet i Positano",
+        "description": "Prisvärda sängar i Positano med panoramautsikt och trevlig stämning."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Rutter för ryggsäcksresenärer",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Rutter för ryggsäcksresenärer på Amalfikusten",
+        "description": "Praktiska, budgetvänliga rutter för 2–7 dagar utan bil."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Ta dig till Positano billigt",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Ta dig till Positano billigt",
+        "description": "De billigaste sätten att ta sig till Positano med buss, tåg och färja."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Färjetidtabeller",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Positanos färjetidtabeller",
+        "description": "Uppdaterade färjeoperatörer och säsongsbetonade tidtabeller för Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Gudarnas stig: Komplett guide från Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Vandra Gudarnas stig",
+        "description": "Dörr-till-dörr-instruktioner för Sentiero degli Dei från Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Gudarnas stig: Vacker färja och vandringsrutt",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Gudarnas stig via Amalfi (färja)",
+        "description": "Ta färjan till Amalfi, buss upp till Bomerano, vandra Gudarnas stig med returvägbeskrivning."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Gudarnas stig: Budgetvänlig buss och vandring",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Gudarnas stig via Amalfi (buss)",
+        "description": "Ta SITA Sud-bussen till Bomerano och följ vår Gudarnas stig-rutt tillbaka mot Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Gudarnas stig: Kort vandring från Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Gudarnas stig via Nocelle",
+        "description": "Kortare tur-retur-vandring från Nocelle med vägbeskrivning tillbaka till Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Bästa dagsturerna: Capri, Amalfi, Pompeji och mer",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Dagsutflykter från Positano",
+        "description": "Idéer för Amalfi, Ravello, Capri och Pompeji med tids- och transporttips."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Kollektivtrafikguide för Amalfikusten",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Kollektivtrafikguide för Amalfikusten",
+        "description": "Hur du använder bussar och färjor på Amalfikusten med pass, tidtabeller och rutter."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Positano-tips för förstagångsbesökare",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Positano-tips för förstagångsbesökare",
+        "description": "Ankomst, bagage, betalning och uppkoppling — praktiska råd för din första resa."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Vad du ska packa för Amalfikusten",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Vad du ska packa för Amalfikusten",
+        "description": "Säsongsbetonad packlista för Positano och Amalfikusten."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Positanos stränder: Sand, sol och hemliga vikar"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo strand: Positanos exklusiva strandklubb"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo strand: Positanos lugnare alternativ"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito strand: Dold pärla under klipporna"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella strand: Praianos solnedgångsbadplats"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Dramatisk vik mellan klipporna"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: Fjordstranden under bron"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Romerska ruiner möter naturlig pool"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positanos ikoniska huvudstrand"
+    },
+    "sunriseHike": {
+      "linkLabel": "Soluppgångsvandring: Se gryningen över Positano"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Vandring till Positanos högsta utsiktspunkt"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Håll dig i form i Positano: Trappor, stigar och strandträning"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Dagstur till Capri: Öflykt från Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri utan att spräcka budgeten"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping på Amalfikusten: Budgetvänligt alternativ till hotell"
+    },
+    "boatTours": {
+      "linkLabel": "Båtturer: Solnedgångskryssningar till privata charter"
+    },
+    "cheapEats": {
+      "linkLabel": "Ät som en lokal: Positanos bästa budgetmat"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Var äta i Positano: Från avslappnat till festligt"
+    },
+    "positanoDining": {
+      "linkLabel": "Positanos bästa restauranger nära Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Smaka Positano: Limoncello, citroner och lokala smaker"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagramvärt Positano: Bästa fotoplatser och tidpunkter"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Solnedgång i Positano: Bästa utsiktspunkter för gyllene timmen"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Festival: Klassiska konserter under stjärnorna"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Italiens 15 augusti-firande i Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Tusentals ljus lyser upp natten"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Gratis ljudguide: Upptäck Positanos dolda berättelser"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Gratis aktiviteter i Positano: Budgetvänligt nöje"
     }
   },
   "dev": {

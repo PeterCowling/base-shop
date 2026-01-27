@@ -1,122 +1,122 @@
 {
   "seo": {
     "title": "Przewodnik po Positano",
-    "description": "Pełen przegląd: dojazd, noclegi, jedzenie, plaże i praktyczne wskazówki dla odwiedzających."
+    "description": "Gdzie się zatrzymać, kiedy przyjechać, jak się poruszać i co zobaczyć w Positano."
   },
   "linkLabel": "Przewodnik po Positano",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Zaplanuj wizytę w Positano: gdzie spać, jak poruszać się po mieście, najlepsze terminy i obowiązkowe punkty programu.",
+    "Ten przegląd odsyła do pogłębionych przewodników po transporcie, plażach, szlakach, wycieczkach jednodniowych i budżecie."
   ],
   "sections": [
     {
       "id": "when",
-      "title": "When to visit",
+      "title": "Kiedy odwiedzić",
       "body": [
-        "Miesiące poboczne (kwiecień–maj, koniec września–październik) równoważą pogodę i ceny.",
-        "Lato przynosi promy i długie dni, ale także upał i kolejki – zacznij wcześnie."
+        "Miesiące poboczne (kwiecień–maj oraz koniec września–października) równoważą pogodę z cenami.",
+        "Latem promy kursują częściej i dni są długie, ale dochodzi upał i kolejki — zaczynaj dni wcześniej."
       ]
     },
     {
       "id": "getting-around",
-      "title": "Getting around",
+      "title": "Jak się poruszać",
       "body": [
-        "Większość tras obsługuje spacer, autobusy SITA i promy sezonowe; schody są powszechne.",
-        "Skorzystaj z naszego przewodnika po transporcie publicznym, aby poznać bilety, rozkład jazdy i wskazówki dotyczące unikania tłumów."
+        "Spaceruj, korzystaj z autobusów SITA i promów sezonowych — schody są wszechobecne.",
+        "Zajrzyj do naszego przewodnika po transporcie publicznym po informacje o biletach, rozkładach i trikach na omijanie tłumów."
       ]
     },
     {
       "id": "highlights",
-      "title": "Highlights",
+      "title": "Co robić",
       "body": [
-        "plaże Spiaggia Grande i Fornillo; punkty widokowe o zachodzie słońca nad Via Pasitea.",
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Plaże Spiaggia Grande i Fornillo oraz punkty widokowe na zachód słońca nad Via Pasitea.",
+        "Droga Bogów (odcinki Nocelle lub Bomerano); wycieczki jednodniowe do Amalfi i Ravello.",
+        "Wyprawa na Capri (pierwszy prom), albo zostań na miejscu i korzystaj z kawiarni na klifie i panoram."
       ]
     },
     {
       "id": "stays",
-      "title": "Where to stay",
+      "title": "Gdzie zostać",
       "body": [
-        "Zatrzymaj się w pobliżu przystanków autobusowych „Chiesa Nuova” lub „Sponda”, aby zminimalizować liczbę schodów z bagażem.",
-        "Tłumaczenie w przygotowaniu."
+        "Bądź blisko przystanków „Chiesa Nuova” lub „Sponda”, by ograniczyć liczbę schodów z bagażem.",
+        "Szukasz oszczędności? Rozważ bazy w Sorrento lub Meta i dojeżdżaj promem/autobusem na jednodniowe wizyty."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Do I need a car?",
+      "q": "Czy potrzebuję samochodu?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Nie — autobusy i promy obsługują wybrzeże, a parkingi są ograniczone i drogie."
       ]
     },
     {
-      "q": "How many days?",
+      "q": "Ile dni zostać?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "2–3 dni na pierwsze wrażenia; 4–5 dni, jeśli chcesz dorzucić wędrówkę i wycieczkę."
       ]
     }
   ],
   "fallback": {
     "intro": [
-      "Tłumaczenie w przygotowaniu."
+      "Positano jest pionowe, piękne i zatłoczone w sezonie. Ten przewodnik skupia się na praktycznych wyborach: gdzie się zatrzymać, kiedy przyjechać, jak się poruszać i co robić na miejscu."
     ],
     "gallery": {
       "items": [
         {
-          "alt": "Hostel terrace with panoramic view",
-          "caption": "Zachód słońca z tarasu — zatrzymaj się kilka kroków od przystanku autobusowego Chiesa Nuova."
+          "alt": "Taras hostelu z panoramicznym widokiem",
+          "caption": "Zachód słońca z tarasu — zatrzymaj się kilka kroków od przystanku Chiesa Nuova."
         },
         {
-          "alt": "Positano panorama",
-          "caption": "Fornillo i Spiaggia Grande są dostępne dla pieszych; spodziewać się schodów."
+          "alt": "Panorama Positano",
+          "caption": "Fornillo i Spiaggia Grande są dostępne pieszo; spodziewaj się schodów."
         }
       ]
     },
     "sections": {
       "whereToStay": {
-        "title": "Where to stay",
-        "body": "Pobyt w pobliżu <em>Chiesa Nuova</em> oznacza mniej schodów w dniu przyjazdu i wyjazdu. Hostel Brikette znajduje się około 80 m od przystanku autobusowego z panoramicznymi tarasami, niedrogimi łóżkami i pokojami prywatnymi. Pobyty przy plaży w pobliżu Spiaggia Grande są malownicze, ale wiążą się z większą liczbą schodów i wyższymi cenami."
+        "title": "Gdzie zostać",
+        "body": "Pobyt blisko <em>Chiesa Nuova</em> oznacza mniej schodów przy przyjeździe i wyjeździe. Hostel Brikette leży ok. 80 m od przystanku, z panoramicznymi tarasami i przystępnymi łóżkami oraz pokojami prywatnymi. Bazując przy plaży Spiaggia Grande dostaniesz widok, ale musisz liczyć się z większą liczbą schodów i wyższymi cenami."
       },
       "whenToVisit": {
-        "title": "When to visit",
-        "body": "Tłumaczenie w przygotowaniu."
+        "title": "Kiedy przyjechać",
+        "body": "Lato jest żywe, ale tłumne; miesiące poboczne zapewniają pogodę i więcej przestrzeni. Przeczytaj pełny rozkład w naszym <linkBestTime>przewodniku o najlepszym czasie na wizytę w Positano</linkBestTime>. Promy kursują sezonowo i słabną poza szczytem."
       },
       "gettingAround": {
-        "title": "Getting around",
-        "arrivals": "Tłumaczenie w przygotowaniu.",
-        "withinTown": "Tłumaczenie w przygotowaniu.",
-        "ferries": "Tłumaczenie w przygotowaniu."
+        "title": "Jak się poruszać",
+        "arrivals": "<strong>Dojazd</strong>: zacznij od <linkHowTo>przewodnika jak dotrzeć do Positano</linkHowTo>, potem zajrzyj na <linkNaples>Neapol → Positano</linkNaples> i <linkSalerno>Salerno → Positano</linkSalerno>.",
+        "withinTown": "<strong>W mieście</strong>: autobusy łączą <em>Chiesa Nuova</em>, <em>Sponda</em> i plażę. Spacer to codzienność — planuj trasy, by nie dublować schodów.",
+        "ferries": "<strong>Promy</strong>: sprawdzaj <linkFerries>rozkłady promów</linkFerries> i zawsze zostaw zapas na pogodowe zmiany planu."
       },
       "thingsToDo": {
-        "title": "Things to do",
-        "beaches": "<linkBeaches>Beaches</linkBeaches>: Spiaggia Grande z klasycznym widokiem; Fornillo dla cichszej atmosfery; Arienzo, aby popływać w malowniczym klifie.",
-        "pathOfTheGods": "Tłumaczenie w przygotowaniu.",
+        "title": "Co robić",
+        "beaches": "<linkBeaches>Plaże</linkBeaches>: Spiaggia Grande dla klasycznego widoku; Fornillo dla spokojniejszej atmosfery; Arienzo na kąpiel na klifie.",
+        "pathOfTheGods": "<linkPath>Droga Bogów</linkPath> z Nocelle lub Bomerano dla spektakularnych widoków.",
         "dayTrips": "Wycieczki jednodniowe: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> i <linkRavello>Ravello</linkRavello>."
       },
       "moneySavers": {
-        "title": "Money savers",
-        "eat": "Tłumaczenie w przygotowaniu.",
-        "travel": "Podróżuj poza szczytowymi weekendami; porównaj <linkBudgetArrival>budżetowe opcje przyjazdu</linkBudgetArrival>.",
-        "stay": "Tłumaczenie w przygotowaniu."
+        "title": "Oszczędności",
+        "eat": "Korzystaj z listy <linkCheapEats>taniego jedzenia</linkCheapEats> i miej butelkę do napełnienia.",
+        "travel": "Podróżuj poza szczytowymi weekendami; porównaj <linkBudgetArrival>budżetowe opcje dojazdu</linkBudgetArrival>.",
+        "stay": "Zostań blisko <em>Chiesa Nuova</em>, by ograniczyć opłaty dla tragarzy i liczbę schodów przy przyjeździe."
       }
     },
-    "tipsTitle": "Where to save",
+    "tipsTitle": "Gdzie oszczędzać",
+    "tips": [
+      "Rezerwuj promy i autobusy wcześniej, kiedy to możliwe; bilety last minute są droższe i łatwiej je wyprzedać.",
+      "Noś gotówkę na kluby plażowe, napiwki dla tragarzy i przekąski — bankomaty często się kończą po kolacji.",
+      "Dziel transfery na lotnisko lub jedź autobusami wybrzeża; wspólne koszty pomagają ograniczyć wydatki przy dojeździe."
+    ],
     "faqHeading": "FAQs",
     "faqs": [
       {
-        "question": "Is Positano doable on a budget?",
-        "answer": "Tak. Korzystaj z autobusów, planuj promy selektywnie i skup się na bezpłatnych punktach widokowych i czasie na plaży."
+        "question": "Czy Positano można odwiedzić z ograniczonym budżetem?",
+        "answer": "Tak. Korzystaj z autobusów, wybieraj promy selektywnie i skupiaj się na bezpłatnych punktach widokowych oraz czasie na plaży."
       },
       {
-        "question": "Where should I base myself?",
-        "answer": "Tłumaczenie w przygotowaniu."
+        "question": "Gdzie warto się zatrzymać?",
+        "answer": "Dla łatwej logistyki zostań przy <em>Chiesa Nuova</em>. Dla nadmorskiego klimatu wybierz okolice Spiaggia Grande (przygotuj się na więcej schodów)."
       }
-    ],
-    "tips": [
-      "Jeśli to możliwe, zarezerwuj promy i autobusy z wyprzedzeniem; Bilety last minute są droższe i mogą zostać wyprzedane.",
-      "Noś przy sobie gotówkę na kluby plażowe, napiwki tragarza i szybkie przekąski — bankomaty w mieście często kończą się po kolacji.",
-      "Udostępnij transfery na lotnisko lub jedź autobusami na wybrzeżu Amalfi; dzielenie taryf pozwala obniżyć koszty przylotu."
     ]
   }
 }

@@ -1,64 +1,64 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Letöltési útmutató, útvonalak, offline használat és etikett."
+    "title": "Ingyenes sétahang: fedezd fel Positano titkait",
+    "description": "Töltsd le a Chiesa Nuovától a strandra tartó útvonalat és kövesd a hallgatási tippeket."
   },
-  "linkLabel": "Free Walking Tour Audio: Positano",
+  "linkLabel": "Ingyenes sétahang: fedezd fel Positano történeteit",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Töltsd le ingyenes Positano sétahangunkat: kezdj a Chiesa Nuovánál, kanyarogj végig az óvároson, és érkezz meg a Spiaggia Grande-ra.",
+    "Kövesd az útvonalat és a hallgatási tippeket lent, és mentsd a fájlokat Wi-Fi-n, mielőtt kilépsz a sikátorokba."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "Ezen az oldalon",
   "toc": [
     {
       "href": "#route",
-      "label": "Route"
+      "label": "Útvonal"
     },
     {
       "href": "#listen",
-      "label": "How to listen"
+      "label": "Hogyan hallgass"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "GYIK"
     }
   ],
   "sections": [
     {
       "id": "route",
-      "title": "Route",
+      "title": "Útvonal",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kezdj a Chiesa Nuova buszmegállónál → állj meg a Via Pasitea kilátópontjainál → kanyarogj a sikátorok között → érkezz meg a Spiaggia Grandéra.",
+        "Pihenj meg a teraszokon, de légy tekintettel a helyiekre és a hordárokra, akik a lépcsőkön szállítják az árut."
       ]
     },
     {
       "id": "listen",
-      "title": "How to listen",
+      "title": "Hogyan hallgass",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Töltsd le a hanganyagot hostel Wi-Fi-n, vagy streameld az út menti ismert pontokon.",
+        "Tartsd alacsonyan a hangerőt a lépcsőkön, és vegyél ki egy fülest, amikor át kell haladnod az úton vagy más sétálókkal találkozol."
       ]
     }
   ],
-  "faqHeading": "FAQs",
+  "faqHeading": "GYIK",
   "faqs": [
     {
-      "q": "Is the loop steep?",
+      "q": "Meredek a kör?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen — számíts lépcsőkre. Ha szükséges, fordítsd meg az útvonalat, vagy használj SITA buszt felfelé, ha a térdeid pihenésre szorulnak."
       ]
     },
     {
-      "q": "Can I listen offline?",
+      "q": "Hallgathatom offline?",
       "a": [
-        "A fordítás folyamatban van."
+        "Természetesen. Mentsd el a fájlokat a telefonodra, hogy ne kelljen a gyenge mobiladatokra támaszkodnod a szűk sikátorokban."
       ]
     },
     {
-      "q": "How long does it take?",
+      "q": "Mennyi időre számítsak?",
       "a": [
-        "A fordítás folyamatban van."
+        "45–60 percet tervezz, beleértve a fotózást és a teraszmegállókat."
       ]
     }
   ]

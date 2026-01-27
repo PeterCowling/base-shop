@@ -3,10 +3,10 @@
     "title": "Best beaches in Positano",
     "description": "Expanded beach overview covering Positano, Praiano, Furore, Sorrento, Amalfi, and Capri day trips."
   },
-  "linkLabel": "Best beaches in Positano",
+  "linkLabel": "Positano Beaches: Sand, Sun & Secret Coves",
   "intro": [
-    "Compare Positano's beaches and nearby day-trip coves before you commit to a lounger. This overview highlights prices, free zones, and the overall vibe so you can match the spot to your budget and energy level.",
-    "Select any beach name in the table or summaries below to open our detailed guides with directions, food suggestions, and step-by-step access notes."
+    "To ensure that you have a great beach day, we have compiled a list of the main beaches available. The list is presented in table format, providing an overview of the features and amenities offered by each beach.",
+    "For more information about each beach, click on the name of the beach in the table below. This will take you to our guides, each of which include travel directions and descriptions of the various sections of the beach."
   ],
   "galleryTitle": "Positano beach highlights",
   "toc": [
@@ -253,6 +253,40 @@
     }
   ],
 
+  "faqs": [
+    {
+      "question": "Which Positano beach is best for budget travellers?",
+      "answer": "Fornillo is the most budget-friendly option with loungers starting at €15 and two free sections—one at the far end and a hidden spot near the rocks. The relaxed vibe and lower prices make it a favourite among hostel guests."
+    },
+    {
+      "question": "Are there any free beaches near Positano?",
+      "answer": "Yes. Fornillo has two free zones, Spiaggia Grande has a public strip in the middle, and Fiordo di Furore is entirely free. Regina Giovanna Bath near Sorrento is also free but has no facilities."
+    },
+    {
+      "question": "How do I get to Arienzo or Laurito beach?",
+      "answer": "Both beaches are best reached by shuttle boat from Spiaggia Grande. Arienzo requires descending around 300 stairs if walking, while Laurito has very limited land access. Book a beach club package that includes boat transfer for the easiest experience."
+    },
+    {
+      "question": "What time should I arrive at the beaches?",
+      "answer": "For popular spots like Fornillo and Spiaggia Grande, arrive by 9-10am to secure a good spot on free sections. Fiordo di Furore fills up quickly due to its small size—arrive early or visit outside peak hours. Gavitella is best for late afternoon when the sunset views are spectacular."
+    },
+    {
+      "question": "How much do beach loungers cost in Positano?",
+      "answer": "Prices vary widely. Budget clubs at Fornillo start around €15, while mid-range options at Spiaggia Grande begin near €25. Premium decks like La Scogliera can run €100-€400 for VIP setups. Arienzo packages including loungers, lunch, and boat transfer start near €60."
+    },
+    {
+      "question": "Can I take a day trip to beaches outside Positano?",
+      "answer": "Absolutely. Praiano (Gavitella and Marina di Praia), Furore's fjord cove, Sorrento's Regina Giovanna Bath, and Amalfi's Marina Grande are all reachable by SITA bus or ferry. Check each guide for specific transport directions and schedules."
+    },
+    {
+      "question": "What should I bring to the beach?",
+      "answer": "Essential items include reef-safe sunscreen, water shoes (especially for rocky beaches like Regina Giovanna), cash for smaller beach clubs, and a reusable water bottle. If visiting free zones, bring your own towel, shade, and snacks as facilities may be limited."
+    },
+    {
+      "question": "Which beach has the best sunset views?",
+      "answer": "Gavitella in Praiano is renowned for its sunset aperitivi scene—the restaurant terrace offers spectacular views as the sun dips below the horizon. Laurito also enjoys late-day sun due to its position along the coast."
+    }
+  ],
   "gallery": [
     {
       "alt": "Spiaggia Grande from above",

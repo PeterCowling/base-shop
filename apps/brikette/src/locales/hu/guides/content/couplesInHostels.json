@@ -5,29 +5,29 @@
   },
   "linkLabel": "Páros utazás hostelben",
   "intro": [
-    "A fordítás folyamatban van."
+    "A hostelek jól működhetnek párok számára, ha okosan választjátok ki a szobatípust, könnyű csomaggal utaztok, és közösen egyeztettek a közös szabályokról."
   ],
   "sections": [
     {
       "id": "room-types",
-      "title": "Room types",
+      "title": "Szobatípusok",
       "body": [
-        "A fordítás folyamatban van."
+        "Foglaljatok privát szobát az intimitás érdekében; ha szűkebb a költségvetés, osszátok meg ugyanazon hálótermek emeletes ágyait, és tartsátok könnyűnek a csomagokat a lépcsők miatt."
       ]
     },
     {
       "id": "quiet",
-      "title": "Finding quiet",
+      "title": "Nyugalom keresése",
       "body": [
-        "A fordítás folyamatban van."
+        "Vigyél magaddal füldugót és szemmaszkot, válassz szobát távol a bár- vagy közösségi terektől, és a nyugodtabb városnézéshez használd a kora reggelt."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Alkalmas egy hostel pároknak?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen — élvezhetitek a közösségi hangulatot és a jó ár-érték arányt, a privát szoba pedig kényelmes kompromisszum a kényelem és költség között."
       ]
     }
   ]

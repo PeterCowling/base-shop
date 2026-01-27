@@ -67,8 +67,7 @@ export const STRUCTURED_TOC_OVERRIDES: Partial<
   safetyAmalfi: { suppressMinimalLocalizedContent: true },
   cheapEats: { suppressMinimalLocalizedContent: true },
   positanoBeaches: {
-    suppressMinimalLocalizedContent: true,
-    suppressMinimalUnlocalizedSections: true,
+    // Content now populated - allow rendering
   },
   simsAtms: {
     suppressMinimalLocalizedContent: true,

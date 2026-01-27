@@ -5,51 +5,51 @@
   },
   "linkLabel": "Limoncello i lokalna kuchnia",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Cytryny i limoncello definiują smaki Amalfi — od degustacji po słodkie zakończenia.",
+    "Oto, gdzie popróbować, co przywieźć i jak wykorzystać smaki w domowych kuchniach."
   ],
   "tocTitle": "On this page",
   "sections": [
     {
       "id": "tasting",
-      "title": "Tasting",
+      "title": "Degustacja",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Połącz degustacje z lodami cytrynowymi, sorbetem lub ciastami, aby ocenić słodycz i równowagę."
+        "Wpadnij do małych botteghe po rzemieślnicze limoncello i poproś o próbkę, by porównać style.",
+        "Połącz degustacje z lodami cytrynowymi, sorbetem lub ciastkami, by ocenić słodycz i balans."
       ]
     },
     {
       "id": "purchase",
-      "title": "Buying & shipping",
+      "title": "Zakupy i wysyłka",
       "body": [
-        "Sprawdź limity płynów linii lotniczych; bezpiecznie pakuj butelki do bagażu rejestrowanego.",
-        "Tłumaczenie w przygotowaniu."
+        "Sprawdź limity płynów linii lotniczych; bezpiecznie pakuj butelki w bagażu rejestrowanym.",
+        "Szukaj oznaczeń IGP Costa d’Amalfi i ekologicznych opakowań od lokalnych producentów."
       ]
     },
     {
       "id": "cooking",
-      "title": "Cooking with lemons",
+      "title": "Gotowanie z cytrynami",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
+        "Dodaj skórkę i sok do sałatek, makaronów z owocami morza i deserów dla świeżej nuty.",
         "Przechowuj cytryny w chłodnym, ciemnym miejscu, a skórki wykorzystaj do syropów lub marynat."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Omiń drogie sklepy z pamiątkami w pobliżu głównej plaży; idź jedną lub dwie ulice w tył, aby uzyskać lepszą jakość."
+    "Wspieraj lokalnych producentów — ich smaki są często intensywniejsze niż masowe marki dla turystów.",
+    "Omiń drogie sklepy z pamiątkami przy głównej plaży; idź jedną-dwie ulice dalej po lepszy stosunek ceny do jakości."
   ],
   "faqs": [
     {
       "q": "Can I carry limoncello in hand luggage?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Nie więcej niż 100 ml — standardowe butelki pakuj w bagażu rejestrowanym z ochraniaczami."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy są wersje bezalkoholowe?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Spróbuj świeżej lemoniady, granity lub syropów cytrynowych, jeśli wolisz zrezygnować z alkoholu."
       ]
     }
   ],
@@ -57,11 +57,11 @@
     "title": "Photo gallery",
     "items": [
       {
-        "alt": "Tłumaczenie w przygotowaniu.",
+        "alt": "Vintage’owy plakat Positano z cytrynami",
         "caption": "Vintage lemons"
       },
       {
-        "alt": "Tłumaczenie w przygotowaniu.",
+        "alt": "Taras z kieliszkami limoncello",
         "caption": "Terrace limoncello"
       }
     ]

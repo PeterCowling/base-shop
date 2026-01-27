@@ -102,6 +102,87 @@
         "title": "ماذا تحزم لساحل أمالفي",
         "description": "قائمة تجهيزات موسمية لبوسيتانو وساحل أمالفي."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "شواطئ بوسيتانو: رمال وشمس وخلجان سرية"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "شاطئ أريينزو: نادي الشاطئ الفاخر في بوسيتانو"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "شاطئ فورنيلو: البديل الهادئ لبوسيتانو"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "شاطئ لوريتو: جوهرة مخفية تحت المنحدرات"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "شاطئ جافيتيلا: مكان السباحة عند الغروب في برايانو"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "مارينا دي برايا: خليج مذهل بين المنحدرات"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "فيوردو دي فوروري: شاطئ الفيورد تحت الجسر"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "ريجينا جيوفانا: آثار رومانية ومسبح طبيعي"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "سبياجيا غراندي: الشاطئ الرئيسي الأيقوني في بوسيتانو"
+    },
+    "sunriseHike": {
+      "linkLabel": "رحلة شروق الشمس: شاهد الفجر فوق بوسيتانو"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "مونتي كوموني: رحلة إلى أعلى نقطة مراقبة في بوسيتانو"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "حافظ على لياقتك في بوسيتانو: سلالم ومسارات وتمارين الشاطئ"
+    },
+    "capriDayTrip": {
+      "linkLabel": "رحلة يومية إلى كابري: هروب إلى الجزيرة من بوسيتانو"
+    },
+    "capriOnABudget": {
+      "linkLabel": "كابري بميزانية محدودة"
+    },
+    "campingAmalfi": {
+      "linkLabel": "التخييم في ساحل أمالفي: بديل اقتصادي للفنادق"
+    },
+    "boatTours": {
+      "linkLabel": "جولات القارب: من رحلات الغروب إلى الاستئجار الخاص"
+    },
+    "cheapEats": {
+      "linkLabel": "كُل كالمحليين: أفضل الأكلات الاقتصادية في بوسيتانو"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "أين تأكل في بوسيتانو: من العادي إلى الاحتفالي"
+    },
+    "positanoDining": {
+      "linkLabel": "أفضل مطاعم بوسيتانو بالقرب من Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "تذوق بوسيتانو: ليمونتشيلو وليمون ونكهات محلية"
+    },
+    "instagramSpots": {
+      "linkLabel": "بوسيتانو المثالية للإنستغرام: أفضل أماكن وأوقات التصوير"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "غروب الشمس في بوسيتانو: أفضل نقاط المراقبة للساعة الذهبية"
+    },
+    "ravelloFestival": {
+      "linkLabel": "مهرجان رافيللو: حفلات كلاسيكية تحت النجوم"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "فيراغوستو: احتفال 15 أغسطس الإيطالي في بوسيتانو"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "لوميناريا دي برايانو: آلاف الشموع تضيء الليل"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "جولة صوتية مجانية: اكتشف قصص بوسيتانو المخفية"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "أنشطة مجانية في بوسيتانو: متعة اقتصادية"
     }
   },
   "dev": {

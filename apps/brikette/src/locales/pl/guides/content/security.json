@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Wytyczne dot. bezpieczeństwa – Positano Hostel",
+    "description": "Najważniejsze informacje o tym, jak dbamy o bezpieczeństwo gości i ich rzeczy, w tym szafki, opaski identyfikacyjne, monitoring CCTV oraz zasady dla odwiedzających."
+  },
+  "linkLabel": "Wytyczne dot. bezpieczeństwa – Positano Hostel",
+  "sections": [
+    {
+      "id": "personalBelongingsSecurity",
+      "title": "Troska o Twoje rzeczy",
+      "body": [
+        "Każdy gość odpowiada za swoje rzeczy osobiste przez cały pobyt. Tam, gdzie to możliwe, udostępniamy szafki i sejfy; korzystanie z nich jest proste, lecz nie przenosi odpowiedzialności na hostel — zalecamy aktualne ubezpieczenie podróżne. Dla spokoju wszystkich zamykaj drzwi do pokoju i zabezpieczaj przydzieloną szafkę. Przedmioty pozostawione na ponad 30 dni mogą zostać przekazane, poddane recyklingowi lub zutylizowane."
+      ]
+    },
+    {
+      "id": "identificationSecurityBands",
+      "title": "Opaski bezpieczeństwa",
+      "body": [
+        "Aby ułatwić personelowi szybką identyfikację gości, przy zameldowaniu każdy otrzymuje opaskę bezpieczeństwa. Noś ją na terenie hostelu; możemy też poprosić o dokument ze zdjęciem. W razie utraty lub uszkodzenia poinformuj recepcję — obowiązuje niewielka opłata za wymianę. Goście bez opaski lub odmawiający pokazania ID mogą zostać poproszeni o opuszczenie obiektu; zwrot środków może nie być możliwy."
+      ]
+    },
+    {
+      "id": "cctvSurveillance",
+      "title": "Monitoring CCTV i wideo",
+      "body": [
+        "Strefy wspólne — w tym wejście, korytarze, taras i sale wspólne — są monitorowane przez CCTV 24/7. Nagrania przechowywane są bezpiecznie i dostępne wyłącznie dla upoważnionego personelu. Kamery wspierają bezpieczeństwo, lecz nie gwarantują braku strat, kradzieży czy szkód — prosimy o czujność i zabezpieczenie cennych przedmiotów."
+      ]
+    },
+    {
+      "id": "temporaryGuestsPolicy",
+      "title": "Przyjmowanie gości dziennych",
+      "body": [
+        "Przed zaproszeniem znajomych prosimy o kontakt z recepcją, aby nadać im status \"Gościa dziennego\". Po rejestracji z ważnym dokumentem mogą korzystać z przestrzeni wspólnych między 10:30 a 20:00. Dla prywatności pokoi, dostęp do nich mają wyłącznie zarejestrowani goście nocujący. Hostel może odmówić lub cofnąć ten status według własnego uznania."
+      ]
+    },
+    {
+      "id": "unregisteredPersonsPolicy",
+      "title": "Rejestracja gości nocujących",
+      "body": [
+        "Prawo włoskie wymaga rejestracji każdego gościa nocującego. Jeśli w pokoju przebywa osoba niezarejestrowana, na zarejestrowanego(-ych) gościa(-i) zostanie nałożona standardowa stawka za tę osobę oraz opłata administracyjna równa dwukrotności tej kwoty. Dodatkowy gość musi natychmiast dokończyć zameldowanie lub opuścić obiekt; w przypadku odmowy hostel jest zobowiązany powiadomić władze. Niezgłoszenie gościa nocującego może skutkować oznaczeniem rezerwacji jako no‑show."
+      ]
+    }
+  ]
+}

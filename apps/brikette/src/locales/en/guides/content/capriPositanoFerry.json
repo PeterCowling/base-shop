@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Capri to Positano by Ferry | Hostel Brikette",
+    "description": "How to travel from Capri to Positano by ferry, with ticket tips, operators, arrival advice, and the easiest way up to the hostel."
+  },
+  "intro": {
+    "title": "Capri to Positano – Ferry",
+    "body": "Use this guide to travel from Capri to Positano entirely by sea. It covers choosing the right operator, buying tickets at the port, and what to do on arrival for the smoothest walk (or bus) up to Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Need other route options or backups when seas are rough? Open the %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|How to Get Here overview%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "body": "Ferries between Capri and Positano run most frequently in spring and summer. Services may be cancelled in rough seas, especially later in the day. Total travel time is typically 30–60 minutes depending on vessel and operator."
+    },
+    {
+      "id": "capriPort",
+      "title": "At Capri port",
+      "body": "Compare ferry times and book: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (aggregated schedule)</positanoLink>.",
+      "list": [
+        "Check times and prices, then identify the operator running your chosen departure.",
+        "Head to Capri’s tourist port. Buy tickets from the operator’s own ticket office.",
+        "Arrive 20–30 minutes early to exchange any vouchers and queue for boarding."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Positano",
+      "list": [
+        "Disembark at Positano Spiaggia Grande pier.",
+        "Porters meet arriving ferries; consider using them for luggage and confirm the fee upfront.",
+        "Expect stairs uphill from the beach; the local Interno Bus helps reduce stairs to the hostel."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Port to hostel by Interno Bus",
+      "body": "For a detailed, luggage-friendly route from the pier to Hostel Brikette, see: <link>Ferry dock → Hostel Brikette, with luggage</link>.",
+      "list": [
+        "The Interno Positano bus runs roughly every 30 minutes from morning until around midnight.",
+        "Look for the electronic sign ‘Interno Positano’ on the bus front.",
+        "From the port, walk to Piazza dei Mulini and board the uphill bus towards Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Final walk from the nearest stop",
+      "list": [
+        "Exit at the stop by the Tabacchi near Chiesa Nuova.",
+        "Turn right towards the main road, then left along Via G. Marconi.",
+        "Walk just over 100 m (≈330 ft) — the hostel is on your right.",
+        "Turn right and follow the stairs up to Hostel Brikette’s main door."
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "If ferries are cancelled",
+      "body": "In case of cancellations due to weather or sea conditions, switch to the rail and bus route via Sorrento. It takes longer but runs in most conditions. Use this fallback: <link>Naples Center → Positano by train then bus</link>."
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

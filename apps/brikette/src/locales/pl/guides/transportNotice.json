@@ -1,11 +1,11 @@
 {
-  "title": "Always verify transport details",
+  "title": "Zawsze sprawdzaj informacje o transporcie",
   "items": {
-    "buses": "Buses: check SITA Sud official timetables — <sitaLink>sitasudtrasporti.it</sitaLink>.",
-    "ferries": "Ferries: operators publish seasonal routes and times (weather-dependent). See <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
-    "airlink": "Tłumaczenie w przygotowaniu.",
-    "driving": "Tłumaczenie w przygotowaniu.",
-    "premium": "Tłumaczenie w przygotowaniu."
+    "buses": "Autobusy: sprawdzaj oficjalne rozkłady SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Promy: operatorzy publikują sezonowe trasy i godziny (w zależności od pogody). Zobacz <travelmarLink>Travelmar</travelmarLink> i <nlgLink>NLG</nlgLink>.",
+    "airlink": "Przylatując na lotnisko Salerno Costa d’Amalfi (QSR), skorzystaj z transferu Airlink do Salerno — <airportLink>aeroportodisalerno.it</airportLink> i <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Samochodem: SS163 ma ograniczenia wjazdu według numerów rejestracyjnych (kwiecień–październik) oraz strefę ZTL; opłaty parkingowe zmieniają się w zależności od sezonu i lokalizacji. Sprawdź oficjalne komunikaty.",
+    "premium": "Oferty premium lub sezonowe: Uber Boat i czartery helikopterów kursują tylko w lecie — upewnij się, że kursują aktualnie."
   },
-  "srLabel": "Transport notice"
+  "srLabel": "Informacja o transporcie"
 }

@@ -1,18 +1,29 @@
 // src/routes/guides/guide-seo/components/GuideEditorialPanel.tsx
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
+import { ENABLE_GUIDE_AUTHORING, PREVIEW_TOKEN } from "@/config/env";
 
 import type {
   ChecklistSnapshot,
+  ChecklistSnapshotItem,
   ChecklistStatus,
   GuideArea,
   GuideManifestEntry,
 } from "../../guide-manifest";
-import { CHECKLIST_LABELS } from "../../guide-manifest";
+import { CHECKLIST_LABELS, GUIDE_AREA_VALUES } from "../../guide-manifest";
 import DiagnosticDetails from "./DiagnosticDetails";
+import { useTranslationCoverage } from "./useTranslationCoverage";
+
+type AreaSaveStatus = "idle" | "saving" | "saved" | "error";
+
+const TRUE_VALUES = new Set(["1", "true", "yes", "on"]);
+const isAuthoringEnabled = (): boolean => {
+  const value = (ENABLE_GUIDE_AUTHORING ?? "").trim().toLowerCase();
+  return TRUE_VALUES.has(value);
+};
 
 type GuideStatus = GuideManifestEntry["status"];
 
@@ -107,6 +118,151 @@ export default function GuideEditorialPanel({
   editUrl,
 }: GuideEditorialPanelProps): JSX.Element {
   const { t } = useTranslation("guides");
+
+  // Fetch translation coverage from API after hydration to avoid SSR mismatch
+  const { isLoading: coverageLoading, coverage } = useTranslationCoverage(manifest.key);
+
+  // Area editing state
+  const canEditAreas = isAuthoringEnabled() && Boolean(PREVIEW_TOKEN);
+  const [selectedAreas, setSelectedAreas] = useState<GuideArea[]>(manifest.areas);
+  const [primaryArea, setPrimaryArea] = useState<GuideArea>(manifest.primaryArea);
+  const [areaSaveStatus, setAreaSaveStatus] = useState<AreaSaveStatus>("idle");
+  const [areaError, setAreaError] = useState<string | null>(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSavedRef = useRef<{ areas: GuideArea[]; primaryArea: GuideArea }>({
+    areas: manifest.areas,
+    primaryArea: manifest.primaryArea,
+  });
+
+  // Auto-save areas on change (debounced)
+  const saveAreas = useCallback(async (areas: GuideArea[], primary: GuideArea) => {
+    if (!canEditAreas) return;
+
+    setAreaSaveStatus("saving");
+    setAreaError(null);
+
+    try {
+      const response = await fetch(`/api/guides/${manifest.key}/manifest`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-preview-token": PREVIEW_TOKEN ?? "",
+        },
+        body: JSON.stringify({ areas, primaryArea: primary }),
+      });
+
+      const data = await response.json() as { ok?: boolean; error?: string };
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error ?? "Failed to save areas");
+      }
+
+      // Update last saved state
+      lastSavedRef.current = { areas, primaryArea: primary };
+      setAreaSaveStatus("saved");
+
+      // Reset to idle after showing "Saved"
+      setTimeout(() => setAreaSaveStatus("idle"), 2000);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save areas";
+      setAreaError(message);
+      setAreaSaveStatus("error");
+
+      // Revert to last known good state
+      setSelectedAreas(lastSavedRef.current.areas);
+      setPrimaryArea(lastSavedRef.current.primaryArea);
+    }
+  }, [canEditAreas, manifest.key]);
+
+  // Debounced save effect
+  useEffect(() => {
+    if (!canEditAreas) return;
+
+    // Skip if no changes from last saved state
+    const areasChanged =
+      JSON.stringify(selectedAreas.slice().sort()) !==
+      JSON.stringify(lastSavedRef.current.areas.slice().sort());
+    const primaryChanged = primaryArea !== lastSavedRef.current.primaryArea;
+
+    if (!areasChanged && !primaryChanged) return;
+
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Debounce save
+    saveTimeoutRef.current = setTimeout(() => {
+      void saveAreas(selectedAreas, primaryArea);
+    }, 500);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [canEditAreas, selectedAreas, primaryArea, saveAreas]);
+
+  // Toggle area selection
+  const handleAreaToggle = (area: GuideArea) => {
+    if (!canEditAreas) return;
+
+    setSelectedAreas((prev) => {
+      const isSelected = prev.includes(area);
+
+      if (isSelected) {
+        // Prevent removing last area
+        if (prev.length <= 1) return prev;
+
+        const newAreas = prev.filter((a) => a !== area);
+
+        // If removing primary area, set new primary to first remaining
+        if (area === primaryArea) {
+          setPrimaryArea(newAreas[0]);
+        }
+
+        return newAreas;
+      } else {
+        return [...prev, area];
+      }
+    });
+  };
+
+  // Set primary area
+  const handleSetPrimary = (area: GuideArea) => {
+    if (!canEditAreas) return;
+    if (!selectedAreas.includes(area)) return;
+    setPrimaryArea(area);
+  };
+
+  // Merge fetched coverage into checklist items
+  const enhancedChecklist = useMemo<ChecklistSnapshot | undefined>(() => {
+    if (!checklist) return undefined;
+
+    return {
+      ...checklist,
+      items: checklist.items.map((item): ChecklistSnapshotItem => {
+        if (item.id !== "translations") return item;
+
+        // If we have coverage data, use it to determine status
+        if (coverage) {
+          const isComplete = coverage.missingLocales.length === 0;
+          return {
+            ...item,
+            status: isComplete ? "complete" : item.status === "complete" ? "inProgress" : item.status,
+            diagnostics: {
+              ...item.diagnostics,
+              translations: coverage,
+            },
+          };
+        }
+
+        // While loading, keep existing status but indicate loading
+        return item;
+      }),
+    };
+  }, [checklist, coverage]);
+
   const areaLabelKeyMap: Record<GuideArea, string> = {
     howToGetHere: "dev.editorialPanel.areaLabels.howToGetHere",
     help: "dev.editorialPanel.areaLabels.help",
@@ -126,12 +282,15 @@ export default function GuideEditorialPanel({
       ? translated
       : value;
   };
+  // For display, use edited values if editing, otherwise manifest values
+  const displayAreas = canEditAreas ? selectedAreas : manifest.areas;
+  const displayPrimary = canEditAreas ? primaryArea : manifest.primaryArea;
   const areaOrder = useMemo(
-    () => Array.from(new Set<GuideArea>([manifest.primaryArea, ...manifest.areas])),
-    [manifest.areas, manifest.primaryArea],
+    () => Array.from(new Set<GuideArea>([displayPrimary, ...displayAreas])),
+    [displayAreas, displayPrimary],
   );
-  const outstandingCount = checklist
-    ? checklist.items.filter((item) => item.status !== "complete").length
+  const outstandingCount = enhancedChecklist
+    ? enhancedChecklist.items.filter((item) => item.status !== "complete").length
     : 0;
   const workflowTitle = t("dev.editorialPanel.title");
   const draftPreviewLabel = t("dev.editorialPanel.workflow.draftPreview");
@@ -156,7 +315,7 @@ export default function GuideEditorialPanel({
     ? publishedLabel
     : pendingLabel;
   const outstandingText =
-    typeof outstandingCount === "number" && checklist
+    typeof outstandingCount === "number" && enhancedChecklist
       ? outstandingCount === 0
         ? allCompleteLabel
         : outstandingLabel
@@ -218,54 +377,154 @@ export default function GuideEditorialPanel({
         ) : null}
 
         <Stack as="section" className="gap-2">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-text/70">
-            {publishHeading}
-          </h3>
-          <Cluster as="div" className="gap-2">
-            {areaOrder.map((area) => {
-              const key = areaLabelKeyMap[area];
-              const translated = t(key);
-              const label =
-                typeof translated === "string" && translated.trim().length > 0 && translated !== key
-                  ? translated
-                  : area;
-              const isPrimary = area === manifest.primaryArea;
-              return (
-                <Inline
-                  as="span"
-                  key={area}
-                  className={clsx(
-                    AREA_PILL_BASE_CLASSES,
-                    isPrimary ? PRIMARY_AREA_RING_CLASSES : null,
-                  )}
-                >
-                  <span>{label}</span>
-                  {isPrimary ? (
-                    <span className={clsx(PRIMARY_BADGE_CLASSES)}>
-                      {primaryLabel}
-                    </span>
-                  ) : null}
-                </Inline>
-              );
-            })}
-          </Cluster>
+          <Inline className="items-center justify-between">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-text/70">
+              {publishHeading}
+            </h3>
+            {canEditAreas && (
+              <span
+                className={clsx(
+                  "text-xs",
+                  areaSaveStatus === "saving" && "text-brand-secondary",
+                  areaSaveStatus === "saved" && "text-brand-primary",
+                  areaSaveStatus === "error" && "text-brand-terra",
+                  areaSaveStatus === "idle" && "text-brand-text/50",
+                )}
+              >
+                {areaSaveStatus === "saving" && "Saving..."}
+                {areaSaveStatus === "saved" && "Saved"}
+                {areaSaveStatus === "error" && "Error"}
+              </span>
+            )}
+          </Inline>
+          {areaError && canEditAreas && (
+            <p className="text-xs text-brand-terra">{areaError}</p>
+          )}
+          {canEditAreas ? (
+            // Editable area selector
+            <Cluster as="div" className="gap-2">
+              {GUIDE_AREA_VALUES.map((area) => {
+                const key = areaLabelKeyMap[area];
+                const translated = t(key);
+                const label =
+                  typeof translated === "string" && translated.trim().length > 0 && translated !== key
+                    ? translated
+                    : area;
+                const isSelected = selectedAreas.includes(area);
+                const isPrimary = area === primaryArea;
+                const canDeselect = selectedAreas.length > 1;
+
+                return (
+                  <Inline
+                    as="div"
+                    key={area}
+                    className="items-center gap-1"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleAreaToggle(area)}
+                      disabled={isSelected && !canDeselect}
+                      className={clsx(
+                        AREA_PILL_BASE_CLASSES,
+                        "cursor-pointer transition-all",
+                        isSelected
+                          ? [
+                              "border-brand-primary/60",
+                              "bg-brand-primary/10",
+                              // Only show primary ring when multiple areas selected
+                              isPrimary && selectedAreas.length > 1 && PRIMARY_AREA_RING_CLASSES,
+                            ]
+                          : [
+                              "opacity-50",
+                              "hover:opacity-75",
+                            ],
+                        !canDeselect && isSelected && "cursor-not-allowed",
+                      )}
+                      title={
+                        !isSelected
+                          ? `Add to ${label}`
+                          : canDeselect
+                            ? `Remove from ${label}`
+                            : "At least one area required"
+                      }
+                    >
+                      <span>{label}</span>
+                      {/* Only show Primary badge when multiple areas are selected */}
+                      {isPrimary && isSelected && selectedAreas.length > 1 && (
+                        <span className={clsx(PRIMARY_BADGE_CLASSES)}>
+                          {primaryLabel}
+                        </span>
+                      )}
+                    </button>
+                    {isSelected && !isPrimary && selectedAreas.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleSetPrimary(area)}
+                        className="rounded px-1.5 py-0.5 text-xs text-brand-text/60 hover:bg-brand-surface hover:text-brand-primary"
+                        title={`Set ${label} as primary`}
+                      >
+                        Set primary
+                      </button>
+                    )}
+                  </Inline>
+                );
+              })}
+            </Cluster>
+          ) : (
+            // Read-only area display
+            <Cluster as="div" className="gap-2">
+              {areaOrder.map((area) => {
+                const key = areaLabelKeyMap[area];
+                const translated = t(key);
+                const label =
+                  typeof translated === "string" && translated.trim().length > 0 && translated !== key
+                    ? translated
+                    : area;
+                const isPrimary = area === displayPrimary;
+                // Only show Primary badge/ring when multiple areas displayed
+                const showPrimaryIndicator = isPrimary && areaOrder.length > 1;
+                return (
+                  <Inline
+                    as="span"
+                    key={area}
+                    className={clsx(
+                      AREA_PILL_BASE_CLASSES,
+                      showPrimaryIndicator ? PRIMARY_AREA_RING_CLASSES : null,
+                    )}
+                  >
+                    <span>{label}</span>
+                    {showPrimaryIndicator ? (
+                      <span className={clsx(PRIMARY_BADGE_CLASSES)}>
+                        {primaryLabel}
+                      </span>
+                    ) : null}
+                  </Inline>
+                );
+              })}
+            </Cluster>
+          )}
         </Stack>
 
-        {checklist ? (
+        {enhancedChecklist ? (
           <Stack as="section" className="gap-3 border-t border-brand-outline/25 pt-4">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-text/70">
               {checklistHeading}
             </h3>
             <Stack as="ul" className="gap-2">
-              {checklist.items.map((item) => {
+              {enhancedChecklist.items.map((item) => {
                 const label = CHECKLIST_LABELS[item.id] ?? item.id;
+                const isTranslationsItem = item.id === "translations";
+                const isTranslationsLoading = isTranslationsItem && coverageLoading;
                 const isTranslationsIncomplete =
-                  item.id === "translations" &&
+                  isTranslationsItem &&
                   item.status !== "complete" &&
                   item.diagnostics?.translations;
                 const incompleteCount = isTranslationsIncomplete
                   ? item.diagnostics?.translations?.missingLocales.length ?? 0
                   : 0;
+
+                // Determine display status for translations
+                const displayStatus = isTranslationsLoading ? "inProgress" : item.status;
 
                 return (
                   <Inline
@@ -275,30 +534,34 @@ export default function GuideEditorialPanel({
                   >
                     <Stack className="gap-1">
                       <p className="text-sm font-medium text-brand-heading">{label}</p>
-                      {item.note ? (
+                      {isTranslationsLoading ? (
+                        <p className="text-xs text-brand-text/75">Loading translation status...</p>
+                      ) : item.note ? (
                         <p className="text-xs text-brand-text/75">{item.note}</p>
                       ) : null}
-                      {isTranslationsIncomplete && incompleteCount > 0 && (
+                      {!isTranslationsLoading && isTranslationsIncomplete && incompleteCount > 0 && (
                         <div className="rounded-md border border-brand-terra/30 bg-brand-terra/10 p-2 text-xs text-brand-terra">
                           <strong>Action required:</strong> {incompleteCount} locale{incompleteCount !== 1 ? "s" : ""} have incomplete translations.
                           Expand details below to see which files need updates.
                         </div>
                       )}
-                      <DiagnosticDetails
-                        itemId={item.id}
-                        diagnostics={item.diagnostics}
-                        guideKey={manifest.key}
-                        manifest={manifest}
-                      />
+                      {!isTranslationsLoading && (
+                        <DiagnosticDetails
+                          itemId={item.id}
+                          diagnostics={item.diagnostics}
+                          guideKey={manifest.key}
+                          manifest={manifest}
+                        />
+                      )}
                     </Stack>
                     <Inline
                       as="span"
                       className={clsx(
                         CHECKLIST_STATUS_BADGE_BASE_CLASSES,
-                        CHECKLIST_BADGE_STYLES[item.status],
+                        CHECKLIST_BADGE_STYLES[displayStatus],
                       )}
                     >
-                      {resolveChecklistStatusLabel(item.status)}
+                      {isTranslationsLoading ? "Loading..." : resolveChecklistStatusLabel(displayStatus)}
                     </Inline>
                   </Inline>
                 );

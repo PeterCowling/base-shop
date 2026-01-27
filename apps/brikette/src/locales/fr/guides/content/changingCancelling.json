@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Modifier ou Annuler votre Réservation à l’Auberge de Positano",
+    "description": "Guide détaillé sur les options d’annulation, la politique de no-show, la modification des réservations, les règles de transfert et les réservations prépayées non remboursables dans la seule auberge de Positano."
+  },
+  "linkLabel": "Modifier ou Annuler votre Réservation à l’Auberge de Positano",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "Frais de No-Show",
+      "body": [
+        "Si vous n’avez pas effectué votre check-in avant 22 h 30 le premier jour, votre réservation sera automatiquement considérée comme « No-Show ». Les frais appliqués correspondront au montant le plus élevé entre la première nuit et votre acompte non remboursable. Si vous détenez plusieurs réservations, chacune peut avoir ses propres délais et frais d’annulation."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Politique d’Annulation",
+      "body": [
+        "Envoyez toute demande d’annulation par écrit à notre adresse officielle (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Le délai d’annulation commence à la réception de votre e-mail et se termine à 00 h 01 le jour prévu de votre arrivée. La réservation reste active jusqu’à la réception de notre e-mail confirmant la prise en compte de l’annulation. Des frais administratifs – généralement 15 % du montant (hors commissions tierces) – seront appliqués. Le hostel peut annuler votre réservation sans demande écrite si vous n’effectuez pas le check-in avant la fermeture, partez plus tôt sans prévenir ou enfreignez le règlement intérieur. En l’absence de préavis suffisant, des frais équivalents à un No-Show seront facturés."
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Modifier une Réservation Confirmée",
+      "body": [
+        "Les réservations existantes ne peuvent pas être modifiées directement ; elles sont remplacées par une nouvelle réservation. Envoyez votre demande de changement dans le délai requis à notre e-mail officiel. Vous recevrez une confirmation dès approbation. Tout changement dépend de la disponibilité et des conditions applicables. Raccourcir ou prolonger votre séjour sera traité comme une annulation ou une extension ; toute extension constitue une nouvelle réservation. Si vous partez avant la date prévue sans confirmation écrite d’annulation, les conditions initiales restent valables."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Transférabilité de la Réservation",
+      "body": [
+        "La réservation doit rester à votre nom pendant toute la durée du séjour. Le transfert ou le changement de nom n’est pas autorisé. Toute tentative d’enregistrement par une autre personne entraînera l’annulation immédiate, et vous resterez redevable de l’intégralité du montant."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Réservations Prépayées Non Remboursables",
+      "body": [
+        "Les réservations prépayées non remboursables exigent le paiement intégral au moment de la réservation. En cas d’échec du paiement, la réservation sera automatiquement annulée. Ces réservations ne sont jamais remboursables, même en cas d’annulation ou de non-présentation. Toute extension sera traitée comme une nouvelle réservation non remboursable."
+      ]
+    }
+  ]
+}

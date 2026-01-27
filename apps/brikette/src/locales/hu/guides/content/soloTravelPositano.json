@@ -1,77 +1,77 @@
 {
   "seo": {
-    "title": "Egyéni utazás Positanóban",
-    "description": "Biztonság, társas programok, hostel vagy privát szoba, és egyedül is élvezhető napi menetrendek."
+    "title": "Egyedül utazás Positanóban: tippek",
+    "description": "Biztonság, társas programok, hostel vs privát szoba, és napirendek egyedülállóknak."
   },
-  "linkLabel": "Egyedül Positanóban: tippek",
+  "linkLabel": "Egyedül Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Positano barátságos egyedül utazóknak: legyél társas a hostel teraszán, tervezz tartalékot a napokra, és használj kompot a legforróbb órákban."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "Ez szerepel az oldalon",
   "toc": [
     {
       "href": "#safety",
-      "label": "Safety & confidence"
+      "label": "Biztonság és magabiztosság"
     },
     {
       "href": "#social",
-      "label": "Social tips"
+      "label": "Társas tippek"
     },
     {
       "href": "#dayplans",
-      "label": "Day plans that work solo"
+      "label": "Napirendek egyedül"
     }
   ],
   "sections": [
     {
       "id": "safety",
-      "title": "Safety & confidence",
+      "title": "Biztonság és magabiztosság",
       "list": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Oszd meg a terveidet a recepción, és vigyél magaddal feltöltött telefont és vizet.",
+        "Éjszaka maradj a jól megvilágított útvonalakon, és ne kapkodj a lépcsőkön."
       ]
     },
     {
       "id": "social",
-      "title": "Social tips",
+      "title": "Társas tippek",
       "list": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Csatlakozz naplementés teraszprogramokhoz és hostel eseményekhez, hogy könnyen találkozz másokkal.",
+        "Válassz kis csoportos hajózást vagy túrákat, így kevésbé erőltetett a társaság."
       ]
     },
     {
       "id": "dayplans",
-      "title": "Day plans that work solo",
+      "title": "Napirendek egyedül",
       "list": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Komp Amalfiig + séta Atrani felé; onnan busz Ravellóba és kertekbe.",
+        "Capri túra a Villa Jovishoz vagy a világítótoronyhoz; térj vissza aranyórára."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Nézd meg este 6 körül a recepciónál a táblákat – ott gyorsan találsz vacsi- vagy hajótársakat.",
+    "Vigyél könnyű napitáskát 1–1,5 liter vízzel és egy power bankkal, hogy a naplementét fotózhassa, miközben nem sietsz fel a dombra."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Biztonságos este egyedül akármerre sétálni?",
       "a": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Maradj a fő lépcsősávokon, tudasd a recepciónál az útvonaladat, és legyen nálad feltöltött telefon.",
+        "Ha későn végzel, a Piazza dei Mulini melletti narancssárga taxi pult rövid utat tud intézni felfelé."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hogy találkozom más utazókkal?",
       "a": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Csatlakozz a hostel naplementés teraszprogramjaihoz vagy 10–12 fős hajótúrákhoz.",
+        "A főzőkurzusok vagy séták Amalfi vagy Capri környékén lazán nyitnak beszélgetésre."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Egyedül teljesíthetem az Istenek ösvényét?",
       "a": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Igen – indulj Bomeranóból kb. 9-kor, vigyél legalább 1,5 liter vizet, és töltsd le offline a térképet.",
+        "Noceléből vagy Montepertusóból busz visz vissza napnyugta előtt; 20:00 után már ritkább a közlekedés."
       ]
     }
   ]

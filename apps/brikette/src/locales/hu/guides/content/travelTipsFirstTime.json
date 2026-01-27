@@ -1,69 +1,69 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Alapvető tudnivalók az érkezésről, etikettől, csomagolásról és a tipikus csapdák elkerüléséről – hostelbarát tanácsokkal."
+    "title": "Positanói tippek első látogatóknak",
+    "description": "Alapvető tanácsok az érkezéshez, etiketthez, csomagoláshoz és a trükkös helyzetek elkerüléséhez hosteles perspektívából."
   },
-  "linkLabel": "Positano utazási tippek először látogatóknak",
+  "linkLabel": "Positanói tippek kezdőknek",
   "intro": [
-    "Először jársz Positanóban? Ezek a tippek lefedik az érkezést, a csomagokat, a fizetést és a kapcsolódást stressz nélkül."
+    "Először Positanóban? Ezek a tippek az érkezésről, csomagokról, fizetésről és a zökkenőmentes kapcsolattartásról szólnak."
   ],
   "sections": [
     {
       "id": "arrivals",
-      "title": "Érkezz okosan",
+      "title": "Okos érkezés",
       "body": [
-        "Foglalj előre, ahol lehet, vonat + busz vagy komp kombinációkat; a kora reggeli indulások elkerülik a hőséget és a sorokat.",
-        "Nehéz csomaggal? Kombináld a SITA buszt a Chiesa Nuováig egy kikötői hordárral, így a legmeredekebb lépcsőket megússzad."
+        "Ha lehet, foglald le előre a vonat+busz vagy komp kombinációkat; a reggeli első járatok elkerülik a hőséget és a sorokat.",
+        "Nehéz csomag? Használd a Chiesa Nuováig tartó SITA buszt és kérj a dokknál hordárt a meredek lépcsők átvállalásához."
       ]
     },
     {
       "id": "bags",
-      "title": "Csomag és lépcsők",
+      "title": "Csomagok és lépcsők",
       "body": [
-        "Pakolj könnyű, puha táskákba vagy hátizsákba, ami elfér a keskeny lépcsőkön és a shuttle csomagtartóiban.",
-        "Korán érkezel? Használd a Via dei Mulini menti csomagmegőrzőket, így check-inig is szabadon mászkálhatsz."
+        "Csomagolj könnyű, puha oldalfalú táskákat vagy hátizsákot, amik kényelmesen mennek fel a szűk lépcsőkön és a shuttle csomagtartóin.",
+        "Ha korán érkezel, használd a Via dei Mulini menti csomagtárolókat, hogy a bejelentkezésig kéz nélkül fedezhesd fel a várost."
       ]
     },
     {
       "id": "timing",
-      "title": "Időzítés és foglalások",
+      "title": "Időzítés és foglalás",
       "body": [
-        "A strandolást és a hosszabb sétákat 10:00 előtt vagy 16:00 után tervezd, amikor hűvösebbek az utcák és nyugodtabb a közlekedés.",
-        "Éttermeket, hajókirándulást és a Sentiero degli Dei shuttle-t csúcsidőben legalább egy nappal előre foglald."
+        "Tervezd a strandot és nagy sétákat 10:00 előttre vagy 16:00 utánra, amikor hűvösebbek az utcák és nyugodtabbak a közlekedési viszonyok.",
+        "Foglalj éttermet, hajókirándulást és a Path of the Gods shuttle-jét legalább egy nappal előre főszezonban."
       ]
     },
     {
       "id": "payments",
       "title": "Fizetés és készpénz",
       "body": [
-        "A kártyát széles körben elfogadják, de sok kávézó és dohánybolt minimum összeget kér – legyen nálad 5–10 eurós bankjegy.",
-        "Az ATM-ek működnek, de a díjak eltérnek; inkább vegyél fel közepes összeget egyszerre, és oszd szét a készpénzt."
+        "A kártyát sok helyen elfogadják, de sok kávézó és dohánybolt minimum vásárlásra kéri a vendéget – tarts magadnál 5–10 eurós címleteket.",
+        "Az ATM működik, de a díjak eltérnek; vegyél fel közepes összeget egyszer, és oszd szét zsebeid között."
       ]
     },
     {
       "id": "connectivity",
-      "title": "Kapcsolat és tartalék",
+      "title": "Kapcsolat és B-tervek",
       "body": [
-        "Vegyél olasz eSIM-et (TIM/Vodafone) vagy ellenőrizd a roamingot; a lefedettség a dombtetőn a legjobb.",
-        "Tölts le offline térképeket, kompmenetrendet és a hostel útvonalát, amikor gyenge a mobilnet."
+        "Szerezz olasz eSIM-et (TIM/Vodafone), vagy ellenőrizd a roamingot; a jel a domb tetején a legerősebb.",
+        "Tölts le offline térképeket, kompmenetrendeket és a hostel útvonalát arra az időre, amikor gyengébb a mobil adat."
       ]
     }
   ],
   "tips": [
-    "Ments el offline busz- és kompmenetrendeket, valamint a hostel érkezési útmutatóját arra az esetre, ha nem lenne térerő.",
-    "Legyen nálad újratölthető kulacs (750 ml) és egy könnyű réteg – nappal meleg van, estére pedig hűvösebb a tengerszint felett."
+    "Mentsd el offline a busz/komp menetrendeket és a hostel érkezési utasításait, ha időnként megszűnne a jel.",
+    "Vigyél 750 ml-es újratölthető palackot és könnyű réteget – a napok forrók, az esti órák a strand fölött szelesek."
   ],
   "faqs": [
     {
-      "q": "Elég a kézipoggyász?",
+      "q": "Elég csak kézipoggyász?",
       "a": [
-        "Igen – hozz gyorsan száradó ruhákat, tervezd be a hostel mosást, és tarts utazóméretű pipereket, hogy beleférj a légitársasági limitbe."
+        "Igen – csomagolj gyorsan száradó ruhákat, használd a hostel mosodáját és vigyél utazó méretű piperecikkeket a légitársaság megengedett súlyhatáraihoz."
       ]
     },
     {
-      "q": "Szükségem van átalakítóra?",
+      "q": "Szükség van adapterre?",
       "a": [
-        "Olaszországban 230 V-os F/L típusú aljzat van; ha eltér a csatlakozód az EU-s szabványtól, hozz univerzális adaptert."
+        "Olaszországban 230V-os F/L típusú konnektorok vannak; ha más csatlakozóid vannak, hozz univerzális adaptert."
       ]
     }
   ]

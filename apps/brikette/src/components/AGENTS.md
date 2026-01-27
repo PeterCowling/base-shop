@@ -45,5 +45,5 @@ Avoid duplicating loader data from routes; prefer `useLoaderData()`.
 ## 4 · Shared components lifted into `@acme/ui`
 
 - Assistance navigation (`HelpCentreNav`, `HelpCentreMobileNav`) and the ferry article section now live in `@acme/ui/organisms/*`. The app-level files in `src/components/assistance/` are thin wrappers: they prep translations, current-route state, and pass a `renderLink` mapper that binds React Router links.
-- When adding new assistance articles, update the canonical list in `@/routes.assistance-helpers` and let the wrappers feed the translated labels into the UI package props.
+- When adding new assistance guides, update the canonical sources: `@/data/assistance.tags.ts` (for tags) and `@/data/assistanceGuideKeys.ts` (for the key list). The wrappers feed the translated labels into the UI package props.
 - If another route needs these UIs, import them straight from `@acme/ui/organisms/...` rather than cloning the JSX. Supply your own `items`/`copy` payloads so the component stays framework-agnostic.

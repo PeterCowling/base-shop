@@ -1,61 +1,45 @@
 {
   "seo": {
-    "title": "48 órás positanoi hétvége",
-    "description": "Kétnapos program, amely a fő látnivalókat, strandot és éjszakai életet is érinti."
+    "title": "48 óra Positanóban",
+    "description": "Egy gyors hétvége terv Positanón: érkezés, strandok, kilátók és vacsora."
   },
-  "linkLabel": "48 órás positanoi hétvége",
+  "linkLabel": "48 óra Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Két nap Positanóban tele van lépcsőkkel és naplementével. Íme egy terv a legfontosabb állomásokra."
   ],
   "sections": [
     {
-      "id": "day1-morning",
-      "title": "Day 1 — arrival & morning",
+      "id": "day1",
+      "title": "1. nap – város és strand",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kezdd a Fornillo vagy Marinella partszakasszal, majd sétálj fel a városban a kézműves üzletekhez és a kilátókhoz.",
+        "Este foglalj asztalt egy tengerparti trattoriában, és nézd a narancssárga naplementét."
       ]
     },
     {
-      "id": "day1-afternoon",
-      "title": "Day 1 — afternoon & sunset",
+      "id": "day2",
+      "title": "2. nap – kirándulás és kaland",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
-      ]
-    },
-    {
-      "id": "day2-morning",
-      "title": "A fordítás folyamatban van.",
-      "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
-      ]
-    },
-    {
-      "id": "day2-afternoon",
-      "title": "Day 2 — wrap-up & departure",
-      "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Indulj korán a Szlak Bogok felé, vagy maradj a Partyn és vegyél kompot Amalfi felé.",
+        "Délután fedezd fel a tengerparti butikokat, majd egy rövid séta a Piazzetta környékén lezárhatja a napot."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Vegyél napijegyet a SITA buszra, hogy nem maradj le a visszaútról.",
+    "Ha jól tudsz lépcsőzni, válassz egy felső szállást, hogy megspórold az utazást a találkozókhoz."
   ],
   "faqs": [
     {
-      "q": "Is one overnight enough?",
+      "q": "Elég két nap?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, ha előre tervezel, és a fő strandokra, kilátókra és programokra koncentrálsz."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Mennyire költséges?",
       "a": [
-        "A fordítás folyamatban van."
+        "Átlagosan 150–200 € egy hétvége, ha beleszámítod a közlekedést, étkezést és egy élményt (pl. hajózás vagy főzőtanfolyam)."
       ]
     }
   ]

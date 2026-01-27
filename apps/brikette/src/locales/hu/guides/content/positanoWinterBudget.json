@@ -1,55 +1,55 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Nyitvatartások, közlekedés, időjárás és spórolási tippek téli látogatáshoz."
+    "title": "Positano télen költséghatékonyan",
+    "description": "Mi marad nyitva, hogyan közlekedj, és mit érdemes csinálni Positanóban télen, hogy ne költs túl sokat."
   },
-  "linkLabel": "Positano in Winter on a Budget",
+  "linkLabel": "Positano télen költséghatékonyan",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Positano télen nyugodt, megfizethető és hűvösebb. Ez az útmutató megmutatja, mi marad nyitva, hogyan jutsz el bár a kompok állnak, és hogyan szervezz hangulatos programokat anélkül, hogy túlköltekeznél.",
+    "Csomagolj rétegesen (egy könnyű pehelydzseki és vízálló kabát) és csúszásgátlós cipőt – az esős lépcsők csúszósak lehetnek."
   ],
   "sections": [
     {
       "id": "open",
-      "title": "What stays open",
+      "title": "Mi marad nyitva",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A fő élelmiszerboltok, a Piazza dei Mulini körüli kávézók és a hostel bárja egész évben működnek – rövidebb nyitvatartással, de megbízható szolgáltatással.",
+        "A part menti kompok többsége november és március között szünetel, de a SITA buszok és néhány privát shuttle továbbra is járnak lecsökkent menetrenddel."
       ]
     },
     {
       "id": "transport",
-      "title": "Getting around in winter",
+      "title": "Téli közlekedés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Használj regionális vonatot Sorrentóig vagy Salernóig, majd folytasd a SITA busszal; számolj 20–30 percet extra idővel a csúszós idő miatti lassulásra.",
+        "Vigyél készpénzt a buszjegyekhez (kb. €2–€3 egyirányban), és mentsd el az UnicoCampania appot az utolsó pillanatos változásokhoz, amikor vihar közeledik."
       ]
     },
     {
       "id": "budget",
-      "title": "Budget-friendly days",
+      "title": "Költségbarát napok",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Bérelj múzeumnapokat Nápolyban vagy Salernóban, ha esős az idő – az oda-vissza vonatjegy kb. €10 (nagyjából 11 USD).",
+        "Tiszta égbolt esetén túrázz a Path of the Gods-on Nocelle-ből: friss levegő, üres kilátópontok és nincs nyári forróság."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Válassz olyan szállást, ahol van fűtés és reggeli, így nem kell extra kávézói kiadásokkal kezdened a hűvös reggeleket.",
+    "A naplemente korábban van (decemberben kb. 16:45) – tervezz teraszos estét kora délutánra és vigyél magaddal meleg réteget."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Nyitva vannak az éttermek télen?",
       "a": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Igen, de szűkül a választék. A családi trattoriák és pizzériák hétvégenként nyitva tartanak; a fine dining helyek jellemzően húsvét körül nyitnak újra.",
+        "Hívd vagy írj WhatsAppon, hogy megerősítsd a nyitvatartást, mielőtt lesétálnál a domboldalon."
       ]
     },
     {
-      "q": "How cold does it get?",
+      "q": "Mennyire hideg van?",
       "a": [
-        "A fordítás folyamatban van."
+        "A nappali maximumok 12–14 °C körül alakulnak. Éjszaka 8 °C-ra (46 °F) is lehűlhet, szóval hozz meleg középréteget és zoknit a csempézett padlókra."
       ]
     }
   ]

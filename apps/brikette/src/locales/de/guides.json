@@ -102,6 +102,87 @@
         "title": "Was packen für die Amalfiküste",
         "description": "Saisonale Packliste für Positano und die Amalfiküste."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Strände in Positano: Sand, Sonne & versteckte Buchten"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Arienzo Beach: Positanos exklusiver Strandclub"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Fornillo Beach: Positanos ruhigere Alternative"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Laurito Beach: Verstecktes Juwel unter den Klippen"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Gavitella Beach: Praianos Badestelle zum Sonnenuntergang"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Dramatische Bucht zwischen den Klippen"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: Der Fjordstrand unter der Brücke"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Römische Ruinen treffen auf Naturpool"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Positanos ikonischer Hauptstrand"
+    },
+    "sunriseHike": {
+      "linkLabel": "Sonnenaufgangswanderung: Erlebe die Morgendämmerung über Positano"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Wanderung zum höchsten Aussichtspunkt Positanos"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Fit bleiben in Positano: Treppen, Wanderwege & Strandtraining"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Tagesausflug nach Capri: Inselflucht ab Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri ohne das Budget zu sprengen"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Camping an der Amalfiküste: Budget-Alternative zu Hotels"
+    },
+    "boatTours": {
+      "linkLabel": "Bootstouren: Von Sonnenuntergangsfahrten bis Privatchartern"
+    },
+    "cheapEats": {
+      "linkLabel": "Essen wie ein Einheimischer: Positanos beste Budget-Bissen"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Wo essen in Positano: Von lässig bis festlich"
+    },
+    "positanoDining": {
+      "linkLabel": "Positanos beste Restaurants nahe Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Geschmack von Positano: Limoncello, Zitronen & lokale Aromen"
+    },
+    "instagramSpots": {
+      "linkLabel": "Instagram-würdiges Positano: Beste Fotospots & Zeiten"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Sonnenuntergang in Positano: Beste Aussichtspunkte zur goldenen Stunde"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Ravello Festival: Klassische Konzerte unter den Sternen"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Italiens Feier am 15. August in Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Tausende Kerzen erhellen die Nacht"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Kostenlose Audio-Stadtführung: Entdecke Positanos verborgene Geschichten"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Gratis-Aktivitäten in Positano: Budgetfreundlicher Spaß"
     }
   },
   "dev": {

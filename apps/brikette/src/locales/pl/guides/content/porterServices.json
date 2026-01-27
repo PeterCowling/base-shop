@@ -5,32 +5,32 @@
   },
   "linkLabel": "Usługi bagażowe w Positano",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Tragarze pomagają z ciężkimi torbami lub ograniczoną mobilnością. Umów miejsce odbioru przy przystani lub przystanku, potwierdź stawkę i trzymaj przy sobie wartościowe rzeczy."
   ],
   "sections": [
     {
       "id": "how",
-      "title": "How it typically works",
+      "title": "Jak to działa",
       "body": [
-        "Ustal miejsce i godzinę odbioru (dok lub przystanek autobusowy). Udostępnij nazwę swojego zakwaterowania i godzinę spotkania.",
-        "Tłumaczenie w przygotowaniu.",
-        "Trzymaj kosztowności przy sobie; wyraźnie oznacz swoje torby."
+        "Ustal punkt i godzinę odbioru (przystań lub przystanek). Podaj nazwę zakwaterowania i czas spotkania.",
+        "Potwierdź stawkę zanim tragarz zacznie pracę; ceny zależą od odległości, schodów i pory dnia.",
+        "Kiedy tragarz idzie z bagażem, trzymaj przy sobie wartościowe rzeczy i oznacz torby."
       ]
     },
     {
       "id": "resources",
-      "title": "Booking & resources",
+      "title": "Rezerwacja i zasoby",
       "body": [
-        "Zapytaj swoje zakwaterowanie o zaufanych lokalnych dostawców w pobliżu stacji dokującej i głównych przystanków autobusowych.",
-        "Tłumaczenie w przygotowaniu."
+        "Zapytaj nocleg o zaufanych lokalnych tragarzy przy przystani i głównych przystankach.",
+        "Dla przechowania lub nietypowych godzin sprawdź platformy takie jak Bounce / Radical Storage."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "Etykieta i wskazówki",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Daj napiwek za ciężkie torby lub wyjątkowe wsparcie, najlepiej w drobnych.",
+        "Podziel się planem przyjazdu z tragarzami wcześniej w sezonie, by mieć pewność terminu."
       ]
     }
   ],
@@ -38,7 +38,7 @@
     {
       "q": "Do I need porters?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Polecamy przy ciężkich walizkach — Positano ma dużo schodów i stromych ulic."
       ]
     },
     {
@@ -50,7 +50,7 @@
     {
       "q": "How much does it cost?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Cena zależy od dystansu i obciążenia; potwierdź stawkę zanim tragarz zacznie pracę."
       ]
     }
   ],

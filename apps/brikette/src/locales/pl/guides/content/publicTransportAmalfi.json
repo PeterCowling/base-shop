@@ -5,7 +5,7 @@
   },
   "linkLabel": "Transport publiczny na Wybrzeżu Amalfitańskim",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Jak poruszać się po Wybrzeżu Amalfitańskim bez samochodu: autobusy gwarantują niezawodność przez cały rok, promy kursują latem, a pociągi obsługują dalsze odcinki."
   ],
   "sections": [
     {
@@ -18,40 +18,40 @@
     },
     {
       "id": "ferries",
-      "title": "Ferries (seasonal)",
+      "title": "Promy (sezonowe)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Szybkie i malownicze połączenia między głównymi miejscowościami od wiosny do jesieni; możliwe są odwołania z powodu pogody.",
+        "Sprawdzaj aktualne rozkłady na stronach operatorów i zostaw zapas czasu na ostatnie kursy dnia."
       ]
     },
     {
       "id": "trains",
-      "title": "Trains (to gateways)",
+      "title": "Pociągi (do punktów przesiadkowych)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
+        "Skorzystaj z Trenitalia/Italo, by dotrzeć do Sorrento/Salerno/Neapolu, a potem przesiądź się na autobus lub prom.",
         "Odcinki międzymiastowe oszczędzają czas na trasach Rzym/Neapol/Salerno; lokalna Circumvesuviana obsługuje Sorrento."
       ]
     },
     {
       "id": "timing",
-      "title": "Timing & strategy",
+      "title": "Planowanie i strategia",
       "body": [
-        "Leave before 09:00 to beat queues; w przypadku powrotów o zachodzie słońca preferuj promy, gdy morze jest spokojne.",
-        "Zabierz ze sobą drobne drobne na bilety i kapelusz/wodę na odsłonięte przystanki."
+        "Wyjedź przed 9:00, aby ominąć kolejki; przy powrotach o zachodzie słońca wybieraj promy, gdy morze jest spokojne.",
+        "Miej przy sobie drobne na bilety oraz kapelusz i wodę na odsłoniętych przystankach."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Can I bring luggage on buses?",
+      "q": "Czy mogę zabrać bagaż do autobusów?",
       "a": [
-        "Dozwolone, ale nie idealne w szczycie; rozważ promy lub tragarzy do ciężkich toreb."
+        "Dozwolone, ale niekomfortowe w godzinach szczytu — cięższe torby warto przewieźć promem albo z pomocą tragarzy."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy kursują nocne połączenia?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Bardzo ograniczone; sprawdź z wyprzedzeniem ostatni autobus lub prom, żeby nie musieć korzystać z drogich taksówek."
       ]
     }
   ]

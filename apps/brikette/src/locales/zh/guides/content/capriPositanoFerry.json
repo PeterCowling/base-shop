@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "卡普里至波西塔诺乘渡轮 | Hostel Brikette",
+    "description": "介绍如何从卡普里乘渡轮抵达波西塔诺，包括购票技巧、运营商建议、抵达后的提示，以及轻松前往旅舍的最佳方式。"
+  },
+  "intro": {
+    "title": "卡普里 → 波西塔诺 – 渡轮",
+    "body": "使用本指南即可全程乘海路从卡普里前往波西塔诺。内容涵盖选择合适的运营商、在港口购买车票，以及抵达后如何尽量轻松地步行或搭乘巴士前往 Hostel Brikette。"
+  },
+  "callouts": {
+    "tip": "海况不佳需要其他路线备选吗？打开%URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|到达方式总览%。"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "行程概览",
+      "body": "卡普里与波西塔诺之间的渡轮在春夏季最为频繁。当天气恶劣时，尤其是下午晚些时候的航班可能取消。根据船型和运营商不同，全程通常需要 30–60 分钟。"
+    },
+    {
+      "id": "capriPort",
+      "title": "在卡普里港口",
+      "body": "比较航班并预订：<capriLink>Capri.net – 卡普里 ↔ 波西塔诺</capriLink> · <positanoLink>Positano.com（时刻表汇总）</positanoLink>。",
+      "list": [
+        "确认时刻表和票价，选择要搭乘的运营商。",
+        "前往卡普里旅游港口，并在各运营商的售票窗口直接购票。",
+        "建议提前 20–30 分钟抵达港口，以便兑换凭证并排队登船。"
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "抵达波西塔诺",
+      "list": [
+        "在波西塔诺 Spiaggia Grande 码头下船。",
+        "码头有行李搬运员，可视情况请其帮忙并事先确认费用。",
+        "从海滩往上需要爬楼梯，可搭乘当地 Interno 巴士减少前往旅舍的楼梯路程。"
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "搭乘 Interno 巴士前往旅舍",
+      "body": "若想了解更适合携带行李的路线，请参阅：<link>渡轮码头 → Hostel Brikette</link>。",
+      "list": [
+        "Interno Positano 巴士通常从早晨运营至午夜左右，约每 30 分钟一班。",
+        "认准车头上的电子标识 “Interno Positano”。",
+        "从港口步行至 Piazza dei Mulini，乘坐开往 Chiesa Nuova 的上行巴士。"
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "从最近的车站步行",
+      "list": [
+        "在靠近 Chiesa Nuova 的香烟店旁车站下车。",
+        "向右走到主干道，再左转进入 Via G. Marconi。",
+        "沿路行走约 100 米（≈330 英尺），旅舍就在右手边。",
+        "右转上楼梯，即可抵达 Hostel Brikette 正门。"
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "若渡轮取消",
+      "body": "若因天气或海况取消航班，可改走经索伦托的火车 + 巴士组合路线。虽然耗时更久，但大多数情况下仍能运行。 可作为备用方案：<link>那不勒斯市区 → 波西塔诺（火车接巴士）</link>。"
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

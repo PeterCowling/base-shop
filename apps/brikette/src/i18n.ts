@@ -10,22 +10,8 @@ import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 
 import { i18nConfig } from "./i18n.config";
-// Seed critical assistance article namespaces for English to avoid hydration
-// drift on direct loads of help articles before lazy bundles resolve.
-import EN_ASSIST_AGE from "./locales/en/ageAccessibility.json";
-import EN_ASSIST_ARRIVE_FERRY from "./locales/en/arrivingByFerry.json";
-import EN_ASSIST_BOOKING from "./locales/en/bookingBasics.json";
-import EN_ASSIST_CHANGE from "./locales/en/changingCancelling.json";
-import EN_ASSIST_CHECKIN from "./locales/en/checkinCheckout.json";
-import EN_ASSIST_DEFECTS from "./locales/en/defectsDamages.json";
-import EN_ASSIST_DEPOSITS from "./locales/en/depositsPayments.json";
 import EN_FOOTER from "./locales/en/footer.json";
-import EN_ASSIST_LEGAL from "./locales/en/legal.json";
-import EN_ASSIST_AIRPORT_BUS from "./locales/en/naplesAirportBus.json";
-import EN_ASSIST_RULES from "./locales/en/rules.json";
-import EN_ASSIST_SECURITY from "./locales/en/security.json";
 import EN_TRANSLATION from "./locales/en/translation.json";
-import EN_ASSIST_TRAVEL_HELP from "./locales/en/travelHelp.json";
 import { getGuidesBundle } from "./locales/guides";
 import { loadGuidesNamespaceFromImports } from "./locales/guides.imports";
 import { loadLocaleResource } from "./locales/locale-loader";
@@ -234,22 +220,7 @@ i18n.use(
         en: {
           translation: asResourceKey(EN_TRANSLATION),
           footer: asResourceKey(EN_FOOTER),
-          // Assistance (help) article namespaces: seed English bundles to
-          // guarantee immediate availability on hydration. Other languages
-          // continue to load lazily via the backend.
-          ageAccessibility: asResourceKey(EN_ASSIST_AGE),
-          bookingBasics: asResourceKey(EN_ASSIST_BOOKING),
-          changingCancelling: asResourceKey(EN_ASSIST_CHANGE),
-          checkinCheckout: asResourceKey(EN_ASSIST_CHECKIN),
-          defectsDamages: asResourceKey(EN_ASSIST_DEFECTS),
-          depositsPayments: asResourceKey(EN_ASSIST_DEPOSITS),
-          rules: asResourceKey(EN_ASSIST_RULES),
-          legal: asResourceKey(EN_ASSIST_LEGAL),
-          security: asResourceKey(EN_ASSIST_SECURITY),
-          arrivingByFerry: asResourceKey(EN_ASSIST_ARRIVE_FERRY),
-          naplesAirportBus: asResourceKey(EN_ASSIST_AIRPORT_BUS),
-          travelHelp: asResourceKey(EN_ASSIST_TRAVEL_HELP),
-          // (blog namespace removed)
+          // (legacy article namespaces removed - now served via guides)
           dealsPage: {
             // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON
             // i18n-exempt -- LINT-1007 [ttl=2026-12-31]

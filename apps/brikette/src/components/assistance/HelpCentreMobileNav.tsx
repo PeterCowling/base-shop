@@ -13,17 +13,16 @@ import HelpCentreMobileNavUI, {
 } from "@acme/ui/organisms/HelpCentreMobileNav";
 
 import { useBannerHeightOrZero } from "@/context/NotificationBannerContext";
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import assistanceFallback from "@/locales/en/assistanceCommon.json";
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
-// Namespace import to handle partial test mocks gracefully
-import * as assistance from "@/routes.assistance-helpers";
+import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 /* ── helpers ─────────────────────────────────────────────────── */
-type CurrentKey = HelpArticleKey;
+type CurrentKey = GuideKey;
 
 const FALLBACK_LANGUAGE: AppLanguage = (() => {
   const raw = i18nConfig.fallbackLng;
@@ -110,12 +109,8 @@ function HelpCentreMobileNav({ currentKey, className = "", lang: explicitLang }:
 
   const root = `/${lang}/${getSlug("assistance", lang)}`;
 
-  type AssistanceModule = typeof assistance;
-  const keys: readonly HelpArticleKey[] =
-    ((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[];
-  const toSlug = (assistance as Partial<AssistanceModule>).articleSlug;
-  const items: AssistanceMobileNavItem[] = keys.map((key) => {
-    const slug = toSlug ? toSlug(lang, key) : String(key);
+  const items: AssistanceMobileNavItem[] = ASSISTANCE_GUIDE_KEYS.map((key) => {
+    const slug = guideSlug(lang, key);
     const href = `${root}/${slug}`;
     return {
       key,

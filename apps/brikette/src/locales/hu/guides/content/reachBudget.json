@@ -1,33 +1,33 @@
 {
   "seo": {
     "title": "Hogyan jutsz el Positanóba költséghatékonyan",
-    "description": "A legolcsóbb útvonalak a nápolyi repülőtérről Positanóba transzferbusszal és SITA járatokkal, részletesen lépésekkel és árakkal."
+    "description": "A legolcsóbb útvonalak a nápolyi repülőtérről Positanóba transzferbusszal és SITA járatokkal, részletesen lépésről lépésre és árakkal."
   },
   "linkLabel": "Hogyan juthatsz el Positanóba költséghatékonyan",
-  "intro": "A fordítás folyamatban van.",
+  "intro": "Használd a Nápoly repülőtér → Sorrento shuttle-t, majd a SITA buszt Positanóba, hogy a legolcsóbb és legmegbízhatóbb kapcsolatot kapd.",
   "sections": [
     {
       "id": "why-route",
       "title": "Miért működik ez az útvonal",
       "body": [
-        "Egy shuttle (~€10) + egy SITA busz (~€2.10) kevesebb mint €13-ból kijön, jóval olcsóbb, mint a kompak vagy taxik.",
-        "Mindkét járat a Chiesa Nuova közelében tesz le, így elkerülöd a hosszú positanoi lépcsősorokat csomaggal."
+        "Egy shuttle (~€10) és egy SITA busz (~€2.10) összesen kevesebb mint €13, ami jóval olcsóbb, mint a komp vagy a taxi.",
+        "Mindkét járat a Chiesa Nuova közelében tesz le, így elkerülheted a hosszú positanoi lépcsősorokat nehéz bőrönddel."
       ]
     },
     {
       "id": "before-you-go",
       "title": "Indulás előtt",
       "body": [
-        "Főszezonban foglald előre a Curreri shuttle-t, vagy vedd meg a jegyet az érkezési szint előtt álló pultnál – hagyj 15 perc pufferidőt landolás után.",
-        "Vigyél aprót a SITA jegyekhez Sorrentóban; a Corso Italia menti kioszkok és dohányboltok árulják, és késő este nem mindig fogadnak el nagy címletet."
+        "Főszezonban foglald le előre a Curreri shuttle-t online, vagy válts jegyet az érkezési szinten lévő pultnál, és számolj 15 perc pufferrel a landolás után.",
+        "Vigyél aprót a SITA jegyekhez Sorrentóban; a Corso Italia menti kioszkok és tabacchik árulják őket, és késő este nem mindig fogadják el a nagy címleteket."
       ]
     },
     {
       "id": "timing-backup",
-      "title": "Időzítés és B terv",
+      "title": "Időzítés és B-terv",
       "body": [
-        "Jegyezd fel a nap utolsó Curreri-indulását (nyáron általában ~21:30, szezonon kívül korábban), és igazítsd ehhez a járatot.",
-        "A fordítás folyamatban van."
+        "Jegyezd fel aznap a Curreri utolsó indulását (nyáron általában ~21:30, szezonon kívül korábban), és igazítsd hozzá a járatodat.",
+        "Lekésted a shuttle-t? Válts Alibus + Circumvesuviana vagy Campania Express utazásra Sorrentóig, majd folytasd ugyanazzal a SITA busszal."
       ]
     }
   ],
@@ -35,53 +35,53 @@
   "stepByStepTitle": "Lépésről lépésre",
   "steps": [
     {
-      "name": "A fordítás folyamatban van.",
-      "text": "Lépj ki az érkezési szintre és szállj fel a Curreri shutllere Sorrentóba. Jegy ~€10; menetidő ~1 óra 15 perc."
+      "name": "Nápoly repülőtér → Sorrento (Curreri Viaggi)",
+      "text": "Az érkezési szinttől szállj fel a Curreri shuttle-re Sorrento állomásáig. Jegy ára ~€10; menetidő ~1 óra 15 perc."
     },
     {
-      "name": "A fordítás folyamatban van.",
-      "text": "Vásárolj SITA CIS jegyet (~€2.10). Szállj fel az Amalfi felé tartó buszra és szállj le Positano Chiesa Nuova megállónál."
+      "name": "Sorrento → Positano (SITA busz)",
+      "text": "Vásárolj SITA CIS jegyet (~€2.10). Szállj fel az Amalfi felé induló buszra és szállj le Positano Chiesa Nuova megállónál."
     },
     {
-      "name": "A fordítás folyamatban van.",
-      "text": "A Chiesa Nuova megállótól ~80 méter lefelé (lépcső nélkül) éred el a hostelt."
+      "name": "Séta a Hostel Brikette-hez",
+      "text": "A Chiesa Nuova megállótól kb. 80 m lefelé (lépcsőmentesen) éred el a hostelt."
     }
   ],
   "alternativesTitle": "Alternatívák",
-  "trainTitle": "A fordítás folyamatban van.",
+  "trainTitle": "Vonat + busz (kicsit drágább, de gyorsabb lehet)",
   "train": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Alibus Nápoly repülőtér → Napoli Centrale (Garibaldi), majd Circumvesuviana Sorrentóba (~€6 összesen).",
+    "SITA busz Sorrento → Positano (~€2.10). Összes menetidő: kb. 2–2,5 óra."
   ],
-  "ferryTitle": "A fordítás folyamatban van.",
+  "ferryTitle": "Komp (szezonális, festői, magasabb költség)",
   "ferry": [
-    "Alibus → Molo Beverello, komp Positanóba (csak nyáron; €20–€38 az üzemeltetőtől függően).",
-    "Élő menetrendhez nézd meg kompútmutatónkat."
+    "Alibus → Molo Beverello, komppal Positanóba (csak nyáron; €20–€38 az üzemeltetőtől függően).",
+    "Élő menetrendért nézd meg komp útmutatónkat."
   ],
   "costsTitle": "Költségek egy pillantásra",
   "costs": [
     "Shuttle (NAP → Sorrento): ~€10",
-    "A fordítás folyamatban van.",
+    "SITA busz (Sorrento → Positano): ~€2.10",
     "Teljes költségvetés-barát út: ~€12.10"
   ],
   "faq": [
     {
       "q": "Mi a legolcsóbb útvonal?",
-      "a": "A fordítás folyamatban van."
+      "a": "Nápoly repülőtér → Sorrento shuttle, majd SITA busz Positano (Chiesa Nuova)."
     },
     {
       "q": "Hol vehetek buszjegyet?",
-      "a": "Kioszkokban és dohányboltokban az állomás közelében; felszállás előtt vedd meg és érvényesítsd a buszon."
+      "a": "Az állomás közelében lévő dohányboltokban/kioszkokban; szállj fel csak akkor, ha már megvetted és érvényesítetted a jegyet."
     },
     {
       "q": "Mennyi ideig tart az út?",
-      "a": "Kb. 2,5 óra, ha a csatlakozások zökkenőmentesek."
+      "a": "Kb. 2,5 óra összesen, ha a csatlakozások zökkenőmentesen működnek."
     }
   ],
-  "ferryCta": "Szeretnél inkább komppal menni nyáron? Nézd meg dedikált komp útmutatónkat és az 'Érkezés komppal' segítségcikkünket a kikötői tippekért és akadálymentességi tudnivalókért.",
-  "mapIframeTitle": "A fordítás folyamatban van.",
+  "ferryCta": "Nyáron inkább komppal mennél? Nézd meg dedikált komp útmutatónkat és az 'Érkezés komppal' segítségcikkünket a kikötői tippekért és akadálymentességi tudnivalókért.",
+  "mapIframeTitle": "Nápoly repülőtértől Positanóig Sorrentón keresztül",
   "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
-  "mapReferrerPolicy": "A fordítás folyamatban van.",
+  "mapReferrerPolicy": "no-referrer-when-downgrade",
   "howTo": {
     "totalTime": "PT2H30M",
     "estimatedCost": {
@@ -92,7 +92,7 @@
   "sectionIds": {
     "map": "reach-budget-map",
     "steps": "reach-budget-steps",
-    "alternatives": "A fordítás folyamatban van.",
+    "alternatives": "reach-budget-alternatives",
     "costs": "reach-budget-costs",
     "tips": "reach-budget-tips"
   }

@@ -4,9 +4,14 @@
 // files when import.meta.webpackContext is unavailable (e.g. Turbopack).
 // -----------------------------------------------------------------------------
 
+import { GENERATED_GUIDE_SLUGS } from "../data/generate-guide-slugs";
+
 import type { GuidesNamespace } from "./guides.types";
 import { isRecord } from "./guides.util";
 import { loadLocaleResource } from "./locale-loader";
+
+// All guide keys from the generated manifest - used to load content files
+const CONTENT_KEYS = Object.keys(GENERATED_GUIDE_SLUGS);
 
 type GlobalGuideImport = {
   key: string;
@@ -83,9 +88,27 @@ export async function loadGuidesNamespaceFromImports(
     content: {},
   };
 
-  const content = mergeRecords(toRecord(legacy?.["content"]), toRecord(merged["content"]));
-  if (content && Object.keys(content).length > 0) {
-    merged.content = content;
+  // Load content files from guides/content/*.json
+  // These contain intro, sections, faqs, seo for each guide
+  const contentEntries: Record<string, unknown> = {};
+  await Promise.all(
+    CONTENT_KEYS.map(async (key) => {
+      const data = await loadLocaleResource(lang, `guides/content/${key}`);
+      if (typeof data !== "undefined" && data !== null) {
+        contentEntries[key] = data;
+      }
+    }),
+  );
+
+  // Merge: legacy content (linkLabels etc) + split content files (intro, sections, faqs)
+  const legacyContent = toRecord(legacy?.["content"]) ?? {};
+  const mergedContent: Record<string, unknown> = { ...legacyContent };
+  for (const [key, splitData] of Object.entries(contentEntries)) {
+    const existing = toRecord(mergedContent[key]) ?? {};
+    mergedContent[key] = { ...existing, ...(toRecord(splitData) ?? {}) };
+  }
+  if (Object.keys(mergedContent).length > 0) {
+    merged.content = mergedContent;
   }
 
   const meta = mergeRecords(toRecord(legacy?.["meta"]), toRecord(merged["meta"]));
@@ -95,3 +118,6 @@ export async function loadGuidesNamespaceFromImports(
 
   return merged;
 }
+
+// Re-export for tests
+export { CONTENT_KEYS as __CONTENT_KEYS_FOR_TESTS };

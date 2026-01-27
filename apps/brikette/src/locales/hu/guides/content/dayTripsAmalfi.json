@@ -1,61 +1,61 @@
 {
   "seo": {
     "title": "Egynapos kirándulások Positanóból",
-    "description": "Capri, Amalfi, Ravello, Pompeii és más célpontok logisztikája egy nap alatt."
+    "description": "Capri, Pompeii, Ravello és Amalfi egynapos programjai: komp és busz menetrendek, időzítések, jegytippek."
   },
-  "linkLabel": "Egynapos kirándulások Positanóból",
+  "linkLabel": "Legjobb egynapos utak: Capri, Amalfi, Pompeii & társai",
   "intro": [
-    "A fordítás folyamatban van."
+    "Használd Positanót bázisként egynapos kirándulásokhoz kompokkal és busszal – indulj korán, foglalj jegyet előre, és mindig legyen B-terved az időjárásra."
   ],
   "sections": [
     {
       "id": "capri",
-      "title": "Capri highlights",
+      "title": "Capri főbb látnivalói",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Foglalj helyet az első kompra, menj fel a Monte Solaróra a libegővel, és sétálj a Giardini di Augusto-ban, mielőtt a hajókirándulók megérkeznének.",
+        "Térj vissza délután, és mentsd el a buszmenetrendet képernyőmentésként arra az esetre, ha rossz lenne az idő."
       ]
     },
     {
       "id": "pompeii",
-      "title": "Pompeii or Herculaneum",
+      "title": "Pompeii vagy Herculaneum",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Vegyél korai buszt Sorrentóba, majd csatlakozz a Circumvesuviana vasúthoz; vásárolj online sorban állás nélküli jegyet az időmegtakarításért.",
+        "Vigyél vizet és sapkát – kevés az árnyék, és a látogatások könnyen 3–4 órásak."
       ]
     },
     {
       "id": "amalfi-ravello",
-      "title": "Amalfi & Ravello combo",
+      "title": "Amalfi & Ravello kombináció",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Komppal juss Amalfiig, nézd meg a Dómot, majd szállj fel a 5110-es buszra Ravello felé, hogy a Villa Cimbrone és egy panorámás ebéd is beleférjen.",
+        "Maradj késő délutáni fényben, majd vegyél egy esti kompot vagy buszt vissza – 18:00 után a sorok már rövidebbek."
       ]
     },
     {
       "id": "sorrento",
-      "title": "Sorrento & food focus",
+      "title": "Sorrento és gasztronómia",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Szállj fel egy délelőtti komphajóra Sorrentóba egy piacjárásra, limoncello kóstolókra és a Villa Comunale teraszán naplementére.",
+        "Ha az utolsó komp betelik, térj vissza késő esti busszal Positanóba; az út kb. 50 perc."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Ments offline térképeket és menetrendeket, mert a vonatok alagutakban és Capri szikláival közel rosszabb a térerő.",
+    "Vigyél könnyű esőkabátot – nyáron gyorsan jönnek a viharok, és ilyenkor a kompok leállhatnak."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Melyik kirándulás igényel korai indulást?",
       "a": [
-        "A fordítás folyamatban van."
+        "Capri és Pompeii indul egyedül a leghamarabb; délre már tele van a helyszín és több az utazási idő."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Két várost lehet ugyanazon a napon meglátogatni?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen – párold össze Amalfit Ravellóval vagy Sorrentót Pompeiivel. Caprit ne told ugyanarra a napra más célponttal, inkább külön napot szánj rá."
       ]
     }
   ]

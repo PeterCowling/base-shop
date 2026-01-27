@@ -1,40 +1,40 @@
 {
   "seo": {
-    "title": "Interrail / Italy Rail Pass na Wybrzeżu Amalfitańskim",
-    "description": "Czy przepustka kolejowa ma sens: obowiązkowe rezerwacje, dopłaty i jak dojechać ostatni odcinek do Positano."
+    "title": "Karta Interrail/Włochy: jak dotrzeć na wybrzeże Amalfi",
+    "description": "Jak wykorzystać karty kolejowe, by dotrzeć na wybrzeże oraz co zrobić z ostatnim odcinkiem do Positano."
   },
-  "linkLabel": "Interrail / Italy Rail Pass na Wybrzeżu Amalfitańskim",
+  "linkLabel": "Interrail/Włochy: wybrzeże Amalfi",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Wykorzystuj kartę Interrail lub Italy Rail Pass: które linie, jakie dopłaty i jak pokryć ostatni odcinek do Positano."
   ],
   "sections": [
     {
       "id": "routes",
-      "title": "Core routes",
+      "title": "Główne trasy",
       "body": [
-        "Rzym → Neapol/Salerno szybki; lokalne pociągi do Sorrento; autobusy do Positano."
+        "Rzym → Neapol/Salerno pociągami dużych prędkości; regionalnie do Sorrento; dalej autobus do Positano."
       ]
     },
     {
       "id": "supplements",
-      "title": "Supplements/reservations",
+      "title": "Dopłaty/rezerwacje",
       "body": [
-        "Tłumaczenie w przygotowaniu."
+        "Frecciarossa i Italo często wymagają rezerwacji miejsc; pociągi regionalne nie, ale bywają zatłoczone."
       ]
     },
     {
       "id": "last-mile",
-      "title": "Last mile to Positano",
+      "title": "Ostatni odcinek do Positano",
       "body": [
-        "Z Neapolu: Circumvesuviana do Sorrento, następnie autobusem SITA. Z Salerno: prom/autobus w sezonie."
+        "Z Neapolu: Circumvesuviana do Sorrento, potem autobus SITA. Z Salerno: prom lub autobus w sezonie."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Is a pass worth it?",
+      "q": "Czy karta się opłaca?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tylko jeśli pokonujesz wystarczająco dużo długodystansowych odcinków; w przeciwnym razie punkt-punkt może być tańszy."
       ]
     }
   ]

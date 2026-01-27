@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Capri-Positano in traghetto | Hostel Brikette",
+    "description": "Come viaggiare da Capri a Positano in traghetto, con consigli su biglietti, operatori, suggerimenti per l'arrivo e il modo più semplice per salire all'ostello."
+  },
+  "intro": {
+    "title": "Capri → Positano – Traghetto",
+    "body": "Usa questa guida per viaggiare da Capri a Positano completamente via mare. Troverai come scegliere l'operatore giusto, acquistare i biglietti al porto e cosa fare all'arrivo per salire a Hostel Brikette a piedi (o in autobus) senza intoppi."
+  },
+  "callouts": {
+    "tip": "Ti servono altre opzioni di percorso o piani di riserva quando il mare è mosso? Apri la %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|panoramica Come arrivare%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "body": "I traghetti tra Capri e Positano sono più frequenti in primavera e in estate. I servizi possono essere cancellati con mare mosso, soprattutto nel tardo pomeriggio. Il tempo di percorrenza totale è di solito 30–60 minuti a seconda dell'imbarcazione e dell'operatore."
+    },
+    {
+      "id": "capriPort",
+      "title": "Al porto di Capri",
+      "body": "Confronta orari e prenota: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (orari aggregati)</positanoLink>.",
+      "list": [
+        "Controlla orari e prezzi, quindi individua l'operatore della tua corsa.",
+        "Raggiungi il porto turistico di Capri. Acquista i biglietti presso la biglietteria dell'operatore.",
+        "Arriva con 20–30 minuti di anticipo per cambiare eventuali voucher e metterti in fila per l'imbarco."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arrivo a Positano",
+      "list": [
+        "Sbarca al molo di Positano Spiaggia Grande.",
+        "I facchini attendono i traghetti in arrivo; valuta di usarli per i bagagli e concorda il prezzo prima.",
+        "Dalla spiaggia ci sono scale in salita; l'autobus Interno aiuta a ridurre i gradini fino all'ostello."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Dal porto all'ostello con l'autobus Interno",
+      "body": "Per un percorso dettagliato e adatto ai bagagli dal molo a Hostel Brikette, consulta: <link>Molo del traghetto → Hostel Brikette</link>.",
+      "list": [
+        "L'autobus Interno Positano passa circa ogni 30 minuti dalla mattina fino a mezzanotte.",
+        "Cerca il display elettronico ‘Interno Positano’ sul fronte dell'autobus.",
+        "Dal porto raggiungi Piazza dei Mulini e prendi l'autobus in salita verso Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Ultimo tratto a piedi dalla fermata più vicina",
+      "list": [
+        "Scendi alla fermata accanto al tabacchi vicino a Chiesa Nuova.",
+        "Gira a destra verso la strada principale, poi a sinistra lungo Via G. Marconi.",
+        "Percorri poco più di 100 m (≈330 piedi); l'ostello è sulla tua destra.",
+        "Gira a destra e segui le scale fino all'ingresso principale di Hostel Brikette."
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "Se i traghetti vengono cancellati",
+      "body": "Se vengono annullati per condizioni meteo o del mare, passa al percorso treno + autobus via Sorrento. È più lungo ma funziona quasi sempre. Usa questo piano B: <link>Centro di Napoli → Positano in treno e poi autobus</link>."
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

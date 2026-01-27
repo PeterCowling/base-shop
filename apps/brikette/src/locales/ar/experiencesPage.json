@@ -91,6 +91,16 @@
     "clearFilter": "عرض جميع أدلة التجارب",
     "cardCta": "استكشف دليل التجارب «{{guideTitle}}»",
     "directionsLabel": "الاتجاهات",
+    "sections": {
+      "content": {
+        "title": "أدلة التجارب",
+        "description": "أدلة متعمقة عن الشواطئ والمشي والرحلات اليومية وما يمكن فعله"
+      },
+      "directions": {
+        "title": "كيفية الوصول",
+        "description": "إرشادات خطوة بخطوة من وإلى النُزل"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "بوزيتانو → كابري بالعبّارة",

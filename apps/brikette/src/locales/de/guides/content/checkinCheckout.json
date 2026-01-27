@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Kompletter Check-in- & Check-out-Leitfaden für Hostel Brikette Positano",
+    "description": "Schritt-für-Schritt-Anleitung zu Ankunftszeiten, Ausweisdokumenten, Gepäckaufbewahrung, Pfand und Check-out-Unterstützung im Hostel Brikette in Positano."
+  },
+  "linkLabel": "Kompletter Check-in- & Check-out-Leitfaden für Hostel Brikette Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Check-in-Anmeldung",
+      "body": [
+        "Bitte wenden Sie sich bei Ihrer Ankunft an die Rezeption, um den Check-in zu starten und Ihr Zimmer zugewiesen zu bekommen."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Frühe Ankunft",
+      "body": [
+        "Wenn Sie vor 10:30 Uhr am Anreisetag eintreffen, beachten Sie bitte, dass der Zutritt zur Unterkunft noch nicht möglich ist."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Ankunft zur Mittagszeit",
+      "body": [
+        "Treffen Sie zwischen 10:30 Uhr und 15:00 Uhr ein, können Sie nach Zustimmung als „Tagesgast“ eingelassen werden. Auf Anfrage lagern wir Ihr Gepäck ein, sofern Platz vorhanden ist. Die Gepäckaufbewahrung ist eine separate Leistung mit eigenen Bedingungen."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Check-in-Zeitfenster",
+      "body": [
+        "Der reguläre Check-in ist täglich von 15:00 Uhr bis 22:30 Uhr möglich. In diesem Zeitraum gilt unser Standard-Check-in-Verfahren."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Späte Ankunft",
+      "body": [
+        "Planen Sie nach Schließung der Rezeption um 22:30 Uhr anzureisen, können wir je nach Verfügbarkeit einen Self-Service-Late-Check-in anbieten. Wir senden die Anweisungen an die bei der Buchung hinterlegte Kontaktadresse. Bitte stellen Sie sicher, dass Ihr Gerät geladen ist und Ihre Kontaktdaten korrekt sind; für Probleme durch falsche Angaben oder technische Ausfälle können wir keine Verantwortung übernehmen."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Erforderlichkeit des vollständigen Check-ins",
+      "body": [
+        "Der Zutritt zum Hostel ist nur nach vollständigem Abschluss des Check-ins möglich. Andernfalls wird Ihre Buchung storniert und als No-Show verbucht."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Identitätsnachweis",
+      "body": [
+        "Beim Check-in ist ein gültiges Originaldokument (Reisepass, Personalausweis, Führerschein oder Militär­ausweis) vorzulegen. Liegt bis 22:30 Uhr am Anreisetag kein gültiger Ausweis vor, wird die Reservierung als No-Show storniert."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Offener Zahlungsbetrag",
+      "body": [
+        "Offene Beträge müssen vor Abschluss des Check-ins vollständig mit einer akzeptierten Zahlungsart beglichen werden. Andernfalls wird die Reservierung storniert und als No-Show markiert."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Pfand für Schlüsselkarte & Bettwäsche",
+      "body": [
+        "Beim Check-in ist ein Pfand von 10 € in bar für Schlüsselkarte und Bettwäsche zu hinterlegen. Bei ordnungsgemäßer Rückgabe beider Artikel erhalten Sie den Betrag beim Check-out in bar zurück. Kartenzahlungen sind für dieses Pfand nicht möglich."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Check-out-Zeitfenster",
+      "body": [
+        "Der Check-out erfolgt von 7:30 Uhr bis 10:30 Uhr. Nach dem Check-out dürfen Sie Ihr Zimmer nicht erneut betreten oder persönliche Gegenstände darin zurücklassen."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Früher Check-out",
+      "body": [
+        "Müssen Sie vor 7:30 Uhr abreisen, vereinbaren Sie bitte am Vorabend einen frühen Check-out an der Rezeption, um Ihr Pfand in bar zurückzuerhalten. Bei Rückgabe der Schlüsselkarte ohne Bestätigung durch das Personal verfällt das Pfand."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Später Check-out",
+      "body": [
+        "Ein später Check-out ist leider nicht möglich. Der Check-out muss bis 10:30 Uhr abgeschlossen sein."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Versäumter Check-out",
+      "body": [
+        "Wenn Sie das Zimmer nicht fristgerecht räumen, können wir Ihre Gegenstände ohne Haftung entfernen lassen. Diese können kostenpflichtig bei einem lokalen Gepäckservice eingelagert werden. Jeglicher unerlaubte Zutritt danach gilt als Sicherheitsverstoß."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Nach dem Check-out",
+      "body": [
+        "Nach dem Check-out endet Ihre Reservierung offiziell. Sie dürfen sich jedoch bis 15:30 Uhr als Tagesgast auf dem Gelände aufhalten. Gepäckaufbewahrung ist auf Anfrage und nach Verfügbarkeit unter separaten Bedingungen möglich."
+      ]
+    }
+  ]
+}

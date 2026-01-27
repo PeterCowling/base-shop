@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Praiano: spokojny sąsiad Positano",
-    "description": "Urok Praiano: plaże, szlaki, dojazd i komu najbardziej przypadnie do gustu."
+    "title": "Poznaj Praiano: spokojny sąsiad",
+    "description": "Dlaczego warto odwiedzić Praiano: zachody słońca, Marina di Praia i San Gennaro."
   },
-  "linkLabel": "Praiano: spokojny sąsiad Positano",
+  "linkLabel": "Poznaj Praiano: spokojny sąsiad",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Praiano to spokojniejszy sąsiad Positano z zachodami słońca, umiarkowanymi cenami i cichszymi plażami."
   ],
   "sections": [
     {
       "id": "why",
-      "title": "Why visit",
+      "title": "Dlaczego warto",
       "body": [
-        "Ciesz się panoramicznymi zachodami słońca z Piazza San Gennaro bez tłumów od łokcia do łokcia.",
-        "Tłumaczenie w przygotowaniu."
+        "Podziwiaj panoramiczne zachody z Piazza San Gennaro bez tłumów łokci w łokieć.",
+        "Noclegi są o 20–40 € tańsze niż w Positano, a autobusy nadal kursują regularnie."
       ]
     },
     {
       "id": "beaches",
-      "title": "Beaches & swimming",
+      "title": "Plaże i kąpiele",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Plaża Gavitella skierowana jest na zachód, gdzie można pływać w złotej godzinie; policz 400 kroków w dół, więc zaplanuj przekąski i wodę."
+        "Marina di Praia to malownicza zatoka z klubami plażowymi i wypożyczalnią kajaków — przyjdź przed 11:00, by zająć leżak przy brzegu.",
+        "Plaża Gavitella wychodzi na zachód, więc idealna na kąpiele przy złotej godzinie; trzeba pokonać 400 schodów, więc zaplanuj przekąski i wodę."
       ]
     },
     {
       "id": "dining",
-      "title": "Food & nightlife",
+      "title": "Jedzenie i życie nocne",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "W weekendy w barach na plaży Praiano można posłuchać muzyki na żywo. Godziny otwarcia znajdziesz na plakatach w pobliżu przystanku SITA."
+        "Zarezerwuj Il Pirata lub Kasai na kolację z owocami morza i widokiem — latem książki rezerwujące stoliki przy zachodzie znikają na kilka dni wcześniej.",
+        "Beach bary w Praiano organizują muzykę na żywo w weekendy — zerknij na plakaty przy przystanku SITA, by sprawdzić godziny."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Skorzystaj z lokalnego busika „interno”, by ominąć najstromsze odcinki między górną a dolną częścią miasta.",
+    "Zabierz latarkę czołową na późne wspinaczki po schodach w drodze do noclegu."
   ],
   "faqs": [
     {
-      "q": "How long is the bus ride from Positano?",
+      "q": "Ile trwa przejazd autobusem z Positano?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Około 15 minut autobusem SITA, dłużej w godzinach szczytu. Latem kursy co około 30 minut."
       ]
     },
     {
-      "q": "Czy mogę zostać w Praiano i codziennie odwiedzać Positano?",
+      "q": "Czy mogę nocować w Praiano i codziennie odwiedzać Positano?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak. Wielu podróżnych dojeżdża autobusem lub skuterem, korzystając z ciszy nocą przy jednoczesnym dostępie do Positano w ciągu dnia."
       ]
     }
   ]

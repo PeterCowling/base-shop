@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Capri à Positano en ferry | Hostel Brikette",
+    "description": "Comment voyager de Capri à Positano en ferry, avec des conseils sur les billets, les opérateurs, l'arrivée et la montée la plus simple vers l'auberge."
+  },
+  "intro": {
+    "title": "Capri → Positano – Ferry",
+    "body": "Utilisez ce guide pour voyager de Capri à Positano entièrement par la mer. Il explique comment choisir le bon opérateur, acheter vos billets au port et quoi faire à l'arrivée pour monter à Hostel Brikette à pied (ou en bus) le plus facilement possible."
+  },
+  "callouts": {
+    "tip": "Besoin d'autres itinéraires ou de plans B quand la mer est agitée ? Ouvrez la %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|vue d'ensemble Comment venir%."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Positano",
+      "list": [
+        "Débarquez au quai de Positano Spiaggia Grande.",
+        "Des porteurs attendent les ferries : envisagez de les utiliser pour vos bagages et confirmez le prix à l'avance.",
+        "Prévoyez des escaliers en montée depuis la plage ; le bus local Interno aide à réduire les marches jusqu'à l'auberge."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Du port à l'auberge en bus Interno",
+      "body": "Pour un itinéraire détaillé et adapté aux bagages du quai jusqu'à Hostel Brikette, consultez : <link>Quai du ferry → Hostel Brikette</link>.",
+      "list": [
+        "Le bus Interno Positano circule environ toutes les 30 minutes du matin jusqu'à minuit.",
+        "Repérez l'affichage électronique « Interno Positano » à l'avant du bus.",
+        "Depuis le port, rejoignez la Piazza dei Mulini et prenez le bus qui monte vers Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "Si les ferries sont annulés",
+      "body": "En cas d'annulation due à la météo ou à la mer, basculez vers l'itinéraire train + bus via Sorrente. C'est plus long mais cela fonctionne dans la plupart des conditions. Utilisez ce plan B : <link>Centre de Naples → Positano en train puis bus</link>."
+    },
+    {
+      "id": "capriPort",
+      "title": "Au port de Capri",
+      "body": "Comparez les horaires de ferry et réservez : <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (horaires regroupés)</positanoLink>.",
+      "list": [
+        "Vérifiez les horaires et les tarifs puis identifiez l'opérateur de votre traversée.",
+        "Rendez-vous au port de plaisance de Capri. Achetez vos billets au guichet de l'opérateur.",
+        "Arrivez 20 à 30 minutes en avance pour échanger vos vouchers et patienter pour l'embarquement."
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Dernier tronçon à pied depuis l'arrêt le plus proche",
+      "list": [
+        "Descendez à l'arrêt près du tabac (tabacchi) à Chiesa Nuova.",
+        "Tournez à droite vers la route principale, puis à gauche sur la Via G. Marconi.",
+        "Parcourez un peu plus de 100 m (≈330 pieds) ; l'auberge se trouve sur votre droite.",
+        "Tournez à droite et montez les escaliers jusqu'à l'entrée principale d'Hostel Brikette."
+      ]
+    },
+    {
+      "id": "overview",
+      "title": "Aperçu du trajet",
+      "body": "Les ferries entre Capri et Positano circulent surtout au printemps et en été. Les traversées peuvent être annulées si la mer est agitée, notamment en fin de journée. Le trajet dure généralement 30 à 60 minutes selon le navire et l'opérateur."
+    }
+  ],
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/capri-positano-interno-yellow.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-interno-red.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/capri-positano-tabacchi.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

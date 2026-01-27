@@ -1,105 +1,123 @@
 {
   "seo": {
-    "title": "Marina di Praia i ukryte plaże",
-    "description": "Mniejsze plaże w okolicy: jak do nich dotrzeć i czego się spodziewać."
+    "title": "Przewodnik po plaży Marina di Praia",
+    "description": "Autobus, układ plaży i kolacja w ukrytej zatoce Praiano."
   },
-  "linkLabel": "Marina di Praia i ukryte plaże",
+  "linkLabel": "Marina di Praia: zaciszna zatoka między klifami",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
-  ],
-  "sections": [
-    {
-      "id": "marina",
-      "title": "Marina di Praia essentials",
-      "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
-      ]
-    },
-    {
-      "id": "coves",
-      "title": "Nearby coves",
-      "body": [
-        "Rent a kayak to explore Grotta di Suppraiano or take a short boat transfer to secluded spots like Gavitella or Laurito.",
-        "Pack reef-friendly sunscreen and water shoes—the rocky seabed offers great snorkeling visibility."
-      ]
-    },
-    {
-      "id": "logistics",
-      "title": "Getting there",
-      "body": [
-        "Catch the SITA bus from Positano toward Amalfi; ask the driver for the Marina di Praia stop and walk down the ramp (five minutes).",
-        "Tłumaczenie w przygotowaniu."
-      ]
-    }
-  ],
-  "tips": [
-    "Book lunch at Il Pirata or La Praia for cliffside dining between swims.",
-    "Tłumaczenie w przygotowaniu."
-  ],
-  "faqs": [
-    {
-      "q": "Is the beach free?",
-      "a": [
-        "Tłumaczenie w przygotowaniu."
-      ]
-    },
-    {
-      "q": "Can I walk from Positano?",
-      "a": [
-        "Tłumaczenie w przygotowaniu."
-      ]
-    }
+    "Marina di Praia to kamienista zatoka Praiano ukryta między klifami — krótki kurs autobusem z Hostelu Brikette, ale znacznie spokojniejsza niż główne plaże Positano. Łodzie rybackie, zabytkowa wieża strażnicza i kamienne tarasy otaczają zatokę, więc masz dostęp do usług bez tłumów.",
+    "Skorzystaj z tego przewodnika, by pewnie dojechać autobusem tam i z powrotem, zrozumieć działanie lido i zaplanować leniwą kolację przed powrotem."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why go"
+      "label": "Dlaczego warto"
     },
     {
       "href": "#getting-there",
-      "label": "Getting there"
+      "label": "Jak dojechać"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "Układ i usługi"
     },
     {
       "href": "#evening",
-      "label": "Stay for dinner"
+      "label": "Wieczorne spotkanie"
     }
   ],
-  "essentialsTitle": "What to expect",
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Dlaczego dodać Marinę di Praia do planu plażowego",
+      "body": [
+        "W przeciwieństwie do Spiaggia Grande czy Fornillo, Marina di Praia leży w wąskiej szczelinie tuż za Praiano. Klify osłaniają zatokę przed falami, łodzie rybackie kołyszą się w porcie, a atmosfera pozostaje spokojna nawet w sierpniu.",
+        "To łatwy dodatek do jednodniowego wypadku do Praiano lub zmianę scenerii w trakcie tygodnia. Mniejsza przestrzeń oznacza mniej leżaków, ale rekompensujesz to ciszą i malowniczym tłem zachodu słońca."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Dojazd autobusem i powrót",
+      "body": [
+        "Ze Hostelu Brikette zejdź Via Pasitea do przystanku Sponda i wsiądź do autobusu SITA w kierunku Amalfi. Powiedz kierowcy „Marina di Praia”, żeby wiedział, gdzie Cię wysadzić — to około 20 minut z Positano, zależnie od ruchu.",
+        "Wysiądź na oznaczonym przystanku (między Praiano a Furore) i idź kamienną ścieżką w dół przez dwie minuty do brzegu. Ścieżka jest utwardzona. Na powrót czekaj po drugiej stronie drogi; autobusy do Positano kursują co 30–40 minut w sezonie, ale po 20:30 rozkład się przerzedza.",
+        "Kup i skasuj bilety SITA przed wejściem — tabaccheria przy Chiesa Nuova i kiosk z prasą w Positano je sprzedają. Jeśli potrzebujesz przypomnienia o typach biletów lub nocnych kursach, zajrzyj do %LINK:sitaTickets|przewodnika po autobusach SITA%. "
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Układ plaży i operatorzy",
+      "body": [
+        "Mały publiczny odcinek znajduje się w centrum zatoki — przybądź przed 10:30, jeśli chcesz złapać bezpłatne miejsce przy wodzie. Główny operator to Marina di Praia Beach Club z rzędami leżaków, parasoli, prysznicami i wypożyczalnią kajaków; spodziewaj się pakietów za 25–35 € za krzesło i parasol w wysokim sezonie.",
+        "Wzdłuż promenady stoją restauracje Da Armandino i Il Pirata oraz małe kioski z napojami. Karty płatnicze czasami się blokują, więc miej gotówkę na dopłaty do leżaków lub seafood lunch.",
+        "Cień znika wcześnie, bo klify zasłaniają słońce, więc zaplanuj poranny kąpiel, a potem przenieś się na bar lub późny lunch, gdy zatoka się ochłodzi."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Zostaw na kolację bez stresu",
+      "body": [
+        "Zatoka zmienia się po zmroku: girlandy świateł odbijają się w wodzie, a restauracje przechodzą w pełną obsługę kolacyjną. Zarezerwuj stolik wcześniej, jeśli zależy Ci na Da Armandino albo Il Pirata — oba specjalizują się w świeżych owocach morza i domowym makaronie.",
+        "Postaw na autobus SITA w kierunku Positano około 21:00 (godziny zależą od sezonu) albo podziel taksówkę z przyjaciółmi, jeśli zostajesz na deser. Autobus zawozi Cię do Sponda, więc zostaje krótki spacer pod górę do hostelu."
+      ]
+    }
+  ],
+  "essentialsTitle": "Co warto wiedzieć",
   "essentials": [
-    "20 minut jazdy autobusem SITA z Positano; poproś o przystanek Marina di Praia i idź dwie minuty w dół.",
-    "Wąska plaża żwirowa z jednym głównym kąpieliskiem i małą bezpłatną częścią pośrodku.",
-    "Restauracje i kioski z przekąskami znajdują się wzdłuż chodnika — idealne miejsce na kolację o zachodzie słońca przed powrotem do domu."
+    "20-minutowy przejazd autobusem SITA z Positano; poproś o postój Marina di Praia i idź dwie minuty w dół.",
+    "Wąska kamienista plaża z jednym głównym lido i małym bezpłatnym odcinkiem na środku.",
+    "Restauracje i kioski ciągną się wzdłuż promenady — idealne na kolację przy zachodzie."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typowe koszty",
   "typicalCosts": [
-    "Leżak + parasol w Marina di Praia Beach Club: 25–35 € za dzień (dostępne zestawy dwuosobowe).",
+    "Leżak i parasol w Marina di Praia Beach Club: 25–35 € dziennie (są zestawy dla dwóch osób).",
     "Wypożyczenie kajaka: około 20 € za godzinę dla dwóch osób.",
-    "Kolacja główna w Da Armandino lub Il Pirata: 16–28 € w zależności od specjałów z połowu i makaronów."
+    "Dania główne w Da Armandino lub Il Pirata: 16–28 € w zależności od ryb i makaronowych specjalności."
   ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
+  "tipsTitle": "Szybkie wskazówki",
+  "tips": [
+    "Skasuj bilet autobusowy zaraz po wejściu i miej zapasowy, gdy kiosk na powrocie będzie zamknięty.",
+    "Spakuj buty do wody — kamienie mogą być śliskie, a brzeg szybko się obniża.",
+    "Porównaj inne opcje przybrzeżne w naszym %LINK:positanoBeaches|przeglądzie plaż% i połącz Marina di Praia z dniem w Positano."
+  ],
+  "warningsTitle": "Dobrze wiedzieć",
   "warnings": [
-    "Przestrzeń jest ograniczona; Wolna strefa zapełnia się jako pierwsza, a leżaki na kąpielisku wyprzedają się w weekendy.",
-    "Klify blokują bezpośrednie słońce do południa – świetnie nadają się do ochłodzenia, ale w wietrzne dni może być chłodno.",
-    "Odbiór mobilny spada w wąwozie; pobierz wcześniej rozkłady jazdy autobusów lub potwierdzenia rezerwacji kolacji."
+    "Miejsca są ograniczone; bezpłatna strefa zapełnia się pierwsza, a leżaki w lido sprzedają się w weekendy.",
+    "Klify blokują słońce już w połowie popołudnia — idealne do ochłody, ale może być chłodno przy wietrze.",
+    "Zasięg telefonii spada wewnątrz wąwozu; ściągnij rozkłady lub potwierdzenia rezerwacji wcześniej."
   ],
-  "faqsTitle": "Marina di Praia FAQs",
   "gallery": {
-    "title": "Przewodnik fotograficzny",
+    "title": "Galeria",
     "items": [
       {
-        "alt": "Widok na Marina di Praia z łodziami i parasolami na kamienistym brzegu.",
-        "caption": "Zatoczka jest wąska, osłonięta klifami i spokojniejsza niż główne plaże Positano."
+        "alt": "Widok na Marínę di Praia z łodziami i parasolami na kamiennym brzegu.",
+        "caption": "Zatoka jest wąska, chroniona klifami i spokojniejsza niż główne plaże Positano."
       },
       {
-        "alt": "Kamienista plaża z niebiesko-żółtymi leżakami w Marina di Praia.",
-        "caption": "Sekcja lido ma większość leżaków, z małą bezpłatną strefą bliżej środka."
+        "alt": "Kamienna plaża w Marina di Praia z niebiesko-żółtymi leżakami.",
+        "caption": "Większość leżaków stoi w lido, a w centrum jest mały, bezpłatny odcinek."
       }
     ]
-  }
+  },
+  "faqsTitle": "FAQ Marina di Praia",
+  "faqs": [
+    {
+      "q": "Z którego przystanku w Positano złapać autobus?",
+      "a": [
+        "Skorzystaj z przystanku Sponda przy Via Pasitea dla autobusów w kierunku Amalfi. To około 10 minut w dół od hostelu; bądź tam 10 minut wcześniej w sezonie, żeby wsiąść zanim autobus się zatłoczy."
+      ]
+    },
+    {
+      "q": "Czy jest darmowy fragment plaży, czy trzeba wynająć leżaki?",
+      "a": [
+        "W centrum zatoki jest niewielki, publiczny odcinek. Zabierz matę lub gruby ręcznik — kamienie są chropowate — i przygotuj się, że będziesz się przesuwać bliżej skał, gdy zmienia się poziom wody. Leżaki w Marina di Praia Beach Club mają prysznice i toalety, jeśli wolisz komfort."
+      ]
+    },
+    {
+      "q": "Jak długo można zostać na kolacji i wrócić do Hostelu Brikette?",
+      "a": [
+        "Ostatnie autobusy SITA w kierunku Positano kursują do około 21:30 w lecie. Sprawdź aktualny rozkład po przybyciu i wybierz przedostatni kurs, na wypadek gdyby pierwszy był pełny. Po ostatnim autobusie taksówki z Praiano do Positano kosztują 35–45 €, więc dziel koszty z towarzyszami."
+      ]
+    }
+  ]
 }

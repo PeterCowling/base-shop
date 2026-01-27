@@ -1,62 +1,62 @@
 {
   "seo": {
-    "title": "Hordárszolgáltatások Positanóban",
-    "description": "Hol éred el a hordárokat, mennyibe kerül, és hogyan működik a poggyászfelvétel a lépcsőkön."
+    "title": "Hordár szolgáltatások Positanóban",
+    "description": "Hogyan működnek a hordárok: hol foglalj, mennyi a díj és mikor érdemes igénybe venni."
   },
-  "linkLabel": "Hordárszolgáltatások Positanóban",
+  "linkLabel": "Hordár szolgáltatások Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "A hordárok segítenek a nehéz csomagokkal vagy mozgáskorlátozás esetén. A dokknál vagy buszmegállónál kéred a felvételt, egyezteted a díjat, és az értékeket magadnál tartod."
   ],
   "sections": [
     {
       "id": "how",
-      "title": "How it typically works",
+      "title": "Hogyan zajlik általában",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Egyértelműen foglald le a találkozó helyét és időpontját (dokkok vagy buszmegállók), add meg a szállás nevét.",
+        "Egyeztessétek a díjat, mielőtt elindultok; az ár függ a távolságtól, a lépcsőktől és az napszaktól.",
+        "Az értékeket tartsd magadnál; címkézd fel a csomagokat."
       ]
     },
     {
       "id": "resources",
-      "title": "Booking & resources",
+      "title": "Foglalás és források",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kérd meg a szállásod, hogy ajánljon megbízható helyi szolgáltatókat a dokk környékén és a fő buszmegállóknál.",
+        "Ha tárolásra vagy késői órás segítségre van szükséged, nézd meg a Bounce / Radical Storage aggregátorokat."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & tips",
+      "title": "Etikett és tippek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Adj borravalót a kiváló szolgáltatásért vagy a különösen nehéz csomagokért; tarts magadnál kis címletű készpénzt.",
+        "Csúcsidőben osszd meg előre az érkezési tervedet, hogy biztosíts helyet a hordárnak."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Do I need porters?",
+      "q": "Szükségem van hordárra?",
       "a": [
-        "A fordítás folyamatban van."
+        "Ajánlott, ha nehéz csomaggal jössz – a város tele van lépcsőkkel és meredek utcákkal."
       ]
     },
     {
-      "q": "Where can I book?",
+      "q": "Hol foglalhatok?",
       "a": [
-        "A fordítás folyamatban van."
+        "Kérdezd meg a szállásod vagy a fő strand/buszmegállók környéki helyi szolgáltatókat."
       ]
     },
     {
-      "q": "How much does it cost?",
+      "q": "Mennyibe kerül?",
       "a": [
-        "A fordítás folyamatban van."
+        "A távolságtól és a terheléstől függ; egyeztesd a díjat, mielőtt kezdődne a szolgáltatás."
       ]
     }
   ],
-  "galleryTitle": "Photo gallery",
+  "galleryTitle": "Fotógaléria",
   "gallery": {
-    "standsCaption": "Porter stands (example)",
-    "cartsCaption": "Porter carts"
+    "standsCaption": "Példa hordárállomásokra",
+    "cartsCaption": "Hordárkocsik"
   }
 }

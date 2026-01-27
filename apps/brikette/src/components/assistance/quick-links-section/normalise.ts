@@ -1,12 +1,9 @@
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
-import * as assistance from "@/routes.assistance-helpers";
+import { ASSISTANCE_GUIDE_KEYS, isAssistanceGuideKey } from "@/data/assistanceGuideKeys";
+import type { GuideKey } from "@/routes.guides-helpers";
 
 import type { ContactCta, QuickLinkItem } from "./types";
 
-type AssistanceModule = typeof assistance;
-const HELP_KEY_SET = new Set<HelpArticleKey>(
-  (((assistance as Partial<AssistanceModule>).ARTICLE_KEYS ?? []) as readonly HelpArticleKey[])
-);
+const ASSISTANCE_GUIDE_KEY_SET = new Set<GuideKey>(ASSISTANCE_GUIDE_KEYS);
 
 export function normaliseQuickLinks(value: unknown): QuickLinkItem[] {
   if (!Array.isArray(value)) return [];
@@ -21,12 +18,12 @@ export function normaliseQuickLinks(value: unknown): QuickLinkItem[] {
       const slug = candidate["slug"];
 
       if (typeof label !== "string" || typeof description !== "string") return null;
-      if (typeof slug !== "string" || !HELP_KEY_SET.has(slug as HelpArticleKey)) return null;
+      if (typeof slug !== "string" || !isAssistanceGuideKey(slug)) return null;
 
       return {
         label,
         description,
-        slug: slug as HelpArticleKey,
+        slug: slug as GuideKey,
       } satisfies QuickLinkItem;
     })
     .filter((item): item is QuickLinkItem => Boolean(item));

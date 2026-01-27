@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Wolontariat i work exchange w włoskich hostelach",
-    "description": "Na co zwrócić uwagę przy ofertach wolontariatu: obowiązki, godziny, przepisy i etyczne wybory."
+    "title": "Wymiana pracy w włoskich hostelach",
+    "description": "Role, godziny, podstawy prawne i kryteria wyboru programów."
   },
-  "linkLabel": "Wolontariat i work exchange w włoskich hostelach",
+  "linkLabel": "Wymiana pracy w włoskich hostelach",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Myślisz o wymianie pracy we Włoszech? Dowiedz się, jak hostele i gospodarstwa organizują zmiany, jakie dokumenty zabrać i jak wybrać rzetelne programy."
   ],
   "sections": [
     {
       "id": "expect",
-      "title": "What to expect",
+      "title": "Czego się spodziewać",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Standardowa wymiana to 20–25 godzin sprzątania, wsparcia recepcyjnego lub animacji w zamian za nocleg i śniadanie.",
+        "Zmiany rozkładają się zwykle na pięć dni tygodnia, zostawiając dwa pełne dni na zwiedzanie. Potwierdź grafik na piśmie przed zobowiązaniem."
       ]
     },
     {
       "id": "vet",
-      "title": "Vetting hosts",
+      "title": "Weryfikacja gospodarzy",
       "body": [
-        "Przeczytaj recenzje na grupach Workaway, Worldpackers i hostelach na Facebooku. Poszukaj gospodarzy z najnowszymi opiniami i przejrzystymi listami zadań.",
-        "Tłumaczenie w przygotowaniu."
+        "Czytaj recenzje na Workaway, Worldpackers i w grupach hostelowych na Facebooku. Szukaj organizatorów z niedawnymi opiniami i klarownymi listami zadań.",
+        "Dopytaj o rodzaj zakwaterowania (dormitorium vs. prywatne pokoje), godziny ciszy i czy jedzenie lub rabaty hotelowe są wliczone."
       ]
     },
     {
       "id": "paperwork",
-      "title": "Paperwork & rules",
+      "title": "Formalności i zasady",
       "body": [
-        "Obywatele UE, Wielkiej Brytanii, Kanady, Australii i Stanów Zjednoczonych mogą przebywać w strefie Schengen do 90 dni w charakterze turystów – wymiana pracownicza musi pozostać dobrowolna.",
-        "Tłumaczenie w przygotowaniu."
+        "Obywatele UE, UK, Kanady, Australii i USA mogą przebywać do 90 dni w strefie Schengen jako turyści — wymiany pracy muszą pozostać dobrowolne.",
+        "Noś ubezpieczenie podróżne obejmujące wolontariat i nieformalne prace; niektórzy gospodarze proszą o podpisanie oświadczenia o odpowiedzialności przy przyjeździe."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Umów rozmowę wideo z gospodarzem, by doprecyzować obowiązki i zobaczyć przestrzeń przed kupnem biletów.",
+    "Przyjedź dzień wcześniej, by się zadomowić, poznać zasady domu i przygotować przed pierwszą zmianą."
   ],
   "faqs": [
     {
-      "q": "Do I get paid pocket money?",
+      "q": "Czy dostanę kieszonkowe?",
       "a": [
-        "Większość włoskich giełd oferuje wyłącznie zakwaterowanie i wyżywienie. Niektórzy oferują napiwki ze zmian w barze lub wycieczek, ale traktują je jako bonusy, a nie gwarantowany dochód."
+        "Większość włoskich wymian to tylko nocleg i wyżywienie. Czasem pojawiają się napiwki z pracy w barze czy wycieczek, ale traktuj je jako bonus, nie stałe źródło dochodu."
       ]
     },
     {
-      "q": "Czy mogę przekroczyć 90 dni pobytu na giełdzie pracy?",
+      "q": "Czy mogę zostać dłużej niż 90 dni?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Nie. Musisz przestrzegać limitów pobytu w Schengen, chyba że uzyskasz wizę pracowniczą lub studencką. Zaplanuj dalsze podróże lub reset strefy Schengen."
       ]
     }
   ]

@@ -93,6 +93,16 @@
     "filterHeading": "Lọc hướng dẫn trải nghiệm",
     "filterDescription": "Chọn thẻ để thu hẹp các trải nghiệm được nổi bật.",
     "directionsLabel": "Cách đến đây",
+    "sections": {
+      "content": {
+        "title": "Hướng dẫn trải nghiệm",
+        "description": "Hướng dẫn chuyên sâu về bãi biển, đi bộ đường dài, chuyến đi trong ngày và hoạt động"
+      },
+      "directions": {
+        "title": "Cách đi lại",
+        "description": "Hướng dẫn từng bước đến và rời hostel"
+      }
+    },
     "directionLinks": {
       "walkFromHostel": "Đi bộ từ hostel",
       "busFromHostel": "Đi xe buýt",

@@ -9,11 +9,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modals";
 
-import { HELP_ARTICLE_KEYS } from "@/components/assistance/HelpCentreNav";
 import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
-import { articleSlug, type HelpArticleKey } from "@/routes.assistance-helpers";
-import { guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
+import { guideSlug, resolveGuideKeyFromSlug, type GuideKey } from "@/routes.guides-helpers";
 import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
@@ -58,13 +56,14 @@ export function LanguageGlobalModal(): JSX.Element | null {
     SLUG_KEYS.find((key) => i18nConfig.supportedLngs.some((lng) => SLUGS[key][lng] === pathSegments[1])) ??
     null;
 
-  const articleKey: HelpArticleKey | null = (() => {
+  // Resolve guide key for assistance pages (null if on assistance index)
+  const assistanceGuideKey: GuideKey | null = (() => {
     if (slugKey !== "assistance") return null;
     const slugSegment = pathSegments[2];
-    if (!slugSegment) {
-      return HELP_ARTICLE_KEYS[0] ?? null;
-    }
-    return HELP_ARTICLE_KEYS.find((key) => articleSlug(curLang, key) === slugSegment) ?? null;
+    // If no slug segment, we're on the assistance index — keep null to stay on index
+    if (!slugSegment) return null;
+    // Resolve the guide key from the slug
+    return resolveGuideKeyFromSlug(slugSegment, curLang) ?? null;
   })();
 
   const candidates = [
@@ -129,8 +128,10 @@ export function LanguageGlobalModal(): JSX.Element | null {
 
           const trailingSegments = remainder.slice(1);
 
-          if (slugKey === "assistance" && articleKey) {
-            nextSegments.push(articleSlug(nextLang, articleKey));
+          // Handle assistance guides and other guide namespaces uniformly
+          if (slugKey === "assistance" && assistanceGuideKey) {
+            // On an assistance guide page — translate the guide slug
+            nextSegments.push(guideSlug(nextLang, assistanceGuideKey));
             nextSegments.push(...trailingSegments.slice(1));
           } else if (
             (slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
@@ -145,6 +146,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
               nextSegments.push(...trailingSegments);
             }
           } else {
+            // Assistance index or other pages — keep trailing segments as-is
             nextSegments.push(...trailingSegments);
           }
         } else {
@@ -157,7 +159,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
       navigate(`${basePath}${location.search}${location.hash}`, { replace: true });
       closeModal();
     },
-    [articleKey, closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
+    [assistanceGuideKey, closeModal, curLang, i18n, location, navigate, slugKey, warmLayoutNamespaces],
   );
 
   return (

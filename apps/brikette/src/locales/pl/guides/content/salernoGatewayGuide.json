@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Salerno: druga brama na Wybrzeże Amalfi",
-    "description": "Co oferuje Salerno: połączenia, zabytki i dlaczego warto je wybrać jako punkt startowy."
+    "title": "Salerno: druga brama wybrzeża Amalfi",
+    "description": "Dlaczego warto przyjechać przez Salerno i jak dalej dojechać do Positano."
   },
-  "linkLabel": "Salerno: druga brama na Wybrzeże Amalfi",
+  "linkLabel": "Salerno: druga brama wybrzeża Amalfi",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Salerno to dobry punkt wejścia na wybrzeże Amalfi, z lepszymi połączeniami kolejowymi i spokojniejszymi ulicami niż Neapol."
   ],
   "sections": [
     {
       "id": "why",
-      "title": "Why arrive via Salerno",
+      "title": "Dlaczego przez Salerno",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Pociągi dużych prędkości z Rzymu czy Mediolanu kończą tutaj trasę, więc od peronu do przystani promowej dojdziesz w kilka minut.",
+        "Noclegi i jedzenie są tańsze niż w Positano, co sprawia, że to dobry wybór na pierwszą lub ostatnią noc."
       ]
     },
     {
       "id": "connections",
-      "title": "Connections onward",
+      "title": "Dalsze połączenia",
       "body": [
-        "Sezonowe promy docierają do Positano w około 70 minut. Autobusy kursują po wybrzeżu przez cały rok; kup bilety UnicoCampania przed wejściem na pokład.",
-        "Transfer lotniskowy do Neapolu Capodichino trwa 60 minut, jeśli wylatujesz po pobycie."
+        "Sezonowe promy płyną do Positano w około 70 minut; autobusy wspinają się po wybrzeżu przez cały rok — kup bilety UnicoCampania przed wejściem.",
+        "Shuttle lotniskowy do Neapolu Capodichino jedzie 60 minut, jeśli odlatujesz po pobycie."
       ]
     },
     {
       "id": "staying",
-      "title": "Staying in Salerno",
+      "title": "Pobyt w Salerno",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Zwiedź nadmorską promenadę, średniowieczne centrum i zamek Arechi dla panoramy na zachód słońca.",
+        "Rezerwuj trattorie przy Via Roma, by zjeść świetne owoce morza bez cen Positano."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Jeśli przyjeżdżasz późnym wieczorem, zostań w Salerno na noc i rano złap pierwszy prom lub autobus do Positano.",
+    "Przechowalnie bagażu przy stacji kosztują €5–€7 za walizkę, dzięki czemu możesz się swobodnie przemieszczać między pociągiem a promem."
   ],
   "faqs": [
     {
-      "q": "Are ferries reliable from Salerno?",
+      "q": "Czy promy z Salerno kursują regularnie?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak, latem są niezawodne. W sezonach przejściowych pogoda bywa kapryśna, więc miej w zanadrzu autobus."
       ]
     },
     {
-      "q": "How early should I arrive for a train?",
+      "q": "Jak wcześnie pojawić się na pociąg?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Zjaw się 15 minut wcześniej, żeby znaleźć peron i — jeśli trzeba — skasować bilet regionalny."
       ]
     }
   ]

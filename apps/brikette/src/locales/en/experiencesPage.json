@@ -151,11 +151,6 @@
         "description": "Where to eat well without overpaying.",
         "imageAlt": "Fresh Italian dishes at a local trattoria"
       },
-      "itinerary": {
-        "title": "Itineraries",
-        "description": "Multi-day plans for different trip lengths.",
-        "imageAlt": "Scenic view of the Amalfi Coast from above"
-      },
       "more": {
         "title": "More Guides",
         "description": "Transport tips, photography spots, and local events.",

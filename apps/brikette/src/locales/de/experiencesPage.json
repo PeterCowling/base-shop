@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Übersetzung in Arbeit.",
+    "title": "Erlebnisse im Hostel Brikette – Terrasse, Wanderungen & Concierge",
     "description": "Genieße Sundowner auf unserer Terrasse, nimm an kuratierten Wanderungen teil und plane entspannte Amalfi-Küsten-Tage mit unserem digitalen Concierge."
   },
   "hero": {
@@ -13,7 +13,7 @@
     "breakfastCta": "Frühstücksmenü ansehen",
     "tertiaryCta": "Digitalen Concierge anschreiben",
     "primaryCtaAria": "Buche deinen Aufenthalt im Hostel Brikette",
-    "secondaryCtaAria": "Übersetzung in Arbeit.",
+    "secondaryCtaAria": "Bar-Menü des Hostel Brikette anzeigen",
     "breakfastCtaAria": "Frühstücksmenü ansehen",
     "tertiaryCtaAria": "Sende eine Nachricht an den digitalen Concierge des Hostel Brikette",
     "scrollNudge": "Entdecke Erlebnisse nach Kategorie"
@@ -26,7 +26,7 @@
       "highlights": [
         "Signature-Spritzes und lokale Weine eisgekühlt serviert.",
         "Social Nights und Verkostungen in den Hochsaison-Wochen.",
-        "Übersetzung in Arbeit."
+        "Panoramablicke, ideal für Fotos in der goldenen Stunde."
       ],
       "imageAlt": "Gäste stoßen bei Sonnenuntergang auf der Terrasse des Hostel Brikette an."
     },
@@ -75,7 +75,7 @@
       "concierge": "Mit dem Concierge chatten"
     }
   },
-  "title": "Übersetzung in Arbeit.",
+  "title": "Erlebnisse im Hostel Brikette",
   "intro": "Genieße einen Spritz auf unserer Terrasse, schließe dich Wanderungen mit Traumkulisse an und erhalte sofort Tipps über unseren digitalen Concierge.",
   "items": {
     "bar": "Terrassenbar bei Sonnenuntergang mit Spritz und lokalen Weinen.",
@@ -91,6 +91,16 @@
     "clearFilter": "Alle Erlebnis-Guides anzeigen",
     "cardCta": "Entdecke den Erlebnisleitfaden '{{guideTitle}}'",
     "directionsLabel": "Wegbeschreibungen",
+    "sections": {
+      "content": {
+        "title": "Erlebnis-Guides",
+        "description": "Detaillierte Guides zu Stränden, Wanderungen, Tagesausflügen und Aktivitäten"
+      },
+      "directions": {
+        "title": "Anreise",
+        "description": "Schritt-für-Schritt-Anleitungen zum Hostel und zurück"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Fähre Positano → Capri",

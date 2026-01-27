@@ -102,6 +102,87 @@
         "title": "अमाल्फ़ी कोस्ट के लिए क्या पैक करें",
         "description": "Positano और अमाल्फ़ी कोस्ट के लिए मौसमी पैकिंग चेकलिस्ट।"
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "पॉज़िटानो के समुद्र तट: रेत, धूप और गुप्त खाड़ियाँ"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "अरिएन्ज़ो बीच: पॉज़िटानो का बुटीक बीच क्लब"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "फोर्निलो बीच: पॉज़िटानो का शांत विकल्प"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "लॉरिटो बीच: चट्टानों के नीचे छिपा रत्न"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "गैविटेला बीच: प्रायानो का सूर्यास्त स्विमिंग स्पॉट"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "मरीना डि प्रैया: चट्टानों के बीच नाटकीय खाड़ी"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "फियोर्डो डि फुरोरे: पुल के नीचे फियोर्ड बीच"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "रेजिना जियोवन्ना: रोमन खंडहर और प्राकृतिक पूल"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "स्पियाज्जा ग्रांदे: पॉज़िटानो का प्रतिष्ठित मुख्य समुद्र तट"
+    },
+    "sunriseHike": {
+      "linkLabel": "सूर्योदय हाइक: पॉज़िटानो पर भोर देखें"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "मोंटे कोमुने: पॉज़िटानो के सबसे ऊंचे व्यूपॉइंट तक हाइक"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "पॉज़िटानो में फिट रहें: सीढ़ियाँ, ट्रेल्स और बीच वर्कआउट"
+    },
+    "capriDayTrip": {
+      "linkLabel": "कैप्री डे ट्रिप: पॉज़िटानो से द्वीप पलायन"
+    },
+    "capriOnABudget": {
+      "linkLabel": "बजट में कैप्री का आनंद लें"
+    },
+    "campingAmalfi": {
+      "linkLabel": "अमाल्फ़ी कोस्ट पर कैंपिंग: होटल का बजट विकल्प"
+    },
+    "boatTours": {
+      "linkLabel": "बोट टूर: सनसेट क्रूज़ से प्राइवेट चार्टर तक"
+    },
+    "cheapEats": {
+      "linkLabel": "स्थानीय की तरह खाएं: पॉज़िटानो के बेस्ट बजट बाइट्स"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "पॉज़िटानो में कहाँ खाएं: कैज़ुअल से सेलिब्रेशन तक"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette के पास पॉज़िटानो के बेस्ट रेस्टोरेंट"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "पॉज़िटानो का स्वाद: लिमोन्सेलो, नींबू और स्थानीय फ्लेवर"
+    },
+    "instagramSpots": {
+      "linkLabel": "इंस्टाग्राम-योग्य पॉज़िटानो: बेस्ट फोटो स्पॉट्स और समय"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "पॉज़िटानो में सूर्यास्त: गोल्डन आवर के लिए बेस्ट व्यूपॉइंट्स"
+    },
+    "ravelloFestival": {
+      "linkLabel": "रावेलो फेस्टिवल: तारों के नीचे क्लासिकल कॉन्सर्ट"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "फेरागोस्टो: पॉज़िटानो में इटली का 15 अगस्त उत्सव"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "लूमिनारिया डि प्रायानो: हज़ारों मोमबत्तियाँ रात को रोशन करती हैं"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "मुफ्त ऑडियो वॉकिंग टूर: पॉज़िटानो की छिपी कहानियाँ खोजें"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "पॉज़िटानो में मुफ्त चीज़ें: बजट-फ्रेंडली मज़ा"
     }
   },
   "dev": {

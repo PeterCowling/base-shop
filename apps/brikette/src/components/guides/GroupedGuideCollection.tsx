@@ -22,7 +22,7 @@ import type { GuideFilterOption } from "./useGuideFilterOptions";
 type GuideSection = "content" | "directions";
 
 // Topic display order and minimum guide threshold
-const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine", "itinerary"] as const;
+const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine"] as const;
 const MORE_TOPICS = ["transport", "photography", "culture"] as const;
 const MIN_GUIDES_FOR_MAIN = 1;
 
@@ -33,7 +33,6 @@ const TOPIC_IMAGES: Record<string, string> = {
   "day-trip": "/img/topics/day-trip.jpg",
   boat: "/img/topics/boat.jpg",
   cuisine: "/img/topics/cuisine.jpg",
-  itinerary: "/img/topics/itinerary.jpg",
   more: "/img/topics/more.jpg",
 };
 
@@ -44,7 +43,6 @@ const TOPIC_LABELS: Record<string, string> = {
   "day-trip": "Day trips",
   boat: "Boat tours",
   cuisine: "Food & Drink",
-  itinerary: "Itineraries",
   more: "More",
 };
 
@@ -309,16 +307,22 @@ function GroupedGuideCollection({
   const directionsSectionTitle = t("guideCollections.sections.directions.title", { ns: "experiencesPage", defaultValue: "Getting There" });
   const directionsSectionDescription = t("guideCollections.sections.directions.description", { ns: "experiencesPage", defaultValue: "Step-by-step directions to and from the hostel" });
 
-  // Filter topic configs based on section
+  // Filter topic configs to only include topics with published guides in the section.
+  // This ensures no header is shown for a category where all guides are draft/unpublished.
   const getFilteredTopicConfigsForSection = (
     sectionGuides: Record<string, GuideMeta[]>,
   ): TopicConfig[] => {
+    const hasPublishedGuides = (topicId: string): boolean => {
+      const guides = sectionGuides[topicId];
+      return Array.isArray(guides) && guides.length > 0;
+    };
+
     if (normalizedTopicParam) {
       return topicConfigs.filter(
-        (config) => config.id === normalizedTopicParam && (sectionGuides[config.id]?.length ?? 0) > 0,
+        (config) => config.id === normalizedTopicParam && hasPublishedGuides(config.id),
       );
     }
-    return topicConfigs.filter((config) => (sectionGuides[config.id]?.length ?? 0) > 0);
+    return topicConfigs.filter((config) => hasPublishedGuides(config.id));
   };
 
   const contentTopicConfigs = getFilteredTopicConfigsForSection(groupedContentGuides);

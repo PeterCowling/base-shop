@@ -1,77 +1,77 @@
 {
   "seo": {
-    "title": "Samotna podróż do Positano: wskazówki",
-    "description": "Bezpieczeństwo, pomysły na integrację, hostel vs pokój prywatny i plany na dni w pojedynkę."
+    "title": "Podróż solo w Positano: porady",
+    "description": "Bezpieczeństwo, pomysły na integrację, hostele kontra prywatne noclegi oraz plany na dzień solo."
   },
-  "linkLabel": "Samotna podróż do Positano: wskazówki",
+  "linkLabel": "Podróż solo w Positano: porady",
   "intro": [
-    "Positano to przyjemne miejsce na podróż solo. Bądź towarzyski w hostelu, planuj jednodniowe wycieczki z buforami i korzystaj z promów, gdy słońce jest wysoko."
+    "Positano dobrze przyjmuje podróżujących solo. Szukaj towarzystwa w hostelu, planuj wycieczki z zapasem i korzystaj z promów, gdy słońce wysoko."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "Na tej stronie",
   "toc": [
     {
       "href": "#safety",
-      "label": "Safety & confidence"
+      "label": "Bezpieczeństwo i pewność siebie"
     },
     {
       "href": "#social",
-      "label": "Social tips"
+      "label": "Wskazówki towarzyskie"
     },
     {
       "href": "#dayplans",
-      "label": "Day plans that work solo"
+      "label": "Plany dnia solo"
     }
   ],
   "sections": [
     {
       "id": "safety",
-      "title": "Safety & confidence",
+      "title": "Bezpieczeństwo i pewność siebie",
       "list": [
-        "Tłumaczenie w przygotowaniu.",
-        "Korzystaj z oświetlonych tras w nocy; unikaj pośpiechu na schodach."
+        "Podziel się planami z recepcją; noś naładowany telefon i wodę.",
+        "Nocą wybieraj oświetlone trasy i nie śpiesz się po schodach."
       ]
     },
     {
       "id": "social",
-      "title": "Social tips",
+      "title": "Wskazówki towarzyskie",
       "list": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Dołącz do wieczornych spotkań na tarasie hostelu i aktywności dla gości.",
+        "Wybierz małe grupowe rejsy lub wycieczki — łatwo znaleźć towarzystwo bez wysiłku."
       ]
     },
     {
       "id": "dayplans",
-      "title": "Day plans that work solo",
+      "title": "Plany dnia solo",
       "list": [
-        "Prom do Amalfi + spacer do Atrani; autobusem do ogrodów Ravello.",
-        "Tłumaczenie w przygotowaniu."
+        "Prom do Amalfi i spacer do Atrani, potem autobus do ogrodów Ravello.",
+        "Capri: szlak do Villa Jovis lub latarni, powrót przy złotej godzinie."
       ]
     }
   ],
   "tips": [
-    "Sprawdź na tablicy rejestracyjnej około 18:00, czy nie ma arkuszy zapisów; to najszybszy sposób na znalezienie znajomych na kolację lub łódkę na następny dzień.",
-    "Tłumaczenie w przygotowaniu."
+    "Sprawdź tablicę recepcyjną około 18:00 — tam pojawiają się listy na kolację lub rejsy, które ułatwiają znalezienie towarzyszy.",
+    "Spakuj lekki plecak dzienny z 1–1,5 l wody i powerbankiem, by robić zdjęcia o zachodzie bez pośpiechu."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy bezpiecznie eksplorować Positano nocą?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Jeśli skończysz późno, pomarańczowa taksówka Positano przy Piazza dei Mulini może zorganizować krótką przejażdżkę pod górę."
+        "Trzymaj się głównych schodów i oświetlonych tras, daj recepcji znać o planach i noś naładowany telefon.",
+        "Jeśli kończysz późno, stoisko Positano Taxi przy Piazza dei Mulini może umówić krótki kurs pod górę."
       ]
     },
     {
-      "q": "Jak mogę poznać innych podróżnych, gdy jestem sam?",
+      "q": "Jak poznać innych podróżnych będąc solo?",
       "a": [
-        "Dołącz do spotkań na tarasie o zachodzie słońca w hostelu lub zapisz się na wycieczki łodzią, które obejmują maksymalnie 10–12 osób.",
-        "Tłumaczenie w przygotowaniu."
+        "Dołącz do spotkań na tarasie hostelu lub zapisów na rejsy z grupami 10–12 osób.",
+        "Warsztaty kulinarne i spacery w Amalfi czy Capri to luźne przestrzenie do rozmów."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy mogę samotnie przejść Szlak Bogów?",
       "a": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Tak — rusz z Bomerano około 9:00, miej co najmniej 1,5 l wody i ściągnij mapę offline.",
+        "Wróć autobusem SITA z Nocelle lub Montepertuso przed zmrokiem; wieczorne kursy kończą się ok. 20:00."
       ]
     }
   ]

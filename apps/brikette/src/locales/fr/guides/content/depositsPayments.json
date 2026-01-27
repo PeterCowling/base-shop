@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Guide des Dépôts et Paiements – Auberge Brikette, Positano",
+    "description": "Guide complet sur les dépôts, moyens de paiement, confirmations, modifications, annulations et blocages de sécurité lors de votre réservation."
+  },
+  "linkLabel": "Guide des Dépôts et Paiements – Auberge Brikette, Positano",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Comment Soumettre votre Demande",
+      "body": [
+        "Envoyez votre demande via une OTA autorisée ou sur notre site ; les chats ou passages spontanés ne suffisent pas. En cliquant sur « Réserver », vous confirmez l’exactitude des données et acceptez nos CGV."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Traitement de votre Demande",
+      "body": [
+        "Nous traitons votre demande dès réception du dépôt, de la pré-autorisation ou du paiement requis. La réservation doit porter le nom du titulaire de la carte. Si différent, envoyez-nous une autorisation écrite avant le traitement."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Quand Nous Pouvons Refuser",
+      "body": [
+        "Nous pouvons refuser une demande (paiement échoué, info manquante, violation de nos CGV)."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Limite par Demande",
+      "body": [
+        "Une demande couvre jusqu’à 7 nuits consécutives et 5 personnes. Pour plus, faites plusieurs demandes."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Si votre Chambre n’est pas Disponible",
+      "body": [
+        "Si la chambre voulue est prise, nous envoyons une contre-proposition. Acceptez-la et réglez pour finaliser."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Tarifs Prépayés Non Remboursables",
+      "body": [
+        "Le tarif prépayé est moins cher mais exige 100 % immédiat. Trois tentatives carte ; si échec, demande annulée. Ni remboursement ni modification."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "E-mail de Confirmation",
+      "body": [
+        "Après paiement, vous recevez un e-mail de confirmation (référence, dates, durée, extras). Vérifiez-le et signalez tout problème."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Invités Inclus",
+      "body": [
+        "Votre réservation inclut automatiquement :",
+        "* 1 personne par lit simple\n* 2 personnes par lit double\n* Capacité annoncée d’un appartement",
+        "Au-delà, nous ne pouvons accueillir d’invités supplémentaires."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Prestations Incluses",
+      "body": [
+        "Chaque invité reçoit :",
+        "* Linge propre et carte clé\n* Douches communes\n* Eau chaude (env. 07 h–10 h 30 et 17 h–22 h 30)\n* Espaces communs",
+        "Petit-déjeuner, Wi-Fi, consigne, etc. sont gratuits selon règles simples."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Responsabilité Financière",
+      "body": [
+        "Le titulaire de la carte indiqué est responsable de tous frais : chambre, dommages, nettoyage, amendes. Les soldes impayés seront débités."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Attribution des Lits et Chambres",
+      "body": [
+        "Nous garantissons la catégorie réservée. En dortoir, vous avez un lit dans cette catégorie, sans garantie que le groupe partage la même chambre. Les lits sont attribués à l’arrivée par ordre d’enregistrement."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Surclassements",
+      "body": [
+        "Nous proposons parfois un surclassement gratuit ou payant. Si le surclassement gratuit devient impossible, nous vous remettons dans la catégorie initiale."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Paiements via Tiers",
+      "body": [
+        "Via une OTA, vous payez sur leur plateforme ; nous ne voyons pas vos données carte. Vérifiez toujours la réussite du paiement et la réception de la confirmation."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Dépôts de Réservation",
+      "body": [
+        "Certains tarifs nécessitent un dépôt. Les tarifs prépayés exigent 100 % d’avance, non remboursable. Échec du dépôt = demande annulée."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Pré-autorisations Carte",
+      "body": [
+        "Pour les tarifs flexibles, nous pouvons pré-autoriser la première nuit ou la totalité. Échec = refus de la demande."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Blocage de Sécurité",
+      "body": [
+        "Au check-in, nous pouvons bloquer l’équivalent d’une nuit par invité. Sinon, acceptez espèce ou carte d’un compagnon ; sans garantie, la réservation est annulée."
+      ]
+    }
+  ]
+}

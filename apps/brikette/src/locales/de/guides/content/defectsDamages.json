@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Leitfaden zu Mängeln und Schäden für das Hostel Brikette, Positano",
+    "description": "Erfahren Sie, wie Sie Zimmermängel melden, wie wir auf schwerwiegende Probleme reagieren, welche Kautions- und Haftungsregeln gelten und wie wir Bettwanzen im exklusiven Hostel von Positano vorbeugen."
+  },
+  "linkLabel": "Leitfaden zu Mängeln und Schäden für das Hostel Brikette, Positano",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Mängel melden",
+      "body": [
+        "Bitte informieren Sie uns umgehend, wenn Sie einen Mangel feststellen. Eine schnelle Meldung hilft uns, das Problem rasch zu beheben."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Mängel bewerten",
+      "body": [
+        "Nach Ihrer Meldung prüfen wir den Mangel sofort und priorisieren unsere Reaktion je nach Auswirkung auf Ihren Komfort und Aufenthalt."
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Reaktion auf schwerwiegende Mängel",
+      "body": [
+        "Kann ein gravierender Mangel nicht sofort behoben werden, bieten wir eine alternative Unterkunft an. Ist diese günstiger, erstatten wir die Differenz. Lehnen Sie das Angebot ab, können Sie eine anteilige Rückerstattung für verbleibende Nächte verlangen."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Nicht gemeldete Mängel",
+      "body": [
+        "Stellen wir einen nicht gemeldeten Mangel fest, prüfen wir etwaige Folgeschäden; unsere Schadensrichtlinie kann angewendet werden."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Schadensrichtlinie",
+      "body": [
+        "Zu Ihrer und unserer Sicherheit können wir bei Check-in Ihre Kreditkarte vorautorisieren oder eine Barkaution verlangen. Ohne Kaution kann die Buchung storniert werden. Die Kaution wird beim Check-out abzüglich aller Schäden, Verluste, Arbeits- oder Verwaltungskosten zurückerstattet. Übersteigt der Schaden die Kaution, tragen Sie die Differenz. Arbeitskosten pro Stunde: Direktor (50 €), Manager (35 €), Mitarbeiter (25 €)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Bettwanzen-Richtlinie",
+      "body": [
+        "Wir beugen Bettwanzen aktiv vor und handeln sofort bei Befall. Werden während Ihres Aufenthalts Bettwanzen gefunden, können Kosten für Umsatzausfall, Reinigung und Schädlingsbekämpfung berechnet werden. Melden Sie Hinweise bitte sofort dem Personal."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Bettwanzen vorbeugen",
+      "body": [
+        "So beugen Sie Bettwanzen vor:",
+        "* Teilen Sie uns beim Check-in mit, falls Sie kürzlich an einem befallenen Ort übernachtet haben.\n* Desinfizieren Sie Ihr Gepäck gründlich.\n* Kontrollieren Sie Koffer und Kleidung vor Betreten des Zimmers auf Bettwanzen."
+      ]
+    }
+  ]
+}

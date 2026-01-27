@@ -5,15 +5,15 @@
   },
   "linkLabel": "Transport przy ograniczonym budżecie",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Obniżaj koszty transportu, mieszając karnety, odjazdy poza szczytem i współdzielone transfery, gdy się opłaca."
   ],
   "sections": [
     {
       "id": "passes",
-      "title": "Tłumaczenie w przygotowaniu.",
+      "title": "Wybierz odpowiedni karnet",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Jeśli planujesz dwa lub więcej rejsów promem dziennie, porównaj bilety łączone od operatorów takich jak Travelmar; oferują chmiel Amalfi i Positano ze zniżką."
+        "Skorzystaj z jednodniowego karnetu UNICO Costiera (12,40 €) na nieograniczone autobusy SITA między Sorrento a Salerno — skasuj przy pierwszym kursie i miej bilet pod ręką dla kontrolerów.",
+        "Jeśli planujesz dwa lub więcej rejsów promem dziennie, porównaj bilety łączone od operatorów takich jak Travelmar; oferują kursy Amalfi i Positano ze zniżką."
       ]
     },
     {
@@ -36,26 +36,26 @@
       "id": "last-mile",
       "title": "Last-mile savings",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Po przyjeździe jedź autobusem SITA do Chiesa Nuova i schodź pieszo zamiast korzystać z bagażowego — przy lekkim bagażu to około 15 minut.",
+        "Skorzystaj z przechowalni przy przystani zamiast prywatnego transferu, jeśli masz późne wymeldowanie — 7–10 € to mniej niż dodatkowa taksówka."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Podróżuj przed 8:30 lub po 19:00 — autobusy są spokojniejsze i łatwiej wsiąść.",
+    "Zrób zrzut ekranu lub wydruku biletu; Wi-Fi może paść w chwili, gdy wsiadają kontrolerzy."
   ],
   "faqs": [
     {
-      "q": "Are bus passes worth it off-season?",
+      "q": "Czy karnety autobusowe opłacają się poza sezonem?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak, jeśli robisz trzy lub więcej kursów dziennie. W przeciwnym razie kup pojedyncze bilety — rozkłady są rzadsze, ale ceny ciągle niskie."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy trzeba kasować bilety promowe?",
       "a": [
-        "Większość operatorów skanuje kody QR cyfrowo, ale przechowuj wydrukowaną kopię, jeśli spodziewasz się, że mokra pogoda będzie dezorientować ekrany."
+        "Większość operatorów skanuje kody QR, ale miej wydrukowaną kopię na wypadek, gdyby mokra pogoda utrudniła odczyt."
       ]
     }
   ]

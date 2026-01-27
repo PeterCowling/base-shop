@@ -20,88 +20,169 @@
   },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Hostel duy nhất ở Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Hostel duy nhất ở Positano",
+        "description": "Giường giá phải chăng ở Positano với tầm nhìn toàn cảnh và không khí thân thiện."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Lịch trình cho người đi bụi",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Lịch trình cho người đi bụi tại Bờ biển Amalfi",
+        "description": "Các tuyến đường thực tế, ưu tiên ngân sách từ 2 đến 7 ngày không cần xe hơi."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Đến Positano với ngân sách tiết kiệm",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Đến Positano với ngân sách tiết kiệm",
+        "description": "Cách rẻ nhất để đến Positano bằng xe buýt, tàu hỏa và phà."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Lịch trình phà",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Lịch trình phà Positano",
+        "description": "Các nhà điều hành phà cập nhật và lịch trình theo mùa cho Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Con đường của các vị thần: Hướng dẫn đầy đủ từ Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Đi bộ Con đường của các vị thần",
+        "description": "Hướng dẫn chi tiết để đi bộ Sentiero degli Dei từ Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Con đường của các vị thần: Tuyến phà và đi bộ đẹp",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Con đường của các vị thần qua Amalfi (phà)",
+        "description": "Đi phà đến Amalfi, xe buýt lên Bomerano, sau đó đi bộ Con đường của các vị thần với hướng dẫn quay về."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Con đường của các vị thần: Xe buýt và đi bộ tiết kiệm",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Con đường của các vị thần qua Amalfi (xe buýt)",
+        "description": "Đi xe buýt SITA Sud đến Bomerano và theo tuyến Con đường của các vị thần quay về Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Con đường của các vị thần: Đi bộ ngắn từ Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Con đường của các vị thần qua Nocelle",
+        "description": "Đi bộ khứ hồi ngắn hơn từ Nocelle với hướng dẫn quay về Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Chuyến đi trong ngày tuyệt nhất: Capri, Amalfi, Pompeii và hơn thế",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Chuyến đi trong ngày từ Positano",
+        "description": "Ý tưởng cho Amalfi, Ravello, Capri và Pompeii với mẹo về thời gian và phương tiện."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Hướng dẫn giao thông công cộng Bờ biển Amalfi",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Hướng dẫn giao thông công cộng Bờ biển Amalfi",
+        "description": "Cách sử dụng xe buýt và phà tại Bờ biển Amalfi với vé, thời gian và tuyến đường."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Mẹo du lịch Positano cho người đến lần đầu",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Mẹo du lịch Positano cho người đến lần đầu",
+        "description": "Đến nơi, hành lý, thanh toán và kết nối — lời khuyên thực tế cho chuyến đi đầu tiên."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Cần mang gì đến Bờ biển Amalfi",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Cần mang gì đến Bờ biển Amalfi",
+        "description": "Danh sách đồ đóng gói theo mùa cho Positano và Bờ biển Amalfi."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "Bãi biển Positano: Cát, nắng và vịnh bí mật"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "Bãi biển Arienzo: Câu lạc bộ bãi biển sang trọng của Positano"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "Bãi biển Fornillo: Lựa chọn yên tĩnh hơn của Positano"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "Bãi biển Laurito: Viên ngọc ẩn dưới vách đá"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "Bãi biển Gavitella: Điểm bơi ngắm hoàng hôn Praiano"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "Marina di Praia: Vịnh ấn tượng giữa các vách đá"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "Fiordo di Furore: Bãi biển vịnh hẹp dưới cầu"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "Regina Giovanna: Di tích La Mã gặp hồ bơi tự nhiên"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "Spiaggia Grande: Bãi biển chính mang tính biểu tượng của Positano"
+    },
+    "sunriseHike": {
+      "linkLabel": "Đi bộ lúc bình minh: Ngắm nhìn rạng đông trên Positano"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "Monte Comune: Đi bộ đến điểm ngắm cảnh cao nhất Positano"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "Giữ dáng ở Positano: Cầu thang, đường mòn và tập luyện bãi biển"
+    },
+    "capriDayTrip": {
+      "linkLabel": "Chuyến đi Capri trong ngày: Thoát ra đảo từ Positano"
+    },
+    "capriOnABudget": {
+      "linkLabel": "Capri tiết kiệm"
+    },
+    "campingAmalfi": {
+      "linkLabel": "Cắm trại Bờ biển Amalfi: Lựa chọn thay thế khách sạn tiết kiệm"
+    },
+    "boatTours": {
+      "linkLabel": "Tour thuyền: Du thuyền hoàng hôn đến thuê thuyền riêng"
+    },
+    "cheapEats": {
+      "linkLabel": "Ăn như dân địa phương: Món ngon giá rẻ nhất Positano"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "Ăn ở đâu tại Positano: Từ bình dân đến sang trọng"
+    },
+    "positanoDining": {
+      "linkLabel": "Nhà hàng ngon nhất Positano gần Hostel Brikette"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "Hương vị Positano: Limoncello, chanh và ẩm thực địa phương"
+    },
+    "instagramSpots": {
+      "linkLabel": "Positano đáng chụp Instagram: Điểm và thời điểm chụp ảnh đẹp nhất"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "Hoàng hôn Positano: Điểm ngắm cảnh tốt nhất cho giờ vàng"
+    },
+    "ravelloFestival": {
+      "linkLabel": "Lễ hội Ravello: Hòa nhạc cổ điển dưới bầu trời sao"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "Ferragosto: Lễ hội 15 tháng 8 của Ý tại Positano"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "Luminaria di Praiano: Hàng nghìn ngọn nến thắp sáng đêm"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "Tour đi bộ audio miễn phí: Khám phá những câu chuyện ẩn giấu của Positano"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "Hoạt động miễn phí tại Positano: Vui chơi tiết kiệm"
     }
   },
   "dev": {

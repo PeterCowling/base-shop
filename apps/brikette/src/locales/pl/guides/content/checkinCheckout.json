@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Kompletny przewodnik po zameldowaniu i wymeldowaniu w Hostel Brikette (Positano)",
+    "description": "Instrukcje krok po kroku dotyczące godzin przyjazdu, dokumentów tożsamości, przechowywania bagażu, depozytów i wsparcia przy wymeldowaniu w Hostel Brikette w Positano."
+  },
+  "linkLabel": "Kompletny przewodnik po zameldowaniu i wymeldowaniu w Hostel Brikette (Positano)",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Prośba o zameldowanie",
+      "body": [
+        "Po przyjeździe udaj się do recepcji, aby rozpocząć procedurę zameldowania i odebrać przydział pokoju."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Wczesny przyjazd",
+      "body": [
+        "Jeśli dotrzesz przed 10:30 w dniu przyjazdu, weź pod uwagę, że wejście do hostelu będzie jeszcze niedostępne."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Przyjazd w południe",
+      "body": [
+        "Przy przyjeździe między 10:30 a 15:00 możemy – po akceptacji – wpuścić Cię jako Gościa Tymczasowego. W tym czasie możesz poprosić o przechowanie bagażu, jeśli mamy wolne miejsce. Magazyn bagażu działa na osobnych zasadach niż rezerwacja pokoju."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Godziny zameldowania",
+      "body": [
+        "Standardowe zameldowanie trwa codziennie od 15:00 do 22:30. W tym czasie obowiązuje pełna procedura recepcyjna."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Późny przyjazd",
+      "body": [
+        "Jeśli planujesz przyjazd po zamknięciu recepcji o 22:30, możemy – o ile to możliwe – przygotować zestaw do samodzielnego, późnego zameldowania. Instrukcje wyślemy na dane kontaktowe podane przy rezerwacji. Upewnij się, że urządzenie jest naładowane, a dane poprawne – nie odpowiadamy za opóźnienia spowodowane błędnymi informacjami lub problemami technicznymi."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Konieczność pełnej procedury zameldowania",
+      "body": [
+        "Pełne zameldowanie jest wymagane, aby uzyskać dostęp do hostelu. Brak ukończenia procesu oznacza anulowanie rezerwacji jako no-show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Potwierdzenie tożsamości",
+      "body": [
+        "Podczas zameldowania musisz okazać oryginalny dokument tożsamości (paszport, dowód osobisty, prawo jazdy lub legitymację wojskową). Jeśli do 22:30 nie przedstawisz ważnego dokumentu, rezerwacja zostanie anulowana jako no-show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Rozliczenie płatności",
+      "body": [
+        "Przed zakończeniem zameldowania trzeba uregulować całe saldo przy użyciu akceptowanej metody płatności. Brak pełnej płatności skutkuje anulowaniem pobytu jako no-show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Depozyt za kartę i pościel",
+      "body": [
+        "Przy zameldowaniu pobieramy 10 € kaucji gotówką za kartę-klucz i komplet pościeli. Zwrot następuje przy wymeldowaniu po oddaniu obu elementów. Kaucji nie przyjmujemy kartą."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Godziny wymeldowania",
+      "body": [
+        "Wymeldowanie trwa od 7:30 do 10:30. Po zakończeniu nie można wracać do pokoju ani zostawiać w nim rzeczy."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Wczesne wymeldowanie",
+      "body": [
+        "Jeśli musisz wyjechać przed 7:30, umów się w recepcji poprzedniego wieczoru na wczesne wymeldowanie i odbiór kaucji. Pozostawienie karty bez potwierdzenia obsługi powoduje utratę depozytu."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Późne wymeldowanie",
+      "body": [
+        "Nie oferujemy późnego wymeldowania – pokój należy opuścić do 10:30."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Brak wymeldowania",
+      "body": [
+        "Nieopuszczenie pokoju w wyznaczonym czasie może skutkować zabezpieczeniem Twoich rzeczy bez naszej odpowiedzialności. Bagaż możemy przekazać lokalnemu porterowi na Twój koszt. Każde późniejsze, nieuprawnione wejście traktujemy jako naruszenie bezpieczeństwa."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Po wymeldowaniu",
+      "body": [
+        "Po wymeldowaniu rezerwacja zostaje zakończona. Możesz pozostać na terenie hostelu jako Gość Tymczasowy do 15:30 oraz – w miarę dostępności – skorzystać z przechowania bagażu na oddzielnych zasadach."
+      ]
+    }
+  ]
+}

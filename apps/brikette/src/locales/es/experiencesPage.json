@@ -91,6 +91,16 @@
     "clearFilter": "Mostrar todas las guías de experiencias",
     "cardCta": "Explora la guía de experiencias {{guideTitle}}",
     "directionsLabel": "Indicaciones",
+    "sections": {
+      "content": {
+        "title": "Guías de experiencias",
+        "description": "Guías detalladas sobre playas, senderismo, excursiones y cosas que hacer"
+      },
+      "directions": {
+        "title": "Cómo llegar",
+        "description": "Indicaciones paso a paso hacia y desde el hostel"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Ferry Positano → Capri",

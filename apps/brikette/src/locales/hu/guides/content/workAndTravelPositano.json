@@ -1,40 +1,40 @@
 {
   "seo": {
-    "title": "A fordítás folyamatban van.",
-    "description": "Időzítés, wifi, munkafolyamatok és pihenőnapok egyensúlya."
+    "title": "Work & Travel: távmunka Positanóban",
+    "description": "Wi-Fi, kávézók, rutinok és reális napirend a produktív tengerparti napokhoz."
   },
-  "linkLabel": "Work & Travel: Balancing Remote Work",
+  "linkLabel": "Work & Travel: egyensúly Positanóban",
   "intro": [
-    "A fordítás folyamatban van."
+    "Tartsd egyensúlyban a fókuszált munkát és Positano felfedezését: reális kapcsolódási lehetőségek, hol dolgozz és milyen napirend működik a tömeg mellett."
   ],
   "sections": [
     {
       "id": "wifi",
-      "title": "Wi‑Fi & backups",
+      "title": "Wi-Fi és tartalékok",
       "body": [
-        "A fordítás folyamatban van."
+        "Használj eSIM tartalékot, teszteld a sebességet, és kerüld a kritikus hívásokat a fő sétányokon, amikor a kompok kipakolnak."
       ]
     },
     {
       "id": "cafes",
-      "title": "Work‑friendly cafés",
+      "title": "Munka-barát kávézók",
       "body": [
-        "A fordítás folyamatban van."
+        "Nézd meg Wi-Fi és munka-barát kávézó útmutatónkat; figyelj a konnektorokra és vásárolj rendszeresen."
       ]
     },
     {
       "id": "routines",
-      "title": "Routines that work",
+      "title": "Működő rutinok",
       "body": [
-        "A fordítás folyamatban van."
+        "Dolgozz korán reggel és késő estig; a déli órákban fedezd fel a várost vagy térj vissza naplemente után."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Megvalósítható a távmunka itt?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, ha tervezel – maradj a Chiesa Nuova környékén, legyen tartalékod és rugalmas órabeosztásod."
       ]
     }
   ]

@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Útmutató: kauciók és fizetések",
+    "description": "Útmutató a kauciókhoz, fizetési módokhoz, foglalási visszaigazolásokhoz, módosításokhoz, lemondásokhoz és biztosítéki zárolásokhoz."
+  },
+  "linkLabel": "Útmutató: kauciók és fizetések",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Foglalási kérelem benyújtása",
+      "body": [
+        "Küldje el foglalási kérelmét hivatalos online utazási ügynökön (OTA) vagy közvetlenül a weboldalunkon keresztül — önmagukban a chat üzenetek vagy a személyes érdeklődések nem elegendők. A \"Foglalás\" gombra kattintva megerősíti, hogy minden név, dátum és tartózkodási hossz pontos, és elfogadja az Általános Szerződési Feltételeinket."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Kérelmed feldolgozása",
+      "body": [
+        "Amint megkapjuk a szükséges kauciót, előzetes zárolást vagy fizetést valamely elfogadott fizetési módunkon keresztül, azonnal elkezdjük feldolgozni kérelmét. Ügyeljen arra, hogy a foglalásnál annak a bankkártya-tulajdonosnak a neve szerepeljen, aki fizetni fog. Ha a fizető neve eltér, a kártyabirtokostól származó rövid írásos engedélyt e-mailben küldje el, mielőtt tovább lépnénk a kérelemmel."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Mikor utasíthatjuk el",
+      "body": [
+        "Ritkán utasítunk el foglalást, de fenntartjuk a jogot, hogy saját belátásunk szerint megtegyük — például ha a fizetés sikertelen, hiányoznak a szükséges adatok, vagy a kérelem megszegi az Általános Szerződési Feltételeinket."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Egy kérelem korlátai",
+      "body": [
+        "Egy foglalási kérelem legfeljebb hét (7) egymást követő éjszakát és maximum öt (5) vendéget fed le. Hosszabb tartózkodást vagy nagyobb csoportot tervez? Ossza fel több különálló kérelemre."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Ha a kért szoba nem elérhető",
+      "body": [
+        "Ha az Ön által preferált szoba már foglalt, e-mailben ellenajánlatot küldünk a legközelebbi elérhető alternatívával. Fogadja el az ajánlatot, és fejezze be a fizetést vagy előzetes zárolást, hogy biztosítsa tartózkodását."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Előre fizetett, nem visszatéríthető foglalások",
+      "body": [
+        "Az Előrefizetett, nem visszatéríthető ár kedvezőbb, de teljes előrefizetést igényel. Kártyáját legfeljebb háromszor próbáljuk megterhelni. Ha minden próbálkozás sikertelen, töröljük a kérelmet. Ezek a foglalások nem visszatéríthetők és nem módosíthatók."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Visszaigazoló e‑mail",
+      "body": [
+        "Miután a fizetés jóváírásra kerül, visszaigazoló e-mailt küldünk a megadott címre. Tartalmazza a foglalási hivatkozást, az érkezés dátumát, a tartózkodás hosszát és az esetleges extrákat. Olvassa át alaposan, és azonnal jelezze, ha bármi hibásnak tűnik."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Kiket foglal magában a foglalás",
+      "body": [
+        "Foglalása automatikusan az alábbiakat tartalmazza:",
+        "* 1 vendég / egyszemélyes ágy\n* Legfeljebb 2 vendég / franciaágy\n* Az apartmanok meghirdetett kapacitásáig",
+        "Biztonsági és kényelmi okokból nem tudunk a szobakapacitáson felül további vendégeket elszállásolni."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Milyen szolgáltatások járnak",
+      "body": [
+        "Minden vendég megkapja:",
+        "* Friss ágyneműt és belépőkártyát\n* A közös zuhanyzók használatát\n* Meleg vizet a meghirdetett idősávokban (kb. 07:00–10:30 és 17:00–22:30)\n* Hozzáférést a közösségi tereinkhez",
+        "A további szolgáltatások (reggeli, Wi-Fi, csomagmegőrzés stb.) ingyenesek, és a saját egyszerű szabályaik szerint működnek."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Pénzügyi felelősséged",
+      "body": [
+        "A foglaláson szereplő bankkártya-tulajdonos felelős minden díjért — szobaárakért, károkért, takarítási díjakért, bírságokért vagy házirend-szegés esetén kiszabott költségekért. A rendezetlen összegeket közvetlenül a nyilvántartott kártyára terhelhetjük."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Ágyak és szobák kiosztása",
+      "body": [
+        "Garantáljuk a lefoglalt ágytípust és szobakategóriát. Közös szobák foglalása esetén az adott kategóriában biztosítunk ágyat, de nem tudjuk garantálni, hogy a csoport tagjai ugyanabban a szobában legyenek. A kollégiumi ágyakat érkezéskor, érkezési sorrendben lehet kiválasztani."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Szoba‑upgrade",
+      "body": [
+        "Időnként díjmentesen jobb szobába helyezzük át, vagy fizethet is felárért foglaláskor. Ha a díjmentes upgrade később nem megvalósítható, visszaköltöztethetjük az eredetileg kifizetett kategóriába."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Fizetés külső felületen",
+      "body": [
+        "Ha OTA-n keresztül foglal, az ő rendszerükben fizet a saját feltételeik szerint. A kártyaadatok nem jutnak el hozzánk, és nem vállalunk felelősséget az ő platformjukon felmerülő problémákért. Mindig ellenőrizze, hogy a fizetés sikeres volt-e, és megkapta-e a visszaigazolást."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Foglalási kauciók",
+      "body": [
+        "Egyes díjakhoz kaució szükséges a szoba lefoglalásához. Az előre fizetett tarifák 100%-os előrefizetést igényelnek. A kauciók nem visszatéríthetők. Ha nem tudjuk levonni a kauciót, a foglalási kérelmet automatikusan töröljük."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Kártya‑előzetes zárolás",
+      "body": [
+        "Rugalmas áraknál előfordulhat, hogy az első éjszaka vagy a teljes tartózkodás összegét előzetesen zároljuk a kártyáján, hogy garantáljuk a foglalást. Ha a zárolás sikertelen, el kell utasítanunk a kérelmet."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Biztosítéki zárolás",
+      "body": [
+        "Bejelentkezéskor biztonsági letétet zárolhatunk, éjszakánként vendégenként egy éjszaka díjának megfelelő összegben, hogy fedezze az esetleges bírságokat, díjakat, hosszabbításokat vagy károkat. Ha kártyás zárolás nem lehetséges, ugyanekkora összeget készpénzben vagy egy másik vendég kártyájával is hagyhat. Ha egyik megoldás sem működik, sajnos kénytelenek vagyunk törölni a foglalást."
+      ]
+    }
+  ]
+}

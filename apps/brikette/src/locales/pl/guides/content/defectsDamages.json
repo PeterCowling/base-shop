@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Usterki i szkody – przewodnik",
+    "description": "Jak zgłaszać usterki w pokoju, nasza reakcja na poważne problemy, polityka kaucji za szkody, odpowiedzialność gościa oraz informacje o zapobieganiu pluskwom."
+  },
+  "linkLabel": "Usterki i szkody – przewodnik",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Zgłaszanie usterek",
+      "body": [
+        "Jeśli zauważysz jakikolwiek problem lub usterkę w pokoju, zgłoś nam to natychmiast. Szybka informacja pozwala nam szybko zareagować i usunąć niedogodność."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Ocena usterek",
+      "body": [
+        "Po otrzymaniu zgłoszenia szybko ocenimy sytuację i nadamy jej priorytet w zależności od wpływu na Twój komfort i pobyt."
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Reakcja na poważne usterki",
+      "body": [
+        "Gdy naprawa poważnej usterki nie jest możliwa od razu, zapewnimy Ci alternatywne zakwaterowanie. Jeśli będzie tańsze od zarezerwowanego pokoju, zwrócimy różnicę w cenie. Jeśli nie przyjmiesz alternatywy, możesz poprosić o proporcjonalny zwrot za niewykorzystane noce."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Usterki niezgłoszone",
+      "body": [
+        "Jeśli odkryjemy problem w Twoim pokoju, którego nie zgłosiłeś/aś w rozsądnym czasie, ocenimy ewentualne szkody i możemy zastosować naszą politykę odszkodowań."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Polityka szkód",
+      "body": [
+        "Dla bezpieczeństwa Twojego i naszego możemy wstępnie autoryzować kartę płatniczą lub poprosić o depozyt gotówkowy przy zameldowaniu na pokrycie ewentualnych szkód. Brak depozytu lub autoryzacji może skutkować anulowaniem rezerwacji. Depozyt zwracamy w całości przy wymeldowaniu, pomniejszając go o koszty napraw, strat, pracy czy administracji. Jeśli koszty przekroczą wysokość depozytu, różnicę trzeba będzie dopłacić. Stawki roboczogodziny za naprawy lub sprzątanie to: Dyrektor 50 € / godz., Manager 35 € / godz., Pracownik 25 € / godz."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Polityka dot. pluskiew",
+      "body": [
+        "Regularnie monitorujemy i szybko reagujemy na zgłoszenia o pluskwach. Jeśli w trakcie Twojego pobytu zostaną wykryte w pokoju, możesz ponieść koszty związane m.in. z utratą przychodów z rezerwacji, sprzątaniem i dezynsekcją. Zgłaszaj natychmiast każdy podejrzany ślad obsłudze."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Zapobieganie pluskwom",
+      "body": [
+        "Aby zapobiegać pluskwom:",
+        "* Poinformuj nas przy zameldowaniu, jeśli ostatnio nocowałeś/aś w miejscu z potwierdzonym problemem pluskiew.\n* Dokładnie zdezynfekuj swoje rzeczy.\n* Sprawdź bagaż i odzież przed wejściem do pokoju."
+      ]
+    }
+  ]
+}

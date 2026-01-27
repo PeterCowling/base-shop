@@ -93,6 +93,16 @@
     "filterHeading": "Filtrér oplevelsesguides",
     "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
     "directionsLabel": "Vejvisning",
+    "sections": {
+      "content": {
+        "title": "Oplevelsesguider",
+        "description": "Fordybende guider om strande, vandreture, dagsture og ting at lave"
+      },
+      "directions": {
+        "title": "Sådan kommer du derhen",
+        "description": "Trin-for-trin-vejvisning til og fra vandrerhjemmet"
+      }
+    },
     "directionLinks": {
       "walking": "Til fods",
       "bus": "Med bus",

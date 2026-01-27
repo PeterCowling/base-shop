@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { TFunction } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
-import { articleSlug } from "@/routes.assistance-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import { FALLBACK_EN_QUICK_LINKS } from "./fallbacks";
@@ -50,7 +50,7 @@ export function useQuickLinksWithHref(
     const basePath = `/${resolvedLang}/${assistanceSlug}`;
 
     return items.map((item) => {
-      const articlePath = `${basePath}/${articleSlug(sourceLang, item.slug)}`;
+      const articlePath = `${basePath}/${guideSlug(sourceLang, item.slug)}`;
       return {
         ...item,
         href: articlePath,

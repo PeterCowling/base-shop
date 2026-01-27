@@ -1,10 +1,10 @@
 import type { AppLanguage } from "@/i18n.config";
-import type { HelpArticleKey } from "@/routes.assistance-helpers";
+import type { GuideKey } from "@/routes.guides-helpers";
 
 export interface QuickLinkItem {
   label: string;
   description: string;
-  slug: HelpArticleKey;
+  slug: GuideKey;
 }
 
 export interface QuickLinkWithHref extends QuickLinkItem {

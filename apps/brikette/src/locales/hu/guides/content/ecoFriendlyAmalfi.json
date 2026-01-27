@@ -1,48 +1,48 @@
 {
   "seo": {
-    "title": "Környezettudatos utazás az Amalfi-parton",
-    "description": "Csökkentsd az ökolábnyomot: utántöltők, gyalogos útvonalak, komp az autó helyett és tudatos strandnapok."
+    "title": "Környezetbarát utazás az Amalfi-parton",
+    "description": "Hogyan csökkentsd a lábnyomod: utántöltések, séta, komp a taxi helyett és tudatos strandnapok."
   },
-  "linkLabel": "Környezettudatos utazás az Amalfi-parton",
+  "linkLabel": "Környezetbarát utazás az Amalfi-parton",
   "intro": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "A környezetbarát utazás az Amalfi-parton a közlekedés, a hulladékkezelés és a mindennapi energiahasználat köré épül.",
+    "Tartsd könnyű lábnyomodat anélkül, hogy lemondanál a tengerparti kilátásokról."
   ],
   "sections": [
     {
       "id": "transport",
-      "title": "Greener transport",
+      "title": "Fenntartható közlekedés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Ha lehetséges, válaszd a buszt vagy a kompot a privát taxik helyett.",
+        "Sétálj a rövidebb távolságokat a városban autóhívás helyett."
       ]
     },
     {
       "id": "waste",
-      "title": "Waste & plastic",
+      "title": "Hulladék és műanyag",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Vigyél újratölthető palackot és szatyrot, töltsd fel a kutaknál vagy kávézóknál.",
+        "Szelektáld ott a szemetet, ahol van kuka, és vidd magaddal a túrákra hozott csomagokat."
       ]
     },
     {
       "id": "energy",
-      "title": "Energy & water",
+      "title": "Energia és víz",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Kapcsold le a légkondit és a lámpákat, amikor elhagyod a szobát; zárd be a zsalukat, hogy hűvös maradjon a belső tér.",
+        "Tartsd röviden a zuhanyt és használd többször a törölközőt a vízspórolásért."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Támogasd a kis helyi üzleteket, amelyek regionális alapanyagokat és alacsony hulladékkal dolgoznak.",
+    "Rendelj szezonális fogásokat – a citrom, szardínia és a zöldségek a csúcsszezonban a legjobbak."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Bérelhetek elektromos biciklit?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, Amalfi, Sorrento és néhány kis település kínál elektromos kerékpárt – foglalj előre, mert a flották kicsik."
       ]
     }
   ]

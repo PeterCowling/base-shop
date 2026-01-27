@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Utazás háziállattal az Amalfi-parton",
-    "description": "Kisállat-barát közlekedés, szállás és mire figyelj melegben."
+    "title": "Állatbarát Amalfi",
+    "description": "Hol fogadják a kutyákat és macskákat, milyen szabályok vannak, és hogyan kövesd a strandok házirendjét."
   },
-  "linkLabel": "Utazás háziállattal az Amalfi-parton",
+  "linkLabel": "Állatbarát Amalfi",
   "intro": [
-    "A fordítás folyamatban van."
+    "Ha négylábú társaddal utazol, tudj meg mindent az Amalfi-parti szállásokról, közlekedésről és strandokról."
   ],
   "sections": [
     {
-      "id": "prep",
-      "title": "Before you arrive",
+      "id": "checkin",
+      "title": "Bejelentkezés",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Mindig jelezd előre a szállásnak, hogy állattal érkezel, és tudd meg a méret- vagy számbeli korlátozásokat.",
+        "Sok hostel és apartman külön csomagot kínál takarítással és etetőhelyekkel."
       ]
     },
     {
-      "id": "getting",
-      "title": "Getting around",
+      "id": "onTheGo",
+      "title": "Út közbeni tippek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Tarts magadnál itatótálat és kutyaszalvétát — a partok többségén kérik, hogy tartsd tisztán a környezetet.",
+        "A buszokon pórázzal és szájkosárral utazhatsz, de mindig kérdezz rá a sofőrnél, mert néhány járat szigorúbb."
       ]
     },
     {
-      "id": "where",
-      "title": "Where pets are welcome",
+      "id": "beaches",
+      "title": "Strandok és zöld területek",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Néhány strand (például Marina di Praia) engedélyezi a kutyákat, de nézd meg a szezonális szabályokat.",
+        "A közelben lévő parkok és pázsitok ideálisak rövid sétákhoz, ha a tengerpart túl zsúfoltnak tűnik."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Mindig legyen nálad közösségi értesítési címke vagy mikrochip adat, ha a kutya elszökne.",
+    "Keress helyi állatorvost a napirend megtervezésekor, hátha hirtelen szükség lesz rá."
   ],
   "faqs": [
     {
-      "q": "Do vets speak English?",
+      "q": "Milyen doksikat kérnek a szállások?",
       "a": [
-        "A fordítás folyamatban van."
+        "Szükség lehet oltási könyvre és kis állatútlevélre, ha külföldről érkezel."
       ]
     },
     {
-      "q": "Are taxis pet-friendly?",
+      "q": "Le lehet sétáltatni a kutyát a parton?",
       "a": [
-        "A fordítás folyamatban van."
+        "Néhány helyen reggel vagy délután engedélyezett; tartsd be a helyi táblákat és a szagra érzékeny helyiek nyugalmát."
       ]
     }
   ]

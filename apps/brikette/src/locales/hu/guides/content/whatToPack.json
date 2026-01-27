@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Mit pakolj az Amalfi-partra",
-    "description": "Kulcsdarabok egész napos lépcsőzéshez, strandoláshoz, esti programokhoz és változó időhöz."
+    "title": "Mit csomagolj az Amalfi-parton",
+    "description": "Évszakhoz igazított csomagolási lista Positanóba: lábbeli, rétegek, napvédelem és egyéb kiegészítők."
   },
-  "linkLabel": "Mit pakolj az Amalfi-partra",
+  "linkLabel": "Mit vigyél az Amalfi-parton?",
   "intro": [
-    "A fordítás folyamatban van."
+    "Csomagolási lista Positanóba: a lépcsők és a nap diktálják a jó döntéseket."
   ],
   "sections": [
     {
       "id": "footwear",
-      "title": "Footwear",
+      "title": "Lábbeli",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Tapadó tapú cipők a lépcsőkhez és túrákhoz; a strandokhoz bordás talppal rendelkező szandálok.",
+        "Kerüld a csúszós talpú cipőket – az utcák meredekek és kifényesedhetnek."
       ]
     },
     {
       "id": "layers",
-      "title": "Layers & sun",
+      "title": "Rétegek és nap",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Könnyű rétegek az estékhez; sapka és SPF a délutáni sétákhoz.",
+        "Vállszezonban legyen nálad egy könnyű vízálló kabát."
       ]
     },
     {
       "id": "bags",
-      "title": "Bags & luggage",
+      "title": "Táskák és poggyász",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A hátizsákok jobbak a nagy bőröndöknél a lépcsők miatt; az értékeket tartsd kézközelben.",
+        "Hozz újratölthető palackot; a boltok nagy palackokat kínálnak utántöltéshez."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Kerüld a nehéz keménytokos bőröndöket, ha lépcsős mászás vár.",
+    "Tarts magadnál kis címletű eurókat napernyőhöz, buszhoz és gyors harapnivalókhoz."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Mindent meg tudok venni helyben?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen, de a csúcsszezonban az árak magasabbak – csomagold be az alapvető holmikat, hogy elkerüld a többletköltséget."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Kell köntöst hoznom?",
       "a": [
-        "A fordítás folyamatban van."
+        "A legtöbb szállás ad törülközőt; ha különösen kedvelsz egy könnyű strandköntöst, vidd magaddal."
       ]
     }
   ]

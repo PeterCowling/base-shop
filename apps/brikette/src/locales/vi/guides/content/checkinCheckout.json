@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Hướng dẫn đầy đủ nhận và trả phòng tại Hostel Brikette Positano",
+    "description": "Hướng dẫn từng bước về thời gian đến, yêu cầu giấy tờ, gửi hành lý, tiền đặt cọc và hỗ trợ trả phòng tại Hostel Brikette ở Positano."
+  },
+  "linkLabel": "Hướng dẫn đầy đủ nhận và trả phòng tại Hostel Brikette Positano",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Yêu cầu nhận phòng",
+      "body": [
+        "Khi đến nơi, hãy ghé quầy lễ tân để bắt đầu thủ tục nhận phòng và nhận giường/phòng đã đặt."
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Đến sớm",
+      "body": [
+        "Nếu bạn tới trước 10:30 sáng ngày nhận phòng, xin lưu ý khi đó hostel chưa thể cho vào bên trong."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Đến buổi trưa",
+      "body": [
+        "Nếu bạn đến trong khoảng 10:30–15:00, bạn có thể được vào như Khách thăm tạm thời khi được chấp thuận. Khi đó bạn có thể yêu cầu gửi hành lý nếu còn chỗ. Lưu ý dịch vụ giữ hành lý tách biệt với đặt phòng và có điều khoản riêng."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Khung giờ nhận phòng",
+      "body": [
+        "Bạn có thể nhận phòng từ 15:00 đến 22:30 hằng ngày theo quy trình chuẩn."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Đến muộn",
+      "body": [
+        "Nếu dự định đến sau khi lễ tân đóng cửa lúc 22:30, chúng tôi có thể cung cấp hướng dẫn tự nhận phòng, tùy tình trạng. Hướng dẫn sẽ được gửi tới thông tin liên lạc bạn đã cung cấp; hãy đảm bảo thiết bị sạc đầy và thông tin chính xác vì chúng tôi không chịu trách nhiệm cho sự cố do dữ liệu sai hoặc lỗi kỹ thuật."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Yêu cầu hoàn tất thủ tục nhận phòng",
+      "body": [
+        "Bạn phải hoàn tất toàn bộ quy trình nhận phòng mới được vào hostel. Nếu không thể hoàn tất, đặt phòng sẽ bị hủy và xem như Vắng mặt."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Giấy tờ tùy thân",
+      "body": [
+        "Bạn phải xuất trình giấy tờ gốc hợp lệ (hộ chiếu, căn cước, bằng lái hoặc thẻ quân nhân) khi đến. Nếu tới 22:30 mà chưa cung cấp giấy tờ, đặt phòng sẽ bị hủy và tính là Vắng mặt."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Thanh toán số dư",
+      "body": [
+        "Bạn cần thanh toán toàn bộ số dư bằng một Phương thức thanh toán chấp nhận trước khi hoàn tất nhận phòng. Nếu không thanh toán được, đặt phòng sẽ bị hủy và ghi nhận là Vắng mặt."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Đặt cọc thẻ & bộ khăn ga",
+      "body": [
+        "Khi nhận phòng bạn đặt cọc 10 € tiền mặt cho thẻ từ và bộ đồ vải. Khoản này được hoàn lại khi trả phòng và trả đủ cả hai vật dụng. Chúng tôi không thể nhận thẻ cho khoản cọc này."
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Khung giờ trả phòng",
+      "body": [
+        "Trả phòng từ 7:30 đến 10:30. Sau khi trả phòng bạn không được quay lại phòng hay để đồ bên trong."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Trả phòng sớm",
+      "body": [
+        "Nếu cần rời đi trước 7:30, hãy sắp xếp với lễ tân vào tối hôm trước để nhận lại tiền cọc bằng tiền mặt. Để lại thẻ mà không có xác nhận của nhân viên đồng nghĩa mất tiền cọc."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Trả phòng muộn",
+      "body": [
+        "Chúng tôi không cung cấp dịch vụ trả phòng trễ. Vui lòng hoàn tất trước 10:30."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Không trả phòng",
+      "body": [
+        "Nếu bạn không rời phòng đúng giờ, chúng tôi có thể di chuyển đồ đạc mà không chịu trách nhiệm. Đồ có thể được gửi cho dịch vụ khuân vác địa phương và bạn phải tự chi trả. Mọi lần quay lại phòng sau đó sẽ được xem là vi phạm an ninh."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Sau khi trả phòng",
+      "body": [
+        "Sau khi trả phòng, đặt chỗ của bạn kết thúc. Bạn có thể ở lại khuôn viên như Khách thăm tạm thời tới 15:30 và yêu cầu giữ hành lý nếu còn chỗ, tuân theo điều kiện riêng."
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { articleSlug } from "@/routes.assistance-helpers";
+import { guideSlug } from "@/routes.guides-helpers";
 import NEARBY from "@/schema/travel-help/en-nearby.jsonld?raw";
 import { HOTEL_ID } from "@/utils/schema";
 import { getSlug } from "@/utils/slug";
@@ -19,7 +19,7 @@ import { parseTravelHelpResource, type TravelHelpResource } from "@/utils/travel
 export default function TravelHelpStructuredData() {
   const lang = useCurrentLanguage();
   const assistanceSlug = getSlug("assistance", lang);
-  const slug = articleSlug(lang, "travelHelp");
+  const slug = guideSlug(lang, "travelHelp");
   const pagePath = `/${lang}/${assistanceSlug}/${slug}`;
   const pageUrl = buildCanonicalUrl(BASE_URL, pagePath);
 

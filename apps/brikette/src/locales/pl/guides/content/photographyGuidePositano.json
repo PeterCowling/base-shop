@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Przewodnik fotograficzny po Positano: najlepsze ujęcia",
-    "description": "Najpiękniejsze kadry: gdzie stanąć, o której godzinie i jak uniknąć tłumów."
+    "title": "Przewodnik fotograficzny po Positano: najlepsze punkty",
+    "description": "Wybierz kadry, planuj światło i zachowaj etykietę, by zrobić świetne zdjęcia."
   },
-  "linkLabel": "Przewodnik fotograficzny po Positano: najlepsze ujęcia",
+  "linkLabel": "Przewodnik fotograficzny po Positano: najlepsze punkty",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Uchwyć Positano jak profesjonalista: kultowe kąty, planowanie światła i etykieta fotografowania."
   ],
   "sections": [
     {
       "id": "classic",
-      "title": "Classic angles",
+      "title": "Klasyczne ujęcia",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Przejdź się Via Cristoforo Colombo, aby zobaczyć warstwowe balkony i bugenwille otaczające morze."
+        "Z przystani promowej uchwycisz wodospad budynków na klifie; szerokokątny obiektyw pozwoli wkomponować kopułę Santa Maria Assunta.",
+        "Przejdź Via Cristoforo Colombo, by złapać warstwowe balkony i bugenwille oprawiające morze."
       ]
     },
     {
       "id": "light",
-      "title": "Light & timing",
+      "title": "Światło i czas",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Wschód słońca (około 06:00 latem) daje ciepłe światło na klify — przyjedź wcześniej, by nie mieć w kadrze łodzi.",
+        "Niebieska godzina po zachodzie dodaje blasku światłom wsi; weź ze sobą mini statyw lub uchwyt na długie ekspozycje."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette & backups",
+      "title": "Etykieta i backupy",
       "body": [
-        "Szanuj prywatne tarasy i unikaj blokowania schodów – po oddaniu strzału szybko się odsuń.",
-        "Co noc przechowuj kopie zapasowe w chmurze lub na dyskach przenośnych; wilgotne powietrze może zaparować soczewki, dlatego spakuj pakiety żelu krzemionkowego."
+        "Szanuj prywatne tarasy i nie blokuj schodów — szybko odsuń się po zrobieniu zdjęcia.",
+        "Kopiuj zdjęcia do chmury lub na zewnętrzny dysk codziennie; wilgotne powietrze może parować obiektyw, więc zabierz saszetki z żelem krzemionkowym."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Miej pod ręką ściereczkę z mikrofibry – na soczewkach szybko gromadzi się morska woda i wilgoć."
+    "Weź filtr polaryzacyjny, by opanować odbicia słońca na wodzie w południe.",
+    "Miej pod ręką mikrofibrową ściereczkę — bryza morska i wilgoć szybko zatykają obiektywy."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy mogę używać drona?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Używanie dronów jest ograniczone; załatw pozwolenia z wyprzedzeniem i szanuj strefy zakazu lotów w okolicy miasta i wysp Li Galli."
       ]
     },
     {
-      "q": "Where can I print photos locally?",
+      "q": "Gdzie mogę wydrukować zdjęcia lokalnie?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "W laboratoriach w Sorrento i Amalfi można szybko wydrukować fotografie; zabierz pliki na pendrivie lub karcie SD."
       ]
     }
   ]

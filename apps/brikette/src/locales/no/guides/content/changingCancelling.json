@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Endre og avbestille din reservasjon i Positano",
+    "description": "Detaljert veiledning om avbestillingsvalg, no‑show‑regler, hvordan endre reservasjonen, overføring av booking og forhåndsbetalte ikke‑refunderbare bestillinger i Positanos eneste hostel."
+  },
+  "linkLabel": "Endre og avbestille din reservasjon i Positano",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "Gebyrer ved no‑show",
+      "body": [
+        "Hvis du ikke har sjekket inn innen kl. 22.30 på ankomstdagen, markeres reservasjonen som «uteblivelse». Du belastes da det høyeste av første natts opphold eller et eventuelt ikke-refunderbart depositum. Har du flere reservasjoner, kan hver av dem ha egne varslingsfrister og gebyrer."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Avbestillingsregler",
+      "body": [
+        "Send alle avbestillingsforespørsler skriftlig til vår offisielle e-postadresse (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Avbestillingsfristen starter når vi mottar e-posten og løper til kl. 00.01 på planlagt innsjekksdato. Bestillingen din er aktiv helt til du får skriftlig bekreftelse på at avbestillingen er behandlet. Et eget administrasjonsgebyr for avbestilling—vanligvis 15 % av bookingprisen eksklusive eventuelle tredjepartsprovisjoner—vil tilkomme. Hostellet kan kansellere uten skriftlig forespørsel dersom du ikke møter før resepsjonen stenger på ankomstdagen, reiser før tiden uten å melde fra, eller bryter husreglene. Manglende eller sen beskjed behandles som uteblivelse og medfører tilsvarende kostnader."
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Endring av bekreftede bestillinger",
+      "body": [
+        "Eksisterende reservasjoner kan ikke endres direkte; de må erstattes med en ny booking. Send endringsforespørselen til vår offisielle e-post innen nødvendig varslingsfrist. Du mottar e-post når endringen er godkjent. Alle endringer forutsetter ledig kapasitet og at øvrige vilkår er oppfylt. Kortere eller lengre opphold behandles som henholdsvis avbestilling eller forlengelse, og enhver forlengelse registreres som en ny reservasjon. Drar du før den bekreftede avreisedatoen uten skriftlig avbestillingsbekreftelse, gjelder de opprinnelige vilkårene fortsatt."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Overføring av booking",
+      "body": [
+        "Reservasjonen må stå i ditt navn gjennom hele oppholdet. Den kan ikke overdras eller omregistreres til en annen gjest. Forsøk på å sjekke inn på en overført booking fører til umiddelbar kansellering, og du er fortsatt økonomisk ansvarlig for hele beløpet."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Forhåndsbetalt, ikke‑refunderbar booking",
+      "body": [
+        "Forhåndsbetalte, ikke-refunderbare bestillinger krever full betaling ved bestilling. Hvis betalingen ikke går gjennom, blir reservasjonen automatisk annullert. Disse reservasjonene refunderes ikke, selv om du avbestiller eller ikke møter opp. Eventuelle forlengelser behandles som separate, nye ikke-refunderbare bookinger."
+      ]
+    }
+  ]
+}

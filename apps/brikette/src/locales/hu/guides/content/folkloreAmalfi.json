@@ -1,53 +1,53 @@
 {
   "seo": {
-    "title": "Helyi legendák és folklór az Amalfi-parton",
-    "description": "Népszerű történetek a part mente mentén, és hol láthatod nyomukat ma."
+    "title": "Amalfi-parti legendák és folklór",
+    "description": "Népszerű történetek a part mentén és hol találhatod meg a nyomukat."
   },
-  "linkLabel": "Helyi legendák és folklór az Amalfi-parton",
+  "linkLabel": "Amalfi-part legendái és folklórja",
   "intro": [
-    "A fordítás folyamatban van."
+    "Merülj el az Amalfi-part legendáiban és népi hagyományaiban, amelyek fesztiválokat, szobrokat és helyi mondásokat formálnak."
   ],
   "sections": [
     {
       "id": "saint",
-      "title": "Saint Andrew",
+      "title": "Szent András",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Az amalfi dóm őrzi Szent András ereklyéit; a helyiek neki tulajdonítják a viharok lecsillapítását és a halászok védelmét.",
+        "Június 27-én és november 30-án körmenetek viszik a szobrot, tűzijátékokkal és fúvós zenekarokkal."
       ]
     },
     {
       "id": "sirens",
-      "title": "Sirens of Li Galli",
+      "title": "A Li Galli szirénjei",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "A monda szerint a Li Galli-szigetek énekkel csábítják a tengerészeket; ma hajótúrák mesélik el a legendát, miközben elhaladsz a magánszigetek mellett.",
+        "Hallgasd meg Parthenopéra utaló történeteket Nápolyban is – a régiók mítoszai összekapcsolódnak."
       ]
     },
     {
       "id": "traditions",
-      "title": "Living traditions",
+      "title": "Élő hagyományok",
       "body": [
-        "A fordítás folyamatban van.",
-        "A fordítás folyamatban van."
+        "Praiano Luminariája és Positano halászbájos megáldása a hitet és a folklórt gyertyafényes rituálékkal fűzi össze.",
+        "A kézzel készített csempék gyakran ábrázolják a szenteket, citromokat vagy part menti legendákat – keresd őket ajtókon és templomlépcsőkön."
       ]
     }
   ],
   "tips": [
-    "A fordítás folyamatban van.",
-    "A fordítás folyamatban van."
+    "Nézd meg a helyi eseménynaptárt a búcsúnapokra, és csatlakozz a tiszteletteljes ünnepléshez.",
+    "Vigyél könnyű sálat, mert sok esemény templomi szertartással folytatódik, ahol az előírt öltözék fontos."
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Csatlakozhatok a körmenetekhez?",
       "a": [
-        "A fordítás folyamatban van."
+        "Igen – állj a út mellett, tapsolj tisztelettel, és engedd előre haladni a szobrot vivő helyieket."
       ]
     },
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Hol hallhatok népzenét?",
       "a": [
-        "A fordítás folyamatban van."
+        "Keress folk-koncerteket Atrani és Ravello városában a nyári fesztiválok alatt; a turistainformációk heti programot is közzétesznek."
       ]
     }
   ]

@@ -1,83 +1,104 @@
 {
   "seo": {
-    "title": "Z Neapolu do Positano: jak dojechać",
-    "description": "Porównanie promu, autobusu, samochodu i transferu prywatnego z Neapolu do Positano."
+    "title": "Neapol → Positano krok po kroku",
+    "description": "Trasa dostępna przez cały rok przez Sorrento i SITA, miejsce wysiadki i spacer do Hostelu Brikette oraz opcje promowe i transfery dla późnych przyjazdów."
   },
-  "linkLabel": "Z Neapolu do Positano: jak dojechać",
+  "linkLabel": "Neapol → Positano krok po kroku",
   "intro": [
-    "Tłumaczenie w przygotowaniu."
+    "Z lotniska w Neapolu lub miasta dotrzesz do Positano przez shuttle lub Alibus + pociąg do Sorrento, a potem autobus SITA w stronę Amalfi. Latem promy kursują przy spokojnym morzu. Ten przewodnik pokazuje, gdzie wysiąść (Chiesa Nuova/Bar Internazionale) i jak przejść ostatnie 2–5 minut do Hostelu Brikette."
   ],
   "toc": [
-    {
-      "href": "#train-bus",
-      "label": "Train + bus (year-round)"
-    },
-    {
-      "href": "#ferry",
-      "label": "Ferry (summer)"
-    },
-    {
-      "href": "#transfer",
-      "label": "Late arrivals & transfers"
-    },
-    {
-      "href": "#faqs",
-      "label": "FAQs"
-    }
+    { "href": "#train-bus", "label": "Pociąg + autobus (cały rok)" },
+    { "href": "#sorrento-bus", "label": "Sorrento → Positano SITA" },
+    { "href": "#get-off", "label": "Wysiądź na Chiesa Nuova" },
+    { "href": "#walk", "label": "Spacer do Hostelu Brikette" },
+    { "href": "#ferry", "label": "Prom (latem)" },
+    { "href": "#transfer", "label": "Późne przyjazdy i transfery" },
+    { "href": "#faqs", "label": "FAQ" }
   ],
   "sections": [
     {
       "id": "train-bus",
-      "title": "Train + bus (year-round)",
+      "title": "Pociąg + autobus (cały rok)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Lotnisko → Sorrento: z lotniska NAP weź shuttle Curreri do Sorrento (płatny w autobusie lub online) albo złap Alibus do Napoli Centrale/Garibaldi i przesiądź się na Circumvesuviana do Sorrento.",
+        "W Sorrento: wyjdź ze stacji i podążaj znakami do stanowisk autobusowych. Kup bilety SITA w tabacchi/na stoisku z prasą — musisz mieć skasowany bilet przed wejściem."
+      ]
+    },
+    {
+      "id": "sorrento-bus",
+      "title": "Sorrento → Positano autobusem SITA",
+      "body": [
+        "Wsiądź do autobusu SITA w kierunku Amalfi/Positano. Bagaż wkładasz pod autobus, cenne rzeczy miej przy sobie. Latem kursy częstsze, ale zatłoczone — pojaw się wcześniej i ustaw w kolejce.",
+        "Droga prowadzi wzdłuż klifu mijając Priora i Piano; po zjeździe z Montepertuso zjeżdżasz w kierunku górnych przystanków Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Wysiądź na ‚Chiesa Nuova’ (Bar Internazionale)",
+      "body": [
+        "Dla Hostelu Brikette wysiądź na ‚Chiesa Nuova’ przy kawiarni Bar Internazionale — to najbliższy przystanek.",
+        "Czas jazdy i liczba przystanków zależą od ruchu. Od przystanku to około 140 m (450 stóp) z minimalną liczbą schodów."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spacer do Hostelu Brikette",
+      "body": [
+        "Z przystanku Bar Internazionale kontynuuj w kierunku, w którym jechał autobus, przez nieco ponad 100 m (330 stóp) wzdłuż Viale Pasitea.",
+        "Szukaj szyldu Hostel Brikette na poziomie tarasowym, odbij za zakrętem i wejdź po schodach po prawej stronie do wejścia głównego."
       ]
     },
     {
       "id": "ferry",
-      "title": "Ferry (summer)",
+      "title": "Prom (latem)",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Z miasta Neapol złap Alibus do Molo Beverello, a stamtąd prom do Positano (sezonowo, zależnie od pogody). Potwierdź godziny i ceny w dniu podróży i unikaj ostatniego kursu, jeśli masz dalsze plany.",
+        "Z przystani w Positano dołącz autobus Interno Positano i ewentualnych tragarzy z poradnika o trasie przystań → hostel i usługach porterów."
       ]
     },
     {
       "id": "transfer",
-      "title": "Late arrivals & transfers",
+      "title": "Późne przyjazdy i transfery",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Tłumaczenie w przygotowaniu."
+        "Jeśli dotrzesz po ostatnim busie/promie, zamów transfer prywatny lub zaplanuj nocleg w pobliżu dworca w Neapolu albo w Sorrento.",
+        "Potwierdź miejsce wysiadki blisko noclegu i dopytaj o pomoc przy bagażu, jeśli będzie potrzebna."
       ]
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "Where to buy SITA tickets?",
+      "q": "Gdzie kupić bilety SITA?",
       "a": [
-        "Tobacconists/kiosks near stations. Buy before boarding and validate on the bus."
+        "W tabacchi/na stoiskach niedaleko stanowisk w Sorrento i w Bar Internazionale w Positano. Kup przed wejściem i ewentualnie skasuj w autobusie."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Który przystanek jest najlepszy dla hostelu?",
       "a": [
-        "From ‘Chiesa Nuova’ stop, it’s ~80 m with no staircases."
+        "‚Chiesa Nuova’ przy Bar Internazionale. To najbliżej Hostelu Brikette i omija długie schody."
+      ]
+    },
+    {
+      "q": "Ile trwa ostatni spacer?",
+      "a": [
+        "Około 2–5 minut i około 140 m (450 stóp) z krótkimi schodami przy wejściu."
       ]
     }
   ],
   "gallery": {
-    "title": "Zdjęcia poglądowe",
+    "title": "Zdjęcia referencyjne",
     "items": [
       {
         "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "Przystanek SITA Chiesa Nuova / Bar Internazionale w Positano",
+        "alt": "Przystanek Chiesa Nuova / Bar Internazionale w Positano",
         "caption": "Przystanek Bar Internazionale / Chiesa Nuova"
       },
       {
         "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Schody do głównego wejścia Hostel Brikette",
-        "caption": "Schody wejściowe Hostel Brikette"
+        "alt": "Schody do głównego wejścia do Hostelu Brikette",
+        "caption": "Schody wejściowe Hostelu Brikette"
       }
     ]
   }

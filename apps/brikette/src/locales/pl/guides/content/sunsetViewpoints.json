@@ -5,72 +5,72 @@
   },
   "linkLabel": "Najlepsze punkty zachodu słońca w Positano",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Zachody słońca w Positano są dramatyczne — odpowiedni punkt i timing robią różnicę.",
+    "Skorzystaj z tych sprawdzonych kadrów i godzin przyjazdu, aby ominąć największe tłumy."
   ],
   "itemList": [
     {
-      "name": "Chiesa Nuova terrace",
-      "note": "Tłumaczenie w przygotowaniu."
+      "name": "Taras Chiesa Nuova",
+      "note": "Łatwy dostęp przy przystanku SITA i szeroka panorama zatoki."
     },
     {
-      "name": "Via Positanesi d’America overlook",
-      "note": "Tłumaczenie w przygotowaniu."
+      "name": "Punkt widokowy Via Positanesi d’America",
+      "note": "Balkon nad Fornillo — przyjdź 30 minut przed zachodem, by złapać ciepłe światło."
     },
     {
-      "name": "Tłumaczenie w przygotowaniu.",
-      "note": "Z widokiem na wysepki Li Galli – spakuj warstwę na podróż powrotną."
+      "name": "Nocelle (początek Drogi Bogów)",
+      "note": "Z widokiem na wysepki Li Galli — spakuj warstwę na drogę powrotną."
     }
   ],
   "sections": [
     {
       "id": "classics",
-      "title": "Classic overlooks",
+      "title": "Klasyczne punkty",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Via Positanesi d’America to balkon nad Fornillo – przyjdź 30 minut przed zachodem słońca, aby uzyskać ciepłe światło."
+        "Taras Chiesa Nuova daje szeroką panoramę zatoki zaledwie kilka kroków od przystanku SITA.",
+        "Via Positanesi d’America to balkon nad Fornillo — przyjdź 30 minut wcześniej, by złapać ciepłe światło."
       ]
     },
     {
       "id": "alternatives",
-      "title": "Quieter alternatives",
+      "title": "Cichsze alternatywy",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Plaża Fornillo poza tygodniami szczytu pozostaje spokojniejsza; słońce chowa się za urwiskiem, więc przygotuj się wcześnie."
+        "Nocelle przy Drozdze Bogów patrzy na Li Galli; weź dodatkową warstwę na powrót.",
+        "Fornillo poza szczytem zostaje spokojniejsze; słońce chowa się za klifem, więc ustaw się wcześniej."
       ]
     },
     {
       "id": "sunset",
-      "title": "Timing your setup",
+      "title": "Kiedy ustawić sprzęt",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Zachody słońca w lecie są około 20:30 — sprawdź rozkłady jazdy autobusów, aby nie utknąć po zmroku."
+        "Bądź na miejscu 20 minut wcześniej, by zająć przestrzeń i ustawić aparat.",
+        "Letnie zachody przypadają ok. 20:30 — sprawdź rozkłady autobusów, by nie utknąć po zmroku."
       ]
     },
     {
       "id": "etiquette",
-      "title": "Etiquette",
+      "title": "Etykieta",
       "body": [
-        "Podczas fotografowania dbaj o to, aby schody i prywatne wejścia były czyste — odsuń się, gdy będziesz mieć kadr.",
-        "Tłumaczenie w przygotowaniu."
+        "Podczas fotografowania dbaj o to, by nie blokować schodów i prywatnych wejść — odsuń się, gdy masz kadr.",
+        "Zabierz ze sobą wszystko, co przyniesiesz, i włącz tryb cichy podczas koncertów lub wydarzeń wieczornych."
       ]
     }
   ],
   "tips": [
-    "Tłumaczenie w przygotowaniu.",
-    "Tłumaczenie w przygotowaniu."
+    "Przyjdź 20–30 minut wcześniej, by spokojnie ustawić statyw i sprzęt.",
+    "Lekki statyw podróżny lub klamra przydają się, gdy światło słabnie."
   ],
   "faqs": [
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy trzeba rezerwować miejsce?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Bary i tarasy mogą wymagać rezerwacji w sezonie; publiczne punkty widokowe działają według zasady kto pierwszeństwo."
       ]
     },
     {
-      "q": "Tłumaczenie w przygotowaniu.",
+      "q": "Czy trasa powrotna jest dobrze oświetlona?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Oświetlenie bywa różne — weź latarkę w telefonie lub małą lampkę przy schodach o późniejszej porze."
       ]
     }
   ],

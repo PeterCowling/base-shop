@@ -91,6 +91,16 @@
     "clearFilter": "Afficher tous les guides d'expériences",
     "cardCta": "Explorez le guide d'expériences « {{guideTitle}} »",
     "directionsLabel": "Itinéraires",
+    "sections": {
+      "content": {
+        "title": "Guides d’expériences",
+        "description": "Guides détaillés sur les plages, randonnées, excursions d’une journée et activités"
+      },
+      "directions": {
+        "title": "S’y rendre",
+        "description": "Itinéraires pas à pas vers et depuis l’auberge"
+      }
+    },
     "directionLinks": {
       "capriDayTrip": {
         "positanoCapriFerry": "Positano → Capri en ferry",

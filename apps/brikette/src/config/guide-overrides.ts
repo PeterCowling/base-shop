@@ -109,7 +109,7 @@ export const GUIDE_OVERRIDES: Partial<Record<GuideKey, GuideOverrideConfig>> = {
   transportMoneySaving: { hideToc: true },
   safetyAmalfi: { hideToc: true },
   cheapEats: { hideToc: true },
-  positanoBeaches: { hideToc: true, suppressGenericForRequestedLocale: true },
+  positanoBeaches: { hideToc: true },
   simsAtms: { hideToc: true },
 
   // Related guides tests expect no lang prop for this guide

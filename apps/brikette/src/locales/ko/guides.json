@@ -102,6 +102,87 @@
         "title": "아말피 해안 준비물",
         "description": "포지타노와 아말피 해안을 위한 계절별 체크리스트."
       }
+    },
+    "positanoBeaches": {
+      "linkLabel": "포지타노 해변: 모래, 태양, 비밀 만"
+    },
+    "arienzoBeachClub": {
+      "linkLabel": "아리엔초 비치: 포지타노의 프리미엄 비치 클럽"
+    },
+    "fornilloBeachGuide": {
+      "linkLabel": "포르닐로 비치: 포지타노의 조용한 대안"
+    },
+    "lauritoBeachGuide": {
+      "linkLabel": "라우리토 비치: 절벽 아래 숨겨진 보석"
+    },
+    "gavitellaBeachGuide": {
+      "linkLabel": "가비텔라 비치: 프라이아노의 일몰 해수욕장"
+    },
+    "marinaDiPraiaBeaches": {
+      "linkLabel": "마리나 디 프라이아: 절벽 사이의 극적인 만"
+    },
+    "fiordoDiFuroreBeachGuide": {
+      "linkLabel": "피오르도 디 푸로레: 다리 아래 피오르드 해변"
+    },
+    "reginaGiovannaBath": {
+      "linkLabel": "레지나 조반나: 로마 유적과 천연 수영장"
+    },
+    "positanoMainBeach": {
+      "linkLabel": "스피아쟈 그란데: 포지타노의 상징적인 메인 해변"
+    },
+    "sunriseHike": {
+      "linkLabel": "일출 하이킹: 포지타노 위로 새벽이 밝아오는 순간"
+    },
+    "topOfTheMountainHike": {
+      "linkLabel": "몬테 코무네: 포지타노 최고 전망대 하이킹"
+    },
+    "stayingFitAmalfi": {
+      "linkLabel": "포지타노에서 건강 유지: 계단, 트레일, 해변 운동"
+    },
+    "capriDayTrip": {
+      "linkLabel": "카프리 당일치기: 포지타노에서 섬으로 탈출"
+    },
+    "capriOnABudget": {
+      "linkLabel": "예산 내에서 카프리 즐기기"
+    },
+    "campingAmalfi": {
+      "linkLabel": "아말피 해안 캠핑: 호텔 대신 저렴한 대안"
+    },
+    "boatTours": {
+      "linkLabel": "보트 투어: 일몰 크루즈부터 프라이빗 차터까지"
+    },
+    "cheapEats": {
+      "linkLabel": "현지인처럼 먹기: 포지타노 최고의 저렴한 맛집"
+    },
+    "eatingOutPositano": {
+      "linkLabel": "포지타노 식사 장소: 캐주얼부터 특별한 날까지"
+    },
+    "positanoDining": {
+      "linkLabel": "Hostel Brikette 근처 포지타노 최고의 레스토랑"
+    },
+    "limoncelloCuisine": {
+      "linkLabel": "포지타노의 맛: 리몬첼로, 레몬, 현지 풍미"
+    },
+    "instagramSpots": {
+      "linkLabel": "인스타그램에 어울리는 포지타노: 최고의 포토 스팟과 시간"
+    },
+    "sunsetViewpoints": {
+      "linkLabel": "포지타노의 일몰: 골든 아워를 위한 최고의 전망대"
+    },
+    "ravelloFestival": {
+      "linkLabel": "라벨로 페스티벌: 별빛 아래 클래식 콘서트"
+    },
+    "ferragostoPositano": {
+      "linkLabel": "페라고스토: 포지타노에서 8월 15일 이탈리아 축제"
+    },
+    "luminariaPraiano": {
+      "linkLabel": "프라이아노 루미나리아: 수천 개의 양초가 밤을 밝히다"
+    },
+    "walkingTourAudio": {
+      "linkLabel": "무료 오디오 워킹 투어: 포지타노의 숨겨진 이야기 발견"
+    },
+    "freeThingsPositano": {
+      "linkLabel": "포지타노 무료 즐길거리: 예산 친화적 재미"
     }
   },
   "dev": {

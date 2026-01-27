@@ -1,8 +1,8 @@
 
 import "@testing-library/jest-dom";
 
+import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { ARTICLE_KEYS, articleSlug } from "@/routes.assistance-helpers";
 import { type GuideKey,guideHref,guideNamespace,guideSlug } from "@/routes.guides-helpers";
 import { SLUGS } from "@/slug-map";
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
@@ -198,19 +198,19 @@ describe("buildLinks", () => {
     }
   });
 
-  it("maps help article slugs across all languages", () => {
+  it("maps assistance guide slugs across all languages", () => {
     const base = "en" as AppLanguage;
-    for (const article of ARTICLE_KEYS) {
-      const path = `/${base}/${getSlug("assistance", base)}/${articleSlug(base, article)}`;
+    for (const guideKey of ASSISTANCE_GUIDE_KEYS) {
+      const path = `/${base}/${getSlug("assistance", base)}/${guideSlug(base, guideKey)}`;
       const links = buildLinks({ lang: base, origin, path });
       const alternates = links.filter(
         (link) => link.rel === "alternate" && link.hrefLang !== "x-default",
       );
       for (const lng of i18nConfig.supportedLngs as unknown as AppLanguage[]) {
         if (lng === base) continue;
-        const expected = `${origin}/${lng}/${getSlug("assistance", lng)}/${articleSlug(
+        const expected = `${origin}/${lng}/${getSlug("assistance", lng)}/${guideSlug(
           lng as AppLanguage,
-          article,
+          guideKey,
         )}`;
         const got = alternates.find((link) => link.hrefLang === lng)?.href;
         expect(got).toBe(expected);

@@ -1,64 +1,64 @@
 {
   "seo": {
-    "title": "Darmowe audio-przewodniki spacerowe po Positano",
-    "description": "Gdzie pobrać trasy audio, jak przygotować sprzęt i zasady dobrego zachowania na szlakach."
+    "title": "Darmowy spacer audio: Positano",
+    "description": "Audio przemarsz od Chiesa Nuova do plaży z lokalnymi historiami."
   },
-  "linkLabel": "Darmowe audio-przewodniki spacerowe po Positano",
+  "linkLabel": "Darmowy spacer audio: odkryj ukryte historie Positano",
   "intro": [
-    "Tłumaczenie w przygotowaniu.",
-    "Postępuj zgodnie z poniższymi wskazówkami dotyczącymi trasy i słuchania, a następnie zapisz pliki przez Wi-Fi, zanim wyjdziesz na zewnątrz."
+    "Pobierz nasz darmowy spacer audio po Positano: zaczynaj przy Chiesa Nuova, snuj się przez starą część miasta i kończ na Spiaggia Grande.",
+    "Podążaj trasą i wskazówkami do słuchania poniżej, zapisując pliki na Wi-Fi, zanim wyjdziesz."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "Na tej stronie",
   "toc": [
     {
       "href": "#route",
-      "label": "Route"
+      "label": "Trasa"
     },
     {
       "href": "#listen",
-      "label": "How to listen"
+      "label": "Jak słuchać"
     },
     {
       "href": "#faqs",
-      "label": "FAQs"
+      "label": "FAQ"
     }
   ],
   "sections": [
     {
       "id": "route",
-      "title": "Route",
+      "title": "Trasa",
       "body": [
-        "Tłumaczenie w przygotowaniu.",
-        "Nie spiesz się na tarasach, ale uważaj na mieszkańców i tragarzy korzystających z klatek schodowych w celu dostarczenia dostaw."
+        "Start na przystanku autobusowym Chiesa Nuova → zatrzymaj się przy punktach widokowych Via Pasitea → przeturlaj przez zaułki → dotrzyj na Spiaggia Grande.",
+        "Zatrzymuj się na tarasach, ale pamiętaj o mieszkańcach i tragarzach korzystających ze schodów przy dostawach."
       ]
     },
     {
       "id": "listen",
-      "title": "How to listen",
+      "title": "Jak słuchać",
       "body": [
-        "Pobierz dźwięk za pośrednictwem Wi-Fi hostelu lub przesyłaj strumieniowo w znanych hotspotach na trasie.",
-        "Utrzymuj niski poziom głośności na schodach i wyjmij jedną słuchawkę, gdy przechodzisz przez ulicę lub mijasz innych spacerowiczów."
+        "Pobierz audio na Wi-Fi hostelu albo streamuj w znanych punktach zasięgu na trasie.",
+        "Trzymaj głośność nisko na schodach i wysuń jedno słuchawko przy przejściach drogowych lub mijaniu innych spacerowiczów."
       ]
     }
   ],
-  "faqHeading": "FAQs",
+  "faqHeading": "FAQ",
   "faqs": [
     {
-      "q": "Is the loop steep?",
+      "q": "Czy trasa jest strom a?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Tak — spodziewaj się schodów. Odwróć trasę albo skorzystaj z autobusu SITA pod górę, jeśli kolana potrzebują przerwy."
       ]
     },
     {
-      "q": "Can I listen offline?",
+      "q": "Czy mogę słuchać offline?",
       "a": [
-        "Tłumaczenie w przygotowaniu."
+        "Oczywiście. Zapisz pliki w telefonie, by nie polegać na przerywanym zasięgu w zaułkach."
       ]
     },
     {
-      "q": "How long does it take?",
+      "q": "Ile to trwa?",
       "a": [
-        "Zaplanuj 45–60 minut, w tym przystanki na zdjęcia i przerwy na tarasie."
+        "Zaplanuj 45–60 minut, wliczając postoje na zdjęcia i relaks na tarasach."
       ]
     }
   ]

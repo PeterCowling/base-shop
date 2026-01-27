@@ -1,33 +1,33 @@
 {
   "seo": {
-    "title": "Utazási biztosítás az Amalfi-partra",
-    "description": "Milyen fedezetre figyelj: egészség, poggyász, vihar miatti lemondás, sporttevékenység."
+    "title": "Utazási biztosítás az Amalfi-parti utazáshoz: tudnivalók",
+    "description": "Alapvető fedezetek és dokumentációs tippek a zökkenőmentes utazáshoz."
   },
-  "linkLabel": "Utazási biztosítás az Amalfi-partra",
+  "linkLabel": "Utazási biztosítás az Amalfi-parti utazáshoz",
   "intro": [
-    "A fordítás folyamatban van."
+    "Alapvető utazási biztosítási tudnivalók az Amalfi-parton: egészség, lemondások, elektronika és kalandviselet."
   ],
   "sections": [
     {
       "id": "coverage",
-      "title": "Coverage essentials",
+      "title": "Fedezetek",
       "body": [
-        "A fordítás folyamatban van."
+        "Egészség/baleset, lemondások/késések és elektronikai eszközök fedezete; fontold meg a Szlak Bogok miatti túrázás biztosítását."
       ]
     },
     {
       "id": "claims",
-      "title": "Claims & docs",
+      "title": "Kárigény és papírok",
       "body": [
-        "A fordítás folyamatban van."
+        "Őrizd meg a blokkokat, lopás esetén a rendőrségi jegyzőkönyvet és a késések/lemondások igazolásait; ellenőrizd a leadási határidőket és az eredeti/pótlap követelményeit."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "A fordítás folyamatban van.",
+      "q": "Külön fedezet kell a kompokra?",
       "a": [
-        "A fordítás folyamatban van."
+        "Általában benne van a közlekedési fedezetben; az időjárás miatti késések vagy lemondások biztosítónként változnak — nézd át a feltételeket."
       ]
     }
   ]

@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Guide: deposita og betalinger",
+    "description": "Din guide til deposita, betalingsmetoder, bookingbekræftelser, ændringer, aflysninger og sikkerhedshold ved booking."
+  },
+  "linkLabel": "Guide: deposita og betalinger",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Sådan indsender du bookinganmodning",
+      "body": [
+        "Send din bookinganmodning via en autoriseret Online Travel Agent (OTA) eller direkte på vores website – chats eller spontane besøg tæller ikke i sig selv. Når du klikker på ‘Book’, bekræfter du, at alle navne, datoer og opholdslængder er korrekte, og at du accepterer vores vilkår og betingelser."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Sådan behandler vi din anmodning",
+      "body": [
+        "Vi går i gang med din anmodning, så snart vi har modtaget et påkrævet depositum, en forhåndsgodkendelse eller en betaling via en af vores accepterede betalingsmetoder. Sørg for, at bookingen står i navnet på den kortholder, der betaler. Hvis en anden betaler, skal vi have en kort skriftlig tilladelse fra kortholderen pr. e-mail, før vi kan fortsætte."
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Hvornår vi kan afslå en anmodning",
+      "body": [
+        "Vi afslår sjældent en booking, men vi forbeholder os retten til at gøre det, hvis betalingen fejler, oplysninger mangler, eller anmodningen strider mod vores vilkår og betingelser."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Grænser for én anmodning",
+      "body": [
+        "Én bookinganmodning kan dække op til syv (7) sammenhængende nætter og maksimalt fem (5) gæster. Har du brug for et længere ophold eller en større gruppe, deler du blot planerne op i flere anmodninger."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Hvis dit ønskede værelse ikke er ledigt",
+      "body": [
+        "Hvis dit ønskede værelse allerede er optaget, sender vi dig et modbud med det nærmeste alternativ. Accepter tilbuddet og gennemfør betalingen eller forhåndsgodkendelsen for at sikre opholdet."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Forudbetalte, ikke‑refunderbare bookinger",
+      "body": [
+        "Vælger du en forudbetalt, ikke-refunderbar pris, sparer du penge, men hele beløbet skal betales på forhånd. Vi forsøger at trække beløbet på dit kort op til tre gange. Lykkes det ikke, annullerer vi anmodningen. Disse bookinger kan ikke refunderes eller ændres."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Bekræftelses‑mail",
+      "body": [
+        "Når betalingen er gennemført, sender vi en bekræftelsesmail til den adresse, du har angivet. Mailen indeholder dit bookingnummer, ankomstdato, opholdslængde og eventuelle tilvalg. Læs den grundigt og kontakt os straks, hvis noget ser forkert ud."
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Hvem der er inkluderet i bookingen",
+      "body": [
+        "Din booking omfatter automatisk:",
+        "* 1 gæst pr. enkeltseng\n* Op til 2 gæster pr. dobbeltseng\n* Op til den annoncerede kapacitet for enhver lejlighed, du booker",
+        "Af hensyn til sikkerhed og komfort kan vi ikke indkvartere ekstra gæster ud over værelsets grænse."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Hvad der er inkluderet i dit ophold",
+      "body": [
+        "Hver gæst får:",
+        "* Rent sengetøj og et nøglekort\n* Adgang til de delte brusebade\n* Varmt vand i de planlagte tidsrum (ca. 07.00–10.30 og 17.00–22.30)\n* Adgang til vores fællesområder",
+        "Andre fordele (morgenmad, Wi-Fi, bagageopbevaring osv.) er gratis og følger deres egne simple regler."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Dit økonomiske ansvar",
+      "body": [
+        "Den kortholder, der står på din booking, hæfter for alle omkostninger – værelsespriser, skader, rengøringsgebyrer, bøder eller sanktioner for brud på husreglerne. Ubetalte beløb kan blive opkrævet direkte på kortet."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Tildeling af senge og værelser",
+      "body": [
+        "Vi garanterer den sengetype og værelsekategori, du har booket. I sovesale er din plads reserveret i den valgte kategori, men vi kan ikke love, at en gruppe får samme værelse. Senge i sovesale fordeles efter først-til-mølle-princippet ved indtjekning."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Værelses‑opgraderinger",
+      "body": [
+        "Nogle gange opgraderer vi dig gratis til et bedre værelse, eller du kan betale for en opgradering ved booking. Hvis en gratis opgradering senere ikke længere er mulig, kan vi flytte dig tilbage til den kategori, du oprindeligt har betalt for."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Betaling via tredjepart",
+      "body": [
+        "Booker du via en OTA, betaler du gennem deres system og efter deres vilkår. Vi modtager ikke dine kortoplysninger fra OTA'en og hæfter ikke for problemer på deres platform. Tjek altid, at betalingen er gennemført, og at du har modtaget en bekræftelse."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Booking‑deposita",
+      "body": [
+        "Visse priser kræver et depositum for at reservere værelset. Forudbetalte priser kræver 100 % betaling med det samme. Deposita er ikke-refunderbare. Hvis vi ikke kan opkræve depositummet, annulleres bookinganmodningen automatisk."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Kort‑forhåndsgodkendelser",
+      "body": [
+        "For fleksible priser kan vi forhåndsgodkende dit kort for den første nat eller hele opholdet for at sikre bookingen. Hvis forhåndsgodkendelsen mislykkes, må vi afslå anmodningen."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Sikkerhedshold",
+      "body": [
+        "Ved indtjekning kan vi lægge et sikkerhedshold svarende til én nat pr. gæst for at dække eventuelle bøder, gebyrer, forlængelser eller skader. Hvis et kort-hold ikke er muligt, kan du i stedet lægge samme beløb kontant eller bruge en medrejsendes kort. Hvis ingen af delene kan lade sig gøre, er vi nødt til at annullere bookingen."
+      ]
+    }
+  ]
+}

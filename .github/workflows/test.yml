@@ -48,13 +48,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build workspace (scoped)
         run: pnpm --filter ./${{ matrix.workspace }}... build
       - run: pnpm --filter ./${{ matrix.workspace }} lint
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
       - name: Test with coverage
         if: matrix.workspace != 'packages/next-config'
-        run: pnpm --filter ./${{ matrix.workspace }} test -- --coverage --coverage-dir=coverage
+        run: pnpm exec turbo run test --filter=./${{ matrix.workspace }} -- --coverage --coverageDirectory=coverage
       - name: Test next-config (node test runner coverage)
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage

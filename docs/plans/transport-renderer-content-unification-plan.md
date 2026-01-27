@@ -8,7 +8,7 @@ Last-reviewed: 2026-01-27
 Last-updated: 2026-01-27
 Feature-Slug: transport-renderer-content-unification
 Fact-Find: docs/plans/transport-renderer-content-unification-fact-find.md
-Overall-confidence: 90%
+Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 ---
 
@@ -894,22 +894,112 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 
 ### TASK-08: Batch migrate remaining routes (scripted, small batches)
 
+**SPLIT INTO TASK-08a + TASK-08b after re-plan (2026-01-27)**
+
+---
+
+### TASK-08a: Enhance transformer to support hero pattern
+
 - **Type:** IMPLEMENT
 - **Depends on:** TASK-07
-- **CI:** 90%
-  - Implementation: 90% — Scripted conversion reduces human error; batches limit blast radius.
-  - Approach: 90% — Ship in batches of ~4–6 routes with explicit rollback points.
-  - Impact: 90% — URLs unchanged; allowlist enables instant revert per batch.
+- **Effort:** S
+- **CI:** 85%
+  - Implementation: 85% — Straightforward fallback logic; both patterns exist and are valid.
+  - Approach: 85% — Add `hero` fallback to existing `header` check; maintains backward compat.
+  - Impact: 85% — Additive change; no risk to already-migrated routes.
+- **Affects:**
+  - `src/routes/how-to-get-here/transformRouteToGuide.ts`
+  - `src/test/routes/how-to-get-here/__tests__/transportMigration.test.ts`
+- **Acceptance:**
+  - Transformer checks for `header` first, falls back to `hero` if missing.
+  - Both patterns map to `intro` in guide content (eyebrow → optional, title → title, description → body).
+  - Golden tests cover both patterns.
+  - Typecheck passes.
+- **Test plan:**
+  - Add test case for hero pattern route (e.g., `positanoAmalfiFerry`).
+  - Run: `pnpm --filter @apps/brikette test transportMigration`
+  - Run: `pnpm typecheck`
+- **Rollout/rollback:**
+  - Safe to ship immediately after tests pass (no consumer changes).
+
+#### Re-plan Update (2026-01-27)
+
+- **Previous confidence:** N/A (new task split from TASK-08)
+- **Updated confidence:** 85%
+  - Implementation: 85% — Both patterns exist in repo; schema allows both; simple OR logic.
+  - Approach: 85% — Fallback pattern is standard; maintains existing content as-is.
+  - Impact: 85% — Additive change with no consumer impact; validated by existing tests.
+
+- **Investigation performed:**
+  - Repo: `src/locales/en/how-to-get-here/routes/*.json` (24 route content files)
+  - Schema: `src/lib/how-to-get-here/schema.ts` (lines 126-154: flexible schema allows both patterns)
+  - Transformer: `src/routes/how-to-get-here/transformRouteToGuide.ts:232-234` (hardcoded `header` check)
+  - Tests: `src/test/routes/how-to-get-here/__tests__/transportMigration.test.ts` (7 golden tests)
+
+- **Decision / resolution:**
+  - **Root cause:** Transformer only checks for `header`, but 10/24 routes use `hero` pattern.
+  - **Pattern analysis:**
+    - HEADER pattern (14 routes): `{ header: { eyebrow?, title, description } }`
+    - HERO pattern (10 routes): `{ hero: { eyebrow?, title, description } }`
+    - Both patterns are semantically identical and map to guide `intro` block.
+  - **Decision:** Update transformer to handle both patterns (Option A over content migration).
+  - **Rationale:** Faster, lower risk, maintains existing content, schema already permits both.
+
+- **Changes to task:**
+  - New task split from original TASK-08.
+  - Gates TASK-08b (remaining migrations depend on this fix).
+
+---
+
+### TASK-08b: Complete batch migration of remaining routes
+
+- **Type:** IMPLEMENT
+- **Depends on:** TASK-08a
+- **Effort:** M (reduced from L)
+- **CI:** 85% (reduced from 90%)
+  - Implementation: 85% — Scripted conversion; now accounts for two patterns.
+  - Approach: 85% — Ship in batches of ~4–6 routes with explicit rollback points.
+  - Impact: 85% — URLs unchanged; allowlist enables instant revert per batch.
 - **Acceptance:**
   - All 24 routes have:
     - manifest entries,
-    - `guides` content for all 18 locales (or an explicit, documented fallback policy),
+    - `guides` content for all 18 locales,
     - allowlist flipped to guide rendering.
   - Feature parity checklist passes for each route (see below).
 - **Test plan:**
   - For each batch, run:
     - `pnpm --filter @apps/brikette test routeGuides -- --maxWorkers=2`
     - targeted transformer/parity tests for migrated routes only (`--testPathPattern`)
+
+#### Re-plan Update (2026-01-27)
+
+- **Previous confidence:** 90% (overall, single TASK-08)
+- **Updated confidence:** 85%
+  - Implementation: 85% (was 90%) — Two content patterns require TASK-08a first; automation still works.
+  - Approach: 85% (was 90%) — Batch strategy unchanged; reduced confidence reflects two-pattern reality.
+  - Impact: 85% (was 90%) — Same rollback strategy; slightly more validation needed per batch.
+
+- **Investigation performed:**
+  - Repo: All 24 route definitions in `src/data/how-to-get-here/routes.json`
+  - Content: 24 route content files across `src/locales/*/how-to-get-here/routes/`
+  - Migration CLI: `scripts/migrate-transport-route.ts`
+  - Pattern breakdown (see re-plan notes below)
+
+- **Decision / resolution:**
+  - **Discovery:** 14 routes failed migration with "missing header block" error.
+  - **Analysis:**
+    - 14 routes use `header` pattern (already compatible)
+    - 10 routes use `hero` pattern (blocked until TASK-08a)
+  - **Decision:** Split task into TASK-08a (transformer fix) + TASK-08b (remaining migrations).
+  - **Updated scope:** 15 remaining routes (9 already migrated in Batch 1 + Batch 2 + pilot).
+
+- **Changes to task:**
+  - **Depends on:** Added TASK-08a dependency.
+  - **Effort:** Reduced from L to M (fewer unknowns; automation proven).
+  - **Confidence:** Reduced from 90% to 85% (accounts for two-pattern complexity).
+  - **Remaining routes (15):**
+    - **HEADER pattern (5 - can migrate after TASK-08a):** capri-positano-ferry, positano-capri-ferry, positano-naples-center-ferry, positano-salerno-ferry, salerno-positano-ferry
+    - **HERO pattern (10 - blocked on TASK-08a):** naples-center-positano-ferry, positano-amalfi-ferry, positano-ravello-bus, positano-ravello-ferry-bus, positano-salerno-bus, positano-sorrento-ferry, positano-to-naples-directions-by-ferry, salerno-positano-bus, sorrento-positano-bus, sorrento-positano-ferry
 
 #### Build Progress (2026-01-27)
 
@@ -998,6 +1088,31 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 - [ ] Breadcrumb structured data correct
 - [ ] Metadata parity (title/description) with legacy route
 - [ ] Locale behaviour: each of the 18 locales renders meaningful content (no empty shells)
+
+## Decision Log
+
+### 2026-01-27: Handle both `header` and `hero` content patterns in transformer
+
+**Context:** During Batch 1-2 migration, 14 routes failed with "Route content missing header block" error. Investigation revealed 10/24 routes use `hero` pattern instead of `header`, but both are semantically identical and valid per schema.
+
+**Options considered:**
+- **A) Update transformer to handle both patterns** (CHOSEN)
+  - Pro: Unblocks all 10 HERO routes immediately with code-only change
+  - Pro: Maintains existing content as-is (no manual file edits)
+  - Pro: Low risk (additive, backward-compatible)
+  - Con: Two patterns persist (can consolidate later if desired)
+
+- **B) Migrate HERO content to HEADER pattern**
+  - Pro: Single canonical pattern
+  - Con: 180 manual file edits (10 routes × 18 locales)
+  - Con: Higher error risk during content migration
+  - Con: Delays feature completion
+
+**Decision:** Option A - Add fallback logic to transformer checking `hero` if `header` missing.
+
+**Rationale:** Faster, safer path to completion. Both patterns map identically to guide `intro` block. Schema already permits both. Can standardize patterns in future cleanup if needed.
+
+**Impact:** Split TASK-08 into TASK-08a (transformer enhancement, S effort) + TASK-08b (remaining migrations, M effort).
 
 ## Risks & Mitigations
 

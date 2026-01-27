@@ -1,11 +1,12 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: CMS / UI
 Relates-to charter: Content unification
 Created: 2026-01-27
 Last-reviewed: 2026-01-27
 Last-updated: 2026-01-27
+Completed: 2026-01-27
 Feature-Slug: transport-renderer-content-unification
 Fact-Find: docs/plans/transport-renderer-content-unification-fact-find.md
 Overall-confidence: 88%
@@ -97,8 +98,9 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Complete (2026-01-27) | - |
 | TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Complete (2026-01-27) | TASK-05 |
 | TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Complete (2026-01-27) | TASK-02, TASK-03, TASK-04, TASK-06 |
-| TASK-08 | IMPLEMENT | Batch migrate remaining 23 routes (scripted, in small batches) | 90% | L | Pending | TASK-07 |
-| TASK-09 | IMPLEMENT | Cleanup: remove legacy renderer + route content namespace usage | 90% | M | Pending | TASK-08 |
+| TASK-08a | IMPLEMENT | Enhance transformer to support hero pattern | 85% | S | Complete (2026-01-27) | TASK-07 |
+| TASK-08b | IMPLEMENT | Batch migrate remaining 24 routes (all patterns) | 85% | M | Complete (2026-01-27) | TASK-08a |
+| TASK-09 | IMPLEMENT | Cleanup: remove legacy renderer + route content namespace usage | 90% | M | Complete (2026-01-27) | TASK-08b |
 
 > Effort scale: S=1, M=2, L=3
 

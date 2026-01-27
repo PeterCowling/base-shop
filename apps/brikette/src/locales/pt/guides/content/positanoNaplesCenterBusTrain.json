@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Positano ao centro de Nápoles de autocarro e comboio | Hostel Brikette",
+    "description": "Instruções porta a porta do Hostel Brikette até Napoli Piazza Garibaldi via autocarro SITA para Sorrento e comboio Circumvesuviana, incluindo validação de bilhetes, dicas de horários e notas de chegada."
+  },
+  "intro": {
+    "title": "Positano ao centro de Nápoles – Autocarro e depois comboio",
+    "body": "Use este guia ao viajar do Hostel Brikette para Napoli Piazza Garibaldi. Vai apanhar o autocarro SITA Sud até Sorrento e depois trocar para o comboio Circumvesuviana para chegar ao centro da cidade. Explicamos a validação de bilhetes, como ler o horário da SITA e o que esperar em cada ligação."
+  },
+  "callouts": {
+    "cta": "Quer todas as opções de transporte? Abra o %HOWTO:how-to-get-here|Guia Como Chegar% para itinerários de ferry, táxi e rotas combinadas."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "Reserve pouco mais de duas horas porta a porta na alta temporada. Os autocarros SITA partem com frequência de Positano (Chiesa Nuova) para Sorrento. O comboio Circumvesuviana sai de Sorrento aproximadamente a cada 20–30 minutos e termina em Napoli Garibaldi."
+    },
+    {
+      "id": "tickets",
+      "body": "Compre os bilhetes do autocarro SITA em bancas de jornal ou tabacarias antes de embarcar. Entregue o bilhete ao motorista ao entrar; ele carimbará ou rasgará o bilhete para validar a viagem. Guarde-o até desembarcar caso um fiscal verifique as tarifas pelo caminho."
+    },
+    {
+      "id": "timetable",
+      "body": "O horário oficial apresenta as paragens nas linhas e as viagens nas colunas identificadas por letras. Combine a linha de Sorrento com a letra do dia da sua viagem para encontrar os horários de partida e depois consulte a linha de Positano (Chiesa Nuova) na mesma coluna para ver o horário de chegada de volta à cidade."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "O autocarro SITA deixa-o ao lado do terminal combinado de comboios e autocarros de Sorrento. Suba as escadas até ao átrio principal, compre o bilhete da Circumvesuviana para Napoli Garibaldi (dinheiro ou cartão) e localize a plataforma correta antes da chegada do comboio."
+    },
+    {
+      "id": "naples",
+      "body": "Permaneça na Circumvesuviana até ao término em Napoli Garibaldi. A partir daí, siga a sinalização até ao átrio principal para fazer ligação com comboios de longa distância, o metro ou autocarros para o aeroporto. A Piazza Garibaldi fica diretamente à frente da entrada da estação."
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano nach Sorrent mit dem Bus | Hostel Brikette",
+    "description": "Schritt-für-Schritt-Anleitung vom Hostel Brikette nach Sorrent mit dem SITA-Bus, inklusive Ticketinfos, Fahrplanhinweisen und der Haltestelle Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano nach Sorrent – Bus (SITA)",
+    "body": "Nutze diesen Leitfaden für die Fahrt vom Hostel Brikette nach Sorrent mit dem SITA-Bus. Wir erklären Tickets, den Fahrplan und wo du in Positano (Chiesa Nuova) einsteigst."
+  },
+  "callouts": {
+    "tip": "Du möchtest alle Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "body": "In der Saison fahren Busse nach Sorrent regelmäßig. Steige in Positano (Chiesa Nuova) ein und fahre direkt bis zum kombinierten Zug- und Busbahnhof von Sorrent. Plane zu Stoßzeiten zusätzliche Zeit ein."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA und Bustickets",
+      "body": "Die Busse werden von SITA Sud betrieben. Kaufe Tickets in Kiosken oder Tabacchi (auch in der Bar Internazionale). Halte dein Ticket beim Einsteigen bereit, damit der Fahrer es entwerten kann."
+    },
+    {
+      "id": "timetable",
+      "title": "Fahrplan lesen",
+      "body": "Rufe den aktuellen Fahrplan auf %URL:https://www.positano.com/en/bus-schedule|Positano.com% ab.",
+      "list": [
+        "Die Zeilen in der ersten Spalte listen alle Haltestellen der Strecke.",
+        "Die Spalten stehen für Fahrten, die mit Buchstaben gekennzeichnet sind.",
+        "Reist du Montag bis Samstag? Nutze die Spalten „F“ und „G“.",
+        "Reist du sonntags oder an Feiertagen? Nutze die Spalten „G“ und „H“."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle",
+      "list": [
+        "Die nächste Bushaltestelle liegt im Bereich „Chiesa Nuova“ von Positano.",
+        "Sie befindet sich etwa 140 Meter vom Hostel entfernt.",
+        "Die Haltestelle liegt direkt vor der Bar „Bar Internazionale“."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Zu Fuß zum Hostel Brikette",
+      "list": [
+        "Verlasse das Hostel durch den Haupteingang und gehe die Stufen zur Straße hinunter.",
+        "Biege links ab und gehe etwa 100 Meter.",
+        "Auf der linken Seite siehst du die Bar „Bar Internazionale“; die SITA-Haltestelle liegt direkt davor."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Ticket kaufen und aufs Boarding warten",
+      "list": [
+        "Kaufe ein Ticket für den Bus nach Sorrent (in der Bar oder im Kiosk).",
+        "Warte vor der Bar auf den Bus Richtung Sorrent.",
+        "Prüfe die Zielanzeige des Busses – sie sollte „Sorrento“ anzeigen."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankunft in Sorrent",
+      "body": "Der SITA-Bus setzt dich am kombinierten Zug- und Busbahnhof von Sorrent ab. Von dort fährst du mit der Circumvesuviana weiter nach Neapel oder erkundest das historische Zentrum gleich hinter dem Bahnhof."
+    }
+  ]
+}

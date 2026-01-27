@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Positano vers le centre de Naples en bus puis en train | Hostel Brikette",
+    "description": "Itinéraire porte à porte depuis l'Hostel Brikette jusqu'à Napoli Piazza Garibaldi via le bus SITA pour Sorrente et le train Circumvesuviana, avec des conseils sur la validation des billets, la lecture des horaires et l'arrivée."
+  },
+  "intro": {
+    "title": "Positano vers le centre de Naples – Bus puis train",
+    "body": "Suivez ce guide lorsque vous voyagez de l'Hostel Brikette à Napoli Piazza Garibaldi. Vous prendrez le bus SITA Sud jusqu'à Sorrente, puis le train Circumvesuviana pour rejoindre le centre-ville. Nous expliquons la validation des billets, comment lire l'horaire SITA et à quoi vous attendre à chaque correspondance."
+  },
+  "callouts": {
+    "cta": "Besoin de toutes les options de transport ? Ouvrez la %HOWTO:how-to-get-here|vue d'ensemble Comment venir% pour les itinéraires en ferry, taxi et combinés."
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "body": "Restez dans la Circumvesuviana jusqu'à son terminus à Napoli Garibaldi. De là, suivez les panneaux vers le hall principal pour rejoindre les trains longue distance, le métro ou les bus pour l'aéroport. La Piazza Garibaldi se trouve juste devant l'entrée de la gare."
+    },
+    {
+      "id": "overview",
+      "body": "Prévoyez un peu plus de deux heures porte à porte en haute saison. Les bus SITA partent fréquemment de Positano (Chiesa Nuova) vers Sorrente. Le train Circumvesuviana depuis Sorrente circule toutes les 20 à 30 minutes environ et termine à Napoli Garibaldi."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "sorrento",
+      "body": "Le bus SITA vous dépose à côté de la gare routière et ferroviaire de Sorrente. Montez les escaliers vers le hall principal, achetez votre billet Circumvesuviana pour Napoli Garibaldi (espèces ou carte) et repérez le bon quai avant l'arrivée du train."
+    },
+    {
+      "id": "tickets",
+      "body": "Achetez vos billets de bus SITA dans un kiosque ou un tabac avant de monter. Présentez le billet au conducteur en montant ; il le tamponnera ou le déchirera pour valider votre trajet. Conservez-le jusqu'à la descente au cas où un contrôleur vérifierait les titres de transport en cours de route."
+    },
+    {
+      "id": "timetable",
+      "body": "L'horaire officiel présente les arrêts en lignes et les trajets en colonnes lettrées. Associez la ligne Sorrente à la lettre correspondant à votre jour de voyage pour trouver les heures de départ, puis vérifiez la ligne Positano (Chiesa Nuova) dans la même colonne pour connaître l'heure d'arrivée en ville."
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "walk"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano to Sorrento by Bus | Hostel Brikette",
+    "description": "Step-by-step directions from Hostel Brikette to Sorrento via SITA bus, including tickets, timetable tips and the Chiesa Nuova stop."
+  },
+  "intro": {
+    "title": "Positano to Sorrento – Bus (SITA)",
+    "body": "Use this guide when travelling from Hostel Brikette to Sorrento with the SITA bus. We cover tickets, how to read the timetable, and where to board at Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "body": "Buses to Sorrento run frequently in season. Board at Positano (Chiesa Nuova) and ride directly to Sorrento’s combined train and bus terminal. Allow extra time at peaks."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA and bus tickets",
+      "body": "Buses are operated by SITA Sud. Buy tickets at newsstands or tobacco shops (including at Bar Internazionale). Have your ticket ready when boarding so the driver can validate it."
+    },
+    {
+      "id": "timetable",
+      "title": "Reading the timetable",
+      "body": "Consult the latest schedule on %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "The rows in the first column list each stop along the route.",
+        "Columns correspond to scheduled journeys labelled with letters.",
+        "Travel Monday to Saturday? Use columns ‘F’ and ‘G’.",
+        "Travel on Sunday or a public holiday? Use columns ‘G’ and ‘H’."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) bus stop",
+      "list": [
+        "The nearest bus stop is in the ‘Chiesa Nuova’ area of Positano.",
+        "It is approximately 140 metres (490 feet) from the hostel.",
+        "The stop is outside the cafe/bar called ‘Bar Internazionale’."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk from the hostel to the stop",
+      "list": [
+        "Exit the hostel through the main door and go down the steps to the road.",
+        "Turn left and walk about 100 metres (330 feet).",
+        "You’ll see ‘Bar Internazionale’ on the left; the SITA stop is outside."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Buy your ticket and wait for boarding",
+      "list": [
+        "Buy a ticket for the bus to Sorrento (inside the bar/newsstand).",
+        "Wait outside the bar for the Sorrento-bound bus.",
+        "Double-check the bus destination display reads ‘Sorrento’."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Sorrento",
+      "body": "The SITA bus drops you at Sorrento’s combined train and bus terminal. From here, continue by Circumvesuviana to Naples or explore Sorrento’s historic centre just beyond the station."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Từ Positano đến trung tâm Naples bằng xe buýt rồi tàu | Hostel Brikette",
+    "description": "Hướng dẫn từ cửa Hostel Brikette tới Piazza Garibaldi (Napoli) qua xe buýt SITA đến Sorrento và tàu Circumvesuviana, kèm cách xác nhận vé, mẹo xem lịch và ghi chú khi đến nơi."
+  },
+  "intro": {
+    "title": "Positano đến trung tâm Naples – Xe buýt rồi tàu",
+    "body": "Dùng hướng dẫn này khi di chuyển từ Hostel Brikette tới Piazza Garibaldi (Napoli). Bạn sẽ đi xe buýt SITA Sud tới Sorrento rồi chuyển sang tàu Circumvesuviana để vào trung tâm. Chúng tôi cung cấp cách xác nhận vé, đọc bảng giờ SITA và những điều cần biết tại từng điểm nối."
+  },
+  "callouts": {
+    "cta": "Cần xem mọi lựa chọn? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để tham khảo phà, taxi và hành trình kết hợp."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "Vào mùa cao điểm hãy dành hơn hai giờ cho toàn bộ hành trình. Xe buýt SITA rời Positano (Chiesa Nuova) đi Sorrento khá thường xuyên. Tàu Circumvesuviana từ Sorrento chạy khoảng mỗi 20–30 phút và kết thúc tại Napoli Garibaldi."
+    },
+    {
+      "id": "tickets",
+      "body": "Mua vé xe buýt SITA tại quầy báo hoặc cửa hàng thuốc lá trước khi lên xe. Đưa vé cho tài xế khi bước lên; họ sẽ đóng dấu hoặc xé để xác nhận. Giữ vé cho tới khi xuống phòng trường hợp có nhân viên kiểm tra trên đường."
+    },
+    {
+      "id": "timetable",
+      "body": "Lịch chính thức hiển thị các điểm dừng theo hàng và các chuyến theo cột chữ cái. Ghép hàng Sorrento với chữ cái ứng với ngày bạn đi để biết giờ xuất phát, sau đó xem hàng Positano (Chiesa Nuova) cùng cột để biết giờ xe tới lại thị trấn."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "Xe buýt SITA trả bạn cạnh nhà ga kết hợp xe buýt và tàu của Sorrento. Đi lên cầu thang tới sảnh chính, mua vé Circumvesuviana đi Napoli Garibaldi (tiền mặt hoặc thẻ) và xác định đúng sân ga trước khi tàu đến."
+    },
+    {
+      "id": "naples",
+      "body": "Ở lại trên tàu Circumvesuviana cho tới khi kết thúc tại Napoli Garibaldi. Từ đây, đi theo biển chỉ dẫn lên sảnh chính để chuyển sang tàu đường dài, metro hoặc xe buýt sân bay. Piazza Garibaldi nằm ngay bên ngoài cửa ga."
+    }
+  ]
+}

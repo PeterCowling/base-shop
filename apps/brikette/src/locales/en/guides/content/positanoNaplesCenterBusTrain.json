@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Positano to Naples Center by Bus then Train | Hostel Brikette",
+    "description": "Door-to-door instructions from Hostel Brikette to Napoli Piazza Garibaldi via the SITA bus to Sorrento and the Circumvesuviana train, including ticket validation, timetable tips, and arrival notes."
+  },
+  "intro": {
+    "title": "Positano to Naples Center – Bus then Train",
+    "body": "Use this guide when travelling from Hostel Brikette to Napoli Piazza Garibaldi. You’ll take the SITA Sud bus to Sorrento, then switch to the Circumvesuviana train to reach the city centre. We cover ticket validation, how to read the SITA timetable, and what to expect at each connection."
+  },
+  "callouts": {
+    "cta": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "Allow a little over two hours door-to-door in high season. SITA buses depart frequently from Positano (Chiesa Nuova) to Sorrento. The Circumvesuviana train from Sorrento runs roughly every 20–30 minutes and terminates at Napoli Garibaldi."
+    },
+    {
+      "id": "tickets",
+      "body": "Purchase SITA bus tickets from newsstands or tobacco shops before you board. Present the ticket to the driver as you enter; they will stamp or tear it to validate your ride. Keep the ticket until you disembark in case an inspector checks fares en route."
+    },
+    {
+      "id": "timetable",
+      "body": "The official timetable lists stops as rows and journeys as lettered columns. Match the Sorrento row with the letter for your travel day to find departure times, then check the Positano (Chiesa Nuova) row in the same column for the arrival time back in town."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "The SITA bus drops you beside Sorrento’s combined train and bus terminal. Climb the stairs to the main concourse, buy your Circumvesuviana ticket to Napoli Garibaldi (cash or card), and locate the correct platform before the train arrives."
+    },
+    {
+      "id": "naples",
+      "body": "Stay on the Circumvesuviana until it terminates at Napoli Garibaldi. From there, follow the signs up to the main concourse to transfer to long-distance trains, the metro, or airport buses. Piazza Garibaldi is directly outside the station entrance."
+    }
+  ]
+}

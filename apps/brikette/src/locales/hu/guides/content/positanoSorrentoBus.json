@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positanóból Szorrentóba busszal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a Hostel Brikette-től Szorrentóba SITA busszal, jegyvásárlási tippekkel, menetrendi tanácsokkal és a Chiesa Nuova megálló részleteivel."
+  },
+  "intro": {
+    "title": "Positanóból Szorrentóba – busz (SITA)",
+    "body": "Használd ezt az útmutatót, amikor a Hostel Brikette-ből Szorrentóba utazol a SITA busszal. Bemutatjuk a jegyeket, a menetrend olvasását és a positanói (Chiesa Nuova) beszállási pontot."
+  },
+  "callouts": {
+    "tip": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Az út áttekintése",
+      "body": "Szorrentó felé szezonban gyakran indulnak buszok. Szállj fel Positanóban (Chiesa Nuova), és utazz közvetlenül a szorrentói közös busz- és vasútállomásig. Csúcsidőben hagyj rá plusz időt."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA és buszjegyek",
+      "body": "A buszokat a SITA Sud üzemelteti. Jegyet újságosnál vagy trafikban vásárolj (a Bar Internazionale-ban is). Tartsd készen a jegyet beszálláskor, hogy a sofőr érvényesíthesse."
+    },
+    {
+      "id": "timetable",
+      "title": "A menetrend olvasása",
+      "body": "A legfrissebb menetrendet a %URL:https://www.positano.com/en/bus-schedule|Positano.com% oldalon találod.",
+      "list": [
+        "Az első oszlop sorai az útvonal megállóit sorolják fel.",
+        "Az oszlopok betűkkel jelölt menetrendi indulásokat mutatnak.",
+        "Hétfőtől szombatig az „F” és „G” oszlopokat használd.",
+        "Vasárnap vagy ünnepnapon a „G” és „H” oszlopokat nézd."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positanói (Chiesa Nuova) buszmegálló",
+      "list": [
+        "A legközelebbi buszmegálló a positanói „Chiesa Nuova” környéken van.",
+        "Megközelítőleg 140 méterre (490 lábra) található a hosteltől.",
+        "A megálló a „Bar Internazionale” nevű kávézó/bár előtt van."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a hosteltől a megállóig",
+      "list": [
+        "Lépj ki a hostel főbejáratán, és menj le a lépcsőn az útra.",
+        "Fordulj balra, és sétálj körülbelül 100 métert (330 lábat).",
+        "Bal oldalon meglátod a „Bar Internazionale”-t; a SITA megálló közvetlenül előtte van."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Jegyvásárlás és várakozás",
+      "list": [
+        "Vásárolj jegyet a Szorrentóba tartó buszra (a bárban/újságosnál).",
+        "Várakozz a bár előtt a Szorrentó felé tartó buszra.",
+        "Ellenőrizd, hogy a busz kijelzőjén „Sorrento” szerepel."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Szorrentóba",
+      "body": "A SITA busz a szorrentói közös vasút- és buszpályaudvarnál tesz le. Innen Circumvesuviana vonattal tovább utazhatsz Nápolyba, vagy felfedezheted Szorrento történelmi központját közvetlenül az állomás mögött."
+    }
+  ]
+}

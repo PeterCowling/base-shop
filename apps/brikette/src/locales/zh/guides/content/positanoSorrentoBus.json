@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "波西塔诺乘巴士前往索伦托 | Hostel Brikette",
+    "description": "提供从 Hostel Brikette 乘坐 SITA 巴士前往索伦托的完整步骤：购票方式、时刻表解读以及 Chiesa Nuova 的上车位置。"
+  },
+  "intro": {
+    "title": "波西塔诺 → 索伦托 — SITA 巴士",
+    "body": "按照本指南即可从 Hostel Brikette 乘坐 SITA 巴士前往索伦托，涵盖购票要点、时刻表阅读方式，以及在波西塔诺（Chiesa Nuova）准确上车的位置。"
+  },
+  "callouts": {
+    "tip": "想比较所有交通方式？请打开%HOWTO:how-to-get-here|“如何到达”总览%，查看渡轮、出租车与组合路线。"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "行程概览",
+      "body": "旺季开往索伦托的班次频繁，请在波西塔诺（Chiesa Nuova）站上车，车辆将驶往索伦托的火车与巴士综合车站。高峰时段请预留额外时间排队。"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA 巴士车票",
+      "body": "线路由 SITA Sud 运营。可在报刊亭或烟草店购票（含 Bar Internazionale）。上车时请备好车票供司机验证。"
+    },
+    {
+      "id": "timetable",
+      "title": "如何阅读时刻表",
+      "body": "请在%URL:https://www.positano.com/en/bus-schedule|Positano.com% 查看最新时刻表。",
+      "list": [
+        "第一列的行表示沿途各个站点。",
+        "各列对应不同班次，以字母标记。",
+        "周一至周六出行请查看 “F”“G” 列。",
+        "周日或公共假日出行请查看 “G”“H” 列。"
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "波西塔诺（Chiesa Nuova）巴士站",
+      "list": [
+        "最近的巴士站位于波西塔诺的 “Chiesa Nuova” 区域。",
+        "距旅舍约 140 米（约 490 英尺）。",
+        "站点就在 “Bar Internazionale” 咖啡吧外。"
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "从旅舍步行到车站",
+      "list": [
+        "从旅舍正门离开，下楼梯到主干道。",
+        "向左转，步行约 100 米（≈330 英尺）。",
+        "左侧可见 “Bar Internazionale”，SITA 巴士站就在门外。"
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "购票并等候上车",
+      "list": [
+        "在酒吧或报刊亭内购买前往索伦托的车票。",
+        "在酒吧外排队等候开往索伦托的巴士。",
+        "再次确认车辆目的地显示为 “Sorrento”。"
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "抵达索伦托",
+      "body": "SITA 巴士将在索伦托的火车与巴士综合车站终点放客。可在此换乘环维苏威铁路前往那不勒斯，或步行探索车站外的索伦托历史中心。"
+    }
+  ]
+}

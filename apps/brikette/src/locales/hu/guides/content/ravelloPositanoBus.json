@@ -1,0 +1,13 @@
+{
+  "seo": {
+    "title": "Ravellóból Positanóba busszal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató Ravellóból Positanóba Amalfín keresztül, SITA buszokkal: menetrendi tippek, megállóinformációk és a rövid séta a Hostel Brikette-ig."
+  },
+  "intro": {
+    "title": "Ravellóból Positanóba – Amalfín át busszal",
+    "body": "Utazz Ravellóból Positanóba egy egyszerű amalfi átszállással. Az útmutató bemutatja, hol vásárolhatod és érvényesítheted a SITA jegyeket, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, valamint a rövid sétát a positanói Chiesa Nuova megállótól a Hostel Brikette-ig."
+  },
+  "callouts": {
+    "tip": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a %HOWTO:how-to-get-here|{{guideLabel}}% oldalt kompokért, taxikért és kombinált útvonalakért."
+  }
+}

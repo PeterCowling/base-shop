@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "포지타노에서 나폴리 중심가까지 버스 후 기차 | Hostel Brikette",
+    "description": "Hostel Brikette에서 포지타노(Chiesa Nuova) 정류장까지 걷고 SITA 버스로 소렌토로 이동한 뒤 Circumvesuviana 기차로 나폴리 피아차 가리발디에 도착하는 방법을 안내합니다. 티켓 검표와 시간표 활용 팁도 포함되어 있습니다."
+  },
+  "intro": {
+    "title": "포지타노 → 나폴리 중심가 – 버스 후 기차",
+    "body": "Hostel Brikette에서 나폴리 피아차 가리발디까지 이동할 때 참고하세요. 포지타노에서는 SITA 버스를, 소렌토에서는 Circumvesuviana 기차를 이용합니다. 각 환승 지점에서 무엇을 기대할 수 있는지, 티켓 검표와 시간표 읽는 법까지 정리했습니다."
+  },
+  "callouts": {
+    "cta": "다른 이동 수단도 필요하신가요? 페리, 택시, 혼합 여정을 확인하려면 %HOWTO:how-to-get-here|이동 가이드 총정리%를 열어보세요."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "성수기에는 문 앞에서 문 앞까지 약 2시간 이상을 예상하세요. SITA 버스는 포지타노(Chiesa Nuova)에서 소렌토까지 자주 운행하며, 소렌토에서 출발하는 Circumvesuviana 열차는 약 20~30분 간격으로 운행해 Napoli Garibaldi에서 종착합니다."
+    },
+    {
+      "id": "tickets",
+      "body": "버스에 타기 전에 뉴스가판대나 담배 가게에서 SITA 티켓을 구매하세요. 탑승할 때 운전기사에게 티켓을 보여주면 펀칭하거나 찢어서 검표합니다. 이동 중 검사관이 운임을 확인할 수 있으니 하차할 때까지 티켓을 보관하세요."
+    },
+    {
+      "id": "timetable",
+      "body": "공식 시간표는 각 정류장을 행으로, 운행편을 알파벳 열로 표시합니다. 여행하는 요일에 맞는 열에서 소렌토 행 출발 시간을 찾은 뒤 같은 열의 포지타노(Chiesa Nuova) 행을 확인해 포지타노 도착 시간을 파악하세요."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "SITA 버스는 소렌토의 기차·버스터미널 옆에 정차합니다. 계단을 올라 메인 홀로 이동한 뒤 Napoli Garibaldi행 Circumvesuviana 티켓을 현금 또는 카드로 구매하고, 열차가 도착하기 전에 맞는 승강장을 확인하세요."
+    },
+    {
+      "id": "naples",
+      "body": "Circumvesuviana가 Napoli Garibaldi에 도착할 때까지 계속 탑승하세요. 도착 후 안내 표지판을 따라 메인 홀로 이동하면 장거리 열차, 지하철, 공항 버스로 환승할 수 있습니다. Piazza Garibaldi는 역 출입구 바로 앞에 있습니다."
+    }
+  ]
+}

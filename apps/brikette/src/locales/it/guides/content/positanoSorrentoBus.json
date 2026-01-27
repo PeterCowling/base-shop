@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano a Sorrento in autobus | Hostel Brikette",
+    "description": "Indicazioni passo dopo passo dall'Hostel Brikette a Sorrento con l'autobus SITA, incluse informazioni sui biglietti, consigli sull'orario e sulla fermata Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano a Sorrento – Autobus SITA",
+    "body": "Usa questa guida quando viaggi dall'Hostel Brikette a Sorrento con l'autobus SITA. Trovi informazioni sui biglietti, su come leggere l'orario e sul punto d'imbarco a Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "body": "Gli autobus per Sorrento passano spesso in alta stagione. Sali a Positano (Chiesa Nuova) e viaggia direttamente fino al terminal combinato treni e bus di Sorrento. Nelle ore di punta prevedi un po' di tempo extra."
+    },
+    {
+      "id": "tickets",
+      "title": "Biglietti SITA e autobus",
+      "body": "Gli autobus sono gestiti da SITA Sud. Acquista i biglietti in edicola o in tabaccheria (anche al Bar Internazionale). Tieni il biglietto pronto quando sali così l'autista può convalidarlo."
+    },
+    {
+      "id": "timetable",
+      "title": "Come leggere l'orario",
+      "body": "Consulta l'orario aggiornato su %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Le righe nella prima colonna elencano ogni fermata lungo la tratta.",
+        "Le colonne corrispondono alle corse programmate contrassegnate da lettere.",
+        "Viaggi da lunedì a sabato? Usa le colonne \"F\" e \"G\".",
+        "Viaggi di domenica o in un giorno festivo? Usa le colonne \"G\" e \"H\"."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Fermata autobus di Positano (Chiesa Nuova)",
+      "list": [
+        "La fermata più vicina si trova nella zona \"Chiesa Nuova\" di Positano.",
+        "Si trova a circa 140 metri (490 piedi) dall'ostello.",
+        "La fermata è davanti al bar/caffè \"Bar Internazionale\"."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Percorso a piedi dall'ostello alla fermata",
+      "list": [
+        "Esci dall'ostello dalla porta principale e scendi i gradini fino alla strada.",
+        "Svolta a sinistra e cammina per circa 100 metri (330 piedi).",
+        "Vedrai il \"Bar Internazionale\" sulla sinistra; la fermata SITA è all'esterno."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Acquista il biglietto e attendi l'imbarco",
+      "list": [
+        "Acquista un biglietto per l'autobus verso Sorrento (all'interno del bar/edicola).",
+        "Attendi fuori dal bar l'autobus diretto a Sorrento.",
+        "Controlla due volte che il display della destinazione indichi \"Sorrento\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arrivo a Sorrento",
+      "body": "L'autobus SITA ti lascia al terminal combinato treni e autobus di Sorrento. Da qui puoi proseguire con la Circumvesuviana verso Napoli oppure esplorare il centro storico di Sorrento appena oltre la stazione."
+    }
+  ]
+}

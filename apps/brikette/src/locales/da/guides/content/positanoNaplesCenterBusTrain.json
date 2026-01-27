@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Positano til Napoli centrum med bus og tog | Hostel Brikette",
+    "description": "Dør-til-dør-vejledning fra Hostel Brikette til Napoli Piazza Garibaldi via SITA-bussen til Sorrento og Circumvesuviana-toget, inklusive billetvalidering, tidstabeller og ankomsttips."
+  },
+  "intro": {
+    "title": "Positano til Napoli centrum – bus og derefter tog",
+    "body": "Brug denne guide, når du rejser fra Hostel Brikette til Napoli Piazza Garibaldi. Du tager SITA Sud-bussen til Sorrento og skifter derefter til Circumvesuviana-toget for at nå centrum. Vi dækker billetvalidering, hvordan du læser SITA-tidstabellen, og hvad du kan forvente ved hver forbindelse."
+  },
+  "callouts": {
+    "cta": "Skal du se alle transportmuligheder? Åbn %HOWTO:how-to-get-here|Oversigt over Sådan kommer du hertil% for færge-, taxa- og kombinerede rejser."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "Sæt godt to timer af dør til dør i højsæsonen. SITA-busserne kører ofte fra Positano (Chiesa Nuova) til Sorrento. Circumvesuviana-toget fra Sorrento afgår cirka hver 20.–30. minut og ender på Napoli Garibaldi."
+    },
+    {
+      "id": "tickets",
+      "body": "Køb SITA-busbilletter i kiosker eller tobaksforretninger, før du går ombord. Vis billetten til chaufføren, når du stiger på; de stempler eller river den for at validere rejsen. Gem billetten, indtil du stiger af, i tilfælde af billetkontrol undervejs."
+    },
+    {
+      "id": "timetable",
+      "body": "Den officielle tidstabel viser stoppesteder som rækker og afgange som bogstavkolonner. Find rækken for Sorrento og match den med bogstavet for din rejsedag for at se afgangstiderne. Se derefter på Positano (Chiesa Nuova)-rækken i samme kolonne for ankomsttidspunktet tilbage i byen."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "SITA-bussen sætter dig af ved Sorrentos kombinerede tog- og busstation. Gå op ad trappen til hovedhallen, køb din Circumvesuviana-billet til Napoli Garibaldi (kontant eller kort), og find det rigtige spor, før toget ankommer."
+    },
+    {
+      "id": "naples",
+      "body": "Bliv på Circumvesuviana, indtil den ender på Napoli Garibaldi. Følg derefter skiltene op til hovedhallen for at skifte til fjerntog, metro eller lufthavnsbusser. Piazza Garibaldi ligger lige uden for stationsindgangen."
+    }
+  ]
+}

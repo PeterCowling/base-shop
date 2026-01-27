@@ -1,0 +1,13 @@
+{
+  "seo": {
+    "title": "乘巴士从拉韦洛前往波西塔诺 | Hostel Brikette",
+    "description": "使用 SITA 巴士经阿马尔菲从拉韦洛前往波西塔诺的分步指引，包含时刻提示、上下车信息以及前往 Hostel Brikette 的最后一段路。"
+  },
+  "intro": {
+    "title": "拉韦洛 → 波西塔诺 — 经阿马尔菲巴士行程",
+    "body": "在阿马尔菲换乘一次即可从拉韦洛抵达波西塔诺。本指南说明在哪里购买并验证 SITA 车票、如何阅读时刻表、在阿马尔菲换乘时的注意事项，以及从波西塔诺 Chiesa Nuova 车站步行至 Hostel Brikette 的路线。"
+  },
+  "callouts": {
+    "tip": "想掌握所有交通方式？打开%HOWTO:how-to-get-here|{{guideLabel}}%查看渡轮、出租车与组合行程。"
+  }
+}

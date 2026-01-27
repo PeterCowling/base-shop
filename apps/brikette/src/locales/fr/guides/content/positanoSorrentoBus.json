@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano vers Sorrente en bus | Hostel Brikette",
+    "description": "Itinéraire détaillé de Hostel Brikette à Sorrente via le bus SITA, avec conseils sur les billets, la lecture des horaires et l'arrêt Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano vers Sorrente – Bus (SITA)",
+    "body": "Utilisez ce guide pour voyager de Hostel Brikette à Sorrente avec le bus SITA. Nous couvrons les billets, comment lire l'horaire et où monter à Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "Besoin de toutes les options de transport ? Ouvrez la %HOWTO:how-to-get-here|vue d’ensemble Comment arriver% pour les ferries, taxis et itinéraires combinés."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Sorrente",
+      "body": "Le bus SITA vous dépose à la gare routière et ferroviaire de Sorrente. De là, poursuivez en Circumvesuviana vers Naples ou explorez le centre historique de Sorrente juste après la gare."
+    },
+    {
+      "id": "overview",
+      "title": "Aperçu du trajet",
+      "body": "Les bus vers Sorrente circulent fréquemment en saison. Montez à Positano (Chiesa Nuova) et voyagez directement jusqu'à la gare routière et ferroviaire de Sorrente. Prévoyez du temps supplémentaire aux heures de pointe."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Arrêt de bus Positano (Chiesa Nuova)",
+      "list": [
+        "L'arrêt de bus le plus proche se situe dans le quartier « Chiesa Nuova » de Positano.",
+        "Il se trouve à environ 140 mètres (490 pieds) de l'auberge.",
+        "L'arrêt est devant le café/bar appelé « Bar Internazionale »."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "SITA et billets de bus",
+      "body": "Les bus sont exploités par SITA Sud. Achetez vos billets dans les maisons de presse ou les bureaux de tabac (y compris au Bar Internazionale). Ayez votre billet prêt lors de la montée pour que le conducteur puisse le valider."
+    },
+    {
+      "id": "timetable",
+      "title": "Lire l'horaire",
+      "body": "Consultez l'horaire le plus récent sur %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Les lignes de la première colonne indiquent chaque arrêt le long du trajet.",
+        "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Achetez votre billet et attendez l'embarquement",
+      "list": [
+        "Achetez un billet pour le bus vers Sorrente (à l'intérieur du bar/maison de presse).",
+        "Attendez à l'extérieur du bar le bus en direction de Sorrente.",
+        "Vérifiez que l'affichage de destination du bus indique « Sorrente »."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Marcher de l'auberge à l'arrêt",
+      "list": [
+        "Sortez de l'auberge par la porte principale et descendez les marches jusqu'à la route.",
+        "Tournez à gauche et marchez environ 100 mètres (330 pieds).",
+        "Vous verrez le « Bar Internazionale » sur la gauche ; l'arrêt SITA se trouve juste devant."
+      ]
+    }
+  ]
+}

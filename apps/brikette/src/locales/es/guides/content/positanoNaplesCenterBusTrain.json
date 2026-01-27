@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Positano a Nápoles centro en autobús y tren | Hostel Brikette",
+    "description": "Instrucciones puerta a puerta desde el Hostel Brikette hasta Napoli Piazza Garibaldi mediante el autobús SITA a Sorrento y el tren Circumvesuviana, con consejos sobre validación de billetes, horarios y notas de llegada."
+  },
+  "intro": {
+    "title": "Positano a Nápoles centro – Autobús y luego tren",
+    "body": "Utiliza esta guía cuando viajes desde el Hostel Brikette hasta Napoli Piazza Garibaldi. Tomarás el autobús SITA Sud a Sorrento y luego cambiarás al tren Circumvesuviana para llegar al centro de la ciudad. Te explicamos cómo validar el billete, leer el horario de SITA y qué esperar en cada conexión."
+  },
+  "callouts": {
+    "cta": "¿Quieres conocer todas las opciones de transporte? Abre el %HOWTO:how-to-get-here|Resumen de Cómo llegar% para consultar ferris, taxis e itinerarios combinados."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "body": "En temporada alta calcula un poco más de dos horas puerta a puerta. Los autobuses SITA salen con frecuencia de Positano (Chiesa Nuova) hacia Sorrento. El tren Circumvesuviana desde Sorrento circula cada 20–30 minutos aproximadamente y finaliza en Napoli Garibaldi."
+    },
+    {
+      "id": "tickets",
+      "body": "Compra los billetes del autobús SITA en quioscos o estancos antes de subir. Entrega el billete al conductor al subir; lo sellará o rasgará para validarlo. Conserva el billete hasta bajar en caso de que un revisor compruebe las tarifas durante el trayecto."
+    },
+    {
+      "id": "timetable",
+      "body": "El horario oficial muestra las paradas como filas y los viajes como columnas identificadas con letras. Relaciona la fila de Sorrento con la letra correspondiente a tu día de viaje para encontrar los horarios de salida y luego revisa la fila Positano (Chiesa Nuova) en la misma columna para conocer la hora de llegada de regreso al pueblo."
+    },
+    {
+      "id": "positanoStop"
+    },
+    {
+      "id": "walk"
+    },
+    {
+      "id": "wait"
+    },
+    {
+      "id": "sorrento",
+      "body": "El autobús SITA te deja junto a la terminal combinada de trenes y autobuses de Sorrento. Sube las escaleras hasta el vestíbulo principal, compra tu billete de Circumvesuviana a Napoli Garibaldi (en efectivo o con tarjeta) y localiza el andén correcto antes de que llegue el tren."
+    },
+    {
+      "id": "naples",
+      "body": "Permanece en la Circumvesuviana hasta que finalice en Napoli Garibaldi. Desde allí, sigue las señales hasta el vestíbulo principal para enlazar con trenes de larga distancia, el metro o los autobuses al aeropuerto. La Piazza Garibaldi se encuentra justo fuera de la entrada de la estación."
+    }
+  ]
+}

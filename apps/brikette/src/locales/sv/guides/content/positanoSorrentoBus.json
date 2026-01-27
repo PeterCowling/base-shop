@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano till Sorrento med buss | Hostel Brikette",
+    "description": "Steg-för-steg-vägbeskrivning från Hostel Brikette till Sorrento med SITA-buss, inklusive biljetter, tidtabellstips och hållplatsen Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano till Sorrento – Buss (SITA)",
+    "body": "Använd den här guiden när du reser från Hostel Brikette till Sorrento med SITA-bussen. Vi går igenom biljetter, hur du läser tidtabellen och var du kliver på i Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "Behöver du alla transportalternativ? Öppna %HOWTO:how-to-get-here|Översikten Så tar du dig hit% för färjor, taxi och kombinerade resvägar."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Översikt över resan",
+      "body": "Bussar till Sorrento går ofta under säsong. Gå ombord i Positano (Chiesa Nuova) och åk direkt till Sorrentos gemensamma tåg- och bussterminal. Avsätt extra tid under högsäsong."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA och bussbiljetter",
+      "body": "Bussarna körs av SITA Sud. Köp biljetter i tidningskiosker eller tobaksaffärer (inklusive Bar Internazionale). Ha biljetten redo när du kliver ombord så att föraren kan stämpla den."
+    },
+    {
+      "id": "timetable",
+      "title": "Läs tidtabellen",
+      "body": "Se den senaste tidtabellen på %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Raderna i första kolumnen visar varje hållplats längs rutten.",
+        "Kolumnerna motsvarar schemalagda avgångar som markeras med bokstäver.",
+        "Reser du måndag till lördag? Använd kolumnerna ”F” och ”G”.",
+        "Reser du på söndag eller helgdag? Använd kolumnerna ”G” och ”H”."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Hållplatsen Positano (Chiesa Nuova)",
+      "list": [
+        "Den närmaste hållplatsen ligger i området ”Chiesa Nuova” i Positano.",
+        "Den är cirka 140 meter (490 fot) från vandrarhemmet.",
+        "Hållplatsen ligger utanför caféet/baren ”Bar Internazionale”."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå från vandrarhemmet till hållplatsen",
+      "list": [
+        "Lämna vandrarhemmet genom huvudentrén och gå ner för trappan till vägen.",
+        "Sväng vänster och gå cirka 100 meter (330 fot).",
+        "Du ser ”Bar Internazionale” på vänster sida; SITA-hållplatsen ligger utanför."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Köp din biljett och vänta på ombordstigning",
+      "list": [
+        "Köp en biljett till bussen mot Sorrento (inne i baren/kiosken).",
+        "Vänta utanför baren på bussen mot Sorrento.",
+        "Kontrollera att destinationen på bussens skylt är ”Sorrento”."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst till Sorrento",
+      "body": "SITA-bussen släpper av dig vid Sorrentos gemensamma tåg- och bussterminal. Härifrån kan du fortsätta med Circumvesuviana till Neapel eller upptäcka Sorrentos historiska centrum strax bortom stationen."
+    }
+  ]
+}

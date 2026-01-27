@@ -305,6 +305,473 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
     - steps → HowTo structured data strategy (manifest `"HowTo"` + buildHowToSteps if required)
     - route `linkBindings` → guide tokens (`%URL:%`, `%LINK:%`, `%HOWTO:%`) with exact rules
 
+#### Schema Mapping Rules
+
+This section documents the exact transformation from legacy route JSON to guide JSON format.
+
+##### Source Files Structure
+
+**Route Definition (`apps/brikette/src/data/how-to-get-here/routes.json`):**
+```json
+{
+  "routes": {
+    "<slug>": {
+      "contentKey": "<contentKey>",
+      "linkBindings": [...],  // Link injection rules
+      "galleries": [...],     // Image galleries (optional)
+      "media": [...]          // Single images (optional)
+    }
+  }
+}
+```
+
+**Route Content (`apps/brikette/src/locales/{lang}/how-to-get-here/routes/<contentKey>.json`):**
+```json
+{
+  "slug": "<slug>",
+  "meta": { "title": "...", "description": "..." },
+  "header": { "eyebrow": "...", "title": "...", "description": "..." },
+  "tip": { ... },        // or "aside" or "cta"
+  "sections": { ... },
+  "externalLinks": { ... }  // Optional URL reference map
+}
+```
+
+##### Target Structure (Guide System)
+
+**Guide Manifest Entry (`apps/brikette/src/routes/guides/guide-manifest.ts`):**
+```typescript
+{
+  guideKey: "<guideKey>",
+  areas: ["howToGetHere"],
+  slug: { en: "<slug>" },  // Preserve URL
+  blocks: [
+    { type: "hero", options: { image: "...", ... } },
+    { type: "genericContent", options: { ... } },
+    { type: "callout", options: { variant: "tip", bodyKey: "callouts.tip" } },
+    { type: "gallery", options: { items: [...], zoomable: true } },
+    { type: "transportDropIn", options: { component: "chiesaNuovaArrivals" } }
+  ],
+  relatedGuides: [...]
+}
+```
+
+**Guide Content (`apps/brikette/src/locales/{lang}/guides/content/<guideKey>.json`):**
+```json
+{
+  "seo": { "title": "...", "description": "..." },
+  "intro": { "title": "...", "body": "..." },
+  "sections": [
+    { "id": "<stable-id>", "title": "...", "body": "...", "list": [...] }
+  ],
+  "callouts": {
+    "tip": "...",
+    "aside": "..."
+  }
+}
+```
+
+##### Transformation Rules by Section
+
+###### 1. Meta → SEO
+**Rule:** Direct mapping with no transformation.
+
+**Input (route JSON):**
+```json
+"meta": {
+  "title": "Capri to Positano by Ferry | Hostel Brikette",
+  "description": "How to travel from Capri to Positano by ferry..."
+}
+```
+
+**Output (guide JSON):**
+```json
+"seo": {
+  "title": "Capri to Positano by Ferry | Hostel Brikette",
+  "description": "How to travel from Capri to Positano by ferry..."
+}
+```
+
+###### 2. Header → Intro
+**Rule:** Map header to guide intro; eyebrow becomes optional context.
+
+**Input:**
+```json
+"header": {
+  "eyebrow": "Hostel Brikette Travel Guide",
+  "title": "Capri to Positano – Ferry",
+  "description": "Use this guide to travel from Capri..."
+}
+```
+
+**Output:**
+```json
+"intro": {
+  "title": "Capri to Positano – Ferry",
+  "body": "Use this guide to travel from Capri..."
+}
+```
+
+**Note:** Eyebrow can be added to hero block alt text or intro if needed.
+
+###### 3. Callouts (tip/aside/cta) → Callout Blocks
+**Rule:** Extract callout content to `callouts.*` namespace and reference from block.
+
+**Input (placeholder pattern with `<link>` tag):**
+```json
+"tip": {
+  "eyebrow": "Tip",
+  "copy": "Need other route options? Open the <link>How to Get Here overview</link>.",
+  "linkLabel": "How to Get Here overview"
+}
+```
+
+**Output (content):**
+```json
+"callouts": {
+  "tip": "Need other route options? Open the %HOWTO:how-to-get-here|How to Get Here overview%."
+}
+```
+
+**Output (manifest block):**
+```typescript
+{ type: "callout", options: { variant: "tip", bodyKey: "callouts.tip" } }
+```
+
+**Input (linkObject pattern with split text):**
+```json
+"tip": {
+  "label": "Tip",
+  "body": {
+    "before": "Need other transport options? Open the ",
+    "linkLabel": "How to Get Here overview",
+    "after": " for buses, mixed routes, and airport transfers."
+  }
+}
+```
+
+**Output (same as above):**
+```json
+"callouts": {
+  "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for buses, mixed routes, and airport transfers."
+}
+```
+
+**Variant mapping:** `tip` → `variant: "tip"`, `aside` → `variant: "aside"`, `cta` → `variant: "cta"`
+
+###### 4. Sections → Sections Array
+**Rule:** Convert object keys to array with stable IDs. Each section gets transformed.
+
+**Input:**
+```json
+"sections": {
+  "overview": {
+    "title": "Journey overview",
+    "body": "Ferries between Capri and Positano run most frequently..."
+  },
+  "capriPort": {
+    "title": "At Capri port",
+    "list": [
+      "Check times and prices...",
+      "Head to Capri's tourist port..."
+    ],
+    "link": "Compare ferry times: <capriLink>Capri.net</capriLink> · <positanoLink>Positano.com</positanoLink>.",
+    "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+    "linkLabelPositano": "Positano.com (aggregated schedule)"
+  }
+}
+```
+
+**Output:**
+```json
+"sections": [
+  {
+    "id": "overview",
+    "title": "Journey overview",
+    "body": "Ferries between Capri and Positano run most frequently..."
+  },
+  {
+    "id": "capriPort",
+    "title": "At Capri port",
+    "list": [
+      "Check times and prices...",
+      "Head to Capri's tourist port..."
+    ],
+    "body": "Compare ferry times: %URL:https://www.capri.net/en/t/capri/positano|Capri.net – Capri ↔ Positano% · %URL:https://www.positano.com/en/ferry-schedule|Positano.com (aggregated schedule)%."
+  }
+]
+```
+
+**Field mappings:**
+- `title` → `title` (unchanged)
+- `body` → `body` (with link tokens)
+- `points` / `list` → `list` (array of strings with link tokens)
+- `intro` / `cta` / `link` → merge into `body` or add as separate section if complex
+
+**Stable ID rule:** Use the original section key as the `id` value.
+
+###### 5. Link Bindings → Guide Link Tokens
+
+**Two patterns in route JSON:** `linkObject` and `placeholders`
+
+**Pattern A: linkObject (Direct Binding)**
+
+**Input (routes.json):**
+```json
+"linkBindings": [
+  {
+    "key": "tip.body",
+    "linkObject": { "type": "howToOverview" }
+  },
+  {
+    "key": "sections.positanoArrival.cta",
+    "linkObject": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+  }
+]
+```
+
+**Input (content):**
+```json
+"tip": {
+  "body": {
+    "before": "Need other transport options? Open the ",
+    "linkLabel": "How to Get Here overview",
+    "after": " for buses."
+  }
+},
+"sections": {
+  "positanoArrival": {
+    "cta": {
+      "before": "Read the ",
+      "linkLabel": "Ferry dock → Hostel Brikette guide",
+      "after": "."
+    }
+  }
+}
+```
+
+**Output (guide content with tokens):**
+```json
+"callouts": {
+  "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for buses."
+},
+"sections": [
+  {
+    "id": "positanoArrival",
+    "body": "Read the %LINK:ferryDockToBrikette|Ferry dock → Hostel Brikette guide%."
+  }
+]
+```
+
+**Conversion rules:**
+- `{ type: "howToOverview" }` → `%HOWTO:how-to-get-here|<linkLabel>%`
+- `{ type: "guide", guideKey: "X" }` → `%LINK:X|<linkLabel>%`
+- `{ type: "directions", slug: "Y" }` → `%HOWTO:Y|<linkLabel>%`
+- `{ type: "external", href: "Z" }` → `%URL:Z|<linkLabel>%`
+
+**Pattern B: placeholders (Template-Based)**
+
+**Input (routes.json):**
+```json
+"linkBindings": [
+  {
+    "key": "tip.body",
+    "placeholders": {
+      "link": { "type": "howToOverview" }
+    }
+  },
+  {
+    "key": "sections.capriPort.body",
+    "placeholders": {
+      "link": {
+        "type": "external",
+        "href": "https://www.capri.net/en/t/capri/positano"
+      }
+    }
+  }
+]
+```
+
+**Input (content with placeholder tags):**
+```json
+"tip": {
+  "copy": "Need options? Open the <link>How to Get Here overview</link>."
+},
+"sections": {
+  "capriPort": {
+    "body": "Check times: <link>Capri.net – Ferry times</link>."
+  }
+}
+```
+
+**Output (guide content with tokens):**
+```json
+"callouts": {
+  "tip": "Need options? Open the %HOWTO:how-to-get-here|How to Get Here overview%."
+},
+"sections": [
+  {
+    "id": "capriPort",
+    "body": "Check times: %URL:https://www.capri.net/en/t/capri/positano|Capri.net – Ferry times%."
+  }
+]
+```
+
+**Placeholder replacement:**
+- Find all `<link>`, `<capriLink>`, `<Link>`, `<map>`, etc. in content
+- Match placeholder name (case-sensitive) to linkBindings entry
+- Replace `<tag>Label</tag>` with appropriate token format
+
+**Token format:** `%TYPE:target|Label%`
+- `TYPE`: `URL`, `LINK`, or `HOWTO`
+- `target`: URL, guideKey, or route slug
+- `Label`: Link text extracted from content
+
+**Special case - wildcard keys:** `"key": "sections.X.list.*"` applies to all list items in that section.
+
+###### 6. Galleries → Gallery Blocks
+
+**Input (routes.json):**
+```json
+"galleries": [
+  {
+    "key": "photoGuide.items",
+    "items": [
+      {
+        "id": "internoYellow",
+        "src": "/img/directions/capri-positano-interno-yellow.jpg",
+        "aspectRatio": "4/3",
+        "preset": "gallery"
+      },
+      {
+        "id": "internoRed",
+        "src": "/img/directions/capri-positano-interno-red.jpg",
+        "aspectRatio": "4/3",
+        "preset": "gallery"
+      }
+    ]
+  }
+]
+```
+
+**Input (content):**
+```json
+"photoGuide": {
+  "heading": "Photo guide",
+  "items": [
+    { "caption": "Yellow Interno bus approaching Chiesa Nuova" },
+    { "caption": "Red bus variant at the main stop" }
+  ]
+}
+```
+
+**Output (manifest block):**
+```typescript
+{
+  type: "gallery",
+  options: {
+    headingKey: "content.photoGuide.heading",
+    items: [
+      {
+        image: "/img/directions/capri-positano-interno-yellow.jpg",
+        captionKey: "content.photoGuide.items.0.caption",
+        width: 1200,
+        height: 900,
+        format: "auto"
+      },
+      {
+        image: "/img/directions/capri-positano-interno-red.jpg",
+        captionKey: "content.photoGuide.items.1.caption",
+        width: 1200,
+        height: 900,
+        format: "auto"
+      }
+    ],
+    zoomable: true
+  }
+}
+```
+
+**Output (content - no change needed, captions remain):**
+```json
+"photoGuide": {
+  "heading": "Photo guide",
+  "items": [
+    { "caption": "Yellow Interno bus approaching Chiesa Nuova" },
+    { "caption": "Red bus variant at the main stop" }
+  ]
+}
+```
+
+**Rules:**
+- Merge metadata (src, aspectRatio, preset) from routes.json with content (caption, alt) from content JSON
+- Calculate width/height from aspectRatio if needed (default 1200x900 for 4/3)
+- Set `zoomable: true` for all transport route galleries (feature parity)
+- Use `captionKey` pattern for i18n: `content.<guideKey>.<section>.items.<index>.caption`
+
+###### 7. HowTo Structured Data (Optional)
+
+**Rule:** For step-by-step transport routes, add HowTo JSON-LD.
+
+**Manifest flag:**
+```typescript
+{
+  guideKey: "capri-positano-ferry",
+  structuredDataType: "HowTo",  // Triggers HowTo schema generation
+  // ...
+}
+```
+
+**No separate "steps" field needed in content:** Use existing sections with proper IDs as steps.
+
+**Alternative:** If route has explicit `steps` array in content:
+```json
+"steps": [
+  { "name": "...", "text": "...", "image": "..." }
+]
+```
+
+Map directly to HowTo steps. However, most routes don't have this - reuse sections instead.
+
+###### 8. Chiesa Nuova Drop-in (Bus Routes Only)
+
+**Rule:** For 6 routes with Chiesa Nuova arrivals/departures, add transport drop-in block.
+
+**Routes requiring this:**
+- naples-airport-positano-bus (and reverse)
+- naples-center-train-bus (and reverse)
+- salerno-positano-bus (and reverse)
+- sorrento-positano-bus (and reverse)
+- amalfi-positano-bus (and reverse)
+- ravello-positano-bus (and reverse)
+
+**Manifest block:**
+```typescript
+{
+  type: "transportDropIn",
+  options: { component: "chiesaNuovaArrivals" }
+}
+```
+
+**Content:** No changes needed - drop-in component has its own content loading.
+
+##### Summary Table
+
+| Route Field | Guide Location | Transformation |
+|-------------|----------------|----------------|
+| `meta.title` | `content.<key>.seo.title` | Direct copy |
+| `meta.description` | `content.<key>.seo.description` | Direct copy |
+| `header.title` | `content.<key>.intro.title` | Direct copy |
+| `header.description` | `content.<key>.intro.body` | Direct copy |
+| `header.eyebrow` | (Optional) hero block alt / intro context | Optional |
+| `tip/aside/cta` | `content.<key>.callouts.*` + callout block | Extract, convert links to tokens |
+| `sections.*` | `content.<key>.sections[]` | Object → array, add `id` from key |
+| `linkBindings` (linkObject) | Guide link tokens in content | `%TYPE:target\|Label%` |
+| `linkBindings` (placeholders) | Guide link tokens in content | Replace `<tag>Label</tag>` with token |
+| `galleries[].items` | Gallery block `options.items` | Merge metadata + captions, set `zoomable: true` |
+| `media[]` | Gallery block or hero block | Convert to appropriate block type |
+| Chiesa Nuova routes | Transport drop-in block | Add block, no content changes |
+
 ### TASK-06: Build transformation tool (library + CLI) with validation + golden tests
 
 - **Type:** IMPLEMENT

@@ -96,7 +96,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Complete (2026-01-27) | TASK-01 |
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Complete (2026-01-27) | - |
 | TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Complete (2026-01-27) | TASK-05 |
-| TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-06 |
+| TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Complete (2026-01-27) | TASK-02, TASK-03, TASK-04, TASK-06 |
 | TASK-08 | IMPLEMENT | Batch migrate remaining 23 routes (scripted, in small batches) | 90% | L | Pending | TASK-07 |
 | TASK-09 | IMPLEMENT | Cleanup: remove legacy renderer + route content namespace usage | 90% | M | Pending | TASK-08 |
 

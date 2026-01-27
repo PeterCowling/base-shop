@@ -932,7 +932,44 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 - capriPositanoFerry already existed (previously migrated, not in current context)
 - naples-center-positano-ferry skipped — route content missing header block (needs manual review)
 
-**Status:** 5/24 routes migrated (including pilot), 19 remaining
+**Batch 2 Complete** (4 routes migrated):
+- ✅ positano-naples-airport-bus
+- ✅ positano-naples-center-bus-train
+- ✅ positano-sorrento-bus
+- ✅ ravello-positano-bus
+
+**Commit:** ff00e44a53
+
+**Validation:**
+- Ran: `pnpm typecheck` — PASS
+- Generated guide content for all 18 locales per route
+- Added manifest entries to guide-manifest.ts
+- Added guide key mappings to generate-guide-slugs.ts
+- Added routes to MIGRATED_ROUTE_SLUGS allowlist
+
+**Notes:**
+- Multiple routes skipped due to missing header block (need manual review or different transformer):
+  - positano-ravello-bus, positano-salerno-bus, salerno-positano-bus, sorrento-positano-bus
+  - All ferry routes: positano-amalfi-ferry, positano-capri-ferry, positano-naples-center-ferry, positano-salerno-ferry, positano-sorrento-ferry, salerno-positano-ferry
+  - naples-center-positano-ferry
+  - positano-to-naples-directions-by-ferry
+
+**Status:** 9/24 routes migrated (including pilot), 15 remaining (14 need manual review/different approach)
+
+**Routes successfully migrated via automation (9 total):**
+1. amalfi-positano-ferry (pilot - TASK-07)
+2. amalfi-positano-bus
+3. naples-airport-positano-bus
+4. naples-center-train-bus
+5. positano-amalfi-bus
+6. positano-naples-airport-bus
+7. positano-naples-center-bus-train
+8. positano-sorrento-bus
+9. ravello-positano-bus
+
+**Routes requiring manual review (15 total):**
+- Missing header block (14): positano-ravello-bus, positano-salerno-bus, salerno-positano-bus, sorrento-positano-bus, positano-amalfi-ferry, positano-capri-ferry, positano-naples-center-ferry, positano-salerno-ferry, positano-sorrento-ferry, salerno-positano-ferry, naples-center-positano-ferry, positano-to-naples-directions-by-ferry
+- Mixed route (1): positano-ravello-ferry-bus
 
 ### TASK-09: Cleanup legacy renderer + content namespace usage
 

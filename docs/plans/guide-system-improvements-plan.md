@@ -226,6 +226,31 @@ Key improvements:
   - Library: Consider inquirer or similar for interactive prompts (or basic readline if keeping dependencies minimal)
   - i18nConfig: apps/brikette/src/i18n.config.ts exports locales array
 
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 9f741acad5
+- **TDD cycle:**
+  - Tests written/completed: None required (script tooling, manual validation)
+  - Manual validation: Script logic verified through code review
+  - Post-implementation: Typecheck PASS, pre-commit hooks PASS
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Pre-commit hooks: lint-staged, typecheck via husky — PASS
+  - Manual verification: Script structure validated, all features implemented
+- **Documentation updated:** None required (README already references script in TASK-01)
+- **Implementation notes:**
+  - Rewrote script from 52 to 265 lines
+  - Used Node.js readline/promises (no external dependencies)
+  - Maintained backward compatibility with CLI args mode
+  - Implemented all acceptance criteria:
+    - Interactive prompts for guideKey, title, slug, area, tags, status
+    - Creates content stubs in all 18 locales with [LOCALE] placeholders
+    - Automatic guides.index.ts updates via file parsing/insertion
+    - Generates manifest entry snippet for manual paste
+    - Validation: guideKey format (camelCase), duplicate detection
+  - No deviations from plan
+
 ---
 
 ### TASK-03: Add strict Zod content schema

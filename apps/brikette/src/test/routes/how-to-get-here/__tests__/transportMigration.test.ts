@@ -259,6 +259,78 @@ describe("transportMigration", () => {
     });
   });
 
+  describe("hero pattern support", () => {
+    it("should transform routes with hero field (fallback for header)", () => {
+      const routeDefinition: Partial<RouteDefinition> = {
+        contentKey: "positanoAmalfiFerry",
+        linkBindings: [
+          {
+            key: "tip.copy",
+            placeholders: {
+              link: {
+                type: "howToOverview",
+              },
+            },
+          },
+        ],
+      };
+
+      const routeContent: RouteContent = {
+        slug: "positano-amalfi-ferry",
+        meta: {
+          title: "Positano to Amalfi by Ferry | Hostel Brikette",
+          description: "Step-by-step ferry trip from Positano to Amalfi...",
+        },
+        hero: {
+          eyebrow: "Hostel Brikette Travel Guide",
+          title: "Positano to Amalfi — Ferry",
+          description: "Follow these steps to travel from Positano to Amalfi by ferry...",
+        },
+        tip: {
+          label: "Tip",
+          copy: "Need other transport options? Open the <link>How to Get Here overview</link>.",
+        },
+        sections: {
+          overview: {
+            title: "Journey overview",
+            points: [
+              "Seasonal ferries link Positano and Amalfi with scenic coastal views.",
+              "Services may vary by season and weather.",
+            ],
+          },
+        },
+      };
+
+      const result = transformRouteToGuide(routeDefinition as any, routeContent, "positanoAmalfiFerry");
+
+      const expected = {
+        seo: {
+          title: "Positano to Amalfi by Ferry | Hostel Brikette",
+          description: "Step-by-step ferry trip from Positano to Amalfi...",
+        },
+        intro: {
+          title: "Positano to Amalfi — Ferry",
+          body: "Follow these steps to travel from Positano to Amalfi by ferry...",
+        },
+        callouts: {
+          tip: "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview%.",
+        },
+        sections: [
+          {
+            id: "overview",
+            title: "Journey overview",
+            list: [
+              "Seasonal ferries link Positano and Amalfi with scenic coastal views.",
+              "Services may vary by season and weather.",
+            ],
+          },
+        ],
+      };
+
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe("callout variants", () => {
     it("should detect tip variant", () => {
       const routeContent: RouteContent = {

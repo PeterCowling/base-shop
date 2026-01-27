@@ -3,7 +3,7 @@
  *
  * Implements the schema mapping documented in TASK-05:
  * - meta → seo
- * - header → intro
+ * - header or hero → intro (supports both patterns)
  * - tip/aside/cta → callouts with link tokens
  * - sections object → sections array with stable IDs
  * - linkBindings (linkObject + placeholders) → guide tokens
@@ -228,10 +228,13 @@ export function transformRouteToGuide(
     throw new Error("Route content missing meta block");
   }
 
-  // Extract header
+  // Extract header or hero (fallback support for both patterns)
   const header = routeContent.header as any;
-  if (!header || typeof header !== "object") {
-    throw new Error("Route content missing header block");
+  const hero = routeContent.hero as any;
+  const headerBlock = header || hero;
+
+  if (!headerBlock || typeof headerBlock !== "object") {
+    throw new Error("Route content missing header or hero block");
   }
 
   // Build guide content
@@ -241,8 +244,8 @@ export function transformRouteToGuide(
       description: meta.description as string,
     },
     intro: {
-      title: header.title as string,
-      body: header.description as string,
+      title: headerBlock.title as string,
+      body: headerBlock.description as string,
     },
   };
 

@@ -9,6 +9,7 @@ import { debugGuide } from "@/utils/debug";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
 
 import { DEFAULT_OG_IMAGE } from "./guide-seo/constants";
+import type { GuideManifestEntry, StructuredDataDeclaration } from "./guide-manifest";
 import { GuideSeoTemplateBody } from "./guide-seo/template/GuideSeoTemplateBody";
 import { resolveShouldRenderGenericContent } from "./guide-seo/template/resolveShouldRenderGenericContent";
 import { resetAdditionalScriptsCache,useAdditionalScripts } from "./guide-seo/template/useAdditionalScripts";
@@ -33,6 +34,19 @@ import {
   shouldSkipGenericForRequestedLocale,
   shouldSuppressGenericWhenUnlocalized,
 } from "./guide-seo/utils/templatePolicies";
+
+function manifestDeclaresHowTo(
+  manifestEntry: GuideManifestEntry | null | undefined,
+): boolean {
+  if (!manifestEntry?.structuredData) return false;
+  return manifestEntry.structuredData.some((declaration: StructuredDataDeclaration) => {
+    if (typeof declaration === "string") return declaration === "HowTo";
+    if (typeof declaration === "object" && declaration !== null) {
+      return declaration.type === "HowTo";
+    }
+    return false;
+  });
+}
 
 function isUnresolvedGuideDescription(
   value: string,
@@ -61,7 +75,7 @@ function GuideSeoTemplate({
   metaKey,
   ogImage = DEFAULT_OG_IMAGE,
   ogType = "article",
-  includeHowToStructuredData = false,
+  includeHowToStructuredData,
   relatedGuides,
   alsoHelpful,
   articleLead,
@@ -392,9 +406,15 @@ function GuideSeoTemplate({
   };
   const breadcrumb = useGuideBreadcrumb(breadcrumbArgs);
 
+  // Derive HowTo structured data default from manifest when prop is not explicitly provided
+  const effectiveIncludeHowToStructuredData =
+    typeof includeHowToStructuredData === "boolean"
+      ? includeHowToStructuredData
+      : manifestDeclaresHowTo(manifestEntry);
+
   const howToJsonArgs = {
     context,
-    includeHowToStructuredData,
+    includeHowToStructuredData: effectiveIncludeHowToStructuredData,
     ...(typeof buildHowToSteps === "function" ? { buildHowToSteps } : {}),
   };
   const howToJson = useHowToJson(howToJsonArgs);

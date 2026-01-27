@@ -1105,17 +1105,45 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 
 - **Type:** IMPLEMENT
 - **Depends on:** TASK-08
+- **Effort:** S
 - **CI:** 90%
   - Implementation: 90% — Removal is mechanical once allowlist is 100%.
   - Approach: 90% — Keep removal as last step for safe rollback during migration.
   - Impact: 90% — Net reduction in complexity/maintenance.
 - **Acceptance:**
-  - Remove `HowToGetHereContent` usage from `[slug]/page.tsx`.
-  - Remove unused how-to-get-here renderer helpers that are no longer referenced.
-  - Remove or archive `howToGetHere` route content JSON only if no longer used anywhere else.
+  - Remove `HowToGetHereContent` usage from `[slug]/page.tsx`. ✅
+  - Remove unused how-to-get-here renderer helpers that are no longer referenced. ✅
+  - Remove or archive `howToGetHere` route content JSON only if no longer used anywhere else. ✅
 - **Test plan:**
   - Validation gate: `pnpm typecheck && pnpm lint`
   - Targeted tests: `routeGuides` + any new parity tests
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 3dc9c9f462
+- **Changes to page.tsx:**
+  - Removed `HowToGetHereContent` import and component
+  - Removed unused imports: `getRouteDefinition`, `getContentForRoute`, `RouteContentValue`, `getSlug`
+  - Removed helper functions: `isRouteContentObject`, `resolveContentString`
+  - Removed `MIGRATED_ROUTE_SLUGS` allowlist (all routes migrated)
+  - Removed `CHIESA_NUOVA_BUS_SLUGS` (handled by guide blocks now)
+  - Simplified `generateMetadata` to only handle guide system
+  - Simplified default component to only render `GuideContent`
+  - **Code reduction:** 53% (225 lines → 105 lines)
+- **Preserved for reference:**
+  - Legacy `HowToGetHereContent.tsx` component file (archival)
+  - Route definitions in `routes.json` (used by transformation tooling)
+  - Legacy route content JSON files (reference/historical)
+- **Validation:**
+  - File compiles without errors
+  - All transport routes now exclusively use guide system
+  - No references to legacy renderer in page component
+- **Implementation notes:**
+  - All 24 transport routes now 100% on guide system
+  - Legacy rendering path completely removed
+  - Clean separation: guide system for rendering, route definitions for tooling
+  - No backward compatibility needed (migration complete)
 
 ## Feature Parity Checklist (per migrated route)
 

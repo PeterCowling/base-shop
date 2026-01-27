@@ -11,6 +11,7 @@ export const GUIDE_BLOCK_TYPES = [
   "genericContent",
   "faq",
   "gallery",
+  "callout",
   "serviceSchema",
   "breadcrumbs",
   "relatedGuides",
@@ -94,6 +95,14 @@ const galleryBlockOptionsSchema = z
     }
   });
 
+const calloutBlockOptionsSchema = z
+  .object({
+    variant: z.enum(["tip", "cta", "aside"]),
+    titleKey: z.string().min(1).optional(),
+    bodyKey: z.string().min(1),
+  })
+  .strict();
+
 const serviceSchemaBlockOptionsSchema = z
   .object({
     contentKey: z.string().min(1).optional(),
@@ -173,6 +182,7 @@ export type GenericContentBlockOptions = z.infer<typeof genericContentBlockOptio
 export type FaqBlockOptions = z.infer<typeof faqBlockOptionsSchema>;
 export type GalleryBlockOptions = z.infer<typeof galleryBlockOptionsSchema>;
 export type GalleryBlockItem = z.infer<typeof galleryItemSchema>;
+export type CalloutBlockOptions = z.infer<typeof calloutBlockOptionsSchema>;
 export type ServiceSchemaBlockOptions = z.infer<typeof serviceSchemaBlockOptionsSchema>;
 export type BreadcrumbsBlockOptions = z.infer<typeof breadcrumbsBlockOptionsSchema>;
 export type RelatedGuidesBlockOptions = z.infer<typeof relatedGuidesBlockOptionsSchema>;
@@ -200,6 +210,11 @@ export type FaqBlock = {
 export type GalleryBlock = {
   type: "gallery";
   options: GalleryBlockOptions;
+};
+
+export type CalloutBlock = {
+  type: "callout";
+  options: CalloutBlockOptions;
 };
 
 export type ServiceSchemaBlock = {
@@ -247,6 +262,7 @@ export type GuideBlockDeclaration =
   | GenericContentBlock
   | FaqBlock
   | GalleryBlock
+  | CalloutBlock
   | ServiceSchemaBlock
   | BreadcrumbsBlock
   | RelatedGuidesBlock
@@ -272,6 +288,10 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("gallery"),
     options: galleryBlockOptionsSchema,
+  }),
+  z.object({
+    type: z.literal("callout"),
+    options: calloutBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("serviceSchema"),

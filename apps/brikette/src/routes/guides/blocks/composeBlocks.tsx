@@ -9,6 +9,7 @@ import type { GuideManifestEntry } from "../guide-manifest";
 
 import {
   applyAlsoHelpfulBlock,
+  applyCalloutBlock,
   applyFaqBlock,
   applyGalleryBlock,
   applyGenericContentBlock,
@@ -33,6 +34,9 @@ function composeBlock(acc: BlockAccumulator, block: GuideBlockDeclaration): void
       return;
     case "gallery":
       applyGalleryBlock(acc, block.options);
+      return;
+    case "callout":
+      applyCalloutBlock(acc, block.options);
       return;
     case "serviceSchema":
       applyServiceSchemaBlock(acc, block.options);

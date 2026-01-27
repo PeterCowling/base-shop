@@ -7,6 +7,31 @@ import {
   type HowToGetHereRouteGuideKey,
 } from "./how-to-get-here/routeGuides";
 
+/**
+ * User-facing guide namespace taxonomy.
+ *
+ * This is the canonical type for guide areas as they appear in URLs and UI.
+ * The manifest's internal `GuideArea` type (`"help" | "experience" | "howToGetHere"`)
+ * is mapped to this via `guideAreaToSlugKey()` in guide-manifest.ts.
+ *
+ * @see guideAreaToSlugKey - maps internal manifest areas to user-facing slugs
+ * @see guideNamespaceKey - determines the canonical namespace for a guide
+ */
+export type GuideNamespaceKey = "experiences" | "assistance" | "howToGetHere";
+
+/**
+ * Legacy section type for GUIDES_INDEX.
+ *
+ * @deprecated Use GuideNamespaceKey for new code. This type will be updated
+ * in a follow-on task to align with GuideNamespaceKey.
+ *
+ * Current mapping:
+ * - "help" → used for both assistance AND howToGetHere guides (legacy)
+ * - "experiences" → experiences guides
+ *
+ * After migration:
+ * - Will be replaced by GuideNamespaceKey
+ */
 export type GuideSection = "help" | "experiences";
 export type GuideMeta = {
   key: GuideKey;

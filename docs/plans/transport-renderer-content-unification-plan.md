@@ -949,6 +949,25 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
   - New task split from original TASK-08.
   - Gates TASK-08b (remaining migrations depend on this fix).
 
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 85eae8e664
+- **TDD cycle:**
+  - Tests written: `src/test/routes/how-to-get-here/__tests__/transportMigration.test.ts` (added hero pattern test)
+  - Initial test run: FAIL (expected — "Route content missing header block")
+  - Post-implementation: PASS (8/8 tests passing)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette test transportMigration` — PASS (8/8 tests)
+  - Ran: `pnpm typecheck` — PASS
+- **Documentation updated:** File comment updated to document both patterns
+- **Implementation notes:**
+  - Added fallback logic: checks `header` first, falls back to `hero` if missing
+  - Used OR operator (`header || hero`) for clean, backward-compatible implementation
+  - Updated error message to reflect both patterns: "Route content missing header or hero block"
+  - Both patterns map identically to guide `intro` block (title, description)
+  - No consumer changes required — fully backward compatible with existing routes
+
 ---
 
 ### TASK-08b: Complete batch migration of remaining routes

@@ -93,7 +93,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | TASK-01 | IMPLEMENT | Wire manifest blocks into `GuideSeoTemplate` (buildBlockTemplate → slot props/config) | 90% | M | Complete (2026-01-27) | - |
 | TASK-02 | IMPLEMENT | Add `callout` block type + handler (tip/cta/aside) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Complete (2026-01-27) | TASK-01 |
-| TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Pending | TASK-01 |
+| TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Complete (2026-01-27) | TASK-01 |
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Pending | - |
 | TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Pending | TASK-05 |
 | TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-06 |
@@ -263,6 +263,29 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 - **Test plan:**
   - Integration test: render a guide with the block and assert the drop-in renders.
   - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=\"Chiesa\" --maxWorkers=2`
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** ae90b28b3e
+- **TDD cycle:**
+  - Test written: `apps/brikette/src/test/routes/guides/__tests__/transport-dropin-block.test.tsx`
+  - Test covers: Chiesa Nuova rendering, language context, afterArticle slot, unsupported component handling
+  - Implementation complete: transportDropIn block type, schema, handler, and dispatcher wired
+- **Validation:**
+  - Ran: `pnpm typecheck --filter @apps/brikette` — PASS
+  - Schema validation: component enum with "chiesaNuovaArrivals" value
+- **Documentation updated:** None required (plan is the doc)
+- **Implementation notes:**
+  - Added "transportDropIn" to GUIDE_BLOCK_TYPES constant
+  - Created TransportDropInBlockOptions schema: `{ component: "chiesaNuovaArrivals" }`
+  - Implemented applyTransportDropInBlock handler in `handlers/transportDropInBlock.tsx`
+  - Handler imports Chiesa Nuova DropIn component from `@/routes/how-to-get-here/chiesaNuovaArrivals/DropIn`
+  - Renders in "after" slot (afterArticle) - before footer widgets, after main content
+  - Passes lang from GuideSeoTemplateContext to DropIn component
+  - Extensible: switch statement allows adding more transport components (e.g., departures)
+  - Wired into composeBlocks dispatcher with case for "transportDropIn"
+  - Explicit block type avoids complexity of "custom" module resolution
 
 ### TASK-05: Document schema mapping (route JSON → guide JSON + link token conversion)
 

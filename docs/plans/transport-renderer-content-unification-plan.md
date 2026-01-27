@@ -94,7 +94,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | TASK-02 | IMPLEMENT | Add `callout` block type + handler (tip/cta/aside) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Complete (2026-01-27) | TASK-01 |
-| TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Pending | - |
+| TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Complete (2026-01-27) | - |
 | TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Pending | TASK-05 |
 | TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-06 |
 | TASK-08 | IMPLEMENT | Batch migrate remaining 23 routes (scripted, in small batches) | 90% | L | Pending | TASK-07 |
@@ -771,6 +771,36 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 | `galleries[].items` | Gallery block `options.items` | Merge metadata + captions, set `zoomable: true` |
 | `media[]` | Gallery block or hero block | Convert to appropriate block type |
 | Chiesa Nuova routes | Transport drop-in block | Add block, no content changes |
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** e975b6e613
+- **Documentation scope:**
+  - Complete schema mapping covering all transformation rules
+  - Examples from capriPositanoFerry (placeholders pattern) and howToGetHereAmalfiPositanoFerry (linkObject pattern)
+  - Documented both linkBindings patterns with exact token format: `%TYPE:target|Label%`
+  - Included special cases: wildcard keys, Chiesa Nuova drop-in, HowTo structured data
+- **Coverage:**
+  - ✅ `meta.*` → `content.<key>.seo.*` (direct copy)
+  - ✅ `header` → guide intro mapping
+  - ✅ Callouts (tip/aside/cta) → callout blocks with variant-specific content keys
+  - ✅ Object sections → `sections[]` array with stable IDs from original keys
+  - ✅ `linkBindings` (linkObject) → guide tokens with split text reconstruction
+  - ✅ `linkBindings` (placeholders) → guide tokens with `<tag>` replacement
+  - ✅ Link type mapping: howToOverview → `%HOWTO:%`, guide → `%LINK:%`, directions → `%HOWTO:%`, external → `%URL:%`
+  - ✅ Galleries → gallery blocks with `zoomable: true` and merged metadata
+  - ✅ Chiesa Nuova drop-in rules for 6 bus route pairs (12 total)
+  - ✅ HowTo structured data strategy (manifest flag, reuse sections as steps)
+- **Validation:**
+  - Documentation reviewed for completeness against route structure
+  - Covers both content patterns observed in codebase
+  - Summary table provides quick reference for TASK-06 tooling implementation
+- **Implementation notes:**
+  - Documentation is comprehensive and unambiguous for transformation tool builder
+  - Token format is consistent with existing guide link token renderer
+  - Stable section IDs preserve anchor-link compatibility if needed
+  - Callout variant mapping is explicit: tip/aside/cta → same variant in block options
 
 ### TASK-06: Build transformation tool (library + CLI) with validation + golden tests
 

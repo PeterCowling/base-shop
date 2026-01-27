@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Từ Salerno đến Positano bằng phà | Hostel Brikette",
+    "description": "Đi phà từ Salerno tới Positano: lịch chạy, mẹo mua vé và cách tới Hostel Brikette từ bến bằng dịch vụ khuân vác hoặc xe buýt địa phương."
+  },
+  "intro": {
+    "title": "Salerno đến Positano — Phà",
+    "body": "Dùng hướng dẫn này để đi từ Salerno đến Positano bằng phà. Bài viết nêu nơi mua vé, điểm lên tàu tại Salerno, mẹo xem giờ và cách tới Hostel Brikette từ bến Positano."
+  },
+  "callouts": {
+    "tip": "Cần phương án khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem xe buýt, tuyến kết hợp và dịch vụ sân bay."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Tổng quan hành trình",
+      "list": [
+        "Phà theo mùa chạy từ Salerno tới Positano với khung cảnh ven biển đẹp mắt.",
+        "Travelmar khai thác nhiều chuyến nhất; hãy chừa thêm thời gian vào mùa cao điểm.",
+        "Phà có thể bị hủy khi thời tiết xấu — luôn kiểm tra thông tin mới trước khi đi."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Vé và lịch chạy",
+      "body": "Xem giờ chạy và giá mới nhất trên %URL:https://travelmar.it/en|Travelmar% và %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Lịch phà%.",
+      "list": [
+        "Mua vé trực tuyến trước trong các tháng cao điểm.",
+        "Đến sớm 15–20 phút trước giờ khởi hành để lên tàu thoải mái.",
+        "Giữ vé sẵn; nhân viên sẽ quét hoặc xé trước khi lên tàu."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Điểm lên tàu tại Salerno",
+      "list": [
+        "Đa số chuyến khởi hành từ Piazza della Concordia của Salerno (Travelmar).",
+        "Một số chuyến dùng Molo Manfredi — kiểm tra bến trên vé của bạn.",
+        "Làm theo biển chỉ dẫn ven bờ; nhân viên có thể hướng bạn đến cầu tàu đúng."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Đến Positano",
+      "body": "Cần lộ trình từng bước từ bến về hostel? Xem %LINK:ferryDockToBrikette|Bến phà → Hostel Brikette%.",
+      "list": [
+        "Bạn sẽ cập bến chính của Positano (Spiaggia Grande).",
+        "Nếu mang nhiều hành lý, nên dùng dịch vụ khuân vác hoặc xe buýt nội thị Interno.",
+        "Không nên leo dốc mang đồ nặng trong cái nóng mùa hè."
+      ]
+    }
+  ]
+}

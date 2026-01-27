@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Salerno til Positano med ferge | Hostel Brikette",
+    "description": "Salerno til Positano med ferge: rutetider, billettips og hvordan du kommer deg til Hostel Brikette fra havnen med bærere eller lokalbussen."
+  },
+  "intro": {
+    "title": "Salerno til Positano — ferge",
+    "body": "Bruk denne guiden for å reise fra Salerno til Positano med ferge. Den dekker billetter, hvor du går om bord i Salerno, rutetips og hvordan du kommer deg til Hostel Brikette fra Positano-kaien."
+  },
+  "callouts": {
+    "tip": "Trenger du andre transportalternativer? Åpne %HOWTO:how-to-get-here|Oversikt: Slik kommer du hit% for busser, kombinerte ruter og flyplasstransport."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "list": [
+        "Sesongbaserte ferger går fra Salerno til Positano med naturskjønne kystutsikter.",
+        "Travelmar driver de mest hyppige avgangene; sett av ekstra tid i høysesongen.",
+        "Fergene kan bli kansellert i dårlig vær – sjekk alltid løpende oppdateringer før du reiser."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og rutetider",
+      "body": "Se oppdaterte tider og priser på %URL:https://travelmar.it/en|Travelmar% og %URL:https://www.positano.com/en/ferry-schedule|Positano.com – fergesruter%.",
+      "list": [
+        "Kjøp billetter på nett på forhånd i travle måneder.",
+        "Møt opp 15–20 minutter før avgang for en rolig ombordstigning.",
+        "Hold billetten klar; personalet skanner eller river den før ombordstigning."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Hvor du går om bord i Salerno",
+      "list": [
+        "De fleste avganger går fra Salernos Piazza della Concordia (Travelmar).",
+        "Noen avganger bruker Molo Manfredi – bekreft terminalen på billetten.",
+        "Følg skilting langs havnepromenaden; personalet kan vise deg riktig brygge."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankomst i Positano",
+      "body": "For en trinnvis rute fra kaien til døren vår, les %LINK:ferryDockToBrikette|Ferjekai → Hostel Brikette%.",
+      "list": [
+        "Du ankommer Positanos hovedfergekai (Spiaggia Grande).",
+        "Med bagasje anbefaler vi bæretjenesten eller den lokale Interno-bussen.",
+        "Å gå oppover med tunge kofferter anbefales ikke i sommervarmen."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Salerno do Positano promem | Hostel Brikette",
+    "description": "Salerno do Positano promem: rozkłady, wskazówki biletowe oraz jak dotrzeć z portu do Hostel Brikette z pomocą bagażowych lub lokalnego autobusu."
+  },
+  "intro": {
+    "title": "Salerno → Positano — prom",
+    "body": "Skorzystaj z tego przewodnika, aby popłynąć z Salerno do Positano. Znajdziesz tu informacje o biletach, miejscu wejścia na pokład w Salerno, wskazówki rozkładowe oraz sposób dotarcia z przystani w Positano do Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Szukasz innych opcji transportu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%, aby sprawdzić autobusy, trasy mieszane i transfery z lotniska."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd podróży",
+      "list": [
+        "Sezonowe promy kursują z Salerno do Positano, oferując widoki na wybrzeże.",
+        "Travelmar obsługuje najwięcej rejsów; w sezonie zaplanuj dodatkowy czas.",
+        "Promy mogą być odwoływane przy złej pogodzie — zawsze sprawdź aktualne komunikaty przed podróżą."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilety i rozkłady",
+      "body": "Sprawdź aktualne godziny i ceny na %URL:https://travelmar.it/en|Travelmar% oraz %URL:https://www.positano.com/en/ferry-schedule|Positano.com – rozkład promów%.",
+      "list": [
+        "Kup bilety online z wyprzedzeniem w szczytowych miesiącach.",
+        "Przybądź 15–20 minut przed wypłynięciem, aby spokojnie wejść na pokład.",
+        "Trzymaj bilet pod ręką; obsługa zeskanuje lub oderwie kontrolkę przed wejściem."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Gdzie wsiąść w Salerno",
+      "list": [
+        "Większość rejsów odpływa z Piazza della Concordia w Salerno (Travelmar).",
+        "Niektóre kursy korzystają z Molo Manfredi — sprawdź terminal na bilecie.",
+        "Kieruj się oznaczeniami na nabrzeżu; obsługa wskaże właściwe molo."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Przybycie do Positano",
+      "body": "Szczegółową trasę z przystani do naszych drzwi znajdziesz w przewodniku %LINK:ferryDockToBrikette|Przystań promowa → Hostel Brikette%.",
+      "list": [
+        "Dopłyniesz do głównej przystani promowej Positano (Spiaggia Grande).",
+        "Z ciężkim bagażem polecamy skorzystanie z usług bagażowych lub lokalnego autobusu Interno.",
+        "Wchodzenie pod górę z ciężkimi walizkami nie jest zalecane w letnim upale."
+      ]
+    }
+  ]
+}

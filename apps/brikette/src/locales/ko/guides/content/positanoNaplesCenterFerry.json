@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "포지타노에서 나폴리 중심가까지 페리 | Hostel Brikette",
+    "description": "Hostel Brikette에서 포지타노 항으로 이동해 티켓을 구매하고 나폴리로 향하는 페리에 탑승하는 과정을 단계별로 안내합니다. 운영사 선택 요령과 나폴리 도착 후 이동 팁도 함께 제공합니다."
+  },
+  "intro": {
+    "title": "포지타노 → 나폴리 중심가 – 페리",
+    "body": "Hostel Brikette에서 포지타노 항까지 걷고, 페리 티켓을 구매해 나폴리로 이동하는 절차를 안내합니다. 운영사 선택 요령, 계절별 주의사항, Napoli Centrale 도착 후 이동 정보를 포함합니다."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

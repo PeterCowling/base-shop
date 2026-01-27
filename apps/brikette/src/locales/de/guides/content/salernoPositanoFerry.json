@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Salerno nach Positano mit der Fähre | Hostel Brikette",
+    "description": "Salerno nach Positano mit der Fähre: Fahrpläne, Tickettipps und wie du vom Hafen mit Gepäckträgern oder dem lokalen Bus zum Hostel Brikette gelangst."
+  },
+  "intro": {
+    "title": "Salerno nach Positano – Fähre",
+    "body": "Nutze diesen Leitfaden für die Fährfahrt von Salerno nach Positano. Er erklärt Tickets, den Einstieg in Salerno, Fahrplanhinweise und wie du vom Anleger in Positano zum Hostel Brikette kommst."
+  },
+  "callouts": {
+    "tip": "Brauchst du andere Verkehrsoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Busse, kombinierte Routen und Flughafentransfers."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "list": [
+        "Saisonale Fähren fahren von Salerno nach Positano und bieten spektakuläre Küstenblicke.",
+        "Travelmar betreibt die häufigsten Verbindungen – plane in der Hochsaison zusätzliche Zeit ein.",
+        "Bei schlechtem Wetter können Fahrten ausfallen – prüfe vor Abreise stets aktuelle Meldungen."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets und Fahrpläne",
+      "body": "Prüfe aktuelle Zeiten und Preise auf %URL:https://travelmar.it/en|Travelmar% und %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Fährpläne%.",
+      "list": [
+        "Kaufe in den Hochsaison-Monaten Tickets vorab online.",
+        "Sei 15–20 Minuten vor Abfahrt vor Ort, um entspannt einzusteigen.",
+        "Halte dein Ticket bereit; das Personal scannt oder reißt es vor dem Boarding."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Einstieg in Salerno",
+      "list": [
+        "Die meisten Verbindungen starten an Salernos Piazza della Concordia (Travelmar).",
+        "Einige Abfahrten nutzen Molo Manfredi – prüfe den Terminal auf deinem Ticket.",
+        "Folge der Beschilderung an der Uferpromenade; das Personal weist dir bei Bedarf den richtigen Steg."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankunft in Positano",
+      "body": "Für eine Schritt-für-Schritt-Route vom Anleger bis zu unserer Tür lies den %LINK:ferryDockToBrikette|Fähranleger → Hostel-Brikette-Leitfaden%.",
+      "list": [
+        "Du kommst am Hauptanleger von Positano (Spiaggia Grande) an.",
+        "Mit Gepäck empfehlen wir den Gepäckträgerdienst oder den lokalen Interno-Bus.",
+        "Der Aufstieg mit schweren Taschen ist in der Sommerhitze nicht zu empfehlen."
+      ]
+    }
+  ]
+}

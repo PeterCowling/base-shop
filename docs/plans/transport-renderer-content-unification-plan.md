@@ -95,7 +95,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Complete (2026-01-27) | TASK-01 |
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Complete (2026-01-27) | - |
-| TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Pending | TASK-05 |
+| TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Complete (2026-01-27) | TASK-05 |
 | TASK-07 | IMPLEMENT | Pilot: migrate 1 route across all 18 locales + allowlist render + metadata parity | 90% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-06 |
 | TASK-08 | IMPLEMENT | Batch migrate remaining 23 routes (scripted, in small batches) | 90% | L | Pending | TASK-07 |
 | TASK-09 | IMPLEMENT | Cleanup: remove legacy renderer + route content namespace usage | 90% | M | Pending | TASK-08 |
@@ -821,11 +821,53 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
   - Conversion applies route `linkBindings` by inserting guide link tokens in output strings.
   - Output passes a structural validation step (Zod/schema or equivalent).
   - Golden tests cover at least:
-    - one “linkBindings.placeholder” route,
-    - one “linkBindings.linkObject” route,
+    - one "linkBindings.placeholder" route,
+    - one "linkBindings.linkObject" route,
     - one route with a gallery.
 - **Test plan:**
   - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=\"transportMigration\" --maxWorkers=2`
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 6d691013ed
+- **TDD cycle:**
+  - Tests written first: `src/test/routes/how-to-get-here/__tests__/transportMigration.test.ts`
+  - 7 golden tests covering placeholder pattern, linkObject pattern, galleries, sections, callout variants
+  - Implementation: `src/routes/how-to-get-here/transformRouteToGuide.ts` (transformation library)
+  - CLI tool: `scripts/migrate-transport-route.ts` (multi-locale migration)
+  - All tests passing (7/7 ✅)
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm exec jest src/test/routes/how-to-get-here/__tests__/transportMigration.test.ts` — 7 passed
+  - Structure: Transformation output matches guide content schema
+- **Implementation notes:**
+  - **Transformation library features:**
+    - Meta → seo (direct copy)
+    - Header → intro (direct copy)
+    - Callouts (tip/aside/cta) → callouts with link token conversion
+    - Sections object → array with stable section IDs from original keys
+    - Link bindings (linkObject + placeholders) → guide tokens (%URL:%, %LINK:%, %HOWTO:%)
+    - Galleries → merged metadata (routes.json) + content (captions from route content)
+    - Supports both linkObject (split text with before/linkLabel/after) and placeholders (template tags)
+  - **CLI tool features:**
+    - Usage: `pnpm --filter @apps/brikette migrate-route <slug> <guideKey>`
+    - Migrates single route across all 18 locales (ar, da, de, en, es, fr, hi, hu, it, ja, ko, no, pl, pt, ru, sv, vi, zh)
+    - Validates slug exists in routes.json before processing
+    - Skips locales with missing route content
+    - Skips locales where guide content already exists (safe re-runs)
+    - Pretty-printed JSON output with 2-space indentation
+    - Summary with success/skip/error counts
+    - Next steps printed after completion
+  - **Golden test coverage:**
+    - ✅ Placeholder pattern transformation (<link> tags → guide tokens)
+    - ✅ LinkObject pattern transformation (split text → guide tokens)
+    - ✅ Gallery metadata merging (routes.json images + content captions)
+    - ✅ Sections object → array conversion with stable IDs
+    - ✅ Callout variants (tip/aside/cta) detection and processing
+  - **Link token format:** `%TYPE:target|Label%` where TYPE is URL/LINK/HOWTO
+  - Added `migrate-route` script to package.json for easy invocation
+- **Documentation updated:** None required (tooling is self-documenting via CLI help)
 
 ### TASK-07: Pilot migration (1 route, all locales) + allowlist render + metadata parity
 

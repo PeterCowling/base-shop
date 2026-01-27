@@ -10,3 +10,4 @@ export { applyGenericContentBlock } from "./genericContentBlock";
 export { applyHeroBlock } from "./heroBlock";
 export { applyJsonLdBlock } from "./jsonLdBlock";
 export { applyServiceSchemaBlock } from "./serviceSchemaBlock";
+export { applyTransportDropInBlock } from "./transportDropInBlock";

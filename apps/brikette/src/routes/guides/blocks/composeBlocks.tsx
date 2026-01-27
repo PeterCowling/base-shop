@@ -16,6 +16,7 @@ import {
   applyHeroBlock,
   applyJsonLdBlock,
   applyServiceSchemaBlock,
+  applyTransportDropInBlock,
   BlockAccumulator,
   type TemplateFragment,
 } from "./handlers";
@@ -61,6 +62,9 @@ function composeBlock(acc: BlockAccumulator, block: GuideBlockDeclaration): void
       return;
     case "transportNotice":
       acc.mergeTemplate({ showTransportNotice: true });
+      return;
+    case "transportDropIn":
+      applyTransportDropInBlock(acc, block.options);
       return;
     case "breadcrumbs":
     case "custom":

@@ -18,6 +18,7 @@ export const GUIDE_BLOCK_TYPES = [
   "alsoHelpful",
   "planChoice",
   "transportNotice",
+  "transportDropIn",
   "jsonLd",
   "custom",
 ] as const;
@@ -164,6 +165,12 @@ const transportNoticeBlockOptionsSchema = z
   .strict()
   .optional();
 
+const transportDropInBlockOptionsSchema = z
+  .object({
+    component: z.enum(["chiesaNuovaArrivals"]),
+  })
+  .strict();
+
 const jsonLdBlockOptionsSchema = z
   .object({
     module: z.string().min(1),
@@ -190,6 +197,7 @@ export type RelatedGuidesBlockOptions = z.infer<typeof relatedGuidesBlockOptions
 export type AlsoHelpfulBlockOptions = z.infer<typeof alsoHelpfulBlockOptionsSchema>;
 export type PlanChoiceBlockOptions = z.infer<typeof planChoiceBlockOptionsSchema>;
 export type TransportNoticeBlockOptions = z.infer<typeof transportNoticeBlockOptionsSchema>;
+export type TransportDropInBlockOptions = z.infer<typeof transportDropInBlockOptionsSchema>;
 export type JsonLdBlockOptions = z.infer<typeof jsonLdBlockOptionsSchema>;
 export type CustomBlockOptions = z.infer<typeof customBlockOptionsSchema>;
 
@@ -248,6 +256,11 @@ export type TransportNoticeBlock = {
   options?: TransportNoticeBlockOptions;
 };
 
+export type TransportDropInBlock = {
+  type: "transportDropIn";
+  options: TransportDropInBlockOptions;
+};
+
 export type JsonLdBlock = {
   type: "jsonLd";
   options: JsonLdBlockOptions;
@@ -270,6 +283,7 @@ export type GuideBlockDeclaration =
   | AlsoHelpfulBlock
   | PlanChoiceBlock
   | TransportNoticeBlock
+  | TransportDropInBlock
   | JsonLdBlock
   | CustomBlock;
 
@@ -317,6 +331,10 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("transportNotice"),
     options: transportNoticeBlockOptionsSchema,
+  }),
+  z.object({
+    type: z.literal("transportDropIn"),
+    options: transportDropInBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("jsonLd"),

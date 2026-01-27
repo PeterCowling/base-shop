@@ -110,7 +110,7 @@ Key improvements:
 
 | Task ID | Type | Description | CI | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
-| TASK-01 | IMPLEMENT | Create comprehensive guides/README.md with architecture overview | 92% | S | Pending | - |
+| TASK-01 | IMPLEMENT | Create comprehensive guides/README.md with architecture overview | 92% | S | Complete (2026-01-27) | - |
 | TASK-02 | IMPLEMENT | Enhance create-guide script with interactive prompts + multi-locale stubs | 88% | S | Pending | - |
 | TASK-03 | IMPLEMENT | Add strict Zod content schema with validation | 86% | S | Pending | - |
 | TASK-04 | IMPLEMENT | Build link token validator for build-time checks | 90% | S | Pending | TASK-03 |
@@ -164,6 +164,25 @@ Key improvements:
 - **Notes / references:**
   - Pattern: apps/brikette/src/components/AGENTS.md (similar architectural overview)
   - Covers: architecture, data flow, guide creation, block addition, troubleshooting
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 9f88201404
+- **Validation:**
+  - Manual review: README is comprehensive (624 lines)
+  - Path verification: All 9 referenced file paths exist and are correct
+  - Content accuracy: Verified against actual codebase structure
+  - Renders correctly in GitHub markdown
+- **Documentation created:**
+  - `apps/brikette/src/routes/guides/README.md` — 624 lines
+  - Covers: Architecture (data flow), quick start, components, block addition (6-file process), content structure, link tokens, testing, troubleshooting (9 common issues)
+- **Implementation notes:**
+  - Included all 14 block types with descriptions
+  - Added code examples for manifest entries, block handlers, tests
+  - Comprehensive troubleshooting with symptoms, causes, and solutions
+  - All file paths verified to exist before commit
+  - No deviations from plan
 
 ---
 

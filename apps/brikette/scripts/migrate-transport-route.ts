@@ -21,8 +21,6 @@ import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { transformRouteToGuide } from "../src/routes/how-to-get-here/transformRouteToGuide";
-import { getRouteDefinition } from "../src/lib/how-to-get-here/definitions";
-import type { RouteContent } from "../src/lib/how-to-get-here/schema";
 
 const SUPPORTED_LOCALES = [
   "ar",
@@ -45,40 +43,45 @@ const SUPPORTED_LOCALES = [
   "zh",
 ] as const;
 
-const [slug, guideKey] = process.argv.slice(2);
+async function main() {
+  const [slug, guideKey] = process.argv.slice(2);
 
-if (!slug || !guideKey) {
-  console.error("Usage: pnpm --filter @apps/brikette migrate-route <slug> <guideKey>");
-  console.error("\nExample:");
-  console.error("  pnpm --filter @apps/brikette migrate-route capri-positano-ferry capriPositanoFerry");
-  process.exit(1);
-}
+  if (!slug || !guideKey) {
+    console.error("Usage: pnpm --filter @apps/brikette migrate-route <slug> <guideKey>");
+    console.error("\nExample:");
+    console.error("  pnpm --filter @apps/brikette migrate-route capri-positano-ferry capriPositanoFerry");
+    process.exit(1);
+  }
 
-if (!/^[a-z][a-zA-Z0-9]*$/u.test(guideKey)) {
-  console.error("Error: guideKey must be camelCase (e.g., capriPositanoFerry)");
-  process.exit(1);
-}
+  if (!/^[a-z][a-zA-Z0-9]*$/u.test(guideKey)) {
+    console.error("Error: guideKey must be camelCase (e.g., capriPositanoFerry)");
+    process.exit(1);
+  }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const appRoot = path.resolve(__dirname, "..");
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const appRoot = path.resolve(__dirname, "..");
 
-// Validate slug exists in route definitions
-const routeDefinition = getRouteDefinition(slug);
-if (!routeDefinition) {
-  console.error(`Error: Route "${slug}" not found in routes.json`);
-  process.exit(1);
-}
+  // Read route definitions directly
+  const routesJsonPath = path.join(appRoot, "src/data/how-to-get-here/routes.json");
+  const routesJsonRaw = await readFile(routesJsonPath, "utf8");
+  const routesJson = JSON.parse(routesJsonRaw) as any;
 
-console.log(`📦 Migrating route: ${slug} → ${guideKey}`);
-console.log(`📋 Content key: ${routeDefinition.contentKey}`);
-console.log(`🌍 Processing ${SUPPORTED_LOCALES.length} locales...\n`);
+  const routeDefinition = routesJson.routes[slug];
+  if (!routeDefinition) {
+    console.error(`Error: Route "${slug}" not found in routes.json`);
+    process.exit(1);
+  }
 
-let successCount = 0;
-let errorCount = 0;
-const errors: Array<{ locale: string; error: string }> = [];
+  console.log(`📦 Migrating route: ${slug} → ${guideKey}`);
+  console.log(`📋 Content key: ${routeDefinition.contentKey}`);
+  console.log(`🌍 Processing ${SUPPORTED_LOCALES.length} locales...\n`);
 
-for (const locale of SUPPORTED_LOCALES) {
+  let successCount = 0;
+  let errorCount = 0;
+  const errors: Array<{ locale: string; error: string }> = [];
+
+  for (const locale of SUPPORTED_LOCALES) {
   try {
     // Read route content
     const routeContentPath = path.join(
@@ -89,10 +92,10 @@ for (const locale of SUPPORTED_LOCALES) {
       `${routeDefinition.contentKey}.json`,
     );
 
-    let routeContent: RouteContent;
+    let routeContent: any;
     try {
       const routeContentRaw = await readFile(routeContentPath, "utf8");
-      routeContent = JSON.parse(routeContentRaw) as RouteContent;
+      routeContent = JSON.parse(routeContentRaw) as any;
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === "ENOENT") {
         console.log(`⚠️  ${locale}: Route content not found, skipping`);
@@ -137,25 +140,31 @@ for (const locale of SUPPORTED_LOCALES) {
     console.error(`❌ ${locale}: ${(error as Error).message}`);
     errors.push({ locale, error: (error as Error).message });
     errorCount += 1;
+    }
   }
+
+  console.log(`\n📊 Summary:`);
+  console.log(`   ✅ ${successCount} locales migrated successfully`);
+  console.log(`   ⚠️  ${SUPPORTED_LOCALES.length - successCount - errorCount} locales skipped`);
+  console.log(`   ❌ ${errorCount} errors`);
+
+  if (errors.length > 0) {
+    console.log(`\n🔍 Errors:`);
+    for (const { locale, error } of errors) {
+      console.log(`   ${locale}: ${error}`);
+    }
+    process.exit(1);
+  }
+
+  console.log(`\n✨ Next steps:`);
+  console.log(`1. Add manifest entry to: apps/brikette/src/routes/guides/guide-manifest.ts`);
+  console.log(`2. Configure blocks (hero, callout, gallery, etc.) in the manifest`);
+  console.log(`3. Add route to migration allowlist in: apps/brikette/src/app/[lang]/how-to-get-here/[slug]/page.tsx`);
+  console.log(`4. Test the route in dev: /[lang]/how-to-get-here/${slug}`);
+  console.log(`5. Verify SEO metadata parity with legacy route`);
 }
 
-console.log(`\n📊 Summary:`);
-console.log(`   ✅ ${successCount} locales migrated successfully`);
-console.log(`   ⚠️  ${SUPPORTED_LOCALES.length - successCount - errorCount} locales skipped`);
-console.log(`   ❌ ${errorCount} errors`);
-
-if (errors.length > 0) {
-  console.log(`\n🔍 Errors:`);
-  for (const { locale, error } of errors) {
-    console.log(`   ${locale}: ${error}`);
-  }
+main().catch((error) => {
+  console.error("Fatal error:", error);
   process.exit(1);
-}
-
-console.log(`\n✨ Next steps:`);
-console.log(`1. Add manifest entry to: apps/brikette/src/routes/guides/guide-manifest.ts`);
-console.log(`2. Configure blocks (hero, callout, gallery, etc.) in the manifest`);
-console.log(`3. Add route to migration allowlist in: apps/brikette/src/app/[lang]/how-to-get-here/[slug]/page.tsx`);
-console.log(`4. Test the route in dev: /[lang]/how-to-get-here/${slug}`);
-console.log(`5. Verify SEO metadata parity with legacy route`);
+});

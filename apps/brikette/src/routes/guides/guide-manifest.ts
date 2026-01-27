@@ -287,6 +287,297 @@ export function createGuideManifestEntry(input: GuideManifestEntryInput): GuideM
 export type GuideManifest = Record<GuideKey, GuideManifestEntry>;
 
 const manifestSeed: GuideManifestEntry[] = [
+  // --- Assistance articles (converted from legacy help system) ---
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "rules",
+    slug: "rules",
+    contentKey: "rules",
+    status: "draft",
+    draftPathSegment: "assistance/rules",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["security", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "rules", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "ageAccessibility",
+    slug: "age-accessibility",
+    contentKey: "ageAccessibility",
+    status: "draft",
+    draftPathSegment: "assistance/age-accessibility",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "checkinCheckout"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "ageAccessibility", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "arrivingByFerry",
+    slug: "arriving-by-ferry",
+    contentKey: "arrivingByFerry",
+    status: "draft",
+    draftPathSegment: "assistance/arriving-by-ferry",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["ferryDockToBrikette", "travelHelp", "naplesAirportBus"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "arrivingByFerry", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "changingCancelling",
+    slug: "changing-cancelling",
+    contentKey: "changingCancelling",
+    status: "draft",
+    draftPathSegment: "assistance/changing-cancelling",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "depositsPayments", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "changingCancelling", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "checkinCheckout",
+    slug: "checkin-checkout",
+    contentKey: "checkinCheckout",
+    status: "draft",
+    draftPathSegment: "assistance/checkin-checkout",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "security", "ageAccessibility"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "checkinCheckout", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "defectsDamages",
+    slug: "defects-damages",
+    contentKey: "defectsDamages",
+    status: "draft",
+    draftPathSegment: "assistance/defects-damages",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "security", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "defectsDamages", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "depositsPayments",
+    slug: "deposits-payments",
+    contentKey: "depositsPayments",
+    status: "draft",
+    draftPathSegment: "assistance/deposits-payments",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["bookingBasics", "changingCancelling", "legal"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "depositsPayments", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "legal",
+    slug: "legal",
+    contentKey: "legal",
+    status: "draft",
+    draftPathSegment: "assistance/legal",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "changingCancelling", "depositsPayments"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "legal", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "naplesAirportBus",
+    slug: "naples-airport-to-positano-bus",
+    contentKey: "naplesAirportBus",
+    status: "draft",
+    draftPathSegment: "assistance/naples-airport-to-positano-bus",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["arrivingByFerry", "travelHelp", "chiesaNuovaArrivals"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "naplesAirportBus", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "security",
+    slug: "security",
+    contentKey: "security",
+    status: "draft",
+    draftPathSegment: "assistance/security",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["rules", "checkinCheckout", "defectsDamages"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "security", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "travelHelp",
+    slug: "travel-help",
+    contentKey: "travelHelp",
+    status: "draft",
+    draftPathSegment: "assistance/travel-help",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["arrivingByFerry", "naplesAirportBus", "ferryDockToBrikette"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "travelHelp", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "bookingBasics",
+    slug: "booking-basics",
+    contentKey: "bookingBasics",
+    status: "draft",
+    draftPathSegment: "assistance/booking-basics",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "BreadcrumbList"],
+    relatedGuides: ["checkinCheckout", "depositsPayments", "changingCancelling", "rules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "bookingBasics", showToc: true },
+      },
+    ],
+    options: {
+      showTagChips: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
+  // --- End assistance articles ---
+
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "luggageStorage",
     slug: "luggage-storage-positano",
@@ -3227,6 +3518,35 @@ const manifestSeed: GuideManifestEntry[] = [
       redirectOnly: true,
     },
   }),
+  // --- Transport routes (pilot migration from legacy how-to-get-here system) ---
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "amalfiPositanoFerry",
+    slug: "amalfi-positano-ferry",
+    contentKey: "amalfiPositanoFerry",
+    status: "live",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: ["ferryDockToBrikette"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "amalfiPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+      { id: "jsonLd", status: "complete" },
+    ],
+  }),
 ];
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));
@@ -3259,6 +3579,55 @@ export function listGuideManifestEntries(): GuideManifestEntry[] {
   return Object.values(guideManifest);
 }
 
+/**
+ * Merges a manifest override into a base entry, returning an updated entry.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function mergeManifestOverride(
+  entry: GuideManifestEntry,
+  override: { areas?: GuideArea[]; primaryArea?: GuideArea } | undefined,
+): GuideManifestEntry {
+  if (!override) return entry;
+
+  const areas = override.areas ?? entry.areas;
+  const primaryArea = override.primaryArea ?? entry.primaryArea;
+
+  // Ensure primaryArea is valid for the areas
+  const validPrimary = areas.includes(primaryArea) ? primaryArea : areas[0];
+
+  return {
+    ...entry,
+    areas,
+    primaryArea: validPrimary,
+  };
+}
+
+/**
+ * Gets a manifest entry with optional overrides applied.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function getGuideManifestEntryWithOverrides(
+  key: GuideKey,
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea }>>,
+): GuideManifestEntry | undefined {
+  const entry = guideManifest[key];
+  if (!entry) return undefined;
+  return mergeManifestOverride(entry, overrides?.[key]);
+}
+
+/**
+ * Lists all manifest entries with optional overrides applied.
+ * Browser-safe: takes overrides as parameter (no FS access).
+ */
+export function listGuideManifestEntriesWithOverrides(
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea }>>,
+): GuideManifestEntry[] {
+  if (!overrides) return Object.values(guideManifest);
+  return Object.values(guideManifest).map((entry) =>
+    mergeManifestOverride(entry, overrides[entry.key]),
+  );
+}
+
 export type ChecklistSnapshot = {
   status: GuideStatus;
   items: ChecklistSnapshotItem[];
@@ -3283,16 +3652,23 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
  */
 export function buildGuideChecklist(
   entry: GuideManifestEntry,
-  options?: { includeDiagnostics?: boolean; lang?: AppLanguage },
+  options?: { includeDiagnostics?: boolean; lang?: AppLanguage; includeTranslationCoverage?: boolean },
 ): ChecklistSnapshot {
   const resolvedLang = options?.lang ?? (i18nConfig.fallbackLng as AppLanguage);
   const diagnostics = (() => {
     if (!options?.includeDiagnostics) return undefined;
     const completeness = analyzeGuideCompleteness(entry.key, resolvedLang);
-    const coverage = analyzeTranslationCoverage(
-      entry.key,
-      i18nConfig.supportedLngs as AppLanguage[],
-    );
+    // Translation coverage analysis requires all locale bundles to be loaded.
+    // In SSR/hydration contexts, only the current locale is reliably available,
+    // which would cause all other locales to appear incomplete. Only compute
+    // when explicitly requested (e.g., from server-only contexts like API routes).
+    // For accurate cross-locale coverage, use /api/guides/bulk-translation-status.
+    const coverage = options?.includeTranslationCoverage
+      ? analyzeTranslationCoverage(
+          entry.key,
+          i18nConfig.supportedLngs as AppLanguage[],
+        )
+      : undefined;
     return {
       translations: coverage,
       content: {
@@ -3306,15 +3682,36 @@ export function buildGuideChecklist(
     } satisfies GuideChecklistDiagnostics;
   })();
 
+  // Auto-infer status based on diagnostics and declarations
+  const inferStatus = (id: ChecklistItemId): ChecklistStatus => {
+    if (id === "jsonLd" && entry.structuredData.length > 0) {
+      return "complete";
+    }
+    if (id === "content" && diagnostics?.content) {
+      const { intro, sections } = diagnostics.content;
+      if (intro && sections) return "complete";
+      if (intro || sections) return "inProgress";
+    }
+    if (id === "faqs" && diagnostics?.faqs) {
+      if (diagnostics.faqs.hasFaqs && diagnostics.faqs.count > 0) return "complete";
+    }
+    return "missing";
+  };
+
+  const inferNote = (id: ChecklistItemId): string | undefined => {
+    if (id === "jsonLd" && entry.structuredData.length > 0) {
+      return "Structured data declared; validate generators.";
+    }
+    return undefined;
+  };
+
   const defaults: Record<ChecklistItemId, ChecklistSnapshotItem> = Object.fromEntries(
     CHECKLIST_ITEM_IDS.map((id) => [
       id,
       {
         id,
-        status: "missing",
-        note: id === "jsonLd" && entry.structuredData.length > 0
-          ? "Structured data declared; validate generators."
-          : undefined,
+        status: inferStatus(id),
+        note: inferNote(id),
         diagnostics,
       },
     ]),

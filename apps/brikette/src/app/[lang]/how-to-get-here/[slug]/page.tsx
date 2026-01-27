@@ -144,9 +144,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+// Allowlist of migrated transport routes that should render via guide system
+const MIGRATED_ROUTE_SLUGS = new Set<string>([
+  "amalfi-positano-ferry",
+]);
+
 export default async function HowToGetHerePage({ params }: Props) {
   const { lang, slug } = await params;
   const validLang = toAppLanguage(lang);
+
+  // Check migration allowlist first
+  if (MIGRATED_ROUTE_SLUGS.has(slug)) {
+    const guideKey = resolveGuideKeyFromSlug(slug, validLang);
+    const guideBase = guideKey ? guideNamespace(validLang, guideKey) : null;
+    if (guideKey && guideBase?.baseKey === "howToGetHere") {
+      return <GuideContent lang={validLang} guideKey={guideKey} />;
+    }
+  }
+
   const definition = getRouteDefinition(slug);
 
   if (!definition) {

@@ -7,6 +7,22 @@
 // -----------------------------------------------------------------------------
 
 export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.freeze({
+  // --- Assistance articles (converted from legacy help system) ---
+  ageAccessibility: "age-accessibility",
+  arrivingByFerry: "arriving-by-ferry",
+  bookingBasics: "booking-basics",
+  changingCancelling: "changing-cancelling",
+  checkinCheckout: "checkin-checkout",
+  defectsDamages: "defects-damages",
+  depositsPayments: "deposits-payments",
+  legal: "legal",
+  naplesAirportBus: "naples-airport-to-positano-bus",
+  rules: "rules",
+  security: "security",
+  travelHelp: "travel-help",
+  // --- End assistance articles ---
+
+  amalfiPositanoFerry: "amalfi-positano-ferry",
   amalfiTownGuide: "amalfi-town-guide",
   arienzoBeachBusBack: "bus-back-from-arienzo-beach",
   arienzoBeachClub: "arienzo-beach-guide",

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi till Positano med färja | Hostel Brikette",
+    "description": "Amalfi till Positano med färja: tider, biljetter, var du går ombord i Amalfi och hur du tar dig till Hostel Brikette från bryggan med minimalt antal trappor."
+  },
+  "intro": {
+    "title": "Amalfi till Positano – färja",
+    "body": "Följ de här stegen för att resa från Amalfi till Positano med färja. Du får tips om biljetter, var du går ombord i Amalfi, vad som väntar vid ankomsten och hur du tar dig till Hostel Brikette från kajen med så få trappsteg som möjligt."
+  },
+  "callouts": {
+    "tip": "Behöver du andra transportsätt? Öppna %HOWTO:how-to-get-here|Översikten Så tar du dig hit% för bussar, kombinerade rutter och flygplatstransfer."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resöversikt",
+      "list": [
+        "Regelbundna säsongsfärjor förbinder Amalfi och Positano med vacker utsikt över kusten.",
+        "Travelmar kör regelbundna avgångar; tiderna kan variera beroende på säsong och väder.",
+        "Kontrollera alltid aktuella tidtabeller på resdagen."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Biljetter och tidtabeller",
+      "list": [
+        "Köp biljetter online i förväg under högsäsong.",
+        "Kom 15–20 minuter före avgång för att hinna köa till ombordstigning.",
+        "Ha din biljett eller QR-kod lätt tillgänglig för kontroll."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Var du går ombord i Amalfi",
+      "list": [
+        "De flesta avgångar sker från Amalfis kajer vid vattnet nära Piazza Flavio Gioia.",
+        "Håll utkik efter Travelmars diskar och skyltar längs strandpromenaden.",
+        "Bekräfta vilken kaj som gäller på biljetten; personalen hjälper dig om du är osäker."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankomst till Positano",
+      "body": "För en steg-för-steg-väg från kajen till vår dörr, läs %LINK:ferryDockToBrikette|Guide: Färjekaj → Hostel Brikette%. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+      "list": [
+        "Båtarna anländer till Positanos huvudkaj på Spiaggia Grande.",
+        "Med bagage kan du överväga bärhjälp eller Interno Positano-bussen för att minska antalet trappor.",
+        "Att gå uppför med tunga väskor kan vara ansträngande i sommarvärmen."
+      ]
+    }
+  ]
+}

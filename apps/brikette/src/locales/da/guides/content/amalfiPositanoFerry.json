@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi til Positano med færge | Hostel Brikette",
+    "description": "Amalfi til Positano med færge: tider, billetter, hvor du går ombord i Amalfi, og hvordan du når Hostel Brikette fra kajen med så få trapper som muligt."
+  },
+  "intro": {
+    "title": "Amalfi til Positano — Færge",
+    "body": "Følg denne guide til turen fra Amalfi til Positano med færge. Her finder du tips til billetter, ombordstigning i Amalfi, hvad du kan forvente ved ankomst, og hvordan du når Hostel Brikette fra kajen med så få trapper som muligt."
+  },
+  "callouts": {
+    "tip": "Brug for andre transportmuligheder? Åbn %HOWTO:how-to-get-here|oversigten Sådan kommer du hertil% for busser, kombinationsruter og lufthavnstransfer."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Rejseoverblik",
+      "list": [
+        "Hyppige sæsonfærger forbinder Amalfi og Positano med naturskønne kystudsigter.",
+        "Travelmar driver regelmæssige afgange; planerne kan variere efter sæson og vejr.",
+        "Tjek altid live-tidsplaner på rejsedagen."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og køreplaner",
+      "list": [
+        "Køb billetter online på forhånd i de travle måneder.",
+        "Kom 15–20 minutter før afgang, så du er klar til køen ved ombordstigning.",
+        "Hold billetten eller QR-koden klar til personalets kontrol."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Hvor går du ombord i Amalfi?",
+      "list": [
+        "De fleste afgange sejler fra Amalfi-havnens moler ved Piazza Flavio Gioia.",
+        "Se efter Travelmar-skranker og skiltning langs promenaden.",
+        "Bekræft den rigtige mole på din billet; personalet kan guide dig, hvis du er i tvivl."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankomst til Positano",
+      "body": "For en trin-for-trin-rute fra kajen til vores dør, læs %LINK:ferryDockToBrikette|guiden Færgekaj → Hostel Brikette%.",
+      "list": [
+        "Bådene lægger til ved Positanos hovedmole på Spiaggia Grande.",
+        "Med bagage kan du overveje portørservice eller Interno Positano-bussen for færre trapper.",
+        "At gå op ad bakke med tunge tasker kan være anstrengende i sommervarmen."
+      ]
+    }
+  ]
+}

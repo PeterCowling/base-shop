@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi nach Positano mit der Fähre | Hostel Brikette",
+    "description": "Amalfi nach Positano mit der Fähre: Fahrzeiten, Tickets, Einstiegsstellen in Amalfi und wie du vom Anleger mit möglichst wenigen Stufen zum Hostel Brikette gelangst."
+  },
+  "intro": {
+    "title": "Amalfi nach Positano – Fähre",
+    "body": "Folge diesen Schritten für die Fährfahrt von Amalfi nach Positano. Du findest Hinweise zu Tickets, zum Einstieg in Amalfi, zu Erwartungen bei der Ankunft und zum Weg vom Anleger zum Hostel Brikette mit so wenig Treppen wie möglich."
+  },
+  "callouts": {
+    "tip": "Brauchst du andere Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Busse, kombinierte Routen und Transfers vom Flughafen."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "list": [
+        "Saisonale Fähren verbinden Amalfi und Positano häufig und bieten malerische Küstenblicke.",
+        "Travelmar betreibt regelmäßige Fahrten; Angebot und Zeiten variieren je nach Saison und Wetter.",
+        "Prüfe am Reisetag immer den aktuellen Fahrplan."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets und Fahrpläne",
+      "list": [
+        "Kaufe in den Hochsaison-Monaten Tickets vorab online.",
+        "Sei 15–20 Minuten früher da, um dich für das Boarding anzustellen.",
+        "Halte Ticket oder QR-Code griffbereit für Kontrollen durch das Personal."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Einstieg in Amalfi",
+      "list": [
+        "Die meisten Abfahrten erfolgen an den Uferstegen von Amalfi nahe der Piazza Flavio Gioia.",
+        "Achte auf Travelmar-Schalter und Beschilderung entlang der Promenade.",
+        "Prüfe auf deinem Ticket den richtigen Steg; das Personal hilft dir bei Unsicherheit."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankunft in Positano",
+      "body": "Für eine Schritt-für-Schritt-Route vom Anleger bis zu unserer Tür lies den %LINK:ferryDockToBrikette|Fähranleger → Hostel-Brikette-Leitfaden%.",
+      "list": [
+        "Die Boote legen am Hauptanleger Spiaggia Grande in Positano an.",
+        "Mit Gepäck lohnt sich der Gepäckträgerdienst oder der Interno-Positano-Bus, um Treppen zu sparen.",
+        "Der Aufstieg mit schweren Taschen kann in der Sommerhitze anstrengend sein."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi til Positano med ferge | Hostel Brikette",
+    "description": "Amalfi til Positano med ferge: tider, billetter, hvor du går om bord i Amalfi og hvordan du kommer deg fra kaien til Hostel Brikette med minst mulig trapper."
+  },
+  "intro": {
+    "title": "Amalfi til Positano — ferge",
+    "body": "Følg disse trinnene for å reise fra Amalfi til Positano med ferge. Du får tips om billetter, hvor du går om bord i Amalfi, hva som venter ved ankomst og hvordan du kommer deg til Hostel Brikette fra kaien med færrest mulig trapper."
+  },
+  "callouts": {
+    "tip": "Trenger du andre transportalternativer? Åpne %HOWTO:how-to-get-here|oversikten Slik kommer du hit% for busser, kombinerte ruter og flyplasstransport."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "list": [
+        "Hyppige sesongferger forbinder Amalfi og Positano med naturskjønne kystutsikter.",
+        "Travelmar driver jevnlige avganger; rutene kan variere med sesong og vær.",
+        "Sjekk alltid oppdaterte rutetider på reisedagen."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og rutetider",
+      "list": [
+        "Kjøp billetter på nett på forhånd i høysesongen.",
+        "Møt opp 15–20 minutter før avgang for ombordstigningskøene.",
+        "Ha billetten eller QR-koden klar for kontroll av personalet."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Hvor du går om bord i Amalfi",
+      "list": [
+        "De fleste avgangene går fra Amalfis brygger ved Piazza Flavio Gioia.",
+        "Se etter Travelmar-skranker og skilt langs promenaden.",
+        "Bekreft riktig brygge på billetten; personalet kan vise deg hvis du er usikker."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Ankomst i Positano",
+      "body": "For en trinnvis rute fra kaien til døren vår, les %LINK:ferryDockToBrikette|guiden Fergekaien → Hostel Brikette%.",
+      "list": [
+        "Båtene legger til ved Positanos hovedkai på Spiaggia Grande.",
+        "Med bagasje kan du vurdere portertjenesten eller Interno Positano-bussen for færre trapper.",
+        "Å gå oppover med tunge kofferter kan være krevende i sommervarmen."
+      ]
+    }
+  ]
+}

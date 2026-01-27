@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi–Positano komp | Hostel Brikette",
+    "description": "Komp Amalfi és Positano között: menetrendek, jegyek, beszállás Amalfiból és útvonal a Hostel Brikette-hez minimális lépcsővel."
+  },
+  "intro": {
+    "title": "Amalfi → Positano — Komp",
+    "body": "Kövesse ezeket a lépéseket, ha Amalfiból Positanóba komppal érkezik. Tippeket talál a jegyekhez, a beszállási ponthoz, az érkezés utáni teendőkhöz és ahhoz, hogyan jusson el a Hostel Brikette-hez a lehető legkevesebb lépcsővel."
+  },
+  "callouts": {
+    "tip": "Más közlekedési lehetőséget keres? Nyissa meg a %HOWTO:how-to-get-here|Hogyan juthat el hozzánk áttekintést% buszokhoz, kombinált útvonalakhoz és reptéri transzferekhez."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "list": [
+        "Szezonban gyakori kompok járnak Amalfi és Positano között, csodás tengerparti panorámával.",
+        "A Travelmar üzemelteti a legtöbb járatot; a menetrend az évszaktól és az időjárástól függően változhat.",
+        "Indulás napján mindig ellenőrizze az aktuális menetrendet."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és menetrend",
+      "list": [
+        "A csúcsszezonban érdemes előre, online jegyet vásárolni.",
+        "Érkezzen 15–20 perccel előbb a beszállási sorok miatt.",
+        "Tartsa kéznél a jegyet vagy QR-kódot az ellenőrzéshez."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Beszállás Amalfi városában",
+      "list": [
+        "A legtöbb járat az amalfii vízparti mólókról indul, a Piazza Flavio Gioia közelében.",
+        "Keresse a Travelmar pultjait és a sétány menti táblákat.",
+        "Jegyén ellenőrizze a megfelelő mólót; bizonytalanság esetén a személyzet segít."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Érkezés Positanóba",
+      "body": "Lépésről lépésre leírást a mólótól a bejáratig a %LINK:ferryDockToBrikette|Kikötő → Hostel Brikette útmutatóban% talál.",
+      "list": [
+        "A hajók Positano fő mólójára, a Spiaggia Grande strandra érkeznek.",
+        "Csomaggal érdemes igénybe venni a hordárszolgálatot vagy az Interno Positano buszt, hogy elkerülje a lépcsőket.",
+        "A meredek emelkedő nyári hőségben megterhelő lehet, ha nehéz bőröndöt visz."
+      ]
+    }
+  ]
+}

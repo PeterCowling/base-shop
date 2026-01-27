@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi a Positano en ferry | Hostel Brikette",
+    "description": "Amalfi a Positano en ferry: horarios, billetes, dónde embarcar en Amalfi y cómo llegar al Hostel Brikette desde el muelle con el mínimo de escalones."
+  },
+  "intro": {
+    "title": "Amalfi a Positano — Ferry",
+    "body": "Sigue estos pasos para viajar de Amalfi a Positano en ferry. Encontrarás consejos sobre billetes, puntos de embarque en Amalfi, qué esperar al llegar y cómo llegar al Hostel Brikette desde el muelle con el menor número posible de escaleras."
+  },
+  "callouts": {
+    "tip": "¿Necesitas otras opciones de transporte? Abre la %HOWTO:how-to-get-here|guía Cómo llegar% para encontrar autobuses, rutas mixtas y traslados desde el aeropuerto."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del viaje",
+      "list": [
+        "Los ferris estacionales frecuentes conectan Amalfi y Positano con vistas panorámicas de la costa.",
+        "Travelmar opera servicios regulares; los horarios pueden variar según la temporada y el clima.",
+        "Comprueba siempre los horarios actualizados el día del viaje."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetes y horarios",
+      "list": [
+        "Compra los billetes en línea con antelación durante los meses de mayor afluencia.",
+        "Llega con 15–20 minutos de margen para las colas de embarque.",
+        "Mantén tu billete o código QR a mano para las comprobaciones del personal."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Dónde embarcar en Amalfi",
+      "list": [
+        "La mayoría de las salidas parten de los muelles del paseo marítimo de Amalfi, cerca de la Piazza Flavio Gioia.",
+        "Busca los mostradores y la señalización de Travelmar a lo largo del paseo marítimo.",
+        "Confirma el muelle correcto en tu billete; el personal puede orientarte si tienes dudas."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Llegada a Positano",
+      "body": "Para una ruta paso a paso desde el muelle hasta nuestra puerta, consulta la %LINK:ferryDockToBrikette|guía Muelle del ferry → Hostel Brikette%.",
+      "list": [
+        "Los barcos llegan al muelle principal de Positano, en la Spiaggia Grande.",
+        "Si llevas equipaje, valora el servicio de porteadores o el autobús Interno Positano para reducir las escaleras.",
+        "Subir la cuesta con equipaje pesado puede ser extenuante con el calor del verano."
+      ]
+    }
+  ]
+}

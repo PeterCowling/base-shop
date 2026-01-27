@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Amalfi para Positano de ferry | Hostel Brikette",
+    "description": "Amalfi para Positano de ferry: horários, bilhetes, onde embarcar em Amalfi e como chegar ao Hostel Brikette a partir do cais com o mínimo de escadas."
+  },
+  "intro": {
+    "title": "Amalfi para Positano — Ferry",
+    "body": "Siga estes passos para viajar de Amalfi para Positano de ferry. Encontre dicas sobre bilhetes, onde embarcar em Amalfi, o que esperar na chegada e como chegar ao Hostel Brikette a partir do cais com o mínimo de escadas."
+  },
+  "callouts": {
+    "tip": "Precisa de outras opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para rotas de autocarro, itinerários combinados e transferes do aeroporto."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumo da viagem",
+      "list": [
+        "Ferries sazonais frequentes ligam Amalfi e Positano com vistas costeiras panorâmicas.",
+        "A Travelmar opera serviços regulares; os horários podem variar conforme a época e o estado do tempo.",
+        "Verifique sempre os horários em tempo real no dia da viagem."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e horários",
+      "list": [
+        "Compre bilhetes online com antecedência nos meses de maior procura.",
+        "Chegue 15–20 minutos mais cedo para as filas de embarque.",
+        "Mantenha o bilhete ou o código QR acessível para as verificações da equipa."
+      ]
+    },
+    {
+      "id": "amalfiBoarding",
+      "title": "Onde embarcar em Amalfi",
+      "list": [
+        "A maioria das partidas sai dos cais à beira-mar de Amalfi, junto à Piazza Flavio Gioia.",
+        "Procure os balcões e a sinalética da Travelmar ao longo da marginal.",
+        "Confirme o cais correto no seu bilhete; a equipa pode orientá-lo caso tenha dúvidas."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Chegada a Positano",
+      "body": "Para um percurso detalhado do cais até à nossa porta, leia o %LINK:ferryDockToBrikette|guia Ferry dock → Hostel Brikette%.",
+      "list": [
+        "Os barcos chegam ao cais principal de Positano, na Spiaggia Grande.",
+        "Com bagagem, considere o serviço de carregadores ou o autocarro Interno Positano para reduzir as escadas.",
+        "Subir com malas pesadas pode ser exigente no calor do verão."
+      ]
+    }
+  ]
+}

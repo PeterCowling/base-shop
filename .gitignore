@@ -85,6 +85,9 @@ packages/types/src/**/*.d.ts.map
 # ---------------------------
 # Agent ephemeral files
 # ---------------------------
+# Local Claude skill/config backups (ephemeral; should not be committed)
+.claude.backup/
+
 # Session learnings (may contain task details, gitignored)
 .agents/learnings/*
 !.agents/learnings/.gitkeep

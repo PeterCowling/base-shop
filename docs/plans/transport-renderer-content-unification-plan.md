@@ -92,7 +92,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Wire manifest blocks into `GuideSeoTemplate` (buildBlockTemplate → slot props/config) | 90% | M | Complete (2026-01-27) | - |
 | TASK-02 | IMPLEMENT | Add `callout` block type + handler (tip/cta/aside) | 90% | M | Complete (2026-01-27) | TASK-01 |
-| TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Pending | TASK-01 |
+| TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Pending | TASK-01 |
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Pending | - |
 | TASK-06 | IMPLEMENT | Build transformation tool (library + CLI) with validation + golden tests | 90% | M | Pending | TASK-05 |
@@ -223,6 +223,27 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 - **Test plan:**
   - Unit test for `ZoomableImageGallery` open/close behaviour.
   - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=\"ZoomableImageGallery\" --maxWorkers=2`
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** cef2285a10
+- **TDD cycle:**
+  - Test written: `apps/brikette/src/test/routes/guides/__tests__/gallery-block-zoomable.test.tsx`
+  - Test covers: default non-zoomable behavior, zoomable variant, dialog interaction, accessibility
+  - Implementation complete: zoomable option, ZoomableImageGallery component, conditional rendering
+- **Validation:**
+  - Ran: `pnpm typecheck --filter @apps/brikette` — PASS
+  - Schema validation: zoomable?: boolean added to GalleryBlockOptions
+- **Documentation updated:** None required (plan is the doc)
+- **Implementation notes:**
+  - Added `zoomable?: boolean` to GalleryBlockOptions schema
+  - Created ZoomableImageGallery component using Dialog primitives from design system
+  - Component features: hover zoom indicator (ZoomIn icon), click to open fullscreen dialog
+  - Dialog shows full-res image with title (caption or alt text) and close button
+  - Keyboard accessible: Escape to close, Enter/Space to open (via Dialog primitives)
+  - Updated galleryBlock handler with conditional: `options.zoomable === true ? ZoomableImageGallery : ImageGallery`
+  - Backwards compatibility: default remains non-zoomable when option is omitted or false
 
 ### TASK-04: Add explicit transport drop-in block for Chiesa Nuova
 

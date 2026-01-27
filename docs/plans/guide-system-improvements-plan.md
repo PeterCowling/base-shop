@@ -1,9 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: CMS / UI / Platform
 Created: 2026-01-27
 Last-updated: 2026-01-27
+Completed: 2026-01-27
 Feature-Slug: guide-system-improvements
 Fact-Find: docs/plans/guide-system-improvements-fact-find.md
 Overall-confidence: 86%
@@ -111,10 +112,10 @@ Key improvements:
 | Task ID | Type | Description | CI | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Create comprehensive guides/README.md with architecture overview | 92% | S | Complete (2026-01-27) | - |
-| TASK-02 | IMPLEMENT | Enhance create-guide script with interactive prompts + multi-locale stubs | 88% | S | Pending | - |
-| TASK-03 | IMPLEMENT | Add strict Zod content schema with validation | 86% | S | Pending | - |
-| TASK-04 | IMPLEMENT | Build link token validator for build-time checks | 90% | S | Pending | TASK-03 |
-| TASK-05 | IMPLEMENT | Integrate i18n coverage reporting into CI | 84% | S | Pending | - |
+| TASK-02 | IMPLEMENT | Enhance create-guide script with interactive prompts + multi-locale stubs | 88% | S | Complete (2026-01-27) | - |
+| TASK-03 | IMPLEMENT | Add strict Zod content schema with validation | 86% | S | Complete (2026-01-27) | - |
+| TASK-04 | IMPLEMENT | Build link token validator for build-time checks | 90% | S | Complete (2026-01-27) | TASK-03 |
+| TASK-05 | IMPLEMENT | Integrate i18n coverage reporting into CI | 84% | S | Complete (2026-01-27) | - |
 
 > Effort scale: S=1, M=2, L=3
 
@@ -446,6 +447,32 @@ Key improvements:
   - Existing script: apps/brikette/scripts/check-i18n-coverage.ts
   - CI artifact pattern: .github/workflows/ (check existing artifact upload steps)
   - JSON output: apps/brikette/i18n-coverage-report.json (existing output file)
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** 8dce9324af
+- **TDD cycle:**
+  - Tests written/completed: src/test/i18n/check-i18n-coverage.test.ts (5 tests)
+  - All tests passed (validates JSON output format, per-locale reports, summary statistics)
+  - Test coverage: JSON schema validation, --fail-on-missing flag, summary calculations
+- **Validation:**
+  - Ran: `pnpm exec jest src/test/i18n/check-i18n-coverage.test.ts --runInBand` — PASS (5/5 tests)
+  - Ran: `pnpm typecheck` — PASS
+  - Pre-commit hooks: lint-staged, typecheck via husky — PASS
+- **Documentation updated:**
+  - README.md: Added "i18n Coverage Tracking" section with CLI commands, JSON schema, CI integration details
+  - Section includes: coverage check commands, report structure, CI artifact access, threshold notes
+- **Implementation notes:**
+  - Script already had JSON output capability (--json flag, --output path, --fail-on-missing)
+  - Created integration tests to verify JSON output format and schema compliance
+  - Added i18n-coverage job to .github/workflows/test.yml
+  - CI job generates JSON report, uploads as artifact, displays summary in logs
+  - Job runs on push to main, workflow_dispatch, and schedule (3am daily)
+  - Coverage checks are informational only (do not block builds)
+  - Report includes: per-locale missing files/keys, summary totals across all 18 locales
+  - JSON schema version 1: baselineLocale, locales[], summary{totalMissingFiles, totalMissingKeys}, reports[]
+  - No deviations from plan - all acceptance criteria met
 
 ---
 

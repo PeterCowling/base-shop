@@ -10,6 +10,7 @@ import {
   getHowToGetHereRouteTags,
   isHowToGetHereRouteGuideKey,
 } from "@/data/how-to-get-here/routeGuides";
+import { GUIDE_BASE_KEY_OVERRIDES, guideNamespace } from "@/guides/slugs/namespaces";
 import { GUIDE_SLUG_OVERRIDES } from "@/guides/slugs/overrides";
 import { resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
 import type { AppLanguage } from "@/i18n.config";
@@ -160,6 +161,30 @@ describe("routeGuides", () => {
           const resolved = resolveGuideKeyFromSlug(slug, lang);
           expect(resolved).toBe(key);
         }
+      }
+    });
+  });
+
+  // TASK-03: GUIDE_BASE_KEY_OVERRIDES integration
+  describe("GUIDE_BASE_KEY_OVERRIDES integration (TASK-03)", () => {
+    it("every route guide key has a base key override entry", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        expect(GUIDE_BASE_KEY_OVERRIDES[key as never]).toBeDefined();
+      }
+    });
+
+    it("all base key overrides are set to howToGetHere", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        expect(GUIDE_BASE_KEY_OVERRIDES[key as never]).toBe("howToGetHere");
+      }
+    });
+
+    it("guideNamespace returns howToGetHere baseKey for all route keys", () => {
+      const testLang = "en" as AppLanguage;
+
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const namespace = guideNamespace(testLang, key as never);
+        expect(namespace.baseKey).toBe("howToGetHere");
       }
     });
   });

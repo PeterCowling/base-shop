@@ -20,6 +20,32 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
   // Point-to-point arrival/departure routes belong under How‑To‑Get‑Here
   naplesPositano: "howToGetHere",
   salernoPositano: "howToGetHere",
+  // --- How-to-get-here transport routes (TASK-03) ---
+  amalfiPositanoBus: "howToGetHere",
+  amalfiPositanoFerry: "howToGetHere",
+  capriPositanoFerry: "howToGetHere",
+  naplesAirportPositanoBus: "howToGetHere",
+  naplesCenterPositanoFerry: "howToGetHere",
+  naplesCenterTrainBus: "howToGetHere",
+  positanoAmalfiBus: "howToGetHere",
+  positanoAmalfiFerry: "howToGetHere",
+  positanoCapriFerry: "howToGetHere",
+  positanoNaplesAirportBus: "howToGetHere",
+  positanoNaplesCenterBusTrain: "howToGetHere",
+  positanoNaplesCenterFerry: "howToGetHere",
+  positanoRavelloBus: "howToGetHere",
+  positanoRavelloFerryBus: "howToGetHere",
+  positanoSalernoBus: "howToGetHere",
+  positanoSalernoFerry: "howToGetHere",
+  positanoSorrentoBus: "howToGetHere",
+  positanoSorrentoFerry: "howToGetHere",
+  positanoToNaplesDirectionsByFerry: "howToGetHere",
+  ravelloPositanoBus: "howToGetHere",
+  salernoPositanoBus: "howToGetHere",
+  salernoPositanoFerry: "howToGetHere",
+  sorrentoPositanoBus: "howToGetHere",
+  sorrentoPositanoFerry: "howToGetHere",
+  // --- End how-to-get-here transport routes ---
   // General planning/help belong under Assistance
   onlyHostel: "assistance",
   porterServices: "assistance",
@@ -59,18 +85,25 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
   reachBudget: "assistance",
 };
 
-export function guideNamespaceKey(key: GuideKey): "experiences" | "howToGetHere" | "assistance" {
-  const override = GUIDE_BASE_KEY_OVERRIDES[key];
-  if (override) {
-    return override;
-  }
-  const manifestEntry = getGuideManifestEntry(key);
-  if (manifestEntry) {
-    const primary = guideAreaToSlugKey(manifestEntry.primaryArea);
+export function guideNamespaceKey(
+  key: GuideKey,
+  manifestEntry?: GuideManifestEntry,
+): "experiences" | "howToGetHere" | "assistance" {
+  // Manifest-first: if we have a manifest entry with areas, use primaryArea
+  const entry = manifestEntry ?? getGuideManifestEntry(key);
+  if (entry) {
+    const primary = guideAreaToSlugKey(entry.primaryArea);
     if (primary === "experiences" || primary === "howToGetHere" || primary === "assistance") {
       return primary;
     }
   }
+
+  // Fallback: check GUIDE_BASE_KEY_OVERRIDES for legacy compatibility
+  const override = GUIDE_BASE_KEY_OVERRIDES[key];
+  if (override) {
+    return override;
+  }
+
   return "experiences";
 }
 
@@ -104,12 +137,7 @@ export function publishedGuideKeysByBase(
       : undefined;
 
   for (const key of GUIDE_KEYS as GuideKey[]) {
-    const override = GUIDE_BASE_KEY_OVERRIDES[key];
-    if (override) {
-      groups[override].push(key);
-      continue;
-    }
-    const manifestEntry = manifestLookup?.[key];
+    const manifestEntry = manifestLookup?.[key] ?? getGuideManifestEntry(key);
     const status =
       statusMap?.[key] ??
       (manifestEntry
@@ -122,12 +150,17 @@ export function publishedGuideKeysByBase(
       continue;
     }
 
+    // Manifest-first: use manifest areas, fall back to GUIDE_BASE_KEY_OVERRIDES
     const areaCandidates = manifestEntry
       ? [
           guideAreaToSlugKey(manifestEntry.primaryArea),
           ...manifestEntry.areas.map((area) => guideAreaToSlugKey(area)),
         ]
-      : [guideNamespaceKey(key)];
+      : (() => {
+          // Legacy fallback when no manifest entry
+          const override = GUIDE_BASE_KEY_OVERRIDES[key];
+          return override ? [override] : ["experiences" as const];
+        })();
 
     const uniqueAreas = Array.from(new Set(areaCandidates));
 

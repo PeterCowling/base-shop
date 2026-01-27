@@ -12,7 +12,10 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests",
     "generate:url-fixtures": "cd /tmp && npx tsx $OLDPWD/scripts/generate-url-fixtures.ts",
     "gen:translation-stub": "cd /tmp && npx tsx $OLDPWD/scripts/generate-translation-stub.ts",
-    "create-guide": "pnpm exec tsx ./scripts/create-guide.ts"
+    "create-guide": "pnpm exec tsx ./scripts/create-guide.ts",
+    "convert-articles": "cd /tmp && npx tsx $OLDPWD/scripts/convert-assistance-articles-to-guides.ts",
+    "migrate-route": "pnpm exec tsx ./scripts/migrate-transport-route.ts",
+    "test:content-readiness": "pnpm exec jest --testPathPattern '(test/i18n/|routes/guides/__tests__|data/assistanceGuideKeys)' --maxWorkers=2"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

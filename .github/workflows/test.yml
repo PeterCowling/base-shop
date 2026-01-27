@@ -79,3 +79,40 @@ jobs:
           name: ${{ steps.coverage-name.outputs.name }}
           path: ${{ matrix.workspace }}/coverage
           if-no-files-found: ignore
+
+  i18n-coverage:
+    name: Check i18n Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run i18n coverage check
+        run: pnpm --filter @apps/brikette check-i18n-coverage --json --output=i18n-coverage-report.json
+      - name: Display coverage summary
+        if: always()
+        run: |
+          if [ -f apps/brikette/i18n-coverage-report.json ]; then
+            echo "## i18n Coverage Summary"
+            TOTAL_MISSING_FILES=$(jq '.summary.totalMissingFiles' apps/brikette/i18n-coverage-report.json)
+            TOTAL_MISSING_KEYS=$(jq '.summary.totalMissingKeys' apps/brikette/i18n-coverage-report.json)
+            echo "- Missing files: $TOTAL_MISSING_FILES"
+            echo "- Missing keys: $TOTAL_MISSING_KEYS"
+
+            # Show per-locale summary
+            echo ""
+            echo "### Per-locale Breakdown"
+            jq -r '.reports[] | "- \(.locale): \(.missingFiles | length) files, \((.missingKeys | to_entries | map(.value | length) | add // 0)) keys"' apps/brikette/i18n-coverage-report.json
+          else
+            echo "Coverage report not found"
+          fi
+      - name: Upload i18n coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-coverage-report
+          path: apps/brikette/i18n-coverage-report.json
+          if-no-files-found: warn

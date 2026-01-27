@@ -293,6 +293,51 @@ pnpm validate-links --verbose
 - Suggested corrections for typos
 - Summary: total files, tokens found, violations
 
+#### i18n Coverage Tracking
+
+Translation coverage is tracked to ensure all guides are properly localized across all 18 supported locales.
+
+**Checking coverage:**
+```bash
+# Run coverage check (text output)
+pnpm check-i18n-coverage
+
+# Generate JSON report
+pnpm check-i18n-coverage --json --output=i18n-coverage-report.json
+
+# Show verbose output with all missing keys
+pnpm check-i18n-coverage --verbose
+
+# Fail if missing translations found (for CI)
+pnpm check-i18n-coverage --fail-on-missing
+```
+
+**Report structure (JSON):**
+- `baselineLocale` — Reference locale (en)
+- `locales` — Array of checked locales (all except baseline)
+- `summary.totalMissingFiles` — Count of completely missing files
+- `summary.totalMissingKeys` — Count of missing translation keys
+- `reports[]` — Per-locale breakdown:
+  - `locale` — Locale code (de, fr, it, etc.)
+  - `missingFiles[]` — Array of file paths missing in this locale
+  - `missingKeys` — Object mapping file paths to array of missing keys
+
+**CI integration:**
+Coverage checks run automatically on push to `main` via `.github/workflows/test.yml`:
+- Generates JSON report with structured data
+- Uploads report as CI artifact for historical tracking
+- Displays summary in workflow logs (missing files/keys per locale)
+- Does not fail builds (informational only)
+
+**Accessing CI reports:**
+1. Go to GitHub Actions → Package Quality Matrix workflow
+2. Find the i18n-coverage job
+3. Download the `i18n-coverage-report` artifact
+4. Or view the summary in the job logs
+
+**Coverage thresholds:**
+Currently informational only. Future enhancement: enforce thresholds for new guides while grandfathering existing gaps.
+
 ### SEO & Metadata
 
 Located in [`guide-seo/`](./guide-seo/):

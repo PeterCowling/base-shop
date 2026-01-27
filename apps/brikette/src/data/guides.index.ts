@@ -23,11 +23,11 @@ export type GuideNamespaceKey = "experiences" | "assistance" | "howToGetHere";
 /**
  * Section type for GUIDES_INDEX and guide filtering.
  *
- * GUIDES_INDEX now uses GuideNamespaceKey values (experiences, assistance, howToGetHere).
- * The legacy "help" value is included for backwards compatibility with consumers
- * that still filter by "help" - these will be updated in TASK-03.
+ * GUIDES_INDEX uses GuideNamespaceKey values (experiences, assistance, howToGetHere).
+ * The legacy "help" value is included for backwards compatibility with block configs
+ * that may still reference "help" - it will be normalized by normaliseGuideSection().
  *
- * After TASK-03, this type will be simplified to just GuideNamespaceKey.
+ * New code should use GuideNamespaceKey values directly.
  */
 export type GuideSection = GuideNamespaceKey | "help";
 

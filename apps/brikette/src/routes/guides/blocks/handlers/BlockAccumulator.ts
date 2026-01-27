@@ -21,7 +21,16 @@ interface AccumulatorSlots {
 export type TemplateFragment = Partial<GuideSeoTemplateProps>;
 
 function normaliseGuideSection(value: unknown): GuideSection | undefined {
-  if (value === "help" || value === "experiences") return value;
+  // Accept new namespace values (experiences, assistance, howToGetHere)
+  // Also accept legacy "help" for backwards compatibility with older block configs
+  if (
+    value === "experiences" ||
+    value === "assistance" ||
+    value === "howToGetHere" ||
+    value === "help"
+  ) {
+    return value as GuideSection;
+  }
   return undefined;
 }
 

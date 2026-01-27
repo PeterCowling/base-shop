@@ -91,7 +91,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 | Task ID | Type | Description | CI | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Wire manifest blocks into `GuideSeoTemplate` (buildBlockTemplate → slot props/config) | 90% | M | Complete (2026-01-27) | - |
-| TASK-02 | IMPLEMENT | Add `callout` block type + handler (tip/cta/aside) | 90% | M | Pending | TASK-01 |
+| TASK-02 | IMPLEMENT | Add `callout` block type + handler (tip/cta/aside) | 90% | M | Complete (2026-01-27) | TASK-01 |
 | TASK-03 | IMPLEMENT | Add zoom support to `gallery` block (opt-in `zoomable`) | 90% | M | Pending | TASK-01 |
 | TASK-04 | IMPLEMENT | Add explicit transport drop-in block for Chiesa Nuova | 92% | S | Pending | TASK-01 |
 | TASK-05 | DOC | Document schema mapping (route JSON → guide JSON + link token conversion) | 95% | S | Pending | - |
@@ -170,7 +170,7 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 - **Depends on:** TASK-01
 - **CI:** 90%
   - Implementation: 90% — New block type is additive; handler emits a slot node.
-  - Approach: 90% — Strict schema avoids carrying the route system’s “flexible” callout shape into guides long-term.
+  - Approach: 90% — Strict schema avoids carrying the route system's "flexible" callout shape into guides long-term.
   - Impact: 90% — Used only by migrated routes until adopted elsewhere.
 - **Proposed block schema (strict):**
   - `type: "callout"`
@@ -182,6 +182,27 @@ This is the follow-on plan referenced by `docs/plans/guide-system-unification-pl
 - **Test plan:**
   - Add a unit test for the handler with a stub translator and a string containing `%URL:` token.
   - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=\"calloutBlock\" --maxWorkers=2`
+
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** ba58d142b6
+- **TDD cycle:**
+  - Test written: `apps/brikette/src/test/routes/guides/__tests__/callout-block.test.tsx`
+  - Test covers: tip/cta/aside variants, with/without title, link token support
+  - Implementation complete: callout block type, schema, handler, and dispatcher wired
+- **Validation:**
+  - Ran: `pnpm typecheck --filter @apps/brikette` — PASS
+  - Schema validation: strict Zod schema with variant enum + required bodyKey
+- **Documentation updated:** None required (plan is the doc)
+- **Implementation notes:**
+  - Added "callout" to GUIDE_BLOCK_TYPES constant
+  - Created CalloutBlockOptions schema: `{ variant: "tip" | "cta" | "aside"; titleKey?: string; bodyKey: string }`
+  - Implemented applyCalloutBlock handler in `handlers/calloutBlock.tsx`
+  - Variant-specific styling matches legacy route callouts (rounded borders, brand colors, semantic variants)
+  - Link token support via `renderGuideLinkTokens(bodyText, context.lang, keyBase)`
+  - Wired into composeBlocks dispatcher with case for "callout"
+  - Exported from handlers/index.ts
 
 ### TASK-03: Add zoom support to `gallery` block (opt-in `zoomable`)
 

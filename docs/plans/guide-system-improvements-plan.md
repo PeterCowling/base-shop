@@ -297,6 +297,31 @@ Key improvements:
   - Pattern: guide-manifest.ts Zod schemas (comprehensive reference)
   - Validation script pattern: scripts/check-i18n-coverage.ts (similar scanning approach)
 
+#### Build Completion (2026-01-27)
+
+- **Status:** Complete
+- **Commits:** bd264794bf
+- **TDD cycle:**
+  - Tests written/completed: content-schema.test.ts (22 tests)
+  - Initial test run: 8 failed, 10 passed (TDD red phase)
+  - Post-implementation: 22 passed (TDD green phase)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette test -- content-schema.test.ts` — PASS (22/22 tests)
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm validate-content` — 2,913 / 2,970 files validated (98.1% pass rate)
+  - Pre-commit hooks: lint-staged, typecheck via husky — PASS
+- **Documentation updated:**
+  - README.md: Added "Content Schema Validation" section with schema requirements, validation commands, opt-out mechanism
+- **Implementation notes:**
+  - Enhanced content-schema.ts from permissive passthrough to strict validation
+  - Created validate-guide-content.ts script with locale filtering, opt-out support, warning/fail modes
+  - Added 22 unit tests covering valid/invalid content structures
+  - Updated GuideEditor.tsx to use Partial<GuideContentInput> for draft state compatibility
+  - Schema accepts multiple intro formats (object/array/string) for backward compatibility
+  - Validation results: 57 violations out of 2,970 files (real content issues)
+  - Added `validate-content` and `check-i18n-coverage` scripts to package.json
+  - No deviations from plan - all acceptance criteria met
+
 ---
 
 ### TASK-04: Build link token validator

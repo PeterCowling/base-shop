@@ -911,6 +911,29 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
     - `pnpm --filter @apps/brikette test routeGuides -- --maxWorkers=2`
     - targeted transformer/parity tests for migrated routes only (`--testPathPattern`)
 
+#### Build Progress (2026-01-27)
+
+**Batch 1 Complete** (4 routes migrated):
+- ✅ amalfi-positano-bus
+- ✅ naples-airport-positano-bus
+- ✅ naples-center-train-bus
+- ✅ positano-amalfi-bus
+
+**Commit:** a8399acd8a
+
+**Validation:**
+- Ran: `pnpm typecheck` — PASS
+- Generated guide content for all 18 locales per route
+- Added manifest entries to guide-manifest.ts
+- Added guide key mappings to generate-guide-slugs.ts
+- Added routes to MIGRATED_ROUTE_SLUGS allowlist
+
+**Notes:**
+- capriPositanoFerry already existed (previously migrated, not in current context)
+- naples-center-positano-ferry skipped — route content missing header block (needs manual review)
+
+**Status:** 5/24 routes migrated (including pilot), 19 remaining
+
 ### TASK-09: Cleanup legacy renderer + content namespace usage
 
 - **Type:** IMPLEMENT

@@ -2,7 +2,7 @@
 Type: Policy
 Status: Active
 Domain: Testing
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-27
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
 ---
@@ -61,6 +61,51 @@ CI runs coverage collection for all workspaces (see `.github/workflows/test.yml`
 3. **Reduced CI noise** — Threshold failures don't block PRs on noise
 
 **CI gating** (failing PRs on threshold violations) will be revisited in June 2026 after local gate adoption is proven stable.
+
+### Turbo Cache Behavior
+
+The `test.yml` workflow uses Turbo to cache test results with coverage. This speeds up CI by skipping tests for unchanged packages.
+
+**Why `--coverageDirectory=coverage`?**
+
+The workflow uses `--coverageDirectory=coverage` (not the Jest preset's default) so that:
+1. Coverage outputs go to `<workspace>/coverage/` (package-local)
+2. Turbo's `outputs: ["coverage/**"]` matches these artifacts
+3. GitHub Actions can upload artifacts from `${{ matrix.workspace }}/coverage`
+
+**What Invalidates the Cache?**
+
+The test cache is invalidated when any of these change:
+
+| Category | Files |
+|----------|-------|
+| **Global config** (turbo.json `globalDependencies`) | `jest.coverage.cjs`, `jest.config.helpers.cjs`, `jest.moduleMapper.cjs`, `packages/config/jest.preset.cjs`, `packages/config/coverage-tiers.cjs`, `pnpm-lock.yaml` |
+| **Package inputs** (turbo.json `inputs`) | `src/**/*.ts`, `src/**/*.tsx`, `**/*.test.ts`, `**/*.test.tsx`, `**/*.spec.ts`, `**/*.spec.tsx`, `test/**`, `__tests__/**`, `package.json`, `tsconfig*.json`, `jest.config.*` |
+
+Changes to `README.md` or other non-code files do **not** invalidate the cache.
+
+**Special Cases**
+
+- **`packages/next-config`**: Uses Node's native test runner (not Jest). It runs `test:coverage` separately and is not routed through Turbo's `test` task.
+
+**Validating Cache Behavior Locally**
+
+```bash
+# Reset local Turbo cache (required for clean validation)
+pnpm exec turbo daemon stop && rm -rf node_modules/.cache/turbo
+
+# Dry-run to see cache status without executing
+pnpm exec turbo run test --filter=@acme/config --dry-run
+
+# Look for "MISS" (first run) or "HIT" (cached) in output
+```
+
+**Interpreting CI Logs**
+
+- **"cache hit"** or **"FULL TURBO"**: Tests were skipped (cached result used)
+- **"cache miss"**: Tests ran (no cached result)
+- **First run after merge**: Expect 100% cache misses (this seeds the cache)
+- **Subsequent runs**: Expect cache hits for unchanged packages
 
 ### Jest Integration
 
@@ -184,4 +229,6 @@ The coverage gate will fail CI once enabled. Until then, it's advisory.
 - [packages/config/coverage-tiers.cjs](../packages/config/coverage-tiers.cjs) — Tier definitions
 - [scripts/check-coverage.sh](../scripts/check-coverage.sh) — Local gate script
 - [jest.coverage.cjs](../jest.coverage.cjs) — Jest coverage configuration
+- [turbo.json](../turbo.json) — Turbo cache configuration (`test` task inputs and globalDependencies)
+- [docs/plans/coverage-caching-plan.md](plans/coverage-caching-plan.md) — Implementation plan for Turbo-based coverage caching
 - [docs/repo-quality-audit-2026-01.md](repo-quality-audit-2026-01.md) — Audit that identified coverage gaps

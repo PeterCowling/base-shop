@@ -1,6 +1,12 @@
 // src/data/guides.index.ts
 import type { GuideKey } from "@/guides/slugs";
 
+import {
+  HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS,
+  HOW_TO_GET_HERE_ROUTE_GUIDES,
+  type HowToGetHereRouteGuideKey,
+} from "./how-to-get-here/routeGuides";
+
 export type GuideSection = "help" | "experiences";
 export type GuideMeta = {
   key: GuideKey;
@@ -10,8 +16,22 @@ export type GuideMeta = {
 };
 
 const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
+  // --- Assistance articles (converted from legacy help system) ---
+  { key: "rules", section: "help", tags: ["policies", "hostel-life"], status: "draft" },
+  { key: "ageAccessibility", section: "help", tags: ["policies", "accessibility"], status: "draft" },
+  { key: "arrivingByFerry", section: "help", tags: ["transport", "ferry", "arrivals"], status: "draft" },
+  { key: "changingCancelling", section: "help", tags: ["booking", "cancellation"], status: "draft" },
+  { key: "checkinCheckout", section: "help", tags: ["booking", "hostel-life"], status: "draft" },
+  { key: "defectsDamages", section: "help", tags: ["policies", "hostel-life"], status: "draft" },
+  { key: "depositsPayments", section: "help", tags: ["booking", "payments"], status: "draft" },
+  { key: "legal", section: "help", tags: ["policies", "legal"], status: "draft" },
+  { key: "naplesAirportBus", section: "help", tags: ["transport", "bus", "naples"], status: "draft" },
+  { key: "security", section: "help", tags: ["policies", "safety", "hostel-life"], status: "draft" },
+  { key: "travelHelp", section: "help", tags: ["transport", "assistance"], status: "draft" },
+  { key: "bookingBasics", section: "help", tags: ["booking", "policies", "hostel-life"], status: "draft" },
+  // --- End assistance articles ---
+
   { key: "onlyHostel", section: "help", tags: ["accommodation", "hostel-life", "positano"] },
-  { key: "backpackerItineraries", section: "experiences", tags: ["budgeting", "itinerary", "positano"] },
   { key: "howToGetToPositano", section: "help", tags: ["transport", "decision", "positano"] },
   { key: "reachBudget", section: "help", tags: ["transport", "budgeting"] },
   { key: "ferrySchedules", section: "help", tags: ["transport", "ferry"] },
@@ -190,10 +210,7 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
     section: "experiences",
     tags: ["cuisine", "positano", "tips"],
   },
-  { key: "itinerariesPillar", section: "experiences", tags: ["itinerary", "amalfi", "pillar"] },
-  { key: "weekend48Positano", section: "experiences", tags: ["itinerary", "positano", "weekend"] },
-  { key: "sevenDayNoCar", section: "experiences", tags: ["itinerary", "amalfi", "no-car"] },
-  { key: "dayTripsAmalfi", section: "experiences", tags: ["itinerary", "day-trip", "amalfi", "capri", "pompeii", "ravello"] },
+  { key: "dayTripsAmalfi", section: "experiences", tags: ["day-trip", "amalfi", "capri", "pompeii", "ravello"] },
   { key: "transportBudget", section: "help", tags: ["transport", "budgeting", "passes"] },
   { key: "salernoVsNaples", section: "help", tags: ["transport", "budgeting", "decision"] },
   { key: "offSeasonLongStay", section: "help", tags: ["digital-nomads", "off-season", "positano"] },
@@ -206,7 +223,6 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
   { key: "transportMoneySaving", section: "help", tags: ["budgeting", "transport", "tips"] },
   { key: "workAndTravelPositano", section: "help", tags: ["digital-nomads", "work-life", "positano"] },
   { key: "souvenirsAmalfi", section: "experiences", tags: ["souvenirs", "budgeting", "amalfi", "positano"] },
-  { key: "backpackingSouthernItaly", section: "experiences", tags: ["itinerary", "southern-italy", "amalfi", "positano"] },
   { key: "positanoCostComparison", section: "help", tags: ["comparison", "cost", "positano"] },
   { key: "travelInsuranceAmalfi", section: "help", tags: ["insurance", "amalfi", "positano"] },
   { key: "hitchhikingAmalfi", section: "help", tags: ["hitchhiking", "amalfi", "budgeting"] },
@@ -223,6 +239,16 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
   { key: "italianPhrasesCampania", section: "help", tags: ["language", "campania", "positano", "travel-tips"] },
   { key: "ecoFriendlyAmalfi", section: "help", tags: ["sustainability", "amalfi", "positano", "hiking", "travel-tips"] },
   { key: "drivingAmalfi", section: "help", tags: ["transport", "car", "amalfi", "positano", "couples", "families"] },
+
+  // --- How-to-get-here transport routes (TASK-04) ---
+  // Tags are derived from the canonical routeGuides.ts mapping (single source of truth).
+  ...HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.map((key) => ({
+    key: key as GuideKey,
+    section: "help" as const,
+    tags: [...HOW_TO_GET_HERE_ROUTE_GUIDES[key as HowToGetHereRouteGuideKey].tags],
+    status: "published" as const,
+  })),
+  // --- End how-to-get-here transport routes ---
 ];
 
 // Ensure every entry has an explicit status (default to 'published')

@@ -10,6 +10,7 @@ import {
   getHowToGetHereRouteTags,
   isHowToGetHereRouteGuideKey,
 } from "@/data/how-to-get-here/routeGuides";
+import { GUIDES_INDEX } from "@/data/guides.index";
 import { GUIDE_BASE_KEY_OVERRIDES, guideNamespace } from "@/guides/slugs/namespaces";
 import { GUIDE_SLUG_OVERRIDES } from "@/guides/slugs/overrides";
 import { resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
@@ -185,6 +186,48 @@ describe("routeGuides", () => {
       for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
         const namespace = guideNamespace(testLang, key as never);
         expect(namespace.baseKey).toBe("howToGetHere");
+      }
+    });
+  });
+
+  // TASK-04: GUIDES_INDEX integration
+  describe("GUIDES_INDEX integration (TASK-04)", () => {
+    it("every route guide key has a GUIDES_INDEX entry", () => {
+      const indexKeys = new Set(GUIDES_INDEX.map((g) => g.key));
+
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        expect(indexKeys.has(key)).toBe(true);
+      }
+    });
+
+    it("all GUIDES_INDEX entries have section help", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const entry = GUIDES_INDEX.find((g) => g.key === key);
+        expect(entry?.section).toBe("help");
+      }
+    });
+
+    it("all GUIDES_INDEX entries have status published", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const entry = GUIDES_INDEX.find((g) => g.key === key);
+        expect(entry?.status).toBe("published");
+      }
+    });
+
+    it("all GUIDES_INDEX entries have transport tag", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const entry = GUIDES_INDEX.find((g) => g.key === key);
+        expect(entry?.tags).toContain("transport");
+      }
+    });
+
+    it("GUIDES_INDEX tags match canonical routeGuides tags", () => {
+      for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
+        const indexEntry = GUIDES_INDEX.find((g) => g.key === key);
+        const canonicalTags = getHowToGetHereRouteTags(key);
+
+        expect(indexEntry?.tags).toEqual(expect.arrayContaining([...canonicalTags]));
+        expect(canonicalTags).toEqual(expect.arrayContaining(indexEntry?.tags ?? []));
       }
     });
   });

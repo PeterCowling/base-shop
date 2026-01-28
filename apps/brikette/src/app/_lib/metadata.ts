@@ -63,6 +63,11 @@ export function buildAppMetadata({
   }
 
 
+  // Use provided image or fall back to default OG image
+  const ogImageUrl = imageUrl || `${origin}${DEFAULT_OG_IMAGE.path}`;
+  const ogImageWidth = imageUrl ? finalImageWidth : DEFAULT_OG_IMAGE.width;
+  const ogImageHeight = imageUrl ? finalImageHeight : DEFAULT_OG_IMAGE.height;
+
   const metadata: Metadata = {
     title,
     description,
@@ -71,30 +76,29 @@ export function buildAppMetadata({
       languages,
     },
     openGraph: {
+      siteName: "Hostel Brikette",
       title,
       description,
       url,
       type: ogType,
       locale: lang,
       alternateLocale: i18nConfig.supportedLngs.filter((l) => l !== lang),
-      ...(imageUrl
-        ? {
-            images: [
-              {
-                url: imageUrl,
-                width: finalImageWidth,
-                height: finalImageHeight,
-                ...(imageAlt ? { alt: imageAlt } : {}),
-              },
-            ],
-          }
-        : {}),
+      images: [
+        {
+          url: ogImageUrl,
+          width: ogImageWidth,
+          height: ogImageHeight,
+          ...(imageAlt ? { alt: imageAlt } : {}),
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@hostelbrikette",
+      creator: "@hostelbrikette",
       title,
       description,
-      ...(imageUrl ? { images: [imageUrl] } : {}),
+      images: [ogImageUrl],
     },
   };
 

@@ -118,4 +118,93 @@ describe("buildAppMetadata", () => {
     expect(metadata.alternates?.languages?.fr).toContain("/arriver-en-ferry/");
     expect(metadata.alternates?.languages?.it).toContain("/arrivo-in-traghetto/");
   });
+
+  it("includes complete social metadata fields", () => {
+    const metadata = buildAppMetadata({
+      lang: "en",
+      title: "Test Page",
+      description: "Test description",
+      path: "/en/test",
+    });
+
+    // OpenGraph metadata
+    expect(metadata.openGraph?.siteName).toBe("Hostel Brikette");
+    expect(metadata.openGraph?.title).toBe("Test Page");
+    expect(metadata.openGraph?.description).toBe("Test description");
+    expect(metadata.openGraph?.url).toBe("https://hostel-positano.com/en/test/");
+    expect(metadata.openGraph?.images).toBeDefined();
+    expect(Array.isArray(metadata.openGraph?.images)).toBe(true);
+
+    // Twitter metadata
+    expect(metadata.twitter?.card).toBe("summary_large_image");
+    expect(metadata.twitter?.site).toBe("@hostelbrikette");
+    expect(metadata.twitter?.creator).toBe("@hostelbrikette");
+    expect(metadata.twitter?.title).toBe("Test Page");
+    expect(metadata.twitter?.description).toBe("Test description");
+    expect(metadata.twitter?.images).toBeDefined();
+    expect(Array.isArray(metadata.twitter?.images)).toBe(true);
+  });
+
+  it("uses default OG image when no image provided", () => {
+    const metadata = buildAppMetadata({
+      lang: "en",
+      title: "Test Page",
+      description: "Test description",
+      path: "/en/test",
+    });
+
+    const ogImages = metadata.openGraph?.images as Array<{ url: string; width: number; height: number }>;
+    expect(ogImages).toHaveLength(1);
+    expect(ogImages[0].url).toBe("https://hostel-positano.com/img/positano-panorama.avif");
+    expect(ogImages[0].width).toBe(1200);
+    expect(ogImages[0].height).toBe(630);
+
+    const twitterImages = metadata.twitter?.images as string[];
+    expect(twitterImages).toHaveLength(1);
+    expect(twitterImages[0]).toBe("https://hostel-positano.com/img/positano-panorama.avif");
+  });
+
+  it("uses custom image when provided", () => {
+    const metadata = buildAppMetadata({
+      lang: "en",
+      title: "Test Page",
+      description: "Test description",
+      path: "/en/test",
+      image: "/img/custom-image.jpg",
+      imageWidth: 800,
+      imageHeight: 600,
+      imageAlt: "Custom image",
+    });
+
+    const ogImages = metadata.openGraph?.images as Array<{ url: string; width: number; height: number; alt?: string }>;
+    expect(ogImages).toHaveLength(1);
+    expect(ogImages[0].url).toBe("/img/custom-image.jpg");
+    expect(ogImages[0].width).toBe(800);
+    expect(ogImages[0].height).toBe(600);
+    expect(ogImages[0].alt).toBe("Custom image");
+
+    const twitterImages = metadata.twitter?.images as string[];
+    expect(twitterImages).toHaveLength(1);
+    expect(twitterImages[0]).toBe("/img/custom-image.jpg");
+  });
+
+  it("uses custom image object when provided", () => {
+    const metadata = buildAppMetadata({
+      lang: "en",
+      title: "Test Page",
+      description: "Test description",
+      path: "/en/test",
+      image: { src: "/img/object-image.png", width: 1000, height: 500 },
+    });
+
+    const ogImages = metadata.openGraph?.images as Array<{ url: string; width: number; height: number }>;
+    expect(ogImages).toHaveLength(1);
+    expect(ogImages[0].url).toBe("/img/object-image.png");
+    expect(ogImages[0].width).toBe(1000);
+    expect(ogImages[0].height).toBe(500);
+
+    const twitterImages = metadata.twitter?.images as string[];
+    expect(twitterImages).toHaveLength(1);
+    expect(twitterImages[0]).toBe("/img/object-image.png");
+  });
 });

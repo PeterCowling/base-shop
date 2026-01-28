@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Ready-to-build
+Status: In-progress
 Domain: SEO
 Created: 2026-01-28
 Last-reviewed: 2026-01-28
@@ -395,10 +395,10 @@ if (key) {
 
 ### TASK-SEO-6: Fix SearchAction to use localized slug
 
-**Status:** Ready
+**Status:** Complete (2026-01-28)
 **Confidence:** 88% (min: Implementation 92%, Approach 88%, Impact 85%)
-**Effort:** S (30 min - 1 hour)
-**Owner:** Unassigned
+**Effort:** S (30 min actual)
+**Owner:** Claude
 **Dependencies:** None
 **Priority:** P1
 
@@ -431,6 +431,39 @@ if (key) {
 **Evidence:**
 - Current code: `SiteSearchStructuredData.tsx:29` (hardcoded `/assistance`)
 - Correct slug map: `slug-map.ts:97-120` (`assistance` key with locale-specific values)
+
+#### Build Completion (2026-01-28)
+
+**Status:** Complete
+**Commit:** ecc6d761b4
+
+**TDD cycle:**
+- Tests written: `apps/brikette/src/test/components/seo/SiteSearchStructuredData.test.tsx` (NEW)
+- Initial test run: FAIL (4/5 tests - expected localized slugs but got hardcoded "assistance")
+- Implementation: Import `getSlug`, replace hardcoded string with `getSlug("assistance", lang)`
+- Post-implementation: PASS (5/5 tests)
+
+**Tests added:**
+- Test localized slug for English (help)
+- Test localized slug for German (hilfe)
+- Test localized slug for French (aide)
+- Test all supported locales (parameterized: en, es, de, fr, it, ja)
+- Test required SearchAction schema fields
+
+**Validation:**
+- `pnpm typecheck`: PASS
+- `pnpm test SiteSearchStructuredData`: PASS (5/5 tests, 13.754s)
+- Pre-commit hooks: PASS (monorepo typecheck, lint, agent context validation)
+
+**Documentation updated:** None required (code change only)
+
+**Implementation notes:**
+- Changed `apps/brikette/src/components/seo/SiteSearchStructuredData.tsx`:
+  - Added `getSlug` import from `@/utils/slug`
+  - Replaced hardcoded `assistance` string with `getSlug("assistance", lang)` on line 29
+- SearchAction now generates locale-appropriate URLs: `/en/help`, `/de/hilfe`, `/fr/aide`, etc.
+- Affects Google's "Search Hostel Brikette" auto-suggest box
+- No changes to other files; isolated fix as planned
 
 ---
 

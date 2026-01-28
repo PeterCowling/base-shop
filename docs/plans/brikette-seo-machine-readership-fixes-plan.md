@@ -560,10 +560,10 @@ const normalizePathname = (value: string): string => {
 
 ### TASK-SEO-8: Noindex draft routes
 
-**Status:** Ready
+**Status:** Complete (2026-01-28)
 **Confidence:** 85% (min: Implementation 90%, Approach 85%, Impact 82%)
-**Effort:** S (1 hour)
-**Owner:** Unassigned
+**Effort:** S (30 min actual)
+**Owner:** Claude
 **Dependencies:** None
 **Priority:** P0
 
@@ -590,6 +590,40 @@ const normalizePathname = (value: string): string => {
 - Missing noindex: `draft/page.tsx:25-31` (no isPublished param)
 - Default value: `metadata.ts:27` (isPublished defaults to true)
 - Sitemap exclusion already works: `generate-public-seo.ts:41` (excludes /draft)
+
+#### Build Completion (2026-01-28)
+
+**Status:** Complete
+**Commit:** 6b38653565
+
+**TDD cycle:**
+- Tests written: `apps/brikette/src/test/lib/metadata.test.ts` (NEW)
+- Tested buildAppMetadata function behavior with isPublished parameter
+- All tests passing (4/4): robots noindex when isPublished=false, no robots when true
+
+**Implementation:**
+- Changed `apps/brikette/src/app/[lang]/draft/page.tsx`:
+  - Added `isPublished: false` parameter to buildAppMetadata() call (line 31)
+  - Added inline comment explaining the purpose
+
+**Tests added:**
+- Test robots noindex set when isPublished=false
+- Test robots not set when isPublished=true (default behavior)
+- Test robots not set when isPublished=explicitly true
+- Test canonical URL unaffected by isPublished parameter
+
+**Validation:**
+- `pnpm typecheck`: PASS
+- `pnpm test metadata.test`: PASS (4/4 tests, 6.888s)
+- Pre-commit hooks: PASS (monorepo typecheck, lint, agent context validation)
+
+**Documentation updated:** None required (code change only)
+
+**Implementation notes:**
+- Draft dashboard now emits `<meta name="robots" content="noindex,follow">`
+- Prevents search engines from indexing internal draft tool
+- Sitemap already excluded draft routes (no change needed)
+- Low-risk change affecting single internal route
 
 ---
 

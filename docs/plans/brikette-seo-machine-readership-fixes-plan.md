@@ -18,9 +18,9 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Machine-layer drift (broken refs in OpenAPI, ai-plugin.json, llms.txt)
 - Draft routes are indexable (SEO leak)
 
-**Current state (2026-01-28 post-build #5):** 7 of 10 tasks complete. All P0 tasks complete. Remaining: 3 P1 tasks (TASK-SEO-3, TASK-SEO-9, TASK-SEO-10).
+**Current state (2026-01-28 post-build #6):** 8 of 10 tasks complete. All P0 tasks complete. Remaining: 2 P1 tasks (TASK-SEO-3, TASK-SEO-10).
 
-**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-5, TASK-SEO-6, TASK-SEO-7, TASK-SEO-8
+**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-5, TASK-SEO-6, TASK-SEO-7, TASK-SEO-8, TASK-SEO-9
 
 **Re-planning complete (2nd pass + audit correction):** All tasks raised to ≥80% confidence. TASK-SEO-4 and TASK-SEO-1 completed with full test coverage.
 
@@ -822,11 +822,11 @@ if (key) {
 
 ### TASK-SEO-9: Complete social metadata coverage
 
-**Status:** Ready
+**Status:** ✅ Complete (2026-01-28, commit 1cad14f934)
 **Confidence:** 80% (min: Implementation 82%, Approach 80%, Impact 78%)
-**Effort:** M (3-4 hours)
-**Owner:** Unassigned
-**Dependencies:** TASK-SEO-1
+**Effort:** M (3-4 hours) - Actual: ~1 hour
+**Owner:** Complete
+**Dependencies:** TASK-SEO-1 (completed)
 **Priority:** P1
 
 **Problem (confirmed via production):**
@@ -1094,6 +1094,38 @@ Create contract tests that validate all machine-document URLs return expected st
   - llms.txt now references 10 valid machine-readable sources
   - Schema files available at /schema/hostel-brikette/*.jsonld
   - Sitemap available at /sitemap_index.xml and /sitemap.xml
+
+### TASK-SEO-9: Complete social metadata coverage ✅
+- **Completed:** 2026-01-28
+- **Commit:** 1cad14f934
+- **Files changed:**
+  1. `src/app/_lib/metadata.ts` - Added social metadata fields to buildAppMetadata()
+  2. `src/test/lib/metadata.test.ts` - Added 4 new tests (12 total, was 8)
+- **Social metadata fields added:**
+  - `openGraph.siteName: "Hostel Brikette"` (was missing)
+  - `twitter.site: "@hostelbrikette"` (was missing)
+  - `twitter.creator: "@hostelbrikette"` (was missing)
+  - `openGraph.images` - always present (uses default when not provided)
+  - `twitter.images` - always present (matches openGraph.images)
+- **Default image fallback:**
+  - When no custom image provided, uses DEFAULT_OG_IMAGE
+  - /img/positano-panorama.avif (1200x630)
+  - Ensures all pages have social preview image
+- **Validation:**
+  - metadata.test.ts: 12/12 passing (added 4 new tests)
+  - pnpm typecheck: PASS
+  - Tests verify: siteName, twitter.site, twitter.creator always present
+  - Tests verify: default image used when no custom image provided
+  - Tests verify: custom images override default when provided
+- **Root cause:**
+  - Next.js App Router page metadata completely overrides root layout
+  - Root layout defines social fields but they never render on pages
+  - Solution: Explicitly include all fields in buildAppMetadata()
+- **Impact:** All pages now have complete social metadata
+  - Proper sharing previews on Facebook, Twitter, LinkedIn
+  - og:site_name helps identify brand in social shares
+  - twitter:site and twitter:creator enable attribution and analytics
+  - og:image always present for rich social previews
 
 ---
 

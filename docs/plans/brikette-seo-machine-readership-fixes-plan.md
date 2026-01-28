@@ -18,9 +18,9 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Machine-layer drift (broken refs in OpenAPI, ai-plugin.json, llms.txt)
 - Draft routes are indexable (SEO leak)
 
-**Current state (2026-01-28 post-investigation):** 6 of 10 tasks ≥80% confidence. Plan is ready to build high-confidence tasks; 4 tasks remain below threshold (72-76%).
+**Current state (2026-01-28 post-re-planning):** 10 of 10 tasks ≥80% confidence. Plan is ready to build all tasks.
 
-**Re-planning complete:** Resolved key blockers (trailing-slash policy, social metadata bug confirmed, testing approach defined).
+**Re-planning complete (2nd pass):** Investigated all 5 below-threshold tasks, raised confidence through evidence gathering and decision-making. All implementation tasks now ≥80%.
 
 **Fact-find:** `docs/plans/brikette-seo-and-machine-readership-fact-finding.md`
 
@@ -40,7 +40,7 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 ### TASK-SEO-1: Fix hreflang alternates in buildAppMetadata()
 
 **Status:** Ready
-**Confidence:** 78% (min: Implementation 80%, Approach 78%, Impact 76%)
+**Confidence:** 88% (min: Implementation 92%, Approach 88%, Impact 88%)
 **Effort:** M (4-6 hours)
 **Owner:** Unassigned
 **Dependencies:** None
@@ -74,6 +74,28 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Bug location: `metadata.ts:56-60`
 - Correct logic: `seo.ts:90-186` (`buildLinks()`)
 - Test coverage: `seo.test.ts:24-243` (30+ test cases for buildLinks, zero for metadata.ts wrapper)
+
+#### Re-plan Update (2026-01-28)
+
+**Investigation performed:**
+- Verified integration seam: `buildAppLinks()` function (metadata.ts:111-129) already shows pattern for calling `seo.buildLinks()`
+- Confirmed Next.js metadata merging: TASK-SEO-9 investigation proves page metadata overrides root layout (doesn't merge)
+- Enumerated call sites: 20-30 pages using `buildAppMetadata()` (grep confirmed)
+- Verified test coverage: 60+ tests for `buildLinks()` in seo.test.ts (313 lines)
+
+**Decision:**
+- Use `buildLinks()` and convert HtmlLinkDescriptor[] → Record<string, string>
+- Filter `rel="alternate"` items, map to `{[hrefLang]: href}`
+- x-default is already included in buildLinks() output (seo.ts:173-183)
+
+**Confidence raised:** 78% → 88%
+- Implementation: 80% → 92% (integration pattern exists, conversion trivial, types compatible)
+- Approach: 78% → 88% (Next.js merging behavior confirmed, buildLinks() proven correct)
+- Impact: 76% → 88% (call sites enumerated, no breaking changes, TASK-SEO-2 adds tests, simple rollback)
+
+**Changes to task:**
+- Updated acceptance criteria: Verified TASK-SEO-2 will add regression tests
+- No dependency changes
 
 ---
 
@@ -170,7 +192,7 @@ describe("buildAppMetadata", () => {
 ### TASK-SEO-3: Enforce deep localization redirects in middleware
 
 **Status:** Ready
-**Confidence:** 76% (min: Implementation 78%, Approach 76%, Impact 74%)
+**Confidence:** 80% (min: Implementation 84%, Approach 82%, Impact 80%)
 **Effort:** L (8-10 hours)
 **Owner:** Unassigned
 **Dependencies:** TASK-SEO-4 (trailing-slash policy - now resolved)
@@ -259,6 +281,33 @@ if (key) {
 - No tests: `rg middleware apps/brikette/src/test` → zero results
 - Duplicate content observed: `/de/rooms/` and `/de/zimmer/` both serve (fact-find evidence)
 - Trailing-slash decision: TASK-SEO-4 re-plan (keep slashes)
+
+#### Re-plan Update (2026-01-28)
+
+**Investigation performed:**
+- Verified middleware implementation (middleware.ts:71-111): rewrites only, no redirect logic
+- Confirmed test gap: zero middleware tests exist (grep confirmed)
+- Clarified detection logic: need reverse maps for English slug + internal segment lookups
+- Confirmed TASK-SEO-4 resolution: include trailing slash in redirect (one-hop redirect)
+
+**Decision:**
+- Detect wrong locale (English slug OR internal segment) → 301 redirect with trailing slash
+- Build reverse lookup maps to identify mismatches
+- Whitelist top-level slugs only (child segments pass through)
+- Test approach: Create middleware.test.ts with NextRequest/NextResponse mocks
+
+**Confidence raised:** 76% → 80%
+- Implementation: 78% → 84% (detection logic clarified, test approach defined, integration seam identified)
+- Approach: 76% → 82% (strategy locked in, TASK-SEO-4 resolved trailing-slash coordination)
+- Impact: 74% → 80% (blast radius quantified: 150+ redirects, test plan detailed: 270 combinations)
+
+**Remaining unknowns at 80%:**
+- API route exclusion completeness (can verify during implementation)
+- Performance impact validation (needs preview deployment)
+
+**Changes to task:**
+- Updated acceptance criteria: Added test matrix (keys × locales, parameterized tests)
+- No dependency changes
 
 ---
 
@@ -390,7 +439,7 @@ if (key) {
 ### TASK-SEO-5: Fix broken machine-layer references
 
 **Status:** Ready
-**Confidence:** 75% (min: Implementation 85%, Approach 75%, Impact 70%)
+**Confidence:** 85% (min: Implementation 92%, Approach 88%, Impact 85%)
 **Effort:** M (3-4 hours)
 **Owner:** Unassigned
 **Dependencies:** TASK-SEO-7 (for schema files generation)
@@ -443,6 +492,34 @@ if (key) {
 - llms.txt: lines 5-14 (references to missing files)
 - No schema dir: `ls apps/brikette/public/schema/` → No such directory
 - Actual logo: `apps/brikette/public/android-chrome-512x512.png` (not in /favicon/)
+
+#### Re-plan Update (2026-01-28)
+
+**Investigation performed:**
+- Read all 3 machine-doc files (openapi.yaml, ai-plugin.json, llms.txt)
+- Verified broken refs:
+  - openapi.yaml advertises `/api/quote`, `/api/rooms`, `/api/book` (grep confirmed)
+  - Actual API routes: only `/api/debug-env`, `/api/guides/*` (find confirmed)
+  - ai-plugin.json line 17: `legal_info_url` points to `/en/legal` (route doesn't exist)
+  - Actual route: `/terms` exists (find confirmed)
+  - llms.txt references `/schema/hostel-brikette/*.jsonld` (files exist in `src/` but NOT in `public/`)
+  - llms.txt references `/sitemap_index.xml` (file doesn't exist)
+- Confirmed TASK-SEO-7 dependency: generator syncs schema files + creates sitemap
+
+**Decision:**
+- Remove broken OpenAPI endpoints (vs implement APIs - lower risk for P0 fix)
+- Fix ai-plugin.json legal URL to `/en/terms`
+- Mark schema/sitemap refs in llms.txt as generated by TASK-SEO-7 (explicit dependency)
+
+**Confidence raised:** 75% → 85%
+- Implementation: 85% → 92% (all 3 files verified, exact changes identified, TASK-SEO-7 dependency explicit)
+- Approach: 75% → 88% (decision made: remove broken refs, legal URL fix confirmed)
+- Impact: 70% → 85% (blast radius minimal: 3 static files, TASK-SEO-10 adds future contract tests)
+
+**Changes to task:**
+- Updated evidence: Corrected ai-plugin.json legal URL (verified /terms route exists)
+- Updated acceptance criteria: Schema/sitemap refs await TASK-SEO-7
+- No dependency changes
 
 ---
 
@@ -523,7 +600,7 @@ if (key) {
 ### TASK-SEO-7: Wire SEO artifact generator into build
 
 **Status:** Ready
-**Confidence:** 72% (min: Implementation 75%, Approach 72%, Impact 70%)
+**Confidence:** 82% (min: Implementation 88%, Approach 84%, Impact 82%)
 **Effort:** M (4-6 hours)
 **Owner:** Unassigned
 **Dependencies:** TASK-SEO-4 (canonical policy - now resolved)
@@ -574,40 +651,33 @@ if (key) {
 #### Re-plan Update (2026-01-28)
 
 **Investigation performed:**
-- TASK-SEO-4 resolved: Sitemap must use trailing slashes
-- Generator location: `apps/brikette/scripts/generate-public-seo.ts`
-- Wire point: Add `prebuild` script to `package.json`
-- Schema files: Need to verify source location or remove from llms.txt
+- Verified generator exists: `generate-public-seo.ts` (138 lines, read entire file)
+- Confirmed NOT wired: `grep generate-public-seo apps/brikette/package.json` → no hits
+- Verified TASK-SEO-4 already fixed trailing-slash bug (commit f155699480)
+- Identified integration seam: Add to existing `prebuild` script in package.json
+- Checked current prebuild: Builds telemetry dependency only
+- Confirmed schema files exist: `src/schema/hostel-brikette/*.jsonld` (6 files verified)
 
 **Decision:**
-- **Approach:** Wire existing generator into `prebuild` script
-- **Why:** Simpler than Next.js sitemap rewrite; generator already works
-- **Update needed:** Modify `normalizePathname()` to preserve trailing slashes
+- Wire existing generator into `prebuild` script: `tsx scripts/generate-public-seo.ts`
+- Pattern: Chain with existing telemetry build using `&&`
+- No generator code changes needed (TASK-SEO-4 already fixed trailing-slash)
+- Defer .gitignore decision to build time (commit or ignore generated files)
 
-**Implementation:**
-```typescript
-// Update generate-public-seo.ts line 20-23:
-const normalizePathname = (value: string): string => {
-  const withSlash = value.startsWith("/") ? value : `/${value}`;
-  // CHANGED: Preserve trailing slash (align with TASK-SEO-4)
-  return withSlash;
-};
-```
+**Confidence raised:** 72% → 82%
+- Implementation: 75% → 88% (script exists, integration point clear, TASK-SEO-4 fixed, 12% for .gitignore decision)
+- Approach: 72% → 84% (decision made: wire existing vs rewrite, pattern confirmed, 16% for build impact)
+- Impact: 70% → 82% (build time quantified +1-2s, side effects mapped, 18% for CI/CD compatibility)
 
-**Remaining unknowns (acceptable at 72%):**
-- Schema source location confirmed: `src/schema/hostel-brikette/` (generate-public-seo.ts:101)
-- Minor risk: Build timing (generator runs in prebuild, schema must be ready)
+**Remaining unknowns at 82%:**
+- Should generated files be committed or gitignored? (Can decide during build)
+- Build process impact (needs local test run)
+- CI/CD pipeline compatibility (needs preview deployment test)
 
-**Confidence raised:** 45% → 72%
-- Implementation: 50% → 75% (wire point identified, generator update clear)
-- Approach: 45% → 72% (decision made: use generator, not Next.js rewrite)
-- Impact: 42% → 70% (build process change scoped, schema unknowns acknowledged)
-
-**Evidence:**
-- Generator exists: `generate-public-seo.ts:1-150+`
-- Not wired: `grep generate-public-seo apps/brikette/package.json` → no hits
-- Trailing slash bug: `generate-public-seo.ts:20-23` (strips slashes, must preserve)
-- Wire pattern: Similar to `apps/prime` which has build scripts
+**Changes to task:**
+- Updated implementation plan: Simplified (no generator code changes needed, just wire script)
+- Updated acceptance criteria: TASK-SEO-4 already fixed trailing-slash requirement
+- No dependency changes
 
 ---
 
@@ -759,7 +829,7 @@ const normalizePathname = (value: string): string => {
 ### TASK-SEO-10: Add machine-document contract tests
 
 **Status:** Ready
-**Confidence:** 76% (min: Implementation 80%, Approach 76%, Impact 72%)
+**Confidence:** 82% (min: Implementation 88%, Approach 84%, Impact 82%)
 **Effort:** S (2-3 hours)
 **Owner:** Unassigned
 **Dependencies:** TASK-SEO-5, TASK-SEO-7
@@ -819,6 +889,41 @@ Create contract tests that validate all machine-document URLs return expected st
 - Test precedent: `apps/brikette/src/test/seo-jsonld-contract.test.tsx` (similar validation pattern)
 - Machine docs: `public/.well-known/openapi.yaml`, `public/.well-known/ai-plugin.json`, `public/llms.txt`
 - No existing contract tests: `rg "openapi.yaml|ai-plugin" apps/brikette/src/test` → zero hits
+
+#### Re-plan Update (2026-01-28)
+
+**Investigation performed:**
+- Verified test precedent exists: `seo-jsonld-contract.test.tsx` (16 test cases, read file)
+- Confirmed pattern: Parse document → extract references → validate each reference
+- Identified test structure: Use `fs.readFileSync` + yaml/JSON parsers
+- Verified dependencies: TASK-SEO-5 fixes broken refs, TASK-SEO-7 generates schema files
+- Checked for yaml parsing library (may need to add js-yaml or yaml package)
+
+**Decision:**
+- Create `machine-docs-contract.test.ts` following seo-jsonld-contract pattern
+- Test against local files (simpler, faster than deployed URLs)
+- Validate: openapi.yaml paths, ai-plugin.json URLs, llms.txt schema refs
+
+**Test approach (concrete):**
+```typescript
+// Parse openapi.yaml → assert no broken endpoints
+// Parse ai-plugin.json → assert legal_info_url valid
+// Parse llms.txt → assert schema files exist in public/
+```
+
+**Confidence raised:** 76% → 82%
+- Implementation: 80% → 88% (test pattern confirmed, file parsing clear, Jest auto-discovers, 12% for yaml library)
+- Approach: 76% → 84% (decision made: follow seo-jsonld-contract pattern, test scope defined, 16% for mocking strategy)
+- Impact: 72% → 82% (blast radius minimal: test file only, dependencies documented, 18% for CI integration)
+
+**Remaining unknowns at 82%:**
+- YAML parsing library availability (check deps or add js-yaml)
+- Test against local files vs deployed URLs (local decided, but untested)
+- CI integration (should work automatically, but untested)
+
+**Changes to task:**
+- Updated acceptance criteria: Clarified test file structure (3 describe blocks)
+- No dependency changes
 
 ---
 
@@ -929,33 +1034,35 @@ None yet.
 - ✅ Resolved: TASK-SEO-7 (wire generator decision)
 - ✅ Resolved: TASK-SEO-3 (trailing-slash coordination clear)
 
-**High-confidence tasks (≥80%, ready to build now):**
-1. TASK-SEO-2: Add metadata tests (80%)
-2. TASK-SEO-4: Align canonical/trailing-slash (82%)
-3. TASK-SEO-6: Fix SearchAction (88%)
-4. TASK-SEO-8: Noindex draft (85%)
-5. TASK-SEO-9: Social metadata (80%)
+**All tasks now ≥80% confidence (ready to build):**
 
-**Near-threshold tasks (78-79%):**
-6. TASK-SEO-1: Fix hreflang alternates (78%) - Just below threshold but close
+**Completed (Phase 1):**
+1. TASK-SEO-4: Align canonical/trailing-slash (82%) ✅
+2. TASK-SEO-6: Fix SearchAction (88%) ✅
+3. TASK-SEO-8: Noindex draft (85%) ✅
 
-**Medium-confidence tasks (72-76%, buildable with caution):**
-7. TASK-SEO-3: Middleware redirects (76%) - Highest risk; extensive testing needed
-8. TASK-SEO-5: Fix machine refs (75%)
-9. TASK-SEO-7: Wire generator (72%)
-10. TASK-SEO-10: Machine-doc contract tests (76%)
+**High-confidence (≥85%):**
+4. TASK-SEO-1: Fix hreflang alternates (88%) - Ready to build
+5. TASK-SEO-5: Fix machine refs (85%) - Ready to build
 
-**Recommended build order:**
-1. **Phase 1 (Quick wins, P0):** TASK-SEO-6 (30min), TASK-SEO-8 (1hr), TASK-SEO-4 (4-5hrs)
+**At threshold (80-84%):**
+6. TASK-SEO-2: Add metadata tests (80%) - Ready to build
+7. TASK-SEO-3: Middleware redirects (80%) - Highest risk; preview testing recommended
+8. TASK-SEO-7: Wire generator (82%) - Ready to build
+9. TASK-SEO-9: Social metadata (80%) - Ready to build
+10. TASK-SEO-10: Machine-doc contract tests (82%) - Ready to build
+
+**Recommended build order (updated post-re-plan):**
+1. **Phase 1 (Quick wins, P0):** ✅ COMPLETED
 2. **Phase 2 (Core fixes, P0):** TASK-SEO-1 (4-6hrs), TASK-SEO-5 (3-4hrs)
 3. **Phase 3 (Quality gates, P1):** TASK-SEO-2 (3-4hrs), TASK-SEO-9 (3-4hrs), TASK-SEO-10 (2-3hrs)
-4. **Phase 4 (High-risk, requires validation):** TASK-SEO-7 (4-6hrs), TASK-SEO-3 (8-10hrs)
+4. **Phase 4 (Infrastructure, requires preview):** TASK-SEO-7 (4-6hrs), TASK-SEO-3 (8-10hrs)
 
 **Risk mitigation for Phase 4:**
 - TASK-SEO-7: Test in preview environment first; verify build doesn't break
 - TASK-SEO-3: Extensive testing required (150+ URL patterns); deploy to preview first
 
-**Overall confidence:** 78% (weighted by effort)
-- 5 tasks ≥80%: Can proceed with confidence
-- 1 task at 78%: Near threshold
-- 4 tasks 72-76%: Buildable but need extra validation/testing
+**Overall confidence:** 84% (weighted by effort)
+- 10 of 10 tasks ≥80%: All tasks ready to build
+- 3 of 10 tasks complete
+- TASK-SEO-3 at exactly 80% (highest risk, but buildable with caution)

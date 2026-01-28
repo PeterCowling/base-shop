@@ -70,14 +70,14 @@ describe("JSON-LD contract: representative pages", () => {
     expect(script?.innerHTML).toContain("\\u003c");
     expect(script?.innerHTML).not.toContain("</script>");
     const json = getJsonLd(container);
-    expect(json.url).toBe(`${BASE_URL}/en/assistance/arriving-by-ferry`);
+    expect(json.url).toBe(`${BASE_URL}/en/assistance/arriving-by-ferry/`);
   });
 
   it("guide FAQ JSON-LD uses canonical URL for the guide page", () => {
     pathname = "/en/experiences/ferry-schedules/";
     const { container } = renderWithProviders(<GuideFaqJsonLd guideKey="ferrySchedules" />);
     const json = getJsonLd(container);
-    expect(json.url).toBe(`${BASE_URL}/en/experiences/ferry-schedules`);
+    expect(json.url).toBe(`${BASE_URL}/en/experiences/ferry-schedules/`);
   });
 
   it("deals JSON-LD uses localized deals URL", () => {
@@ -87,6 +87,6 @@ describe("JSON-LD contract: representative pages", () => {
     const itemList = json["itemListElement"] as Array<Record<string, unknown>>;
     const item = itemList?.[0]?.item as Record<string, unknown>;
     const dealsSlug = getSlug("deals", "en");
-    expect(item?.url).toBe(`${BASE_URL}/en/${dealsSlug}`);
+    expect(item?.url).toBe(`${BASE_URL}/en/${dealsSlug}/`);
   });
 });

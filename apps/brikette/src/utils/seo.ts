@@ -63,8 +63,8 @@ const SUPPORTED_LANGS_SAFE: readonly AppLanguage[] = (() => {
 /* ------------------------------------------------------------------ */
 /* Helper utilities                                                   */
 /* ------------------------------------------------------------------ */
-const trimTrailingSlash = (p: string): string =>
-  p !== "/" && p.endsWith("/") ? p.slice(0, -1) : p;
+const ensureTrailingSlash = (p: string): string =>
+  p === "/" || p.endsWith("/") ? p : `${p}/`;
 
 const stripLang = (p: string, l: string): string => {
   const parts = p.split("/").filter(Boolean);
@@ -104,7 +104,7 @@ export function buildLinks({
   const lang: AppLanguage = urlLang;
 
   /* ── Canonical link ── */
-  const canonicalPath = trimTrailingSlash(path);
+  const canonicalPath = ensureTrailingSlash(path);
   const canonical: HtmlLinkDescriptor = {
     rel: "canonical",
     href: `${origin}${canonicalPath === "/" ? "" : canonicalPath}`,
@@ -218,13 +218,13 @@ export function buildBreadcrumb({
     },
   ];
 
-  const trimmed = trimTrailingSlash(path);
-  if (trimmed !== `/${lang}`) {
+  const normalized = ensureTrailingSlash(path);
+  if (normalized !== `/${lang}/`) {
     items.push({
       "@type": "ListItem",
       position: 2,
       name: title,
-      item: `${origin}${trimmed}`,
+      item: `${origin}${normalized}`,
     });
   }
 

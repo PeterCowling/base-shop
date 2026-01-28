@@ -18,9 +18,10 @@ const APP_ROOT = path.resolve(__dirname, "..");
 const PUBLIC_DIR = path.join(APP_ROOT, "public");
 
 const normalizePathname = (value: string): string => {
-  const withSlash = value.startsWith("/") ? value : `/${value}`;
-  if (withSlash.length > 1 && withSlash.endsWith("/")) return withSlash.slice(0, -1);
-  return withSlash;
+  const withLeadingSlash = value.startsWith("/") ? value : `/${value}`;
+  // Ensure trailing slash for all paths except root
+  if (withLeadingSlash === "/") return withLeadingSlash;
+  return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
 };
 
 const escapeXml = (value: string): string =>

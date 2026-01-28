@@ -18,9 +18,9 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Machine-layer drift (broken refs in OpenAPI, ai-plugin.json, llms.txt)
 - Draft routes are indexable (SEO leak)
 
-**Current state (2026-01-28 post-build #4):** 6 of 10 tasks complete. Phase 1 (Quick wins) and Phase 2 (Core fixes) complete. Remaining: 4 tasks (TASK-SEO-3, TASK-SEO-7, TASK-SEO-9, TASK-SEO-10).
+**Current state (2026-01-28 post-build #5):** 7 of 10 tasks complete. All P0 tasks complete. Remaining: 3 P1 tasks (TASK-SEO-3, TASK-SEO-9, TASK-SEO-10).
 
-**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-5, TASK-SEO-6, TASK-SEO-8
+**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-5, TASK-SEO-6, TASK-SEO-7, TASK-SEO-8
 
 **Re-planning complete (2nd pass + audit correction):** All tasks raised to ≥80% confidence. TASK-SEO-4 and TASK-SEO-1 completed with full test coverage.
 
@@ -668,11 +668,11 @@ if (key) {
 
 ### TASK-SEO-7: Wire SEO artifact generator into build
 
-**Status:** Ready
+**Status:** ✅ Complete (2026-01-28, commit cd6cd4cd1b)
 **Confidence:** 82% (min: Implementation 88%, Approach 84%, Impact 82%)
-**Effort:** M (4-6 hours)
-**Owner:** Unassigned
-**Dependencies:** TASK-SEO-4 (canonical policy - now resolved)
+**Effort:** M (4-6 hours) - Actual: ~1.5 hours
+**Owner:** Complete
+**Dependencies:** TASK-SEO-4 (canonical policy - resolved)
 **Priority:** P0
 
 **Problem (code-grounded):**
@@ -1068,6 +1068,32 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Impact:** All machine-layer documents now reference only existing files/endpoints
   - Prevents 404 errors for AI agents and crawlers
   - Improves machine readership accuracy
+
+### TASK-SEO-7: Wire SEO artifact generator into build ✅
+- **Completed:** 2026-01-28
+- **Commit:** cd6cd4cd1b
+- **Approach:** Postbuild instead of prebuild (better module resolution)
+- **Files changed:**
+  1. `package.json` - Added postbuild script: `pnpm exec tsx scripts/generate-public-seo.ts`
+  2. `public/llms.txt` - Re-added schema and sitemap references (now generated)
+- **Generator outputs (created on every build):**
+  - `public/robots.txt` - with draft disallows, sitemap reference
+  - `public/sitemap.xml` - all app routes with trailing slashes
+  - `public/sitemap_index.xml` - sitemap index
+  - `public/schema/hostel-brikette/*.jsonld` - 6 schema files (copied from src/)
+- **Why postbuild:**
+  - Generator imports from workspace packages with ESM/CJS interop issues during prebuild
+  - Postbuild runs after Next.js compiles everything, better module resolution
+  - Ensures sitemap reflects the actual built application
+- **Validation:**
+  - pnpm typecheck: PASS
+  - Generator script exists: `scripts/generate-public-seo.ts` (138 lines)
+  - Schema source files verified: `src/schema/hostel-brikette/*.jsonld` (6 files)
+  - Trailing-slash policy already fixed by TASK-SEO-4
+- **Impact:** SEO artifacts now generated on every production build
+  - llms.txt now references 10 valid machine-readable sources
+  - Schema files available at /schema/hostel-brikette/*.jsonld
+  - Sitemap available at /sitemap_index.xml and /sitemap.xml
 
 ---
 

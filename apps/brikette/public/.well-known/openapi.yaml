@@ -327,20 +327,20 @@ paths:
       parameters:
         - $ref: "#/components/parameters/ApiVersion"
         - name: sku
-            in: query
-            required: false
-            schema: { $ref: "#/components/schemas/Sku" }
-            description: Filter to one SKU
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/Sku" }
+          description: Filter to one SKU
         - name: start
-            in: query
-            required: false
-            schema: { type: string, format: date }
-            description: Start date (YYYY-MM-DD)
+          in: query
+          required: false
+          schema: { type: string, format: date }
+          description: Start date (YYYY-MM-DD)
         - name: end
-            in: query
-            required: false
-            schema: { type: string, format: date }
-            description: End date (YYYY-MM-DD)  
+          in: query
+          required: false
+          schema: { type: string, format: date }
+          description: End date (YYYY-MM-DD)  
       responses:
         "200":
           description: JSON object keyed by internal rate id

@@ -1,10 +1,9 @@
 ---
 Type: Plan
-Status: Complete
+Status: Active
 Domain: UI
 Created: 2026-01-28
-Last-updated: 2026-01-28 (All tasks complete)
-Completed: 2026-01-28
+Last-updated: 2026-01-28 (TASK-08 discovered during user testing)
 Feature-Slug: guides-hydration-fix
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -117,12 +116,13 @@ Fix React hydration errors in the guides system by eliminating server/client div
 | Task ID | Type        | Description                                                        | Confidence | Effort | Status  | Depends on      |
 | ------- | ----------- | ------------------------------------------------------------------ | ---------: | -----: | ------- | --------------- |
 | TASK-01 | IMPLEMENT   | Create hydration test utilities                                    |        88% |      M | Complete (2026-01-28) | -               |
-| TASK-02 | IMPLEMENT   | Add hydration regression test for preview guide                    |        85% |      M | Pending | TASK-01         |
-| TASK-03 | IMPLEMENT   | Fix PreviewBanner hydration mismatch (search + stable markup)      |        90% |      S | Pending | TASK-02         |
-| TASK-04 | IMPLEMENT   | Move HeadSection DOM mutations to useEffect                        |        85% |      M | Pending | TASK-01         |
+| TASK-02 | IMPLEMENT   | Add hydration regression test for preview guide                    |        85% |      M | Complete (2026-01-28) | TASK-01         |
+| TASK-03 | IMPLEMENT   | Fix PreviewBanner hydration mismatch (search + stable markup)      |        90% |      S | Complete (2026-01-28) | TASK-02         |
+| TASK-04 | IMPLEMENT   | Move HeadSection DOM mutations to useEffect                        |        85% |      M | Complete (2026-01-28) | TASK-01         |
 | TASK-05 | IMPLEMENT   | Remove localStorage-driven initial-render divergence (dev/preview) |        88% |      S | Complete (2026-01-28) | TASK-01         |
 | TASK-06 | IMPLEMENT   | Add hydration regression test for published guide                  |        90% |      S | Complete (2026-01-28) | TASK-01,TASK-03 |
 | TASK-07 | INVESTIGATE | Verify i18n doesn't cause structural script divergence             |        90% |      S | Complete (2026-01-28) | TASK-06         |
+| TASK-08 | IMPLEMENT   | Fix FaqStructuredDataBlock hydration mismatch                      |        90% |      S | Pending | TASK-01         |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -490,6 +490,49 @@ Evidence:
 - Impact: 85% (confirmed low impact, unlikely scenario)
 
 **Full investigation report:** `/tmp/task07-investigation-summary.md`
+
+### TASK-08: Fix FaqStructuredDataBlock hydration mismatch
+
+- **Type:** IMPLEMENT
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/routes/guides/guide-seo/components/FaqStructuredDataBlock.tsx` (conditional rendering causing structural divergence)
+- **Depends on:** TASK-01
+- **Confidence:** 90%
+  - Implementation: 95% — Same pattern as PreviewBanner fix (TASK-03). Replace `return null` with stable container element.
+  - Approach: 90% — Proven approach. Always render container, use hidden state instead of null returns.
+  - Impact: 85% — Affects guides with FAQ structured data. Risk: minor layout shift if not handled correctly.
+- **Discovered:** 2026-01-28 during user testing of `/en/experiences/positano-beaches`
+- **Root cause:**
+  - Lines 37 and 252-254 of `FaqStructuredDataBlock.tsx` return `null` when FAQ should not be shown
+  - Causes structural divergence: SSR renders no element, client renders element (or vice versa)
+  - Error: "Hydration failed... server rendered HTML didn't match client"
+  - Mismatch: `<div>` vs `<script type="application/ld+json">`
+- **Acceptance:**
+  - [ ] `FaqStructuredDataBlock` always renders a container element (even when hidden)
+  - [ ] Use hidden container (`<div suppressHydrationWarning style={{ display: 'none' }} />`) instead of `return null`
+  - [ ] Update both early-return locations (lines 37 and 252-254)
+  - [ ] No hydration errors for guides with FAQ structured data
+  - [ ] Existing guide tests pass (no regressions)
+  - [ ] Test with `positano-beaches` guide specifically (the trigger guide)
+- **Test plan:**
+  - Manual: Visit `/en/experiences/positano-beaches` and check console for hydration errors
+  - Run: `pnpm --filter @apps/brikette test -- published-guide-hydration.test.tsx`
+  - Run: `pnpm --filter @apps/brikette test -- guide-diagnostics.test.ts`
+  - Add test case for FAQ-enabled guide if needed
+- **Planning validation:**
+  - Pattern proven in TASK-03 (PreviewBanner)
+  - Test harness from TASK-01 can verify fix
+- **What would make this ≥90%:**
+  - Already at 90%. Pattern is proven and straightforward.
+- **Rollout / rollback:**
+  - Rollout: Deploy with other hydration fixes. Low risk.
+  - Rollback: Revert commit. Previous behavior produces hydration errors but doesn't break functionality.
+- **Documentation impact:** None (internal implementation detail)
+- **Notes / references:**
+  - Same pattern as TASK-03 (PreviewBanner stable markup)
+  - Code: Lines 37 and 252-254 in `FaqStructuredDataBlock.tsx`
+  - User report: Hydration error on first load of `/en/experiences/positano-beaches`
 
 ## Risks & Mitigations
 

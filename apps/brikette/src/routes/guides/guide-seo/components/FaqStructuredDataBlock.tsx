@@ -34,7 +34,12 @@ export default function FaqStructuredDataBlock({
   tGuides,
   hookI18n,
 }: FaqStructuredDataBlockProps): JSX.Element | null {
-  if (suppressFaqWhenUnlocalized && !hasLocalizedContent) return null;
+  // IMPORTANT: Always render a container div (even when hidden) to maintain structural
+  // hydration safety. This prevents div ↔ script mismatches when FAQ eligibility
+  // differs between SSR and client (e.g., when i18n timing or conditional logic diverges).
+  if (suppressFaqWhenUnlocalized && !hasLocalizedContent) {
+    return <div suppressHydrationWarning style={{ display: "none" }} />;
+  }
 
   const shouldProvideFaqFallback = Boolean(
     // Honor explicit request to always expose a fallback builder
@@ -249,8 +254,10 @@ export default function FaqStructuredDataBlock({
     return undefined;
   })();
 
+  // Always render a container to maintain stable DOM structure during hydration
+  // When not eligible, render hidden container to avoid structural mismatches
   if (!hasLocalizedContent && !fallbackProp && !preferManualFallbackActive) {
-    return null;
+    return <div suppressHydrationWarning style={{ display: "none" }} />;
   }
 
   return (

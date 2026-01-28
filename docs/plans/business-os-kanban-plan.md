@@ -7,7 +7,7 @@ Last-reviewed: 2026-01-28
 Last-updated: 2026-01-28
 Feature-Slug: business-os-kanban
 Overall-confidence: 82%
-Confidence-Method: Effort-weighted average across 37 tasks (S=1, M=2, L=3). Major blockers resolved (BOS-00-B, BOS-00-E, BOS-00-F complete). BOS-00-A remains partial (40%); BOS-10 now build-eligible (70%)
+Confidence-Method: Effort-weighted average across 38 tasks (S=1, M=2, L=3). Major blockers resolved (BOS-00-B, BOS-00-E, BOS-00-F complete). BOS-00-A remains partial (40%); BOS-10 now build-eligible (70%)
 Relates-to charter: TBD (business-os-charter.md to be created)
 ---
 
@@ -32,7 +32,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 
 ## Non-goals
 
-- Phase 0 does NOT include: agent APIs, multi-agent runners, PR-based review workflow, public access
+- Phase 0 does NOT include: agent APIs, multi-agent runners, manual PR review/approval workflow, public access
 - NOT replacing the existing dashboard workboard (separate scope/naming to prevent confusion)
 - NOT building ERP-style complexity—this is intentionally lightweight and repo-backed
 - NOT implementing agent ownership in Phase 0 (human ownership only)
@@ -44,10 +44,12 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - Constraints:
   - Single agent runner: only Pete can run agents in Phase 0
   - No agent APIs: app must not call agents; Pete runs prompts manually
-  - **Repo write model (✅ RESOLVED via BOS-00-B):** Governance exception granted. App commits to `work/business-os-*` branches → existing auto-PR workflow creates PR → auto-merge after CI passes. Preserves audit trail and rollback capability while enabling automated writes.
+  - Phase 0 single human user: only Pete uses the Business OS app in Phase 0 (no multi-user access)
+  - **Repo write model (✅ RESOLVED via BOS-00-B):** Governance exception granted. App commits to `work/**` branches (`work/business-os-store` in Phase 0) → existing auto-PR workflow creates PR → auto-merge after CI passes. Preserves audit trail and rollback capability while enabling automated writes.
   - Path-level authorization: strict allowlist enforced server-side
   - Plan/people editing: only Pete and agents may edit business plans and people docs
   - Lane move proposals: only Pete and agents may propose lane moves
+  - **Phase 0 card editor (✅ DECIDED):** Pete can create/update cards in-app, including `Lane` and `Proposed-Lane`
   - Archive policy: Dropped/Retired items MUST move to archive/ and be hidden from UI
   - Taxonomy alignment: Option A required in Phase 0 (Business OS docs in docs:lint + registry)
   - Lane transition stage docs: Option 2 (always-on) required
@@ -92,7 +94,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - People: `people/people.(user|agent).md`
   - Scans: `scans/last-scan.json`, `scans/active-docs.json`, `scans/history/`
 - **App layer:** Next.js 15 / React 19 app at `apps/business-os`
-  - Server actions for repo writes (direct git commits to `main`)
+  - Server actions for repo writes via RepoStore (commit to `work/**` branches; explicit Sync pushes; auto-PR/auto-merge)
   - Path-level authorization enforced server-side
   - Renders only `.user.md` files (agent files not shown in UI)
 - **Agent layer:** Extends existing `.claude/skills/` pattern
@@ -111,7 +113,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 
 ### Alternatives considered
 
-- **Option A (chosen):** Repo-native storage with direct git commits
+- **Option A (chosen):** Repo-native storage with git-backed writes (work branches + auto-PR)
   - Pros: Simple, auditable, works offline, git history = audit trail, no DB setup
   - Cons: Concurrent writes need conflict handling, performance limits at scale (acceptable for Phase 0)
 - **Option B (deferred):** Hybrid DB + git (DB for cards/ideas, git for plans/people)
@@ -125,8 +127,8 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 |---------|------|-------------|------------|--------|--------|------------|
 | BOS-00-A | DECISION | Determine deployment runtime and git access model | 40% ⚠️ | S | Needs-Input | - |
 | BOS-00-B | DECISION | Reconcile direct-to-main commits with repo governance | 100% | S | Complete (2026-01-28) | - |
-| BOS-00-C | IMPLEMENT | Design docs registry sync on app writes | 60% | S | Pending | BOS-07 |
-| BOS-00-D | IMPLEMENT | Auth identity implementation (Pete vs non-Pete) | 50% ⚠️ | M | Pending | BOS-00-E |
+| BOS-00-C | IMPLEMENT | Design docs registry sync on Sync (push) | 60% | S | Pending | BOS-07 |
+| BOS-00-D | DECISION | Phase 0 identity scope (Pete-only vs multi-user) | 100% | S | Complete (2026-01-28) | - |
 | BOS-00-E | DECISION | Choose auth mechanism for apps/business-os | 100% | S | Complete (2026-01-28) | - |
 | BOS-00-F | DECISION | Node vs Edge runtime for git/filesystem routes | 100% | S | Complete (2026-01-28) | BOS-00-A |
 | BOS-01 | IMPLEMENT | Extend docs taxonomy for Business OS types | 88% | S | Pending | - |
@@ -137,16 +139,17 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 | BOS-06 | INVESTIGATE | Audit existing `pnpm docs:lint` implementation | 100% | S | Complete (2026-01-28) | BOS-01 |
 | BOS-07 | IMPLEMENT | Extend `pnpm docs:lint` for Business OS validation | 88% | M | Pending | BOS-06 |
 | BOS-08 | IMPLEMENT | Create data access layer (repo reader) | 82% | M | Pending | BOS-02 |
-| BOS-09 | IMPLEMENT | Implement server-side path authorization | 65% | M | Pending | BOS-00-D, BOS-08 |
+| BOS-09 | IMPLEMENT | Implement server-side path authorization | 78% | M | Pending | BOS-08 |
 | BOS-10 | IMPLEMENT | Create repo write operations with git integration | 70% | L | Pending | BOS-00-A, BOS-09, BOS-18 |
 | BOS-11 | IMPLEMENT | Build board view components | 80% | M | Pending | BOS-04, BOS-08 |
 | BOS-12 | IMPLEMENT | Build card detail view | 82% | M | Pending | BOS-11 |
 | BOS-13 | IMPLEMENT | Build raw idea submission form | 88% | S | Pending | BOS-04, BOS-10 |
+| BOS-32 | IMPLEMENT | Build card create/edit UI (incl. lane + Proposed-Lane) | 78% | M | Pending | BOS-10, BOS-12 |
 | BOS-14 | IMPLEMENT | Implement board filtering and computed ordering | 85% | M | Pending | BOS-11 |
 | BOS-15 | IMPLEMENT | Build plan/people presentation views (read-only) | 80% | M | Pending | BOS-08 |
 | BOS-16 | IMPLEMENT | Implement change request mechanism for plans/people | 82% | M | Pending | BOS-13, BOS-15 |
 | BOS-17 | IMPLEMENT | Create archive mechanism and UI filtering | 85% | S | Pending | BOS-08 |
-| BOS-18 | DECISION | Choose git library (isomorphic-git vs simple-git vs nodegit) | 100% | S | Complete (2026-01-28) | - |
+| BOS-18 | DECISION | Choose git integration (git CLI vs isomorphic-git vs nodegit) | 100% | S | Complete (2026-01-28) | - |
 | BOS-19 | IMPLEMENT | Implement lane transition validation and stage doc creation | 85% | M | Pending | BOS-10 |
 | BOS-20 | IMPLEMENT | Build dependency tracking and cycle detection | 85% | M | Pending | BOS-08 |
 | BOS-21 | IMPLEMENT | Create agent skill: `/work-idea` | 88% | M | Pending | BOS-07 |
@@ -187,9 +190,9 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 
 - **Provisional Phase 0 approach (local-only until hosted mechanism proven):**
   - **Phase 0 (immediate):** Local development on Pete's machine (`pnpm --filter @apps/business-os dev`)
-  - **Git access:** Direct filesystem (Pete's local repo)
-  - **Credentials:** Pete's existing git config
-  - **Concurrency:** None (single user, single process)
+  - **Git access:** Dedicated git worktree on Pete's machine (separate from the dev checkout; created via `scripts/git/new-worktree.sh business-os-store`)
+  - **Credentials:** HTTPS remote using Pete's existing git credentials (`credential.helper=osxkeychain` / `gh`); app stores no secrets
+  - **Concurrency:** None (single writer; one running instance)
   - **Deployment:** Not deployed; local-only
 
 - **Phase 1+ blocked until resolved:**
@@ -211,7 +214,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
     - Trade-offs: Most flexible; highest complexity for Phase 0
   - **Option C: GitHub API commits (no local repo)**
     - Pros: No writable checkout needed, GitHub handles concurrency
-    - Cons: Different API from BOS-18 (isomorphic-git), rate limits, requires GitHub token management
+    - Cons: Different approach than BOS-18 (git CLI), rate limits, requires GitHub token management
     - Trade-offs: Clean separation; different implementation from planned approach
 - **Acceptance (to reach 80%+ confidence):**
   - [ ] Hosted deployment mechanism proven (writable checkout OR GitHub API OR self-hosted VM)
@@ -222,13 +225,13 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - [ ] BOS-00-F updated with runtime choice (Node vs Edge)
 - **Impact on other tasks:**
   - **BOS-10 (Blocked):** Cannot design git write operations without knowing access model
-  - **BOS-18:** May need to revisit if GitHub API chosen (octokit instead of isomorphic-git)
+  - **BOS-18:** May need to revisit if GitHub API chosen (octokit instead of git CLI)
   - **BOS-27:** Commit identity approach depends on runtime
   - **BOS-29:** E2E test environment depends on runtime
 - **Notes / references:**
   - Repo precedent: CLI git via execSync in `deploy.ts:28-39` (local execution model)
-  - Requirements line 46: "App commits directly to main with no PR step"
-  - Conflict with `AGENTS.md:55`: "never commit to main" (addressed in BOS-00-B)
+  - Earlier requirements draft assumed direct-to-main writes; resolved in BOS-00-B (work/* + auto-PR)
+  - Repo governance: `AGENTS.md` prohibits direct-to-main commits (satisfied via work/* + auto-PR)
 
 ### BOS-00-B: Reconcile direct-to-main commits with repo governance
 
@@ -258,10 +261,15 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - **Rollback procedure:** Revert PR via GitHub UI or `git revert` + PR
   - **Authority:** Exception approved by Pete (repo owner) for Business OS app only
 - **Implementation guidance for BOS-10:**
-  - Commits must target `work/business-os-<timestamp>` branches
-  - Commit message must include context for PR body (will be visible in auto-PR)
-  - Wait for auto-merge completion before returning success to UI
-  - Handle merge failures gracefully (CI failures, conflicts)
+  - Work branch naming:
+    - **Phase 0 (single writer):** `work/business-os-store`
+    - **Phase 1+ (multi-writer):** `work/business-os/<actorSlug>` (slug: lowercase, `[a-z0-9-]`, 3–32 chars)
+  - UI/write semantics:
+    - **Save:** create local commit(s) on the work branch (no push)
+    - **Sync:** push the work branch to `origin` (auto-PR/auto-merge runs asynchronously)
+    - App does **not** poll GitHub for PR/merge status (Phase 0); it only provides "Find PR" / "Compare" links
+    - `Synced` means **pushed**, not **merged**
+  - Commit message must include context for PR body (visible in auto-PR)
 - **Impact on other tasks:**
   - **BOS-10 (Unblocked):** Use work/* branch + auto-PR workflow pattern
   - **BOS-27:** Commit identity uses real user name/email (no service account needed)
@@ -277,7 +285,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Depends on:** BOS-07 (docs:lint extension defines Business OS types in registry)
 - **Confidence:** 60%
   - Implementation: 65% — Registry generation logic understood (`docs-lint.ts:86-101`); sync mechanism straightforward
-  - Approach: 60% — Two approaches: (1) call `pnpm docs:lint` after write, (2) replicate registry logic in app; choice affects performance
+  - Approach: 60% — Two approaches: (1) call `pnpm docs:lint` on Sync, (2) replicate registry logic in app; choice affects performance/duplication
   - Impact: 55% — Stale registry breaks Option A "docs taxonomy alignment"; queries return incomplete results
 - **Problem statement:**
   - BOS-07 extends docs:lint to include Business OS docs in `docs/registry.json`
@@ -286,11 +294,11 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - **Gap:** After app writes, registry is stale until `pnpm docs:lint` runs
   - **Impact:** App queries may return incomplete results; registry-dependent features break
 - **Options:**
-  - **Option A: Run `pnpm docs:lint` after every write (via BOS-10)**
-    - Mechanism: After git commit, execute `pnpm docs:lint` via child_process.execSync
-    - Pros: Reuses existing validation logic, registry always in sync
-    - Cons: ~1-2s per write (slow for users), requires pnpm in PATH
-    - Trade-offs: Simple, reliable; performance acceptable for Phase 0 write frequency (<10/day)
+  - **Option A: Run `pnpm docs:lint` on Sync only (via RepoStore Sync) — CHOSEN**
+    - Mechanism: On Sync, after merging `origin/main`, run `pnpm docs:lint` via `child_process`, commit the updated `docs/registry.json`, then push
+    - Pros: Keeps Save fast; reuses existing validation logic; registry guaranteed correct when pushed
+    - Cons: Sync is slower; requires pnpm in PATH; Sync can fail on docs lint errors
+    - Trade-offs: Best UX under Save/Sync; avoids duplication while keeping registry accurate when changes leave the machine
   - **Option B: Replicate registry logic in app (incremental update)**
     - Mechanism: App parses frontmatter of written doc, appends to `docs/registry.json` directly
     - Pros: Fast (<50ms), no external dependency
@@ -301,69 +309,42 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
     - Pros: Decouples write from registry update, no user-facing delay
     - Cons: Registry can be stale for up to 5 min, adds background process complexity
     - Trade-offs: Eventual consistency; acceptable for Phase 0 (low write frequency)
-- **Recommendation:** Option A for Phase 0 (simplicity > performance at low scale)
+- **Decision (2026-01-28):** Option A (run `pnpm docs:lint` on Sync only)
 - **Acceptance:**
-  - Registry sync mechanism chosen and documented
-  - BOS-10 updated to include registry sync in write operations
-  - Test: Write a card, verify `docs/registry.json` includes new entry
-  - Performance: Registry sync completes in <5s per write (acceptable for Phase 0)
+  - Registry sync runs on Sync only (no registry updates on Save)
+  - Sync runs `pnpm docs:lint` and commits `docs/registry.json` updates before pushing
+  - **Repo reality (as of 2026-01-28):** `pnpm docs:lint` currently exits non-zero due to legacy docs missing headers (not Business OS–specific). Phase 0 Sync must **not** be blocked by this exit code; Sync should proceed, but surface the docs-lint output as warnings.
+  - Test: Save a card (no registry update) → Sync → verify `docs/registry.json` includes new entry
+  - Performance: Registry sync completes in <10s per Sync (acceptable for Phase 0)
 - **Test plan:**
-  - Integration: Write idea → verify registry.json updated
-  - Integration: Write card → verify registry.json updated
-  - Integration: Archive card → verify registry.json removes entry (or marks archived)
+  - Integration: Save idea/card → verify registry.json unchanged → Sync → verify registry.json updated
+  - Integration: `pnpm docs:lint` returns non-zero → Sync still pushes but returns warnings (and still commits updated `docs/registry.json`)
 - **Rollout / rollback:**
-  - Rollout: Integrated into BOS-10 write operations
-  - Rollback: If registry sync fails, write still succeeds (registry can be manually regenerated via `pnpm docs:lint`)
+  - Rollout: Integrated into RepoStore Sync (BOS-10)
+  - Rollback: If registry sync fails, Save still succeeds; registry can be manually regenerated via `pnpm docs:lint`
 - **Notes / references:**
   - Registry generation: `docs-lint.ts:86-101`
   - Registry schema: `{path, type, status, domain}[]`
   - Option A complete = BOS-07 incomplete acknowledged by user
 
-### BOS-00-D: Auth identity implementation (Pete vs non-Pete)
+### BOS-00-D: Phase 0 identity scope (Pete-only vs multi-user)
 
-- **Type:** IMPLEMENT
-- **Affects:** `apps/business-os/src/lib/auth/identity.ts`, middleware
-- **Depends on:** BOS-00-E (auth mechanism choice)
-- **Status:** Pending (blocked by BOS-00-E)
-- **Confidence:** 50% ⚠️
-  - Implementation: 55% — Identity check logic straightforward BUT depends on auth mechanism from BOS-00-E
-  - Approach: 50% — Cannot design identity implementation without knowing if NextAuth, custom auth, or no-auth (local-only)
-  - Impact: 45% — Incorrect identity allows privilege escalation; blocked by upstream decision
-- **Problem statement:**
-  - BOS-09 enforces path-level authorization: "Pete + agents" vs "non-Pete users"
-  - Requirements: "only Pete and agents may edit business plans and people docs"
-  - **Gap:** No definition of how to identify "Pete" vs spoofing prevention
-  - **Risk:** User could impersonate Pete or agent to bypass authorization
-- **Existing repo patterns:**
-  - `middleware.ts:5`: Likely NextAuth-based auth (need to verify)
-  - `middleware.ts:10`: Auth check pattern (need to verify)
-  - Assumption: Repo has user identity from auth session
-- **Approach:**
-  - **Identity check:** `user.id === PETE_USER_ID || user.role === 'agent'`
-  - **Pete identity:** Hardcoded user ID or email from env var (`PETE_USER_ID` / `PETE_EMAIL`)
-  - **Agent identity:** Special role or separate auth token for agent skills
-  - **Spoofing prevention:** Identity comes from server-side session (not client-provided header)
-- **Acceptance:**
-  - Function `isPeteOrAgent(user)` returns boolean
-  - Pete identity defined via env var or hardcoded constant (document which)
-  - Agent identity mechanism defined (role-based or token-based)
-  - Unit tests: Pete identified correctly, non-Pete rejected, agent identified correctly
-  - Integration: Non-Pete user attempts to write plan → 403 Forbidden
-- **Test plan:**
-  - Unit: `apps/business-os/src/lib/auth/identity.test.ts`
-  - Integration: Auth check in BOS-09 authorization middleware
-- **What would make this ≥80%:**
-  - Verify existing auth mechanism (NextAuth? Custom?)
-  - Clarify agent auth strategy (how does agent skill authenticate?)
-- **Rollout / rollback:**
-  - Rollout: Integrated into BOS-09 authorization middleware
-  - Rollback: Remove identity check (allow all writes; unsafe but reversible)
-- **Documentation impact:**
-  - `docs/business-os/security.md` document identity mechanism and Pete configuration
-- **Notes / references:**
-  - Requirements lines 318-325: "Commit authorship: real user identity or agent identity"
-  - Requirements lines 330-342: "Path-level authorization: only Pete/agents may modify plans/people"
-  - Existing patterns: `middleware.ts:5`, `:10` (need verification)
+- **Type:** DECISION
+- **Affects:** Phase 0 UX scope, authorization design, raw-idea visibility rules
+- **Depends on:** -
+- **Status:** ✅ COMPLETE (2026-01-28)
+- **Confidence:** 100%
+  - Implementation: 100% — Scope decision; no code required to decide
+  - Approach: 100% — Aligns with Phase 0 operating constraint: local-only, Pete-only
+  - Impact: 100% — Removes auth/identity complexity from Phase 0; multi-user deferred cleanly
+- **Decision:** **Phase 0 is Pete-only**
+  - Only Pete uses the Business OS app in Phase 0.
+  - No per-user visibility enforcement in Phase 0 (e.g., "submitter/owner can see raw ideas") because there are no other users.
+  - Server-side authorization is still required as defense-in-depth, but is not user-specific in Phase 0 (see BOS-09).
+- **Deferred to Phase 1+:**
+  - Multi-user authentication and identity
+  - Per-user visibility rules for raw ideas
+  - Per-user write permissions (non-Pete comment-only, etc.)
 
 ### BOS-00-E: Choose auth mechanism for apps/business-os
 
@@ -397,9 +378,8 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
     - `const currentUser = { name: "Pete", email: "pete@example.com", isPete: true }`
     - All "only Pete can..." checks use `currentUser.isPete === true`
   - **BOS-09 (authorization):** Implement permission checks with hardcoded Pete identity
-    - Path-level authorization still enforced (only Pete/agents can edit plans/people)
-    - Comment append permissions still differentiated (non-Pete can comment only)
-    - Phase 1+ migration: replace hardcoded identity with session-based identity
+    - Phase 0 is Pete-only; enforce a strict path/operation allowlist as defense-in-depth (not user-specific)
+    - Phase 1+ migration: replace hardcoded identity with session-based identity + per-user permissions
   - **UI:** No login screen, no logout, no user profile
   - **Security note:** Phase 0 app must NOT be deployed to public URL (local-only)
 - **Impact on other tasks:**
@@ -422,7 +402,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Decision:** **Option A: Node runtime for all git/filesystem routes**
   - **Mechanism:** Add `export const runtime = 'nodejs'` to all Business OS API routes that touch git/filesystem
   - **Rationale:**
-    - BOS-10 requires `fs` (read/write docs), `isomorphic-git` (git operations), and `child_process` (for `pnpm docs:lint`)
+    - BOS-10 requires `fs` (read/write docs), git CLI operations (via `simple-git`), and `child_process` (for `pnpm docs:lint`)
     - **All unavailable in Edge runtime** (Edge has no `fs`, `child_process`, or local filesystem access)
     - **Repo precedent:** Existing routes use Node runtime for complex operations:
       - `apps/cms/src/app/api/cart/route.ts:10` — `export const runtime = "nodejs"`
@@ -434,7 +414,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
     - Route handlers have longer cold starts than Edge functions
     - Acceptable for Phase 0 local-only deployment; can revisit for Phase 1+ hosted if needed
   - **Alternative rejected:** Option B (Edge runtime with GitHub API) would require:
-    - Reversal of BOS-18 decision (isomorphic-git → octokit)
+    - Reversal of BOS-18 decision (git CLI → octokit)
     - Full BOS-10 redesign (different concurrency model, no local fs)
     - Higher complexity and cost for Phase 0
 - **Implementation guidance for BOS-10 and related tasks:**
@@ -445,17 +425,17 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Routes requiring Node runtime:
     - `POST /api/business-os/cards` (create/update cards via fs)
     - `POST /api/business-os/ideas` (create ideas via fs)
-    - `POST /api/business-os/commit` (git operations via isomorphic-git)
-    - `POST /api/business-os/sync-registry` (run `pnpm docs:lint` via child_process)
+    - `POST /api/business-os/commit` (git operations via git CLI)
+    - `POST /api/business-os/sync` (RepoStore Sync: push + run `pnpm docs:lint` + commit `docs/registry.json` via child_process)
   - Read-only routes (GET) can use Edge if desired, but simpler to use Node uniformly
 - **Impact on other tasks:**
   - **BOS-10 (Unblocked):** Proceed with Node runtime; no refactor needed
   - **BOS-00-C (Unblocked):** `pnpm docs:lint` via child_process is viable
-  - **BOS-18:** Confirmed isomorphic-git (Option A) aligns with Node runtime
+  - **BOS-18:** Confirmed git CLI approach aligns with Node runtime
 - **Notes / references:**
   - Next.js runtime docs: https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
   - Repo pattern: Node for cart/media/guides; Edge for simple product-pipeline queries
-  - BOS-10 design: assumes `fs`, `isomorphic-git`, `child_process` (all Node-only)
+  - BOS-10 design: assumes `fs`, `simple-git`, `child_process` (all Node-only)
 
 ### BOS-01: Extend docs taxonomy for Business OS types
 
@@ -735,22 +715,23 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 
 - **Type:** IMPLEMENT
 - **Affects:** `apps/business-os/src/lib/auth/`, middleware
-- **Depends on:** BOS-00-D (identity implementation), BOS-08 (repo reader)
-- **Status:** Pending (blocked by BOS-00-D)
-- **Confidence:** 65%
-  - Implementation: 70% — Allowlist logic straightforward BUT depends on identity from BOS-00-D
-  - Approach: 65% — Path-based authz correct BUT auth mechanism unknown (BOS-00-E unresolved)
-  - Impact: 60% — Security-critical; errors could expose/block wrong paths; cannot test without auth
+- **Depends on:** BOS-08 (repo reader)
+- **Status:** Pending
+- **Confidence:** 78%
+  - Implementation: 80% — Allowlist logic straightforward; Phase 0 is not user-specific
+  - Approach: 78% — Defense-in-depth: restrict writes to the Business OS subtree + explicit ops
+  - Impact: 75% — Prevent accidental/buggy writes outside Business OS area
 - **Acceptance:**
-  - Function `authorizeWrite(userId: string, filePath: string)` returns boolean
-  - Allowlist enforced:
-    - Non-Pete users: only `docs/business-os/ideas/inbox/**` and `docs/business-os/cards/**/comments`
-    - Pete + agents: all paths
+  - Function `authorizeWrite(filePath: string)` returns boolean (Phase 0)
+  - Allowlist enforced (Phase 0):
+    - Writes allowed only under `docs/business-os/**` (plus any explicitly enumerated exceptions)
+    - Writes denied to any other paths under `docs/**` or repo root
+  - Explicitly allow card lane changes for Phase 0 (Pete-only), including edits to `Lane` and `Proposed-Lane` in card frontmatter
   - Middleware applied to all write API routes
-  - Unit tests: Pete can write anywhere, non-Pete blocked from plans/people/boards/lane-changes
+  - Unit tests: allowed Business OS paths pass; non-Business OS paths blocked
 - **Test plan:**
   - Unit: `apps/business-os/src/lib/auth/authorize.test.ts`
-  - Integration: Mock write requests as Pete and non-Pete; verify allowlist
+  - Integration: Mock write requests to allowed and disallowed paths; verify allowlist
   - Run: `pnpm --filter @apps/business-os test authorize`
 - **Planning validation:**
   - Tests run: N/A (new code)
@@ -764,7 +745,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Documentation impact:**
   - `docs/business-os/security.md` document authorization model
 - **Notes / references:**
-  - Requirements lines 330-350 specify path-level authorization
+  - Phase 0 is Pete-only; authorization is path/operation based. Multi-user permissions are Phase 1+.
   - Follow middleware pattern from `apps/cms/src/middleware.ts`
 
 ### BOS-10: Create repo write operations with git integration
@@ -774,8 +755,8 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Depends on:** BOS-00-A (deployment runtime), BOS-09 (authorization), BOS-18 (resolved)
 - **Status:** Pending (major blockers resolved; BOS-00-A partial)
 - **Confidence:** 70% 🟡 BUILD-ELIGIBLE
-  - Implementation: 75% — BOS-18 resolved (isomorphic-git), BOS-00-F resolved (Node runtime confirmed), writable checkout proven for local Phase 0; credentials via git config for local-only
-  - Approach: 70% — BOS-00-B resolved (governance via auto-PR workflow); write cycle design clear: commit to work/* branch → auto-PR → auto-merge
+  - Implementation: 75% — BOS-18 resolved (git CLI via simple-git), BOS-00-F resolved (Node runtime confirmed), writable checkout proven for local Phase 0 (dedicated worktree); credentials via existing git helper for HTTPS (no tokens stored)
+  - Approach: 70% — BOS-00-B resolved (governance via auto-PR workflow); write cycle design clear: commit to work/* branch → explicit Sync push → auto-PR/auto-merge
   - Impact: 65% — Core write path now has safety mechanism (auto-PR + CI gates); governance aligned; local runtime proven; hosted deployment still partial (BOS-00-A at 40%)
 
 #### Re-plan Update (2026-01-28) - MAJOR BLOCKERS RESOLVED
@@ -787,7 +768,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Remaining partial blocker:**
   - **BOS-00-A (40% incomplete):** Local Phase 0 runtime decided (Pete's machine, writable checkout) BUT hosted mechanism unproven (Vercel/CF serverless read-only). Acceptable for Phase 0; must resolve for Phase 1+ hosted deployment.
 - **Resolved dependencies:**
-  - Git access model: Isomorphic-git (BOS-18) + Node runtime (BOS-00-F) + writable local checkout (BOS-00-A local) ✅ Viable for Phase 0
+  - Git access model: git CLI (BOS-18) + Node runtime (BOS-00-F) + writable local checkout (BOS-00-A local; dedicated worktree) ✅ Viable for Phase 0
   - Governance safety: Auto-PR workflow (BOS-00-B) provides CI gates, audit trail, rollback ✅
   - Branch protection: No bypass needed; use work/* branches per repo convention ✅
 - **Remaining unresolved for ≥80%:**
@@ -795,25 +776,52 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Concurrency/locking: Single-writer Phase 0 OK; multi-writer Phase 1+ undefined (acceptable gap for now)
   - Hosted deployment: BOS-00-A unresolved for hosted; not needed for Phase 0
 - **Why confidence increased 40 points (30% → 70%):**
-  - Implementation: 35% → 75% (Node runtime confirmed, isomorphic-git viable, local writable checkout proven)
+  - Implementation: 35% → 75% (Node runtime confirmed, git CLI viable, local writable checkout proven)
   - Approach: 30% → 70% (governance resolved via auto-PR; write cycle design clear and safe)
   - Impact: 25% → 65% (safety mechanism in place; governance aligned; local runtime proven)
 - **Path to ≥90%:**
-  - Test credentials handling in local git config (verify name/email from `~/.gitconfig`)
-  - Integration test: Write operation → auto-PR created → auto-merge completes
-  - Performance test: Write cycle time <2s acceptable for Phase 0 (includes PR creation + merge wait)
+  - Confirm RepoStore works from a dedicated worktree (no pollution of the dev checkout)
+  - Manual smoke test (no GitHub polling): Save → verify local commit; Sync → verify push; open "Compare" / "Find PR" links and confirm auto-PR + auto-merge operate end-to-end
+  - Confirm commit author name/email is correct for Pete + agents (from git config; no secrets stored)
 - **Acceptance:**
   - Writer functions: `writeIdea()`, `writeCard()`, `updateCard()`, `writeComment()`, `archiveCard()`
-  - Git operations: pull latest, apply change, commit, push (with retry on conflict)
+  - Worktree safety: all writes operate in a dedicated worktree; refuse to run if the worktree is mid-merge or has uncommitted changes from a prior failure
+  - Work branch + status semantics (Phase 0):
+    - Uses `work/business-os-store`
+    - `Save` creates local commit(s) but does not push
+    - `Sync` pushes the branch and returns stable "Compare" / "Find PR" links (no polling for PR/merge status)
+    - `Synced` means pushed; merge status is checked by the user via links
+  - Git operations: fetch/merge as needed, apply change, commit, push (conflict strategy defined explicitly in this plan; no rebase, no force-push)
+  - **P0 Sync conflict strategy (LOCKED):**
+    - Invariants:
+      - Never `rebase`, never `push --force`, never `reset --hard`, never `clean -fd` from the app
+      - Never claim "Merged" automatically; `Synced` = pushed only
+    - Preflight (before any Save/Sync write):
+      - Require clean worktree (`git status --porcelain` empty)
+      - Require not mid-merge / mid-rebase (abort and instruct manual recovery if detected)
+    - Save (local-only):
+      1. Write file(s)
+      2. `git add`
+      3. `git commit`
+    - Sync (push):
+      1. `git fetch origin` (at least `origin/main` and `origin/work/business-os-store`)
+      2. Checkout `work/business-os-store`
+      3. Merge the remote work branch into local (if it exists): `git merge origin/work/business-os-store`
+      4. Merge `origin/main` into the work branch: `git merge origin/main`
+      5. `git push origin work/business-os-store`
+    - Failure handling:
+      - If merge conflicts occur (step 3 or 4): return failure, leave the worktree in conflict state, and **block further writes** until the user resolves (fix conflicts + commit, or `git merge --abort`)
+      - If push is rejected (non-fast-forward): re-run Sync once (fetch + merges + push). If it fails again, return failure and require manual intervention
+      - If auth fails: return failure with guidance ("Run `gh auth login` or fix HTTPS credentials; app stores no secrets")
+    - Link templates (used by UI; no GitHub API):
+      - Compare: `https://github.com/PeterCowling/base-shop/compare/main...work/business-os-store`
+      - Find PR: `https://github.com/PeterCowling/base-shop/pulls?q=is%3Apr+head%3Awork%2Fbusiness-os-store`
   - Commit authorship: real user identity (name/email) or agent identity
   - Atomic operations: fail fast if pull/commit/push fails
   - Unit tests: mock git operations; test conflict retry, authorship, error handling
-  - **isomorphic-git implementation:**
-    - Install: `pnpm add isomorphic-git` in `apps/business-os`
-    - Import: `import git from 'isomorphic-git'` + `import fs from 'fs'`
-    - Write cycle: `git.pull()` → fs write → `git.add()` → `git.commit()` → `git.push()`
-    - Conflict retry: max 3 attempts with exponential backoff (100ms, 200ms, 400ms)
-    - Auth: env vars `GIT_USERNAME`, `GIT_PASSWORD` or config file
+  - **git CLI implementation (Phase 0):**
+    - Prefer `simple-git` (wraps system `git`; uses existing credential helper for HTTPS)
+    - Write cycle: `fetch` → ensure branch checked out → merge base(s) → fs write → `git add` → `git commit` → `git push`
 - **Test plan:**
   - Unit: `apps/business-os/src/lib/repo/writer.test.ts` (mocked git)
   - Integration: Real git repo in test env; simulate concurrent writes
@@ -833,8 +841,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - `apps/business-os/src/lib/repo/README.md` document git operations and error handling
 - **Notes / references:**
   - Requirements lines 312-358 specify repo write model and commit identity
-  - Git library: isomorphic-git (pure JS, no native deps) per BOS-18 decision
-  - isomorphic-git docs: https://isomorphic-git.org/docs/en/quickstart
+  - Git integration: git CLI via simple-git per BOS-18 decision (Phase 0: uses existing HTTPS creds; no tokens stored)
 
 ### BOS-11: Build board view components
 
@@ -922,7 +929,7 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Impact: 85% — User-facing form; errors visible but low impact (only creates draft idea)
 - **Acceptance:**
   - Form page: `/ideas/new`
-  - Fields: title (required), description (required), business (dropdown from businesses.json), owner (default: submitter)
+  - Fields: title (required), description (required), business (dropdown from businesses.json), owner (default: Pete in Phase 0; submitter in Phase 1+)
   - Zod schema validation client + server
   - Server action: `POST /api/ideas` → writes `docs/business-os/ideas/inbox/<ID>.user.md`
   - Success: redirect to `/ideas/inbox` (list view)
@@ -945,6 +952,27 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Notes / references:**
   - Requirements lines 209-227 specify raw idea visibility and ownership
   - Follow form pattern from `apps/cms/src/components/forms/`
+
+### BOS-32: Build card create/edit UI (incl. lane + Proposed-Lane)
+
+- **Type:** IMPLEMENT
+- **Affects:** `apps/business-os/src/app/cards/`, `apps/business-os/src/components/card-editor/`, BOS-10 write routes
+- **Depends on:** BOS-10 (writes), BOS-12 (detail view patterns)
+- **Status:** Pending
+- **Confidence:** 78%
+  - Implementation: 80% — Standard form + markdown editor + server action write
+  - Approach: 78% — Must respect repo-native invariants (worked-up idea ↔ card; always-on stage docs on lane entry)
+  - Impact: 75% — UX-critical; mistakes can corrupt workflow state (lane/stage-doc mismatch)
+- **Acceptance:**
+  - Create card flow produces valid `cards/<ID>.user.md` and corresponding worked-up idea docs (so “worked-up idea ⇒ card exists” remains true)
+  - Edit card supports updating core fields, including `Lane` and `Proposed-Lane` (Pete-only Phase 0)
+  - Lane changes trigger always-on stage doc creation/maintenance (BOS-19)
+  - Validation prevents invalid lane names and invalid IDs
+  - Draft-friendly UX: Save is fast (local commit) and Sync is explicit
+- **Test plan:**
+  - Unit: validation schemas (lane enum, ID format)
+  - Integration: create/edit card → verify files + stage docs created; verify board ordering updates
+  - Run: `pnpm --filter @apps/business-os test card-editor`
 
 ### BOS-14: Implement board filtering and computed ordering
 
@@ -1088,41 +1116,39 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - **Notes / references:**
   - Requirements lines 140-149 specify archive policy
 
-### BOS-18: Choose git library (isomorphic-git vs simple-git vs nodegit)
+### BOS-18: Choose git integration (git CLI vs isomorphic-git vs nodegit)
 
 - **Type:** DECISION
 - **Affects:** `apps/business-os/package.json`, `apps/business-os/src/lib/repo/git.ts`
 - **Depends on:** -
 - **Status:** Complete (2026-01-28)
 - **Confidence:** 100%
-  - Implementation: 100% — Decision made; isomorphic-git API well-documented
-  - Approach: 100% — Option A chosen per user directive
-  - Impact: 100% — Trade-offs understood and accepted for Phase 0
-- **Decision:** Option A (isomorphic-git) — CHOSEN
-  - **Rationale:** Pure JS with no native dependencies; runs in Node + browser/Edge; actively maintained. Best fit for Phase 0 constraints favoring simplicity + portability over raw performance. Performance is acceptable for Phase 0 scale (<100 cards expected). Migration path to simple-git documented if performance issues arise at scale.
+  - Implementation: 100% — Decision made; Phase 0 is local-only Node runtime with `git` available
+  - Approach: 100% — Chosen to match Phase 0 security constraint: no stored secrets; reuse existing HTTPS git credentials
+  - Impact: 100% — Trade-offs understood and accepted for Phase 0; revisit for hosted Phase 1+
+- **Decision (Phase 0):** git CLI via `simple-git` — CHOSEN
+  - **Rationale:** Uses the system `git` credential helper (e.g., `osxkeychain` / `gh`) so the app does not need to store GitHub tokens/secrets. Reliable for local-only Phase 0. If Phase 1+ requires hosted execution without a writable checkout or without `git` available, revisit this decision (GitHub API or isomorphic-git with explicit creds).
 - **Options evaluated:**
-  - **Option A: isomorphic-git** ✓ CHOSEN
-    - Pros: Pure JS, no native deps, runs in Node + browser, actively maintained
-    - Cons: Slower than native git CLI, limited feature set (no partial clone, sparse checkout)
-    - Trade-offs: Best for Vercel/Edge deployments; acceptable for Phase 0 scale
-  - **Option B: simple-git** (not chosen)
-    - Pros: Wraps git CLI (fast), feature-complete, widely used
-    - Cons: Requires git binary installed, not portable to browser/Edge
-    - Trade-offs: Best for traditional Node server; assumes git in PATH
-  - **Option C: nodegit** (not chosen)
+  - **Option A: git CLI via simple-git** ✓ CHOSEN (Phase 0)
+    - Pros: Uses system `git` + credential helper, feature-complete, widely used, easy to debug with CLI
+    - Cons: Requires `git` binary installed; not portable to browser/Edge
+    - Trade-offs: Best for local Node server; matches Phase 0 constraints
+  - **Option B: isomorphic-git** (deferred)
+    - Pros: Pure JS; no `git` binary required
+    - Cons: Requires explicit auth handling (tokens) and custom credential management; easier to dead-end under "no secrets stored"
+    - Trade-offs: Reconsider only if Phase 1+ needs non-git environments and a token strategy exists
+  - **Option C: nodegit** (not chosen; unlikely)
     - Pros: Native bindings (fast), feature-complete
     - Cons: Native compilation required, maintenance concerns, complex install
     - Trade-offs: Best for performance; worst for deployment simplicity
 - **Implementation notes for BOS-10:**
-  - Install: `pnpm add isomorphic-git` in `apps/business-os`
-  - Import: `import git from 'isomorphic-git'` + `import fs from 'fs'` (Node fs API)
-  - Key operations: `git.clone()`, `git.pull()`, `git.add()`, `git.commit()`, `git.push()`
-  - Auth: Use callbacks for credentials (support env vars + config file)
-  - Conflict handling: Check status before commit; retry on push failure with fresh pull
+  - Install: `pnpm add simple-git` in `apps/business-os`
+  - Use system `git` in a dedicated worktree; rely on existing HTTPS creds (no tokens stored)
+  - Key operations: `fetch`, `checkout`, `merge`, `add`, `commit`, `push`
 - **Acceptance:**
-  - [x] User confirmed Option A (2026-01-28)
-  - [ ] BOS-10 updated with isomorphic-git implementation notes (pending)
-  - [ ] BOS-10 confidence updated to ≥85% (pending)
+  - [x] User confirmed "HTTPS + existing git credentials; no stored secrets" (2026-01-28)
+  - [x] Plan updated to use git CLI via simple-git for Phase 0
+  - [ ] BOS-10 updated with detailed conflict strategy + worktree setup (pending)
 
 ### BOS-19: Implement lane transition validation and stage doc creation
 
@@ -1245,12 +1271,12 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
   - Requirements: lines 209-227 (raw idea → worked idea → card workflow)
 - **Decision / resolution:**
   - **Worked idea quality rubric:**
-    - Required fields: Business-Code, Owner, Title, Description (≥3 sentences), Status: Worked
+    - Required fields: Business-Code, Owner, Title, Description (≥3 sentences), Idea-State: Worked
     - Scope clarity: 1-sentence summary of opportunity + impact/value statement
     - Completeness check: all required frontmatter fields from BOS-07 validation rules
   - **Skill workflow:**
     1. Read raw idea from `docs/business-os/ideas/inbox/<ID>.user.md`
-    2. Analyze: extract business code, clarify scope, assign owner (default: submitter)
+    2. Analyze: extract business code, clarify scope, assign owner (default: Pete in Phase 0; submitter in Phase 1+)
     3. Generate: worked idea at `docs/business-os/ideas/worked/<ID>.user.md` + `.agent.md`
     4. Create card: `docs/business-os/cards/<ID>.user.md` + `.agent.md` with Lane: Inbox (Ideas)
     5. Validate: run `pnpm docs:lint` to ensure compliance
@@ -1649,10 +1675,11 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - [ ] Can submit raw idea via UI; file created in `docs/business-os/ideas/inbox/`
 - [ ] Board views render correctly (business board + global board)
 - [ ] Card detail view displays all required fields + stage docs
+- [ ] Pete can create/edit cards in-app (including `Lane` and `Proposed-Lane`); stage docs are created/maintained per lane rules
 - [ ] Plan/people views render markdown correctly
 - [ ] Change requests create ideas with correct metadata
 - [ ] Archive mechanism moves files to `archive/` and hides from UI
-- [ ] Path authorization enforced (non-Pete users blocked from plans/people edits)
+- [ ] Path authorization enforced (Phase 0: writes restricted to `docs/business-os/**`)
 - [ ] Agent skills run manually (Pete-triggered) and produce valid outputs
 - [ ] Evidence source typing enum validated by `pnpm docs:lint`
 - [ ] Commit identity correct (user vs agent)
@@ -1666,11 +1693,12 @@ The system is ERP-like in breadth but not implementation—UI must be extremely 
 - 2026-01-28: Chose Option A (docs taxonomy integration) over Option B (separate validation) for Phase 0 — aligns with existing `pnpm docs:lint` infrastructure; reduces tooling fragmentation
 - 2026-01-28: Chose Option 2 (always-on stage docs) over Option 1 (optional stage docs) — reduces conditional logic in UI; ensures evidence trail always present
 - 2026-01-28: PLAT treated as normal business code (no special priority) — simplifies dependency logic; aligns with requirements update
-- 2026-01-28: BOS-18 resolved — chose isomorphic-git (Option A) over simple-git/nodegit — pure JS with no native deps; best fit for Phase 0 simplicity + portability; acceptable performance for expected scale (<100 cards). Note: Library choice alone insufficient to raise BOS-10 confidence; deployment runtime and governance must be resolved first.
+- 2026-01-28: BOS-18 resolved — Phase 0 uses git CLI via `simple-git` to reuse existing HTTPS credentials (`osxkeychain` / `gh`) with no stored secrets. isomorphic-git deferred (would require explicit token management). Note: Git integration choice alone insufficient to raise BOS-10 confidence; deployment runtime and governance must be resolved first.
 - 2026-01-28: Re-plan complete (initial) — investigated 10 low-confidence tasks; BOS-06 resolved (100%); others raised to ≥82%. Key findings: docs:lint at `scripts/src/docs-lint.ts`, repo has both Cypress and Playwright (chose Cypress for consistency), agent skills follow `.claude/skills/` pattern.
 - 2026-01-28: Re-plan corrections (post-review) — identified critical repo-truth failures and architectural risks. Added 4 new DECISION/IMPLEMENT tasks (BOS-00-A/B/C/D) as blockers. BOS-10 confidence reduced from 85% to 45% (blocked by deployment runtime and governance decisions). Overall confidence reduced from 86% to 52% (honest assessment of critical path blockers). Fixed false claims: gray-matter (repo has own parser), Playwright exists (chose Cypress for pattern consistency), removed false validation statements (app doesn't exist yet). Status: Draft (not Active; not ready for build until blockers resolved).
 - 2026-01-28: Second corrections pass (addressing internal inconsistencies) — Fixed contradictory task statuses between table and sections. BOS-00-A reduced from "100% Complete" to "40% Needs-Input" (hosted writable checkout mechanism unproven). Added 2 missing critical blockers: BOS-00-E (auth mechanism choice, 0%), BOS-00-F (Node vs Edge runtime, 0%). BOS-10 further reduced to 30% (added BOS-00-F blocker; 4 existential blockers total). Overall changed from "52%" to "Blocked (0%)" (effort-weighted misleading when critical path blocked). Fixed downstream task statuses (BOS-13, 19, 27, 29 now Blocked). Updated requirements constraint to reflect unresolved conflict ("commits directly to main" contradicts AGENTS.md:55). Decision log cleaned of contradictions. Total blockers: 4 (BOS-00-A 40%, BOS-00-B 0%, BOS-00-E 0%, BOS-00-F 0%).
 - 2026-01-28: BOS-00-B resolved (governance exception) — User decision: "An exception needs to be made for this app." Mechanism: Use existing auto-PR workflow (`.github/workflows/auto-pr.yml`). App commits to `work/business-os-*` branches → auto-PR creates PR with "zero-touch" label → auto-merge after CI passes. Preserves audit trail, rollback capability, and aligns with repo governance philosophy while enabling automated writes. Confidence: 100% complete.
 - 2026-01-28: BOS-00-E resolved (no auth for Phase 0) — User decision: "No auth for p0." Mechanism: Local-only trust model. App assumes single trusted user (Pete); no login or session management required. Hardcode identity as `{name: "Pete", isPete: true}` for authorization checks. Migration to full auth required for Phase 1+ hosted deployment. Confidence: 100% complete.
-- 2026-01-28: BOS-00-F resolved (Node runtime) — Recommendation accepted (implicit). Decision: Node runtime for all git/filesystem routes. Add `export const runtime = 'nodejs'` to API routes touching git/fs. Required for fs, isomorphic-git, and child_process (all unavailable in Edge runtime). Follows repo pattern from `apps/cms/src/app/api/cart/route.ts:10`, `apps/cms/src/app/api/media/route.ts:12`, `apps/brikette/src/app/api/guides/bulk-translation-status/route.ts:10`. Confidence: 100% complete.
+- 2026-01-28: BOS-00-F resolved (Node runtime) — Recommendation accepted (implicit). Decision: Node runtime for all git/filesystem routes. Add `export const runtime = 'nodejs'` to API routes touching git/fs. Required for fs, git CLI (`simple-git`), and child_process (all unavailable in Edge runtime). Follows repo pattern from `apps/cms/src/app/api/cart/route.ts:10`, `apps/cms/src/app/api/media/route.ts:12`, `apps/brikette/src/app/api/guides/bulk-translation-status/route.ts:10`. Confidence: 100% complete.
 - 2026-01-28: Major blockers resolved — BOS-00-B, BOS-00-E, BOS-00-F complete. BOS-10 unblocked: confidence increased from 30% to 70% (build-eligible). Downstream tasks unblocked: BOS-13, BOS-19, BOS-27, BOS-29 status changed from Blocked to Pending. Overall plan confidence recalculated from "Blocked (0%)" to 82% (effort-weighted across 37 tasks). Remaining partial blocker: BOS-00-A at 40% (hosted deployment mechanism unproven; acceptable for Phase 0 local-only).
+- 2026-01-28: Phase 0 UX decision — Business OS app is a full card editor for Pete (create/update cards, including `Lane` and `Proposed-Lane`).

@@ -75,8 +75,10 @@ The system delivers three linked outcomes:
 
 - **Single agent runner:** only Pete can run agents against the repo initially.
 - **No agent APIs:** the app must not call agents via API. Pete runs prompts manually; outputs land as normal git changes.
-- **Repo write model:** the app commits directly to `main` with no review (no PR step).
-  - Note: this is intentionally different from the human/agent workflow guidance in `AGENTS.md`; reconcile governance explicitly during implementation.
+- **Phase 0 single human user:** only Pete uses the Business OS app in Phase 0 (no multi-user access).
+- **Agent-run kanban updates are manual:** agent-generated updates to cards/lanes/plans/people happen only when Pete runs agents; the app has no background/scheduled agent runs (user submissions via the app are separate).
+- **Repo write model (Phase 0):** the app commits to `work/**` branches and pushes only on explicit **Sync**; the repo’s existing auto-PR workflow creates a PR and auto-merges after CI passes (no manual review step).
+  - Phase 0 UI does not poll GitHub for PR/merge status; it only provides "Find PR" / "Compare" links.
 - **Commit authorship:** commits must use the real user identity (name/email) or an agent name when an agent is the author of the change.
 - **Plan/People editing permissions:** only Pete and agents may edit business plans and people docs.
 - **Lane move proposals:** only Pete and agents may propose lane moves.
@@ -165,6 +167,10 @@ Goal: `docs/registry.json` becomes a unified index for both existing docs and Bu
 
 Repo note (today): `pnpm docs:lint` already walks all of `docs/**` and writes `docs/registry.json`, but does not yet validate Business OS–specific required fields (beyond the repo’s generic doc header checks).
 
+Operational note (Phase 0): `docs/registry.json` is updated on explicit **Sync** (RepoStore Sync runs `pnpm docs:lint` and commits the updated registry before pushing). Save does not update the registry.
+
+Repo reality note (as of 2026-01-28): `pnpm docs:lint` currently exits non-zero due to legacy docs missing headers. Phase 0 Sync uses docs:lint primarily as a **registry generator** and must not be blocked by the non-zero exit code; instead surface the output as warnings and proceed.
+
 ## 7) Canonical IDs and Business Catalog
 
 ### Business catalog
@@ -214,10 +220,9 @@ Examples:
 
 ### Raw idea visibility (UI)
 
-Raw ideas must be visible only to:
+Phase 0: raw ideas are visible only to Pete (because Pete is the only user).
 
-- Pete, and
-- the submitting user and/or assigned owner.
+Phase 1+: raw ideas should be visible to Pete plus the submitting user and/or assigned owner (requires real auth/identity).
 
 ### Ownership (Phase 0)
 
@@ -295,6 +300,13 @@ Only `.user.md` is rendered in the app.
 - links (doc-centric: plan/people/related cards/commits/PRs)
 - lightweight history
 
+### Card editing (Phase 0)
+
+Phase 0 is Pete-only, and the app is a full editor for cards:
+
+- Pete can create/update cards in the app, including updating `Lane` and `Proposed-Lane`.
+- Lane changes must ensure always-on stage docs exist (Fact-finding/Planned/In progress/Reflected mapping).
+
 ### Plans and people in the app (read-only, presentation formatted)
 
 The app must render:
@@ -317,8 +329,11 @@ These requests must not directly modify plan/people docs (since only Pete/agents
 
 ### Branch and review
 
-- All app writes commit directly to `main`.
-- No PR/review step.
+- All app writes commit to `work/**` branches.
+- No manual review step; existing auto-PR workflow creates PRs and auto-merges after CI passes.
+- Push policy (Phase 0):
+  - **Save:** local commit(s) only (no push)
+  - **Sync:** push to `origin` (PR/merge is asynchronous; surfaced via links only)
 
 ### Commit identity
 
@@ -329,27 +344,25 @@ Commit author must be:
 
 ### Path-level authorization (hard)
 
-Enforce a strict allowlist at the server layer:
+Phase 0 (Pete-only): enforce a strict allowlist at the server layer, but it is **not user-specific**:
 
-- Non-Pete users may write only to:
-  - `docs/business-os/ideas/inbox/**` (new raw ideas, append comments)
-  - `docs/business-os/cards/**` (append comments only; no lane changes; no proposals)
-- Only Pete/agents may modify:
-  - `docs/business-os/strategy/**` (plans, `businesses.json`)
-  - `docs/business-os/people/**`
-  - `docs/business-os/boards/**`
-  - `docs/business-os/scans/**`
-  - card lane/proposal fields in frontmatter
+- Writes allowed only under `docs/business-os/**` (plus explicitly enumerated exceptions, if any).
+- Writes denied to all other paths under `docs/**` and repo root.
+ - Phase 0 explicitly allows card lane changes (Pete can edit `Lane` and `Proposed-Lane`).
+
+Phase 1+ (multi-user): add user-scoped permissions:
+
+- Non-Pete users: only `docs/business-os/ideas/inbox/**` (new raw ideas, append comments) and `docs/business-os/cards/**` (append comments only; no lane changes; no proposals)
+- Only Pete/agents may modify: `docs/business-os/strategy/**`, `docs/business-os/people/**`, `docs/business-os/boards/**`, `docs/business-os/scans/**`, and card lane/proposal fields in frontmatter
 
 ### Minimizing conflicts
 
 - Use append-only comment logs where possible.
-- When a write touches an existing file, the server must:
-  1. pull latest `main`
-  2. apply patch
-  3. commit
-  4. push
-  5. retry on rebase conflicts where feasible
+- When a write touches an existing file:
+  - **Save:** write + local commit (no push)
+  - **Sync:** `fetch` → merge remote work branch → merge `origin/main` → push
+  - **No destructive git ops:** never rebase, never force-push
+  - On merge conflicts: fail fast and require manual resolution in the dedicated worktree (block further writes until resolved)
 
 ## 13) Change Requests for Plans and People
 

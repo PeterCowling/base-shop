@@ -1,3 +1,6 @@
+Type: Plan
+Status: Draft
+
 # Plan: Simplify Next.js Webpack Configuration
 
 **Status:** Draft — requires review before implementation

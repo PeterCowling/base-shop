@@ -1,3 +1,6 @@
+Type: Plan
+Status: Draft
+
 # MCP Server Implementation Plan
 
 **Feature:** Model Context Protocol (MCP) Server Integration

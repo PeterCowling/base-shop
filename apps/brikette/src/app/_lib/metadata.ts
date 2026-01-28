@@ -50,14 +50,17 @@ export function buildAppMetadata({
   const finalImageWidth = typeof image === "object" ? image.width : imageWidth;
   const finalImageHeight = typeof image === "object" ? image.height : imageHeight;
 
-  // Build hreflang alternates
+  // Build hreflang alternates using proven buildLinks() logic
+  const links = seo.buildLinks({ lang, origin, path });
   const languages: Record<string, string> = {};
-  for (const supportedLang of i18nConfig.supportedLngs) {
-    // Replace current lang segment with alternate lang
-    const alternatePath = path.replace(`/${lang}`, `/${supportedLang}`);
-    languages[supportedLang] = seo.ensureTrailingSlash(`${origin}${alternatePath}`);
+
+  // Convert HtmlLinkDescriptor[] → Record<string, string> for Next.js alternates.languages
+  // Apply trailing-slash policy to alternates (buildLinks only applies it to canonical)
+  for (const link of links) {
+    if (link.rel === "alternate" && link.hrefLang) {
+      languages[link.hrefLang] = seo.ensureTrailingSlash(link.href);
+    }
   }
-  languages["x-default"] = seo.ensureTrailingSlash(`${origin}${path.replace(`/${lang}`, `/${i18nConfig.fallbackLng}`)}`);
 
 
   const metadata: Metadata = {

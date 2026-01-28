@@ -264,10 +264,10 @@ if (key) {
 
 ### TASK-SEO-4: Align canonical/trailing-slash policy
 
-**Status:** Ready
+**Status:** Complete (2026-01-28)
 **Confidence:** 82% (min: Implementation 85%, Approach 82%, Impact 80%)
-**Effort:** M (4-5 hours)
-**Owner:** Unassigned
+**Effort:** M (4-5 hours actual)
+**Owner:** Claude
 **Dependencies:** None (but affects TASK-SEO-3, TASK-SEO-7)
 **Priority:** P0
 
@@ -331,6 +331,59 @@ if (key) {
 - Tests expect slashless: `seo-jsonld-contract.test.tsx:73`, line 80, line 90
 - Sitemap normalizer: `generate-public-seo.ts:20-23`
 - Repo precedent: `apps/prime/next.config.mjs:7` (`trailingSlash: true`)
+
+#### Build Completion (2026-01-28)
+
+**Status:** Complete
+**Commit:** f155699480
+
+**TDD cycle:**
+- Tests updated: `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`
+- Updated 3 test expectations to require trailing slashes (lines 73, 80, 90)
+- Initial test run: FAIL (3/4 tests - expected trailing slashes but code stripped them)
+- Implementation: Modified 6 files to preserve/add trailing slashes
+- Post-implementation: PASS (4/4 tests)
+
+**Implementation:**
+- Changed `apps/brikette/src/utils/seo.ts:66-67,107,221`:
+  - Renamed `trimTrailingSlash` → `ensureTrailingSlash`
+  - Inverted logic to preserve/add trailing slashes for all non-root paths
+- Changed `apps/brikette/src/utils/routeHead.ts:142`:
+  - Updated fallback canonical logic to preserve trailing slashes
+- Changed `apps/brikette/scripts/generate-public-seo.ts:20-25`:
+  - Modified `normalizePathname` to ensure trailing slashes
+- Changed `packages/ui/src/lib/seo/buildCanonicalUrl.ts:4,10,22`:
+  - Removed slash-stripping logic (`.replace(/\/$/, "")`)
+  - Added comments: "// Preserve trailing slash (align with server behavior)"
+- Changed `packages/ui/src/lib/__tests__/buildCanonicalUrl.test.ts:5-6,10-11,16,20-21`:
+  - Updated test expectations to require trailing slashes
+  - Added new test: "preserves trailing slashes to align with server behavior"
+- Changed `apps/brikette/src/components/seo/DealsStructuredData.tsx:17`:
+  - Added trailing slash to `pageUrl` construction
+
+**Tests updated:**
+- Updated 3 expectations in `seo-jsonld-contract.test.tsx`:
+  - Line 73: `/en/assistance/arriving-by-ferry` → `/en/assistance/arriving-by-ferry/`
+  - Line 80: `/en/experiences/ferry-schedules` → `/en/experiences/ferry-schedules/`
+  - Line 90: `${BASE_URL}/en/${dealsSlug}` → `${BASE_URL}/en/${dealsSlug}/`
+- Updated 4 expectations in `buildCanonicalUrl.test.ts` to expect trailing slashes
+- Added new test case for trailing-slash preservation
+
+**Validation:**
+- `pnpm typecheck`: PASS (monorepo typecheck, all 70 packages)
+- `pnpm test seo-jsonld-contract.test`: PASS (4/4 tests)
+- `pnpm test buildCanonicalUrl.test`: PASS (4/4 tests)
+- Pre-commit hooks: PASS (lint-staged, typecheck, lint, agent context validation)
+
+**Documentation updated:** None required (code change only)
+
+**Implementation notes:**
+- All canonical URLs now end with `/` (except root `/`)
+- Sitemap entries include trailing slashes
+- Aligns with Cloudflare Pages server behavior (HTTP 308 redirects)
+- Follows `apps/prime` precedent (`trailingSlash: true` in next.config.mjs)
+- Unblocks TASK-SEO-3 (middleware redirects) and TASK-SEO-7 (generator)
+- Multi-surface change: affected 6 files across brikette app and shared ui package
 
 ---
 

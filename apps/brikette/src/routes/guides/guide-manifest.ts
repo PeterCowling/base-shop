@@ -576,6 +576,30 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "content", status: "complete" },
     ],
   }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "hostelFaqs",
+    slug: "hostel-faqs",
+    contentKey: "hostelFaqs",
+    status: "draft",
+    draftPathSegment: "assistance/hostel-faqs",
+    areas: ["help"],
+    primaryArea: "help",
+    structuredData: ["Article", "FAQPage", "BreadcrumbList"],
+    relatedGuides: ["checkinCheckout", "bookingBasics", "rules"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "hostelFaqs", showToc: true },
+      },
+    ],
+    options: {
+      suppressUnlocalizedFallback: false,
+    },
+    checklist: [
+      { id: "translations", status: "complete" },
+      { id: "content", status: "complete" },
+    ],
+  }),
   // --- End assistance articles ---
 
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1223,6 +1247,12 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["Article"],
     relatedGuides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"],
     blocks: [
+      {
+        type: "hero",
+        options: {
+          image: "santa-maria-castello/smaria-to-positano.jpg",
+        },
+      },
       {
         type: "genericContent",
         options: { contentKey: "santaMariaDelCastelloHike", showToc: true },
@@ -4258,7 +4288,7 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
   jsonLd: "Structured data",
   faqs: "FAQs",
   content: "Content sections",
-  media: "Media & galleries",
+  media: "Media & galleries (optional)",
 };
 
 /**

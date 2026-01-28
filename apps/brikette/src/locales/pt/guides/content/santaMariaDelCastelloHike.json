@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Caminhada Santa Maria del Castello do Hostel Brikette - Positano",
+    "description": "Guia completo de caminhada para Santa Maria del Castello, vila de montanha acima de Positano com direções, mirantes e vistas espetaculares da costa."
+  },
+  "linkLabel": "Santa Maria del Castello: Caminhada à vila de montanha",
+  "intro": [
+    "Santa Maria del Castello fica a 670 metros (2.200 pés) acima de Positano, oferecendo vistas que igualam ou superam as do Caminho dos Deuses. Esta vila de montanha possui um restaurante que oferece boa comida a preços acessíveis e vistas panorâmicas deslumbrantes.",
+    "Vistas magníficas aparecem a apenas 15 minutos de partida do albergue, tornando esta uma caminhada gratificante para quem busca flexibilidade e quer evitar ônibus SITA lotados."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "O que é Santa Maria del Castello?",
+      "body": [
+        "Seu destino é uma vila de montanha posicionada acima de Positano a 670 metros (2.200 pés) de elevação. A vila possui um restaurante que oferece boa comida a preços acessíveis, além de vistas magníficas.",
+        "Um mirante dedicado oferece vistas panorâmicas deslumbrantes da Costa Amalfitana, Positano e as montanhas circundantes."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Por que fazer esta caminhada?",
+      "body": [
+        "As vistas igualam ou superam as do Caminho dos Deuses, oferecendo panoramas costeiros espetaculares.",
+        "Vistas magníficas aparecem a apenas 15 minutos de partida do albergue – você não precisa esperar muito para recompensas.",
+        "Oferece flexibilidade e é preferida por quem evita ônibus SITA lotados.",
+        "Serve como ponto de partida para explorar outras áreas montanhosas ao redor de Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Considerações importantes",
+      "body": [
+        "Esta caminhada é significativamente mais extenuante que o Caminho dos Deuses. Prepare-se para subidas íngremes.",
+        "Pode não ser adequada para quem prioriza a experiência do Caminho dos Deuses como objetivo principal de caminhada.",
+        "O calor do verão exige evitar esta caminhada entre 11h00 e 16h00. Partidas no início da manhã ou final da tarde são essenciais nos meses quentes."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Direções para a vila",
+      "body": [
+        "Siga estas instruções passo a passo do Hostel Brikette para chegar à vila de Santa Maria del Castello:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Direções para o mirante",
+      "body": [
+        "Depois de chegar ao cruzamento onde a trilha se nivela, siga estas direções para acessar o mirante deslumbrante."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Saia do albergue e vire à direita",
+      "text": "Da entrada do albergue, vire à direita e suba os degraus ao lado do edifício."
+    },
+    {
+      "name": "Continue no caminho de pedestres",
+      "text": "No topo dos degraus iniciais, continue seguindo o caminho de pedestres para cima."
+    },
+    {
+      "name": "Escolha a esquerda no cruzamento",
+      "text": "Quando chegar a um cruzamento, escolha a opção de subida à esquerda para continuar subindo."
+    },
+    {
+      "name": "Siga os degraus até a estrada",
+      "text": "Continue seguindo os degraus até chegar a um ponto com escadas que levam a uma estrada."
+    },
+    {
+      "name": "Atravesse a estrada",
+      "text": "Atravesse a estrada e localize as escadas que correm ao lado das casas no lado oposto."
+    },
+    {
+      "name": "Suba as escadas atrás das casas",
+      "text": "Siga estas escadas enquanto serpenteiam atrás das casas, levando você até a trilha de montanha."
+    },
+    {
+      "name": "Continue na trilha de montanha",
+      "text": "Siga a trilha de montanha enquanto sobe em direção à vila. O caminho fica mais cênico aqui."
+    },
+    {
+      "name": "Escolha subida nas bifurcações",
+      "text": "Em duas bifurcações da trilha ao longo do caminho, escolha os caminhos de subida para continuar em direção à vila."
+    },
+    {
+      "name": "Chegue ao cruzamento da vila",
+      "text": "Você chegará a um cruzamento onde a trilha se nivela. Isso marca sua chegada a Santa Maria del Castello."
+    },
+    {
+      "name": "Vire à direita em direção ao mirante (opcional)",
+      "text": "Para chegar ao mirante, vire à direita no cruzamento."
+    },
+    {
+      "name": "Pegue a estrada subindo até o cruzamento",
+      "text": "Siga a estrada subindo até chegar a um cruzamento."
+    },
+    {
+      "name": "Vire à direita no cruzamento",
+      "text": "No cruzamento, vire à direita e siga a estrada enquanto ela curva para a direita."
+    },
+    {
+      "name": "Prossiga até a seção gramada",
+      "text": "Continue até chegar a uma seção gramada fora da estrada principal."
+    },
+    {
+      "name": "Acesse os pontos de observação",
+      "text": "Os pontos de observação são acessíveis a partir desta área gramada. Use extrema cautela – há quedas súbitas de várias centenas de metros."
+    }
+  ],
+  "warningsTitle": "Avisos de segurança",
+  "warnings": [
+    "Os pontos de observação têm quedas súbitas de várias centenas de metros. Fique bem longe das bordas e supervisione as crianças de perto.",
+    "Esta caminhada é significativamente mais extenuante que o Caminho dos Deuses. Avalie seu nível de condicionamento físico antes de tentar.",
+    "Evite caminhar entre 11h00 e 16h00 durante os meses de verão devido à exposição extrema ao calor na trilha de montanha."
+  ],
+  "essentialsTitle": "O que trazer",
+  "essentials": [
+    "Sapatos de caminhada resistentes com boa aderência para terreno íngreme e irregular",
+    "Pelo menos 1,5 litros de água por pessoa – oportunidades limitadas de reabastecimento",
+    "Proteção solar: chapéu, protetor solar e óculos de sol para seções expostas",
+    "Lanches leves ou almoço se planeja passar tempo no restaurante da vila"
+  ],
+  "tipsTitle": "Dicas de caminhada",
+  "tips": [
+    "Comece cedo pela manhã durante os meses de verão para evitar o calor do meio-dia.",
+    "Vá com calma nas seções íngremes – as vistas valem a pena serem apreciadas ao longo do caminho.",
+    "Considere almoçar no restaurante da vila antes de descer de volta a Positano.",
+    "Traga uma câmera ou telefone totalmente carregado – as oportunidades de fotos do mirante são excepcionais."
+  ]
+}

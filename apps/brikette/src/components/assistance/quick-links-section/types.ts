@@ -4,10 +4,11 @@ import type { GuideKey } from "@/routes.guides-helpers";
 export interface QuickLinkItem {
   label: string;
   description: string;
-  slug: GuideKey;
+  slug?: GuideKey;
+  href?: string;
 }
 
-export interface QuickLinkWithHref extends QuickLinkItem {
+export interface QuickLinkWithHref extends Omit<QuickLinkItem, 'href'> {
   href: string;
 }
 

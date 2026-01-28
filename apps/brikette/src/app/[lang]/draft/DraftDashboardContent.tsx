@@ -3,8 +3,9 @@
 // src/app/[lang]/draft/DraftDashboardContent.tsx
 // Client component for draft dashboard - migrated from routes/guides/draft.index.tsx
 /* eslint-disable ds/no-hardcoded-copy -- TECH-DEBT-000 [ttl=2025-12-31] Editorial dashboard copy awaiting i18n coverage */
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import Link from "next/link";
+import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -21,6 +22,7 @@ import {
   type ChecklistSnapshot,
   guideAreaToSlugKey,
   type GuideManifestEntry,
+  GUIDE_STATUS_VALUES,
   listGuideManifestEntries,
   resolveDraftPathSegment,
 } from "@/routes/guides/guide-manifest";
@@ -94,6 +96,91 @@ function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideS
     checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
     draftPath: resolveDraftPathSegment(entry),
   };
+}
+
+type StatusDropdownProps = {
+  guideKey: string;
+  initialStatus: DraftGuideStatus;
+  canEdit: boolean;
+};
+
+function StatusDropdown({ guideKey, initialStatus, canEdit }: StatusDropdownProps) {
+  const [status, setStatus] = useState<DraftGuideStatus>(initialStatus);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  const handleStatusChange = useCallback(
+    async (newStatus: DraftGuideStatus) => {
+      if (!canEdit) return;
+
+      setStatus(newStatus);
+      setSaveStatus("saving");
+
+      try {
+        const response = await fetch(`/api/guides/${guideKey}/manifest`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-preview-token": PREVIEW_TOKEN ?? "",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+
+        const data = await response.json() as { ok?: boolean; error?: string };
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error ?? "Failed to save status");
+        }
+
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } catch (err) {
+        setSaveStatus("error");
+        setStatus(initialStatus); // Revert on error
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    },
+    [canEdit, guideKey, initialStatus]
+  );
+
+  if (!canEdit) {
+    return (
+      <Inline
+        as="span"
+        className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASS[status]}`}
+      >
+        {STATUS_LABEL[status]}
+      </Inline>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <select
+        value={status}
+        onChange={(e) => void handleStatusChange(e.target.value as DraftGuideStatus)}
+        className={clsx(
+          "cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition-colors",
+          "hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-1",
+          STATUS_CLASS[status]
+        )}
+      >
+        {GUIDE_STATUS_VALUES.map((statusValue) => (
+          <option key={statusValue} value={statusValue}>
+            {STATUS_LABEL[statusValue]}
+          </option>
+        ))}
+      </select>
+      {saveStatus === "saving" && (
+        <span className="text-xs text-brand-secondary">Saving...</span>
+      )}
+      {saveStatus === "saved" && (
+        <span className="text-xs text-brand-primary">Saved</span>
+      )}
+      {saveStatus === "error" && (
+        <span className="text-xs text-brand-terra">Error</span>
+      )}
+    </div>
+  );
 }
 
 function DraftDashboardContent({ lang }: Props) {
@@ -183,12 +270,11 @@ function DraftDashboardContent({ lang }: Props) {
                     </Cluster>
                   </td>
                   <td className="px-4 py-3">
-                    <Inline
-                      as="span"
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_CLASS[guide.status]}`}
-                    >
-                      {STATUS_LABEL[guide.status]}
-                    </Inline>
+                    <StatusDropdown
+                      guideKey={guide.key}
+                      initialStatus={guide.status}
+                      canEdit={canEdit}
+                    />
                   </td>
                   <td className="px-4 py-3">
                     <Stack className="gap-1">

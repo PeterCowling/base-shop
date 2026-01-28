@@ -17,6 +17,9 @@ const FALLBACK_PRIMARY_CTA_LABEL =
 const FALLBACK_TOGGLE_LABEL =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback aria label. */
   "Toggle menu";
+const FALLBACK_BRAND_TITLE =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
+  "Hostel Brikette";
 
 interface Props {
   menuOpen: boolean;
@@ -74,8 +77,12 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
             loading="eager"
             decoding="async"
           />
-          <span className="hidden text-lg font-bold text-brand-heading sm:inline">
-            {t("title")}
+          <span className="hidden text-lg font-bold text-white sm:inline">
+            {(() => {
+              const title = t("title") as string;
+              if (title && title !== "title") return title;
+              return FALLBACK_BRAND_TITLE;
+            })()}
           </span>
         </Link>
 

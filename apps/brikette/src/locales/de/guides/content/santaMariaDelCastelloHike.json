@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Santa Maria del Castello Wanderung vom Hostel Brikette - Positano",
+    "description": "Vollständiger Wanderführer nach Santa Maria del Castello, einem Bergdorf über Positano mit Wegbeschreibung, Aussichtspunkten und atemberaubenden Küstenblicken."
+  },
+  "linkLabel": "Santa Maria del Castello: Bergdorf-Wanderung",
+  "intro": [
+    "Santa Maria del Castello liegt auf 670 Metern (2.200 Fuß) über Positano und bietet Aussichten, die denen vom Pfad der Götter gleichkommen oder sie übertreffen. Dieses Bergdorf verfügt über ein Restaurant mit gutem Essen zu erschwinglichen Preisen und atemberaubenden Panoramablicken.",
+    "Großartige Ausblicke erscheinen bereits 15 Minuten nach dem Verlassen des Hostels, was diese Wanderung zu einer lohnenden Wahl für diejenigen macht, die Flexibilität suchen und überfüllte SITA-Busse vermeiden möchten."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Was ist Santa Maria del Castello?",
+      "body": [
+        "Ihr Ziel ist ein Bergdorf über Positano auf 670 Metern (2.200 Fuß) Höhe. Das Dorf verfügt über ein Restaurant mit gutem Essen zu erschwinglichen Preisen sowie großartigen Aussichten.",
+        "Ein eigener Aussichtspunkt bietet atemberaubende Panoramablicke über die Amalfiküste, Positano und die umliegenden Berge."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Warum sollten Sie diese Wanderung machen?",
+      "body": [
+        "Die Aussichten entsprechen oder übertreffen die vom Pfad der Götter und bieten spektakuläre Küstenpanoramen.",
+        "Großartige Aussichten erscheinen bereits 15 Minuten nach dem Verlassen des Hostels – Sie müssen nicht lange auf Belohnungen warten.",
+        "Bietet Flexibilität und wird von denjenigen bevorzugt, die überfüllte SITA-Busse vermeiden.",
+        "Dient als Ausgangspunkt für die Erkundung anderer Berggebiete rund um Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Wichtige Überlegungen",
+      "body": [
+        "Diese Wanderung ist deutlich anspruchsvoller als der Pfad der Götter. Bereiten Sie sich auf steile Anstiege vor.",
+        "Möglicherweise nicht geeignet für diejenigen, die das Erlebnis Pfad der Götter als ihr Haupt-Wanderziel priorisieren.",
+        "Die Sommerhitze erfordert es, diese Wanderung zwischen 11:00 und 16:00 Uhr zu vermeiden. Frühe Morgen- oder späte Nachmittagsabfahrten sind in warmen Monaten unerlässlich."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Wegbeschreibung zum Dorf",
+      "body": [
+        "Folgen Sie dieser Schritt-für-Schritt-Anleitung vom Hostel Brikette, um das Dorf Santa Maria del Castello zu erreichen:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Wegbeschreibung zum Aussichtspunkt",
+      "body": [
+        "Sobald Sie die Kreuzung erreichen, wo der Weg eben wird, folgen Sie dieser Anleitung, um zum atemberaubenden Aussichtspunkt zu gelangen."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Verlassen Sie das Hostel und biegen Sie rechts ab",
+      "text": "Vom Hostel-Eingang biegen Sie rechts ab und steigen die Stufen neben dem Gebäude hinauf."
+    },
+    {
+      "name": "Folgen Sie dem Fußweg",
+      "text": "Oben auf den ersten Stufen folgen Sie dem Fußweg weiter nach oben."
+    },
+    {
+      "name": "Wählen Sie links an der Kreuzung",
+      "text": "Wenn Sie zu einer Kreuzung kommen, wählen Sie die linke Bergan-Option, um weiter aufzusteigen."
+    },
+    {
+      "name": "Folgen Sie den Stufen zur Straße",
+      "text": "Folgen Sie den Stufen weiter, bis Sie zu einem Punkt mit Treppen kommen, die zu einer Straße hinunterführen."
+    },
+    {
+      "name": "Überqueren Sie die Straße",
+      "text": "Überqueren Sie die Straße und lokalisieren Sie die Treppen, die an den Häusern auf der gegenüberliegenden Seite entlanglaufen."
+    },
+    {
+      "name": "Steigen Sie die Treppen hinter den Häusern hinauf",
+      "text": "Folgen Sie diesen Treppen, während sie sich hinter den Häusern winden und Sie zum Bergpfad führen."
+    },
+    {
+      "name": "Folgen Sie dem Bergpfad",
+      "text": "Folgen Sie dem Bergpfad, während er zum Dorf hinaufklettert. Der Weg wird hier malerischer."
+    },
+    {
+      "name": "Wählen Sie bergauf an Weggabelungen",
+      "text": "An zwei Weggabelungen unterwegs wählen Sie die Bergauf-Pfade, um weiter zum Dorf zu gelangen."
+    },
+    {
+      "name": "Erreichen Sie die Dorfkreuzung",
+      "text": "Sie erreichen eine Kreuzung, wo der Weg eben wird. Dies markiert Ihre Ankunft in Santa Maria del Castello."
+    },
+    {
+      "name": "Biegen Sie rechts zum Aussichtspunkt ab (optional)",
+      "text": "Um zum Aussichtspunkt zu gelangen, biegen Sie an der Kreuzung rechts ab."
+    },
+    {
+      "name": "Nehmen Sie die Straße bergauf zur Kreuzung",
+      "text": "Folgen Sie der Straße bergauf, bis Sie zu einer Kreuzung kommen."
+    },
+    {
+      "name": "Biegen Sie an der Kreuzung rechts ab",
+      "text": "An der Kreuzung biegen Sie rechts ab und folgen der Straße, während sie sich nach rechts krümmt."
+    },
+    {
+      "name": "Fahren Sie zum Grasabschnitt fort",
+      "text": "Fahren Sie fort, bis Sie zu einem Grasabschnitt abseits der Hauptstraße kommen."
+    },
+    {
+      "name": "Zugang zu den Aussichtspunkten",
+      "text": "Die Aussichtspunkte sind von diesem Grasbereich aus zugänglich. Seien Sie äußerst vorsichtig – es gibt plötzliche Abfälle von mehreren hundert Metern."
+    }
+  ],
+  "warningsTitle": "Sicherheitswarnungen",
+  "warnings": [
+    "Die Aussichtspunkte haben plötzliche Abfälle von mehreren hundert Metern. Halten Sie sich weit von den Rändern fern und beaufsichtigen Sie Kinder genau.",
+    "Diese Wanderung ist deutlich anspruchsvoller als der Pfad der Götter. Beurteilen Sie Ihr Fitnessniveau, bevor Sie es versuchen.",
+    "Vermeiden Sie das Wandern zwischen 11:00 und 16:00 Uhr in den Sommermonaten aufgrund extremer Hitzebelastung auf dem Bergpfad."
+  ],
+  "essentialsTitle": "Was Sie mitbringen sollten",
+  "essentials": [
+    "Robuste Wanderschuhe mit gutem Halt für steiles, unebenes Gelände",
+    "Mindestens 1,5 Liter Wasser pro Person – begrenzte Nachfüllmöglichkeiten",
+    "Sonnenschutz: Hut, Sonnencreme und Sonnenbrille für exponierte Abschnitte",
+    "Leichte Snacks oder Mittagessen, wenn Sie Zeit im Dorfrestaurant verbringen möchten"
+  ],
+  "tipsTitle": "Wandertipps",
+  "tips": [
+    "Starten Sie früh am Morgen während der Sommermonate, um die Mittagshitze zu vermeiden.",
+    "Nehmen Sie sich Zeit bei den steilen Abschnitten – die Aussichten sind es wert, unterwegs genossen zu werden.",
+    "Erwägen Sie ein Mittagessen im Dorfrestaurant, bevor Sie zurück nach Positano absteigen.",
+    "Bringen Sie eine Kamera oder ein vollständig aufgeladenes Telefon mit – die Fotomöglichkeiten vom Aussichtspunkt sind außergewöhnlich."
+  ]
+}

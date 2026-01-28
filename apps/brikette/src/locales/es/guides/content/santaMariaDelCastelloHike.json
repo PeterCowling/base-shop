@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Ruta de senderismo a Santa Maria del Castello desde Hostel Brikette - Positano",
+    "description": "Guía completa de senderismo a Santa Maria del Castello, pueblo sobre Positano con indicaciones, miradores y vistas espectaculares de la costa."
+  },
+  "linkLabel": "Santa Maria del Castello: Ruta al pueblo de montaña",
+  "intro": [
+    "Santa Maria del Castello se encuentra a 670 metros (2.200 pies) sobre Positano, ofreciendo vistas que igualan o superan las del Sendero de los Dioses. Este pueblo de montaña cuenta con un restaurante que ofrece buena comida a precios asequibles y panoramas impresionantes.",
+    "Las grandes vistas aparecen a solo 15 minutos de salir del hostel, lo que hace de esta una caminata gratificante para quienes buscan flexibilidad y quieren evitar los autobuses SITA abarrotados."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "¿Qué es Santa Maria del Castello?",
+      "body": [
+        "Tu destino es un pueblo de montaña situado sobre Positano a 670 metros (2.200 pies) de altitud. El pueblo cuenta con un restaurante que ofrece buena comida a precios asequibles, así como excelentes vistas.",
+        "Un mirador dedicado ofrece vistas panorámicas impresionantes de la Costa Amalfitana, Positano y las montañas circundantes."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "¿Por qué hacer esta ruta?",
+      "body": [
+        "Las vistas igualan o superan las del Sendero de los Dioses, ofreciendo panoramas espectaculares de la costa.",
+        "Aparecen grandes vistas a solo 15 minutos de salir del hostel: no tienes que esperar mucho para obtener recompensas.",
+        "Ofrece flexibilidad y es preferida por quienes evitan los autobuses SITA abarrotados.",
+        "Sirve como punto de partida para explorar otras áreas de montaña alrededor de Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Consideraciones importantes",
+      "body": [
+        "Esta ruta es significativamente más exigente que el Sendero de los Dioses. Prepárate para ascensos pronunciados.",
+        "Puede no ser adecuada para quienes priorizan la experiencia del Sendero de los Dioses como su objetivo principal de senderismo.",
+        "El calor del verano requiere evitar esta ruta entre las 11:00 y las 16:00. Las salidas temprano por la mañana o al final de la tarde son esenciales en los meses cálidos."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Indicaciones al pueblo",
+      "body": [
+        "Sigue estas indicaciones paso a paso desde Hostel Brikette para llegar al pueblo de Santa Maria del Castello:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Indicaciones al mirador",
+      "body": [
+        "Una vez que llegues al cruce donde el sendero se nivela, sigue estas indicaciones para acceder al impresionante mirador."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Sal del hostel y gira a la derecha",
+      "text": "Desde la entrada del hostel, gira a la derecha y sube los escalones al lado del edificio."
+    },
+    {
+      "name": "Continúa por el sendero",
+      "text": "En la parte superior de los escalones iniciales, continúa siguiendo el sendero hacia arriba."
+    },
+    {
+      "name": "Elige la izquierda en el cruce",
+      "text": "Cuando llegues a un cruce, elige la opción de subida a la izquierda para continuar ascendiendo."
+    },
+    {
+      "name": "Sigue los escalones hasta la carretera",
+      "text": "Sigue los escalones hasta que llegues a un punto con escaleras que bajan a una carretera."
+    },
+    {
+      "name": "Cruza la carretera",
+      "text": "Cruza la carretera y localiza las escaleras que corren junto a las casas en el lado opuesto."
+    },
+    {
+      "name": "Sube las escaleras detrás de las casas",
+      "text": "Sigue estas escaleras mientras serpentean detrás de las casas, llevándote hasta el sendero de montaña."
+    },
+    {
+      "name": "Continúa por el sendero de montaña",
+      "text": "Sigue el sendero de montaña mientras sube hacia el pueblo. El camino se vuelve más pintoresco aquí."
+    },
+    {
+      "name": "Elige subida en las bifurcaciones",
+      "text": "En dos bifurcaciones del sendero a lo largo del camino, elige los caminos de subida para continuar hacia el pueblo."
+    },
+    {
+      "name": "Llega al cruce del pueblo",
+      "text": "Llegarás a un cruce donde el sendero se nivela. Esto marca tu llegada a Santa Maria del Castello."
+    },
+    {
+      "name": "Gira a la derecha hacia el mirador (opcional)",
+      "text": "Para llegar al mirador, gira a la derecha en el cruce."
+    },
+    {
+      "name": "Toma la carretera cuesta arriba hasta el cruce",
+      "text": "Sigue la carretera cuesta arriba hasta que llegues a un cruce."
+    },
+    {
+      "name": "Gira a la derecha en el cruce",
+      "text": "En el cruce, gira a la derecha y sigue la carretera mientras se curva hacia la derecha."
+    },
+    {
+      "name": "Continúa hasta la sección de hierba",
+      "text": "Continúa hasta que llegues a una sección de hierba fuera de la carretera principal."
+    },
+    {
+      "name": "Accede a los miradores",
+      "text": "Los miradores son accesibles desde esta área de hierba. Ten mucho cuidado: hay caídas repentinas de varios cientos de metros."
+    }
+  ],
+  "warningsTitle": "Advertencias de seguridad",
+  "warnings": [
+    "Los miradores tienen caídas repentinas de varios cientos de metros. Mantente bien alejado de los bordes y supervisa a los niños de cerca.",
+    "Esta ruta es significativamente más exigente que el Sendero de los Dioses. Evalúa tu nivel de condición física antes de intentarla.",
+    "Evita hacer senderismo entre las 11:00 y las 16:00 durante los meses de verano debido a la exposición extrema al calor en el sendero de montaña."
+  ],
+  "essentialsTitle": "Qué llevar",
+  "essentials": [
+    "Zapatos de senderismo resistentes con buen agarre para terreno empinado e irregular",
+    "Al menos 1,5 litros de agua por persona: oportunidades limitadas de recarga",
+    "Protección solar: sombrero, protector solar y gafas de sol para secciones expuestas",
+    "Bocadillos ligeros o almuerzo si planeas pasar tiempo en el restaurante del pueblo"
+  ],
+  "tipsTitle": "Consejos para la ruta",
+  "tips": [
+    "Comienza temprano por la mañana durante los meses de verano para evitar el calor del mediodía.",
+    "Tómate tu tiempo en las secciones empinadas: las vistas valen la pena disfrutarlas en el camino.",
+    "Considera almorzar en el restaurante del pueblo antes de descender de regreso a Positano.",
+    "Trae una cámara o teléfono completamente cargado: las oportunidades fotográficas desde el mirador son excepcionales."
+  ]
+}

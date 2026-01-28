@@ -1,3 +1,5 @@
+"use client";
+
 // src/routes/guides/guide-seo/components/GuideEditorialPanel.tsx
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +15,7 @@ import type {
   GuideArea,
   GuideManifestEntry,
 } from "../../guide-manifest";
-import { CHECKLIST_LABELS, GUIDE_AREA_VALUES } from "../../guide-manifest";
+import { CHECKLIST_LABELS, GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES } from "../../guide-manifest";
 import DiagnosticDetails from "./DiagnosticDetails";
 import { useTranslationCoverage } from "./useTranslationCoverage";
 
@@ -122,20 +124,35 @@ export default function GuideEditorialPanel({
   // Fetch translation coverage from API after hydration to avoid SSR mismatch
   const { isLoading: coverageLoading, coverage } = useTranslationCoverage(manifest.key);
 
-  // Area editing state
+  // Area and status editing state
+  // Since this component is dynamically imported with ssr:false, it only runs on client
   const canEditAreas = isAuthoringEnabled() && Boolean(PREVIEW_TOKEN);
   const [selectedAreas, setSelectedAreas] = useState<GuideArea[]>(manifest.areas);
   const [primaryArea, setPrimaryArea] = useState<GuideArea>(manifest.primaryArea);
+  const [selectedStatus, setSelectedStatus] = useState<GuideStatus>(status);
   const [areaSaveStatus, setAreaSaveStatus] = useState<AreaSaveStatus>("idle");
   const [areaError, setAreaError] = useState<string | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastSavedRef = useRef<{ areas: GuideArea[]; primaryArea: GuideArea }>({
+  const lastSavedRef = useRef<{ areas: GuideArea[]; primaryArea: GuideArea; status: GuideStatus }>({
     areas: manifest.areas,
     primaryArea: manifest.primaryArea,
+    status: status,
   });
 
-  // Auto-save areas on change (debounced)
-  const saveAreas = useCallback(async (areas: GuideArea[], primary: GuideArea) => {
+  // Debug logging to check environment variables
+  useEffect(() => {
+    console.log('[GuideEditorialPanel] Debug info:', {
+      ENABLE_GUIDE_AUTHORING,
+      PREVIEW_TOKEN,
+      isAuthoringEnabled: isAuthoringEnabled(),
+      canEditAreas,
+      manifestKey: manifest.key,
+      status
+    });
+  }, [canEditAreas, manifest.key, status]);
+
+  // Auto-save areas and status on change (debounced)
+  const saveAreas = useCallback(async (areas: GuideArea[], primary: GuideArea, newStatus: GuideStatus) => {
     if (!canEditAreas) return;
 
     setAreaSaveStatus("saving");
@@ -148,29 +165,30 @@ export default function GuideEditorialPanel({
           "Content-Type": "application/json",
           "x-preview-token": PREVIEW_TOKEN ?? "",
         },
-        body: JSON.stringify({ areas, primaryArea: primary }),
+        body: JSON.stringify({ areas, primaryArea: primary, status: newStatus }),
       });
 
       const data = await response.json() as { ok?: boolean; error?: string };
 
       if (!response.ok || !data.ok) {
-        throw new Error(data.error ?? "Failed to save areas");
+        throw new Error(data.error ?? "Failed to save changes");
       }
 
       // Update last saved state
-      lastSavedRef.current = { areas, primaryArea: primary };
+      lastSavedRef.current = { areas, primaryArea: primary, status: newStatus };
       setAreaSaveStatus("saved");
 
       // Reset to idle after showing "Saved"
       setTimeout(() => setAreaSaveStatus("idle"), 2000);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to save areas";
+      const message = err instanceof Error ? err.message : "Failed to save changes";
       setAreaError(message);
       setAreaSaveStatus("error");
 
       // Revert to last known good state
       setSelectedAreas(lastSavedRef.current.areas);
       setPrimaryArea(lastSavedRef.current.primaryArea);
+      setSelectedStatus(lastSavedRef.current.status);
     }
   }, [canEditAreas, manifest.key]);
 
@@ -183,8 +201,9 @@ export default function GuideEditorialPanel({
       JSON.stringify(selectedAreas.slice().sort()) !==
       JSON.stringify(lastSavedRef.current.areas.slice().sort());
     const primaryChanged = primaryArea !== lastSavedRef.current.primaryArea;
+    const statusChanged = selectedStatus !== lastSavedRef.current.status;
 
-    if (!areasChanged && !primaryChanged) return;
+    if (!areasChanged && !primaryChanged && !statusChanged) return;
 
     // Clear existing timeout
     if (saveTimeoutRef.current) {
@@ -193,7 +212,7 @@ export default function GuideEditorialPanel({
 
     // Debounce save
     saveTimeoutRef.current = setTimeout(() => {
-      void saveAreas(selectedAreas, primaryArea);
+      void saveAreas(selectedAreas, primaryArea, selectedStatus);
     }, 500);
 
     return () => {
@@ -201,7 +220,7 @@ export default function GuideEditorialPanel({
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [canEditAreas, selectedAreas, primaryArea, saveAreas]);
+  }, [canEditAreas, selectedAreas, primaryArea, selectedStatus, saveAreas]);
 
   // Toggle area selection
   const handleAreaToggle = (area: GuideArea) => {
@@ -233,6 +252,12 @@ export default function GuideEditorialPanel({
     if (!canEditAreas) return;
     if (!selectedAreas.includes(area)) return;
     setPrimaryArea(area);
+  };
+
+  // Change status
+  const handleStatusChange = (newStatus: GuideStatus) => {
+    if (!canEditAreas) return;
+    setSelectedStatus(newStatus);
   };
 
   // Merge fetched coverage into checklist items
@@ -285,6 +310,7 @@ export default function GuideEditorialPanel({
   // For display, use edited values if editing, otherwise manifest values
   const displayAreas = canEditAreas ? selectedAreas : manifest.areas;
   const displayPrimary = canEditAreas ? primaryArea : manifest.primaryArea;
+  const displayStatus = canEditAreas ? selectedStatus : status;
   const areaOrder = useMemo(
     () => Array.from(new Set<GuideArea>([displayPrimary, ...displayAreas])),
     [displayAreas, displayPrimary],
@@ -337,12 +363,30 @@ export default function GuideEditorialPanel({
               ) : null}
             </p>
           </Stack>
-          <Inline
-            as="span"
-            className={clsx(STATUS_BADGE_BASE_CLASSES, STATUS_BADGE_STYLES[status])}
-          >
-            {resolveStatusLabel(status)}
-          </Inline>
+          {canEditAreas ? (
+            <select
+              value={selectedStatus}
+              onChange={(e) => handleStatusChange(e.target.value as GuideStatus)}
+              className={clsx(
+                STATUS_BADGE_BASE_CLASSES,
+                STATUS_BADGE_STYLES[selectedStatus],
+                "cursor-pointer transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
+              )}
+            >
+              {GUIDE_STATUS_VALUES.map((statusValue) => (
+                <option key={statusValue} value={statusValue}>
+                  {resolveStatusLabel(statusValue)}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <Inline
+              as="span"
+              className={clsx(STATUS_BADGE_BASE_CLASSES, STATUS_BADGE_STYLES[displayStatus])}
+            >
+              {resolveStatusLabel(displayStatus)}
+            </Inline>
+          )}
         </Inline>
 
         {draftUrl ? (
@@ -536,7 +580,7 @@ export default function GuideEditorialPanel({
                       <p className="text-sm font-medium text-brand-heading">{label}</p>
                       {isTranslationsLoading ? (
                         <p className="text-xs text-brand-text/75">Loading translation status...</p>
-                      ) : item.note ? (
+                      ) : item.note && item.note !== label ? (
                         <p className="text-xs text-brand-text/75">{item.note}</p>
                       ) : null}
                       {!isTranslationsLoading && isTranslationsIncomplete && incompleteCount > 0 && (

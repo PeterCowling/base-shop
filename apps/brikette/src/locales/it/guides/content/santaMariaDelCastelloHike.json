@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Escursione a Santa Maria del Castello dall'Hostel Brikette - Positano",
+    "description": "Guida completa all'escursione a Santa Maria del Castello, borgo montano sopra Positano con indicazioni, punti panoramici e viste mozzafiato sulla costa."
+  },
+  "linkLabel": "Santa Maria del Castello: Escursione al borgo montano",
+  "intro": [
+    "Santa Maria del Castello si trova a 670 metri (2.200 piedi) sopra Positano, offrendo viste che eguagliano o superano quelle del Sentiero degli Dei. Questo borgo montano dispone di un ristorante che offre buon cibo a prezzi accessibili e panorami mozzafiato.",
+    "Splendide viste appaiono a soli 15 minuti dalla partenza dall'ostello, rendendo questa un'escursione gratificante per chi cerca flessibilità e vuole evitare gli autobus SITA affollati."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Cos'è Santa Maria del Castello?",
+      "body": [
+        "La tua destinazione è un borgo montano situato sopra Positano a 670 metri (2.200 piedi) di altitudine. Il borgo dispone di un ristorante che offre buon cibo a prezzi accessibili, oltre a splendide viste.",
+        "Un punto panoramico dedicato offre viste mozzafiato sulla Costiera Amalfitana, Positano e le montagne circostanti."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Perché fare questa escursione?",
+      "body": [
+        "Le viste eguagliano o superano quelle del Sentiero degli Dei, offrendo panorami costieri spettacolari.",
+        "Splendide viste appaiono a soli 15 minuti dalla partenza dall'ostello – non devi aspettare a lungo per essere ricompensato.",
+        "Offre flessibilità ed è preferita da chi evita gli autobus SITA affollati.",
+        "Funge da punto di partenza per esplorare altre aree montane intorno a Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Considerazioni importanti",
+      "body": [
+        "Questa escursione è significativamente più impegnativa del Sentiero degli Dei. Preparati a salite ripide.",
+        "Potrebbe non essere adatta a chi dà priorità all'esperienza del Sentiero degli Dei come obiettivo escursionistico principale.",
+        "Il caldo estivo richiede di evitare questa escursione tra le 11:00 e le 16:00. Partenze al mattino presto o nel tardo pomeriggio sono essenziali nei mesi caldi."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Indicazioni per il borgo",
+      "body": [
+        "Segui queste istruzioni passo dopo passo dall'Hostel Brikette per raggiungere il borgo di Santa Maria del Castello:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Indicazioni per il punto panoramico",
+      "body": [
+        "Una volta raggiunto il bivio dove il sentiero si livella, segui queste indicazioni per accedere allo splendido punto panoramico."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Esci dall'ostello e gira a destra",
+      "text": "Dall'ingresso dell'ostello, gira a destra e sali i gradini accanto all'edificio."
+    },
+    {
+      "name": "Continua sul sentiero",
+      "text": "In cima ai gradini iniziali, continua a seguire il sentiero verso l'alto."
+    },
+    {
+      "name": "Scegli a sinistra al bivio",
+      "text": "Quando arrivi a un bivio, scegli l'opzione in salita a sinistra per continuare a salire."
+    },
+    {
+      "name": "Segui i gradini fino alla strada",
+      "text": "Continua a seguire i gradini fino a raggiungere un punto con scale che scendono verso una strada."
+    },
+    {
+      "name": "Attraversa la strada",
+      "text": "Attraversa la strada e individua le scale che corrono lungo le case sul lato opposto."
+    },
+    {
+      "name": "Sali le scale dietro le case",
+      "text": "Segui queste scale mentre serpeggiano dietro le case, portandoti al sentiero di montagna."
+    },
+    {
+      "name": "Continua sul sentiero di montagna",
+      "text": "Segui il sentiero di montagna mentre sale verso il borgo. Il percorso diventa più panoramico qui."
+    },
+    {
+      "name": "Scegli in salita ai bivi",
+      "text": "A due bivi del sentiero lungo il percorso, scegli i sentieri in salita per continuare verso il borgo."
+    },
+    {
+      "name": "Raggiungi il bivio del borgo",
+      "text": "Arriverai a un bivio dove il sentiero si livella. Questo segna il tuo arrivo a Santa Maria del Castello."
+    },
+    {
+      "name": "Gira a destra verso il punto panoramico (facoltativo)",
+      "text": "Per raggiungere il punto panoramico, gira a destra al bivio."
+    },
+    {
+      "name": "Prendi la strada in salita fino al bivio",
+      "text": "Segui la strada in salita fino a raggiungere un bivio."
+    },
+    {
+      "name": "Gira a destra al bivio",
+      "text": "Al bivio, gira a destra e segui la strada mentre curva a destra."
+    },
+    {
+      "name": "Procedi fino alla sezione erbosa",
+      "text": "Continua fino a raggiungere una sezione erbosa fuori dalla strada principale."
+    },
+    {
+      "name": "Accedi ai punti panoramici",
+      "text": "I punti panoramici sono accessibili da quest'area erbosa. Usa estrema cautela – ci sono dislivelli improvvisi di diverse centinaia di metri."
+    }
+  ],
+  "warningsTitle": "Avvisi di sicurezza",
+  "warnings": [
+    "I punti panoramici hanno dislivelli improvvisi di diverse centinaia di metri. Resta ben lontano dai bordi e sorveglia attentamente i bambini.",
+    "Questa escursione è significativamente più impegnativa del Sentiero degli Dei. Valuta il tuo livello di forma fisica prima di tentare.",
+    "Evita di fare escursioni tra le 11:00 e le 16:00 durante i mesi estivi a causa dell'esposizione estrema al caldo sul sentiero di montagna."
+  ],
+  "essentialsTitle": "Cosa portare",
+  "essentials": [
+    "Scarpe da trekking robuste con buona presa per terreno ripido e irregolare",
+    "Almeno 1,5 litri d'acqua a persona – opportunità di rifornimento limitate",
+    "Protezione solare: cappello, crema solare e occhiali da sole per sezioni esposte",
+    "Snack leggeri o pranzo se prevedi di trascorrere tempo al ristorante del borgo"
+  ],
+  "tipsTitle": "Consigli per l'escursione",
+  "tips": [
+    "Parti al mattino presto durante i mesi estivi per evitare il caldo di mezzogiorno.",
+    "Prenditi il tuo tempo nelle sezioni ripide – le viste meritano di essere apprezzate lungo il percorso.",
+    "Considera di pranzare al ristorante del borgo prima di scendere di nuovo a Positano.",
+    "Porta una macchina fotografica o un telefono completamente carico – le opportunità fotografiche dal punto panoramico sono eccezionali."
+  ]
+}

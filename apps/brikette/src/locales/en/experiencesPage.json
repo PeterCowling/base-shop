@@ -80,7 +80,7 @@
     "taggedDescription": "These stories highlight {{tag}} moments. Clear the filter to explore everything.",
     "empty": "We don't have experience guides for {{tag}} yet. Try a different topic or remove the filter.",
     "clearFilter": "Show all experiences guides",
-    "cardCta": "Explore the {{guideTitle}} experience guide",
+    "cardCta": "Read guide",
     "directionsLabel": "Directions",
     "sections": {
       "content": {

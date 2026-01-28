@@ -27,6 +27,14 @@ Resolve low-confidence tasks in an existing plan. Investigate, remove uncertaint
 - The task IDs to re-plan (explicit from user or inferred from below-threshold tasks)
 - Optional: fact-find brief `docs/plans/<feature-slug>-fact-find.md`
 
+**If the plan doc does not exist:**
+- **With fact-find:** Offer to create initial plan from fact-find, then proceed with re-planning
+- **Without fact-find:** Stop and instruct: "No plan exists. Run `/plan-feature` to create initial plan first."
+
+**If the plan doc is stale/out-of-sync:**
+- Create a minimal recovery plan if salvageable (preserve task IDs, update with current reality)
+- Otherwise, recommend `/plan-feature` for clean rebuild
+
 ## Outputs
 
 - Update the existing plan doc in-place: `docs/plans/<feature-slug>-plan.md`
@@ -57,10 +65,6 @@ For each target task, record:
 - current acceptance criteria
 - dependencies (TASK-IDs)
 - affected files/modules
-
-**If the plan doc does not exist or is stale/out-of-sync with reality**, create a minimal recovery plan:
-- Locate the most recent plan in `docs/plans/` for the feature slug.
-- If none exists, stop and instruct the user to run `/plan-feature` (do not fabricate a plan under `/re-plan`).
 
 ### 2) Diagnose the confidence gap by dimension
 
@@ -164,6 +168,21 @@ Update `docs/plans/<feature-slug>-plan.md` as follows:
 - `Last-updated` in frontmatter
 - `Overall-confidence` (effort-weighted as defined in `/plan-feature`)
 - Task Summary table (confidence, effort, dependencies)
+
+### 5a) Confidence Score Validation Checklist (Mandatory Before Finalizing)
+
+Before marking any task as Ready or finalizing confidence scores, verify:
+
+- [ ] **Evidence citation:** Every non-trivial claim includes file path + line number
+  - Example: "Bug location: `metadata.ts:56-60`" not "metadata.ts has a bug"
+- [ ] **Code verification:** If claiming something exists/doesn't exist, you've read the file
+  - Example: "No tests exist: `rg generateMetadata apps/brikette/src/test` → zero hits"
+- [ ] **Min-of-dimensions:** Overall confidence = min(Implementation, Approach, Impact), not weighted average
+- [ ] **Internal consistency:** Confidence in task body matches confidence in summary table
+- [ ] **No assumptions:** If you haven't verified in code, it's an "Unknown" not a confident claim
+- [ ] **Test impact quantified:** If tests will break, list how many and which files
+
+**If any checklist item fails, do NOT finalize the confidence score. Investigate or mark as Unknown.**
 
 ### 6) Re-assess knock-on effects
 

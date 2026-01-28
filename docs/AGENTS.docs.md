@@ -40,9 +40,49 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
     - An optional **Completed** / **Frozen** section for history.
   - Task IDs are domain‑specific (for example `CMS-*`, `DOC-*`, `RT-*`, `THEME-*`, `I18N-*`, `COM-*`) and should be stable so agents can reference them.
 
+- **Investigating Low-Confidence Tasks (Confidence Raising Pattern)**
+
+  When a task is below 80% confidence due to unknowns, use this systematic investigation approach:
+
+  **1. Identify the blocking unknown:**
+  - Is it a technical "how" (Implementation)?
+  - Is it a "which approach" decision (Approach)?
+  - Is it "what will break" uncertainty (Impact)?
+
+  **2. Evidence-gathering methods (pick what applies):**
+
+  | Unknown Type | Investigation Method | Example |
+  |--------------|---------------------|---------|
+  | Server behavior | Production curl checks | `curl -sI https://...` to check redirects |
+  | Code existence | Grep/glob searches | `rg "pattern" path` to confirm presence/absence |
+  | Test impact | Count assertions | Search test files for patterns that will break |
+  | Repo precedent | Check similar code | Find how other apps/packages solved this |
+  | Framework behavior | Check other apps in monorepo | Look for existing usage patterns |
+
+  **3. Make evidence-based decision:**
+  - Document what you found (with file paths/line numbers)
+  - Choose approach based on evidence (not speculation)
+  - Update plan with decision + evidence
+
+  **4. Recalculate confidence:**
+  - If unknown is resolved → raise dimension score
+  - Overall confidence = min(Implementation, Approach, Impact)
+  - Document in "Re-plan Update" section
+
+  **Example (from brikette-seo re-plan session):**
+  ```
+  Task: Align canonical/trailing-slash policy
+  Before: 52% (Approach unknown: keep or remove slashes?)
+  Investigation: `curl -sI` showed Cloudflare enforces slashes, `apps/prime` precedent uses `trailingSlash: true`
+  Decision: Keep trailing slashes (align with server)
+  After: 82% (Approach resolved, test impact quantified)
+  ```
+
+  **Efficiency note:** ~30-40 minutes of targeted investigation can raise 3-5 tasks by 20-30 percentage points.
+
 - **Registry powers tooling**
   - The docs-lint script (`pnpm docs:lint`) writes `docs/registry.json` with `{ path, type, status, domain }` entries.
-  - Tools and agents can import `scripts/src/docs-registry.ts` to load and query the registry (for example, “give me all Contracts for Domain = CMS”).
+  - Tools and agents can import `scripts/src/docs-registry.ts` to load and query the registry (for example, "give me all Contracts for Domain = CMS").
 
 ---
 

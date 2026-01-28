@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Wędrówka do Santa Maria del Castello z Hostel Brikette - Positano",
+    "description": "Kompletny przewodnik po wędrówce do Santa Maria del Castello, górskiej wioski nad Positano z drogami, punktami widokowymi i spektakularnymi widokami na wybrzeże."
+  },
+  "linkLabel": "Santa Maria del Castello: Wędrówka do górskiej wioski",
+  "intro": [
+    "Santa Maria del Castello znajduje się 670 metrów (2200 stóp) nad Positano, oferując widoki równe lub przewyższające te ze Ścieżki Bogów. Ta górska wioska posiada restaurację oferującą dobre jedzenie w przystępnych cenach i oszałamiające widoki panoramiczne.",
+    "Wspaniałe widoki pojawiają się zaledwie 15 minut po wyjściu z hostelu, co czyni tę wędrówkę satysfakcjonującą dla osób poszukujących elastyczności i chcących uniknąć zatłoczonych autobusów SITA."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "Czym jest Santa Maria del Castello?",
+      "body": [
+        "Twoim celem jest górska wioska położona nad Positano na wysokości 670 metrów (2200 stóp). Wioska posiada restaurację oferującą dobre jedzenie w przystępnych cenach oraz wspaniałe widoki.",
+        "Dedykowany punkt widokowy oferuje oszałamiające widoki panoramiczne na Wybrzeże Amalfi, Positano i okoliczne góry."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Dlaczego warto wybrać się na tę wędrówkę?",
+      "body": [
+        "Widoki równają się lub przewyższają te ze Ścieżki Bogów, oferując spektakularne panoramy wybrzeża.",
+        "Wspaniałe widoki pojawiają się zaledwie 15 minut po wyjściu z hostelu – nie musisz długo czekać na nagrody.",
+        "Oferuje elastyczność i jest preferowana przez osoby unikające zatłoczonych autobusów SITA.",
+        "Służy jako punkt wyjścia do eksploracji innych obszarów górskich wokół Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Ważne uwagi",
+      "body": [
+        "Ta wędrówka jest znacznie bardziej wymagająca niż Ścieżka Bogów. Przygotuj się na strome podejścia.",
+        "Może nie być odpowiednia dla osób priorytetowo traktujących doświadczenie Ścieżki Bogów jako główny cel wędrówki.",
+        "Letnie upały wymagają unikania tej wędrówki między 11:00 a 16:00. Wczesne poranki lub późne popołudnia są konieczne w ciepłych miesiącach."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Dojazd do wioski",
+      "body": [
+        "Postępuj zgodnie z tymi wskazówkami krok po kroku z Hostel Brikette, aby dotrzeć do wioski Santa Maria del Castello:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Dojazd do punktu widokowego",
+      "body": [
+        "Po dotarciu do skrzyżowania, gdzie ścieżka się wyrównuje, postępuj zgodnie z tymi wskazówkami, aby dostać się do wspaniałego punktu widokowego."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Opuść hostel i skręć w prawo",
+      "text": "Od wejścia do hostelu skręć w prawo i wejdź po schodach obok budynku."
+    },
+    {
+      "name": "Kontynuuj ścieżką pieszą",
+      "text": "Na szczycie pierwszych schodów kontynuuj podążanie ścieżką pieszą w górę."
+    },
+    {
+      "name": "Wybierz lewo na skrzyżowaniu",
+      "text": "Gdy dotrzesz do skrzyżowania, wybierz lewą opcję w górę, aby kontynuować wspinaczkę."
+    },
+    {
+      "name": "Podążaj schodami do drogi",
+      "text": "Kontynuuj podążanie schodami, aż dotrzesz do punktu ze schodami prowadzącymi do drogi."
+    },
+    {
+      "name": "Przekrocz drogę",
+      "text": "Przekrocz drogę i zlokalizuj schody biegnące wzdłuż domów po przeciwnej stronie."
+    },
+    {
+      "name": "Wejdź po schodach za domami",
+      "text": "Podążaj tymi schodami, gdy wijąsię za domami, prowadząc cię do górskiej ścieżki."
+    },
+    {
+      "name": "Kontynuuj górską ścieżką",
+      "text": "Podążaj górską ścieżką, gdy wspina się w stronę wioski. Ścieżka staje się tu bardziej malownicza."
+    },
+    {
+      "name": "Wybierz w górę na rozwidleniach",
+      "text": "Na dwóch rozwidleniach ścieżki po drodze wybieraj ścieżki w górę, aby kontynuować w stronę wioski."
+    },
+    {
+      "name": "Dotrzyj do skrzyżowania wioski",
+      "text": "Dotrzesz do skrzyżowania, gdzie ścieżka się wyrównuje. To oznacza Twój przyjazd do Santa Maria del Castello."
+    },
+    {
+      "name": "Skręć w prawo w stronę punktu widokowego (opcjonalnie)",
+      "text": "Aby dotrzeć do punktu widokowego, skręć w prawo na skrzyżowaniu."
+    },
+    {
+      "name": "Weź drogę w górę do skrzyżowania",
+      "text": "Podążaj drogą w górę, aż dotrzesz do skrzyżowania."
+    },
+    {
+      "name": "Skręć w prawo na skrzyżowaniu",
+      "text": "Na skrzyżowaniu skręć w prawo i podążaj drogą, gdy zakręca w prawo."
+    },
+    {
+      "name": "Kontynuuj do trawiastej sekcji",
+      "text": "Kontynuuj, aż dotrzesz do trawiastej sekcji poza główną drogą."
+    },
+    {
+      "name": "Dostęp do punktów widokowych",
+      "text": "Punkty widokowe są dostępne z tego trawiastego obszaru. Zachowaj szczególną ostrożność – są nagłe spadki o kilkaset metrów."
+    }
+  ],
+  "warningsTitle": "Ostrzeżenia bezpieczeństwa",
+  "warnings": [
+    "Punkty widokowe mają nagłe spadki o kilkaset metrów. Trzymaj się z dala od krawędzi i pilnuj dzieci uważnie.",
+    "Ta wędrówka jest znacznie bardziej wymagająca niż Ścieżka Bogów. Oceń swój poziom kondycji przed podjęciem próby.",
+    "Unikaj wędrówek między 11:00 a 16:00 w miesiącach letnich z powodu ekstremalnego narażenia na ciepło na górskiej ścieżce."
+  ],
+  "essentialsTitle": "Co zabrać",
+  "essentials": [
+    "Solidne buty trekkingowe z dobrą przyczepnością do stromego, nierównego terenu",
+    "Co najmniej 1,5 litra wody na osobę – ograniczone możliwości uzupełnienia",
+    "Ochrona przeciwsłoneczna: kapelusz, krem z filtrem i okulary przeciwsłoneczne na odsłonięte sekcje",
+    "Lekkie przekąski lub lunch, jeśli planujesz spędzić czas w restauracji wioski"
+  ],
+  "tipsTitle": "Wskazówki dotyczące wędrówki",
+  "tips": [
+    "Wyruszaj wcześnie rano w miesiącach letnich, aby uniknąć popołudniowego upału.",
+    "Poświęć czas na stromych sekcjach – widoki warte są podziwiania po drodze.",
+    "Rozważ zjedzenie lunchu w restauracji wioski przed zejściem z powrotem do Positano.",
+    "Zabierz aparat lub w pełni naładowany telefon – możliwości fotograficzne z punktu widokowego są wyjątkowe."
+  ]
+}

@@ -37,7 +37,7 @@
     "taggedDescription": "These essentials focus on {{tag}}. Clear the filter to browse everything we've prepared.",
     "empty": "We don’t have planning guides for {{tag}} yet. Try another tag or reset the filter.",
     "clearFilter": "Browse all planning essentials",
-    "cardCta": "Read the {{guideTitle}} planning guide"
+    "cardCta": "Read guide"
   },
   "crosslinks": {
     "heading": "{{howToTitle}} · {{experiencesTitle}}",

@@ -83,7 +83,7 @@
       }
     },
     "positanoBeaches": {
-      "linkLabel": "Positano Beaches: Sand, Sun & Secret Coves"
+      "linkLabel": "Positano Beaches: Sun & Secret Coves"
     },
     "arienzoBeachClub": {
       "linkLabel": "Arienzo Beach: Positano's Boutique Beach Club"
@@ -111,6 +111,9 @@
     },
     "sunriseHike": {
       "linkLabel": "Sunrise Hike: Watch Dawn Break Over Positano"
+    },
+    "santaMariaDelCastelloHike": {
+      "linkLabel": "Santa Maria del Castello: Mountain Village Hike"
     },
     "topOfTheMountainHike": {
       "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint"

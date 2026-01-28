@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Santa Maria del Castello Hike from Hostel Brikette - Positano",
+    "description": "Complete hiking guide to Santa Maria del Castello village above Positano with directions, lookout points, and stunning coastal views."
+  },
+  "linkLabel": "Santa Maria del Castello: Mountain Village Hike",
+  "intro": [
+    "Santa Maria del Castello sits at 670 meters (2,200 feet) above Positano, offering views that match or exceed those from the Path of the Gods. This mountain village features a restaurant with good food at affordable prices and stunning panoramic vistas.",
+    "Great views appear within just 15 minutes of departure from the hostel, making this a rewarding hike for those seeking flexibility and wanting to avoid crowded SITA buses."
+  ],
+  "sections": [
+    {
+      "id": "what-is-santa-maria",
+      "title": "What is Santa Maria del Castello?",
+      "body": [
+        "Your destination is a mountain village positioned above Positano at 670 meters (2,200 feet) elevation. The village features a restaurant offering good food at affordable prices, as well as great views.",
+        "A dedicated lookout point provides stunning panoramic views across the Amalfi Coast, Positano, and the surrounding mountains."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "Why should you do this hike?",
+      "body": [
+        "Views match or exceed those from the Path of the Gods, offering spectacular coastal panoramas.",
+        "Great vistas appear within 15 minutes of departure from the hostel—you don't have to wait long for rewards.",
+        "Offers flexibility and is preferred by those avoiding crowded SITA buses.",
+        "Serves as a starting point for exploring other mountain areas around Positano."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Important considerations",
+      "body": [
+        "This hike is significantly more strenuous than the Path of the Gods. Be prepared for steep ascents.",
+        "May not suit those prioritizing the Path of the Gods experience as their main hiking goal.",
+        "Summer heat requires avoiding this hike between 11am and 4pm. Early morning or late afternoon departures are essential in warm months."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "Directions to the village",
+      "body": [
+        "Follow these step-by-step directions from Hostel Brikette to reach Santa Maria del Castello village:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "Directions to the lookout point",
+      "body": [
+        "Once you reach the crossroads where the trail levels out, follow these directions to access the stunning lookout point."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Exit the hostel and turn right",
+      "text": "From the hostel entrance, turn right and ascend the steps beside the building."
+    },
+    {
+      "name": "Continue on the footpath",
+      "text": "At the top of the initial steps, continue following the footpath upward."
+    },
+    {
+      "name": "Choose left at the junction",
+      "text": "When you reach a junction, choose the left uphill option to continue ascending."
+    },
+    {
+      "name": "Follow steps to the road",
+      "text": "Keep following the steps until you reach a point with stairs leading down to a road."
+    },
+    {
+      "name": "Cross the road",
+      "text": "Cross the road and locate the stairs that run alongside the houses on the opposite side."
+    },
+    {
+      "name": "Climb stairs behind houses",
+      "text": "Follow these stairs as they wind behind the houses, leading you up to the mountain trail."
+    },
+    {
+      "name": "Continue on mountain trail",
+      "text": "Follow the mountain trail as it climbs toward the village. The path becomes more scenic here."
+    },
+    {
+      "name": "Choose uphill at trail splits",
+      "text": "At two trail splits along the way, choose the uphill paths to continue toward the village."
+    },
+    {
+      "name": "Reach the village crossroads",
+      "text": "You'll arrive at a crossroads where the trail levels out. This marks your arrival at Santa Maria del Castello."
+    },
+    {
+      "name": "Turn right toward lookout (optional)",
+      "text": "To reach the lookout point, turn right at the crossroads."
+    },
+    {
+      "name": "Take road uphill to junction",
+      "text": "Follow the road uphill until you reach a junction."
+    },
+    {
+      "name": "Turn right at junction",
+      "text": "At the junction, turn right and follow the road as it curves rightward."
+    },
+    {
+      "name": "Proceed to grassy section",
+      "text": "Continue until you reach a grassy section off the main road."
+    },
+    {
+      "name": "Access vantage points",
+      "text": "The lookout vantage points are accessible from this grassy area. Use extreme caution—there are sudden drop-offs of several hundred meters."
+    }
+  ],
+  "warningsTitle": "Safety warnings",
+  "warnings": [
+    "Vantage points at the lookout have sudden drop-offs of several hundred meters. Stay well back from edges and supervise children closely.",
+    "This hike is significantly more strenuous than the Path of the Gods. Assess your fitness level before attempting.",
+    "Avoid hiking between 11am and 4pm during summer months due to extreme heat exposure on the mountain trail."
+  ],
+  "essentialsTitle": "What to bring",
+  "essentials": [
+    "Sturdy hiking shoes with good grip for steep, uneven terrain",
+    "At least 1.5 litres of water per person—limited refill opportunities",
+    "Sun protection: hat, sunscreen, and sunglasses for exposed sections",
+    "Light snacks or lunch if planning to spend time at the village restaurant"
+  ],
+  "tipsTitle": "Hiking tips",
+  "tips": [
+    "Start early in the morning during summer months to avoid the midday heat.",
+    "Take your time on the steep sections—the views are worth savoring along the way.",
+    "Consider having lunch at the village restaurant before descending back to Positano.",
+    "Bring a camera or fully charged phone—the photo opportunities from the lookout are exceptional."
+  ]
+}

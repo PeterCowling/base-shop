@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import type { GuideKey } from "../../guides/slugs/keys";
 
-import { GUIDE_AREA_VALUES, type GuideArea } from "./guide-manifest";
+import { GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES, type GuideArea, type GuideStatus } from "./guide-manifest";
 
 /**
  * Schema for a single guide's manifest override.
@@ -17,11 +17,13 @@ import { GUIDE_AREA_VALUES, type GuideArea } from "./guide-manifest";
  * - areas is a non-empty array of valid GuideArea values (when provided)
  * - primaryArea is a valid GuideArea (when provided)
  * - primaryArea must be included in areas when both are provided
+ * - status is a valid GuideStatus value (when provided)
  */
 export const manifestOverrideSchema = z
   .object({
     areas: z.array(z.enum(GUIDE_AREA_VALUES)).min(1).optional(),
     primaryArea: z.enum(GUIDE_AREA_VALUES).optional(),
+    status: z.enum(GUIDE_STATUS_VALUES).optional(),
   })
   .refine(
     (data) => {
@@ -86,12 +88,13 @@ export function safeParseManifestOverrides(data: unknown) {
 }
 
 /**
- * Creates a valid override entry with areas and primaryArea.
+ * Creates a valid override entry with areas, primaryArea, and optionally status.
  * Ensures primaryArea defaults to the first area if not specified.
  */
 export function createManifestOverride(
   areas: GuideArea[],
   primaryArea?: GuideArea,
+  status?: GuideStatus,
 ): ManifestOverride {
   if (areas.length === 0) {
     throw new Error("areas must contain at least one area");
@@ -102,5 +105,9 @@ export function createManifestOverride(
     throw new Error("primaryArea must be included in areas");
   }
 
-  return { areas, primaryArea: primary };
+  return {
+    areas,
+    primaryArea: primary,
+    ...(status ? { status } : {}),
+  };
 }

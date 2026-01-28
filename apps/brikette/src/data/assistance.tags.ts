@@ -4,7 +4,7 @@
 
 import type { GuideKey } from "@/routes.guides-helpers";
 
-// Partial because we only define tags for the 12 assistance guides, not all guides.
+// Partial because we only define tags for the assistance guides, not all guides.
 export const ASSISTANCE_TAGS: Partial<Record<GuideKey, string[]>> = {
   ageAccessibility: ["stairs", "safety", "positano"],
   bookingBasics: ["accommodation", "planning", "tips", "positano", "comparison"],
@@ -18,6 +18,7 @@ export const ASSISTANCE_TAGS: Partial<Record<GuideKey, string[]>> = {
   arrivingByFerry: ["transport", "ferry", "bus", "logistics", "stairs", "porters"],
   naplesAirportBus: ["transport", "bus", "naples", "logistics", "planning"],
   travelHelp: ["transport", "planning", "positano"],
+  hostelFaqs: ["hostel-life", "accommodation", "planning", "tips"],
 };
 
 export function tagsForAssistance(key: GuideKey | undefined): string[] {

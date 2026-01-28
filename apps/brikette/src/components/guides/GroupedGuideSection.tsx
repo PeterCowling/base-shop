@@ -240,8 +240,11 @@ function GroupedGuideSection({
         {guides.map((guide) => {
           const label = resolveLabel(guide.key);
           const summary = resolveSummary?.(guide);
+          // Use template if it contains placeholder, otherwise use as-is
           const ctaLabel = cardCtaTemplate
-            ? cardCtaTemplate.replace("{{guideTitle}}", label)
+            ? cardCtaTemplate.includes("{{guideTitle}}")
+              ? cardCtaTemplate.replace("{{guideTitle}}", label)
+              : cardCtaTemplate
             : undefined;
           // Use guide-specific image if available, otherwise fall back to topic image
           const thumbnailSrc = getGuideImage(guide.key, topic.imageSrc);

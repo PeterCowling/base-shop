@@ -7,6 +7,7 @@ import {
   getGuideManifestEntry,
   getGuideManifestEntryWithOverrides,
   type GuideArea,
+  type GuideStatus,
 } from "@/routes/guides/guide-manifest";
 import {
   getGuideManifestOverrideFromFs,
@@ -85,7 +86,7 @@ export async function GET(
  * PUT /api/guides/{guideKey}/manifest
  *
  * Updates the manifest override for a specific guide.
- * Body: { areas?: GuideArea[], primaryArea?: GuideArea }
+ * Body: { areas?: GuideArea[], primaryArea?: GuideArea, status?: GuideStatus }
  */
 export async function PUT(
   request: Request,
@@ -115,9 +116,10 @@ export async function PUT(
     return NextResponse.json({ ok: false, error: "Invalid request body" }, { status: 400 });
   }
 
-  // Extract areas and primaryArea from the request
+  // Extract areas, primaryArea, and status from the request
   const areas = Array.isArray(record.areas) ? record.areas as GuideArea[] : undefined;
   const primaryArea = typeof record.primaryArea === "string" ? record.primaryArea as GuideArea : undefined;
+  const status = typeof record.status === "string" ? record.status as GuideStatus : undefined;
 
   // Handle clearing the override
   if (record.clear === true) {
@@ -135,10 +137,10 @@ export async function PUT(
     }
   }
 
-  // If no areas or primaryArea provided, nothing to update
-  if (!areas && !primaryArea) {
+  // If no areas, primaryArea, or status provided, nothing to update
+  if (!areas && !primaryArea && !status) {
     return NextResponse.json(
-      { ok: false, error: "No areas or primaryArea provided" },
+      { ok: false, error: "No areas, primaryArea, or status provided" },
       { status: 400 },
     );
   }
@@ -147,6 +149,7 @@ export async function PUT(
   const newOverride = {
     ...(areas ? { areas } : {}),
     ...(primaryArea ? { primaryArea } : {}),
+    ...(status ? { status } : {}),
   };
 
   // Validate the override

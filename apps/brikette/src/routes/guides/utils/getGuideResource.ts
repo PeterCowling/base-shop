@@ -47,11 +47,14 @@ const getGuideResource = <T = unknown>(
   if (typeof instance.getResource === "function") {
     const localized = instance.getResource(effectiveLang, "guides", key) as T | null | undefined;
     if (localized === null) return null;
-    if (typeof localized !== "undefined") return localized;
+    // i18next returns the key string itself when translation is missing - treat that as undefined
+    const isKeyFallback = typeof localized === "string" && localized === key;
+    if (typeof localized !== "undefined" && !isKeyFallback) return localized;
     // Only use English fallback if includeFallback is true
     if (includeFallback && effectiveLang !== fb) {
       const fromFb = instance.getResource(fb, "guides", key) as T | null | undefined;
-      if (typeof fromFb !== "undefined") return fromFb;
+      const isFbKeyFallback = typeof fromFb === "string" && fromFb === key;
+      if (typeof fromFb !== "undefined" && !isFbKeyFallback) return fromFb;
     }
     // Don't return early - fall through to try bundle strategies
     // This handles the case where the i18n namespace hasn't loaded yet
@@ -62,7 +65,8 @@ const getGuideResource = <T = unknown>(
     const fixed = instance.getFixedT?.(effectiveLang, "guides");
     if (typeof fixed === "function") {
       const value = fixed(key, { returnObjects: true });
-      if (value !== undefined && value !== null) return value as T;
+      // getFixedT also returns the key string when translation is missing
+      if (value !== undefined && value !== null && value !== key) return value as T;
     }
   } catch {
     /* ignore and try bundles */

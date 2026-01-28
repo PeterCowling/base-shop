@@ -16,14 +16,21 @@ export function normaliseQuickLinks(value: unknown): QuickLinkItem[] {
       const label = candidate["label"];
       const description = candidate["description"];
       const slug = candidate["slug"];
+      const href = candidate["href"];
 
       if (typeof label !== "string" || typeof description !== "string") return null;
-      if (typeof slug !== "string" || !isAssistanceGuideKey(slug)) return null;
+
+      // Must have either a valid slug or a valid href
+      const hasValidSlug = typeof slug === "string" && isAssistanceGuideKey(slug);
+      const hasValidHref = typeof href === "string" && href.trim().length > 0;
+
+      if (!hasValidSlug && !hasValidHref) return null;
 
       return {
         label,
         description,
-        slug: slug as GuideKey,
+        ...(hasValidSlug && { slug: slug as GuideKey }),
+        ...(hasValidHref && { href: href as string }),
       } satisfies QuickLinkItem;
     })
     .filter((item): item is QuickLinkItem => Boolean(item));

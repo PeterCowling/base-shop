@@ -15,6 +15,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   checkinCheckout: "checkin-checkout",
   defectsDamages: "defects-damages",
   depositsPayments: "deposits-payments",
+  hostelFaqs: "hostel-faqs",
   legal: "legal",
   naplesAirportBus: "naples-airport-to-positano-bus",
   rules: "rules",

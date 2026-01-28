@@ -57,7 +57,7 @@ describe("buildAppMetadata", () => {
       isPublished: false,
     });
 
-    expect(published.alternates?.canonical).toBe("https://hostel-positano.com/en/test");
-    expect(unpublished.alternates?.canonical).toBe("https://hostel-positano.com/en/test");
+    expect(published.alternates?.canonical).toBe("https://hostel-positano.com/en/test/");
+    expect(unpublished.alternates?.canonical).toBe("https://hostel-positano.com/en/test/");
   });
 });

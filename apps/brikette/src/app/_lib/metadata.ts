@@ -43,7 +43,7 @@ export function buildAppMetadata({
   isPublished = true,
 }: AppMetadataArgs): Metadata {
   const origin = BASE_URL || "https://hostel-positano.com";
-  const url = `${origin}${path}`;
+  const url = seo.ensureTrailingSlash(`${origin}${path}`);
 
   // Normalize image to extract src, width, height
   const imageUrl = typeof image === "string" ? image : image?.src;
@@ -55,9 +55,10 @@ export function buildAppMetadata({
   for (const supportedLang of i18nConfig.supportedLngs) {
     // Replace current lang segment with alternate lang
     const alternatePath = path.replace(`/${lang}`, `/${supportedLang}`);
-    languages[supportedLang] = `${origin}${alternatePath}`;
+    languages[supportedLang] = seo.ensureTrailingSlash(`${origin}${alternatePath}`);
   }
-  languages["x-default"] = `${origin}${path.replace(`/${lang}`, `/${i18nConfig.fallbackLng}`)}`;
+  languages["x-default"] = seo.ensureTrailingSlash(`${origin}${path.replace(`/${lang}`, `/${i18nConfig.fallbackLng}`)}`);
+
 
   const metadata: Metadata = {
     title,

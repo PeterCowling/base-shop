@@ -42,7 +42,7 @@ describe("buildLinks", () => {
 
   it("handles localized subpaths with stripped prefix", () => {
     const links = buildLinks({ lang: "en", origin, path: "/en/rooms" });
-    expect(links[0].href).toBe(`${origin}/en/rooms`);
+    expect(links[0].href).toBe(`${origin}/en/rooms/`);
     expect(links.some((link) => link.href.includes("/fr/chambres"))).toBe(true);
   });
 
@@ -142,7 +142,7 @@ describe("buildLinks", () => {
     const links = buildLinks({ lang: "en", origin, path: "/en" });
     const canonical = links.find((link) => link.rel === "canonical");
     const alternates = links.filter((link) => link.rel === "alternate");
-    expect(canonical?.href).toBe(`${origin}/en`);
+    expect(canonical?.href).toBe(`${origin}/en/`);
     expect(alternates).toHaveLength(i18nConfig.supportedLngs.length);
     const langs = alternates.map((link) => link.hrefLang).filter(Boolean);
     expect(langs).toContain("x-default");
@@ -307,7 +307,7 @@ describe("buildBreadcrumb", () => {
 
     expect(graph.itemListElement).toHaveLength(2);
     expect(graph.itemListElement[1]).toEqual(
-      expect.objectContaining({ name: "Rooms", item: `${origin}/en/rooms` }),
+      expect.objectContaining({ name: "Rooms", item: `${origin}/en/rooms/` }),
     );
   });
 });

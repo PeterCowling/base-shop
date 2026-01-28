@@ -63,7 +63,7 @@ const SUPPORTED_LANGS_SAFE: readonly AppLanguage[] = (() => {
 /* ------------------------------------------------------------------ */
 /* Helper utilities                                                   */
 /* ------------------------------------------------------------------ */
-const ensureTrailingSlash = (p: string): string =>
+export const ensureTrailingSlash = (p: string): string =>
   p === "/" || p.endsWith("/") ? p : `${p}/`;
 
 const stripLang = (p: string, l: string): string => {

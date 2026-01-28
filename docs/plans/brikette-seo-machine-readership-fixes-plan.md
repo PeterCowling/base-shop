@@ -18,9 +18,9 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Machine-layer drift (broken refs in OpenAPI, ai-plugin.json, llms.txt)
 - Draft routes are indexable (SEO leak)
 
-**Current state (2026-01-28 post-build #3):** 5 of 10 tasks complete. Phase 1 (Quick wins) and Phase 2 highest-priority task (TASK-SEO-1) complete. Remaining: 5 tasks (TASK-SEO-3, TASK-SEO-5, TASK-SEO-7, TASK-SEO-9, TASK-SEO-10).
+**Current state (2026-01-28 post-build #4):** 6 of 10 tasks complete. Phase 1 (Quick wins) and Phase 2 (Core fixes) complete. Remaining: 4 tasks (TASK-SEO-3, TASK-SEO-7, TASK-SEO-9, TASK-SEO-10).
 
-**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-6, TASK-SEO-8
+**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-5, TASK-SEO-6, TASK-SEO-8
 
 **Re-planning complete (2nd pass + audit correction):** All tasks raised to ≥80% confidence. TASK-SEO-4 and TASK-SEO-1 completed with full test coverage.
 
@@ -507,11 +507,11 @@ if (key) {
 
 ### TASK-SEO-5: Fix broken machine-layer references
 
-**Status:** Ready
+**Status:** ✅ Complete (2026-01-28, commit e56d4c54bf)
 **Confidence:** 85% (min: Implementation 92%, Approach 88%, Impact 85%)
-**Effort:** M (3-4 hours)
-**Owner:** Unassigned
-**Dependencies:** TASK-SEO-7 (for schema files generation)
+**Effort:** M (3-4 hours) - Actual: ~1 hour
+**Owner:** Complete
+**Dependencies:** TASK-SEO-7 (for schema files generation - deferred)
 **Priority:** P0
 
 **Problem (code-grounded — complete inventory):**
@@ -1042,6 +1042,32 @@ Create contract tests that validate all machine-document URLs return expected st
   - Before: `/en/rooms` → `/de/rooms` (incorrect, duplicate content risk)
   - After: `/en/rooms` → `/de/zimmer/` (correct, localized)
 - **Unblocks:** TASK-SEO-2 dependency satisfied (though TASK-SEO-1 already added the unit tests)
+
+### TASK-SEO-5: Fix broken machine-layer references ✅
+- **Completed:** 2026-01-28
+- **Commit:** e56d4c54bf
+- **Files changed:**
+  1. `public/.well-known/openapi.yaml` (removed 141 lines)
+     - Removed non-existent endpoints: `/api/quote`, `/api/rooms`, `/api/book`
+     - Updated description: removed "booking beds" capability claim
+     - Removed "Booking" tag (no booking endpoints remain)
+  2. `public/.well-known/ai-plugin.json` (fixed 2 broken URLs)
+     - Fixed `logo_url`: `/favicon/android-chrome-512x512.png` → `/android-chrome-512x512.png`
+     - Fixed `legal_info_url`: `/en/legal` → `/en/terms`
+     - Updated plugin name and descriptions (removed booking capability claims)
+  3. `public/llms.txt` (removed 7 lines)
+     - Removed 6 schema references: `/schema/hostel-brikette/*.jsonld` (directory doesn't exist)
+     - Removed sitemap reference: `/sitemap_index.xml` (file doesn't exist)
+     - Note: Schema and sitemap will be added by TASK-SEO-7
+- **Validation:**
+  - Verified actual API routes: `/api/debug-env`, `/api/guides/*` only
+  - Verified logo exists: `public/android-chrome-512x512.png`
+  - Verified `/en/terms` route exists: `src/app/[lang]/terms`
+  - Verified `/data/rates.json` exists: `public/data/rates.json`
+  - pnpm typecheck: PASS
+- **Impact:** All machine-layer documents now reference only existing files/endpoints
+  - Prevents 404 errors for AI agents and crawlers
+  - Improves machine readership accuracy
 
 ---
 

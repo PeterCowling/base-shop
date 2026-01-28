@@ -1,4 +1,5 @@
 import type { TFunction } from "i18next";
+import { useEffect } from "react";
 
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import type { BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
@@ -54,19 +55,28 @@ export default function HeadSection({
   canonicalUrl: _canonicalUrl,
   suppressTwitterCardResolve,
 }: HeadSectionProps): JSX.Element {
-  // Ensure tests see meaningful <title> and meta description even when the
-  // router head placeholders are mocked or unavailable. This mirrors the
-  // values passed to ArticleStructuredData for parity in coverage suites.
-  try {
+  // Move all document.head mutations to useEffect to follow React patterns and avoid
+  // hydration issues. Render-time side effects violate React expectations.
+  // These mutations are primarily for test environments where route-level meta() isn't applied.
+  useEffect(() => {
+    // Only run on client (SSR safe)
     if (
-      typeof document !== "undefined" &&
-      typeof document.querySelector === "function" &&
-      document.head
+      typeof document === "undefined" ||
+      typeof document.querySelector !== "function" ||
+      !document.head
     ) {
+      return;
+    }
+
+    try {
       const head = document.head;
+
+      // Update title
       const titleEl = document.querySelector("title") ?? document.createElement("title");
       titleEl.textContent = pageTitle;
       if (!titleEl.parentNode) head.appendChild(titleEl);
+
+      // Update meta description
       let metaDesc = document.querySelector(`meta[name="${META_NAME_DESCRIPTION}"]`) as HTMLMetaElement | null;
       if (!metaDesc) {
         metaDesc = document.createElement("meta");
@@ -74,9 +84,8 @@ export default function HeadSection({
         head.appendChild(metaDesc);
       }
       metaDesc.setAttribute("content", description);
-      // Ensure twitter:title meta mirrors the page title for tests/non-framework envs.
-      // Router-level meta() usually provides this; add a fallback here so the
-      // coverage suite can assert the expected tag in isolation.
+
+      // Update twitter:title
       let twitterTitle = document.querySelector(`meta[name="${META_NAME_TWITTER_TITLE}"]`) as HTMLMetaElement | null;
       if (!twitterTitle) {
         twitterTitle = document.createElement("meta");
@@ -84,19 +93,16 @@ export default function HeadSection({
         head.appendChild(twitterTitle);
       }
       twitterTitle.setAttribute("content", pageTitle);
-      // Ensure twitter:card meta exists in test/non-framework environments.
-      // Coverage tests query this explicitly when route meta() isn’t applied.
+
+      // Update twitter:card
       let twitterCard = document.querySelector(`meta[name="${META_NAME_TWITTER_CARD}"]`) as HTMLMetaElement | null;
       if (!twitterCard) {
         twitterCard = document.createElement("meta");
         twitterCard.setAttribute("name", META_NAME_TWITTER_CARD);
         head.appendChild(twitterCard);
       }
-      // Prefer a translator-provided override when available. Even when
-      // suppressTwitterCardResolve is true for localized structured content,
-      // some routes/tests provide an explicit translation override for
-      // twitter:card (e.g., "summary"). Honor that here so head fallbacks
-      // match route meta() behaviour in non-framework tests.
+
+      // Resolve twitter:card override from translations
       const resolveTwitterCardOverride = () => {
         try {
           const fixed: TFunction | undefined =
@@ -105,7 +111,6 @@ export default function HeadSection({
           const pick = (v: unknown, expectedKey: string) => {
             const s = typeof v === "string" ? v.trim() : "";
             if (!s) return undefined;
-            // Ignore unresolved-key sentinels returned by stub translators
             if (s === expectedKey) return undefined;
             return s;
           };
@@ -119,6 +124,7 @@ export default function HeadSection({
           return undefined;
         }
       };
+
       const currentTc = twitterCard.getAttribute("content");
       const shouldResolveOverride = () => {
         if (!suppressTwitterCardResolve) return true;
@@ -128,7 +134,8 @@ export default function HeadSection({
       const override = shouldResolveOverride() ? resolveTwitterCardOverride() : undefined;
       const next = (override && override.trim()) || (currentTc && String(currentTc).trim()) || DEFAULT_TWITTER_CARD;
       twitterCard.setAttribute("content", next);
-      // Mirror og:title for environments where route meta() isn't applied
+
+      // Update og:title
       let ogTitle = document.querySelector(`meta[property="${META_PROPERTY_OG_TITLE}"]`) as HTMLMetaElement | null;
       if (!ogTitle) {
         ogTitle = document.createElement("meta");
@@ -136,7 +143,8 @@ export default function HeadSection({
         head.appendChild(ogTitle);
       }
       ogTitle.setAttribute("content", pageTitle);
-      // Inject canonical link for tests/non-framework rendering when provided
+
+      // Update canonical link if provided
       if (_canonicalUrl && typeof _canonicalUrl === "string" && _canonicalUrl.trim().length > 0) {
         let canonical = document.querySelector(`link[rel="${LINK_REL_CANONICAL}"]`) as HTMLLinkElement | null;
         if (!canonical) {
@@ -146,7 +154,8 @@ export default function HeadSection({
         }
         canonical.setAttribute("href", _canonicalUrl);
       }
-      // Also expose og:image for tests that assert its presence
+
+      // Update og:image
       if (ogImageUrl) {
         let ogImg = document.querySelector(`meta[property="${META_PROPERTY_OG_IMAGE}"]`) as HTMLMetaElement | null;
         if (!ogImg) {
@@ -159,14 +168,17 @@ export default function HeadSection({
           ogImg.setAttribute("data-og-image-size", "inline-fallback"); // i18n-exempt -- TECH-000 [ttl=2026-12-31] Non-UI metadata hint
         }
       }
+
+      // Update twitter:image
       const twitterImage = document.querySelector(`meta[name="${META_NAME_TWITTER_IMAGE}"]`) as HTMLMetaElement | null;
       if (twitterImage && ogImageUrl) {
         twitterImage.setAttribute("content", ogImageUrl);
       }
+    } catch {
+      // Ignore DOM write errors in non-browser test environments
     }
-  } catch {
-    // ignore DOM write errors in non-browser test environments
-  }
+  }, [pageTitle, description, ogImageUrl, _canonicalUrl, _lang, suppressTwitterCardResolve]);
+
   return (
     <>
       {/* Head tags are provided via route meta()/links() exports; render content-only here. */}

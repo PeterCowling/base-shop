@@ -9,6 +9,7 @@ import type { AppLanguage } from "@/i18n.config";
 import type { SearchActionSchema } from "@/types/seo";
 import { ORG_ID, WEBSITE_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 /* Keep this component *tiny* so React can memo‑skip it. */
 interface Props {
@@ -25,8 +26,8 @@ function SiteSearchStructuredData({ lang }: Props): JSX.Element {
     publisher: { "@id": ORG_ID },
     potentialAction: {
       "@type": "SearchAction",
-      // Use locale-aware browse URL
-      target: `${BASE_URL}/${lang}/assistance?q={search_term_string}`,
+      // Use localized slug for assistance page
+      target: `${BASE_URL}/${lang}/${getSlug("assistance", lang)}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
     inLanguage: lang,

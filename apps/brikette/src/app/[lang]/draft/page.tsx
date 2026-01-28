@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: "Track publication status and outstanding tasks for every guide.",
     path,
     ogType: "website",
+    isPublished: false, // Prevent indexing of internal draft dashboard
   });
 }
 

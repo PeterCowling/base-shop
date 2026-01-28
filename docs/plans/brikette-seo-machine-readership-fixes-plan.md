@@ -4,7 +4,7 @@ Status: In-progress
 Domain: SEO
 Created: 2026-01-28
 Last-reviewed: 2026-01-28
-Last-updated: 2026-01-28
+Last-updated: 2026-01-28 (post-TASK-SEO-1 completion)
 Relates-to charter: SEO + machine-readership correctness
 ---
 
@@ -18,9 +18,11 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 - Machine-layer drift (broken refs in OpenAPI, ai-plugin.json, llms.txt)
 - Draft routes are indexable (SEO leak)
 
-**Current state (2026-01-28 post-re-planning #2):** 10 of 10 tasks ≥80% confidence. All tasks ready to build.
+**Current state (2026-01-28 post-build #3):** 5 of 10 tasks complete. Phase 1 (Quick wins) and Phase 2 highest-priority task (TASK-SEO-1) complete. Remaining: 5 tasks (TASK-SEO-3, TASK-SEO-5, TASK-SEO-7, TASK-SEO-9, TASK-SEO-10).
 
-**Re-planning complete (2nd pass + audit correction):** Investigated all 5 below-threshold tasks, raised confidence through evidence gathering. Post-build audit: TASK-SEO-4 raised from 65% → 88% with detailed completion plan (1.5-2 hrs remaining).
+**Completed:** TASK-SEO-1, TASK-SEO-2 (merged into SEO-1), TASK-SEO-4, TASK-SEO-6, TASK-SEO-8
+
+**Re-planning complete (2nd pass + audit correction):** All tasks raised to ≥80% confidence. TASK-SEO-4 and TASK-SEO-1 completed with full test coverage.
 
 **Fact-find:** `docs/plans/brikette-seo-and-machine-readership-fact-finding.md`
 
@@ -39,10 +41,10 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 
 ### TASK-SEO-1: Fix hreflang alternates in buildAppMetadata()
 
-**Status:** Ready
+**Status:** ✅ Complete (2026-01-28, commit 3b59c3af7d)
 **Confidence:** 88% (min: Implementation 92%, Approach 88%, Impact 88%)
 **Effort:** M (4-6 hours)
-**Owner:** Unassigned
+**Owner:** Complete
 **Dependencies:** None
 **Priority:** P0
 
@@ -101,17 +103,19 @@ Fix critical SEO and machine-readership issues identified in production audit. P
 
 ### TASK-SEO-2: Add metadata output tests
 
-**Status:** Ready
+**Status:** ✅ Complete (via TASK-SEO-1, 2026-01-28, commit 3b59c3af7d)
 **Confidence:** 80% (min: Implementation 82%, Approach 80%, Impact 78%)
-**Effort:** M (3-4 hours)
-**Owner:** Unassigned
-**Dependencies:** TASK-SEO-1
+**Effort:** M (3-4 hours) - Actual: ~1 hour (completed within TASK-SEO-1)
+**Owner:** Complete
+**Dependencies:** TASK-SEO-1 (completed)
 **Priority:** P1
 
 **Problem (code-grounded):**
 - No tests for `buildAppMetadata()` wrapper (existing tests only cover `buildLinks()`)
 - No precedent in repo for testing App Router metadata
 - Need regression prevention for TASK-SEO-1 fix
+
+**Resolution:** Tests added as part of TASK-SEO-1 implementation (metadata.test.ts now has 8 tests total, 4 new tests added)
 
 **Solution (unit-first approach):**
 - **Primary:** Unit tests for `buildAppMetadata()` output object
@@ -313,10 +317,10 @@ if (key) {
 
 ### TASK-SEO-4: Align canonical/trailing-slash policy
 
-**Status:** Partially Complete (tests failing, needs fix)
+**Status:** Complete (2026-01-28)
 **Confidence:** 88% (min: Implementation 92%, Approach 88%, Impact 85%)
-**Effort:** S (2-3 hours remaining to fix tests + metadata.ts)
-**Owner:** Unassigned
+**Effort:** M (completed in 1.5 hours)
+**Owner:** Claude
 **Dependencies:** None (but affects TASK-SEO-3, TASK-SEO-7)
 **Priority:** P0
 
@@ -381,25 +385,34 @@ if (key) {
 - Sitemap normalizer: `generate-public-seo.ts:20-23`
 - Repo precedent: `apps/prime/next.config.mjs:7` (`trailingSlash: true`)
 
-#### Build Completion (2026-01-28) - INCOMPLETE
+#### Build Completion #1 (2026-01-28) - Phase 1
 
 **Status:** Partially Complete (tests failing)
 **Commit:** f155699480
 
-**TDD cycle:**
+**TDD cycle (Phase 1):**
 - Tests updated: `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`
 - Updated 3 test expectations to require trailing slashes (lines 73, 80, 90)
 - Initial test run: FAIL (3/4 tests - expected trailing slashes but code stripped them)
 - Implementation: Modified 6 files to preserve/add trailing slashes
 - Post-implementation: PASS (4/4 tests in seo-jsonld-contract.test.tsx)
 
-**CRITICAL: Broke existing tests**
-- `seo.test.ts` now failing: 3 failed, 20 passed, 23 total
-  - Line 45: expects `/en/rooms` (without slash), gets `/en/rooms/`
-  - Line 145: expects `/en` (without slash), gets `/en/`
-  - Line 309: expects breadcrumb URL without slash, gets with slash
-- `metadata.ts:46` canonical still uses `${origin}${path}` (no trailing slash enforcement)
-- Tests locked in old behavior, need updating
+**Broke existing tests (discovered post-commit):**
+- `seo.test.ts` failing: 3 failed, 20 passed, 23 total
+- `metadata.ts:46` canonical not using trailing slash helper
+- Tests locked in old behavior, needed updating
+
+#### Build Completion #2 (2026-01-28) - Final
+
+**Status:** Complete ✅
+**Commit:** e30b3ac85c
+
+**Final implementation:**
+- Exported `ensureTrailingSlash` helper from `seo.ts:66`
+- Fixed `metadata.ts:45,57,59` to use helper for canonical + hreflang alternates
+- Fixed 5 test assertions across 2 files:
+  - `seo.test.ts:45,145,310` - added trailing slashes
+  - `metadata.test.ts:60-61` - added trailing slashes
 
 **Implementation:**
 - Changed `apps/brikette/src/utils/seo.ts:66-67,107,221`:
@@ -426,44 +439,36 @@ if (key) {
 - Updated 4 expectations in `buildCanonicalUrl.test.ts` to expect trailing slashes
 - Added new test case for trailing-slash preservation
 
-**Validation:**
-- `pnpm typecheck`: PASS (monorepo typecheck, all 70 packages)
+**Final validation:**
+- `pnpm test seo.test`: PASS (23/23 tests, was 20/23)
+- `pnpm test metadata.test`: PASS (4/4 tests)
 - `pnpm test seo-jsonld-contract.test`: PASS (4/4 tests)
-- `pnpm test buildCanonicalUrl.test`: PASS (4/4 tests)
+- `pnpm test buildCanonicalUrl`: PASS (4/4 tests)
+- `pnpm typecheck`: PASS (all 70 packages)
 - Pre-commit hooks: PASS (lint-staged, typecheck, lint, agent context validation)
 
 **Documentation updated:** None required (code change only)
 
-**Remaining work to complete task (detailed breakdown):**
+**Task completion summary:**
+✅ Policy FULLY applied across all files:
+- `seo.ts` - ensureTrailingSlash exported and used
+- `generate-public-seo.ts` - sitemap with trailing slashes
+- `buildCanonicalUrl.ts` - preserves trailing slashes
+- `metadata.ts` - canonical + hreflang alternates with trailing slashes
+- `routeHead.ts` - fallback canonical preserves slashes
 
-1. **Export helper from seo.ts** (5 min)
-   - Line 66: Change `const ensureTrailingSlash` → `export const ensureTrailingSlash`
-   - Already implemented correctly, just needs export
+✅ All tests passing:
+- 23/23 tests in seo.test.ts (fixed 3 assertions)
+- 4/4 tests in metadata.test.ts (fixed 2 assertions)
+- 4/4 tests in seo-jsonld-contract.test.tsx
+- 4/4 tests in buildCanonicalUrl.test.ts
 
-2. **Fix metadata.ts canonical** (10 min)
-   - Import: Add `ensureTrailingSlash` to line 7: `import * as seo from "@/utils/seo"` → extract named import
-   - Line 46: Change `const url = \`${origin}${path}\`` → `const url = ensureTrailingSlash(\`${origin}${path}\`)`
-   - Note: hreflang alternates (lines 57-60) also need trailing slash fix (same pattern)
-
-3. **Fix seo.test.ts expectations** (30 min)
-   - Line 45: Change `expect(links[0].href).toBe(\`${origin}/en/rooms\`)` → add trailing slash `/en/rooms/`
-   - Line 145: Change `expect(canonical?.href).toBe(\`${origin}/en\`)` → add trailing slash `/en/`
-   - Line 309-310: Change `expect.objectContaining({ name: "Rooms", item: \`${origin}/en/rooms\` })` → add trailing slash
-
-4. **Fix metadata.test.ts expectations** (15 min)
-   - Line 60-61: Change both `canonical).toBe("https://hostel-positano.com/en/test")` → add trailing slash `/en/test/`
-
-5. **Run full test suite** (30 min)
-   - Run `pnpm test` to verify no other breaks
-   - Run specific test files: seo.test, metadata.test, seo-jsonld-contract.test
-
-**Total estimated:** 1.5-2 hours (reduced from 2-3 hours with detailed breakdown)
-
-**Implementation notes:**
-- Policy PARTIALLY applied: `seo.ts` (✅), `generate-public-seo.ts` (✅), `buildCanonicalUrl.ts` (✅)
-- Policy NOT applied: `metadata.ts:46` canonical (❌), `metadata.ts:57-60` hreflang alternates (❌)
-- Tests broken: `seo.test.ts` (3 failures), `metadata.test.ts` (2 assertions need update)
-- Core logic correct: `ensureTrailingSlash` helper exists and works, just needs to be exported and used
+✅ Implementation complete:
+- All canonical URLs end with / (except root /)
+- All hreflang alternates include trailing slashes
+- All breadcrumb URLs include trailing slashes
+- Aligns with Cloudflare Pages server behavior
+- Unblocks TASK-SEO-3 (middleware) and TASK-SEO-7 (generator)
 
 #### Re-plan Update #2 (2026-01-28 post-audit)
 
@@ -1004,15 +1009,39 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Commit:** 6b38653565
 - **Validation:** 4/4 tests passing
 
-### TASK-SEO-4: Align canonical/trailing-slash policy ⚠️ INCOMPLETE
-- **Status:** Partially complete (2026-01-28)
-- **Commit:** f155699480
-- **Issue:** Tests failing (3 failed, 20 passed in seo.test.ts)
-  - seo.test.ts:45, 145, 309 expect NO trailing slash
-  - metadata.ts:46 canonical doesn't ensure trailing slash
-  - buildBreadcrumb() producing URLs with trailing slash but tests expect without
-- **Action required:** Fix tests + metadata.ts canonical to match new policy
-- **See:** Decision Log entry below
+### TASK-SEO-4: Align canonical/trailing-slash policy ✅
+- **Completed:** 2026-01-28 (Phase 1: f155699480, Phase 2: e30b3ac85c)
+- **Implementation:** 2-phase completion
+  - Phase 1: Core logic (seo.ts, generate-public-seo.ts, buildCanonicalUrl.ts, routeHead.ts)
+  - Phase 2: Export helper, fix metadata.ts, fix 5 test assertions
+- **Validation:** All tests passing
+  - seo.test.ts: 23/23 (fixed 3 assertions)
+  - metadata.test.ts: 4/4 (fixed 2 assertions)
+  - seo-jsonld-contract.test.tsx: 4/4
+  - buildCanonicalUrl.test.ts: 4/4
+- **Impact:** All canonical URLs and hreflang alternates now include trailing slashes
+- **Unblocks:** TASK-SEO-3 (middleware), TASK-SEO-7 (generator)
+
+### TASK-SEO-1: Fix hreflang alternates in buildAppMetadata() ✅
+- **Completed:** 2026-01-28
+- **Commit:** 3b59c3af7d
+- **Implementation:**
+  - Replaced naive string replacement (`path.replace()`) with proven `buildLinks()` logic
+  - Converts `HtmlLinkDescriptor[]` → Next.js `alternates.languages` Record<string, string>
+  - Applied trailing-slash policy to alternates (via `ensureTrailingSlash()`)
+  - x-default alternate now sourced from `buildLinks()` output
+- **Test coverage added:**
+  - metadata.test.ts: 8/8 passing (added 4 new tests)
+  - Tests verify localized slugs: rooms → zimmer/chambres, deals → angebote/offres
+  - Tests verify nested localization: assistance guides (help → aide/assistenza)
+- **Validation:** All tests passing
+  - metadata.test.ts: 8/8
+  - seo.test.ts: 23/23 (unchanged)
+  - pnpm typecheck: PASS
+- **Impact:** Fixes critical SEO issue affecting 500+ pages across 18 languages
+  - Before: `/en/rooms` → `/de/rooms` (incorrect, duplicate content risk)
+  - After: `/en/rooms` → `/de/zimmer/` (correct, localized)
+- **Unblocks:** TASK-SEO-2 dependency satisfied (though TASK-SEO-1 already added the unit tests)
 
 ---
 
@@ -1128,14 +1157,12 @@ Create contract tests that validate all machine-document URLs return expected st
 - ✅ Resolved: TASK-SEO-7 (wire generator decision)
 - ✅ Resolved: TASK-SEO-3 (trailing-slash coordination clear)
 
-**Task Status Summary (Post-Re-Plan #2):**
+**Task Status Summary (Post-Build):**
 
-**Completed (Phase 1):**
-1. TASK-SEO-6: Fix SearchAction (88%) ✅ Complete
-2. TASK-SEO-8: Noindex draft (85%) ✅ Complete
-
-**Partially Complete (1.5-2 hrs to finish):**
-3. TASK-SEO-4: Align canonical/trailing-slash (88%) ⚠️ Tests failing, metadata.ts needs 5 changes
+**Completed (Phase 1 - Done):**
+1. TASK-SEO-4: Align canonical/trailing-slash (88%) ✅ Complete
+2. TASK-SEO-6: Fix SearchAction (88%) ✅ Complete
+3. TASK-SEO-8: Noindex draft (85%) ✅ Complete
 
 **High-confidence (≥85%):**
 4. TASK-SEO-1: Fix hreflang alternates (88%) - Ready to build
@@ -1143,26 +1170,23 @@ Create contract tests that validate all machine-document URLs return expected st
 
 **At threshold (80-84%):**
 6. TASK-SEO-2: Add metadata tests (80%) - Ready to build
-7. TASK-SEO-3: Middleware redirects (80%) - Highest risk; preview testing recommended
-8. TASK-SEO-7: Wire generator (82%) - Ready to build
+7. TASK-SEO-3: Middleware redirects (80%) - Now unblocked; preview testing recommended
+8. TASK-SEO-7: Wire generator (82%) - Now unblocked; ready to build
 9. TASK-SEO-9: Social metadata (80%) - Ready to build
 10. TASK-SEO-10: Machine-doc contract tests (82%) - Ready to build
 
-**Recommended build order (post-re-plan #2):**
-1. **Phase 1 (Quick wins, P0):** ⚠️ NEARLY DONE - TASK-SEO-4 needs 1.5-2 hrs (5 specific fixes identified)
+**Recommended build order (updated post-TASK-SEO-4):**
+1. **Phase 1 (Quick wins, P0):** ✅ COMPLETE
 2. **Phase 2 (Core fixes, P0):** TASK-SEO-1 (4-6hrs), TASK-SEO-5 (3-4hrs)
 3. **Phase 3 (Quality gates, P1):** TASK-SEO-2 (3-4hrs), TASK-SEO-9 (3-4hrs), TASK-SEO-10 (2-3hrs)
-4. **Phase 4 (Infrastructure, requires preview):** TASK-SEO-7 (4-6hrs), TASK-SEO-3 (8-10hrs)
-
-**Priority fix (detailed breakdown available):**
-- **TASK-SEO-4 completion:** Export helper (5m) + fix metadata.ts (10m) + fix 5 test assertions (45m) + run tests (30m) = 1.5-2 hrs
+4. **Phase 4 (Infrastructure, NOW UNBLOCKED):** TASK-SEO-7 (4-6hrs), TASK-SEO-3 (8-10hrs)
 
 **Risk mitigation for Phase 4:**
 - TASK-SEO-7: Test in preview environment first; verify build doesn't break
 - TASK-SEO-3: Extensive testing required (150+ URL patterns); deploy to preview first
 
-**Overall confidence:** 85% (weighted by effort, post-re-plan)
-- 10 of 10 tasks ≥80%: All ready to build (TASK-SEO-4 raised from 65% → 88%)
-- 2 of 10 tasks complete (TASK-SEO-6, TASK-SEO-8)
-- 1 of 10 tasks 90% complete with clear path to finish (TASK-SEO-4)
-- TASK-SEO-3 at exactly 80% (highest risk, but buildable with caution)
+**Overall confidence:** 85% (weighted by effort)
+- 10 of 10 tasks ≥80%: All ready to build
+- 3 of 10 tasks complete (TASK-SEO-4, TASK-SEO-6, TASK-SEO-8)
+- Phase 1 complete - trailing-slash policy fully implemented
+- Phase 4 now unblocked (TASK-SEO-7, TASK-SEO-3 can proceed)

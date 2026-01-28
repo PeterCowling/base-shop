@@ -90,12 +90,8 @@ describe("Plan & People Views", () => {
           // Try to submit empty form
           cy.get('button[type="submit"]').click();
 
-          // Should require description
-          cy.get('body').then(($modal) => {
-            // Form validation should prevent submission or show error
-            expect($modal.find('textarea[required]').length > 0 ||
-                   $modal.text().includes("required")).to.be.true;
-          });
+          // Should require description - check that textarea is required or error message appears
+          cy.get('textarea[required], body:contains("required")').should("exist");
         }
       });
     });

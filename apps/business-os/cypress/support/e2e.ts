@@ -23,7 +23,9 @@ Cypress.on("uncaught:exception", (err) => {
 });
 
 // Type augmentation
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       /**

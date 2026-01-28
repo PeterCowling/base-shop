@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, ds/no-hardcoded-copy -- DEV-000 [ttl=2099-12-31] Template helper (_-prefixed) not shipped as a route. It intentionally contains placeholders, broad typing, and debug strings. Suppress to reduce IDE noise per src/routes/AGENTS.md; real routes must not rely on these disables. */
 import { memo, useMemo, useRef } from "react";
 
+import { useOptionalSearchParams } from "@/components/seo/locationUtils";
 import { IS_DEV } from "@/config/env";
 import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -111,7 +112,8 @@ function GuideSeoTemplate({
     ? "prose-headings:font-bold"
     : "prose-headings:font-semibold";
   const lang = useCurrentLanguage();
-  const search = typeof window !== "undefined" ? window.location?.search ?? "" : "";
+  // Use Next.js router search params instead of window.location.search to avoid hydration mismatches
+  const search = useOptionalSearchParams();
   const translations = useGuideTranslations(lang);
   const t = translations.tGuides;
   const hookI18n: any = (translations as any)?.i18n;

@@ -5,10 +5,10 @@ info:
   title: Hostel Brikette API
   version: "1.0.4"
   description: |
-    Machine-friendly endpoints for checking rates and booking beds at **Hostel Brikette**.
+    Machine-friendly endpoints for checking rates and availability at **Hostel Brikette**.
 
-    • All responses are JSON and served over HTTPS.  
-    • Some operations are rate-limited — see the `429` response and `X-RateLimit-*` headers.  
+    • All responses are JSON and served over HTTPS.
+    • Some operations are rate-limited — see the `429` response and `X-RateLimit-*` headers.
     • All dates are **local hotel time** (Europe/Rome) in `YYYY-MM-DD` format.
   contact:
     name: Hostel Brikette
@@ -28,8 +28,6 @@ security: [] # satisfies redocly’s “security-defined” rule
 tags:
   - name: Rates
     description: Live price & availability
-  - name: Booking
-    description: Reservation operations
   - name: Metadata
     description: Static machine-layer artefacts
 
@@ -318,147 +316,6 @@ components:
                 { code: rate_limit, message: "Slow down, you’re sending requests too quickly." }       
 
 paths:
-  ####################################
-  #  /api/quote
-  ####################################
-  /api/quote:
-    get:
-      summary: Retrieve a rate quote
-      description: |
-        Returns the **cheapest non-refundable price** (`total`) for the
-        requested SKU and date range.
-      operationId: getRateQuote
-      tags: [Rates]
-      parameters:
-        - name: sku
-          in: query
-          required: true
-          schema: { $ref: "#/components/schemas/Sku" }
-        - name: checkin
-          in: query
-          required: true
-          schema: { type: string, format: date }
-        - name: checkout
-          in: query
-          required: true
-          schema: { type: string, format: date }
-        - $ref: "#/components/parameters/ApiVersion"
-      responses:
-        "200":
-          description: Quote response
-          headers:
-            RateLimit-Limit: { $ref: "#/components/headers/RateLimit-Limit" }
-            RateLimit-Remaining: { $ref: "#/components/headers/RateLimit-Remaining" }
-            RateLimit-Reset: { $ref: "#/components/headers/RateLimit-Reset" }
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/RateQuote" }
-              examples:
-                available:
-                  summary: Rooms available
-                  value: { available: true, total: 120.5, currency: EUR }
-                sold_out:
-                  summary: Sold-out
-                  value: { available: false, total: 0, currency: EUR }
-        "400": { $ref: "#/components/responses/Error4xx" }
-        "404": { $ref: "#/components/responses/Error404" }
-        "429": { $ref: "#/components/responses/Error429" }
-        "500": { $ref: "#/components/responses/Error5xx" }
-
-
-  ####################################
-  #  /api/rooms
-  ####################################
-  /api/rooms:
-    get:
-      summary: List room metadata
-      operationId: getRooms
-      tags: [Metadata]
-      parameters:
-        - $ref: "#/components/parameters/ApiVersion"
-        - name: sku
-          in: query
-          required: false
-          schema: { $ref: "#/components/schemas/Sku" }
-          description: Return only the room matching this SKU
-      responses:
-        "200":
-          description: Array of room categories
-          content:
-            application/json:
-              schema:
-                type: array
-                items: { $ref: "#/components/schemas/RoomCategory" }
-              examples:
-                snippet:
-                  value:
-                    - sku: double_room
-                      name: { en: "Private Double Ensuite" }
-                      occupancy: 2
-        "400": { $ref: "#/components/responses/Error4xx" }
-        "404": { $ref: "#/components/responses/Error404" }
-        "429": { $ref: "#/components/responses/Error429" }
-        "500": { $ref: "#/components/responses/Error5xx" }
-
-  ####################################
-  #  /api/book
-  ####################################
-  /api/book:
-    post:
-      summary: Create a booking
-      operationId: createBooking
-      tags: [Booking]
-      parameters:
-        - $ref: "#/components/parameters/ApiVersion"
-        - $ref: "#/components/parameters/IdempotencyKey"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: "#/components/schemas/BookingRequest" }
-            examples:
-              example:
-                value:
-                  sku: double_room
-                  checkin: 2025-06-14
-                  checkout: 2025-06-16
-                  adults: 1
-                  guestName: Ada Lovelace
-                  email: ada@example.net
-      responses:
-        "201":
-          description: Reservation created
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/BookingConfirmation" }
-              examples:
-                confirmed:
-                  value: { reservationId: ABC123, status: confirmed }
-        "202":
-          description: Booking accepted but still processing
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/BookingConfirmation" }
-              examples:
-                pending:
-                  value: { reservationId: XYZ987, status: pending }
-        "400": { $ref: "#/components/responses/Error4xx" }
-        "404": { $ref: "#/components/responses/Error404" }
-        "409":
-          description: Duplicate idempotency key
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/Error" }
-              examples:
-                duplicateKey:
-                  value:
-                    {
-                      code: duplicate_request,
-                      message: "Booking already processed for this Idempotency-Key.",
-                    }
-        "429": { $ref: "#/components/responses/Error429" }
-        "500": { $ref: "#/components/responses/Error5xx" }
-
   ####################################
   #  /data/rates.json
   ####################################

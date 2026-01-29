@@ -6,6 +6,7 @@
  * Phase 3+: Replace with full authentication
  */
 
+/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/min-tap-size -- BOS-P2-01 Phase 0 user switcher scaffold [ttl=2026-03-31] */
 "use client";
 
 import { useState } from "react";
@@ -76,7 +77,7 @@ export function UserSwitcher({ currentUser }: UserSwitcherProps) {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-md border border-border bg-background shadow-lg">
+        <div className="absolute end-0 top-full z-50 mt-2 w-48 rounded-md border border-border bg-background shadow-lg">
           <div
             role="listbox"
             aria-label="Select user"

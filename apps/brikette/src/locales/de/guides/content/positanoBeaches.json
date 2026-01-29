@@ -1,279 +1,208 @@
 {
   "seo": {
-    "title": "Die besten Strände in Positano",
-    "description": "Überblick über die Strände von Positano: Spiaggia Grande, Fornillo, Arienzo – plus Anreise."
+    "title": "Positano-Strände: Guide zu Spots, Preisen & freien Bereichen",
+    "description": "Vergleiche Positano-Strände (Fornillo, Spiaggia Grande, Arienzo, Laurito) plus einfache Tagestrips — Preise, freie Bereiche und hostel-freundliche Tipps."
   },
-  "linkLabel": "Die besten Strände in Positano",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Positano-Strände: Sonne & geheime Buchten",
   "intro": [
-    "Vergleiche Positanos Strände und nahegelegene Ausflugsbuchten, bevor du dich auf eine Liege festlegst. Diese Übersicht zeigt dir Preise, freie Bereiche und die Stimmung vor Ort, damit du Strand und Budget aufeinander abstimmen kannst.",
-    "Tippe in der Tabelle oder in den Zusammenfassungen unten auf einen Strandnamen, um unsere ausführlichen Guides mit Anreise, Essensempfehlungen und Schritt-für-Schritt-Zugangshinweisen zu öffnen."
+    "Positano-Strände können traumhaft sein – und teuer. Dieser Guide hilft dir, schnell den richtigen Strand zu wählen: ob du einen kostenlosen Handtuchplatz willst, einen Beach-Club-Tag planst oder entspannt zum Sonnenuntergang schwimmen möchtest.",
+    "Nutze die Tabelle, um Stimmung, Liegenpreise und die üblichen freien Bereiche zu vergleichen. Klicke in der Tabelle auf einen Strandnamen, um die Mini-Guide-Version mit Wegbeschreibung vom Hostel zu öffnen.",
+    "Hostel-Tipp: Die Strände sind kieselig. Nimm Wasserschuhe (oder robuste Sandalen), ein dickeres Handtuch/Matte und etwas Bargeld als Backup mit."
   ],
-  "galleryTitle": "Strandhighlights in Positano",
+  "galleryTitle": "Positano Strand-Highlights",
+  "comparisonTable": {
+    "title": "Strandvergleich an der Amalfiküste"
+  },
   "toc": [
-    {
-      "href": "#overview",
-      "label": "So triffst du die Wahl"
-    },
-    {
-      "href": "#positano-beaches",
-      "label": "Strände in Positano"
-    },
-    {
-      "href": "#praiano-beaches",
-      "label": "Strände in Praiano"
-    },
-    {
-      "href": "#furore-beaches",
-      "label": "Furore"
-    },
-    {
-      "href": "#sorrento-beaches",
-      "label": "Sorrento"
-    },
-    {
-      "href": "#amalfi-beaches",
-      "label": "Amalfi"
-    },
-    {
-      "href": "#logistics",
-      "label": "Logistik"
-    },
-    {
-      "href": "#faqs",
-      "label": "Häufige Fragen"
-    }
+    { "href": "#overview", "label": "Auswahl" },
+    { "href": "#beach-day-checklist", "label": "Strandtag-Checkliste" },
+    { "href": "#positano-beaches", "label": "Positano-Strände" },
+    { "href": "#praiano-beaches", "label": "Praiano-Strände" },
+    { "href": "#furore-beaches", "label": "Furore" },
+    { "href": "#sorrento-beaches", "label": "Sorrent" },
+    { "href": "#amalfi-beaches", "label": "Amalfi" },
+    { "href": "#logistics", "label": "Logistik" },
+    { "href": "#comparison-table", "label": "Vergleichstabelle" },
+    { "href": "#faqs", "label": "FAQs" }
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "So findest du den passenden Strand",
+      "title": "So wählst du den richtigen Strand",
       "body": [
-        "Positano verbindet kostenlose Kiesabschnitte mit organisierten Lidos. Liegen kosten zwischen 15 € in kleineren Clubs und 400 € auf Prestige-Decks wie La Scogliera – entscheide also früh, ob du Rundumservice oder lieber ein freies Handtuchplätzchen möchtest.",
-        "Unsere Vergleichstabelle bündelt die Strände nach Ort. Jeder Eintrag zeigt die Startpreise für Liegen, ob es einen kostenlosen Bereich gibt und fasst Vor- und Nachteile zusammen, damit du Sonnenstunden, Andrang und Komfort gegeneinander abwägen kannst."
+        "Positano hat Kiesstrände mit einer Mischung aus Beach Clubs (kostenpflichtig) und öffentlichen Bereichen (kostenlos). Die Preise reichen von ~15 € pro Liege an ruhigeren Stränden bis zu 100 €+ für Premium-Decks.",
+        "Wenn du als Hostel-Gast aufs Budget achtest: Starte mit Fornillo (meist günstiger und entspannter). Für das klassische Postkartenbild geh früh zur Spiaggia Grande. Für späte Sonne sind Arienzo oder Laurito top – aber die Anreise ist etwas trickreicher.",
+        "Quick Picks für 2026: günstigster Chill‑Tag = Fornillo; einfachstes „ikonisches Positano“-Foto = Spiaggia Grande; beste späte Sonne = Arienzo (per Boot) oder Laurito; dramatischster Cove‑Tagestrip = Fiordo di Furore."
+      ]
+    },
+    {
+      "id": "beach-day-checklist",
+      "title": "Hostel-freundliche Strandtag-Checkliste",
+      "body": [
+        "Ein bisschen Vorbereitung spart Geld (und Blasen). Die meisten Strände sind kieselig, Schatten ist in den freien Bereichen begrenzt, und manche Kioske bevorzugen noch Bargeld."
+      ],
+      "list": [
+        "Wasserschuhe oder robuste Sandalen (heiße Steine + leichter ins Wasser)",
+        "Dickeres Handtuch oder Matte (dünne Handtücher sind auf Kies unangenehm)",
+        "Trinkflasche + Snacks (Promenade-Preise summieren sich)",
+        "Bargeld als Backup (besonders bei kleinen Kiosken)",
+        "Ein kleiner Dry Bag (Handy + Cash sind auf Booten sicher)",
+        "Sonnencreme + Hut (freie Bereiche sind oft volle Sonne)",
+        "Ein leichtes Buch/Karten (gut, um Wartezeiten/Andrang zu überbrücken)",
+        "Leichte Schicht für den Rückweg (abends wird es schnell kühler)"
       ]
     },
     {
       "id": "positano-beaches",
-      "title": "Strände in Positano auf einen Blick",
+      "title": "Positano-Strände auf einen Blick",
       "body": [
-        "Fornillo bleibt der Hostel-Liebling: entspannte Stimmung, zwei freie Abschnitte (einer versteckt) und Beachclubs wie Pupetto, Grassi, Ferdinando und La Marinella ab etwa 15 €. Der Rückweg ist steil, daher wechseln viele zum Hauptstrand und nehmen den Bus bergauf.",
-        "Spiaggia Grande liefert die Postkartenperspektive mit Positanos Häuserkulisse hinter den Sonnenschirmen. Rechne mit höheren Preisen: L’Incanto startet bei ca. 25 €, La Scogliera als VIP-Deck kostet 100–400 €. Es gibt einen öffentlichen Streifen, doch viele Gäste mögen Fornillos ruhigere Atmosphäre lieber.",
-        "Arienzo kombiniert lange Nachmittagssonne mit einem dramatischen Treppenabstieg. Pakete mit Liegen, Mittagessen und Bootstransfer starten bei rund 60 € und beinhalten das Wassertaxi des Clubs – sinnvoll, weil der freie Zugang beschwerlich ist.",
-        "Laurito ist eine kompakte Bucht, bedient von Da Adolfo (kostenlose Liegen mit Restaurantrechnung) und Villa Tre Ville (ab 30 €). Die Sonne bleibt lange, aber wirklich bequem kommst du nur mit ihren Shuttlebooten hin; der öffentliche Abschnitt ist winzig."
+        "Fornillo ist der Hostel-Favorit: entspannter, oft günstigere Clubs (~15 €+), und ein größerer freier Bereich als am Hauptstrand. Der Rückweg ist steil – viele laufen rüber zur Spiaggia Grande und nehmen den internen Bus nach oben. Siehe %LINK:fornilloBeachGuide|Fornillo-Strandguide% für die einfachste Route und den Strandplan.",
+        "Spiaggia Grande (Hauptstrand) ist das klassische Postkartenmotiv. Er ist aber auch voll und teuer. Wenn du hinwillst: geh früh, such den öffentlichen Abschnitt und setz die Erwartungen realistisch. Nutze unsere %LINK:positanoMainBeachWalkDown|Wegbeschreibung zu Fuß% oder den %LINK:positanoMainBeachBusDown|Bus-Guide%.",
+        "Arienzo ist bekannt für lange Nachmittagssonne. Der Haken: viele Stufen, wenn du zu Fuß gehst – die meisten nutzen das Shuttleboot des Beach Clubs. Pakete mit Liegen + Lunch + Bootstransfer können ein gutes Preis-Leistungs-Verhältnis haben. Siehe %LINK:arienzoBeachClub|Arienzo Beach Club Guide% für Zeiten.",
+        "Laurito ist eine kleine Bucht, oft per Shuttleboot erreichbar. Perfekt für spätes Schwimmen, aber der öffentliche Platz ist begrenzt und die Zeiten sind wichtig. Siehe %LINK:lauritoBeachGuide|Laurito-Strandguide%, bevor du dich festlegst."
       ]
     },
     {
       "id": "praiano-beaches",
-      "title": "Praiano als Tagesausflug",
+      "title": "Tagestrip-Optionen in Praiano",
       "body": [
-        "Praianos Gavitella Beach ist ein Sunset-Hotspot mit Restaurantterrasse – perfekt für Aperitivi und Abendessen. Einen freien Bereich gibt es nicht, und mittags staut sich die Hitze auf den Betonplattformen, also komm lieber später am Tag.",
-        "Marina di Praia bietet eine schmale Kiesbucht eingerahmt von Fischerbooten und Felsen. Neben den Lidos bleibt ein kleiner freier Abschnitt – ideal, wenn du Abwechslung willst, ohne auf Service zu verzichten."
+        "Gavitella in Praiano ist am besten am späten Nachmittag: goldenes Licht und Sunset-Vibes. Vieles sind Plattformen und Clubs, und der freie Bereich (falls vorhanden) ist begrenzt – für Komfort plane eher eine bezahlte Option ein. Nutze den %LINK:gavitellaBeachGuide|Gavitella-Strandguide% für Schritt-für-Schritt-Zugang.",
+        "Marina di Praia ist eine schmale Kiesbucht, eingerahmt von Klippen und Fischerbooten. Super als Tapetenwechsel und meist etwas ruhiger. Siehe %LINK:marinaDiPraiaBeaches|Marina-di-Praia-Guide% für Transportoptionen."
       ]
     },
     {
       "id": "furore-beaches",
-      "title": "Furores Fjordbucht",
+      "title": "Furores fjordartige Bucht",
       "body": [
-        "Der Fiordo di Furore ist der Instagram-Klassiker der Amalfiküste mit Steinbrücke und Klippensprungstellen. Der Eintritt ist frei und Ausgaben bleiben gering, aber der Platz ist extrem begrenzt – komm früh oder außerhalb der Stoßzeiten."
+        "Fiordo di Furore ist eine winzige, dramatische Bucht unter einer Brücke. Der Eintritt ist gratis, aber es gibt wenig Platz, und der Zugang ist steil (und im Sommer heiß). Geh früh los, nimm Wasser mit und rechne nicht mit Infrastruktur."
       ]
     },
     {
       "id": "sorrento-beaches",
-      "title": "Sorrents Bagno della Regina Giovanna",
+      "title": "Sorrents Regina Giovanna",
       "body": [
-        "Das Bagno della Regina Giovanna bei Sorrent ist ein natürliches Schwimmbecken in den Felsen. Der Zugang ist frei, das Wasser angenehm kühl und der Spot deutlich weniger bekannt als Positanos Hauptstrände – nimm Wasserschuhe und Proviant mit, es gibt keine Infrastruktur."
+        "Regina Giovanna ist eher ein natürlicher Swim-Spot als ein klassischer Beach-Club-Tag. Als kostenloses Abenteuer macht es Spaß, wenn du Lust auf einen Fußweg hast und Vorräte mitnimmst. Trag Schuhe, die nass werden dürfen, und nimm nur das Nötigste an Wertsachen mit."
       ]
     },
     {
       "id": "amalfi-beaches",
-      "title": "Beachclubs in Amalfi-Stadt",
+      "title": "Amalfis Beach Clubs",
       "body": [
-        "Amalfis Hauptstrand Marina Grande ist gesäumt von Clubs wie Stella Maris, Marina Grande Beach Club, Silver Moon und Bagni Mar di Cobalto. Dich erwarten klassische Lido-Setups mit Service, Duschen und Blick auf den Dom – reserviere in der Hochsaison früh, wenn du in der ersten Reihe liegen willst."
+        "Amalfis Marina Grande ist praktisch für ein paar Stunden am Wasser, wenn du ohnehin in der Stadt bist. In der Hochsaison sind die Preise premium – und für Liegen lohnt sich Reservieren."
       ]
     },
     {
       "id": "logistics",
-      "title": "An- und Abreise",
+      "title": "Hin und zurück zum Strand",
       "body": [
-        "Für Fornillo und Spiaggia Grande gehst du vom Hostel die Viale Pasitea hinunter. Wenn dir der Rückweg zu anstrengend ist, folge der Uferpromenade zum Hauptstrand und nimm den orangefarbenen Ortsbus hinauf nach Chiesa Nuova – von dort sind es nur wenige Schritte zum Hostel Brikette.",
-        "Arienzo und Laurito betreiben eigene Shuttleboote ab der Spiaggia Grande; klär vor einem späten Aperitivo unbedingt die letzte Rückfahrt. Für Praiano, Furore, Sorrent oder Amalfi findest du in den verlinkten Guides genaue Infos zu Anreise, Buszeiten und Fährmöglichkeiten."
-      ]
-    }
-  ],
-  "prosCons": [
-    {
-      "title": "Fornillo",
-      "pros": [
-        "Liegen ab 15 €",
-        "Großer und versteckter Freiraum",
-        "Entspannte Atmosphäre"
-      ],
-      "cons": [
-        "Steiler Rückweg",
-        "Ohne Miete wenig Schatten"
+        "Vom Hostel ist der schnellste Ansatz meist: runter zur Spiaggia Grande laufen (oder mit dem Bus runter), dann entscheiden: an der Promenade weiter nach Fornillo, aufs Shuttleboot, oder am Hauptstrand bleiben.",
+        "Wenn du einen Beach-Club-Tag mit Bootstransfer machst (Arienzo oder Laurito), ist es oft am einfachsten, bei Spiaggia Grande zu starten: früh anstellen und die Treppen vermeiden.",
+        "Im Sommer 2026: plane Hitze für die Anstiege ein. Füll Wasser auf, bevor du wieder hochgehst, und wenn du müde bist, nimm lieber den internen Bus statt jede Stufe zu laufen.",
+        "Für Tagestrips (Praiano, Amalfi, Sorrent) check vorab die letzte Rückfahrt. Fähren sind die schönste Option, wenn sie fahren, Busse sind der Plan B. Wenn das Meer rau ist oder Fähren ausfallen, plane extra Zeit und bleib flexibel. Nimm Snacks für die Fahrt mit."
       ]
     },
     {
-      "title": "Spiaggia Grande",
-      "pros": [
-        "Ikonische Positano-Skyline",
-        "Zentrale Fährverbindungen",
-        "Öffentlicher Streifen vorhanden"
-      ],
-      "cons": [
-        "Teuerste Liegen",
-        "Mittags sehr voll"
-      ]
-    },
-    {
-      "title": "Arienzo",
-      "pros": [
-        "Lange Nachmittagssonne",
-        "Pakete inklusive Mittagessen und Boot",
-        "Tolle Aussichtspunkte"
-      ],
-      "cons": [
-        "Hunderte Stufen",
-        "Ohne Club-Shuttle schwer erreichbar"
-      ]
-    },
-    {
-      "title": "Laurito",
-      "pros": [
-        "Sonne bis in den Abend",
-        "Da Adolfo als kultiges Lunch-Lokal",
-        "Premium-Service bei Villa Tre Ville"
-      ],
-      "cons": [
-        "Winziger öffentlicher Bereich",
-        "Zugang hängt von den Wassertaxi-Zeiten ab"
-      ],
-      "guideKey": "lauritoBeachGuide"
-    },
-    {
-      "title": "Gavitella (Praiano)",
-      "pros": [
-        "Aperitivi zum Sonnenuntergang",
-        "Restaurantterrasse"
-      ],
-      "cons": [
-        "Kein freier Bereich",
-        "Betonplattformen heizen sich auf"
-      ]
-    },
-    {
-      "title": "Marina di Praia",
-      "pros": [
-        "Charmante Fischerbucht",
-        "Freier Abschnitt neben den Lidos"
-      ],
-      "cons": [
-        "Schmaler Strand",
-        "Früher am Tag wenig Sonne"
-      ]
-    },
-    {
-      "title": "Fiordo di Furore",
-      "pros": [
-        "Freier Eintritt",
-        "Klippensprünge",
-        "Einzigartige Brückenkulisse"
-      ],
-      "cons": [
-        "Sehr kleiner Strand",
-        "Schnell voll"
-      ]
-    },
-    {
-      "title": "Bad der Regina Giovanna",
-      "pros": [
-        "Kostenloses Naturbecken",
-        "Kühles Wasser für heiße Tage"
-      ],
-      "cons": [
-        "Keine Services",
-        "Felsiger Zugangsweg"
-      ]
-    },
-    {
-      "title": "Amalfi Marina Grande",
-      "pros": [
-        "Viele Club-Optionen",
-        "Einfache Fähr- und Busanbindung"
-      ],
-      "cons": [
-        "Premiumpreise",
-        "In der Hochsaison vorab reservieren"
+      "id": "comparison-table",
+      "title": "Strand-Vergleichstabelle",
+      "body": [
+        "Nutze diese Tabelle, um Strand-Vibe, typische Liegenpreise und ob es meist einen freien Bereich gibt zu vergleichen. Preise schwanken je nach Saison und Beach Club – sieh sie als grobe Spannen."
       ]
     }
   ],
   "itemList": [
-    {
-      "name": "Fornillo",
-      "note": "Lokaler Favorit mit Liegen ab 15 € und zwei freien Abschnitten."
-    },
-    {
-      "name": "Spiaggia Grande",
-      "note": "Hauptstrand mit ikonischer Aussicht, teuren Clubs und zentralem freien Bereich."
-    },
-    {
-      "name": "Arienzo",
-      "note": "Sonniger Terrassenstrand, erreichbar über 300 Stufen oder das Club-Wassertaxi."
-    },
-    {
-      "name": "Laurito",
-      "note": "Kompakte Bucht mit Shuttlebooten von Da Adolfo und Villa Tre Ville."
-    },
-    {
-      "name": "Gavitella",
-      "note": "Praiano-Plattform für Sunset-Aperitivi (nur mit Clubzugang)."
-    },
-    {
-      "name": "Marina di Praia",
-      "note": "Fischerbucht mit kleinem freien Bereich plus Lidos."
-    },
-    {
-      "name": "Fiordo di Furore",
-      "note": "Dramatische Brückenbucht mit freiem Eintritt und wenig Platz."
-    },
-    {
-      "name": "Bad der Regina Giovanna",
-      "note": "Versteckte Badegrotte bei Sorrent – kostenlos, aber bring Proviant mit."
-    },
-    {
-      "name": "Amalfi Marina Grande",
-      "note": "Reihe klassischer Amalfi-Lidos gegenüber dem Dom."
-    }
+    { "name": "Fornillo", "note": "Lokaler Favorit mit 15-€-Liegen und zwei freien Bereichen." },
+    { "name": "Spiaggia Grande", "note": "Hauptstrand mit ikonischer Aussicht, teuren Clubs und zentralem freien Abschnitt." },
+    { "name": "Arienzo", "note": "Sonnige Terrassen-Bucht: 300 Stufen oder Club-Wassertaxi." },
+    { "name": "Laurito", "note": "Kleine Bucht mit Shuttlebooten von Da Adolfo und Villa Tre Ville." },
+    { "name": "Gavitella", "note": "Praiano-Plattformen perfekt für Sunset-Aperitivo (club-only)." },
+    { "name": "Marina di Praia", "note": "Fischerdorf-Bucht mit kleinem freien Abschnitt und Lidos." },
+    { "name": "Fiordo di Furore", "note": "Dramatische Bucht unter der Brücke: kostenlos, aber wenig Platz." },
+    { "name": "Regina Giovanna Bath", "note": "Versteckter Swim-Spot bei Sorrent – kostenlos, aber bring alles mit." },
+    { "name": "Amalfi Marina Grande", "note": "Reihe klassischer Amalfi-Lidos gegenüber dem Dom." }
   ],
-  "faqsTitle": "FAQs zu Positanos Stränden",
   "faqs": [
     {
-      "q": "Wo finde ich einen kostenlosen Strandabschnitt in Positano?",
-      "a": [
-        "Fornillo hat den größten freien Bereich sowie einen ruhigeren Abschnitt hinter den Hauptclubs. Auch an der Spiaggia Grande gibt es zwischen den kostenpflichtigen Decks eine öffentliche Zone, während Laurito nur ein winziges Stück neben dem Ponton von Da Adolfo bietet."
-      ]
+      "question": "Welcher Strand in Positano ist am besten für Budget-Reisende?",
+      "answer": "Fornillo ist am budgetfreundlichsten: Liegen starten oft um 15 € und die freie Zone ist größer als am Hauptstrand. Außerdem ist es ruhiger – ein Favorit bei Hostel-Gästen."
     },
     {
-      "q": "Wie komme ich nach dem Strandtag zurück zum Hostel Brikette?",
-      "a": [
-        "Von Fornillo aus folgst du dem Küstenweg zur Spiaggia Grande und nimmst den orangefarbenen Ortsbus hinauf nach Chiesa Nuova. Dort steigst du aus und gehst nur ein paar Minuten bis zum Hostel – so sparst du dir den steilen Aufstieg."
-      ]
+      "question": "Gibt es kostenlose Strände in der Nähe von Positano?",
+      "answer": "Ja. Die meisten Strände haben zumindest einen öffentlichen Bereich (oft als „spiaggia libera“ ausgeschildert), aber Lage und Größe können sich je nach Saison ändern. In Positano ist Fornillo meist am einfachsten, wenn du einen größeren freien Bereich suchst."
     },
     {
-      "q": "Muss ich Beachclubs im Voraus reservieren?",
-      "a": [
-        "Reserviere vorab für Arienzo, Lauritos Da Adolfo oder Villa Tre Ville sowie die vorderen Reihen an der Spiaggia Grande – am Wochenende sind die Plätze schnell weg. Kleinere Clubs in Fornillo nehmen morgens oft noch spontane Gäste an."
-      ]
+      "question": "Wie komme ich nach Arienzo oder Laurito?",
+      "answer": "Am einfachsten erreichst du beide per Shuttleboot ab Spiaggia Grande. Arienzo bedeutet viele Stufen zu Fuß, und Laurito hat nur begrenzten Zugang an Land. Wenn du es easy willst, buche ein Paket inklusive Bootstransfer."
+    },
+    {
+      "question": "Wann sollte ich am Strand ankommen?",
+      "answer": "Für Fornillo und Spiaggia Grande: komm zwischen 9 und 10 Uhr, um in der freien Zone noch einen guten Platz zu bekommen. Fiordo di Furore ist sehr klein und füllt sich schnell – geh früh oder außerhalb der Peak-Zeiten."
+    },
+    {
+      "question": "Wie viel kosten Strandliegen in Positano?",
+      "answer": "Das variiert je nach Club und Saison. Budget-Clubs in Fornillo starten oft um 15 €. An der Spiaggia Grande beginnen Mittelklasse-Optionen häufig um 25 €. Premium-Decks können deutlich teurer sein. Arienzo-Pakete mit Bootstransfer und Essen starten oft um 60 €."
+    },
+    {
+      "question": "Kann ich Tagestrips zu Stränden außerhalb von Positano machen?",
+      "answer": "Ja. Praiano (Gavitella und Marina di Praia), Fiordo di Furore, Sorrents Swim-Spot Regina Giovanna und Amalfi sind beliebte Tagestrip-Optionen per Bus oder Fähre. Schau in die verlinkten Guides für die einfachste Route vom Hostel."
+    },
+    {
+      "question": "Was sollte ich an den Strand mitnehmen?",
+      "answer": "Wasserschuhe (Kies), Sonnencreme, eine Trinkflasche und etwas Bargeld. Für die freie Zone: nimm ein dickeres Handtuch/Matte, Snacks und etwas Schatten mit."
+    },
+    {
+      "question": "Welcher Strand hat die besten Sonnenuntergänge?",
+      "answer": "Gavitella in Praiano ist bekannt für Sunset-Aperitivi. Laurito kann ebenfalls späte Sonne haben – besonders, wenn du das Shuttleboot nutzt und die Zeiten gut triffst."
     }
   ],
   "gallery": [
     {
-      "alt": "Spiaggia Grande von oben",
-      "caption": "Spiaggia Grande"
+      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+      "alt": "Blick auf Positanos Hauptstrand (Spiaggia Grande) mit dem Ort an den Klippen im Hintergrund",
+      "caption": "Spiaggia Grande (Hauptstrand)",
+      "credits": ["Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
-      "alt": "Weg zum Strand von Fornillo",
-      "caption": "Fornillo"
+      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+      "alt": "Fornillo Beach in Positano mit Sonnenschirmen entlang der Küste",
+      "caption": "Fornillo (meist ruhiger + budgetfreundlicher)",
+      "credits": ["Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+      "alt": "Strandbereich von Arienzo an der Amalfiküste bei Positano",
+      "caption": "Arienzo (Nachmittagssonne, oft per Shuttleboot)",
+      "credits": ["Photo: villlamania (CC BY 3.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+      "alt": "Brücke am Fiordo di Furore über der schmalen Bucht und dem Wasser",
+      "caption": "Fiordo di Furore (dramatische Bucht)",
+      "credits": ["Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+      "alt": "Bucht von Marina di Praia, eingerahmt von Klippen und Booten",
+      "caption": "Marina di Praia (Praiano)",
+      "credits": ["Photo: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+      "alt": "Weitblick auf Positano und die Küste vom Meer aus",
+      "caption": "Positano-Küste (viele Treppen)",
+      "credits": ["Photo: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+      "alt": "Strand-Schirme und Schwimmer entlang der Küste von Positano",
+      "caption": "Schirme am Positano-Strand (Peak-Day-Vibe)",
+      "credits": ["Photo: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+      "alt": "Menschen am Strand mit Booten, die in der Bucht bei Positano ankern",
+      "caption": "Boote in der Bucht (Dry Bag fürs Handy mitnehmen)",
+      "credits": ["Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }

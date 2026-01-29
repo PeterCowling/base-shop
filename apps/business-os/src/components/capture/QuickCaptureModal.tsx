@@ -4,7 +4,7 @@
  * BOS-UX-13
  */
 
- 
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/absolute-parent-guard, ds/no-nonlayered-zindex -- BOS-UX-13: Phase 0 quick capture scaffold [ttl=2026-03-31] */
 "use client";
 
 import { useState } from "react";
@@ -118,7 +118,7 @@ export function QuickCaptureModal({
       <DialogPortal>
         <DialogOverlay className="bg-black/50 backdrop-blur-sm" />
         <DialogPrimitive.Content
-          className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-background text-foreground shadow-lg focus:outline-none"
+          className="fixed top-1/2 start-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-background text-foreground shadow-lg focus:outline-none"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border">

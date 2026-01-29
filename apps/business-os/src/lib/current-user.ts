@@ -55,6 +55,7 @@ export function getCurrentUser(): User {
   // Try to get from cookie first (client-side only)
   if (typeof window !== "undefined") {
     const cookies = document.cookie.split(";");
+    // i18n-exempt -- BOS-02: Cookie name constant [ttl=2026-03-31]
     const userCookie = cookies.find((c) => c.trim().startsWith("current_user_id="));
     if (userCookie) {
       const userId = userCookie.split("=")[1];

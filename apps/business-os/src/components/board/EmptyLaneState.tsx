@@ -4,7 +4,7 @@
  * BOS-UX-12
  */
 
- 
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at -- BOS-UX-12: Phase 0 empty state scaffold [ttl=2026-03-31] */
 "use client";
 
 import Link from "next/link";

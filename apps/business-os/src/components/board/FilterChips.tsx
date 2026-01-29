@@ -4,7 +4,7 @@
  * BOS-UX-09
  */
 
-/* eslint-disable ds/enforce-layout-primitives -- BOS-UX-09: Phase 0 scaffold UI */
+/* eslint-disable ds/enforce-layout-primitives, ds/min-tap-size -- BOS-UX-09 Phase 0 scaffold UI [ttl=2026-03-31] */
 "use client";
 
 import type { Card } from "@/lib/types";

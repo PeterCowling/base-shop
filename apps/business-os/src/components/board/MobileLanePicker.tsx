@@ -29,7 +29,7 @@ function getLaneBorderColor(lane: Lane): string {
   return "border-muted-foreground";
 }
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/absolute-parent-guard -- BOS-P2-03: Phase 0 mobile UI */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/absolute-parent-guard -- BOS-P2-03 Phase 0 mobile UI scaffold [ttl=2026-03-31] */
 export function MobileLanePicker({
   lanes,
   activeLane,
@@ -38,7 +38,7 @@ export function MobileLanePicker({
 }: MobileLanePickerProps) {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-card border-t border-border-2 md:hidden z-40"
+      className="fixed bottom-0 inset-x-0 bg-card border-t border-border-2 md:hidden z-40"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       role="tablist"
       aria-label="Lane selector"

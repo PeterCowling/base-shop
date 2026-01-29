@@ -93,7 +93,7 @@ export function IdeaEditorForm({
 
       {/* Content Editor or Preview */}
       {showPreview ? (
-        <div className="border border-gray-200 rounded-md p-4 bg-white min-h-[400px]">
+        <div className="border border-gray-200 rounded-md p-4 bg-white min-h-96">
           <MarkdownContent content={content || ""} />
         </div>
       ) : (

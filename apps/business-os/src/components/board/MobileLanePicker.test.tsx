@@ -45,6 +45,7 @@ describe("MobileLanePicker", () => {
     );
 
     allLanes.forEach((lane) => {
+      // eslint-disable-next-line security/detect-non-literal-regexp -- safe test data from controlled fixture
       expect(screen.getByRole("tab", { name: new RegExp(lane, "i") })).toBeInTheDocument();
     });
   });

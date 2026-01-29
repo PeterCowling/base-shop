@@ -194,6 +194,50 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 
 ---
 
+### BOS-P2-00: Fix Jest matcher TypeScript errors in test files
+
+- **Type:** FIX
+- **Affects:**
+  - `apps/business-os/tsconfig.json` (Jest types configuration)
+  - All test files in `apps/business-os/src/` (47+ TypeScript errors)
+- **Depends on:** -
+- **Status:** CRITICAL BLOCKER (discovered 2026-01-29)
+- **Confidence:** 95%
+  - Implementation: 98% — Missing jest-dom types import in test setup
+  - Approach: 95% — Standard Jest + Testing Library setup
+  - Impact: 90% — Blocks all development work (baseline validation fails)
+- **Effort:** S (Small - ~1 hour)
+- **Priority:** P0 (CRITICAL - blocks BOS-P2-03 and all future work)
+- **Description:**
+  - Problem: TypeScript errors in all test files: "Property 'toBeInTheDocument' does not exist on type 'Assertion'"
+  - Root cause: Jest matcher types not available (toBeInTheDocument, toBe, toEqual, toHaveAttribute, etc.)
+  - Impact: Baseline typecheck fails, blocking all `/build-feature` operations
+  - Files affected (partial list):
+    - `src/components/board/BoardLane.test.tsx` (18 errors)
+    - `src/components/board/BoardView.test.tsx` (13 errors)
+    - `src/components/board/BoardViewSwitcher.test.tsx` (9 errors)
+    - `src/components/board/CompactCard.test.tsx` (11 errors)
+    - `src/components/board/EmptyLaneState.test.tsx` (11 errors)
+    - `src/components/board/FilterChips.test.tsx` (20 errors)
+    - `src/components/board/SearchBar.test.tsx` (3 errors)
+- **Solution Options:**
+  1. Add `@testing-library/jest-dom` import to jest setup file
+  2. Update `tsconfig.json` to include Jest types properly
+  3. Add explicit type imports to each test file (not preferred)
+- **Acceptance:**
+  - `pnpm typecheck` passes with zero errors in business-os app
+  - All existing tests continue to pass
+  - No changes to test behavior, only type definitions
+- **Test plan:**
+  - Run `pnpm typecheck` → expect zero errors
+  - Run `pnpm test` → expect all tests pass
+  - Verify types available in VSCode (hover over matchers shows correct types)
+- **Rollout / rollback:**
+  - Rollout: Fix types, verify typecheck passes
+  - Rollback: Revert type changes (not applicable - baseline must work)
+
+---
+
 ### BOS-P2-01: Add user switcher component for dev/testing
 
 - **Type:** IMPLEMENT
@@ -608,6 +652,10 @@ export const FEATURE_FLAGS = {
 ---
 
 ## Phase Prioritization
+
+### Phase 0: Infrastructure Fixes (Immediate)
+**Priority: CRITICAL BLOCKER**
+- BOS-P2-00: Fix Jest matcher TypeScript errors (BLOCKS ALL WORK)
 
 ### Phase 2A: Multi-User Foundation (Target: Q1 2026)
 **Priority: CRITICAL**

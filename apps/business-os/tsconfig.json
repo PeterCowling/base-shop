@@ -24,6 +24,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"

@@ -2,7 +2,9 @@
 Type: Plan
 Status: Active
 Domain: Guides / Content / SEO
+Relates-to charter: Content unification
 Created: 2026-01-29
+Last-reviewed: 2026-01-29
 Last-updated: 2026-01-29
 Feature-Slug: guide-cross-referencing
 Overall-confidence: 88%
@@ -19,7 +21,7 @@ Improve guide discoverability by making related guides blocks render by default 
 
 - Related guides render automatically when `manifest.relatedGuides` is non-empty (remove need for explicit `relatedGuides` block declaration)
 - Validation enforces correctness (valid keys, no duplicates, no self-reference, no draftOnly on live routes)
-- Coverage reporting identifies guides missing related guides (enforce minimum for `live` status)
+- Coverage reporting identifies guides missing related guides (report minimum thresholds for `live` status; enforcement is a follow-up decision)
 - Editorial guidance for inline `%LINK:` tokens and Google Maps `%URL:` patterns
 - Reciprocity warnings (A links B → B should link A, warn-only)
 
@@ -36,7 +38,7 @@ Improve guide discoverability by making related guides blocks render by default 
 **Constraints:**
 - Related guides must render consistently across all guides (SSR-stable)
 - Validation must run in CI and locally without breaking existing workflows
-- Changes must not affect existing guide rendering behavior unless manifest changes
+- Changes must not affect guides that are not configured with non-empty `manifest.relatedGuides` (default rendering is config-driven)
 - Must support 18 locales (labels already have EN fallback via `getGuideLinkLabel`)
 
 **Assumptions:**
@@ -98,6 +100,10 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 
 **Decision:** Option A chosen because it reduces editor friction and treats cross-references as first-class content feature per fact-find recommendation.
 
+## Related Plans / Dependencies
+
+- `docs/plans/guide-system-improvements-phase2-plan.md` — centralizes guide validation and repo validation-gate wiring. Align TASK-06 with Phase 2’s validation-gate approach to avoid duplicate CI steps and inconsistent “warn vs fail” semantics.
+
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
@@ -112,7 +118,7 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 > Effort scale: S=1, M=2, L=3
 
 **Overall Confidence Calculation:**
-- (92×2 + 88×2 + 85×2 + 80×1 + 95×1 + 88×1) / (2+2+2+1+1+1) = 803/9 = **89%** (rounded to 88%)
+- (92×2 + 88×2 + 85×2 + 80×1 + 95×1 + 88×1) / (2+2+2+1+1+1) = 793/9 = **88%**
 
 ## Tasks
 
@@ -175,9 +181,9 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
     - No duplicate guide keys in array
     - No self-reference (guide doesn't list itself)
     - `live` guides cannot reference `draftOnly` guides
-  - Script returns exit code 1 on validation failure
+  - Script returns exit code 1 on validation failure (or supports an explicit warn-only mode for CI)
   - Validation runs locally via `pnpm validate-manifest`
-  - Clear error messages with file/line context
+  - Clear error messages that identify the guide key and offending related guide key (file/line context is best-effort)
 - **Test plan:**
   - Add: `scripts/validate-guide-manifest.test.ts` — unit tests for validation rules
   - Test cases: valid array, duplicate key, self-reference, draft-to-live violation, broken key

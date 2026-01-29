@@ -4,7 +4,6 @@
  * BOS-UX-05
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-05: Phase 0 scaffold UI */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -56,10 +55,10 @@ export function SearchBar({
   };
 
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-full">
       <div className="relative">
         {/* Search Icon */}
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+        <div className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
           <svg
             className="h-4 w-4"
             fill="none"
@@ -92,7 +91,7 @@ export function SearchBar({
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute end-3 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Clear search"
           >
             <svg

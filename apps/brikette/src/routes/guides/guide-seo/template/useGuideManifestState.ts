@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { IS_DEV } from "@/config/env";
 import type { AppLanguage } from "@/i18n.config";
@@ -21,6 +21,7 @@ export function useGuideManifestState(params: {
   loaderData?: LoaderData;
 }) {
   const { guideKey, lang, canonicalPathname, preferManualWhenUnlocalized, loaderData } = params;
+  const [checklistVersion, setChecklistVersion] = useState(0);
 
   const manifestEntry = useMemo<GuideManifestEntry | null>(
     () => getGuideManifestEntry(guideKey) ?? null,
@@ -37,6 +38,7 @@ export function useGuideManifestState(params: {
       return;
     }
     if (!langKey) return;
+    let active = true;
     const load = async () => {
       try {
         const loaders = {
@@ -51,9 +53,16 @@ export function useGuideManifestState(params: {
         await ensureGuideContent(langKey, contentKey, loaders);
       } catch (err) {
         if (IS_DEV) console.debug("[GuideSeoTemplate] ensureGuideContent failed", err);
+      } finally {
+        if (active) {
+          setChecklistVersion((prev) => prev + 1);
+        }
       }
     };
     void load();
+    return () => {
+      active = false;
+    };
   }, [lang, manifestEntry, preferManualWhenUnlocalized]);
 
   const resolvedStatus = (loaderData?.status ?? manifestEntry?.status ?? "draft") as GuideManifestEntry["status"];
@@ -74,7 +83,7 @@ export function useGuideManifestState(params: {
     return manifestEntry
       ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang })
       : undefined;
-  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang]);
+  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang, checklistVersion]);
 
   const draftUrl = useMemo(() => {
     if (!manifestEntry) return undefined;

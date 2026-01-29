@@ -4,7 +4,6 @@
  * BOS-UX-04
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-04: Phase 0 scaffold UI */
 "use client";
 
 import { useState } from "react";
@@ -12,6 +11,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import type { Business } from "@/lib/types";
+
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
 import { BusinessSelector } from "./BusinessSelector";
 
@@ -47,35 +49,43 @@ export function NavigationHeader({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
+    <header className="sticky top-0 w-full border-b border-border bg-background">
+      <Inline
+        alignY="center"
+        wrap={false}
+        className="h-16 w-full justify-between px-4 md:px-6"
+      >
         {/* Logo / Brand */}
-        <div className="flex items-center gap-4">
+        <Inline alignY="center" gap={4} wrap={false}>
           <Link href="/" className="text-lg font-semibold text-foreground">
             Business OS
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
-            {NAV_LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    active
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  }`}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+          <div className="hidden md:block">
+            <Inline asChild alignY="center" gap={1} wrap={false}>
+              <nav aria-label="Main navigation">
+                {NAV_LINKS.map((link) => {
+                  const active = isActive(link.href);
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                        active
+                          ? "bg-muted text-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      }`}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </Inline>
+          </div>
+        </Inline>
 
         {/* Desktop Business Selector */}
         <div className="hidden md:block">
@@ -88,7 +98,7 @@ export function NavigationHeader({
         {/* Mobile Menu Button */}
         <button
           type="button"
-          className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-foreground md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
@@ -111,31 +121,33 @@ export function NavigationHeader({
             )}
           </svg>
         </button>
-      </div>
+      </Inline>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border bg-background">
-          <nav className="flex flex-col p-4 gap-2" aria-label="Mobile navigation">
-            {NAV_LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    active
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  }`}
-                  aria-current={active ? "page" : undefined}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <Stack asChild gap={2} className="p-4">
+            <nav aria-label="Mobile navigation">
+              {NAV_LINKS.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                      active
+                        ? "bg-muted text-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    }`}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </Stack>
 
           {/* Mobile Business Selector */}
           <div className="px-4 pb-4">

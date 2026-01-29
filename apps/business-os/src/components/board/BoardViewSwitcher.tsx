@@ -4,10 +4,11 @@
  * BOS-UX-06
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-06: Phase 0 scaffold UI */
 "use client";
 
 import type { Lane } from "@/lib/types";
+
+import { Inline } from "@acme/design-system/primitives/Inline";
 
 export type BoardView = "all" | "planning" | "active" | "complete";
 
@@ -57,7 +58,7 @@ export function BoardViewSwitcher({
   onViewChange,
 }: BoardViewSwitcherProps) {
   return (
-    <div role="tablist" className="flex gap-1 p-1 bg-muted rounded-lg">
+    <Inline role="tablist" gap={1} className="rounded-lg bg-muted p-1">
       {VIEW_TABS.map((tab) => {
         const isActive = tab.id === currentView;
         return (
@@ -77,6 +78,6 @@ export function BoardViewSwitcher({
           </button>
         );
       })}
-    </div>
+    </Inline>
   );
 }

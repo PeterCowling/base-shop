@@ -1,7 +1,8 @@
 // src/routes/guides/guide-seo/components/useTranslationCoverage.ts
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import i18n from "@/i18n";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 import { analyzeTranslationCoverage } from "../../guide-diagnostics";
@@ -25,23 +26,68 @@ export function useTranslationCoverage(guideKey: string): TranslationCoverageSta
     error: null,
   });
 
+  const supportedLocales = useMemo(
+    () => i18nConfig.supportedLngs as AppLanguage[],
+    [],
+  );
+
   useEffect(() => {
     if (!guideKey) {
       setState({ isLoading: false, coverage: null, error: null });
       return;
     }
 
-    // Compute coverage after mount to avoid hydration mismatch
-    try {
-      const coverage = analyzeTranslationCoverage(
-        guideKey as GuideKey,
-        i18nConfig.supportedLngs as AppLanguage[],
-      );
-      setState({ isLoading: false, coverage, error: null });
-    } catch (err) {
-      setState({ isLoading: false, coverage: null, error: String(err) });
+    let active = true;
+
+    const computeCoverage = () => {
+      try {
+        const coverage = analyzeTranslationCoverage(
+          guideKey as GuideKey,
+          supportedLocales,
+        );
+        if (active) {
+          setState({ isLoading: false, coverage, error: null });
+        }
+      } catch (err) {
+        if (active) {
+          setState({ isLoading: false, coverage: null, error: String(err) });
+        }
+      }
+    };
+
+    const handleLoaded = (loaded?: Record<string, readonly string[]>) => {
+      if (!loaded) {
+        computeCoverage();
+        return;
+      }
+      const namespaces = Object.values(loaded).flat();
+      if (namespaces.includes("guides")) {
+        computeCoverage();
+      }
+    };
+
+    const handleAdded = (_lng: string, ns: string) => {
+      if (ns === "guides") {
+        computeCoverage();
+      }
+    };
+
+    setState((prev) => ({ ...prev, isLoading: true }));
+    computeCoverage();
+
+    if (typeof i18n.on === "function") {
+      i18n.on("loaded", handleLoaded);
+      i18n.on("added", handleAdded);
     }
-  }, [guideKey]);
+
+    return () => {
+      active = false;
+      if (typeof i18n.off === "function") {
+        i18n.off("loaded", handleLoaded);
+        i18n.off("added", handleAdded);
+      }
+    };
+  }, [guideKey, supportedLocales]);
 
   return state;
 }

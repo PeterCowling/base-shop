@@ -107,4 +107,57 @@ describe("CompactCard", () => {
     // Should still render the card
     expect(screen.getByText("Test Card")).toBeInTheDocument();
   });
+
+  it("shows BLOCKED badge when card is blocked", () => {
+    const blockedCard = {
+      ...mockCard,
+      Blocked: true,
+    };
+
+    render(<CompactCard card={blockedCard} showBusinessTag={false} />);
+
+    expect(screen.getByText("BLOCKED")).toBeInTheDocument();
+  });
+
+  it("hides BLOCKED badge when card is not blocked", () => {
+    const notBlockedCard = {
+      ...mockCard,
+      Blocked: false,
+    };
+
+    render(<CompactCard card={notBlockedCard} showBusinessTag={false} />);
+
+    expect(screen.queryByText("BLOCKED")).not.toBeInTheDocument();
+  });
+
+  it("applies blocked visual styling when card is blocked", () => {
+    const blockedCard = {
+      ...mockCard,
+      Blocked: true,
+    };
+
+    const { container } = render(
+      <CompactCard card={blockedCard} showBusinessTag={false} />
+    );
+
+    const link = container.querySelector("a");
+    expect(link).toHaveClass("border-l-4");
+    expect(link).toHaveClass("border-l-danger");
+    expect(link).toHaveClass("bg-danger-soft");
+  });
+
+  it("shows blocked reason in title attribute", () => {
+    const blockedCard = {
+      ...mockCard,
+      Blocked: true,
+      "Blocked-Reason": "Waiting for API approval",
+    };
+
+    const { container } = render(
+      <CompactCard card={blockedCard} showBusinessTag={false} />
+    );
+
+    const link = container.querySelector("a");
+    expect(link).toHaveAttribute("title", "Blocked: Waiting for API approval");
+  });
 });

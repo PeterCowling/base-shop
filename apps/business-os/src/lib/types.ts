@@ -52,6 +52,8 @@ export interface CardFrontmatter {
   "Due-Date"?: string;
   Created?: string;
   Updated?: string;
+  Blocked?: boolean;
+  "Blocked-Reason"?: string;
 }
 
 // Card with parsed content

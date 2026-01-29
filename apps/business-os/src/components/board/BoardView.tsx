@@ -1,12 +1,24 @@
+/**
+ * BoardView Component
+ * Main board view with search, filters, and lane display
+ * BOS-UX-10: Integrated view with all board components
+ */
+
 /* eslint-disable ds/no-unsafe-viewport-units, ds/enforce-layout-primitives -- BOS-11: Phase 0 scaffold UI */
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
 import { useTranslations } from "@acme/i18n";
+import { Inline } from "@acme/design-system/primitives/Inline";
+import { Stack } from "@acme/design-system/primitives/Stack";
 
-import type { Business, Card, Idea, Lane } from "@/lib/types";
+import type { Business, Card, Idea, Lane, BoardView as BoardViewType } from "@/lib/types";
 
+import { SearchBar } from "./SearchBar";
+import { FilterChips, applyFilters } from "./FilterChips";
+import { BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
 import { BoardLane } from "./BoardLane";
 
 interface BoardViewProps {
@@ -27,6 +39,60 @@ export function BoardView({
   const t = useTranslations();
   const currentBusiness = businesses.find((b) => b.id === businessCode);
   const isGlobal = businessCode === "global";
+
+  // State for search, filters, and view
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [currentView, setCurrentView] = useState<BoardViewType>("all");
+
+  // Get lanes for current view
+  const visibleLanes = useMemo(
+    () => getLanesForView(currentView, lanes),
+    [currentView, lanes]
+  );
+
+  // Filter cards based on search and filters
+  const filteredCardsByLane = useMemo(() => {
+    const result: Record<Lane, Card[]> = {} as Record<Lane, Card[]>;
+
+    visibleLanes.forEach((lane) => {
+      const laneCards = cardsByLane[lane] || [];
+
+      // Apply search filter
+      let filtered = laneCards;
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(
+          (card) =>
+            card.ID?.toLowerCase().includes(query) ||
+            card.content.toLowerCase().includes(query) ||
+            card.Tags?.some((tag) => tag.toLowerCase().includes(query))
+        );
+      }
+
+      // Apply filter chips
+      if (activeFilters.length > 0) {
+        filtered = applyFilters(filtered, activeFilters, "Pete"); // TODO: Get current user
+      }
+
+      result[lane] = filtered;
+    });
+
+    return result;
+  }, [visibleLanes, cardsByLane, searchQuery, activeFilters]);
+
+  // Filter ideas based on search
+  const filteredIdeas = useMemo(() => {
+    if (!searchQuery) return inboxIdeas;
+
+    const query = searchQuery.toLowerCase();
+    return inboxIdeas.filter(
+      (idea) =>
+        idea.ID?.toLowerCase().includes(query) ||
+        idea.content.toLowerCase().includes(query) ||
+        idea.Tags?.some((tag) => tag.toLowerCase().includes(query))
+    );
+  }, [inboxIdeas, searchQuery]);
 
   return (
     <div className="min-h-screen bg-surface-1">
@@ -97,12 +163,34 @@ export function BoardView({
         )}
       </header>
 
+      {/* Toolbar: Search, Filters, View Switcher */}
+      <div className="bg-card border-b border-border-2 px-6 py-4">
+        <Stack gap={3}>
+          {/* Search and View Switcher Row */}
+          <Inline alignY="center" wrap={false} className="justify-between">
+            <div className="flex-1 max-w-md">
+              <SearchBar value={searchQuery} onSearch={setSearchQuery} />
+            </div>
+            <BoardViewSwitcher
+              currentView={currentView}
+              onViewChange={setCurrentView}
+            />
+          </Inline>
+
+          {/* Filter Chips Row */}
+          <FilterChips
+            activeFilters={activeFilters}
+            onFiltersChange={setActiveFilters}
+          />
+        </Stack>
+      </div>
+
       {/* Board lanes */}
       <div className="flex gap-4 p-6 overflow-x-auto">
-        {lanes.map((lane) => {
-          const cards = cardsByLane[lane] || [];
+        {visibleLanes.map((lane) => {
+          const cards = filteredCardsByLane[lane] || [];
           // For Inbox lane, show ideas too
-          const ideas = lane === "Inbox" ? inboxIdeas : [];
+          const ideas = lane === "Inbox" ? filteredIdeas : [];
 
           return (
             <BoardLane

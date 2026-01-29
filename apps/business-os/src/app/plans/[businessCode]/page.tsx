@@ -13,6 +13,7 @@ import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslat
 import { ChangeRequestButton } from "@/components/change-request/ChangeRequestButton";
 import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { readFileWithinRoot } from "@/lib/safe-fs";
 
 interface PlanPageProps {
@@ -24,7 +25,7 @@ interface PlanPageProps {
 export default async function PlanPage({ params }: PlanPageProps) {
   const t = await getServerTranslations("en");
   const { businessCode } = await params;
-  const repoRoot = process.cwd();
+  const repoRoot = getRepoRoot();
   const planPath = path.join(
     repoRoot,
     "docs/business-os/strategy",

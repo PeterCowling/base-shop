@@ -259,105 +259,74 @@
   },
   "positanoBeaches": {
     "auditResults": {
-      "timestamp": "2026-01-29T18:17:30.539Z",
-      "score": 7.6,
+      "timestamp": "2026-01-29T21:47:48.538Z",
+      "score": 10,
       "analysis": {
         "strengths": [
           "All internal links resolve to valid guide keys",
-          "Strong internal linking with 10 links",
+          "Good meta title length (55 chars)",
+          "Good meta description length (136 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1200 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 7 links",
           "FAQ section present with 8 questions",
-          "Well-structured with 8 section headings",
+          "Well-structured with 9 section headings",
           "No common misspellings detected",
           "All images have alt attributes",
           "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
           "Structured data declared in manifest"
         ],
         "criticalIssues": [],
-        "improvements": [
-          {
-            "issue": "Too few images (2, experience template suggests 6+)",
-            "impact": 0.5
-          },
-          {
-            "issue": "Meta title too short (24 chars, target 35-65)",
-            "impact": 0.4
-          },
-          {
-            "issue": "Content below optimal (1114 words, target 1200+ for experience)",
-            "impact": 0.4
-          },
-          {
-            "issue": "Meta description short (98 chars, target ~120-170)",
-            "impact": 0.3
-          },
-          {
-            "issue": "1 empty section - add content or remove",
-            "impact": 0.3
-          },
-          {
-            "issue": "Simplify language (grade 10.1, optimal ~7-10)",
-            "impact": 0.2
-          },
-          {
-            "issue": "Consider using modern image formats (WebP/AVIF)",
-            "impact": 0.1
-          },
-          {
-            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
-            "impact": 0.1
-          },
-          {
-            "issue": "Optional: add lastUpdated date",
-            "impact": 0.05
-          }
-        ]
+        "improvements": []
       },
       "metrics": {
-        "metaTitleLength": 24,
-        "metaDescriptionLength": 98,
+        "metaTitleLength": 55,
+        "metaDescriptionLength": 136,
         "hasTitleTag": 1,
         "hasMetaDescription": 1,
-        "contentWordCount": 1114,
-        "headingCount": 8,
-        "h2Count": 8,
+        "contentWordCount": 1200,
+        "headingCount": 9,
+        "h2Count": 9,
         "hasH1": 1,
-        "internalLinkCount": 10,
+        "internalLinkCount": 7,
         "invalidInternalLinkOccurrences": 0,
         "faqCount": 8,
-        "imageCount": 2,
+        "imageCount": 8,
         "urlSlugLength": 16,
         "hasOgTitle": 1,
         "hasOgDescription": 1,
         "hasOgImage": 1,
-        "firstParagraphLength": 38,
+        "firstParagraphLength": 33,
         "hasEarlyAnswer": 0,
-        "hasPlaceholders": 1,
+        "hasPlaceholders": 0,
         "errorRate": 0,
         "imageAltCoverage": 100,
-        "imageAltTotal": 2,
-        "imageAltWithAlt": 2,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
         "imageOversizeCount": 0,
         "imageModerateCount": 0,
         "featuredImageWidth": 0,
-        "usesModernFormats": 0,
+        "usesModernFormats": 1,
         "hasFirstHandDetails": 1,
-        "avgParagraphLength": 46,
-        "avgSentenceLength": 16,
-        "readingGradeLevel": 10.1,
-        "hasFocusKeyword": 0,
-        "focusKeywordInTitle": 0,
-        "focusKeywordNearFront": 0,
-        "focusKeywordEarly": 0,
-        "h2AlignmentCount": 8,
-        "h2TotalCount": 8,
-        "keywordStuffingRate": 0,
+        "avgParagraphLength": 26,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 7.8,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0.3,
         "genericAnchorCount": 0,
         "hasBreadcrumbs": 0,
         "hasArticleSchema": 1,
-        "hasPrimaryCTA": 1,
+        "hasPrimaryCTA": 0,
         "hasAboveFoldCTA": 0,
-        "contextualCTACount": 2,
-        "hasLastUpdated": 0,
+        "contextualCTACount": 3,
+        "hasLastUpdated": 1,
         "hasYearReferences": 0
       },
       "version": "3.1.0"

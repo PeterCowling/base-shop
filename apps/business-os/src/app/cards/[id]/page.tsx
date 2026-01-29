@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { CardDetail } from "@/components/card-detail/CardDetail";
 import { getCurrentUserServer } from "@/lib/current-user";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { getFileHistory, getGitHubHistoryUrl } from "@/lib/git-history";
 import { createRepoReader } from "@/lib/repo-reader";
 
@@ -12,7 +13,7 @@ interface PageProps {
 // Phase 0: Local-only, Pete-only. No auth needed.
 export default async function CardPage({ params }: PageProps) {
   const { id } = await params;
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const reader = createRepoReader(repoRoot);
   const currentUser = await getCurrentUserServer();
 

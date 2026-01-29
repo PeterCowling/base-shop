@@ -13,11 +13,12 @@ import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslat
 import { ChangeRequestButton } from "@/components/change-request/ChangeRequestButton";
 import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { readFileWithinRoot } from "@/lib/safe-fs";
 
 export default async function PeoplePage() {
   const t = await getServerTranslations("en");
-  const repoRoot = process.cwd();
+  const repoRoot = getRepoRoot();
   const peoplePath = path.join(
     repoRoot,
     "docs/business-os/people/people.user.md"

@@ -1458,6 +1458,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article", "ItemList"],
+    focusKeyword: "Positano beaches",
     relatedGuides: ["fornilloBeachGuide", "positanoMainBeach", "gavitellaBeachGuide", "marinaDiPraiaBeaches"],
     blocks: [
       {
@@ -1471,6 +1472,10 @@ const manifestSeed: GuideManifestEntry[] = [
       {
         type: "genericContent",
         options: { contentKey: "positanoBeaches", showToc: true },
+      },
+      {
+        type: "gallery",
+        options: { source: "positanoBeaches", zoomable: true, headingKey: "content.positanoBeaches.galleryTitle" },
       },
       {
         type: "table",
@@ -2837,6 +2842,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "gavitella-beach-guide",
     contentKey: "gavitellaBeachGuide",
     status: "draft",
+    focusKeyword: "Gavitella Beach Praiano",
     draftPathSegment: "guides/gavitella-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",

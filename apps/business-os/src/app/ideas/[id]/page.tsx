@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoReader } from "@/lib/repo-reader";
 
 import { ConvertToCardButton } from "./ConvertToCardButton";
@@ -12,11 +13,11 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
 // Phase 0: Local-only, Pete-only. No auth needed.
 export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const reader = createRepoReader(repoRoot);
 
   // Fetch idea data

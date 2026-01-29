@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoWriter } from "@/lib/repo-writer";
 
 // Phase 0: Node runtime required for git operations
@@ -18,7 +19,7 @@ export async function POST() {
   const t = await getServerTranslations("en");
   try {
     // Get repo root
-    const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+    const repoRoot = getRepoRoot();
 
     // Create writer
     const writer = createRepoWriter(repoRoot);

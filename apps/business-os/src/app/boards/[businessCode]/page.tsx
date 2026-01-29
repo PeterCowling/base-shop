@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 
 import { BoardView } from "@/components/board/BoardView";
 import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
-import { createRepoReader } from "@/lib/repo-reader";
 import { getCurrentUserServer } from "@/lib/current-user";
+import { getRepoRoot } from "@/lib/get-repo-root";
+import { createRepoReader } from "@/lib/repo-reader";
 import type { Lane } from "@/lib/types";
 
 interface PageProps {
@@ -13,7 +14,7 @@ interface PageProps {
 // Phase 0: Local-only, Pete-only. No auth needed.
 export default async function BoardPage({ params }: PageProps) {
   const { businessCode } = await params;
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const reader = createRepoReader(repoRoot);
   const currentUser = await getCurrentUserServer();
 

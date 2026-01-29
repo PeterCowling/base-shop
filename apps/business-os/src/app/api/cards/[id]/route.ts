@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 import { CommitIdentities } from "@/lib/commit-identity";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
 
@@ -73,7 +74,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       parsed.data;
 
     // Get repo root
-    const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+    const repoRoot = getRepoRoot();
 
     // Create writer
     const writer = createRepoWriter(repoRoot);

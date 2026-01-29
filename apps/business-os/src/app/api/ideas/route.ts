@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 import { CommitIdentities } from "@/lib/commit-identity";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
 import { createRepoWriter } from "@/lib/repo-writer";
 
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     const { business, content, tags } = parsed.data;
 
     // Get repo root (remove /apps/business-os from cwd)
-    const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+    const repoRoot = getRepoRoot();
 
     // Validate business ID
     const isValidBusiness = await validateBusinessId(business, repoRoot);

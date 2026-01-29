@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/current-user";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Idea } from "@/lib/types";
 
@@ -28,7 +29,7 @@ export interface ConvertToCardResult {
 export async function convertToCard(
   ideaId: string
 ): Promise<ConvertToCardResult> {
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const writer = createRepoWriter(repoRoot);
 
   // Get current user for commit identity
@@ -97,7 +98,7 @@ export async function updateIdea(
   ideaId: string,
   content: string
 ): Promise<ConvertToCardResult> {
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const writer = createRepoWriter(repoRoot);
 
   // Get current user for commit identity

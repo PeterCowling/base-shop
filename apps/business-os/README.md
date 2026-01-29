@@ -31,6 +31,22 @@ pnpm --filter @apps/business-os dev
 # Visit http://localhost:3020
 ```
 
+## Production Deployment
+
+Business OS requires the `BUSINESS_OS_REPO_ROOT` environment variable to locate the monorepo root in production environments (Cloudflare Pages, Vercel, etc.).
+
+```bash
+# Required environment variable
+BUSINESS_OS_REPO_ROOT=/absolute/path/to/monorepo/root
+
+# Example for Cloudflare Pages/Vercel
+BUSINESS_OS_REPO_ROOT=/app
+```
+
+**Development:** Repo root is automatically inferred from `process.cwd()` (strips `/apps/business-os` suffix if present).
+
+**Production:** Must explicitly set `BUSINESS_OS_REPO_ROOT` to an absolute path. See `.env.example` for details.
+
 ## Structure
 
 ```

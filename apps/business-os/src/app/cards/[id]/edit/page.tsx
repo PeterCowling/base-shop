@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CardEditorForm } from "@/components/card-editor/CardEditorForm";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoReader } from "@/lib/repo-reader";
 
 /* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/container-widths-only-at -- BOS-32: Phase 0 scaffold UI (ttl: 2026-03-31) */
@@ -20,7 +21,7 @@ export default async function EditCardPage({ params }: PageProps) {
   const { id } = await params;
 
   // Get repo root
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
 
   // Create reader and fetch card + businesses
   const reader = createRepoReader(repoRoot);

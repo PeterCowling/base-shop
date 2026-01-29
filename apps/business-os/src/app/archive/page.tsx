@@ -10,14 +10,15 @@ import Link from "next/link";
 import { CompactCard } from "@/components/board/CompactCard";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { orderCards } from "@/lib/board-logic";
-import { canViewAllArchived,getCurrentUserServer } from "@/lib/current-user";
+import { canViewAllArchived, getCurrentUserServer } from "@/lib/current-user";
+import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoReader } from "@/lib/repo-reader";
 
 /* eslint-disable ds/no-hardcoded-copy, ds/enforce-layout-primitives, ds/no-unsafe-viewport-units -- BOS-04 */
 // i18n-exempt -- BOS-04 [ttl=2026-03-01] Archive page scaffold; real UI in BOS-11+
 export default async function ArchivePage() {
   const currentUser = await getCurrentUserServer();
-  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const repoRoot = getRepoRoot();
   const reader = createRepoReader(repoRoot);
 
   // Fetch all archived cards

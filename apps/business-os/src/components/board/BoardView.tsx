@@ -17,6 +17,7 @@ import { useTranslations } from "@acme/i18n";
 
 import type { Business, Card, Idea, Lane } from "@/lib/types";
 import type { User } from "@/lib/current-user";
+import { useRovingTabindex } from "@/hooks/useRovingTabindex";
 
 import { BoardLane } from "./BoardLane";
 import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
@@ -123,6 +124,59 @@ export function BoardView({
     });
     return counts;
   }, [cardsByLane, inboxIdeas, allLanes]);
+
+  // Build grid for keyboard navigation (BOS-P2-05)
+  const cardGrid = useMemo(() => {
+    return visibleLanes.map((lane) => {
+      const cards = filteredCardsByLane[lane] || [];
+      return cards.map((card) => card.ID);
+    });
+  }, [visibleLanes, filteredCardsByLane]);
+
+  // Roving tabindex for keyboard navigation (BOS-P2-05)
+  const {
+    focusedId,
+    isFocusMode,
+    focusElement,
+    exitFocusMode,
+    handleArrowKey,
+    getTabIndex,
+  } = useRovingTabindex(cardGrid);
+
+  // Keyboard event listener for arrow keys and Escape (BOS-P2-05)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Don't interfere with input fields or modals
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      // Arrow keys: navigate between cards
+      if (
+        event.key === "ArrowUp" ||
+        event.key === "ArrowDown" ||
+        event.key === "ArrowLeft" ||
+        event.key === "ArrowRight"
+      ) {
+        event.preventDefault();
+        handleArrowKey(event.key);
+      }
+
+      // Escape: exit focus mode
+      if (event.key === "Escape" && isFocusMode) {
+        event.preventDefault();
+        exitFocusMode();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleArrowKey, isFocusMode, exitFocusMode]);
 
   // Scroll to top when mobile lane changes (BOS-P2-03 Phase 4)
   useEffect(() => {
@@ -241,6 +295,11 @@ export function BoardView({
               cards={cards}
               ideas={ideas}
               showBusinessTag={isGlobal}
+              keyboardNav={{
+                getTabIndex,
+                isFocused: (cardId: string) => focusedId === cardId,
+                onFocus: focusElement,
+              }}
             />
           );
         })}

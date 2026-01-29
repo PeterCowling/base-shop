@@ -1574,6 +1574,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Spiaggia Grande Positano",
     relatedGuides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"],
     blocks: [
       {

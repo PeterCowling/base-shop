@@ -417,8 +417,13 @@ function checkYearReferences(content: GuideContent): boolean {
  * Get first paragraph word count.
  */
 function getFirstParagraphWordCount(content: GuideContent): number {
-  if (!Array.isArray(content.intro) || content.intro.length === 0) return 0;
-  const firstPara = content.intro[0];
+  const firstPara =
+    typeof content.intro === "string"
+      ? content.intro
+      : Array.isArray(content.intro)
+        ? content.intro[0]
+        : undefined;
+
   if (typeof firstPara !== "string") return 0;
   return firstPara.split(/\s+/).filter((w) => w.length > 0).length;
 }
@@ -446,7 +451,10 @@ function getLeadText(content: GuideContent, maxWords: number): string {
     }
   };
 
-  if (Array.isArray(content.intro)) {
+  if (typeof content.intro === "string") {
+    add(content.intro);
+    if (used >= maxWords) return parts.join(" ").trim();
+  } else if (Array.isArray(content.intro)) {
     for (const p of content.intro) {
       if (typeof p === "string") add(p);
       if (used >= maxWords) return parts.join(" ").trim();
@@ -455,7 +463,10 @@ function getLeadText(content: GuideContent, maxWords: number): string {
 
   if (Array.isArray(content.sections)) {
     for (const section of content.sections) {
-      if (Array.isArray(section.body)) {
+      if (typeof section.body === "string") {
+        add(section.body);
+        if (used >= maxWords) return parts.join(" ").trim();
+      } else if (Array.isArray(section.body)) {
         for (const p of section.body) {
           if (typeof p === "string") add(p);
           if (used >= maxWords) return parts.join(" ").trim();
@@ -522,9 +533,10 @@ function detectPlaceholders(content: GuideContent): Array<{ type: string; locati
     content.sections.forEach((section) => {
       const hasTitle = section.title && section.title.trim().length > 0;
       const hasBody =
-        Array.isArray(section.body) &&
-        section.body.length > 0 &&
-        section.body.some((item) => typeof item === "string" && item.trim().length > 0);
+        (typeof section.body === "string" && section.body.trim().length > 0) ||
+        (Array.isArray(section.body) &&
+          section.body.length > 0 &&
+          section.body.some((item) => typeof item === "string" && item.trim().length > 0));
 
       const hasList =
         Array.isArray(section.list) &&
@@ -738,13 +750,45 @@ function detectFirstHandDetails(content: GuideContent): boolean {
 function calculateAvgParagraphLength(content: GuideContent): number {
   const paragraphs: string[] = [];
 
-  if (Array.isArray(content.intro)) paragraphs.push(...content.intro);
+  const pushText = (value: unknown) => {
+    if (typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return;
+    paragraphs.push(trimmed);
+  };
+
+  const pushTextArray = (value: unknown) => {
+    if (typeof value === "string") {
+      pushText(value);
+      return;
+    }
+    if (!Array.isArray(value)) return;
+    value.forEach((v) => pushText(v));
+  };
+
+  pushTextArray(content.intro);
 
   if (Array.isArray(content.sections)) {
     content.sections.forEach((section) => {
-      if (Array.isArray(section.body)) paragraphs.push(...section.body);
-      if (Array.isArray(section.list)) paragraphs.push(...section.list);
+      pushTextArray(section.body);
+      if (Array.isArray(section.list)) section.list.forEach((li) => pushText(li));
     });
+  }
+
+  pushTextArray(content.tips);
+  pushTextArray(content.warnings);
+  pushTextArray(content.essentialsSection?.items);
+  pushTextArray(content.costsSection?.items);
+
+  if (Array.isArray(content.faqs)) {
+    content.faqs.forEach((faq) => {
+      pushText(faq.q ?? faq.question);
+      pushTextArray(faq.a ?? faq.answer);
+    });
+  }
+
+  if (content.callouts && typeof content.callouts === "object") {
+    Object.values(content.callouts).forEach((value) => pushText(value));
   }
 
   if (paragraphs.length === 0) return 0;
@@ -1022,6 +1066,7 @@ export async function auditGuideSeo(
   const spellingErrors = checkSpellingGrammar(content, locale);
   const h2Alignment = checkH2AlignmentToQueries(content);
   const ctaAnalysis = analyzeCTAs(content);
+  const allImages = getAllImages(content);
 
   const title = content.seo?.title || "";
   const keywordInTitle = focusKeyword
@@ -1047,13 +1092,13 @@ export async function auditGuideSeo(
     internalLinkCount: internalLinks.length,
     invalidInternalLinkOccurrences: linkValidation.invalidOccurrences,
     faqCount: content.faqs?.length ?? 0,
-    imageCount: countImages(content),
+    imageCount: allImages.length,
 
     // HTML hygiene (lightweight — still mostly content-only)
     urlSlugLength: manifest.slug.length,
     hasOgTitle: content.seo?.title ? 1 : 0,
     hasOgDescription: content.seo?.description ? 1 : 0,
-    hasOgImage: content.seo?.image || content.gallery?.[0] ? 1 : 0,
+    hasOgImage: content.seo?.image || allImages[0] ? 1 : 0,
 
     // Content completeness
     firstParagraphLength: getFirstParagraphWordCount(content),
@@ -1069,7 +1114,7 @@ export async function auditGuideSeo(
     imageAltWithAlt: imageAltCoverage.withAlt,
     imageOversizeCount: imageSizes.oversize,
     imageModerateCount: imageSizes.moderate,
-    featuredImageWidth: content.seo?.image?.width || content.gallery?.[0]?.width || 0,
+    featuredImageWidth: content.seo?.image?.width || allImages[0]?.width || 0,
     usesModernFormats: checkModernImageFormats(content) ? 1 : 0,
 
     // Content strategy (scoped)

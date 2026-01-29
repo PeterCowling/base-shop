@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import type { Card } from "@/lib/types";
 
@@ -12,9 +14,23 @@ import { PriorityBadge } from "./PriorityBadge";
 interface CompactCardProps {
   card: Card;
   showBusinessTag: boolean;
+  /** Tabindex for roving tabindex pattern (0 for focused, -1 for others) */
+  tabIndex?: 0 | -1;
+  /** Whether this card is focused in keyboard navigation */
+  isFocused?: boolean;
+  /** Callback when card is clicked (for keyboard navigation) */
+  onFocus?: () => void;
 }
 
-export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
+export function CompactCard({
+  card,
+  showBusinessTag,
+  tabIndex = -1,
+  isFocused = false,
+  onFocus,
+}: CompactCardProps) {
+  const router = useRouter();
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const ownerInitials = getOwnerInitials(card.Owner);
   const dueDateColor = card["Due-Date"]
     ? getDueDateColor(card["Due-Date"])
@@ -23,10 +39,35 @@ export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
   const isBlocked = card.Blocked === true;
   const blockedReason = card["Blocked-Reason"];
 
+  // Auto-scroll into view when focused
+  useEffect(() => {
+    if (isFocused && linkRef.current) {
+      linkRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [isFocused]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      router.push(`/cards/${card.ID}`);
+    }
+  };
+
   return (
     <Link
+      ref={linkRef}
       href={`/cards/${card.ID}`}
-      className={`block rounded-lg border p-3 text-foreground transition-shadow hover:shadow-md ${
+      tabIndex={tabIndex}
+      onClick={onFocus}
+      onKeyDown={handleKeyDown}
+      className={`block rounded-lg border p-3 text-foreground transition-all hover:shadow-md ${
+        isFocused
+          ? "ring-2 ring-primary ring-offset-2"
+          : ""
+      } ${
         isBlocked
           ? "border-l-4 border-l-danger border-border-2 bg-danger-soft"
           : "border-border-2 bg-card"

@@ -9,6 +9,12 @@ interface BoardLaneProps {
   cards: Card[];
   ideas: Idea[];
   showBusinessTag: boolean;
+  /** Optional keyboard navigation helpers */
+  keyboardNav?: {
+    getTabIndex: (cardId: string) => 0 | -1;
+    isFocused: (cardId: string) => boolean;
+    onFocus: (cardId: string) => void;
+  };
 }
 
 interface LaneStats {
@@ -64,7 +70,13 @@ export function calculateLaneStats(cards: Card[]): LaneStats {
 }
 
 /* eslint-disable ds/no-arbitrary-tailwind, ds/container-widths-only-at, ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/enforce-layout-primitives -- BOS-11: Phase 0 scaffold UI */
-export function BoardLane({ lane, cards, ideas, showBusinessTag }: BoardLaneProps) {
+export function BoardLane({
+  lane,
+  cards,
+  ideas,
+  showBusinessTag,
+  keyboardNav,
+}: BoardLaneProps) {
   // Cards are already sorted by board-logic.ts (BOS-14)
   const stats = calculateLaneStats(cards);
   const headerColor = getLaneHeaderColor(lane);
@@ -115,6 +127,9 @@ export function BoardLane({ lane, cards, ideas, showBusinessTag }: BoardLaneProp
             key={card.ID}
             card={card}
             showBusinessTag={showBusinessTag}
+            tabIndex={keyboardNav?.getTabIndex(card.ID) ?? -1}
+            isFocused={keyboardNav?.isFocused(card.ID) ?? false}
+            onFocus={keyboardNav ? () => keyboardNav.onFocus(card.ID) : undefined}
           />
         ))}
 

@@ -1,10 +1,13 @@
 /**
  * NavigationHeader Component Tests
- * BOS-UX-04
+ * BOS-UX-04, BOS-UX-15
  * @jest-environment jsdom
  */
 
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import type { Business } from "@/lib/types";
 
 import { NavigationHeader } from "./NavigationHeader";
 
@@ -13,9 +16,25 @@ jest.mock("next/navigation", () => ({
   usePathname: () => "/boards",
 }));
 
-const mockBusinesses = [
-  { id: "BRIK", name: "Brikette" },
-  { id: "CMS", name: "CMS Platform" },
+const mockBusinesses: Business[] = [
+  {
+    id: "BRIK",
+    name: "Brikette",
+    description: "Retail operations",
+    owner: "Pete",
+    status: "active",
+    created: "2025-01-01",
+    tags: ["retail"],
+  },
+  {
+    id: "CMS",
+    name: "CMS Platform",
+    description: "Content platform",
+    owner: "Avery",
+    status: "active",
+    created: "2025-02-01",
+    tags: ["platform"],
+  },
 ];
 
 describe("NavigationHeader", () => {
@@ -46,5 +65,39 @@ describe("NavigationHeader", () => {
 
     // BusinessSelector should show current business name
     expect(screen.getByText("Brikette")).toBeInTheDocument();
+  });
+
+  it("renders capture button", () => {
+    render(
+      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+    );
+
+    const captureButton = screen.getByRole("button", { name: /capture/i });
+    expect(captureButton).toBeInTheDocument();
+  });
+
+  it("opens modal when capture button clicked", async () => {
+    const user = userEvent.setup();
+    render(
+      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+    );
+
+    const captureButton = screen.getByRole("button", { name: /capture/i });
+    await user.click(captureButton);
+
+    // Modal should be open
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/quick capture/i)).toBeInTheDocument();
+  });
+
+  it("shows capture button on desktop only", () => {
+    render(
+      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+    );
+
+    const captureButton = screen.getByRole("button", { name: /capture/i });
+    // Parent container should have responsive class
+    const parentContainer = captureButton.closest(".md\\:inline-flex");
+    expect(parentContainer).toBeInTheDocument();
   });
 });

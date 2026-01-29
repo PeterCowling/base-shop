@@ -1,7 +1,7 @@
 /**
  * NavigationHeader Component
  * Main navigation header with business selector and navigation links
- * BOS-UX-04
+ * BOS-UX-04, BOS-UX-15
  */
 
 "use client";
@@ -12,9 +12,11 @@ import { usePathname } from "next/navigation";
 
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { Button } from "@acme/design-system/atoms";
 
 import type { Business } from "@/lib/types";
 
+import { QuickCaptureModal } from "../capture/QuickCaptureModal";
 import { BusinessSelector } from "./BusinessSelector";
 
 export interface NavigationHeaderProps {
@@ -40,6 +42,7 @@ export function NavigationHeader({
 }: NavigationHeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [captureModalOpen, setCaptureModalOpen] = useState(false);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -87,13 +90,24 @@ export function NavigationHeader({
           </div>
         </Inline>
 
-        {/* Desktop Business Selector */}
-        <div className="hidden md:block">
+        {/* Desktop Actions */}
+        <Inline alignY="center" gap={2} wrap={false} className="hidden md:inline-flex">
+          {/* Capture Button */}
+          <Button
+            onClick={() => setCaptureModalOpen(true)}
+            variant="default"
+            size="sm"
+            aria-label="Capture idea"
+          >
+            + Capture
+          </Button>
+
+          {/* Business Selector */}
           <BusinessSelector
             businesses={businesses}
             currentBusiness={currentBusiness}
           />
-        </div>
+        </Inline>
 
         {/* Mobile Menu Button */}
         <button
@@ -158,6 +172,13 @@ export function NavigationHeader({
           </div>
         </div>
       )}
+
+      {/* Quick Capture Modal */}
+      <QuickCaptureModal
+        isOpen={captureModalOpen}
+        onClose={() => setCaptureModalOpen(false)}
+        defaultBusiness={currentBusiness}
+      />
     </header>
   );
 }

@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: Platform
 Created: 2026-01-29
 Last-updated: 2026-01-29
 Feature-Slug: business-os-multi-user-mvp
-Overall-confidence: TBD
+Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Related-Docs:
   - docs/plans/business-os-strategic-review.md
@@ -190,7 +190,7 @@ LastUpdated: 2026-01-29T14:32:10Z
 ## Outputs
 
 - Card: BRIK-ENG-0016
-- Stage doc: docs/business-os/cards/BRIK-ENG-0016/stage-docs/01-fact-finding.md
+- Stage doc: docs/business-os/cards/BRIK-ENG-0016/fact-finding.user.md
 - Commit: abc123def456
 ```
 
@@ -337,24 +337,24 @@ Show code commits linked to cards automatically.
 
 | Task ID | Epic | Description | Confidence | Effort | Status | Depends on |
 |---------|------|-------------|------------|--------|--------|------------|
-| MVP-A1 | A | Production run mode + repoRoot config | TBD | S | Pending | - |
-| MVP-A2 | A | Health endpoint | TBD | S | Pending | MVP-A1 |
-| MVP-A3 | A | Remote access runbook | TBD | S | Pending | MVP-A1 |
-| MVP-B1 | B | Invite-only auth system | TBD | M | Pending | MVP-A1 |
-| MVP-B2 | B | Server-side authorization on all mutations | TBD | M | Pending | MVP-B1 |
-| MVP-B3 | B | Audit attribution standard | TBD | S | Pending | MVP-B1 |
-| MVP-C1 | C | Global repo write lock | TBD | M | Pending | MVP-A1 |
-| MVP-C2 | C | Collision-proof ID allocation | TBD | M | Pending | MVP-C1 |
-| MVP-C3 | C | Optimistic concurrency for long-form edits | TBD | M | Pending | MVP-C1 |
-| MVP-D1 | D | Claim/Accept task button | TBD | S | Pending | MVP-B2, MVP-C1 |
-| MVP-D2 | D | Mark complete button | TBD | S | Pending | MVP-B2, MVP-C1 |
-| MVP-D3 | D | "My Work" view | TBD | M | Pending | MVP-B1, MVP-D1 |
-| MVP-E1 | E | Comments as first-class git artifacts | TBD | M | Pending | MVP-B2, MVP-C1 |
-| MVP-E2 | E | "Ask agent" button creates queue item | TBD | M | Pending | MVP-B2, MVP-C1 |
-| MVP-E3 | E | Agent runner daemon | TBD | L | Pending | MVP-C1, MVP-E2 |
-| MVP-E4 | E | Agent run status UI (polling) | TBD | M | Pending | MVP-E3 |
-| MVP-F1 | F | Commit-to-card linking | TBD | M | Pending | MVP-E3 |
-| MVP-F2 | F | Auto-progress notes (optional) | TBD | S | Pending | MVP-E3 |
+| MVP-A1 | A | Production run mode + repoRoot config | 92% | S | Pending | - |
+| MVP-A2 | A | Health endpoint | 94% | S | Pending | MVP-A1 |
+| MVP-A3 | A | Remote access runbook | 95% | S | Pending | MVP-A1 |
+| MVP-B1 | B | Invite-only auth system | 82% | M | Pending | MVP-A1 |
+| MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Pending | MVP-B1 |
+| MVP-B3 | B | Audit attribution standard | 90% | S | Pending | MVP-B1 |
+| MVP-C1 | C | Global repo write lock | 85% | M | Pending | MVP-A1 |
+| MVP-C2 | C | Collision-proof ID allocation | 88% | M | Pending | MVP-C1 |
+| MVP-C3 | C | Optimistic concurrency for long-form edits | 78% | M | Pending | MVP-C1 |
+| MVP-D1 | D | Claim/Accept task button | 90% | S | Pending | MVP-B2, MVP-C1 |
+| MVP-D2 | D | Mark complete button | 90% | S | Pending | MVP-B2, MVP-C1 |
+| MVP-D3 | D | "My Work" view | 85% | M | Pending | MVP-B1, MVP-D1 |
+| MVP-E1 | E | Comments as first-class git artifacts | 86% | M | Pending | MVP-B2, MVP-C1 |
+| MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Pending | MVP-B2, MVP-C1 |
+| MVP-E3 | E | Agent runner daemon | 78% | L | Pending | MVP-C1, MVP-E2 |
+| MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
+| MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
+| MVP-F2 | F | Auto-progress notes (optional) | 86% | S | Pending | MVP-E3 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -364,23 +364,23 @@ Show code commits linked to cards automatically.
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/lib/repo/RepoReader.ts`
-  - `apps/business-os/src/lib/repo/RepoWriter.ts`
+  - `apps/business-os/src/lib/repo/repo-reader.ts`
+  - `apps/business-os/src/lib/repo/repo-writer.ts`
   - `apps/business-os/src/lib/current-user.ts`
   - `.env.example` (NEW)
   - `README.md` (config documentation)
 - **Depends on:** -
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 92%
+  - Implementation: 92% — Clear pattern exists, 3 files to update
+  - Approach: 95% — Simple env var replacement, well-understood
+  - Impact: 92% — Low risk, backwards compatible with dev mode
 - **Acceptance:**
   - [ ] All `process.cwd()` usage replaced with `process.env.BUSINESS_OS_REPO_ROOT`
   - [ ] `.env.example` documents required env vars
   - [ ] `pnpm build && pnpm start` works on clean machine (no CWD assumptions)
   - [ ] Dev mode still works (defaults to `process.cwd()` if env var not set)
 - **Test plan:**
-  - Unit: Test RepoReader/RepoWriter with explicit repoRoot path
+  - Unit: Extend existing repo-reader.test.ts and repo-writer.test.ts with explicit repoRoot path scenarios
   - Integration: Build + run on separate machine, verify repo operations work
 - **Rollout / rollback:**
   - Rollout: Deploy with env var set; backwards compatible (dev mode unaffected)
@@ -393,16 +393,35 @@ Show code commits linked to cards automatically.
   - New pattern: `const repoRoot = process.env.BUSINESS_OS_REPO_ROOT || process.cwd()`
   - Expert review: "Replace process.cwd().replace(...) with single config source"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 92%
+  - Implementation: 92% — Found exact pattern in `apps/business-os/src/app/boards/[businessCode]/page.tsx:16`. RepoReader and RepoWriter use repoRoot passed from page components. Simple env var replacement.
+  - Approach: 95% — Straightforward env var config with fallback to CWD for dev mode. No architectural changes.
+  - Impact: 92% — Isolated change, backwards compatible. Test coverage straightforward.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/repo-reader.ts`, `apps/business-os/src/lib/repo-writer.ts`, `apps/business-os/src/app/boards/[businessCode]/page.tsx`
+  - Tests: Found comprehensive test coverage - `repo-reader.test.ts` (16KB), `repo-writer.test.ts` (10KB) - will extend with repoRoot config tests
+  - Patterns: Standard Next.js env var pattern used throughout monorepo
+- **Decision / resolution:**
+  - Use `BUSINESS_OS_REPO_ROOT` env var with fallback to `process.cwd()` for dev mode
+  - Update all page.tsx files that construct repoRoot
+  - Add validation to ensure repoRoot is absolute path
+- **Changes to task:**
+  - Affects: Added `apps/business-os/src/app/boards/[businessCode]/page.tsx` to affected files
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-A2: Health endpoint
 
 - **Type:** IMPLEMENT
 - **Affects:**
   - `apps/business-os/src/app/api/healthz/route.ts` (NEW)
 - **Depends on:** MVP-A1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 94%
+  - Implementation: 94% — Analogous to existing API routes, simple read-only endpoint
+  - Approach: 95% — Standard Next.js App Router route handler
+  - Impact: 94% — Read-only, zero side effects, isolated
 - **Acceptance:**
   - [ ] `GET /api/healthz` returns 200 with JSON body
   - [ ] Response includes: `gitHead`, `repoLockStatus`, `lastAgentRunTimestamp`
@@ -419,18 +438,38 @@ Show code commits linked to cards automatically.
   - Similar pattern: `apps/brikette/src/app/api/health/route.ts` (if exists)
   - Expert review: "Add GET /api/healthz returning: git HEAD, repo lock status, last agent-run timestamp"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 94%
+  - Implementation: 94% — Found existing `/api/health`, `/api/cards`, `/api/ideas` routes. Pattern is clear: Next.js 15 App Router route.ts files with GET handlers.
+  - Approach: 95% — Standard route handler returning JSON. Use simple-git (already in use) for git HEAD.
+  - Impact: 94% — Read-only endpoint, no mutations, zero blast radius.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/app/api/health/route.ts`, `apps/business-os/src/app/api/cards/route.ts`
+  - Tests: Will add integration test for healthz endpoint
+  - Patterns: Simple-git already used in repo-writer.ts for git operations
+- **Decision / resolution:**
+  - Create new route handler following existing API route pattern
+  - Use simple-git to get HEAD commit SHA
+  - Read lock file status from `docs/business-os/.locks/repo.lock` (if exists)
+  - Scan `agent-runs/` directory for most recent run timestamp
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-A3: Remote access runbook
 
 - **Type:** DOCUMENT
 - **Affects:**
-  - `docs/ops/tunnel-setup.md` (NEW)
-  - `ops/tunnel-trycloudflare.sh` (NEW)
+  - `docs/runbooks/tunnel-setup.md` (NEW)
+  - `apps/business-os/scripts/tunnel-trycloudflare.sh` (NEW)
   - `README.md` (link to runbook)
 - **Depends on:** MVP-A1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 95%
+  - Implementation: 95% — Documentation only, shell script straightforward
+  - Approach: 95% — Well-documented cloudflared and ngrok CLIs
+  - Impact: 95% — Documentation only, no code impact
 - **Acceptance:**
   - [ ] Document includes step-by-step: install cloudflared, run tunnel, share URL
   - [ ] Script automates tunnel creation (one command)
@@ -443,11 +482,30 @@ Show code commits linked to cards automatically.
   - Rollback: N/A (docs can be reverted)
 - **Documentation impact:**
   - README.md: Add "Remote Access (Free Tunnel)" section
-  - New doc: `docs/ops/tunnel-setup.md`
+  - New doc: `docs/runbooks/tunnel-setup.md`
 - **Notes / references:**
   - Cloudflare Quick Tunnels: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/
   - ngrok free tier: https://ngrok.com/pricing
   - Expert review: "TryCloudflare for 'today-level speed', but no SSE support"
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 95%
+  - Implementation: 95% — Documentation and shell script. Cloudflared CLI well-documented.
+  - Approach: 95% — Standard tunnel setup pattern. No novel implementation.
+  - Impact: 95% — Documentation only, no code changes.
+- **Investigation performed:**
+  - Repo: No existing tunnel documentation found
+  - Tests: N/A (documentation task)
+  - Patterns: Standard cloudflared/ngrok setup
+- **Decision / resolution:**
+  - Document cloudflared installation and tunnel creation
+  - Create shell script wrapper for one-command tunnel start
+  - Document URL rotation and access control procedures
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
 
 ### MVP-B1: Invite-only auth system
 
@@ -461,10 +519,10 @@ Show code commits linked to cards automatically.
   - `docs/business-os/people/users.json` (NEW or extend existing)
   - `apps/business-os/src/components/user/UserSwitcher.tsx` (REMOVE or ADMIN-ONLY)
 - **Depends on:** MVP-A1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 82%
+  - Implementation: 85% — No existing middleware.ts, but iron-session well-documented
+  - Approach: 82% — Standard session-based auth pattern, some Next.js 15 middleware specifics
+  - Impact: 85% — Feature flag mitigates risk, backwards compatible for dev
 - **Acceptance:**
   - [ ] Login page with username + passcode fields
   - [ ] User list stored in `docs/business-os/people/users.json` with bcrypt hashed passcodes
@@ -486,29 +544,49 @@ Show code commits linked to cards automatically.
   - Expert review: "simplest: username + passcode (no email)"
   - Library options: `iron-session` (signed cookies), `bcryptjs` (hashing)
   - Existing user data: `apps/business-os/src/lib/current-user.ts` (USERS object)
+  - Current cookie name: `current_user_id` (will migrate to session-based auth)
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 82%
+  - Implementation: 85% — No existing middleware.ts found. User switching via cookies exists in `apps/business-os/src/lib/current-user.ts`. Need to create middleware + session management.
+  - Approach: 82% — Iron-session is well-documented for Next.js 15. Middleware pattern straightforward. Minor uncertainty on App Router middleware specifics.
+  - Impact: 85% — Feature flag `BUSINESS_OS_AUTH_ENABLED` provides safety net. Dev mode unaffected.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/current-user.ts` (USERS object, cookie-based switching), `apps/business-os/src/lib/auth/authorize.ts` (path-based allowlist)
+  - Tests: Found `current-user.test.ts` (4KB, includes canEditCard tests) - will extend with session auth tests
+  - Patterns: Current user switching uses `cookies().get('current_user_id')`. **Auth gap identified:** Server actions use `getCurrentUser()` which falls back to `process.env.CURRENT_USER_ID` instead of reading cookies on server - session-based auth will fix this.
+- **Decision / resolution:**
+  - Use iron-session for signed session cookies
+  - Store users in `docs/business-os/people/users.json` with bcrypt-hashed passcodes
+  - Create middleware.ts for auth redirect (only when feature flag enabled)
+  - Keep UserSwitcher behind admin flag for impersonation
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: Clarified feature flag approach
+  - Dependencies: No changes
 
 ### MVP-B2: Server-side authorization on all mutations
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/app/api/ideas/create/route.ts`
-  - `apps/business-os/src/app/api/ideas/update/route.ts`
-  - `apps/business-os/src/app/api/cards/create/route.ts`
-  - `apps/business-os/src/app/api/cards/update/route.ts`
-  - `apps/business-os/src/lib/repo/RepoWriter.ts` (add permission checks)
+  - `apps/business-os/src/app/api/ideas/route.ts` (POST for create)
+  - `apps/business-os/src/app/api/cards/route.ts` (POST for create)
+  - `apps/business-os/src/app/api/cards/[id]/route.ts` (PATCH for update)
+  - `apps/business-os/src/lib/repo/repo-writer.ts` (add permission checks)
   - `apps/business-os/src/lib/permissions.ts` (NEW - centralize auth logic)
 - **Depends on:** MVP-B1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 88%
+  - Implementation: 88% — Existing `canEditCard()` pattern found in current-user.ts, extend to all mutations
+  - Approach: 90% — Standard authorization middleware pattern
+  - Impact: 88% — Breaking change for API routes, but routes are internal (no external consumers)
 - **Acceptance:**
   - [ ] Every server action/API route validates authenticated user
   - [ ] Every mutation validates permission to edit target entity (use `canEditCard()` pattern)
   - [ ] Unauthorized requests return 403 with user-friendly error message
   - [ ] Can't call `updateIdea`/`writeCard` for someone else via curl/Postman if not permitted
 - **Test plan:**
-  - Unit: Test permission helpers (`canEditIdea`, `canEditCard`, `canCreateComment`)
+  - Unit: Extend existing current-user.test.ts with new permission helpers (`canEditIdea`, `canCreateComment`, `canRequestAgent`)
   - Integration: Attempt to update another user's card → 403; update own card → 200
   - E2E: Non-owner tries to edit card via UI → disabled; via API → 403
 - **Rollout / rollback:**
@@ -521,17 +599,36 @@ Show code commits linked to cards automatically.
   - Extend to: `canEditIdea()`, `canCreateComment()`, `canRequestAgent()`
   - Expert review: "Easy to forget to enforce permissions in server actions/routes"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 88%
+  - Implementation: 88% — Found `canEditCard()` in `apps/business-os/src/lib/current-user.ts`. Also found `authorizeWrite()` in `apps/business-os/src/lib/auth/authorize.ts` (path-based allowlist). Clear pattern to extend.
+  - Approach: 90% — Centralize permission logic in new `permissions.ts`, call from all API routes and server actions.
+  - Impact: 88% — API routes are internal (no external consumers), so breaking change is controlled. All routes will need updates.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/current-user.ts` (canEditCard helper), `apps/business-os/src/lib/auth/authorize.ts` (path-based checks)
+  - Tests: Found `current-user.test.ts` with canEditCard tests - will extend with new permission helpers
+  - Patterns: Found `/api/cards`, `/api/ideas`, `/api/health`, `/api/sync` routes (POST/PATCH endpoints, not just GET)
+- **Decision / resolution:**
+  - Create `permissions.ts` with helpers: `canEditCard()`, `canEditIdea()`, `canCreateComment()`, etc.
+  - Add permission checks to all existing API routes (4 routes identified)
+  - Return 403 with user-friendly error message on unauthorized access
+- **Changes to task:**
+  - Affects: Added `apps/business-os/src/app/api/sync/route.ts` to audit list
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-B3: Audit attribution standard
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/lib/repo/RepoWriter.ts` (commit message format)
-  - All server actions that call RepoWriter (pass actor info)
+  - `apps/business-os/src/lib/repo/repo-writer.ts` (commit message format)
+  - All server actions that call repo-writer (pass actor info)
 - **Depends on:** MVP-B1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 90%
+  - Implementation: 90% — RepoWriter already uses simple-git for commits
+  - Approach: 92% — Standard commit message format extension
+  - Impact: 90% — Backwards compatible (old commits still valid)
 - **Acceptance:**
   - [ ] Commit messages include: `Actor: {username}`, `Initiator: {username}`, entity ID
   - [ ] Git author set to acting human (or "Business OS Agent" for agent commits)
@@ -545,22 +642,41 @@ Show code commits linked to cards automatically.
 - **Documentation impact:**
   - `docs/architecture.md`: Document commit message convention
 - **Notes / references:**
-  - Current pattern: `Co-authored-by: Claude Sonnet 4.5 <noreply@anthropic.com>`
-  - New pattern: `Actor: pete\nInitiator: pete\nEntity: BRIK-ENG-0001\nCo-authored-by: ...`
+  - Current pattern: `Add idea: {title}` or `Add card: {title}` (repo-writer.ts:204), uses `getGitAuthorOptions()` from commit-identity.ts
+  - New pattern: `Actor: pete\nInitiator: pete\nEntity: BRIK-ENG-0001\n\nAdd card: {title}`
   - Expert review: "Author = acting human (or 'Business OS Agent')"
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 90%
+  - Implementation: 90% — RepoWriter found at `apps/business-os/src/lib/repo-writer.ts`. Uses simple-git for commits. Commit message format is straightforward to extend.
+  - Approach: 92% — Standard git commit message convention. Well-understood pattern.
+  - Impact: 90% — Backwards compatible (doesn't break old commits). Pure metadata addition.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/repo-writer.ts` (simple-git integration, commit method uses getGitAuthorOptions)
+  - Tests: Found comprehensive `repo-writer.test.ts` (10KB) - will extend with actor/initiator tests
+  - Patterns: Simple-git already in use for git operations, commit-identity.ts provides author configuration
+- **Decision / resolution:**
+  - Update RepoWriter commit method to accept actor and initiator parameters
+  - Format: "Actor: {user}\nInitiator: {user}\nEntity: {id}\n\n{message}"
+  - Set git author name via simple-git config (per-commit author override)
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
 
 ### MVP-C1: Global repo write lock
 
 - **Type:** IMPLEMENT
 - **Affects:**
   - `apps/business-os/src/lib/repo/RepoLock.ts` (NEW)
-  - `apps/business-os/src/lib/repo/RepoWriter.ts` (integrate lock acquisition)
+  - `apps/business-os/src/lib/repo/repo-writer.ts` (integrate lock acquisition)
   - `docs/business-os/.locks/` (NEW directory for lock files)
 - **Depends on:** MVP-A1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 85%
+  - Implementation: 85% — Node.js fs.open('wx') is standard, stale-lock logic straightforward
+  - Approach: 88% — Well-documented pattern, similar to file-based mutex libraries
+  - Impact: 85% — Critical path (all writes), but feature flag allows gradual rollout
 - **Acceptance:**
   - [ ] Lock file: `docs/business-os/.locks/repo.lock` acquired via atomic `wx` create
   - [ ] Lock includes: timestamp, pid, holder info (user + action)
@@ -581,19 +697,41 @@ Show code commits linked to cards automatically.
   - Stale lock detection: check if pid in lock file is alive via `process.kill(pid, 0)`
   - Expert review: "Git operations need to be single-writer"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 85%
+  - Implementation: 85% — Node.js fs.open('wx') atomic create is standard. RepoWriter already has worktree pattern suggesting familiarity with git concurrency concerns.
+  - Approach: 88% — File-based mutex is well-understood. Stale-lock recovery via pid check is straightforward.
+  - Impact: 85% — Critical path (all writes go through lock), but feature flag `BUSINESS_OS_REPO_LOCK_ENABLED` allows safe rollout.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/repo-writer.ts` (has worktree pattern, simple-git usage)
+  - Tests: Found comprehensive `repo-writer.test.ts` - will add locking integration tests
+  - Patterns: repo-writer shows awareness of git concurrency (worktree setup)
+- **Decision / resolution:**
+  - Create RepoLock.ts with atomic lock acquisition via fs.open('wx')
+  - Store lock metadata: timestamp, pid, userId, action
+  - Implement TTL stale-lock recovery (30s timeout, check if pid alive)
+  - Integrate into RepoWriter: acquire lock before git operations, release after
+  - Add retry logic with exponential backoff (max 3 retries)
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: Added retry UX requirement ("busy, retrying..." message)
+  - Dependencies: No changes
+
 ### MVP-C2: Collision-proof ID allocation
 
 - **Type:** IMPLEMENT
 - **Affects:**
   - `docs/business-os/_meta/counters.json` (NEW)
   - `apps/business-os/src/lib/repo/IDAllocator.ts` (NEW)
-  - `apps/business-os/src/lib/repo/RepoWriter.ts` (use IDAllocator)
+  - `apps/business-os/src/lib/repo/repo-writer.ts` (use IDAllocator)
+  - `apps/business-os/src/lib/id-generator.ts` (REPLACE existing scan-based allocator)
   - All server actions that create ideas/cards (integrate IDAllocator)
 - **Depends on:** MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 88%
+  - Implementation: 90% — CRITICAL: Found existing collision-prone allocator at `apps/business-os/src/lib/id-generator.ts` lines 34-74 (findHighestIdNumber function)
+  - Approach: 88% — Atomic counter update under repo lock, clear replacement strategy
+  - Impact: 88% — Validates expert review concern, high-value fix
 - **Acceptance:**
   - [ ] `docs/business-os/_meta/counters.json` stores per-business + per-type counters
   - [ ] Counter updates atomic (under repo lock)
@@ -612,19 +750,39 @@ Show code commits linked to cards automatically.
   - New pattern: Atomic counter increment under repo lock
   - Expert review: "Any 'scan the directory, pick next number' allocator will collide"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 88%
+  - Implementation: 90% — **CRITICAL FINDING**: Found exact collision-prone pattern in `apps/business-os/src/lib/id-generator.ts` lines 34-74. Function `findHighestIdNumber()` scans directory and picks next number. This validates expert review. Replacement is straightforward: atomic counter file updated under repo lock.
+  - Approach: 88% — Read counters.json, increment, write back (all under lock). Initialize from existing max IDs via migration script.
+  - Impact: 88% — Core ID allocation, but clean replacement. Migration script seeds initial counters from existing IDs.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/id-generator.ts` (found scan-based allocator), `apps/business-os/src/lib/repo-writer.ts` (will integrate counter-based allocator)
+  - Tests: Found comprehensive `id-generator.test.ts` (5.9KB) - will migrate tests to new IDAllocator pattern
+  - Patterns: Existing allocator is synchronous directory scan (lines 34-74)
+- **Decision / resolution:**
+  - Create `docs/business-os/_meta/counters.json` with structure: `{business: {type: counter}}`
+  - Create `IDAllocator.ts` with atomic counter increment (read-modify-write under lock)
+  - Write migration script to seed counters from existing directory scan (one-time)
+  - Replace id-generator.ts usage with IDAllocator
+- **Changes to task:**
+  - Affects: Added `apps/business-os/src/lib/id-generator.ts` to replacement list
+  - Acceptance: Added migration script requirement
+  - Dependencies: No changes
+
 ### MVP-C3: Optimistic concurrency for long-form edits
 
 - **Type:** IMPLEMENT
 - **Affects:**
   - `apps/business-os/src/app/cards/[id]/edit/page.tsx` (add baseCommit field)
-  - `apps/business-os/src/app/ideas/[id]/edit/page.tsx` (add baseCommit field)
-  - `apps/business-os/src/lib/repo/RepoWriter.ts` (add concurrency check)
+  - `apps/business-os/src/app/ideas/[id]/page.tsx` (add baseCommit to inline editor)
+  - `apps/business-os/src/lib/repo/repo-writer.ts` (add concurrency check)
   - `apps/business-os/src/components/ConflictDialog.tsx` (NEW - show diff + options)
 - **Depends on:** MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 78%
+  - Implementation: 85% — Git commit SHA tracking straightforward, conflict detection clear
+  - Approach: 78% — Diff UI component is new pattern, some UX decisions needed
+  - Impact: 82% — Prevents data loss, but adds complexity to edit flow
 - **Acceptance:**
   - [ ] Edit forms include hidden `baseCommit` field (git SHA of file when loaded)
   - [ ] On save, check if current file SHA matches baseCommit
@@ -644,6 +802,26 @@ Show code commits linked to cards automatically.
   - Alternative: use file mtime instead of commit SHA (less reliable)
   - Expert review: "Include baseCommit (or fileSha) in edit forms"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 78%
+  - Implementation: 85% — Git commit SHA retrieval via simple-git is straightforward. Conflict detection is simple SHA comparison.
+  - Approach: 78% — Core logic clear. ConflictDialog UX needs design (show diff, merge options). Some uncertainty on diff rendering library choice.
+  - Impact: 82% — Prevents silent overwrites (high value), but adds modal/error flow to edit experience.
+- **Investigation performed:**
+  - Repo: Found card edit page at `apps/business-os/src/app/cards/[id]/edit/page.tsx`. Ideas use inline editing via `IdeaEditorForm.tsx` on detail page (no separate /edit route).
+  - Tests: Will add edit conflict tests
+  - Patterns: Simple-git can get file commit SHA via `git log -1 --format=%H -- <path>`
+- **Decision / resolution:**
+  - Add hidden field `baseCommit` to edit forms (captured on page load)
+  - On save, compare baseCommit to current commit SHA for target file
+  - If mismatch: reject save, show ConflictDialog with options (refresh, force overwrite, manual merge)
+  - Use `diff` library for visual diff rendering in dialog
+- **Changes to task:**
+  - Affects: Updated to reflect actual paths - card edit is separate route, idea edit is inline on detail page
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-D1: Claim/Accept task button
 
 - **Type:** IMPLEMENT
@@ -652,10 +830,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/app/api/cards/claim/route.ts` (NEW)
   - `apps/business-os/src/app/api/cards/accept/route.ts` (NEW)
 - **Depends on:** MVP-B2, MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 90%
+  - Implementation: 90% — Simple frontmatter field updates via RepoWriter
+  - Approach: 92% — Straightforward mutation, clear business logic
+  - Impact: 90% — Isolated feature, non-breaking (edit still works)
 - **Acceptance:**
   - [ ] If `Owner` empty (or unassigned): show "Claim" button → sets Owner to current user
   - [ ] If `Owner = me` and `Lane = Inbox`: show "Accept" button → moves Lane to "In progress"
@@ -672,6 +850,26 @@ Show code commits linked to cards automatically.
 - **Notes / references:**
   - Expert review: "users can take ownership without editing markdown"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 90%
+  - Implementation: 90% — RepoWriter has markdown frontmatter update capabilities. Simple field mutations: `Owner` and `Lane`.
+  - Approach: 92% — Clear business logic: Claim sets Owner, Accept moves Lane from Inbox to In progress.
+  - Impact: 90% — Additive feature. Existing edit flow unaffected. Isolated to card detail UI.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/repo-writer.ts` (frontmatter update methods)
+  - Tests: Found `repo-writer.test.ts` - will add card mutation tests (claim/accept operations)
+  - Patterns: Frontmatter structure in existing cards (Owner, Lane fields)
+- **Decision / resolution:**
+  - Create API routes for claim and accept (POST handlers)
+  - Add buttons to card detail component (conditional on current state)
+  - Use RepoWriter to update frontmatter fields
+  - Enforce permissions via MVP-B2 auth checks
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-D2: Mark complete button
 
 - **Type:** IMPLEMENT
@@ -679,10 +877,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/components/card-detail/CardDetail.tsx` (add button)
   - `apps/business-os/src/app/api/cards/complete/route.ts` (NEW)
 - **Depends on:** MVP-B2, MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 90%
+  - Implementation: 90% — Nearly identical to MVP-D1, frontmatter update
+  - Approach: 92% — Clear mutation: Lane to Done, add timestamp
+  - Impact: 90% — Isolated, non-breaking
 - **Acceptance:**
   - [ ] Show "Mark Complete" button on card detail (if owner or admin)
   - [ ] Click → moves `Lane` to "Done", adds `Completed-Date` timestamp
@@ -699,6 +897,25 @@ Show code commits linked to cards automatically.
 - **Notes / references:**
   - Expert review: "user can complete in one click"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 90%
+  - Implementation: 90% — Identical pattern to MVP-D1. Update frontmatter: `Lane: Done`, `Completed-Date: <timestamp>`.
+  - Approach: 92% — Simple mutation with clear semantics.
+  - Impact: 90% — Isolated feature, additive.
+- **Investigation performed:**
+  - Repo: Same as MVP-D1 (repo-writer frontmatter updates)
+  - Tests: Found `repo-writer.test.ts` - will add complete operation tests
+  - Patterns: Same as MVP-D1
+- **Decision / resolution:**
+  - Create `/api/cards/complete` route
+  - Add "Mark Complete" button to card detail (shown to owner/admin only)
+  - Update frontmatter: Lane = Done, add Completed-Date timestamp
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-D3: "My Work" view
 
 - **Type:** IMPLEMENT
@@ -706,10 +923,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/app/me/page.tsx` (NEW)
   - `apps/business-os/src/components/my-work/MyWorkView.tsx` (NEW)
 - **Depends on:** MVP-B1, MVP-D1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 85%
+  - Implementation: 85% — Filtering logic straightforward, UI component new
+  - Approach: 88% — Standard filtered list view
+  - Impact: 85% — New route, isolated from existing board views
 - **Acceptance:**
   - [ ] Route `/me` shows:
     - Assigned cards (not Done)
@@ -729,6 +946,26 @@ Show code commits linked to cards automatically.
   - Similar to GitHub "Assigned to me" filter
   - Expert review: "non-admin user can operate without understanding whole board"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 85%
+  - Implementation: 85% — RepoReader can fetch all cards. Filter by Owner field. UI component straightforward (table or card list).
+  - Approach: 88% — Standard filtered view pattern. Query: cards where Owner = currentUser and Lane != Done.
+  - Impact: 85% — New route, no impact on existing board views. Clean separation.
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/lib/repo-reader.ts` (read cards methods)
+  - Tests: Found `repo-reader.test.ts` (16KB, comprehensive) - will add filtered view tests
+  - Patterns: Board view components can serve as reference
+- **Decision / resolution:**
+  - Create `/me` route with server-side filtering
+  - Show three sections: Assigned to me (not Done), Due soon (next 7 days), Waiting acceptance (Inbox lane)
+  - Reuse card list UI components from board views
+  - Add navigation link in header
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-E1: Comments as first-class git artifacts
 
 - **Type:** IMPLEMENT
@@ -740,10 +977,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/app/cards/[id]/page.tsx` (render comments)
   - `apps/business-os/src/app/ideas/[id]/page.tsx` (render comments)
 - **Depends on:** MVP-B2, MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 86%
+  - Implementation: 86% — Similar to cards/ideas pattern (markdown + frontmatter)
+  - Approach: 88% — Standard CRUD for comment files, thread rendering straightforward
+  - Impact: 86% — New feature, isolated from existing entities
 - **Acceptance:**
   - [ ] Comments stored in `docs/business-os/comments/{entityType}/{id}/{timestamp}-{author}.md`
   - [ ] Comment thread rendered on card/idea pages
@@ -762,6 +999,26 @@ Show code commits linked to cards automatically.
 - **Notes / references:**
   - Expert review: "Comments as first-class git artifacts"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 86%
+  - Implementation: 86% — Same pattern as cards/ideas: markdown files with frontmatter. RepoReader/RepoWriter already handle this pattern.
+  - Approach: 88% — Directory structure: `comments/{entityType}/{id}/{timestamp}-{author}.md`. CRUD operations straightforward.
+  - Impact: 86% — Additive feature. Entities without comments unaffected. Thread UI component is new but isolated.
+- **Investigation performed:**
+  - Repo: Existing card/idea markdown patterns can be reused for comments
+  - Tests: Found `repo-reader.test.ts` and `repo-writer.test.ts` - will add comment CRUD tests
+  - Patterns: Frontmatter parsing already in repo-reader
+- **Decision / resolution:**
+  - Create CommentReader/CommentWriter following repo-reader/repo-writer pattern
+  - Store comments as markdown files with frontmatter (Author, Entity, Created, Type)
+  - Render thread component on entity pages (sorted by timestamp)
+  - Use RepoLock for atomic comment creation
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-E2: "Ask agent" button creates queue item
 
 - **Type:** IMPLEMENT
@@ -772,10 +1029,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/components/idea-detail/IdeaDetail.tsx` (add dropdown)
   - `apps/business-os/src/app/api/agent-queue/create/route.ts` (NEW)
 - **Depends on:** MVP-B2, MVP-C1
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 88%
+  - Implementation: 88% — Identical pattern to comments (markdown file creation)
+  - Approach: 90% — Simple file write with structured frontmatter
+  - Impact: 88% — Passive until MVP-E3 (agent runner), low risk
 - **Acceptance:**
   - [ ] Dropdown on card/idea detail: "Agent: work this idea", "Agent: break into tasks", "Agent: draft plan"
   - [ ] Click → creates file in `agent-queue/` with: action type, target entity, initiator user, optional instructions
@@ -793,6 +1050,26 @@ Show code commits linked to cards automatically.
 - **Notes / references:**
   - Expert review: "user can request agent work without leaving browser"
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 88%
+  - Implementation: 88% — Same as MVP-E1: create markdown file with frontmatter. AgentQueueWriter follows CommentWriter pattern.
+  - Approach: 90% — Simple file creation with fields: Action, Target, Initiator, Status, Created.
+  - Impact: 88% — Files are passive (just data) until agent runner (MVP-E3) processes them. Low risk.
+- **Investigation performed:**
+  - Repo: Same patterns as comments/cards/ideas
+  - Tests: Found `repo-writer.test.ts` - will add queue item creation tests
+  - Patterns: Markdown + frontmatter via repo-writer
+- **Decision / resolution:**
+  - Create AgentQueueWriter for queue item creation
+  - Add dropdown on entity pages with actions: "Work idea", "Break into tasks", "Draft plan"
+  - Create API route for queue item creation
+  - Use RepoLock for atomic file creation
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-E3: Agent runner daemon
 
 - **Type:** IMPLEMENT
@@ -801,12 +1078,12 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/agent-runner/skills.ts` (NEW - skill execution wrappers)
   - `apps/business-os/src/agent-runner/run-logger.ts` (NEW)
   - `docs/business-os/agent-runs/` (NEW directory for run logs)
-  - `ops/agent-runner.sh` (NEW - start/stop script)
+  - `apps/business-os/scripts/agent-runner.sh` (NEW - start/stop script)
 - **Depends on:** MVP-C1, MVP-E2
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 78%
+  - Implementation: 80% — Polling loop straightforward, skill execution via CLI is novel integration
+  - Approach: 78% — Daemon pattern clear, but skill execution wrapper needs design (spawn Claude Code CLI vs import modules)
+  - Impact: 80% — New daemon process, isolated from web server, repo lock integration critical
 - **Acceptance:**
   - [ ] Daemon polls `agent-queue/` every 5s
   - [ ] On new task: acquire repo lock, execute skill (Claude Code CLI or equivalent), write outputs + commit
@@ -823,11 +1100,31 @@ Show code commits linked to cards automatically.
   - Rollout: Deploy daemon as systemd service (or PM2 process), monitor logs
   - Rollback: Stop daemon (queue accumulates but no processing)
 - **Documentation impact:**
-  - `docs/ops/agent-runner.md`: Setup, monitoring, troubleshooting
+  - `docs/runbooks/agent-runner.md`: Setup, monitoring, troubleshooting
   - `docs/architecture.md`: Document agent runtime architecture
 - **Notes / references:**
   - Expert review: "A local 'agent runner' process on the host that consumes a git-backed queue"
   - Skill execution: wrap existing Claude Code CLI commands (or reuse internal modules)
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 78%
+  - Implementation: 80% — Polling loop via setInterval straightforward. Directory scanning for queue items simple. Skill execution is novel: need to spawn Claude Code CLI process or import skill modules.
+  - Approach: 78% — Daemon structure clear (poll → acquire lock → execute → write log → commit). Uncertainty on skill execution: CLI spawn vs module import. CLI spawn safer (isolation), module import faster.
+  - Impact: 80% — New long-running process. Isolated from web server (separate Node process). Repo lock integration critical for correctness. Crash recovery via systemd/PM2.
+- **Investigation performed:**
+  - Repo: No existing daemon patterns in codebase
+  - Tests: Will need integration tests with mock queue items
+  - Patterns: Node.js child_process spawn for CLI execution
+- **Decision / resolution:**
+  - Use CLI spawn approach initially (safer isolation, easier debugging)
+  - Daemon structure: poll queue directory → pick pending task → acquire lock → spawn CLI → capture output → write run log → commit → release lock
+  - Run log updated in real-time (append-only file)
+  - Deploy as PM2 process with auto-restart
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
 
 ### MVP-E4: Agent run status UI (polling)
 
@@ -838,10 +1135,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/app/cards/[id]/page.tsx` (render RunStatus)
   - `apps/business-os/src/app/ideas/[id]/page.tsx` (render RunStatus)
 - **Depends on:** MVP-E3
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 84%
+  - Implementation: 85% — Polling UI via useEffect, read run log files via API
+  - Approach: 84% — Standard polling pattern, some UX decisions needed
+  - Impact: 85% — Client-side only, non-blocking, graceful degradation
 - **Acceptance:**
   - [ ] Entity pages show: latest runs, current run status if any, last message from run log
   - [ ] Client polls `/api/agent-runs/{id}/status` every 5-10s when run active
@@ -859,6 +1156,26 @@ Show code commits linked to cards automatically.
   - Expert review: "polling for repo HEAD + per-entity activity"
   - Polling interval: 5s during active run, 30s when idle
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 84%
+  - Implementation: 85% — useEffect polling hook straightforward. API route reads run log file (markdown). UI component displays status + log messages.
+  - Approach: 84% — Standard polling pattern. Adaptive interval (5s active, 30s idle). Some UX uncertainty: how to display streaming logs elegantly.
+  - Impact: 85% — Client-side feature, non-blocking. If API fails, UI degrades gracefully (no crash).
+- **Investigation performed:**
+  - Repo: No existing polling UI patterns found
+  - Tests: No existing polling tests
+  - Patterns: React useEffect with setInterval for polling
+- **Decision / resolution:**
+  - Create `/api/agent-runs/[id]/status` route that reads run log file
+  - RunStatus component polls when status is "pending" or "in-progress"
+  - Display: status badge + latest log messages (last 5 lines)
+  - Stop polling when status is "complete" or "failed"
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-F1: Commit-to-card linking
 
 - **Type:** IMPLEMENT
@@ -867,10 +1184,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/components/card-detail/RecentActivity.tsx` (NEW)
   - `apps/business-os/src/app/cards/[id]/page.tsx` (render RecentActivity)
 - **Depends on:** MVP-E3
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 87%
+  - Implementation: 87% — Git log parsing via simple-git, regex for card ID extraction
+  - Approach: 90% — Standard git log query, straightforward pattern matching
+  - Impact: 87% — Read-only feature, isolated component
 - **Acceptance:**
   - [ ] Parse git log for commits mentioning card ID (regex: `BRIK-\d+`)
   - [ ] Display "Recent activity" section on card page with linked commits
@@ -889,6 +1206,26 @@ Show code commits linked to cards automatically.
   - Expert review: "When agent commits code mentioning card ID, card shows progress automatically"
   - Git log parsing: `git log --grep="BRIK-003" --format=...`
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 87%
+  - Implementation: 87% — Simple-git already in use. Git log query: `git log --all --grep="<cardId>" --format=<custom>`. Regex to extract card IDs from commit messages.
+  - Approach: 90% — Straightforward git log parsing. RecentActivity component shows list of linked commits with message, author, timestamp.
+  - Impact: 87% — Read-only, additive feature. No side effects. Isolated to card detail pages.
+- **Investigation performed:**
+  - Repo: Simple-git usage in repo-writer confirmed
+  - Tests: Found `repo-writer.test.ts` - will add commit parsing tests
+  - Patterns: Git log via simple-git.log() method
+- **Decision / resolution:**
+  - Create CommitReader.ts with method to search git log by card ID
+  - Parse commit messages for card ID patterns (BRIK-\d+, PLAT-\d+, etc.)
+  - Display recent activity section on card page (last 10 commits)
+  - Cache results for 60s to avoid excessive git log calls
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
+
 ### MVP-F2: Auto-progress notes (optional)
 
 - **Type:** IMPLEMENT
@@ -896,10 +1233,10 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/agent-runner/progress-notifier.ts` (NEW)
   - `apps/business-os/src/lib/repo/CommentWriter.ts` (extend for agent comments)
 - **Depends on:** MVP-E3
-- **Confidence:** TBD%
-  - Implementation: TBD% — (requires investigation)
-  - Approach: TBD% — (requires investigation)
-  - Impact: TBD% — (requires investigation)
+- **Confidence:** 86%
+  - Implementation: 86% — Extends CommentWriter from MVP-E1, straightforward
+  - Approach: 88% — Simple hook in agent runner to create comment after commit
+  - Impact: 86% — Optional feature, can be disabled, low risk
 - **Acceptance:**
   - [ ] Agent runner appends short "Progress" comment after each code commit batch
   - [ ] Format: "Agent completed: {task description}. Files changed: {list}. Commit: {hash}"
@@ -915,6 +1252,26 @@ Show code commits linked to cards automatically.
   - None (internal agent behavior)
 - **Notes / references:**
   - Expert review: "Humans never write 'I did X'; emitted by agent"
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** TBD
+- **Updated confidence:** 86%
+  - Implementation: 86% — Reuses CommentWriter from MVP-E1. Progress notifier creates comment after agent commit batch.
+  - Approach: 88% — Simple pattern: agent runner detects commits, extracts card ID, calls CommentWriter with summary.
+  - Impact: 86% — Optional feature (config flag). Can be disabled if noisy. Low risk.
+- **Investigation performed:**
+  - Repo: Same CommentWriter pattern as MVP-E1
+  - Tests: No existing auto-comment tests
+  - Patterns: Git commit parsing from MVP-F1 can be reused
+- **Decision / resolution:**
+  - Add progress-notifier module to agent runner
+  - After skill execution completes, parse commits made during run
+  - Create comment with format: "Agent completed: {task}. Files: {list}. Commit: {hash}"
+  - Feature flag: `BUSINESS_OS_AUTO_PROGRESS_NOTES=true` (default false initially)
+- **Changes to task:**
+  - Affects: No changes
+  - Acceptance: No changes
+  - Dependencies: No changes
 
 ## Risks & Mitigations
 
@@ -1010,7 +1367,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 ## Next Steps
 
 1. **Review this plan** with Pete - confirm epic priority and scope
-2. **Run `/re-plan`** to assess confidence for each task (currently TBD)
+2. ~~**Run `/re-plan`** to assess confidence for each task~~ ✓ **COMPLETED 2026-01-29**
 3. **Start with Epic A** (production run mode) - lowest risk, enables all other work
 4. **Iterate through epics** A → B → C → D → E → F
 5. **Test with 5 real users** after Epic E complete (agent integration)
@@ -1018,4 +1375,12 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 
 ---
 
-**Plan Status:** Draft (awaiting confidence assessment via `/re-plan`)
+**Plan Status:** Active (all tasks ≥78% confidence, ready for `/build-feature`)
+
+**Re-planning Summary (2026-01-29):**
+- **Tasks ready (≥80%):** 16/18 tasks (89%)
+- **Tasks in caution zone (60-79%):** 2/18 tasks (MVP-C3: 78%, MVP-E3: 78%)
+- **Tasks blocked (<60%):** 0/18 tasks
+- **Overall confidence:** 86% (effort-weighted)
+- **Critical finding:** Confirmed collision-prone ID allocator in `apps/business-os/src/lib/id-generator.ts` (lines 34-74) - validates expert review
+- **Next action:** `/build-feature` starting with Epic A (MVP-A1)

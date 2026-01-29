@@ -64,7 +64,7 @@ Results are written to `guide-manifest-overrides.json` under the guide key:
         "faqCount": 8,
         "imageCount": 2
       },
-      "version": "2.1.0"
+      "version": "3.0.0"
     }
   }
 }
@@ -284,14 +284,170 @@ Note: Word count scoring in "Content Length" section above uses unique content w
 
 Note: "Serious errors" include misspellings, subject-verb disagreement, wrong homophones (their/there/they're). Stylistic choices (sentence fragments, contractions, informal tone) are not penalized.
 
+### Image Quality & Accessibility (up to -2.0 points)
+
+**Alt Text Coverage:**
+- **< 50% images have alt text**: -1.0 (critical accessibility issue)
+- **< 80% images have alt text**: -0.5
+- **< 100% images have alt text**: -0.3
+- **100% coverage** (decorative can use empty alt): 0 (optimal)
+
+**Image File Size:**
+- **Any image > 500 KB**: -0.5 (serious performance issue)
+- **Multiple images > 250 KB**: -0.3 (moderate issue)
+- **All images ≤ 250 KB**: 0 (optimal)
+
+**Featured/Hero Image:**
+- **< 1200px wide** (poor social sharing): -0.3
+- **≥ 1200px wide**: 0 (optimal)
+
+**Modern Formats:**
+- **Only using JPG/PNG** (no WebP/AVIF): -0.2 (nice-to-have optimization)
+- **Using modern formats**: 0 (optimal)
+
+### Content Strategy & Targeting (up to -2.5 points)
+
+**Primary Intent Clarity:**
+- **Mixed intent** (help + guide + inspiration unclear): -0.5
+- **Single clear intent**: 0 (optimal)
+
+**Query Targeting:**
+- **No clear target queries defined**: -0.5
+- **Primary query missing or unclear**: -0.3
+- **< 3 secondary questions covered**: -0.3
+- **Primary + 3-10 secondary questions**: 0 (optimal)
+
+**Task Completion:**
+- **Missing key practical info** (how to get there, costs, what to bring): -0.5
+- **Incomplete practical guidance**: -0.3
+- **Complete task-oriented info**: 0 (optimal)
+
+**Local Specificity:**
+- **< 3 concrete local entities**: -0.5 (too generic)
+- **< 5 concrete local entities**: -0.3
+- **≥ 5 local entities** (neighborhoods, landmarks, transit stops, venues): 0 (optimal)
+
+**Concrete Facts Density:**
+- **< 5 concrete facts per 500 words**: -0.5 (too vague)
+- **< 8 concrete facts per 500 words**: -0.3
+- **≥ 8 concrete facts per 500 words** (numbers, names, steps): 0 (optimal)
+
+**First-Hand Details:**
+- **No first-hand evidence** (staff tips, "we tried", "from the hostel"): -0.3
+- **First-hand details present**: 0 (optimal)
+
+### Readability & Writing Quality (up to -1.5 points)
+
+**Paragraph Length:**
+- **Average > 150 words**: -0.5 (walls of text)
+- **Average > 120 words**: -0.3
+- **Average ≤ 90-120 words**: 0 (optimal)
+
+**Sentence Length:**
+- **Average > 30 words**: -0.5 (too complex)
+- **Average > 25 words**: -0.3
+- **Average ≤ 20-25 words**: 0 (optimal)
+
+**Reading Grade Level:**
+- **Grade > 12**: -0.5 (too academic for travel content)
+- **Grade > 10**: -0.3
+- **Grade 7-10**: 0 (optimal for broad audiences)
+
+### Keyword Optimization (up to -2.0 points)
+
+**Primary Topic in Title:**
+- **Missing or buried deep**: -0.5
+- **Not near the front**: -0.3
+- **Near front of title**: 0 (optimal)
+
+**Primary Topic in H1:**
+- **Missing from H1**: -0.5
+- **Present in H1**: 0 (optimal)
+
+**Primary Topic Early:**
+- **Not in first 150 words**: -0.5
+- **Not in first 100 words**: -0.3
+- **In first 100-150 words**: 0 (optimal)
+
+**H2s Aligned to Secondary Questions:**
+- **No H2s match secondary queries**: -0.3
+- **< 50% H2s are descriptive**: -0.2
+- **≥ 1 descriptive H2 per secondary question**: 0 (optimal)
+
+**Semantic Variation:**
+- **Repetitive language, no synonyms**: -0.3
+- **Good entity/synonym coverage**: 0 (optimal)
+
+**Keyword Stuffing Check:**
+- **Exact phrase > 3% of total words**: -0.5 (over-optimization)
+- **Exact phrase > 2% of total words**: -0.3
+- **Exact phrase ≤ 2% of total words**: 0 (optimal)
+
+### Internal Linking Quality (up to -0.5 points)
+
+**Anchor Text:**
+- **> 3 "click here" or generic anchors**: -0.5
+- **1-2 "click here" or generic anchors**: -0.3
+- **All anchors descriptive**: 0 (optimal)
+
+Note: Link count already scored in template-specific section; this checks link quality only.
+
+### Performance & Technical (up to -2.0 points)
+
+Note: Performance metrics require actual page testing and are optional for content-only audits. Scores shown are guidelines.
+
+**Core Web Vitals:**
+- **LCP > 3.5s** (mobile): -0.5
+- **LCP > 2.5s** (mobile): -0.3
+- **LCP ≤ 2.5s** (mobile): 0 (optimal)
+
+- **INP > 500ms**: -0.3
+- **INP > 200ms**: -0.2
+- **INP ≤ 200ms**: 0 (optimal)
+
+- **CLS > 0.25**: -0.3
+- **CLS > 0.1**: -0.2
+- **CLS ≤ 0.1**: 0 (optimal)
+
+**Page Weight:**
+- **Total > 3 MB**: -0.5
+- **Total > 2 MB**: -0.3
+- **Total ≤ 2 MB**: 0 (optimal)
+
+- **Images > 70% of page weight**: -0.3
+- **Images ≤ 60-70% of page weight**: 0 (optimal)
+
+### Call-to-Action (up to -1.0 points)
+
+**Primary CTA:**
+- **No CTA** (book/check availability/join/contact): -0.5
+- **Primary CTA exists**: 0 (optimal)
+
+**CTA Placement:**
+- **No above-fold CTA** (for commercial guides): -0.3
+- **CTA above fold on mobile**: 0 (optimal)
+
+**Contextual CTAs:**
+- **< 2 contextual CTAs**: -0.3
+- **≥ 2 contextual CTAs** (e.g., "Walking distance from our hostel"): 0 (optimal)
+
+Note: CTAs are more important for experience/booking content than pure help articles.
+
 ### Freshness Signals (up to -0.5 points)
 - **No lastUpdated date**: -0.3
 - **No year/season references in content**: -0.2
 
-### Structured Data (up to -0.5 points)
-- **Missing Article or ItemList schema**: -0.5
+### Structured Data & Markup (up to -1.0 points)
+- **Missing breadcrumb markup**: -0.3 (strongly recommended)
+- **Invalid breadcrumb structure**: -0.2
+- **Missing Article or BlogPosting schema**: -0.5 (recommended)
+- **Invalid Article/BlogPosting markup**: -0.3
+- **All structured data present and valid**: 0 (optimal)
 
+**Maximum Possible Deductions**: ~20 points (from base 10.0)
 **Target Score for Publishing**: 9.0+/10
+
+Note: The audit prioritizes content quality and user experience. Performance metrics are guidelines; actual testing may be done separately.
 
 ## Analysis Guidelines
 
@@ -398,6 +554,43 @@ const metrics = {
   // Spelling & Grammar
   spellingErrors: checkSpellingGrammar(content),
   errorRate: checkSpellingGrammar(content).errorRate, // Errors per 400 words
+
+  // Image Quality & Accessibility
+  imageAltCoverage: checkImageAltText(content),
+  imageSizes: checkImageSizes(content),
+  featuredImageWidth: content.seo?.image?.width || content.gallery?.[0]?.width || 0,
+  usesModernFormats: checkModernImageFormats(content),
+
+  // Content Strategy
+  primaryIntent: detectPrimaryIntent(content, manifest),
+  queryTargeting: analyzeQueryTargeting(content),
+  taskCompletion: checkTaskCompletionInfo(content),
+  localEntityCount: countLocalEntities(content),
+  concreteFactsDensity: countConcreteFactsPer500Words(content),
+  hasFirstHandDetails: detectFirstHandDetails(content),
+
+  // Readability
+  avgParagraphLength: calculateAvgParagraphLength(content),
+  avgSentenceLength: calculateAvgSentenceLength(content),
+  readingGradeLevel: calculateReadingGrade(content),
+
+  // Keyword Optimization
+  primaryTopicInTitle: checkPrimaryTopicInTitle(content),
+  primaryTopicInH1: checkPrimaryTopicInH1(content),
+  primaryTopicEarly: checkPrimaryTopicInFirst150Words(content),
+  h2Alignment: checkH2AlignmentToQueries(content),
+  semanticVariation: checkSemanticVariation(content),
+  keywordStuffingRate: calculateKeywordStuffingRate(content),
+
+  // Internal Link Quality
+  genericAnchorCount: countGenericAnchors(content),
+
+  // Structured Data & Markup
+  hasBreadcrumbs: Boolean(manifest.structuredData?.some(sd => sd.type === 'BreadcrumbList')),
+  hasArticleSchema: Boolean(manifest.structuredData?.some(sd => sd.type === 'Article' || sd.type === 'BlogPosting')),
+
+  // Call-to-Action
+  ctaAnalysis: analyzeCTAs(content, template),
 
   // Freshness
   hasLastUpdated: Boolean(content.lastUpdated),
@@ -1120,6 +1313,486 @@ function extractTextContent(content: any): string {
 }
 ```
 
+### Check Image Alt Text
+```typescript
+function checkImageAltText(content: any): { coverage: number; total: number; withAlt: number } {
+  let total = 0;
+  let withAlt = 0;
+
+  // Check gallery images
+  if (Array.isArray(content.gallery)) {
+    content.gallery.forEach((img: any) => {
+      total++;
+      if (img.alt && img.alt.trim().length > 0) withAlt++;
+      // Empty alt="" is valid for decorative images
+      if (img.alt === '') withAlt++;
+    });
+  }
+
+  // Check inline images in content
+  const allText = extractTextContent(content);
+  const inlineImagePattern = /!\[([^\]]*)\]\([^)]+\)/g;
+  const matches = allText.matchAll(inlineImagePattern);
+
+  for (const match of matches) {
+    total++;
+    const altText = match[1];
+    if (altText && altText.trim().length > 0) withAlt++;
+    if (altText === '') withAlt++; // Empty alt is valid
+  }
+
+  const coverage = total > 0 ? (withAlt / total) * 100 : 100;
+  return { coverage, total, withAlt };
+}
+```
+
+### Check Image Sizes
+```typescript
+function checkImageSizes(content: any): { oversize: number; moderate: number; total: number } {
+  let oversize = 0; // > 500 KB
+  let moderate = 0; // > 250 KB but ≤ 500 KB
+  let total = 0;
+
+  // Check gallery images
+  if (Array.isArray(content.gallery)) {
+    content.gallery.forEach((img: any) => {
+      total++;
+      const sizeKB = img.sizeKB || img.size || 0; // Size in KB
+      if (sizeKB > 500) oversize++;
+      else if (sizeKB > 250) moderate++;
+    });
+  }
+
+  return { oversize, moderate, total };
+}
+```
+
+### Check Modern Image Formats
+```typescript
+function checkModernImageFormats(content: any): boolean {
+  if (!Array.isArray(content.gallery) || content.gallery.length === 0) return true;
+
+  const hasModern = content.gallery.some((img: any) => {
+    const format = (img.format || img.type || '').toLowerCase();
+    return format.includes('webp') || format.includes('avif');
+  });
+
+  return hasModern;
+}
+```
+
+### Detect Primary Intent
+```typescript
+function detectPrimaryIntent(content: any, manifest: any): 'help' | 'guide' | 'inspiration' | 'mixed' {
+  // Use primaryArea as the main signal
+  const area = manifest.primaryArea;
+  if (area === 'help') return 'help';
+  if (area === 'howToGetHere') return 'guide';
+  if (area === 'experience') return 'inspiration';
+
+  // Fallback: analyze content tone
+  const text = extractTextContent(content).toLowerCase();
+  const helpSignals = (text.match(/\b(how to|step|process|policy|rule|requirement)\b/g) || []).length;
+  const guideSignals = (text.match(/\b(route|transport|walk|bus|ferry|get there|distance)\b/g) || []).length;
+  const inspirationSignals = (text.match(/\b(experience|feel|atmosphere|discover|explore|enjoy)\b/g) || []).length;
+
+  const max = Math.max(helpSignals, guideSignals, inspirationSignals);
+  if (helpSignals === guideSignals && guideSignals === inspirationSignals) return 'mixed';
+  if (helpSignals === max) return 'help';
+  if (guideSignals === max) return 'guide';
+  return 'inspiration';
+}
+```
+
+### Analyze Query Targeting
+```typescript
+function analyzeQueryTargeting(content: any): { hasPrimary: boolean; secondaryCount: number } {
+  const title = content.seo?.title || '';
+  const h2s = content.sections?.filter((s: any) => s.title).map((s: any) => s.title) || [];
+
+  // Primary query typically matches the title
+  const hasPrimary = title.length > 10;
+
+  // Secondary questions often match H2 headings (if they're questions or clear topics)
+  const secondaryCount = h2s.filter((h: string) =>
+    h.match(/\b(how|what|where|when|why|which|best|top|guide)\b/i)
+  ).length;
+
+  return { hasPrimary, secondaryCount };
+}
+```
+
+### Check Task Completion Info
+```typescript
+function checkTaskCompletionInfo(content: any): {
+  hasHowToGetThere: boolean;
+  hasCosts: boolean;
+  hasWhatToBring: boolean;
+  hasWhatToDo: boolean;
+} {
+  const text = extractTextContent(content).toLowerCase();
+
+  return {
+    hasHowToGetThere: /\b(how to get|getting there|transport|bus|ferry|walk|drive|route)\b/i.test(text),
+    hasCosts: /\b(cost|price|€|\$|£|free|ticket|admission|fee)\b/i.test(text),
+    hasWhatToBring: /\b(bring|pack|wear|need|required|essential)\b/i.test(text),
+    hasWhatToDo: /\b(do|see|visit|explore|check out|don't miss)\b/i.test(text),
+  };
+}
+```
+
+### Count Local Entities
+```typescript
+function countLocalEntities(content: any): number {
+  const text = extractTextContent(content);
+  let count = 0;
+
+  // Patterns for local entities (very basic detection)
+  // In production, use NER or a gazetteer
+  const patterns = [
+    /\b[A-Z][a-z]+\s+(Street|Road|Avenue|Piazza|Beach|Station|Stop|Port|Harbor)\b/g, // Named places
+    /\b(Via|Piazza|Corso|Viale|Lungomare)\s+[A-Z][a-z]+/g, // Italian street names
+    /\b[A-Z][a-z]+\s+(Hotel|Hostel|Restaurant|Bar|Café|Museum|Church|Cathedral)\b/g, // Named venues
+    /\b(SITA|bus\s+line|ferry\s+to|metro\s+line)\s+[A-Z0-9]+/gi, // Transit references
+  ];
+
+  patterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) count += matches.length;
+  });
+
+  // Deduplicate by converting to set
+  const uniqueMatches = new Set<string>();
+  patterns.forEach(pattern => {
+    const matches = text.matchAll(pattern);
+    for (const match of matches) {
+      uniqueMatches.add(match[0]);
+    }
+  });
+
+  return uniqueMatches.size;
+}
+```
+
+### Count Concrete Facts Per 500 Words
+```typescript
+function countConcreteFactsPer500Words(content: any): number {
+  const text = extractTextContent(content);
+  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+
+  let factCount = 0;
+
+  // Numbers (except years alone)
+  const numbers = text.match(/\b\d{1,3}(,\d{3})*(\.\d+)?\s*(minutes?|hours?|km|meters?|€|\$|£)\b/gi);
+  if (numbers) factCount += numbers.length;
+
+  // Specific times
+  const times = text.match(/\b\d{1,2}:\d{2}\s*(am|pm)?\b/gi);
+  if (times) factCount += times.length;
+
+  // Proper names (simple heuristic)
+  const properNames = text.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+\b/g);
+  if (properNames) factCount += properNames.length * 0.5; // Each name = 0.5 facts
+
+  // Specific dates/seasons
+  const dates = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December|spring|summer|fall|autumn|winter)\b/gi);
+  if (dates) factCount += dates.length * 0.5;
+
+  // Convert to per-500-word rate
+  const factsPer500 = wordCount > 0 ? (factCount / wordCount) * 500 : 0;
+  return Math.round(factsPer500);
+}
+```
+
+### Detect First Hand Details
+```typescript
+function detectFirstHandDetails(content: any): boolean {
+  const text = extractTextContent(content).toLowerCase();
+
+  // Look for first-person or staff attribution
+  const firstHandPatterns = [
+    /\b(we tried|we visited|we recommend|from our experience|when we stayed)\b/i,
+    /\b(from the hostel|our hostel|our staff|reception recommend)\b/i,
+    /\b(I visited|I tried|I walked|I took)\b/i,
+    /\b(tip from|according to our|based on our)\b/i,
+  ];
+
+  return firstHandPatterns.some(pattern => pattern.test(text));
+}
+```
+
+### Calculate Average Paragraph Length
+```typescript
+function calculateAvgParagraphLength(content: any): number {
+  const paragraphs: string[] = [];
+
+  if (Array.isArray(content.intro)) {
+    paragraphs.push(...content.intro);
+  }
+
+  if (Array.isArray(content.sections)) {
+    content.sections.forEach((section: any) => {
+      if (Array.isArray(section.body)) {
+        paragraphs.push(...section.body);
+      }
+    });
+  }
+
+  if (paragraphs.length === 0) return 0;
+
+  const wordCounts = paragraphs.map(p => {
+    if (typeof p !== 'string') return 0;
+    return p.split(/\s+/).filter(w => w.length > 0).length;
+  });
+
+  const totalWords = wordCounts.reduce((sum, count) => sum + count, 0);
+  return Math.round(totalWords / paragraphs.length);
+}
+```
+
+### Calculate Average Sentence Length
+```typescript
+function calculateAvgSentenceLength(content: any): number {
+  const text = extractTextContent(content);
+
+  // Split by sentence-ending punctuation
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  if (sentences.length === 0) return 0;
+
+  const wordCounts = sentences.map(s =>
+    s.split(/\s+/).filter(w => w.length > 0).length
+  );
+
+  const totalWords = wordCounts.reduce((sum, count) => sum + count, 0);
+  return Math.round(totalWords / sentences.length);
+}
+```
+
+### Calculate Reading Grade
+```typescript
+function calculateReadingGrade(content: any): number {
+  // Simple Flesch-Kincaid Grade Level approximation
+  const text = extractTextContent(content);
+
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const syllables = words.reduce((count, word) => count + countSyllables(word), 0);
+
+  if (words.length === 0 || sentences.length === 0) return 0;
+
+  const avgWordsPerSentence = words.length / sentences.length;
+  const avgSyllablesPerWord = syllables / words.length;
+
+  // Flesch-Kincaid Grade Level formula
+  const grade = 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
+  return Math.max(0, Math.round(grade * 10) / 10);
+}
+
+function countSyllables(word: string): number {
+  word = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (word.length <= 3) return 1;
+
+  const vowels = 'aeiouy';
+  let count = 0;
+  let previousWasVowel = false;
+
+  for (let i = 0; i < word.length; i++) {
+    const isVowel = vowels.includes(word[i]);
+    if (isVowel && !previousWasVowel) {
+      count++;
+    }
+    previousWasVowel = isVowel;
+  }
+
+  // Adjust for silent 'e'
+  if (word.endsWith('e')) count--;
+
+  // Words always have at least 1 syllable
+  return Math.max(1, count);
+}
+```
+
+### Check Primary Topic in Title
+```typescript
+function checkPrimaryTopicInTitle(content: any): { present: boolean; nearFront: boolean } {
+  const title = content.seo?.title || '';
+  // Extract likely primary topic (first 2-3 meaningful words)
+  const words = title.split(/\s+/).filter((w: string) => w.length > 2);
+  const topicWords = words.slice(0, 3).join(' ').toLowerCase();
+
+  const present = topicWords.length > 0;
+  // "Near front" means within first 30 characters
+  const nearFront = title.toLowerCase().indexOf(topicWords) < 30;
+
+  return { present, nearFront };
+}
+```
+
+### Check Primary Topic in H1
+```typescript
+function checkPrimaryTopicInH1(content: any): boolean {
+  const title = content.seo?.title || '';
+  const h1 = title; // H1 is derived from title in our template
+
+  // Extract topic from title
+  const words = title.split(/\s+/).filter((w: string) => w.length > 2);
+  const topicWords = words.slice(0, 3).join(' ').toLowerCase();
+
+  return h1.toLowerCase().includes(topicWords);
+}
+```
+
+### Check Primary Topic in First 150 Words
+```typescript
+function checkPrimaryTopicInFirst150Words(content: any): boolean {
+  if (!Array.isArray(content.intro) || content.intro.length === 0) return false;
+
+  const title = content.seo?.title || '';
+  const words = title.split(/\s+/).filter((w: string) => w.length > 2);
+  const topicWords = words.slice(0, 3).join(' ').toLowerCase();
+
+  let wordCount = 0;
+  let text = '';
+
+  for (const para of content.intro) {
+    if (typeof para !== 'string') continue;
+    const paraWords = para.split(/\s+/).filter((w: string) => w.length > 0);
+    wordCount += paraWords.length;
+    text += ' ' + para.toLowerCase();
+
+    if (wordCount >= 150) break;
+  }
+
+  return text.includes(topicWords);
+}
+```
+
+### Check H2 Alignment to Queries
+```typescript
+function checkH2AlignmentToQueries(content: any): { aligned: number; total: number } {
+  if (!Array.isArray(content.sections)) return { aligned: 0, total: 0 };
+
+  const h2s = content.sections.filter((s: any) => s.title).map((s: any) => s.title);
+  const total = h2s.length;
+
+  // H2s that look like queries or topics (questions or descriptive phrases)
+  const aligned = h2s.filter((h: string) =>
+    h.match(/\b(how|what|where|when|why|which|best|top|guide|tips)\b/i) ||
+    h.split(/\s+/).length >= 3 // Or at least 3 words (descriptive)
+  ).length;
+
+  return { aligned, total };
+}
+```
+
+### Check Semantic Variation
+```typescript
+function checkSemanticVariation(content: any): boolean {
+  const text = extractTextContent(content).toLowerCase();
+  const title = (content.seo?.title || '').toLowerCase();
+
+  // Extract main topic word from title
+  const words = title.split(/\s+/).filter((w: string) => w.length > 3);
+  if (words.length === 0) return true;
+
+  const mainTopic = words[0];
+
+  // Look for synonyms or related terms (basic check)
+  // In production, use a thesaurus or word embeddings
+  const topicOccurrences = (text.match(new RegExp(`\\b${mainTopic}\\b`, 'gi')) || []).length;
+  const totalWords = text.split(/\s+/).length;
+
+  // If main topic appears > 3% of total words, might be repetitive
+  const repetitionRate = totalWords > 0 ? topicOccurrences / totalWords : 0;
+
+  // Good variation = main topic appears but not excessively
+  return repetitionRate > 0.005 && repetitionRate < 0.03;
+}
+```
+
+### Calculate Keyword Stuffing Rate
+```typescript
+function calculateKeywordStuffingRate(content: any): number {
+  const text = extractTextContent(content).toLowerCase();
+  const title = (content.seo?.title || '').toLowerCase();
+  const totalWords = text.split(/\s+/).filter(w => w.length > 0).length;
+
+  if (totalWords === 0) return 0;
+
+  // Extract main 2-3 word phrase from title
+  const words = title.split(/\s+/).filter((w: string) => w.length > 2);
+  if (words.length < 2) return 0;
+
+  const phrase = words.slice(0, Math.min(3, words.length)).join(' ');
+  const phraseOccurrences = (text.match(new RegExp(phrase, 'gi')) || []).length;
+
+  // Calculate exact phrase repetition rate as percentage
+  const phraseWordCount = phrase.split(/\s+/).length;
+  const phraseRate = (phraseOccurrences * phraseWordCount / totalWords) * 100;
+
+  return Math.round(phraseRate * 10) / 10; // Round to 1 decimal
+}
+```
+
+### Count Generic Anchors
+```typescript
+function countGenericAnchors(content: any): number {
+  const text = extractTextContent(content);
+  const genericPatterns = [
+    /\[click here\]/gi,
+    /\[here\]/gi,
+    /\[read more\]/gi,
+    /\[this link\]/gi,
+    /\[this page\]/gi,
+  ];
+
+  let count = 0;
+  genericPatterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) count += matches.length;
+  });
+
+  return count;
+}
+```
+
+### Analyze CTAs
+```typescript
+function analyzeCTAs(content: any, template: string): {
+  hasPrimary: boolean;
+  hasAboveFold: boolean;
+  contextualCount: number;
+} {
+  const text = extractTextContent(content).toLowerCase();
+  const intro = Array.isArray(content.intro) ? content.intro.join(' ').toLowerCase() : '';
+
+  // Primary CTA patterns
+  const ctaPatterns = [
+    /\b(book now|check availability|reserve|join us|contact us|whatsapp|call reception)\b/i,
+    /%LINK:[^|]+\|(book|reserve|contact|join)/i,
+  ];
+
+  const hasPrimary = ctaPatterns.some(pattern => pattern.test(text));
+
+  // Above fold = in intro (first 1-2 paragraphs)
+  const hasAboveFold = ctaPatterns.some(pattern => pattern.test(intro));
+
+  // Contextual CTAs (mentions of hostel/property with actionable language)
+  const contextualPatterns = [
+    /\b(from our hostel|from the hostel|walking distance from|our staff|ask reception)\b/i,
+    /\b(book through us|we can arrange|we offer|available at reception)\b/i,
+  ];
+
+  let contextualCount = 0;
+  contextualPatterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) contextualCount += matches.length;
+  });
+
+  return { hasPrimary, hasAboveFold, contextualCount };
+}
+```
+
 ## Example Usage
 
 ### Example 1: Local Guide (9.5/10)
@@ -1361,6 +2034,18 @@ Check file permissions for guide-manifest-overrides.json
 ```
 
 ## Version History
+
+**3.0.0** (2026-01-29)
+- **Image Quality & Accessibility** (-2.0 pts): Alt text coverage, file sizes ≤250KB, featured image ≥1200px, modern formats
+- **Content Strategy & Targeting** (-2.5 pts): Primary intent, query targeting, task completion, local entities ≥5, concrete facts, first-hand details
+- **Readability & Writing Quality** (-1.5 pts): Paragraph length ≤120 words, sentence length ≤25 words, reading grade 7-10
+- **Keyword Optimization** (-2.0 pts): Primary topic placement, H2 alignment, semantic variation, anti-stuffing ≤2%
+- **Internal Link Quality** (-0.5 pts): Descriptive anchors (no "click here")
+- **Performance & Technical** (-2.0 pts): Core Web Vitals (LCP, INP, CLS), page weight ≤2MB, image weight ≤70%
+- **Call-to-Action** (-1.0 pt): Primary CTA, above-fold placement, contextual CTAs ≥2
+- **Enhanced Structured Data** (-1.0 pt): Breadcrumbs + Article/BlogPosting schema
+- 20+ new helper functions for comprehensive content analysis
+- Maximum possible deductions increased to ~20 points (prioritizes critical factors)
 
 **2.1.0** (2026-01-29)
 - Placeholder content detection (TBD, lorem ipsum, empty sections, "coming soon")

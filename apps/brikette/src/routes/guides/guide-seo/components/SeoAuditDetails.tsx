@@ -6,7 +6,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 
-import { Stack } from "@/components/ui/flex";
+import { Inline, Stack } from "@/components/ui/flex";
 import type { SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
 
 const DETAIL_CONTAINER_CLASSES = [
@@ -52,7 +52,7 @@ function AnalysisSection({
   type = "default",
 }: {
   title: string;
-  items: string[];
+  items: string[] | Array<{ issue: string; impact: number }>;
   emoji: string;
   type?: "success" | "error" | "warning" | "default";
 }) {
@@ -67,18 +67,41 @@ function AnalysisSection({
           ? "text-amber-700 dark:text-amber-400"
           : "text-brand-text";
 
+  const impactBadgeClass =
+    type === "error"
+      ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+      : type === "warning"
+        ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+        : "bg-brand-surface text-brand-text";
+
+  const hasImpact = items.length > 0 && typeof items[0] === "object" && "impact" in items[0];
+
   return (
     <div className="space-y-2">
       <h4 className={clsx("text-sm font-semibold", typeClass)}>
         {emoji} {title}
+        {hasImpact && <span className="text-xs font-normal text-brand-text/60 ml-2">(sorted by impact)</span>}
       </h4>
-      <ul className="space-y-1 pl-4">
-        {items.map((item, index) => (
-          <li key={index} className="text-sm text-brand-text/80 list-disc">
-            {item}
-          </li>
-        ))}
-      </ul>
+      <Stack className="gap-1.5">
+        {items.map((item, index) => {
+          if (typeof item === "string") {
+            return (
+              <li key={index} className="text-sm text-brand-text/80 list-disc ml-4">
+                {item}
+              </li>
+            );
+          }
+
+          return (
+            <Inline key={index} className="gap-2 items-start">
+              <span className={clsx("shrink-0 rounded px-2 py-0.5 text-xs font-bold", impactBadgeClass)}>
+                -{item.impact.toFixed(1)}
+              </span>
+              <span className="text-sm text-brand-text/80">{item.issue}</span>
+            </Inline>
+          );
+        })}
+      </Stack>
     </div>
   );
 }
@@ -123,13 +146,6 @@ export default function SeoAuditDetails({
       {isExpanded && (
         <Stack className="mt-4 gap-4">
           <AnalysisSection
-            title="Strengths"
-            items={analysis.strengths}
-            emoji="✅"
-            type="success"
-          />
-
-          <AnalysisSection
             title="Critical Issues"
             items={analysis.criticalIssues}
             emoji="❌"
@@ -141,6 +157,13 @@ export default function SeoAuditDetails({
             items={analysis.improvements}
             emoji="💡"
             type="warning"
+          />
+
+          <AnalysisSection
+            title="Strengths"
+            items={analysis.strengths}
+            emoji="✅"
+            type="success"
           />
         </Stack>
       )}

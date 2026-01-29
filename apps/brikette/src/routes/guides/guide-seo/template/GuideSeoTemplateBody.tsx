@@ -98,8 +98,6 @@ export type GuideSeoTemplateBodyProps = {
   showPlanChoice: boolean;
   showTransportNotice: boolean;
   relatedGuides?: GuideSeoTemplateProps["relatedGuides"];
-  showRelatedWhenLocalized: boolean;
-  alsoHelpful?: GuideSeoTemplateProps["alsoHelpful"];
   guideFaqFallback?: GuideSeoTemplateProps["guideFaqFallback"];
   alwaysProvideFaqFallback: boolean;
   suppressFaqWhenUnlocalized: boolean;
@@ -162,8 +160,6 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     showPlanChoice,
     showTransportNotice,
     relatedGuides,
-    showRelatedWhenLocalized,
-    alsoHelpful,
     guideFaqFallback,
     alwaysProvideFaqFallback,
     suppressFaqWhenUnlocalized,
@@ -292,13 +288,10 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         <FooterWidgets
           lang={lang as any}
           guideKey={guideKey as any}
-          hasLocalizedContent={hasAnyLocalized}
           showTagChips={showTagChips}
           showPlanChoice={showPlanChoice}
           showTransportNotice={showTransportNotice}
           relatedGuides={relatedGuides as any}
-          showRelatedWhenLocalized={showRelatedWhenLocalized}
-          alsoHelpful={alsoHelpful as any}
           tGuides={tGuides as any}
         />
       </Section>

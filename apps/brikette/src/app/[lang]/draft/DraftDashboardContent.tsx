@@ -17,23 +17,16 @@ import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import { buildGuideEditUrl } from "@/routes/guides/guide-authoring/urls";
 import { guideSlug } from "@/routes.guides-helpers";
 import {
-  buildGuideChecklist,
   type ChecklistSnapshotItem,
   type ChecklistSnapshot,
   guideAreaToSlugKey,
   type GuideManifestEntry,
   GUIDE_STATUS_VALUES,
-  listGuideManifestEntries,
-  resolveDraftPathSegment,
 } from "@/routes/guides/guide-manifest";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
 import { getSlug } from "@/utils/slug";
 
-type Props = {
-  lang: AppLanguage;
-};
-
-type DraftGuideSummary = {
+export type DraftGuideSummary = {
   key: GuideSeoTemplateProps["guideKey"];
   slug: string;
   status: GuideManifestEntry["status"];
@@ -41,6 +34,11 @@ type DraftGuideSummary = {
   primaryArea: GuideManifestEntry["primaryArea"];
   checklist: ChecklistSnapshot;
   draftPath: string;
+};
+
+type Props = {
+  lang: AppLanguage;
+  guides: DraftGuideSummary[];
 };
 
 type DraftGuideStatus = DraftGuideSummary["status"];
@@ -84,18 +82,6 @@ function formatOutstandingLabel(item: ChecklistSnapshotItem): string {
   }
 
   return item.note ?? item.id;
-}
-
-function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideSummary {
-  return {
-    key: entry.key,
-    slug: entry.slug,
-    status: entry.status,
-    areas: entry.areas,
-    primaryArea: entry.primaryArea,
-    checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
-    draftPath: resolveDraftPathSegment(entry),
-  };
 }
 
 type StatusDropdownProps = {
@@ -183,11 +169,9 @@ function StatusDropdown({ guideKey, initialStatus, canEdit }: StatusDropdownProp
   );
 }
 
-function DraftDashboardContent({ lang }: Props) {
+function DraftDashboardContent({ lang, guides }: Props) {
   usePagePreload({ lang, namespaces: ["guides"] });
   const canEdit = isGuideAuthoringEnabled() && Boolean(PREVIEW_TOKEN);
-
-  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, lang));
 
   const sortedGuides = (() => {
     return [...guides].sort((a, b) => {

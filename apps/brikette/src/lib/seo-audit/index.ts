@@ -204,42 +204,52 @@ export async function auditGuideSeo(
 
   // 4. Apply scoring rubric
   let score = 10.0;
-  const issues: string[] = [];
-  const improvements: string[] = [];
+  const issues: Array<{ issue: string; impact: number }> = [];
+  const improvements: Array<{ issue: string; impact: number }> = [];
   const strengths: string[] = [];
 
   // Meta title
   if (!content.seo?.title) {
-    score -= 1.0;
-    issues.push("Missing meta title");
+    const impact = 1.0;
+    score -= impact;
+    issues.push({ issue: "Missing meta title", impact });
   } else if (metrics.metaTitleLength < 40) {
-    score -= 0.5;
-    improvements.push(
-      `Meta title too short (${metrics.metaTitleLength} chars, target 40-60)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Meta title too short (${metrics.metaTitleLength} chars, target 40-60)`,
+      impact,
+    });
   } else if (metrics.metaTitleLength > 60) {
-    score -= 0.5;
-    improvements.push(
-      `Meta title too long (${metrics.metaTitleLength} chars, target 40-60)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Meta title too long (${metrics.metaTitleLength} chars, target 40-60)`,
+      impact,
+    });
   } else {
     strengths.push(`Good meta title length (${metrics.metaTitleLength} chars)`);
   }
 
   // Meta description
   if (!content.seo?.description) {
-    score -= 1.0;
-    issues.push("Missing meta description");
+    const impact = 1.0;
+    score -= impact;
+    issues.push({ issue: "Missing meta description", impact });
   } else if (metrics.metaDescriptionLength < 140) {
-    score -= 0.5;
-    improvements.push(
-      `Meta description too short (${metrics.metaDescriptionLength} chars, target 150-155)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Meta description too short (${metrics.metaDescriptionLength} chars, target 150-155)`,
+      impact,
+    });
   } else if (metrics.metaDescriptionLength > 160) {
-    score -= 0.5;
-    improvements.push(
-      `Meta description too long (${metrics.metaDescriptionLength} chars, target 150-155)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Meta description too long (${metrics.metaDescriptionLength} chars, target 150-155)`,
+      impact,
+    });
   } else {
     strengths.push(
       `Good meta description length (${metrics.metaDescriptionLength} chars)`,
@@ -248,28 +258,35 @@ export async function auditGuideSeo(
 
   // Content length
   if (metrics.contentWordCount < 1500) {
-    score -= 1.0;
-    issues.push(
-      `Content too short (${metrics.contentWordCount} words, need 1500+)`,
-    );
+    const impact = 1.0;
+    score -= impact;
+    issues.push({
+      issue: `Content too short (${metrics.contentWordCount} words, need 1500+)`,
+      impact,
+    });
   } else if (metrics.contentWordCount < 2000) {
-    score -= 0.5;
-    improvements.push(
-      `Content could be longer (${metrics.contentWordCount} words, target 2000+)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Content could be longer (${metrics.contentWordCount} words, target 2000+)`,
+      impact,
+    });
   } else {
     strengths.push(`Good content length (${metrics.contentWordCount} words)`);
   }
 
   // Heading structure
   if (metrics.headingCount === 0) {
-    score -= 0.5;
-    issues.push("No section headings present");
+    const impact = 0.5;
+    score -= impact;
+    issues.push({ issue: "No section headings present", impact });
   } else if (metrics.headingCount < 5) {
-    score -= 0.5;
-    improvements.push(
-      `Few section headings (${metrics.headingCount}, recommend 5+)`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Few section headings (${metrics.headingCount}, recommend 5+)`,
+      impact,
+    });
   } else {
     strengths.push(
       `Well-structured content with ${metrics.headingCount} headings`,
@@ -278,15 +295,19 @@ export async function auditGuideSeo(
 
   // Internal links
   if (metrics.internalLinkCount < 3) {
-    score -= 0.5;
-    issues.push(
-      `Only ${metrics.internalLinkCount} internal links, need 3+`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    issues.push({
+      issue: `Only ${metrics.internalLinkCount} internal links, need 3+`,
+      impact,
+    });
   } else if (metrics.internalLinkCount < 5) {
-    score -= 0.3;
-    improvements.push(
-      `Add ${5 - metrics.internalLinkCount} more internal links (currently ${metrics.internalLinkCount})`,
-    );
+    const impact = 0.3;
+    score -= impact;
+    improvements.push({
+      issue: `Add ${5 - metrics.internalLinkCount} more internal links (currently ${metrics.internalLinkCount})`,
+      impact,
+    });
   } else {
     strengths.push(
       `Strong internal linking strategy (${metrics.internalLinkCount} links)`,
@@ -295,13 +316,16 @@ export async function auditGuideSeo(
 
   // FAQs
   if (metrics.faqCount < 5) {
-    score -= 0.5;
-    issues.push(`Only ${metrics.faqCount} FAQs, need 5+`);
+    const impact = 0.5;
+    score -= impact;
+    issues.push({ issue: `Only ${metrics.faqCount} FAQs, need 5+`, impact });
   } else if (metrics.faqCount < 8) {
-    score -= 0.3;
-    improvements.push(
-      `Add ${8 - metrics.faqCount} more FAQs (currently ${metrics.faqCount})`,
-    );
+    const impact = 0.3;
+    score -= impact;
+    improvements.push({
+      issue: `Add ${8 - metrics.faqCount} more FAQs (currently ${metrics.faqCount})`,
+      impact,
+    });
   } else {
     strengths.push(
       `Comprehensive FAQ section with ${metrics.faqCount} questions`,
@@ -310,23 +334,28 @@ export async function auditGuideSeo(
 
   // Images
   if (metrics.imageCount < 3) {
-    score -= 0.5;
-    improvements.push(
-      `Add ${3 - metrics.imageCount} more images (currently ${metrics.imageCount})`,
-    );
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: `Add ${3 - metrics.imageCount} more images (currently ${metrics.imageCount})`,
+      impact,
+    });
   } else if (metrics.imageCount < 5) {
-    score -= 0.3;
-    improvements.push(
-      `Add ${5 - metrics.imageCount} more images to reach 5+ target (currently ${metrics.imageCount})`,
-    );
+    const impact = 0.3;
+    score -= impact;
+    improvements.push({
+      issue: `Add ${5 - metrics.imageCount} more images to reach 5+ target (currently ${metrics.imageCount})`,
+      impact,
+    });
   } else {
     strengths.push(`Rich media with ${metrics.imageCount} images`);
   }
 
   // Freshness signals
   if (!hasFreshnessSignals(content)) {
-    score -= 0.3;
-    improvements.push("Include year/date signals for freshness");
+    const impact = 0.3;
+    score -= impact;
+    improvements.push({ issue: "Include year/date signals for freshness", impact });
   } else {
     strengths.push("Content includes freshness signals (year/date references)");
   }
@@ -340,14 +369,22 @@ export async function auditGuideSeo(
   );
 
   if (!hasArticleSchema && !hasItemListSchema) {
-    score -= 0.5;
-    improvements.push("Add Article or ItemList structured data to manifest");
+    const impact = 0.5;
+    score -= impact;
+    improvements.push({
+      issue: "Add Article or ItemList structured data to manifest",
+      impact,
+    });
   } else {
     const schemaTypes = manifest.structuredData
       .map((s) => (typeof s === "string" ? s : s.type))
       .join(", ");
     strengths.push(`Structured data declared: ${schemaTypes}`);
   }
+
+  // Sort issues and improvements by impact (highest first)
+  issues.sort((a, b) => b.impact - a.impact);
+  improvements.sort((a, b) => b.impact - a.impact);
 
   // 5. Round score to 1 decimal place
   score = Math.round(score * 10) / 10;
@@ -426,17 +463,17 @@ export function formatAuditSummary(guideKey: GuideKey, results: SeoAuditResult):
   }
 
   if (analysis.criticalIssues.length > 0) {
-    summary += `### Critical Issues ❌\n`;
-    for (const issue of analysis.criticalIssues) {
-      summary += `- ${issue}\n`;
+    summary += `### Critical Issues ❌ (sorted by impact)\n`;
+    for (const { issue, impact } of analysis.criticalIssues) {
+      summary += `- **[-${impact.toFixed(1)}]** ${issue}\n`;
     }
     summary += `\n`;
   }
 
   if (analysis.improvements.length > 0) {
-    summary += `### Improvements 💡\n`;
-    for (const improvement of analysis.improvements) {
-      summary += `- ${improvement}\n`;
+    summary += `### Improvements 💡 (sorted by impact)\n`;
+    for (const { issue, impact } of analysis.improvements) {
+      summary += `- **[-${impact.toFixed(1)}]** ${issue}\n`;
     }
     summary += `\n`;
   }
@@ -445,7 +482,7 @@ export function formatAuditSummary(guideKey: GuideKey, results: SeoAuditResult):
   if (score >= 9.0) {
     summary += `✅ Guide meets SEO requirements and can be published to "live" status.\n\n`;
   } else {
-    summary += `⚠️ Score must reach 9.0+ before publishing. Address the improvements listed above and re-run the audit.\n\n`;
+    summary += `⚠️ Score must reach 9.0+ before publishing. Address the highest-impact items first.\n\n`;
   }
 
   summary += `Results saved to guide-manifest-overrides.json\n`;

@@ -79,7 +79,6 @@ function GuideSeoTemplate({
   ogType = "article",
   includeHowToStructuredData,
   relatedGuides,
-  alsoHelpful,
   articleLead,
   articleExtras,
   afterArticle,
@@ -95,7 +94,6 @@ function GuideSeoTemplate({
   showTransportNotice = true,
   showTagChips = true,
   showTocWhenUnlocalized = true,
-  showRelatedWhenLocalized = true,
   twitterCardKey = "meta.twitterCard",
   twitterCardDefault,
   buildHowToSteps,
@@ -451,7 +449,6 @@ function GuideSeoTemplate({
   const mergedShowPlanChoice = showPlanChoice !== undefined ? showPlanChoice : (blockTemplate.template.showPlanChoice ?? true);
   const mergedShowTransportNotice = showTransportNotice !== undefined ? showTransportNotice : (blockTemplate.template.showTransportNotice ?? true);
   const mergedRelatedGuides = relatedGuides !== undefined ? relatedGuides : blockTemplate.template.relatedGuides;
-  const mergedAlsoHelpful = alsoHelpful !== undefined ? alsoHelpful : blockTemplate.template.alsoHelpful;
 
   const { articleLeadNode, articleExtrasNode, afterArticleNode } = useGuideSlotNodes({
     context,
@@ -537,8 +534,6 @@ function GuideSeoTemplate({
       showPlanChoice={mergedShowPlanChoice}
       showTransportNotice={mergedShowTransportNotice}
       relatedGuides={mergedRelatedGuides}
-      showRelatedWhenLocalized={showRelatedWhenLocalized}
-      alsoHelpful={mergedAlsoHelpful}
       guideFaqFallback={guideFaqFallback}
       alwaysProvideFaqFallback={alwaysProvideFaqFallback}
       suppressFaqWhenUnlocalized={suppressFaqWhenUnlocalized}

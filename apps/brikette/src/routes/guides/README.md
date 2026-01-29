@@ -150,8 +150,8 @@ Located in [`blocks/`](./blocks/):
 - `callout` — Highlighted text (tip, cta, aside)
 - `serviceSchema` — Structured data for services
 - `breadcrumbs` — Breadcrumb list schema
-- `relatedGuides` — List of related guides
-- `alsoHelpful` — Tag-based recommendations
+- `relatedGuides` — Footer list of non-inline guide links (canonical related-links surface)
+- `alsoHelpful` — Tag-based suggestions that augment `relatedGuides` (does not render separately)
 - `planChoice` — Plan/pricing selector
 - `transportNotice` — Transport info banner
 - `transportDropIn` — Transport components (Chiesa Nuova)

@@ -320,6 +320,42 @@ function DiagnosticDetails({
       <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
         <p className="text-[10px] font-semibold uppercase text-brand-text/60">Audit Results</p>
         <Stack className="mt-2 gap-3">
+          {hasIssues && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-terra">
+                Critical Issues ✗ (sorted by impact)
+              </p>
+              <Stack className="gap-1">
+                {analysis.criticalIssues.map(({ issue, impact }, i) => (
+                  <Inline key={i} className="gap-2 items-start">
+                    <span className="shrink-0 rounded bg-brand-terra/20 px-1.5 py-0.5 text-[10px] font-bold text-brand-terra">
+                      -{impact.toFixed(1)}
+                    </span>
+                    <span className="text-[11px] text-brand-terra/90">{issue}</span>
+                  </Inline>
+                ))}
+              </Stack>
+            </Stack>
+          )}
+
+          {hasImprovements && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-secondary">
+                Improvements Recommended (sorted by impact)
+              </p>
+              <Stack className="gap-1">
+                {analysis.improvements.map(({ issue, impact }, i) => (
+                  <Inline key={i} className="gap-2 items-start">
+                    <span className="shrink-0 rounded bg-brand-secondary/20 px-1.5 py-0.5 text-[10px] font-bold text-brand-secondary">
+                      -{impact.toFixed(1)}
+                    </span>
+                    <span className="text-[11px] text-brand-text/80">{issue}</span>
+                  </Inline>
+                ))}
+              </Stack>
+            </Stack>
+          )}
+
           {hasStrengths && (
             <Stack className="gap-1">
               <p className="text-[10px] font-semibold text-brand-primary">Strengths ✓</p>
@@ -331,30 +367,8 @@ function DiagnosticDetails({
             </Stack>
           )}
 
-          {hasIssues && (
-            <Stack className="gap-1">
-              <p className="text-[10px] font-semibold text-brand-terra">Critical Issues ✗</p>
-              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-terra/90 pl-2">
-                {analysis.criticalIssues.map((issue, i) => (
-                  <li key={i}>{issue}</li>
-                ))}
-              </ul>
-            </Stack>
-          )}
-
-          {hasImprovements && (
-            <Stack className="gap-1">
-              <p className="text-[10px] font-semibold text-brand-secondary">Improvements Recommended</p>
-              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-text/80 pl-2">
-                {analysis.improvements.map((improvement, i) => (
-                  <li key={i}>{improvement}</li>
-                ))}
-              </ul>
-            </Stack>
-          )}
-
           <p className="text-[10px] text-brand-text/50 pt-1 border-t border-brand-outline/20">
-            Score must be 9.0/10 or higher to publish. Re-run audit after making improvements.
+            Score must be 9.0/10 or higher to publish. Address highest-impact items first.
           </p>
         </Stack>
       </div>

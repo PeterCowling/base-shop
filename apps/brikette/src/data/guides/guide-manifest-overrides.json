@@ -1,45 +1,308 @@
 {
-  "chiesaNuovaArrivals": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "chiesaNuovaDepartures": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "ferryDockToBrikette": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "briketteToFerryDock": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "fornilloBeachToBrikette": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "naplesPositano": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "salernoPositano": { "areas": ["howToGetHere"], "primaryArea": "howToGetHere" },
-  "onlyHostel": { "areas": ["help"], "primaryArea": "help" },
-  "porterServices": { "areas": ["help"], "primaryArea": "help" },
-  "luggageStorage": { "areas": ["help"], "primaryArea": "help" },
-  "parking": { "areas": ["help"], "primaryArea": "help" },
-  "whatToPack": { "areas": ["help"], "primaryArea": "help" },
-  "simsAtms": { "areas": ["help"], "primaryArea": "help" },
-  "workCafes": { "areas": ["help"], "primaryArea": "help" },
-  "workAndTravelPositano": { "areas": ["help"], "primaryArea": "help" },
-  "workExchangeItaly": { "areas": ["help"], "primaryArea": "help" },
-  "ferrySchedules": { "areas": ["help"], "primaryArea": "help" },
-  "transportBudget": { "areas": ["help"], "primaryArea": "help" },
-  "transportMoneySaving": { "areas": ["help"], "primaryArea": "help" },
-  "interrailAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "travelInsuranceAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "couplesInHostels": { "areas": ["help"], "primaryArea": "help" },
-  "groceriesPharmacies": { "areas": ["help"], "primaryArea": "help" },
-  "hitchhikingAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "bestTimeToVisit": { "areas": ["help"], "primaryArea": "help" },
-  "positanoCostBreakdown": { "areas": ["help"], "primaryArea": "help" },
-  "positanoCostComparison": { "areas": ["help"], "primaryArea": "help" },
-  "howToGetToPositano": { "areas": ["help"], "primaryArea": "help" },
-  "budgetAccommodationBeyond": { "areas": ["help"], "primaryArea": "help" },
-  "offSeasonLongStay": { "areas": ["help"], "primaryArea": "help" },
-  "sorrentoGuide": { "areas": ["help"], "primaryArea": "help" },
-  "salernoGatewayGuide": { "areas": ["help"], "primaryArea": "help" },
-  "naplesCityGuide": { "areas": ["help"], "primaryArea": "help" },
-  "safetyAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "italianPhrasesCampania": { "areas": ["help"], "primaryArea": "help" },
-  "ecoFriendlyAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "drivingAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "laundryPositano": { "areas": ["help"], "primaryArea": "help" },
-  "publicTransportAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "salernoVsNaples": { "areas": ["help"], "primaryArea": "help" },
-  "sitaTickets": { "areas": ["help"], "primaryArea": "help" },
-  "travelFaqsAmalfi": { "areas": ["help"], "primaryArea": "help" },
-  "reachBudget": { "areas": ["help"], "primaryArea": "help" }
+  "chiesaNuovaArrivals": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "chiesaNuovaDepartures": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "ferryDockToBrikette": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "briketteToFerryDock": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "fornilloBeachToBrikette": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "naplesPositano": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "salernoPositano": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "onlyHostel": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "porterServices": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "luggageStorage": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "parking": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "whatToPack": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "simsAtms": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workCafes": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workAndTravelPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workExchangeItaly": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "ferrySchedules": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "transportBudget": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "transportMoneySaving": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "interrailAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "travelInsuranceAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "couplesInHostels": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "groceriesPharmacies": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "hitchhikingAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "bestTimeToVisit": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoCostBreakdown": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoCostComparison": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "howToGetToPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "budgetAccommodationBeyond": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "offSeasonLongStay": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "sorrentoGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "salernoGatewayGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "naplesCityGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "safetyAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "italianPhrasesCampania": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "ecoFriendlyAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "drivingAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "laundryPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "publicTransportAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "salernoVsNaples": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "sitaTickets": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "travelFaqsAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "reachBudget": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoBeaches": {
+    "auditResults": {
+      "timestamp": "2026-01-29T15:45:40.964Z",
+      "score": 7.2,
+      "analysis": {
+        "strengths": [
+          "Well-structured content with 8 headings",
+          "Strong internal linking strategy (10 links)",
+          "Comprehensive FAQ section with 8 questions",
+          "Structured data declared: Article, ItemList"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (1114 words, need 1500+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Meta title too short (24 chars, target 40-60)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Meta description too short (98 chars, target 150-155)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add 1 more images (currently 2)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Include year/date signals for freshness",
+            "impact": 0.3
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 24,
+        "metaDescriptionLength": 98,
+        "contentWordCount": 1114,
+        "headingCount": 8,
+        "internalLinkCount": 10,
+        "faqCount": 8,
+        "imageCount": 2
+      },
+      "version": "1.0.0"
+    }
+  }
 }

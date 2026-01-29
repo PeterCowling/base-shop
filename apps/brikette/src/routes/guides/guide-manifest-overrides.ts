@@ -12,12 +12,21 @@ import type { GuideKey } from "../../guides/slugs/keys";
 import { GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES, type GuideArea, type GuideStatus } from "./guide-manifest";
 
 /**
+ * Schema for a single issue with score impact.
+ */
+const seoAuditIssueSchema = z.object({
+  issue: z.string(),
+  impact: z.number(), // Score deduction amount (positive number)
+});
+
+/**
  * Schema for SEO audit analysis results.
+ * Issues are sorted by impact (highest first) for efficient addressing.
  */
 const seoAuditAnalysisSchema = z.object({
   strengths: z.array(z.string()).default([]),
-  criticalIssues: z.array(z.string()).default([]),
-  improvements: z.array(z.string()).default([]),
+  criticalIssues: z.array(seoAuditIssueSchema).default([]),
+  improvements: z.array(seoAuditIssueSchema).default([]),
 });
 
 /**

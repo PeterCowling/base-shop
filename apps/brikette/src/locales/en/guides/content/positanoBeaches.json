@@ -39,6 +39,10 @@
       "label": "Logistics"
     },
     {
+      "href": "#comparison-table",
+      "label": "Comparison table"
+    },
+    {
       "href": "#faqs",
       "label": "FAQs"
     }
@@ -97,6 +101,13 @@
       "body": [
         "For Fornillo and Spiaggia Grande, start from the hostel and descend via Viale Pasitea. If climbing back feels daunting, continue along the waterfront to the main beach and ride the orange internal bus up to Chiesa Nuova, a short walk from Hostel Brikette. Buy tickets at any Tabacchi/newsagent before you need them.",
         "Arienzo and Laurito run private shuttle boats from Spiaggia Grande; confirm the last return sail before committing to a late aperitif. For Praiano, Furore, Sorrento, or Amalfi, follow the linked guides for transport directions, bus schedules, and ferry options."
+      ]
+    },
+    {
+      "id": "comparison-table",
+      "title": "Beach comparison table",
+      "body": [
+        "Use this quick reference table to compare prices, facilities, and key features across all beaches covered in this guide.\n\n## Positano Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Fornillo** | Pupetto, Grassi, Ferdinando, La Marinella start at €15 | Yes | Cheaper than main beach; large free section; secret free area | Steep walk back to hostel; easier route via main beach & bus |\n| **Main aka Grande** | L'Incanto: €25+; La Scogliera: €100-400 | Yes | Classic Positano views with town backdrop | Generally expensive; most guests prefer Fornillo atmosphere |\n| **Arienzo** | €60+ with food/drink deals | Yes | Long sunshine hours; stunning views; good beach club value | Challenging access without water taxi service |\n| **Laurito** | Da Adolfo: free with restaurant purchase; Villa Tre Ville: €30+ | Yes | Extended sunshine; remarkable views | Da Adolfo overrated; Villa Tre Ville expensive; small free area; water taxi needed |\n\n## Praiano Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Gavitella** | Not listed | No | Ideal evening destination; sunset/aperitif atmosphere | Appears as concrete jungle during daytime |\n| **Marina di Praia** | Not listed | Yes | Charming fishing cove atmosphere | Narrow beach; limited morning sun |\n\n## Furore Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Fiordo di Furore** | Not listed | Yes | Instagram-worthy; cliff jumping available; budget-friendly | Difficult access/departure; extremely limited space |\n\n## Sorrento & Amalfi\n\n**Regina Giovanna Bath** (Sorrento) - Free entry; relatively unknown and cool option; no facilities (bring supplies)\n\n**Amalfi Beach** - Multiple clubs: Stella Maris, Marina Grande, Silver Moon, Bagni Mar Di Cobalto, Tonino ò Beach; premium pricing; reserve ahead in peak season"
       ]
     }
   ],

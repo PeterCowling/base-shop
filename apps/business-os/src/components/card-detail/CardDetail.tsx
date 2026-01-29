@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 
-import type { CommitHistoryEntry } from "@/lib/git-history";
-import type { Business, Card, StageDoc } from "@/lib/types";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { User } from "@/lib/current-user";
 import { canEditCard } from "@/lib/current-user";
-import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import type { CommitHistoryEntry } from "@/lib/git-history";
+import type { Business, Card, StageDoc } from "@/lib/types";
 
 import { CardHeader } from "./CardHeader";
 import { CardHistory } from "./CardHistory";

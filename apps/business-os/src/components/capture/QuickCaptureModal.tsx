@@ -4,12 +4,12 @@
  * BOS-UX-13
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-13: Phase 0 scaffold UI */
+ 
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 import { Button, Input, Textarea } from "@acme/design-system/atoms";

@@ -1,6 +1,6 @@
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
 
 import type { Card } from "@/lib/types";
 

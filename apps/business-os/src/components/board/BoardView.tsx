@@ -10,21 +10,22 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
+import useViewport from "@acme/design-system/hooks/useViewport";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import useViewport from "@acme/design-system/hooks/useViewport";
 import { useTranslations } from "@acme/i18n";
 
-import type { Business, Card, Idea, Lane } from "@/lib/types";
-import type { User } from "@/lib/current-user";
 import { useRovingTabindex } from "@/hooks/useRovingTabindex";
+import type { User } from "@/lib/current-user";
+import type { Business, Card, Idea, Lane } from "@/lib/types";
+
+import { UserSwitcher } from "../user/UserSwitcher";
 
 import { BoardLane } from "./BoardLane";
 import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
 import { applyFilters, FilterChips, type FilterType } from "./FilterChips";
 import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
-import { UserSwitcher } from "../user/UserSwitcher";
 
 interface BoardViewProps {
   businessCode: string;
@@ -53,15 +54,18 @@ export function BoardView({
   const [activeMobileLane, setActiveMobileLane] = useState<Lane>("In progress");
 
   // All lanes for mobile picker
-  const allLanes: Lane[] = [
-    "Inbox",
-    "Fact-finding",
-    "Planned",
-    "In progress",
-    "Blocked",
-    "Done",
-    "Reflected",
-  ];
+  const allLanes: Lane[] = useMemo(
+    () => [
+      "Inbox",
+      "Fact-finding",
+      "Planned",
+      "In progress",
+      "Blocked",
+      "Done",
+      "Reflected",
+    ],
+    []
+  );
 
   // Get lanes for current view (mobile shows single lane, desktop shows filtered view)
   const visibleLanes = useMemo(() => {
@@ -99,7 +103,7 @@ export function BoardView({
     });
 
     return result;
-  }, [visibleLanes, cardsByLane, searchQuery, activeFilters]);
+  }, [visibleLanes, cardsByLane, searchQuery, activeFilters, currentUser.name]);
 
   // Filter ideas based on search
   const filteredIdeas = useMemo(() => {

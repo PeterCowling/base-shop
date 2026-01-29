@@ -3,9 +3,9 @@ import "@/styles/global.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { ToastProvider } from "@/components/toast/ToastProvider";
-import { KeyboardShortcutProvider } from "@/components/keyboard/KeyboardShortcutProvider";
 import { CaptureFAB } from "@/components/capture/CaptureFAB";
+import { KeyboardShortcutProvider } from "@/components/keyboard/KeyboardShortcutProvider";
+import { ToastProvider } from "@/components/toast/ToastProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -4,7 +4,7 @@
  * BOS-UX-12
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-12: Phase 0 scaffold UI */
+ 
 "use client";
 
 import Link from "next/link";

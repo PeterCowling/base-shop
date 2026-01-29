@@ -3,7 +3,7 @@
  * BOS-P2-05: Keyboard arrow navigation
  */
 
-import { renderHook, act } from "@testing-library/react";
+import { act,renderHook } from "@testing-library/react";
 
 import { useRovingTabindex } from "./useRovingTabindex";
 

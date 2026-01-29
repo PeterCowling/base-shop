@@ -4,7 +4,7 @@
  * BOS-UX-09
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-09: Phase 0 scaffold UI */
+/* eslint-disable ds/enforce-layout-primitives -- BOS-UX-09: Phase 0 scaffold UI */
 "use client";
 
 import type { Card } from "@/lib/types";
@@ -88,7 +88,7 @@ export function applyFilters(
 export function FilterChips({
   activeFilters,
   onFiltersChange,
-  currentUser = "Pete",
+  currentUser: _currentUser = "Pete",
 }: FilterChipsProps) {
   const toggleFilter = (filterId: FilterType) => {
     if (activeFilters.includes(filterId)) {

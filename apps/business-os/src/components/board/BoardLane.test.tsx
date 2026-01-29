@@ -8,7 +8,7 @@ import { render, screen } from "@testing-library/react";
 
 import type { Card } from "@/lib/types";
 
-import { BoardLane, getLaneHeaderColor, calculateLaneStats } from "./BoardLane";
+import { BoardLane, calculateLaneStats,getLaneHeaderColor } from "./BoardLane";
 
 const mockCards: Card[] = [
   {

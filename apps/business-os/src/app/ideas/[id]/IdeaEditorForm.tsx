@@ -15,6 +15,7 @@ import { z } from "zod";
 import { Button, Textarea } from "@acme/design-system/atoms";
 
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
+
 import { updateIdea } from "./actions";
 
 const ideaEditorSchema = z.object({
@@ -70,7 +71,7 @@ export function IdeaEditorForm({
 
       // Success - call onSuccess callback
       onSuccess();
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
       setIsSubmitting(false);
     }

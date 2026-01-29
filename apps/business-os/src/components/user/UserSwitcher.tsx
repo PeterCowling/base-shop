@@ -98,7 +98,7 @@ export function UserSwitcher({ currentUser }: UserSwitcherProps) {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                   {user.name[0]}
                 </span>
-                <span className="flex-1 text-left">{user.name}</span>
+                <span className="flex-1 text-start">{user.name}</span>
                 {user.role === "admin" && (
                   <span className="text-xs text-muted-foreground">Admin</span>
                 )}

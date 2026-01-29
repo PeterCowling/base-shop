@@ -29,7 +29,7 @@ function getLaneBorderColor(lane: Lane): string {
   return "border-muted-foreground";
 }
 
-/* eslint-disable ds/no-arbitrary-tailwind, ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/absolute-parent-guard -- BOS-P2-03: Phase 0 mobile UI */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/absolute-parent-guard -- BOS-P2-03: Phase 0 mobile UI */
 export function MobileLanePicker({
   lanes,
   activeLane,

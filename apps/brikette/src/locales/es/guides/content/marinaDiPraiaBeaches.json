@@ -1,106 +1,217 @@
 {
   "seo": {
-    "title": "Marina di Praia y playas escondidas",
-    "description": "Cómo llegar a calas apartadas y qué esperar en cada una."
+    "title": "Guía Marina di Praia: bus SITA, lido y cena",
+    "description": "Guía para huéspedes de hostel sobre Marina di Praia: cómo llegar en bus SITA, dónde ponerse (lido o zona libre), qué llevar y dónde cenar antes de volver."
   },
-  "linkLabel": "Marina di Praia y playas escondidas",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: cala dramática entre acantilados",
   "intro": [
-    "Marina di Praia es una cala estrecha entre acantilados con mezcla de barcas pesqueras y beach clubs.",
-    "Planifica la subida y bajada por escaleras empinadas o llega en taxi-barco."
+    "Marina di Praia es una cala de guijarros escondida en Praiano: un trayecto corto en bus SITA desde Hostel Brikette, pero normalmente más tranquila que las playas más famosas de Positano. Barcas de pesca, una torre de vigilancia y pasarelas de piedra le dan ese aire “secreto” sin perder servicios ni comida cerca.",
+    "Si quieres un día de playa sin estrés (baño, snack, siesta a la sombra y una cena fácil), es una de las mejores opciones cercanas para viajeros de hostel.",
+    "Esta guía cubre el bus, cómo se organiza la playa (lido vs zona libre), qué llevar para estar cómodo en los guijarros y la forma más simple de volver a Positano después del atardecer."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Por qué ir" },
+    { "href": "#getting-there", "label": "Cómo llegar" },
+    { "href": "#layout", "label": "Distribución y servicios" },
+    { "href": "#what-to-bring", "label": "Qué llevar" },
+    { "href": "#best-time", "label": "Mejor hora para ir" },
+    { "href": "#nearby", "label": "Baños tranquilos cerca" },
+    { "href": "#evening", "label": "Cena y regreso" }
   ],
   "sections": [
     {
+      "id": "why-go",
+      "title": "Por qué esta cala funciona para huéspedes de hostel",
+      "body": [
+        "A diferencia de Spiaggia Grande o Fornillo, esta bahía está en una garganta estrecha justo fuera de Praiano. Los acantilados protegen el agua del oleaje, las barcas se mecen en el pequeño puerto y el ambiente se mantiene relajado incluso en plena temporada.",
+        "Es un día “intermedio” perfecto: más cómodo que las calas salvajes llenas de escaleras, pero menos caótico que las grandes arenas de Positano. Tienes duchas y comida, pero sigues sintiendo que estás entre acantilados y no en el centro del pueblo.",
+        "Planéalo como media jornada (baño por la mañana + comida larga) o como un plan de tarde que termina con cena junto al agua antes de volver."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Vista de la cala de Marina di Praia con barcas, sombrillas y acantilados altos en Praiano",
+          "caption": "Resguardada, dramática y normalmente más tranquila que las grandes playas de Positano. Foto: Falk2 (CC BY-SA 4.0) vía Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Ir y volver en bus SITA",
+      "body": [
+        "Desde Hostel Brikette, baja por Via Pasitea hasta la parada Sponda y toma un bus SITA en dirección a Amalfi. Dile al conductor que quieres “Marina di Praia” para que se acuerde de parar: la parada está entre Praiano y Furore y con el bus lleno es fácil pasarla de largo.",
+        "Bájate en la parada señalizada y sigue el camino de piedra cuesta abajo (unos dos minutos) hasta el paseo marítimo. Está pavimentado, así que es sencillo incluso con chanclas.",
+        "Para la vuelta, cruza a la otra acera y espera un bus de regreso a Positano. En verano suele haber buena frecuencia, pero por la noche las salidas se espacian: mira el horario publicado al llegar e intenta tomar el penúltimo bus si vas a quedarte a cenar.",
+        "Compra y valida los billetes SITA antes de subir. Si necesitas repasar tipos de billete, dónde comprarlos y qué hacer cuando los buses van llenos, consulta nuestra %LINK:sitaTickets|guía de billetes SITA%. Si conviertes el día en un paseo completo por Praiano (iglesias, miradores y caminatas costeras), combínalo con la %LINK:praianoGuide|guía de Praiano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Paseo de piedra en la orilla de Marina di Praia con barcas y paredes de roca",
+          "caption": "El paseo de piedra hace fácil el último tramo de dos minutos hasta el agua. Foto: Falk2 (CC BY-SA 4.0) vía Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Iglesia de San Gennaro en Praiano con cúpula de azulejos y vistas a la Costa Amalfitana",
+          "caption": "Si combinas playa con un paseo por Praiano, la Iglesia de San Gennaro es un añadido fácil. Foto: Elliott Brown (CC BY 2.0) vía Wikimedia Commons."
+        }
+      ]
+    },
+    {
       "id": "layout",
-      "title": "Cómo es la ensenada",
+      "title": "Distribución de la playa: lido y servicios",
       "body": [
-        "La playa es pequeña y de cantos rodados; las rocas laterales dan fotos dramáticas.",
-        "Hay zona pública limitada: llega temprano para asegurarte espacio."
+        "La playa es estrecha, de guijarros, y se divide entre una pequeña zona pública y el área principal del lido. Si quieres la parte gratis cerca del agua, llega antes: es lo primero que se llena los fines de semana.",
+        "El operador principal es Marina di Praia Beach Club (tumbonas, sombrillas, duchas y normalmente algún tipo de paddle/kayak). En temporada alta pagas más por comodidad que por espacio, pero merece la pena si quieres baños y un día más “dejar cosas y relajarte”.",
+        "A lo largo del paseo encontrarás restaurantes y kioscos de bebidas frías. Los datáfonos a veces fallan, así que lleva algo de efectivo para pagos pequeños y un plan B si el kiosco de billetes del bus está cerrado más tarde.",
+        "Realidad hostel: no traigas cosas valiosas que te den ansiedad. Si vas solo, elige un sitio visible (cerca de otros grupos), guarda el móvil con cremallera en la mochila y haz baños cortos en lugar de dejar tus cosas sin vigilancia mucho tiempo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia vista desde el mar con playa de guijarros y paseo al pie del acantilado",
+          "caption": "Desde el agua se ve lo “compacta” que es la cala: llega temprano si quieres zona libre. Foto: Gilbert Bochenek (CC BY-SA 3.0) vía Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "access",
-      "title": "Cómo llegar",
+      "id": "what-to-bring",
+      "title": "Qué llevar (para que los guijarros no te fastidien el día)",
       "body": [
-        "Toma el bus SITA hasta Praiano y baja a pie unos 10 minutos por las escaleras señalizadas.",
-        "Los taxis-barco desde Positano te dejan en el muelle; confirma horarios para el regreso."
+        "Esto es guijarro, no arena blanda. La diferencia se nota mucho: si llegas con una toalla fina, probablemente estarás moviéndote cada cinco minutos en vez de relajarte.",
+        "Haz una mochila “de excursión hostel”: ligera para la subida de vuelta, pero con lo necesario para guijarros y sombra."
+      ],
+      "list": [
+        "Escarpines/zapatos de agua: la orilla puede resbalar y los guijarros duelen después de horas.",
+        "Esterilla o toalla gruesa: en guijarros se siente duro muy rápido.",
+        "Capa ligera para la tarde: el acantilado da sombra pronto y después del baño refresca.",
+        "Efectivo + tarjeta: algunos pagos pequeños y datáfonos no son fiables.",
+        "Bolsa estanca o funda zip para el móvil si entras y sales del agua."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Costa de Praiano con acantilados y mar azul en la Costa Amalfitana",
+          "caption": "Los acantilados cambian la luz y la sombra rápido: lleva una capa si te quedas hasta tarde. Foto: Barochat (CC BY-SA 3.0) vía Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "extras",
-      "title": "Servicios disponibles",
+      "id": "best-time",
+      "title": "Mejor hora para ir (y cómo se siente el agua)",
       "body": [
-        "Los beach clubs alquilan tumbonas, kayaks y organizan cenas al atardecer.",
-        "Hay baños sencillos y duchas frías: lleva toalla ligera y sandalias cerradas."
-      ]
-    }
-  ],
-  "tips": [
-    "Reserva almuerzo en Il Pirata o La Praia para comer sobre el acantilado entre baño y baño.",
-    "Lleva una bolsa estanca para objetos de valor: la playa es compacta y es más cómodo mantener todo junto."
-  ],
-  "faqs": [
-    {
-      "q": "¿Vale la pena para hacer snorkel?",
-      "a": [
-        "Sí, las rocas protegen peces pequeños. Usa máscara y escarpines."
+        "Para un día tranquilo y fácil, llega por la mañana. Tendrás más opciones de encontrar un sitio cómodo, menos agobio en el paseo y un ritmo más simple de “base y baño”.",
+        "A media/tarde los acantilados dan más sombra. Puede venir bien si estás acalorado, pero también significa que la cala puede sentirse fresca con viento, sobre todo después de un baño largo.",
+        "La orilla cae rápido: entra con calma la primera vez y vigila dónde dejas la mochila si las olas suben."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Vista de la costa de Praiano con acantilados y casas en la ladera",
+          "caption": "Aquí los acantilados mandan en la luz y la sombra: planifica con eso en mente. Foto: Mihael Grmek (CC BY-SA 4.0) vía Wikimedia Commons."
+        }
       ]
     },
     {
-      "q": "¿Es accesible para movilidad reducida?",
-      "a": [
-        "Lamentablemente no: las escaleras son largas e inclinadas. Para accesibilidad mejor playas en Amalfi con pasarelas."
+      "id": "nearby",
+      "title": "Baños tranquilos cerca (lo realista)",
+      "body": [
+        "La Costa Amalfitana es famosa por las “calas secretas”, pero muchas son privadas, solo accesibles en barco o requieren senderos por acantilados poco seguros. Para huéspedes de hostel, lo mejor es usar esta cala como base cómoda y añadir una sola parada “wow” en la misma línea de bus.",
+        "La parada dramática más fácil cerca es %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: ve temprano para fotos y un baño rápido, y luego vuelve aquí para comer, sombra y un baño más relajado.",
+        "Si quieres un día completo tipo “degustación”, organiza el orden (y los horarios del bus) con nuestra %LINK:beachHoppingAmalfi|guía de beach-hopping en la Costa Amalfitana% para no pasarte la tarde viendo buses llenos pasar de largo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Garganta de Fiordo di Furore con agua turquesa y acantilados altos",
+          "caption": "Fiordo di Furore es la parada fotogénica y dramática de cerca: combínala con una playa base más tranquila. Foto: Luca Aless (CC BY-SA 4.0) vía Wikimedia Commons."
+        }
       ]
-    }
-  ],
-  "toc": [
-    {
-      "href": "#why-go",
-      "label": "Por qué ir"
     },
     {
-      "href": "#getting-there",
-      "label": "Cómo llegar"
-    },
-    {
-      "href": "#layout",
-      "label": "Distribución y servicios"
-    },
-    {
-      "href": "#evening",
-      "label": "Quédate a cenar"
+      "id": "evening",
+      "title": "Cena junto al agua y regreso sin estrés",
+      "body": [
+        "Esta es una de las bahías más bonitas para alargar el plan: cuando baja el sol, los restaurantes pasan a modo cena y las luces del paseo se reflejan en el agua. Si quieres una mesa concreta, reserva, especialmente en julio y agosto.",
+        "Para simplificar la vuelta, mira el horario del bus en cuanto llegues. Intenta tomar el penúltimo servicio hacia Positano para tener margen si un bus va lleno.",
+        "Si pierdes el último bus, los taxis de Praiano a Positano pueden ser caros: si vas a quedarte tarde, organiza para compartir con gente del hostel."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Torre costera cerca de Praiano sobre los acantilados junto al mar",
+          "caption": "Esta costa está salpicada de torres históricas y senderos de acantilado. Foto: Falk2 (CC BY-SA 4.0) vía Wikimedia Commons."
+        }
+      ]
     }
   ],
   "essentialsTitle": "Qué esperar",
   "essentials": [
-    "Viaje en autobús SITA de 20 minutos desde Positano; Pregunta por la parada Marina di Praia y camina dos minutos cuesta abajo.",
-    "Estrecha playa de guijarros con una zona principal y una pequeña sección libre en el medio.",
-    "Restaurantes y quioscos de refrigerios se alinean en la pasarela, ideales para una cena al atardecer antes de regresar a casa."
+    "Trayecto corto en bus SITA desde Positano; pide la parada de Marina di Praia y baja dos minutos a pie hasta el agua.",
+    "Bahía estrecha de guijarros con un lido principal y una pequeña zona libre; llega temprano si quieres el tramo público.",
+    "Comida y servicios en el sitio (restaurantes, bebidas, duchas en el lido): ideal para media jornada o para cenar antes de volver."
   ],
   "typicalCostsTitle": "Costes típicos",
   "typicalCosts": [
-    "Tumbona + sombrilla en Marina di Praia Beach Club: 25€–35€ por día (disponibles juegos para dos personas).",
-    "Alquiler de kayak: unos 20 euros la hora para dos personas.",
-    "Platos principales de la cena en Da Armandino o Il Pirata: entre 16 y 28 € dependiendo de las especialidades de pesca y pasta."
+    "Tumbona + sombrilla en Marina di Praia Beach Club: €25–€35 el día (hay sets para dos).",
+    "Alquiler de kayak: alrededor de €20 por hora para dos personas.",
+    "Platos principales en Da Armandino o Il Pirata: €16–€28 según pescado y pasta del día."
   ],
   "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Valida el billete del bus en cuanto subas y guarda uno extra para la vuelta por si el kiosco está cerrado por la tarde/noche.",
+    "Lleva escarpines: los guijarros pueden resbalar y la orilla cae rápido.",
+    "Compara otras opciones costeras en nuestro %LINK:positanoBeaches|resumen de playas% si quieres combinar esta cala con un día en Positano."
+  ],
   "warningsTitle": "A tener en cuenta",
   "warnings": [
-    "El espacio es limitado; el área libre se llena primero y las tumbonas del Lido se agotan los fines de semana.",
-    "Los acantilados bloquean el sol directo a media tarde, lo que es excelente para refrescarse, pero puede hacer frío en los días ventosos.",
-    "La recepción móvil cae dentro del desfiladero; Descargue los horarios de los autobuses o las confirmaciones de la reserva de la cena con antelación."
+    "El espacio es limitado: la zona libre se llena primero y las tumbonas del lido se agotan los fines de semana.",
+    "Los acantilados bloquean el sol directo a media tarde: perfecto para refrescarse, pero puede sentirse fresco con viento.",
+    "La cobertura móvil baja dentro de la garganta: descarga horarios del bus o confirmaciones de reservas antes de llegar."
   ],
   "faqsTitle": "Preguntas frecuentes sobre Marina di Praia",
-  "gallery": {
-    "title": "Recorrido fotográfico",
-    "items": [
-      {
-        "alt": "Vista de Marina di Praia con barcas y sombrillas en la orilla de guijarros.",
-        "caption": "La cala es estrecha, protegida por acantilados, y se mantiene más tranquila que las playas principales de Positano."
-      },
-      {
-        "alt": "Playa de guijarros con tumbonas azules y amarillas en Marina di Praia.",
-        "caption": "La sección de lido tiene la mayoría de las tumbonas, con una pequeña franja libre cerca del centro."
-      }
-    ]
-  }
+  "faqs": [
+    {
+      "q": "¿Dónde cojo exactamente el bus desde Positano?",
+      "a": [
+        "Usa la parada Sponda en Via Pasitea para buses hacia Amalfi. Está a unos 10 minutos caminando cuesta abajo desde el hostel; en temporada alta llega 10 minutos antes para subir antes de que el bus se llene."
+      ]
+    },
+    {
+      "q": "¿Hay zona gratis o tengo que alquilar tumbonas?",
+      "a": [
+        "Hay un pequeño tramo público en el centro de la cala. Lleva una esterilla o una toalla gruesa: los guijarros son ásperos. Con la marea quizá tengas que moverte hacia las rocas. Las tumbonas de Marina di Praia Beach Club incluyen duchas y baños si prefieres montar “base” cómoda."
+      ]
+    },
+    {
+      "q": "¿Hasta qué hora puedo quedarme a cenar y volver a Hostel Brikette?",
+      "a": [
+        "El último bus SITA hacia Positano cambia según el mes, pero en verano suele haber servicio hasta alrededor de las 21:30. Mira el horario al llegar e intenta tomar el penúltimo por si uno va lleno. Después del último, los taxis de Praiano a Positano cuestan unos €35–€45, así que compártelo si te quedas más tiempo."
+      ]
+    },
+    {
+      "q": "¿Marina di Praia es buena opción si voy solo?",
+      "a": [
+        "Sí: es una de las bahías más “amigables” para ir solo porque tiene servicios y un paseo visible. Aun así, usa sentido común de hostel: lleva solo lo que estás dispuesto a cargar, guarda el móvil con cremallera y haz baños más cortos para no dejar la mochila sin vigilancia mucho rato."
+      ]
+    }
+  ]
 }
+

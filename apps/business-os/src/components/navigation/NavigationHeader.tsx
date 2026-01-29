@@ -14,8 +14,8 @@ import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
-import type { Business } from "@/lib/types";
 import type { User } from "@/lib/current-user";
+import type { Business } from "@/lib/types";
 
 import { QuickCaptureModal } from "../capture/QuickCaptureModal";
 import { UserSwitcher } from "../user/UserSwitcher";

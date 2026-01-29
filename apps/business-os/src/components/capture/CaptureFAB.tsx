@@ -4,7 +4,7 @@
  * BOS-UX-14
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-14: Phase 0 scaffold UI */
+ 
 "use client";
 
 import { useState } from "react";

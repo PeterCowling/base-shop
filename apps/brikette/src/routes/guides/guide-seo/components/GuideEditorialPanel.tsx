@@ -17,6 +17,7 @@ import type {
 } from "../../guide-manifest";
 import { CHECKLIST_LABELS, GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES } from "../../guide-manifest";
 import DiagnosticDetails from "./DiagnosticDetails";
+import SeoAuditBadge from "./SeoAuditBadge";
 import { useTranslationCoverage } from "./useTranslationCoverage";
 
 type AreaSaveStatus = "idle" | "saving" | "saved" | "error";
@@ -613,7 +614,116 @@ export default function GuideEditorialPanel({
             </Stack>
           </Stack>
         ) : null}
+
+        {/* SEO Audit Section */}
+        {enhancedChecklist && canEditAreas ? (
+          <Stack as="section" className="gap-3 border-t border-brand-outline/25 pt-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-brand-text/70">
+              SEO Audit
+            </h3>
+            <SeoAuditSection
+              guideKey={manifest.key}
+              checklist={enhancedChecklist}
+            />
+          </Stack>
+        ) : null}
       </Stack>
     </aside>
+  );
+}
+
+/**
+ * SEO Audit Section Component
+ * Displays audit results and provides button to run/re-run audit
+ */
+function SeoAuditSection({
+  guideKey,
+  checklist,
+}: {
+  guideKey: string;
+  checklist: ChecklistSnapshot;
+}): JSX.Element {
+  const [isRunning, setIsRunning] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Find the seoAudit checklist item
+  const seoAuditItem = checklist.items.find((item) => item.id === "seoAudit");
+  const hasAudit = seoAuditItem && seoAuditItem.status !== "missing";
+  const score = hasAudit && seoAuditItem.note?.includes("Score:")
+    ? parseFloat(seoAuditItem.note.match(/Score: ([\d.]+)\/10/)?.[1] ?? "0")
+    : null;
+  const needsImprovement = score !== null && score < 9.0;
+
+  const handleRunAudit = useCallback(async () => {
+    setIsRunning(true);
+    setError(null);
+
+    try {
+      // Call the audit function via script
+      // Note: In production, this would be an API endpoint
+      // For now, we'll show a message that the skill needs to be run manually
+      const message =
+        "To run an SEO audit, use the /audit-guide-seo skill:\n\n" +
+        `/audit-guide-seo ${guideKey}\n\n` +
+        "This will analyze the guide content and save results to the manifest overrides.";
+
+      alert(message);
+
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsRunning(false);
+    }
+  }, [guideKey]);
+
+  return (
+    <Stack className="gap-3">
+      {hasAudit && score !== null ? (
+        <Inline className="items-center gap-3">
+          <SeoAuditBadge score={score} />
+          {needsImprovement && (
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Score must be ≥9.0 to publish
+            </p>
+          )}
+        </Inline>
+      ) : (
+        <p className="text-xs text-brand-text/60">
+          No audit completed. Run an audit to check SEO quality.
+        </p>
+      )}
+
+      {seoAuditItem?.note && seoAuditItem.note !== "SEO Audit" && (
+        <p className="text-xs text-brand-text/75">{seoAuditItem.note}</p>
+      )}
+
+      <Inline className="gap-2">
+        <button
+          type="button"
+          onClick={handleRunAudit}
+          disabled={isRunning}
+          className={clsx(
+            "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+            isRunning
+              ? "bg-brand-outline/20 text-brand-text/40 cursor-not-allowed"
+              : "bg-brand-primary text-white hover:bg-brand-primary/90",
+          )}
+        >
+          {isRunning ? "Running..." : hasAudit ? "Re-run SEO Audit" : "Run SEO Audit"}
+        </button>
+
+        {hasAudit && needsImprovement && (
+          <span className="text-xs text-brand-text/60">
+            Address issues to reach 9.0+
+          </span>
+        )}
+      </Inline>
+
+      {error && (
+        <div className="rounded-md border border-red-300 bg-red-50 p-2 text-xs text-red-700 dark:border-red-700 dark:bg-red-900 dark:text-red-100">
+          <strong>Error:</strong> {error}
+        </div>
+      )}
+    </Stack>
   );
 }

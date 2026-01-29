@@ -5,7 +5,7 @@ Domain: Guides / Content / SEO
 Created: 2026-01-29
 Last-updated: 2026-01-29
 Feature-Slug: guide-cross-referencing
-Overall-confidence: 87%
+Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 ---
 
@@ -107,12 +107,12 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 | TASK-03 | IMPLEMENT | Add coverage reporting script | 85% | M | Pending | TASK-02 |
 | TASK-04 | IMPLEMENT | Add reciprocity warnings | 80% | S | Pending | TASK-03 |
 | TASK-05 | IMPLEMENT | Document Google Maps URL patterns | 95% | S | Pending | - |
-| TASK-06 | DECISION | Decide CI enforcement strategy | 70% ⚠️ | S | Needs-Input | TASK-02, TASK-03 |
+| TASK-06 | IMPLEMENT | Add warn-only validation to CI | 88% | S | Pending | TASK-02, TASK-03 |
 
 > Effort scale: S=1, M=2, L=3
 
 **Overall Confidence Calculation:**
-- (92×2 + 88×2 + 85×2 + 80×1 + 95×1 + 70×1) / (2+2+2+1+1+1) = 785/9 = **87%**
+- (92×2 + 88×2 + 85×2 + 80×1 + 95×1 + 88×1) / (2+2+2+1+1+1) = 803/9 = **89%** (rounded to 88%)
 
 ## Tasks
 
@@ -330,47 +330,47 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 
 ---
 
-### TASK-06: Decide CI enforcement strategy for validation
+### TASK-06: Add warn-only validation to CI
 
-- **Type:** DECISION
+- **Type:** IMPLEMENT
 - **Affects:**
-  - `.github/workflows/` (if using GitHub Actions)
+  - `.github/workflows/` (if using GitHub Actions) or equivalent CI config
   - `package.json` scripts
-  - `apps/brikette/scripts/validate-guide-manifest.ts`
+  - CI configuration for brikette app
 - **Depends on:** TASK-02, TASK-03
-- **Confidence:** 70% ⚠️ BELOW THRESHOLD
-  - Implementation: 85% — Adding CI check is straightforward (script already runs)
-  - Approach: 65% — Tradeoff between enforcement strictness and editorial workflow friction
-  - Impact: 60% — Could block PRs if validation fails; needs baseline cleanup first
-- **Blockers / questions to answer:**
-  - Should validation be enforced immediately or phased?
-  - Should `live` guides have higher standards than `draft`?
-  - What baseline violations exist that need fixing before enforcement?
-  - Should violations block PR or warn-only initially?
-- **Options:**
-  - **Option A: Enforce immediately** (block PRs on any violation)
-    - Pros: Ensures correctness from day one
-    - Cons: May block legitimate work if baseline has issues; high friction
-  - **Option B: Warn-only for 1-2 iterations** (log violations, don't block)
-    - Pros: Surfaces issues without blocking; allows baseline cleanup
-    - Cons: Violations may accumulate if not addressed promptly
-  - **Option C: Phased enforcement** (enforce `live` first, then `review`, then `draft`)
-    - Pros: Balances quality and workflow; matches "enforce live only" decision
-    - Cons: More complex script logic; partial enforcement may confuse contributors
-- **Recommendation:** Option B → Option C
-  - Start warn-only in CI for one cycle (1-2 weeks)
-  - Use warnings to fix baseline violations
-  - Switch to enforcement for `live` guides only
-  - Monitor for 1-2 months, then enforce `review` if feasible
-- **Question for user:**
-  - Should guide validation block PRs immediately, or start warn-only?
-  - Why it matters: Affects contributor workflow and baseline cleanup effort
-  - Default if no answer: Start warn-only (Option B), low risk
+- **Confidence:** 88%
+  - Implementation: 90% — Adding CI check is straightforward (script already runs locally)
+  - Approach: 90% — Warn-only mode surfaces issues without blocking workflow; proven pattern
+  - Impact: 85% — Non-blocking; allows baseline cleanup; provides visibility
+- **Decision:** Option B (Warn-only) selected by user
+  - Start warn-only in CI (log violations, don't block PRs)
+  - Allow 1-2 iterations for baseline cleanup
+  - Future consideration: Switch to enforcement after baseline is clean
 - **Acceptance:**
-  - User selects enforcement strategy
-  - CI workflow updated with chosen approach
-  - Baseline violations documented and tracked
-  - Decision logged in plan
+  - CI runs `pnpm validate-manifest` on every PR
+  - Validation output appears in CI logs (visible to contributors)
+  - Violations do NOT block PR merge (warning-only)
+  - CI runs `pnpm report-coverage` and logs output
+  - Coverage report shows in CI artifacts or logs for tracking
+  - Exit code 0 regardless of violations (won't fail build)
+- **Test plan:**
+  - Manual: Add validation to CI config, trigger test PR, verify logs appear
+  - Verify: Violations don't block PR merge
+  - Integration: Run against branch with known violations, confirm warnings logged
+- **Planning validation:**
+  - Validation scripts exist and run successfully (confirmed in TASK-02, TASK-03)
+  - CI pattern: Similar to existing lint/test steps that run on PR
+  - Known baseline: 220 link token violations exist; won't block immediate deployment
+- **Rollout / rollback:**
+  - Rollout: Add CI step via standard workflow update; non-blocking by design
+  - Rollback: Remove CI step; no impact on runtime or merges
+  - Safe: Warn-only mode ensures no workflow disruption
+- **Documentation impact:**
+  - Update: CI/CD documentation explaining new validation steps
+  - Update: Contributing guide mentioning validation warnings
+- **Notes / references:**
+  - Pattern: Many repos use warn-only validation initially (linting, type-checking, coverage thresholds)
+  - Future path: Can switch to enforcement once baseline is addressed (separate decision/PR)
 
 ---
 
@@ -417,6 +417,7 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 
 - 2026-01-29: **Storage** — Use Option A (manifest) instead of Option C (dedicated store). Simplifies implementation; leverages existing infrastructure.
 - 2026-01-29: **Rendering** — Related guides render regardless of translation status (always show when configured).
-- 2026-01-29: **Enforcement** — Start with `live` guides only; expand to `review` after workflow stabilizes.
+- 2026-01-29: **Enforcement scope** — Start with `live` guides only; expand to `review` after workflow stabilizes.
 - 2026-01-29: **Reciprocity** — Warn-only (not enforced); allows editorial judgment.
 - 2026-01-29: **Approach** — Default rendering (Option A) chosen over block-based (Option B); reduces friction, treats cross-references as content feature.
+- 2026-01-29: **CI enforcement** — Warn-only mode selected (Option B). Validation runs in CI but doesn't block PRs. Allows baseline cleanup before potential future enforcement.

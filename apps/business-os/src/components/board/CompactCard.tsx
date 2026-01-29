@@ -2,7 +2,11 @@ import Link from "next/link";
 
 import type { Card } from "@/lib/types";
 
-import { formatDate } from "./date-utils";
+import {
+  formatDueDate,
+  getDueDateColor,
+  getOwnerInitials,
+} from "./date-utils";
 import { PriorityBadge } from "./PriorityBadge";
 
 interface CompactCardProps {
@@ -11,6 +15,11 @@ interface CompactCardProps {
 }
 
 export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
+  const ownerInitials = getOwnerInitials(card.Owner);
+  const dueDateColor = card["Due-Date"]
+    ? getDueDateColor(card["Due-Date"])
+    : "text-muted-foreground";
+
   return (
     <Link
       href={`/cards/${card.ID}`}
@@ -21,21 +30,27 @@ export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
         {card.Title || card.ID}
       </h3>
 
-      {/* Metadata row */}
-      <div className="flex items-center gap-2 mb-2">
+      {/* Metadata row: Priority • Owner • Due Date */}
+      <div className="flex items-center gap-2 mb-2 flex-wrap">
         <PriorityBadge priority={card.Priority} />
+
+        {/* Owner chip */}
+        <span className="rounded bg-muted px-2 py-0.5 text-xs font-medium text-foreground">
+          {ownerInitials}
+        </span>
+
+        {/* Due date */}
+        {card["Due-Date"] && (
+          <span className={`text-xs font-medium ${dueDateColor}`}>
+            Due {formatDueDate(card["Due-Date"])}
+          </span>
+        )}
+
+        {/* Business tag (only on global board) */}
         {showBusinessTag && card.Business && (
           <span className="rounded bg-info-soft px-2 py-0.5 text-xs text-info-foreground">
             {card.Business}
           </span>
-        )}
-      </div>
-
-      {/* Owner & date */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span className="font-medium">{card.Owner}</span>
-        {card.Updated && (
-          <span>{formatDate(card.Updated)}</span>
         )}
       </div>
 

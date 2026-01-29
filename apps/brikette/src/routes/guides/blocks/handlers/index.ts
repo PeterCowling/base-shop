@@ -5,6 +5,7 @@ export { applyAlsoHelpfulBlock } from "./alsoHelpfulBlock";
 export { BlockAccumulator, type TemplateFragment } from "./BlockAccumulator";
 export { applyCalloutBlock } from "./calloutBlock";
 export { applyFaqBlock } from "./faqBlock";
+export { applyTableBlock } from "./tableBlock";
 export { applyGalleryBlock } from "./galleryBlock";
 export { applyGenericContentBlock } from "./genericContentBlock";
 export { applyHeroBlock } from "./heroBlock";

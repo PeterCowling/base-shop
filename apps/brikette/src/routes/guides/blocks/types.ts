@@ -12,6 +12,7 @@ export const GUIDE_BLOCK_TYPES = [
   "faq",
   "gallery",
   "callout",
+  "table",
   "serviceSchema",
   "breadcrumbs",
   "relatedGuides",
@@ -105,6 +106,22 @@ const calloutBlockOptionsSchema = z
   })
   .strict();
 
+const tableBlockOptionsSchema = z
+  .object({
+    id: z.string().min(1).optional(),
+    titleKey: z.string().min(1).optional(),
+    title: z.string().min(1).optional(),
+    columns: z.array(
+      z.object({
+        key: z.string().min(1),
+        label: z.string().min(1),
+        align: z.enum(["left", "center", "right"]).optional(),
+      })
+    ).min(1),
+    rows: z.array(z.record(z.string(), z.string())).min(1),
+  })
+  .strict();
+
 const serviceSchemaBlockOptionsSchema = z
   .object({
     contentKey: z.string().min(1).optional(),
@@ -191,6 +208,7 @@ export type FaqBlockOptions = z.infer<typeof faqBlockOptionsSchema>;
 export type GalleryBlockOptions = z.infer<typeof galleryBlockOptionsSchema>;
 export type GalleryBlockItem = z.infer<typeof galleryItemSchema>;
 export type CalloutBlockOptions = z.infer<typeof calloutBlockOptionsSchema>;
+export type TableBlockOptions = z.infer<typeof tableBlockOptionsSchema>;
 export type ServiceSchemaBlockOptions = z.infer<typeof serviceSchemaBlockOptionsSchema>;
 export type BreadcrumbsBlockOptions = z.infer<typeof breadcrumbsBlockOptionsSchema>;
 export type RelatedGuidesBlockOptions = z.infer<typeof relatedGuidesBlockOptionsSchema>;
@@ -224,6 +242,11 @@ export type GalleryBlock = {
 export type CalloutBlock = {
   type: "callout";
   options: CalloutBlockOptions;
+};
+
+export type TableBlock = {
+  type: "table";
+  options: TableBlockOptions;
 };
 
 export type ServiceSchemaBlock = {
@@ -277,6 +300,7 @@ export type GuideBlockDeclaration =
   | FaqBlock
   | GalleryBlock
   | CalloutBlock
+  | TableBlock
   | ServiceSchemaBlock
   | BreadcrumbsBlock
   | RelatedGuidesBlock
@@ -307,6 +331,10 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("callout"),
     options: calloutBlockOptionsSchema,
+  }),
+  z.object({
+    type: z.literal("table"),
+    options: tableBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("serviceSchema"),

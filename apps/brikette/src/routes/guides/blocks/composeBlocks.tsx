@@ -16,6 +16,7 @@ import {
   applyHeroBlock,
   applyJsonLdBlock,
   applyServiceSchemaBlock,
+  applyTableBlock,
   applyTransportDropInBlock,
   BlockAccumulator,
   type TemplateFragment,
@@ -38,6 +39,9 @@ function composeBlock(acc: BlockAccumulator, block: GuideBlockDeclaration): void
       return;
     case "callout":
       applyCalloutBlock(acc, block.options);
+      return;
+    case "table":
+      applyTableBlock(acc, block.options);
       return;
     case "serviceSchema":
       applyServiceSchemaBlock(acc, block.options);

@@ -9,6 +9,9 @@
     "For more information about each beach, click on the name of the beach in the table below. This will take you to our guides, each of which include travel directions and descriptions of the various sections of the beach."
   ],
   "galleryTitle": "Positano beach highlights",
+  "comparisonTable": {
+    "title": "Beach Comparison Table"
+  },
   "toc": [
     {
       "href": "#overview",

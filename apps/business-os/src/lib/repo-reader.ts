@@ -2,7 +2,7 @@ import path from "node:path";
 
 import matter from "gray-matter";
 
-import { readdirWithinRoot,readFileWithinRoot } from "./safe-fs";
+import { readdirWithinRoot, readFileWithinRoot } from "./safe-fs";
 import type {
   Business,
   BusinessCatalog,

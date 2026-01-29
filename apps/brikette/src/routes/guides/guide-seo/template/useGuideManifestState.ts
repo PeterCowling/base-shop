@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { IS_DEV } from "@/config/env";
+import { IS_DEV, PREVIEW_TOKEN } from "@/config/env";
 import type { AppLanguage } from "@/i18n.config";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { ensureGuideContent } from "@/utils/ensureGuideContent";
 
 import type { ChecklistSnapshot, GuideChecklistItem, GuideManifestEntry } from "../../guide-manifest";
 import { buildGuideChecklist, getGuideManifestEntry, resolveDraftPathSegment } from "../../guide-manifest";
+import type { ManifestOverrides } from "../../guide-manifest-overrides";
 
 type LoaderData = {
   status?: GuideManifestEntry["status"];
@@ -22,11 +23,50 @@ export function useGuideManifestState(params: {
 }) {
   const { guideKey, lang, canonicalPathname, preferManualWhenUnlocalized, loaderData } = params;
   const [checklistVersion, setChecklistVersion] = useState(0);
+  const [overrides, setOverrides] = useState<ManifestOverrides>({});
 
   const manifestEntry = useMemo<GuideManifestEntry | null>(
     () => getGuideManifestEntry(guideKey) ?? null,
     [guideKey],
   );
+
+  // Fetch manifest overrides (includes SEO audit results)
+  useEffect(() => {
+    if (!manifestEntry) return;
+
+    const previewToken = PREVIEW_TOKEN ?? "";
+    if (!previewToken) return;
+
+    let active = true;
+
+    const fetchOverrides = async () => {
+      try {
+        const response = await fetch(`/api/guides/${guideKey}/manifest`, {
+          headers: {
+            "x-preview-token": previewToken,
+          },
+        });
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        if (active && data.ok && data.override) {
+          setOverrides((prev) => ({
+            ...prev,
+            [guideKey]: data.override,
+          }));
+        }
+      } catch (err) {
+        if (IS_DEV) console.debug("[useGuideManifestState] Failed to fetch overrides", err);
+      }
+    };
+
+    void fetchOverrides();
+
+    return () => {
+      active = false;
+    };
+  }, [guideKey, manifestEntry, checklistVersion]);
 
   useEffect(() => {
     if (!manifestEntry) return;
@@ -81,9 +121,9 @@ export function useGuideManifestState(params: {
       }
     }
     return manifestEntry
-      ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang })
+      ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang, overrides })
       : undefined;
-  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang, checklistVersion]);
+  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang, checklistVersion, overrides]);
 
   const draftUrl = useMemo(() => {
     if (!manifestEntry) return undefined;

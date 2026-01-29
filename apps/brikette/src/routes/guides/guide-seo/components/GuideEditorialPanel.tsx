@@ -9,6 +9,7 @@ import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import { ENABLE_GUIDE_AUTHORING, PREVIEW_TOKEN } from "@/config/env";
 
 import type {
+  ChecklistItemId,
   ChecklistSnapshot,
   ChecklistSnapshotItem,
   ChecklistStatus,
@@ -301,7 +302,12 @@ export default function GuideEditorialPanel({
       ? translated
       : value;
   };
-  const resolveChecklistStatusLabel = (value: ChecklistStatus): string => {
+  const resolveChecklistStatusLabel = (value: ChecklistStatus, itemId?: ChecklistItemId): string => {
+    // Special case for seoAudit: "inProgress" means audit exists but score < 9.0
+    if (itemId === "seoAudit" && value === "inProgress") {
+      return "Below threshold";
+    }
+
     const key = `dev.editorialPanel.checklist.status.${value}`;
     const translated = t(key);
     return typeof translated === "string" && translated.trim().length > 0 && translated !== key
@@ -606,7 +612,7 @@ export default function GuideEditorialPanel({
                         CHECKLIST_BADGE_STYLES[displayStatus],
                       )}
                     >
-                      {isTranslationsLoading ? "Loading..." : resolveChecklistStatusLabel(displayStatus)}
+                      {isTranslationsLoading ? "Loading..." : resolveChecklistStatusLabel(displayStatus, item.id)}
                     </Inline>
                   </Inline>
                 );
@@ -674,11 +680,15 @@ function SeoAuditSection({
         throw new Error(data.error || "Audit failed");
       }
 
-      // Refresh the page to show updated checklist with new audit results
-      window.location.reload();
+      // Wait briefly to ensure file is written, then reload with cache bust
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Add timestamp to force cache invalidation
+      const url = new URL(window.location.href);
+      url.searchParams.set("_audit", Date.now().toString());
+      window.location.href = url.toString();
     } catch (err) {
       setError((err as Error).message);
-    } finally {
       setIsRunning(false);
     }
   }, [guideKey]);

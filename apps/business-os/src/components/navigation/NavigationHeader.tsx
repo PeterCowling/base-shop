@@ -10,13 +10,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { Button } from "@acme/design-system/atoms";
 
 import type { Business } from "@/lib/types";
 
 import { QuickCaptureModal } from "../capture/QuickCaptureModal";
+
 import { BusinessSelector } from "./BusinessSelector";
 
 export interface NavigationHeaderProps {
@@ -34,6 +35,7 @@ const NAV_LINKS: NavLink[] = [
   { href: "/boards", label: "Boards" },
   { href: "/people", label: "People" },
   { href: "/plans", label: "Plans" },
+  { href: "/archive", label: "Archive" },
 ];
 
 export function NavigationHeader({

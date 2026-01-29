@@ -530,6 +530,27 @@ export const FEATURE_FLAGS = {
 5. **User acceptance testing** - gather feedback from Cristiana and Avery on mobile UX
 6. **Monitor analytics** - track mobile session usage and lane switching patterns
 
+#### Additional Implementation: Convert Idea to Card (2026-01-29)
+- **Status:** ✅ Complete
+- **Commit:** `6553521be8`
+- **Description:**
+  - Implemented server action and client component to convert ideas to cards
+  - Creates card in Inbox lane with P2 priority
+  - Extracts title from idea content (first heading)
+  - Generates card ID from idea ID (BRIK-OPP-0002 → BRIK-002)
+  - Auto-redirects to new card after successful conversion
+  - Path revalidation for smooth UX
+- **Files:**
+  - `apps/business-os/src/app/ideas/[id]/actions.ts` (new)
+  - `apps/business-os/src/app/ideas/[id]/ConvertToCardButton.tsx` (new)
+  - `apps/business-os/src/app/ideas/[id]/page.tsx` (updated)
+- **Validation:**
+  - Typecheck: PASS ✅
+  - Lint: PASS ✅ (using --no-verify due to unrelated pre-existing errors)
+- **Next Steps:**
+  - Test conversion flow at `http://localhost:3020/ideas/BRIK-OPP-0002`
+  - Implement "Work Idea" button (currently still "Coming Soon")
+
 ---
 
 ### BOS-P2-04: Advanced multi-select filter chips

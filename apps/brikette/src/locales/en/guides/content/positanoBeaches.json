@@ -56,7 +56,7 @@
       "title": "How to choose the right beach",
       "body": [
         "Positano offers a mix of free pebbled stretches and organised lidos. Lounger prices range from €15 at smaller clubs to €400 at prestige decks like La Scogliera, so decide early whether you want full service or a free towel spot.",
-        "Our comparison table groups beaches by town. Each entry lists starting lounger costs, if a free area exists, and quick pros and cons so you can balance sun hours, crowds, and convenience."
+        "Our comparison table below groups beaches by town. Each entry lists starting lounger costs, if a free area exists, and quick pros and cons so you can balance sun hours, crowds, and convenience."
       ]
     },
     {
@@ -109,9 +109,7 @@
     {
       "id": "comparison-table",
       "title": "Beach comparison table",
-      "body": [
-        "Use this quick reference table to compare prices, facilities, and key features across all beaches covered in this guide.\n\n## Positano Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Fornillo** | Pupetto, Grassi, Ferdinando, La Marinella start at €15 | Yes | Cheaper than main beach; large free section; secret free area | Steep walk back to hostel; easier route via main beach & bus |\n| **Main aka Grande** | L'Incanto: €25+; La Scogliera: €100-400 | Yes | Classic Positano views with town backdrop | Generally expensive; most guests prefer Fornillo atmosphere |\n| **Arienzo** | €60+ with food/drink deals | Yes | Long sunshine hours; stunning views; good beach club value | Challenging access without water taxi service |\n| **Laurito** | Da Adolfo: free with restaurant purchase; Villa Tre Ville: €30+ | Yes | Extended sunshine; remarkable views | Da Adolfo overrated; Villa Tre Ville expensive; small free area; water taxi needed |\n\n## Praiano Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Gavitella** | Not listed | No | Ideal evening destination; sunset/aperitif atmosphere | Appears as concrete jungle during daytime |\n| **Marina di Praia** | Not listed | Yes | Charming fishing cove atmosphere | Narrow beach; limited morning sun |\n\n## Furore Beaches\n\n| Beach | Lounger Prices | Free Area? | Pros | Cons |\n|-------|----------------|------------|------|------|\n| **Fiordo di Furore** | Not listed | Yes | Instagram-worthy; cliff jumping available; budget-friendly | Difficult access/departure; extremely limited space |\n\n## Sorrento & Amalfi\n\n**Regina Giovanna Bath** (Sorrento) - Free entry; relatively unknown and cool option; no facilities (bring supplies)\n\n**Amalfi Beach** - Multiple clubs: Stella Maris, Marina Grande, Silver Moon, Bagni Mar Di Cobalto, Tonino ò Beach; premium pricing; reserve ahead in peak season"
-      ]
+      "body": []
     }
   ],
   "prosCons": [

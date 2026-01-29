@@ -282,6 +282,30 @@ function DiagnosticDetails({
     );
   }
 
+  if (itemId === "seoAudit") {
+    return (
+      <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
+        <p className="text-[10px] font-semibold uppercase text-brand-text/60">SEO Audit</p>
+        <Stack className="mt-2 gap-2">
+          <p className="text-[11px] text-brand-text/80">
+            SEO audits analyze guide content quality across multiple factors:
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-[11px] text-brand-text/70 pl-2">
+            <li>Meta tags (title and description)</li>
+            <li>Content length and structure</li>
+            <li>Internal links and FAQs</li>
+            <li>Images and freshness signals</li>
+            <li>Structured data declarations</li>
+          </ul>
+          <p className="text-[10px] text-brand-text/50 pt-1">
+            Guides must score 9.0/10 or higher to be published to "live" status.
+            See the SEO Audit section above for detailed results and recommendations.
+          </p>
+        </Stack>
+      </div>
+    );
+  }
+
   return null;
 }
 

@@ -64,12 +64,12 @@ export function MobileLanePicker({
               className={`
                 flex-shrink-0 snap-center px-4 py-3 min-w-[100px] min-h-11
                 flex flex-col items-center justify-center gap-1
-                border-t-2 transition-colors
+                border-t-2 transition-all duration-200 ease-in-out
                 ${isActive ? borderColor : "border-transparent"}
                 ${isActive ? "bg-surface-2" : "hover:bg-surface-1"}
               `}
             >
-              <span className={`text-xs font-medium ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+              <span className={`text-xs font-medium truncate max-w-[80px] ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                 {lane}
               </span>
               <span className={`text-xs ${isActive ? "text-foreground" : "text-muted-foreground"}`}>

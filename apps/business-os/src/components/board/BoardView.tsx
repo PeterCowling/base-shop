@@ -7,7 +7,7 @@
 /* eslint-disable ds/no-unsafe-viewport-units, ds/enforce-layout-primitives -- BOS-11: Phase 0 scaffold UI */
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 import { Inline } from "@acme/design-system/primitives/Inline";
@@ -120,6 +120,13 @@ export function BoardView({
     return counts;
   }, [cardsByLane, inboxIdeas, allLanes]);
 
+  // Scroll to top when mobile lane changes (BOS-P2-03 Phase 4)
+  useEffect(() => {
+    if (viewport === "mobile") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [activeMobileLane, viewport]);
+
   return (
     <div className="min-h-screen bg-surface-1">
       {/* Header */}
@@ -214,7 +221,7 @@ export function BoardView({
       </div>
 
       {/* Board lanes */}
-      <div className="flex gap-4 p-6 overflow-x-auto md:flex-row max-md:flex-col max-md:overflow-y-auto max-md:px-4 max-md:pb-20">
+      <div className="flex gap-4 p-6 overflow-x-auto md:flex-row max-md:flex-col max-md:overflow-y-auto max-md:px-4 max-md:pb-20 transition-opacity duration-200 ease-in-out">
         {visibleLanes.map((lane) => {
           const cards = filteredCardsByLane[lane] || [];
           // For Inbox lane, show ideas too

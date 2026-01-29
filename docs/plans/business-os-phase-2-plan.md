@@ -4,7 +4,7 @@ Status: Draft
 Domain: Business OS
 Created: 2026-01-29
 Last-reviewed: 2026-01-29
-Last-updated: 2026-01-29
+Last-updated: 2026-01-29 (re-planned BOS-P2-04, BOS-P2-05)
 Feature-Slug: business-os-phase-2
 Overall-confidence: TBD
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
@@ -560,7 +560,7 @@ export const FEATURE_FLAGS = {
   - `apps/business-os/src/components/board/FilterChips.tsx` (add multi-select)
   - `apps/business-os/src/components/board/FilterChipsAdvanced.tsx` (new)
 - **Depends on:** -
-- **Status:** Pending
+- **Status:** ⚠️ DEFERRED TO PHASE 3
 - **Confidence:** 82%
   - Implementation: 85% — Checkbox-based multi-select + AND/OR logic
   - Approach: 82% — Complexity tradeoff: power vs usability
@@ -587,20 +587,48 @@ export const FEATURE_FLAGS = {
   - Rollout: Add advanced filters behind feature flag
   - Rollback: Remove advanced filters, keep basic single-select
 
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** 82%
+- **Updated confidence:** 82% (unchanged - but deferred)
+- **Decision:** DEFER TO PHASE 3
+- **Rationale:**
+  - Current FilterChips.tsx (lines 1-139) already implements working multi-select with AND logic
+  - Toggle-based design is clean and simple (5 preset chips: myItems, overdue, highPriority, blocked, untriaged)
+  - Task as described asks for date pickers, owner dropdowns, saved presets, AND/OR toggle
+  - This scope represents significant complexity creep that risks making the interface overwhelming
+  - No user demand for advanced filters yet (Phase 1 just completed)
+  - Better approach: Keep current simple chip filters, gather usage data, defer enhancements until real user pain points emerge
+- **Investigation performed:**
+  - Repo: `apps/business-os/src/components/board/FilterChips.tsx` (current implementation)
+  - Findings: Multi-select already working with array-based activeFilters state
+  - Pattern: `activeFilters.every()` provides AND logic for filtering (line 53)
+  - Design: Toggle chips add/remove from array (lines 93-99)
+- **Changes to task:**
+  - Status: Pending → Deferred to Phase 3
+  - Dependencies: None (no blockers, just scope management)
+  - Priority remains P2 but execution deferred
+- **What would make this ≥90%:**
+  - User research showing demand for date range filters or owner dropdowns
+  - Usage data showing current simple filters insufficient
+  - UX design review to ensure advanced UI doesn't confuse users
+  - Phase 3 roadmap planning session to validate priority
+
 ---
 
 ### BOS-P2-05: Keyboard arrow navigation between cards
 
 - **Type:** IMPLEMENT
 - **Affects:**
+  - `apps/business-os/src/hooks/useRovingTabindex.ts` (new - roving tabindex hook)
   - `apps/business-os/src/components/keyboard/KeyboardShortcutProvider.tsx` (add arrow handlers)
-  - `apps/business-os/src/components/board/CompactCard.tsx` (add focus state)
+  - `apps/business-os/src/components/board/CompactCard.tsx` (add focus state + tabindex)
+  - `apps/business-os/src/components/board/BoardView.tsx` (integrate roving tabindex context)
 - **Depends on:** -
-- **Status:** Pending
-- **Confidence:** 78%
-  - Implementation: 80% — Focus management + arrow key handlers
-  - Approach: 78% — Complex focus logic across lanes
-  - Impact: 75% — Nice-to-have; risk of keyboard trap bugs
+- **Status:** Pending (Ready to build - confidence raised to 85%)
+- **Confidence:** 85% (↑ from 78%)
+  - Implementation: 88% (↑ from 80%) — Roving tabindex pattern well-documented with proven libraries
+  - Approach: 85% (↑ from 78%) — Standard accessibility pattern, escape key prevents keyboard trap
+  - Impact: 82% (↑ from 75%) — Graceful fallback to click-only if disabled
 - **Effort:** L (Large)
 - **Priority:** P3 (Low - power user feature)
 - **Description:**
@@ -621,6 +649,58 @@ export const FEATURE_FLAGS = {
 - **Rollout / rollback:**
   - Rollout: Add behind feature flag, gather feedback
   - Rollback: Remove arrow handlers, revert to click-only
+
+#### Re-plan Update (2026-01-29)
+- **Previous confidence:** 78% (BELOW THRESHOLD)
+- **Updated confidence:** 85% (ABOVE THRESHOLD - Ready to build)
+  - Implementation: 88% (↑ from 80%) — React roving tabindex pattern proven and well-documented
+  - Approach: 85% (↑ from 78%) — Standard WCAG 2.1 accessibility pattern with escape key safety
+  - Impact: 82% (↑ from 75%) — Graceful degradation to click-only navigation if disabled
+- **Investigation performed:**
+  - **Roving tabindex pattern research:**
+    - Pattern: Only one element in tab sequence (tabindex="0"), others use tabindex="-1"
+    - Arrow keys move focus between elements and update which has tabindex="0"
+    - Standard WCAG 2.1 pattern for 2D grids
+    - React libraries available: `react-roving-tabindex` (3.2.0), `react-roving-tabindex-grid`, `use-rove`
+  - **Keyboard trap prevention:**
+    - Escape key deactivates focus trap (standard pattern)
+    - Focus returns to element that triggered navigation
+    - Libraries like `focus-trap-react` provide battle-tested implementations
+  - **Current state:**
+    - `KeyboardShortcutProvider.tsx` (lines 1-55): Only handles Cmd+K, no arrow keys yet
+    - `CompactCard.tsx` (lines 1-80): Link component with no focus state or tabindex management
+    - Design system hooks: No focus management utilities exist yet (checked packages/design-system/src/hooks/)
+  - **Files to read during implementation:**
+    - External docs: [React Roving Tabindex](https://github.com/stevejay/react-roving-tabindex), [Focus Trap React](https://www.dhiwise.com/post/mastering-accessibility-with-focus-trap-react)
+    - Repo patterns: `src/components/keyboard/KeyboardShortcutProvider.tsx` for keyboard event patterns
+- **Decision / resolution:**
+  - **Chosen approach:** Implement custom `useRovingTabindex` hook (don't add external library for single feature)
+  - **Why:** Business OS is a focused tool with specific needs; custom hook gives full control over behavior
+  - **Safety:** Escape key always available to exit focus mode, no keyboard trap risk
+  - **Accessibility:** Follows WCAG 2.1 guidelines for grid navigation
+  - **Performance:** Minimal overhead (single event listener + focus state tracking)
+- **Changes to task:**
+  - **Affects:** Added `useRovingTabindex.ts` (new custom hook), updated BoardView integration
+  - **Dependencies:** None (no blockers)
+  - **Acceptance criteria:** Unchanged (all original criteria still apply)
+  - **Test plan:** Enhanced with specific roving tabindex behavior tests
+    - Unit test: useRovingTabindex hook manages tabindex correctly
+    - Unit test: Arrow keys update focused element
+    - Unit test: Escape key exits focus mode
+    - Integration test: Focus moves correctly in 2D grid (lanes × cards)
+    - Accessibility test: Screen reader announces focus changes
+  - **Rollout/rollback:** Unchanged (feature flag + easy revert)
+- **What would make this ≥90%:**
+  - Write failing test stubs for useRovingTabindex hook (L-effort requirement)
+  - Prototype basic 2D grid navigation in isolation (validate assumptions)
+  - Manual testing with VoiceOver/NVDA on real content
+  - Performance testing with 50+ cards per lane
+
+**Sources:**
+- [React Roving Tabindex](https://github.com/stevejay/react-roving-tabindex)
+- [Mastering Keyboard Navigation with Roving tabindex in Grids](https://rajeev.dev/mastering-keyboard-navigation-with-roving-tabindex-in-grids)
+- [Mastering Accessibility with Focus Trap React](https://www.dhiwise.com/post/mastering-accessibility-with-focus-trap-react)
+- [How to Design Keyboard Accessibility for Complex React Experiences](https://www.freecodecamp.org/news/designing-keyboard-accessibility-for-complex-react-experiences/)
 
 ---
 

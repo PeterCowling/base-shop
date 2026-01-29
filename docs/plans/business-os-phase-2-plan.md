@@ -270,34 +270,174 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 - **Affects:**
   - `apps/business-os/src/components/board/BoardView.tsx` (responsive layout)
   - `apps/business-os/src/components/board/MobileLanePicker.tsx` (new)
+  - `apps/business-os/src/components/board/BoardLane.tsx` (responsive styles)
 - **Depends on:** -
-- **Status:** Pending
-- **Confidence:** 75%
-  - Implementation: 80% — CSS flexbox/grid changes + lane picker component
-  - Approach: 75% — Single-lane picker vs vertical stacking tradeoff unclear
-  - Impact: 70% — Major layout change; needs extensive mobile testing
-- **Effort:** L (Large)
+- **Status:** Planned
+- **Confidence:** 85% (↑ from 75% - design decisions finalized)
+  - Implementation: 90% — Bottom tab bar pattern proven, CSS + useViewport hook well-understood
+  - Approach: 85% — Hybrid CSS/JS with smart defaults, leverages existing design system patterns
+  - Impact: 80% — Comprehensive test plan addresses mobile testing needs
+- **Effort:** L (Large - ~18 hours / 2.5 days)
 - **Priority:** P1 (High - critical for mobile adoption)
-- **Description:**
-  - On mobile (<768px), switch from horizontal scrolling to vertical single-lane view
-  - Add MobileLanePicker component (tab bar or dropdown) to select active lane
-  - Cards within selected lane displayed vertically
-  - Lane picker sticky at top of viewport
-  - Preserve search/filter functionality on mobile
-- **Acceptance:**
-  - Mobile layout (<768px) shows single lane vertically
-  - Lane picker allows switching between lanes
-  - Search and filter chips remain functional on mobile
-  - Smooth transitions between lane selections
-  - No horizontal scrolling on mobile
-- **Test plan:**
-  - Manual: Test on iOS Safari (iPhone 12, 14 Pro)
-  - Manual: Test on Android Chrome (Pixel, Samsung)
-  - Manual: Verify landscape orientation works
-  - Manual: Test with 1 lane vs 7 lanes (performance)
-- **Rollout / rollback:**
-  - Rollout: Add responsive layout behind feature flag initially
-  - Rollback: Remove mobile layout, restore horizontal scrolling
+
+#### Description
+Transform Business OS board from desktop-only horizontal scrolling to mobile-optimized single-lane vertical view. Current implementation uses fixed 320px lane widths - mobile users must swipe left/right, creating poor UX.
+
+**Approach:** Hybrid CSS + JavaScript implementation with bottom tab bar lane picker and smart defaults.
+
+#### Design Decisions (Finalized)
+
+1. **Mobile Lane Selection: Bottom Tab Bar**
+   - Fixed bottom navigation with horizontal scrollable tabs (iOS/Android standard)
+   - Always visible, thumb-friendly positioning
+   - All 7 lanes accessible with snap-to-center scrolling
+   - Smart default: "In Progress" lane shown first (most actionable)
+
+2. **Responsive Strategy**
+   - Breakpoint: `md:` (768px) - mobile below, desktop above
+   - Mobile (<768px): Single lane vertical, bottom tab bar, full-width cards
+   - Desktop (≥768px): Unchanged horizontal scrolling with 320px lanes
+   - Tablet (768-1024px): Uses desktop layout (sufficient width for multiple lanes)
+
+3. **Implementation: Hybrid CSS + JS**
+   - CSS: Responsive layout (Tailwind breakpoints), no JS reflow
+   - JavaScript: Behavior only (`useViewport()` hook, lane selection state)
+   - SSR compatible: Layout works on first render
+
+4. **Toolbar Responsive Behavior**
+   - BoardViewSwitcher: Hidden on mobile (replaced by MobileLanePicker)
+   - Search: Full width on mobile, stacks above filters
+   - Filters: Natural wrapping (already has flex-wrap)
+
+#### Implementation Steps
+
+**Phase 1: Core Responsive Layout (~4 hours)**
+
+1. Add `useViewport()` hook to BoardView
+   - Import from `@acme/design-system/hooks/useViewport`
+   - Add `activeMobileLane` state (default: "In Progress")
+   - Update `visibleLanes` to return single lane on mobile
+
+2. Update board container responsive styles:
+   ```tsx
+   <div className="
+     flex gap-4 p-6 overflow-x-auto        /* Desktop */
+     md:flex-row
+     max-md:flex-col max-md:overflow-y-auto max-md:px-4 max-md:pb-20 /* Mobile */
+   ">
+   ```
+
+3. Hide BoardViewSwitcher on mobile:
+   ```tsx
+   <div className="hidden md:block">
+     <BoardViewSwitcher ... />
+   </div>
+   ```
+
+**Phase 2: MobileLanePicker Component (~6 hours)**
+
+1. Create `MobileLanePicker.tsx` component:
+   - Fixed bottom nav (`z-40`) with horizontal scrollable tabs
+   - Active lane highlighted with colored top border
+   - Card count displayed per lane
+   - iOS safe area insets (`paddingBottom: env(safe-area-inset-bottom)`)
+   - ARIA roles (tablist, tab, aria-selected)
+
+2. Integrate into BoardView:
+   - Calculate `cardCountByLane` (cards + ideas per lane)
+   - Render conditionally: `viewport === "mobile"`
+   - Pass all 7 lanes, active lane, onChange callback, card counts
+
+**Phase 3: Responsive Refinements (~4 hours)**
+
+1. Update BoardLane for mobile:
+   ```tsx
+   <div className="
+     min-w-[320px] max-w-[320px]          /* Desktop: fixed 320px */
+     md:min-w-[320px] md:max-w-[320px]
+     max-md:min-w-full max-md:max-w-full /* Mobile: full width */
+   ">
+     <div className="... md:sticky md:top-0 max-md:static"> {/* Header */}
+     <div className="... md:max-h-[calc(100vh-16rem)] max-md:max-h-none"> {/* Content */}
+   ```
+
+2. Adjust header for mobile:
+   - Stack vertically: `max-md:flex-col max-md:gap-3`
+   - Action buttons: `max-md:flex-wrap max-md:flex-1`
+   - Reduce padding: `max-md:px-4`
+   - Smaller heading: `max-md:text-xl`
+
+**Phase 4: Polish & Edge Cases (~4 hours)**
+
+1. Preserve search/filter on lane switch (already global state)
+2. Add scroll-to-top on lane switch
+3. Smooth transitions: `transition-all duration-200 ease-in-out`
+4. Handle empty lanes (EmptyLaneState), landscape mode, long names
+
+#### Acceptance Criteria
+
+**Functional:**
+- ✅ Mobile (<768px) shows single lane vertically
+- ✅ MobileLanePicker displays all 7 lanes in bottom tab bar
+- ✅ Default lane is "In Progress"
+- ✅ Search and filters preserved across lane switches
+- ✅ Smooth transitions (<200ms)
+- ✅ No horizontal scrolling on mobile
+- ✅ Desktop layout unchanged (≥768px)
+
+**Visual/UX:**
+- ✅ Bottom tab bar thumb-friendly (≥44px touch targets)
+- ✅ Active lane highlighted with semantic color
+- ✅ Card counts visible per lane
+- ✅ Header actions stack on mobile
+- ✅ iOS safe area insets respected
+
+**Performance:**
+- ✅ Lane switch <200ms
+- ✅ No layout shift on viewport resize
+- ✅ Works on low-end devices
+
+**Accessibility:**
+- ✅ ARIA roles (tablist, tab, aria-selected)
+- ✅ Keyboard navigation
+- ✅ Screen reader compatible
+
+#### Test Plan
+
+**Unit Tests:**
+- `MobileLanePicker.test.tsx` (NEW): 8 tests (lanes render, active highlight, onChange, card counts, keyboard)
+- `BoardView.test.tsx` (UPDATE): 6 mobile tests (single lane, switcher hidden, picker shown, lane switching, search persistence)
+
+**Integration Tests (Cypress):**
+- `board-mobile-layout.cy.ts` (NEW): Mobile viewport (375x667), tab bar visible, lane switching, search persistence, tablet layout (768x1024)
+
+**Manual Testing:**
+- Devices: iPhone 14 Pro, iPhone SE, Pixel 7, iPad 10th gen
+- Scenarios: Portrait/landscape, rotation, empty lanes, long lists, tab scroll, safe areas
+
+#### Rollout / Rollback
+
+**Feature Flag:**
+```tsx
+// lib/feature-flags.ts
+export const FEATURE_FLAGS = {
+  MOBILE_VERTICAL_LANES: process.env.NEXT_PUBLIC_MOBILE_VERTICAL_LANES === "true",
+};
+```
+
+**Rollback:** Set `NEXT_PUBLIC_MOBILE_VERTICAL_LANES=false` → mobile reverts to horizontal scroll
+
+#### Critical Files
+
+**New:**
+- `apps/business-os/src/components/board/MobileLanePicker.tsx`
+- `apps/business-os/src/components/board/MobileLanePicker.test.tsx`
+- `apps/business-os/cypress/e2e/board-mobile-layout.cy.ts`
+
+**Modified:**
+- `apps/business-os/src/components/board/BoardView.tsx` (useViewport, activeMobileLane state, conditional visibleLanes, render MobileLanePicker)
+- `apps/business-os/src/components/board/BoardLane.tsx` (responsive widths, header sticky, content max-height)
+- `apps/business-os/src/components/board/BoardView.test.tsx` (mobile tests)
 
 ---
 

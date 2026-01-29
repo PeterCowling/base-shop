@@ -19,6 +19,7 @@
     "validate-content": "pnpm exec tsx ./scripts/validate-guide-content.ts",
     "validate-links": "pnpm exec tsx ./scripts/validate-guide-links.ts",
     "validate-manifest": "pnpm exec tsx ./scripts/validate-guide-manifest.ts",
+    "report-coverage": "pnpm exec tsx ./scripts/report-guide-coverage.ts",
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
     "test:content-readiness": "pnpm exec jest --testPathPattern '(test/i18n/|routes/guides/__tests__|data/assistanceGuideKeys)' --maxWorkers=2"
   },

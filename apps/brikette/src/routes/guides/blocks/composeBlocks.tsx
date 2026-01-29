@@ -80,9 +80,25 @@ export function composeBlocks(entry: GuideManifestEntry): {
   warnings: string[];
 } {
   const accumulator = new BlockAccumulator(entry);
+
+  // Process explicit blocks
   for (const block of entry.blocks) {
     composeBlock(accumulator, block);
   }
+
+  // GUIDE-XREF-01: Apply manifest.relatedGuides as default when no explicit relatedGuides block exists
+  const template = accumulator.buildTemplate();
+  const hasExplicitRelatedGuides = template.relatedGuides !== undefined;
+  const hasManifestRelatedGuides = Array.isArray(entry.relatedGuides) && entry.relatedGuides.length > 0;
+
+  if (!hasExplicitRelatedGuides && hasManifestRelatedGuides) {
+    accumulator.mergeTemplate({
+      relatedGuides: {
+        items: entry.relatedGuides.map((key) => ({ key })),
+      },
+    });
+  }
+
   return {
     template: accumulator.buildTemplate(),
     warnings: accumulator.warnings,

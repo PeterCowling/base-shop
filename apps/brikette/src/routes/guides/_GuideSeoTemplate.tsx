@@ -144,11 +144,16 @@ function GuideSeoTemplate({
     preferManualWhenUnlocalized,
   });
 
-  // TASK-01: Wire manifest blocks into template
-  // When manifestEntry.blocks is non-empty, buildBlockTemplate() produces slot props/config
-  // that will be merged with explicit route props (explicit props have higher precedence).
+  // TASK-01 + GUIDE-XREF-01: Wire manifest blocks into template
+  // buildBlockTemplate() produces slot props/config from blocks and applies default relatedGuides
+  // when manifest.relatedGuides is non-empty (even without explicit relatedGuides block).
+  // Explicit route props have higher precedence over block-derived props.
   const blockTemplate = useMemo(() => {
-    if (!manifestEntry?.blocks?.length) {
+    if (!manifestEntry) {
+      return { template: {}, warnings: [] };
+    }
+    // Call buildBlockTemplate when blocks exist OR relatedGuides exist
+    if (!manifestEntry.blocks?.length && !manifestEntry.relatedGuides?.length) {
       return { template: {}, warnings: [] };
     }
     const result = buildBlockTemplate(manifestEntry);

@@ -90,6 +90,67 @@ export async function convertToCard(
 }
 
 /**
+ * Update an idea's content and status
+ * Transitions idea from "raw" to "worked" status
+ */
+export async function updateIdea(
+  ideaId: string,
+  content: string
+): Promise<ConvertToCardResult> {
+  const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
+  const writer = createRepoWriter(repoRoot);
+
+  // Get current user for commit identity
+  const currentUser = getCurrentUser();
+
+  // Read the idea first to verify it exists
+  const reader = (await import("@/lib/repo-reader")).createRepoReader(
+    repoRoot
+  );
+  const idea = await reader.getIdea(ideaId);
+
+  if (!idea) {
+    return {
+      success: false,
+      errorKey: "businessOs.ideas.errors.ideaNotFound",
+    };
+  }
+
+  // Validate content length
+  if (content.trim().length < 10) {
+    return {
+      success: false,
+      errorKey: "businessOs.ideas.errors.contentTooShort",
+    };
+  }
+
+  // Update idea with new content and status
+  const result = await writer.updateIdea(
+    ideaId,
+    {
+      Status: "worked",
+      content,
+    },
+    currentUser
+  );
+
+  if (!result.success) {
+    return {
+      success: false,
+      errorKey: result.errorKey,
+      errorDetails: result.errorDetails,
+    };
+  }
+
+  // Revalidate idea detail page
+  revalidatePath(`/ideas/${ideaId}`);
+
+  return {
+    success: true,
+  };
+}
+
+/**
  * Generate card ID from idea ID
  * BRIK-OPP-0002 -> BRIK-002
  * Removes the OPP segment and pads the number

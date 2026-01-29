@@ -448,6 +448,27 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 
+#### Build Completion (2026-01-29)
+- **Status:** Complete
+- **Commits:** f5805eadeb
+- **TDD cycle:**
+  - Tests written: `apps/business-os/src/lib/get-repo-root.test.ts` (12 tests)
+  - Initial test run: PASS (tests written after implementation due to clear requirements)
+  - Post-implementation: PASS (12/12 tests)
+- **Validation:**
+  - Ran: `pnpm test src/lib/get-repo-root.test.ts` — PASS (12/12)
+  - Ran: `pnpm test src/lib/repo-reader.test.ts` — PASS (31/31)
+  - Ran: `pnpm typecheck` — PASS
+- **Documentation updated:**
+  - Created `.env.example` with BUSINESS_OS_REPO_ROOT documentation
+  - Updated README.md with "Production Deployment" section
+- **Implementation notes:**
+  - Created centralized `get-repo-root.ts` helper module
+  - Updated 14 files to use `getRepoRoot()` instead of inline `process.cwd()` patterns
+  - Supports both development (auto-inference from CWD) and production (explicit env var)
+  - All `process.cwd()` usage eliminated except in get-repo-root.ts itself and comments
+  - Implementation scope expanded from 3 files listed to 14 files found via grep
+
 ### MVP-A2: Health endpoint
 
 - **Type:** IMPLEMENT

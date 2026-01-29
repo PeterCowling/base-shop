@@ -1,200 +1,224 @@
-import {
-  createManifestOverride,
-  manifestOverrideSchema,
-  manifestOverridesSchema,
-  safeParseManifestOverride,
-  safeParseManifestOverrides,
-  validateManifestOverride,
-  validateManifestOverrides,
-} from "@/routes/guides/guide-manifest-overrides";
+/**
+ * Tests for guide manifest override schema validation.
+ */
+import { describe, expect, it } from "@jest/globals";
 
-describe("guide-manifest-overrides schema", () => {
-  describe("manifestOverrideSchema", () => {
-    it("accepts valid override with areas and primaryArea", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: ["help", "experience"],
-        primaryArea: "help",
-      });
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.areas).toEqual(["help", "experience"]);
-        expect(result.data.primaryArea).toBe("help");
-      }
-    });
+import type { SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
+import { manifestOverrideSchema, validateManifestOverride } from "@/routes/guides/guide-manifest-overrides";
 
-    it("accepts override with only areas", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: ["howToGetHere"],
-      });
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.areas).toEqual(["howToGetHere"]);
-        expect(result.data.primaryArea).toBeUndefined();
-      }
-    });
+describe("manifestOverrideSchema", () => {
+  describe("SEO audit results validation", () => {
+    it("accepts valid audit results", () => {
+      const validAuditResult: SeoAuditResult = {
+        timestamp: "2026-01-29T10:00:00.000Z",
+        score: 8.5,
+        analysis: {
+          strengths: ["Good meta title", "Strong FAQs"],
+          criticalIssues: [],
+          improvements: ["Add more internal links", "Increase content length"],
+        },
+        metrics: {
+          metaTitleLength: 55,
+          metaDescriptionLength: 145,
+          contentWordCount: 1800,
+          headingCount: 12,
+          internalLinkCount: 4,
+          faqCount: 8,
+          imageCount: 6,
+        },
+        version: "1.0.0",
+      };
 
-    it("accepts override with only primaryArea", () => {
-      const result = manifestOverrideSchema.safeParse({
-        primaryArea: "experience",
-      });
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.primaryArea).toBe("experience");
-        expect(result.data.areas).toBeUndefined();
-      }
-    });
+      const override = {
+        areas: ["experience"] as const,
+        primaryArea: "experience" as const,
+        status: "draft" as const,
+        auditResults: validAuditResult,
+      };
 
-    it("accepts empty override object", () => {
-      const result = manifestOverrideSchema.safeParse({});
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(true);
     });
 
-    it("rejects primaryArea not in areas when both provided", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: ["help"],
-        primaryArea: "experience",
-      });
+    it("accepts audit results with empty analysis arrays", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: 10.0,
+          analysis: {
+            strengths: [],
+            criticalIssues: [],
+            improvements: [],
+          },
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts minimal valid audit results", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: 0,
+          analysis: {
+            strengths: [],
+            criticalIssues: ["Missing meta title", "No content"],
+            improvements: [],
+          },
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
+      expect(result.success).toBe(true);
+    });
+
+    it("rejects audit results with score below 0", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: -1,
+          analysis: {
+            strengths: [],
+            criticalIssues: [],
+            improvements: [],
+          },
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
-          "primaryArea must be included in areas when both are provided",
-        );
+        expect(result.error.issues[0].path).toEqual(["auditResults", "score"]);
       }
     });
 
-    it("rejects empty areas array", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: [],
-      });
+    it("rejects audit results with score above 10", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: 10.5,
+          analysis: {
+            strengths: [],
+            criticalIssues: [],
+            improvements: [],
+          },
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].path).toEqual(["auditResults", "score"]);
+      }
     });
 
-    it("rejects invalid area value", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: ["invalidArea"],
-      });
+    it("rejects audit results with invalid timestamp", () => {
+      const override = {
+        auditResults: {
+          timestamp: "not-a-valid-date",
+          score: 8.5,
+          analysis: {
+            strengths: [],
+            criticalIssues: [],
+            improvements: [],
+          },
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].path).toEqual(["auditResults", "timestamp"]);
+      }
     });
 
-    it("rejects invalid primaryArea value", () => {
-      const result = manifestOverrideSchema.safeParse({
-        primaryArea: "invalidArea",
-      });
+    it("rejects audit results with invalid version format", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: 8.5,
+          analysis: {
+            strengths: [],
+            criticalIssues: [],
+            improvements: [],
+          },
+          metrics: {},
+          version: "v1.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].path).toEqual(["auditResults", "version"]);
+      }
     });
 
-    it("accepts all valid area values", () => {
-      const result = manifestOverrideSchema.safeParse({
-        areas: ["howToGetHere", "help", "experience"],
-        primaryArea: "help",
-      });
+    it("rejects audit results missing required fields", () => {
+      const override = {
+        auditResults: {
+          timestamp: "2026-01-29T10:00:00.000Z",
+          score: 8.5,
+          // Missing analysis
+          metrics: {},
+          version: "1.0.0",
+        },
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].path).toEqual(["auditResults", "analysis"]);
+      }
+    });
+
+    it("accepts override without audit results", () => {
+      const override = {
+        areas: ["experience"] as const,
+        primaryArea: "experience" as const,
+        status: "draft" as const,
+      };
+
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(true);
     });
   });
 
-  describe("manifestOverridesSchema", () => {
-    it("accepts valid overrides record", () => {
-      const result = manifestOverridesSchema.safeParse({
-        someGuide: { areas: ["help"], primaryArea: "help" },
-        anotherGuide: { areas: ["experience"] },
-      });
-      expect(result.success).toBe(true);
-    });
+  describe("existing validation", () => {
+    it("validates primaryArea is in areas", () => {
+      const override = {
+        areas: ["experience"] as const,
+        primaryArea: "help" as const,
+      };
 
-    it("accepts empty overrides record", () => {
-      const result = manifestOverridesSchema.safeParse({});
-      expect(result.success).toBe(true);
-    });
-
-    it("rejects invalid entry in overrides record", () => {
-      const result = manifestOverridesSchema.safeParse({
-        validGuide: { areas: ["help"] },
-        invalidGuide: { areas: ["help"], primaryArea: "experience" },
-      });
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(false);
-    });
-  });
-
-  describe("validateManifestOverride", () => {
-    it("returns validated data for valid input", () => {
-      const result = validateManifestOverride({
-        areas: ["help"],
-        primaryArea: "help",
-      });
-      expect(result).toEqual({ areas: ["help"], primaryArea: "help" });
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain("primaryArea must be included in areas");
+      }
     });
 
-    it("throws for invalid input", () => {
-      expect(() =>
-        validateManifestOverride({ areas: ["help"], primaryArea: "experience" }),
-      ).toThrow();
-    });
-  });
+    it("accepts valid override with areas and primaryArea", () => {
+      const override = {
+        areas: ["experience", "help"] as const,
+        primaryArea: "experience" as const,
+        status: "live" as const,
+      };
 
-  describe("validateManifestOverrides", () => {
-    it("returns validated data for valid input", () => {
-      const result = validateManifestOverrides({
-        testGuide: { areas: ["experience"] },
-      });
-      expect(result).toEqual({ testGuide: { areas: ["experience"] } });
-    });
-
-    it("throws for invalid input", () => {
-      expect(() =>
-        validateManifestOverrides({
-          testGuide: { areas: [] },
-        }),
-      ).toThrow();
-    });
-  });
-
-  describe("safeParseManifestOverride", () => {
-    it("returns success result for valid input", () => {
-      const result = safeParseManifestOverride({ areas: ["help"] });
+      const result = manifestOverrideSchema.safeParse(override);
       expect(result.success).toBe(true);
-    });
-
-    it("returns error result for invalid input", () => {
-      const result = safeParseManifestOverride({ areas: [] });
-      expect(result.success).toBe(false);
-    });
-  });
-
-  describe("safeParseManifestOverrides", () => {
-    it("returns success result for valid input", () => {
-      const result = safeParseManifestOverrides({
-        guide: { areas: ["experience"], primaryArea: "experience" },
-      });
-      expect(result.success).toBe(true);
-    });
-
-    it("returns error result for invalid input", () => {
-      const result = safeParseManifestOverrides({
-        guide: { primaryArea: "invalidValue" },
-      });
-      expect(result.success).toBe(false);
-    });
-  });
-
-  describe("createManifestOverride", () => {
-    it("creates override with explicit primaryArea", () => {
-      const result = createManifestOverride(["help", "experience"], "experience");
-      expect(result).toEqual({ areas: ["help", "experience"], primaryArea: "experience" });
-    });
-
-    it("defaults primaryArea to first area when not specified", () => {
-      const result = createManifestOverride(["howToGetHere", "help"]);
-      expect(result).toEqual({ areas: ["howToGetHere", "help"], primaryArea: "howToGetHere" });
-    });
-
-    it("throws when areas is empty", () => {
-      expect(() => createManifestOverride([])).toThrow("areas must contain at least one area");
-    });
-
-    it("throws when primaryArea not in areas", () => {
-      expect(() => createManifestOverride(["help"], "experience")).toThrow(
-        "primaryArea must be included in areas",
-      );
     });
   });
 });

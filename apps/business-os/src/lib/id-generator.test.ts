@@ -2,13 +2,14 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-import { afterEach,beforeEach, describe, expect, it } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import {
   generateBusinessOsId,
   getValidBusinessIds,
   validateBusinessId,
 } from "./id-generator";
+import { mkdirWithinRoot, writeFileWithinRoot } from "./safe-fs";
 
 describe("id-generator", () => {
   let tempDir: string;
@@ -20,16 +21,18 @@ describe("id-generator", () => {
     businessOsPath = path.join(tempDir, "docs/business-os");
 
     // Create directory structure
-    await fs.mkdir(path.join(businessOsPath, "ideas/inbox/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "ideas/inbox/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "ideas/worked/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "ideas/worked/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "cards/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "strategy"), { recursive: true });
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "strategy"), {
+      recursive: true,
+    });
 
     // Create business catalog
     const catalog = {
@@ -40,7 +43,8 @@ describe("id-generator", () => {
       ],
       metadata: { version: "1.0.0" },
     };
-    await fs.writeFile(
+    await writeFileWithinRoot(
+      tempDir,
       path.join(businessOsPath, "strategy/businesses.json"),
       JSON.stringify(catalog, null, 2)
     );
@@ -58,11 +62,13 @@ describe("id-generator", () => {
     });
 
     it("increments from highest existing ID in inbox", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0001.user.md"),
         "# Test"
       );
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0003.user.md"),
         "# Test"
       );
@@ -72,7 +78,8 @@ describe("id-generator", () => {
     });
 
     it("increments from highest existing ID in worked", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/worked/PLAT-OPP-0005.user.md"),
         "# Test"
       );
@@ -82,7 +89,7 @@ describe("id-generator", () => {
     });
 
     it("increments from highest existing card directory", async () => {
-      await fs.mkdir(path.join(businessOsPath, "cards/BOS-OPP-0010"), {
+      await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/BOS-OPP-0010"), {
         recursive: true,
       });
 
@@ -91,19 +98,22 @@ describe("id-generator", () => {
     });
 
     it("scans across all locations including archives", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0002.user.md"),
         "# Test"
       );
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/archive/BRIK-OPP-0005.user.md"),
         "# Test"
       );
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/worked/BRIK-OPP-0003.user.md"),
         "# Test"
       );
-      await fs.mkdir(path.join(businessOsPath, "cards/BRIK-OPP-0004"), {
+      await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/BRIK-OPP-0004"), {
         recursive: true,
       });
 
@@ -112,7 +122,8 @@ describe("id-generator", () => {
     });
 
     it("handles agent.md extension", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/PLAT-OPP-0001.agent.md"),
         "# Test"
       );
@@ -122,11 +133,13 @@ describe("id-generator", () => {
     });
 
     it("ignores other business IDs", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0050.user.md"),
         "# Test"
       );
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/PLAT-OPP-0010.user.md"),
         "# Test"
       );
@@ -136,7 +149,8 @@ describe("id-generator", () => {
     });
 
     it("ignores .gitkeep files", async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        tempDir,
         path.join(businessOsPath, "ideas/inbox/archive/.gitkeep"),
         ""
       );

@@ -19,6 +19,7 @@ import { GenericContentFaqSection, resolveFaqsHeadingLabel } from "./generic-con
 import { SectionHeading } from "./generic-content/SectionHeading";
 import { applyStableKeys, buildTableOfContents, toTocItems } from "./generic-content/toc";
 import type { GenericContentTranslator } from "./generic-content/types";
+import ImageGallery from "./ImageGallery";
 import TableOfContents from "./TableOfContents";
 
 const DEBUG_KEYS = {
@@ -263,7 +264,7 @@ export default function GenericContent({
         sectionsForRender
           .filter((section) =>
             Array.isArray(section.body)
-              ? section.body.length > 0 || !showToc
+              ? section.body.length > 0 || (section.images?.length ?? 0) > 0 || !showToc
               : !showToc,
           )
           .map((section, sectionIndex) => (
@@ -278,6 +279,9 @@ export default function GenericContent({
               {Array.isArray(section.body)
                 ? renderBodyBlocks(section.body, lang, `${guideKey}-section-${section.id}`)
                 : null}
+              {section.images?.length ? (
+                <ImageGallery items={section.images} className="my-0" />
+              ) : null}
               {sectionBottomExtras?.[section.id] ? (
                 <div>{sectionBottomExtras[section.id]}</div>
               ) : null}

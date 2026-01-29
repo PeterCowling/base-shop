@@ -109,12 +109,18 @@ export function isGlobalBoardCard(card: Card): boolean {
 /**
  * Helper: Get board title
  */
+export interface BoardTitleLabels {
+  global: string;
+  businessFallback: string;
+}
+
 export function getBoardTitle(
   boardType: "global" | "business",
+  labels: BoardTitleLabels,
   businessName?: string
 ): string {
   if (boardType === "global") {
-    return "Global Board (P0/P1)";
+    return labels.global;
   }
-  return businessName || "Business Board";
+  return businessName || labels.businessFallback;
 }

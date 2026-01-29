@@ -134,12 +134,14 @@ export function analyzeTranslationCoverage(
   locales: readonly AppLanguage[],
 ): TranslationCoverageResult {
   // Determine which fields are required based on English reference.
-  // FAQs are only required if English has them - not all guides use FAQs.
+  // Only require fields that the English source actually provides so we
+  // don't flag locales for optional content (ex: guides without intros).
   const englishFields = buildFieldStatus(guideKey, "en");
-  const requiredFields: Array<keyof GuideFieldStatus> = ["intro", "sections", "seo"];
-  if (englishFields.faqs) {
-    requiredFields.push("faqs");
-  }
+  const requiredFields: Array<keyof GuideFieldStatus> = [];
+  if (englishFields.intro) requiredFields.push("intro");
+  if (englishFields.sections) requiredFields.push("sections");
+  if (englishFields.seo) requiredFields.push("seo");
+  if (englishFields.faqs) requiredFields.push("faqs");
 
   const results = locales.map((locale) => {
     const fields = buildFieldStatus(guideKey, locale);

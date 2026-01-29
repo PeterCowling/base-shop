@@ -3,43 +3,44 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { Checkbox } from "@acme/design-system/atoms";
+
 interface MarkdownContentProps {
   content: string;
 }
 
-/* eslint-disable ds/no-raw-tailwind-color, ds/container-widths-only-at, ds/min-tap-size, ds/no-hardcoded-copy -- BOS-12: Phase 0 scaffold UI */
 export function MarkdownContent({ content }: MarkdownContentProps) {
   return (
-    <div className="prose prose-sm max-w-none">
+    <div className="prose prose-sm w-full">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
           // Customize rendering for better styling
           h1: ({ children }) => (
-            <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-4">
+            <h1 className="mb-4 mt-6 text-2xl font-bold text-foreground">
               {children}
             </h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-xl font-bold text-gray-900 mt-5 mb-3">
+            <h2 className="mb-3 mt-5 text-xl font-bold text-foreground">
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-2">
+            <h3 className="mb-2 mt-4 text-lg font-semibold text-foreground">
               {children}
             </h3>
           ),
           p: ({ children }) => (
-            <p className="text-gray-700 mb-4 leading-relaxed">{children}</p>
+            <p className="mb-4 leading-relaxed text-foreground">{children}</p>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700">
+            <ul className="mb-4 list-inside list-disc space-y-2 text-foreground">
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700">
+            <ol className="mb-4 list-inside list-decimal space-y-2 text-foreground">
               {children}
             </ol>
           ),
@@ -47,9 +48,14 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
           a: ({ href, children }) => (
             <a
               href={href}
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="inline-flex min-h-11 min-w-11 items-center px-1 text-link underline"
               target={href?.startsWith("http") ? "_blank" : undefined}
-              rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+              rel={
+                href?.startsWith("http")
+                  ? // i18n-exempt -- BOS-102 security rel attribute [ttl=2026-03-31]
+                    "noopener noreferrer"
+                  : undefined
+              }
             >
               {children}
             </a>
@@ -58,32 +64,38 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
             const isInline = !className;
             if (isInline) {
               return (
-                <code className="px-1.5 py-0.5 bg-gray-100 text-gray-800 rounded text-sm font-mono">
+                <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-foreground">
                   {children}
                 </code>
               );
             }
             return (
-              <code className="block p-4 bg-gray-100 text-gray-800 rounded text-sm font-mono overflow-x-auto">
+              <code className="block overflow-x-auto rounded bg-surface-2 p-4 font-mono text-sm text-foreground">
                 {children}
               </code>
             );
           },
           pre: ({ children }) => <pre className="mb-4">{children}</pre>,
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+            <blockquote className="mb-4 border-l-4 border-border-2 pl-4 italic text-muted-foreground">
               {children}
             </blockquote>
           ),
           // Task list support (GFM)
-          input: (props) => (
-            <input
-              {...props}
-              className="me-2"
-              disabled={true}
-              type={props.type || "checkbox"}
-            />
-          ),
+          input: (props) => {
+            const isCheckbox = props.type === "checkbox" || props.type === undefined;
+            if (!isCheckbox) return <input {...props} />;
+
+            return (
+              <span className="me-2 inline-flex min-h-10 min-w-10 items-center justify-center">
+                <Checkbox
+                  checked={Boolean(props.checked)}
+                  disabled
+                  aria-hidden
+                />
+              </span>
+            );
+          },
         }}
       >
         {content}

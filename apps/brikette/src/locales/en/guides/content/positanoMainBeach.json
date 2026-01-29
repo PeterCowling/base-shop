@@ -22,7 +22,19 @@
       "title": "Layout and main zones",
       "body": [
         "Facing the sea, the public ferry dock and water-taxi pontoons are on the right, the main free strip sits in the middle, and the paid clubs line the rocks on the left.",
-        "On the numbered beach map you’ll usually see #1 as the public zone, #2 as the Positano residents’ zone, and #3/#4 as the two paid operators: L’Incanto on the sand and La Scogliera on the raised deck."
+        "On the numbered beach map you'll usually see #1 as the public zone, #2 as the Positano residents' zone, and #3/#4 as the two paid operators: L'Incanto on the sand and La Scogliera on the raised deck."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
+          "alt": "Beach layout map showing the free section, residents' section, L'Incanto, and La Scogliera at Spiaggia Grande",
+          "caption": "Spiaggia Grande layout: free zone (#1), residents' strip (#2), L'Incanto (#3), and La Scogliera deck (#4)"
+        },
+        {
+          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
+          "alt": "Overview of the four beach providers on Spiaggia Grande showing their locations along the shoreline",
+          "caption": "Beach providers overview — the four zones on Spiaggia Grande from public area to premium decks"
+        }
       ]
     },
     {
@@ -43,10 +55,17 @@
     },
     {
       "id": "lincanto",
-      "title": "L’Incanto Beach Club (#3)",
+      "title": "L'Incanto Beach Club (#3)",
       "body": [
-        "L’Incanto covers most of the sand with rows of orange loungers, showers, changing cabins, and waiter service. In high season, expect roughly €25–€35 per person for a standard setup; front-row upgrades cost more.",
+        "L'Incanto covers most of the sand with rows of orange loungers, showers, changing cabins, and waiter service. In high season, expect roughly €25–€35 per person for a standard setup; front-row upgrades cost more.",
         "Reserve by WhatsApp/email in July–August. In shoulder months, a walk-in before 09:30 is often fine. Blu Bar sits on the promenade and is a convenient way to grab pizza, salads, and aperitivi without leaving your lounger."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/03-blu-bar.jpg",
+          "alt": "Blu Bar at L'Incanto beach club on the Positano promenade",
+          "caption": "Blu Bar — L'Incanto's promenade restaurant serving pizza, salads, and aperitivi"
+        }
       ]
     },
     {
@@ -55,6 +74,13 @@
       "body": [
         "La Scogliera sits on the rocks at the far left with teak decks, daybeds, and ladders into deep water. Packages start around €100 for back-row loungers and can exceed €400 for panoramic VIP nests with extras included.",
         "Service is white-tablecloth level and the upstairs restaurant looks over the harbour. Staff can help call water taxis if you want to beach-hop toward Laurito or Arienzo for sunset."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/04-la-scogliera-deck.jpg",
+          "alt": "La Scogliera premium beach club with teak decks and ocean views on Positano's main beach",
+          "caption": "La Scogliera — premium teak decks on the rocks with direct water access and upstairs restaurant"
+        }
       ]
     },
     {

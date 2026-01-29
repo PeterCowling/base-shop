@@ -27,10 +27,21 @@ jest.mock("@/routes/guides/guide-seo/template/useGuideManifestState", () => ({
 
 // Mock guide translations
 jest.mock("@/routes/guides/guide-seo/translations", () => ({
+  ...jest.requireActual<typeof import("@/routes/guides/guide-seo/translations")>(
+    "@/routes/guides/guide-seo/translations",
+  ),
   useGuideTranslations: jest.fn(() => ({
     tGuides: jest.fn((key: string) => key),
-    guidesEn: {},
+    guidesEn: jest.fn((key: string) => key),
+    tAny: jest.fn((key: string) => key),
+    anyEn: jest.fn((key: string) => key),
+    tHeader: jest.fn((key: string) => key),
+    headerEn: jest.fn((key: string) => key),
+    tCommon: jest.fn((key: string) => key),
+    commonEn: jest.fn((key: string) => key),
     translateGuides: jest.fn((key: string) => key),
+    lang: "en",
+    i18n: {},
   })),
 }));
 

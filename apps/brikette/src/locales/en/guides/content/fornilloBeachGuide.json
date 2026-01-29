@@ -45,6 +45,13 @@
       "body": [
         "Two main paths feed Fornillo. The shortcut from %LINK:hostelBriketteToFornilloBeach|Hostel Brikette% arrives at the left-hand side of the beach (when facing the sea); the waterfront promenade from Spiaggia Grande reaches the right-hand side.",
         "Beach clubs run in sequence from the hostel access point toward the main beach path: Pupetto, Da Ferdinando, Fratelli Grassi, and La Marinella. Two public zones bookend the lidos — a wide free stretch beside Pupetto and a smaller cove beyond La Marinella."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/01-beach-layout-map.jpg",
+          "alt": "Fornillo beach layout map showing paths from hostel and Spiaggia Grande, plus beach club locations",
+          "caption": "Fornillo layout: Path A from Hostel Brikette, Path B from Spiaggia Grande, with beach clubs numbered in sequence"
+        }
       ]
     },
     {
@@ -53,6 +60,13 @@
       "body": [
         "The largest free section sits directly in front of the shortcut from the hostel. Arrive before 10:30 to claim a spot near the waterline; the pebbles warm quickly so pack a mat or thick towel.",
         "Pupetto and Da Ferdinando both sell takeaway drinks and panini — perfect if you want food without renting a lounger. Keep an eye on the tide in shoulder months; autumn storms can shrink the shoreline for a day or two."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/02-main-free-section.jpg",
+          "alt": "Main free section at Fornillo beach with pebbles and waterfront access",
+          "caption": "The largest free area at Fornillo — arrive before 10:30 to secure waterfront space"
+        }
       ]
     },
     {
@@ -60,7 +74,14 @@
       "title": "Pupetto Beach Club",
       "body": [
         "Pupetto anchors the left side of Fornillo with rows of orange loungers, showers, and a full-service restaurant. Reserve by WhatsApp or phone in summer if you want front-row seats; walk-ins are normally fine before 09:30.",
-        "Guests using the free area can still order takeaway from the bar, and Pupetto’s bathrooms are open to paying customers — handy if you decide to upgrade partway through the day."
+        "Guests using the free area can still order takeaway from the bar, and Pupetto's bathrooms are open to paying customers — handy if you decide to upgrade partway through the day."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/03-pupetto-beach-club.jpg",
+          "alt": "Pupetto Beach Club with orange loungers and restaurant on Fornillo beach",
+          "caption": "Pupetto Beach Club — orange loungers, full-service restaurant, and showers on the left side of Fornillo"
+        }
       ]
     },
     {
@@ -68,7 +89,14 @@
       "title": "Da Ferdinando",
       "body": [
         "Da Ferdinando keeps a chilled beach-bar vibe with blue loungers, paddleboard rentals, and a popular lunch menu (think grilled catch of the day, salads, and pasta). Expect prices a little higher than Pupetto but still reasonable for Positano.",
-        "Water taxis to Laurito and Arienzo swing by Da Ferdinando’s jetty — useful if you plan to beach-hop after a morning swim."
+        "Water taxis to Laurito and Arienzo swing by Da Ferdinando's jetty — useful if you plan to beach-hop after a morning swim."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/04-da-ferdinando.jpg",
+          "alt": "Da Ferdinando beach bar with blue loungers and jetty at Fornillo",
+          "caption": "Da Ferdinando — beach-bar vibe with blue loungers, paddleboard rentals, and water taxi access"
+        }
       ]
     },
     {
@@ -77,6 +105,13 @@
       "body": [
         "Grassi is compact with neat rows of red loungers and a shaded bar for cocktails and granita. The team offers dry bags for valuables if you rent kayaks to explore the nearby caves.",
         "Because space is limited, advance bookings help on weekends. Walk-ins are usually possible midweek after 11:00 once early reservations settle."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/05-fratelli-grassi.jpg",
+          "alt": "Fratelli Grassi Beach Bar with red loungers and shaded bar area at Fornillo",
+          "caption": "Fratelli Grassi — compact setup with red loungers, shaded cocktail bar, and kayak rentals"
+        }
       ]
     },
     {
@@ -85,14 +120,28 @@
       "body": [
         "La Marinella sits closest to the Spiaggia Grande walkway and catches midday sun. Expect attentive service, lunch platters, and the option to book upper-deck loungers with extra shade.",
         "In shoulder season La Marinella sometimes relocates a few chairs into the neighbouring cove. Staff should leave space for the public area, but be prepared for a tighter footprint when seas are rough."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/06-la-marinella.jpg",
+          "alt": "La Marinella beach club with loungers and restaurant near Spiaggia Grande walkway",
+          "caption": "La Marinella — attentive service, upper-deck loungers, and closest to the Spiaggia Grande walkway"
+        }
       ]
     },
     {
       "id": "secret-free",
-      "title": "‘Secret’ free section",
+      "title": "'Secret' free section",
       "body": [
         "Beyond La Marinella, a small cove offers a quieter public area with a pebble shelf and calm water. Bring reef-friendly sunscreen and water shoes — the entry is rocky and sea urchins can cluster near the edges.",
         "La Marinella occasionally sets spare loungers here on stormy days. The zone remains officially free, so feel comfortable using the space if you arrive first; just leave room for returning chairs or kayaks."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fornillo-beach/07-secret-free-section.jpg",
+          "alt": "Hidden free cove beyond La Marinella with rocky entry and calm water",
+          "caption": "The 'secret' free section — a quieter cove beyond La Marinella with rocky entry and sea urchin areas"
+        }
       ]
     }
   ],

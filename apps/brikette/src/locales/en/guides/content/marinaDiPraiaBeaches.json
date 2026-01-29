@@ -33,6 +33,13 @@
       "body": [
         "Unlike Spiaggia Grande or Fornillo, Marina di Praia sits in a narrow gorge just outside Praiano. The cliffs shelter the water from swells, fishing boats bob in the harbour, and the vibe stays low key even in August.",
         "It is an easy add-on to a Praiano day trip or a change of scenery mid-week. The smaller footprint means fewer loungers overall, but you trade that for calmer crowds and photogenic scenery for sunset."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-beach-overview.jpg",
+          "alt": "Aerial view of Marina di Praia cove with boats, umbrellas, and surrounding cliffs in Praiano",
+          "caption": "Marina di Praia nestled in its dramatic gorge — sheltered, intimate, and less crowded than Positano's beaches"
+        }
       ]
     },
     {
@@ -51,6 +58,13 @@
         "A small public strip sits at the centre of the cove — arrive before 10:30 if you want a free spot near the water. The main operator is Marina di Praia Beach Club with rows of loungers, parasols, showers, and kayak rentals; expect packages from €25–€35 for a chair and umbrella in high season.",
         "Along the walkway you will also find Da Armandino and Il Pirata restaurants plus small kiosks for cold drinks. Card machines can be temperamental, so carry enough cash for lounger balances or a seafood lunch.",
         "Shade disappears early because the cliffs block the sun, so plan a morning swim, then transition to bar seating or a late lunch as the bay cools down."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-beach-club-loungers.jpg",
+          "alt": "Marina di Praia Beach Club with blue and yellow loungers on the pebble shore",
+          "caption": "The lido section at Marina di Praia Beach Club — most loungers are here, with a small free area in the center"
+        }
       ]
     },
     {
@@ -90,10 +104,12 @@
     "title": "Photo walkthrough",
     "items": [
       {
+        "image": "/img/guides/marina-di-praia/01-beach-overview.jpg",
         "alt": "Overlook of Marina di Praia with boats and umbrellas on the pebble shore.",
-        "caption": "The cove is narrow, sheltered by cliffs, and stays calmer than Positano’s main beaches."
+        "caption": "The cove is narrow, sheltered by cliffs, and stays calmer than Positano's main beaches."
       },
       {
+        "image": "/img/guides/marina-di-praia/02-beach-club-loungers.jpg",
         "alt": "Pebble beach lined with blue-and-yellow loungers at Marina di Praia.",
         "caption": "The lido section has most of the loungers, with a small free stretch nearer the center."
       }

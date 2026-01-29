@@ -86,6 +86,43 @@ describe("guideContentSchema", () => {
       expect(result.success).toBe(true);
     });
 
+    it("accepts content with section images", () => {
+      const validContent = {
+        seo: {
+          title: "Test Guide",
+          description: "A test guide description",
+        },
+        sections: [
+          {
+            id: "section-1",
+            title: "Section One",
+            body: "Section body text",
+            images: [
+              {
+                src: "/img/guides/test.jpg",
+                alt: "Test image alt text",
+                caption: "Test image caption",
+              },
+            ],
+          },
+        ],
+      };
+
+      const result = guideContentSchema.safeParse(validContent);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        const section = result.data.sections?.[0];
+        expect(section).toBeTruthy();
+        expect(section?.images).toEqual([
+          {
+            src: "/img/guides/test.jpg",
+            alt: "Test image alt text",
+            caption: "Test image caption",
+          },
+        ]);
+      }
+    });
+
     it("accepts content with optional faqs array", () => {
       const validContent = {
         seo: {
@@ -263,6 +300,31 @@ describe("guideContentSchema", () => {
             id: "section-1",
             // missing title
             body: "Text",
+          },
+        ],
+      };
+
+      const result = guideContentSchema.safeParse(invalidContent);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects section images missing required fields", () => {
+      const invalidContent = {
+        seo: {
+          title: "Title",
+          description: "Description",
+        },
+        sections: [
+          {
+            id: "section-1",
+            title: "Section",
+            body: "Text",
+            images: [
+              {
+                // missing src + alt
+                caption: "Caption only",
+              },
+            ],
           },
         ],
       };

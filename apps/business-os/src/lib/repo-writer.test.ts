@@ -7,6 +7,7 @@ import matter from "gray-matter";
 
 import { CommitIdentities } from "./commit-identity";
 import { RepoWriter } from "./repo-writer";
+import { mkdirWithinRoot, readFileWithinRoot, writeFileWithinRoot } from "./safe-fs";
 
 /**
  * Note: These tests use real filesystem and git operations in temp directories
@@ -26,18 +27,26 @@ describe("RepoWriter", () => {
     worktreePath = path.join(tempDir, "worktree");
 
     // Initialize a git repo
-    await fs.mkdir(repoRoot, { recursive: true });
-    await fs.mkdir(path.join(repoRoot, ".git"), { recursive: true });
+    await mkdirWithinRoot(tempDir, repoRoot, { recursive: true });
+    await mkdirWithinRoot(tempDir, path.join(repoRoot, ".git"), {
+      recursive: true,
+    });
 
     // Initialize worktree
-    await fs.mkdir(worktreePath, { recursive: true });
-    await fs.mkdir(path.join(worktreePath, ".git"), { recursive: true });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/ideas/inbox"), {
+    await mkdirWithinRoot(tempDir, worktreePath, { recursive: true });
+    await mkdirWithinRoot(tempDir, path.join(worktreePath, ".git"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/cards"), {
-      recursive: true,
-    });
+    await mkdirWithinRoot(
+      tempDir,
+      path.join(worktreePath, "docs/business-os/ideas/inbox"),
+      { recursive: true }
+    );
+    await mkdirWithinRoot(
+      tempDir,
+      path.join(worktreePath, "docs/business-os/cards"),
+      { recursive: true }
+    );
 
     // Create a minimal git config for the worktree
     const gitConfig = `[core]
@@ -51,7 +60,8 @@ describe("RepoWriter", () => {
 \tremote = origin
 \tmerge = refs/heads/work/business-os-store
 `;
-    await fs.writeFile(
+    await writeFileWithinRoot(
+      tempDir,
       path.join(worktreePath, ".git/config"),
       gitConfig,
       "utf-8"
@@ -75,7 +85,7 @@ describe("RepoWriter", () => {
 
     it("returns false if worktree is not a git repo", async () => {
       const noGitPath = path.join(tempDir, "nogit");
-      await fs.mkdir(noGitPath, { recursive: true });
+      await mkdirWithinRoot(tempDir, noGitPath, { recursive: true });
 
       const testWriter = new RepoWriter(repoRoot, noGitPath);
 
@@ -120,7 +130,11 @@ describe("RepoWriter", () => {
 
       if (fileExists) {
         // Verify file contents
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = (await readFileWithinRoot(
+          tempDir,
+          filePath,
+          "utf-8"
+        )) as string;
         const parsed = matter(content);
 
         expect(parsed.data.Type).toBe("Idea");
@@ -147,7 +161,7 @@ describe("RepoWriter", () => {
       const result = await writer.writeIdea(idea, CommitIdentities.user);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain("Write access denied");
+      expect(result.errorKey).toBe("businessOs.api.common.writeAccessDenied");
     });
   });
 
@@ -178,7 +192,11 @@ describe("RepoWriter", () => {
 
       if (fileExists) {
         // Verify file contents
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = (await readFileWithinRoot(
+          tempDir,
+          filePath,
+          "utf-8"
+        )) as string;
         const parsed = matter(content);
 
         expect(parsed.data.Type).toBe("Card");
@@ -234,7 +252,11 @@ describe("RepoWriter", () => {
 
       if (fileExists) {
         // Verify file contents
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = (await readFileWithinRoot(
+          tempDir,
+          filePath,
+          "utf-8"
+        )) as string;
         const parsed = matter(content);
 
         expect(parsed.data.Lane).toBe("In progress");
@@ -256,7 +278,7 @@ describe("RepoWriter", () => {
       );
 
       expect(result.success).toBe(false);
-      expect(result.error).toBeDefined();
+      expect(result.errorKey).toBe("businessOs.repoWriter.errors.cardNotFound");
     });
   });
 

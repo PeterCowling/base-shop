@@ -45,6 +45,13 @@
       "body": [
         "Fiordo di Furore has no beach clubs, no bathrooms, and only the occasional mobile snack cart in peak season. Pack water, snacks, and something comfortable to sit on — the pebbles are coarse and space is limited.",
         "Cliff jumping happens from the rocks beside the bridge, but always check the depth first and jump only where locals are already in the water. Respect the swimmers below and keep an eye on the tides; the cove gets shady by late afternoon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
+          "alt": "Fiordo di Furore beach beneath the iconic arched bridge with emerald water and sheer cliffs",
+          "caption": "The Instagram-famous gorge — a narrow inlet beneath the bridge with no services, just dramatic cliffs and cliff jumping"
+        }
       ]
     }
   ],
@@ -73,6 +80,7 @@
   "faqsTitle": "Fiordo di Furore FAQs",
   "faqs": [],
   "sectionFigure": {
+    "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
     "alt": "Fiordo di Furore bridge above the cove",
     "caption": "The narrow inlet sits beneath the arched bridge."
   }

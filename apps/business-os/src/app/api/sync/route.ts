@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
 import { createRepoWriter } from "@/lib/repo-writer";
 
 // Phase 0: Node runtime required for git operations
@@ -13,6 +15,7 @@ export const runtime = "nodejs";
  * Returns PR links for manual verification (no GitHub API polling)
  */
 export async function POST() {
+  const t = await getServerTranslations("en");
   try {
     // Get repo root
     const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
@@ -25,8 +28,8 @@ export async function POST() {
     if (!isReady) {
       return NextResponse.json(
         {
-          error: "Worktree not initialized",
-          hint: "Run: apps/business-os/scripts/setup-worktree.sh",
+          error: t("businessOs.api.common.worktreeNotInitialized"),
+          hint: t("businessOs.api.common.worktreeSetupHint"),
         },
         { status: 500 }
       );
@@ -36,19 +39,23 @@ export async function POST() {
     const result = await writer.sync();
 
     if (!result.success) {
+      const errorMessage = result.errorKey
+        ? t(result.errorKey)
+        : t("businessOs.api.sync.errors.failed");
+
       if (result.needsManualResolution) {
         return NextResponse.json(
           {
-            error: result.error,
+            error: errorMessage,
             needsManualResolution: true,
-            hint: "Resolve conflicts manually in the worktree, then try again",
+            hint: t("businessOs.api.common.resolveConflictsRetryHint"),
           },
           { status: 409 }
         );
       }
 
       return NextResponse.json(
-        { error: result.error || "Sync failed" },
+        { error: errorMessage },
         { status: 500 }
       );
     }
@@ -59,11 +66,11 @@ export async function POST() {
       commitCount: result.commitCount,
       compareUrl: result.compareUrl,
       findPrUrl: result.findPrUrl,
-      message: "Changes pushed. Check PR links to verify auto-merge status.",
+      message: t("businessOs.api.sync.success.pushed"),
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal server error", details: String(error) },
+      { error: t("api.common.internalServerError"), details: String(error) },
       { status: 500 }
     );
   }

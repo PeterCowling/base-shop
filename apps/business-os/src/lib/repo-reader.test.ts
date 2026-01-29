@@ -5,6 +5,7 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import { createRepoReader } from "./repo-reader";
+import { mkdirWithinRoot, writeFileWithinRoot } from "./safe-fs";
 import type { CardFrontmatter, IdeaFrontmatter } from "./types";
 
 /* eslint-disable max-lines-per-function -- BOS-08: comprehensive test coverage requires extended setup */
@@ -18,16 +19,18 @@ describe("RepoReader", () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "business-os-test-"));
     businessOsPath = path.join(tempDir, "docs/business-os");
 
-    await fs.mkdir(path.join(businessOsPath, "ideas/inbox/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "ideas/inbox/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "ideas/worked/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "ideas/worked/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "cards/archive"), {
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/archive"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(businessOsPath, "strategy"), { recursive: true });
+    await mkdirWithinRoot(tempDir, path.join(businessOsPath, "strategy"), {
+      recursive: true,
+    });
 
     // Create business catalog
     const catalog = {
@@ -53,7 +56,8 @@ describe("RepoReader", () => {
       ],
       metadata: { version: "1.0.0", lastUpdated: "2026-01-28", format: "v1" },
     };
-    await fs.writeFile(
+    await writeFileWithinRoot(
+      tempDir,
       path.join(businessOsPath, "strategy/businesses.json"),
       JSON.stringify(catalog, null, 2)
     );
@@ -118,7 +122,7 @@ Tags: [test, feature]
 
 Card content here.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/BRIK-OPP-0001.user.md"),
         cardContent
       );
@@ -154,7 +158,7 @@ ID: BRIK-OPP-0002
 
 Archived card.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/archive/BRIK-OPP-0002.user.md"),
         archivedContent
       );
@@ -223,7 +227,7 @@ ${Object.entries(card.frontmatter)
 
 Card content.
 `;
-        await fs.writeFile(
+        await writeFileWithinRoot(tempDir, 
           path.join(businessOsPath, `cards/${card.id}.user.md`),
           content
         );
@@ -276,7 +280,7 @@ ID: BRIK-OPP-0099
 
 Archived.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/archive/BRIK-OPP-0099.user.md"),
         archivedContent
       );
@@ -297,7 +301,7 @@ ID: BRIK-OPP-0099
 
 Archived.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/archive/BRIK-OPP-0099.user.md"),
         archivedContent
       );
@@ -310,7 +314,7 @@ Archived.
 
   describe("getStageDoc", () => {
     beforeEach(async () => {
-      await fs.mkdir(path.join(businessOsPath, "cards/BRIK-OPP-0001"), {
+      await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/BRIK-OPP-0001"), {
         recursive: true,
       });
 
@@ -324,7 +328,7 @@ Card-ID: BRIK-OPP-0001
 
 Evidence gathered...
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/BRIK-OPP-0001/fact-find.user.md"),
         stageContent
       );
@@ -347,12 +351,12 @@ Evidence gathered...
 
   describe("getCardStageDocs", () => {
     beforeEach(async () => {
-      await fs.mkdir(path.join(businessOsPath, "cards/BRIK-OPP-0001"), {
+      await mkdirWithinRoot(tempDir, path.join(businessOsPath, "cards/BRIK-OPP-0001"), {
         recursive: true,
       });
 
       // Create fact-find and plan stages
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/BRIK-OPP-0001/fact-find.user.md"),
         `---
 Type: Stage
@@ -364,7 +368,7 @@ Fact finding content.
 `
       );
 
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/BRIK-OPP-0001/plan.user.md"),
         `---
 Type: Stage
@@ -401,7 +405,7 @@ Tags: [feature-request]
 
 Idea description here.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0005.user.md"),
         ideaContent
       );
@@ -432,7 +436,7 @@ Status: worked
 
 Worked idea.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "ideas/worked/BRIK-OPP-0006.user.md"),
         workedContent
       );
@@ -451,7 +455,7 @@ Status: dropped
 
 Archived idea.
 `;
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "ideas/inbox/archive/BRIK-OPP-0007.user.md"),
         archivedContent
       );
@@ -506,7 +510,7 @@ ${Object.entries(idea.frontmatter)
 
 Idea content.
 `;
-        await fs.writeFile(
+        await writeFileWithinRoot(tempDir, 
           path.join(businessOsPath, `ideas/${idea.location}/${idea.id}.user.md`),
           content
         );
@@ -545,7 +549,7 @@ Idea content.
 
   describe("cardExists", () => {
     beforeEach(async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "cards/BRIK-OPP-0001.user.md"),
         `---
 Type: Card
@@ -573,7 +577,7 @@ Card.
 
   describe("ideaExists", () => {
     beforeEach(async () => {
-      await fs.writeFile(
+      await writeFileWithinRoot(tempDir, 
         path.join(businessOsPath, "ideas/inbox/BRIK-OPP-0001.user.md"),
         `---
 Type: Idea

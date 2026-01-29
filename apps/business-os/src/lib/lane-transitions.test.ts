@@ -11,6 +11,12 @@ import {
   stageDocExists,
   validateStageDocsForCard,
 } from "./lane-transitions";
+import {
+  accessWithinRoot,
+  mkdirWithinRoot,
+  readFileWithinRoot,
+  writeFileWithinRoot,
+} from "./safe-fs";
 import type { Lane, StageType } from "./types";
 
 describe("lane-transitions", () => {
@@ -24,8 +30,10 @@ describe("lane-transitions", () => {
 
     // Create business-os structure
     const docsDir = path.join(repoPath, "docs/business-os");
-    await fs.mkdir(docsDir, { recursive: true });
-    await fs.mkdir(path.join(docsDir, "cards"), { recursive: true });
+    await mkdirWithinRoot(repoPath, docsDir, { recursive: true });
+    await mkdirWithinRoot(repoPath, path.join(docsDir, "cards"), {
+      recursive: true,
+    });
   });
 
   afterEach(async () => {
@@ -85,8 +93,9 @@ describe("lane-transitions", () => {
     it("should return true when stage doc exists", async () => {
       // Create a stage doc
       const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-001");
-      await fs.mkdir(cardDir, { recursive: true });
-      await fs.writeFile(
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
         path.join(cardDir, "fact-find.user.md"),
         "test content",
         "utf-8"
@@ -98,10 +107,11 @@ describe("lane-transitions", () => {
 
     it("should check both user and agent docs independently", async () => {
       const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-001");
-      await fs.mkdir(cardDir, { recursive: true });
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
 
       // Create only user doc
-      await fs.writeFile(
+      await writeFileWithinRoot(
+        repoPath,
         path.join(cardDir, "fact-find.user.md"),
         "test content",
         "utf-8"
@@ -126,7 +136,11 @@ describe("lane-transitions", () => {
 
       expect(docPath).toContain("TEST-001/fact-find.user.md");
 
-      const content = await fs.readFile(docPath, "utf-8");
+      const content = (await readFileWithinRoot(
+        repoPath,
+        docPath,
+        "utf-8"
+      )) as string;
       expect(content).toContain("Type: Stage");
       expect(content).toContain("Stage: fact-find");
       expect(content).toContain("Card-ID: TEST-001");
@@ -136,7 +150,11 @@ describe("lane-transitions", () => {
     it("should create fact-find agent doc with correct structure", async () => {
       const docPath = await createStageDoc(repoPath, "TEST-001", "fact-find", "agent");
 
-      const content = await fs.readFile(docPath, "utf-8");
+      const content = (await readFileWithinRoot(
+        repoPath,
+        docPath,
+        "utf-8"
+      )) as string;
       expect(content).toContain("Type: Stage");
       expect(content).toContain("Stage: fact-find");
       expect(content).toContain("Card-ID: TEST-001");
@@ -148,8 +166,16 @@ describe("lane-transitions", () => {
       const userPath = await createStageDoc(repoPath, "TEST-001", "plan", "user");
       const agentPath = await createStageDoc(repoPath, "TEST-001", "plan", "agent");
 
-      const userContent = await fs.readFile(userPath, "utf-8");
-      const agentContent = await fs.readFile(agentPath, "utf-8");
+      const userContent = (await readFileWithinRoot(
+        repoPath,
+        userPath,
+        "utf-8"
+      )) as string;
+      const agentContent = (await readFileWithinRoot(
+        repoPath,
+        agentPath,
+        "utf-8"
+      )) as string;
 
       expect(userContent).toContain("Stage: plan");
       expect(userContent).toContain("Planning in progress");
@@ -163,8 +189,16 @@ describe("lane-transitions", () => {
       const userPath = await createStageDoc(repoPath, "TEST-001", "build", "user");
       const agentPath = await createStageDoc(repoPath, "TEST-001", "build", "agent");
 
-      const userContent = await fs.readFile(userPath, "utf-8");
-      const agentContent = await fs.readFile(agentPath, "utf-8");
+      const userContent = (await readFileWithinRoot(
+        repoPath,
+        userPath,
+        "utf-8"
+      )) as string;
+      const agentContent = (await readFileWithinRoot(
+        repoPath,
+        agentPath,
+        "utf-8"
+      )) as string;
 
       expect(userContent).toContain("Stage: build");
       expect(userContent).toContain("Work in progress");
@@ -178,8 +212,16 @@ describe("lane-transitions", () => {
       const userPath = await createStageDoc(repoPath, "TEST-001", "reflect", "user");
       const agentPath = await createStageDoc(repoPath, "TEST-001", "reflect", "agent");
 
-      const userContent = await fs.readFile(userPath, "utf-8");
-      const agentContent = await fs.readFile(agentPath, "utf-8");
+      const userContent = (await readFileWithinRoot(
+        repoPath,
+        userPath,
+        "utf-8"
+      )) as string;
+      const agentContent = (await readFileWithinRoot(
+        repoPath,
+        agentPath,
+        "utf-8"
+      )) as string;
 
       expect(userContent).toContain("Stage: reflect");
       expect(userContent).toContain("Reflection pending");
@@ -195,8 +237,10 @@ describe("lane-transitions", () => {
       expect(docPath).toContain("NEW-CARD/fact-find.user.md");
 
       // Verify directory was created
-      const dirExists = await fs
-        .access(path.join(repoPath, "docs/business-os/cards/NEW-CARD"))
+      const dirExists = await accessWithinRoot(
+        repoPath,
+        path.join(repoPath, "docs/business-os/cards/NEW-CARD")
+      )
         .then(() => true)
         .catch(() => false);
 
@@ -264,8 +308,9 @@ describe("lane-transitions", () => {
     it("should not recreate existing docs", async () => {
       // Create user doc manually
       const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-001");
-      await fs.mkdir(cardDir, { recursive: true });
-      await fs.writeFile(
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
         path.join(cardDir, "fact-find.user.md"),
         "existing content",
         "utf-8"
@@ -278,10 +323,11 @@ describe("lane-transitions", () => {
       expect(created[0]).toContain("fact-find.agent.md");
 
       // Verify existing user doc wasn't overwritten
-      const userContent = await fs.readFile(
+      const userContent = (await readFileWithinRoot(
+        repoPath,
         path.join(cardDir, "fact-find.user.md"),
         "utf-8"
-      );
+      )) as string;
       expect(userContent).toBe("existing content");
     });
 
@@ -333,8 +379,9 @@ describe("lane-transitions", () => {
     it("should detect partially missing docs (only user exists)", async () => {
       // Create only user doc
       const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-001");
-      await fs.mkdir(cardDir, { recursive: true });
-      await fs.writeFile(
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
         path.join(cardDir, "fact-find.user.md"),
         "test content",
         "utf-8"

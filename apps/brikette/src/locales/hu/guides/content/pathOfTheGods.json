@@ -30,9 +30,9 @@
       "id": "route-options",
       "title": "Útvonalak a Hostel Brikette-től",
       "body": [
-        "[Kompos verzió Amalfin keresztül](guide:pathOfTheGodsFerry): sétálj a Spiaggia Grandéig, kompozz Amalfiig, busszal kapaszkodj fel Bomeranóba, túrázz Noceléig, majd shuttle-lal térj vissza. Hosszabb nap, de tengerparti és Amalfi élményt is ad.",
-        "[Buszos verzió Amalfin keresztül](guide:pathOfTheGodsBus): válts jegyet a Bar Internazionale-nél, SITA busszal menj Amalfiig, onnan Agerola járattal Bomeranóba, majd kövesd a klasszikus Bomerano → Nocelle szakaszt. Akkor jó, ha a tengeri viszonyok rosszak vagy a kompot elkapkodták.",
-        "[Direkt Nocelle kör](guide:pathOfTheGodsNocelle): fogd a Montepertuso–Nocelle minibuszt, sétálj panorámás oda-vissza szakaszt Colle Serra felé, majd ugyanazon busszal térj vissza. Ideális könnyebb napra vagy kevésbé összetett utazásra."
+        "%LINK:pathOfTheGodsFerry|Kompos verzió Amalfin keresztül%: sétálj a Spiaggia Grandéig, kompozz Amalfiig, busszal kapaszkodj fel Bomeranóba, túrázz Noceléig, majd shuttle-lal térj vissza. Hosszabb nap, de tengerparti és Amalfi élményt is ad.",
+        "%LINK:pathOfTheGodsBus|Buszos verzió Amalfin keresztül%: válts jegyet a Bar Internazionale-nél, SITA busszal menj Amalfiig, onnan Agerola járattal Bomeranóba, majd kövesd a klasszikus Bomerano → Nocelle szakaszt. Akkor jó, ha a tengeri viszonyok rosszak vagy a kompot elkapkodták.",
+        "%LINK:pathOfTheGodsNocelle|Direkt Nocelle kör%: fogd a Montepertuso–Nocelle minibuszt, sétálj panorámás oda-vissza szakaszt Colle Serra felé, majd ugyanazon busszal térj vissza. Ideális könnyebb napra vagy kevésbé összetett utazásra."
       ]
     },
     {

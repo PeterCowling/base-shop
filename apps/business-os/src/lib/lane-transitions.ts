@@ -4,9 +4,13 @@
  * Implements BOS-19: Automatic stage doc creation when cards move between lanes
  */
 
-import { promises as fs } from "fs";
 import path from "path";
 
+import {
+  accessWithinRoot,
+  mkdirWithinRoot,
+  writeFileWithinRoot,
+} from "./safe-fs";
 import type { Lane, StageType } from "./types";
 
 /**
@@ -256,7 +260,7 @@ export async function stageDocExists(
   );
 
   try {
-    await fs.access(stagePath);
+    await accessWithinRoot(repoPath, stagePath);
     return true;
   } catch {
     return false;
@@ -277,10 +281,10 @@ export async function createStageDoc(
   const stagePath = path.join(stageDir, `${stage}.${audience}.md`);
 
   // Ensure stage directory exists
-  await fs.mkdir(stageDir, { recursive: true });
+  await mkdirWithinRoot(repoPath, stageDir, { recursive: true });
 
   // Write template
-  await fs.writeFile(stagePath, template, "utf-8");
+  await writeFileWithinRoot(repoPath, stagePath, template, "utf-8");
 
   return stagePath;
 }

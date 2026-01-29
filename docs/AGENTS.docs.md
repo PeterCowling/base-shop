@@ -300,6 +300,166 @@ These are non‑canonical by default but still important context.
 
 For agents, anything marked `Type: Research` or `Status: Historical` is **input/context**, not canonical truth.
 
+#### 3.1.5 Business OS Doc Types
+
+Business OS artifacts live under `docs/business-os/` and follow a **dual-audience pattern**: every logical artifact has two versions (`.user.md` for human/UI consumption, `.agent.md` for agent-optimized structured content). Both versions must be kept in sync when updated.
+
+**Common frontmatter fields (all Business OS docs):**
+- `Type:` (see specific types below)
+- `Status: Draft | Active | Archived | Dropped | Retired`
+- `Created: YYYY-MM-DD`
+- `Last-updated: YYYY-MM-DD`
+- `Card-ID: <BIZ>-OPP-####` (for card-related docs)
+- `Business: <BIZ>` (business code: BRIK, PLAT, etc.)
+
+**Business OS doc types:**
+
+**Idea / Opportunity**
+- **Purpose:** Capture raw or worked-up business opportunities
+- **Location:**
+  - Raw ideas: `docs/business-os/ideas/inbox/<ID>.user.md` + `.agent.md`
+  - Worked ideas: `docs/business-os/ideas/worked/<ID>.user.md` + `.agent.md`
+  - Archived: `docs/business-os/ideas/inbox/archive/` or `ideas/worked/archive/`
+- **Required frontmatter:**
+  - `Type: Idea`
+  - `Status: Draft | Worked | Dropped`
+  - `Business: <BIZ>`
+  - `Owner: <name>`
+  - `ID: <BIZ>-OPP-####`
+- **Rule:** Worked ideas must have a corresponding card
+
+**Card**
+- **Purpose:** Execution-focused artifact that progresses through kanban lanes
+- **Location:**
+  - `docs/business-os/cards/<ID>.user.md` + `.agent.md`
+  - Archived: `docs/business-os/cards/archive/`
+- **Required frontmatter:**
+  - `Type: Card`
+  - `Status: Active | Archived | Dropped | Retired`
+  - `Business: <BIZ>`
+  - `Lane: Inbox | Fact-finding | Planned | In progress | Blocked | Done | Reflected`
+  - `Priority: P0 | P1 | P2 | P3 | P4 | P5`
+  - `Owner: <name>`
+  - `ID: <BIZ>-OPP-####`
+  - `Created: YYYY-MM-DD`
+  - `Last-updated: YYYY-MM-DD`
+- **Optional frontmatter:**
+  - `Proposed-Lane: <lane>` (for agent-proposed lane moves requiring approval)
+  - `Due: YYYY-MM-DD`
+  - `Dependencies: [<ID>, ...]` (other card IDs)
+  - `External-Dependencies: [...]` (external blockers)
+
+**Stage Documents** (always-on pattern: created automatically when card enters corresponding lane)
+
+Each card has subdirectory: `docs/business-os/cards/<ID>/`
+
+**Fact-Find**
+- **Location:** `docs/business-os/cards/<ID>/fact-find.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: Fact-Find`
+  - `Status: Draft | Active | Complete`
+  - `Card-ID: <BIZ>-OPP-####`
+- **Purpose:** Evidence gathering before planning
+
+**Plan (Card-level)**
+- **Location:** `docs/business-os/cards/<ID>/plan.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: Plan`
+  - `Status: Draft | Active | Complete`
+  - `Card-ID: <BIZ>-OPP-####`
+- **Purpose:** Implementation plan for the opportunity
+
+**Build-Log**
+- **Location:** `docs/business-os/cards/<ID>/build.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: Build-Log`
+  - `Status: Draft | Active | Complete`
+  - `Card-ID: <BIZ>-OPP-####`
+- **Purpose:** Execution notes and progress tracking
+
+**Reflection**
+- **Location:** `docs/business-os/cards/<ID>/reflect.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: Reflection`
+  - `Status: Draft | Active | Complete`
+  - `Card-ID: <BIZ>-OPP-####`
+- **Purpose:** Post-completion reflection and learnings
+
+**Comments**
+- **Location:** `docs/business-os/cards/<ID>/comments/<timestamp>-<author>.md`
+- **Format:** File-per-comment (no dual-audience; single markdown file)
+- **Required frontmatter:**
+  - `Type: Comment`
+  - `Author: <name>`
+  - `Created: YYYY-MM-DD HH:MM:SS`
+  - `Card-ID: <BIZ>-OPP-####`
+
+**Business Plan**
+- **Location:** `docs/business-os/strategy/<BIZ>/plan.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: Business-Plan`
+  - `Status: Active | Draft | Archived`
+  - `Business: <BIZ>`
+  - `Last-reviewed: YYYY-MM-DD`
+- **Purpose:** Strategic plan and context for a business unit
+- **Note:** Only Pete and agents may edit
+
+**People**
+- **Location:** `docs/business-os/people/people.user.md` + `.agent.md`
+- **Required frontmatter:**
+  - `Type: People`
+  - `Status: Active | Draft`
+  - `Last-reviewed: YYYY-MM-DD`
+- **Purpose:** People responsibilities and capabilities mapping
+- **Note:** Only Pete and agents may edit
+
+**Business Catalog**
+- **Location:** `docs/business-os/strategy/businesses.json`
+- **Format:** JSON (not markdown)
+- **Purpose:** Canonical list of business codes, names, and metadata
+- **Schema:**
+  ```json
+  {
+    "businesses": [
+      {
+        "code": "BRIK",
+        "name": "Hostel Brikette",
+        "description": "...",
+        "active": true,
+        "apps": ["@apps/brikette"],
+        "packages": [],
+        "defaultOwners": ["Pete"]
+      }
+    ]
+  }
+  ```
+
+**Evidence Source Typing**
+
+When recording evidence in any Business OS doc, use typed evidence sources:
+- `measurement` — quantitative data
+- `customer-input` — user feedback, interviews
+- `repo-diff` — code/commit analysis
+- `experiment` — A/B test, spike, prototype
+- `financial-model` — cost/revenue projections
+- `vendor-quote` — external partner estimates
+- `legal` — compliance, contracts
+- `assumption` — explicitly flagged assumptions
+- `other` — catchall (use sparingly)
+
+**Validation:**
+- Business OS docs are validated by `pnpm docs:lint` (implemented in `scripts/src/docs-lint.ts`)
+- Registry entries written to `docs/registry.json`
+- Type-specific required frontmatter fields enforced (hard errors):
+  - **Idea**: Type, Status, Business, Owner (warn), ID
+  - **Card**: Type, Status, Business, Lane, Priority, Owner (warn), ID, Created, Last-updated (warn)
+  - **Stage docs** (Fact-Find, Plan, Build-Log, Reflection): Type, Status, Card-ID
+  - **Comment**: Type, Author, Created, Card-ID
+  - **Business-Plan**: Type, Status, Business, Last-reviewed
+  - **People**: Type, Status, Last-reviewed
+- Dual-audience pairing checked: each `.user.md` should have corresponding `.agent.md` (warnings only in Phase 0)
+- Tests: `scripts/src/docs-lint.test.ts`
+
 ### 3.2 Status Vocabulary
 
 Use a small, standard set of status values:

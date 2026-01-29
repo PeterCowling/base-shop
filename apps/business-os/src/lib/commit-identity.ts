@@ -16,13 +16,17 @@ export interface CommitIdentity {
 export const CommitIdentities = {
   /** User identity (Pete - Phase 0) */
   user: {
+    // i18n-exempt -- BOS-104 commit identity constant [ttl=2026-03-31]
     name: "Pete",
+    // i18n-exempt -- BOS-104 commit identity constant [ttl=2026-03-31]
     email: "pete@business-os.local",
   } as CommitIdentity,
 
   /** Agent identity (Claude) */
   agent: {
+    // i18n-exempt -- BOS-104 commit identity constant [ttl=2026-03-31]
     name: "Claude Agent",
+    // i18n-exempt -- BOS-104 commit identity constant [ttl=2026-03-31]
     email: "agent@business-os.internal",
   } as CommitIdentity,
 } as const;

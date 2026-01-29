@@ -1,3 +1,6 @@
+Type: Guide
+Status: Active
+
 # Deploy Health Checks
 
 All deploy workflows must include post-deploy health checks to verify deployments succeed.

@@ -5,12 +5,14 @@
  */
 
 import { notFound } from "next/navigation";
-import { promises as fs } from "fs";
 import matter from "gray-matter";
 import path from "path";
 
-import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
 import { ChangeRequestButton } from "@/components/change-request/ChangeRequestButton";
+import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
+import { readFileWithinRoot } from "@/lib/safe-fs";
 
 interface PlanPageProps {
   params: Promise<{
@@ -19,6 +21,7 @@ interface PlanPageProps {
 }
 
 export default async function PlanPage({ params }: PlanPageProps) {
+  const t = await getServerTranslations("en");
   const { businessCode } = await params;
   const repoRoot = process.cwd();
   const planPath = path.join(
@@ -33,7 +36,11 @@ export default async function PlanPage({ params }: PlanPageProps) {
   let frontmatter: Record<string, unknown>;
 
   try {
-    const fileContent = await fs.readFile(planPath, "utf-8");
+    const fileContent = await readFileWithinRoot(
+      repoRoot,
+      planPath,
+      "utf-8"
+    );
     const parsed = matter(fileContent);
     planContent = parsed.content;
     frontmatter = parsed.data;
@@ -49,38 +56,36 @@ export default async function PlanPage({ params }: PlanPageProps) {
       : undefined;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="bg-surface-1" style={{ minHeight: "100svh" }}>
+      <div className="mx-auto w-full px-4 py-8" style={{ maxWidth: "64rem" }}>
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {businessCode} Business Plan
+            <h1 className="text-3xl font-bold text-foreground">
+              {t("businessOs.pages.plans.title", { businessCode })}
             </h1>
             <ChangeRequestButton
               documentType="plan"
+              // i18n-exempt -- BOS-101 document path constant [ttl=2026-03-31]
               documentPath={`docs/business-os/strategy/${businessCode}/plan.user.md`}
               businessCode={businessCode}
             />
           </div>
           {lastReviewed && (
-            <p className="text-sm text-gray-600">
-              Last reviewed: {lastReviewed}
+            <p className="text-sm text-muted-foreground">
+              {t("businessOs.pages.lastReviewed", { date: lastReviewed })}
             </p>
           )}
         </div>
 
         {/* Plan content */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="bg-card rounded-lg shadow-sm border border-border-2 p-8">
           <MarkdownRenderer content={planContent} />
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-sm text-gray-600 text-center">
-          <p>
-            This is a read-only view. To request changes, use the &ldquo;Request
-            Change&rdquo; button.
-          </p>
+        <div className="mt-6 text-sm text-muted-foreground text-center">
+          <p>{t("businessOs.pages.footerReadOnly")}</p>
         </div>
       </div>
     </div>
@@ -91,10 +96,11 @@ export default async function PlanPage({ params }: PlanPageProps) {
  * Generate metadata for the page
  */
 export async function generateMetadata({ params }: PlanPageProps) {
+  const t = await getServerTranslations("en");
   const { businessCode } = await params;
 
   return {
-    title: `${businessCode} Business Plan | Business OS`,
-    description: `Business plan for ${businessCode}`,
+    title: t("businessOs.pages.plans.metaTitle", { businessCode }),
+    description: t("businessOs.pages.plans.metaDescription", { businessCode }),
   };
 }

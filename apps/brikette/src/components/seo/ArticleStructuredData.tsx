@@ -9,7 +9,7 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { buildArticlePayload } from "@/utils/seo/jsonld";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
-import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
+import { ensureLeadingSlash, useOptionalRouterPathname } from "./locationUtils";
 
 type Props = {
   headline: string;
@@ -33,10 +33,10 @@ function ArticleStructuredData({
   publisherLogoUrl = `${BASE_URL}/img/hostel_brikette_icon.png`,
 }: Props): JSX.Element {
   const lang = useCurrentLanguage();
+  // Use Next.js router pathname directly. Avoid window.location fallback to prevent
+  // server/client hydration mismatches. usePathname() works reliably in App Router.
   const routerPathname = useOptionalRouterPathname();
-  const fallbackPath = normaliseWindowPath();
-  const rawPathname = routerPathname ?? fallbackPath;
-  const pathname = rawPathname ? ensureLeadingSlash(rawPathname) : "/";
+  const pathname = ensureLeadingSlash(routerPathname ?? "/");
 
   const canonicalUrl = buildCanonicalUrl(BASE_URL, pathname);
   const img = image || `${BASE_URL}/img/hostel-communal-terrace-lush-view.webp`;

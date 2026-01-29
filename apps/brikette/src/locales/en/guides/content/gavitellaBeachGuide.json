@@ -37,6 +37,13 @@
       "body": [
         "The beach sits below Praiano's Piazza San Gennaro. Roughly 400 steps weave past villas and lemon terraces to a stone platform, a pebble shelf, and a slim free zone between the two lidos.",
         "La Gavitella occupies the left-hand side (facing the sea) with restaurant tables, sun decks, and moorings for dinner guests. One Fire lines the right-hand pier with bright loungers, a DJ podium, and a dock for their party boats."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/01-beach-layout.jpg",
+          "alt": "Gavitella Beach layout diagram showing La Gavitella and One Fire beach clubs",
+          "caption": "The beach layout: La Gavitella on the left with restaurant, One Fire on the right with DJ podium"
+        }
       ]
     },
     {
@@ -53,6 +60,13 @@
       "body": [
         "La Gavitella is all about slow lunches, aperitivi, and a sunset boat spin around the Li Galli islets. The kitchen focuses on seasonal seafood — crudo platters, paccheri with local fish, and a lemon-forward dessert list.",
         "Mention transfer needs when you reserve: staff coordinate tender boats for dinner guests and can store bags while you swim before the aperitif cruise."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/02-la-gavitella-club.jpg",
+          "alt": "La Gavitella Beach Club terrace with sea views and sunset dining",
+          "caption": "La Gavitella — slow lunches, aperitivi, and sunset boat cruises around the Li Galli islets"
+        }
       ]
     },
     {
@@ -61,6 +75,13 @@
       "body": [
         "One Fire is the Amalfi Coast's party beach, famous for its afternoon watermelon ritual, DJ sets, and crowd choreography timed perfectly with the sunset.",
         "Book loungers or cabanas via WhatsApp — deposits are common in July and August. When seas behave, their boats shuttle groups from Positano and back after the music winds down."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/03-one-fire-club.jpg",
+          "alt": "One Fire Beach Club with bright loungers, DJ podium, and party atmosphere",
+          "caption": "One Fire — the Amalfi Coast's party beach with DJ sets, watermelon ritual, and sunset choreography"
+        }
       ]
     },
     {
@@ -74,14 +95,17 @@
   ],
   "images": {
     "overview": {
+      "src": "/img/guides/gavitella-beach/01-beach-layout.jpg",
       "alt": "Aerial view of Gavitella Beach cove and the sun decks",
       "caption": "The two beach clubs share a narrow platform carved into the cliff."
     },
     "gavitellaClub": {
+      "src": "/img/guides/gavitella-beach/02-la-gavitella-club.jpg",
       "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
       "caption": "La Gavitella's sunset dinners pair sea views with long aperitivi."
     },
     "oneFire": {
+      "src": "/img/guides/gavitella-beach/03-one-fire-club.jpg",
       "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
       "caption": "One Fire is known for lively afternoons and a DJ-led sunset scene."
     }

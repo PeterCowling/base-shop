@@ -1,9 +1,12 @@
+Type: Audit
+Status: Reference
+
 # AUDIT-04: Application Feature Baseline Audit
 
 **Audit ID:** AUDIT-04
 **Date:** 2026-01-21
 **Scope:** Phase 6 apps identified for lib-primitives-enhancement-plan
-**Status:** Complete
+**Status:** Reference
 
 ---
 

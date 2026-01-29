@@ -64,27 +64,54 @@ export interface EvidenceEntry {
 /** Zod schema for evidence entry validation */
 export const evidenceEntrySchema = z.object({
   sourceType: evidenceSourceTypeSchema,
-  description: z.string().min(1, "Evidence description is required"),
+  description: z.string().min(1),
   link: z.string().url().optional().or(z.literal("")),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });
 
+/** Zod schema factory for evidence entry validation with translated errors */
+export function createEvidenceEntrySchema(
+  t: (key: string) => string
+): typeof evidenceEntrySchema {
+  return z.object({
+    sourceType: evidenceSourceTypeSchema,
+    description: z
+      .string()
+      .min(1, t("businessOs.evidence.errors.descriptionRequired")),
+    link: z.string().url().optional().or(z.literal("")),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  });
+}
+
 /**
  * Get human-readable label for evidence source type
  */
-export function getEvidenceSourceLabel(type: EvidenceSourceType): string {
-  const labels: Record<EvidenceSourceType, string> = {
-    measurement: "Measurement",
-    "customer-input": "Customer Input",
-    "repo-diff": "Code Changes",
-    experiment: "Experiment",
-    "financial-model": "Financial Model",
-    "vendor-quote": "Vendor Quote",
-    legal: "Legal",
-    assumption: "Assumption",
-    other: "Other",
-  };
-  return labels[type] || type;
+export function getEvidenceSourceLabel(
+  type: EvidenceSourceType,
+  t: (key: string) => string
+): string {
+  switch (type) {
+    case "measurement":
+      return t("businessOs.evidence.labels.measurement");
+    case "customer-input":
+      return t("businessOs.evidence.labels.customerInput");
+    case "repo-diff":
+      return t("businessOs.evidence.labels.repoDiff");
+    case "experiment":
+      return t("businessOs.evidence.labels.experiment");
+    case "financial-model":
+      return t("businessOs.evidence.labels.financialModel");
+    case "vendor-quote":
+      return t("businessOs.evidence.labels.vendorQuote");
+    case "legal":
+      return t("businessOs.evidence.labels.legal");
+    case "assumption":
+      return t("businessOs.evidence.labels.assumption");
+    case "other":
+      return t("businessOs.evidence.labels.other");
+    default:
+      return type;
+  }
 }
 
 /**

@@ -1,9 +1,12 @@
+Type: Audit
+Status: Reference
+
 # AUDIT-03: Financial Math Usage Audit
 
 **Audit Date:** 2026-01-21
 **Scope:** `packages/platform-core/src/pricing/`, `**/discount*.ts`, `**/margin*.ts`, `**/money*.ts`, `**/tax*.ts`, financial calculations across packages and apps
 **Related Plan:** [lib-primitives-enhancement-plan.md](../plans/lib-primitives-enhancement-plan.md)
-**Status:** Complete
+**Status:** Reference
 
 ---
 

@@ -1,14 +1,21 @@
 import { z } from "zod";
 
-/**
- * Form schema for creating new ideas
- * Phase 0: Simple form with title, description, business
- */
-export const createIdeaSchema = z.object({
-  title: z.string().min(1, "Title is required").max(200, "Title too long"),
-  description: z.string().min(1, "Description is required"),
-  business: z.string().min(1, "Please select a business"),
-  tags: z.string().optional(),
-});
+type Translator = (
+  key: string,
+  vars?: Record<string, string | number>
+) => string;
 
-export type CreateIdeaFormData = z.infer<typeof createIdeaSchema>;
+function buildCreateIdeaSchema(t: Translator) {
+  return z.object({
+    title: z.string().min(1, t("businessOs.forms.titleRequired")).max(200, t("businessOs.forms.titleTooLong")),
+    description: z.string().min(1, t("businessOs.forms.descriptionRequired")),
+    business: z.string().min(1, t("businessOs.forms.businessRequired")),
+    tags: z.string().optional(),
+  });
+}
+
+export type CreateIdeaFormData = z.infer<ReturnType<typeof buildCreateIdeaSchema>>;
+
+export function createIdeaSchema(t: Translator) {
+  return buildCreateIdeaSchema(t);
+}

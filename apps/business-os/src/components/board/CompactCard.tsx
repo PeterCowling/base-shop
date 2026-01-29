@@ -14,10 +14,10 @@ export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
   return (
     <Link
       href={`/cards/${card.ID}`}
-      className="block bg-white rounded-lg border border-gray-200 p-3 hover:shadow-md transition-shadow"
+      className="block rounded-lg border border-border-2 bg-card p-3 text-foreground transition-shadow hover:shadow-md"
     >
       {/* Title */}
-      <h3 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2">
+      <h3 className="mb-2 line-clamp-2 text-sm font-medium text-foreground">
         {card.Title || card.ID}
       </h3>
 
@@ -25,24 +25,24 @@ export function CompactCard({ card, showBusinessTag }: CompactCardProps) {
       <div className="flex items-center gap-2 mb-2">
         <PriorityBadge priority={card.Priority} />
         {showBusinessTag && card.Business && (
-          <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded">
+          <span className="rounded bg-info-soft px-2 py-0.5 text-xs text-info-foreground">
             {card.Business}
           </span>
         )}
       </div>
 
       {/* Owner & date */}
-      <div className="flex items-center justify-between text-xs text-gray-600">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span className="font-medium">{card.Owner}</span>
         {card.Updated && (
-          <span className="text-gray-500">{formatDate(card.Updated)}</span>
+          <span>{formatDate(card.Updated)}</span>
         )}
       </div>
 
       {/* Proposed lane indicator */}
       {card["Proposed-Lane"] && card["Proposed-Lane"] !== card.Lane && (
-        <div className="mt-2 pt-2 border-t border-gray-200">
-          <span className="text-xs text-orange-600 font-medium">
+        <div className="mt-2 border-t border-border-2 pt-2">
+          <span className="text-xs font-medium text-warning-foreground">
             → Proposed: {card["Proposed-Lane"]}
           </span>
         </div>

@@ -3,7 +3,6 @@
  * BOS-17: Move items to archive/ and hide from UI
  */
 
-import fs from "node:fs/promises";
 import path from "node:path";
 
 import matter from "gray-matter";
@@ -11,6 +10,13 @@ import simpleGit from "simple-git";
 
 import type { CommitIdentity } from "./commit-identity";
 import { getGitAuthorOptions } from "./commit-identity";
+import {
+  accessWithinRoot,
+  mkdirWithinRoot,
+  readFileWithinRoot,
+  unlinkWithinRoot,
+  writeFileWithinRoot,
+} from "./safe-fs";
 
 export type ArchiveItemType = "card" | "idea";
 
@@ -70,7 +76,7 @@ export async function archiveItem(
 
     // Check if source file exists
     try {
-      await fs.access(absoluteSourcePath);
+      await accessWithinRoot(worktreePath, absoluteSourcePath);
     } catch {
       return {
         success: false,
@@ -79,7 +85,11 @@ export async function archiveItem(
     }
 
     // Read and update frontmatter
-    const content = await fs.readFile(absoluteSourcePath, "utf-8");
+    const content = (await readFileWithinRoot(
+      worktreePath,
+      absoluteSourcePath,
+      "utf-8"
+    )) as string;
     const parsed = matter(content);
 
     // Update status to Archived
@@ -87,13 +97,20 @@ export async function archiveItem(
     const updatedContent = matter.stringify(parsed.content, parsed.data);
 
     // Ensure archive directory exists
-    await fs.mkdir(path.dirname(absoluteDestPath), { recursive: true });
+    await mkdirWithinRoot(worktreePath, path.dirname(absoluteDestPath), {
+      recursive: true,
+    });
 
     // Write updated content to new location
-    await fs.writeFile(absoluteDestPath, updatedContent, "utf-8");
+    await writeFileWithinRoot(
+      worktreePath,
+      absoluteDestPath,
+      updatedContent,
+      "utf-8"
+    );
 
     // Remove original file
-    await fs.unlink(absoluteSourcePath);
+    await unlinkWithinRoot(worktreePath, absoluteSourcePath);
 
     // Git operations: add new, remove old, commit
     // These may fail in test environments without proper git setup

@@ -74,10 +74,11 @@ describe("JSON-LD contract: representative pages", () => {
   });
 
   it("guide FAQ JSON-LD uses canonical URL for the guide page", () => {
-    pathname = "/en/experiences/ferry-schedules/";
+    pathname = "/en/help/ferry-schedules";
     const { container } = renderWithProviders(<GuideFaqJsonLd guideKey="ferrySchedules" />);
     const json = getJsonLd(container);
-    expect(json.url).toBe(`${BASE_URL}/en/experiences/ferry-schedules/`);
+    const assistanceSlug = getSlug("assistance", "en");
+    expect(json.url).toBe(`${BASE_URL}/en/${assistanceSlug}/ferry-schedules`);
   });
 
   it("deals JSON-LD uses localized deals URL", () => {

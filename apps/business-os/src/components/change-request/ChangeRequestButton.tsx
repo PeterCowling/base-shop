@@ -6,8 +6,17 @@
 
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { Button, Input, Textarea } from "@acme/design-system/atoms";
+import { useTranslations } from "@acme/i18n";
+import { SimpleModal } from "@acme/ui/molecules";
+
+type Translate = ReturnType<typeof useTranslations>;
+
+// i18n-exempt -- BOS-106 form id constant [ttl=2026-03-31]
+const CHANGE_REQUEST_FORM_ID = "change-request-form";
 
 interface ChangeRequestButtonProps {
   documentType: "plan" | "people";
@@ -20,11 +29,138 @@ interface ChangeRequestFormData {
   anchor?: string;
 }
 
+function buildChangeRequestContent({
+  t,
+  targetLabel,
+  description,
+  anchor,
+  documentPath,
+}: {
+  t: Translate;
+  targetLabel: string;
+  description: string;
+  anchor: string;
+  documentPath: string;
+}): string {
+  const lines = [
+    `# ${t("businessOs.changeRequest.content.header", { target: targetLabel })}`,
+    "",
+    `## ${t("businessOs.changeRequest.content.requestedChangeHeading")}`,
+    "",
+    description,
+    "",
+    anchor
+      ? `## ${t("businessOs.changeRequest.content.targetSectionHeading")}\n\n${t(
+          "businessOs.changeRequest.content.anchorLine",
+          { anchor }
+        )}\n`
+      : "",
+    `## ${t("businessOs.changeRequest.content.documentHeading")}`,
+    "",
+    t("businessOs.changeRequest.content.targetLine", { path: documentPath }),
+    anchor
+      ? t("businessOs.changeRequest.content.sectionLine", { anchor })
+      : "",
+    "",
+    "---",
+    "",
+    `*${t("businessOs.changeRequest.content.footerNote")}*`,
+  ];
+
+  return lines.filter(Boolean).join("\n");
+}
+
+function ChangeRequestSuccess({ t }: { t: Translate }) {
+  return (
+    <div className="space-y-3 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-success-soft text-success-foreground">
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      </div>
+      <div>
+        <h3 className="text-lg font-semibold text-foreground">
+          {t("businessOs.changeRequest.success.title")}
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          {t("businessOs.changeRequest.success.description")}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+interface ChangeRequestFormProps {
+  formTitle: string;
+  formData: ChangeRequestFormData;
+  isSubmitting: boolean;
+  error: string | null;
+  onSubmit: (event: React.FormEvent) => void;
+  onChange: (data: ChangeRequestFormData) => void;
+  t: Translate;
+}
+
+function ChangeRequestForm({
+  formTitle,
+  formData,
+  isSubmitting,
+  error,
+  onSubmit,
+  onChange,
+  t,
+}: ChangeRequestFormProps) {
+  return (
+    <form
+      id={CHANGE_REQUEST_FORM_ID}
+      onSubmit={onSubmit}
+      className="space-y-4"
+    >
+      <h3 className="text-lg font-semibold text-foreground">{formTitle}</h3>
+      <Textarea
+        id="description"
+        required
+        rows={4}
+        label={t("businessOs.changeRequest.form.descriptionLabel")}
+        placeholder={t("businessOs.changeRequest.form.descriptionPlaceholder")}
+        value={formData.description}
+        onChange={(e) => onChange({ ...formData, description: e.target.value })}
+        disabled={isSubmitting}
+      />
+      <Input
+        id="anchor"
+        type="text"
+        label={t("businessOs.changeRequest.form.anchorLabel")}
+        description={t("businessOs.changeRequest.form.anchorHelp")}
+        placeholder={t("businessOs.changeRequest.form.anchorPlaceholder")}
+        value={formData.anchor}
+        onChange={(e) => onChange({ ...formData, anchor: e.target.value })}
+        disabled={isSubmitting}
+      />
+      {error && (
+        <div className="rounded-md border border-danger bg-danger-soft p-3">
+          <p className="text-sm text-danger-foreground">{error}</p>
+        </div>
+      )}
+    </form>
+  );
+}
+
 export function ChangeRequestButton({
   documentType,
   documentPath,
   businessCode,
 }: ChangeRequestButtonProps) {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +171,27 @@ export function ChangeRequestButton({
     description: "",
     anchor: "",
   });
+
+  const targetLabel = useMemo(() => {
+    if (documentType === "plan") {
+      return t("businessOs.changeRequest.targets.plan", {
+        businessCode: businessCode ?? "PLAT",
+      });
+    }
+    return t("businessOs.changeRequest.targets.people");
+  }, [businessCode, documentType, t]);
+
+  const requestContent = useMemo(
+    () =>
+      buildChangeRequestContent({
+        t,
+        targetLabel,
+        description: formData.description,
+        anchor: formData.anchor ?? "",
+        documentPath,
+      }),
+    [documentPath, formData.anchor, formData.description, t, targetLabel]
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,34 +210,19 @@ export function ChangeRequestButton({
         },
         body: JSON.stringify({
           business,
-          content: `# Change Request: ${documentType === "plan" ? `${business} Plan` : "People Doc"}
-
-## Requested Change
-
-${formData.description}
-
-${formData.anchor ? `## Target Section\n\nAnchor: \`#${formData.anchor}\`\n` : ""}
-
-## Document
-
-Target: \`${documentPath}\`
-${formData.anchor ? `Section: \`#${formData.anchor}\`\n` : ""}
-
----
-
-*This is a change request. Pete or an agent will review and implement the requested changes.*
-`,
+          content: requestContent,
           tags: ["change-request", documentType, ...(formData.anchor ? ["has-anchor"] : [])],
         }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to submit change request");
+        throw new Error(
+          data.error || t("businessOs.changeRequest.errors.submitFailed")
+        );
       }
 
-      const data = await response.json();
-
+      await response.json();
       setSuccess(true);
 
       // Close modal after short delay and refresh
@@ -91,146 +233,78 @@ ${formData.anchor ? `Section: \`#${formData.anchor}\`\n` : ""}
         router.refresh();
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      setError(
+        err instanceof Error
+          ? err.message
+          : t("businessOs.changeRequest.errors.unknown")
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleClose = () => {
+    if (isSubmitting) return;
+    setIsOpen(false);
+  };
+
+  const formTitle = t("businessOs.changeRequest.form.title", {
+    target: targetLabel,
+  });
+
   return (
     <>
       {/* Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        Request Change
-      </button>
+      <Button onClick={() => setIsOpen(true)} variant="outline">
+        {t("businessOs.changeRequest.button")}
+      </Button>
 
       {/* Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            {/* Backdrop */}
-            <div
-              className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
-              onClick={() => !isSubmitting && setIsOpen(false)}
-            />
-
-            {/* Modal content */}
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-              {success ? (
-                <div className="text-center">
-                  <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                    <svg
-                      className="h-6 w-6 text-green-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Change Request Submitted
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Pete or an agent will review your request and make the changes.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">
-                      Request Change to{" "}
-                      {documentType === "plan"
-                        ? `${businessCode} Plan`
-                        : "People Doc"}
-                    </h3>
-
-                    {/* Description field */}
-                    <div className="mb-4">
-                      <label
-                        htmlFor="description"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Describe the change you&apos;d like to see *
-                      </label>
-                      <textarea
-                        id="description"
-                        required
-                        rows={4}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        placeholder="Example: Update the Q1 revenue target to reflect new market conditions..."
-                        value={formData.description}
-                        onChange={(e) =>
-                          setFormData({ ...formData, description: e.target.value })
-                        }
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    {/* Anchor field */}
-                    <div className="mb-4">
-                      <label
-                        htmlFor="anchor"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Section anchor (optional)
-                      </label>
-                      <input
-                        type="text"
-                        id="anchor"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                        placeholder="strategy"
-                        value={formData.anchor}
-                        onChange={(e) =>
-                          setFormData({ ...formData, anchor: e.target.value })
-                        }
-                        disabled={isSubmitting}
-                      />
-                      <p className="mt-1 text-xs text-gray-500">
-                        The heading ID from the URL (e.g., &ldquo;strategy&rdquo; for
-                        #strategy)
-                      </p>
-                    </div>
-
-                    {error && (
-                      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                        <p className="text-sm text-red-800">{error}</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex justify-end space-x-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsOpen(false)}
-                      disabled={isSubmitting}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting || !formData.description.trim()}
-                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                    >
-                      {isSubmitting ? "Submitting..." : "Submit Request"}
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <SimpleModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        title={success ? undefined : t("businessOs.changeRequest.modalTitle")}
+        maxWidth="max-w-xl"
+        showCloseButton={!isSubmitting}
+        footer={
+          success ? null : (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                disabled={isSubmitting}
+              >
+                {t("businessOs.changeRequest.actions.cancel")}
+              </Button>
+              <Button
+                type="submit"
+                form={CHANGE_REQUEST_FORM_ID}
+                disabled={isSubmitting || !formData.description.trim()}
+                aria-busy={isSubmitting}
+              >
+                {isSubmitting
+                  ? t("businessOs.changeRequest.actions.submitting")
+                  : t("businessOs.changeRequest.actions.submit")}
+              </Button>
+            </>
+          )
+        }
+      >
+        {success ? (
+          <ChangeRequestSuccess t={t} />
+        ) : (
+          <ChangeRequestForm
+            formTitle={formTitle}
+            formData={formData}
+            isSubmitting={isSubmitting}
+            error={error}
+            onSubmit={handleSubmit}
+            onChange={setFormData}
+            t={t}
+          />
+        )}
+      </SimpleModal>
     </>
   );
 }

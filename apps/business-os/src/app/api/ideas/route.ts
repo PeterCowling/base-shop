@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
 import { CommitIdentities } from "@/lib/commit-identity";
 import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
 import { createRepoWriter } from "@/lib/repo-writer";
@@ -21,6 +23,7 @@ const CreateIdeaSchema = z.object({
  * Phase 0: Pete-only, local-only, no auth
  */
 export async function POST(request: Request) {
+  const t = await getServerTranslations("en");
   try {
     const body = await request.json();
 
@@ -28,7 +31,7 @@ export async function POST(request: Request) {
     const parsed = CreateIdeaSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Validation failed", details: parsed.error.errors },
+        { error: t("businessOs.api.common.validationFailed"), details: parsed.error.errors },
         { status: 400 }
       );
     }
@@ -42,7 +45,7 @@ export async function POST(request: Request) {
     const isValidBusiness = await validateBusinessId(business, repoRoot);
     if (!isValidBusiness) {
       return NextResponse.json(
-        { error: `Invalid business ID: ${business}` },
+        { error: t("businessOs.api.cards.errors.invalidBusiness", { business }) },
         { status: 400 }
       );
     }
@@ -58,8 +61,8 @@ export async function POST(request: Request) {
     if (!isReady) {
       return NextResponse.json(
         {
-          error: "Worktree not initialized",
-          hint: "Run: apps/business-os/scripts/setup-worktree.sh",
+          error: t("businessOs.api.common.worktreeNotInitialized"),
+          hint: t("businessOs.api.common.worktreeSetupHint"),
         },
         { status: 500 }
       );
@@ -79,19 +82,23 @@ export async function POST(request: Request) {
     );
 
     if (!result.success) {
+      const errorMessage = result.errorKey
+        ? t(result.errorKey)
+        : t("businessOs.api.ideas.errors.createFailed");
+
       if (result.needsManualResolution) {
         return NextResponse.json(
           {
-            error: result.error,
+            error: errorMessage,
             needsManualResolution: true,
-            hint: "Resolve conflicts manually in the worktree",
+            hint: t("businessOs.api.common.resolveConflictsHint"),
           },
           { status: 409 }
         );
       }
 
       return NextResponse.json(
-        { error: result.error || "Failed to create idea" },
+        { error: errorMessage },
         { status: 500 }
       );
     }
@@ -102,13 +109,13 @@ export async function POST(request: Request) {
         ideaId,
         filePath: result.filePath,
         commitHash: result.commitHash,
-        message: "Idea created locally. Run Sync to push.",
+        message: t("businessOs.api.ideas.success.created"),
       },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal server error", details: String(error) },
+      { error: t("api.common.internalServerError"), details: String(error) },
       { status: 500 }
     );
   }

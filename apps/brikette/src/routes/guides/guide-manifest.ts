@@ -2375,6 +2375,43 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoMainBeachBusBack",
+    slug: "bus-back-to-hostel-brikette-from-positano-main-beach",
+    contentKey: "positanoMainBeachBusBack",
+    status: "draft",
+    draftPathSegment: "guides/bus-back-to-hostel-brikette-from-positano-main-beach",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoMainBeachBusBack", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoMainBeachBusBack", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["positanoMainBeachBusDown", "positanoMainBeachWalkBack", "positanoBeaches"] },
+      },
+      {
+        type: "alsoHelpful",
+        options: {
+          tags: ["beaches", "positano", "bus"],
+          excludeGuide: ["positanoMainBeachBusDown", "positanoMainBeachBusBack", "positanoBeaches"],
+          includeRooms: true,
+        },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "drivingAmalfi",
     slug: "driving-the-amalfi-coast-tips",
     contentKey: "drivingAmalfi",

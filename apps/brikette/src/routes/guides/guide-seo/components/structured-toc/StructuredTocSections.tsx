@@ -1,4 +1,5 @@
 import i18nApp from "@/i18n";
+import ImageGallery from "@/components/guides/ImageGallery";
 import { debugGuide } from "@/utils/debug";
 import { ensureStringArray } from "@/utils/i18nContent";
 
@@ -55,7 +56,7 @@ export function MinimalLocalizedContent({
     .filter((p) => p.length > 0);
 
   const meaningfulSections = (Array.isArray(sections) ? sections : []).filter(
-    (s) => Array.isArray(s?.body) && s.body.length > 0,
+    (s) => (Array.isArray(s?.body) && s.body.length > 0) || (s.images?.length ?? 0) > 0,
   );
 
   const sectionsForDisplay = meaningfulSections.filter((section) => {
@@ -109,6 +110,7 @@ export function MinimalLocalizedContent({
             .map((text: string, i: number) => (
               <p key={`lb-${i}`}>{text}</p>
             ))}
+          {s.images?.length ? <ImageGallery items={s.images} className="my-0" /> : null}
         </section>
       ))}
 
@@ -263,7 +265,7 @@ export function MinimalUnlocalizedSections({
   if (policy.suppressMinimalUnlocalizedSections) return null;
 
   const meaningful = (Array.isArray(sections) ? sections : []).filter(
-    (s) => Array.isArray(s?.body) && s.body.length > 0,
+    (s) => (Array.isArray(s?.body) && s.body.length > 0) || (s.images?.length ?? 0) > 0,
   );
 
   if (meaningful.length === 0) return null;
@@ -297,6 +299,7 @@ export function MinimalUnlocalizedSections({
             .map((text: string, i: number) => (
               <p key={i}>{text}</p>
             ))}
+          {s.images?.length ? <ImageGallery items={s.images} className="my-0" /> : null}
         </section>
       ))}
     </div>

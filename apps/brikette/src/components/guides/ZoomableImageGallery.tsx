@@ -34,7 +34,7 @@ function ZoomableImageGallery({ items, className = "" }: Props): JSX.Element | n
   if (!items?.length) return null;
 
   return (
-    <figure className={`not-prose my-6 grid gap-3 sm:grid-cols-2 ${className}`}>
+    <figure className={`not-prose my-6 grid items-start gap-3 sm:grid-cols-2 ${className}`}>
       {items.map(({ src, alt, width = 1200, height = 800, caption }, index) => {
         const aspect = width > 0 && height > 0 ? `${width}/${height}` : undefined;
         const key = `${src}::${index}`;
@@ -45,7 +45,7 @@ function ZoomableImageGallery({ items, className = "" }: Props): JSX.Element | n
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="group relative overflow-hidden rounded-md border border-slate-200 transition-all hover:border-slate-300 hover:shadow-lg dark:border-slate-700 dark:hover:border-slate-600"
+                className="group relative w-fit max-w-full overflow-hidden rounded-md border border-slate-200 transition-all hover:border-slate-300 hover:shadow-lg dark:border-slate-700 dark:hover:border-slate-600"
               >
                 <CfResponsiveImage
                   src={src}
@@ -53,7 +53,7 @@ function ZoomableImageGallery({ items, className = "" }: Props): JSX.Element | n
                   width={width}
                   height={height}
                   preset="gallery"
-                  className="block h-auto w-full"
+                  className="block h-auto w-auto max-w-full"
                   data-aspect={aspect}
                 />
                 {/* Zoom indicator overlay */}

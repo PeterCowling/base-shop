@@ -7,7 +7,7 @@ import { buildCanonicalUrl } from "@acme/ui/lib/seo/buildCanonicalUrl";
 import { BASE_URL } from "@/config/site";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 
-import { ensureLeadingSlash, normaliseWindowPath, useOptionalRouterPathname } from "./locationUtils";
+import { ensureLeadingSlash, useOptionalRouterPathname } from "./locationUtils";
 
 type Props = {
   name: string;
@@ -38,9 +38,10 @@ function EventStructuredData({
   image,
   path,
 }: Props): JSX.Element {
+  // Use Next.js router pathname directly. Avoid window.location fallback to prevent
+  // server/client hydration mismatches. usePathname() works reliably in App Router.
   const routerPathname = useOptionalRouterPathname();
-  const fallbackPath = normaliseWindowPath();
-  const pathname = ensureLeadingSlash(path ?? routerPathname ?? fallbackPath ?? "/");
+  const pathname = ensureLeadingSlash(path ?? routerPathname ?? "/");
   const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "Event",

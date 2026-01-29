@@ -216,6 +216,7 @@ For comprehensive guidance, see:
 | Git hooks | [docs/git-hooks.md](docs/git-hooks.md) |
 | Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
 | Plan metadata schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
+| Business OS charter | [docs/business-os/business-os-charter.md](docs/business-os/business-os-charter.md) |
 | Incident details | [docs/historical/RECOVERY-PLAN-2026-01-14.md](docs/historical/RECOVERY-PLAN-2026-01-14.md) |
 | Incident prevention | [docs/incident-prevention.md](docs/incident-prevention.md) |
 

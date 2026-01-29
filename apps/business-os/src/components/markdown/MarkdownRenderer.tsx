@@ -48,9 +48,14 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
           a: ({ href, children }) => (
             <a
               href={href}
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="inline-flex min-h-11 min-w-11 items-center px-1 text-link underline"
               target={href?.startsWith("http") ? "_blank" : undefined}
-              rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+              rel={
+                href?.startsWith("http")
+                  ? // i18n-exempt -- BOS-102 security rel attribute [ttl=2026-03-31]
+                    "noopener noreferrer"
+                  : undefined
+              }
             >
               {children}
             </a>

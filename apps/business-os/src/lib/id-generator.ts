@@ -1,6 +1,6 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 
+import { readdirWithinRoot,readFileWithinRoot } from "./safe-fs";
 /**
  * Generate a unique Business OS ID in format <BIZ>-OPP-####
  *
@@ -15,7 +15,11 @@ export async function generateBusinessOsId(
   const businessOsPath = path.join(repoRoot, "docs/business-os");
 
   // Find highest existing number for this business
-  const highestNumber = await findHighestIdNumber(businessId, businessOsPath);
+  const highestNumber = await findHighestIdNumber(
+    businessId,
+    repoRoot,
+    businessOsPath
+  );
 
   // Generate next ID with zero-padded number
   const nextNumber = highestNumber + 1;
@@ -29,32 +33,42 @@ export async function generateBusinessOsId(
  */
 async function findHighestIdNumber(
   businessId: string,
+  repoRoot: string,
   businessOsPath: string
 ): Promise<number> {
   let highest = 0;
-  const pattern = new RegExp(`^${businessId}-OPP-(\\d+)$`);
+  const prefix = `${businessId}-OPP-`;
 
   // Check ideas/inbox
   const inboxPath = path.join(businessOsPath, "ideas/inbox");
-  highest = Math.max(highest, await scanDirectory(inboxPath, pattern));
+  highest = Math.max(highest, await scanDirectory(repoRoot, inboxPath, prefix));
 
   // Check ideas/worked
   const workedPath = path.join(businessOsPath, "ideas/worked");
-  highest = Math.max(highest, await scanDirectory(workedPath, pattern));
+  highest = Math.max(highest, await scanDirectory(repoRoot, workedPath, prefix));
 
   // Check cards
   const cardsPath = path.join(businessOsPath, "cards");
-  highest = Math.max(highest, await scanDirectory(cardsPath, pattern));
+  highest = Math.max(highest, await scanDirectory(repoRoot, cardsPath, prefix));
 
   // Check archives
   const inboxArchivePath = path.join(businessOsPath, "ideas/inbox/archive");
-  highest = Math.max(highest, await scanDirectory(inboxArchivePath, pattern));
+  highest = Math.max(
+    highest,
+    await scanDirectory(repoRoot, inboxArchivePath, prefix)
+  );
 
   const workedArchivePath = path.join(businessOsPath, "ideas/worked/archive");
-  highest = Math.max(highest, await scanDirectory(workedArchivePath, pattern));
+  highest = Math.max(
+    highest,
+    await scanDirectory(repoRoot, workedArchivePath, prefix)
+  );
 
   const cardsArchivePath = path.join(businessOsPath, "cards/archive");
-  highest = Math.max(highest, await scanDirectory(cardsArchivePath, pattern));
+  highest = Math.max(
+    highest,
+    await scanDirectory(repoRoot, cardsArchivePath, prefix)
+  );
 
   return highest;
 }
@@ -63,13 +77,16 @@ async function findHighestIdNumber(
  * Scan a directory for files/subdirs matching the ID pattern
  */
 async function scanDirectory(
+  repoRoot: string,
   dirPath: string,
-  pattern: RegExp
+  prefix: string
 ): Promise<number> {
   let highest = 0;
 
   try {
-    const entries = await fs.readdir(dirPath, { withFileTypes: true });
+    const entries = await readdirWithinRoot(repoRoot, dirPath, {
+      withFileTypes: true,
+    });
 
     for (const entry of entries) {
       // Skip .gitkeep and hidden files
@@ -81,9 +98,13 @@ async function scanDirectory(
         ? entry.name.replace(/\.(user|agent)\.md$/, "")
         : entry.name;
 
-      const match = pattern.exec(baseName);
-      if (match) {
-        const number = parseInt(match[1], 10);
+      if (!baseName.startsWith(prefix)) continue;
+
+      const numberText = baseName.slice(prefix.length);
+      if (!/^\d+$/.test(numberText)) continue;
+
+      const number = parseInt(numberText, 10);
+      if (!Number.isNaN(number)) {
         highest = Math.max(highest, number);
       }
     }
@@ -109,7 +130,11 @@ export async function validateBusinessId(
       repoRoot,
       "docs/business-os/strategy/businesses.json"
     );
-    const catalogContent = await fs.readFile(catalogPath, "utf-8");
+    const catalogContent = (await readFileWithinRoot(
+      repoRoot,
+      catalogPath,
+      "utf-8"
+    )) as string;
     const catalog = JSON.parse(catalogContent);
 
     return catalog.businesses.some(
@@ -132,7 +157,11 @@ export async function getValidBusinessIds(
       repoRoot,
       "docs/business-os/strategy/businesses.json"
     );
-    const catalogContent = await fs.readFile(catalogPath, "utf-8");
+    const catalogContent = (await readFileWithinRoot(
+      repoRoot,
+      catalogPath,
+      "utf-8"
+    )) as string;
     const catalog = JSON.parse(catalogContent);
 
     return catalog.businesses.map((business: { id: string }) => business.id);

@@ -35,16 +35,30 @@
       "id": "why-go",
       "title": "Why Laurito is worth the effort",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
+        "Laurito sits just outside Positano's centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
         "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+          "alt": "Laurito Beach cove with cliff backdrop and beach clubs along the shoreline",
+          "caption": "Laurito's cliff-backed cove — calmer and quieter than Spiaggia Grande with west-facing sun"
+        }
       ]
     },
     {
       "id": "layout",
       "title": "Layout and who runs what",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
+        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville's club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
         "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+          "alt": "Laurito beach layout diagram showing three zones: free section, Villa Tre Ville, and Da Adolfo",
+          "caption": "Laurito layout: narrow public strip (far right), Villa Tre Ville central decks, and Da Adolfo terrace (left)"
+        }
       ]
     },
     {
@@ -54,6 +68,13 @@
         "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
         "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
         "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+          "alt": "Villa Tre Ville beach club with terracotta loungers and premium service",
+          "caption": "Villa Tre Ville — boutique beach club with premium day beds, concierge service, and sunset spritz tastings"
+        }
       ]
     },
     {
@@ -63,6 +84,13 @@
         "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
         "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
         "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+          "alt": "Da Adolfo beach club dock and restaurant terrace with bohemian atmosphere",
+          "caption": "Da Adolfo — famous for grilled mozzarella, relaxed vibe, and water taxi access from Spiaggia Grande"
+        }
       ]
     },
     {
@@ -77,20 +105,24 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "Laurito Beach cove with beach clubs along the shoreline",
-      "caption": "Laurito’s cliff-backed cove is calmer and quieter than the main beach."
+      "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "Beach decks and shoreline layout at Laurito",
       "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "Villa Tre Ville beach club loungers and sea views",
       "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "Da Adolfo beach club dock and seating area",
-      "caption": "Da Adolfo’s shuttle boat drops guests beside the restaurant terrace."
+      "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
     }
   },
   "essentialsTitle": "What to expect",
@@ -139,6 +171,28 @@
     }
   ],
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "title": "Photo walkthrough",
+    "items": [
+      {
+        "image": "/img/guides/laurito-beach/02-beach-overview.jpg",
+        "alt": "Laurito Beach cove with beach clubs along the shoreline",
+        "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
+      },
+      {
+        "image": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+        "alt": "Beach layout diagram showing three zones at Laurito",
+        "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
+      },
+      {
+        "image": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+        "alt": "Villa Tre Ville beach club loungers and sea views",
+        "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
+      },
+      {
+        "image": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+        "alt": "Da Adolfo beach club dock and seating area",
+        "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
+      }
+    ]
   }
 }

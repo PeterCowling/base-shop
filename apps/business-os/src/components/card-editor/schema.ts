@@ -2,28 +2,20 @@ import { z } from "zod";
 
 import type { Lane, Priority } from "@/lib/types";
 
-/**
- * Form schema for creating/editing cards
- * Phase 0: Pete-only card management
- */
-export const cardEditorSchema = z.object({
-  business: z.string().min(1, "Please select a business"),
-  title: z.string().min(1, "Title is required").max(200, "Title too long"),
-  description: z.string().min(1, "Description is required"),
-  lane: z.enum([
-    "Inbox",
-    "Fact-finding",
-    "Planned",
-    "In progress",
-    "Blocked",
-    "Done",
-    "Reflected",
-  ] as const),
-  priority: z.enum(["P0", "P1", "P2", "P3", "P4", "P5"] as const),
-  owner: z.string().min(1, "Owner is required"),
-  proposedLane: z
-    .enum([
-      "",
+type Translator = (
+  key: string,
+  vars?: Record<string, string | number>
+) => string;
+
+function buildCardEditorSchema(t: Translator) {
+  return z.object({
+    business: z.string().min(1, t("businessOs.forms.businessRequired")),
+    title: z
+      .string()
+      .min(1, t("businessOs.forms.titleRequired"))
+      .max(200, t("businessOs.forms.titleTooLong")),
+    description: z.string().min(1, t("businessOs.forms.descriptionRequired")),
+    lane: z.enum([
       "Inbox",
       "Fact-finding",
       "Planned",
@@ -31,13 +23,31 @@ export const cardEditorSchema = z.object({
       "Blocked",
       "Done",
       "Reflected",
-    ] as const)
-    .optional(),
-  tags: z.string().optional(),
-  dueDate: z.string().optional(),
-});
+    ] as const),
+    priority: z.enum(["P0", "P1", "P2", "P3", "P4", "P5"] as const),
+    owner: z.string().min(1, t("businessOs.forms.ownerRequired")),
+    proposedLane: z
+      .enum([
+        "",
+        "Inbox",
+        "Fact-finding",
+        "Planned",
+        "In progress",
+        "Blocked",
+        "Done",
+        "Reflected",
+      ] as const)
+      .optional(),
+    tags: z.string().optional(),
+    dueDate: z.string().optional(),
+  });
+}
 
-export type CardEditorFormData = z.infer<typeof cardEditorSchema>;
+export type CardEditorFormData = z.infer<ReturnType<typeof buildCardEditorSchema>>;
+
+export function createCardEditorSchema(t: Translator) {
+  return buildCardEditorSchema(t);
+}
 
 // Helper to convert form data to API payload
 export function formDataToApiPayload(data: CardEditorFormData) {

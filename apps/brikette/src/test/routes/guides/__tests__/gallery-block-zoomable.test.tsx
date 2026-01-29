@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import React from "react";
-import { cleanup, render, screen, fireEvent } from "@testing-library/react";
+import { cleanup, render, screen, fireEvent, within } from "@testing-library/react";
 
 import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 import type { GalleryBlockOptions } from "@/routes/guides/blocks/types";
@@ -11,21 +11,19 @@ import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
 
 // Mock design system Dialog primitives
 jest.mock("@acme/design-system/primitives", () => ({
-  Dialog: ({ children }: { children: React.ReactNode }) => <div data-testid="dialog-root">{children}</div>,
+  Dialog: ({ children }: { children: React.ReactNode }) => <div data-cy="dialog-root">{children}</div>,
   DialogTrigger: ({ children, asChild }: { children: React.ReactNode; asChild?: boolean }) => (
-    <div data-testid="dialog-trigger">{children}</div>
+    <div data-cy="dialog-trigger">{children}</div>
   ),
-  DialogContent: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="dialog-content">{children}</div>
-  ),
+  DialogContent: ({ children }: { children: React.ReactNode }) => <div data-cy="dialog-content">{children}</div>,
   DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogTitle: ({ children }: { children: React.ReactNode }) => <div data-testid="dialog-title">{children}</div>,
+  DialogTitle: ({ children }: { children: React.ReactNode }) => <div data-cy="dialog-title">{children}</div>,
 }));
 
 // Mock CfResponsiveImage
 jest.mock("@acme/ui/atoms/CfResponsiveImage", () => ({
   CfResponsiveImage: ({ src, alt, ...props }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} data-testid="cf-image" {...props} />
+    <img src={src} alt={alt} data-cy="cf-image" {...props} />
   ),
 }));
 
@@ -39,9 +37,9 @@ jest.mock("@acme/ui/lib/buildCfImageUrl", () => ({
 jest.mock("@/components/guides/ImageGallery", () => ({
   __esModule: true,
   default: ({ items }: { items: Array<{ src: string; alt: string }> }) => (
-    <div data-testid="image-gallery">
+    <div data-cy="image-gallery">
       {items.map((item, i) => (
-        <img key={i} src={item.src} alt={item.alt} data-testid="gallery-image" />
+        <img key={i} src={item.src} alt={item.alt} data-cy="gallery-image" />
       ))}
     </div>
   ),
@@ -197,7 +195,9 @@ describe("Gallery block zoomable option", () => {
 
       render(<>{template.articleExtras?.(context)}</>);
 
-      expect(screen.getByText("A beautiful view")).toBeInTheDocument();
+      expect(within(screen.getByTestId("dialog-title")).getByText("A beautiful view")).toBeInTheDocument();
+      // Caption should also render under the image tile.
+      expect(screen.getAllByText("A beautiful view").length).toBeGreaterThanOrEqual(2);
     });
 
     it("uses alt text as Dialog title when caption is not provided", () => {

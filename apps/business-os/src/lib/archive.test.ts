@@ -7,6 +7,12 @@ import matter from "gray-matter";
 
 import { archiveItem, filterArchived, isArchived } from "./archive";
 import { CommitIdentities } from "./commit-identity";
+import {
+  accessWithinRoot,
+  mkdirWithinRoot,
+  readFileWithinRoot,
+  writeFileWithinRoot,
+} from "./safe-fs";
 
 describe("archive", () => {
   let tempDir: string;
@@ -18,14 +24,16 @@ describe("archive", () => {
     worktreePath = path.join(tempDir, "worktree");
 
     // Initialize minimal git structure
-    await fs.mkdir(path.join(worktreePath, ".git"), { recursive: true });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/cards"), {
+    await mkdirWithinRoot(worktreePath, path.join(worktreePath, ".git"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/ideas/inbox"), {
+    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/cards"), {
       recursive: true,
     });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/ideas/worked"), {
+    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/ideas/inbox"), {
+      recursive: true,
+    });
+    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/ideas/worked"), {
       recursive: true,
     });
 
@@ -41,7 +49,8 @@ describe("archive", () => {
 \tremote = origin
 \tmerge = refs/heads/work/business-os-store
 `;
-    await fs.writeFile(
+    await writeFileWithinRoot(
+      worktreePath,
       path.join(worktreePath, ".git/config"),
       gitConfig,
       "utf-8"
@@ -128,7 +137,7 @@ describe("archive", () => {
         Created: "2026-01-28",
       });
 
-      await fs.writeFile(cardPath, cardContent, "utf-8");
+      await writeFileWithinRoot(worktreePath, cardPath, cardContent, "utf-8");
 
       // Archive the card
       const result = await archiveItem(
@@ -148,22 +157,24 @@ describe("archive", () => {
       );
 
       // Verify original file was removed
-      const originalExists = await fs
-        .access(cardPath)
+      const originalExists = await accessWithinRoot(worktreePath, cardPath)
         .then(() => true)
         .catch(() => false);
       expect(originalExists).toBe(false);
 
       // Verify archived file exists with updated status
       const archivedPath = path.join(worktreePath, result.archivedPath!);
-      const archivedExists = await fs
-        .access(archivedPath)
+      const archivedExists = await accessWithinRoot(worktreePath, archivedPath)
         .then(() => true)
         .catch(() => false);
       expect(archivedExists).toBe(true);
 
       if (archivedExists) {
-        const archivedContent = await fs.readFile(archivedPath, "utf-8");
+        const archivedContent = (await readFileWithinRoot(
+          worktreePath,
+          archivedPath,
+          "utf-8"
+        )) as string;
         const parsed = matter(archivedContent);
         expect(parsed.data.Status).toBe("Archived");
         expect(parsed.data.ID).toBe(cardId);
@@ -185,7 +196,7 @@ describe("archive", () => {
         Business: "TEST",
       });
 
-      await fs.writeFile(ideaPath, ideaContent, "utf-8");
+      await writeFileWithinRoot(worktreePath, ideaPath, ideaContent, "utf-8");
 
       // Archive the idea
       const result = await archiveItem(
@@ -204,13 +215,16 @@ describe("archive", () => {
 
       // Verify archived file has updated status
       const archivedPath = path.join(worktreePath, result.archivedPath!);
-      const archivedExists = await fs
-        .access(archivedPath)
+      const archivedExists = await accessWithinRoot(worktreePath, archivedPath)
         .then(() => true)
         .catch(() => false);
 
       if (archivedExists) {
-        const archivedContent = await fs.readFile(archivedPath, "utf-8");
+        const archivedContent = (await readFileWithinRoot(
+          worktreePath,
+          archivedPath,
+          "utf-8"
+        )) as string;
         const parsed = matter(archivedContent);
         expect(parsed.data.Status).toBe("Archived");
       }

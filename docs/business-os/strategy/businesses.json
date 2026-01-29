@@ -1,0 +1,37 @@
+{
+  "$schema": "./businesses.schema.json",
+  "businesses": [
+    {
+      "id": "PLAT",
+      "name": "Platform",
+      "description": "Core platform infrastructure, shared services, and developer experience",
+      "owner": "Pete",
+      "status": "active",
+      "created": "2026-01-28",
+      "tags": ["infrastructure", "dx", "monorepo"]
+    },
+    {
+      "id": "BRIK",
+      "name": "Brikette",
+      "description": "Multilingual e-commerce platform for hostel bookings and travel experiences",
+      "owner": "Pete",
+      "status": "active",
+      "created": "2026-01-28",
+      "tags": ["e-commerce", "travel", "i18n"]
+    },
+    {
+      "id": "BOS",
+      "name": "Business OS",
+      "description": "Repo-native business operating system and kanban coordination layer",
+      "owner": "Pete",
+      "status": "active",
+      "created": "2026-01-28",
+      "tags": ["workflow", "coordination", "agents"]
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-01-28",
+    "format": "business-catalog-v1"
+  }
+}

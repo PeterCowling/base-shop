@@ -1,6 +1,9 @@
+/* eslint-disable ds/no-unsafe-viewport-units, ds/enforce-layout-primitives -- BOS-11: Phase 0 scaffold UI */
 "use client";
 
 import Link from "next/link";
+
+import { useTranslations } from "@acme/i18n";
 
 import type { Business, Card, Idea, Lane } from "@/lib/types";
 
@@ -14,7 +17,6 @@ interface BoardViewProps {
   inboxIdeas: Idea[];
 }
 
-/* eslint-disable ds/no-unsafe-viewport-units, ds/enforce-layout-primitives -- BOS-11: Phase 0 scaffold UI */
 export function BoardView({
   businessCode,
   businesses,
@@ -22,25 +24,28 @@ export function BoardView({
   cardsByLane,
   inboxIdeas,
 }: BoardViewProps) {
+  const t = useTranslations();
   const currentBusiness = businesses.find((b) => b.id === businessCode);
   const isGlobal = businessCode === "global";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-1">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-card border-b border-border-2 px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {isGlobal ? "Global Board" : currentBusiness?.name || businessCode}
+            <h1 className="text-2xl font-bold text-foreground">
+              {isGlobal
+                ? t("businessOs.board.titles.global")
+                : currentBusiness?.name || businessCode}
             </h1>
             {isGlobal ? (
-              <p className="text-sm text-gray-600 mt-1">
-                High priority cards (P0/P1) across all businesses
+              <p className="text-sm text-muted-foreground mt-1">
+                {t("businessOs.board.descriptions.highPriority")}
               </p>
             ) : (
               currentBusiness?.description && (
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {currentBusiness.description}
                 </p>
               )
@@ -49,28 +54,28 @@ export function BoardView({
           <div className="flex gap-2">
             <Link
               href="/cards/new"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
             >
-              + New Card
+              {t("businessOs.board.actions.newCard")}
             </Link>
             <Link
               href="/ideas/new"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
             >
-              + New Idea
+              {t("businessOs.board.actions.newIdea")}
             </Link>
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-surface-2 border border-border-2 rounded-md hover:bg-surface-3"
             >
-              Home
+              {t("businessOs.board.actions.home")}
             </Link>
             {!isGlobal && (
               <Link
                 href="/boards/global"
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                className="px-4 py-2 text-sm font-medium text-foreground bg-surface-2 border border-border-2 rounded-md hover:bg-surface-3"
               >
-                Global Board
+                {t("businessOs.board.actions.globalBoard")}
               </Link>
             )}
           </div>
@@ -83,7 +88,7 @@ export function BoardView({
               <Link
                 key={business.id}
                 href={`/boards/${business.id}`}
-                className="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                className="px-3 py-1 text-sm font-medium text-foreground bg-surface-2 border border-border-2 rounded-md hover:bg-surface-3"
               >
                 {business.id}
               </Link>

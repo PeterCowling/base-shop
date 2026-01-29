@@ -1,10 +1,11 @@
 ---
 Type: Plan
-Status: Complete
+Status: Active
 Domain: UI
+Relates-to charter: Guides SEO
 Created: 2026-01-28
-Last-updated: 2026-01-28 (All tasks complete including TASK-08)
-Completed: 2026-01-28
+Last-reviewed: 2026-01-29
+Last-updated: 2026-01-29
 Feature-Slug: guides-hydration-fix
 Overall-confidence: 89%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -14,7 +15,11 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 ## Summary
 
-Fix React hydration errors in the guides system by eliminating server/client divergence that causes structural mismatches during hydration. The primary verified issue is `PreviewBanner` conditionally rendering on the client but not in SSR due to `window.location.search` usage, creating `<div>` vs `<script>` structural mismatches. Secondary issues include render-time DOM mutation in `HeadSection` and `localStorage`-based status divergence in dev mode. This plan establishes hydration testing infrastructure and fixes all identified divergence sources.
+Fix React hydration errors in the guides system by eliminating server/client divergence that causes **structural mismatches** during hydration. Two issues are now verified:
+- **Dev/preview:** `PreviewBanner` eligibility can differ between SSR and the first client render (search params and/or client-only status overrides), shifting the JSON-LD script subtree.
+- **Published pages too:** `FaqStructuredDataBlock` can render different element types between SSR and the first client render (`<script>` FAQ JSON-LD vs a placeholder node) when `hasLocalizedContent` diverges due to i18n/content-detection readiness.
+
+This plan establishes hydration regression tests and hardens the affected components so eligibility can differ without producing structural hydration failures.
 
 ## Goals
 
@@ -38,8 +43,8 @@ Fix React hydration errors in the guides system by eliminating server/client div
   - Dev-mode components (GuideEditorialPanel, DevStatusPill) must remain client-only
   - Must follow `docs/testing-policy.md` (targeted tests only, no broad suites)
 - **Assumptions:**
-  - Primary hydration error is from dev/preview work (user-confirmed)
-  - Published guides may have latent hydration issues from i18n timing or conditional structured data
+  - The reported hydration errors originated from dev/preview work (user-confirmed), **but** we must treat published/production routes as in-scope (FAQ JSON-LD mismatch reproduced on a published guide route).
+  - Published guides may have additional hydration issues from i18n timing or conditional structured data
   - Tests will catch hydration regressions once infrastructure is in place
   - **Status source nuance (important for task accuracy):**
     - `PreviewBanner` uses `getEffectiveGuideStatus()` → `GUIDE_STATUS_BY_KEY` (from `src/data/guides.index.ts`) plus optional client-only `localStorage` overrides (`src/utils/guideStatus.ts`).
@@ -50,18 +55,19 @@ Fix React hydration errors in the guides system by eliminating server/client div
 
 - Related brief: `docs/plans/guides-hydration-fix-fact-find.md`
 - Key findings:
-  - **Primary cause (verified):** `search` derived from `window.location.search` causes `PreviewBanner` to appear on client but not SSR, creating `<div>` vs `<script>` mismatch
+  - **Primary cause (verified, dev/preview):** `PreviewBanner` eligibility can differ between SSR and the first client render (search params + optional client-only status overrides), shifting the script subtree
+  - **Verified (published routes too):** `FaqStructuredDataBlock` previously emitted a placeholder element on the client while SSR emitted an FAQ JSON-LD `<script>` when `hasLocalizedContent` differed between SSR and the first client render
   - **Contributing factor:** `localStorage`-based guide status overrides in dev mode (client-only)
-  - **Contributing factor:** `HeadSection` mutates `document.head` during render (violates React expectations)
-  - **Testing gap:** No hydration-specific tests exist; coverage tests don't verify SSR → client hydration cycle
+  - **Contributing factor:** `HeadSection` previously mutated `document.head` during render (violates React expectations)
+  - **Testing gap (partial):** Hydration regression tests now exist, but they do not exercise full Next.js route SSR for App Router (they use component-level `renderToString` → `hydrateRoot`)
   - **Pattern precedent:** `ArticleStructuredData` already uses `useOptionalRouterPathname()` for hydration-safe pathname access
 
 ## Existing System Notes
 
 - **Key modules/files:**
-  - `apps/brikette/src/routes/guides/_GuideSeoTemplate.tsx:114` — Uses `typeof window` for search params (root cause)
-  - `apps/brikette/src/routes/guides/guide-seo/components/PreviewBanner.tsx` — Conditionally renders div
-  - `apps/brikette/src/routes/guides/guide-seo/components/HeadSection.tsx:60-169` — DOM mutation during render
+  - `apps/brikette/src/routes/guides/_GuideSeoTemplate.tsx:~120` — Derives `search` via `useOptionalSearchParams()` (router-safe; avoids `window.location.search` branching)
+  - `apps/brikette/src/routes/guides/guide-seo/components/PreviewBanner.tsx` — Always renders a container div (visibility/contents are conditional)
+  - `apps/brikette/src/routes/guides/guide-seo/components/HeadSection.tsx:~40-160` — DOM writes (now in `useEffect`) used as a fallback for tests
   - `apps/brikette/src/utils/guideStatus.ts:40-46` — `localStorage` reads (client-only)
   - `apps/brikette/src/components/seo/locationUtils.ts` — Contains `useOptionalRouterPathname()` helper
   - `apps/brikette/src/components/seo/ArticleStructuredData.tsx:38` — Reference implementation using `useOptionalRouterPathname()`
@@ -122,8 +128,8 @@ Fix React hydration errors in the guides system by eliminating server/client div
 | TASK-04 | IMPLEMENT   | Move HeadSection DOM mutations to useEffect                        |        85% |      M | Complete (2026-01-28) | TASK-01         |
 | TASK-05 | IMPLEMENT   | Remove localStorage-driven initial-render divergence (dev/preview) |        88% |      S | Complete (2026-01-28) | TASK-01         |
 | TASK-06 | IMPLEMENT   | Add hydration regression test for published guide                  |        90% |      S | Complete (2026-01-28) | TASK-01,TASK-03 |
-| TASK-07 | INVESTIGATE | Verify i18n doesn't cause structural script divergence             |        90% |      S | Complete (2026-01-28) | TASK-06         |
-| TASK-08 | IMPLEMENT   | Fix FaqStructuredDataBlock hydration mismatch                      |        90% |      S | Complete (2026-01-28) | TASK-01         |
+| TASK-07 | INVESTIGATE | Verify i18n doesn't cause structural script divergence             |        90% |      S | Complete (2026-01-29) | TASK-06         |
+| TASK-08 | IMPLEMENT   | Fix FaqStructuredDataBlock hydration mismatch                      |        90% |      S | Complete (2026-01-29) | TASK-01         |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -314,7 +320,7 @@ Fix React hydration errors in the guides system by eliminating server/client div
   - [x] `DevStatusPill` initial state does **not** depend on `localStorage` (SSR and first client render match)
   - [x] After mount, `DevStatusPill` may apply localStorage overrides (if any)
   - [x] `PreviewBanner` initial render does **not** depend on `localStorage` (or is structurally hydration-safe if it does)
-  - [x] No hydration errors attributable to localStorage-driven status divergence
+  - [x] No **structural** hydration errors attributable to localStorage-driven status divergence (banner markup is stable; content differences are suppressed)
 - **Test plan:**
   - Add: Unit test(s) verifying hydration safety with localStorage overrides present
   - Run: targeted tests for the new unit test files
@@ -405,125 +411,59 @@ Fix React hydration errors in the guides system by eliminating server/client div
 ### TASK-07: Verify i18n doesn't cause structural script divergence
 
 - **Type:** INVESTIGATE
+- **Status:** Complete (2026-01-29)
 - **Affects:**
-  - `apps/brikette/src/routes/guides/_GuideSeoTemplate.tsx` (HowTo structured data conditional rendering)
-  - `apps/brikette/src/routes/guides/guide-seo/template/useHowToJson.ts` (HowTo generation)
-  - `apps/brikette/src/routes/guides/guide-seo/components/HeadSection.tsx:182-184` (conditional HowTo script)
+  - `apps/brikette/src/routes/guides/guide-seo/template/useHowToJson.ts` (HowTo JSON generation)
+  - `apps/brikette/src/routes/guides/guide-seo/components/HeadSection.tsx` (conditional HowTo `<script>`)
 - **Depends on:** TASK-06
-- **Confidence:** 70% ⚠️ BELOW THRESHOLD
-  - Implementation: 75% — Known area to investigate (HowTo script conditional on i18n content). Unknown: exact timing of i18n content resolution during SSR vs client.
-  - Approach: 70% — Investigation task; approach is "read code + add test to verify". Outcome unknown until investigation complete.
-  - Impact: 65% — If i18n causes divergence, it affects guides with HowTo structured data. Unknown blast radius until investigated.
-- **Blockers / questions to answer:**
-  - Does `howToJson` value differ between SSR and first client render due to i18n content timing?
-  - Do guides with `includeHowToStructuredData={true}` have hydration errors from conditionally rendered `<script>` tags?
-  - Does `useGuideContent` hook always return same structured arrays on SSR and client?
-  - Are there guides where HowTo script appears on client but not SSR (or vice versa)?
-- **Testability constraints (important):**
-  - Jest runs with JSDOM globals by default; SSR simulation must explicitly clear `window`/`document` during the SSR phase (TASK-01).
-  - In Jest, `@/i18n` and `@/utils/loadI18nNs` are globally module-mapped to mocks (see `apps/brikette/jest.config.cjs`). This means we **cannot** directly verify real i18n namespace timing in Jest by importing those modules “for real”.
-  - Verification in Jest should therefore focus on **structural stability** under simulated i18n readiness divergence (e.g., `useGuideContent` returning empty sections on SSR and non-empty on client).
-  - A “real runtime” check (dev/preview + production build) remains necessary to confirm actual namespace timing behavior.
-- **Pre-test / evidence gathered (to date):**
-  - `apps/brikette/src/test/routes/guides/__tests__/howto-manifest-default.test.ts` is green and confirms multiple manifests declare `HowTo` (e.g., `pathOfTheGods`, `capriDayTrip`, `laundryPositano`).
-  - `apps/brikette/src/locales/en/guides/content/pathOfTheGods.json` has non-empty structured content (`sections: 5`), so if `includeHowToStructuredData` is true and content is available at render time, `howToJson` should be non-null.
-  - Manifest contains ~30 `HowTo` keys (mix of experience + transport directions), so there is enough surface area to pick 1–2 representative guides for hydration verification.
-  - Candidate “published + HowTo” guide key for tests: `pathOfTheGods` (published by default in `GUIDE_STATUS_BY_KEY`, and declares `HowTo` in the manifest).
-  - Jest config excludes the existing `loadI18nNs.client-and-preload.test.ts` (vitest-only), so TASK-07 should not rely on that test in this package’s Jest suite.
-
+- **Confidence:** 90%
+  - Implementation: 90% — Investigation completed with a targeted hydration harness and DOM inspection.
+  - Approach: 90% — Uses the same SSR → hydrate harness as other hydration regression tests.
+  - Impact: 85% — Confirms behavior for the one structural divergence that i18n timing could plausibly introduce (HowTo script absent on SSR, present on client).
+- **Evidence (tests):**
+  - `apps/brikette/src/test/routes/guides/__tests__/hydration/howto-script-divergence.test.tsx`
+  - `apps/brikette/src/test/routes/guides/__tests__/hydration/howto-script-dom-inspection.test.tsx`
+- **Key finding (React 19):**
+  - A `null → <script>` transition during hydration does **not** produce a hydration error in our harness, but React also does **not** insert the missing script into the hydrated DOM.
+  - Practical implication: if SSR ever omits HowTo JSON-LD (e.g., due to i18n readiness), the client is unlikely to “fix it” during hydration. This is primarily an **SEO correctness** risk rather than a user-facing hydration error.
+- **Limitations:**
+  - Jest runs with module-level mocks for `@/i18n` and `@/utils/loadI18nNs` (see `apps/brikette/jest.config.cjs`), so these tests validate **structural behavior under simulated divergence**, not real runtime namespace timing.
 - **Acceptance:**
-  - [x] Code review of `useHowToJson` and `useGuideContent` to trace i18n content resolution
-  - [x] Add hydration test for guide with HowTo structured data (if not already covered), using simulated i18n readiness divergence:
-    - SSR: `sections=[]` → `howToJson=null` → no HowTo script
-    - Client: `sections=[...]` → `howToJson!=null` → HowTo script present
-    - Confirm whether this produces a hydration error today; if it can, decide whether to (a) stabilize script presence or (b) guarantee consistent section readiness at first render
-  - [x] Confirm whether HowTo script rendering is stable across SSR → client hydration
-  - [x] If divergence found: create new IMPLEMENT task to fix it
-  - [x] If no divergence: document findings and mark complete
-  - [x] Update plan with confidence adjustment based on findings
-- **Notes / references:**
-  - Fact-find: "Plausible but needs verification" — i18n content readiness could change script presence
-  - Code: `apps/brikette/src/routes/guides/guide-seo/components/HeadSection.tsx:194-196`
-  - Code: `apps/brikette/src/routes/guides/guide-seo/useHowToJson.ts`
-  - Code: `apps/brikette/src/routes/guides/guide-seo/useGuideContent.ts`
-  - Code: `apps/brikette/src/routes/guides/guide-seo/translations.ts`
-
-#### Investigation Completion (2026-01-28)
-
-- **Status:** Complete (Investigation only, no implementation needed)
-- **Investigation tests created:**
-  - `howto-script-divergence.test.tsx` — simulates HowTo script appearing on client but not SSR
-  - `howto-script-dom-inspection.test.tsx` — inspects actual DOM structure to verify script presence
-- **Test results:** All tests pass with zero hydration errors
-- **Code review findings:**
-  - `useHowToJson` depends on `context.sections` (line 51 in useHowToJson.ts)
-  - `useGuideContent` loads sections via `tGuides` translator (lines 76-78)
-  - `useGuideTranslations` has robust fallback chain: tGuides → guidesFallback → guidesEn → store resources → eager bundles
-  - Eager bundles (`getGuidesBundle()`) available on both SSR and client as last resort
-
-**Key Finding:** i18n timing does NOT cause HowTo script hydration errors
-
-Evidence:
-1. **Test scenario:** Server rendered with `howToJson: null`, client with `howToJson: <populated>`
-2. **Result:** Zero hydration errors
-3. **React 19 behavior:** When script element appears on client but not SSR, React prevents adding it during hydration (graceful recovery, no error thrown)
-4. **DOM inspection:** HowTo script did NOT appear in client DOM even when `howToJson` prop was provided to client render
-5. **Conclusion:** React's hydration process maintains SSR HTML structure and prevents structural divergence
-
-**Risk assessment:**
-- **Likelihood of issue in production:** LOW
-  - i18n bundles loaded before render via eager bundles
-  - Translator has 5-layer fallback chain
-  - Next.js preloads translations
-  - No production evidence of HowTo script hydration errors
-- **Impact if it occurred:** Medium (SEO only - HowTo script would be missing from initial HTML)
-- **User-facing impact:** None (HowTo scripts not visible to users)
-
-**Recommendation:** No implementation work required
-- React 19 handles the scenario gracefully
-- Production architecture makes divergence unlikely
-- Current `suppressHydrationWarning` on script tag (line 195) is unnecessary but harmless
-- Optional monitoring: Track when `howToJson` is null for guides with `includeHowToStructuredData={true}`
-
-**Confidence adjustment:** 70% → 90%
-- Implementation: 90% (confirmed no changes needed)
-- Approach: 95% (investigation validated no issue exists)
-- Impact: 85% (confirmed low impact, unlikely scenario)
-
-**Full investigation report:** `/tmp/task07-investigation-summary.md`
+  - [x] Hydration harness covers the `null → <script>` transition for HowTo JSON-LD
+  - [x] DOM inspection confirms the script is not inserted during hydration when absent in SSR HTML
+  - [x] Documented the implication for production (SSR must include HowTo JSON-LD when expected)
 
 ### TASK-08: Fix FaqStructuredDataBlock hydration mismatch
 
 - **Type:** IMPLEMENT
-- **Status:** Pending
+- **Status:** Complete (2026-01-29)
 - **Affects:**
   - `apps/brikette/src/routes/guides/guide-seo/components/FaqStructuredDataBlock.tsx` (conditional rendering causing structural divergence)
 - **Depends on:** TASK-01
 - **Confidence:** 90%
-  - Implementation: 95% — Same pattern as PreviewBanner fix (TASK-03). Replace `return null` with stable container element.
-  - Approach: 90% — Proven approach. Always render container, use hidden state instead of null returns.
-  - Impact: 85% — Affects guides with FAQ structured data. Risk: minor layout shift if not handled correctly.
-- **Discovered:** 2026-01-28 during user testing of `/en/experiences/positano-beaches`
+  - Implementation: 90% — Replace element-type-divergent placeholders with a stable JSON-LD `<script>` placeholder.
+  - Approach: 90% — Keep element type stable (`<script>` ↔ `<script>`) so hydration does not fail when eligibility differs.
+  - Impact: 85% — Affects published guides; reduces hydration failures and avoids full client re-render.
+- **Discovered:** 2026-01-29 during user testing of `/en/experiences/positano-beaches`
 - **Root cause:**
-  - Lines 37 and 252-254 of `FaqStructuredDataBlock.tsx` return `null` when FAQ should not be shown
-  - Causes structural divergence: SSR renders no element, client renders element (or vice versa)
+  - SSR rendered an FAQ JSON-LD `<script type="application/ld+json">…</script>` while the first client render emitted a placeholder element of a **different type** in `FaqStructuredDataBlock` when `hasLocalizedContent` differed between SSR and hydration.
   - Error: "Hydration failed... server rendered HTML didn't match client"
-  - Mismatch: `<div>` vs `<script type="application/ld+json">`
+  - Mismatch: `<script type="application/ld+json">` vs `<div …>`
+- **Fix (implemented):**
+  - In `FaqStructuredDataBlock`, return a JSON-LD `<script>` placeholder (empty `@graph`) in suppression branches instead of returning a `<div>` placeholder.
+  - This keeps element structure stable even if SSR/client disagree on eligibility; JSON differences are covered by `suppressHydrationWarning`.
 - **Acceptance:**
-  - [x] `FaqStructuredDataBlock` always renders a container element (even when hidden)
-  - [x] Use hidden container (`<div suppressHydrationWarning style={{ display: 'none' }} />`) instead of `return null`
-  - [x] Update both early-return locations (lines 37 and 256-258)
-  - [x] No hydration errors for guides with FAQ structured data (to be verified by user)
+  - [x] Suppression branches render a `<script type="application/ld+json">` placeholder (not a `<div>`)
+  - [x] Placeholder JSON-LD is valid (empty `@graph`) and uses `suppressHydrationWarning`
+  - [x] Hydration regression test covers eligibility flipping without errors
   - [x] Existing guide tests pass (no regressions)
   - [ ] Test with `positano-beaches` guide specifically (requires user manual testing)
 - **Test plan:**
   - Manual: Visit `/en/experiences/positano-beaches` and check console for hydration errors
-  - Run: `pnpm --filter @apps/brikette test -- published-guide-hydration.test.tsx`
-  - Run: `pnpm --filter @apps/brikette test -- guide-diagnostics.test.ts`
-  - Add test case for FAQ-enabled guide if needed
+  - Run: `pnpm --filter @apps/brikette test -- src/test/routes/guides/__tests__/hydration/faq-structured-data-hydration.test.tsx`
+  - Run: `pnpm --filter @apps/brikette test -- src/test/routes/guides/__tests__/hydration/published-guide-hydration.test.tsx`
 - **Planning validation:**
-  - Pattern proven in TASK-03 (PreviewBanner)
-  - Test harness from TASK-01 can verify fix
+  - Added hydration regression coverage for FAQ structural divergence (SSR script ↔ client placeholder)
 - **What would make this ≥90%:**
   - Already at 90%. Pattern is proven and straightforward.
 - **Rollout / rollback:**
@@ -531,28 +471,7 @@ Evidence:
   - Rollback: Revert commit. Previous behavior produces hydration errors but doesn't break functionality.
 - **Documentation impact:** None (internal implementation detail)
 - **Notes / references:**
-  - Same pattern as TASK-03 (PreviewBanner stable markup)
-  - Code: Lines 37 and 256-258 in `FaqStructuredDataBlock.tsx`
-  - User report: Hydration error on first load of `/en/experiences/positano-beaches`
-
-#### Build Completion (2026-01-28)
-
-- **Status:** Complete
-- **Commits:** f4704acda4
-- **Implementation:**
-  - Updated line 37: Replace `return null` with `<div suppressHydrationWarning style={{ display: "none" }} />`
-  - Updated lines 256-258: Replace `return null` with hidden container
-  - Added explanatory comments about hydration safety
-  - Follows proven pattern from TASK-03 (PreviewBanner)
-- **Validation:**
-  - Ran: `pnpm --filter @apps/brikette test -- published-guide-hydration.test.tsx --maxWorkers=1` — PASS (3 tests)
-  - Ran: `pnpm --filter @apps/brikette test -- guide-diagnostics.test.ts --maxWorkers=1` — PASS (16 tests)
-  - All tests pass, confirming fix doesn't break existing functionality
-- **Implementation notes:**
-  - Same structural stability pattern as PreviewBanner
-  - Always renders container element (even when hidden)
-  - Prevents div ↔ script structural mismatches
-  - User should test `/en/experiences/positano-beaches` manually to confirm fix
+  - Regression test: `apps/brikette/src/test/routes/guides/__tests__/hydration/faq-structured-data-hydration.test.tsx`
 
 ## Risks & Mitigations
 
@@ -564,8 +483,8 @@ Evidence:
   - **Mitigation:** Start with simple cases (TASK-02, TASK-06) and iterate. Use `renderToString` or Next.js testing utilities.
 - **Risk:** Fixes break SEO structured data rendering
   - **Mitigation:** Validate structured data is present after fixes (manual + test assertions)
-- **Risk:** i18n timing causes additional hydration issues (TASK-07)
-  - **Mitigation:** Investigation task will identify any issues; create follow-up IMPLEMENT task if needed
+- **Risk:** i18n timing causes SSR to omit structured data that the client "wants" to add (notably HowTo JSON-LD)
+  - **Mitigation:** Treat structured data as SSR-critical; add regression coverage that asserts representative guides include expected JSON-LD in the server HTML when their manifest declares it (client hydration is unlikely to add missing `<script>` nodes).
 
 ## Observability
 
@@ -586,6 +505,7 @@ Evidence:
 - [ ] PreviewBanner appears correctly when eligible (no delayed flash)
 - [ ] DevStatusPill works correctly in dev mode (may have brief flash during mount)
 - [ ] All existing guide tests pass (no regressions)
+- [x] Hydration regression tests pass locally (Jest): `preview-guide-hydration.test.tsx`, `published-guide-hydration.test.tsx`, `faq-structured-data-hydration.test.tsx`
 - [ ] Hydration regression tests pass in CI
 - [ ] SEO structured data (JSON-LD) renders correctly
 - [ ] GuideEditorialPanel still works in dev mode
@@ -594,3 +514,4 @@ Evidence:
 
 - 2026-01-28: Chose Option A (`useSearchParams`) plus Option C (stabilize PreviewBanner markup). Rationale: remove explicit window-branching, and also guarantee structural hydration safety even when other client-only inputs (e.g., localStorage status overrides) differ.
 - 2026-01-28: Created TASK-07 (INVESTIGATE) for i18n divergence instead of IMPLEMENT task. Rationale: Insufficient evidence to confirm issue exists; investigation required before committing to fix approach.
+- 2026-01-29: Fixed published FAQ JSON-LD hydration mismatch by rendering a JSON-LD `<script>` placeholder instead of a `<div>` placeholder (and added a regression test for eligibility flipping).

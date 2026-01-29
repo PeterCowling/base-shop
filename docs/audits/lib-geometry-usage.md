@@ -1,8 +1,11 @@
+Type: Audit
+Status: Reference
+
 # AUDIT-01: Geometry Usage Audit for lib-primitives-enhancement-plan
 
 **Date:** 2026-01-21
 **Auditor:** Claude Code (Opus 4.5)
-**Status:** Complete
+**Status:** Reference
 
 ## Executive Summary
 

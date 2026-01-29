@@ -56,3 +56,7 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 - **Plan-feature:** `docs/plans/<feature>-plan.md` (atomic tasks + CI per task)
 - **Build-feature:** code/tests + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/CIs (no implementation changes)
+
+## Special-Purpose Workflows
+
+- **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)

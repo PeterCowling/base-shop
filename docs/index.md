@@ -11,7 +11,7 @@ Last-reviewed: 2025-12-02
 - CMS plans and threads: see `docs/cms-plan/index.md` and `docs/cms-plan/master-thread.md`.
 - Base-Shop implementation plan: see `IMPLEMENTATION_PLAN.md`.
 - Domain plans: see `docs/runtime/runtime-plan.md`, `docs/theming-plan.md`, `docs/i18n/i18n-plan.md`, `docs/commerce-plan.md`, and `docs/docs-plan.md`.
- - Core charters: `docs/cms/cms-charter.md`, `docs/runtime/runtime-charter.md`, `docs/theming-charter.md`, `docs/i18n/i18n-charter.md`, `docs/commerce-charter.md`.
+ - Core charters: `docs/cms/cms-charter.md`, `docs/runtime/runtime-charter.md`, `docs/theming-charter.md`, `docs/i18n/i18n-charter.md`, `docs/commerce-charter.md`, `docs/business-os/business-os-charter.md`.
  - Key contracts: `docs/architecture.md`, `docs/persistence.md`, `docs/platform-vs-apps.md`, `docs/runtime/template-contract.md`, `docs/deployment-adapters.md`, `docs/permissions.md`, `docs/users.md`, `docs/reverse-logistics-events.md`.
 
 ## Getting Started

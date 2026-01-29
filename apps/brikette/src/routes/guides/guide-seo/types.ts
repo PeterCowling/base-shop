@@ -42,7 +42,14 @@ export interface AlsoHelpfulConfig {
 }
 
 export type TocItem = { href: string; label: string };
-export type NormalisedSection = { id: string; title: string; body: string[] };
+export type GuideSectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+export type NormalisedSection = { id: string; title: string; body: string[]; images?: GuideSectionImage[] };
 export type NormalisedFaq = { q: string; a: string[] };
 export type HowToStep = { name: string; text?: string };
 export type HowToObjectPayload = {

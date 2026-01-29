@@ -494,16 +494,23 @@ describe("board-logic", () => {
   });
 
   describe("getBoardTitle", () => {
+    const labels = {
+      global: "Global Board (P0/P1)",
+      businessFallback: "Business Board",
+    };
+
     it("should return global board title", () => {
-      expect(getBoardTitle("global")).toBe("Global Board (P0/P1)");
+      expect(getBoardTitle("global", labels)).toBe("Global Board (P0/P1)");
     });
 
     it("should return business name for business board", () => {
-      expect(getBoardTitle("business", "Hostel Brikette")).toBe("Hostel Brikette");
+      expect(getBoardTitle("business", labels, "Hostel Brikette")).toBe(
+        "Hostel Brikette"
+      );
     });
 
     it("should return fallback for business board without name", () => {
-      expect(getBoardTitle("business")).toBe("Business Board");
+      expect(getBoardTitle("business", labels)).toBe("Business Board");
     });
   });
 });

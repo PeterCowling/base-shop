@@ -1,8 +1,8 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 
 import matter from "gray-matter";
 
+import { readdirWithinRoot,readFileWithinRoot } from "./safe-fs";
 import type {
   Business,
   BusinessCatalog,
@@ -41,7 +41,11 @@ export class RepoReader {
       this.businessOsPath,
       "strategy/businesses.json"
     );
-    const content = await fs.readFile(catalogPath, "utf-8");
+    const content = (await readFileWithinRoot(
+      this.repoRoot,
+      catalogPath,
+      "utf-8"
+    )) as string;
     return JSON.parse(content) as BusinessCatalog;
   }
 
@@ -71,7 +75,11 @@ export class RepoReader {
     );
 
     try {
-      const content = await fs.readFile(userPath, "utf-8");
+      const content = (await readFileWithinRoot(
+        this.repoRoot,
+        userPath,
+        "utf-8"
+      )) as string;
       const parsed = matter(content);
 
       return {
@@ -87,7 +95,11 @@ export class RepoReader {
           `cards/archive/${cardId}.user.md`
         );
         try {
-          const content = await fs.readFile(archivePath, "utf-8");
+          const content = (await readFileWithinRoot(
+            this.repoRoot,
+            archivePath,
+            "utf-8"
+          )) as string;
           const parsed = matter(content);
 
           return {
@@ -140,7 +152,9 @@ export class RepoReader {
     const cards: Card[] = [];
 
     try {
-      const entries = await fs.readdir(dirPath, { withFileTypes: true });
+      const entries = await readdirWithinRoot(this.repoRoot, dirPath, {
+        withFileTypes: true,
+      });
 
       for (const entry of entries) {
         if (!entry.isFile()) continue;
@@ -148,7 +162,11 @@ export class RepoReader {
         if (entry.name.startsWith(".")) continue;
 
         const filePath = path.join(dirPath, entry.name);
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = (await readFileWithinRoot(
+          this.repoRoot,
+          filePath,
+          "utf-8"
+        )) as string;
         const parsed = matter(content);
 
         cards.push({
@@ -179,7 +197,11 @@ export class RepoReader {
     );
 
     try {
-      const content = await fs.readFile(userPath, "utf-8");
+      const content = (await readFileWithinRoot(
+        this.repoRoot,
+        userPath,
+        "utf-8"
+      )) as string;
       const parsed = matter(content);
 
       return {
@@ -267,7 +289,11 @@ export class RepoReader {
    */
   private async readIdeaFile(filePath: string): Promise<Idea | null> {
     try {
-      const content = await fs.readFile(filePath, "utf-8");
+      const content = (await readFileWithinRoot(
+        this.repoRoot,
+        filePath,
+        "utf-8"
+      )) as string;
       const parsed = matter(content);
 
       return {
@@ -326,7 +352,9 @@ export class RepoReader {
     const ideas: Idea[] = [];
 
     try {
-      const entries = await fs.readdir(dirPath, { withFileTypes: true });
+      const entries = await readdirWithinRoot(this.repoRoot, dirPath, {
+        withFileTypes: true,
+      });
 
       for (const entry of entries) {
         if (!entry.isFile()) continue;
@@ -334,7 +362,11 @@ export class RepoReader {
         if (entry.name.startsWith(".")) continue;
 
         const filePath = path.join(dirPath, entry.name);
-        const content = await fs.readFile(filePath, "utf-8");
+        const content = (await readFileWithinRoot(
+          this.repoRoot,
+          filePath,
+          "utf-8"
+        )) as string;
         const parsed = matter(content);
 
         ideas.push({

@@ -106,16 +106,29 @@ describe("evidenceEntrySchema", () => {
 });
 
 describe("getEvidenceSourceLabel", () => {
+  const labelMap: Record<string, string> = {
+    "businessOs.evidence.labels.measurement": "Measurement",
+    "businessOs.evidence.labels.customerInput": "Customer Input",
+    "businessOs.evidence.labels.repoDiff": "Code Changes",
+    "businessOs.evidence.labels.experiment": "Experiment",
+    "businessOs.evidence.labels.financialModel": "Financial Model",
+    "businessOs.evidence.labels.vendorQuote": "Vendor Quote",
+    "businessOs.evidence.labels.legal": "Legal",
+    "businessOs.evidence.labels.assumption": "Assumption",
+    "businessOs.evidence.labels.other": "Other",
+  };
+  const t = (key: string) => labelMap[key] ?? key;
+
   it("should return human-readable labels for all types", () => {
-    expect(getEvidenceSourceLabel("measurement")).toBe("Measurement");
-    expect(getEvidenceSourceLabel("customer-input")).toBe("Customer Input");
-    expect(getEvidenceSourceLabel("repo-diff")).toBe("Code Changes");
-    expect(getEvidenceSourceLabel("experiment")).toBe("Experiment");
-    expect(getEvidenceSourceLabel("financial-model")).toBe("Financial Model");
-    expect(getEvidenceSourceLabel("vendor-quote")).toBe("Vendor Quote");
-    expect(getEvidenceSourceLabel("legal")).toBe("Legal");
-    expect(getEvidenceSourceLabel("assumption")).toBe("Assumption");
-    expect(getEvidenceSourceLabel("other")).toBe("Other");
+    expect(getEvidenceSourceLabel("measurement", t)).toBe("Measurement");
+    expect(getEvidenceSourceLabel("customer-input", t)).toBe("Customer Input");
+    expect(getEvidenceSourceLabel("repo-diff", t)).toBe("Code Changes");
+    expect(getEvidenceSourceLabel("experiment", t)).toBe("Experiment");
+    expect(getEvidenceSourceLabel("financial-model", t)).toBe("Financial Model");
+    expect(getEvidenceSourceLabel("vendor-quote", t)).toBe("Vendor Quote");
+    expect(getEvidenceSourceLabel("legal", t)).toBe("Legal");
+    expect(getEvidenceSourceLabel("assumption", t)).toBe("Assumption");
+    expect(getEvidenceSourceLabel("other", t)).toBe("Other");
   });
 });
 

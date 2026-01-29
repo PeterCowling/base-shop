@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
 import { CommitIdentities } from "@/lib/commit-identity";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
@@ -52,6 +54,8 @@ interface RouteParams {
  * Phase 0: Pete-only, local-only, no auth
  */
 export async function PATCH(request: Request, { params }: RouteParams) {
+  const t = await getServerTranslations("en");
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -60,7 +64,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const parsed = UpdateCardSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: "Validation failed", details: parsed.error.errors },
+        { error: t("businessOs.api.common.validationFailed"), details: parsed.error.errors },
         { status: 400 }
       );
     }
@@ -79,8 +83,8 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (!isReady) {
       return NextResponse.json(
         {
-          error: "Worktree not initialized",
-          hint: "Run: apps/business-os/scripts/setup-worktree.sh",
+          error: t("businessOs.api.common.worktreeNotInitialized"),
+          hint: t("businessOs.api.common.worktreeSetupHint"),
         },
         { status: 500 }
       );
@@ -125,19 +129,23 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const result = await writer.updateCard(id, updates, CommitIdentities.user);
 
     if (!result.success) {
+      const errorMessage = result.errorKey
+        ? t(result.errorKey)
+        : t("businessOs.api.cards.errors.updateFailed");
+
       if (result.needsManualResolution) {
         return NextResponse.json(
           {
-            error: result.error,
+            error: errorMessage,
             needsManualResolution: true,
-            hint: "Resolve conflicts manually in the worktree",
+            hint: t("businessOs.api.common.resolveConflictsHint"),
           },
           { status: 409 }
         );
       }
 
       return NextResponse.json(
-        { error: result.error || "Failed to update card" },
+        { error: errorMessage },
         { status: 500 }
       );
     }
@@ -147,11 +155,11 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       cardId: id,
       filePath: result.filePath,
       commitHash: result.commitHash,
-      message: "Card updated locally. Run Sync to push.",
+      message: t("businessOs.api.cards.success.updated"),
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal server error", details: String(error) },
+      { error: t("api.common.internalServerError"), details: String(error) },
       { status: 500 }
     );
   }

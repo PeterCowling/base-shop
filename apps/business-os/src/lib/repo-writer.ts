@@ -4,7 +4,6 @@
  * Phase 0: Local-only, dedicated worktree, work/business-os-store branch
  */
 
-import fs from "node:fs/promises";
 import path from "node:path";
 
 import matter from "gray-matter";
@@ -15,13 +14,20 @@ import {
   type CommitIdentity,
   getGitAuthorOptions,
 } from "./commit-identity";
+import {
+  accessWithinRoot,
+  mkdirWithinRoot,
+  readFileWithinRoot,
+  writeFileWithinRoot,
+} from "./safe-fs";
 import type { CardFrontmatter, IdeaFrontmatter } from "./types";
 
 export interface WriteResult {
   success: boolean;
   filePath?: string;
   commitHash?: string;
-  error?: string;
+  errorKey?: string;
+  errorDetails?: string;
   needsManualResolution?: boolean;
 }
 
@@ -31,9 +37,26 @@ export interface SyncResult {
   commitCount?: number;
   compareUrl?: string;
   findPrUrl?: string;
-  error?: string;
+  errorKey?: string;
+  errorDetails?: string;
   needsManualResolution?: boolean;
 }
+
+const repoWriterErrorKeys = {
+  worktreeUncommitted: "businessOs.repoWriter.errors.worktreeUncommitted",
+  worktreeConflict: "businessOs.repoWriter.errors.worktreeConflict",
+  worktreeStatusFailed: "businessOs.repoWriter.errors.worktreeStatusFailed",
+  writeAccessDenied: "businessOs.api.common.writeAccessDenied",
+  writeIdeaFailed: "businessOs.repoWriter.errors.writeIdeaFailed",
+  writeCardFailed: "businessOs.repoWriter.errors.writeCardFailed",
+  updateCardFailed: "businessOs.repoWriter.errors.updateCardFailed",
+  cardNotFound: "businessOs.repoWriter.errors.cardNotFound",
+  mergeConflictWorkBranch:
+    "businessOs.repoWriter.errors.mergeConflictWorkBranch",
+  mergeConflictMain: "businessOs.repoWriter.errors.mergeConflictMain",
+  pushFailedAfterRetry: "businessOs.repoWriter.errors.pushFailedAfterRetry",
+  syncFailed: "businessOs.repoWriter.errors.syncFailed",
+} as const;
 
 /**
  * Repository writer for Business OS documents
@@ -67,7 +90,7 @@ export class RepoWriter {
   async isWorktreeReady(): Promise<boolean> {
     try {
       // Check if worktree directory exists
-      await fs.access(this.worktreePath);
+      await accessWithinRoot(this.worktreePath, this.worktreePath);
 
       // Re-initialize git with correct path if needed
       this.git = simpleGit(this.worktreePath);
@@ -91,7 +114,8 @@ export class RepoWriter {
    */
   async isWorktreeClean(): Promise<{
     clean: boolean;
-    error?: string;
+    errorKey?: string;
+    errorDetails?: string;
   }> {
     try {
       const status = await this.git.status();
@@ -104,7 +128,7 @@ export class RepoWriter {
       ) {
         return {
           clean: false,
-          error: "Worktree has uncommitted changes. Commit or discard them first.",
+          errorKey: repoWriterErrorKeys.worktreeUncommitted,
         };
       }
 
@@ -112,8 +136,7 @@ export class RepoWriter {
       if (status.conflicted.length > 0) {
         return {
           clean: false,
-          error:
-            "Worktree is in conflict state. Resolve conflicts manually or run 'git merge --abort'.",
+          errorKey: repoWriterErrorKeys.worktreeConflict,
         };
       }
 
@@ -121,7 +144,8 @@ export class RepoWriter {
     } catch (error) {
       return {
         clean: false,
-        error: `Failed to check worktree status: ${error}`,
+        errorKey: repoWriterErrorKeys.worktreeStatusFailed,
+        errorDetails: String(error),
       };
     }
   }
@@ -140,7 +164,7 @@ export class RepoWriter {
     if (!authorizeWrite(absolutePath, this.repoRoot)) {
       return {
         success: false,
-        error: "Write access denied to this path",
+        errorKey: repoWriterErrorKeys.writeAccessDenied,
       };
     }
 
@@ -149,7 +173,8 @@ export class RepoWriter {
     if (!cleanCheck.clean) {
       return {
         success: false,
-        error: cleanCheck.error,
+        errorKey: cleanCheck.errorKey,
+        errorDetails: cleanCheck.errorDetails,
         needsManualResolution: true,
       };
     }
@@ -165,10 +190,12 @@ export class RepoWriter {
       const fileContent = matter.stringify(idea.content, frontmatter);
 
       // Ensure directory exists
-      await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+      await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), {
+        recursive: true,
+      });
 
       // Write file
-      await fs.writeFile(absolutePath, fileContent, "utf-8");
+      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
       // Git add and commit
       await this.git.add(relativePath);
@@ -186,7 +213,8 @@ export class RepoWriter {
     } catch (error) {
       return {
         success: false,
-        error: `Failed to write idea: ${error}`,
+        errorKey: repoWriterErrorKeys.writeIdeaFailed,
+        errorDetails: String(error),
       };
     }
   }
@@ -205,7 +233,7 @@ export class RepoWriter {
     if (!authorizeWrite(absolutePath, this.repoRoot)) {
       return {
         success: false,
-        error: "Write access denied to this path",
+        errorKey: repoWriterErrorKeys.writeAccessDenied,
       };
     }
 
@@ -214,7 +242,8 @@ export class RepoWriter {
     if (!cleanCheck.clean) {
       return {
         success: false,
-        error: cleanCheck.error,
+        errorKey: cleanCheck.errorKey,
+        errorDetails: cleanCheck.errorDetails,
         needsManualResolution: true,
       };
     }
@@ -230,10 +259,12 @@ export class RepoWriter {
       const fileContent = matter.stringify(card.content, frontmatter);
 
       // Ensure directory exists
-      await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+      await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), {
+        recursive: true,
+      });
 
       // Write file
-      await fs.writeFile(absolutePath, fileContent, "utf-8");
+      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
       // Git add and commit
       await this.git.add(relativePath);
@@ -251,7 +282,8 @@ export class RepoWriter {
     } catch (error) {
       return {
         success: false,
-        error: `Failed to write card: ${error}`,
+        errorKey: repoWriterErrorKeys.writeCardFailed,
+        errorDetails: String(error),
       };
     }
   }
@@ -271,7 +303,7 @@ export class RepoWriter {
     if (!authorizeWrite(absolutePath, this.repoRoot)) {
       return {
         success: false,
-        error: "Write access denied to this path",
+        errorKey: repoWriterErrorKeys.writeAccessDenied,
       };
     }
 
@@ -280,14 +312,19 @@ export class RepoWriter {
     if (!cleanCheck.clean) {
       return {
         success: false,
-        error: cleanCheck.error,
+        errorKey: cleanCheck.errorKey,
+        errorDetails: cleanCheck.errorDetails,
         needsManualResolution: true,
       };
     }
 
     try {
       // Read existing file
-      const existingContent = await fs.readFile(absolutePath, "utf-8");
+      const existingContent = (await readFileWithinRoot(
+        this.worktreePath,
+        absolutePath,
+        "utf-8"
+      )) as string;
       const parsed = matter(existingContent);
 
       // Merge updates
@@ -302,7 +339,7 @@ export class RepoWriter {
       const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
 
       // Write file
-      await fs.writeFile(absolutePath, fileContent, "utf-8");
+      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
       // Git add and commit
       await this.git.add(relativePath);
@@ -318,9 +355,17 @@ export class RepoWriter {
         commitHash: commitResult.commit,
       };
     } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        return {
+          success: false,
+          errorKey: repoWriterErrorKeys.cardNotFound,
+        };
+      }
+
       return {
         success: false,
-        error: `Failed to update card: ${error}`,
+        errorKey: repoWriterErrorKeys.updateCardFailed,
+        errorDetails: String(error),
       };
     }
   }
@@ -338,7 +383,8 @@ export class RepoWriter {
       return {
         success: false,
         pushed: false,
-        error: cleanCheck.error,
+        errorKey: cleanCheck.errorKey,
+        errorDetails: cleanCheck.errorDetails,
         needsManualResolution: true,
       };
     }
@@ -363,8 +409,7 @@ export class RepoWriter {
           return {
             success: false,
             pushed: false,
-            error:
-              "Merge conflict with remote work branch. Resolve conflicts manually.",
+            errorKey: repoWriterErrorKeys.mergeConflictWorkBranch,
             needsManualResolution: true,
           };
         }
@@ -381,8 +426,7 @@ export class RepoWriter {
           return {
             success: false,
             pushed: false,
-            error:
-              "Merge conflict with main branch. Resolve conflicts manually.",
+            errorKey: repoWriterErrorKeys.mergeConflictMain,
             needsManualResolution: true,
           };
         }
@@ -406,7 +450,8 @@ export class RepoWriter {
           return {
             success: false,
             pushed: false,
-            error: `Push failed after retry: ${retryError}`,
+            errorKey: repoWriterErrorKeys.pushFailedAfterRetry,
+            errorDetails: String(retryError),
             needsManualResolution: true,
           };
         }
@@ -429,7 +474,8 @@ export class RepoWriter {
       return {
         success: false,
         pushed: false,
-        error: `Sync failed: ${error}`,
+        errorKey: repoWriterErrorKeys.syncFailed,
+        errorDetails: String(error),
       };
     }
   }

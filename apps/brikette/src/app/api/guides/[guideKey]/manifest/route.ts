@@ -165,6 +165,36 @@ export async function PUT(
     );
   }
 
+  // Quality gate: Enforce SEO audit requirement for "live" status
+  if (status === "live") {
+    const allOverrides = loadGuideManifestOverridesFromFs();
+    const audit = allOverrides[guideKey as GuideKey]?.auditResults;
+
+    if (!audit) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "SEO audit required before publishing",
+          message: "Run an SEO audit using the /audit-guide-seo skill before changing status to live.",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (audit.score < 9.0) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: `SEO score too low: ${audit.score.toFixed(1)}/10 (minimum: 9.0)`,
+          currentScore: audit.score,
+          issues: audit.analysis.criticalIssues,
+          improvements: audit.analysis.improvements,
+        },
+        { status: 400 },
+      );
+    }
+  }
+
   // Get existing override and merge if needed
   const existingOverride = getGuideManifestOverrideFromFs(guideKey as GuideKey);
   const mergedOverride = {

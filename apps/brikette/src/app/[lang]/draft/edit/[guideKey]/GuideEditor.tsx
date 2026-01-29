@@ -18,6 +18,7 @@ import GalleryTab from "./tabs/GalleryTab";
 import OverviewTab from "./tabs/OverviewTab";
 import RawJsonTab from "./tabs/RawJsonTab";
 import SectionsTab from "./tabs/SectionsTab";
+import { ValidationTab } from "./tabs/ValidationTab";
 import type { EditorTab, LoadState } from "./types";
 import { setDeep } from "./types";
 
@@ -253,6 +254,9 @@ export default function GuideEditor({
               )}
               {activeTab === "gallery" && (
                 <GalleryTab content={content as GuideContentInput} updateField={updateField} />
+              )}
+              {activeTab === "validation" && (
+                <ValidationTab guideKey={guideKey} />
               )}
               {activeTab === "raw" && (
                 <RawJsonTab

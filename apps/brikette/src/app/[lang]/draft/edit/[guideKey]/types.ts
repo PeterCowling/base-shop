@@ -1,7 +1,7 @@
 /* eslint-disable ds/no-hardcoded-copy -- GUIDES-2470 editor types are developer-facing */
 import type { GuideContentInput } from "@/routes/guides/content-schema";
 
-export type EditorTab = "overview" | "sections" | "faqs" | "gallery" | "raw";
+export type EditorTab = "overview" | "sections" | "faqs" | "gallery" | "validation" | "raw";
 
 export type TabProps = {
   content: GuideContentInput;
@@ -15,6 +15,7 @@ export const EDITOR_TABS: { id: EditorTab; label: string }[] = [
   { id: "sections", label: "Sections" },
   { id: "faqs", label: "FAQs" },
   { id: "gallery", label: "Gallery" },
+  { id: "validation", label: "Validation" },
   { id: "raw", label: "Raw JSON" },
 ];
 

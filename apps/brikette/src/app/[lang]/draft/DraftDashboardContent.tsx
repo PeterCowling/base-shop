@@ -200,9 +200,20 @@ function DraftDashboardContent({ lang }: Props) {
   return (
     <Section as="main" className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       <Stack as="header" className="gap-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-text/60">
-          Guides editorial
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-text/60">
+            Guides editorial
+          </p>
+          <Link
+            href={`/${lang}/draft/validation`}
+            className="inline-flex items-center gap-2 rounded-lg border border-brand-primary bg-brand-primary/10 px-4 py-2 text-sm font-medium text-brand-primary hover:bg-brand-primary/20 transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            View Validation Report
+          </Link>
+        </div>
         <h1 className="text-2xl font-semibold text-brand-heading">Draft & publication checklist</h1>
         <p className="text-sm text-brand-text/80">
           Every guide listed here can be previewed under the draft URL. Use the checklist to confirm

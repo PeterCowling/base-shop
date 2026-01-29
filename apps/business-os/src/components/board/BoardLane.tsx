@@ -71,10 +71,10 @@ export function BoardLane({ lane, cards, ideas, showBusinessTag }: BoardLaneProp
   const totalCount = cards.length + ideas.length;
 
   return (
-    <div className="flex flex-col min-w-[320px] max-w-[320px] bg-gray-100 rounded-lg">
-      {/* Lane header - sticky */}
+    <div className="flex flex-col min-w-[320px] max-w-[320px] md:min-w-[320px] md:max-w-[320px] max-md:min-w-full max-md:max-w-full bg-gray-100 rounded-lg">
+      {/* Lane header - sticky on desktop, static on mobile */}
       <div
-        className={`sticky top-0 z-10 px-4 py-3 border-b border-border ${headerColor}`}
+        className={`md:sticky top-0 z-10 px-4 py-3 border-b border-border ${headerColor}`}
       >
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
@@ -98,8 +98,8 @@ export function BoardLane({ lane, cards, ideas, showBusinessTag }: BoardLaneProp
         )}
       </div>
 
-      {/* Lane content */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-2 max-h-[calc(100vh-16rem)]">
+      {/* Lane content - max-height on desktop only */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-2 md:max-h-[calc(100vh-16rem)] max-md:max-h-none">
         {/* Ideas (only in Inbox lane) */}
         {ideas.map((idea) => (
           <CompactIdea

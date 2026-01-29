@@ -12,6 +12,7 @@ import Link from "next/link";
 
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import useViewport from "@acme/design-system/hooks/useViewport";
 import { useTranslations } from "@acme/i18n";
 
 import type { Business, Card, Idea, Lane } from "@/lib/types";
@@ -19,6 +20,7 @@ import type { Business, Card, Idea, Lane } from "@/lib/types";
 import { BoardLane } from "./BoardLane";
 import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
 import { applyFilters, FilterChips, type FilterType } from "./FilterChips";
+import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
 
 interface BoardViewProps {
@@ -35,6 +37,7 @@ export function BoardView({
   inboxIdeas,
 }: BoardViewProps) {
   const t = useTranslations();
+  const viewport = useViewport();
   const currentBusiness = businesses.find((b) => b.id === businessCode);
   const isGlobal = businessCode === "global";
 
@@ -42,12 +45,26 @@ export function BoardView({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
   const [currentView, setCurrentView] = useState<BoardViewType>("all");
+  const [activeMobileLane, setActiveMobileLane] = useState<Lane>("In progress");
 
-  // Get lanes for current view
-  const visibleLanes = useMemo(
-    () => getLanesForView(currentView),
-    [currentView]
-  );
+  // All lanes for mobile picker
+  const allLanes: Lane[] = [
+    "Inbox",
+    "Fact-finding",
+    "Planned",
+    "In progress",
+    "Blocked",
+    "Done",
+    "Reflected",
+  ];
+
+  // Get lanes for current view (mobile shows single lane, desktop shows filtered view)
+  const visibleLanes = useMemo(() => {
+    if (viewport === "mobile") {
+      return [activeMobileLane];
+    }
+    return getLanesForView(currentView);
+  }, [viewport, activeMobileLane, currentView]);
 
   // Filter cards based on search and filters
   const filteredCardsByLane = useMemo(() => {
@@ -92,13 +109,24 @@ export function BoardView({
     );
   }, [inboxIdeas, searchQuery]);
 
+  // Calculate card counts for mobile picker
+  const cardCountByLane = useMemo(() => {
+    const counts: Record<Lane, number> = {} as Record<Lane, number>;
+    allLanes.forEach((lane) => {
+      const laneCards = cardsByLane[lane] || [];
+      const laneIdeas = lane === "Inbox" ? inboxIdeas : [];
+      counts[lane] = laneCards.length + laneIdeas.length;
+    });
+    return counts;
+  }, [cardsByLane, inboxIdeas, allLanes]);
+
   return (
     <div className="min-h-screen bg-surface-1">
       {/* Header */}
-      <header className="bg-card border-b border-border-2 px-6 py-4">
-        <div className="flex items-center justify-between">
+      <header className="bg-card border-b border-border-2 px-6 py-4 max-md:px-4">
+        <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-2xl font-bold text-foreground max-md:text-xl">
               {isGlobal
                 ? t("businessOs.board.titles.global")
                 : currentBusiness?.name || businessCode}
@@ -115,7 +143,7 @@ export function BoardView({
               )
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 max-md:flex-wrap max-md:w-full">
             <Link
               href="/cards/new"
               className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
@@ -162,17 +190,19 @@ export function BoardView({
       </header>
 
       {/* Toolbar: Search, Filters, View Switcher */}
-      <div className="bg-card border-b border-border-2 px-6 py-4">
+      <div className="bg-card border-b border-border-2 px-6 py-4 max-md:px-4">
         <Stack gap={3}>
           {/* Search and View Switcher Row */}
-          <Inline alignY="center" wrap={false} className="justify-between">
-            <div className="flex-1">
+          <Inline alignY="center" wrap={false} className="justify-between max-md:flex-col max-md:items-start max-md:gap-3">
+            <div className="flex-1 max-md:w-full">
               <SearchBar value={searchQuery} onSearch={setSearchQuery} />
             </div>
-            <BoardViewSwitcher
-              currentView={currentView}
-              onViewChange={setCurrentView}
-            />
+            <div className="hidden md:block">
+              <BoardViewSwitcher
+                currentView={currentView}
+                onViewChange={setCurrentView}
+              />
+            </div>
           </Inline>
 
           {/* Filter Chips Row */}
@@ -184,7 +214,7 @@ export function BoardView({
       </div>
 
       {/* Board lanes */}
-      <div className="flex gap-4 p-6 overflow-x-auto">
+      <div className="flex gap-4 p-6 overflow-x-auto md:flex-row max-md:flex-col max-md:overflow-y-auto max-md:px-4 max-md:pb-20">
         {visibleLanes.map((lane) => {
           const cards = filteredCardsByLane[lane] || [];
           // For Inbox lane, show ideas too
@@ -201,6 +231,16 @@ export function BoardView({
           );
         })}
       </div>
+
+      {/* Mobile lane picker - bottom tab bar */}
+      {viewport === "mobile" && (
+        <MobileLanePicker
+          lanes={allLanes}
+          activeLane={activeMobileLane}
+          onLaneChange={setActiveMobileLane}
+          cardCountByLane={cardCountByLane}
+        />
+      )}
     </div>
   );
 }

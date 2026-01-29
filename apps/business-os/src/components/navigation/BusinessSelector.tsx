@@ -1,0 +1,94 @@
+/**
+ * BusinessSelector Dropdown Component
+ * Allows switching between different businesses in the Business OS
+ * BOS-UX-04
+ */
+
+/* eslint-disable ds/enforce-layout-primitives, ds/no-arbitrary-tailwind -- BOS-UX-04: Phase 0 scaffold UI */
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+import type { Business } from "@/lib/types";
+
+export interface BusinessSelectorProps {
+  businesses: Business[];
+  currentBusiness: string;
+}
+
+export function BusinessSelector({
+  businesses,
+  currentBusiness,
+}: BusinessSelectorProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const current = businesses.find((b) => b.id === currentBusiness);
+  const currentName = current?.name ?? currentBusiness;
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm font-medium text-foreground hover:bg-muted/80 transition-colors"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+      >
+        <span>{currentName}</span>
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full mt-2 w-48 rounded-md border border-border bg-background shadow-lg z-50">
+          <div className="py-1">
+            {businesses.map((business) => {
+              const isCurrent = business.id === currentBusiness;
+              return (
+                <Link
+                  key={business.id}
+                  href={`/?business=${business.id}`}
+                  className={`block px-4 py-2 text-sm hover:bg-muted transition-colors ${
+                    isCurrent
+                      ? "bg-muted font-medium text-foreground"
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="flex items-center justify-between">
+                    <span>{business.name}</span>
+                    {isCurrent && (
+                      <svg
+                        className="h-4 w-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

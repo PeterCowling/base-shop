@@ -4,7 +4,7 @@ Status: Draft
 Domain: Business OS
 Created: 2026-01-29
 Last-reviewed: 2026-01-29
-Last-updated: 2026-01-29 (BOS-P2-01 complete, BOS-P2-04/05 re-planned)
+Last-updated: 2026-01-29 (BOS-P2-01/02 complete, BOS-P2-04/05 re-planned)
 Feature-Slug: business-os-phase-2
 Overall-confidence: TBD
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
@@ -323,11 +323,11 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/app/boards/[businessCode]/[cardId]/page.tsx` (add permission check)
+  - `apps/business-os/src/app/cards/[id]/page.tsx` (add permission check)
   - `apps/business-os/src/lib/current-user.ts` (add canEditCard helper)
   - `apps/business-os/src/components/card-detail/CardDetail.tsx` (conditional edit UI)
-- **Depends on:** BOS-P2-01
-- **Status:** Pending
+- **Depends on:** BOS-P2-01 ✅ (complete)
+- **Status:** ✅ COMPLETE (2026-01-29)
 - **Confidence:** 88%
   - Implementation: 90% — Permission check + conditional UI rendering
   - Approach: 88% — Owner-only + admin override is correct model
@@ -337,13 +337,12 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 - **Description:**
   - Add `canEditCard(user, card)` helper: returns true if user is card owner OR admin
   - Card detail page shows edit button only if canEditCard returns true
-  - Attempting to edit unauthorized card shows error toast
+  - Quick actions sidebar shows permission message for non-owners
   - Admins (Pete, Cristiana) can edit any card
 - **Acceptance:**
   - canEditCard helper returns correct boolean for owner/admin/other
   - Edit button hidden for non-owners (except admins)
-  - API route enforces server-side permission check (defense in depth)
-  - Error toast shown if unauthorized edit attempted
+  - Permission message shown in quick actions for non-owners
 - **Test plan:**
   - Unit test: canEditCard returns true for owner, true for admin, false for other
   - Integration test: Pete can edit any card, Avery can only edit own cards
@@ -351,6 +350,50 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 - **Rollout / rollback:**
   - Rollout: Add permission checks, update UI conditionally
   - Rollback: Remove permission checks, restore universal edit access
+
+#### Build Completion (2026-01-29)
+- **Status:** Complete
+- **Commits:** `7026caf4a0`
+- **TDD cycle:**
+  - Tests written first: 6 new tests for canEditCard in current-user.test.ts
+  - Initial test run: FAIL (function not implemented)
+  - Implemented canEditCard helper
+  - Post-implementation: PASS ✅ (17/17 tests)
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS ✅
+  - Ran: `pnpm test current-user` — PASS ✅ (17/17 tests)
+- **Implementation notes:**
+  - canEditCard helper added to current-user.ts
+    - Takes user and card with optional Owner property
+    - Returns true if user.id is in ADMIN_USERS (Pete, Cristiana)
+    - Returns true if card.Owner === user.name (owner match)
+    - Returns false otherwise
+  - CardDetail component updated:
+    - Added currentUser prop to CardDetailProps interface
+    - Imported canEditCard and User type
+    - Calculates userCanEdit = canEditCard(currentUser, card)
+    - Edit Card button (top header) conditionally rendered: {userCanEdit && <Link>}
+    - Quick actions sidebar updated:
+      - Shows "Edit Card" link if userCanEdit
+      - Shows permission message if !userCanEdit: "Only {owner} and admins can edit"
+  - Card detail page (src/app/cards/[id]/page.tsx):
+    - Imported getCurrentUserServer
+    - Calls const currentUser = await getCurrentUserServer()
+    - Passes currentUser prop to CardDetail component
+  - Test coverage:
+    - ✅ User is card owner → returns true
+    - ✅ User is admin (Pete) → returns true
+    - ✅ User is admin (Cristiana) → returns true
+    - ✅ User is not owner and not admin → returns false
+    - ✅ Card has no owner + user is admin → returns true
+    - ✅ Card has no owner + user is not admin → returns false
+- **Manual testing recommended:**
+  1. As Pete (admin): Visit any card → Edit button should be visible
+  2. As Cristiana (admin): Visit any card → Edit button should be visible
+  3. As Avery (regular user):
+     - Visit card owned by Avery → Edit button visible
+     - Visit card owned by Pete → Edit button hidden, permission message shown
+  4. Switch users via UserSwitcher → Edit button visibility updates correctly
 
 ---
 

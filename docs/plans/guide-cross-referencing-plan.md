@@ -521,6 +521,13 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 - Validation script exit codes signal pass/fail
 - Coverage report output available in CI logs
 
+**Draft Area Integration (2026-01-29):**
+- API endpoints: `/api/guides/validate/manifest` and `/api/guides/validate/coverage`
+- Dashboard route: `/draft/validation` - Full coverage report with live data
+- Editor tab: "Validation" tab shows per-guide quality metrics
+- Main dashboard: "View Validation Report" button provides quick access
+- Real-time validation without CLI script execution
+
 ## Acceptance Criteria (overall)
 
 - [x] Related guides render by default when `manifest.relatedGuides` is non-empty

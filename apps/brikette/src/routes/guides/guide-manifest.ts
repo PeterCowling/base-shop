@@ -16,6 +16,7 @@ import {
 } from "./blocks/types";
 import { analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
+import type { ManifestOverrides } from "./guide-manifest-overrides";
 
 /**
  * Supported publish status values for guides. These power both routing (draft vs live)
@@ -51,7 +52,7 @@ export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
  * of a guide still need attention before promotion. Items intentionally stay generic so
  * we can derive them from content analysis in a follow-up iteration.
  */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "media"] as const;
+export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "media", "seoAudit"] as const;
 export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
 
 export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
@@ -4442,16 +4443,22 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
   faqs: "FAQs",
   content: "Content sections",
   media: "Media & galleries (optional)",
+  seoAudit: "SEO Audit",
 };
 
 /**
  * Build the checklist payload surfaced in editorial dashboards. When entries omit a particular
- * checklist item we treat it as “missing” by default so gaps remain obvious. Future iterations
+ * checklist item we treat it as "missing" by default so gaps remain obvious. Future iterations
  * will replace these heuristics with lint-driven signals.
  */
 export function buildGuideChecklist(
   entry: GuideManifestEntry,
-  options?: { includeDiagnostics?: boolean; lang?: AppLanguage; includeTranslationCoverage?: boolean },
+  options?: {
+    includeDiagnostics?: boolean;
+    lang?: AppLanguage;
+    includeTranslationCoverage?: boolean;
+    overrides?: ManifestOverrides;
+  },
 ): ChecklistSnapshot {
   const resolvedLang = options?.lang ?? (i18nConfig.fallbackLng as AppLanguage);
   const diagnostics = (() => {
@@ -4494,12 +4501,25 @@ export function buildGuideChecklist(
     if (id === "faqs" && diagnostics?.faqs) {
       if (diagnostics.faqs.hasFaqs && diagnostics.faqs.count > 0) return "complete";
     }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (!audit) return "missing";
+      if (audit.score >= 9.0) return "complete";
+      return "inProgress";
+    }
     return "missing";
   };
 
   const inferNote = (id: ChecklistItemId): string | undefined => {
     if (id === "jsonLd" && entry.structuredData.length > 0) {
       return "Structured data declared; validate generators.";
+    }
+    if (id === "seoAudit" && options?.overrides) {
+      const audit = options.overrides[entry.key]?.auditResults;
+      if (audit) {
+        return `Score: ${audit.score.toFixed(1)}/10`;
+      }
+      return "Not audited";
     }
     return undefined;
   };

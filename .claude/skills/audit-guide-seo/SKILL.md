@@ -64,7 +64,7 @@ Results are written to `guide-manifest-overrides.json` under the guide key:
         "faqCount": 8,
         "imageCount": 2
       },
-      "version": "1.0.0"
+      "version": "2.0.0"
     }
   }
 }
@@ -223,7 +223,54 @@ Universal across all templates:
 - **< 15 images**: -0.3
 - **15–30 images**: 0 (optimal)
 
-### Freshness Signals (up to -0.3 points)
+### HTML Hygiene & Metadata (up to -2.5 points)
+
+**Title Tag:**
+- **Missing or empty**: -1.0
+- **Not unique** (duplicate with other guides): -0.5
+- **Too short** (<35 chars): -0.3
+- **Too long** (>65 chars): -0.3
+- **35–65 chars, unique**: 0 (optimal)
+
+**H1 Heading:**
+- **No H1 found**: -0.5
+- **Multiple H1s** (should be exactly one): -0.3
+- **H1 doesn't match intent** (e.g., generic "Blog" instead of specific topic): -0.3
+- **Exactly one H1, matches intent**: 0 (optimal)
+
+**URL Slug:**
+- **Not lowercase/hyphenated**: -0.2
+- **Contains stopwords** (the, a, of, etc.): -0.1
+- **Too long** (>70 chars): -0.2
+- **Lowercase, hyphenated, concise**: 0 (optimal)
+
+**Open Graph Tags:**
+- **Missing og:title**: -0.2
+- **Missing og:description**: -0.2
+- **Missing og:image**: -0.3
+- **All OG tags present**: 0 (optimal)
+
+Note: Title and meta description are already scored in "Meta Tags" section above; this section focuses on HTML structure and OG tags.
+
+### Content Completeness (up to -1.5 points)
+
+**Primary Answer Placement:**
+- **No clear answer in first 200 words**: -0.5
+- **Long intro before main content** (>300 words of preamble): -0.3
+- **Answer appears early** (within first 120-200 words): 0 (optimal)
+
+**Heading Structure (H2s):**
+- **Zero H2 headings**: -0.5 (for non-trivial content >500 words)
+- **Only 1 H2**: -0.3 (for content >1000 words)
+- **At least 2 H2s**: 0 (optimal)
+
+**Content Uniqueness:**
+- **High boilerplate ratio** (nav/footer text counted as main content): -0.3
+- **Main content is unique prose**: 0 (optimal)
+
+Note: Word count scoring in "Content Length" section above uses unique content words excluding nav/footer/related posts.
+
+### Freshness Signals (up to -0.5 points)
 - **No lastUpdated date**: -0.3
 - **No year/season references in content**: -0.2
 
@@ -302,13 +349,37 @@ const content = JSON.parse(await fs.readFile(contentPath, "utf-8"));
 ### 3. Extract Metrics
 ```typescript
 const metrics = {
+  // Meta tags
   metaTitleLength: content.seo?.title?.length ?? 0,
   metaDescriptionLength: content.seo?.description?.length ?? 0,
+  hasTitleTag: Boolean(content.seo?.title),
+  hasMetaDescription: Boolean(content.seo?.description),
+
+  // Content
   contentWordCount: countWords(content),
   headingCount: countHeadings(content),
+  h2Count: countH2Headings(content),
+  hasH1: Boolean(content.seo?.title), // Title becomes H1 in ArticleHeader
+
+  // Links & Media
   internalLinkCount: countInternalLinks(content),
   faqCount: content.faqs?.length ?? 0,
   imageCount: (content.gallery?.length ?? 0) + countInlineImages(content),
+
+  // HTML hygiene
+  urlSlug: manifest.slug,
+  urlSlugLength: manifest.slug.length,
+  hasOgTitle: Boolean(content.seo?.title), // Used for og:title
+  hasOgDescription: Boolean(content.seo?.description), // Used for og:description
+  hasOgImage: Boolean(content.seo?.image || content.gallery?.[0]), // Hero or first gallery image
+
+  // Content completeness
+  firstParagraphLength: getFirstParagraphWordCount(content),
+  hasEarlyAnswer: checkEarlyAnswer(content), // Answer in first 200 words
+
+  // Freshness
+  hasLastUpdated: Boolean(content.lastUpdated),
+  hasYearReferences: checkYearReferences(content),
 };
 ```
 
@@ -499,6 +570,74 @@ if (!content.lastUpdated) {
   improvements.push({ issue: "Add lastUpdated date for freshness signals", impact });
 }
 
+// HTML Hygiene - Title Tag
+if (metrics.metaTitleLength < 35) {
+  const impact = 0.3;
+  score -= impact;
+  improvements.push({ issue: `Title too short (${metrics.metaTitleLength} chars, target 35-65)`, impact });
+} else if (metrics.metaTitleLength > 65) {
+  const impact = 0.3;
+  score -= impact;
+  improvements.push({ issue: `Title too long (${metrics.metaTitleLength} chars, target 35-65)`, impact });
+} else {
+  strengths.push(`Good title length (${metrics.metaTitleLength} chars)`);
+}
+
+// HTML Hygiene - H1 (already checked via title tag above)
+if (!metrics.hasH1) {
+  const impact = 0.5;
+  score -= impact;
+  issues.push({ issue: "Missing H1 heading", impact });
+}
+
+// HTML Hygiene - URL Slug
+if (metrics.urlSlugLength > 70) {
+  const impact = 0.2;
+  score -= impact;
+  improvements.push({ issue: `URL slug too long (${metrics.urlSlugLength} chars, target ≤70)`, impact });
+}
+if (!/^[a-z0-9-]+$/.test(metrics.urlSlug)) {
+  const impact = 0.2;
+  score -= impact;
+  improvements.push({ issue: "URL slug should be lowercase with hyphens only", impact });
+}
+if (/-(the|a|of|and|or|in|on|at|to|for)-/.test(metrics.urlSlug)) {
+  const impact = 0.1;
+  score -= impact;
+  improvements.push({ issue: "URL slug contains stopwords (the, a, of, etc.)", impact });
+}
+
+// HTML Hygiene - Open Graph Tags
+if (!metrics.hasOgImage) {
+  const impact = 0.3;
+  score -= impact;
+  improvements.push({ issue: "Missing og:image (add seo.image or gallery image)", impact });
+} else {
+  strengths.push("Open Graph tags present for social sharing");
+}
+
+// Content Completeness - Early Answer
+if (!metrics.hasEarlyAnswer && metrics.contentWordCount > 300) {
+  const impact = 0.5;
+  score -= impact;
+  issues.push({ issue: "No clear answer in first 200 words (avoid long intros)", impact });
+} else if (metrics.hasEarlyAnswer) {
+  strengths.push("Primary answer appears early in content");
+}
+
+// Content Completeness - H2 Structure
+if (metrics.h2Count === 0 && metrics.contentWordCount > 500) {
+  const impact = 0.5;
+  score -= impact;
+  issues.push({ issue: "No H2 headings (content needs section breaks)", impact });
+} else if (metrics.h2Count === 1 && metrics.contentWordCount > 1000) {
+  const impact = 0.3;
+  score -= impact;
+  improvements.push({ issue: "Only 1 H2 heading (add more sections for long content)", impact });
+} else if (metrics.h2Count >= 2) {
+  strengths.push(`Good heading structure with ${metrics.h2Count} H2 sections`);
+}
+
 // Structured data
 const hasStructuredData = manifest.structuredData && manifest.structuredData.length > 0;
 if (!hasStructuredData) {
@@ -661,6 +800,68 @@ function countInternalLinks(content: any): number {
   }
   
   return linkCount;
+}
+```
+
+### Count H2 Headings
+```typescript
+function countH2Headings(content: any): number {
+  // Section titles are rendered as H2s in the template
+  if (!Array.isArray(content.sections)) return 0;
+  return content.sections.filter(s => s.title && s.title.trim().length > 0).length;
+}
+```
+
+### Get First Paragraph Word Count
+```typescript
+function getFirstParagraphWordCount(content: any): number {
+  if (!Array.isArray(content.intro) || content.intro.length === 0) return 0;
+  const firstPara = content.intro[0];
+  if (typeof firstPara !== 'string') return 0;
+  return firstPara.split(/\s+/).filter(w => w.length > 0).length;
+}
+```
+
+### Check Early Answer
+```typescript
+function checkEarlyAnswer(content: any): boolean {
+  // Check if meaningful content appears in first 200 words (first 1-2 intro paragraphs)
+  if (!Array.isArray(content.intro)) return false;
+
+  let wordCount = 0;
+  let foundSubstantiveContent = false;
+
+  for (const para of content.intro.slice(0, 3)) { // Check first 3 paragraphs
+    if (typeof para !== 'string') continue;
+
+    const words = para.split(/\s+/).filter(w => w.length > 0);
+    wordCount += words.length;
+
+    // Check if paragraph contains substantive info (not just "Welcome to..." type fluff)
+    const hasActionableInfo = para.match(/\b(how|what|where|when|why|cost|price|time|€|\$|open|close|recommend|best)\b/i);
+    if (hasActionableInfo && words.length > 15) {
+      foundSubstantiveContent = true;
+    }
+
+    if (wordCount >= 200) break;
+  }
+
+  return foundSubstantiveContent && wordCount <= 200;
+}
+```
+
+### Check Year References
+```typescript
+function checkYearReferences(content: any): boolean {
+  const allText = JSON.stringify(content);
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+
+  // Check for current/next year OR seasonal references
+  const hasYear = allText.includes(String(currentYear)) || allText.includes(String(nextYear));
+  const hasSeason = /\b(spring|summer|fall|autumn|winter|seasonal)\b/i.test(allText);
+
+  return hasYear || hasSeason;
 }
 ```
 
@@ -840,6 +1041,14 @@ Check file permissions for guide-manifest-overrides.json
 ```
 
 ## Version History
+
+**2.0.0** (2026-01-29)
+- Template-based scoring standards (Help, Experience, Local Guide, Pillar)
+- Auto-detect pillar guides from word count or related guides
+- HTML hygiene checks (title tag, H1, URL slug, Open Graph tags)
+- Content completeness checks (early answer, H2 structure, unique content)
+- Impact-sorted feedback (-1.0, -0.5, etc.) for prioritization
+- Helper functions for H2 count, early answer detection, year references
 
 **1.0.0** (2026-01-29)
 - Initial release with full scoring rubric

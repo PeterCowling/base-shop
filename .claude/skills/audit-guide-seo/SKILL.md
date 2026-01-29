@@ -64,7 +64,7 @@ Results are written to `guide-manifest-overrides.json` under the guide key:
         "faqCount": 8,
         "imageCount": 2
       },
-      "version": "2.0.0"
+      "version": "2.1.0"
     }
   }
 }
@@ -252,7 +252,7 @@ Universal across all templates:
 
 Note: Title and meta description are already scored in "Meta Tags" section above; this section focuses on HTML structure and OG tags.
 
-### Content Completeness (up to -1.5 points)
+### Content Completeness (up to -3.0 points)
 
 **Primary Answer Placement:**
 - **No clear answer in first 200 words**: -0.5
@@ -269,6 +269,20 @@ Note: Title and meta description are already scored in "Meta Tags" section above
 - **Main content is unique prose**: 0 (optimal)
 
 Note: Word count scoring in "Content Length" section above uses unique content words excluding nav/footer/related posts.
+
+**Placeholder Content:**
+- **"TBD" or "TODO" markers**: -0.5 per occurrence (up to -1.0 max)
+- **Lorem ipsum text**: -1.0 (instant critical issue)
+- **Empty lists or sections**: -0.3 per occurrence (up to -0.6 max)
+- **"Coming soon" or similar**: -0.3
+- **All content is finalized**: 0 (optimal)
+
+**Spelling & Grammar:**
+- **Serious errors** (>1 per 400 words): -0.5
+- **Moderate errors** (0.5-1 per 400 words): -0.3
+- **Clean copy** (<0.5 errors per 400 words): 0 (optimal)
+
+Note: "Serious errors" include misspellings, subject-verb disagreement, wrong homophones (their/there/they're). Stylistic choices (sentence fragments, contractions, informal tone) are not penalized.
 
 ### Freshness Signals (up to -0.5 points)
 - **No lastUpdated date**: -0.3
@@ -376,6 +390,14 @@ const metrics = {
   // Content completeness
   firstParagraphLength: getFirstParagraphWordCount(content),
   hasEarlyAnswer: checkEarlyAnswer(content), // Answer in first 200 words
+
+  // Placeholder detection
+  placeholderIssues: detectPlaceholders(content),
+  hasPlaceholders: detectPlaceholders(content).length > 0,
+
+  // Spelling & Grammar
+  spellingErrors: checkSpellingGrammar(content),
+  errorRate: checkSpellingGrammar(content).errorRate, // Errors per 400 words
 
   // Freshness
   hasLastUpdated: Boolean(content.lastUpdated),
@@ -638,6 +660,75 @@ if (metrics.h2Count === 0 && metrics.contentWordCount > 500) {
   strengths.push(`Good heading structure with ${metrics.h2Count} H2 sections`);
 }
 
+// Content Completeness - Placeholder Detection
+if (metrics.hasPlaceholders) {
+  const placeholderList = metrics.placeholderIssues;
+
+  // Lorem ipsum is a critical blocking issue
+  const hasLoremIpsum = placeholderList.some(p => p.type === 'lorem');
+  if (hasLoremIpsum) {
+    const impact = 1.0;
+    score -= impact;
+    issues.push({ issue: "Lorem ipsum placeholder text found - replace with real content", impact });
+  }
+
+  // TBD/TODO markers
+  const tbdCount = placeholderList.filter(p => p.type === 'tbd').length;
+  if (tbdCount > 0) {
+    const impact = Math.min(tbdCount * 0.5, 1.0); // Up to -1.0 max
+    score -= impact;
+    issues.push({
+      issue: `${tbdCount} TBD/TODO marker${tbdCount > 1 ? 's' : ''} found - complete all sections before publishing`,
+      impact
+    });
+  }
+
+  // Empty lists/sections
+  const emptyCount = placeholderList.filter(p => p.type === 'empty').length;
+  if (emptyCount > 0) {
+    const impact = Math.min(emptyCount * 0.3, 0.6); // Up to -0.6 max
+    score -= impact;
+    improvements.push({
+      issue: `${emptyCount} empty section${emptyCount > 1 ? 's' : ''} or list${emptyCount > 1 ? 's' : ''} - add content or remove`,
+      impact
+    });
+  }
+
+  // "Coming soon" type placeholders
+  const comingSoonCount = placeholderList.filter(p => p.type === 'comingSoon').length;
+  if (comingSoonCount > 0) {
+    const impact = 0.3;
+    score -= impact;
+    improvements.push({
+      issue: `"Coming soon" placeholder found - complete content before publishing`,
+      impact
+    });
+  }
+} else {
+  strengths.push("All content is finalized (no placeholders)");
+}
+
+// Content Completeness - Spelling & Grammar
+if (metrics.errorRate > 1.0) {
+  const impact = 0.5;
+  score -= impact;
+  issues.push({
+    issue: `High error rate (${metrics.spellingErrors.totalErrors} errors in ${metrics.contentWordCount} words, ${metrics.errorRate.toFixed(2)} per 400 words)`,
+    impact
+  });
+} else if (metrics.errorRate > 0.5) {
+  const impact = 0.3;
+  score -= impact;
+  improvements.push({
+    issue: `Moderate errors found (${metrics.spellingErrors.totalErrors} errors, ${metrics.errorRate.toFixed(2)} per 400 words)`,
+    impact
+  });
+} else if (metrics.spellingErrors.totalErrors === 0) {
+  strengths.push("Clean copy with no spelling or grammar errors");
+} else {
+  strengths.push(`Good copy quality (${metrics.spellingErrors.totalErrors} minor errors, ${metrics.errorRate.toFixed(2)} per 400 words)`);
+}
+
 // Structured data
 const hasStructuredData = manifest.structuredData && manifest.structuredData.length > 0;
 if (!hasStructuredData) {
@@ -865,6 +956,170 @@ function checkYearReferences(content: any): boolean {
 }
 ```
 
+### Detect Placeholders
+```typescript
+function detectPlaceholders(content: any): Array<{ type: string; location: string }> {
+  const issues: Array<{ type: string; location: string }> = [];
+  const allText = JSON.stringify(content);
+
+  // Lorem ipsum detection
+  if (/lorem\s+ipsum/i.test(allText)) {
+    issues.push({ type: 'lorem', location: 'content contains lorem ipsum placeholder text' });
+  }
+
+  // TBD/TODO markers
+  const tbdMatches = allText.match(/\b(TBD|TODO|FIXME|XXX|PLACEHOLDER)\b/gi);
+  if (tbdMatches) {
+    tbdMatches.forEach((match, idx) => {
+      issues.push({ type: 'tbd', location: `"${match}" marker found` });
+    });
+  }
+
+  // Check for empty sections
+  if (Array.isArray(content.sections)) {
+    content.sections.forEach((section: any, idx: number) => {
+      const hasTitle = section.title && section.title.trim().length > 0;
+      const hasBody = Array.isArray(section.body) && section.body.length > 0 &&
+        section.body.some((item: any) => typeof item === 'string' && item.trim().length > 0);
+
+      if (hasTitle && !hasBody) {
+        issues.push({ type: 'empty', location: `Section "${section.title}" has no content` });
+      }
+
+      // Check for empty lists
+      if (Array.isArray(section.list) && section.list.length === 0) {
+        issues.push({ type: 'empty', location: `Section "${section.title}" has empty list` });
+      }
+    });
+  }
+
+  // "Coming soon" type placeholders
+  if (/\b(coming soon|more info soon|details tba|to be announced)\b/i.test(allText)) {
+    issues.push({ type: 'comingSoon', location: '"Coming soon" or similar placeholder found' });
+  }
+
+  return issues;
+}
+```
+
+### Check Spelling & Grammar
+```typescript
+function checkSpellingGrammar(content: any): {
+  totalErrors: number;
+  errorRate: number;
+  errors: Array<{ type: string; example: string }>;
+} {
+  const allText = extractTextContent(content);
+  const wordCount = allText.split(/\s+/).filter(w => w.length > 0).length;
+  const errors: Array<{ type: string; example: string }> = [];
+
+  // Common misspellings (expand this list based on your content)
+  const commonMisspellings = {
+    'accomodation': 'accommodation',
+    'seperate': 'separate',
+    'definately': 'definitely',
+    'occured': 'occurred',
+    'recieve': 'receive',
+    'beleive': 'believe',
+    'existance': 'existence',
+    'occassion': 'occasion',
+    'goverment': 'government',
+    'enviroment': 'environment',
+    'restaraunt': 'restaurant',
+    'begining': 'beginning',
+    'transfered': 'transferred',
+    'untill': 'until',
+    'sucessful': 'successful',
+  };
+
+  // Check for common misspellings
+  Object.entries(commonMisspellings).forEach(([wrong, correct]) => {
+    const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
+    const matches = allText.match(regex);
+    if (matches) {
+      matches.forEach(() => {
+        errors.push({ type: 'spelling', example: `"${wrong}" should be "${correct}"` });
+      });
+    }
+  });
+
+  // Common homophone errors
+  const homophones = [
+    { wrong: /\btheir\s+are\b/gi, correct: 'there are', pattern: 'their are' },
+    { wrong: /\byour\s+(a|an|the|going|coming)\b/gi, correct: "you're", pattern: 'your [verb]' },
+    { wrong: /\bits\s+a\b/gi, correct: "it's a", pattern: 'its a' },
+    { wrong: /\bthen\s+(you|we|I|they)\s+(can|will|should)\b/gi, correct: 'than', pattern: 'then [pronoun] [modal]' },
+  ];
+
+  homophones.forEach(({ wrong, correct, pattern }) => {
+    const matches = allText.match(wrong);
+    if (matches) {
+      matches.forEach(() => {
+        errors.push({ type: 'homophone', example: `Possible "${pattern}" error, check if should be "${correct}"` });
+      });
+    }
+  });
+
+  // Subject-verb agreement (basic checks)
+  const agreementErrors = [
+    /\bwe\s+is\b/gi,
+    /\bthey\s+is\b/gi,
+    /\byou\s+is\b/gi,
+    /\bI\s+are\b/gi,
+    /\bhe\s+are\b/gi,
+    /\bshe\s+are\b/gi,
+  ];
+
+  agreementErrors.forEach((pattern) => {
+    const matches = allText.match(pattern);
+    if (matches) {
+      matches.forEach((match) => {
+        errors.push({ type: 'grammar', example: `Subject-verb disagreement: "${match}"` });
+      });
+    }
+  });
+
+  // Calculate error rate per 400 words
+  const errorRate = wordCount > 0 ? (errors.length / wordCount) * 400 : 0;
+
+  return {
+    totalErrors: errors.length,
+    errorRate,
+    errors: errors.slice(0, 10), // Return first 10 examples
+  };
+}
+
+// Helper to extract all text content
+function extractTextContent(content: any): string {
+  let text = '';
+
+  // Extract from intro
+  if (Array.isArray(content.intro)) {
+    text += content.intro.join(' ') + ' ';
+  }
+
+  // Extract from sections
+  if (Array.isArray(content.sections)) {
+    content.sections.forEach((section: any) => {
+      if (section.title) text += section.title + ' ';
+      if (Array.isArray(section.body)) {
+        text += section.body.join(' ') + ' ';
+      }
+    });
+  }
+
+  // Extract from FAQs
+  if (Array.isArray(content.faqs)) {
+    content.faqs.forEach((faq: any) => {
+      if (faq.question) text += faq.question + ' ';
+      if (faq.answer) text += faq.answer + ' ';
+    });
+  }
+
+  return text;
+}
+```
+
 ## Example Usage
 
 ### Example 1: Local Guide (9.5/10)
@@ -1004,6 +1259,71 @@ Consider addressing improvements to reach 10/10 perfect score.
 Results saved to guide-manifest-overrides.json
 ```
 
+### Example 5: Draft with Placeholders & Errors (5.2/10)
+```bash
+/audit-guide-seo beachSafetyGuide
+```
+
+**Output:**
+```markdown
+## SEO Audit Results: beachSafetyGuide
+
+**Template:** Help/Policy (primaryArea: help)
+**Score: 5.2/10** 🔴
+
+**Template Standards:**
+- Word count: 600–1,400 words (current: 720)
+- Images: 1–4 images (current: 2)
+- Internal links: 3–8 links (current: 4)
+- FAQs: 4–10 FAQs (current: 6)
+
+### Strengths ✅
+- Concise content at 720 words (optimal for help article)
+- Good meta title length (48 chars)
+- Strong internal linking with 4 links
+- Comprehensive FAQ section with 6 questions
+
+### Critical Issues ❌ (sorted by impact)
+- **-1.5** 3 TBD/TODO markers found - complete all sections before publishing
+- **-1.0** Missing meta description
+- **-0.5** High error rate (8 errors in 720 words, 4.44 per 400 words)
+- **-0.5** No clear answer in first 200 words (avoid long intros)
+- **-0.6** 2 empty sections or lists - add content or remove
+- **-0.3** Add lastUpdated date for freshness signals
+- **-0.3** "Coming soon" placeholder found - complete content before publishing
+
+### Errors Found:
+**Spelling/Grammar (8 errors):**
+- "accomodation" should be "accommodation"
+- "definately" should be "definitely"
+- "your going" should be "you're going"
+- Subject-verb disagreement: "we is"
+- (4 more errors detected)
+
+**Placeholders (6 issues):**
+- "TBD" marker found in "Emergency Contact" section
+- "TODO: Add lifeguard schedule" marker found
+- "Coming soon: seasonal warnings" placeholder
+- Section "Water Temperature" has no content
+- Section "Beach Flags" has empty list
+- "TODO" marker found in "First Aid" section
+
+### Next Steps
+⚠️ This guide has critical blocking issues preventing publication:
+
+1. **Remove all TBD/TODO markers** - Complete the 3 unfinished sections
+2. **Add meta description** (150-155 chars summarizing beach safety tips)
+3. **Fix spelling & grammar** - 8 errors detected (see list above)
+4. **Add content to empty sections** - "Water Temperature" and "Beach Flags" need content
+5. **Remove "coming soon" placeholders** - Either complete or remove the seasonal warnings section
+6. **Restructure intro** - Move key safety info to first 200 words
+7. **Add lastUpdated date**
+
+Run `/audit-guide-seo beachSafetyGuide` again after addressing these issues.
+
+Results saved to guide-manifest-overrides.json
+```
+
 ## Quality Checks
 
 Before saving results, validate:
@@ -1041,6 +1361,13 @@ Check file permissions for guide-manifest-overrides.json
 ```
 
 ## Version History
+
+**2.1.0** (2026-01-29)
+- Placeholder content detection (TBD, lorem ipsum, empty sections, "coming soon")
+- Spelling & grammar checks with error rate threshold (≤1 error per 400 words)
+- Unique word count clarification (excludes nav/footer/boilerplate)
+- Enhanced content completeness scoring (up to -3.0 points vs -1.5)
+- Helper functions: detectPlaceholders(), checkSpellingGrammar()
 
 **2.0.0** (2026-01-29)
 - Template-based scoring standards (Help, Experience, Local Guide, Pillar)

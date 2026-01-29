@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import type { CommitHistoryEntry } from "@/lib/git-history";
 import type { Business, Card, StageDoc } from "@/lib/types";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 
 import { CardHeader } from "./CardHeader";
 import { CardHistory } from "./CardHistory";
@@ -32,10 +33,24 @@ export function CardDetail({
   history = [],
   githubUrl,
 }: CardDetailProps) {
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    {
+      label: business ? `${business.name} Board` : "Board",
+      href: card.Business ? `/boards/${card.Business}` : "/boards/global",
+    },
+    { label: `Card ${card.ID}` },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
+        {/* Breadcrumb */}
+        <div className="mb-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link

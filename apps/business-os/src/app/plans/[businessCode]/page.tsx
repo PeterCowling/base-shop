@@ -12,6 +12,7 @@ import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslat
 
 import { ChangeRequestButton } from "@/components/change-request/ChangeRequestButton";
 import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { readFileWithinRoot } from "@/lib/safe-fs";
 
 interface PlanPageProps {
@@ -55,9 +56,20 @@ export default async function PlanPage({ params }: PlanPageProps) {
       ? frontmatter["Last-reviewed"]
       : undefined;
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Plans", href: "/" },
+    { label: `${businessCode} Plan` },
+  ];
+
   return (
     <div className="bg-surface-1" style={{ minHeight: "100svh" }}>
       <div className="mx-auto w-full px-4 py-8" style={{ maxWidth: "64rem" }}>
+        {/* Breadcrumb */}
+        <div className="mb-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">

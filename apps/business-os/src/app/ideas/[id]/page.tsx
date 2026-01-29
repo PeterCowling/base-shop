@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
+import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { createRepoReader } from "@/lib/repo-reader";
 
 interface PageProps {
@@ -30,10 +31,21 @@ export default async function IdeaPage({ params }: PageProps) {
   const firstLine = idea.content.split("\n").find((line) => line.trim());
   const title = firstLine?.replace(/^#+\s*/, "") || idea.ID || "Untitled Idea";
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Ideas", href: "/" },
+    { label: idea.ID || "Idea" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
+        {/* Breadcrumb */}
+        <div className="mb-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link

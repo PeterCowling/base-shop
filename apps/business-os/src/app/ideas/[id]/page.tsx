@@ -5,6 +5,8 @@ import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { createRepoReader } from "@/lib/repo-reader";
 
+import { ConvertToCardButton } from "./ConvertToCardButton";
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -149,19 +151,13 @@ export default async function IdeaPage({ params }: PageProps) {
                 Actions
               </h3>
               <div className="space-y-2">
+                <ConvertToCardButton ideaId={idea.ID || id} />
                 <button
                   type="button"
                   className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
                   disabled
                 >
                   Work Idea (Coming Soon)
-                </button>
-                <button
-                  type="button"
-                  className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
-                  disabled
-                >
-                  Convert to Card (Coming Soon)
                 </button>
               </div>
             </div>

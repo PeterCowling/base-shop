@@ -10,21 +10,20 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
-import { useTranslations } from "@acme/i18n";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
+import { useTranslations } from "@acme/i18n";
 
-import type { Business, Card, Idea, Lane, BoardView as BoardViewType } from "@/lib/types";
+import type { Business, Card, Idea, Lane } from "@/lib/types";
 
-import { SearchBar } from "./SearchBar";
-import { FilterChips, applyFilters } from "./FilterChips";
-import { BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
 import { BoardLane } from "./BoardLane";
+import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
+import { applyFilters, FilterChips, type FilterType } from "./FilterChips";
+import { SearchBar } from "./SearchBar";
 
 interface BoardViewProps {
   businessCode: string;
   businesses: Business[];
-  lanes: Lane[];
   cardsByLane: Record<Lane, Card[]>;
   inboxIdeas: Idea[];
 }
@@ -32,7 +31,6 @@ interface BoardViewProps {
 export function BoardView({
   businessCode,
   businesses,
-  lanes,
   cardsByLane,
   inboxIdeas,
 }: BoardViewProps) {
@@ -42,13 +40,13 @@ export function BoardView({
 
   // State for search, filters, and view
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState<FilterType[]>([]);
   const [currentView, setCurrentView] = useState<BoardViewType>("all");
 
   // Get lanes for current view
   const visibleLanes = useMemo(
-    () => getLanesForView(currentView, lanes),
-    [currentView, lanes]
+    () => getLanesForView(currentView),
+    [currentView]
   );
 
   // Filter cards based on search and filters
@@ -168,7 +166,7 @@ export function BoardView({
         <Stack gap={3}>
           {/* Search and View Switcher Row */}
           <Inline alignY="center" wrap={false} className="justify-between">
-            <div className="flex-1 max-w-md">
+            <div className="flex-1">
               <SearchBar value={searchQuery} onSearch={setSearchQuery} />
             </div>
             <BoardViewSwitcher

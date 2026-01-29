@@ -30,6 +30,7 @@ const mockBusinesses: Business[] = [
 
 const mockCards: Card[] = [
   {
+    Type: "Card",
     ID: "BRIK-001",
     Business: "BRIK",
     Lane: "Inbox",
@@ -38,8 +39,10 @@ const mockCards: Card[] = [
     "Due-Date": "2025-02-01",
     content: "# Test Card 1",
     Tags: [],
+    filePath: "/test/cards/BRIK-001.user.md",
   },
   {
+    Type: "Card",
     ID: "BRIK-002",
     Business: "BRIK",
     Lane: "Fact-finding",
@@ -48,17 +51,20 @@ const mockCards: Card[] = [
     "Due-Date": "2025-02-15",
     content: "# Test Card 2",
     Tags: [],
+    filePath: "/test/cards/BRIK-002.user.md",
   },
 ];
 
 const mockIdeas: Idea[] = [
   {
+    Type: "Idea",
     ID: "BRIK-OPP-001",
     Business: "BRIK",
     Status: "raw",
     "Created-Date": "2025-01-20",
     content: "# Test Idea",
     Tags: [],
+    filePath: "/test/ideas/inbox/BRIK-OPP-001.md",
   },
 ];
 
@@ -78,6 +84,7 @@ const mockCardsByLane: Record<Lane, Card[]> = {
   "In progress": [],
   Done: [],
   Blocked: [],
+  Reflected: [],
 };
 
 describe("BoardView", () => {
@@ -86,8 +93,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -102,8 +108,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -116,8 +121,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -133,8 +137,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -150,8 +153,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -169,8 +171,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );
@@ -191,8 +192,7 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-        lanes={mockLanes}
-        cardsByLane={mockCardsByLane}
+          cardsByLane={mockCardsByLane}
         inboxIdeas={mockIdeas}
       />
     );

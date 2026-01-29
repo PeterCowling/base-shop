@@ -74,7 +74,6 @@ export default async function BoardPage({ params }: PageProps) {
     <BoardView
       businessCode={businessCode}
       businesses={businesses}
-      lanes={lanes}
       cardsByLane={cardsByLane}
       inboxIdeas={filteredIdeas}
     />

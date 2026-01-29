@@ -1432,8 +1432,8 @@ const manifestSeed: GuideManifestEntry[] = [
       {
         type: "hero",
         options: {
-          image: "/img/guides/topics/cheapEats.jpg",
-          alt: "Beach overview covering multiple towns on the Amalfi Coast",
+          image: "/img/guides/positano-beaches/positano-main-beach.webp",
+          alt: "Positano's main beach with colorful umbrellas and the town rising up the cliffs",
           showIntro: true,
         },
       },

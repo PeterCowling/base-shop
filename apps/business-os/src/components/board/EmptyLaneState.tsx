@@ -18,7 +18,7 @@ export interface EmptyLaneStateProps {
 
 interface LaneConfig {
   message: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
   cta?: {
     label: string;
     href: string;

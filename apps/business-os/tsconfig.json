@@ -24,7 +24,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["@testing-library/jest-dom"],
+    "types": ["react", "react-dom", "node", "jest", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"
@@ -39,6 +39,11 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "src/test-setup.ts"
   ]
 }

@@ -10,7 +10,6 @@ const base = require("@acme/config/jest.preset.cjs")({
 module.exports = {
   ...base,
   roots: ["<rootDir>/src"],
-  testEnvironment: "node",
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",
     "!src/**/*.d.ts",

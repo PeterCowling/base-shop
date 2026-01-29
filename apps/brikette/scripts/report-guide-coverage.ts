@@ -4,7 +4,9 @@
  *
  * Reports:
  * - Guides with 0 or low relatedGuides (by status)
+ * - Guides below minimum threshold (live: <2, review: <1)
  * - Orphan guides (no inbound links from other guides)
+ * - Missing reciprocal links (A→B but not B→A) - informational only
  * - Inline %LINK: usage statistics
  * - Google Maps URL usage count
  *
@@ -78,6 +80,7 @@ type CoverageReport = {
   guidesWithoutRelatedGuides: Record<GuideStatus, number>;
   guidesBelowThreshold: Array<{ key: string; status: GuideStatus; count: number }>;
   orphanGuides: Array<{ key: string; status: GuideStatus }>;
+  missingReciprocals: Array<{ from: string; to: string; fromStatus: GuideStatus; toStatus: GuideStatus }>;
   guidesWithInlineLinks: number;
   totalInlineLinks: number;
   guidesWithMapsUrls: number;
@@ -244,6 +247,49 @@ function buildInboundLinksMap(
 }
 
 /**
+ * Detect missing reciprocal links (A→B but not B→A)
+ * Only checks manifest relatedGuides, not inline links
+ */
+function detectMissingReciprocals(
+  manifest: GuideManifestEntry[]
+): Array<{ from: string; to: string; fromStatus: GuideStatus; toStatus: GuideStatus }> {
+  const missingReciprocals: Array<{ from: string; to: string; fromStatus: GuideStatus; toStatus: GuideStatus }> = [];
+
+  // Build a map of guide → relatedGuides for fast lookup
+  const relatedGuidesMap = new Map<string, Set<string>>();
+  const statusMap = new Map<string, GuideStatus>();
+
+  for (const entry of manifest) {
+    relatedGuidesMap.set(entry.key, new Set(entry.relatedGuides));
+    statusMap.set(entry.key, entry.status ?? "draft");
+  }
+
+  // For each A → B relationship, check if B → A exists
+  for (const entry of manifest) {
+    const fromKey = entry.key;
+    const fromStatus = entry.status ?? "draft";
+
+    for (const toKey of entry.relatedGuides) {
+      // Check if the reciprocal exists
+      const reciprocalRelated = relatedGuidesMap.get(toKey);
+      if (!reciprocalRelated || !reciprocalRelated.has(fromKey)) {
+        const toStatus = statusMap.get(toKey) ?? "draft";
+        missingReciprocals.push({
+          from: fromKey,
+          to: toKey,
+          fromStatus,
+          toStatus,
+        });
+      }
+    }
+  }
+
+  return missingReciprocals.sort((a, b) =>
+    a.from.localeCompare(b.from) || a.to.localeCompare(b.to)
+  );
+}
+
+/**
  * Generate coverage report
  */
 function generateReport(
@@ -303,6 +349,9 @@ function generateReport(
   const totalInlineLinks = guideStats.reduce((sum, g) => sum + g.inlineLinkCount, 0);
   const guidesWithMapsUrls = guideStats.filter(g => g.hasMapsUrl).length;
 
+  // Detect missing reciprocal links
+  const missingReciprocals = detectMissingReciprocals(manifest);
+
   return {
     totalGuides: manifest.length,
     guidesByStatus,
@@ -310,6 +359,7 @@ function generateReport(
     guidesWithoutRelatedGuides,
     guidesBelowThreshold,
     orphanGuides,
+    missingReciprocals,
     guidesWithInlineLinks,
     totalInlineLinks,
     guidesWithMapsUrls,
@@ -364,6 +414,27 @@ function outputMarkdownReport(report: CoverageReport, locale: string): void {
     }
     if (!verbose && report.orphanGuides.length > 10) {
       console.log(`- ...and ${report.orphanGuides.length - 10} more (use --verbose to see all)`);
+    }
+  }
+  console.log("");
+
+  console.log("## Missing Reciprocal Links");
+  console.log("");
+  if (report.missingReciprocals.length === 0) {
+    console.log("✅ All relatedGuides relationships are reciprocal");
+  } else {
+    console.log(`ℹ️  ${report.missingReciprocals.length} missing reciprocal links found:`);
+    console.log("");
+    console.log("**Note:** Not all relationships need to be symmetric (e.g., overview guides linking to specifics).");
+    console.log("These are informational warnings to help identify potential editorial improvements.");
+    console.log("");
+
+    const displayLimit = verbose ? 999 : 20;
+    for (const reciprocal of report.missingReciprocals.slice(0, displayLimit)) {
+      console.log(`- \`${reciprocal.from}\` → \`${reciprocal.to}\` (missing: \`${reciprocal.to}\` → \`${reciprocal.from}\`)`);
+    }
+    if (!verbose && report.missingReciprocals.length > displayLimit) {
+      console.log(`- ...and ${report.missingReciprocals.length - displayLimit} more (use --verbose to see all)`);
     }
   }
   console.log("");

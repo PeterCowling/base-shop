@@ -16,18 +16,21 @@ import useViewport from "@acme/design-system/hooks/useViewport";
 import { useTranslations } from "@acme/i18n";
 
 import type { Business, Card, Idea, Lane } from "@/lib/types";
+import type { User } from "@/lib/current-user";
 
 import { BoardLane } from "./BoardLane";
 import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
 import { applyFilters, FilterChips, type FilterType } from "./FilterChips";
 import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
+import { UserSwitcher } from "../user/UserSwitcher";
 
 interface BoardViewProps {
   businessCode: string;
   businesses: Business[];
   cardsByLane: Record<Lane, Card[]>;
   inboxIdeas: Idea[];
+  currentUser: User;
 }
 
 export function BoardView({
@@ -35,6 +38,7 @@ export function BoardView({
   businesses,
   cardsByLane,
   inboxIdeas,
+  currentUser,
 }: BoardViewProps) {
   const t = useTranslations();
   const viewport = useViewport();
@@ -87,7 +91,7 @@ export function BoardView({
 
       // Apply filter chips
       if (activeFilters.length > 0) {
-        filtered = applyFilters(filtered, activeFilters, "Pete"); // TODO: Get current user
+        filtered = applyFilters(filtered, activeFilters, currentUser.name);
       }
 
       result[lane] = filtered;
@@ -150,7 +154,10 @@ export function BoardView({
               )
             )}
           </div>
-          <div className="flex gap-2 max-md:flex-wrap max-md:w-full">
+          <div className="flex gap-2 max-md:flex-wrap max-md:w-full items-center">
+            {/* User Switcher (dev mode only) */}
+            <UserSwitcher currentUser={currentUser} />
+
             <Link
               href="/cards/new"
               className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"

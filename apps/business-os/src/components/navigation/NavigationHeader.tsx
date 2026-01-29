@@ -15,14 +15,17 @@ import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
 
 import type { Business } from "@/lib/types";
+import type { User } from "@/lib/current-user";
 
 import { QuickCaptureModal } from "../capture/QuickCaptureModal";
+import { UserSwitcher } from "../user/UserSwitcher";
 
 import { BusinessSelector } from "./BusinessSelector";
 
 export interface NavigationHeaderProps {
   businesses: Business[];
   currentBusiness: string;
+  currentUser: User;
 }
 
 interface NavLink {
@@ -41,6 +44,7 @@ const NAV_LINKS: NavLink[] = [
 export function NavigationHeader({
   businesses,
   currentBusiness,
+  currentUser,
 }: NavigationHeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -103,6 +107,9 @@ export function NavigationHeader({
           >
             + Capture
           </Button>
+
+          {/* User Switcher (dev mode only) */}
+          <UserSwitcher currentUser={currentUser} />
 
           {/* Business Selector */}
           <BusinessSelector

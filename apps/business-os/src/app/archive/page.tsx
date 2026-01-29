@@ -16,7 +16,7 @@ import { createRepoReader } from "@/lib/repo-reader";
 /* eslint-disable ds/no-hardcoded-copy, ds/enforce-layout-primitives, ds/no-unsafe-viewport-units -- BOS-04 */
 // i18n-exempt -- BOS-04 [ttl=2026-03-01] Archive page scaffold; real UI in BOS-11+
 export default async function ArchivePage() {
-  const currentUser = getCurrentUserServer();
+  const currentUser = await getCurrentUserServer();
   const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
   const reader = createRepoReader(repoRoot);
 

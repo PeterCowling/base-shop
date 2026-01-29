@@ -47,12 +47,24 @@ export const USERS: Record<string, User> = {
 export const ADMIN_USERS = ["pete", "cristiana"];
 
 /**
- * Get current user from environment or default to Pete
+ * Get current user from cookie, environment, or default to Pete
  * Phase 0: Hardcoded to Pete
  * Phase 0.5+: Read from cookie or header
  */
 export function getCurrentUser(): User {
-  // Phase 0.5+: In development, allow switching users via env var
+  // Try to get from cookie first (client-side only)
+  if (typeof window !== "undefined") {
+    const cookies = document.cookie.split(";");
+    const userCookie = cookies.find((c) => c.trim().startsWith("current_user_id="));
+    if (userCookie) {
+      const userId = userCookie.split("=")[1];
+      if (USERS[userId]) {
+        return USERS[userId];
+      }
+    }
+  }
+
+  // Fall back to environment variable (server-side or dev)
   const userId = process.env.CURRENT_USER_ID || "pete";
 
   return USERS[userId] || USERS.pete;
@@ -68,8 +80,21 @@ export function canViewAllArchived(user: User): boolean {
 /**
  * Server-side helper to get current user (for API routes and server components)
  */
-export function getCurrentUserServer(): User {
-  // Phase 0.5+: Could read from cookies/headers
-  // For now, use environment variable
-  return getCurrentUser();
+export async function getCurrentUserServer(): Promise<User> {
+  // Try to read from cookie (Next.js server components)
+  try {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const userIdCookie = cookieStore.get("current_user_id");
+
+    if (userIdCookie?.value && USERS[userIdCookie.value]) {
+      return USERS[userIdCookie.value];
+    }
+  } catch {
+    // Not in server component context, fall through
+  }
+
+  // Fall back to environment variable
+  const userId = process.env.CURRENT_USER_ID || "pete";
+  return USERS[userId] || USERS.pete;
 }

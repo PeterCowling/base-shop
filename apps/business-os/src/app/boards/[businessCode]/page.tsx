@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { BoardView } from "@/components/board/BoardView";
 import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
 import { createRepoReader } from "@/lib/repo-reader";
+import { getCurrentUserServer } from "@/lib/current-user";
 import type { Lane } from "@/lib/types";
 
 interface PageProps {
@@ -14,6 +15,7 @@ export default async function BoardPage({ params }: PageProps) {
   const { businessCode } = await params;
   const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
   const reader = createRepoReader(repoRoot);
+  const currentUser = await getCurrentUserServer();
 
   // Validate business code
   if (businessCode !== "global") {
@@ -76,6 +78,7 @@ export default async function BoardPage({ params }: PageProps) {
       businesses={businesses}
       cardsByLane={cardsByLane}
       inboxIdeas={filteredIdeas}
+      currentUser={currentUser}
     />
   );
 }

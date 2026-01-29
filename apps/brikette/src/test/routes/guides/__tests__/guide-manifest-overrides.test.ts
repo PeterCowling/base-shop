@@ -15,7 +15,10 @@ describe("manifestOverrideSchema", () => {
         analysis: {
           strengths: ["Good meta title", "Strong FAQs"],
           criticalIssues: [],
-          improvements: ["Add more internal links", "Increase content length"],
+          improvements: [
+            { issue: "Add more internal links", impact: 0.2 },
+            { issue: "Increase content length", impact: 0.3 },
+          ],
         },
         metrics: {
           metaTitleLength: 55,
@@ -66,7 +69,10 @@ describe("manifestOverrideSchema", () => {
           score: 0,
           analysis: {
             strengths: [],
-            criticalIssues: ["Missing meta title", "No content"],
+            criticalIssues: [
+              { issue: "Missing meta title", impact: 1.0 },
+              { issue: "No content", impact: 1.0 },
+            ],
             improvements: [],
           },
           metrics: {},

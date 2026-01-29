@@ -91,6 +91,9 @@ export type StructuredDataDeclaration =
       options?: Record<string, unknown> | undefined;
     };
 
+export const GUIDE_TEMPLATE_VALUES = ["help", "experience", "localGuide", "pillar"] as const;
+export type GuideTemplate = (typeof GUIDE_TEMPLATE_VALUES)[number];
+
 const STRUCTURED_DATA_SCHEMA = z.union([
   z.enum(STRUCTURED_DATA_TYPES),
   z.object({
@@ -211,6 +214,14 @@ export type GuideManifestEntry = {
   options?: GuideRouteOptions;
   expectations?: GuideRouteExpectations;
   checklist?: GuideChecklistItem[];
+  /**
+   * Optional SEO/content auditing hints.
+   * These are intentionally non-blocking fields that can be rolled out incrementally.
+   */
+  template?: GuideTemplate;
+  focusKeyword?: string;
+  primaryQuery?: string;
+  timeSensitive?: boolean;
 };
 
 const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
@@ -230,6 +241,10 @@ const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
     options: GUIDE_ROUTE_OPTIONS_SCHEMA,
     expectations: GUIDE_ROUTE_EXPECTATIONS_SCHEMA,
     checklist: z.array(CHECKLIST_ITEM_SCHEMA).optional(),
+    template: z.enum(GUIDE_TEMPLATE_VALUES).optional(),
+    focusKeyword: z.string().trim().min(3).optional(),
+    primaryQuery: z.string().trim().min(3).optional(),
+    timeSensitive: z.boolean().optional(),
   })
   .superRefine((value, ctx) => {
     const ogType = value.options?.ogType?.trim();
@@ -251,7 +266,18 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
   typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE,
   GuideManifestEntry
 > = GUIDE_MANIFEST_ENTRY_SCHEMA_BASE.transform((value) => {
-  const { draftPathSegment, metaKey, options, expectations, checklist, ...rest } = value;
+  const {
+    draftPathSegment,
+    metaKey,
+    options,
+    expectations,
+    checklist,
+    template,
+    focusKeyword,
+    primaryQuery,
+    timeSensitive,
+    ...rest
+  } = value;
   const cleanOptions = options
     ? (Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v !== "undefined")) as GuideRouteOptions)
     : undefined;
@@ -274,6 +300,10 @@ export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
     ...(typeof cleanOptions !== "undefined" ? { options: cleanOptions } : {}),
     ...(typeof cleanExpectations !== "undefined" ? { expectations: cleanExpectations } : {}),
     ...(Array.isArray(cleanChecklist) ? { checklist: cleanChecklist } : {}),
+    ...(typeof template === "string" ? { template } : {}),
+    ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
+    ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
+    ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
     status: (value.status ?? "draft") as GuideStatus,
     structuredData: value.structuredData ?? [],
     relatedGuides: value.relatedGuides ?? [],

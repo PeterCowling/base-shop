@@ -14,7 +14,7 @@ import {
   GUIDE_BLOCK_DECLARATION_SCHEMA,
   type GuideBlockDeclaration,
 } from "./blocks/types";
-import { analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
+import { analyzeGuideCompleteness, analyzeTranslationCoverage, analyzeDateValidation } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
 import type { ManifestOverrides } from "./guide-manifest-overrides";
 
@@ -4475,8 +4475,16 @@ export function buildGuideChecklist(
           i18nConfig.supportedLngs as AppLanguage[],
         )
       : undefined;
+    // Date validation: check if English has a date but other locales don't
+    const dateValidation = options?.includeTranslationCoverage
+      ? analyzeDateValidation(
+          entry.key,
+          i18nConfig.supportedLngs as AppLanguage[],
+        )
+      : undefined;
     return {
       translations: coverage,
+      dateValidation,
       content: {
         intro: completeness.fields.intro,
         sections: completeness.fields.sections,

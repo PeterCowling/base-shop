@@ -5,6 +5,7 @@ import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import { isPlaceholderString } from "./guide-seo/content-detection";
 import {
+  type DateValidationResult,
   type GuideDiagnosticResult,
   type GuideFieldStatus,
   type SeoFieldStatus,
@@ -171,5 +172,54 @@ export function analyzeTranslationCoverage(
     locales: results,
     completeLocales,
     missingLocales,
+  };
+}
+
+export function analyzeDateValidation(
+  guideKey: GuideKey,
+  locales: readonly AppLanguage[],
+): DateValidationResult {
+  // Check if English has a lastUpdated date
+  const englishDateRaw = getGuideResource<string>("en", `content.${guideKey}.lastUpdated`, { includeFallback: false });
+  const englishDate = englishDateRaw && typeof englishDateRaw === "string" && englishDateRaw.trim().length > 0
+    ? englishDateRaw
+    : undefined;
+  const hasEnglishDate = Boolean(englishDate);
+
+  if (!hasEnglishDate) {
+    // If English doesn't have a date, no validation needed
+    return {
+      hasEnglishDate: false,
+      localesWithDate: [],
+      localesMissingDate: [],
+    };
+  }
+
+  const localesWithDate: AppLanguage[] = [];
+  const localesMissingDate: AppLanguage[] = [];
+
+  // Check each locale for lastUpdated
+  for (const locale of locales) {
+    if (locale === "en") {
+      // Skip English since we already checked it
+      localesWithDate.push("en");
+      continue;
+    }
+
+    const localeDate = getGuideResource<string>(locale, `content.${guideKey}.lastUpdated`, { includeFallback: false });
+    const hasDate = Boolean(localeDate && typeof localeDate === "string" && localeDate.trim().length > 0);
+
+    if (hasDate) {
+      localesWithDate.push(locale);
+    } else {
+      localesMissingDate.push(locale);
+    }
+  }
+
+  return {
+    hasEnglishDate,
+    englishDate,
+    localesWithDate,
+    localesMissingDate,
   };
 }

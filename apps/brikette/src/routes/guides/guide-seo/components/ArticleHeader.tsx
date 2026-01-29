@@ -1,8 +1,12 @@
+import type { AppLanguage } from "@/i18n.config";
 import { isGuideDebugEnabled } from "@/utils/debug";
+import { formatGuideDate } from "@/utils/formatGuideDate";
 
 interface ArticleHeaderProps {
   displayTitle: string;
   subtitle?: string;
+  lastUpdated?: string;
+  locale?: AppLanguage;
   debug: {
     lang: string;
     guideKey: string;
@@ -13,7 +17,7 @@ interface ArticleHeaderProps {
   };
 }
 
-export default function ArticleHeader({ displayTitle, subtitle, debug }: ArticleHeaderProps): JSX.Element {
+export default function ArticleHeader({ displayTitle, subtitle, lastUpdated, locale, debug }: ArticleHeaderProps): JSX.Element {
   const resolvedTitle = (() => {
     const primary = typeof displayTitle === "string" ? displayTitle.trim() : "";
     if (primary.length > 0) return primary;
@@ -25,6 +29,7 @@ export default function ArticleHeader({ displayTitle, subtitle, debug }: Article
     return fromGuideKey;
   })();
   const subtitleText = typeof subtitle === "string" ? subtitle.trim() : "";
+  const formattedDate = lastUpdated && locale ? formatGuideDate(lastUpdated, locale) : "";
 
   return (
     <>
@@ -46,6 +51,11 @@ export default function ArticleHeader({ displayTitle, subtitle, debug }: Article
         {resolvedTitle}
       </h1>
       {subtitleText.length > 0 ? <p>{subtitleText}</p> : null}
+      {formattedDate.length > 0 ? (
+        <p className="mt-2 text-sm text-brand-text/60">
+          <time dateTime={lastUpdated}>{formattedDate}</time>
+        </p>
+      ) : null}
       {isGuideDebugEnabled() ? (
         <pre data-debug-guide-content className="mt-2 overflow-auto rounded bg-brand-surface/40 p-2 text-xs text-brand-muted">
           {JSON.stringify(

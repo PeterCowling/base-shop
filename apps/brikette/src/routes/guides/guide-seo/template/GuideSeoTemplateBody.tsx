@@ -57,6 +57,7 @@ export type GuideSeoTemplateBodyProps = {
   draftUrl?: string;
   articleHeadingWeightClass: string;
   subtitleText: string;
+  lastUpdated?: string;
   articleHeaderDebug: {
     lang: AppLanguage;
     guideKey: GuideSeoTemplateProps["guideKey"];
@@ -126,6 +127,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
     draftUrl,
     articleHeadingWeightClass,
     subtitleText,
+    lastUpdated,
     articleHeaderDebug,
     manualStructuredFallbackNode,
     manualStructuredFallbackRendered,
@@ -218,6 +220,8 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
           <ArticleHeader
             displayTitle={resolvedDisplayTitle}
             subtitle={subtitleText}
+            lastUpdated={lastUpdated}
+            locale={lang}
             debug={articleHeaderDebug}
           />
           {/* When routes prefer manual handling for unlocalized locales and a

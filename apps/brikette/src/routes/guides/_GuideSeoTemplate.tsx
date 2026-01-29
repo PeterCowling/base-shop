@@ -190,6 +190,17 @@ function GuideSeoTemplate({
     // (and thus ToC derivation) when tests expect only curated fallbacks.
     suppressEnglishStructuredWhenUnlocalized: Boolean(preferManualWhenUnlocalized),
   });
+
+  // Extract lastUpdated from guide content
+  const lastUpdated = useMemo(() => {
+    try {
+      const result = translations.tGuides(`content.${guideKey}.lastUpdated`, { returnObjects: false });
+      return typeof result === "string" && result.trim().length > 0 ? result : undefined;
+    } catch {
+      return undefined;
+    }
+  }, [guideKey, translations.tGuides]);
+
   const targetLocale = (requestedLang ?? lang)?.trim().toLowerCase();
   const hasLocalizedResourcesForRequested = useHasLocalizedResources({
     targetLocale,
@@ -500,6 +511,7 @@ function GuideSeoTemplate({
       draftUrl={draftUrl}
       articleHeadingWeightClass={articleHeadingWeightClass}
       subtitleText={subtitleText}
+      lastUpdated={lastUpdated}
       articleHeaderDebug={articleHeaderDebug}
       manualStructuredFallbackNode={manualStructuredFallback.node}
       manualStructuredFallbackRendered={manualStructuredFallback.hasContent}

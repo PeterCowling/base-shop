@@ -74,6 +74,7 @@ export const guideContentSchema = z
   .object({
     seo: guideSeoSchema,
     linkLabel: z.string().trim().min(1).optional(),
+    lastUpdated: z.string().datetime().optional(), // ISO 8601 date string, auto-updated on save
     intro: guideIntroSchema.optional(),
     sections: z.array(guideSectionSchema).optional(),
     faqs: z.array(guideFaqSchema).optional(),

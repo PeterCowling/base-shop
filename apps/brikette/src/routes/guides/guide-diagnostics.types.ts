@@ -37,6 +37,13 @@ export type GuideDiagnosticResult = {
   faqCount: number;
 };
 
+export type DateValidationResult = {
+  hasEnglishDate: boolean;
+  englishDate?: string;
+  localesWithDate: AppLanguage[];
+  localesMissingDate: AppLanguage[];
+};
+
 export type GuideChecklistDiagnostics = {
   translations?: TranslationCoverageResult;
   content?: {
@@ -49,4 +56,5 @@ export type GuideChecklistDiagnostics = {
   };
   seo?: SeoFieldStatus;
   seoAudit?: SeoAuditResult;
+  dateValidation?: DateValidationResult;
 };

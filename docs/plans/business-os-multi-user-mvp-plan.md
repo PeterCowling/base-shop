@@ -358,14 +358,50 @@ Show code commits linked to cards automatically.
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
+## Confidence-Raising Actions (78% Tasks)
+
+Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to raise confidence:
+
+### MVP-C3: Optimistic Concurrency (78% → 82-85%)
+
+**Current uncertainty:** Diff UI component and conflict resolution UX need validation.
+
+**Evidence that reduces uncertainty:**
+- Edit surfaces now grounded: `apps/business-os/src/app/cards/[id]/edit/page.tsx` (card edit), `IdeaEditorForm.tsx` (idea inline editing)
+- Diff libraries identified: `diff` (3.4M weekly DL, small), `fast-diff`, `diff-match-patch`
+
+**Action to raise confidence (2-3 hours):**
+- **Quick spike**: Pick `diff` npm package, implement baseCommit → detect mismatch → render conflict UI end-to-end on card edit page
+- **Targeted test**: Simulate User A loads card, User B edits, User A saves → conflict dialog shows diff + options
+- **Validates**: "Detect conflict + show diff + user chooses action" flow works
+- **Confidence after spike:** 82-85%
+
+### MVP-E3: Agent Runner Daemon (78% → 82-85%)
+
+**Current uncertainty:** Reliable skill execution (external CLI vs module import).
+
+**Evidence that reduces uncertainty:**
+- Skills documented and scoped: `docs/business-os/agent-workflows.md:19` (5 skills: /work-idea, /propose-lane-move, /scan-repo, /update-business-plan, /update-people)
+- Existing "check CLI exists then exec" pattern: `scripts/mcp/sync-ts-language.mjs:50` (`commandExists()` function)
+- Pattern is proven in repo for external tool integration
+
+**Action to raise confidence (1-2 hours):**
+- **Design executor abstraction**: Interface + mock executor (for tests) + real executor (with CLI check)
+- **Isolated boundary**: Executor interface isolates risky part (external CLI) from daemon logic
+- **Unit test**: Mock executor validates daemon behavior without external dependencies
+- **Integration test**: Real executor proves CLI invocation works
+- **Confidence after abstraction:** 82-85%
+
+**Recommendation:** These spikes can be done during Epic C (MVP-C3) and Epic E (MVP-E3) build phases as first implementation steps. Both are small, focused validations that de-risk the main implementation.
+
 ## Tasks
 
 ### MVP-A1: Production run mode + repoRoot config
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/lib/repo/repo-reader.ts`
-  - `apps/business-os/src/lib/repo/repo-writer.ts`
+  - `apps/business-os/src/lib/repo-reader.ts`
+  - `apps/business-os/src/lib/repo-writer.ts`
   - `apps/business-os/src/lib/current-user.ts`
   - `.env.example` (NEW)
   - `README.md` (config documentation)
@@ -435,13 +471,13 @@ Show code commits linked to cards automatically.
 - **Documentation impact:**
   - Add to runbook: "Monitoring" section with healthz endpoint usage
 - **Notes / references:**
-  - Similar pattern: `apps/brikette/src/app/api/health/route.ts` (if exists)
+  - Similar pattern: `apps/business-os/src/app/api/health/route.ts`
   - Expert review: "Add GET /api/healthz returning: git HEAD, repo lock status, last agent-run timestamp"
 
 #### Re-plan Update (2026-01-29)
 - **Previous confidence:** TBD
 - **Updated confidence:** 94%
-  - Implementation: 94% — Found existing `/api/health`, `/api/cards`, `/api/ideas` routes. Pattern is clear: Next.js 15 App Router route.ts files with GET handlers.
+  - Implementation: 94% — Found existing `/api/health`, `/api/cards`, `/api/ideas` routes. Pattern is clear: Next.js 15 App Router route.ts files with per-method handlers (GET/POST/PATCH).
   - Approach: 95% — Standard route handler returning JSON. Use simple-git (already in use) for git HEAD.
   - Impact: 94% — Read-only endpoint, no mutations, zero blast radius.
 - **Investigation performed:**
@@ -573,7 +609,7 @@ Show code commits linked to cards automatically.
   - `apps/business-os/src/app/api/ideas/route.ts` (POST for create)
   - `apps/business-os/src/app/api/cards/route.ts` (POST for create)
   - `apps/business-os/src/app/api/cards/[id]/route.ts` (PATCH for update)
-  - `apps/business-os/src/lib/repo/repo-writer.ts` (add permission checks)
+  - `apps/business-os/src/lib/repo-writer.ts` (add permission checks)
   - `apps/business-os/src/lib/permissions.ts` (NEW - centralize auth logic)
 - **Depends on:** MVP-B1
 - **Confidence:** 88%
@@ -622,7 +658,7 @@ Show code commits linked to cards automatically.
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/lib/repo/repo-writer.ts` (commit message format)
+  - `apps/business-os/src/lib/repo-writer.ts` (commit message format)
   - All server actions that call repo-writer (pass actor info)
 - **Depends on:** MVP-B1
 - **Confidence:** 90%
@@ -670,7 +706,7 @@ Show code commits linked to cards automatically.
 - **Type:** IMPLEMENT
 - **Affects:**
   - `apps/business-os/src/lib/repo/RepoLock.ts` (NEW)
-  - `apps/business-os/src/lib/repo/repo-writer.ts` (integrate lock acquisition)
+  - `apps/business-os/src/lib/repo-writer.ts` (integrate lock acquisition)
   - `docs/business-os/.locks/` (NEW directory for lock files)
 - **Depends on:** MVP-A1
 - **Confidence:** 85%
@@ -724,7 +760,7 @@ Show code commits linked to cards automatically.
 - **Affects:**
   - `docs/business-os/_meta/counters.json` (NEW)
   - `apps/business-os/src/lib/repo/IDAllocator.ts` (NEW)
-  - `apps/business-os/src/lib/repo/repo-writer.ts` (use IDAllocator)
+  - `apps/business-os/src/lib/repo-writer.ts` (use IDAllocator)
   - `apps/business-os/src/lib/id-generator.ts` (REPLACE existing scan-based allocator)
   - All server actions that create ideas/cards (integrate IDAllocator)
 - **Depends on:** MVP-C1
@@ -776,7 +812,7 @@ Show code commits linked to cards automatically.
 - **Affects:**
   - `apps/business-os/src/app/cards/[id]/edit/page.tsx` (add baseCommit field)
   - `apps/business-os/src/app/ideas/[id]/page.tsx` (add baseCommit to inline editor)
-  - `apps/business-os/src/lib/repo/repo-writer.ts` (add concurrency check)
+  - `apps/business-os/src/lib/repo-writer.ts` (add concurrency check)
   - `apps/business-os/src/components/ConflictDialog.tsx` (NEW - show diff + options)
 - **Depends on:** MVP-C1
 - **Confidence:** 78%
@@ -812,15 +848,18 @@ Show code commits linked to cards automatically.
   - Repo: Found card edit page at `apps/business-os/src/app/cards/[id]/edit/page.tsx`. Ideas use inline editing via `IdeaEditorForm.tsx` on detail page (no separate /edit route).
   - Tests: Will add edit conflict tests
   - Patterns: Simple-git can get file commit SHA via `git log -1 --format=%H -- <path>`
+  - Diff libraries: `diff` (3.4M weekly DL), `fast-diff` (lightweight), `diff-match-patch` (Google's implementation)
 - **Decision / resolution:**
   - Add hidden field `baseCommit` to edit forms (captured on page load)
   - On save, compare baseCommit to current commit SHA for target file
   - If mismatch: reject save, show ConflictDialog with options (refresh, force overwrite, manual merge)
-  - Use `diff` library for visual diff rendering in dialog
+  - Use `diff` library for visual diff rendering in dialog (small, widely used)
 - **Changes to task:**
   - Affects: Updated to reflect actual paths - card edit is separate route, idea edit is inline on detail page
   - Acceptance: No changes
   - Dependencies: No changes
+- **What would make this ≥80%:**
+  - **Quick spike** (2-3 hours): Pick concrete diff library (`diff` npm package), implement baseCommit → detect mismatch → render conflict UI end-to-end on card edit page with targeted test. Proves "detect conflict + show diff + user chooses action" flow works. Once spike passes, confidence → 82-85%.
 
 ### MVP-D1: Claim/Accept task button
 
@@ -1113,18 +1152,24 @@ Show code commits linked to cards automatically.
   - Approach: 78% — Daemon structure clear (poll → acquire lock → execute → write log → commit). Uncertainty on skill execution: CLI spawn vs module import. CLI spawn safer (isolation), module import faster.
   - Impact: 80% — New long-running process. Isolated from web server (separate Node process). Repo lock integration critical for correctness. Crash recovery via systemd/PM2.
 - **Investigation performed:**
-  - Repo: No existing daemon patterns in codebase
+  - Repo: **Skills are documented and scoped** in `docs/business-os/agent-workflows.md:19` (5 skills: /work-idea, /propose-lane-move, /scan-repo, /update-business-plan, /update-people)
+  - Repo: **"Check CLI exists then exec" pattern** found in `scripts/mcp/sync-ts-language.mjs:50` (`commandExists()` function uses `execFileSync` with `command -v`)
   - Tests: Will need integration tests with mock queue items
-  - Patterns: Node.js child_process spawn for CLI execution
+  - Patterns: Node.js child_process spawn for CLI execution, existing skill scoping reduces uncertainty
 - **Decision / resolution:**
-  - Use CLI spawn approach initially (safer isolation, easier debugging)
-  - Daemon structure: poll queue directory → pick pending task → acquire lock → spawn CLI → capture output → write run log → commit → release lock
+  - **Make runner pluggable from day 1:** Use `BUSINESS_OS_AGENT_COMMAND` env var (defaults to `claude` CLI) + executor abstraction
+  - Executor interface: `execute(skill: string, args: Record<string, any>): Promise<{stdout, stderr, exitCode}>`
+  - Real executor: checks if CLI exists (per sync-ts-language.mjs pattern), then spawns process
+  - Mock executor: for tests (returns canned responses, no external CLI dependency)
+  - Daemon structure: poll queue directory → pick pending task → acquire lock → execute via abstraction → write run log → commit → release lock
   - Run log updated in real-time (append-only file)
   - Deploy as PM2 process with auto-restart
 - **Changes to task:**
-  - Affects: No changes
+  - Affects: Add `apps/business-os/src/agent-runner/executor.ts` (NEW - pluggable executor abstraction)
   - Acceptance: No changes
   - Dependencies: No changes
+- **What would make this ≥80%:**
+  - **Design executor abstraction** (1-2 hours): Define interface, implement mock executor for tests, implement real executor with CLI check (reuse sync-ts-language.mjs pattern). This isolates the risky part (external CLI) into a well-tested boundary. Unit test the abstraction with mock, integration test with real CLI. Once abstraction is validated independently, confidence → 82-85%.
 
 ### MVP-E4: Agent run status UI (polling)
 

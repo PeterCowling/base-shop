@@ -6,7 +6,7 @@
  * Phase 3+: Replace with full authentication
  */
 
-/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/min-tap-size -- BOS-P2-01 Phase 0 user switcher scaffold [ttl=2026-03-31] */
+/* eslint-disable ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/min-tap-size -- BOS-04 Phase 0 user switcher scaffold [ttl=2026-03-31] */
 "use client";
 
 import { useState } from "react";

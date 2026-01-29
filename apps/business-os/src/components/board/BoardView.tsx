@@ -15,7 +15,10 @@ import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
 import { useTranslations } from "@acme/i18n";
 
+import { useBoardFilters } from "@/hooks/useBoardFilters";
+import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { useRovingTabindex } from "@/hooks/useRovingTabindex";
+import { calculateCardCountsByLane } from "@/lib/board-card-counts";
 import type { User } from "@/lib/current-user";
 import type { Business, Card, Idea, Lane } from "@/lib/types";
 
@@ -23,7 +26,7 @@ import { UserSwitcher } from "../user/UserSwitcher";
 
 import { BoardLane } from "./BoardLane";
 import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
-import { applyFilters, FilterChips, type FilterType } from "./FilterChips";
+import { FilterChips, type FilterType } from "./FilterChips";
 import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
 
@@ -75,59 +78,21 @@ export function BoardView({
     return getLanesForView(currentView);
   }, [viewport, activeMobileLane, currentView]);
 
-  // Filter cards based on search and filters
-  const filteredCardsByLane = useMemo(() => {
-    const result: Record<Lane, Card[]> = {} as Record<Lane, Card[]>;
-
-    visibleLanes.forEach((lane) => {
-      const laneCards = cardsByLane[lane] || [];
-
-      // Apply search filter
-      let filtered = laneCards;
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(
-          (card) =>
-            card.ID?.toLowerCase().includes(query) ||
-            card.content.toLowerCase().includes(query) ||
-            card.Tags?.some((tag) => tag.toLowerCase().includes(query))
-        );
-      }
-
-      // Apply filter chips
-      if (activeFilters.length > 0) {
-        filtered = applyFilters(filtered, activeFilters, currentUser.name);
-      }
-
-      result[lane] = filtered;
-    });
-
-    return result;
-  }, [visibleLanes, cardsByLane, searchQuery, activeFilters, currentUser.name]);
-
-  // Filter ideas based on search
-  const filteredIdeas = useMemo(() => {
-    if (!searchQuery) return inboxIdeas;
-
-    const query = searchQuery.toLowerCase();
-    return inboxIdeas.filter(
-      (idea) =>
-        idea.ID?.toLowerCase().includes(query) ||
-        idea.content.toLowerCase().includes(query) ||
-        idea.Tags?.some((tag) => tag.toLowerCase().includes(query))
-    );
-  }, [inboxIdeas, searchQuery]);
+  // Apply search and filter logic
+  const { filteredCardsByLane, filteredIdeas } = useBoardFilters({
+    cardsByLane,
+    inboxIdeas,
+    visibleLanes,
+    searchQuery,
+    activeFilters,
+    currentUserName: currentUser.name,
+  });
 
   // Calculate card counts for mobile picker
-  const cardCountByLane = useMemo(() => {
-    const counts: Record<Lane, number> = {} as Record<Lane, number>;
-    allLanes.forEach((lane) => {
-      const laneCards = cardsByLane[lane] || [];
-      const laneIdeas = lane === "Inbox" ? inboxIdeas : [];
-      counts[lane] = laneCards.length + laneIdeas.length;
-    });
-    return counts;
-  }, [cardsByLane, inboxIdeas, allLanes]);
+  const cardCountByLane = useMemo(
+    () => calculateCardCountsByLane(allLanes, cardsByLane, inboxIdeas),
+    [cardsByLane, inboxIdeas, allLanes]
+  );
 
   // Build grid for keyboard navigation (BOS-P2-05)
   const cardGrid = useMemo(() => {
@@ -147,40 +112,8 @@ export function BoardView({
     getTabIndex,
   } = useRovingTabindex(cardGrid);
 
-  // Keyboard event listener for arrow keys and Escape (BOS-P2-05)
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Don't interfere with input fields or modals
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
-        return;
-      }
-
-      // Arrow keys: navigate between cards
-      if (
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight"
-      ) {
-        event.preventDefault();
-        handleArrowKey(event.key);
-      }
-
-      // Escape: exit focus mode
-      if (event.key === "Escape" && isFocusMode) {
-        event.preventDefault();
-        exitFocusMode();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleArrowKey, isFocusMode, exitFocusMode]);
+  // Set up keyboard event listeners (BOS-P2-05)
+  useKeyboardNavigation({ handleArrowKey, isFocusMode, exitFocusMode });
 
   // Scroll to top when mobile lane changes (BOS-P2-03 Phase 4)
   useEffect(() => {

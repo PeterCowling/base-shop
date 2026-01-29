@@ -82,11 +82,9 @@ export const linkClasses = [
 export const inactiveLinkClasses = [
   "text-brand-heading",
   "hover:border-brand-outline/30",
-  "hover:bg-brand-surface",
   "hover:shadow-sm",
   "dark:text-brand-text",
   "dark:hover:border-brand-outline/50",
-  "dark:hover:bg-brand-surface/20",
 ] as const;
 
 export const currentLinkClasses = [

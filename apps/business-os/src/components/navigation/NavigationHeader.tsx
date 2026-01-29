@@ -10,10 +10,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import type { Business } from "@/lib/types";
-
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { Stack } from "@acme/design-system/primitives/Stack";
+
+import type { Business } from "@/lib/types";
 
 import { BusinessSelector } from "./BusinessSelector";
 

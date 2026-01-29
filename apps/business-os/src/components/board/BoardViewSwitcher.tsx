@@ -6,9 +6,9 @@
 
 "use client";
 
-import type { Lane } from "@/lib/types";
-
 import { Inline } from "@acme/design-system/primitives/Inline";
+
+import type { Lane } from "@/lib/types";
 
 export type BoardView = "all" | "planning" | "active" | "complete";
 

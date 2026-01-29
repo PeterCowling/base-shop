@@ -659,16 +659,23 @@ function SeoAuditSection({
     setError(null);
 
     try {
-      // Call the audit function via script
-      // Note: In production, this would be an API endpoint
-      // For now, we'll show a message that the skill needs to be run manually
-      const message =
-        "To run an SEO audit, use the /audit-guide-seo skill:\n\n" +
-        `/audit-guide-seo ${guideKey}\n\n` +
-        "This will analyze the guide content and save results to the manifest overrides.";
+      const previewToken = PREVIEW_TOKEN ?? "";
+      const response = await fetch(`/api/guides/${guideKey}/audit?locale=en`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-preview-token": previewToken,
+        },
+      });
 
-      alert(message);
+      const data = await response.json();
 
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Audit failed");
+      }
+
+      // Refresh the page to show updated checklist with new audit results
+      window.location.reload();
     } catch (err) {
       setError((err as Error).message);
     } finally {

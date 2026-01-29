@@ -1,7 +1,7 @@
 /**
  * Quick test of the audit function on positanoBeaches guide
  */
-import { auditGuideSeo, formatAuditSummary, saveAuditResults } from "./audit-guide-seo";
+import { auditGuideSeo, formatAuditSummary, saveAuditResults } from "../src/lib/seo-audit";
 
 async function main() {
   try {

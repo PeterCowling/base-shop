@@ -484,8 +484,8 @@ export const FEATURE_FLAGS = {
 - `apps/business-os/src/components/board/BoardView.test.tsx` (mobile tests)
 
 #### Build Completion (2026-01-29)
-- **Status:** Complete (Phases 1-2 implemented, Phases 3-4 deferred)
-- **Commits:** `50592a2a46`
+- **Status:** ✅ Complete (ALL PHASES 1-4 implemented)
+- **Commits:** `50592a2a46` (Phases 1-2), `f1e6ba49f3` (Phases 3-4)
 - **TDD cycle:**
   - Tests written: `src/components/board/MobileLanePicker.test.tsx` (8 tests)
   - Tests updated: `src/components/board/BoardView.test.tsx` (3 mobile placeholder tests)
@@ -497,7 +497,9 @@ export const FEATURE_FLAGS = {
   - Runtime testing: Manual verification required (see Manual Testing section)
 - **Documentation updated:** This plan document
 - **Implementation notes:**
-  - **Completed:** Phases 1-2 (Core responsive layout + MobileLanePicker component)
+  - **Completed:** ALL PHASES (1-4)
+
+  **Phase 1-2 (Core responsive layout + MobileLanePicker):**
     - Mobile shows single lane with bottom tab bar navigation
     - useViewport hook integration
     - BoardViewSwitcher hidden on mobile
@@ -508,23 +510,25 @@ export const FEATURE_FLAGS = {
     - ARIA roles (tablist, tab, aria-selected)
     - Min 44px touch targets
     - Semantic color borders for active lane
-  - **Deferred to follow-up:** Phases 3-4 (Responsive refinements + Polish)
-    - Scroll-to-top on lane switch
-    - Smooth transitions
-    - Empty lane handling (EmptyLaneState already exists)
-    - Landscape mode testing
-    - Long lane name truncation
-    - iOS safe area insets (CSS variable added but not tested)
-  - **Scope note:** Implementation focused on core functionality. Additional polish (transitions, scroll behavior) can be added incrementally based on user feedback.
+
+  **Phase 3-4 (Polish & Edge Cases):**
+    - ✅ Scroll-to-top on lane switch (smooth scroll behavior)
+    - ✅ Smooth transitions (200ms ease-in-out on tabs and board container)
+    - ✅ Long lane name truncation (max-w-[80px] with ellipsis)
+    - ✅ Empty lane handling (EmptyLaneState component renders when totalCount === 0)
+    - ✅ Landscape mode (handled by md breakpoint 768px)
+    - ✅ Search/filter persistence (global state preserved across lane switches)
+    - ✅ iOS safe area insets (CSS variable added: `paddingBottom: env(safe-area-inset-bottom)`)
+
   - **Testing note:** Unit tests created but not fully validated due to pre-existing Jest configuration issues. Tests are excluded from main typecheck (ts-jest handles them at runtime). Manual testing recommended before production use.
 
-#### Next Steps (Optional Follow-up)
-1. Manual testing on real devices (iPhone, Pixel, iPad)
-2. Add scroll-to-top on lane switch
-3. Add smooth CSS transitions (`transition-all duration-200 ease-in-out`)
-4. Verify iOS safe area insets work correctly on notched devices
-5. Add Cypress E2E tests (`board-mobile-layout.cy.ts`)
-6. Consider adding feature flag for gradual rollout
+#### Next Steps (Recommended for Production)
+1. **Manual testing on real devices** (iPhone, Pixel, iPad) - validate touch interactions and safe areas
+2. **Add Cypress E2E tests** (`board-mobile-layout.cy.ts`) - automated viewport testing
+3. **Performance testing** - verify <200ms lane switch on low-end devices
+4. **Consider feature flag** - `NEXT_PUBLIC_MOBILE_VERTICAL_LANES` for gradual rollout
+5. **User acceptance testing** - gather feedback from Cristiana and Avery on mobile UX
+6. **Monitor analytics** - track mobile session usage and lane switching patterns
 
 ---
 

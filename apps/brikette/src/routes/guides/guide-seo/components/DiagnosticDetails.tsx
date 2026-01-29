@@ -283,23 +283,78 @@ function DiagnosticDetails({
   }
 
   if (itemId === "seoAudit") {
+    const auditResults = diagnostics?.seoAudit;
+
+    if (!auditResults) {
+      // No audit run yet - show explanatory text
+      return (
+        <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
+          <p className="text-[10px] font-semibold uppercase text-brand-text/60">SEO Audit</p>
+          <Stack className="mt-2 gap-2">
+            <p className="text-[11px] text-brand-text/80">
+              SEO audits analyze guide content quality across multiple factors:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-[11px] text-brand-text/70 pl-2">
+              <li>Meta tags (title and description)</li>
+              <li>Content length and structure</li>
+              <li>Internal links and FAQs</li>
+              <li>Images and freshness signals</li>
+              <li>Structured data declarations</li>
+            </ul>
+            <p className="text-[10px] text-brand-text/50 pt-1">
+              Guides must score 9.0/10 or higher to be published to "live" status.
+              Click "Run SEO Audit" above to analyze this guide.
+            </p>
+          </Stack>
+        </div>
+      );
+    }
+
+    // Audit results available - show detailed analysis
+    const { analysis } = auditResults;
+    const hasStrengths = analysis.strengths.length > 0;
+    const hasIssues = analysis.criticalIssues.length > 0;
+    const hasImprovements = analysis.improvements.length > 0;
+
     return (
       <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
-        <p className="text-[10px] font-semibold uppercase text-brand-text/60">SEO Audit</p>
-        <Stack className="mt-2 gap-2">
-          <p className="text-[11px] text-brand-text/80">
-            SEO audits analyze guide content quality across multiple factors:
-          </p>
-          <ul className="list-disc list-inside space-y-1 text-[11px] text-brand-text/70 pl-2">
-            <li>Meta tags (title and description)</li>
-            <li>Content length and structure</li>
-            <li>Internal links and FAQs</li>
-            <li>Images and freshness signals</li>
-            <li>Structured data declarations</li>
-          </ul>
-          <p className="text-[10px] text-brand-text/50 pt-1">
-            Guides must score 9.0/10 or higher to be published to "live" status.
-            See the SEO Audit section above for detailed results and recommendations.
+        <p className="text-[10px] font-semibold uppercase text-brand-text/60">Audit Results</p>
+        <Stack className="mt-2 gap-3">
+          {hasStrengths && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-primary">Strengths ✓</p>
+              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-text/80 pl-2">
+                {analysis.strengths.map((strength, i) => (
+                  <li key={i}>{strength}</li>
+                ))}
+              </ul>
+            </Stack>
+          )}
+
+          {hasIssues && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-terra">Critical Issues ✗</p>
+              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-terra/90 pl-2">
+                {analysis.criticalIssues.map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
+              </ul>
+            </Stack>
+          )}
+
+          {hasImprovements && (
+            <Stack className="gap-1">
+              <p className="text-[10px] font-semibold text-brand-secondary">Improvements Recommended</p>
+              <ul className="list-disc list-inside space-y-0.5 text-[11px] text-brand-text/80 pl-2">
+                {analysis.improvements.map((improvement, i) => (
+                  <li key={i}>{improvement}</li>
+                ))}
+              </ul>
+            </Stack>
+          )}
+
+          <p className="text-[10px] text-brand-text/50 pt-1 border-t border-brand-outline/20">
+            Score must be 9.0/10 or higher to publish. Re-run audit after making improvements.
           </p>
         </Stack>
       </div>

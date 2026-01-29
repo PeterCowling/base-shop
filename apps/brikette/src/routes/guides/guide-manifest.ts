@@ -4525,23 +4525,41 @@ export function buildGuideChecklist(
   };
 
   const defaults: Record<ChecklistItemId, ChecklistSnapshotItem> = Object.fromEntries(
-    CHECKLIST_ITEM_IDS.map((id) => [
-      id,
-      {
+    CHECKLIST_ITEM_IDS.map((id) => {
+      // Add audit results to seoAudit item diagnostics
+      const itemDiagnostics = id === "seoAudit" && options?.overrides
+        ? {
+            ...diagnostics,
+            seoAudit: options.overrides[entry.key]?.auditResults,
+          }
+        : diagnostics;
+
+      return [
         id,
-        status: inferStatus(id),
-        note: inferNote(id),
-        diagnostics,
-      },
-    ]),
+        {
+          id,
+          status: inferStatus(id),
+          note: inferNote(id),
+          diagnostics: itemDiagnostics,
+        },
+      ];
+    }),
   ) as Record<ChecklistItemId, ChecklistSnapshotItem>;
 
   const overrides = (entry.checklist ?? []).reduce<Record<ChecklistItemId, ChecklistSnapshotItem>>((acc, item) => {
+    // Add audit results to seoAudit item diagnostics
+    const itemDiagnostics = item.id === "seoAudit" && options?.overrides
+      ? {
+          ...diagnostics,
+          seoAudit: options.overrides[entry.key]?.auditResults,
+        }
+      : diagnostics;
+
     acc[item.id] = {
       id: item.id,
       status: item.status,
       note: item.note ?? CHECKLIST_LABELS[item.id],
-      diagnostics,
+      diagnostics: itemDiagnostics,
     };
     return acc;
   }, {} as Record<ChecklistItemId, ChecklistSnapshotItem>);

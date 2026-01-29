@@ -1,5 +1,6 @@
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
+import type { SeoAuditResult } from "@/routes/guides/guide-manifest-overrides";
 
 export type GuideFieldStatus = {
   intro: boolean;
@@ -47,4 +48,5 @@ export type GuideChecklistDiagnostics = {
     hasFaqs: boolean;
   };
   seo?: SeoFieldStatus;
+  seoAudit?: SeoAuditResult;
 };

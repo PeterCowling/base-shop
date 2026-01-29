@@ -2922,6 +2922,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "lauritoBeachGuide",
     slug: "laurito-beach-guide",
     contentKey: "lauritoBeachGuide",
+    focusKeyword: "Laurito Beach",
     status: "draft",
     draftPathSegment: "guides/laurito-beach-guide",
     areas: ["experience"],

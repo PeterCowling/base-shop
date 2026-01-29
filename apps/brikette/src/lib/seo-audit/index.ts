@@ -35,26 +35,65 @@ type GuideContent = {
       height?: number;
     };
   };
-  intro?: string[];
+  lastUpdated?: string;
+  intro?: string | string[];
   sections?: Array<{
     id?: string;
     title?: string;
-    body?: string[];
+    body?: string | string[];
     list?: string[];
+    images?: Array<{
+      src?: string;
+      image?: string;
+      alt?: string;
+      caption?: string;
+      width?: number;
+      height?: number;
+      sizeKB?: number;
+      size?: number;
+      format?: string;
+      type?: string;
+    }>;
   }>;
   faqs?: Array<{
+    q?: string;
+    a?: string | string[];
     question?: string;
-    answer?: string;
+    answer?: string | string[];
   }>;
-  gallery?: Array<{
-    alt?: string;
-    sizeKB?: number;
-    size?: number;
-    width?: number;
-    format?: string;
-    type?: string;
-  }>;
-  lastUpdated?: string;
+  tips?: string[];
+  warnings?: string[];
+  essentialsSection?: { items?: string[] };
+  costsSection?: { items?: string[] };
+  callouts?: Record<string, string>;
+  gallery?:
+    | {
+        title?: string;
+        items?: Array<{
+          image?: string;
+          src?: string;
+          alt?: string;
+          caption?: string;
+          sizeKB?: number;
+          size?: number;
+          width?: number;
+          height?: number;
+          format?: string;
+          type?: string;
+        }>;
+      }
+    | Array<{
+        image?: string;
+        src?: string;
+        alt?: string;
+        caption?: string;
+        sizeKB?: number;
+        size?: number;
+        width?: number;
+        height?: number;
+        format?: string;
+        type?: string;
+      }>;
 };
 
 type Template = GuideTemplate;
@@ -87,13 +126,23 @@ type TextSegment = { text: string; location: string };
 function getTextSegments(content: GuideContent): TextSegment[] {
   const segments: TextSegment[] = [];
 
-  if (Array.isArray(content.intro)) {
-    content.intro.forEach((p, i) => {
-      if (typeof p === "string" && p.trim().length > 0) {
-        segments.push({ text: p, location: `intro[${i}]` });
-      }
-    });
-  }
+  const pushText = (text: unknown, location: string) => {
+    if (typeof text !== "string") return;
+    const trimmed = text.trim();
+    if (trimmed.length === 0) return;
+    segments.push({ text: trimmed, location });
+  };
+
+  const pushTextArray = (value: unknown, locationBase: string) => {
+    if (typeof value === "string") {
+      pushText(value, locationBase);
+      return;
+    }
+    if (!Array.isArray(value)) return;
+    value.forEach((p, i) => pushText(p, `${locationBase}[${i}]`));
+  };
+
+  pushTextArray(content.intro, "intro");
 
   if (Array.isArray(content.sections)) {
     content.sections.forEach((section, si) => {
@@ -101,13 +150,7 @@ function getTextSegments(content: GuideContent): TextSegment[] {
         segments.push({ text: section.title, location: `sections[${si}].title` });
       }
 
-      if (Array.isArray(section.body)) {
-        section.body.forEach((p, pi) => {
-          if (typeof p === "string" && p.trim().length > 0) {
-            segments.push({ text: p, location: `sections[${si}].body[${pi}]` });
-          }
-        });
-      }
+      pushTextArray(section.body, `sections[${si}].body`);
 
       if (Array.isArray(section.list)) {
         section.list.forEach((li, lii) => {
@@ -121,13 +164,26 @@ function getTextSegments(content: GuideContent): TextSegment[] {
 
   if (Array.isArray(content.faqs)) {
     content.faqs.forEach((faq, fi) => {
-      if (typeof faq.question === "string" && faq.question.trim().length > 0) {
-        segments.push({ text: faq.question, location: `faqs[${fi}].question` });
-      }
-      if (typeof faq.answer === "string" && faq.answer.trim().length > 0) {
-        segments.push({ text: faq.answer, location: `faqs[${fi}].answer` });
-      }
+      pushText(faq.q ?? faq.question, `faqs[${fi}].question`);
+      pushTextArray(faq.a ?? faq.answer, `faqs[${fi}].answer`);
     });
+  }
+
+  pushTextArray(content.tips, "tips");
+  pushTextArray(content.warnings, "warnings");
+  pushTextArray(content.essentialsSection?.items, "essentialsSection.items");
+  pushTextArray(content.costsSection?.items, "costsSection.items");
+
+  if (content.callouts && typeof content.callouts === "object") {
+    Object.entries(content.callouts).forEach(([key, value]) => pushText(value, `callouts.${key}`));
+  }
+
+  // Gallery titles/captions can contain useful descriptive content and internal links.
+  if (content.gallery && typeof content.gallery === "object" && !Array.isArray(content.gallery)) {
+    pushText(content.gallery.title, "gallery.title");
+    if (Array.isArray(content.gallery.items)) {
+      content.gallery.items.forEach((item, i) => pushText(item.caption, `gallery.items[${i}].caption`));
+    }
   }
 
   return segments;
@@ -246,11 +302,101 @@ function countGenericAnchorsFromLinks(links: InternalLink[]): number {
 /**
  * Count images in guide content (gallery + inline images).
  */
-function countImages(content: GuideContent): number {
-  if (Array.isArray(content.gallery)) {
-    return content.gallery.length;
+type NormalizedGuideImage = {
+  src: string;
+  alt?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  sizeKB?: number;
+  size?: number;
+  format?: string;
+  type?: string;
+};
+
+function normalizeImageSrc(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function getGalleryImages(content: GuideContent): NormalizedGuideImage[] {
+  const out: NormalizedGuideImage[] = [];
+  const gallery = content.gallery;
+  if (!gallery) return out;
+
+  // Array gallery: [{ src/image, alt, caption, ... }]
+  if (Array.isArray(gallery)) {
+    gallery.forEach((item) => {
+      const src = normalizeImageSrc(item.src ?? item.image);
+      if (!src) return;
+      out.push({
+        src,
+        alt: item.alt,
+        caption: item.caption,
+        width: item.width,
+        height: item.height,
+        sizeKB: item.sizeKB,
+        size: item.size,
+        format: item.format,
+        type: item.type,
+      });
+    });
+    return out;
   }
-  return 0;
+
+  // Object gallery: { title, items: [{ image/src, alt, caption, ... }] }
+  if (typeof gallery === "object" && Array.isArray(gallery.items)) {
+    gallery.items.forEach((item) => {
+      const src = normalizeImageSrc(item.src ?? item.image);
+      if (!src) return;
+      out.push({
+        src,
+        alt: item.alt,
+        caption: item.caption,
+        width: item.width,
+        height: item.height,
+        sizeKB: item.sizeKB,
+        size: item.size,
+        format: item.format,
+        type: item.type,
+      });
+    });
+  }
+
+  return out;
+}
+
+function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
+  const out: NormalizedGuideImage[] = [];
+  if (!Array.isArray(content.sections)) return out;
+  content.sections.forEach((section) => {
+    if (!Array.isArray(section.images)) return;
+    section.images.forEach((item) => {
+      const src = normalizeImageSrc(item.src ?? item.image);
+      if (!src) return;
+      out.push({
+        src,
+        alt: item.alt,
+        caption: item.caption,
+        width: item.width,
+        height: item.height,
+        sizeKB: item.sizeKB,
+        size: item.size,
+        format: item.format,
+        type: item.type,
+      });
+    });
+  });
+  return out;
+}
+
+function getAllImages(content: GuideContent): NormalizedGuideImage[] {
+  return [...getSectionImages(content), ...getGalleryImages(content)];
+}
+
+function countImages(content: GuideContent): number {
+  return getAllImages(content).length;
 }
 
 /**
@@ -470,14 +616,12 @@ function checkImageAltText(content: GuideContent): {
   let total = 0;
   let withAlt = 0;
 
-  if (Array.isArray(content.gallery)) {
-    content.gallery.forEach((img) => {
-      total++;
-      if (typeof img.alt === "string" && (img.alt.trim().length > 0 || img.alt === "")) {
-        withAlt++;
-      }
-    });
-  }
+  getAllImages(content).forEach((img) => {
+    total++;
+    if (typeof img.alt === "string" && (img.alt.trim().length > 0 || img.alt === "")) {
+      withAlt++;
+    }
+  });
 
   const coverage = total > 0 ? (withAlt / total) * 100 : 100;
   return { coverage, total, withAlt };
@@ -491,14 +635,13 @@ function checkImageSizes(content: GuideContent): { oversize: number; moderate: n
   let moderate = 0;
   let total = 0;
 
-  if (Array.isArray(content.gallery)) {
-    content.gallery.forEach((img) => {
-      total++;
-      const sizeKB = img.sizeKB || img.size || 0;
-      if (sizeKB > 500) oversize++;
-      else if (sizeKB > 250) moderate++;
-    });
-  }
+  getAllImages(content).forEach((img) => {
+    const sizeKB = img.sizeKB || img.size || 0;
+    if (!Number.isFinite(sizeKB) || sizeKB <= 0) return;
+    total++;
+    if (sizeKB > 500) oversize++;
+    else if (sizeKB > 250) moderate++;
+  });
 
   return { oversize, moderate, total };
 }
@@ -507,11 +650,18 @@ function checkImageSizes(content: GuideContent): { oversize: number; moderate: n
  * Check if modern image formats are used.
  */
 function checkModernImageFormats(content: GuideContent): boolean {
-  if (!Array.isArray(content.gallery) || content.gallery.length === 0) return true;
+  const images = getAllImages(content);
+  if (images.length === 0) return true;
 
-  return content.gallery.some((img) => {
+  return images.some((img) => {
     const format = (img.format || img.type || "").toLowerCase();
-    return format.includes("webp") || format.includes("avif");
+    const src = (img.src || "").toLowerCase().trim();
+    return (
+      format.includes("webp") ||
+      format.includes("avif") ||
+      src.endsWith(".webp") ||
+      src.endsWith(".avif")
+    );
   });
 }
 

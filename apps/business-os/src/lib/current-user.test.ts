@@ -92,4 +92,49 @@ describe("current-user", () => {
       expect(USERS.avery.role).toBe("user");
     });
   });
+
+  describe("canEditCard", () => {
+    const mockCard = {
+      ID: "TEST-001",
+      Lane: "In progress" as const,
+      Owner: "Avery",
+      Priority: "P1" as const,
+      Title: "Test Card",
+      content: "Test content",
+      filePath: "docs/business-os/cards/TEST-001.user.md",
+    };
+
+    it("returns true when user is card owner", () => {
+      const { canEditCard } = require("./current-user");
+      expect(canEditCard(USERS.avery, mockCard)).toBe(true);
+    });
+
+    it("returns true when user is admin (Pete)", () => {
+      const { canEditCard } = require("./current-user");
+      expect(canEditCard(USERS.pete, mockCard)).toBe(true);
+    });
+
+    it("returns true when user is admin (Cristiana)", () => {
+      const { canEditCard } = require("./current-user");
+      expect(canEditCard(USERS.cristiana, mockCard)).toBe(true);
+    });
+
+    it("returns false when user is not owner and not admin", () => {
+      const { canEditCard } = require("./current-user");
+      const cardOwnedByPete = { ...mockCard, Owner: "Pete" };
+      expect(canEditCard(USERS.avery, cardOwnedByPete)).toBe(false);
+    });
+
+    it("returns true when card has no owner and user is admin", () => {
+      const { canEditCard } = require("./current-user");
+      const cardWithNoOwner = { ...mockCard, Owner: undefined };
+      expect(canEditCard(USERS.pete, cardWithNoOwner)).toBe(true);
+    });
+
+    it("returns false when card has no owner and user is not admin", () => {
+      const { canEditCard } = require("./current-user");
+      const cardWithNoOwner = { ...mockCard, Owner: undefined };
+      expect(canEditCard(USERS.avery, cardWithNoOwner)).toBe(false);
+    });
+  });
 });

@@ -8,6 +8,7 @@ import { BASE_URL } from "@/config/site";
 import howToGetHereRoutes from "@/data/how-to-get-here/routes.json";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { listAppRouterUrls } from "@/routing/routeInventory";
+import { buildRobotsTxt } from "@/seo/robots";
 import type { SlugKey } from "@/types/slugs";
 import { getSlug } from "@/utils/slug";
 
@@ -70,28 +71,6 @@ const buildSitemapIndexXml = (): string => {
     `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     `  <sitemap><loc>${escapeXml(sitemapUrl)}</loc></sitemap>\n` +
     `</sitemapindex>\n`;
-};
-
-const buildRobotsTxt = (): string => {
-  const sitemapUrl = `${baseUrl}/sitemap_index.xml`;
-  const supportedLangs = (i18nConfig.supportedLngs ?? []) as string[];
-  const disallowDraftLines = supportedLangs.flatMap((lang) => [
-    `Disallow: /${lang}/draft`,
-    `Disallow: /${lang}/draft/`,
-  ]);
-
-  return [
-    "User-agent: *",
-    "Allow: /",
-    "Disallow: /api/",
-    "Disallow: /cms",
-    "Disallow: /.well-known/",
-    "Disallow: /preview",
-    "Disallow: /preview/",
-    ...disallowDraftLines,
-    `Sitemap: ${sitemapUrl}`,
-    "",
-  ].join("\n");
 };
 
 const ensureDir = async (dir: string): Promise<void> => {

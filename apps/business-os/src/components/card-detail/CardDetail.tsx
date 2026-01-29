@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import type { CommitHistoryEntry } from "@/lib/git-history";
 import type { Business, Card, StageDoc } from "@/lib/types";
+import type { User } from "@/lib/current-user";
+import { canEditCard } from "@/lib/current-user";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 
 import { CardHeader } from "./CardHeader";
@@ -21,6 +23,7 @@ interface CardDetailProps {
     reflect?: StageDoc;
   };
   business: Business | null;
+  currentUser: User;
   history?: CommitHistoryEntry[];
   githubUrl?: string;
 }
@@ -30,9 +33,12 @@ export function CardDetail({
   card,
   stageDocs,
   business,
+  currentUser,
   history = [],
   githubUrl,
 }: CardDetailProps) {
+  const userCanEdit = canEditCard(currentUser, card);
+
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     {
@@ -70,12 +76,14 @@ export function CardDetail({
             )}
           </div>
           <div className="flex gap-2">
-            <Link
-              href={`/cards/${card.ID}/edit`}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-            >
-              Edit Card
-            </Link>
+            {userCanEdit && (
+              <Link
+                href={`/cards/${card.ID}/edit`}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                Edit Card
+              </Link>
+            )}
             <Link
               href="/"
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
@@ -147,13 +155,18 @@ export function CardDetail({
                 Actions
               </h3>
               <div className="space-y-2">
-                <button
-                  type="button"
-                  className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
-                  disabled
-                >
-                  Edit Card (Coming Soon)
-                </button>
+                {userCanEdit ? (
+                  <Link
+                    href={`/cards/${card.ID}/edit`}
+                    className="block w-full px-3 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
+                  >
+                    Edit Card
+                  </Link>
+                ) : (
+                  <div className="px-3 py-2 text-sm text-gray-500 text-center">
+                    Only {card.Owner || "owner"} and admins can edit
+                  </div>
+                )}
                 <button
                   type="button"
                   className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"

@@ -78,6 +78,22 @@ export function canViewAllArchived(user: User): boolean {
 }
 
 /**
+ * Check if user can edit a card
+ * Returns true if:
+ * - User is the card owner, OR
+ * - User is an admin (can edit any card)
+ */
+export function canEditCard(user: User, card: { Owner?: string }): boolean {
+  // Admins can edit any card
+  if (ADMIN_USERS.includes(user.id)) {
+    return true;
+  }
+
+  // User can edit if they own the card
+  return card.Owner === user.name;
+}
+
+/**
  * Server-side helper to get current user (for API routes and server components)
  */
 export async function getCurrentUserServer(): Promise<User> {

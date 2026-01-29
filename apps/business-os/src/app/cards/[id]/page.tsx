@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { CardDetail } from "@/components/card-detail/CardDetail";
+import { getCurrentUserServer } from "@/lib/current-user";
 import { getFileHistory, getGitHubHistoryUrl } from "@/lib/git-history";
 import { createRepoReader } from "@/lib/repo-reader";
 
@@ -13,6 +14,7 @@ export default async function CardPage({ params }: PageProps) {
   const { id } = await params;
   const repoRoot = process.cwd().replace(/\/apps\/business-os$/, "");
   const reader = createRepoReader(repoRoot);
+  const currentUser = await getCurrentUserServer();
 
   // Fetch card data
   const card = await reader.getCard(id);
@@ -38,6 +40,7 @@ export default async function CardPage({ params }: PageProps) {
       card={card}
       stageDocs={stageDocs}
       business={business}
+      currentUser={currentUser}
       history={history}
       githubUrl={githubUrl}
     />

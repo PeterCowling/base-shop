@@ -282,6 +282,70 @@ describe("RepoWriter", () => {
     });
   });
 
+  describe("updateIdea", () => {
+    it("updates existing idea with new frontmatter and content", async () => {
+      // First create an idea
+      await writer.writeIdea(
+        {
+          ID: "BRIK-OPP-0003",
+          Business: "BRIK",
+          Status: "raw",
+          "Created-Date": "2026-01-29",
+          content: "# Original idea content",
+        },
+        CommitIdentities.user
+      );
+
+      // Then update it
+      const result = await writer.updateIdea(
+        "BRIK-OPP-0003",
+        {
+          Status: "worked",
+          content: "# Updated idea content\n\nWith more details.",
+        },
+        CommitIdentities.user
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.filePath).toBe("docs/business-os/ideas/inbox/BRIK-OPP-0003.user.md");
+
+      // Verify file was updated
+      const filePath = path.join(tempDir, result.filePath!);
+      const fileExists = await accessWithinRoot(tempDir, filePath)
+        .then(() => true)
+        .catch(() => false);
+
+      if (fileExists) {
+        const content = (await readFileWithinRoot(
+          tempDir,
+          filePath,
+          "utf-8"
+        )) as string;
+        const parsed = matter(content);
+
+        expect(parsed.data.Status).toBe("worked");
+        expect(parsed.data["Last-Updated"]).toBeDefined();
+        expect(parsed.data.Business).toBe("BRIK"); // Should preserve unchanged fields
+        expect(parsed.content).toContain("Updated idea content");
+      }
+
+      expect(result).toHaveProperty("success");
+    });
+
+    it("returns error for non-existent idea", async () => {
+      const result = await writer.updateIdea(
+        "NONEXISTENT-OPP-0001",
+        {
+          Status: "worked",
+        },
+        CommitIdentities.user
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.errorKey).toBe("businessOs.repoWriter.errors.ideaNotFound");
+    });
+  });
+
   describe("sync", () => {
     it("returns sync result structure", async () => {
       const result = await writer.sync();

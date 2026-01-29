@@ -50,7 +50,9 @@ const repoWriterErrorKeys = {
   writeIdeaFailed: "businessOs.repoWriter.errors.writeIdeaFailed",
   writeCardFailed: "businessOs.repoWriter.errors.writeCardFailed",
   updateCardFailed: "businessOs.repoWriter.errors.updateCardFailed",
+  updateIdeaFailed: "businessOs.repoWriter.errors.updateIdeaFailed",
   cardNotFound: "businessOs.repoWriter.errors.cardNotFound",
+  ideaNotFound: "businessOs.repoWriter.errors.ideaNotFound",
   mergeConflictWorkBranch:
     "businessOs.repoWriter.errors.mergeConflictWorkBranch",
   mergeConflictMain: "businessOs.repoWriter.errors.mergeConflictMain",
@@ -365,6 +367,88 @@ export class RepoWriter {
       return {
         success: false,
         errorKey: repoWriterErrorKeys.updateCardFailed,
+        errorDetails: String(error),
+      };
+    }
+  }
+
+  /**
+   * Update an existing idea
+   */
+  async updateIdea(
+    ideaId: string,
+    updates: Partial<IdeaFrontmatter> & { content?: string },
+    identity: CommitIdentity
+  ): Promise<WriteResult> {
+    const relativePath = `docs/business-os/ideas/inbox/${ideaId}.user.md`;
+    const absolutePath = path.join(this.worktreePath, relativePath);
+
+    // Check authorization
+    if (!authorizeWrite(absolutePath, this.repoRoot)) {
+      return {
+        success: false,
+        errorKey: repoWriterErrorKeys.writeAccessDenied,
+      };
+    }
+
+    // Check worktree is clean
+    const cleanCheck = await this.isWorktreeClean();
+    if (!cleanCheck.clean) {
+      return {
+        success: false,
+        errorKey: cleanCheck.errorKey,
+        errorDetails: cleanCheck.errorDetails,
+        needsManualResolution: true,
+      };
+    }
+
+    try {
+      // Read existing file
+      const existingContent = (await readFileWithinRoot(
+        this.worktreePath,
+        absolutePath,
+        "utf-8"
+      )) as string;
+      const parsed = matter(existingContent);
+
+      // Merge updates
+      const updatedFrontmatter = {
+        ...parsed.data,
+        ...updates,
+        "Last-Updated": new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      };
+      const updatedContent = updates.content ?? parsed.content;
+
+      // Create updated markdown
+      const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
+
+      // Write file
+      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
+
+      // Git add and commit
+      await this.git.add(relativePath);
+      const commitResult = await this.git.commit(
+        `Update idea: ${ideaId}`,
+        undefined,
+        getGitAuthorOptions(identity)
+      );
+
+      return {
+        success: true,
+        filePath: relativePath,
+        commitHash: commitResult.commit,
+      };
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        return {
+          success: false,
+          errorKey: repoWriterErrorKeys.ideaNotFound,
+        };
+      }
+
+      return {
+        success: false,
+        errorKey: repoWriterErrorKeys.updateIdeaFailed,
         errorDetails: String(error),
       };
     }

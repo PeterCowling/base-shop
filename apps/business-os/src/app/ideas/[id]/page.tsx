@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 
 import { RunStatus } from "@/components/agent-runs/RunStatus";
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
+import { CommentThread } from "@/components/comments/CommentThread";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
+import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
+import { getCommentsForEntity } from "@/lib/repo/CommentReader";
 import { createRepoReader } from "@/lib/repo-reader";
 
 import { ConvertToCardButton } from "./ConvertToCardButton";
@@ -20,6 +23,7 @@ export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;
   const repoRoot = getRepoRoot();
   const reader = createRepoReader(repoRoot);
+  const currentUser = await getCurrentUserServer();
 
   // Fetch idea data
   const idea = await reader.getIdea(id);
@@ -31,6 +35,9 @@ export default async function IdeaPage({ params }: PageProps) {
   const business = idea.Business
     ? await reader.getBusiness(idea.Business)
     : null;
+
+  // Fetch comments for this idea (MVP-E1)
+  const comments = await getCommentsForEntity(repoRoot, "idea", id);
 
   // Extract title from content
   const firstLine = idea.content.split("\n").find((line) => line.trim());
@@ -169,6 +176,16 @@ export default async function IdeaPage({ params }: PageProps) {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Comments - MVP-E1 */}
+        <div className="mt-6">
+          <CommentThread
+            comments={comments}
+            entityType="idea"
+            entityId={idea.ID || id}
+            currentUserName={currentUser.name}
+          />
         </div>
       </div>
     </div>

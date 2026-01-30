@@ -15,6 +15,7 @@ import {
   type CommitIdentity,
   getGitAuthorOptions,
 } from "./commit-identity";
+import { RepoLock } from "./repo";
 import {
   accessWithinRoot,
   mkdirWithinRoot,
@@ -71,6 +72,8 @@ export class RepoWriter {
   private worktreePath: string;
   private repoRoot: string;
   private workBranch = "work/business-os-store";
+  private lock: RepoLock;
+  private lockEnabled: boolean;
 
   constructor(repoRoot: string, worktreePath?: string) {
     this.repoRoot = repoRoot;
@@ -85,6 +88,11 @@ export class RepoWriter {
       // Worktree doesn't exist - will be caught by isWorktreeReady
       this.git = simpleGit();
     }
+
+    // MVP-C1: Initialize repo lock
+    const lockDir = path.join(repoRoot, "docs/business-os/.locks");
+    this.lock = new RepoLock(lockDir);
+    this.lockEnabled = process.env.BUSINESS_OS_REPO_LOCK_ENABLED === "true";
   }
 
   /**
@@ -185,50 +193,42 @@ export class RepoWriter {
       };
     }
 
-    try {
-      // Prepare frontmatter
-      const frontmatter: IdeaFrontmatter = {
-        Type: "Idea",
-        ...idea,
-      };
+    // MVP-C1: Define write operation
+    const writeOperation = async (): Promise<WriteResult> => {
+      try {
+        // Prepare frontmatter
+        const frontmatter: IdeaFrontmatter = { Type: "Idea", ...idea };
 
-      // Create markdown with frontmatter
-      const fileContent = matter.stringify(idea.content, frontmatter);
+        // Create markdown with frontmatter
+        const fileContent = matter.stringify(idea.content, frontmatter);
 
-      // Ensure directory exists
-      await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), {
-        recursive: true,
-      });
+        // Ensure directory exists
+        await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), { recursive: true });
 
-      // Write file
-      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
+        // Write file
+        await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit (MVP-B3: Audit attribution)
-      await this.git.add(relativePath);
-      const entityId = idea.ID || "UNKNOWN";
-      const commitMessage = buildAuditCommitMessage({
-        actor,
-        initiator,
-        entityId,
-        action: `Add idea: ${entityId}`,
-      });
-      const commitResult = await this.git.commit(
-        commitMessage,
-        undefined,
-        getGitAuthorOptions(identity)
-      );
+        // Git add and commit (MVP-B3: Audit attribution)
+        await this.git.add(relativePath);
+        const entityId = idea.ID || "UNKNOWN";
+        const commitMessage = buildAuditCommitMessage({ actor, initiator, entityId, action: `Add idea: ${entityId}` });
+        const commitResult = await this.git.commit(commitMessage, undefined, getGitAuthorOptions(identity));
 
-      return {
-        success: true,
-        filePath: relativePath,
-        commitHash: commitResult.commit,
-      };
-    } catch (error) {
-      return {
-        success: false,
-        errorKey: repoWriterErrorKeys.writeIdeaFailed,
-        errorDetails: String(error),
-      };
+        return { success: true, filePath: relativePath, commitHash: commitResult.commit };
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.writeIdeaFailed, errorDetails: String(error) };
+      }
+    };
+
+    // Execute with or without lock
+    if (this.lockEnabled) {
+      try {
+        return await this.lock.withLock({ userId: actor, action: "write-idea" }, writeOperation);
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.writeIdeaFailed, errorDetails: String(error) };
+      }
+    } else {
+      return writeOperation();
     }
   }
 
@@ -264,49 +264,41 @@ export class RepoWriter {
       };
     }
 
-    try {
-      // Prepare frontmatter
-      const frontmatter: CardFrontmatter = {
-        Type: "Card",
-        ...card,
-      };
+    // MVP-C1: Define write operation
+    const writeOperation = async (): Promise<WriteResult> => {
+      try {
+        // Prepare frontmatter
+        const frontmatter: CardFrontmatter = { Type: "Card", ...card };
 
-      // Create markdown with frontmatter
-      const fileContent = matter.stringify(card.content, frontmatter);
+        // Create markdown with frontmatter
+        const fileContent = matter.stringify(card.content, frontmatter);
 
-      // Ensure directory exists
-      await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), {
-        recursive: true,
-      });
+        // Ensure directory exists
+        await mkdirWithinRoot(this.worktreePath, path.dirname(absolutePath), { recursive: true });
 
-      // Write file
-      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
+        // Write file
+        await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit (MVP-B3: Audit attribution)
-      await this.git.add(relativePath);
-      const commitMessage = buildAuditCommitMessage({
-        actor,
-        initiator,
-        entityId: card.ID,
-        action: `Add card: ${card.ID}`,
-      });
-      const commitResult = await this.git.commit(
-        commitMessage,
-        undefined,
-        getGitAuthorOptions(identity)
-      );
+        // Git add and commit (MVP-B3: Audit attribution)
+        await this.git.add(relativePath);
+        const commitMessage = buildAuditCommitMessage({ actor, initiator, entityId: card.ID, action: `Add card: ${card.ID}` });
+        const commitResult = await this.git.commit(commitMessage, undefined, getGitAuthorOptions(identity));
 
-      return {
-        success: true,
-        filePath: relativePath,
-        commitHash: commitResult.commit,
-      };
-    } catch (error) {
-      return {
-        success: false,
-        errorKey: repoWriterErrorKeys.writeCardFailed,
-        errorDetails: String(error),
-      };
+        return { success: true, filePath: relativePath, commitHash: commitResult.commit };
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.writeCardFailed, errorDetails: String(error) };
+      }
+    };
+
+    // Execute with or without lock
+    if (this.lockEnabled) {
+      try {
+        return await this.lock.withLock({ userId: actor, action: "write-card" }, writeOperation);
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.writeCardFailed, errorDetails: String(error) };
+      }
+    } else {
+      return writeOperation();
     }
   }
 
@@ -343,61 +335,46 @@ export class RepoWriter {
       };
     }
 
-    try {
-      // Read existing file
-      const existingContent = (await readFileWithinRoot(
-        this.worktreePath,
-        absolutePath,
-        "utf-8"
-      )) as string;
-      const parsed = matter(existingContent);
+    // MVP-C1: Define write operation
+    const writeOperation = async (): Promise<WriteResult> => {
+      try {
+        // Read existing file
+        const existingContent = (await readFileWithinRoot(this.worktreePath, absolutePath, "utf-8")) as string;
+        const parsed = matter(existingContent);
 
-      // Merge updates
-      const updatedFrontmatter = {
-        ...parsed.data,
-        ...updates,
-        Updated: new Date().toISOString().split("T")[0], // YYYY-MM-DD
-      };
-      const updatedContent = updates.content ?? parsed.content;
+        // Merge updates
+        const updatedFrontmatter = { ...parsed.data, ...updates, Updated: new Date().toISOString().split("T")[0] };
+        const updatedContent = updates.content ?? parsed.content;
 
-      // Create updated markdown
-      const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
+        // Create updated markdown
+        const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
 
-      // Write file
-      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
+        // Write file
+        await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit (MVP-B3: Audit attribution)
-      await this.git.add(relativePath);
-      const commitMessage = buildAuditCommitMessage({
-        actor,
-        initiator,
-        entityId: cardId,
-        action: `Update card: ${cardId}`,
-      });
-      const commitResult = await this.git.commit(
-        commitMessage,
-        undefined,
-        getGitAuthorOptions(identity)
-      );
+        // Git add and commit (MVP-B3: Audit attribution)
+        await this.git.add(relativePath);
+        const commitMessage = buildAuditCommitMessage({ actor, initiator, entityId: cardId, action: `Update card: ${cardId}` });
+        const commitResult = await this.git.commit(commitMessage, undefined, getGitAuthorOptions(identity));
 
-      return {
-        success: true,
-        filePath: relativePath,
-        commitHash: commitResult.commit,
-      };
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-        return {
-          success: false,
-          errorKey: repoWriterErrorKeys.cardNotFound,
-        };
+        return { success: true, filePath: relativePath, commitHash: commitResult.commit };
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+          return { success: false, errorKey: repoWriterErrorKeys.cardNotFound };
+        }
+        return { success: false, errorKey: repoWriterErrorKeys.updateCardFailed, errorDetails: String(error) };
       }
+    };
 
-      return {
-        success: false,
-        errorKey: repoWriterErrorKeys.updateCardFailed,
-        errorDetails: String(error),
-      };
+    // Execute with or without lock
+    if (this.lockEnabled) {
+      try {
+        return await this.lock.withLock({ userId: actor, action: "update-card" }, writeOperation);
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.updateCardFailed, errorDetails: String(error) };
+      }
+    } else {
+      return writeOperation();
     }
   }
 
@@ -434,61 +411,46 @@ export class RepoWriter {
       };
     }
 
-    try {
-      // Read existing file
-      const existingContent = (await readFileWithinRoot(
-        this.worktreePath,
-        absolutePath,
-        "utf-8"
-      )) as string;
-      const parsed = matter(existingContent);
+    // MVP-C1: Define write operation
+    const writeOperation = async (): Promise<WriteResult> => {
+      try {
+        // Read existing file
+        const existingContent = (await readFileWithinRoot(this.worktreePath, absolutePath, "utf-8")) as string;
+        const parsed = matter(existingContent);
 
-      // Merge updates
-      const updatedFrontmatter = {
-        ...parsed.data,
-        ...updates,
-        "Last-Updated": new Date().toISOString().split("T")[0], // YYYY-MM-DD
-      };
-      const updatedContent = updates.content ?? parsed.content;
+        // Merge updates
+        const updatedFrontmatter = { ...parsed.data, ...updates, "Last-Updated": new Date().toISOString().split("T")[0] };
+        const updatedContent = updates.content ?? parsed.content;
 
-      // Create updated markdown
-      const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
+        // Create updated markdown
+        const fileContent = matter.stringify(updatedContent, updatedFrontmatter);
 
-      // Write file
-      await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
+        // Write file
+        await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit (MVP-B3: Audit attribution)
-      await this.git.add(relativePath);
-      const commitMessage = buildAuditCommitMessage({
-        actor,
-        initiator,
-        entityId: ideaId,
-        action: `Update idea: ${ideaId}`,
-      });
-      const commitResult = await this.git.commit(
-        commitMessage,
-        undefined,
-        getGitAuthorOptions(identity)
-      );
+        // Git add and commit (MVP-B3: Audit attribution)
+        await this.git.add(relativePath);
+        const commitMessage = buildAuditCommitMessage({ actor, initiator, entityId: ideaId, action: `Update idea: ${ideaId}` });
+        const commitResult = await this.git.commit(commitMessage, undefined, getGitAuthorOptions(identity));
 
-      return {
-        success: true,
-        filePath: relativePath,
-        commitHash: commitResult.commit,
-      };
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-        return {
-          success: false,
-          errorKey: repoWriterErrorKeys.ideaNotFound,
-        };
+        return { success: true, filePath: relativePath, commitHash: commitResult.commit };
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+          return { success: false, errorKey: repoWriterErrorKeys.ideaNotFound };
+        }
+        return { success: false, errorKey: repoWriterErrorKeys.updateIdeaFailed, errorDetails: String(error) };
       }
+    };
 
-      return {
-        success: false,
-        errorKey: repoWriterErrorKeys.updateIdeaFailed,
-        errorDetails: String(error),
-      };
+    // Execute with or without lock
+    if (this.lockEnabled) {
+      try {
+        return await this.lock.withLock({ userId: actor, action: "update-idea" }, writeOperation);
+      } catch (error) {
+        return { success: false, errorKey: repoWriterErrorKeys.updateIdeaFailed, errorDetails: String(error) };
+      }
+    } else {
+      return writeOperation();
     }
   }
 

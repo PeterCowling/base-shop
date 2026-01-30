@@ -1,105 +1,217 @@
 {
   "seo": {
-    "title": "Marina di Praia 与隐秘海滩",
-    "description": "如何到达隐蔽海湾，以及将会遇到什么。"
+    "title": "Marina di Praia 海滩攻略：SITA 巴士、躺椅区与晚餐",
+    "description": "面向青旅住客的 Marina di Praia 指南：如何搭 SITA 巴士到达、选位（lido/免费区）、要带什么，以及晚餐后顺利回到波西塔诺的办法。"
   },
-  "linkLabel": "Marina di Praia 与隐秘海滩",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia：夹在悬崖间的安静海湾",
   "intro": [
-    "Marina di Praia 和 Furore 峡湾是普拉亚诺附近的袖珍海湾，从波西塔诺乘公交或步行即可抵达，适合安排半日轻松行程。"
+    "Marina di Praia 是普拉亚诺（Praiano）一处“藏起来”的卵石海湾——从 Hostel Brikette 搭 SITA 巴士不远，但通常比波西塔诺那些头牌海滩安静得多。渔船、瞭望塔和石头步道让这里很有“隐秘感”，同时又不至于没有吃喝和基本设施。",
+    "如果你想要一个低压力的海滩日（游泳、吃点东西、在阴影里躺一会儿，然后轻松吃个晚饭），这就是青旅住客附近非常值得的选择之一。",
+    "本指南会讲清：巴士怎么坐、海滩结构（lido vs 免费区）、卵石滩的舒适装备，以及日落后最省心的回波西塔诺方式。"
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "为什么值得去" },
+    { "href": "#getting-there", "label": "怎么去" },
+    { "href": "#layout", "label": "布局与设施" },
+    { "href": "#what-to-bring", "label": "带什么" },
+    { "href": "#best-time", "label": "最佳时间" },
+    { "href": "#nearby", "label": "附近更“隐”的下水点" },
+    { "href": "#evening", "label": "晚餐与回程" }
   ],
   "sections": [
     {
-      "id": "marina",
-      "title": "Marina di Praia",
+      "id": "why-go",
+      "title": "为什么这片海湾很适合青旅住客",
       "body": [
-        "被峭壁围成的狭窄海湾。阴凉不多：建议早点到；穿溯溪鞋或水鞋更安全。",
-        "想抢到前排躺椅请在 10:30 前抵达；下午约 16:00 之后阴影会慢慢遮住海湾。"
+        "和 Spiaggia Grande、Fornillo 不同，这里位于普拉亚诺外侧一条狭窄峡谷里。悬崖能挡住部分涌浪，渔船停在小港湾里，就算旺季也比较“低调”。",
+        "它是很棒的“折中”选择：比需要爬大量台阶的野生小海湾更舒服，但又比波西塔诺的大沙滩少很多混乱。你能洗澡、有吃的，但仍然是夹在悬崖间的海湾感，而不是城市中心。",
+        "可以按半天来玩（早上游泳 + 慢慢吃午饭），也可以下午晚点来放松，然后在水边吃晚饭再回去。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "从高处俯瞰 Marina di Praia 海湾：渔船、遮阳伞与普拉亚诺的陡峭悬崖",
+          "caption": "更避风、景色很戏剧化，通常也比波西塔诺大海滩更安静。图：Falk2（CC BY-SA 4.0）via Wikimedia Commons。"
+        }
       ]
     },
     {
-      "id": "furore",
-      "title": "Furore 峡湾",
+      "id": "getting-there",
+      "title": "SITA 巴士往返",
       "body": [
-        "标志性拱桥与小海滩。空间很有限；想拍空景请清晨到达，适合短暂停留快闪。",
-        "记得带环保防晒与水鞋，石质海床透明度高，适合浮潜。"
+        "从 Hostel Brikette 沿 Via Pasitea 往下走到 Sponda 站，搭乘前往阿马尔菲（Amalfi）方向的 SITA 巴士。上车时跟司机说你要在“Marina di Praia”下——站点在普拉亚诺与富罗雷（Furore）之间，车挤时很容易错过。",
+        "在有标识的站下车后，沿石头小路下行（约 2 分钟）到海边。路面铺装很好，穿拖鞋也基本没问题。",
+        "回程时到马路对面等回波西塔诺（Positano）的车。夏季班次通常还可以，但晚间会变稀——到达后先看站牌时刻表；如果要吃晚饭，建议以“倒数第二班”为目标，避免满员。",
+        "SITA 车票请提前购买并上车后立刻打票。票种、购买点以及“车满了怎么办”请看 %LINK:sitaTickets|SITA 车票指南%。如果你想把海滩和普拉亚诺散步（教堂、观景点、海岸步道）组合在一起，也可以搭配 %LINK:praianoGuide|普拉亚诺指南%。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Marina di Praia 海边的石头步道与渔船，旁边是高耸的岩壁",
+          "caption": "最后下到海边的两分钟路程很轻松，全是石头步道。图：Falk2（CC BY-SA 4.0）via Wikimedia Commons。"
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "普拉亚诺的 San Gennaro 教堂，彩色瓷砖穹顶与阿马尔菲海岸的视野",
+          "caption": "如果你要顺便逛普拉亚诺，San Gennaro 教堂是很容易加入的点。图：Elliott Brown（CC BY 2.0）via Wikimedia Commons。"
+        }
       ]
     },
     {
-      "id": "tips",
-      "title": "贴士",
+      "id": "layout",
+      "title": "海滩布局：lido 与服务",
       "body": [
-        "携带现金以备租用躺椅/伞；湿滑岩石注意脚下；回程请提前查好 SITA 班次。",
-        "骑乘机车可停在海湾上方，需准备硬币付停车费。"
+        "海滩很窄、以卵石为主，分为一小段免费区和主要的 lido 区。想在免费区靠近水边占到位，尽量早到——周末最先满的就是这里。",
+        "主要运营是 Marina di Praia Beach Club（躺椅、遮阳伞、淋浴，通常还有桨板/皮划艇类租赁）。旺季你更多是在为“省事”付费，但如果需要厕所和更轻松的“放下东西就躺平”，很值得。",
+        "步道旁有餐厅和冷饮小摊。刷卡机有时不稳定，建议带点现金应付小额；另外晚些时候售票点可能关门，所以回程票最好提前准备好。",
+        "青旅现实建议：别带会让你焦虑的贵重物品。一个人去的话选视野开阔、旁边有人群的地方，把手机放进带拉链的小包，尽量多次短泳，不要长时间把包丢着不管。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "从海上看 Marina di Praia：卵石海滩与悬崖脚下的步道",
+          "caption": "从水里看更能感受到海湾很“紧凑”。想要免费区，早点来更稳。图：Gilbert Bochenek（CC BY-SA 3.0）via Wikimedia Commons。"
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "带什么（别让卵石毁了体验）",
+      "body": [
+        "这里是卵石滩，不是软沙。差别很大：只带一条薄浴巾，很可能会不停挪来挪去，难以真正放松。",
+        "按青旅一日游来打包：尽量轻便（回程要走坡），但带上几样能显著提升卵石滩舒适度的东西。"
+      ],
+      "list": [
+        "溯溪/水鞋：海边可能打滑，卵石久坐久站会疼。",
+        "厚一点的垫子或折叠毛巾：卵石很快就会觉得“硬”。",
+        "薄外套：下午悬崖阴影会变多，游完会更凉。",
+        "现金 + 卡：小额支付与刷卡不稳定时备用。",
+        "小号防水袋或拉链袋：如果你要带手机下水特别有用。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "普拉亚诺的海岸线：蓝色海水与悬崖构成的阿马尔菲海岸风景",
+          "caption": "悬崖会让光影变化很快，待到傍晚建议带件薄外套。图：Barochat（CC BY-SA 3.0）via Wikimedia Commons。"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "最佳时间（以及体感）",
+      "body": [
+        "想要轻松一点，尽量上午到。更容易找到舒服的位置，步道也不那么挤，“先搭基地再游泳”节奏更顺。",
+        "中后段下午悬崖会投下更多阴影。热的时候很舒服，但有风的日子会感觉偏凉——尤其是长时间游泳后。",
+        "这里下水后会很快变深：第一次入水慢一点，并注意波浪拍上来时包放在哪里。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "普拉亚诺沿海景色：悬崖与山坡上的房子",
+          "caption": "这里的光影几乎由悬崖决定——按时间段规划更舒服。图：Mihael Grmek（CC BY-SA 4.0）via Wikimedia Commons。"
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "附近更“隐”的下水点（现实版）",
+      "body": [
+        "阿马尔菲海岸以“秘密海湾”出名，但不少要么是私有，要么只能坐船到，要么要走不太安全的悬崖小路。对青旅住客来说，最现实的策略是：把这里当舒适基地，再加一个同线路巴士可达的“哇”点就够了。",
+        "最容易加的戏剧性景点是 %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%：早上去拍照+快速下水，然后回到这里吃午饭、躲阴影、再轻松游一会儿。",
+        "如果你想一整天“多点串联”，建议用 %LINK:beachHoppingAmalfi|阿马尔菲海岸 beach-hopping 指南%来排顺序（尤其是巴士时间），不然很可能下午都在看满员巴士驶过。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Fiordo di Furore 峡谷：碧绿海水与高耸悬崖",
+          "caption": "附近最“出片”的停靠点——建议搭配更轻松的基地海滩一起玩。图：Luca Aless（CC BY-SA 4.0）via Wikimedia Commons。"
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "在水边吃晚餐，然后省心回去",
+      "body": [
+        "这里很适合游完还继续待着：太阳下山后餐厅进入晚餐模式，步道灯光映在水面上很有氛围。想要特定餐厅或座位，建议提前订（尤其 7–8 月）。",
+        "为了回程不慌，到了就先看巴士时刻表。最好以“倒数第二班”回波西塔诺为目标，给自己留出缓冲，避免满员。",
+        "错过末班车的话，普拉亚诺到波西塔诺的出租车可能会比较贵；如果打算待到很晚，提前和青旅的小伙伴约好拼车更划算。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "普拉亚诺附近的海岸瞭望塔，位于海边悬崖之上",
+          "caption": "这一段海岸点缀着历史瞭望塔与悬崖小径。图：Falk2（CC BY-SA 4.0）via Wikimedia Commons。"
+        }
       ]
     }
   ],
-  "tips": [
-    "提前预约 Il Pirata 或 La Praia 的午餐位置，可在游泳间隙享受临海餐点。",
-    "随身携带防水干袋，沙滩空间小，把贵重物品集中更安心。"
+  "essentialsTitle": "你会遇到什么",
+  "essentials": [
+    "从波西塔诺搭 SITA 巴士很快；请司机在 Marina di Praia 停靠，下车后步行约 2 分钟下坡到海边。",
+    "狭窄的卵石海湾：一个主要 lido + 一小段免费区；想要免费区尽量早到。",
+    "现场有吃喝与设施（餐厅、饮料、lido 淋浴）——适合轻松半日或吃完晚饭再回。"
   ],
+  "typicalCostsTitle": "常见花费",
+  "typicalCosts": [
+    "Marina di Praia Beach Club 躺椅 + 遮阳伞：€25–€35/天（有双人套餐）。",
+    "皮划艇：约 €20/小时（两人）。",
+    "Da Armandino 或 Il Pirata 主菜：€16–€28（看当天鱼类与意面）。"
+  ],
+  "tipsTitle": "快速小贴士",
+  "tips": [
+    "上车就打票，并提前准备回程票（晚上售票点可能关门）。",
+    "带水鞋：卵石可能打滑，而且下水后很快变深。",
+    "想对比其他选择，可看我们的 %LINK:positanoBeaches|海滩总览% 。"
+  ],
+  "warningsTitle": "注意事项",
+  "warnings": [
+    "空间有限：免费区最先满，周末 lido 的躺椅也可能售罄。",
+    "下午悬崖会挡住直射阳光：降温很舒服，但有风时会偏凉。",
+    "峡谷内手机信号可能下降：提前下载巴士时刻或餐厅订位确认。"
+  ],
+  "faqsTitle": "Marina di Praia 常见问题",
   "faqs": [
     {
-      "q": "需要提前预订躺椅吗？",
+      "q": "在波西塔诺具体哪里坐巴士？",
       "a": [
-        "旺季建议前一天透过 WhatsApp 联系海滩俱乐部保留位置。"
+        "前往阿马尔菲方向的车请在 Via Pasitea 的 Sponda 站乘坐。从青旅走下坡约 10 分钟；旺季建议提前 10 分钟到，避免车满上不去。"
       ]
     },
     {
-      "q": "怎么从波西塔诺前往 Marina di Praia？",
+      "q": "有免费区吗？一定要租躺椅吗？",
       "a": [
-        "搭乘 SITA 公交往阿马尔菲方向，在 Marina di Praia 站下车，再沿楼梯走向海湾。"
+        "海湾中央有一小段公共免费区。卵石比较粗，建议带厚垫子或厚毛巾；潮位变化时可能需要往岩石边靠一点。Marina di Praia Beach Club 的躺椅一般包含淋浴和厕所，如果你更看重舒适和省事，租 lido 会更轻松。"
+      ]
+    },
+    {
+      "q": "最晚能吃到几点还来得及回 Hostel Brikette？",
+      "a": [
+        "回波西塔诺的 SITA 末班时间会随月份变化，但夏季通常到大约 21:30 左右。到达后先看站牌时刻表，并以倒数第二班为目标以防满员。末班后出租车 Praiano → Positano 大约 €35–€45，建议与同伴拼车分摊。"
+      ]
+    },
+    {
+      "q": "一个人去合适吗？",
+      "a": [
+        "合适——这里有设施、步道也更容易被看到，相对“单人友好”。但仍建议按青旅常识：带最少的贵重物品，手机放进拉链包，尽量短泳多次，别让包长时间无人看管。"
       ]
     }
-  ],
-  "toc": [
-    {
-      "href": "#why-go",
-      "label": "Why go"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Getting there"
-    },
-    {
-      "href": "#layout",
-      "label": "Layout & services"
-    },
-    {
-      "href": "#evening",
-      "label": "Stay for dinner"
-    }
-  ],
-  "essentialsTitle": "What to expect",
-  "essentials": [
-    "从波西塔诺乘坐 SITA 巴士 20 分钟；询问 Marina di Praia 站，然后步行两分钟下坡。",
-    "狭窄的卵石海滩，有一个主要的海滨浴场，中间还有一小块免费区域。",
-    "人行道上设有餐馆和小吃亭，非常适合在回家前享用日落晚餐。"
-  ],
-  "typicalCostsTitle": "Typical costs",
-  "typicalCosts": [
-    "Marina di Praia 海滩俱乐部的躺椅 + 遮阳伞：当天 25 欧元至 35 欧元（提供两人套餐）。",
-    "皮艇租赁：两人每小时约 20 欧元。",
-    "Da Armandino 或 Il Pirata 的晚餐主菜：16 欧元至 28 欧元，具体取决于捕获的海鲜和特色面食。"
-  ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
-  "warnings": [
-    "空间有限；免费区域首先就满了，而周末的利多躺椅就卖完了。",
-    "下午三点左右，悬崖会遮挡阳光直射，非常适合降温，但在大风天会感觉寒冷。",
-    "峡谷内的移动信号接收能力下降；提前下载巴士时刻表或晚餐预订确认书。"
-  ],
-  "faqsTitle": "Marina di Praia FAQs",
-  "gallery": {
-    "title": "Marina di Praia 图集",
-    "items": [
-      {
-        "alt": "Marina di Praia 海湾全景，渔船与阳伞点缀海滩",
-        "caption": "海湾狭窄，被峭壁环绕，比波西塔诺主海滩更加宁静"
-      },
-      {
-        "alt": "Marina di Praia 海滩俱乐部的蓝黄躺椅",
-        "caption": "海滩俱乐部区域占据了大部分躺椅，中央靠近水边有小段免费区域"
-      }
-    ]
-  }
+  ]
 }
+

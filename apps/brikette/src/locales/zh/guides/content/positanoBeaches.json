@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "波西塔诺海滩指南：好去处、价格与免费区域",
-    "description": "对比波西塔诺海滩（Fornillo、Spiaggia Grande、Arienzo、Laurito）以及前往Praiano、Furore、Sorrento和Amalfi的一日游——价格、免费区域与适合青旅住客的实用小贴士。"
+    "description": "对比波西塔诺海滩（Fornillo、Spiaggia Grande、Arienzo、Laurito）以及轻松的一日游选择——价格、免费区域与适合青旅住客的实用小贴士。"
   },
   "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "波西塔诺海滩：阳光与隐藏海湾",
@@ -15,16 +15,46 @@
     "title": "阿马尔菲海岸海滩对比"
   },
   "toc": [
-    { "href": "#overview", "label": "怎么选" },
-    { "href": "#beach-day-checklist", "label": "海滩清单" },
-    { "href": "#positano-beaches", "label": "波西塔诺海滩" },
-    { "href": "#praiano-beaches", "label": "Praiano海滩" },
-    { "href": "#furore-beaches", "label": "Furore" },
-    { "href": "#sorrento-beaches", "label": "Sorrento" },
-    { "href": "#amalfi-beaches", "label": "Amalfi" },
-    { "href": "#logistics", "label": "交通" },
-    { "href": "#comparison-table", "label": "对比表" },
-    { "href": "#faqs", "label": "常见问题" }
+    {
+      "href": "#overview",
+      "label": "怎么选"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "海滩清单"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "波西塔诺海滩"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Praiano海滩"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "交通"
+    },
+    {
+      "href": "#comparison-table",
+      "label": "对比表"
+    },
+    {
+      "href": "#faqs",
+      "label": "常见问题"
+    }
   ],
   "sections": [
     {
@@ -32,270 +62,205 @@
       "title": "怎么选对海滩",
       "body": [
         "波西塔诺多为卵石海滩，既有海滩俱乐部（收费）也有公共区域（免费）。价格从较安静海滩的~15€/张躺椅，到高级露台的100€+不等。",
-        "如果你住青旅、预算有限，建议先去Fornillo（通常更便宜也更清静）。想拍经典“明信片视角”，就一早去Spiaggia Grande。想要下午晚些时候的阳光，Arienzo或Laurito很合适——但去起来更麻烦。"
+        "如果你住青旅、预算有限，建议先去Fornillo（通常更便宜也更清静）。想拍经典“明信片视角”，就一早去Spiaggia Grande。想要下午晚些时候的阳光，Arienzo或Laurito很合适——但去起来更麻烦。",
+        "2026快速选择：最便宜的轻松一天 = Fornillo；最容易拍到“经典波西塔诺”照片 = Spiaggia Grande；最好的晚阳光 = Arienzo（坐船）或 Laurito；最震撼的峡湾式海湾一日游 = Fiordo di Furore。"
       ]
     },
     {
       "id": "beach-day-checklist",
       "title": "适合青旅住客的海滩清单",
       "body": [
-        "提前准备一点能省钱（也能少长水泡）。大多是卵石滩，免费区域阴凉少，有些小摊仍更喜欢现金。"
+        "提前准备一点点，能省钱（也能少磨脚）。大多数海滩都是卵石，免费区域的阴凉有限，而且有些小摊仍更喜欢现金。"
       ],
       "list": [
-        "水鞋或结实凉鞋（热石头+更好下水）",
-        "更厚的毛巾或垫子（薄毛巾铺在卵石上很难受）",
-        "可重复使用水瓶+零食（海边步道的价格很快就叠加）",
+        "水鞋或结实的凉鞋（石头烫 + 下水更方便）",
+        "更厚的毛巾或垫子（薄毛巾在卵石上很硌）",
+        "可补水的水瓶 + 零食（海边步道的价格很快就上来了）",
         "备用现金（尤其是小摊）",
-        "防晒霜+帽子（免费区往往是直晒）",
-        "回程的轻薄外套（傍晚降温很快）"
+        "小号防水袋（坐船时手机 + 现金更安全）",
+        "防晒霜 + 帽子（免费区域可能是全日晒）",
+        "轻便的书/扑克牌（等人潮散一点时很好用）",
+        "一件薄外套（走回去时，傍晚很快变凉）"
       ]
     },
     {
       "id": "positano-beaches",
-      "title": "波西塔诺海滩速览",
+      "title": "波西塔诺海滩概览",
       "body": [
-        "Fornillo是青旅住客最爱：更放松、俱乐部通常更便宜（常见~15€+），而且免费区域比主海滩更大。回程上坡很陡——很多人会走到Spiaggia Grande再搭内部小巴上山。查看%LINK:fornilloBeachGuide|Fornillo海滩指南%获取最省力路线和海滩布局。",
-        "Spiaggia Grande（主海滩）就是经典明信片景色，但也更拥挤、更贵。想去的话务必早到，先找到公共区域那一段，并降低对“安静”的期待。用%LINK:positanoMainBeachWalkDown|步行路线%或%LINK:positanoMainBeachBusDown|公交指南%快速抵达。",
-        "Arienzo以“下午晒到久”出名。缺点是如果走路要爬很多台阶，多数人会坐海滩俱乐部的接驳船。包含躺椅+午餐+船接送的套餐有时性价比不错。看%LINK:arienzoBeachClub|Arienzo Beach Club指南%了解时间。",
-        "Laurito是个小海湾，通常靠接驳船更方便。很适合傍晚去游泳，但公共空间有限，而且要看接驳时间。决定前先看%LINK:lauritoBeachGuide|Laurito海滩指南%。"
+        "Fornillo是青旅住客的最爱：更安静、海滩俱乐部通常更便宜（常见~15€+），而且免费区域比主海滩更大。走回去上坡很陡——很多人会横穿到Spiaggia Grande再坐内部小巴上山。路线和海滩布局见 %LINK:fornilloBeachGuide|Fornillo海滩指南%。",
+        "Spiaggia Grande（主海滩）就是经典明信片视角。缺点是人多、也更贵。想去的话要早到，找到公共区域，然后把期待值放合理。快速抵达可用 %LINK:positanoMainBeachWalkDown|步行路线% 或 %LINK:positanoMainBeachBusDown|公交指南%。",
+        "Arienzo以“下午太阳晒得久”出名。问题是如果走路要爬很多台阶，大多数人会坐海滩俱乐部的接驳船。含躺椅+午餐+船接驳的套餐有时性价比不错。时间见 %LINK:arienzoBeachClub|Arienzo Beach Club指南%。",
+        "Laurito是一个小海湾，通常坐接驳船最方便。适合傍晚下海，但公共空间有限，时间安排很关键。出发前先看 %LINK:lauritoBeachGuide|Laurito海滩指南%。"
       ]
     },
     {
       "id": "praiano-beaches",
       "title": "Praiano一日游选择",
       "body": [
-        "Praiano的Gavitella最适合下午晚些时候：金色光线+日落氛围。那里很多是平台和俱乐部，免费空间（如果有）也比较有限；想舒服一点，建议按“付费”来规划。用%LINK:gavitellaBeachGuide|Gavitella海滩指南%按步骤到达。",
-        "Marina di Praia是一条狭长的卵石小海湾，被悬崖和渔船包围，很适合换个风景，通常也更“藏得住”。交通方式见%LINK:marinaDiPraiaBeaches|Marina di Praia指南%。"
+        "Praiano的Gavitella最适合下午偏晚：金色光线 + 日落氛围。这里很多是平台和俱乐部，免费空间（如果有）也很有限，所以想舒服一点要预期付费。逐步到达方式见 %LINK:gavitellaBeachGuide|Gavitella海滩指南%。",
+        "Marina di Praia是一个狭窄的卵石小海湾，两侧是悬崖和渔船。换个风景很舒服，通常更有“隐蔽感”。交通方式见 %LINK:marinaDiPraiaBeaches|Marina di Praia指南%。"
       ]
     },
     {
       "id": "furore-beaches",
-      "title": "Furore的“峡湾”小海湾",
+      "title": "Furore的峡湾式海湾",
       "body": [
-        "Fiordo di Furore是阿马尔菲海岸最有名的“桥+窄海湾”拍照点：景很震撼、花费不高，但地方非常小，很快就满。建议早到或避开高峰时段。用%LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore指南%规划路线。"
+        "Fiordo di Furore是桥下一个小而震撼的海湾。免费进入，但空间很小，且下去的路很陡（夏天也很热）。建议早到、带足水，并别指望有完善设施。"
       ]
     },
     {
       "id": "sorrento-beaches",
-      "title": "Regina Giovanna（Sorrento）",
+      "title": "Sorrento的Regina Giovanna天然泳点",
       "body": [
-        "Regina Giovanna（Bagni della Regina Giovanna）在Sorrento附近，是一个岩石间的天然泳池。免费、通常比Positano更凉爽，如果想来点不一样，是个很棒的一日游选择。",
-        "带水鞋和零食——几乎没有服务设施。查看%LINK:reginaGiovannaBath|Regina Giovanna指南%了解进出路线。"
+        "Regina Giovanna更像自然泳点，而不是传统的海滩俱乐部躺一天。只要你愿意走一段路并带齐补给，这会是一次有趣（且免费的）小冒险。穿能弄湿的鞋，贵重物品尽量少带。"
       ]
     },
     {
       "id": "amalfi-beaches",
-      "title": "Amalfi的海滩俱乐部",
+      "title": "Amalfi镇上的海滩俱乐部",
       "body": [
-        "Amalfi的Marina Grande是镇上的主海滩，典型的lido配置（淋浴、遮阳伞、餐食）。旺季很容易满位，如果你当天铁定要去Amalfi，建议提前预订。"
+        "如果你本来就要去Amalfi镇，Marina Grande很适合在海边待半天。旺季价格偏高，建议提前预订躺椅。"
       ]
     },
     {
       "id": "logistics",
-      "title": "怎么去、怎么回",
+      "title": "怎么去海滩、怎么回来",
       "body": [
-        "去Fornillo和Spiaggia Grande，大多数人会从青旅沿Viale Pasitea走下去。如果回程爬坡太累，可以沿海边走到Spiaggia Grande，再搭内部小巴上到Chiesa Nuova（然后步行一小段回Hostel Brikette）。",
-        "Arienzo和Laurito通常依赖从Spiaggia Grande出发的私人接驳船。出发前务必确认最后一班回程船（尤其想看日落时）。去Praiano、Furore、Sorrento或Amalfi，可查看对应指南里的交通与时间。"
+        "从青旅出发，最快的思路通常是：先走到（或坐车下到）Spiaggia Grande，然后再决定是沿海边步道继续去Fornillo、上接驳船，还是就待在主海滩。",
+        "如果你要去带船接驳的海滩俱乐部（Arienzo或Laurito），通常从Spiaggia Grande出发最省事：可以早点排队，也能少爬台阶。",
+        "2026年夏天要考虑上坡的炎热：回去前先把水装满；如果累了，用内部小巴代替一路爬完台阶。",
+        "做一日游（Praiano、Amalfi、Sorrento）前，先确认最后一班返程。渡轮在正常运行时最舒服，但公交是备选。如果海况不好导致渡轮取消，要预留更多时间并保持行程弹性。路上带点零食。"
       ]
     },
     {
       "id": "comparison-table",
       "title": "海滩对比表",
       "body": [
-        "把下方表格当作快速决策工具：按氛围、躺椅大致价格，以及是否通常有公共区域（常标注为“spiaggia libera”）来对比。",
-        "价格会随季节和运营方变化很大，所以这些数字仅作参考。想省钱的话，坐下前先问清楚价格。"
-      ]
-    }
-  ],
-  "prosCons": [
-    {
-      "title": "Fornillo",
-      "guideKey": "fornilloBeachGuide",
-      "pros": [
-        "躺椅约15€起",
-        "免费区域更大，且有更隐蔽的免费点",
-        "氛围更放松"
-      ],
-      "cons": [
-        "回程上坡陡",
-        "不租伞的话阴凉少"
-      ]
-    },
-    {
-      "title": "Spiaggia Grande",
-      "guideKey": "positanoMainBeachWalkDown",
-      "pros": [
-        "Positano经典天际线",
-        "渡轮交通更集中",
-        "有公共区域"
-      ],
-      "cons": [
-        "躺椅最贵",
-        "中午非常拥挤"
-      ]
-    },
-    {
-      "title": "Arienzo",
-      "guideKey": "arienzoBeachClub",
-      "pros": [
-        "下午阳光更久",
-        "套餐常含午餐和船",
-        "观景很棒"
-      ],
-      "cons": [
-        "台阶很多",
-        "没有俱乐部接驳不太好到"
-      ]
-    },
-    {
-      "title": "Laurito",
-      "pros": [
-        "傍晚还有阳光",
-        "Da Adolfo很有名的午餐点",
-        "Villa Tre Ville服务更高端"
-      ],
-      "cons": [
-        "公共区域很小",
-        "到达受水上出租车/接驳时间影响"
-      ],
-      "guideKey": "lauritoBeachGuide"
-    },
-    {
-      "title": "Gavitella（Praiano）",
-      "guideKey": "gavitellaBeachGuide",
-      "pros": [
-        "日落小酒氛围",
-        "餐厅露台"
-      ],
-      "cons": [
-        "没有免费区域",
-        "水泥平台中午很热"
-      ]
-    },
-    {
-      "title": "Marina di Praia",
-      "guideKey": "marinaDiPraiaBeaches",
-      "pros": [
-        "很有渔村味的小海湾",
-        "旁边有一段公共免费区"
-      ],
-      "cons": [
-        "海滩很窄",
-        "早上日照时间更短"
-      ]
-    },
-    {
-      "title": "Fiordo di Furore",
-      "guideKey": "fiordoDiFuroreBeachGuide",
-      "pros": [
-        "免费进入",
-        "可以跳水（谨慎）",
-        "桥下背景很独特"
-      ],
-      "cons": [
-        "海滩非常小",
-        "很快就拥挤"
-      ]
-    },
-    {
-      "title": "Regina Giovanna",
-      "guideKey": "reginaGiovannaBath",
-      "pros": [
-        "免费天然泳池",
-        "热天水更凉"
-      ],
-      "cons": [
-        "没有服务设施",
-        "入口路段多岩石"
-      ]
-    },
-    {
-      "title": "Amalfi Marina Grande",
-      "pros": [
-        "俱乐部选择多",
-        "渡轮和公交都方便"
-      ],
-      "cons": [
-        "价格偏高",
-        "旺季建议提前订"
+        "用这张表对比海滩氛围、躺椅的大致价格区间，以及通常是否有免费区域。价格会随季节和俱乐部变化，所以把这些当作粗略范围即可。"
       ]
     }
   ],
   "itemList": [
-    { "name": "Fornillo", "note": "当地人也爱：约15€起的躺椅，两处免费区域。" },
-    { "name": "Spiaggia Grande", "note": "主海滩：经典景观、俱乐部更贵，中间有公共免费区。" },
-    { "name": "Arienzo", "note": "阳光好的“露台式”海滩：300级台阶或俱乐部水上接驳。" },
-    { "name": "Laurito", "note": "小海湾：Da Adolfo与Villa Tre Ville提供接驳船。" },
-    { "name": "Gavitella", "note": "Praiano平台区适合日落小酒（基本为俱乐部）。" },
-    { "name": "Marina di Praia", "note": "渔村海湾：有一小块免费区 + lido。" },
-    { "name": "Fiordo di Furore", "note": "桥下窄海湾：免费进入但空间极小。" },
-    { "name": "Regina Giovanna", "note": "Sorrento附近的隐藏泳点：免费但要自备补给。" },
-    { "name": "Amalfi Marina Grande", "note": "Amalfi经典lido一排，就在大教堂对面。" }
+    {
+      "name": "Fornillo",
+      "note": "当地人喜欢：约€15的躺椅和两个免费区域。"
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "主海滩：经典视角、俱乐部更贵、中央有免费区。"
+    },
+    {
+      "name": "Arienzo",
+      "note": "阳光充足的露台式海滩：300级台阶或俱乐部水上接驳。"
+    },
+    {
+      "name": "Laurito",
+      "note": "小海湾：Da Adolfo和Villa Tre Ville的接驳船服务。"
+    },
+    {
+      "name": "Gavitella",
+      "note": "Praiano平台：日落时喝开胃酒很棒（仅俱乐部）。"
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "渔村海滩：小块免费区 + lido。"
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "桥下震撼海湾：免费进入但空间有限。"
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Sorrento的隐藏泳点—免费但要自备补给。"
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Amalfi主教堂对面的经典lido一排。"
+    }
   ],
   "faqs": [
     {
-      "question": "波西塔诺哪片海滩最适合省钱？",
-      "answer": "Fornillo最适合省预算：躺椅约15€起，并且有两处免费区域——一处在尽头，另一处在岩石附近更隐蔽。氛围更放松、价格更友好，所以很受青旅住客欢迎。"
+      "question": "预算旅行者最适合的波西塔诺海滩是哪一个？",
+      "answer": "Fornillo最适合省钱：躺椅大约从€15起，而且免费区通常比主海滩更大。这里也更安静，是青旅住客的常见选择。"
     },
     {
       "question": "波西塔诺附近有免费海滩吗？",
-      "answer": "有。多数海滩至少会有一部分公共空间（常标注为“spiaggia libera”），但位置和大小会随季节变化。在波西塔诺，Fornillo通常更容易找到相对更大的免费区域。"
+      "answer": "有。大多数海滩至少有一部分公共区域（常见标识为“spiaggia libera”），但位置和体感大小会随季节变化。在波西塔诺，Fornillo通常更容易找到相对更大的免费区。"
     },
     {
-      "question": "怎么去Arienzo或Laurito？",
-      "answer": "两处都建议从Spiaggia Grande乘接驳船前往。Arienzo如果走路需要下约300级台阶；Laurito陆路通行非常有限。想省事，直接预订包含船接送的海滩俱乐部套餐。"
+      "question": "怎么去Arienzo或Laurito海滩？",
+      "answer": "两处最省事的方法都是从Spiaggia Grande坐接驳船。Arienzo如果走路要爬很多台阶，Laurito的陆路也有限。如果想简单，直接订含船接驳的套餐。"
     },
     {
-      "question": "几点到海滩比较合适？",
-      "answer": "像Fornillo和Spiaggia Grande这类热门点，建议9–10点到，才能在免费区占到更好的位置。Fiordo di Furore因为太小，很快就满——要么早到，要么避开高峰。Gavitella最适合下午晚些时候去看日落。"
+      "question": "几点到海滩比较好？",
+      "answer": "像Fornillo和Spiaggia Grande这种热门地点，建议在上午9–10点前到，才能在免费区抢到好位置。Fiordo di Furore很小，容易满，建议早到或避开高峰时段。"
     },
     {
-      "question": "波西塔诺躺椅大概多少钱？",
-      "answer": "价格差异很大。Fornillo的平价俱乐部大约15€起；Spiaggia Grande的中档选项约25€起。像La Scogliera这样的高级露台，VIP组合可能要100–400€。Arienzo含躺椅、午餐和船接送的套餐通常约60€起。"
+      "question": "波西塔诺的躺椅大概多少钱？",
+      "answer": "价格随俱乐部和季节变化。Fornillo更便宜的选择可能约€15起。Spiaggia Grande的中档通常约€25起。高级露台可能贵很多。含船接驳和餐食的Arienzo套餐可能约€60起。"
     },
     {
-      "question": "可以从波西塔诺去其他地方海滩一日游吗？",
-      "answer": "当然可以。Praiano（Gavitella与Marina di Praia）、Furore的峡湾海湾、Sorrento的Regina Giovanna，以及Amalfi的Marina Grande，都可以乘SITA公交或渡轮到达。具体交通与班次请看对应指南。"
+      "question": "能不能从波西塔诺去外面的海滩做一日游？",
+      "answer": "可以。Praiano（Gavitella和Marina di Praia）、Fiordo di Furore、Sorrento的Regina Giovanna泳点、以及Amalfi都很热门，可坐公交或渡轮前往。查看链接指南获取从青旅出发最省事的路线。"
     },
     {
       "question": "去海滩要带什么？",
-      "answer": "带水鞋（卵石）、防晒、可重复使用水瓶和少量现金。如果打算去免费区，再带上更厚的毛巾/垫子、零食，以及遮阳物，因为服务设施可能有限。"
+      "answer": "带水鞋（卵石滩）、防晒、可补水的水瓶，以及一点现金。如果打算去免费区，建议带更厚的毛巾/垫子、零食，以及遮阳的东西。"
     },
     {
-      "question": "哪里看日落最好？",
-      "answer": "Praiano的Gavitella以“日落小酒”很有名，餐厅露台在太阳沉入海平面时视野非常棒。Laurito因为地理位置也常能晒到更晚。"
+      "question": "哪片海滩日落最好看？",
+      "answer": "Praiano的Gavitella以日落开胃酒很出名。Laurito也可能有晚阳光，尤其是坐接驳船并把时间安排好。"
     }
   ],
   "gallery": [
     {
       "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "从远处俯瞰波西塔诺主海滩（Spiaggia Grande），背景是悬崖上的小镇",
-      "caption": "Spiaggia Grande（主海滩）"
+      "alt": "波西塔诺主海滩（Spiaggia Grande），背景是悬崖上的小镇",
+      "caption": "Spiaggia Grande（主海滩）",
+      "credits": ["照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "波西塔诺Fornillo海滩，岸边排列着遮阳伞",
-      "caption": "Fornillo（通常更清静+更省钱）"
+      "alt": "波西塔诺Fornillo海滩，岸边布满遮阳伞",
+      "caption": "Fornillo（通常更安静 + 更省钱）",
+      "credits": ["照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "靠近波西塔诺的Arienzo海滩区域（阿马尔菲海岸）",
-      "caption": "Arienzo（下午阳光更久，通常坐接驳船）"
+      "alt": "靠近波西塔诺的阿马尔菲海岸Arienzo海滩区域",
+      "caption": "Arienzo（下午阳光，通常坐接驳船）",
+      "credits": ["照片：villlamania (CC BY 3.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Fiordo di Furore的桥，桥下是狭窄海湾与海水",
-      "caption": "Fiordo di Furore（震撼小海湾）"
+      "alt": "Fiordo di Furore桥下的狭窄海湾与海水",
+      "caption": "Fiordo di Furore（震撼海湾）",
+      "credits": ["照片：DimiTalen (CC0 1.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Marina di Praia海湾，被悬崖与船只环绕",
-      "caption": "Marina di Praia（Praiano）"
+      "alt": "被悬崖与船只围绕的Marina di Praia海湾",
+      "caption": "Marina di Praia（Praiano）",
+      "credits": ["照片：Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "从海上远望波西塔诺小镇与海岸线的宽阔视角",
-      "caption": "波西塔诺海岸（做好爬楼梯的心理准备）"
+      "alt": "从海上看到的波西塔诺小镇与海岸线全景",
+      "caption": "波西塔诺海岸线（台阶很多）",
+      "credits": ["照片：Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+      "alt": "波西塔诺海岸线上密集的遮阳伞与游泳的人",
+      "caption": "波西塔诺海滩遮阳伞（旺日氛围）",
+      "credits": ["照片：Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+      "alt": "海滩上的人和停泊在波西塔诺湾内的船只",
+      "caption": "海湾里的船（手机记得带防水袋）",
+      "credits": ["照片：DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }
+

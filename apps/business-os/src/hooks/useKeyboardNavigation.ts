@@ -7,8 +7,10 @@
 
 import { useEffect } from "react";
 
+type ArrowKey = "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight";
+
 interface UseKeyboardNavigationOptions {
-  handleArrowKey: (key: string) => void;
+  handleArrowKey: (key: ArrowKey) => void;
   isFocusMode: boolean;
   exitFocusMode: () => void;
 }

@@ -1,301 +1,266 @@
 {
   "seo": {
-    "title": "Bãi biển Positano: hướng dẫn điểm đẹp, giá và khu miễn phí",
-    "description": "So sánh các bãi biển ở Positano (Fornillo, Spiaggia Grande, Arienzo, Laurito) và các chuyến đi trong ngày tới Praiano, Furore, Sorrento và Amalfi — giá, khu miễn phí và mẹo đơn giản cho khách hostel."
+    "title": "Cẩm nang bãi biển Positano: điểm đẹp, giá & khu miễn phí",
+    "description": "So sánh các bãi biển Positano (Fornillo, Spiaggia Grande, Arienzo, Laurito) và vài lựa chọn đi trong ngày — giá, khu miễn phí và mẹo cho khách ở hostel."
   },
   "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Bãi biển Positano: nắng và vịnh nhỏ bí mật",
   "intro": [
-    "Bãi biển Positano có thể rất đẹp — và cũng rất đắt. Hướng dẫn này giúp bạn chọn nhanh bãi phù hợp: nằm khu miễn phí trải khăn, đi beach club, hoặc tắm biển lúc hoàng hôn cho nhẹ nhàng.",
-    "Dùng bảng để so sánh vibe, giá ghế nằm và vị trí khu miễn phí thường nằm ở đâu. Bấm vào tên bãi trong bảng để mở mini‑guide với đường đi từ hostel.",
-    "Mẹo hostel: bãi ở đây toàn sỏi. Mang giày nước (hoặc dép chắc), khăn/tấm lót dày hơn và một ít tiền mặt dự phòng."
+    "Bãi biển ở Positano có thể rất tuyệt — và cũng rất đắt. Hướng dẫn này giúp bạn chọn nhanh bãi phù hợp: muốn chỗ miễn phí trải khăn, muốn “beach club day”, hay chỉ muốn bơi nhẹ lúc hoàng hôn.",
+    "Dùng bảng để so sánh vibe, giá ghế nằm và khu miễn phí thường nằm ở đâu. Bấm vào tên bãi biển trong bảng để mở mini‑guide kèm đường đi từ hostel.",
+    "Mẹo cho khách hostel: bãi biển đa phần là sỏi. Mang giày đi nước (hoặc sandal chắc chắn), khăn/tấm lót dày hơn, và một ít tiền mặt dự phòng."
   ],
-  "galleryTitle": "Điểm nhấn bãi biển Positano",
+  "galleryTitle": "Điểm nổi bật bãi biển Positano",
   "comparisonTable": {
-    "title": "So sánh bãi biển bờ biển Amalfi"
+    "title": "So sánh bãi biển Bờ biển Amalfi"
   },
   "toc": [
-    { "href": "#overview", "label": "Cách chọn" },
-    { "href": "#beach-day-checklist", "label": "Checklist đi biển" },
-    { "href": "#positano-beaches", "label": "Bãi ở Positano" },
-    { "href": "#praiano-beaches", "label": "Bãi ở Praiano" },
-    { "href": "#furore-beaches", "label": "Furore" },
-    { "href": "#sorrento-beaches", "label": "Sorrento" },
-    { "href": "#amalfi-beaches", "label": "Amalfi" },
-    { "href": "#logistics", "label": "Di chuyển" },
-    { "href": "#comparison-table", "label": "Bảng so sánh" },
-    { "href": "#faqs", "label": "Câu hỏi thường gặp" }
+    {
+      "href": "#overview",
+      "label": "Cách chọn"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "Checklist đi biển"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Bãi biển Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Bãi biển Praiano"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Di chuyển"
+    },
+    {
+      "href": "#comparison-table",
+      "label": "Bảng so sánh"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
   ],
   "sections": [
     {
       "id": "overview",
       "title": "Cách chọn bãi biển phù hợp",
       "body": [
-        "Positano có bãi biển sỏi, với beach club (trả phí) xen kẽ khu công cộng (miễn phí). Giá có thể từ ~15 € mỗi ghế ở bãi yên hơn đến 100 €+ cho các khu deck premium.",
-        "Nếu bạn đi kiểu hostel tiết kiệm, hãy bắt đầu với Fornillo (thường rẻ và chill hơn). Muốn view “bưu thiếp” thì đi sớm tới Spiaggia Grande. Muốn nắng muộn cuối ngày, Arienzo hoặc Laurito rất ổn — nhưng đường đi phức tạp hơn."
+        "Positano có bãi sỏi với cả beach club (trả phí) và khu công cộng (miễn phí). Giá có thể từ ~€15/ghế nằm ở bãi yên tĩnh đến €100+ cho set deck “premium”.",
+        "Nếu bạn ở hostel và muốn tiết kiệm, bắt đầu với Fornillo (thường rẻ hơn và yên hơn). Muốn ảnh “postcard” thì đi Spiaggia Grande sớm. Muốn nắng muộn, Arienzo hoặc Laurito rất ổn — nhưng đường đi khó hơn.",
+        "Gợi ý nhanh 2026: ngày chill rẻ nhất = Fornillo; ảnh “Positano biểu tượng” dễ nhất = Spiaggia Grande; nắng muộn tốt nhất = Arienzo (đi thuyền) hoặc Laurito; vịnh kịch tính nhất để đi trong ngày = Fiordo di Furore."
       ]
     },
     {
       "id": "beach-day-checklist",
-      "title": "Checklist đi biển cho khách hostel",
+      "title": "Checklist đi biển (hợp khách hostel)",
       "body": [
-        "Chuẩn bị một chút sẽ tiết kiệm tiền (và tránh phồng chân). Hầu hết bãi là sỏi, khu miễn phí ít bóng râm, và vài kiosk vẫn thích tiền mặt."
+        "Chuẩn bị một chút giúp tiết kiệm tiền (và tránh phồng rộp). Hầu hết bãi là sỏi, khu miễn phí ít bóng râm, và một số quầy nhỏ vẫn thích tiền mặt."
       ],
       "list": [
-        "Giày nước hoặc dép chắc (đá nóng + xuống nước dễ hơn)",
-        "Khăn/tấm lót dày hơn (khăn mỏng nằm trên sỏi rất khó chịu)",
-        "Bình nước tái sử dụng + đồ ăn nhẹ (giá trên promenade cộng lại nhanh)",
-        "Ít tiền mặt dự phòng (nhất là kiosk nhỏ)",
-        "Kem chống nắng + mũ (khu miễn phí thường nắng gắt)",
-        "Một lớp áo mỏng cho đường về (chiều tối lạnh nhanh)"
+        "Giày đi nước hoặc sandal chắc (đá nóng + xuống nước dễ hơn)",
+        "Khăn/tấm lót dày (khăn mỏng rất “cấn” trên sỏi)",
+        "Bình nước + đồ ăn nhẹ (giá dọc promenade dễ đội lên)",
+        "Tiền mặt dự phòng (nhất là quầy nhỏ)",
+        "Túi chống nước nhỏ (giữ điện thoại + tiền an toàn trên thuyền)",
+        "Kem chống nắng + mũ (khu miễn phí có thể nắng gắt)",
+        "Sách mỏng/bài (đỡ chán khi chờ bớt đông)",
+        "Áo khoác mỏng cho lúc về (tối lạnh nhanh)"
       ]
     },
     {
       "id": "positano-beaches",
-      "title": "Các bãi ở Positano (tóm tắt nhanh)",
+      "title": "Bãi biển Positano nhìn nhanh",
       "body": [
-        "Fornillo là “chân ái” của khách hostel: vibe chill, club thường rẻ hơn (~15 €+), và khu miễn phí rộng hơn so với bãi chính. Đường leo về rất dốc — nhiều người đi ngang qua Spiaggia Grande rồi bắt bus nội bộ lên. Xem %LINK:fornilloBeachGuide|hướng dẫn Fornillo% để đi dễ nhất và xem bố cục bãi.",
-        "Spiaggia Grande (bãi chính) là view bưu thiếp kinh điển. Nhưng cũng đông và đắt. Nếu muốn đi, hãy đi sớm, tìm dải bãi công cộng và chuẩn bị tinh thần. Dùng %LINK:positanoMainBeachWalkDown|đi bộ% hoặc %LINK:positanoMainBeachBusDown|đi bus% để tới nhanh.",
-        "Arienzo nổi tiếng vì nắng chiều kéo dài. Điểm trừ: rất nhiều bậc thang nếu đi bộ, và đa số dùng thuyền shuttle của beach club. Gói gồm ghế + bữa trưa + thuyền đưa đón có thể đáng tiền. Xem %LINK:arienzoBeachClub|hướng dẫn Arienzo Beach Club% để biết giờ.",
-        "Laurito là một vịnh nhỏ, thường đi bằng thuyền shuttle. Rất hợp tắm muộn cuối ngày, nhưng khu công cộng ít và timing quan trọng. Xem %LINK:lauritoBeachGuide|hướng dẫn Laurito% trước khi chốt."
+        "Fornillo là “hostel favourite”: vibe yên hơn, club thường rẻ hơn (hay ~€15+), và khu miễn phí lớn hơn bãi chính. Đường leo lên lại khá dốc — nhiều khách đi tắt qua Spiaggia Grande rồi bắt xe bus nội bộ lên dốc. Xem %LINK:fornilloBeachGuide|guide bãi Fornillo% để có đường đi dễ nhất và bố cục bãi.",
+        "Spiaggia Grande (bãi chính) là view “postcard” kinh điển. Nhưng cũng đông và đắt. Nếu muốn trải nghiệm, đi sớm, tìm dải công cộng và đặt kỳ vọng vừa phải. Dùng %LINK:positanoMainBeachWalkDown|chỉ đường đi bộ% hoặc %LINK:positanoMainBeachBusDown|guide đi bus% để xuống nhanh.",
+        "Arienzo nổi tiếng vì nắng chiều dài. Điểm trừ: rất nhiều bậc thang nếu đi bộ; đa số dùng thuyền shuttle của beach club. Gói gồm ghế nằm + bữa trưa + transfer thuyền đôi khi rất đáng tiền. Xem %LINK:arienzoBeachClub|guide Arienzo Beach Club% để biết giờ.",
+        "Laurito là vịnh nhỏ đi bằng thuyền shuttle. Hợp cho bơi muộn cuối ngày, nhưng không gian công cộng hạn chế và timing quan trọng. Xem %LINK:lauritoBeachGuide|guide bãi Laurito% trước khi quyết."
       ]
     },
     {
       "id": "praiano-beaches",
-      "title": "Gợi ý đi Praiano trong ngày",
+      "title": "Lựa chọn đi Praiano trong ngày",
       "body": [
-        "Gavitella ở Praiano đẹp nhất vào cuối chiều: ánh vàng và vibe hoàng hôn. Khu vực phần lớn là platform và club; khu miễn phí (nếu có) khá hạn chế — muốn thoải mái thì nên tính phương án trả phí. Dùng %LINK:gavitellaBeachGuide|hướng dẫn Gavitella% để đi từng bước.",
-        "Marina di Praia là một vịnh sỏi hẹp, kẹp giữa vách đá và thuyền cá. Đây là lựa chọn đổi gió và thường cảm giác “kín” hơn. Xem %LINK:marinaDiPraiaBeaches|hướng dẫn Marina di Praia% cho lựa chọn di chuyển."
+        "Gavitella ở Praiano đẹp nhất lúc chiều muộn: ánh vàng và vibe ngắm hoàng hôn. Nhiều chỗ là platform và club; khu miễn phí (nếu có) khá ít, nên nếu muốn thoải mái hãy tính phương án trả phí. Xem %LINK:gavitellaBeachGuide|guide bãi Gavitella% để đi từng bước.",
+        "Marina di Praia là vịnh sỏi hẹp kẹp giữa vách đá và thuyền đánh cá. Đổi cảnh rất đã và thường cảm giác “kín” hơn. Xem %LINK:marinaDiPraiaBeaches|guide Marina di Praia% để chọn cách đi."
       ]
     },
     {
       "id": "furore-beaches",
-      "title": "Vịnh kiểu “fiord” ở Furore",
+      "title": "Vịnh kiểu “fjord” ở Furore",
       "body": [
-        "Fiordo di Furore là điểm nổi tiếng với cây cầu phía trên một vịnh hẹp. Cảnh rất “đã”, chi phí thấp và cực kỳ nhỏ — đầy rất nhanh. Hãy đi sớm hoặc tránh giờ cao điểm. Lên kế hoạch với %LINK:fiordoDiFuroreBeachGuide|hướng dẫn Fiordo di Furore%."
+        "Fiordo di Furore là vịnh nhỏ, rất kịch tính dưới cây cầu. Vào miễn phí, nhưng chỗ ít và đường xuống dốc (mùa hè rất nóng). Đi sớm, mang nước, và đừng trông chờ nhiều dịch vụ."
       ]
     },
     {
       "id": "sorrento-beaches",
-      "title": "Regina Giovanna (Sorrento)",
+      "title": "Regina Giovanna (Sorrento) – điểm bơi tự nhiên",
       "body": [
-        "Regina Giovanna (Bagni della Regina Giovanna) gần Sorrento là một hồ tắm tự nhiên giữa đá. Miễn phí, thường mát hơn Positano và là một chuyến đi thú vị nếu bạn muốn trải nghiệm khác.",
-        "Mang giày nước và đồ ăn nhẹ — gần như không có dịch vụ. Dùng %LINK:reginaGiovannaBath|hướng dẫn Regina Giovanna% để xem đường vào."
+        "Regina Giovanna là điểm bơi tự nhiên hơn là một ngày beach club. Có thể là chuyến phiêu lưu vui (miễn phí) nếu bạn chịu đi bộ và mang đồ cần thiết. Mang giày có thể ướt và hạn chế đồ giá trị."
       ]
     },
     {
       "id": "amalfi-beaches",
-      "title": "Beach club ở Amalfi",
+      "title": "Beach club ở thị trấn Amalfi",
       "body": [
-        "Marina Grande ở Amalfi là bãi chính trong thị trấn, kiểu lido cổ điển (tắm tráng, dù, đồ ăn). Mùa cao điểm rất nhanh hết chỗ — hãy đặt trước nếu bạn chắc chắn đi Amalfi trong ngày."
+        "Marina Grande ở Amalfi tiện cho nửa ngày gần biển nếu bạn đã ghé thị trấn. Mùa cao điểm giá rất cao, nên cân nhắc đặt ghế trước."
       ]
     },
     {
       "id": "logistics",
-      "title": "Cách đi/ về bãi biển",
+      "title": "Đi biển và quay về",
       "body": [
-        "Đi Fornillo và Spiaggia Grande, đa số khách đi bộ xuống từ hostel qua Viale Pasitea. Nếu leo về quá “căng”, hãy đi dọc bờ biển tới Spiaggia Grande rồi bắt bus nội bộ lên Chiesa Nuova (sau đó đi bộ ngắn về Hostel Brikette).",
-        "Arienzo và Laurito thường phụ thuộc thuyền shuttle riêng từ Spiaggia Grande. Luôn kiểm tra chuyến cuối quay về trước khi đi (đặc biệt nếu canh hoàng hôn). Đi Praiano, Furore, Sorrento hay Amalfi thì xem các guide liên quan để biết phương tiện và giờ."
+        "Từ hostel, cách nhanh nhất thường là: đi xuống Spiaggia Grande (đi bộ hoặc bus), rồi quyết định tiếp tục dọc promenade tới Fornillo, lên thuyền shuttle, hoặc ở lại bãi chính.",
+        "Nếu bạn có ngày beach club kèm transfer thuyền (Arienzo hoặc Laurito), thường dễ nhất là bắt đầu từ Spiaggia Grande để xếp hàng sớm và tránh leo nhiều bậc.",
+        "Mùa hè 2026, nhớ tính đến cái nóng khi leo dốc: đổ đầy nước trước khi đi lên lại, và nếu mệt thì dùng bus nội bộ thay vì leo hết.",
+        "Với các chuyến đi trong ngày (Praiano, Amalfi, Sorrento), hãy kiểm tra chuyến về cuối cùng trước khi quyết. Ferry là lựa chọn dễ chịu nhất khi chạy, nhưng bus là phương án dự phòng. Nếu biển động hoặc ferry bị hủy, hãy chừa thêm thời gian và giữ lịch linh hoạt. Mang snack cho chuyến đi."
       ]
     },
     {
       "id": "comparison-table",
       "title": "Bảng so sánh bãi biển",
       "body": [
-        "Dùng bảng bên dưới như công cụ quyết định nhanh. Bảng so sánh theo vibe, giá ghế nằm và việc thường có khu công cộng hay không (thường được ghi là “spiaggia libera”).",
-        "Giá thay đổi khá nhiều theo mùa và theo đơn vị vận hành — coi các con số là tham khảo. Muốn tiết kiệm, hãy hỏi giá trước khi ngồi xuống."
-      ]
-    }
-  ],
-  "prosCons": [
-    {
-      "title": "Fornillo",
-      "guideKey": "fornilloBeachGuide",
-      "pros": [
-        "Ghế từ 15 €",
-        "Khu miễn phí rộng + có góc “bí mật”",
-        "Không khí thư giãn"
-      ],
-      "cons": [
-        "Đường leo về dốc",
-        "Ít bóng râm nếu không thuê"
-      ]
-    },
-    {
-      "title": "Spiaggia Grande",
-      "guideKey": "positanoMainBeachWalkDown",
-      "pros": [
-        "Toàn cảnh Positano rất “iconic”",
-        "Gần bến phà trung tâm",
-        "Có dải bãi công cộng"
-      ],
-      "cons": [
-        "Ghế đắt nhất",
-        "Rất đông vào giữa ngày"
-      ]
-    },
-    {
-      "title": "Arienzo",
-      "guideKey": "arienzoBeachClub",
-      "pros": [
-        "Nắng chiều lâu",
-        "Gói thường gồm ăn trưa + thuyền",
-        "View đẹp"
-      ],
-      "cons": [
-        "Hàng trăm bậc thang",
-        "Khó đi nếu không có shuttle của club"
-      ]
-    },
-    {
-      "title": "Laurito",
-      "pros": [
-        "Nắng muộn cuối ngày",
-        "Da Adolfo: điểm ăn trưa nổi tiếng",
-        "Dịch vụ “xịn” ở Villa Tre Ville"
-      ],
-      "cons": [
-        "Khu công cộng rất nhỏ",
-        "Đi lại phụ thuộc giờ water taxi"
-      ],
-      "guideKey": "lauritoBeachGuide"
-    },
-    {
-      "title": "Gavitella (Praiano)",
-      "guideKey": "gavitellaBeachGuide",
-      "pros": [
-        "Aperitivo lúc hoàng hôn",
-        "Sân hiên nhà hàng"
-      ],
-      "cons": [
-        "Không có khu miễn phí",
-        "Platform bê tông rất nóng"
-      ]
-    },
-    {
-      "title": "Marina di Praia",
-      "guideKey": "marinaDiPraiaBeaches",
-      "pros": [
-        "Vịnh cá chài rất duyên",
-        "Có đoạn miễn phí cạnh lido"
-      ],
-      "cons": [
-        "Bãi hẹp",
-        "Ít nắng hơn vào buổi sáng"
-      ]
-    },
-    {
-      "title": "Fiordo di Furore",
-      "guideKey": "fiordoDiFuroreBeachGuide",
-      "pros": [
-        "Vào cửa miễn phí",
-        "Nhảy vách đá",
-        "Hậu cảnh cây cầu độc đáo"
-      ],
-      "cons": [
-        "Bãi cực nhỏ",
-        "Nhanh đông"
-      ]
-    },
-    {
-      "title": "Regina Giovanna",
-      "guideKey": "reginaGiovannaBath",
-      "pros": [
-        "Hồ tắm tự nhiên miễn phí",
-        "Nước mát trong ngày nóng"
-      ],
-      "cons": [
-        "Không có dịch vụ",
-        "Đường vào nhiều đá"
-      ]
-    },
-    {
-      "title": "Amalfi Marina Grande",
-      "pros": [
-        "Nhiều lựa chọn beach club",
-        "Dễ đi bằng phà và bus"
-      ],
-      "cons": [
-        "Giá cao",
-        "Nên đặt trước mùa cao điểm"
+        "Dùng bảng này để so sánh vibe, khoảng giá ghế nằm và việc thường có khu miễn phí hay không. Giá thay đổi theo mùa và theo từng club, nên hãy xem như mức tham khảo."
       ]
     }
   ],
   "itemList": [
-    { "name": "Fornillo", "note": "Điểm người địa phương thích: ghế từ 15 € và hai khu miễn phí." },
-    { "name": "Spiaggia Grande", "note": "Bãi chính với view biểu tượng, club đắt và dải công cộng ở giữa." },
-    { "name": "Arienzo", "note": "Bãi kiểu terrace nắng đẹp: 300 bậc thang hoặc water taxi của club." },
-    { "name": "Laurito", "note": "Vịnh nhỏ có thuyền shuttle của Da Adolfo và Villa Tre Ville." },
-    { "name": "Gavitella", "note": "Platform ở Praiano hợp aperitivo hoàng hôn (gần như chỉ club)." },
-    { "name": "Marina di Praia", "note": "Vịnh làng chài có chút khu miễn phí và lido." },
-    { "name": "Fiordo di Furore", "note": "Vịnh dưới cầu rất ấn tượng: vào miễn phí nhưng chật." },
-    { "name": "Regina Giovanna", "note": "Điểm tắm “ẩn” ở Sorrento — miễn phí nhưng mang đủ đồ." },
-    { "name": "Amalfi Marina Grande", "note": "Dãy lido cổ điển ở Amalfi đối diện nhà thờ Duomo." }
+    {
+      "name": "Fornillo",
+      "note": "Bãi được người địa phương thích: ghế nằm €15 và 2 khu miễn phí."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Bãi chính: view biểu tượng, club đắt và có khu miễn phí trung tâm."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Bãi kiểu “terrace” rất nắng: 300 bậc hoặc water taxi của club."
+    },
+    {
+      "name": "Laurito",
+      "note": "Vịnh nhỏ với thuyền shuttle của Da Adolfo và Villa Tre Ville."
+    },
+    {
+      "name": "Gavitella",
+      "note": "Platform ở Praiano hợp aperitivo ngắm hoàng hôn (chỉ club)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Bãi làng chài: một mảng miễn phí nhỏ + lido."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Vịnh kịch tính dưới cầu: vào miễn phí nhưng chỗ ít."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Điểm bơi “ẩn” ở Sorrento—miễn phí nhưng cần tự chuẩn bị."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Dãy lido Amalfi cổ điển đối diện Duomo."
+    }
   ],
   "faqs": [
     {
-      "question": "Bãi biển nào ở Positano hợp nhất cho người đi tiết kiệm?",
-      "answer": "Fornillo là lựa chọn tiết kiệm nhất, với ghế từ 15 € và hai khu miễn phí — một ở cuối bãi và một góc “ẩn” gần đá. Không khí thư giãn và giá thấp khiến nơi này rất được khách hostel ưa thích."
+      "question": "Bãi nào ở Positano hợp người đi du lịch tiết kiệm?",
+      "answer": "Fornillo là lựa chọn “budget” nhất: ghế nằm có thể từ khoảng €15 và khu miễn phí lớn hơn bãi chính. Cũng yên hơn và được khách hostel thích."
     },
     {
-      "question": "Gần Positano có bãi biển miễn phí không?",
-      "answer": "Có. Hầu hết bãi đều có ít nhất một phần công cộng (thường có biển “spiaggia libera”), nhưng vị trí và độ rộng có thể thay đổi theo mùa. Ở Positano, Fornillo thường dễ tìm khu miễn phí rộng hơn."
+      "question": "Gần Positano có bãi miễn phí không?",
+      "answer": "Có. Hầu hết bãi đều có ít nhất một phần công cộng (thường ghi “spiaggia libera”), nhưng vị trí và cảm giác rộng/hẹp có thể thay đổi theo mùa. Ở Positano, Fornillo thường là nơi dễ tìm khu miễn phí lớn hơn."
     },
     {
       "question": "Đi Arienzo hoặc Laurito như thế nào?",
-      "answer": "Cách dễ nhất là đi thuyền shuttle từ Spiaggia Grande. Nếu đi bộ tới Arienzo sẽ phải xuống khoảng 300 bậc thang, còn Laurito gần như rất khó đi từ đường bộ. Muốn đơn giản, hãy đặt gói beach club có kèm transfer thuyền."
+      "answer": "Cả hai bãi dễ nhất nếu đi thuyền shuttle từ Spiaggia Grande. Arienzo có hàng trăm bậc thang nếu đi bộ; Laurito cũng hạn chế đường bộ. Muốn đơn giản, hãy đặt gói có kèm transfer thuyền."
     },
     {
       "question": "Nên tới bãi biển lúc mấy giờ?",
-      "answer": "Với các điểm đông như Fornillo và Spiaggia Grande, hãy tới khoảng 9–10 giờ để kiếm chỗ đẹp ở khu miễn phí. Fiordo di Furore rất nhỏ nên đầy nhanh — đi sớm hoặc tránh giờ cao điểm. Gavitella hợp nhất vào cuối chiều khi hoàng hôn rất đẹp."
+      "answer": "Với nơi đông như Fornillo và Spiaggia Grande, hãy tới trước 9–10h để lấy chỗ tốt ở khu miễn phí. Fiordo di Furore rất nhỏ nên nhanh kín — đi sớm hoặc tránh giờ cao điểm."
     },
     {
       "question": "Giá ghế nằm ở Positano khoảng bao nhiêu?",
-      "answer": "Giá rất khác nhau. Ở Fornillo, club rẻ có thể từ khoảng 15 €, còn ở Spiaggia Grande, mức trung bình thường từ khoảng 25 €. Deck premium như La Scogliera có thể 100–400 € cho set VIP. Gói Arienzo gồm ghế, ăn trưa và thuyền đưa đón thường từ khoảng 60 €."
+      "answer": "Tùy club và mùa. Club “budget” ở Fornillo có thể từ khoảng €15. Ở Spiaggia Grande, lựa chọn tầm trung thường từ khoảng €25. Deck premium có thể cao hơn nhiều. Gói Arienzo gồm transfer thuyền và đồ ăn có thể từ khoảng €60."
     },
     {
-      "question": "Có thể đi trong ngày tới các bãi ngoài Positano không?",
-      "answer": "Chắc chắn rồi. Praiano (Gavitella và Marina di Praia), vịnh kiểu fiord ở Furore, Regina Giovanna ở Sorrento và Marina Grande ở Amalfi đều có thể đi bằng bus SITA hoặc phà. Xem từng guide để biết đường đi và lịch chạy."
+      "question": "Có thể đi trong ngày tới bãi ngoài Positano không?",
+      "answer": "Có. Praiano (Gavitella và Marina di Praia), Fiordo di Furore, điểm bơi Regina Giovanna ở Sorrento và Amalfi đều là lựa chọn phổ biến bằng bus hoặc ferry. Xem các guide được link để chọn đường dễ nhất từ hostel."
     },
     {
-      "question": "Nên mang gì khi đi biển?",
-      "answer": "Mang giày nước (sỏi), kem chống nắng, bình nước tái sử dụng và một ít tiền mặt. Nếu nhắm khu miễn phí, mang thêm khăn/tấm lót dày, snack và thứ tạo bóng râm vì dịch vụ có thể hạn chế."
+      "question": "Nên mang gì ra biển?",
+      "answer": "Mang giày đi nước (sỏi), kem chống nắng, bình nước, và một ít tiền mặt. Nếu muốn khu miễn phí, mang khăn/tấm lót dày, snack và thứ tạo bóng râm."
     },
     {
       "question": "Bãi nào ngắm hoàng hôn đẹp nhất?",
-      "answer": "Gavitella ở Praiano nổi tiếng với aperitivo ngắm hoàng hôn — sân hiên nhà hàng có view rất đẹp khi mặt trời lặn. Laurito cũng thường có nắng muộn nhờ vị trí dọc bờ biển."
+      "answer": "Gavitella ở Praiano nổi tiếng với aperitivo lúc hoàng hôn. Laurito cũng có nắng muộn, nhất là khi đi thuyền shuttle và canh giờ đúng."
     }
   ],
   "gallery": [
     {
       "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Toàn cảnh bãi chính của Positano (Spiaggia Grande) với thị trấn trên vách đá phía sau",
-      "caption": "Spiaggia Grande (bãi chính)"
+      "alt": "Toàn cảnh bãi chính Positano (Spiaggia Grande) với thị trấn trên sườn vách đá phía sau",
+      "caption": "Spiaggia Grande (bãi chính)",
+      "credits": ["Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Bãi Fornillo ở Positano với dù dọc theo bờ",
-      "caption": "Fornillo (thường yên hơn + tiết kiệm hơn)"
+      "alt": "Bãi Fornillo ở Positano với ô dù dọc theo bờ biển",
+      "caption": "Fornillo (thường yên hơn + hợp ngân sách)",
+      "credits": ["Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Khu bãi Arienzo trên bờ biển Amalfi gần Positano",
-      "caption": "Arienzo (nắng chiều, thường đi thuyền shuttle)"
+      "alt": "Khu bãi Arienzo trên Bờ biển Amalfi gần Positano",
+      "caption": "Arienzo (nắng chiều, thường đi thuyền shuttle)",
+      "credits": ["Ảnh: villlamania (CC BY 3.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
       "alt": "Cây cầu Fiordo di Furore phía trên vịnh hẹp và mặt nước",
-      "caption": "Fiordo di Furore (vịnh ấn tượng)"
+      "caption": "Fiordo di Furore (vịnh kịch tính)",
+      "credits": ["Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/marina-di-praia.webp",
       "alt": "Vịnh Marina di Praia được bao quanh bởi vách đá và thuyền",
-      "caption": "Marina di Praia (Praiano)"
+      "caption": "Marina di Praia (Praiano)",
+      "credits": ["Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
     },
     {
       "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Góc nhìn rộng Positano và đường bờ biển từ ngoài khơi",
-      "caption": "Bờ biển Positano (chuẩn bị leo nhiều bậc thang)"
+      "alt": "Góc nhìn rộng từ biển về thị trấn Positano và đường bờ biển",
+      "caption": "Bờ biển Positano (nhiều bậc thang)",
+      "credits": ["Ảnh: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+      "alt": "Ô dù và người bơi dọc theo bờ biển Positano",
+      "caption": "Ô dù trên bãi Positano (vibe ngày đông)",
+      "credits": ["Ảnh: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
+    },
+    {
+      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+      "alt": "Người trên bãi với thuyền neo trong vịnh gần Positano",
+      "caption": "Thuyền trong vịnh (mang túi chống nước cho điện thoại)",
+      "credits": ["Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }
+

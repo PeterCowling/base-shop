@@ -1,105 +1,217 @@
 {
   "seo": {
-    "title": "Bản dịch đang được chuẩn bị.",
-    "description": "Bãi biển nhỏ ít người, cách đến và dịch vụ đi kèm."
+    "title": "Cẩm nang Marina di Praia: bus SITA, lido và bữa tối",
+    "description": "Hướng dẫn Marina di Praia cho khách hostel: đi bus SITA, chọn chỗ (lido vs khu miễn phí), mang gì theo và ăn tối ở đâu để về Positano không bị kẹt."
   },
-  "linkLabel": "Marina di Praia & Secluded Beaches",
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: vịnh nhỏ kẹp giữa vách đá",
   "intro": [
-    "Bản dịch đang được chuẩn bị."
+    "Marina di Praia là một vịnh sỏi nhỏ “ẩn mình” ở Praiano — đi bus SITA từ Hostel Brikette rất nhanh, và thường yên hơn nhiều so với các bãi biển nổi tiếng ở Positano. Thuyền đánh cá, tháp canh và lối đi đá tạo cảm giác bí mật nhưng vẫn có đồ ăn và dịch vụ ngay gần đó.",
+    "Nếu bạn muốn một ngày biển ít căng thẳng (bơi, ăn nhẹ, ngủ trưa trong bóng râm rồi ăn tối gọn gàng), đây là một trong những lựa chọn gần hostel đáng nhất.",
+    "Bài này hướng dẫn đường bus, bố cục bãi (lido vs khu miễn phí), đồ nên mang để thoải mái trên bãi sỏi, và cách đơn giản nhất để quay về Positano sau hoàng hôn."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Vì sao nên đi" },
+    { "href": "#getting-there", "label": "Cách đi" },
+    { "href": "#layout", "label": "Bố cục & dịch vụ" },
+    { "href": "#what-to-bring", "label": "Nên mang gì" },
+    { "href": "#best-time", "label": "Thời điểm đẹp nhất" },
+    { "href": "#nearby", "label": "Chỗ bơi yên tĩnh gần đó" },
+    { "href": "#evening", "label": "Ăn tối & về lại" }
   ],
   "sections": [
     {
-      "id": "marina",
-      "title": "Bản dịch đang được chuẩn bị.",
+      "id": "why-go",
+      "title": "Vì sao vịnh này hợp với khách hostel",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Khác với Spiaggia Grande hay Fornillo, vịnh này nằm trong một khe hẹp ngay ngoài Praiano. Vách đá che sóng, thuyền cá neo trong vịnh nhỏ và không khí vẫn khá “low key” ngay cả mùa cao điểm.",
+        "Đây là lựa chọn “ở giữa” rất hợp lý: thoải mái hơn các vịnh hoang dã phải leo nhiều bậc thang, nhưng ít hỗn loạn hơn các bãi cát lớn ở Positano. Có tắm tráng và đồ ăn, nhưng vẫn giữ cảm giác nằm giữa vách đá chứ không phải giữa phố.",
+        "Bạn có thể đi nửa ngày (bơi buổi sáng + ăn trưa lâu) hoặc đi chiều muộn rồi ăn tối sát biển trước khi quay về."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Toàn cảnh vịnh Marina di Praia với thuyền, ô che nắng và vách đá ở Praiano",
+          "caption": "Kín gió, phong cảnh ấn tượng và thường yên hơn các bãi lớn ở Positano. Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "coves",
-      "title": "Nearby coves",
+      "id": "getting-there",
+      "title": "Đi và về bằng bus SITA",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Từ Hostel Brikette, đi xuống Via Pasitea tới trạm Sponda và bắt bus SITA hướng Amalfi. Nói với tài xế bạn muốn xuống “Marina di Praia” để họ nhớ dừng — trạm nằm giữa Praiano và Furore nên lúc bus đông rất dễ bị lướt qua.",
+        "Xuống ở trạm có biển chỉ dẫn, rồi đi theo đường đá xuống dốc (khoảng 2 phút) tới bờ biển. Đường được lát nên đi dép cũng ổn.",
+        "Lúc về, băng qua đường sang phía đối diện và đợi bus về Positano. Mùa hè thường có tần suất khá ổn, nhưng tối muộn sẽ thưa — xem bảng giờ khi bạn đến và cố gắng bắt chuyến áp chót nếu bạn ở lại ăn tối.",
+        "Mua và validate vé SITA trước khi lên xe. Nếu bạn cần nhớ lại loại vé, chỗ mua và xử lý khi bus chạy qua vì quá tải, xem %LINK:sitaTickets|hướng dẫn vé SITA%. Nếu bạn muốn kết hợp đi biển với dạo Praiano (nhà thờ, viewpoint, đường ven biển), ghép thêm %LINK:praianoGuide|hướng dẫn Praiano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Lối đi đá sát bờ ở Marina di Praia với thuyền và vách đá dựng",
+          "caption": "Đoạn 2 phút cuối xuống biển rất dễ đi nhờ lối đi đá. Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Nhà thờ San Gennaro ở Praiano với mái vòm lát gạch và view nhìn ra Amalfi Coast",
+          "caption": "Nếu kết hợp đi biển với dạo Praiano, nhà thờ San Gennaro là điểm ghé rất tiện. Ảnh: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
       ]
     },
     {
-      "id": "logistics",
-      "title": "Getting there",
+      "id": "layout",
+      "title": "Bố cục bãi: lido và tiện ích",
       "body": [
-        "Bản dịch đang được chuẩn bị.",
-        "Bản dịch đang được chuẩn bị."
+        "Bãi hẹp, nền sỏi và chia thành một dải miễn phí nhỏ cùng khu lido chính. Muốn ngồi khu miễn phí sát nước thì nên đến sớm — cuối tuần sẽ hết chỗ nhanh nhất.",
+        "Nhà khai thác chính là Marina di Praia Beach Club (ghế nằm, ô, tắm tráng và thường có thuê paddle/kayak). Mùa cao điểm bạn trả tiền chủ yếu để “đỡ phiền”, nhưng rất đáng nếu bạn cần nhà vệ sinh và một ngày kiểu “đặt đồ xuống rồi thư giãn”.",
+        "Dọc lối đi có nhà hàng và kiosk đồ uống lạnh. Máy quẹt thẻ đôi khi trục trặc, nên có chút tiền mặt cho khoản nhỏ và có phương án dự phòng nếu kiosk bán vé bus đóng cửa về tối.",
+        "Thực tế hostel: đừng mang đồ giá trị khiến bạn lo. Nếu đi một mình, chọn chỗ dễ quan sát (gần nhóm khác), cất điện thoại trong túi có khóa kéo và bơi theo lượt ngắn thay vì bỏ đồ không ai trông quá lâu."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia nhìn từ biển với bãi sỏi và lối đi men theo chân vách đá",
+          "caption": "Nhìn từ nước sẽ thấy vịnh khá “nhỏ gọn” — muốn chỗ miễn phí thì nên đi sớm. Ảnh: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Nên mang gì (để bãi sỏi không phá mood)",
+      "body": [
+        "Đây là bãi sỏi, không phải cát mềm. Sự khác biệt rất lớn: chỉ có khăn mỏng thì bạn sẽ phải xoay xở liên tục thay vì nằm thư giãn.",
+        "Hãy pack như một chuyến day trip từ hostel: đủ nhẹ để mang về dốc, nhưng có vài món giúp bạn thoải mái trên sỏi và trong bóng râm."
+      ],
+      "list": [
+        "Giày nước: mép nước có thể trơn, sỏi nằm lâu sẽ đau chân.",
+        "Thảm/khăn dày: sỏi sẽ thấy “cứng” rất nhanh.",
+        "Áo mỏng cho chiều muộn: vách đá tạo bóng sớm và sau khi bơi sẽ mát hơn.",
+        "Tiền mặt + thẻ: đề phòng khoản nhỏ và máy quẹt lỗi.",
+        "Dry bag hoặc túi zip nhỏ cho điện thoại nếu bạn hay xuống nước."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Đường bờ Praiano với vách đá và biển xanh ở Amalfi Coast",
+          "caption": "Vách đá làm ánh sáng và bóng thay đổi nhanh — mang áo mỏng nếu bạn ở lại tới tối. Ảnh: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Thời điểm đẹp nhất (và cảm giác nước)",
+      "body": [
+        "Muốn một ngày êm và dễ, hãy đến buổi sáng. Bạn dễ kiếm chỗ đẹp, ít đông trên lối đi và nhịp “đặt base rồi bơi” mượt hơn.",
+        "Từ trưa/chiều muộn, vách đá tạo nhiều bóng hơn. Rất hợp khi bạn nóng, nhưng cũng có thể khiến vịnh cảm giác lạnh hơn khi có gió — nhất là sau khi bơi lâu.",
+        "Bãi xuống sâu khá nhanh: lần đầu xuống nước hãy chậm rãi và để ý chỗ đặt túi nếu sóng dạt lên cao."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "View dọc bờ Praiano với vách đá và nhà trên sườn đồi",
+          "caption": "Ở đây vách đá quyết định ánh sáng và bóng — lên lịch theo điều đó. Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "Chỗ bơi yên tĩnh gần đó (thực tế)",
+      "body": [
+        "Amalfi Coast nổi tiếng có “vịnh bí mật”, nhưng nhiều nơi là tư nhân, chỉ đi được bằng thuyền hoặc phải đi đường vách đá khá nguy hiểm. Với khách hostel, chiến lược tốt nhất là dùng vịnh này làm base thoải mái và thêm một điểm “wow” ngắn trên cùng tuyến bus.",
+        "Điểm gần và ấn tượng nhất là %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: đi sớm để chụp ảnh và bơi nhanh, rồi quay lại đây ăn trưa, tránh nắng và bơi thư thả hơn.",
+        "Nếu bạn muốn “đi nhiều bãi trong một ngày”, hãy lên thứ tự (và giờ bus) bằng %LINK:beachHoppingAmalfi|hướng dẫn beach-hopping Amalfi Coast% để không mất cả buổi chiều nhìn bus đông chạy qua."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Hẻm núi Fiordo di Furore với nước xanh ngọc và vách đá cao",
+          "caption": "Fiordo di Furore là điểm “chụp ảnh choáng ngợp” gần đây — nên ghép với một bãi base yên hơn. Ảnh: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Ăn tối sát biển, rồi về lại không căng thẳng",
+      "body": [
+        "Đây là một trong những vịnh đẹp nhất để ở lại sau khi bơi: khi mặt trời xuống, nhà hàng chuyển sang phục vụ bữa tối và đèn trên lối đi phản chiếu xuống mặt nước. Nếu bạn muốn một bàn cụ thể, nên đặt trước — đặc biệt tháng 7–8.",
+        "Để về dễ, hãy xem giờ bus ngay khi bạn đến. Nếu bạn ở lại ăn tối, nên nhắm chuyến áp chót về Positano để có “buffer” nếu một chuyến quá tải.",
+        "Nếu lỡ chuyến cuối, taxi từ Praiano về Positano khá đắt — nếu ở lại muộn, hãy rủ bạn cùng hostel chia tiền."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Tháp canh ven biển gần Praiano nằm trên vách đá nhìn ra biển",
+          "caption": "Dọc bờ biển này có nhiều tháp cổ và đường mòn ven vách đá. Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
       ]
     }
   ],
-  "tips": [
-    "Bản dịch đang được chuẩn bị.",
-    "Bản dịch đang được chuẩn bị."
+  "essentialsTitle": "Bạn sẽ gặp gì",
+  "essentials": [
+    "Đi bus SITA từ Positano rất nhanh; nhờ tài xế dừng ở Marina di Praia rồi đi xuống khoảng 2 phút tới biển.",
+    "Vịnh sỏi hẹp với một khu lido chính và một dải miễn phí nhỏ; muốn chỗ miễn phí thì nên đi sớm.",
+    "Có ăn uống và tiện ích ngay tại chỗ (nhà hàng, đồ uống, tắm tráng ở lido) — hợp cho nửa ngày thư giãn hoặc ăn tối rồi về."
   ],
+  "typicalCostsTitle": "Chi phí thường gặp",
+  "typicalCosts": [
+    "Ghế nằm + ô tại Marina di Praia Beach Club: €25–€35/ngày (có set 2 người).",
+    "Thuê kayak: khoảng €20/giờ cho 2 người.",
+    "Món chính ở Da Armandino hoặc Il Pirata: €16–€28 tùy cá và pasta đặc biệt."
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Validate vé bus ngay khi lên xe và giữ sẵn một vé cho lượt về phòng trường hợp kiosk đóng cửa buổi tối.",
+    "Mang giày nước — sỏi có thể trơn và bãi xuống sâu nhanh.",
+    "Xem thêm lựa chọn khác trong %LINK:positanoBeaches|tổng quan các bãi biển% nếu bạn muốn ghép vịnh này với một ngày ở Positano."
+  ],
+  "warningsTitle": "Lưu ý",
+  "warnings": [
+    "Không gian hạn chế: khu miễn phí đầy trước và ghế lido có thể hết vào cuối tuần.",
+    "Vách đá che nắng trực tiếp từ giữa chiều — mát hơn nhưng có thể hơi lạnh khi có gió.",
+    "Sóng điện thoại có thể yếu trong khe vách đá: tải sẵn giờ bus hoặc xác nhận đặt bàn trước."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về Marina di Praia",
   "faqs": [
     {
-      "q": "Is the beach free?",
+      "q": "Ở Positano thì bắt bus ở đâu?",
       "a": [
-        "Bản dịch đang được chuẩn bị."
+        "Bắt bus ở trạm Sponda trên Via Pasitea cho tuyến hướng Amalfi. Từ hostel đi bộ xuống khoảng 10 phút; mùa cao điểm nên đến sớm 10 phút để kịp lên xe trước khi đông."
       ]
     },
     {
-      "q": "Can I walk from Positano?",
+      "q": "Có khu miễn phí không, hay bắt buộc thuê lido?",
       "a": [
-        "Bản dịch đang được chuẩn bị."
+        "Có một dải công cộng nhỏ ở giữa vịnh. Nên mang thảm hoặc khăn dày vì sỏi khá thô, và có thể phải dịch gần đá hơn khi thủy triều thay đổi. Thuê ghế ở Marina di Praia Beach Club có kèm tắm tráng và nhà vệ sinh nếu bạn muốn thoải mái hơn."
+      ]
+    },
+    {
+      "q": "Ăn tối xong muộn nhất mấy giờ thì vẫn về được Hostel Brikette?",
+      "a": [
+        "Giờ chuyến SITA cuối về Positano thay đổi theo tháng, nhưng mùa hè thường chạy tới khoảng 21:30. Hãy xem bảng giờ khi đến và nhắm chuyến áp chót phòng trường hợp một chuyến quá tải. Sau chuyến cuối, taxi Praiano → Positano khoảng €35–€45, nên chia cùng bạn đồng hành nếu ở lại lâu."
+      ]
+    },
+    {
+      "q": "Đi một mình có ổn không?",
+      "a": [
+        "Ổn — đây là một trong những vịnh “dễ đi solo” vì có dịch vụ và lối đi khá dễ quan sát. Tuy vậy hãy dùng “hostel common sense”: mang tối giản, cất điện thoại an toàn và bơi theo lượt ngắn để không bỏ đồ không ai trông quá lâu."
       ]
     }
-  ],
-  "toc": [
-    {
-      "href": "#why-go",
-      "label": "Why go"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Getting there"
-    },
-    {
-      "href": "#layout",
-      "label": "Layout & services"
-    },
-    {
-      "href": "#evening",
-      "label": "Stay for dinner"
-    }
-  ],
-  "essentialsTitle": "What to expect",
-  "essentials": [
-    "20 phút đi xe buýt SITA từ Positano; yêu cầu dừng Marina di Praia và đi bộ xuống dốc hai phút.",
-    "Bãi biển sỏi hẹp có một lido chính cộng với một phần nhỏ trống ở giữa.",
-    "Các nhà hàng và quán ăn nhẹ nằm dọc lối đi - lý tưởng cho bữa tối lúc hoàng hôn trước khi về nhà."
-  ],
-  "typicalCostsTitle": "Typical costs",
-  "typicalCosts": [
-    "Ghế dài + ô tại Câu lạc bộ bãi biển Marina di Praia: €25–€35 một ngày (có sẵn bộ dành cho hai người).",
-    "Thuê thuyền kayak: khoảng €20 một giờ cho hai người.",
-    "Bữa tối chính tại Da Armandino hoặc Il Pirata: €16–€28 tùy thuộc vào món đặc sản đánh bắt và mì ống."
-  ],
-  "tipsTitle": "Quick tips",
-  "warningsTitle": "Good to know",
-  "warnings": [
-    "Không gian có hạn; khu vực miễn phí sẽ kín chỗ trước và ghế nằm lido bán hết vào cuối tuần.",
-    "Các vách đá chắn ánh nắng trực tiếp vào giữa buổi chiều - rất tốt để hạ nhiệt nhưng có thể cảm thấy lạnh vào những ngày nhiều gió.",
-    "Khả năng thu sóng di động chìm trong hẻm núi; tải trước lịch trình xe buýt hoặc xác nhận đặt chỗ ăn tối."
-  ],
-  "faqsTitle": "Marina di Praia FAQs",
-  "gallery": {
-    "title": "Cảnh Marina di Praia",
-    "items": [
-      {
-        "alt": "Bãi biển và bến thuyền Marina di Praia",
-        "caption": "Bãi biển sỏi nằm trong hẻm núi giữa các vách đá"
-      },
-      {
-        "alt": "Nhà hàng ven bờ với đèn vào buổi tối",
-        "caption": "Các nhà hàng dọc lối đi sáng đèn lúc hoàng hôn"
-      }
-    ]
-  }
+  ]
 }
+

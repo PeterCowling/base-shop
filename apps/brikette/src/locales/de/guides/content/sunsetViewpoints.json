@@ -73,18 +73,5 @@
         "Die Straßenbeleuchtung variiert – nimm eine Handy-Taschenlampe oder ein kleines Licht für späte Abstiege mit."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotogalerie",
-    "items": [
-      {
-        "caption": "Terrasse Chiesa Nuova",
-        "alt": "Sonnenuntergang von der Terrasse Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Sonnenuntergang über Nocelle"
-      }
-    ]
-  }
+  ]
 }

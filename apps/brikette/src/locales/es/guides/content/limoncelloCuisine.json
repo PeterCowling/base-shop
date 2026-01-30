@@ -60,18 +60,5 @@
         "Coloca botellas de más de 100 ml en equipaje facturado, acolchadas entre ropa, o pide envío desde la tienda si prefieres evitar el peso."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galería de fotos",
-    "items": [
-      {
-        "alt": "Cartel vintage de Positano con limones",
-        "caption": "Póster vintage"
-      },
-      {
-        "alt": "Mesa en terraza con copas de limoncello",
-        "caption": "Limoncello en la terraza"
-      }
-    ]
-  }
+  ]
 }

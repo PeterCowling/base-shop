@@ -84,23 +84,6 @@
       "note": "Bäckerei für Delizia al limone, Babà al limoncello und Gebäck to-go für Picknicks an den Klippen."
     }
   ],
-  "gallery": {
-    "title": "Gerichte im Fokus",
-    "items": [
-      {
-        "alt": "Meeresfrüchte-Pasta mit Zitronen der Amalfiküste",
-        "caption": "Meeresfrüchte-Klassiker aus Positanos Trattorien"
-      },
-      {
-        "alt": "Delizia al limone auf einem Teller",
-        "caption": "Zitronendesserts zum Probieren"
-      },
-      {
-        "alt": "Freunde stoßen mit Limoncello zum Sonnenuntergang an",
-        "caption": "Digestivi mit Aussicht"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

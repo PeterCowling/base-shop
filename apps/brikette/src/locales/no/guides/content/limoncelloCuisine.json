@@ -52,18 +52,5 @@
         "Uåpnet holder den 1–2 år; åpnet bør drikkes innen seks måneder for best smak."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Bildegalleri",
-    "items": [
-      {
-        "alt": "Vintageplakat fra Positano med sitroner",
-        "caption": "Vintage-sitroner"
-      },
-      {
-        "alt": "Terrassebord med limoncelloglass",
-        "caption": "Limoncello på terrassen"
-      }
-    ]
-  }
+  ]
 }

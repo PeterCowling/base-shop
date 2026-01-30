@@ -61,19 +61,6 @@
       "note": "Stock up on fruit, large water bottles, and snacks for terrace picnics."
     }
   ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Panini from a local deli",
-        "caption": "Panini & deli"
-      },
-      {
-        "alt": "Picnic with Positano view",
-        "caption": "Picnic viewpoints"
-      }
-    ]
-  },
   "faqs": [
     {
       "q": "Can I refill water for free?",

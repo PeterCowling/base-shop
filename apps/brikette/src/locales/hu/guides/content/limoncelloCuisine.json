@@ -52,18 +52,5 @@
         "Próbáld ki a friss limonádét, a granitát vagy citromszirupokat, ha kerülnéd az alkoholt."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotógaléria",
-    "items": [
-      {
-        "alt": "Positano régi plakát citromokkal",
-        "caption": "Vintage citromok"
-      },
-      {
-        "alt": "Teraszasztal limoncellós poharakkal",
-        "caption": "Teraszon kortyolt limoncello"
-      }
-    ]
-  }
+  ]
 }

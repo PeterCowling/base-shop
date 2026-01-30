@@ -53,10 +53,5 @@
         "Cela dépend de la distance et du volume à transporter ; confirmez le tarif avant de commencer."
       ]
     }
-  ],
-  "galleryTitle": "Galerie photo",
-  "gallery": {
-    "standsCaption": "Postes de porteurs (exemple)",
-    "cartsCaption": "Chariots de porteurs"
-  }
+  ]
 }

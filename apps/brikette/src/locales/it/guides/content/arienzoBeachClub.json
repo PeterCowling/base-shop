@@ -10,15 +10,42 @@
     "Questa guida è pensata per chi viaggia in ostello: cosa prenotare, come si sentono davvero quei ~300 gradini, come funziona la barca shuttle da Spiaggia Grande, cosa mettere nello zaino per non soffrire in salita e come rientrare senza stress."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Perché Arienzo" },
-    { "href": "#when-to-go", "label": "Quando andare" },
-    { "href": "#getting-there", "label": "Come arrivare" },
-    { "href": "#stairs", "label": "Scale e accessibilità" },
-    { "href": "#layout", "label": "Aree e servizi" },
-    { "href": "#packages", "label": "Pacchetti e pranzo" },
-    { "href": "#what-to-pack", "label": "Cosa portare" },
-    { "href": "#sea-conditions", "label": "Se la barca si ferma" },
-    { "href": "#heading-back", "label": "Come tornare" }
+    {
+      "href": "#why-go",
+      "label": "Perché Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Quando andare"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Come arrivare"
+    },
+    {
+      "href": "#stairs",
+      "label": "Scale e accessibilità"
+    },
+    {
+      "href": "#layout",
+      "label": "Aree e servizi"
+    },
+    {
+      "href": "#packages",
+      "label": "Pacchetti e pranzo"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Cosa portare"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Se la barca si ferma"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Come tornare"
+    }
   ],
   "sections": [
     {
@@ -204,11 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Foto highlights di Arienzo",
-  "gallery": {
-    "primaryAlt": "Spiaggia di Arienzo e beach club sotto la scogliera",
-    "primaryCaption": "Spiaggia di ciottoli con ombrelloni arancioni sotto le scogliere",
-    "secondaryAlt": "Terrazza pranzo all’Arienzo Beach Club",
-    "secondaryCaption": "Tavoli vista mare sotto ombrelloni arancione‑bianchi"
-  }
+  "galleryHeading": "Foto highlights di Arienzo"
 }

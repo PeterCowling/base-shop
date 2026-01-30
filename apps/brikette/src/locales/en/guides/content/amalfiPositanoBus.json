@@ -1,29 +1,152 @@
 {
   "seo": {
     "title": "Amalfi to Positano by Bus | Hostel Brikette",
-    "description": "SITA bus Amalfi to Positano: boarding points, ticket tips, timetable notes, and where to get off for Hostel Brikette (Chiesa Nuova)."
+    "description": "Complete guide to the SITA bus from Amalfi to Positano: boarding points, 2026 fares (€2.60), timetables, and where to get off for Hostel Brikette."
   },
-  "intro": {
-    "title": "Amalfi to Positano — Bus (SITA Sud)",
-    "body": "Use this guide to travel from Amalfi to Positano by SITA bus. It covers where to board in Amalfi, ticket validation, how to read the timetable, and where to get off for the shortest walk to the hostel."
-  },
+  "intro": [
+    "The SITA Sud bus (Route 5070) is the most affordable way to travel from Amalfi to Positano, costing €2.60 for a single journey. This guide covers everything hostel guests need to know: where to board in Amalfi, how to buy tickets, journey times, and crucially, which stop to get off at for the shortest walk to %LINK:chiesaNuovaArrivals|Hostel Brikette in Chiesa Nuova%.",
+    "Updated for the 2026 season with current fares and practical tips from staff who've guided hundreds of guests through this journey."
+  ],
   "callouts": {
-    "aside": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferries, taxis, and mixed itineraries."
+    "aside": "Need other transport options? Open the %LINK:howToGetToPositano|How to Get Here overview% for ferries, taxis, and mixed itineraries."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Journey overview",
-      "body": "The direct SITA bus from Amalfi to Positano runs frequently in season. Expect a scenic coastal ride of around an hour depending on traffic."
+      "body": [
+        "The SITA bus from Amalfi to Positano takes 30-40 minutes depending on traffic and stops. You'll board at Piazza Flavio Gioia in Amalfi (the main waterfront bus terminal) and travel along the stunning Amalfi Coast road with dramatic coastal views.",
+        "For Hostel Brikette, get off at the Chiesa Nuova stop—not Positano Centro. Chiesa Nuova is the first stop in Positano, roughly 10 minutes before the main town. From there, it's a 5-minute walk downhill to the hostel. Staying on until Positano Centro means a steep 20-minute uphill walk back.",
+        "Buses run frequently in summer (every 30-60 minutes) but less often in winter. Always check the current timetable before traveling, especially outside peak season."
+      ]
     },
     {
       "id": "boarding",
-      "title": "Where to board in Amalfi"
+      "title": "Where to board in Amalfi",
+      "body": [
+        "All SITA buses to Positano depart from Piazza Flavio Gioia, Amalfi's main bus terminal located on the waterfront between the two ferry piers. You can't miss it—it's directly in front of the tunnel entrance to Amalfi town.",
+        "Look for the SITA bus bays marked with route numbers. Route 5070 serves Amalfi-Positano-Sorrento. The stop is clearly signed, and you'll see other travelers waiting. Arrive 10 minutes early in summer, as buses can fill up and occasionally skip full stops.",
+        "Bar Sita, located right at Piazza Flavio Gioia, is a convenient spot to buy tickets and check posted timetables while waiting."
+      ]
     },
     {
       "id": "tickets",
-      "title": "Tickets and timetable",
-      "body": "Check the latest schedule on %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Use the notes below to read the grid correctly."
+      "title": "Tickets and fares (2026)",
+      "body": [
+        "A single ticket from Amalfi to Positano costs €2.60 (AC2 fare level). Tickets must be purchased before boarding—the driver cannot sell you a ticket. Buy them at Bar Sita (Piazza Flavio Gioia), any tabaccheria (tobacco shop), newsstand, or café displaying the SITA logo.",
+        "If you're planning multiple bus trips in one day, consider the COSTIERASITA 24-hour pass for €10, which gives unlimited rides on all SITA Sud buses across the Amalfi Coast. It pays for itself after four rides.",
+        "Always validate your ticket in the yellow machine as you board the bus. Inspectors do check tickets, and fines for unvalidated or missing tickets are steep (typically €50+).",
+        "Check the latest schedule on %URL:https://www.positano.com/en/bus-schedule|Positano.com% or %URL:https://www.sitasudtrasporti.it|SITA Sud's official site%. Timetables change seasonally, with reduced services from November to March."
+      ]
+    },
+    {
+      "id": "chiesa-nuova-stop",
+      "title": "Getting off at Chiesa Nuova for the hostel",
+      "body": [
+        "This is critical: ask the driver or a local passenger to tell you when you reach Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). It's the first official stop in Positano, about 10 minutes before the town center. The stop is marked with a SITA sign and shelter.",
+        "Press the stop button as soon as you see the Chiesa Nuova sign or recognize the cluster of buildings at the hilltop. The driver will stop on the main road (Via Cristoforo Colombo). If you're unsure, tell the driver when boarding: \"Chiesa Nuova, per favore\" (please, Chiesa Nuova). Most drivers are helpful and will signal or announce your stop.",
+        "From the Chiesa Nuova stop, it's a 5-minute downhill walk to Hostel Brikette. For detailed walking directions from the stop, see our %LINK:chiesaNuovaArrivals|Chiesa Nuova arrival guide%.",
+        "Many first-time visitors accidentally stay on until Positano Centro, which means backtracking uphill with luggage—not fun on a hot day. Set a reminder on your phone 25 minutes after departure to start watching for Chiesa Nuova. If you have offline maps (Maps.me or Google Maps offline mode), follow your GPS location—Chiesa Nuova is at approximately 40.6270°N, 14.4851°E.",
+        "Visual cues for Chiesa Nuova: you'll see a cluster of buildings on both sides of the road, a church with a distinctive bell tower on the right, and several shops and cafés. The bus stop has a covered shelter and usually a few people waiting. It's at a relatively flat section of the road before the dramatic descent into Positano proper.",
+        "If you're traveling with a group, designate one person to watch for the stop. It's easy to miss if you're chatting or distracted by the views. Ask your hostel to send a WhatsApp message with the exact stop location before you travel—staff can share a photo or map pin."
+      ]
+    },
+    {
+      "id": "what-to-expect",
+      "title": "What to expect on the bus",
+      "body": [
+        "SITA buses on the Amalfi Coast are standard coaches, not luxury vehicles. In summer, expect standing room only on popular routes and times. The ride is scenic but winding—if you're prone to motion sickness, sit near the front and look at the horizon.",
+        "There's limited space for large backpacks and suitcases. If the luggage hold is full, you'll need to keep your bag with you. Travel light if possible, or consider using the hostel's %LINK:porterServices|porter service% to send your bags ahead.",
+        "The driver takes tight corners confidently (they do this route daily). Don't panic when the bus seems to skim cliff edges—it's normal, and accidents are extremely rare. These drivers navigate the route multiple times daily and have seen every possible scenario.",
+        "No toilets on board, so use facilities in Amalfi before boarding. The journey is short, but good to know if traveling with kids. There's a public toilet near Piazza Flavio Gioia in Amalfi (usually €0.50), or Bar Sita has facilities for customers.",
+        "The bus stops at multiple points between Amalfi and Positano, including Praiano. Each stop adds 2-5 minutes to the journey. If someone requests a stop between official stops, the driver may pull over briefly—this is normal. Just stay in your seat unless it's your stop.",
+        "Air conditioning exists but isn't always effective when the bus is packed and doors open frequently. In July and August, carry water and dress in light, breathable clothing. A small handheld fan can be a lifesaver on a stationary, crowded bus.",
+        "The best views are from the right side of the bus (as you face forward) when traveling from Amalfi to Positano. You'll see the full sweep of the coastline, terraced lemon groves, and dramatic cliff drops to the sea. Left side gives you mountain views and glimpses into villages."
+      ]
+    },
+    {
+      "id": "tips-from-staff",
+      "title": "Tips from hostel staff",
+      "body": [
+        "\"We tell guests to avoid the 12:00-14:00 buses in summer if possible—those are peak tourist hours and buses often pass by full stops. Early morning (before 10:00) or late afternoon (after 16:00) are usually less crowded.\" — Brikette reception",
+        "\"Keep small bills or coins for the ticket machine. Some tobacco shops only accept cash, and you don't want to miss your bus hunting for change.\" — Luca, hostel manager",
+        "\"Screenshot the timetable or save it offline. Mobile signal can be patchy on the coast road, and you'll want to know your backup departure times.\" — Sofia, front desk",
+        "\"If you miss your stop and end up in Positano Centro, don't stress. You can either walk back uphill (20 minutes) or catch the next bus back to Chiesa Nuova (same €2.60 ticket). We've all done it!\" — Marco, volunteer"
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative routes",
+      "body": [
+        "If the bus schedule doesn't match your needs, consider the %LINK:amalfiPositanoFerry|Amalfi-Positano ferry% (April-October only, €12-18). It's faster, more scenic, and drops you at Positano's Spiaggia Grande, from where you can catch a local bus or taxi to Chiesa Nuova.",
+        "Taxis from Amalfi to Chiesa Nuova cost around €50-70 (negotiate beforehand). Worth considering if you're traveling with 3-4 people or have heavy luggage.",
+        "For detailed information on reaching Positano from other cities, see our comprehensive %LINK:howToGetToPositano|How to Get to Positano guide%."
+      ]
+    },
+    {
+      "id": "common-mistakes",
+      "title": "Common mistakes to avoid",
+      "body": [
+        "**Buying tickets on arrival day from Naples or Salerno:** If you're coming from Naples Airport or Salerno station, remember you'll need separate tickets for each leg. The SITA 24-hour pass (€10) is often the smartest choice if arriving from outside the coast, as it covers your connection from Salerno or Sorrento plus several local trips.",
+        "**Not validating tickets:** Even if you bought your ticket, you must stamp it in the yellow validation machine as you board. Inspectors patrol regularly, especially in summer, and won't accept \"I forgot\" as an excuse. Fines start at €50.",
+        "**Waiting at the wrong stop:** In Amalfi, there are multiple bus bays at Piazza Flavio Gioia. Make sure you're waiting for Route 5070 (direction Positano-Sorrento), not routes heading inland or to Salerno. Check the electronic display or ask a local if unsure.",
+        "**Bringing unsuitable luggage:** Hard-shell roller suitcases are difficult on crowded buses and the hostel's stairs. If you're staying several days, consider packing in a soft backpack or duffel. Better yet, use our %LINK:porterServices|porter service% to transport bags while you travel light.",
+        "**Assuming buses run late at night:** The last bus from Amalfi to Positano typically departs around 20:00-21:00 depending on season. If you're dining in Amalfi, check the return schedule first. Missing the last bus means an expensive taxi ride (€60+) or a very uncomfortable night."
+      ]
+    },
+    {
+      "id": "seasonal-notes",
+      "title": "Seasonal considerations (2026)",
+      "body": [
+        "**Peak summer (June-August):** Buses run every 30-60 minutes but are often packed to capacity. Expect to stand, especially on afternoon services. Buy tickets early and arrive at the stop 10 minutes ahead. Heat on a stationary, crowded bus can be intense—bring water.",
+        "**Shoulder season (April-May, September-October):** The sweet spot for bus travel. Services still frequent, but buses less crowded. Weather is pleasant, and you'll actually get a seat with a view. Perfect for first-time visitors who want to enjoy the scenery without being squeezed.",
+        "**Winter (November-March):** Reduced timetables with buses running every 1-2 hours. Services may be suspended during severe weather (rare but happens with storms). Always check the schedule the day before traveling. On the plus side, you'll likely have the bus to yourself and get unobstructed coastal views.",
+        "**Holiday periods (Easter, August 15, Christmas):** Expect chaos. Italians vacation domestically during these periods, and locals also use the buses. Services may be adjusted for public holidays. Plan extra time, consider alternative transport, or travel early morning to avoid crowds."
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": "Accessibility and mobility considerations",
+      "body": [
+        "SITA buses are standard coaches with steps at the entrance—there are no low-floor accessible buses on this route. Travelers using wheelchairs or with limited mobility will find boarding extremely difficult, especially when buses are crowded.",
+        "If you have mobility concerns, we strongly recommend pre-booking a private accessible taxi from Amalfi to Chiesa Nuova. Ask your accommodation (or contact us) to arrange this in advance. Cost is typically €70-90 for an adapted vehicle.",
+        "The Chiesa Nuova bus stop itself is on a main road with a narrow sidewalk. Getting on and off requires navigating a high step, often while the bus is idling in traffic. There's no assistance available—you'll need to be confident managing your luggage and the step independently.",
+        "Parents with strollers: fold and carry them. There's no space for open strollers on crowded buses, and the entrance is too narrow. Baby carriers or wraps are much more practical for bus travel on the Amalfi Coast."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How much does the bus from Amalfi to Positano cost?",
+      "answer": "€2.60 for a single journey. If you're making multiple trips in one day, the COSTIERASITA 24-hour pass costs €10 and includes unlimited SITA bus rides across the Amalfi Coast."
+    },
+    {
+      "question": "Can I buy bus tickets on board?",
+      "answer": "No. Tickets must be purchased before boarding at Bar Sita (Piazza Flavio Gioia), tobacco shops, newsstands, or cafés with the SITA logo. Drivers cannot sell tickets."
+    },
+    {
+      "question": "Which stop should I get off at for Hostel Brikette?",
+      "answer": "Get off at Chiesa Nuova, the first stop in Positano. It's a 5-minute downhill walk to the hostel. Do not stay on until Positano Centro, as that requires a steep 20-minute uphill walk back."
+    },
+    {
+      "question": "How long does the bus journey take?",
+      "answer": "30-40 minutes depending on traffic and the number of stops. The route is scenic but winding, following the coastal road with dramatic cliff-side views."
+    },
+    {
+      "question": "Can I bring luggage on the bus?",
+      "answer": "Yes, but space is limited. Large backpacks and suitcases may need to go in the luggage hold if there's space, or stay with you if it's full. Consider using the hostel's porter service for heavy bags."
+    },
+    {
+      "question": "Do buses run in winter?",
+      "answer": "Yes, but with reduced frequency. Services run year-round, but November-March has fewer departures. Always check the current timetable on sitasudtrasporti.it before traveling."
+    },
+    {
+      "question": "What if I miss my stop?",
+      "answer": "If you end up in Positano Centro, you can either walk back uphill to Chiesa Nuova (20 minutes) or catch the next bus back to Chiesa Nuova using the same €2.60 ticket."
+    },
+    {
+      "question": "Is the bus journey scenic?",
+      "answer": "Extremely. The route hugs the dramatic Amalfi Coast cliffs with stunning sea views. Sit on the right side when traveling Amalfi to Positano for the best coastal views."
     }
   ]
 }

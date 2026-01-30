@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "Galerie photo",
-  "gallery": {
-    "primaryAlt": "Bateau longeant la côte de Positano",
-    "primaryCaption": "Navigation le long de la côte",
-    "secondaryAlt": "Pause baignade près des falaises de Positano",
-    "secondaryCaption": "Pause baignade"
-  }
+  "galleryHeading": "Galerie photo"
 }

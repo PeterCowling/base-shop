@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "When to reconsider"
     }
-  },
-  "gallery": {
-    "title": "Fotogalleri",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "Utsikt över halvön mot Capri"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "Skanna för att dela"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "Nästan uppe på toppen"
-      }
-    ]
   }
 }

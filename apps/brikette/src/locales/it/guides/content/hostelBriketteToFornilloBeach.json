@@ -57,22 +57,5 @@
         "La scorciatoia scende diverse rampe dall'ostello prima di passare su una strada asfaltata. Utilizza l'autobus per il ritorno se preferisci evitare di risalire."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Mappe del percorso e punti di riferimento",
-    "items": [
-      {
-        "alt": "Mappa del percorso a piedi dall'Hostel Brikette alla spiaggia di Fornillo",
-        "caption": "Hostel Brikette verso Fornillo (mappa)"
-      },
-      {
-        "alt": "Svolta verso il sentiero pedonale vicino all'Hotel Posa Posa",
-        "caption": "Scorciatoia per Fornillo, punto di svolta"
-      },
-      {
-        "alt": "Percorso da Spiaggia Grande alla fermata dell'autobus interno",
-        "caption": "Percorso di ritorno verso l'autobus interno"
-      }
-    ]
-  }
+  ]
 }

@@ -10,15 +10,42 @@
     "Den här guiden är skriven för hostelgäster: vad du bör boka, hur 300 trappsteg känns på riktigt, hur skyttelbåten från Spiaggia Grande funkar, vad du ska packa för att slippa lida på vägen upp och hur du tar dig hem utan att tappa kvällsplanerna."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Varför Arienzo" },
-    { "href": "#when-to-go", "label": "Bästa tiden" },
-    { "href": "#getting-there", "label": "Så tar du dig dit" },
-    { "href": "#stairs", "label": "Trappor & tillgänglighet" },
-    { "href": "#layout", "label": "Upplägg & service" },
-    { "href": "#packages", "label": "Paket & mat" },
-    { "href": "#what-to-pack", "label": "Vad du ska packa" },
-    { "href": "#sea-conditions", "label": "Om båten ställs in" },
-    { "href": "#heading-back", "label": "Så tar du dig hem" }
+    {
+      "href": "#why-go",
+      "label": "Varför Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Bästa tiden"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Så tar du dig dit"
+    },
+    {
+      "href": "#stairs",
+      "label": "Trappor & tillgänglighet"
+    },
+    {
+      "href": "#layout",
+      "label": "Upplägg & service"
+    },
+    {
+      "href": "#packages",
+      "label": "Paket & mat"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Vad du ska packa"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Om båten ställs in"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Så tar du dig hem"
+    }
   ],
   "sections": [
     {
@@ -204,12 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo – fotohöjdpunkter",
-  "gallery": {
-    "primaryAlt": "Arienzo-stranden och beach cluben under klippan",
-    "primaryCaption": "Klapperstensstrand med orange parasoller under klipporna",
-    "secondaryAlt": "Terrassservering på Arienzo Beach Club",
-    "secondaryCaption": "Bord med havsutsikt under orange‑vita parasoller"
-  }
+  "galleryHeading": "Arienzo – fotohöjdpunkter"
 }
-

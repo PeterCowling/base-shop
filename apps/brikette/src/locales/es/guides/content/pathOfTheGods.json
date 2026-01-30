@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "Preguntas frecuentes",
-  "galleryTitle": "Galería de fotos",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Vista a lo largo del Camino de los Dioses",
-        "caption": "A lo largo del sendero"
-      },
-      {
-        "alt": "Vistas del pueblo de Nocelle",
-        "caption": "Vistas de Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "En esta página",
     "essentials": "Imprescindibles",

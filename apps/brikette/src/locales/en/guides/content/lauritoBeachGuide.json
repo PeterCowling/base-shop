@@ -275,30 +275,5 @@
         "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo walkthrough",
-    "items": [
-      {
-        "image": "/img/guides/laurito-beach/02-beach-overview.jpg",
-        "alt": "Laurito Beach cove with beach clubs along the shoreline",
-        "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
-      },
-      {
-        "image": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
-        "alt": "Beach layout diagram showing three zones at Laurito",
-        "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
-      },
-      {
-        "image": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
-        "alt": "Villa Tre Ville beach club loungers and sea views",
-        "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
-      },
-      {
-        "image": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
-        "alt": "Da Adolfo beach club dock and seating area",
-        "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
-      }
-    ]
-  }
+  ]
 }

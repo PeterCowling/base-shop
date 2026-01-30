@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "De l'Hostel Brikette à l'Arrêt de Bus Chiesa Nuova/Bar Internazionale",
-    "description": "Guide complet pour les clients de l'auberge : directions à pied depuis Hostel Brikette jusqu'à l'arrêt de bus Chiesa Nuova, horaires de bus, billets et connexions vers Amalfi, Sorrento, Naples, Salerno."
+    "description": "Marchez de l'Hostel Brikette à l'arrêt Chiesa Nuova : directions, horaires, billets, connexions vers Amalfi, Sorrento, Naples, Salerno."
   },
   "linkLabel": "De l'Hostel Brikette à l'Arrêt de Bus Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
@@ -22,9 +22,9 @@
       "id": "why-route",
       "title": "Pourquoi cet itinéraire fonctionne",
       "body": [
-        "C'est une marche de 120 mètres (400 pieds) depuis l'entrée de l'auberge jusqu'à l'arrêt de bus sur Viale Pasitea, la route côtière principale traversant Positano. La marche dure 2–4 minutes sur une pente douce descendante avec des trottoirs pavés tout au long.",
-        "Si vous allez vers Amalfi (est), l'arrêt se trouve en face du Bar Internazionale du côté de la route avec vue sur la mer. Faites la queue ici pour les bus vers la ville d'Amalfi, Salerno et Ravello. Si vous vous dirigez vers Sorrento (ouest), vous attendrez directement devant le bar lui-même du côté montagne de la route.",
-        "Cet arrêt de Chiesa Nuova est l'arrêt de bus SITA le plus proche de l'Hostel Brikette et le point de départ le plus pratique pour voyager le long de la côte. Il est également connu localement sous le nom d'arrêt du Bar Internazionale."
+        "C'est une marche de 120 mètres (400 pieds) depuis l'entrée de l'auberge jusqu'à l'arrêt de bus sur Viale Pasitea, la route côtière principale traversant Positano. La marche dure 2–4 minutes sur une pente douce descendante avec des trottoirs pavés tout au long. Vous verrez l'enseigne de l'auberge sur votre droite en sortant. Le trottoir est assez large pour les bagages et a un bon éclairage la nuit.",
+        "Si vous allez vers Amalfi (est), l'arrêt se trouve en face du Bar Internazionale du côté de la route avec vue sur la mer. Attendez ici pour les bus vers Amalfi, Salerno et Ravello. Si vous allez vers Sorrento (ouest), vous attendrez directement devant le bar du côté montagne de la route. Cherchez le panneau bleu et blanc de l'arrêt de bus SITA.",
+        "Cet arrêt Chiesa Nuova est l'arrêt de bus SITA le plus proche de l'Hostel Brikette et l'endroit le plus facile pour prendre les bus le long de la côte. Les habitants l'appellent aussi l'arrêt du Bar Internazionale. Le bar a un grand auvent rouge qui le rend facile à repérer depuis les deux directions."
       ]
     },
     {
@@ -41,20 +41,20 @@
       "id": "bus-schedules",
       "title": "Horaires et fréquence des bus",
       "body": [
-        "Les bus SITA circulent fréquemment entre Positano et à la fois Amalfi et Sorrento pendant la haute saison (avril–octobre). Attendez-vous à des bus toutes les 20–30 minutes pendant les heures de la journée, avec une fréquence réduite tôt le matin (avant 8h) et le soir (après 21h).",
-        "**Premiers bus :** Le premier bus en direction est vers Amalfi part généralement de Chiesa Nuova vers 6h30–7h00. Le premier bus en direction ouest vers Sorrento part généralement vers 6h45–7h15. Vérifiez l'horaire actuel au Bar Internazionale ou à la réception de l'auberge car les horaires varient selon les saisons.",
-        "**Derniers bus :** Les services du soir se raréfient considérablement après 22h. Le dernier bus vers Amalfi part généralement vers 22h30, tandis que le dernier bus vers Sorrento part vers 23h. Vérifiez toujours les horaires exacts à la réception ou sur l'horaire SITA, et prévoyez de prendre l'avant-dernier service si vous voyagez le soir pour éviter d'être bloqué.",
-        "**Horaires d'hiver (novembre–mars) :** La fréquence tombe à toutes les 40–60 minutes, avec des derniers bus plus tôt. Certains services du soir peuvent ne pas fonctionner du tout les dimanches ou jours fériés."
+        "Les bus SITA circulent souvent entre Positano et à la fois Amalfi et Sorrento pendant la haute saison (avril–octobre). Attendez-vous à des bus toutes les 20–30 minutes pendant la journée, avec moins de bus tôt le matin (avant 8h) et le soir (après 21h). Le trajet prend environ 40 minutes pour Amalfi et 50 minutes pour Sorrento, mais peut prendre plus de temps pendant les journées d'été chargées quand le trafic est intense.",
+        "**Premiers bus :** Le premier bus allant à l'est vers Amalfi part généralement de Chiesa Nuova vers 6h30–7h00. Le premier bus allant à l'ouest vers Sorrento part généralement vers 6h45–7h15. Vérifiez les horaires actuels au Bar Internazionale ou demandez à la réception de l'auberge car les horaires changent avec les saisons. En été, il y a plus de bus qu'en hiver.",
+        "**Derniers bus :** Les bus du soir deviennent beaucoup moins fréquents après 22h. Le dernier bus pour Amalfi part généralement vers 22h30, et le dernier bus pour Sorrento part vers 23h. Vérifiez toujours les horaires exacts à la réception ou regardez l'horaire SITA affiché à l'arrêt. Essayez de prendre l'avant-dernier bus si vous voyagez la nuit pour ne pas rater le dernier et rester coincé.",
+        "**Horaires d'hiver (novembre–mars) :** Les bus circulent moins souvent en hiver, environ toutes les 40–60 minutes, et les derniers bus partent plus tôt. Certains bus du soir peuvent ne pas circuler du tout les dimanches ou jours fériés. Vérifiez toujours l'horaire d'hiver avant de voyager."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Billets : où acheter et comment valider",
       "body": [
-        "Achetez des billets de bus SITA au tabacchi (bureau de tabac) situé à côté du Bar Internazionale, ou à l'intérieur du bar lui-même. Les billets sont vendus comme trajets individuels ou passes journalières. N'essayez pas de monter dans le bus sans un billet pré-acheté—vous ne pouvez pas acheter de billets auprès du conducteur.",
-        "**Prix des billets (2026) :** Un trajet simple de Positano à Amalfi coûte 2,50 €. Positano à Sorrento coûte 2,50 €. Positano à Salerno (via Amalfi) coûte 4,00 €. Un pass Costiera de 24 heures coûte 8,00 € et couvre les voyages illimités entre Sorrento et Salerno.",
-        "**Validation :** Présentez votre billet au conducteur en montant, qui le tamponnera avec la date et l'heure. Dans les bus plus récents, vous pouvez scanner votre billet au validateur électronique juste à l'intérieur de la porte. Conservez votre billet validé pendant tout le trajet—les contrôleurs vérifient régulièrement les billets et émettent des amendes sur place pour les billets non validés ou manquants.",
-        "**Achetez à l'avance :** Si vous prenez le premier bus le matin (avant 7h30), achetez votre billet la veille, car le tabacchi peut ne pas être ouvert encore. Venez à la réception de l'auberge pour organiser un départ anticipé si nécessaire.",
+        "Achetez des billets de bus SITA au tabacchi (bureau de tabac) à côté du Bar Internazionale, ou à l'intérieur du bar lui-même. Les billets sont vendus comme trajets individuels ou passes journalières. N'essayez pas de monter dans le bus sans un billet que vous avez acheté d'abord : vous ne pouvez pas acheter de billets auprès du conducteur. Le tabacchi ouvre généralement à 7h et ferme à 20h.",
+        "**Prix des billets (2026) :** Un trajet simple de Positano à Amalfi coûte 2,50 €. Positano à Sorrento coûte 2,50 €. Positano à Salerno (en passant par Amalfi) coûte 4,00 €. Un pass Costiera de 24 heures coûte 8,00 € et vous permet de prendre autant de bus que vous voulez entre Sorrento et Salerno. Le pass journalier est une bonne affaire si vous prévoyez de faire plus de trois trajets en une journée.",
+        "**Validation :** Montrez votre billet au conducteur quand vous montez dans le bus. Le conducteur le tamponnera avec la date et l'heure. Dans les bus plus récents, vous pouvez scanner votre billet à la machine juste à l'intérieur de la porte. Conservez votre billet tamponné pour tout le trajet : les contrôleurs montent souvent dans le bus et vérifient les billets. Si vous n'avez pas de billet tamponné, vous recevrez une amende immédiate qui coûte beaucoup plus que le billet.",
+        "**Achetez à l'avance :** Si vous prenez le premier bus le matin (avant 7h30), achetez votre billet la veille car le tabacchi peut ne pas être encore ouvert. Venez à la réception de l'auberge si vous devez partir tôt. Le bar vend aussi des billets et ouvre plus tôt que le tabacchi, généralement à 6h30.",
         "Pour plus de détails sur les billets SITA, les passes et les prix, consultez notre %LINK:sitaTickets|guide complet des billets de bus SITA%."
       ]
     },
@@ -62,10 +62,10 @@
       "id": "boarding-tips",
       "title": "Attendre et embarquer : files d'attente estivales et bagages",
       "body": [
-        "**Arrivez tôt en été :** Les bus d'été (juin–septembre) se remplissent souvent à capacité, surtout pendant les heures de pointe en milieu de matinée (9h–12h) et en fin d'après-midi (16h–19h). Arrivez à l'arrêt au moins 10–15 minutes avant votre bus pour vous assurer une place près du début de la file.",
-        "**Étiquette de la file :** Formez une ligne ordonnée près de l'abri bus du bon côté de la route. Ne poussez pas et ne vous entassez pas—les Italiens respectent généralement l'ordre de la file. Quand le bus arrive, attendez que les passagers descendent avant de monter.",
-        "**Bagages :** Il y a un espace limité pour les bagages dans les bus SITA—généralement un petit compartiment à l'arrière ou seulement un rangement sous les sièges. Si vous voyagez avec de grands sacs à dos ou des valises, essayez de monter tôt pour réclamer un espace bagages. Envisagez d'utiliser un %LINK:porterServices|service de porteur% pour transporter les bagages vers votre prochaine destination si vous transportez des sacs lourds.",
-        "**Places debout :** Dans les bus d'été bondés, vous devrez peut-être rester debout pendant une partie ou la totalité du trajet. La route côtière est sinueuse avec des virages serrés, alors tenez-vous fermement aux barres aériennes ou aux dossiers de sièges."
+        "**Arrivez tôt en été :** Les bus d'été (juin–septembre) se remplissent souvent complètement, surtout pendant les heures de pointe comme le milieu de matinée (9h–12h) et la fin d'après-midi (16h–19h). Arrivez à l'arrêt au moins 10–15 minutes avant votre bus pour obtenir une bonne place près du début de la file. Si le bus est plein, il peut ne pas s'arrêter du tout et vous devrez attendre le suivant.",
+        "**Règles de la file :** Formez une file claire près de l'abri bus du bon côté de la route. Ne poussez pas et ne vous entassez pas : les Italiens respectent généralement l'ordre de la file. Quand le bus arrive, attendez que les gens descendent avant de monter. Le conducteur peut fermer la porte si les gens essaient de pousser en avant.",
+        "**Bagages :** Il n'y a pas beaucoup d'espace pour les bagages dans les bus SITA : généralement juste un petit espace à l'arrière ou sous les sièges. Si vous avez de grands sacs à dos ou des valises, essayez de monter tôt pour obtenir un espace bagages. Pensez à utiliser un %LINK:porterServices|service de porteur% pour porter vos bagages à votre prochain endroit si vous avez des sacs lourds. La plupart des bus n'ont de la place que pour 4-5 grands sacs dans le compartiment arrière.",
+        "**Places debout :** Dans les bus d'été pleins, vous devrez peut-être rester debout pour une partie ou tout le trajet. La route côtière a beaucoup de virages et de coins serrés, alors tenez-vous fermement aux barres au-dessus de votre tête ou aux dossiers de sièges. Le conducteur peut freiner fort si une voiture s'arrête soudainement devant."
       ]
     },
     {

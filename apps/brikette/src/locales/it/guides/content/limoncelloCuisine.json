@@ -52,18 +52,5 @@
         "Prova limonata fresca, granita o sciroppi al limone se preferisci evitare l'alcol."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galleria fotografica",
-    "items": [
-      {
-        "alt": "Poster vintage di Positano con limoni",
-        "caption": "Limoni vintage"
-      },
-      {
-        "alt": "Tavolo in terrazza con bicchieri di limoncello",
-        "caption": "Limoncello in terrazza"
-      }
-    ]
-  }
+  ]
 }

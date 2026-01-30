@@ -10,15 +10,42 @@
     "Este guia está escrito com mentalidade de hostel: o que reservar, como são mesmo os 300 degraus, como funciona o barco shuttle a partir da Spiaggia Grande, o que levar para não sofrer na subida, e como voltar sem stress nem perder planos de jantar."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Porque escolher Arienzo" },
-    { "href": "#when-to-go", "label": "Melhor hora para ir" },
-    { "href": "#getting-there", "label": "Como chegar" },
-    { "href": "#stairs", "label": "Escadas e acessibilidade" },
-    { "href": "#layout", "label": "Layout e serviços" },
-    { "href": "#packages", "label": "Pacotes e almoço" },
-    { "href": "#what-to-pack", "label": "O que levar" },
-    { "href": "#sea-conditions", "label": "Se o barco for cancelado" },
-    { "href": "#heading-back", "label": "Como voltar" }
+    {
+      "href": "#why-go",
+      "label": "Porque escolher Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Melhor hora para ir"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Como chegar"
+    },
+    {
+      "href": "#stairs",
+      "label": "Escadas e acessibilidade"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout e serviços"
+    },
+    {
+      "href": "#packages",
+      "label": "Pacotes e almoço"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "O que levar"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Se o barco for cancelado"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Como voltar"
+    }
   ],
   "sections": [
     {
@@ -204,12 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Destaques fotográficos de Arienzo",
-  "gallery": {
-    "primaryAlt": "Margem de Arienzo e beach club sob a falésia",
-    "primaryCaption": "Praia de seixos com guarda‑sóis laranja sob as falésias",
-    "secondaryAlt": "Terraço para almoçar no Arienzo Beach Club",
-    "secondaryCaption": "Mesas com vista mar sob guarda‑sóis laranja e branco"
-  }
+  "galleryHeading": "Destaques fotográficos de Arienzo"
 }
-

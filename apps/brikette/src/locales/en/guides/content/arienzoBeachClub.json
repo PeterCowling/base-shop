@@ -10,15 +10,42 @@
     "This guide is written for hostel guests: what to book, what those 300 steps really feel like, how the shuttle boat from Spiaggia Grande works, what to pack so the climb doesn’t punish you, and how to get back without stress."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Why Arienzo" },
-    { "href": "#when-to-go", "label": "Best time to go" },
-    { "href": "#getting-there", "label": "Getting there" },
-    { "href": "#stairs", "label": "Stairs & accessibility" },
-    { "href": "#layout", "label": "Layout & facilities" },
-    { "href": "#packages", "label": "Packages & lunch" },
-    { "href": "#what-to-pack", "label": "What to pack" },
-    { "href": "#sea-conditions", "label": "If the boat cancels" },
-    { "href": "#heading-back", "label": "Getting back" }
+    {
+      "href": "#why-go",
+      "label": "Why Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Best time to go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#stairs",
+      "label": "Stairs & accessibility"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & facilities"
+    },
+    {
+      "href": "#packages",
+      "label": "Packages & lunch"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "What to pack"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "If the boat cancels"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Getting back"
+    }
   ],
   "sections": [
     {
@@ -204,11 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo photo highlights",
-  "gallery": {
-    "primaryAlt": "Arienzo beach and beach club under the cliff",
-    "primaryCaption": "Pebble beach with orange umbrellas under the cliffs",
-    "secondaryAlt": "Dining terrace at Arienzo Beach Club",
-    "secondaryCaption": "Tables with sea views under orange‑white umbrellas"
-  }
+  "galleryHeading": "Arienzo photo highlights"
 }

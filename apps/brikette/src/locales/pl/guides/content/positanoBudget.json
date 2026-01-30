@@ -82,15 +82,5 @@
         "value": 18
       }
     ]
-  },
-  "gallery": [
-      {
-        "alt": "Darmowy punkt widokowy nad Positano",
-        "caption": "Free viewpoints"
-      },
-    {
-      "alt": "Piknik z widokiem na Positano",
-      "caption": "Picnic to save on meals"
-    }
-  ]
+  }
 }

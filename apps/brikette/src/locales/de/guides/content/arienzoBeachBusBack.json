@@ -48,14 +48,5 @@
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
     "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Referenz Haltestelle Arienzo",
-    "items": [
-      {
-        "alt": "Blau-weißes SITA-Bushaltestellenschild an Metallpfosten",
-        "caption": "Achte auf das SITA-Schild auf der bergseitigen Straßenseite oberhalb von Arienzo."
-      }
-    ]
-  }
+  ]
 }

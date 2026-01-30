@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "Quando ripensarci"
     }
-  },
-  "gallery": {
-    "title": "Galleria fotografica",
-    "items": [
-      {
-        "alt": "Vista sulla penisola verso Capri",
-        "caption": "Vista sulla penisola verso Capri"
-      },
-      {
-        "alt": "Codice QR per condividere",
-        "caption": "Scansiona per condividere"
-      },
-      {
-        "alt": "Sentiero vicino alla vetta",
-        "caption": "Verso la vetta"
-      }
-    ]
   }
 }

@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette a Chiesa Nuova/Bar Internazionale buszmegállóhoz",
-    "description": "Teljes útmutató hostelvendégeknek: gyalogtúra a Hostel Brikette-től a Chiesa Nuova buszmegállóig, menetrendek, jegyek és kapcsolatok Amalfi, Sorrento, Nápoly, Salerno felé."
+    "description": "Séta a Hostel Brikette-től a Chiesa Nuova megállóig: útvonal, menetrend, jegyek, kapcsolatok Amalfi, Sorrento, Nápoly, Salerno felé."
   },
   "linkLabel": "Hostel Brikette a Chiesa Nuova/Bar Internazionale buszmegállóhoz",
   "lastUpdated": "2026-01-30",
@@ -22,9 +22,9 @@
       "id": "why-route",
       "title": "Miért működik ez az útvonal",
       "body": [
-        "120 méteres (400 láb) séta a hostel bejáratától a buszmegállóig a Viale Pasiteán, Positano fő tengerparti útján. A séta 2-4 percig tart enyhe lejtőn, végig burkolt járdán.",
-        "Ha Amalfi (kelet) felé tart, a megálló a Bar Internazionale-lel szemben, az út tengerre néző oldalán található. Itt álljon sorba az Amalfi város, Salerno és Ravello felé tartó buszokhoz. Ha Sorrento (nyugat) felé tart, közvetlenül a bár előtt, az út hegyi oldalán fog várni.",
-        "Ez a Chiesa Nuova megálló a legközelebbi SITA buszmegálló a Hostel Brikette-hez, és a legkényelmesebb kiindulópont a part mentén történő továbbútazáshoz. Helyileg Bar Internazionale megállóként is ismert."
+        "120 méteres (400 láb) séta a hostel bejáratától a buszmegállóig a Viale Pasiteán, Positano fő tengerparti útján. A séta 2-4 percig tart enyhe lejtőn, végig burkolt járdán. Kilépéskor jobb oldalon látni fogja a hostel tábláját. A járda elég széles a poggyászhoz és jó megvilágítása van éjszaka.",
+        "Ha Amalfi (kelet) felé tart, a megálló a Bar Internazionale-lel szemben, az út tengerre néző oldalán található. Itt várjon az Amalfi, Salerno és Ravello felé tartó buszokra. Ha Sorrento (nyugat) felé tart, közvetlenül a bár előtt, az út hegyi oldalán fog várni. Keresse a kék-fehér SITA buszmegálló táblát.",
+        "Ez a Chiesa Nuova megálló a legközelebbi SITA buszmegálló a Hostel Brikette-hez, és a legegyszerűbb hely a part mentén tartó buszok elérésére. A helyiek Bar Internazionale megállónak is hívják. A bár nagy piros napellenzője van, ami mindkét irányból könnyen észrevehető."
       ]
     },
     {
@@ -41,20 +41,20 @@
       "id": "bus-schedules",
       "title": "Buszmenetrendek és gyakoriság",
       "body": [
-        "A SITA buszok gyakran közlekednek Positano és Amalfi, valamint Sorrento között a csúcsszezonban (április-október). Napközben számítson 20-30 percenkénti buszokra, korai reggel (8:00 előtt) és este (21:00 után) csökkentett gyakorisággal.",
-        "**Első buszok:** Az első kelet felé tartó busz Amalfi irányába általában 6:30-7:00 körül indul Chiesa Nuovától. Az első nyugat felé tartó busz Sorrento irányába általában 6:45-7:15 körül indul. Ellenőrizze az aktuális menetrendet a Bar Internazionale-nél vagy a hostel recepcióján, mivel a menetrendek szezonálisan változnak.",
-        "**Utolsó buszok:** Az esti járatok jelentősen megritkulenak 22:00 után. Az utolsó Amalfi felé tartó busz általában 22:30 körül indul, míg az utolsó Sorrento felé tartó busz 23:00 körül. Mindig ellenőrizze a pontos időpontokat a recepción vagy a SITA menetrendben, és tervezze be az utolsó előtti busz elérését, ha este utazik, hogy elkerülje a rekedést.",
-        "**Téli menetrendek (november-március):** A gyakoriság 40-60 percenként esik vissza, korábbi utolsó buszokkal. Néhány esti járat egyáltalán nem közlekedhet vasárnap vagy ünnepnapokon."
+        "A SITA buszok gyakran közlekednek Positano és Amalfi, valamint Sorrento között a csúcsszezonban (április-október). Napközben számítson 20-30 percenkénti buszokra, kevesebb busszal kora reggel (8:00 előtt) és este (21:00 után). Az út körülbelül 40 percig tart Amalfiba és 50 percig Sorrentóba, de forgalmas nyári napokon tovább tarthat, amikor nagy a forgalom.",
+        "**Első buszok:** Az első kelet felé tartó busz Amalfi irányába általában 6:30-7:00 körül indul Chiesa Nuovától. Az első nyugat felé tartó busz Sorrento irányába általában 6:45-7:15 körül indul. Ellenőrizze az aktuális időpontokat a Bar Internazionale-nél vagy kérdezze meg a hostel recepcióján, mert a menetrend az évszakokkal változik. Nyáron több busz van, mint télen.",
+        "**Utolsó buszok:** Az esti buszok sokkal ritkábban járnak 22:00 után. Az utolsó Amalfi felé tartó busz általában 22:30 körül indul, az utolsó Sorrento felé tartó busz pedig 23:00 körül. Mindig ellenőrizze a pontos időpontokat a recepción vagy nézze meg a megállónál kihelyezett SITA menetrendet. Próbálja elérni az utolsó előtti buszt, ha éjszaka utazik, hogy ne maradjon le az utolsóról és ne rekedjen meg.",
+        "**Téli menetrendek (november-március):** A buszok ritkábban járnak télen, körülbelül 40-60 percenként, és az utolsó buszok korábban indulnak. Néhány esti busz egyáltalán nem közlekedhet vasárnap vagy ünnepnapokon. Mindig ellenőrizze a téli menetrendet utazás előtt."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Jegyek: hol vásároljon és hogyan érvényesítsen",
       "body": [
-        "Vásároljon SITA buszjegyeket a Bar Internazionale mellett található tabacchiban (dohányboltban) vagy magában a bárban. A jegyek egyszeri utazásként vagy napijegyként kaphatók. Ne próbáljon meg előre megvásárolt jegy nélkül felszállni a buszra - nem vásárolhat jegyet a sofőrtől.",
-        "**Jegyárak (2026):** Egy egyszeri utazás Positanóból Amalfiba 2,50 euróba kerül. Positanóból Sorrentóba 2,50 euró. Positanóból Salernóba (Amalfin keresztül) 4,00 euró. Egy 24 órás Costiera bérlet 8,00 euróba kerül és korlátlan utazást biztosít Sorrento és Salerno között.",
-        "**Érvényesítés:** Mutassa be jegyét a sofőrnek beszálláskor, aki lebélyegzi a dátummal és idővel. Újabb buszokon beszkennelheti jegyét az ajtó mögötti elektronikus érvényesítőnél. Őrizze meg érvényesített jegyét az egész utazás során - az ellenőrök rendszeresen ellenőrzik a jegyeket és helyszínen bírságot szabnak ki az érvényesítetlen vagy hiányzó jegyekért.",
-        "**Vásároljon előre:** Ha az első buszt szeretné elérni reggel (7:30 előtt), vásárolja meg jegyét az előző napon, mivel a tabacchi még nem biztos, hogy nyitva van. Forduljon a hostel recepciójához, hogy szükség esetén korai kijelentkezést szervezzen.",
+        "Vásároljon SITA buszjegyeket a Bar Internazionale mellett található tabacchiban (dohányboltban) vagy magában a bárban. A jegyek egyszeri utazásként vagy napijegyként kaphatók. Ne próbáljon meg felszállni a buszra anélkül, hogy először vásárolt volna jegyet - nem vásárolhat jegyet a sofőrtől. A tabacchi általában 7:00-kor nyit és 20:00-kor zár.",
+        "**Jegyárak (2026):** Egy egyszeri utazás Positanóból Amalfiba 2,50 euróba kerül. Positanóból Sorrentóba 2,50 euró. Positanóból Salernóba (Amalfin keresztül) 4,00 euró. Egy 24 órás Costiera bérlet 8,00 euróba kerül és annyi buszt vehet, amennyit csak akar Sorrento és Salerno között. A napijegy jó vétel, ha egy napon több mint három utat tervez.",
+        "**Érvényesítés:** Mutassa meg jegyét a sofőrnek, amikor felszáll a buszra. A sofőr lebélyegzi dátummal és idővel. Újabb buszokon beszkennelheti jegyét az ajtó mögötti gépen. Őrizze meg lebélyegzett jegyét az egész út során - az ellenőrök gyakran felszállnak a buszra és ellenőrzik a jegyeket. Ha nincs lebélyegzett jegye, azonnal bírságot kap, ami sokkal többe kerül, mint a jegy.",
+        "**Vásároljon előre:** Ha az első reggeli buszt szeretné elérni (7:30 előtt), vásárolja meg jegyét az előző este, mert a tabacchi még nem biztos, hogy nyitva van. Forduljon a hostel recepcióhoz, ha korán kell kijelentkeznie. A bár is árul jegyeket és korábban nyit, mint a tabacchi, általában legkésőbb 6:30-ra.",
         "A SITA jegyekről, bérletekről és árakról további részletekért tekintse meg teljes %LINK:sitaTickets|SITA buszjegy útmutatónkat%."
       ]
     },
@@ -62,10 +62,10 @@
       "id": "boarding-tips",
       "title": "Várakozás és felszállás: nyári sorok és poggyász",
       "body": [
-        "**Érkezzen korán nyáron:** A nyári buszok (június-szeptember) gyakran megtelnek, különösen a délelőtti csúcsidőben (9:00-12:00) és késő délután (16:00-19:00). Érkezzen a megállóhoz legalább 10-15 perccel a busza előtt, hogy biztosítsa helyét a sor elején.",
-        "**Sorban állási etikett:** Álljon fel rendezett sorba a buszvárónál az út megfelelő oldalán. Ne tolakodjon vagy nyomuljon - az olaszok általában tiszteletben tartják a sorrendet. Amikor a busz megérkezik, várja meg, amíg az utasok kiszállnak, mielőtt felszáll.",
-        "**Poggyász:** Korlátozott poggyásztér van a SITA buszokon - általában csak egy kis rekesz hátul vagy ülés alatti tárolás. Ha nagy hátizsákokkal vagy bőröndökkel utazik, próbáljon meg korán felszállni a poggyászhely biztosítása érdekében. Fontolja meg egy %LINK:porterServices|hordárszolgálat% használatát a poggyász következő célállomásra való szállítására, ha nehéz táskákat hord.",
-        "**Állóhelyek:** Zsúfolt nyári buszokon előfordulhat, hogy az utazás egy részén vagy egészén állnia kell. A tengerparti út kanyargós, éles kanyarokkal, ezért tartsa szorosan a felső korlátokat vagy az üléstámlákat."
+        "**Érkezzen korán nyáron:** A nyári buszok (június-szeptember) gyakran teljesen megtelnek, különösen a forgalmas időszakokban, mint délelőtt (9:00-12:00) és késő délután (16:00-19:00). Érkezzen a megállóhoz legalább 10-15 perccel a busza előtt, hogy jó helyet kapjon a sor elején. Ha a busz tele van, lehet, hogy egyáltalán nem áll meg és a következőre kell várnia.",
+        "**Sorban állási szabályok:** Álljon fel egyértelmű sorba a buszvárónál az út jobb oldalán. Ne tolakodjon vagy nyomuljon - az olaszok általában tiszteletben tartják a sor rendjét. Amikor megérkezik a busz, várja meg, amíg az emberek kiszállnak, mielőtt felszáll. A sofőr bezárhatja az ajtót, ha az emberek megpróbálnak előretolakodni.",
+        "**Poggyász:** Nincs sok hely a poggyásznak a SITA buszokon - általában csak egy kis hely hátul vagy az ülések alatt. Ha nagy hátizsákjai vagy bőröndjei vannak, próbáljon meg korán felszállni, hogy poggyászhelyet kapjon. Gondoljon egy %LINK:porterServices|hordárszolgálat% használatára, hogy vigye a poggyászát a következő helyre, ha nehéz táskái vannak. A legtöbb buszon csak 4-5 nagy táskának van helye a hátsó rekeszben.",
+        "**Állóhelyek:** Tele nyári buszokon előfordulhat, hogy az út egy részén vagy egészén állnia kell. A tengerparti úton sok kanyar és éles sarok van, ezért tartson szorosan a fej feletti rúdakon vagy az üléstámlákon. A sofőr erősen fékezhet, ha egy autó hirtelen megáll előtte."
       ]
     },
     {

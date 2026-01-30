@@ -48,14 +48,5 @@
     "Der er ingen billetstand ved Arienzo. Køb returbillet i byen, eller vær klar til at gå til Positano Sponda eller tage shuttle-båden tilbage til Spiaggia Grande.",
     "Læs vores %LINK:arienzoBeachClub|Arienzo Beach-guide% for faciliteter, shuttles og planlægningstips.",
     "Se %LINK:positanoBeaches|oversigten over Positanos strande% for at sammenligne andre bugter og planlægge kommende besøg."
-  ],
-  "gallery": {
-    "title": "Reference for Arienzo busstoppet",
-    "items": [
-      {
-        "alt": "Blå-hvidt SITA-busstopskilt på metalpæl",
-        "caption": "Find SITA-skiltet på indersiden af vejen over Arienzo."
-      }
-    ]
-  }
+  ]
 }

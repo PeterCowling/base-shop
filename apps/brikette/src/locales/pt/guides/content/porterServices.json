@@ -53,10 +53,5 @@
         "Depende da distância e do volume; confirme o valor antes de começar."
       ]
     }
-  ],
-  "galleryTitle": "Galeria de fotos",
-  "gallery": {
-    "standsCaption": "Postos de porteiros (exemplo)",
-    "cartsCaption": "Carrinhos de transporte"
-  }
+  ]
 }

@@ -24,13 +24,5 @@
     }
   ],
   "tips": [],
-  "faqs": [],
-  "gallery": {
-    "title": "",
-    "items": [
-      { "alt": "QR code to share the guide", "caption": "Scan to Share" },
-      { "alt": "House at the top of the initial climb", "caption": "House at the top of the stairs" },
-      { "alt": "Viewpoint over Positano at sunrise", "caption": "Viewpoint with sunrise over Positano" }
-    ]
-  }
+  "faqs": []
 }

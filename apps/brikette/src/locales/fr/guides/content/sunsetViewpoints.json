@@ -73,18 +73,5 @@
         "L'éclairage public varie ; prenez la lampe de votre téléphone ou une petite lumière pour les descentes tardives."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "caption": "Terrasse de Chiesa Nuova",
-        "alt": "Coucher de soleil depuis la terrasse de Chiesa Nuova"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Coucher de soleil depuis Nocelle"
-      }
-    ]
-  }
+  ]
 }

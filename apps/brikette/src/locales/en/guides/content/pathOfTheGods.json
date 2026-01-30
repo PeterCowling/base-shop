@@ -128,19 +128,6 @@
       ]
     }
   ],
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "items": [
-      {
-        "alt": "View along the Path of the Gods",
-        "caption": "Along the trail"
-      },
-      {
-        "alt": "Nocelle village views",
-        "caption": "Nocelle views"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "On this page",
     "essentials": "Essentials",

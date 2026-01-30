@@ -53,10 +53,5 @@
         "거리와 짐 무게에 따라 달라지므로 이동 전 합의한 금액을 확인하세요."
       ]
     }
-  ],
-  "galleryTitle": "포토 갤러리",
-  "gallery": {
-    "standsCaption": "포터 대기소(예시)",
-    "cartsCaption": "포터 수레"
-  }
+  ]
 }

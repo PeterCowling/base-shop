@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "Vanliga frågor",
-  "galleryTitle": "Fotogalleri",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Utsikt längs Gudarnas stig",
-        "caption": "Längs leden"
-      },
-      {
-        "alt": "Vy över byn Nocelle",
-        "caption": "Nocelle uppifrån"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "På denna sida",
     "essentials": "Det viktigaste",

@@ -10,15 +10,42 @@
     "Ce guide est écrit pour les voyageurs en hostel : quoi réserver, ce que font vraiment ~300 marches, comment fonctionne la navette bateau depuis Spiaggia Grande, quoi emporter pour que la montée ne te ruine pas et comment rentrer sans stress."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Pourquoi Arienzo" },
-    { "href": "#when-to-go", "label": "Meilleur moment" },
-    { "href": "#getting-there", "label": "Comment y aller" },
-    { "href": "#stairs", "label": "Escaliers & accessibilité" },
-    { "href": "#layout", "label": "Zones & services" },
-    { "href": "#packages", "label": "Packs & déjeuner" },
-    { "href": "#what-to-pack", "label": "Quoi prendre" },
-    { "href": "#sea-conditions", "label": "Si le bateau s’arrête" },
-    { "href": "#heading-back", "label": "Comment rentrer" }
+    {
+      "href": "#why-go",
+      "label": "Pourquoi Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Meilleur moment"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Comment y aller"
+    },
+    {
+      "href": "#stairs",
+      "label": "Escaliers & accessibilité"
+    },
+    {
+      "href": "#layout",
+      "label": "Zones & services"
+    },
+    {
+      "href": "#packages",
+      "label": "Packs & déjeuner"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Quoi prendre"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Si le bateau s’arrête"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Comment rentrer"
+    }
   ],
   "sections": [
     {
@@ -204,11 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Photos phares d’Arienzo",
-  "gallery": {
-    "primaryAlt": "Plage d’Arienzo et beach club sous la falaise",
-    "primaryCaption": "Plage de galets avec parasols orange sous les falaises",
-    "secondaryAlt": "Terrasse du restaurant à Arienzo Beach Club",
-    "secondaryCaption": "Tables avec vue mer sous des parasols orange‑blanc"
-  }
+  "galleryHeading": "Photos phares d’Arienzo"
 }

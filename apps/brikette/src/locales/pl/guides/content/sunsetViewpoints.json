@@ -73,18 +73,5 @@
         "Oświetlenie bywa różne — weź latarkę w telefonie lub małą lampkę przy schodach o późniejszej porze."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Sunset from Chiesa Nuova terrace"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Sunset from Nocelle"
-      }
-    ]
-  }
+  ]
 }

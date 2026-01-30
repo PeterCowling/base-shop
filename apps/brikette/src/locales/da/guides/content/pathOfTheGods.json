@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "FAQ",
-  "galleryTitle": "Fotogalleri",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Udsigt langs Sentiero degli Dei",
-        "caption": "Langs stien"
-      },
-      {
-        "alt": "Udsigt over landsbyen Nocelle",
-        "caption": "Nocelle-udsigt"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "På denne side",
     "essentials": "Det vigtigste",

@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "When to reconsider"
     }
-  },
-  "gallery": {
-    "title": "Bộ sưu tập ảnh",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "Nhìn qua bán đảo về phía Capri"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "Quét để chia sẻ"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "Đoạn gần đỉnh"
-      }
-    ]
   }
 }

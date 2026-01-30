@@ -10,15 +10,42 @@
     "Guiden er skrevet til hostelgæster: hvad du skal booke, hvordan de 300 trin føles i virkeligheden, hvordan shuttle-båden fra Spiaggia Grande fungerer, hvad du skal have med for ikke at lide på vej op, og hvordan du kommer hjem uden stress."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Hvorfor Arienzo" },
-    { "href": "#when-to-go", "label": "Bedste tidspunkt" },
-    { "href": "#getting-there", "label": "Sådan kommer du dertil" },
-    { "href": "#stairs", "label": "Trapper & tilgængelighed" },
-    { "href": "#layout", "label": "Layout & faciliteter" },
-    { "href": "#packages", "label": "Pakker & frokost" },
-    { "href": "#what-to-pack", "label": "Hvad du skal pakke" },
-    { "href": "#sea-conditions", "label": "Hvis båden aflyses" },
-    { "href": "#heading-back", "label": "Sådan kommer du hjem" }
+    {
+      "href": "#why-go",
+      "label": "Hvorfor Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Bedste tidspunkt"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Sådan kommer du dertil"
+    },
+    {
+      "href": "#stairs",
+      "label": "Trapper & tilgængelighed"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & faciliteter"
+    },
+    {
+      "href": "#packages",
+      "label": "Pakker & frokost"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Hvad du skal pakke"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Hvis båden aflyses"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Sådan kommer du hjem"
+    }
   ],
   "sections": [
     {
@@ -204,12 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo foto-højdepunkter",
-  "gallery": {
-    "primaryAlt": "Arienzo-stranden og strandklubben under klippen",
-    "primaryCaption": "Stenstrand med orange parasoller under klipperne",
-    "secondaryAlt": "Spiseterrasse på Arienzo Beach Club",
-    "secondaryCaption": "Borde med havudsigt under orange-hvide parasoller"
-  }
+  "galleryHeading": "Arienzo foto-højdepunkter"
 }
-

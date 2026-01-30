@@ -107,20 +107,5 @@
         "Körülbelül 2–5 perc és nagyjából 140 méter (450 láb) rövid lépcsővel a bejáratnál."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Referenciaképek",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "Chiesa Nuova / Bar Internazionale SITA megálló Positanóban",
-        "caption": "Bar Internazionale / Chiesa Nuova megálló"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Lépcső a Hostel Brikette főbejáratához",
-        "caption": "Hostel Brikette bejárati lépcsői"
-      }
-    ]
-  }
+  ]
 }

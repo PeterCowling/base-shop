@@ -61,19 +61,6 @@
       "note": "Faites le plein de fruits, grandes bouteilles d’eau et snacks pour les pique-niques en terrasse."
     }
   ],
-  "gallery": {
-    "title": "Galerie photo",
-    "items": [
-      {
-        "alt": "Panini d’une charcuterie locale",
-        "caption": "Panini et comptoirs traiteur"
-      },
-      {
-        "alt": "Pique-nique avec vue sur Positano",
-        "caption": "Points de vue pour pique-niquer"
-      }
-    ]
-  },
   "faqs": [
     {
       "q": "Puis-je remplir mes gourdes gratuitement ?",

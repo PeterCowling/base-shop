@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette til Chiesa Nuova/Bar Internazionale busstoppested",
-    "description": "Komplet guide for hostelgæster: gangrute fra Hostel Brikette til Chiesa Nuova busstoppested, bustider, billetter og forbindelser til Amalfi, Sorrento, Napoli, Salerno."
+    "description": "Gå fra Hostel Brikette til Chiesa Nuova busstoppested: retninger, tidtabeller, billetter, forbindelser til Amalfi, Sorrento, Napoli, Salerno."
   },
   "linkLabel": "Hostel Brikette til Chiesa Nuova/Bar Internazionale busstoppested",
   "lastUpdated": "2026-01-30",
@@ -22,9 +22,9 @@
       "id": "why-route",
       "title": "Hvorfor denne rute virker",
       "body": [
-        "Det er en 120 meter (400 fod) gåtur fra vandrerhjemmets indgang til busstoppestedet på Viale Pasitea, hovedkystvejen gennem Positano. Turen tager 2-4 minutter på en let nedadgående hældning med flisebelagte fortove hele vejen.",
-        "Hvis du skal mod Amalfi (øst), er stoppestedet overfor Bar Internazionale på havudsigts-siden af vejen. Kø her for busser mod Amalfi by, Salerno og Ravello. Hvis du skal mod Sorrento (vest), venter du lige uden for selve baren på bjergsiden af vejen.",
-        "Dette Chiesa Nuova stoppested er det nærmeste SITA busstoppested til Hostel Brikette og det mest bekvemme afgangssted for videre rejse langs kysten. Det er også lokalt kendt som Bar Internazionale stoppestedet."
+        "Det er en 120 meter (400 fod) gåtur fra vandrerhjemmets indgang til busstoppestedet på Viale Pasitea, hovedkystvejen gennem Positano. Turen tager 2-4 minutter på en let nedadgående hældning med flisebelagte fortove hele vejen. Du vil se vandrerhjem sketet på din højre side når du går ud. Fortovet er bredt nok til bagage og har god belysning om natten.",
+        "Hvis du skal mod Amalfi (øst), er stoppestedet overfor Bar Internazionale på havudsigts-siden af vejen. Vent her for busser mod Amalfi, Salerno og Ravello. Hvis du skal mod Sorrento (vest), venter du lige uden for baren på bjergsiden af vejen. Se efter det blå og hvide SITA busstopskilt.",
+        "Dette Chiesa Nuova stoppested er det nærmeste SITA busstoppested til Hostel Brikette og det letteste sted at tage busser langs kysten. Lokalbefolkningen kalder det også Bar Internazionale stoppestedet. Baren har en stor rød markise, der gør den let at få øje på fra begge retninger."
       ]
     },
     {
@@ -41,31 +41,31 @@
       "id": "bus-schedules",
       "title": "Bustider og frekvens",
       "body": [
-        "SITA busser kører hyppigt mellem Positano og både Amalfi og Sorrento i højsæsonen (april-oktober). Forvent busser hver 20-30 minutter i dagtimerne, med reduceret frekvens tidligt om morgenen (før kl. 8) og om aftenen (efter kl. 21).",
-        "**Første busser:** Den første østgående bus mod Amalfi kører typisk fra Chiesa Nuova omkring kl. 6:30-7:00. Den første vestgående bus mod Sorrento kører normalt omkring kl. 6:45-7:15. Tjek den aktuelle køreplan ved Bar Internazionale eller hos vandrerhjemmets reception, da køreplaner varierer sæsonmæssigt.",
-        "**Sidste busser:** Aftentjenester bliver betydeligt færre efter kl. 22. Den sidste bus mod Amalfi kører normalt omkring kl. 22:30, mens den sidste Sorrento-bus kører omkring kl. 23. Tjek altid de nøjagtige tider ved receptionen eller på SITA-køreplanen, og planlæg at tage den næstsidste bus, hvis du rejser om aftenen for at undgå at blive strandet.",
-        "**Vinterplaner (november-marts):** Frekvensen falder til hver 40-60 minutter, med tidligere sidste busser. Nogle aftentjenester kører muligvis slet ikke om søndagen eller på helligdage."
+        "SITA busser kører ofte mellem Positano og både Amalfi og Sorrento i højsæsonen (april-oktober). Forvent busser hver 20-30 minutter i løbet af dagen, med færre busser tidligt om morgenen (før kl. 8) og om aftenen (efter kl. 21). Turen tager omkring 40 minutter til Amalfi og 50 minutter til Sorrento, men kan tage længere tid i travle sommerdage, når trafikken er tæt.",
+        "**Første busser:** Den første bus mod øst til Amalfi kører normalt fra Chiesa Nuova omkring kl. 6:30-7:00. Den første bus mod vest til Sorrento kører normalt omkring kl. 6:45-7:15. Tjek de aktuelle tider ved Bar Internazionale eller spørg ved vandrerhjemmets reception, fordi køreplanen ændrer sig med årstiderne. Om sommeren er der flere busser end om vinteren.",
+        "**Sidste busser:** Aftenbusser bliver meget mindre hyppige efter kl. 22. Den sidste bus til Amalfi kører normalt omkring kl. 22:30, og den sidste bus til Sorrento kører omkring kl. 23. Tjek altid de præcise tider ved receptionen eller se på SITA-køreplanen opsat ved stoppestedet. Prøv at tage den næstsidste bus, hvis du rejser om natten, så du ikke går glip af den sidste og sidder fast.",
+        "**Vinterkøreplaner (november-marts):** Busser kører sjældnere om vinteren, omkring hver 40-60 minutter, og de sidste busser kører tidligere. Nogle aftenbusser kører måske slet ikke om søndagen eller på helligdage. Tjek altid vinterkøreplanen, før du rejser."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Billetter: hvor man køber og hvordan man validerer",
       "body": [
-        "Køb SITA busbilletter i tabacchi (tobaksforretningen) ved siden af Bar Internazionale, eller inde i baren selv. Billetter sælges som enkeltturer eller dagskort. Forsøg ikke at gå ombord på bussen uden en på forhånd købt billet - du kan ikke købe billetter hos chaufføren.",
-        "**Billetpriser (2026):** En enkelttur fra Positano til Amalfi koster €2,50. Positano til Sorrento koster €2,50. Positano til Salerno (via Amalfi) koster €4,00. Et 24-timers Costiera-pas koster €8,00 og dækker ubegrænset rejse mellem Sorrento og Salerno.",
-        "**Validering:** Fremvis din billet til chaufføren, når du går ombord, som vil stemple den med dato og klokkeslæt. På nyere busser kan du scanne din billet ved den elektroniske validator lige inden for døren. Gem din validerede billet under hele rejsen - inspektører tjekker regelmæssigt billetter og udsteder bøder på stedet for ikke-validerede eller manglende billetter.",
-        "**Køb på forhånd:** Hvis du tager den første bus ud om morgenen (før kl. 7:30), skal du købe din billet dagen før, da tabacchi måske ikke er åben endnu. Kom til vandrerhjemmets reception for at arrangere en tidlig udtjekning om nødvendigt.",
-        "For flere detaljer om SITA billetter, pas og priser, se vores komplette %LINK:sitaTickets|SITA busbilletguide%."
+        "Køb SITA busbilletter i tabacchi (tobaksforretningen) ved siden af Bar Internazionale, eller inde i baren selv. Billetter sælges som enkeltturer eller dagskort. Prøv ikke at gå ombord på bussen uden en billet, du har købt først - du kan ikke købe billetter hos chaufføren. Tabacchi åbner normalt kl. 7 og lukker kl. 20.",
+        "**Billetpriser (2026):** En enkelttur fra Positano til Amalfi koster €2,50. Positano til Sorrento koster €2,50. Positano til Salerno (gennem Amalfi) koster €4,00. Et 24-timers Costiera-pas koster €8,00 og lader dig tage så mange busser, du vil, mellem Sorrento og Salerno. Dagskortet er en god handel, hvis du planlægger at tage mere end tre ture på én dag.",
+        "**Validering:** Vis din billet til chaufføren, når du stiger på bussen. Chaufføren vil stemple den med dato og klokkeslæt. På nyere busser kan du scanne din billet ved maskinen lige inden for døren. Gem din stemplede billet under hele turen - billetkontrollører stiger ofte på bussen og tjekker billetter. Hvis du ikke har en stemplet billet, får du en bøde med det samme, som koster meget mere end billetten.",
+        "**Køb på forhånd:** Hvis du tager den første bus om morgenen (før kl. 7:30), skal du købe din billet aftenen før, fordi tabacchi måske ikke er åben endnu. Kom til vandrerhjemmets reception, hvis du skal tjekke ud tidligt. Baren sælger også billetter og åbner tidligere end tabacchi, normalt senest kl. 6:30.",
+        "For flere detaljer om SITA billetter, pas og priser, se vores fulde %LINK:sitaTickets|SITA busbilletguide%."
       ]
     },
     {
       "id": "boarding-tips",
       "title": "Ventning og ombordstigning: sommerkøer og bagage",
       "body": [
-        "**Ankom tidligt om sommeren:** Sommerbusser (juni-september) fyldes ofte til kapacitet, især i spidsbelastningstimer om formiddagen (9-12) og sen eftermiddag (16-19). Ankom til stoppestedet mindst 10-15 minutter før din bus for at sikre dig en plads tæt på foran i køen.",
-        "**Køetikette:** Dan en ordentlig kø nær busskuret på den korrekte side af vejen. Skub ikke eller tryk - italienere respekterer generelt kørækkefølgen. Når bussen ankommer, skal du vente på, at passagererne stiger af, før du går ombord.",
-        "**Bagage:** Der er begrænset bagageplads på SITA busser - normalt kun et lille rum bagerst eller opbevaring under sædet. Hvis du rejser med store rygsække eller kufferter, så prøv at gå tidligt ombord for at sikre dig en bagageplads. Overvej at bruge en %LINK:porterServices|bærerservice% til at transportere bagage til din næste destination, hvis du bærer tunge tasker.",
-        "**Ståpladser:** På fuldt pakkede sommerbusser skal du muligvis stå under en del eller hele rejsen. Kystvejen er snoet med skarpe sving, så hold godt fast i overhead-stænger eller sæderygge."
+        "**Ankom tidligt om sommeren:** Sommerbusser (juni-september) fyldes ofte helt, især i travle tider som midt på formiddagen (9-12) og sen eftermiddag (16-19). Ankom til stoppestedet mindst 10-15 minutter før din bus for at få en god plads nær foran i køen. Hvis bussen er fuld, stopper den måske slet ikke, og du skal vente på den næste.",
+        "**Køregler:** Dan en klar kø nær busskuret på den højre side af vejen. Skub ikke eller tryk - italienere respekterer normalt køordenen. Når bussen kommer, skal du vente på, at folk stiger af, før du stiger på. Chaufføren kan lukke døren, hvis folk prøver at trænge sig foran.",
+        "**Bagage:** Der er ikke meget plads til bagage på SITA busser - normalt kun et lille rum bagerst eller under sæderne. Hvis du har store rygsække eller kufferter, skal du prøve at stige på tidligt for at få en bagageplads. Tænk på at bruge en %LINK:porterServices|bærerservice% til at bære din bagage til dit næste sted, hvis du har tunge tasker. De fleste busser har kun plads til 4-5 store tasker i det bageste rum.",
+        "**Ståpladser:** På fulde sommerbusser skal du måske stå i en del af eller hele turen. Kystvejen har mange sving og skarpe hjørner, så hold godt fast i stængerne over dit hoved eller i sæderygene. Chaufføren kan bremse hårdt, hvis en bil stopper pludseligt foran."
       ]
     },
     {

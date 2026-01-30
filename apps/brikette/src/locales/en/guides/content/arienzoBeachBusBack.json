@@ -49,11 +49,5 @@
     "There are no ticket vendors near Arienzo Beach. Buy your return ticket in town in advance, or walk to Sponda to board there, or take the water shuttle back to the main beach in Positano.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach Guide% for facilities, shuttles, and planning tips.",
     "Browse the %LINK:positanoBeaches|Beaches Overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Arienzo bus stop reference",
-    "items": [
-      { "alt": "Blue-and-white SITA bus stop sign on metal pole", "caption": "Look for the SITA bus stop sign on the inland side of the road above Arienzo." }
-    ]
-  }
+  ]
 }

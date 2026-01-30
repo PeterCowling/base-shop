@@ -10,15 +10,42 @@
     "Denne guiden er skrevet for hostelgjester: hva du bør booke, hvordan de 300 trinnene føles på ordentlig, hvordan skyttelbåten fra Spiaggia Grande fungerer, hva du bør ta med for å slippe å slite på vei opp, og hvordan du kommer deg hjem uten stress."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Hvorfor Arienzo" },
-    { "href": "#when-to-go", "label": "Beste tidspunkt" },
-    { "href": "#getting-there", "label": "Slik kommer du dit" },
-    { "href": "#stairs", "label": "Trapper og tilgjengelighet" },
-    { "href": "#layout", "label": "Oppsett og tjenester" },
-    { "href": "#packages", "label": "Pakker og lunsj" },
-    { "href": "#what-to-pack", "label": "Hva du bør pakke" },
-    { "href": "#sea-conditions", "label": "Hvis båten avlyses" },
-    { "href": "#heading-back", "label": "Slik kommer du hjem" }
+    {
+      "href": "#why-go",
+      "label": "Hvorfor Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Beste tidspunkt"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Slik kommer du dit"
+    },
+    {
+      "href": "#stairs",
+      "label": "Trapper og tilgjengelighet"
+    },
+    {
+      "href": "#layout",
+      "label": "Oppsett og tjenester"
+    },
+    {
+      "href": "#packages",
+      "label": "Pakker og lunsj"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Hva du bør pakke"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Hvis båten avlyses"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Slik kommer du hjem"
+    }
   ],
   "sections": [
     {
@@ -204,12 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo – fotohøydepunkter",
-  "gallery": {
-    "primaryAlt": "Arienzo-stranden og strandklubben under klippen",
-    "primaryCaption": "Rullesteinsstrand med oransje parasoller under klippene",
-    "secondaryAlt": "Terrassebespisning på Arienzo Beach Club",
-    "secondaryCaption": "Bord med havutsikt under oransje‑hvite parasoller"
-  }
+  "galleryHeading": "Arienzo – fotohøydepunkter"
 }
-

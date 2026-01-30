@@ -65,20 +65,5 @@
         "Da paragem ‘Chiesa Nuova’ são ~80 m sem escadas."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Imagens de referência",
-    "items": [
-      {
-        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-        "alt": "Paragem SITA Chiesa Nuova / Bar Internazionale em Positano",
-        "caption": "Paragem Bar Internazionale / Chiesa Nuova"
-      },
-      {
-        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-        "alt": "Escadas para a entrada principal do Hostel Brikette",
-        "caption": "Escadas de entrada do Hostel Brikette"
-      }
-    ]
-  }
+  ]
 }

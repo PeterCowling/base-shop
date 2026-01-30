@@ -48,14 +48,5 @@
     "Det er ingen billettselger i Arienzo. Kjøp returbilletten i byen, eller vær klar til å gå til Positano Sponda eller ta skyttelbåten tilbake til Spiaggia Grande.",
     "Les vår %LINK:arienzoBeachClub|guide til Arienzo-stranden% for fasiliteter, skyttelbusser og planleggingstips.",
     "Se %LINK:positanoBeaches|oversikten over Positano-strender% for å sammenligne andre viker og planlegge fremtidige besøk."
-  ],
-  "gallery": {
-    "title": "Referanse for busstoppet i Arienzo",
-    "items": [
-      {
-        "alt": "Blått og hvitt SITA-skilt på en metallstolpe",
-        "caption": "Se etter SITA-skiltet på innsiden av veien ovenfor Arienzo."
-      }
-    ]
-  }
+  ]
 }

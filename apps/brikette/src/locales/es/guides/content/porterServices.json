@@ -54,10 +54,5 @@
         "Depende de la distancia y del volumen; confirma la tarifa antes de que empiece el servicio."
       ]
     }
-  ],
-  "galleryTitle": "Galería de fotos",
-  "gallery": {
-    "standsCaption": "Puestos de porteadores (ejemplo)",
-    "cartsCaption": "Carritos de porteadores"
-  }
+  ]
 }

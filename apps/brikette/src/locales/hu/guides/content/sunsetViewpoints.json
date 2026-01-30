@@ -73,18 +73,5 @@
         "Az utcai világítás változó – vigyél telefontöltött lámpát a késő esti lejövéshez."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Fotógaléria",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terasz",
-        "alt": "Naplemente a Chiesa Nuova teraszáról"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Naplemente Noceléből"
-      }
-    ]
-  }
+  ]
 }

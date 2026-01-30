@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Dall'Hostel Brikette alla Fermata Bus Chiesa Nuova/Bar Internazionale",
-    "description": "Guida completa per gli ospiti: indicazioni a piedi dall'Hostel Brikette alla fermata bus Chiesa Nuova, orari autobus, biglietti e collegamenti per Amalfi, Sorrento, Napoli, Salerno."
+    "description": "Cammina dall'Hostel Brikette alla fermata bus Chiesa Nuova: indicazioni, orari, biglietti, collegamenti per Amalfi, Sorrento, Napoli, Salerno."
   },
   "linkLabel": "Dall'Hostel Brikette alla Fermata Bus Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
@@ -22,9 +22,9 @@
       "id": "why-route",
       "title": "Perché questo percorso funziona",
       "body": [
-        "È una camminata di 120 metri dalla porta dell'ostello alla fermata dell'autobus su Viale Pasitea, la strada costiera principale attraverso Positano. La camminata dura 2-4 minuti su una leggera pendenza in discesa con marciapiedi pavimentati.",
-        "Se vai verso Amalfi (est), la fermata è di fronte al Bar Internazionale sul lato della strada con vista mare. Fai la fila qui per gli autobus verso Amalfi, Salerno e Ravello. Se vai verso Sorrento (ovest), aspetterai direttamente fuori dal bar stesso sul lato montagna della strada.",
-        "Questa fermata Chiesa Nuova è la fermata SITA più vicina all'Hostel Brikette e il punto di partenza più comodo per i viaggi lungo la costa. È anche conosciuta localmente come la fermata Bar Internazionale."
+        "È una camminata di 120 metri (400 piedi) dalla porta dell'ostello alla fermata dell'autobus su Viale Pasitea, la strada costiera principale attraverso Positano. La camminata dura 2-4 minuti su una leggera pendenza in discesa con marciapiedi pavimentati per tutto il percorso. Vedrai l'insegna dell'ostello sulla tua destra mentre esci. Il marciapiede è abbastanza largo per i bagagli e ha una buona illuminazione di notte.",
+        "Se vai verso Amalfi (est), la fermata è di fronte al Bar Internazionale sul lato della strada con vista mare. Aspetta qui per gli autobus verso Amalfi, Salerno e Ravello. Se vai verso Sorrento (ovest), aspetterai direttamente fuori dal bar sul lato montagna della strada. Cerca la segnaletica blu e bianca della fermata bus SITA.",
+        "Questa fermata Chiesa Nuova è la fermata SITA più vicina all'Hostel Brikette e il posto più facile per prendere gli autobus lungo la costa. I locali la chiamano anche la fermata Bar Internazionale. Il bar ha una grande tenda rossa che lo rende facile da individuare da entrambe le direzioni."
       ]
     },
     {
@@ -41,20 +41,20 @@
       "id": "bus-schedules",
       "title": "Orari e frequenza degli autobus",
       "body": [
-        "Gli autobus SITA viaggiano frequentemente tra Positano e sia Amalfi che Sorrento durante l'alta stagione (aprile-ottobre). Aspettati autobus ogni 20-30 minuti durante le ore diurne, con frequenza ridotta nelle prime ore del mattino (prima delle 8:00) e la sera (dopo le 21:00).",
-        "**Primi autobus:** Il primo autobus verso est diretto ad Amalfi parte tipicamente da Chiesa Nuova intorno alle 6:30-7:00. Il primo autobus verso ovest diretto a Sorrento parte solitamente intorno alle 6:45-7:15. Controlla l'orario corrente al Bar Internazionale o alla reception dell'ostello poiché gli orari variano stagionalmente.",
-        "**Ultimi autobus:** I servizi serali si riducono considerevolmente dopo le 22:00. L'ultimo autobus verso Amalfi parte solitamente intorno alle 22:30, mentre l'ultimo autobus per Sorrento parte intorno alle 23:00. Controlla sempre gli orari esatti alla reception o sull'orario SITA e pianifica di prendere il penultimo servizio se viaggi la sera per evitare di rimanere bloccato.",
-        "**Orari invernali (novembre-marzo):** La frequenza scende a ogni 40-60 minuti, con ultimi autobus più anticipati. Alcuni servizi serali potrebbero non funzionare affatto la domenica o nei giorni festivi."
+        "Gli autobus SITA viaggiano spesso tra Positano e sia Amalfi che Sorrento durante l'alta stagione (aprile-ottobre). Aspettati autobus ogni 20-30 minuti durante il giorno, con meno autobus al mattino presto (prima delle 8:00) e la sera (dopo le 21:00). Il viaggio dura circa 40 minuti per Amalfi e 50 minuti per Sorrento, ma può durare più a lungo durante le giornate estive affollate quando il traffico è intenso.",
+        "**Primi autobus:** Il primo autobus verso est diretto ad Amalfi parte solitamente da Chiesa Nuova intorno alle 6:30-7:00. Il primo autobus verso ovest diretto a Sorrento parte solitamente intorno alle 6:45-7:15. Controlla gli orari attuali al Bar Internazionale o chiedi alla reception dell'ostello perché gli orari cambiano con le stagioni. In estate ci sono più autobus che in inverno.",
+        "**Ultimi autobus:** Gli autobus serali diventano molto meno frequenti dopo le 22:00. L'ultimo autobus per Amalfi parte solitamente intorno alle 22:30, e l'ultimo autobus per Sorrento parte intorno alle 23:00. Controlla sempre gli orari esatti alla reception o guarda l'orario SITA affisso alla fermata. Cerca di prendere il penultimo autobus se viaggi di notte così non perdi l'ultimo e rimani bloccato.",
+        "**Orari invernali (novembre-marzo):** Gli autobus viaggiano meno spesso in inverno, circa ogni 40-60 minuti, e gli ultimi autobus partono prima. Alcuni autobus serali potrebbero non circolare affatto la domenica o nei giorni festivi. Controlla sempre l'orario invernale prima di viaggiare."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Biglietti: dove acquistare e come convalidare",
       "body": [
-        "Acquista i biglietti dell'autobus SITA al tabacchi (tabaccheria) situato vicino al Bar Internazionale, o all'interno del bar stesso. I biglietti sono venduti come corse singole o pass giornalieri. Non tentare di salire sull'autobus senza un biglietto pre-acquistato: non puoi acquistare biglietti dall'autista.",
-        "**Prezzi dei biglietti (2026):** Una corsa singola da Positano ad Amalfi costa €2,50. Positano-Sorrento costa €2,50. Positano-Salerno (via Amalfi) costa €4,00. Un pass Costiera da 24 ore costa €8,00 e copre viaggi illimitati tra Sorrento e Salerno.",
-        "**Convalida:** Presenta il tuo biglietto all'autista mentre sali, che lo timbrerà con la data e l'ora. Sui nuovi autobus, puoi scansionare il tuo biglietto al validatore elettronico appena dentro la porta. Conserva il biglietto convalidato per l'intero viaggio: i controllori controllano regolarmente i biglietti ed emettono multe immediate per biglietti non convalidati o mancanti.",
-        "**Acquista in anticipo:** Se prendi il primo autobus della mattina (prima delle 7:30), acquista il biglietto il giorno prima, poiché il tabacchi potrebbe non essere ancora aperto. Vieni alla reception dell'ostello per organizzare un check-out anticipato se necessario.",
+        "Acquista i biglietti dell'autobus SITA al tabacchi (tabaccheria) vicino al Bar Internazionale, o all'interno del bar stesso. I biglietti sono venduti come corse singole o pass giornalieri. Non cercare di salire sull'autobus senza un biglietto che hai acquistato prima: non puoi comprare biglietti dall'autista. Il tabacchi di solito apre alle 7:00 e chiude alle 20:00.",
+        "**Prezzi dei biglietti (2026):** Una corsa singola da Positano ad Amalfi costa €2,50. Positano-Sorrento costa €2,50. Positano-Salerno (passando per Amalfi) costa €4,00. Un pass Costiera da 24 ore costa €8,00 e ti permette di prendere tutti gli autobus che vuoi tra Sorrento e Salerno. Il pass giornaliero è un buon affare se pensi di fare più di tre viaggi in un giorno.",
+        "**Convalida:** Mostra il tuo biglietto all'autista quando sali sull'autobus. L'autista lo timbrerà con la data e l'ora. Sui nuovi autobus, puoi scansionare il tuo biglietto alla macchinetta appena dentro la porta. Conserva il tuo biglietto timbrato per tutto il viaggio: i controllori spesso salgono sull'autobus e controllano i biglietti. Se non hai un biglietto timbrato, riceverai subito una multa che costa molto più del biglietto.",
+        "**Acquista in anticipo:** Se prendi il primo autobus della mattina (prima delle 7:30), acquista il biglietto la sera prima perché il tabacchi potrebbe non essere ancora aperto. Vieni alla reception dell'ostello se devi fare il check-out presto. Il bar vende anche biglietti e apre prima del tabacchi, di solito entro le 6:30.",
         "Per maggiori dettagli sui biglietti SITA, pass e prezzi, consulta la nostra %LINK:sitaTickets|guida completa ai biglietti dell'autobus SITA%."
       ]
     },
@@ -62,10 +62,10 @@
       "id": "boarding-tips",
       "title": "Attesa e imbarco: code estive e bagagli",
       "body": [
-        "**Arriva presto in estate:** Gli autobus estivi (giugno-settembre) si riempiono spesso a capacità, specialmente durante le ore di punta della tarda mattinata (9:00-12:00) e del tardo pomeriggio (16:00-19:00). Arriva alla fermata almeno 10-15 minuti prima del tuo autobus per assicurarti un posto vicino all'inizio della coda.",
-        "**Etichetta della coda:** Forma una fila ordinata vicino alla pensilina sul lato corretto della strada. Non spingere o affollare: gli italiani generalmente rispettano l'ordine della coda. Quando arriva l'autobus, aspetta che i passeggeri scendano prima di salire.",
-        "**Bagagli:** C'è spazio limitato per i bagagli sugli autobus SITA: di solito solo un piccolo compartimento sul retro o spazio sotto i sedili. Se viaggi con zaini grandi o valigie, cerca di salire presto per rivendicare uno spazio bagagli. Considera di utilizzare un %LINK:porterServices|servizio di facchino% per trasportare i bagagli alla tua prossima destinazione se porti borse pesanti.",
-        "**Posti in piedi:** Sugli autobus estivi affollati, potresti dover stare in piedi per parte o tutto il viaggio. La strada costiera è tortuosa con curve strette, quindi tieniti stretto alle sbarre sopra la testa o agli schienali dei sedili."
+        "**Arriva presto in estate:** Gli autobus estivi (giugno-settembre) spesso si riempiono completamente, specialmente durante gli orari di punta come la tarda mattinata (9:00-12:00) e il tardo pomeriggio (16:00-19:00). Arriva alla fermata almeno 10-15 minuti prima del tuo autobus per avere un buon posto vicino all'inizio della fila. Se l'autobus è pieno, potrebbe non fermarsi affatto e dovrai aspettare il prossimo.",
+        "**Regole della fila:** Forma una fila chiara vicino alla pensilina sul lato destro della strada. Non spingere o affollare: gli italiani di solito rispettano l'ordine della fila. Quando arriva l'autobus, aspetta che la gente scenda prima di salire. L'autista potrebbe chiudere la porta se la gente cerca di spingersi avanti.",
+        "**Bagagli:** Non c'è molto spazio per i bagagli sugli autobus SITA: di solito solo un piccolo spazio sul retro o sotto i sedili. Se hai zaini grandi o valigie, cerca di salire presto per ottenere uno spazio per i bagagli. Pensa di usare un %LINK:porterServices|servizio di facchino% per portare i tuoi bagagli al tuo prossimo posto se hai borse pesanti. La maggior parte degli autobus ha spazio solo per 4-5 borse grandi nel vano sul retro.",
+        "**Posti in piedi:** Sugli autobus pieni d'estate, potresti dover stare in piedi per parte o tutto il viaggio. La strada costiera ha molte curve e angoli stretti, quindi tieniti forte alle sbarre sopra la tua testa o agli schienali dei sedili. L'autista potrebbe frenare forte se un'auto si ferma improvvisamente davanti."
       ]
     },
     {

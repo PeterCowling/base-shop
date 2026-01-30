@@ -10,15 +10,42 @@
     "Dieser Guide ist für Hostelgäste: was du buchen solltest, wie sich die ~300 Stufen wirklich anfühlen, wie das Shuttleboot ab Spiaggia Grande funktioniert, was du einpackst, damit der Aufstieg nicht bestraft, und wie du ohne Stress zurückkommst."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Warum Arienzo" },
-    { "href": "#when-to-go", "label": "Beste Zeit" },
-    { "href": "#getting-there", "label": "Hinkommen" },
-    { "href": "#stairs", "label": "Treppen & Zugang" },
-    { "href": "#layout", "label": "Layout & Ausstattung" },
-    { "href": "#packages", "label": "Pakete & Lunch" },
-    { "href": "#what-to-pack", "label": "Packliste" },
-    { "href": "#sea-conditions", "label": "Wenn das Boot ausfällt" },
-    { "href": "#heading-back", "label": "Rückweg" }
+    {
+      "href": "#why-go",
+      "label": "Warum Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Beste Zeit"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Hinkommen"
+    },
+    {
+      "href": "#stairs",
+      "label": "Treppen & Zugang"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & Ausstattung"
+    },
+    {
+      "href": "#packages",
+      "label": "Pakete & Lunch"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Packliste"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Wenn das Boot ausfällt"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Rückweg"
+    }
   ],
   "sections": [
     {
@@ -204,11 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Arienzo Foto‑Highlights",
-  "gallery": {
-    "primaryAlt": "Arienzo‑Strand und Beach‑Club unter der Klippe",
-    "primaryCaption": "Kieselstrand mit orangefarbenen Schirmen unter den Klippen",
-    "secondaryAlt": "Terrasse zum Essen im Arienzo Beach Club",
-    "secondaryCaption": "Tische mit Meerblick unter orange‑weißen Schirmen"
-  }
+  "galleryHeading": "Arienzo Foto‑Highlights"
 }

@@ -73,18 +73,5 @@
         "Street lighting varies—bring a phone torch or small light for late descents."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "caption": "Chiesa Nuova terrace",
-        "alt": "Sunset from Chiesa Nuova terrace"
-      },
-      {
-        "caption": "Nocelle",
-        "alt": "Sunset from Nocelle"
-      }
-    ]
-  }
+  ]
 }

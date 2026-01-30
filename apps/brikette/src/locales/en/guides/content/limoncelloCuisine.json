@@ -52,18 +52,5 @@
         "Try fresh lemonade, granita, or lemon syrups if you prefer to skip alcohol."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Positano vintage poster with lemons",
-        "caption": "Vintage lemons"
-      },
-      {
-        "alt": "Terrace table with limoncello glasses",
-        "caption": "Terrace limoncello"
-      }
-    ]
-  }
+  ]
 }

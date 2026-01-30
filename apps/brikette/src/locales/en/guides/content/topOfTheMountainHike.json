@@ -123,19 +123,6 @@
       ]
     }
   ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Panoramic view across the Amalfi Coast and Capri",
-        "caption": "Looking out from the summit ridge."
-      },
-      {
-        "alt": "Elevation profile showing Santa Maria del Castello and the summit climb",
-        "caption": "Santa Maria del Castello sits about one third of the way up."
-      }
-    ]
-  },
   "toc": {
     "labels": {
       "warnings": "When to reconsider"

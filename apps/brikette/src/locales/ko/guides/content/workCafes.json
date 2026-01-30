@@ -25,13 +25,6 @@
       ]
     }
   ],
-  "galleryTitle": "갤러리",
-  "gallery": {
-    "item1Alt": "카페 테이블 위 노트북",
-    "item1Caption": "조용한 통화 공간",
-    "item2Alt": "에스프레소와 노트",
-    "item2Caption": "장소를 번갈아 가며 이용하고 정기적으로 주문하세요"
-  },
   "faqs": [
     {
       "q": "하루 종일 일해도 되나요?",

@@ -84,23 +84,6 @@
       "note": "Bakery for delizia al limone, babà al limoncello, and pastries easy to pack for a cliffside picnic."
     }
   ],
-  "gallery": {
-    "title": "Dish highlights",
-    "items": [
-      {
-        "alt": "Seafood pasta with Amalfi Coast lemons",
-        "caption": "Seafood staples from Positano trattorias"
-      },
-      {
-        "alt": "Delizia al limone pastry on a plate",
-        "caption": "Lemon desserts to sample"
-      },
-      {
-        "alt": "Friends clinking limoncello glasses at sunset",
-        "caption": "Digestivos with a view"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

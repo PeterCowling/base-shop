@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "Photo gallery",
-  "gallery": {
-    "primaryAlt": "Łódź płynąca wzdłuż wybrzeża Positano",
-    "primaryCaption": "Rejs wzdłuż wybrzeża",
-    "secondaryAlt": "Postój na kąpiel przy klifach Positano",
-    "secondaryCaption": "Postój na kąpiel"
-  }
+  "galleryHeading": "Photo gallery"
 }

@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "When to reconsider"
     }
-  },
-  "gallery": {
-    "title": "フォトギャラリー",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "半島越しにカプリを望む"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "共有用QRコード"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "山頂近くのトレイル"
-      }
-    ]
   }
 }

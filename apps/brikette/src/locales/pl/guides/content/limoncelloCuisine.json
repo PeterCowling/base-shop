@@ -52,18 +52,5 @@
         "Spróbuj świeżej lemoniady, granity lub syropów cytrynowych, jeśli wolisz zrezygnować z alkoholu."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Photo gallery",
-    "items": [
-      {
-        "alt": "Vintage’owy plakat Positano z cytrynami",
-        "caption": "Vintage lemons"
-      },
-      {
-        "alt": "Taras z kieliszkami limoncello",
-        "caption": "Terrace limoncello"
-      }
-    ]
-  }
+  ]
 }

@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "常见问题",
-  "galleryTitle": "照片集",
-  "gallery": {
-    "items": [
-      {
-        "alt": "沿着众神之路的风景",
-        "caption": "沿着小径"
-      },
-      {
-        "alt": "诺切莱村景观",
-        "caption": "诺切莱景色"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "本页内容",
     "essentials": "必备提醒",

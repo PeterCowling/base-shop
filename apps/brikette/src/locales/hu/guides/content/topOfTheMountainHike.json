@@ -112,22 +112,5 @@
     "labels": {
       "warnings": "When to reconsider"
     }
-  },
-  "gallery": {
-    "title": "Fotógaléria",
-    "items": [
-      {
-        "alt": "Looking across the peninsula to Capri",
-        "caption": "Kilátás a félszigeten át Caprira"
-      },
-      {
-        "alt": "Scan to Share QR code",
-        "caption": "Oszd meg, olvasd be a QR-kódot"
-      },
-      {
-        "alt": "Trail near the summit",
-        "caption": "A csúcs közelében"
-      }
-    ]
   }
 }

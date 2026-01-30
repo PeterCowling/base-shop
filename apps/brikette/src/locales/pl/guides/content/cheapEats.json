@@ -61,19 +61,6 @@
       "note": "Kupuj owoce, duże butelki wody i przekąski na tarasowe pikniki."
     }
   ],
-  "gallery": {
-    "title": "Galeria zdjęć",
-    "items": [
-      {
-        "alt": "Panini z lokalnego delikatesu",
-        "caption": "Panini i delikatesy"
-      },
-      {
-        "alt": "Piknik z widokiem na Positano",
-        "caption": "Piknikowe widoki"
-      }
-    ]
-  },
   "faqs": [
     {
       "q": "Czy mogę uzupełnić wodę za darmo?",

@@ -53,10 +53,5 @@
         "Priset varierar med distans och last – bekräfta summan innan tjänsten börjar."
       ]
     }
-  ],
-  "galleryTitle": "Fotogalleri",
-  "gallery": {
-    "standsCaption": "Porter-stationer (exempel)",
-    "cartsCaption": "Portervagnar"
-  }
+  ]
 }

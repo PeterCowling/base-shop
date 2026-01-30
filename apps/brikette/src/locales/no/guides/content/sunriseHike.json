@@ -73,22 +73,5 @@
         "Hvis du planlegger å bli for soloppgangsbilder, vurder stativ eller mobilholder."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Bilder",
-    "items": [
-      {
-        "alt": "QR-kode for å dele guiden",
-        "caption": "Skann for å dele"
-      },
-      {
-        "alt": "Hus på toppen av den første stigningen",
-        "caption": "Hus på toppen av trappen"
-      },
-      {
-        "alt": "Utsiktspunkt over Positano ved soloppgang",
-        "caption": "Utsiktspunkt med soloppgang over Positano"
-      }
-    ]
-  }
+  ]
 }

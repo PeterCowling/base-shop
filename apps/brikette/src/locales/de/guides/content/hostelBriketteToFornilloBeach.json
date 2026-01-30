@@ -43,23 +43,6 @@
     "Planen Sie zusätzliche Strandzeit mit unserem %LINK:fornilloBeachGuide|Strandführer für Fornillo% und %LINK:positanoBeaches|Übersicht über die Strände von Positano%.",
     "Sehen Sie in der Positano-Reiseübersicht, wie sich dieser Spaziergang in eine vollständige Reise einfügt."
   ],
-  "gallery": {
-    "title": "Routenkarten und wichtige Abzweigungen",
-    "items": [
-      {
-        "alt": "Karte der Fußroute vom Hostel Brikette zum Fornillo Beach",
-        "caption": "Hostel Brikette nach Fornillo (Karte)"
-      },
-      {
-        "alt": "Abzweigung zum Fußweg beim Hotel Posa Posa",
-        "caption": "Abkürzung nach Fornillo, Wendepunkt"
-      },
-      {
-        "alt": "Route von Spiaggia Grande zur Interno-Bushaltestelle",
-        "caption": "Rückweg zur Interno-Bushaltestelle"
-      }
-    ]
-  },
   "faqsTitle": "FAQ zur Route",
   "faqs": [
     {

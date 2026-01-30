@@ -48,14 +48,5 @@
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
     "Browse the %LINK:positanoBeaches|Positano beaches overview% to compare other coves and plan future visits."
-  ],
-  "gallery": {
-    "title": "Tham chiếu điểm dừng xe buýt Arienzo",
-    "items": [
-      {
-        "alt": "Biển báo điểm dừng SITA màu xanh trắng trên cột kim loại",
-        "caption": "Tìm biển dừng SITA ở phía trong đường, phía trên Arienzo."
-      }
-    ]
-  }
+  ]
 }

@@ -10,15 +10,42 @@
     "Esta guía está pensada para gente de hostel: qué reservar, cómo se sienten de verdad esos ~300 escalones, cómo funciona el barco shuttle desde Spiaggia Grande, qué llevar para que la subida no te castigue y cómo volver sin estrés."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Por qué Arienzo" },
-    { "href": "#when-to-go", "label": "Mejor momento" },
-    { "href": "#getting-there", "label": "Cómo llegar" },
-    { "href": "#stairs", "label": "Escaleras y accesibilidad" },
-    { "href": "#layout", "label": "Zonas y servicios" },
-    { "href": "#packages", "label": "Paquetes y comida" },
-    { "href": "#what-to-pack", "label": "Qué llevar" },
-    { "href": "#sea-conditions", "label": "Si se cancela el barco" },
-    { "href": "#heading-back", "label": "Cómo volver" }
+    {
+      "href": "#why-go",
+      "label": "Por qué Arienzo"
+    },
+    {
+      "href": "#when-to-go",
+      "label": "Mejor momento"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cómo llegar"
+    },
+    {
+      "href": "#stairs",
+      "label": "Escaleras y accesibilidad"
+    },
+    {
+      "href": "#layout",
+      "label": "Zonas y servicios"
+    },
+    {
+      "href": "#packages",
+      "label": "Paquetes y comida"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Qué llevar"
+    },
+    {
+      "href": "#sea-conditions",
+      "label": "Si se cancela el barco"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Cómo volver"
+    }
   ],
   "sections": [
     {
@@ -204,11 +231,5 @@
       ]
     }
   ],
-  "galleryHeading": "Fotos destacadas de Arienzo",
-  "gallery": {
-    "primaryAlt": "Playa de Arienzo y beach club bajo el acantilado",
-    "primaryCaption": "Playa de guijarros con sombrillas naranjas bajo los acantilados",
-    "secondaryAlt": "Terraza para comer en Arienzo Beach Club",
-    "secondaryCaption": "Mesas con vistas al mar bajo sombrillas naranja‑blanco"
-  }
+  "galleryHeading": "Fotos destacadas de Arienzo"
 }

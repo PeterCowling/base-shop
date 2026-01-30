@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "Vanlige spørsmål",
-  "galleryTitle": "Bildegalleri",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Utsikt langs Gudestien",
-        "caption": "Langs stien"
-      },
-      {
-        "alt": "Utsikt mot Nocelle-landsbyen",
-        "caption": "Utsikt mot Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "På denne siden",
     "essentials": "Nødvendigheter",

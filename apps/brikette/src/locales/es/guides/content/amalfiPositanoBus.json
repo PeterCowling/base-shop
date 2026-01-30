@@ -1,29 +1,152 @@
 {
   "seo": {
-    "title": "Amalfi a Positano en autobús | Hostel Brikette",
-    "description": "Autobús SITA de Amalfi a Positano: puntos de embarque, consejos de billetes, notas sobre el horario y dónde bajar para el Hostel Brikette (Chiesa Nuova)."
+    "title": "De Amalfi a Positano en autobús | Hostel Brikette",
+    "description": "Guía completa del autobús SITA de Amalfi a Positano: puntos de embarque, tarifas 2026 (€2,60), horarios y dónde bajar para el Hostel Brikette."
   },
-  "intro": {
-    "title": "Amalfi a Positano — Autobús (SITA Sud)",
-    "body": "Usa esta guía para viajar de Amalfi a Positano en el autobús SITA. Explicamos dónde abordar en Amalfi, cómo validar los billetes, cómo leer el horario y dónde bajar para tener la caminata más corta hasta el hostel."
-  },
+  "intro": [
+    "El autobús SITA Sud (Ruta 5070) es la forma más económica de viajar de Amalfi a Positano, con un coste de €2,60 por trayecto. Esta guía cubre todo lo que los huéspedes del hostel necesitan saber: dónde subir en Amalfi, cómo comprar billetes, tiempos de viaje y, sobre todo, en qué parada bajar para el camino más corto hasta el %LINK:chiesaNuovaArrivals|Hostel Brikette en Chiesa Nuova%.",
+    "Actualizada para la temporada 2026 con tarifas actuales y consejos prácticos del personal que ha orientado a cientos de huéspedes en este trayecto."
+  ],
   "callouts": {
-    "aside": "¿Quieres otras opciones de transporte? Abre la %HOWTO:how-to-get-here|guía general de Cómo llegar% para ferris, taxis y rutas combinadas."
+    "aside": "¿Necesitas otras opciones de transporte? Abre la %LINK:howToGetToPositano|guía general de Cómo llegar% para ferris, taxis e itinerarios combinados."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Resumen del viaje",
-      "body": "El autobús directo de SITA entre Amalfi y Positano circula con frecuencia en temporada. Disfrutarás de un trayecto costero panorámico de aproximadamente una hora, según el tráfico."
+      "body": [
+        "El autobús SITA de Amalfi a Positano tarda 30-40 minutos dependiendo del tráfico y las paradas. Subirás en la Piazza Flavio Gioia en Amalfi (la terminal principal de autobuses en el paseo marítimo) y viajarás por la impresionante carretera de la Costa Amalfitana con vistas espectaculares de la costa.",
+        "Para el Hostel Brikette, bájate en la parada Chiesa Nuova, no en Positano Centro. Chiesa Nuova es la primera parada en Positano, aproximadamente 10 minutos antes del centro del pueblo. Desde allí, son 5 minutos a pie cuesta abajo hasta el hostel. Quedarse hasta Positano Centro significa una empinada caminata de 20 minutos cuesta arriba de regreso.",
+        "Los autobuses circulan con frecuencia en verano (cada 30-60 minutos) pero menos en invierno. Consulta siempre el horario actual antes de viajar, especialmente fuera de temporada alta."
+      ]
     },
     {
       "id": "boarding",
-      "title": "Dónde abordar en Amalfi"
+      "title": "Dónde subir en Amalfi",
+      "body": [
+        "Todos los autobuses SITA hacia Positano salen de la Piazza Flavio Gioia, la terminal principal de autobuses de Amalfi situada en el paseo marítimo entre los dos muelles de ferry. No tiene pérdida: está justo enfrente de la entrada del túnel al centro de Amalfi.",
+        "Busca las paradas de autobús SITA marcadas con números de ruta. La Ruta 5070 conecta Amalfi-Positano-Sorrento. La parada está claramente señalizada y verás otros viajeros esperando. Llega 10 minutos antes en verano, ya que los autobuses pueden llenarse y ocasionalmente pasar de largo en paradas completas.",
+        "El Bar Sita, situado justo en la Piazza Flavio Gioia, es un lugar práctico para comprar billetes y consultar los horarios publicados mientras esperas."
+      ]
     },
     {
       "id": "tickets",
-      "title": "Billetes y horario",
-      "body": "Consulta el horario más reciente en %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Usa las notas de abajo para interpretar la cuadrícula correctamente."
+      "title": "Billetes y tarifas (2026)",
+      "body": [
+        "Un billete sencillo de Amalfi a Positano cuesta €2,60 (nivel tarifario AC2). Los billetes deben comprarse antes de subir: el conductor no puede venderte un billete. Cómpralos en el Bar Sita (Piazza Flavio Gioia), cualquier estanco (tabaccheria), quiosco o cafetería que muestre el logo SITA.",
+        "Si planeas hacer varios viajes en autobús en un día, considera el pase de 24 horas COSTIERASITA por €10, que ofrece viajes ilimitados en todos los autobuses SITA Sud por la Costa Amalfitana. Se amortiza después de cuatro viajes.",
+        "Valida siempre tu billete en la máquina amarilla al subir al autobús. Los inspectores sí revisan billetes, y las multas por billetes sin validar o ausentes son elevadas (normalmente €50+).",
+        "Consulta el horario más reciente en %URL:https://www.positano.com/en/bus-schedule|Positano.com% o en el %URL:https://www.sitasudtrasporti.it|sitio oficial de SITA Sud%. Los horarios cambian según la temporada, con servicios reducidos de noviembre a marzo."
+      ]
+    },
+    {
+      "id": "chiesa-nuova-stop",
+      "title": "Bajarse en Chiesa Nuova para el hostel",
+      "body": [
+        "Esto es crítico: pide al conductor o a un pasajero local que te avise cuando llegues a Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). Es la primera parada oficial en Positano, unos 10 minutos antes del centro del pueblo. La parada está marcada con un letrero y refugio de SITA.",
+        "Pulsa el botón de parada en cuanto veas el letrero de Chiesa Nuova o reconozcas el grupo de edificios en lo alto de la colina. El conductor parará en la carretera principal (Via Cristoforo Colombo). Si tienes dudas, dile al conductor al subir: \"Chiesa Nuova, per favore\" (por favor, Chiesa Nuova). La mayoría de conductores son serviciales y señalarán o anunciarán tu parada.",
+        "Desde la parada de Chiesa Nuova, son 5 minutos a pie cuesta abajo hasta el Hostel Brikette. Para direcciones detalladas a pie desde la parada, consulta nuestra %LINK:chiesaNuovaArrivals|guía de llegada a Chiesa Nuova%.",
+        "Muchos visitantes primerizos se quedan accidentalmente hasta Positano Centro, lo que implica volver cuesta arriba con equipaje, nada agradable en un día caluroso. Pon un recordatorio en tu teléfono 25 minutos después de la salida para empezar a vigilar Chiesa Nuova. Si tienes mapas offline (Maps.me o Google Maps en modo offline), sigue tu ubicación GPS: Chiesa Nuova está aproximadamente en 40.6270°N, 14.4851°E.",
+        "Señales visuales para Chiesa Nuova: verás un grupo de edificios a ambos lados de la carretera, una iglesia con un campanario distintivo a la derecha, y varias tiendas y cafeterías. La parada de autobús tiene un refugio cubierto y normalmente algunas personas esperando. Está en una sección relativamente plana de la carretera antes del dramático descenso a Positano propiamente dicho.",
+        "Si viajas en grupo, designa a una persona para vigilar la parada. Es fácil pasarla si estás charlando o distraído con las vistas. Pide al hostel que te envíe un mensaje de WhatsApp con la ubicación exacta de la parada antes de viajar: el personal puede compartir una foto o un pin del mapa."
+      ]
+    },
+    {
+      "id": "what-to-expect",
+      "title": "Qué esperar en el autobús",
+      "body": [
+        "Los autobuses SITA en la Costa Amalfitana son autocares estándar, no vehículos de lujo. En verano, espera viajar de pie en rutas y horarios populares. El trayecto es escénico pero sinuoso: si eres propenso al mareo, siéntate cerca del frente y mira el horizonte.",
+        "Hay espacio limitado para mochilas grandes y maletas. Si el portaequipajes está lleno, tendrás que guardar tu bolsa contigo. Viaja ligero si es posible, o considera usar el %LINK:porterServices|servicio de maleteros% del hostel para enviar tus bolsas por adelantado.",
+        "El conductor toma las curvas cerradas con confianza (hace esta ruta a diario). No entres en pánico cuando el autobús parezca rozar los bordes del acantilado: es normal, y los accidentes son extremadamente raros. Estos conductores recorren la ruta varias veces al día y han visto todos los escenarios posibles.",
+        "No hay aseos a bordo, así que usa las instalaciones en Amalfi antes de subir. El viaje es corto, pero es bueno saberlo si viajas con niños. Hay un aseo público cerca de la Piazza Flavio Gioia en Amalfi (normalmente €0,50), o el Bar Sita tiene instalaciones para clientes.",
+        "El autobús para en varios puntos entre Amalfi y Positano, incluyendo Praiano. Cada parada añade 2-5 minutos al viaje. Si alguien solicita una parada entre paradas oficiales, el conductor puede detenerse brevemente: esto es normal. Simplemente quédate en tu asiento a menos que sea tu parada.",
+        "Existe aire acondicionado pero no siempre es efectivo cuando el autobús está lleno y las puertas se abren frecuentemente. En julio y agosto, lleva agua y vístete con ropa ligera y transpirable. Un pequeño abanico de mano puede ser un salvavidas en un autobús parado y abarrotado.",
+        "Las mejores vistas están desde el lado derecho del autobús (mirando hacia adelante) cuando viajas de Amalfi a Positano. Verás toda la extensión de la costa, limoneros en terrazas y dramáticas caídas de acantilado al mar. El lado izquierdo te da vistas de montaña y atisbos de pueblos."
+      ]
+    },
+    {
+      "id": "tips-from-staff",
+      "title": "Consejos del personal del hostel",
+      "body": [
+        "\"Les decimos a los huéspedes que eviten los autobuses de 12:00-14:00 en verano si es posible: son horas punta turística y los autobuses a menudo pasan de largo en paradas llenas. Primera hora de la mañana (antes de las 10:00) o tarde (después de las 16:00) suelen estar menos concurridos.\" — Recepción de Brikette",
+        "\"Ten billetes pequeños o monedas para la máquina de billetes. Algunos estancos solo aceptan efectivo, y no querrás perder tu autobús buscando cambio.\" — Luca, gerente del hostel",
+        "\"Haz una captura de pantalla del horario o guárdalo offline. La señal móvil puede ser irregular en la carretera de la costa, y querrás conocer tus horarios de salida alternativos.\" — Sofia, recepción",
+        "\"Si te pasas de parada y acabas en Positano Centro, no te estreses. Puedes caminar de vuelta cuesta arriba (20 minutos) o coger el siguiente autobús de vuelta a Chiesa Nuova (mismo billete de €2,60). ¡Todos lo hemos hecho!\" — Marco, voluntario"
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Rutas alternativas",
+      "body": [
+        "Si el horario del autobús no se ajusta a tus necesidades, considera el %LINK:amalfiPositanoFerry|ferry Amalfi-Positano% (solo abril-octubre, €12-18). Es más rápido, más escénico, y te deja en Spiaggia Grande de Positano, desde donde puedes coger un autobús local o taxi a Chiesa Nuova.",
+        "Los taxis de Amalfi a Chiesa Nuova cuestan alrededor de €50-70 (negocia de antemano). Merece la pena considerar si viajas con 3-4 personas o tienes equipaje pesado.",
+        "Para información detallada sobre cómo llegar a Positano desde otras ciudades, consulta nuestra completa %LINK:howToGetToPositano|guía Cómo llegar a Positano%."
+      ]
+    },
+    {
+      "id": "common-mistakes",
+      "title": "Errores comunes a evitar",
+      "body": [
+        "**Comprar billetes el día de llegada desde Nápoles o Salerno:** Si vienes desde el aeropuerto de Nápoles o la estación de Salerno, recuerda que necesitarás billetes separados para cada tramo. El pase de 24 horas SITA (€10) es a menudo la opción más inteligente si llegas desde fuera de la costa, ya que cubre tu conexión desde Salerno o Sorrento más varios viajes locales.",
+        "**No validar billetes:** Aunque hayas comprado tu billete, debes sellarlo en la máquina de validación amarilla al subir. Los inspectores patrullan regularmente, especialmente en verano, y no aceptarán \"se me olvidó\" como excusa. Las multas empiezan en €50.",
+        "**Esperar en la parada equivocada:** En Amalfi, hay múltiples paradas en la Piazza Flavio Gioia. Asegúrate de que estás esperando la Ruta 5070 (dirección Positano-Sorrento), no rutas que van al interior o a Salerno. Consulta la pantalla electrónica o pregunta a un local si no estás seguro.",
+        "**Traer equipaje inadecuado:** Maletas de carcasa rígida con ruedas son difíciles en autobuses llenos y en las escaleras del hostel. Si te quedas varios días, considera empacar en una mochila blanda o bolso de viaje. Mejor aún, usa nuestro %LINK:porterServices|servicio de maleteros% para transportar las bolsas mientras viajas ligero.",
+        "**Asumir que los autobuses circulan tarde por la noche:** El último autobús de Amalfi a Positano normalmente sale alrededor de las 20:00-21:00 dependiendo de la temporada. Si cenas en Amalfi, consulta el horario de regreso primero. Perder el último autobús significa un caro viaje en taxi (€60+) o una noche muy incómoda."
+      ]
+    },
+    {
+      "id": "seasonal-notes",
+      "title": "Consideraciones de temporada (2026)",
+      "body": [
+        "**Pleno verano (junio-agosto):** Los autobuses circulan cada 30-60 minutos pero a menudo están llenos hasta la capacidad. Espera viajar de pie, especialmente en servicios de tarde. Compra billetes con anticipación y llega a la parada 10 minutos antes. El calor en un autobús parado y abarrotado puede ser intenso: trae agua.",
+        "**Temporada media (abril-mayo, septiembre-octubre):** El punto óptimo para viajar en autobús. Servicios aún frecuentes, pero autobuses menos llenos. El clima es agradable, y realmente conseguirás un asiento con vistas. Perfecto para visitantes primerizos que quieran disfrutar del paisaje sin estar apretujados.",
+        "**Invierno (noviembre-marzo):** Horarios reducidos con autobuses cada 1-2 horas. Los servicios pueden suspenderse durante clima severo (raro pero ocurre con tormentas). Consulta siempre el horario el día antes de viajar. Por el lado positivo, probablemente tendrás el autobús para ti y conseguirás vistas costeras sin obstrucciones.",
+        "**Períodos festivos (Semana Santa, 15 de agosto, Navidad):** Espera caos. Los italianos vacacioanan domésticamente durante estos períodos, y los locales también usan los autobuses. Los servicios pueden ajustarse para días festivos. Planifica tiempo extra, considera transporte alternativo, o viaja temprano en la mañana para evitar multitudes."
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": "Accesibilidad y consideraciones de movilidad",
+      "body": [
+        "Los autobuses SITA son autocares estándar con escalones en la entrada: no hay autobuses accesibles de piso bajo en esta ruta. Los viajeros que usan sillas de ruedas o con movilidad limitada encontrarán extremadamente difícil subir, especialmente cuando los autobuses están llenos.",
+        "Si tienes preocupaciones de movilidad, recomendamos encarecidamente reservar un taxi privado accesible de Amalfi a Chiesa Nuova. Pide a tu alojamiento (o contáctanos) que lo organice con anticipación. El coste es típicamente €70-90 para un vehículo adaptado.",
+        "La parada de autobús de Chiesa Nuova en sí está en una carretera principal con una acera estrecha. Subir y bajar requiere navegar un escalón alto, a menudo mientras el autobús está al ralentí en el tráfico. No hay asistencia disponible: necesitarás tener confianza manejando tu equipaje y el escalón de forma independiente.",
+        "Padres con cochecitos: dóblalos y llévalos. No hay espacio para cochecitos abiertos en autobuses llenos, y la entrada es demasiado estrecha. Los portabebés o fulares son mucho más prácticos para viajar en autobús por la Costa Amalfitana."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Cuánto cuesta el autobús de Amalfi a Positano?",
+      "answer": "€2,60 por un trayecto sencillo. Si vas a hacer varios viajes en un día, el pase de 24 horas COSTIERASITA cuesta €10 e incluye viajes ilimitados en autobús SITA por la Costa Amalfitana."
+    },
+    {
+      "question": "¿Puedo comprar billetes de autobús a bordo?",
+      "answer": "No. Los billetes deben comprarse antes de subir en el Bar Sita (Piazza Flavio Gioia), estancos, quioscos o cafeterías con el logo SITA. Los conductores no pueden vender billetes."
+    },
+    {
+      "question": "¿En qué parada debo bajar para el Hostel Brikette?",
+      "answer": "Bájate en Chiesa Nuova, la primera parada en Positano. Son 5 minutos a pie cuesta abajo hasta el hostel. No te quedes hasta Positano Centro, ya que eso requiere una empinada caminata de 20 minutos cuesta arriba de vuelta."
+    },
+    {
+      "question": "¿Cuánto dura el viaje en autobús?",
+      "answer": "30-40 minutos dependiendo del tráfico y el número de paradas. La ruta es escénica pero sinuosa, siguiendo la carretera costera con dramáticas vistas al acantilado."
+    },
+    {
+      "question": "¿Puedo llevar equipaje en el autobús?",
+      "answer": "Sí, pero el espacio es limitado. Mochilas grandes y maletas pueden necesitar ir en el portaequipajes si hay espacio, o quedarse contigo si está lleno. Considera usar el servicio de maleteros del hostel para bolsas pesadas."
+    },
+    {
+      "question": "¿Circulan autobuses en invierno?",
+      "answer": "Sí, pero con frecuencia reducida. Los servicios funcionan todo el año, pero noviembre-marzo tiene menos salidas. Consulta siempre el horario actual en sitasudtrasporti.it antes de viajar."
+    },
+    {
+      "question": "¿Qué pasa si me paso de parada?",
+      "answer": "Si acabas en Positano Centro, puedes caminar de vuelta cuesta arriba a Chiesa Nuova (20 minutos) o coger el siguiente autobús de vuelta a Chiesa Nuova usando el mismo billete de €2,60."
+    },
+    {
+      "question": "¿Es escénico el viaje en autobús?",
+      "answer": "Extremadamente. La ruta abraza los dramáticos acantilados de la Costa Amalfitana con impresionantes vistas al mar. Siéntate en el lado derecho cuando viajes de Amalfi a Positano para las mejores vistas costeras."
     }
   ]
 }

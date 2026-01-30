@@ -84,23 +84,6 @@
       "note": "Cukrászda delizia al limonéval, limoncellós babà-val és könnyen csomagolható süteményekkel sziklafal menti piknikhez."
     }
   ],
-  "gallery": {
-    "title": "Fogásajánlók",
-    "items": [
-      {
-        "alt": "Tengeri tészta amalfi citrommal",
-        "caption": "Positanói trattoriák tengeri klasszikusai"
-      },
-      {
-        "alt": "Delizia al limone sütemény tányéron",
-        "caption": "Citromos desszertek, amiket érdemes megkóstolni"
-      },
-      {
-        "alt": "Barátok limoncellós poharakkal koccintanak naplementében",
-        "caption": "Digestivo kilátással"
-      }
-    ]
-  },
   "fallback": {
     "toc": [
       {

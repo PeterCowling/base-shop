@@ -10,12 +10,30 @@
     "Use this guide to get there and back, choose between the lido and the free strip, and stay for a simple dinner before heading home."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Why go" },
-    { "href": "#getting-there", "label": "Getting there" },
-    { "href": "#layout", "label": "Layout & services" },
-    { "href": "#evening", "label": "Stay for dinner" },
-    { "href": "#swim", "label": "Swim & comfort" },
-    { "href": "#pairing", "label": "Pair it with Fiordo" }
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    },
+    {
+      "href": "#swim",
+      "label": "Swim & comfort"
+    },
+    {
+      "href": "#pairing",
+      "label": "Pair it with Fiordo"
+    }
   ],
   "sections": [
     {
@@ -127,41 +145,6 @@
     "The cliffs block direct sun by mid-afternoon — great for cooling down but it can feel chilly on windy days.",
     "Mobile reception dips inside the gorge; download bus timetables or dinner booking confirmations beforehand."
   ],
-  "gallery": {
-    "title": "Photo walkthrough",
-    "items": [
-      {
-        "image": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
-        "alt": "Overlook of Marina di Praia with boats and umbrellas on the pebble shore",
-        "caption": "The cove is narrow, sheltered by cliffs, and often calmer than exposed beaches."
-      },
-      {
-        "image": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
-        "alt": "Pebble beach lined with loungers at Marina di Praia",
-        "caption": "Most loungers are in the main lido area, with a small free strip in the centre."
-      },
-      {
-        "image": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
-        "alt": "View of the Amalfi Coast cliffs and sea near Marina di Praia from the water",
-        "caption": "The cliffs help block swells, so the water often stays calmer."
-      },
-      {
-        "image": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
-        "alt": "Stone watchtower above Marina di Praia surrounded by trees",
-        "caption": "A historic watchtower sits above the cove — a quick, easy photo stop."
-      },
-      {
-        "image": "/img/guides/marina-di-praia/06-praiano-view.webp",
-        "alt": "Coastal view over Praiano with hillsides and sea",
-        "caption": "Praiano’s cliffs and views are part of the draw, even off the beach."
-      },
-      {
-        "image": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
-        "alt": "Church of San Gennaro in Praiano with tiled dome and coastal views",
-        "caption": "If you stay in Praiano after the beach, the Church of San Gennaro is worth a quick look."
-      }
-    ]
-  },
   "faqsTitle": "Marina di Praia FAQs",
   "faqs": [
     {

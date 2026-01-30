@@ -128,19 +128,6 @@
       ]
     }
   ],
-  "galleryTitle": "포토 갤러리",
-  "gallery": {
-    "items": [
-      {
-        "alt": "신들의 길에서 바라본 풍경",
-        "caption": "트레일 전경"
-      },
-      {
-        "alt": "노첼레 마을 전망",
-        "caption": "노첼레 풍경"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "이 페이지에서",
     "essentials": "필수 준비물",

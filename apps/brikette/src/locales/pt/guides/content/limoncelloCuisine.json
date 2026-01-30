@@ -52,18 +52,5 @@
         "Experimente limonada fresca, granita ou xaropes de limão se preferir evitar álcool."
       ]
     }
-  ],
-  "gallery": {
-    "title": "Galeria de fotos",
-    "items": [
-      {
-        "alt": "Poster vintage de Positano com limões",
-        "caption": "Limões vintage"
-      },
-      {
-        "alt": "Mesa de terraço com copos de limoncello",
-        "caption": "Limoncello no terraço"
-      }
-    ]
-  }
+  ]
 }

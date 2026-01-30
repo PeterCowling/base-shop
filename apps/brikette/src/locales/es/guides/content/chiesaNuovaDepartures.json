@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Del Hostel Brikette a la Parada de Autobús Chiesa Nuova/Bar Internazionale",
-    "description": "Guía completa para huéspedes del hostel: direcciones a pie desde Hostel Brikette hasta la parada de autobús Chiesa Nuova, horarios de autobuses, billetes y conexiones a Amalfi, Sorrento, Nápoles, Salerno."
+    "description": "Camina del Hostel Brikette a la parada Chiesa Nuova: direcciones, horarios, billetes, conexiones a Amalfi, Sorrento, Nápoles, Salerno."
   },
   "linkLabel": "Del Hostel Brikette a la Parada de Autobús Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
@@ -22,9 +22,9 @@
       "id": "why-route",
       "title": "Por qué funciona esta ruta",
       "body": [
-        "Son 120 metros (400 pies) a pie desde la entrada del hostel hasta la parada de autobús en Viale Pasitea, la carretera costera principal a través de Positano. El camino dura 2–4 minutos en una pendiente suave cuesta abajo con aceras pavimentadas en todo el recorrido.",
-        "Si vas hacia Amalfi (este), la parada está frente al Bar Internazionale en el lado con vistas al mar de la carretera. Haz cola aquí para autobuses hacia la ciudad de Amalfi, Salerno y Ravello. Si te diriges hacia Sorrento (oeste), esperarás directamente fuera del bar mismo en el lado de la montaña de la carretera.",
-        "Esta parada de Chiesa Nuova es la parada de autobús SITA más cercana a Hostel Brikette y el punto de partida más conveniente para viajar a lo largo de la costa. También se conoce localmente como la parada del Bar Internazionale."
+        "Son 120 metros (400 pies) a pie desde la entrada del hostel hasta la parada de autobús en Viale Pasitea, la carretera costera principal a través de Positano. El camino dura 2–4 minutos en una pendiente suave cuesta abajo con aceras pavimentadas en todo el recorrido. Verás el letrero del hostel a tu derecha al salir. La acera es lo suficientemente ancha para el equipaje y tiene buena iluminación por la noche.",
+        "Si vas hacia Amalfi (este), la parada está frente al Bar Internazionale en el lado con vistas al mar de la carretera. Espera aquí para autobuses hacia Amalfi, Salerno y Ravello. Si vas hacia Sorrento (oeste), esperarás directamente fuera del bar en el lado de la montaña de la carretera. Busca el letrero azul y blanco de la parada de autobús SITA.",
+        "Esta parada de Chiesa Nuova es la parada de autobús SITA más cercana a Hostel Brikette y el lugar más fácil para tomar autobuses a lo largo de la costa. Los lugareños también la llaman la parada del Bar Internazionale. El bar tiene un gran toldo rojo que lo hace fácil de ver desde cualquier dirección."
       ]
     },
     {
@@ -41,20 +41,20 @@
       "id": "bus-schedules",
       "title": "Horarios y frecuencia de autobuses",
       "body": [
-        "Los autobuses SITA circulan frecuentemente entre Positano y tanto Amalfi como Sorrento durante la temporada alta (abril–octubre). Espera autobuses cada 20–30 minutos durante las horas del día, con frecuencia reducida por la mañana temprano (antes de las 8am) y por la noche (después de las 9pm).",
-        "**Primeros autobuses:** El primer autobús dirección este hacia Amalfi normalmente sale de Chiesa Nuova alrededor de las 6:30–7:00am. El primer autobús dirección oeste hacia Sorrento suele salir alrededor de las 6:45–7:15am. Consulta el horario actual en Bar Internazionale o con la recepción del hostel, ya que los horarios varían según la temporada.",
-        "**Últimos autobuses:** Los servicios nocturnos se reducen considerablemente después de las 10pm. El último autobús hacia Amalfi suele salir alrededor de las 10:30pm, mientras que el último autobús con destino a Sorrento sale alrededor de las 11pm. Siempre verifica los horarios exactos en recepción o en el horario SITA, y planea coger el penúltimo servicio si viajas por la noche para evitar quedarte atrapado.",
-        "**Horarios de invierno (noviembre–marzo):** La frecuencia cae a cada 40–60 minutos, con últimos autobuses más tempranos. Algunos servicios nocturnos pueden no funcionar en absoluto los domingos o días festivos."
+        "Los autobuses SITA circulan a menudo entre Positano y tanto Amalfi como Sorrento durante la temporada alta (abril–octubre). Espera autobuses cada 20–30 minutos durante el día, con menos autobuses por la mañana temprano (antes de las 8am) y por la noche (después de las 9pm). El viaje dura unos 40 minutos a Amalfi y 50 minutos a Sorrento, pero puede durar más durante los días de verano ocupados cuando el tráfico es intenso.",
+        "**Primeros autobuses:** El primer autobús que va al este hacia Amalfi suele salir de Chiesa Nuova alrededor de las 6:30–7:00am. El primer autobús que va al oeste hacia Sorrento suele salir alrededor de las 6:45–7:15am. Consulta los horarios actuales en Bar Internazionale o pregunta en la recepción del hostel porque el horario cambia con las estaciones. En verano hay más autobuses que en invierno.",
+        "**Últimos autobuses:** Los autobuses nocturnos son mucho menos frecuentes después de las 10pm. El último autobús a Amalfi suele salir alrededor de las 10:30pm, y el último autobús a Sorrento sale alrededor de las 11pm. Siempre verifica los horarios exactos en recepción o mira el horario SITA en la parada. Intenta coger el penúltimo autobús si viajas de noche para no perder el último y quedarte atascado.",
+        "**Horarios de invierno (noviembre–marzo):** Los autobuses circulan menos a menudo en invierno, aproximadamente cada 40–60 minutos, y los últimos autobuses salen más temprano. Algunos autobuses nocturnos pueden no circular en absoluto los domingos o días festivos. Siempre verifica el horario de invierno antes de viajar."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Billetes: dónde comprar y cómo validar",
       "body": [
-        "Compra billetes de autobús SITA en el tabacchi (estanco) ubicado junto al Bar Internazionale, o dentro del bar mismo. Los billetes se venden como viajes individuales o pases de día. No intentes subir al autobús sin un billete comprado previamente—no puedes comprar billetes al conductor.",
-        "**Precios de billetes (2026):** Un viaje individual de Positano a Amalfi cuesta €2.50. Positano a Sorrento cuesta €2.50. Positano a Salerno (vía Amalfi) cuesta €4.00. Un pase Costiera de 24 horas cuesta €8.00 y cubre viajes ilimitados entre Sorrento y Salerno.",
-        "**Validación:** Presenta tu billete al conductor al subir, quien lo sellará con la fecha y hora. En autobuses más nuevos, puedes escanear tu billete en el validador electrónico justo dentro de la puerta. Guarda tu billete validado durante todo el viaje—los inspectores verifican regularmente los billetes y emiten multas en el momento por billetes no validados o faltantes.",
-        "**Compra con anticipación:** Si vas a coger el primer autobús por la mañana (antes de las 7:30am), compra tu billete el día anterior, ya que el tabacchi puede no estar abierto todavía. Ven a la recepción del hostel para organizar una salida temprana si es necesario.",
+        "Compra billetes de autobús SITA en el tabacchi (estanco) al lado del Bar Internazionale, o dentro del bar mismo. Los billetes se venden como viajes individuales o pases de día. No intentes subir al autobús sin un billete que hayas comprado primero: no puedes comprar billetes al conductor. El tabacchi generalmente abre a las 7am y cierra a las 8pm.",
+        "**Precios de billetes (2026):** Un viaje individual de Positano a Amalfi cuesta €2.50. Positano a Sorrento cuesta €2.50. Positano a Salerno (pasando por Amalfi) cuesta €4.00. Un pase Costiera de 24 horas cuesta €8.00 y te permite tomar todos los autobuses que quieras entre Sorrento y Salerno. El pase de día es una buena oferta si planeas hacer más de tres viajes en un día.",
+        "**Validación:** Muestra tu billete al conductor cuando subas al autobús. El conductor lo sellará con la fecha y hora. En autobuses más nuevos, puedes escanear tu billete en la máquina justo dentro de la puerta. Guarda tu billete sellado para todo el viaje: los inspectores a menudo suben al autobús y verifican los billetes. Si no tienes un billete sellado, recibirás una multa inmediata que cuesta mucho más que el billete.",
+        "**Compra con anticipación:** Si tomas el primer autobús de la mañana (antes de las 7:30am), compra tu billete la noche anterior porque el tabacchi puede no estar abierto todavía. Ven a la recepción del hostel si necesitas hacer el check-out temprano. El bar también vende billetes y abre más temprano que el tabacchi, generalmente a las 6:30am.",
         "Para más detalles sobre billetes SITA, pases y precios, consulta nuestra %LINK:sitaTickets|guía completa de billetes de autobús SITA%."
       ]
     },
@@ -62,10 +62,10 @@
       "id": "boarding-tips",
       "title": "Esperar y subir: colas de verano y equipaje",
       "body": [
-        "**Llega temprano en verano:** Los autobuses de verano (junio–septiembre) a menudo se llenan hasta la capacidad, especialmente durante las horas pico de media mañana (9am–12pm) y tarde (4pm–7pm). Llega a la parada al menos 10–15 minutos antes de tu autobús para asegurar un lugar cerca del frente de la cola.",
-        "**Etiqueta de cola:** Forma una línea ordenada cerca del refugio del autobús en el lado correcto de la carretera. No empujes ni te aglomeres—los italianos generalmente respetan el orden de la cola. Cuando llegue el autobús, espera a que los pasajeros bajen antes de subir.",
-        "**Equipaje:** Hay espacio limitado para equipaje en los autobuses SITA—generalmente un pequeño compartimento en la parte trasera o solo almacenamiento debajo del asiento. Si viajas con mochilas grandes o maletas, intenta subir temprano para reclamar un lugar para el equipaje. Considera usar un %LINK:porterServices|servicio de porteadores% para transportar equipaje a tu próximo destino si llevas bolsas pesadas.",
-        "**Espacio de pie:** En autobuses de verano llenos, puede que necesites estar de pie durante parte o todo el viaje. La carretera costera es sinuosa con curvas pronunciadas, así que agárrate firmemente a las barras superiores o respaldos de asientos."
+        "**Llega temprano en verano:** Los autobuses de verano (junio–septiembre) a menudo se llenan por completo, especialmente durante las horas pico como media mañana (9am–12pm) y tarde (4pm–7pm). Llega a la parada al menos 10–15 minutos antes de tu autobús para conseguir un buen lugar cerca del frente de la fila. Si el autobús está lleno, puede que no pare en absoluto y tendrás que esperar al siguiente.",
+        "**Reglas de la cola:** Forma una fila clara cerca del refugio del autobús en el lado derecho de la carretera. No empujes ni te aglomeres: los italianos generalmente respetan el orden de la fila. Cuando llegue el autobús, espera a que la gente baje antes de subir. El conductor puede cerrar la puerta si la gente intenta empujar hacia adelante.",
+        "**Equipaje:** No hay mucho espacio para equipaje en los autobuses SITA: generalmente solo un pequeño espacio en la parte trasera o debajo de los asientos. Si tienes mochilas grandes o maletas, intenta subir temprano para conseguir un lugar para el equipaje. Piensa en usar un %LINK:porterServices|servicio de porteadores% para llevar tu equipaje a tu próximo lugar si tienes bolsas pesadas. La mayoría de los autobuses solo tienen espacio para 4-5 bolsas grandes en el compartimento trasero.",
+        "**Espacio de pie:** En autobuses llenos de verano, puede que necesites estar de pie durante parte o todo el viaje. La carretera costera tiene muchas curvas y esquinas cerradas, así que agárrate fuerte a las barras sobre tu cabeza o a los respaldos de los asientos. El conductor puede frenar fuerte si un coche se detiene repentinamente adelante."
       ]
     },
     {

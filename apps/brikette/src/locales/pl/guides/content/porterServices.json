@@ -53,10 +53,5 @@
         "Cena zależy od dystansu i obciążenia; potwierdź stawkę zanim tragarz zacznie pracę."
       ]
     }
-  ],
-  "galleryTitle": "Photo gallery",
-  "gallery": {
-    "standsCaption": "Porter stands (example)",
-    "cartsCaption": "Porter carts"
-  }
+  ]
 }

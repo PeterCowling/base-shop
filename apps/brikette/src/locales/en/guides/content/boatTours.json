@@ -51,11 +51,5 @@
       ]
     }
   ],
-  "galleryHeading": "Photo gallery",
-  "gallery": {
-    "primaryAlt": "Boat cruising along the Positano coast",
-    "primaryCaption": "Cruising the coast",
-    "secondaryAlt": "Swim stop near Positano cliffs",
-    "secondaryCaption": "Swim stop"
-  }
+  "galleryHeading": "Photo gallery"
 }

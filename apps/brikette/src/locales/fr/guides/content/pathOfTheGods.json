@@ -87,19 +87,6 @@
     }
   ],
   "faqsTitle": "FAQ",
-  "galleryTitle": "Galerie photo",
-  "gallery": {
-    "items": [
-      {
-        "alt": "Vue le long du Sentier des Dieux",
-        "caption": "Sur le sentier"
-      },
-      {
-        "alt": "Vues sur le village de Nocelle",
-        "caption": "Vues sur Nocelle"
-      }
-    ]
-  },
   "toc": {
     "onThisPage": "Sur cette page",
     "essentials": "Indispensables",

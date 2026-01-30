@@ -52,6 +52,7 @@ export interface CardFrontmatter {
   "Due-Date"?: string;
   Created?: string;
   Updated?: string;
+  "Completed-Date"?: string; // MVP-D2: timestamp when card moved to Done
   Blocked?: boolean;
   "Blocked-Reason"?: string;
 }

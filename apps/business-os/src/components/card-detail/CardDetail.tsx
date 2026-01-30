@@ -47,6 +47,7 @@ export function CardDetail({
   const isOwner = card.Owner === currentUser.name;
   const isUnclaimed = !card.Owner || card.Owner.trim() === "";
   const canAccept = isOwner && card.Lane === "Inbox";
+  const canComplete = userCanEdit && card.Lane !== "Done";
 
   const handleClaim = async () => {
     setIsClaimingOrAccepting(true);
@@ -90,6 +91,33 @@ export function CardDetail({
 
       if (!response.ok) {
         setActionError(data.error || "Failed to accept card");
+        setIsClaimingOrAccepting(false);
+        return;
+      }
+
+      // Success - refresh page to show updated card
+      router.refresh();
+    } catch (error) {
+      setActionError("An unexpected error occurred");
+      setIsClaimingOrAccepting(false);
+    }
+  };
+
+  const handleComplete = async () => {
+    setIsClaimingOrAccepting(true);
+    setActionError(null);
+
+    try {
+      const response = await fetch("/api/cards/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cardId: card.ID }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || "Failed to mark card complete");
         setIsClaimingOrAccepting(false);
         return;
       }
@@ -239,6 +267,18 @@ export function CardDetail({
                     className="w-full px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isClaimingOrAccepting ? "Accepting..." : "Accept & Start"}
+                  </button>
+                )}
+
+                {/* MVP-D2: Mark Complete button (if owner/admin and not Done) */}
+                {canComplete && (
+                  <button
+                    type="button"
+                    onClick={handleComplete}
+                    disabled={isClaimingOrAccepting}
+                    className="w-full px-3 py-2 text-sm font-medium text-white bg-purple-600 border border-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isClaimingOrAccepting ? "Completing..." : "Mark Complete"}
                   </button>
                 )}
 

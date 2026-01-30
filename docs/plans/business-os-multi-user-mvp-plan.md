@@ -515,6 +515,25 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** 7cf9d39dc5
+- **TDD cycle:**
+  - Tests written: `apps/business-os/src/app/api/healthz/route.test.ts` (7 tests)
+  - Initial test run: FAIL (expected — endpoint not implemented)
+  - Post-implementation: PASS (7/7)
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm test src/app/api/healthz/route.test.ts` — PASS (7/7)
+- **Documentation updated:** None required (runbook documentation deferred to MVP-A3)
+- **Implementation notes:**
+  - Created `/api/healthz` endpoint with Node.js runtime for git operations
+  - Uses `simple-git` to retrieve current HEAD commit SHA
+  - Returns JSON with: status, gitHead, repoLockStatus (placeholder), lastAgentRunTimestamp (placeholder), timestamp
+  - Graceful error handling: returns 200 with "degraded" status on git errors (uptime checkers only care about HTTP 200 vs 500)
+  - Placeholder fields for future MVPs: repoLockStatus (MVP-C1), lastAgentRunTimestamp (MVP-E3)
+  - Fixed type error in `useKeyboardNavigation.ts` (ArrowKey union type mismatch)
+
 ### MVP-A3: Remote access runbook
 
 - **Type:** DOCUMENT

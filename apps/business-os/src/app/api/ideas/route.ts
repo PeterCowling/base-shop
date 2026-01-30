@@ -7,7 +7,8 @@ import { getSession, getSessionUser } from "@/lib/auth";
 import { userToCommitIdentity } from "@/lib/commit-identity";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
-import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
+import { allocateIdeaId } from "@/lib/id-allocator-instance";
+import { validateBusinessId } from "@/lib/id-generator";
 import { canCreateIdea } from "@/lib/permissions";
 import { createRepoWriter } from "@/lib/repo-writer";
 
@@ -79,8 +80,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate ID
-    const ideaId = await generateBusinessOsId(business, repoRoot);
+    // Generate ID (MVP-C2: atomic counter-based allocation)
+    const ideaId = await allocateIdeaId(business);
 
     // Create writer
     const writer = createRepoWriter(repoRoot);

@@ -7,7 +7,8 @@ import { getSession, getSessionUser } from "@/lib/auth";
 import { userToCommitIdentity } from "@/lib/commit-identity";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
-import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
+import { allocateCardId } from "@/lib/id-allocator-instance";
+import { validateBusinessId } from "@/lib/id-generator";
 import { canCreateCard } from "@/lib/permissions";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
@@ -114,8 +115,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate ID
-    const cardId = await generateBusinessOsId(business, repoRoot);
+    // Generate ID (MVP-C2: atomic counter-based allocation)
+    const cardId = await allocateCardId(business);
 
     // Create writer
     const writer = createRepoWriter(repoRoot);

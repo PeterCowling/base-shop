@@ -206,46 +206,36 @@
     }
   },
   "ferryDockToBrikette": {
+    "focusKeyword": "ferry dock to hostel brikette",
     "areas": [
       "howToGetHere"
     ],
     "primaryArea": "howToGetHere",
     "auditResults": {
-      "timestamp": "2026-01-30T18:44:21.480Z",
-      "score": 8.7,
+      "timestamp": "2026-01-30T23:36:10.577Z",
+      "score": 9.7,
       "analysis": {
         "strengths": [
           "All internal links resolve to valid guide keys",
           "Good meta title length (42 chars)",
           "Good meta description length (153 chars)",
           "All content is finalized (no placeholders)",
+          "Comprehensive content at 2074 words",
           "Strong internal linking with 5 links",
           "FAQ section present with 8 questions",
           "Well-structured with 9 section headings",
           "Lead contains actionable info early",
           "No common misspellings detected",
           "All images have alt attributes",
-          "Good density of concrete details (11 facts per 500 words)",
+          "Good density of concrete details (10 facts per 500 words)",
           "Includes first-hand / on-the-ground details",
           "Structured data declared in manifest"
         ],
         "criticalIssues": [],
         "improvements": [
           {
-            "issue": "Too few images (5, localGuide template suggests 8+)",
-            "impact": 0.5
-          },
-          {
-            "issue": "Content below optimal (1877 words, target 2000+ for localGuide)",
-            "impact": 0.4
-          },
-          {
-            "issue": "Add lastUpdated date (time-sensitive guide)",
-            "impact": 0.25
-          },
-          {
-            "issue": "Consider using modern image formats (WebP/AVIF)",
-            "impact": 0.1
+            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
+            "impact": 0.2
           },
           {
             "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
@@ -258,14 +248,14 @@
         "metaDescriptionLength": 153,
         "hasTitleTag": 1,
         "hasMetaDescription": 1,
-        "contentWordCount": 1877,
+        "contentWordCount": 2074,
         "headingCount": 9,
         "h2Count": 9,
         "hasH1": 1,
         "internalLinkCount": 5,
         "invalidInternalLinkOccurrences": 0,
         "faqCount": 8,
-        "imageCount": 5,
+        "imageCount": 8,
         "urlSlugLength": 42,
         "hasOgTitle": 1,
         "hasOgDescription": 1,
@@ -275,18 +265,18 @@
         "hasPlaceholders": 0,
         "errorRate": 0,
         "imageAltCoverage": 100,
-        "imageAltTotal": 5,
-        "imageAltWithAlt": 5,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
         "imageOversizeCount": 0,
         "imageModerateCount": 0,
         "featuredImageWidth": 0,
-        "usesModernFormats": 0,
+        "usesModernFormats": 1,
         "localEntityCount": 4,
-        "concreteFactsDensity": 11,
+        "concreteFactsDensity": 10,
         "hasFirstHandDetails": 1,
-        "avgParagraphLength": 37,
+        "avgParagraphLength": 39,
         "avgSentenceLength": 11,
-        "readingGradeLevel": 7.8,
+        "readingGradeLevel": 8.1,
         "hasFocusKeyword": 0,
         "focusKeywordInTitle": 0,
         "focusKeywordNearFront": 0,
@@ -300,7 +290,7 @@
         "hasPrimaryCTA": 1,
         "hasAboveFoldCTA": 0,
         "contextualCTACount": 3,
-        "hasLastUpdated": 0,
+        "hasLastUpdated": 1,
         "hasYearReferences": 1
       },
       "version": "3.1.0"

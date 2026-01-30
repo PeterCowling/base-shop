@@ -3,6 +3,7 @@
     "title": "Ferry dock → Hostel Brikette, with luggage",
     "description": "Complete 2026 guide: ferry dock to Hostel Brikette with luggage using porters and Interno bus. Costs, timing, step-by-step directions, and traveler tips."
   },
+  "lastUpdated": "2026-01-31",
   "linkLabel": "Ferry dock → Hostel Brikette, with luggage",
   "intro": [
     "Arriving by ferry with luggage? Combine the Interno Positano bus with Positano's porters to reach Hostel Brikette without hauling bags up steep staircases. This route takes 20-45 minutes depending on porter and bus timing, costs €2-€6 per person plus optional porter fees, and eliminates most of Positano's infamous stair-climbing.",
@@ -23,6 +24,13 @@
         "The beach area has restrooms (€1), a few cafés, and ticket kiosks where you can buy Interno bus tickets. Most ferries arrive between 09:00-19:00 in summer season (April-October), with the busiest periods around 11:00-14:00. If your ferry is running late, check the %LINK:ferrySchedules|current ferry schedules% for updated arrival times.",
         "Ferry services to Positano run from multiple ports along the Amalfi Coast. If you're arriving from Salerno, Naples, or Sorrento, ferries typically dock at Positano Spiaggia between late morning and early evening. The dock handles both hydrofoils (aliscafi) and slower traditional ferries (traghetti). Hydrofoils are faster but more expensive, while traditional ferries offer outdoor seating and better views. Both arrive at the same dock and follow the same disembarkation process.",
         "Weather can affect ferry schedules significantly. During rough seas or high winds (common in autumn and winter), ferries may be delayed, rerouted to alternative ports, or cancelled entirely. If you're traveling during shoulder season (March-April or September-November), always have a backup plan. The %LINK:amalfiPositanoBus|SITA bus from Amalfi% or other coastal towns can serve as an alternative if your ferry is cancelled, though you'll arrive at Chiesa Nuova instead of the beach level."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Positano ferry dock and beach promenade with boats in the bay.",
+          "caption": "The ferry dock at Positano Spiaggia — compact and easy to navigate from disembarkation."
+        }
       ]
     },
     {
@@ -40,21 +48,28 @@
       "body": [
         "Walk from the main beach up to Piazza dei Mulini following the signed promenade — use %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|these directions%.",
         "If you are carrying bags, consider hiring one of Positano's porter services at the dock so they transport everything uphill for you — our %LINK:porterServices|porter service guide% covers pricing and how to book."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Positano beachfront promenade with shops and cafés along the waterfront.",
+          "caption": "The promenade from the ferry dock toward Piazza dei Mulini — a short uphill walk through the beach area."
+        }
       ]
     },
     {
       "id": "mulini-to-bus",
       "title": "Piazza dei Mulini to the Interno bus stop",
       "body": [
-        "Piazza dei Mulini si trova nel quartiere dello shopping di Positano vicino alla farmacia — è il punto più basso accessibile in auto della città, rendendola il centro naturale per i servizi di autobus.",
+        "Piazza dei Mulini sits in Positano's shopping district near the pharmacy — it's the lowest traffic-accessible point in town, making it the natural hub for bus services.",
         "When you arrive at Piazza dei Mulini, pick up an interno bus ticket from one of the corner stores or 'tabacchi'. And then go to the bus stop which is at the edge of the Piazza - where the Piazza joins the road.",
-        "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Visualizza il percorso completo dell'autobus su Google Maps% per vedere esattamente dove l'autobus sale verso l'ostello."
+        "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|View the complete bus route on Google Maps% to see exactly where the bus travels uphill towards the hostel."
       ],
       "images": [
         {
           "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
-          "alt": "Fermata dell'autobus di Piazza dei Mulini nel quartiere dello shopping del centro di Positano.",
-          "caption": "La fermata dell'autobus Interno a Piazza dei Mulini, situata al bordo della piazza dove si unisce alla strada principale."
+          "alt": "Piazza dei Mulini bus stop in Positano's town center shopping district.",
+          "caption": "The Interno bus stop at Piazza dei Mulini, located at the edge of the piazza where it joins the main road."
         }
       ]
     },
@@ -110,6 +125,13 @@
         "**Bus only (no porters):** 25-35 minutes carrying your own bags, €2-€6 per person. You'll manage stairs at the port (short flight), walk with luggage to Piazza dei Mulini (5 minutes uphill), and carry bags on/off the bus. Suitable for travelers with one small backpack or light luggage.",
         "**Walking the entire route:** Not recommended with luggage. The route involves 300+ steps, steep gradients, and takes 45-60 minutes. Only consider this if you're arriving without bags or with a very light daypack. Most of our guests who attempt this with luggage end up exhausted or needing to stop multiple times.",
         "If you're arriving from %LINK:chiesaNuovaArrivals|Chiesa Nuova bus stop% instead of the ferry dock, the final walking section (100m + stairs) is identical to what's described in the last section above."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Ferry approaching Positano with the colorful hillside town in the background.",
+          "caption": "Arriving by ferry — your journey to Hostel Brikette begins at the beach-level dock."
+        }
       ]
     },
     {

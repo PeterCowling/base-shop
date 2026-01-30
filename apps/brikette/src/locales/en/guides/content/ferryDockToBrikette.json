@@ -3,6 +3,7 @@
     "title": "Ferry dock → Hostel Brikette, with luggage",
     "description": "Complete 2026 guide: ferry dock to Hostel Brikette with luggage using porters and Interno bus. Costs, timing, step-by-step directions, and traveler tips."
   },
+  "lastUpdated": "2026-01-31",
   "linkLabel": "Ferry dock → Hostel Brikette, with luggage",
   "intro": [
     "Arriving by ferry with luggage? Combine the Interno Positano bus with Positano's porters to reach Hostel Brikette without hauling bags up steep staircases. This route takes 20-45 minutes depending on porter and bus timing, costs €2-€6 per person plus optional porter fees, and eliminates most of Positano's infamous stair-climbing.",
@@ -23,6 +24,13 @@
         "The beach area has restrooms (€1), a few cafés, and ticket kiosks where you can buy Interno bus tickets. Most ferries arrive between 09:00-19:00 in summer season (April-October), with the busiest periods around 11:00-14:00. If your ferry is running late, check the %LINK:ferrySchedules|current ferry schedules% for updated arrival times.",
         "Ferry services to Positano run from multiple ports along the Amalfi Coast. If you're arriving from Salerno, Naples, or Sorrento, ferries typically dock at Positano Spiaggia between late morning and early evening. The dock handles both hydrofoils (aliscafi) and slower traditional ferries (traghetti). Hydrofoils are faster but more expensive, while traditional ferries offer outdoor seating and better views. Both arrive at the same dock and follow the same disembarkation process.",
         "Weather can affect ferry schedules significantly. During rough seas or high winds (common in autumn and winter), ferries may be delayed, rerouted to alternative ports, or cancelled entirely. If you're traveling during shoulder season (March-April or September-November), always have a backup plan. The %LINK:amalfiPositanoBus|SITA bus from Amalfi% or other coastal towns can serve as an alternative if your ferry is cancelled, though you'll arrive at Chiesa Nuova instead of the beach level."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Positano ferry dock and beach promenade with boats in the bay.",
+          "caption": "The ferry dock at Positano Spiaggia — compact and easy to navigate from disembarkation."
+        }
       ]
     },
     {
@@ -31,7 +39,8 @@
       "body": [
         "Positano's official porter service charges €15-€20 per bag depending on size and weight. A standard backpack or suitcase (up to 20kg) costs €15, while oversized bags or multiple items cost €18-€20. Payment is cash only — have euros ready at the dock.",
         "Porters load your bags onto wheeled carts and deliver them directly to Hostel Brikette's entrance within 30-45 minutes. You hand over your luggage, tell them 'Hostel Brikette' (they know it), pay the fee, and keep your valuables with you. The porters take a different route using service paths and shortcuts, so you won't see your bags until you reach the hostel — this is normal.",
-        "From our experience hosting hundreds of ferry arrivals: porters are reliable and bags always arrive safely, but we recommend keeping medications, electronics, and travel documents in your daypack. If you're traveling as a couple or group, consider using porters for heavy bags while keeping one small bag each for the journey. For complete details on booking and pricing, see our %LINK:porterServices|porter service guide%."
+        "From our experience hosting hundreds of ferry arrivals: porters are reliable and bags always arrive safely, but we recommend keeping medications, electronics, and travel documents in your daypack. If you're traveling as a couple or group, consider using porters for heavy bags while keeping one small bag each for the journey. Solo travelers with one bag typically find the porter service worth every euro — arriving relaxed rather than sweaty and exhausted makes a huge difference to your first impressions of Positano.",
+        "The porter service operates year-round and meets every scheduled ferry arrival. During peak summer months (July-August), multiple porter teams work simultaneously to handle the ferry crowds. You don't need to book in advance — simply approach them at the dock after disembarking. They accept cash payment only (euros), so stop at an ATM before your ferry departure if needed. For complete details on booking and pricing, see our %LINK:porterServices|porter service guide%."
       ]
     },
     {
@@ -40,6 +49,13 @@
       "body": [
         "Walk from the main beach up to Piazza dei Mulini following the signed promenade — use %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|these directions%.",
         "If you are carrying bags, consider hiring one of Positano's porter services at the dock so they transport everything uphill for you — our %LINK:porterServices|porter service guide% covers pricing and how to book."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Positano beachfront promenade with shops and cafés along the waterfront.",
+          "caption": "The promenade from the ferry dock toward Piazza dei Mulini — a short uphill walk through the beach area."
+        }
       ]
     },
     {
@@ -110,6 +126,13 @@
         "**Bus only (no porters):** 25-35 minutes carrying your own bags, €2-€6 per person. You'll manage stairs at the port (short flight), walk with luggage to Piazza dei Mulini (5 minutes uphill), and carry bags on/off the bus. Suitable for travelers with one small backpack or light luggage.",
         "**Walking the entire route:** Not recommended with luggage. The route involves 300+ steps, steep gradients, and takes 45-60 minutes. Only consider this if you're arriving without bags or with a very light daypack. Most of our guests who attempt this with luggage end up exhausted or needing to stop multiple times.",
         "If you're arriving from %LINK:chiesaNuovaArrivals|Chiesa Nuova bus stop% instead of the ferry dock, the final walking section (100m + stairs) is identical to what's described in the last section above."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Ferry approaching Positano with the colorful hillside town in the background.",
+          "caption": "Arriving by ferry — your journey to Hostel Brikette begins at the beach-level dock."
+        }
       ]
     },
     {
@@ -127,7 +150,8 @@
       "body": [
         "**Best arrival strategy according to our staff:** Hand your main luggage to porters at the dock (most guests use this — it's worth the €15-20 per bag), keep a small daypack with essentials, buy your Interno bus ticket during the walk to Piazza dei Mulini, and take the bus to Chiesa Nuova. This way you arrive relaxed, bags-free, and ready to enjoy Positano.",
         "**When porters save the most effort:** If you have bags over 15kg, multiple suitcases, or traveling in summer heat, porters are essential. We've seen too many guests arrive exhausted from carrying bags uphill — the €15-20 cost is minor compared to starting your Positano stay stressed and sweaty.",
-        "**Coordinate porter delivery timing:** If you're arriving before our check-in time (15:00), tell the porters when you expect to arrive at the hostel so they can time the delivery. Bags usually arrive 30-45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance.",
+        "**Coordinate porter delivery timing:** If you're arriving before our check-in time (15:00), tell the porters when you expect to arrive at the hostel so they can time the delivery. Bags usually arrive 30-45 minutes after you hand them over, which gives you time to take the bus and reach the hostel entrance. Early arrivals can leave bags with our reception team and explore town while waiting for your room to be ready.",
+        "**First-time visitors to Positano:** Don't be intimidated by the stairs and hills — combining porters with the Interno bus reduces the physical challenge significantly. Most of our guests tell us this arrival route is much easier than they expected, especially compared to horror stories they've heard about Positano's stairs.",
         "**Keep bus change ready:** Interno bus tickets cost €2-€6 depending on season and exact route. Ticket vendors at tabacchi accept cash only (small bills preferred — don't expect them to break a €50 note). Have a few €5 or €10 notes ready at the dock."
       ]
     }

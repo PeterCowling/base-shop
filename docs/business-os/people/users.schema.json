@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Business OS Users",
+  "description": "User authentication data for Business OS invite-only auth system",
+  "type": "object",
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique user identifier (lowercase, no spaces)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email address"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "user"],
+            "description": "User role (admin has full access, user has limited access)"
+          },
+          "passcodeHash": {
+            "type": "string",
+            "description": "Bcrypt hash of user's passcode (never store plain text passcodes)"
+          }
+        },
+        "required": ["id", "name", "email", "role", "passcodeHash"]
+      }
+    },
+    "_devPasscodes": {
+      "type": "object",
+      "description": "Development-only plain text passcodes (REMOVE in production)"
+    }
+  },
+  "required": ["users"]
+}

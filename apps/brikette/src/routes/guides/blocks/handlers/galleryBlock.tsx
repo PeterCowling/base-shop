@@ -18,6 +18,12 @@ function resolveGalleryItems(
   options: GalleryBlockOptions,
   fallbackTitle: string,
 ): GalleryBlockItem[] {
+  console.log('[galleryBlock] resolveGalleryItems called:', {
+    hasItems: Array.isArray(options.items) && options.items.length > 0,
+    source: options.source,
+    guideKey: context.guideKey,
+  });
+
   if (Array.isArray(options.items) && options.items.length > 0) {
     return options.items.map((item) => ({
       ...item,
@@ -32,10 +38,21 @@ function resolveGalleryItems(
     }));
   }
   if (options.source) {
+    const allKeys = Object.keys(GALLERY_MODULES);
+    console.log('[galleryBlock] Looking for gallery module:', {
+      source: options.source,
+      expectedEnding1: `${options.source}.gallery.ts`,
+      expectedEnding2: `${options.source}.gallery.tsx`,
+      availableModules: allKeys,
+    });
+
     const matchedKey = Object.keys(GALLERY_MODULES).find(
       (key) =>
         key.endsWith(`${options.source}.gallery.ts`) || key.endsWith(`${options.source}.gallery.tsx`),
     );
+
+    console.log('[galleryBlock] Matched key:', matchedKey);
+
     if (matchedKey) {
       const mod = GALLERY_MODULES[matchedKey] as Record<string, unknown>;
       const candidate =
@@ -67,6 +84,31 @@ function resolveGalleryItems(
           // swallow and fall through to empty array
         }
       }
+    }
+
+    // Fallback: If no module found, try reading directly from translations
+    console.log('[galleryBlock] No module found, trying direct translation read');
+    try {
+      const contentKey = `content.${options.source}.gallery`;
+      const galleryData = context.translateGuides(contentKey, { returnObjects: true });
+      console.log('[galleryBlock] Direct translation result:', {
+        contentKey,
+        hasData: !!galleryData,
+        isArray: Array.isArray(galleryData),
+        dataType: typeof galleryData,
+      });
+
+      if (Array.isArray(galleryData)) {
+        return galleryData.map((item: Record<string, unknown>) => ({
+          image: (item.src ?? item.image) as string,
+          alt: (item.alt ?? fallbackTitle) as string,
+          caption: item.caption as string | undefined,
+          width: item.width as number | undefined,
+          height: item.height as number | undefined,
+        })).filter(item => item.image);
+      }
+    } catch (err) {
+      console.error('[galleryBlock] Failed to read gallery from translations:', err);
     }
   }
   return [];

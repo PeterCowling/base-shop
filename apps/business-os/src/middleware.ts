@@ -23,7 +23,7 @@ import { NextResponse } from "next/server";
 // DO NOT enable until iron-session edge compatibility is resolved
 const AUTH_ENABLED = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
 
-export async function middleware(request: NextRequest) {
+export async function middleware(_request: NextRequest) {
   // Auth is disabled - iron-session incompatible with edge runtime
   // To enable auth, must first resolve edge runtime limitation (see file header)
   if (!AUTH_ENABLED) {

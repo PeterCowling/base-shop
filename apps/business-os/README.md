@@ -21,6 +21,8 @@ Repo-native Business OS + Kanban system that coordinates human and agent work ac
 
 ## Development
 
+### Local Development (Phase 0: Node + Git)
+
 ```bash
 # Install dependencies (from repo root)
 pnpm install
@@ -30,6 +32,50 @@ pnpm --filter @apps/business-os dev
 
 # Visit http://localhost:3020
 ```
+
+### Cloudflare D1 Development (Phase 1+: D1-backed)
+
+**Prerequisites:**
+- Wrangler CLI installed globally: `npm install -g wrangler`
+- Cloudflare account (for remote D1; local D1 works without account)
+
+**Initial Setup:**
+
+```bash
+# 1. Create D1 database (one-time, remote only)
+cd apps/business-os
+wrangler d1 create business-os
+
+# 2. Copy the database_id from output and update wrangler.toml
+# Replace "00000000000000000000000000000000" with your actual database_id
+
+# 3. Run migrations (creates tables)
+wrangler d1 migrations apply business-os --local  # local D1
+wrangler d1 migrations apply business-os          # remote D1
+```
+
+**Daily Development:**
+
+```bash
+# Query local D1 database
+wrangler d1 execute business-os --local --command "SELECT 1 as test"
+
+# List tables
+wrangler d1 execute business-os --local --command "SELECT name FROM sqlite_master WHERE type='table'"
+
+# Build for Cloudflare Pages (via next-on-pages)
+pnpm build
+pnpm exec next-on-pages
+
+# Run with Cloudflare dev runtime
+wrangler pages dev .vercel/output/static --compatibility-date=2025-06-20
+```
+
+**D1 Database Access:**
+- **Local:** `--local` flag stores data in `.wrangler/state/v3/d1/`
+- **Remote:** Omit `--local` to use production Cloudflare D1
+
+**Note:** Phase 1+ requires Edge runtime conversion (all routes must export `runtime = "edge"`). Until complete, use Phase 0 Node + Git development workflow.
 
 ## Remote Access (Free Tunnel)
 

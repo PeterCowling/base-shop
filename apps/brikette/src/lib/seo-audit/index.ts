@@ -66,34 +66,6 @@ type GuideContent = {
   essentialsSection?: { items?: string[] };
   costsSection?: { items?: string[] };
   callouts?: Record<string, string>;
-  gallery?:
-    | {
-        title?: string;
-        items?: Array<{
-          image?: string;
-          src?: string;
-          alt?: string;
-          caption?: string;
-          sizeKB?: number;
-          size?: number;
-          width?: number;
-          height?: number;
-          format?: string;
-          type?: string;
-        }>;
-      }
-    | Array<{
-        image?: string;
-        src?: string;
-        alt?: string;
-        caption?: string;
-        sizeKB?: number;
-        size?: number;
-        width?: number;
-        height?: number;
-        format?: string;
-        type?: string;
-      }>;
 };
 
 type Template = GuideTemplate;
@@ -176,14 +148,6 @@ function getTextSegments(content: GuideContent): TextSegment[] {
 
   if (content.callouts && typeof content.callouts === "object") {
     Object.entries(content.callouts).forEach(([key, value]) => pushText(value, `callouts.${key}`));
-  }
-
-  // Gallery titles/captions can contain useful descriptive content and internal links.
-  if (content.gallery && typeof content.gallery === "object" && !Array.isArray(content.gallery)) {
-    pushText(content.gallery.title, "gallery.title");
-    if (Array.isArray(content.gallery.items)) {
-      content.gallery.items.forEach((item, i) => pushText(item.caption, `gallery.items[${i}].caption`));
-    }
   }
 
   return segments;
@@ -320,53 +284,6 @@ function normalizeImageSrc(value: unknown): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-function getGalleryImages(content: GuideContent): NormalizedGuideImage[] {
-  const out: NormalizedGuideImage[] = [];
-  const gallery = content.gallery;
-  if (!gallery) return out;
-
-  // Array gallery: [{ src/image, alt, caption, ... }]
-  if (Array.isArray(gallery)) {
-    gallery.forEach((item) => {
-      const src = normalizeImageSrc(item.src ?? item.image);
-      if (!src) return;
-      out.push({
-        src,
-        alt: item.alt,
-        caption: item.caption,
-        width: item.width,
-        height: item.height,
-        sizeKB: item.sizeKB,
-        size: item.size,
-        format: item.format,
-        type: item.type,
-      });
-    });
-    return out;
-  }
-
-  // Object gallery: { title, items: [{ image/src, alt, caption, ... }] }
-  if (typeof gallery === "object" && Array.isArray(gallery.items)) {
-    gallery.items.forEach((item) => {
-      const src = normalizeImageSrc(item.src ?? item.image);
-      if (!src) return;
-      out.push({
-        src,
-        alt: item.alt,
-        caption: item.caption,
-        width: item.width,
-        height: item.height,
-        sizeKB: item.sizeKB,
-        size: item.size,
-        format: item.format,
-        type: item.type,
-      });
-    });
-  }
-
-  return out;
-}
-
 function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
   const out: NormalizedGuideImage[] = [];
   if (!Array.isArray(content.sections)) return out;
@@ -392,7 +309,7 @@ function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
 }
 
 function getAllImages(content: GuideContent): NormalizedGuideImage[] {
-  return [...getSectionImages(content), ...getGalleryImages(content)];
+  return getSectionImages(content);
 }
 
 function countImages(content: GuideContent): number {

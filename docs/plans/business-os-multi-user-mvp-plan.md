@@ -344,7 +344,7 @@ Show code commits linked to cards automatically.
 | MVP-B1 | B | Invite-only auth system | 82% | M | Complete | MVP-A1 |
 | MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Complete | MVP-B1 |
 | MVP-B3 | B | Audit attribution standard | 90% | S | Complete | MVP-B1 |
-| MVP-C1 | C | Global repo write lock | 85% | M | Partial | MVP-A1 |
+| MVP-C1 | C | Global repo write lock | 85% | M | Complete | MVP-A1 |
 | MVP-C2 | C | Collision-proof ID allocation | 88% | M | Pending | MVP-C1 |
 | MVP-C3 | C | Optimistic concurrency for long-form edits | 84% | M | Partial | MVP-C1 |
 | MVP-D1 | D | Claim/Accept task button | 90% | S | Pending | MVP-B2, MVP-C1 |
@@ -377,8 +377,9 @@ This section is the source of truth for **current status**, based on what exists
 
 **Epic B (Session-Based Authentication): COMPLETE ✅**
 
+- **MVP-C1** — Repo lock complete: `RepoLock.ts` with atomic lock acquisition (fs.open 'wx'), TTL stale-lock recovery (30s), EEXIST handling for race conditions. Comprehensive test coverage (14 tests, all passing). Flag documented in `.env.example`. `/api/healthz` reports real lock status (`apps/business-os/src/lib/repo/RepoLock.ts`, `apps/business-os/src/lib/repo/RepoLock.test.ts`, `apps/business-os/.env.example`).
+
 ### Partial
-- **MVP-C1** — Repo lock implementation exists (`apps/business-os/src/lib/repo/RepoLock.ts`) and RepoWriter can run locked writes when `BUSINESS_OS_REPO_LOCK_ENABLED=true` (`apps/business-os/src/lib/repo-writer.ts`). There is no RepoLock test coverage yet, the flag is not documented in `apps/business-os/.env.example`, and `/api/healthz` does not yet report real lock status.
 - **MVP-C3** — File SHA (`fileSha`) + `baseFileSha` optimistic concurrency exists for card edits (`apps/business-os/src/app/api/cards/[id]/route.ts`) with conflict UI (`apps/business-os/src/components/ConflictDialog.tsx`), but needs extension to other long-form edit surfaces (ideas, stage docs).
 - **MVP-E3** — Agent runner daemon isn't implemented yet, but validation requirements complete: queue scanner, run logger, health check, lock integration tests, and PM2 supervision strategy (`apps/business-os/src/agent-runner/*`, `docs/runbooks/agent-runner-supervision.md`).
 
@@ -1697,8 +1698,8 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Next action:** `/build-feature` starting with Epic A (MVP-A1)
 
 **Audit Summary (2026-01-30):**
-- **Complete:** 6/18 (MVP-A1, MVP-A2, MVP-A3, MVP-B1, MVP-B2, MVP-B3) — **Epic A complete! ✅ Epic B complete! ✅**
-- **Partial:** 3/18 (MVP-C1, MVP-C3, MVP-E3)
+- **Complete:** 7/18 (MVP-A1, MVP-A2, MVP-A3, MVP-B1, MVP-B2, MVP-B3, MVP-C1) — **Epic A complete! ✅ Epic B complete! ✅**
+- **Partial:** 2/18 (MVP-C3, MVP-E3)
 - **Pending:** 9/18
 - **Confidence note:** MVP-C3 and MVP-E3 were de-risked on 2026-01-30 and are now ≥80% confidence (see per-task Re-plan Updates).
 - **Overall confidence (effort-weighted):** ~86.6% (rounds to 87% in plan header)

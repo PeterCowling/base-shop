@@ -6,7 +6,7 @@ Created: 2026-01-29
 Last-updated: 2026-01-30
 Last-audited: 2026-01-30
 Feature-Slug: business-os-multi-user-mvp
-Overall-confidence: 87%
+Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Related-Docs:
   - docs/plans/business-os-strategic-review.md
@@ -356,6 +356,7 @@ Show code commits linked to cards automatically.
 | MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
 | MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
 | MVP-F2 | F | Auto-progress notes (optional) | 86% | S | Pending | MVP-E3 |
+| MVP-G1 | G | Dual-locale i18n with agent translation | 78% | L | Pending | MVP-B1, MVP-E2, MVP-E3 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -1748,6 +1749,145 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Affects: No changes
   - Acceptance: No changes
   - Dependencies: No changes
+
+---
+
+### MVP-G1: Dual-locale i18n with agent translation
+
+**Epic G: Internationalization**
+
+Enable dual-locale support (en, it) for all Business OS UI and content. Translations occur automatically via agent tasks as part of core workflow. Non-worked ideas remain untranslated; all other entities (worked ideas, cards, stage docs, comments) are translated to both locales.
+
+- **Type:** IMPLEMENT
+- **Effort:** L
+- **Affects:**
+  - `apps/business-os/src/lib/types.ts` — Add locale fields to all content types
+  - `apps/business-os/src/lib/current-user.ts` — Add user locale preference
+  - `apps/business-os/src/lib/repo/content-reader.ts` — Read locale-specific content
+  - `apps/business-os/src/lib/repo/translation-queue.ts` (NEW) — Create translation agent tasks
+  - `apps/business-os/src/app/api/user/locale/route.ts` (NEW) — Set user locale preference
+  - `apps/business-os/src/components/*` — Render locale-aware content throughout UI
+  - `apps/business-os/docs/business-os/cards/*.md` — Add translation fields
+  - `apps/business-os/docs/business-os/ideas/worked/*.md` — Add translation fields
+- **Depends on:** MVP-B1 (user accounts), MVP-E2 (agent queue), MVP-E3 (agent runner for executing translations)
+- **Confidence:** 78%
+  - Implementation: 82% — i18n patterns exist in brikette; adapt for git-backed content
+  - Approach: 78% — Frontmatter translation fields approach is clear, but triggering logic needs refinement
+  - Impact: 80% — Affects all content rendering; changes are additive and non-breaking
+- **Acceptance:**
+  - [ ] User can set locale preference via UI (en or it, default en)
+  - [ ] User locale preference persists in session and across logins
+  - [ ] All worked ideas have `Title-it` and `Content-it` frontmatter fields populated
+  - [ ] All cards have `Title-it` frontmatter field populated
+  - [ ] Non-worked ideas (inbox) do NOT have translation fields or trigger translation
+  - [ ] When idea status changes to "worked" or card is created, agent translation task is queued
+  - [ ] Agent translation task reads en content, translates to it, updates frontmatter
+  - [ ] UI displays content in user's preferred locale (falls back to en if translation missing)
+  - [ ] All UI strings (buttons, labels, navigation) respect user locale
+  - [ ] No regressions: existing en-only content renders correctly
+- **Test plan:**
+  - Unit tests:
+    - `apps/business-os/src/lib/current-user.test.ts` — User locale preference storage/retrieval
+    - `apps/business-os/src/lib/repo/translation-queue.test.ts` — Translation task creation logic
+    - `apps/business-os/src/lib/repo/content-reader.test.ts` — Locale-specific content reading
+  - Integration tests:
+    - `apps/business-os/src/app/api/user/locale/route.test.ts` — Locale preference endpoint
+    - Create card → verify translation queue item created
+    - Work idea → verify translation queue item created
+    - Non-worked idea → verify NO translation queue item created
+  - E2E tests:
+    - `apps/business-os/cypress/e2e/i18n-workflow.cy.ts` (NEW)
+      - User switches locale → UI updates immediately
+      - Create card in en → agent translates to it → view in it locale
+      - Work idea → translation triggered → both locales display correctly
+      - Inbox idea → no translation → only en content exists
+- **Planning validation:** (L-effort required)
+  - Tests run: `pnpm test apps/business-os` — baseline pass (existing tests)
+  - Existing i18n patterns surveyed:
+    - `apps/brikette/src/locales/*` — Translation file structure
+    - `packages/i18n/src/useTranslations.tsx` — Client-side hook pattern
+    - `packages/i18n/src/useTranslations.server.tsx` — Server-side pattern
+  - Test stubs written: No (will write during build)
+  - Unexpected findings:
+    - Brikette uses JSON files per locale; Business OS uses markdown frontmatter
+    - Need to decide: separate `.it.md` files OR translation fields in same frontmatter
+    - **Decision:** Use frontmatter fields (`Title-it`, `Content-it`) for atomic git commits
+  - Extinct tests: None identified (i18n is new feature)
+- **What would make this ≥90%:**
+  - Write test stubs for translation agent (mock translation service, verify queue → frontmatter update flow)
+  - Prototype translation triggering logic (status change hooks)
+  - Decide on agent translation implementation (use Claude API? External service? Mock for MVP?)
+  - Validate full round-trip: en content → queue → agent translates → it content rendered
+- **Rollout / rollback:**
+  - Rollout:
+    - Phase 1: Add locale preference UI + storage (no translation yet)
+    - Phase 2: Add translation frontmatter fields to existing content (all empty initially)
+    - Phase 3: Enable translation queue creation (feature flag: `BUSINESS_OS_I18N_ENABLED=true`)
+    - Phase 4: Enable agent translation runner (after MVP-E3 complete)
+  - Feature flags:
+    - `BUSINESS_OS_I18N_ENABLED` — Master switch (default false)
+    - `BUSINESS_OS_AUTO_TRANSLATE` — Queue translations automatically (default false, manual override)
+  - Rollback:
+    - Set `BUSINESS_OS_I18N_ENABLED=false` → all UI falls back to en
+    - Translation fields in frontmatter remain but are ignored
+    - No data loss; can re-enable at any time
+  - Backwards compatibility:
+    - Content without translation fields displays en version (graceful degradation)
+    - Existing code that doesn't check locale continues to work (reads default en)
+- **Documentation impact:**
+  - Update: `docs/business-os/README.md` — Add i18n section explaining locale support
+  - Update: `docs/AGENTS.md` — Document translation agent task type and workflow
+  - New: `docs/business-os/i18n-guide.md` — How to add new locales, translation workflow
+  - Update: Entity schema docs (cards, ideas) — Document translation frontmatter fields
+- **Notes / references:**
+  - Pattern: Brikette i18n structure in `apps/brikette/src/locales/*` and `packages/i18n/`
+  - Precedent: Next.js i18n routing (though Business OS uses single route with dynamic content)
+  - Translation strategy options:
+    - **Option A:** Machine translation (Claude API, Google Translate)
+    - **Option B:** Agent-based translation (agent writes translation using domain knowledge)
+    - **Option C:** Manual translation (out of scope for MVP, agents only)
+    - **Chosen:** Option B (agent-based) — agents can use Claude API internally, but workflow is agent-driven
+  - Triggering logic:
+    - On card create: Queue translation task
+    - On idea status change (raw → worked): Queue translation task
+    - On content update: Queue re-translation task (future enhancement)
+  - Locale preference storage:
+    - Store in user session (server-side)
+    - Persist in user profile (future: database field)
+    - Default: `en` for all users initially
+
+#### Re-plan Update (2026-01-30)
+- **Previous confidence:** N/A (new task)
+- **Updated confidence:** 78%
+  - Implementation: 82% — i18n infrastructure exists in brikette; frontmatter pattern is proven; agent queue system is complete
+  - Approach: 78% — Frontmatter fields approach is straightforward; triggering on status changes is well-understood (similar to MVP-E2 queue creation)
+  - Impact: 80% — All content rendering affected, but changes are additive; no breaking changes to existing en-only content
+- **Investigation performed:**
+  - Repo: `apps/brikette/src/locales/*` — JSON-based translation files (not applicable)
+  - Repo: `packages/i18n/src/useTranslations.tsx` — Client-side i18n hook pattern
+  - Repo: `packages/i18n/src/useTranslations.server.tsx` — Server-side i18n pattern
+  - Repo: `apps/business-os/src/lib/types.ts` — Frontmatter schema (easy to extend)
+  - Repo: `apps/business-os/src/lib/repo/RepoWriter.ts` — Proven git write pattern
+  - Tests: No existing i18n tests in Business OS (new feature area)
+- **Decision / resolution:**
+  - **Translation storage:** Use frontmatter fields (`Title-it`, `Content-it`) in same markdown file
+    - Rationale: Atomic git commits, simpler git history, no file duplication
+    - Alternative rejected: Separate `.it.md` files (would complicate git ops, harder to keep in sync)
+  - **Triggering logic:** Queue translation on status change (worked) and card creation
+    - Implement in RepoWriter.updateCard() and createCard() — add translation queue item after successful write
+  - **Agent implementation:** Agent uses Claude API to translate en → it
+    - Agent reads `Title` and `Content` (or `content`) from frontmatter
+    - Agent writes `Title-it` and `Content-it` back to frontmatter
+    - MVP: Simple prompt "Translate this to Italian: {content}"
+  - **Non-worked ideas exclusion:** Check `Status: raw` in idea frontmatter before queueing translation
+    - Only ideas with `Status: worked` or cards get translated
+- **Changes to task:**
+  - Affects: Added specific files based on investigation
+  - Acceptance: Added specific frontmatter field names (`Title-it`, `Content-it`)
+  - Test plan: Added specific test file paths
+  - Rollout: Added phased rollout plan with feature flags
+
+---
 
 ## Risks & Mitigations
 

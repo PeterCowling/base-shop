@@ -16,12 +16,14 @@ export interface WorkIdeaButtonProps {
   ideaId: string;
   initialContent: string;
   initialStatus: string;
+  baseFileSha?: string;
 }
 
 export function WorkIdeaButton({
   ideaId,
   initialContent,
   initialStatus,
+  baseFileSha,
 }: WorkIdeaButtonProps) {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
@@ -45,6 +47,7 @@ export function WorkIdeaButton({
         ideaId={ideaId}
         initialContent={initialContent}
         initialStatus={initialStatus}
+        baseFileSha={baseFileSha}
         onCancel={handleCancel}
         onSuccess={handleSuccess}
       />

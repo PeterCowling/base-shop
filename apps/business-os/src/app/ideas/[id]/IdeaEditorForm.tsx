@@ -15,6 +15,8 @@ import { z } from "zod";
 import { Button, Textarea } from "@acme/design-system/atoms";
 
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
+import { ConflictDialog } from "@/components/ConflictDialog";
+import type { Idea } from "@/lib/types";
 
 import { updateIdea } from "./actions";
 
@@ -28,6 +30,7 @@ export interface IdeaEditorFormProps {
   ideaId: string;
   initialContent: string;
   initialStatus: string;
+  baseFileSha?: string;
   onCancel: () => void;
   onSuccess: () => void;
 }
@@ -35,12 +38,15 @@ export interface IdeaEditorFormProps {
 export function IdeaEditorForm({
   ideaId,
   initialContent,
+  baseFileSha,
   onCancel,
   onSuccess,
 }: IdeaEditorFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [conflictIdea, setConflictIdea] = useState<Idea | null>(null);
+  const [conflictSubmitted, setConflictSubmitted] = useState<string | null>(null);
 
   const {
     register,
@@ -56,14 +62,25 @@ export function IdeaEditorForm({
 
   const content = watch("content");
 
-  const onSubmit = async (data: IdeaEditorFormData) => {
+  const onSubmit = async (data: IdeaEditorFormData, force?: boolean) => {
     setIsSubmitting(true);
     setError(null);
+    setConflictIdea(null);
 
     try {
-      const result = await updateIdea(ideaId, data.content);
+      setConflictSubmitted(data.content);
+
+      const result = await updateIdea(ideaId, data.content, baseFileSha, force);
 
       if (!result.success) {
+        // MVP-C3: Handle conflict
+        if (result.conflict?.currentIdea) {
+          setConflictIdea(result.conflict.currentIdea as Idea);
+          setError(result.errorDetails || "This idea changed since you loaded it.");
+          setIsSubmitting(false);
+          return;
+        }
+
         setError(result.errorKey || "Failed to update idea");
         setIsSubmitting(false);
         return;
@@ -78,7 +95,7 @@ export function IdeaEditorForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit((data) => onSubmit(data))} className="space-y-4">
       {/* Preview Toggle */}
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-gray-900">Edit Idea</h3>
@@ -134,6 +151,17 @@ export function IdeaEditorForm({
           Cancel
         </Button>
       </div>
+
+      {/* Conflict resolution (MVP-C3) */}
+      {conflictIdea && (
+        <ConflictDialog
+          currentMarkdown={conflictIdea.content}
+          submittedMarkdown={conflictSubmitted || content}
+          isBusy={isSubmitting}
+          onRefresh={() => window.location.reload()}
+          onOverwrite={() => onSubmit({ content: conflictSubmitted || content }, true)}
+        />
+      )}
     </form>
   );
 }

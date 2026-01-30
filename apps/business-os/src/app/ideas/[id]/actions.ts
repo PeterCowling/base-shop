@@ -112,11 +112,14 @@ export async function convertToCard(
  * Transitions idea from "raw" to "worked" status
  *
  * MVP-B2: Server action with session validation
+ * MVP-C3: Optimistic concurrency with baseFileSha
  */
 export async function updateIdea(
   ideaId: string,
-  content: string
-): Promise<ConvertToCardResult> {
+  content: string,
+  baseFileSha?: string,
+  force?: boolean
+): Promise<ConvertToCardResult & { conflict?: { currentIdea: unknown; currentFileSha: string } }> {
   // MVP-B2: Check authentication if enabled
   const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
   if (authEnabled) {
@@ -145,6 +148,20 @@ export async function updateIdea(
     return {
       success: false,
       errorKey: "businessOs.ideas.errors.ideaNotFound",
+    };
+  }
+
+  // MVP-C3: Optimistic concurrency check
+  if (baseFileSha && !force && idea.fileSha && idea.fileSha !== baseFileSha) {
+    return {
+      success: false,
+      errorKey: "businessOs.ideas.errors.conflict",
+      // i18n-exempt -- MVP-C3 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
+      errorDetails: "This idea changed since you loaded it.",
+      conflict: {
+        currentIdea: idea,
+        currentFileSha: idea.fileSha,
+      },
     };
   }
 

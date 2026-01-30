@@ -158,6 +158,7 @@ export default async function IdeaPage({ params }: PageProps) {
                   ideaId={idea.ID || id}
                   initialContent={idea.content}
                   initialStatus={idea.Status || "raw"}
+                  baseFileSha={idea.fileSha}
                 />
               </div>
             </div>

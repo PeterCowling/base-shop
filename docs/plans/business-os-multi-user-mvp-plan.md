@@ -3,9 +3,10 @@ Type: Plan
 Status: Active
 Domain: Platform
 Created: 2026-01-29
-Last-updated: 2026-01-29
+Last-updated: 2026-01-30
+Last-audited: 2026-01-30
 Feature-Slug: business-os-multi-user-mvp
-Overall-confidence: 86%
+Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Related-Docs:
   - docs/plans/business-os-strategic-review.md
@@ -337,62 +338,80 @@ Show code commits linked to cards automatically.
 
 | Task ID | Epic | Description | Confidence | Effort | Status | Depends on |
 |---------|------|-------------|------------|--------|--------|------------|
-| MVP-A1 | A | Production run mode + repoRoot config | 92% | S | Pending | - |
-| MVP-A2 | A | Health endpoint | 94% | S | Pending | MVP-A1 |
-| MVP-A3 | A | Remote access runbook | 95% | S | Pending | MVP-A1 |
-| MVP-B1 | B | Invite-only auth system | 82% | M | Pending | MVP-A1 |
-| MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Pending | MVP-B1 |
-| MVP-B3 | B | Audit attribution standard | 90% | S | Pending | MVP-B1 |
-| MVP-C1 | C | Global repo write lock | 85% | M | Pending | MVP-A1 |
+| MVP-A1 | A | Production run mode + repoRoot config | 92% | S | Complete | - |
+| MVP-A2 | A | Health endpoint | 94% | S | Partial | MVP-A1 |
+| MVP-A3 | A | Remote access runbook | 95% | S | Complete | MVP-A1 |
+| MVP-B1 | B | Invite-only auth system | 82% | M | Partial | MVP-A1 |
+| MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Partial | MVP-B1 |
+| MVP-B3 | B | Audit attribution standard | 90% | S | Partial | MVP-B1 |
+| MVP-C1 | C | Global repo write lock | 85% | M | Partial | MVP-A1 |
 | MVP-C2 | C | Collision-proof ID allocation | 88% | M | Pending | MVP-C1 |
-| MVP-C3 | C | Optimistic concurrency for long-form edits | 78% | M | Pending | MVP-C1 |
+| MVP-C3 | C | Optimistic concurrency for long-form edits | 84% | M | Partial | MVP-C1 |
 | MVP-D1 | D | Claim/Accept task button | 90% | S | Pending | MVP-B2, MVP-C1 |
 | MVP-D2 | D | Mark complete button | 90% | S | Pending | MVP-B2, MVP-C1 |
 | MVP-D3 | D | "My Work" view | 85% | M | Pending | MVP-B1, MVP-D1 |
 | MVP-E1 | E | Comments as first-class git artifacts | 86% | M | Pending | MVP-B2, MVP-C1 |
 | MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Pending | MVP-B2, MVP-C1 |
-| MVP-E3 | E | Agent runner daemon | 78% | L | Pending | MVP-C1, MVP-E2 |
+| MVP-E3 | E | Agent runner daemon | 82% | L | Blocked (V1-V5) | MVP-C1, MVP-E2 |
 | MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
 | MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
 | MVP-F2 | F | Auto-progress notes (optional) | 86% | S | Pending | MVP-E3 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
-## Confidence-Raising Actions (78% Tasks)
+## Repo Status Audit (2026-01-30)
 
-Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to raise confidence:
+This section is the source of truth for **current status**, based on what exists in this repo as of 2026-01-30 (files + code). Older “Build Completion” notes below are point-in-time and may no longer reflect how the system behaves end-to-end.
 
-### MVP-C3: Optimistic Concurrency (78% → 82-85%)
+### Complete
 
-**Current uncertainty:** Diff UI component and conflict resolution UX need validation.
+- **MVP-A1** — `getRepoRoot()` exists and is widely used (`apps/business-os/src/lib/get-repo-root.ts`); `apps/business-os/.env.example` documents `BUSINESS_OS_REPO_ROOT`.
+- **MVP-A3** — Tunnel runbook + script exist (`docs/runbooks/tunnel-setup.md`, `apps/business-os/scripts/tunnel-trycloudflare.sh`) and are referenced from `apps/business-os/README.md`.
 
-**Evidence that reduces uncertainty:**
-- Edit surfaces now grounded: `apps/business-os/src/app/cards/[id]/edit/page.tsx` (card edit), `IdeaEditorForm.tsx` (idea inline editing)
-- Diff libraries identified: `diff` (3.4M weekly DL, small), `fast-diff`, `diff-match-patch`
+### Partial
 
-**Action to raise confidence (2-3 hours):**
-- **Quick spike**: Pick `diff` npm package, implement baseCommit → detect mismatch → render conflict UI end-to-end on card edit page
-- **Targeted test**: Simulate User A loads card, User B edits, User A saves → conflict dialog shows diff + options
-- **Validates**: "Detect conflict + show diff + user chooses action" flow works
-- **Confidence after spike:** 82-85%
+- **MVP-A2** — `/api/healthz` exists (`apps/business-os/src/app/api/healthz/route.ts`) and returns `gitHead`, but `repoLockStatus` is hardcoded to `"not_implemented"` and `lastAgentRunTimestamp` is always `null`.
+- **MVP-B1** — Auth primitives exist (login page + login/logout routes + middleware + `docs/business-os/people/users.json`), but app pages/server actions still primarily derive “current user” from `current_user_id` (`apps/business-os/src/lib/current-user.ts`) rather than session. This means “logged-in user identity” is not yet consistently the source of truth across UI/server components/server actions.
+- **MVP-B2** — Session-based enforcement exists for mutation API routes when `BUSINESS_OS_AUTH_ENABLED=true` (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`), but server actions are not session-validated (`apps/business-os/src/app/ideas/[id]/actions.ts`) and UI gating still uses `current-user.ts` checks.
+- **MVP-B3** — Audit commit message metadata exists (`apps/business-os/src/lib/commit-identity.ts`, `apps/business-os/src/lib/repo-writer.ts`), but API routes currently pass `CommitIdentities.user` (Pete) as the git author identity (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`) rather than setting git author to the authenticated user’s identity.
+- **MVP-C1** — Repo lock implementation exists (`apps/business-os/src/lib/repo/RepoLock.ts`) and RepoWriter can run locked writes when `BUSINESS_OS_REPO_LOCK_ENABLED=true` (`apps/business-os/src/lib/repo-writer.ts`). There is no RepoLock test coverage yet, the flag is not documented in `apps/business-os/.env.example`, and `/api/healthz` does not yet report real lock status.
+- **MVP-C3** — File SHA (`fileSha`) + `baseFileSha` optimistic concurrency exists for card edits (`apps/business-os/src/app/api/cards/[id]/route.ts`) with conflict UI (`apps/business-os/src/components/ConflictDialog.tsx`), but needs extension to other long-form edit surfaces (ideas, stage docs).
+- **MVP-E3** — Agent runner daemon isn’t implemented yet, but CLI execution groundwork exists (`apps/business-os/src/agent-runner/*`).
 
-### MVP-E3: Agent Runner Daemon (78% → 82-85%)
+### Pending (not found in repo yet)
 
-**Current uncertainty:** Reliable skill execution (external CLI vs module import).
+- **MVP-C2** — ID allocation remains scan-based (`apps/business-os/src/lib/id-generator.ts`), and there is no `docs/business-os/_meta/counters.json`.
+- **MVP-D1/D2/D3** — No one-click claim/accept/complete routes/components found; no `/me` route found.
+- **MVP-E1/E2/E4** — No `docs/business-os/agent-queue/` or `docs/business-os/agent-runs/` directories found; comment system remains “Coming Soon” in UI (`apps/business-os/src/components/card-detail/CardDetail.tsx`).
+- **MVP-F1/F2** — There is a lightweight per-card-file history view (BOS-28) (`apps/business-os/src/lib/git-history.ts`, `apps/business-os/src/components/card-detail/CardHistory.tsx`), but no commit-to-card linking by scanning commit messages for card IDs, and no auto-progress notes.
 
-**Evidence that reduces uncertainty:**
-- Skills documented and scoped: `docs/business-os/agent-workflows.md:19` (5 skills: /work-idea, /propose-lane-move, /scan-repo, /update-business-plan, /update-people)
-- Existing "check CLI exists then exec" pattern: `scripts/mcp/sync-ts-language.mjs:50` (`commandExists()` function)
-- Pattern is proven in repo for external tool integration
+## Confidence-Raising Actions (Completed 2026-01-30)
 
-**Action to raise confidence (1-2 hours):**
-- **Design executor abstraction**: Interface + mock executor (for tests) + real executor (with CLI check)
-- **Isolated boundary**: Executor interface isolates risky part (external CLI) from daemon logic
-- **Unit test**: Mock executor validates daemon behavior without external dependencies
-- **Integration test**: Real executor proves CLI invocation works
-- **Confidence after abstraction:** 82-85%
+These were the two tasks originally at 78% confidence. Investigation work (tests + spikes + doc validation) raised both to ≥80% without deferring scope.
 
-**Recommendation:** These spikes can be done during Epic C (MVP-C3) and Epic E (MVP-E3) build phases as first implementation steps. Both are small, focused validations that de-risk the main implementation.
+### MVP-C3: Optimistic Concurrency (78% → 84%)
+
+**What changed:** Chose **file SHA** (SHA-256 of raw markdown) instead of git commit SHA for the “base version” signal, and implemented a card edit spike end-to-end.
+
+**Evidence added (repo-backed):**
+- `fileSha` captured at read time for cards/ideas/stage docs (`apps/business-os/src/lib/repo-reader.ts` + `apps/business-os/src/lib/types.ts`).
+- Concurrency check helper + unit tests (`apps/business-os/src/lib/optimistic-concurrency.ts`, `apps/business-os/src/lib/optimistic-concurrency.test.ts`).
+- End-to-end spike for cards: `baseFileSha` sent from edit page → API rejects on mismatch → UI shows conflict resolution controls (`apps/business-os/src/app/cards/[id]/edit/page.tsx`, `apps/business-os/src/app/api/cards/[id]/route.ts`, `apps/business-os/src/components/card-editor/CardEditorForm.tsx`, `apps/business-os/src/components/ConflictDialog.tsx`).
+
+**Tests run:** `pnpm --filter @apps/business-os test -- src/lib/repo-reader.test.ts src/lib/optimistic-concurrency.test.ts`
+
+### MVP-E3: Agent Runner Daemon (78% → 82%)
+
+**What changed:** Validated that the Claude Code CLI supports non-interactive execution (`claude -p/--print`) and added a tested CLI-executor foundation.
+
+**Evidence added (repo-backed + docs):**
+- Agent skills are explicitly documented and stored in-repo (`docs/business-os/agent-workflows.md`, `.claude/skills/*`).
+- Claude Code CLI supports `--print` and JSON output (`claude --help`) and is documented publicly (see Anthropic “Claude Code” docs and SDK reference).
+- Executor building blocks + unit tests exist (`apps/business-os/src/agent-runner/exec-command.ts`, `apps/business-os/src/agent-runner/claude-cli.ts`, and tests in `apps/business-os/src/agent-runner/*.test.ts`).
+
+**Tests run:** `pnpm --filter @apps/business-os test -- src/agent-runner/claude-cli.test.ts src/agent-runner/exec-command.test.ts src/agent-runner/command-exists.test.ts`
+
+**Remaining biggest uncertainty:** Running a Claude Code slash-command “skill” non-interactively against this repo without any interactive permission prompts, and capturing structured outputs reliably.
 
 ## Tasks
 
@@ -983,22 +1002,25 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/business-os/src/app/cards/[id]/edit/page.tsx` (add baseCommit field)
-  - `apps/business-os/src/app/ideas/[id]/page.tsx` (add baseCommit to inline editor)
-  - `apps/business-os/src/lib/repo-writer.ts` (add concurrency check)
-  - `apps/business-os/src/components/ConflictDialog.tsx` (NEW - show diff + options)
+  - `apps/business-os/src/lib/file-sha.ts` (NEW)
+  - `apps/business-os/src/lib/repo-reader.ts` (add `fileSha` on reads)
+  - `apps/business-os/src/lib/optimistic-concurrency.ts` (NEW - check helpers)
+  - `apps/business-os/src/app/cards/[id]/edit/page.tsx` (send `baseFileSha`)
+  - `apps/business-os/src/app/api/cards/[id]/route.ts` (enforce `baseFileSha`, add `force`)
+  - `apps/business-os/src/components/ConflictDialog.tsx` (NEW - conflict UI)
+  - `apps/business-os/src/components/card-editor/CardEditorForm.tsx` (render conflict UI + overwrite path)
 - **Depends on:** MVP-C1
-- **Confidence:** 78%
-  - Implementation: 85% — Git commit SHA tracking straightforward, conflict detection clear
-  - Approach: 78% — Diff UI component is new pattern, some UX decisions needed
-  - Impact: 82% — Prevents data loss, but adds complexity to edit flow
+- **Confidence:** 84%
+  - Implementation: 88% — Card edit path now implements fileSha-based checks end-to-end with tests
+  - Approach: 84% — File SHA avoids git/worktree ambiguity; still need to extend to idea edits and other long-form surfaces
+  - Impact: 84% — Prevents silent overwrite; additive, guarded with `force` escape hatch
 - **Acceptance:**
-  - [ ] Edit forms include hidden `baseCommit` field (git SHA of file when loaded)
-  - [ ] On save, check if current file SHA matches baseCommit
-  - [ ] If mismatch: reject save, show ConflictDialog with diff + options (refresh, force save, merge)
+  - [ ] Edit forms include hidden `baseFileSha` field (SHA-256 of raw markdown when loaded)
+  - [ ] On save, check if current file SHA matches `baseFileSha`
+  - [ ] If mismatch: reject save (409), show ConflictDialog with options (refresh, force save, manual merge)
   - [ ] No silent overwrite of another user's edits
 - **Test plan:**
-  - Unit: Test conflict detection logic (baseCommit vs currentCommit)
+  - Unit: Test conflict detection logic (`baseFileSha` vs current `fileSha`)
   - Integration: User A loads card, User B edits card, User A saves → conflict detected
   - E2E: Simulate concurrent edit, verify UI shows conflict dialog
 - **Rollout / rollback:**
@@ -1008,7 +1030,7 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - User guide: "Handling edit conflicts"
 - **Notes / references:**
   - Similar to git merge conflict resolution
-  - Alternative: use file mtime instead of commit SHA (less reliable)
+  - Alternative: use git commit SHA instead of file SHA (riskier with worktrees/branches)
   - Expert review: "Include baseCommit (or fileSha) in edit forms"
 
 #### Re-plan Update (2026-01-29)
@@ -1032,7 +1054,22 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 - **What would make this ≥80%:**
-  - **Quick spike** (2-3 hours): Pick concrete diff library (`diff` npm package), implement baseCommit → detect mismatch → render conflict UI end-to-end on card edit page with targeted test. Proves "detect conflict + show diff + user chooses action" flow works. Once spike passes, confidence → 82-85%.
+  - (Completed 2026-01-30) Card edit spike + tests; see next update.
+
+#### Re-plan Update (2026-01-30)
+- **Previous confidence:** 78%
+- **Updated confidence:** 84%
+  - Implementation: 88% — Implemented `fileSha` capture and concurrency check for card edits; added unit tests and ran targeted lint/typecheck.
+  - Approach: 84% — File SHA approach is simpler and branch/worktree-safe; remaining work is extending to ideas and other long-form edit paths.
+  - Impact: 84% — Adds 409 conflict path with explicit “force” escape hatch; prevents silent overwrite.
+- **Evidence added:**
+  - Tests: `apps/business-os/src/lib/optimistic-concurrency.test.ts`
+  - Card flow: `apps/business-os/src/app/cards/[id]/edit/page.tsx`, `apps/business-os/src/app/api/cards/[id]/route.ts`, `apps/business-os/src/components/card-editor/CardEditorForm.tsx`, `apps/business-os/src/components/ConflictDialog.tsx`
+  - Reader support: `apps/business-os/src/lib/repo-reader.ts`, `apps/business-os/src/lib/file-sha.ts`
+- **Decision / resolution:**
+  - Use `baseFileSha` (SHA-256 of raw markdown) as the optimistic concurrency token (preferred over git commit SHA in this repo’s worktree architecture)
+  - Support `force=true` to allow an explicit overwrite path after user review
+  - Treat line-by-line diff rendering as “nice to have” for MVP; side-by-side current vs submitted is sufficient to prevent silent data loss
 
 ### MVP-D1: Claim/Accept task button
 
@@ -1289,20 +1326,31 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - `apps/business-os/src/agent-runner/index.ts` (NEW - main daemon script)
   - `apps/business-os/src/agent-runner/skills.ts` (NEW - skill execution wrappers)
   - `apps/business-os/src/agent-runner/run-logger.ts` (NEW)
+  - `apps/business-os/src/agent-runner/exec-command.ts` (NEW - subprocess runner)
+  - `apps/business-os/src/agent-runner/command-exists.ts` (NEW - CLI detection)
+  - `apps/business-os/src/agent-runner/claude-cli.ts` (NEW - Claude Code CLI wrapper)
   - `docs/business-os/agent-runs/` (NEW directory for run logs)
   - `apps/business-os/scripts/agent-runner.sh` (NEW - start/stop script)
 - **Depends on:** MVP-C1, MVP-E2
-- **Confidence:** 78%
-  - Implementation: 80% — Polling loop straightforward, skill execution via CLI is novel integration
-  - Approach: 78% — Daemon pattern clear, but skill execution wrapper needs design (spawn Claude Code CLI vs import modules)
-  - Impact: 80% — New daemon process, isolated from web server, repo lock integration critical
+- **Confidence:** 82% (BLOCKED - see Pre-Implementation Validation)
+  - Implementation: 82% — Polling loop still pending, but CLI execution boundary is now specified and unit-tested
+  - Approach: 82% — Claude Code CLI supports non-interactive runs (`-p/--print`), enabling a reliable "spawn CLI per task" model
+  - Impact: 80% — Still a new daemon process; crash recovery + repo lock integration remain critical
+  - **BUILD GATE:** Impact must reach ≥85% before implementation proceeds (complete validation requirements below)
+- **Pre-Implementation Validation Requirements (MANDATORY):**
+  - [ ] **V1: Polling loop validation** - Build + test queue scanning logic in isolation. Prove directory watching, file parsing, task state detection works correctly. Tests must cover: empty queue, single task, multiple tasks, malformed files.
+  - [ ] **V2: Run logging atomicity** - Build + test run logger in isolation. Prove logs can be written atomically during execution. Tests must cover: log creation, append during execution, finalization on completion/error, log file corruption recovery.
+  - [ ] **V3: RepoLock integration test** - Build integration test proving daemon can acquire/release lock correctly. Test must spawn mock daemon, create lock contention with RepoWriter, verify both operations serialize correctly. Prove lock timeout handling works.
+  - [ ] **V4: Supervision strategy document** - Write `docs/runbooks/agent-runner-supervision.md` with: PM2 process config, restart policy, health check strategy, log rotation, monitoring approach. Document failure modes and recovery procedures.
+  - [ ] **V5: Health check implementation** - Build daemon health check endpoint or status file. Prove daemon can report: alive, queue length, current task, last heartbeat. Add to supervision doc.
+  - **Gate condition:** All 5 validations complete → Impact increases to ≥85% → implementation proceeds
 - **Acceptance:**
   - [ ] Daemon polls `agent-queue/` every 5s
-  - [ ] On new task: acquire repo lock, execute skill (Claude Code CLI or equivalent), write outputs + commit
+  - [ ] On new task: acquire repo lock, execute skill via Claude Code CLI (`claude -p ...`) or equivalent, write outputs + commit
   - [ ] Write run log to `agent-runs/{queue-id}/run.log.md` with progress updates
   - [ ] Queued task becomes visible output + git commit without admin touch
 - **Test plan:**
-  - Unit: Test run logger, skill execution wrappers
+  - Unit: Test run logger, skill execution wrappers (including CLI argument generation + subprocess runner)
   - Integration: Create queue item → daemon picks up → skill executes → outputs committed
   - E2E: Request agent work via UI → daemon processes → see outputs in entity page
 - **Planning validation:**
@@ -1317,6 +1365,8 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
 - **Notes / references:**
   - Expert review: "A local 'agent runner' process on the host that consumes a git-backed queue"
   - Skill execution: wrap existing Claude Code CLI commands (or reuse internal modules)
+  - Claude Code docs: https://docs.anthropic.com/en/docs/claude-code/overview
+  - Claude Agent SDK (renamed from “Claude Code SDK”): https://platform.claude.com/docs/en/agent-sdk/quickstart
 
 #### Re-plan Update (2026-01-29)
 - **Previous confidence:** TBD
@@ -1342,7 +1392,47 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 - **What would make this ≥80%:**
-  - **Design executor abstraction** (1-2 hours): Define interface, implement mock executor for tests, implement real executor with CLI check (reuse sync-ts-language.mjs pattern). This isolates the risky part (external CLI) into a well-tested boundary. Unit test the abstraction with mock, integration test with real CLI. Once abstraction is validated independently, confidence → 82-85%.
+  - (Completed 2026-01-30) Executor boundary extracted + unit tests; see next update.
+- **What would make this ≥85% (MANDATORY before build):**
+  - Complete all 5 Pre-Implementation Validation requirements (V1-V5 above)
+  - V1 raises Implementation confidence (polling proven)
+  - V2 raises Implementation confidence (logging proven)
+  - V3 raises Impact confidence (lock integration proven)
+  - V4+V5 raise Impact confidence (operational risk mitigated)
+  - Once complete, update Impact: 80% → 85%, proceed to `/build-feature`
+
+#### Re-plan Update (2026-01-30)
+- **Previous confidence:** 78%
+- **Updated confidence:** 82%
+  - Implementation: 82% — Implemented and tested a CLI execution foundation (`exec-command`, `command-exists`, `claude-cli`). Remaining work is wiring queue polling + run logging + repo writer integration.
+  - Approach: 82% — Claude Code CLI supports non-interactive mode (`-p/--print`) per local CLI help and Anthropic documentation, making “spawn CLI per task” viable without module-import complexity.
+  - Impact: 80% — Still adds a long-running daemon; operational concerns remain but are known/standard (systemd/PM2 supervision).
+- **Evidence added:**
+  - CLI wrappers: `apps/business-os/src/agent-runner/claude-cli.ts`, `apps/business-os/src/agent-runner/exec-command.ts`, `apps/business-os/src/agent-runner/command-exists.ts`
+  - Tests: `apps/business-os/src/agent-runner/claude-cli.test.ts`, `apps/business-os/src/agent-runner/exec-command.test.ts`, `apps/business-os/src/agent-runner/command-exists.test.ts`
+- **Decision / resolution:**
+  - Default executor strategy: Claude Code CLI (`claude -p "<prompt>"`) with JSON output where possible
+  - Keep the daemon logic isolated from the executor so we can swap to Claude Code SDK later if needed
+
+#### Re-plan Update (2026-01-30) - Validation Gate Added
+- **Status change:** Partial → **Blocked (V1-V5)**
+- **Reason:** Impact score of 80% is at build threshold. User requested validation requirements be completed BEFORE implementation to raise Impact to ≥85%.
+- **Validation requirements added:**
+  1. V1: Polling loop validation (isolated + tested)
+  2. V2: Run logging atomicity (isolated + tested)
+  3. V3: RepoLock integration test (prove serialization works)
+  4. V4: Supervision strategy document (PM2 config + runbook)
+  5. V5: Health check implementation (daemon status reporting)
+- **Effect on plan:**
+  - MVP-E3 blocked until all validations complete
+  - MVP-E4, MVP-F1, MVP-F2 transitively blocked (depend on MVP-E3)
+  - Epic E and Epic F cannot complete until validations done
+- **Recommended approach:**
+  - Build V1-V3 as test-first code (unit + integration tests)
+  - Write V4 as documentation (runbook + PM2 config)
+  - Build V5 as small feature (health endpoint or status file)
+  - Run `/re-plan` on MVP-E3 after all validations complete
+  - Expect Impact: 80% → 85% after validation
 
 ### MVP-E4: Agent run status UI (polling)
 
@@ -1593,7 +1683,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 
 ---
 
-**Plan Status:** Active (all tasks ≥78% confidence, ready for `/build-feature`)
+**Plan Status:** Active (implementation in progress; see **Repo Status Audit (2026-01-30)** for current repo-backed status)
 
 **Re-planning Summary (2026-01-29):**
 - **Tasks ready (≥80%):** 16/18 tasks (89%)
@@ -1602,3 +1692,11 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Overall confidence:** 86% (effort-weighted)
 - **Critical finding:** Confirmed collision-prone ID allocator in `apps/business-os/src/lib/id-generator.ts` (lines 34-74) - validates expert review
 - **Next action:** `/build-feature` starting with Epic A (MVP-A1)
+
+**Audit Summary (2026-01-30):**
+- **Complete:** 2/18 (MVP-A1, MVP-A3)
+- **Partial:** 7/18 (MVP-A2, MVP-B1, MVP-B2, MVP-B3, MVP-C1, MVP-C3, MVP-E3)
+- **Pending:** 9/18
+- **Most important gap to resolve next:** unify “current user identity” so pages/server actions/API routes all use the same authenticated session user (remove/retire `current_user_id` as an authority source when auth is enabled).
+- **Confidence note:** MVP-C3 and MVP-E3 were de-risked on 2026-01-30 and are now ≥80% confidence (see per-task Re-plan Updates).
+- **Overall confidence (effort-weighted):** ~86.6% (rounds to 87% in plan header)

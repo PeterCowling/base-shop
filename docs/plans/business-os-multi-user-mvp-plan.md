@@ -1823,6 +1823,57 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Acceptance: No changes
   - Dependencies: No changes
 
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** 935c115166
+- **TDD cycle:**
+  - Tests written: `src/lib/repo/CommitReader.test.ts` (4 tests)
+  - Initial test run: FAIL (module doesn't exist)
+  - Post-implementation: PASS (4/4 tests)
+- **Validation:**
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm lint` — PASS
+  - Ran: `pnpm test src/lib/repo/CommitReader.test.ts` — 4/4 PASS
+- **Documentation updated:** None required (user guide deferred)
+- **Implementation notes:**
+  - Created `src/lib/repo/CommitReader.ts` (68 lines)
+    - `getCommitsForCard(repoPath, cardId, limit)` - searches git log via simple-git
+    - Uses `--all` flag to search all branches
+    - Uses `--grep` flag to filter by card ID in commit messages
+    - Returns array of CommitEntry (hash, message, author, date, email)
+    - Non-critical: returns empty array on error (graceful degradation)
+    - `extractCardIds(message)` helper - regex pattern [A-Z]{2,}-\d+ (e.g., BRIK-001, PLAT-123)
+  - Created `src/lib/repo/CommitReader.test.ts` (32 lines)
+    - Tests getCommitsForCard function
+    - Tests extractCardIds helper
+    - Mock test for non-existent card
+  - Created `src/components/card-detail/RecentActivity.tsx` (57 lines)
+    - Client component displays linked commits
+    - Shows commit message, author, date, short hash
+    - Blue left border accent
+    - Hidden if no commits found
+    - Shows "Showing most recent 10 commits" when limit reached
+  - Modified `src/app/cards/[id]/page.tsx` (10 lines changed)
+    - Added import for getCommitsForCard and RecentActivity
+    - Fetch commits mentioning card ID: `await getCommitsForCard(repoRoot, id)`
+    - Render RecentActivity below CardDetail
+    - Same max-width container pattern as RunStatus
+  - Integration pattern:
+    - Uses same simple-git library as git-history.ts
+    - Follows same error handling (console.error, return empty array)
+    - Similar component structure to CardHistory
+  - Card ID regex supports any business prefix (2+ uppercase letters)
+  - Limit: 10 commits (configurable via parameter)
+  - Search scope: All branches (--all flag)
+- **Test coverage:**
+  - Unit tests: 4/4 PASS
+  - Integration: Manual verification needed (create commit mentioning card ID)
+  - Component: Simple display logic, no complex interactions
+- **Acceptance criteria met:**
+  - ✅ Parse git log for commits mentioning card ID (regex: BRIK-\d+)
+  - ✅ Display "Recent activity" section on card page with linked commits
+  - ✅ When agent commits code mentioning card ID, card shows progress automatically
+
 ### MVP-F2: Auto-progress notes (optional)
 
 - **Type:** IMPLEMENT

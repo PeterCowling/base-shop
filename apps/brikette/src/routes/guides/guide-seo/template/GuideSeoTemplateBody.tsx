@@ -207,7 +207,7 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         {...(typeof guideFaqFallback === "function" ? { guideFaqFallback } : {})}
       />
 
-      <Section as="div" padding="none" className={`mx-auto max-w-3xl px-4 ${shouldShowEditorialPanel ? 'pt-10' : 'pt-35'} md:px-8 lg:px-10`}>
+      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-3 md:px-8 lg:px-10">
         <DevStatusPill guideKey={guideKey as any} />
         <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
           {shouldShowEditorialPanel && manifestEntry ? (

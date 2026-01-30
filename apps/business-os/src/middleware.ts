@@ -19,41 +19,24 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getSession, getSessionUser } from "./lib/auth";
-
 // Feature flag - auth is DISABLED by default due to edge runtime limitation
 // DO NOT enable until iron-session edge compatibility is resolved
 const AUTH_ENABLED = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
 
-// Public paths that don't require authentication
-const PUBLIC_PATHS = ["/login", "/api/auth/login", "/api/auth/logout"];
-
 export async function middleware(request: NextRequest) {
-  // Skip auth check if feature flag is disabled
+  // Auth is disabled - iron-session incompatible with edge runtime
+  // To enable auth, must first resolve edge runtime limitation (see file header)
   if (!AUTH_ENABLED) {
     return NextResponse.next();
   }
 
-  const { pathname } = request.nextUrl;
-
-  // Allow public paths
-  if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
-    return NextResponse.next();
-  }
-
-  // Check session
-  const response = NextResponse.next();
-  const session = await getSession(request, response);
-  const user = getSessionUser(session);
-
-  // Redirect to login if not authenticated
-  if (!user) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  return response;
+  // Auth is not currently functional due to iron-session edge runtime incompatibility
+  // This code path should not be reached unless AUTH_ENABLED is explicitly set to true
+  throw new Error(
+    "Auth middleware is not supported in edge runtime. " +
+    "Set BUSINESS_OS_AUTH_ENABLED=false or upgrade to Next.js canary with experimental.nodeMiddleware. " +
+    "See middleware.ts header for details."
+  );
 }
 
 // Apply middleware to all routes except static files and Next.js internals

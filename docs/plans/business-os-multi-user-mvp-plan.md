@@ -341,9 +341,9 @@ Show code commits linked to cards automatically.
 | MVP-A1 | A | Production run mode + repoRoot config | 92% | S | Complete | - |
 | MVP-A2 | A | Health endpoint | 94% | S | Complete | MVP-A1 |
 | MVP-A3 | A | Remote access runbook | 95% | S | Complete | MVP-A1 |
-| MVP-B1 | B | Invite-only auth system | 82% | M | Partial | MVP-A1 |
-| MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Partial | MVP-B1 |
-| MVP-B3 | B | Audit attribution standard | 90% | S | Partial | MVP-B1 |
+| MVP-B1 | B | Invite-only auth system | 82% | M | Complete | MVP-A1 |
+| MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Complete | MVP-B1 |
+| MVP-B3 | B | Audit attribution standard | 90% | S | Complete | MVP-B1 |
 | MVP-C1 | C | Global repo write lock | 85% | M | Partial | MVP-A1 |
 | MVP-C2 | C | Collision-proof ID allocation | 88% | M | Pending | MVP-C1 |
 | MVP-C3 | C | Optimistic concurrency for long-form edits | 84% | M | Partial | MVP-C1 |
@@ -371,10 +371,13 @@ This section is the source of truth for **current status**, based on what exists
 
 **Epic A (Production Run Mode): COMPLETE ✅**
 
+- **MVP-B1** — Session is now source of truth: `getCurrentUserServer()` checks iron-session when `BUSINESS_OS_AUTH_ENABLED=true` (`apps/business-os/src/lib/current-user.ts`), falling back to legacy `current_user_id` cookie when auth disabled. Added `getAuthenticatedUserFromHeaders()` helper for server components (`apps/business-os/src/lib/auth.ts`).
+- **MVP-B2** — Authorization complete: API routes (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`) and server actions (`apps/business-os/src/app/ideas/[id]/actions.ts`) validate sessions when `BUSINESS_OS_AUTH_ENABLED=true`.
+- **MVP-B3** — Audit attribution complete: API routes and server actions now use authenticated user identity as git author via `userToCommitIdentity()` helper (`apps/business-os/src/lib/commit-identity.ts`), replacing hardcoded `CommitIdentities.user`.
+
+**Epic B (Session-Based Authentication): COMPLETE ✅**
+
 ### Partial
-- **MVP-B1** — Auth primitives exist (login page + login/logout routes + middleware + `docs/business-os/people/users.json`), but app pages/server actions still primarily derive “current user” from `current_user_id` (`apps/business-os/src/lib/current-user.ts`) rather than session. This means “logged-in user identity” is not yet consistently the source of truth across UI/server components/server actions.
-- **MVP-B2** — Session-based enforcement exists for mutation API routes when `BUSINESS_OS_AUTH_ENABLED=true` (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`), but server actions are not session-validated (`apps/business-os/src/app/ideas/[id]/actions.ts`) and UI gating still uses `current-user.ts` checks.
-- **MVP-B3** — Audit commit message metadata exists (`apps/business-os/src/lib/commit-identity.ts`, `apps/business-os/src/lib/repo-writer.ts`), but API routes currently pass `CommitIdentities.user` (Pete) as the git author identity (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`) rather than setting git author to the authenticated user’s identity.
 - **MVP-C1** — Repo lock implementation exists (`apps/business-os/src/lib/repo/RepoLock.ts`) and RepoWriter can run locked writes when `BUSINESS_OS_REPO_LOCK_ENABLED=true` (`apps/business-os/src/lib/repo-writer.ts`). There is no RepoLock test coverage yet, the flag is not documented in `apps/business-os/.env.example`, and `/api/healthz` does not yet report real lock status.
 - **MVP-C3** — File SHA (`fileSha`) + `baseFileSha` optimistic concurrency exists for card edits (`apps/business-os/src/app/api/cards/[id]/route.ts`) with conflict UI (`apps/business-os/src/components/ConflictDialog.tsx`), but needs extension to other long-form edit surfaces (ideas, stage docs).
 - **MVP-E3** — Agent runner daemon isn't implemented yet, but validation requirements complete: queue scanner, run logger, health check, lock integration tests, and PM2 supervision strategy (`apps/business-os/src/agent-runner/*`, `docs/runbooks/agent-runner-supervision.md`).
@@ -1694,9 +1697,8 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Next action:** `/build-feature` starting with Epic A (MVP-A1)
 
 **Audit Summary (2026-01-30):**
-- **Complete:** 3/18 (MVP-A1, MVP-A2, MVP-A3) — **Epic A complete! ✅**
-- **Partial:** 6/18 (MVP-B1, MVP-B2, MVP-B3, MVP-C1, MVP-C3, MVP-E3)
+- **Complete:** 6/18 (MVP-A1, MVP-A2, MVP-A3, MVP-B1, MVP-B2, MVP-B3) — **Epic A complete! ✅ Epic B complete! ✅**
+- **Partial:** 3/18 (MVP-C1, MVP-C3, MVP-E3)
 - **Pending:** 9/18
-- **Most important gap to resolve next:** unify “current user identity” so pages/server actions/API routes all use the same authenticated session user (remove/retire `current_user_id` as an authority source when auth is enabled).
 - **Confidence note:** MVP-C3 and MVP-E3 were de-risked on 2026-01-30 and are now ≥80% confidence (see per-task Re-plan Updates).
 - **Overall confidence (effort-weighted):** ~86.6% (rounds to 87% in plan header)

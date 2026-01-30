@@ -17,6 +17,8 @@ Enable the Business OS board to automatically refresh when markdown document cha
 
 User expectation: "Every time the status of documents changes, reflect those changes in what's presented on the board. This should include marking tasks as complete in ongoing work."
 
+**Critical prerequisite (confirmed):** Business OS reads and writes must point at the *same* checkout. The codebase is designed around a dedicated git worktree for writes (`../base-shop-business-os-store`), but `RepoReader` reads from `repoRoot/docs/business-os` while `RepoWriter` writes under `worktreePath/docs/business-os`. The recommended approach is to **initialize the worktree** and then set `BUSINESS_OS_REPO_ROOT` to the worktree root so the entire Business OS stack (reader, writer, locks, ID allocation, queue/runs) uses a single filesystem + git view.
+
 ### Goals
 - Auto-refresh board when card frontmatter changes (Lane, Priority, Owner, etc.)
 - Auto-refresh board when ideas are created/moved
@@ -34,7 +36,8 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - Constraints:
   - Node.js runtime required (already the case for git operations)
   - Phase 0: Local-only, single-user (Pete) - but design for multi-user
-  - Must handle worktree architecture (writes to `../base-shop-business-os-store`, reads from main repo)
+  - Must handle worktree architecture (writes are committed in a dedicated worktree checkout)
+  - Business OS repo root must be configurable (`BUSINESS_OS_REPO_ROOT`) so reads/writes align on the same checkout
   - No paid infrastructure ($0 constraint)
 - Assumptions:
   - Polling overhead is acceptable for MVP (<100 clients)
@@ -44,21 +47,46 @@ User expectation: "Every time the status of documents changes, reflect those cha
 ## Repo Audit (Current State)
 ### Entry Points
 - `apps/business-os/src/app/boards/[businessCode]/page.tsx` — Server Component, loads board data at request time
-- `apps/business-os/src/lib/repo-reader.ts` — Data access layer, synchronous file reads
-- `apps/business-os/src/lib/repo-writer.ts` — Mutation layer, writes to worktree + git commits
+- `apps/business-os/src/components/board/BoardView.tsx` — Client component, board UI (no auto-refresh)
+- `apps/business-os/src/lib/get-repo-root.ts` — Central resolver for Business OS repo root (`BUSINESS_OS_REPO_ROOT` or dev inference)
+- `apps/business-os/src/lib/repo-reader.ts` — Data access layer (async reads via `fs/promises`)
+- `apps/business-os/src/lib/repo-writer.ts` — Mutation layer (writes + commits to worktree)
+- Worktree bootstrap script — **Does not exist yet** (verified 2026-01-30); needs to be created as part of implementation
 
 ### Key Modules / Files
-- `apps/business-os/src/components/board/BoardView.tsx` — Client component, board UI (currently no auto-refresh)
-- `apps/business-os/src/components/agent-runs/RunStatus.tsx` — Example of existing polling pattern (5s interval for agent status)
-- `apps/business-os/src/lib/repo-lock.ts` — Repo-level locking for concurrent writes
+- `apps/business-os/src/components/agent-runs/RunStatus.tsx` — Example polling pattern (5s interval for agent status)
+- `apps/business-os/src/lib/auth/authorize.ts` — Path-based allowlist; requires writes to be within `repoRoot` and under `docs/business-os/`
+- `apps/business-os/src/lib/repo/RepoLock.ts` — Repo-level locking for concurrent writes (writes lock file under `docs/business-os/.locks/`)
 - `apps/business-os/src/lib/board-logic.ts` — Board filtering and ordering logic
+- `apps/business-os/src/lib/safe-fs.ts` — Root-bound FS helpers used by reader/writer
 
 ### Patterns & Conventions Observed
 - **Server Components for data fetching** — evidence: `apps/business-os/src/app/boards/[businessCode]/page.tsx:15` (async function)
 - **`router.refresh()` for manual refresh** — evidence: `apps/business-os/src/components/card-detail/CardDetail.tsx:74,101,128`
 - **Client polling with `useEffect`** — evidence: `apps/business-os/src/components/agent-runs/RunStatus.tsx:40-60`
-- **No file watchers** — grep confirmed zero usage of `chokidar`, `fsevents`, or `fs.watch`
-- **No SSE/WebSocket** — grep confirmed zero usage
+- **No file watchers in Business OS app** — repo search finds no `chokidar`/`fs.watch` usage under `apps/business-os/`
+- **No SSE/WebSocket in Business OS app** — repo search finds no `EventSource`/WebSocket usage under `apps/business-os/`
+
+### Critical Finding: Repo Root / Worktree Alignment
+
+**Problem:** `RepoReader` and `RepoWriter` are designed to operate against a configurable `repoRoot`, but the writer’s default worktree is a *separate* checkout. Auto-refresh only works once the board is reading from the same checkout that receives writes.
+
+**Evidence (code):**
+- Reader root: `repoRoot/docs/business-os` (`apps/business-os/src/lib/repo-reader.ts:34`)
+- Writer default worktree: `path.join(repoRoot, "../base-shop-business-os-store")` (`apps/business-os/src/lib/repo-writer.ts:80-83`)
+- Write authorization requires the write target to be within `repoRoot` (`apps/business-os/src/lib/auth/authorize.ts:24-36`)
+- `getRepoRoot()` supports overriding `repoRoot` via `BUSINESS_OS_REPO_ROOT` (`apps/business-os/src/lib/get-repo-root.ts:33-46`)
+
+**Current local state (verified 2026-01-30):**
+- `../base-shop-business-os-store` does not exist and is not in `git worktree list`, so `RepoWriter.isWorktreeReady()` fails and write API routes return a “worktree not initialized” error.
+
+**Recommended approach (decision made):**
+1. Create and run a worktree setup script to initialize `../base-shop-business-os-store` on branch `work/business-os-store`.
+2. Set `BUSINESS_OS_REPO_ROOT` to the worktree root (e.g. `/Users/petercowling/base-shop-business-os-store`).
+
+This makes `repoRoot === worktreePath` (by construction of the default worktree path), so reads/writes/locks/ID allocation all observe the same filesystem state and git HEAD.
+
+**Scope boundary (important):** All Business OS reads and writes will use the worktree as the source of truth. Edits to the main repo checkout at `/Users/petercowling/base-shop/docs/business-os` will **not be visible** to the application when `BUSINESS_OS_REPO_ROOT` points to the worktree. This is by design for isolation.
 
 ### Data & Contracts
 - Types/schemas:
@@ -71,8 +99,8 @@ User expectation: "Every time the status of documents changes, reflect those cha
   - Businesses: `docs/business-os/strategy/businesses.json`
 - API/event contracts:
   - Mutations: POST /api/cards, PATCH /api/cards/[id], POST /api/cards/claim, etc.
-  - All mutations write to worktree + commit to git
-  - No refresh triggered after mutations (client must call `router.refresh()` manually)
+  - All mutations use `RepoWriter` and commit via git (worktree checkout)
+  - UI patterns for showing fresh server data include `router.refresh()` (e.g., claim/accept/complete) and navigation back to server-rendered pages
 
 ### Dependency & Impact Map
 - Upstream dependencies:
@@ -86,7 +114,7 @@ User expectation: "Every time the status of documents changes, reflect those cha
   - "My Work" view — filtered card view
 - Likely blast radius:
   - Low: Board refresh is additive feature, no breaking changes to existing code
-  - Worktree architecture adds complexity (writes to worktree, reads from main repo)
+  - Worktree configuration impacts *all* Business OS reads/writes (intentionally, once `BUSINESS_OS_REPO_ROOT` is set)
   - Multi-user: Need to detect changes from other users (not just local API mutations)
 
 ### Tests & Quality Gates
@@ -98,7 +126,8 @@ User expectation: "Every time the status of documents changes, reflect those cha
   - No integration tests for file system change detection
   - No tests for polling behavior or SSE connections
 - Commands/suites:
-  - `pnpm test apps/business-os/src/lib/repo-reader.test.ts`
+  - `pnpm --filter @apps/business-os test -- apps/business-os/src/lib/repo-reader.test.ts`
+  - `pnpm --filter @apps/business-os test -- apps/business-os/src/components/board/BoardView.test.tsx`
   - `pnpm --filter @apps/business-os typecheck`
 
 ### Recent Git History (Targeted)
@@ -106,107 +135,173 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - `apps/business-os/src/lib/repo-reader.ts` — Stable, last changed for fileSha support (optimistic concurrency)
 - `apps/business-os/src/lib/repo-writer.ts` — Worktree integration, repo lock support
 
+### Verification Completed (2026-01-30)
+**Setup script existence:**
+- Status: ❌ Does not exist
+- Command: `ls -la apps/business-os/scripts/setup-worktree.sh`
+- Result: `No such file or directory` (scripts directory doesn't exist either)
+- Impact: TASK-01 must create the script, not just run it
+
+**Authorization layer compatibility:**
+- Status: ✅ Compatible with worktree approach
+- Evidence: `apps/business-os/src/lib/auth/authorize.ts:19-41`
+- Logic: Checks `filePath.startsWith(repoRoot)` and `relativePath.startsWith("docs/business-os/")`
+- Example: When `repoRoot=/path/to/worktree`, filePath=`/path/to/worktree/docs/business-os/cards/X.md` → passes both checks
+- Impact: No code changes needed, works as-is
+
+**Repo lock compatibility:**
+- Status: ✅ Compatible with worktree approach
+- Evidence: `apps/business-os/src/lib/repo/RepoLock.ts` uses `path.join(repoRoot, "docs/business-os/.locks")`
+- Logic: Lock files are relative to `repoRoot`, so they work in any checkout
+- Impact: No code changes needed, works as-is
+
 ## External Research (If needed)
-- Finding: Next.js 15 Server Components support `router.refresh()` for re-running data fetching without full navigation
-  - Source: https://nextjs.org/docs/app/api-reference/functions/use-router#routerrefresh
-  - Compatibility: Already using Next.js 15.3.8
-- Finding: Server-Sent Events (SSE) supported via `ReadableStream` in Next.js App Router
-  - Source: https://nextjs.org/docs/app/building-your-application/routing/route-handlers#streaming
-  - Compatibility: Requires Node.js runtime (already the case)
-- Finding: `chokidar` is the standard file watcher library for Node.js
-  - Source: https://www.npmjs.com/package/chokidar (v4.0.3 latest)
-  - Compatibility: Requires long-running process (not serverless)
+- No external research needed. Repo contains the required patterns:
+  - `router.refresh()` usage: `apps/business-os/src/components/card-detail/CardDetail.tsx`
+  - Polling pattern: `apps/business-os/src/components/agent-runs/RunStatus.tsx`
+  - SSE examples exist elsewhere in the monorepo (not currently in Business OS): `apps/cms/src/app/api/launch-shop/route.ts`
 
 ## Questions
 ### Resolved
 - Q: Does the board currently have any auto-refresh mechanism?
   - A: No. Board is static snapshot at page load. Manual refresh via `router.refresh()` only.
-  - Evidence: Grep for polling/SSE/WebSocket returned zero results
+  - Evidence: `apps/business-os/src/components/board/BoardView.tsx` has no polling/refresh logic
 - Q: How are mutations currently handled?
-  - A: API routes write to worktree, commit to git, return success. Client must call `router.refresh()` manually.
-  - Evidence: `apps/business-os/src/lib/repo-writer.ts:150-180` (write + commit flow)
+  - A: API routes use `RepoWriter` to write and commit Business OS documents; UI refreshes server data via navigation and/or `router.refresh()` depending on the screen.
+  - Evidence: `apps/business-os/src/lib/repo-writer.ts`, `apps/business-os/src/components/card-detail/CardDetail.tsx:74,101,128`
 - Q: Is there existing polling infrastructure?
   - A: Yes, for agent run status only (5s interval). Not for board data.
   - Evidence: `apps/business-os/src/components/agent-runs/RunStatus.tsx:40-60`
-- Q: What causes the worktree vs main repo split?
-  - A: Writes go to dedicated worktree (`../base-shop-business-os-store`) on branch `work/business-os-store`. Main repo stays clean.
-  - Evidence: `apps/business-os/src/lib/repo-writer.ts:80-95`
+- Q: What is the decided approach for fixing the read/write split?
+  - A: Keep the worktree architecture, and set `BUSINESS_OS_REPO_ROOT` to the worktree root so the Business OS app reads/writes from the same checkout.
+  - Evidence: `apps/business-os/src/lib/get-repo-root.ts`, `apps/business-os/src/lib/repo-reader.ts:34`, `apps/business-os/src/lib/repo-writer.ts:80-83`, `apps/business-os/src/lib/auth/authorize.ts:24-36`
 
 ### Open (User Input Needed)
 - Q: What refresh latency is acceptable?
-  - Why it matters: Determines polling interval (10s? 30s? 60s?) vs real-time (SSE)
+  - Why it matters: Determines polling interval (30s? 60s?) vs real-time (SSE)
   - Decision impacted: Polling vs SSE architecture choice
-  - Default assumption: 10-30 seconds acceptable for MVP
-- Q: Should board refresh when OTHER users make changes (multi-user)?
-  - Why it matters: Polling would detect external changes, but increases complexity
-  - Decision impacted: Scope of change detection (local only vs global)
-  - Default assumption: Yes, detect all changes (design for multi-user)
+  - Default assumption: 30 seconds acceptable for Phase 1
 - Q: Should direct file edits (outside API) trigger refresh?
-  - Why it matters: File watcher would detect these, polling wouldn't (unless version check includes file mtime)
-  - Decision impacted: Whether file watcher is required
-  - Default assumption: Yes, detect direct file edits (use file watcher or git log polling)
+  - Why it matters: File watcher would detect these, polling might not
+  - Decision impacted: Whether file watcher is required for Phase 1
+  - Default assumption + risk:
+    - Phase 1 detects committed changes (via git HEAD/version endpoint); Phase 2 adds watcher/mtime scanning if uncommitted edits must be detected.
+    - With worktree-as-repoRoot, “direct edits” must be made in the worktree checkout to be visible to the app.
 
 ## Confidence Inputs (for /plan-feature)
-- **Implementation:** 85%
-  - High confidence: Polling pattern exists (agent run status), `router.refresh()` works, version check endpoint is straightforward
-  - Medium confidence: Worktree vs main repo read path needs investigation (do we read from worktree or main repo?)
-  - Missing: Need to verify whether RepoReader reads from worktree or main repo
-- **Approach:** 80%
-  - Multiple viable approaches: Polling (simple), SSE (real-time), webhook (distributed)
-  - Trade-offs: Polling overhead vs SSE complexity vs webhook deployment
-  - Recommendation: Start with polling (Phase 1), migrate to SSE if needed (Phase 2)
-  - Missing: User preference on latency vs complexity trade-off
-- **Impact:** 88%
-  - Low risk: Additive feature, no breaking changes
-  - Board View is already client component, can add `useEffect` hook
-  - Worktree architecture adds complexity but doesn't block implementation
-  - Missing: Need to test multi-user scenario (concurrent changes)
+- **Implementation:** 78%
+  - Known: Polling pattern exists (`RunStatus.tsx`), and `router.refresh()` is used successfully elsewhere.
+  - Known: Authorization layer validated (2026-01-30) — works correctly with worktree paths
+  - Missing: Setup script doesn't exist yet (verified 2026-01-30) — needs to be created
+  - Straightforward: Git HEAD as version signal (simple git command, pattern exists)
+- **Approach:** 82%
+  - Phase 1 polling is the simplest fit for “good enough” latency and $0 infra.
+  - SSE/file watching is viable later, but increases operational requirements (long-lived process) and complexity.
+- **Impact:** 80%
+  - Primary blast radius is Business OS board UX plus a small new API route/hook.
+  - Worktree-as-repoRoot affects all Business OS pages that read `docs/business-os/` (intended), so rollout should include a quick sanity check of boards/cards/ideas/people pages.
+
+## Risks & Mitigations
+- **Risk**: Developer edits files in main repo (`/Users/petercowling/base-shop/docs/business-os`), changes invisible to app
+  - **Mitigation**: Document clearly in `apps/business-os/README.md` and `.env.example`; add startup warning if `BUSINESS_OS_REPO_ROOT` not set in dev
+  - **Severity**: Medium (dev confusion, not production issue)
+- **Risk**: Worktree gets out of sync with main/remote branches
+  - **Mitigation**: Existing sync endpoint (`/api/sync`) handles push to remote; document pull workflow in README
+  - **Severity**: Low (normal git workflow)
+- **Risk**: Authorization layer rejects worktree paths
+  - **Mitigation**: Validated (2026-01-30) — `authorizeWrite()` checks `filePath.startsWith(repoRoot)` and `relativePath.startsWith("docs/business-os/")`, which works correctly when `repoRoot` is the worktree root
+  - **Evidence**: `apps/business-os/src/lib/auth/authorize.ts:19-41`
+  - **Severity**: Low (already validated)
+- **Risk**: Repo lock mechanism fails in worktree context
+  - **Mitigation**: Lock files are written under `docs/business-os/.locks/` relative to `repoRoot`, so they work in any checkout
+  - **Evidence**: `apps/business-os/src/lib/repo/RepoLock.ts` uses `path.join(repoRoot, "docs/business-os/.locks")`
+  - **Severity**: Low (architecture supports it)
+- **Risk**: Polling overhead impacts performance with many concurrent users
+  - **Mitigation**: Conservative 30s interval for Phase 1; version endpoint must be cheap (git HEAD read, no full scan); monitor metrics
+  - **Severity**: Medium (can adjust interval based on observed load)
 
 ## Planning Constraints & Notes
 - Must-follow patterns:
   - Use `router.refresh()` from Next.js 15 for triggering board refresh
   - Follow existing polling pattern from `RunStatus.tsx` (useEffect + interval + cleanup)
   - Respect repo lock when reading/writing (if `BUSINESS_OS_REPO_LOCK_ENABLED=true`)
+  - Use `getRepoRoot()` and `BUSINESS_OS_REPO_ROOT` so reads/writes align
 - Rollout/rollback expectations:
-  - Feature flag: `BUSINESS_OS_AUTO_REFRESH_ENABLED` (default: true)
-  - Rollback: Set flag to false, board reverts to manual refresh
-  - Gradual rollout: Start with 10s polling, increase interval if performance issues
+  - Phase 1 can ship without a feature flag if polling interval is conservative (30s) and the endpoint is cheap.
+  - If we want a kill-switch, it must be client-visible (e.g. `NEXT_PUBLIC_*`) since the polling hook runs in the browser.
+  - Rollback: Remove polling hook, board reverts to manual refresh
+  - Gradual rollout: Start with 30s polling, decrease interval after validating performance
 - Observability expectations:
-  - Log polling requests (rate, latency, cache hits/misses)
+  - Log polling requests (rate, latency)
   - Log refresh triggers (what changed, how often)
   - Metrics: refresh count per user session, polling overhead
 
 ## Suggested Task Seeds (Non-binding)
-1. **Create version check endpoint** (`GET /api/boards/[businessCode]/version`)
-   - Return git commit hash or aggregate file mtime
-   - Include card count, idea count for quick change detection
-   - S-effort, 1 file
 
-2. **Add auto-refresh hook to BoardView** (`useBoardAutoRefresh()`)
-   - Poll version endpoint every 10-30s
-   - Compare version with last known, call `router.refresh()` if changed
-   - Store last known version in component state
-   - S-effort, 1 file
+### Phase 0: Worktree Infrastructure (prerequisite for auto-refresh)
 
-3. **Handle worktree vs main repo read path** (investigation)
-   - Verify whether RepoReader reads from worktree or main repo
-   - If main repo, ensure worktree changes are visible (may need to read from worktree)
-   - S-effort, investigation + potential fix
+- **TASK-01: Create worktree setup script** (M-effort, blocking)
+  - Create `apps/business-os/scripts/setup-worktree.sh` (directory doesn't exist yet)
+  - Script should:
+    - Create worktree: `git worktree add ../base-shop-business-os-store work/business-os-store`
+    - If branch doesn't exist locally, create it from `main`
+    - Verify worktree is on correct branch
+    - Print instructions for setting `BUSINESS_OS_REPO_ROOT`
+  - Test manually: run script, verify worktree created
+  - Affects: New file `apps/business-os/scripts/setup-worktree.sh`
 
-4. **Add refresh indicator to board UI**
-   - Show "Board updated" toast when refresh occurs
-   - Optional: Show "Refreshing..." indicator during fetch
-   - S-effort, UI polish
+- **TASK-02: Document worktree setup and env configuration** (S-effort)
+  - Update `apps/business-os/README.md` with:
+    - Worktree setup instructions (run setup script)
+    - `BUSINESS_OS_REPO_ROOT` env var requirement
+    - Warning that main repo edits are invisible when using worktree
+  - Create/update `apps/business-os/.env.example` with `BUSINESS_OS_REPO_ROOT=/Users/you/base-shop-business-os-store`
+  - Affects: `apps/business-os/README.md`, `apps/business-os/.env.example`
 
-5. **Optional: File watcher + SSE for real-time** (Phase 2)
-   - Add `chokidar` file watcher for `docs/business-os/`
-   - Create SSE endpoint (`GET /api/board-updates`)
-   - Replace polling with SSE connection in `useBoardAutoRefresh()`
-   - L-effort, 3+ files, requires persistent process
+- **TASK-03: Validate worktree-as-repoRoot integration** (M-effort, test validation)
+  - Manual validation checklist:
+    - [ ] Authorization layer accepts worktree paths (`authorizeWrite()` returns true)
+    - [ ] Repo lock creates lock files in worktree (check `docs/business-os/.locks/`)
+    - [ ] ID allocation reads/writes to worktree counter file
+    - [ ] Create card via API → immediately visible on board refresh
+    - [ ] Update card via API → immediately visible on board refresh
+  - Record results in plan doc
+  - No code changes (validation only)
+
+### Phase 1: Auto-Refresh Implementation (after Phase 0 complete)
+
+- **TASK-04: Create board version endpoint** (`GET /api/boards/[businessCode]/version`)
+  - Return version based on `repoRoot` (worktree) that changes when board-relevant docs change
+  - Phase 1 implementation: git HEAD commit hash (detects all committed changes via API mutations)
+  - Lightweight: single git command, no full directory scan
+  - S-effort, 1 file
+
+- **TASK-05: Add `useBoardAutoRefresh()` hook to BoardView** (S-effort)
+  - Poll version endpoint every 30s
+  - Compare version with last known value (useState)
+  - Call `router.refresh()` when version changes
+  - Include tab visibility check (don't poll when tab hidden)
+  - Affects: `apps/business-os/src/components/board/BoardView.tsx`
+
+- **TASK-06: Add refresh UI affordance** (S-effort, optional polish)
+  - Show "Board updated" toast when refresh occurs
+  - Optional: Show subtle "Checking for updates..." indicator
+  - Use existing toast system
+  - Affects: `apps/business-os/src/components/board/BoardView.tsx`
+
+### Phase 2: Real-time / Uncommitted Changes (future, optional)
+
+- **TASK-07: File watcher + SSE for real-time updates** (L-effort, requires long-lived process)
+  - Add `chokidar` file watcher for `docs/business-os/` in worktree
+  - Create SSE endpoint (`GET /api/board-updates`)
+  - Replace polling with SSE connection in `useBoardAutoRefresh()`
+  - Detects uncommitted changes immediately (no 30s delay)
+  - Requires persistent Node.js process (not serverless-compatible)
+  - Affects: 3+ files, new dependencies
 
 ## Planning Readiness
 - Status: **Ready-for-planning**
-- Blocking items: None (open questions have acceptable defaults)
-- Recommended next step: Proceed to `/plan-feature` with polling approach (Phase 1)
-  - Phase 1: Polling (10-30s interval) — quick win, low complexity
-  - Phase 2: SSE (optional) — if real-time is needed later
+- Blocking items (if any):
+  - None (open questions are non-blocking; defaults are acceptable for Phase 1)
+- Recommended next step:
+  - Proceed to `/plan-feature` using the worktree-as-repoRoot approach and Phase 1 polling.

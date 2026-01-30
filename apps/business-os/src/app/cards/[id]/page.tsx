@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 
 import { RunStatus } from "@/components/agent-runs/RunStatus";
 import { CardDetail } from "@/components/card-detail/CardDetail";
+import { RecentActivity } from "@/components/card-detail/RecentActivity";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { getFileHistory, getGitHubHistoryUrl } from "@/lib/git-history";
+import { getCommitsForCard } from "@/lib/repo/CommitReader";
 import { createRepoReader } from "@/lib/repo-reader";
 
 interface PageProps {
@@ -37,6 +39,9 @@ export default async function CardPage({ params }: PageProps) {
   const history = await getFileHistory(repoRoot, cardFilePath);
   const githubUrl = history.length > 0 ? getGitHubHistoryUrl(cardFilePath) : undefined;
 
+  // Fetch commits mentioning this card (MVP-F1)
+  const recentActivity = await getCommitsForCard(repoRoot, id);
+
   return (
     <>
       {/* Agent run status - MVP-E4 */}
@@ -53,6 +58,12 @@ export default async function CardPage({ params }: PageProps) {
         history={history}
         githubUrl={githubUrl}
       />
+
+      {/* Recent activity - MVP-F1 */}
+      {/* eslint-disable-next-line ds/container-widths-only-at -- BOS-33: Phase 0 layout, container at page level */}
+      <div className="max-w-5xl mx-auto px-6 pb-6">
+        <RecentActivity commits={recentActivity} cardId={id} />
+      </div>
     </>
   );
 }

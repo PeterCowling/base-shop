@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { User } from "@/lib/current-user";
@@ -37,7 +39,68 @@ export function CardDetail({
   history = [],
   githubUrl,
 }: CardDetailProps) {
+  const router = useRouter();
+  const [isClaimingOrAccepting, setIsClaimingOrAccepting] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+
   const userCanEdit = canEditCard(currentUser, card);
+  const isOwner = card.Owner === currentUser.name;
+  const isUnclaimed = !card.Owner || card.Owner.trim() === "";
+  const canAccept = isOwner && card.Lane === "Inbox";
+
+  const handleClaim = async () => {
+    setIsClaimingOrAccepting(true);
+    setActionError(null);
+
+    try {
+      const response = await fetch("/api/cards/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cardId: card.ID }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || "Failed to claim card");
+        setIsClaimingOrAccepting(false);
+        return;
+      }
+
+      // Success - refresh page to show updated card
+      router.refresh();
+    } catch (error) {
+      setActionError("An unexpected error occurred");
+      setIsClaimingOrAccepting(false);
+    }
+  };
+
+  const handleAccept = async () => {
+    setIsClaimingOrAccepting(true);
+    setActionError(null);
+
+    try {
+      const response = await fetch("/api/cards/accept", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cardId: card.ID }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionError(data.error || "Failed to accept card");
+        setIsClaimingOrAccepting(false);
+        return;
+      }
+
+      // Success - refresh page to show updated card
+      router.refresh();
+    } catch (error) {
+      setActionError("An unexpected error occurred");
+      setIsClaimingOrAccepting(false);
+    }
+  };
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -155,6 +218,37 @@ export function CardDetail({
                 Actions
               </h3>
               <div className="space-y-2">
+                {/* MVP-D1: Claim button (if unclaimed) */}
+                {isUnclaimed && (
+                  <button
+                    type="button"
+                    onClick={handleClaim}
+                    disabled={isClaimingOrAccepting}
+                    className="w-full px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isClaimingOrAccepting ? "Claiming..." : "Claim Card"}
+                  </button>
+                )}
+
+                {/* MVP-D1: Accept button (if owner and in Inbox) */}
+                {canAccept && (
+                  <button
+                    type="button"
+                    onClick={handleAccept}
+                    disabled={isClaimingOrAccepting}
+                    className="w-full px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isClaimingOrAccepting ? "Accepting..." : "Accept & Start"}
+                  </button>
+                )}
+
+                {/* Error display */}
+                {actionError && (
+                  <div className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                    {actionError}
+                  </div>
+                )}
+
                 {userCanEdit ? (
                   <Link
                     href={`/cards/${card.ID}/edit`}

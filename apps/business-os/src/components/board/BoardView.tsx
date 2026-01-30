@@ -123,7 +123,7 @@ export function BoardView({
   }, [activeMobileLane, viewport]);
 
   return (
-    <div className="min-h-screen bg-surface-1">
+    <div className="min-h-screen bg-surface-1" suppressHydrationWarning>
       {/* Header */}
       <header className="bg-card border-b border-border-2 px-6 py-4 max-md:px-4">
         <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-3">

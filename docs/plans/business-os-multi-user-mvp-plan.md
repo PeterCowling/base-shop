@@ -339,7 +339,7 @@ Show code commits linked to cards automatically.
 | Task ID | Epic | Description | Confidence | Effort | Status | Depends on |
 |---------|------|-------------|------------|--------|--------|------------|
 | MVP-A1 | A | Production run mode + repoRoot config | 92% | S | Complete | - |
-| MVP-A2 | A | Health endpoint | 94% | S | Partial | MVP-A1 |
+| MVP-A2 | A | Health endpoint | 94% | S | Complete | MVP-A1 |
 | MVP-A3 | A | Remote access runbook | 95% | S | Complete | MVP-A1 |
 | MVP-B1 | B | Invite-only auth system | 82% | M | Partial | MVP-A1 |
 | MVP-B2 | B | Server-side authorization on all mutations | 88% | M | Partial | MVP-B1 |
@@ -366,11 +366,12 @@ This section is the source of truth for **current status**, based on what exists
 ### Complete
 
 - **MVP-A1** — `getRepoRoot()` exists and is widely used (`apps/business-os/src/lib/get-repo-root.ts`); `apps/business-os/.env.example` documents `BUSINESS_OS_REPO_ROOT`.
+- **MVP-A2** — `/api/healthz` exists (`apps/business-os/src/app/api/healthz/route.ts`) and returns `gitHead`, real `repoLockStatus` (checks lock file), and `lastAgentRunTimestamp` (scans agent-runs directory).
 - **MVP-A3** — Tunnel runbook + script exist (`docs/runbooks/tunnel-setup.md`, `apps/business-os/scripts/tunnel-trycloudflare.sh`) and are referenced from `apps/business-os/README.md`.
 
-### Partial
+**Epic A (Production Run Mode): COMPLETE ✅**
 
-- **MVP-A2** — `/api/healthz` exists (`apps/business-os/src/app/api/healthz/route.ts`) and returns `gitHead`, but `repoLockStatus` is hardcoded to `"not_implemented"` and `lastAgentRunTimestamp` is always `null`.
+### Partial
 - **MVP-B1** — Auth primitives exist (login page + login/logout routes + middleware + `docs/business-os/people/users.json`), but app pages/server actions still primarily derive “current user” from `current_user_id` (`apps/business-os/src/lib/current-user.ts`) rather than session. This means “logged-in user identity” is not yet consistently the source of truth across UI/server components/server actions.
 - **MVP-B2** — Session-based enforcement exists for mutation API routes when `BUSINESS_OS_AUTH_ENABLED=true` (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`), but server actions are not session-validated (`apps/business-os/src/app/ideas/[id]/actions.ts`) and UI gating still uses `current-user.ts` checks.
 - **MVP-B3** — Audit commit message metadata exists (`apps/business-os/src/lib/commit-identity.ts`, `apps/business-os/src/lib/repo-writer.ts`), but API routes currently pass `CommitIdentities.user` (Pete) as the git author identity (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`) rather than setting git author to the authenticated user’s identity.
@@ -1693,8 +1694,8 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Next action:** `/build-feature` starting with Epic A (MVP-A1)
 
 **Audit Summary (2026-01-30):**
-- **Complete:** 2/18 (MVP-A1, MVP-A3)
-- **Partial:** 7/18 (MVP-A2, MVP-B1, MVP-B2, MVP-B3, MVP-C1, MVP-C3, MVP-E3)
+- **Complete:** 3/18 (MVP-A1, MVP-A2, MVP-A3) — **Epic A complete! ✅**
+- **Partial:** 6/18 (MVP-B1, MVP-B2, MVP-B3, MVP-C1, MVP-C3, MVP-E3)
 - **Pending:** 9/18
 - **Most important gap to resolve next:** unify “current user identity” so pages/server actions/API routes all use the same authenticated session user (remove/retire `current_user_id` as an authority source when auth is enabled).
 - **Confidence note:** MVP-C3 and MVP-E3 were de-risked on 2026-01-30 and are now ≥80% confidence (see per-task Re-plan Updates).

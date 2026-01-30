@@ -829,6 +829,51 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** 870ace986f
+- **TDD cycle:**
+  - Tests written: `src/lib/commit-identity.test.ts` (4 new tests for buildAuditCommitMessage)
+  - Initial test run: PASS (tests written before implementation)
+  - Implementation: Added `buildAuditCommitMessage()` helper function
+  - Post-implementation: PASS (all 15 commit-identity tests passing)
+- **Validation:**
+  - Ran: `pnpm test src/lib/commit-identity.test.ts` — PASS (15 tests)
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm lint` — PASS
+- **Documentation updated:** None required (internal implementation, architecture doc update deferred)
+- **Implementation notes:**
+  - Created `buildAuditCommitMessage()` helper in commit-identity.ts
+  - Updated all repo-writer methods to accept actor/initiator parameters:
+    - `writeIdea(idea, identity, actor, initiator)`
+    - `writeCard(card, identity, actor, initiator)`
+    - `updateCard(id, updates, identity, actor, initiator)`
+    - `updateIdea(id, updates, identity, actor, initiator)`
+  - Updated all API routes to pass actor/initiator:
+    - `/api/ideas` POST — actor = authenticated user ID (or "pete" fallback)
+    - `/api/cards` POST — actor = authenticated user ID (or "pete" fallback)
+    - `/api/cards/[id]` PATCH — actor retrieved from auth helper
+  - Updated server actions in `ideas/[id]/actions.ts`:
+    - `convertIdeaToCard` action — passes currentUser.id as actor/initiator
+    - `updateIdeaContent` action — passes currentUser.id as actor/initiator
+  - All tests updated to pass actor/initiator parameters
+  - Commit message format:
+    ```
+    Actor: pete
+    Initiator: pete
+    Entity: BRIK-ENG-0001
+
+    Add card: BRIK-ENG-0001
+    ```
+  - Git author remains set via `getGitAuthorOptions(identity)` for proper attribution
+  - Phase 0: actor = initiator (users acting for themselves)
+  - Backwards compatible: old commits remain valid, git log readable
+- **Test coverage:** 4 new buildAuditCommitMessage tests, all 15 commit-identity tests passing
+- **Acceptance criteria met:**
+  - ✅ Commit messages include Actor, Initiator, Entity metadata
+  - ✅ Git author set to acting identity (Pete/Agent)
+  - ✅ From git log alone, can answer "who did what"
+
 ### MVP-C1: Global repo write lock
 
 - **Type:** IMPLEMENT

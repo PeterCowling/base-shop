@@ -21,6 +21,7 @@ import { USERS } from "../lib/current-user";
 import { getRepoRoot } from "../lib/get-repo-root";
 
 import { runClaudeCli } from "./claude-cli";
+import { createProgressComment } from "./progress-notifier";
 import { QueueScanner, type QueueTask } from "./queue-scanner";
 import { RunLogger } from "./run-logger";
 
@@ -173,6 +174,9 @@ async function executeTask(
         });
 
         console.log(`[Agent Runner] Task ${task.id} completed successfully. Commit: ${commitHash}`);
+
+        // Create progress comment if enabled (MVP-F2)
+        await createProgressComment(repoRoot, commitMessage, commitHash, task.action);
       } else {
         // No changes to commit
         await logger.appendLog("No changes to commit (task may have been read-only)");

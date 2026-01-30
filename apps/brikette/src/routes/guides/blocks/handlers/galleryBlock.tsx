@@ -89,13 +89,36 @@ function resolveGalleryItems(
     // Fallback: If no module found, try reading directly from translations
     console.log('[galleryBlock] No module found, trying direct translation read');
     try {
+      // Try different approaches to get the raw gallery data
       const contentKey = `content.${options.source}.gallery`;
-      const galleryData = context.translateGuides(contentKey, { returnObjects: true });
+
+      // Approach 1: returnObjects
+      let galleryData = context.translateGuides(contentKey, { returnObjects: true });
+
+      // Approach 2: Try without the content prefix (just the guide key + gallery)
+      if (!Array.isArray(galleryData)) {
+        galleryData = context.translateGuides(`${options.source}.gallery`, { returnObjects: true });
+      }
+
+      // Approach 3: Try accessing via i18n instance directly
+      if (!Array.isArray(galleryData) && typeof context.translateGuides === 'function') {
+        // Access the i18n instance if available
+        const i18nInstance = (context.translateGuides as any).i18n;
+        if (i18nInstance?.store?.data) {
+          const currentLang = context.lang || 'en';
+          const store = i18nInstance.store.data[currentLang];
+          if (store?.guides?.[options.source]?.gallery) {
+            galleryData = store.guides[options.source].gallery;
+          }
+        }
+      }
+
       console.log('[galleryBlock] Direct translation result:', {
         contentKey,
         hasData: !!galleryData,
         isArray: Array.isArray(galleryData),
         dataType: typeof galleryData,
+        sampleData: Array.isArray(galleryData) ? galleryData[0] : galleryData,
       });
 
       if (Array.isArray(galleryData)) {

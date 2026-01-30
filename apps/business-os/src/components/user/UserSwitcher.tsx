@@ -27,6 +27,20 @@ export function UserSwitcher({ currentUser }: UserSwitcherProps) {
     return null;
   }
 
+  // Hide when auth is enabled, unless admin impersonation is explicitly allowed
+  const authEnabled = process.env.NEXT_PUBLIC_BUSINESS_OS_AUTH_ENABLED === "true";
+  const allowAdminImpersonation =
+    process.env.NEXT_PUBLIC_BUSINESS_OS_ALLOW_ADMIN_IMPERSONATION === "true";
+
+  if (authEnabled && !allowAdminImpersonation) {
+    return null;
+  }
+
+  // If impersonation is allowed, only show to admins
+  if (authEnabled && allowAdminImpersonation && currentUser.role !== "admin") {
+    return null;
+  }
+
   const handleUserSwitch = (userId: string) => {
     // Don't reload if selecting current user
     if (userId === currentUser.id) {

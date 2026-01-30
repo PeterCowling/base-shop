@@ -367,8 +367,8 @@ This approach:
 - **Decision / resolution:**
   - **Chosen: Spawn tsx subprocess with minimal test script** (corrected Option B)
   - Implementation: Jest test uses execSync to spawn `tsx --tsconfig tsconfig.scripts.json` with test script
-  - Test script: `const { createGuideUrlHelpers } = require('@acme/guides-core'); process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
-  - Test verifies: exit code 0 (tsx resolution works)
+  - Test script: `const { createGuideUrlHelpers } = require('@acme/guides-core'); console.log(typeof createGuideUrlHelpers); process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
+  - Test verifies: exit code 0 and stdout contains "function" (tsx resolution works)
   - Why: Actually tests tsx resolution (not Jest resolution), validated both cases, catches real regression
   - **Rejected: Direct Jest import (previous Option A)**
   - Why: Fatal flaw - Jest moduleNameMapper bypasses tsx resolution

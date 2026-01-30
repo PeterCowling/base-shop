@@ -31,6 +31,31 @@ pnpm --filter @apps/business-os dev
 # Visit http://localhost:3020
 ```
 
+## Remote Access (Free Tunnel)
+
+Access Business OS from external devices (iPad, phone, remote machine) without deploying to production.
+
+**Quick start:**
+```bash
+# One command to start dev server + create tunnel
+./apps/business-os/scripts/tunnel-trycloudflare.sh
+```
+
+This will display a public URL like `https://random-words-1234.trycloudflare.com` that you can access from any device.
+
+**Use cases:**
+- Demo to collaborators
+- Test on real devices (mobile, tablet)
+- Access from multiple locations during development
+
+**⚠ Important:** Tunnel URLs are temporary (expire when you stop the script) and should NOT be shared publicly.
+
+**Full documentation:** See [`docs/runbooks/tunnel-setup.md`](../../docs/runbooks/tunnel-setup.md) for:
+- Manual setup steps
+- Alternative tunnel providers (ngrok)
+- Troubleshooting
+- Security considerations
+
 ## Production Deployment
 
 Business OS requires the `BUSINESS_OS_REPO_ROOT` environment variable to locate the monorepo root in production environments (Cloudflare Pages, Vercel, etc.).

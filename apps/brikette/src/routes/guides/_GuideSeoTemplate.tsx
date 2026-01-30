@@ -104,6 +104,7 @@ function GuideSeoTemplate({
   renderGenericWhenEmpty = false,
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
+  serverOverrides,
 }: GuideSeoTemplateProps): JSX.Element {
   const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
   const articleHeadingWeightClass = isExperiencesGuide
@@ -140,6 +141,7 @@ function GuideSeoTemplate({
     lang,
     canonicalPathname,
     preferManualWhenUnlocalized,
+    serverOverrides,
   });
 
   // TASK-01 + GUIDE-XREF-01: Wire manifest blocks into template

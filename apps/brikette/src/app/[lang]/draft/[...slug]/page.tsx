@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { listGuideManifestEntries, resolveDraftPathSegment } from "@/routes/guides/guide-manifest";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
 
@@ -23,5 +24,14 @@ export default async function DraftGuidePage({ params }: Props) {
     notFound();
   }
 
-  return <GuideContent lang={validLang} guideKey={entry.key} />;
+  // Load manifest overrides server-side (includes SEO audit results)
+  const manifestOverrides = loadGuideManifestOverridesFromFs();
+
+  return (
+    <GuideContent
+      lang={validLang}
+      guideKey={entry.key}
+      serverOverrides={manifestOverrides}
+    />
+  );
 }

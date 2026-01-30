@@ -19,6 +19,10 @@ import HeadSection from "../components/HeadSection";
 import StructuredTocBlock from "../components/StructuredTocBlock";
 
 // Dynamically import GuideEditorialPanel to avoid SSR hydration mismatches
+// Note: Even with server-side override loading, this component fetches translation
+// coverage client-side (useTranslationCoverage), which would cause hydration errors.
+// The server-side override loading still helps by providing initial data immediately
+// when the component mounts on the client.
 const GuideEditorialPanel = dynamic(
   () => import("../components/GuideEditorialPanel"),
   { ssr: false }

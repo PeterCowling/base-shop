@@ -251,17 +251,29 @@
     "width": 822,
     "height": 600
   },
-  "/img/guides/arienzo-beach/image1.jpg": {
+  "/img/guides/arienzo-beach/01-beach-layout.webp": {
     "width": 800,
     "height": 516
   },
-  "/img/guides/arienzo-beach/image2.jpg": {
-    "width": 800,
-    "height": 600
+  "/img/guides/arienzo-beach/02-arienzo-cliffs.webp": {
+    "width": 1600,
+    "height": 1160
   },
-  "/img/guides/arienzo-beach/image3.jpg": {
-    "width": 800,
-    "height": 600
+  "/img/guides/arienzo-beach/03-positano-umbrellas.webp": {
+    "width": 1600,
+    "height": 1067
+  },
+  "/img/guides/arienzo-beach/04-positano-beach.webp": {
+    "width": 1600,
+    "height": 2399
+  },
+  "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp": {
+    "width": 1600,
+    "height": 1200
+  },
+  "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp": {
+    "width": 1600,
+    "height": 1200
   },
   "/img/guides/hostel-brikette-to-arienzo-bus/image1.jpg": {
     "width": 451,

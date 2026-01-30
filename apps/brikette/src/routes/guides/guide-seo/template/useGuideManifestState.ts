@@ -20,10 +20,11 @@ export function useGuideManifestState(params: {
   canonicalPathname?: string;
   preferManualWhenUnlocalized: boolean;
   loaderData?: LoaderData;
+  serverOverrides?: ManifestOverrides;
 }) {
-  const { guideKey, lang, canonicalPathname, preferManualWhenUnlocalized, loaderData } = params;
+  const { guideKey, lang, canonicalPathname, preferManualWhenUnlocalized, loaderData, serverOverrides } = params;
   const [checklistVersion, setChecklistVersion] = useState(0);
-  const [overrides, setOverrides] = useState<ManifestOverrides>({});
+  const [overrides, setOverrides] = useState<ManifestOverrides>(serverOverrides ?? {});
 
   const manifestEntry = useMemo<GuideManifestEntry | null>(
     () => getGuideManifestEntry(guideKey) ?? null,
@@ -31,11 +32,18 @@ export function useGuideManifestState(params: {
   );
 
   // Fetch manifest overrides (includes SEO audit results)
+  // Skip if server-provided overrides already contain this guide's data
   useEffect(() => {
     if (!manifestEntry) return;
 
     const previewToken = PREVIEW_TOKEN ?? "";
     if (!previewToken) return;
+
+    // Skip fetch if serverOverrides already provided this guide's data
+    if (serverOverrides?.[guideKey]) {
+      if (IS_DEV) console.debug("[useGuideManifestState] Using server-loaded overrides for", guideKey);
+      return;
+    }
 
     let active = true;
 
@@ -66,7 +74,7 @@ export function useGuideManifestState(params: {
     return () => {
       active = false;
     };
-  }, [guideKey, manifestEntry, checklistVersion]);
+  }, [guideKey, manifestEntry, checklistVersion, serverOverrides]);
 
   useEffect(() => {
     if (!manifestEntry) return;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { RunStatus } from "@/components/agent-runs/RunStatus";
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { getRepoRoot } from "@/lib/get-repo-root";
@@ -103,6 +104,11 @@ export default async function IdeaPage({ params }: PageProps) {
 
       {/* Main content */}
       <div className="max-w-5xl mx-auto p-6">
+        {/* Agent run status - MVP-E4 */}
+        <div className="mb-6">
+          <RunStatus entityId={idea.ID || id} taskId={undefined} />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left column - Content */}
           <div className="lg:col-span-2">

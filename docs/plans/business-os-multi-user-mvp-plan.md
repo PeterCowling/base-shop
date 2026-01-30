@@ -669,6 +669,40 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: Clarified feature flag approach
   - Dependencies: No changes
 
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** 385c73b199, 0c1c18a235, 5fdd4d3c6c
+- **Implementation notes:**
+  - **Part 1 (Foundation):** Auth helpers, users.json, login/logout API routes
+    - Created `src/lib/auth.ts` with password hashing (bcrypt), session management (iron-session), credential validation
+    - Created `docs/business-os/people/users.json` with bcrypt-hashed passcodes (pete, cristiana, avery)
+    - Created `POST /api/auth/login` and `POST /api/auth/logout` routes
+    - 20 auth tests passing (hashPassword, verifyPassword, loadUsers, validateCredentials, login/logout routes)
+
+  - **Part 2 (UI & Middleware):** Login page, auth middleware, feature flags
+    - Created `src/app/login/page.tsx` - simple username/passcode form with error handling
+    - Created `src/middleware.ts` - protects all routes except /login and /api/auth/* when enabled
+    - Feature flag: `BUSINESS_OS_AUTH_ENABLED` (default: false for backward compatibility)
+    - Updated `UserSwitcher` to hide when auth enabled (unless admin impersonation allowed)
+    - Added `NEXT_PUBLIC_BUSINESS_OS_ALLOW_ADMIN_IMPERSONATION` flag for admin user switching
+
+  - **Part 3 (Documentation):** README updated with auth setup instructions
+    - Documented feature flag configuration and user management
+    - Explained passcode hashing and admin impersonation
+    - Security notes (session cookies, bcrypt, middleware protection)
+- **Validation:**
+  - All 40 auth tests passing
+  - Typecheck: PASS (business-os only)
+  - Lint: PASS
+- **Deviations from plan:**
+  - Did not remove UserSwitcher completely - made it conditionally visible based on auth state
+  - Added admin impersonation feature flag for better testing/support workflow
+  - Used Request/Response API for iron-session instead of Next.js cookies() for better testability
+- **Known limitations:**
+  - Auth is opt-in via feature flag (disabled by default)
+  - No logout button in UI yet (can POST to /api/auth/logout manually or will be in future task)
+  - Session management uses `getSession(request, response)` pattern (not compatible with server components that need `cookies()`)
+
 ### MVP-B2: Server-side authorization on all mutations
 
 - **Type:** IMPLEMENT

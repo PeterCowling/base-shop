@@ -6,7 +6,7 @@ Created: 2026-01-30
 Last-reviewed: 2026-01-30
 Last-updated: 2026-01-30 (re-planned BUILD-04)
 Feature-Slug: postbuild-tsx-esm-fix
-Overall-confidence: 88%
+Overall-confidence: 86%
 Confidence-Method: Each task confidence = min(Implementation,Approach,Impact). Overall-confidence = min(required task confidences) where required = BUILD-01, BUILD-02, BUILD-04.
 Relates-to charter: None
 Build-progress: 2/4 tasks complete (BUILD-01, BUILD-02)
@@ -105,10 +105,10 @@ This approach:
 | BUILD-01 | IMPLEMENT | Add scripts tsconfig | 90% | S | Complete (2026-01-30) | - |
 | BUILD-02 | IMPLEMENT | Wire postbuild to scripts tsconfig | 88% | S | Complete (2026-01-30) | BUILD-01 |
 | BUILD-03 | IMPLEMENT | Apply to other brikette scripts (optional) | 70% | M | Pending | BUILD-02 |
-| BUILD-04 | IMPLEMENT | Add regression check | 88% | M | Pending | BUILD-02 |
+| BUILD-04 | IMPLEMENT | Add regression check | 86% | M | Pending | BUILD-02 |
 
 > Effort scale: S=1, M=2, L=3 (informational only; not used in confidence calculation)
-> Overall-confidence uses required tasks only (BUILD-01, BUILD-02, BUILD-04): min(90%, 88%, 78%) = 78%
+> Overall-confidence uses required tasks only (BUILD-01, BUILD-02, BUILD-04): min(90%, 88%, 86%) = 86%
 
 ## Tasks
 
@@ -280,16 +280,17 @@ This approach:
 - **Affects:**
   - `apps/brikette/src/test/tsx-runtime-resolution.test.ts` (new test file)
 - **Depends on:** BUILD-02
-- **Confidence:** 88%
-  - Implementation: 92% — Direct import + function call test; proven approach, clear implementation
-  - Approach: 88% — Decided on direct import test (Option A); validated both success and failure cases
-  - Impact: 90% — Low risk; validation-only; pure import test with no filesystem or subprocess dependencies
+- **Confidence:** 86%
+  - Implementation: 90% — Subprocess + minimal test script; validated both cases work
+  - Approach: 86% — Spawn tsx subprocess with test script; tests actual tsx resolution behavior
+  - Impact: 90% — Low risk; subprocess test pattern is standard in integration tests
 - **Acceptance:**
-  - ✅ Test successfully imports `createGuideUrlHelpers` from `@acme/guides-core`
-  - ✅ Test verifies `createGuideUrlHelpers` is a function (not undefined)
-  - ✅ Test verifies the function can be called and returns an object
-  - ✅ Test runs in CI whenever brikette tests are in the affected set (via `pnpm test:affected`)
-  - ✅ Test is fast (<1s) and deterministic (no filesystem writes, no subprocess execution)
+  - Test spawns `tsx --tsconfig tsconfig.scripts.json` with minimal test script
+  - Test script requires `@acme/guides-core` and checks if `createGuideUrlHelpers` is a function
+  - Test verifies exit code 0 (tsx resolution successful)
+  - Test verifies stdout contains "function" (not "undefined")
+  - Test runs in CI whenever brikette tests are in the affected set (via `pnpm test:affected`)
+  - Test is fast (<2s) and deterministic (subprocess execution with known output)
 - **Test plan:**
   - Unit: Validate that the resolver chooses a runtime module (not `.d.ts`) under the scripts tsconfig
   - Negative: Intentionally swap the `paths` ordering in `tsconfig.scripts.json` locally and verify the test fails
@@ -331,9 +332,9 @@ This approach:
   - Affects: Updated to prefer a runtime-resolution regression test file path
   - Test plan: Updated to avoid running postbuild inside Jest
 
-#### Re-plan Update (2026-01-30 - Second Pass)
+#### Re-plan Update (2026-01-30 - Second Pass) [SUPERSEDED - FLAWED]
 - **Previous confidence:** 78%
-- **Updated confidence:** 88%
+- **Updated confidence:** 88% ❌ OVERCONFIDENT
   - Implementation: 92% — Direct import + function call test; proven to work in investigation
   - Approach: 88% — Decided on Option A (direct import test); validated both positive and negative cases
   - Impact: 90% — Pure import test; no filesystem, no subprocess; Jest handles module resolution
@@ -343,17 +344,38 @@ This approach:
   - Negative test: `tsx --tsconfig tsconfig.json /tmp/test-tsx-resolution.ts` → FAIL ("is not a function" - resolves to .d.ts)
   - Evidence: Approach is simple, deterministic, fast, and catches the exact failure mode
 - **Decision / resolution:**
-  - **Chosen: Option A - Direct import + function call test**
+  - **Chosen: Option A - Direct import + function call test** ❌ FATAL FLAW
   - Implementation: Jest test that imports `@acme/guides-core` and calls `createGuideUrlHelpers()`
   - Test structure: Simple describe/it blocks, import statement, function invocation, assertion
   - Why: Proven to work, simple, fast, no tsx API inspection needed, clear failure mode
   - **Rejected: Option B - tsx API inspection or subprocess execution**
   - Why: More complex, slower, less maintainable
+- **FLAW IDENTIFIED:** Jest bypasses tsx resolution via moduleNameMapper (jest.config.cjs:82-86 hard-maps @acme/guides-core to source), so direct Jest import won't exercise tsx tsconfig path resolution at all. This approach won't catch the regression.
+
+#### Re-plan Update (2026-01-30 - Third Pass) [CORRECTED]
+- **Previous confidence:** 88% (overconfident, flawed approach)
+- **Updated confidence:** 86%
+  - Implementation: 90% — Subprocess + minimal test script; validated both cases work
+  - Approach: 86% — Spawn tsx subprocess with test script; tests actual tsx resolution behavior
+  - Impact: 90% — Low risk; subprocess test pattern is standard in integration tests
+- **Investigation performed:**
+  - Discovered Jest flaw: jest.config.cjs:82-86 maps @acme/guides-core to source, bypassing tsx resolution
+  - Created minimal test script: requires @acme/guides-core, checks typeof createGuideUrlHelpers
+  - Positive test: `tsx --tsconfig tsconfig.scripts.json /tmp/quick-tsx-test.js` → output "function", exit 0
+  - Negative test: `tsx --tsconfig tsconfig.json /tmp/quick-tsx-test.js` → output "undefined", exit 1
+  - Evidence: Subprocess approach actually tests tsx resolution, not Jest resolution
+- **Decision / resolution:**
+  - **Chosen: Spawn tsx subprocess with minimal test script** (corrected Option B)
+  - Implementation: Jest test uses execSync to spawn `tsx --tsconfig tsconfig.scripts.json` with test script
+  - Test script: `const { createGuideUrlHelpers } = require('@acme/guides-core'); process.exit(typeof createGuideUrlHelpers === 'function' ? 0 : 1);`
+  - Test verifies: exit code 0 (tsx resolution works)
+  - Why: Actually tests tsx resolution (not Jest resolution), validated both cases, catches real regression
+  - **Rejected: Direct Jest import (previous Option A)**
+  - Why: Fatal flaw - Jest moduleNameMapper bypasses tsx resolution
 - **Changes to task:**
-  - Approach confidence: 78% → 88% (approach decided with evidence)
-  - Implementation confidence: 85% → 92% (proven approach, clear implementation path)
-  - Acceptance: Simplified to "test imports and calls function successfully"
-  - Test plan: Concrete implementation: `import { createGuideUrlHelpers } from "@acme/guides-core"; expect(typeof createGuideUrlHelpers).toBe("function")`
+  - Approach: Corrected to subprocess spawn (tests tsx, not Jest)
+  - Implementation: Slightly more complex (subprocess) but proven to work
+  - Acceptance: Test spawns tsx with scripts tsconfig, verifies exit 0 and function is defined
 
 ## Risks & Mitigations
 
@@ -390,4 +412,5 @@ This approach:
 - 2026-01-30: Made BUILD-03 optional to minimize initial scope; can be added as hardening later
 - 2026-01-30 (Re-plan): Updated BUILD-04 to prefer a tsx runtime-resolution regression test rather than running postbuild inside Jest
 - 2026-01-30 (Re-plan): Updated BUILD-03 confidence down until transitive import auditing is complete
-- 2026-01-30 (Re-plan): **BUILD-04 approach decided** — Option A (direct import + function call test) chosen over Option B (tsx API inspection). Validated both positive (scripts tsconfig works) and negative (original tsconfig fails) cases. Confidence increased from 78% to 88%.
+- 2026-01-30 (Re-plan, First Pass): **BUILD-04 approach decided** — Option A (direct import + function call test) chosen over Option B (tsx API inspection). Validated both positive (scripts tsconfig works) and negative (original tsconfig fails) cases. Confidence increased from 78% to 88%. **[SUPERSEDED - FLAWED]**
+- 2026-01-30 (Re-plan, Second Pass - CORRECTED): **BUILD-04 approach corrected** — Direct Jest import approach was flawed because jest.config.cjs:82-86 bypasses tsx resolution via moduleNameMapper. Corrected to spawn tsx subprocess with minimal test script. Validated both cases (scripts tsconfig → "function", original tsconfig → "undefined"). Confidence adjusted from 88% (overconfident) to 86% (realistic for subprocess complexity). Overall plan confidence updated from 88% to 86%.

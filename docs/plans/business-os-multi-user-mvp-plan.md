@@ -4,9 +4,10 @@ Status: Active
 Domain: Platform
 Created: 2026-01-29
 Last-updated: 2026-01-30
+Last-replanned: 2026-01-30
 Last-audited: 2026-01-30
 Feature-Slug: business-os-multi-user-mvp
-Overall-confidence: 86%
+Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Related-Docs:
   - docs/plans/business-os-strategic-review.md
@@ -356,7 +357,7 @@ Show code commits linked to cards automatically.
 | MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
 | MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
 | MVP-F2 | F | Auto-progress notes (optional) | 86% | S | Pending | MVP-E3 |
-| MVP-G1 | G | Dual-locale i18n with agent translation | 78% | L | Pending | MVP-B1, MVP-E2, MVP-E3 |
+| MVP-G1 | G | Dual-locale i18n with agent translation | 84% | L | Pending | MVP-B1, MVP-E2, MVP-E3 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -1770,10 +1771,10 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
   - `apps/business-os/docs/business-os/cards/*.md` — Add translation fields
   - `apps/business-os/docs/business-os/ideas/worked/*.md` — Add translation fields
 - **Depends on:** MVP-B1 (user accounts), MVP-E2 (agent queue), MVP-E3 (agent runner for executing translations)
-- **Confidence:** 78%
-  - Implementation: 82% — i18n patterns exist in brikette; adapt for git-backed content
-  - Approach: 78% — Frontmatter translation fields approach is clear, but triggering logic needs refinement
-  - Impact: 80% — Affects all content rendering; changes are additive and non-breaking
+- **Confidence:** 84%
+  - Implementation: 86% — i18n patterns exist in brikette; adapt for git-backed content
+  - Approach: 84% — Frontmatter translation fields approach is clear; triggering logic refined
+  - Impact: 85% — Affects all content rendering; changes are additive and non-breaking
 - **Acceptance:**
   - [ ] User can set locale preference via UI (en or it, default en)
   - [ ] User locale preference persists in session and across logins
@@ -1856,7 +1857,7 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
     - Persist in user profile (future: database field)
     - Default: `en` for all users initially
 
-#### Re-plan Update (2026-01-30)
+#### Re-plan Update (2026-01-30) — Initial Planning
 - **Previous confidence:** N/A (new task)
 - **Updated confidence:** 78%
   - Implementation: 82% — i18n infrastructure exists in brikette; frontmatter pattern is proven; agent queue system is complete
@@ -1886,6 +1887,71 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
   - Acceptance: Added specific frontmatter field names (`Title-it`, `Content-it`)
   - Test plan: Added specific test file paths
   - Rollout: Added phased rollout plan with feature flags
+
+#### Re-plan Update (2026-01-30) — Confidence Refinement
+- **Previous confidence:** 78% (Implementation: 82%, Approach: 78% ←, Impact: 80%)
+- **Updated confidence:** 84% ✓ READY TO BUILD
+  - Implementation: 86% ↑ — All integration seams confirmed; session storage pattern proven
+  - Approach: 84% ↑ — API-route triggering pattern decided and validated
+  - Impact: 85% ↑ — All rendering paths traced; graceful degradation confirmed
+- **Investigation performed:**
+  - User preference storage:
+    - `apps/business-os/src/lib/current-user.ts:9-18` — User interface structure (ready to extend)
+    - `apps/business-os/src/lib/auth.ts:17-19` — SessionData interface (iron-session, can add `locale?: string`)
+    - `apps/business-os/src/lib/auth.ts:69-76` — getSessionUser() helper (read pattern)
+  - Locale infrastructure:
+    - `packages/i18n/src/locales.ts:16-24` — UiLocale/ContentLocale types exist
+    - `packages/types/src/constants.ts:16` — UI_LOCALES = ["en", "it"] ✓ (Italian already supported)
+    - `packages/i18n/src/useTranslations.server.ts:9-22` — Server-side translation hook (ready to use)
+  - Content rendering paths:
+    - `apps/business-os/src/components/board/CompactCard.tsx:79` — Fallback pattern: `card.Title || card.ID`
+    - `apps/business-os/src/components/card-detail/CardHeader.tsx` — Same fallback pattern
+    - `apps/business-os/src/components/board/CompactIdea.tsx` — Same fallback pattern
+    - **All components already use graceful fallback** → adding locale fields is drop-in compatible
+  - Content writing paths (where to queue translations):
+    - `apps/business-os/src/app/api/cards/claim/route.ts:84-93` — POST → writer → success check → revalidate pattern
+    - `apps/business-os/src/app/ideas/[id]/actions.ts:77-91` — convertToCard() → writeCard() pattern
+    - Agent queue creation: `apps/business-os/src/lib/repo/AgentQueueWriter.ts:54-93` (proven MVP-E2 pattern)
+  - Idea status flow:
+    - `apps/business-os/src/lib/types.ts:73` — Status: "raw" | "worked" | "converted" | "dropped"
+    - Raw ideas (inbox) have Status: "raw" → no translation
+    - Worked ideas have Status: "worked" → queue translation
+  - Tests:
+    - 43 existing test files in apps/business-os
+    - Test pattern established: `apps/business-os/src/lib/current-user.test.ts`, `apps/business-os/src/lib/auth.test.ts`
+    - No extinct tests found (i18n is new feature)
+- **Decision / resolution:**
+  - **Triggering approach — REFINED:** API-route triggering (Option B) wins
+    - **Where:** Add translation queueing in server actions/API routes AFTER successful write
+    - **Pattern:** Existing routes already follow: write → check success → side effects (revalidate, queue, etc.)
+    - **Evidence:** `apps/business-os/src/app/api/cards/claim/route.ts:84-93` shows exact pattern
+    - **Why better than RepoWriter:** Separation of concerns; easier feature-flag control; clearer testing
+    - **Implementation points:**
+      - `apps/business-os/src/app/api/cards/*/route.ts` — After writeCard() success, queue translation
+      - `apps/business-os/src/app/ideas/[id]/actions.ts` — After workUpIdea() or convertToCard(), queue translation
+      - Check feature flag `BUSINESS_OS_I18N_ENABLED` before queueing
+      - Check Status !== "raw" for ideas before queueing
+  - **Locale preference storage — CONFIRMED:**
+    - Extend `SessionData` interface: `locale?: "en" | "it"`
+    - Add API route: `POST /api/user/locale` → updates session.locale
+    - Read from session in components: `const locale = session.locale ?? "en"`
+  - **Content reading — CONFIRMED:**
+    - No new "content-reader" file needed (was speculative)
+    - Instead: Update existing components to read locale-aware fields
+    - Pattern: `card["Title-it"] ?? card.Title ?? card.ID` (triple fallback)
+    - Locale from session (server) or context (client)
+- **Changes to task:**
+  - **Affects:** Removed speculative `content-reader.ts` (not needed)
+  - **Affects:** Clarified exact API routes to modify:
+    - `apps/business-os/src/app/api/cards/claim/route.ts`
+    - `apps/business-os/src/app/api/cards/accept/route.ts`
+    - `apps/business-os/src/app/api/cards/complete/route.ts`
+    - `apps/business-os/src/app/ideas/[id]/actions.ts` (convertToCard, workUpIdea)
+  - **Affects:** Added session extension:
+    - `apps/business-os/src/lib/auth.ts` (SessionData interface)
+  - **Acceptance:** No changes (already specific)
+  - **Test plan:** Confirmed 43 existing tests as baseline; new tests follow established patterns
+  - **Rollout:** No changes (feature flags already defined)
 
 ---
 
@@ -1949,6 +2015,7 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
 
 - **2026-01-29:** Chose git-backed agent queue over Redis/SQS (aligns with git-only storage, no new dependencies)
 - **2026-01-29:** Chose polling over SSE (TryCloudflare doesn't support SSE, simpler implementation)
+- **2026-01-30:** MVP-G1 i18n triggering approach — API-route triggering (Option B) over RepoWriter hooks (Option A) or event-driven (Option C). Rationale: Separation of concerns; easier feature-flag control; aligns with existing server action pattern (write → check → side effects); clearer testing boundaries. Evidence: All existing API routes follow this pattern (`apps/business-os/src/app/api/cards/claim/route.ts:84-93`).
 - **2026-01-29:** Chose invite-only username+passcode auth over OAuth (no external service dependency, $0 constraint)
 - **2026-01-29:** Chose atomic counters file over distributed counter service (git-only storage, no new dependencies)
 - **2026-01-29:** Chose single repo lock over per-entity locks (simpler, sufficient for 5 users, can optimize later)

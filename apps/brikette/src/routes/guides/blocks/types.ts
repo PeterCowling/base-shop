@@ -10,7 +10,6 @@ export const GUIDE_BLOCK_TYPES = [
   "hero",
   "genericContent",
   "faq",
-  "gallery",
   "callout",
   "table",
   "serviceSchema",
@@ -64,39 +63,6 @@ const faqBlockOptionsSchema = z
   })
   .strict()
   .optional();
-
-const galleryItemSchema = z
-  .object({
-    image: z.string().min(1),
-    altKey: z.string().min(1).optional(),
-    alt: z.string().min(1).optional(),
-    captionKey: z.string().min(1).optional(),
-    caption: z.string().min(1).optional(),
-    width: z.number().int().positive().optional(),
-    height: z.number().int().positive().optional(),
-    format: z.enum(IMAGE_FORMAT_VALUES).optional(),
-    quality: z.number().int().min(10).max(100).optional(),
-  })
-  .strict();
-
-const galleryBlockOptionsSchema = z
-  .object({
-    items: z.array(galleryItemSchema).min(1).optional(),
-    source: z.string().min(1).optional(),
-    contentKey: z.string().min(1).optional(),
-    headingKey: z.string().min(1).optional(),
-    zoomable: z.boolean().optional(),
-  })
-  .strict()
-  .superRefine((value, ctx) => {
-    if (!value.items && !value.source) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Provide either gallery items or a source module",
-        path: ["items"],
-      });
-    }
-  });
 
 const calloutBlockOptionsSchema = z
   .object({
@@ -205,8 +171,6 @@ const customBlockOptionsSchema = z
 export type HeroBlockOptions = z.infer<typeof heroBlockOptionsSchema>;
 export type GenericContentBlockOptions = z.infer<typeof genericContentBlockOptionsSchema>;
 export type FaqBlockOptions = z.infer<typeof faqBlockOptionsSchema>;
-export type GalleryBlockOptions = z.infer<typeof galleryBlockOptionsSchema>;
-export type GalleryBlockItem = z.infer<typeof galleryItemSchema>;
 export type CalloutBlockOptions = z.infer<typeof calloutBlockOptionsSchema>;
 export type TableBlockOptions = z.infer<typeof tableBlockOptionsSchema>;
 export type ServiceSchemaBlockOptions = z.infer<typeof serviceSchemaBlockOptionsSchema>;
@@ -232,11 +196,6 @@ export type GenericContentBlock = {
 export type FaqBlock = {
   type: "faq";
   options?: FaqBlockOptions;
-};
-
-export type GalleryBlock = {
-  type: "gallery";
-  options: GalleryBlockOptions;
 };
 
 export type CalloutBlock = {
@@ -298,7 +257,6 @@ export type GuideBlockDeclaration =
   | HeroBlock
   | GenericContentBlock
   | FaqBlock
-  | GalleryBlock
   | CalloutBlock
   | TableBlock
   | ServiceSchemaBlock
@@ -323,10 +281,6 @@ export const GUIDE_BLOCK_DECLARATION_SCHEMA = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("faq"),
     options: faqBlockOptionsSchema,
-  }),
-  z.object({
-    type: z.literal("gallery"),
-    options: galleryBlockOptionsSchema,
   }),
   z.object({
     type: z.literal("callout"),

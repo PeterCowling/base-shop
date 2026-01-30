@@ -3,9 +3,11 @@ import { z } from "zod";
 
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
+import { getSession, getSessionUser } from "@/lib/auth";
 import { CommitIdentities } from "@/lib/commit-identity";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
+import { canCreateCard } from "@/lib/permissions";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
 
@@ -46,11 +48,35 @@ const CreateCardSchema = z.object({
  * POST /api/cards
  * Create a new card
  *
- * Phase 0: Pete-only, local-only, no auth
+ * MVP-B2: Requires authentication
  */
-
 export async function POST(request: Request) {
   const t = await getServerTranslations("en");
+
+  // MVP-B2: Check authentication (if auth is enabled)
+  const response = NextResponse.next();
+  const session = await getSession(request, response);
+  const user = getSessionUser(session);
+
+  // Only enforce auth if BUSINESS_OS_AUTH_ENABLED is true
+  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
+  if (authEnabled && !user) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
+  // Check permissions (any authenticated user can create cards)
+  if (authEnabled && user && !canCreateCard(user)) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+      { error: "You do not have permission to create cards" },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await request.json();
 

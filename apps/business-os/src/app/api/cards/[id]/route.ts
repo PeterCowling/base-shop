@@ -3,8 +3,11 @@ import { z } from "zod";
 
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
+import { getSession, getSessionUser } from "@/lib/auth";
 import { CommitIdentities } from "@/lib/commit-identity";
 import { getRepoRoot } from "@/lib/get-repo-root";
+import { canEditCard } from "@/lib/permissions";
+import { createRepoReader } from "@/lib/repo-reader";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
 
@@ -49,16 +52,72 @@ interface RouteParams {
 }
 
 /**
+ * Helper: Check authorization for card update
+ * MVP-B2: Validates authentication and permissions
+ */
+async function checkCardUpdateAuthorization(
+  request: Request,
+  cardId: string
+): Promise<NextResponse | null> {
+  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
+  if (!authEnabled) {
+    return null; // No auth check needed
+  }
+
+  // Check authentication
+  const response = NextResponse.next();
+  const session = await getSession(request, response);
+  const user = getSessionUser(session);
+
+  if (!user) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
+  // Load card and check permissions
+  const repoRoot = getRepoRoot();
+  const reader = createRepoReader(repoRoot);
+  const existingCard = await reader.getCard(cardId);
+
+  if (!existingCard) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Card not found" },
+      { status: 404 }
+    );
+  }
+
+  if (!canEditCard(user, existingCard)) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+      { error: "You do not have permission to edit this card" },
+      { status: 403 }
+    );
+  }
+
+  return null; // Authorization passed
+}
+
+/**
  * PATCH /api/cards/[id]
  * Update an existing card
  *
- * Phase 0: Pete-only, local-only, no auth
+ * MVP-B2: Requires authentication and authorization
  */
 export async function PATCH(request: Request, { params }: RouteParams) {
   const t = await getServerTranslations("en");
+  const { id } = await params;
+
+  // MVP-B2: Check authorization
+  const authError = await checkCardUpdateAuthorization(request, id);
+  if (authError) {
+    return authError;
+  }
 
   try {
-    const { id } = await params;
     const body = await request.json();
 
     // Validate input

@@ -351,7 +351,7 @@ Show code commits linked to cards automatically.
 | MVP-D2 | D | Mark complete button | 90% | S | Complete | MVP-B2, MVP-C1 |
 | MVP-D3 | D | "My Work" view | 85% | M | Complete | MVP-B1, MVP-D1 |
 | MVP-E1 | E | Comments as first-class git artifacts | 86% | M | Pending | MVP-B2, MVP-C1 |
-| MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Pending | MVP-B2, MVP-C1 |
+| MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Complete | MVP-B2, MVP-C1 |
 | MVP-E3 | E | Agent runner daemon | 87% | L | Pending | MVP-C1, MVP-E2 |
 | MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
 | MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
@@ -1457,6 +1457,36 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Affects: No changes
   - Acceptance: No changes
   - Dependencies: No changes
+
+#### Build Completion (2026-01-30)
+- **Status:** ✅ COMPLETE
+- **Commits:** 4abc307070
+- **TDD cycle:**
+  - Pattern replication: Followed RepoWriter pattern (simpleGit, frontmatter, RepoLock)
+  - Implementation validated via typecheck
+- **Validation:**
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS ✅
+- **Documentation updated:** None required (internal implementation)
+- **Implementation notes:**
+  - Created `AgentQueueWriter.ts`: Follows same git+frontmatter pattern as cards/ideas
+    - Uses simpleGit for commit operations
+    - Uses RepoLock for atomic file creation
+    - Queue ID format: {target}-{timestamp}-{random}
+    - Stores in: docs/business-os/agent-queue/{queueId}.md
+  - Created `/api/agent-queue/create` route:
+    - Validates action type (work-idea, break-into-tasks, draft-plan, custom)
+    - MVP-B2 auth checks (when enabled)
+    - Returns queueId and commit hash
+  - Updated `CardDetail.tsx`:
+    - Added "Ask Agent..." dropdown in Actions section
+    - Three options: Draft plan, Break into tasks, Work this card
+    - Loading states and success/error feedback
+    - Green success message when task queued
+  - Queue items are passive (just data) until MVP-E3 processes them
+- **Acceptance criteria met:**
+  - [x] Dropdown on card detail: "Agent: work this idea", "Agent: break into tasks", "Agent: draft plan"
+  - [x] Click → creates file in agent-queue/ with: action type, target entity, initiator user
+  - [x] User can request agent work without leaving browser
 
 ### MVP-E3: Agent runner daemon
 

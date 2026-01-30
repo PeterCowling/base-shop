@@ -45,6 +45,7 @@ export async function GET() {
         repoLockStatus: "error",
         lastAgentRunTimestamp: null,
         timestamp: new Date().toISOString(),
+        // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
         error: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 200 }

@@ -4,13 +4,13 @@
 // Client component for how-to-get-here index page
 import { Fragment, memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTravel";
-import { DestinationSections } from "@/routes/how-to-get-here/components/DestinationSections";
 import { ExperienceGuidesSection } from "@/routes/how-to-get-here/components/ExperienceGuidesSection";
 import { FiltersDialog } from "@/routes/how-to-get-here/components/FiltersDialog";
 import { HeaderSection } from "@/routes/how-to-get-here/components/HeaderSection";
@@ -28,6 +28,12 @@ import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
+
+// Lazy load DestinationSections to prevent bundling destinations data into guide pages
+const DestinationSections = dynamic(
+  () => import("@/routes/how-to-get-here/components/DestinationSections").then((mod) => ({ default: mod.DestinationSections })),
+  { ssr: true }
+);
 
 type Props = {
   lang: AppLanguage;

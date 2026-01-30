@@ -349,7 +349,7 @@ Show code commits linked to cards automatically.
 | MVP-C3 | C | Optimistic concurrency for long-form edits | 84% | M | Complete | MVP-C1 |
 | MVP-D1 | D | Claim/Accept task button | 90% | S | Complete | MVP-B2, MVP-C1 |
 | MVP-D2 | D | Mark complete button | 90% | S | Complete | MVP-B2, MVP-C1 |
-| MVP-D3 | D | "My Work" view | 85% | M | Pending | MVP-B1, MVP-D1 |
+| MVP-D3 | D | "My Work" view | 85% | M | Complete | MVP-B1, MVP-D1 |
 | MVP-E1 | E | Comments as first-class git artifacts | 86% | M | Pending | MVP-B2, MVP-C1 |
 | MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Pending | MVP-B2, MVP-C1 |
 | MVP-E3 | E | Agent runner daemon | 87% | L | Pending | MVP-C1, MVP-E2 |
@@ -383,11 +383,16 @@ This section is the source of truth for **current status**, based on what exists
 
 **Epic C (Safe Concurrent Operations): COMPLETE ✅**
 
+- **MVP-D1** — Claim/Accept buttons complete: `/api/cards/claim` and `/api/cards/accept` routes implemented. CardDetail component shows "Claim Card" (blue) for unclaimed cards and "Accept & Start" (green) for owned cards in Inbox. One-click task ownership without editing markdown (`apps/business-os/src/app/api/cards/claim/route.ts`, `apps/business-os/src/app/api/cards/accept/route.ts`, `apps/business-os/src/components/card-detail/CardDetail.tsx`).
+- **MVP-D2** — Mark Complete button complete: `/api/cards/complete` route implemented. CardDetail component shows "Mark Complete" (purple) for owner/admin when card not Done. Moves Lane to Done and adds Completed-Date timestamp. Added Completed-Date field to CardFrontmatter type (`apps/business-os/src/app/api/cards/complete/route.ts`, `apps/business-os/src/components/card-detail/CardDetail.tsx`, `apps/business-os/src/lib/types.ts`).
+- **MVP-D3** — My Work view complete: `/me` route implemented with three sections: Waiting Acceptance (Inbox cards), Due Soon (next 7 days), All Assigned (Owner = me, not Done). Server-side filtering, reuses CompactCard component, responsive grid layout. Non-admin users can operate without full board context (`apps/business-os/src/app/me/page.tsx`, `apps/business-os/src/components/my-work/MyWorkView.tsx`).
+
+**Epic D (One-Click Task Management): COMPLETE ✅**
+
 ### Partial
 - **MVP-E3** — Agent runner daemon isn't implemented yet, but validation requirements complete: queue scanner, run logger, health check, lock integration tests, and PM2 supervision strategy (`apps/business-os/src/agent-runner/*`, `docs/runbooks/agent-runner-supervision.md`).
 
 ### Pending (not found in repo yet)
-- **MVP-D1/D2/D3** — No one-click claim/accept/complete routes/components found; no `/me` route found.
 - **MVP-E1/E2/E4** — No `docs/business-os/agent-queue/` or `docs/business-os/agent-runs/` directories found; comment system remains “Coming Soon” in UI (`apps/business-os/src/components/card-detail/CardDetail.tsx`).
 - **MVP-F1/F2** — There is a lightweight per-card-file history view (BOS-28) (`apps/business-os/src/lib/git-history.ts`, `apps/business-os/src/components/card-detail/CardHistory.tsx`), but no commit-to-card linking by scanning commit messages for card IDs, and no auto-progress notes.
 
@@ -1322,6 +1327,32 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Affects: No changes
   - Acceptance: No changes
   - Dependencies: No changes
+
+#### Build Completion (2026-01-30)
+- **Status:** ✅ COMPLETE
+- **Commits:** 77c709bd54
+- **TDD cycle:**
+  - Pattern replication: Reused CompactCard component and board page filtering pattern
+  - Implementation validated via typecheck
+- **Validation:**
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS ✅
+- **Documentation updated:** None required (internal implementation)
+- **Implementation notes:**
+  - Created `/app/me/page.tsx`: Server component with three filtered card queries
+    - Assigned to me: Owner = currentUser, Lane != Done
+    - Waiting acceptance: Owner = me, Lane = Inbox
+    - Due soon: next 7 days with due dates, not Done, owned by me
+  - Created `MyWorkView.tsx`: Client component with three sections
+    - Grid layout (responsive: 1/2/3 columns)
+    - Reuses CompactCard component for card display
+    - Empty states with helpful messaging and links
+    - Breadcrumb navigation + links to boards/home
+  - Server-side filtering (no client-side data fetching)
+  - Shows business tags for multi-business support
+  - Non-admin users can operate without understanding full board structure
+- **Acceptance criteria met:**
+  - [x] Route /me shows: Assigned cards (not Done), Due soon (next 7 days), Tasks waiting acceptance (Owner = me, Lane = Inbox)
+  - [x] Non-admin user can operate without understanding whole board
 
 ### MVP-E1: Comments as first-class git artifacts
 

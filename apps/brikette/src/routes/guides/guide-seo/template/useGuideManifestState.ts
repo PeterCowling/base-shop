@@ -41,39 +41,23 @@ export function useGuideManifestState(params: {
 
     const fetchOverrides = async () => {
       try {
-        console.log('[useGuideManifestState] Fetching overrides for', guideKey, 'with token:', previewToken ? 'YES' : 'NO');
         const response = await fetch(`/api/guides/${guideKey}/manifest`, {
           headers: {
             "x-preview-token": previewToken,
           },
         });
 
-        console.log('[useGuideManifestState] Response:', response.status, response.ok);
-        if (!response.ok) {
-          const text = await response.text();
-          console.warn('[useGuideManifestState] Not OK:', text);
-          return;
-        }
+        if (!response.ok) return;
 
         const data = await response.json();
-        console.log('[useGuideManifestState] Data received:', {
-          ok: data.ok,
-          hasOverride: !!data.override,
-          hasAuditResults: !!data.override?.auditResults,
-          auditScore: data.override?.auditResults?.score,
-        });
-
         if (active && data.ok && data.override) {
-          console.log('[useGuideManifestState] Setting overrides');
           setOverrides((prev) => ({
             ...prev,
             [guideKey]: data.override,
           }));
-        } else {
-          console.warn('[useGuideManifestState] Not setting overrides:', { active, dataOk: data.ok, hasOverride: !!data.override });
         }
       } catch (err) {
-        console.error("[useGuideManifestState] Failed to fetch overrides", err);
+        if (IS_DEV) console.debug("[useGuideManifestState] Failed to fetch overrides", err);
       }
     };
 
@@ -136,13 +120,6 @@ export function useGuideManifestState(params: {
         return { status: status as ChecklistSnapshot["status"], items: candidate.items };
       }
     }
-    console.log('[useGuideManifestState] Building checklist:', {
-      guideKey,
-      hasManifestEntry: !!manifestEntry,
-      hasOverrides: !!overrides[guideKey],
-      hasAuditResults: !!overrides[guideKey]?.auditResults,
-      auditScore: overrides[guideKey]?.auditResults?.score,
-    });
     return manifestEntry
       ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang, overrides })
       : undefined;

@@ -3,6 +3,7 @@
  */
 import ImageGallery from "@/components/guides/ImageGallery";
 import ZoomableImageGallery from "@/components/guides/ZoomableImageGallery";
+import { IS_DEV } from "@/config/env";
 import buildCfImageUrl, { type BuildCfImageOptions } from "@acme/ui/lib/buildCfImageUrl";
 
 import type { GuideSeoTemplateContext } from "../../guide-seo/types";
@@ -18,12 +19,6 @@ function resolveGalleryItems(
   options: GalleryBlockOptions,
   fallbackTitle: string,
 ): GalleryBlockItem[] {
-  console.log('[galleryBlock] resolveGalleryItems called:', {
-    hasItems: Array.isArray(options.items) && options.items.length > 0,
-    source: options.source,
-    guideKey: context.guideKey,
-  });
-
   if (Array.isArray(options.items) && options.items.length > 0) {
     return options.items.map((item) => ({
       ...item,
@@ -38,21 +33,10 @@ function resolveGalleryItems(
     }));
   }
   if (options.source) {
-    const allKeys = Object.keys(GALLERY_MODULES);
-    console.log('[galleryBlock] Looking for gallery module:', {
-      source: options.source,
-      expectedEnding1: `${options.source}.gallery.ts`,
-      expectedEnding2: `${options.source}.gallery.tsx`,
-      availableModules: allKeys,
-    });
-
     const matchedKey = Object.keys(GALLERY_MODULES).find(
       (key) =>
         key.endsWith(`${options.source}.gallery.ts`) || key.endsWith(`${options.source}.gallery.tsx`),
     );
-
-    console.log('[galleryBlock] Matched key:', matchedKey);
-
     if (matchedKey) {
       const mod = GALLERY_MODULES[matchedKey] as Record<string, unknown>;
       const candidate =
@@ -87,7 +71,6 @@ function resolveGalleryItems(
     }
 
     // Fallback: If no module found, try reading directly from translations
-    console.log('[galleryBlock] No module found, trying direct translation read');
     try {
       // Try different approaches to get the raw gallery data
       const contentKey = `content.${options.source}.gallery`;
@@ -113,14 +96,6 @@ function resolveGalleryItems(
         }
       }
 
-      console.log('[galleryBlock] Direct translation result:', {
-        contentKey,
-        hasData: !!galleryData,
-        isArray: Array.isArray(galleryData),
-        dataType: typeof galleryData,
-        sampleData: Array.isArray(galleryData) ? galleryData[0] : galleryData,
-      });
-
       if (Array.isArray(galleryData)) {
         return galleryData.map((item: Record<string, unknown>) => ({
           image: (item.src ?? item.image) as string,
@@ -131,7 +106,7 @@ function resolveGalleryItems(
         })).filter(item => item.image);
       }
     } catch (err) {
-      console.error('[galleryBlock] Failed to read gallery from translations:', err);
+      if (IS_DEV) console.debug('[galleryBlock] Failed to read gallery from translations:', err);
     }
   }
   return [];

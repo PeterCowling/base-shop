@@ -98,19 +98,6 @@ export function buildGuideGallery(args: {
   const raw =
     readGalleryFromTranslations(args.translator, key) ??
     readGalleryFromTranslations(args.englishTranslator, key);
-
-  console.log('[positanoBeaches.gallery] Debug:', {
-    key,
-    hasRaw: !!raw,
-    rawType: typeof raw,
-    isArray: Array.isArray(raw),
-    rawLength: Array.isArray(raw) ? raw.length : 'N/A',
-    fallbackTitle: args.fallbackTitle
-  });
-
-  const items = normalizeGalleryItems(raw, args.fallbackTitle);
-  console.log('[positanoBeaches.gallery] Normalized items:', items.length);
-
-  return items;
+  return normalizeGalleryItems(raw, args.fallbackTitle);
 }
 

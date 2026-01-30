@@ -56,6 +56,63 @@ This will display a public URL like `https://random-words-1234.trycloudflare.com
 - Troubleshooting
 - Security considerations
 
+## Authentication
+
+**MVP-B1: Invite-only auth system** - Session-based authentication with username + passcode.
+
+### Enable Authentication
+
+By default, auth is **disabled** for backward compatibility. To enable:
+
+```bash
+# .env.local
+BUSINESS_OS_AUTH_ENABLED=true
+SESSION_SECRET=your-secret-key-at-least-32-chars-long
+
+# Generate a secure session secret:
+openssl rand -base64 32
+```
+
+### User Management
+
+Users are stored in `docs/business-os/people/users.json` with bcrypt-hashed passcodes.
+
+**Development users:**
+- `pete` / `pete123` (admin)
+- `cristiana` / `cristiana123` (admin)
+- `avery` / `avery123` (user)
+
+**Add a new user:**
+1. Generate password hash: `node -e "require('bcryptjs').hash('passcode', 10).then(console.log)"`
+2. Add to `users.json`:
+   ```json
+   {
+     "id": "username",
+     "name": "Display Name",
+     "email": "user@business-os.local",
+     "role": "admin",
+     "passcodeHash": "$2a$10$..."
+   }
+   ```
+
+### Admin Impersonation (Optional)
+
+Allow admins to switch users for testing/support:
+
+```bash
+# .env.local
+NEXT_PUBLIC_BUSINESS_OS_ALLOW_ADMIN_IMPERSONATION=true
+```
+
+This shows the UserSwitcher component to admins when auth is enabled.
+
+### Security Notes
+
+- **Session cookies**: Encrypted with iron-session, httpOnly, 7-day expiration
+- **Password hashing**: bcrypt with 10 rounds
+- **Middleware protection**: All routes protected except `/login` and `/api/auth/*`
+- **Feature flag**: Auth disabled by default for local development
+
 ## Production Deployment
 
 Business OS requires the `BUSINESS_OS_REPO_ROOT` environment variable to locate the monorepo root in production environments (Cloudflare Pages, Vercel, etc.).

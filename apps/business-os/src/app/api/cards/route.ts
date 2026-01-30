@@ -10,6 +10,7 @@ import { getRepoRoot } from "@/lib/get-repo-root";
 import { allocateCardId } from "@/lib/id-allocator-instance";
 import { validateBusinessId } from "@/lib/id-generator";
 import { canCreateCard } from "@/lib/permissions";
+import { queueTranslation } from "@/lib/repo/translation-queue";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Lane, Priority } from "@/lib/types";
 
@@ -182,6 +183,15 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
+    // MVP-G1: Queue translation for new card
+    await queueTranslation({
+      targetId: cardId,
+      targetType: "card",
+      initiator: currentUser.name,
+      identity: gitAuthor,
+      actor: actorId,
+    });
 
     return NextResponse.json(
       {

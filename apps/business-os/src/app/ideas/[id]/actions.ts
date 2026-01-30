@@ -14,6 +14,7 @@ import { getAuthenticatedUserFromHeaders } from "@/lib/auth";
 import { userToCommitIdentity } from "@/lib/commit-identity";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
+import { queueTranslation } from "@/lib/repo/translation-queue";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Idea } from "@/lib/types";
 
@@ -97,6 +98,15 @@ export async function convertToCard(
       errorDetails: result.errorDetails,
     };
   }
+
+  // MVP-G1: Queue translation for new card
+  await queueTranslation({
+    targetId: cardId,
+    targetType: "card",
+    initiator: currentUser.name,
+    identity: gitAuthor,
+    actor: currentUser.id,
+  });
 
   // Revalidate paths
   revalidatePath(`/ideas/${ideaId}`);
@@ -193,6 +203,17 @@ export async function updateIdea(
       errorKey: result.errorKey,
       errorDetails: result.errorDetails,
     };
+  }
+
+  // MVP-G1: Queue translation for worked idea (only if transitioning to "worked")
+  if (idea.Status !== "worked") {
+    await queueTranslation({
+      targetId: ideaId,
+      targetType: "idea",
+      initiator: currentUser.name,
+      identity: gitAuthor,
+      actor: currentUser.id,
+    });
   }
 
   // Revalidate idea detail page

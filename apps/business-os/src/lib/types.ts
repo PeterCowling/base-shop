@@ -45,6 +45,7 @@ export interface CardFrontmatter {
   Owner: string;
   ID: string;
   Title?: string;
+  "Title-it"?: string; // MVP-G1: Italian translation of title
   "Proposed-Lane"?: Lane;
   Business?: string;
   Tags?: string[];
@@ -60,6 +61,7 @@ export interface CardFrontmatter {
 // Card with parsed content
 export interface Card extends CardFrontmatter {
   content: string;
+  "content-it"?: string; // MVP-G1: Italian translation of content
   filePath: string;
   /** SHA-256 of the raw markdown file (including frontmatter) when read */
   fileSha?: string;
@@ -73,11 +75,13 @@ export interface IdeaFrontmatter {
   Status?: "raw" | "worked" | "converted" | "dropped";
   "Created-Date"?: string;
   Tags?: string[];
+  "Title-it"?: string; // MVP-G1: Italian translation of title (only for worked ideas)
 }
 
 // Idea with parsed content
 export interface Idea extends IdeaFrontmatter {
   content: string;
+  "content-it"?: string; // MVP-G1: Italian translation of content (only for worked ideas)
   filePath: string;
   /** SHA-256 of the raw markdown file (including frontmatter) when read */
   fileSha?: string;

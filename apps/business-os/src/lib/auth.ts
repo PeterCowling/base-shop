@@ -16,6 +16,7 @@ import { type User,USERS } from "./current-user";
  */
 export interface SessionData extends IronSessionData {
   userId?: string;
+  locale?: "en" | "it"; // MVP-G1: User locale preference
 }
 
 /**

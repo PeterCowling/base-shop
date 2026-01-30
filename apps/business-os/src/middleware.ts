@@ -5,7 +5,15 @@
  * Protects all routes except /login and /api/auth/*
  * Redirects unauthenticated users to /login when BUSINESS_OS_AUTH_ENABLED=true
  *
- * Runtime: Node.js (required for iron-session crypto operations)
+ * IMPORTANT: Auth is currently DISABLED by default (see below).
+ *
+ * Known limitation: iron-session requires Node.js crypto module which is not
+ * available in Next.js middleware edge runtime. Solutions:
+ * 1. Upgrade to Next.js canary + experimental.nodeMiddleware (unstable)
+ * 2. Replace iron-session with edge-compatible session library
+ * 3. Move auth to API route handlers instead of middleware
+ *
+ * For MVP, auth remains disabled (AUTH_ENABLED=false) to avoid runtime errors.
  */
 
 import type { NextRequest } from "next/server";
@@ -13,10 +21,8 @@ import { NextResponse } from "next/server";
 
 import { getSession, getSessionUser } from "./lib/auth";
 
-// Configure middleware to run in Node.js runtime (iron-session requires crypto module)
-export const runtime = "nodejs";
-
-// Feature flag - auth is disabled by default for backward compatibility
+// Feature flag - auth is DISABLED by default due to edge runtime limitation
+// DO NOT enable until iron-session edge compatibility is resolved
 const AUTH_ENABLED = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
 
 // Public paths that don't require authentication

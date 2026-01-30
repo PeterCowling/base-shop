@@ -169,17 +169,13 @@ describe("guideContentSchema", () => {
         },
         essentialsTitle: "Essentials",
         essentials: ["Item 1", "Item 2"],
-        gallery: {
-          title: "Photos",
-          items: [{ alt: "Photo", caption: "Caption" }],
-        },
       };
 
       const result = guideContentSchema.safeParse(validContent);
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toHaveProperty("essentialsTitle");
-        expect(result.data).toHaveProperty("gallery");
+        expect(result.data).toHaveProperty("essentials");
       }
     });
   });

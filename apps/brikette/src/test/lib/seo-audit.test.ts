@@ -36,7 +36,7 @@ import { auditGuideSeo } from "@/lib/seo-audit";
 const mockReadFile = fs.readFile as unknown as jest.MockedFunction<typeof fs.readFile>;
 
 describe("seo-audit", () => {
-  it("counts section images + gallery images and extracts internal links from tips and q/a FAQs", async () => {
+  it("counts section images and extracts internal links from tips and q/a FAQs", async () => {
     const longIntro = Array.from({ length: 650 }, (_, i) => `word${i}`).join(" ");
 
     mockReadFile.mockResolvedValueOnce(
@@ -56,34 +56,14 @@ describe("seo-audit", () => {
           },
         ],
         faqs: [{ q: "Question?", a: ["Answer with %LINK:targetC|Guide C%."] }],
-        gallery: { title: "Gallery", items: [{ image: "/img/c.jpg", alt: "Alt C" }] },
-      }),
-    );
-
-    const results = await auditGuideSeo("testGuide" as any, "en");
-
-    expect(results.metrics.imageCount).toBe(3);
-    expect(results.metrics.internalLinkCount).toBe(3);
-    expect(results.metrics.invalidInternalLinkOccurrences).toBe(0);
-  });
-
-  it("counts images from array gallery items using src/image fields", async () => {
-    const longIntro = Array.from({ length: 650 }, (_, i) => `word${i}`).join(" ");
-
-    mockReadFile.mockResolvedValueOnce(
-      JSON.stringify({
-        seo: { title: "Test title", description: "Test description" },
-        intro: [longIntro],
-        gallery: [
-          { src: "/img/a.webp", alt: "Alt A", format: "webp" },
-          { image: "/img/b.jpg", alt: "Alt B", type: "image/jpeg" },
-        ],
       }),
     );
 
     const results = await auditGuideSeo("testGuide" as any, "en");
 
     expect(results.metrics.imageCount).toBe(2);
+    expect(results.metrics.internalLinkCount).toBe(3);
+    expect(results.metrics.invalidInternalLinkOccurrences).toBe(0);
   });
 });
 

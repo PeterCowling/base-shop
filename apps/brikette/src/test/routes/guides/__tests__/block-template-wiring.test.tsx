@@ -99,49 +99,6 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
     });
   });
 
-  describe("when manifestEntry.blocks provides articleExtras", () => {
-    it("applies block-derived articleExtras slot", () => {
-      const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
-
-      const testManifestEntry: Partial<GuideManifestEntry> = {
-        guideKey: "testGuide",
-        areas: ["experiences"],
-        blocks: [
-          {
-            type: "gallery",
-            options: {
-              items: [
-                {
-                  image: "/test-image.jpg",
-                  alt: "Test image",
-                },
-              ],
-            },
-          },
-        ],
-        relatedGuides: [],
-        contentKey: "testGuide",
-      };
-
-      useGuideManifestState.mockReturnValue({
-        manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
-      });
-
-      const { container } = render(
-        <GuideSeoTemplate guideKey="testGuide" metaKey="testGuide" />
-      );
-
-      expect(container).toBeInTheDocument();
-      // Gallery block should contribute articleExtras
-      // This test will initially FAIL because blocks aren't wired yet
-    });
-  });
-
   describe("merge precedence", () => {
     it("explicit route props override block-derived props", () => {
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");

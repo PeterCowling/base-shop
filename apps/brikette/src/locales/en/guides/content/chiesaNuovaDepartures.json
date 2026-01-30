@@ -1,13 +1,14 @@
 {
   "seo": {
     "title": "Hostel Brikette to Chiesa Nuova/Bar Internazionale Bus Stop",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
+    "description": "Complete guide for hostel guests: walking directions from Hostel Brikette to the Chiesa Nuova bus stop, bus schedules, tickets, and connections to Amalfi, Sorrento, Naples, Salerno."
   },
   "linkLabel": "Hostel Brikette to Chiesa Nuova/Bar Internazionale Bus Stop",
-  "intro": "Leaving the hostel for the bus to Amalfi, Sorrento? This micro-route shows the quickest way from Hostel Brikette to the Chiesa Nuova/Bar Internazionale bus stop and provides some tips.",
+  "lastUpdated": "2026-01-30",
+  "intro": "Leaving the hostel for the bus to Amalfi, Sorrento, or beyond? This guide covers everything you need to know about walking from Hostel Brikette to the Chiesa Nuova/Bar Internazionale bus stop: the 2-minute walking route, where to buy tickets, which side of the road to queue, and connections to major destinations along the Amalfi Coast.",
   "image": {
     "alt": "Positano's Chiesa Nuova SITA stop outside Bar Internazionale",
-    "caption": "Hostel Brikette sits one bend uphill from the stop. Allow a couple of minutes so you can join the queue before the bus arrives."
+    "caption": "Hostel Brikette sits one bend from the stop. Allow a couple of minutes to join the queue before the bus arrives, especially in summer when services fill quickly."
   },
   "toc": {
     "onThisPage": "On this page",
@@ -21,43 +22,127 @@
       "id": "why-route",
       "title": "Why this route works",
       "body": [
-        "It is a 120 metre (400 foot) walk from the hostel entrance to the stop, on the main road.",
-        "If you are going towards Amalfi, the stop is opposite Bar Internazionale. Queue on the sea-view side of the road.  If you are going towards Sorrento, you'll wait directly outside the bar itself."
+        "It is a 120 metre (400 foot) walk from the hostel entrance to the bus stop on Viale Pasitea, the main coastal road through Positano. The walk takes 2–4 minutes on a gentle downhill gradient with paved sidewalks throughout.",
+        "If you are going towards Amalfi (east), the stop is opposite Bar Internazionale on the sea-view side of the road. Queue here for buses towards Amalfi town, Salerno, and Ravello. If you are heading towards Sorrento (west), you'll wait directly outside the bar itself on the mountain side of the road.",
+        "This Chiesa Nuova stop is the closest SITA bus stop to Hostel Brikette and the most convenient departure point for onward travel along the coast. It's also known locally as the Bar Internazionale stop."
+      ]
+    },
+    {
+      "id": "where-buses-go",
+      "title": "Where buses from this stop go",
+      "body": [
+        "From the Chiesa Nuova/Bar Internazionale stop, SITA buses run in both directions along the coast:",
+        "**Towards Amalfi (eastbound):** Buses head through Praiano, passing Marina di Praia and Fiordo di Furore before reaching %LINK:amalfiTownGuide|Amalfi town% (30–40 minutes). From Amalfi, you can continue to %LINK:salernoPositano|Salerno% (additional 45 minutes) or take connecting buses to Ravello.",
+        "**Towards Sorrento (westbound):** Buses wind along the coast through several scenic tunnels before reaching %LINK:sorrentoGuide|Sorrento% (40–50 minutes). From Sorrento, you can connect to trains heading to %LINK:naplesPositano|Naples% (Circumvesuviana line to Naples Central Station) or continue to Naples Airport.",
+        "For complete journey planning from Positano, see our dedicated route guides: %LINK:positanoAmalfiBus|Positano to Amalfi by bus%, %LINK:positanoSorrentoBus|Positano to Sorrento by bus%, %LINK:positanoNaplesCenterBusTrain|Positano to Naples% via Sorrento, and %LINK:positanoSalernoBus|Positano to Salerno by bus%."
+      ]
+    },
+    {
+      "id": "bus-schedules",
+      "title": "Bus schedules and frequency",
+      "body": [
+        "SITA buses run frequently between Positano and both Amalfi and Sorrento during peak season (April–October). Expect buses every 20–30 minutes during daytime hours, with reduced frequency in the early morning (before 8am) and evening (after 9pm).",
+        "**First buses:** The first eastbound bus towards Amalfi typically departs Chiesa Nuova around 6:30–7:00am. The first westbound bus towards Sorrento usually leaves around 6:45–7:15am. Check the current timetable at Bar Internazionale or with hostel reception as schedules vary seasonally.",
+        "**Last buses:** Evening services thin out considerably after 10pm. The last bus towards Amalfi usually departs around 10:30pm, while the last Sorrento-bound bus leaves around 11pm. Always check the exact times at reception or on the SITA timetable, and plan to catch the second-to-last service if you're traveling in the evening to avoid being stranded.",
+        "**Winter schedules (November–March):** Frequency drops to every 40–60 minutes, with earlier last buses. Some evening services may not run at all on Sundays or public holidays."
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "Tickets: where to buy and how to validate",
       "body": [
-        "Buy a SITA ticket at the tabacchi or inside the bar.  Do not try to board the bus without a ticket, as you will not be able to buy one on the bus itself.  Present your ticket to the driver on boarding.  If you are catching the first bus out, buy your ticket the day before, and come see us at reception to arrange checkout.",
-        "Summer buses often fill. Plan accordingly, particularly during the most busy periods."
+        "Buy SITA bus tickets at the tabacchi (tobacco shop) located next to Bar Internazionale, or inside the bar itself. Tickets are sold as single journeys or day passes. Do not attempt to board the bus without a pre-purchased ticket—you cannot buy tickets from the driver.",
+        "**Ticket prices (2026):** A single journey from Positano to Amalfi costs €2.50. Positano to Sorrento costs €2.50. Positano to Salerno (via Amalfi) costs €4.00. A 24-hour Costiera pass costs €8.00 and covers unlimited travel between Sorrento and Salerno.",
+        "**Validation:** Present your ticket to the driver as you board, who will stamp it with the date and time. On newer buses, you may scan your ticket at the electronic validator just inside the door. Keep your validated ticket for the entire journey—inspectors regularly check tickets and issue on-the-spot fines for unvalidated or missing tickets.",
+        "**Buy ahead:** If you're catching the first bus out in the morning (before 7:30am), buy your ticket the day before, as the tabacchi may not be open yet. Come to hostel reception to arrange an early checkout if needed.",
+        "For more details on SITA tickets, passes, and pricing, see our complete %LINK:sitaTickets|SITA bus ticket guide%."
+      ]
+    },
+    {
+      "id": "boarding-tips",
+      "title": "Waiting and boarding: summer queues and luggage",
+      "body": [
+        "**Arrive early in summer:** Summer buses (June–September) often fill to capacity, especially during peak mid-morning hours (9am–12pm) and late afternoon (4pm–7pm). Arrive at the stop at least 10–15 minutes before your bus to secure a spot near the front of the queue.",
+        "**Queue etiquette:** Form an orderly line near the bus shelter on the correct side of the road. Don't push or crowd—Italians generally respect queue order. When the bus arrives, wait for passengers to alight before boarding.",
+        "**Luggage:** There's limited luggage space on SITA buses—usually a small compartment at the back or under-seat storage only. If you're traveling with large backpacks or suitcases, try to board early to claim a luggage spot. Consider using a %LINK:porterServices|porter service% to transport luggage to your next destination if you're carrying heavy bags.",
+        "**Standing room:** On packed summer buses, you may need to stand for part or all of the journey. The coastal road is winding with sharp bends, so hold on tightly to overhead rails or seat backs."
+      ]
+    },
+    {
+      "id": "connecting-journeys",
+      "title": "Connecting to Naples, Salerno, and beyond",
+      "body": [
+        "The Chiesa Nuova stop is the starting point for most hostel guests' onward journeys from Positano. Here's how to connect to major destinations:",
+        "**To Naples:** Take the westbound bus towards Sorrento (50 minutes), then connect to the Circumvesuviana train from Sorrento to Naples Central Station (60 minutes). Total journey time: approximately 2 hours. See our %LINK:positanoNaplesCenterBusTrain|complete Positano to Naples guide% for schedules and platform information.",
+        "**To Naples Airport:** Follow the Naples route above, then take the Alibus shuttle from Naples Central Station to the airport (20 minutes). Alternatively, book a direct shuttle from Positano—ask at reception. Our %LINK:naplesAirportPositanoBus|Naples Airport guide% covers all options.",
+        "**To Salerno:** Take the eastbound bus towards Amalfi (35 minutes), then continue on the same or a connecting bus to Salerno (45 minutes). Salerno has mainline trains to Rome, Florence, and other Italian cities. See %LINK:salernoPositano|Salerno to Positano% for the reverse journey and %LINK:salernoGatewayGuide|Salerno gateway guide% for train connections.",
+        "**To ferry dock:** If you're planning to take a ferry from Positano's main beach dock rather than the bus, see our %LINK:briketteToFerryDock|Hostel Brikette to ferry dock with luggage% guide for the walking route with minimal stairs."
+      ]
+    },
+    {
+      "id": "alternative-transport",
+      "title": "Alternatives to the SITA bus",
+      "body": [
+        "While the SITA bus is the most economical and frequent option, hostel guests have several alternatives:",
+        "**Ferry (April–October only):** Walk down to Positano's main beach ferry dock and catch a hydrofoil or ferry to Amalfi, Salerno, Capri, or Naples. Ferries are faster and more scenic than buses but cost 2–3 times more. See our %LINK:ferrySchedules|ferry schedules guide% for timetables and our %LINK:briketteToFerryDock|walking route to the dock%.",
+        "**Private transfer/taxi:** Expect to pay €80–150 for a private car to Sorrento or Amalfi, €150–200 to Naples Airport, and €100–140 to Salerno. Taxis can be booked at reception. Worth considering if you have heavy luggage or are traveling as a group of 3–4 people.",
+        "**Scooter rental:** Experienced riders can rent a scooter in Positano and drive the coastal road themselves. See our %LINK:scooterRentalPositano|scooter rental guide% for rental shops, pricing, and safety tips. Not recommended for nervous riders—the SS163 coastal road is narrow and winding with heavy traffic in summer."
       ]
     }
   ],
-  "beforeList": [],
-  "stepsList": [
-    "Leave reception, descend the short staircase to Viale Pasitea, and turn left to head downhill.",
-    "Follow the pavement for roughly 120 metres (400 feet) along the main road to reach Bar Internazionale."
+  "beforeList": [
+    "Buy your SITA ticket the evening before if catching an early morning bus (before 7:30am)",
+    "Check current bus schedules at reception or at Bar Internazionale—timetables change seasonally",
+    "Pack light if possible—luggage space on buses is very limited, especially in summer",
+    "Arrive 10–15 minutes early in peak summer months to secure your spot in the queue"
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
-  "kneesList": [],
-  "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
-  "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
-  "kneesPorterLinkLabel": "porter service guide",
+  "stepsList": [
+    "Leave hostel reception and descend the short entrance staircase to Viale Pasitea",
+    "Turn left (downhill) and walk 120 metres (400 feet) along the paved sidewalk on Viale Pasitea",
+    "After 2–3 minutes, you'll reach Bar Internazionale on your left",
+    "For Amalfi/Salerno: queue on the opposite (sea-view) side of the road",
+    "For Sorrento: queue directly outside the bar entrance on the mountain side"
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!5e0!3m2!1sen!2sit!4v1700000000000",
+  "kneesList": [
+    "The entire walk is a gentle downhill on paved sidewalk—no stairs until you reach the stop",
+    "If you have knee issues and heavy luggage, consider using the porter service (book at reception)"
+  ],
+  "kneesDockPrefix": "Going to the ferry dock instead of the bus? See our",
+  "kneesDockLinkLabel": "Ferry dock luggage route from Hostel Brikette",
+  "kneesPorterPrefix": "Need a porter to carry luggage to the stop or your next destination? Check our",
+  "kneesPorterLinkLabel": "Porter service guide and pricing",
   "faqs": [
     {
       "q": "How early should I reach the stop?",
-      "a": "Arrive at least 10 minutes before your chosen bus in summer so you can queue near the shelter and board comfortably."
+      "a": "Arrive at least 10–15 minutes before your chosen bus in summer (June–September) so you can queue near the shelter and secure a seat. In winter, 5 minutes is usually sufficient as buses are less crowded."
     },
     {
       "q": "Where can I buy or validate tickets?",
-      "a": "Use the tabacchi next to Bar Internazionale for ticket sales. Validators are on board; clip or scan your ticket as soon as you step on."
+      "a": "Buy tickets at the tabacchi next to Bar Internazionale or inside the bar itself. Validate by presenting your ticket to the driver when boarding (they'll stamp it) or scanning it at the electronic validator inside the bus door."
+    },
+    {
+      "q": "Can I take a large backpack or suitcase on the bus?",
+      "a": "Yes, but luggage space is very limited. Arrive early to secure a spot in the rear luggage compartment or plan to hold your bag on your lap or between your legs. For large or multiple bags, consider a porter service or private transfer."
+    },
+    {
+      "q": "What if I miss the last bus of the evening?",
+      "a": "The last buses depart around 10:30–11pm depending on the destination. If you miss the last bus, your only options are a taxi (expensive, €80–150 depending on destination) or walking back to the hostel and trying again tomorrow. Always aim for the second-to-last bus to avoid this scenario."
+    },
+    {
+      "q": "Which side of the road do I queue on?",
+      "a": "For eastbound buses towards Amalfi and Salerno, queue on the sea-view side of the road (opposite Bar Internazionale). For westbound buses towards Sorrento and Naples, queue on the mountain side directly outside the bar entrance."
+    },
+    {
+      "q": "Do I need to book buses in advance?",
+      "a": "No, SITA buses cannot be pre-booked. It's first-come, first-served based on queue position. Just buy your ticket and join the queue at the stop. In peak summer, buses may fill up and pass without stopping—arrive early to avoid this."
     }
   ],
   "howtoSteps": [
-    "Walk 2–4 minutes downhill from Hostel Brikette to the Bar Internazionale stop",
-    "Queue on the sea side of the road and validate tickets on boarding",
-    "Combine with ferry or long-distance guides for onward travel"
+    "Walk 2–4 minutes downhill from Hostel Brikette to Bar Internazionale/Chiesa Nuova stop",
+    "Buy SITA ticket at tabacchi or inside bar (cannot buy on bus)",
+    "Queue on correct side: sea-view side for Amalfi/east, mountain side for Sorrento/west",
+    "Validate ticket with driver or at electronic validator when boarding",
+    "Connect to Naples via Sorrento (train) or to Salerno via Amalfi (bus)"
   ]
 }

@@ -1,63 +1,148 @@
 {
   "seo": {
-    "title": "Hostel Brikette前往Chiesa Nuova/Bar Internazionale巴士站",
-    "description": "从 Hostel Brikette 到 Chiesa Nuova 巴士站的微路线，楼梯最少；检票和出发时间。"
+    "title": "Hostel Brikette 到 Chiesa Nuova/Bar Internazionale 巴士站",
+    "description": "旅舍客人完整指南：从 Hostel Brikette 到 Chiesa Nuova 巴士站的步行路线、巴士时刻表、车票以及前往阿马尔菲、索伦托、那不勒斯、萨莱诺的连接。"
   },
-  "linkLabel": "Hostel Brikette 至 Chiesa Nuova/Bar Internazionale 巴士站",
-  "intro": "离开旅馆搭乘巴士前往阿马尔菲、索伦托？这条微型路线显示了从 Hostel Brikette 到 Chiesa Nuova/Bar Internazionale 巴士站的最快路线，并提供了一些提示。",
+  "linkLabel": "Hostel Brikette 到 Chiesa Nuova/Bar Internazionale 巴士站",
+  "lastUpdated": "2026-01-30",
+  "intro": "要离开旅舍搭乘巴士前往阿马尔菲、索伦托或更远的地方？本指南涵盖了从 Hostel Brikette 步行到 Chiesa Nuova/Bar Internazionale 巴士站所需了解的所有信息：2分钟步行路线、购票地点、排队位置以及前往阿马尔菲海岸主要目的地的连接。",
   "image": {
-    "alt": "波西塔诺的 Chiesa Nuova SITA 停在国际米兰酒吧外",
-    "caption": "Hostel Brikette 坐落在距离车站一个弯的上坡处。请等待几分钟，以便您可以在巴士到达之前加入队列。"
+    "alt": "波西塔诺的 Chiesa Nuova SITA 巴士站在 Bar Internazionale 外",
+    "caption": "Hostel Brikette 距离巴士站仅一个弯道。在夏季服务快速满员时，请在巴士到达前留出几分钟加入队列。"
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "本页内容",
+    "before": "出发前",
+    "steps": "分步说明",
+    "knees": "膝盖和行李",
+    "faqs": "常见问题"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "为什么选择这条路线",
       "body": [
-        "从旅舍入口步行 120 米（400 英尺）即可抵达主干道上的车站。",
-        "如果您前往阿马尔菲，车站就在 Bar Internazionale 对面。在路边海景一侧排队。  如果您要去索伦托，您将直接在酒吧外面等候。"
+        "从旅舍入口到 Viale Pasitea 巴士站步行 120 米（400 英尺），Viale Pasitea 是穿过波西塔诺的主要海岸公路。步行需要 2-4 分钟，全程缓坡下行，人行道铺砌完整。",
+        "如果您前往阿马尔菲（东行），巴士站在道路海景一侧 Bar Internazionale 的对面。在此排队乘坐前往阿马尔菲镇、萨莱诺和拉韦洛的巴士。如果您前往索伦托（西行），您将直接在酒吧外山侧等候。",
+        "这个 Chiesa Nuova 巴士站是距离 Hostel Brikette 最近的 SITA 巴士站，也是沿海岸继续旅行最便利的出发点。当地人也称其为 Bar Internazionale 巴士站。"
+      ]
+    },
+    {
+      "id": "where-buses-go",
+      "title": "从此站出发的巴士目的地",
+      "body": [
+        "从 Chiesa Nuova/Bar Internazionale 巴士站，SITA 巴士沿海岸双向运行：",
+        "**前往阿马尔菲（东行）：** 巴士经过普拉亚诺，途经 Marina di Praia 和 Fiordo di Furore，到达%LINK:amalfiTownGuide|阿马尔菲镇%（30-40 分钟）。从阿马尔菲，您可以继续前往%LINK:salernoPositano|萨莱诺%（另需 45 分钟）或乘坐连接巴士前往拉韦洛。",
+        "**前往索伦托（西行）：** 巴士沿海岸蜿蜒前行，经过几个风景优美的隧道，到达%LINK:sorrentoGuide|索伦托%（40-50 分钟）。从索伦托，您可以换乘前往%LINK:naplesPositano|那不勒斯%的火车（Circumvesuviana 线路到那不勒斯中央车站）或继续前往那不勒斯机场。",
+        "有关从波西塔诺的完整行程规划，请参阅我们的专门路线指南：%LINK:positanoAmalfiBus|波西塔诺到阿马尔菲巴士%、%LINK:positanoSorrentoBus|波西塔诺到索伦托巴士%、%LINK:positanoNaplesCenterBusTrain|波西塔诺到那不勒斯%经索伦托，以及%LINK:positanoSalernoBus|波西塔诺到萨莱诺巴士%。"
+      ]
+    },
+    {
+      "id": "bus-schedules",
+      "title": "巴士时刻表和班次",
+      "body": [
+        "在旺季（4月至10月），SITA 巴士在波西塔诺与阿马尔菲和索伦托之间频繁运行。白天时段（8:00am之后至9:00pm之前）每 20-30 分钟一班，清晨（8:00am之前）和晚间（9:00pm之后）班次减少。",
+        "**首班车：** 前往阿马尔菲的首班东行巴士通常在早上 6:30-7:00 从 Chiesa Nuova 出发。前往索伦托的首班西行巴士通常在早上 6:45-7:15 出发。请在 Bar Internazionale 或旅舍前台查看当前时刻表，因为时刻表因季节而异。",
+        "**末班车：** 晚上 10:00pm 之后，晚间服务大幅减少。前往阿马尔菲的末班车通常在晚上 10:30pm 左右出发，而前往索伦托的末班车在晚上 11:00pm 左右出发。请务必在前台或 SITA 时刻表上查看确切时间，如果晚上出行，请计划搭乘倒数第二班车以避免被困。",
+        "**冬季时刻表（11月至3月）：** 班次降至每 40-60 分钟一班，末班车时间提前。周日或公共假日可能完全没有某些晚间服务。"
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "车票：购买地点和验票方式",
       "body": [
-        "在 tabacchi 或酒吧内购买 SITA 门票。  不要尝试在没有车票的情况下登上巴士，因为您无法在巴士上购买车票。  上车时向司机出示您的车票。  如果您要赶第一趟出发的巴士，请在前一天购买车票，然后到接待处与我们联系以安排退房。",
-        "夏季巴士经常满员。相应地进行计划，尤其是在最繁忙的时期。"
+        "在 Bar Internazionale 旁边的 tabacchi（烟草店）或酒吧内购买 SITA 巴士票。车票分为单程票或日票。请勿在没有预先购买车票的情况下尝试上车——您无法从司机那里购买车票。",
+        "**票价（2026年）：** 从波西塔诺到阿马尔菲的单程票价为 €2.50。波西塔诺到索伦托为 €2.50。波西塔诺到萨莱诺（经阿马尔菲）为 €4.00。24小时 Costiera 通票为 €8.00，涵盖索伦托和萨莱诺之间的无限次旅行。",
+        "**验票：** 上车时向司机出示您的车票，司机会盖上日期和时间戳。在较新的巴士上，您可以在门内的电子验票机上扫描车票。请在整个行程中保留已验票的车票——检票员会定期检查车票，对未验票或缺失车票的乘客当场开罚单。",
+        "**提前购买：** 如果您要搭乘早上的首班车（7:30am之前），请在前一天购买车票，因为 tabacchi 可能还未营业。如果需要，请到旅舍前台安排提早退房。",
+        "有关 SITA 车票、通票和价格的更多详情，请参阅我们的完整%LINK:sitaTickets|SITA 巴士票指南%。"
+      ]
+    },
+    {
+      "id": "boarding-tips",
+      "title": "等候和上车：夏季排队和行李",
+      "body": [
+        "**夏季请提前到达：** 夏季巴士（6月至9月）经常满员，特别是在高峰的上午时段（9am-12pm）和下午晚些时候（4pm-7pm）。请在巴士到达前至少 10-15 分钟到达车站，以确保在队列前排占据位置。",
+        "**排队礼仪：** 在正确的道路一侧靠近候车亭处排成有序队列。不要推挤或拥挤——意大利人通常尊重排队顺序。当巴士到达时，等待乘客下车后再上车。",
+        "**行李：** SITA 巴士上的行李空间有限——通常只有后部的小隔间或座位下的储物空间。如果您携带大背包或行李箱，请尽量早上车以占据行李位置。如果您携带重型行李，请考虑使用%LINK:porterServices|搬运工服务%将行李运送到下一个目的地。",
+        "**站立空间：** 在拥挤的夏季巴士上，您可能需要在部分或全程站立。海岸公路蜿蜒曲折有急转弯，因此请紧紧抓住头顶扶手或座椅靠背。"
+      ]
+    },
+    {
+      "id": "connecting-journeys",
+      "title": "连接前往那不勒斯、萨莱诺及更远地区",
+      "body": [
+        "Chiesa Nuova 巴士站是大多数旅舍客人从波西塔诺继续旅程的起点。以下是如何连接到主要目的地：",
+        "**前往那不勒斯：** 乘坐西行巴士前往索伦托（50分钟），然后从索伦托换乘 Circumvesuviana 火车到那不勒斯中央车站（60分钟）。总行程时间：约2小时。请参阅我们的%LINK:positanoNaplesCenterBusTrain|完整波西塔诺到那不勒斯指南%了解时刻表和站台信息。",
+        "**前往那不勒斯机场：** 按照上述那不勒斯路线，然后从那不勒斯中央车站乘坐 Alibus 班车到机场（20分钟）。或者，预订从波西塔诺的直达班车——请在前台咨询。我们的%LINK:naplesAirportPositanoBus|那不勒斯机场指南%涵盖所有选项。",
+        "**前往萨莱诺：** 乘坐东行巴士前往阿马尔菲（35分钟），然后继续乘坐同一或连接巴士前往萨莱诺（45分钟）。萨莱诺有前往罗马、佛罗伦萨和意大利其他城市的干线火车。请参阅%LINK:salernoPositano|萨莱诺到波西塔诺%了解返程以及%LINK:salernoGatewayGuide|萨莱诺门户指南%了解火车连接。",
+        "**前往渡轮码头：** 如果您计划从波西塔诺的主海滩码头乘坐渡轮而不是巴士，请参阅我们的%LINK:briketteToFerryDock|Hostel Brikette 到渡轮码头携带行李%指南，了解楼梯最少的步行路线。"
+      ]
+    },
+    {
+      "id": "alternative-transport",
+      "title": "SITA 巴士的替代方案",
+      "body": [
+        "虽然 SITA 巴士是最经济和班次最多的选择，但旅舍客人还有几种替代方案：",
+        "**渡轮（仅4月至10月）：** 步行到波西塔诺主海滩渡轮码头，乘坐水翼船或渡轮前往阿马尔菲、萨莱诺、卡普里岛或那不勒斯。渡轮比巴士更快、风景更优美，但费用是巴士的2-3倍。请参阅我们的%LINK:ferrySchedules|渡轮时刻表指南%了解时刻表，以及我们的%LINK:briketteToFerryDock|步行到码头的路线%。",
+        "**私人接送/出租车：** 前往索伦托或阿马尔菲的私人轿车预计费用为 €80-150，前往那不勒斯机场为 €150-200，前往萨莱诺为 €100-140。出租车可在前台预订。如果您有重型行李或3-4人团体出行，值得考虑。",
+        "**摩托车租赁：** 有经验的骑手可以在波西塔诺租一辆摩托车，自己驾驶海岸公路。请参阅我们的%LINK:scooterRentalPositano|摩托车租赁指南%了解租赁店、价格和安全提示。不建议紧张的骑手使用——SS163 海岸公路狭窄蜿蜒，夏季交通繁忙。"
       ]
     }
   ],
-  "beforeList": [],
-  "stepsList": [
-    "离开接待处，走下短楼梯到达 Viale Pasitea，然后左转下坡。",
-    "沿着主路沿着人行道行驶约 120 米（400 英尺）即可到达国际酒吧 (Bar Internazionale)。"
+  "beforeList": [
+    "如果要搭乘清晨巴士（7:30am之前），请在前一天晚上购买 SITA 车票",
+    "在前台或 Bar Internazionale 查看当前巴士时刻表——时刻表因季节而异",
+    "如果可能，请轻装出行——巴士上的行李空间非常有限，特别是在夏季",
+    "在夏季高峰月份提前 10-15 分钟到达，以确保在队列中占据位置"
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
-  "kneesList": [],
-  "kneesDockPrefix": "从渡轮码头拿行李开始？使用我们的",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
-  "kneesPorterPrefix": "需要搬运工定价或预订帮助吗？检查",
-  "kneesPorterLinkLabel": "porter service guide",
+  "stepsList": [
+    "离开旅舍前台，走下通往 Viale Pasitea 的短楼梯",
+    "左转（下坡）沿着 Viale Pasitea 的铺砌人行道步行 120 米（400 英尺）",
+    "2-3 分钟后，您将到达左侧的 Bar Internazionale",
+    "前往阿马尔菲/萨莱诺：在道路对面（海景一侧）排队",
+    "前往索伦托：直接在酒吧入口外山侧排队"
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!5e0!3m2!1sen!2sit!4v1700000000000",
+  "kneesList": [
+    "整个步行路线是缓坡下行的铺砌人行道——到达车站前没有楼梯",
+    "如果您有膝盖问题并携带重型行李，请考虑使用搬运工服务（在前台预订）"
+  ],
+  "kneesDockPrefix": "要前往渡轮码头而不是巴士站？请参阅我们的",
+  "kneesDockLinkLabel": "从 Hostel Brikette 到渡轮码头的行李路线",
+  "kneesPorterPrefix": "需要搬运工将行李搬到车站或下一个目的地？查看我们的",
+  "kneesPorterLinkLabel": "搬运工服务指南和价格",
   "faqs": [
     {
-      "q": "How early should I reach the stop?",
-      "a": "夏季，请至少比您选择的巴士提前 10 分钟到达，以便您可以在候车亭附近排队并舒适地上车。"
+      "q": "我应该提前多久到达车站？",
+      "a": "在夏季（6月至9月），请在您选择的巴士到达前至少 10-15 分钟到达，这样您可以在候车亭附近排队并确保座位。在冬季，通常5分钟就足够了，因为巴士不那么拥挤。"
     },
     {
-      "q": "Where can I buy or validate tickets?",
-      "a": "使用 Bar Internazionale 旁边的 tabacchi 售票。验证者已在船上；上车后立即夹住或扫描您的车票。"
+      "q": "我可以在哪里购买或验票？",
+      "a": "在 Bar Internazionale 旁边的 tabacchi 或酒吧内购买车票。上车时向司机出示车票进行验票（他们会盖章）或在巴士门内的电子验票机上扫描。"
+    },
+    {
+      "q": "我可以在巴士上携带大背包或行李箱吗？",
+      "a": "可以，但行李空间非常有限。请尽早到达以确保后部行李箱或计划将包放在膝盖上或两腿之间。对于大型或多件行李，请考虑搬运工服务或私人接送。"
+    },
+    {
+      "q": "如果我错过了晚上的末班车怎么办？",
+      "a": "末班车大约在晚上 10:30-11pm 出发，具体取决于目的地。如果您错过了末班车，唯一的选择是乘坐出租车（昂贵，根据目的地 €80-150）或步行回旅舍明天再试。请务必瞄准倒数第二班车以避免这种情况。"
+    },
+    {
+      "q": "我应该在道路的哪一侧排队？",
+      "a": "对于前往阿马尔菲和萨莱诺的东行巴士，在道路的海景一侧（Bar Internazionale 对面）排队。对于前往索伦托和那不勒斯的西行巴士，直接在酒吧入口外的山侧排队。"
+    },
+    {
+      "q": "我需要提前预订巴士吗？",
+      "a": "不需要，SITA 巴士无法预订。根据排队位置先到先得。只需购买车票并在车站加入队列。在夏季高峰期，巴士可能会满员并通过而不停车——请尽早到达以避免这种情况。"
     }
   ],
   "howtoSteps": [
-    "从 Hostel Brikette 下坡步行 2-4 分钟至 Bar Internazionale 站",
-    "在路边的海边排队，上车时验证车票",
-    "结合渡轮或长途导游继续旅行"
+    "从 Hostel Brikette 下坡步行 2-4 分钟到 Bar Internazionale/Chiesa Nuova 巴士站",
+    "在 tabacchi 或酒吧内购买 SITA 车票（不能在巴士上购买）",
+    "在正确的一侧排队：前往阿马尔菲/东行在海景一侧，前往索伦托/西行在山侧",
+    "上车时用司机或电子验票机验票",
+    "经索伦托（火车）连接到那不勒斯或经阿马尔菲（巴士）连接到萨莱诺"
   ]
 }

@@ -59,6 +59,7 @@ export default async function EditCardPage({ params }: PageProps) {
           <CardEditorForm
             businesses={businesses}
             existingCard={card}
+            baseFileSha={card.fileSha}
             mode="edit"
           />
         </div>

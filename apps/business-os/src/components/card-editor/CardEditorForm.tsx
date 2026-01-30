@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, FormField, Input, Textarea } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
+import { ConflictDialog } from "@/components/ConflictDialog";
 import type { Business, Card, Lane, Priority } from "@/lib/types";
 
 import {
@@ -20,6 +21,7 @@ interface CardEditorFormProps {
   businesses: Business[];
   existingCard?: Card;
   mode: "create" | "edit";
+  baseFileSha?: string;
 }
 
 // Extract title from existing card content (first # heading)
@@ -323,11 +325,14 @@ export function CardEditorForm({
   businesses,
   existingCard,
   mode,
+  baseFileSha,
 }: CardEditorFormProps) {
   const t = useTranslations();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [conflictCard, setConflictCard] = useState<Card | null>(null);
+  const [conflictSubmitted, setConflictSubmitted] = useState<CardEditorFormData | null>(null);
 
   const defaultValues = useMemo(
     () => buildDefaultValues(existingCard, t),
@@ -341,15 +346,18 @@ export function CardEditorForm({
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<CardEditorFormData>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-  const onSubmit = async (data: CardEditorFormData) => {
+  const submit = async (params: { data: CardEditorFormData; force?: boolean }) => {
     setIsSubmitting(true);
     setError(null);
+    setConflictCard(null);
+    setConflictSubmitted(null);
 
     const isCreate = mode === "create";
     const submitErrorKey = isCreate
@@ -357,19 +365,38 @@ export function CardEditorForm({
       : "businessOs.cardEditor.errors.updateFailed";
 
     try {
-      const payload = formDataToApiPayload(data);
+      if (!isCreate) {
+        setConflictSubmitted(params.data);
+      }
+
+      const payload = formDataToApiPayload(params.data);
       const endpoint = isCreate ? "/api/cards" : `/api/cards/${existingCard!.ID}`;
       const response = await fetch(endpoint, {
         method: isCreate ? "POST" : "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(
+          isCreate
+            ? payload
+            : {
+                ...payload,
+                baseFileSha,
+                force: params.force === true ? true : undefined,
+              }
+        ),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || t(submitErrorKey));
+        const errorData = await response.json().catch(() => null);
+
+        if (!isCreate && response.status === 409 && errorData?.conflict?.currentCard) {
+          setConflictCard(errorData.conflict.currentCard as Card);
+          // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
+          throw new Error(errorData.error || "This card changed since you loaded it.");
+        }
+
+        throw new Error(errorData?.error || t(submitErrorKey));
       }
 
       if (isCreate) {
@@ -383,6 +410,8 @@ export function CardEditorForm({
       setIsSubmitting(false);
     }
   };
+
+  const onSubmit = async (data: CardEditorFormData) => submit({ data });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -402,6 +431,20 @@ export function CardEditorForm({
         <div className="rounded-md border border-danger bg-danger-soft p-4">
           <p className="text-sm text-danger-foreground">{error}</p>
         </div>
+      )}
+
+      {/* Conflict resolution (MVP-C3 spike) */}
+      {conflictCard && existingCard && (
+        <ConflictDialog
+          currentMarkdown={`# ${conflictCard.Title || extractTitle(conflictCard.content)}\n\n${extractDescription(conflictCard.content)}`}
+          submittedMarkdown={`# ${(conflictSubmitted?.title ?? getValues().title) || ""}\n\n${(conflictSubmitted?.description ?? getValues().description) || ""}`}
+          isBusy={isSubmitting}
+          onRefresh={() => router.refresh()}
+          onOverwrite={async () => {
+            const data = conflictSubmitted ?? getValues();
+            await submit({ data, force: true });
+          }}
+        />
       )}
 
       <CardEditorFormActions

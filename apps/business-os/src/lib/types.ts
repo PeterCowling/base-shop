@@ -60,6 +60,8 @@ export interface CardFrontmatter {
 export interface Card extends CardFrontmatter {
   content: string;
   filePath: string;
+  /** SHA-256 of the raw markdown file (including frontmatter) when read */
+  fileSha?: string;
 }
 
 // Idea frontmatter
@@ -76,6 +78,8 @@ export interface IdeaFrontmatter {
 export interface Idea extends IdeaFrontmatter {
   content: string;
   filePath: string;
+  /** SHA-256 of the raw markdown file (including frontmatter) when read */
+  fileSha?: string;
 }
 
 // Stage document types
@@ -92,6 +96,8 @@ export interface StageFrontmatter {
 export interface StageDoc extends StageFrontmatter {
   content: string;
   filePath: string;
+  /** SHA-256 of the raw markdown file (including frontmatter) when read */
+  fileSha?: string;
 }
 
 // Evidence source types (from plan section 14)

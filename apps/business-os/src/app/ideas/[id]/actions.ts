@@ -10,7 +10,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getCurrentUser } from "@/lib/current-user";
+import { getAuthenticatedUserFromHeaders } from "@/lib/auth";
+import { userToCommitIdentity } from "@/lib/commit-identity";
+import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoWriter } from "@/lib/repo-writer";
 import type { Idea } from "@/lib/types";
@@ -25,15 +27,29 @@ export interface ConvertToCardResult {
 /**
  * Convert an idea to a card
  * Creates a new card in Inbox lane with the idea's content
+ *
+ * MVP-B2: Server action with session validation
  */
 export async function convertToCard(
   ideaId: string
 ): Promise<ConvertToCardResult> {
+  // MVP-B2: Check authentication if enabled
+  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
+  if (authEnabled) {
+    const sessionUser = await getAuthenticatedUserFromHeaders();
+    if (!sessionUser) {
+      return {
+        success: false,
+        errorKey: "businessOs.api.common.authenticationRequired",
+      };
+    }
+  }
+
   const repoRoot = getRepoRoot();
   const writer = createRepoWriter(repoRoot);
 
-  // Get current user for commit identity
-  const currentUser = getCurrentUser();
+  // Get current user for commit identity (checks session when auth enabled)
+  const currentUser = await getCurrentUserServer();
 
   // Read the idea first to get its data
   const reader = (await import("@/lib/repo-reader")).createRepoReader(
@@ -56,6 +72,8 @@ export async function convertToCard(
   const title = firstLine?.replace(/^#+\s*/, "") || idea.ID || "Untitled";
 
   // Create card with idea content (MVP-B3: Audit attribution)
+  const gitAuthor = userToCommitIdentity(currentUser);
+
   const result = await writer.writeCard(
     {
       ID: cardId,
@@ -67,10 +85,7 @@ export async function convertToCard(
       Tags: idea.Tags || [],
       content: idea.content,
     },
-    {
-      name: currentUser.name,
-      email: currentUser.email,
-    },
+    gitAuthor,
     currentUser.id,
     currentUser.id // initiator same as actor in Phase 0
   );
@@ -95,16 +110,30 @@ export async function convertToCard(
 /**
  * Update an idea's content and status
  * Transitions idea from "raw" to "worked" status
+ *
+ * MVP-B2: Server action with session validation
  */
 export async function updateIdea(
   ideaId: string,
   content: string
 ): Promise<ConvertToCardResult> {
+  // MVP-B2: Check authentication if enabled
+  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
+  if (authEnabled) {
+    const sessionUser = await getAuthenticatedUserFromHeaders();
+    if (!sessionUser) {
+      return {
+        success: false,
+        errorKey: "businessOs.api.common.authenticationRequired",
+      };
+    }
+  }
+
   const repoRoot = getRepoRoot();
   const writer = createRepoWriter(repoRoot);
 
-  // Get current user for commit identity
-  const currentUser = getCurrentUser();
+  // Get current user for commit identity (checks session when auth enabled)
+  const currentUser = await getCurrentUserServer();
 
   // Read the idea first to verify it exists
   const reader = (await import("@/lib/repo-reader")).createRepoReader(
@@ -128,13 +157,15 @@ export async function updateIdea(
   }
 
   // Update idea with new content and status (MVP-B3: Audit attribution)
+  const gitAuthor = userToCommitIdentity(currentUser);
+
   const result = await writer.updateIdea(
     ideaId,
     {
       Status: "worked",
       content,
     },
-    currentUser,
+    gitAuthor,
     currentUser.id,
     currentUser.id // initiator same as actor in Phase 0
   );

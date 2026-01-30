@@ -3206,6 +3206,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "reginaGiovannaBath",
     slug: "regina-giovanna-bath-beach-guide",
     contentKey: "reginaGiovannaBath",
+    focusKeyword: "Bagni della Regina Giovanna",
     status: "draft",
     draftPathSegment: "guides/regina-giovanna-bath-beach-guide",
     areas: ["experience"],

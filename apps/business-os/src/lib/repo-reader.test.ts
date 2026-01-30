@@ -140,6 +140,7 @@ Card content here.
       expect(card?.Business).toBe("BRIK");
       expect(card?.Tags).toEqual(["test", "feature"]);
       expect(card?.content).toContain("# Test Card");
+      expect(card?.fileSha).toMatch(/^[a-f0-9]{64}$/);
     });
 
     it("returns null for non-existent card", async () => {
@@ -168,6 +169,7 @@ Archived card.
       expect(card).not.toBeNull();
       expect(card?.ID).toBe("BRIK-OPP-0002");
       expect(card?.Lane).toBe("Done");
+      expect(card?.fileSha).toMatch(/^[a-f0-9]{64}$/);
     });
   });
 

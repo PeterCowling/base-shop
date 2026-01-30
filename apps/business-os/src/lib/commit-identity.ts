@@ -32,6 +32,20 @@ export const CommitIdentities = {
 } as const;
 
 /**
+ * Create commit identity from User object
+ * Use this to set the git author to the authenticated user.
+ */
+export function userToCommitIdentity(user: {
+  name: string;
+  email: string;
+}): CommitIdentity {
+  return {
+    name: user.name,
+    email: user.email,
+  };
+}
+
+/**
  * Get commit identity for a given actor type
  */
 export function getCommitIdentity(

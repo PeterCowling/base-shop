@@ -4,7 +4,8 @@ import { z } from "zod";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 import { getSession, getSessionUser } from "@/lib/auth";
-import { CommitIdentities } from "@/lib/commit-identity";
+import { userToCommitIdentity } from "@/lib/commit-identity";
+import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { generateBusinessOsId, validateBusinessId } from "@/lib/id-generator";
 import { canCreateIdea } from "@/lib/permissions";
@@ -97,8 +98,11 @@ export async function POST(request: Request) {
     }
 
     // Write idea (MVP-B3: Audit attribution)
-    // Actor = user if authenticated, otherwise "pete" for backward compatibility
-    const actorId = user?.id || "pete";
+    // Get authenticated user for git author and audit trail
+    const currentUser = await getCurrentUserServer();
+    const gitAuthor = userToCommitIdentity(currentUser);
+    const actorId = currentUser.id;
+
     const result = await writer.writeIdea(
       {
         ID: ideaId,
@@ -108,7 +112,7 @@ export async function POST(request: Request) {
         Tags: tags,
         content,
       },
-      CommitIdentities.user,
+      gitAuthor,
       actorId,
       actorId // initiator same as actor in Phase 0 (user acting for themselves)
     );

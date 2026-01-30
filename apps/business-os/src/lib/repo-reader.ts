@@ -2,6 +2,7 @@ import path from "node:path";
 
 import matter from "gray-matter";
 
+import { computeFileSha } from "./file-sha";
 import { readdirWithinRoot, readFileWithinRoot } from "./safe-fs";
 import type {
   Business,
@@ -80,12 +81,14 @@ export class RepoReader {
         userPath,
         "utf-8"
       )) as string;
+      const fileSha = computeFileSha(content);
       const parsed = matter(content);
 
       return {
         ...(parsed.data as CardFrontmatter),
         content: parsed.content,
         filePath: userPath,
+        fileSha,
       };
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
@@ -100,12 +103,14 @@ export class RepoReader {
             archivePath,
             "utf-8"
           )) as string;
+          const fileSha = computeFileSha(content);
           const parsed = matter(content);
 
           return {
             ...(parsed.data as CardFrontmatter),
             content: parsed.content,
             filePath: archivePath,
+            fileSha,
           };
         } catch {
           return null;
@@ -167,12 +172,14 @@ export class RepoReader {
           filePath,
           "utf-8"
         )) as string;
+        const fileSha = computeFileSha(content);
         const parsed = matter(content);
 
         cards.push({
           ...(parsed.data as CardFrontmatter),
           content: parsed.content,
           filePath,
+          fileSha,
         });
       }
     } catch (err) {
@@ -202,12 +209,14 @@ export class RepoReader {
         userPath,
         "utf-8"
       )) as string;
+      const fileSha = computeFileSha(content);
       const parsed = matter(content);
 
       return {
         ...(parsed.data as StageFrontmatter),
         content: parsed.content,
         filePath: userPath,
+        fileSha,
       };
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
@@ -294,12 +303,14 @@ export class RepoReader {
         filePath,
         "utf-8"
       )) as string;
+      const fileSha = computeFileSha(content);
       const parsed = matter(content);
 
       return {
         ...(parsed.data as IdeaFrontmatter),
         content: parsed.content,
         filePath,
+        fileSha,
       };
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
@@ -367,12 +378,14 @@ export class RepoReader {
           filePath,
           "utf-8"
         )) as string;
+        const fileSha = computeFileSha(content);
         const parsed = matter(content);
 
         ideas.push({
           ...(parsed.data as IdeaFrontmatter),
           content: parsed.content,
           filePath,
+          fileSha,
         });
       }
     } catch (err) {

@@ -4,8 +4,10 @@ import { z } from "zod";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 import { getSession, getSessionUser } from "@/lib/auth";
-import { CommitIdentities } from "@/lib/commit-identity";
+import { userToCommitIdentity } from "@/lib/commit-identity";
+import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
+import { checkCardBaseFileSha } from "@/lib/optimistic-concurrency";
 import { canEditCard } from "@/lib/permissions";
 import { createRepoReader } from "@/lib/repo-reader";
 import { createRepoWriter } from "@/lib/repo-writer";
@@ -17,6 +19,8 @@ export const runtime = "nodejs";
 const UpdateCardSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().min(1).optional(),
+  baseFileSha: z.string().min(1).optional(),
+  force: z.boolean().optional(),
   lane: z
     .enum([
       "Inbox",
@@ -49,6 +53,41 @@ interface RouteParams {
   params: Promise<{
     id: string;
   }>;
+}
+
+async function checkCardOptimisticConcurrency(params: {
+  repoRoot: string;
+  cardId: string;
+  baseFileSha?: string;
+  force?: boolean;
+}): Promise<NextResponse | null> {
+  const { repoRoot, cardId, baseFileSha, force } = params;
+
+  if (!baseFileSha || force === true) {
+    return null;
+  }
+
+  const result = await checkCardBaseFileSha({ repoRoot, cardId, baseFileSha });
+  if (result.ok) {
+    return null;
+  }
+
+  const reader = createRepoReader(repoRoot);
+  const currentCard = await reader.getCard(cardId);
+
+  return NextResponse.json(
+    {
+      // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
+      error: "Conflict: this card changed since you loaded it.",
+      conflict: {
+        kind: "card",
+        id: cardId,
+        currentFileSha: result.currentFileSha,
+        currentCard,
+      },
+    },
+    { status: 409 }
+  );
 }
 
 /**
@@ -139,11 +178,22 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       );
     }
 
-    const { title, description, lane, priority, owner, proposedLane, tags, dueDate } =
+    const { title, description, baseFileSha, force, lane, priority, owner, proposedLane, tags, dueDate } =
       parsed.data;
 
     // Get repo root
     const repoRoot = getRepoRoot();
+
+    // MVP-C3 spike: optimistic concurrency check (cards only)
+    const concurrencyResponse = await checkCardOptimisticConcurrency({
+      repoRoot,
+      cardId: id,
+      baseFileSha,
+      force,
+    });
+    if (concurrencyResponse) {
+      return concurrencyResponse;
+    }
 
     // Create writer
     const writer = createRepoWriter(repoRoot);
@@ -196,10 +246,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     }
 
     // Write card (MVP-B3: Audit attribution with actor ID from auth helper)
+    // Get authenticated user for git author
+    const currentUser = await getCurrentUserServer();
+    const gitAuthor = userToCommitIdentity(currentUser);
+
     const result = await writer.updateCard(
       id,
       updates,
-      CommitIdentities.user,
+      gitAuthor,
       actorId,
       actorId // initiator same as actor in Phase 0 (user acting for themselves)
     );

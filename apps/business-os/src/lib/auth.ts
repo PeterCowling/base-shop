@@ -89,6 +89,8 @@ export async function getSession(
 /**
  * Get the current authenticated user from session
  * Returns null if not authenticated
+ *
+ * Use this in API routes where you have Request/Response objects.
  */
 export async function getAuthenticatedUser(
   request: Request,
@@ -96,6 +98,35 @@ export async function getAuthenticatedUser(
 ): Promise<User | null> {
   const session = await getSession(request, response);
   return getSessionUser(session);
+}
+
+/**
+ * Get the current authenticated user from Next.js headers
+ * Returns null if not authenticated
+ *
+ * Use this in server components and server actions where you only have access to headers().
+ */
+export async function getAuthenticatedUserFromHeaders(): Promise<User | null> {
+  try {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get(sessionOptions.cookieName);
+
+    if (!sessionCookie?.value) {
+      return null;
+    }
+
+    // Decode iron session manually
+    const iron = await import("iron-session");
+    const sessionData = await iron.unsealData<SessionData>(sessionCookie.value, {
+      password: sessionOptions.password,
+    });
+
+    return getSessionUser(sessionData);
+  } catch {
+    // Session cookie doesn't exist or can't be decoded
+    return null;
+  }
 }
 
 /**

@@ -1,13 +1,14 @@
 {
   "seo": {
-    "title": "Hostel Brikette vers l’arrêt Chiesa Nuova/Bar Internazionale",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; contrôles des billets et horaires de départ."
+    "title": "De l'Hostel Brikette à l'Arrêt de Bus Chiesa Nuova/Bar Internazionale",
+    "description": "Guide complet pour les clients de l'auberge : directions à pied depuis Hostel Brikette jusqu'à l'arrêt de bus Chiesa Nuova, horaires de bus, billets et connexions vers Amalfi, Sorrento, Naples, Salerno."
   },
-  "linkLabel": "De l’auberge Brikette à l’arrêt de bus Chiesa Nuova/Bar Internazionale",
-  "intro": "Vous quittez l'auberge pour prendre le bus pour Amalfi, Sorrente ? This micro-route shows the quickest way from Hostel Brikette to the Chiesa Nuova/Bar Internazionale bus stop and provides some tips.",
+  "linkLabel": "De l'Hostel Brikette à l'Arrêt de Bus Chiesa Nuova/Bar Internazionale",
+  "lastUpdated": "2026-01-30",
+  "intro": "Vous quittez l'auberge pour prendre le bus vers Amalfi, Sorrento ou au-delà ? Ce guide couvre tout ce que vous devez savoir sur le trajet à pied depuis Hostel Brikette jusqu'à l'arrêt de bus Chiesa Nuova/Bar Internazionale : l'itinéraire de 2 minutes, où acheter des billets, de quel côté de la route faire la queue, et les connexions vers les principales destinations le long de la Côte Amalfitaine.",
   "image": {
-    "alt": "La Chiesa Nuova SITA de Positano s'arrête devant le Bar Internazionale",
-    "caption": "L'auberge Brikette se trouve à un virage en amont de l'arrêt. Prévoyez quelques minutes pour pouvoir rejoindre la file d'attente avant l'arrivée du bus."
+    "alt": "L'arrêt SITA Chiesa Nuova de Positano devant le Bar Internazionale",
+    "caption": "L'Hostel Brikette se trouve à un virage de l'arrêt. Prévoyez quelques minutes pour rejoindre la file d'attente avant l'arrivée du bus, surtout en été lorsque les services se remplissent rapidement."
   },
   "toc": {
     "onThisPage": "Sur cette page",
@@ -21,43 +22,127 @@
       "id": "why-route",
       "title": "Pourquoi cet itinéraire fonctionne",
       "body": [
-        "Il faut marcher 120 mètres (400 pieds) entre l'entrée de l'auberge et l'arrêt, sur la route principale.",
-        "Si vous allez vers Amalfi, l'arrêt se trouve en face du Bar Internazionale. Queue on the sea-view side of the road.  Si vous vous dirigez vers Sorrente, vous attendrez directement devant le bar lui-même."
+        "C'est une marche de 120 mètres (400 pieds) depuis l'entrée de l'auberge jusqu'à l'arrêt de bus sur Viale Pasitea, la route côtière principale traversant Positano. La marche dure 2–4 minutes sur une pente douce descendante avec des trottoirs pavés tout au long.",
+        "Si vous allez vers Amalfi (est), l'arrêt se trouve en face du Bar Internazionale du côté de la route avec vue sur la mer. Faites la queue ici pour les bus vers la ville d'Amalfi, Salerno et Ravello. Si vous vous dirigez vers Sorrento (ouest), vous attendrez directement devant le bar lui-même du côté montagne de la route.",
+        "Cet arrêt de Chiesa Nuova est l'arrêt de bus SITA le plus proche de l'Hostel Brikette et le point de départ le plus pratique pour voyager le long de la côte. Il est également connu localement sous le nom d'arrêt du Bar Internazionale."
+      ]
+    },
+    {
+      "id": "where-buses-go",
+      "title": "Où vont les bus depuis cet arrêt",
+      "body": [
+        "Depuis l'arrêt Chiesa Nuova/Bar Internazionale, les bus SITA circulent dans les deux directions le long de la côte :",
+        "**Vers Amalfi (direction est) :** Les bus passent par Praiano, en passant par Marina di Praia et Fiordo di Furore avant d'atteindre %LINK:amalfiTownGuide|Amalfi% (30–40 minutes). Depuis Amalfi, vous pouvez continuer vers %LINK:salernoPositano|Salerno% (45 minutes supplémentaires) ou prendre des bus de correspondance vers Ravello.",
+        "**Vers Sorrento (direction ouest) :** Les bus serpentent le long de la côte à travers plusieurs tunnels pittoresques avant d'atteindre %LINK:sorrentoGuide|Sorrento% (40–50 minutes). Depuis Sorrento, vous pouvez vous connecter aux trains allant vers %LINK:naplesPositano|Naples% (ligne Circumvesuviana vers la Gare Centrale de Naples) ou continuer vers l'aéroport de Naples.",
+        "Pour une planification complète de voyage depuis Positano, consultez nos guides d'itinéraire dédiés : %LINK:positanoAmalfiBus|Positano à Amalfi en bus%, %LINK:positanoSorrentoBus|Positano à Sorrento en bus%, %LINK:positanoNaplesCenterBusTrain|Positano à Naples% via Sorrento, et %LINK:positanoSalernoBus|Positano à Salerno en bus%."
+      ]
+    },
+    {
+      "id": "bus-schedules",
+      "title": "Horaires et fréquence des bus",
+      "body": [
+        "Les bus SITA circulent fréquemment entre Positano et à la fois Amalfi et Sorrento pendant la haute saison (avril–octobre). Attendez-vous à des bus toutes les 20–30 minutes pendant les heures de la journée, avec une fréquence réduite tôt le matin (avant 8h) et le soir (après 21h).",
+        "**Premiers bus :** Le premier bus en direction est vers Amalfi part généralement de Chiesa Nuova vers 6h30–7h00. Le premier bus en direction ouest vers Sorrento part généralement vers 6h45–7h15. Vérifiez l'horaire actuel au Bar Internazionale ou à la réception de l'auberge car les horaires varient selon les saisons.",
+        "**Derniers bus :** Les services du soir se raréfient considérablement après 22h. Le dernier bus vers Amalfi part généralement vers 22h30, tandis que le dernier bus vers Sorrento part vers 23h. Vérifiez toujours les horaires exacts à la réception ou sur l'horaire SITA, et prévoyez de prendre l'avant-dernier service si vous voyagez le soir pour éviter d'être bloqué.",
+        "**Horaires d'hiver (novembre–mars) :** La fréquence tombe à toutes les 40–60 minutes, avec des derniers bus plus tôt. Certains services du soir peuvent ne pas fonctionner du tout les dimanches ou jours fériés."
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Billets et horaires",
+      "title": "Billets : où acheter et comment valider",
       "body": [
-        "Achetez un ticket SITA au tabacchi ou à l'intérieur du bar.  N'essayez pas de monter à bord du bus sans billet, car vous ne pourrez pas en acheter un dans le bus lui-même.  Present your ticket to the driver on boarding.  Si vous prenez le premier bus, achetez votre billet la veille et venez nous voir à la réception pour organiser votre départ.",
-        "Les bus d'été se remplissent souvent. Planifiez en conséquence, particulièrement pendant les périodes les plus chargées."
+        "Achetez des billets de bus SITA au tabacchi (bureau de tabac) situé à côté du Bar Internazionale, ou à l'intérieur du bar lui-même. Les billets sont vendus comme trajets individuels ou passes journalières. N'essayez pas de monter dans le bus sans un billet pré-acheté—vous ne pouvez pas acheter de billets auprès du conducteur.",
+        "**Prix des billets (2026) :** Un trajet simple de Positano à Amalfi coûte 2,50 €. Positano à Sorrento coûte 2,50 €. Positano à Salerno (via Amalfi) coûte 4,00 €. Un pass Costiera de 24 heures coûte 8,00 € et couvre les voyages illimités entre Sorrento et Salerno.",
+        "**Validation :** Présentez votre billet au conducteur en montant, qui le tamponnera avec la date et l'heure. Dans les bus plus récents, vous pouvez scanner votre billet au validateur électronique juste à l'intérieur de la porte. Conservez votre billet validé pendant tout le trajet—les contrôleurs vérifient régulièrement les billets et émettent des amendes sur place pour les billets non validés ou manquants.",
+        "**Achetez à l'avance :** Si vous prenez le premier bus le matin (avant 7h30), achetez votre billet la veille, car le tabacchi peut ne pas être ouvert encore. Venez à la réception de l'auberge pour organiser un départ anticipé si nécessaire.",
+        "Pour plus de détails sur les billets SITA, les passes et les prix, consultez notre %LINK:sitaTickets|guide complet des billets de bus SITA%."
+      ]
+    },
+    {
+      "id": "boarding-tips",
+      "title": "Attendre et embarquer : files d'attente estivales et bagages",
+      "body": [
+        "**Arrivez tôt en été :** Les bus d'été (juin–septembre) se remplissent souvent à capacité, surtout pendant les heures de pointe en milieu de matinée (9h–12h) et en fin d'après-midi (16h–19h). Arrivez à l'arrêt au moins 10–15 minutes avant votre bus pour vous assurer une place près du début de la file.",
+        "**Étiquette de la file :** Formez une ligne ordonnée près de l'abri bus du bon côté de la route. Ne poussez pas et ne vous entassez pas—les Italiens respectent généralement l'ordre de la file. Quand le bus arrive, attendez que les passagers descendent avant de monter.",
+        "**Bagages :** Il y a un espace limité pour les bagages dans les bus SITA—généralement un petit compartiment à l'arrière ou seulement un rangement sous les sièges. Si vous voyagez avec de grands sacs à dos ou des valises, essayez de monter tôt pour réclamer un espace bagages. Envisagez d'utiliser un %LINK:porterServices|service de porteur% pour transporter les bagages vers votre prochaine destination si vous transportez des sacs lourds.",
+        "**Places debout :** Dans les bus d'été bondés, vous devrez peut-être rester debout pendant une partie ou la totalité du trajet. La route côtière est sinueuse avec des virages serrés, alors tenez-vous fermement aux barres aériennes ou aux dossiers de sièges."
+      ]
+    },
+    {
+      "id": "connecting-journeys",
+      "title": "Connexions vers Naples, Salerno et au-delà",
+      "body": [
+        "L'arrêt Chiesa Nuova est le point de départ pour la plupart des voyages des clients de l'auberge depuis Positano. Voici comment se connecter aux principales destinations :",
+        "**Vers Naples :** Prenez le bus en direction ouest vers Sorrento (50 minutes), puis connectez-vous au train Circumvesuviana de Sorrento à la Gare Centrale de Naples (60 minutes). Temps de trajet total : environ 2 heures. Consultez notre %LINK:positanoNaplesCenterBusTrain|guide complet de Positano à Naples% pour les horaires et les informations de quai.",
+        "**Vers l'Aéroport de Naples :** Suivez l'itinéraire Naples ci-dessus, puis prenez la navette Alibus de la Gare Centrale de Naples à l'aéroport (20 minutes). Alternativement, réservez une navette directe depuis Positano—demandez à la réception. Notre %LINK:naplesAirportPositanoBus|guide de l'Aéroport de Naples% couvre toutes les options.",
+        "**Vers Salerno :** Prenez le bus en direction est vers Amalfi (35 minutes), puis continuez sur le même bus ou un bus de correspondance vers Salerno (45 minutes). Salerno a des trains grandes lignes vers Rome, Florence et d'autres villes italiennes. Consultez %LINK:salernoPositano|Salerno à Positano% pour le trajet inverse et %LINK:salernoGatewayGuide|guide de la porte d'entrée de Salerno% pour les connexions ferroviaires.",
+        "**Vers l'embarcadère des ferries :** Si vous prévoyez de prendre un ferry depuis l'embarcadère de la plage principale de Positano plutôt que le bus, consultez notre guide %LINK:briketteToFerryDock|Hostel Brikette à l'embarcadère des ferries avec bagages% pour l'itinéraire à pied avec un minimum d'escaliers."
+      ]
+    },
+    {
+      "id": "alternative-transport",
+      "title": "Alternatives au bus SITA",
+      "body": [
+        "Bien que le bus SITA soit l'option la plus économique et la plus fréquente, les clients de l'auberge ont plusieurs alternatives :",
+        "**Ferry (avril–octobre uniquement) :** Descendez jusqu'à l'embarcadère des ferries de la plage principale de Positano et prenez un hydroptère ou un ferry vers Amalfi, Salerno, Capri ou Naples. Les ferries sont plus rapides et plus pittoresques que les bus mais coûtent 2–3 fois plus cher. Consultez notre %LINK:ferrySchedules|guide des horaires de ferry% pour les horaires et notre %LINK:briketteToFerryDock|itinéraire à pied vers l'embarcadère%.",
+        "**Transfert privé/taxi :** Attendez-vous à payer 80–150 € pour une voiture privée vers Sorrento ou Amalfi, 150–200 € vers l'Aéroport de Naples, et 100–140 € vers Salerno. Les taxis peuvent être réservés à la réception. À envisager si vous avez des bagages lourds ou voyagez en groupe de 3–4 personnes.",
+        "**Location de scooter :** Les conducteurs expérimentés peuvent louer un scooter à Positano et conduire eux-mêmes sur la route côtière. Consultez notre %LINK:scooterRentalPositano|guide de location de scooter% pour les magasins de location, les prix et les conseils de sécurité. Non recommandé pour les conducteurs nerveux—la route côtière SS163 est étroite et sinueuse avec beaucoup de trafic en été."
       ]
     }
   ],
-  "beforeList": [],
-  "stepsList": [
-    "Sortez de la réception, descendez le petit escalier jusqu'à Viale Pasitea et tournez à gauche pour descendre.",
-    "Suivez le trottoir sur environ 120 mètres (400 pieds) le long de la route principale pour atteindre le Bar Internazionale."
+  "beforeList": [
+    "Achetez votre billet SITA la veille si vous prenez un bus tôt le matin (avant 7h30)",
+    "Vérifiez les horaires de bus actuels à la réception ou au Bar Internazionale—les horaires changent selon les saisons",
+    "Voyagez léger si possible—l'espace bagages dans les bus est très limité, surtout en été",
+    "Arrivez 10–15 minutes en avance pendant les mois d'été de pointe pour sécuriser votre place dans la file"
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
-  "kneesList": [],
-  "kneesDockPrefix": "Commencer avec les bagages au quai du ferry ? Utilisez notre",
-  "kneesDockLinkLabel": "Itinéraire bagages depuis le quai des ferries",
-  "kneesPorterPrefix": "Besoin d'un prix de porteur ou d'aide pour la réservation ? Vérifiez le",
-  "kneesPorterLinkLabel": "guide des porteurs",
+  "stepsList": [
+    "Quittez la réception de l'auberge et descendez le court escalier d'entrée vers Viale Pasitea",
+    "Tournez à gauche (en descente) et marchez 120 mètres (400 pieds) le long du trottoir pavé sur Viale Pasitea",
+    "Après 2–3 minutes, vous atteindrez le Bar Internazionale sur votre gauche",
+    "Pour Amalfi/Salerno : faites la queue du côté opposé (vue sur mer) de la route",
+    "Pour Sorrento : faites la queue directement devant l'entrée du bar du côté montagne"
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!5e0!3m2!1sen!2sit!4v1700000000000",
+  "kneesList": [
+    "Toute la marche se fait en descente douce sur un trottoir pavé—pas d'escaliers jusqu'à ce que vous atteigniez l'arrêt",
+    "Si vous avez des problèmes de genoux et des bagages lourds, envisagez d'utiliser le service de porteur (réservez à la réception)"
+  ],
+  "kneesDockPrefix": "Vous allez à l'embarcadère des ferries au lieu du bus ? Consultez notre",
+  "kneesDockLinkLabel": "Itinéraire avec bagages vers l'embarcadère des ferries depuis l'Hostel Brikette",
+  "kneesPorterPrefix": "Besoin d'un porteur pour transporter les bagages jusqu'à l'arrêt ou votre prochaine destination ? Consultez notre",
+  "kneesPorterLinkLabel": "Guide du service de porteur et tarifs",
   "faqs": [
     {
-      "q": "À quelle heure dois-je arriver à l’arrêt ?",
-      "a": "Arrivez au moins 10 minutes avant le bus de votre choix en été afin de pouvoir faire la queue près du refuge et embarquer confortablement."
+      "q": "À quelle heure dois-je arriver à l'arrêt ?",
+      "a": "Arrivez au moins 10–15 minutes avant votre bus choisi en été (juin–septembre) pour pouvoir faire la queue près de l'abri et vous assurer une place assise. En hiver, 5 minutes suffisent généralement car les bus sont moins bondés."
     },
     {
-      "q": "Où puis-je acheter ou valider les billets ?",
-      "a": "Utilisez le tabacchi à côté du Bar Internazionale pour la vente de billets. Les validateurs sont à bord ; Découpez ou scannez votre ticket dès que vous montez dessus."
+      "q": "Où puis-je acheter ou valider des billets ?",
+      "a": "Achetez des billets au tabacchi à côté du Bar Internazionale ou à l'intérieur du bar lui-même. Validez en présentant votre billet au conducteur lors de l'embarquement (il le tamponnera) ou en le scannant au validateur électronique à l'intérieur de la porte du bus."
+    },
+    {
+      "q": "Puis-je prendre un grand sac à dos ou une valise dans le bus ?",
+      "a": "Oui, mais l'espace bagages est très limité. Arrivez tôt pour sécuriser une place dans le compartiment à bagages arrière ou prévoyez de tenir votre sac sur vos genoux ou entre vos jambes. Pour les grands sacs ou plusieurs sacs, envisagez un service de porteur ou un transfert privé."
+    },
+    {
+      "q": "Que faire si je rate le dernier bus du soir ?",
+      "a": "Les derniers bus partent vers 22h30–23h selon la destination. Si vous ratez le dernier bus, vos seules options sont un taxi (cher, 80–150 € selon la destination) ou retourner à pied à l'auberge et réessayer demain. Visez toujours l'avant-dernier bus pour éviter ce scénario."
+    },
+    {
+      "q": "De quel côté de la route dois-je faire la queue ?",
+      "a": "Pour les bus en direction est vers Amalfi et Salerno, faites la queue du côté vue sur mer de la route (en face du Bar Internazionale). Pour les bus en direction ouest vers Sorrento et Naples, faites la queue du côté montagne directement devant l'entrée du bar."
+    },
+    {
+      "q": "Dois-je réserver les bus à l'avance ?",
+      "a": "Non, les bus SITA ne peuvent pas être réservés à l'avance. C'est premier arrivé, premier servi selon la position dans la file. Achetez simplement votre billet et rejoignez la file à l'arrêt. En plein été, les bus peuvent se remplir et passer sans s'arrêter—arrivez tôt pour éviter cela."
     }
   ],
   "howtoSteps": [
-    "Marchez 2 à 4 minutes en descente depuis l'Hostel Brikette jusqu'à l'arrêt Bar Internazionale.",
-    "Faire la queue côté mer et valider les billets à l'embarquement",
-    "À combiner avec un ferry ou des guides longue distance pour poursuivre votre voyage"
+    "Marchez 2–4 minutes en descente depuis l'Hostel Brikette jusqu'à l'arrêt Bar Internazionale/Chiesa Nuova",
+    "Achetez un billet SITA au tabacchi ou à l'intérieur du bar (impossible d'acheter dans le bus)",
+    "Faites la queue du bon côté : côté vue sur mer pour Amalfi/est, côté montagne pour Sorrento/ouest",
+    "Validez le billet auprès du conducteur ou au validateur électronique lors de l'embarquement",
+    "Connectez-vous à Naples via Sorrento (train) ou à Salerno via Amalfi (bus)"
   ]
 }

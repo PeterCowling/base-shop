@@ -1474,10 +1474,6 @@ const manifestSeed: GuideManifestEntry[] = [
         options: { contentKey: "positanoBeaches", showToc: true },
       },
       {
-        type: "gallery",
-        options: { source: "positanoBeaches", zoomable: true, headingKey: "content.positanoBeaches.galleryTitle" },
-      },
-      {
         type: "table",
         options: {
           id: "beach-comparison",

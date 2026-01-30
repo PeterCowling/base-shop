@@ -10,7 +10,6 @@
     "Use the table to compare vibes, lounger prices, and where the free areas usually are. Click a beach name in the table to open the full mini-guide with directions from the hostel.",
     "Hostel tip: the beaches are pebbly. Bring water shoes (or sturdy sandals), a thicker towel/mat, and cash as backup."
   ],
-  "galleryTitle": "Positano beach highlights",
   "comparisonTable": {
     "title": "Amalfi Coast beach comparison"
   },
@@ -63,7 +62,19 @@
       "body": [
         "Positano has pebbly beaches with a mix of beach clubs (paid) and public areas (free). Prices can be anything from ~€15 per lounger on quieter beaches to €100+ for premium deck setups.",
         "If you're on a hostel budget, start with Fornillo (usually cheaper and calmer). If you want the classic postcard view, go to Spiaggia Grande early. For late-day sun, Arienzo or Laurito can be great — but access is trickier.",
-        "Quick picks for 2026: cheapest chill day = Fornillo; easiest “iconic Positano” photo = Spiaggia Grande; best late sun = Arienzo (by boat) or Laurito; most dramatic cove day trip = Fiordo di Furore."
+        "Quick picks for 2026: cheapest chill day = Fornillo; easiest \"iconic Positano\" photo = Spiaggia Grande; best late sun = Arienzo (by boat) or Laurito; most dramatic cove day trip = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Wide view of Positano town and coastline from the sea",
+          "caption": "Positano coastline (expect stairs) — Photo: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Beach umbrellas and swimmers along Positano's shoreline",
+          "caption": "Umbrellas on Positano beach (peak-day vibe) — Photo: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (the main beach) is the classic postcard view. It also gets crowded and pricey. If you want to do it, go early, find the public strip, and set expectations. Use our %LINK:positanoMainBeachWalkDown|walking directions% or %LINK:positanoMainBeachBusDown|bus guide% to get there fast.",
         "Arienzo is famous for long afternoon sun. The catch: lots of stairs if you walk, and most people use the beach club shuttle boat. Packages with loungers + lunch + boat transfer can be good value. See the %LINK:arienzoBeachClub|Arienzo Beach Club guide% for timings.",
         "Laurito is a small cove with boat-shuttle access. It can be a great late-day swim, but the public space is limited and timing matters. See the %LINK:lauritoBeachGuide|Laurito Beach guide% before you commit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "View of Positano's main beach (Spiaggia Grande) with the cliffside town in the background",
+          "caption": "Spiaggia Grande (main beach) — Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Fornillo Beach in Positano with umbrellas along the shoreline",
+          "caption": "Fornillo (usually calmer + more budget-friendly) — Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Arienzo beach area on the Amalfi Coast near Positano",
+          "caption": "Arienzo (afternoon sun, usually by shuttle boat) — Photo: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,13 +127,27 @@
       "body": [
         "Praiano's Gavitella is best in late afternoon for golden light and sunset vibes. Much of the area is platforms and clubs, and the free space (if available) is limited, so plan for a paid setup if you want comfort. Use the %LINK:gavitellaBeachGuide|Gavitella beach guide% for step-by-step access.",
         "Marina di Praia is a narrow pebble cove framed by cliffs and fishing boats. It's a great change of scenery and usually feels more tucked away. See the %LINK:marinaDiPraiaBeaches|Marina di Praia guide% for transport options."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Marina di Praia cove framed by cliffs and boats",
+          "caption": "Marina di Praia (Praiano) — Photo: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
       "id": "furore-beaches",
       "title": "Furore's fjord-style cove",
       "body": [
-        "Fiordo di Furore is a tiny, dramatic cove under a bridge. It’s free to enter, but space is limited, and the access route is steep (and hot in summer). Go early, pack water, and don’t count on facilities."
+        "Fiordo di Furore is a tiny, dramatic cove under a bridge. It's free to enter, but space is limited, and the access route is steep (and hot in summer). Go early, pack water, and don't count on facilities."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Fiordo di Furore bridge above the narrow cove and water",
+          "caption": "Fiordo di Furore (dramatic cove) — Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -127,9 +169,16 @@
       "title": "Getting to and from the beach",
       "body": [
         "From the hostel, the fastest approach is usually: walk down to Spiaggia Grande (or bus down), then decide whether to continue along the promenade to Fornillo, hop on a shuttle boat, or stick with the main beach.",
-        "If you’re doing a beach club day that includes boat transfer (Arienzo or Laurito), it’s often easiest to start from Spiaggia Grande so you can line up early and avoid the stairs.",
-        "In summer 2026, plan for heat on the climbs: refill water before you head back up, and if you’re tired, use the internal bus instead of walking every step.",
-        "For day trips (Praiano, Amalfi, Sorrento), check the last return option before you commit. Ferries are the nicest ride when they’re running, but buses are the backup. If the sea is rough or ferries are cancelled, plan extra time and keep your schedule flexible. Pack snacks for the ride."
+        "If you're doing a beach club day that includes boat transfer (Arienzo or Laurito), it's often easiest to start from Spiaggia Grande so you can line up early and avoid the stairs.",
+        "In summer 2026, plan for heat on the climbs: refill water before you head back up, and if you're tired, use the internal bus instead of walking every step.",
+        "For day trips (Praiano, Amalfi, Sorrento), check the last return option before you commit. Ferries are the nicest ride when they're running, but buses are the backup. If the sea is rough or ferries are cancelled, plan extra time and keep your schedule flexible. Pack snacks for the ride."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "People on the beach with boats anchored in the bay near Positano",
+          "caption": "Boats in the bay (bring a dry bag for your phone) — Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -210,56 +259,6 @@
     {
       "question": "Which beach has the best sunset views?",
       "answer": "Gavitella in Praiano is well-known for sunset aperitivi. Laurito can also get late-day sun, especially if you use the boat shuttle and time it right."
-    }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "View of Positano's main beach (Spiaggia Grande) with the cliffside town in the background",
-      "caption": "Spiaggia Grande (main beach)",
-      "credits": ["Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Fornillo Beach in Positano with umbrellas along the shoreline",
-      "caption": "Fornillo (usually calmer + more budget-friendly)",
-      "credits": ["Photo: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Arienzo beach area on the Amalfi Coast near Positano",
-      "caption": "Arienzo (afternoon sun, usually by shuttle boat)",
-      "credits": ["Photo: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Fiordo di Furore bridge above the narrow cove and water",
-      "caption": "Fiordo di Furore (dramatic cove)",
-      "credits": ["Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Marina di Praia cove framed by cliffs and boats",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Photo: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Wide view of Positano town and coastline from the sea",
-      "caption": "Positano coastline (expect stairs)",
-      "credits": ["Photo: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Beach umbrellas and swimmers along Positano's shoreline",
-      "caption": "Umbrellas on Positano beach (peak-day vibe)",
-      "credits": ["Photo: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "People on the beach with boats anchored in the bay near Positano",
-      "caption": "Boats in the bay (bring a dry bag for your phone)",
-      "credits": ["Photo: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }

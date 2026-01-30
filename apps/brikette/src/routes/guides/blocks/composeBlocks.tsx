@@ -13,7 +13,6 @@ import {
   applyAlsoHelpfulBlock,
   applyCalloutBlock,
   applyFaqBlock,
-  applyGalleryBlock,
   applyGenericContentBlock,
   applyHeroBlock,
   applyJsonLdBlock,
@@ -83,9 +82,6 @@ function composeBlock(acc: BlockAccumulator, block: GuideBlockDeclaration): void
       return;
     case "faq":
       applyFaqBlock(acc, block.options);
-      return;
-    case "gallery":
-      applyGalleryBlock(acc, block.options);
       return;
     case "callout":
       applyCalloutBlock(acc, block.options);

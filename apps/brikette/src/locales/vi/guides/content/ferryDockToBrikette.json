@@ -46,8 +46,16 @@
       "id": "mulini-to-bus",
       "title": "Piazza dei Mulini to the Interno bus stop",
       "body": [
+        "Piazza dei Mulini nằm trong khu mua sắm của Positano gần hiệu thuốc — đây là điểm thấp nhất có thể tiếp cận bằng phương tiện trong thị trấn, khiến nó trở thành trung tâm tự nhiên cho các dịch vụ xe buýt.",
         "When you arrive at Piazza dei Mulini, pick up an interno bus ticket from one of the corner stores or 'tabacchi'. And then go to the bus stop which is at the edge of the Piazza - where the Piazza joins the road.",
         "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Xem tuyến xe buýt hoàn chỉnh trên Google Maps% để xem chính xác nơi xe buýt đi lên dốc về phía nhà trọ."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Trạm xe buýt Piazza dei Mulini trong khu mua sắm trung tâm thị trấn Positano.",
+          "caption": "Trạm xe buýt Interno tại Piazza dei Mulini, nằm ở rìa quảng trường nơi nó giao với đường chính."
+        }
       ]
     },
     {
@@ -67,6 +75,11 @@
           "src": "/img/directions/ferry-dock-interno-red.jpg",
           "alt": "An Interno Positano bus in Positano with 'INTERNO POSITANO' on the electronic front sign.",
           "caption": "Buses vary, but the sign is consistent."
+        },
+        {
+          "src": "/img/directions/ferry-dock-bus-interior.jpg",
+          "alt": "Hình ảnh nội thất xe buýt Interno Positano cho thấy ghế ngồi nhỏ gọn và không gian đứng.",
+          "caption": "Hãy chuẩn bị cho một chiếc xe buýt thành phố nhỏ gọn có không gian đứng — lên xe ở lề đường và xác thực hoặc xuất trình vé của bạn cho tài xế."
         }
       ]
     },

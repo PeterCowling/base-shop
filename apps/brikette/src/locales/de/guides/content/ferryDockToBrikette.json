@@ -46,8 +46,16 @@
       "id": "mulini-to-bus",
       "title": "Piazza dei Mulini to the Interno bus stop",
       "body": [
+        "Die Piazza dei Mulini liegt im Einkaufsviertel von Positano in der Nähe der Apotheke — sie ist der niedrigste mit dem Auto erreichbare Punkt der Stadt und damit der natürliche Knotenpunkt für die Busverbindungen.",
         "When you arrive at Piazza dei Mulini, pick up an interno bus ticket from one of the corner stores or 'tabacchi'. And then go to the bus stop which is at the edge of the Piazza - where the Piazza joins the road.",
         "The Interno bus runs every ~30 minutes from morning until midnight. %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Die vollständige Busroute auf Google Maps ansehen% um genau zu sehen, wo der Bus bergauf zum Hostel fährt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Bushaltestelle Piazza dei Mulini im Einkaufsviertel im Stadtzentrum von Positano.",
+          "caption": "Die Interno-Bushaltestelle an der Piazza dei Mulini, am Rand des Platzes, wo er auf die Hauptstraße trifft."
+        }
       ]
     },
     {
@@ -67,6 +75,11 @@
           "src": "/img/directions/ferry-dock-interno-red.jpg",
           "alt": "An Interno Positano bus in Positano with 'INTERNO POSITANO' on the electronic front sign.",
           "caption": "Buses vary, but the sign is consistent."
+        },
+        {
+          "src": "/img/directions/ferry-dock-bus-interior.jpg",
+          "alt": "Innenansicht eines Interno Positano Busses mit kompakten Sitzplätzen und Stehplätzen.",
+          "caption": "Erwarten Sie einen kompakten Stadtbus mit Stehplätzen — steigen Sie am Bordstein ein und entwerten oder zeigen Sie Ihr Ticket beim Fahrer."
         }
       ]
     },

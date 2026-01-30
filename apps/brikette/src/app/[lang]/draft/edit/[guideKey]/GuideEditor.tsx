@@ -14,7 +14,6 @@ import { guideContentSchema } from "@/routes/guides/content-schema";
 
 import TabBar from "./components/TabBar";
 import FaqsTab from "./tabs/FaqsTab";
-import GalleryTab from "./tabs/GalleryTab";
 import OverviewTab from "./tabs/OverviewTab";
 import RawJsonTab from "./tabs/RawJsonTab";
 import SectionsTab from "./tabs/SectionsTab";
@@ -251,9 +250,6 @@ export default function GuideEditor({
               )}
               {activeTab === "faqs" && (
                 <FaqsTab content={content as GuideContentInput} updateField={updateField} />
-              )}
-              {activeTab === "gallery" && (
-                <GalleryTab content={content as GuideContentInput} updateField={updateField} />
               )}
               {activeTab === "validation" && (
                 <ValidationTab guideKey={guideKey} />

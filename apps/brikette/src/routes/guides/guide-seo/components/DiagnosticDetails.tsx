@@ -291,7 +291,6 @@ function DiagnosticDetails({
 
   if (itemId === "media" && manifest) {
     const hasHeroBlock = manifest.blocks.some((b) => b.type === "hero");
-    const hasGalleryBlock = manifest.blocks.some((b) => b.type === "gallery");
 
     return (
       <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
@@ -300,10 +299,6 @@ function DiagnosticDetails({
           <Inline className="gap-2">
             <span className="min-w-16 text-[11px] font-medium text-brand-text">Hero</span>
             {renderFieldStatus(hasHeroBlock)}
-          </Inline>
-          <Inline className="gap-2">
-            <span className="min-w-16 text-[11px] font-medium text-brand-text">Gallery</span>
-            {renderFieldStatus(hasGalleryBlock)}
           </Inline>
         </Stack>
         <p className="mt-2 text-[10px] text-brand-text/50">

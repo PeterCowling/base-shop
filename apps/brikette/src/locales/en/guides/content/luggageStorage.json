@@ -42,11 +42,5 @@
   "faqsTitle": "FAQs",
   "heroAlt": "Porter guiding a luggage cart up Positano's steps",
   "serviceType": "Luggage storage",
-  "areaServed": "Positano",
-  "gallery": {
-    "primaryAlt": "Positano's cliffside homes overlooking the sea",
-    "primaryCaption": "Positano panorama",
-    "secondaryAlt": "Porter pushing a luggage cart near Positano's ferry dock",
-    "secondaryCaption": "Porter carts near the dock"
-  }
+  "areaServed": "Positano"
 }

@@ -672,12 +672,6 @@ const manifestSeed: GuideManifestEntry[] = [
         },
       },
       {
-        type: "gallery",
-        options: {
-          source: "luggage-storage-positano",
-        },
-      },
-      {
         type: "alsoHelpful",
         options: {
           tags: ["porters", "logistics", "positano"],

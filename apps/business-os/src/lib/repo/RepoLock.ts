@@ -115,6 +115,17 @@ export class RepoLock {
         lockId,
       };
     } catch (error) {
+      // Handle EEXIST specifically (race condition: lock created between check and create)
+      const nodeError = error as NodeJS.ErrnoException;
+      if (nodeError.code === "EEXIST") {
+        return {
+          success: false,
+          errorKey: "businessOs.repoLock.errors.lockHeld",
+          // i18n-exempt -- MVP-C1 Phase 0 lock error details [ttl=2026-03-31]
+          errorDetails: "Repository lock is currently held by another operation",
+        };
+      }
+
       return {
         success: false,
         errorKey: "businessOs.repoLock.errors.acquireFailed",

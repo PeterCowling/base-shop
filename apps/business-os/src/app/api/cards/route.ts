@@ -134,7 +134,9 @@ export async function POST(request: Request) {
     // Prepare card content
     const content = `# ${title}\n\n${description}`;
 
-    // Write card (Phase 0: user identity)
+    // Write card (MVP-B3: Audit attribution)
+    // Actor = user if authenticated, otherwise "pete" for backward compatibility
+    const actorId = user?.id || "pete";
     const result = await writer.writeCard(
       {
         ID: cardId,
@@ -149,7 +151,9 @@ export async function POST(request: Request) {
         Created: new Date().toISOString().split("T")[0],
         content,
       },
-      CommitIdentities.user
+      CommitIdentities.user,
+      actorId,
+      actorId // initiator same as actor in Phase 0 (user acting for themselves)
     );
 
     if (!result.success) {

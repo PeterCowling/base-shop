@@ -11,6 +11,7 @@ import simpleGit, { type SimpleGit } from "simple-git";
 
 import { authorizeWrite } from "./auth/authorize";
 import {
+  buildAuditCommitMessage,
   type CommitIdentity,
   getGitAuthorOptions,
 } from "./commit-identity";
@@ -154,10 +155,13 @@ export class RepoWriter {
 
   /**
    * Write an idea to inbox
+   * MVP-B3: Includes audit attribution (actor/initiator)
    */
   async writeIdea(
     idea: Omit<IdeaFrontmatter, "Type"> & { content: string },
-    identity: CommitIdentity
+    identity: CommitIdentity,
+    actor: string,
+    initiator: string
   ): Promise<WriteResult> {
     const relativePath = `docs/business-os/ideas/inbox/${idea.ID}.user.md`;
     const absolutePath = path.join(this.worktreePath, relativePath);
@@ -199,10 +203,17 @@ export class RepoWriter {
       // Write file
       await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit
+      // Git add and commit (MVP-B3: Audit attribution)
       await this.git.add(relativePath);
+      const entityId = idea.ID || "UNKNOWN";
+      const commitMessage = buildAuditCommitMessage({
+        actor,
+        initiator,
+        entityId,
+        action: `Add idea: ${entityId}`,
+      });
       const commitResult = await this.git.commit(
-        `Add idea: ${idea.ID}`,
+        commitMessage,
         undefined,
         getGitAuthorOptions(identity)
       );
@@ -223,10 +234,13 @@ export class RepoWriter {
 
   /**
    * Write a card
+   * MVP-B3: Includes audit attribution (actor/initiator)
    */
   async writeCard(
     card: Omit<CardFrontmatter, "Type"> & { content: string },
-    identity: CommitIdentity
+    identity: CommitIdentity,
+    actor: string,
+    initiator: string
   ): Promise<WriteResult> {
     const relativePath = `docs/business-os/cards/${card.ID}.user.md`;
     const absolutePath = path.join(this.worktreePath, relativePath);
@@ -268,10 +282,16 @@ export class RepoWriter {
       // Write file
       await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit
+      // Git add and commit (MVP-B3: Audit attribution)
       await this.git.add(relativePath);
+      const commitMessage = buildAuditCommitMessage({
+        actor,
+        initiator,
+        entityId: card.ID,
+        action: `Add card: ${card.ID}`,
+      });
       const commitResult = await this.git.commit(
-        `Add card: ${card.ID}`,
+        commitMessage,
         undefined,
         getGitAuthorOptions(identity)
       );
@@ -292,11 +312,14 @@ export class RepoWriter {
 
   /**
    * Update an existing card
+   * MVP-B3: Includes audit attribution (actor/initiator)
    */
   async updateCard(
     cardId: string,
     updates: Partial<CardFrontmatter> & { content?: string },
-    identity: CommitIdentity
+    identity: CommitIdentity,
+    actor: string,
+    initiator: string
   ): Promise<WriteResult> {
     const relativePath = `docs/business-os/cards/${cardId}.user.md`;
     const absolutePath = path.join(this.worktreePath, relativePath);
@@ -343,10 +366,16 @@ export class RepoWriter {
       // Write file
       await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit
+      // Git add and commit (MVP-B3: Audit attribution)
       await this.git.add(relativePath);
+      const commitMessage = buildAuditCommitMessage({
+        actor,
+        initiator,
+        entityId: cardId,
+        action: `Update card: ${cardId}`,
+      });
       const commitResult = await this.git.commit(
-        `Update card: ${cardId}`,
+        commitMessage,
         undefined,
         getGitAuthorOptions(identity)
       );
@@ -374,11 +403,14 @@ export class RepoWriter {
 
   /**
    * Update an existing idea
+   * MVP-B3: Includes audit attribution (actor/initiator)
    */
   async updateIdea(
     ideaId: string,
     updates: Partial<IdeaFrontmatter> & { content?: string },
-    identity: CommitIdentity
+    identity: CommitIdentity,
+    actor: string,
+    initiator: string
   ): Promise<WriteResult> {
     const relativePath = `docs/business-os/ideas/inbox/${ideaId}.user.md`;
     const absolutePath = path.join(this.worktreePath, relativePath);
@@ -425,10 +457,16 @@ export class RepoWriter {
       // Write file
       await writeFileWithinRoot(this.worktreePath, absolutePath, fileContent, "utf-8");
 
-      // Git add and commit
+      // Git add and commit (MVP-B3: Audit attribution)
       await this.git.add(relativePath);
+      const commitMessage = buildAuditCommitMessage({
+        actor,
+        initiator,
+        entityId: ideaId,
+        action: `Update idea: ${ideaId}`,
+      });
       const commitResult = await this.git.commit(
-        `Update idea: ${ideaId}`,
+        commitMessage,
         undefined,
         getGitAuthorOptions(identity)
       );

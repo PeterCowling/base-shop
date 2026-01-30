@@ -96,7 +96,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Write idea (Phase 0: user identity)
+    // Write idea (MVP-B3: Audit attribution)
+    // Actor = user if authenticated, otherwise "pete" for backward compatibility
+    const actorId = user?.id || "pete";
     const result = await writer.writeIdea(
       {
         ID: ideaId,
@@ -106,7 +108,9 @@ export async function POST(request: Request) {
         Tags: tags,
         content,
       },
-      CommitIdentities.user
+      CommitIdentities.user,
+      actorId,
+      actorId // initiator same as actor in Phase 0 (user acting for themselves)
     );
 
     if (!result.success) {

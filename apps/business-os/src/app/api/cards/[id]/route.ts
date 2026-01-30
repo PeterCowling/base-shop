@@ -54,51 +54,60 @@ interface RouteParams {
 /**
  * Helper: Check authorization for card update
  * MVP-B2: Validates authentication and permissions
+ * MVP-B3: Also returns authenticated user ID for audit attribution
  */
 async function checkCardUpdateAuthorization(
   request: Request,
   cardId: string
-): Promise<NextResponse | null> {
+): Promise<{ error: NextResponse; actorId?: undefined } | { error: null; actorId: string }> {
   const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
-  if (!authEnabled) {
-    return null; // No auth check needed
-  }
 
   // Check authentication
   const response = NextResponse.next();
   const session = await getSession(request, response);
   const user = getSessionUser(session);
 
-  if (!user) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "Authentication required" },
-      { status: 401 }
-    );
+  // MVP-B3: Return actor ID for audit attribution
+  const actorId = user?.id || "pete";
+
+  if (authEnabled && !user) {
+    return {
+      error: NextResponse.json(
+        // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Authentication required" },
+        { status: 401 }
+      ),
+    };
   }
 
-  // Load card and check permissions
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
-  const existingCard = await reader.getCard(cardId);
+  // Load card and check permissions (only if auth enabled)
+  if (authEnabled) {
+    const repoRoot = getRepoRoot();
+    const reader = createRepoReader(repoRoot);
+    const existingCard = await reader.getCard(cardId);
 
-  if (!existingCard) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "Card not found" },
-      { status: 404 }
-    );
+    if (!existingCard) {
+      return {
+        error: NextResponse.json(
+          // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+          { error: "Card not found" },
+          { status: 404 }
+        ),
+      };
+    }
+
+    if (user && !canEditCard(user, existingCard)) {
+      return {
+        error: NextResponse.json(
+          // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
+          { error: "You do not have permission to edit this card" },
+          { status: 403 }
+        ),
+      };
+    }
   }
 
-  if (!canEditCard(user, existingCard)) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "You do not have permission to edit this card" },
-      { status: 403 }
-    );
-  }
-
-  return null; // Authorization passed
+  return { error: null, actorId }; // Authorization passed, return actor ID
 }
 
 /**
@@ -111,11 +120,12 @@ export async function PATCH(request: Request, { params }: RouteParams) {
   const t = await getServerTranslations("en");
   const { id } = await params;
 
-  // MVP-B2: Check authorization
-  const authError = await checkCardUpdateAuthorization(request, id);
-  if (authError) {
-    return authError;
+  // MVP-B2/B3: Check authorization and get actor ID
+  const authResult = await checkCardUpdateAuthorization(request, id);
+  if (authResult.error) {
+    return authResult.error;
   }
+  const actorId = authResult.actorId;
 
   try {
     const body = await request.json();
@@ -185,8 +195,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       }
     }
 
-    // Write card (Phase 0: user identity)
-    const result = await writer.updateCard(id, updates, CommitIdentities.user);
+    // Write card (MVP-B3: Audit attribution with actor ID from auth helper)
+    const result = await writer.updateCard(
+      id,
+      updates,
+      CommitIdentities.user,
+      actorId,
+      actorId // initiator same as actor in Phase 0 (user acting for themselves)
+    );
 
     if (!result.success) {
       const errorMessage = result.errorKey

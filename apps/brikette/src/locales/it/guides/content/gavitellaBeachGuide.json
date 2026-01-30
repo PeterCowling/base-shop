@@ -1,21 +1,25 @@
 {
   "seo": {
-    "title": "Gavitella Beach Guide",
-    "description": "Pianifica una giornata all'insegna del tramonto presso gli stabilimenti balneari La Gavitella e One Fire di Praiano con trasporti, prenotazioni e suggerimenti per il reso."
+    "title": "Gavitella Beach Praiano Guide: Sunset, Steps & Beach Clubs",
+    "description": "A hostel-friendly guide to Gavitella Beach Praiano: how to get there, pick La Gavitella vs One Fire, what it costs, and how to get back without suffering."
   },
-  "linkLabel": "Gavitella Beach Guide",
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Gavitella Beach: Praiano's Sunset Swimming Spot",
   "intro": [
-    "La cala Gavitella di Praiano guarda a ovest, regalando lunghe ore di sole pomeridiano e panorami dorati su Positano e Capri al tramonto. Due lido — La Gavitella e One Fire — si dividono la piccola battigia accanto a un tratto pubblico ricavato nella roccia.",
-    "Aspettati un'esperienza curata e gestita su prenotazione: le scale ripide limitano le folle, i club coordinano navette in barca e le serate ruotano attorno a cene di pesce o feste al tramonto con DJ."
+    "Gavitella Beach Praiano is the coast’s “sunset beach”: the small cove faces west, so you get long afternoon light and golden-hour views back toward Positano and Capri.",
+    "Most of the waterfront is run by two lidos (beach clubs) — La Gavitella and One Fire — plus a slim public strip carved into the rock between them. In high season, space is limited and reservations matter.",
+    "This guide is written for Hostel Brikette guests. From the hostel desk, we see the same two mistakes every week: people overpack for the stairs, and people stay for sunset without a return plan. We’ll help you avoid both.",
+    "It focuses on the practical stuff: the staircase down from Piazza San Gennaro, how to time your day so you are not stranded after sunset, what to pack (water shoes are non‑negotiable), and how to choose between a calm lunch club vs a party setup.",
+    "Quick rule of thumb: arrive earlier than you think, swim before the crowds and the wind pick up, and decide your “return plan” before you commit to sunset events."
   ],
   "toc": [
     {
       "href": "#overview",
-      "label": "Disposizione e atmosfera"
+      "label": "Layout & vibe"
     },
     {
       "href": "#access",
-      "label": "Come arrivare a Gavitella"
+      "label": "How to reach Gavitella"
     },
     {
       "href": "#gavitella-club",
@@ -27,114 +31,237 @@
     },
     {
       "href": "#amenities",
-      "label": "Servizi e pianificazione"
+      "label": "Facilities & planning"
+    },
+    {
+      "href": "#best-time",
+      "label": "Best time to go"
+    },
+    {
+      "href": "#hostel-day-plan",
+      "label": "Hostel-friendly day plan"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "What to bring"
+    },
+    {
+      "href": "#backup-plan",
+      "label": "If it's windy (backup plan)"
     }
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "Disposizione e atmosfera",
+      "title": "Layout and vibe",
       "body": [
-        "La spiaggia si trova sotto la piazza San Gennaro di Praiano. Circa 400 gradini serpeggiano tra ville e terrazzamenti di limoni fino a una piattaforma in pietra, un piccolo ripiano di ciottoli e una sottile zona libera tra i due lido.",
-        "La Gavitella occupa il lato sinistro (guardando il mare) con tavoli del ristorante, solarium e ormeggi per gli ospiti della cena. One Fire costeggia il molo destro con lettini colorati, una pedana per DJ e un pontile per le loro barche delle feste."
+        "Gavitella sits below Praiano’s Piazza San Gennaro. Roughly 400 steps weave past villas and lemon terraces to a stone platform, a pebble shelf, and a narrow public strip between the two lidos.",
+        "La Gavitella occupies the left-hand side (facing the sea) with restaurant tables, sun decks, and moorings for tender boats. One Fire lines the right-hand pier with bright loungers, a DJ podium, and a dock for their party boats.",
+        "It helps to think of the cove as two experiences: a classic “Amalfi Coast lunch and swim” on the La Gavitella side, and a louder, social afternoon at One Fire. Both can be fun — but if you show up expecting a big free sandy beach, you will be disappointed.",
+        "Hostel reality check: the steps are what make the place special (fewer day-trippers), but they also make it easy to overpack. Keep your bag light and plan your return before sunset."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/gavitellaBeachGuide.webp",
+          "alt": "View of Gavitella Beach in Praiano with cliffside platforms and the sea",
+          "caption": "Gavitella Beach Praiano is small, cliff-carved, and best enjoyed as an afternoon-to-sunset swim spot"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+          "alt": "Gavitella Beach layout diagram showing La Gavitella and One Fire beach clubs",
+          "caption": "The beach layout: La Gavitella on the left with restaurant, One Fire on the right with DJ podium"
+        },
+        {
+          "src": "/img/guides/gavitella-beach/04-steps-and-return.webp",
+          "alt": "Infographic showing the 400-step descent to Gavitella Beach and return options",
+          "caption": "Plan the stairs: down is easy; up after sunset is the hard part — decide your return before you go"
+        }
       ]
     },
     {
       "id": "access",
-      "title": "Come arrivare a Gavitella",
+      "title": "How to reach Gavitella",
       "body": [
-        "Dall'Hostel Brikette o dal centro di Positano, prendi l'autobus SITA in direzione Amalfi e scendi alla fermata di piazza San Gennaro a Praiano; calcola 10-15 minuti per scendere la scalinata fino alla tua prenotazione.",
-        "La navetta interno di Praiano collega la strada superiore con Marina di Praia: usala per il ritorno così da evitare di risalire centinaia di gradini dopo il tramonto. Entrambi i club possono anche organizzare navette in barca da Positano o Marina di Praia quando il mare è calmo."
+        "From Hostel Brikette or central Positano, take the SITA bus toward Amalfi and hop off at Praiano’s Piazza San Gennaro. From the square, follow the signed stairway down to the sea; give yourself 10–15 minutes for the descent (more if you are carrying a beach bag).",
+        "If you are meeting friends or you have a reservation time, treat the staircase as a “hard deadline”. In July/August it is common to arrive sweaty — bring water, and do not plan to sprint the last part.",
+        "For the return, think in options: (1) commit to the stairs back up, (2) use Praiano’s interno shuttle where possible, or (3) arrange a boat shuttle when seas are calm and staff confirm it is running. Do not assume boats are always operating — the sea decides."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/05-getting-there.webp",
+          "alt": "Infographic with steps for getting to Gavitella Beach from the SITA bus stop in Praiano",
+          "caption": "Hostel-friendly approach: SITA to Piazza San Gennaro, then stairs down — plan extra time in summer"
+        }
       ]
     },
     {
       "id": "gavitella-club",
       "title": "La Gavitella Beach Club",
       "body": [
-        "La Gavitella celebra pranzi lenti, aperitivi e un giro in barca al tramonto attorno agli isolotti Li Galli. La cucina punta sul pescato di stagione: crudi, paccheri con pesce locale e dessert dal forte accento al limone.",
-        "Comunica le esigenze di trasferimento al momento della prenotazione: lo staff coordina i tender per gli ospiti della cena e può custodire i bagagli mentre fai un bagno prima della crociera dell'aperitivo."
+        "La Gavitella is the “classic” option: slow lunches, aperitivi, and sunset vibes without the full party energy. The kitchen leans seafood-forward with seasonal plates (and plenty of lemon in true Amalfi Coast style).",
+        "If you are doing this as a special day, the best version is simple: arrive early enough to swim, change, then settle in for a long lunch that naturally becomes sunset drinks.",
+        "Staff tip: when you reserve, ask two practical questions up front — (1) what time they want you on-site for your table/loungers, and (2) what the return options are that day. If boats are running, staff can coordinate tender transfers for guests, but it depends on conditions."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+          "alt": "La Gavitella Beach Club terrace with sea views and sunset dining",
+          "caption": "La Gavitella — slow lunches, aperitivi, and sunset boat cruises around the Li Galli islets"
+        }
       ]
     },
     {
       "id": "one-fire",
       "title": "One Fire Beach Club",
       "body": [
-        "One Fire è la spiaggia party della Costiera Amalfitana, famosa per il rito dell'anguria del pomeriggio, i DJ set e la coreografia della folla sincronizzata con il tramonto.",
-        "Prenota lettini o cabanas via WhatsApp — a luglio e agosto è normale che richiedano un acconto. Quando il mare lo consente, le loro barche accompagnano i gruppi da Positano e li riportano indietro a fine musica."
+        "One Fire is the party option: DJ sets, high energy, and a crowd that ramps up as the afternoon goes on (often timed perfectly with sunset). If you are looking for a social day where you will meet other travellers, this is the obvious pick.",
+        "Book loungers or cabanas via WhatsApp — deposits are common in July and August. Confirm what is included (beds vs towels vs minimum spend) so you do not get surprised on arrival.",
+        "Hostel guest reality check: One Fire is fun, but it is easy to lose track of time. If you plan to stay until sunset, confirm your return plan early (stairs vs interno vs boat shuttle) so you are not negotiating logistics when you are tired."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+          "alt": "One Fire Beach Club with bright loungers, DJ podium, and party atmosphere",
+          "caption": "One Fire — the Amalfi Coast's party beach with DJ sets, watermelon ritual, and sunset choreography"
+        }
       ]
     },
     {
       "id": "amenities",
-      "title": "Servizi e pianificazione",
+      "title": "Facilities & planning",
       "body": [
-        "Entrambi i club offrono docce, cabine spogliatoio e armadietti a pagamento; gli asciugamani sono di solito inclusi nel prezzo del lettino. Porta una crema solare reef-safe e scarpette da scoglio per la piattaforma in pietra e l'ingresso ghiaioso.",
-        "Una minuscola striscia pubblica separa i lido. Lo spazio è limitato, quindi arriva prima delle 10:00 con il tuo tappetino e aspettati che lo staff recuperi le sedie se il moto ondoso le spinge verso terra."
+        "Both clubs typically provide showers and changing cabins; lockers are often paid. Towels may be included with the lounger fee, but do not rely on it — pack a small towel if you can.",
+        "The entry is rocky and the platform can be slippery. Water shoes make the day better (and safer). Bring reef-safe sunscreen and a refillable bottle; the sun is still strong late in the day.",
+        "The tiny public strip between the lidos is real, but it is small. If you are going “spiaggia libera” (free beach), arrive early with your own mat and a simple setup. In rougher seas, staff may need to move chairs inland and the free strip can feel even tighter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/06-packing-checklist.webp",
+          "alt": "Packing checklist infographic for Gavitella Beach day trip from a hostel",
+          "caption": "Pack light: water shoes, sunscreen, refillable bottle, and a small towel make the stairs easier"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and what the sea does)",
+      "body": [
+        "Gavitella Beach Praiano is best from mid‑afternoon into golden hour. Because the cove faces west, it keeps sunlight later than many Amalfi Coast beaches — which is exactly why sunset here is famous.",
+        "If you want the calmest swim, go earlier in the day and treat sunset as a bonus. Wind and chop can build later, and the platforms feel smaller when the sea is active.",
+        "Shoulder season (late spring / early autumn) can be the sweet spot for hostel travellers: fewer reservations, more breathing room, and you can still get that warm late light without the peak-summer crush."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/07-sunset-window.webp",
+          "alt": "Infographic explaining why Gavitella faces west and catches late afternoon sun",
+          "caption": "Why it’s a sunset beach: west-facing light lasts longer, so the best vibe is late afternoon"
+        }
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "A hostel-friendly Gavitella day plan",
+      "body": [
+        "If you want the “best version” of Gavitella without blowing your energy (or budget), this plan works well for most guests.",
+        "1) Leave after breakfast and take the SITA bus toward Amalfi. Get off at Piazza San Gennaro and start the stairs down with water in hand.",
+        "2) Swim first. The earlier you swim, the less crowded it feels and the easier it is to claim a comfortable spot.",
+        "3) Decide your vibe: La Gavitella for a long lunch + sunset aperitivo, or One Fire if you want a social afternoon with music.",
+        "4) Lock in your return plan early. If you are staying for sunset, confirm (stairs vs interno shuttle vs boat shuttle) before the day gets loud.",
+        "5) Back at Hostel Brikette: shower, rehydrate, and you are ready for aperitivo in town. If you want an easier second beach day, compare options in our %LINK:positanoBeaches|Positano beaches overview%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/gavitella-beach/08-hostel-day-plan.webp",
+          "alt": "Timeline infographic for a hostel-friendly day at Gavitella Beach from morning to sunset",
+          "caption": "A simple day plan: bus + stairs, swim early, choose your lido, and confirm the return before sunset"
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to bring (so you do not overpack)",
+      "body": [
+        "A light bag is the secret to enjoying Gavitella. The stairs are the whole point — but they punish overpacking.",
+        "Bring: water shoes, sunscreen, a hat, a small towel, and a refillable bottle. Add a light layer for the ride back if you will be out after sunset (sea breeze + wet skin gets chilly fast).",
+        "Skip: passports and big cash. Keep valuables locked up at the hostel. Carry just enough cash as backup for small extras and transport surprises."
+      ]
+    },
+    {
+      "id": "backup-plan",
+      "title": "If it’s windy (backup plan)",
+      "body": [
+        "When the sea is rough, the platforms feel smaller and boat shuttles often pause. If you arrive and it feels chaotic, switch plans instead of forcing it.",
+        "Two simple hostel-friendly backups: (1) choose a more sheltered cove like %LINK:marinaDiPraiaBeaches|Marina di Praia%, or (2) do a town day and save Gavitella for your next calm-weather window.",
+        "If your goal is “sunset + good vibes” rather than “swim”, you can still use Praiano’s viewpoints and terraces for golden hour without committing to the stairs."
       ]
     }
   ],
   "images": {
     "overview": {
-      "alt": "Cala della spiaggia di Gavitella vista dalla scalinata",
-      "caption": "La discesa rivela le terrazze di La Gavitella e One Fire."
+      "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
+      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
+      "caption": "The two beach clubs share a narrow platform carved into the cliff."
     },
     "gavitellaClub": {
-      "alt": "Lettini e ristorante de La Gavitella Beach Club",
-      "caption": "Tavoli del ristorante e lettini terracotta con vista su Capri."
+      "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
+      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
+      "caption": "La Gavitella's sunset dinners pair sea views with long aperitivi."
     },
     "oneFire": {
-      "alt": "Configurazione DJ e lettini di One Fire Beach Club",
-      "caption": "Lettini colorati e pedana DJ per le feste al tramonto."
+      "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
+      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
+      "caption": "One Fire is known for lively afternoons and a DJ-led sunset scene."
     }
   },
-  "essentialsTitle": "L'essenziale",
+  "essentialsTitle": "Essentials",
   "essentials": [
-    "Prenota in anticipo per entrambi i club; le fasce del tramonto e i weekend si esauriscono per primi.",
-    "Calcola più di 400 gradini dalla piazza San Gennaro e una risalita ripida, a meno che tu non prenda la navetta interno.",
-    "Porta scarpette da scoglio per la piattaforma in pietra e crema solare reef-safe per il sole del tardo pomeriggio."
+    "Reserve in advance for both clubs; sunset slots and weekends sell out first.",
+    "Plan for 400+ steps down from Piazza San Gennaro and a steep return unless you take the interno shuttle.",
+    "Pack water shoes for the rocky platform and reef-safe sunscreen for late-afternoon sun."
   ],
-  "typicalCostsTitle": "Costi tipici",
+  "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Set lettini La Gavitella per due: 70-100 € a seconda della stagione.",
-    "Daybed o cabana One Fire per due: 100-180 €, spesso con acconto nei mesi di punta.",
-    "Navetta in barca (se disponibile): 10-20 € a persona per tratta."
+    "La Gavitella lounger set for two: €70–€100 depending on season.",
+    "One Fire day bed or cabana for two: €100–€180, often with a deposit in peak months.",
+    "Boat shuttle add-on (when available): €10–€20 per person each way."
   ],
-  "tipsTitle": "Consigli rapidi",
+  "tipsTitle": "Quick tips",
   "tips": [
-    "Usa %LINK:positanoAmalfi|la nostra guida ai trasporti Positano ↔ Amalfi% per programmare la corsa SITA fino a piazza San Gennaro prima di affrontare i 400 gradini in discesa.",
-    "Controlla i %LINK:sitaTickets|consigli sui biglietti SITA% per le opzioni di ritorno; la navetta interno di Praiano ti evita di risalire al buio.",
-    "Prenota il ristorante a picco sulla scogliera di La Gavitella insieme ai lettini — il menu degustazione di pesce e il giro in barca al tramonto valgono la spesa.",
-    "Confronta lettini, aree libere e cale alternative nella nostra %LINK:positanoBeaches|panoramica delle spiagge di Positano% prima di scegliere."
+    "Use %LINK:positanoAmalfi|our Positano ↔ Amalfi transport guide% to plan the SITA ride to Piazza San Gennaro before you tackle the 400 steps down.",
+    "Check the %LINK:sitaTickets|SITA bus ticket tips% for return options; Praiano's interno loop saves you from climbing back up in the dark.",
+    "Reserve La Gavitella's cliffside restaurant when you book loungers — the seafood tasting menu and sunset boat spin are worth the splurge.",
+    "Compare loungers, free zones, and alternative coves in our %LINK:positanoBeaches|Positano beaches overview% before you commit."
   ],
-  "warningsTitle": "Da sapere",
+  "warningsTitle": "Good to know",
   "warnings": [
-    "Metti in conto circa 400 gradini irregolari in ogni direzione; Gavitella non è accessibile a sedie a rotelle o bagagli pesanti.",
-    "La zona libera può sparire con il mare mosso — tieni pronto un piano B per le giornate ventose.",
-    "Le navette in barca si fermano quando il mare cambia: conferma il rientro prima che inizino gli eventi al tramonto."
+    "Expect around 400 uneven steps each way; Gavitella is not accessible for wheelchairs or heavy luggage.",
+    "The free section can vanish during rough seas — keep a backup plan for windy days.",
+    "Boat shuttles pause when the sea turns, so confirm your return ride before sunset events begin."
   ],
-  "faqsTitle": "FAQ su Gavitella",
+  "faqsTitle": "Gavitella FAQs",
   "faqs": [
     {
-      "q": "Come arrivo a Gavitella dall'Hostel Brikette?",
+      "q": "How do I reach Gavitella from Hostel Brikette?",
       "a": [
-        "Raggiungi la fermata Chiesa Nuova e sali sul bus SITA verso Amalfi. Scendi a piazza San Gennaro a Praiano, poi segui la scalinata segnalata per circa 400 gradini fino alla spiaggia. Con il mare calmo puoi anche prenotare in anticipo le navette in barca dal molo principale di Positano."
+        "Walk to the Chiesa Nuova stop and board the SITA bus toward Amalfi. Get off at Praiano's Piazza San Gennaro, then follow the signed stairway for roughly 400 steps to the beach. In calm weather you can also pre-book boat shuttles from Positano's main pier."
       ]
     },
     {
-      "q": "Devo prenotare in anticipo?",
+      "q": "Do I need to reserve in advance?",
       "a": [
-        "Sì. Contatta La Gavitella o One Fire via WhatsApp o tramite i loro form online, comunica l'orario di arrivo e chiedi se è richiesto un deposito. I weekend e le fasce del tramonto si esauriscono rapidamente da giugno a settembre."
+        "Yes. Contact La Gavitella or One Fire via WhatsApp or their online forms, share your arrival time, and ask about deposits. Weekends and sunset slots sell out quickly from June through September."
       ]
     },
     {
-      "q": "C'è un'area libera se non affitto i lettini?",
+      "q": "Is there a free area if I don't rent loungers?",
       "a": [
-        "Tra i due club c'è una stretta striscia pubblica. Porta un tappetino o le scarpette, arriva presto e rispetta corde o passerelle predisposte dallo staff per l'accesso delle barche."
+        "A narrow public strip sits between the two clubs. Bring a mat or water shoes, arrive early, and respect any ropes or walkways staff set for boat access."
       ]
     },
     {
-      "q": "Posso restare per la cena o per eventi serali?",
+      "q": "Can I stay for dinner or late events?",
       "a": [
-        "La Gavitella serve la cena in terrazza e spesso la abbina a una breve uscita in barca. One Fire organizza feste al tramonto che finiscono intorno all'ultima corsa della navetta interno. Conferma il rientro con lo staff per evitare di risalire le scale di notte."
+        "La Gavitella serves dinner on the terrace and often pairs it with a short boat cruise. One Fire runs sunset parties that finish around the last interno bus. Confirm return transport with staff so you are not climbing the stairs at night."
       ]
     }
   ]

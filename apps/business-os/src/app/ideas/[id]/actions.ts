@@ -55,7 +55,7 @@ export async function convertToCard(
   const firstLine = idea.content.split("\n").find((line) => line.trim());
   const title = firstLine?.replace(/^#+\s*/, "") || idea.ID || "Untitled";
 
-  // Create card with idea content
+  // Create card with idea content (MVP-B3: Audit attribution)
   const result = await writer.writeCard(
     {
       ID: cardId,
@@ -70,7 +70,9 @@ export async function convertToCard(
     {
       name: currentUser.name,
       email: currentUser.email,
-    }
+    },
+    currentUser.id,
+    currentUser.id // initiator same as actor in Phase 0
   );
 
   if (!result.success) {
@@ -125,14 +127,16 @@ export async function updateIdea(
     };
   }
 
-  // Update idea with new content and status
+  // Update idea with new content and status (MVP-B3: Audit attribution)
   const result = await writer.updateIdea(
     ideaId,
     {
       Status: "worked",
       content,
     },
-    currentUser
+    currentUser,
+    currentUser.id,
+    currentUser.id // initiator same as actor in Phase 0
   );
 
   if (!result.success) {

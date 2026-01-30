@@ -115,8 +115,8 @@ describe("RepoWriter", () => {
         content: "# Test Idea\n\nThis is a test idea.",
       };
 
-      // Write the idea
-      const result = await writer.writeIdea(idea, CommitIdentities.user);
+      // Write the idea (MVP-B3: with actor/initiator)
+      const result = await writer.writeIdea(idea, CommitIdentities.user, "pete", "pete");
 
       // Check if file was created
       const filePath = path.join(
@@ -158,7 +158,7 @@ describe("RepoWriter", () => {
         content: "malicious",
       };
 
-      const result = await writer.writeIdea(idea, CommitIdentities.user);
+      const result = await writer.writeIdea(idea, CommitIdentities.user, "pete", "pete");
 
       expect(result.success).toBe(false);
       expect(result.errorKey).toBe("businessOs.api.common.writeAccessDenied");
@@ -178,7 +178,7 @@ describe("RepoWriter", () => {
         content: "# Test Card\n\nCard content here.",
       };
 
-      const result = await writer.writeCard(card, CommitIdentities.user);
+      const result = await writer.writeCard(card, CommitIdentities.user, "pete", "pete");
 
       // Check if file was created
       const filePath = path.join(
@@ -226,7 +226,7 @@ describe("RepoWriter", () => {
         content: "Original content",
       };
 
-      await writer.writeCard(card, CommitIdentities.user);
+      await writer.writeCard(card, CommitIdentities.user, "pete", "pete");
 
       // Update the card
       const updates = {
@@ -237,7 +237,9 @@ describe("RepoWriter", () => {
       const result = await writer.updateCard(
         "TEST-OPP-0002",
         updates,
-        CommitIdentities.user
+        CommitIdentities.user,
+        "pete",
+        "pete"
       );
 
       // Check if file was updated
@@ -274,7 +276,9 @@ describe("RepoWriter", () => {
         {
           Lane: "Done",
         },
-        CommitIdentities.user
+        CommitIdentities.user,
+        "pete",
+        "pete"
       );
 
       expect(result.success).toBe(false);
@@ -293,7 +297,9 @@ describe("RepoWriter", () => {
           "Created-Date": "2026-01-29",
           content: "# Original idea content",
         },
-        CommitIdentities.user
+        CommitIdentities.user,
+        "pete",
+        "pete"
       );
 
       // Then update it
@@ -303,7 +309,9 @@ describe("RepoWriter", () => {
           Status: "worked",
           content: "# Updated idea content\n\nWith more details.",
         },
-        CommitIdentities.user
+        CommitIdentities.user,
+        "pete",
+        "pete"
       );
 
       expect(result.success).toBe(true);
@@ -338,7 +346,9 @@ describe("RepoWriter", () => {
         {
           Status: "worked",
         },
-        CommitIdentities.user
+        CommitIdentities.user,
+        "pete",
+        "pete"
       );
 
       expect(result.success).toBe(false);

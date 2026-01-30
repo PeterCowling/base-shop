@@ -60,3 +60,24 @@ export function getGitAuthorOptions(identity: CommitIdentity): {
     "--author": `${identity.name} <${identity.email}>`,
   };
 }
+
+/**
+ * Build audit commit message with actor, initiator, and entity metadata
+ * MVP-B3: Audit attribution standard
+ *
+ * Format:
+ * Actor: {username}
+ * Initiator: {username}
+ * Entity: {ID}
+ *
+ * {action message}
+ */
+export function buildAuditCommitMessage(params: {
+  actor: string;
+  initiator: string;
+  entityId: string;
+  action: string;
+}): string {
+  const { actor, initiator, entityId, action } = params;
+  return `Actor: ${actor}\nInitiator: ${initiator}\nEntity: ${entityId}\n\n${action}`;
+}

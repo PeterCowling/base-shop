@@ -61,18 +61,6 @@
     "intro": [
       "Positano jest pionowe, piękne i zatłoczone w sezonie. Ten przewodnik skupia się na praktycznych wyborach: gdzie się zatrzymać, kiedy przyjechać, jak się poruszać i co robić na miejscu."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Taras hostelu z panoramicznym widokiem",
-          "caption": "Zachód słońca z tarasu — zatrzymaj się kilka kroków od przystanku Chiesa Nuova."
-        },
-        {
-          "alt": "Panorama Positano",
-          "caption": "Fornillo i Spiaggia Grande są dostępne pieszo; spodziewaj się schodów."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Gdzie zostać",

@@ -61,18 +61,6 @@
     "intro": [
       "Positano er vertikal, smuk og travl i højsæsonen. Guiden her fokuserer på praktiske valg: hvor du skal bo, hvornår du skal komme, hvordan du kommer rundt, og hvad du faktisk skal lave, når du er her."
     ],
-    "gallery": {
-      "items": [
-        {
-          "alt": "Hostel-terrasse med panoramaudsigt",
-          "caption": "Solnedgang fra terrassen — kun få skridt fra busstoppet Chiesa Nuova."
-        },
-        {
-          "alt": "Positano-panorama",
-          "caption": "Fornillo og Spiaggia Grande kan nås til fods; forvent trapper."
-        }
-      ]
-    },
     "sections": {
       "whereToStay": {
         "title": "Hvor skal du bo",

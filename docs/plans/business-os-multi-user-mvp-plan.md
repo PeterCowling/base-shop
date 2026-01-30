@@ -755,6 +755,33 @@ Two tasks are at 78% confidence (close to ≥80% threshold). Concrete actions to
   - Acceptance: No changes
   - Dependencies: No changes
 
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** 2deb4dc131
+- **TDD cycle:**
+  - Tests written: `src/lib/permissions.test.ts` (10 tests for all permission helpers)
+  - Initial test run: PASS (tests written before implementation)
+  - Implementation: `src/lib/permissions.ts` created with canCreateIdea, canCreateCard, canEditCard, canEditIdea
+  - Post-implementation: PASS (all 10 tests passing)
+- **Validation:**
+  - Ran: `pnpm test src/lib/permissions.test.ts` — PASS (10 tests)
+  - Ran: `pnpm test src/lib/auth.test.ts src/app/api/auth/login/route.test.ts` — PASS (30 tests total)
+  - Ran: `pnpm typecheck` — PASS
+  - Ran: `pnpm lint` — PASS
+- **Documentation updated:** None required (internal implementation)
+- **Implementation notes:**
+  - Created `permissions.ts` module with centralized authorization helpers
+  - Added authorization checks to all mutation endpoints:
+    - `/api/ideas` POST — validates canCreateIdea
+    - `/api/cards` POST — validates canCreateCard
+    - `/api/cards/[id]` PATCH — validates canEditCard (loads existing card first)
+  - Extracted authorization logic in PATCH route into `checkCardUpdateAuthorization` helper to reduce complexity from 24 to below 20
+  - All routes check `BUSINESS_OS_AUTH_ENABLED` flag for backward compatibility
+  - Returns 401 for unauthenticated, 403 for unauthorized, 404 for card not found
+  - Pattern: Admin can edit anything, users can only edit their own content
+- **Test coverage:** 10 new permission tests, all 30 auth-related tests passing
+- **Known issues:** Pre-existing repo-writer test failures (unrelated to MVP-B2, caused by path authorization mismatch in test setup)
+
 ### MVP-B3: Audit attribution standard
 
 - **Type:** IMPLEMENT

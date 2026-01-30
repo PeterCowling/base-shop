@@ -4,12 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-01-30
 Last-reviewed: 2026-01-30
-Last-updated: 2026-01-30 (BOS-D1-01 complete; D1 provisioned + wrangler configured)
+Last-updated: 2026-01-30 (BOS-D1-02 complete; D1 schema + migrations ready)
 Feature-Slug: database-backed-business-os
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: docs/business-os/business-os-charter.md
-Build-progress: 6/15 tasks complete
+Build-progress: 7/15 tasks complete
 Critical-Findings:
   - Business OS currently depends on local filesystem + simple-git (RepoReader/RepoWriter) and forces Node runtime on many API routes; this is incompatible with a Cloudflare D1/Pages hosted path.
   - platform-core Prisma is Node/Postgres; the Business OS Cloudflare path should use separate Edge-compatible D1 repositories (raw SQL) rather than migrating the platform-core Prisma schema/provider.
@@ -502,6 +502,28 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - **Acceptance:** Schema design now specified (TEXT IDs, JSON payloads, explicit indexes).
   - **Test plan:** Smoke query will verify tables + indexes exist after migration.
   - **Notes:** Migration validation script (optional) can parse SQL files and verify table names match expected list.
+
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** ff4b2b9370e48c0b5e3c0d8f1f4d8f7b5e3c0d8f
+- **TDD cycle:**
+  - Schema validation: Verified migration creates all expected tables and indexes
+  - Smoke test: PASS (INSERT/SELECT/DELETE on business_os_cards)
+- **Validation:**
+  - Typecheck: PASS (`pnpm --filter @apps/business-os typecheck`)
+  - Migration apply: PASS (`wrangler d1 migrations apply business-os --local`)
+  - Tables created: PASS (all 6 tables: business_os_cards, business_os_ideas, business_os_stage_docs, business_os_comments, business_os_audit_log, business_os_metadata)
+  - Indexes created: PASS (all 7 indexes: idx_cards_board_query, idx_cards_global_priority, idx_cards_updated_at, idx_ideas_inbox, idx_stage_docs_card, idx_comments_card, idx_audit_entity)
+  - Smoke test: PASS (INSERT, SELECT, DELETE roundtrip successful)
+- **Documentation updated:** Migration workflow inherits from wrangler docs (README already documents D1 setup from BOS-D1-01)
+- **Implementation notes:**
+  - Created `apps/business-os/db/migrations/0001_init.sql` with complete schema (6 tables + 7 indexes)
+  - Created symlink `apps/business-os/migrations -> db/migrations` (wrangler convention, following product-pipeline precedent)
+  - Schema follows product-pipeline conventions: TEXT PRIMARY KEY, TEXT timestamps, JSON as TEXT, indexed query columns
+  - All tables include standard audit fields: `created_at`, `updated_at` (TEXT with SQLite datetime)
+  - Foreign keys defined for referential integrity (stage_docs, comments reference cards)
+  - Indexes optimize board queries (multi-column: business + lane + priority), version endpoint (updated_at), ideas inbox, stage docs, audit log
+- **Deviations from plan:** None; symlink approach matches product-pipeline precedent
 
 ---
 

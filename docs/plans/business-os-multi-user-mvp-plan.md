@@ -352,7 +352,7 @@ Show code commits linked to cards automatically.
 | MVP-D3 | D | "My Work" view | 85% | M | Pending | MVP-B1, MVP-D1 |
 | MVP-E1 | E | Comments as first-class git artifacts | 86% | M | Pending | MVP-B2, MVP-C1 |
 | MVP-E2 | E | "Ask agent" button creates queue item | 88% | M | Pending | MVP-B2, MVP-C1 |
-| MVP-E3 | E | Agent runner daemon | 82% | L | Blocked (V1-V5) | MVP-C1, MVP-E2 |
+| MVP-E3 | E | Agent runner daemon | 87% | L | Pending | MVP-C1, MVP-E2 |
 | MVP-E4 | E | Agent run status UI (polling) | 84% | M | Pending | MVP-E3 |
 | MVP-F1 | F | Commit-to-card linking | 87% | M | Pending | MVP-E3 |
 | MVP-F2 | F | Auto-progress notes (optional) | 86% | S | Pending | MVP-E3 |
@@ -376,7 +376,7 @@ This section is the source of truth for **current status**, based on what exists
 - **MVP-B3** — Audit commit message metadata exists (`apps/business-os/src/lib/commit-identity.ts`, `apps/business-os/src/lib/repo-writer.ts`), but API routes currently pass `CommitIdentities.user` (Pete) as the git author identity (`apps/business-os/src/app/api/ideas/route.ts`, `apps/business-os/src/app/api/cards/route.ts`, `apps/business-os/src/app/api/cards/[id]/route.ts`) rather than setting git author to the authenticated user’s identity.
 - **MVP-C1** — Repo lock implementation exists (`apps/business-os/src/lib/repo/RepoLock.ts`) and RepoWriter can run locked writes when `BUSINESS_OS_REPO_LOCK_ENABLED=true` (`apps/business-os/src/lib/repo-writer.ts`). There is no RepoLock test coverage yet, the flag is not documented in `apps/business-os/.env.example`, and `/api/healthz` does not yet report real lock status.
 - **MVP-C3** — File SHA (`fileSha`) + `baseFileSha` optimistic concurrency exists for card edits (`apps/business-os/src/app/api/cards/[id]/route.ts`) with conflict UI (`apps/business-os/src/components/ConflictDialog.tsx`), but needs extension to other long-form edit surfaces (ideas, stage docs).
-- **MVP-E3** — Agent runner daemon isn’t implemented yet, but CLI execution groundwork exists (`apps/business-os/src/agent-runner/*`).
+- **MVP-E3** — Agent runner daemon isn't implemented yet, but validation requirements complete: queue scanner, run logger, health check, lock integration tests, and PM2 supervision strategy (`apps/business-os/src/agent-runner/*`, `docs/runbooks/agent-runner-supervision.md`).
 
 ### Pending (not found in repo yet)
 
@@ -1332,18 +1332,17 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - `docs/business-os/agent-runs/` (NEW directory for run logs)
   - `apps/business-os/scripts/agent-runner.sh` (NEW - start/stop script)
 - **Depends on:** MVP-C1, MVP-E2
-- **Confidence:** 82% (BLOCKED - see Pre-Implementation Validation)
-  - Implementation: 82% — Polling loop still pending, but CLI execution boundary is now specified and unit-tested
-  - Approach: 82% — Claude Code CLI supports non-interactive runs (`-p/--print`), enabling a reliable "spawn CLI per task" model
-  - Impact: 80% — Still a new daemon process; crash recovery + repo lock integration remain critical
-  - **BUILD GATE:** Impact must reach ≥85% before implementation proceeds (complete validation requirements below)
-- **Pre-Implementation Validation Requirements (MANDATORY):**
-  - [ ] **V1: Polling loop validation** - Build + test queue scanning logic in isolation. Prove directory watching, file parsing, task state detection works correctly. Tests must cover: empty queue, single task, multiple tasks, malformed files.
-  - [ ] **V2: Run logging atomicity** - Build + test run logger in isolation. Prove logs can be written atomically during execution. Tests must cover: log creation, append during execution, finalization on completion/error, log file corruption recovery.
-  - [ ] **V3: RepoLock integration test** - Build integration test proving daemon can acquire/release lock correctly. Test must spawn mock daemon, create lock contention with RepoWriter, verify both operations serialize correctly. Prove lock timeout handling works.
-  - [ ] **V4: Supervision strategy document** - Write `docs/runbooks/agent-runner-supervision.md` with: PM2 process config, restart policy, health check strategy, log rotation, monitoring approach. Document failure modes and recovery procedures.
-  - [ ] **V5: Health check implementation** - Build daemon health check endpoint or status file. Prove daemon can report: alive, queue length, current task, last heartbeat. Add to supervision doc.
-  - **Gate condition:** All 5 validations complete → Impact increases to ≥85% → implementation proceeds
+- **Confidence:** 87% ✅ **READY TO BUILD** (all validations complete - 2026-01-30)
+  - Implementation: 87% — Queue scanner + run logger + health check all implemented and tested
+  - Approach: 87% — Claude Code CLI validated, supervision strategy documented
+  - Impact: 87% — Lock integration proven, daemon failure modes documented, PM2 supervision strategy defined
+- **Pre-Implementation Validation Requirements (COMPLETED 2026-01-30):**
+  - [x] **V1: Polling loop validation** ✅ `queue-scanner.ts` + 10 tests - All pass
+  - [x] **V2: Run logging atomicity** ✅ `run-logger.ts` + 12 tests - All pass
+  - [x] **V3: RepoLock integration test** ✅ `repo-lock-integration.test.ts` + 11 tests - All pass
+  - [x] **V4: Supervision strategy document** ✅ `docs/runbooks/agent-runner-supervision.md` - Complete
+  - [x] **V5: Health check implementation** ✅ `health-check.ts` + 17 tests - All pass
+  - **Gate condition:** ✅ All 5 validations complete (2026-01-30 commit 1f30ebe199) → Impact raised from 80% to 87% → ready for implementation
 - **Acceptance:**
   - [ ] Daemon polls `agent-queue/` every 5s
   - [ ] On new task: acquire repo lock, execute skill via Claude Code CLI (`claude -p ...`) or equivalent, write outputs + commit

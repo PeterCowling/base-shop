@@ -30,12 +30,21 @@ describe("/api/healthz", () => {
     const response = await GET();
     const data = await response.json();
     expect(data.repoLockStatus).toBeDefined();
+    expect(["unlocked", "locked", "unknown", "error"]).toContain(
+      data.repoLockStatus
+    );
   });
 
   it("should include lastAgentRunTimestamp in response", async () => {
     const response = await GET();
     const data = await response.json();
     expect(data).toHaveProperty("lastAgentRunTimestamp");
+    // Can be null if no agent runs exist
+    if (data.lastAgentRunTimestamp !== null) {
+      expect(typeof data.lastAgentRunTimestamp).toBe("string");
+      // Should be valid ISO timestamp
+      expect(() => new Date(data.lastAgentRunTimestamp)).not.toThrow();
+    }
   });
 
   it("should include timestamp in response", async () => {

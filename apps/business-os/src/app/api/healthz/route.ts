@@ -6,6 +6,9 @@
  * for uptime monitoring (UptimeRobot, etc.)
  */
 
+import fs from "node:fs/promises";
+import path from "node:path";
+
 import { NextResponse } from "next/server";
 import simpleGit from "simple-git";
 
@@ -13,6 +16,64 @@ import { getRepoRoot } from "@/lib/get-repo-root";
 
 // Node runtime required for git operations
 export const runtime = "nodejs";
+
+/**
+ * Get repo lock status by checking lock file existence
+ */
+async function getRepoLockStatus(
+  repoRoot: string
+): Promise<"unlocked" | "locked" | "unknown"> {
+  try {
+    const lockFile = path.join(repoRoot, "docs/business-os/.locks/repo.lock");
+    await fs.access(lockFile);
+    return "locked";
+  } catch {
+    // Lock file doesn't exist or not accessible
+    return "unlocked";
+  }
+}
+
+/**
+ * Get last agent run timestamp by scanning agent-runs directory
+ */
+async function getLastAgentRunTimestamp(
+  repoRoot: string
+): Promise<string | null> {
+  try {
+    const runsDir = path.join(repoRoot, "docs/business-os/agent-runs");
+    const entries = await fs.readdir(runsDir, { withFileTypes: true });
+
+    // Find all run directories
+    const runDirs = entries.filter((entry) => entry.isDirectory());
+
+    if (runDirs.length === 0) {
+      return null;
+    }
+
+    // Get the most recent run.log.md file timestamp
+    let latestTimestamp: number | null = null;
+
+    for (const runDir of runDirs) {
+      const logFile = path.join(runsDir, runDir.name, "run.log.md");
+      try {
+        const stats = await fs.stat(logFile);
+        const mtime = stats.mtime.getTime();
+
+        if (latestTimestamp === null || mtime > latestTimestamp) {
+          latestTimestamp = mtime;
+        }
+      } catch {
+        // Log file doesn't exist or not accessible - skip
+        continue;
+      }
+    }
+
+    return latestTimestamp ? new Date(latestTimestamp).toISOString() : null;
+  } catch {
+    // agent-runs directory doesn't exist or not accessible
+    return null;
+  }
+}
 
 export async function GET() {
   const repoRoot = getRepoRoot();
@@ -22,11 +83,11 @@ export async function GET() {
     // Get current git HEAD commit SHA
     const gitHead = await git.revparse(["HEAD"]);
 
-    // TODO: MVP-C1 will implement repo locking
-    const repoLockStatus = "not_implemented";
+    // Get repo lock status
+    const repoLockStatus = await getRepoLockStatus(repoRoot);
 
-    // TODO: MVP-E3 will track agent run timestamps
-    const lastAgentRunTimestamp = null;
+    // Get last agent run timestamp
+    const lastAgentRunTimestamp = await getLastAgentRunTimestamp(repoRoot);
 
     return NextResponse.json({
       status: "ok",

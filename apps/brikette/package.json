@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
     "prebuild": "pnpm --filter @acme/telemetry clean && pnpm --filter @acme/telemetry build",
-    "postbuild": "pnpm exec tsx scripts/generate-public-seo.ts",
+    "postbuild": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-public-seo.ts",
     "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
     "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
     "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",

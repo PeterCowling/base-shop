@@ -9,6 +9,11 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...sharedConfig,
+  experimental: {
+    ...sharedConfig.experimental,
+    // Enable Node.js runtime for middleware (required for iron-session crypto)
+    nodeMiddleware: true,
+  },
   webpack: (config, context) => {
     if (typeof sharedConfig.webpack === "function") {
       config = sharedConfig.webpack(config, context);

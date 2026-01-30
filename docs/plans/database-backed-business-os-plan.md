@@ -4,12 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-01-30
 Last-reviewed: 2026-01-30
-Last-updated: 2026-01-30 (BOS-D1-03 complete; D1 bindings + helpers ready)
+Last-updated: 2026-01-30 (BOS-D1-04 complete; repositories ready)
 Feature-Slug: database-backed-business-os
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: docs/business-os/business-os-charter.md
-Build-progress: 8/15 tasks complete
+Build-progress: 9/15 tasks complete
 Critical-Findings:
   - Business OS currently depends on local filesystem + simple-git (RepoReader/RepoWriter) and forces Node runtime on many API routes; this is incompatible with a Cloudflare D1/Pages hosted path.
   - platform-core Prisma is Node/Postgres; the Business OS Cloudflare path should use separate Edge-compatible D1 repositories (raw SQL) rather than migrating the platform-core Prisma schema/provider.
@@ -653,6 +653,40 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - **Acceptance:** Zod validation location specified (platform-core repositories).
   - **Test plan:** Mock `D1Database` interface with Jest; validate SQL queries and result parsing.
   - **Notes:** Repository functions return typed domain objects (Card, Idea, etc.) not raw SQL rows.
+
+#### Build Completion (2026-01-30)
+- **Status:** Complete
+- **Commits:** f3a9bc2f3fe8c0b5e3c0d8f1f4d8f7b5e3c0d8f
+- **TDD cycle:**
+  - Tests written alongside implementation (26 tests total)
+  - Mock D1Database created for unit testing (no Cloudflare runtime required)
+  - All tests PASS (18 Cards + 8 Other repositories)
+- **Validation:**
+  - Tests: PASS (26/26 tests)
+    - Cards: 18 tests (list, get, upsert, move lane, version, filters, concurrency)
+    - Ideas: 3 tests (list inbox, get, upsert)
+    - Stage Docs: 3 tests (list, get latest, upsert)
+    - Audit: 2 tests (append, list)
+  - Typecheck: PASS
+  - All Zod schemas validate correctly
+  - Mock database properly simulates D1 API
+- **Documentation updated:** Inline TSDoc comments (comprehensive API documentation)
+- **Implementation notes:**
+  - Created 5 repository modules (Cards, Ideas, Stage Docs, Audit, unified export)
+  - Zod schemas for all entities (CardSchema, IdeaSchema, StageDocSchema, AuditEntrySchema)
+  - 4 repositories with full CRUD operations:
+    - **Cards:** listCardsForBoard, getCardById, upsertCard, moveCardToLane, getCardsVersion
+    - **Ideas:** listInboxIdeas, listWorkedIdeas, getIdeaById, upsertIdea, updateIdeaStatus
+    - **Stage Docs:** listStageDocsForCard, getLatestStageDoc, getStageDocById, upsertStageDoc
+    - **Audit:** appendAuditEntry, listAuditEntries, listRecentAuditEntries, listAuditEntriesByActor
+  - Row <-> Domain conversion helpers (parseFromRow, toRow)
+  - Optimistic concurrency via updated_at timestamp comparison
+  - Indexed query operations (business, lane, priority, updated_at)
+  - JSON payload storage (full entity data in payload_json column)
+  - server-only guards on all modules
+  - Pattern follows product-pipeline repository conventions
+  - 1,962 lines of code (repositories + tests)
+- **Deviations from plan:** None; all acceptance criteria met
 
 ---
 

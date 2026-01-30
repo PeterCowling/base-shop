@@ -4,12 +4,17 @@
  *
  * Protects all routes except /login and /api/auth/*
  * Redirects unauthenticated users to /login when BUSINESS_OS_AUTH_ENABLED=true
+ *
+ * Runtime: Node.js (required for iron-session crypto operations)
  */
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { getSession, getSessionUser } from "./lib/auth";
+
+// Configure middleware to run in Node.js runtime (iron-session requires crypto module)
+export const runtime = "nodejs";
 
 // Feature flag - auth is disabled by default for backward compatibility
 const AUTH_ENABLED = process.env.BUSINESS_OS_AUTH_ENABLED === "true";

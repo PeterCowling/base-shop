@@ -10,7 +10,6 @@
     "Используйте таблицу, чтобы сравнить атмосферу, цены на лежаки и где обычно находятся бесплатные зоны. Нажмите на название пляжа в таблице — откроется мини‑гайд с маршрутом от хостела.",
     "Совет хостела: пляжи галечные. Возьмите аквашузы (или крепкие сандалии), полотенце/коврик потолще и немного наличных на всякий случай."
   ],
-  "galleryTitle": "Главные пляжи Позитано",
   "comparisonTable": {
     "title": "Сравнение пляжей Амальфитанского побережья"
   },
@@ -64,6 +63,18 @@
         "В Позитано галечные пляжи, где рядом существуют бич‑клубы (платно) и общественные зоны (бесплатно). Цены могут быть от ~15€ за лежак на более спокойных пляжах до 100€+ за премиальные террасы.",
         "Если у вас бюджет хостела, начните с Fornillo (обычно дешевле и спокойнее). За классическим «открыточным» видом идите на Spiaggia Grande рано утром. За поздним солнцем хороши Arienzo или Laurito — но добираться сложнее.",
         "Быстрый выбор на 2026: самый дешёвый спокойный день = Fornillo; самое простое “иконическое Позитано” фото = Spiaggia Grande; лучшее позднее солнце = Arienzo (на лодке) или Laurito; самая драматичная бухта на выезд = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Широкий вид на город Позитано и побережье со стороны моря",
+          "caption": "Побережье Позитано (будут лестницы) — Фото: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Пляжные зонтики и купающиеся вдоль берега Позитано",
+          "caption": "Зонтики на пляже Позитано (атмосфера пикового дня) — Фото: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (главный пляж) — классическая «открыточная» картинка. Но там же часто толпы и высокие цены. Если хотите — приходите рано, найдите общественную полосу и настройте ожидания. Быстро добраться помогут %LINK:positanoMainBeachWalkDown|маршрут пешком% или %LINK:positanoMainBeachBusDown|гайд по автобусу%.",
         "Arienzo знаменит длинным солнцем после обеда. Минус: если идти пешком, много лестниц; большинство пользуется лодкой‑шаттлом бич‑клуба. Пакеты с лежаками + обедом + лодкой могут быть выгодными. По времени смотрите %LINK:arienzoBeachClub|гайд Arienzo Beach Club%.",
         "Laurito — маленькая бухта с доступом на лодке‑шаттле. Отлично для позднего купания, но общественного места мало, и тайминг важен. Перед тем как решиться, посмотрите %LINK:lauritoBeachGuide|гайд по пляжу Laurito%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Вид на главный пляж Позитано (Spiaggia Grande) с городом на скале на заднем плане",
+          "caption": "Spiaggia Grande (главный пляж) — Фото: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Пляж Fornillo в Позитано с зонтиками вдоль берега",
+          "caption": "Fornillo (обычно спокойнее + дешевле) — Фото: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Пляжная зона Arienzo на Амальфитанском побережье рядом с Позитано",
+          "caption": "Arienzo (солнце после обеда, часто на лодке‑шаттле) — Фото: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Gavitella в Прайано лучше всего поздним днём: золотой свет и закатная атмосфера. Большая часть — платформы и клубы, а бесплатное место (если есть) ограничено, поэтому для комфорта рассчитывайте на платный вариант. Пошаговый доступ: %LINK:gavitellaBeachGuide|гайд по Gavitella%.",
         "Marina di Praia — узкая галечная бухта между скалами и рыбацкими лодками. Хорошая смена картинки и обычно ощущается более «спрятанной». Варианты транспорта: %LINK:marinaDiPraiaBeaches|гайд по Marina di Praia%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Бухта Marina di Praia, окружённая скалами и лодками",
+          "caption": "Marina di Praia (Прайано) — Фото: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Фьорд‑стайл бухта в Фуроре",
       "body": [
         "Fiordo di Furore — крошечная и очень эффектная бухта под мостом. Вход бесплатный, но места мало, а путь вниз крутой (и жаркий летом). Идите рано, берите воду и не рассчитывайте на инфраструктуру."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Мост над Fiordo di Furore, узкая бухта и вода внизу",
+          "caption": "Fiordo di Furore (драматичная бухта) — Фото: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "Если у вас день в бич‑клубе с трансфером на лодке (Arienzo или Laurito), часто проще стартовать со Spiaggia Grande: так вы сможете занять очередь пораньше и избежать лестниц.",
         "Летом 2026 планируйте жару на подъёмах: пополняйте воду перед дорогой вверх, а если устали — используйте внутренний автобус вместо того, чтобы идти каждый шаг.",
         "Для выездов на день (Прайано, Амальфи, Сорренто) проверьте последнее возвращение прежде чем решиться. Паромы — лучший вариант, когда они ходят, но автобусы — запасной план. Если море штормит или паромы отменяют, заложите больше времени и оставьте расписание гибким. Возьмите перекус в дорогу."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Люди на пляже и лодки на якоре в бухте рядом с Позитано",
+          "caption": "Лодки в бухте (возьмите гермомешок для телефона) — Фото: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "На каком пляже лучший закат?",
       "answer": "Gavitella в Прайано известна закатными аперитивами. Laurito тоже получает позднее солнце — особенно если воспользоваться лодкой‑шаттлом и правильно выбрать время."
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Вид на главный пляж Позитано (Spiaggia Grande) с городом на скале на заднем плане",
-      "caption": "Spiaggia Grande (главный пляж)",
-      "credits": ["Фото: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Пляж Fornillo в Позитано с зонтиками вдоль берега",
-      "caption": "Fornillo (обычно спокойнее + дешевле)",
-      "credits": ["Фото: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Пляжная зона Arienzo на Амальфитанском побережье рядом с Позитано",
-      "caption": "Arienzo (солнце после обеда, часто на лодке‑шаттле)",
-      "credits": ["Фото: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Мост над Fiordo di Furore, узкая бухта и вода внизу",
-      "caption": "Fiordo di Furore (драматичная бухта)",
-      "credits": ["Фото: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Бухта Marina di Praia, окружённая скалами и лодками",
-      "caption": "Marina di Praia (Прайано)",
-      "credits": ["Фото: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Широкий вид на город Позитано и побережье со стороны моря",
-      "caption": "Побережье Позитано (будут лестницы)",
-      "credits": ["Фото: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Пляжные зонтики и купающиеся вдоль берега Позитано",
-      "caption": "Зонтики на пляже Позитано (атмосфера пикового дня)",
-      "credits": ["Фото: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Люди на пляже и лодки на якоре в бухте рядом с Позитано",
-      "caption": "Лодки в бухте (возьмите гермомешок для телефона)",
-      "credits": ["Фото: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

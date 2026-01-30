@@ -10,7 +10,6 @@
     "टेबल से माहौल, लाउंजर की कीमतें और फ्री एरिया आमतौर पर कहाँ होते हैं — सब तुलना करें। टेबल में किसी बीच के नाम पर क्लिक करें और हॉस्टल से दिशा‑निर्देश वाला मिनी‑गाइड खोलें।",
     "हॉस्टल टिप: यहाँ के बीच कंकड़ वाले हैं। वॉटर शूज़ (या मजबूत सैंडल), मोटा तौलिया/मैट, और बैकअप के लिए थोड़ा कैश रखें।"
   ],
-  "galleryTitle": "पोसितानो बीच हाइलाइट्स",
   "comparisonTable": {
     "title": "अमाल्फी कोस्ट बीच तुलना"
   },
@@ -64,6 +63,18 @@
         "पोसितानो में कंकड़ वाले बीच हैं, जहाँ बीच क्लब (पेड) और पब्लिक एरिया (फ्री) दोनों मिलते हैं। कीमतें शांत बीच पर ~€15 प्रति लाउंजर से लेकर प्रीमियम डेक सेटअप के लिए €100+ तक जा सकती हैं।",
         "अगर आपका बजट हॉस्टल‑वाला है, तो Fornillo से शुरू करें (आमतौर पर सस्ता और शांत)। क्लासिक “पोस्टकार्ड” व्यू के लिए Spiaggia Grande जल्दी जाएँ। देर‑दोपहर/शाम की धूप के लिए Arienzo या Laurito अच्छे हो सकते हैं — लेकिन पहुँचना थोड़ा मुश्किल है।",
         "2026 के लिए क्विक पिक्स: सबसे सस्ता चिल‑डे = Fornillo; सबसे आसान “आइकॉनिक Positano” फोटो = Spiaggia Grande; सबसे अच्छी लेट सन = Arienzo (बोट से) या Laurito; सबसे ड्रामैटिक कोव डे‑ट्रिप = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "समुद्र से दिखता पोसितानो शहर और तटरेखा का वाइड व्यू",
+          "caption": "Positano कोस्टलाइन (सीढ़ियाँ तैयार रखें) — फ़ोटो: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "पोसितानो के किनारे पर बीच छाते और तैराक",
+          "caption": "पोसितानो बीच पर छाते (पीक‑डे वाइब) — फ़ोटो: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (मुख्य बीच) वही क्लासिक पोस्टकार्ड व्यू है। यहाँ भीड़ और कीमतें दोनों ज्यादा रहती हैं। जाना हो तो जल्दी जाएँ, पब्लिक स्ट्रिप ढूँढें, और उम्मीदें सेट रखें। जल्दी पहुँचने के लिए %LINK:positanoMainBeachWalkDown|पैदल दिशा‑निर्देश% या %LINK:positanoMainBeachBusDown|बस गाइड% देखें।",
         "Arienzo देर‑दोपहर की लंबी धूप के लिए फेमस है। लेकिन पैदल जाएँ तो बहुत सी सीढ़ियाँ हैं, और ज्यादातर लोग बीच क्लब की शटल बोट लेते हैं। लाउंजर + लंच + बोट ट्रांसफर वाले पैकेज अक्सर अच्छा वैल्यू देते हैं। टाइमिंग के लिए %LINK:arienzoBeachClub|Arienzo Beach Club गाइड% देखें।",
         "Laurito एक छोटा कोव है जहाँ शटल बोट से पहुँचना आसान है। देर‑शाम की तैराकी के लिए बढ़िया, लेकिन पब्लिक जगह सीमित है और टाइमिंग जरूरी है। कमिट करने से पहले %LINK:lauritoBeachGuide|Laurito बीच गाइड% देखें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "पोसितानो के मुख्य बीच (Spiaggia Grande) का दृश्य, पीछे चट्टान पर बसा शहर",
+          "caption": "Spiaggia Grande (मुख्य बीच) — फ़ोटो: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "पोसितानो का Fornillo बीच, किनारे पर छाते लगे हुए",
+          "caption": "Fornillo (आमतौर पर शांत + बजट‑फ्रेंडली) — फ़ोटो: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "पोसितानो के पास अमाल्फी कोस्ट पर Arienzo बीच क्षेत्र",
+          "caption": "Arienzo (अफ्टरनून सन, अक्सर शटल बोट से) — फ़ोटो: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Praiano का Gavitella लेट‑आफ्टरनून में गोल्डन लाइट और सनसेट वाइब्स के लिए सबसे अच्छा है। ज्यादातर हिस्सा प्लेटफ़ॉर्म और क्लब हैं; फ्री स्पेस (अगर हो) तो कम होती है, इसलिए आराम चाहिए तो पेड सेटअप मानकर चलें। स्टेप‑बाय‑स्टेप एक्सेस के लिए %LINK:gavitellaBeachGuide|Gavitella बीच गाइड% देखें।",
         "Marina di Praia एक संकरा कंकड़ीला कोव है, जो चट्टानों और मछुआरों की नावों से घिरा है। सीनरी बदलने के लिए बढ़िया और अक्सर ज्यादा छुपा‑सा लगता है। ट्रांसपोर्ट विकल्पों के लिए %LINK:marinaDiPraiaBeaches|Marina di Praia गाइड% देखें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Marina di Praia का कोव, चारों तरफ चट्टानें और नावें",
+          "caption": "Marina di Praia (Praiano) — फ़ोटो: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Furore का fjord‑स्टाइल कोव",
       "body": [
         "Fiordo di Furore पुल के नीचे एक छोटा, बेहद ड्रामैटिक कोव है। एंट्री फ्री है, लेकिन जगह कम है और रास्ता खड़ा (और गर्मियों में बहुत गरम) होता है। जल्दी जाएँ, पानी साथ रखें, और सुविधाओं पर भरोसा न करें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Fiordo di Furore का पुल, नीचे संकरा कोव और पानी",
+          "caption": "Fiordo di Furore (ड्रामैटिक कोव) — फ़ोटो: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "अगर आपका बीच‑क्लब‑डे बोट ट्रांसफर (Arienzo या Laurito) के साथ है, तो आमतौर पर Spiaggia Grande से शुरू करना सबसे आसान रहता है ताकि आप जल्दी लाइन में लग सकें और सीढ़ियों से बचें।",
         "समर 2026 में चढ़ाई पर गर्मी के लिए तैयार रहें: ऊपर लौटने से पहले पानी भर लें, और अगर थक जाएँ तो हर सीढ़ी चलने के बजाय अंदर वाली बस लें।",
         "डे‑ट्रिप्स (Praiano, Amalfi, Sorrento) के लिए कमिट करने से पहले आख़िरी रिटर्न ऑप्शन चेक करें। फेरी चल रही हो तो सबसे अच्छा विकल्प है, लेकिन बैकअप बस है। अगर समुद्र खराब हो या फेरी कैंसिल हो जाए, तो अतिरिक्त समय रखें और प्लान लचीला रखें। सफर के लिए स्नैक्स पैक करें।"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "बीच पर लोग और पोसितानो के पास खाड़ी में लंगर डाले नावें",
+          "caption": "खाड़ी में नावें (फोन के लिए ड्राई बैग लाएँ) — फ़ोटो: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "किस बीच पर सनसेट व्यू सबसे अच्छा है?",
       "answer": "Praiano का Gavitella सनसेट aperitivi के लिए मशहूर है। Laurito पर भी देर‑शाम की धूप मिल सकती है, खासकर अगर आप शटल बोट लें और टाइमिंग सही रखें।"
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "पोसितानो के मुख्य बीच (Spiaggia Grande) का दृश्य, पीछे चट्टान पर बसा शहर",
-      "caption": "Spiaggia Grande (मुख्य बीच)",
-      "credits": ["फ़ोटो: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "पोसितानो का Fornillo बीच, किनारे पर छाते लगे हुए",
-      "caption": "Fornillo (आमतौर पर शांत + बजट‑फ्रेंडली)",
-      "credits": ["फ़ोटो: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "पोसितानो के पास अमाल्फी कोस्ट पर Arienzo बीच क्षेत्र",
-      "caption": "Arienzo (अफ्टरनून सन, अक्सर शटल बोट से)",
-      "credits": ["फ़ोटो: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Fiordo di Furore का पुल, नीचे संकरा कोव और पानी",
-      "caption": "Fiordo di Furore (ड्रामैटिक कोव)",
-      "credits": ["फ़ोटो: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Marina di Praia का कोव, चारों तरफ चट्टानें और नावें",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["फ़ोटो: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "समुद्र से दिखता पोसितानो शहर और तटरेखा का वाइड व्यू",
-      "caption": "Positano कोस्टलाइन (सीढ़ियाँ तैयार रखें)",
-      "credits": ["फ़ोटो: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "पोसितानो के किनारे पर बीच छाते और तैराक",
-      "caption": "पोसितानो बीच पर छाते (पीक‑डे वाइब)",
-      "credits": ["फ़ोटो: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "बीच पर लोग और पोसितानो के पास खाड़ी में लंगर डाले नावें",
-      "caption": "खाड़ी में नावें (फोन के लिए ड्राई बैग लाएँ)",
-      "credits": ["फ़ोटो: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

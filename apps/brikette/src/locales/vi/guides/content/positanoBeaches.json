@@ -10,7 +10,6 @@
     "Dùng bảng để so sánh vibe, giá ghế nằm và khu miễn phí thường nằm ở đâu. Bấm vào tên bãi biển trong bảng để mở mini‑guide kèm đường đi từ hostel.",
     "Mẹo cho khách hostel: bãi biển đa phần là sỏi. Mang giày đi nước (hoặc sandal chắc chắn), khăn/tấm lót dày hơn, và một ít tiền mặt dự phòng."
   ],
-  "galleryTitle": "Điểm nổi bật bãi biển Positano",
   "comparisonTable": {
     "title": "So sánh bãi biển Bờ biển Amalfi"
   },
@@ -64,6 +63,18 @@
         "Positano có bãi sỏi với cả beach club (trả phí) và khu công cộng (miễn phí). Giá có thể từ ~€15/ghế nằm ở bãi yên tĩnh đến €100+ cho set deck “premium”.",
         "Nếu bạn ở hostel và muốn tiết kiệm, bắt đầu với Fornillo (thường rẻ hơn và yên hơn). Muốn ảnh “postcard” thì đi Spiaggia Grande sớm. Muốn nắng muộn, Arienzo hoặc Laurito rất ổn — nhưng đường đi khó hơn.",
         "Gợi ý nhanh 2026: ngày chill rẻ nhất = Fornillo; ảnh “Positano biểu tượng” dễ nhất = Spiaggia Grande; nắng muộn tốt nhất = Arienzo (đi thuyền) hoặc Laurito; vịnh kịch tính nhất để đi trong ngày = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Góc nhìn rộng từ biển về thị trấn Positano và đường bờ biển",
+          "caption": "Bờ biển Positano (nhiều bậc thang) — Ảnh: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Ô dù và người bơi dọc theo bờ biển Positano",
+          "caption": "Ô dù trên bãi Positano (vibe ngày đông) — Ảnh: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (bãi chính) là view “postcard” kinh điển. Nhưng cũng đông và đắt. Nếu muốn trải nghiệm, đi sớm, tìm dải công cộng và đặt kỳ vọng vừa phải. Dùng %LINK:positanoMainBeachWalkDown|chỉ đường đi bộ% hoặc %LINK:positanoMainBeachBusDown|guide đi bus% để xuống nhanh.",
         "Arienzo nổi tiếng vì nắng chiều dài. Điểm trừ: rất nhiều bậc thang nếu đi bộ; đa số dùng thuyền shuttle của beach club. Gói gồm ghế nằm + bữa trưa + transfer thuyền đôi khi rất đáng tiền. Xem %LINK:arienzoBeachClub|guide Arienzo Beach Club% để biết giờ.",
         "Laurito là vịnh nhỏ đi bằng thuyền shuttle. Hợp cho bơi muộn cuối ngày, nhưng không gian công cộng hạn chế và timing quan trọng. Xem %LINK:lauritoBeachGuide|guide bãi Laurito% trước khi quyết."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Toàn cảnh bãi chính Positano (Spiaggia Grande) với thị trấn trên sườn vách đá phía sau",
+          "caption": "Spiaggia Grande (bãi chính) — Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Bãi Fornillo ở Positano với ô dù dọc theo bờ biển",
+          "caption": "Fornillo (thường yên hơn + hợp ngân sách) — Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Khu bãi Arienzo trên Bờ biển Amalfi gần Positano",
+          "caption": "Arienzo (nắng chiều, thường đi thuyền shuttle) — Ảnh: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Gavitella ở Praiano đẹp nhất lúc chiều muộn: ánh vàng và vibe ngắm hoàng hôn. Nhiều chỗ là platform và club; khu miễn phí (nếu có) khá ít, nên nếu muốn thoải mái hãy tính phương án trả phí. Xem %LINK:gavitellaBeachGuide|guide bãi Gavitella% để đi từng bước.",
         "Marina di Praia là vịnh sỏi hẹp kẹp giữa vách đá và thuyền đánh cá. Đổi cảnh rất đã và thường cảm giác “kín” hơn. Xem %LINK:marinaDiPraiaBeaches|guide Marina di Praia% để chọn cách đi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Vịnh Marina di Praia được bao quanh bởi vách đá và thuyền",
+          "caption": "Marina di Praia (Praiano) — Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Vịnh kiểu “fjord” ở Furore",
       "body": [
         "Fiordo di Furore là vịnh nhỏ, rất kịch tính dưới cây cầu. Vào miễn phí, nhưng chỗ ít và đường xuống dốc (mùa hè rất nóng). Đi sớm, mang nước, và đừng trông chờ nhiều dịch vụ."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Cây cầu Fiordo di Furore phía trên vịnh hẹp và mặt nước",
+          "caption": "Fiordo di Furore (vịnh kịch tính) — Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "Nếu bạn có ngày beach club kèm transfer thuyền (Arienzo hoặc Laurito), thường dễ nhất là bắt đầu từ Spiaggia Grande để xếp hàng sớm và tránh leo nhiều bậc.",
         "Mùa hè 2026, nhớ tính đến cái nóng khi leo dốc: đổ đầy nước trước khi đi lên lại, và nếu mệt thì dùng bus nội bộ thay vì leo hết.",
         "Với các chuyến đi trong ngày (Praiano, Amalfi, Sorrento), hãy kiểm tra chuyến về cuối cùng trước khi quyết. Ferry là lựa chọn dễ chịu nhất khi chạy, nhưng bus là phương án dự phòng. Nếu biển động hoặc ferry bị hủy, hãy chừa thêm thời gian và giữ lịch linh hoạt. Mang snack cho chuyến đi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Người trên bãi với thuyền neo trong vịnh gần Positano",
+          "caption": "Thuyền trong vịnh (mang túi chống nước cho điện thoại) — Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "Bãi nào ngắm hoàng hôn đẹp nhất?",
       "answer": "Gavitella ở Praiano nổi tiếng với aperitivo lúc hoàng hôn. Laurito cũng có nắng muộn, nhất là khi đi thuyền shuttle và canh giờ đúng."
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Toàn cảnh bãi chính Positano (Spiaggia Grande) với thị trấn trên sườn vách đá phía sau",
-      "caption": "Spiaggia Grande (bãi chính)",
-      "credits": ["Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Bãi Fornillo ở Positano với ô dù dọc theo bờ biển",
-      "caption": "Fornillo (thường yên hơn + hợp ngân sách)",
-      "credits": ["Ảnh: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Khu bãi Arienzo trên Bờ biển Amalfi gần Positano",
-      "caption": "Arienzo (nắng chiều, thường đi thuyền shuttle)",
-      "credits": ["Ảnh: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Cây cầu Fiordo di Furore phía trên vịnh hẹp và mặt nước",
-      "caption": "Fiordo di Furore (vịnh kịch tính)",
-      "credits": ["Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Vịnh Marina di Praia được bao quanh bởi vách đá và thuyền",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Ảnh: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Góc nhìn rộng từ biển về thị trấn Positano và đường bờ biển",
-      "caption": "Bờ biển Positano (nhiều bậc thang)",
-      "credits": ["Ảnh: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Ô dù và người bơi dọc theo bờ biển Positano",
-      "caption": "Ô dù trên bãi Positano (vibe ngày đông)",
-      "credits": ["Ảnh: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Người trên bãi với thuyền neo trong vịnh gần Positano",
-      "caption": "Thuyền trong vịnh (mang túi chống nước cho điện thoại)",
-      "credits": ["Ảnh: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

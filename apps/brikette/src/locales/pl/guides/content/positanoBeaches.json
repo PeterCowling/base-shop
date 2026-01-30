@@ -10,7 +10,6 @@
     "Użyj tabeli, aby porównać klimat, ceny leżaków i gdzie zwykle są strefy darmowe. Kliknij nazwę plaży w tabeli, aby otworzyć mini‑przewodnik z dojściem z hostelu.",
     "Tip dla hostelu: plaże są kamieniste. Zabierz buty do wody (lub solidne sandały), grubszy ręcznik/matę i trochę gotówki na wszelki wypadek."
   ],
-  "galleryTitle": "Najciekawsze plaże w Positano",
   "comparisonTable": {
     "title": "Porównanie plaż na Wybrzeżu Amalfitańskim"
   },
@@ -64,6 +63,18 @@
         "Positano ma kamieniste plaże z mieszanką beach clubów (płatnych) i stref publicznych (darmowych). Ceny potrafią wynosić od ok. 15€ za leżak na spokojniejszych plażach do 100€+ za premium zestawy na tarasach.",
         "Jeśli masz budżet hostelowy, zacznij od Fornillo (zwykle taniej i spokojniej). Jeśli chcesz klasyczny „pocztówkowy” widok, idź rano na Spiaggia Grande. Na późne słońce świetne bywa Arienzo lub Laurito — ale dojście jest trudniejsze.",
         "Szybkie wybory na 2026: najtańszy chill = Fornillo; najłatwiejsze “ikoniczne Positano” foto = Spiaggia Grande; najlepsze późne słońce = Arienzo (łodzią) lub Laurito; najbardziej dramatyczna zatoczka na wycieczkę = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Szeroki widok na miasto Positano i linię brzegową od strony morza",
+          "caption": "Wybrzeże Positano (sporo schodów) — Zdjęcie: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Parasole plażowe i kąpiący się wzdłuż brzegu w Positano",
+          "caption": "Parasole na plaży Positano (klimat dnia w szczycie sezonu) — Zdjęcie: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (główna plaża) to klasyczny pocztówkowy widok. Jest też tłoczno i drogo. Jeśli chcesz ją zaliczyć, przyjdź wcześnie, znajdź pas publiczny i nastaw się na tłum. Użyj %LINK:positanoMainBeachWalkDown|dojścia pieszo% albo %LINK:positanoMainBeachBusDown|poradnika busa% żeby szybko dotrzeć.",
         "Arienzo słynie z długiego słońca po południu. Minus: dużo schodów, jeśli idziesz pieszo, a większość osób korzysta z łodzi‑shuttla beach clubu. Pakiety z leżakami + lunchem + transferem łodzią mogą być opłacalne. Godziny: %LINK:arienzoBeachClub|przewodnik Arienzo Beach Club%.",
         "Laurito to mała zatoczka z dojazdem łodzią. Świetna na późne pływanie, ale przestrzeń publiczna jest ograniczona i timing ma znaczenie. Zobacz %LINK:lauritoBeachGuide|przewodnik po plaży Laurito% zanim się zdecydujesz."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Widok na główną plażę Positano (Spiaggia Grande) z miastem na klifie w tle",
+          "caption": "Spiaggia Grande (główna plaża) — Zdjęcie: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Plaża Fornillo w Positano z parasolami wzdłuż brzegu",
+          "caption": "Fornillo (zwykle spokojniej + bardziej budżetowo) — Zdjęcie: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Strefa plaży Arienzo na Wybrzeżu Amalfitańskim koło Positano",
+          "caption": "Arienzo (popołudniowe słońce, zwykle łodzią) — Zdjęcie: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Gavitella w Praiano jest najlepsza późnym popołudniem: złote światło i zachód słońca. Dużo to platformy i kluby, a darmowa przestrzeń (jeśli jest) bywa mała, więc dla komfortu lepiej zakładać płatny zestaw. Dostęp krok po kroku: %LINK:gavitellaBeachGuide|przewodnik po Gavitella%.",
         "Marina di Praia to wąska kamienista zatoczka wciśnięta między klify i łodzie rybackie. Fajna odmiana i często bardziej “schowana”. Opcje transportu: %LINK:marinaDiPraiaBeaches|przewodnik Marina di Praia%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Zatoczka Marina di Praia otoczona klifami i łodziami",
+          "caption": "Marina di Praia (Praiano) — Zdjęcie: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Fiordowa zatoka w Furore",
       "body": [
         "Fiordo di Furore to mała, bardzo spektakularna zatoczka pod mostem. Wejście jest darmowe, ale miejsca jest mało, a zejście strome (i gorące latem). Idź wcześnie, weź wodę i nie licz na infrastrukturę."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Most nad Fiordo di Furore, wąska zatoczka i woda",
+          "caption": "Fiordo di Furore (dramatyczna zatoczka) — Zdjęcie: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "Jeśli planujesz dzień w beach clubie z transferem łodzią (Arienzo lub Laurito), często najłatwiej wystartować ze Spiaggia Grande: ustawisz się wcześniej w kolejce i unikniesz schodów.",
         "Latem 2026 zaplanuj upał na podejściach: uzupełnij wodę zanim ruszysz w górę, a gdy jesteś zmęczony, skorzystaj z wewnętrznego busa zamiast iść każdy stopień.",
         "Na jednodniówki (Praiano, Amalfi, Sorrento) sprawdź ostatni powrót zanim się zdecydujesz. Promy są najprzyjemniejsze, gdy pływają, ale autobusy to plan B. Jeśli morze jest wzburzone lub promy odwołane, dolicz czas i trzymaj plan elastyczny. Spakuj przekąski na drogę."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Ludzie na plaży i łodzie zacumowane w zatoce koło Positano",
+          "caption": "Łodzie w zatoce (weź suchy worek na telefon) — Zdjęcie: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "Która plaża ma najlepszy zachód słońca?",
       "answer": "Gavitella w Praiano jest znana z aperitivi o zachodzie słońca. Laurito też potrafi mieć późne słońce, zwłaszcza jeśli dopłyniesz łodzią i dobrze to zaplanujesz."
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Widok na główną plażę Positano (Spiaggia Grande) z miastem na klifie w tle",
-      "caption": "Spiaggia Grande (główna plaża)",
-      "credits": ["Zdjęcie: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Plaża Fornillo w Positano z parasolami wzdłuż brzegu",
-      "caption": "Fornillo (zwykle spokojniej + bardziej budżetowo)",
-      "credits": ["Zdjęcie: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Strefa plaży Arienzo na Wybrzeżu Amalfitańskim koło Positano",
-      "caption": "Arienzo (popołudniowe słońce, zwykle łodzią)",
-      "credits": ["Zdjęcie: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Most nad Fiordo di Furore, wąska zatoczka i woda",
-      "caption": "Fiordo di Furore (dramatyczna zatoczka)",
-      "credits": ["Zdjęcie: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Zatoczka Marina di Praia otoczona klifami i łodziami",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Zdjęcie: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Szeroki widok na miasto Positano i linię brzegową od strony morza",
-      "caption": "Wybrzeże Positano (sporo schodów)",
-      "credits": ["Zdjęcie: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Parasole plażowe i kąpiący się wzdłuż brzegu w Positano",
-      "caption": "Parasole na plaży Positano (klimat dnia w szczycie sezonu)",
-      "credits": ["Zdjęcie: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Ludzie na plaży i łodzie zacumowane w zatoce koło Positano",
-      "caption": "Łodzie w zatoce (weź suchy worek na telefon)",
-      "credits": ["Zdjęcie: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

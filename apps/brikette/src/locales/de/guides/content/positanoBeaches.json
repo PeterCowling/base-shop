@@ -10,7 +10,6 @@
     "Nutze die Tabelle, um Stimmung, Liegenpreise und die üblichen freien Bereiche zu vergleichen. Klicke in der Tabelle auf einen Strandnamen, um die Mini-Guide-Version mit Wegbeschreibung vom Hostel zu öffnen.",
     "Hostel-Tipp: Die Strände sind kieselig. Nimm Wasserschuhe (oder robuste Sandalen), ein dickeres Handtuch/Matte und etwas Bargeld als Backup mit."
   ],
-  "galleryTitle": "Positano Strand-Highlights",
   "comparisonTable": {
     "title": "Strandvergleich an der Amalfiküste"
   },
@@ -33,7 +32,19 @@
       "body": [
         "Positano hat Kiesstrände mit einer Mischung aus Beach Clubs (kostenpflichtig) und öffentlichen Bereichen (kostenlos). Die Preise reichen von ~15 € pro Liege an ruhigeren Stränden bis zu 100 €+ für Premium-Decks.",
         "Wenn du als Hostel-Gast aufs Budget achtest: Starte mit Fornillo (meist günstiger und entspannter). Für das klassische Postkartenbild geh früh zur Spiaggia Grande. Für späte Sonne sind Arienzo oder Laurito top – aber die Anreise ist etwas trickreicher.",
-        "Quick Picks für 2026: günstigster Chill‑Tag = Fornillo; einfachstes „ikonisches Positano“-Foto = Spiaggia Grande; beste späte Sonne = Arienzo (per Boot) oder Laurito; dramatischster Cove‑Tagestrip = Fiordo di Furore."
+        "Quick Picks für 2026: günstigster Chill‑Tag = Fornillo; einfachstes „ikonisches Positano"-Foto = Spiaggia Grande; beste späte Sonne = Arienzo (per Boot) oder Laurito; dramatischster Cove‑Tagestrip = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Weitblick auf Positano und die Küste vom Meer aus",
+          "caption": "Positano-Küste (viele Treppen) — Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Strand-Schirme und Schwimmer entlang der Küste von Positano",
+          "caption": "Schirme am Positano-Strand (Peak-Day-Vibe) — Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -61,6 +72,23 @@
         "Spiaggia Grande (Hauptstrand) ist das klassische Postkartenmotiv. Er ist aber auch voll und teuer. Wenn du hinwillst: geh früh, such den öffentlichen Abschnitt und setz die Erwartungen realistisch. Nutze unsere %LINK:positanoMainBeachWalkDown|Wegbeschreibung zu Fuß% oder den %LINK:positanoMainBeachBusDown|Bus-Guide%.",
         "Arienzo ist bekannt für lange Nachmittagssonne. Der Haken: viele Stufen, wenn du zu Fuß gehst – die meisten nutzen das Shuttleboot des Beach Clubs. Pakete mit Liegen + Lunch + Bootstransfer können ein gutes Preis-Leistungs-Verhältnis haben. Siehe %LINK:arienzoBeachClub|Arienzo Beach Club Guide% für Zeiten.",
         "Laurito ist eine kleine Bucht, oft per Shuttleboot erreichbar. Perfekt für spätes Schwimmen, aber der öffentliche Platz ist begrenzt und die Zeiten sind wichtig. Siehe %LINK:lauritoBeachGuide|Laurito-Strandguide%, bevor du dich festlegst."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Blick auf Positanos Hauptstrand (Spiaggia Grande) mit dem Ort an den Klippen im Hintergrund",
+          "caption": "Spiaggia Grande (Hauptstrand) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Fornillo Beach in Positano mit Sonnenschirmen entlang der Küste",
+          "caption": "Fornillo (meist ruhiger + budgetfreundlicher) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Strandbereich von Arienzo an der Amalfiküste bei Positano",
+          "caption": "Arienzo (Nachmittagssonne, oft per Shuttleboot) — Foto: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -69,6 +97,13 @@
       "body": [
         "Gavitella in Praiano ist am besten am späten Nachmittag: goldenes Licht und Sunset-Vibes. Vieles sind Plattformen und Clubs, und der freie Bereich (falls vorhanden) ist begrenzt – für Komfort plane eher eine bezahlte Option ein. Nutze den %LINK:gavitellaBeachGuide|Gavitella-Strandguide% für Schritt-für-Schritt-Zugang.",
         "Marina di Praia ist eine schmale Kiesbucht, eingerahmt von Klippen und Fischerbooten. Super als Tapetenwechsel und meist etwas ruhiger. Siehe %LINK:marinaDiPraiaBeaches|Marina-di-Praia-Guide% für Transportoptionen."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Bucht von Marina di Praia, eingerahmt von Klippen und Booten",
+          "caption": "Marina di Praia (Praiano) — Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -76,6 +111,13 @@
       "title": "Furores fjordartige Bucht",
       "body": [
         "Fiordo di Furore ist eine winzige, dramatische Bucht unter einer Brücke. Der Eintritt ist gratis, aber es gibt wenig Platz, und der Zugang ist steil (und im Sommer heiß). Geh früh los, nimm Wasser mit und rechne nicht mit Infrastruktur."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Brücke am Fiordo di Furore über der schmalen Bucht und dem Wasser",
+          "caption": "Fiordo di Furore (dramatische Bucht) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -100,6 +142,13 @@
         "Wenn du einen Beach-Club-Tag mit Bootstransfer machst (Arienzo oder Laurito), ist es oft am einfachsten, bei Spiaggia Grande zu starten: früh anstellen und die Treppen vermeiden.",
         "Im Sommer 2026: plane Hitze für die Anstiege ein. Füll Wasser auf, bevor du wieder hochgehst, und wenn du müde bist, nimm lieber den internen Bus statt jede Stufe zu laufen.",
         "Für Tagestrips (Praiano, Amalfi, Sorrent) check vorab die letzte Rückfahrt. Fähren sind die schönste Option, wenn sie fahren, Busse sind der Plan B. Wenn das Meer rau ist oder Fähren ausfallen, plane extra Zeit und bleib flexibel. Nimm Snacks für die Fahrt mit."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Menschen am Strand mit Booten, die in der Bucht bei Positano ankern",
+          "caption": "Boote in der Bucht (Dry Bag fürs Handy mitnehmen) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -153,56 +202,6 @@
     {
       "question": "Welcher Strand hat die besten Sonnenuntergänge?",
       "answer": "Gavitella in Praiano ist bekannt für Sunset-Aperitivi. Laurito kann ebenfalls späte Sonne haben – besonders, wenn du das Shuttleboot nutzt und die Zeiten gut triffst."
-    }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Blick auf Positanos Hauptstrand (Spiaggia Grande) mit dem Ort an den Klippen im Hintergrund",
-      "caption": "Spiaggia Grande (Hauptstrand)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Fornillo Beach in Positano mit Sonnenschirmen entlang der Küste",
-      "caption": "Fornillo (meist ruhiger + budgetfreundlicher)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Strandbereich von Arienzo an der Amalfiküste bei Positano",
-      "caption": "Arienzo (Nachmittagssonne, oft per Shuttleboot)",
-      "credits": ["Foto: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Brücke am Fiordo di Furore über der schmalen Bucht und dem Wasser",
-      "caption": "Fiordo di Furore (dramatische Bucht)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Bucht von Marina di Praia, eingerahmt von Klippen und Booten",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Weitblick auf Positano und die Küste vom Meer aus",
-      "caption": "Positano-Küste (viele Treppen)",
-      "credits": ["Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Strand-Schirme und Schwimmer entlang der Küste von Positano",
-      "caption": "Schirme am Positano-Strand (Peak-Day-Vibe)",
-      "credits": ["Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Menschen am Strand mit Booten, die in der Bucht bei Positano ankern",
-      "caption": "Boote in der Bucht (Dry Bag fürs Handy mitnehmen)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }

@@ -10,7 +10,6 @@
     "A táblázatban hasonlítsd össze a hangulatot, a napágyárakat és azt, hogy általában hol vannak az ingyenes részek. Kattints a táblázatban egy strand nevére, és megnyílik a mini‑útmutató útvonaltervvel a hosteltől.",
     "Hostel tipp: a strandok kavicsosak. Vigyél vízicipőt (vagy strapabíró szandált), vastagabb törölközőt/polifoamot, és legyen nálad némi készpénz tartalékban."
   ],
-  "galleryTitle": "Positano strand‑kiemelések",
   "comparisonTable": {
     "title": "Amalfi‑part strand összehasonlítás"
   },
@@ -64,6 +63,18 @@
         "Positanóban kavicsos strandok vannak, vegyesen beach clubokkal (fizetős) és közterületekkel (ingyenes). Az árak a nyugodtabb strandokon ~15€ napágytól a prémium terasz‑szettekig (100€+) terjedhetnek.",
         "Ha hostel‑büdzsében utazol, kezdd Fornillóval (általában olcsóbb és nyugodtabb). A klasszikus „képeslap” nézethez menj korán a Spiaggia Grandéra. Késő délutáni naphoz Arienzo vagy Laurito szuper lehet — de macerásabb a megközelítés.",
         "Gyors választás 2026‑ra: legolcsóbb chill nap = Fornillo; legegyszerűbb „ikonikus Positano” fotó = Spiaggia Grande; legjobb késői nap = Arienzo (hajóval) vagy Laurito; legdrámaibb öböl‑kirándulás = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Széles kilátás Positano városára és a partvonalra a tengerről",
+          "caption": "Positano partvonala (készülj lépcsőkre) — Fotó: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Napernyők és fürdőzők Positano partja mentén",
+          "caption": "Napernyők Positanóban (csúcsnapi hangulat) — Fotó: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (a főstrand) a klasszikus képeslap‑nézet. Ugyanakkor zsúfolt és drága is. Ha mindenképp mennél, érkezz korán, keresd meg a közösségi sávot, és számíts rá, hogy tömeg lesz. Használd a %LINK:positanoMainBeachWalkDown|gyalogos útvonalat% vagy a %LINK:positanoMainBeachBusDown|busz‑útmutatót% a gyors lejutáshoz.",
         "Arienzót a hosszú délutáni napfény miatt szeretik. A bökkenő: rengeteg lépcső, ha gyalog mész, és a legtöbben a beach club shuttle hajóját használják. A napágy + ebéd + hajótranszfer csomagok jó ár‑érték arányt adhatnak. Időpontokért nézd a %LINK:arienzoBeachClub|Arienzo Beach Club útmutatót%.",
         "Laurito egy kicsi öböl shuttle hajóval. Szuper lehet egy késői fürdőzéshez, de az ingyenes rész kicsi, és a timing fontos. Mielőtt döntesz, nézd meg a %LINK:lauritoBeachGuide|Laurito strandkalauzt%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Kilátás Positano főstrandjára (Spiaggia Grande), a háttérben a sziklafalra épült várossal",
+          "caption": "Spiaggia Grande (főstrand) — Fotó: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "A positano‑i Fornillo strand napernyőkkel a part mentén",
+          "caption": "Fornillo (általában nyugodtabb + pénztárcabarátabb) — Fotó: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Arienzo strandterület az Amalfi‑parton Positano közelében",
+          "caption": "Arienzo (délutáni nap, gyakran shuttle hajóval) — Fotó: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Praianóban a Gavitella késő délután a legjobb arany fényben és naplementés hangulathoz. Sok a platform és a beach club, az ingyenes hely (ha van) korlátozott, ezért kényelmes naphoz számolj fizetős hellyel. Lépésről lépésre: %LINK:gavitellaBeachGuide|Gavitella strandkalauz%.",
         "Marina di Praia egy keskeny, kavicsos öböl sziklákkal és halászhajókkal. Jó változatosság, és gyakran „eldugottabbnak” érződik. Közlekedési tippek: %LINK:marinaDiPraiaBeaches|Marina di Praia útmutató%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "A Marina di Praia öble sziklákkal és csónakokkal keretezve",
+          "caption": "Marina di Praia (Praiano) — Fotó: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Furore fjord‑szerű öble",
       "body": [
         "A Fiordo di Furore egy pici, látványos öböl a híd alatt. A belépés ingyenes, de kevés a hely, és a lejutás meredek (nyáron pedig nagyon meleg). Menj korán, vigyél vizet, és ne számíts komoly szolgáltatásokra."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "A Fiordo di Furore hídja a keskeny öböl és a víz fölött",
+          "caption": "Fiordo di Furore (drámai öböl) — Fotó: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "Ha olyan beach club napot csinálsz, ami hajótranszfert is ad (Arienzo vagy Laurito), gyakran a legegyszerűbb a Spiaggia Grandéról indulni: korán sorba tudsz állni, és megúszod a lépcsőket.",
         "2026 nyarán számolj a hőséggel a mászásoknál: indulás előtt tölts vizet, és ha fáradt vagy, használd a belső buszt a teljes lépcsőzés helyett.",
         "Egynapos kiruccanásoknál (Praiano, Amalfi, Sorrento) még indulás előtt nézd meg az utolsó visszaút lehetőségét. A komp a legjobb, amikor jár, de a busz a B‑terv. Durva tenger vagy komp‑törlés esetén adj extra időt, és maradj rugalmas. Vigyél snackeket az útra."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Emberek a strandon, a háttérben hajók horgonyoznak Positano öblében",
+          "caption": "Hajók az öbölben (vigyél dry baget a telefonodnak) — Fotó: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "Melyik strand a legjobb naplementéhez?",
       "answer": "Praianóban a Gavitella híres a naplementés aperitivókról. Lauritón is lehet késői napfény, főleg ha shuttle hajóval mész és jól időzítesz."
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Kilátás Positano főstrandjára (Spiaggia Grande), a háttérben a sziklafalra épült várossal",
-      "caption": "Spiaggia Grande (főstrand)",
-      "credits": ["Fotó: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "A positano‑i Fornillo strand napernyőkkel a part mentén",
-      "caption": "Fornillo (általában nyugodtabb + pénztárcabarátabb)",
-      "credits": ["Fotó: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Arienzo strandterület az Amalfi‑parton Positano közelében",
-      "caption": "Arienzo (délutáni nap, gyakran shuttle hajóval)",
-      "credits": ["Fotó: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "A Fiordo di Furore hídja a keskeny öböl és a víz fölött",
-      "caption": "Fiordo di Furore (drámai öböl)",
-      "credits": ["Fotó: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "A Marina di Praia öble sziklákkal és csónakokkal keretezve",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Fotó: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Széles kilátás Positano városára és a partvonalra a tengerről",
-      "caption": "Positano partvonala (készülj lépcsőkre)",
-      "credits": ["Fotó: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Napernyők és fürdőzők Positano partja mentén",
-      "caption": "Napernyők Positanóban (csúcsnapi hangulat)",
-      "credits": ["Fotó: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Emberek a strandon, a háttérben hajók horgonyoznak Positano öblében",
-      "caption": "Hajók az öbölben (vigyél dry baget a telefonodnak)",
-      "credits": ["Fotó: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

@@ -10,7 +10,6 @@
     "Använd tabellen för att jämföra känsla, solstolspriser och var de fria områdena brukar vara. Klicka på ett strandnamn i tabellen för att öppna mini-guiden med vägbeskrivning från hostelet.",
     "Hostel-tips: stränderna är steniga (småsten). Ta med badskor (eller rejäla sandaler), en tjockare handduk/underlag och lite kontanter som backup."
   ],
-  "galleryTitle": "Positano strandhöjdpunkter",
   "comparisonTable": {
     "title": "Strandjämförelse på Amalfikusten"
   },
@@ -64,6 +63,18 @@
         "Positano har stenstränder med en mix av beach clubs (betalt) och offentliga områden (gratis). Priserna kan vara allt från ~15€ per solstol på lugnare stränder till 100€+ för premium-däck.",
         "Om du reser på hostelbudget: börja med Fornillo (oftast billigare och lugnare). För den klassiska “vykortsvyn”, gå tidigt till Spiaggia Grande. För sen sol kan Arienzo eller Laurito vara toppen — men accessen är krångligare.",
         "Snabbval för 2026: billigaste chill-dagen = Fornillo; enklaste “ikoniska Positano”-bilden = Spiaggia Grande; bäst sen sol = Arienzo (med båt) eller Laurito; mest dramatiska vik-utflykten = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Bred vy över Positanos stad och kustlinje från havet",
+          "caption": "Positano-kusten (räkna med trappor) — Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Strandparasoller och badande längs Positanos strandlinje",
+          "caption": "Parasoller på Positano-stranden (peak-dag vibe) — Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande (huvudstranden) är den klassiska vykortsvyn. Den blir också trång och dyr. Vill du göra den: gå tidigt, hitta den offentliga remsan och justera förväntningarna. Använd %LINK:positanoMainBeachWalkDown|gångvägen% eller %LINK:positanoMainBeachBusDown|busguiden% för att komma ner snabbt.",
         "Arienzo är känd för lång eftermiddagssol. Nackdelen: massor av trappor om du går, och de flesta tar beach clubens shuttle-båt. Paket med solstolar + lunch + båttransfer kan vara bra value. Se %LINK:arienzoBeachClub|Arienzo Beach Club-guiden% för tider.",
         "Laurito är en liten vik med shuttle-båt-access. Den kan vara perfekt för ett sent dopp, men den fria ytan är begränsad och tajming spelar roll. Se %LINK:lauritoBeachGuide|Laurito strandguide% innan du bestämmer dig."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Utsikt över Positanos huvudstrand (Spiaggia Grande) med staden på klippan i bakgrunden",
+          "caption": "Spiaggia Grande (huvudstrand) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Fornillo Beach i Positano med parasoller längs strandlinjen",
+          "caption": "Fornillo (ofta lugnare + mer budgetvänlig) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Arienzo strandområde på Amalfikusten nära Positano",
+          "caption": "Arienzo (eftermiddagssol, ofta med shuttle-båt) — Foto: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Praianos Gavitella är bäst sent på eftermiddagen för gyllene ljus och solnedgångsvibes. Mycket är plattformar och clubs, och fri plats (om den finns) är begränsad, så räkna med en betald setup om du vill vara bekväm. Använd %LINK:gavitellaBeachGuide|Gavitella strandguide% för steg-för-steg access.",
         "Marina di Praia är en smal stenig vik inramad av klippor och fiskebåtar. Det är en skön scenförändring och känns ofta mer “gömd”. Se %LINK:marinaDiPraiaBeaches|Marina di Praia-guiden% för transportalternativ."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Marina di Praia-viken inramad av klippor och båtar",
+          "caption": "Marina di Praia (Praiano) — Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Furores fjord-liknande vik",
       "body": [
         "Fiordo di Furore är en liten, dramatisk vik under en bro. Det är gratis att gå in, men platsen är begränsad och vägen ner är brant (och varm på sommaren). Gå tidigt, packa vatten och räkna inte med faciliteter."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Fiordo di Furore-bron ovanför den smala viken och vattnet",
+          "caption": "Fiordo di Furore (dramatisk vik) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "Om du gör en beach club-dag som inkluderar båttransfer (Arienzo eller Laurito) är det ofta enklast att börja vid Spiaggia Grande så att du kan ställa dig i kö tidigt och undvika trapporna.",
         "Sommaren 2026: räkna med värme i backarna. Fyll på vatten innan du går upp igen, och om du är trött, ta den interna bussen istället för att gå varje steg.",
         "För dagsturer (Praiano, Amalfi, Sorrento): kolla sista returen innan du bestämmer dig. Färjor är den skönaste resan när de går, men bussar är backup. Om havet är stökigt eller färjor ställs in, lägg in extra tid och håll planen flexibel. Packa snacks för resan."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Folk på stranden med båtar ankrade i bukten nära Positano",
+          "caption": "Båtar i bukten (ta en dry bag för mobilen) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "Vilken strand har bäst solnedgång?",
       "answer": "Gavitella i Praiano är känd för solnedgångs-aperitivi. Laurito kan också få sen sol, särskilt om du tar shuttle-båten och tajmar rätt."
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Utsikt över Positanos huvudstrand (Spiaggia Grande) med staden på klippan i bakgrunden",
-      "caption": "Spiaggia Grande (huvudstrand)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Fornillo Beach i Positano med parasoller längs strandlinjen",
-      "caption": "Fornillo (ofta lugnare + mer budgetvänlig)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Arienzo strandområde på Amalfikusten nära Positano",
-      "caption": "Arienzo (eftermiddagssol, ofta med shuttle-båt)",
-      "credits": ["Foto: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Fiordo di Furore-bron ovanför den smala viken och vattnet",
-      "caption": "Fiordo di Furore (dramatisk vik)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Marina di Praia-viken inramad av klippor och båtar",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Bred vy över Positanos stad och kustlinje från havet",
-      "caption": "Positano-kusten (räkna med trappor)",
-      "credits": ["Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Strandparasoller och badande längs Positanos strandlinje",
-      "caption": "Parasoller på Positano-stranden (peak-dag vibe)",
-      "credits": ["Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Folk på stranden med båtar ankrade i bukten nära Positano",
-      "caption": "Båtar i bukten (ta en dry bag för mobilen)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

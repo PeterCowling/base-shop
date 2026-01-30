@@ -10,21 +10,50 @@
     "Usa la tabella per confrontare atmosfera, prezzi dei lettini e dove di solito si trovano le aree libere. Clicca sul nome di una spiaggia nella tabella per aprire la mini-guida completa con indicazioni dall’ostello.",
     "Consiglio da ostello: le spiagge sono di ciottoli. Porta scarpette da scoglio (o sandali robusti), un telo/tappetino più spesso e un po’ di contanti come riserva."
   ],
-  "galleryTitle": "Highlights delle spiagge di Positano",
   "comparisonTable": {
     "title": "Confronto spiagge in Costiera Amalfitana"
   },
   "toc": [
-    { "href": "#overview", "label": "Come scegliere" },
-    { "href": "#beach-day-checklist", "label": "Checklist per la spiaggia" },
-    { "href": "#positano-beaches", "label": "Spiagge di Positano" },
-    { "href": "#praiano-beaches", "label": "Spiagge di Praiano" },
-    { "href": "#furore-beaches", "label": "Furore" },
-    { "href": "#sorrento-beaches", "label": "Sorrento" },
-    { "href": "#amalfi-beaches", "label": "Amalfi" },
-    { "href": "#logistics", "label": "Logistica" },
-    { "href": "#comparison-table", "label": "Tabella comparativa" },
-    { "href": "#faqs", "label": "Domande frequenti" }
+    {
+      "href": "#overview",
+      "label": "Come scegliere"
+    },
+    {
+      "href": "#beach-day-checklist",
+      "label": "Checklist per la spiaggia"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Spiagge di Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Spiagge di Praiano"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logistica"
+    },
+    {
+      "href": "#comparison-table",
+      "label": "Tabella comparativa"
+    },
+    {
+      "href": "#faqs",
+      "label": "Domande frequenti"
+    }
   ],
   "sections": [
     {
@@ -34,6 +63,18 @@
         "A Positano le spiagge sono di ciottoli e trovi un mix di stabilimenti (a pagamento) e aree pubbliche (gratuite). I prezzi possono variare da ~15 € a lettino sulle spiagge più tranquille fino a 100 €+ per le pedane premium.",
         "Se hai un budget da ostello, inizia da Fornillo (di solito più economica e più tranquilla). Se vuoi la classica vista da cartolina, vai presto a Spiaggia Grande. Per il sole del tardo pomeriggio, Arienzo o Laurito possono essere ottime — ma l’accesso è più complicato.",
         "Scelte rapide per il 2026: giornata più economica e chill = Fornillo; foto “iconica Positano” più facile = Spiaggia Grande; miglior sole fino a tardi = Arienzo (in barca) o Laurito; gita in cala più scenografica = Fiordo di Furore."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Vista ampia di Positano e della costa dal mare",
+          "caption": "Costa di Positano (preparati alle scale) — Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Ombrelloni e bagnanti lungo la spiaggia di Positano",
+          "caption": "Ombrelloni in spiaggia (giornata di punta) — Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -61,6 +102,23 @@
         "Spiaggia Grande (la spiaggia principale) è la classica vista da cartolina. È anche più affollata e costosa. Se vuoi andarci, vai presto, trova la striscia pubblica e regola le aspettative. Usa le nostre %LINK:positanoMainBeachWalkDown|indicazioni a piedi% o la %LINK:positanoMainBeachBusDown|guida in autobus% per arrivare velocemente.",
         "Arienzo è famosa per il sole lungo del pomeriggio. Il rovescio della medaglia: tante scale se vai a piedi, e quasi tutti usano la navetta in barca dello stabilimento. I pacchetti con lettino + pranzo + transfer in barca possono essere un buon affare. Vedi la %LINK:arienzoBeachClub|guida al Beach Club di Arienzo% per gli orari.",
         "Laurito è una piccola cala raggiungibile spesso con navetta in barca. Può essere perfetta per un bagno nel tardo pomeriggio, ma lo spazio pubblico è limitato e gli orari contano. Vedi la %LINK:lauritoBeachGuide|guida alla spiaggia di Laurito% prima di decidere."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Vista della spiaggia principale di Positano (Spiaggia Grande) con il paese arroccato sullo sfondo",
+          "caption": "Spiaggia Grande (spiaggia principale) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "Spiaggia di Fornillo a Positano con ombrelloni lungo la riva",
+          "caption": "Fornillo (di solito più tranquilla + più economica) — Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "Area spiaggia di Arienzo sulla Costiera Amalfitana vicino a Positano",
+          "caption": "Arienzo (sole pomeridiano, spesso con navetta in barca) — Foto: villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -69,6 +127,13 @@
       "body": [
         "La Gavitella a Praiano è perfetta nel tardo pomeriggio per luce dorata e atmosfera da tramonto. Gran parte dell’area è fatta di piattaforme e lidi, e lo spazio libero (se presente) è limitato: se vuoi comodità, prevedi una sistemazione a pagamento. Usa la %LINK:gavitellaBeachGuide|guida alla spiaggia della Gavitella% per l’accesso passo passo.",
         "Marina di Praia è una stretta cala di ciottoli incorniciata da falesie e barche da pesca. È un ottimo cambio di scenario e di solito sembra più raccolta. Vedi la %LINK:marinaDiPraiaBeaches|guida a Marina di Praia% per le opzioni di trasporto."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "Cala di Marina di Praia incorniciata da scogliere e barche",
+          "caption": "Marina di Praia (Praiano) — Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -76,6 +141,13 @@
       "title": "La cala-fiordo di Furore",
       "body": [
         "Il Fiordo di Furore è una cala piccolissima e scenografica sotto un ponte. L’ingresso è gratuito, ma lo spazio è limitato e la strada di accesso è ripida (e calda in estate). Vai presto, porta acqua e non contare su servizi."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Ponte del Fiordo di Furore sopra la stretta cala e il mare",
+          "caption": "Fiordo di Furore (cala scenografica) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -100,6 +172,13 @@
         "Se fai una giornata in stabilimento con transfer in barca (Arienzo o Laurito), spesso conviene partire da Spiaggia Grande: ti metti in fila presto ed eviti molte scale.",
         "Estate 2026: considera il caldo nelle risalite. Riempi l’acqua prima di risalire e, se sei stanco, usa l’autobus interno invece di fare ogni gradino.",
         "Per le gite in giornata (Praiano, Amalfi, Sorrento), controlla l’ultima opzione di rientro prima di impegnarti. I traghetti sono il modo più piacevole quando operano, ma l’autobus è il piano B. Se il mare è mosso o i traghetti vengono cancellati, calcola più tempo e mantieni il programma flessibile. Porta snack per il viaggio."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Persone in spiaggia con barche ancorate nella baia vicino a Positano",
+          "caption": "Barche in baia (porta una dry bag per il telefono) — Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -111,15 +190,42 @@
     }
   ],
   "itemList": [
-    { "name": "Fornillo", "note": "Preferita dai locali: lettini da 15 € e due aree libere." },
-    { "name": "Spiaggia Grande", "note": "Spiaggia principale con vista iconica, club costosi e una zona pubblica centrale." },
-    { "name": "Arienzo", "note": "Spiaggia/terrazze soleggiate, 300 scalini o taxi del mare dello stabilimento." },
-    { "name": "Laurito", "note": "Cala piccola servita dalle navette di Da Adolfo e Villa Tre Ville." },
-    { "name": "Gavitella", "note": "Piattaforma a Praiano perfetta per l’aperitivo al tramonto (club-only)." },
-    { "name": "Marina di Praia", "note": "Cala di pescatori con un piccolo tratto libero e lidi." },
-    { "name": "Fiordo di Furore", "note": "Cala scenografica sotto il ponte: ingresso gratuito ma spazio limitato." },
-    { "name": "Regina Giovanna Bath", "note": "Spot di nuoto a Sorrento, gratuito ma porta tutto il necessario." },
-    { "name": "Amalfi Marina Grande", "note": "Fila di classici lidi ad Amalfi, davanti al Duomo." }
+    {
+      "name": "Fornillo",
+      "note": "Preferita dai locali: lettini da 15 € e due aree libere."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Spiaggia principale con vista iconica, club costosi e una zona pubblica centrale."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Spiaggia/terrazze soleggiate, 300 scalini o taxi del mare dello stabilimento."
+    },
+    {
+      "name": "Laurito",
+      "note": "Cala piccola servita dalle navette di Da Adolfo e Villa Tre Ville."
+    },
+    {
+      "name": "Gavitella",
+      "note": "Piattaforma a Praiano perfetta per l’aperitivo al tramonto (club-only)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Cala di pescatori con un piccolo tratto libero e lidi."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Cala scenografica sotto il ponte: ingresso gratuito ma spazio limitato."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Spot di nuoto a Sorrento, gratuito ma porta tutto il necessario."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Fila di classici lidi ad Amalfi, davanti al Duomo."
+    }
   ],
   "faqs": [
     {
@@ -153,56 +259,6 @@
     {
       "question": "Quale spiaggia ha i tramonti migliori?",
       "answer": "La Gavitella a Praiano è famosa per l’aperitivo al tramonto. Anche Laurito può prendere sole fino a tardi, soprattutto se usi la navetta in barca e azzecchi gli orari."
-    }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "Vista della spiaggia principale di Positano (Spiaggia Grande) con il paese arroccato sullo sfondo",
-      "caption": "Spiaggia Grande (spiaggia principale)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "Spiaggia di Fornillo a Positano con ombrelloni lungo la riva",
-      "caption": "Fornillo (di solito più tranquilla + più economica)",
-      "credits": ["Foto: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "Area spiaggia di Arienzo sulla Costiera Amalfitana vicino a Positano",
-      "caption": "Arienzo (sole pomeridiano, spesso con navetta in barca)",
-      "credits": ["Foto: villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Ponte del Fiordo di Furore sopra la stretta cala e il mare",
-      "caption": "Fiordo di Furore (cala scenografica)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "Cala di Marina di Praia incorniciata da scogliere e barche",
-      "caption": "Marina di Praia (Praiano)",
-      "credits": ["Foto: Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "Vista ampia di Positano e della costa dal mare",
-      "caption": "Costa di Positano (preparati alle scale)",
-      "credits": ["Foto: Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "Ombrelloni e bagnanti lungo la spiaggia di Positano",
-      "caption": "Ombrelloni in spiaggia (giornata di punta)",
-      "credits": ["Foto: Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "Persone in spiaggia con barche ancorate nella baia vicino a Positano",
-      "caption": "Barche in baia (porta una dry bag per il telefono)",
-      "credits": ["Foto: DimiTalen (CC0 1.0) via Wikimedia Commons"]
     }
   ]
 }

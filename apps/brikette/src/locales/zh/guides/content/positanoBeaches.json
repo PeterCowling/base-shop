@@ -10,7 +10,6 @@
     "用下方表格对比氛围、躺椅价格，以及免费区域通常在哪里。点击表格中的海滩名称，即可打开从青旅出发的详细小指南。",
     "青旅小贴士：这里多为卵石滩。带水鞋（或结实的凉鞋）、更厚的毛巾/垫子，并准备一点现金备用。"
   ],
-  "galleryTitle": "波西塔诺海滩亮点",
   "comparisonTable": {
     "title": "阿马尔菲海岸海滩对比"
   },
@@ -64,6 +63,18 @@
         "波西塔诺多为卵石海滩，既有海滩俱乐部（收费）也有公共区域（免费）。价格从较安静海滩的~15€/张躺椅，到高级露台的100€+不等。",
         "如果你住青旅、预算有限，建议先去Fornillo（通常更便宜也更清静）。想拍经典“明信片视角”，就一早去Spiaggia Grande。想要下午晚些时候的阳光，Arienzo或Laurito很合适——但去起来更麻烦。",
         "2026快速选择：最便宜的轻松一天 = Fornillo；最容易拍到“经典波西塔诺”照片 = Spiaggia Grande；最好的晚阳光 = Arienzo（坐船）或 Laurito；最震撼的峡湾式海湾一日游 = Fiordo di Furore。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "从海上看到的波西塔诺小镇与海岸线全景",
+          "caption": "波西塔诺海岸线（台阶很多） — 照片：Alexis Lours (CC BY 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "波西塔诺海岸线上密集的遮阳伞与游泳的人",
+          "caption": "波西塔诺海滩遮阳伞（旺日氛围） — 照片：Nan Palmero (CC BY 2.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -91,6 +102,23 @@
         "Spiaggia Grande（主海滩）就是经典明信片视角。缺点是人多、也更贵。想去的话要早到，找到公共区域，然后把期待值放合理。快速抵达可用 %LINK:positanoMainBeachWalkDown|步行路线% 或 %LINK:positanoMainBeachBusDown|公交指南%。",
         "Arienzo以“下午太阳晒得久”出名。问题是如果走路要爬很多台阶，大多数人会坐海滩俱乐部的接驳船。含躺椅+午餐+船接驳的套餐有时性价比不错。时间见 %LINK:arienzoBeachClub|Arienzo Beach Club指南%。",
         "Laurito是一个小海湾，通常坐接驳船最方便。适合傍晚下海，但公共空间有限，时间安排很关键。出发前先看 %LINK:lauritoBeachGuide|Laurito海滩指南%。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "波西塔诺主海滩（Spiaggia Grande），背景是悬崖上的小镇",
+          "caption": "Spiaggia Grande（主海滩） — 照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
+          "alt": "波西塔诺Fornillo海滩，岸边布满遮阳伞",
+          "caption": "Fornillo（通常更安静 + 更省钱） — 照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"
+        },
+        {
+          "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
+          "alt": "靠近波西塔诺的阿马尔菲海岸Arienzo海滩区域",
+          "caption": "Arienzo（下午阳光，通常坐接驳船） — 照片：villlamania (CC BY 3.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -99,6 +127,13 @@
       "body": [
         "Praiano的Gavitella最适合下午偏晚：金色光线 + 日落氛围。这里很多是平台和俱乐部，免费空间（如果有）也很有限，所以想舒服一点要预期付费。逐步到达方式见 %LINK:gavitellaBeachGuide|Gavitella海滩指南%。",
         "Marina di Praia是一个狭窄的卵石小海湾，两侧是悬崖和渔船。换个风景很舒服，通常更有“隐蔽感”。交通方式见 %LINK:marinaDiPraiaBeaches|Marina di Praia指南%。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/marina-di-praia.webp",
+          "alt": "被悬崖与船只围绕的Marina di Praia海湾",
+          "caption": "Marina di Praia（Praiano） — 照片：Falk2 (CC BY-SA 4.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -106,6 +141,13 @@
       "title": "Furore的峡湾式海湾",
       "body": [
         "Fiordo di Furore是桥下一个小而震撼的海湾。免费进入，但空间很小，且下去的路很陡（夏天也很热）。建议早到、带足水，并别指望有完善设施。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
+          "alt": "Fiordo di Furore桥下的狭窄海湾与海水",
+          "caption": "Fiordo di Furore（震撼海湾） — 照片：DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -130,6 +172,13 @@
         "如果你要去带船接驳的海滩俱乐部（Arienzo或Laurito），通常从Spiaggia Grande出发最省事：可以早点排队，也能少爬台阶。",
         "2026年夏天要考虑上坡的炎热：回去前先把水装满；如果累了，用内部小巴代替一路爬完台阶。",
         "做一日游（Praiano、Amalfi、Sorrento）前，先确认最后一班返程。渡轮在正常运行时最舒服，但公交是备选。如果海况不好导致渡轮取消，要预留更多时间并保持行程弹性。路上带点零食。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "海滩上的人和停泊在波西塔诺湾内的船只",
+          "caption": "海湾里的船（手机记得带防水袋） — 照片：DimiTalen (CC0 1.0) via Wikimedia Commons"
+        }
       ]
     },
     {
@@ -211,56 +260,5 @@
       "question": "哪片海滩日落最好看？",
       "answer": "Praiano的Gavitella以日落开胃酒很出名。Laurito也可能有晚阳光，尤其是坐接驳船并把时间安排好。"
     }
-  ],
-  "gallery": [
-    {
-      "src": "/img/guides/positano-beaches/positano-main-beach.webp",
-      "alt": "波西塔诺主海滩（Spiaggia Grande），背景是悬崖上的小镇",
-      "caption": "Spiaggia Grande（主海滩）",
-      "credits": ["照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fornillo-beach-positano.webp",
-      "alt": "波西塔诺Fornillo海滩，岸边布满遮阳伞",
-      "caption": "Fornillo（通常更安静 + 更省钱）",
-      "credits": ["照片：Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/arienzo-beach-positano.webp",
-      "alt": "靠近波西塔诺的阿马尔菲海岸Arienzo海滩区域",
-      "caption": "Arienzo（下午阳光，通常坐接驳船）",
-      "credits": ["照片：villlamania (CC BY 3.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/fiordo-di-furore-bridge.webp",
-      "alt": "Fiordo di Furore桥下的狭窄海湾与海水",
-      "caption": "Fiordo di Furore（震撼海湾）",
-      "credits": ["照片：DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/marina-di-praia.webp",
-      "alt": "被悬崖与船只围绕的Marina di Praia海湾",
-      "caption": "Marina di Praia（Praiano）",
-      "credits": ["照片：Falk2 (CC BY-SA 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
-      "alt": "从海上看到的波西塔诺小镇与海岸线全景",
-      "caption": "波西塔诺海岸线（台阶很多）",
-      "credits": ["照片：Alexis Lours (CC BY 4.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
-      "alt": "波西塔诺海岸线上密集的遮阳伞与游泳的人",
-      "caption": "波西塔诺海滩遮阳伞（旺日氛围）",
-      "credits": ["照片：Nan Palmero (CC BY 2.0) via Wikimedia Commons"]
-    },
-    {
-      "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
-      "alt": "海滩上的人和停泊在波西塔诺湾内的船只",
-      "caption": "海湾里的船（手机记得带防水袋）",
-      "credits": ["照片：DimiTalen (CC0 1.0) via Wikimedia Commons"]
-    }
   ]
 }
-

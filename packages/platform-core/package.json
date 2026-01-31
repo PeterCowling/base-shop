@@ -193,6 +193,11 @@
       "import": "./dist/d1/index.server.js",
       "default": "./dist/d1/index.server.js"
     },
+    "./repositories/businessOs.server": {
+      "types": "./dist/repositories/businessOs.server.d.ts",
+      "import": "./dist/repositories/businessOs.server.js",
+      "default": "./dist/repositories/businessOs.server.js"
+    },
     "./*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",

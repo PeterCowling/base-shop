@@ -5,6 +5,14 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@acme/platform-core/d1": [
+        "../../packages/platform-core/src/d1/index.server.ts",
+        "../../packages/platform-core/dist/d1/index.server.d.ts"
+      ],
+      "@acme/platform-core/repositories/businessOs.server": [
+        "../../packages/platform-core/src/repositories/businessOs.server.ts",
+        "../../packages/platform-core/dist/repositories/businessOs.server.d.ts"
       ]
     },
     "jsx": "preserve",

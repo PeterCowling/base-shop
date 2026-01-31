@@ -3,48 +3,76 @@ import { notFound } from "next/navigation";
 import { BoardView } from "@/components/board/BoardView";
 import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
 import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { createRepoReader } from "@/lib/repo-reader";
-import type { Lane } from "@/lib/types";
+import { getDb } from "@/lib/d1.server";
+import type { Business, Lane } from "@/lib/types";
+import {
+  listCardsForBoard as listCardsFromD1,
+  listInboxIdeas,
+} from "@acme/platform-core/repositories/businessOs.server";
 
-// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
-// Currently using Node runtime with RepoReader (filesystem + git)
-// TODO: Migrate to D1 repositories in BOS-D1-06
-export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+// BOS-D1-05 Phase 2: Edge runtime with D1 repositories
+export const runtime = "edge";
 
 // BOS-D1-05: Disable Next.js caching for board pages (real-time updates required)
 export const revalidate = 0;
+
+// TODO (BOS-D1-08): Move businesses to D1 table or derive from cards
+// Temporary hard-coded business catalog (matches docs/business-os/strategy/businesses.json)
+const BUSINESSES: Business[] = [
+  {
+    id: "PLAT",
+    name: "Platform",
+    description:
+      "Core platform infrastructure, shared services, and developer experience",
+    owner: "Pete",
+    status: "active",
+    created: "2026-01-28",
+    tags: ["infrastructure", "dx", "monorepo"],
+  },
+  {
+    id: "BRIK",
+    name: "Brikette",
+    description:
+      "Multilingual e-commerce platform for hostel bookings and travel experiences",
+    owner: "Pete",
+    status: "active",
+    created: "2026-01-28",
+    tags: ["e-commerce", "travel", "i18n"],
+  },
+  {
+    id: "BOS",
+    name: "Business OS",
+    description:
+      "Repo-native business operating system and kanban coordination layer",
+    owner: "Pete",
+    status: "active",
+    created: "2026-01-28",
+    tags: ["workflow", "coordination", "agents"],
+  },
+];
 
 interface PageProps {
   params: Promise<{ businessCode: string }>;
 }
 
-// Phase 0: Local-only, Pete-only. No auth needed.
-// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
+// BOS-D1-05 Phase 2: Using D1 repositories (Edge runtime)
 export default async function BoardPage({ params }: PageProps) {
   const { businessCode } = await params;
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
+  const db = getDb();
   const currentUser = await getCurrentUserServer();
 
   // Validate business code
   if (businessCode !== "global") {
-    const business = await reader.getBusiness(businessCode);
+    const business = BUSINESSES.find((b) => b.id === businessCode);
     if (!business) {
       notFound();
     }
   }
 
-  // Fetch ALL cards (unfiltered) and businesses
-  const [businesses, allCards, allIdeas] = await Promise.all([
-    reader.getBusinesses(),
-    reader.queryCards({
-      includeArchived: false,
-    }),
-    reader.queryIdeas({
-      location: "inbox",
-      includeArchived: false,
-    }),
+  // Fetch ALL cards (unfiltered) and ideas from D1
+  const [allCards, allIdeas] = await Promise.all([
+    listCardsFromD1(db, {}),
+    listInboxIdeas(db, {}),
   ]);
 
   // BOS-14: Filter cards for this board type
@@ -85,7 +113,7 @@ export default async function BoardPage({ params }: PageProps) {
   return (
     <BoardView
       businessCode={businessCode}
-      businesses={businesses}
+      businesses={BUSINESSES}
       cardsByLane={cardsByLane}
       inboxIdeas={filteredIdeas}
       currentUser={currentUser}

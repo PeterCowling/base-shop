@@ -5,56 +5,94 @@ import { CardDetail } from "@/components/card-detail/CardDetail";
 import { RecentActivity } from "@/components/card-detail/RecentActivity";
 import { CommentThread } from "@/components/comments/CommentThread";
 import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { getFileHistory, getGitHubHistoryUrl } from "@/lib/git-history";
-import { getCommentsForEntity } from "@/lib/repo/CommentReader";
-import { getCommitsForCard } from "@/lib/repo/CommitReader";
-import { createRepoReader } from "@/lib/repo-reader";
+import { getDb } from "@/lib/d1.server";
+import {
+  getCardById,
+  listStageDocsForCard,
+} from "@acme/platform-core/repositories/businessOs.server";
 
-// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
-// Currently using Node runtime with RepoReader (filesystem + git)
-// TODO: Migrate to D1 repositories in BOS-D1-06
-export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+// BOS-D1-05 Phase 2: Edge runtime with D1 repositories
+export const runtime = "edge";
 
 // BOS-D1-05: Cache card detail pages (1 minute acceptable for detail views)
 export const revalidate = 60;
+
+// TODO (BOS-D1-08): Move businesses to D1 table or derive from cards
+// Temporary hard-coded business catalog (matches docs/business-os/strategy/businesses.json)
+const BUSINESSES = [
+  {
+    id: "PLAT",
+    name: "Platform",
+    description:
+      "Core platform infrastructure, shared services, and developer experience",
+    owner: "Pete",
+    status: "active" as const,
+    created: "2026-01-28",
+    tags: ["infrastructure", "dx", "monorepo"],
+  },
+  {
+    id: "BRIK",
+    name: "Brikette",
+    description:
+      "Multilingual e-commerce platform for hostel bookings and travel experiences",
+    owner: "Pete",
+    status: "active" as const,
+    created: "2026-01-28",
+    tags: ["e-commerce", "travel", "i18n"],
+  },
+  {
+    id: "BOS",
+    name: "Business OS",
+    description:
+      "Repo-native business operating system and kanban coordination layer",
+    owner: "Pete",
+    status: "active" as const,
+    created: "2026-01-28",
+    tags: ["workflow", "coordination", "agents"],
+  },
+];
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-// Phase 0: Local-only, Pete-only. No auth needed.
-// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
+// BOS-D1-05 Phase 2: Using D1 repositories (Edge runtime)
 export default async function CardPage({ params }: PageProps) {
   const { id } = await params;
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
+  const db = getDb();
   const currentUser = await getCurrentUserServer();
 
-  // Fetch card data
-  const card = await reader.getCard(id);
+  // Fetch card data from D1
+  const card = await getCardById(db, id);
   if (!card) {
     notFound();
   }
 
-  // Fetch stage docs
-  const stageDocs = await reader.getCardStageDocs(id);
+  // Fetch stage docs from D1
+  const stageDocsArray = await listStageDocsForCard(db, id);
 
-  // Fetch business info
+  // Transform stage docs array into object format expected by CardDetail
+  const stageDocs = {
+    factFind: stageDocsArray.find((doc) => doc.Stage === "fact-find"),
+    plan: stageDocsArray.find((doc) => doc.Stage === "plan"),
+    build: stageDocsArray.find((doc) => doc.Stage === "build"),
+    reflect: stageDocsArray.find((doc) => doc.Stage === "reflect"),
+  };
+
+  // Get business info from hard-coded catalog
   const business = card.Business
-    ? await reader.getBusiness(card.Business)
+    ? BUSINESSES.find((b) => b.id === card.Business) ?? null
     : null;
 
-  // Fetch git history (BOS-28)
-  const cardFilePath = `docs/business-os/cards/${id}.user.md`;
-  const history = await getFileHistory(repoRoot, cardFilePath);
-  const githubUrl = history.length > 0 ? getGitHubHistoryUrl(cardFilePath) : undefined;
+  // TODO (BOS-D1-09): Re-enable git history via git mirror or D1 metadata
+  const history: never[] = [];
+  const githubUrl = undefined;
 
-  // Fetch commits mentioning this card (MVP-F1)
-  const recentActivity = await getCommitsForCard(repoRoot, id);
+  // TODO (BOS-D1-09): Re-enable recent activity via D1 audit log
+  const recentActivity: never[] = [];
 
-  // Fetch comments for this card (MVP-E1)
-  const comments = await getCommentsForEntity(repoRoot, "card", id);
+  // TODO (BOS-D1-06): Re-enable comments via D1 comments table
+  const comments: never[] = [];
 
   return (
     <>
@@ -73,13 +111,13 @@ export default async function CardPage({ params }: PageProps) {
         githubUrl={githubUrl}
       />
 
-      {/* Recent activity - MVP-F1 */}
+      {/* Recent activity - MVP-F1 - Disabled during D1 migration */}
       {/* eslint-disable-next-line ds/container-widths-only-at -- BOS-33: Phase 0 layout, container at page level */}
       <div className="max-w-5xl mx-auto px-6 pb-6">
         <RecentActivity commits={recentActivity} cardId={id} />
       </div>
 
-      {/* Comments - MVP-E1 */}
+      {/* Comments - MVP-E1 - Disabled during D1 migration */}
       {/* eslint-disable-next-line ds/container-widths-only-at -- BOS-33: Phase 0 layout, container at page level */}
       <div className="max-w-5xl mx-auto px-6 pb-6">
         <CommentThread

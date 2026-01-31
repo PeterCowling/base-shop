@@ -6,47 +6,50 @@ import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { CommentThread } from "@/components/comments/CommentThread";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { getCommentsForEntity } from "@/lib/repo/CommentReader";
-import { createRepoReader } from "@/lib/repo-reader";
+import { getDb } from "@/lib/d1.server";
+import { getIdeaById } from "@acme/platform-core/repositories/businessOs.server";
 
 import { ConvertToCardButton } from "./ConvertToCardButton";
 import { WorkIdeaButton } from "./WorkIdeaButton";
 
-// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
-// Currently using Node runtime with RepoReader (filesystem + git)
-// TODO: Migrate to D1 repositories in BOS-D1-06
-export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+// BOS-D1-05 Phase 2: Edge runtime with D1 repositories
+export const runtime = "edge";
 
 // BOS-D1-05: Cache idea detail pages (1 minute acceptable for detail views)
 export const revalidate = 60;
+
+// TODO (BOS-D1-08): Move businesses to D1 table or derive from cards
+// Temporary hard-coded business catalog
+const BUSINESSES = [
+  { id: "PLAT", name: "Platform" },
+  { id: "BRIK", name: "Brikette" },
+  { id: "BOS", name: "Business OS" },
+];
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 /* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
-// Phase 0: Local-only, Pete-only. No auth needed.
-// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
+// BOS-D1-05 Phase 2: Using D1 repositories (Edge runtime)
 export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
+  const db = getDb();
   const currentUser = await getCurrentUserServer();
 
-  // Fetch idea data
-  const idea = await reader.getIdea(id);
+  // Fetch idea data from D1
+  const idea = await getIdeaById(db, id);
   if (!idea) {
     notFound();
   }
 
-  // Fetch business info
+  // Get business info from hard-coded catalog
   const business = idea.Business
-    ? await reader.getBusiness(idea.Business)
+    ? BUSINESSES.find((b) => b.id === idea.Business) ?? null
     : null;
 
-  // Fetch comments for this idea (MVP-E1)
-  const comments = await getCommentsForEntity(repoRoot, "idea", id);
+  // TODO (BOS-D1-06): Re-enable comments via D1 comments table
+  const comments: never[] = [];
 
   // Extract title from content
   const firstLine = idea.content.split("\n").find((line) => line.trim());

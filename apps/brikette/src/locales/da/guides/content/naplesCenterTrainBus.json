@@ -1,48 +1,141 @@
 {
   "seo": {
-    "title": "Napoli centrum til Positano med tog og bus | Hostel Brikette",
-    "description": "Trin-for-trin-anvisninger fra Napoli centrum til Hostel Brikette via Circumvesuviana-toget og SITA-bussen, inklusive billettips og fotos af ankomsten i Positano."
+    "title": "Napoli til Positano Tog Bus Guide | Hostel Brikette 2026",
+    "description": "Komplet Napoli til Positano tog bus guide: Circumvesuviana til Sorrento (€4.60), derefter SITA bus (€2.60). Total 2,5 timer. Opdateret 2026."
   },
-  "intro": {
-    "title": "Napoli centrum til Positano – tog og bus",
-    "body": "Følg disse anvisninger for at rejse fra det centrale Napoli til Hostel Brikette via Circumvesuviana-toget til Sorrento og SITA-bussen til Positano. Guiden rummer billettips, råd om buskøreplanen og fotos af den sidste del frem til hostellet."
-  },
+  "lastUpdated": "2026-01-31",
+  "intro": "At tage Napoli til Positano tog bus ruten er den mest overkommelige måde at nå Hostel Brikette fra Napoli centrum på. Du tager Circumvesuviana toget til Sorrento (70 minutter, €4.60) efterfulgt af SITA bussen til Positano (50 minutter, €2.60).\n\nSamlet rejsetid er omkring 2,5 timer, plus ventetid mellem forbindelser. Denne guide inkluderer 2026 billetpriser, køreplantips og trin-for-trin vejledning fra ankomst ved Chiesa Nuova busstoppestedet.\n\nHvis du ankommer fra %LINK:naplesAirportBus|Napoli Lufthavn, se vores dedikerede lufthavnsbus guide%.",
   "callouts": {
-    "tip": "Brug for andre ruter? Se alle ankomstmuligheder på %HOWTO:how-to-get-here|siden Sådan kommer du hertil%."
+    "tip": "Har du brug for andre ruter? Udforsk det fulde sæt ankomstvejledninger på %HOWTO:how-to-get-here|Sådan kommer du hertil siden%, inklusive %LINK:ferryDockToBrikette|færge ankomster% og %LINK:naplesAirportBus|lufthavnstransport%."
   },
   "sections": [
     {
       "id": "overview",
-      "title": "Overblik: tog og bus",
-      "body": "Rejsen dækker den hurtigste kombination med offentlig transport fra Napoli centrum: Circumvesuviana-toget til Sorrento efterfulgt af SITA-bussen til Positano. Den beskriver ikke ruten fra Napoli lufthavn."
+      "title": "Rejseoversigt og omkostninger",
+      "body": "Denne to-etapers rejse er den billigste måde at nå Positano fra Napoli centrum på. Samlet pris er omkring €7.20 (tog €4.60 + bus €2.60) sammenlignet med €100+ for privat transport eller €10-15 for den direkte Curreri bus fra Napoli Lufthavn.\n\nCircumvesuviana toget afgår fra Napoli Garibaldi station (under hovedterminal Napoli Centrale) hver 30. minut i myldretiden. Fra Sorrento kører SITA busser til Positano cirka hver 40-60 minut om sommeren (april-oktober) og hver 60-90 minut om vinteren (november-marts).\n\nTjek altid aktuelle køreplaner på sitasudtrasporti.it da service ændrer sig sæsonmæssigt. Tillad 3-3,5 timer i alt inklusive forbindelsestid i Sorrento.\n\nDenne rute dækker ikke rejse fra Napoli Lufthavn — se vores %LINK:naplesAirportBus|Napoli Lufthavns bus guide% for den rejse.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/napoli-garibaldi-station.jpg",
+          "alt": "Indgang til Circumvesuviana perron ved Napoli Garibaldi station i Napoli"
+        }
+      ]
     },
     {
       "id": "naplesStation",
-      "title": "Napoli togstation",
-      "body": "Circumvesuviana-afgangene til Sorrento kører fra underetagen på Napoli Garibaldi-stationen (under Napoli Centrale). Køb billetten, før du går ned til perronerne, tjek hvilken perron dit tog bruger, og stig på toget mod Sorrento."
+      "title": "Napoli Garibaldi station: find Circumvesuviana",
+      "body": "Circumvesuviana er et regionalt tognetværk adskilt fra Italiens nationale jernbanesystem (Trenitalia). Hvis du ankommer til Napoli Centrale (hovedstationen), gå ned ad trappen og følg skiltene til 'Circumvesuviana' eller 'Garibaldi Metro'.\n\nCircumvesuviana perronerne er på det nedre niveau, tilgængelige via rulletrapper eller trapper nær hovedindgangen. Billetluger og selvbetjeningsmaskiner er på perronniveau — køb din billet til Sorrento før ombordstigning (€4.60 enkeltbillet i 2026).\n\nBilletter kan købes kontant eller med kort fra billetkontoret eller gule automatmaskiner. Valider din billet i de små grønne eller gule maskiner på perronet før ombordstigning.\n\nTog til Sorrento afgår hver 30. minut i myldretiden (07-09, 17-20) og hver 60. minut uden for myldretiden. Tjek afgangstavler for 'Sorrento via Pompei' — dit tog stopper ved Pompei Scavi-Villa dei Misteri hvis du vil besøge ruinerne.\n\nRejsetid er 70 minutter. Tog kan være overfyldte, især om sommeren og i weekender. Der er begrænset bagageplads, så kom tidligt ombord hvis du har store tasker. Sæder er først-til-mølle, og du skal måske stå i travle perioder.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/circumvesuviana-ticket-machine.jpg",
+          "alt": "Circumvesuviana billetautomat der viser Sorrento rute muligheder"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/circumvesuviana-platform.jpg",
+          "alt": "Circumvesuviana tog på perron i Napoli Garibaldi station"
+        }
+      ]
     },
     {
       "id": "sorrentoStation",
-      "title": "Sorrento station",
-      "body": "Efter ankomst til Sorrento forlader du stationen og køber SITA-billetten i den nærliggende bar, kiosk eller tabacchi — billetter sælges ikke på bussen. SITA-stoppet ligger for foden af trappen uden for stationen; vent på bussen mod Amalfi og kør den til Positano."
+      "title": "Sorrento station: køb SITA bus billet",
+      "body": "Når du ankommer til Sorrento Circumvesuviana station, gå ud gennem hoveddørene og drej til venstre. SITA busstoppestedet er omkring 50 meter væk i bunden af en kort trappe.\n\nFør du går til busstoppestedet, skal du købe din billet — SITA busser sælger ikke billetter ombord. Led efter enhver nærliggende bar, tabacchi (tobaksforretning) eller aviskiosk der viser SITA logoet.\n\nBilletkontoret er ofte ved Bar Circolo eller Bar Fauno, begge inden for 100 meter fra stationsudgangen. Bed om 'un biglietto per Positano' (en billet til Positano). Prisen er €2.60 i 2026.\n\nDu kan også bruge EAV Campania appen til at købe digitale billetter, men servicen kan være upålidelig. Efter vores erfaring er den fysiske billet mere pålidelig.\n\nNår du har din billet, gå til SITA busstoppestedet (led efter det blå og hvide SITA skilt). Busser til Positano er mærket 'Amalfi via Positano' eller simpelthen 'Amalfi'.\n\nBusser afgår cirka hver 40-60 minut i højsæson (april-oktober) og hver 60-90 minut i lavsæson (november-marts). Højsommer service (juli-august) kan køre hver 30. minut.\n\nRejsen til Positano tager 45-50 minutter. Vi anbefaler at sidde på højre side af bussen for fantastisk udsigt over kysten. Vejen er smal og snoet — dette er en af verdens mest maleriske busruter.\n\nFor flere detaljer om læsning af køreplanen og valg af dit stop, se %LINK:chiesaNuovaDepartures|vores Chiesa Nuova afgangsguide%.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/sorrento-sita-bus-stop.jpg",
+          "alt": "SITA busstoppested uden for Sorrento togstation med Amalfikysten bus ventende"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/sita-bus-interior.jpg",
+          "alt": "Indvendig SITA bus der viser bagageområde og passagersæder"
+        }
+      ]
     },
     {
       "id": "timetable",
-      "title": "Sådan læser du SITA-køreplanen",
-      "body": "SITA-køreplanen kan være forvirrende — brug disse hurtige råd til at finde den rigtige afgang:"
+      "title": "Læsning af SITA bus køreplanen",
+      "body": "SITA køreplaner kan være forvirrende fordi de lister hvert stop langs ruten. Her er hvordan man læser dem fra vores hostels erfaring med at hjælpe gæster:\n\n(1) Find kolonnen mærket 'Sorrento' i toppen — dette er dit afgangssted.\n\n(2) Scan ned for at finde 'Positano (Chiesa Nuova)' eller bare 'Positano' i venstre kolonne.\n\n(3) De angivne tider er når bussen når Positano, ikke når den afgår fra Sorrento. Træk 45-50 minutter fra for at estimere afgang fra Sorrento.\n\n(4) Tjenester mærket 'Festivi' kører kun søndage og helligdage. Tjenester mærket 'Feriali' kører mandag-lørdag.\n\n(5) Nogle busser springer visse stop over — hvis du ser en streg i stedet for et tidspunkt, stopper den bus ikke der.\n\nTjek altid den seneste køreplan på sitasudtrasporti.it eller spørg ved billetkontoret. Download et foto af den aktuelle køreplan på din telefon før rejsen i tilfælde af begrænset internetadgang på kysten."
     },
     {
       "id": "positanoStop",
-      "title": "Positano busstoppested",
-      "list": [
-        "Det nærmeste stop er Positano (Chiesa Nuova), cirka 140 meter (490 fod) fra hostellet.",
-        "Det ligger foran caféen/baren Bar Internazionale.",
-        "Bussen sætter dig af i gadeniveau — ingen lange trapper er nødvendige for at nå frem."
+      "title": "Stigning af ved Positano (Chiesa Nuova)",
+      "body": "Bussen vil lave flere stop i Positano. Det tætteste stop på Hostel Brikette er 'Positano (Chiesa Nuova)' — cirka 140 meter (460 fod) fra vores hoveddør.\n\nDette stop annonceres som 'Chiesa Nuova' og ligger uden for Bar Internazionale, en cafe på hovedkystvejen (Via Pasitea). Fortæl chaufføren 'Chiesa Nuova, per favore' når du går ombord så de ved hvor du skal af.\n\nTryk på stopknappen når du ser Bar Internazionale på din højre side. Bussen stopper direkte uden for. Dette er et vejside stop uden trapper — du går ud på vejniveau, hvilket gør det nemt med bagage.\n\nGå ikke af ved 'Positano Centro' eller 'Positano Spiaggia' (hovedbyens stop) medmindre du vil udforske bycentrum først. De stop kræver en stejl gåtur op ad bakke for at nå hostellet.\n\nFor flere detaljer om busser fra dette stop, inklusive tjenester tilbage til Sorrento og videre til Amalfi, se vores %LINK:chiesaNuovaDepartures|Chiesa Nuova afgangsguide%.",
+      "images": [
+        {
+          "src": "/img/guides/chiesa-nuova-departures/chiesa-nuova-bus-stop.jpg",
+          "alt": "Chiesa Nuova busstoppested uden for Bar Internazionale i Positano"
+        }
       ]
     },
     {
       "id": "walk",
-      "title": "Gå fra busstoppet"
+      "title": "Gang fra Chiesa Nuova stop til hostellet",
+      "body": "Efter at stige af bussen ved Chiesa Nuova, vil du se Bar Internazionale på din højre side. Vend ansigtet op ad bakke (væk fra havet) og gå 50 meter langs Via Pasitea.\n\nDu vil se en lille fodgængerstræde på din venstre side mærket 'Via Trara Genoino'. Drej til venstre her og gå 90 meter langs denne rolige stræde. Hostel Brikette er på din venstre side ved nummer 23, mærket med vores skilt.\n\nSamlet gangtid er under 2 minutter. Stien er flad og brolagt — ingen trapper.\n\nHvis du ankommer efter mørkets frembrud, er stræden oplyst men tag en telefonlygte med for ekstra synlighed. Se vores %LINK:chiesaNuovaArrivals|Chiesa Nuova ankomstguide% for fotos af gåturen og detaljeret vejledning.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/via-trara-genoino.jpg",
+          "alt": "Via Trara Genoino fodgængerstræde der fører til Hostel Brikette indgang"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/hostel-brikette-entrance.jpg",
+          "alt": "Hovedindgang til Hostel Brikette ved Via Trara Genoino 23, Positano"
+        }
+      ]
+    },
+    {
+      "id": "luggageTips",
+      "title": "Bagage og komforttips",
+      "body": "Både Circumvesuviana toget og SITA bussen har begrænset bagageplads, især i højsæsonen. Hvis du rejser med en stor rygsæk eller kuffert, kom tidligt ombord for at sikre en plads nær bagagehylderne.\n\nPå toget er bagagehylder nær dørene i hver ende af vognen. På bussen er der et lille bagageområde bagerst, men det fyldes hurtigt. Store kufferter skal måske placeres i midtergangen i travle perioder.\n\nBehold værdigenstande hos dig — lommetyverier kan forekomme på overfyldte tog, især i højturistsæsonen. Circumvesuviana har grundlæggende faciliteter (ingen toiletter, ingen aircondition på ældre tog). Tag vand med, især om sommeren.\n\nSITA bussen har heller ikke toilet, så brug faciliteterne ved Sorrento station før ombordstigning. Der er en lille cafe ved stationen med toiletter.\n\nHvis du har tunge tasker og vil undgå besværet, overvej at bruge vores %LINK:porterServices|bærer tjenester% til bagagetransport fra færgelejet, eller tjek %LINK:travelHelp|vores rejsehjælp side% for private transportmuligheder."
+    },
+    {
+      "id": "alternativeRoutes",
+      "title": "Alternative ruter og backup planer",
+      "body": "Hvis tog eller busser er forsinkede, aflyst eller for overfyldte, har du flere backup muligheder:\n\n(1) Den direkte Curreri bus kører fra Napoli centrum til Positano (€10-15, 90 minutter) men køreplaner er begrænsede.\n\n(2) Du kan tage en færge fra Napoli havn til Positano (kun april-oktober, €20-25, 90 minutter) — se vores %LINK:arrivingByFerry|færge ankomstguide%.\n\n(3) Private transporter koster €100-140 men giver dør-til-dør service uden ventetid.\n\n(4) Hvis du misser den sidste bus fra Sorrento (normalt omkring 20-21 afhængigt af sæson), kan du tage en taxa til Positano (€80-100, 30 minutter).\n\nTjek altid sidste bus tid før du forlader Napoli. På søndage og helligdage er tjenester reduceret — planlæg ekstra tid og tjek køreplaner på forhånd."
+    },
+    {
+      "id": "timings",
+      "title": "Eksempel rejsetider",
+      "body": "Her er en realistisk tidslinje for den komplette rejse fra Napoli centrum til Hostel Brikette:\n\n**Morgen afgang (anbefalet):**\n- 09:00 - Ankom til Napoli Garibaldi, køb billet (15 min)\n- 09:15 - Gå ombord på Circumvesuviana tog til Sorrento\n- 10:25 - Ankom Sorrento, køb SITA bus billet (15 min)\n- 10:40 - Gå ombord på SITA bus til Positano\n- 11:30 - Ankom Chiesa Nuova stop, gå til hostel (5 min)\n- 11:35 - Check ind på Hostel Brikette\n\nSamlet tid: 2 timer 35 minutter (plus eventuel ventetid hvis du misser en forbindelse).\n\n**Eftermiddag afgang:**\n- 14:00 - Ankom til Napoli Garibaldi\n- 14:15 - Gå ombord på tog\n- 15:25 - Ankom Sorrento\n- 15:40 - Gå ombord på bus (hvis en afgår på dette tidspunkt)\n- 16:30 - Ankom til hostel\n\nBemærk: Sommer køreplaner (juni-september) tilbyder mere hyppige tjenester. Vinter køreplaner (november-marts) har længere huller mellem busser, så medregn potentielle 60-90 minutters ventetider ved Sorrento."
+    },
+    {
+      "id": "whatToExpect",
+      "title": "Hvad at forvente på rejsen",
+      "body": "Circumvesuviana er et pendlertog, ikke en turistservice. Forvent grundlæggende forhold: hårde plastiksæder, ingen aircondition på ældre tog, og overfyldte vogne i myldretiden (07-09, 17-20).\n\nOm sommeren kan toget være meget varmt. Tag vand med og klæd dig i lag. Togvinduerne åbner og giver noget ventilation, men vognene kan stadig være ubehagelige i topvarme. Mange lokale står nær dørene for bedre luftgennemstrømning.\n\nSITA bus rejsen er spektakulær men nervepirrende hvis du ikke er vant til smalle kystveje. Chauffører er erfarne og laver denne rejse flere gange dagligt, men vejen har skarpe sving og stejle fald med minimale barrierer. Sid på højre side for det bedste udsyn over kystlinjen (og mindre eksponering til klippe kanten hvis højder gør dig nervøs).\n\nBegge tjenester kører året rundt, men vinter køreplaner (november-marts) er betydeligt reduceret. Sommer køreplaner (april-oktober) er hyppige og pålidelige, selvom busser kan fyldes op ved formiddag i højsæson (juli-august). Hvis du rejser i topsommer, sigt efter morgen afgange for at undgå kun ståpladser.\n\nFra hostellet har vi bemærket at de fleste gæster finder rejsen ligetil når de forstår trinnene. Den største forvirring er normalt køb af bus billetten ved Sorrento — bare husk at du ikke kan købe ombord.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/coastal-road-view.jpg",
+          "alt": "Malerisk udsigt over Amalfikystvejen fra SITA bus vindue mellem Sorrento og Positano"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/sita-ticket.jpg",
+          "alt": "Eksempel på SITA bus billet til Positano rute der viser pris og valideringsstempel"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvor meget koster det at komme fra Napoli centrum til Positano med tog og bus?",
+      "a": "Den samlede pris er omkring €7.20: €4.60 for Circumvesuviana toget fra Napoli til Sorrento, plus €2.60 for SITA bussen fra Sorrento til Positano (2026 priser). Dette er den billigste offentlige transport mulighed."
+    },
+    {
+      "q": "Hvor lang tid tager rejsen fra Napoli til Positano?",
+      "a": "Samlet rejsetid er 2,5-3 timer: 70 minutter på toget, 50 minutter på bussen, plus 20-40 minutter venten på forbindelser i Sorrento. Tillad 3-3,5 timer i alt for at tage højde for potentielle forsinkelser."
+    },
+    {
+      "q": "Kan jeg købe billetter på toget eller bussen?",
+      "a": "Du kan købe togbilletter på Napoli Garibaldi station fra billetautomater eller billetkontoret, men du skal validere før ombordstigning. SITA bus billetter kan ikke købes ombord — du skal købe dem fra en bar, tabacchi eller aviskiosk nær Sorrento station før du går på bussen."
+    },
+    {
+      "q": "Er denne rute egnet for rejsende med tung bagage?",
+      "a": "Ja, men det kan være udfordrende i spidsbelastningstider. Både toget og bussen har begrænset bagageplads, så kom tidligt ombord hvis du har store tasker. Gåturen fra Chiesa Nuova busstoppested til hostellet er flad og under 2 minutter, så bagage er håndterbar når du ankommer. Hvis du foretrækker, overvej at bruge vores bærer tjenester eller en privat transport."
+    },
+    {
+      "q": "Hvad tid er den sidste bus fra Sorrento til Positano?",
+      "a": "Den sidste bus varierer efter sæson. Om sommeren (juli-august) er den sidste bus normalt omkring 21-22. Om vinteren (november-marts) kan det være så tidligt som 19-20. Tjek altid den aktuelle køreplan på sitasudtrasporti.it før rejsen, især på søndage og helligdage når tjenester er reduceret."
+    },
+    {
+      "q": "Er der et direkte tog eller bus fra Napoli til Positano?",
+      "a": "Ingen direkte tog eksisterer — du skal skifte ved Sorrento. Curreri bussen tilbyder en direkte forbindelse fra Napoli til Positano, men køreplaner er begrænsede (normalt 2-3 tjenester per dag). Tog-bus kombinationen kører mere hyppigt og er billigere."
     }
   ]
 }

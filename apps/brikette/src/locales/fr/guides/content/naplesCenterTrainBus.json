@@ -1,48 +1,141 @@
 {
   "seo": {
-    "title": "Centre de Naples à Positano en train puis bus | Hostel Brikette",
-    "description": "Instructions étape par étape pour aller du centre de Naples à l'Hostel Brikette via le train Circumvesuviana et le bus SITA, avec des conseils sur les billets et des photos de l'arrivée à Positano."
+    "title": "Guide Train Bus Naples à Positano | Hostel Brikette 2026",
+    "description": "Guide complet train bus Naples à Positano : Circumvesuviana jusqu'à Sorrente (€4.60), puis bus SITA (€2.60). Total 2,5 heures. Mis à jour 2026."
   },
-  "intro": {
-    "title": "Centre de Naples à Positano – Train puis bus",
-    "body": "Suivez ces indications pour voyager du centre de Naples à l'Hostel Brikette en prenant le train Circumvesuviana jusqu'à Sorrente puis le bus SITA vers Positano. Le guide inclut des conseils sur les billets, l'horaire des bus et des photos de votre approche finale de l'auberge."
-  },
+  "lastUpdated": "2026-01-31",
+  "intro": "Prendre l'itinéraire train-bus de Naples à Positano est le moyen le plus abordable de rejoindre l'Hostel Brikette depuis le centre-ville de Naples. Vous prendrez le train Circumvesuviana jusqu'à Sorrente (70 minutes, €4.60) suivi du bus SITA jusqu'à Positano (50 minutes, €2.60).\n\nLe temps de trajet total est d'environ 2,5 heures, plus le temps d'attente entre les correspondances. Ce guide inclut les prix des billets 2026, des conseils d'horaires et des instructions étape par étape depuis l'arrivée à l'arrêt de bus Chiesa Nuova.\n\nSi vous arrivez depuis l'%LINK:naplesAirportBus|Aéroport de Naples, consultez notre guide dédié du bus de l'aéroport%.",
   "callouts": {
-    "tip": "Besoin d'autres itinéraires ? Explorez l'ensemble des directions d'arrivée sur la %HOWTO:how-to-get-here|page Comment venir%."
+    "tip": "Besoin d'autres itinéraires ? Explorez l'ensemble complet des directions d'arrivée sur la %HOWTO:how-to-get-here|page Comment Venir%, y compris %LINK:ferryDockToBrikette|arrivées en ferry% et %LINK:naplesAirportBus|transferts aéroport%."
   },
   "sections": [
     {
-      "id": "naplesStation",
-      "title": "Gare de Naples",
-      "body": "Les trains Circumvesuviana vers Sorrente partent du niveau inférieur de la gare Napoli Garibaldi (sous Napoli Centrale). Achetez votre billet avant de descendre sur les quais, vérifiez la voie de votre service et montez dans le train en direction de Sorrente."
-    },
-    {
       "id": "overview",
-      "title": "Aperçu train puis bus",
-      "body": "Ce trajet couvre la combinaison de transports publics la plus rapide depuis le centre de Naples : le train Circumvesuviana jusqu'à Sorrente, suivi du bus SITA vers Positano. Il n'inclut pas le trajet depuis l'aéroport de Naples."
+      "title": "Aperçu du trajet et coûts",
+      "body": "Ce trajet en deux étapes est le moyen le moins cher d'atteindre Positano depuis le centre-ville de Naples. Le coût total est d'environ €7.20 (train €4.60 + bus €2.60) comparé à €100+ pour un transfert privé ou €10-15 pour le bus direct Curreri depuis l'Aéroport de Naples.\n\nLe train Circumvesuviana part de la gare Napoli Garibaldi (sous le terminal principal Napoli Centrale) toutes les 30 minutes aux heures de pointe. Depuis Sorrente, les bus SITA vers Positano circulent environ toutes les 40-60 minutes en été (avril-octobre) et toutes les 60-90 minutes en hiver (novembre-mars).\n\nVérifiez toujours les horaires actuels sur sitasudtrasporti.it car les services changent selon la saison. Prévoyez 3-3,5 heures au total incluant le temps de correspondance à Sorrente.\n\nCet itinéraire ne couvre pas le trajet depuis l'Aéroport de Naples — consultez notre %LINK:naplesAirportBus|guide du bus de l'Aéroport de Naples% pour ce trajet.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/napoli-garibaldi-station.jpg",
+          "alt": "Entrée du quai Circumvesuviana à la gare Napoli Garibaldi à Naples"
+        }
+      ]
     },
     {
-      "id": "positanoStop",
-      "title": "Arrêt de bus de Positano",
-      "list": [
-        "L'arrêt le plus proche est Positano (Chiesa Nuova), à environ 140 mètres (490 pieds) de l'auberge.",
-        "Il se situe devant le café/bar Bar Internazionale.",
-        "Le bus vous dépose au niveau de la route — pas besoin de longues volées d'escaliers pour nous rejoindre."
+      "id": "naplesStation",
+      "title": "Gare Napoli Garibaldi : trouver le Circumvesuviana",
+      "body": "Le Circumvesuviana est un réseau ferroviaire régional distinct du système ferroviaire national italien (Trenitalia). Si vous arrivez à Napoli Centrale (la gare principale), descendez en suivant les panneaux 'Circumvesuviana' ou 'Garibaldi Metro'.\n\nLes quais Circumvesuviana sont au niveau inférieur, accessibles par escalators ou escaliers près de l'entrée principale. Les guichets et machines en libre-service sont au niveau des quais — achetez votre billet pour Sorrente avant de monter (€4.60 aller simple en 2026).\n\nLes billets peuvent être achetés en espèces ou par carte au guichet ou aux machines automatiques jaunes. Compostez votre billet dans les petites machines vertes ou jaunes sur le quai avant de monter.\n\nLes trains pour Sorrente partent toutes les 30 minutes aux heures de pointe (7h-9h, 17h-20h) et toutes les 60 minutes en dehors des heures de pointe. Vérifiez les tableaux de départ pour 'Sorrento via Pompei' — votre train s'arrêtera à Pompei Scavi-Villa dei Misteri si vous voulez visiter les ruines.\n\nLe temps de trajet est de 70 minutes. Les trains peuvent être bondés, surtout en été et le week-end. L'espace bagages est limité, montez tôt si vous avez de gros sacs. Les sièges sont attribués selon le principe du premier arrivé, premier servi, et vous devrez peut-être rester debout pendant les périodes chargées.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/circumvesuviana-ticket-machine.jpg",
+          "alt": "Distributeur de billets Circumvesuviana montrant les options de route vers Sorrente"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/circumvesuviana-platform.jpg",
+          "alt": "Train Circumvesuviana à quai dans la gare Napoli Garibaldi"
+        }
       ]
     },
     {
       "id": "sorrentoStation",
-      "title": "Gare de Sorrente",
-      "body": "Après votre arrivée à Sorrente, sortez de la gare et achetez votre billet de bus SITA au bar, au kiosque ou au bureau de tabac à proximité — les billets ne sont pas vendus à bord. L'arrêt SITA se trouve en bas des escaliers à l'extérieur de la gare ; attendez le bus en direction d'Amalfi et restez à bord jusqu'à Positano."
+      "title": "Gare de Sorrente : acheter le billet de bus SITA",
+      "body": "Quand vous arrivez à la gare Sorrento Circumvesuviana, sortez par les portes principales et tournez à gauche. L'arrêt de bus SITA est à environ 50 mètres en bas d'un court escalier.\n\nAvant de vous diriger vers l'arrêt de bus, vous devez acheter votre billet — les bus SITA ne vendent pas de billets à bord. Cherchez n'importe quel bar proche, tabacchi (bureau de tabac) ou kiosque à journaux affichant le logo SITA.\n\nLe guichet est souvent au Bar Circolo ou Bar Fauno, tous deux à moins de 100 mètres de la sortie de la gare. Demandez 'un biglietto per Positano' (un billet pour Positano). Le coût est de €2.60 en 2026.\n\nVous pouvez aussi utiliser l'application EAV Campania pour acheter des billets numériques, mais le service peut être peu fiable. D'après notre expérience, le billet physique est plus fiable.\n\nUne fois que vous avez votre billet, dirigez-vous vers l'arrêt de bus SITA (cherchez le panneau bleu et blanc SITA). Les bus pour Positano sont marqués 'Amalfi via Positano' ou simplement 'Amalfi'.\n\nLes bus partent environ toutes les 40-60 minutes en haute saison (avril-octobre) et toutes les 60-90 minutes en basse saison (novembre-mars). Les services d'été de pointe (juillet-août) peuvent circuler toutes les 30 minutes.\n\nLe trajet jusqu'à Positano prend 45-50 minutes. Nous recommandons de s'asseoir du côté droit du bus pour des vues côtières époustouflantes. La route est étroite et sinueuse — c'est l'une des routes de bus les plus panoramiques au monde.\n\nPour plus de détails sur la lecture de l'horaire et le choix de votre arrêt, consultez %LINK:chiesaNuovaDepartures|notre guide des départs de Chiesa Nuova%.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/sorrento-sita-bus-stop.jpg",
+          "alt": "Arrêt de bus SITA devant la gare de Sorrente avec bus de la Côte Amalfitaine en attente"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/sita-bus-interior.jpg",
+          "alt": "Intérieur du bus SITA montrant la zone bagages et les sièges passagers"
+        }
+      ]
     },
     {
       "id": "timetable",
-      "title": "Lire l'horaire SITA",
-      "body": "L'horaire des bus SITA peut prêter à confusion — voici quelques repères pour trouver le bon service :"
+      "title": "Lire l'horaire du bus SITA",
+      "body": "Les horaires SITA peuvent être déroutants car ils listent chaque arrêt le long du parcours. Voici comment les lire d'après l'expérience de notre auberge en aidant les clients :\n\n(1) Trouvez la colonne étiquetée 'Sorrento' en haut — c'est votre point de départ.\n\n(2) Descendez pour trouver 'Positano (Chiesa Nuova)' ou juste 'Positano' dans la colonne de gauche.\n\n(3) Les heures listées indiquent quand le bus arrive à Positano, pas quand il part de Sorrente. Soustrayez 45-50 minutes pour estimer le départ de Sorrente.\n\n(4) Les services marqués 'Festivi' circulent uniquement les dimanches et jours fériés. Les services marqués 'Feriali' circulent du lundi au samedi.\n\n(5) Certains bus sautent certains arrêts — si vous voyez un tiret au lieu d'une heure, ce bus ne s'y arrête pas.\n\nVérifiez toujours le dernier horaire sur sitasudtrasporti.it ou demandez au guichet. Téléchargez une photo de l'horaire actuel sur votre téléphone avant de voyager au cas où l'accès Internet serait limité sur la côte."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Descendre à Positano (Chiesa Nuova)",
+      "body": "Le bus fera plusieurs arrêts à Positano. L'arrêt le plus proche de l'Hostel Brikette est 'Positano (Chiesa Nuova)' — environ 140 mètres (460 pieds) de notre porte d'entrée.\n\nCet arrêt est annoncé comme 'Chiesa Nuova' et est situé devant le Bar Internazionale, un café sur la route côtière principale (Via Pasitea). Dites au chauffeur 'Chiesa Nuova, per favore' quand vous montez pour qu'il sache où vous descendez.\n\nAppuyez sur le bouton d'arrêt quand vous voyez le Bar Internazionale sur votre droite. Le bus s'arrêtera directement devant. C'est un arrêt en bordure de route sans escaliers — vous sortez au niveau de la route, ce qui facilite avec les bagages.\n\nNe descendez pas à 'Positano Centro' ou 'Positano Spiaggia' (les arrêts du centre-ville) sauf si vous voulez d'abord explorer le centre-ville. Ces arrêts nécessitent une montée raide pour atteindre l'auberge.\n\nPour plus de détails sur les bus depuis cet arrêt, y compris les services retour vers Sorrente et vers Amalfi, consultez notre %LINK:chiesaNuovaDepartures|guide des départs de Chiesa Nuova%.",
+      "images": [
+        {
+          "src": "/img/guides/chiesa-nuova-departures/chiesa-nuova-bus-stop.jpg",
+          "alt": "Arrêt de bus Chiesa Nuova devant le Bar Internazionale à Positano"
+        }
+      ]
     },
     {
       "id": "walk",
-      "title": "Marcher depuis l'arrêt de bus"
+      "title": "Marche de l'arrêt Chiesa Nuova à l'auberge",
+      "body": "Après être descendu du bus à Chiesa Nuova, vous verrez le Bar Internazionale sur votre droite. Faites face à la montée (en vous éloignant de la mer) et marchez 50 mètres le long de Via Pasitea.\n\nVous verrez une petite ruelle piétonne sur votre gauche marquée 'Via Trara Genoino'. Tournez à gauche ici et marchez 90 mètres le long de cette ruelle tranquille. L'Hostel Brikette est sur votre gauche au numéro 23, marqué par notre enseigne.\n\nLe temps de marche total est de moins de 2 minutes. Le chemin est plat et pavé — pas d'escaliers.\n\nSi vous arrivez après la tombée de la nuit, la ruelle est éclairée mais apportez une lampe de téléphone pour une meilleure visibilité. Consultez notre %LINK:chiesaNuovaArrivals|guide d'arrivée de Chiesa Nuova% pour des photos de la marche et des instructions détaillées.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/via-trara-genoino.jpg",
+          "alt": "Ruelle piétonne Via Trara Genoino menant à l'entrée de l'Hostel Brikette"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/hostel-brikette-entrance.jpg",
+          "alt": "Entrée principale de l'Hostel Brikette au Via Trara Genoino 23, Positano"
+        }
+      ]
+    },
+    {
+      "id": "luggageTips",
+      "title": "Conseils bagages et confort",
+      "body": "Le train Circumvesuviana et le bus SITA ont tous deux un espace bagages limité, surtout pendant la haute saison. Si vous voyagez avec un grand sac à dos ou une valise, montez tôt pour sécuriser une place près des porte-bagages.\n\nDans le train, les porte-bagages sont près des portes à chaque extrémité du wagon. Dans le bus, il y a une petite zone bagages à l'arrière, mais elle se remplit rapidement. Les grosses valises peuvent devoir être placées dans l'allée pendant les périodes chargées.\n\nGardez les objets de valeur avec vous — les vols à la tire peuvent se produire dans les trains bondés, particulièrement pendant la haute saison touristique. Le Circumvesuviana a des installations basiques (pas de toilettes, pas de climatisation dans les anciens trains). Apportez de l'eau, surtout en été.\n\nLe bus SITA n'a pas non plus de toilettes, utilisez donc les installations à la gare de Sorrente avant de monter. Il y a un petit café à la gare avec des toilettes.\n\nSi vous avez des sacs lourds et voulez éviter les tracas, envisagez d'utiliser nos %LINK:porterServices|services de porteur% pour le transfert des bagages depuis l'embarcadère du ferry, ou consultez %LINK:travelHelp|notre page d'aide voyage% pour les options de transfert privé."
+    },
+    {
+      "id": "alternativeRoutes",
+      "title": "Itinéraires alternatifs et plans de secours",
+      "body": "Si les trains ou bus sont retardés, annulés ou trop bondés, vous avez plusieurs options de secours :\n\n(1) Le bus direct Curreri circule du centre-ville de Naples à Positano (€10-15, 90 minutes) mais les horaires sont limités.\n\n(2) Vous pouvez prendre un ferry du port de Naples à Positano (avril-octobre uniquement, €20-25, 90 minutes) — consultez notre %LINK:arrivingByFerry|guide d'arrivée en ferry%.\n\n(3) Les transferts privés coûtent €100-140 mais fournissent un service porte-à-porte sans attente.\n\n(4) Si vous ratez le dernier bus depuis Sorrente (généralement vers 20h-21h selon la saison), vous pouvez prendre un taxi pour Positano (€80-100, 30 minutes).\n\nVérifiez toujours l'heure du dernier bus avant de quitter Naples. Les dimanches et jours fériés, les services sont réduits — prévoyez du temps supplémentaire et vérifiez les horaires à l'avance."
+    },
+    {
+      "id": "timings",
+      "title": "Exemples de horaires de trajet",
+      "body": "Voici un calendrier réaliste pour le trajet complet du centre de Naples à l'Hostel Brikette :\n\n**Départ matinal (recommandé) :**\n- 09:00 - Arrivée à Napoli Garibaldi, achat du billet (15 min)\n- 09:15 - Montée dans le train Circumvesuviana pour Sorrente\n- 10:25 - Arrivée à Sorrente, achat du billet de bus SITA (15 min)\n- 10:40 - Montée dans le bus SITA pour Positano\n- 11:30 - Arrivée à l'arrêt Chiesa Nuova, marche vers l'auberge (5 min)\n- 11:35 - Enregistrement à l'Hostel Brikette\n\nTemps total : 2 heures 35 minutes (plus tout temps d'attente si vous ratez une correspondance).\n\n**Départ après-midi :**\n- 14:00 - Arrivée à Napoli Garibaldi\n- 14:15 - Montée dans le train\n- 15:25 - Arrivée à Sorrente\n- 15:40 - Montée dans le bus (si un part à cette heure)\n- 16:30 - Arrivée à l'auberge\n\nNote : Les horaires d'été (juin-septembre) offrent des services plus fréquents. Les horaires d'hiver (novembre-mars) ont des intervalles plus longs entre les bus, prévoyez donc des attentes potentielles de 60-90 minutes à Sorrente."
+    },
+    {
+      "id": "whatToExpect",
+      "title": "À quoi s'attendre pendant le trajet",
+      "body": "Le Circumvesuviana est un train de banlieue, pas un service touristique. Attendez-vous à des conditions basiques : sièges en plastique dur, pas de climatisation dans les anciens trains, et des wagons bondés pendant les heures de pointe (7h-9h, 17h-20h).\n\nEn été, le train peut être très chaud. Apportez de l'eau et habillez-vous en couches. Les fenêtres du train s'ouvrent, fournissant une certaine ventilation, mais les wagons peuvent rester inconfortables en pleine chaleur. Beaucoup de locaux se tiennent près des portes pour un meilleur flux d'air.\n\nLe trajet en bus SITA est spectaculaire mais éprouvant si vous n'êtes pas habitué aux routes côtières étroites. Les chauffeurs sont expérimentés et font ce trajet plusieurs fois par jour, mais la route a des virages serrés et des descentes abruptes avec des barrières minimales. Asseyez-vous du côté droit pour les meilleures vues de la côte (et moins d'exposition au bord de la falaise si les hauteurs vous rendent nerveux).\n\nLes deux services fonctionnent toute l'année, mais les horaires d'hiver (novembre-mars) sont significativement réduits. Les horaires d'été (avril-octobre) sont fréquents et fiables, bien que les bus puissent se remplir en milieu de matinée en haute saison (juillet-août). Si vous voyagez en plein été, visez les départs matinaux pour éviter de rester debout uniquement.\n\nDepuis l'auberge, nous avons remarqué que la plupart des clients trouvent le trajet simple une fois qu'ils comprennent les étapes. La principale confusion concerne généralement l'achat du billet de bus à Sorrente — rappelez-vous simplement que vous ne pouvez pas acheter à bord.",
+      "images": [
+        {
+          "src": "/img/guides/naples-center-train-bus/coastal-road-view.jpg",
+          "alt": "Vue panoramique de la route de la Côte Amalfitaine depuis la fenêtre du bus SITA entre Sorrente et Positano"
+        },
+        {
+          "src": "/img/guides/naples-center-train-bus/sita-ticket.jpg",
+          "alt": "Exemple de billet de bus SITA pour l'itinéraire Positano montrant le prix et le tampon de validation"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Combien coûte le trajet du centre de Naples à Positano en train et bus ?",
+      "a": "Le coût total est d'environ €7.20 : €4.60 pour le train Circumvesuviana de Naples à Sorrente, plus €2.60 pour le bus SITA de Sorrente à Positano (prix 2026). C'est l'option de transport public la moins chère."
+    },
+    {
+      "q": "Combien de temps prend le trajet de Naples à Positano ?",
+      "a": "Le temps de trajet total est de 2,5-3 heures : 70 minutes en train, 50 minutes en bus, plus 20-40 minutes d'attente pour les correspondances à Sorrente. Prévoyez 3-3,5 heures au total pour tenir compte des retards potentiels."
+    },
+    {
+      "q": "Puis-je acheter des billets dans le train ou le bus ?",
+      "a": "Vous pouvez acheter des billets de train à la gare Napoli Garibaldi depuis les distributeurs ou le guichet, mais vous devez composter avant de monter. Les billets de bus SITA ne peuvent pas être achetés à bord — vous devez les acheter dans un bar, tabacchi ou kiosque à journaux près de la gare de Sorrente avant de monter dans le bus."
+    },
+    {
+      "q": "Cet itinéraire convient-il aux voyageurs avec des bagages lourds ?",
+      "a": "Oui, mais cela peut être difficile pendant les heures de pointe. Le train et le bus ont tous deux un espace bagages limité, montez donc tôt si vous avez de gros sacs. La marche de l'arrêt de bus Chiesa Nuova à l'auberge est plate et de moins de 2 minutes, les bagages sont donc gérables une fois arrivé. Si vous préférez, envisagez d'utiliser nos services de porteur ou un transfert privé."
+    },
+    {
+      "q": "À quelle heure est le dernier bus de Sorrente à Positano ?",
+      "a": "Le dernier bus varie selon la saison. En été (juillet-août), le dernier bus est généralement vers 21h-22h. En hiver (novembre-mars), il peut être dès 19h-20h. Vérifiez toujours l'horaire actuel sur sitasudtrasporti.it avant de voyager, surtout les dimanches et jours fériés quand les services sont réduits."
+    },
+    {
+      "q": "Y a-t-il un train ou bus direct de Naples à Positano ?",
+      "a": "Aucun train direct n'existe — vous devez changer à Sorrente. Le bus Curreri offre une connexion directe de Naples à Positano, mais les horaires sont limités (généralement 2-3 services par jour). La combinaison train-bus circule plus fréquemment et est moins chère."
     }
   ]
 }

@@ -117,7 +117,7 @@
     ],
     "primaryArea": "howToGetHere",
     "auditResults": {
-      "timestamp": "2026-01-31T08:35:47.471Z",
+      "timestamp": "2026-01-31T10:28:54.092Z",
       "score": 10,
       "analysis": {
         "strengths": [
@@ -1256,7 +1256,7 @@
   },
   "amalfiPositanoBus": {
     "auditResults": {
-      "timestamp": "2026-01-31T08:14:51.892Z",
+      "timestamp": "2026-01-31T10:31:08.524Z",
       "score": 9.7,
       "analysis": {
         "strengths": [
@@ -1344,7 +1344,7 @@
   },
   "amalfiPositanoFerry": {
     "auditResults": {
-      "timestamp": "2026-01-31T07:47:43.790Z",
+      "timestamp": "2026-01-31T10:14:24.319Z",
       "score": 9.2,
       "analysis": {
         "strengths": [
@@ -1434,7 +1434,7 @@
     "focusKeyword": "capri to positano ferry",
     "lastUpdated": "2026-01-31",
     "auditResults": {
-      "timestamp": "2026-01-31T07:50:06.708Z",
+      "timestamp": "2026-01-31T10:22:55.834Z",
       "score": 9.6,
       "analysis": {
         "strengths": [
@@ -1442,7 +1442,7 @@
           "Good meta title length (44 chars)",
           "Good meta description length (160 chars)",
           "All content is finalized (no placeholders)",
-          "Comprehensive content at 2018 words",
+          "Comprehensive content at 2029 words",
           "Strong internal linking with 6 links",
           "FAQ section present with 4 questions",
           "Well-structured with 11 section headings",
@@ -1474,7 +1474,7 @@
         "metaDescriptionLength": 160,
         "hasTitleTag": 1,
         "hasMetaDescription": 1,
-        "contentWordCount": 2018,
+        "contentWordCount": 2029,
         "headingCount": 11,
         "h2Count": 11,
         "hasH1": 1,
@@ -1501,8 +1501,8 @@
         "concreteFactsDensity": 19,
         "hasFirstHandDetails": 1,
         "avgParagraphLength": 23,
-        "avgSentenceLength": 18,
-        "readingGradeLevel": 9.7,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 9,
         "hasFocusKeyword": 0,
         "focusKeywordInTitle": 0,
         "focusKeywordNearFront": 0,

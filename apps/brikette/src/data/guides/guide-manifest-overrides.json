@@ -212,8 +212,8 @@
     ],
     "primaryArea": "howToGetHere",
     "auditResults": {
-      "timestamp": "2026-01-30T23:36:10.577Z",
-      "score": 9.7,
+      "timestamp": "2026-01-31T07:17:34.148Z",
+      "score": 9.2,
       "analysis": {
         "strengths": [
           "All internal links resolve to valid guide keys",
@@ -229,17 +229,22 @@
           "All images have alt attributes",
           "Good density of concrete details (10 facts per 500 words)",
           "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
           "Structured data declared in manifest"
         ],
         "criticalIssues": [],
         "improvements": [
           {
-            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
-            "impact": 0.2
+            "issue": "Focus keyword should appear near front of title (\"ferry dock to hostel brikette\")",
+            "impact": 0.3
           },
           {
-            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
-            "impact": 0.1
+            "issue": "Include focus keyword in first ~150 words (\"ferry dock to hostel brikette\")",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
+            "impact": 0.2
           }
         ]
       },
@@ -277,7 +282,7 @@
         "avgParagraphLength": 39,
         "avgSentenceLength": 11,
         "readingGradeLevel": 8.1,
-        "hasFocusKeyword": 0,
+        "hasFocusKeyword": 1,
         "focusKeywordInTitle": 0,
         "focusKeywordNearFront": 0,
         "focusKeywordEarly": 0,
@@ -1261,7 +1266,7 @@
   },
   "amalfiPositanoBus": {
     "auditResults": {
-      "timestamp": "2026-01-30T18:44:40.055Z",
+      "timestamp": "2026-01-31T07:21:18.330Z",
       "score": 8.9,
       "analysis": {
         "strengths": [
@@ -1269,7 +1274,7 @@
           "Good meta title length (43 chars)",
           "Good meta description length (146 chars)",
           "All content is finalized (no placeholders)",
-          "Comprehensive content at 2130 words",
+          "Comprehensive content at 2332 words",
           "Strong internal linking with 7 links",
           "FAQ section present with 8 questions",
           "Well-structured with 10 section headings",
@@ -1277,7 +1282,9 @@
           "No common misspellings detected",
           "All images have alt attributes",
           "Good local specificity (10 entities detected)",
-          "Good density of concrete details (15 facts per 500 words)",
+          "Good density of concrete details (14 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
           "Structured data declared in manifest"
         ],
         "criticalIssues": [],
@@ -1287,16 +1294,12 @@
             "impact": 0.5
           },
           {
-            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
-            "impact": 0.25
+            "issue": "Focus keyword should appear near front of title (\"Amalfi Positano bus\")",
+            "impact": 0.3
           },
           {
-            "issue": "Add lastUpdated date (time-sensitive guide)",
-            "impact": 0.25
-          },
-          {
-            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
-            "impact": 0.1
+            "issue": "Include focus keyword in first ~150 words (\"Amalfi Positano bus\")",
+            "impact": 0.3
           }
         ]
       },
@@ -1305,7 +1308,7 @@
         "metaDescriptionLength": 146,
         "hasTitleTag": 1,
         "hasMetaDescription": 1,
-        "contentWordCount": 2130,
+        "contentWordCount": 2332,
         "headingCount": 10,
         "h2Count": 10,
         "hasH1": 1,
@@ -1329,12 +1332,12 @@
         "featuredImageWidth": 0,
         "usesModernFormats": 1,
         "localEntityCount": 10,
-        "concreteFactsDensity": 15,
-        "hasFirstHandDetails": 0,
-        "avgParagraphLength": 34,
-        "avgSentenceLength": 13,
-        "readingGradeLevel": 8.7,
-        "hasFocusKeyword": 0,
+        "concreteFactsDensity": 14,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 37,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 8.9,
+        "hasFocusKeyword": 1,
         "focusKeywordInTitle": 0,
         "focusKeywordNearFront": 0,
         "focusKeywordEarly": 0,
@@ -1346,8 +1349,8 @@
         "hasArticleSchema": 0,
         "hasPrimaryCTA": 1,
         "hasAboveFoldCTA": 0,
-        "contextualCTACount": 0,
-        "hasLastUpdated": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
         "hasYearReferences": 1
       },
       "version": "3.1.0"

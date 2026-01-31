@@ -3676,6 +3676,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "ferry-dock-to-hostel-brikette-with-luggage",
     contentKey: "ferryDockToBrikette",
     status: "draft",
+    focusKeyword: "ferry dock to hostel brikette",
     draftPathSegment: "guides/ferry-dock-to-hostel-brikette-with-luggage",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3767,6 +3768,7 @@ const manifestSeed: GuideManifestEntry[] = [
     status: "live",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
+    focusKeyword: "Amalfi Positano bus",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
     blocks: [

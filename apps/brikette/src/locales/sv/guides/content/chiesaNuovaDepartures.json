@@ -1,11 +1,11 @@
 {
   "seo": {
-    "title": "Hostel Brikette till busshållplatsen Chiesa Nuova/Bar Internazionale",
-    "description": "Gå från Hostel Brikette till Chiesa Nuova busshållplats: vägbeskrivning, tidtabeller, biljetter, förbindelser till Amalfi, Sorrento, Neapel, Salerno."
+    "title": "Positano Chiesa Nuova busshållplats: Gångavstånd från Hostel Brikette",
+    "description": "Gå från Hostel Brikette till busshållplatsen Positano Chiesa Nuova: vägbeskrivning, tidtabeller, biljetter, förbindelser till Amalfi, Sorrento, Neapel, Salerno."
   },
   "linkLabel": "Hostel Brikette till busshållplatsen Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
-  "intro": "Lämnar du vandrarh emmet för bussen till Amalfi, Sorrento eller vidare? Den här guiden täcker allt du behöver veta om att gå från Hostel Brikette till Chiesa Nuova/Bar Internazionale busshållplats: den 2 minuters långa gångvägen, var du kan köpa biljetter, vilken sida av vägen du ska köa på och förbindelser till större destinationer längs Amalfikusten.",
+  "intro": "Positano Chiesa Nuova busshållplats är din port från Hostel Brikette till hela Amalfikusten. Den här guiden täcker allt du behöver veta om denna 2 minuters gångväg: var du kan köpa biljetter, vilken sida av vägen du ska köa på och förbindelser till större destinationer längs kusten.",
   "image": {
     "alt": "Positanos Chiesa Nuova SITA-hållplats utanför Bar Internazionale",
     "caption": "Hostel Brikette ligger en sväng från hållplatsen. Räkna med ett par minuter för att ansluta till kön innan bussen anländer, särskilt på sommaren när bussarna snabbt fylls."
@@ -25,6 +25,18 @@
         "Det är en 120 meter (400 fot) lång promenad från hostelsentrén till busshållplatsen på Viale Pasitea, huvudkustvägen genom Positano. Promenaden tar 2-4 minuter på en lätt nedförsbacke med asfalterade trottoarer hela vägen. Du kommer att se hostellskylten på din högra sida när du går ut. Trottoaren är bred nog för bagage och har god belysning på natten.",
         "Om du ska mot Amalfi (öst), ligger hållplatsen mittemot Bar Internazionale på havsutsiktssidan av vägen. Vänta här för bussar mot Amalfi, Salerno och Ravello. Om du ska mot Sorrento (väst), väntar du direkt utanför baren på bergsidan av vägen. Leta efter den blå och vita SITA-busshållplatsskylten.",
         "Denna Chiesa Nuova-hållplats är den närmaste SITA-busshållplatsen till Hostel Brikette och det enklaste stället att ta bussar längs kusten. Lokalbefolkningen kallar det också Bar Internazionale-hållplatsen. Baren har en stor röd markis som gör den lätt att få syn på från båda riktningarna."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Positano Chiesa Nuova SITA-hållplats sedd från Hostel Brikette",
+          "caption": "Chiesa Nuova-hållplats framför Bar Internazionale. Bara 2-4 minuters lätt nedförsbacke."
+        },
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Bar Internazionale i Positano med stor röd markis",
+          "caption": "Leta efter den röda markisen: ett visuellt landmärke som hjälper dig identifiera denna hållplats från båda riktningarna."
+        }
       ]
     },
     {
@@ -35,6 +47,13 @@
         "**Mot Amalfi (östgående):** Bussarna kör genom Praiano, passerar Marina di Praia och Fiordo di Furore innan de når %LINK:amalfiTownGuide|Amalfi stad% (30-40 minuter). Från Amalfi kan du fortsätta till %LINK:salernoPositano|Salerno% (ytterligare 45 minuter) eller ta anslutande bussar till Ravello.",
         "**Mot Sorrento (västgående):** Bussarna slingrar sig längs kusten genom flera natursköna tunnlar innan de når %LINK:sorrentoGuide|Sorrento% (40-50 minuter). Från Sorrento kan du ansluta till tåg mot %LINK:naplesPositano|Neapel% (Circumvesuviana-linjen till Neapel centralstation) eller fortsätta till Neapels flygplats.",
         "För komplett reseplanering från Positano, se våra dedikerade ruttguider: %LINK:positanoAmalfiBus|Positano till Amalfi med buss%, %LINK:positanoSorrentoBus|Positano till Sorrento med buss%, %LINK:positanoNaplesCenterBusTrain|Positano till Neapel% via Sorrento, och %LINK:positanoSalernoBus|Positano till Salerno med buss%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "SITA-buss på kustvägen i Positano",
+          "caption": "SITA-bussar kör i båda riktningarna: österut till Amalfi eller västerut till Sorrento."
+        }
       ]
     },
     {
@@ -45,6 +64,13 @@
         "**Första bussarna:** Den första bussen österut till Amalfi avgår vanligtvis från Chiesa Nuova runt kl. 6:30-7:00. Den första bussen västerut till Sorrento avgår vanligtvis runt kl. 6:45-7:15. Kontrollera aktuella tider vid Bar Internazionale eller fråga vid hostelreceptionen eftersom tidtabellen ändras med säsongerna. På sommaren finns det fler bussar än på vintern.",
         "**Sista bussarna:** Kvällsbussarna blir mycket mindre frekventa efter kl. 22. Den sista bussen till Amalfi avgår vanligtvis runt kl. 22:30, och den sista bussen till Sorrento avgår runt kl. 23. Kontrollera alltid exakta tider vid receptionen eller titta på SITA-tidtabellen som är uppsatt vid hållplatsen. Försök ta näst sista bussen om du reser på natten så att du inte missar den sista och sitter fast.",
         "**Vintertidtabeller (november-mars):** Bussar kör mer sällan på vintern, cirka var 40-60:e minut, och de sista bussarna avgår tidigare. Vissa kvällsbussar kanske inte körs alls på söndagar eller helgdagar. Kontrollera alltid vintertidtabellen innan du reser."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "SITA-busstidtabell uppsatt vid busshållplats",
+          "caption": "SITA-tidtabeller är uppsatta vid hållplatsen. Kontrollera alltid de senaste tiderna eftersom de ändras säsongsmässigt."
+        }
       ]
     },
     {
@@ -56,6 +82,13 @@
         "**Validering:** Visa din biljett för föraren när du stiger på bussen. Föraren kommer att stämpla den med datum och tid. På nyare bussar kan du skanna din biljett vid maskinen precis innanför dörren. Behåll din stämplade biljett under hela resan - biljettkontrollanter går ofta på bussen och kontrollerar biljetter. Om du inte har en stämplad biljett får du böter direkt som kostar mycket mer än biljetten.",
         "**Köp i förväg:** Om du tar första bussen på morgonen (före kl. 7:30), köp din biljett kvällen innan eftersom tabacchi kanske inte har öppnat ännu. Kom till hostelreceptionen om du behöver checka ut tidigt. Baren säljer också biljetter och öppnar tidigare än tabacchi, vanligtvis senast kl. 6:30.",
         "För mer information om SITA-biljetter, pass och priser, se vår fullständiga %LINK:sitaTickets|SITA-bussbiljettguide%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "SITA-biljettvalideringsmaskin på bussen",
+          "caption": "Validera din biljett vid ombordstigning eller visa den för föraren. Behåll alltid din stämplade biljett under resan."
+        }
       ]
     },
     {
@@ -66,6 +99,13 @@
         "**Köregler:** Bilda en tydlig kö nära busskuren på högra sidan av vägen. Tryck inte eller träng - italienare respekterar vanligtvis köordningen. När bussen kommer, vänta på att folk stiger av innan du går på. Föraren kan stänga dörren om folk försöker tränga sig fram.",
         "**Bagage:** Det finns inte mycket utrymme för bagage på SITA-bussar - vanligtvis bara ett litet utrymme baktill eller under sätena. Om du har stora ryggsäckar eller resväskor, försök gå på tidigt för att få en bagageplats. Tänk på att använda en %LINK:porterServices|bärartjänst% för att bära ditt bagage till din nästa plats om du har tunga väskor. De flesta bussar har bara plats för 4-5 stora väskor i det bakre facket.",
         "**Ståplatser:** På fulla sommarbussar kan du behöva stå under delar av eller hela resan. Kustvägen har många kurvor och skarpa hörn, så håll hårt i stängerna över ditt huvud eller i ryggstöden. Föraren kan bromsa hårt om en bil stannar plötsligt framför."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "Passagerarköer vid Chiesa Nuova-hållplatsen på sommaren",
+          "caption": "Sommarköer kan bli långa. Anländ 10-15 minuter tidigt för att säkra din plats."
+        }
       ]
     },
     {
@@ -77,6 +117,13 @@
         "**Till Neapels flygplats:** Följ Neapel-rutten ovan, ta sedan Alibus-shutteln från Neapels centralstation till flygplatsen (20 minuter). Alternativt kan du boka en direktshuttle från Positano - fråga vid receptionen. Vår %LINK:naplesAirportPositanoBus|Neapels flygplatsguide% täcker alla alternativ.",
         "**Till Salerno:** Ta den östgående bussen mot Amalfi (35 minuter), fortsätt sedan på samma eller en anslutande buss till Salerno (45 minuter). Salerno har huvudlinjetåg till Rom, Florens och andra italienska städer. Se %LINK:salernoPositano|Salerno till Positano% för returresan och %LINK:salernoGatewayGuide|Salerno gateway-guide% för tågförbindelser.",
         "**Till färjekajen:** Om du planerar att ta en färja från Positanos huvudstrandskaj istället för bussen, se vår %LINK:briketteToFerryDock|Hostel Brikette till färjekajen med bagage%-guide för gångvägen med minimala trappor."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Anslutningskarta från Positano till större destinationer",
+          "caption": "Från Chiesa Nuova kan du nå Sorrento, Amalfi, Salerno, Neapel och flygplatsen."
+        }
       ]
     },
     {
@@ -87,6 +134,35 @@
         "**Färja (endast april-oktober):** Gå ner till Positanos huvudstrandsfärjekaj och ta en bärkraftsbåt eller färja till Amalfi, Salerno, Capri eller Neapel. Färjor är snabbare och mer natursköna än bussar men kostar 2-3 gånger mer. Se vår %LINK:ferrySchedules|färjetidtabellguide% för tidtabeller och vår %LINK:briketteToFerryDock|gångväg till kajen%.",
         "**Privat transport/taxi:** Förvänta dig att betala €80-150 för en privat bil till Sorrento eller Amalfi, €150-200 till Neapels flygplats, och €100-140 till Salerno. Taxibilar kan bokas vid receptionen. Värt att överväga om du har tungt bagage eller reser som en grupp på 3-4 personer.",
         "**Scooteuthyrning:** Erfarna förare kan hyra en scoter i Positano och köra kustvägen själva. Se vår %LINK:scooterRentalPositano|scooterhyrsguide% för uthyrningsbutiker, priser och säkerhetstips. Rekommenderas inte för nervösa förare - SS163-kustvägen är smal och slingrande med tung trafik på sommaren."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Positanos färjekaj sedd från stranden",
+          "caption": "Alternativ: gå ner till färjekajen för att resa på vattnet istället för med buss."
+        }
+      ]
+    },
+    {
+      "id": "safety-timing",
+      "title": "Säkerhet och timing: när du ska gå och hur du håller dig säker",
+      "body": [
+        "Promenaden från Hostel Brikette till Chiesa Nuova-hållplatsen är säker vid alla tidpunkter på dygnet. Viale Pasitea har breda trottoarer och gatubelysning som fungerar hela natten. Biltrafiken kan vara tung under dagen, men trottoaren är tydligt separerad från vägen med räcken. Håll dig på trottoaren hela tiden och ge höflighet till mötande bilar vid övergångsställen - förare stannar vanligtvis om de tydligt ser att du väntar.",
+        "Om du tar morgonbussen (före kl. 8), planera att lämna hostellet minst 20 minuter före din planerade busstid. Detta ger dig 5 minuter för promenaden, 10 minuter för att köa och köpa biljett (om du inte redan gjort det), och en buffert för oförutsedda händelser. På sommaren, anländ ännu tidigare - 30 minuter före busstiden - eftersom köerna kan bli långa och de första bussarna ofta fylls med passagerare på väg till tidiga färjetransporter eller tåg.",
+        "Om du reser på kvällen eller natten (efter kl. 21), kontrollera de exakta tiderna för de sista bussarna vid hostelreceptionen innan du går. Sista bussarna kan avgå tidigare än du förväntar dig, särskilt på vintern eller på söndagar. Om du stannar i Amalfi eller Sorrento längre än den sista återvändande bussen måste du beställa en taxi (€80-150 beroende på destination) eller stanna över natten och återvända nästa morgon. Sikta alltid på näst sista bussen hem om du är osäker.",
+        "Vid regn eller vått väder kan trottoaren bli hal, särskilt nära Bar Internazionale där stenplattorna kan vara glatta. Bär skor med bra grepp och gå försiktigt på nedförsbackarna. Om du bär tungt bagage vid regn, överväg att använda %LINK:porterServices|bärartjänsten% eller boka en taxi vid receptionen - det kostar mer men är säkrare än att halka med en stor ryggsäck på våta stenar."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Viale Pasitea på natten med gatubelysning",
+          "caption": "Väl belyst väg på natten. Säker promenad vid alla tidpunkter."
+        },
+        {
+          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+          "alt": "Passagerare som väntar vid busshållplatsen i regnet",
+          "caption": "Vid regn, bär skor med grepp. Stenytor kan vara hala."
+        }
       ]
     }
   ],

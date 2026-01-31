@@ -1,11 +1,11 @@
 {
   "seo": {
-    "title": "Hostel Brikette do przystanku autobusowego Chiesa Nuova/Bar Internazionale",
-    "description": "Przejdź z Hostelu Brikette do przystanku Chiesa Nuova: wskazówki, rozkłady, bilety, połączenia do Amalfi, Sorrento, Neapolu, Salerno."
+    "title": "Positano Chiesa Nuova przystanek autobusowy: Spacer z Hostelu Brikette",
+    "description": "Przejdź z Hostelu Brikette do przystanku autobusowego Positano Chiesa Nuova: wskazówki, rozkłady, bilety, połączenia do Amalfi, Sorrento, Neapolu, Salerno."
   },
   "linkLabel": "Hostel Brikette do przystanku autobusowego Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
-  "intro": "Opuszczasz hostel autobusem do Amalfi, Sorrento lub dalej? Ten przewodnik obejmuje wszystko, co musisz wiedzieć o drodze z Hostelu Brikette do przystanku autobusowego Chiesa Nuova/Bar Internazionale: 2-minutową trasę pieszą, gdzie kupić bilety, po której stronie drogi stać w kolejce oraz połączenia do głównych miejsc wzdłuż Wybrzeża Amalfitańskiego.",
+  "intro": "Przystanek autobusowy Positano Chiesa Nuova jest Twoją bramą z Hostelu Brikette do całego Wybrzeża Amalfitańskiego. Ten przewodnik obejmuje wszystko, co musisz wiedzieć o tej 2-minutowej trasie pieszej: gdzie kupić bilety, po której stronie drogi stać w kolejce oraz połączenia do głównych miejsc wzdłuż wybrzeża.",
   "image": {
     "alt": "Przystanek SITA Chiesa Nuova w Positano przed Bar Internazionale",
     "caption": "Hostel Brikette znajduje się jeden zakręt od przystanku. Zarezerwuj kilka minut, aby dołączyć do kolejki przed przyjazdem autobusu, szczególnie latem, gdy autobusy szybko się zapełniają."
@@ -25,6 +25,18 @@
         "To 120 metrów (400 stóp) spacerem od wejścia do hostelu do przystanku autobusowego na Viale Pasitea, głównej drodze przybrzeżnej przez Positano. Spacer trwa 2-4 minuty łagodnym spadkiem z wybrukowanymi chodnikami przez całą drogę. Zobaczysz szyld hostelu po prawej stronie, gdy wychodzisz. Chodnik jest wystarczająco szeroki na bagaż i ma dobre oświetlenie w nocy.",
         "Jeśli jedziesz w kierunku Amalfi (wschód), przystanek znajduje się naprzeciwko Bar Internazionale po stronie drogi z widokiem na morze. Czekaj tutaj na autobusy do Amalfi, Salerno i Ravello. Jeśli jedziesz w kierunku Sorrento (zachód), będziesz czekać bezpośrednio przed barem po stronie górskiej drogi. Szukaj niebiesko-białego znaku przystanku autobusowego SITA.",
         "Ten przystanek Chiesa Nuova jest najbliższym przystankiem autobusowym SITA do Hostelu Brikette i najłatwiejszym miejscem, aby złapać autobusy wzdłuż wybrzeża. Miejscowi nazywają go również przystankiem Bar Internazionale. Bar ma dużą czerwoną markizę, która ułatwia jego zauważenie z obu kierunków."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Przystanek SITA Positano Chiesa Nuova, widok z Hostelu Brikette",
+          "caption": "Przystanek Chiesa Nuova przed Bar Internazionale. To tylko 2-4 minuty łagodnego spaceru w dół."
+        },
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Bar Internazionale w Positano z dużą czerwoną markizą",
+          "caption": "Szukaj czerwonej markizy: punkt orientacyjny, który pomaga zidentyfikować ten przystanek z obu kierunków."
+        }
       ]
     },
     {
@@ -35,6 +47,13 @@
         "**W kierunku Amalfi (na wschód):** Autobusy jadą przez Praiano, mijając Marina di Praia i Fiordo di Furore, zanim dotrą do %LINK:amalfiTownGuide|miasta Amalfi% (30-40 minut). Z Amalfi możesz jechać dalej do %LINK:salernoPositano|Salerno% (kolejne 45 minut) lub wsiąść w autobusy łączące do Ravello.",
         "**W kierunku Sorrento (na zachód):** Autobusy wiją się wzdłuż wybrzeża przez kilka malowniczych tuneli, zanim dotrą do %LINK:sorrentoGuide|Sorrento% (40-50 minut). Z Sorrento możesz przesiąść się na pociągi jadące do %LINK:naplesPositano|Neapolu% (linia Circumvesuviana do Neapolu Stazione Centrale) lub jechać dalej do lotniska w Neapolu.",
         "Aby zaplanować kompletną podróż z Positano, zobacz nasze dedykowane przewodniki tras: %LINK:positanoAmalfiBus|Positano do Amalfi autobusem%, %LINK:positanoSorrentoBus|Positano do Sorrento autobusem%, %LINK:positanoNaplesCenterBusTrain|Positano do Neapolu% przez Sorrento i %LINK:positanoSalernoBus|Positano do Salerno autobusem%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Autobus SITA na nadmorskiej drodze w Positano",
+          "caption": "Autobusy SITA kursują w obu kierunkach: na wschód do Amalfi lub na zachód do Sorrento."
+        }
       ]
     },
     {
@@ -45,6 +64,13 @@
         "**Pierwsze autobusy:** Pierwszy autobus na wschód do Amalfi zazwyczaj odjeżdża z Chiesa Nuova około 6:30-7:00. Pierwszy autobus na zachód do Sorrento zazwyczaj odjeżdża około 6:45-7:15. Sprawdź aktualne godziny w Bar Internazionale lub zapytaj w recepcji hostelu, ponieważ rozkład zmienia się wraz z porami roku. Latem jest więcej autobusów niż zimą.",
         "**Ostatnie autobusy:** Autobusy wieczorne stają się znacznie mniej częste po 22:00. Ostatni autobus do Amalfi zazwyczaj odjeżdża około 22:30, a ostatni autobus do Sorrento odjeżdża około 23:00. Zawsze sprawdzaj dokładne godziny w recepcji lub spójrz na rozkład SITA wywieszon przy przystanku. Spróbuj złapać przedostatni autobus, jeśli podróżujesz w nocy, żebyś nie przegapił ostatniego i nie utknął.",
         "**Rozkłady zimowe (listopad-marzec):** Autobusy kursują rzadziej zimą, około co 40-60 minut, a ostatnie autobusy odjeżdżają wcześniej. Niektóre autobusy wieczorne mogą w ogóle nie kursować w niedziele lub święta. Zawsze sprawdź zimowy rozkład przed podróżą."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Rozkład jazdy SITA wywieszon przy przystanku autobusowym",
+          "caption": "Rozkłady jazdy SITA są wywieszone przy przystanku. Zawsze sprawdzaj najnowsze czasy, ponieważ zmieniają się sezonowo."
+        }
       ]
     },
     {
@@ -56,6 +82,13 @@
         "**Kasowanie:** Pokaż bilet kierowcy, gdy wsiadasz do autobusu. Kierowca ostempluje go datą i godziną. W nowszych autobusach możesz zeskanować bilet w automacie tuż za drzwiami. Zachowaj skasowany bilet przez całą podróż - kontrolerzy często wsiadają do autobusu i sprawdzają bilety. Jeśli nie masz skasowanego biletu, otrzymasz mandat od razu, który kosztuje znacznie więcej niż bilet.",
         "**Kup z wyprzedzeniem:** Jeśli łapiesz pierwszy autobus rano (przed 7:30), kup bilet wieczorem wcześniej, ponieważ tabacchi może jeszcze nie być otwarte. Przyjdź do recepcji hostelu, jeśli musisz się wcześnie wymeldować. Bar również sprzedaje bilety i otwiera się wcześniej niż tabacchi, zazwyczaj o 6:30.",
         "Więcej szczegółów na temat biletów SITA, karnetów i cen znajdziesz w naszym pełnym %LINK:sitaTickets|przewodniku biletów autobusowych SITA%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Automat do kasowania biletów SITA w autobusie",
+          "caption": "Skasuj bilet przy wejściu lub pokaż go kierowcy. Zawsze zachowaj skasowany bilet podczas podróży."
+        }
       ]
     },
     {
@@ -66,6 +99,13 @@
         "**Zasady kolejki:** Utwórz wyraźną kolejkę w pobliżu wiaty autobusowej po prawej stronie drogi. Nie popychaj się ani nie przepychaj - Włosi zazwyczaj szanują kolejność. Gdy autobus przyjedzie, poczekaj, aż ludzie wysiądą, zanim wsiądziesz. Kierowca może zamknąć drzwi, jeśli ludzie będą próbowali przepychać się do przodu.",
         "**Bagaż:** W autobusach SITA nie ma zbyt wiele miejsca na bagaż - zazwyczaj tylko mała przestrzeń z tyłu lub pod siedzeniami. Jeśli masz duże plecaki lub walizki, spróbuj wsiąść wcześnie, aby zdobyć miejsce na bagaż. Pomyśl o skorzystaniu z %LINK:porterServices|usługi bagażowej%, aby przenieść bagaż do następnego miejsca, jeśli masz ciężkie torby. Większość autobusów ma miejsce tylko na 4-5 dużych toreb w tylnym schowku.",
         "**Miejsca stojące:** W pełnych letnich autobusach możesz musieć stać przez część lub całą podróż. Droga przybrzeżna ma wiele zakrętów i ostrych rogów, więc trzymaj się mocno poręczy nad głową lub oparć siedzeń. Kierowca może mocno zahamować, jeśli samochód nagle zatrzyma się przed nim."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "Kolejka pasażerów przy przystanku Chiesa Nuova w lecie",
+          "caption": "Kolejki latem mogą być długie. Przyjedź 10-15 minut wcześniej, aby zapewnić sobie miejsce."
+        }
       ]
     },
     {
@@ -77,6 +117,13 @@
         "**Do lotniska w Neapolu:** Podążaj trasą do Neapolu powyżej, następnie weź autobus wahadłowy Alibus z Neapolu Stazione Centrale na lotnisko (20 minut). Alternatywnie zarezerwuj bezpośredni transfer z Positano - zapytaj w recepcji. Nasz %LINK:naplesAirportPositanoBus|przewodnik po lotnisku w Neapolu% obejmuje wszystkie opcje.",
         "**Do Salerno:** Weź autobus jadący na wschód do Amalfi (35 minut), następnie kontynuuj tym samym lub łączącym autobusem do Salerno (45 minut). Salerno ma pociągi głównych linii do Rzymu, Florencji i innych włoskich miast. Zobacz %LINK:salernoPositano|Salerno do Positano% dla podróży powrotnej i %LINK:salernoGatewayGuide|przewodnik po bramce Salerno% dla połączeń kolejowych.",
         "**Do przystani promowej:** Jeśli planujesz wziąć prom z głównej przystani na plaży w Positano zamiast autobusu, zobacz nasz przewodnik %LINK:briketteToFerryDock|Hostel Brikette do przystani promowej z bagażem% dla trasy pieszej z minimalnymi schodami."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Mapa połączeń z Positano do głównych miejsc docelowych",
+          "caption": "Z Chiesa Nuova możesz dotrzeć do Sorrento, Amalfi, Salerno, Neapolu i lotniska."
+        }
       ]
     },
     {
@@ -87,6 +134,35 @@
         "**Prom (tylko kwiecień-październik):** Zejdź do głównej przystani promowej na plaży w Positano i weź wodolot lub prom do Amalfi, Salerno, Capri lub Neapolu. Promy są szybsze i bardziej malownicze niż autobusy, ale kosztują 2-3 razy więcej. Zobacz nasz %LINK:ferrySchedules|przewodnik rozkładów promów% dla rozkładów jazdy i naszą %LINK:briketteToFerryDock|trasę pieszą do przystani%.",
         "**Transfer prywatny/taksówka:** Spodziewaj się zapłacić 80-150 € za prywatny samochód do Sorrento lub Amalfi, 150-200 € na lotnisko w Neapolu i 100-140 € do Salerno. Taksówki można zarezerwować w recepcji. Warto rozważyć, jeśli masz ciężki bagaż lub podróżujesz jako grupa 3-4 osób.",
         "**Wynajem skutera:** Doświadczeni kierowcy mogą wynająć skuter w Positano i sami jeździć drogą przybrzeżną. Zobacz nasz %LINK:scooterRentalPositano|przewodnik wynajmu skuterów% po wypożyczalniach, cenach i wskazówkach bezpieczeństwa. Niezalecane dla nerwowych kierowców - droga przybrzeżna SS163 jest wąska i kręta z dużym ruchem latem."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Przystań promowa w Positano widziana z plaży",
+          "caption": "Alternatywa: zejdź do przystani promowej, aby podróżować wodą zamiast autobusem."
+        }
+      ]
+    },
+    {
+      "id": "safety-timing",
+      "title": "Bezpieczeństwo i czas: kiedy wyjść i jak pozostać bezpiecznym",
+      "body": [
+        "Spacer z Hostelu Brikette do przystanku Chiesa Nuova jest bezpieczny o każdej porze dnia i nocy. Viale Pasitea ma szerokie chodniki i oświetlenie uliczne, które działa przez całą noc. Ruch samochodowy może być intensywny w ciągu dnia, ale chodnik jest wyraźnie oddzielony od drogi barierami. Pozostań na chodniku przez cały czas i daj uprzejmość nadjeżdżającym samochodom na przejściach dla pieszych - kierowcy zazwyczaj zatrzymują się, jeśli wyraźnie zobaczą, że czekasz.",
+        "Jeśli łapiesz autobus rano (przed 8:00), zaplanuj opuszczenie hostelu co najmniej 20 minut przed planowanym czasem odjazdu autobusu. To daje ci 5 minut na spacer, 10 minut na kolejkę i kupno biletu (jeśli jeszcze tego nie zrobiłeś) oraz bufor na nieprzewidziane okoliczności. Latem przyjedź jeszcze wcześniej - 30 minut przed odjazdem autobusu - ponieważ kolejki mogą być długie, a pierwszych kilka autobusów często wypełnia się pasażerami udającymi się na wczesne transfery promowe lub pociągi.",
+        "Jeśli jedziesz wieczorem lub w nocy (po 21:00), sprawdź dokładne czasy ostatnich autobusów w recepcji hostelu przed wyjściem. Ostatnie autobusy mogą odjeżdżać wcześniej niż oczekujesz, szczególnie zimą lub w niedziele. Jeśli zostaniesz w Amalfi lub Sorrento później niż ostatni autobus powrotny, będziesz musiał zamówić taksówkę (80-150 € w zależności od miejsca docelowego) lub zostać na noc i wrócić następnego ranka. Zawsze celuj w przedostatni autobus powrotny, jeśli jesteś niepewny.",
+        "W przypadku deszczu lub mokrej pogody chodnik może stać się śliski, szczególnie blisko Bar Internazionale, gdzie kamienne płytki mogą być gładkie. Noś obuwie z dobrą przyczepnością i idź ostrożnie na spadkach. Jeśli niesiesz ciężki bagaż podczas deszczu, rozważ skorzystanie z %LINK:porterServices|usługi bagażowej% lub zarezerwuj taksówkę w recepcji - to kosztuje więcej, ale jest bezpieczniejsze niż ślizganie się z dużym plecakiem na mokrych kamieniach."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Viale Pasitea w nocy z oświetleniem ulicznym",
+          "caption": "Dobrze oświetlona droga w nocy. Bezpieczny spacer o każdej porze."
+        },
+        {
+          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+          "alt": "Pasażerowie czekający przy przystanku autobusowym w deszczu",
+          "caption": "W deszczu noś obuwie z przyczepnością. Kamienne powierzchnie mogą być śliskie."
+        }
       ]
     }
   ],

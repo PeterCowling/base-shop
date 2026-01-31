@@ -1,11 +1,11 @@
 {
   "seo": {
-    "title": "Hostel Brikette 到 Chiesa Nuova/Bar Internazionale 巴士站",
-    "description": "从 Hostel Brikette 步行到 Chiesa Nuova 巴士站：方向、时刻表、车票、前往阿马尔菲、索伦托、那不勒斯、萨莱诺的连接。"
+    "title": "波西塔诺 Chiesa Nuova 巴士站：从 Hostel Brikette 步行",
+    "description": "从 Hostel Brikette 步行到波西塔诺的 Chiesa Nuova 巴士站：方向、时刻表、车票、前往阿马尔菲、索伦托、那不勒斯、萨莱诺的连接。"
   },
   "linkLabel": "Hostel Brikette 到 Chiesa Nuova/Bar Internazionale 巴士站",
   "lastUpdated": "2026-01-30",
-  "intro": "要离开旅舍搭乘巴士前往阿马尔菲、索伦托或更远的地方？本指南涵盖了从 Hostel Brikette 步行到 Chiesa Nuova/Bar Internazionale 巴士站所需了解的所有信息：2分钟步行路线、购票地点、排队位置以及前往阿马尔菲海岸主要目的地的连接。",
+  "intro": "波西塔诺 Chiesa Nuova 巴士站是您从 Hostel Brikette 前往整个阿马尔菲海岸的门户。要离开旅舍搭乘巴士前往阿马尔菲、索伦托或更远的地方？本指南涵盖了从 Hostel Brikette 步行到这个重要巴士站（也称为 Bar Internazionale）所需了解的所有信息：2分钟步行路线、购票地点、在道路哪一侧排队以及前往阿马尔菲海岸主要目的地的连接。",
   "image": {
     "alt": "波西塔诺的 Chiesa Nuova SITA 巴士站在 Bar Internazionale 外",
     "caption": "Hostel Brikette 距离巴士站仅一个弯道。在夏季服务快速满员时，请在巴士到达前留出几分钟加入队列。"
@@ -25,6 +25,18 @@
         "从旅舍入口到 Viale Pasitea 巴士站步行 120 米（400 英尺），Viale Pasitea 是穿过波西塔诺的主要海岸公路。步行需要 2-4 分钟，全程缓坡下行，人行道铺砌完整。离开时您会在右侧看到旅舍的标志。人行道足够宽，可以携带行李，夜间照明良好。",
         "如果您前往阿马尔菲（东行），巴士站在道路海景一侧 Bar Internazionale 的对面。在此等候前往阿马尔菲、萨莱诺和拉韦洛的巴士。如果您前往索伦托（西行），您将直接在酒吧外山侧等候。寻找蓝白相间的 SITA 巴士站标志。",
         "这个 Chiesa Nuova 巴士站是距离 Hostel Brikette 最近的 SITA 巴士站，也是沿海岸乘坐巴士最容易的地方。当地人也称其为 Bar Internazionale 巴士站。酒吧有一个大红色遮阳篷，从两个方向都很容易看到。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "波西塔诺的 Chiesa Nuova SITA 巴士站，从 Hostel Brikette 看到的景色",
+          "caption": "Bar Internazionale 外的 Chiesa Nuova 巴士站。步行仅需 2-4 分钟，全程缓坡下行。"
+        },
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "波西塔诺的 Bar Internazionale 和大红色遮阳篷",
+          "caption": "寻找红色遮阳篷：这是帮助您从两个方向识别这个巴士站的视觉地标。"
+        }
       ]
     },
     {
@@ -35,6 +47,13 @@
         "**前往阿马尔菲（东行）：** 巴士经过普拉亚诺，途经 Marina di Praia 和 Fiordo di Furore，到达%LINK:amalfiTownGuide|阿马尔菲镇%（30-40 分钟）。从阿马尔菲，您可以继续前往%LINK:salernoPositano|萨莱诺%（另需 45 分钟）或乘坐连接巴士前往拉韦洛。",
         "**前往索伦托（西行）：** 巴士沿海岸蜿蜒前行，经过几个风景优美的隧道，到达%LINK:sorrentoGuide|索伦托%（40-50 分钟）。从索伦托，您可以换乘前往%LINK:naplesPositano|那不勒斯%的火车（Circumvesuviana 线路到那不勒斯中央车站）或继续前往那不勒斯机场。",
         "有关从波西塔诺的完整行程规划，请参阅我们的专门路线指南：%LINK:positanoAmalfiBus|波西塔诺到阿马尔菲巴士%、%LINK:positanoSorrentoBus|波西塔诺到索伦托巴士%、%LINK:positanoNaplesCenterBusTrain|波西塔诺到那不勒斯%经索伦托，以及%LINK:positanoSalernoBus|波西塔诺到萨莱诺巴士%。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "阿马尔菲海岸 SITA 巴士路线图",
+          "caption": "阿马尔菲海岸巴士路线：从 Chiesa Nuova 双向运行至索伦托和萨莱诺。"
+        }
       ]
     },
     {
@@ -45,6 +64,13 @@
         "**首班车：** 前往阿马尔菲的首班东行巴士通常在早上 6:30-7:00 从 Chiesa Nuova 出发。前往索伦托的首班西行巴士通常在早上 6:45-7:15 出发。请在 Bar Internazionale 查看当前时间或询问旅舍前台，因为时刻表随季节变化。夏季的巴士比冬季多。",
         "**末班车：** 晚上10点后，晚间巴士变得少得多。前往阿马尔菲的末班车通常在晚上 10:30 左右出发，前往索伦托的末班车在晚上 11:00 左右出发。请务必在前台查看确切时间或查看车站张贴的 SITA 时刻表。如果晚上出行，请尽量搭乘倒数第二班车，这样就不会错过最后一班而被困。",
         "**冬季时刻表（11月至3月）：** 冬季巴士班次较少，大约每 40-60 分钟一班，末班车出发时间更早。周日或公共假日可能根本没有某些晚间巴士。旅行前务必查看冬季时刻表。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Bar Internazionale 张贴的 SITA 巴士时刻表",
+          "caption": "在车站查看当前时刻表。夏季和冬季之间的时刻表变化很大。"
+        }
       ]
     },
     {
@@ -56,6 +82,13 @@
         "**验票：** 上车时向司机出示您的车票。司机会盖上日期和时间戳。在较新的巴士上，您可以在门内的机器上扫描车票。请在整个行程中保留盖章的车票——检票员经常上巴士检查车票。如果您没有盖章的车票，您将立即收到比车票贵得多的罚单。",
         "**提前购买：** 如果您要搭乘早上的首班车（7:30am之前），请在前一天晚上购买车票，因为 tabacchi 可能还未营业。如果您需要提早退房，请到旅舍前台。酒吧也出售车票，开门时间比 tabacchi 早，通常最晚在 6:30 开门。",
         "有关 SITA 车票、通票和价格的更多详情，请参阅我们的完整%LINK:sitaTickets|SITA 巴士票指南%。"
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "SITA 巴士上的车票验票机",
+          "caption": "上车时向司机出示车票或在门内的电子机器上扫描。"
+        }
       ]
     },
     {
@@ -66,6 +99,13 @@
         "**排队规则：** 在道路右侧靠近候车亭处排成清晰的队列。不要推挤或拥挤——意大利人通常尊重排队顺序。当巴士到来时，等人们下车后再上车。如果人们试图往前挤，司机可能会关门。",
         "**行李：** SITA 巴士上的行李空间不多——通常只有后部的小空间或座位下面。如果您有大背包或行李箱，请尽量早上车以获得行李位置。如果您有重型行李，请考虑使用%LINK:porterServices|搬运工服务%将行李运送到下一个地方。大多数巴士的后部隔间只能容纳 4-5 个大包。",
         "**站立空间：** 在满员的夏季巴士上，您可能需要在部分或全程站立。海岸公路有许多弯道和急转弯，因此请紧紧抓住头顶的扶手或座椅靠背。如果前面的车突然停下，司机可能会急刹车。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "在 Chiesa Nuova 巴士站等候 SITA 巴士的人群",
+          "caption": "夏季请提前到达以在队列中获得好位置。巴士会快速满员，有时会不停车通过。"
+        }
       ]
     },
     {
@@ -77,6 +117,13 @@
         "**前往那不勒斯机场：** 按照上述那不勒斯路线，然后从那不勒斯中央车站乘坐 Alibus 班车到机场（20分钟）。或者，预订从波西塔诺的直达班车——请在前台咨询。我们的%LINK:naplesAirportPositanoBus|那不勒斯机场指南%涵盖所有选项。",
         "**前往萨莱诺：** 乘坐东行巴士前往阿马尔菲（35分钟），然后继续乘坐同一或连接巴士前往萨莱诺（45分钟）。萨莱诺有前往罗马、佛罗伦萨和意大利其他城市的干线火车。请参阅%LINK:salernoPositano|萨莱诺到波西塔诺%了解返程以及%LINK:salernoGatewayGuide|萨莱诺门户指南%了解火车连接。",
         "**前往渡轮码头：** 如果您计划从波西塔诺的主海滩码头乘坐渡轮而不是巴士，请参阅我们的%LINK:briketteToFerryDock|Hostel Brikette 到渡轮码头携带行李%指南，了解楼梯最少的步行路线。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "索伦托火车站，Circumvesuviana 连接前往那不勒斯",
+          "caption": "从索伦托换乘 Circumvesuviana 火车到那不勒斯中央车站（60分钟）。"
+        }
       ]
     },
     {
@@ -87,6 +134,35 @@
         "**渡轮（仅4月至10月）：** 步行到波西塔诺主海滩渡轮码头，乘坐水翼船或渡轮前往阿马尔菲、萨莱诺、卡普里岛或那不勒斯。渡轮比巴士更快、风景更优美，但费用是巴士的2-3倍。请参阅我们的%LINK:ferrySchedules|渡轮时刻表指南%了解时刻表，以及我们的%LINK:briketteToFerryDock|步行到码头的路线%。",
         "**私人接送/出租车：** 前往索伦托或阿马尔菲的私人轿车预计费用为 €80-150，前往那不勒斯机场为 €150-200，前往萨莱诺为 €100-140。出租车可在前台预订。如果您有重型行李或3-4人团体出行，值得考虑。",
         "**摩托车租赁：** 有经验的骑手可以在波西塔诺租一辆摩托车，自己驾驶海岸公路。请参阅我们的%LINK:scooterRentalPositano|摩托车租赁指南%了解租赁店、价格和安全提示。不建议紧张的骑手使用——SS163 海岸公路狭窄蜿蜒，夏季交通繁忙。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "波西塔诺渡轮码头，阿马尔菲海岸水翼船",
+          "caption": "渡轮更快、风景更优美，但更昂贵。仅在4月至10月运营。"
+        }
+      ]
+    },
+    {
+      "id": "safety-timing",
+      "title": "安全和时间提示",
+      "body": [
+        "从旅舍到巴士站的步行非常安全，但有一些实际考虑因素。人行道在夜间照明良好，Viale Pasitea 在深夜之前都有当地人和游客通行。从旅舍入口到巴士站步行仅需 2-4 分钟，因此您无需在最后一刻冲刺赶车。",
+        "**安全注意事项：** 人行道足够宽，可以携带行李，但请注意不平整的铺路石块。如果您拖着重型行李，请远离道路一侧，靠建筑物一侧行走。Viale Pasitea 交通繁忙，特别是在夏季，巴士、出租车和摩托车可能会非常快速地转弯。请保持在远离道路的人行道上。",
+        "**留出时间余地：** 在旅舍前台查看巴士时刻表后，在前往巴士站之前至少留出 10 分钟。收拾行李和退房总是比您想象的要长。如果乘坐夏季巴士，请在巴士计划出发前至少 15 分钟到达车站——您需要时间在队列中获得好位置并验票。",
+        "**冬季注意事项：** 在冬季（11月至3月），人行道可能在清晨或傍晚时分潮湿或滑溜。如果有小雨，请留意人行道表面。如果您有重型行李，请向旅舍前台咨询使用搬运工服务——支付少量费用比在冬季条件下拖着行李在湿滑的人行道上行走更值得。"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "从 Hostel Brikette 到 Chiesa Nuova 照明良好的人行道",
+          "caption": "安全的步行路线，即使在夜间也照明良好。全程缓坡下行，需 2-4 分钟。"
+        },
+        {
+          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+          "alt": "Viale Pasitea，夏季交通繁忙",
+          "caption": "Viale Pasitea 交通繁忙——请保持在人行道上，避开道路边缘。"
+        }
       ]
     }
   ],

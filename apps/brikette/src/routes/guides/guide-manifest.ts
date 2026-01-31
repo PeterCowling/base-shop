@@ -3728,6 +3728,7 @@ const manifestSeed: GuideManifestEntry[] = [
     structuredData: ["BreadcrumbList"],
     relatedGuides: [],
     blocks: [],
+    focusKeyword: "Positano Chiesa Nuova bus stop",
     expectations: {
       redirectOnly: true,
     },
@@ -3741,6 +3742,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
     structuredData: ["HowTo", "BreadcrumbList"],
+    focusKeyword: "Amalfi to Positano ferry",
     relatedGuides: ["ferryDockToBrikette"],
     blocks: [
       {
@@ -3799,6 +3801,7 @@ const manifestSeed: GuideManifestEntry[] = [
     primaryArea: "howToGetHere",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
+    focusKeyword: "naples airport to positano bus",
     blocks: [
       {
         type: "genericContent",
@@ -3825,6 +3828,7 @@ const manifestSeed: GuideManifestEntry[] = [
     status: "live",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
+    focusKeyword: "Naples to Positano train bus",
     structuredData: ["HowTo", "BreadcrumbList"],
     relatedGuides: [],
     blocks: [
@@ -4012,6 +4016,35 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "translations", status: "complete" },
       { id: "content", status: "complete" },
       { id: "jsonLd", status: "complete" },
+    ],
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "capriPositanoFerry",
+    slug: "capri-positano-ferry",
+    contentKey: "capriPositanoFerry",
+    status: "draft",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
+    structuredData: ["HowTo", "BreadcrumbList"],
+    relatedGuides: [],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "capriPositanoFerry", showToc: true },
+      },
+      {
+        type: "callout",
+        options: { variant: "tip", bodyKey: "callouts.tip" },
+      },
+    ],
+    options: {
+      ogType: "article",
+    },
+    checklist: [
+      { id: "translations", status: "inProgress" },
+      { id: "content", status: "inProgress" },
+      { id: "jsonLd", status: "complete" },
+      { id: "seoAudit", status: "inProgress" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({

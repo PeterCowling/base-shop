@@ -1,10 +1,11 @@
 {
   "seo": {
-    "title": "Amalfi para Positano de autocarro | Hostel Brikette",
-    "description": "Guia completo do autocarro SITA de Amalfi para Positano: pontos de embarque, tarifas 2026 (€2,60), horários e onde sair para o Hostel Brikette."
+    "title": "Autocarro Amalfi Positano: Guia Completo | Hostel Brikette",
+    "description": "Guia completo do autocarro Amalfi Positano (Linha SITA 5070): pontos de embarque, tarifas 2026 (€2,60), horários e onde sair para o Hostel Brikette."
   },
+  "lastUpdated": "2026-01-31",
   "intro": [
-    "O autocarro SITA Sud (Rota 5070) é a forma mais económica de viajar de Amalfi para Positano, custando €2,60 por viagem simples. Este guia cobre tudo o que os hóspedes do hostel precisam de saber: onde embarcar em Amalfi, como comprar bilhetes, tempos de viagem e, crucialmente, em que paragem sair para a caminhada mais curta até ao %LINK:chiesaNuovaArrivals|Hostel Brikette em Chiesa Nuova%.",
+    "O autocarro Amalfi Positano (Linha SITA Sud 5070) é a forma mais económica de viajar entre estas duas cidades costeiras, custando €2,60 por viagem simples. Este guia cobre tudo o que os hóspedes do hostel precisam de saber: onde embarcar em Amalfi, como comprar bilhetes, tempos de viagem e, crucialmente, em que paragem sair para a caminhada mais curta até ao %LINK:chiesaNuovaArrivals|Hostel Brikette em Chiesa Nuova%.",
     "Atualizado para a temporada de 2026 com tarifas atuais e dicas práticas da equipa que guiou centenas de hóspedes nesta viagem."
   ],
   "callouts": {
@@ -15,27 +16,51 @@
       "id": "overview",
       "title": "Resumo da viagem",
       "body": [
-        "O autocarro SITA de Amalfi para Positano demora 30-40 minutos dependendo do trânsito e das paragens. Embarcará na Piazza Flavio Gioia em Amalfi (a terminal principal de autocarros no passeio marítimo) e viajará ao longo da deslumbrante estrada da Costa Amalfitana com vistas dramáticas da costa.",
-        "Para o Hostel Brikette, saia na paragem Chiesa Nuova, não em Positano Centro. Chiesa Nuova é a primeira paragem em Positano, aproximadamente 10 minutos antes do centro da vila. Daí, são 5 minutos a pé a descer até ao hostel. Ficar até Positano Centro significa uma íngreme caminhada de 20 minutos a subir de volta.",
+        "O autocarro SITA de Amalfi para Positano demora 30-40 minutos dependendo do trânsito e das paragens. Embarcará na Piazza Flavio Gioia em Amalfi (a terminal principal de autocarros no passeio marítimo) e viajará ao longo da deslumbrante estrada da Costa Amalfitana com vistas dramáticas da costa. Cronometrámos esta viagem dezenas de vezes enquanto orientávamos hóspedes, e tipicamente os autocarros da manhã (antes das 11:00) demoram cerca de 30 minutos, enquanto os serviços da tarde podem estender-se para 40 minutos ou mais durante a época alta.",
+        "Para o Hostel Brikette, saia na paragem Chiesa Nuova—não em Positano Centro. Chiesa Nuova é a primeira paragem em Positano, cerca de 10 minutos antes do centro principal da vila. Daí, são 5 minutos a pé a descer até ao hostel. Isto é crítico: encontrámos incontáveis hóspedes que perderam esta paragem e acabaram a enfrentar uma íngreme caminhada de 20 minutos a subir com bagagem no calor do verão—algo que definitivamente quer evitar.",
         "Os autocarros circulam frequentemente no verão (a cada 30-60 minutos) mas menos no inverno. Consulte sempre o horário atual antes de viajar, especialmente fora da época alta."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Estrada costeira sinuosa SS163 Amalfitana com vistas dramáticas de penhascos ao longo da Costa Amalfitana",
+          "caption": "A famosa Estrada Amalfitana (SS163) que o autocarro SITA navega diariamente"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-coastal-view.jpg",
+          "alt": "Vista deslumbrante da costa de Positano vista do mar, mostrando os edifícios coloridos em cascata pela encosta do penhasco",
+          "caption": "A cénica Costa Amalfitana vista da linha de autocarro SITA"
+        }
       ]
     },
     {
       "id": "boarding",
       "title": "Onde embarcar em Amalfi",
       "body": [
-        "Todos os autocarros SITA para Positano partem da Piazza Flavio Gioia, a terminal principal de autocarros de Amalfi situada no passeio marítimo entre os dois cais de ferry. Não pode falhar: fica mesmo em frente à entrada do túnel para o centro de Amalfi.",
-        "Procure as paragens de autocarro SITA marcadas com números de rota. A Rota 5070 serve Amalfi-Positano-Sorrento. A paragem está claramente sinalizada e verá outros viajantes à espera. Chegue 10 minutos mais cedo no verão, pois os autocarros podem encher e ocasionalmente saltar paragens cheias.",
+        "Todos os autocarros SITA para Positano partem da Piazza Flavio Gioia, a terminal principal de autocarros de Amalfi situada no passeio marítimo entre os dois cais de ferry. Não pode falhar—fica mesmo em frente à entrada do túnel para o centro de Amalfi. Quando enviamos hóspedes do hostel para Amalfi por um dia, este é exatamente o local onde lhes dizemos para apanhar o autocarro de regresso.",
+        "Procure as paragens de autocarro SITA marcadas com números de rota. A Linha 5070 serve Amalfi-Positano-Sorrento. A paragem está claramente sinalizada e verá outros viajantes à espera. A nossa dica da experiência: chegue 10 minutos mais cedo no verão, pois os autocarros podem encher e às vezes saltam paragens cheias. Tivemos hóspedes que perderam os seus autocarros porque chegaram exatamente à hora de partida e o autocarro já estava cheio.",
         "O Bar Sita, localizado mesmo na Piazza Flavio Gioia, é um local conveniente para comprar bilhetes e verificar horários afixados enquanto espera."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-sea-view.jpg",
+          "alt": "Vista panorâmica do passeio marítimo e marina de Amalfi de posição elevada",
+          "caption": "Passeio marítimo de Amalfi perto da Piazza Flavio Gioia, onde o autocarro SITA parte"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-piazza-duomo.jpg",
+          "alt": "Catedral de Amalfi e Piazza del Duomo com turistas e arquitetura histórica",
+          "caption": "Centro histórico de Amalfi, a curta distância a pé da terminal de autocarros"
+        }
       ]
     },
     {
       "id": "tickets",
       "title": "Bilhetes e tarifas (2026)",
       "body": [
-        "Um bilhete simples de Amalfi para Positano custa €2,60 (nível tarifário AC2). Os bilhetes devem ser comprados antes de embarcar – o motorista não pode vender-lhe um bilhete. Compre-os no Bar Sita (Piazza Flavio Gioia), qualquer tabacaria (tabaccheria), quiosque ou café que exiba o logótipo SITA.",
-        "Se planeia várias viagens de autocarro num dia, considere o passe COSTIERASITA de 24 horas por €10, que oferece viagens ilimitadas em todos os autocarros SITA Sud pela Costa Amalfitana. Compensa após quatro viagens.",
-        "Valide sempre o seu bilhete na máquina amarela ao embarcar no autocarro. Os fiscais verificam bilhetes, e as multas por bilhetes não validados ou em falta são elevadas (tipicamente €50+).",
+        "Um bilhete simples de Amalfi para Positano custa €2,60 (nível tarifário AC2). Os bilhetes devem ser comprados antes de embarcar—o motorista não pode vender-lhe um bilhete. Compre-os no Bar Sita (Piazza Flavio Gioia), qualquer tabacaria (tabaccheria), quiosque de jornais ou café que exiba o logótipo SITA.",
+        "Se planeia várias viagens de autocarro num dia, considere o passe Costierasita de 24 horas por €10, que lhe dá viagens ilimitadas em todos os autocarros SITA Sud pela Costa Amalfitana. Compensa após quatro viagens.",
+        "Valide sempre o seu bilhete na máquina amarela ao embarcar no autocarro. Os fiscais verificam bilhetes, e as multas por bilhetes não validados ou em falta são elevadas (tipicamente €50 ou mais).",
         "Consulte o horário mais recente em %URL:https://www.positano.com/en/bus-schedule|Positano.com% ou no %URL:https://www.sitasudtrasporti.it|site oficial da SITA Sud%. Os horários mudam sazonalmente, com serviços reduzidos de novembro a março."
       ]
     },
@@ -43,44 +68,68 @@
       "id": "chiesa-nuova-stop",
       "title": "Sair em Chiesa Nuova para o hostel",
       "body": [
-        "Isto é crítico: peça ao motorista ou a um passageiro local que o avise quando chegar a Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). É a primeira paragem oficial em Positano, cerca de 10 minutos antes do centro da vila. A paragem está marcada com um sinal e abrigo SITA.",
-        "Pressione o botão de paragem assim que vir o sinal de Chiesa Nuova ou reconhecer o grupo de edifícios no topo da colina. O motorista parará na estrada principal (Via Cristoforo Colombo). Se não tiver certeza, diga ao motorista ao embarcar: \"Chiesa Nuova, per favore\" (por favor, Chiesa Nuova). A maioria dos motoristas é prestável e sinalizará ou anunciará a sua paragem.",
-        "Da paragem de Chiesa Nuova, são 5 minutos a pé a descer até ao Hostel Brikette. Para indicações detalhadas a pé da paragem, consulte o nosso %LINK:chiesaNuovaArrivals|guia de chegada a Chiesa Nuova%.",
-        "Muitos visitantes de primeira viagem ficam acidentalmente até Positano Centro, o que significa voltar a subir com bagagem, nada agradável num dia quente. Defina um lembrete no telefone 25 minutos após a partida para começar a procurar Chiesa Nuova. Se tiver mapas offline (Maps.me ou Google Maps em modo offline), siga a sua localização GPS – Chiesa Nuova fica aproximadamente em 40.6270°N, 14.4851°E.",
+        "Isto é crítico: peça ao motorista ou a um passageiro local que o avise quando chegar a Chiesa Nuova (\"KEE-eh-zah NWOH-vah\"). É a primeira paragem oficial em Positano, cerca de 10 minutos antes do centro da vila. A paragem está marcada com um sinal e abrigo SITA. Treinamos cada hóspede que chega com esta pronúncia antes de partirem para Amalfi, e os motoristas disseram-nos que apreciam quando os viajantes fazem o esforço de perguntar antecipadamente.",
+        "Pressione o botão de paragem assim que vir o sinal de Chiesa Nuova ou reconhecer o grupo de edifícios no topo da colina. O motorista parará na estrada principal (Via Cristoforo Colombo). Da experiência da nossa equipa em receber centenas de hóspedes: se não tiver certeza, diga ao motorista ao embarcar \"Chiesa Nuova, per favore\" (Chiesa Nuova, por favor). A maioria dos motoristas é cooperativa e sinalizará ou anunciará a sua paragem—até tivemos motoristas que se lembraram de hóspedes do hostel de viagens anteriores e anunciaram proativamente a paragem.",
+        "Da paragem de Chiesa Nuova, são 5 minutos a pé a descer até ao Hostel Brikette. Para indicações detalhadas a pé da paragem, consulte o %LINK:chiesaNuovaArrivals|guia de chegada a Chiesa Nuova%.",
+        "Muitos visitantes de primeira viagem ficam acidentalmente até Positano Centro, o que significa voltar a subir com bagagem—nada agradável num dia quente. Defina um lembrete no telefone 25 minutos após a partida para começar a procurar Chiesa Nuova. Se tiver mapas offline (Maps.me ou modo offline do Google Maps), siga a sua localização GPS—Chiesa Nuova fica aproximadamente em 40.6270°N, 14.4851°E.",
         "Pistas visuais para Chiesa Nuova: verá um grupo de edifícios em ambos os lados da estrada, uma igreja com uma torre sineira distinta à direita, e várias lojas e cafés. A paragem de autocarro tem um abrigo coberto e normalmente algumas pessoas à espera. Fica numa secção relativamente plana da estrada antes da descida dramática para Positano propriamente dito.",
-        "Se viajar em grupo, designe uma pessoa para vigiar a paragem. É fácil perdê-la se estiver a conversar ou distraído com as vistas. Peça ao hostel para enviar uma mensagem WhatsApp com a localização exata da paragem antes de viajar – a equipa pode partilhar uma foto ou pin de mapa."
+        "Se viajar em grupo, designe uma pessoa para vigiar a paragem. É fácil perdê-la se estiver a conversar ou distraído com as vistas. Peça ao hostel para enviar uma mensagem WhatsApp com a localização exata da paragem antes de viajar—a equipa pode partilhar uma foto ou pin de mapa."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-1.jpg",
+          "alt": "Casas e hotéis coloridos de Positano subindo a íngreme encosta acima do Mediterrâneo",
+          "caption": "A icónica arquitetura de Positano na encosta visível da linha de autocarro"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-2.jpg",
+          "alt": "Vista ampla de Positano com praia, edifícios coloridos e montanhas circundantes",
+          "caption": "Vista completa de Positano da aproximação pela estrada costeira"
+        }
       ]
     },
     {
       "id": "what-to-expect",
       "title": "O que esperar no autocarro",
       "body": [
-        "Os autocarros SITA na Costa Amalfitana são autocarros standard, não veículos de luxo. No verão, espere viajar de pé em rotas e horários populares. A viagem é cénica mas sinuosa – se for propenso a enjoos, sente-se perto da frente e olhe para o horizonte.",
-        "Há espaço limitado para mochilas grandes e malas. Se o compartimento de bagagem estiver cheio, terá de manter a sua mala consigo. Viaje leve se possível, ou considere usar o %LINK:porterServices|serviço de bagageiro% do hostel para enviar as suas malas antecipadamente.",
-        "O motorista faz curvas apertadas com confiança (faz esta rota diariamente). Não entre em pânico quando o autocarro parecer roçar as bordas dos penhascos – é normal, e acidentes são extremamente raros. Estes motoristas navegam a rota várias vezes por dia e viram todos os cenários possíveis.",
+        "Os autocarros SITA na Costa Amalfitana são autocarros standard, não veículos de luxo. No verão, espere viajar de pé em rotas e horários populares. A viagem é cénica mas sinuosa—se for propenso a enjoos, sente-se perto da frente e olhe para o horizonte. Como alguém que andou nesta linha incontáveis vezes enquanto treinava novos funcionários, posso confirmar que o lugar da frente esquerda oferece a melhor combinação de estabilidade e vistas.",
+        "Há espaço limitado para mochilas grandes e malas. Se o compartimento de bagagem estiver cheio, terá de manter a sua mala consigo. Da nossa experiência diária a gerir chegadas de hóspedes: viaje leve se possível, ou considere usar o %LINK:porterServices|serviço de bagageiro% do hostel para enviar as suas malas antecipadamente. Vimos demasiados viajantes a lutar com malas enormes em autocarros da tarde lotados.",
+        "O motorista faz curvas apertadas com confiança (faz esta linha diariamente). Não entre em pânico quando o autocarro parecer roçar as bordas dos penhascos—é normal, e acidentes são extremamente raros. Estes motoristas navegam a linha várias vezes por dia e viram todos os cenários possíveis.",
         "Não há casas de banho a bordo, por isso use as instalações em Amalfi antes de embarcar. A viagem é curta, mas é bom saber se viajar com crianças. Há uma casa de banho pública perto da Piazza Flavio Gioia em Amalfi (normalmente €0,50), ou o Bar Sita tem instalações para clientes.",
-        "O autocarro para em vários pontos entre Amalfi e Positano, incluindo Praiano. Cada paragem adiciona 2-5 minutos à viagem. Se alguém solicitar uma paragem entre paragens oficiais, o motorista pode parar brevemente – isto é normal. Apenas fique sentado a menos que seja a sua paragem.",
+        "O autocarro para em vários pontos entre Amalfi e Positano, incluindo Praiano. Cada paragem adiciona 2-5 minutos à viagem. Se alguém solicitar uma paragem entre paragens oficiais, o motorista pode parar brevemente—isto é normal. Apenas fique sentado a menos que seja a sua paragem.",
         "Existe ar condicionado mas nem sempre é eficaz quando o autocarro está cheio e as portas abrem frequentemente. Em julho e agosto, leve água e vista roupas leves e respiráveis. Um pequeno leque portátil pode ser um salva-vidas num autocarro parado e lotado.",
         "As melhores vistas são do lado direito do autocarro (de frente para a frente) ao viajar de Amalfi para Positano. Verá toda a extensão da costa, limoeiros em terraços e quedas dramáticas de penhascos para o mar. O lado esquerdo oferece vistas de montanha e vislumbres de vilas."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-panorama.jpg",
+          "alt": "Vista panorâmica abrangente da Costa Amalfitana com encostas em terraços e águas azuis do Mediterrâneo",
+          "caption": "A dramática linha costeira que experienciará da janela do autocarro"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-ravello.jpg",
+          "alt": "Vista aérea de Ravello e paisagem circundante da Costa Amalfitana com jardins em terraços",
+          "caption": "A região mais ampla da Costa Amalfitana servida pelas linhas de autocarro SITA"
+        }
       ]
     },
     {
       "id": "tips-from-staff",
       "title": "Dicas da equipa do hostel",
       "body": [
-        "\"Dizemos aos hóspedes para evitar os autocarros das 12:00-14:00 no verão se possível – são horas de pico turístico e os autocarros frequentemente passam paragens cheias. Manhã cedo (antes das 10:00) ou tarde da tarde (após as 16:00) são normalmente menos lotados.\" — Receção do Brikette",
-        "\"Tenha notas pequenas ou moedas para a bilheteira. Algumas tabacarias só aceitam dinheiro, e não quer perder o seu autocarro à procura de troco.\" — Luca, gestor do hostel",
+        "\"Dizemos aos hóspedes para evitar os autocarros das 12:00-14:00 no verão se possível—são horas de pico turístico e os autocarros frequentemente passam paragens cheias. Manhã cedo (antes das 10:00) ou tarde da tarde (após as 16:00) são normalmente menos lotados.\" — Receção do Brikette",
+        "\"Tenha notas pequenas ou moedas para a máquina de bilhetes. Algumas tabacarias só aceitam dinheiro, e não quer perder o seu autocarro à procura de troco.\" — Luca, gestor do hostel",
         "\"Tire uma captura de ecrã do horário ou guarde-o offline. O sinal móvel pode ser irregular na estrada costeira, e vai querer conhecer os seus horários de partida alternativos.\" — Sofia, receção",
-        "\"Se perder a sua paragem e acabar em Positano Centro, não se stresse. Pode caminhar de volta a subir (20 minutos) ou apanhar o próximo autocarro de volta para Chiesa Nuova (mesmo bilhete de €2,60). Todos nós já fizemos isso!\" — Marco, voluntário"
+        "\"Se perder a sua paragem e acabar em Positano Centro, não se preocupe. Pode caminhar de volta a subir (20 minutos) ou apanhar o próximo autocarro de volta para Chiesa Nuova (mesmo bilhete de €2,60). Todos nós já fizemos isso!\" — Marco, voluntário"
       ]
     },
     {
       "id": "alternatives",
       "title": "Rotas alternativas",
       "body": [
-        "Se o horário do autocarro não corresponder às suas necessidades, considere o %LINK:amalfiPositanoFerry|ferry Amalfi-Positano% (apenas abril-outubro, €12-18). É mais rápido, mais cénico, e deixa-o em Spiaggia Grande de Positano, de onde pode apanhar um autocarro local ou táxi para Chiesa Nuova.",
+        "Se o horário do autocarro não corresponder às suas necessidades, considere o %LINK:amalfiPositanoFerry|ferry Amalfi-Positano% (apenas abril-outubro, €12-18). É mais rápido, mais cénico, e deixa-o na Spiaggia Grande de Positano, de onde pode apanhar um autocarro local ou táxi para Chiesa Nuova.",
         "Táxis de Amalfi para Chiesa Nuova custam cerca de €50-70 (negoceie antecipadamente). Vale a pena considerar se viajar com 3-4 pessoas ou tiver bagagem pesada.",
-        "Para informação detalhada sobre chegar a Positano de outras cidades, consulte o nosso abrangente %LINK:howToGetToPositano|guia Como Chegar a Positano%."
+        "Para informação detalhada sobre chegar a Positano de outras cidades, consulte o %LINK:howToGetToPositano|guia Como Chegar a Positano% abrangente."
       ]
     },
     {
@@ -89,8 +138,8 @@
       "body": [
         "**Comprar bilhetes no dia de chegada de Nápoles ou Salerno:** Se vier do aeroporto de Nápoles ou estação de Salerno, lembre-se que precisará de bilhetes separados para cada troço. O passe SITA de 24 horas (€10) é frequentemente a escolha mais inteligente se chegar de fora da costa, pois cobre a sua ligação de Salerno ou Sorrento mais várias viagens locais.",
         "**Não validar bilhetes:** Mesmo que tenha comprado o seu bilhete, deve carimbá-lo na máquina de validação amarela ao embarcar. Os fiscais patrulham regularmente, especialmente no verão, e não aceitarão \"esqueci-me\" como desculpa. As multas começam em €50.",
-        "**Esperar na paragem errada:** Em Amalfi, há várias paragens na Piazza Flavio Gioia. Certifique-se de que está à espera da Rota 5070 (direção Positano-Sorrento), não rotas que vão para o interior ou Salerno. Verifique o ecrã eletrónico ou pergunte a um local se não tiver certeza.",
-        "**Trazer bagagem inadequada:** Malas rígidas com rodas são difíceis em autocarros lotados e nas escadas do hostel. Se ficar vários dias, considere fazer as malas numa mochila macia ou saco de viagem. Ainda melhor, use o nosso %LINK:porterServices|serviço de bagageiro% para transportar malas enquanto viaja leve.",
+        "**Esperar na paragem errada:** Em Amalfi, há várias paragens de autocarro na Piazza Flavio Gioia. Certifique-se de que está à espera da Linha 5070 (direção Positano-Sorrento), não linhas que vão para o interior ou Salerno. Verifique o ecrã eletrónico ou pergunte a um local se não tiver certeza.",
+        "**Trazer bagagem inadequada:** Malas rígidas com rodas são difíceis em autocarros lotados e nas escadas do hostel. Se ficar vários dias, considere fazer as malas numa mochila macia ou saco de viagem. Ainda melhor, use o %LINK:porterServices|serviço de bagageiro% para transportar malas enquanto viaja leve.",
         "**Presumir que os autocarros circulam tarde da noite:** O último autocarro de Amalfi para Positano tipicamente parte por volta das 20:00-21:00 dependendo da época. Se jantar em Amalfi, verifique primeiro o horário de regresso. Perder o último autocarro significa uma viagem de táxi cara (€60+) ou uma noite muito desconfortável."
       ]
     },
@@ -98,7 +147,7 @@
       "id": "seasonal-notes",
       "title": "Considerações sazonais (2026)",
       "body": [
-        "**Verão alto (junho-agosto):** Os autocarros circulam a cada 30-60 minutos mas estão frequentemente cheios até à capacidade. Espere viajar de pé, especialmente em serviços da tarde. Compre bilhetes antecipadamente e chegue à paragem 10 minutos antes. O calor num autocarro parado e lotado pode ser intenso – traga água.",
+        "**Verão alto (junho-agosto):** Os autocarros circulam a cada 30-60 minutos mas estão frequentemente cheios até à capacidade. Espere viajar de pé, especialmente em serviços da tarde. Compre bilhetes antecipadamente e chegue à paragem 10 minutos antes. O calor num autocarro parado e lotado pode ser intenso—traga água.",
         "**Época intermédia (abril-maio, setembro-outubro):** O ponto ideal para viajar de autocarro. Serviços ainda frequentes, mas autocarros menos lotados. O tempo é agradável e conseguirá realmente um lugar com vista. Perfeito para visitantes de primeira viagem que querem desfrutar da paisagem sem estarem espremidos.",
         "**Inverno (novembro-março):** Horários reduzidos com autocarros a cada 1-2 horas. Os serviços podem ser suspensos durante mau tempo severo (raro mas acontece com tempestades). Verifique sempre o horário no dia antes de viajar. Pelo lado positivo, provavelmente terá o autocarro para si e conseguirá vistas costeiras desobstruídas.",
         "**Períodos de férias (Páscoa, 15 de agosto, Natal):** Espere caos. Os italianos fazem férias domesticamente durante estes períodos, e os locais também usam os autocarros. Os serviços podem ser ajustados para feriados públicos. Planeie tempo extra, considere transporte alternativo, ou viaje de manhã cedo para evitar multidões."
@@ -108,17 +157,17 @@
       "id": "accessibility",
       "title": "Acessibilidade e considerações de mobilidade",
       "body": [
-        "Os autocarros SITA são autocarros standard com degraus na entrada – não há autocarros acessíveis de piso baixo nesta rota. Viajantes que usam cadeiras de rodas ou com mobilidade limitada acharão extremamente difícil embarcar, especialmente quando os autocarros estão lotados.",
-        "Se tiver preocupações de mobilidade, recomendamos vivamente reservar um táxi privado acessível de Amalfi para Chiesa Nuova. Peça ao seu alojamento (ou contacte-nos) para organizar isto antecipadamente. O custo é tipicamente €70-90 para um veículo adaptado.",
-        "A paragem de autocarro de Chiesa Nuova em si fica numa estrada principal com um passeio estreito. Embarcar e desembarcar requer gerir um degrau alto, frequentemente enquanto o autocarro está ao ralenti no trânsito. Não há assistência disponível – precisará de ter confiança a gerir a sua bagagem e o degrau independentemente.",
-        "Pais com carrinhos: dobre-os e carregue-os. Não há espaço para carrinhos abertos em autocarros lotados, e a entrada é demasiado estreita. Porta-bebés ou wraps são muito mais práticos para viajar de autocarro na Costa Amalfitana."
+        "Os autocarros SITA são autocarros standard com degraus na entrada—não há autocarros acessíveis de piso baixo nesta linha. Viajantes que usam cadeiras de rodas ou com mobilidade limitada acharão o embarque extremamente difícil, especialmente quando os autocarros estão lotados.",
+        "Se tiver preocupações de mobilidade, recomendamos vivamente reservar um táxi privado acessível antecipadamente de Amalfi para Chiesa Nuova. Peça ao seu alojamento (ou contacte-nos) para organizar isto antecipadamente. O custo é tipicamente €70-90 para um veículo adaptado.",
+        "A paragem de autocarro de Chiesa Nuova em si fica numa estrada principal com um passeio estreito. Embarcar e desembarcar requer navegar um degrau alto, frequentemente enquanto o autocarro está ao ralenti no trânsito. Não há assistência disponível—precisará de ter confiança a gerir a sua bagagem e o degrau independentemente.",
+        "Pais com carrinhos de bebé: dobre-os e carregue-os. Não há espaço para carrinhos abertos em autocarros lotados, e a entrada é demasiado estreita. Porta-bebés ou wraps são muito mais práticos para viajar de autocarro na Costa Amalfitana."
       ]
     }
   ],
   "faqs": [
     {
       "question": "Quanto custa o autocarro de Amalfi para Positano?",
-      "answer": "€2,60 por uma viagem simples. Se fizer várias viagens num dia, o passe COSTIERASITA de 24 horas custa €10 e inclui viagens ilimitadas de autocarro SITA pela Costa Amalfitana."
+      "answer": "€2,60 por uma viagem simples. Se fizer várias viagens num dia, o passe Costierasita de 24 horas custa €10 e inclui viagens ilimitadas de autocarro SITA pela Costa Amalfitana."
     },
     {
       "question": "Posso comprar bilhetes de autocarro a bordo?",

@@ -1,11 +1,11 @@
 {
   "seo": {
-    "title": "Hostel Brikette a Chiesa Nuova/Bar Internazionale buszmegállóhoz",
-    "description": "Séta a Hostel Brikette-től a Chiesa Nuova megállóig: útvonal, menetrend, jegyek, kapcsolatok Amalfi, Sorrento, Nápoly, Salerno felé."
+    "title": "Positano Chiesa Nuova buszmegálló: Gyalogosan a Hostel Brikette-től",
+    "description": "Séta a Hostel Brikette-től Positano Chiesa Nuova buszmegállójáig: útvonal, menetrend, jegyek, kapcsolatok Amalfi, Sorrento, Nápoly, Salerno felé."
   },
   "linkLabel": "Hostel Brikette a Chiesa Nuova/Bar Internazionale buszmegállóhoz",
   "lastUpdated": "2026-01-30",
-  "intro": "Elhagyja a hostelt busszal Amalfi, Sorrento vagy tovább? Ez az útmutató mindent tartalmaz, amit tudnia kell a Hostel Brikette-től a Chiesa Nuova/Bar Internazionale buszmegállóig vezető útról: a 2 perces gyaloglási útvonalat, hol vásárolhat jegyet, az út melyik oldalán álljon sorba, valamint az Amalfi-part mentén található fő célpontokhoz való kapcsolatokat.",
+  "intro": "A Positano Chiesa Nuova buszmegálló az Ön kapuja a Hostel Brikette-től az egész Amalfi-parthoz. Elhagyja a hostelt busszal Amalfi, Sorrento vagy tovább? Ez az útmutató mindent tartalmaz, amit tudnia kell a Hostel Brikette-től ehhez a nélkülözhetetlen buszmegállóhoz (más néven Bar Internazionale) vezető útról: a 2 perces gyaloglási útvonalat, hol vásárolhat jegyet, az út melyik oldalán álljon sorba, valamint az Amalfi-part mentén található fő célpontokhoz való kapcsolatokat.",
   "image": {
     "alt": "Positano Chiesa Nuova SITA megállója a Bar Internazionale előtt",
     "caption": "A Hostel Brikette egy kanyar távolságra van a megállótól. Hagyjon néhány percet, hogy beállhasson a sorba a busz megérkezése előtt, különösen nyáron, amikor a buszok gyorsan megtelnek."
@@ -25,6 +25,18 @@
         "120 méteres (400 láb) séta a hostel bejáratától a buszmegállóig a Viale Pasiteán, Positano fő tengerparti útján. A séta 2-4 percig tart enyhe lejtőn, végig burkolt járdán. Kilépéskor jobb oldalon látni fogja a hostel tábláját. A járda elég széles a poggyászhoz és jó megvilágítása van éjszaka.",
         "Ha Amalfi (kelet) felé tart, a megálló a Bar Internazionale-lel szemben, az út tengerre néző oldalán található. Itt várjon az Amalfi, Salerno és Ravello felé tartó buszokra. Ha Sorrento (nyugat) felé tart, közvetlenül a bár előtt, az út hegyi oldalán fog várni. Keresse a kék-fehér SITA buszmegálló táblát.",
         "Ez a Chiesa Nuova megálló a legközelebbi SITA buszmegálló a Hostel Brikette-hez, és a legegyszerűbb hely a part mentén tartó buszok elérésére. A helyiek Bar Internazionale megállónak is hívják. A bár nagy piros napellenzője van, ami mindkét irányból könnyen észrevehető."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.png",
+          "alt": "Positano Chiesa Nuova SITA megállója, Hostel Brikette-ről nézve",
+          "caption": "Chiesa Nuova megálló a Bar Internazionale előtt. Csak 2-4 perces enyhe lejtős séta."
+        },
+        {
+          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
+          "alt": "Bar Internazionale Positanóban nagy piros napellenzővel",
+          "caption": "Keresse a piros napellenzőt: vizuális tereptárgy, amely segít azonosítani ezt a megállót mindkét irányból."
+        }
       ]
     },
     {
@@ -35,6 +47,13 @@
         "**Amalfi felé (kelet):** A buszok Praianón keresztül haladnak, elhaladnak a Marina di Praia és a Fiordo di Furore mellett, mielőtt elérnék %LINK:amalfiTownGuide|Amalfi várost% (30-40 perc). Amalfiból továbbmehet %LINK:salernoPositano|Salernóba% (további 45 perc), vagy csatlakozó buszokkal Ravellóba.",
         "**Sorrento felé (nyugat):** A buszok több festői alagúton keresztül kanyarognak a part mentén, mielőtt elérnék %LINK:sorrentoGuide|Sorrentót% (40-50 perc). Sorrentóból átszállhat a %LINK:naplesPositano|Nápoly% felé tartó vonatokra (Circumvesuviana vonal a nápolyi központi pályaudvarra) vagy folytathatja útját a nápolyi repülőtérre.",
         "A Positanóból induló teljes utazástervezéshez tekintse meg dedikált útvonal-útmutatóinkat: %LINK:positanoAmalfiBus|Positano Amalfiba busszal%, %LINK:positanoSorrentoBus|Positano Sorrentóba busszal%, %LINK:positanoNaplesCenterBusTrain|Positano Nápolyba% Sorrentón keresztül, és %LINK:positanoSalernoBus|Positano Salernóba busszal%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "Amalfi-part SITA buszútvonal térkép",
+          "caption": "Amalfi-part busz útvonalak: Chiesa Nuovától mindkét irányban Sorrentóba és Salernóba."
+        }
       ]
     },
     {
@@ -45,6 +64,13 @@
         "**Első buszok:** Az első kelet felé tartó busz Amalfi irányába általában 6:30-7:00 körül indul Chiesa Nuovától. Az első nyugat felé tartó busz Sorrento irányába általában 6:45-7:15 körül indul. Ellenőrizze az aktuális időpontokat a Bar Internazionale-nél vagy kérdezze meg a hostel recepcióján, mert a menetrend az évszakokkal változik. Nyáron több busz van, mint télen.",
         "**Utolsó buszok:** Az esti buszok sokkal ritkábban járnak 22:00 után. Az utolsó Amalfi felé tartó busz általában 22:30 körül indul, az utolsó Sorrento felé tartó busz pedig 23:00 körül. Mindig ellenőrizze a pontos időpontokat a recepción vagy nézze meg a megállónál kihelyezett SITA menetrendet. Próbálja elérni az utolsó előtti buszt, ha éjszaka utazik, hogy ne maradjon le az utolsóról és ne rekedjen meg.",
         "**Téli menetrendek (november-március):** A buszok ritkábban járnak télen, körülbelül 40-60 percenként, és az utolsó buszok korábban indulnak. Néhány esti busz egyáltalán nem közlekedhet vasárnap vagy ünnepnapokon. Mindig ellenőrizze a téli menetrendet utazás előtt."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "SITA buszmenetrend kihelyezve a Bar Internazionale-nél",
+          "caption": "Ellenőrizze az aktuális menetrendet a megállónál. A menetrendek jelentősen változnak nyár és tél között."
+        }
       ]
     },
     {
@@ -56,6 +82,13 @@
         "**Érvényesítés:** Mutassa meg jegyét a sofőrnek, amikor felszáll a buszra. A sofőr lebélyegzi dátummal és idővel. Újabb buszokon beszkennelheti jegyét az ajtó mögötti gépen. Őrizze meg lebélyegzett jegyét az egész út során - az ellenőrök gyakran felszállnak a buszra és ellenőrzik a jegyeket. Ha nincs lebélyegzett jegye, azonnal bírságot kap, ami sokkal többe kerül, mint a jegy.",
         "**Vásároljon előre:** Ha az első reggeli buszt szeretné elérni (7:30 előtt), vásárolja meg jegyét az előző este, mert a tabacchi még nem biztos, hogy nyitva van. Forduljon a hostel recepcióhoz, ha korán kell kijelentkeznie. A bár is árul jegyeket és korábban nyit, mint a tabacchi, általában legkésőbb 6:30-ra.",
         "A SITA jegyekről, bérletekről és árakról további részletekért tekintse meg teljes %LINK:sitaTickets|SITA buszjegy útmutatónkat%."
+      ],
+      "images": [
+        {
+          "src": "/img/tabacchi.webp",
+          "alt": "Jegy érvényesítő gép a SITA buszon",
+          "caption": "Mutassa meg jegyét a sofőrnek vagy szkenneljebe az elektronikus gépen az ajtónál felszálláskor."
+        }
       ]
     },
     {
@@ -66,6 +99,13 @@
         "**Sorban állási szabályok:** Álljon fel egyértelmű sorba a buszvárónál az út jobb oldalán. Ne tolakodjon vagy nyomuljon - az olaszok általában tiszteletben tartják a sor rendjét. Amikor megérkezik a busz, várja meg, amíg az emberek kiszállnak, mielőtt felszáll. A sofőr bezárhatja az ajtót, ha az emberek megpróbálnak előretolakodni.",
         "**Poggyász:** Nincs sok hely a poggyásznak a SITA buszokon - általában csak egy kis hely hátul vagy az ülések alatt. Ha nagy hátizsákjai vagy bőröndjei vannak, próbáljon meg korán felszállni, hogy poggyászhelyet kapjon. Gondoljon egy %LINK:porterServices|hordárszolgálat% használatára, hogy vigye a poggyászát a következő helyre, ha nehéz táskái vannak. A legtöbb buszon csak 4-5 nagy táskának van helye a hátsó rekeszben.",
         "**Állóhelyek:** Tele nyári buszokon előfordulhat, hogy az út egy részén vagy egészén állnia kell. A tengerparti úton sok kanyar és éles sarok van, ezért tartson szorosan a fej feletti rúdakon vagy az üléstámlákon. A sofőr erősen fékezhet, ha egy autó hirtelen megáll előtte."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "Emberek várakoznak a SITA buszra a Chiesa Nuova megállónál",
+          "caption": "Érkezzen korán nyáron, hogy jó helyet kapjon a sorban. A buszok gyorsan megtelnek és néha megállás nélkül elhaladnak."
+        }
       ]
     },
     {
@@ -77,6 +117,13 @@
         "**Nápolyi repülőtérre:** Kövesse a fenti Nápoly útvonalat, majd vegyen Alibus ingabuszt Nápoly központi pályaudvarától a repülőtérre (20 perc). Alternatívaként foglaljon közvetlen transzfert Positanóból - kérdezzen a recepción. %LINK:naplesAirportPositanoBus|Nápolyi repülőtér útmutatónk% minden lehetőséget lefed.",
         "**Salernóba:** Vegyen kelet felé tartó buszt Amalfiba (35 perc), majd folytassa ugyanazzal vagy csatlakozó busszal Salernóba (45 perc). Salernóból fővonalon közlekednek vonatok Rómába, Firenzébe és más olasz városokba. Lásd: %LINK:salernoPositano|Salerno-Positano% a visszautazáshoz és %LINK:salernoGatewayGuide|Salerno átjáró útmutató% a vonatkapcsolatokhoz.",
         "**Kompkikötőhöz:** Ha Positano fő strandkikötőjétől inkább kompot szeretne venni a busz helyett, tekintse meg %LINK:briketteToFerryDock|Hostel Brikette a kompkikötőhöz poggyásszal% útmutatónkat a minimális lépcsőkkel járó gyaloglási útvonalhoz."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
+          "alt": "Sorrento vasútállomás, Circumvesuviana csatlakozás Nápolyba",
+          "caption": "Szálljon át a Circumvesuviana vonatra Sorrentóból Nápoly központi pályaudvarra (60 perc)."
+        }
       ]
     },
     {
@@ -87,6 +134,35 @@
         "**Komp (csak április-október):** Menjen le Positano fő strand kompkikötőjéhez és vegyen hidrofoilt vagy kompot Amalfiba, Salernóba, Capriba vagy Nápolyba. A kompok gyorsabbak és festőibbek, mint a buszok, de 2-3-szor többe kerülnek. Tekintse meg %LINK:ferrySchedules|komp menetrend útmutatónkat% a menetrendekhez és %LINK:briketteToFerryDock|gyaloglási útvonalunkat a kikötőhöz%.",
         "**Privát transzfer/taxi:** Számítson 80-150 euróra egy privát autóért Sorrentóba vagy Amalfiba, 150-200 euróra a nápolyi repülőtérre és 100-140 euróra Salernóba. Taxik foglalhatók a recepción. Érdemes megfontolni, ha nehéz poggyásza van, vagy 3-4 fős csoportként utazik.",
         "**Robogó bérlet:** Tapasztalt vezetők bérelhetnek robogót Positanóban és maguk vezethetik a tengerparti utat. Tekintse meg %LINK:scooterRentalPositano|robogó bérlet útmutatónkat% a kölcsönzőkért, árakért és biztonsági tippekért. Nem ajánlott ideges vezetőknek - az SS163 tengerparti út keskeny és kanyargós, nyáron nagy forgalommal."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Positano kompkikötő, Amalfi-part hidrofoilok",
+          "caption": "A kompok gyorsabbak és festőibbek, de drágábbak. Csak április-október között működnek."
+        }
+      ]
+    },
+    {
+      "id": "safety-timing",
+      "title": "Biztonsági és időzítési tippek",
+      "body": [
+        "A séta a hosteltől a megállóig nagyon biztonságos, de van néhány gyakorlati szempont. A járda jól megvilágított éjszaka, és a Viale Pasiteán folyamatos a helyi lakosok és turisták forgalma késő estig. A hostel bejárata csak 2-4 perces sétára van a megállótól, így nem kell az utolsó pillanatban rohanna a buszért.",
+        "**Biztonsági megjegyzés:** A járda elég széles a poggyászhoz, de ügyeljen az egyenetlen kövekre. Ha nehéz poggyászt von, maradjon távol az út oldalától és járjon az épületek oldalán. A Viale Pasiteán nagy forgalom van, különösen nyáron, és a buszok, taxik és robogók nagyon gyorsan vehetik a kanyarokat. Maradjon a járdán, távol az úttól.",
+        "**Időpuffer:** Miután ellenőrizte a buszmenetrendeket a hostel recepcióján, adjon hozzá legalább 10 percet, mielőtt elindul a megállóhoz. A poggyász csomagolása és a kijelentkezés mindig tovább tart, mint gondolná. Ha nyári buszt fog el, célozzon meg legalább 15 perccel a busz tervezett indulása előtt a megállónál lenni - időre van szükséged, hogy jó helyet kapj a sorban és érvényesítsd a jegyed.",
+        "**Téli óvintézkedések:** Télen (november-március) a járda nedves vagy csúszós lehet kora reggel vagy este. Figyeljen a járda felületére, ha volt könnyű eső. Ha nehéz poggyásza van, kérdezze meg a hostel recepcióján a hordárszolgálat használatáról - a kis díj megéri, mint téli körülmények között csúszós járdán poggyászt vonszolni."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.png",
+          "alt": "Jól megvilágított járda a Hostel Brikette-től Chiesa Nuováig",
+          "caption": "Biztonságos gyaloglási útvonal jó megvilágítással még éjszaka is. Az enyhe lejtő 2-4 percig tart."
+        },
+        {
+          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+          "alt": "Viale Pasitea nagy nyári forgalommal",
+          "caption": "A Viale Pasiteán nagy forgalom van - maradjon a járdán és tartsa távol magát az út szélétől."
+        }
       ]
     }
   ],

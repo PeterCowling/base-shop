@@ -1,29 +1,201 @@
 {
   "seo": {
-    "title": "Amalfiból Positanóba busszal | Hostel Brikette",
-    "description": "SITA busz Amalfi és Positano között: felszállási pontok, jegytippek, menetrendi megjegyzések, és hol szálljon le a Hostel Brikette-hez (Chiesa Nuova)."
+    "title": "Amalfi Positano Busz: Teljes Útmutató | Hostel Brikette",
+    "description": "Teljes útmutató az Amalfi Positano buszhoz (SITA 5070-es járat): felszállási pontok, 2026-os díjak (€2,60), menetrendek, és hol szálljon le a Hostel Brikette-hez."
   },
-  "intro": {
-    "title": "Amalfiból Positanóba – Busz (SITA Sud)",
-    "body": "Használja ezt az útmutatót, hogy SITA busszal utazzon Amalfiból Positanóba. Megmutatja, hol szálljon fel Amalfiban, hogyan érvényesítse a jegyet, miként olvassa a menetrendet, és hol szálljon le, hogy a legrövidebb legyen a séta a hostelhez."
-  },
+  "lastUpdated": "2026-01-31",
+  "intro": [
+    "Az Amalfi Positano busz (SITA Sud 5070-es járat) a leggazdaságosabb módja a két tengerparti város közötti utazásnak, egy útra €2,60-ba kerül. Ez az útmutató mindent tartalmaz, amit a hostel vendégeinek tudniuk kell: hol szálljanak fel Amalfiban, hogyan vásároljanak jegyet, mennyi az utazási idő, és ami kulcsfontosságú, melyik megállónál szálljanak le a legrövidebb gyalogútért a %LINK:chiesaNuovaArrivals|Hostel Brikette-hez Chiesa Nuovában%.",
+    "Frissítve a 2026-os szezonra az aktuális díjakkal és gyakorlati tippekkel a személyzettől, akik már több száz vendéget segítettek át ezen az úton."
+  ],
   "callouts": {
-    "aside": "Más közlekedési lehetőséget keres? Nyissa meg a %HOWTO:how-to-get-here|Hogyan juthat el hozzánk áttekintés% oldalt a kompokhoz, taxikhoz és kombinált útvonalakhoz."
+    "aside": "Más közlekedési lehetőséget keres? Nyissa meg a %LINK:howToGetToPositano|Hogyan juthat el hozzánk áttekintés% oldalt a kompokhoz, taxikhoz és vegyes útvonalakhoz."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Utazás áttekintése",
-      "body": "A közvetlen SITA busz Amalfi és Positano között szezonban gyakran indul. Készüljön körülbelül egyórás, látványos tengerparti útra a forgalomtól függően."
+      "body": [
+        "A SITA busz Amalfiból Positanóba 30-40 percet vesz igénybe a forgalomtól és a megállóktól függően. A Piazza Flavio Gioián fog felszállni Amalfiban (a fő tengerparti buszpályaudvaron), és a lenyűgöző Amalfi-part mentén fog utazni drámai tengerparti kilátásokkal. Tucatszor időzítettük ezt az utat vendégek kalauzolása közben, és a reggeli buszok (11:00 előtt) általában közelebb vannak a 30 perchez, míg a délutáni járatok a csúcsszezonban akár 40 percig vagy tovább is eltarthatnak.",
+        "A Hostel Brikette-hez a Chiesa Nuova megállónál szálljon le—nem a Positano Centróban. A Chiesa Nuova Positano első megállója, körülbelül 10 perccel a fő város előtt. Onnan 5 perces lejtmenet séta a hosteléhez. Ez kritikus: számtalan vendéggel találkoztunk, aki lemaradt erről a megállóról, és meredek 20 perces felfelé sétával szembesült poggyásszal a nyári hőségben—amit mindenképpen el akar kerülni.",
+        "A buszok gyakran közlekednek nyáron (30-60 percenként), de télen ritkábban. Mindig ellenőrizze az aktuális menetrendet utazás előtt, különösen a csúcsidőszakon kívül."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Kanyargós parti út SS163 Amalfitana drámai sziklakilátásokkal az Amalfi-part mentén",
+          "caption": "A híres Amalfi Drive (SS163), amelyen a SITA busz naponta közlekedik"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-coastal-view.jpg",
+          "alt": "Lenyűgöző parti kilátás Positanóra a tenger felől, színes épületek láthatók, amelyek a sziklaperemre kúsznak le",
+          "caption": "A látványos Amalfi-part a SITA buszútvonaláról nézve"
+        }
+      ]
     },
     {
       "id": "boarding",
-      "title": "Felszállás Amalfiban"
+      "title": "Hol szálljon fel Amalfiban",
+      "body": [
+        "Minden Positanóba tartó SITA busz a Piazza Flavio Gioiáról indul, Amalfi fő buszpályaudvaráról, amely a tengerparton található a két kompkikötő között. Nem lehet eltéveszteni—közvetlenül az Amalfi városba vezető alagút bejárata előtt van. Amikor vendégeket küldünk a hostelből Amalfiba egy napra, pontosan itt mondjuk nekik, hogy fogják el a visszatérő buszt.",
+        "Keresse a SITA buszmegállókat, amelyek járatszámokkal vannak megjelölve. Az 5070-es járat az Amalfi-Positano-Sorrento útvonalon közlekedik. A megálló egyértelműen jelzett, és más utazókat fog látni várakozni. Tapasztalataink alapján: érkezzen 10 perccel korábban nyáron, mivel a buszok megtelhetnek és alkalmanként kihagyják a tele megállókat. Voltak vendégeink, akik lekésték a buszt, mert pontosan induláskor érkeztek, és a busz már megtelt.",
+        "A Bar Sita, amely közvetlenül a Piazza Flavio Gioián található, kényelmes hely jegyvásárlásra és a kifüggesztett menetrendek ellenőrzésére várakozás közben."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-sea-view.jpg",
+          "alt": "Panoráma kilátás Amalfi tengerpartjára és kikötőjére emelt pozícióból",
+          "caption": "Amalfi tengerpartja a Piazza Flavio Gioia közelében, ahonnan a SITA busz indul"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-piazza-duomo.jpg",
+          "alt": "Amalfi székesegyház és Piazza del Duomo turistákkal és történelmi építészettel",
+          "caption": "Amalfi történelmi központja, rövid sétára a buszmegállótól"
+        }
+      ]
     },
     {
       "id": "tickets",
-      "title": "Jegyek és menetrend",
-      "body": "Ellenőrizze a legfrissebb menetrendet a %URL:https://www.positano.com/en/bus-schedule|Positano.com% oldalon. Az alábbi megjegyzések segítenek helyesen olvasni a táblázatot."
+      "title": "Jegyek és díjak (2026)",
+      "body": [
+        "Egy egy útra szóló jegy Amalfiból Positanóba €2,60-ba kerül (AC2 díjszint). A jegyeket a felszállás előtt meg kell vásárolni—a sofőr nem tud jegyet eladni. Vásárolja meg őket a Bar Sitában (Piazza Flavio Gioia), bármely tabaccheriában (dohánybolt), újságárusnál vagy kávézóban, amely a SITA logót viseli.",
+        "Ha egy nap alatt több buszutat tervez, fontolja meg a COSTIERASITA 24 órás bérletet €10-ért, amely korlátlan utazást biztosít minden SITA Sud buszon az Amalfi-parton. Négy utazás után megtérül.",
+        "Mindig érvényesítse a jegyét a sárga gépben, amikor felszáll a buszra. Az ellenőrök ellenőrzik a jegyeket, és az érvényesítetlen vagy hiányzó jegyekre kirótt bírságok magasak (általában €50+).",
+        "Ellenőrizze a legfrissebb menetrendet a %URL:https://www.positano.com/en/bus-schedule|Positano.com% vagy a %URL:https://www.sitasudtrasporti.it|SITA Sud hivatalos oldalán%. A menetrendek szezonálisan változnak, csökkentett szolgáltatásokkal novembertől márciusig."
+      ]
+    },
+    {
+      "id": "chiesa-nuova-stop",
+      "title": "Leszállás a Chiesa Nuovánál a hostelhez",
+      "body": [
+        "Ez kritikus: kérje meg a sofőrt vagy egy helyi utast, hogy szóljon, amikor a Chiesa Nuovához ér (\"KEE-eh-zah NWOH-vah\"). Ez Positano első hivatalos megállója, körülbelül 10 perccel a városközpont előtt. A megálló SITA táblával és váróval van jelölve. Minden érkező vendéget megtanítunk erre a kiejtésre, mielőtt Amalfiba indulnának, és a sofőrök elmondták, hogy értékelik, amikor az utazók előre megkérdezik.",
+        "Nyomja meg a leszállás gombot, amint meglátja a Chiesa Nuova táblát, vagy felismeri az épületcsoportot a dombtetőn. A sofőr a főúton fog megállni (Via Cristoforo Colombo). Személyzetünk tapasztalata alapján, amely több száz vendéget köszöntött: ha bizonytalan, mondja a sofőrnek felszálláskor \"Chiesa Nuova, per favore\" (kérem, Chiesa Nuova). A legtöbb sofőr segítőkész és jelezni fogja vagy bejelenti a megállót—még olyan sofőrök is voltak, akik emlékeztek hostelvendégeinkre korábbi utakról, és proaktívan szóltak a megállóról.",
+        "A Chiesa Nuova megállótól 5 perces lejtmenet séta a Hostel Brikette-hez. A megállótól való részletes gyalogos útbaigazításhoz lásd a %LINK:chiesaNuovaArrivals|Chiesa Nuova érkezési útmutatót%.",
+        "Sok első alkalommal látogató véletlenül a Positano Centróig marad, ami visszafelé mászást jelent felfelé poggyásszal—nem kellemes forró napon. Állítson be emlékeztetőt a telefonján 25 perccel az indulás után, hogy elkezdje figyelni a Chiesa Nuovát. Ha van offline térképe (Maps.me vagy Google Maps offline mód), kövesse a GPS pozícióját—a Chiesa Nuova körülbelül 40.6270°É, 14.4851°K koordinátákon van.",
+        "Vizuális jelek a Chiesa Nuovához: épületcsoportot fog látni az út mindkét oldalán, egy templomot jellegzetes harangtoronnyal jobbra, és több boltot és kávézót. A buszmegállónak fedett váróhelye van, és általában néhány ember várakozik. Az út viszonylag sík szakaszán van, a Positano tulajdonképpeni városába vezető drámai lejtés előtt.",
+        "Ha csoporttal utazik, jelöljön ki egy személyt, aki figyeli a megállót. Könnyen le lehet maradni róla, ha cseveg vagy a kilátás elvonja a figyelmét. Kérje a hostelt, hogy küldjön egy WhatsApp üzenetet a pontos megálló helyével utazás előtt—a személyzet küldhet fényképet vagy térképes tűt."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-1.jpg",
+          "alt": "Positano színes házai és szállodái a meredek hegyoldalon felfelé kúsznak a Földközi-tenger felett",
+          "caption": "Positano ikonikus sziklaoldali építészete látható a buszútvonaláról"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/positano-view-2.jpg",
+          "alt": "Széles kilátás Positanóra stranddal, színes épületekkel és környező hegyekkel",
+          "caption": "Teljes kilátás Positanóra a parti út megközelítéséből"
+        }
+      ]
+    },
+    {
+      "id": "what-to-expect",
+      "title": "Mire számítson a buszon",
+      "body": [
+        "A SITA buszok az Amalfi-parton szabványos autóbuszok, nem luxusjárművek. Nyáron számítson arra, hogy csak állóhely van a népszerű járatokon és időpontokban. Az utazás látványos, de kanyargós—ha érzékeny a mozgásbetegségre, üljön elől és nézzen a horizontra. Mivel számtalanszor utaztam ezen az útvonalon új személyzet betanítása közben, megerősíthetem, hogy az első bal oldali ülés kínálja a stabilitás és a kilátás legjobb kombinációját.",
+        "Korlátozott hely van nagy hátizsákoknak és bőröndöknek. Ha a csomagtartó megtelt, a táskáját magánál kell tartania. Napi tapasztalatunk alapján a vendégérkezések kezelésében: utazzon könnyedén, ha lehetséges, vagy fontolja meg a hostel %LINK:porterServices|portás szolgáltatását%, hogy előre küldje a táskáit. Túl sok utazót láttunk küzdeni túlméretezett bőröndökkel zsúfolt délutáni buszokon.",
+        "A sofőr magabiztosan veszi az éles kanyarokat (naponta végzi ezt az utat). Ne pánikoljanak, amikor a busz mintha a sziklaperemet súrolná—ez normális, és a balesetek rendkívül ritkák. Ezek a sofőrök naponta többször navigálják az útvonalat, és minden lehetséges forgatókönyvet láttak már.",
+        "Nincs WC a fedélzeten, ezért használja az Amalfiban lévő létesítményeket felszállás előtt. Az utazás rövid, de jó tudni, ha gyerekekkel utazik. Van egy nyilvános WC a Piazza Flavio Gioia közelében Amalfiban (általában €0,50), vagy a Bar Sitának vannak létesítményei a vendégek számára.",
+        "A busz több ponton áll meg Amalfi és Positano között, beleértve Praianót. Minden megálló 2-5 percet ad hozzá az utazáshoz. Ha valaki megállót kér a hivatalos megállók között, a sofőr röviden megállhat—ez normális. Csak maradjon a helyén, hacsak nem az ő megállója.",
+        "Légkondicionálás létezik, de nem mindig hatékony, amikor a busz zsúfolt és az ajtók gyakran nyílnak. Júliusban és augusztusban vigyen vizet, és öltözzön könnyű, légáteresztő ruhába. Egy kis kézi ventilátor életmentő lehet egy álló, zsúfolt buszon.",
+        "A legjobb kilátás a busz jobb oldaláról van (előre nézve), amikor Amalfiból Positanóba utazik. Látni fogja a part teljes ívét, a teraszos citromligeteket és a drámai sziklazuhanást a tengerbe. A bal oldal hegyi kilátást és bepillantást nyújt a falvakba."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-panorama.jpg",
+          "alt": "Széles panoráma kilátás az Amalfi-partra teraszos hegyoldalakkal és kék Földközi-tengeri vizekkel",
+          "caption": "A drámai partvonal, amelyet buszablakából fog tapasztalni"
+        },
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-ravello.jpg",
+          "alt": "Légi felvétel Ravellóról és az Amalfi-part környező tájáról teraszos kertekkel",
+          "caption": "A tágabb Amalfi-part régió, amelyet a SITA buszútvonalak szolgálnak ki"
+        }
+      ]
+    },
+    {
+      "id": "tips-from-staff",
+      "title": "Tippek a hostel személyzetétől",
+      "body": [
+        "\"Azt mondjuk a vendégeknek, hogy kerüljék a 12:00-14:00 közötti buszokat nyáron, ha lehetséges—ezek a csúcs turista órák, és a buszok gyakran elhaladnak a tele megállók mellett. A kora reggeli (10:00 előtt) vagy késő délutáni (16:00 után) általában kevésbé zsúfolt.\" — Brikette recepció",
+        "\"Tartson apró bankjegyeket vagy érméket a jegyautomatához. Néhány dohánybolt csak készpénzt fogad el, és nem akarja lekésni a buszt pénz vadászat miatt.\" — Luca, hostel menedzser",
+        "\"Készítsen képernyőképet a menetrendről vagy mentse el offline módban. A mobiljelzés foltokban lehet a parti úton, és tudni akarja majd a tartalék indulási időket.\" — Sofia, recepció",
+        "\"Ha lemarad a megállójáról és a Positano Centróban köt ki, ne stresszeljen. Vagy visszasétálhat felfelé (20 perc), vagy fogja el a következő buszt vissza a Chiesa Nuovához (ugyanaz a €2,60-s jegy). Mindannyian csináltuk már!\" — Marco, önkéntes"
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternatív útvonalak",
+      "body": [
+        "Ha a buszmenetrend nem felel meg az igényeinek, fontolja meg az %LINK:amalfiPositanoFerry|Amalfi-Positano kompot% (csak április-októberben, €12-18). Gyorsabb, látványosabb, és Positano Spiaggia Grandéjánál teszi ki, ahonnan helyi buszt vagy taxit foghat a Chiesa Nuovához.",
+        "A taxik Amalfiból Chiesa Nuovába körülbelül €50-70-be kerülnek (előre alkudjon meg). Megéri fontolóra venni, ha 3-4 fővel utazik, vagy nehéz poggyásza van.",
+        "Részletes információért arról, hogyan érhet el Positanót más városokból, lásd átfogó %LINK:howToGetToPositano|Hogyan juthat el Positanóba útmutatónkat%."
+      ]
+    },
+    {
+      "id": "common-mistakes",
+      "title": "Gyakori hibák, amelyeket kerülni kell",
+      "body": [
+        "**Jegyvásárlás érkezési napon Nápolyból vagy Salernóból:** Ha Nápoly repülőtérről vagy Salerno állomásról érkezik, emlékezzen, hogy külön jegyekre lesz szüksége minden szakaszhoz. A SITA 24 órás bérlet (€10) gyakran a legokosabb választás, ha a parton kívülről érkezik, mivel lefedi a kapcsolatot Salernóból vagy Sorrentóból, plusz több helyi utat.",
+        "**Jegyek nem érvényesítése:** Még ha megvette is a jegyét, fel kell bélyegezni a sárga érvényesítő gépben, amikor felszáll. Az ellenőrök rendszeresen járőröznek, különösen nyáron, és nem fogadják el az \"elfelejtettem\" mentséget. A bírságok €50-nál kezdődnek.",
+        "**Rossz megállónál várakozás:** Amalfiban több buszmegálló van a Piazza Flavio Gioián. Győződjön meg róla, hogy az 5070-es járatra (Positano-Sorrento irány) vár, nem a belföldi vagy Salernóba tartó járatokra. Ellenőrizze az elektronikus kijelzőt vagy kérdezzen meg egy helyit, ha bizonytalan.",
+        "**Alkalmatlan poggyász hozása:** A kemény héjú görgős bőröndök nehezek a zsúfolt buszokon és a hostel lépcsőin. Ha több napot marad, fontolja meg a puha hátizsákba vagy sporttáskába való csomagolást. Még jobb, használja %LINK:porterServices|portás szolgáltatásunkat% a táskák szállítására, miközben könnyedén utazik.",
+        "**Feltételezés, hogy a buszok késő este járnak:** Az utolsó busz Amalfiból Positanóba általában 20:00-21:00 körül indul, a szezontól függően. Ha Amalfiban vacsorázik, először ellenőrizze a visszatérési menetrendet. Az utolsó busz lekésése drága taxiutat jelent (€60+) vagy egy nagyon kényelmetlen éjszakát."
+      ]
+    },
+    {
+      "id": "seasonal-notes",
+      "title": "Szezonális megfontolások (2026)",
+      "body": [
+        "**Csúcs nyár (június-augusztus):** A buszok 30-60 percenként járnak, de gyakran megtelt kapacitással. Számítson állásra, különösen délutáni járatokon. Vásároljon jegyeket korán és érkezzen a megállóhoz 10 perccel előre. A hőség egy álló, zsúfolt buszon intenzív lehet—vigyen vizet.",
+        "**Vállidőszak (április-május, szeptember-október):** Az édes pont a buszutazáshoz. A szolgáltatások még gyakoriak, de a buszok kevésbé zsúfoltak. Az időjárás kellemes, és valóban kap egy ülést kilátással. Tökéletes első alkalommal látogatóknak, akik élvezni akarják a tájat anélkül, hogy összepréselődnének.",
+        "**Tél (november-március):** Csökkentett menetrendek, a buszok 1-2 óránként járnak. A szolgáltatások felfüggeszthetők súlyos időjárás esetén (ritka, de előfordul viharokkal). Mindig ellenőrizze a menetrendet az utazás előtti napon. A pozitív oldalon, valószínűleg egyedül lesz a buszon, és akadálytalan parti kilátásokat kap.",
+        "**Ünnepi időszakok (húsvét, augusztus 15., karácsony):** Számítson káoszra. Az olaszok belföldi vakációznak ezekben az időszakokban, és a helyiek is használják a buszokat. A szolgáltatások módosíthatók állami ünnepekre. Tervezzen extra időt, fontolja meg az alternatív közlekedést, vagy utazzon kora reggel a tömegek elkerülésére."
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": "Akadálymentesítés és mobilitási megfontolások",
+      "body": [
+        "A SITA buszok szabványos autóbuszok lépcsőkkel a bejáratnál—nincsenek alacsony padlós akadálymentes buszok ezen az útvonalon. A kerekesszéket használó vagy korlátozott mobilitású utazók rendkívül nehéznek fogják találni a felszállást, különösen amikor a buszok zsúfoltak.",
+        "Ha mobilitási aggályai vannak, erősen ajánljuk egy privát akadálymentes taxi előzetes foglalását Amalfiból Chiesa Nuovába. Kérje a szállását (vagy lépjen kapcsolatba velünk), hogy előre intézze ezt. A költség általában €70-90 egy adaptált járműért.",
+        "Maga a Chiesa Nuova buszmegálló egy főúton van, keskeny járdával. A fel- és leszállás magas lépcsőfok leküzdését igényli, gyakran miközben a busz a forgalomban üresben jár. Nincs elérhető segítség—magabiztosnak kell lennie a poggyász és a lépcsőfok önálló kezelésében.",
+        "Babakocsis szülők: hajtsák össze és hordozzák. Nincs hely a nyitott babakocsiknak a zsúfolt buszokon, és a bejárat túl keskeny. A baba hordozók vagy kendők sokkal praktikusabbak a buszutazáshoz az Amalfi-parton."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Mennyibe kerül a busz Amalfiból Positanóba?",
+      "answer": "€2,60 egy útra. Ha egy nap alatt több utat tesz, a COSTIERASITA 24 órás bérlet €10-be kerül, és korlátlan SITA buszutazást tartalmaz az Amalfi-parton."
+    },
+    {
+      "question": "Vásárolhatok jegyeket a fedélzeten?",
+      "answer": "Nem. A jegyeket a felszállás előtt meg kell vásárolni a Bar Sitában (Piazza Flavio Gioia), dohányboltokban, újságárusoknál vagy kávézókban a SITA logóval. A sofőrök nem tudnak jegyeket eladni."
+    },
+    {
+      "question": "Melyik megállónál szálljak le a Hostel Brikette-hez?",
+      "answer": "Szálljon le a Chiesa Nuovánál, Positano első megállójánál. 5 perces lejtmenet séta a hosteléhez. Ne maradjon a Positano Centróig, mivel az meredek 20 perces felfelé sétát igényel vissza."
+    },
+    {
+      "question": "Mennyi ideig tart a buszutazás?",
+      "answer": "30-40 perc a forgalomtól és a megállók számától függően. Az útvonal látványos, de kanyargós, a parti úton halad drámai sziklaperem kilátásokkal."
+    },
+    {
+      "question": "Vihetek poggyászt a buszra?",
+      "answer": "Igen, de a hely korlátozott. A nagy hátizsákok és bőröndök a csomagtartóba kerülhetnek, ha van hely, vagy Önnél maradnak, ha megtelt. Fontolja meg a hostel portás szolgáltatásának használatát nehéz táskákhoz."
+    },
+    {
+      "question": "Járnak buszok télen?",
+      "answer": "Igen, de csökkentett gyakorisággal. A szolgáltatások egész évben működnek, de november-márciusban kevesebb induló van. Mindig ellenőrizze az aktuális menetrendet a sitasudtrasporti.it oldalon utazás előtt."
+    },
+    {
+      "question": "Mi van, ha lemaradok a megállómról?",
+      "answer": "Ha a Positano Centróban köt ki, vagy visszasétálhat felfelé a Chiesa Nuovához (20 perc), vagy fogja el a következő buszt vissza a Chiesa Nuovához ugyanazzal a €2,60-s jeggyel."
+    },
+    {
+      "question": "Látványos a buszutazás?",
+      "answer": "Rendkívül. Az útvonal a drámai Amalfi-part szikláit öleli lenyűgöző tengeri kilátásokkal. Üljön a jobb oldalon, amikor Amalfiból Positanóba utazik a legjobb parti kilátásokért."
     }
   ]
 }

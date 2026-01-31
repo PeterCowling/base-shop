@@ -309,7 +309,29 @@ function getSectionImages(content: GuideContent): NormalizedGuideImage[] {
 }
 
 function getAllImages(content: GuideContent): NormalizedGuideImage[] {
-  return getSectionImages(content);
+  const sectionImages = getSectionImages(content);
+
+  // Also include top-level gallery images
+  const galleryImages: NormalizedGuideImage[] = [];
+  if (Array.isArray((content as any).gallery)) {
+    (content as any).gallery.forEach((item: any) => {
+      const src = normalizeImageSrc(item.src ?? item.image);
+      if (!src) return;
+      galleryImages.push({
+        src,
+        alt: item.alt,
+        caption: item.caption,
+        width: item.width,
+        height: item.height,
+        sizeKB: item.sizeKB,
+        size: item.size,
+        format: item.format,
+        type: item.type,
+      });
+    });
+  }
+
+  return [...sectionImages, ...galleryImages];
 }
 
 function countImages(content: GuideContent): number {

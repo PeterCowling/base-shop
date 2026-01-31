@@ -89,10 +89,9 @@ const DOMAIN_TO_BUSINESS: Record<string, string> = {
   Commerce: "PIPE",
   "Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement": "PIPE",
   "Platform, Commerce": "PIPE",
-  Prime: "PRIME",
-  Reception: "RECEP",
-  "Dashboard / Upgrade": "RECEP",
-  Skylar: "SKYL",
+  Prime: "BRIK",
+  Reception: "BRIK",
+  "Dashboard / Upgrade": "BRIK",
   Theming: "BRIK",
   "Design System": "PLAT",
 };

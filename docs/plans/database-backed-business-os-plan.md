@@ -4,12 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-01-30
 Last-reviewed: 2026-01-31
-Last-updated: 2026-01-31 (BOS-D1-08: Data migration script with dry-run validation)
+Last-updated: 2026-01-31 (BOS-D1-10: Documentation updates complete - ALL TASKS DONE)
 Feature-Slug: database-backed-business-os
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: docs/business-os/business-os-charter.md
-Build-progress: 13/15 tasks complete (BOS-D1-02..08 complete; next: BOS-D1-09..10)
+Build-progress: 15/15 tasks complete ✅ ALL TASKS COMPLETE
 Critical-Findings:
   - Business OS currently depends on local filesystem + simple-git (RepoReader/RepoWriter) and forces Node runtime on many API routes; this is incompatible with a Cloudflare D1/Pages hosted path.
   - platform-core Prisma is Node/Postgres; the Business OS Cloudflare path should use separate Edge-compatible D1 repositories (raw SQL) rather than migrating the platform-core Prisma schema/provider.
@@ -1231,6 +1231,27 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **Rollout / rollback:** N/A.
 - **Documentation impact:** High (charter + security are canonical docs).
 - **Notes / references:** Keep doc claims strictly evidence-based and consistent with the final implementation.
+
+#### Build Completion (2026-01-31)
+
+- **Status:** Complete
+- **Commits:** (documentation updates)
+- **Documentation updated:**
+  - `docs/business-os/business-os-charter.md` — Updated to state D1 as canonical store with git mirror; removed "repo-native" language; documented hourly git export
+  - `docs/business-os/security.md` — Removed "must not deploy" warning; updated for hosted deployment with D1 binding; replaced git/filesystem security with database security
+  - `apps/business-os/src/lib/repo/README.md` — Marked worktree/git writer as legacy (local-only); added deprecation notice pointing to D1 architecture
+  - `docs/plans/database-backed-business-os-fact-find.md` — Removed contradictions about local-only deployment; updated status to "Superseded (Implementation Complete)"
+- **Validation:** Documentation consistency verified across all four affected files
+- **Implementation notes:**
+  - Charter now explicitly states D1-canonical architecture with git as export/mirror
+  - Security model updated to reflect private hosted deployment (Pete-only, no auth in Phase 0)
+  - Repo README clearly marks git worktree pattern as legacy/local-only
+  - Fact-find updated to reflect completion of all implementation decisions
+- **Acceptance criteria verified:**
+  - ✅ Charter explicitly states canonical store (D1) and audit mechanism (git mirror + audit log)
+  - ✅ Security model updated: removed "must not deploy", replaced with hosted deployment expectations
+  - ✅ Repo README updated: worktree/git writer marked as "local-only legacy"
+  - ✅ Fact-find updated: contradictions removed, implementation status reflected
 
 ## Observability
 

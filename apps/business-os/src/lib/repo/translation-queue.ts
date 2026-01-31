@@ -38,17 +38,11 @@ export async function queueTranslation(
   }
 
   const repoRoot = getRepoRoot();
-  const worktreePath = path.join(repoRoot, "../base-shop-business-os-store");
   const lockDir = path.join(repoRoot, "docs/business-os/.locks");
   const lock = new RepoLock(lockDir);
 
   const lockEnabled = process.env.BUSINESS_OS_REPO_LOCK_ENABLED === "true";
-  const queueWriter = new AgentQueueWriter(
-    worktreePath,
-    repoRoot,
-    lock,
-    lockEnabled
-  );
+  const queueWriter = new AgentQueueWriter(repoRoot, lock, lockEnabled);
 
   // Create translation queue item
   const result = await queueWriter.createQueueItem({

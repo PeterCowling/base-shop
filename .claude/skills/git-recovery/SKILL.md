@@ -17,7 +17,7 @@ Use this skill when git state is confusing, commits seem lost, or you need to re
 git status
 git log --oneline -10
 git branch -vv
-git stash list
+scripts/git/writer-lock.sh status
 ```
 
 Share this output with the user before proceeding.
@@ -52,15 +52,9 @@ If `git status` shows "HEAD detached":
    git log --oneline -5
    ```
 
-2. **If you have uncommitted work, stash it**:
+2. **If you have work you want to keep, create a branch to attach it**:
    ```bash
-   git stash
-   ```
-
-3. **Return to your branch**:
-   ```bash
-   git checkout <your-branch>
-   git stash pop  # if you stashed
+   git checkout -b recovery-branch
    ```
 
 ### Scenario 3: Merge Conflict Overwhelm
@@ -108,8 +102,6 @@ If commits ended up on wrong branch:
 | `git status` | See current state |
 | `git log` | See commit history |
 | `git reflog` | See all recent HEAD movements |
-| `git stash` | Temporarily save uncommitted work |
-| `git stash list` | See saved stashes |
 | `git branch -a` | List all branches |
 | `git diff` | See uncommitted changes |
 
@@ -133,5 +125,5 @@ Never run these as an agent in Base-Shop. If one seems necessary, STOP and ask f
 - Don't use `reset --hard` to "fix" things
 - Don't force push to fix local issues
 - Do run `git status` and share output first
-- Do use `git stash` to protect uncommitted work
+- Do create a recovery branch (or checkpoint commit) to protect work
 - Do check `git reflog` for recovery options

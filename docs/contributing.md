@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-31
 ---
 
 # Contributing
@@ -19,7 +19,13 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Create branches from `main` and name them descriptively (e.g., `work/2026-01-15-login-form` or `fix/cart-redirect`). Push your branch; PRs are zero-touch and auto-merge when checks pass. If no PR exists after the first push, open one manually and enable auto-merge.
+Base-Shop uses a `dev` → `staging` → `main` release pipeline:
+
+- Do not commit directly to `main` or `staging`.
+- Day-to-day work lands on `dev` (either directly, or via feature branches that target `dev`).
+- Shipping is automated via PRs:
+  - Ship `dev` → `staging`: `scripts/git/ship-to-staging.sh`
+  - Promote `staging` → `main`: `scripts/git/promote-to-main.sh`
 
 ## Linting and Tests
 

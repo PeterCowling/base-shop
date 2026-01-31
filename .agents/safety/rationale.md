@@ -17,10 +17,10 @@ This document explains WHY each safety rule exists, including incident history a
 **Safe alternatives:**
 | Instead of | Do this |
 |------------|---------|
-| `git reset --hard` | Make a checkpoint commit on a `work/*` branch, then use `git revert` to undo changes safely |
+| `git reset --hard` | Make a checkpoint commit on `dev`, then use `git revert` to undo changes safely |
 | Undo last commit | `git revert HEAD` (creates a new commit; no history rewrite) |
 | Discard one file | `git restore --source <commit-hash> -- <file>` (targeted, not global) |
-| Start fresh | Create a new worktree from a clean base and abandon the broken one (`scripts/git/new-worktree.sh <label>`) |
+| Start fresh | Create a fresh clone from a clean base and abandon the broken checkout (do not use worktrees) |
 
 **If a human truly needs to do this anyway:** follow `docs/git-safety.md` and create a backup branch first. Agents must not run `git reset --hard`.
 
@@ -90,19 +90,19 @@ This document explains WHY each safety rule exists, including incident history a
 
 ## Branch Safety Rules
 
-### Committing to `main` — PROHIBITED
+### Committing to `main` / `staging` — PROHIBITED
 
 **Why dangerous:**
-- `main` is the production branch
-- Direct commits bypass PR review
+- `main` is the production branch; `staging` deploys to staging
+- Direct commits bypass the release pipeline
 - Can break CI/CD pipelines
 - Harder to rollback than reverting a PR
 
 **Safe alternatives:**
-- Create `work/*` branch for all work
-- Open PR for review
-- Let CI validate changes
-- Squash-merge to keep history clean
+- Commit on `dev`
+- Ship via PR `dev` → `staging` (auto-merge)
+- Promote via PR `staging` → `main` (auto-merge)
+- Let CI validate changes before merges
 
 ---
 

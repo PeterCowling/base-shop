@@ -19,10 +19,10 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `pre-commit-check-env.sh` + `pre-commit-agent-claims.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` + `pnpm validate:agent-context` | Block secrets, block parallel edit conflicts, block partial staging, lint staged files, then run typecheck + lint + agent context checks |
+| `pre-commit` | `pre-commit-check-env.sh` + `require-writer-lock.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` + `pnpm validate:agent-context` | Block secrets, enforce single-writer commits, block partial staging, lint staged files, then run typecheck + lint + agent context checks |
 | `prepare-commit-msg` | `prepare-commit-msg-safety.sh` | Block amend-style / commit-message-reuse workflows (reduces history rewrite pressure) |
 | `pre-rebase` | `pre-rebase-safety.sh` | Block `git rebase` (history rewrite) by default |
-| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Block direct pushes to protected branches and any non-fast-forward push; run typecheck + lint before pushing |
+| `pre-push` | `require-writer-lock.sh` + `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Enforce single-writer pushes; block pushes to protected branches and any non-fast-forward push; run typecheck + lint before pushing |
 
 ---
 
@@ -31,7 +31,7 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 The pre-commit hook runs checks before allowing a commit:
 
 1. **Environment File Check** - Prevents accidental commits of sensitive credential files
-2. **Agent claims guard** - Prevents parallel agents from committing to the same claimed area (see `scripts/git/claim.sh`)
+2. **Writer lock guard** - Prevents multiple agents/humans from committing concurrently in a shared checkout
 3. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
 4. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
 5. **Typecheck** - Runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching)
@@ -152,10 +152,10 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 
 ```json
 "simple-git-hooks": {
-  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/pre-commit-agent-claims.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
+  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/require-writer-lock.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
   "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
   "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
-  "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
+  "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
 }
 ```
 

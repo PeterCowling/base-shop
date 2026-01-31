@@ -2,7 +2,7 @@
 Type: Charter
 Status: Canonical
 Domain: Business OS
-Last-reviewed: 2026-01-28
+Last-reviewed: 2026-01-31
 Primary code entrypoints:
   - apps/business-os/ — Next.js Kanban app
   - docs/business-os/ — Canonical document storage
@@ -125,14 +125,14 @@ docs/business-os/
 ### Phase 0 Constraints
 - **Identity:** Pete-only (hardcoded identity, no auth)
 - **Runtime:** Local development only (`pnpm --filter @apps/business-os dev`)
-- **Write model:** App commits to `work/business-os-store` → auto-PR → auto-merge after CI
+- **Write model:** App commits to `dev` → auto-PR (`dev` → `staging`) → auto-merge after CI
 - **Path authorization:** Server-side allowlist (writes restricted to `docs/business-os/**`)
 
 ### Quality Gates
 - `pnpm docs:lint` validates all Business OS document headers
 - TypeScript type checking enforced (`pnpm typecheck`)
 - Targeted tests required before commits (`pnpm test -- <specific-test>`)
-- No direct commits to main (PR workflow via `work/**` branches)
+- No direct commits to `staging` or `main` (ship via pipeline PRs)
 
 ## Migration Notes
 

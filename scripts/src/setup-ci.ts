@@ -64,8 +64,8 @@ name: Deploy ${appSlug}
 on:
   push:
     branches:
+      - staging
       - main
-      - 'work/**'
     paths:
       - 'apps/${appSlug}/**'
       - 'packages/**'
@@ -90,9 +90,9 @@ jobs:
       project-name: "${appSlug}"
     secrets: inherit
 
-  deploy-preview:
-    name: Deploy Preview
-    if: github.ref != 'refs/heads/main' && github.event_name == 'push'
+  deploy-staging:
+    name: Deploy Staging
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
     needs: validate-and-build
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -129,7 +129,7 @@ jobs:
             "deployUrl": "\${{ steps.deploy.outputs.deploy_url }}",
             "productionUrl": "https://${appSlug}.pages.dev",
             "gitSha": "${gitSha}",
-            "environment": "preview",
+            "environment": "staging",
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "shopId": "${shopId}",
             "appSlug": "${appSlug}"

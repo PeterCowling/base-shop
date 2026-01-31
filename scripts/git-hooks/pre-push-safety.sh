@@ -2,12 +2,13 @@
 set -euo pipefail
 
 # Block dangerous pushes:
-# - Any direct push to protected branches (main/master)
+# - Any direct push to protected branches (staging/main/master)
 # - Any non-fast-forward push to any branch (history rewrite / force push)
 #
 # Git provides local_sha/remote_sha pairs over stdin.
 
 PROTECTED_BRANCHES=(
+  "refs/heads/staging"
   "refs/heads/main"
   "refs/heads/master"
 )
@@ -36,7 +37,9 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     echo "" >&2
     echo "Protected branch: ${remote_ref#refs/heads/}" >&2
     echo "" >&2
-    echo "Use a PR from a work branch instead." >&2
+    echo "Use the pipeline PR scripts instead:" >&2
+    echo "  - Ship dev -> staging: scripts/git/ship-to-staging.sh" >&2
+    echo "  - Promote staging -> main: scripts/git/promote-to-main.sh" >&2
     echo "" >&2
     exit 1
   fi

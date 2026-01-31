@@ -3,7 +3,7 @@ Type: Documentation
 Domain: Business OS
 Status: Active
 Created: 2026-01-28
-Last-updated: 2026-01-28
+Last-updated: 2026-01-31
 ---
 
 # Business OS Security Model
@@ -78,9 +78,10 @@ docs/business-os/**
 - HTTPS remote only (never SSH with custom keys)
 
 **Branch Model:**
-- Commits to `work/business-os-store` branch
-- Never commits directly to `main`
-- Auto-PR workflow provides safety gate
+- Commits to `dev` branch
+- Never commits directly to `staging` or `main`
+- Shipping is `dev` → `staging` via auto-PR + auto-merge after CI
+- Production promotion is `staging` → `main` via `scripts/git/promote-to-main.sh`
 
 **Audit Trail:**
 - All changes visible in git history
@@ -89,10 +90,10 @@ docs/business-os/**
 
 ### File System Security
 
-**Worktree Isolation:**
-- Dedicated worktree separate from dev checkout
-- Located at `../base-shop-business-os-store/`
-- Prevents accidental modification of dev files
+**Single Checkout + Writer Lock:**
+- Writes occur in the main Base-Shop checkout (restricted to `docs/business-os/**` by allowlist)
+- Writes are serialized by the Base-Shop writer lock (`scripts/git/writer-lock.sh`)
+- Prevents overlapping commits/pushes in a shared checkout
 
 **File Permissions:**
 - Respects filesystem permissions
@@ -192,12 +193,16 @@ If security issue discovered:
 # Stop server
 pkill -f "next dev.*3020"
 
-# Revert last commit
-cd ../base-shop-business-os-store
-git revert HEAD
-git push
+# Acquire a writer-locked shell (recommended)
+scripts/agents/with-writer-lock.sh
 
-# PR will be auto-created for revert
+# Revert last commit on dev
+cd /path/to/base-shop
+git checkout dev
+git revert HEAD
+git push origin dev
+
+# CI will auto-PR dev -> staging and auto-merge after checks.
 ```
 
 ## References

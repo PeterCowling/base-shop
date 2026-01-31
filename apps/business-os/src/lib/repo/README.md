@@ -11,81 +11,45 @@ This document describes the git integration and write operations for Business OS
 
 ## Architecture
 
-### Dedicated Worktree
+### Single Checkout + Writer Lock
 
-Phase 0 uses a **dedicated git worktree** for write operations:
+Phase 0 uses the Base-Shop repo checkout directly (no git worktrees). Writes are serialized by:
 
-```
-/Users/pete/base-shop/               (main dev checkout)
-/Users/pete/base-shop-business-os-store/  (dedicated worktree)
-```
+- The repo-level writer lock: `scripts/git/writer-lock.sh`
+- The Business OS repo lock directory: `docs/business-os/.locks` (guards Business OS operations)
 
-**Why a separate worktree?**
-- Prevents pollution of the dev checkout
-- Allows dev work to continue while writes happen
-- Clean separation between UI dev and data writes
+### Branch Model
 
-### Work Branch
-
-All writes commit to: `work/business-os-store`
-
-Phase 0: Single branch (single writer - Pete)
-Phase 1+: Per-user branches (`work/business-os/<user>`)
+All Business OS writes commit to `dev`. A separate pipeline PR ships `dev` → `staging` and auto-merges on green.
+Promotion `staging` → `main` is explicit via `scripts/git/promote-to-main.sh`.
 
 ## Setup
 
-### Initialize Worktree
+### Initialize Repo (No Worktrees)
 
 ```bash
-# From apps/business-os/
-./scripts/setup-worktree.sh
+# From repo root
+apps/business-os/scripts/setup-repo.sh
 ```
 
-This creates the worktree and checks out the work branch.
-
-### Verify Setup
-
-```bash
-cd ../base-shop-business-os-store
-git status
-# Should show: On branch work/business-os-store
-# Should show: nothing to commit, working tree clean
-```
+This ensures you’re on `dev` and that the repo is ready for Business OS write operations.
 
 ## Write Operations
 
 ### Save (Local Commit)
 
-1. Write file to worktree
+1. Write file to repo checkout
 2. `git add <file>`
 3. `git commit -m "message"`
 4. **No push** - stays local
 
 **Use case:** Make multiple related changes, then sync once.
 
-### Sync (Push to Remote)
+### Sync (Push `dev` to Remote)
 
-1. `git fetch origin`
-2. `git merge origin/work/business-os-store` (if exists)
-3. `git merge origin/main`
-4. `git push origin work/business-os-store`
+`POST /api/sync` pushes the `dev` branch to GitHub.
 
-**Result:** Auto-PR workflow creates PR → CI runs → auto-merge
-
-### Conflict Handling
-
-If conflicts occur during Sync:
-- Worktree enters conflict state
-- Further writes are **blocked**
-- User must resolve manually:
-  ```bash
-  cd ../base-shop-business-os-store
-  # Fix conflicts in files
-  git add <resolved-files>
-  git commit
-  # Or abort:
-  git merge --abort
-  ```
+**Result:** CI auto-creates/updates PR `dev` → `staging` and auto-merges when checks pass.
 
 ## API Routes
 
@@ -115,7 +79,7 @@ Create a new idea (Save operation).
 
 ### POST /api/sync
 
-Sync local commits to remote (Sync operation).
+Push local commits to GitHub (Sync operation).
 
 **Request:** (no body)
 
@@ -125,61 +89,65 @@ Sync local commits to remote (Sync operation).
   "success": true,
   "pushed": true,
   "commitCount": 3,
-  "compareUrl": "https://github.com/PeterCowling/base-shop/compare/main...work/business-os-store",
-  "findPrUrl": "https://github.com/PeterCowling/base-shop/pulls?q=is%3Apr+head%3Awork%2Fbusiness-os-store",
+  "compareUrl": "https://github.com/PeterCowling/base-shop/compare/staging...dev",
+  "findPrUrl": "https://github.com/PeterCowling/base-shop/pulls?q=is%3Apr+head%3Adev+base%3Astaging",
   "message": "Changes pushed. Check PR links to verify auto-merge status."
 }
 ```
 
 ## Error Handling
 
-### Worktree Not Initialized
+### Repo Not Ready
 
 **Error:**
 ```json
 {
-  "error": "Worktree not initialized",
-  "hint": "Run: apps/business-os/scripts/setup-worktree.sh"
+  "error": "Repository not ready",
+  "hint": "Run: apps/business-os/scripts/setup-repo.sh"
 }
 ```
 
 **Fix:** Run setup script.
 
-### Worktree Has Uncommitted Changes
+### Repo Has Uncommitted Changes
 
 **Error:**
 ```json
 {
-  "error": "Worktree has uncommitted changes. Commit or discard them first."
+  "error": "Repo has uncommitted changes. Commit or discard them first."
 }
 ```
 
 **Fix:**
 ```bash
-cd ../base-shop-business-os-store
 git status
-# Either commit or discard changes
+# Commit the work on dev, or revert changes safely.
 ```
 
-### Merge Conflict
+### Conflicts / Non-Fast-Forward Push
 
-**Error:**
-```json
-{
-  "error": "Merge conflict with main branch. Resolve conflicts manually.",
-  "needsManualResolution": true
-}
-```
+If push fails due to remote changes:
+- Fetch, inspect, and resolve via safe merges (no rebases/force pushes).
+- Prefer using the `dev` → `staging` PR pipeline rather than manual merges.
 
-**Fix:**
+See: `docs/git-safety.md`
+
+## Debugging
+
+### Check Repo Status
+
 ```bash
-cd ../base-shop-business-os-store
 git status
-# See conflicted files
-# Edit files to resolve conflicts
-git add <resolved-files>
-git commit -m "Resolve merge conflict"
-# Then retry Sync
+git log --oneline -10
+scripts/git/writer-lock.sh status
+```
+
+### View Changes
+
+```bash
+git status
+git diff
+git diff --staged
 ```
 
 ### Authentication Failed
@@ -225,57 +193,23 @@ Add idea: BRIK-OPP-0003
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
-## Debugging
+### Git Safety
 
-### Check Worktree Status
-
-```bash
-cd ../base-shop-business-os-store
-git status
-git log --oneline -10
-```
-
-### View Uncommitted Changes
-
-```bash
-cd ../base-shop-business-os-store
-git diff
-git diff --staged
-```
-
-### Check Remote Status
-
-```bash
-cd ../base-shop-business-os-store
-git fetch origin
-git log origin/main..HEAD
-```
-
-### Reset Worktree (Caution)
-
-```bash
-cd ../base-shop-business-os-store
-git reset --hard origin/main
-git clean -fd
-```
-
-**Warning:** This discards all local changes!
+Business OS follows the same git safety rules as the rest of the repo: never use destructive commands like
+`git reset --hard` or `git clean -fd`. See: `docs/git-safety.md`
 
 ## Phase 1+ Considerations
 
 ### Multi-User Branches
 
-Phase 1+ will use per-user branches:
-- `work/business-os/pete`
-- `work/business-os/alice`
-- etc.
+Phase 1+ likely needs a database-backed store instead of git-based writes.
 
 ### Concurrency
 
 Phase 1+ needs:
 - Optimistic locking
 - Conflict detection before write
-- User-scoped worktrees or lock mechanism
+- Clear single-writer behavior (or DB transactions)
 
 ### Hosted Deployment
 

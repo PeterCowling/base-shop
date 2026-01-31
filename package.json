@@ -151,10 +151,10 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/pre-commit-agent-claims.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
+    "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/require-writer-lock.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
     "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
     "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
-    "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
+    "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
   },
   "dependencies": {
     "@acme/config": "workspace:^",

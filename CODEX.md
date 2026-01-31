@@ -31,7 +31,7 @@ Codex has no tool-level safety hooks in this repo. Treat the following as **forb
 | `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
 | `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
 | `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
-| Any commit to `main` branch | Protected branch; bypasses PR/CI gates | Work on `work/*` branches only. |
+| Any commit to `main` / `staging` | Protected branches; bypasses the release pipeline | Commit on `dev` only. |
 
 ### How to STOP and Hand Off
 
@@ -42,9 +42,9 @@ When you hit a situation that *seems* to require one of the commands above:
    - `git status --porcelain=v1 -b`
    - `git diff --stat`
    - `git log --oneline -10`
-   - `git stash list`
+   - `scripts/git/writer-lock.sh status`
 3. **Explain** which command would be risky and why it’s forbidden for agents
-4. **Offer safer alternatives** (checkpoint commit, new branch, revert, worktree isolation)
+4. **Offer safer alternatives** (checkpoint commit, revert, wait for writer lock)
 5. **Ask the user to decide next steps** and point them to `docs/git-safety.md` if a human must perform a destructive recovery
 
 **Example**:
@@ -72,21 +72,14 @@ For the full rationale behind these safety rules, see:
 ### Local Enforcement (Recommended)
 
 Codex has no repo-native pre-execution hooks. To hard-block the most dangerous git commands for agent sessions,
-run Codex inside the repo’s optional git wrapper:
+run Codex inside the repo’s “integrator mode” (writer lock + git guard):
 
 ```bash
-scripts/agents/with-git-guard.sh -- codex
+scripts/agents/integrator-shell.sh -- codex
 ```
 
-This wraps `git` and blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, and `commit --amend`.
-
-For parallel work, also claim the area you’re editing (prevents hard-to-resolve conflicts):
-
-```bash
-scripts/git/claim.sh <path>
-scripts/git/claims.sh
-scripts/git/unclaim.sh <path>
-```
+This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
+and enforces a single-writer lock for commits/pushes.
 
 ## Environment Awareness
 

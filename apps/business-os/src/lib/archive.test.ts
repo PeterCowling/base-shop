@@ -16,24 +16,24 @@ import {
 
 describe("archive", () => {
   let tempDir: string;
-  let worktreePath: string;
+  let repoRoot: string;
 
   beforeEach(async () => {
     // Create temporary directory structure
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "business-os-archive-"));
-    worktreePath = path.join(tempDir, "worktree");
+    repoRoot = path.join(tempDir, "repo");
 
     // Initialize minimal git structure
-    await mkdirWithinRoot(worktreePath, path.join(worktreePath, ".git"), {
+    await mkdirWithinRoot(repoRoot, path.join(repoRoot, ".git"), {
       recursive: true,
     });
-    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/cards"), {
+    await mkdirWithinRoot(repoRoot, path.join(repoRoot, "docs/business-os/cards"), {
       recursive: true,
     });
-    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/ideas/inbox"), {
+    await mkdirWithinRoot(repoRoot, path.join(repoRoot, "docs/business-os/ideas/inbox"), {
       recursive: true,
     });
-    await mkdirWithinRoot(worktreePath, path.join(worktreePath, "docs/business-os/ideas/worked"), {
+    await mkdirWithinRoot(repoRoot, path.join(repoRoot, "docs/business-os/ideas/worked"), {
       recursive: true,
     });
 
@@ -45,13 +45,13 @@ describe("archive", () => {
 [remote "origin"]
 \turl = https://github.com/test/repo.git
 \tfetch = +refs/heads/*:refs/remotes/origin/*
-[branch "work/business-os-store"]
+[branch "dev"]
 \tremote = origin
-\tmerge = refs/heads/work/business-os-store
+\tmerge = refs/heads/dev
 `;
     await writeFileWithinRoot(
-      worktreePath,
-      path.join(worktreePath, ".git/config"),
+      repoRoot,
+      path.join(repoRoot, ".git/config"),
       gitConfig,
       "utf-8"
     );
@@ -123,7 +123,7 @@ describe("archive", () => {
       // Create a test card
       const cardId = "TEST-OPP-001";
       const cardPath = path.join(
-        worktreePath,
+        repoRoot,
         `docs/business-os/cards/${cardId}.user.md`
       );
 
@@ -137,11 +137,11 @@ describe("archive", () => {
         Created: "2026-01-28",
       });
 
-      await writeFileWithinRoot(worktreePath, cardPath, cardContent, "utf-8");
+      await writeFileWithinRoot(repoRoot, cardPath, cardContent, "utf-8");
 
       // Archive the card
       const result = await archiveItem(
-        worktreePath,
+        repoRoot,
         "card",
         cardId,
         CommitIdentities.user
@@ -157,21 +157,21 @@ describe("archive", () => {
       );
 
       // Verify original file was removed
-      const originalExists = await accessWithinRoot(worktreePath, cardPath)
+      const originalExists = await accessWithinRoot(repoRoot, cardPath)
         .then(() => true)
         .catch(() => false);
       expect(originalExists).toBe(false);
 
       // Verify archived file exists with updated status
-      const archivedPath = path.join(worktreePath, result.archivedPath!);
-      const archivedExists = await accessWithinRoot(worktreePath, archivedPath)
+      const archivedPath = path.join(repoRoot, result.archivedPath!);
+      const archivedExists = await accessWithinRoot(repoRoot, archivedPath)
         .then(() => true)
         .catch(() => false);
       expect(archivedExists).toBe(true);
 
       if (archivedExists) {
         const archivedContent = (await readFileWithinRoot(
-          worktreePath,
+          repoRoot,
           archivedPath,
           "utf-8"
         )) as string;
@@ -185,7 +185,7 @@ describe("archive", () => {
       // Create a test idea
       const ideaFilename = "test-idea.md";
       const ideaPath = path.join(
-        worktreePath,
+        repoRoot,
         `docs/business-os/ideas/inbox/${ideaFilename}`
       );
 
@@ -196,11 +196,11 @@ describe("archive", () => {
         Business: "TEST",
       });
 
-      await writeFileWithinRoot(worktreePath, ideaPath, ideaContent, "utf-8");
+      await writeFileWithinRoot(repoRoot, ideaPath, ideaContent, "utf-8");
 
       // Archive the idea
       const result = await archiveItem(
-        worktreePath,
+        repoRoot,
         "idea",
         ideaFilename,
         CommitIdentities.user,
@@ -214,14 +214,14 @@ describe("archive", () => {
       );
 
       // Verify archived file has updated status
-      const archivedPath = path.join(worktreePath, result.archivedPath!);
-      const archivedExists = await accessWithinRoot(worktreePath, archivedPath)
+      const archivedPath = path.join(repoRoot, result.archivedPath!);
+      const archivedExists = await accessWithinRoot(repoRoot, archivedPath)
         .then(() => true)
         .catch(() => false);
 
       if (archivedExists) {
         const archivedContent = (await readFileWithinRoot(
-          worktreePath,
+          repoRoot,
           archivedPath,
           "utf-8"
         )) as string;
@@ -232,7 +232,7 @@ describe("archive", () => {
 
     it("returns error for non-existent card", async () => {
       const result = await archiveItem(
-        worktreePath,
+        repoRoot,
         "card",
         "NONEXISTENT-001",
         CommitIdentities.user
@@ -244,7 +244,7 @@ describe("archive", () => {
 
     it("returns error for idea without location", async () => {
       const result = await archiveItem(
-        worktreePath,
+        repoRoot,
         "idea",
         "test-idea.md",
         CommitIdentities.user

@@ -24,7 +24,7 @@ echo "------------------------------------------------------------------" >&2
 echo "" >&2
 echo "This repo avoids history-rewriting workflows (amend/rebase/force-push), especially for agent work." >&2
 echo "" >&2
-echo "Write a new commit message and keep history linear; PR squash-merge keeps main clean." >&2
+echo "Write a new commit message and keep history additive; use the PR pipeline (MERGE) instead of rewriting commits." >&2
 echo "" >&2
 echo "If you believe you must proceed (human only):" >&2
 echo "  ALLOW_COMMIT_MSG_REUSE=1 git commit ..." >&2

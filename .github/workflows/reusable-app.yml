@@ -114,8 +114,8 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy if a deploy command is provided AND we are on main
-    if: ${{ inputs.deploy-cmd != '' && github.ref == 'refs/heads/main' }}
+    # Only deploy if a deploy command is provided AND we are on main or staging
+    if: ${{ inputs.deploy-cmd != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
     needs: validate-and-build
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -143,7 +143,7 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
-          environment: production
+          environment: "${{ github.ref_name == 'staging' && 'preview' || 'production' }}"
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment

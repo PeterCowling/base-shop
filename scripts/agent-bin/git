@@ -44,7 +44,7 @@ deny() {
   echo "" >&2
   echo "Safer alternatives:" >&2
   echo "  - Make a checkpoint commit, then revert if needed" >&2
-  echo "  - Create a new worktree/branch: scripts/git/new-worktree.sh <label>" >&2
+  echo "  - Use integrator mode (writer lock + guard): scripts/agents/integrator-shell.sh" >&2
   echo "  - Read: docs/git-safety.md" >&2
   echo "" >&2
   exit 1
@@ -53,6 +53,9 @@ deny() {
 subcommand="${1:-}"
 
 case "$subcommand" in
+  worktree)
+    deny "git worktree adds extra checkouts; Base-Shop workflow forbids worktrees." "$@"
+    ;;
   reset)
     for arg in "$@"; do
       case "$arg" in
@@ -84,13 +87,13 @@ case "$subcommand" in
     done
     ;;
   rebase)
-    deny "rebase rewrites history; use merges and PR squash-merge instead." "$@"
+    deny "rebase rewrites history; use merge commits via PRs instead." "$@"
     ;;
   commit)
     for arg in "$@"; do
       case "$arg" in
         --amend)
-          deny "amend rewrites history; prefer a new commit and PR squash-merge." "$@"
+          deny "amend rewrites history; prefer a new commit and merge via PR." "$@"
           ;;
       esac
     done
@@ -106,9 +109,7 @@ case "$subcommand" in
     done
     ;;
   stash)
-    if [[ "${2:-}" == "drop" || "${2:-}" == "clear" ]]; then
-      deny "stash drop/clear permanently deletes stashed work." "$@"
-    fi
+    deny "stash hides work and increases rollback risk in a multi-agent repo." "$@"
     ;;
 esac
 

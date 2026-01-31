@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import simpleGit, { type SimpleGit } from "simple-git";
 
 import { authorizeWrite } from "../auth/authorize";
+import { withBaseShopWriterLock } from "../base-shop-writer-lock";
 import {
   buildAuditCommitMessage,
   type CommitIdentity,
@@ -51,12 +52,11 @@ export class AgentQueueWriter {
   private git: SimpleGit;
 
   constructor(
-    private worktreePath: string,
     private repoRoot: string,
     private lock: RepoLock,
     private lockEnabled: boolean = true
   ) {
-    this.git = simpleGit(worktreePath);
+    this.git = simpleGit(repoRoot);
   }
 
   /**
@@ -83,7 +83,7 @@ export class AgentQueueWriter {
     const queueId = `${target}-${timestamp}-${randomSuffix}`;
 
     const relativePath = `docs/business-os/agent-queue/${queueId}.md`;
-    const absolutePath = path.join(this.worktreePath, relativePath);
+    const absolutePath = path.join(this.repoRoot, relativePath);
 
     // Check authorization
     if (!authorizeWrite(absolutePath, this.repoRoot)) {
@@ -96,7 +96,7 @@ export class AgentQueueWriter {
     const writeOperation = async (): Promise<WriteResult & { queueId?: string }> => {
       try {
         // Ensure agent-queue directory exists
-        const queueDir = path.join(this.worktreePath, "docs/business-os/agent-queue");
+        const queueDir = path.join(this.repoRoot, "docs/business-os/agent-queue");
         await mkdir(queueDir, { recursive: true });
 
         // Create frontmatter
@@ -149,22 +149,27 @@ export class AgentQueueWriter {
       }
     };
 
-    // Execute with or without lock
-    if (this.lockEnabled) {
-      try {
-        return await this.lock.withLock(
-          { userId: actor, action: "create-queue-item" },
-          writeOperation
-        );
-      } catch (error) {
-        return {
-          success: false,
-          errorKey: "businessOs.agentQueue.errors.createFailed",
-          errorDetails: String(error),
-        };
+    return withBaseShopWriterLock(
+      this.repoRoot,
+      `business-os:${actor}:create-queue-item`,
+      async () => {
+        if (this.lockEnabled) {
+          try {
+            return await this.lock.withLock(
+              { userId: actor, action: "create-queue-item" },
+              writeOperation
+            );
+          } catch (error) {
+            return {
+              success: false,
+              errorKey: "businessOs.agentQueue.errors.createFailed",
+              errorDetails: String(error),
+            };
+          }
+        }
+
+        return writeOperation();
       }
-    } else {
-      return writeOperation();
-    }
+    );
   }
 }

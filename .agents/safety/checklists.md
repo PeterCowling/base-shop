@@ -10,8 +10,8 @@ Run through this checklist before every `git commit`:
 - [ ] **Tests pass**: Targeted tests for changed files
 - [ ] **No secrets**: Check for accidentally staged `.env`, credentials, API keys
 - [ ] **No debug code**: Remove `console.log`, `debugger`, commented-out code
-- [ ] **Correct branch**: Verify you're on `work/*`, not `main`
-- [ ] **Area claimed**: `scripts/git/claim.sh <path>` to avoid parallel conflicts
+- [ ] **Correct branch**: Verify you're on `dev`, not `main`/`staging`
+- [ ] **Writer lock held**: `scripts/agents/integrator-shell.sh` (recommended) or `scripts/agents/with-writer-lock.sh`
 - [ ] **Changes reviewed**: `git diff --staged` shows only intended changes
 - [ ] **Commit message**: Follows conventional format, explains "why"
 
@@ -56,8 +56,7 @@ If you still want to proceed, please follow `docs/git-safety.md` and run it your
 Before starting multi-file changes:
 
 - [ ] **Plan exists**: Create plan in `docs/plans/` first
-- [ ] **Worktree isolated**: `scripts/git/new-worktree.sh <label>` for parallel work
-- [ ] **Work area claimed**: `scripts/git/claim.sh <path>` so parallel agents don’t collide
+- [ ] **Single writer**: Run in `scripts/agents/integrator-shell.sh` before editing/committing/pushing
 - [ ] **Baseline captured**: All tests pass before changes
 - [ ] **Scope defined**: List of files to touch is explicit
 - [ ] **Incremental approach**: Break into atomic commits
@@ -79,7 +78,7 @@ Before starting multi-file changes:
 - [ ] **PR title clear**: Summarizes the change
 - [ ] **Description complete**: Explains what and why
 - [ ] **Tests added**: New functionality has test coverage
-- [ ] **No history rewrites**: Don’t `rebase`/`--amend`/force-push; PR squash-merge keeps history tidy
+- [ ] **No history rewrites**: Don’t `rebase`/`--amend`/force-push; PR merge keeps history tidy
 
 ---
 

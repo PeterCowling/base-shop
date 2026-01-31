@@ -62,18 +62,12 @@ export async function POST(request: Request) {
     const { action, target, targetType, instructions, content } = parsed.data;
 
     const repoRoot = getRepoRoot();
-    const worktreePath = path.join(repoRoot, "../base-shop-business-os-store");
     const lockDir = path.join(repoRoot, "docs/business-os/.locks");
     const lock = new RepoLock(lockDir);
 
     // Create queue writer
     const lockEnabled = process.env.BUSINESS_OS_REPO_LOCK_ENABLED === "true";
-    const queueWriter = new AgentQueueWriter(
-      worktreePath,
-      repoRoot,
-      lock,
-      lockEnabled
-    );
+    const queueWriter = new AgentQueueWriter(repoRoot, lock, lockEnabled);
 
     // Get authenticated user for git author and audit trail
     const currentUser = await getCurrentUserServer();

@@ -59,13 +59,13 @@ export async function POST(request: Request) {
     const reader = createRepoReader(repoRoot);
     const writer = createRepoWriter(repoRoot);
 
-    // Check if worktree is ready
-    const isReady = await writer.isWorktreeReady();
+    // Check if repo is ready
+    const isReady = await writer.isRepoReady();
     if (!isReady) {
       return NextResponse.json(
         {
-          error: t("businessOs.api.common.worktreeNotInitialized"),
-          hint: t("businessOs.api.common.worktreeSetupHint"),
+          error: t("businessOs.api.common.repoNotReady"),
+          hint: t("businessOs.api.common.repoSetupHint"),
         },
         { status: 500 }
       );

@@ -4,7 +4,7 @@ Outcome: Planning
 Status: Ready-for-planning
 Domain: Platform
 Created: 2026-01-30
-Last-updated: 2026-01-30
+Last-updated: 2026-01-31
 Feature-Slug: board-auto-refresh
 Related-Plan: docs/plans/board-auto-refresh-plan.md
 ---
@@ -17,7 +17,7 @@ Enable the Business OS board to automatically refresh when markdown document cha
 
 User expectation: "Every time the status of documents changes, reflect those changes in what's presented on the board. This should include marking tasks as complete in ongoing work."
 
-**Critical prerequisite (confirmed):** Business OS reads and writes must point at the *same* checkout. The codebase is designed around a dedicated git worktree for writes (`../base-shop-business-os-store`), but `RepoReader` reads from `repoRoot/docs/business-os` while `RepoWriter` writes under `worktreePath/docs/business-os`. The recommended approach is to **initialize the worktree** and then set `BUSINESS_OS_REPO_ROOT` to the worktree root so the entire Business OS stack (reader, writer, locks, ID allocation, queue/runs) uses a single filesystem + git view.
+**Critical prerequisite (confirmed):** Business OS reads and writes must point at the *same* checkout. RepoWriter now writes to the Base-Shop repo checkout directly (no worktrees), so reads/writes align by default. Ensure the repo is on `dev` (run `apps/business-os/scripts/setup-repo.sh`) and that write operations are serialized via the Base-Shop writer lock.
 
 ### Goals
 - Auto-refresh board when card frontmatter changes (Lane, Priority, Owner, etc.)
@@ -36,8 +36,8 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - Constraints:
   - Node.js runtime required (already the case for git operations)
   - Phase 0: Local-only, single-user (Pete) - but design for multi-user
-  - Must handle worktree architecture (writes are committed in a dedicated worktree checkout)
-  - Business OS repo root must be configurable (`BUSINESS_OS_REPO_ROOT`) so reads/writes align on the same checkout
+  - Single checkout: git writes must use the Base-Shop writer lock to avoid overlapping commits/pushes
+  - Business OS repo root must be configurable (`BUSINESS_OS_REPO_ROOT`) so reads/writes can be pointed at the same checkout if needed
   - No paid infrastructure ($0 constraint)
 - Assumptions:
   - Polling overhead is acceptable for MVP (<100 clients)
@@ -50,8 +50,8 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - `apps/business-os/src/components/board/BoardView.tsx` — Client component, board UI (no auto-refresh)
 - `apps/business-os/src/lib/get-repo-root.ts` — Central resolver for Business OS repo root (`BUSINESS_OS_REPO_ROOT` or dev inference)
 - `apps/business-os/src/lib/repo-reader.ts` — Data access layer (async reads via `fs/promises`)
-- `apps/business-os/src/lib/repo-writer.ts` — Mutation layer (writes + commits to worktree)
-- Worktree bootstrap script — **Does not exist yet** (verified 2026-01-30); needs to be created as part of implementation
+- `apps/business-os/src/lib/repo-writer.ts` — Mutation layer (writes + commits on `dev` in repo checkout)
+- Repo setup script: `apps/business-os/scripts/setup-repo.sh`
 
 ### Key Modules / Files
 - `apps/business-os/src/components/agent-runs/RunStatus.tsx` — Example polling pattern (5s interval for agent status)
@@ -67,26 +67,16 @@ User expectation: "Every time the status of documents changes, reflect those cha
 - **No file watchers in Business OS app** — repo search finds no `chokidar`/`fs.watch` usage under `apps/business-os/`
 - **No SSE/WebSocket in Business OS app** — repo search finds no `EventSource`/WebSocket usage under `apps/business-os/`
 
-### Critical Finding: Repo Root / Worktree Alignment
+### Critical Finding: Repo Root / Write Alignment (Resolved)
 
-**Problem:** `RepoReader` and `RepoWriter` are designed to operate against a configurable `repoRoot`, but the writer’s default worktree is a *separate* checkout. Auto-refresh only works once the board is reading from the same checkout that receives writes.
+**Finding:** Business OS reads and writes must point at the *same* checkout for auto-refresh to be meaningful. The previous worktree split (reader in one checkout, writer in another) is now removed.
 
-**Evidence (code):**
-- Reader root: `repoRoot/docs/business-os` (`apps/business-os/src/lib/repo-reader.ts:34`)
-- Writer default worktree: `path.join(repoRoot, "../base-shop-business-os-store")` (`apps/business-os/src/lib/repo-writer.ts:80-83`)
-- Write authorization requires the write target to be within `repoRoot` (`apps/business-os/src/lib/auth/authorize.ts:24-36`)
-- `getRepoRoot()` supports overriding `repoRoot` via `BUSINESS_OS_REPO_ROOT` (`apps/business-os/src/lib/get-repo-root.ts:33-46`)
+**Current state (code):**
+- Reader root: `repoRoot/docs/business-os` (`apps/business-os/src/lib/repo-reader.ts`)
+- Writer root: repo checkout + `dev` branch (`apps/business-os/src/lib/repo-writer.ts`)
+- Git writes are serialized by the Base-Shop writer lock (`scripts/git/writer-lock.sh`)
 
-**Current local state (verified 2026-01-30):**
-- `../base-shop-business-os-store` does not exist and is not in `git worktree list`, so `RepoWriter.isWorktreeReady()` fails and write API routes return a “worktree not initialized” error.
-
-**Recommended approach (decision made):**
-1. Create and run a worktree setup script to initialize `../base-shop-business-os-store` on branch `work/business-os-store`.
-2. Set `BUSINESS_OS_REPO_ROOT` to the worktree root (e.g. `/Users/petercowling/base-shop-business-os-store`).
-
-This makes `repoRoot === worktreePath` (by construction of the default worktree path), so reads/writes/locks/ID allocation all observe the same filesystem state and git HEAD.
-
-**Scope boundary (important):** All Business OS reads and writes will use the worktree as the source of truth. Edits to the main repo checkout at `/Users/petercowling/base-shop/docs/business-os` will **not be visible** to the application when `BUSINESS_OS_REPO_ROOT` points to the worktree. This is by design for isolation.
+**Implication for auto-refresh:** A version endpoint can treat the repo checkout as the source of truth, and direct edits under `docs/business-os/**` are visible to the app when they’re in the same repo root.
 
 ### Data & Contracts
 - Types/schemas:
@@ -99,7 +89,7 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
   - Businesses: `docs/business-os/strategy/businesses.json`
 - API/event contracts:
   - Mutations: POST /api/cards, PATCH /api/cards/[id], POST /api/cards/claim, etc.
-  - All mutations use `RepoWriter` and commit via git (worktree checkout)
+  - All mutations use `RepoWriter` and commit via git (repo checkout / `dev` branch)
   - UI patterns for showing fresh server data include `router.refresh()` (e.g., claim/accept/complete) and navigation back to server-rendered pages
 
 ### Dependency & Impact Map
@@ -114,7 +104,7 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
   - "My Work" view — filtered card view
 - Likely blast radius:
   - Low: Board refresh is additive feature, no breaking changes to existing code
-  - Worktree configuration impacts *all* Business OS reads/writes (intentionally, once `BUSINESS_OS_REPO_ROOT` is set)
+  - Repo root configuration impacts *all* Business OS reads/writes (intentionally, once `BUSINESS_OS_REPO_ROOT` is set)
   - Multi-user: Need to detect changes from other users (not just local API mutations)
 
 ### Tests & Quality Gates
@@ -133,24 +123,23 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
 ### Recent Git History (Targeted)
 - `apps/business-os/src/components/board/` — Recent mobile lane stacking (BOS-P2-03), keyboard nav (BOS-P2-05)
 - `apps/business-os/src/lib/repo-reader.ts` — Stable, last changed for fileSha support (optimistic concurrency)
-- `apps/business-os/src/lib/repo-writer.ts` — Worktree integration, repo lock support
+- `apps/business-os/src/lib/repo-writer.ts` — Repo checkout writes, repo lock support
 
 ### Verification Completed (2026-01-30)
 **Setup script existence:**
-- Status: ❌ Does not exist
-- Command: `ls -la apps/business-os/scripts/setup-worktree.sh`
-- Result: `No such file or directory` (scripts directory doesn't exist either)
-- Impact: TASK-01 must create the script, not just run it
+- Status: ✅ Exists
+- Command: `ls -la apps/business-os/scripts/setup-repo.sh`
+- Impact: Use this to ensure the repo is on `dev` before running Business OS
 
 **Authorization layer compatibility:**
-- Status: ✅ Compatible with worktree approach
+- Status: ✅ Compatible with repo checkout approach
 - Evidence: `apps/business-os/src/lib/auth/authorize.ts:19-41`
 - Logic: Checks `filePath.startsWith(repoRoot)` and `relativePath.startsWith("docs/business-os/")`
-- Example: When `repoRoot=/path/to/worktree`, filePath=`/path/to/worktree/docs/business-os/cards/X.md` → passes both checks
+- Example: When `repoRoot=/path/to/base-shop`, filePath=`/path/to/base-shop/docs/business-os/cards/X.md` → passes both checks
 - Impact: No code changes needed, works as-is
 
 **Repo lock compatibility:**
-- Status: ✅ Compatible with worktree approach
+- Status: ✅ Compatible with repo checkout approach
 - Evidence: `apps/business-os/src/lib/repo/RepoLock.ts` uses `path.join(repoRoot, "docs/business-os/.locks")`
 - Logic: Lock files are relative to `repoRoot`, so they work in any checkout
 - Impact: No code changes needed, works as-is
@@ -173,8 +162,8 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
   - A: Yes, for agent run status only (5s interval). Not for board data.
   - Evidence: `apps/business-os/src/components/agent-runs/RunStatus.tsx:40-60`
 - Q: What is the decided approach for fixing the read/write split?
-  - A: Keep the worktree architecture, and set `BUSINESS_OS_REPO_ROOT` to the worktree root so the Business OS app reads/writes from the same checkout.
-  - Evidence: `apps/business-os/src/lib/get-repo-root.ts`, `apps/business-os/src/lib/repo-reader.ts:34`, `apps/business-os/src/lib/repo-writer.ts:80-83`, `apps/business-os/src/lib/auth/authorize.ts:24-36`
+  - A: Use the repo checkout directly (no worktrees); RepoWriter commits on `dev` and uses the Base-Shop writer lock.
+  - Evidence: `apps/business-os/src/lib/repo-writer.ts`, `scripts/git/writer-lock.sh`
 
 ### Open (User Input Needed)
 - Q: What refresh latency is acceptable?
@@ -186,36 +175,26 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
   - Decision impacted: Whether file watcher is required for Phase 1
   - Default assumption + risk:
     - Phase 1 detects committed changes (via git HEAD/version endpoint); Phase 2 adds watcher/mtime scanning if uncommitted edits must be detected.
-    - With worktree-as-repoRoot, “direct edits” must be made in the worktree checkout to be visible to the app.
 
 ## Confidence Inputs (for /plan-feature)
 - **Implementation:** 78%
   - Known: Polling pattern exists (`RunStatus.tsx`), and `router.refresh()` is used successfully elsewhere.
-  - Known: Authorization layer validated (2026-01-30) — works correctly with worktree paths
-  - Missing: Setup script doesn't exist yet (verified 2026-01-30) — needs to be created
+  - Known: Authorization layer validated (2026-01-30) — works correctly in the repo checkout model
   - Straightforward: Git HEAD as version signal (simple git command, pattern exists)
 - **Approach:** 82%
   - Phase 1 polling is the simplest fit for “good enough” latency and $0 infra.
   - SSE/file watching is viable later, but increases operational requirements (long-lived process) and complexity.
 - **Impact:** 80%
   - Primary blast radius is Business OS board UX plus a small new API route/hook.
-  - Worktree-as-repoRoot affects all Business OS pages that read `docs/business-os/` (intended), so rollout should include a quick sanity check of boards/cards/ideas/people pages.
+  - Repo checkout model affects all Business OS pages that read `docs/business-os/` (intended), so rollout should include a quick sanity check of boards/cards/ideas/people pages.
 
 ## Risks & Mitigations
-- **Risk**: Developer edits files in main repo (`/Users/petercowling/base-shop/docs/business-os`), changes invisible to app
-  - **Mitigation**: Document clearly in `apps/business-os/README.md` and `.env.example`; add startup warning if `BUSINESS_OS_REPO_ROOT` not set in dev
-  - **Severity**: Medium (dev confusion, not production issue)
-- **Risk**: Worktree gets out of sync with main/remote branches
-  - **Mitigation**: Existing sync endpoint (`/api/sync`) handles push to remote; document pull workflow in README
-  - **Severity**: Low (normal git workflow)
-- **Risk**: Authorization layer rejects worktree paths
-  - **Mitigation**: Validated (2026-01-30) — `authorizeWrite()` checks `filePath.startsWith(repoRoot)` and `relativePath.startsWith("docs/business-os/")`, which works correctly when `repoRoot` is the worktree root
-  - **Evidence**: `apps/business-os/src/lib/auth/authorize.ts:19-41`
-  - **Severity**: Low (already validated)
-- **Risk**: Repo lock mechanism fails in worktree context
-  - **Mitigation**: Lock files are written under `docs/business-os/.locks/` relative to `repoRoot`, so they work in any checkout
-  - **Evidence**: `apps/business-os/src/lib/repo/RepoLock.ts` uses `path.join(repoRoot, "docs/business-os/.locks")`
-  - **Severity**: Low (architecture supports it)
+- **Risk**: Direct file edits (uncommitted) are not detected by a git-HEAD version check
+  - **Mitigation**: Phase 1 detects committed changes only; Phase 2 can add watcher/mtime scanning if uncommitted edits must trigger refresh.
+  - **Severity**: Medium (dev UX; not a production issue if writes always commit)
+- **Risk**: Shared checkout write conflicts during high activity
+  - **Mitigation**: Base-Shop writer lock serializes write operations; treat lock contention as normal and surface “repo busy” UI errors.
+  - **Severity**: Low (Phase 0 is single-user; multi-user needs more)
 - **Risk**: Polling overhead impacts performance with many concurrent users
   - **Mitigation**: Conservative 30s interval for Phase 1; version endpoint must be cheap (git HEAD read, no full scan); monitor metrics
   - **Severity**: Medium (can adjust interval based on observed load)
@@ -238,40 +217,17 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
 
 ## Suggested Task Seeds (Non-binding)
 
-### Phase 0: Worktree Infrastructure (prerequisite for auto-refresh)
+### Phase 0: Repo Readiness (prerequisite for auto-refresh)
 
-- **TASK-01: Create worktree setup script** (M-effort, blocking)
-  - Create `apps/business-os/scripts/setup-worktree.sh` (directory doesn't exist yet)
-  - Script should:
-    - Create worktree: `git worktree add ../base-shop-business-os-store work/business-os-store`
-    - If branch doesn't exist locally, create it from `main`
-    - Verify worktree is on correct branch
-    - Print instructions for setting `BUSINESS_OS_REPO_ROOT`
-  - Test manually: run script, verify worktree created
-  - Affects: New file `apps/business-os/scripts/setup-worktree.sh`
-
-- **TASK-02: Document worktree setup and env configuration** (S-effort)
-  - Update `apps/business-os/README.md` with:
-    - Worktree setup instructions (run setup script)
-    - `BUSINESS_OS_REPO_ROOT` env var requirement
-    - Warning that main repo edits are invisible when using worktree
-  - Create/update `apps/business-os/.env.example` with `BUSINESS_OS_REPO_ROOT=/Users/you/base-shop-business-os-store`
-  - Affects: `apps/business-os/README.md`, `apps/business-os/.env.example`
-
-- **TASK-03: Validate worktree-as-repoRoot integration** (M-effort, test validation)
-  - Manual validation checklist:
-    - [ ] Authorization layer accepts worktree paths (`authorizeWrite()` returns true)
-    - [ ] Repo lock creates lock files in worktree (check `docs/business-os/.locks/`)
-    - [ ] ID allocation reads/writes to worktree counter file
-    - [ ] Create card via API → immediately visible on board refresh
-    - [ ] Update card via API → immediately visible on board refresh
-  - Record results in plan doc
-  - No code changes (validation only)
+- **TASK-01: Ensure repo is ready for writes** (S-effort)
+  - Run: `apps/business-os/scripts/setup-repo.sh`
+  - Ensure: repo is on `dev` and Business OS writes can commit cleanly
+  - Note: git writes require the Base-Shop writer lock in shared-checkout mode
 
 ### Phase 1: Auto-Refresh Implementation (after Phase 0 complete)
 
 - **TASK-04: Create board version endpoint** (`GET /api/boards/[businessCode]/version`)
-  - Return version based on `repoRoot` (worktree) that changes when board-relevant docs change
+  - Return version based on `repoRoot` (repo checkout) that changes when board-relevant docs change
   - Phase 1 implementation: git HEAD commit hash (detects all committed changes via API mutations)
   - Lightweight: single git command, no full directory scan
   - S-effort, 1 file
@@ -292,7 +248,7 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
 ### Phase 2: Real-time / Uncommitted Changes (future, optional)
 
 - **TASK-07: File watcher + SSE for real-time updates** (L-effort, requires long-lived process)
-  - Add `chokidar` file watcher for `docs/business-os/` in worktree
+  - Add `chokidar` file watcher for `docs/business-os/` in repo checkout
   - Create SSE endpoint (`GET /api/board-updates`)
   - Replace polling with SSE connection in `useBoardAutoRefresh()`
   - Detects uncommitted changes immediately (no 30s delay)
@@ -304,4 +260,4 @@ This makes `repoRoot === worktreePath` (by construction of the default worktree 
 - Blocking items (if any):
   - None (open questions are non-blocking; defaults are acceptable for Phase 1)
 - Recommended next step:
-  - Proceed to `/plan-feature` using the worktree-as-repoRoot approach and Phase 1 polling.
+  - Proceed to `/plan-feature` using the repo checkout approach and Phase 1 polling.

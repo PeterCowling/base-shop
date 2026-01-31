@@ -16,6 +16,7 @@
 
 import path from "node:path";
 
+import { withBaseShopWriterLock } from "../lib/base-shop-writer-lock";
 import { userToCommitIdentity } from "../lib/commit-identity";
 import { USERS } from "../lib/current-user";
 import { getRepoRoot } from "../lib/get-repo-root";
@@ -100,7 +101,9 @@ async function executeTask(
   const logger = new RunLogger(runsDir, task.id);
 
   try {
-    console.log(`[Agent Runner] Executing task ${task.id}: ${task.action} for ${task.target}`);
+    console.log(
+      `[Agent Runner] Executing task ${task.id}: ${task.action} for ${task.target}`
+    );
 
     // Mark task as in-progress
     await scanner.updateTaskStatus(task.id, "in-progress");
@@ -114,87 +117,108 @@ async function executeTask(
 
     await logger.appendLog(`Starting execution: ${task.action} for ${task.target}`);
 
-    // Execute skill via Claude CLI
-    const prompt = `/${task.action} ${task.target}`;
-    const result = await runClaudeCli({
-      prompt,
-      cwd: repoRoot,
-      permissionMode: "bypassPermissions", // Agent runs with full permissions
-      timeoutMs: 300000, // 5 minute timeout per task
-    });
+    await withBaseShopWriterLock(repoRoot, `business-os:agent-runner:${task.id}`, async () => {
+      // Execute skill via Claude CLI
+      const prompt = `/${task.action} ${task.target}`;
+      const result = await runClaudeCli({
+        prompt,
+        cwd: repoRoot,
+        permissionMode: "bypassPermissions", // Agent runs with full permissions
+        timeoutMs: 300000, // 5 minute timeout per task
+      });
 
-    await logger.appendLog(`Execution completed. Exit code: ${result.exitCode}`);
+      await logger.appendLog(
+        `Execution completed. Exit code: ${result.exitCode}`
+      );
 
-    if (result.exitCode !== 0) {
-      // Execution failed
-      await logger.appendLog(`Error output:\n${result.stderr}`);
-      await logger.finalizeRun("failed", { error: result.stderr });
-      await scanner.updateTaskStatus(task.id, "failed");
+      if (result.exitCode !== 0) {
+        // Execution failed
+        await logger.appendLog(`Error output:\n${result.stderr}`);
+        await logger.finalizeRun("failed", { error: result.stderr });
+        await scanner.updateTaskStatus(task.id, "failed");
 
-      console.error(`[Agent Runner] Task ${task.id} failed with exit code ${result.exitCode}`);
-      return;
-    }
-
-    // Execution succeeded
-    await logger.appendLog(`Standard output:\n${result.stdout}`);
-
-    // Commit outputs to git
-    const gitAuthor = userToCommitIdentity(AGENT_USER);
-
-    // Check if there are changes to commit
-    const worktreePath = path.join(repoRoot, "../base-shop-business-os-store");
-
-    try {
-      // Import simple-git dynamically to avoid top-level async
-      const simpleGit = (await import("simple-git")).default;
-      const git = simpleGit(worktreePath);
-
-      const status = await git.status();
-
-      if (status.files.length > 0) {
-        // There are changes - commit them
-        await git.add("."); // Add all changes in worktree
-
-        const commitMessage = `agent: ${task.action} for ${task.target}\n\nTask ID: ${task.id}\nInitiated by: ${task.initiator}`;
-
-        const commitResult = await git.commit(
-          commitMessage,
-          undefined,
-          {
-            "--author": `${gitAuthor.name} <${gitAuthor.email}>`,
-          }
+        console.error(
+          `[Agent Runner] Task ${task.id} failed with exit code ${result.exitCode}`
         );
-
-        const commitHash = commitResult.commit;
-
-        await logger.appendLog(`Changes committed: ${commitHash}`);
-        await logger.finalizeRun("complete", {
-          output: result.stdout,
-          commitHash,
-        });
-
-        console.log(`[Agent Runner] Task ${task.id} completed successfully. Commit: ${commitHash}`);
-
-        // Create progress comment if enabled (MVP-F2)
-        await createProgressComment(repoRoot, commitMessage, commitHash, task.action);
-      } else {
-        // No changes to commit
-        await logger.appendLog("No changes to commit (task may have been read-only)");
-        await logger.finalizeRun("complete", { output: result.stdout });
-
-        console.log(`[Agent Runner] Task ${task.id} completed (no changes)`);
+        return;
       }
-    } catch (error) {
-      await logger.appendLog(`Git commit failed: ${String(error)}`);
-      await logger.finalizeRun("failed", { error: String(error) });
-      await scanner.updateTaskStatus(task.id, "failed");
 
-      console.error(`[Agent Runner] Task ${task.id} failed during git commit:`, error);
-      return;
-    }
+      // Execution succeeded
+      await logger.appendLog(`Standard output:\n${result.stdout}`);
 
-    // Mark task as complete
-    await scanner.updateTaskStatus(task.id, "complete");
+      // Commit outputs to git
+      const gitAuthor = userToCommitIdentity(AGENT_USER);
+
+      try {
+        // Import simple-git dynamically to avoid top-level async
+        const simpleGit = (await import("simple-git")).default;
+        const git = simpleGit(repoRoot);
+
+        const status = await git.status();
+        if (status.current !== "dev") {
+          await logger.appendLog(
+            `Refusing to commit: expected branch 'dev' but on '${status.current || "unknown"}'`
+          );
+          await logger.finalizeRun("failed", {
+            error: `Wrong branch: ${status.current || "unknown"}`,
+          });
+          await scanner.updateTaskStatus(task.id, "failed");
+          return;
+        }
+
+        if (status.files.length > 0) {
+          // There are changes - commit them
+          await git.add("."); // Add all changes in repo root
+
+          const commitMessage = `agent: ${task.action} for ${task.target}\n\nTask ID: ${task.id}\nInitiated by: ${task.initiator}`;
+
+          const commitResult = await git.commit(commitMessage, undefined, {
+            "--author": `${gitAuthor.name} <${gitAuthor.email}>`,
+          });
+
+          const commitHash = commitResult.commit;
+
+          await logger.appendLog(`Changes committed: ${commitHash}`);
+          await logger.finalizeRun("complete", {
+            output: result.stdout,
+            commitHash,
+          });
+
+          console.log(
+            `[Agent Runner] Task ${task.id} completed successfully. Commit: ${commitHash}`
+          );
+
+          // Create progress comment if enabled (MVP-F2)
+          await createProgressComment(
+            repoRoot,
+            commitMessage,
+            commitHash,
+            task.action
+          );
+        } else {
+          // No changes to commit
+          await logger.appendLog(
+            "No changes to commit (task may have been read-only)"
+          );
+          await logger.finalizeRun("complete", { output: result.stdout });
+
+          console.log(`[Agent Runner] Task ${task.id} completed (no changes)`);
+        }
+      } catch (error) {
+        await logger.appendLog(`Git commit failed: ${String(error)}`);
+        await logger.finalizeRun("failed", { error: String(error) });
+        await scanner.updateTaskStatus(task.id, "failed");
+
+        console.error(
+          `[Agent Runner] Task ${task.id} failed during git commit:`,
+          error
+        );
+        return;
+      }
+
+      // Mark task as complete
+      await scanner.updateTaskStatus(task.id, "complete");
+    });
 
   } catch (error) {
     // Unexpected error during task execution

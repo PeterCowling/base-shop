@@ -11,11 +11,20 @@ import { getCommentsForEntity } from "@/lib/repo/CommentReader";
 import { getCommitsForCard } from "@/lib/repo/CommitReader";
 import { createRepoReader } from "@/lib/repo-reader";
 
+// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
+// Currently using Node runtime with RepoReader (filesystem + git)
+// TODO: Migrate to D1 repositories in BOS-D1-06
+export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+
+// BOS-D1-05: Cache card detail pages (1 minute acceptable for detail views)
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 // Phase 0: Local-only, Pete-only. No auth needed.
+// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
 export default async function CardPage({ params }: PageProps) {
   const { id } = await params;
   const repoRoot = getRepoRoot();

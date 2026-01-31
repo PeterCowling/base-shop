@@ -13,12 +13,21 @@ import { createRepoReader } from "@/lib/repo-reader";
 import { ConvertToCardButton } from "./ConvertToCardButton";
 import { WorkIdeaButton } from "./WorkIdeaButton";
 
+// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
+// Currently using Node runtime with RepoReader (filesystem + git)
+// TODO: Migrate to D1 repositories in BOS-D1-06
+export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+
+// BOS-D1-05: Cache idea detail pages (1 minute acceptable for detail views)
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 /* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
 // Phase 0: Local-only, Pete-only. No auth needed.
+// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
 export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;
   const repoRoot = getRepoRoot();

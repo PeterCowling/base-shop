@@ -7,11 +7,20 @@ import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoReader } from "@/lib/repo-reader";
 import type { Lane } from "@/lib/types";
 
+// BOS-D1-05: Prepare for Edge runtime (Cloudflare Pages deployment)
+// Currently using Node runtime with RepoReader (filesystem + git)
+// TODO: Migrate to D1 repositories in BOS-D1-06
+export const runtime = "nodejs"; // Will change to "edge" after D1 migration
+
+// BOS-D1-05: Disable Next.js caching for board pages (real-time updates required)
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ businessCode: string }>;
 }
 
 // Phase 0: Local-only, Pete-only. No auth needed.
+// BOS-D1-05: Using RepoReader (git-based) until D1 migration complete
 export default async function BoardPage({ params }: PageProps) {
   const { businessCode } = await params;
   const repoRoot = getRepoRoot();

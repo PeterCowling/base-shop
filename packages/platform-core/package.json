@@ -188,6 +188,11 @@
       "import": "./dist/stripeConnect/index.js",
       "default": "./dist/stripeConnect/index.js"
     },
+    "./d1": {
+      "types": "./dist/d1/index.server.d.ts",
+      "import": "./dist/d1/index.server.js",
+      "default": "./dist/d1/index.server.js"
+    },
     "./*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",

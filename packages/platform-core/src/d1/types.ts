@@ -24,7 +24,7 @@ export type D1PreparedStatement = {
   first: <T = unknown>() => Promise<T | null>;
 
   /** Execute statement (for INSERT/UPDATE/DELETE) */
-  run: () => Promise<{ success?: boolean; meta?: { changes?: number; duration?: number } }>;
+  run: () => Promise<{ success?: boolean; meta?: { changes?: number; duration?: number; last_row_id?: number } }>;
 };
 
 /**

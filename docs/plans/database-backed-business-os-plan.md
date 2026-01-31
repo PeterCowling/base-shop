@@ -4,12 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-01-30
 Last-reviewed: 2026-01-31
-Last-updated: 2026-01-31 (BOS-D1-07: Board auto-refresh with 30s polling)
+Last-updated: 2026-01-31 (BOS-D1-08: Data migration script with dry-run validation)
 Feature-Slug: database-backed-business-os
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: docs/business-os/business-os-charter.md
-Build-progress: 12/15 tasks complete (BOS-D1-02..07 complete; next: BOS-D1-08..10)
+Build-progress: 13/15 tasks complete (BOS-D1-02..08 complete; next: BOS-D1-09..10)
 Critical-Findings:
   - Business OS currently depends on local filesystem + simple-git (RepoReader/RepoWriter) and forces Node runtime on many API routes; this is incompatible with a Cloudflare D1/Pages hosted path.
   - platform-core Prisma is Node/Postgres; the Business OS Cloudflare path should use separate Edge-compatible D1 repositories (raw SQL) rather than migrating the platform-core Prisma schema/provider.
@@ -1090,6 +1090,37 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **Changes to task:**
   - **Confidence:** Raised to 80% now that mapping + idempotency strategy are concrete.
   - **Test plan:** Use the 7 files above as fixtures for mapping tests.
+
+#### Build Completion (2026-01-31)
+- **Status:** Complete
+- **Commits:** bf3826c61a
+- **Implementation:**
+  - Created `apps/business-os/scripts/migrate-business-os-to-d1.ts` (895 lines)
+  - Parses markdown frontmatter with gray-matter
+  - Validates with Zod schemas (cards, ideas, stage docs)
+  - Direct D1 SQL upserts (bypasses server-only repository guards)
+  - Idempotent with deterministic IDs:
+    - Cards/ideas: by primary key `id`
+    - Stage docs: `${cardId}/${stage}` format
+  - Handles YAML date parsing (Date objects → ISO strings)
+  - Field name mapping (frontmatter `Created` → D1 `created_at`)
+  - Location inference for ideas (from file path)
+  - SHA computation for cards (entity-sha)
+- **Validation:**
+  - Dry-run test: 7/7 entities parsed successfully
+    - 3/3 cards ✓
+    - 3/3 ideas ✓
+    - 1/1 stage docs ✓
+  - Typecheck: PASS
+  - Reports: success/failure counts, file paths, error details
+- **Usage:** `pnpm tsx apps/business-os/scripts/migrate-business-os-to-d1.ts [--dry-run] [--apply]`
+- **Documentation updated:** Inline comments + usage in script header
+- **Implementation notes:**
+  - Default mode is dry-run (safe by default)
+  - --apply flag required for actual D1 writes
+  - Direct SQL used because repository layer imports trigger server-only guards
+  - Migration is idempotent (safe to re-run)
+  - Entity validation errors shown with full Zod details
 
 ---
 

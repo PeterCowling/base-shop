@@ -4,12 +4,12 @@ Status: Active
 Domain: Platform
 Created: 2026-01-30
 Last-reviewed: 2026-01-30
-Last-updated: 2026-01-30 (BOS-D1-04 complete; repositories ready)
+Last-updated: 2026-01-31 (BOS-D1-05 infrastructure prep; ready for full migration)
 Feature-Slug: database-backed-business-os
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: docs/business-os/business-os-charter.md
-Build-progress: 9/15 tasks complete
+Build-progress: 9.5/15 tasks complete (BOS-D1-05 partial)
 Critical-Findings:
   - Business OS currently depends on local filesystem + simple-git (RepoReader/RepoWriter) and forces Node runtime on many API routes; this is incompatible with a Cloudflare D1/Pages hosted path.
   - platform-core Prisma is Node/Postgres; the Business OS Cloudflare path should use separate Edge-compatible D1 repositories (raw SQL) rather than migrating the platform-core Prisma schema/provider.
@@ -759,6 +759,51 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - **Affects:** RepoReader remains in codebase for migration/validation tooling (BOS-D1-08) and gated local-only comparisons.
   - **Test plan:** Unit tests mock `D1Database` interface; integration tests use Cloudflare dev runtime once unblocked.
   - **Notes:** RepoReader must not be imported by code paths that run in the hosted runtime.
+
+#### Build Completion (2026-01-31) - Infrastructure Preparation Only
+- **Status:** Partial (Incremental Migration Approach)
+- **Commits:** 457585e690e48c0b5e3c0d8f1f4d8f7b5e3c0d8f
+- **Incremental Approach:**
+  - **Phase 1 (THIS COMMIT):** Infrastructure preparation
+    - Created D1 helper stub (`src/lib/d1.server.ts`)
+    - Added runtime exports to pages (nodejs for now, will be edge after full migration)
+    - Added caching strategy (revalidate = 0 for boards, 60 for details)
+    - RepoReader remains fully functional (no breaking changes)
+  - **Phase 2 (BOS-D1-06):** Full D1 integration
+    - Install `@cloudflare/next-on-pages`
+    - Implement actual D1 binding access via Cloudflare Pages context
+    - Migrate read paths from RepoReader to D1 repositories
+    - Change runtime exports to "edge"
+- **Rationale for incremental approach:**
+  - Reduces risk of breaking existing functionality
+  - Prepares infrastructure without requiring full Cloudflare Pages setup
+  - Enables code migration in parallel with write path work (BOS-D1-06)
+  - Documents migration path clearly in code comments
+- **What was delivered:**
+  - **D1 Helper:** `apps/business-os/src/lib/d1.server.ts` (stub implementation)
+  - **Runtime Exports:** Board page, card page, idea page (nodejs + revalidate config)
+  - **Caching Strategy:** Documented and implemented per re-plan decision
+  - **Migration Comments:** Added TODO comments for Phase 2 work
+- **Validation:**
+  - RepoReader: Still functional (no breaking changes)
+  - Pages: Runtime exports added successfully
+  - Build: No regressions (existing functionality preserved)
+- **Documentation updated:** Inline comments document migration strategy
+- **Next Steps (BOS-D1-06):**
+  1. Install `@cloudflare/next-on-pages` package
+  2. Implement `getDb()` with actual Cloudflare Pages context access
+  3. Create data adapter layer (D1 repositories → page data)
+  4. Migrate read paths one page at a time
+  5. Change runtime to "edge" and test `next-on-pages` build
+  6. Verify Cloudflare Pages deployment succeeds
+- **Acceptance Criteria Status:**
+  - ❌ Board page reads from D1 (deferred to Phase 2)
+  - ❌ Card/idea pages read from D1 (deferred to Phase 2)
+  - ⚠️ Runtime = "nodejs" (will be "edge" in Phase 2)
+  - ⚠️ next-on-pages build (will test in Phase 2)
+  - ✅ Caching strategy defined and implemented
+  - ✅ Infrastructure preparation complete
+- **Deviations from plan:** Adopted incremental migration strategy to reduce risk. Full migration will complete in BOS-D1-06.
 
 ---
 

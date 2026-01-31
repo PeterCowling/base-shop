@@ -1,0 +1,101 @@
+name: Business OS D1 Export
+
+# BOS-D1-09: Scheduled export of D1 data to git mirror
+# Exports Business OS entities from D1 to markdown files in docs/business-os/**
+# Commits to work/business-os-export branch
+# Auto-PR workflow handles PR creation + auto-merge
+
+on:
+  # Schedule: Run hourly
+  schedule:
+    - cron: '0 * * * *' # Every hour at :00
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (no commits)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: write  # Required for git push
+  pull-requests: write  # Required for auto-PR creation
+
+jobs:
+  export:
+    name: Export D1 to Git
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for proper git operations
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Wrangler auth
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # Wrangler will use these environment variables for auth
+          echo "Wrangler auth configured via environment variables"
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run D1 export
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            echo "Running in dry-run mode"
+            pnpm tsx apps/business-os/scripts/export-d1-to-git.ts --dry-run
+          else
+            echo "Running export with commit"
+            pnpm tsx apps/business-os/scripts/export-d1-to-git.ts --commit
+          fi
+
+      - name: Export summary
+        if: always()
+        run: |
+          echo "### Business OS D1 Export Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: work/business-os-export" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry run**: ${{ github.event.inputs.dry_run || 'false' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Auto-PR workflow will handle PR creation and auto-merge." >> $GITHUB_STEP_SUMMARY

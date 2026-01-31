@@ -81,21 +81,21 @@ export async function POST(request: Request) {
     const actorId = currentUser.id;
 
     // Create queue item
-    const result = await queueWriter.createQueueItem(
+    const result = await queueWriter.createQueueItem({
       action,
       target,
       targetType,
-      currentUser.name,
-      gitAuthor,
-      actorId,
+      initiator: currentUser.name,
+      identity: gitAuthor,
+      actor: actorId,
       content,
-      instructions
-    );
+      instructions,
+    });
 
     if (!result.success) {
       const errorMessage = result.errorKey
         ? t(result.errorKey)
-        : // i18n-exempt -- MVP-E2 Phase 0 API error message [ttl=2026-03-31]
+        : // i18n-exempt -- BOS-33 Phase 0 API error message [ttl=2026-03-31]
           "Failed to create agent queue item";
 
       return NextResponse.json(
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
         action,
         target,
         commitHash: result.commitHash,
-        // i18n-exempt -- MVP-E2 Phase 0 API success message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-33 Phase 0 API success message [ttl=2026-03-31]
         message: `Agent task requested: ${action}`,
       },
       { status: 201 }

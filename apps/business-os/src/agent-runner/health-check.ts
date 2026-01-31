@@ -137,7 +137,7 @@ export class HealthCheck {
       return {
         status: "unhealthy",
         age: -1,
-        // i18n-exempt -- MVP-E3 Phase 0 health check status message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-33 health check status message (non-UI) [ttl=2026-03-31]
         message: "Health file missing",
       };
     }

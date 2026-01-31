@@ -33,6 +33,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  if (!/^[A-Za-z0-9_-]+$/.test(id)) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-33 invalid task id (non-UI) [ttl=2026-03-31]
+      { error: "Invalid task id" },
+      { status: 400 }
+    );
+  }
 
   try {
     const repoRoot = getRepoRoot();
@@ -54,6 +61,7 @@ export async function GET(
     }
 
     // Read and parse run log
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BOS-33 validated repo-internal path [ttl=2026-03-31]
     const logContent = await fs.readFile(runLogPath, "utf-8");
     const parsed = matter(logContent);
 

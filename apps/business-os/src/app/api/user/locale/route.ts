@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const parsed = SetLocaleSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        // i18n-exempt -- MVP-G1 Phase 0 API error message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
         { error: "Invalid locale. Must be 'en' or 'it'.", details: parsed.error.errors },
         { status: 400 }
       );
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       {
         success: true,
         locale,
-        // i18n-exempt -- MVP-G1 Phase 0 API success message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-04 Phase 0 API success message [ttl=2026-03-31]
         message: `Locale set to ${locale}`,
       },
       {
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      // i18n-exempt -- MVP-G1 Phase 0 API error message [ttl=2026-03-31]
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
       { error: "Failed to set locale", details: String(error) },
       { status: 500 }
     );
@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      // i18n-exempt -- MVP-G1 Phase 0 API error message [ttl=2026-03-31]
+      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
       { error: "Failed to get locale", details: String(error) },
       { status: 500 }
     );

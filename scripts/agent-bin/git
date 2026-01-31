@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# This wrapper is intended for agent shells only (see scripts/agents/with-git-guard.sh).
+# It blocks a small set of destructive/history-rewriting commands that have caused
+# accidental rollbacks and lost work.
+
+wrapper_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+real_git=""
+
+IFS=":" read -r -a path_entries <<< "${PATH:-}"
+for dir in "${path_entries[@]}"; do
+  [[ -z "$dir" ]] && continue
+  if [[ "$(cd "$dir" 2>/dev/null && pwd)" == "$wrapper_dir" ]]; then
+    continue
+  fi
+  if [[ -x "${dir}/git" ]]; then
+    real_git="${dir}/git"
+    break
+  fi
+done
+
+if [[ -z "$real_git" ]]; then
+  echo "ERROR: unable to locate real git binary on PATH" >&2
+  exit 127
+fi
+
+deny() {
+  local why="$1"
+  shift
+
+  echo "------------------------------------------------------------------" >&2
+  echo "GIT COMMAND BLOCKED (agent guard)" >&2
+  echo "------------------------------------------------------------------" >&2
+  echo "" >&2
+  echo "Reason: ${why}" >&2
+  echo "" >&2
+  echo "Command:" >&2
+  printf "  git"
+  for arg in "$@"; do
+    printf " %q" "$arg"
+  done
+  echo "" >&2
+  echo "" >&2
+  echo "Safer alternatives:" >&2
+  echo "  - Make a checkpoint commit, then revert if needed" >&2
+  echo "  - Create a new worktree/branch: scripts/git/new-worktree.sh <label>" >&2
+  echo "  - Read: docs/git-safety.md" >&2
+  echo "" >&2
+  exit 1
+}
+
+subcommand="${1:-}"
+
+case "$subcommand" in
+  reset)
+    for arg in "$@"; do
+      case "$arg" in
+        --hard|--soft|--mixed|--merge|--keep)
+          deny "git reset with mode flags rewrites state and can lose work." "$@"
+          ;;
+      esac
+    done
+    ;;
+  clean)
+    has_f="0"
+    has_d="0"
+    for arg in "$@"; do
+      [[ "$arg" == "-f" || "$arg" == "--force" ]] && has_f="1"
+      [[ "$arg" == "-d" ]] && has_d="1"
+      [[ "$arg" == "-fd" || "$arg" == "-df" ]] && { has_f="1"; has_d="1"; }
+    done
+    if [[ "$has_f" == "1" && "$has_d" == "1" ]]; then
+      deny "git clean -fd permanently deletes untracked files." "$@"
+    fi
+    ;;
+  push)
+    for arg in "$@"; do
+      case "$arg" in
+        --force|-f|--force-with-lease)
+          deny "force-push rewrites remote history and can destroy teammates' work." "$@"
+          ;;
+      esac
+    done
+    ;;
+  rebase)
+    deny "rebase rewrites history; use merges and PR squash-merge instead." "$@"
+    ;;
+  commit)
+    for arg in "$@"; do
+      case "$arg" in
+        --amend)
+          deny "amend rewrites history; prefer a new commit and PR squash-merge." "$@"
+          ;;
+      esac
+    done
+    ;;
+  checkout|restore)
+    # Block repo-wide discards ('.' or ':/' patterns). Allow targeted file restores.
+    for arg in "$@"; do
+      case "$arg" in
+        "."|":/"|":/."|":/*")
+          deny "repo-wide checkout/restore discards changes." "$@"
+          ;;
+      esac
+    done
+    ;;
+  stash)
+    if [[ "${2:-}" == "drop" || "${2:-}" == "clear" ]]; then
+      deny "stash drop/clear permanently deletes stashed work." "$@"
+    fi
+    ;;
+esac
+
+exec "$real_git" "$@"

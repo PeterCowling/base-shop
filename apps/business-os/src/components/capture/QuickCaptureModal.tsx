@@ -4,7 +4,7 @@
  * BOS-UX-13
  */
 
-/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/absolute-parent-guard, ds/no-nonlayered-zindex -- BOS-UX-13: Phase 0 quick capture scaffold [ttl=2026-03-31] */
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/absolute-parent-guard, ds/no-nonlayered-zindex, max-lines-per-function -- BOS-UX-13: Phase 0 quick capture scaffold [ttl=2026-03-31] */
 "use client";
 
 import { useState } from "react";
@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@acme/design-system/primitives";
 
+import { getErrorField, getStringField, safeReadJson } from "@/lib/json";
 import type { Priority } from "@/lib/types";
 
 export interface QuickCaptureModalProps {
@@ -88,12 +89,17 @@ export function QuickCaptureModal({
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to create idea");
+        const errorData = await safeReadJson(response);
+        throw new Error(getErrorField(errorData) || "Failed to create idea");
       }
 
-      const result = await response.json();
-      setSubmittedIdeaId(result.ideaId);
+      const result = await safeReadJson(response);
+      const ideaId = getStringField(result, "ideaId");
+      if (!ideaId) {
+        throw new Error("Failed to create idea");
+      }
+
+      setSubmittedIdeaId(ideaId);
       toast.success("Idea created!");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to create idea");

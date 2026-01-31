@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getIdeaById } from "@acme/platform-core/repositories/businessOs.server";
+
 import { RunStatus } from "@/components/agent-runs/RunStatus";
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { CommentThread } from "@/components/comments/CommentThread";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getDb } from "@/lib/d1.server";
-import { getIdeaById } from "@acme/platform-core/repositories/businessOs.server";
 
 import { ConvertToCardButton } from "./ConvertToCardButton";
 import { WorkIdeaButton } from "./WorkIdeaButton";
@@ -30,7 +31,7 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/enforce-layout-primitives, ds/container-widths-only-at, complexity -- BOS-12: Phase 0 scaffold UI */
 // BOS-D1-05 Phase 2: Using D1 repositories (Edge runtime)
 export default async function IdeaPage({ params }: PageProps) {
   const { id } = await params;

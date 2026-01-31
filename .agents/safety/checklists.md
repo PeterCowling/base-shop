@@ -11,6 +11,7 @@ Run through this checklist before every `git commit`:
 - [ ] **No secrets**: Check for accidentally staged `.env`, credentials, API keys
 - [ ] **No debug code**: Remove `console.log`, `debugger`, commented-out code
 - [ ] **Correct branch**: Verify you're on `work/*`, not `main`
+- [ ] **Area claimed**: `scripts/git/claim.sh <path>` to avoid parallel conflicts
 - [ ] **Changes reviewed**: `git diff --staged` shows only intended changes
 - [ ] **Commit message**: Follows conventional format, explains "why"
 
@@ -22,25 +23,30 @@ pnpm typecheck && pnpm lint && git diff --staged
 
 ---
 
-## Before Destructive Command
+## Before Destructive / History-Rewriting Command
 
-**STOP** if you're about to run any of these:
+**STOP. Agents must not run these commands in Base-Shop.** If one seems necessary, capture diagnostics and ask for human guidance.
 
-| Command | Required Steps |
-|---------|----------------|
-| `git reset --hard` | 1. Run `git stash` first 2. List what will be lost 3. Get explicit user approval |
-| `git push --force` | 1. Use `--force-with-lease` instead 2. Confirm no one else pushed 3. Get explicit user approval |
-| `git clean -fd` | 1. Run `git clean -n` first 2. Review files to be deleted 3. Get explicit user approval |
-| `rm -rf <dir>` | 1. Verify exact path 2. List contents first 3. Get explicit user approval |
+| Command | Agent Action |
+|---------|--------------|
+| `git reset --hard` | STOP. Do not run. Ask for help. |
+| `git clean -fd` | STOP. Do not run. Ask for help. |
+| `git push --force` / `-f` / `--force-with-lease` | STOP. Do not run. Ask for help. |
+| `git checkout -- .` / `git restore .` | STOP. Do not run. Ask for help. |
+| `git stash drop` / `git stash clear` | STOP. Do not run. Ask for help. |
+| `git rebase` (incl. `-i`) / `git commit --amend` | STOP. Do not run. Ask for help. |
+| `rm -rf <dir>` | STOP. Do not run. Ask for help. |
 
-### Approval Script
+### Hand-off Script
 ```markdown
-"This operation would run `[command]` which [danger].
+The command you’re asking for (`[command]`) is destructive or rewrites history.
+That’s a common cause of accidental rollbacks / lost work, so I won’t run it as an agent.
 
-Files/changes that will be affected:
-[list them]
+Here are safer alternatives:
+- [safe alternative 1]
+- [safe alternative 2]
 
-This is irreversible. Do you want to proceed? (yes/no)"
+If you still want to proceed, please follow `docs/git-safety.md` and run it yourself.
 ```
 
 ---
@@ -51,6 +57,7 @@ Before starting multi-file changes:
 
 - [ ] **Plan exists**: Create plan in `docs/plans/` first
 - [ ] **Worktree isolated**: `scripts/git/new-worktree.sh <label>` for parallel work
+- [ ] **Work area claimed**: `scripts/git/claim.sh <path>` so parallel agents don’t collide
 - [ ] **Baseline captured**: All tests pass before changes
 - [ ] **Scope defined**: List of files to touch is explicit
 - [ ] **Incremental approach**: Break into atomic commits
@@ -68,11 +75,11 @@ Before starting multi-file changes:
 
 - [ ] **All commits pushed**: `git push origin HEAD`
 - [ ] **CI passes**: Check GitHub Actions status
-- [ ] **Branch up to date**: `git pull --rebase origin main`
+- [ ] **Branch synced (optional)**: `git fetch origin --prune` (avoid rebases; merge `origin/main` only if needed)
 - [ ] **PR title clear**: Summarizes the change
 - [ ] **Description complete**: Explains what and why
 - [ ] **Tests added**: New functionality has test coverage
-- [ ] **No WIP commits**: Squash or clean up history if needed
+- [ ] **No history rewrites**: Don’t `rebase`/`--amend`/force-push; PR squash-merge keeps history tidy
 
 ---
 

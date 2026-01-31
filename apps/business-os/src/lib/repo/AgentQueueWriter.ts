@@ -1,5 +1,5 @@
-import * as fs from "fs/promises";
-import * as path from "path";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 import matter from "gray-matter";
 import simpleGit, { type SimpleGit } from "simple-git";
@@ -11,6 +11,7 @@ import {
   getGitAuthorOptions,
 } from "../commit-identity";
 import type { WriteResult } from "../repo-writer";
+
 import type { RepoLock } from "./RepoLock";
 
 export type AgentAction = "work-idea" | "break-into-tasks" | "draft-plan" | "custom";
@@ -29,6 +30,17 @@ export interface AgentQueueItemFrontmatter {
 export interface AgentQueueItem extends AgentQueueItemFrontmatter {
   content: string;
   queueId: string;
+}
+
+export interface CreateAgentQueueItemParams {
+  action: AgentAction;
+  target: string;
+  targetType: "card" | "idea";
+  initiator: string;
+  identity: CommitIdentity;
+  actor: string;
+  content?: string;
+  instructions?: string;
 }
 
 /**
@@ -52,15 +64,19 @@ export class AgentQueueWriter {
    * Stores in docs/business-os/agent-queue/{queueId}.md
    */
   async createQueueItem(
-    action: AgentAction,
-    target: string,
-    targetType: "card" | "idea",
-    initiator: string,
-    identity: CommitIdentity,
-    actor: string,
-    content?: string,
-    instructions?: string
+    params: CreateAgentQueueItemParams
   ): Promise<WriteResult & { queueId?: string }> {
+    const {
+      action,
+      target,
+      targetType,
+      initiator,
+      identity,
+      actor,
+      content,
+      instructions,
+    } = params;
+
     // Generate unique queue ID with timestamp + random suffix
     const timestamp = Date.now();
     const randomSuffix = Math.random().toString(36).substring(2, 8);
@@ -81,7 +97,7 @@ export class AgentQueueWriter {
       try {
         // Ensure agent-queue directory exists
         const queueDir = path.join(this.worktreePath, "docs/business-os/agent-queue");
-        await fs.mkdir(queueDir, { recursive: true });
+        await mkdir(queueDir, { recursive: true });
 
         // Create frontmatter
         const frontmatter: AgentQueueItemFrontmatter = {
@@ -102,7 +118,7 @@ export class AgentQueueWriter {
         );
 
         // Write file
-        await fs.writeFile(absolutePath, markdownContent, "utf-8");
+        await writeFile(absolutePath, markdownContent, "utf-8");
 
         // Git add and commit (MVP-B3: Audit attribution)
         await this.git.add(relativePath);

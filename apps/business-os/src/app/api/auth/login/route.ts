@@ -10,16 +10,26 @@
 import { NextResponse } from "next/server";
 
 import { getSession, validateCredentials } from "@/lib/auth";
+import { isRecord } from "@/lib/json";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { username, passcode } = body;
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      body = null;
+    }
+
+    const username =
+      isRecord(body) && typeof body.username === "string" ? body.username : "";
+    const passcode =
+      isRecord(body) && typeof body.passcode === "string" ? body.passcode : "";
 
     // Validate input
-    if (!username || !passcode) {
+    if (!username.trim() || !passcode.trim()) {
       return NextResponse.json(
         // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
         { error: "Username and passcode are required" },

@@ -54,14 +54,15 @@ pnpm typecheck && pnpm lint
 
 - Work on `work/*` branches only — never commit to `main`
 - For parallel work: **one worktree per agent/human** (`scripts/git/new-worktree.sh <label>`)
+- For parallel work: **claim your work area** to avoid hard-to-resolve conflicts (`scripts/git/claim.sh <path>`)
 - **Commit every 30 minutes** or after completing any significant change
 - **Push every 2 hours** (or every 3 commits) — GitHub is your backup
 
-**Destructive commands:**
-- **Agents:** MUST NOT run `git reset --hard`, `git clean -fd`, `git push --force`
-- **Humans:** Avoid; if required, follow procedure in [docs/git-safety.md](docs/git-safety.md)
+**Destructive / history-rewriting commands (agents: never):**
+- `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
 
-Full guide: [docs/git-safety.md](docs/git-safety.md)
+If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
 ## Testing Rules
 

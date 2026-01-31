@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, FormField, Input, Textarea } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
+import { getErrorField, getStringField, safeReadJson } from "@/lib/json";
 import type { Business } from "@/lib/types";
 
 import { type CreateIdeaFormData, createIdeaSchema } from "./schema";
@@ -68,16 +69,20 @@ export function IdeaForm({ businesses }: IdeaFormProps) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await safeReadJson(response);
         throw new Error(
-          errorData.error || t("businessOs.ideaForm.errors.createFailed")
+          getErrorField(errorData) || t("businessOs.ideaForm.errors.createFailed")
         );
       }
 
-      const result = await response.json();
+      const result = await safeReadJson(response);
+      const ideaId = getStringField(result, "ideaId");
+      if (!ideaId) {
+        throw new Error(t("businessOs.ideaForm.errors.createFailed"));
+      }
 
       // Redirect to the created idea
-      router.push(`/ideas/${result.ideaId}`);
+      router.push(`/ideas/${ideaId}`);
     } catch (err) {
       setError(
         err instanceof Error

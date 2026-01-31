@@ -9,6 +9,13 @@ import { Button, FormField, Input, Textarea } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
 import { ConflictDialog } from "@/components/ConflictDialog";
+import {
+  getErrorField,
+  getRecordField,
+  getStringField,
+  isRecord,
+  safeReadJson,
+} from "@/lib/json";
 import type { Business, Card, Lane, Priority } from "@/lib/types";
 
 import {
@@ -22,6 +29,49 @@ interface CardEditorFormProps {
   existingCard?: Card;
   mode: "create" | "edit";
   baseFileSha?: string;
+}
+
+const LANE_SET = {
+  Inbox: true,
+  "Fact-finding": true,
+  Planned: true,
+  "In progress": true,
+  Blocked: true,
+  Done: true,
+  Reflected: true,
+} satisfies Record<Lane, true>;
+
+const PRIORITY_SET = {
+  P0: true,
+  P1: true,
+  P2: true,
+  P3: true,
+  P4: true,
+  P5: true,
+} satisfies Record<Priority, true>;
+
+function isLane(value: unknown): value is Lane {
+  return typeof value === "string" && value in LANE_SET;
+}
+
+function isPriority(value: unknown): value is Priority {
+  return typeof value === "string" && value in PRIORITY_SET;
+}
+
+function isCard(value: unknown): value is Card {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return (
+    value.Type === "Card" &&
+    typeof value.ID === "string" &&
+    isLane(value.Lane) &&
+    isPriority(value.Priority) &&
+    typeof value.Owner === "string" &&
+    typeof value.content === "string" &&
+    typeof value.filePath === "string"
+  );
 }
 
 // Extract title from existing card content (first # heading)
@@ -388,20 +438,30 @@ export function CardEditorForm({
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorData = await safeReadJson(response);
 
-        if (!isCreate && response.status === 409 && errorData?.conflict?.currentCard) {
-          setConflictCard(errorData.conflict.currentCard as Card);
-          // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
-          throw new Error(errorData.error || "This card changed since you loaded it.");
+        if (!isCreate && response.status === 409) {
+          const conflict = getRecordField(errorData, "conflict");
+          const currentCard = conflict ? conflict["currentCard"] : null;
+          if (isCard(currentCard)) {
+            setConflictCard(currentCard);
+            // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
+            throw new Error(
+              getErrorField(errorData) || "This card changed since you loaded it."
+            );
+          }
         }
 
-        throw new Error(errorData?.error || t(submitErrorKey));
+        throw new Error(getErrorField(errorData) || t(submitErrorKey));
       }
 
       if (isCreate) {
-        const result = await response.json();
-        router.push(`/cards/${result.cardId}`);
+        const result = await safeReadJson(response);
+        const cardId = getStringField(result, "cardId");
+        if (!cardId) {
+          throw new Error(t(submitErrorKey));
+        }
+        router.push(`/cards/${cardId}`);
       } else {
         router.push(`/cards/${existingCard!.ID}`);
       }

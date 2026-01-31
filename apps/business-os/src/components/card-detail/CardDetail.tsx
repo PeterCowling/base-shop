@@ -1,13 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { User } from "@/lib/current-user";
 import { canEditCard } from "@/lib/current-user";
 import type { CommitHistoryEntry } from "@/lib/git-history";
+import { getErrorField, getStringField, safeReadJson } from "@/lib/json";
 import type { Business, Card, StageDoc } from "@/lib/types";
 
 import { CardHeader } from "./CardHeader";
@@ -30,7 +31,7 @@ interface CardDetailProps {
   githubUrl?: string;
 }
 
-/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size, max-lines-per-function, complexity -- BOS-12: Phase 0 scaffold UI */
 export function CardDetail({
   card,
   stageDocs,
@@ -62,17 +63,17 @@ export function CardDetail({
         body: JSON.stringify({ cardId: card.ID }),
       });
 
-      const data = await response.json();
+      const data = await safeReadJson(response);
 
       if (!response.ok) {
-        setActionError(data.error || "Failed to claim card");
+        setActionError(getErrorField(data) || "Failed to claim card");
         setIsClaimingOrAccepting(false);
         return;
       }
 
       // Success - refresh page to show updated card
       router.refresh();
-    } catch (error) {
+    } catch {
       setActionError("An unexpected error occurred");
       setIsClaimingOrAccepting(false);
     }
@@ -89,17 +90,17 @@ export function CardDetail({
         body: JSON.stringify({ cardId: card.ID }),
       });
 
-      const data = await response.json();
+      const data = await safeReadJson(response);
 
       if (!response.ok) {
-        setActionError(data.error || "Failed to accept card");
+        setActionError(getErrorField(data) || "Failed to accept card");
         setIsClaimingOrAccepting(false);
         return;
       }
 
       // Success - refresh page to show updated card
       router.refresh();
-    } catch (error) {
+    } catch {
       setActionError("An unexpected error occurred");
       setIsClaimingOrAccepting(false);
     }
@@ -116,17 +117,17 @@ export function CardDetail({
         body: JSON.stringify({ cardId: card.ID }),
       });
 
-      const data = await response.json();
+      const data = await safeReadJson(response);
 
       if (!response.ok) {
-        setActionError(data.error || "Failed to mark card complete");
+        setActionError(getErrorField(data) || "Failed to mark card complete");
         setIsClaimingOrAccepting(false);
         return;
       }
 
       // Success - refresh page to show updated card
       router.refresh();
-    } catch (error) {
+    } catch {
       setActionError("An unexpected error occurred");
       setIsClaimingOrAccepting(false);
     }
@@ -148,18 +149,18 @@ export function CardDetail({
         }),
       });
 
-      const data = await response.json();
+      const data = await safeReadJson(response);
 
       if (!response.ok) {
-        setActionError(data.error || "Failed to request agent work");
+        setActionError(getErrorField(data) || "Failed to request agent work");
         setIsRequestingAgent(false);
         return;
       }
 
       // Success - show confirmation message
-      setAgentSuccess(data.message || "Agent task queued successfully");
+      setAgentSuccess(getStringField(data, "message") || "Agent task queued successfully");
       setIsRequestingAgent(false);
-    } catch (error) {
+    } catch {
       setActionError("An unexpected error occurred");
       setIsRequestingAgent(false);
     }

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { isRecord, safeReadJson } from "@/lib/json";
+
 interface RunStatusData {
   taskId: string;
   status: "in-progress" | "complete" | "failed";
@@ -18,6 +20,24 @@ interface RunStatusData {
 interface RunStatusProps {
   entityId: string;
   taskId?: string;
+}
+
+function isRunStatus(value: unknown): value is RunStatusData {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  const status = value.status;
+  const isValidStatus =
+    status === "in-progress" || status === "complete" || status === "failed";
+
+  return (
+    typeof value.taskId === "string" &&
+    isValidStatus &&
+    typeof value.action === "string" &&
+    typeof value.target === "string" &&
+    typeof value.started === "string"
+  );
 }
 
 /* eslint-disable ds/no-hardcoded-copy -- BOS-33: Phase 0 agent status UI */
@@ -47,7 +67,11 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
           throw new Error("Failed to fetch run status");
         }
 
-        const data = await response.json();
+        const data = await safeReadJson(response);
+        if (!isRunStatus(data)) {
+          throw new Error("Invalid run status response");
+        }
+
         setRunStatus(data);
         setError(null);
 

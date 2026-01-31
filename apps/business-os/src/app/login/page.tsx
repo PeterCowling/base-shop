@@ -12,6 +12,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getErrorField, safeReadJson } from "@/lib/json";
+
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -31,10 +33,10 @@ export default function LoginPage() {
         body: JSON.stringify({ username, passcode }),
       });
 
-      const data = await response.json();
+      const data = await safeReadJson(response);
 
       if (!response.ok) {
-        setError(data.error || "Login failed");
+        setError(getErrorField(data) || "Login failed");
         setIsLoading(false);
         return;
       }

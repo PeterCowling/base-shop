@@ -96,5 +96,8 @@ packages/types/src/**/*.d.ts.map
 .agents/status/*
 !.agents/status/.gitkeep
 
+# Working-tree backup/restore reports (ephemeral; should not be committed)
+.agents/pre_rollback_reports/
+
 # VS Code MCP port sentinel (ephemeral)
 .vscode/.mcp-port

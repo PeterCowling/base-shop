@@ -10,7 +10,7 @@ import { GUIDES_INDEX } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
 import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { getGuideManifestOverrideFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
@@ -102,7 +102,7 @@ export default async function HowToGetHerePage({ params }: Props) {
   }
 
   // Load manifest overrides (includes audit results)
-  const serverOverrides = getGuideManifestOverrideFromFs(guideKey);
+  const serverOverrides = loadGuideManifestOverridesFromFs();
 
-  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides ?? undefined} />;
+  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides} />;
 }

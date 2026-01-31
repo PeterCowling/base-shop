@@ -2,7 +2,6 @@ import { MyWorkView } from "@/components/my-work/MyWorkView";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { createRepoReader } from "@/lib/repo-reader";
-import type { Card } from "@/lib/types";
 
 /**
  * /me route - "My Work" view

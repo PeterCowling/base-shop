@@ -39,10 +39,22 @@
       "path": "../design-system"
     },
     {
+      "path": "../i18n"
+    },
+    {
       "path": "../page-builder-core"
     },
     {
+      "path": "../platform-core"
+    },
+    {
+      "path": "../telemetry"
+    },
+    {
       "path": "../types"
+    },
+    {
+      "path": "../ui"
     }
   ],
   "include": ["src", "src/**/*.json"],

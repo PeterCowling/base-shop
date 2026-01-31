@@ -51,16 +51,17 @@ export async function queueTranslation(
   );
 
   // Create translation queue item
-  const result = await queueWriter.createQueueItem(
-    "custom", // Use "custom" action type for translation
-    options.targetId,
-    options.targetType,
-    options.initiator,
-    options.identity,
-    options.actor,
-    `Translate ${options.targetType} ${options.targetId} to Italian`,
-    "translate-to-it" // Custom instruction for agent
-  );
+  const result = await queueWriter.createQueueItem({
+    action: "custom", // Use "custom" action type for translation
+    target: options.targetId,
+    targetType: options.targetType,
+    initiator: options.initiator,
+    identity: options.identity,
+    actor: options.actor,
+    // i18n-exempt -- BOS-04 translation task content (non-UI) [ttl=2026-03-31]
+    content: `Translate ${options.targetType} ${options.targetId} to Italian`,
+    instructions: "translate-to-it", // Custom instruction for agent
+  });
 
   return result;
 }

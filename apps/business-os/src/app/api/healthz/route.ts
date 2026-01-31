@@ -41,6 +41,7 @@ async function getLastAgentRunTimestamp(
 ): Promise<string | null> {
   try {
     const runsDir = path.join(repoRoot, "docs/business-os/agent-runs");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BOS-04 repo-internal scan [ttl=2026-03-31]
     const entries = await fs.readdir(runsDir, { withFileTypes: true });
 
     // Find all run directories
@@ -56,6 +57,7 @@ async function getLastAgentRunTimestamp(
     for (const runDir of runDirs) {
       const logFile = path.join(runsDir, runDir.name, "run.log.md");
       try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- BOS-04 repo-internal scan [ttl=2026-03-31]
         const stats = await fs.stat(logFile);
         const mtime = stats.mtime.getTime();
 

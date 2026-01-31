@@ -72,10 +72,10 @@ If conflicts are too complex:
    git merge --abort
    ```
 
-2. **Try rebasing instead** (often cleaner):
+2. **Don’t “fix” this by rewriting history.** Prefer a plain merge (or ask for human guidance):
    ```bash
-   git rebase <target-branch>
-   # Resolve conflicts one commit at a time
+   git fetch origin --prune
+   git merge <target-branch>
    ```
 
 ### Scenario 4: Wrong Commits on Branch
@@ -93,11 +93,13 @@ If commits ended up on wrong branch:
    git cherry-pick <commit-hash>
    ```
 
-3. **Remove from wrong branch** (soft reset keeps changes):
-   ```bash
-   git checkout wrong-branch
-   git reset --soft HEAD~1
-   ```
+3. **Clean up the wrong branch safely**:
+   - Prefer abandoning the wrong branch and continuing on the correct one, or
+   - Revert the commits on the wrong branch:
+     ```bash
+     git checkout wrong-branch
+     git revert <commit-hash>
+     ```
 
 ## Safe Commands (Always OK)
 
@@ -111,16 +113,19 @@ If commits ended up on wrong branch:
 | `git branch -a` | List all branches |
 | `git diff` | See uncommitted changes |
 
-## Dangerous Commands (STOP and Ask)
+## Dangerous Commands (Agents: Never)
 
-Never run these without explicit user approval:
+Never run these as an agent in Base-Shop. If one seems necessary, STOP and ask for human guidance.
 
 | Command | Danger |
 |---------|--------|
 | `git reset --hard` | Loses uncommitted work |
 | `git clean -fd` | Deletes untracked files |
-| `git push --force` | Overwrites remote history |
-| `git rebase -i` on shared branches | Rewrites shared history |
+| `git push --force` / `-f` / `--force-with-lease` | Overwrites remote history |
+| `git checkout -- .` / `git restore .` | Discards local modifications |
+| `git stash drop` / `git stash clear` | Permanently deletes stashed work |
+| `git rebase` (incl. `-i`) | Rewrites history (often leads to force-push pressure) |
+| `git commit --amend` | Rewrites the last commit (dangerous after push) |
 
 ## Common Pitfalls
 

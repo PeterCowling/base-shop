@@ -15,12 +15,12 @@ interface MyWorkViewProps {
   currentUser: User;
 }
 
-/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/enforce-layout-primitives -- BOS-12: Phase 0 scaffold UI */
 export function MyWorkView({
   assignedToMe,
   waitingAcceptance,
   dueSoon,
-  businesses,
+  businesses: _businesses,
   currentUser,
 }: MyWorkViewProps) {
   const breadcrumbItems = [
@@ -70,7 +70,8 @@ export function MyWorkView({
                 Waiting Acceptance
               </h2>
               <p className="text-sm text-gray-600">
-                Cards assigned to you in Inbox (click "Accept & Start" to begin)
+                Cards assigned to you in Inbox (click{" "}
+                <span className="font-mono">Accept &amp; Start</span> to begin)
               </p>
             </div>
             {waitingAcceptance.length === 0 ? (

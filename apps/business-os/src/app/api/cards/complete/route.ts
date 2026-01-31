@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     // Check if user can edit card (owner or admin)
     if (!canEditCard(currentUser, card)) {
       return NextResponse.json(
-        // i18n-exempt -- MVP-D2 Phase 0 API error message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
         { error: `Only the card owner (${card.Owner || "unassigned"}) or admins can mark this card complete` },
         { status: 403 }
       );
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
     // Check if card is already complete
     if (card.Lane === "Done") {
       return NextResponse.json(
-        // i18n-exempt -- MVP-D2 Phase 0 API error message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
         { error: "Card is already marked as complete" },
         { status: 400 }
       );

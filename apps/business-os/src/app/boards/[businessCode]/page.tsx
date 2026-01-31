@@ -1,14 +1,17 @@
 import { notFound } from "next/navigation";
 
+import {
+  listCardsForBoard as listCardsFromD1,
+  listInboxIdeas,
+} from "@acme/platform-core/repositories/businessOs.server";
+
 import { BoardView } from "@/components/board/BoardView";
 import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
 import { getCurrentUserServer } from "@/lib/current-user";
 import { getDb } from "@/lib/d1.server";
 import type { Business, Lane } from "@/lib/types";
-import {
-  listCardsForBoard as listCardsFromD1,
-  listInboxIdeas,
-} from "@acme/platform-core/repositories/businessOs.server";
+
+/* eslint-disable ds/no-hardcoded-copy -- BOS-04 (BOS-D1-08) temporary hard-coded business catalog scaffold [ttl=2026-03-31] */
 
 // BOS-D1-05 Phase 2: Edge runtime with D1 repositories
 export const runtime = "edge";

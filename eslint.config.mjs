@@ -235,6 +235,16 @@ export default [
       "security/detect-non-literal-fs-filename": "off",
     },
   },
+  /* ▸ Business OS agent runner + repo utilities: allow dynamic filesystem paths */
+  {
+    files: [
+      "apps/business-os/src/agent-runner/**/*.{ts,tsx,js,jsx}",
+      "apps/business-os/src/lib/repo/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
 
   /* ▸ Your repo-wide TypeScript rules (NO plugins key!) */
   {

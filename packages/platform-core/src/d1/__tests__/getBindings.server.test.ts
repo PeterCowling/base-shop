@@ -5,13 +5,13 @@
  * Uses fake globalThis bindings (no Cloudflare runtime required).
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
+import { afterEach,beforeEach, describe, expect, it } from "@jest/globals";
 
 import {
+  type BusinessOsEnv,
   getBusinessOsDb,
   getD1FromGlobalThis,
   hasBusinessOsDb,
-  type BusinessOsEnv,
 } from "../getBindings.server";
 import type { D1Database, D1PreparedStatement } from "../types";
 

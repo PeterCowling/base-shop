@@ -5,25 +5,25 @@
  * Uses mocked D1Database (no Cloudflare runtime required).
  */
 
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect,it } from "@jest/globals";
 
 import type { D1Database, D1PreparedStatement } from "../../d1/types";
-import {
-  listInboxIdeas,
-  getIdeaById,
-  upsertIdea,
-  type Idea,
-} from "../businessOsIdeas.server";
-import {
-  listStageDocsForCard,
-  getLatestStageDoc,
-  upsertStageDoc,
-  type StageDoc,
-} from "../businessOsStageDocs.server";
 import {
   appendAuditEntry,
   listAuditEntries,
 } from "../businessOsAudit.server";
+import {
+  getIdeaById,
+  type Idea,
+  listInboxIdeas,
+  upsertIdea,
+} from "../businessOsIdeas.server";
+import {
+  getLatestStageDoc,
+  listStageDocsForCard,
+  type StageDoc,
+  upsertStageDoc,
+} from "../businessOsStageDocs.server";
 
 // ============================================================================
 // Simple Mock D1Database

@@ -4,17 +4,17 @@
  * Unit tests using mocked D1Database (no Cloudflare runtime required).
  */
 
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { beforeEach,describe, expect, it } from "@jest/globals";
 
 import type { D1Database, D1PreparedStatement } from "../../d1/types";
 import {
-  listCardsForBoard,
-  getCardById,
-  upsertCard,
-  moveCardToLane,
-  getCardsVersion,
   type Card,
   type CardRow,
+  getCardById,
+  getCardsVersion,
+  listCardsForBoard,
+  moveCardToLane,
+  upsertCard,
 } from "../businessOsCards.server";
 
 // ============================================================================

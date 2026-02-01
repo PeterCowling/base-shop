@@ -1276,6 +1276,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.2.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1315,6 +1318,16 @@ importers:
       sweetalert2:
         specifier: ^11.22.2
         version: 11.26.17
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.8
+        version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
+      '@types/react-transition-group':
+        specifier: ^4.4.12
+        version: 4.4.12(@types/react@19.1.8)
 
   apps/skylar:
     dependencies:
@@ -7042,6 +7055,11 @@ packages:
 
   '@types/react-reconciler@0.28.9':
     resolution: {integrity: sha512-HHM3nxyUZ3zAylX8ZEyrDNd2XZOnQ0D5XfunJF5FLQnZbHHYq4UWvW1QfelQNXv1ICNkwYhfxjwfnqivYB6bFg==}
+    peerDependencies:
+      '@types/react': '*'
+
+  '@types/react-transition-group@4.4.12':
+    resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
     peerDependencies:
       '@types/react': '*'
 
@@ -21259,6 +21277,10 @@ snapshots:
       '@types/react': 19.1.8
 
   '@types/react-reconciler@0.28.9(@types/react@19.1.8)':
+    dependencies:
+      '@types/react': 19.1.8
+
+  '@types/react-transition-group@4.4.12(@types/react@19.1.8)':
     dependencies:
       '@types/react': 19.1.8
 

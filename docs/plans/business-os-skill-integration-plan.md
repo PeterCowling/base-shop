@@ -131,7 +131,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Complete | BOS-103 |
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Complete | BOS-106 |
 | BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Complete | BOS-103 |
-| BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Pending | BOS-108 |
+| BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Complete | BOS-108 |
 | BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Pending | BOS-104, BOS-106, BOS-108 |
 | BOS-111 | INVESTIGATE | Validate IDAllocator integration for card creation | 80% | S | Complete | - |
 
@@ -466,6 +466,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-109: Add lane transition to Done after all tasks complete
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/build-feature/SKILL.md`
 - **Depends on:** BOS-108
 - **Confidence:** 82%
@@ -473,11 +474,11 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 82% - Aligns with lane lifecycle
   - Impact: 80% - Only affects completion message and card state
 - **Acceptance:**
-  - When all eligible tasks are complete, skill proposes lane transition
-  - Proposal: `In progress -> Done`
-  - Evidence cited: all tasks marked complete, tests passing, build stage doc updated
-  - Skill instructions reference `/propose-lane-move` for formal proposal
-  - Alternative: Inline proposal (set `Proposed-Lane: Done` in card frontmatter)
+  - [x] When all eligible tasks are complete, skill proposes lane transition
+  - [x] Proposal: `In progress -> Done`
+  - [x] Evidence cited: all tasks marked complete, tests passing, build stage doc updated
+  - [x] Skill instructions reference `/propose-lane-move` for formal proposal
+  - [x] Alternative: Inline proposal (set `Proposed-Lane: Done` in card frontmatter)
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by completing all tasks with Card-ID
@@ -485,6 +486,11 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Tests run: N/A (S-effort)
   - Test stubs written: N/A
   - Unexpected findings: None
+- **Implementation notes (2026-02-02):**
+  - Added Step 4 to Business OS Integration section
+  - Two options: /propose-lane-move (recommended) or inline Proposed-Lane frontmatter
+  - Evidence requirements documented: all tasks complete, tests pass, docs updated
+  - Guard conditions: do NOT propose if tasks blocked or tests failing
 - **Rollout / rollback:**
   - Rollout: Direct commit; additive step in skill completion
   - Rollback: Remove the lane proposal step

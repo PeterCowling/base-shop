@@ -402,8 +402,47 @@ After updating the plan, check if all IMPLEMENT tasks are complete:
 ```bash
 # If all tasks in plan are marked Complete:
 # - Update build stage doc transition criteria (all checkboxes)
-# - Suggest lane transition to Done (see BOS-109)
+# - Propose lane transition to Done (Step 4)
 ```
+
+#### Step 4: Propose Lane Transition (All Tasks Complete)
+
+When all eligible IMPLEMENT tasks are complete:
+
+**Option A: Use /propose-lane-move (Recommended)**
+
+Run `/propose-lane-move` with evidence:
+```
+/propose-lane-move CARD-ID
+- Current Lane: In progress
+- Proposed Lane: Done
+- Evidence:
+  - All IMPLEMENT tasks marked Complete in plan
+  - Build stage doc shows all tasks complete with commit hashes
+  - Validation: typecheck PASS, lint PASS, tests PASS
+  - Documentation updated per task requirements
+```
+
+**Option B: Inline Proposal (Faster)**
+
+Update card frontmatter directly:
+```yaml
+# In card's .user.md and .agent.md frontmatter:
+Proposed-Lane: Done
+```
+
+This signals to the card owner (Pete in Phase 0) that the card is ready for review and lane transition.
+
+**Evidence Requirements for Done:**
+- All IMPLEMENT tasks complete with commits
+- All tests passing
+- Documentation updated
+- Build stage doc transition criteria all checked
+
+**Do NOT propose Done if:**
+- Some tasks are blocked or pending
+- Tests are failing
+- DECISION tasks remain unresolved
 
 ### Modified Build Loop (Steps 6-7)
 

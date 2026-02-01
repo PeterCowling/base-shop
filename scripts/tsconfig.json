@@ -19,8 +19,8 @@
     "target": "ES2022",
     "moduleResolution": "bundler",
 
-    /* ───── Node typings only ───── */
-    "types": ["node"],
+    /* ───── Node typings + test framework ───── */
+    "types": ["node", "jest"],
 
     /* ───── workspace package resolution ───── */
     "paths": {

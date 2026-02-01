@@ -1,10 +1,5 @@
 name: Deploy Brikette
 
-env:
-  # Allow repo/environment configuration to override the Cloudflare Pages project
-  # name without editing this workflow.
-  BRIKETTE_PAGES_PROJECT: ${{ vars.BRIKETTE_PAGES_PROJECT != '' && vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
-
 on:
   push:
     branches:
@@ -54,10 +49,10 @@ jobs:
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec next-on-pages deploy --project-name ${{ env.BRIKETTE_PAGES_PROJECT }} --branch staging
-      project-name: ${{ env.BRIKETTE_PAGES_PROJECT }}
+        pnpm exec next-on-pages deploy --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch staging
+      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "staging"
-      environment-url: ${{ format('https://staging.{0}.pages.dev', env.BRIKETTE_PAGES_PROJECT) }}
+      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette') }}
       healthcheck-args: "--staging"
     secrets: inherit
 
@@ -70,8 +65,8 @@ jobs:
       build-cmd: pnpm --filter @apps/brikette... build
       deploy-cmd: >
         cd apps/brikette &&
-        pnpm exec next-on-pages deploy --project-name ${{ env.BRIKETTE_PAGES_PROJECT }} --branch main
-      project-name: ${{ env.BRIKETTE_PAGES_PROJECT }}
+        pnpm exec next-on-pages deploy --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }} --branch main
+      project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette' }}
       environment-name: "production"
       # Set this once the custom domain is attached to the Pages project.
       environment-url: "https://www.hostel-positano.com"

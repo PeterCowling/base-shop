@@ -124,7 +124,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on |
 |---|---|---|---:|---:|---|---|
 | BOS-101 | IMPLEMENT | Add Business OS frontmatter schema to plan docs | 90% | S | Complete | - |
-| BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Pending | BOS-101 |
+| BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Pending | BOS-101 |
 | BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Pending | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Pending | BOS-102 |
@@ -178,6 +178,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-102: Create card creation helper module
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/_shared/` (new directory), `.claude/skills/work-idea/SKILL.md` (reference)
 - **Depends on:** BOS-101
 - **Confidence:** 85%
@@ -185,10 +186,10 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 85% - Shared module approach aligns with DRY principles
   - Impact: 80% - New module; `/work-idea` can reference it but is not required to change
 - **Acceptance:**
-  - Shared helper documented in `.claude/skills/_shared/card-operations.md`
-  - Helper describes: card file structure, frontmatter requirements, ID allocation pattern
-  - Helper includes: step-by-step instructions for card creation
-  - Helper references `IDAllocator` for ID generation
+  - [x] Shared helper documented in `.claude/skills/_shared/card-operations.md`
+  - [x] Helper describes: card file structure, frontmatter requirements, ID allocation pattern
+  - [x] Helper includes: step-by-step instructions for card creation
+  - [x] Helper uses scan-based ID allocation (per BOS-111 findings)
 - **Test plan:**
   - Add/Update: N/A (skill instruction documentation)
   - Run: Manual validation that instructions are complete and correct
@@ -203,9 +204,14 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Rollback: Delete file
 - **Documentation impact:**
   - Create: `.claude/skills/_shared/card-operations.md`
+- **Implementation notes (2026-02-02):**
+  - Created `.claude/skills/_shared/` directory
+  - Created comprehensive card-operations.md helper (250+ lines)
+  - Used scan-based ID allocation (per BOS-111 findings) instead of IDAllocator
+  - Documented: ID format, allocation algorithm, file structure, templates, idempotency, integration points
 - **Notes / references:**
   - Pattern source: `.claude/skills/work-idea/SKILL.md` lines 188-254
-  - ID allocation: `apps/business-os/src/lib/repo/IDAllocator.ts`
+  - ID allocation: Scan-based (BOS-111 found IDAllocator format mismatch)
 
 ---
 

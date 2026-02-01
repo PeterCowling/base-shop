@@ -1,4 +1,5 @@
 "use client";
+// Force rebuild to ensure useCurrency export is included in dist
 
 import {
   createContext,

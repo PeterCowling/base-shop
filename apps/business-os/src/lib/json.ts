@@ -36,3 +36,8 @@ export async function safeReadJson(response: Response): Promise<unknown> {
   }
 }
 
+// Backwards-compatible aliases (main branch usage)
+export { getStringField as getStringProp };
+export { getRecordField as getRecordProp };
+export { safeReadJson as readJsonSafely };
+

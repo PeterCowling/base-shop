@@ -3,6 +3,7 @@
     "title": "Laurito Beach guide",
     "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "linkLabel": "Laurito Beach guide",
   "intro": [
     "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
@@ -77,20 +78,46 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "Zatoczka Laurito Beach z klubami plażowymi wzdłuż brzegu",
-      "caption": "Zatoczka Laurito pod klifami jest spokojniejsza i cichsza niż główna plaża."
+      "caption": "Zatoczka Laurito pod klifami jest spokojniejsza i cichsza niż główna plaża.",
+      "width": 403,
+      "height": 500
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "Tarasy plażowe i układ linii brzegowej w Laurito",
-      "caption": "Trzy strefy dzielą zatoczkę: publiczny pasek, tarasy Villa Tre Ville i taras Da Adolfo."
+      "caption": "Trzy strefy dzielą zatoczkę: publiczny pasek, tarasy Villa Tre Ville i taras Da Adolfo.",
+      "width": 1500,
+      "height": 1000
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "Leżaki beach clubu Villa Tre Ville z widokiem na morze",
-      "caption": "Villa Tre Ville skupia się na luksusowych leżakach i usługach concierge."
+      "caption": "Villa Tre Ville skupia się na luksusowych leżakach i usługach concierge.",
+      "width": 1280,
+      "height": 1600
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "Molo i strefa wypoczynkowa beach clubu Da Adolfo",
-      "caption": "Łódź wahadłowa Da Adolfo wysadza gości obok tarasu restauracji."
+      "caption": "Łódź wahadłowa Da Adolfo wysadza gości obok tarasu restauracji.",
+      "width": 512,
+      "height": 215
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats.",
+      "width": 1280,
+      "height": 1707
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused.",
+      "width": 1920,
+      "height": 1080
     }
   },
   "essentialsTitle": "What to expect",

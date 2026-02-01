@@ -16,16 +16,19 @@ export default async function DraftGuidePage({ params }: Props) {
   const { lang, slug } = await params;
   const validLang = toAppLanguage(lang);
   const draftPath = Array.isArray(slug) ? slug.join("/") : slug;
-  const entry = listGuideManifestEntries().find(
-    (item) => resolveDraftPathSegment(item) === draftPath,
-  );
+
+  // Load manifest overrides server-side (includes SEO audit results and draftPathSegment overrides)
+  const manifestOverrides = loadGuideManifestOverridesFromFs();
+
+  // Find entry matching the draft path (considering overrides)
+  const entry = listGuideManifestEntries().find((item) => {
+    const overridePath = manifestOverrides[item.key]?.draftPathSegment;
+    return resolveDraftPathSegment(item, overridePath) === draftPath;
+  });
 
   if (!entry) {
     notFound();
   }
-
-  // Load manifest overrides server-side (includes SEO audit results)
-  const manifestOverrides = loadGuideManifestOverridesFromFs();
 
   return (
     <GuideContent

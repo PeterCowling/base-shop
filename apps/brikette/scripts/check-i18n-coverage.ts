@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] CLI audit reads locale JSON files from the app workspace. */
 
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,16 +10,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const APP_ROOT = path.resolve(__dirname, "..");
-const LOCALES_ROOT = path.join(APP_ROOT, "src", "locales");
 const BASELINE_LOCALE = "en";
 
 // Parse CLI arguments
 const rawArgs = process.argv.slice(2);
-const args = new Set(rawArgs.filter((arg) => !arg.startsWith("--output=")));
+const args = new Set(
+  rawArgs.filter(
+    (arg) =>
+      !arg.startsWith("--output=") &&
+      !arg.startsWith("--locales-root=") &&
+      !arg.startsWith("--locales="),
+  ),
+);
 const verbose = args.has("--verbose");
 const failOnMissing = args.has("--fail-on-missing");
 const jsonOutput = args.has("--json");
 const maxListItems = verbose ? Number.POSITIVE_INFINITY : 10;
+
+// Optional: override locales root for fixtures / alternate worktrees
+const localesRootArg = rawArgs.find((arg) => arg.startsWith("--locales-root="));
+const localesRootOverride = localesRootArg
+  ? localesRootArg.slice("--locales-root=".length)
+  : undefined;
+const LOCALES_ROOT = localesRootOverride
+  ? path.resolve(APP_ROOT, localesRootOverride)
+  : path.join(APP_ROOT, "src", "locales");
+
+// Optional: override which locales are audited (comma-separated, excluding baseline)
+const localesArg = rawArgs.find((arg) => arg.startsWith("--locales="));
+const localesOverrideRaw = localesArg
+  ? localesArg.slice("--locales=".length)
+  : undefined;
 
 // Parse --output=<path> argument
 const outputArg = rawArgs.find((arg) => arg.startsWith("--output="));
@@ -107,7 +128,14 @@ type CoverageReportJson = {
 
 const main = async (): Promise<void> => {
   const supportedLocales = (i18nConfig.supportedLngs ?? []) as string[];
-  const locales = supportedLocales.filter((locale) => locale !== BASELINE_LOCALE);
+  const locales = localesOverrideRaw
+    ? localesOverrideRaw
+        .split(",")
+        .map((locale) => locale.trim())
+        .filter(Boolean)
+        .filter((locale, index, all) => all.indexOf(locale) === index)
+        .filter((locale) => locale !== BASELINE_LOCALE)
+    : supportedLocales.filter((locale) => locale !== BASELINE_LOCALE);
 
   const baselineDir = path.join(LOCALES_ROOT, BASELINE_LOCALE);
   const baselineFiles = await listJsonFiles(baselineDir);
@@ -176,6 +204,8 @@ const main = async (): Promise<void> => {
 
     if (outputPath) {
       // Write to file and print summary to stdout
+      const outputDir = path.dirname(outputPath);
+      await mkdir(outputDir, { recursive: true });
       await writeFile(outputPath, jsonString, "utf8");
       console.log(`i18n coverage report written to: ${outputPath}`);
       console.log(`Summary: ${totalMissingFiles} missing files, ${totalMissingKeys} missing keys`);

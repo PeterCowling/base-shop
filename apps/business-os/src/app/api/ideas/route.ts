@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import {
+  allocateNextIdeaId,
+  appendAuditEntry,
+  type Idea,
+  upsertIdea,
+} from "@acme/platform-core/repositories/businessOs.server";
 
-import { getSession, getSessionUser } from "@/lib/auth";
-import { userToCommitIdentity } from "@/lib/commit-identity";
-import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { allocateIdeaId } from "@/lib/id-allocator-instance";
-import { validateBusinessId } from "@/lib/id-generator";
-import { canCreateIdea } from "@/lib/permissions";
-import { createRepoWriter } from "@/lib/repo-writer";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
+import { computeEntitySha } from "@/lib/entity-sha";
 
-// Phase 0: Node runtime required for git/filesystem operations
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const CreateIdeaSchema = z.object({
   business: z.string().min(1),
@@ -23,137 +23,85 @@ const CreateIdeaSchema = z.object({
 
 /**
  * POST /api/ideas
- * Create a new idea in inbox
- *
- * MVP-B2: Requires authentication
+ * Create a new idea in inbox (D1-hosted path)
  */
 export async function POST(request: Request) {
-  const t = await getServerTranslations("en");
-
-  // MVP-B2: Check authentication (if auth is enabled)
-  const response = NextResponse.next();
-  const session = await getSession(request, response);
-  const user = getSessionUser(session);
-
-  // Only enforce auth if BUSINESS_OS_AUTH_ENABLED is true
-  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
-  if (authEnabled && !user) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "Authentication required" },
-      { status: 401 }
-    );
-  }
-
-  // Check permissions (any authenticated user can create ideas)
-  if (authEnabled && user && !canCreateIdea(user)) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "You do not have permission to create ideas" },
-      { status: 403 }
-    );
-  }
-
   try {
     const body = await request.json();
 
-    // Validate input
     const parsed = CreateIdeaSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: t("businessOs.api.common.validationFailed"), details: parsed.error.errors },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Invalid request", details: parsed.error.errors },
         { status: 400 }
       );
     }
 
     const { business, content, tags } = parsed.data;
 
-    // Get repo root (remove /apps/business-os from cwd)
-    const repoRoot = getRepoRoot();
-
-    // Validate business ID
-    const isValidBusiness = await validateBusinessId(business, repoRoot);
-    if (!isValidBusiness) {
+    if (!BUSINESSES.some((b) => b.id === business)) {
       return NextResponse.json(
-        { error: t("businessOs.api.cards.errors.invalidBusiness", { business }) },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: `Invalid business: ${business}` },
         { status: 400 }
       );
     }
 
-    // Generate ID (MVP-C2: atomic counter-based allocation)
-    const ideaId = await allocateIdeaId(business);
-
-    // Create writer
-    const writer = createRepoWriter(repoRoot);
-
-    // Check if worktree is ready
-    const isReady = await writer.isWorktreeReady();
-    if (!isReady) {
-      return NextResponse.json(
-        {
-          error: t("businessOs.api.common.worktreeNotInitialized"),
-          hint: t("businessOs.api.common.worktreeSetupHint"),
-        },
-        { status: 500 }
-      );
-    }
-
-    // Write idea (MVP-B3: Audit attribution)
-    // Get authenticated user for git author and audit trail
+    const db = getDb();
     const currentUser = await getCurrentUserServer();
-    const gitAuthor = userToCommitIdentity(currentUser);
-    const actorId = currentUser.id;
+    const ideaId = await allocateNextIdeaId(db, business);
 
-    const result = await writer.writeIdea(
-      {
-        ID: ideaId,
-        Business: business,
-        Status: "raw",
-        "Created-Date": new Date().toISOString().split("T")[0],
-        Tags: tags,
-        content,
-      },
-      gitAuthor,
-      actorId,
-      actorId // initiator same as actor in Phase 0 (user acting for themselves)
-    );
+    const createdDate = new Date().toISOString().split("T")[0];
 
+    const ideaBase: Idea = {
+      Type: "Idea",
+      ID: ideaId,
+      Business: business,
+      Status: "raw",
+      "Created-Date": createdDate,
+      Tags: tags,
+      content,
+      filePath: `docs/business-os/ideas/inbox/${ideaId}.user.md`,
+    };
+
+    const idea: Idea = {
+      ...ideaBase,
+      fileSha: await computeEntitySha(ideaBase),
+    };
+
+    const result = await upsertIdea(db, idea, "inbox");
     if (!result.success) {
-      const errorMessage = result.errorKey
-        ? t(result.errorKey)
-        : t("businessOs.api.ideas.errors.createFailed");
-
-      if (result.needsManualResolution) {
-        return NextResponse.json(
-          {
-            error: errorMessage,
-            needsManualResolution: true,
-            hint: t("businessOs.api.common.resolveConflictsHint"),
-          },
-          { status: 409 }
-        );
-      }
-
       return NextResponse.json(
-        { error: errorMessage },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Failed to create idea" },
         { status: 500 }
       );
     }
+
+    await appendAuditEntry(db, {
+      entity_type: "idea",
+      entity_id: ideaId,
+      action: "create",
+      actor: currentUser.id,
+      changes_json: JSON.stringify({ business, status: "raw" }),
+    });
 
     return NextResponse.json(
       {
         success: true,
         ideaId,
-        filePath: result.filePath,
-        commitHash: result.commitHash,
-        message: t("businessOs.api.ideas.success.created"),
+        // i18n-exempt -- BOS-D1 Phase 0 API success message [ttl=2026-03-31]
+        message: "Idea created",
       },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: t("api.common.internalServerError"), details: String(error) },
+      // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Internal server error", details: String(error) },
       { status: 500 }
     );
   }
 }
+

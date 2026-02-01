@@ -9,7 +9,7 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { guideNamespace,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { getGuideManifestOverrideFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -107,7 +107,7 @@ export default async function GuidePage({ params }: Props) {
   }
 
   // Load manifest overrides (includes audit results)
-  const serverOverrides = getGuideManifestOverrideFromFs(guideKey);
+  const serverOverrides = loadGuideManifestOverridesFromFs();
 
-  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides ?? undefined} />;
+  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides} />;
 }

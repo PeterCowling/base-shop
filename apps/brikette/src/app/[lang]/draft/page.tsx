@@ -11,6 +11,8 @@ import {
   resolveDraftPathSegment,
   type GuideManifestEntry,
 } from "@/routes/guides/guide-manifest";
+import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import type { ManifestOverrides } from "@/routes/guides/guide-manifest-overrides";
 import type { GuideSeoTemplateProps } from "@/routes/guides/guide-seo/types";
 import type { AppLanguage } from "@/i18n.config";
 
@@ -40,7 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideSummary {
+function buildSummary(
+  entry: GuideManifestEntry,
+  lang: AppLanguage,
+  overrides: ManifestOverrides,
+): DraftGuideSummary {
+  const overridePath = overrides[entry.key]?.draftPathSegment;
   return {
     key: entry.key,
     slug: entry.slug,
@@ -48,7 +55,7 @@ function buildSummary(entry: GuideManifestEntry, lang: AppLanguage): DraftGuideS
     areas: entry.areas,
     primaryArea: entry.primaryArea,
     checklist: buildGuideChecklist(entry, { includeDiagnostics: true, lang }),
-    draftPath: resolveDraftPathSegment(entry),
+    draftPath: resolveDraftPathSegment(entry, overridePath),
   };
 }
 
@@ -56,8 +63,11 @@ export default async function DraftPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
+  // Load manifest overrides server-side
+  const overrides = loadGuideManifestOverridesFromFs();
+
   // Fetch guide data on the server to ensure consistent SSR/hydration
-  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, validLang));
+  const guides = listGuideManifestEntries().map((entry) => buildSummary(entry, validLang, overrides));
 
   return <DraftDashboardContent lang={validLang} guides={guides} />;
 }

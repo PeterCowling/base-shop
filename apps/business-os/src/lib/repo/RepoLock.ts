@@ -92,7 +92,7 @@ export class RepoLock {
           return {
             success: false,
             errorKey: "businessOs.repoLock.errors.lockHeld",
-            // i18n-exempt -- MVP-C1 Phase 0 lock error details [ttl=2026-03-31]
+            // i18n-exempt -- BOS-33 repo lock error details (non-UI) [ttl=2026-03-31]
             errorDetails: "Repository lock is currently held by another operation",
           };
         }
@@ -121,7 +121,7 @@ export class RepoLock {
         return {
           success: false,
           errorKey: "businessOs.repoLock.errors.lockHeld",
-          // i18n-exempt -- MVP-C1 Phase 0 lock error details [ttl=2026-03-31]
+          // i18n-exempt -- BOS-33 repo lock error details (non-UI) [ttl=2026-03-31]
           errorDetails: "Repository lock is currently held by another operation",
         };
       }
@@ -179,10 +179,9 @@ export class RepoLock {
     const result = await this.acquire(metadata);
 
     if (!result.success) {
-      // i18n-exempt -- MVP-C1 Phase 0 lock error message [ttl=2026-03-31]
-      throw new Error(
-        result.errorDetails || "Failed to acquire repository lock"
-      );
+      // i18n-exempt -- BOS-33 repo lock fallback error details (non-UI) [ttl=2026-03-31]
+      const fallbackErrorDetails = "Failed to acquire repository lock";
+      throw new Error(result.errorDetails || fallbackErrorDetails);
     }
 
     try {

@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "L'unique auberge de Positano : à quoi s'attendre (et comment économiser)",
+    "description": "Profitez de notre singularité : vue terrasse, arrêt de bus tout proche, bar et petit-déjeuner — plus des conseils de réservation directe pour économiser."
+  },
+  "linkLabel": "L'unique auberge de Positano : à quoi s'attendre (et comment économiser)",
+  "intro": "Bienvenue dans l’unique auberge de Positano. Ambiance conviviale, terrasse panoramique pour le café du matin et emplacement imbattable juste à côté de l’arrêt de bus SITA de Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Types de chambres et literie",
+      "body": [
+        "Les dortoirs partagés accueillent 4 à 8 personnes et disposent de lampes de lecture individuelles, de prises et de casiers — apportez un cadenas TSA ou achetez-en un à la réception.",
+        "Les chambres privées existent avec salle de bain ou sanitaires partagés ; demandez un balcon ou une vue mer par e-mail si c’est important pour vous."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Espaces communs et services",
+      "body": [
+        "La terrasse offre tables, transats et prises pour manger, planifier vos itinéraires ou participer aux apéritifs au coucher du soleil sans quitter l’établissement.",
+        "Le bar du lobby sert café, spritz et vins locaux ; un buffet petit-déjeuner saisonnier fonctionne d’environ 7 h 30 à 10 h 00 — consultez le tableau noir pour le menu du jour."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Réservation et politique",
+      "body": [
+        "Réservez directement sur hostelbrikette.com pour bénéficier du tarif flexible le plus bas ; les OTA facturent plus cher et imposent des conditions de modification plus strictes.",
+        "Un petit acompte garantit votre lit ; l’annulation est gratuite jusqu’à la date limite indiquée — contactez l’équipe si votre trajet change pour qu’elle adapte le ménage."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "À proximité",
+      "body": [
+        "À moins de deux minutes se trouvent un minimarket, une boulangerie et l’arrêt SITA de Chiesa Nuova ; prenez des encas avant que les derniers bus ne soient complets.",
+        "Suivez la Via Pasitea en descente vers les restaurants et le gelato ; comptez 10 à 12 minutes pour rejoindre Spiaggia Grande par la route principale avec très peu d’escaliers."
+      ]
+    }
+  ],
+  "highlightsTitle": "Points forts",
+  "highlights": [
+    "Terrasses avec vue imprenable sur la côte amalfitaine",
+    "À ~80 m de l’arrêt de bus, sans escaliers",
+    "Bar détendu sur place et petit-déjeuner saisonnier",
+    "Lits et chambres privées abordables"
+  ],
+  "saveTitle": "Astuces budget",
+  "save": [
+    "Réservez en direct pour le meilleur tarif et des conditions souples",
+    "Évitez si possible les week-ends de haute affluence",
+    "Choisissez les dortoirs et voyagez léger pour éviter les frais de portage"
+  ],
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "rooms": "Chambres et équipements",
+    "arrival": "Arriver ici",
+    "etiquette": "Règles de vie",
+    "faqs": "FAQ"
+  },
+  "roomsList": [
+    "Terrasses communes avec vue panoramique — le café du lever du soleil et l’heure dorée du soir ravissent les voyageurs.",
+    "Bar (prix doux) et petit-déjeuner saisonnier.",
+    "Casiers dans les dortoirs ; consultez notre liste de bagages.",
+    "Wi-Fi fiable ; pour des spots de travail prolongé, voyez les cafés adaptés au travail."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Nous sommes à environ 80 m de l’arrêt SITA « Chiesa Nuova » sans escaliers. Vous arrivez par ferry ? Pensez à un porteur ou au bus SITA pour monter la côte.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Itinéraires :",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Heures calmes : restez discret dans les dortoirs tard le soir et tôt le matin.",
+    "Étiquetez vos aliments au réfrigérateur, nettoyez les tables après usage et gardez les espaces communs accueillants.",
+    "Rangez vos objets de valeur dans les casiers ; bouchons d’oreilles/masque de nuit recommandés en dortoir."
+  ],
+  "faq": [
+    {
+      "q": "Disposez-vous de chambres privées ?",
+      "a": "Oui — en quantité limitée pendant la haute saison. Réservez tôt pour les meilleurs tarifs."
+    },
+    {
+      "q": "Puis-je arriver tard ?",
+      "a": "Oui — contactez la réception pour organiser un check-in tardif. Pour une arrivée tardive en ferry, envisagez un porteur depuis l’embarcadère."
+    }
+  ]
+}

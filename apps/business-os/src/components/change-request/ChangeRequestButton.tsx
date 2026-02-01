@@ -13,6 +13,8 @@ import { Button, Input, Textarea } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 import { SimpleModal } from "@acme/ui/molecules";
 
+import { getStringProp, readJsonSafely } from "@/lib/json";
+
 type Translate = ReturnType<typeof useTranslations>;
 
 // i18n-exempt -- BOS-106 form id constant [ttl=2026-03-31]
@@ -216,13 +218,14 @@ export function ChangeRequestButton({
       });
 
       if (!response.ok) {
-        const data = await response.json();
+        const data = await readJsonSafely(response);
         throw new Error(
-          data.error || t("businessOs.changeRequest.errors.submitFailed")
+          getStringProp(data, "error") ||
+            t("businessOs.changeRequest.errors.submitFailed")
         );
       }
 
-      await response.json();
+      await readJsonSafely(response);
       setSuccess(true);
 
       // Close modal after short delay and refresh

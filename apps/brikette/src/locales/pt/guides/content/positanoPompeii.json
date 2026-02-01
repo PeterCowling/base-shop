@@ -1,134 +1,162 @@
 {
   "seo": {
-    "title": "Positano a Pompeia: como ir",
-    "description": "Comparativo de rotas via Sorrento, Salerno e Nápoles — horários recomendados, onde comprar bilhetes e dicas para encaixar a visita em um dia."
+    "title": "Viagem de um Dia de Positano a Pompeia: Guia de Transporte e Passeio",
+    "description": "Guia completo para visitar Pompeia de Positano. Direções de ônibus e trem, o que ver, dicas de horário e conselhos práticos para hóspedes de hostel planejando uma viagem de um dia.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Positano a Pompeia: como ir",
+  "linkLabel": "Viagem de um Dia de Positano a Pompeia: Guia de Transporte e Passeio",
   "intro": [
-    "Pompeia é vasta, impressionante e fácil de sobrecarregar na agenda. Este plano ajuda-te a ver o essencial sem passar o dia inteiro em deslocações.",
-    "No verão conta com calor, pó e muita gente: leva água, proteção solar e sê realista quanto à parte do sítio que consegues visitar."
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "Em resumo"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "Preços e horários"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "Serviços no local"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Como chegar"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "Percurso autónomo"
-    },
-    {
-      "href": "#faqs",
-      "label": "Perguntas frequentes"
-    }
+    "Visitar Pompeia de Positano é uma viagem de um dia atraente. A antiga cidade enterrada pelo Monte Vesúvio em 79 d.C. oferece um contraste dramático com o relaxamento costeiro—ruínas extensas, ruas preservadas, casas com afrescos e história romana tangível. A jornada de Positano a Pompeia leva aproximadamente 2 horas em cada sentido via ônibus e trem. Planeje um dia completo (saindo às 08h00, retornando às 18h00–19h00). Este guia cobre transporte, horário, o que ver e dicas práticas para hóspedes de hostel fazendo a viagem.",
+    "Pompeia é vasta e pode ser avassaladora sem um plano. Muitos visitantes de primeira viagem subestimam a escala do local (66 hectares—aproximadamente 165 acres) e as demandas físicas (quente, empoeirado, sombra mínima). Este guia ajuda você a ver os destaques eficientemente, evitar erros comuns e retornar a Positano satisfeito em vez de exausto."
   ],
   "sections": [
     {
-      "id": "at-a-glance",
-      "title": "Em resumo",
+      "id": "why-visit-pompeii",
+      "title": "Por que visitar Pompeia de Positano?",
       "body": [
-        "A dimensão de Pompeia impressiona assim que entras: quase toda a cidade foi escavada e é fácil de percorrer a pé.",
-        "É uma saída económica se estiveres disposto a visitar por conta própria — o contexto histórico ganha vida mesmo sem guia privado.",
-        "Herculano é mais pequena e está melhor preservada; lembra-te dela se quiseres frescos e mosaicos intactos em vez das ruas extensas de Pompeia.",
-        "Quem parte de Positano em transportes públicos deve prever calor, pó e tempos de viagem longos."
-      ]
-    },
-    {
-      "id": "entry-cost-and-hours",
-      "title": "Preços e horários de abertura",
-      "body": [
-        "Os preços e horários variam consoante a época — confirma o site oficial do Parco Archeologico di Pompei antes de sair.",
-        "O bilhete normal costuma rondar a dezena e meia de euros; a última entrada situa-se entre o fim da tarde e o início da noite, dependendo do mês."
-      ]
-    },
-    {
-      "id": "other-facilities",
-      "title": "Serviços no local",
-      "body": [
-        "Levanta o mapa gratuito no posto de informação ao lado das bilheteiras; facilita muito a orientação dentro das ruínas.",
-        "À entrada podes alugar audioguias ou contratar guias credenciados se quiseres comentários adicionais.",
-        "Existem pontos de restauração, mas podem ser limitados — chega com bastante água, sobretudo nos meses mais quentes.",
-        "Podes guardar bagagens na estação Pompeii Scavi (serviço pago) ou deixá-las gratuitamente no guarda-volumes logo após a entrada."
+        "%IMAGE:pompeii-ruins-overview.jpg|Vista aérea do sítio arqueológico de Pompeia com o Monte Vesúvio%",
+        "Pompeia é um dos sítios arqueológicos mais significativos do mundo. Quando o Monte Vesúvio entrou em erupção em 24 de agosto de 79 d.C., enterrou Pompeia sob 4–6 metros de cinzas vulcânicas e pedra-pomes. A cidade permaneceu congelada no tempo por quase 1.700 anos até que as escavações começaram no século 18. O que torna Pompeia extraordinária não é apenas sua idade, mas sua integridade—ruas inteiras, casas, lojas, templos, teatros e casas de banho preservadas com afrescos, mosaicos, grafites e até restos humanos moldados em gesso. Se você está interessado em outros %LINK:historyPositano|locais históricos na Costa Amalfitana%, Pompeia oferece um complemento dramático ao patrimônio medieval e romano de Positano.",
+        "Para viajantes hospedados no %LINK:onlyHostel|Hostel Brikette%, Pompeia oferece um contraponto histórico poderoso à beleza natural da Costa Amalfitana. Você pode andar por ruas onde romanos caminharam há 2.000 anos, ver como viviam, compravam, adoravam e se entretinham. A escala é humilhante—Pompeia era uma cidade próspera de 11.000–20.000 pessoas quando a erupção atingiu. Hoje, você pode caminhar por suas casas, ler seus grafites nas paredes e ficar em seu anfiteatro.",
+        "A viagem de Positano a Pompeia também oferece variedade prática. Se você esteve indo à praia por vários dias na %LINK:positanoMainBeach|Spiaggia Grande% ou explorando %LINK:pathOfTheGods|trilhas costeiras%, uma excursão cultural quebra o ritmo. Pompeia funciona bem em dias nublados quando as praias são menos atraentes. E diferente das %LINK:avoidCrowdsPositano|densas multidões turísticas de Positano%, a vastidão de Pompeia dispersa os visitantes—você frequentemente terá ruas inteiras para si, especialmente se chegar cedo ou visitar fora de temporada."
       ]
     },
     {
       "id": "getting-there",
-      "title": "Como chegar",
+      "title": "Como ir de Positano a Pompeia",
       "body": [
-        "De Positano, apanha o autocarro SITA até Sorrento; compra os bilhetes no tabacaria ou a bordo e conta com cerca de uma hora de viagem.",
-        "Em Sorrento sobe as escadas para os cais da Circumvesuviana e apanha o comboio local para ‘Pompei Scavi – Villa dei Misteri’.",
-        "Ao sair da estação vira à direita: em menos de um minuto estarás na entrada Porta Marina Superiore, à esquerda."
+        "%IMAGE:sita-bus-sorrento.jpg|Ônibus SITA na estação de Sorrento conectando à Circumvesuviana%",
+        "A jornada de Positano a Pompeia requer dois trechos: ônibus SITA de Positano a Sorrento, depois trem Circumvesuviana de Sorrento a Pompeia. O tempo total de viagem é aproximadamente 1,5–2 horas em cada sentido, dependendo dos tempos de espera de ônibus e trem. Aqui está o processo passo a passo:",
+        "**Passo 1: Ônibus de Positano a Sorrento (50–60 minutos).** Pegue o ônibus SITA de Chiesa Nuova (perto do hostel) ou do ponto de ônibus principal de Positano (Spiaggia Grande). Ônibus circulam a cada 20–40 minutos dependendo da temporada. Compre bilhetes em lojas tabacchi antes de embarcar ou use o aplicativo SITA. Bilhetes custam ~€2,50–€3,00. A viagem de ônibus ao longo da %LINK:chiesaNuovaArrivals|estrada da Costa Amalfitana% oferece vistas deslumbrantes, mas pode estar lotada—procure embarcar cedo em Chiesa Nuova para garantir um assento. Para horários detalhados e dicas, veja %LINK:sorrentoPositanoBus|Positano a Sorrento de ônibus%.",
+        "**Passo 2: Trem de Sorrento a Pompeia Scavi (30–35 minutos).** Em Sorrento, o ônibus para na Piazza Tasso (a praça principal). De lá, caminhe 5 minutos até a estação de trem Circumvesuviana (siga as placas ou pergunte aos locais). Compre um bilhete para \"Pompei Scavi – Villa dei Misteri\" no balcão de bilhetes ou máquinas. Bilhetes custam ~€3,00–€4,00. A Circumvesuviana é um trem de passageiros local—básico, frequentemente lotado, sem ar condicionado. Trens circulam a cada 20–30 minutos. A viagem leva cerca de 30 minutos. Saia na estação \"Pompei Scavi\" (NÃO estação \"Pompeii\", que fica mais longe das ruínas).",
+        "**Passo 3: Caminhe até a entrada (1–2 minutos).** Saia da estação Pompei Scavi, vire à direita e você verá a entrada do sítio arqueológico de Pompeia (Porta Marina Superiore) a 50 metros. Esta é a entrada principal para visitantes independentes. Bilheterias e depósito de bagagem estão aqui.",
+        "**Tempo total de viagem:** Reserve 2–2,5 horas de Positano até a entrada de Pompeia, incluindo espera de ônibus, viagem de ônibus, transferência em Sorrento, viagem de trem e caminhada. Saia de Positano às 08h00 para chegar a Pompeia às 10h00–10h30, dando a você 4–5 horas para explorar antes de retornar."
       ]
     },
     {
-      "id": "self-guided-tour",
-      "title": "Percurso autónomo",
+      "id": "timing-and-planning",
+      "title": "Quando visitar e quanto tempo passar",
       "body": [
-        "À entrada vira à esquerda para o posto de informação, recolhe o mapa e, se necessário, trata da consignação de bagagem antes de comprares os bilhetes nas bilheteiras em frente.",
-        "Já dentro, identifica Porta Marina Superiore no mapa — estarás na Via Marina com sinalização clara à tua frente.",
-        "Segue a Via Marina em direção ao anfiteatro, desviando-te para as casas, termas e fóruns que te interessem antes de regressar ao percurso principal.",
-        "Depois de explorares o anfiteatro, regressa atravessando a parte inferior do sítio para cobrir mais destaques sem repetir caminhos.",
-        "Este circuito permite ver entre 60 % e 80 % dos pontos-chave em muito menos tempo do que tentar percorrer todas as ruas."
+        "%IMAGE:pompeii-summer-crowds.jpg|Turistas explorando ruínas de Pompeia em dia de verão%",
+        "**Melhor horário do dia:** Chegue a Pompeia às 09h00–10h00 para vencer multidões de pico e calor do meio-dia. O local abre às 09h00 (verifique horários oficiais sazonalmente). As temperaturas matinais são mais frescas, a luz é mais suave para fotos e grupos de turismo chegam mais tarde (11h00–12h00). Se você chegar às 09h30, terá 1–2 horas de ruínas relativamente vazias antes das multidões se formarem.",
+        "**Quanto tempo passar:** Planeje 3–4 horas no mínimo para ver os principais destaques sem pressa. Entusiastas sérios de arqueologia podem passar 6–8 horas explorando cada canto, mas a maioria dos hóspedes de hostel acha 3–4 horas suficientes para apreciar a escala do local e ver áreas-chave. Se você tem tempo limitado, 2 horas cobrem o absolutamente essencial (fórum, anfiteatro, algumas casas), mas você perderá muito.",
+        "**Melhor temporada:** Abril–junho e setembro–outubro oferecem o melhor equilíbrio—temperaturas agradáveis, multidões administráveis e acesso completo ao local. Julho–agosto trazem calor extremo (35–40°C), sol intenso, sombra mínima e multidões turísticas de pico. Novembro–março são mais tranquilos, mas arriscam chuva e horas de luz do dia mais curtas. Se visitar no verão, traga o dobro da água que acha que precisa, use um chapéu de aba larga e faça pausas frequentes em áreas sombreadas.",
+        "**Itinerário de exemplo para hóspedes de hostel:**\n- 08h00: Saia de Positano via ônibus SITA\n- 09h00: Chegue a Sorrento, transfira para Circumvesuviana\n- 09h30: Parta de Sorrento de trem\n- 10h00–10h30: Chegue a Pompeia, compre bilhetes, entre no local\n- 10h30–14h00: Explore ruínas (3,5 horas)\n- 14h00–14h30: Pausa para almoço (traga almoço empacotado ou compre no café do local)\n- 14h30: Parta de Pompeia de trem\n- 15h00–15h30: Chegue a Sorrento, pegue ônibus SITA\n- 16h30–17h30: Chegue de volta a Positano\n\nEste cronograma permite 3–4 horas em Pompeia com tempo de buffer para atrasos de transporte. Você retorna a Positano com tempo para descansar antes do jantar. Muitos hóspedes de hostel seguem exatamente este itinerário e relatam que funciona bem—nem muito apressado, nem muito tranquilo, com tempo suficiente para ver destaques sem exaustão. Hóspedes que tentam espremer mais no dia (por exemplo, adicionando Herculano ou estendendo Pompeia para 5+ horas) consistentemente relatam se sentir esgotados à noite."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "O que ver em Pompeia: passeio pelos destaques",
+      "body": [
+        "%IMAGE:pompeii-forum-columns.jpg|Antigo fórum romano em Pompeia com colunas preservadas%",
+        "Os 66 hectares de Pompeia contêm centenas de edifícios. Ver tudo é impossível em uma visita. Concentre-se nos principais destaques para um passeio auto-guiado recompensador. Pegue o mapa gratuito do local na entrada (essencial para navegação) e siga esta rota sugerida:",
+        "**1. Fórum (Foro).** O fórum era o centro político, religioso e comercial de Pompeia. É uma grande praça retangular cercada por templos, edifícios administrativos e salões de mercado. O Templo de Júpiter ancora a extremidade norte, com o Monte Vesúvio erguendo-se atrás dele—um poderoso lembrete visual do que destruiu a cidade. O fórum dá contexto para tudo o mais que você verá. Passe 20–30 minutos aqui.",
+        "%IMAGE:pompeii-basilica-interior.jpg|Interior da antiga basílica em Pompeia com colunas%",
+        "**2. Basílica.** Adjacente ao fórum, a basílica era o tribunal e centro de negócios de Pompeia. O interior maciço (65m x 28m) uma vez abrigou processos legais e negociações comerciais. A escala das colunas e arquitetura demonstra a engenharia romana. Passe 10 minutos.",
+        "**3. Casa do Fauno (Casa del Fauno).** Uma das maiores e mais opulentas casas privadas de Pompeia, cobrindo um quarteirão inteiro da cidade. Famosa pela estátua de bronze do fauno no átrio (o original está no Museu Arqueológico de Nápoles, mas uma réplica está in situ) e o Mosaico de Alexandre (também movido para Nápoles). A casa demonstra como a elite rica de Pompeia vivia—múltiplos pátios, salas de jantar, quartos de servos, mosaicos elaborados. Passe 15–20 minutos.",
+        "%IMAGE:house-vettii-frescoes.jpg|Afrescos coloridos preservados na Casa dos Vettii%",
+        "**4. Casa dos Vettii (Casa dei Vettii).** Outra casa rica, famosa por seus afrescos notavelmente preservados. A sala de jantar (triclinium) apresenta cenas mitológicas em vermelhos, azuis e dourados vívidos. O jardim foi reconstruído com base em restos de plantas antigas. Esta casa mostra melhor a arte e cor de Pompeia. Passe 15 minutos.",
+        "**5. Termas Stabianas (Terme Stabiane).** As termas públicas mais antigas e melhor preservadas de Pompeia. Você pode ver o caldarium (sala quente), tepidarium (sala morna), frigidarium (sala fria) e apodyterium (vestiário). A engenharia é visível—pisos aquecidos, encanamento, até grafites antigos nas paredes. Isso dá uma visão da vida diária e costumes sociais romanos. Passe 15 minutos.",
+        "**6. Lupanar (Bordel).** Um pequeno edifício de dois andares com camas de pedra e afrescos eróticos. O lupanar é um dos locais mais visitados (e fotografados) de Pompeia. Fornece evidências francas da indústria de sexo comercial de Pompeia. Os quartos do andar de cima e a arte explícita chocam alguns visitantes, mas oferecem verdade histórica sem verniz. Passe 5–10 minutos (frequentemente lotado).",
+        "%IMAGE:pompeii-amphitheater.jpg|Antigo anfiteatro em Pompeia com pano de fundo do Monte Vesúvio%",
+        "**7. Anfiteatro (Anfiteatro).** O anfiteatro de Pompeia acomodava 20.000 espectadores para jogos de gladiadores e espetáculos públicos. Construído por volta de 70 a.C., é um dos anfiteatros romanos sobreviventes mais antigos. Você pode caminhar pelo chão da arena e subir as arquibancadas para vistas sobre as ruínas e o Monte Vesúvio. A escala é impressionante—imagine o rugido de 20.000 romanos comemorando esportes sangrentos. Passe 20 minutos.",
+        "%IMAGE:pompeii-plaster-casts.jpg|Moldes de gesso de vítimas de Pompeia no Jardim dos Fugitivos%",
+        "**8. Jardim dos Fugitivos (Orto dei Fugitivi).** Um vinhedo onde 13 residentes de Pompeia morreram tentando escapar da erupção. Seus corpos foram preservados em cinzas; arqueólogos preencheram as cavidades com gesso para criar moldes assombrosos. Ver os moldes de gesso—adultos, crianças, contorcidos em seus momentos finais—torna a tragédia de Pompeia visceral. Isso é emocionalmente pesado, mas historicamente importante. Passe 10 minutos.",
+        "%IMAGE:via-abbondanza-street.jpg|Antiga rua romana Via dell'Abbondanza com lojas%",
+        "**9. Via dell'Abbondanza.** A rua principal de Pompeia, ladeada por lojas, tavernas e casas. Caminhar por esta rua parece entrar em uma cidade romana—você pode ver balcões onde comerciantes vendiam comida e vinho, grafites nas paredes (slogans eleitorais, bilhetes de amor, insultos), pedras de passagem para atravessar ruas lamacentas. É aqui que Pompeia parece mais viva. Passe 20–30 minutos passeando.",
+        "Esta rota cobre os destaques essenciais em 3–3,5 horas em um ritmo relaxado. Se você tem mais tempo, explore o distrito do teatro, mais casas (Casa do Poeta Trágico, Casa de Menandro) e ruas laterais. Se você tem menos tempo, priorize o fórum, uma casa rica (Vettii ou Fauno), as termas e o anfiteatro."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Dicas práticas para sua visita",
+      "body": [
+        "%IMAGE:pompeii-map-tourists.jpg|Turistas consultando mapa do local na entrada de Pompeia%",
+        "**Pegue o mapa gratuito na entrada.** A mesa de informações dentro da Porta Marina Superiore distribui mapas impressos gratuitos. Pegue um. Pompeia é enorme e confusa sem um mapa. O mapa marca locais principais, banheiros, saídas e áreas de sombra. Não confie na navegação do telefone—a recepção celular é irregular e vagar sem rumo desperdiça tempo.",
+        "**Traga bastante água.** Pompeia é exposta—sombra mínima, superfícies de pedra refletivas amplificando o calor. No verão, as temperaturas no local podem atingir 40°C. Traga pelo menos 1,5 litros de água por pessoa. Fontes dentro do local oferecem água potável para reabastecimento. Desidratação é um risco real—muitos visitantes subestimam isso. Do hostel, vimos hóspedes retornarem de Pompeia com insolação e dores de cabeça de desidratação porque trouxeram apenas uma pequena garrafa. A equipe recomenda encher duas garrafas de 750ml antes de sair e reabastecer nas fontes de Pompeia ao longo do dia.",
+        "**Use sapatos confortáveis e resistentes.** As ruas de Pompeia são pavimentadas com pedras grandes e irregulares. Sandálias ou chinelos levam a tornozelos torcidos e pés doloridos. Use sapatos fechados para caminhar com bom suporte. Você caminhará 5–8 km (3–5 milhas) explorando o local.",
+        "**Proteção solar é crítica.** Use protetor solar (FPS 30+), um chapéu de aba larga e óculos de sol. O sol é implacável e quase não há sombra. Mangas compridas em tecido leve e respirável ajudam a prevenir queimaduras solares melhor do que aplicar protetor solar repetidamente.",
+        "**Depósito de bagagem disponível.** Se você está combinando Pompeia com viagem adiante (por exemplo, visitando Pompeia a caminho de Nápoles), pode guardar bagagem na estação de trem Pompei Scavi (serviço pago) ou no vestiário gratuito logo dentro da entrada do local. Mochilas grandes são permitidas dentro, mas tornam a manobra através de portas estreitas difícil.",
+        "**Audioguias e passeios.** Audioguias (€8–€10) estão disponíveis na entrada e fornecem contexto para locais principais. Guias licenciados oferecem passeios em grupo (€15–€20 por pessoa para passeios de 2 horas) ou passeios privados (€100–€150 para grupos pequenos). Para visitantes de primeira viagem, um audioguia ou participar de um passeio em grupo agrega valor significativo—as ruínas são mais significativas com contexto histórico. Visitas auto-guiadas funcionam bem com um guia de viagem ou o mapa gratuito, mas você perde histórias e detalhes.",
+        "**Comida e bebida dentro.** Há um café perto do fórum vendendo sanduíches, bebidas e lanches a preços inflacionados. A qualidade é medíocre. Muitos hóspedes de hostel trazem almoços empacotados preparados na %LINK:onlyHostel|cozinha do hostel%—sanduíches, frutas, lanches de mercearias de Chiesa Nuova—e comem em áreas sombreadas perto do anfiteatro ou fórum. Isso economiza dinheiro (€15–€20 por pessoa) e permite que você descanse sem sair do local. Experimentamos os sanduíches do café; eles são caros (€8–€10) e decepcionantes. Prepare o seu próprio.",
+        "**Banheiros são limitados.** Há banheiros perto da entrada, fórum e anfiteatro. Use-os quando os vir—longos intervalos entre instalações. Eles são básicos, mas funcionais.",
+        "**Fotografia é permitida.** Você pode tirar fotos por toda Pompeia (sem flash dentro de edifícios com afrescos). As melhores oportunidades de foto são o fórum com pano de fundo do Vesúvio, o anfiteatro, cenas de rua da Via dell'Abbondanza e os moldes de gesso no Jardim dos Fugitivos. A luz da manhã e do final da tarde é melhor; o sol do meio-dia cria sombras duras."
+      ]
+    },
+    {
+      "id": "herculaneum-alternative",
+      "title": "Herculano como alternativa ou adição",
+      "body": [
+        "%IMAGE:herculaneum-villa-fresco.jpg|Afrescos bem preservados no sítio arqueológico de Herculano%",
+        "Herculano (Ercolano) é uma cidade romana menor também destruída pelo Vesúvio em 79 d.C. Fica mais perto de Nápoles do que Pompeia (cerca de 40 minutos de Circumvesuviana de Sorrento). Muitos arqueólogos e historiadores consideram Herculano superior a Pompeia em termos de qualidade de preservação. Herculano foi enterrada sob material vulcânico mais profundo (até 20 metros vs 6 metros de Pompeia), o que criou uma vedação hermética. Isso preservou materiais orgânicos—madeira, tecido, comida—que se desintegraram em Pompeia. Afrescos e mosaicos em Herculano retêm mais cor. Edifícios têm andares superiores e telhados intactos.",
+        "**Herculano vs Pompeia: qual visitar?** Se você tem tempo para apenas um, a maioria dos visitantes de primeira viagem escolhe Pompeia por sua escala e fama. Pompeia entrega o fator \"uau\" de uma cidade inteira congelada no tempo. Herculano é menor (4,5 hectares vs 66 de Pompeia), menos avassaladora e mais íntima. Você pode ver todo o local em 1,5–2 horas vs 3–4 de Pompeia. Herculano é melhor para apreciar arte, arquitetura e detalhes da vida diária romana. Pompeia é melhor para entender planejamento urbano e experimentar a escala de uma cidade romana.",
+        "**Você pode visitar ambos em um dia de Positano?** Tecnicamente sim, mas é exaustivo. Ambos os locais em um dia requer sair de Positano às 07h30, visitar Herculano primeiro (09h00–11h00), depois Pompeia (12h00–15h00), retornando às 18h00–19h00. Você passará 5–6 horas em transporte e 4–5 horas nos locais. A maioria dos hóspedes de hostel acha isso muito apressado. Se você quer ambos, considere ficar durante a noite em Nápoles ou Sorrento para espalhar as visitas por dois dias."
+      ]
+    },
+    {
+      "id": "returning-to-positano",
+      "title": "Retornando a Positano",
+      "body": [
+        "%IMAGE:circumvesuviana-train.jpg|Trem Circumvesuviana retornando de Pompeia a Sorrento%",
+        "Reverta a rota da manhã: caminhe de volta à estação de trem Pompei Scavi, pegue a Circumvesuviana para Sorrento, depois %LINK:sorrentoPositanoBus|ônibus SITA de volta a Positano%. Ônibus da tarde de Sorrento a Positano (15h00–18h00) podem estar muito lotados—turistas de verão e passageiros voltando para casa. Espere ficar de pé por parte ou toda a viagem se embarcar em Sorrento. Alternativamente, pegue o ônibus um pouco mais tarde (depois das 18h30) quando as multidões diminuem, embora isso signifique chegar a Positano por volta das 19h30–20h00.",
+        "Se os ônibus estiverem impossivelmente cheios, táxis e motoristas privados operam de Sorrento a Positano (€60–€80 para até 4 passageiros). Isso é caro, mas economiza 45–60 minutos e garante um assento. Alguns hóspedes de hostel dividem um táxi depois de dias longos e quentes em Pompeia. Peça à %LINK:onlyHostel|equipe do hostel% recomendações de motorista se quiser esta opção. Uma vez de volta a Positano, muitos hóspedes pegam jantar em restaurantes locais ou compram mantimentos para cozinhar na %LINK:onlyHostel|cozinha do hostel% e compartilhar histórias de Pompeia com outros viajantes."
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "Autocarro para Sorrento",
-        "text": "Apanha o autocarro SITA em Positano e segue até à estação principal de Sorrento (cerca de 60 minutos)."
-      },
-      {
-        "name": "Comboio para Pompeii Scavi",
-        "text": "Sobe aos cais da Circumvesuviana e apanha o comboio para ‘Pompei Scavi – Villa dei Misteri’."
-      },
-      {
-        "name": "Caminhada até à entrada",
-        "text": "Ao sair da estação vira à direita; Porta Marina Superiore fica a uns 50 metros à esquerda."
-      }
-    ]
-  },
-  "tipsTitle": "Dicas para o dia",
+  "tipsTitle": "Dicas rápidas para viagem de um dia a Pompeia",
   "tips": [
-    "Levanta o mapa gratuito antes de passar as torniquetes para planear desvios sem regressar atrás.",
-    "Leva bastante água e reabastece sempre que vires uma fonte — no verão os quiosques podem ter filas longas.",
-    "Assinala pontos fotogénicos ou frescos que queiras rever na saída; é fácil esquecê-los com o calor."
+    "Saia de Positano às 08h00 para chegar a Pompeia às 10h00–10h30 e vencer multidões de pico.",
+    "Pegue o mapa gratuito do local na entrada—essencial para navegação nas ruínas extensas.",
+    "Traga 1,5+ litros de água por pessoa; calor e exposição ao sol são intensos no verão.",
+    "Use sapatos fechados resistentes—as ruas de pedra irregulares de Pompeia destroem sandálias e chinelos.",
+    "Empacote um almoço para comer dentro do local e economize €15–€20 em comida cara de café.",
+    "Use protetor solar, chapéu e óculos de sol—Pompeia quase não tem sombra.",
+    "Priorize fórum, Casa dos Vettii, Termas Stabianas, anfiteatro e Via dell'Abbondanza para uma visita de 3 horas.",
+    "Considere um audioguia (€8–€10) para contexto histórico—torna as ruínas muito mais significativas.",
+    "Guarde bagagem na estação Pompei Scavi ou no vestiário gratuito dentro da entrada.",
+    "Ônibus de retorno de Sorrento a Positano estão lotados 15h00–18h00; viaje mais cedo ou mais tarde se possível."
   ],
-  "warningsTitle": "Avisos importantes",
-  "warnings": [
-    "Em época alta, as filas para o autocarro SITA e para a Circumvesuviana podem acrescentar 20–30 minutos a cada trajeto — reserva algum tempo extra.",
-    "Grande parte do sítio é a céu aberto sem sombra; evita as visitas ao meio-dia se és sensível ao calor."
-  ],
-  "faqsTitle": "Perguntas frequentes",
+  "faqsTitle": "Perguntas Frequentes",
   "faqs": [
     {
-      "q": "Qual é a melhor entrada?",
+      "q": "Quanto tempo leva para ir de Positano a Pompeia?",
       "a": [
-        "Porta Marina Superiore, junto à estação Pompei Scavi, é a mais prática para quem visita de forma independente: fica a poucos metros do comboio e perto do guarda-volumes."
+        "Cerca de 1,5–2 horas em cada sentido. Ônibus SITA de Positano a Sorrento leva 50–60 minutos, trem Circumvesuviana de Sorrento a Pompei Scavi leva 30–35 minutos, mais 5–10 minutos para a transferência em Sorrento. Reserve 2–2,5 horas no total incluindo tempos de espera."
       ]
     },
     {
-      "q": "Posso visitar sem guia?",
+      "q": "Quanto custa uma viagem de um dia a Pompeia de Positano?",
       "a": [
-        "Sim. O mapa oficial gratuito é detalhado e a maioria dos edifícios principais tem sinalética em italiano e inglês. Há audioguias e guias credenciados disponíveis se quiseres mais contexto."
+        "Orçamento €30–€40 por pessoa: ônibus SITA Positano-Sorrento (€2,50–€3), trem Circumvesuviana Sorrento-Pompei (€3–€4), bilhete de entrada de Pompeia (€16–€18), transporte de retorno (€5,50–€7), mais comida/bebidas. Um audioguia adiciona €8–€10. Orçamento total de viagem de um dia: €35–€50 por pessoa."
       ]
     },
     {
-      "q": "Existe guarda-volumes seguro?",
+      "q": "Vale a pena visitar Pompeia de Positano?",
       "a": [
-        "Podes deixar malas pequenas na estação Pompei Scavi mediante pagamento, e o sítio oferece um guarda-volumes gratuito logo após a entrada."
+        "Sim, especialmente se você quer variedade cultural/histórica além de praias. Pompeia é um dos sítios arqueológicos mais significativos do mundo. A jornada é longa (4+ horas de transporte ida e volta), mas administrável como uma excursão de dia completo. Melhor para viajantes passando 4+ dias em Positano que querem uma pausa de atividades costeiras."
+      ]
+    },
+    {
+      "q": "Posso visitar tanto Pompeia quanto Herculano em um dia de Positano?",
+      "a": [
+        "Tecnicamente sim, mas muito apressado. Você precisaria sair de Positano às 07h30, visitar Herculano primeiro (09h00–11h00), depois Pompeia (12h00–15h00), retornando às 18h00–19h00. Total 5–6 horas de transporte, 4–5 horas nos locais. A maioria dos viajantes acha isso exaustivo. Melhor escolher um local ou ficar durante a noite em Nápoles/Sorrento para espalhar visitas por dois dias."
+      ]
+    },
+    {
+      "q": "O que devo trazer para Pompeia?",
+      "a": [
+        "Essencial: 1,5+ litros de água por pessoa, protetor solar, chapéu, óculos de sol, sapatos resistentes para caminhar, mapa do local (gratuito na entrada). Recomendado: almoço empacotado, mochila pequena, câmera, guia de viagem ou audioguia. Verão: dobre a água, mangas compridas leves para proteção solar. O local é quente, exposto e requer 3–4 horas de caminhada."
+      ]
+    },
+    {
+      "q": "Preciso de um guia ou posso explorar Pompeia sozinho?",
+      "a": [
+        "Você pode explorar independentemente com o mapa gratuito do local. No entanto, um audioguia (€8–€10) ou participar de um passeio em grupo (€15–€20) aprimora significativamente a experiência ao fornecer contexto histórico, histórias e detalhes que você perderia de outra forma. Visitantes de primeira viagem se beneficiam mais do contexto guiado."
+      ]
+    },
+    {
+      "q": "Quando é o melhor momento para visitar Pompeia?",
+      "a": [
+        "Abril–junho e setembro–outubro oferecem o melhor clima e multidões administráveis. Chegue ao local às 09h00–10h00 para vencer grupos de turismo e calor do meio-dia. Evite julho–agosto se possível (calor extremo, sol intenso, multidões de pico). Novembro–março são mais tranquilos, mas arriscam chuva e luz do dia mais curta."
       ]
     }
   ]

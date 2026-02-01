@@ -1,13 +1,24 @@
 {
   "seo": {
     "title": "Ravellóból Positanóba busszal | Hostel Brikette",
-    "description": "Lépésről lépésre útmutató Ravellóból Positanóba Amalfín keresztül, SITA buszokkal: menetrendi tippek, megállóinformációk és a rövid séta a Hostel Brikette-ig."
+    "description": "Lépésről lépésre útmutató Ravellóból Positanóba Amalfin keresztül SITA buszokkal, menetrendi tippekkel, megállóinformációkkal és a rövid sétával a Hostel Brikette-ig."
   },
   "intro": {
-    "title": "Ravellóból Positanóba – Amalfín át busszal",
-    "body": "Utazz Ravellóból Positanóba egy egyszerű amalfi átszállással. Az útmutató bemutatja, hol vásárolhatod és érvényesítheted a SITA jegyeket, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, valamint a rövid sétát a positanói Chiesa Nuova megállótól a Hostel Brikette-ig."
+    "title": "Ravellóból Positanóba – Amalfin át busszal",
+    "body": "Utazz Ravellóból Positanóba egy egyszerű amalfi átszállással. Ez az útmutató bemutatja, hol vásárolhatod és érvényesítheted a SITA jegyeket, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, valamint a rövid sétát a positanói Chiesa Nuova megállótól a Hostel Brikette-ig."
   },
   "callouts": {
     "tip": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a %HOWTO:how-to-get-here|{{guideLabel}}% oldalt kompokért, taxikért és kombinált útvonalakért."
-  }
+  },
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**A sorok olvasása:** Az első oszlop sorai az útvonal mentén különböző buszmegállókat jelölnek.",
+        "**Az oszlopok olvasása:** A menetrend minden egyes tervezett járathoz egy betűt rendel, amelyek minden oszlop fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**A sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokat, hogy mikor vannak buszok, és mikor érkeznek meg a célállomásra. Például a Sorrento indulási idejének megtekintéséhez nézze meg a Sorrento sort. A Positano (Chiesa Nuova / Bar Internazionale) érkezési idejének megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
+    }
+  ]
 }

@@ -1,13 +1,23 @@
 {
   "seo": {
-    "title": "Từ Ravello đến Positano bằng xe buýt | Hostel Brikette",
-    "description": "Hướng dẫn từng bước đi xe buýt SITA qua Amalfi từ Ravello đến Positano, kèm mẹo đọc giờ chạy, chi tiết điểm dừng và đoạn đi bộ cuối tới Hostel Brikette."
+    "title": "Ravello đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước từ Ravello đến Positano qua Amalfi bằng xe buýt SITA, với mẹo về lịch trình, chi tiết trạm dừng và đoạn đi bộ cuối cùng đến Hostel Brikette."
   },
   "intro": {
     "title": "Ravello đến Positano – qua Amalfi bằng xe buýt",
-    "body": "Di chuyển từ Ravello đến Positano với một lần đổi xe đơn giản tại Amalfi. Hướng dẫn này cho biết nơi mua và xác nhận vé SITA, cách đọc bảng giờ và những điều cần lưu ý khi đổi tuyến ở Amalfi — cùng đoạn đi bộ ngắn từ trạm Chiesa Nuova tới Hostel Brikette."
+    "body": "Di chuyển từ Ravello đến Positano với một lần đổi xe đơn giản tại Amalfi. Hướng dẫn này bao gồm nơi mua và xác thực vé SITA, cách đọc lịch trình và những điều cần lưu ý khi đổi xe tại Amalfi — cộng với đoạn đi bộ ngắn từ trạm Chiesa Nuova của Positano đến Hostel Brikette."
   },
   "callouts": {
-    "tip": "Cần xem mọi lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|{{guideLabel}}% để tham khảo phà, taxi và hành trình kết hợp."
-  }
+    "tip": "Cần xem tất cả các lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|{{guideLabel}}% để tham khảo phà, taxi và hành trình kết hợp."
+  },
+  "faqs": [
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái theo thứ tự bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê dưới dạng tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm khởi hành và đến của bạn, sau đó kiểm tra các cột để xem xe buýt có sẵn khi nào và chúng sẽ đến điểm đến của bạn vào lúc mấy giờ. Ví dụ, để xem thời gian khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem thời gian đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
 }

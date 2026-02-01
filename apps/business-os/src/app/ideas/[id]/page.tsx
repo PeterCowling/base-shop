@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getIdeaById } from "@acme/platform-core/repositories/businessOs.server";
+
 import { RunStatus } from "@/components/agent-runs/RunStatus";
 import { MarkdownContent } from "@/components/card-detail/MarkdownContent";
 import { CommentThread } from "@/components/comments/CommentThread";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
-import { getCurrentUserServer } from "@/lib/current-user";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
 import { getDb } from "@/lib/d1.server";
-import { getIdeaById } from "@acme/platform-core/repositories/businessOs.server";
 
 import { ConvertToCardButton } from "./ConvertToCardButton";
 import { WorkIdeaButton } from "./WorkIdeaButton";
@@ -17,14 +19,6 @@ export const runtime = "edge";
 
 // BOS-D1-05: Cache idea detail pages (1 minute acceptable for detail views)
 export const revalidate = 60;
-
-// TODO (BOS-D1-08): Move businesses to D1 table or derive from cards
-// Temporary hard-coded business catalog
-const BUSINESSES = [
-  { id: "PLAT", name: "Platform" },
-  { id: "BRIK", name: "Brikette" },
-  { id: "BOS", name: "Business OS" },
-];
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -44,9 +38,8 @@ export default async function IdeaPage({ params }: PageProps) {
   }
 
   // Get business info from hard-coded catalog
-  const business = idea.Business
-    ? BUSINESSES.find((b) => b.id === idea.Business) ?? null
-    : null;
+  const businessCode = idea.Business ?? "global";
+  const business = BUSINESSES.find((b) => b.id === businessCode) ?? null;
 
   // TODO (BOS-D1-06): Re-enable comments via D1 comments table
   const comments: never[] = [];
@@ -73,7 +66,7 @@ export default async function IdeaPage({ params }: PageProps) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href={idea.Business ? `/boards/${idea.Business}` : "/boards/global"}
+              href={`/boards/${businessCode}`}
               className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
               ← Back to Board

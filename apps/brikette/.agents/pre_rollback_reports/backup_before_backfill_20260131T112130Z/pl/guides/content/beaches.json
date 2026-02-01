@@ -1,0 +1,218 @@
+{
+  "seo": {
+    "title": "Najlepsze plaże w Positano",
+    "description": "Przegląd plaż Positano: Spiaggia Grande, Fornillo, Arienzo i jak do nich dotrzeć."
+  },
+  "linkLabel": "Najlepsze plaże w Positano",
+  "intro": [
+    "Aby mieć pewność, że spędzisz udany dzień na plaży, zebraliśmy listę najważniejszych plaż w okolicy. Zestawienie ma formę tabeli i pokazuje najważniejsze udogodnienia oraz charakter każdej plaży.",
+    "Więcej informacji o każdej plaży znajdziesz po kliknięciu jej nazwy w tabeli poniżej. Przeniesiesz się wtedy do naszych przewodników z dojazdem oraz opisem poszczególnych stref na plaży."
+  ],
+  "toc": [
+    {
+      "href": "#guides-directions",
+      "label": "Przewodniki z dojazdem"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Plaże w Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Plaże w Praiano"
+    },
+    {
+      "href": "#furore-beach",
+      "label": "Plaża w Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Plaże w Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Plaże w Amalfi"
+    },
+    {
+      "href": "#capri-day-trips",
+      "label": "Wycieczki na Capri"
+    }
+  ],
+  "sections": [
+    {
+      "id": "guides-directions",
+      "title": "Przewodniki wraz z dojazdem",
+      "body": [
+        "Stuknij lub kliknij nazwę plaży poniżej, aby przejść do szczegółowego przewodnika. Każdy opis zawiera informacje o dojeździe, o tym gdzie zaczynają się strefy płatne i bezpłatne oraz wskazówki, jak poruszać się między różnymi odcinkami."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Plaże w Positano",
+      "body": [
+        "Fornillo, Spiaggia Grande, Arienzo i Laurito to główne opcje w zasięgu spaceru lub busa z hostelu. Korzystaj z klifowej promenady albo lokalnych wodnych taksówek, aby się między nimi przemieszczać, i zaplanuj z wyprzedzeniem powrót autobusem lub łodzią po długim dniu na słońcu."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Plaże w Praiano",
+      "body": [
+        "Zatoczki w Praiano świetnie nadają się na jednodniowe wypady z Positano. Gavitella to ulubione miejsce na zachód słońca, aperitivo i kolację, a Marina di Praia jest czynną wioską rybacką z klubami plażowymi i niewielkim publicznym pomostem między łodziami."
+      ]
+    },
+    {
+      "id": "furore-beach",
+      "title": "Plaża w Furore",
+      "body": [
+        "Fiordo di Furore to dramatyczna plaża w stylu fiordu, znana z Instagrama. Wejście jest bezpłatne, ale dojazd i strome schody wymagają planowania, zwłaszcza jeśli chcesz wyjechać, zanim niewielki parking się zapełni."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Plaże w Sorrento",
+      "body": [
+        "Kąpielisko Regina Giovanna to najciekawsza opcja na kąpiel w Sorrento. To naturalny basen z darmowym wstępem, chłodną wodą i widokami z klifu — idealny, jeśli chcesz na chwilę uciec od tłumów."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Plaże w Amalfi",
+      "body": [
+        "Miejska plaża w Amalfi leży naprzeciwko mariny i jest otoczona lido, m.in. Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto i Tonino ò Beach. W szczycie sezonu zarezerwuj leżaki z wyprzedzeniem lub przyjdź wcześnie, aby zająć miejsce w części publicznej."
+      ]
+    },
+    {
+      "id": "capri-day-trips",
+      "title": "Wycieczki na Capri",
+      "body": [
+        "Jeśli wybierasz się na Capri, zwróć uwagę na Marina di Mulo, Bagni di Tiberio i Marina Grande. Każde z tych miejsc oferuje płatne leżaki z krystaliczną wodą oraz szybki dostęp do promów wracających do reszty wyspy."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo (Positano)",
+      "pros": [
+        "Plażowe kluby Pupetto, Grassi, Ferdinando i La Marinella zaczynają się od ok. 15 € za komplet leżaków.",
+        "Dwie strefy publiczne, w tym mniej znany „sekretny” odcinek za główną darmową częścią."
+      ],
+      "cons": [
+        "Powrót do Hostel Brikette jest stromy; jeśli jesteś zmęczony, przejdź na główną plażę i wsiądź w lokalny autobus pod górę."
+      ]
+    },
+    {
+      "title": "Spiaggia Grande (Positano)",
+      "pros": [
+        "Klasyczne widoki z pocztówek z miasteczkiem w tle.",
+        "Strefa publiczna dostępna dla tych, którzy przyjdą wystarczająco wcześnie."
+      ],
+      "cons": [
+        "L’Incanto kosztuje około 25 € za leżak, a La Scogliera waha się mniej więcej od 100 € do 400 €.",
+        "Większość gości woli atmosferę i ceny w Fornillo."
+      ]
+    },
+    {
+      "title": "Arienzo (Positano)",
+      "pros": [
+        "Pakiety z leżakami, lunchem i napojami zaczynają się w okolicach 60 € i oferują świetny stosunek jakości do ceny.",
+        "Długie godziny nasłonecznienia i szerokie widoki na wybrzeże."
+      ],
+      "cons": [
+        "Dojście jest wymagające, jeśli nie skorzystasz z wodnej taksówki klubu lub nie pokonasz długich schodów."
+      ]
+    },
+    {
+      "title": "Laurito (Positano)",
+      "pros": [
+        "Da Adolfo zapewnia leżaki przy zamówieniu z restauracji, a zestaw w Villa Tre Ville zaczyna się od około 30 €.",
+        "Dużo słońca i charakterystyczne widoki; Da Adolfo to klasyk, a Villa Tre Ville ma kameralny klimat."
+      ],
+      "cons": [
+        "Najłatwiej dotrzeć łodziami klubowymi, a darmowa część jest bardzo niewielka."
+      ]
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Idealne miejsce na późne popołudnie: zachody słońca, aperitivo i kolacja na tarasie."
+      ],
+      "cons": [
+        "Betonowe platformy dominują w ciągu dnia, więc bez rezerwacji może być ciasno.",
+        "Brak w pełni darmowej strefy — jeśli zostajesz dłużej, licz się z opłatą za leżak."
+      ]
+    },
+    {
+      "title": "Marina di Praia (Praiano)",
+      "pros": [
+        "Klimat wioski rybackiej z trattoriami tuż nad wodą.",
+        "Niewielkie publiczne wejście pozwala popływać bez rezerwacji lido."
+      ],
+      "cons": [
+        "Wąska zatoczka szybciej traci słońce po południu.",
+        "Większość wybrzeża zajmują kluby plażowe, więc leżaki warto rezerwować z wyprzedzeniem."
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Bezpłatne wejście, dramatyczne klify i naturalny cień.",
+        "Popularne miejsce do skoków ze skał i zdjęć — to instagramowy klasyk."
+      ],
+      "cons": [
+        "Logistyka transportu i strome schody utrudniają przyjazd oraz wyjazd, zwłaszcza gdy parking się zapełni."
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath (Sorrento)",
+      "pros": [
+        "Stosunkowo nieznany naturalny basen z krystalicznie czystą wodą.",
+        "Darmowy wstęp i orzeźwiająca alternatywa dla marin w Sorrento."
+      ],
+      "cons": [
+        "Kamieniste zejście wymaga solidnego obuwia i ostrożności przy wejściu do wody.",
+        "Brak zaplecza na miejscu — zabierz wodę, przekąski i ochronę przeciwsłoneczną."
+      ]
+    },
+    {
+      "title": "Plaża w Amalfi",
+      "pros": [
+        "Centralna lokalizacja naprzeciwko przystani promowej i wiele lido do wyboru.",
+        "Wśród opcji znajdziesz Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto i Tonino ò Beach."
+      ],
+      "cons": [
+        "Wysokie ceny w szczycie sezonu; polecamy rezerwację z wyprzedzeniem.",
+        "Przestrzeń publiczna jest ograniczona i szybko się zapełnia każdego ranka."
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Tanie kluby plażowe od ok. 15 € oraz dwie wydzielone darmowe strefy."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Ikoniczna główna plaża z widokami jak z pocztówki i drogimi lido."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Słoneczna zatoczka z pakietami lunchowymi za 60 € i sezonową taksówką wodną."
+    },
+    {
+      "name": "Laurito",
+      "note": "Do Da Adolfo i Villa Tre Ville dopłyniesz łodzią; publiczny odcinek jest maleńki."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Bezpłatna, fiordowa plaża słynąca ze skoków ze skał i spektakularnych widoków."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy plaże są bezpłatne?",
+      "a": [
+        "Każda opisana tu plaża ma jakiś darmowy dostęp, ale płatne lido zapewniają leżaki, parasole i obsługę gastronomiczną. Zaplanuj wizytę, jeśli zależy Ci na pewnym cieniu lub transporcie wodnym."
+      ]
+    }
+  ]
+}

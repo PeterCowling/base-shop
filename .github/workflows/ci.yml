@@ -56,16 +56,8 @@ jobs:
       - name: Audit dependencies
         run: |
           echo "::group::Running pnpm audit"
-          pnpm audit --audit-level=high 2>&1 | tee audit-report.txt || true
+          pnpm audit --audit-level=high
           echo "::endgroup::"
-
-          # Fail if HIGH or CRITICAL vulnerabilities found
-          if grep -q "high\|critical" audit-report.txt; then
-            echo "::error::HIGH or CRITICAL vulnerabilities found in dependencies"
-            echo "Run 'pnpm audit' locally to see details"
-            exit 1
-          fi
-          echo "No HIGH or CRITICAL vulnerabilities found"
 
   dep-alignment:
     name: Dependency Alignment
@@ -243,6 +235,8 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: true
+          require-any: true
           environment: production
 
       # ADMIN-05: Validate environment before deploy

@@ -1,0 +1,218 @@
+{
+  "seo": {
+    "title": "De bedste strande i Positano",
+    "description": "Overblik over Positanos strande: Spiaggia Grande, Fornillo, Arienzo og hvordan du kommer dertil."
+  },
+  "linkLabel": "De bedste strande i Positano",
+  "intro": [
+    "For at sikre, at du får en skøn dag på stranden, har vi samlet en liste over de vigtigste strande. Listen er sat op som en tabel, der giver dig et overblik over faciliteter og services på hver strand.",
+    "Klik på navnet i tabellen nedenfor for at få flere oplysninger om den enkelte strand. Så bliver du sendt videre til vores guider med rejsevejledning og beskrivelser af strandens forskellige afsnit."
+  ],
+  "toc": [
+    {
+      "href": "#guides-directions",
+      "label": "Guider med vejbeskrivelser"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Strande i Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Strande i Praiano"
+    },
+    {
+      "href": "#furore-beach",
+      "label": "Stranden i Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Strande i Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Strande i Amalfi"
+    },
+    {
+      "href": "#capri-day-trips",
+      "label": "Endagsture til Capri"
+    }
+  ],
+  "sections": [
+    {
+      "id": "guides-directions",
+      "title": "Guider med vejbeskrivelser",
+      "body": [
+        "Tryk eller klik på strandenavnene nedenfor for at hoppe ind i vores detaljerede guider. Hver guide dækker transport, hvor gratis- og betalingszoner begynder, samt tips til at finde rundt i de forskellige områder."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Strande i Positano",
+      "body": [
+        "Fornillo, Spiaggia Grande, Arienzo og Laurito er de vigtigste valg i gåafstand eller shuttleafstand fra hostellet. Brug stien langs klippen eller de lokale vandtaxaer til at komme mellem dem, og planlæg i forvejen, hvis du vil have bus- eller bådtur tilbage op ad bakken efter en lang dag."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Strande i Praiano",
+      "body": [
+        "Praianos bugter er oplagte dagsture fra Positano. Gavitella er solnedgangsfavoritten til aperitivo og middag, mens Marina di Praia er en aktiv fiskerlandsby med strandklubber og en lille offentlig platform mellem bådene."
+      ]
+    },
+    {
+      "id": "furore-beach",
+      "title": "Stranden i Furore",
+      "body": [
+        "Fiordo di Furore er den dramatiske fjordlignende strand, du ser på Instagram. Adgangen er gratis, men transporten og de stejle trapper gør planlægning nødvendig, især hvis du vil af sted, før den lille parkeringsplads bliver fyldt."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Strande i Sorrento",
+      "body": [
+        "Regina Giovanna Bath er det oplagte valg til en svømmetur i Sorrento. Det er en naturlig pool med fri adgang, køligt vand og udsigt fra klipperne – perfekt, hvis du vil slippe for menneskemængderne en eftermiddag."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Strande i Amalfi",
+      "body": [
+        "Bystranden i Amalfi ligger over for marinaen og er flankeret af lidoer som Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto og Tonino ò Beach. Bestil i god tid i højsæsonen eller kom tidligt for at få en offentlig plads."
+      ]
+    },
+    {
+      "id": "capri-day-trips",
+      "title": "Endagsture til Capri",
+      "body": [
+        "Hvis du tager en smuttur til Capri, er de vigtigste strandområder Marina di Mulo, Bagni di Tiberio og Marina Grande. Alle tilbyder betalte solsenge med klart vand og hurtig adgang tilbage til øens transportforbindelser."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo (Positano)",
+      "pros": [
+        "Strandklubberne Pupetto, Grassi, Ferdinando og La Marinella starter alle omkring €15 for et solsæt.",
+        "To offentlige afsnit, inklusive en mindre kendt ‘hemmelig’ strækning bag hovedområdet."
+      ],
+      "cons": [
+        "Turen tilbage til Hostel Brikette er stejl; hvis du er træt, så gå til hovedstranden og tag den lokale bus op ad bakken."
+      ]
+    },
+    {
+      "title": "Spiaggia Grande (Positano)",
+      "pros": [
+        "Klassisk Positano-postkortudsigt med byen som bagtæppe.",
+        "Offentligt område tilgængeligt, hvis du ankommer tidligt nok."
+      ],
+      "cons": [
+        "L’Incanto starter omkring €25 per solseng, mens La Scogliera ligger på cirka €100–€400.",
+        "De fleste gæster foretrækker stemningen og værdien ved Fornillo."
+      ]
+    },
+    {
+      "title": "Arienzo (Positano)",
+      "pros": [
+        "Pakker med solsenge, frokost og drikke starter omkring €60 og giver god værdi for beliggenheden.",
+        "Har mange soltimer og panoramaudsigt ned langs kysten."
+      ],
+      "cons": [
+        "Adgangen er udfordrende, medmindre du booker strandklubbens vandtaxa eller tager den lange trappe."
+      ]
+    },
+    {
+      "title": "Laurito (Positano)",
+      "pros": [
+        "Da Adolfo inkluderer solsenge, når du bestiller fra restauranten, mens Villa Tre Ville starter omkring €30.",
+        "Lang soltid og ikoniske udsigter; Da Adolfo er legendarisk, og Villa Tre Ville føles eksklusiv."
+      ],
+      "cons": [
+        "Det er nemmest at komme til bugten med strandklubbernes vandtaxaer, og den gratis sektion er meget lille."
+      ]
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Perfekt sidst på dagen til solnedgangsbad, aperitivo og middag på terrassen."
+      ],
+      "cons": [
+        "Betonplatforme dominerer i dagtimerne, så pladsen kan føles trang uden reservation.",
+        "Ingen helt gratis sektion – forvent at betale for en solseng, hvis du bliver længe."
+      ]
+    },
+    {
+      "title": "Marina di Praia (Praiano)",
+      "pros": [
+        "Fiskerby-stemning med seafoodtrattoriaer lige ved vandet.",
+        "Lille offentlig adgang gør det muligt at bade uden at booke et lido."
+      ],
+      "cons": [
+        "Den smalle bugt mister solen tidligere om eftermiddagen.",
+        "Strandklubber fylder det meste af kysten, så book solsenge i forvejen."
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Gratis adgang med dramatiske klipper og naturlig skygge.",
+        "Populær til cliff jumping og fotografering – det er Instagram-klassikeren."
+      ],
+      "cons": [
+        "Transport og stejle trapper gør ankomst og afgang besværlig, især når parkeringen er fuld."
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath (Sorrento)",
+      "pros": [
+        "Relativt ukendt naturpool med krystalklart vand.",
+        "Gratis adgang og et forfriskende afbræk fra Sorrentos marinaer."
+      ],
+      "cons": [
+        "Stenet adgang kræver solide sko og forsigtighed, når du går i vandet.",
+        "Ingen faciliteter på stedet – medbring vand, snacks og solbeskyttelse."
+      ]
+    },
+    {
+      "title": "Amalfis bystrand",
+      "pros": [
+        "Central placering over for færgehavnen med flere lidoer at vælge imellem.",
+        "Muligheder som Stella Maris, Marina Grande Beach Club, Silver Moon, Bagni Mar di Cobalto og Tonino ò Beach."
+      ],
+      "cons": [
+        "Høje priser i højsæsonen; reservation anbefales.",
+        "Offentligt område er begrænset og fyldes hurtigt hver morgen."
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Prisvenlige strandklubber fra cirka €15 samt to separate gratis zoner."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Ikonisk hovedstrand med postkortudsigt og lidoer til premiumpris."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Solsikker bugt med frokostpakker til €60 og sæsonbetonet vandtaxiservice."
+    },
+    {
+      "name": "Laurito",
+      "note": "Vandtaks-adgang til Da Adolfo eller Villa Tre Ville plus en lille offentlig stribe."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Gratis fjordstrand kendt for cliff jumping og dramatisk natur."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er strandene gratis?",
+      "a": [
+        "Alle strande her har en form for offentlig adgang, men betalingslidoer giver solsenge, parasoller og madservice. Planlæg i forvejen, hvis du vil være sikker på skygge eller vandtaksi."
+      ]
+    }
+  ]
+}

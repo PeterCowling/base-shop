@@ -1,52 +1,52 @@
 {
   "seo": {
-    "title": "Từ Salerno đến Positano bằng phà | Hostel Brikette",
-    "description": "Đi phà từ Salerno tới Positano: lịch chạy, mẹo mua vé và cách tới Hostel Brikette từ bến bằng dịch vụ khuân vác hoặc xe buýt địa phương."
+    "title": "Salerno đến Positano bằng phà | Hostel Brikette",
+    "description": "Salerno đến Positano bằng phà: lịch trình, mẹo mua vé và cách đến Hostel Brikette từ cảng bằng dịch vụ khuân vác hoặc xe buýt địa phương."
   },
   "intro": {
     "title": "Salerno đến Positano — Phà",
-    "body": "Dùng hướng dẫn này để đi từ Salerno đến Positano bằng phà. Bài viết nêu nơi mua vé, điểm lên tàu tại Salerno, mẹo xem giờ và cách tới Hostel Brikette từ bến Positano."
+    "body": "Sử dụng hướng dẫn này để di chuyển từ Salerno đến Positano bằng phà. Hướng dẫn bao gồm vé, nơi lên tàu tại Salerno, mẹo về lịch trình và cách đến Hostel Brikette từ cầu tàu Positano."
   },
   "callouts": {
-    "tip": "Cần phương án khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để xem xe buýt, tuyến kết hợp và dịch vụ sân bay."
+    "tip": "Cần các lựa chọn di chuyển khác? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để tham khảo xe buýt, tuyến kết hợp và dịch vụ đưa đón sân bay."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Tổng quan hành trình",
       "list": [
-        "Phà theo mùa chạy từ Salerno tới Positano với khung cảnh ven biển đẹp mắt.",
-        "Travelmar khai thác nhiều chuyến nhất; hãy chừa thêm thời gian vào mùa cao điểm.",
-        "Phà có thể bị hủy khi thời tiết xấu — luôn kiểm tra thông tin mới trước khi đi."
+        "Phà theo mùa chạy từ Salerno đến Positano với khung cảnh ven biển tuyệt đẹp.",
+        "Travelmar vận hành các dịch vụ thường xuyên nhất; dành thêm thời gian trong mùa cao điểm.",
+        "Phà có thể bị hủy khi thời tiết xấu — luôn kiểm tra thông tin cập nhật trực tiếp trước khi đi."
       ]
     },
     {
       "id": "tickets",
-      "title": "Vé và lịch chạy",
-      "body": "Xem giờ chạy và giá mới nhất trên %URL:https://travelmar.it/en|Travelmar% và %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Lịch phà%.",
+      "title": "Vé và lịch trình",
+      "body": "Kiểm tra thời gian và giá mới nhất trên %URL:https://travelmar.it/en|Travelmar% và %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Lịch trình phà%.",
       "list": [
         "Mua vé trực tuyến trước trong các tháng cao điểm.",
-        "Đến sớm 15–20 phút trước giờ khởi hành để lên tàu thoải mái.",
-        "Giữ vé sẵn; nhân viên sẽ quét hoặc xé trước khi lên tàu."
+        "Đến trước 15–20 phút trước giờ khởi hành để lên tàu thoải mái.",
+        "Giữ vé sẵn; nhân viên sẽ quét hoặc xé vé trước khi lên tàu."
       ]
     },
     {
       "id": "salernoBoarding",
-      "title": "Điểm lên tàu tại Salerno",
+      "title": "Nơi lên tàu tại Salerno",
       "list": [
-        "Đa số chuyến khởi hành từ Piazza della Concordia của Salerno (Travelmar).",
-        "Một số chuyến dùng Molo Manfredi — kiểm tra bến trên vé của bạn.",
-        "Làm theo biển chỉ dẫn ven bờ; nhân viên có thể hướng bạn đến cầu tàu đúng."
+        "Hầu hết các chuyến khởi hành từ Piazza della Concordia của Salerno (Travelmar).",
+        "Một số chuyến sử dụng Molo Manfredi — xác nhận bến tàu trên vé của bạn.",
+        "Làm theo biển báo ở ven biển; nhân viên có thể hướng dẫn bạn đến cầu tàu đúng."
       ]
     },
     {
       "id": "positanoArrival",
       "title": "Đến Positano",
-      "body": "Cần lộ trình từng bước từ bến về hostel? Xem %LINK:ferryDockToBrikette|Bến phà → Hostel Brikette%.",
+      "body": "Để biết tuyến đường từng bước từ cầu tàu đến cửa hostel, đọc %LINK:ferryDockToBrikette|Cầu tàu phà → Hostel Brikette, với hướng dẫn hành lý%.",
       "list": [
-        "Bạn sẽ cập bến chính của Positano (Spiaggia Grande).",
-        "Nếu mang nhiều hành lý, nên dùng dịch vụ khuân vác hoặc xe buýt nội thị Interno.",
-        "Không nên leo dốc mang đồ nặng trong cái nóng mùa hè."
+        "Bạn sẽ đến cầu tàu phà chính của Positano (Spiaggia Grande).",
+        "Với hành lý, chúng tôi khuyến nghị sử dụng dịch vụ khuân vác hoặc xe buýt địa phương Interno.",
+        "Không nên đi bộ lên đồi với hành lý nặng trong cái nóng mùa hè."
       ]
     }
   ]

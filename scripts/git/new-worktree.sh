@@ -22,6 +22,20 @@ fi
 
 cd "$repo_root"
 
+lock_script="${repo_root}/scripts/git/writer-lock.sh"
+if [ -x "$lock_script" ]; then
+  # Worktree creation mutates the shared git common dir. Serialize it.
+  token="$(BASESHOP_WRITER_LOCK_OWNER_PID="$$" "$lock_script" acquire --wait --print-token)"
+  if [ -n "$token" ]; then
+    export BASESHOP_WRITER_LOCK_TOKEN="$token"
+  fi
+
+  release_lock() {
+    "$lock_script" release >/dev/null 2>&1 || true
+  }
+  trap release_lock EXIT INT TERM
+fi
+
 date_str="$(date +%Y-%m-%d)"
 slug="$(printf "%s" "$label" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
 

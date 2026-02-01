@@ -1,23 +1,23 @@
+import { listCardsForBoard } from "@acme/platform-core/repositories/businessOs.server";
+
 import { MyWorkView } from "@/components/my-work/MyWorkView";
-import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { createRepoReader } from "@/lib/repo-reader";
-import type { Card } from "@/lib/types";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
 
 /**
  * /me route - "My Work" view
  * Shows cards assigned to current user
  * MVP-D3: Filtered view for non-admin users
  */
+export const runtime = "edge";
+
 export default async function MyWorkPage() {
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
+  const db = getDb();
   const currentUser = await getCurrentUserServer();
 
   // Fetch all cards (excluding archived)
-  const allCards = await reader.queryCards({
-    includeArchived: false,
-  });
+  const allCards = await listCardsForBoard(db, {});
 
   // Filter: Assigned to me (not Done)
   const assignedToMe = allCards.filter(
@@ -43,15 +43,12 @@ export default async function MyWorkPage() {
     return dueDate >= today && dueDate <= sevenDaysFromNow;
   });
 
-  // Fetch businesses for card metadata
-  const businesses = await reader.getBusinesses();
-
   return (
     <MyWorkView
       assignedToMe={assignedToMe}
       waitingAcceptance={waitingAcceptance}
       dueSoon={dueSoon}
-      businesses={businesses}
+      businesses={BUSINESSES}
       currentUser={currentUser}
     />
   );

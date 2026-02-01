@@ -7,30 +7,29 @@
 
 import Link from "next/link";
 
+import { listCardsForBoard } from "@acme/platform-core/repositories/businessOs.server";
+
 import { CompactCard } from "@/components/board/CompactCard";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import { orderCards } from "@/lib/board-logic";
-import { canViewAllArchived, getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { createRepoReader } from "@/lib/repo-reader";
+import { canViewAllArchived } from "@/lib/current-user";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
 
 /* eslint-disable ds/no-hardcoded-copy, ds/enforce-layout-primitives, ds/no-unsafe-viewport-units -- BOS-04 */
 // i18n-exempt -- BOS-04 [ttl=2026-03-01] Archive page scaffold; real UI in BOS-11+
+export const runtime = "edge";
+
 export default async function ArchivePage() {
   const currentUser = await getCurrentUserServer();
-  const repoRoot = getRepoRoot();
-  const reader = createRepoReader(repoRoot);
+  const db = getDb();
 
   // Fetch all archived cards
-  const allArchivedCards = await reader.queryCards({
-    includeArchived: true,
-  });
+  const allCards = await listCardsForBoard(db, {});
 
   // Filter to only archived cards (exclude active ones)
   // Archived cards are stored in the /archive/ subdirectory
-  const archivedOnly = allArchivedCards.filter((card) =>
-    card.filePath.includes("/archive/")
-  );
+  const archivedOnly = allCards.filter((card) => card.filePath.includes("/archive/"));
 
   // Apply permission filtering
   const visibleCards = canViewAllArchived(currentUser)

@@ -89,7 +89,14 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
   i += 1;
 
   const keyStart = i;
-  while (i < text.length && text[i] !== "|" && text[i] !== "%") i += 1;
+  const tokenType = type.toUpperCase();
+  // For URL tokens, allow % characters in the key (for percent-encoded URLs like %20, %3D, etc.)
+  // For other tokens (LINK, HOWTO), stop at % as before
+  const allowPercentInKey = tokenType === "URL";
+  while (i < text.length && text[i] !== "|") {
+    if (!allowPercentInKey && text[i] === "%") break;
+    i += 1;
+  }
   if (i >= text.length || text[i] !== "|") return null;
   const rawKey = text.slice(keyStart, i);
   i += 1;
@@ -100,7 +107,6 @@ function tryParsePercentToken(text: string, startIndex: number, lang: AppLanguag
   const rawLabel = text.slice(labelStart, i);
   const endIndex = i + 1;
 
-  const tokenType = type.toUpperCase();
   const key = rawKey.trim();
   const label = normalizeTokenLabel(rawLabel);
   if (key.length === 0 || label.length === 0) return null;
@@ -211,6 +217,7 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
           <a
             key={`${keyBase}-extlink-${linkIndex}`}
             href={href}
+            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
             {...(isMailto ? {} : { target: "_blank", rel: "noopener noreferrer" })}
           >
             {label}
@@ -218,7 +225,11 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string): ReactNo
         );
       } else {
         out.push(
-          <Link key={`${keyBase}-link-${linkIndex}`} href={href}>
+          <Link
+            key={`${keyBase}-link-${linkIndex}`}
+            href={href}
+            className="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 transition-colors hover:text-primary-900 hover:decoration-primary-500 dark:text-primary-400 dark:decoration-primary-600 dark:hover:text-primary-300 dark:hover:decoration-primary-400"
+          >
             {label}
           </Link>,
         );

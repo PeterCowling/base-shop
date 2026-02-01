@@ -81,5 +81,24 @@
         }
       ]
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "question": "How much does the Capri to Positano ferry cost?",
+      "answer": "Ferry tickets cost between €22-€35 per person for a one-way trip in 2026. Prices vary slightly by operator and season – expect to pay closer to €30-€35 during July and August peak season. There are no advance purchase discounts, but booking online guarantees you a spot on busy days."
+    },
+    {
+      "question": "Can I bring luggage on the Capri-Positano ferry?",
+      "answer": "Yes, you can bring luggage at no extra charge. Backpacks, suitcases, and large bags are all allowed. Store them in the designated luggage area near the entrance or under your seat. Most ferries have limited overhead storage, so keep valuables with you. From the hostel's experience, a full backpack fits comfortably under the seats on all operators."
+    },
+    {
+      "question": "What happens if my ferry from Capri is cancelled?",
+      "answer": "Ferry cancellations are common in afternoon rough weather. If cancelled, check with all operators at Marina Grande – sometimes one still runs. Otherwise, take the Capri-Sorrento ferry (runs in rougher conditions) then the SITA bus from Sorrento to Positano. Total journey: about 2.5 hours. Your ticket can usually be refunded or used on the next available sailing."
+    },
+    {
+      "question": "Do I need to book the Capri to Positano ferry in advance?",
+      "answer": "It depends on the season. In July and August, morning and early afternoon departures sell out quickly – book online 1-2 days ahead. In shoulder season (April-June, September-October), you can usually buy tickets at the port 30 minutes before departure. From the hostel, we have seen guests miss their preferred crossing in peak season, so advance booking is worth it if you have a tight schedule."
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

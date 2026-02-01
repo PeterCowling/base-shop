@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { z } from "zod";
 
-interface RunStatusData {
-  taskId: string;
-  status: "in-progress" | "complete" | "failed";
-  action: string;
-  target: string;
-  started: string;
-  completed?: string;
-  lastMessage?: string;
-  error?: string;
-  output?: string;
-  commitHash?: string;
-}
+import { readJsonSafely } from "@/lib/json";
+
+const RunStatusDataSchema = z.object({
+  taskId: z.string(),
+  status: z.enum(["in-progress", "complete", "failed"]),
+  action: z.string(),
+  target: z.string(),
+  started: z.string(),
+  completed: z.string().optional(),
+  lastMessage: z.string().optional(),
+  error: z.string().optional(),
+  output: z.string().optional(),
+  commitHash: z.string().optional(),
+});
+
+type RunStatusData = z.infer<typeof RunStatusDataSchema>;
 
 interface RunStatusProps {
   entityId: string;
@@ -47,7 +52,13 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
           throw new Error("Failed to fetch run status");
         }
 
-        const data = await response.json();
+        const json = await readJsonSafely(response);
+        const parsed = RunStatusDataSchema.safeParse(json);
+        if (!parsed.success) {
+          throw new Error("Invalid run status response");
+        }
+
+        const data = parsed.data;
         setRunStatus(data);
         setError(null);
 

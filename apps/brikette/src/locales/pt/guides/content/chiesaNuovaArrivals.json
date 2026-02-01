@@ -1,17 +1,17 @@
 {
   "seo": {
-    "title": "Chiesa Nuova/Bar Internazionale até o Hostel Brikette",
-    "description": "Microrota da parada Chiesa Nuova até o albergue com escadas mínimas; dicas e alternativas de bagagem."
+    "title": "Chiesa Nuova/Bar Internazionale para o Hostel Brikette",
+    "description": "Micro-rota da paragem Chiesa Nuova até ao hostel com escadas mínimas; dicas de bagagem e alternativas."
   },
-  "linkLabel": "Chegadas em Chiesa Nuova/Bar Internazionale: rota até o Hostel Brikette",
-  "intro": "Chegando de ônibus? “Chiesa Nuova” ou “Bar Internazionale” é a parada mais próxima do albergue. Esta microrrota minimiza escadas para joelhos e bagagem.",
+  "linkLabel": "Chiesa Nuova/Bar Internazionale para o Hostel Brikette",
+  "intro": "Chegando de autocarro? \"Chiesa Nuova\" ou \"Bar Internazionale\" é a paragem mais próxima do hostel. Esta micro-rota minimiza escadas para joelhos e bagagem.",
   "image": {
-    "alt": "Parada SITA de Chiesa Nuova em Positano em frente ao Bar Internazionale",
-    "caption": "Parada Positano (Chiesa Nuova) — espere em frente ao Bar Internazionale; no verão chegue um pouco mais cedo porque os ônibus lotam rápido."
+    "alt": "Paragem SITA de Chiesa Nuova em Positano junto ao Bar Internazionale",
+    "caption": "Paragem Positano (Chiesa Nuova) — aguarde junto ao Bar Internazionale; chegue um pouco mais cedo no verão, pois os autocarros podem encher rapidamente."
   },
   "toc": {
     "onThisPage": "Nesta página",
-    "before": "Antes de sair",
+    "before": "Antes de partir",
     "steps": "Passo a passo",
     "knees": "Pernas e bagagem",
     "faqs": "Perguntas frequentes"
@@ -19,51 +19,72 @@
   "sections": [
     {
       "id": "why-stop",
-      "title": "Por que esta parada funciona",
+      "title": "Por que esta paragem funciona",
       "body": [
-        "A parada de ônibus em frente ao café/bar chamado Bar Internazionale fica a cerca de 140 metros do Hostel Brikette."
+        "A paragem de autocarro junto ao café/bar chamado Bar Internazionale fica a cerca de 120 metros (400 pés) do Hostel Brikette — aproximadamente 3 minutos a pé.",
+        "Esta é a paragem de autocarro SITA mais próxima do hostel, com escadas mínimas (apenas a escadaria de entrada)."
+      ]
+    },
+    {
+      "id": "detailed-route",
+      "title": "Instruções a pé do Bar Internazionale para o hostel",
+      "body": [
+        "Saia do autocarro na paragem Bar Internazionale na Viale Pasitea (também chamada paragem Chiesa Nuova).",
+        "Caminhe ao longo da Viale Pasitea na direção de Montepertuso/Chiesa Nuova por aproximadamente 120 metros (400 pés). Caminhará pelo passeio pavimentado do lado direito da estrada.",
+        "Após cerca de 3 minutos, procure a entrada do Hostel Brikette à sua direita – verá uma escadaria curta que leva à receção. Há uma placa ao nível do terraço antes das escadas de entrada.",
+        "Suba as escadas para chegar à porta principal e à receção."
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Horários e bilhetes de ônibus",
+      "title": "Horários de autocarro e bilhetes",
       "body": [
-        "Compre bilhetes da SITA no tabacchi próximo ao ponto ou valide no embarque os bilhetes comprados com antecedência; deixe um extra reservado para retornos tarde da noite.",
-        "Os ônibus noturnos ficam mais espaçados depois das 22h — verifique a tabela de horários com antecedência e planeje-se para o penúltimo serviço para evitar tarifas de táxi."
+        "Compre bilhetes SITA na tabacaria perto da paragem ou valide bilhetes pré-comprados ao embarcar; guarde um extra para regressos à noite.",
+        "Os autocarros noturnos ficam mais espaçados depois das 22:00 — consulte o horário com antecedência e procure apanhar o penúltimo serviço para evitar preços de táxi."
       ]
     }
   ],
   "beforeList": [
-    "Consulte os horários da SITA com antecedência para não acabar esperando na beira da estrada pela última partida.",
-    "Valide o bilhete assim que embarcar — os fiscais multam bilhetes não validados, mesmo em trajetos curtos.",
-    "Avise o albergue se for chegar depois da meia-noite para que a equipe noturna mantenha o código da porta à mão."
+    "Verifique os horários SITA com antecedência para não ficar à espera na berma da estrada pelo último serviço.",
+    "Valide o seu bilhete assim que embarcar — os fiscais multam bilhetes não validados, mesmo em viagens curtas.",
+    "Envie mensagem ao hostel se chegar depois da meia-noite para que o pessoal noturno tenha o código da porta à mão."
   ],
   "stepsList": [
-    "Do ponto em frente ao Bar Internazionale, caminhe pouco mais de 100 metros (330 pés) morro acima pela Viale Pasitea — siga a rota do mapa abaixo para orientações passo a passo.",
-    "Na curva, passe pela placa do Hostel Brikette no nível do terraço e depois suba as escadas no lado direito da estrada até a porta principal."
+    "Saia do autocarro na paragem Bar Internazionale e caminhe ao longo da Viale Pasitea em direção a Montepertuso/Chiesa Nuova.",
+    "Continue no passeio pavimentado por 120 metros (400 pés, cerca de 3 minutos) – siga o percurso a pé no mapa abaixo.",
+    "Procure a entrada do Hostel Brikette à sua direita com uma placa ao nível do terraço, depois suba as escadas até à receção."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Todo o trajeto é pavimentado, com apenas uma pequena escada na entrada.",
-    "Se as subidas incomodarem seus joelhos, faça pausas curtas — o tráfego abranda naturalmente na curva."
+    "Toda a caminhada é pavimentada com apenas uma escadaria curta na entrada.",
+    "Se as subidas incomodam os seus joelhos, faça pausas curtas — o trânsito abranda naturalmente na curva."
   ],
   "kneesDockPrefix": "Chegando primeiro de ferry?",
-  "kneesDockLinkLabel": "Doca → rota de bagagem do hostel",
+  "kneesDockLinkLabel": "Rota de bagagem Cais → Hostel",
   "kneesPorterPrefix": "Precisa de ajuda com malas pesadas?",
-  "kneesPorterLinkLabel": "Guia do serviço de carregador",
+  "kneesPorterLinkLabel": "Guia do serviço de carregadores",
   "faqs": [
     {
-      "q": "Há calçada por todo o caminho?",
-      "a": "Sim — o percurso usa a calçada da via principal, evitando escadarias longas."
+      "q": "Há passeio todo o caminho?",
+      "a": "Sim — o percurso usa o passeio da estrada principal, evitando escadarias longas."
     },
     {
       "q": "Tem iluminação à noite?",
-      "a": "Há iluminação pública; use a lanterna do telefone para enxergar melhor nas vielas."
+      "a": "A iluminação pública está presente; use a lanterna do telemóvel para maior visibilidade em becos."
+    },
+    {
+      "q": "Quanto tempo demora a caminhada?",
+      "a": "Cerca de 3 minutos do Bar Internazionale até à entrada do hostel (120 metros/400 pés)."
+    },
+    {
+      "q": "Conseguirei encontrar a entrada facilmente?",
+      "a": "Sim — procure a placa do Hostel Brikette ao nível do terraço à sua direita enquanto caminha pela Viale Pasitea. A escadaria de entrada está claramente marcada e leva até à receção."
     }
   ],
   "howtoSteps": [
-    "Do ponto “Chiesa Nuova”, caminhe de 2 a 5 minutos até o albergue",
-    "Use as vielas com menos degraus; evite escadarias longas",
-    "Se estiver com malas pesadas, considere pedir que o carregador faça a coleta no ponto"
-  ]
+    "Da paragem 'Chiesa Nuova', caminhe 2–5 minutos até ao hostel",
+    "Use os becos com menos escadas; evite escadarias longas",
+    "Se carregar malas pesadas, considere o serviço de carregadores na paragem"
+  ],
+  "lastUpdated": "2026-01-31"
 }

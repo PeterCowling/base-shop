@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Capri do Positano promem | Hostel Brikette",
     "description": "Jak popłynąć z Capri do Positano promem: porady dotyczące biletów, przewoźników, przyjazdu oraz najłatwiejszego dojścia do hostelu."
@@ -80,6 +81,24 @@
           "preset": "gallery"
         }
       ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Ile kosztuje prom z Capri do Positano?",
+      "answer": "Bilety promowe kosztują od 22 do 35 € na osobę w jedną stronę w 2026 roku. Ceny nieznacznie różnią się w zależności od operatora i sezonu – w szczycie sezonu lipiec-sierpień spodziewaj się cen bliżej 30-35 €. Nie ma zniżek przy wcześniejszym zakupie, ale rezerwacja online gwarantuje miejsce w ruchliwe dni."
+    },
+    {
+      "question": "Czy mogę zabrać bagaż na prom Capri-Positano?",
+      "answer": "Tak, bagaż można zabrać bez dodatkowych opłat. Plecaki, walizki i duże torby są dozwolone. Przechowuj je w wyznaczonym miejscu na bagaż przy wejściu lub pod siedzeniem. Większość promów ma ograniczoną przestrzeń nad głową, więc trzymaj przy sobie cenne rzeczy. Z doświadczenia hostelu pełny plecak wygodnie mieści się pod siedzeniami u wszystkich operatorów."
+    },
+    {
+      "question": "Co się stanie, jeśli mój prom z Capri zostanie odwołany?",
+      "answer": "Odwołania promów są częste przy wzburzonym morzu po południu. Jeśli zostanie odwołany, sprawdź u wszystkich operatorów w Marina Grande – czasami jeden nadal kursuje. W przeciwnym razie weź prom Capri-Sorrento (kursuje w trudniejszych warunkach), a następnie autobus SITA z Sorrento do Positano. Całkowita podróż: około 2,5 godziny. Twój bilet można zwykle zwrócić lub wykorzystać na następny dostępny rejs."
+    },
+    {
+      "question": "Czy muszę rezerwować prom z Capri do Positano z wyprzedzeniem?",
+      "answer": "To zależy od sezonu. W lipcu i sierpniu poranne i wczesne popołudniowe odjazdy szybko się wyprzedają – zarezerwuj online 1-2 dni wcześniej. W sezonie wakacyjnym (kwiecień-czerwiec, wrzesień-październik) zazwyczaj możesz kupić bilety w porcie 30 minut przed wyjazdem. Z doświadczenia hostelu widzieliśmy gości, którzy przegapili preferowane przeprawy w szczycie sezonu, więc wcześniejsza rezerwacja jest warta zachodu, jeśli masz napięty harmonogram."
     }
   ]
 }

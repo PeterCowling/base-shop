@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { Grid } from "@acme/design-system/primitives/Grid";
+
 import { CompactCard } from "@/components/board/CompactCard";
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { User } from "@/lib/current-user";
@@ -15,12 +17,11 @@ interface MyWorkViewProps {
   currentUser: User;
 }
 
-/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
 export function MyWorkView({
   assignedToMe,
   waitingAcceptance,
   dueSoon,
-  businesses,
   currentUser,
 }: MyWorkViewProps) {
   const breadcrumbItems = [
@@ -70,7 +71,8 @@ export function MyWorkView({
                 Waiting Acceptance
               </h2>
               <p className="text-sm text-gray-600">
-                Cards assigned to you in Inbox (click "Accept & Start" to begin)
+                Cards assigned to you in Inbox (click &quot;Accept & Start&quot;
+                to begin)
               </p>
             </div>
             {waitingAcceptance.length === 0 ? (
@@ -78,7 +80,7 @@ export function MyWorkView({
                 No cards waiting acceptance
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-3">
                 {waitingAcceptance.map((card) => (
                   <CompactCard
                     key={card.ID}
@@ -86,7 +88,7 @@ export function MyWorkView({
                     showBusinessTag={true}
                   />
                 ))}
-              </div>
+              </Grid>
             )}
           </section>
 
@@ -101,7 +103,7 @@ export function MyWorkView({
                   Cards with upcoming deadlines
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-3">
                 {dueSoon.map((card) => (
                   <CompactCard
                     key={card.ID}
@@ -109,7 +111,7 @@ export function MyWorkView({
                     showBusinessTag={true}
                   />
                 ))}
-              </div>
+              </Grid>
             </section>
           )}
 
@@ -135,7 +137,7 @@ export function MyWorkView({
                 to claim tasks.
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-3">
                 {assignedToMe.map((card) => (
                   <CompactCard
                     key={card.ID}
@@ -143,7 +145,7 @@ export function MyWorkView({
                     showBusinessTag={true}
                   />
                 ))}
-              </div>
+              </Grid>
             )}
           </section>
         </div>

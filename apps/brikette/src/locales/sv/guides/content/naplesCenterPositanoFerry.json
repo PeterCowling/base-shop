@@ -14,30 +14,36 @@
     {
       "id": "journey",
       "title": "Resan i korthet",
-      "body": "Färjorna mellan Neapel och Positano går som oftast under vår och sommar och kan ställas in vid dåligt väder. Den totala restiden är vanligtvis 1,5–2,5 timmar beroende på fartygstyp och väntetider i hamnen."
+      "body": "Färjorna mellan Neapel och Positano går som oftast under vår och sommar och kan ställas in vid dåligt väder. Den totala restiden är vanligtvis 1,5–2,5 timmar beroende på fartygstyp och väntetider i hamnen.",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "transfer",
-      "title": "Så tar du dig från Napoli Centrale till hamnen",
-      "body": "Det snabbaste kollektivtrafiksättet är spårvagn 1 från Piazza Garibaldi till Municipio (för Molo Beverello) eller Marittima (för Porta di Massa). Taxi är också enkelt och prisvärt för sällskap."
+      "title": "Ta dig till hamnen från Napoli Centrale",
+      "body": "Det snabbaste kollektivtrafiksättet är spårvagn 1 från Piazza Garibaldi till Municipio (för Molo Beverello) eller Marittima (för Porta di Massa). Taxi är också enkelt och prisvärt för sällskap.",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "tickets",
-      "title": "Färjebiljetter och rederier"
+      "title": "Färjebiljetter och rederier",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "boarding",
       "title": "Ombordstigning i hamnen",
-      "body": "Var på plats vid kajen 20–30 minuter i förväg för att byta eventuella bokningskvitton och ställa dig i kö. Följ personalens instruktioner för bagaget och se upp när landgången rör sig i svallvågorna."
+      "body": "Var på plats vid kajen 20–30 minuter i förväg för att byta eventuella bokningskvitton och ställa dig i kö. Följ personalens instruktioner för bagaget och se upp när landgången rör sig i svallvågorna.",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "arrival",
-      "title": "När du anländer till Positano"
+      "title": "Ankomst till Positano",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "fallback",
       "title": "Om färjorna ställs in",
-      "body": "Om turerna ställs in på grund av väder eller sjögång byter du till tåg- och bussrutten via Sorrento. Den tar längre tid men fungerar i de flesta väder. Använd den här reserven: %HOWTO:naples-center-train-bus|Neapel centrum → Positano med tåg och sedan buss%."
+      "body": "Om turerna ställs in på grund av väder eller sjögång byter du till tåg- och bussrutten via Sorrento. Den tar längre tid men fungerar i de flesta väder. Använd den här reserven: %HOWTO:naples-center-train-bus|Neapel centrum → Positano med tåg och sedan buss%.",
+      "lastUpdated": "2026-01-31"
     }
   ]
 }

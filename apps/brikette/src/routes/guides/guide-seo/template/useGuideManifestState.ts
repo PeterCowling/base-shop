@@ -113,11 +113,11 @@ export function useGuideManifestState(params: {
     };
   }, [lang, manifestEntry, preferManualWhenUnlocalized]);
 
-  const resolvedStatus = (loaderData?.status ?? manifestEntry?.status ?? "draft") as GuideManifestEntry["status"];
+  const resolvedStatus = (loaderData?.status ?? overrides[guideKey]?.status ?? manifestEntry?.status ?? "draft") as GuideManifestEntry["status"];
 
   const checklistSnapshot = useMemo<ChecklistSnapshot | undefined>(() => {
     const raw = loaderData?.checklist;
-    const fallbackStatus = (loaderData?.status ?? manifestEntry?.status ?? "draft") as ChecklistSnapshot["status"];
+    const fallbackStatus = (loaderData?.status ?? overrides[guideKey]?.status ?? manifestEntry?.status ?? "draft") as ChecklistSnapshot["status"];
     if (Array.isArray(raw)) {
       return { status: fallbackStatus, items: raw as GuideChecklistItem[] } satisfies ChecklistSnapshot;
     }
@@ -131,12 +131,13 @@ export function useGuideManifestState(params: {
     return manifestEntry
       ? buildGuideChecklist(manifestEntry, { includeDiagnostics: true, lang, overrides })
       : undefined;
-  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang, checklistVersion, overrides]);
+  }, [loaderData?.checklist, loaderData?.status, manifestEntry, lang, checklistVersion, overrides, guideKey]);
 
   const draftUrl = useMemo(() => {
     if (!manifestEntry) return undefined;
-    return `/${lang}/draft/${resolveDraftPathSegment(manifestEntry)}`;
-  }, [lang, manifestEntry]);
+    const overridePath = overrides[guideKey]?.draftPathSegment;
+    return `/${lang}/draft/${resolveDraftPathSegment(manifestEntry, overridePath)}`;
+  }, [lang, manifestEntry, overrides, guideKey]);
 
   const isDraftRoute = Boolean(canonicalPathname?.includes("/draft/"));
   const shouldShowEditorialPanel = Boolean(manifestEntry) && (isDraftRoute || resolvedStatus !== "live");

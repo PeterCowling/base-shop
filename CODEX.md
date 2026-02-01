@@ -5,7 +5,7 @@ Domain: Repo
 Last-reviewed: 2026-01-20
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-24
+Last-updated: 2026-02-01
 Last-updated-by: Claude Opus 4.5
 ---
 
@@ -17,47 +17,57 @@ This file contains Codex-specific guidance. For universal commands, see `AGENTS.
 
 **IMPORTANT**: Codex does not have safety hooks like Claude Code. You MUST follow these rules based on documentation alone.
 
-### Destructive Commands — STOP and Ask Protocol
+### Destructive / History-Rewriting Commands — STOP (Do Not Run)
 
-Before running ANY of these commands, **STOP and ask the user for explicit confirmation**:
+Codex has no tool-level safety hooks in this repo. Treat the following as **forbidden for agents** (even if the user asks).
 
 | Command/Pattern | Why Dangerous | Required Action |
 |-----------------|---------------|-----------------|
-| `git reset --hard` | Loses all uncommitted work permanently | STOP, explain risk, ask user |
-| `git push --force` | Overwrites remote history, affects all collaborators | STOP, explain risk, ask user |
-| `git clean -fd` | Deletes all untracked files permanently | STOP, explain risk, ask user |
-| `rm -rf` on project directories | Irreversible deletion | STOP, explain risk, ask user |
-| `pnpm test` (unfiltered) | Spawns too many Jest workers, crashes machine | Use targeted tests instead |
-| Any commit to `main` branch | Protected branch | Work on `work/*` branches only |
+| `git reset --hard` | Loses uncommitted work; often used during “git is confusing” moments | STOP. Do not run. Ask for human guidance. |
+| `git clean -fd` | Permanently deletes untracked files (often includes new work) | STOP. Do not run. Ask for human guidance. |
+| `git push --force`, `git push -f`, `git push --force-with-lease` | Overwrites remote history; can destroy teammates’ commits | STOP. Do not run. Ask for human guidance. |
+| `git checkout -- .`, `git restore .` | Discards local modifications across the repo | STOP. Do not run. Ask for human guidance. |
+| `git stash drop`, `git stash clear` | Permanently deletes stashed work | STOP. Do not run. Ask for human guidance. |
+| `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
+| `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
+| `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
+| Any commit to `main` branch | Protected branch; bypasses PR/CI gates | Work on `work/*` branches only. |
 
-### How to STOP and Ask
+### How to STOP and Hand Off
 
-When you encounter a situation requiring a destructive command:
+When you hit a situation that *seems* to require one of the commands above:
 
 1. **Do NOT run the command**
-2. **Explain to the user**: "This operation would run `[command]` which [danger]. This is irreversible."
-3. **Offer alternatives**: "Instead, I can [safer alternative]."
-4. **Wait for explicit approval**: Only proceed if user explicitly confirms
+2. **Capture diagnostics** (safe, read-only):
+   - `git status --porcelain=v1 -b`
+   - `git diff --stat`
+   - `git log --oneline -10`
+   - `git stash list`
+3. **Explain** which command would be risky and why it’s forbidden for agents
+4. **Offer safer alternatives** (checkpoint commit, new branch, revert, worktree isolation)
+5. **Ask the user to decide next steps** and point them to `docs/git-safety.md` if a human must perform a destructive recovery
 
 **Example**:
 ```
 User: Clean up all the untracked files
-You: This would run `git clean -fd` which permanently deletes all untracked files.
-     This cannot be undone. Files that would be deleted include: [list them]
+You: The command you’re asking for is `git clean -fd`, which permanently deletes untracked files.
+     That is a common cause of accidental rollbacks / lost work, so I won’t run it as an agent.
 
-     Alternatives:
-     - Review untracked files first: `git status`
+     Safer options:
+     - Review what’s untracked: `git status --porcelain`
+     - Dry-run the clean: `git clean -n`
      - Delete specific files manually
-     - Add files to .gitignore instead
+     - Add patterns to `.gitignore` so they stop appearing
 
-     Do you want me to proceed with `git clean -fd`? (yes/no)
+     If you still want a full clean, please follow `docs/git-safety.md` and run it yourself.
 ```
 
 ### Reference
 
 For the full rationale behind these safety rules, see:
-- `AGENTS.md` § "Git Rules → Destructive commands"
+- `AGENTS.md` § "Git Rules → Destructive / history-rewriting commands"
 - `.agents/safety/rationale.md`
+- `docs/git-safety.md`
 
 ## Environment Awareness
 
@@ -94,7 +104,7 @@ git remote -v  # If empty or unreachable, commits are local-only
 
 ## Type Intelligence (MCP)
 
-When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before pushing (and CI re-enforces it before merge).
 
 Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 
@@ -196,10 +206,11 @@ When uncertain about the right approach:
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
+| `fact-check` | Verify documentation accuracy against repo state | `.claude/skills/fact-check/SKILL.md` |
 | `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
 | `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
 | `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
-| `session-reflection` | Capture learnings after work | `.claude/skills/session-reflection/SKILL.md` |
+| `session-reflect` | Capture learnings and improve docs/skills | `.claude/skills/session-reflect/SKILL.md` |
 
 ## What Stays the Same
 

@@ -44,5 +44,40 @@
       "id": "walk",
       "title": "Fußweg von der Bushaltestelle"
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "How much does it cost to get from Naples center to Positano by train and bus?",
+      "a": "The total cost is around €7.20: €4.60 for the Circumvesuviana train from Naples to Sorrento, plus €2.60 for the SITA bus from Sorrento to Positano (2026 prices). This is the cheapest public transport option."
+    },
+    {
+      "q": "How long does the journey take from Naples to Positano?",
+      "a": "Total journey time is 2.5-3 hours: 70 minutes on the train, 50 minutes on the bus, plus 20-40 minutes waiting for connections in Sorrento. Allow 3-3.5 hours total to account for potential delays."
+    },
+    {
+      "q": "Can I buy tickets on the train or bus?",
+      "a": "You can buy train tickets at Napoli Garibaldi station from ticket machines or the ticket office, but you must validate before boarding. SITA bus tickets cannot be purchased on board — you must buy them from a bar, tabacchi, or newsstand near Sorrento station before getting on the bus."
+    },
+    {
+      "q": "Is this route suitable for travelers with heavy luggage?",
+      "a": "Yes, but it can be challenging during peak times. Both the train and bus have limited luggage space, so board early if you have large bags. The walk from Chiesa Nuova bus stop to the hostel is flat and under 2 minutes, so luggage is manageable once you arrive. If you prefer, consider using our porter services or a private transfer."
+    },
+    {
+      "q": "What time is the last bus from Sorrento to Positano?",
+      "a": "The last bus varies by season. In summer (July-August), the last bus is usually around 9-10pm. In winter (November-March), it can be as early as 7-8pm. Always check the current timetable at sitasudtrasporti.it before traveling, especially on Sundays and holidays when services are reduced."
+    },
+    {
+      "q": "Is there a direct train or bus from Naples to Positano?",
+      "a": "No direct train exists — you must change at Sorrento. The Curreri bus offers a direct connection from Naples to Positano, but schedules are limited (usually 2-3 services per day). The train-bus combination runs more frequently and is cheaper."
+    },
+    {
+      "q": "Wie lese ich den SITA-Busfahrplan?",
+      "a": [
+        "**Zeilen lesen:** Die Zeilen in der ersten Spalte repräsentieren verschiedene Bushaltestellen entlang der Route.",
+        "**Spalten lesen:** Der Fahrplan weist jeder geplanten Fahrt einen alphabetischen Buchstaben zu, der als Überschrift in jeder Spalte aufgeführt ist. Wenn Sie Montag bis Samstag reisen, suchen Sie nach den Spalten 'F' und 'G'. Wenn Sie an einem Sonntag oder Feiertag reisen, suchen Sie nach den Spalten 'G' und 'H'.",
+        "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Ankunftshaltestellen aus und überprüfen Sie dann die Spalten, um zu sehen, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um beispielsweise die Abfahrtszeit von Sorrento zu sehen, schauen Sie sich die Sorrento-Zeile an. Um die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) zu sehen, schauen Sie sich die Positano (Chiesa Nuova)-Zeile an."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

@@ -81,5 +81,24 @@
         }
       ]
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "Hvor lang tid tar fergen fra Capri til Positano?",
+      "a": "Reisen tar vanligvis 30–60 minutter avhengig av fartøy og operatør. Direkte avganger er raskest, mens de som stopper ved andre havner tar lengre tid."
+    },
+    {
+      "q": "Kan jeg kjøpe billetter på fergen?",
+      "a": "Nei, kjøp billetter på forhånd fra operatørens billettluke i Capri havn eller på nett. Om bord kan du ikke kjøpe billetter."
+    },
+    {
+      "q": "Hva skjer hvis fergen kanselleres?",
+      "a": "Ved kansellering på grunn av vær, ta tog- og bussruten via Sorrento. Den er mer pålitelig i dårlig vær. Se vår %LINK:naplesCenterTrainBus|tog- og bussguide% for detaljer."
+    },
+    {
+      "q": "Hvordan kommer jeg fra Positano kai til Hostel Brikette?",
+      "a": "Ta Interno Positano-bussen fra Piazza dei Mulini til Chiesa Nuova holdeplass, deretter gå 140 meter langs Via G. Marconi og sving til høyre opp trappene til hostellet. Se vår %LINK:ferryDockToBrikette|fergekaieguide% for bilder."
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

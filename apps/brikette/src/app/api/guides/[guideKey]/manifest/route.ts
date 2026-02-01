@@ -6,6 +6,8 @@ import { isGuideAuthoringEnabled } from "@/routes/guides/guide-authoring/gate";
 import {
   getGuideManifestEntry,
   getGuideManifestEntryWithOverrides,
+  listGuideManifestEntries,
+  resolveDraftPathSegment,
   type GuideArea,
   type GuideStatus,
 } from "@/routes/guides/guide-manifest";
@@ -61,6 +63,12 @@ export async function GET(
   // Get merged manifest entry
   const mergedEntry = getGuideManifestEntryWithOverrides(guideKey as GuideKey, overrides);
 
+  // Compute the effective draft path segment
+  const effectiveDraftPath = resolveDraftPathSegment(
+    mergedEntry ?? baseEntry,
+    override?.draftPathSegment,
+  );
+
   return NextResponse.json({
     ok: true,
     guideKey,
@@ -70,6 +78,7 @@ export async function GET(
           areas: mergedEntry.areas,
           primaryArea: mergedEntry.primaryArea,
           status: mergedEntry.status,
+          draftPathSegment: effectiveDraftPath,
         }
       : null,
     // The raw override (if any) - useful for UI to show what's been customized
@@ -78,6 +87,7 @@ export async function GET(
     base: {
       areas: baseEntry.areas,
       primaryArea: baseEntry.primaryArea,
+      draftPathSegment: baseEntry.draftPathSegment,
     },
   });
 }
@@ -116,10 +126,11 @@ export async function PUT(
     return NextResponse.json({ ok: false, error: "Invalid request body" }, { status: 400 });
   }
 
-  // Extract areas, primaryArea, and status from the request
+  // Extract areas, primaryArea, status, and draftPathSegment from the request
   const areas = Array.isArray(record.areas) ? record.areas as GuideArea[] : undefined;
   const primaryArea = typeof record.primaryArea === "string" ? record.primaryArea as GuideArea : undefined;
   const status = typeof record.status === "string" ? record.status as GuideStatus : undefined;
+  const draftPathSegment = typeof record.draftPathSegment === "string" ? record.draftPathSegment : undefined;
 
   // Handle clearing the override
   if (record.clear === true) {
@@ -137,12 +148,44 @@ export async function PUT(
     }
   }
 
-  // If no areas, primaryArea, or status provided, nothing to update
-  if (!areas && !primaryArea && !status) {
+  // If no areas, primaryArea, status, or draftPathSegment provided, nothing to update
+  if (!areas && !primaryArea && !status && !draftPathSegment) {
     return NextResponse.json(
-      { ok: false, error: "No areas, primaryArea, or status provided" },
+      { ok: false, error: "No areas, primaryArea, status, or draftPathSegment provided" },
       { status: 400 },
     );
+  }
+
+  // Validate draftPathSegment uniqueness (only for draft guides)
+  if (draftPathSegment) {
+    // Get current status (from request or existing)
+    const currentOverrides = loadGuideManifestOverridesFromFs();
+    const currentStatus = status ?? currentOverrides[guideKey as GuideKey]?.status ?? baseEntry.status;
+
+    // Only allow editing draftPathSegment for draft guides
+    if (currentStatus !== "draft") {
+      return NextResponse.json(
+        { ok: false, error: "Draft path can only be edited for guides in draft status" },
+        { status: 400 },
+      );
+    }
+
+    // Check for uniqueness across all guides
+    const allEntries = listGuideManifestEntries();
+    for (const entry of allEntries) {
+      if (entry.key === guideKey) continue; // Skip self
+
+      // Get the effective draft path for this entry (with overrides)
+      const entryOverride = currentOverrides[entry.key];
+      const entryDraftPath = entryOverride?.draftPathSegment ?? entry.draftPathSegment ?? `guides/${entry.slug}`;
+
+      if (entryDraftPath === draftPathSegment) {
+        return NextResponse.json(
+          { ok: false, error: `Draft path "${draftPathSegment}" is already used by guide "${entry.key}"` },
+          { status: 400 },
+        );
+      }
+    }
   }
 
   // Build the override object
@@ -150,6 +193,7 @@ export async function PUT(
     ...(areas ? { areas } : {}),
     ...(primaryArea ? { primaryArea } : {}),
     ...(status ? { status } : {}),
+    ...(draftPathSegment ? { draftPathSegment } : {}),
   };
 
   // Validate the override
@@ -226,6 +270,12 @@ export async function PUT(
   const updatedOverrides = loadGuideManifestOverridesFromFs();
   const mergedEntry = getGuideManifestEntryWithOverrides(guideKey as GuideKey, updatedOverrides);
 
+  // Compute the effective draft path segment
+  const effectiveDraftPath = resolveDraftPathSegment(
+    mergedEntry ?? baseEntry,
+    updatedOverrides[guideKey as GuideKey]?.draftPathSegment,
+  );
+
   return NextResponse.json({
     ok: true,
     guideKey,
@@ -234,6 +284,7 @@ export async function PUT(
           areas: mergedEntry.areas,
           primaryArea: mergedEntry.primaryArea,
           status: mergedEntry.status,
+          draftPathSegment: effectiveDraftPath,
         }
       : null,
     override: mergedParsed.data,

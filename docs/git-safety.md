@@ -1,9 +1,11 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-02-01
 
 # Git Safety Guide (Agent Runbook)
+
+> **Humans:** Start with `docs/git-and-github-workflow.md` for the day‑to‑day Git/GitHub user experience, then come back here for the full safety rules.
 
 > **⚠️ CRITICAL:** On January 14, 2026, a `git reset --hard` command destroyed 8 applications worth of work.
 > Recovery took days. This guide exists to prevent that from ever happening again.
@@ -31,12 +33,15 @@ These commands can permanently destroy work:
 | `git reset --hard` | 🔴 CATASTROPHIC | Destroys uncommitted changes AND moves HEAD |
 | `git reset --hard <commit>` | 🔴 CATASTROPHIC | Deletes ALL work since that commit |
 | `git clean -fd` | 🔴 HIGH | Permanently deletes untracked files |
-| `git checkout -- .` | 🔴 HIGH | Discards all local modifications |
+| `git checkout -- .`, `git restore .` | 🔴 HIGH | Discards all local modifications |
+| `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
 | `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes |
 | `git stash clear` | 🟠 MEDIUM | Loses all stashes |
 | `git push --force` | 🔴 HIGH | Overwrites remote history (affects team) |
 | `git push -f` | 🔴 HIGH | Same as above (shorthand) |
-| `git rebase -i` | 🟠 MEDIUM | Interactive mode can rewrite/lose history |
+| `git push --force-with-lease` | 🔴 HIGH | Safer force-push variant, but still rewrites remote history |
+| `git rebase` (incl. `-i`) | 🟠 MEDIUM | Rewrites history; can lose commits |
+| `git commit --amend` | 🟠 MEDIUM | Rewrites the last commit (dangerous after push) |
 
 **If one of these commands seems necessary, STOP and read the alternatives below.**
 
@@ -47,7 +52,8 @@ These commands can permanently destroy work:
 | `git reset --hard` | Commit first, then discuss what to discard |
 | `git reset --hard <commit>` | **Never do this.** Ask for help instead. |
 | `git clean -fd` | Move files to `archive/` folder |
-| `git checkout -- .` | Commit first, then discuss what to discard |
+| `git checkout -- .`, `git restore .` | Commit first, then discuss what to discard |
+| `git rebase`, `git commit --amend` | Create a new commit; let PR squash-merge handle history |
 | `git push --force` | Create a new branch instead |
 | Fixing a "broken" git state | Share `git status` output and ask for help |
 
@@ -137,13 +143,6 @@ Examples:
 │ Auto-deploy │
 │ to staging  │
 └─────────────┘
-        │
-        ▼
-┌─────────────┐
-│ Manual      │
-│ promote to  │
-│ prod        │
-└─────────────┘
 ```
 
 ---
@@ -167,12 +166,14 @@ Git hooks run automatically before commits and pushes:
 
 | Hook | Script | What It Does |
 |------|--------|--------------|
+| `pre-commit` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Enforces single-writer in the main checkout (linked worktrees are excluded) |
+| `pre-commit` | [block-commit-on-protected-branches.sh](../scripts/git-hooks/block-commit-on-protected-branches.sh) | Blocks commits directly on `main`/`master` |
 | `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret env files |
 | `pre-commit` | [no-partially-staged.js](../scripts/git-hooks/no-partially-staged.js) | Blocks partially staged files before lint-staged runs |
 | `pre-commit` | `lint-staged --no-stash` | Runs check-only linting on staged files without backup stashes |
-| `pre-commit` | `pnpm typecheck` | Runs typecheck before committing |
-| `pre-commit` | `pnpm lint` | Runs lint before committing |
-| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks non-fast-forward pushes to protected branches |
+| `pre-commit` | `pnpm typecheck:staged` | Runs typecheck only for workspaces affected by staged changes |
+| `pre-push` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Enforces single-writer in the main checkout (linked worktrees are excluded) |
+| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks direct pushes to protected branches and blocks non-fast-forward updates |
 | `pre-push` | `pnpm typecheck` | Runs typecheck before pushing |
 | `pre-push` | `pnpm lint` | Runs lint before pushing |
 
@@ -196,24 +197,15 @@ GitHub enforces these rules on the `main` branch:
 | Auto-merge enabled | ✅ On | Merges PRs when checks pass |
 | Block force pushes | ✅ On | Prevents history destruction |
 
+**Recommended required check:** `Merge Gate / Gate` (single always-present merge check).
+
 **Configuration:** GitHub → Settings → Rules → Rulesets → `main`
 
-### Layer 4: Claude Code Hooks (AI Level)
+### Layer 4: Agent Runner Guardrails (Optional)
 
-Claude Code has hooks that intercept destructive commands before execution:
+Some agent tools can be configured to deny-list destructive commands (tool permissions, wrappers, command filters, etc.).
 
-**Location:** [.claude/settings.json](../.claude/settings.json)
-
-**Blocked commands:**
-- `git reset --hard`
-- `git clean -fd`
-- `git checkout -- .`
-- `git stash drop`
-- `git stash clear`
-- `git push --force`
-- `git push -f`
-- `git rebase -i`
-- `--no-verify`
+**Do not rely on this layer.** Assume *no* tool will save you from a bad git command. Follow the rules above.
 
 ---
 
@@ -230,8 +222,8 @@ git branch --show-current
 git status --porcelain
 # If not empty, commit them
 
-# 3. Pull latest changes
-git pull origin HEAD
+# 3. Sync remote refs (no merge/rebase)
+git fetch origin --prune
 ```
 
 ### During Session
@@ -301,8 +293,8 @@ git push origin HEAD
 
 4. **Verify staging and promote:**
    - Check GitHub Actions tab
-   - Confirm staging URL (see `docs/deployment-workflow.md`)
-   - After visual review, trigger production deploy (see `docs/deployment-workflow.md`)
+   - Use the workflow logs/summary to find preview URLs and deploy outputs (see `docs/development.md`)
+   - Follow any app/runbook‑specific post‑deploy checks (see `docs/deploy-health-checks.md` and `docs/runbooks/`)
 
 ### Cleaning Up
 
@@ -312,13 +304,22 @@ git branch -d work/<branch-name>
 git push origin --delete work/<branch-name>
 ```
 
-### Emergency: Bypassing Hooks
+### Emergency: Bypassing Hooks (Humans only)
 
 **⚠️ Use only when absolutely necessary:**
 
 ```bash
 # Skip git hooks (local only)
-SKIP_GIT_HOOKS=1 git push --force
+git push --no-verify
+
+# Or skip simple-git-hooks specifically
+SKIP_SIMPLE_GIT_HOOKS=1 git push
+
+# Custom safety overrides (last resort)
+SKIP_WRITER_LOCK=1 <git command>
+ALLOW_COMMIT_ON_PROTECTED_BRANCH=1 git commit ...
+ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push ...
+# Note: direct-push override does NOT allow non-fast-forward/force pushes.
 
 # Skip pre-commit
 git commit --no-verify -m "Emergency fix"
@@ -341,11 +342,9 @@ git commit --no-verify -m "Emergency fix"
 ### "I accidentally committed to main"
 
 1. Don't push yet!
-2. Create a backup branch: `git branch backup-$(date +%Y%m%d)`
-3. Reset main to remote: `git reset origin/main`
-4. Create work branch: `git checkout -b work/$(date +%Y-%m-%d)-my-feature`
-5. Cherry-pick the commit: `git cherry-pick backup-<date>`
-6. Push work branch: `git push -u origin HEAD`
+2. Create a work branch at your current commit: `git checkout -b work/$(date +%Y-%m-%d)-my-feature`
+3. Push the work branch: `git push -u origin HEAD`
+4. Continue via PR from the work branch (do not try to “clean up” `main` as an agent)
 
 ### "I want to undo a change"
 
@@ -355,7 +354,7 @@ git commit --no-verify -m "Emergency fix"
 git revert <commit-hash>
 
 # Restore a specific file to an earlier version
-git checkout <commit-hash> -- path/to/file
+git restore --source <commit-hash> -- path/to/file
 ```
 
 **NOT safe (don't do this):**
@@ -426,6 +425,6 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 ---
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-02-01
 
 **Questions?** Open an issue on GitHub or check the related documentation above.

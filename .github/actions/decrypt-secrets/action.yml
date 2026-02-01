@@ -6,6 +6,18 @@ inputs:
     description: "Age private key for SOPS decryption (skip decryption if empty)"
     required: false
     default: ""
+  require-key:
+    description: "If true, fail when sops-age-key is missing (recommended for protected deploy paths)"
+    required: false
+    default: "false"
+  require-file:
+    description: "If true, fail when the app-path SOPS file is missing (only applies when app-path is set)"
+    required: false
+    default: "false"
+  require-any:
+    description: "If true, fail when decrypting all apps and no SOPS files are found"
+    required: false
+    default: "false"
   app-path:
     description: "Path to the app directory (e.g., apps/cms)"
     required: false
@@ -21,20 +33,52 @@ runs:
     - name: Install SOPS
       shell: bash
       run: |
+        SOPS_VERSION="v3.9.4"
+        SOPS_BIN="sops-${SOPS_VERSION}.linux.amd64"
+        SOPS_URL="https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/${SOPS_BIN}"
+        # sha256 for sops-v3.9.4.linux.amd64
+        SOPS_SHA256="5488e32bc471de7982ad895dd054bbab3ab91c417a118426134551e9626e4e85"
+
         if ! command -v sops &> /dev/null; then
-          curl -LO https://github.com/getsops/sops/releases/download/v3.9.4/sops-v3.9.4.linux.amd64
-          chmod +x sops-v3.9.4.linux.amd64
-          sudo mv sops-v3.9.4.linux.amd64 /usr/local/bin/sops
+          curl -L --fail -o "${SOPS_BIN}" "${SOPS_URL}"
+          echo "${SOPS_SHA256}  ${SOPS_BIN}" | sha256sum -c -
+          chmod +x "${SOPS_BIN}"
+
+          if [ -w /usr/local/bin ]; then
+            mv "${SOPS_BIN}" /usr/local/bin/sops
+            SOPS_PATH="/usr/local/bin/sops"
+          else
+            mkdir -p "${HOME}/.local/bin"
+            mv "${SOPS_BIN}" "${HOME}/.local/bin/sops"
+            echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+            export PATH="${HOME}/.local/bin:${PATH}"
+            SOPS_PATH="${HOME}/.local/bin/sops"
+          fi
         fi
-        sops --version
+        if [ -n "${SOPS_PATH:-}" ]; then
+          "${SOPS_PATH}" --version
+        else
+          sops --version
+        fi
 
     - name: Decrypt secrets
       shell: bash
       env:
         SOPS_AGE_KEY: ${{ inputs.sops-age-key }}
       run: |
+        set -euo pipefail
+
+        require_key="${{ inputs.require-key }}"
+        require_file="${{ inputs.require-file }}"
+        require_any="${{ inputs.require-any }}"
+
         # Skip if no SOPS_AGE_KEY provided
         if [ -z "$SOPS_AGE_KEY" ]; then
+          if [ "$require_key" = "true" ] || [ "$require_file" = "true" ] || [ "$require_any" = "true" ]; then
+            echo "::error::SOPS_AGE_KEY is required for this workflow run, but was not provided." >&2
+            echo "Add SOPS_AGE_KEY to repository secrets (or adjust require-key=false for untrusted PR contexts)." >&2
+            exit 1
+          fi
           echo "No SOPS_AGE_KEY provided - skipping decryption"
           echo "To enable decryption, add SOPS_AGE_KEY to repository secrets"
           exit 0
@@ -47,25 +91,59 @@ runs:
 
           if [ -f "$SOPS_FILE" ]; then
             echo "Decrypting $SOPS_FILE -> $OUTPUT_FILE"
-            sops -d "$SOPS_FILE" > "$OUTPUT_FILE"
+            tmp="$(mktemp -p "$(dirname "$OUTPUT_FILE")" ".env.${{ inputs.environment }}.tmp.XXXXXX")"
+            sops -d "$SOPS_FILE" > "$tmp"
+            chmod 600 "$tmp"
+            mv "$tmp" "$OUTPUT_FILE"
             echo "Successfully decrypted secrets for ${{ inputs.app-path }}"
           else
+            if [ "$require_file" = "true" ] || [ "$require_key" = "true" ]; then
+              echo "::error::Missing SOPS file: $SOPS_FILE" >&2
+              echo "Either add the file, or set require-file=false (and/or require-key=false) for this workflow." >&2
+              exit 1
+            fi
             echo "No SOPS file found at $SOPS_FILE (skipping)"
           fi
         else
           # Decrypt all .sops files in apps/
           echo "Decrypting all ${{ inputs.environment }} SOPS files..."
-          find apps -name ".env.${{ inputs.environment }}.sops" -type f | while read -r sops_file; do
+          mapfile -t sops_files < <(find apps -name ".env.${{ inputs.environment }}.sops" -type f)
+          if [ "${#sops_files[@]}" -eq 0 ]; then
+            if [ "$require_any" = "true" ] || [ "$require_key" = "true" ]; then
+              echo "::error::No SOPS files found in apps/ for environment '${{ inputs.environment }}'." >&2
+              echo "Either add at least one .env.${{ inputs.environment }}.sops file, or set require-any=false (and/or require-key=false) for this workflow." >&2
+              exit 1
+            fi
+            echo "No SOPS files found (nothing to decrypt)."
+            exit 0
+          fi
+
+          fail=0
+          for sops_file in "${sops_files[@]}"; do
             output_file="${sops_file%.sops}"
             echo "Decrypting $sops_file -> $output_file"
-            sops -d "$sops_file" > "$output_file"
+            tmp="$(mktemp -p "$(dirname "$output_file")" ".env.${{ inputs.environment }}.tmp.XXXXXX")"
+            if sops -d "$sops_file" > "$tmp"; then
+              chmod 600 "$tmp"
+              mv "$tmp" "$output_file"
+            else
+              echo "::error::Failed to decrypt $sops_file" >&2
+              rm -f "$tmp"
+              fail=1
+            fi
           done
+
+          if [ "$fail" -ne 0 ]; then
+            exit "$fail"
+          fi
           echo "Decryption complete"
         fi
 
     - name: Verify decrypted files exist
       shell: bash
       run: |
+        set -euo pipefail
+
         if [ -n "${{ inputs.app-path }}" ]; then
           OUTPUT_FILE="${{ inputs.app-path }}/.env.${{ inputs.environment }}"
           if [ -f "$OUTPUT_FILE" ]; then
@@ -74,6 +152,11 @@ runs:
             echo "Warning: $OUTPUT_FILE does not exist (no SOPS file to decrypt)"
           fi
         else
-          echo "Decrypted files:"
-          find apps -name ".env.${{ inputs.environment }}" -type f || echo "No decrypted files found"
+          mapfile -t decrypted < <(find apps -name ".env.${{ inputs.environment }}" -type f)
+          if [ "${#decrypted[@]}" -eq 0 ]; then
+            echo "No decrypted files found."
+          else
+            echo "Decrypted files:"
+            printf '%s\n' "${decrypted[@]}"
+          fi
         fi

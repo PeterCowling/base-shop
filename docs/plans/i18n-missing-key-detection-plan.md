@@ -131,12 +131,12 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `apps/brikette/src/test/i18n/i18n-render-audit.test.tsx` (new)
+  - `apps/brikette/src/test/content-readiness/i18n/i18n-render-audit.test.ts` (new)
 - **Depends on:** TASK-01
 - **Confidence:** 90%
   - **Implementation:** 92% — Uses existing Jest + RTL patterns. Mock pattern for `useTranslation()` with real JSON dictionaries is established in [guides.test-utils.tsx](apps/brikette/src/test/routes/guides/__tests__/guides.test-utils.tsx). Rendering components and scanning text content is standard RTL usage.
   - **Approach:** 88% — Dedicated suite avoids noise from tests that intentionally mock without full dictionaries. Initial component set (Footer, Experiences, etc.) chosen for namespace diversity and high traffic. Slight uncertainty on whether 4 components is enough signal vs too narrow — can expand incrementally.
-  - **Impact:** 90% — Test-only addition. Complements (doesn't replace) existing `english-fallback.test.ts` which catches static JSON duplication. No production behaviour changes.
+  - **Impact:** 90% — Test-only addition. Complements (doesn't replace) existing `guide-english-fallbacks.test.ts` which catches static JSON duplication. No production behaviour changes.
 - **Acceptance:**
   - The suite renders a small, explicitly listed set of representative routes/components (initial set; expandable):
     - Experiences listing page content
@@ -163,7 +163,7 @@ This keeps the detection useful (focused on user-visible regressions) while stil
   - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern i18n-render-audit` — PASS (4 tests)
   - Found 1335 placeholder phrases across 3 locales (de, pl, hu) — reported as warnings
 - **Implementation notes:**
-  - Created `apps/brikette/src/test/i18n/i18n-render-audit.test.ts`
+  - Created `apps/brikette/src/test/content-readiness/i18n/i18n-render-audit.test.ts`
   - Scans locale JSON files for placeholder phrases (e.g., "Traduzione in arrivo", "Tłumaczenie w przygotowaniu")
   - Default mode: warn-only (test passes, prints report to stdout)
   - Strict mode: `I18N_MISSING_KEYS_MODE=fail` makes test fail on findings
@@ -261,4 +261,3 @@ This keeps the detection useful (focused on user-visible regressions) while stil
 
 - 2026-01-27: Default to report-only (warn) to avoid blocking on known partial locales; keep strict mode as an opt-in switch.
 - 2026-01-27: Use a dedicated audit suite rather than global test hooks to prevent noise from tests that intentionally don’t seed translations.
-

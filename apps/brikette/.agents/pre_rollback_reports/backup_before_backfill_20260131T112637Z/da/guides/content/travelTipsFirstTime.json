@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Rejsetips til Positano for førstegangsbesøgende",
+    "description": "Vigtige råd om transport, etikette, pakning og fælder du bør undgå — med hostelvenlige anbefalinger."
+  },
+  "linkLabel": "Rejsetips til Positano for førstegangsbesøgende",
+  "intro": [
+    "Første gang i Positano? Her får du tips til ankomst, bagage, betalinger og forbindelser, så turen forløber uden stress."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Planlæg ankomsten",
+      "body": [
+        "Forudbestil togsnit + bus eller færge, når det er muligt; morgenafgange undgår både varme og køer.",
+        "Har du tung bagage? Kombinér SITA-bussen til Chiesa Nuova med en portør fra molen, så de stejleste trapper klares for dig."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bagage og trapper",
+      "body": [
+        "Pak let i bløde tasker eller rygsække, der klarer smalle trapper og shuttle-bagagerum.",
+        "Ankommer du tidligt? Brug bagageopbevaringen langs Via dei Mulini og udforsk byen hænderne fri indtil check-in."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing og reservationer",
+      "body": [
+        "Læg strandtid og længere vandreture før kl. 10 eller efter kl. 16, hvor gaderne er køligere og trafikken roligere.",
+        "Book restauranter, bådture og shuttle til Gudernes sti mindst en dag i forvejen i højsæsonen."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Betaling og kontanter",
+      "body": [
+        "Kort accepteres bredt, men mange caféer og tabacchi har minimumsbeløb – hav €5–€10 sedler klar.",
+        "Hæveautomater virker, men gebyrerne varierer; hæv mellemstore beløb én gang og fordel kontanterne."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Forbindelse og backup",
+      "body": [
+        "Køb et italiensk eSIM (TIM/Vodafone) eller bekræft roaming – dækningen er bedst højere oppe ad bakken.",
+        "Download offlinekort, færgeplaner og vejbeskrivelser til hostellet til de tidspunkter, hvor mobildata forsvinder."
+      ]
+    }
+  ],
+  "tips": [
+    "Gem bus- og færgetider samt ankomstinstruktioner offline til øjeblikke uden signal.",
+    "Medbring en genopfyldelig flaske (ca. 750 ml) og et let lag – dagene er varme, og briserne kan være kølige over stranden om aftenen."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg klare mig med håndbagage?",
+      "a": [
+        "Ja – pak hurtigttørrende tøj, planlæg at bruge hostellets vaskeri, og tag rejsestørrelser med for at holde dig inden for flyselskabernes grænser."
+      ]
+    },
+    {
+      "q": "Behøver jeg en strøm-adapter?",
+      "a": [
+        "Italien bruger 230V Type F/L stik; medbring en universel adapter, hvis dine stik ikke passer til EU-standarden."
+      ]
+    }
+  ]
+}

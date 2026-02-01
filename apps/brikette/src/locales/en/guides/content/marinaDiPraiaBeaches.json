@@ -31,6 +31,10 @@
       "label": "Swim & comfort"
     },
     {
+      "href": "#budget",
+      "label": "Budget & hostel tips"
+    },
+    {
       "href": "#pairing",
       "label": "Pair it with Fiordo"
     }
@@ -56,9 +60,18 @@
       "id": "getting-there",
       "title": "Getting there and back by bus",
       "body": [
-        "From Hostel Brikette, walk down Via Pasitea to the Sponda stop and catch the SITA bus towards Amalfi. Ask the driver for “Marina di Praia” so they know you want that stop.",
-        "Get off at the signed stop between Praiano and Furore and follow the stone path downhill for two minutes. The walk is short and paved the whole way.",
-        "For the return, wait at the same stop on the opposite side. Check the posted timetable when you arrive and aim for an earlier bus if you have dinner plans. Review our %LINK:sitaTickets|SITA bus guide% if you want a quick refresher on tickets and validation."
+        "From Hostel Brikette, walk down Via Pasitea to the Sponda stop and catch the SITA bus towards Amalfi. Ask the driver for \"Marina di Praia\" so they know you want that stop.",
+        "The journey takes about 20 minutes. You'll wind along the coastal road with great views - sit on the sea side if you can. The driver will usually announce Marina di Praia, but keep an eye out for the signed stop after you pass through the main part of Praiano.",
+        "Get off at the signed stop between Praiano and Furore and follow the stone path downhill for two minutes. The walk is short and paved the whole way. You'll pass a few small shops and cafes before reaching the beach level.",
+        "For the return, wait at the same stop on the opposite side. Check the posted timetable when you arrive and aim for an earlier bus if you have dinner plans. Buses can fill up in summer, so don't wait for the absolute last service - give yourself a backup option.",
+        "If you miss the bus or it's full, you can walk up to the main road and flag down the next one, or share a taxi back to Positano (around €35-€45 split between 3-4 people). Review our %LINK:sitaTickets|SITA bus guide% if you want a quick refresher on tickets and validation."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-coastal-road.webp",
+          "alt": "SITA bus on the scenic Amalfi Coast road between Positano and Praiano",
+          "caption": "The bus ride from Positano takes about 20 minutes along the coastal road"
+        }
       ]
     },
     {
@@ -66,14 +79,19 @@
       "title": "Beach layout and operators",
       "body": [
         "A small free strip sits in the centre of the cove. Bring a thick towel or mat because the pebbles are rough. Water shoes make the entry much easier.",
-        "Most of the waterfront is the Marina di Praia Beach Club, with loungers, umbrellas, showers, bathrooms, and kayak rentals. In high season, expect about €25–€35 for a chair-and-umbrella package.",
-        "Along the walkway you’ll find Da Armandino and Il Pirata, plus kiosks for cold drinks and snacks. Card machines can be unreliable, so carry enough cash for beach extras or a simple lunch."
+        "Most of the waterfront is the Marina di Praia Beach Club, with loungers, umbrellas, showers, bathrooms, and kayak rentals. In high season, expect about €25-€35 for a chair-and-umbrella package.",
+        "Along the walkway you'll find Da Armandino and Il Pirata, plus kiosks for cold drinks and snacks. Card machines can be unreliable, so carry enough cash for beach extras or a simple lunch."
       ],
       "images": [
         {
           "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
           "alt": "Pebble beach lined with loungers at Marina di Praia on the Amalfi Coast",
           "caption": "Most loungers are in the main lido area, with a small free strip in the centre"
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-beach-club-entrance.webp",
+          "alt": "Entrance to Marina di Praia Beach Club with umbrellas and loungers visible",
+          "caption": "The beach club offers full facilities including showers, bathrooms, and equipment rentals"
         }
       ]
     },
@@ -101,6 +119,30 @@
         "If you want sun, plan for midday. Shade arrives as the cliffs block the light, so the cove can feel cool after a long swim.",
         "Mobile reception can dip inside the gorge. Download bus times and any reservation info before you go.",
         "When the shade arrives, a light shirt or towel helps between swims, especially if the breeze picks up."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-swimmers.webp",
+          "alt": "Clear turquoise water at Marina di Praia with swimmers near the pebble shore",
+          "caption": "The protected cove keeps the water calm — perfect for a long swim"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Hostel guest tips: budget & practicalities",
+      "body": [
+        "From the hostel's experience hosting hundreds of beach-goers, here's what works best: pack light with just a daypack — towel, water shoes, sunscreen, a light cover-up, and your bus ticket. Leave valuables in your hostel locker.",
+        "The free strip fills by 11am on weekends in July and August. Arrive before 10:30am or plan to rent a lounger. If you're traveling solo, the lido makes it easier to leave your stuff while you swim.",
+        "Bring a reusable water bottle — the kiosks charge €2–€3 for small bottles. Fill up at the hostel before you leave.",
+        "If you're on a tight budget, skip the lido and bring snacks from the shops near Chiesa Nuova. The free strip is perfectly fine for a few hours, and you can always grab a cold drink from the kiosk later."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-beach-setup.webp",
+          "alt": "Beach umbrellas and loungers set up at Marina di Praia lido",
+          "caption": "The lido setup includes showers and secure loungers — worth it if you're staying all day"
+        }
       ]
     },
     {
@@ -108,7 +150,7 @@
       "title": "Pair Marina di Praia with Fiordo di Furore",
       "body": [
         "For a full day out, combine this cove with %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%. Both stops are on the same bus line, so you can visit one first, then ride a couple of stops to the other.",
-        "Treat Fiordo as a short photo-and-dip stop and do your longer swim time at Marina di Praia. It’s a better “beach day” base with more space and services.",
+        "Treat Fiordo as a short photo-and-dip stop and do your longer swim time at Marina di Praia. It's a better \"beach day\" base with more space and services.",
         "The coastal walk between them is scenic but steep in parts. Only do it if you have energy and good shoes."
       ],
       "images": [
@@ -163,6 +205,12 @@
       "q": "How late can I stay for dinner and still get back to Hostel Brikette?",
       "a": [
         "The last SITA buses towards Positano vary by month but typically run until around 21:30 in summer. Check the posted timetable when you arrive and aim for the second-to-last service in case one is full. After the final bus, taxis from Praiano to Positano cost €35–€45, so split with travel mates if you linger longer."
+      ]
+    },
+    {
+      "q": "Can I leave my valuables on the beach while I swim?",
+      "a": [
+        "If you're on the free strip, take turns swimming with your group or bring only what you need (towel, water bottle, sunscreen). The lido loungers are more secure since staff are around, but still avoid leaving phones and wallets unattended. Your safest bet is to leave valuables in your hostel locker before you come."
       ]
     }
   ]

@@ -48,7 +48,7 @@ export const CardFrontmatterSchema = z.object({
   Type: z.literal("Card"),
   Lane: LaneSchema,
   Priority: PrioritySchema,
-  Owner: z.string().min(1),
+  Owner: z.string(),
   ID: z.string().min(1),
   Title: z.string().optional(),
   "Title-it": z.string().optional(),

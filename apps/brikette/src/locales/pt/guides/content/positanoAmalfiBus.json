@@ -64,5 +64,15 @@
       "title": "Chegada a Amalfi",
       "body": "A maioria dos serviços termina no terminal rodoviário de Amalfi, junto ao porto. A partir daí pode apanhar ligações para Ravello e Salerno ou explorar a pé o centro histórico de Amalfi. A planear o regresso? Veja %HOWTO:amalfi-positano-bus|Amalfi para Positano de autocarro%."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Como leio o horário dos autocarros SITA?",
+      "a": [
+        "**Ler as linhas:** As linhas na primeira coluna representam as diferentes paragens de autocarro ao longo da rota.",
+        "**Ler as colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se está a viajar de segunda a sábado, procure as colunas 'F' e 'G'. Se está a viajar ao domingo ou num feriado, use as colunas 'G' e 'H'.",
+        "**Combinar linhas e colunas:** Escolha as suas paragens de partida e chegada, depois verifique as colunas para ver quando os autocarros estão disponíveis e a que horas chegam ao seu destino. Por exemplo, para ver a hora de partida de Sorrento, veja a linha Sorrento. Para ver a hora de chegada a Positano (Chiesa Nuova / Bar Internazionale), consulte a linha Positano (Chiesa Nuova)."
+      ]
+    }
   ]
 }

@@ -23,7 +23,7 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
     <div
       data-cy={TEST_IDS.root}
       data-testid={TEST_IDS.root}
-      className={`not-prose my-6 grid items-start gap-3 sm:grid-cols-2 ${className}`}
+      className={`not-prose my-8 grid items-start gap-4 sm:grid-cols-2 ${className}`}
     >
       {items.map(({ src, alt, width = 1200, height = 800, caption }) => {
         const aspect = width > 0 && height > 0 ? `${width}/${height}` : undefined;
@@ -33,7 +33,7 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
         return (
           <figure
             key={key}
-            className="w-fit max-w-full overflow-hidden rounded-md border border-slate-200 dark:border-slate-700"
+            className="group w-fit max-w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800/50"
           >
             <CfResponsiveImage
               src={src}
@@ -41,11 +41,11 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
               width={width}
               height={height}
               preset="gallery"
-              className="block h-auto w-auto max-w-full"
+              className="block h-auto w-auto max-w-full transition-opacity group-hover:opacity-95"
               data-aspect={aspect}
             />
             {caption ? (
-              <figcaption className="px-3 py-2 text-xs text-slate-600 dark:text-slate-300">
+              <figcaption className="px-4 py-3 text-sm leading-snug text-slate-700 dark:text-slate-300">
                 {caption}
               </figcaption>
             ) : null}

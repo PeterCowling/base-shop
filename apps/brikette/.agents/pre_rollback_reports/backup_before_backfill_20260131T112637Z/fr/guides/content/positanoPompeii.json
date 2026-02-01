@@ -1,0 +1,135 @@
+{
+  "seo": {
+    "title": "Positano - Pompéi : comment y aller",
+    "description": "Itinéraire détaillé pour visiter Pompéi depuis Positano en bus + train ou ferry + train (en été)."
+  },
+  "linkLabel": "Positano - Pompéi : comment y aller",
+  "intro": [
+    "Pompéi est immense, spectaculaire et facile à surcharger. Ce plan t'aide à voir l'essentiel sans passer toute la journée dans les transports.",
+    "Attends-toi à de la chaleur, de la poussière et de la foule en été : emporte de l'eau, de la protection solaire et sois réaliste sur la portion du site que tu peux couvrir."
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "En un coup d'œil"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "Tarifs et horaires"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "Services sur place"
+    },
+    {
+      "href": "#getting-there",
+      "label": "S'y rendre"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "Parcours autonome"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "title": "En un coup d'œil",
+      "body": [
+        "La taille de Pompéi impressionne dès l'entrée : presque toute la ville a été mise au jour et se parcourt facilement à pied.",
+        "C'est une sortie peu coûteuse si tu visites en autonomie — le contexte historique reste parlant sans guide privé.",
+        "Herculanum est plus petite et mieux conservée, à privilégier si tu veux voir des fresques et mosaïques intactes plutôt que les larges rues de Pompéi.",
+        "Depuis Positano en transports publics, prévois chaleur, poussière et trajets longs."
+      ]
+    },
+    {
+      "id": "entry-cost-and-hours",
+      "title": "Tarifs et horaires d'ouverture",
+      "body": [
+        "Les tarifs et horaires varient selon la saison : vérifie le site officiel du Parco Archeologico di Pompei avant de partir.",
+        "Le billet plein tarif tourne généralement autour de la quinzaine d'euros; la dernière entrée va de la fin d'après-midi au début de soirée selon le mois."
+      ]
+    },
+    {
+      "id": "other-facilities",
+      "title": "Services sur place",
+      "body": [
+        "Récupère le plan gratuit au point d'information à côté des guichets : il facilite grandement l'orientation dans les ruines.",
+        "Tu peux louer des audioguides ou engager des guides agréés à l'entrée si tu souhaites davantage de commentaires.",
+        "Des stands de restauration existent mais restent limités — arrive avec beaucoup d'eau, surtout pendant les mois chauds.",
+        "Tu peux laisser tes bagages à la gare de Pompeii Scavi (service payant) ou les déposer gratuitement juste après l'entrée du site."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "S'y rendre",
+      "body": [
+        "Depuis Positano, prends le bus SITA jusqu'à Sorrente; achète les billets au tabac ou à bord et compte environ une heure de trajet.",
+        "À Sorrente, monte les escaliers vers les quais de la Circumvesuviana et prends le train local pour ‘Pompei Scavi – Villa dei Misteri’.",
+        "En sortant de la gare, tourne à droite : tu atteindras l'entrée Porta Marina Superiore en moins d'une minute, sur la gauche."
+      ]
+    },
+    {
+      "id": "self-guided-tour",
+      "title": "Parcours autonome",
+      "body": [
+        "À l'entrée, tourne à gauche vers le point d'information pour récupérer le plan et, si besoin, organiser la consigne avant d'acheter les billets aux guichets en face.",
+        "Une fois à l'intérieur, repère Porta Marina Superiore sur le plan : tu te tiens sur Via Marina avec une signalétique claire devant toi.",
+        "Suis Via Marina vers l'amphithéâtre en faisant des détours par les maisons, thermes et forums qui t'intéressent, puis reviens sur l'axe principal.",
+        "Après l'amphithéâtre, traverse la partie basse du site pour voir d'autres points forts sans refaire le même chemin.",
+        "Cet itinéraire couvre généralement 60 à 80 % des sites majeurs en bien moins de temps que si tu essayais d'arpenter toutes les rues."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Bus jusqu'à Sorrente",
+        "text": "Prends le bus SITA depuis Positano jusqu'à la gare principale de Sorrente (environ 60 minutes)."
+      },
+      {
+        "name": "Train pour Pompeii Scavi",
+        "text": "Monte sur les quais de la Circumvesuviana et prends le train pour ‘Pompei Scavi – Villa dei Misteri’."
+      },
+      {
+        "name": "Marche jusqu'à l'entrée",
+        "text": "En sortant de la gare, tourne à droite : Porta Marina Superiore se trouve à une cinquantaine de mètres sur la gauche."
+      }
+    ]
+  },
+  "tipsTitle": "Conseils du jour J",
+  "tips": [
+    "Récupère le plan gratuit avant de passer les tourniquets afin de planifier les détours sans revenir sur tes pas.",
+    "Emporte beaucoup d'eau et remplis tes gourdes dès que tu vois une fontaine : en été, les kiosques peuvent avoir de longues files.",
+    "Note les points photo ou les fresques à revoir à la sortie; on les oublie facilement sous la chaleur."
+  ],
+  "warningsTitle": "À savoir absolument",
+  "warnings": [
+    "En haute saison, les files pour le bus SITA et la Circumvesuviana peuvent ajouter 20 à 30 minutes à chaque trajet : garde une marge dans ton planning.",
+    "De vastes portions du site sont en plein soleil; évite les visites à midi si tu es sensible à la chaleur."
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Quelle est la meilleure entrée ?",
+      "a": [
+        "Porta Marina Superiore, juste à côté de la gare Pompei Scavi, est la plus pratique pour les visiteurs autonomes — à quelques mètres du train et proche de la consigne."
+      ]
+    },
+    {
+      "q": "Peut-on visiter sans guide ?",
+      "a": [
+        "Oui. Le plan officiel gratuit est détaillé et la plupart des bâtiments principaux disposent de panneaux en italien et en anglais. Des audioguides et guides agréés restent disponibles pour davantage de contexte."
+      ]
+    },
+    {
+      "q": "Existe-t-il une consigne sécurisée ?",
+      "a": [
+        "Tu peux laisser les petits bagages à la gare Pompei Scavi moyennant un supplément, et le site offre une consigne gratuite juste après l'entrée."
+      ]
+    }
+  ]
+}

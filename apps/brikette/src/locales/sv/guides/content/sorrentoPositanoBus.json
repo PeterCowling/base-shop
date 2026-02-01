@@ -1,10 +1,10 @@
 {
   "seo": {
     "title": "Sorrento till Positano med buss | Hostel Brikette",
-    "description": "Steg-för-steg från Sorrento till Hostel Brikette med SITA-buss till Positano (Chiesa Nuova): biljetter, tidtabellstips och vägen från hållplatsen till vandrarhemmet."
+    "description": "Steg för steg från Sorrento till Hostel Brikette via SITA-buss till Positano (Chiesa Nuova): biljetter, tidtabellstips och vägen från hållplatsen till vandrarhemmet."
   },
   "intro": {
-    "title": "Sorrento till Positano — SITA-buss",
+    "title": "Sorrento till Positano – SITA-buss",
     "body": "Använd den här guiden när du reser från Sorrento till Positano. Du tar SITA Sud-bussen och går av vid Positano (Chiesa Nuova), den hållplats som ligger närmast vandrarhemmet. Vi går igenom biljettgrunderna, hur du läser tidtabellen och hur du tar dig från hållplatsen till vandrarhemmet."
   },
   "callouts": {
@@ -13,40 +13,55 @@
   "sections": [
     {
       "id": "journey",
-      "title": "Översikt över resan",
-      "body": "Räkna med 1–1,5 timme under högsäsong. Bussarna går ofta mellan Sorrento och Positano. Köp biljetten innan du kliver ombord och ha den redo för validering."
+      "title": "Resan i korthet",
+      "body": "Räkna med 1–1,5 timme under högsäsong. Bussarna går ofta mellan Sorrento och Positano. Köp biljetten innan du kliver ombord och ha den redo för validering.",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "tickets",
       "title": "Biljetter och validering",
-      "body": "SITA (SITA Sud) kör den här sträckan. Köp biljetter i tidningskiosker eller tabacchi. Visa biljetten för föraren när du kliver ombord och behåll den till resans slut. Validera den före användning där det krävs."
+      "body": "SITA (SITA Sud) kör den här sträckan. Köp biljetter i tidningskiosker eller tabacchi. Visa biljetten för föraren när du kliver ombord och behåll den till resans slut. Validera den före användning där det krävs.",
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "timetable",
-      "title": "Läs tidtabellen",
+      "title": "Läsa tidtabellen",
       "list": [
         "Raderna i första kolumnen visar varje busshållplats längs linjen.",
         "Kolumnerna motsvarar schemalagda turer som markeras med bokstäver.",
-        "Reser du måndag till lördag? Använd kolumnerna ”F” och ”G”.",
-        "Reser du på söndag eller helgdag? Använd kolumnerna ”G” och ”H”."
-      ]
+        "Reser du måndag till lördag? Använd kolumnerna \"F\" och \"G\".",
+        "Reser du på söndag eller helgdag? Använd kolumnerna \"G\" och \"H\"."
+      ],
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "arrival",
       "title": "Ankomst till Positano (Chiesa Nuova)",
       "list": [
-        "Det finns två SITA-hållplatser listade för Positano: ”Sponda” och ”Chiesa Nuova”.",
-        "För vandrarhemmet är ”Positano (Chiesa Nuova)” rätt hållplats på Via G. Marconi.",
-        "Hållplatsen ligger utanför caféet/baret ”Bar Internazionale”."
-      ]
+        "Det finns två SITA-hållplatser listade för Positano: \"Sponda\" och \"Chiesa Nuova\".",
+        "För vandrarhemmet är \"Positano (Chiesa Nuova)\" rätt hållplats på Via G. Marconi.",
+        "Hållplatsen ligger utanför caféet/baren \"Bar Internazionale\"."
+      ],
+      "lastUpdated": "2026-01-31"
     },
     {
       "id": "walk",
-      "title": "Gå till Hostel Brikette",
+      "title": "Promenera till Hostel Brikette",
       "list": [
         "Gå drygt 100 meter (330 fot) längs Via G. Marconi.",
         "Håll utkik efter vår skylt ovanför terrassen på andra våningen till höger.",
         "Sväng höger uppför trapporna för att nå vandrarhemmets huvudentré."
+      ],
+      "lastUpdated": "2026-01-31"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA-busstidtabellen?",
+      "a": [
+        "**Läsning av raderna:** Raderna i den första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsning av kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje planerad resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på söndag eller en helgdag, leta efter kolumnerna 'G' och 'H'.",
+        "**Kombination av rader och kolumner:** Välj dina avgångs- och ankomsthållplatser, kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de anländer till din destination. Till exempel, för att se avgångstiden från Sorrento, titta på Sorrento-raden. För att se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), titta på Positano (Chiesa Nuova)-raden."
       ]
     }
   ]

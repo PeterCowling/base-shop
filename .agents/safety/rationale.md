@@ -4,7 +4,7 @@ This document explains WHY each safety rule exists, including incident history a
 
 ## Git Safety Rules
 
-### `git reset --hard` — PROHIBITED without explicit user confirmation
+### `git reset --hard` — PROHIBITED for agents
 
 **Why dangerous:**
 - Permanently discards all uncommitted changes (staged and unstaged)
@@ -12,24 +12,21 @@ This document explains WHY each safety rule exists, including incident history a
 - Often used reflexively when "things are messy" but destroys valuable work
 
 **Incident history:**
-- **2026-01-14**: Agent ran `git reset --hard` during cleanup, losing several hours of uncommitted work. Required manual reconstruction from memory and partial backups. See `docs/RECOVERY-PLAN-2026-01-14.md` for details.
+- **2026-01-14**: An agent ran `git reset --hard` during cleanup, losing large amounts of work. Recovery took days. See `docs/historical/RECOVERY-PLAN-2026-01-14.md` for details.
 
 **Safe alternatives:**
 | Instead of | Do this |
 |------------|---------|
-| `git reset --hard` | `git stash` (preserves changes, can recover later) |
-| Undo last commit | `git reset --soft HEAD~1` (keeps changes staged) |
-| Discard one file | `git checkout -- <file>` (targeted, not global) |
-| Start fresh | `git stash && git checkout -b new-branch` |
+| `git reset --hard` | Make a checkpoint commit on a `work/*` branch, then use `git revert` to undo changes safely |
+| Undo last commit | `git revert HEAD` (creates a new commit; no history rewrite) |
+| Discard one file | `git restore --source <commit-hash> -- <file>` (targeted, not global) |
+| Start fresh | Create a new worktree from a clean base and abandon the broken one (`scripts/git/new-worktree.sh <label>`) |
 
-**When it might be legitimate:**
-- User explicitly requests it after understanding the risk
-- Working directory has no valuable uncommitted changes
-- Always list what will be lost BEFORE running
+**If a human truly needs to do this anyway:** follow `docs/git-safety.md` and create a backup branch first. Agents must not run `git reset --hard`.
 
 ---
 
-### `git push --force` — PROHIBITED without explicit user confirmation
+### `git push --force` — PROHIBITED for agents
 
 **Why dangerous:**
 - Overwrites remote history
@@ -43,18 +40,15 @@ This document explains WHY each safety rule exists, including incident history a
 **Safe alternatives:**
 | Instead of | Do this |
 |------------|---------|
-| `git push --force` | `git push --force-with-lease` (fails if remote changed) |
-| Fix pushed commit | `git revert <commit>` (creates new commit, preserves history) |
-| Update branch | `git pull --rebase && git push` (integrate remote changes first) |
+| `git push --force` | Create a new branch and PR instead of rewriting history |
+| Fix pushed commit | `git revert <commit>` (creates a new commit; preserves history) |
+| Update branch | `git fetch origin --prune` then merge (avoid rebase) |
 
-**When it might be legitimate:**
-- Rebasing a feature branch that only you are working on
-- Cleaning up commits before PR merge (use `--force-with-lease`)
-- Always confirm no one else has pushed to the branch
+**If a human truly needs to do this anyway:** follow `docs/git-safety.md` and coordinate with the team. Agents must not force-push.
 
 ---
 
-### `git clean -fd` — PROHIBITED without explicit user confirmation
+### `git clean -fd` — PROHIBITED for agents
 
 **Why dangerous:**
 - Permanently deletes ALL untracked files
@@ -69,10 +63,7 @@ This document explains WHY each safety rule exists, including incident history a
 | Remove specific files | `rm <file>` (targeted, reversible with trash) |
 | Ignore generated files | Add to `.gitignore` instead of deleting |
 
-**When it might be legitimate:**
-- After reviewing `git clean -n` output carefully
-- In CI where working directory should be pristine
-- User explicitly confirms after seeing what will be deleted
+**If a human truly needs to do this anyway:** review `git clean -n` output first and follow `docs/git-safety.md`. Agents must not run `git clean -fd`.
 
 ---
 
@@ -117,7 +108,7 @@ This document explains WHY each safety rule exists, including incident history a
 
 ## File Safety Rules
 
-### `rm -rf` on project directories — PROHIBITED without explicit user confirmation
+### `rm -rf` on project directories — PROHIBITED for agents
 
 **Why dangerous:**
 - Recursive deletion is permanent
@@ -132,10 +123,7 @@ This document explains WHY each safety rule exists, including incident history a
 | Clean build outputs | `pnpm clean` or specific `rm -rf dist/` |
 | Delete specific files | `rm <file>` (non-recursive, targeted) |
 
-**When it might be legitimate:**
-- Cleaning known build artifacts (`dist/`, `.next/`, `node_modules/`)
-- User explicitly confirms the exact path
-- Always double-check the path before running
+**If a human truly needs to do this anyway:** double-check the exact path and follow `docs/git-safety.md`. Agents must not run recursive deletes on project directories.
 
 ---
 

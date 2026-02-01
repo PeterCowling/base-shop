@@ -48,5 +48,48 @@
         "At gå op ad bakke med tunge tasker kan være anstrengende i sommervarmen."
       ]
     }
-  ]
+  ],
+  "faqs": [
+    {
+      "q": "Can I bring a large backpack or roller bag on the ferry?",
+      "a": "Yes, but bags larger than 45cm × 35cm × 20cm cost €2 extra per bag. Buy the luggage ticket with your ferry ticket (online or at the kiosk). Put large bags in the luggage racks on deck."
+    },
+    {
+      "q": "What happens if the ferry is canceled due to weather?",
+      "a": "Travelmar cancels sailings if seas are rough (rare, but happens in early/late season). You'll get an email if you booked online. Staff post notices at the pier. Take the SITA bus from Amalfi to Positano (€2–€3) or get a taxi instead."
+    },
+    {
+      "q": "Is the ferry good for travelers with mobility issues?",
+      "a": "Boarding needs a short gangway walk and maybe stairs between pier and deck. Most Travelmar ferries don't have wheelchair ramps. If you need help, arrive early and ask staff. They can board you first via a safer route."
+    },
+    {
+      "q": "Can I buy ferry tickets on the day of travel?",
+      "a": "Usually yes in April, May, September, and October. But July and August sell out 1–2 days ahead. Book online the night before to be safe, especially for morning boats."
+    },
+    {
+      "q": "How do I get from Positano dock to Hostel Brikette?",
+      "a": "Three ways: walk uphill (15–20 minutes, steep stairs), take the Interno Positano bus (€2), or hire a porter (€20–€25 per bag). See our %LINK:ferryDockToBrikette|dock to Brikette luggage guide% for directions and photos."
+    },
+    {
+      "q": "Are there toilets and snacks on board?",
+      "a": "Most Travelmar boats have a small snack bar with drinks and light food. Toilets are on larger boats, but not on smaller ones in off-peak times. Use the toilet before you board if you can."
+    },
+    {
+      "q": "What's the best time to take the ferry?",
+      "a": "Morning boats (08:25–10:00) have calmer seas and better photo light. Afternoon trips get busier with day-trippers. Skip the last boat (20:00) unless you're OK arriving after dark."
+    },
+    {
+      "q": "Do I need to print my ticket or can I show my phone?",
+      "a": "Your phone is fine. Staff scan the QR code from your screen. Make sure your phone is charged and you can open the email or booking without internet (save it offline or screenshot it)."
+    },
+    {
+      "q": "Where exactly is the Amalfi ferry pier?",
+      "a": "Walk to the waterfront from Piazza Flavio Gioia (main square with the fountain). Face the sea and turn right. The Travelmar pier is 2 minutes along the promenade. Look for blue-and-white signs and ticket kiosks."
+    },
+    {
+      "q": "Can I store luggage in Positano if I arrive early?",
+      "a": "Yes. Several %LINK:luggageStorage|luggage storage spots% near Spiaggia Grande beach charge €5–€8 per bag per day. Good if you land before hostel check-in at 15:00."
+    }
+  ],
+  "lastUpdated": "2026-01-31"
 }

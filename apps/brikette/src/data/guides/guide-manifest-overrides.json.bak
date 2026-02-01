@@ -1,0 +1,5237 @@
+{
+  "chiesaNuovaArrivals": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.870Z",
+      "score": 9.3,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (61 chars)",
+          "Good meta description length (134 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3094 words",
+          "Strong internal linking with 12 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 8 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (9 entities detected)",
+          "Good density of concrete details (17 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (6, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 61,
+        "metaDescriptionLength": 134,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3094,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 12,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 6,
+        "urlSlugLength": 50,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 47,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 6,
+        "imageAltWithAlt": 6,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 9,
+        "concreteFactsDensity": 17,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 32,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 9.1,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 4,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "chiesaNuovaDepartures": {
+    "focusKeyword": "chiesa nuova bus stop",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "auditResults": {
+      "timestamp": "2026-01-31T10:28:54.092Z",
+      "score": 10,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (60 chars)",
+          "Good meta description length (144 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2075 words",
+          "Good visual content with 10 images",
+          "Strong internal linking with 18 links",
+          "FAQ section present with 6 questions",
+          "Well-structured with 8 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (7 entities detected)",
+          "Good density of concrete details (16 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": []
+      },
+      "metrics": {
+        "metaTitleLength": 60,
+        "metaDescriptionLength": 144,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2075,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 18,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 6,
+        "imageCount": 10,
+        "urlSlugLength": 50,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 74,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 10,
+        "imageAltWithAlt": 10,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 7,
+        "concreteFactsDensity": 16,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 44,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 9.7,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0.2,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "ferryDockToBrikette": {
+    "focusKeyword": "ferry dock to hostel brikette",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.880Z",
+      "score": 9.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (42 chars)",
+          "Good meta description length (153 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2074 words",
+          "Strong internal linking with 5 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 9 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (10 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Focus keyword should appear near front of title (\"ferry dock to hostel brikette\")",
+            "impact": 0.3
+          },
+          {
+            "issue": "Include focus keyword in first ~150 words (\"ferry dock to hostel brikette\")",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
+            "impact": 0.2
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 42,
+        "metaDescriptionLength": 153,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2074,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 5,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 8,
+        "urlSlugLength": 42,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 49,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 4,
+        "concreteFactsDensity": 10,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 39,
+        "avgSentenceLength": 11,
+        "readingGradeLevel": 8.1,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 3,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "briketteToFerryDock": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "fornilloBeachToBrikette": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "naplesPositano": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "salernoPositano": {
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere"
+  },
+  "onlyHostel": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "porterServices": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "luggageStorage": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "parking": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "whatToPack": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "simsAtms": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workCafes": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workAndTravelPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "workExchangeItaly": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "ferrySchedules": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "transportBudget": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "transportMoneySaving": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "interrailAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "travelInsuranceAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "couplesInHostels": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "groceriesPharmacies": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "hitchhikingAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "bestTimeToVisit": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoCostBreakdown": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoCostComparison": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "howToGetToPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "budgetAccommodationBeyond": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "offSeasonLongStay": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "sorrentoGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "salernoGatewayGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "naplesCityGuide": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "safetyAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "italianPhrasesCampania": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "ecoFriendlyAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "auditResults": {
+      "timestamp": "2026-01-31T15:59:34.883Z",
+      "score": 9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (39 chars)",
+          "Good meta description length (162 chars)",
+          "All content is finalized (no placeholders)",
+          "Concise content at 1094 words",
+          "Strong internal linking with 3 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 4 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "No clear actionable info in first ~200 words (tighten the lead)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Too few images (0, help template suggests 1+)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Simplify language (grade 11.8, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 39,
+        "metaDescriptionLength": 162,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1094,
+        "headingCount": 4,
+        "h2Count": 4,
+        "hasH1": 1,
+        "internalLinkCount": 3,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 0,
+        "urlSlugLength": 32,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 65,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 40,
+        "avgSentenceLength": 18,
+        "readingGradeLevel": 11.8,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 3,
+        "h2TotalCount": 4,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "drivingAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "laundryPositano": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "publicTransportAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "salernoVsNaples": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "sitaTickets": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "travelFaqsAmalfi": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "reachBudget": {
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help"
+  },
+  "positanoBeaches": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:40:54.469Z",
+      "score": 10,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (55 chars)",
+          "Good meta description length (136 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1200 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 7 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": []
+      },
+      "metrics": {
+        "metaTitleLength": 55,
+        "metaDescriptionLength": 136,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1200,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 7,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 8,
+        "urlSlugLength": 16,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 33,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 26,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 7.8,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0.3,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 3,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoMainBeach": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:41:15.259Z",
+      "score": 9.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (42 chars)",
+          "Good meta description length (157 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1445 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 11 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 11 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Simplify language (grade 10.3, optimal ~7-10)",
+            "impact": 0.2
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 42,
+        "metaDescriptionLength": 157,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1445,
+        "headingCount": 11,
+        "h2Count": 11,
+        "hasH1": 1,
+        "internalLinkCount": 11,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 8,
+        "urlSlugLength": 25,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 26,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 21,
+        "readingGradeLevel": 10.3,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 11,
+        "h2TotalCount": 11,
+        "keywordStuffingRate": 0.2,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 3,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "marinaDiPraiaBeaches": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:52:27.883Z",
+      "score": 9.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (51 chars)",
+          "Good meta description length (130 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1248 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 4 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 7 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 51,
+        "metaDescriptionLength": 130,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1248,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 4,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 8,
+        "urlSlugLength": 36,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 26,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 29,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 6.9,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "fiordoDiFuroreBeachGuide": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:55:38.919Z",
+      "score": 9.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (48 chars)",
+          "Good meta description length (149 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1396 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 15 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 10 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 48,
+        "metaDescriptionLength": 149,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1396,
+        "headingCount": 10,
+        "h2Count": 10,
+        "hasH1": 1,
+        "internalLinkCount": 15,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 8,
+        "urlSlugLength": 28,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 58,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 29,
+        "avgSentenceLength": 20,
+        "readingGradeLevel": 9.6,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 10,
+        "h2TotalCount": 10,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "fornilloBeachGuide": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:41:23.428Z",
+      "score": 9.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (57 chars)",
+          "Good meta description length (156 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1684 words",
+          "Good visual content with 9 images",
+          "Strong internal linking with 11 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 57,
+        "metaDescriptionLength": 156,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1684,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 11,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 9,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 37,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 9,
+        "imageAltWithAlt": 9,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 31,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 8,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "lauritoBeachGuide": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:54:06.574Z",
+      "score": 9.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (52 chars)",
+          "Good meta description length (141 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1654 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 13 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 52,
+        "metaDescriptionLength": 141,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1654,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 13,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 8,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 47,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 1200,
+        "usesModernFormats": 0,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 31,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 8.1,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0.5,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "reginaGiovannaBath": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:42:16.290Z",
+      "score": 9.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (50 chars)",
+          "Good meta description length (140 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1255 words",
+          "Good visual content with 8 images",
+          "Strong internal linking with 8 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 7 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Featured image small (760px, recommend ≥1200px for social sharing)",
+            "impact": 0.2
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 50,
+        "metaDescriptionLength": 140,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1255,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 8,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 8,
+        "urlSlugLength": 32,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 49,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 760,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 31,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 9.1,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 1.6,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "gavitellaBeachGuide": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:41:50.724Z",
+      "score": 10,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (58 chars)",
+          "Good meta description length (154 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1575 words",
+          "Good visual content with 9 images",
+          "Strong internal linking with 5 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": []
+      },
+      "metrics": {
+        "metaTitleLength": 58,
+        "metaDescriptionLength": 154,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1575,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 5,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 9,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 27,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 9,
+        "imageAltWithAlt": 9,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 30,
+        "avgSentenceLength": 18,
+        "readingGradeLevel": 8.4,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0.4,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "amalfiPositanoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.836Z",
+      "score": 9.7,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (53 chars)",
+          "Good meta description length (151 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2335 words",
+          "Strong internal linking with 7 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 10 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (10 entities detected)",
+          "Good density of concrete details (14 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 53,
+        "metaDescriptionLength": 151,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2335,
+        "headingCount": 10,
+        "h2Count": 10,
+        "hasH1": 1,
+        "internalLinkCount": 7,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 8,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 64,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 10,
+        "concreteFactsDensity": 14,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 37,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 10,
+        "keywordStuffingRate": 0.1,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "amalfiPositanoFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.851Z",
+      "score": 9.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (48 chars)",
+          "Good meta description length (159 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2130 words",
+          "Strong internal linking with 8 links",
+          "FAQ section present with 10 questions",
+          "Well-structured with 12 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (7 entities detected)",
+          "Good density of concrete details (15 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Include focus keyword in first ~150 words (\"Amalfi to Positano ferry\")",
+            "impact": 0.3
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 48,
+        "metaDescriptionLength": 159,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2130,
+        "headingCount": 12,
+        "h2Count": 12,
+        "hasH1": 1,
+        "internalLinkCount": 8,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 10,
+        "imageCount": 0,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 7,
+        "concreteFactsDensity": 15,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 22,
+        "avgSentenceLength": 10,
+        "readingGradeLevel": 5.5,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 11,
+        "h2TotalCount": 12,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "capriPositanoFerry": {
+    "focusKeyword": "capri to positano ferry",
+    "lastUpdated": "2026-01-31",
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.861Z",
+      "score": 9.6,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (44 chars)",
+          "Good meta description length (160 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2029 words",
+          "Strong internal linking with 6 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 11 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (19 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Add 2 more images (currently 8, target 10+ for localGuide)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 44,
+        "metaDescriptionLength": 160,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2029,
+        "headingCount": 11,
+        "h2Count": 11,
+        "hasH1": 1,
+        "internalLinkCount": 6,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 8,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 8,
+        "imageAltWithAlt": 8,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 4,
+        "concreteFactsDensity": 19,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 23,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 9,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 10,
+        "h2TotalCount": 11,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 6,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "naplesCenterTrainBus": {
+    "focusKeyword": "Naples to Positano train bus",
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.914Z",
+      "score": 9.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (57 chars)",
+          "Good meta description length (135 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2097 words",
+          "Good visual content with 10 images",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 6 questions",
+          "Well-structured with 10 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (7 entities detected)",
+          "Good density of concrete details (22 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 57,
+        "metaDescriptionLength": 135,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2097,
+        "headingCount": 10,
+        "h2Count": 10,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 6,
+        "imageCount": 10,
+        "urlSlugLength": 23,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 84,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 10,
+        "imageAltWithAlt": 10,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 7,
+        "concreteFactsDensity": 22,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 85,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9.5,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 10,
+        "h2TotalCount": 10,
+        "keywordStuffingRate": 0.2,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "naplesCenterPositanoFerry": {
+    "focusKeyword": "Naples to Positano ferry",
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.898Z",
+      "score": 9.3,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (65 chars)",
+          "Good meta description length (166 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3167 words",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 9 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (8 entities detected)",
+          "Good density of concrete details (24 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (7, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 65,
+        "metaDescriptionLength": 166,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3167,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 7,
+        "urlSlugLength": 28,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 51,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 7,
+        "imageAltWithAlt": 7,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 8,
+        "concreteFactsDensity": 24,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 13,
+        "readingGradeLevel": 9.1,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "naplesAirportPositanoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.887Z",
+      "score": 9.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (52 chars)",
+          "Good meta description length (150 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2149 words",
+          "Good visual content with 10 images",
+          "Strong internal linking with 12 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 10 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (12 entities detected)",
+          "Good density of concrete details (23 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 52,
+        "metaDescriptionLength": 150,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2149,
+        "headingCount": 10,
+        "h2Count": 10,
+        "hasH1": 1,
+        "internalLinkCount": 12,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 10,
+        "urlSlugLength": 27,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 93,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 10,
+        "imageAltWithAlt": 10,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 12,
+        "concreteFactsDensity": 23,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 75,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9.3,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 10,
+        "h2TotalCount": 10,
+        "keywordStuffingRate": 0.2,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "beachHoppingAmalfi": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:40:36.940Z",
+      "score": 7,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "All content is finalized (no placeholders)",
+          "FAQ section present with 2 questions",
+          "Well-structured with 4 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (248 words, experience template needs 1000+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Meta title too short (33 chars, target 35-65)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Too few internal links (1, experience needs 3+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Meta description short (58 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 33,
+        "metaDescriptionLength": 58,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 248,
+        "headingCount": 4,
+        "h2Count": 4,
+        "hasH1": 1,
+        "internalLinkCount": 1,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 2,
+        "imageCount": 0,
+        "urlSlugLength": 26,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 15,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 15,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 7.8,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 4,
+        "h2TotalCount": 4,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "arienzoBeachClub": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:41:31.766Z",
+      "score": 9.7,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (57 chars)",
+          "Good meta description length (164 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1322 words",
+          "Strong internal linking with 7 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Add 2 more images (currently 6, target 8+ for experience)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 57,
+        "metaDescriptionLength": 164,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1322,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 7,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 6,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 50,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 6,
+        "imageAltWithAlt": 6,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 24,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 6.7,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoAmalfiBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:17.020Z",
+      "score": 7.6,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (43 chars)",
+          "Good meta description length (150 chars)",
+          "All content is finalized (no placeholders)",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (5 entities detected)",
+          "Good density of concrete details (10 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (332 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 43,
+        "metaDescriptionLength": 150,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 332,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 5,
+        "concreteFactsDensity": 10,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 17,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 7.7,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 6,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoAmalfiFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:22.819Z",
+      "score": 6.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (45 chars)",
+          "Good meta description length (134 chars)",
+          "All content is finalized (no placeholders)",
+          "Well-structured with 4 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (10 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (167 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (2 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 45,
+        "metaDescriptionLength": 134,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 167,
+        "headingCount": 4,
+        "h2Count": 4,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 2,
+        "concreteFactsDensity": 10,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 12,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 8.8,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 3,
+        "h2TotalCount": 4,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoCapriFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:30.999Z",
+      "score": 5.5,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (44 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (0 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add concrete facts (0 per 500 words, target 8+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Meta description short (101 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 44,
+        "metaDescriptionLength": 101,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 0,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 0,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 0,
+        "avgSentenceLength": 0,
+        "readingGradeLevel": 0,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoNaplesAirportBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:38.438Z",
+      "score": 6.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (51 chars)",
+          "Good meta description length (141 chars)",
+          "Well-structured with 5 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (17 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (163 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "1 empty section - add content or remove",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 51,
+        "metaDescriptionLength": 141,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 163,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 27,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 1,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 3,
+        "concreteFactsDensity": 17,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 13,
+        "avgSentenceLength": 11,
+        "readingGradeLevel": 9.5,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 3,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoNaplesCenterBusTrain": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:44.635Z",
+      "score": 6.1,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (61 chars)",
+          "All content is finalized (no placeholders)",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (11 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (218 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Meta description long (197 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Simplify language (grade 10.4, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 61,
+        "metaDescriptionLength": 197,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 218,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 32,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 3,
+        "concreteFactsDensity": 11,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 36,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 10.4,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoNaplesCenterFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:50.926Z",
+      "score": 5.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (52 chars)",
+          "Good meta description length (126 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (0 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add concrete facts (0 per 500 words, target 8+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 52,
+        "metaDescriptionLength": 126,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 0,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 28,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 0,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 0,
+        "avgSentenceLength": 0,
+        "readingGradeLevel": 0,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoRavelloBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:53:58.214Z",
+      "score": 5.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (44 chars)",
+          "Good meta description length (149 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (0 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add concrete facts (0 per 500 words, target 8+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 44,
+        "metaDescriptionLength": 149,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 0,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 0,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 0,
+        "avgSentenceLength": 0,
+        "readingGradeLevel": 0,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoRavelloFerryBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:05.215Z",
+      "score": 5.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (55 chars)",
+          "Good meta description length (144 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (14 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (18 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Reading level high (grade 13.5, target ~7-10)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 55,
+        "metaDescriptionLength": 144,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 18,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 26,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 14,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 18,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 13.5,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoSalernoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:11.319Z",
+      "score": 6.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (41 chars)",
+          "Good meta description length (139 chars)",
+          "Well-structured with 8 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (15 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (68 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "7 empty sections - add content or remove",
+            "impact": 0.6
+          },
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (1 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Simplify language (grade 11.5, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 41,
+        "metaDescriptionLength": 139,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 68,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 1,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 1,
+        "concreteFactsDensity": 15,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 17,
+        "avgSentenceLength": 10,
+        "readingGradeLevel": 11.5,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoSalernoFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:17.014Z",
+      "score": 5.7,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (46 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (18 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (14 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Meta description short (98 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Simplify language (grade 11.6, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 46,
+        "metaDescriptionLength": 98,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 14,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 22,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 18,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 14,
+        "avgSentenceLength": 7,
+        "readingGradeLevel": 11.6,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoSorrentoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:22.892Z",
+      "score": 7.4,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (45 chars)",
+          "Good meta description length (131 chars)",
+          "All content is finalized (no placeholders)",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (8 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (272 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 45,
+        "metaDescriptionLength": 131,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 272,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 4,
+        "concreteFactsDensity": 8,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 13,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 8.2,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 6,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoSorrentoFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:30.807Z",
+      "score": 5.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (47 chars)",
+          "Good meta description length (142 chars)",
+          "All content is finalized (no placeholders)",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (15 facts per 500 words)",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (17 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "No section headings found (add H2 sections for skimmability)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Reading level high (grade 14.1, target ~7-10)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 47,
+        "metaDescriptionLength": 142,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 17,
+        "headingCount": 0,
+        "h2Count": 0,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 23,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 15,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 17,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 14.1,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 0,
+        "h2TotalCount": 0,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoToNaplesDirectionsByFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T13:54:49.647Z",
+      "score": 5.5,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (56 chars)",
+          "Good meta description length (120 chars)",
+          "Well-structured with 5 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [
+          {
+            "issue": "Content too short (17 words, localGuide template needs 1600+)",
+            "impact": 1
+          }
+        ],
+        "improvements": [
+          {
+            "issue": "5 empty sections - add content or remove",
+            "impact": 0.6
+          },
+          {
+            "issue": "Too few images (0, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (0, localGuide needs 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add local specificity (0 entities found, target 5+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add concrete facts (0 per 500 words, target 8+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add FAQs if users commonly ask follow-ups (currently 0, suggested 2+)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Simplify language (grade 11.9, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Include year/season references (time-sensitive guide)",
+            "impact": 0.15
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 56,
+        "metaDescriptionLength": 120,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 17,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 0,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 0,
+        "imageCount": 0,
+        "urlSlugLength": 38,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 0,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 1,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 0,
+        "concreteFactsDensity": 0,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 0,
+        "avgSentenceLength": 17,
+        "readingGradeLevel": 11.9,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 4,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "pathOfTheGods": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:38:55.746Z",
+      "score": 9.4,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (37 chars)",
+          "Good meta description length (137 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1796 words",
+          "Strong internal linking with 3 links",
+          "FAQ section present with 6 questions",
+          "Well-structured with 8 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 37,
+        "metaDescriptionLength": 137,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1796,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 3,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 6,
+        "imageCount": 0,
+        "urlSlugLength": 16,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 76,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 38,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 10,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "pathOfTheGodsFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:40:48.190Z",
+      "score": 9.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (39 chars)",
+          "Good meta description length (126 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1289 words",
+          "Good visual content with 19 images",
+          "Strong internal linking with 3 links",
+          "FAQ section present with 3 questions",
+          "Well-structured with 9 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 39,
+        "metaDescriptionLength": 126,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1289,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 3,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 3,
+        "imageCount": 19,
+        "urlSlugLength": 33,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 64,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 19,
+        "imageAltWithAlt": 19,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 30,
+        "avgSentenceLength": 17,
+        "readingGradeLevel": 9.5,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 9,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "pathOfTheGodsBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:43:20.735Z",
+      "score": 9.8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (37 chars)",
+          "Good meta description length (153 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1547 words",
+          "Good visual content with 9 images",
+          "Strong internal linking with 3 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 8 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 37,
+        "metaDescriptionLength": 153,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1547,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 3,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 9,
+        "urlSlugLength": 31,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 65,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 9,
+        "imageAltWithAlt": 9,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 40,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 9.4,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "pathOfTheGodsNocelle": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:46:03.998Z",
+      "score": 9.4,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (36 chars)",
+          "Good meta description length (126 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1608 words",
+          "Strong internal linking with 3 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 6 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 36,
+        "metaDescriptionLength": 126,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1608,
+        "headingCount": 6,
+        "h2Count": 6,
+        "hasH1": 1,
+        "internalLinkCount": 3,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 0,
+        "urlSlugLength": 28,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 65,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 37,
+        "avgSentenceLength": 18,
+        "readingGradeLevel": 9.7,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 5,
+        "h2TotalCount": 6,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 5,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "topOfTheMountainHike": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:48:42.449Z",
+      "score": 9.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (45 chars)",
+          "Good meta description length (157 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1660 words",
+          "Strong internal linking with 4 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 5 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Simplify language (grade 10.8, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 45,
+        "metaDescriptionLength": 157,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1660,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 4,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 0,
+        "urlSlugLength": 24,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 85,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 44,
+        "avgSentenceLength": 20,
+        "readingGradeLevel": 10.8,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 5,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "santaMariaDelCastelloHike": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:51:21.358Z",
+      "score": 9.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (61 chars)",
+          "Good meta description length (133 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1784 words",
+          "Strong internal linking with 4 links",
+          "FAQ section present with 4 questions",
+          "Well-structured with 5 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Simplify language (grade 10.1, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 61,
+        "metaDescriptionLength": 133,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1784,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 4,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 4,
+        "imageCount": 0,
+        "urlSlugLength": 29,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 78,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 44,
+        "avgSentenceLength": 17,
+        "readingGradeLevel": 10.1,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 4,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 4,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "sunriseHike": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:53:44.744Z",
+      "score": 9.4,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (42 chars)",
+          "Good meta description length (169 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1419 words",
+          "Strong internal linking with 4 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 4 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 42,
+        "metaDescriptionLength": 169,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1419,
+        "headingCount": 4,
+        "h2Count": 4,
+        "hasH1": 1,
+        "internalLinkCount": 4,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 0,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 64,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 40,
+        "avgSentenceLength": 17,
+        "readingGradeLevel": 8.7,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 4,
+        "h2TotalCount": 4,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "stayingFitAmalfi": {
+    "auditResults": {
+      "timestamp": "2026-01-31T15:57:36.080Z",
+      "score": 8.9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (42 chars)",
+          "Good meta description length (167 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1631 words",
+          "Strong internal linking with 6 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 5 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Simplify language (grade 10.6, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 42,
+        "metaDescriptionLength": 167,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1631,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 6,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 0,
+        "urlSlugLength": 40,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 63,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 46,
+        "avgSentenceLength": 16,
+        "readingGradeLevel": 10.6,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 4,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "ravelloPositanoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.919Z",
+      "score": 9.3,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (57 chars)",
+          "Good meta description length (152 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2108 words",
+          "Strong internal linking with 5 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (16 entities detected)",
+          "Good density of concrete details (26 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (5, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 57,
+        "metaDescriptionLength": 152,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2108,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 5,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 5,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 53,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 5,
+        "imageAltWithAlt": 5,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 16,
+        "concreteFactsDensity": 26,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 25,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9.3,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 6,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "salernoPositanoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.926Z",
+      "score": 9.1,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (57 chars)",
+          "Good meta description length (153 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2254 words",
+          "Strong internal linking with 7 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (14 entities detected)",
+          "Good density of concrete details (26 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (6, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Simplify language (grade 10.1, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 57,
+        "metaDescriptionLength": 153,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2254,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 7,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 6,
+        "urlSlugLength": 20,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 41,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 6,
+        "imageAltWithAlt": 6,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 14,
+        "concreteFactsDensity": 26,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 10.1,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 6,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "salernoPositanoFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.932Z",
+      "score": 9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (59 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3188 words",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 9 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (6 entities detected)",
+          "Good density of concrete details (22 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (7, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Meta description long (174 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 59,
+        "metaDescriptionLength": 174,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3188,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 7,
+        "urlSlugLength": 22,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 55,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 7,
+        "imageAltWithAlt": 7,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 6,
+        "concreteFactsDensity": 22,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9.3,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "sorrentoPositanoBus": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.940Z",
+      "score": 9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (58 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2492 words",
+          "Strong internal linking with 5 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (12 entities detected)",
+          "Good density of concrete details (20 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (5, localGuide template suggests 8+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Meta description long (172 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 58,
+        "metaDescriptionLength": 172,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2492,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 5,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 5,
+        "urlSlugLength": 21,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 46,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 5,
+        "imageAltWithAlt": 5,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 12,
+        "concreteFactsDensity": 20,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 6,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "sorrentoPositanoFerry": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:05:13.948Z",
+      "score": 9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (60 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3077 words",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 8 questions",
+          "Well-structured with 9 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (7 entities detected)",
+          "Good density of concrete details (24 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (7, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Meta description long (175 chars, target ~120-170)",
+            "impact": 0.3
+          },
+          {
+            "issue": "Consider using modern image formats (WebP/AVIF)",
+            "impact": 0.1
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 60,
+        "metaDescriptionLength": 175,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3077,
+        "headingCount": 9,
+        "h2Count": 9,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 7,
+        "urlSlugLength": 23,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 1,
+        "firstParagraphLength": 47,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 7,
+        "imageAltWithAlt": 7,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 0,
+        "localEntityCount": 7,
+        "concreteFactsDensity": 24,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 27,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 9.4,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 8,
+        "h2TotalCount": 9,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 1,
+        "hasArticleSchema": 0,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 1,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "stayingFitPositano": {
+    "auditResults": {
+      "timestamp": "2026-01-31T16:51:19.627Z",
+      "score": 9.5,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (41 chars)",
+          "Good meta description length (162 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1955 words",
+          "Strong internal linking with 15 links",
+          "FAQ section present with 6 questions",
+          "Well-structured with 6 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 41,
+        "metaDescriptionLength": 162,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1955,
+        "headingCount": 6,
+        "h2Count": 6,
+        "hasH1": 1,
+        "internalLinkCount": 15,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 6,
+        "imageCount": 0,
+        "urlSlugLength": 17,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 59,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 47,
+        "avgSentenceLength": 13,
+        "readingGradeLevel": 9.5,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 5,
+        "h2TotalCount": 6,
+        "keywordStuffingRate": 0.2,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "historyPositano": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:15:10.829Z",
+      "score": 9,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (55 chars)",
+          "Good meta description length (150 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 1719 words",
+          "Strong internal linking with 4 links",
+          "FAQ section present with 5 questions",
+          "Well-structured with 5 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Simplify language (grade 12, optimal ~7-10)",
+            "impact": 0.2
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 55,
+        "metaDescriptionLength": 150,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 1719,
+        "headingCount": 5,
+        "h2Count": 5,
+        "hasH1": 1,
+        "internalLinkCount": 4,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 5,
+        "imageCount": 0,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 53,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 46,
+        "avgSentenceLength": 14,
+        "readingGradeLevel": 12,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 5,
+        "h2TotalCount": 5,
+        "keywordStuffingRate": 0.3,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "folkloreAmalfi": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:36:11.408Z",
+      "score": 8,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (51 chars)",
+          "Good meta description length (165 chars)",
+          "All content is finalized (no placeholders)",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 7 questions",
+          "Well-structured with 7 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (8 facts per 500 words)",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Content below optimal (2904 words, target 3000+ for pillar)",
+            "impact": 0.4
+          },
+          {
+            "issue": "No clear actionable info in first ~200 words (tighten the lead)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Simplify language (grade 10.7, optimal ~7-10)",
+            "impact": 0.2
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 51,
+        "metaDescriptionLength": 165,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2904,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 7,
+        "imageCount": 0,
+        "urlSlugLength": 39,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 68,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 3,
+        "concreteFactsDensity": 8,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 47,
+        "avgSentenceLength": 15,
+        "readingGradeLevel": 10.7,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0.4,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "etiquetteItalyAmalfi": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:41:34.964Z",
+      "score": 8.5,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (50 chars)",
+          "Good meta description length (150 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2096 words",
+          "FAQ section present with 8 questions",
+          "Well-structured with 8 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Too few internal links (1, experience needs 3+)",
+            "impact": 0.4
+          },
+          {
+            "issue": "Include focus keyword in first ~150 words (\"Italy travel etiquette\")",
+            "impact": 0.3
+          },
+          {
+            "issue": "Add first-hand details (staff tips, \"from the hostel\", \"we tried\")",
+            "impact": 0.25
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 50,
+        "metaDescriptionLength": 150,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2096,
+        "headingCount": 8,
+        "h2Count": 8,
+        "hasH1": 1,
+        "internalLinkCount": 1,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 8,
+        "imageCount": 0,
+        "urlSlugLength": 38,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 58,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 0,
+        "avgParagraphLength": 30,
+        "avgSentenceLength": 9,
+        "readingGradeLevel": 6.9,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 5,
+        "h2TotalCount": 8,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 0,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  },
+  "avoidCrowdsPositano": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:54:16.027Z",
+      "score": 9.3,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (58 chars)",
+          "Good meta description length (134 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3118 words",
+          "Strong internal linking with 14 links",
+          "FAQ section present with 7 questions",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good local specificity (8 entities detected)",
+          "Good density of concrete details (27 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "No obvious keyword stuffing",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 58,
+        "metaDescriptionLength": 134,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3118,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 14,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 7,
+        "imageCount": 0,
+        "urlSlugLength": 41,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 92,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 8,
+        "concreteFactsDensity": 27,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 44,
+        "avgSentenceLength": 12,
+        "readingGradeLevel": 9.9,
+        "hasFocusKeyword": 1,
+        "focusKeywordInTitle": 1,
+        "focusKeywordNearFront": 1,
+        "focusKeywordEarly": 1,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0.1,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 2,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "positanoPompeii": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:59:24.639Z",
+      "score": 9.2,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (52 chars)",
+          "Good meta description length (161 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 3126 words",
+          "Strong internal linking with 11 links",
+          "FAQ section present with 7 questions",
+          "Well-structured with 7 section headings",
+          "Lead contains actionable info early",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Good density of concrete details (22 facts per 500 words)",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, pillar template suggests 12+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add lastUpdated date (time-sensitive guide)",
+            "impact": 0.25
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 52,
+        "metaDescriptionLength": 161,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 3126,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 11,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 7,
+        "imageCount": 0,
+        "urlSlugLength": 19,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 79,
+        "hasEarlyAnswer": 1,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "localEntityCount": 4,
+        "concreteFactsDensity": 22,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 41,
+        "avgSentenceLength": 11,
+        "readingGradeLevel": 9.3,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 0,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 1,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 1
+      },
+      "version": "3.1.0"
+    }
+  },
+  "ferragostoPositano": {
+    "auditResults": {
+      "timestamp": "2026-01-31T17:22:05.393Z",
+      "score": 9.4,
+      "analysis": {
+        "strengths": [
+          "All internal links resolve to valid guide keys",
+          "Good meta title length (49 chars)",
+          "Good meta description length (143 chars)",
+          "All content is finalized (no placeholders)",
+          "Comprehensive content at 2439 words",
+          "Strong internal linking with 10 links",
+          "FAQ section present with 7 questions",
+          "Well-structured with 7 section headings",
+          "No common misspellings detected",
+          "All images have alt attributes",
+          "Includes first-hand / on-the-ground details",
+          "Structured data declared in manifest"
+        ],
+        "criticalIssues": [],
+        "improvements": [
+          {
+            "issue": "Too few images (0, experience template suggests 6+)",
+            "impact": 0.5
+          },
+          {
+            "issue": "Add manifest.focusKeyword (or manifest.primaryQuery) to enable keyword-targeting checks",
+            "impact": 0.1
+          },
+          {
+            "issue": "Optional: add lastUpdated date",
+            "impact": 0.05
+          }
+        ]
+      },
+      "metrics": {
+        "metaTitleLength": 49,
+        "metaDescriptionLength": 143,
+        "hasTitleTag": 1,
+        "hasMetaDescription": 1,
+        "contentWordCount": 2439,
+        "headingCount": 7,
+        "h2Count": 7,
+        "hasH1": 1,
+        "internalLinkCount": 10,
+        "invalidInternalLinkOccurrences": 0,
+        "faqCount": 7,
+        "imageCount": 0,
+        "urlSlugLength": 22,
+        "hasOgTitle": 1,
+        "hasOgDescription": 1,
+        "hasOgImage": 0,
+        "firstParagraphLength": 57,
+        "hasEarlyAnswer": 0,
+        "hasPlaceholders": 0,
+        "errorRate": 0,
+        "imageAltCoverage": 100,
+        "imageAltTotal": 0,
+        "imageAltWithAlt": 0,
+        "imageOversizeCount": 0,
+        "imageModerateCount": 0,
+        "featuredImageWidth": 0,
+        "usesModernFormats": 1,
+        "hasFirstHandDetails": 1,
+        "avgParagraphLength": 45,
+        "avgSentenceLength": 11,
+        "readingGradeLevel": 8.9,
+        "hasFocusKeyword": 0,
+        "focusKeywordInTitle": 0,
+        "focusKeywordNearFront": 0,
+        "focusKeywordEarly": 0,
+        "h2AlignmentCount": 7,
+        "h2TotalCount": 7,
+        "keywordStuffingRate": 0,
+        "genericAnchorCount": 0,
+        "hasBreadcrumbs": 0,
+        "hasArticleSchema": 1,
+        "hasPrimaryCTA": 1,
+        "hasAboveFoldCTA": 0,
+        "contextualCTACount": 3,
+        "hasLastUpdated": 0,
+        "hasYearReferences": 0
+      },
+      "version": "3.1.0"
+    }
+  }
+}

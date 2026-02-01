@@ -8,7 +8,7 @@ This directory contains agent-agnostic support files for AI assistants (Claude C
 .agents/
 ├── README.md              # This file
 ├── safety/                # Safety rules and rationale
-├── learnings/             # Session reflections (gitignored, ephemeral)
+├── learnings/             # DEPRECATED: Legacy learning files (use /session-reflect instead)
 └── status/                # Worker status files (gitignored, ephemeral)
 ```
 
@@ -20,18 +20,19 @@ Skills have moved to `.claude/skills/`. See:
 
 ## Recording Learnings
 
-After significant work, use the `/session-reflection` skill:
-1. Creates a file in `.agents/learnings/` with structured findings
-2. Notes skill gaps, patterns that worked, tooling ideas
+After significant work, use the `/session-reflect` skill:
+1. Analyzes session for evidence-based improvement opportunities
+2. Proposes targeted updates to existing docs, skills, or core instructions
+3. Applies approved changes directly (no separate learning files)
 
-**Privacy note**: `learnings/` is gitignored. Do not include customer data, secrets, or PII.
+**Note**: The legacy `/session-reflection` skill (which created separate files in `learnings/`) has been deprecated in favor of the active feedback-loop approach.
 
 ## What's Committed vs Ephemeral
 
 | Directory | Committed | Purpose |
 |-----------|-----------|---------|
 | `safety/` | Yes | Safety rules and rationale |
-| `learnings/` | No (gitignored) | Session reflections (may contain task details) |
+| `learnings/` | No (gitignored) | **DEPRECATED:** Legacy learning files (use `/session-reflect` instead) |
 | `status/` | No (gitignored) | Worker coordination files |
 
 ## Cleanup Commands

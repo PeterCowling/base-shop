@@ -157,7 +157,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   sorrentoPositanoBus: "sorrento-positano-bus",
   sorrentoPositanoFerry: "sorrento-positano-ferry",
   souvenirsAmalfi: "thrifty-souvenir-shopping-amalfi-coast",
-  stayingFitAmalfi: "staying-fit-while-traveling-amalfi-coast",
+  stayingFitPositano: "stay-fit-positano",
   sunriseHike: "sunrise-hike-positano",
   sunsetViewpoints: "sunset-viewpoints-positano",
   tagsIndex: "tags",

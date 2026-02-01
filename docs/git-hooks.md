@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-16
+Last-reviewed: 2026-02-01
 
 # Git Hooks (Agent Runbook)
 
@@ -17,8 +17,8 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` | Block secrets, block partial staging, lint staged files, then run typecheck + lint |
-| `pre-push` | `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Block force pushes; run typecheck + lint before pushing |
+| `pre-commit` | `require-writer-lock.sh` + `block-commit-on-protected-branches.sh` + `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck:staged` | Enforce writer lock in main checkout, block commits on `main`, then run env/partial-stage guards + lint-staged + staged workspace typecheck |
+| `pre-push` | `require-writer-lock.sh` + `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Enforce writer lock in main checkout, block pushes to protected branches; run typecheck + lint before pushing |
 
 ---
 
@@ -26,11 +26,23 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 The pre-commit hook runs checks before allowing a commit:
 
-1. **Environment File Check** - Prevents accidental commits of sensitive credential files
-2. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
-3. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
-4. **Typecheck** - Runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching)
-5. **Lint** - Runs `pnpm lint` (Turbo lint tasks)
+1. **Writer lock (main checkout only)** - Prevents overlapping git writes when contributors ignore the worktree workflow
+2. **Protected branch guard** - Blocks commits on `main`/`master`
+3. **Environment File Check** - Prevents accidental commits of sensitive credential files
+4. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
+5. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
+6. **Typecheck (staged)** - Runs `pnpm typecheck:staged` (only affected workspaces inferred from staged files)
+
+### Writer Lock: Stale Locks
+
+If the writer lock is shown as held but the owning process is gone, you can safely reap it:
+
+```bash
+scripts/git/writer-lock.sh status
+scripts/git/writer-lock.sh release --if-stale
+```
+
+Emergency (human only): `scripts/git/writer-lock.sh release --force`
 
 #### Environment File Protection
 
@@ -63,7 +75,7 @@ The following files should NOT be committed:
 These files likely contain sensitive credentials or secrets.
 
 To fix this issue:
-  1. Unstage the files:  git reset HEAD <file>
+  1. Unstage the files:  git restore --staged <file>   (or: git reset HEAD <file>)
   2. Verify .gitignore includes these patterns
   3. Check if secrets need rotation (if previously committed)
 ```
@@ -80,16 +92,14 @@ The pre-push hook prevents dangerous push operations that could destroy work or 
 
 | Operation | Result |
 |-----------|--------|
-| Force push to `main` | ❌ **BLOCKED** - Prevents overwriting remote history |
-| Force push to `master` | ❌ **BLOCKED** - Same protection |
-| Non-fast-forward push to protected branches | ❌ **BLOCKED** |
+| Any direct push to protected branches (`main`/`master`/`dev`/`staging`) | ❌ **BLOCKED** - PRs only |
+| Non-fast-forward push to protected branches | ❌ **BLOCKED** - Prevents overwriting remote history |
 
 ### What It Warns About
 
 | Operation | Result |
 |-----------|--------|
-| Direct push to `main` | ⚠️ **WARNING** - Recommends using PR instead |
-| Direct push to `master` | ⚠️ **WARNING** - Recommends using PR instead |
+| None | `pre-push` is intended to be loud and fail-safe |
 
 ### Example Blocked Push
 
@@ -111,7 +121,7 @@ Reference: docs/historical/RECOVERY-PLAN-2026-01-14.md
 If this must be done (emergency only):
   1. Create a backup: git branch backup-$(date +%Y%m%d-%H%M%S)
   2. Coordinate with all team members
-  3. Use: SKIP_GIT_HOOKS=1 git push --force
+  3. Use Git’s native bypass: git push --no-verify
 ```
 
 ### Why This Exists
@@ -123,7 +133,7 @@ On January 14, 2026, destructive git commands caused significant data loss. This
 **⚠️ Only use in genuine emergencies after coordinating with the team:**
 
 ```bash
-SKIP_GIT_HOOKS=1 git push --force origin main
+ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push origin main
 ```
 
 ---
@@ -136,8 +146,8 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 
 ```json
 "simple-git-hooks": {
-  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint",
-  "pre-push": "scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
+  "pre-commit": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck:staged",
+  "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
 }
 ```
 
@@ -193,6 +203,15 @@ SKIP_SIMPLE_GIT_HOOKS=1 git commit -m "Emergency fix"
 ```bash
 git commit -n -m "Trusted change"  # -n is short for --no-verify
 ```
+
+### Custom safety overrides (last resort)
+
+These are intentionally separate from hook bypassing:
+
+- Skip writer-lock enforcement (human only): `SKIP_WRITER_LOCK=1 <git command>`
+- Allow commit on protected branch (human only): `ALLOW_COMMIT_ON_PROTECTED_BRANCH=1 git commit ...`
+- Allow direct push to protected branch (human only): `ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push ...`
+  - This does **not** allow non-fast-forward/force pushes; those remain blocked.
 
 ## Troubleshooting
 
@@ -306,7 +325,7 @@ pnpm exec simple-git-hooks  # Reinstall with new version
 
 ---
 
-**Last Updated:** 2026-01-15
+**Last Updated:** 2026-02-01
 
 For questions or issues with git hooks, please:
 1. Check this documentation and the [Git Safety Guide](./git-safety.md)

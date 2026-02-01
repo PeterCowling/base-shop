@@ -32,11 +32,9 @@ export async function middleware(_request: NextRequest) {
 
   // Auth is not currently functional due to iron-session edge runtime incompatibility
   // This code path should not be reached unless AUTH_ENABLED is explicitly set to true
-  throw new Error(
-    "Auth middleware is not supported in edge runtime. " +
-    "Set BUSINESS_OS_AUTH_ENABLED=false or upgrade to Next.js canary with experimental.nodeMiddleware. " +
-    "See middleware.ts header for details."
-  );
+  const authMiddlewareUnsupportedError =
+    "Auth middleware is not supported in edge runtime. Set BUSINESS_OS_AUTH_ENABLED=false or upgrade to Next.js canary with experimental.nodeMiddleware. See middleware.ts header for details."; // i18n-exempt -- BOS-04 developer-only middleware error [ttl=2026-03-31]
+  throw new Error(authMiddlewareUnsupportedError);
 }
 
 // Apply middleware to all routes except static files and Next.js internals

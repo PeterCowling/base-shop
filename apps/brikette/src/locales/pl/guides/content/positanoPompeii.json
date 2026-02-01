@@ -1,134 +1,162 @@
 {
   "seo": {
-    "title": "Z Positano do Pompejów: jak dojechać",
-    "description": "Instrukcje krok po kroku, jak odwiedzić Pompeje z Positano autobusem + pociągiem lub promem + pociągiem (latem)."
+    "title": "Jednodniowa wycieczka z Positano do Pompejów: przewodnik po transporcie i zwiedzaniu",
+    "description": "Kompletny przewodnik po odwiedzeniu Pompejów z Positano. Kierunki autobusem i pociągiem, co zobaczyć, wskazówki dotyczące czasu i praktyczne porady dla gości hostelu planujących jednodniową wycieczkę.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Z Positano do Pompejów: jak dojechać",
+  "linkLabel": "Jednodniowa wycieczka z Positano do Pompejów: przewodnik po transporcie i zwiedzaniu",
   "intro": [
-    "Pompeje są rozległe, spektakularne i łatwo zaplanować tu za dużo. Ten plan pomoże zobaczyć najważniejsze miejsca bez spędzania całego dnia w podróży.",
-    "Latem przygotuj się na upał, kurz i tłumy — zabierz wodę, ochronę przeciwsłoneczną i realnie oceń, jaką część terenu zdążysz obejść."
-  ],
-  "toc": [
-    {
-      "href": "#at-a-glance",
-      "label": "W skrócie"
-    },
-    {
-      "href": "#entry-cost-and-hours",
-      "label": "Bilety i godziny"
-    },
-    {
-      "href": "#other-facilities",
-      "label": "Udogodnienia"
-    },
-    {
-      "href": "#getting-there",
-      "label": "Dojazd"
-    },
-    {
-      "href": "#self-guided-tour",
-      "label": "Zwiedzanie samemu"
-    },
-    {
-      "href": "#faqs",
-      "label": "FAQ"
-    }
+    "Odwiedzenie Pompejów z Positano to przekonująca jednodniowa wycieczka. Starożytne miasto pogrzebane przez Wezuwiusz w 79 roku n.e. oferuje dramatyczny kontrast do nadmorskiego relaksu – rozległe ruiny, zachowane ulice, domy z freskami i namacalna rzymska historia. Podróż z Positano do Pompejów trwa około 2 godzin w każdą stronę autobusem i pociągiem. Zaplanuj pełen dzień (wyjazd do 08:00, powrót do 18:00–19:00). Ten przewodnik obejmuje transport, planowanie czasu, co zobaczyć i praktyczne wskazówki dla gości hostelu odbywających wycieczkę.",
+    "Pompeje są ogromne i mogą być przytłaczające bez planu. Wielu odwiedzających po raz pierwszy nie docenia skali miejsca (66 hektarów – około 165 akrów) i fizycznych wymagań (gorąco, pyłowo, minimalny cień). Ten przewodnik pomaga zobaczyć najważniejsze atrakcje efektywnie, uniknąć typowych błędów i wrócić do Positano usatysfakcjonowanym, a nie wyczerpanym."
   ],
   "sections": [
     {
-      "id": "at-a-glance",
-      "title": "W skrócie",
+      "id": "why-visit-pompeii",
+      "title": "Dlaczego odwiedzić Pompeje z Positano?",
       "body": [
-        "Skala Pompej zachwyca od pierwszego kroku — niemal całe miasto odsłonięto i można je łatwo zwiedzać pieszo.",
-        "To niedrogi wypad, jeśli zwiedzasz na własną rękę; kontekst historyczny i tak jest czytelny bez prywatnego przewodnika.",
-        "Herkulanum jest mniejsze i lepiej zachowane, więc warto je rozważyć, jeśli zależy Ci na nienaruszonych freskach i mozaikach zamiast rozległych ulic Pompej.",
-        "Podróżując z Positano komunikacją publiczną, weź pod uwagę upał, kurz i długie przejazdy."
-      ]
-    },
-    {
-      "id": "entry-cost-and-hours",
-      "title": "Bilety i godziny otwarcia",
-      "body": [
-        "Ceny biletów i godziny wstępu zmieniają się sezonowo — przed wyjazdem zajrzyj na oficjalną stronę Parco Archeologico di Pompei.",
-        "Standardowy bilet kosztuje zwykle niewiele powyżej 15 euro, a ostatnie wejście przypada — w zależności od miesiąca — między późnym popołudniem a wczesnym wieczorem."
-      ]
-    },
-    {
-      "id": "other-facilities",
-      "title": "Udogodnienia",
-      "body": [
-        "Odbierz darmową mapę w punkcie informacji obok kas biletowych; znacznie ułatwia orientację na terenie ruin.",
-        "Przy wejściu możesz wypożyczyć audioprzewodnik lub wynająć licencjonowanego przewodnika, jeśli potrzebujesz dodatkowych wyjaśnień.",
-        "Na miejscu są stoiska z przekąskami, ale wybór jest ograniczony — szczególnie latem zabierz ze sobą sporo wody.",
-        "Bagaż przechowasz za opłatą na stacji Pompeii Scavi albo bezpłatnie w szatni zaraz za wejściem."
+        "%IMAGE:pompeii-ruins-overview.jpg|Widok z lotu ptaka na stanowisko archeologiczne w Pompejach z Wezuwiuszem%",
+        "Pompeje to jedno z najważniejszych stanowisk archeologicznych na świecie. Kiedy Wezuwiusz wybuchł 24 sierpnia 79 roku n.e., pogrzebał Pompeje pod 4–6 metrami wulkanicznego popiołu i pemzy. Miasto pozostało zamrożone w czasie przez prawie 1700 lat, aż do rozpoczęcia wykopalisk w XVIII wieku. To, co czyni Pompeje niezwykłymi, to nie tylko ich wiek, ale kompletność – całe ulice, domy, sklepy, świątynie, teatry i łaźnie zachowane z freskami, mozaikami, graffiti, a nawet ludzkimi szczątkami odlanymi w gipsie. Jeśli jesteś zainteresowany innymi %LINK:historyPositano|miejscami historycznymi na Wybrzeżu Amalfitańskim%, Pompeje oferują dramatyczny uzupełnienie średniowiecznego i rzymskiego dziedzictwa Positano.",
+        "Dla podróżnych zatrzymujących się w %LINK:onlyHostel|Hostelu Brikette%, Pompeje oferują potężny historyczny kontrapunkt dla naturalnego piękna Wybrzeża Amalfitańskiego. Możesz wędrować ulicami, którymi chodzili Rzymianie 2000 lat temu, zobaczyć, jak żyli, robili zakupy, czcili i bawili się. Skala jest pokorna – Pompeje były kwitnącym miastem liczącym 11 000–20 000 ludzi, gdy uderzyła erupcja. Dziś możesz chodzić po ich domach, czytać ich graffiti na ścianach i stać w ich amfiteatrze.",
+        "Wycieczka z Positano do Pompejów oferuje również praktyczną różnorodność. Jeśli przez kilka dni byłeś na plaży w %LINK:positanoMainBeach|Spiaggia Grande% lub odkrywałeś %LINK:pathOfTheGods|nadmorskie szlaki turystyczne%, kulturalna wycieczka przerywa rytm. Pompeje dobrze sprawdzają się w pochmurne dni, gdy plaże są mniej atrakcyjne. I w przeciwieństwie do %LINK:avoidCrowdsPositano|gęstych tłumów turystycznych Positano%, ogrom Pompejów rozprасza odwiedzających – często będziesz miał całe ulice dla siebie, szczególnie jeśli przyjedziesz wcześnie lub odwiedzisz poza sezonem."
       ]
     },
     {
       "id": "getting-there",
-      "title": "Dojazd",
+      "title": "Jak dostać się z Positano do Pompejów",
       "body": [
-        "Z Positano wsiądź do autobusu SITA do Sorrento; bilety kupisz w tabacchi lub u kierowcy, a podróż trwa około godziny.",
-        "W Sorrento wejdź po schodach na perony Circumvesuviany i wsiądź do lokalnego pociągu do ‘Pompei Scavi – Villa dei Misteri’.",
-        "Po wyjściu ze stacji skręć w prawo; wejście Porta Marina Superiore znajduje się po lewej stronie, około 50 metrów dalej."
+        "%IMAGE:sita-bus-sorrento.jpg|Autobus SITA na stacji w Sorrento łączący się z Circumvesuviana%",
+        "Podróż z Positano do Pompejów wymaga dwóch etapów: autobus SITA z Positano do Sorrento, potem pociąg Circumvesuviana z Sorrento do Pompejów. Całkowity czas podróży to około 1,5–2 godziny w każdą stronę, w zależności od czasu oczekiwania na autobus i pociąg. Oto proces krok po kroku:",
+        "**Krok 1: Autobus z Positano do Sorrento (50–60 minut).** Złap autobus SITA z Chiesa Nuova (w pobliżu hostelu) lub głównego przystanku autobusowego w Positano (Spiaggia Grande). Autobusy kursują co 20–40 minut w zależności od sezonu. Kup bilety w sklepach tabacchi przed wejściem lub użyj aplikacji SITA. Bilety kosztują ~2,50–3,00 €. Przejazd autobusem wzdłuż %LINK:chiesaNuovaArrivals|drogi Wybrzeża Amalfitańskiego% oferuje oszałamiające widoki, ale może być zatłoczony – staraj się wsiąść wcześnie w Chiesa Nuova, aby zapewnić sobie miejsce. Szczegółowe harmonogramy i wskazówki znajdują się w %LINK:sorrentoPositanoBus|z Positano do Sorrento autobusem%.",
+        "**Krok 2: Pociąg z Sorrento do Pompei Scavi (30–35 minut).** W Sorrento autobus zatrzymuje się na Piazza Tasso (główny plac). Stamtąd idź 5 minut do stacji kolejowej Circumvesuviana (podążaj za znakami lub pytaj lokalnych). Kup bilet do \"Pompei Scavi – Villa dei Misteri\" w kasie biletowej lub automatach. Bilety kosztują ~3,00–4,00 €. Circumvesuviana to lokalny pociąg podmiejski – podstawowy, często zatłoczony, bez klimatyzacji. Pociągi kursują co 20–30 minut. Przejazd trwa około 30 minut. Wysiądź na stacji \"Pompei Scavi\" (NIE na stacji \"Pompeii\", która jest dalej od ruin).",
+        "**Krok 3: Spacer do wejścia (1–2 minuty).** Wyjdź ze stacji Pompei Scavi, skręć w prawo, a zobaczysz wejście do stanowiska archeologicznego w Pompejach (Porta Marina Superiore) w odległości 50 metrów. To główne wejście dla niezależnych odwiedzających. Kasy biletowe i przechowalnia bagażu są tutaj.",
+        "**Całkowity czas podróży:** Zaplanuj 2–2,5 godziny z Positano do wejścia do Pompejów, łącznie z oczekiwaniem na autobus, przejazdem autobusem, przesiadką w Sorrento, przejazdem pociągiem i spacerem. Wyjedź z Positano do 08:00, aby dotrzeć do Pompejów do 10:00–10:30, dając sobie 4–5 godzin na zwiedzanie przed powrotem."
       ]
     },
     {
-      "id": "self-guided-tour",
-      "title": "Zwiedzanie samemu",
+      "id": "timing-and-planning",
+      "title": "Kiedy odwiedzić i ile czasu spędzić",
       "body": [
-        "Tuż przy wejściu skręć w lewo do punktu informacji, odbierz mapę i — w razie potrzeby — zostaw bagaż, zanim kupisz bilety w kasach naprzeciwko.",
-        "W środku zlokalizuj na mapie Porta Marina Superiore — stoisz na Via Marina, a oznaczenia są czytelne.",
-        "Podążaj Via Marina w stronę amfiteatru, po drodze zaglądając do domów, term i forów, które Cię interesują, po czym wróć na główny trakt.",
-        "Po obejrzeniu amfiteatru wróć dolną częścią stanowiska, by zobaczyć kolejne atrakcje bez dublowania trasy.",
-        "Taka pętla pozwala zobaczyć 60–80% kluczowych punktów w dużo krótszym czasie niż próba przejścia każdej uliczki."
+        "%IMAGE:pompeii-summer-crowds.jpg|Turyści zwiedzający ruiny Pompejów w letni dzień%",
+        "**Najlepsza pora dnia:** Przyjedź do Pompejów do 09:00–10:00, aby wyprzedzić szczytowe tłumy i południowe upały. Miejsce otwiera się o 09:00 (sprawdź oficjalne godziny sezonowo). Poranne temperatury są chłodniejsze, światło jest miększe do zdjęć, a grupy turystyczne przybywają później (11:00–12:00). Jeśli przyjedziesz do 09:30, będziesz miał 1–2 godziny stosunkowo pustych ruin zanim tłumy się zbudują.",
+        "**Ile czasu spędzić:** Zaplanuj minimum 3–4 godziny, aby zobaczyć główne atrakcje bez pośpiechu. Poważni entuzjaści archeologii mogą spędzić 6–8 godzin odkrywając każdy zakątek, ale większość gości hostelu uważa, że 3–4 godziny wystarczy, aby docenić skalę miejsca i zobaczyć kluczowe obszary. Jeśli masz ograniczony czas, 2 godziny obejmują absolutne podstawy (forum, amfiteatr, kilka domów), ale wiele przeoczysz.",
+        "**Najlepszy sezon:** Kwiecień–czerwiec i wrzesień–październik oferują najlepszą równowagę – przyjemne temperatury, możliwe do opanowania tłumy i pełny dostęp do miejsca. Lipiec–sierpień przynoszą ekstremalny upał (35–40°C), intensywne słońce, minimalny cień i szczytowe tłumy turystów. Listopad–marzec są spokojniejsze, ale grożą deszczem i krótszymi godzinami dziennymi. Jeśli odwiedzasz latem, przynieś podwójną ilość wody, niż myślisz, że potrzebujesz, noś kapelusz z szerokim rondem i rób częste przerwy w zacienionych obszarach.",
+        "**Przykładowy plan podróży dla gości hostelu:**\n- 08:00: Wyjazd z Positano autobusem SITA\n- 09:00: Przyjazd do Sorrento, przesiadka na Circumvesuviana\n- 09:30: Odjazd z Sorrento pociągiem\n- 10:00–10:30: Przyjazd do Pompejów, zakup biletów, wejście na teren\n- 10:30–14:00: Zwiedzanie ruin (3,5 godziny)\n- 14:00–14:30: Przerwa na lunch (przynieś spakowany lunch lub kup w kawiarni na miejscu)\n- 14:30: Odjazd z Pompejów pociągiem\n- 15:00–15:30: Przyjazd do Sorrento, złapanie autobusu SITA\n- 16:30–17:30: Powrót do Positano\n\nTen harmonogram pozwala na 3–4 godziny w Pompejach z czasem buforowym na opóźnienia transportu. Wracasz do Positano z czasem na odpoczynek przed kolacją. Wielu gości hostelu podąża dokładnie tym planem i raportuje, że dobrze działa – nie za szybko, nie za leniwie, z wystarczającym czasem, aby zobaczyć najważniejsze atrakcje bez wyczerpania. Goście, którzy próbują wpakować więcej do dnia (np. dodając Herkulanum lub przedłużając Pompeje do 5+ godzin), konsekwentnie raportują, że czują się wypaleni wieczorem."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "Co zobaczyć w Pompejach: wycieczka po najważniejszych atrakcjach",
+      "body": [
+        "%IMAGE:pompeii-forum-columns.jpg|Starożytne rzymskie forum w Pompejach z zachowanymi kolumnami%",
+        "66 hektarów Pompejów zawiera setki budynków. Zobaczenie wszystkiego jest niemożliwe w jednej wizycie. Skup się na głównych atrakcjach dla satysfakcjonującej wycieczki z przewodnikiem. Weź darmową mapę miejsca przy wejściu (niezbędna do nawigacji) i podążaj tą sugerowaną trasą:",
+        "**1. Forum (Foro).** Forum było politycznym, religijnym i handlowym centrum Pompejów. To duży prostokątny plac otoczony świątyniami, budynkami administracyjnymi i halami targowymi. Świątynia Jowisza kotwi północny koniec, z Wezuwiuszem górującym za nią – potężne wizualne przypomnienie tego, co zniszczyło miasto. Forum daje kontekst dla wszystkiego innego, co zobaczysz. Spędź tu 20–30 minut.",
+        "%IMAGE:pompeii-basilica-interior.jpg|Wnętrze starożytnej bazyliki w Pompejach z kolumnami%",
+        "**2. Bazylika.** Przylegająca do forum, bazylika była sądem i centrum biznesowym Pompejów. Ogromne wnętrze (65m x 28m) kiedyś mieściło postępowania prawne i negocjacje handlowe. Skala kolumn i architektury demonstruje rzymskie inżynierstwo. Spędź 10 minut.",
+        "**3. Dom Fauna (Casa del Fauno).** Jeden z największych i najbardziej wystawnych prywatnych domów w Pompejach, zajmujący cały blok miejski. Słynny z brązowego posągu fauna w atrium (oryginał jest w Muzeum Archeologicznym w Neapolu, ale replika stoi in situ) i mozaiki Aleksandra (również przeniesionej do Neapolu). Dom demonstruje, jak żyła bogata elita Pompejów – wiele dziedzińców, jadalnie, kwatery dla służby, wyszukane mozaiki. Spędź 15–20 minut.",
+        "%IMAGE:house-vettii-frescoes.jpg|Kolorowe zachowane freski w Domu Wettich%",
+        "**4. Dom Wettich (Casa dei Vettii).** Kolejny bogaty dom, słynny ze swoich niezwykle zachowanych fresków. Jadalnia (triclinium) przedstawia mitologiczne sceny w żywych czerwieniach, błękitach i złotach. Ogród został zrekonstruowany na podstawie starożytnych pozostałości roślin. Ten dom najlepiej pokazuje sztukę i kolor Pompejów. Spędź 15 minut.",
+        "**5. Łaźnie Stabiańskie (Terme Stabiane).** Najstarsze i najlepiej zachowane łaźnie publiczne w Pompejach. Możesz zobaczyć caldarium (gorące pomieszczenie), tepidarium (ciepłe pomieszczenie), frigidarium (zimne pomieszczenie) i apodyterium (przebieralnia). Inżynieria jest widoczna – ogrzewane podłogi, instalacja wodociągowa, nawet starożytne graffiti na ścianach. To daje wgląd w rzymskie życie codzienne i zwyczaje społeczne. Spędź 15 minut.",
+        "**6. Lupanar (Burdel).** Mały dwupiętrowy budynek z kamiennymi łóżkami i erotycznymi freskami. Lupanar to jedno z najczęściej odwiedzanych (i fotografowanych) miejsc w Pompejach. Dostarcza szczerych dowodów na komercyjny przemysł seksualny w Pompejach. Sypialnie na górze i wyraźna sztuka szokują niektórych odwiedzających, ale oferują nieprzyozdobioną historyczną prawdę. Spędź 5–10 minut (często zatłoczone).",
+        "%IMAGE:pompeii-amphitheater.jpg|Starożytny amfiteatr w Pompejach z tłem Wezuwiusza%",
+        "**7. Amfiteatr (Anfiteatro).** Amfiteatr w Pompejach pomieścił 20 000 widzów na walki gladiatorów i publiczne spektakle. Zbudowany około 70 roku p.n.e., jest to jeden z najstarszych zachowanych amfiteatrów rzymskich. Możesz chodzić po podłodze areny i wspinać się po stopniach siedzących dla widoków na ruiny i Wezuwiusz. Skala jest imponująca – wyobraź sobie ryk 20 000 Rzymian dopingujących krwawy sport. Spędź 20 minut.",
+        "%IMAGE:pompeii-plaster-casts.jpg|Gipsowe odlewy ofiar Pompejów w Ogrodzie Uciekinierów%",
+        "**8. Ogród Uciekinierów (Orto dei Fugitivi).** Winnica, gdzie 13 mieszkańców Pompejów zginęło próbując uciec przed erupcją. Ich ciała zostały zachowane w popiele; archeolodzy wypełnili ubytki gipsem, aby stworzyć niesamowite odlewy. Zobaczenie gipsowych odlewów – dorosłych, dzieci, skręconych w ostatnich momentach – sprawia, że tragedia Pompejów staje się namacalna. To jest emocjonalnie ciężkie, ale historycznie ważne. Spędź 10 minut.",
+        "%IMAGE:via-abbondanza-street.jpg|Starożytna rzymska ulica Via dell'Abbondanza ze sklepami%",
+        "**9. Via dell'Abbondanza.** Główna ulica Pompejów, wyłożona sklepami, tawernami i domami. Spacer tą ulicą przypomina wejście do rzymskiego miasta – możesz zobaczyć lady, gdzie kupcy sprzedawali jedzenie i wino, graffiti na ścianach (slogany wyborcze, listy miłosne, obelgi), kamienie do przechodzenia przez błotniste ulice. To tutaj Pompeje wydają się najbardziej żywe. Spędź 20–30 minut wędrując.",
+        "Ta trasa obejmuje niezbędne atrakcje w 3–3,5 godziny w zrelaksowanym tempie. Jeśli masz więcej czasu, odkryj dzielnicę teatralną, więcej domów (Dom Tragicznego Poety, Dom Menandera) i boczne ulice. Jeśli masz mniej czasu, priorytetuj forum, jeden bogaty dom (Wettich lub Fauna), łaźnie i amfiteatr."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Praktyczne wskazówki dla Twojej wizyty",
+      "body": [
+        "%IMAGE:pompeii-map-tourists.jpg|Turyści konsultujący mapę miejsca przy wejściu do Pompejów%",
+        "**Weź darmową mapę przy wejściu.** Punkt informacyjny wewnątrz Porta Marina Superiore rozdaje darmowe drukowane mapy. Weź jedną. Pompeje są ogromne i mylące bez mapy. Mapa oznacza główne miejsca, toalety, wyjścia i strefy cienia. Nie polegaj na nawigacji telefonu – zasięg komórkowy jest nierówny, a bezczynne wędrowanie marnuje czas.",
+        "**Przynieś dużo wody.** Pompeje są odsłonięte – minimalny cień, odbijające kamienne powierzchnie wzmacniające upał. Latem temperatury na miejscu mogą sięgać 40°C. Przynieś co najmniej 1,5 litra wody na osobę. Fontanny wewnątrz miejsca oferują pitną wodę do napełnienia. Odwodnienie to realne ryzyko – wielu odwiedzających nie docenia tego. Z hostelu widzieliśmy gości wracających z Pompejów z udarem słonecznym i bólami głowy od odwodnienia, ponieważ przynieśli tylko jedną małą butelkę. Personel zaleca napełnienie dwóch butelek 750 ml przed wyjazdem i napełnianie przy fontannach Pompejów przez cały dzień.",
+        "**Noś wygodne, solidne buty.** Ulice Pompejów są wyłożone dużymi, nierównymi kamieniami. Sandały lub japonki prowadzą do skręconych kostek i obolałych stóp. Noś buty spacerowe z zamkniętymi palcami z dobrym wsparciem. Będziesz chodzić 5–8 km (3–5 mil) zwiedzając miejsce.",
+        "**Ochrona przed słońcem jest krytyczna.** Noś krem z filtrem (SPF 30+), kapelusz z szerokim rondem i okulary przeciwsłoneczne. Słońce jest bezlitosne i prawie nie ma cienia. Długie rękawy w lekkim, oddychającym materiale pomagają zapobiec oparzeniom słonecznym lepiej niż wielokrotne nakładanie kremu z filtrem.",
+        "**Dostępna przechowalnia bagażu.** Jeśli łączysz Pompeje z dalszą podróżą (np. odwiedzanie Pompejów w drodze do Neapolu), możesz przechować bagaż na stacji kolejowej Pompei Scavi (płatna usługa) lub w darmowej szatni zaraz wewnątrz wejścia na teren. Duże plecaki są dozwolone wewnątrz, ale utrudniają manewrowanie przez wąskie drzwi.",
+        "**Przewodniki audio i wycieczki.** Przewodniki audio (8–10 €) są dostępne przy wejściu i dostarczają kontekstu dla głównych miejsc. Licencjonowani przewodnicy turystyczni oferują wycieczki grupowe (15–20 € na osobę za 2-godzinne wycieczki) lub wycieczki prywatne (100–150 € dla małych grup). Dla odwiedzających po raz pierwszy przewodnik audio lub dołączenie do wycieczki grupowej dodaje znaczącą wartość – ruiny są bardziej znaczące z historycznym kontekstem. Samodzielne wizyty działają dobrze z przewodnikiem lub darmową mapą, ale tracisz historie i szczegóły.",
+        "**Jedzenie i napoje wewnątrz.** Jest kawiarnia w pobliżu forum sprzedająca kanapki, napoje i przekąski po zawyżonych cenach. Jakość jest przeciętna. Wielu gości hostelu przynosi spakowane lunche przygotowane w %LINK:onlyHostel|kuchni hostelu% – kanapki, owoce, przekąski ze sklepów spożywczych Chiesa Nuova – i je w zacienionych obszarach w pobliżu amfiteatru lub forum. To oszczędza pieniądze (15–20 € na osobę) i pozwala odpocząć bez opuszczania miejsca. Próbowaliśmy kanapek z kawiarni; są przeważone (8–10 €) i rozczarowujące. Spakuj własne.",
+        "**Toalety są ograniczone.** Są toalety w pobliżu wejścia, forum i amfiteatru. Korzystaj z nich, kiedy je zobaczysz – długie przerwy między obiektami. Są podstawowe, ale funkcjonalne.",
+        "**Fotografowanie jest dozwolone.** Możesz robić zdjęcia w całych Pompejach (bez flesza wewnątrz budynków z freskami). Najlepsze możliwości fotograficzne to forum z tłem Wezuwiusza, amfiteatr, sceny uliczne Via dell'Abbondanza i gipsowe odlewy w Ogrodzie Uciekinierów. Poranne i późnopopołudniowe światło są najlepsze; południowe słońce tworzy ostre cienie."
+      ]
+    },
+    {
+      "id": "herculaneum-alternative",
+      "title": "Herkulanum jako alternatywa lub dodatek",
+      "body": [
+        "%IMAGE:herculaneum-villa-fresco.jpg|Dobrze zachowane freski w stanowisku archeologicznym Herkulanum%",
+        "Herkulanum (Ercolano) to mniejsze rzymskie miasto również zniszczone przez Wezuwiusz w 79 roku n.e. Leży bliżej Neapolu niż Pompeje (około 40 minut Circumvesuviana z Sorrento). Wielu archeologów i historyków uważa Herkulanum za lepsze od Pompejów pod względem jakości zachowania. Herkulanum zostało pogrzebane pod głębszym materiałem wulkanicznym (do 20 metrów vs 6 metrów w Pompejach), co stworzyło szczelną pieczęć. To zachowało materiały organiczne – drewno, tkaniny, jedzenie – które rozpadły się w Pompejach. Freski i mozaiki w Herkulanum zachowują więcej koloru. Budynki mają nienaruszone górne piętra i dachy.",
+        "**Herkulanum vs Pompeje: które odwiedzić?** Jeśli masz czas tylko na jedno, większość odwiedzających po raz pierwszy wybiera Pompeje ze względu na skalę i sławę. Pompeje dostarczają \"efektu wow\" całego miasta zamrożonego w czasie. Herkulanum jest mniejsze (4,5 hektara vs 66 Pompejów), mniej przytłaczające i bardziej intymne. Możesz zobaczyć całe miejsce w 1,5–2 godziny vs 3–4 Pompejów. Herkulanum jest lepsze do doceniania rzymskiej sztuki, architektury i szczegółów życia codziennego. Pompeje są lepsze do zrozumienia planowania miejskiego i doświadczenia skali rzymskiego miasta.",
+        "**Czy możesz odwiedzić oba w jeden dzień z Positano?** Technicznie tak, ale jest to wyczerpujące. Oba miejsca w jeden dzień wymagają wyjazdu z Positano do 07:30, odwiedzenia Herkulanum najpierw (09:00–11:00), potem Pompejów (12:00–15:00), powrotu do 18:00–19:00. Spędzisz 5–6 godzin na transporcie i 4–5 godzin na miejscach. Większość gości hostelu uważa to za zbyt szybkie. Jeśli chcesz oba, rozważ nocleg w Neapolu lub Sorrento, aby rozłożyć wizyty na dwa dni."
+      ]
+    },
+    {
+      "id": "returning-to-positano",
+      "title": "Powrót do Positano",
+      "body": [
+        "%IMAGE:circumvesuviana-train.jpg|Pociąg Circumvesuviana wracający z Pompejów do Sorrento%",
+        "Odwróć poranną trasę: wróć pieszo do stacji kolejowej Pompei Scavi, weź Circumvesuviana do Sorrento, potem %LINK:sorrentoPositanoBus|autobus SITA z powrotem do Positano%. Popołudniowe autobusy z Sorrento do Positano (15:00–18:00) mogą być bardzo zatłoczone – letni turyści i dojeżdżający wracający do domu. Spodziewaj się stania przez część lub całą podróż, jeśli wsiądziesz w Sorrento. Alternatywnie złap autobus nieco później (po 18:30), gdy tłumy się przerzedzą, chociaż oznacza to przyjazd do Positano około 19:30–20:00.",
+        "Jeśli autobusy są niemożliwie pełne, taksówki i prywatni kierowcy działają z Sorrento do Positano (60–80 € za maksymalnie 4 pasażerów). To drogie, ale oszczędza 45–60 minut i gwarantuje miejsce siedzące. Niektórzy goście hostelu dzielą taksówkę po długich, gorących dniach w Pompejach. Zapytaj %LINK:onlyHostel|personel hostelu% o rekomendacje kierowców, jeśli chcesz tej opcji. Po powrocie do Positano wielu gości łapie kolację w lokalnych restauracjach lub kupuje artykuły spożywcze, aby gotować w %LINK:onlyHostel|kuchni hostelu% i dzielić się historiami z Pompejów z innymi podróżnymi."
       ]
     }
   ],
-  "howTo": {
-    "steps": [
-      {
-        "name": "Autobus do Sorrento",
-        "text": "Wsiądź w Positano do autobusu SITA i jedź do głównego dworca w Sorrento (około 60 minut)."
-      },
-      {
-        "name": "Pociąg do Pompeii Scavi",
-        "text": "Wejdź na perony Circumvesuviany i złap pociąg do ‘Pompei Scavi – Villa dei Misteri’."
-      },
-      {
-        "name": "Spacer do wejścia",
-        "text": "Po wyjściu ze stacji skręć w prawo; Porta Marina Superiore jest około 50 metrów dalej po lewej."
-      }
-    ]
-  },
-  "tipsTitle": "Wskazówki na dzień wyjazdu",
+  "tipsTitle": "Szybkie wskazówki dotyczące jednodniowej wycieczki do Pompejów",
   "tips": [
-    "Weź darmową mapę zanim przejdziesz przez bramki, by planować objazdy bez zawracania.",
-    "Zabierz dużo wody i uzupełniaj ją przy każdej fontannie — latem przy kioskach ustawiają się długie kolejki.",
-    "Zapisuj punkty widokowe lub freski, do których chcesz wrócić przy wyjściu; w upale łatwo o nich zapomnieć."
-  ],
-  "warningsTitle": "Ważne ostrzeżenia",
-  "warnings": [
-    "W szczycie sezonu kolejki do autobusów SITA i pociągów Circumvesuviany mogą wydłużyć każdy odcinek o 20–30 minut — zaplanuj zapas czasowy.",
-    "Większość terenu jest odkryta i pozbawiona cienia, dlatego jeśli źle znosisz upał, unikaj zwiedzania w południe."
+    "Wyjedź z Positano do 08:00, aby dotrzeć do Pompejów do 10:00–10:30 i wyprzedzić szczytowe tłumy.",
+    "Weź darmową mapę miejsca przy wejściu – niezbędna do nawigacji w rozległych ruinach.",
+    "Przynieś 1,5+ litra wody na osobę; upał i ekspozycja słoneczna są intensywne latem.",
+    "Noś solidne buty z zamkniętymi palcami – nierówne kamienne ulice Pompejów niszczą sandały i japonki.",
+    "Spakuj lunch, aby zjeść wewnątrz miejsca i zaoszczędzić 15–20 € na przeważonym jedzeniu z kawiarni.",
+    "Używaj kremu z filtrem, kapelusza i okularów przeciwsłonecznych – Pompeje mają prawie żadnego cienia.",
+    "Priorytetuj forum, Dom Wettich, Łaźnie Stabiańskie, amfiteatr i Via dell'Abbondanza dla 3-godzinnej wizyty.",
+    "Rozważ przewodnik audio (8–10 €) dla historycznego kontekstu – sprawia, że ruiny są o wiele bardziej znaczące.",
+    "Przechowuj bagaż na stacji Pompei Scavi lub w darmowej szatni wewnątrz wejścia.",
+    "Powrotne autobusy z Sorrento do Positano są zatłoczone 15:00–18:00; podróżuj wcześniej lub później, jeśli to możliwe."
   ],
   "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "Które wejście jest najlepsze?",
+      "q": "Ile czasu zajmuje dotarcie z Positano do Pompejów?",
       "a": [
-        "Porta Marina Superiore tuż obok stacji Pompei Scavi jest najwygodniejsze dla osób zwiedzających samodzielnie — kilka kroków od pociągu i blisko przechowalni bagażu."
+        "Około 1,5–2 godziny w każdą stronę. Autobus SITA z Positano do Sorrento zajmuje 50–60 minut, pociąg Circumvesuviana z Sorrento do Pompei Scavi zajmuje 30–35 minut, plus 5–10 minut na przesiadkę w Sorrento. Zaplanuj 2–2,5 godziny łącznie, łącznie z czasami oczekiwania."
       ]
     },
     {
-      "q": "Czy można zwiedzać bez przewodnika?",
+      "q": "Ile kosztuje jednodniowa wycieczka do Pompejów z Positano?",
       "a": [
-        "Tak. Bezpłatna oficjalna mapa jest szczegółowa, a większość kluczowych budynków ma tablice po włosku i angielsku. Dostępne są też audioprzewodniki i licencjonowani przewodnicy, jeśli potrzebujesz więcej informacji."
+        "Budżet 30–40 € na osobę: autobus SITA Positano-Sorrento (2,50–3 €), pociąg Circumvesuviana Sorrento-Pompei (3–4 €), bilet wstępu do Pompejów (16–18 €), transport powrotny (5,50–7 €), plus jedzenie/napoje. Przewodnik audio dodaje 8–10 €. Całkowita budżetowa jednodniowa wycieczka: 35–50 € na osobę."
       ]
     },
     {
-      "q": "Gdzie zostawić bagaż?",
+      "q": "Czy warto odwiedzić Pompeje z Positano?",
       "a": [
-        "Mały bagaż można za opłatą oddać na stacji Pompei Scavi, a zaraz za wejściem znajduje się darmowa szatnia."
+        "Tak, szczególnie jeśli chcesz kulturowej/historycznej różnorodności poza plażami. Pompeje to jedno z najważniejszych stanowisk archeologicznych na świecie. Podróż jest długa (4+ godziny transportu w obie strony), ale możliwa do opanowania jako całodniowa wycieczka. Najlepsze dla podróżnych spędzających 4+ dni w Positano, którzy chcą przerwy od nadmorskich aktywności."
+      ]
+    },
+    {
+      "q": "Czy mogę odwiedzić zarówno Pompeje, jak i Herkulanum w jeden dzień z Positano?",
+      "a": [
+        "Technicznie tak, ale bardzo szybko. Musiałbyś wyjechać z Positano do 07:30, odwiedzić Herkulanum najpierw (09:00–11:00), potem Pompeje (12:00–15:00), wracając do 18:00–19:00. Łącznie 5–6 godzin transportu, 4–5 godzin na miejscach. Większość podróżnych uważa to za wyczerpujące. Lepiej wybrać jedno miejsce lub nocować w Neapolu/Sorrento, aby rozłożyć wizyty na dwa dni."
+      ]
+    },
+    {
+      "q": "Co powinienem przynieść do Pompejów?",
+      "a": [
+        "Niezbędne: 1,5+ litra wody na osobę, krem z filtrem, kapelusz, okulary przeciwsłoneczne, solidne buty spacerowe, mapa miejsca (darmowa przy wejściu). Zalecane: spakowany lunch, mały plecak, aparat fotograficzny, przewodnik lub przewodnik audio. Latem: podwójna ilość wody, lekkie długie rękawy do ochrony przed słońcem. Miejsce jest gorące, odsłonięte i wymaga 3–4 godzin spaceru."
+      ]
+    },
+    {
+      "q": "Czy potrzebuję przewodnika, czy mogę zwiedzać Pompeje samodzielnie?",
+      "a": [
+        "Możesz zwiedzać niezależnie z darmową mapą miejsca. Jednak przewodnik audio (8–10 €) lub dołączenie do wycieczki grupowej (15–20 €) znacząco wzbogaca doświadczenie, dostarczając historycznego kontekstu, historii i szczegółów, które w przeciwnym razie byś przeoczył. Odwiedzający po raz pierwszy najbardziej korzystają z kontekstu z przewodnikiem."
+      ]
+    },
+    {
+      "q": "Kiedy jest najlepszy czas na odwiedzenie Pompejów?",
+      "a": [
+        "Kwiecień–czerwiec i wrzesień–październik oferują najlepszą pogodę i możliwe do opanowania tłumy. Przyjedź na miejsce do 09:00–10:00, aby wyprzedzić grupy turystyczne i południowy upał. Unikaj lipca–sierpnia, jeśli to możliwe (ekstremalny upał, intensywne słońce, szczytowe tłumy). Listopad–marzec są spokojniejsze, ale grożą deszczem i krótszymi godzinami dziennymi."
       ]
     }
   ]

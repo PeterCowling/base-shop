@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getCardById } from "@acme/platform-core/repositories/businessOs.server";
+
 import { CardEditorForm } from "@/components/card-editor/CardEditorForm";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { createRepoReader } from "@/lib/repo-reader";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getDb } from "@/lib/d1.server";
 
 /* eslint-disable ds/no-hardcoded-copy, ds/no-unsafe-viewport-units, ds/container-widths-only-at -- BOS-32: Phase 0 scaffold UI (ttl: 2026-03-31) */
 
@@ -17,18 +19,13 @@ interface PageProps {
  * Page: Edit Card
  * Phase 0: Pete-only card editing
  */
+export const runtime = "edge";
+
 export default async function EditCardPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Get repo root
-  const repoRoot = getRepoRoot();
-
-  // Create reader and fetch card + businesses
-  const reader = createRepoReader(repoRoot);
-  const [card, businesses] = await Promise.all([
-    reader.getCard(id),
-    reader.getBusinesses(),
-  ]);
+  const db = getDb();
+  const card = await getCardById(db, id);
 
   if (!card) {
     notFound();
@@ -57,7 +54,7 @@ export default async function EditCardPage({ params }: PageProps) {
         {/* Form */}
         <div className="bg-white rounded-lg shadow p-6">
           <CardEditorForm
-            businesses={businesses}
+            businesses={BUSINESSES}
             existingCard={card}
             baseFileSha={card.fileSha}
             mode="edit"

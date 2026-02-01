@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Italienske fraser for reisende i Campania",
+    "description": "Nyttig italiensk (med litt dialekt) for busser, ferjer, kafeer og høflige møter langs kysten."
+  },
+  "linkLabel": "Italienske fraser for reisende i Campania",
+  "intro": [
+    "Hendig italiensk (og et snev av lokal dialekt) for busser, ferger, kafeer og høflige forespørsler rundt i Campania."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport – grunnleggende",
+      "body": [
+        "\"Un biglietto per Positano, per favore\" (en billett til Positano, takk) eller \"Dove si convalida?\" (Hvor validerer jeg?) dekker de fleste motchatter.",
+        "Behold \"Scendo alla prossima\" (jeg går av neste gang) og \"A che ora parte l'ultima corsa?\" (Hva tid er siste løpetur?) klar for raske spørsmål."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Kafeer og måltider",
+      "body": [
+        "Bestill med \"Prendo un espresso al banco\" eller \"Possiamo avere il conto, per favore?\" og alltid legge til en grazie.",
+        "Be om anbefalinger (\"Cosa consiglia oggi?\") eller sjekk kostholdsbehov: \"È possibile senza glutine?\"."
+      ]
+    },
+    {
+      "id": "emergency",
+      "title": "Nød og høflighet",
+      "body": [
+        "\"Ho bisogno di aiuto\" (jeg trenger hjelp) og \"Può chiamare un taxi?\" (Kan du ringe en taxi?) dekke de fleste akutte situasjoner.",
+        "Lokal farge: \"Guagliò\" er en vennlig uformell hilsen, mens \"Statt' bbuon\" er et varmt farvel du kanskje hører på dialekt."
+      ]
+    }
+  ],
+  "tips": [
+    "Last ned en frakoblet parlør-app for rask lydavspilling når mobildata faller.",
+    "En enkel \"Grazie mille\" og \"Buona giornata\" holder samspillet varmt selv i høysesongen."
+  ]
+}

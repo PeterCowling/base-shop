@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@acme/design-system/primitives";
 
+import { getStringProp, readJsonSafely } from "@/lib/json";
 import type { Priority } from "@/lib/types";
 
 export interface QuickCaptureModalProps {
@@ -50,6 +51,120 @@ const PRIORITY_OPTIONS: { value: Priority; label: string }[] = [
   { value: "P4", label: "P4 - Very Low" },
   { value: "P5", label: "P5 - Backlog" },
 ];
+
+type SetFormData = React.Dispatch<React.SetStateAction<FormData>>;
+
+function QuickCaptureForm(props: {
+  formData: FormData;
+  setFormData: SetFormData;
+  isSubmitting: boolean;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const { formData, setFormData, isSubmitting, onSubmit, onCancel } = props;
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-4">
+      <Input
+        id="title"
+        type="text"
+        label="Title"
+        placeholder="What's your idea?"
+        value={formData.title}
+        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+        required
+        autoFocus
+        disabled={isSubmitting}
+      />
+
+      <div>
+        <label htmlFor="business" className="block text-sm font-medium text-foreground mb-1">
+          Business
+        </label>
+        <select
+          id="business"
+          value={formData.business}
+          onChange={(e) => setFormData({ ...formData, business: e.target.value })}
+          disabled={isSubmitting}
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <option value="PLAT">Platform</option>
+          <option value="BRIK">Brikette</option>
+          <option value="CMS">CMS</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="priority" className="block text-sm font-medium text-foreground mb-1">
+          Priority
+        </label>
+        <select
+          id="priority"
+          value={formData.priority}
+          onChange={(e) => setFormData({ ...formData, priority: e.target.value as Priority })}
+          disabled={isSubmitting}
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {PRIORITY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <Textarea
+        id="notes"
+        label="Notes"
+        placeholder="Additional details (optional)"
+        value={formData.notes}
+        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+        rows={4}
+        disabled={isSubmitting}
+      />
+
+      <div className="flex justify-end gap-2 pt-4">
+        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isSubmitting || !formData.title.trim()}>
+          {isSubmitting ? "Capturing..." : "Capture"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function QuickCaptureSuccess(props: {
+  ideaId: string;
+  onViewIdea: () => void;
+  onAddAnother: () => void;
+}) {
+  const { ideaId, onViewIdea, onAddAnother } = props;
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-md bg-success-soft p-4 text-center">
+        <p className="text-sm font-medium text-success-foreground">
+          Idea created successfully!
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Link
+          href={`/ideas/${ideaId}`}
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          onClick={onViewIdea}
+        >
+          View idea
+        </Link>
+        <Button type="button" variant="outline" onClick={onAddAnother} autoFocus>
+          Add another
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 export function QuickCaptureModal({
   isOpen,
@@ -88,12 +203,17 @@ export function QuickCaptureModal({
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to create idea");
+        const errorData = await readJsonSafely(response);
+        throw new Error(getStringProp(errorData, "error") || "Failed to create idea");
       }
 
-      const result = await response.json();
-      setSubmittedIdeaId(result.ideaId);
+      const result = await readJsonSafely(response);
+      const ideaId = getStringProp(result, "ideaId");
+      if (!ideaId) {
+        throw new Error("Unexpected response from server");
+      }
+
+      setSubmittedIdeaId(ideaId);
       toast.success("Idea created!");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to create idea");
@@ -148,116 +268,20 @@ export function QuickCaptureModal({
           {/* Content */}
           <div className="px-6 py-4">
             {!submittedIdeaId ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title */}
-          <Input
-            id="title"
-            type="text"
-            label="Title"
-            placeholder="What's your idea?"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            required
-            autoFocus
-            disabled={isSubmitting}
-          />
-
-          {/* Business */}
-          <div>
-            <label htmlFor="business" className="block text-sm font-medium text-foreground mb-1">
-              Business
-            </label>
-            <select
-              id="business"
-              value={formData.business}
-              onChange={(e) => setFormData({ ...formData, business: e.target.value })}
-              disabled={isSubmitting}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <option value="PLAT">Platform</option>
-              <option value="BRIK">Brikette</option>
-              <option value="CMS">CMS</option>
-            </select>
-          </div>
-
-          {/* Priority */}
-          <div>
-            <label htmlFor="priority" className="block text-sm font-medium text-foreground mb-1">
-              Priority
-            </label>
-            <select
-              id="priority"
-              value={formData.priority}
-              onChange={(e) => setFormData({ ...formData, priority: e.target.value as Priority })}
-              disabled={isSubmitting}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {PRIORITY_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Notes */}
-          <Textarea
-            id="notes"
-            label="Notes"
-            placeholder="Additional details (optional)"
-            value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            rows={4}
-            disabled={isSubmitting}
-          />
-
-          {/* Submit */}
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting || !formData.title.trim()}
-            >
-              {isSubmitting ? "Capturing..." : "Capture"}
-            </Button>
-          </div>
-        </form>
-      ) : (
-        <div className="space-y-4">
-          {/* Success message */}
-          <div className="rounded-md bg-success-soft p-4 text-center">
-            <p className="text-sm font-medium text-success-foreground">
-              Idea created successfully!
-            </p>
-          </div>
-
-          {/* Actions */}
-          <div className="flex flex-col gap-2">
-            <Link
-              href={`/ideas/${submittedIdeaId}`}
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-              onClick={handleClose}
-            >
-              View idea
-            </Link>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleAddAnother}
-              autoFocus
-            >
-              Add another
-            </Button>
-          </div>
-        </div>
-      )}
+              <QuickCaptureForm
+                formData={formData}
+                setFormData={setFormData}
+                isSubmitting={isSubmitting}
+                onSubmit={handleSubmit}
+                onCancel={handleClose}
+              />
+            ) : (
+              <QuickCaptureSuccess
+                ideaId={submittedIdeaId}
+                onViewIdea={handleClose}
+                onAddAnother={handleAddAnother}
+              />
+            )}
           </div>
         </DialogPrimitive.Content>
       </DialogPortal>

@@ -196,6 +196,14 @@
     {
       "question": "Látványos a buszutazás?",
       "answer": "Rendkívül. Az útvonal a drámai Amalfi-part szikláit öleli lenyűgöző tengeri kilátásokkal. Üljön a jobb oldalon, amikor Amalfiból Positanóba utazik a legjobb parti kilátásokért."
+    },
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlop sorai különböző buszmegállókat képviselnek az útvonal mentén.",
+        "**Oszlopok olvasása:** A menetrend minden tervezett utazáshoz egy alfabetikus betűt rendel, amelyek fejlécként szerepelnek minden oszlopban. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési buszmegállókat, majd ellenőrizze az oszlopokat, hogy lássa, mikor vannak buszok és mikor érkeznek meg a célállomására. Például a Sorrentóból való indulási idő megtekintéséhez nézze meg a Sorrento sort. A Positanóba (Chiesa Nuova / Bar Internazionale) való érkezési idő megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
     }
   ]
 }

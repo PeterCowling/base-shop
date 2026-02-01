@@ -1,7 +1,6 @@
 import * as fs from "fs/promises";
-import * as path from "path";
-
 import matter from "gray-matter";
+import * as path from "path";
 import simpleGit, { type SimpleGit } from "simple-git";
 
 import { authorizeWrite } from "../auth/authorize";
@@ -11,6 +10,7 @@ import {
   getGitAuthorOptions,
 } from "../commit-identity";
 import type { WriteResult } from "../repo-writer";
+
 import type { RepoLock } from "./RepoLock";
 
 export type AgentAction = "work-idea" | "break-into-tasks" | "draft-plan" | "custom";
@@ -52,15 +52,20 @@ export class AgentQueueWriter {
    * Stores in docs/business-os/agent-queue/{queueId}.md
    */
   async createQueueItem(
-    action: AgentAction,
-    target: string,
-    targetType: "card" | "idea",
-    initiator: string,
-    identity: CommitIdentity,
-    actor: string,
-    content?: string,
-    instructions?: string
+    params: {
+      action: AgentAction;
+      target: string;
+      targetType: "card" | "idea";
+      initiator: string;
+      identity: CommitIdentity;
+      actor: string;
+      content?: string;
+      instructions?: string;
+    }
   ): Promise<WriteResult & { queueId?: string }> {
+    const { action, target, targetType, initiator, identity, actor, content, instructions } =
+      params;
+
     // Generate unique queue ID with timestamp + random suffix
     const timestamp = Date.now();
     const randomSuffix = Math.random().toString(36).substring(2, 8);
@@ -108,7 +113,7 @@ export class AgentQueueWriter {
         await this.git.add(relativePath);
         const commitMessage = buildAuditCommitMessage({
           actor,
-          initiator: actor,
+          initiator,
           entityId: queueId,
           action: `Request agent: ${action} for ${target}`,
         });

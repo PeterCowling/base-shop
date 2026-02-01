@@ -7,7 +7,9 @@ Last-reviewed: 2026-01-17
 
 # Contributing
 
-This guide defines the contribution workflow for the base-shop monorepo. Follow these procedures to ensure consistent code quality.
+This guide defines the contribution workflow for the base-shop monorepo, with a bias toward a smooth day‑to‑day developer experience.
+
+For the full “what happens when I push?” workflow, see `docs/git-and-github-workflow.md`.
 
 ## Formatting
 
@@ -19,7 +21,13 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Create branches from `main` and name them descriptively (e.g., `work/2026-01-15-login-form` or `fix/cart-redirect`). Push your branch; PRs are zero-touch and auto-merge when checks pass. If no PR exists after the first push, open one manually and enable auto-merge.
+Use `work/**` branches for almost all work.
+
+- Branch naming: `work/YYYY-MM-DD-short-description`
+- Push to GitHub and expect a PR to appear automatically (the repo enables auto‑merge on green).
+- If you need a PR to stay open while it’s red or idle, add the `keep-open` label.
+
+Details: `docs/git-and-github-workflow.md`.
 
 ## Linting and Tests
 

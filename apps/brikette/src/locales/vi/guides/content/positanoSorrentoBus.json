@@ -64,5 +64,15 @@
       "title": "Đến Sorrento",
       "body": "Xe buýt SITA trả bạn tại nhà ga kết hợp xe buýt và tàu của Sorrento. Từ đây, tiếp tục bằng tàu Circumvesuviana tới Naples hoặc khám phá khu trung tâm lịch sử của Sorrento ngay phía ngoài ga."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái trong bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê làm tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm xuất phát và đến của bạn, sau đó kiểm tra các cột để xem khi nào có xe buýt và họ sẽ đến đích của bạn vào lúc nào. Ví dụ, để xem giờ khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem giờ đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
+      ]
+    }
   ]
 }

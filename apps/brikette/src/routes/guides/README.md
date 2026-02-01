@@ -528,11 +528,13 @@ Tokens are parsed and rendered by [`utils/_linkTokens.tsx`](./utils/_linkTokens.
 
 ### Test Structure
 
-Tests are located in [`test/routes/guides/`](../../test/routes/guides/):
+Tests are located in:
+- [`src/test/routes/guides/`](../../test/routes/guides/) (route/component tests)
+- [`src/test/content-readiness/guides/`](../../test/content-readiness/guides/) (manifest + content readiness guardrails)
 
 **Test Categories**:
 - **Block tests**: `__tests__/callout-block.test.tsx`, `__tests__/gallery-block-zoomable.test.tsx`
-- **Manifest tests**: `__tests__/guide-manifest.draft-status.test.ts`
+- **Manifest tests**: `src/test/content-readiness/guides/guide-manifest.status.test.ts`
 - **Coverage tests**: `__tests__/coverage/{guide-name}.coverage.test.tsx`
 - **Integration tests**: `__tests__/block-template-wiring.test.tsx`
 
@@ -541,6 +543,9 @@ Tests are located in [`test/routes/guides/`](../../test/routes/guides/):
 ```bash
 # Run all guide tests
 pnpm --filter @apps/brikette test -- --testPathPattern="guides"
+
+# Run content readiness guardrails only
+pnpm --filter @apps/brikette test:content-readiness
 
 # Run specific test file
 pnpm --filter @apps/brikette test -- --testPathPattern="callout-block"

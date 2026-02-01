@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Legenden & Folklore der Amalfiküste",
+    "description": "Beliebte Geschichten entlang der Küste und wo du ihre Spuren siehst."
+  },
+  "linkLabel": "Legenden & Folklore der Amalfiküste",
+  "intro": [
+    "Legenden und Mythen der Amalfiküste werfen Licht auf Feste, Statuen und Redewendungen, die du heute noch siehst."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "Sankt Andreas",
+      "body": [
+        "Amalfi verehrt seinen Schutzpatron mit der „Festa di Sant’Andrea“ – die Statue wird über die Treppen getragen, begleitet von Böllern und Musik.",
+        "Die Legende erzählt, dass der Heilige 1544 einen Sturm heraufbeschwor, der Piratenflotten abwehrte – daher das Feuerwerk über der Bucht."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Sirenen der Li Galli",
+      "body": [
+        "Die Inselgruppe Li Galli gilt als Heim der Sirenen, die laut Odyssee Seeleute mit Gesang lockten.",
+        "Locals verweisen auf leuchtende Sonnenuntergänge und ruhiges Meer als „Gesang“ der Sirenen – ein romantischer Rahmen für Abendfahrten."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Lebendige Traditionen",
+      "body": [
+        "In Positano kündigen Glockenläuten und Fackeln die Prozession der Madonna Assunta an – die Legende beschreibt, wie sie einen Sturm stoppte.",
+        "Viele Gastgeber erzählen gern Familiengeschichten zu Zitronenhainen oder Fischerlegenden; frag nach, wenn du lokale Perspektiven hören möchtest."
+      ]
+    }
+  ],
+  "tips": [
+    "Frage Einheimische nach weiteren Sagen – viele Dörfer haben eigene Varianten derselben Geschichte.",
+    "Besuche lokale Museen oder Kirchen in ruhigen Stunden, um Tafeln und Fresken mit Legenden in Ruhe zu lesen."
+  ],
+  "faqs": [
+    {
+      "q": "Wird die Sant’Andrea-Prozession das ganze Jahr über gefeiert?",
+      "a": [
+        "Die großen Feste finden am 27. Juni und 30. November statt; kleinere Andachten gibt es das Jahr über."
+      ]
+    },
+    {
+      "q": "Kann ich Li Galli besuchen?",
+      "a": [
+        "Die Inseln sind privat, doch Bootsfahrten umrunden sie und erzählen unterwegs die Sirenenlegende."
+      ]
+    }
+  ]
+}

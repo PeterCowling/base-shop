@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Leyendas y folclore de la Costa Amalfitana",
+    "description": "Relatos populares de la costa y dónde descubrir sus huellas."
+  },
+  "linkLabel": "Leyendas y folclore de la Costa Amalfitana",
+  "intro": [
+    "Sirenas, santos y marineros colorean las historias de la Costa Amalfitana y siguen presentes en fiestas, procesiones y nombres de lugares.",
+    "Estas leyendas añaden contexto cuando visitas iglesias costeras, miradores y eventos anuales."
+  ],
+  "sections": [
+    {
+      "id": "fishermen",
+      "title": "Historias de pescadores",
+      "body": [
+        "Relatos de santos protectores, tormentas repentinas y rescates milagrosos explican procesiones marítimas y exvotos en las capillas costeras.",
+        "Pregunta por las festividades locales: muchas recrean estos episodios con fuegos artificiales y bendiciones en el puerto."
+      ]
+    },
+    {
+      "id": "toponyms",
+      "title": "Mitos de topónimos",
+      "body": [
+        "Nombres como Positano, Li Galli o Praiano están ligados a sirenas, mercaderes y navegantes medievales.",
+        "Escucha a los guías locales o visita pequeños museos para descubrir cómo el folklore moldeó la identidad de cada pueblo."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Tradiciones vivas",
+      "body": [
+        "La Luminaria de Praiano y las bendiciones pesqueras de Positano fusionan fe y folklore con rituales a la luz de las velas.",
+        "Los azulejos artesanales suelen representar santos, limones o leyendas marineras: fíjate en portales y escalinatas de iglesias."
+      ]
+    }
+  ],
+  "tips": [
+    "Consulta los calendarios municipales para identificar fiestas patronales y sumarte con respeto.",
+    "Lleva un chal ligero; muchos actos terminan en templos donde se agradece vestir con modestia."
+  ],
+  "faqs": [
+    {
+      "q": "¿Dónde se pueden ver estas leyendas en acción?",
+      "a": [
+        "Asiste a procesiones marítimas como la de Sant’Andrea en Amalfi o al desfile de sirenas de Positano durante Ferragosto para ver recreaciones vivas."
+      ]
+    },
+    {
+      "q": "¿Hay visitas guiadas centradas en el folklore?",
+      "a": [
+        "Sí: museos cívicos de Amalfi y recorridos a pie por Praiano o Atrani incluyen relatos locales; reserva con guías certificados para asegurar disponibilidad en español."
+      ]
+    },
+    {
+      "q": "¿Es apropiado participar en rituales religiosos como visitante?",
+      "a": [
+        "Sí, siempre que sigas el código local: viste con respeto, guarda silencio durante las oraciones y espera a ser invitado antes de tocar estandartes o imágenes."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes"
+}

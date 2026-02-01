@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Block non-fast-forward pushes to protected branches (main/master).
+# Block direct pushes and non-fast-forward updates to protected branches.
 # Git provides local_sha/remote_sha pairs over stdin.
 
 PROTECTED_BRANCHES=(
   "refs/heads/main"
   "refs/heads/master"
+  "refs/heads/dev"
+  "refs/heads/staging"
 )
 
 is_protected_ref() {
@@ -29,6 +31,33 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     continue
   fi
 
+  if [[ "${ALLOW_DIRECT_PUSH_PROTECTED_BRANCH:-}" != "1" ]]; then
+    echo "------------------------------------------------------------------" >&2
+    echo "PUSH BLOCKED: protected branch '${remote_ref#refs/heads/}'" >&2
+    echo "------------------------------------------------------------------" >&2
+    echo "" >&2
+    echo "Direct pushes to protected branches are not allowed." >&2
+    echo "Open a PR instead (work/* branches auto-open PRs to main)." >&2
+    echo "" >&2
+    echo "Bypass (human only, emergency):" >&2
+    echo "  ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push ..." >&2
+    echo "" >&2
+    exit 1
+  fi
+
+  # Deletion of a protected branch.
+  if [[ "$local_sha" == "$zeros40" ]]; then
+    echo "------------------------------------------------------------------" >&2
+    echo "PUSH BLOCKED: deletion of protected branch" >&2
+    echo "------------------------------------------------------------------" >&2
+    echo "" >&2
+    echo "You are attempting to delete: ${remote_ref#refs/heads/}" >&2
+    echo "" >&2
+    echo "This can destroy work and break automation." >&2
+    echo "" >&2
+    exit 1
+  fi
+
   # New branch on remote (remote_sha all zeros) isn't a force push.
   if [[ "$remote_sha" == "$zeros40" ]]; then
     continue
@@ -46,9 +75,6 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     echo "" >&2
     exit 1
   fi
-
-  echo "WARNING: direct push to protected branch '${remote_ref#refs/heads/}' detected." >&2
-  echo "Prefer opening a PR instead." >&2
 done
 
 exit 0

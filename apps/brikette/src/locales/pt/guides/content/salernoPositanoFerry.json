@@ -1,22 +1,22 @@
 {
   "seo": {
-    "title": "Salerno a Positano de ferry | Hostel Brikette",
-    "description": "Salerno a Positano de ferry: horários, dicas de bilhetes e como chegar ao Hostel Brikette a partir do porto usando carregadores ou o autocarro local."
+    "title": "Salerno para Positano de Ferry | Hostel Brikette",
+    "description": "Salerno para Positano de ferry: horários, dicas de bilhetes e como chegar ao Hostel Brikette a partir do porto usando carregadores ou o autocarro local."
   },
   "intro": {
-    "title": "Salerno a Positano — Ferry",
-    "body": "Use este guia para viajar de Salerno a Positano de ferry. Ele explica bilhetes, onde embarcar em Salerno, dicas de horários e como chegar ao Hostel Brikette a partir do cais de Positano."
+    "title": "Salerno para Positano — Ferry",
+    "body": "Use este guia para viajar de Salerno para Positano de ferry. Ele cobre bilhetes, onde embarcar em Salerno, dicas de horários e como chegar ao Hostel Brikette a partir do cais de Positano."
   },
   "callouts": {
-    "tip": "Precisa de outras opções de transporte? Abra o %HOWTO:how-to-get-here|Guia Como Chegar% para autocarros, rotas combinadas e transfers do aeroporto."
+    "tip": "Precisa de outras opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para autocarros, rotas combinadas e transfers do aeroporto."
   },
   "sections": [
     {
       "id": "overview",
       "title": "Resumo da viagem",
       "list": [
-        "Ferries sazonais ligam Salerno a Positano com vistas costeiras panorâmicas.",
-        "A Travelmar opera os serviços mais frequentes; reserve tempo extra na alta temporada.",
+        "Os ferries sazonais ligam Salerno a Positano com vistas panorâmicas da costa.",
+        "A Travelmar opera os serviços mais frequentes; reserve tempo extra na época alta.",
         "Os ferries podem ser cancelados com mau tempo — verifique sempre as atualizações em tempo real antes de viajar."
       ]
     },
@@ -25,9 +25,9 @@
       "title": "Bilhetes e horários",
       "body": "Consulte os horários e preços mais recentes em %URL:https://travelmar.it/en|Travelmar% e %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Horários de ferry%.",
       "list": [
-        "Compre bilhetes online com antecedência nos meses de maior movimento.",
+        "Compre bilhetes online com antecedência nos meses de pico.",
         "Chegue 15–20 minutos antes da partida para embarcar com calma.",
-        "Tenha o bilhete à mão; a equipa irá digitalizar ou rasgá-lo antes do embarque."
+        "Tenha o bilhete à mão; a tripulação irá digitalizá-lo ou rasgá-lo antes do embarque."
       ]
     },
     {
@@ -36,18 +36,19 @@
       "list": [
         "A maioria dos serviços parte da Piazza della Concordia, em Salerno (Travelmar).",
         "Algumas partidas usam o Molo Manfredi — confirme o terminal indicado no seu bilhete.",
-        "Siga a sinalização na orla; a equipa pode indicar o cais correto."
+        "Siga a sinalização na orla; a tripulação pode indicar-lhe o cais correto."
       ]
     },
     {
       "id": "positanoArrival",
-      "title": "Chegando a Positano",
-      "body": "Para um percurso passo a passo do cais até a nossa porta, leia o %LINK:ferryDockToBrikette|guia Ferry dock → Hostel Brikette%.",
+      "title": "Chegada a Positano",
+      "body": "Para um percurso passo a passo do cais até à nossa porta, leia o %LINK:ferryDockToBrikette|Cais do ferry → Hostel Brikette, com guia de bagagem%.",
       "list": [
         "Chegará ao cais principal de Positano (Spiaggia Grande).",
         "Com bagagem, recomendamos o serviço de carregadores ou o autocarro local Interno.",
         "Caminhar ladeira acima com malas pesadas não é aconselhável no calor do verão."
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

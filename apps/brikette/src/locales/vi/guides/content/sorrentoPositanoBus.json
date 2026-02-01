@@ -1,52 +1,62 @@
 {
   "seo": {
-    "title": "Từ Sorrento đến Positano bằng xe buýt | Hostel Brikette",
-    "description": "Từng bước đi từ Sorrento tới Hostel Brikette bằng xe buýt SITA tới Positano (Chiesa Nuova): vé, mẹo xem lịch và cách đi từ trạm về hostel."
+    "title": "Sorrento đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước từ Sorrento tới Hostel Brikette bằng xe buýt SITA đến Positano (Chiesa Nuova): vé, mẹo xem lịch trình và cách đi từ trạm về hostel."
   },
   "intro": {
     "title": "Sorrento đến Positano — Xe buýt SITA",
-    "body": "Dùng hướng dẫn này khi đi từ Sorrento tới Positano. Bạn sẽ đi xe buýt SITA Sud và xuống tại Positano (Chiesa Nuova), trạm gần hostel nhất. Chúng tôi cung cấp thông tin vé, cách đọc bảng giờ và lộ trình đi bộ từ trạm về hostel."
+    "body": "Sử dụng hướng dẫn này khi di chuyển từ Sorrento đến Positano. Bạn sẽ đi xe buýt SITA Sud và xuống tại Positano (Chiesa Nuova), trạm gần hostel nhất. Chúng tôi hướng dẫn về vé, cách đọc lịch trình và cách đến hostel từ trạm xe buýt."
   },
   "callouts": {
-    "tip": "Cần xem mọi lựa chọn di chuyển? Mở %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để tham khảo phà, thông tin taxi và các phương án khác."
+    "tip": "Cần xem tất cả các lựa chọn di chuyển? %HOWTO:how-to-get-here|Tổng quan Cách đến đây% để tham khảo phà, thông tin taxi và các phương án thay thế."
   },
   "sections": [
     {
       "id": "journey",
       "title": "Tổng quan hành trình",
-      "body": "Vào mùa cao điểm hãy dành 1–1,5 giờ. Xe buýt chạy thường xuyên giữa Sorrento và Positano. Mua vé trước khi lên xe và chuẩn bị sẵn để xác nhận."
+      "body": "Dành 1–1,5 giờ trong mùa cao điểm. Xe buýt chạy thường xuyên giữa Sorrento và Positano. Mua vé trước khi lên xe và chuẩn bị sẵn để xác thực."
     },
     {
       "id": "tickets",
-      "title": "Vé và xác nhận",
-      "body": "SITA (SITA Sud) vận hành tuyến này. Mua vé tại quầy báo hoặc tabacchi. Đưa vé cho tài xế khi lên xe và giữ đến cuối hành trình. Xác nhận trước khi sử dụng nếu được yêu cầu."
+      "title": "Vé và xác thực",
+      "body": "SITA (SITA Sud) vận hành tuyến này. Mua vé tại quầy báo hoặc cửa hàng thuốc lá (tabacchi). Đưa vé cho tài xế khi lên xe; giữ vé đến hết hành trình. Xác thực trước khi sử dụng nếu được yêu cầu."
     },
     {
       "id": "timetable",
-      "title": "Cách đọc bảng giờ",
+      "title": "Cách đọc lịch trình",
       "list": [
-        "Các hàng ở cột đầu liệt kê từng trạm trên tuyến.",
-        "Các cột tương ứng với các chuyến được gắn chữ cái.",
-        "Đi từ thứ Hai đến thứ Bảy? Dùng cột “F” và “G”.",
-        "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột “G” và “H”."
+        "Các hàng ở cột đầu tiên liệt kê từng trạm xe buýt dọc tuyến.",
+        "Các cột tương ứng với các chuyến xe theo lịch trình được gắn nhãn bằng chữ cái.",
+        "Đi từ thứ Hai đến thứ Bảy? Sử dụng cột \"F\" và \"G\".",
+        "Đi vào Chủ nhật hoặc ngày lễ? Sử dụng cột \"G\" và \"H\"."
       ]
     },
     {
       "id": "arrival",
       "title": "Đến Positano (Chiesa Nuova)",
       "list": [
-        "Có hai trạm SITA tại Positano: “Sponda” và “Chiesa Nuova”.",
-        "Để tới hostel, trạm đúng là “Positano (Chiesa Nuova)” trên Via G. Marconi.",
-        "Trạm nằm ngay trước quán cà phê/bar “Bar Internazionale”."
+        "Có hai trạm SITA được liệt kê cho Positano: \"Sponda\" và \"Chiesa Nuova\".",
+        "Để đến hostel, trạm đúng là \"Positano (Chiesa Nuova)\" trên Via G. Marconi.",
+        "Trạm nằm bên ngoài quán cà phê/bar \"Bar Internazionale\"."
       ]
     },
     {
       "id": "walk",
-      "title": "Đi bộ tới Hostel Brikette",
+      "title": "Đi bộ đến Hostel Brikette",
       "list": [
-        "Đi bộ hơn 100 mét dọc Via G. Marconi.",
+        "Đi bộ hơn 100 mét (330 feet) dọc theo Via G. Marconi.",
         "Tìm bảng hiệu của chúng tôi phía trên sân thượng tầng hai bên phải.",
-        "Rẽ phải lên các bậc thang để tới cửa chính của hostel."
+        "Rẽ phải lên các bậc thang để đến cửa chính của hostel."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Làm thế nào để đọc lịch trình xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc theo tuyến đường.",
+        "**Đọc các cột:** Lịch trình gán một chữ cái trong bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê làm tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, hãy tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, hãy tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm xuất phát và đến của bạn, sau đó kiểm tra các cột để xem khi nào có xe buýt và họ sẽ đến đích của bạn vào lúc nào. Ví dụ, để xem giờ khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem giờ đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
       ]
     }
   ]

@@ -1,53 +1,263 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
-    "title": "Salerno per Positano in traghetto | Hostel Brikette",
-    "description": "Da Salerno a Positano in traghetto: orari, consigli sui biglietti e come raggiungere Hostel Brikette dal porto usando i facchini o l’autobus locale."
+    "title": "Da Salerno a Positano in traghetto | Hostel Brikette",
+    "description": "Guida completa al traghetto Salerno-Positano: punto d'imbarco esatto, prezzi 2026 (€16-€24), migliori posti per la vista costiera, consigli per i bagagli e come raggiungere Brikette dal molo."
   },
   "intro": {
-    "title": "Salerno → Positano — Traghetto",
-    "body": "Usa questa guida per viaggiare da Salerno a Positano in traghetto. Troverai informazioni su biglietti, imbarco a Salerno, suggerimenti sugli orari e come raggiungere Hostel Brikette dal molo di Positano."
+    "title": "Salerno → Positano in traghetto — Guida completa",
+    "body": "Il servizio traghetto Salerno-Positano opera da fine marzo a ottobre, offrendo un modo panoramico per attraversare la Costiera Amalfitana. Questa guida copre tutto ciò che serve agli ospiti dell'ostello: costi esatti (€16–€24), dove imbarcarsi a Salerno, come ottenere i posti migliori a bordo e raggiungere comodamente Hostel Brikette dal molo di Positano con i bagagli."
   },
   "callouts": {
-    "tip": "Cerchi altre opzioni di trasporto? Apri %HOWTO:how-to-get-here|Panoramica Come arrivare% per autobus, percorsi combinati e trasferimenti da/per l’aeroporto."
+    "tip": "Cerchi altre opzioni di trasporto? Apri %HOWTO:how-to-get-here|Panoramica Come arrivare% per autobus, percorsi combinati e trasferimenti da/per l'aeroporto."
   },
   "sections": [
     {
       "id": "overview",
-      "title": "Panoramica del viaggio",
+      "title": "Panoramica rapida",
+      "body": "Il traghetto Salerno-Positano è gestito principalmente da Travelmar, con corse giornaliere da fine marzo a ottobre. Il tempo di viaggio è 70 minuti per le corse dirette o 1 ora e 45 minuti con fermata intermedia ad Amalfi.",
       "list": [
-        "In alta stagione partono traghetti stagionali da Salerno a Positano con splendide vedute costiere.",
-        "Travelmar opera i servizi più frequenti; prevedi tempo extra nei periodi di punta.",
-        "Con mare mosso i traghetti possono essere cancellati — controlla sempre gli aggiornamenti in tempo reale prima di partire."
+        "**Costo:** €16–€24 a persona solo andata (stagione 2026)",
+        "**Bagagli:** €2 per borsa oltre al bagaglio a mano incluso (max 45cm × 35cm × 20cm)",
+        "**Prima partenza:** Circa 08:30 da Salerno",
+        "**Ultima partenza:** Circa 19:30 da Salerno",
+        "**Stagione:** Fine marzo a fine ottobre (dipende dal meteo)"
+      ]
+    },
+    {
+      "id": "whyFerry",
+      "title": "Perché prendere il traghetto?",
+      "body": "Il traghetto batte l'autobus SITA in molti modi. Eviti l'affollata Strada Statale 163 costiera. Non devi lottare per un posto a sedere sull'autobus in alta stagione. Arrivi direttamente alla spiaggia di Spiaggia Grande a Positano, più vicino all'ostello rispetto alle fermate autobus di Chiesa Nuova o Sponda. E godi di viste costiere spettacolari per soli €16–€24.",
+      "list": [
+        "Vedi città arroccate come Praiano, calette nascoste e terrazze di limoni verticali da vicino",
+        "Niente code stradali: i traghetti partono puntuali anche quando la SS163 è bloccata dal traffico",
+        "Sbarco alla spiaggia principale di Positano, vicino ai %LINK:porterServices|servizi facchini% e al %LINK:ferryDockToBrikette|percorso ostello%",
+        "Aria fresca di mare e posti sul ponte esterno (primo arrivato, primo servito)",
+        "Spesso più veloce dell'autobus in luglio e agosto quando il traffico stradale è peggiore"
       ]
     },
     {
       "id": "tickets",
       "title": "Biglietti e orari",
-      "body": "Verifica orari e tariffe aggiornati su %URL:https://travelmar.it/en|Travelmar% e %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Orari traghetti%.",
+      "body": "Acquista i biglietti Travelmar online su travelmar.it, presso l'ufficio sul lungomare di Salerno o nei chioschi vicino a Piazza della Concordia. In luglio e agosto, prenota online 1–2 giorni prima. I biglietti dello stesso giorno funzionano in aprile, maggio, settembre e ottobre, ma i fine settimana possono esaurirsi.",
       "list": [
-        "Acquista i biglietti online in anticipo nei mesi di punta.",
-        "Arriva 15–20 minuti prima della partenza per imbarcarti con calma.",
-        "Tieni il biglietto a portata di mano; il personale lo scannerizza o lo strappa prima dell’imbarco."
+        "**Online:** Prenota su travelmar.it. Il biglietto arriva via email come codice QR.",
+        "**Di persona:** La biglietteria sul lungomare di Salerno apre 30 minuti prima della prima corsa.",
+        "**Prezzo:** €16–€24 per adulto. Bambini e neonati possono costare meno.",
+        "**Bagagli:** Una piccola borsa (45cm × 35cm × 20cm) è gratuita. Zaini più grandi e trolley costano €2 ciascuno.",
+        "**Pagamento:** Contanti e carta funzionano ai chioschi. Online serve carta o PayPal."
       ]
     },
     {
       "id": "salernoBoarding",
       "title": "Dove imbarcarsi a Salerno",
+      "body": "Il molo dei traghetti è sul lungomare di Salerno presso Molo Concordia, a 5 minuti a piedi dalla stazione ferroviaria di Salerno. Dalla stazione, cammina verso il mare lungo Via dei Principati. Il molo è a sinistra sul lungomare. Cerca i cartelli Travelmar, chioschi blu e bianchi e le code 15–20 minuti prima della partenza.",
       "list": [
-        "La maggior parte delle corse parte da Piazza della Concordia (Travelmar).",
-        "Alcune partenze utilizzano Molo Manfredi: controlla il terminal indicato sul biglietto.",
-        "Segui la segnaletica sul lungomare; il personale può indirizzarti verso il molo corretto."
+        "**Posizione:** Porto di Salerno, Molo Concordia (chiamato anche Piazza della Concordia), lungomare Trieste",
+        "**Dalla stazione:** Cammina dritto verso il mare per 5 minuti, gira a sinistra sul lungomare",
+        "**Segnaletica:** Gli sportelli Travelmar sono chiari. Il personale in gilet blu aiuta con l'imbarco.",
+        "**Gate di partenza:** Controlla il biglietto per il molo giusto. Esistono due moli. Le barche più grandi usano quello esterno.",
+        "**Tempistiche:** Arriva 15–20 minuti prima per prendere i posti sul ponte esterno ed evitare la fretta."
+      ]
+    },
+    {
+      "id": "onboard",
+      "title": "Cosa aspettarsi a bordo",
+      "body": "Le imbarcazioni Travelmar hanno posti interni con aria condizionata e spazio sul ponte esterno. Per le migliori viste, vai direttamente al ponte esterno quando inizia l'imbarco. I posti si riempiono velocemente. Sulla rotta Salerno-Positano, siediti sul **lato sinistro** (guardando avanti) per vedere le scogliere, città come Cetara e Vietri, e spiagge nascoste. Il viaggio dura 70 minuti in diretta o 1 ora e 45 minuti con fermata ad Amalfi. Niente cabine o letti, solo posti a sedere.",
+      "list": [
+        "**Posti migliori:** Ponte esterno, lato sinistro, guardando avanti per massime viste sulla costiera e le isole Li Galli",
+        "**Cabina interna:** Sala climatizzata con panchine. Buona per mare mosso o sole forte a mezzogiorno.",
+        "**Snack bar:** Alcune barche hanno un bancone con bevande, snack e gelati (contanti e carta funzionano entrambi).",
+        "**Bagagli:** Metti le borse negli scaffali sul ponte o sotto il sedile. Il personale aiuta se le borse sono grandi.",
+        "**Mal di mare:** Di solito calmo. Se soffri di mal di mare, siediti dentro vicino al centro. Non leggere o usare il telefono."
       ]
     },
     {
       "id": "positanoArrival",
       "title": "Arrivo a Positano",
-      "body": "Per il percorso dettagliato dal molo alla nostra porta, leggi la guida %LINK:ferryDockToBrikette|Dal molo dei traghetti → Hostel Brikette%.",
+      "body": "Le barche attraccano al molo principale di Spiaggia Grande (la grande spiaggia pubblica). Scendi dal molo sulla strada della spiaggia. Da qui, tre modi per Hostel Brikette: camminare in salita (ripido, 15–20 min con borse), prendere l'autobus Interno Positano (€2, meno scale) o assumere un facchino (€20–€25 per borsa, meglio se hai cose pesanti). Vedi la %LINK:ferryDockToBrikette|guida dal molo a Brikette% per foto passo-passo.",
       "list": [
-        "Sbarcherai al molo principale di Positano (Spiaggia Grande).",
-        "Con bagagli ti consigliamo il servizio facchini o l’autobus locale Interno.",
-        "Con valigie pesanti non è consigliabile risalire a piedi sotto il sole estivo."
+        "**Molo:** Molo Spiaggia Grande, centro di Positano, vicino a Via Positanesi d'America",
+        "**Facchini:** Aspettano al molo. Chiedi il prezzo prima di dare loro le borse (€20–€25 per borsa fino a Brikette).",
+        "**Autobus Interno:** Parte da Via Cristoforo Colombo vicino al molo. Compra biglietti ai chioschi o sull'autobus.",
+        "**A piedi:** Scale e salite ripide. OK con uno zainetto. Difficile con trolley nel caldo estivo.",
+        "**Arrivo anticipato:** Se arrivi prima del check-in alle 15:00, usa il %LINK:luggageStorage|deposito bagagli% vicino alla spiaggia (€5–€8 per borsa)."
       ]
+    },
+    {
+      "id": "hostelTips",
+      "title": "Consigli dall'ostello",
+      "body": "Abbiamo visto molti ospiti arrivare in traghetto da Salerno. Ecco cosa funziona meglio, basato su feedback reali ed errori comuni.",
+      "list": [
+        "**Prendi il traghetto delle 08:30 o 09:00** per sfruttare al meglio il primo giorno. Arriverai in tempo per il check-in, lasciare le borse ed esplorare prima di pranzo.",
+        "**Evita l'ultimo traghetto (19:30)** a meno che non ti vada bene fare le scale al buio. I sentieri di Positano non hanno molta illuminazione dopo il tramonto.",
+        "**Porta un piccolo zainetto** per gli oggetti di valore. Tienilo con te sul ponte. Le borse grandi vanno negli scaffali, ma non lasciare telefoni o portafogli lì.",
+        "**Vestiti a strati.** Il ponte diventa ventoso anche in estate. Una giacca leggera aiuta per i viaggi mattutini o serali.",
+        "**Scarica mappe offline** prima di imbarcarti. Il segnale cellulare cade a metà traversata. Vuoi le indicazioni pronte quando sbarchi.",
+        "**Prevedi un budget per i facchini** se hai più di una borsa o qualsiasi cosa sopra i 15kg. La salita lungo Via Pasitea fino a Brikette è più ripida di quanto sembri."
+      ]
+    },
+    {
+      "id": "alternativeRoutes",
+      "title": "Altri modi per raggiungere Positano",
+      "body": "Se l'orario del traghetto non funziona, o se le barche si fermano per maltempo (raro ma succede in aprile e ottobre), prova questi piani B. Vedi la %HOWTO:how-to-get-here|guida Come arrivare% per i dettagli completi.",
+      "list": [
+        "**Autobus SITA:** Salerno a Positano via strada costiera SS163, €2–€3, funziona tutto l'anno ma si riempie in alta stagione.",
+        "**Taxi acqueo privato:** Più veloce e flessibile dei traghetti programmati, ma costa €100–€150 per l'intera barca (dividi tra 4–6 persone).",
+        "**Taxi stradale:** Va via Agerola e percorsi interni come SP2, €50–€70, buono quando i traghetti non funzionano.",
+        "**Diretto da Napoli:** Vieni dall'aeroporto di Napoli Capodichino? Vedi %LINK:naplesAirportBus|Aeroporto di Napoli a Positano in autobus% per saltare Salerno."
+      ]
+    },
+    {
+      "id": "whenToGo",
+      "title": "Mesi migliori per il traghetto",
+      "body": "La stagione dei traghetti va da fine marzo a fine ottobre. I mesi di punta (luglio e agosto) vedono il maggior numero di corse ma anche le folle più grandi e i prezzi più alti. I mesi di spalla (aprile, maggio, settembre, ottobre) offrono miglior rapporto qualità-prezzo, mari più calmi e maggiore disponibilità di biglietti.",
+      "list": [
+        "**Aprile–maggio:** Meno turisti, mari calmi, più facile ottenere biglietti in giornata. Il tempo può essere fresco a inizio aprile.",
+        "**Giugno:** Fine settimana affollati, mari calmi, inizia l'orario completo dei traghetti. Prenota 1 giorno prima per i fine settimana.",
+        "**Luglio–agosto:** Alta stagione. Prenota 2 giorni prima. Le barche si riempiono velocemente. Aspettati folle ai moli di Salerno e Positano.",
+        "**Settembre–ottobre:** Torna la stagione di spalla. Più calmo dell'estate, ma ottobre può avere mari mossi e chiusure anticipate della stagione."
+      ]
+    },
+    {
+      "id": "budgetTips",
+      "title": "Consigli di budget per ospiti dell'ostello",
+      "body": "Il traghetto costa €16–€24, che è giusto per 70 minuti di viste costiere. Ma i costi extra si sommano velocemente. Ecco come mantenerlo economico.",
+      "list": [
+        "**Viaggia leggero.** Una piccola borsa sotto 45cm × 35cm × 20cm è gratuita. Una seconda borsa costa €2. Se hai uno zaino grande e uno zainetto, indossa lo zainetto e porta lo zaino per evitare la tariffa.",
+        "**Salta lo snack bar.** Bevande e snack sulla barca costano il doppio di quanto pagheresti in un negozio a Salerno. Compra acqua e snack in un supermercato vicino alla stazione prima di imbarcarti.",
+        "**Prenota direttamente.** Compra biglietti da travelmar.it o dal chiosco del molo. I siti di terze parti come Viator o GetYourGuide aggiungono un ricarico. Risparmia €2–€3 prenotando direttamente.",
+        "**Viaggia in stagione di spalla.** I traghetti fanno la stessa rotta in aprile, maggio, settembre e ottobre, ma i biglietti sono più facili da ottenere e le folle sono più rade. Ottieni le stesse viste con meno stress.",
+        "**Condividi un taxi acqueo.** Se sei in un gruppo di 4–6 persone, un taxi acqueo privato (€100–€150) può risultare più economico a persona dei traghetti. Inoltre salti le code e scegli il tuo orario."
+      ]
+    },
+    {
+      "id": "commonMistakes",
+      "title": "Errori comuni da evitare",
+      "body": "Abbiamo osservato centinaia di ospiti dell'ostello prendere il traghetto Salerno-Positano. Ecco gli errori principali che fanno inciampare le persone.",
+      "list": [
+        "**Arrivare tardi al molo.** Travelmar imbarca 10–15 minuti prima della partenza. Se arrivi 5 minuti prima che la barca parta, la perderai o rimarrai bloccato dentro con posti cattivi. Arriva 20 minuti prima.",
+        "**Non controllare il meteo.** I traghetti cancellano se il mare è mosso. Controlla il sito Travelmar o chiama prima nelle giornate ventose, specialmente in aprile e ottobre. Abbi un piano B (autobus SITA o taxi).",
+        "**Dimenticare contanti.** La maggior parte dei chioschi accetta carte, ma lo snack bar a bordo è spesso solo contanti. Porta €5–€10 in monete se vuoi bevande o snack.",
+        "**Sedersi sul lato destro.** Sulla rotta Salerno-Positano, le viste migliori sono a sinistra (guardando avanti). Il lato destro guarda il mare aperto. I turisti si siedono sempre prima dal lato sbagliato.",
+        "**Non sapere quale molo.** Salerno ha due moli. Controlla il biglietto. Se vai a quello sbagliato, dovrai correre indietro. Cerca i cartelli Travelmar e chiedi al personale se non sei sicuro.",
+        "**Sovrastimare la camminata dal molo di Positano.** La salita fino a Brikette è ripida. Non provarci con un grande trolley nel caldo di luglio. Prevedi un facchino o l'autobus. Vedi la %LINK:ferryDockToBrikette|guida dal molo all'ostello% per il percorso esatto."
+      ]
+    },
+    {
+      "id": "whatToBring",
+      "title": "Cosa portare sul traghetto",
+      "body": "La traversata è di durata media (70 minuti in diretta, 1h 45min via Amalfi), quindi non serve molto. Ma alcuni oggetti rendono il viaggio migliore.",
+      "list": [
+        "**Bottiglia d'acqua.** Il ponte diventa caldo in estate. Porta una bottiglia riutilizzabile riempita dal tuo ostello o da una fontana a Salerno.",
+        "**Crema solare e occhiali da sole.** Niente ombra sul ponte esterno. Il sole si riflette sull'acqua e brucia velocemente, anche nelle giornate nuvolose.",
+        "**Giacca leggera o maglione.** I traghetti mattutini e serali diventano ventosi. Gli spruzzi di mare possono bagnare le magliette leggere se ti siedi davanti.",
+        "**Caricabatterie o power bank.** Farai molte foto. Assicurati che il telefono abbia carica per quando sbarchi a Positano.",
+        "**Mappe offline.** Scarica Google Maps o Maps.me prima di imbarcarti. Il segnale cellulare cade a metà traversata, e vorrai le indicazioni quando attracchi.",
+        "**Piccolo zainetto.** Tieni gli oggetti di valore con te. Non lasciare borse incustodite negli scaffali bagagli. I borseggiatori prendono di mira i turisti sulle barche affollate in alta stagione."
+      ]
+    },
+    {
+      "id": "salernoToPositanoRoute",
+      "title": "Il percorso da Salerno a Positano",
+      "body": "Il traghetto segue la costa da Salerno verso ovest, passando città costiere pittoresche e scogliere drammatiche. Le corse dirette impiegano 70 minuti; le corse con fermata ad Amalfi impiegano 1 ora e 45 minuti totali.",
+      "list": [
+        "**Partenza da Salerno:** Il traghetto lascia Molo Concordia dirigendosi verso ovest lungo la costiera.",
+        "**Vietri sul Mare:** Prima città che vedi, famosa per le sue ceramiche colorate e cupola a maiolica della chiesa.",
+        "**Cetara:** Pittoresco villaggio di pescatori noto per le acciughe e la colatura di alici.",
+        "**Erchie:** Piccola spiaggia incastonata tra le scogliere, visibile dal ponte.",
+        "**Fermata Amalfi (se applicabile):** Alcune corse fermano ad Amalfi per 15–20 minuti. Puoi scendere qui o restare a bordo per Positano.",
+        "**Conca dei Marini e Furore:** Vedi la Grotta dello Smeraldo e il famoso fiordo di Furore.",
+        "**Praiano:** Ultimo paese prima di Positano, arroccato sulle scogliere verticali.",
+        "**Arrivo a Positano:** Il traghetto attracca al molo di Spiaggia Grande, in pieno centro."
+      ]
+    },
+    {
+      "id": "weatherConsiderations",
+      "title": "Considerazioni meteo",
+      "body": "I traghetti dipendono dalle condizioni del mare e del vento. Le cancellazioni sono rare ma possibili, specialmente in aprile e ottobre quando il tempo è variabile.",
+      "list": [
+        "**Condizioni ideali:** Mari calmi, vento leggero, visibilità chiara. Tipico da maggio a settembre.",
+        "**Condizioni limite:** Vento moderato, piccole onde. Il traghetto può ancora andare ma il viaggio sarà più mosso.",
+        "**Cancellazioni:** Mari mossi con onde alte, forte vento o nebbia fitta portano a cancellazioni. Travelmar avvisa via email/SMS.",
+        "**Controllo meteo:** Verifica le previsioni marine 24 ore prima. Cerca \"meteo marino Salerno\" o controlla windguru.com.",
+        "**Piano B:** Sempre avere un'alternativa pronta. L'autobus SITA Salerno-Positano via Amalfi funziona con quasi tutti i tipi di tempo."
+      ]
+    },
+    {
+      "id": "luggageAdvice",
+      "title": "Consigli sui bagagli",
+      "body": "Viaggiare con bagagli sul traghetto richiede pianificazione. Ecco cosa devi sapere per un viaggio senza stress.",
+      "list": [
+        "**Limite bagaglio a mano:** 45cm × 35cm × 20cm è gratuito. Rientra un piccolo zaino da cabina o borsa da viaggio.",
+        "**Bagagli grandi:** €2 per ogni borsa oltre il limite. Include zaini da trekking, valigie e trolley.",
+        "**Dove mettere i bagagli:** Gli scaffali sono sul ponte vicino alle sedute esterne. Il personale indica dove mettere le borse grandi.",
+        "**Sicurezza:** Tieni oggetti di valore (portafoglio, telefono, passaporto) con te, non nelle borse negli scaffali.",
+        "**Imballaggio intelligente:** Usa una borsa morbida pieghevole invece di un trolley rigido. Più facile da stivare e trasportare dopo lo sbarco.",
+        "**Arrivo a Positano:** Ricorda che dovrai portare i bagagli su per la collina. Pianifica facchini (€20–€25/borsa) o l'autobus Interno se hai più di una borsa."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso portare uno zaino grande o un trolley sul traghetto?",
+      "a": "Sì, ma le borse più grandi di 45cm × 35cm × 20cm costano €2 extra per borsa. Compra il biglietto bagaglio con il biglietto del traghetto (online o al chiosco). Metti le borse grandi negli scaffali bagagli sul ponte."
+    },
+    {
+      "q": "Cosa succede se il traghetto viene cancellato per maltempo?",
+      "a": "Travelmar cancella le corse se il mare è mosso (raro, ma succede all'inizio/fine stagione). Riceverai un'email se hai prenotato online. Il personale affigge avvisi al molo. Prendi l'autobus SITA da Salerno a Positano via Amalfi (€2–€3) o prendi un taxi invece."
+    },
+    {
+      "q": "Il traghetto è adatto per viaggiatori con problemi di mobilità?",
+      "a": "L'imbarco richiede una breve camminata sulla passerella e forse scale tra molo e ponte. La maggior parte dei traghetti Travelmar non ha rampe per sedie a rotelle. Se hai bisogno di aiuto, arriva presto e chiedi al personale. Possono imbarcarti per primo tramite un percorso più sicuro."
+    },
+    {
+      "q": "Posso comprare i biglietti del traghetto il giorno del viaggio?",
+      "a": "Di solito sì in aprile, maggio, settembre e ottobre. Ma luglio e agosto si esauriscono 1–2 giorni prima. Prenota online la sera prima per sicurezza, specialmente per le corse mattutine."
+    },
+    {
+      "q": "Come arrivo dal molo di Positano a Hostel Brikette?",
+      "a": "Tre modi: camminare in salita (15–20 minuti, scale ripide), prendere l'autobus Interno Positano (€2) o assumere un facchino (€20–€25 per borsa). Vedi la nostra %LINK:ferryDockToBrikette|guida dal molo a Brikette con bagagli% per indicazioni e foto."
+    },
+    {
+      "q": "Ci sono toilette e snack a bordo?",
+      "a": "La maggior parte delle barche Travelmar ha un piccolo snack bar con bevande e cibo leggero. Le toilette sono sulle barche più grandi, ma non su quelle più piccole nei periodi di bassa stagione. Usa la toilette prima di imbarcarti se puoi."
+    },
+    {
+      "q": "Qual è il momento migliore per prendere il traghetto?",
+      "a": "Le corse mattutine (08:30–10:00) hanno mari più calmi e migliore luce per le foto. I viaggi pomeridiani sono più affollati di escursionisti. Evita l'ultima corsa (19:30) a meno che non ti vada bene arrivare dopo il tramonto."
+    },
+    {
+      "q": "Devo stampare il biglietto o posso mostrare il telefono?",
+      "a": "Il tuo telefono va bene. Il personale scansiona il codice QR dallo schermo. Assicurati che il telefono sia carico e che tu possa aprire l'email o la prenotazione senza internet (salvala offline o fai uno screenshot)."
+    },
+    {
+      "q": "Dov'è esattamente il molo dei traghetti di Salerno?",
+      "a": "Dalla stazione ferroviaria di Salerno, cammina dritto verso il mare lungo Via dei Principati (5 minuti). Al lungomare, gira a sinistra. Molo Concordia/Piazza della Concordia è lungo il lungomare Trieste. Cerca i cartelli blu e bianchi Travelmar e i chioschi dei biglietti."
+    },
+    {
+      "q": "Posso depositare i bagagli a Positano se arrivo presto?",
+      "a": "Sì. Diversi %LINK:luggageStorage|punti di deposito bagagli% vicino alla spiaggia di Spiaggia Grande addebitano €5–€8 per borsa al giorno. Utile se arrivi prima del check-in dell'ostello alle 15:00."
+    },
+    {
+      "q": "Quanto tempo ci vuole da Salerno a Positano in traghetto?",
+      "a": "Le corse dirette impiegano 70 minuti. Le corse che fermano ad Amalfi impiegano 1 ora e 45 minuti in totale (compresi 15–20 minuti di sosta ad Amalfi). Controlla il tuo biglietto per vedere quale tipo di corsa hai prenotato."
+    },
+    {
+      "q": "È meglio sedersi all'interno o sul ponte esterno?",
+      "a": "Il ponte esterno offre le migliori viste e aria fresca. Siediti sul lato sinistro (guardando avanti) per vedere le città costiere e le scogliere. L'interno è climatizzato e migliore per mare mosso o forte sole a mezzogiorno."
+    },
+    {
+      "q": "Posso portare cibo e bevande sul traghetto?",
+      "a": "Sì, puoi portare i tuoi snack e acqua. C'è uno snack bar a bordo ma i prezzi sono più alti. Compra provviste in un supermercato vicino alla stazione di Salerno prima di imbarcarti."
+    },
+    {
+      "q": "I traghetti funzionano in inverno?",
+      "a": "No. Il servizio stagionale opera solo da fine marzo/inizio aprile a fine ottobre. In inverno (novembre-marzo), usa l'autobus SITA o i taxi per andare da Salerno a Positano."
+    },
+    {
+      "q": "Ci sono sconti per studenti o gruppi?",
+      "a": "Alcuni sconti possono essere disponibili per gruppi grandi (10+ persone). Contatta direttamente Travelmar. Non ci sono generalmente sconti studenti pubblicizzati, ma vale la pena chiedere al momento dell'acquisto."
     }
   ]
 }

@@ -64,5 +64,15 @@
       "title": "Ankomst til Sorrento",
       "body": "SITA-bussen sætter dig af ved Sorrentos fælles tog- og busstation. Herfra kan du fortsætte med Circumvesuviana til Napoli eller udforske Sorrentos historiske centrum lige bag stationen."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan læser jeg SITA bus køreplanen?",
+      "a": [
+        "**Læsning af rækkerne:** Rækkerne i den første kolonne repræsenterer forskellige busstoppesteder langs ruten.",
+        "**Læsning af kolonnerne:** Køreplanen tildeler et alfabetisk bogstav til hver planlagt rejse, som er angivet som overskrifter i hver kolonne. Hvis du rejser mandag til lørdag, skal du kigge efter kolonnerne 'F' og 'G'. Hvis du rejser om søndagen eller på en helligdag, skal du kigge efter kolonnerne 'G' og 'H'.",
+        "**Kombination af rækker og kolonner:** Vælg dine afgangs- og ankomststoppesteder, og tjek derefter kolonnerne for at se, hvornår busserne er tilgængelige, og hvornår de ankommer til din destination. For eksempel, for at se afgangstiden fra Sorrento, kig på Sorrento-rækken. For at se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), kig på Positano (Chiesa Nuova)-rækken."
+      ]
+    }
   ]
 }

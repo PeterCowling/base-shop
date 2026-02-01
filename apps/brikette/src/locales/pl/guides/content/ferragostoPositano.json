@@ -1,61 +1,141 @@
 {
   "seo": {
-    "title": "Ferragosto w Positano (Wniebowzięcie)",
-    "description": "Jak wygląda Ferragosto: procesje, fajerwerki, wskazówki dotyczące tłumów i rezerwacji."
+    "title": "Ferragosto w Positano: Włoskie Święto 15 Sierpnia",
+    "description": "Ferragosto w Positano—czego oczekiwać 15 sierpnia. Tłumy, fajerwerki, imprezy plażowe, procesje kościelne i praktyczne wskazówki dla gości hostelowych.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Ferragosto w Positano (Wniebowzięcie)",
+  "linkLabel": "Ferragosto w Positano: Przewodnik po Święcie 15 Sierpnia",
   "intro": [
-    "Ferragosto 15 sierpnia przynosi pełne plaże, fajerwerki i zmienione rozkłady jazdy — zaplanuj z wyprzedzeniem, żeby święto było radosne, nie nerwowe."
+    "Planujesz być w Positano 15 sierpnia? Wybrałeś Ferragosto—największe letnie święto we Włoszech. To narodowe święto łączy tradycję religijną (Wniebowzięcie Maryi) z imprezami plażowymi, fajerwerkami i spotkaniami rodzinnymi. Dla gości hostelu Ferragosto oznacza zatłoczone plaże, zmienione rozkłady transportu i świąteczną, ale gorączkową atmosferę. Ten przewodnik pomoże Ci poruszać się po dniu i cieszyć się świętowaniem.",
+    "Ferragosto w Positano jest wyjątkowe. Całe miasto ożywa. Lokalni mieszkańcy, którzy się wyprowadzili, wracają na święto. Restauracje organizują imprezy plażowe. Fajerwerki rozświetlają zatokę o północy. Plaża jest zapełniona po brzegi. Jeśli lubisz duże tłumy i świąteczną energię, pokochasz to. Jeśli wolisz ciche Positano, może pomiń miasto na ten dzień. Tak czy inaczej, planuj z wyprzedzeniem—nic nie działa zgodnie z normalnym harmonogramem podczas Ferragosto."
   ],
   "sections": [
     {
-      "id": "expectations",
-      "title": "Czego spodziewać się w tym dniu",
+      "id": "what-is-ferragosto",
+      "title": "Czym jest Ferragosto?",
       "body": [
-        "Sklepy i małe spożywczaki zamykają się wcześnie; uzupełnij przekąski i wodę już wieczorem 14 sierpnia.",
-        "Oczekuj tłumów na plażach od 09:00 i głośniejszej muzyki wzdłuż Spiaggia Grande przed północnym pokazem sztucznych ogni."
+        "%IMAGE:ferragosto-positano-beach.jpg|Zatłoczona plaża w Positano podczas obchodów Ferragosto%",
+        "Ferragosto (15 sierpnia) to najważniejsze letnie święto we Włoszech. Nazwa pochodzi od łacińskiego \"Feriae Augusti\" (święta cesarza Augusta), festiwalu żniw ustanowionego w 18 roku p.n.e. Kościół rzymskokatolicki później połączył ten pogański festiwal z Świętem Wniebowzięcia Maryi, tworząc religijno-kulturowy hybrid, który Włosi świętują w całym kraju.",
+        "Tradycyjnie Ferragosto oznacza szczyt lata. Praca się zatrzymuje. Fabryki się zamykają. Rodziny zbierają się na plaży lub w górach. To nieoficjalna data rozpoczęcia wakacji letnich we Włoszech—wielu Włochów bierze dwa tygodnie wolnego od 15 sierpnia. Dla nadmorskich miasteczek takich jak Positano Ferragosto oznacza najbardziej ruchliwy dzień w roku. Włoskie rodziny z Neapolu, Rzymu i miast północnych napływają na Wybrzeże Amalfi. Hotele, plaże, restauracje i transport osiągają maksymalną pojemność.",
+        "W Positano Ferragosto ma specyficzny charakter. Rano odbywa się procesja religijna i msza ku czci Wniebowzięcia Maryi. Popołudnie to sama plaża—pływanie, jedzenie, picie, muzyka, tańce. Wieczór buduje się do fajerwerków o północy wystrzelowanych z łodzi w zatoce. Całe miasto ogląda z plaży, tarasów i wzgórz. Po fajerworkach imprezy plażowe trwają po 01:00. Ferragosto nie jest subtelne—jeśli jesteś w Positano 15 sierpnia, jesteś częścią świętowania, niezależnie od tego, czy to zaplanowałeś, czy nie."
       ]
     },
     {
-      "id": "bookings",
-      "title": "Rezerwacje i gotowość",
+      "id": "what-to-expect",
+      "title": "Czego oczekiwać w dzień Ferragosto",
       "body": [
-        "Zarezerwuj restauracje i rejsy co najmniej tydzień wcześniej; wiele wymaga przedpłaty lub blokady karty na czas świątecznej obsługi.",
-        "Potwierdź usługi tragarzy 24 godziny wcześniej, jeśli przyjeżdżasz lub wyjeżdżasz 15 sierpnia — zespoły działają ograniczonymi składami."
+        "%IMAGE:ferragosto-fireworks-positano.jpg|Fajerwerki o północy nad zatoką Positano podczas Ferragosto%",
+        "Dzień Ferragosto w Positano to kontrolowany chaos. Zacznij od realistycznych oczekiwań. Plaża (Spiaggia Grande) osiąga pojemność do 09:00–09:30. Każdy metr kwadratowy jest zajęty—ręczniki się dotykają, parasole krawędź do krawędzi. Jeśli chcesz miejsce na plaży, przyjedź do 08:00. Leżaki w lido wyprzedają się wcześnie i kosztują szczytowe stawki (€30–€50 za dwa krzesła plus parasol). Publiczne sekcje plaży są bezpłatne, ale zatłoczone. Przynieś własny parasol, jeśli chcesz cienia—nie ma miejsca, aby wynająć jeden do południa.",
+        "Muzyka wzmacnia wszystko. Kluby plażowe i restauracje ustawiają systemy nagłośnienia wzdłuż brzegu. Spodziewaj się włoskiego popu, muzyki tanecznej i występów na żywo od około 11:00 i narastających przez popołudnie. Głośność jest głośna—to atmosfera imprezowa, a nie relaksujący dzień na plaży. Jeśli wolisz ciszę, %LINK:fornilloBeachGuide|Fornillo Beach% (następna plaża na zachód) jest nieco mniej zatłoczona, ale nadal ruchliwa.",
+        "Warunki do pływania są trudne. Ratownicy są na służbie, ale z setkami pływających jednocześnie w wodzie ich zdolność do monitorowania wszystkich jest ograniczona. Trzymaj się płytkich obszarów, jeśli nie jesteś pewnym pływakiem. Unikaj pływania głęboko, gdy plaża jest tak zatłoczona—prądy stają się trudniejsze do oceny przy tak wielu ludziach mieszających wodę. Pływaj wcześnie (przed 10:00) lub późno (po 18:00), gdy mniej osób jest w wodzie.",
+        "Sklepy i usługi działają w zmniejszonych godzinach lub zamykają się całkowicie. Wiele małych sklepów spożywczych, aptek i sklepów zamyka się na dzień—właściciele świętują z rodzinami. Supermarkety mogą być otwarte przez krótkie okno poranne (08:00–12:00), a następnie zamknąć. Restauracje pozostają otwarte, ale są w pełni zarezerwowane. Jeśli potrzebujesz produktów spożywczych, wody, przekąsek lub jakichkolwiek dostaw, kup je wieczorem 14 sierpnia. Nie licz na znalezienie tego, czego potrzebujesz rano Ferragosto."
       ]
     },
     {
-      "id": "beach-day",
-      "title": "Porady plażowe i kąpielowe",
+      "id": "religious-celebrations",
+      "title": "Procesje religijne i msza",
       "body": [
-        "Przynieś własny parasol do strefy publicznej; leżaki w lido wyprzedają się, a ceny skaczą do szczytowych.",
-        "Pływaj wcześnie lub o zachodzie słońca, kiedy ratownicy mają lepszą widoczność; południowe tłumy utrudniają ocenę prądów."
+        "Religijna strona Ferragosto skupia się na Kościele Santa Maria Assunta (główny kościół z zieloną kopułą). Uroczysta msza świętuje Wniebowzięcie Maryi, zwykle zaczynając się o 10:00 lub 11:00 (sprawdź wywieszone godziny lub zapytaj personel hostelu). Kościół wypełnia się miejscowymi i gośćmi. Ubieraj się z szacunkiem—ramiona i kolana przykryte, bez odzieży plażowej. Nabożeństwo trwa 45–60 minut i obejmuje hymny, modlitwy i czytania.",
+        "Po mszy procesja może nieść posąg Madonny przez ulice. Ta tradycja różni się z roku na rok w zależności od lokalnej organizacji i pogody. Jeśli się zdarzy, spodziewaj się wąskich ulic w pobliżu kościoła zatłoczonych. Procesja jest krótka (15–20 minut) i kończy się z powrotem w kościele. Udział to głównie miejscowi, ale goście są mile widziani do oglądania. Przynieś drobne (monety €1–€2), jeśli chcesz zapalić świecę lub złożyć darowiznę.",
+        "Komponent religijny jest cichszy i bardziej tradycyjny niż atmosfera imprezowa na plaży, która dominuje popołudnie. Jeśli chcesz doświadczyć kulturowych korzeni Ferragosto, weź udział w mszy lub procesji. To zapewnia kontekst, dlaczego Ferragosto ma znaczenie poza fajerwerkami i tłumami na plaży."
       ]
     },
     {
-      "id": "transport",
-      "title": "Awaryjne plany transportowe",
+      "id": "food-and-dining",
+      "title": "Tradycje kulinarne i jedzenie",
       "body": [
-        "Autobusy SITA kursują według świątecznego rozkładu z rzadszymi kursami; sprawdź rozkład i ustaw się w kolejce wcześniej.",
-        "Promy mogą się wyprzedać; zaopatrz się dzień wcześniej w bilety w obie strony i zaplanuj autobus, jeśli morze stanie się wzburzone."
+        "%IMAGE:ferragosto-feast-positano.jpg|Tradycyjna uczta Ferragosto z makaronem i owocami morza%",
+        "Posiłki Ferragosto to wielka sprawa we Włoszech. Tradycyjnie rodziny zbierają się na długie obiady z owocami morza, makaronem, grillowanym mięsem i sezonowymi warzywami. W Positano restauracje oferują specjalne menu Ferragosto—wielodaniowe uczty o stałych cenach (€50–€100 na osobę). Te posiłki są uroczyste i hojne. Spodziewaj się antipasti (przystawki), primi (makaron lub risotto), secondi (ryba lub mięso), contorni (warzywa), dolci (desery), wino i kawa.",
+        "Rezerwacje są niezbędne. Restauracje rezerwują tygodnie z wyprzedzeniem na Ferragosto. Jeśli chcesz zjeść na mieście, rezerwuj do wczesnego sierpnia najpóźniej. Wiele restauracji wymaga przedpłaty lub gwarancji karty kredytowej na usługę świąteczną. Osoby bez rezerwacji będą miały trudności ze znalezieniem stolików, szczególnie na lunch (13:00–15:00) i kolację (20:00–22:00). Jeśli przegapisz rezerwacje, twoje opcje są ograniczone do pizzy na wynos lub jedzenia produktów spożywczych w hostelu.",
+        "Tradycyjne jedzenie Ferragosto obejmuje makaron z owocami morza (spaghetti alle vongole, scialatielli ai frutti di mare), grillowaną rybę, arbuza (charakterystyczny owoc Ferragosto, podawany lodowato zimny na deser) i lokalne wino. Niektóre rodziny urządzają pikniki na plaży z zapakowanymi posiłkami—zimne sałatki makaronowe, pieczone warzywa, wędliny, ser, chleb, owoce. To jest legalne i powszechne. Jeśli wybierzesz trasę piknikową, przynieś koc, lodówkę z lodem i wielokrotnego użytku sztućce. Zapakuj wszystkie śmieci—plaże robią się brudne podczas Ferragosto, ale zostawianie śmieci jest nieuczciwe.",
+        "Dla gości hostelu z budżetem rozważ %LINK:cheapEats|tanie jedzenie% lub samodzielne gotowanie. Kup zapasy 14 sierpnia: chleb, ser, salami, pomidory, oliwki, owoce. Zrób kanapki i przynieś je na plażę. Zaoszczędzisz €40–€60 w porównaniu do posiłków w restauracji. Wspólny obszar hostelu ma małą kuchnię—możesz też ugotować prosty makaron obiadowy i zjeść na tarasie podczas oglądania fajerwerków."
+      ]
+    },
+    {
+      "id": "fireworks-and-evening",
+      "title": "Fajerwerki i nocne uroczystości",
+      "body": [
+        "Fajerwerki to główne wydarzenie Ferragosto. Wystrzelone z łodzi zakotwiczonych w zatoce, pokaz rozpoczyna się o północy i trwa 15–20 minut. Całe miasto zbiera się, aby oglądać—plaże, tarasy, wzgórza, dachy. Pokaz jest imponujący—profesjonalna pirotechnika, zsynchronizowana z muzyką, wypełniająca niebo nad wodą. Kolory odbijają się od morza. Dźwięk odbija się od klifów. To naprawdę spektakularne.",
+        "Taras Hostel Brikette ma wyraźną linię wzroku nad zatoką. Możesz oglądać stamtąd bez walki z tłumami na plaży. Przyjedź do 23:30, aby zająć miejsce. Przynieś lekką kurtkę lub sweter—morska bryza podnosi się po zmroku, a temperatury spadają 5–8°C od popołudniowego upału. Możesz chcieć koc do siedzenia i butelkę wina lub prosecco do dzielenia się z innymi gośćmi. Atmosfera hostelu w wieczór Ferragosto jest świąteczna—wszyscy oglądają razem.",
+        "Po fajerworkach impreza trwa dalej. Kluby plażowe i restauracje utrzymują głośną muzykę. Tańczenie na plaży jest powszechne. Bary podają drinki do 02:00 lub później. Jeśli chcesz dołączyć do świętowania, udaj się do Spiaggia Grande po fajerworkach. Jeśli chcesz spać, spakuj zatyczki do uszu. Hałas z plaży niesie się w górę wzgórza—usłyszysz muzykę, wiwatowanie i głosy do dobrze po 01:00. Pokoje z widokiem na morze otrzymują najwięcej hałasu. Zatyczki do uszu lub słuchawki z redukcją szumów pomagają.",
+        "Uwaga dotycząca bezpieczeństwa: noc Ferragosto staje się zatłoczona i chaotyczna. Trzymaj wartościowe rzeczy bezpiecznie. Pilnuj swojego drinka w zatłoczonych barach. Wracaj do hostelu w grupach, jeśli to możliwe, szczególnie późno w nocy, gdy widoczność jest słaba, a schody są zajęte przez podpitych biesiadników. Schody z plaży do Chiesa Nuova są strome i nierówne—poświęć czas na wspinanie się. Personel może polecić bezpieczniejsze trasy, jeśli jesteś zaniepokojony."
+      ]
+    },
+    {
+      "id": "transport-challenges",
+      "title": "Transport i poruszanie się",
+      "body": [
+        "Transport podczas Ferragosto działa według harmonogramów świątecznych z ograniczoną obsługą. Autobusy SITA (główny transport publiczny wzdłuż Wybrzeża Amalfi) obsługują mniej kursów. Sprawdź wywieszone rozkłady jazdy na przystankach autobusowych lub zapytaj w recepcji hostelu—personel ma aktualne harmonogramy. Spodziewaj się dłuższych oczekiwań między autobusami (30–45 minut zamiast zwykłych 20–30) i pełnych autobusów. Kolejki tworzą się wcześnie. Jeśli musisz złapać autobus podczas Ferragosto, przyjedź na przystanek 15–20 minut przed zaplanowanym czasem, aby zapewnić sobie miejsce.",
+        "Promy również działają w ograniczonych harmonogramach. Niektóre trasy działają normalnie; inne mają mniej odjazdów. Jeśli zarezerwowałeś jednodniową wycieczkę (%LINK:capriDayTrip|Capri%) lub wycieczkę wyjeżdżającą 15 sierpnia, potwierdź czasy odjazdów 24–48 godzin z wyprzedzeniem. Kup bilety promowe w obie strony dzień wcześniej, jeśli to możliwe—kasy biletowe są przeciążone rano Ferragosto. Wzburzone morze może całkowicie anulować promy (pogoda sierpniowa jest zwykle spokojna, ale nie gwarantowana). Miej plan rezerwowy autobusu.",
+        "Taksówki i prywatni kierowcy pobierają szczytowe stawki podczas Ferragosto. Spodziewaj się cen o 20–30% wyższych niż normalnie. Dostępność jest ograniczona—większość kierowców jest zarezerwowanych na uroczystości rodzinne lub bierze dzień wolny. Jeśli potrzebujesz taksówki 15 sierpnia, rezerwuj dni wcześniej. Hostel może pomóc to zorganizować.",
+        "Usługi bagażowe (przewoźnicy bagażu, którzy pomagają z torbami na stromych schodach) działają w zmniejszonych harmonogramach. Jeśli przybywasz lub wyjeżdżasz podczas Ferragosto z ciężkim bagażem, potwierdź dostępność bagażowych 24–48 godzin wcześniej. Niektóre zespoły biorą wolne całkowicie. Bądź przygotowany do noszenia własnych toreb, jeśli bagażowi są niedostępni. Schody z przystanku autobusowego do hostelu są możliwe do przejścia z plecakiem, ale trudne z walizką na kółkach."
+      ]
+    },
+    {
+      "id": "alternative-plans",
+      "title": "Alternatywy dla pozostania w Positano",
+      "body": [
+        "Jeśli tłumy Ferragosto nie przemawiają do ciebie, rozważ opuszczenie Positano na dzień. Weź prom lub autobus do %LINK:amalfiTownGuide|Amalfi% (mniej zatłoczone niż Positano) lub %LINK:ravelloGuide|Ravello% (górskie miasto, znacznie cichsze). Oba mają obchody Ferragosto, ale z mniejszymi tłumami i bardziej możliwą do zarządzania atmosferą. Możesz wrócić do Positano wieczorem, aby oglądać fajerwerki z tarasu hostelu.",
+        "Alternatywnie wędruj. Szlak %LINK:pathOfTheGods|Ścieżka Bogów% jest otwarty i stosunkowo pusty podczas Ferragosto—większość ludzi jest na plaży, a nie wędruje po górach. Zacznij wcześnie (07:00), aby uniknąć południowego upału. Przynieś dużo wody i ochrony przeciwsłonecznej. Będziesz miał szlak w dużej mierze dla siebie. Wróć do hostelu wieczorem na fajerwerki.",
+        "Niektórzy goście opuszczają Positano całkowicie na weekend Ferragosto. Jeśli masz elastyczność, rozważ spędzenie 14–16 sierpnia w Neapolu, Sorrento lub Salerno. Wróć do Positano po święcie, gdy tłumy się rozproszą, a miasto wróci do normalnego rytmu. Ferragosto to szczytowe szaleństwo—w porządku jest je pominąć, jeśli to nie jest twój styl podróżowania."
       ]
     }
   ],
+  "tipsTitle": "Praktyczne wskazówki dla gości hostelu",
   "tips": [
-    "Jeśli pokój wychodzi na plażę, spakuj zatyczki do uszu — finał sztucznych ogni i muzyka po koncercie mogą trwać nawet do 01:00.",
-    "Weź drobne pieniądze na datki do kościoła Wniebowzięcia; karty tam rzadko są akceptowane."
+    "Kup artykuły spożywcze, wodę, przekąski i wszelkie zapasy 14 sierpnia—sklepy zamykają się lub działają w ograniczonych godzinach podczas Ferragosto.",
+    "Rezerwuj restauracje co najmniej tydzień wcześniej, jeśli chcesz zjeść na mieście 15 sierpnia.",
+    "Przyjedź na plażę do 08:00, jeśli chcesz miejsce. Po 09:30 Spiaggia Grande jest całkowicie zapełniona.",
+    "Spakuj zatyczki do uszu, jeśli twój pokój jest skierowany w stronę plaży—fajerwerki i muzyka po pokazie trwają po 01:00.",
+    "Przynieś drobne (monety €1–€2) do skarbon kościelnych, jeśli uczestniczysz we Mszy Wniebowzięcia.",
+    "Potwierdź rozkłady autobusów i promów 14 sierpnia—Ferragosto prowadzi zmniejszone rozkłady transportu.",
+    "Oglądaj fajerwerki z tarasu hostelu (wyraźna linia wzroku), aby uniknąć tłumów na plaży. Przyjedź do 23:30, aby zająć miejsce.",
+    "Przynieś lekką kurtkę na taras—morska bryza podnosi się po zmroku, a temperatury spadają.",
+    "Jeśli podróżujesz 15 sierpnia, potwierdź usługi bagażowe 24–48 godzin wcześniej—wielu bierze dzień wolny.",
+    "Rozważ opuszczenie Positano na dzień, jeśli tłumy nie przemawiają—%LINK:amalfiTownGuide|Amalfi%, %LINK:ravelloGuide|Ravello% lub wędrówka po %LINK:pathOfTheGods|Ścieżce Bogów% są cichszymi alternatywami."
   ],
+  "faqsTitle": "Często zadawane pytania",
   "faqs": [
     {
-      "q": "Czy supermarkety są zamknięte przez cały dzień?",
+      "q": "Czy supermarkety są zamknięte cały dzień podczas Ferragosto?",
       "a": [
-        "Wiele z nich zamyka się całkowicie albo otwiera tylko rano. Kup podstawowe rzeczy do 14 sierpnia wieczorem."
+        "Większość supermarketów zamyka się całkowicie lub otwiera na krótkie okno poranne (08:00–12:00), a następnie zamyka. Małe sklepy spożywcze i sklepy często zamykają się na cały dzień. Kup niezbędne rzeczy do wieczora 14 sierpnia. Nie licz na znalezienie dostaw rano Ferragosto."
       ]
     },
     {
-      "q": "Czy mogę obejrzeć fajerwerki z tarasu hostelu?",
+      "q": "Czy mogę oglądać fajerwerki z tarasu hostelu?",
       "a": [
-        "Tak — taras ma dobrą linię widokową nad zatoką. Zajmij miejsce wcześnie i weź cienką bluzę na wieczorną bryzę."
+        "Tak—taras w Hostel Brikette ma wyraźną linię wzroku nad zatoką. Możesz oglądać cały pokaz fajerwerków stamtąd bez walki z tłumami na plaży. Przyjedź do 23:30, aby zająć miejsce. Przynieś lekką kurtkę (morska bryza podnosi się po zmroku) i może koc do siedzenia. Niektórzy goście przynoszą wino lub prosecco do dzielenia podczas oglądania."
+      ]
+    },
+    {
+      "q": "Czy Ferragosto jest warte doświadczenia, czy powinienem unikać Positano tego dnia?",
+      "a": [
+        "Zależy od twojego stylu podróżowania. Jeśli lubisz duże tłumy, świąteczną energię, fajerwerki i imprezy plażowe, Ferragosto to unikalne doświadczenie kulturowe. Jeśli wolisz ciche, zrelaksowane Positano, Ferragosto będzie przytłaczające. Wielu gości hostelu to uwielbia—opisują to jako chaotyczne, ale zabawne. Inni opuszczają miasto na dzień i wracają na fajerwerki wieczorem. Każde podejście działa. Po prostu planuj z wyprzedzeniem, abyś nie został zaskoczony tłumami i zamknięciami."
+      ]
+    },
+    {
+      "q": "O której godzinie zaczynają się fajerwerki?",
+      "a": [
+        "Północ (00:00). Pokaz trwa 15–20 minut. Wystrzelone z łodzi w zatoce, widoczne z dowolnego miejsca z widokiem na wodę. Taras hostelu, Spiaggia Grande i Fornillo Beach to główne miejsca do oglądania. Po fajerworkach imprezy plażowe trwają po 01:00. Spodziewaj się hałasu do 02:00 lub później."
+      ]
+    },
+    {
+      "q": "Czy mogę iść na plażę po fajerworkach?",
+      "a": [
+        "Tak. Kluby plażowe i bary pozostają otwarte późno podczas Ferragosto. Muzyka, tańce i picie trwają po 01:00. Jeśli chcesz dołączyć do imprezy, udaj się do Spiaggia Grande po fajerworkach. Spodziewaj się tłumów, głośnej muzyki i świątecznej, ale chaotycznej atmosfery. Bary podają drinki do 02:00. Jeśli chcesz spać zamiast tego, spakuj zatyczki do uszu—hałas z plaży niesie się w górę wzgórza."
+      ]
+    },
+    {
+      "q": "Czy restauracje są otwarte podczas Ferragosto?",
+      "a": [
+        "Większość restauracji pozostaje otwarta i serwuje specjalne menu Ferragosto (wielodaniowe uczty, €50–€100 na osobę). Jednak są w pełni zarezerwowane tygodnie z wyprzedzeniem. Jeśli nie zarezerwowałeś do wczesnego sierpnia, stoliki bez rezerwacji są prawie niemożliwe do znalezienia. Twoje opcje to pizza na wynos, artykuły spożywcze w hostelu lub opuszczenie Positano, aby zjeść w %LINK:amalfiTownGuide|Amalfi% lub innym mieście."
+      ]
+    },
+    {
+      "q": "Jakie jest religijne znaczenie Ferragosto?",
+      "a": [
+        "Ferragosto świętuje Wniebowzięcie Maryi (katolickie przekonanie, że Maryja została wzięta do nieba duszą i ciałem). Święto powstało jako rzymski festiwal żniw w 18 roku p.n.e., później połączony z chrześcijańskim świętem. W Positano Kościół Santa Maria Assunta odprawia specjalną mszę 15 sierpnia (zwykle 10:00 lub 11:00). Procesja może nieść posąg Madonny przez ulice. Komponent religijny jest cichszy niż atmosfera imprezowa na plaży, ale zapewnia kontekst kulturowy, dlaczego Ferragosto ma znaczenie."
       ]
     }
   ]

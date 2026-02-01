@@ -5,7 +5,7 @@
   },
   "intro": {
     "title": "Centro de Nápoles para Positano — Ferry",
-    "body": "Siga estas instruções para viajar do centro de Nápoles até Positano totalmente por mar. Este guia cobre o curto transfer de Napoli Centrale para o porto, a compra de bilhetes de ferry, o embarque e o que esperar ao chegar ao cais de Positano."
+    "body": "Use estas instruções para viajar do centro de Nápoles até Positano totalmente por mar. Este guia cobre o curto transfer de Napoli Centrale para o porto, a compra de bilhetes de ferry, o embarque e o que esperar ao chegar ao cais de Positano."
   },
   "callouts": {
     "tip": "Procura outras rotas ou alternativas em caso de mar agitado? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar%."
@@ -14,12 +14,12 @@
     {
       "id": "journey",
       "title": "Resumo da viagem",
-      "body": "Os ferries entre Nápoles e Positano funcionam sobretudo na primavera e no verão e podem ser cancelados com mau tempo. O tempo total de viagem varia normalmente entre 1,5 e 2,5 horas, consoante o tipo de embarcação e a espera no porto."
+      "body": "Os ferries entre Nápoles e Positano funcionam com maior frequência na primavera e no verão e podem ser cancelados com mau tempo. O tempo total de viagem varia normalmente entre 1,5 e 2,5 horas, dependendo do tipo de embarcação e do tempo de espera no porto."
     },
     {
       "id": "transfer",
       "title": "Chegar ao porto desde Napoli Centrale",
-      "body": "O transporte público mais rápido é o Elétrico 1 desde a Piazza Garibaldi até Municipio (para o Molo Beverello) ou Marittima (para Porta di Massa). Um táxi também é simples e económico para grupos."
+      "body": "O transporte público mais rápido é o Elétrico 1 desde a Piazza Garibaldi até Municipio (para o Molo Beverello) ou Marittima (para Porta di Massa). Um táxi também é uma opção simples e económica para grupos."
     },
     {
       "id": "tickets",
@@ -28,7 +28,7 @@
     {
       "id": "boarding",
       "title": "Embarque no porto",
-      "body": "Chegue ao cais 20–30 minutos mais cedo para trocar eventuais vouchers, se necessário, e para esperar na fila de embarque. Siga as instruções da tripulação para a bagagem e tenha atenção ao movimento da prancha quando houver ondulação."
+      "body": "Chegue ao cais 20–30 minutos mais cedo para trocar eventuais vouchers de reserva, se necessário, e para fazer fila para o embarque. Siga as instruções da tripulação para a colocação da bagagem e tenha atenção ao pisar na prancha quando houver ondulação."
     },
     {
       "id": "arrival",
@@ -39,5 +39,6 @@
       "title": "Se os ferries forem cancelados",
       "body": "Em caso de cancelamentos devido ao tempo ou ao estado do mar, altere para a rota de comboio e autocarro via Sorrento. Demora mais, mas funciona na maioria das condições. Use esta alternativa: %HOWTO:naples-center-train-bus|Centro de Nápoles → Positano de comboio e depois autocarro%."
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

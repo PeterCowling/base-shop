@@ -8,17 +8,15 @@
 
 import { NextResponse } from "next/server";
 
-import { getSession } from "@/lib/auth";
-
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 export async function POST(request: Request) {
   try {
     const response = NextResponse.json({ success: true });
+    void request;
 
-    // Destroy session
-    const session = await getSession(request, response);
-    session.destroy();
+    response.cookies.delete("current_user_id");
+    response.cookies.delete("business_os_session");
 
     return response;
   } catch (error) {

@@ -36,12 +36,12 @@ function GuideContent({ lang, guideKey, serverOverrides }: Props) {
     }
 
     // Check if audit results exist
-    const hasAuditResults = serverOverrides?.auditResults != null;
+    const hasAuditResults = serverOverrides?.[guideKey]?.auditResults != null;
     console.debug("[GuideContent] Audit check:", {
       guideKey,
       hasServerOverrides: serverOverrides != null,
       hasAuditResults,
-      auditScore: serverOverrides?.auditResults?.score,
+      auditScore: serverOverrides?.[guideKey]?.auditResults?.score,
     });
 
     if (!hasAuditResults) return;

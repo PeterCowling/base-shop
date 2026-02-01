@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Lotnisko w Neapolu do Positano autobusem | Hostel Brikette",
     "description": "Z lotniska w Neapolu do Positano autobusem Curreri do Sorrento, a następnie autobusem SITA. Bilety, przystanki, wskazówki dotyczące rozkładu SITA i dojście pieszo do Hostel Brikette."
@@ -8,6 +9,7 @@
     "body": "Ten przewodnik krok po kroku prowadzi z lotniska w Neapolu do Positano, najpierw autobusem Curreri do Sorrento, a następnie autobusem SITA do Positano. Zawiera informacje o biletach, przesiadce, czytaniu rozkładu SITA oraz dojściu z najbliższego przystanku do Hostel Brikette."
   },
   "callouts": {
+    "tip": "Potrzebujesz innych tras? Sprawdź pełny %HOWTO:how-to-get-here|przegląd Jak dotrzeć%, aby zobaczyć %LINK:arrivingByFerry|przyjazd promem%, %LINK:porterServices|usługi bagażowe% i %LINK:travelHelp|prywatne transfery%.",
     "aside": "Potrzebujesz wszystkich opcji transportu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%, aby sprawdzić promy, taksówki i alternatywne trasy."
   },
   "sections": [
@@ -55,6 +57,48 @@
       "list": [
         "Przejdź nieco ponad 100 metrów (330 stóp) wzdłuż Via G. Marconi.",
         "Skręć w prawo i wejdź po schodach do głównych drzwi hostelu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ile kosztuje dojazd z lotniska w Neapolu do Positano autobusem?",
+      "a": "Całkowity koszt to około 12,60 €: 10 € za autobus Curreri z lotniska w Neapolu do Sorrento, plus 2,60 € za autobus SITA z Sorrento do Positano (ceny 2026). To najtańsza opcja transportu publicznego."
+    },
+    {
+      "q": "Ile trwa podróż z lotniska w Neapolu do Positano?",
+      "a": "Całkowity czas podróży to 2,5-3 godziny: 75 minut autobusem Curreri, 50 minut autobusem SITA, plus 20-40 minut oczekiwania na przesiadki w Sorrento. Zaplanuj 3-3,5 godziny w sumie, aby uwzględnić możliwe opóźnienia."
+    },
+    {
+      "q": "Czy mogę kupić bilety autobusowe na pokładzie?",
+      "a": "Możesz kupić bilety Curreri na lotnisku w Neapolu (stoisko lub online). Bilety autobusowe SITA nie mogą być kupowane na pokładzie — musisz je kupić w barze, tabacchi lub kiosku w pobliżu dworca autobusowego w Sorrento przed wejściem na pokład."
+    },
+    {
+      "q": "Czy ta trasa jest odpowiednia dla podróżnych z ciężkim bagażem?",
+      "a": "Tak, ale może być trudna w godzinach szczytu. Autobus Curreri ma dedykowaną przechowalnię bagażu. Autobus SITA ma ograniczoną przestrzeń bagażową, więc wsiądź wcześnie, jeśli masz duże torby. Spacer z przystanku Chiesa Nuova do hostelu jest płaski i trwa poniżej 2 minut, więc bagaż jest łatwy do zarządzania po przyjeździe. Jeśli wolisz, rozważ skorzystanie z naszych usług bagażowych lub prywatnego transferu."
+    },
+    {
+      "q": "O której godzinie odjeżdża ostatni autobus z Sorrento do Positano?",
+      "a": "Ostatni autobus różni się w zależności od sezonu. Latem (lipiec-sierpień) ostatni autobus zwykle odjeżdża około 21-22. Zimą (listopad-marzec) może być nawet o 19-20. Zawsze sprawdzaj aktualny rozkład na sitasudtrasporti.it przed podróżą, zwłaszcza w niedziele i święta, gdy usługi są ograniczone."
+    },
+    {
+      "q": "Co jeśli spóźnię się na autobus Curreri lub będzie w pełni zarezerwowany?",
+      "a": "Weź Alibus do Napoli Centrale (5 €, 20 min), następnie pociąg Circumvesuviana do Sorrento (4,60 €, 70 min), następnie autobus SITA do Positano (2,60 €, 50 min). Całkowity koszt: 12,20 €, podobnie jak trasa Curreri, ale z dodatkowym przesiadaniem. Zobacz nasz przewodnik pociąg-autobus z centrum Neapolu, aby uzyskać szczegóły."
+    },
+    {
+      "q": "Czy w autobusach są toalety?",
+      "a": "Nie. Ani autobus Curreri, ani autobus SITA nie mają toalet. Skorzystaj z toalet na lotnisku w Neapolu przed wejściem na pokład autobusu Curreri i skorzystaj z toalet na dworcu autobusowym w Sorrento (jest mała kawiarnia z toaletami) przed wejściem na pokład autobusu SITA."
+    },
+    {
+      "q": "Czy mogę przechować bagaż w Positano, jeśli przybędę przed godziną meldowania?",
+      "a": "Tak. Kilka %LINK:luggageStorage|miejsc przechowania bagażu% w pobliżu plaży Spiaggia Grande pobiera 5-8 € za torbę dziennie. Przydatne, jeśli przyjedziesz przed godziną meldowania w hostelu o 15:00."
+    },
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje literę alfabetyczną do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy są dostępne autobusy i o której godzinie dotrą do celu. Na przykład, aby zobaczyć godzinę odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć godzinę przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
       ]
     }
   ]

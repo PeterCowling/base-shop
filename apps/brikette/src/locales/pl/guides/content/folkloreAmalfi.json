@@ -1,7 +1,8 @@
 {
   "seo": {
     "title": "Legendy i folklor Wybrzeża Amalfi",
-    "description": "Syreny, święci i opowieści, które wyjaśniają lokalne rytuały i nazwy miejsc."
+    "description": "Syreny, święci i opowieści, które wyjaśniają lokalne rytuały i nazwy miejsc.",
+    "lastUpdated": "2026-01-31"
   },
   "linkLabel": "Legendy i folklor Wybrzeża Amalfi",
   "intro": [
@@ -33,10 +34,12 @@
       ]
     }
   ],
+  "tipsTitle": "Doświadczanie folkloru jako podróżny",
   "tips": [
     "Sprawdź kalendarz wydarzeń gminy, by wziąć udział w szacownych obchodach świąt.",
     "Zabierz lekki szal — wiele wydarzeń przechodzi w nabożeństwo, gdzie doceniana jest skromna odzież."
   ],
+  "faqsTitle": "Najczęściej zadawane pytania",
   "faqs": [
     {
       "q": "Czy każdy może wziąć udział w procesjach?",

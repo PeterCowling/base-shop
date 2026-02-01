@@ -145,6 +145,14 @@
       "a": [
         "Sprawdź rozkład jazdy wywieszony na przystanku. Jeśli następny autobus będzie za ponad godzinę, asfaltową drogą do Positano można dojść w około 45–60 minut."
       ]
+    },
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje alfabetyczną literę do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy autobusy są dostępne i o której godzinie dotrą do miejsca docelowego. Na przykład, aby zobaczyć czas odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć czas przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
+      ]
     }
   ],
   "toc": {

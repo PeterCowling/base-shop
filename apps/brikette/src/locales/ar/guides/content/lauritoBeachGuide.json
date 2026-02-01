@@ -123,19 +123,34 @@
   "images": {
     "whyGo": {
       "alt": "خليج لوريتو مع النوادي الشاطئية على طول الساحل",
-      "caption": "خليج لوريتو المحمي بالجروف أهدأ من الشاطئ الرئيسي."
+      "caption": "خليج لوريتو المحمي بالجروف أهدأ من الشاطئ الرئيسي.",
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg"
     },
     "layout": {
       "alt": "تراسات وخط الشاطئ في لوريتو",
-      "caption": "ثلاث مناطق تتقاسم الخليج: الشريط العام، تراسات فيلا تري فيل، ومنصة دا أدولفو."
+      "caption": "ثلاث مناطق تتقاسم الخليج: الشريط العام، تراسات فيلا تري فيل، ومنصة دا أدولفو.",
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg"
     },
     "treVille": {
       "alt": "منصات نادي فيلا تري فيل البوتيكية",
-      "caption": "فيلا تري فيل يقدم أسِرّة نهارية فاخرة وخدمة كونسيرج."
+      "caption": "فيلا تري فيل يقدم أسِرّة نهارية فاخرة وخدمة كونسيرج.",
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg"
     },
     "daAdolfo": {
       "alt": "طاولات خشبية أمام مطعم دا أدولفو",
-      "caption": "دا أدولفو مشهور بموزاريلا أوراق الليمون وأجوائه البوهيمية."
+      "caption": "دا أدولفو مشهور بموزاريلا أوراق الليمون وأجوائه البوهيمية.",
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
-  }
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

@@ -6,5 +6,15 @@
   "intro": {},
   "callouts": {
     "tip": "Du möchtest alle Transportoptionen? Öffne die %HOWTO:how-to-get-here|Übersicht „So kommst du zu uns“% für Fähren, Taxis und kombinierte Routen."
-  }
+  },
+  "faqs": [
+    {
+      "q": "Wie lese ich den SITA-Busfahrplan?",
+      "a": [
+        "**Zeilen lesen:** Die Zeilen in der ersten Spalte zeigen die einzelnen Bushaltestellen entlang der Strecke.",
+        "**Spalten lesen:** Der Fahrplan ordnet jeder geplanten Fahrt einen Buchstaben zu, der als Überschrift in jeder Spalte steht. Wenn Sie Montag bis Samstag reisen, nutzen Sie die Spalten 'F' und 'G'. Bei Reisen am Sonntag oder an Feiertagen verwenden Sie die Spalten 'G' und 'H'.",
+        "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Zielhaltestelle und prüfen Sie dann in den Spalten, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um etwa die Abfahrtszeit in Sorrent zu sehen, schauen Sie in die Sorrent-Zeile. Für die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) nutzen Sie die Zeile Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
 }

@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { userToCommitIdentity } from "@/lib/commit-identity";
-import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { writeComment } from "@/lib/repo/CommentWriter";
+import { appendAuditEntry } from "@acme/platform-core/repositories/businessOs.server";
 
-// Phase 0: Node runtime required for filesystem operations
-export const runtime = "nodejs";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
+import { isRecord } from "@/lib/json";
+
+export const runtime = "edge";
 
 const CreateCommentSchema = z.object({
   content: z.string().min(1),
@@ -17,19 +17,18 @@ const CreateCommentSchema = z.object({
 
 /**
  * POST /api/comments
- * Create a new comment
+ * Create a new comment (D1-hosted path)
  *
- * MVP-E1: Comments as first-class git artifacts
+ * Note: D1 schema currently supports card comments only.
  */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Validate input
     const parsed = CreateCommentSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        // i18n-exempt -- BOS-33 MVP-E1 API error message [ttl=2026-03-31]
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
         { error: "Invalid request", details: parsed.error.errors },
         { status: 400 }
       );
@@ -37,45 +36,64 @@ export async function POST(request: Request) {
 
     const { content, entityType, entityId } = parsed.data;
 
-    // Get current user
+    if (entityType !== "card") {
+      return NextResponse.json(
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Comments are not available for ideas yet." },
+        { status: 501 }
+      );
+    }
+
+    const db = getDb();
     const currentUser = await getCurrentUserServer();
-    const gitAuthor = userToCommitIdentity(currentUser);
+    const id = crypto.randomUUID();
+    const now = new Date().toISOString();
 
-    // Get repo root
-    const repoRoot = getRepoRoot();
-
-    // Write comment
-    const result = await writeComment(
-      repoRoot,
-      {
-        content,
-        entityType,
-        entityId,
-        author: currentUser.name,
-      },
-      gitAuthor
-    );
+    const result = await db
+      .prepare(
+         
+        `
+        INSERT INTO business_os_comments (id, card_id, author, content, created_at)
+        VALUES (?, ?, ?, ?, ?)
+      `
+      )
+      .bind(id, entityId, currentUser.name, content, now)
+      .run();
 
     if (!result.success) {
       return NextResponse.json(
-        // i18n-exempt -- BOS-33 MVP-E1 API error message [ttl=2026-03-31]
-        { error: "Failed to create comment", details: result.error },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Failed to create comment" },
         { status: 500 }
       );
     }
 
+    await appendAuditEntry(db, {
+      entity_type: "comment",
+      entity_id: id,
+      action: "create",
+      actor: currentUser.id,
+      changes_json: JSON.stringify({
+        entityType,
+        entityId,
+      }),
+    });
+
     return NextResponse.json(
-      {
-        success: true,
-        filePath: result.filePath,
-      },
+      { success: true, id },
       { status: 201 }
     );
   } catch (error) {
+    const details =
+      isRecord(error) && typeof error.message === "string"
+        ? error.message
+        : String(error);
+
     return NextResponse.json(
-      // i18n-exempt -- BOS-33 MVP-E1 API error message [ttl=2026-03-31]
-      { error: "Internal server error", details: String(error) },
+      // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Internal server error", details },
       { status: 500 }
     );
   }
 }
+

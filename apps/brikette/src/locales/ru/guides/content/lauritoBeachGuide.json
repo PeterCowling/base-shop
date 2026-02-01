@@ -123,19 +123,42 @@
   "images": {
     "whyGo": {
       "alt": "Бухта Лаурито с бирюзовой водой и шезлонгами",
-      "caption": "Спокойная вода и скальный фон делают Лаурито идеальным для фото."
+      "caption": "Спокойная вода и скальный фон делают Лаурито идеальным для фото.",
+      "width": 403,
+      "height": 500,
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg"
     },
     "layout": {
       "alt": "Вид сверху на пляжные клубы Лаурито",
-      "caption": "Da Adolfo слева, Villa Tre Ville в центре, бесплатная зона справа."
+      "caption": "Da Adolfo слева, Villa Tre Ville в центре, бесплатная зона справа.",
+      "width": 1500,
+      "height": 1000,
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg"
     },
     "treVille": {
       "alt": "Терракотовые шезлонги на террасе Villa Tre Ville",
-      "caption": "Villa Tre Ville предлагает премиум-сервис и просекко к лежаку."
+      "caption": "Villa Tre Ville предлагает премиум-сервис и просекко к лежаку.",
+      "width": 1280,
+      "height": 1600,
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg"
     },
     "daAdolfo": {
       "alt": "Деревянные лежаки и терраса ресторана Da Adolfo",
-      "caption": "Da Adolfo славится моцареллой гриль на лимонных листьях."
+      "caption": "Da Adolfo славится моцареллой гриль на лимонных листьях.",
+      "width": 512,
+      "height": 215,
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "Вид на Позитано и море с лодками у берега",
+      "caption": "Спьяджа Гранде — главная точка отправления многих шаттлов и лодок."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Синий автобус SITA едет по дороге Амальфитанского побережья над морем",
+      "caption": "Прибрежный автобус SITA — полезный запасной вариант, когда лодки не ходят."
     }
-  }
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

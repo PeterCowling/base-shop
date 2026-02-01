@@ -40,5 +40,15 @@
       "id": "naples",
       "body": "Maradj a Circumvesuvianán egészen a végállomásig, Napoli Garibaldióig. Onnan kövesd a táblákat a fő csarnok felé, ahol átszállhatsz távolsági vonatokra, metróra vagy repülőtéri buszokra. A Piazza Garibaldi közvetlenül az állomás bejárata előtt található."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**A sorok olvasása:** Az első oszlop sorai az útvonal mentén különböző buszmegállókat jelölnek.",
+        "**Az oszlopok olvasása:** A menetrend minden egyes tervezett járathoz egy betűt rendel, amelyek minden oszlop fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**A sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokat, hogy mikor vannak buszok, és mikor érkeznek meg a célállomásra. Például a Sorrento indulási idejének megtekintéséhez nézze meg a Sorrento sort. A Positano (Chiesa Nuova / Bar Internazionale) érkezési idejének megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
+    }
   ]
 }

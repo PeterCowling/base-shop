@@ -65,10 +65,8 @@ export function getCurrentUser(): User {
     }
   }
 
-  // Fall back to environment variable (server-side or dev)
-  const userId = process.env.CURRENT_USER_ID || "pete";
-
-  return USERS[userId] || USERS.pete;
+  // Phase 0 fallback: default to Pete
+  return USERS.pete;
 }
 
 /**
@@ -92,64 +90,4 @@ export function canEditCard(user: User, card: { Owner?: string }): boolean {
 
   // User can edit if they own the card
   return card.Owner === user.name;
-}
-
-/**
- * Server-side helper to get current user (for API routes and server components)
- *
- * Priority order when BUSINESS_OS_AUTH_ENABLED=true:
- * 1. Iron session (authenticated user)
- * 2. Fall back to CURRENT_USER_ID env var (dev mode)
- *
- * Priority order when auth disabled:
- * 1. current_user_id cookie
- * 2. CURRENT_USER_ID env var
- */
-export async function getCurrentUserServer(): Promise<User> {
-  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
-
-  // When auth is enabled, check iron session first
-  if (authEnabled) {
-    try {
-      // Dynamically import to avoid circular dependencies
-      const { getAuthenticatedUserFromHeaders } = await import("./auth");
-      const user = await getAuthenticatedUserFromHeaders();
-
-      if (user) {
-        return user;
-      }
-
-      // If no session user, fall back to env var for dev mode
-      // (This allows testing without login when auth is enabled)
-      const userId = process.env.CURRENT_USER_ID;
-      if (userId && USERS[userId]) {
-        return USERS[userId];
-      }
-
-      // No authenticated user and no env fallback - return Pete as safe default
-      // (Middleware should have already redirected unauthenticated users to /login)
-      return USERS.pete;
-    } catch (error) {
-      // If auth check fails, fall through to legacy behavior
-      console.error("Failed to get authenticated user:", error);
-    }
-  }
-
-  // Legacy behavior (auth disabled or auth check failed)
-  // Try to read from cookie (Next.js server components)
-  try {
-    const { cookies } = await import("next/headers");
-    const cookieStore = await cookies();
-    const userIdCookie = cookieStore.get("current_user_id");
-
-    if (userIdCookie?.value && USERS[userIdCookie.value]) {
-      return USERS[userIdCookie.value];
-    }
-  } catch {
-    // Not in server component context, fall through
-  }
-
-  // Fall back to environment variable
-  const userId = process.env.CURRENT_USER_ID || "pete";
-  return USERS[userId] || USERS.pete;
 }

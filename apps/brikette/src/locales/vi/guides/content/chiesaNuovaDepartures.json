@@ -5,7 +5,7 @@
   },
   "linkLabel": "Hostel Brikette đến trạm xe buýt Chiesa Nuova/Bar Internazionale",
   "lastUpdated": "2026-01-30",
-  "intro": "Trạm xe buýt Positano Chiesa Nuova là cổng vào của bạn từ Hostel Brikette đến toàn bộ Bờ biển Amalfi. Hướng dẫn này bao gồm mọi thứ bạn cần biết về lộ trình đi bộ 2 phút này: nơi mua vé, xếp hàng bên nào đường và các kết nối đến các điểm đến chính dọc bờ biển.",
+  "intro": "Trạm xe buýt Positano Chiesa Nuova là cổng vào của bạn từ Hostel Brikette đến toàn bộ Bờ biển Amalfi. Rời khỏi nhà trọ để đi xe buýt đến Amalfi, Sorrento hoặc xa hơn? Hướng dẫn này bao gồm mọi thứ bạn cần biết về việc đi bộ từ Hostel Brikette đến trạm thiết yếu này (còn được gọi là Bar Internazionale): lộ trình đi bộ 2 phút, nơi mua vé, xếp hàng ở phía nào của đường và các kết nối đến các điểm đến chính dọc Bờ biển Amalfi.",
   "image": {
     "alt": "Trạm SITA Chiesa Nuova của Positano bên ngoài Bar Internazionale",
     "caption": "Hostel Brikette nằm cách trạm một khúc quanh. Hãy dành vài phút để xếp hàng trước khi xe buýt đến, đặc biệt là vào mùa hè khi các chuyến xe nhanh chóng kín chỗ."
@@ -22,20 +22,15 @@
       "id": "why-route",
       "title": "Tại sao lộ trình này hiệu quả",
       "body": [
-        "Đó là quãng đường đi bộ 120 mét (400 foot) từ lối vào nhà trọ đến trạm xe buýt trên Viale Pasitea, con đường ven biển chính xuyên qua Positano. Chuyến đi bộ mất 2-4 phút trên độ dốc xuống nhẹ với vỉa hè được lát suốt. Bạn sẽ thấy biển hiệu nhà trọ bên phải khi ra ngoài. Vỉa hè đủ rộng cho hành lý và có ánh sáng tốt vào ban đêm.",
-        "Nếu bạn đi về phía Amalfi (hướng đông), trạm nằm đối diện Bar Internazionale ở phía nhìn ra biển của đường. Đợi ở đây cho các xe buýt đi về Amalfi, Salerno và Ravello. Nếu bạn đi về phía Sorrento (hướng tây), bạn sẽ đợi ngay bên ngoài quán bar ở phía núi của đường. Tìm biển báo trạm xe buýt SITA màu xanh và trắng.",
-        "Trạm Chiesa Nuova này là trạm xe buýt SITA gần nhất với Hostel Brikette và là nơi dễ nhất để bắt xe buýt dọc bờ biển. Người địa phương cũng gọi nó là trạm Bar Internazionale. Quán bar có mái che lớn màu đỏ giúp dễ nhận ra từ cả hai hướng."
+        "Trạm Positano Chiesa Nuova / Bar Internazionale là trạm xe buýt SITA gần nhất với Hostel Brikette và là nơi dễ nhất để bắt xe buýt dọc bờ biển. Người dân địa phương gọi nó bằng cả hai tên thay thế nhau. Đó là quãng đường đi bộ 120 mét (400 feet) từ lối vào nhà trọ đến trạm xe buýt trên Viale Pasitea, con đường ven biển chính xuyên qua Positano. Chuyến đi bộ mất 2-4 phút trên độ dốc xuống nhẹ. Bạn sẽ thấy biển hiệu nhà trọ bên phải khi ra ngoài. Vỉa hè đủ rộng cho hành lý và có ánh sáng tốt vào ban đêm.",
+        "Nếu bạn đi về phía Amalfi (hướng đông), trạm nằm đối diện Bar Internazionale ở phía nhìn ra biển của đường—tìm một cột kim loại trên mặt đất đánh dấu trạm xe buýt. Đợi ở đây cho các xe buýt đến thị trấn Amalfi, Salerno và Ravello. Nếu bạn đi về phía Sorrento (hướng tây), bạn sẽ đợi ngay bên ngoài quán bar.",
+        "Để biết hướng dẫn đi bộ với bản đồ, xem %URL:https://www.google.com/maps/dir/V.+G.+Marconi,+358,+84017+Positano+SA/Bar+Internazionale,+V.+G.+Marconi,+306,+84017+Positano+SA/@40.6294795,14.4790535,746m/data=!3m2!1e3!4b1!4m14!4m13!1m5!1m1!1s0x133b976683fb47c9:0x209c0949d4fb4c3b!2m2!1d14.4809356!2d40.6296237!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!3e0?hl=en&entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D|tuyến đường Google Maps từ Hostel Brikette đến trạm xe buýt%."
       ],
       "images": [
         {
           "src": "/img/directions/positano-bus-stop.png",
-          "alt": "Trạm SITA Positano Chiesa Nuova nhìn từ Hostel Brikette",
-          "caption": "Trạm Chiesa Nuova trước Bar Internazionale. Chỉ 2-4 phút đi xuống dốc nhẹ."
-        },
-        {
-          "src": "/img/directions/ferry-dock-piazza-mulini-bus-stop.jpg",
-          "alt": "Bar Internazionale ở Positano với mái che đỏ lớn",
-          "caption": "Tìm mái che màu đỏ: một điểm mốc trực quan giúp bạn nhận ra trạm này từ cả hai hướng."
+          "alt": "Biển báo trạm xe buýt SITA tại Chiesa Nuova ở Positano",
+          "caption": "Trạm xe buýt SITA Chiesa Nuova bên ngoài Bar Internazionale"
         }
       ]
     },
@@ -46,13 +41,14 @@
         "Từ trạm Chiesa Nuova/Bar Internazionale, xe buýt SITA chạy theo cả hai hướng dọc bờ biển:",
         "**Về phía Amalfi (hướng đông):** Xe buýt đi qua Praiano, đi qua Marina di Praia và Fiordo di Furore trước khi đến %LINK:amalfiTownGuide|thị trấn Amalfi% (30-40 phút). Từ Amalfi, bạn có thể tiếp tục đến %LINK:salernoPositano|Salerno% (thêm 45 phút) hoặc đi xe buýt kết nối đến Ravello.",
         "**Về phía Sorrento (hướng tây):** Xe buýt uốn lượn dọc bờ biển qua một số đường hầm đẹp trước khi đến %LINK:sorrentoGuide|Sorrento% (40-50 phút). Từ Sorrento, bạn có thể kết nối với tàu đi %LINK:naplesPositano|Naples% (tuyến Circumvesuviana đến Ga trung tâm Naples) hoặc tiếp tục đến Sân bay Naples.",
-        "Để lập kế hoạch hành trình hoàn chỉnh từ Positano, xem các hướng dẫn tuyến đường chuyên biệt của chúng tôi: %LINK:positanoAmalfiBus|Positano đến Amalfi bằng xe buýt%, %LINK:positanoSorrentoBus|Positano đến Sorrento bằng xe buýt%, %LINK:positanoNaplesCenterBusTrain|Positano đến Naples% qua Sorrento, và %LINK:positanoSalernoBus|Positano đến Salerno bằng xe buýt%."
+        "Để lập kế hoạch hành trình hoàn chỉnh từ Positano, xem các hướng dẫn tuyến đường chuyên biệt của chúng tôi: %LINK:positanoAmalfiBus|Positano đến Amalfi bằng xe buýt%, %LINK:positanoSorrentoBus|Positano đến Sorrento bằng xe buýt%, %LINK:positanoNaplesCenterBusTrain|Positano đến Naples% qua Sorrento, và %LINK:positanoSalernoBus|Positano đến Salerno bằng xe buýt%.",
+        "**Lịch trình xe buýt:** Xem lịch trình hiện tại cho %URL:https://www.sorrentoinsider.com/en/sorrento-to-positano-bus-schedule?route=amalfi_positano_sorrento|xe buýt hướng tây đến Sorrento% hoặc %URL:https://www.sorrentoinsider.com/en/sorrento-to-positano-bus-schedule?route=sorrento_positano_amalfi|xe buýt hướng đông đến Amalfi%."
       ],
       "images": [
         {
-          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "Xe buýt SITA trên đường ven biển Positano",
-          "caption": "Xe buýt SITA chạy cả hai hướng: về phía đông đến Amalfi hoặc về phía tây đến Sorrento."
+          "src": "https://simplyamalficoast.it/wp-content/uploads/2025/11/simply-amalfi-coast-bus-sita-4.jpg",
+          "alt": "Xe buýt SITA tại trạm Positano đi về Amalfi",
+          "caption": "Xe buýt SITA kết nối Positano với các điểm đến trên khắp Bờ biển Amalfi"
         }
       ]
     },
@@ -62,14 +58,14 @@
       "body": [
         "Xe buýt SITA chạy thường xuyên giữa Positano và cả Amalfi và Sorrento trong mùa cao điểm (tháng 4-10). Dự kiến xe buýt cứ 20-30 phút một chuyến trong ngày, với ít xe buýt hơn vào sáng sớm (trước 8 giờ sáng) và tối (sau 9 giờ tối). Chuyến đi mất khoảng 40 phút đến Amalfi và 50 phút đến Sorrento, nhưng có thể mất lâu hơn vào những ngày hè bận rộn khi giao thông đông đúc.",
         "**Chuyến đầu tiên:** Chuyến xe buýt hướng đông đầu tiên đến Amalfi thường khởi hành từ Chiesa Nuova vào khoảng 6:30-7:00 sáng. Chuyến xe buýt hướng tây đầu tiên đến Sorrento thường khởi hành vào khoảng 6:45-7:15 sáng. Kiểm tra thời gian hiện tại tại Bar Internazionale hoặc hỏi ở lễ tân nhà trọ vì lịch trình thay đổi theo mùa. Mùa hè có nhiều xe buýt hơn mùa đông.",
-        "**Chuyến cuối:** Xe buýt buổi tối trở nên ít hơn nhiều sau 10 giờ tối. Chuyến xe buýt cuối cùng đến Amalfi thường khởi hành vào khoảng 10:30 tối, và chuyến xe buýt cuối đến Sorrento khởi hành vào khoảng 11 giờ tối. Luôn kiểm tra thời gian chính xác tại lễ tân hoặc xem thời gian biểu SITA được đặt tại trạm. Cố gắng bắt chuyến xe gần cuối nếu bạn đi vào ban đêm để không bỏ lỡ chuyến cuối cùng và bị mắc kẹt.",
+        "**Chuyến cuối:** Xe buýt buổi tối trở nên ít hơn nhiều sau 10 giờ tối. Chuyến xe buýt cuối cùng đến Amalfi thường khởi hành vào khoảng 10:30 tối, và chuyến xe buýt cuối đến Sorrento khởi hành vào khoảng 11 giờ tối. Luôn kiểm tra thời gian chính xác tại lễ tân hoặc xem thời gian biểu SITA được đăng tại trạm. Cố gắng bắt chuyến xe gần cuối nếu bạn đi vào ban đêm để không bỏ lỡ chuyến cuối cùng và bị mắc kẹt.",
         "**Lịch trình mùa đông (tháng 11-3):** Xe buýt chạy ít hơn vào mùa đông, khoảng cứ 40-60 phút một chuyến, và các chuyến xe cuối khởi hành sớm hơn. Một số xe buýt buổi tối có thể hoàn toàn không chạy vào Chủ nhật hoặc ngày lễ. Luôn kiểm tra lịch trình mùa đông trước khi đi."
       ],
       "images": [
         {
-          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
-          "alt": "Bảng thời gian biểu SITA được đăng tại trạm xe buýt",
-          "caption": "Thời gian biểu SITA được đăng tại trạm. Luôn kiểm tra thời gian mới nhất vì chúng thay đổi theo mùa."
+          "src": "https://www.thetrainline.com/cms/media/1452/italy-atrani-amalfi-coast.jpg?mode=crop&width=860&height=574&quality=70",
+          "alt": "Cảnh bờ biển Positano với các tòa nhà nằm rải rác xuống sườn đồi",
+          "caption": "Tuyến đường đẹp từ Positano kết nối với các điểm đến trên khắp Bờ biển Amalfi"
         }
       ]
     },
@@ -77,17 +73,18 @@
       "id": "bus-basics",
       "title": "Vé: mua ở đâu và cách xác thực",
       "body": [
+        "Bạn có thể mua vé xe buýt SITA tại bất kỳ quầy báo hoặc cửa hàng thuốc lá (tabacchi) nào. Khi lên xe buýt, xuất trình vé của bạn cho tài xế, người sẽ đóng dấu hoặc xé một phần để cho biết nó đã được sử dụng. Hãy nhớ rằng vé xe buýt phải được xác thực trước khi sử dụng, vì vậy hãy đảm bảo có vé sẵn sàng khi lên xe.",
         "Mua vé xe buýt SITA tại tabacchi (cửa hàng thuốc lá) nằm bên cạnh Bar Internazionale, hoặc bên trong quán bar. Vé được bán theo chuyến đơn hoặc thẻ ngày. Đừng cố gắng lên xe buýt mà không có vé bạn đã mua trước—bạn không thể mua vé từ tài xế. Tabacchi thường mở cửa lúc 7 giờ sáng và đóng cửa lúc 8 giờ tối.",
         "**Giá vé (2026):** Một chuyến đơn từ Positano đến Amalfi có giá €2,50. Positano đến Sorrento có giá €2,50. Positano đến Salerno (qua Amalfi) có giá €4,00. Thẻ Costiera 24 giờ có giá €8,00 và cho phép bạn đi xe buýt không giới hạn giữa Sorrento và Salerno. Thẻ ngày là mua tốt nếu bạn dự định đi hơn ba chuyến trong một ngày.",
-        "**Xác thực:** Xuất trình vé của bạn cho tài xế khi lên xe buýt. Tài xế sẽ đóng dấu ngày giờ. Trên xe buýt mới hơn, bạn có thể quét vé của mình tại máy ngay bên trong cửa. Giữ vé đã đóng dấu của bạn trong suốt hành trình—thanh tra thường xuyên lên xe buýt và kiểm tra vé. Nếu bạn không có vé đã đóng dấu, bạn sẽ nhận phạt ngay lập tức mà đắt hơn nhiều so với vé.",
+        "**Xác thực:** Xuất trình vé của bạn cho tài xế khi lên xe buýt. Tài xế sẽ đóng dấu hoặc xé một phần để đánh dấu là đã sử dụng. Trên xe buýt mới hơn, bạn cũng có thể quét vé của mình tại máy ngay bên trong cửa. Giữ vé đã xác thực của bạn trong suốt hành trình—thanh tra thường xuyên lên xe buýt và kiểm tra vé. Nếu bạn không có vé đã xác thực, bạn sẽ nhận phạt ngay lập tức mà đắt hơn nhiều so với vé.",
         "**Mua trước:** Nếu bạn bắt chuyến xe buýt đầu tiên vào buổi sáng (trước 7:30 sáng), hãy mua vé vào tối hôm trước vì tabacchi có thể chưa mở cửa. Đến quầy lễ tân nhà trọ nếu bạn cần trả phòng sớm. Quán bar cũng bán vé và mở cửa sớm hơn tabacchi, thường là trước 6:30 sáng.",
         "Để biết thêm chi tiết về vé, thẻ và giá SITA, xem %LINK:sitaTickets|hướng dẫn vé xe buýt SITA% hoàn chỉnh của chúng tôi."
       ],
       "images": [
         {
           "src": "/img/tabacchi.webp",
-          "alt": "Máy xác thực vé SITA trên xe buýt",
-          "caption": "Xác thực vé của bạn khi lên xe hoặc xuất trình cho tài xế. Luôn giữ vé đã đóng dấu trong suốt chuyến đi."
+          "alt": "Cửa hàng Tabacchi tại trạm xe buýt Chiesa Nuova ở Positano",
+          "caption": "Mua vé SITA tại tabacchi bên cạnh Bar Internazionale"
         }
       ]
     },
@@ -102,9 +99,9 @@
       ],
       "images": [
         {
-          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Hàng đợi hành khách tại trạm Chiesa Nuova vào mùa hè",
-          "caption": "Hàng đợi mùa hè có thể dài. Đến sớm 10-15 phút để đảm bảo vị trí của bạn."
+          "src": "https://themillennialrunaway.com/wp-content/uploads/2023/10/IMG_3655-scaled.jpg",
+          "alt": "Hành khách đang đợi tại trạm xe buýt SITA ở Positano",
+          "caption": "Đến sớm trong mùa hè để đảm bảo vị trí của bạn trong hàng"
         }
       ]
     },
@@ -121,8 +118,8 @@
       "images": [
         {
           "src": "/img/directions/ferry-dock-promenade-to-mulini.jpg",
-          "alt": "Bản đồ kết nối từ Positano đến các điểm đến chính",
-          "caption": "Từ Chiesa Nuova bạn có thể đến Sorrento, Amalfi, Salerno, Naples và sân bay."
+          "alt": "Lối đi dạo ven biển Positano với khu vực bến phà",
+          "caption": "Bến phà cung cấp một phương án thay thế cho xe buýt cho các kết nối ven biển"
         }
       ]
     },
@@ -137,33 +134,22 @@
       ],
       "images": [
         {
-          "src": "/img/directions/positano-capri-ferry-img02.jpg",
-          "alt": "Bến phà Positano nhìn từ bãi biển",
-          "caption": "Phương án thay thế: đi xuống bến phà để đi du lịch bằng đường thủy thay vì xe buýt."
+          "src": "https://forum.amalfi.com/uploads/default/original/1X/da74ebd4925614aa758c601b44557129bf6b5405.jpeg",
+          "alt": "Phà tại bến phà bãi biển Positano với hành khách",
+          "caption": "Phà cung cấp một phương án thay thế đẹp cho xe buýt trong mùa tháng 4-10"
         }
       ]
     },
     {
       "id": "safety-timing",
-      "title": "An toàn và thời gian: khi nào nên đi và cách giữ an toàn",
+      "title": "Mẹo an toàn và thời gian tối ưu",
       "body": [
-        "Chuyến đi bộ từ Hostel Brikette đến trạm Chiesa Nuova an toàn vào mọi thời điểm trong ngày và đêm. Viale Pasitea có vỉa hè rộng và đèn đường hoạt động suốt đêm. Giao thông ô tô có thể đông đúc trong ngày, nhưng vỉa hè được tách biệt rõ ràng khỏi đường bằng lan can. Luôn ở trên vỉa hè và nhường đường lịch sự cho xe đến tại vạch sang đường—tài xế thường dừng lại nếu họ thấy rõ bạn đang đợi.",
-        "Nếu bạn bắt xe buýt buổi sáng (trước 8 giờ sáng), hãy lên kế hoạch rời nhà trọ ít nhất 20 phút trước giờ xe buýt dự kiến. Điều này cho bạn 5 phút để đi bộ, 10 phút để xếp hàng và mua vé (nếu bạn chưa làm), và khoảng dự phòng cho những trường hợp không lường trước. Vào mùa hè, hãy đến sớm hơn nữa - 30 phút trước giờ xe buýt - vì hàng đợi có thể dài và những chuyến xe đầu tiên thường đầy hành khách đi đến các chuyến phà hoặc tàu sớm.",
-        "Nếu bạn đi du lịch vào buổi tối hoặc ban đêm (sau 9 giờ tối), hãy kiểm tra thời gian chính xác của các chuyến xe buýt cuối cùng tại quầy lễ tân nhà trọ trước khi đi. Các chuyến xe buýt cuối có thể khởi hành sớm hơn bạn mong đợi, đặc biệt là vào mùa đông hoặc Chủ nhật. Nếu bạn ở lại Amalfi hoặc Sorrento lâu hơn chuyến xe buýt cuối về, bạn sẽ phải gọi taxi (€80-150 tùy thuộc vào điểm đến) hoặc ở lại qua đêm và quay lại vào sáng hôm sau. Luôn hướng đến chuyến xe gần cuối về nhà nếu bạn không chắc chắn.",
-        "Trong trời mưa hoặc thời tiết ẩm ướt, vỉa hè có thể trở nên trơn, đặc biệt là gần Bar Internazionale nơi tấm đá có thể nhẵn. Đi giày có độ bám tốt và đi cẩn thận trên các đoạn dốc. Nếu bạn mang hành lý nặng khi trời mưa, hãy xem xét sử dụng %LINK:porterServices|dịch vụ khuân vác% hoặc đặt taxi tại quầy lễ tán—nó đắt hơn nhưng an toàn hơn là trượt với ba lô lớn trên đá ướt."
+        "**Đi bộ vào ban đêm:** Vỉa hè từ nhà trọ đến trạm xe buýt được chiếu sáng tốt và an toàn mọi lúc. Đèn đường chiếu sáng toàn bộ tuyến đường, và khu vực có giao thông đi bộ thường xuyên ngay cả vào đêm muộn. Tuy nhiên, hãy chú ý đến bước chân của bạn—vỉa hè hẹp lại ở một vài điểm nơi gặp xe máy đỗ hoặc ghế ngồi quán cà phê ngoài trời. Nếu bạn bắt xe buýt muộn, dành thêm vài phút để di chuyển cẩn thận trong tầm nhìn giảm.",
+        "**Thời gian cao điểm cần tránh:** Nếu bạn có tính linh hoạt trong lịch trình của mình, hãy tránh bắt xe buýt trong các thời điểm bận rộn nhất: 9:00-11:00 (khách du lịch một ngày đến), 4:00-6:00 chiều (khách du lịch một ngày đi). Xe buýt trong các khung giờ này thường lấp đầy hoàn toàn tại các trạm trước đó, khiến hành khách bị kẹt lại tại Chiesa Nuova. Thay vào đó, hãy nhắm đến các chuyến khởi hành sáng sớm (7:00-8:30) hoặc giữa buổi chiều (1:00-3:00 chiều) khi bạn có nhiều khả năng có được ghế ngồi hơn.",
+        "**Cân nhắc thời tiết:** Chuyến đi bộ bị phơi nhiễm với các yếu tố—không có phần được che giữa nhà trọ và chỗ trú ẩn xe buýt. Trong mưa lớn, bạn sẽ bị ướt trong chuyến đi bộ 2 phút. Mang theo ô hoặc áo mưa nếu dự báo có vẻ không chắc chắn. Trong nóng mùa hè, vỉa hè không có bóng râm; sử dụng kem chống nắng và mang nước nếu bạn đến trạm sớm để xếp hàng. Mùa đông có thể mang đến gió mạnh dọc phần lộ thiên này của Viale Pasitea—buộc chặt các vật dụng lỏng lẻo trong túi của bạn.",
+        "**Để hành lý tại quầy lễ tân:** Nếu bạn đang trả phòng nhưng cần khám phá Positano trong vài giờ trước chuyến xe buýt của bạn, hãy hỏi tại quầy lễ tân về việc để lại hành lý của bạn. Điều này cho phép bạn đi bộ đến trạm sau này mà không có hành lý và chỉ cần lấy chúng trên đường đi bắt xe buýt. Điều này đặc biệt hữu ích nếu bạn muốn đến bãi biển hoặc ăn trưa trong thị trấn trước khi khởi hành."
       ],
-      "images": [
-        {
-          "src": "/img/directions/hostel-brikette-entrance-steps.png",
-          "alt": "Viale Pasitea vào ban đêm với đèn đường",
-          "caption": "Đường được chiếu sáng tốt vào ban đêm. Đi bộ an toàn vào mọi lúc."
-        },
-        {
-          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
-          "alt": "Hành khách chờ tại trạm xe buýt trong mưa",
-          "caption": "Trong mưa, đi giày có độ bám. Bề mặt đá có thể trơn."
-        }
-      ]
+      "images": []
     }
   ],
   "beforeList": [
@@ -212,6 +198,14 @@
     {
       "q": "Tôi có cần đặt xe buýt trước không?",
       "a": "Không, xe buýt SITA không thể đặt trước. Nó là theo nguyên tắc đến trước, được phục vụ trước dựa trên vị trí xếp hàng. Chỉ cần mua vé của bạn và tham gia hàng tại trạm. Vào mùa hè cao điểm, xe buýt có thể đầy và đi qua mà không dừng—đến sớm để tránh điều này."
+    },
+    {
+      "q": "Làm thế nào để đọc thời gian biểu xe buýt SITA?",
+      "a": [
+        "**Đọc các hàng:** Các hàng trong cột đầu tiên đại diện cho các trạm xe buýt khác nhau dọc tuyến đường.",
+        "**Đọc các cột:** Thời gian biểu gán một chữ cái theo thứ tự bảng chữ cái cho mỗi chuyến đi đã lên lịch, được liệt kê dưới dạng tiêu đề trong mỗi cột. Nếu bạn đi du lịch từ thứ Hai đến thứ Bảy, tìm các cột 'F' và 'G'. Nếu bạn đi du lịch vào Chủ nhật hoặc ngày lễ, tìm các cột 'G' và 'H'.",
+        "**Kết hợp các hàng và cột:** Chọn các trạm khởi hành và đến của bạn, sau đó kiểm tra các cột để xem khi nào xe buýt có sẵn và thời gian chúng sẽ đến điểm đến của bạn. Ví dụ, để xem thời gian khởi hành từ Sorrento, hãy xem hàng Sorrento. Để xem thời gian đến Positano (Chiesa Nuova / Bar Internazionale), hãy xem hàng Positano (Chiesa Nuova)."
+      ]
     }
   ],
   "howtoSteps": [

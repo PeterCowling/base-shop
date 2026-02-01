@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Aeroporto de Nápoles para Positano de Autocarro | Hostel Brikette",
     "description": "Do Aeroporto de Nápoles para Positano via Curreri até Sorrento e depois autocarro SITA. Bilhetes, paragens, dicas para ler os horários da SITA e direções a pé até ao Hostel Brikette."
@@ -8,7 +9,8 @@
     "body": "Este guia passo a passo leva-o do Aeroporto de Nápoles até Positano usando o autocarro Curreri para Sorrento e, em seguida, o autocarro SITA até Positano. Inclui bilhetes, onde fazer a troca, como ler o horário da SITA e como chegar ao Hostel Brikette a partir da paragem mais próxima."
   },
   "callouts": {
-    "aside": "Precisa de todas as opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para ferries, táxis e rotas alternativas."
+    "aside": "Precisa de todas as opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para ferries, táxis e rotas alternativas.",
+    "tip": "Need other routes? Explore the full %HOWTO:how-to-get-here|How to Get Here overview% for %LINK:arrivingByFerry|ferry arrival%, %LINK:porterServices|porter services%, and %LINK:travelHelp|private transfers%."
   },
   "sections": [
     {
@@ -55,6 +57,56 @@
       "list": [
         "Caminhe pouco mais de 100 metros ao longo da Via G. Marconi.",
         "Vire à direita e suba as escadas até à porta principal do hostel."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quanto custa ir do Aeroporto de Nápoles para Positano de autocarro?",
+      "a": "O custo total é aproximadamente €12.60: €10 para o autocarro Curreri do Aeroporto de Nápoles para Sorrento, mais €2.60 para o autocarro SITA de Sorrento para Positano (preços de 2026). Esta é a opção de transporte público mais barata."
+    },
+    {
+      "q": "Quanto tempo demora a viagem total?",
+      "a": "Planeie 2.5-3.5 horas no total: 75 minutos no autocarro Curreri até Sorrento, 15-30 minutos de tempo de transferência em Sorrento, depois 50 minutos no autocarro SITA até Positano. Os tempos de espera variam conforme o horário que apanhar."
+    },
+    {
+      "q": "Preciso de reservar os autocarros com antecedência?",
+      "a": "Para o Curreri (aeroporto-Sorrento): reserve online 1-2 dias antes em julho-agosto. Noutras épocas, comprar na bilheteira normalmente funciona. Para o SITA (Sorrento-Positano): não precisa de reserva, mas chegue 10-15 minutos mais cedo pois os autocarros enchem."
+    },
+    {
+      "q": "Onde apanho o autocarro Curreri no Aeroporto de Nápoles?",
+      "a": "Terminal 1, nível das chegadas. Saia do hall de chegadas e vire à direita. A paragem do autocarro Curreri fica a cerca de 50 metros da saída principal. Procure a sinalização azul e branca da Curreri e um pequeno balcão de bilhetes."
+    },
+    {
+      "q": "Como sei quando transferir em Sorrento?",
+      "a": "O autocarro Curreri termina na estação de comboios Circumvesuviana de Sorrento. A paragem de autocarro SITA para Positano fica do outro lado da rua (Via degli Aranci). Atravesse a rua e procure placas 'SITA' e 'Positano'. Verifique os horários da SITA antes para saber quanto tempo tem para esperar."
+    },
+    {
+      "q": "Posso levar bagagem grande nestes autocarros?",
+      "a": "Sim. O autocarro Curreri tem compartimento de bagagem (sem custo extra). O autocarro SITA tem prateleiras acima dos assentos e algum espaço no chão - funciona para mochilas/malas médias. Se tiver algo enorme (prancha de surf, bicicleta), considere uma transferência privada."
+    },
+    {
+      "q": "E se o meu voo chegar tarde ou perder a ligação em Sorrento?",
+      "a": "Os autocarros Curreri param cerca das 19:30-20:00. Se chegar mais tarde, apanhe um táxi do aeroporto para Sorrento (€90-120) depois autocarro SITA, ou táxi direto para Positano (€120-150). Os últimos autocarros SITA saem de Sorrento cerca das 22:00 no verão, 20:00 no inverno."
+    },
+    {
+      "q": "Esta rota funciona durante todo o ano?",
+      "a": "Sim. O autocarro Curreri opera durante todo o ano com serviço reduzido no inverno. O autocarro SITA também funciona durante todo o ano mas com menos frequência novembro-março. Verifique sempre os horários atuais em sitasudtrasporti.it antes da viagem."
+    },
+    {
+      "q": "Como chego do autocarro SITA ao Hostel Brikette?",
+      "a": "Desça na paragem Chiesa Nuova (peça ao motorista 'Chiesa Nuova per favore'). Do outro lado da rua do tabacchi, vire à direita para a estrada principal, depois à esquerda pela Via G. Marconi. Caminhe 100m, o hostel fica à direita. Vire à direita e suba as escadas."
+    },
+    {
+      "q": "Há alternativas se os autocarros estiverem cheios?",
+      "a": "Sim: (1) Transferência privada porta-a-porta €120-150, (2) Táxi partilhado €30-40/pessoa em grupos, (3) Autocarro Curreri para Sorrento depois ferry para Positano (apenas abril-outubro), (4) Comboio de Nápoles centro para Sorrento depois autocarro SITA (se estiver no centro da cidade)."
+    },
+    {
+      "q": "Como leio o horário do ônibus SITA?",
+      "a": [
+        "**Leitura das linhas:** As linhas na primeira coluna representam diferentes pontos de ônibus ao longo da rota.",
+        "**Leitura das colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você está viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você está viajando no domingo ou em um feriado, procure as colunas 'G' e 'H'.",
+        "**Combinação de linhas e colunas:** Escolha seus pontos de partida e chegada, depois verifique as colunas para ver quando os ônibus estão disponíveis e a que horas chegarão ao seu destino. Por exemplo, para ver o horário de partida de Sorrento, veja a linha Sorrento. Para ver o horário de chegada em Positano (Chiesa Nuova / Bar Internazionale), veja a linha Positano (Chiesa Nuova)."
       ]
     }
   ]

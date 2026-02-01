@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Repo / Agents
-Last-reviewed: 2026-01-27
+Last-reviewed: 2026-02-01
 ---
 
 # Feature Workflow Guide (All Agents)
@@ -47,7 +47,7 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 ## Quality Gates (Non-negotiable)
 
 - Targeted tests only; never run unfiltered `pnpm test` (see `docs/testing-policy.md`).
-- `pnpm typecheck && pnpm lint` is the baseline validation gate before commits.
+- Checkpoint commits rely on `pre-commit` (staged lint + affected typecheck). Before pushing, `pre-push` enforces `pnpm typecheck && pnpm lint`.
 - Avoid destructive git commands; follow `AGENTS.md` and `docs/git-safety.md`.
 
 ## Outputs by Phase

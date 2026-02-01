@@ -52,7 +52,7 @@ export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
  * of a guide still need attention before promotion. Items intentionally stay generic so
  * we can derive them from content analysis in a follow-up iteration.
  */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "media", "seoAudit"] as const;
+export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "seoAudit"] as const;
 export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
 
 export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
@@ -694,7 +694,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "complete" },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -775,7 +774,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo schema mirrors localized steps." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery assets for all locales." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -808,7 +806,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Review Article metadata for regional schema requirements." },
       { id: "faqs", status: "inProgress", note: "Ensure FAQ entries mirror updated tasting notes." },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery photography rights." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -832,7 +829,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Validate HowTo payload for totalTime extras." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "inProgress", note: "Confirm gallery imagery licensing." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -865,7 +861,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm HowTo schema reflects bus timings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -898,7 +893,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Ensure HowTo steps include ferry legs." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for ferry terminals." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -920,7 +914,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm FAQ fallback mirrors guidesFallback strings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add imagery for SIM shops/ATMs." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -956,7 +949,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data for budget experiences." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs match localized content." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Source imagery for featured free experiences." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -994,27 +986,27 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data when ready." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs align with localized content." },
       { id: "content", status: "inProgress", note: "Verify couple-friendly sections render as expected." },
-      { id: "media", status: "missing", note: "Add imagery showcasing private hostel spaces for couples." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
-    key: "stayingFitAmalfi",
-    slug: "staying-fit-while-traveling-amalfi-coast",
-    contentKey: "stayingFitAmalfi",
+    key: "stayingFitPositano",
+    slug: "stay-fit-positano",
+    contentKey: "stayingFitPositano",
     status: "draft",
-    draftPathSegment: "guides/staying-fit-while-traveling-amalfi-coast",
+    draftPathSegment: "guides/stay-fit-positano",
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "stay fit Positano",
     relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "positanoTravelGuide"],
     blocks: [
       {
         type: "genericContent",
-        options: { contentKey: "stayingFitAmalfi" },
+        options: { contentKey: "stayingFitPositano" },
       },
       {
         type: "faq",
-        options: { fallbackKey: "stayingFitAmalfi", alwaysProvideFallback: true },
+        options: { fallbackKey: "stayingFitPositano", alwaysProvideFallback: true },
       },
     ],
     options: {
@@ -1026,7 +1018,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data when finalized." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs capture wellness tips." },
       { id: "content", status: "inProgress", note: "Verify workout sections render correctly." },
-      { id: "media", status: "missing", note: "Add imagery for fitness routes if available." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1066,7 +1057,6 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "missing", note: "Add Article structured data for transport advice." },
       { id: "faqs", status: "inProgress", note: "Ensure fallback FAQs cover route options." },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add gallery imagery for transit routes." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1165,7 +1155,6 @@ const manifestSeed: GuideManifestEntry[] = [
       suppressUnlocalizedFallback: true,
     },
     checklist: [
-      { id: "media", status: "inProgress", note: "Curate Capri gallery coverage before launch." },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -1301,7 +1290,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
-    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"],
+    relatedGuides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -1313,7 +1302,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitAmalfi"] },
+        options: { guides: ["pathOfTheGods", "sunsetViewpoints", "stayingFitPositano"] },
       },
     ],
     options: {
@@ -1363,6 +1352,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "history of Positano",
     relatedGuides: ["positanoTravelGuide", "instagramSpots", "scenicWalksPositano"],
     blocks: [
       {
@@ -1687,6 +1677,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "avoidCrowdsPositano",
     slug: "avoid-crowds-off-the-beaten-path-positano",
     contentKey: "avoidCrowdsPositano",
+    focusKeyword: "avoid crowds Positano",
     status: "draft",
     draftPathSegment: "guides/avoid-crowds-off-the-beaten-path-positano",
     areas: ["experience"],
@@ -1815,6 +1806,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Ferragosto Positano",
     relatedGuides: ["bestTimeToVisit", "sunsetViewpoints", "positanoBeaches"],
     blocks: [
       {
@@ -1993,7 +1985,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["help"],
     primaryArea: "help",
     structuredData: ["Article", "FAQPage"],
-    relatedGuides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"],
+    relatedGuides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"],
     blocks: [
       {
         type: "genericContent",
@@ -2005,7 +1997,7 @@ const manifestSeed: GuideManifestEntry[] = [
       },
       {
         type: "relatedGuides",
-        options: { guides: ["stayingFitAmalfi", "safetyAmalfi", "workAndTravelPositano"] },
+        options: { guides: ["stayingFitPositano", "safetyAmalfi", "workAndTravelPositano"] },
       },
     ],
     options: {
@@ -2733,6 +2725,7 @@ const manifestSeed: GuideManifestEntry[] = [
     areas: ["experience"],
     primaryArea: "experience",
     structuredData: ["Article"],
+    focusKeyword: "Amalfi Coast folklore",
     relatedGuides: ["luminariaPraiano", "ravelloFestival", "ferragostoPositano"],
     blocks: [
       {
@@ -3066,6 +3059,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "etiquetteItalyAmalfi",
     slug: "italy-travel-etiquette-amalfi-examples",
     contentKey: "etiquetteItalyAmalfi",
+    focusKeyword: "Italy travel etiquette",
     status: "draft",
     draftPathSegment: "guides/italy-travel-etiquette-amalfi-examples",
     areas: ["experience"],
@@ -4449,12 +4443,13 @@ export function listGuideManifestEntries(): GuideManifestEntry[] {
  */
 export function mergeManifestOverride(
   entry: GuideManifestEntry,
-  override: { areas?: GuideArea[]; primaryArea?: GuideArea } | undefined,
+  override: { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] } | undefined,
 ): GuideManifestEntry {
   if (!override) return entry;
 
   const areas = override.areas ?? entry.areas;
   const primaryArea = override.primaryArea ?? entry.primaryArea;
+  const status = override.status ?? entry.status;
 
   // Ensure primaryArea is valid for the areas
   const validPrimary = areas.includes(primaryArea) ? primaryArea : areas[0];
@@ -4463,6 +4458,7 @@ export function mergeManifestOverride(
     ...entry,
     areas,
     primaryArea: validPrimary,
+    status,
   };
 }
 
@@ -4472,7 +4468,7 @@ export function mergeManifestOverride(
  */
 export function getGuideManifestEntryWithOverrides(
   key: GuideKey,
-  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea }>>,
+  overrides?: Partial<Record<GuideKey, { areas?: GuideArea[]; primaryArea?: GuideArea; status?: GuideManifestEntry["status"] }>>,
 ): GuideManifestEntry | undefined {
   const entry = guideManifest[key];
   if (!entry) return undefined;
@@ -4506,7 +4502,6 @@ export const CHECKLIST_LABELS: Record<ChecklistItemId, string> = {
   jsonLd: "Structured data",
   faqs: "FAQs",
   content: "Content sections",
-  media: "Media & galleries (optional)",
   seoAudit: "SEO Audit",
 };
 
@@ -4650,9 +4645,29 @@ export function buildGuideChecklist(
   };
 }
 
-export function resolveDraftPathSegment(entry: GuideManifestEntry): string {
+/**
+ * Resolves the draft path segment for a guide entry.
+ * Priority order:
+ * 1. Override draftPathSegment (from JSON overrides file)
+ * 2. Entry draftPathSegment (from TypeScript manifest)
+ * 3. Computed from slug or key
+ *
+ * @param entry - The guide manifest entry
+ * @param overridePath - Optional override from the JSON overrides file
+ */
+export function resolveDraftPathSegment(
+  entry: GuideManifestEntry,
+  overridePath?: string | undefined,
+): string {
+  // Check override first
+  const override = overridePath?.trim();
+  if (override) return override;
+
+  // Then check explicit entry value
   const explicit = entry.draftPathSegment?.trim();
   if (explicit) return explicit;
+
+  // Fall back to computed value from slug
   const slug = entry.slug.trim();
   if (!slug) return `guides/${entry.key}`;
   return slug.includes("/") ? slug : `guides/${slug}`;

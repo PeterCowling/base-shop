@@ -75,3 +75,6 @@ export {
   listAuditEntriesByActor,
   listRecentAuditEntries,
 } from "./businessOsAudit.server";
+
+// ID allocation (counters)
+export { allocateNextCardId, allocateNextIdeaId } from "./businessOsIds.server";

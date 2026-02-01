@@ -145,6 +145,14 @@
       "a": [
         "Controlla l'orario pubblicato alla fermata. Se il prossimo autobus è a più di un'ora di distanza, puoi percorrere la strada asfaltata fino a Positano in circa 45-60 minuti."
       ]
+    },
+    {
+      "q": "Come si legge l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano diverse fermate dell'autobus lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascun viaggio programmato, che sono elencate come intestazioni in ogni colonna. Se viaggi dal lunedì al sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, cerca le colonne 'G' e 'H'.",
+        "**Combinazione di righe e colonne:** Scegli le tue fermate di partenza e arrivo, quindi controlla le colonne per vedere quando sono disponibili gli autobus e a che ora arriveranno a destinazione. Ad esempio, per vedere l'orario di partenza da Sorrento, guarda la riga Sorrento. Per vedere l'orario di arrivo a Positano (Chiesa Nuova / Bar Internazionale), guarda la riga Positano (Chiesa Nuova)."
+      ]
     }
   ],
   "toc": {

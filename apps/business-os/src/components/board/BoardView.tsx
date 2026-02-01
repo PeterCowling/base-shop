@@ -29,6 +29,7 @@ import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } fr
 import { FilterChips, type FilterType } from "./FilterChips";
 import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
+import { useBoardAutoRefresh } from "./useBoardAutoRefresh";
 
 interface BoardViewProps {
   businessCode: string;
@@ -114,6 +115,13 @@ export function BoardView({
 
   // Set up keyboard event listeners (BOS-P2-05)
   useKeyboardNavigation({ handleArrowKey, isFocusMode, exitFocusMode });
+
+  // Auto-refresh board when cards/ideas change (BOS-D1-07)
+  useBoardAutoRefresh({
+    businessCode,
+    enabled: true,
+    pollingInterval: 30000, // 30 seconds
+  });
 
   // Scroll to top when mobile lane changes (BOS-P2-03 Phase 4)
   useEffect(() => {

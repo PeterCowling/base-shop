@@ -289,25 +289,6 @@ function DiagnosticDetails({
     );
   }
 
-  if (itemId === "media" && manifest) {
-    const hasHeroBlock = manifest.blocks.some((b) => b.type === "hero");
-
-    return (
-      <div className={clsx(DETAIL_CONTAINER_CLASSES)}>
-        <p className="text-[10px] font-semibold uppercase text-brand-text/60">Media blocks</p>
-        <Stack className="mt-2 gap-1">
-          <Inline className="gap-2">
-            <span className="min-w-16 text-[11px] font-medium text-brand-text">Hero</span>
-            {renderFieldStatus(hasHeroBlock)}
-          </Inline>
-        </Stack>
-        <p className="mt-2 text-[10px] text-brand-text/50">
-          Media blocks are declared in guide-manifest.ts
-        </p>
-      </div>
-    );
-  }
-
   if (itemId === "seoAudit") {
     const auditResults = diagnostics?.seoAudit;
 

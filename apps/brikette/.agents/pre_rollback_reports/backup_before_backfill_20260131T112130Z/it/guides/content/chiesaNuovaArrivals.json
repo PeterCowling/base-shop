@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Arrivi a Chiesa Nuova/Bar Internazionale: percorso per Hostel Brikette",
+    "description": "Istruzioni dettagliate dalla fermata Chiesa Nuova all'ostello con rampe, ascensori e soste consigliate."
+  },
+  "linkLabel": "Arrivi a Chiesa Nuova/Bar Internazionale: percorso per Hostel Brikette",
+  "intro": "Arrivi in autobus? “Chiesa Nuova” o “Bar Internazionale” è la fermata più vicina all'ostello. Questo micropercorso riduce al minimo le scale per ginocchia e bagagli.",
+  "image": {
+    "alt": "Fermata SITA Chiesa Nuova di Positano fuori dal Bar Internazionale",
+    "caption": "Positano (Chiesa Nuova) — attendi fuori dal Bar Internazionale; in estate arriva un po' in anticipo perché gli autobus si riempiono rapidamente."
+  },
+  "toc": {
+    "onThisPage": "In questa pagina",
+    "before": "Prima di uscire",
+    "steps": "Passo dopo passo",
+    "knees": "Gambe e bagagli",
+    "faqs": "Domande frequenti"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "Perché questo stop funziona",
+      "body": [
+        "La fermata dell'autobus davanti al bar/caffetteria chiamato Bar Internazionale è a circa 140 metri (490 piedi) dall'Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Orari e biglietti dell'autobus",
+      "body": [
+        "Acquista i biglietti SITA presso il tabacchi vicino alla fermata oppure convalida all'imbarco i biglietti già comprati; tienine uno di riserva per i rientri a tarda notte.",
+        "Gli autobus serali si diradano dopo le 22:00: controlla gli orari in anticipo e punta al penultimo servizio per evitare le tariffe dei taxi."
+      ]
+    }
+  ],
+  "beforeList": [
+    "Controlla in anticipo gli orari SITA in modo da non dover aspettare l'ultimo servizio sul ciglio della strada.",
+    "Convalida il tuo biglietto non appena sali a bordo: gli ispettori multano i biglietti non convalidati anche per corse brevi.",
+    "Se arrivi dopo mezzanotte, invia un messaggio all'ostello in modo che il personale notturno possa tenere a portata di mano il codice della porta."
+  ],
+  "stepsList": [
+    "Dalla fermata fuori dal Bar Internazionale, cammina per poco più di 100 metri (330 piedi) in salita lungo Viale Pasitea: segui il percorso a piedi nella mappa qui sotto per indicazioni passo passo.",
+    "Alla curva, prosegui oltre il cartello Hostel Brikette a livello della terrazza, quindi prendi le scale che salgono sul lato destro della strada fino alla porta principale."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "L'intero percorso è pavimentato con una sola breve scalinata all'ingresso.",
+    "Se le pendenze ti danno fastidio alle ginocchia, fai brevi pause: il traffico rallenta naturalmente in curva."
+  ],
+  "kneesDockPrefix": "Arrivando prima con il traghetto?",
+  "kneesDockLinkLabel": "Dock → Percorso bagagli dell'ostello",
+  "kneesPorterPrefix": "Hai bisogno di una mano con le borse pesanti?",
+  "kneesPorterLinkLabel": "Guida al servizio di facchinaggio",
+  "faqs": [
+    {
+      "q": "C'è un marciapiede per tutto il percorso?",
+      "a": "Sì, il percorso utilizza il marciapiede della strada principale, evitando lunghe scalinate."
+    },
+    {
+      "q": "Di notte è illuminato?",
+      "a": "E' presente l'illuminazione stradale; usa la torcia del telefono per una maggiore visibilità sui vicoli."
+    }
+  ],
+  "howtoSteps": [
+    "Dalla fermata \"Chiesa Nuova\", cammina per 2-5 minuti fino all'ostello",
+    "Usa i vicoli con il minor numero di scale; evita le scalinate lunghe",
+    "Se trasporti bagagli pesanti, valuta il ritiro del facchino alla fermata"
+  ]
+}

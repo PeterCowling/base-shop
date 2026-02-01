@@ -1,0 +1,173 @@
+{
+  "seo": {
+    "title": "Path of the Gods via ferry para Amalfi",
+    "description": "Navegue de Positano para Amalfi, apanhe o autocarro até Bomerano e caminhe o Sentiero degli Dei de volta a Nocelle, com dicas de bilhetes e horários."
+  },
+  "linkLabel": "Path of the Gods via Amalfi (ferry + caminhada)",
+  "intro": [
+    "Este itinerário combina uma viagem de ferry panorâmica até Amalfi com a travessia clássica Bomerano → Nocelle do Path of the Gods. É a experiência mais completa a partir do Hostel Brikette, permitindo admirar as falésias ao nível do mar antes de caminhar ao longo delas.",
+    "Reserve uma manhã inteira ou início de tarde. Os ferries esgotam na alta temporada, por isso compre os bilhetes assim que chegar ao porto e mantenha um horário de autocarros como plano B caso o mar fique agitado."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Antes de sair do hostel",
+      "body": [
+        "Leve água, snacks, protetor solar e agasalhos. Não existem serviços entre Bomerano e Nocelle depois de abandonar as aldeias.",
+        "Consulte o horário mais recente dos ferries (Travelmar ou Lucibello) e dos autocarros SITA. Procure partir de manhã para evitar o calor do meio-dia na crista exposta.",
+        "Traga três bilhetes SITA por pessoa: Amalfi → Bomerano, Nocelle → Positano e um extra para imprevistos."
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Desça ao porto de Positano e compre bilhetes",
+      "body": [
+        "Saia do hostel, vire à esquerda e caminhe cerca de 100 metros até ao Bar Internazionale. Compre os bilhetes SITA no balcão do tabacchi antes de continuar a descer.",
+        "Siga as escadas de atalho em direção à Spiaggia Grande. A caminhada demora cerca de 20–30 minutos; conte com mais tempo em dias movimentados.",
+        "Na praia, vire à direita para chegar ao pequeno porto onde os operadores de ferry têm bilheteiras lado a lado."
+      ]
+    },
+    {
+      "id": "buy-ferry-ticket",
+      "title": "Garanta o ferry para Amalfi",
+      "body": [
+        "Verifique os painéis em frente à Lucibello e à Travelmar para saber a próxima partida. De manhã, os barcos costumam sair a cada 30–60 minutos na época alta.",
+        "Compre um bilhete só de ida para Amalfi e mantenha-o à mão para o embarque; cada operador chama os passageiros poucos minutos antes da partida.",
+        "As filas crescem rapidamente, por isso chegue pelo menos 15 minutos antes do ferry escolhido para garantir lugar no convés."
+      ]
+    },
+    {
+      "id": "sail-to-amalfi",
+      "title": "Viaje de ferry e aproveite Amalfi",
+      "body": [
+        "A travessia dura cerca de 25 minutos. Fique a estibordo para ver Positano e Praiano ao longe.",
+        "Ao atracar, desembarque de imediato e siga em frente até ao terminal de autocarros situado à esquerda da praça do porto.",
+        "Se ainda tiver tempo antes do autocarro, dê uma volta pela praça da catedral de Amalfi ou tome um expresso — apenas vigie a baía dos autocarros para a partida de Agerola."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Apanhe o autocarro para Bomerano",
+      "body": [
+        "Procure o autocarro SITA com indicação “Agerola/Bomerano”. Valide o bilhete ao entrar e sente-se mais à frente para evitar tantas curvas.",
+        "Após cerca de 45 minutos, desça na paragem de Bomerano ao lado do Ristorante Jerla. Atravesse a estrada e siga a rua lateral a descer até à praça.",
+        "Continue à esquerda pela praça e siga as placas “Sentiero degli Dei” até ao painel do início da trilha."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Caminhe de Bomerano até Nocelle",
+      "body": [
+        "O trilho sobe e desce ao longo de cerca de 6 quilómetros. Espere degraus de pedra, passagens estreitas e miradouros espetaculares sobre a costa.",
+        "Faça pausas nos miradouros sinalizados e leve de volta todo o lixo. Respeite os agricultores locais e mantenha-se no percurso marcado.",
+        "Quando o caminho de terra encontra a passagem de cimento que entra em Nocelle, chegou ao final."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Atravessar Nocelle",
+      "body": [
+        "Siga o caminho pavimentado para a aldeia, mantendo-se à direita na primeira bifurcação para evitar os 1.700 degraus até Positano.",
+        "Ande cerca de 175 metros até à paragem de autocarro junto ao pequeno parque de estacionamento. O quiosque ao lado da igreja vende bebidas frescas na época.",
+        "Chegue com pelo menos 10 minutos de antecedência; quando o parque está cheio, os autocarros às vezes param antes do abrigo."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Regresse a Positano",
+      "body": [
+        "Entre no autocarro Montepertuso/Nocelle de regresso a Positano e desça no Bar Internazionale ou Chiesa Nuova para a caminhada mais curta até ao hostel.",
+        "Se preferir descer a pé pela estrada, conte com 45–60 minutos e mantenha-se atento ao trânsito nas curvas.",
+        "Quando regressar à cidade, celebre com uma granita ou um almoço tardio — o mais difícil do dia já passou."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Exemplos de horários",
+      "body": [
+        "06h30 sair do hostel → 07h10 ferry → 08h40 chegada a Bomerano → caminhada de 3 horas → 12h30 autocarro de regresso → 13h00 chegada a Positano.",
+        "Partir às 08h00 ainda cabe antes do almoço: 08h00 saída do hostel, 08h40 ferry, 10h15 início do trilho, 14h30 de volta à vila.",
+        "Partidas mais tardias funcionam na meia-estação, mas confirme sempre o último autocarro de Nocelle antes de optar por começar à tarde."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essenciais",
+  "essentials": [
+    "Bilhete de ferry Positano ⇄ Amalfi e três bilhetes SITA por pessoa (Amalfi → Bomerano, Nocelle → Positano e um extra).",
+    "1,5–2 litros de água, snacks ou um panino preparado, protetor solar e chapéu.",
+    "Calçado confortável com boa aderência para degraus irregulares e saliências rochosas."
+  ],
+  "typicalCostsTitle": "Custos médios",
+  "typicalCosts": [
+    "Ferry Positano → Amalfi: 12–16 € por trajeto, conforme o operador e a época.",
+    "Autocarro SITA Amalfi → Bomerano e Nocelle → Positano: 2–4 € por percurso se comprado com antecedência.",
+    "Snacks ou panini no mini-mercado pelo caminho: 4–8 €."
+  ],
+  "tipsTitle": "Dicas de percurso",
+  "tips": [
+    "Comece cedo para fugir ao calor e garantir lugar no ferry — as primeiras saídas são as mais tranquilas.",
+    "Compre um panino para levar no segundo mini-mercado da Via Pasitea para um almoço em conta no trilho.",
+    "Guarde os bilhetes de ferry e autocarro juntos numa bolsa impermeável para os mostrar rapidamente ao embarcar."
+  ],
+  "warningsTitle": "Atenções",
+  "warnings": [
+    "Não siga as escadas sinalizadas de Nocelle para Positano, a menos que queira mesmo descer 1.700 degraus e terminar longe do hostel.",
+    "Mar agitado pode cancelar ferries sem aviso — confirme as condições no porto e, se necessário, use a rota totalmente de autocarro.",
+    "As tardes de verão são expostas e quentes; se perder o ferry da manhã, espere pelo final do dia em vez de caminhar sob o sol forte."
+  ],
+  "steps": [
+    {
+      "name": "Desça até ao porto",
+      "text": "Saia do Hostel Brikette, compre bilhetes no Bar Internazionale e siga até à Spiaggia Grande."
+    },
+    {
+      "name": "Compre os bilhetes de ferry",
+      "text": "Escolha a próxima partida Travelmar ou Lucibello para Amalfi e entre na fila 15 minutos antes."
+    },
+    {
+      "name": "Navegue até Amalfi",
+      "text": "Aproveite a travessia de 25 minutos e siga diretamente para as paragens de autocarro junto ao porto."
+    },
+    {
+      "name": "Autocarro para Bomerano",
+      "text": "Viaje no SITA com indicação Agerola/Bomerano e siga a rua lateral até ao início do trilho."
+    },
+    {
+      "name": "Caminhe até Nocelle",
+      "text": "Siga as marcações do Sentiero degli Dei pela crista até começar o passadiço de cimento."
+    },
+    {
+      "name": "Volte para Positano",
+      "text": "Apanhe o autocarro de Nocelle para o Bar Internazionale ou desça pela estrada se os autocarros estiverem cheios."
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Onde devo comprar os bilhetes de transporte?",
+      "a": [
+        "Compre os bilhetes SITA no Bar Internazionale antes de descer, e adquira o bilhete do ferry diretamente nas bilheteiras da Lucibello ou Travelmar no porto."
+      ]
+    },
+    {
+      "q": "Quanto tempo devo reservar em Amalfi?",
+      "a": [
+        "Reserve uma margem de 20–30 minutos para trocar do ferry para o autocarro de Agerola. Use o tempo para um café rápido, mas mantenha-se à vista das baias de autocarro para não perder o embarque."
+      ]
+    },
+    {
+      "q": "E se o ferry for cancelado?",
+      "a": [
+        "Verifique as condições no porto. Se os barcos deixarem de operar, mude para o itinerário de autocarro via Amalfi — a caminhada é a mesma a partir de Bomerano."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Nesta página",
+    "essentials": "Essenciais",
+    "costs": "Custos médios",
+    "tips": "Dicas de percurso",
+    "warnings": "Atenções",
+    "faqs": "Perguntas frequentes"
+  }
+}

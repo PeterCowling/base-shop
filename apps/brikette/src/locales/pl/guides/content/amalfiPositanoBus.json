@@ -197,6 +197,14 @@
     {
       "question": "Czy przejazd autobusem jest malowniczy?",
       "answer": "Bardzo. Droga przylega do dramatycznych klifów Wybrzeża Amalfitańskiego z oszałamiającymi widokami na morze. Usiądź po prawej stronie podczas podróży z Amalfi do Positano dla najlepszych widoków na wybrzeże."
+    },
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje literę alfabetyczną do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy są dostępne autobusy i o której godzinie dotrą do celu. Na przykład, aby zobaczyć godzinę odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć godzinę przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
+      ]
     }
   ]
 }

@@ -98,8 +98,8 @@ Users are seeing raw i18n keys rendered on the brikette website instead of trans
 ### Tests & Quality Gates
 
 - Existing tests:
-  - [english-fallback.test.ts](apps/brikette/src/locales/__tests__/english-fallback.test.ts) - Checks guides for untranslated English content (40+ char strings)
-  - [placeholder-detection.test.ts](apps/brikette/src/test/routes/guides/__tests__/placeholder-detection.test.ts) - Tests `isPlaceholderString()` logic
+  - [guide-english-fallbacks.test.ts](apps/brikette/src/test/content-readiness/i18n/guide-english-fallbacks.test.ts) - Checks guides for untranslated English content (40+ char strings)
+  - [placeholder-detection.test.ts](apps/brikette/src/test/content-readiness/guides/placeholder-detection.test.ts) - Tests `isPlaceholderString()` logic
   - [check-i18n-coverage.ts](apps/brikette/scripts/check-i18n-coverage.ts) - Reports missing files/keys (does not fail CI by default)
   - Component tests mock translations, bypassing real translation resolution
 
@@ -193,7 +193,7 @@ None - sufficient information gathered to proceed with planning.
 
 3. **Add namespace completeness tests**
    - Test that validates all keys in `en/` exist in other locales
-   - Uses existing filesystem-based approach from `english-fallback.test.ts`
+   - Uses existing filesystem-based approach from `guide-english-fallbacks.test.ts`
    - Reports missing keys without hard-failing
 
 4. **Create sample component test demonstrating pattern**

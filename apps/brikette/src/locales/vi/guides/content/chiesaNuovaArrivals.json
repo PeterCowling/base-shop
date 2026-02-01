@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "Đến Chiesa Nuova/Bar Internazionale: đường tới Hostel Brikette",
-    "description": "Bản dịch đang được chuẩn bị."
+    "title": "Chiesa Nuova/Bar Internazionale đến Hostel Brikette",
+    "description": "Tuyến đường ngắn từ trạm Chiesa Nuova đến hostel với ít bậc thang nhất; mẹo về hành lý và các phương án thay thế."
   },
-  "linkLabel": "Đến Chiesa Nuova/Bar Internazionale: đường tới Hostel Brikette",
-  "intro": "Đến bằng xe buýt? “Chiesa Nuova” hoặc “Bar Internazionale” là điểm dừng gần nhất với hostel. Lộ trình ngắn này giảm tối đa số bậc thang cho đầu gối và hành lý của bạn.",
+  "linkLabel": "Chiesa Nuova/Bar Internazionale đến Hostel Brikette",
+  "intro": "Đến bằng xe buýt? \"Chiesa Nuova\" hoặc \"Bar Internazionale\" là trạm gần hostel nhất. Tuyến đường ngắn này giảm thiểu bậc thang cho đầu gối và hành lý của bạn.",
   "image": {
-    "alt": "Điểm dừng SITA Chiesa Nuova ở Positano phía trước Bar Internazionale",
-    "caption": "Điểm dừng Positano (Chiesa Nuova) — hãy đợi bên ngoài Bar Internazionale; vào mùa hè nên đến sớm một chút vì xe buýt nhanh chóng đầy chỗ."
+    "alt": "Trạm SITA Chiesa Nuova của Positano bên ngoài Bar Internazionale",
+    "caption": "Trạm Positano (Chiesa Nuova) — chờ bên ngoài Bar Internazionale; đến sớm một chút vào mùa hè vì xe buýt có thể nhanh chóng đầy chỗ."
   },
   "toc": {
-    "onThisPage": "Nội dung trang",
+    "onThisPage": "Nội dung trang này",
     "before": "Trước khi lên đường",
     "steps": "Từng bước",
     "knees": "Đầu gối & hành lý",
@@ -19,51 +19,71 @@
   "sections": [
     {
       "id": "why-stop",
-      "title": "Vì sao nên xuống ở đây",
+      "title": "Tại sao trạm này phù hợp",
       "body": [
-        "Điểm dừng xe buýt trước quán cà phê/quán bar Bar Internazionale cách Hostel Brikette khoảng 140 mét."
+        "Trạm xe buýt bên ngoài quán cà phê/bar có tên Bar Internazionale cách Hostel Brikette khoảng 120 mét (400 feet) — khoảng 3 phút đi bộ.",
+        "Đây là trạm xe buýt SITA gần hostel nhất, với ít bậc thang (chỉ có cầu thang lối vào)."
+      ]
+    },
+    {
+      "id": "detailed-route",
+      "title": "Hướng dẫn đi bộ từ Bar Internazionale đến hostel",
+      "body": [
+        "Xuống xe buýt tại trạm Bar Internazionale trên Viale Pasitea (còn gọi là trạm Chiesa Nuova).",
+        "Đi bộ dọc theo Viale Pasitea theo hướng Montepertuso/Chiesa Nuova khoảng 120 mét (400 feet). Bạn sẽ đi trên vỉa hè được lát bên phải đường.",
+        "Sau khoảng 3 phút, tìm lối vào Hostel Brikette bên phải — bạn sẽ thấy một cầu thang ngắn dẫn lên lễ tân. Có bảng hiệu ở tầng sân thượng trước cầu thang lối vào.",
+        "Leo cầu thang để đến cửa chính và lễ tân."
       ]
     },
     {
       "id": "bus-basics",
-      "title": "Giờ xe buýt và vé",
+      "title": "Thời gian xe buýt & vé",
       "body": [
-        "Mua vé SITA tại cửa hàng tabacchi sát điểm dừng hoặc đóng dấu vé đã mua trước ngay khi lên xe; giữ thêm một vé dự phòng cho chuyến về muộn.",
-        "Sau 22:00 các chuyến xe buýt thưa dần — hãy kiểm tra lịch trình trước và cố gắng bắt chuyến áp chót để tránh phải đi taxi."
+        "Mua vé SITA tại cửa hàng thuốc lá (tabacchi) gần trạm hoặc xác thực vé đã mua trước khi lên xe; giữ một vé dự phòng cho chuyến về đêm muộn.",
+        "Xe buýt tối chạy thưa sau 22:00—kiểm tra lịch trình trước và nhắm đến chuyến áp chót để tránh giá taxi."
       ]
     }
   ],
   "beforeList": [
-    "Xem trước lịch chạy của SITA để không phải đứng bên đường chờ chuyến cuối cùng.",
-    "Đóng dấu vé ngay khi bước lên xe — thanh tra có thể phạt vé chưa xác thực dù chỉ đi quãng ngắn.",
-    "Nếu bạn đến sau nửa đêm, hãy nhắn cho hostel để nhân viên trực đêm chuẩn bị sẵn mã cửa."
+    "Kiểm tra lịch trình SITA trước để bạn không phải đợi ở lề đường cho chuyến cuối cùng.",
+    "Xác thực vé ngay khi lên xe—thanh tra phạt vé chưa xác thực ngay cả cho chuyến đi ngắn.",
+    "Nhắn tin cho hostel nếu bạn đến sau nửa đêm để nhân viên trực đêm có thể chuẩn bị sẵn mã cửa."
   ],
   "stepsList": [
-    "Từ điểm dừng trước Bar Internazionale, đi bộ lên dốc hơn 100 mét (330 feet) dọc theo Viale Pasitea — làm theo lộ trình trên bản đồ bên dưới để được hướng dẫn từng bước.",
-    "Đến khúc cua, đi qua biển hiệu Hostel Brikette ở tầng sân thượng rồi rẽ lên cầu thang bên phải con đường tới cửa chính."
+    "Xuống xe buýt tại trạm Bar Internazionale và đi bộ dọc Viale Pasitea về phía Montepertuso/Chiesa Nuova.",
+    "Tiếp tục trên vỉa hè được lát 120 mét (400 feet, khoảng 3 phút) – làm theo tuyến đường đi bộ trên bản đồ bên dưới.",
+    "Tìm lối vào Hostel Brikette bên phải với bảng hiệu ở tầng sân thượng, sau đó leo cầu thang lên lễ tân."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Toàn bộ đường đi đã được lát, chỉ có một đoạn cầu thang ngắn ở lối vào.",
-    "Nếu đoạn dốc khiến đầu gối mỏi, hãy nghỉ ngắn — xe cộ cũng tự động giảm tốc ở khúc cua."
+    "Toàn bộ đoạn đi bộ được lát với chỉ một cầu thang ngắn ở lối vào.",
+    "Nếu đoạn dốc làm phiền đầu gối của bạn, hãy nghỉ ngắn—xe cộ tự nhiên chậm lại ở khúc cua."
   ],
-  "kneesDockPrefix": "Bạn đến bằng phà trước?",
-  "kneesDockLinkLabel": "Bến tàu → đường mang hành lý lên hostel",
-  "kneesPorterPrefix": "Cần hỗ trợ với hành lý nặng?",
+  "kneesDockPrefix": "Đến bằng phà trước?",
+  "kneesDockLinkLabel": "Tuyến đường có hành lý từ Cầu tàu → Hostel",
+  "kneesPorterPrefix": "Cần trợ giúp với hành lý nặng?",
   "kneesPorterLinkLabel": "Hướng dẫn dịch vụ khuân vác",
   "faqs": [
     {
-      "q": "Có vỉa hè suốt quãng đường không?",
-      "a": "Có — tuyến đường đi trên vỉa hè của trục đường chính nên tránh được các cầu thang dài."
+      "q": "Có vỉa hè suốt đoạn đường không?",
+      "a": "Có — tuyến đường sử dụng vỉa hè đường chính, tránh các cầu thang dài."
     },
     {
-      "q": "Ban đêm có đủ sáng không?",
-      "a": "Có đèn đường; bạn nên bật đèn pin điện thoại khi đi trong hẻm để nhìn rõ hơn."
+      "q": "Có đèn chiếu sáng vào ban đêm không?",
+      "a": "Có đèn đường; sử dụng đèn pin điện thoại để tăng tầm nhìn ở các con hẻm."
+    },
+    {
+      "q": "Đi bộ mất bao lâu?",
+      "a": "Khoảng 3 phút từ Bar Internazionale đến lối vào hostel (120 mét/400 feet)."
+    },
+    {
+      "q": "Tôi có thể tìm thấy lối vào dễ dàng không?",
+      "a": "Có – tìm bảng hiệu Hostel Brikette ở tầng sân thượng bên phải khi bạn đi dọc Viale Pasitea. Cầu thang lối vào được đánh dấu rõ ràng và dẫn lên lễ tân."
     }
   ],
   "howtoSteps": [
-    "Từ điểm dừng “Chiesa Nuova”, đi bộ 2–5 phút là tới hostel",
-    "Chọn các hẻm có ít bậc thang nhất; tránh những cầu thang dài",
-    "Mang nhiều hành lý? Hãy cân nhắc đặt dịch vụ khuân vác đón tại điểm dừng"
+    "Từ trạm 'Chiesa Nuova', đi bộ 2–5 phút đến hostel",
+    "Sử dụng các con hẻm có ít bậc thang nhất; tránh cầu thang dài",
+    "Nếu mang hành lý nặng, cân nhắc dịch vụ khuân vác đón tại trạm"
   ]
 }

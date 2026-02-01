@@ -77,20 +77,34 @@
   ],
   "images": {
     "whyGo": {
-      "alt": "Laurito Beach öble a partvonalat szegélyező strandklubokkal",
-      "caption": "Laurito sziklafalakkal övezett öble nyugodtabb és csendesebb, mint a főstrand."
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
     },
     "layout": {
-      "alt": "Strandteraszok és partvonal elrendezése Lauritónál",
-      "caption": "Három zóna osztja meg az öblöt: nyilvános sáv, Villa Tre Ville teraszok és Da Adolfo terasz."
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "Beach decks and shoreline layout at Laurito",
+      "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
     },
     "treVille": {
-      "alt": "Villa Tre Ville strandklub napágyak és tengeri kilátás",
-      "caption": "A Villa Tre Ville prémium napágyakra és concierge-stílusú szolgáltatásra fókuszál."
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
     },
     "daAdolfo": {
-      "alt": "Da Adolfo strandklub móló és ülőrész",
-      "caption": "A Da Adolfo transzferhajója az éttermi terasznál teszi partra a vendégeket."
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Da Adolfo beach club dock and seating area",
+      "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
   },
   "essentialsTitle": "Mire számíts",
@@ -137,5 +151,6 @@
         "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

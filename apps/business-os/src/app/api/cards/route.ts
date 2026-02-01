@@ -1,21 +1,19 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import {
+  allocateNextCardId,
+  appendAuditEntry,
+  type Card,
+  upsertCard,
+} from "@acme/platform-core/repositories/businessOs.server";
 
-import { getSession, getSessionUser } from "@/lib/auth";
-import { userToCommitIdentity } from "@/lib/commit-identity";
-import { getCurrentUserServer } from "@/lib/current-user";
-import { getRepoRoot } from "@/lib/get-repo-root";
-import { allocateCardId } from "@/lib/id-allocator-instance";
-import { validateBusinessId } from "@/lib/id-generator";
-import { canCreateCard } from "@/lib/permissions";
-import { queueTranslation } from "@/lib/repo/translation-queue";
-import { createRepoWriter } from "@/lib/repo-writer";
-import type { Lane, Priority } from "@/lib/types";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
+import { computeEntitySha } from "@/lib/entity-sha";
 
-// Phase 0: Node runtime required for git/filesystem operations
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const CreateCardSchema = z.object({
   business: z.string().min(1),
@@ -49,164 +47,97 @@ const CreateCardSchema = z.object({
 
 /**
  * POST /api/cards
- * Create a new card
- *
- * MVP-B2: Requires authentication
+ * Create a new card (D1-hosted path)
  */
 export async function POST(request: Request) {
-  const t = await getServerTranslations("en");
-
-  // MVP-B2: Check authentication (if auth is enabled)
-  const response = NextResponse.next();
-  const session = await getSession(request, response);
-  const user = getSessionUser(session);
-
-  // Only enforce auth if BUSINESS_OS_AUTH_ENABLED is true
-  const authEnabled = process.env.BUSINESS_OS_AUTH_ENABLED === "true";
-  if (authEnabled && !user) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "Authentication required" },
-      { status: 401 }
-    );
-  }
-
-  // Check permissions (any authenticated user can create cards)
-  if (authEnabled && user && !canCreateCard(user)) {
-    return NextResponse.json(
-      // i18n-exempt -- BOS-04 Phase 0 API error message [ttl=2026-03-31]
-      { error: "You do not have permission to create cards" },
-      { status: 403 }
-    );
-  }
-
   try {
     const body = await request.json();
 
-    // Validate input
     const parsed = CreateCardSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: t("businessOs.api.common.validationFailed"), details: parsed.error.errors },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: "Invalid request", details: parsed.error.errors },
         { status: 400 }
       );
     }
 
-    const {
-      business,
-      title,
-      description,
-      lane,
-      priority,
-      owner,
-      proposedLane,
-      tags,
-      dueDate,
-    } = parsed.data;
+    const { business, title, description, lane, priority, owner, proposedLane, tags, dueDate } =
+      parsed.data;
 
-    // Get repo root (remove /apps/business-os from cwd)
-    const repoRoot = getRepoRoot();
-
-    // Validate business ID
-    const isValidBusiness = await validateBusinessId(business, repoRoot);
-    if (!isValidBusiness) {
+    if (!BUSINESSES.some((b) => b.id === business)) {
       return NextResponse.json(
-        { error: t("businessOs.api.cards.errors.invalidBusiness", { business }) },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: `Invalid business: ${business}` },
         { status: 400 }
       );
     }
 
-    // Generate ID (MVP-C2: atomic counter-based allocation)
-    const cardId = await allocateCardId(business);
-
-    // Create writer
-    const writer = createRepoWriter(repoRoot);
-
-    // Check if worktree is ready
-    const isReady = await writer.isWorktreeReady();
-    if (!isReady) {
-      return NextResponse.json(
-        {
-          error: t("businessOs.api.common.worktreeNotInitialized"),
-          hint: t("businessOs.api.common.worktreeSetupHint"),
-        },
-        { status: 500 }
-      );
-    }
-
-    // Prepare card content
-    const content = `# ${title}\n\n${description}`;
-
-    // Write card (MVP-B3: Audit attribution)
-    // Get authenticated user for git author and audit trail
+    const db = getDb();
     const currentUser = await getCurrentUserServer();
-    const gitAuthor = userToCommitIdentity(currentUser);
-    const actorId = currentUser.id;
+    const cardId = await allocateNextCardId(db, business);
 
-    const result = await writer.writeCard(
-      {
-        ID: cardId,
-        Lane: lane as Lane,
-        Priority: priority as Priority,
-        Owner: owner,
-        Business: business,
-        Title: title,
-        "Proposed-Lane": proposedLane as Lane | undefined,
-        Tags: tags,
-        "Due-Date": dueDate,
-        Created: new Date().toISOString().split("T")[0],
-        content,
-      },
-      gitAuthor,
-      actorId,
-      actorId // initiator same as actor in Phase 0 (user acting for themselves)
-    );
+    const content = `# ${title}\n\n${description}`;
+    const created = new Date().toISOString().split("T")[0];
 
+    const cardBase: Card = {
+      Type: "Card",
+      ID: cardId,
+      Lane: lane,
+      Priority: priority,
+      Owner: owner,
+      Business: business,
+      Title: title,
+      "Proposed-Lane": proposedLane,
+      Tags: tags,
+      "Due-Date": dueDate,
+      Created: created,
+      content,
+      filePath: `docs/business-os/cards/${cardId}.user.md`,
+    };
+
+    const card: Card = {
+      ...cardBase,
+      fileSha: await computeEntitySha(cardBase),
+    };
+
+    const result = await upsertCard(db, card, null);
     if (!result.success) {
-      const errorMessage = result.errorKey
-        ? t(result.errorKey)
-        : t("businessOs.api.cards.errors.createFailed");
-
-      if (result.needsManualResolution) {
-        return NextResponse.json(
-          {
-            error: errorMessage,
-            needsManualResolution: true,
-            hint: t("businessOs.api.common.resolveConflictsHint"),
-          },
-          { status: 409 }
-        );
-      }
-
       return NextResponse.json(
-        { error: errorMessage },
+        // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+        { error: result.error || "Failed to create card" },
         { status: 500 }
       );
     }
 
-    // MVP-G1: Queue translation for new card
-    await queueTranslation({
-      targetId: cardId,
-      targetType: "card",
-      initiator: currentUser.name,
-      identity: gitAuthor,
-      actor: actorId,
+    await appendAuditEntry(db, {
+      entity_type: "card",
+      entity_id: cardId,
+      action: "create",
+      actor: currentUser.id,
+      changes_json: JSON.stringify({
+        business,
+        lane,
+        priority,
+        owner,
+      }),
     });
 
     return NextResponse.json(
       {
         success: true,
         cardId,
-        filePath: result.filePath,
-        commitHash: result.commitHash,
-        message: t("businessOs.api.cards.success.created"),
+        // i18n-exempt -- BOS-D1 Phase 0 API success message [ttl=2026-03-31]
+        message: "Card created",
       },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: t("api.common.internalServerError"), details: String(error) },
+      // i18n-exempt -- BOS-D1 Phase 0 API error message [ttl=2026-03-31]
+      { error: "Internal server error", details: String(error) },
       { status: 500 }
     );
   }
 }
+

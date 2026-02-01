@@ -21,7 +21,8 @@
     "validate-manifest": "pnpm exec tsx ./scripts/validate-guide-manifest.ts",
     "report-coverage": "pnpm exec tsx ./scripts/report-guide-coverage.ts",
     "check-i18n-coverage": "pnpm exec tsx ./scripts/check-i18n-coverage.ts",
-    "test:content-readiness": "pnpm exec jest --testPathPattern '(test/i18n/|routes/guides/__tests__|data/assistanceGuideKeys)' --maxWorkers=2"
+    "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
+    "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",
@@ -30,6 +31,7 @@
     "@acme/platform-core": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",
+    "@anthropic-ai/sdk": "^0.32.1",
     "@headlessui/react": "^2.2.3",
     "@tiptap/core": "^2.24.1",
     "@tiptap/extension-placeholder": "^2.27.2",

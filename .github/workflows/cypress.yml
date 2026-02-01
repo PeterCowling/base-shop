@@ -1,6 +1,13 @@
 name: CMS E2E & Component Tests
 
 on:
+  workflow_dispatch:
+    inputs:
+      run_e2e:
+        description: "Run E2E jobs on manual dispatch (default: false)"
+        required: false
+        type: boolean
+        default: false
   push:
     branches: [ main ]
     paths:
@@ -86,6 +93,7 @@ jobs:
     name: E2E smoke (${{ matrix.browser }} — ${{ matrix.viewport }})
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_e2e }}
     strategy:
       fail-fast: false
       matrix:
@@ -127,6 +135,7 @@ jobs:
     name: E2E dashboard a11y (Chrome)
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_e2e }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo

@@ -1,55 +1,157 @@
 {
   "seo": {
-    "title": "Hogyan kerüld el a tömeget Positanóban",
-    "description": "Időzítés, csendes útvonalak, alternatív falvak és okos fotóhelyek, hogy sorban állás nélkül élvezd a várost."
+    "title": "Tömegek elkerülése Positanóban: Időzítés, útvonalak és rejtett helyek útmutató",
+    "description": "Kerülje el a tömeget Positanóban okos időzítéssel, csendes útvonalakkal és rejtett helyekkel. A legjobb strandidőpontok, alternatív városok és hostel beavatott tippek.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Hogyan kerüld el a tömeget Positanóban (a mellékutakon)",
+  "linkLabel": "Tömegek elkerülése Positanóban: Időzítés, útvonalak és rejtett helyek útmutató",
   "intro": [
-    "A tömegek elkerüléséhez Positanóban fontos a jó időzítés, az eldugott sikátorok ismerete és az, hogy tudd, mikor érdemes csendesebb településre ugrani."
+    "El akarja kerülni a tömegeket, amelyeket Positano dob Önre a csúcsszezonban? Ez az útmutató megmutatja, hogyan. A nyári csúcsidőszakban (július-augusztus) Positano naponta több ezer napi látogatót fogad - tengerjáró utasokat, turisztikai buszokat Nápolyból és Sorrentóból, komphajókon érkezőket Capriról és Amalfiról. A főutcák már délelőtt tele vannak. A strandok 10:00-ra megtelnek. A népszerű fotóhelyeknél sorban kell állni. A tömegek elkerülése Positanóban stratégiát igényel, de kifizetődik hiteles élményekkel. Ez az útmutató gyakorlati taktikákat ad a Brikette hostel vendégeinek, hogy a legjobban élvezzék a várost, miközben elkerülik a legrosszabb turistatömegeket.",
+    "A Chiesa Nuova-i Hostel Briketteben való tartózkodás már előnyt jelent - Ön a fő turisztikai zóna felett van. A legtöbb napi látogató soha nem merészkedik túl a Spiaggia Grande-n és a Via dei Mulini-n. A hostelből csendesebb utcákat, kevésbé lefotózott kilátópontokat és autentikus negyedeket fedezhet fel, amelyeket a szervezett turisták kihagynak. Ezek a stratégiák segítenek maximalizálni ezt az előnyt."
   ],
   "sections": [
     {
-      "id": "timing",
-      "title": "Időzítés, ami működik",
+      "id": "understanding-crowd-patterns",
+      "title": "A tömeges minták megértése Positanóban",
       "body": [
-        "Érkezz a Spiaggia Grande-ra vagy a fő kilátókra napkeltekor vagy aranyórában; a 14:30 utáni ebédek szintén elkerülik a csúcsidőt.",
-        "Délben tarts szünetet árnyékban vagy sziesztával – a legtöbb egynapos látogató 10:00 és 16:00 között tölti meg az utcákat."
+        "%IMAGE:positano-crowded-beach.jpg|Zsúfolt Spiaggia Grande a nyári csúcsszezon délutánján%",
+        "Positano tömegei előre jelezhető mintákat követnek. Annak tudása, hogy mikor és hol csúcsosodik ki a tömeg, segít megtervezni, hogyan kerülje el őket. A legforgalmasabb idő a délelőtt közepe és a késő délután (10:00-17:00), különösen július és augusztus között. A napi látogatók kompon érkeznek (09:00-11:00) és SITA busszal (09:30-12:00). Ők koncentrálódnak a Spiaggia Grande, a Via dei Mulini (fő gyalogos bevásárlóutca) és a Chiesa di Santa Maria Assunta (a templom az ikonikus zöld kupolával) körül. A legtöbben 17:00-18:00-kor távoznak, hogy elérjék a visszautazást.",
+        "%IMAGE:tour-bus-positano.jpg|Turistabuszok lerakják a tömegeket Positanóban a tengerjáró hajó napján%",
+        "A tengerjáró hajók napjai drámaian felerősítik a tömeget. Amikor tengerjáró hajók kikötnek Nápolyban vagy Salernóban, utasok százai árasztják el az Amalfi partot turistabuszokkal. Positano 3-4 turistabuszt is láthat egyszerre érkezni, 150+ embert kirakva a szűk utcákra. Ezek a csoportok általában 2-3 órát maradnak (elég hosszú az ebédhez és fotókhoz), majd távoznak. Ellenőrizze online a tengerjáró hajók menetrendjét, ha el akarja kerülni a legrosszabb napokat - olyan oldalak, mint a CruiseMapper, megmutatják a nápolyi és salernói érkezéseket.",
+        "A hétvégék egész évben forgalmasabbak, mint a hétköznapok. Olasz családok Nápolyból és Rómából autóznak le hétvégi strandkirándulásra. A péntek délutánok és a szombatok a legrosszabbak. A vasárnapok valamivel jobbak, mivel a családok délre kezdenek hazaindulni. A hétköznapok (kedd-csütörtök) a legkevésbé forgalmasak, különösen július-augusztuson kívül.",
+        "Az átmeneti szezon (május, június eleje, szeptember, október) kínálja a legjobb egyensúlyt - kellemes időjárás, nyitva tartó üzletek, kezelhető tömegek. Novembertől áprilisig a legcsendesebb, de sok étterem és bolt zárva tart, a komphajó szolgáltatás korlátozott, és az időjárás kiszámíthatatlan. A hostel vendégei számára, akik hitelességet keresnek káosz nélkül, május vége vagy szeptember az ideális."
       ]
     },
     {
-      "id": "routes",
-      "title": "Útvonalak és csendesebb pontok",
+      "id": "timing-strategies",
+      "title": "Időzítési stratégiák a tömegek legyőzésére",
       "body": [
-        "Használd a felső sétányt Chiesa Nuova és Sponda között, így erkélyes kilátást kapsz a Via dei Mulini szűkülete helyett.",
-        "Menj át a Fornillo strandra vagy a Via Positanesi d’America kilátóhoz, ha nyugodtabb fürdésre és fotókra vágysz."
+        "%IMAGE:positano-sunrise-beach.jpg|Üres Spiaggia Grande napkeltekor, mielőtt a tömegek megérkeznek%",
+        "**A kora reggel (07:00-09:00) az Ön titkos fegyvere.** Positano lassan ébred. A legtöbb turista későn kel, vagy nyugodt szállodai reggelit fogyaszt. Ha 07:30-08:00-kor eléri a Spiaggia Grande-t, szinte egyedül lesz a strandon. A fény lágy és aranyos - tökéletes fotókhoz idegenek nélkül a képen. Az úszók nyugodt vizet élveznek, mielőtt a délutáni szél felkap. A strandklubok 08:30-09:00 körül nyitnak; lefoglalhat egy helyet a roham előtt. A kora reggel működik a fő kilátópontokhoz is - a Via Cristoforo Colombo teraszán és a Chiesa di Santa Maria Assunta közelében lévő kilátóponton 09:00 előtt üresek.",
+        "**A késő délután és este (18:00-naplemente) visszahódítja Positanót.** A napi látogatók távoznak, hogy elérjék a buszokat és kompokat. 18:30-ra a főutcák észrevehetően kiürülnek. Az éttermek vacsoraszervizre készülnek. A város a turistalátványosságból helyi életté változik. Ez a legjobb idő a Via dei Mulini bolyongására anélkül, hogy bevásárló csoportok lökdösnének. A napnyugta kilátás a Fornillo strandon vagy a Chiesa Nuova közelében lévő felső teraszokról lenyűgöző és nem zsúfolt. A vacsorafoglalás 20:00-21:00-kor (standard olasz vacsoraidő) lehetővé teszi, hogy élvezze az ételeket sietős asztalfordulás nélkül.",
+        "%IMAGE:hostel-terrace-siesta.jpg|Csendes hostel terasz a déli visszavonulás alatt a tömegektől%",
+        "**Déli visszavonulási stratégia.** 11:00-15:00 között a tömegek csúcsosodnak. Ahelyett, hogy küzdene a strandon lévő helyért vagy a zsúfolt utcákon navigálna, vonuljon vissza. Térjen vissza a hostelbe egy sziesztára, olvasson a teraszon, főzzön ebédet a közös konyhában, vagy túrázzon kevésbé zsúfolt ösvényeken (a %LINK:pathOfTheGods|Path of the Gods% Nocelle-ből délben csendesebb, mint a strandok). Sok hostel vendég alkalmaz mediterrán ritmust - kora reggeli tevékenység, déli pihenés, késő délutáni/esti felfedezés. Ez elkerüli a legrosszabb tömegeket és illeszkedik a helyi tempóhoz.",
+        "**Szezonon kívüli időzítés (május, szeptember, október).** Ha rugalmas az ütemezése, a Positanóba való látogatás az átmeneti szezonban teljesen megváltoztatja az élményt. Május meleg időjárást kínál (20-25°C), virágzó virágokat, nyitott üzleteket és fele annyi tömeget, mint júliusban. Szeptember nyugodtabb tengereket, elnyúló nyári meleget és vakáció utáni nyugalmat hoz. Október több esőt kockáztat, de lenyűgöző fényt és majdnem üres strandokat kínál. A hostel egész évben nyitva tart; élvezheti Positanót a leghitelesebb formájában a nyári csúcson kívül."
       ]
     },
     {
-      "id": "alternatives",
-      "title": "Alternatív bázisok",
+      "id": "quiet-routes-positano",
+      "title": "Csendes útvonalak és rejtett helyek Positanóban",
       "body": [
-        "Praiano és Cetara lassabb estéket, könnyű naplementés spotokat és olcsóbb vacsorát kínál, miközben megmarad a tengerparti panoráma.",
-        "Ravello kertjei vagy Agerola hegyi falvai jó egynapos menedéket jelentenek, ha Positano telítettnek érződik."
+        "%IMAGE:positano-upper-path.jpg|Csendes sétaút Chiesa Nuovában a turisztikai területek felett%",
+        "Positano vertikális elrendezése természetes tömegválasztókat hoz létre. A legtöbb turista a tengerszinti területekhez ragaszkodik - Spiaggia Grande, Via dei Mulini, a komphajó dokk. A lépcsők mászása kiszűri a véletlenszerű látogatókat. Minél magasabbra megy, annál csendesebb lesz. A Hostel Brikette Chiesa Nuovában, a felső városban található, ahol a lakóélet nagyrészt zavartalan a turizmus által. Chiesa Nuova utcáinak, kis templomaink és helyi élelmiszerboltjainak felfedezése autentikus Positanót ad, amelyet a szervezett turisták soha nem látnak.",
+        "**Felső sétányok Chiesa Nuova és Sponda között.** Ahelyett, hogy közvetlenül leereszkedne a Via dei Mulini-ra (a zsúfolt főutca), válassza a felső ösvényeket, amelyek párhuzamosan futnak. A Via Pasiteának vannak szakaszai lenyűgöző kilátással, de sokkal kevesebb gyalogossal. A Chiesa Nuovát Spondával (a keleti lakónegyed) összekötő ösvény erkély-szerű kilátást kínál a part felett a Via dei Mulini szűk kereszteződése nélkül. Ezek az útvonalak kevésbé közvetlen, de exponenciálisan békésebbek. Kérje meg a hostel személyzetét, hogy jelöljék be őket a térképen - ők ismerik a helyiek által használt rövidítéseket.",
+        "**Fornillo strand a Spiaggia Grande helyett.** A %LINK:fornilloBeachGuide|Fornillo Beach% 10 perces sétára nyugatra található a Spiaggia Grande-tól, egy kis hegyfok mellett. Talán a Spiaggia Grande tömegének 30%-át vonzza. A strand kisebb, de tisztább, csendesebb és nyugodtabb. A Lido árak valamivel alacsonyabbak. A vízminőség azonos. Egy középkori őrtorony horgonyozza a nyugati végét, festői látnivalót biztosítva. A Spiaggia Grande-ról a Fornillo-ra vezető séta egy festői parti ösvényt követ - gyönyörű naplemente sétákhoz, amikor a fő strand kiürül vacsoraidőre.",
+        "%IMAGE:via-positanesi-america-viewpoint.jpg|Nem zsúfolt kilátópont panorámás Positano kilátással%",
+        "**Via Positanesi d'America kilátó.** Ez a magasított kilátópont a Fornillo strand felett Positano egyik legjobb fotószögét kínálja - teljes parti panoráma, Li Galli szigetek a távolban, vertikális város lezuhan a szikláról. 5-7 perces mászás a Fornillo strandról. A legtöbb turista soha nem tesz erőfeszítést. Gyakran egyedül lesz a kilátóponton, különösen kora reggel vagy késő délután. A fény a legjobb fotókhoz 17:00-18:30 körül, amikor a nap átszögezi az öblöt.",
+        "**Lakóutcák a Chiesa di Santa Maria Assunta közelében.** A templom a zöld kupolával tömegeket vonz fotókhoz, de a templom mögötti lakóutcák (a templom mögött) szinte elhagyottak. Bougainvilleával borított lépcsők, lógó szárított ruha, kis szentélyek és helyiek a mindennapi életükben - ez az autentikus Positano. Sétáljon tisztelettel (ez egy valódi környék, nem vidámpark), tartsa alacsony hangon a hangját, és megtapasztalhatja a várost, ahogy a helyiek ismerik."
+      ]
+    },
+    {
+      "id": "beach-strategies",
+      "title": "Strand stratégiák a tömegek elkerülésére",
+      "body": [
+        "%IMAGE:fornillo-beach-quiet.jpg|Csendesebb Fornillo strand kevesebb tömeggel, mint a fő strand%",
+        "Positano strandjai kicsik és gyorsan megtelnek. Ha strand időt szeretne szardíniás körülmények nélkül, alkalmazza ezeket a stratégiákat. **Érkezzen 08:30 előtt.** A komoly strandolók ezt tudják. A Lidók 08:00-08:30 körül kezdenek napozóágyakat felállítani. Ha akkor érkezik, kiválaszthatja a prémium helyeket - első sor, jó árnyék, a víz közelében. 10:00-ra a Lidók elkelnek, és az ingyenes szakaszok tele vannak. A korai érkezési erőfeszítés megtérül 3-4 óra élvezetes strand idővel, mielőtt a tömegek csúcsosodnának.",
+        "**Válassza a Fornillót a Spiaggia Grande helyett.** Ezt korábban említettük, de megismétlésre érdemes. A Fornillo strand objektíven kevésbé zsúfolt. A séta a Spiaggia Grande-tól 10 percet vesz igénybe egy festői parti ösvényen keresztül. A kompromisszum kevesebb éttermi lehetőség (Fornillonak 2-3 strandklubja van a Spiaggia Grande 8-10-ével szemben), de a kifizetés a lélegzet vételének tere. Ha értékeli a nyugalmat a kényelem helyett, a Fornillo minden alkalommal nyer.",
+        "**Hétközi strand napok.** A strandok észrevehetően csendesebbek kedd-csütörtökön, mint péntek-vasárnap. Olasz családok uralják a hétvégéket. Hétköznap leginkább nemzetközi turisták és egy maroknyi helyi között van. A Lido árak néha kissé csökkennek hétköznapokon (25-30 € két székért és napernyőért vs. 35-40 € hétvégén). Az ingyenes strandszakaszok könnyebben navigálhatók hétköznap.",
+        "**Kerülje el a %LINK:ferragostoPositano|Ferragostót% (augusztus 15) teljesen.** Olaszország legnagyobb nyári ünnepe abszolút káoszt hoz Positanóba. A strandok veszélyes túlzsúfoltságot érnek el. Minden négyzetméter elfoglalt. Ha Positanóban van Ferragostóra, vagy ölelje át a party hangulatot (tűzijáték éjfélkor, strand zene egész nap), vagy hagyja el a várost napra. A %LINK:pathOfTheGods|Path of the Gods% túrázása vagy csendesebb városok látogatása, mint Ravello, jó menekülési lehetőségek.",
+        "**Késő délutáni strand szekciók (17:00-19:30).** A legtöbb strandoló 17:00-kor távozik, hogy zuhanyozzon és készüljön a vacsorára. De a strand nyitva marad napnyugtáig (nagyjából 19:30-20:30, szezonon függően). Egy késő délutáni úszás a napi látogatók távozása után üdvözítő - nyugodt víz, arany fény, üres homok. Vigyen magával törölközőt és élvezze a strandot a legnyugodtabb formájában. A vízhőmérséklet melegen marad este nyáron."
+      ]
+    },
+    {
+      "id": "alternative-towns",
+      "title": "Alternatív városok csendesebb élményekhez",
+      "body": [
+        "%IMAGE:praiano-quiet-evening.jpg|Csendes este Praianóban kevesebb turistával, mint Positanóban%",
+        "Néha a legjobb módja Positano tömegeinek elkerülésére az, hogy elhagyja Positanót. Több közeli város hasonló parti szépséget kínál a turistasűrűség 10-20%-ával. Maradhat a Hostel Briketteben és napi kirándulásokat tehet, vagy tervezzen éjszakai tartózkodásokat, ha hosszabb szökéseket szeretne. Mindegyik elérhető SITA busszal vagy komphajóval.",
+        "**Praiano (10 perc keletre busszal).** Praiano Positano és Amalfi között található. Lenyűgöző naplemente kilátásokkal, csendesebb stranddal (Marina di Praia), olcsóbb éttermekkel és helyi hangulattal rendelkezik. A családok által vezetett trattoriák kiváló tengeri ételeket szolgálnak fel Positano árainak feléért. Praiano nélkülözi Positano vertikális drámáját, de kompenzálja hitelességgel és nyugalommal. Ez nagyszerű bázis olyan vendégek számára, akik Amalfi parti szépséget akarnak Positano turista telítettsége nélkül. A %LINK:chiesaNuovaArrivals|SITA buszok% 20-30 percenként közlekednek Positano és Praiano között.",
+        "%IMAGE:ravello-gardens-terrace.jpg|Csendes dombtető kertek Ravellóban parti kilátásokkal%",
+        "**Ravello (30 perc busszal Amalfin keresztül).** Ravello magasan a hegyen található Amalfi felett. Híres dombtető kertekről (Villa Rufolo, Villa Cimbrone), klasszikus zenei koncertekről és panorámás kilátásokról a part felett. A város kicsi, elegáns és békés. A tömegek kezelhetők még csúcsszezonban is, mert Ravello elérése erőfeszítést igényel - a legtöbb napi látogató kihagyja. Töltsön egy délelőttöt kertek és kilátópontok felfedezésével, egyen ebédet az öböl felett, majd térjen vissza Positanóba felfrissülve. A buszút %LINK:amalfiPositanoBus|Amalfin% keresztül összesen 45-50 percet vesz igénybe (Positano-Amalfi 25 perc, Amalfi-Ravello 20 perc).",
+        "**Furore és Agerola (20-30 perc busszal).** Ezek a hegyi falvak az Amalfi part felett helyezkednek el. Furore híres fjordjáról (egy szűk öböl kis stranddal) és festett házakról, amelyek sziklákon csüngenek. Agerola a %LINK:pathOfTheGods|Path of the Gods% túra kiindulópontja. Mindkettő hegyi levegőt, hagyományos éttermeket, alacsonyabb árakat és közel nulla nemzetközi turizmust kínál. Jó napi kirándulásokat tesznek, amikor Positano túlzottnak tűnik. Agerolában különösen számos családi agriturismi (farm étterem) található, egyszerű, finom hegyi ételt szolgálva - grillezett húsokat, friss mozzarellát, helyi bort - költségvetési árakon.",
+        "**Minori és Maiori (35-40 perc busszal).** Ezek a városok Amalfi keleti részén valódi homokos strandokkal rendelkeznek (ritka az Amalfi parton, ahol a legtöbb strand sziklás vagy kavicsos). A helyiek kedvelik őket családi strand napokhoz, mert kevésbé drágák és kevésbé zsúfoltak, mint Positano. A hangulat inkább munkásosztály olasz, mint luxus turista. Ha meg akarja tapasztalni, hogy a rendes olaszok hogyan élvezik a partot, Minori és Maiori szállít. Mindkettőben vannak jó éttermek, fagylalt üzletek és tengerparti sétányok. A buszok rendszeresen közlekednek; komphajók is megállnak Maioriban nyáron."
+      ]
+    },
+    {
+      "id": "shopping-dining-timing",
+      "title": "Vásárlási és étkezési tippek a tömegek elkerülésére",
+      "body": [
+        "%IMAGE:positano-via-mulini-crowded.jpg|Zsúfolt Via dei Mulini bevásárlóutca csúcsidőben%",
+        "**Vásároljon korán (08:30-10:00) vagy későn (18:00-20:00).** A Via dei Mulini emberi forgalmi dugóvá válik 11:00-17:00 között. Ha böngészni szeretné Positano butikjait, kerámia üzleteit vagy szandálkészítőit anélkül, hogy összezúznák, menjen kora reggel vagy este. Az üzletek 09:00 körül nyitnak és 20:00-21:00-ig nyitva tartanak nyáron. A kora reggel lehetővé teszi, hogy beszélgessen az üzlettulajdonosokkal, mielőtt túlterheltek lennének. Az esti vásárlás kellemes - hűvösebb hőmérsékletek, lágyabb fény, mozgástér.",
+        "A kerámia üzletek különösen érdemes korán vagy későn meglátogatni. A kézművesek gyakran dolgoznak reggel, mielőtt a tömegek megérkeznének. Ha 09:00-kor vásárol, lehet, hogy látja őket festeni mintákat csempékre vagy tányérokra - személyesebb élmény, mint áttolni a délutáni tömegeken. Az esti vásárlás 18:30 után lehetővé teszi a böngészést anélkül, hogy sietve érezné magát. Az üzlettulajdonosok nyugodtabbak, hajlandóak elmagyarázni a technikákat és a családi történelmet. Jobb árakat alkudhat meg, amikor az üzletek nincsenek túlterhelve.",
+        "**Foglalja le a vacsorát 20:00-ra vagy későbbre.** Az olaszok későn esznek (21:00 standard). A turisták korábban esznek (18:30-19:30). Ha 20:00-ra vagy 21:00-ra foglalja le a vacsorát, a helyiekkel együtt fog vacsorázni, nem turistacsoportokkal. A kiszolgálás nyugodtabb. Az éttermek nem siettetik Önt az ételeken keresztül. A hangulat a tranzakciósról vendégszeretővé vált. A hostel személyzete ajánlhat olyan éttermeket, amelyek szívesen fogadják a késői étkezőket, és ahol a foglalások garantálják a jó asztalokat.",
+        "%IMAGE:positano-restaurant-evening.jpg|Csendes esti étkezés Positano étteremben%",
+        "A hostel vendégek tapasztalatai alapján a 19:00 és 21:00 közötti vacsorafoglalások közötti különbség drámai. A korai étkezés futószalagnak tűnik - a személyzet gyorsan tisztítja az asztalokat, hogy második ülésre fordíthassa őket. A késői étkezés tényleges étkezésnek tűnik - az ételek civilizált ütemben érkeznek, a pincérek beszélgetnek a kiszállítások között, arra biztatják Önt, hogy időzzön kávé és desszert mellett. Az étel minősége azonos, de az élmény teljesen megváltozik az időzítés alapján.",
+        "**Kerülje el az ebédet 12:30-14:00 között, ha lehetséges.** Ez a napi látogatók csúcs ebédideje. A strand közelében lévő éttermek ledöngölődnek. Sorok keletkeznek a elvihetős pizza helyeken. Ha ebédet szeretne kint, egyen korán (11:30) vagy későn (14:30+). Alternatívaként csomagoljon piknik ebédet - vegyen kenyeret, sajtot, szalámit, paradicsomot és gyümölcsöt egy helyi élelmiszerboltból - és egyen csendes strand helyen vagy teraszon. A hostel konyhában vannak alapvető dolgok, ha ott szeretné elkészíteni az ételt.",
+        "**Helyi élelmiszerüzletek vs turista üzletek.** Positanónak van kis alimentari (élelmiszerüzletei), amelyek szétszórva vannak a lakónegyedekben. Ezek ugyanazokat a cikkeket tárolják, mint a turista-orientált üzletek, de helyi árakat számolnak fel, és nulla tömeg van. Kérdezze meg a hostel személyzetét, hol vásárolnak a helyiek. Pénzt takarít meg és elkerüli a Via dei Mulini kereskedelmi cirkuszt. Chiesa Nuovának (ahol a hostel van) két kis élelmiszerboltja van, amelyeket kizárólag helyiek látogatnak - friss mozzarellát, érett paradicsomot, helyi bort és ropogós kenyeret vásárolhat a turista-területi árak töredékéért. Ezek az üzletek szieszt ára zárva vannak (13:30-16:30) és vasárnap délutánonként, ezért tervezze meg ennek megfelelően."
+      ]
+    },
+    {
+      "id": "transport-timing",
+      "title": "Közlekedési tippek a zsúfolt buszok és kompok elkerülésére",
+      "body": [
+        "%IMAGE:sita-bus-crowded-positano.jpg|Zsúfolt SITA busz csúcsidőben az Amalfi parton%",
+        "**SITA busz időzítés.** A buszok gyorsan megtelnek nyáron. A legrosszabb idők a reggeli érkezések Positanóba (09:00-11:00) és az esti indulások (17:00-19:00). Ha buszt kell fognia, érkezzen a megállóhoz 15-20 perccel korábban, hogy biztosítson egy helyet. Alternatívaként utazzon csúcsidőn kívüli időpontokban - 08:30 előtt vagy 19:30 után. A kora reggeli buszok ritkán telnek meg. A késő esti buszok (utolsó járatok 22:00-23:00 körül) szintén van hely. Részletes busz menetrendekért és tippekért lásd: %LINK:chiesaNuovaArrivals|megérkezés Chiesa Nuovába busszal%.",
+        "**Komp időzítés.** A kompok kényelmesebbek, mint a buszok, de szintén megtelnek. A legforgalmasabb komp idők a délelőtt közepi indulások (09:00-11:00) és a késő délutáni visszatérések (16:00-18:00). Ha %LINK:capriPositanoFerry|kompot vesz Caprira% vagy %LINK:amalfiPositanoFerry|kompot Amalfira%, előre foglalja le a jegyeket, vagy érkezzen 30 perccel az indulás előtt. A kora reggeli kompok (első járatok 08:00 körül) és a késő délutáni kompok (18:00 után) több elérhetőséggel és nyugodtabb tengerekkel rendelkeznek.",
+        "**Gyalogoljon, amikor lehetséges.** Positano kicsi. A gyaloglás a strandról Chiesa Nuovába (ahol a hostel van) 15-20 percet vesz igénybe lépcsőkön. Igen, ez egy mászás, de elkerüli a zsúfolt buszokat, megtakarít 1,30 €-t utazásonként, és vertikálisan tapasztalja meg a várost - különböző kilátások minden száz lépcsőnél. A jó mobilitással rendelkező vendégek számára a gyaloglás veri a buszokra való várakozást. Hordár szolgáltatások tudják vinni a csomagot, ha nehéz táskái vannak."
       ]
     }
   ],
+  "tipsTitle": "Gyors tömeg-elkerülési tippek",
+  "tips": [
+    "Találja el a Spiaggia Grande-t 08:30 előtt üres strandokért és nagyszerű fotó fényért.",
+    "Válassza a %LINK:fornilloBeachGuide|Fornillo Beachet% a Spiaggia Grande helyett - 10 perccel távolabbi, de 50%-kal kevesebb tömeg.",
+    "Kerülje el Positanót tengerjáró hajó napokon - ellenőrizze a CruiseMapperen a nápolyi/salernói menetrendeket.",
+    "Vásároljon a Via dei Mulinin korán (10:00 előtt) vagy későn (18:00 után), hogy elkerülje az emberi dugót.",
+    "Foglalja le a vacsorát 20:00-ra vagy későbbre, hogy a helyiekkel vacsorázzon turistacsoportok helyett.",
+    "Fedezze fel Chiesa Nuova felső utcáit és lakónegyedeit - autentikus és nem zsúfolt.",
+    "Vegyen késő délutáni strand szekciót (17:00-19:30) miután a napi látogatók távoznak.",
+    "Látogasson el átmeneti szezonban (május, szeptember, október) fele annyi tömeggel és teljes parti szépséggel.",
+    "Napi kirándulás Praianóba, Ravellóba vagy Agerolába, amikor Positano túlzottnak tűnik.",
+    "Gyalogoljon buszok helyett, amikor lehetséges - pénzt takarít meg és elkerüli a teli közlekedést."
+  ],
+  "faqsTitle": "GYIK",
   "faqs": [
     {
-      "q": "Mikor csendes a Spiaggia Grande?",
+      "q": "Mikor a legkevésbé zsúfolt Positano?",
       "a": [
-        "09:00 előtt vagy 18:30 után találsz szabad helyet és puhább fényt a fotózáshoz – vigyél törölközőt és érkezz korán."
+        "A kora reggel (07:00-09:00) és a késő délután (18:00-naplemente) a legcsendesebb idők naponta. A szezonális időzítéshez május, szeptember és október kezelhető tömegekkel rendelkeznek jó időjárással. November-április nagyon csendes, de sok vállalkozás bezár, és az időjárás kiszámíthatatlan. A hétköznapok (kedd-csütörtök) csendesebbek, mint a hétvégék egész évben."
       ]
     },
     {
-      "q": "Hol fotózhatok tömeg nélkül?",
+      "q": "A Fornillo strand kevésbé zsúfolt, mint a Spiaggia Grande?",
       "a": [
-        "Sétálj fel a Via Cristoforo Colombón a magasabban fekvő teraszokhoz, vagy buszozz fel Nocellébe a széles panorámáért."
+        "Igen - jelentősen. A Fornillo strand nagyjából a Spiaggia Grande tömegének 30%-át vonzza. 10 perces séta nyugatra a fő strandról egy parti ösvényen keresztül. A strand kisebb, de tisztább és békésebb. A Lido árak valamivel alacsonyabbak. A vízminőség azonos. Ha értékeli a nyugalmat a kényelem helyett, a Fornillo minden alkalommal a jobb választás."
       ]
     },
     {
-      "q": "Érdemes a városon kívül megszállni a nyugodt estékért?",
+      "q": "Kerüljem el Positanót augusztusban?",
       "a": [
-        "Igen, ha nyugodtabb estét szeretnél – Praiano, Minori vagy Agerola kedvezőbb árakat kínál, és nappal busszal vagy komppal könnyen visszajutsz Positanóba."
+        "Augusztus a legforgalmasabb hónap, különösen a %LINK:ferragostoPositano|Ferragosto% (augusztus 15) körül. Ha nem szereti a tömegeket, augusztus kihívást jelent. Azonban, ha alkalmazza az útmutatóban található stratégiákat - kora reggel, késő délután, csendesebb strandok, csúcsidőn kívüli közlekedés - továbbra is jó élményeket élhet. Az átmeneti szezon (május, szeptember) jobb egyensúlyt kínál az időjárás és a tömegek között."
+      ]
+    },
+    {
+      "q": "Hol tudok fotókat készíteni tömegek nélkül?",
+      "a": [
+        "A Via Positanesi d'America kilátó (Fornillo strand felett), a Chiesa Nuova és Sponda közötti felső sétányok, és a Chiesa di Santa Maria Assunta mögötti lakóutcák mind lenyűgöző kilátást kínálnak minimális tömegekkel. A kora reggel (09:00 előtt) a fő kilátópontoknál szintén működik - a legtöbb turista még alszik vagy reggelit fogyaszt."
+      ]
+    },
+    {
+      "q": "Milyen jó napi kirándulások vannak Positano tömegeinek elkerülésére?",
+      "a": [
+        "Praiano (10 perc busszal) csendes strandokat és olcsóbb éttermeket kínál. Ravello (45 perc Amalfin keresztül) dombtető kertekkel és hegyi kilátással rendelkezik kezelhető tömegekkel. Furore és Agerola (20-30 perc) hegyi falvak közel nulla turizmussal. Minori és Maiori (35-40 perc) homokos strandokkal rendelkeznek, amelyeket helyi családok kedvelnek. Mindegyik elérhető %LINK:chiesaNuovaArrivals|SITA busszal%."
+      ]
+    },
+    {
+      "q": "Segít-e Chiesa Nuovában tartózkodni a tömegek elkerülésében?",
+      "a": [
+        "Igen. Chiesa Nuova (a felső város, ahol a Hostel Brikette található) a fő turisztikai zóna felett van. A legtöbb napi látogató soha nem merészkedik túl a Spiaggia Grande-n és a Via dei Mulinin. A hostelből csendes lakóutcákat, helyi élelmiszerboltokat és autentikus negyedeket fedezhet fel, amelyeket a szervezett turisták kihagynak. Ön leereszkedik a strandra, amikor akarja, majd visszavonul a dombra békére és nyugalomra."
+      ]
+    },
+    {
+      "q": "Mikor kell elkapnom a buszt, hogy elkerüljem a tömegeket?",
+      "a": [
+        "A buszok a leggyorsabban telnek meg a reggeli érkezések (09:00-11:00) és az esti indulások (17:00-19:00) során. Utazzon 08:30 előtt vagy 19:30 után a legjobb esélyért az elérhető ülésekre. Érkezzen a busz megállóhoz 15-20 perccel korábban, ha csúcsidőben kell utaznia. Lásd: %LINK:chiesaNuovaArrivals|megérkezés Chiesa Nuovába busszal% részletes menetrendekért."
       ]
     }
   ]

@@ -1,4 +1,5 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Từ Amalfi đến Positano bằng phà | Hostel Brikette",
     "description": "Phà Amalfi đến Positano: giờ chạy, vé, nơi lên tàu tại Amalfi và cách tới Hostel Brikette từ bến với ít bậc thang nhất."
@@ -47,6 +48,48 @@
         "Mang nhiều hành lý? Cân nhắc thuê phu khuân vác hoặc đi xe buýt Interno Positano để giảm bậc thang.",
         "Đi bộ lên dốc với hành lý nặng giữa trời hè sẽ khá mệt."
       ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có thể mang ba lô lớn hoặc va li lên phà không?",
+      "a": "Có, nhưng hành lý lớn hơn 45cm × 35cm × 20cm phải trả thêm €2 mỗi túi. Mua vé hành lý cùng vé phà (online hoặc tại quầy). Đặt hành lý lớn trên giá để đồ trên boong."
+    },
+    {
+      "q": "Điều gì xảy ra nếu phà bị hủy do thời tiết?",
+      "a": "Travelmar hủy chuyến nếu biển động mạnh (hiếm, nhưng xảy ra vào đầu/cuối mùa). Bạn sẽ nhận email nếu đặt online. Nhân viên sẽ đăng thông báo tại bến. Đi xe buýt SITA từ Amalfi đến Positano (€2–€3) hoặc đi taxi."
+    },
+    {
+      "q": "Phà có phù hợp với du khách khuyết tật di chuyển không?",
+      "a": "Lên tàu cần đi qua cầu tàu ngắn và có thể có cầu thang giữa bến và boong. Hầu hết phà Travelmar không có dốc xe lăn. Nếu cần trợ giúp, đến sớm và hỏi nhân viên. Họ có thể cho bạn lên tàu trước qua đường an toàn hơn."
+    },
+    {
+      "q": "Tôi có thể mua vé phà trong ngày không?",
+      "a": "Thường là có vào tháng 4, 5, 9 và 10. Nhưng tháng 7 và 8 hết chỗ trước 1–2 ngày. Đặt online vào tối hôm trước để chắc chắn, đặc biệt cho chuyến sáng."
+    },
+    {
+      "q": "Làm thế nào để từ bến Positano đến Hostel Brikette?",
+      "a": "Ba cách: đi bộ lên dốc (15–20 phút, bậc thang dốc), đi xe buýt Interno Positano (€2), hoặc thuê phu khuân vác (€20–€25 mỗi túi). Xem %LINK:ferryDockToBrikette|hướng dẫn từ bến đến Brikette% với chỉ dẫn và ảnh."
+    },
+    {
+      "q": "Có nhà vệ sinh và đồ ăn nhẹ trên tàu không?",
+      "a": "Hầu hết tàu Travelmar có quầy ăn nhẹ nhỏ bán đồ uống và đồ ăn nhẹ. Nhà vệ sinh có trên tàu lớn hơn, nhưng không có trên tàu nhỏ ngoài mùa cao điểm. Nếu có thể, hãy dùng nhà vệ sinh trước khi lên tàu."
+    },
+    {
+      "q": "Thời điểm nào tốt nhất để đi phà?",
+      "a": "Tàu buổi sáng (08:25–10:00) có biển êm hơn và ánh sáng chụp ảnh đẹp hơn. Chuyến chiều đông khách du lịch trong ngày hơn. Bỏ qua chuyến cuối (20:00) trừ khi bạn đồng ý đến sau khi trời tối."
+    },
+    {
+      "q": "Tôi có cần in vé hay có thể hiển thị trên điện thoại?",
+      "a": "Điện thoại được. Nhân viên quét mã QR từ màn hình. Đảm bảo điện thoại đầy pin và bạn có thể mở email hoặc đặt chỗ không cần internet (lưu offline hoặc chụp màn hình)."
+    },
+    {
+      "q": "Bến phà Amalfi nằm chính xác ở đâu?",
+      "a": "Đi bộ đến bờ biển từ Piazza Flavio Gioia (quảng trường chính có đài phun nước). Quay mặt ra biển và rẽ phải. Bến Travelmar cách 2 phút dọc lối đi ven biển. Tìm biển hiệu xanh-trắng và quầy vé."
+    },
+    {
+      "q": "Tôi có thể gửi hành lý ở Positano nếu đến sớm không?",
+      "a": "Có. Nhiều %LINK:luggageStorage|điểm gửi hành lý% gần bãi biển Spiaggia Grande tính €5–€8 mỗi túi mỗi ngày. Hữu ích nếu bạn đến trước giờ nhận phòng hostel lúc 15:00."
     }
   ]
 }

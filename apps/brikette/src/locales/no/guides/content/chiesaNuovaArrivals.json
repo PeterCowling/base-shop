@@ -1,56 +1,68 @@
 {
   "seo": {
-    "title": "Ankomst via Chiesa Nuova/Bar Internazionale: ruten til Hostel Brikette",
-    "description": "Detaljert rute fra stoppet Chiesa Nuova til vandrerhjemmet med minimale trapper; bagasjetips og alternativer."
+    "title": "Chiesa Nuova/Bar Internazionale til Hostel Brikette",
+    "description": "Kortrute fra Chiesa Nuova-stoppet til hostellet med minimale trapper; bagasjetips og alternativer."
   },
-  "linkLabel": "Ankomst via Chiesa Nuova/Bar Internazionale: ruten til Hostel Brikette",
-  "intro": "Kommer du med buss? “Chiesa Nuova” eller “Bar Internazionale” er det stoppet som ligger nærmest hostellet. Denne korte ruten minimerer trapper for både knær og bagasje.",
+  "linkLabel": "Chiesa Nuova/Bar Internazionale til Hostel Brikette",
+  "intro": "Kommer du med buss? «Chiesa Nuova» eller «Bar Internazionale» er det stoppet som ligger nærmest hostellet. Denne kortruten minimerer trapper for både knær og bagasje.",
   "image": {
-    "alt": "Positanos SITA-stopp Chiesa Nuova utenfor Bar Internazionale",
-    "caption": "Positano (Chiesa Nuova) – vent utenfor Bar Internazionale; om sommeren er det lurt å komme litt tidlig siden bussene fylles raskt."
+    "alt": "Positanos Chiesa Nuova SITA-stopp utenfor Bar Internazionale",
+    "caption": "Positano (Chiesa Nuova)-stoppet – vent utenfor Bar Internazionale; kom litt tidlig om sommeren siden bussene kan fylles raskt."
   },
   "toc": {
     "onThisPage": "På denne siden",
     "before": "Før du drar",
-    "steps": "Trinn for trinn",
+    "steps": "Steg for steg",
     "knees": "Knær og bagasje",
     "faqs": "Ofte stilte spørsmål"
   },
   "sections": [
     {
       "id": "why-stop",
-      "title": "Hvorfor dette stoppet passer best",
+      "title": "Hvorfor dette stoppet fungerer",
       "body": [
-        "Bussholdeplassen foran kafeen/baren Bar Internazionale ligger omtrent 140 meter fra Hostel Brikette."
+        "Bussholdeplassen utenfor kafeen/baren Bar Internazionale ligger omtrent 120 meter (400 fot) fra Hostel Brikette – rundt 3 minutters gange.",
+        "Dette er det SITA-bussholdeplassen som ligger nærmest hostellet, med minimale trapper (kun hovedinngangstrappen)."
+      ]
+    },
+    {
+      "id": "detailed-route",
+      "title": "Gangvei fra Bar Internazionale til hostellet",
+      "body": [
+        "Gå av bussen ved Bar Internazionale-stoppet på Viale Pasitea (også kalt Chiesa Nuova-stoppet).",
+        "Gå langs Viale Pasitea i retning Montepertuso/Chiesa Nuova i omtrent 120 meter (400 fot). Du går på det asfalterte fortauet på høyre side av veien.",
+        "Etter rundt 3 minutter ser du inngangen til Hostel Brikette på høyre side – du vil se en kort trapp som fører opp til resepsjonen. Det er et skilt på terrassenivå før inngangstrappen.",
+        "Gå opp trappen for å komme til hoveddøren og resepsjonen."
       ]
     },
     {
       "id": "bus-basics",
       "title": "Busstider og billetter",
       "body": [
-        "Kjøp SITA-billetter i tabacchi-kiosken ved stoppet, eller valider forhåndskjøpte billetter når du går om bord; spar én ekstra til sene returer.",
-        "Etter klokken 22.00 går kveldsbussene sjeldnere – sjekk rutetabellen på forhånd og sikte på nest siste avgang for å slippe taxipriser."
+        "Kjøp SITA-billetter på tabacchi-kiosken nær stoppet, eller valider forhåndskjøpte billetter ved ombordstigning; ha en ekstra billett til sene returer.",
+        "Kveldsbussene blir sjeldnere etter kl. 22.00 – sjekk rutetabellen på forhånd og sikt på nest siste avgang for å unngå taxipriser."
       ]
     }
   ],
   "beforeList": [
-    "Se over SITA-rutene i forkant slik at du slipper å vente på veiskulderen på siste avgang.",
-    "Valider billetten idet du går om bord – kontrollører bøtelegger uvaliderte billetter selv på korte turer.",
-    "Gi beskjed til hostellet hvis du kommer etter midnatt, så har nattevakten dørkoden klar."
+    "Sjekk SITA-rutene på forhånd slik at du ikke må vente langs veien på siste avgang.",
+    "Valider billetten så snart du går om bord – kontrollører bøtelegger uvaliderte billetter selv på korte turer.",
+    "Send melding til hostellet hvis du kommer etter midnatt, så kan nattevakten ha dørkoden klar."
   ],
   "stepsList": [
-    "Fra stoppet utenfor Bar Internazionale går du litt over 100 meter (330 fot) oppover Viale Pasitea – følg gangruten i kartet nedenfor for veiledning steg for steg.",
-    "I svingen passerer du Hostel Brikette-skiltet på terrassenivå og tar deretter trappen på høyre side av veien opp til hovedinngangen."
+    "Gå av bussen ved Bar Internazionale-stoppet og gå langs Viale Pasitea i retning Montepertuso/Chiesa Nuova.",
+    "Fortsett på det asfalterte fortauet i 120 meter (400 fot, rundt 3 minutter) – følg gangruten i kartet nedenfor.",
+    "Se etter Hostel Brikette-inngangen på høyre side med skiltet på terrassenivå, ta deretter trappen opp til resepsjonen."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
   "kneesList": [
-    "Hele strekningen er asfaltert, med bare én kort trapp ved inngangen.",
-    "Hvis stigningene er tunge for knærne, ta korte pauser – trafikken roer seg naturlig i svingen."
+    "Hele turen er asfaltert med kun én kort trapp ved inngangen.",
+    "Hvis stigninger er slitsomme for knærne, ta korte pauser – trafikken roer seg naturlig i svingen."
   ],
-  "kneesDockPrefix": "Kommer du først med ferge?",
-  "kneesDockLinkLabel": "Havn → hostellets bagasjerute",
+  "kneesDockPrefix": "Kommer du med ferge først?",
+  "kneesDockLinkLabel": "Kai → hostellets bagasjerute",
   "kneesPorterPrefix": "Trenger du hjelp med tunge kofferter?",
-  "kneesPorterLinkLabel": "Guide til portertjenesten",
+  "kneesPorterLinkLabel": "Guide til bæretjenesten",
   "faqs": [
     {
       "q": "Er det fortau hele veien?",
@@ -58,12 +70,20 @@
     },
     {
       "q": "Er det opplyst om natten?",
-      "a": "Det er gatelys; bruk gjerne lommelykten på telefonen for ekstra sikt i smugene."
+      "a": "Det finnes gatelys; bruk lommelykten på telefonen for ekstra synlighet i smug."
+    },
+    {
+      "q": "Hvor lang tid tar turen?",
+      "a": "Rundt 3 minutter fra Bar Internazionale til hostellinngangen (120 meter/400 fot)."
+    },
+    {
+      "q": "Vil jeg kunne finne inngangen lett?",
+      "a": "Ja – se etter Hostel Brikette-skiltet på terrassenivå på høyre side når du går langs Viale Pasitea. Inngangstrappen er tydelig merket og fører opp til resepsjonen."
     }
   ],
   "howtoSteps": [
-    "Fra “Chiesa Nuova”-stoppet er det 2–5 minutters gange til hostellet",
-    "Velg smug med færrest trappetrinn; unngå lange trapper",
-    "Har du tung bagasje, kan du be om porterhenting ved stoppet"
+    "Fra «Chiesa Nuova»-stoppet går du 2–5 minutter til hostellet",
+    "Bruk smugene med færrest trapper; unngå lange trappeløp",
+    "Hvis du har tung bagasje, vurder bærerhenting ved stoppet"
   ]
 }

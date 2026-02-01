@@ -56,6 +56,36 @@ const seoAuditResultSchema = z.object({
 export type SeoAuditResult = z.infer<typeof seoAuditResultSchema>;
 
 /**
+ * Regex for URL-safe slug segments.
+ * Allows lowercase letters, numbers, and hyphens.
+ * Must start and end with alphanumeric characters.
+ */
+const URL_SAFE_SEGMENT_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * Validates a draft path segment (e.g., "guides/my-guide" or "experiences/cool-experience").
+ * Path must consist of URL-safe segments separated by forward slashes.
+ */
+const draftPathSegmentSchema = z
+  .string()
+  .min(1, "Draft path cannot be empty")
+  .max(200, "Draft path is too long")
+  .refine(
+    (value) => {
+      const segments = value.split("/");
+      return segments.length >= 1 && segments.length <= 5;
+    },
+    { message: "Draft path must have 1-5 segments" },
+  )
+  .refine(
+    (value) => {
+      const segments = value.split("/");
+      return segments.every((segment) => URL_SAFE_SEGMENT_REGEX.test(segment));
+    },
+    { message: "Draft path segments must be URL-safe (lowercase letters, numbers, hyphens)" },
+  );
+
+/**
  * Schema for a single guide's manifest override.
  * Validates that:
  * - areas is a non-empty array of valid GuideArea values (when provided)
@@ -63,6 +93,7 @@ export type SeoAuditResult = z.infer<typeof seoAuditResultSchema>;
  * - primaryArea must be included in areas when both are provided
  * - status is a valid GuideStatus value (when provided)
  * - auditResults follows the SEO audit schema (when provided)
+ * - draftPathSegment is a valid URL-safe path (when provided)
  */
 export const manifestOverrideSchema = z
   .object({
@@ -70,6 +101,7 @@ export const manifestOverrideSchema = z
     primaryArea: z.enum(GUIDE_AREA_VALUES).optional(),
     status: z.enum(GUIDE_STATUS_VALUES).optional(),
     auditResults: seoAuditResultSchema.optional(),
+    draftPathSegment: draftPathSegmentSchema.optional(),
   })
   .refine(
     (data) => {

@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import { Breadcrumb } from "@/components/navigation/Breadcrumb";
 import type { User } from "@/lib/current-user";
@@ -10,6 +8,7 @@ import { canEditCard } from "@/lib/current-user";
 import type { CommitHistoryEntry } from "@/lib/git-history";
 import type { Business, Card, StageDoc } from "@/lib/types";
 
+import { CardActionsPanel } from "./CardActionsPanel";
 import { CardHeader } from "./CardHeader";
 import { CardHistory } from "./CardHistory";
 import { CardMetadata } from "./CardMetadata";
@@ -30,7 +29,7 @@ interface CardDetailProps {
   githubUrl?: string;
 }
 
-/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
+/* eslint-disable ds/no-unsafe-viewport-units, ds/no-hardcoded-copy, ds/container-widths-only-at -- BOS-12: Phase 0 scaffold UI */
 export function CardDetail({
   card,
   stageDocs,
@@ -39,131 +38,7 @@ export function CardDetail({
   history = [],
   githubUrl,
 }: CardDetailProps) {
-  const router = useRouter();
-  const [isClaimingOrAccepting, setIsClaimingOrAccepting] = useState(false);
-  const [actionError, setActionError] = useState<string | null>(null);
-  const [isRequestingAgent, setIsRequestingAgent] = useState(false);
-  const [agentSuccess, setAgentSuccess] = useState<string | null>(null);
-
   const userCanEdit = canEditCard(currentUser, card);
-  const isOwner = card.Owner === currentUser.name;
-  const isUnclaimed = !card.Owner || card.Owner.trim() === "";
-  const canAccept = isOwner && card.Lane === "Inbox";
-  const canComplete = userCanEdit && card.Lane !== "Done";
-
-  const handleClaim = async () => {
-    setIsClaimingOrAccepting(true);
-    setActionError(null);
-
-    try {
-      const response = await fetch("/api/cards/claim", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: card.ID }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setActionError(data.error || "Failed to claim card");
-        setIsClaimingOrAccepting(false);
-        return;
-      }
-
-      // Success - refresh page to show updated card
-      router.refresh();
-    } catch (error) {
-      setActionError("An unexpected error occurred");
-      setIsClaimingOrAccepting(false);
-    }
-  };
-
-  const handleAccept = async () => {
-    setIsClaimingOrAccepting(true);
-    setActionError(null);
-
-    try {
-      const response = await fetch("/api/cards/accept", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: card.ID }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setActionError(data.error || "Failed to accept card");
-        setIsClaimingOrAccepting(false);
-        return;
-      }
-
-      // Success - refresh page to show updated card
-      router.refresh();
-    } catch (error) {
-      setActionError("An unexpected error occurred");
-      setIsClaimingOrAccepting(false);
-    }
-  };
-
-  const handleComplete = async () => {
-    setIsClaimingOrAccepting(true);
-    setActionError(null);
-
-    try {
-      const response = await fetch("/api/cards/complete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: card.ID }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setActionError(data.error || "Failed to mark card complete");
-        setIsClaimingOrAccepting(false);
-        return;
-      }
-
-      // Success - refresh page to show updated card
-      router.refresh();
-    } catch (error) {
-      setActionError("An unexpected error occurred");
-      setIsClaimingOrAccepting(false);
-    }
-  };
-
-  const handleRequestAgent = async (action: "work-idea" | "break-into-tasks" | "draft-plan") => {
-    setIsRequestingAgent(true);
-    setActionError(null);
-    setAgentSuccess(null);
-
-    try {
-      const response = await fetch("/api/agent-queue/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action,
-          target: card.ID,
-          targetType: "card",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setActionError(data.error || "Failed to request agent work");
-        setIsRequestingAgent(false);
-        return;
-      }
-
-      // Success - show confirmation message
-      setAgentSuccess(data.message || "Agent task queued successfully");
-      setIsRequestingAgent(false);
-    } catch (error) {
-      setActionError("An unexpected error occurred");
-      setIsRequestingAgent(false);
-    }
-  };
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -276,102 +151,7 @@ export function CardDetail({
             )}
 
             {/* Quick actions */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
-                Actions
-              </h3>
-              <div className="space-y-2">
-                {/* MVP-D1: Claim button (if unclaimed) */}
-                {isUnclaimed && (
-                  <button
-                    type="button"
-                    onClick={handleClaim}
-                    disabled={isClaimingOrAccepting}
-                    className="w-full px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isClaimingOrAccepting ? "Claiming..." : "Claim Card"}
-                  </button>
-                )}
-
-                {/* MVP-D1: Accept button (if owner and in Inbox) */}
-                {canAccept && (
-                  <button
-                    type="button"
-                    onClick={handleAccept}
-                    disabled={isClaimingOrAccepting}
-                    className="w-full px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isClaimingOrAccepting ? "Accepting..." : "Accept & Start"}
-                  </button>
-                )}
-
-                {/* MVP-D2: Mark Complete button (if owner/admin and not Done) */}
-                {canComplete && (
-                  <button
-                    type="button"
-                    onClick={handleComplete}
-                    disabled={isClaimingOrAccepting}
-                    className="w-full px-3 py-2 text-sm font-medium text-white bg-purple-600 border border-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isClaimingOrAccepting ? "Completing..." : "Mark Complete"}
-                  </button>
-                )}
-
-                {/* Error display */}
-                {actionError && (
-                  <div className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-                    {actionError}
-                  </div>
-                )}
-
-                {/* Success display */}
-                {agentSuccess && (
-                  <div className="px-3 py-2 text-sm text-green-600 bg-green-50 border border-green-200 rounded-md">
-                    {agentSuccess}
-                  </div>
-                )}
-
-                {userCanEdit ? (
-                  <Link
-                    href={`/cards/${card.ID}/edit`}
-                    className="block w-full px-3 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
-                  >
-                    Edit Card
-                  </Link>
-                ) : (
-                  <div className="px-3 py-2 text-sm text-gray-500 text-center">
-                    Only {card.Owner || "owner"} and admins can edit
-                  </div>
-                )}
-
-                {/* MVP-E2: Ask Agent dropdown */}
-                <div className="relative">
-                  <select
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        handleRequestAgent(e.target.value as "work-idea" | "break-into-tasks" | "draft-plan");
-                        e.target.value = ""; // Reset selection
-                      }
-                    }}
-                    disabled={isRequestingAgent}
-                    className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <option value="">{isRequestingAgent ? "Requesting..." : "Ask Agent..."}</option>
-                    <option value="draft-plan">Draft implementation plan</option>
-                    <option value="break-into-tasks">Break into tasks</option>
-                    <option value="work-idea">Work this card</option>
-                  </select>
-                </div>
-
-                <button
-                  type="button"
-                  className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
-                  disabled
-                >
-                  Add Comment (Coming Soon)
-                </button>
-              </div>
-            </div>
+            <CardActionsPanel card={card} currentUser={currentUser} userCanEdit={userCanEdit} />
           </div>
         </div>
       </div>

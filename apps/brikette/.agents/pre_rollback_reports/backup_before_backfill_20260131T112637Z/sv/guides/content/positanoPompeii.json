@@ -1,0 +1,135 @@
+{
+  "seo": {
+    "title": "Positano till Pompeji: så gör du",
+    "description": "Steg-för-steg-beskrivning till Pompeji från Positano med buss + tåg eller färja + tåg (sommar)."
+  },
+  "linkLabel": "Positano till Pompeji: så gör du",
+  "intro": [
+    "Pompeji är enormt, dramatiskt och lätt att överboka. Den här planen hjälper dig att se höjdpunkterna utan att hela dagen går åt till transporter.",
+    "På sommaren väntar värme, damm och mycket folk – ta med vatten, solskydd och var realistisk kring hur mycket av området du hinner täcka."
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "Snabb överblick"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "Priser och öppettider"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "Service på plats"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Så tar du dig dit"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "Rundtur på egen hand"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanliga frågor"
+    }
+  ],
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "title": "Snabb överblick",
+      "body": [
+        "Storleken på Pompeji imponerar direkt – nästan hela staden är frilagd och enkel att promenera runt i.",
+        "Det är ett billigt utflyktsmål om du guidar dig själv; historien känns levande även utan privat guide.",
+        "Herculaneum är mindre och bättre bevarat, så överväg det om du vill se intakta fresker och mosaiker istället för Pompejis vida gator.",
+        "Reser du från Positano med kollektivtrafik bör du räkna med värme, damm och långa restider."
+      ]
+    },
+    {
+      "id": "entry-cost-and-hours",
+      "title": "Priser och öppettider",
+      "body": [
+        "Biljettpriser och öppettider varierar med säsongen – kolla den officiella webbplatsen för Parco Archeologico di Pompei innan du åker.",
+        "Ordinarie inträde ligger oftast strax över 15 euro; sista insläpp varierar mellan sen eftermiddag och tidig kväll beroende på månad."
+      ]
+    },
+    {
+      "id": "other-facilities",
+      "title": "Service på plats",
+      "body": [
+        "Hämta den gratis kartan vid informationsdisken bredvid biljettluckorna – den gör det mycket lättare att orientera sig.",
+        "Vid entrén kan du hyra audioguider eller anlita licensierade guider om du vill ha mer förklaringar.",
+        "Det finns kiosker men utbudet är begränsat – ta med ordentligt med vatten, särskilt under de varma månaderna.",
+        "Bagage kan förvaras mot avgift på stationen Pompeii Scavi eller gratis i garderoben precis innanför entrén."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Så tar du dig dit",
+      "body": [
+        "Från Positano tar du SITA-bussen till Sorrento; köp biljetter i en tabacchi-butik eller ombord och räkna med ungefär en timmes resa.",
+        "I Sorrento går du upp för trapporna till Circumvesuviana-plattformarna och tar lokaltåget till ‘Pompei Scavi – Villa dei Misteri’.",
+        "När du lämnar stationen svänger du höger; entrén Porta Marina Superiore ligger på vänster sida cirka 50 meter bort."
+      ]
+    },
+    {
+      "id": "self-guided-tour",
+      "title": "Rundtur på egen hand",
+      "body": [
+        "Vid entrén, sväng vänster till informationsdisken för att hämta kartan och ordna bagageförvaring innan du köper biljetter i luckorna rakt fram.",
+        "Inne på området lokaliserar du Porta Marina Superiore på kartan – du står på Via Marina med tydlig skyltning framför dig.",
+        "Följ Via Marina mot amfiteatern och gör avstickare till de hus, bad och forum som lockar innan du återvänder till huvudleden.",
+        "Efter amfiteatern tar du vägen genom den nedre delen av området för att se fler höjdpunkter utan att gå samma sträcka tillbaka.",
+        "Den här rundan täcker vanligtvis 60–80 % av de viktigaste platserna på betydligt kortare tid än om du försöker gå på varje gata."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Buss till Sorrento",
+        "text": "Ta SITA-bussen från Positano till Sorrentos centralstation (cirka 60 minuter)."
+      },
+      {
+        "name": "Tåg till Pompeii Scavi",
+        "text": "Gå upp till Circumvesuviana-plattformarna och ta tåget mot ‘Pompei Scavi – Villa dei Misteri’."
+      },
+      {
+        "name": "Promenera till entrén",
+        "text": "Sväng höger när du lämnar stationen; Porta Marina Superiore ligger ungefär 50 meter bort på vänster sida."
+      }
+    ]
+  },
+  "tipsTitle": "Tips för besöksdagen",
+  "tips": [
+    "Plocka upp den gratis kartan innan du passerar spärrarna så att du kan planera avstickare utan att backa tillbaka.",
+    "Ta med gott om vatten och fyll på vid fontäner; på sommaren kan köerna till kioskerna bli långa.",
+    "Anteckna fotoplatser eller fresker du vill återvända till på vägen ut – i hettan är de lätta att missa."
+  ],
+  "warningsTitle": "Viktiga varningar",
+  "warnings": [
+    "Under högsäsong kan köerna till SITA-bussen och Circumvesuviana-tågen lägga på 20–30 minuter per sträcka – bygg in marginal i schemat.",
+    "Stora delar av området är utan skugga, så undvik besök mitt på dagen om du är känslig för värme."
+  ],
+  "faqsTitle": "Vanliga frågor",
+  "faqs": [
+    {
+      "q": "Vilken entré är bäst?",
+      "a": [
+        "Porta Marina Superiore, precis bredvid stationen Pompei Scavi, är smidigast för individuella besökare – bara några meter från tåget och nära bagageförvaringen."
+      ]
+    },
+    {
+      "q": "Kan jag gå runt utan guide?",
+      "a": [
+        "Ja. Den kostnadsfria officiella kartan är detaljerad och de flesta större byggnader har skyltar på italienska och engelska. Audioguider och licensierade guider finns att hyra om du vill ha mer fördjupning."
+      ]
+    },
+    {
+      "q": "Var kan jag lämna bagaget?",
+      "a": [
+        "Mindre väskor kan lämnas mot avgift på stationen Pompei Scavi, och innanför entrén finns en kostnadsfri garderob."
+      ]
+    }
+  ]
+}

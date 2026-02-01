@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 
+import { getStringProp, readJsonSafely } from "@/lib/json";
 import type { Comment } from "@/lib/repo/CommentReader";
 
 interface CommentThreadProps {
@@ -49,8 +50,8 @@ export function CommentThread({
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        setError(data.error || "Failed to post comment");
+        const data = await readJsonSafely(response);
+        setError(getStringProp(data, "error") || "Failed to post comment");
         setIsSubmitting(false);
         return;
       }

@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-02-01
 ---
 
 # Claude Coding Assistant Guide
@@ -35,7 +35,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 ## Type Intelligence (MCP)
 
-When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before pushing (and CI re-enforces it before merge).
 
 Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 

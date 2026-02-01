@@ -1,55 +1,22 @@
 import { notFound } from "next/navigation";
 
-import { BoardView } from "@/components/board/BoardView";
-import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
-import { getCurrentUserServer } from "@/lib/current-user";
-import { getDb } from "@/lib/d1.server";
-import type { Business, Lane } from "@/lib/types";
 import {
   listCardsForBoard as listCardsFromD1,
   listInboxIdeas,
 } from "@acme/platform-core/repositories/businessOs.server";
+
+import { BoardView } from "@/components/board/BoardView";
+import { filterCardsForBoard, orderCards } from "@/lib/board-logic";
+import { BUSINESSES } from "@/lib/business-catalog";
+import { getCurrentUserServer } from "@/lib/current-user.server-only";
+import { getDb } from "@/lib/d1.server";
+import type { Lane } from "@/lib/types";
 
 // BOS-D1-05 Phase 2: Edge runtime with D1 repositories
 export const runtime = "edge";
 
 // BOS-D1-05: Disable Next.js caching for board pages (real-time updates required)
 export const revalidate = 0;
-
-// TODO (BOS-D1-08): Move businesses to D1 table or derive from cards
-// Temporary hard-coded business catalog (matches docs/business-os/strategy/businesses.json)
-const BUSINESSES: Business[] = [
-  {
-    id: "PLAT",
-    name: "Platform",
-    description:
-      "Core platform infrastructure, shared services, and developer experience",
-    owner: "Pete",
-    status: "active",
-    created: "2026-01-28",
-    tags: ["infrastructure", "dx", "monorepo"],
-  },
-  {
-    id: "BRIK",
-    name: "Brikette",
-    description:
-      "Multilingual e-commerce platform for hostel bookings and travel experiences",
-    owner: "Pete",
-    status: "active",
-    created: "2026-01-28",
-    tags: ["e-commerce", "travel", "i18n"],
-  },
-  {
-    id: "BOS",
-    name: "Business OS",
-    description:
-      "Repo-native business operating system and kanban coordination layer",
-    owner: "Pete",
-    status: "active",
-    created: "2026-01-28",
-    tags: ["workflow", "coordination", "agents"],
-  },
-];
 
 interface PageProps {
   params: Promise<{ businessCode: string }>;

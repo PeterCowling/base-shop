@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Rejtett falvak az Amalfi-parton",
+    "description": "Kikapcsolódás a főútvonalaktól: helyi falvak, kis terek és autentikus légkör."
+  },
+  "linkLabel": "Rejtett falvak az Amalfi-parton",
+  "intro": [
+    "Fedezd fel az Amalfiból kilépő kisebb falvakat, amikor szeretnél nyugodt sétát, helyi vendéglátást és kilátót a turisták nélküli házak fölött."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Miért érdemes elmenni?",
+      "body": [
+        "A kisebb települések kevesebb tömeggel, több csenddel és kurzusokkal várnak, amelyek közelebb visznek a napi olasz élethez.",
+        "Ha a főútvonalak már túlzsúfoltak, a falvak tökéletesek egy délutáni kirándulásra vagy egy kényelmes ebédre."
+      ]
+    },
+    {
+      "id": "which",
+      "title": "Hová menj, ha ...",
+      "body": [
+        "Próbáld ki a Praiano feletti Nocelle-t vagy a hegyoldali Scala-t a kilátók miatt.",
+        "A Tramonti-völgyben a szőlőültetvények és az autentikus trattoriák várnak, míg a Vietri di Mare és Ravello közötti szakaszon csendes tengerparti falvak vannak."
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Tippek a nyugis naphoz",
+      "body": [
+        "Foglalj kora reggeli buszt vagy bérelj e-kickbike-ot, ha a falvak magasabban vannak.",
+        "Kérj helyi ajánlást a kávézókhoz, mert sokan nem hirdetik ki a napi különlegességeket."
+      ]
+    }
+  ],
+  "tips": [
+    "Hozz apró eurócímleteket a kis boltokban való fizetéshez.",
+    "Tervezz több időt az oda-vissza útra — a tengerparti utak kanyargósak és lassúak."
+  ],
+  "faqs": [
+    {
+      "q": "Lehet tömeg nélkül sétálni?",
+      "a": [
+        "Igen; a falvak kora reggel vagy késő este a legcsendesebbek."
+      ]
+    },
+    {
+      "q": "Vannak nyitott éttermek?",
+      "a": [
+        "A legtöbb helyi vendéglő szezonálisan nyit, de a falvakban gyakran találsz egész évben működő trattoriát."
+      ]
+    }
+  ],
+  "tocTitle": "Ezen az oldalon"
+}

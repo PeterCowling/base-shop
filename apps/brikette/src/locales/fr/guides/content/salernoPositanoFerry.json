@@ -1,11 +1,12 @@
 {
+  "lastUpdated": "2026-01-31",
   "seo": {
     "title": "Salerne à Positano en ferry | Hostel Brikette",
-    "description": "Salerne à Positano en ferry : horaires, conseils pour les billets et trajet jusqu'à l'Hostel Brikette depuis le port en utilisant les porteurs ou le bus local."
+    "description": "Salerne à Positano en ferry : horaires, conseils pour les billets (€16-24), 70 min via Amalfi, embarcadère Molo Concordia, et trajet jusqu'à l'Hostel Brikette."
   },
   "intro": {
-    "title": "Salerne à Positano — Ferry",
-    "body": "Utilisez ce guide pour voyager de Salerne à Positano en ferry. Il couvre les billets, les points d'embarquement à Salerne, des conseils sur les horaires et la façon de rejoindre l'Hostel Brikette depuis le quai de Positano."
+    "title": "Salerne à Positano en ferry — Guide complet",
+    "body": "Le ferry de Salerne à Positano fonctionne d'avril à octobre et offre une alternative panoramique à la route côtière. Ce guide couvre tout ce que les voyageurs de l'auberge doivent savoir : tarifs exacts (€16–€24), où embarquer à Salerne, comment obtenir les meilleures places à bord, et rejoindre l'Hostel Brikette depuis le quai de Positano avec vos bagages."
   },
   "callouts": {
     "tip": "Besoin d'autres options de transport ? Ouvrez la %HOWTO:how-to-get-here|vue d'ensemble Comment venir% pour les bus, les itinéraires combinés et les transferts depuis l'aéroport."
@@ -13,41 +14,210 @@
   "sections": [
     {
       "id": "overview",
-      "title": "Aperçu du trajet",
+      "title": "Aperçu rapide",
+      "body": "Le ferry Salerne-Positano est exploité principalement par Travelmar, avec 2 à 4 traversées quotidiennes d'avril à octobre. Le temps de trajet est de 70 minutes en direct ou 1h45 avec un arrêt à Amalfi, selon les conditions maritimes.",
       "list": [
-        "Des ferries saisonniers relient Salerne à Positano en offrant de superbes vues sur la côte.",
-        "Travelmar exploite les services les plus fréquents ; prévoyez du temps supplémentaire en haute saison.",
-        "Les ferries peuvent être annulés en cas de mauvais temps — consultez toujours les informations en direct avant de voyager."
+        "**Coût :** €16–€24 par personne aller simple (saison 2026)",
+        "**Bagages :** €2 par sac au-delà du bagage à main inclus (max 45cm × 35cm × 20cm)",
+        "**Premier départ :** Environ 08:15 depuis Salerne",
+        "**Dernier départ :** Environ 17:45 depuis Salerne",
+        "**Saison :** Avril à fin octobre (selon la météo)"
       ]
     },
     {
-      "id": "positanoArrival",
-      "title": "Arrivée à Positano",
-      "body": "Pour un itinéraire détaillé du quai jusqu'à notre porte, lisez le %LINK:ferryDockToBrikette|guide Ferry dock → Hostel Brikette%.",
+      "id": "whyFerry",
+      "title": "Pourquoi prendre le ferry ?",
+      "body": "Le ferry bat le bus SITA à bien des égards. Vous évitez la route côtière encombrée SS163. Vous n'avez pas à vous battre pour des places de bus en haute saison. Vous débarquez directement à la plage Spiaggia Grande à Positano, plus proche de l'auberge que les arrêts de bus Chiesa Nuova ou Sponda. Et vous profitez de vues côtières spectaculaires pour seulement €16–€24.",
       "list": [
-        "Vous accosterez au quai principal de Positano (Spiaggia Grande).",
-        "Avec des bagages, nous recommandons le service de porteurs ou le bus local Interno.",
-        "Marcher en montée avec des valises lourdes est déconseillé sous la chaleur estivale."
-      ]
-    },
-    {
-      "id": "salernoBoarding",
-      "title": "Où embarquer à Salerne",
-      "list": [
-        "La plupart des services partent de la Piazza della Concordia (Travelmar) à Salerne.",
-        "Certaines traversées utilisent le Molo Manfredi — vérifiez le terminal indiqué sur votre billet.",
-        "Suivez la signalisation sur le front de mer ; le personnel peut vous orienter vers le bon quai."
+        "Admirez de près les villes à flanc de falaise comme Praiano, les criques cachées et les terrasses de citronniers verticales",
+        "Pas d'embouteillages—les ferries partent à l'heure même quand la route SS163 est bloquée",
+        "Accostez à la plage principale de Positano, près des %LINK:porterServices|services de porteurs% et de %LINK:ferryDockToBrikette|l'itinéraire vers l'auberge%",
+        "Air marin frais et sièges sur le pont extérieur (premier arrivé, premier servi)",
+        "Souvent plus rapide que le bus en juillet et août quand le trafic routier est au pire"
       ]
     },
     {
       "id": "tickets",
       "title": "Billets et horaires",
-      "body": "Consultez les horaires et tarifs les plus récents sur %URL:https://travelmar.it/en|Travelmar% et %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Horaires des ferries%.",
+      "body": "Achetez les billets Travelmar en ligne sur travelmar.it, au bureau du front de mer de Salerne, ou aux kiosques près du Molo Concordia. En juillet et août, réservez en ligne 1 à 2 jours à l'avance. Les billets du jour fonctionnent en avril, mai, septembre et octobre, mais les week-ends peuvent afficher complet.",
       "list": [
-        "Achetez vos billets en ligne à l'avance pendant les mois de forte affluence.",
-        "Arrivez 15 à 20 minutes avant le départ pour embarquer sereinement.",
-        "Gardez votre billet à portée de main ; le personnel le scannera ou le déchirera avant l'embarquement."
+        "**En ligne :** Réservez sur travelmar.it. Le billet arrive par e-mail sous forme de code QR.",
+        "**En personne :** Le bureau de billetterie sur le front de mer de Salerne ouvre 30 minutes avant le premier bateau.",
+        "**Prix :** €16–€24 par adulte selon la saison et le type de service (direct ou via Amalfi). Les enfants et bébés peuvent coûter moins cher.",
+        "**Bagages :** Un petit sac (45cm × 35cm × 20cm) est gratuit. Les sacs à dos plus grands et les valises à roulettes coûtent €2 chacun.",
+        "**Paiement :** Espèces et carte acceptées aux kiosques. En ligne nécessite une carte ou PayPal."
       ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Où embarquer à Salerne",
+      "body": "L'embarcadère du ferry se trouve sur le front de mer de Salerne au Molo Concordia (Piazza della Concordia), à 5 minutes à pied de la gare de Salerne. Face à la mer depuis la place. Cherchez les enseignes Travelmar, les kiosques bleus et blancs, et les files d'attente 15 à 20 minutes avant le départ des bateaux.",
+      "list": [
+        "**Emplacement :** Port de Salerne, Molo Concordia, Piazza della Concordia, à l'est de la gare ferroviaire",
+        "**Depuis la gare :** Marchez vers la mer le long de la Corso Vittorio Emanuele, puis tournez à droite sur le Lungomare Trieste",
+        "**Enseignes :** Les bureaux Travelmar sont clairement indiqués. Le personnel en gilets bleus aide à l'embarquement.",
+        "**Porte de départ :** Vérifiez votre billet pour le bon quai. Certains départs utilisent le Molo Manfredi—confirmez le terminal.",
+        "**Horaire :** Arrivez 15 à 20 minutes en avance pour attraper les places sur le pont extérieur et éviter la ruée."
+      ]
+    },
+    {
+      "id": "onboard",
+      "title": "À quoi s'attendre à bord",
+      "body": "Les bateaux Travelmar ont des sièges climatisés à l'intérieur et un espace sur le pont extérieur. Pour les meilleures vues, allez directement sur le pont extérieur quand l'embarquement commence. Les sièges se remplissent vite. Sur le trajet Salerne-Positano, asseyez-vous du **côté gauche** (face à l'avant) pour voir les falaises, les villes comme Amalfi et Praiano, et les plages cachées. Le voyage dure 70 minutes en direct ou 1h45 via Amalfi. Pas de cabines ni de lits—juste des sièges.",
+      "list": [
+        "**Meilleures places :** Pont extérieur, côté gauche, face à l'avant pour des vues maximales du fjord de Furore et des îles Li Galli",
+        "**Cabine intérieure :** Salon climatisé avec bancs. Bon pour mer agitée ou soleil brûlant à midi.",
+        "**Snack-bar :** Certains bateaux ont un comptoir avec boissons, snacks et glaces (espèces et carte acceptées).",
+        "**Bagages :** Mettez les sacs dans les racks du pont ou sous votre siège. Le personnel aide si les sacs sont gros.",
+        "**Mal de mer :** Généralement calme. Si vous avez le mal de mer, asseyez-vous à l'intérieur près du milieu. Ne lisez pas et n'utilisez pas votre téléphone."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Arrivée à Positano",
+      "body": "Les bateaux accostent au quai principal de Spiaggia Grande (la grande plage publique). Vous descendez du quai sur la route de la plage. De là, trois moyens pour rejoindre l'Hostel Brikette : marcher en montée (raide, 15–20 min avec des sacs), prendre le bus Interno Positano (€2, moins d'escaliers), ou engager un porteur (€20–€25 par sac, mieux si vous avez des affaires lourdes). Voir le %LINK:ferryDockToBrikette|guide du quai à Brikette% pour des photos étape par étape.",
+      "list": [
+        "**Quai :** Quai de Spiaggia Grande, centre de Positano, près de la Via Positanesi d'America",
+        "**Porteurs :** Attendent au quai. Demandez le prix avant de leur donner vos sacs (€20–€25 par sac jusqu'à Brikette).",
+        "**Bus Interno :** Part de la Via Cristoforo Colombo près du quai. Achetez les billets aux kiosques ou dans le bus.",
+        "**À pied :** Escaliers et pentes raides. OK avec un sac à dos de jour. Difficile avec des valises à roulettes sous la chaleur estivale.",
+        "**Arrivée anticipée :** Si vous débarquez avant l'enregistrement à 15h00, utilisez la %LINK:luggageStorage|consigne à bagages% près de la plage (€5–€8 par sac)."
+      ]
+    },
+    {
+      "id": "hostelTips",
+      "title": "Conseils de l'auberge",
+      "body": "Nous avons vu beaucoup de voyageurs arriver en ferry depuis Salerne. Voici ce qui fonctionne le mieux, basé sur des retours réels et des erreurs courantes.",
+      "list": [
+        "**Prenez le bateau de 08:15 ou 09:00** pour profiter au maximum de votre première journée. Vous arriverez à temps pour vous enregistrer, déposer vos sacs et explorer avant le déjeuner.",
+        "**Évitez le dernier ferry (17:45)** sauf si les escaliers dans le noir ne vous dérangent pas. Les chemins de Positano n'ont pas beaucoup de lumière après le coucher du soleil.",
+        "**Apportez un petit sac à dos** pour vos objets de valeur. Gardez-le avec vous sur le pont. Les gros sacs vont dans les racks, mais ne laissez pas de téléphones ou portefeuilles là-bas.",
+        "**Portez des couches.** Le pont devient venteux même en été. Une veste légère aide pour les trajets du matin ou du soir.",
+        "**Téléchargez des cartes hors ligne** avant d'embarquer. Le signal téléphonique diminue en pleine traversée. Vous voulez des directions prêtes quand vous débarquez.",
+        "**Prévoyez un budget pour les porteurs** si vous avez plus d'un sac ou quelque chose de plus de 15 kg. La montée de la Via Pasitea jusqu'à Brikette est plus raide qu'elle n'y paraît."
+      ]
+    },
+    {
+      "id": "alternativeRoutes",
+      "title": "Autres moyens d'atteindre Positano",
+      "body": "Si l'horaire du ferry ne convient pas, ou si les bateaux s'arrêtent à cause de la météo (rare mais arrive en avril et octobre), essayez ces solutions de secours. Voir le %HOWTO:how-to-get-here|guide Comment venir% pour tous les détails.",
+      "list": [
+        "**Bus SITA :** Salerne à Positano via la route côtière SS163, €2.50–€3.50, fonctionne toute l'année mais bondé en haute saison.",
+        "**Taxi maritime privé :** Plus rapide et plus flexible que les bateaux programmés, mais coûte €100–€150 pour tout le bateau (partagé entre 4 à 6 personnes).",
+        "**Taxi routier :** Passe par Agerola et les routes intérieures comme la SP2, €50–€70, bon quand les ferries ne fonctionnent pas.",
+        "**Direct depuis Naples :** Vous venez de l'aéroport de Naples Capodichino ? Voir %LINK:naplesAirportBus|Naples Aéroport à Positano en bus% pour éviter Salerne."
+      ]
+    },
+    {
+      "id": "whenToGo",
+      "title": "Meilleurs mois pour le ferry",
+      "body": "La saison des ferries s'étend d'avril à fin octobre. Les mois de pointe (juillet et août) voient le plus de traversées mais aussi les plus grandes foules et les prix les plus élevés. Les mois d'intersaison (avril, mai, septembre, octobre) offrent un meilleur rapport qualité-prix, des mers plus calmes et une disponibilité de billets plus facile.",
+      "list": [
+        "**Avril–Mai :** Moins de touristes, mers calmes, plus facile d'obtenir des billets le jour même. Le temps peut être frais début avril.",
+        "**Juin :** Week-ends chargés, mers calmes, l'horaire complet des ferries commence. Réservez 1 jour à l'avance pour les week-ends.",
+        "**Juillet–Août :** Haute saison. Réservez 2 jours à l'avance. Les bateaux se remplissent vite. Attendez-vous à des foules aux quais de Salerne et Positano.",
+        "**Septembre–Octobre :** Retour de l'intersaison. Plus calme qu'en été, mais octobre peut avoir des mers agitées et des fermetures précoces de saison."
+      ]
+    },
+    {
+      "id": "budgetTips",
+      "title": "Conseils budget pour les voyageurs d'auberge",
+      "body": "Le ferry coûte €16–€24, ce qui est correct pour 70 minutes de vues côtières. Mais les coûts supplémentaires s'accumulent vite. Voici comment rester économique.",
+      "list": [
+        "**Voyagez léger.** Un petit sac sous 45cm × 35cm × 20cm est gratuit. Un deuxième sac coûte €2. Si vous avez un gros sac à dos et un sac de jour, portez le sac de jour et transportez le sac à dos pour éviter les frais.",
+        "**Ignorez le snack-bar.** Boissons et snacks sur le bateau coûtent le double de ce que vous paieriez dans un magasin à Salerne. Achetez eau et snacks dans un supermarché près de la gare avant d'embarquer.",
+        "**Réservez directement.** Achetez les billets sur travelmar.it ou au kiosque du quai. Les sites tiers comme Viator ou GetYourGuide ajoutent une majoration. Économisez €2–€3 en réservant directement.",
+        "**Voyagez en intersaison.** Les ferries font le même trajet en avril, mai, septembre et octobre, mais les billets sont plus faciles à obtenir et les foules plus minces. Vous avez les mêmes vues pour moins de stress.",
+        "**Partagez un taxi maritime.** Si vous êtes en groupe de 4 à 6 personnes, un taxi maritime privé (€100–€150) peut revenir moins cher par personne que les ferries. En plus vous évitez les files et choisissez votre propre horaire."
+      ]
+    },
+    {
+      "id": "commonMistakes",
+      "title": "Erreurs courantes à éviter",
+      "body": "Nous avons observé des centaines de voyageurs d'auberge prendre le ferry Salerne-Positano. Voici les principales erreurs qui posent problème.",
+      "list": [
+        "**Arriver en retard au quai.** Travelmar embarque 10 à 15 minutes avant le départ. Si vous arrivez 5 minutes avant que le bateau parte, vous le raterez ou serez coincé à l'intérieur avec de mauvaises places. Arrivez 20 minutes en avance.",
+        "**Ne pas vérifier la météo.** Les ferries annulent si les mers sont agitées. Vérifiez le site Travelmar ou appelez à l'avance les jours venteux, surtout en avril et octobre. Ayez un plan de secours (bus SITA ou taxi).",
+        "**Oublier les espèces.** La plupart des kiosques acceptent les cartes, mais le snack-bar à bord est souvent en espèces seulement. Apportez €5–€10 en pièces si vous voulez boissons ou snacks.",
+        "**S'asseoir du côté droit.** Sur le trajet Salerne-Positano, les meilleures vues sont à gauche (face à l'avant). Le côté droit fait face à la mer ouverte. Les touristes s'assoient toujours du mauvais côté d'abord.",
+        "**Ne pas savoir quel quai.** Salerne a plusieurs quais. Vérifiez votre billet. Si vous allez au mauvais, vous devrez courir. Cherchez les enseignes Travelmar et demandez au personnel si vous n'êtes pas sûr.",
+        "**Surestimer la marche depuis le quai de Positano.** La montée jusqu'à Brikette est raide. N'essayez pas avec une grosse valise à roulettes sous la chaleur de juillet. Prévoyez un porteur ou un bus. Voir le %LINK:ferryDockToBrikette|guide du quai à l'auberge% pour l'itinéraire exact."
+      ]
+    },
+    {
+      "id": "whatToBring",
+      "title": "Quoi apporter sur le ferry",
+      "body": "La traversée est relativement longue (70 min–1h45), vous aurez donc besoin de quelques articles pour rendre le voyage meilleur.",
+      "list": [
+        "**Bouteille d'eau.** Le pont devient chaud en été. Apportez une bouteille réutilisable remplie depuis votre hôtel ou une fontaine à Salerne.",
+        "**Crème solaire et lunettes de soleil.** Pas d'ombre sur le pont extérieur. Le soleil se reflète sur l'eau et brûle vite, même les jours nuageux.",
+        "**Veste ou pull léger.** Les ferries du matin et du soir deviennent venteux. Les embruns peuvent tremper les chemises légères si vous vous asseyez à l'avant.",
+        "**Chargeur de téléphone ou batterie externe.** Vous prendrez beaucoup de photos. Assurez-vous que votre téléphone a de la batterie pour quand vous débarquez à Positano.",
+        "**Cartes hors ligne.** Téléchargez Google Maps ou Maps.me avant d'embarquer. Le signal téléphonique diminue en pleine traversée, et vous voudrez des directions quand vous accostez.",
+        "**Petit sac à dos.** Gardez les objets de valeur avec vous. Ne laissez pas de sacs sans surveillance dans les racks à bagages. Les pickpockets ciblent les touristes sur les bateaux bondés en haute saison."
+      ]
+    },
+    {
+      "id": "salernoTips",
+      "title": "Conseils spécifiques à Salerne",
+      "body": "Salerne est une ville plus grande qu'Amalfi avec plus d'options de transport. Si vous avez du temps avant votre ferry, voici ce qu'il faut savoir.",
+      "list": [
+        "**Consigne à bagages à la gare :** Si vous venez de Naples en train et arrivez tôt, déposez vos sacs à la consigne (€5–€6 par sac) près de la Piazza Vittorio Veneto.",
+        "**Supermarchés :** Coop et Conad près du Corso Vittorio Emanuele vendent eau, snacks et sandwiches pour moitié prix par rapport aux kiosques du quai.",
+        "**Centre historique :** Si vous avez 1 à 2 heures, marchez jusqu'à la Cathédrale de Salerne (Duomo) et les Giardini della Minerva (jardins médicinaux). Tous deux sont à 10 minutes à pied du quai.",
+        "**WiFi gratuit :** La plupart des cafés près de la gare et du Lungomare Trieste offrent le WiFi gratuit. Bon pour vérifier les horaires de ferry de dernière minute.",
+        "**Toilettes publiques :** À la gare de Salerne (€0.50) et dans les cafés le long du front de mer si vous consommez."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je apporter un gros sac à dos ou une valise à roulettes sur le ferry ?",
+      "a": "Oui, mais les sacs plus grands que 45cm × 35cm × 20cm coûtent €2 supplémentaires par sac. Achetez le billet bagages avec votre billet de ferry (en ligne ou au kiosque). Mettez les gros sacs dans les racks à bagages sur le pont."
+    },
+    {
+      "q": "Que se passe-t-il si le ferry est annulé à cause de la météo ?",
+      "a": "Travelmar annule les traversées si les mers sont agitées (rare, mais arrive en début/fin de saison). Vous recevrez un e-mail si vous avez réservé en ligne. Le personnel affiche des avis au quai. Prenez le bus SITA de Salerne à Positano (€2.50–€3.50) ou prenez un taxi à la place."
+    },
+    {
+      "q": "Le ferry convient-il aux voyageurs à mobilité réduite ?",
+      "a": "L'embarquement nécessite de marcher sur une courte passerelle et peut-être des escaliers entre le quai et le pont. La plupart des ferries Travelmar n'ont pas de rampes pour fauteuils roulants. Si vous avez besoin d'aide, arrivez tôt et demandez au personnel. Ils peuvent vous embarquer en premier via une route plus sûre."
+    },
+    {
+      "q": "Puis-je acheter les billets de ferry le jour du voyage ?",
+      "a": "Généralement oui en avril, mai, septembre et octobre. Mais juillet et août affichent complet 1 à 2 jours à l'avance. Réservez en ligne la veille pour être sûr, surtout pour les bateaux du matin."
+    },
+    {
+      "q": "Comment aller du quai de Positano à l'Hostel Brikette ?",
+      "a": "Trois moyens : marcher en montée (15–20 minutes, escaliers raides), prendre le bus Interno Positano (€2), ou engager un porteur (€20–€25 par sac). Voir notre %LINK:ferryDockToBrikette|guide bagages du quai à Brikette% pour directions et photos."
+    },
+    {
+      "q": "Y a-t-il des toilettes et des snacks à bord ?",
+      "a": "La plupart des bateaux Travelmar ont un petit snack-bar avec boissons et nourriture légère. Les toilettes sont sur les plus gros bateaux, mais pas sur les plus petits en période creuse. Utilisez les toilettes avant d'embarquer si possible."
+    },
+    {
+      "q": "Quel est le meilleur moment pour prendre le ferry ?",
+      "a": "Les bateaux du matin (08:15–10:00) ont des mers plus calmes et une meilleure lumière pour les photos. Les trajets de l'après-midi sont plus chargés avec les excursionnistes. Évitez le dernier bateau (17:45) sauf si arriver après la nuit tombée ne vous dérange pas."
+    },
+    {
+      "q": "Dois-je imprimer mon billet ou puis-je montrer mon téléphone ?",
+      "a": "Votre téléphone suffit. Le personnel scanne le code QR depuis votre écran. Assurez-vous que votre téléphone est chargé et que vous pouvez ouvrir l'e-mail ou la réservation sans internet (enregistrez-le hors ligne ou faites une capture d'écran)."
+    },
+    {
+      "q": "Où se trouve exactement le quai du ferry à Salerne ?",
+      "a": "Marchez vers le front de mer depuis la gare de Salerne le long du Corso Vittorio Emanuele. Tournez à droite sur le Lungomare Trieste. Le quai Travelmar (Molo Concordia) est à 5 minutes le long de la promenade. Cherchez les enseignes bleues et blanches et les kiosques de billets."
+    },
+    {
+      "q": "Puis-je stocker des bagages à Positano si j'arrive tôt ?",
+      "a": "Oui. Plusieurs %LINK:luggageStorage|points de consigne à bagages% près de la plage Spiaggia Grande facturent €5–€8 par sac par jour. Pratique si vous débarquez avant l'enregistrement à l'auberge à 15h00."
+    },
+    {
+      "q": "Le ferry direct est-il meilleur que celui qui s'arrête à Amalfi ?",
+      "a": "Le ferry direct (70 min) est plus rapide et mieux si vous voulez arriver rapidement. Le ferry via Amalfi (1h45) prend plus de temps mais offre plus de vues côtières et la chance de voir Amalfi depuis l'eau. Les deux ont le même prix—choisissez selon votre emploi du temps."
+    },
+    {
+      "q": "Puis-je apporter de la nourriture et des boissons sur le ferry ?",
+      "a": "Oui, vous pouvez apporter votre propre nourriture et boissons. Beaucoup de voyageurs apportent des sandwiches et de l'eau achetés dans les supermarchés de Salerne. Mangez sur le pont extérieur mais jetez vos déchets dans les poubelles fournies."
     }
   ]
 }

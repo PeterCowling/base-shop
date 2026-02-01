@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-01-20
+Last-reviewed: 2026-02-01
 ---
 
 # AGENTS.md — Operational Runbook
@@ -41,27 +41,28 @@ When you identify that the "right" solution requires significantly more work, ex
 | Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
 | Validate all | `bash scripts/validate-changes.sh` |
 
-## Validation Gate (Before Every Commit)
+## Validation Gates
 
 ```bash
-pnpm typecheck && pnpm lint
-# Plus: targeted tests for changed files (see scripts/validate-changes.sh)
+# Checkpoint commits: rely on pre-commit (staged lint + affected typecheck).
+# Before pushing:     pre-push enforces `pnpm typecheck && pnpm lint`.
 ```
 
-**Rule:** Never commit code that fails validation. Fix first.
+**Rule:** Never push code that fails validation. Fix first.
 
 ## Git Rules
 
 - Work on `work/*` branches only — never commit to `main`
 - For parallel work: **one worktree per agent/human** (`scripts/git/new-worktree.sh <label>`)
+- If you operate in the **main checkout** (not recommended), acquire the writer lock first (`scripts/agents/with-writer-lock.sh`). Commits/pushes are blocked otherwise.
 - **Commit every 30 minutes** or after completing any significant change
 - **Push every 2 hours** (or every 3 commits) — GitHub is your backup
 
-**Destructive commands:**
-- **Agents:** MUST NOT run `git reset --hard`, `git clean -fd`, `git push --force`
-- **Humans:** Avoid; if required, follow procedure in [docs/git-safety.md](docs/git-safety.md)
+**Destructive / history-rewriting commands (agents: never):**
+- `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
 
-Full guide: [docs/git-safety.md](docs/git-safety.md)
+If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
 ## Testing Rules
 

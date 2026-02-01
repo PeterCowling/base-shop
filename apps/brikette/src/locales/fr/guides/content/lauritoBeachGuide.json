@@ -122,20 +122,35 @@
   ],
   "images": {
     "whyGo": {
-      "alt": "Crique de Laurito avec transats face aux falaises",
-      "caption": "Soleil jusqu'au soir et eau calme pour la baignade."
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
+      "alt": "Laurito Beach cove with beach clubs along the shoreline",
+      "caption": "Laurito's cliff-backed cove is calmer and quieter than the main beach."
     },
     "layout": {
-      "alt": "Vue aérienne de la plage de Laurito montrant les trois zones",
-      "caption": "Zone publique à droite, Tre Ville au centre, Da Adolfo à gauche."
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
+      "alt": "Beach decks and shoreline layout at Laurito",
+      "caption": "Three zones share the cove: public strip, Villa Tre Ville decks, and Da Adolfo terrace."
     },
     "treVille": {
-      "alt": "Terrasse de Villa Tre Ville avec transats en terre cuite",
-      "caption": "Service boutique et vues sur les îlots Li Galli."
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
+      "alt": "Villa Tre Ville beach club loungers and sea views",
+      "caption": "Villa Tre Ville focuses on premium loungers and concierge-style service."
     },
     "daAdolfo": {
-      "alt": "Tables du restaurant Da Adolfo sur la terrasse",
-      "caption": "La mozzarella grillée sur feuilles de citronnier est la spécialité maison."
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
+      "alt": "Da Adolfo beach club dock and seating area",
+      "caption": "Da Adolfo's shuttle boat drops guests beside the restaurant terrace."
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "View over Positano and the sea with boats near the shore",
+      "caption": "Spiaggia Grande is the main launch point for many beach shuttles and boats."
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "Blue SITA bus driving along the Amalfi Coast road above the sea",
+      "caption": "The coastal SITA bus is a useful backup when boats are paused."
     }
-  }
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z"
 }

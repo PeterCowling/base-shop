@@ -141,6 +141,13 @@ export default function GuideEditorialPanel({
     status: status,
   });
 
+  // Draft path editing state (only for draft status)
+  const [isEditingDraftPath, setIsEditingDraftPath] = useState(false);
+  const [draftPathInput, setDraftPathInput] = useState("");
+  const [draftPathSaveStatus, setDraftPathSaveStatus] = useState<AreaSaveStatus>("idle");
+  const [draftPathError, setDraftPathError] = useState<string | null>(null);
+  const canEditDraftPath = canEditAreas && selectedStatus === "draft";
+
   // Debug logging to check environment variables
   useEffect(() => {
     console.log('[GuideEditorialPanel] Debug info:', {
@@ -261,6 +268,90 @@ export default function GuideEditorialPanel({
     if (!canEditAreas) return;
     setSelectedStatus(newStatus);
   };
+
+  // Extract the last segment from the draft URL for editing
+  const extractPathSegmentFromUrl = (url: string): string => {
+    // Remove leading /{lang}/draft/ prefix to get just the path segment
+    const match = url.match(/^\/[a-z]{2}\/draft\/(.+)$/);
+    return match ? match[1] : "";
+  };
+
+  // Start editing draft path
+  const handleStartEditingDraftPath = () => {
+    if (!canEditDraftPath || !draftUrl) return;
+    const currentSegment = extractPathSegmentFromUrl(draftUrl);
+    setDraftPathInput(currentSegment);
+    setIsEditingDraftPath(true);
+    setDraftPathError(null);
+  };
+
+  // Cancel draft path editing
+  const handleCancelDraftPathEdit = () => {
+    setIsEditingDraftPath(false);
+    setDraftPathInput("");
+    setDraftPathError(null);
+  };
+
+  // Save draft path
+  const handleSaveDraftPath = useCallback(async () => {
+    if (!canEditDraftPath) return;
+
+    const trimmedPath = draftPathInput.trim();
+    if (!trimmedPath) {
+      setDraftPathError("Draft path cannot be empty");
+      return;
+    }
+
+    // Client-side validation: URL-safe segments
+    const segments = trimmedPath.split("/");
+    const urlSafeRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    for (const segment of segments) {
+      if (!urlSafeRegex.test(segment)) {
+        setDraftPathError("Path segments must be URL-safe (lowercase letters, numbers, hyphens)");
+        return;
+      }
+    }
+
+    if (segments.length > 5) {
+      setDraftPathError("Path cannot have more than 5 segments");
+      return;
+    }
+
+    setDraftPathSaveStatus("saving");
+    setDraftPathError(null);
+
+    try {
+      const response = await fetch(`/api/guides/${manifest.key}/manifest`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-preview-token": PREVIEW_TOKEN ?? "",
+        },
+        body: JSON.stringify({ draftPathSegment: trimmedPath }),
+      });
+
+      const data = await response.json() as { ok?: boolean; error?: string };
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error ?? "Failed to save draft path");
+      }
+
+      setDraftPathSaveStatus("saved");
+      setIsEditingDraftPath(false);
+
+      // Reset to idle after showing "Saved"
+      setTimeout(() => setDraftPathSaveStatus("idle"), 2000);
+
+      // Reload the page to reflect the new URL
+      // The URL will change, so we need to navigate to the new path
+      const newUrl = `/${draftUrl?.split("/")[1] ?? "en"}/draft/${trimmedPath}`;
+      window.location.href = newUrl;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save draft path";
+      setDraftPathError(message);
+      setDraftPathSaveStatus("error");
+    }
+  }, [canEditDraftPath, draftPathInput, manifest.key, draftUrl]);
 
   // Merge fetched coverage into checklist items
   const enhancedChecklist = useMemo<ChecklistSnapshot | undefined>(() => {
@@ -397,11 +488,79 @@ export default function GuideEditorialPanel({
         </Inline>
 
         {draftUrl ? (
-          <Stack as="div" className="gap-1 text-xs text-brand-text/80">
-            <span>{draftPathLabel}</span>
-            <code className="w-fit rounded bg-brand-surface/80 px-2 py-1 font-mono text-xs text-brand-heading">
-              {draftUrl}
-            </code>
+          <Stack as="div" className="gap-2 text-xs text-brand-text/80">
+            <Inline className="items-center justify-between">
+              <span>{draftPathLabel}</span>
+              {canEditDraftPath && !isEditingDraftPath && (
+                <button
+                  type="button"
+                  onClick={handleStartEditingDraftPath}
+                  className="text-xs font-medium text-brand-primary underline decoration-brand-primary/40 underline-offset-2 hover:text-brand-primary/80"
+                >
+                  Edit path
+                </button>
+              )}
+              {draftPathSaveStatus === "saved" && (
+                <span className="text-xs text-brand-primary">Saved</span>
+              )}
+            </Inline>
+            {isEditingDraftPath ? (
+              <Stack className="gap-2">
+                <Inline className="items-center gap-1">
+                  <span className="font-mono text-xs text-brand-text/60">
+                    /{draftUrl?.split("/")[1] ?? "en"}/draft/
+                  </span>
+                  <input
+                    type="text"
+                    value={draftPathInput}
+                    onChange={(e) => setDraftPathInput(e.target.value.toLowerCase())}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") void handleSaveDraftPath();
+                      if (e.key === "Escape") handleCancelDraftPathEdit();
+                    }}
+                    className={clsx(
+                      "flex-1 rounded border bg-brand-surface px-2 py-1 font-mono text-xs text-brand-heading",
+                      "focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-1",
+                      draftPathError ? "border-brand-terra" : "border-brand-outline/40",
+                    )}
+                    placeholder="guides/my-guide-slug"
+                    autoFocus
+                  />
+                </Inline>
+                {draftPathError && (
+                  <p className="text-xs text-brand-terra">{draftPathError}</p>
+                )}
+                <Inline className="gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void handleSaveDraftPath()}
+                    disabled={draftPathSaveStatus === "saving"}
+                    className={clsx(
+                      "rounded px-3 py-1 text-xs font-medium transition-colors",
+                      draftPathSaveStatus === "saving"
+                        ? "bg-brand-outline/20 text-brand-text/40 cursor-not-allowed"
+                        : "bg-brand-primary text-white hover:bg-brand-primary/90",
+                    )}
+                  >
+                    {draftPathSaveStatus === "saving" ? "Saving..." : "Save"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCancelDraftPathEdit}
+                    className="rounded px-3 py-1 text-xs font-medium text-brand-text/70 hover:text-brand-text"
+                  >
+                    Cancel
+                  </button>
+                </Inline>
+                <p className="text-xs text-brand-text/60">
+                  Use lowercase letters, numbers, and hyphens. Separate segments with /.
+                </p>
+              </Stack>
+            ) : (
+              <code className="w-fit rounded bg-brand-surface/80 px-2 py-1 font-mono text-xs text-brand-heading">
+                {draftUrl}
+              </code>
+            )}
           </Stack>
         ) : null}
         {dashboardUrl ? (

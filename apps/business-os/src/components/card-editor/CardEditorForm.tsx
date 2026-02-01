@@ -9,6 +9,7 @@ import { Button, FormField, Input, Textarea } from "@acme/design-system/atoms";
 import { useTranslations } from "@acme/i18n";
 
 import { ConflictDialog } from "@/components/ConflictDialog";
+import { getRecordProp, getStringProp, isRecord, readJsonSafely } from "@/lib/json";
 import type { Business, Card, Lane, Priority } from "@/lib/types";
 
 import {
@@ -39,6 +40,19 @@ function extractDescription(content: string): string {
     .slice(firstHeadingIndex + 1)
     .join("\n")
     .trim();
+}
+
+function isCard(value: unknown): value is Card {
+  return (
+    isRecord(value) &&
+    value.Type === "Card" &&
+    typeof value.ID === "string" &&
+    typeof value.content === "string" &&
+    typeof value.filePath === "string" &&
+    typeof value.Lane === "string" &&
+    typeof value.Priority === "string" &&
+    typeof value.Owner === "string"
+  );
 }
 
 const SELECT_CLASS_NAME =
@@ -388,20 +402,32 @@ export function CardEditorForm({
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorData = await readJsonSafely(response);
 
-        if (!isCreate && response.status === 409 && errorData?.conflict?.currentCard) {
-          setConflictCard(errorData.conflict.currentCard as Card);
-          // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
-          throw new Error(errorData.error || "This card changed since you loaded it.");
+        if (!isCreate && response.status === 409) {
+          const conflict = getRecordProp(errorData, "conflict");
+          const currentCard = conflict?.currentCard;
+          if (isCard(currentCard)) {
+            setConflictCard(currentCard);
+            // i18n-exempt -- BOS-32 Phase 0 optimistic concurrency copy [ttl=2026-03-31]
+            throw new Error(
+              getStringProp(errorData, "error") ||
+                "This card changed since you loaded it."
+            );
+          }
         }
 
-        throw new Error(errorData?.error || t(submitErrorKey));
+        throw new Error(getStringProp(errorData, "error") || t(submitErrorKey));
       }
 
       if (isCreate) {
-        const result = await response.json();
-        router.push(`/cards/${result.cardId}`);
+        const result = await readJsonSafely(response);
+        const cardId = getStringProp(result, "cardId");
+        if (!cardId) {
+          throw new Error(t(submitErrorKey));
+        }
+
+        router.push(`/cards/${cardId}`);
       } else {
         router.push(`/cards/${existingCard!.ID}`);
       }

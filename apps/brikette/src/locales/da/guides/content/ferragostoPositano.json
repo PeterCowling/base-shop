@@ -1,61 +1,141 @@
 {
   "seo": {
-    "title": "Ferragosto i Positano (Maria Himmelfart)",
-    "description": "Hvad der sker 15. august: traditioner, fyrværkeri og praktiske tips."
+    "title": "Ferragosto i Positano: Italiens 15. august helligdag",
+    "description": "Ferragosto i Positano—hvad du kan forvente den 15. august. Folkemængder, fyrværkeri, strandfester, kirkeprocessioner og praktiske tips til hostelgæster.",
+    "lastUpdated": "2026-01-31"
   },
-  "linkLabel": "Ferragosto i Positano (Maria Himmelfart)",
+  "linkLabel": "Ferragosto i Positano: 15. august helligdagsguide",
   "intro": [
-    "Ferragosto den 15. august betyder fyldte strande, fyrværkeri og ændrede køreplaner – planlæg i god tid, så dagen føles festlig frem for hektisk."
+    "Planlægger du at være i Positano den 15. august? Du valgte Ferragosto—Italiens største sommerferie. Denne nationale fejring kombinerer religiøs tradition (Marias himmelfart) med strandfester, fyrværkeri og familiesammenkomster. For hostelgæster betyder Ferragosto overfyldte strande, ændrede transportplaner og en festlig men hektisk atmosfære. Denne guide hjælper dig med at navigere dagen og nyde fejringen.",
+    "Ferragosto i Positano er specielt. Hele byen kommer til live. Lokale som er flyttet væk vender tilbage til helligdagen. Restauranter holder strandfester. Fyrværkeri lyser bugten op ved midnat. Stranden er fyldt til bristepunktet. Hvis du nyder store folkemængder og festlig energi, vil du elske det. Hvis du foretrækker roligt Positano, skal du måske forlade byen for dagen. Uanset hvad, så planlæg forud—ingenting kører efter normale tidsplaner på Ferragosto."
   ],
   "sections": [
     {
-      "id": "expectations",
-      "title": "Det kan du forvente",
+      "id": "what-is-ferragosto",
+      "title": "Hvad er Ferragosto?",
       "body": [
-        "Butikker og små dagligvareforretninger lukker tidligt; fyld mad og vand op aftenen før.",
-        "Regn med strandmylder allerede kl. 09.00 og høj musik langs Spiaggia Grande frem mod fyrværkeriet ved midnat."
+        "%IMAGE:ferragosto-positano-beach.jpg|Overfyldt strand i Positano under Ferragosto-fejringen%",
+        "Ferragosto (15. august) er Italiens vigtigste sommerferie. Navnet kommer fra latin \"Feriae Augusti\" (kejser Augustus' festivaler), en høstfestival etableret i 18 f.Kr. Den romersk-katolske kirke fusionerede senere denne hedenske festival med Marias himmelfartsdag og skabte en religiøs-kulturel hybrid som italienere fejrer på landsplan.",
+        "Traditionelt markerer Ferragosto sommerens højdepunkt. Arbejdet stopper. Fabrikker lukker. Familier samles ved stranden eller i bjergene. Det er Italiens uofficielle sommerferiestart—mange italienere holder to ugers ferie fra 15. august. For kystbyer som Positano betyder Ferragosto årets travleste dag. Italienske familier fra Napoli, Rom og norditalienske byer strømmer til Amalfikysten. Hoteller, strande, restauranter og transport når maksimal kapacitet.",
+        "I Positano har Ferragosto en specifik karakter. Morgenen byder på en religiøs procession og messe til ære for Marias himmelfart. Eftermiddagen er ren strand—svømning, spisning, drikke, musik, dans. Aftenen bygger op til midnats-fyrværkeri affyret fra både i bugten. Hele byen ser med fra stranden, terrasserne og bjergsiderne. Efter fyrværkeriet fortsætter strandfesterne efter kl. 01:00. Ferragosto er ikke subtil—hvis du er i Positano den 15. august, er du en del af fejringen, om du planlagde det eller ej."
       ]
     },
     {
-      "id": "bookings",
-      "title": "Reservationer",
+      "id": "what-to-expect",
+      "title": "Hvad du kan forvente på Ferragosto-dagen",
       "body": [
-        "Book restauranter og bådture mindst en uge i forvejen; mange kræver forudbetaling eller kortgaranti på helligdage.",
-        "Bekræft portørservice 24 timer før, hvis du ankommer eller rejser den 15. – bemandingen er reduceret."
+        "%IMAGE:ferragosto-fireworks-positano.jpg|Midnats-fyrværkeri over Positano-bugten under Ferragosto%",
+        "Ferragosto-dagen i Positano er kontrolleret kaos. Start med realistiske forventninger. Stranden (Spiaggia Grande) når kapacitet kl. 09:00–09:30. Hver kvadratmeter er optaget—håndklæder rører hinanden, parasoller side om side. Hvis du vil have strandplads, ankom kl. 08:00. Lido-solsenge sælges ud tidligt og koster spidsrater (€30–€50 for to stole plus parasol). De offentlige strandsektioner er gratis men overfyldte. Tag din egen parasol med, hvis du vil have skygge—ingen plads til at leje en midt på morgenen.",
+        "Musik forstærker alt. Strandklubber og restauranter sætter lydsystemer op langs kysten. Forvent italiensk pop, dansmusik og liveoptrædener fra omkring kl. 11:00 og opbyggende gennem eftermiddagen. Lydstyrken er høj—dette er fest-atmosfære, ikke afslappende stranddag. Hvis du foretrækker ro, er %LINK:fornilloBeachGuide|Fornillo-stranden% (den næste strand mod vest) lidt mindre overfyldt men stadig travl.",
+        "Svømmeforholdene er vanskelige. Livvagter er på vagt, men med hundredvis af svømmere i vandet samtidigt er deres evne til at overvåge alle begrænset. Hold dig til lavt vand, hvis du ikke er en sikker svømmer. Undgå at gå dybt, når stranden er så overfyldt—strømme bliver sværere at vurdere med så mange mennesker der pisker vandet op. Svøm tidligt (før kl. 10:00) eller sent (efter kl. 18:00), når færre er i vandet.",
+        "Butikker og tjenester kører på reducerede tidsplaner eller lukker helt. Mange små købmænd, apoteker og butikker lukker for dagen—ejere fejrer med deres familier. Supermarkeder åbner måske for et kort morgenvindue (kl. 08:00–12:00) og lukker så. Restauranter holder åbent men er fuldt booket. Hvis du har brug for dagligvarer, vand, snacks eller forsyninger, køb dem aftenen den 14. august. Regn ikke med at finde hvad du behøver om Ferragosto-morgenen."
       ]
     },
     {
-      "id": "beach-day",
-      "title": "Strand og badning",
+      "id": "religious-celebrations",
+      "title": "Religiøse processioner og messe",
       "body": [
-        "Medbring egen parasol til det offentlige område; lido-solstole bliver udsolgt, og priserne stiger til højsæsonniveau.",
-        "Tag en dukkert tidligt eller ved solnedgang, når livreddere har bedre overblik; midt på dagen gør trængsel strømforhold sværere at vurdere."
+        "Den religiøse side af Ferragosto centrerer om Chiesa di Santa Maria Assunta (hovedkirken med den grønne kuppel). En højtidelig messe fejrer Marias himmelfart, starter normalt kl. 10:00 eller 11:00 (tjek opslåede tider eller spørg hostel-personalet). Kirken fyldes med lokale og besøgende. Klæd dig respektfuldt—skuldre og knæ dækket, intet strandetøj. Gudstjenesten varer 45–60 minutter og inkluderer salmer, bønner og oplæsninger.",
+        "Efter messen bærer en procession måske en statue af Madonna gennem gaderne. Denne tradition varierer år for år afhængigt af lokal organisering og vejr. Hvis det sker, forvent smalle gader nær kirken er overfyldte. Processionen er kort (15–20 minutter) og slutter tilbage ved kirken. Deltagelse er mest lokale, men besøgende er velkomne til at se med. Tag småpenge med (€1–€2 mønter), hvis du vil tænde et lys eller give donation.",
+        "Den religiøse komponent er mere stille og traditionel end strandfest-atmosfæren der dominerer eftermiddagen. Hvis du vil opleve Ferragostos kulturelle rødder, deltag i messen eller processionen. Det giver kontekst for hvorfor Ferragosto betyder noget ud over fyrværkeri og strandemængder."
       ]
     },
     {
-      "id": "transport",
-      "title": "Transportbackup",
+      "id": "food-and-dining",
+      "title": "Madtraditioner og spisning",
       "body": [
-        "SITA-busser kører helligdagsplaner med færre afgange; tjek opslaget og stil dig i kø i god tid.",
-        "Færger kan blive udsolgt; køb tur/retur-dag 14., og hav en busplan klar, hvis havet bliver uroligt."
+        "%IMAGE:ferragosto-feast-positano.jpg|Traditionel Ferragosto-fest med pasta og fisk%",
+        "Ferragosto-måltider er en stor sag i Italien. Traditionelt samles familier til lange frokoster med fisk, pasta, grillet kød og sæsongrøntsager. I Positano tilbyder restauranter specielle Ferragosto-menuer—flerretters festmåltider med faste priser (€50–€100 per person). Disse måltider er festlige og generøse. Forvent antipasti (forretter), primi (pasta eller risotto), secondi (fisk eller kød), contorni (grøntsager), dolci (desserter), vin og kaffe.",
+        "Reservationer er essentielle. Restauranter booker uger i forvejen til Ferragosto. Hvis du vil spise ude, reserver senest tidligt i august. Mange restauranter kræver forudbetaling eller kreditkortgaranti for helligdagsservice. Walk-ins vil kæmpe for at finde borde, især til frokost (kl. 13:00–15:00) og middag (kl. 20:00–22:00). Hvis du misser reservationer, er dine muligheder begrænset til takeaway-pizza eller at spise dagligvarer på hostellet.",
+        "Traditionelle Ferragosto-fødevarer inkluderer pasta med fisk (spaghetti alle vongole, scialatielli ai frutti di mare), grillet fisk, vandmelon (signatur Ferragosto-frugt, serveret iskold som dessert) og lokal vin. Nogle familier pikniker på stranden med medbragte måltider—kolde pastasalater, ristede grøntsager, spegepølse, ost, brød, frugt. Dette er lovligt og almindeligt. Hvis du tager picnic-ruten, tag tæppe, køletaske med is og genanvendeligt bestik med. Pak alt affald med hjem—strande bliver rodede på Ferragosto, men efterlade affald er respektløst.",
+        "For hostelgæster på budget, overvej %LINK:cheapEats|billig mad% eller selvforplejning. Køb forsyninger den 14. august: brød, ost, salami, tomater, oliven, frugt. Lav sandwich og tag dem med til stranden. Du sparer €40–€60 sammenlignet med restaurantmåltider. Hostellets fællesområde har et lille køkken—du kan også lave en simpel pasta-middag og spise på terrassen mens du ser fyrværkeri."
+      ]
+    },
+    {
+      "id": "fireworks-and-evening",
+      "title": "Fyrværkeri og senfestligheder",
+      "body": [
+        "Fyrværkeriet er Ferragostos hovedbegivenhed. Affyret fra både forankret i bugten starter showet ved midnat og varer 15–20 minutter. Hele byen samles for at se—strande, terrasser, bjergsider, tage. Displayet er imponerende—professionel pyroteknik synkroniseret til musik fylder himlen over vandet. Farver reflekteres fra havet. Lyd ekkoer fra klipperne. Det er virkelig spektakulært.",
+        "Hostel Brikettes terrasse har klar sigtlinje over bugten. Du kan se derfra uden at kæmpe med strandemængder. Ankom kl. 23:30 for at kræve plads. Tag en let jakke eller sweater med—havbrisen tager til efter mørkets frembrud og temperaturerne falder 5–8°C fra eftermiddagsvarmen. Du vil måske have et tæppe at sidde på og en flaske vin eller prosecco at dele med medgæster. Hostel-atmosfæren på Ferragosto-nat er festlig—alle ser sammen.",
+        "Efter fyrværkeri fortsætter festen. Strandklubber og restauranter holder musikken høj. Dans på stranden er almindeligt. Barer serverer drinks indtil kl. 02:00 eller senere. Hvis du vil deltage i fejringen, gå ned til Spiaggia Grande efter fyrværkeriet. Hvis du vil sove, pak ørepropper. Støj fra stranden bærer op ad bakken—du vil høre musik, jubel og stemmer langt efter kl. 01:00. Værelser mod havet får mest støj. Ørepropper eller støjreducerende hovedtelefoner hjælper.",
+        "Sikkerhedsnote: Ferragosto-nat bliver overfyldt og kaotisk. Hold værdigenstande sikre. Hold øje med din drink i overfyldte barer. Gå tilbage til hostellet i grupper hvis muligt, især sent om natten når sigtbarheden er dårlig og trapperne er fyldt med berusede festgængere. Trapperne fra stranden til Chiesa Nuova er stejle og ujævne—tag din tid med at klatre. Personalet kan anbefale sikrere ruter hvis du er bekymret."
+      ]
+    },
+    {
+      "id": "transport-challenges",
+      "title": "Transport og at komme rundt",
+      "body": [
+        "Transport på Ferragosto kører efter helligdagsplaner med reduceret service. SITA-busser (den primære offentlige transport langs Amalfikysten) kører færre ture. Tjek den opslåede køreplan ved busstop eller spørg i hostel-receptionen—personalet har aktuelle tidsplaner. Forvent længere ventetider mellem busser (30–45 minutter i stedet for de sædvanlige 20–30) og fulde busser. Køer dannes tidligt. Hvis du skal nå en bus på Ferragosto, ankom til stoppet 15–20 minutter før den planlagte tid for at sikre en plads.",
+        "Færger kører også begrænsede tidsplaner. Nogle ruter kører normalt; andre har færre afgange. Hvis du bookede en dagstur (%LINK:capriDayTrip|Capri%) eller udflugt med afgang 15. august, bekræft afgangstider 24–48 timer i forvejen. Køb retur-færgebilletter dagen før hvis muligt—billetkiosker bliver overbelastede på Ferragosto-morgenen. Hårdt vejr kan aflyse færger helt (august-vejret er normalt roligt, men ikke garanteret). Hav en bus-backupplan.",
+        "Taxaer og private chauffører opkræver spidsrater på Ferragosto. Forvent priser 20–30% højere end normalt. Tilgængelighed er begrænset—de fleste chauffører er booket til familiebegivenheder eller holder fri. Hvis du har brug for en taxa den 15. august, book dage i forvejen. Hostellet kan hjælpe med at arrangere dette.",
+        "Bærerservice (bagagebærere der hjælper med tasker på de stejle trapper) kører reducerede tidsplaner. Hvis du ankommer eller rejser på Ferragosto med tung bagage, bekræft bærer-tilgængelighed 24–48 timer i forvejen. Nogle hold holder helt fri. Vær forberedt på at bære dine egne tasker hvis bærere ikke er tilgængelige. Trapperne fra busstoppet til hostellet er overkommelige med en rygsæk men svære med en kuffert på hjul."
+      ]
+    },
+    {
+      "id": "alternative-plans",
+      "title": "Alternativer til at blive i Positano",
+      "body": [
+        "Hvis Ferragosto-mængderne ikke appellerer til dig, overvej at forlade Positano for dagen. Tag færgen eller bussen til %LINK:amalfiTownGuide|Amalfi% (mindre overfyldt end Positano) eller %LINK:ravelloGuide|Ravello% (bjergby, meget mere rolig). Begge har Ferragosto-fejringer men med mindre folkemængder og mere håndterbar atmosfære. Du kan vende tilbage til Positano om aftenen for at se fyrværkeri fra hostel-terrassen.",
+        "Alternativt, vandre. %LINK:pathOfTheGods|Gudernes sti%-ruten er åben og relativt tom på Ferragosto—de fleste mennesker er ved stranden, ikke vandrer i bjergene. Start tidligt (kl. 07:00) for at undgå middagsvarme. Tag rigeligt vand og solbeskyttelse med. Du vil have stien stort set for dig selv. Vend tilbage til hostellet om aftenen til fyrværkeri.",
+        "Nogle gæster forlader Positano helt for Ferragosto-weekenden. Hvis du har fleksibilitet, overvej at tilbringe 14.–16. august i Napoli, Sorrento eller Salerno. Vend tilbage til Positano efter helligdagen, når mængderne spredes og byen vender tilbage til normal rytme. Ferragosto er maksimal galskab—det er okay at springe det over, hvis det ikke er din rejsestil."
       ]
     }
   ],
+  "tipsTitle": "Praktiske tips til hostelgæster",
   "tips": [
-    "Pak ørepropper, hvis dit værelse vender mod stranden – fyrværkeri og efterfølgende musik kan fortsætte efter kl. 01.",
-    "Medbring små kontanter til kirkens donationsbøsser, hvis du deltager i messe på Maria Himmelfart; kort accepteres sjældent."
+    "Køb dagligvarer, vand, snacks og forsyninger den 14. august—butikker lukker eller kører begrænsede timer på Ferragosto.",
+    "Reserver restauranter mindst en uge i forvejen, hvis du vil spise ude den 15. august.",
+    "Ankom til stranden kl. 08:00, hvis du vil have plads. Efter kl. 09:30 er Spiaggia Grande helt overfyldt.",
+    "Pak ørepropper, hvis dit værelse vender mod stranden—fyrværkeri og efter-show-musik kører efter kl. 01:00.",
+    "Tag småpenge med (€1–€2 mønter) til kirkens donationsbokse, hvis du deltager i himmelfartstmessen.",
+    "Bekræft bus- og færgeplaner den 14. august—Ferragosto kører reducerede transporttidsplaner.",
+    "Se fyrværkeri fra hostel-terrassen (klar sigtlinje) for at undgå strandemængder. Ankom kl. 23:30 for at kræve plads.",
+    "Tag en let jakke med til terrassen—havbrisen tager til efter mørkets frembrud og temperaturerne falder.",
+    "Hvis du rejser den 15. august, bekræft bærerservice 24–48 timer i forvejen—mange holder fri.",
+    "Overvej at forlade Positano for dagen, hvis mængder ikke appellerer—%LINK:amalfiTownGuide|Amalfi%, %LINK:ravelloGuide|Ravello% eller vandring ad %LINK:pathOfTheGods|Gudernes sti% er mere rolige alternativer."
   ],
+  "faqsTitle": "Ofte stillede spørgsmål",
   "faqs": [
     {
-      "q": "Holder supermarkeder lukket hele dagen?",
+      "q": "Er supermarkeder lukket hele dagen på Ferragosto?",
       "a": [
-        "Mange holder helt lukket eller åbner kun kort om morgenen. Køb det nødvendige senest om aftenen den 14."
+        "De fleste supermarkeder lukker helt eller åbner for et kort morgenvindue (kl. 08:00–12:00) og lukker så. Små købmænd og butikker lukker ofte hele dagen. Køb essentials aftenen den 14. august. Regn ikke med at finde forsyninger om Ferragosto-morgenen."
       ]
     },
     {
-      "q": "Kan jeg se fyrværkeriet fra hostellets terrasse?",
+      "q": "Kan jeg se fyrværkeriet fra hostel-terrassen?",
       "a": [
-        "Ja – terrassen har frit udsyn over bugten. Kom i god tid for at sikre plads, og tag et let lag med til havbrisen."
+        "Ja—terrassen på Hostel Brikette har klar sigtlinje over bugten. Du kan se hele fyrværkeri-showet derfra uden at kæmpe med strandemængder. Ankom kl. 23:30 for at kræve plads. Tag en let jakke med (havbrisen tager til efter mørkets frembrud) og måske et tæppe at sidde på. Nogle gæster tager vin eller prosecco med for at dele mens de ser."
+      ]
+    },
+    {
+      "q": "Er Ferragosto værd at opleve, eller skal jeg undgå Positano den dag?",
+      "a": [
+        "Afhænger af din rejsestil. Hvis du nyder store folkemængder, festlig energi, fyrværkeri og strandfester, er Ferragosto en unik kulturel oplevelse. Hvis du foretrækker roligt, afslappet Positano, vil du finde Ferragosto overvældende. Mange hostelgæster elsker det—de beskriver det som kaotisk men sjovt. Andre forlader byen for dagen og vender tilbage til fyrværkeri om aftenen. Begge tilgange virker. Bare planlæg forud, så du ikke bliver overrasket af mængder og lukninger."
+      ]
+    },
+    {
+      "q": "Hvad tid starter fyrværkeriet?",
+      "a": [
+        "Midnat (kl. 00:00). Showet varer 15–20 minutter. Affyret fra både i bugten, synligt fra hvor som helst med udsigt til vandet. Hostel-terrassen, Spiaggia Grande og Fornillo-stranden er førsteklasses seersteder. Efter fyrværkeriet fortsætter strandfester efter kl. 01:00. Forvent støj indtil kl. 02:00 eller senere."
+      ]
+    },
+    {
+      "q": "Kan jeg gå til stranden efter fyrværkeriet?",
+      "a": [
+        "Ja. Strandklubber og barer holder åbent sent på Ferragosto. Musik, dans og drikkevarer fortsætter efter kl. 01:00. Hvis du vil deltage i festen, gå til Spiaggia Grande efter fyrværkeriet. Forvent mængder, høj musik og en festlig men kaotisk atmosfære. Barer serverer drinks indtil kl. 02:00. Hvis du hellere vil sove, pak ørepropper—støj fra stranden bærer op ad bakken."
+      ]
+    },
+    {
+      "q": "Er restauranter åbne på Ferragosto?",
+      "a": [
+        "De fleste restauranter holder åbent og serverer specielle Ferragosto-menuer (flerretters festmåltider, €50–€100 per person). Dog er de fuldt booket uger i forvejen. Hvis du ikke reserverede inden tidligt august, er walk-in-borde næsten umulige at finde. Dine muligheder er takeaway-pizza, dagligvarer på hostellet eller forlade Positano for at spise i %LINK:amalfiTownGuide|Amalfi% eller en anden by."
+      ]
+    },
+    {
+      "q": "Hvad er den religiøse betydning af Ferragosto?",
+      "a": [
+        "Ferragosto fejrer Marias himmelfart (katolsk tro på at Maria blev taget til himlen med krop og sjæl). Helligdagen opstod som en romersk høstfestival i 18 f.Kr., senere fusioneret med den kristne festdag. I Positano holder Chiesa di Santa Maria Assunta en special messe den 15. august (normalt kl. 10:00 eller 11:00). En procession bærer måske en statue af Madonna gennem gaderne. Den religiøse komponent er mere stille end strandfest-atmosfæren men giver kulturel kontekst for hvorfor Ferragosto betyder noget."
       ]
     }
   ]

@@ -40,5 +40,15 @@
       "id": "naples",
       "body": "Permaneça na Circumvesuviana até ao término em Napoli Garibaldi. A partir daí, siga a sinalização até ao átrio principal para fazer ligação com comboios de longa distância, o metro ou autocarros para o aeroporto. A Piazza Garibaldi fica diretamente à frente da entrada da estação."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Como leio o horário de ônibus SITA?",
+      "a": [
+        "**Leitura das linhas:** As linhas na primeira coluna representam diferentes pontos de ônibus ao longo da rota.",
+        "**Leitura das colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se você estiver viajando de segunda a sábado, procure as colunas 'F' e 'G'. Se você estiver viajando em um domingo ou feriado, procure as colunas 'G' e 'H'.",
+        "**Combinação de linhas e colunas:** Escolha seus pontos de partida e chegada, depois verifique as colunas para ver quando os ônibus estão disponíveis e a que horas chegarão ao seu destino. Por exemplo, para ver o horário de partida de Sorrento, veja a linha Sorrento. Para ver o horário de chegada em Positano (Chiesa Nuova / Bar Internazionale), veja a linha Positano (Chiesa Nuova)."
+      ]
+    }
   ]
 }

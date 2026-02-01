@@ -8,7 +8,7 @@
     "body": "从索伦托的 Marina Piccola 乘坐直达渡轮前往波西塔诺。本短指南涵盖购票地点、何时排队，以及抵达波西塔诺港口后如何更轻松地前往 Hostel Brikette。"
   },
   "callouts": {
-    "tip": "想了解所有交通方式？请查看%HOWTO:how-to-get-here|“如何到达”总览%，了解巴士、出租车与组合行程。"
+    "tip": "想了解所有交通方式？请查看%HOWTO:how-to-get-here|如何到达总览%，了解巴士、出租车与组合行程。"
   },
   "sections": [
     {
@@ -44,9 +44,10 @@
       "list": [
         "在波西塔诺主码头（Spiaggia Grande）下船。",
         "如携带重行李，可考虑码头的官方搬运服务（付费）。",
-        "想更轻松抵达 Hostel Brikette，可乘坐当地 Interno 巴士上坡至 “Chiesa Nuova”，再步行一小段。",
+        "想更轻松抵达 Hostel Brikette，可乘坐当地 Interno 巴士上坡至 Chiesa Nuova，再步行一小段。",
         "也可以沿 Via dei Mulini/Via G. Marconi 徒步上坡，记得预留额外时间。"
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-01-31"
 }

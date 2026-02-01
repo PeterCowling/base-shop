@@ -196,6 +196,14 @@
     {
       "question": "Is the bus journey scenic?",
       "answer": "Extremely. The route hugs the dramatic Amalfi Coast cliffs with stunning sea views. Sit on the right side when traveling Amalfi to Positano for the best coastal views."
+    },
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
+      ]
     }
   ]
 }

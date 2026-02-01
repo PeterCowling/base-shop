@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   issues: write
 
@@ -19,6 +19,12 @@ jobs:
   ensure-pr:
     runs-on: ubuntu-latest
     steps:
+      - name: Guard (work/** only)
+        if: ${{ !startsWith(github.ref, 'refs/heads/work/') }}
+        run: |
+          echo "::error::This workflow is only valid for branches under refs/heads/work/**." >&2
+          echo "Select a work/** branch, or push to a work/** branch to trigger automatically." >&2
+          exit 1
       - name: Ensure PR exists
         id: pr
         uses: actions/github-script@v7

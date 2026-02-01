@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getSession } from "@/lib/auth";
-
-// Phase 0: Node runtime required for session operations
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const SetLocaleSchema = z.object({
   locale: z.enum(["en", "it"]),
@@ -32,26 +29,24 @@ export async function POST(request: Request) {
 
     const { locale } = parsed.data;
 
-    // Get session
-    const response = NextResponse.next();
-    const session = await getSession(request, response);
-
-    // Update locale in session
-    session.locale = locale;
-    await session.save();
-
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
         locale,
         // i18n-exempt -- MVP-G1 Phase 0 API success message [ttl=2026-03-31]
         message: `Locale set to ${locale}`,
       },
-      {
-        status: 200,
-        headers: response.headers,
-      }
+      { status: 200 }
     );
+
+    response.cookies.set("business_os_locale", locale, {
+      path: "/",
+      httpOnly: false,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.json(
       // i18n-exempt -- MVP-G1 Phase 0 API error message [ttl=2026-03-31]
@@ -67,20 +62,14 @@ export async function POST(request: Request) {
  */
 export async function GET(request: Request) {
   try {
-    const response = NextResponse.next();
-    const session = await getSession(request, response);
+    void request;
 
-    const locale = session.locale ?? "en"; // Default to English
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const localeCookie = cookieStore.get("business_os_locale")?.value;
+    const locale = localeCookie === "it" ? "it" : "en";
 
-    return NextResponse.json(
-      {
-        locale,
-      },
-      {
-        status: 200,
-        headers: response.headers,
-      }
-    );
+    return NextResponse.json({ locale }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       // i18n-exempt -- MVP-G1 Phase 0 API error message [ttl=2026-03-31]

@@ -64,5 +64,15 @@
       "title": "Framme i Amalfi",
       "body": "De flesta turer slutar vid Amalfis bussterminal nära hamnen. Härifrån kan du byta till Ravello och Salerno eller utforska Amalfis historiska centrum till fots. Planerar du återresan? Läs %HOWTO:amalfi-positano-bus|Amalfi till Positano med buss%."
     }
+  ],
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA-busstidtabellen?",
+      "a": [
+        "**Läsa raderna:** Raderna i första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsa kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje schemalagd resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på söndag eller en helgdag, använd kolumnerna 'G' och 'H'.",
+        "**Kombinera rader och kolonner:** Välj dina avgångs- och ankomsthållplatser, kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de anländer till din destination. Till exempel, för att se avgångstid från Sorrento, titta på Sorrento-raden. För att se ankomsttid i Positano (Chiesa Nuova / Bar Internazionale), se Positano (Chiesa Nuova)-raden."
+      ]
+    }
   ]
 }

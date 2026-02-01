@@ -143,6 +143,7 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: ${{ github.ref == 'refs/heads/main' }}
           environment: production
 
       # ADMIN-05: Validate environment before deploy

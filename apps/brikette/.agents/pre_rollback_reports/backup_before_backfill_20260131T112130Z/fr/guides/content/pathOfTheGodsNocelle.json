@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Sentier des Dieux via la navette de Nocelle",
+    "description": "Prenez le bus Montepertuso–Nocelle pour une randonnée aller-retour sur le Sentiero degli Dei, avec horaires, conseils et options de retour."
+  },
+  "linkLabel": "Sentier des Dieux via la navette de Nocelle",
+  "intro": [
+    "Peu de temps devant vous ou envie d'éviter les multiples correspondances ? Prenez le bus Montepertuso–Nocelle depuis l'Hostel Brikette, parcourez la portion la plus panoramique du Sentiero degli Dei en aller-retour, puis revenez par le même chemin.",
+    "Cette option évite le ferry et la connexion par Amalfi ; elle est idéale pour une journée plus tranquille ou pour les voyageurs qui préfèrent un programme allégé."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Se préparer à l'auberge",
+      "body": [
+        "Achetez deux billets de bus par personne au Bar Internazionale : Positano → Nocelle et Nocelle → Positano. L'équipe peut vous conseiller la formule la plus économique.",
+        "Vérifiez les derniers horaires Montepertuso/Nocelle pour connaître le dernier retour avant le coucher du soleil.",
+        "Emportez eau, encas et vêtements en couches. Le kiosque de Nocelle vend des boissons en saison, mais aucun commerce ne se trouve sur le sentier."
+      ]
+    },
+    {
+      "id": "bus-to-nocelle",
+      "title": "Monter en bus jusqu'à Nocelle",
+      "body": [
+        "Attendez devant le Bar Internazionale. Les bus affichent « Montepertuso - Nocelle » à l'avant.",
+        "Le trajet grimpe via Montepertuso avant de terminer sur le petit parking de Nocelle. Restez à bord jusqu'à ce que le bus fasse demi-tour pour redescendre : c'est votre arrêt.",
+        "Validez votre billet en montant et gardez-le à portée pour le retour."
+      ]
+    },
+    {
+      "id": "walk-through-town",
+      "title": "Traverser Nocelle jusqu'au sentier",
+      "body": [
+        "Depuis le parking, empruntez les escaliers piétons jusqu'à l'allée principale puis tournez à gauche.",
+        "Marchez environ 175 mètres en restant sur la droite à la bifurcation clé pour éviter l'escalier qui descend vers Positano.",
+        "Continuez tout droit jusqu'aux panneaux du Sentiero degli Dei et au chemin pavé qui s'éloigne du village."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Randonner à votre rythme",
+      "body": [
+        "Dirigez-vous vers Colle Serra pour les plus beaux panoramas. L'aller-retour complet jusqu'à Bomerano fait environ 11,6 km, mais vous pouvez faire demi-tour quand vous le souhaitez.",
+        "Suivez les marques rouge et blanc du CAI, avancez prudemment sur les passages exposés et profitez des balcons panoramiques pour prendre des photos.",
+        "Lorsque vous êtes prêt, retracez vos pas jusqu'à Nocelle."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Retourner à Positano",
+      "body": [
+        "Revenez à travers Nocelle par le même chemin, en tournant à droite à la bifurcation pour retrouver l'arrêt de bus.",
+        "Utilisez votre billet retour pour descendre au Bar Internazionale ou à Chiesa Nuova. Si les bus sont pleins, vous pouvez suivre la route goudronnée (environ 4 km) mais comptez 45 à 60 minutes.",
+        "Évitez le raccourci par les escaliers sauf si vous cherchez volontairement une longue descente éprouvante qui se termine de l'autre côté de la ville."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Exemples d'horaires",
+      "body": [
+        "06 h 30 bus → 06 h 50 arrivée à Nocelle → randonnée de 3 h → 09 h 50 bus retour → 10 h 10 arrivée à Positano (3 h 40 porte à porte).",
+        "08 h 30 départ → 08 h 50 arrivée à Nocelle → randonnée de 3 h 20 → 11 h 50 bus retour → 12 h 10 arrivée à Positano (4 h au total).",
+        "10 h 30 départ → 10 h 50 arrivée à Nocelle → randonnée de 3 h → 13 h 50 bus retour → 14 h 10 arrivée à Positano (3 h 40 au total)."
+      ]
+    }
+  ],
+  "essentialsTitle": "Indispensables",
+  "essentials": [
+    "Deux billets SITA par personne (montée et descente) plus un de secours.",
+    "Eau, encas, crème solaire et chapeau pour la crête exposée.",
+    "Chaussures confortables avec adhérence et bâtons de randonnée optionnels pour les marches irrégulières."
+  ],
+  "typicalCostsTitle": "Coûts indicatifs",
+  "typicalCosts": [
+    "Billets navette Nocelle : 1,80–2,40 € par trajet selon le carnet.",
+    "Granita ou boissons au kiosque de Nocelle : 3–5 €.",
+    "Accès au sentier : gratuit."
+  ],
+  "tipsTitle": "Conseils de parcours",
+  "tips": [
+    "Visez un départ tôt le matin pour bénéficier de températures plus fraîches et de sentiers plus calmes.",
+    "Emportez une veste légère : la crête peut être venteuse même quand Positano est chaude.",
+    "Gardez une gourmandise pour le kiosque près de l'église en guise de récompense au retour."
+  ],
+  "warningsTitle": "À surveiller",
+  "warnings": [
+    "Ignorez le panneau qui indique l'escalier vers Positano sauf si vous souhaitez une descente exigeante qui termine loin de l'auberge.",
+    "Les bus sont moins fréquents l'après-midi — programmez un rappel pour le dernier retour possible.",
+    "Le sentier est exposé ; évitez de marcher aux heures les plus chaudes en juillet et août."
+  ],
+  "steps": [
+    {
+      "name": "Acheter les billets de bus",
+      "text": "Procurez-vous les billets pour Nocelle au Bar Internazionale avant de quitter l'auberge."
+    },
+    {
+      "name": "Monter jusqu'à Nocelle",
+      "text": "Prenez le bus Montepertuso–Nocelle et restez à bord jusqu'au demi-tour sur le parking."
+    },
+    {
+      "name": "Rejoindre le sentier",
+      "text": "Suivez le chemin piéton à travers le village en restant sur la droite pour trouver les panneaux du Sentiero degli Dei."
+    },
+    {
+      "name": "Randonnée aller-retour",
+      "text": "Progressez vers Colle Serra et faites demi-tour quand vous souhaitez revenir."
+    },
+    {
+      "name": "Retour à Positano",
+      "text": "Revenez à l'arrêt de bus et redescendez vers le Bar Internazionale ou Chiesa Nuova."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Combien de temps marcher avant de faire demi-tour ?",
+      "a": [
+        "Beaucoup de randonneurs poursuivent 45 à 60 minutes vers Colle Serra pour atteindre les points de vue emblématiques, puis reviennent sur leurs pas. Prévoyez plus de temps si vous voulez rejoindre Bomerano."
+      ]
+    },
+    {
+      "q": "Le bus de Nocelle est-il fiable ?",
+      "a": [
+        "Oui, mais il suit un horaire fixe avec de plus longs intervalles en milieu de journée. Consultez l'affiche au Bar Internazionale et prévoyez une marge si le bus est plein."
+      ]
+    },
+    {
+      "q": "Puis-je redescendre à pied plutôt que de prendre le bus ?",
+      "a": [
+        "Vous pouvez suivre la route goudronnée en 45 à 60 minutes. Évitez l'escalier sauf si vous voulez un entraînement soutenu et êtes à l'aise avec des milliers de marches."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "essentials": "Indispensables",
+    "costs": "Coûts indicatifs",
+    "tips": "Conseils de parcours",
+    "warnings": "À surveiller",
+    "faqs": "FAQ"
+  }
+}

@@ -453,11 +453,11 @@ Key improvements:
 - **Status:** Complete
 - **Commits:** 8dce9324af
 - **TDD cycle:**
-  - Tests written/completed: src/test/i18n/check-i18n-coverage.test.ts (5 tests)
+  - Tests written/completed: src/test/content-readiness/i18n/check-i18n-coverage.test.ts (5 tests)
   - All tests passed (validates JSON output format, per-locale reports, summary statistics)
   - Test coverage: JSON schema validation, --fail-on-missing flag, summary calculations
 - **Validation:**
-  - Ran: `pnpm exec jest src/test/i18n/check-i18n-coverage.test.ts --runInBand` — PASS (5/5 tests)
+  - Ran: `pnpm exec jest src/test/content-readiness/i18n/check-i18n-coverage.test.ts --runInBand` — PASS (5/5 tests)
   - Ran: `pnpm typecheck` — PASS
   - Pre-commit hooks: lint-staged, typecheck via husky — PASS
 - **Documentation updated:**

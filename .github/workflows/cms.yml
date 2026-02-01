@@ -141,6 +141,8 @@ jobs:
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: true
+          require-file: true
           app-path: apps/cms
           environment: production
 

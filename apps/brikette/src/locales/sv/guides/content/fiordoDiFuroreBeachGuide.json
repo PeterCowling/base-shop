@@ -3,6 +3,7 @@
     "title": "Strandguide: Fiordo di Furore",
     "description": "Så tar du dig till Fiordo di Furore med buss från Positano, vad du ska packa och vad som väntar i den dramatiska klippviken."
   },
+  "lastUpdated": "2026-01-29T00:00:00Z",
   "linkLabel": "Strandguide: Fiordo di Furore",
   "intro": [
     "Fiordo di Furore är Amalfikustens vykortsklyfta – en smal vik under en bågbro med smaragdgrönt vatten och lodräta klippor. Det är en liten, nästan helt orörd strand utan strandklubbar eller restauranger, så kom förberedd på ett dopp, några foton och dramatisk klipphoppning.",
@@ -72,6 +73,7 @@
     "Inga faciliteter eller klubbar = inga avgifter utöver transport."
   ],
   "sectionFigure": {
+    "src": "/img/guides/fiordo-di-furore/01-beach-and-bridge.jpg",
     "alt": "Utsikt över Fiordo di Furore från bron",
     "caption": "Fjordens smaragdgröna vatten under den bågformade bron"
   },

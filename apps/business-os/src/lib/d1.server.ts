@@ -11,8 +11,9 @@
 
 import "server-only";
 
-import type { D1Database } from "@acme/platform-core/d1";
 import { getRequestContext } from "@cloudflare/next-on-pages";
+
+import type { D1Database } from "@acme/platform-core/d1";
 
 /**
  * Cloudflare environment with Business OS D1 binding

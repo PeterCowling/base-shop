@@ -77,22 +77,37 @@
   ],
   "images": {
     "whyGo": {
+      "src": "/img/guides/laurito-beach/02-beach-overview.jpg",
       "alt": "海岸線に沿ってビーチクラブが並ぶラウリート・ビーチの入り江",
       "caption": "崖に囲まれたラウリートの入り江は、メインビーチより穏やかで静かです。"
     },
     "layout": {
+      "src": "/img/guides/laurito-beach/01-beach-layout-map.jpg",
       "alt": "ラウリートのビーチデッキと海岸線のレイアウト",
       "caption": "入り江は3つのゾーンに分かれています：公共エリア、ヴィラ・トレ・ヴィッレのデッキ、ダ・アドルフォのテラス。"
     },
     "treVille": {
+      "src": "/img/guides/laurito-beach/03-tre-ville-beach-club.jpg",
       "alt": "ヴィラ・トレ・ヴィッレ・ビーチクラブのサンベッドと海の眺め",
       "caption": "ヴィラ・トレ・ヴィッレはプレミアムなサンベッドとコンシェルジュスタイルのサービスが特徴です。"
     },
     "daAdolfo": {
+      "src": "/img/guides/laurito-beach/04-da-adolfo-beach-club.jpg",
       "alt": "ダ・アドルフォ・ビーチクラブの桟橋と座席エリア",
       "caption": "ダ・アドルフォのシャトルボートはレストランテラスの横にゲストを降ろします。"
+    },
+    "positanoView": {
+      "src": "/img/guides/laurito-beach/05-positano-view.jpg",
+      "alt": "ポジターノと海岸近くのボートの眺め",
+      "caption": "スピアッジャ・グランデは多くのビーチシャトルやボートの主要な出発地点です。"
+    },
+    "sitaBus": {
+      "src": "/img/guides/laurito-beach/06-amalfi-coast-sita-bus.jpg",
+      "alt": "海の上のアマルフィ海岸道路を走る青いSITAバス",
+      "caption": "ボートが一時停止した場合の信頼できるバックアップ：海岸道路沿いのSITAバス。"
     }
   },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
   "essentialsTitle": "What to expect",
   "essentials": [
     "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",

@@ -450,20 +450,6 @@ Include `Business-Unit` in the frontmatter when:
 - The feature is part of a specific business unit's roadmap (BRIK, PLAT, PIPE, BOS)
 - You want automatic card creation and lifecycle tracking
 
-### How It Works
-
-1. **Add Business-Unit to frontmatter** during fact-finding:
-   ```yaml
-   Business-Unit: PLAT
-   ```
-
-2. **Card creation** (when `/fact-find` completes with Business-Unit):
-   - A new card is created in `docs/business-os/cards/` with Lane: `Fact-finding`
-   - A fact-finding stage doc is created in `docs/business-os/cards/<ID>/`
-   - The `Card-ID` is added to the brief frontmatter automatically
-
-3. **Idempotency**: If `Card-ID` already exists in the frontmatter, no new card is created. The stage doc is created/updated instead.
-
 ### Business Unit Codes
 
 - `BRIK` - Brikette (guide booking platform)
@@ -471,8 +457,174 @@ Include `Business-Unit` in the frontmatter when:
 - `PIPE` - Pipeline (product pipeline tools)
 - `BOS` - Business OS (internal tools)
 
+### Card Creation Workflow (After Brief Completion)
+
+**When:** After persisting the fact-find brief (Outcome A only), if `Business-Unit` is present in frontmatter.
+
+**Step 1: Check for existing card**
+
+```bash
+# Check if Card-ID already exists in brief frontmatter
+# If yes: skip to Step 4 (create/update stage doc only)
+# If no: proceed to Step 2
+```
+
+See `.claude/skills/_shared/card-operations.md` for idempotency check details.
+
+**Step 2: Allocate Card-ID (scan-based)**
+
+```bash
+BUSINESS="PLAT"  # From Business-Unit frontmatter
+MAX_ID=$(ls docs/business-os/cards/${BUSINESS}-ENG-*.user.md 2>/dev/null | \
+  sed 's/.*-ENG-\([0-9]*\)\.user\.md/\1/' | \
+  sort -n | tail -1)
+NEXT_ID=$(printf "%04d" $((${MAX_ID:-0} + 1)))
+CARD_ID="${BUSINESS}-ENG-${NEXT_ID}"
+```
+
+**Step 3: Create card files**
+
+Create two files in `docs/business-os/cards/`:
+
+**`{CARD-ID}.user.md`:**
+```markdown
+---
+Type: Card
+ID: {CARD-ID}
+Lane: Fact-finding
+Priority: P3
+Business: {BUSINESS-UNIT}
+Owner: Pete
+Created: {DATE}
+Title: {Feature title from brief}
+Plan-Link: docs/plans/{feature-slug}-fact-find.md
+---
+
+# {Feature Title}
+
+## Description
+{Summary from fact-find brief}
+
+## Value
+{Goals from fact-find brief}
+
+## Next Steps
+1. Complete fact-finding phase
+2. If findings are positive, proceed to /plan-feature
+3. Review evidence and transition to Planned lane
+```
+
+**`{CARD-ID}.agent.md`:**
+```markdown
+---
+Type: Card
+ID: {CARD-ID}
+Lane: Fact-finding
+Priority: P3
+Business: {BUSINESS-UNIT}
+Owner: Pete
+Created: {DATE}
+Title: {Feature title from brief}
+Plan-Link: docs/plans/{feature-slug}-fact-find.md
+---
+
+## Card: {CARD-ID}
+
+**Linked Artifacts:**
+- Fact-find: `docs/plans/{feature-slug}-fact-find.md`
+
+**Current Lane:** Fact-finding
+
+**Context for LLM:**
+- {Summary of what's being investigated}
+- {Key constraints from fact-find}
+
+**Transition Criteria:**
+- Fact-finding -> Planned: Requires completed fact-find with positive findings and /plan-feature
+```
+
+**Step 4: Create fact-finding stage doc**
+
+Create `docs/business-os/cards/{CARD-ID}/fact-finding.user.md`:
+
+```markdown
+---
+Type: Stage-Doc
+Card-ID: {CARD-ID}
+Stage: Fact-finding
+Created: {DATE}
+Owner: Pete
+---
+
+# Fact-Finding: {Feature Title}
+
+## Questions to Answer
+
+{Import questions from fact-find brief}
+
+## Findings
+
+{Import findings from fact-find brief or "To be completed"}
+
+## Recommendations
+
+{Import recommendations or "To be completed based on findings"}
+
+## Transition Decision
+
+**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}
+**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}
+```
+
+See `.claude/skills/_shared/stage-doc-operations.md` for full template.
+
+**Step 5: Update brief frontmatter**
+
+Add `Card-ID` to the fact-find brief:
+```yaml
+---
+Type: Fact-Find
+Outcome: Planning
+Status: Ready-for-planning
+# ... other fields ...
+Business-Unit: PLAT
+Card-ID: PLAT-ENG-0024  # Added after card creation
+---
+```
+
+**Step 6: Validate**
+
+```bash
+pnpm docs:lint
+```
+
+### Completion Message (with Business OS)
+
+When Business-Unit is present and card is created:
+
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning.
+>
+> **Business OS Integration:**
+> - Created card: `<Card-ID>`
+> - Card location: `docs/business-os/cards/<Card-ID>.user.md`
+> - Stage doc: `docs/business-os/cards/<Card-ID>/fact-finding.user.md`
+> - Card-ID added to brief frontmatter
+>
+> Proceed to `/plan-feature` once blocking questions are answered."
+
+When Business-Unit is present but card already exists:
+
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning.
+>
+> **Business OS Integration:**
+> - Using existing card: `<Card-ID>`
+> - Stage doc updated: `docs/business-os/cards/<Card-ID>/fact-finding.user.md`
+>
+> Proceed to `/plan-feature` once blocking questions are answered."
+
 ### Backward Compatibility
 
 - Briefs without `Business-Unit` work exactly as before
 - No card is created unless `Business-Unit` is explicitly provided
 - Existing briefs are unaffected
+- The standard completion message is used when no Business OS integration

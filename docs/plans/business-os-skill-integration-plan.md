@@ -126,7 +126,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-101 | IMPLEMENT | Add Business OS frontmatter schema to plan docs | 90% | S | Complete | - |
 | BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Complete | BOS-101 |
-| BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Pending | BOS-102, BOS-103 |
+| BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Complete | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Pending | BOS-103 |
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Pending | BOS-106 |
@@ -257,6 +257,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-104: Extend /fact-find with card creation hook
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/fact-find/SKILL.md`
 - **Depends on:** BOS-102, BOS-103
 - **Confidence:** 82%
@@ -264,14 +265,14 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 82% - Optional hook approach maintains backward compatibility
   - Impact: 80% - Only affects `/fact-find`; other skills unaffected
 - **Acceptance:**
-  - `/fact-find` checks for `Business-Unit` in user input or existing brief
-  - If `Business-Unit` present and no `Card-ID` exists:
+  - [x] `/fact-find` checks for `Business-Unit` in user input or existing brief
+  - [x] If `Business-Unit` present and no `Card-ID` exists:
     - Create card using helper from BOS-102 with `Lane: Fact-finding`
     - Create fact-finding stage doc using helper from BOS-103
     - Add `Card-ID` to brief frontmatter
-  - If `Card-ID` already exists, create/update stage doc only
-  - Completion message includes card ID when created
-  - Skills continue to work without Business-Unit (backward compatible)
+  - [x] If `Card-ID` already exists, create/update stage doc only
+  - [x] Completion message includes card ID when created
+  - [x] Skills continue to work without Business-Unit (backward compatible)
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by running `/fact-find` with and without `Business-Unit`
@@ -286,6 +287,12 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Rollback: Remove the Business OS integration section
 - **Documentation impact:**
   - Update: `.claude/skills/fact-find/SKILL.md` (add Business OS integration section)
+- **Implementation notes (2026-02-02):**
+  - Expanded Business OS Integration section with full 6-step workflow
+  - Added card creation templates (user.md + agent.md)
+  - Added stage doc creation instructions
+  - Added completion messages for both new card and existing card cases
+  - References shared helpers from BOS-102 and BOS-103
   - Update: `docs/business-os/agent-workflows.md` (reference new integration)
 - **Notes / references:**
   - Integration point: After "Persist the brief" step in Outcome A workflow

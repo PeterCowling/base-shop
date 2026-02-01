@@ -277,6 +277,9 @@ Last-updated: YYYY-MM-DD
 Feature-Slug: <kebab-case>
 Overall-confidence: <weighted average %>
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
+# Business OS Integration (optional - inherited from fact-find or manually provided)
+Business-Unit: <BRIK | PLAT | PIPE | BOS | etc.>
+Card-ID: <from fact-find or manually provided>
 ---
 
 # <Feature Name> Plan
@@ -443,3 +446,46 @@ A plan is considered complete only if:
 
 **If some below threshold:**
 > "Plan ready with blockers. Tasks <IDs> are below threshold (<%>). Recommend `/re-plan` for those tasks before implementation; remaining tasks can proceed."
+
+---
+
+## Business OS Integration (Optional)
+
+Plan documents can optionally integrate with Business OS for card tracking. This is entirely opt-in.
+
+### When to Use
+
+Include `Business-Unit` and/or `Card-ID` in the frontmatter when:
+- The fact-find brief already has Business-Unit/Card-ID (inherit them)
+- The feature should be tracked on the Business OS kanban board
+- You want automatic stage doc creation and lane transitions
+
+### How It Works
+
+1. **Inherit from fact-find** or add manually:
+   ```yaml
+   Business-Unit: PLAT
+   Card-ID: PLAT-ENG-0023
+   ```
+
+2. **Stage doc creation** (when `/plan-feature` completes with Card-ID):
+   - A planned stage doc is created in `docs/business-os/cards/<ID>/`
+   - The stage doc links to the plan file
+   - Card frontmatter is updated with plan confidence and link
+
+3. **Lane transition** (proposed, not automatic):
+   - After planned stage doc is created, the skill suggests moving to "Planned" lane
+   - Use `/propose-lane-move <Card-ID> Planned` to formally propose the transition
+
+### Business Unit Codes
+
+- `BRIK` - Brikette (guide booking platform)
+- `PLAT` - Platform (shared infrastructure)
+- `PIPE` - Pipeline (product pipeline tools)
+- `BOS` - Business OS (internal tools)
+
+### Backward Compatibility
+
+- Plans without `Business-Unit`/`Card-ID` work exactly as before
+- No card operations occur unless these fields are explicitly provided
+- Existing plans are unaffected

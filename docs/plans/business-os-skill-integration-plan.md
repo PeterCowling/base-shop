@@ -129,7 +129,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Complete | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Complete | BOS-103 |
-| BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Pending | BOS-106 |
+| BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Complete | BOS-106 |
 | BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Pending | BOS-103 |
 | BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Pending | BOS-108 |
 | BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Pending | BOS-104, BOS-106, BOS-108 |
@@ -382,6 +382,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-107: Add lane transition proposal after /plan-feature
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/plan-feature/SKILL.md`
 - **Depends on:** BOS-106
 - **Confidence:** 85%
@@ -389,11 +390,11 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 85% - Reuses existing proposal mechanism
   - Impact: 80% - Only affects `/plan-feature` completion message
 - **Acceptance:**
-  - After planned stage doc is created, skill suggests lane transition
-  - Proposal: `Fact-finding -> Planned`
-  - Evidence cited: planned stage doc exists, plan doc with acceptance criteria
-  - Skill instructions reference `/propose-lane-move` for formal proposal
-  - Alternative: Inline proposal (set `Proposed-Lane: Planned` in card frontmatter)
+  - [x] After planned stage doc is created, skill suggests lane transition
+  - [x] Proposal: `Fact-finding -> Planned`
+  - [x] Evidence cited: planned stage doc exists, plan doc with acceptance criteria
+  - [x] Skill instructions reference `/propose-lane-move` for formal proposal
+  - [x] Alternative: Inline proposal (set `Proposed-Lane: Planned` in card frontmatter)
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by running `/plan-feature` with Card-ID
@@ -401,6 +402,12 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Tests run: N/A (S-effort)
   - Test stubs written: N/A
   - Unexpected findings: None
+- **Implementation notes (2026-02-02):**
+  - Added Step 4 with lane transition proposal options
+  - Option A: /propose-lane-move command (recommended)
+  - Option B: Inline Proposed-Lane frontmatter
+  - Evidence requirements documented
+  - Guard: only propose if all tasks >=80%
 - **Rollout / rollback:**
   - Rollout: Direct commit; additive step in skill workflow
   - Rollback: Remove the lane proposal step

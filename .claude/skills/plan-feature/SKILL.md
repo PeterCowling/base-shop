@@ -543,7 +543,36 @@ Plan-Created: {DATE}
 ---
 ```
 
-**Step 4: Validate**
+**Step 4: Propose lane transition (if all tasks >=80%)**
+
+If all IMPLEMENT tasks are >=80% confidence, propose the lane transition.
+
+**Option A: Use `/propose-lane-move` (recommended)**
+```
+/propose-lane-move {CARD-ID} Planned
+```
+
+**Option B: Inline proposal (set in card frontmatter)**
+
+Add `Proposed-Lane` to the card's frontmatter:
+```yaml
+---
+Type: Card
+ID: {CARD-ID}
+Lane: Fact-finding
+Proposed-Lane: Planned  # Lane transition proposal
+# ... other fields ...
+---
+```
+
+**Evidence to cite for transition:**
+- Planned stage doc exists: `docs/business-os/cards/{CARD-ID}/planned.user.md`
+- Plan doc with acceptance criteria: `docs/plans/{feature-slug}-plan.md`
+- All tasks have >=80% confidence
+
+**If some tasks <80%:** Do NOT propose lane transition. The card should remain in Fact-finding until `/re-plan` raises confidence on blocked tasks.
+
+**Step 5: Validate**
 
 ```bash
 pnpm docs:lint

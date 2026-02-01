@@ -460,23 +460,6 @@ Include `Business-Unit` and/or `Card-ID` in the frontmatter when:
 - The feature should be tracked on the Business OS kanban board
 - You want automatic stage doc creation and lane transitions
 
-### How It Works
-
-1. **Inherit from fact-find** or add manually:
-   ```yaml
-   Business-Unit: PLAT
-   Card-ID: PLAT-ENG-0023
-   ```
-
-2. **Stage doc creation** (when `/plan-feature` completes with Card-ID):
-   - A planned stage doc is created in `docs/business-os/cards/<ID>/`
-   - The stage doc links to the plan file
-   - Card frontmatter is updated with plan confidence and link
-
-3. **Lane transition** (proposed, not automatic):
-   - After planned stage doc is created, the skill suggests moving to "Planned" lane
-   - Use `/propose-lane-move <Card-ID> Planned` to formally propose the transition
-
 ### Business Unit Codes
 
 - `BRIK` - Brikette (guide booking platform)
@@ -484,8 +467,118 @@ Include `Business-Unit` and/or `Card-ID` in the frontmatter when:
 - `PIPE` - Pipeline (product pipeline tools)
 - `BOS` - Business OS (internal tools)
 
+### Planned Stage Doc Workflow (After Plan Completion)
+
+**When:** After persisting the plan document, if `Card-ID` is present in frontmatter.
+
+**Step 1: Check for Card-ID**
+
+If the fact-find brief or plan frontmatter contains `Card-ID`:
+- Verify the card exists at `docs/business-os/cards/{Card-ID}.user.md`
+- If card doesn't exist: warn user (card should have been created during /fact-find)
+- If card exists: proceed to Step 2
+
+**Step 2: Create planned stage doc**
+
+Create `docs/business-os/cards/{CARD-ID}/planned.user.md`:
+
+```markdown
+---
+Type: Stage-Doc
+Card-ID: {CARD-ID}
+Stage: Planned
+Created: {DATE}
+Owner: Pete
+Plan-Link: docs/plans/{feature-slug}-plan.md
+Plan-Confidence: {OVERALL-CONFIDENCE}%
+---
+
+# Planned: {Feature Title}
+
+## Plan Reference
+
+**Plan Document:** `docs/plans/{feature-slug}-plan.md`
+
+**Overall Confidence:** {OVERALL-CONFIDENCE}%
+
+## Task Summary
+
+| Task ID | Description | Confidence | Status |
+|---------|-------------|------------|--------|
+{Table from plan document}
+
+## Key Decisions
+
+{Summarize key decisions from plan document}
+
+## Build Prerequisites
+
+- [ ] All IMPLEMENT tasks >=80% confidence
+- [ ] Dependencies resolved
+- [ ] Test infrastructure ready
+
+## Transition Criteria
+
+**To In Progress:**
+- Plan approved
+- At least one task ready to build
+- `/build-feature` initiated
+```
+
+See `.claude/skills/_shared/stage-doc-operations.md` for full template.
+
+**Step 3: Update card frontmatter**
+
+Add plan metadata to the card's frontmatter in `docs/business-os/cards/{CARD-ID}.user.md`:
+
+```yaml
+---
+Type: Card
+ID: {CARD-ID}
+Lane: Fact-finding
+# ... existing fields ...
+Plan-Link: docs/plans/{feature-slug}-plan.md
+Plan-Confidence: {OVERALL-CONFIDENCE}%
+Plan-Created: {DATE}
+---
+```
+
+**Step 4: Validate**
+
+```bash
+pnpm docs:lint
+```
+
+### Completion Message (with Business OS)
+
+When Card-ID is present:
+
+> "Plan ready. All implementation tasks are ≥80% confidence.
+>
+> **Business OS Integration:**
+> - Card: `<Card-ID>`
+> - Planned stage doc created: `docs/business-os/cards/<Card-ID>/planned.user.md`
+> - Card updated with plan link and confidence
+> - **Suggested lane transition:** Fact-finding -> Planned
+> - Run `/propose-lane-move <Card-ID> Planned` to formally propose transition
+>
+> Proceed to `/build-feature`."
+
+When Card-ID is present but some tasks below threshold:
+
+> "Plan ready with blockers. Tasks <IDs> are below threshold (<%>).
+>
+> **Business OS Integration:**
+> - Card: `<Card-ID>`
+> - Planned stage doc created: `docs/business-os/cards/<Card-ID>/planned.user.md`
+> - Card updated with plan link and confidence
+> - **Note:** Lane transition to Planned should wait until tasks >=80%
+>
+> Recommend `/re-plan` for blocked tasks."
+
 ### Backward Compatibility
 
 - Plans without `Business-Unit`/`Card-ID` work exactly as before
 - No card operations occur unless these fields are explicitly provided
 - Existing plans are unaffected
+- The standard completion message is used when no Business OS integration

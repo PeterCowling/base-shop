@@ -128,7 +128,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Complete | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
-| BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Pending | BOS-103 |
+| BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Complete | BOS-103 |
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Pending | BOS-106 |
 | BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Pending | BOS-103 |
 | BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Pending | BOS-108 |
@@ -338,6 +338,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-106: Extend /plan-feature with planned stage doc creation
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/plan-feature/SKILL.md`
 - **Depends on:** BOS-103
 - **Confidence:** 82%
@@ -345,13 +346,13 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 82% - Optional hook maintains backward compatibility
   - Impact: 80% - Only affects `/plan-feature`; other skills unaffected
 - **Acceptance:**
-  - `/plan-feature` checks for `Card-ID` in fact-find brief or plan frontmatter
-  - If `Card-ID` present:
+  - [x] `/plan-feature` checks for `Card-ID` in fact-find brief or plan frontmatter
+  - [x] If `Card-ID` present:
     - Create planned stage doc using helper from BOS-103
     - Stage doc links to plan file path
     - Update card frontmatter with `Plan-Confidence` and `Plan-Link`
-  - If no `Card-ID`, skill works unchanged
-  - Completion message notes stage doc creation
+  - [x] If no `Card-ID`, skill works unchanged
+  - [x] Completion message notes stage doc creation
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by running `/plan-feature` with and without `Card-ID`
@@ -361,6 +362,12 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Unexpected findings: None
 - **What would make this >=90%:**
   - Actually run `/plan-feature` with Card-ID and verify stage doc creation
+- **Implementation notes (2026-02-02):**
+  - Expanded Business OS Integration section with full 4-step workflow
+  - Added planned stage doc template with task summary table
+  - Added card frontmatter update instructions
+  - Added completion messages for with/without threshold blockers
+  - Suggests lane transition to Planned
 - **Rollout / rollback:**
   - Rollout: Direct commit; additive section in skill file
   - Rollback: Remove the Business OS integration section

@@ -92,6 +92,11 @@
       "import": "./dist/utils/index.js",
       "default": "./dist/utils/index.js"
     },
+    "./contexts/CurrencyContext": {
+      "types": "./dist/contexts/CurrencyContext.d.ts",
+      "import": "./dist/contexts/CurrencyContext.js",
+      "default": "./dist/contexts/CurrencyContext.js"
+    },
     "./components/*": {
       "types": "./dist/components/*.d.ts",
       "import": "./dist/components/*.js",

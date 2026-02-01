@@ -54,6 +54,7 @@ const nextConfig = {
     "@acme/auth",
     "@acme/zod-utils", // needed by @acme/config/env/auth.ts
     "@acme/i18n",
+    "@acme/platform-core", // needed for useCurrency and other context exports
   ],
 };
 

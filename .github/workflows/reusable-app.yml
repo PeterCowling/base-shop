@@ -71,11 +71,11 @@ jobs:
           turbo-team: ${{ vars.TURBO_TEAM }}
 
       - name: Lint
-        run: pnpm --filter ${{ inputs.app-filter }} lint
+        run: pnpm --filter ${{ inputs.app-filter }}... lint
         shell: bash
 
       - name: Typecheck
-        run: pnpm --filter ${{ inputs.app-filter }} typecheck
+        run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}
         shell: bash
 
       - name: Test

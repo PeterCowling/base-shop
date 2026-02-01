@@ -11,6 +11,7 @@
     "test": "jest --config jest.config.cjs --passWithNoTests"
   },
   "dependencies": {
+    "@acme/date-utils": "workspace:*",
     "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",

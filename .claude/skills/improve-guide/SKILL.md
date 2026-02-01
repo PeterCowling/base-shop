@@ -1,41 +1,49 @@
 ---
 name: improve-guide
-description: End-to-end guide improvement - runs improve-en-guide for EN fixes, then improve-translate-guide for localization
+description: Main entry point for guide improvement - interactive workflow selection for audit, translation, or both
 ---
 
-# Guide SEO Audit + Fix + Localization (Orchestrator)
+# Guide Improvement (Interactive Workflow Selector)
 
 ## Description
 
-Wrapper skill that runs `improve-en-guide` followed by `improve-translate-guide` for end-to-end guide improvement.
+Main entry point for guide improvement with **interactive workflow selection**. Presents user with choice of:
+1. **Audit EN content only** - Fix EN issues, stop before translation for manual review
+2. **Translate to all locales** - Propagate EN content (assumes EN is already clean)
+3. **Audit + Translate (full workflow)** - Both phases with no manual review between
 
-This orchestrator handles the complete workflow:
-1. **Phase 1 (EN):** Fix all SEO audit issues in English content
-2. **Phase 2 (Translation):** Propagate fixed EN content to all 17 locales
-
-## When to Use
-
-Use this skill for **end-to-end guide improvement** when you need both:
-- EN content fixes (SEO audit issues)
-- Translation/propagation to all locales
-
-## When NOT to Use
-
-**Use `improve-en-guide` alone if:**
-- You only need to fix EN content
-- You want to review EN changes before translating
-- You're iterating on EN content quality
-
-**Use `improve-translate-guide` alone if:**
-- EN content is already audit-clean
-- You've already run improve-en-guide and just need translation
-- You want to re-translate without re-auditing EN
+This flexibility allows manual review of EN content before propagating to 17 locales.
 
 ---
 
-## Operating Mode
+## Interactive Workflow Selection
 
-**ORCHESTRATE: improve-en-guide + improve-translate-guide**
+When this skill is invoked, it **first asks the user which workflow to run** before any processing begins.
+
+**Why this matters:**
+- EN content changes affect all 17 locales
+- Manual review between audit and translation catches issues early
+- Some users want to iterate on EN before translating
+- Some users want the full automated workflow
+
+---
+
+## When to Use
+
+**Use this skill as the main entry point** for all guide improvement work. The interactive selection lets you choose the right workflow for your situation.
+
+**Direct sub-skill invocation (skip selection prompt):**
+- Use `improve-en-guide` directly if you always want EN-only processing
+- Use `improve-translate-guide` directly if EN is already clean and you just need translation
+
+---
+
+## When NOT to Use
+
+This skill orchestrates sub-skills. If you need fine-grained control over specific phases or want to skip the selection prompt entirely, invoke the sub-skills directly:
+
+- **`improve-en-guide`** - EN audit and fixes only
+- **`improve-translate-guide`** - Translation only (requires clean EN)
 
 ---
 
@@ -65,56 +73,93 @@ All flags are passed through to the appropriate sub-skill:
 
 ## Workflow
 
-### Phase 1: EN Fixes (improve-en-guide)
+### Step 1: Ask User for Workflow Selection
 
-Execute the `improve-en-guide` skill with:
-- The guide reference(s) provided
-- Any `--skip-json-fix` flag if specified
-- Readership/tone inputs
+**Use AskUserQuestion tool** with:
 
-**This phase:**
-- Runs baseline JSON validation
-- Runs SEO audit for EN
-- Iteratively fixes all EN audit issues
-- Validates EN content is audit-clean
+- **Question:** "Which workflow do you want to run for this guide?"
+- **Header:** "Workflow Selection"
+- **Options:**
+  1. **"Audit EN content only"** - Run SEO audit and fix EN content issues. Stops before translation so you can review/adjust EN content manually.
+  2. **"Translate to all locales"** - Propagate EN content to all 17 locales (assumes EN is already audit-clean and reviewed).
+  3. **"Audit + Translate (full workflow)"** - Run EN audit/fixes, then immediately translate to all locales (no manual review between phases).
 
-**Gate:** Phase 1 must complete successfully before Phase 2 begins.
+### Step 2: Execute Selected Workflow
 
-If Phase 1 fails:
-- Report the failure details
-- STOP - do not proceed to translation
-- Provide guidance on how to resolve
+**If user selects "Audit EN content only":**
+1. Invoke `improve-en-guide` skill with guide reference and any flags
+2. Report EN audit results
+3. STOP - Provide guidance: "EN content is now audit-clean. Review the changes, make any manual adjustments, then run /improve-guide again and select 'Translate to all locales'."
 
-### Phase 2: Translation (improve-translate-guide)
+**If user selects "Translate to all locales":**
+1. Invoke `improve-translate-guide` skill with guide reference and any flags
+2. Report translation results for all 17 locales
 
-Execute the `improve-translate-guide` skill with:
-- The same guide reference(s)
-- Any `--skip-validation` flag if specified (not recommended)
+**If user selects "Audit + Translate (full workflow)":**
+1. Invoke `improve-en-guide` skill with guide reference and any flags
+2. **Gate:** Phase 1 must complete successfully before Phase 2 begins
+3. If Phase 1 fails: Report failure, STOP, provide guidance
+4. Invoke `improve-translate-guide` skill with guide reference and any flags
+5. Report combined results from both phases
 
-**This phase:**
-- Validates EN is audit-clean (should always pass after Phase 1)
-- Spawns parallel subagents for translation
-- Propagates EN content to all 17 locales
-- Validates all locale files
+### Step 3: Report Results
+
+Report results based on selected workflow (see Completion Report section).
+
+---
+
+## Typical Usage Pattern
+
+Most common workflow for careful iteration:
+
+1. Run `/improve-guide` and select **"Audit EN content only"**
+2. Review the EN content fixes made by the audit
+3. Make any manual adjustments to EN content
+4. Run `/improve-guide` again and select **"Translate to all locales"**
+
+This pattern ensures EN content is reviewed before propagating to 17 locales.
+
+**For quick end-to-end processing** (no manual review):
+- Run `/improve-guide` and select **"Audit + Translate (full workflow)"**
 
 ---
 
 ## Completion Report
 
-Report results from both phases:
+### If "Audit EN content only" was selected:
 
-### Phase 1 Summary (EN Fixes)
+**Phase 1 Summary (EN Fixes)**
 - Initial score, final score
 - Audit iterations performed
 - Key issue categories fixed
 - Reader-first improvements made
 
-### Phase 2 Summary (Translation)
+**Next Steps Guidance:**
+- Review EN changes at the guide URL
+- Make any manual adjustments
+- Run `/improve-guide` again and select "Translate to all locales"
+
+### If "Translate to all locales" was selected:
+
+**Translation Summary**
 - Locales updated (should be all 17)
 - Any locale-specific issues encountered
 - Parallel translation efficiency
 
-### Overall
+### If "Audit + Translate (full workflow)" was selected:
+
+**Phase 1 Summary (EN Fixes)**
+- Initial score, final score
+- Audit iterations performed
+- Key issue categories fixed
+- Reader-first improvements made
+
+**Phase 2 Summary (Translation)**
+- Locales updated (should be all 17)
+- Any locale-specific issues encountered
+- Parallel translation efficiency
+
+**Overall**
 - Total guides processed
 - Any guides/locales skipped (with reasons)
 - Confirmation that:
@@ -145,12 +190,12 @@ Non-EN locale content may have drifted. Check and reconcile entire locale conten
 
 ## Error Handling
 
-**Phase 1 failure:**
+**Phase 1 failure (EN audit):**
 - Report specific EN audit issues
 - STOP before translation
 - User can fix manually and re-run, or use improve-en-guide directly
 
-**Phase 2 failure:**
+**Phase 2 failure (translation):**
 - Report which locales failed
 - Translation for successful locales is preserved
 - User can re-run improve-translate-guide for failed locales

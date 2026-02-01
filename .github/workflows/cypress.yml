@@ -111,8 +111,8 @@ jobs:
       - uses: ./.github/actions/setup-repo
       - name: Seed test data
         run: TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts
-      - name: Build CMS app
-        run: pnpm --filter @apps/cms build
+      - name: Build CMS app (with dependencies)
+        run: pnpm exec turbo run build --filter=@apps/cms
       - name: Cache Cypress binary
         uses: actions/cache@v4
         with:
@@ -141,8 +141,8 @@ jobs:
       - uses: ./.github/actions/setup-repo
       - name: Seed test data
         run: TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts
-      - name: Build CMS app
-        run: pnpm --filter @apps/cms build
+      - name: Build CMS app (with dependencies)
+        run: pnpm exec turbo run build --filter=@apps/cms
       - name: Cache Cypress binary
         uses: actions/cache@v4
         with:

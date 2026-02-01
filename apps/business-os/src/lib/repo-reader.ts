@@ -81,7 +81,7 @@ export class RepoReader {
         userPath,
         "utf-8"
       )) as string;
-      const fileSha = computeFileSha(content);
+      const fileSha = await computeFileSha(content);
       const parsed = matter(content);
 
       return {
@@ -103,7 +103,7 @@ export class RepoReader {
             archivePath,
             "utf-8"
           )) as string;
-          const fileSha = computeFileSha(content);
+          const fileSha = await computeFileSha(content);
           const parsed = matter(content);
 
           return {
@@ -172,7 +172,7 @@ export class RepoReader {
           filePath,
           "utf-8"
         )) as string;
-        const fileSha = computeFileSha(content);
+        const fileSha = await computeFileSha(content);
         const parsed = matter(content);
 
         cards.push({
@@ -209,7 +209,7 @@ export class RepoReader {
         userPath,
         "utf-8"
       )) as string;
-      const fileSha = computeFileSha(content);
+      const fileSha = await computeFileSha(content);
       const parsed = matter(content);
 
       return {
@@ -303,7 +303,7 @@ export class RepoReader {
         filePath,
         "utf-8"
       )) as string;
-      const fileSha = computeFileSha(content);
+      const fileSha = await computeFileSha(content);
       const parsed = matter(content);
 
       return {
@@ -378,7 +378,7 @@ export class RepoReader {
           filePath,
           "utf-8"
         )) as string;
-        const fileSha = computeFileSha(content);
+        const fileSha = await computeFileSha(content);
         const parsed = matter(content);
 
         ideas.push({

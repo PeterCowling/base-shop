@@ -53,7 +53,7 @@ Body
 `;
     await writeFileWithinRoot(tempDir, filePath, raw);
 
-    const baseFileSha = computeFileSha(raw);
+    const baseFileSha = await computeFileSha(raw);
 
     const result = await checkCardBaseFileSha({
       repoRoot: tempDir,
@@ -82,12 +82,12 @@ Body v1
 `;
     await writeFileWithinRoot(tempDir, filePath, rawV1);
 
-    const baseFileSha = computeFileSha(rawV1);
+    const baseFileSha = await computeFileSha(rawV1);
 
     const rawV2 = rawV1.replace("Body v1", "Body v2");
     await writeFileWithinRoot(tempDir, filePath, rawV2);
 
-    const currentFileSha = computeFileSha(rawV2);
+    const currentFileSha = await computeFileSha(rawV2);
 
     const result = await checkCardBaseFileSha({
       repoRoot: tempDir,

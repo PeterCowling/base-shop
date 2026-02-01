@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
+    ".turbo-cache-version",
     "jest.coverage.cjs",
     "jest.config.helpers.cjs",
     "jest.moduleMapper.cjs",

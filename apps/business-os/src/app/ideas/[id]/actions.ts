@@ -95,7 +95,7 @@ export async function convertToCard(
 
   const card: Card = {
     ...cardBase,
-    fileSha: await computeEntitySha(cardBase),
+    fileSha: await computeEntitySha(cardBase as unknown as Record<string, unknown>),
   };
 
   const result = await upsertCard(db, card, null);

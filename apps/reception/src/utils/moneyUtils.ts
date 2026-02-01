@@ -1,4 +1,4 @@
-import { roundDownToIncrement } from "@acme/lib";
+import { roundDownToIncrement } from "@acme/lib/math/financial";
 
 /**
  * Round a value down to the nearest 50 cents.

@@ -22,7 +22,7 @@ function sortKeysDeep(value: unknown): unknown {
  *
  * Used for optimistic concurrency checks and migration scripts.
  */
-export function computeEntitySha(entity: Record<string, unknown>): string {
+export async function computeEntitySha(entity: Record<string, unknown>): Promise<string> {
   const stableJson = JSON.stringify(sortKeysDeep(entity));
   return computeFileSha(stableJson);
 }

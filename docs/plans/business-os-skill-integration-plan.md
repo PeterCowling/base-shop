@@ -127,7 +127,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Pending | BOS-102, BOS-103 |
-| BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Pending | BOS-102 |
+| BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Pending | BOS-103 |
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Pending | BOS-106 |
 | BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Pending | BOS-103 |
@@ -295,6 +295,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-105: Add idempotency checks for card operations
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/_shared/card-operations.md`
 - **Depends on:** BOS-102
 - **Confidence:** 88%
@@ -302,11 +303,11 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 88% - Standard idempotency pattern
   - Impact: 85% - Prevents duplicate cards; no negative side effects
 - **Acceptance:**
-  - Helper includes idempotency check: scan `docs/business-os/cards/` for existing card
-  - Check by `Card-ID` if provided in frontmatter
-  - Check by `Feature-Slug` match if no `Card-ID` (secondary fallback)
-  - If card exists, return existing card ID instead of creating duplicate
-  - Log message indicates "Using existing card" vs "Created new card"
+  - [x] Helper includes idempotency check: scan `docs/business-os/cards/` for existing card
+  - [x] Check by `Card-ID` if provided in frontmatter
+  - [x] Check by `Feature-Slug` match if no `Card-ID` (secondary fallback)
+  - [x] If card exists, return existing card ID instead of creating duplicate
+  - [x] Log message indicates "Using existing card" vs "Created new card"
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by running card creation twice with same context
@@ -319,6 +320,10 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Rollback: Remove the idempotency check section
 - **Documentation impact:**
   - Update: `.claude/skills/_shared/card-operations.md`
+- **Implementation notes (2026-02-02):**
+  - Enhanced idempotency section with full algorithm
+  - Added bash scripts for Card-ID check, Feature-Slug fallback, and combined check
+  - Added skill integration notes for /fact-find, /plan-feature, /build-feature
 - **Notes / references:**
   - Edge case in `/work-idea`: SKILL.md lines 335-339
 

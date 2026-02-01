@@ -176,25 +176,122 @@ pnpm docs:lint
 
 ## Idempotency
 
-Before creating a new card, check if one already exists:
+Before creating a new card, always check if one already exists. This prevents duplicate cards for the same work.
 
-### Check by Card-ID
+### Idempotency Check Algorithm
+
+```
+1. If Card-ID is provided in frontmatter:
+   - Check if docs/business-os/cards/{Card-ID}.user.md exists
+   - If exists: RETURN existing Card-ID (skip creation)
+   - If not exists: proceed with card creation
+
+2. If no Card-ID but Feature-Slug is provided:
+   - Scan all cards for matching Feature-Slug in frontmatter or Plan-Link
+   - If match found: RETURN existing Card-ID (skip creation)
+   - If no match: proceed with card creation
+
+3. Log the outcome:
+   - "Using existing card: {Card-ID}" (if found)
+   - "Created new card: {Card-ID}" (if created)
+```
+
+### Check by Card-ID (Primary)
 
 If `Card-ID` is provided in frontmatter:
+
 ```bash
+CARD_ID="PLAT-ENG-0023"
+
 if [ -f "docs/business-os/cards/${CARD_ID}.user.md" ]; then
-  echo "Card already exists: ${CARD_ID}"
-  # Skip card creation, proceed to stage doc
+  echo "Using existing card: ${CARD_ID}"
+  # Skip card creation
+  # Proceed to stage doc creation
+else
+  echo "Card not found, creating: ${CARD_ID}"
+  # Create card files
+  echo "Created new card: ${CARD_ID}"
 fi
 ```
 
 ### Check by Feature-Slug (Fallback)
 
-If no `Card-ID` but `Feature-Slug` exists, scan for matching cards:
+If no `Card-ID` but `Feature-Slug` exists in the fact-find or plan frontmatter:
+
 ```bash
-# Search for cards that reference this feature slug
-rg -l "Feature-Slug: ${FEATURE_SLUG}" docs/business-os/cards/*.md
+FEATURE_SLUG="business-os-skill-integration"
+
+# Search for cards with matching Feature-Slug in frontmatter
+EXISTING_CARD=$(rg -l "Feature-Slug: ${FEATURE_SLUG}" docs/business-os/cards/*.user.md 2>/dev/null | head -1)
+
+# Also check Plan-Link references
+if [ -z "$EXISTING_CARD" ]; then
+  EXISTING_CARD=$(rg -l "Plan-Link:.*${FEATURE_SLUG}" docs/business-os/cards/*.user.md 2>/dev/null | head -1)
+fi
+
+if [ -n "$EXISTING_CARD" ]; then
+  # Extract Card-ID from filename
+  CARD_ID=$(basename "$EXISTING_CARD" .user.md)
+  echo "Using existing card (matched by Feature-Slug): ${CARD_ID}"
+  # Skip card creation
+else
+  echo "No existing card found for Feature-Slug: ${FEATURE_SLUG}"
+  # Proceed with new card creation
+fi
 ```
+
+### Full Idempotency Check (Combined)
+
+```bash
+#!/bin/bash
+# Idempotent card creation check
+
+check_existing_card() {
+  local CARD_ID="$1"
+  local FEATURE_SLUG="$2"
+
+  # Check by Card-ID first
+  if [ -n "$CARD_ID" ] && [ -f "docs/business-os/cards/${CARD_ID}.user.md" ]; then
+    echo "Using existing card: ${CARD_ID}"
+    return 0  # Card exists
+  fi
+
+  # Fallback to Feature-Slug search
+  if [ -n "$FEATURE_SLUG" ]; then
+    local EXISTING=$(rg -l "Feature-Slug: ${FEATURE_SLUG}" docs/business-os/cards/*.user.md 2>/dev/null | head -1)
+    if [ -n "$EXISTING" ]; then
+      local FOUND_ID=$(basename "$EXISTING" .user.md)
+      echo "Using existing card (matched by Feature-Slug): ${FOUND_ID}"
+      return 0  # Card exists
+    fi
+  fi
+
+  return 1  # Card does not exist, proceed with creation
+}
+
+# Usage:
+# if check_existing_card "$CARD_ID" "$FEATURE_SLUG"; then
+#   # Card exists - skip creation, proceed to stage doc
+# else
+#   # Create new card
+# fi
+```
+
+### Skill Integration Notes
+
+**For /fact-find:**
+- Check if `Card-ID` already in brief frontmatter
+- If present, use existing card
+- If not, check by `Feature-Slug`
+- Only allocate new ID if neither check finds a match
+
+**For /plan-feature:**
+- Inherit `Card-ID` from fact-find brief if present
+- Never create a new card (cards created during fact-find phase)
+
+**For /build-feature:**
+- Use `Card-ID` from plan frontmatter
+- Never create a new card (cards created during fact-find phase)
 
 ## Lane Transitions
 

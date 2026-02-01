@@ -101,3 +101,11 @@ packages/types/src/**/*.d.ts.map
 
 # VS Code MCP port sentinel (ephemeral)
 .vscode/.mcp-port
+
+# ---------------------------
+# Gmail OAuth credentials
+# ---------------------------
+# OAuth client credentials (never commit these!)
+**/credentials.json
+# OAuth tokens (contain access/refresh tokens)
+**/token.json

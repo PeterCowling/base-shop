@@ -26,15 +26,18 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
-    "@acme/platform-core": "workspace:^",
     "@acme/config": "workspace:^",
+    "@acme/platform-core": "workspace:^",
     "@acme/zod-utils": "workspace:^",
+    "@google-cloud/local-auth": "^3.0.1",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "google-auth-library": "^10.5.0",
+    "googleapis": "^171.0.0",
     "zod": "^3.25.73"
   },
   "devDependencies": {
-    "tsx": "^4.19.0",
     "@types/node": "^20.19.4",
+    "tsx": "^4.19.0",
     "typescript": "^5.8.3"
   }
 }

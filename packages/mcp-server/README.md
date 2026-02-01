@@ -180,6 +180,88 @@ src/
     └── validation.ts# Input validation with Zod
 ```
 
+## Gmail API Setup
+
+The MCP server can access Gmail for email automation tasks. This requires OAuth2 setup.
+
+### Prerequisites
+
+1. A Google account with Gmail
+2. Access to Google Cloud Console
+
+### Setup Steps
+
+#### 1. Create OAuth Credentials
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Gmail API:
+   - Go to "APIs & Services" > "Library"
+   - Search for "Gmail API"
+   - Click "Enable"
+4. Configure OAuth consent screen:
+   - Go to "APIs & Services" > "OAuth consent screen"
+   - Choose "External" user type (or "Internal" if using Google Workspace)
+   - Fill in required fields (app name, support email)
+   - Add scopes: `gmail.readonly`, `gmail.modify`, `gmail.compose`
+   - Add your email as a test user (required for External apps in testing mode)
+   - **Recommended:** Publish the app to production for long-lived refresh tokens
+5. Create OAuth credentials:
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "OAuth client ID"
+   - Choose "Desktop app" as application type
+   - Download the JSON file
+   - Rename it to `credentials.json`
+   - Place it in `packages/mcp-server/`
+
+#### 2. Authorize the Application
+
+On first run (or if token expires):
+
+```bash
+# Navigate to mcp-server directory
+cd packages/mcp-server
+
+# Run the authorization script (coming in TASK-02)
+# For now, the Gmail tools will prompt when needed
+pnpm dev
+```
+
+A browser window will open asking you to authorize the application. After authorization:
+- Token is saved to `token.json`
+- Future runs will use the saved token
+- Token refreshes automatically
+
+### File Locations
+
+| File | Purpose | Git Status |
+|------|---------|------------|
+| `credentials.json` | OAuth client credentials from Google | **Gitignored** - never commit |
+| `token.json` | Access/refresh tokens after authorization | **Gitignored** - never commit |
+
+### Token Refresh
+
+- Tokens are automatically refreshed when expired
+- If refresh fails (e.g., token revoked), re-run authorization
+- Apps in "Testing" mode have 7-day token expiry; publish to production for longer validity
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "Credentials not found" | Download OAuth credentials from Google Cloud Console |
+| "Token not found" | Run interactive authorization |
+| "Token expired" | Usually auto-refreshes; if not, delete `token.json` and re-authorize |
+| "Access denied" | Ensure you're signed in as a test user (for apps in testing mode) |
+| "Insufficient permissions" | Check that Gmail API scopes are configured correctly |
+
+### Security Notes
+
+- **Never commit** `credentials.json` or `token.json`
+- These files are in `.gitignore` by default
+- Treat `credentials.json` like a password
+- `token.json` contains access tokens that could be used to access your email
+
 ## Security Notes
 
 - Read operations are generally safe

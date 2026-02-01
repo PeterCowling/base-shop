@@ -125,7 +125,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 |---|---|---|---:|---:|---|---|
 | BOS-101 | IMPLEMENT | Add Business OS frontmatter schema to plan docs | 90% | S | Complete | - |
 | BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Complete | BOS-101 |
-| BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Pending | BOS-101 |
+| BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-104 | IMPLEMENT | Extend /fact-find with card creation hook | 82% | M | Pending | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Pending | BOS-102 |
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Pending | BOS-103 |
@@ -217,6 +217,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-103: Create stage doc creation helper module
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/_shared/` (new directory)
 - **Depends on:** BOS-101
 - **Confidence:** 85%
@@ -224,10 +225,10 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 85% - Shared module approach aligns with DRY principles
   - Impact: 80% - New module; independent of existing skills
 - **Acceptance:**
-  - Shared helper documented in `.claude/skills/_shared/stage-doc-operations.md`
-  - Helper describes: stage doc file structure, frontmatter requirements, stage types
-  - Helper includes: templates for fact-finding, planned, build, reflect stage docs
-  - Stage types match `StageType` enum: `fact-find | plan | build | reflect`
+  - [x] Shared helper documented in `.claude/skills/_shared/stage-doc-operations.md`
+  - [x] Helper describes: stage doc file structure, frontmatter requirements, stage types
+  - [x] Helper includes: templates for fact-finding, planned, build, reflect stage docs
+  - [x] Stage types match `StageType` enum: `fact-find | plan | build | reflect`
 - **Test plan:**
   - Add/Update: N/A (skill instruction documentation)
   - Run: Manual validation that instructions are complete and correct
@@ -242,6 +243,12 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Rollback: Delete file
 - **Documentation impact:**
   - Create: `.claude/skills/_shared/stage-doc-operations.md`
+- **Implementation notes (2026-02-02):**
+  - Created comprehensive stage-doc-operations.md helper (280+ lines)
+  - Documented all 4 stage types: fact-find, plan, build, reflect
+  - Included templates for each stage type
+  - Added evidence type reference table
+  - Documented integration with /fact-find, /plan-feature, /build-feature skills
 - **Notes / references:**
   - Pattern source: `.claude/skills/work-idea/SKILL.md` lines 256-299
   - Stage types: `apps/business-os/src/lib/types.ts` line 91

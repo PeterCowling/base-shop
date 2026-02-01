@@ -25,6 +25,6 @@
     "@acme/page-builder-core": "workspace:*"
   },
   "devDependencies": {
-    "next": "^15.3.8"
+    "next": "^15.3.9"
   }
 }

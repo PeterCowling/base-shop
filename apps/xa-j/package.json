@@ -28,7 +28,7 @@
     "react-dom": "19.2.1"
   },
   "devDependencies": {
-    "next": "^15.3.8",
+    "next": "^15.3.9",
     "typescript": "5.8.3"
   }
 }

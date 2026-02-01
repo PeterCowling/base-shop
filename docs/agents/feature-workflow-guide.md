@@ -57,6 +57,23 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 - **Build-feature:** code/tests + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/CIs (no implementation changes)
 
+## Business OS Card Tracking (Optional)
+
+The feature workflow skills integrate with Business OS card lifecycle. To enable automatic card and stage doc management:
+
+1. **Add `Business-Unit`** to your fact-find brief frontmatter (e.g., `Business-Unit: PLAT`)
+2. **Card creation happens automatically** when `/fact-find` completes
+3. **Card-ID flows through** to `/plan-feature` and `/build-feature`
+
+**What's automated:**
+- `/fact-find`: Creates card + fact-finding stage doc
+- `/plan-feature`: Creates planned stage doc + proposes lane move to Planned
+- `/build-feature`: Tracks task progress + proposes lane move to Done on completion
+
+**Without Business-Unit/Card-ID:** Skills work unchanged (backward compatible).
+
+**Shared helpers:** See `.claude/skills/_shared/card-operations.md` and `.claude/skills/_shared/stage-doc-operations.md`
+
 ## Special-Purpose Workflows
 
 - **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)

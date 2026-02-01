@@ -132,7 +132,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Complete | BOS-106 |
 | BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Complete | BOS-103 |
 | BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Complete | BOS-108 |
-| BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Pending | BOS-104, BOS-106, BOS-108 |
+| BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Complete | BOS-104, BOS-106, BOS-108 |
 | BOS-111 | INVESTIGATE | Validate IDAllocator integration for card creation | 80% | S | Complete | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -504,6 +504,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-110: Update skill documentation with Business OS integration
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `docs/business-os/agent-workflows.md`, `docs/agents/feature-workflow-guide.md`
 - **Depends on:** BOS-104, BOS-106, BOS-108
 - **Confidence:** 88%
@@ -511,10 +512,10 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 88% - Follows existing documentation patterns
   - Impact: 85% - No functional changes; improves discoverability
 - **Acceptance:**
-  - `agent-workflows.md` updated with new skill integration section
-  - `feature-workflow-guide.md` mentions Business OS card tracking option
-  - Each skill's integration is documented with examples
-  - Opt-in mechanism (Business-Unit frontmatter) is clearly explained
+  - [x] `agent-workflows.md` updated with new skill integration section
+  - [x] `feature-workflow-guide.md` mentions Business OS card tracking option
+  - [x] Each skill's integration is documented with examples
+  - [x] Opt-in mechanism (Business-Unit frontmatter) is clearly explained
 - **Test plan:**
   - Add/Update: N/A (documentation)
   - Run: Review documentation for completeness and accuracy
@@ -522,6 +523,13 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Tests run: N/A (S-effort)
   - Test stubs written: N/A
   - Unexpected findings: None
+- **Implementation notes (2026-02-02):**
+  - Added "Feature Workflow Skills with Business OS Integration" section to agent-workflows.md
+  - Documents what happens automatically for each skill when Business-Unit/Card-ID present
+  - References shared helper docs
+  - Added "Business OS Card Tracking (Optional)" section to feature-workflow-guide.md
+  - Documents 3-step enablement process and what gets automated
+  - Updated card lifecycle diagram with alternative skill-based paths
 - **Rollout / rollback:**
   - Rollout: Direct commit
   - Rollback: Revert documentation changes

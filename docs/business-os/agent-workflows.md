@@ -194,6 +194,29 @@ Agent:
 
 ## Workflow Integration
 
+### Feature Workflow Skills with Business OS Integration
+
+The feature workflow skills (`/fact-find`, `/plan-feature`, `/build-feature`) now integrate with Business OS card lifecycle. This is **opt-in** via frontmatter fields.
+
+**How to enable:**
+1. Add `Business-Unit: <BRIK|PLAT|PIPE|BOS>` to fact-find brief frontmatter
+2. The skill automatically creates a card and stage doc
+3. Card-ID flows through to plan and build phases
+
+**What happens automatically:**
+
+| Skill | When Business-Unit/Card-ID Present |
+|-------|-----------------------------------|
+| `/fact-find` | Creates card, fact-finding stage doc, adds Card-ID to brief |
+| `/plan-feature` | Creates planned stage doc, updates card with Plan-Link, proposes lane move |
+| `/build-feature` | Creates build stage doc (first task), updates Last-Progress, proposes Done lane move |
+
+**Shared helper docs:**
+- Card creation: `.claude/skills/_shared/card-operations.md`
+- Stage doc creation: `.claude/skills/_shared/stage-doc-operations.md`
+
+**Backward compatibility:** Skills work unchanged if Business-Unit/Card-ID not provided.
+
 ### Typical Card Lifecycle (Agent-Assisted)
 
 ```
@@ -202,14 +225,17 @@ Agent:
 2. /work-idea → Card created + Fact-finding stage doc
    ↓
 3. Pete performs fact-finding (code analysis, user research)
+   OR /fact-find with Business-Unit → Card + stage doc created automatically
    ↓
 4. /propose-lane-move → Fact-finding → Planned
    ↓
 5. Pete creates plan doc with acceptance criteria
+   OR /plan-feature with Card-ID → Planned stage doc + lane proposal
    ↓
 6. /propose-lane-move → Planned → In progress
    ↓
 7. Pete implements (or delegates to agent)
+   OR /build-feature with Card-ID → Progress tracking + lane proposal on completion
    ↓
 8. /propose-lane-move → In progress → Done
    ↓

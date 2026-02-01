@@ -130,7 +130,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
 | BOS-106 | IMPLEMENT | Extend /plan-feature with planned stage doc creation | 82% | M | Complete | BOS-103 |
 | BOS-107 | IMPLEMENT | Add lane transition proposal after /plan-feature | 85% | S | Complete | BOS-106 |
-| BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Pending | BOS-103 |
+| BOS-108 | IMPLEMENT | Extend /build-feature with task progress tracking | 80% | M | Complete | BOS-103 |
 | BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Pending | BOS-108 |
 | BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Pending | BOS-104, BOS-106, BOS-108 |
 | BOS-111 | INVESTIGATE | Validate IDAllocator integration for card creation | 80% | S | Complete | - |
@@ -421,6 +421,7 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
 
 ### BOS-108: Extend /build-feature with task progress tracking
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-02)
 - **Affects:** `.claude/skills/build-feature/SKILL.md`
 - **Depends on:** BOS-103
 - **Confidence:** 80%
@@ -428,13 +429,13 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Approach: 80% - Progress tracking is straightforward but adds complexity to build loop
   - Impact: 78% - Affects build loop; must not interfere with core build functionality
 - **Acceptance:**
-  - `/build-feature` checks for `Card-ID` in plan frontmatter
-  - If `Card-ID` present:
+  - [x] `/build-feature` checks for `Card-ID` in plan frontmatter
+  - [x] If `Card-ID` present:
     - After each task completion, update card's `Last-Progress` field with date
     - Optionally update card body with task completion status
     - Create build stage doc if not exists (first task)
-  - If no `Card-ID`, skill works unchanged
-  - Build loop remains unaffected for core functionality
+  - [x] If no `Card-ID`, skill works unchanged
+  - [x] Build loop remains unaffected for core functionality
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
   - Run: Manual test by running `/build-feature` with and without `Card-ID`
@@ -444,6 +445,13 @@ Create `/fact-find-with-card`, `/plan-feature-with-card`, etc.
   - Unexpected findings: Build loop is complex; integration must be lightweight
 - **What would make this >=90%:**
   - Actually run `/build-feature` with Card-ID through multiple tasks
+- **Implementation notes (2026-02-02):**
+  - Added full "Business OS Integration (Optional)" section after Completion Messages
+  - Documented 3-step workflow: check for build stage doc, update card progress, check for completion
+  - Build stage doc template included with Progress Tracker table and Build Log
+  - Modified Build Loop instructions (Steps 6-7) for Card-ID integration
+  - Added completion messages for with-Card-ID scenarios
+  - References shared helpers from BOS-102 and BOS-103
 - **Rollout / rollback:**
   - Rollout: Direct commit; additive section in skill file
   - Rollback: Remove the Business OS integration section

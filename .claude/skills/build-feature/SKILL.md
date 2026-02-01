@@ -305,3 +305,140 @@ Use one of the following outcomes:
 
 **C) Stopped mid-task due to confidence regression:**
 > "Stopped during TASK-XX due to newly discovered complexity or unclear blast radius. No further implementation will proceed until `/re-plan` updates the plan for TASK-XX (and any dependent tasks)."
+
+## Business OS Integration (Optional)
+
+When the plan frontmatter includes `Card-ID`, `/build-feature` integrates with Business OS card lifecycle management. This is **opt-in** — if no `Card-ID` is present, the skill works unchanged.
+
+### When Card-ID is Present
+
+#### Step 1: Check for Build Stage Doc (First Task Only)
+
+Before starting the first task, check if a build stage doc exists:
+
+```bash
+CARD_ID="PLAT-ENG-0023"  # From plan frontmatter
+
+if [ ! -f "docs/business-os/cards/${CARD_ID}/build.user.md" ]; then
+  # Create build stage doc (first task starting)
+  mkdir -p "docs/business-os/cards/${CARD_ID}"
+  # Create build.user.md using template from stage-doc-operations.md
+fi
+```
+
+**Build Stage Doc Template:**
+
+```markdown
+---
+Type: Stage-Doc
+Card-ID: {CARD-ID}
+Stage: Build
+Created: {DATE}
+Owner: Pete
+Updated: {DATE}
+Plan-Link: docs/plans/{feature-slug}-plan.md
+---
+
+# Build: {CARD-TITLE}
+
+## Progress Tracker
+
+**Last Updated:** {DATE}
+
+| Task ID | Description | Status | Completed |
+|---------|-------------|--------|-----------|
+| {ID} | {Description} | {Pending|In Progress|Complete} | {DATE or -} |
+
+## Build Log
+
+### {DATE} - {Task ID}
+- **Action:** {What was done}
+- **Commits:** {Commit hashes}
+- **Validation:** {Tests passed, etc.}
+- **Notes:** {Any issues or observations}
+
+## Blockers
+
+_None currently_
+
+## Transition Criteria
+
+**To Done:**
+- [ ] All tasks complete
+- [ ] All tests passing
+- [ ] Documentation updated
+- [ ] `pnpm typecheck && pnpm lint` passing
+```
+
+#### Step 2: Update Card Progress (After Each Task)
+
+After each task is committed and the plan is updated, also update the card:
+
+1. **Update card's `Last-Progress` field:**
+
+```bash
+# In the card's .user.md and .agent.md frontmatter:
+# Last-Progress: YYYY-MM-DD
+```
+
+2. **Update build stage doc:**
+
+Add an entry to the Build Log section:
+
+```markdown
+### YYYY-MM-DD - TASK-XX
+- **Action:** {Brief description of what was implemented}
+- **Commits:** {commit hash(es)}
+- **Validation:** typecheck PASS, lint PASS, tests PASS
+- **Notes:** {Any deviations or observations}
+```
+
+Update the Progress Tracker table with task status.
+
+#### Step 3: Check for Completion (After Each Task)
+
+After updating the plan, check if all IMPLEMENT tasks are complete:
+
+```bash
+# If all tasks in plan are marked Complete:
+# - Update build stage doc transition criteria (all checkboxes)
+# - Suggest lane transition to Done (see BOS-109)
+```
+
+### Modified Build Loop (Steps 6-7)
+
+When `Card-ID` is present, extend the standard build loop:
+
+**After Step 6 (Commit):**
+- Update card's `Last-Progress` frontmatter field with today's date
+
+**After Step 7 (Update the plan):**
+- Append entry to build stage doc's Build Log
+- Update Progress Tracker table
+- If this was the first task, the build stage doc was created in Step 1
+
+### Completion Messages (with Card-ID)
+
+Append to standard completion messages:
+
+**A) All eligible tasks complete (with Card-ID):**
+> "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Card {CARD-ID} Last-Progress updated. Build stage doc updated. Ready for lane transition to Done — run `/propose-lane-move` or update card's `Proposed-Lane: Done`."
+
+**B) Some tasks remain (with Card-ID):**
+> "Completed N/M IMPLEMENT tasks. Card {CARD-ID} Last-Progress updated to {DATE}. Build stage doc updated with progress."
+
+**C) Stopped mid-task (with Card-ID):**
+> "Stopped during TASK-XX. Card {CARD-ID} Last-Progress remains at previous value. Build stage doc notes the blocker."
+
+### Without Card-ID
+
+If the plan frontmatter does not include `Card-ID`:
+- Skip all Business OS integration steps
+- Use standard completion messages
+- Build loop operates unchanged
+
+### Related Resources
+
+- Card operations: `.claude/skills/_shared/card-operations.md`
+- Stage doc operations: `.claude/skills/_shared/stage-doc-operations.md`
+- Lane transitions: `.claude/skills/propose-lane-move/SKILL.md`

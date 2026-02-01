@@ -34,6 +34,20 @@ Status: Complete (focused)
 - Medium severity issues: 1
 - Low severity issues: 0
 
+## Claim Ledger (checked)
+
+| Claim ID | Line | Category | Claim (atomic) | Status | Evidence |
+|---|---:|---:|---|---|---|
+| C01 | 20 | 5 | “Current workflow” uses a single writer lock to serialize git commits/pushes in a shared checkout | Partially accurate | Working tree: `package.json:155-156`; HEAD differs: `git show HEAD:package.json` shows no writer-lock hook (see Evidence Log) |
+| C02 | 42 | 5 | Auto PR workflow triggers on pushes to `work/**` | Accurate | `.github/workflows/auto-pr.yml:3-7` |
+| C03 | 42 | 3 | A “Merge Gate” workflow exists as part of the current automation | Partially accurate | HEAD lacks `.github/workflows/merge-gate.yml` (`git ls-tree ...` empty); working tree has it untracked (`git status ...`) |
+| C04 | 67 | 1 | File `scripts/git/writer-lock.sh` exists as part of the current workflow | Partially accurate | Working tree: `scripts/git/writer-lock.sh:12-18`; not present in HEAD (`git ls-tree ...` empty) |
+| C05 | 68 | 1 | File `scripts/git-hooks/require-writer-lock.sh` exists as part of the current workflow | Partially accurate | Working tree: `scripts/git-hooks/require-writer-lock.sh:4-9`; not present in HEAD (`git ls-tree ...` empty) |
+| C06 | 68 | 2 | `package.json` hooks enforce the writer lock via `require-writer-lock.sh` | Partially accurate | Working tree: `package.json:155-156`; HEAD differs: `git show HEAD:package.json` (Evidence Log) |
+| C07 | 69 | 5 | “Stale-but-alive” writer locks are possible (e.g., abandoned shells) | Partially accurate | Working tree: `scripts/agents/with-writer-lock.sh:42-45` |
+| C08 | 288 | 1 | File `scripts/git-hooks/pre-commit-check-env.sh` exists | Accurate | `scripts/git-hooks/pre-commit-check-env.sh:1` |
+| C09 | 288 | 5 | `pre-commit-check-env.sh` is an env/secrets guard that blocks committing local env files | Accurate | `scripts/git-hooks/pre-commit-check-env.sh:4-9`, `scripts/git-hooks/pre-commit-check-env.sh:38-42` |
+
 ## Issues (Partially Accurate)
 
 ### FC-01: “Current workflow uses writer lock” is only true in the working tree (not in HEAD)
@@ -130,4 +144,3 @@ Status: Complete (focused)
 - **Verbosity:** detailed
 - **Time spent:** ~25 minutes
 - **Large doc mode:** No
-

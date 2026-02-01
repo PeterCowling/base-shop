@@ -216,12 +216,24 @@ When uncertain about the right approach:
 
 ### Other Available Skills
 
+**Core Workflow Skills:**
+
 | Skill | Purpose | Location |
 |-------|---------|----------|
+| `fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/fact-find/SKILL.md` |
+| `plan-feature` | Create confidence-gated implementation plan | `.claude/skills/plan-feature/SKILL.md` |
+| `build-feature` | Implement tasks from approved plan with confidence gating | `.claude/skills/build-feature/SKILL.md` |
+| `re-plan` | Resolve low-confidence tasks in existing plan | `.claude/skills/re-plan/SKILL.md` |
+
+**Specialized Skills:**
+
+| Skill | Purpose | Location |
+|-------|---------|----------|
+| `fact-check` | Verify documentation accuracy against repo state | `.claude/skills/fact-check/SKILL.md` |
 | `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
 | `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
 | `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
-| `session-reflection` | Capture learnings after work | `.claude/skills/session-reflection/SKILL.md` |
+| `session-reflect` | Capture learnings and improve docs/skills | `.claude/skills/session-reflect/SKILL.md` |
 
 ## What Stays the Same
 

@@ -6,8 +6,15 @@ import {
   ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
-import { handleResourceRead,resourceDefinitions } from "./resources/schema.js";
-import { handleToolCall,toolDefinitions } from "./tools/index.js";
+import {
+  briketteResourceDefinitions,
+  handleBriketteResourceRead,
+} from "./resources/brikette-knowledge.js";
+import { handleResourceRead, resourceDefinitions } from "./resources/schema.js";
+import { handleToolCall, toolDefinitions } from "./tools/index.js";
+
+// Combine all resource definitions
+const allResourceDefinitions = [...resourceDefinitions, ...briketteResourceDefinitions];
 
 export const server = new Server(
   {
@@ -32,11 +39,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 server.setRequestHandler(ListResourcesRequestSchema, async () => ({
-  resources: resourceDefinitions,
+  resources: allResourceDefinitions,
 }));
 
 server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const { uri } = request.params;
+
+  // Route to appropriate handler based on URI scheme
+  if (uri.startsWith("brikette://")) {
+    return handleBriketteResourceRead(uri);
+  }
+
+  // Default to schema handler
   return handleResourceRead(uri);
 });
 

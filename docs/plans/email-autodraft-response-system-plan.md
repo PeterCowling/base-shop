@@ -142,7 +142,7 @@ Brikette/
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Gmail OAuth2 Setup | 82% | M | Pending | - |
 | TASK-02 | IMPLEMENT | Gmail MCP Tools Module | 82% | M | Pending | TASK-01 |
-| TASK-03 | IMPLEMENT | Brikette Knowledge Resources | 88% | S | Pending | - |
+| TASK-03 | IMPLEMENT | Brikette Knowledge Resources | 88% | S | Complete | - |
 | TASK-04 | IMPLEMENT | Gmail Label Configuration | 92% | S | Complete | - |
 | TASK-05 | IMPLEMENT | GAS Email Monitor Script | 80% | M | Pending | TASK-04 |
 | TASK-06 | IMPLEMENT | Process-Emails Skill Enhancement | 85% | M | Pending | TASK-02, TASK-03 |
@@ -277,10 +277,18 @@ Brikette/
 - **Effort:** S
 - **Affects:** `packages/mcp-server/src/resources/brikette-knowledge.ts`, `packages/mcp-server/src/server.ts`
 - **Depends on:** -
+- **Status:** COMPLETE (2026-02-02)
 - **Confidence:** 88%
   - Implementation: 92% - Clear precedent in `schema.ts`; file reading pattern established; source files exist and are well-structured
   - Approach: 90% - Resource URIs defined in workflow design; caching strategy documented
   - Impact: 82% - Read-only access to existing files; no database changes; isolated from other resources
+- **Completion Notes:**
+  - Created `packages/mcp-server/src/resources/brikette-knowledge.ts` with 4 resources
+  - Implemented 5-minute caching via `loadCached()` helper
+  - Updated `packages/mcp-server/src/server.ts` to register resources and route by URI scheme
+  - Room config and menu pricing hardcoded (can't dynamically import TS at runtime)
+  - Policies resource extracts relevant FAQ items and adds structured summary
+  - Validation: `pnpm --filter @acme/mcp-server build` and `lint` pass
 - **Acceptance:**
   - Four resources implemented: `brikette://faq`, `brikette://rooms`, `brikette://pricing/menu`, `brikette://policies`
   - Resources load from correct source files

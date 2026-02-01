@@ -6,23 +6,16 @@ usage() {
 Usage:
   scripts/git/ship-to-staging.sh
 
-DEPRECATED (2026-02-01):
-This repo's canonical workflow is `work/*` branches with zero-touch PRs to `main`.
-Staging deployments are handled by GitHub Actions (see `docs/ci-and-deploy-roadmap.md`)
-and are not driven by a `dev`→`staging` git-branch promotion flow.
-
-This script is kept only for historical reference. Do not use it unless you
-explicitly decide to adopt a `dev`→`staging` branch pipeline and update docs/CI.
+Ships the current dev branch state to staging via PR + auto-merge:
+- Pushes branch 'dev' to origin
+- Ensures an open PR dev -> staging exists
+- Enables auto-merge (MERGE) on that PR
 
 Requirements:
-- None (this script exits by default).
+- You must hold the writer lock (use scripts/agents/with-writer-lock.sh).
+- GitHub CLI must be installed and authenticated (`gh auth status`).
 EOF
 }
-
-if [[ "${ALLOW_DEPRECATED_PIPELINE_SCRIPTS:-}" != "1" ]]; then
-  usage >&2
-  exit 1
-fi
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "$repo_root" ]]; then
@@ -65,7 +58,7 @@ if [[ -z "$existing_pr_number" ]]; then
   echo "Creating PR: dev -> staging..."
   pr_url="$(gh pr create --head dev --base staging --title \"dev → staging\" --body \"Auto-shipping dev to staging.\" )"
 else
-  pr_url="$(gh pr view "$existing_pr_number" --json url --jq .url)"
+  pr_url="$(gh pr view \"$existing_pr_number\" --json url --jq .url)"
 fi
 
 echo "Enabling auto-merge (MERGE) for: ${pr_url}"
@@ -74,3 +67,4 @@ gh pr merge "$pr_url" --auto --merge
 echo ""
 echo "Shipped. Staging will update when CI passes and the PR auto-merges."
 echo "PR: ${pr_url}"
+

@@ -24,7 +24,11 @@ if [[ ! -x "$lock_script" ]]; then
   exit 1
 fi
 
-token="$(BASESHOP_WRITER_LOCK_OWNER_PID="$$" "$lock_script" acquire --wait --print-token)"
+"$lock_script" acquire --wait
+
+common_dir="$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)"
+lock_meta="${common_dir}/base-shop-writer-lock/meta"
+token="$(grep -E '^token=' "$lock_meta" | sed 's/^token=//' | head -n 1)"
 
 if [[ -z "$token" ]]; then
   echo "ERROR: lock acquired but token missing; refusing to continue." >&2
@@ -41,8 +45,7 @@ trap release_lock EXIT INT TERM
 
 if [[ $# -eq 0 ]]; then
   echo "Writer lock held for this shell. Exit to release." >&2
-  bash
-  exit 0
+  exec bash
 fi
 
 if [[ "${1:-}" != "--" ]]; then
@@ -56,4 +59,5 @@ if [[ $# -eq 0 ]]; then
   exit 2
 fi
 
-"$@"
+exec "$@"
+

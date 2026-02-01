@@ -47,21 +47,17 @@ export function getDb(): D1Database {
   const ctx = getRequestContext();
 
   if (!ctx) {
-    throw new Error(
-      "Cloudflare request context not available. " +
-        "Ensure this code runs in Edge runtime (export const runtime = 'edge') " +
-        "and is called during an active request."
-    );
+    const noContextError =
+      "Cloudflare request context not available. Ensure this code runs in Edge runtime (export const runtime = 'edge') and is called during an active request."; // i18n-exempt -- BOS-04 developer-only runtime guard [ttl=2026-03-31]
+    throw new Error(noContextError);
   }
 
   const env = ctx.env as BusinessOsEnv;
 
   if (!env.BUSINESS_OS_DB) {
-    throw new Error(
-      "BUSINESS_OS_DB binding not found in Cloudflare environment. " +
-        "Ensure wrangler.toml has [[d1_databases]] with binding = 'BUSINESS_OS_DB' " +
-        "and the binding is configured in Cloudflare Pages settings."
-    );
+    const missingBindingError =
+      "BUSINESS_OS_DB binding not found in Cloudflare environment. Ensure wrangler.toml has [[d1_databases]] with binding = 'BUSINESS_OS_DB' and the binding is configured in Cloudflare Pages settings."; // i18n-exempt -- BOS-04 developer-only config guard [ttl=2026-03-31]
+    throw new Error(missingBindingError);
   }
 
   return env.BUSINESS_OS_DB;

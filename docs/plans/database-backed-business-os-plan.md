@@ -31,7 +31,7 @@ We are committing to **Cloudflare D1** as the persistence layer for Business OS.
 
 Today, Business OS reads/writes via an on-disk git checkout:
 - Reads: `apps/business-os/src/lib/repo-reader.ts` (frontmatter parsing from `docs/business-os/**`)
-- Writes: `apps/business-os/src/lib/repo-writer.ts` (worktree + `simple-git` commits)
+- Writes: `apps/business-os/src/lib/repo-writer.ts` (repo checkout + `simple-git` commits on `dev`)
 - Many API routes are explicitly `export const runtime = "nodejs"` due to filesystem/git usage.
 
 That architecture is fundamentally incompatible with a **hosted Cloudflare Pages/Workers runtime**, where there is no writable git checkout and no `simple-git`/shell git. Moving to D1 requires:
@@ -47,7 +47,7 @@ This plan front-loads the necessary fact-finding/spikes to avoid building the wr
 - **BOS-D1-07:** Auto-refresh in D1 world (MVP polling; optional SSE later)
 - **BOS-D1-08:** Data migration: importer `docs/business-os/** → D1` + validation report
 - **BOS-D1-09:** Git mirror/export job (CI): export `D1 → docs/business-os`
-- **BOS-D1-10:** Update charter/security/docs for D1 reality + remove outdated worktree assumptions
+- **BOS-D1-10:** Update charter/security/docs for D1 reality + remove outdated filesystem/git assumptions
 
 ## Key decisions (locked)
 
@@ -99,7 +99,7 @@ This plan front-loads the necessary fact-finding/spikes to avoid building the wr
 
 - Business OS data currently lives under `docs/business-os/**` (repo-native).
 - Board page reads via RepoReader: `apps/business-os/src/app/boards/[businessCode]/page.tsx`.
-- Writes are performed via RepoWriter (worktree): `apps/business-os/src/lib/repo-writer.ts`.
+- Writes are performed via RepoWriter (repo checkout / `dev`): `apps/business-os/src/lib/repo-writer.ts`.
 - Many routes force Node runtime, e.g. `apps/business-os/src/app/api/cards/route.ts`.
 - D1 patterns exist in-repo (raw SQL + binding checks), e.g. `apps/product-pipeline/wrangler.toml` and `apps/product-pipeline/src/routes/api/_lib/db.ts`.
 
@@ -134,7 +134,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 
 - Replace RepoReader usage in board/card/idea pages with D1 repositories.
 - Replace write routes (create/update/move) to write to D1.
-- Remove/disable Node-only runtime dependencies on the hosted path (git sync, worktree, filesystem writes).
+- Remove/disable Node-only runtime dependencies on the hosted path (git sync, filesystem writes).
 
 ### Phase E — Data migration + validation
 
@@ -164,7 +164,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 | BOS-D1-07 | IMPLEMENT | Auto-refresh in D1 world (MVP polling; optional SSE later) | 82% ✓ | M | Pending | BOS-D1-05 |
 | BOS-D1-08 | IMPLEMENT | Data migration: importer `docs/business-os/** → D1` + validation report | 80% ✓ | M | Pending | BOS-D1-02 |
 | BOS-D1-09 | IMPLEMENT | Git mirror/export job (CI): export `D1 → docs/business-os` | 80% ✓ | L | Pending | BOS-D1-DEC-01 |
-| BOS-D1-10 | DOC | Update charter/security/docs for D1 reality + remove outdated worktree assumptions | 85% | S | Pending | BOS-D1-DEC-01 |
+| BOS-D1-10 | DOC | Update charter/security/docs for D1 reality + remove outdated filesystem/git assumptions | 85% | S | Pending | BOS-D1-DEC-01 |
 
 > \* Runtime verification is now unblocked (2026-01-31): `pnpm --filter @apps/business-os build` and `pnpm --filter @apps/business-os exec next-on-pages` both pass under Edge constraints.
 
@@ -345,7 +345,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - Impact: 82% — Charter update prevents trust boundary confusion; security model updated to reflect hosted reality.
 - **Investigation performed:**
   - **Charter review:** `docs/business-os/business-os-charter.md:30-34` states "Repo-native: All state lives in `docs/business-os/` as markdown + JSON" and "Git-backed: Full audit trail, rollback capability, PR workflow for all changes."
-  - **Current write model:** `apps/business-os/src/lib/repo/README.md:14-34` documents worktree pattern (Phase 0 local-only) and acknowledges "BOS-00-A blocker: Hosted deployment needs proven writable checkout mechanism" (line 282).
+  - **Current write model:** `apps/business-os/src/lib/repo/README.md` documents repo-checkout writes (Phase 0 local-only) and explains why hosted deployment needs a non-filesystem write path.
   - **Security:** `docs/business-os/security.md` (not read but referenced in charter) asserts Phase 0 local-only; this must be updated for hosted deployment.
   - **Repo README:** `apps/business-os/src/lib/repo/README.md:264-287` explicitly lists GitHub API commits as a Phase 1+ option for hosted deployment.
 - **Decision / resolution:**
@@ -1132,10 +1132,10 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - `.github/workflows/business-os-export.yml` (NEW scheduled job)
   - `docs/business-os/**` (generated output)
 - **Depends on:** BOS-D1-DEC-01
-- **Confidence:** 80%
-  - Implementation: 85% — Export script + CI job is straightforward; we have in-repo precedent for wrangler-driven D1 scripts.
-  - Approach: 80% — Use existing `work/**` → auto-PR automation for safe, reviewable commits.
-  - Impact: 80% — High impact on trust model, mitigated by dual audit trail (D1 log + git mirror) and explicit “generated” semantics.
+  - **Confidence:** 80%
+    - Implementation: 85% — Export script + CI job is straightforward; we have in-repo precedent for wrangler-driven D1 scripts.
+    - Approach: 80% — Use the repo pipeline PR (`dev` → `staging`) for safe, reviewable commits.
+    - Impact: 80% — High impact on trust model, mitigated by dual audit trail (D1 log + git mirror) and explicit “generated” semantics.
 - **Acceptance:**
   - [ ] Implement the export script + CI scheduled job with clear guarantees documented.
   - [ ] Make drift visible (mirror lag metric, last export time, last commit hash).
@@ -1160,9 +1160,9 @@ Add a D1-backed repository layer in `packages/platform-core` that:
   - Approach: 78% — Git mirror is async (CI scheduled job); non-blocking to core UX; aligns with D1-canonical decision.
   - Impact: 78% — Trust model impact mitigated by dual audit: D1 `business_os_audit_log` (immediate) + git mirror (eventual consistency).
 - **Investigation performed:**
-  - **Export script + CI job precedent:** repo already uses Wrangler for D1, and Business OS docs already warn that local git/worktrees are not viable in Cloudflare hosted runtime.
+  - **Export script + CI job precedent:** repo already uses Wrangler for D1, and Business OS docs already warn that local filesystem + git is not viable in Cloudflare hosted runtime.
   - **Rejected alternative (deferred):** git-canonical via GitHub API commits in Cloudflare runtime (higher complexity + runtime secrets).
-  - **Precedent:** Current RepoWriter uses local git + worktree (`apps/business-os/src/lib/repo-writer.ts`); this won't work in Cloudflare Workers (no writable filesystem).
+  - **Precedent:** Current RepoWriter uses local filesystem + git (`apps/business-os/src/lib/repo-writer.ts`); this won't work in Cloudflare Workers (no writable filesystem).
 - **Decision / resolution:**
   - **Chosen: Option A (D1-canonical + git mirror via CI)**
   - **Rationale:**
@@ -1195,14 +1195,14 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **Previous confidence:** 78%
 - **Updated confidence:** 80%
   - Implementation: 85% — There is clear in-repo precedent for “Node script drives wrangler D1” workflows (product-pipeline seed scripts).
-  - Approach: 80% — Use repo-standard automation: push commits to a `work/**` branch and let `Auto PR (Zero-Touch)` handle PR creation + auto-merge.
+  - Approach: 80% — Use repo-standard automation: push commits to `dev` and let the `dev` → `staging` pipeline PR handle merge + staging deploy.
   - Impact: 80% — Export is an additive mirror; core UX remains D1-backed even if export is paused.
 - **Investigation performed:**
   - **Wrangler-in-script precedent:** `apps/product-pipeline/scripts/seed.ts:30-47` shells out to `pnpm exec wrangler ...` and uses `wrangler d1 execute`/migrations.
-  - **Repo PR automation exists for `work/**` branches:** `.github/workflows/auto-pr.yml:3-7` creates PRs automatically and enables auto-merge (`.github/workflows/auto-pr.yml:22-58`).
+  - **Repo PR automation exists for the `dev` → `staging` pipeline:** `.github/workflows/auto-pr.yml` creates/maintains the pipeline PR and enables auto-merge.
 - **Decision / resolution:**
-  - **Branch strategy:** push export commits to a dedicated branch like `work/business-os-export` (not `main`).
-  - **PR strategy:** rely on existing auto-PR workflow to open and auto-merge once checks pass.
+  - **Branch strategy:** push export commits to `dev` (not `staging`/`main`).
+  - **PR strategy:** rely on the pipeline PR (`dev` → `staging`) to auto-merge once checks pass.
   - **Generated semantics:** exporter should treat `docs/business-os/**` output as generated-from-D1; BOS-D1-10 updates charter/docs accordingly.
 - **Changes to task:**
   - **Confidence:** Raised to 80% now that CI integration strategy aligns with existing repo workflows and D1 tooling precedent.
@@ -1221,7 +1221,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - **Acceptance:**
   - [ ] Charter explicitly states canonical store and audit mechanism (git mirror and/or DB audit log).
   - [ ] Security model updated: remove “must not deploy” if we are deploying; replace with real auth/authorization expectations.
-  - [ ] Repo README updated: worktree/git writer becomes “local-only legacy” or is removed if superseded.
+  - [ ] Repo README updated: filesystem/git writer becomes “local-only legacy” or is removed if superseded.
   - [ ] Fact-find updated to remove contradictions and reflect code truth.
 - **Test plan:** N/A (docs).
 - **Planning validation:** (S-effort)
@@ -1276,7 +1276,7 @@ Add a D1-backed repository layer in `packages/platform-core` that:
 - 2026-01-30 (re-plan): **Git export: CI scheduled job** — hourly export via Node script, no runtime secrets needed (BOS-D1-09).
 - 2026-01-30: **BOS-D1-DEC-01 recorded** — plan is ready to begin IMPLEMENT tasks (subject to Edge build gates unblocking `next build` + `next-on-pages`).
 - 2026-01-31 (re-plan): **Edge build is an explicit acceptance gate** — current failures stem from Node-only auth and git/fs server actions imported by Edge pages (BOS-D1-FF-01, BOS-D1-06).
-- 2026-01-31 (re-plan): **Git mirror should use repo-standard PR workflow** — exporter commits land via `work/**` branch + Auto PR (Zero-Touch), not direct pushes to `main` (BOS-D1-09).
+- 2026-01-31 (re-plan): **Git mirror should use repo pipeline PR workflow** — exporter commits land via `dev` → `staging`, not direct pushes to `staging`/`main` (BOS-D1-09).
 
 ## Risks & mitigations
 

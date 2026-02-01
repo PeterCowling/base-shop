@@ -2,14 +2,12 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-01-31
 ---
 
 # Contributing
 
-This guide defines the contribution workflow for the base-shop monorepo, with a bias toward a smooth day‑to‑day developer experience.
-
-For the full “what happens when I push?” workflow, see `docs/git-and-github-workflow.md`.
+This guide defines the contribution workflow for the base-shop monorepo. Follow these procedures to ensure consistent code quality.
 
 ## Formatting
 
@@ -21,13 +19,13 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Use `work/**` branches for almost all work.
+Base-Shop uses a `dev` → `staging` → `main` release pipeline:
 
-- Branch naming: `work/YYYY-MM-DD-short-description`
-- Push to GitHub and expect a PR to appear automatically (the repo enables auto‑merge on green).
-- If you need a PR to stay open while it’s red or idle, add the `keep-open` label.
-
-Details: `docs/git-and-github-workflow.md`.
+- Do not commit directly to `main` or `staging`.
+- Day-to-day work lands on `dev` (either directly, or via feature branches that target `dev`).
+- Shipping is automated via PRs:
+  - Ship `dev` → `staging`: `scripts/git/ship-to-staging.sh`
+  - Promote `staging` → `main`: `scripts/git/promote-to-main.sh`
 
 ## Linting and Tests
 

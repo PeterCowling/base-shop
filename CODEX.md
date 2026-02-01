@@ -5,7 +5,7 @@ Domain: Repo
 Last-reviewed: 2026-01-20
 Created: 2026-01-17
 Created-by: Claude Opus 4.5
-Last-updated: 2026-02-01
+Last-updated: 2026-01-24
 Last-updated-by: Claude Opus 4.5
 ---
 
@@ -31,7 +31,7 @@ Codex has no tool-level safety hooks in this repo. Treat the following as **forb
 | `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
 | `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
 | `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
-| Any commit to `main` branch | Protected branch; bypasses PR/CI gates | Work on `work/*` branches only. |
+| Any commit to `main` / `staging` | Protected branches; bypasses the release pipeline | Commit on `dev` only. |
 
 ### How to STOP and Hand Off
 
@@ -42,9 +42,9 @@ When you hit a situation that *seems* to require one of the commands above:
    - `git status --porcelain=v1 -b`
    - `git diff --stat`
    - `git log --oneline -10`
-   - `git stash list`
+   - `scripts/git/writer-lock.sh status`
 3. **Explain** which command would be risky and why it’s forbidden for agents
-4. **Offer safer alternatives** (checkpoint commit, new branch, revert, worktree isolation)
+4. **Offer safer alternatives** (checkpoint commit, revert, wait for writer lock)
 5. **Ask the user to decide next steps** and point them to `docs/git-safety.md` if a human must perform a destructive recovery
 
 **Example**:
@@ -68,6 +68,18 @@ For the full rationale behind these safety rules, see:
 - `AGENTS.md` § "Git Rules → Destructive / history-rewriting commands"
 - `.agents/safety/rationale.md`
 - `docs/git-safety.md`
+
+### Local Enforcement (Recommended)
+
+Codex has no repo-native pre-execution hooks. To hard-block the most dangerous git commands for agent sessions,
+run Codex inside the repo’s “integrator mode” (writer lock + git guard):
+
+```bash
+scripts/agents/integrator-shell.sh -- codex
+```
+
+This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
+and enforces a single-writer lock for commits/pushes.
 
 ## Environment Awareness
 
@@ -104,7 +116,7 @@ git remote -v  # If empty or unreachable, commits are local-only
 
 ## Type Intelligence (MCP)
 
-When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before pushing (and CI re-enforces it before merge).
+When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before commits.
 
 Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 
@@ -206,11 +218,10 @@ When uncertain about the right approach:
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
-| `fact-check` | Verify documentation accuracy against repo state | `.claude/skills/fact-check/SKILL.md` |
 | `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
 | `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
 | `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
-| `session-reflect` | Capture learnings and improve docs/skills | `.claude/skills/session-reflect/SKILL.md` |
+| `session-reflection` | Capture learnings after work | `.claude/skills/session-reflection/SKILL.md` |
 
 ## What Stays the Same
 

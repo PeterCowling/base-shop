@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-01
+Last-reviewed: 2026-01-16
 
 # Git Hooks (Agent Runbook)
 
@@ -11,14 +11,18 @@ This project uses [simple-git-hooks](https://github.com/toplenboren/simple-git-h
 
 ## Overview
 
-Git hooks are automatically installed when `pnpm install` runs (via the `prepare` script in [package.json](../package.json:25)).
+Git hooks are automatically installed when `pnpm install` runs (via the `prepare` script in [package.json](../package.json)).
+
+`prepare` runs `scripts/git-hooks/install-hooks.sh`, which configures `core.hooksPath` so hook installation works in git worktrees (where `.git` is a file), then invokes `simple-git-hooks`.
 
 ## Active Hooks
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `pre-commit` | `require-writer-lock.sh` + `block-commit-on-protected-branches.sh` + `pre-commit-check-env.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck:staged` | Enforce writer lock in main checkout, block commits on `main`, then run env/partial-stage guards + lint-staged + staged workspace typecheck |
-| `pre-push` | `require-writer-lock.sh` + `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Enforce writer lock in main checkout, block pushes to protected branches; run typecheck + lint before pushing |
+| `pre-commit` | `pre-commit-check-env.sh` + `require-writer-lock.sh` + `no-partially-staged.js` + `lint-staged --no-stash` + `pnpm typecheck` + `pnpm lint` + `pnpm validate:agent-context` | Block secrets, enforce single-writer commits, block partial staging, lint staged files, then run typecheck + lint + agent context checks |
+| `prepare-commit-msg` | `prepare-commit-msg-safety.sh` | Block amend-style / commit-message-reuse workflows (reduces history rewrite pressure) |
+| `pre-rebase` | `pre-rebase-safety.sh` | Block `git rebase` (history rewrite) by default |
+| `pre-push` | `require-writer-lock.sh` + `pre-push-safety.sh` + `pnpm typecheck` + `pnpm lint` | Enforce single-writer pushes; block pushes to protected branches and any non-fast-forward push; run typecheck + lint before pushing |
 
 ---
 
@@ -26,23 +30,13 @@ Git hooks are automatically installed when `pnpm install` runs (via the `prepare
 
 The pre-commit hook runs checks before allowing a commit:
 
-1. **Writer lock (main checkout only)** - Prevents overlapping git writes when contributors ignore the worktree workflow
-2. **Protected branch guard** - Blocks commits on `main`/`master`
-3. **Environment File Check** - Prevents accidental commits of sensitive credential files
-4. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
-5. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
-6. **Typecheck (staged)** - Runs `pnpm typecheck:staged` (only affected workspaces inferred from staged files)
-
-### Writer Lock: Stale Locks
-
-If the writer lock is shown as held but the owning process is gone, you can safely reap it:
-
-```bash
-scripts/git/writer-lock.sh status
-scripts/git/writer-lock.sh release --if-stale
-```
-
-Emergency (human only): `scripts/git/writer-lock.sh release --force`
+1. **Environment File Check** - Prevents accidental commits of sensitive credential files
+2. **Writer lock guard** - Prevents multiple agents/humans from committing concurrently in a shared checkout
+3. **Partial staging guard** - Blocks partially staged files to prevent unstaged hunks being staged under `lint-staged --no-stash` behavior
+4. **Lint-staged** - Runs ESLint on staged TypeScript/JavaScript files (check-only; no `--fix`)
+5. **Typecheck** - Runs `pnpm typecheck` (incremental `tsc -b` + Turbo caching)
+6. **Lint** - Runs `pnpm lint` (Turbo lint tasks)
+7. **Agent context validation** - Runs `pnpm validate:agent-context` (drift checks for agent runbooks)
 
 #### Environment File Protection
 
@@ -92,14 +86,16 @@ The pre-push hook prevents dangerous push operations that could destroy work or 
 
 | Operation | Result |
 |-----------|--------|
-| Any direct push to protected branches (`main`/`master`/`dev`/`staging`) | ❌ **BLOCKED** - PRs only |
-| Non-fast-forward push to protected branches | ❌ **BLOCKED** - Prevents overwriting remote history |
+| Force push to `main` | ❌ **BLOCKED** - Prevents overwriting remote history |
+| Force push to `master` | ❌ **BLOCKED** - Same protection |
+| Non-fast-forward push to protected branches | ❌ **BLOCKED** |
 
 ### What It Warns About
 
 | Operation | Result |
 |-----------|--------|
-| None | `pre-push` is intended to be loud and fail-safe |
+| Direct push to `main` | ⚠️ **WARNING** - Recommends using PR instead |
+| Direct push to `master` | ⚠️ **WARNING** - Recommends using PR instead |
 
 ### Example Blocked Push
 
@@ -121,7 +117,7 @@ Reference: docs/historical/RECOVERY-PLAN-2026-01-14.md
 If this must be done (emergency only):
   1. Create a backup: git branch backup-$(date +%Y%m%d-%H%M%S)
   2. Coordinate with all team members
-  3. Use Git’s native bypass: git push --no-verify
+  3. Use: SKIP_GIT_HOOKS=1 git push --force
 ```
 
 ### Why This Exists
@@ -130,11 +126,21 @@ On January 14, 2026, destructive git commands caused significant data loss. This
 
 ### Emergency Bypass
 
-**⚠️ Only use in genuine emergencies after coordinating with the team:**
+**⚠️ Humans only. Prefer not to.**
+
+You can bypass local git hooks with either:
 
 ```bash
-ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push origin main
+git push --no-verify
 ```
+
+or:
+
+```bash
+SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
+```
+
+Do not bypass in order to push to protected branches; use the PR workflow instead.
 
 ---
 
@@ -146,7 +152,9 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 
 ```json
 "simple-git-hooks": {
-  "pre-commit": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck:staged",
+  "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/require-writer-lock.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
+  "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
+  "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
   "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
 }
 ```
@@ -154,7 +162,7 @@ Edit the `simple-git-hooks` section in [package.json](../package.json):
 After making changes, reinstall the hooks:
 
 ```bash
-pnpm exec simple-git-hooks
+pnpm run prepare
 ```
 
 ### Adding New Forbidden Patterns
@@ -204,15 +212,6 @@ SKIP_SIMPLE_GIT_HOOKS=1 git commit -m "Emergency fix"
 git commit -n -m "Trusted change"  # -n is short for --no-verify
 ```
 
-### Custom safety overrides (last resort)
-
-These are intentionally separate from hook bypassing:
-
-- Skip writer-lock enforcement (human only): `SKIP_WRITER_LOCK=1 <git command>`
-- Allow commit on protected branch (human only): `ALLOW_COMMIT_ON_PROTECTED_BRANCH=1 git commit ...`
-- Allow direct push to protected branch (human only): `ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push ...`
-  - This does **not** allow non-fast-forward/force pushes; those remain blocked.
-
 ## Troubleshooting
 
 ### Hooks not running
@@ -222,13 +221,14 @@ These are intentionally separate from hook bypassing:
 **Solution:**
 ```bash
 # Reinstall hooks
-pnpm exec simple-git-hooks
+pnpm run prepare
 
 # Verify hook is installed
-cat .git/hooks/pre-commit
+hooks_dir="$(git config --get core.hooksPath || git rev-parse --git-path hooks)"
+cat "$hooks_dir/pre-commit"
 
 # Check hook is executable
-ls -la .git/hooks/pre-commit
+ls -la "$hooks_dir/pre-commit"
 ```
 
 ### Hook fails with "command not found"
@@ -244,7 +244,7 @@ ls scripts/git-hooks/pre-commit-check-env.sh
 chmod +x scripts/git-hooks/pre-commit-check-env.sh
 
 # Reinstall hooks
-pnpm exec simple-git-hooks
+pnpm run prepare
 ```
 
 ### False positive: Safe file blocked
@@ -255,7 +255,7 @@ pnpm exec simple-git-hooks
 1. Verify the file truly contains no secrets
 2. Add it to `ALLOWED_EXCEPTIONS` in the hook script
 3. Update `.gitignore` to explicitly allow it (if appropriate)
-4. Reinstall hooks: `pnpm exec simple-git-hooks`
+4. Reinstall hooks: `pnpm run prepare`
 
 ## Testing the Hooks
 
@@ -299,7 +299,7 @@ rm test.env.example
 
 Git hooks run locally only. For CI/CD environments:
 
-- Hooks are automatically bypassed in CI (no `.git/hooks` directory)
+- CI does not run hooks by default (it typically doesn't perform interactive `git commit` / `git push`)
 - Use GitHub Actions or similar for server-side validation
 - Consider tools like [pre-commit.ci](https://pre-commit.ci/) for centralized hook management
 
@@ -325,7 +325,7 @@ pnpm exec simple-git-hooks  # Reinstall with new version
 
 ---
 
-**Last Updated:** 2026-02-01
+**Last Updated:** 2026-01-15
 
 For questions or issues with git hooks, please:
 1. Check this documentation and the [Git Safety Guide](./git-safety.md)

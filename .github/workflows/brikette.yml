@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/brikette/**'
       - 'packages/design-system/**'

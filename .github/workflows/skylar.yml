@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/skylar/**'
       - 'packages/config/**'
@@ -44,4 +45,7 @@ jobs:
       deploy-cmd: >
         pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch ${{ github.ref_name }}
       project-name: "skylar"
+      environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.skylar.pages.dev' || 'https://skylar.pages.dev' }}"
+      healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

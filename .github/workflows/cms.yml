@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/cms/**'
       - 'packages/config/**'
@@ -120,13 +121,13 @@ jobs:
 
   deploy:
     name: Deploy
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
     needs: [build]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
-      name: production
-      url: https://cms.pages.dev
+      name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      url: "${{ github.ref_name == 'staging' && 'https://staging.cms.pages.dev' || 'https://cms.pages.dev' }}"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -144,7 +145,7 @@ jobs:
           require-key: true
           require-file: true
           app-path: apps/cms
-          environment: production
+          environment: "${{ github.ref_name == 'staging' && 'preview' || 'production' }}"
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
@@ -161,7 +162,7 @@ jobs:
       - name: Post-Deploy Health Check
         run: |
           chmod +x scripts/post-deploy-health-check.sh
-          ./scripts/post-deploy-health-check.sh cms
+          ./scripts/post-deploy-health-check.sh cms ${{ github.ref_name == 'staging' && '--staging' || '' }}
         env:
           EXTRA_ROUTES: "/api/health"
           MAX_RETRIES: "10"

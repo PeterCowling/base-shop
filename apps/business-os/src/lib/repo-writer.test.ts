@@ -4,10 +4,11 @@ import path from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import matter from "gray-matter";
+import simpleGit from "simple-git";
 
 import { CommitIdentities } from "./commit-identity";
 import { RepoWriter } from "./repo-writer";
-import { mkdirWithinRoot, readFileWithinRoot, writeFileWithinRoot } from "./safe-fs";
+import { accessWithinRoot, mkdirWithinRoot, readFileWithinRoot } from "./safe-fs";
 
 /**
  * Note: These tests use real filesystem and git operations in temp directories
@@ -17,91 +18,60 @@ import { mkdirWithinRoot, readFileWithinRoot, writeFileWithinRoot } from "./safe
 describe("RepoWriter", () => {
   let tempDir: string;
   let repoRoot: string;
-  let worktreePath: string;
   let writer: RepoWriter;
 
   beforeEach(async () => {
     // Create temporary directories
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "business-os-writer-"));
     repoRoot = path.join(tempDir, "repo");
-    worktreePath = path.join(tempDir, "worktree");
 
-    // Initialize a git repo
     await mkdirWithinRoot(tempDir, repoRoot, { recursive: true });
-    await mkdirWithinRoot(tempDir, path.join(repoRoot, ".git"), {
+    await mkdirWithinRoot(tempDir, path.join(repoRoot, "docs/business-os/ideas/inbox"), {
+      recursive: true,
+    });
+    await mkdirWithinRoot(tempDir, path.join(repoRoot, "docs/business-os/cards"), {
       recursive: true,
     });
 
-    // Initialize worktree
-    await mkdirWithinRoot(tempDir, worktreePath, { recursive: true });
-    await mkdirWithinRoot(tempDir, path.join(worktreePath, ".git"), {
-      recursive: true,
-    });
-    await mkdirWithinRoot(
-      tempDir,
-      path.join(worktreePath, "docs/business-os/ideas/inbox"),
-      { recursive: true }
-    );
-    await mkdirWithinRoot(
-      tempDir,
-      path.join(worktreePath, "docs/business-os/cards"),
-      { recursive: true }
-    );
+    // Initialize a real git repo so RepoWriter can run status/add/commit.
+    const git = simpleGit(repoRoot);
+    await git.init();
+    await git.addConfig("user.name", "Test User");
+    await git.addConfig("user.email", "test@example.com");
+    await git.commit("chore: initial", undefined, { "--allow-empty": null });
+    await git.checkoutLocalBranch("dev");
 
-    // Create a minimal git config for the worktree
-    const gitConfig = `[core]
-\trepositoryformatversion = 0
-\tfilemode = true
-\tbare = false
-[remote "origin"]
-\turl = https://github.com/test/repo.git
-\tfetch = +refs/heads/*:refs/remotes/origin/*
-[branch "work/business-os-store"]
-\tremote = origin
-\tmerge = refs/heads/work/business-os-store
-`;
-    await writeFileWithinRoot(
-      tempDir,
-      path.join(worktreePath, ".git/config"),
-      gitConfig,
-      "utf-8"
-    );
-
-    writer = new RepoWriter(repoRoot, worktreePath);
+    writer = new RepoWriter(repoRoot);
   });
 
   afterEach(async () => {
     await fs.rm(tempDir, { recursive: true, force: true });
   });
 
-  describe("isWorktreeReady", () => {
-    it("returns false if worktree doesn't exist", async () => {
+  describe("isRepoReady", () => {
+    it("returns false if repo doesn't exist", async () => {
       const nonExistentPath = path.join(tempDir, "nonexistent");
-      const testWriter = new RepoWriter(repoRoot, nonExistentPath);
+      const testWriter = new RepoWriter(nonExistentPath);
 
-      const ready = await testWriter.isWorktreeReady();
+      const ready = await testWriter.isRepoReady();
       expect(ready).toBe(false);
     });
 
-    it("returns false if worktree is not a git repo", async () => {
+    it("returns false if repo is not a git repo", async () => {
       const noGitPath = path.join(tempDir, "nogit");
       await mkdirWithinRoot(tempDir, noGitPath, { recursive: true });
 
-      const testWriter = new RepoWriter(repoRoot, noGitPath);
+      const testWriter = new RepoWriter(noGitPath);
 
-      const ready = await testWriter.isWorktreeReady();
+      const ready = await testWriter.isRepoReady();
       expect(ready).toBe(false);
     });
   });
 
-  describe("isWorktreeClean", () => {
-    it("returns clean=true for clean worktree", async () => {
-      // Mock a clean worktree (no uncommitted files)
-      const result = await writer.isWorktreeClean();
-
-      // This may fail if git status can't run, but that's OK for the test
-      // We're primarily testing the logic
-      expect(result).toHaveProperty("clean");
+  describe("isRepoClean", () => {
+    it("returns clean=true for clean repo", async () => {
+      const result = await writer.isRepoClean();
+      expect(result.clean).toBe(true);
     });
   });
 
@@ -120,7 +90,7 @@ describe("RepoWriter", () => {
 
       // Check if file was created
       const filePath = path.join(
-        worktreePath,
+        repoRoot,
         "docs/business-os/ideas/inbox/TEST-OPP-0001.user.md"
       );
       const fileExists = await fs
@@ -182,7 +152,7 @@ describe("RepoWriter", () => {
 
       // Check if file was created
       const filePath = path.join(
-        worktreePath,
+        repoRoot,
         "docs/business-os/cards/TEST-OPP-0001.user.md"
       );
       const fileExists = await fs
@@ -244,7 +214,7 @@ describe("RepoWriter", () => {
 
       // Check if file was updated
       const filePath = path.join(
-        worktreePath,
+        repoRoot,
         "docs/business-os/cards/TEST-OPP-0002.user.md"
       );
       const fileExists = await fs
@@ -318,8 +288,8 @@ describe("RepoWriter", () => {
       expect(result.filePath).toBe("docs/business-os/ideas/inbox/BRIK-OPP-0003.user.md");
 
       // Verify file was updated
-      const filePath = path.join(tempDir, result.filePath!);
-      const fileExists = await accessWithinRoot(tempDir, filePath)
+      const filePath = path.join(repoRoot, result.filePath!);
+      const fileExists = await accessWithinRoot(repoRoot, filePath)
         .then(() => true)
         .catch(() => false);
 

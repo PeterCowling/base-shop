@@ -33,8 +33,7 @@
     "lint:all:raw": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
     "typecheck": "tsc -b tsconfig.json --pretty && turbo run typecheck",
     "typecheck:watch": "tsc -b -w tsconfig.json --noEmit --preserveWatchOutput --pretty",
-    "typecheck:staged": "tsx scripts/git-hooks/typecheck-staged.ts",
-    "prepare": "simple-git-hooks",
+    "prepare": "scripts/git-hooks/install-hooks.sh",
     "test": "CI=true turbo run test",
     "test:affected": "CI=true turbo run test --affected",
     "test:changed": "pnpm exec tsx scripts/src/run-changed-tests.ts",
@@ -152,7 +151,9 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit-check-env.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck:staged",
+    "pre-commit": "scripts/git-hooks/pre-commit-check-env.sh && scripts/git-hooks/require-writer-lock.sh && node scripts/git-hooks/no-partially-staged.js && pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=6144 pnpm exec lint-staged --no-stash && pnpm typecheck && pnpm lint && pnpm validate:agent-context",
+    "prepare-commit-msg": "scripts/git-hooks/prepare-commit-msg-safety.sh",
+    "pre-rebase": "scripts/git-hooks/pre-rebase-safety.sh",
     "pre-push": "scripts/git-hooks/require-writer-lock.sh && scripts/git-hooks/pre-push-safety.sh && pnpm typecheck && pnpm lint"
   },
   "dependencies": {

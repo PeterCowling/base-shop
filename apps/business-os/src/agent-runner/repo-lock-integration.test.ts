@@ -5,7 +5,6 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
 import { RepoLock } from "../lib/repo/RepoLock";
-import { RepoWriter } from "../lib/repo-writer";
 
 /**
  * V3: RepoLock integration validation
@@ -18,22 +17,16 @@ import { RepoWriter } from "../lib/repo-writer";
 describe("RepoLock Integration (Daemon + RepoWriter)", () => {
   let tempDir: string;
   let repoRoot: string;
-  let worktreePath: string;
   let lockDir: string;
   let lock: RepoLock;
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-lock-integration-"));
     repoRoot = path.join(tempDir, "repo");
-    worktreePath = path.join(tempDir, "worktree");
     lockDir = path.join(repoRoot, "docs/business-os/.locks");
 
     // Create directories
     await fs.mkdir(lockDir, { recursive: true });
-    await fs.mkdir(path.join(worktreePath, ".git"), { recursive: true });
-    await fs.mkdir(path.join(worktreePath, "docs/business-os/cards"), {
-      recursive: true,
-    });
 
     lock = new RepoLock(lockDir);
   });

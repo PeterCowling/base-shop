@@ -3,49 +3,46 @@ Type: Documentation
 Domain: Business OS
 Status: Active
 Created: 2026-01-28
-Last-updated: 2026-01-28
+Last-updated: 2026-01-31
 ---
 
 # Business OS Security Model
 
-## Phase 0: Single-User Hosted Security (Current)
+## Phase 0: Local-Only Security (Current)
 
 ### Access Control
 
 **User Model:**
 - Single user: Pete only
-- No authentication required (hardcoded identity, Pete-only deployment)
-- App deployed to Cloudflare Pages (private deployment URL)
-- **SECURITY NOTE:** Phase 0 is Pete-only; multi-user access requires Phase 1 auth implementation
+- No authentication required (local development only)
+- App runs on `localhost:3020`
+- **SECURITY CRITICAL:** App MUST NOT be deployed to public URL in Phase 0
 
 **Authorization Model:**
-- Table-based access control (Business OS tables only)
+- Path-based allowlist (not user-specific)
 - Defense-in-depth approach
 
 ### Write Authorization
 
-**Allowed Tables:**
+**Allowed Paths:**
 ```
-business_os_cards
-business_os_ideas
-business_os_stage_docs
-business_os_audit_log
+docs/business-os/**
 ```
 
-**Denied Tables:**
-- All other D1 tables
-- Product pipeline tables
-- Any other Cloudflare bindings
+**Denied Paths:**
+- All other `docs/**` paths
+- Repository root files
+- Source code directories
+- Any path outside repository
 
 **Implementation:**
-- Server-side enforcement via D1 repository layer
+- Server-side enforcement via `authorizeWrite()` function
 - Applied to all write API routes
 - No client-side bypass possible
-- Git export runs in CI (GitHub Actions), not in app runtime
 
 **Code Location:**
-- `packages/platform-core/src/repositories/businessOs.server.ts`
-- `apps/business-os/src/app/api/*/route.ts` (API routes use repositories)
+- `apps/business-os/src/lib/auth/authorize.ts`
+- `apps/business-os/src/lib/auth/middleware.ts`
 
 ### Read Authorization
 
@@ -59,52 +56,56 @@ business_os_audit_log
 - Raw ideas visible only to submitter/owner
 - Business-scoped access control
 
-### Data Validation
+### Path Validation
 
-**Input Sanitization:**
-- SQL injection prevention (parameterized queries only)
-- Zod schema validation on all writes
-- Entity ID format enforcement (e.g., `BRIK-ENG-0001`)
+**Sanitization:**
+- Directory traversal attempts blocked (`../`, `~`)
+- Path normalization enforced
+- Leading slashes removed
 
-**Entity Types:**
-- `cards`: Cards with lane, priority, owner, business fields
-- `ideas`: Ideas with status, location, business fields
-- `stage_docs`: Stage documentation linked to cards
-- `audit_log`: Append-only audit events
+**Location Types:**
+- `ideas`: inbox/worked subdirectories only
+- `cards`: flat structure + stage doc subdirectories
+- `strategy`: JSON files + business subdirectories
+- `people`: flat markdown files
+- `scans`: JSON files + history subdirectory
 
-### Database Security
-
-**D1 Binding Access:**
-- Cloudflare D1 binding via `BUSINESS_OS_DB` environment variable
-- Binding configured in `apps/business-os/wrangler.toml`
-- No direct SQL execution in client code (repositories only)
-
-**Audit Trail:**
-- All changes logged in `business_os_audit_log` table
-- Append-only audit events (actor, initiator, action, timestamp)
-- Git mirror provides secondary audit trail (hourly export)
-- PR record preserved for git exports
-
-### Git Export Security
-
-**CI-Only Git Writes:**
-- Git export runs in GitHub Actions (not app runtime)
-- Uses `CLOUDFLARE_API_TOKEN` secret for D1 access
-- Commits to `work/business-os-export` branch
-- Auto-PR workflow provides safety gate
+### Git Security
 
 **Credentials:**
-- No git credentials in app runtime
-- GitHub Actions uses built-in `GITHUB_TOKEN`
-- D1 access via Cloudflare API token (secret)
+- Uses existing git credential helper (`osxkeychain`)
+- No credentials stored in app
+- HTTPS remote only (never SSH with custom keys)
+
+**Branch Model:**
+- Commits to `dev` branch
+- Never commits directly to `staging` or `main`
+- Shipping is `dev` → `staging` via auto-PR + auto-merge after CI
+- Production promotion is `staging` → `main` via `scripts/git/promote-to-main.sh`
+
+**Audit Trail:**
+- All changes visible in git history
+- PR record preserved (even after auto-merge)
+- Commit author properly attributed
+
+### File System Security
+
+**Single Checkout + Writer Lock:**
+- Writes occur in the main Base-Shop checkout (restricted to `docs/business-os/**` by allowlist)
+- Writes are serialized by the Base-Shop writer lock (`scripts/git/writer-lock.sh`)
+- Prevents overlapping commits/pushes in a shared checkout
+
+**File Permissions:**
+- Respects filesystem permissions
+- No privilege escalation
+- Standard user permissions only
 
 ## Phase 1+: Multi-User Security (Future)
 
 ### Authentication
-- Required for multi-user access
-- Recommended: GitHub OAuth (aligns with repo-based workflows)
-- Must integrate with Cloudflare Pages deployment
-- Session management via encrypted cookies or JWTs
+- To be determined
+- Options: GitHub OAuth, magic links, etc.
+- Must work with hosted deployment
 
 ### Authorization
 - User-scoped read permissions
@@ -130,44 +131,44 @@ business_os_audit_log
 
 ### Phase 0 Threats (Mitigated)
 
-**Threat:** Accidental writes outside Business OS tables
-- **Mitigation:** Repository layer restricts table access
+**Threat:** Accidental writes outside Business OS area
+- **Mitigation:** Server-side path allowlist
 - **Status:** ✅ Implemented
 
-**Threat:** SQL injection attacks
-- **Mitigation:** Parameterized queries only, no raw SQL in API routes
+**Threat:** Directory traversal attacks
+- **Mitigation:** Path sanitization, allowlist
 - **Status:** ✅ Implemented
 
-**Threat:** Malicious content (XSS via markdown)
+**Threat:** Malicious file content (XSS via markdown)
 - **Mitigation:** react-markdown sanitizes by default
 - **Status:** ✅ Implemented
 
-**Threat:** D1 binding credential exposure
-- **Mitigation:** Cloudflare runtime manages bindings securely
-- **Status:** ✅ Implemented (Cloudflare platform security)
+**Threat:** Git credential exposure
+- **Mitigation:** Use system credential helper, no storage
+- **Status:** ✅ Implemented
 
 ### Phase 0 Non-Threats (Out of Scope)
 
 **Threat:** Unauthorized network access
-- **Status:** ⚠️ Mitigated by private deployment URL (Pete-only access)
-- **Phase 1+ requirement:** Proper authentication and authorization
+- **Status:** ⚠️ Not applicable (local-only, no public URL)
+- **Phase 1+ requirement:** Authentication
 
 **Threat:** Multi-user conflicts
 - **Status:** ⚠️ Not applicable (single-user)
-- **Phase 1+ requirement:** Optimistic locking and conflict resolution
+- **Phase 1+ requirement:** Concurrency control
 
 **Threat:** CSRF attacks
-- **Status:** ⚠️ Low risk (Pete-only, no public sharing)
-- **Phase 1+ requirement:** CSRF tokens and SameSite cookies
+- **Status:** ⚠️ Not applicable (no public URL)
+- **Phase 1+ requirement:** CSRF protection
 
 ## Security Checklist
 
 ### Before Phase 0 Launch
-- [x] Table authorization implemented and tested
-- [x] D1 binding security (Cloudflare managed)
-- [x] Private deployment URL (Pete-only access)
+- [x] Path authorization implemented and tested
+- [x] Git credentials via system helper (no storage)
+- [x] No public deployment (local-only confirmed)
 - [x] Markdown sanitization confirmed
-- [x] Test coverage for repository layer
+- [x] Test coverage for authorization logic
 
 ### Before Phase 1 Launch
 - [ ] Authentication implemented
@@ -181,26 +182,31 @@ business_os_audit_log
 
 ### Phase 0
 If security issue discovered:
-1. Disable affected API routes in deployment
-2. Review D1 audit log for unauthorized changes
-3. Restore database from snapshot if needed
-4. Fix issue and re-deploy
+1. Stop `pnpm dev` server immediately
+2. `git revert` any problematic commits
+3. Review git history for unauthorized changes
+4. Fix issue and re-test
 5. Document in this file
 
 ### Emergency Rollback
 ```bash
-# Deploy previous working version
-cd apps/business-os
-git checkout <previous-commit>
-pnpm --filter @apps/business-os deploy:cloudflare
+# Stop server
+pkill -f "next dev.*3020"
 
-# Or restore D1 from backup
-wrangler d1 backup restore BUSINESS_OS_DB --id <backup-id>
+# Acquire a writer-locked shell (recommended)
+scripts/agents/with-writer-lock.sh
+
+# Revert last commit on dev
+cd /path/to/base-shop
+git checkout dev
+git revert HEAD
+git push origin dev
+
+# CI will auto-PR dev -> staging and auto-merge after checks.
 ```
 
 ## References
 
-- Repository layer: `packages/platform-core/src/repositories/businessOs.server.ts`
-- D1 schema: `apps/business-os/db/migrations/`
-- Test coverage: `packages/platform-core/src/repositories/businessOs.server.test.ts`
-- Plan: `docs/plans/database-backed-business-os-plan.md`
+- Authorization code: `apps/business-os/src/lib/auth/`
+- Test coverage: `apps/business-os/src/lib/auth/authorize.test.ts`
+- Plan: `docs/plans/business-os-kanban-plan.md` (BOS-09)

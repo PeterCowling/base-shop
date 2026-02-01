@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-01
+Last-reviewed: 2026-01-31
 ---
 
 # AGENTS.md — Operational Runbook
@@ -41,22 +41,28 @@ When you identify that the "right" solution requires significantly more work, ex
 | Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
 | Validate all | `bash scripts/validate-changes.sh` |
 
-## Validation Gates
+## Validation Gate (Before Every Commit)
 
 ```bash
-# Checkpoint commits: rely on pre-commit (staged lint + affected typecheck).
-# Before pushing:     pre-push enforces `pnpm typecheck && pnpm lint`.
+pnpm typecheck && pnpm lint
+# Plus: targeted tests for changed files (see scripts/validate-changes.sh)
 ```
 
-**Rule:** Never push code that fails validation. Fix first.
+**Rule:** Never commit code that fails validation. Fix first.
 
 ## Git Rules
 
-- Work on `work/*` branches only — never commit to `main`
-- For parallel work: **one worktree per agent/human** (`scripts/git/new-worktree.sh <label>`)
-- If you operate in the **main checkout** (not recommended), acquire the writer lock first (`scripts/agents/with-writer-lock.sh`). Commits/pushes are blocked otherwise.
+- **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
+- **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
+  - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
+  - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
+  - Check status: `scripts/git/writer-lock.sh status`
+- **Branch flow:** `dev` → `staging` → `main`
+  - Commit locally on `dev`
+  - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
+  - Promote `staging` to production (PR + auto-merge): `scripts/git/promote-to-main.sh`
 - **Commit every 30 minutes** or after completing any significant change
-- **Push every 2 hours** (or every 3 commits) — GitHub is your backup
+- **Push `dev` every 2 hours** (or every 3 commits) — GitHub is your backup
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
@@ -165,8 +171,9 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 
 ## Pull Requests & CI
 
-- PRs are zero-touch: auto-open on `work/*` push, labeled `zero-touch`, auto-merge on green, auto-close on failing checks or staleness (add `keep-open` to skip auto-close)
-- If auto-open fails, create PR manually (`gh pr create --fill`) and enable auto-merge (`gh pr merge --auto --squash --delete-branch`)
+- PRs are pipeline artifacts:
+  - `dev` → `staging` is shipped via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
+  - `staging` → `main` is promoted via PR + auto-merge (`scripts/git/promote-to-main.sh`).
 - Keep PR green and mergeable — fix CI failures promptly
 - **Never merge directly to `main`** — always use PR workflow
 - All CI checks must pass before auto-merge

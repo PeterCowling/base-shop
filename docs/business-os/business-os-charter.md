@@ -2,7 +2,7 @@
 Type: Charter
 Status: Canonical
 Domain: Business OS
-Last-reviewed: 2026-01-28
+Last-reviewed: 2026-01-31
 Primary code entrypoints:
   - apps/business-os/ — Next.js Kanban app
   - docs/business-os/ — Canonical document storage
@@ -27,26 +27,24 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 
 **Design Principles:**
 
-- **Database-canonical:** Cards and ideas live in Cloudflare D1 (serverless SQLite) with git mirror export for audit and manual inspection
+- **Repo-native:** All state lives in `docs/business-os/` as markdown + JSON
 - **Evidence-based:** Every stage transition requires evidence documentation
 - **Dual-audience:** `.user.md` optimized for humans, `.agent.md` optimized for LLMs
 - **Lightweight:** Intentionally simple—not ERP complexity, just enough structure
-- **Audit trail:** Full history via D1 audit log and periodic git export; rollback capability via database snapshots
+- **Git-backed:** Full audit trail, rollback capability, PR workflow for all changes
 
 ## Core Flows
 
 ### 1. Idea Submission (Human or Agent)
 - Submit raw idea via UI form or agent `/scan-repo` skill
-- Idea saved to D1 database (`business_os_ideas` table)
-- Git export mirrors to `docs/business-os/ideas/inbox/<slug>.md` (hourly CI job)
+- Idea saved to `docs/business-os/ideas/inbox/<slug>.md`
 - Visible in Inbox lane on business boards
 
 ### 2. Idea → Card Workflow (Agent-assisted)
 - Agent uses `/work-idea` skill to convert idea to card
-- Creates card in D1 database (`business_os_cards` table)
-- Git export mirrors to `docs/business-os/cards/<ID>.user.md` + `.agent.md`
+- Creates card in `docs/business-os/cards/<ID>.user.md` + `.agent.md`
 - Creates initial Fact-finding stage doc
-- Idea status updated to "worked" with Card-ID reference
+- Idea moves to `ideas/worked/` with Card-ID reference
 
 ### 3. Card Lifecycle (Lane Progression)
 - **Lanes:** Inbox → Fact-finding → Planned → In progress → Blocked → Done → Reflected
@@ -95,27 +93,20 @@ Business OS is a **repo-native coordination system** for human and agent work ac
 - Real-time collaboration (Phase 0 is file-based, eventual consistency)
 - ERP-style complexity (inventory, accounting, CRM integrations)
 
-## Storage Architecture
+## Document Structure
 
-**Canonical Store:** Cloudflare D1 (serverless SQLite)
-- Cards: `business_os_cards` table
-- Ideas: `business_os_ideas` table
-- Stage docs: `business_os_stage_docs` table
-- Audit log: `business_os_audit_log` table
-
-**Git Mirror** (read-only export, hourly sync):
 ```
 docs/business-os/
 ├── cards/
-│   ├── <ID>.user.md              # Human-readable card (mirrored from D1)
-│   ├── <ID>.agent.md             # Agent-readable card (mirrored from D1)
+│   ├── <ID>.user.md              # Human-readable card
+│   ├── <ID>.agent.md             # Agent-readable card
 │   └── <ID>/
-│       ├── fact-finding.user.md  # Stage documentation (mirrored from D1)
+│       ├── fact-finding.user.md  # Stage documentation
 │       ├── planned.user.md
 │       └── ...
 ├── ideas/
-│   ├── inbox/*.md                # Raw ideas (mirrored from D1)
-│   └── worked/*.md               # Ideas with Card-ID (mirrored from D1)
+│   ├── inbox/*.md                # Raw ideas
+│   └── worked/*.md               # Ideas with Card-ID
 ├── strategy/
 │   ├── businesses.json           # Business catalog
 │   └── <BIZ>/
@@ -132,25 +123,25 @@ docs/business-os/
 ## Governance
 
 ### Phase 0 Constraints
-- **Identity:** Pete-only (hardcoded identity, no auth required)
-- **Runtime:** Cloudflare Pages with Edge runtime (`wrangler pages dev` for local, Cloudflare Pages for production)
-- **Write model:** App writes to D1 database; hourly CI job exports to git (`work/business-os-export` branch)
-- **Data authorization:** Server-side enforcement (D1 writes restricted to Business OS tables)
+- **Identity:** Pete-only (hardcoded identity, no auth)
+- **Runtime:** Local development only (`pnpm --filter @apps/business-os dev`)
+- **Write model:** App commits to `dev` → auto-PR (`dev` → `staging`) → auto-merge after CI
+- **Path authorization:** Server-side allowlist (writes restricted to `docs/business-os/**`)
 
 ### Quality Gates
 - `pnpm docs:lint` validates all Business OS document headers
 - TypeScript type checking enforced (`pnpm typecheck`)
 - Targeted tests required before commits (`pnpm test -- <specific-test>`)
-- No direct commits to main (PR workflow via `work/**` branches)
+- No direct commits to `staging` or `main` (ship via pipeline PRs)
 
 ## Migration Notes
 
 ### Phase 1+ Requirements (Future)
-- Multi-user access with authentication (GitHub OAuth or similar)
-- Real-time updates (Server-Sent Events or Durable Objects)
+- Hosted deployment (Cloudflare Pages)
+- Multi-user access with authentication
+- Real-time updates (WebSocket or SSE)
 - Agent APIs for programmatic invocation
-- Manual PR review workflow option for git exports
-- User-scoped data visibility and authorization
+- Manual PR review workflow option
 
 ### Historical Context
 - Derived from comprehensive requirements doc `repo-native-business-os-kanban-system-prompt.md`

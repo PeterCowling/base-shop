@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Block direct pushes and non-fast-forward updates to protected branches.
+# Block dangerous pushes:
+# - Any direct push to protected branches (staging/main/master)
+# - Any non-fast-forward push to any branch (history rewrite / force push)
+#
 # Git provides local_sha/remote_sha pairs over stdin.
 
 PROTECTED_BRANCHES=(
+  "refs/heads/staging"
   "refs/heads/main"
   "refs/heads/master"
-  "refs/heads/dev"
-  "refs/heads/staging"
 )
 
 is_protected_ref() {
@@ -27,33 +29,17 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   # stdin can be empty in some scenarios
   [[ -z "${remote_ref:-}" ]] && continue
 
-  if ! is_protected_ref "$remote_ref"; then
-    continue
-  fi
-
-  if [[ "${ALLOW_DIRECT_PUSH_PROTECTED_BRANCH:-}" != "1" ]]; then
+  # Block direct push to protected branches (even if fast-forward).
+  if is_protected_ref "$remote_ref"; then
     echo "------------------------------------------------------------------" >&2
-    echo "PUSH BLOCKED: protected branch '${remote_ref#refs/heads/}'" >&2
+    echo "PUSH BLOCKED: Direct push to protected branch" >&2
     echo "------------------------------------------------------------------" >&2
     echo "" >&2
-    echo "Direct pushes to protected branches are not allowed." >&2
-    echo "Open a PR instead (work/* branches auto-open PRs to main)." >&2
+    echo "Protected branch: ${remote_ref#refs/heads/}" >&2
     echo "" >&2
-    echo "Bypass (human only, emergency):" >&2
-    echo "  ALLOW_DIRECT_PUSH_PROTECTED_BRANCH=1 git push ..." >&2
-    echo "" >&2
-    exit 1
-  fi
-
-  # Deletion of a protected branch.
-  if [[ "$local_sha" == "$zeros40" ]]; then
-    echo "------------------------------------------------------------------" >&2
-    echo "PUSH BLOCKED: deletion of protected branch" >&2
-    echo "------------------------------------------------------------------" >&2
-    echo "" >&2
-    echo "You are attempting to delete: ${remote_ref#refs/heads/}" >&2
-    echo "" >&2
-    echo "This can destroy work and break automation." >&2
+    echo "Use the pipeline PR scripts instead:" >&2
+    echo "  - Ship dev -> staging: scripts/git/ship-to-staging.sh" >&2
+    echo "  - Promote staging -> main: scripts/git/promote-to-main.sh" >&2
     echo "" >&2
     exit 1
   fi
@@ -63,9 +49,14 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     continue
   fi
 
+  # Branch deletion (local_sha all zeros) is allowed (except protected branches, handled above).
+  if [[ "$local_sha" == "$zeros40" ]]; then
+    continue
+  fi
+
   if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
     echo "------------------------------------------------------------------" >&2
-    echo "PUSH BLOCKED: Non-fast-forward push to protected branch" >&2
+    echo "PUSH BLOCKED: Non-fast-forward push (history rewrite)" >&2
     echo "------------------------------------------------------------------" >&2
     echo "" >&2
     echo "You are attempting to push a history rewrite to: ${remote_ref#refs/heads/}" >&2

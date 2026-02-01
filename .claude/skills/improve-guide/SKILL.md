@@ -3,344 +3,451 @@ name: improve-guide
 description: Run audit-guide-seo.ts for a guide URL, iteratively fix all audit issues in EN, then propagate updated copy to all locales
 ---
 
-# Guide SEO Audit + Fix + Localization
+# Guide SEO Audit + Fix + Localization (Batch-Capable, Locale-Safe, Reader-First)
 
-Given a guide reference (usually a local URL), this skill:
+## Core commitments (non-negotiable)
 
-1. Resolves the URL → guide **slug** → internal **guideKey**
-2. Runs `apps/brikette/scripts/audit-guide-seo.ts` (EN locale only) to generate SEO audit results
-3. Fixes **every** issue/improvement reported by the audit by updating the guide content (and any required manifest overrides)
-4. Re-runs the audit and repeats until **no issues/improvements remain**
-5. Propagates the final updated English copy to **all other locales** (string updates only; preserve non-translatable tokens exactly)
-6. Reports completion to the user
+**Batch is user-directed.**
+You must ask which guide or group of guides to process. If the user provides a URL that implies a single guide but says "batch," you must still ask how to define the batch (keys, slugs, folder, or manifest selection).
 
-The audit output is saved to `apps/brikette/src/data/guides/guide-manifest-overrides.json` under the guide key.
+**Every write is validated immediately.**
+After each file write, validate JSON parseability and token integrity before doing anything else.
+
+If validation fails, the only allowed fix is replacement with known-good content.
+
+- Restore the file from a known-good snapshot taken immediately before the edit, or from git restore / git checkout -- <path>.
+- Then re-apply the intended change safely (prefer structured JSON editing).
+- No other fix is valid. No "surgery" on corrupted text, no partial patching, no "we'll fix later."
+
+**No delaying for convenience.**
+Do not accumulate multiple edits and validate later. Validation is stepwise and immediate.
+
+**If a timely replacement cannot be made, stop and ask the user what they want to do.**
+This is the only acceptable fallback.
+
+**Readership-first ordering is required.**
+Reorder content so the reader can decide/act quickly, with explicit early-content gates (defined below).
+
+**Localization must not assume sync.**
+Non-EN locale content may have drifted. You must check and reconcile the entire locale content, not only the strings changed in EN.
 
 ---
 
 ## Operating Mode
 
-**READ + RUN (SCRIPT) + EDIT (EN CONTENT) + RE-RUN (UNTIL CLEAN) + LOCALIZE + WRITE**
+**READ + PLAN BATCH + SNAPSHOT + RUN (SCRIPT) + EDIT (EN JSON, VALIDATE EACH WRITE) + RE-RUN (UNTIL CLEAN) + LOCALIZE (PARALLEL, DRIFT-AWARE, VALIDATE EACH LOCALE WRITE) + REPORT**
+
+**Translation Policy (Non-Negotiable):**
+- **Always complete all translation work in-house.** Never ask about engaging professional translators or offloading translation work to external services.
+- **Always use parallel subagents for localization.** Spawn multiple Task tool subagents to translate locales concurrently, maximizing speed.
+- **Never defer or skip localization.** All 17 non-EN locales must be updated for every guide processed.
 
 ---
 
 ## Allowed
 
-- Read and parse the provided guide reference (URL/slug)
-- Read guide manifest data to map **slug → guideKey**
-- Run the repository audit script: `apps/brikette/scripts/audit-guide-seo.ts`
-- Read and modify the **EN** guide content JSON:
-  - `apps/brikette/src/locales/en/guides/content/{guideKey}.json`
-- Add/replace **authoritative** supporting content (facts + images) to address audit findings
-  - Research via web browsing is allowed for factual verification and sourcing of usable images
-  - Write original prose (do **not** copy-paste copyrighted text)
+- Ask user to specify a single guide or a batch definition (see Inputs)
+- Read/parse guide references (URL/slug/guideKey list)
+- Read guide manifest data to map slug(s) → guideKey(s)
+- Run apps/brikette/scripts/audit-guide-seo.ts (EN locale only)
+- Read/modify EN guide JSON:
+  - apps/brikette/src/locales/en/guides/content/{guideKey}.json
 - Update audit results in:
-  - `apps/brikette/src/data/guides/guide-manifest-overrides.json`
-- Update non-EN locale guide content JSON files so they match the updated EN meaning (see Localization Rules)
+  - apps/brikette/src/data/guides/guide-manifest-overrides.json
+- Update non-EN locale guide JSON files to match updated EN meaning, preserving tokens exactly
+- **Spawn parallel Task tool subagents for concurrent locale translation** (required for all localization work)
+- Web research for fact verification + finding usable images (as needed)
+- Write original prose (no copying copyrighted text)
 
 ---
 
 ## Not Allowed
 
-- Running third-party SEO tools/APIs (Semrush, Ahrefs, Screaming Frog, etc.)
-- Making changes outside the target guide except where strictly required to satisfy the audit (e.g., related internal link targets should already exist)
-- Changing link targets when localizing (only translate visible anchor text)
-- Translating or altering any "preserve exactly" tokens (see Localization Rules)
-- Stopping after the first audit: you must iterate until the audit is clean (no critical issues, no improvements)
+- Third-party SEO tools/APIs (Semrush, Ahrefs, Screaming Frog, etc.)
+- Changes outside the target guides except where strictly required by the audit
+- Changing link targets in localization (only translate visible anchor text)
+- Translating or altering any "preserve exactly" tokens
+- Deferring validation/fixing "until later"
+- Any remediation for corrupted JSON other than replacement with known-good content
+- **Asking about professional translators or external translation services** (forbidden)
+- **Suggesting to defer/skip localization or offload translation work** (forbidden)
+- **Sequential locale processing when parallel is possible** (forbidden - always use Task tool for parallel translation)
 
 ---
 
 ## Inputs
 
-### Required
-- **Guide reference** (preferred: full URL), e.g.
-  - `http://localhost:3012/en/experiences/gavitella-beach-guide`
+### Required (batch selection)
 
-### Optional
-- **Readership / audience** (if not provided, you must ask)
-  - Examples: "hostel guests", "day-trippers without a car", "families with kids", "budget travelers", etc.
+You must obtain one of the following from the user:
 
-> **Note:** All auditing + fixing is performed in **EN** (`apps/brikette/src/locales/en/...`) regardless of the locale in the URL.
+**Single guide reference**
+- Full URL (preferred), e.g. http://localhost:3012/en/experiences/gavitella-beach-guide
+- Or a slug, e.g. gavitella-beach-guide
+- Or a guideKey, e.g. gavitellaBeachGuide
+
+**Batch selection**
+- A list of URLs/slugs/guideKeys
+- A manifest-driven selection rule, e.g.:
+  - "all guides under /experiences"
+  - "all beach guides"
+  - "these 12 slugs…"
+- A repo/path-driven selection rule (only if your repo actually supports it), e.g.:
+  - "all guide JSONs in apps/brikette/src/locales/en/guides/content/ that match prefix X"
+
+**Hard requirement:**
+If the user does not explicitly specify the guide(s), you must ask:
+
+> "Which guide or group of guides should we cover?"
+
+### Optional (but recommended)
+
+- Readership/audience (ask after the first audit results are known, per guide or for the batch)
+- Tone constraints + must-include details (accessibility, costs, transport, safety, crowds, seasonality)
+
+> **Note:** All auditing + fixing is performed in EN regardless of locale in the URL.
 
 ---
 
 ## Pre-step: Ask About Readership (Required)
 
-Before applying fixes (i.e., after the first audit results are known), ask:
+After the first audit results are known, ask:
 
-- Who is the intended readership?
-- Any constraints on tone (practical, friendly, premium, minimal, etc.)?
-- Any must-include details (accessibility, costs, transport, safety, crowds, seasonality)?
+- Intended readership?
+- Tone constraints?
+- Must-include details (accessibility, costs, transport, safety, crowds, seasonality)?
 
-If the user does not respond, assume: **general travelers + practical "how to go / what to expect" orientation**.
+**Batch behavior:**
+- If the batch is homogeneous (e.g., "beach guides"), you may ask for one shared readership profile to apply to all, and allow exceptions if the user specifies.
+- If the batch is mixed (e.g., beaches + directions + attractions), ask whether to apply a common readership or specify per category.
+- If the user doesn't respond, assume: general travelers + practical "how to go / what to expect."
 
 ---
 
 ## Script of Record
 
-The audit logic is **exactly** what is implemented in:
+Audit logic is exactly:
 
 - `apps/brikette/scripts/audit-guide-seo.ts`
 
-This skill must use that script as the source of truth for scoring, issues, and improvements.
+This script is the source of truth for: score, issues, improvements.
 
 ---
 
-## Audit Output Schema
+## Validation & Replacement Protocol (applies to every write)
 
-Written to `apps/brikette/src/data/guides/guide-manifest-overrides.json`:
+### A. Snapshot before every edit (mandatory)
 
-```json
-{
-  "{guideKey}": {
-    "auditResults": {
-      "timestamp": "2026-01-30T10:00:00.000Z",
-      "score": 9.7,
-      "analysis": {
-        "strengths": ["..."],
-        "criticalIssues": ["..."],
-        "improvements": ["..."]
-      },
-      "metrics": {
-        "metaTitleLength": 52,
-        "metaDescriptionLength": 154,
-        "contentWordCount": 2310,
-        "headingCount": 7,
-        "internalLinkCount": 6,
-        "faqCount": 9,
-        "imageCount": 6
-      },
-      "version": "1.0.0"
-    }
-  }
-}
-```
+Before modifying any JSON file:
+
+1. Read the full file contents into memory as the known-good snapshot.
+2. Ensure you can restore it immediately if needed.
+
+Recommended additional safety:
+- Keep a second snapshot from git (if available) as the "absolute known-good."
+
+### B. Validate immediately after every write (mandatory)
+
+For any file you write (EN guide JSON, locale guide JSON, manifest overrides JSON), run:
+
+**JSON parse check (hard gate)**
+- Must parse as valid JSON (UTF-8).
+- If it fails → restore snapshot immediately.
+
+**Token preservation check (hard gate)**
+Preserve exactly:
+- `%LINK:target|anchor%` → only anchor may change; target must remain identical
+- `%IMAGE:path%` unchanged
+- `%COMPONENT:name%` unchanged
+- URLs, paths, IDs, technical tokens
+
+If broken/missing/unexpected changes → restore snapshot immediately.
+
+**Structure parity check (hard gate for localization)**
+For each locale file after update:
+- Same sections order and count as EN
+- Same number of intro paragraphs
+- Same FAQ count and ordering
+- Same gallery structure
+
+If mismatch → restore snapshot immediately.
+
+### C. Only permitted remedy for failed validation
+
+1. Replace corrupted content with the known-good snapshot (or git restore).
+2. Re-apply the intended change using structured JSON editing.
+3. If repeated failure and you cannot produce a clean write promptly → stop and ask user what to do.
+
+**No other fix is valid.**
 
 ---
 
-## Workflow
+## Readership-first ordering gates (mandatory)
 
-### 1. Resolve Guide Reference → guideKey
+The guide must communicate essentials early. Apply this in EN, then preserve equivalent structure in all locales.
 
-Parse the provided URL or slug:
-- Extract the slug from the URL path (e.g., `gavitella-beach-guide`)
-- Read guide manifest to find the matching `guideKey`
-- Validate the guide exists in EN locale
+### Default early-content window
 
-### 2. Run Initial Audit
+Target first ~250–350 words. Choose the smallest number that fully communicates essentials for that guide type.
 
-Execute the audit script:
+### Guide-type specific gates
+
+**Directions / "how to get there" guides**
+
+Within first ~300 words:
+- Starting point(s) and destination
+- Best default route + alternatives (walk/transit/taxi/car)
+- Typical time range(s)
+- Approx cost expectations (if relevant)
+- One or two "gotchas" (stairs, last service, reservations, weather exposure)
+
+**Beach guides**
+
+Within first ~250–300 words:
+- Who it's best for / not for (kids, mobility, budget, crowds)
+- Access difficulty (stairs, distance, transport)
+- Facilities snapshot (toilets, showers, shade, rentals)
+- Costs (free vs lido fees; parking; rentals if known)
+- Best time to go + one safety note if relevant
+
+**Attractions / POIs**
+
+Within first ~250–300 words:
+- Why go + time needed
+- Access and booking/queues
+- Cost expectations (if relevant)
+- One or two key gotchas
+
+**Food/drink venues**
+
+Within first ~250–300 words:
+- What it is + price band
+- Booking necessity
+- Dietary constraints baseline
+- Best use case (sunset, quick bite, special occasion)
+
+**Implementation requirement:**
+If current content buries these essentials, reorder and rewrite so these appear early—without breaking audit requirements.
+
+---
+
+## Batch Workflow
+
+### 0) Ask for guide(s) to process (mandatory)
+
+If the user has not clearly provided:
+- a single guide, or
+- a list/batch definition,
+
+you must ask:
+
+> "Which guide or group of guides should we cover?"
+
+Acceptable answers include:
+- 1 URL
+- list of URLs/slugs/guideKeys
+- "all under /experiences"
+- "all beach guides"
+- "these 10 slugs…"
+
+### 1) Resolve batch → ordered guideKey list
+
+For each input item:
+- If URL/slug: map to guideKey via manifest
+- Validate EN file exists for each guideKey
+- Produce a deterministic processing order:
+  - Prefer user-specified order, else:
+  - category grouping (directions first if travel-critical), then alphabetical.
+
+**Stop-the-line rule:**
+If any guide cannot be resolved, report which item failed and ask user how to proceed (skip, fix input, or stop).
+
+### 2) Baseline validation pass for the entire batch (mandatory)
+
+Before modifying any guide in the batch:
+
+For every target file you may touch:
+- EN guide JSON for each guideKey
+- Locale JSONs for each guideKey (all locales you intend to update)
+- guide-manifest-overrides.json
+
+Validate:
+- JSON parses cleanly
+- Token inventory can be computed
+
+If any file is corrupted:
+- Replace corrupted content with known-good content immediately.
+- If you cannot restore promptly, stop and ask user what they want to do (e.g., skip affected guide/locale, or stop batch).
+- No proceeding with SEO fixes while corruption exists.
+
+### 3) Per-guide EN audit + iterative fix loop (one guide at a time)
+
+For each guideKey in the batch:
+
+**Run initial audit:**
 ```bash
 pnpm --filter brikette tsx scripts/audit-guide-seo.ts {guideKey}
 ```
 
-Read the audit results from `guide-manifest-overrides.json`.
+Read audit output from overrides JSON
 
-### 3. Fix All Issues (Iterative)
+**Apply EN fixes iteratively:**
+- Use structured JSON editing (load → modify → stringify)
+- After each EN write:
+  - snapshot exists
+  - validate parse + token integrity
+- Enforce readership-first ordering gates
+- Re-run audit after each iteration until clean:
+  - score ≥ 9.0
+  - zero critical issues
+  - zero improvements
 
-For each issue or improvement in the audit results:
+**Stop-the-line:**
+- If any write fails validation, restore snapshot immediately and redo safely.
+- If you cannot produce a timely clean write, stop and ask the user what to do.
 
-**Critical Issues** (score < 7.0):
-- Missing meta tags → Add to `seo` object
-- Content too short → Add authoritative content sections
-- Missing FAQs → Add relevant Q&A
-- No internal links → Add contextual links to related guides
+### 4) Per-guide localization to all locales (parallel execution via Task tool, drift-aware)
 
-**Improvements** (score 7.0-8.9):
-- Meta description length → Adjust to 140-160 chars
-- Image count → Add relevant images (research if needed)
-- Heading structure → Add/reorganize sections
-- Content depth → Expand with practical details
+After EN is clean for that guide:
 
-**Content Research Guidelines:**
-- Use web search to verify facts (opening hours, costs, distances, transport)
-- Find authoritative image sources (official tourism, Creative Commons)
-- Write original prose - never copy protected text
-- Cite specific facts: "€3.50 entry", "15-minute walk", "open 9am-6pm"
+**Required: Spawn parallel translation subagents**
 
-After each fix:
-1. Save the updated EN content
-2. Re-run the audit script
-3. Read the new results
-4. Continue until `score >= 9.0` and both `criticalIssues` and `improvements` arrays are empty
+Use the Task tool to spawn multiple parallel subagents for concurrent locale translation. **Never translate sequentially.**
 
-### 4. Propagate to All Locales
+Target locales: [ar, da, de, es, fr, hi, hu, it, ja, ko, no, pl, pt, ru, sv, vi, zh] (17 total)
 
-Once the EN content is clean, update all other locale files:
+**Recommended parallelization strategy:**
+- Spawn 4-6 subagents in a single Task tool call (one message with multiple tool uses)
+- Each subagent handles 3-4 locales
+- Example grouping:
+  - Agent 1: ar, da, de, es
+  - Agent 2: fr, hi, hu, it
+  - Agent 3: ja, ko, no, pl
+  - Agent 4: pt, ru, sv, vi, zh
 
-**Localization Rules:**
+**Per-locale translation workflow (each subagent executes these steps):**
 
-1. **Preserve Exactly (Never Translate):**
-   - `%LINK:target|anchor%` → Only translate `anchor`, keep `target` identical
-   - `%IMAGE:path%` → Keep unchanged
-   - `%COMPONENT:name%` → Keep unchanged
-   - URLs, paths, IDs, technical tokens
+1. Parse existing locale file (baseline validate)
+   - If parse fails: restore known-good content immediately; if not possible promptly, stop and ask user.
 
-2. **Translate Naturally:**
-   - All user-facing strings (titles, body text, FAQs)
-   - Section headings
-   - Meta titles and descriptions
-   - Image alt text (if present)
+2. Drift check (required):
+   - Compare locale's structure and coverage vs EN:
+     - missing/extra sections
+     - ordering differences
+     - FAQ mismatches
+     - stale content elsewhere
 
-3. **Match Structure:**
-   - Same number of intro paragraphs
-   - Same number of sections (same order)
-   - Same number of FAQs
-   - Same gallery structure
+3. Update locale comprehensively to match EN meaning and structure:
+   - preserve tokens exactly
+   - keep link targets unchanged (translate anchor only)
 
-4. **Locale-Specific Adaptation:**
-   - Maintain cultural appropriateness
-   - Preserve original meaning while adapting phrasing
-   - Keep the same level of formality as existing locale content
+4. Write locale file → validate immediately:
+   - JSON parse
+   - token preservation
+   - structure parity vs EN
 
-**Process:**
-```typescript
-for each locale in [ar, da, de, es, fr, hi, hu, it, ja, ko, no, pl, pt, ru, sv, vi, zh]:
-  - Read existing locale content
-  - Update strings to match EN semantics
-  - Preserve all tokens exactly
-  - Write updated locale content
-```
+5. If validation fails:
+   - restore snapshot immediately
+   - redo localization safely
+   - if still not possible promptly, stop and ask user what they want to do
 
-### 5. Report Completion
+**After all parallel subagents complete:**
+- Verify all 17 locales were successfully updated
+- Report any locale-specific issues encountered
+- Confirm validation passed for all locales
 
-Summarize:
-- Initial score vs final score
-- Number of audit iterations required
-- Issues fixed (categorized)
-- Number of locales updated
-- Link to view the guide
+### 5) Completion report (batch-aware)
 
----
+At end, report:
 
-## Example Workflow
+**For the batch:**
+- Guides processed (count + list)
+- Any guides skipped (with reasons)
 
-### Input
-```
-Guide URL: http://localhost:3012/en/experiences/gavitella-beach-guide
-Readership: Day-trippers from Positano, families with kids
-```
+**Aggregate:**
+- initial vs final scores (per guide)
+- audit iterations per guide
+- locales updated per guide (confirm all 17 locales updated via parallel subagents)
+- parallel translation efficiency (number of subagents spawned, total translation time)
+- any locale exceptions (must be user-approved)
 
-### Step 1: Resolve
-- Slug: `gavitella-beach-guide`
-- Guide key: `gavitellaBeachGuide`
-
-### Step 2: Initial Audit
-```bash
-pnpm --filter brikette tsx scripts/audit-guide-seo.ts gavitellaBeachGuide
-```
-
-**Results:**
-- Score: 7.2/10
-- Critical issues: 0
-- Improvements: 5
-
-### Step 3: Fix Issues (Iteration 1)
-
-**Issue 1:** Meta description too short (128 chars, target 140-160)
-- Current: "Everything you need to know about Gavitella Beach in Positano"
-- Fixed: "Complete guide to Gavitella Beach in Positano: how to get there, what to expect, facilities, best time to visit, and family-friendly tips"
-
-**Issue 2:** Add 2 more FAQs (currently 6, target 8+)
-- Added: "Is Gavitella Beach suitable for children?"
-- Added: "Are there restaurants near Gavitella Beach?"
-
-**Issue 3:** Add 1 more internal link (currently 4, target 5+)
-- Added link to "positanoBeaches" in intro
-
-**Issue 4:** Content below optimal (1650 words, target 2000+)
-- Added "Facilities" section (150 words)
-- Expanded "Best Time to Visit" section (200 words)
-
-**Issue 5:** No year references for freshness
-- Added "Updated for 2026 season" to intro
-- Added seasonal pricing details
-
-Re-run audit...
-
-### Step 3: Fix Issues (Iteration 2)
-
-**Results:**
-- Score: 9.1/10
-- Critical issues: 0
-- Improvements: 0
-
-✅ Audit clean!
-
-### Step 4: Localization
-
-Updated 15 locale files:
-- `ar/guides/content/gavitellaBeachGuide.json`
-- `da/guides/content/gavitellaBeachGuide.json`
-- ... (13 more)
-
-### Step 5: Report
-
-```
-✅ SEO Audit Complete: gavitellaBeachGuide
-
-Initial Score: 7.2/10
-Final Score: 9.1/10
-
-Iterations: 2
-Issues Fixed: 5
-- Meta description extended to 154 chars
-- Added 2 FAQs (now 8 total)
-- Added 1 internal link (now 5 total)
-- Expanded content by 350 words (now 2000 total)
-- Added 2026 season references
-
-Locales Updated: 15
-- All non-EN locales now reflect updated content
-
-View guide: http://localhost:3012/en/experiences/gavitella-beach-guide
-```
+**For each guide:**
+- Initial score → final score
+- Key issue categories fixed
+- Reader-first improvements made (what the first ~300 words now cover)
+- Confirmation that:
+  - every write was validated immediately
+  - any corruption was handled only by replacement with known-good content
+  - all 17 non-EN locales were successfully updated via parallel subagents
+  - no translation work was deferred or suggested for external handling
 
 ---
 
-## Quality Gates
+## Localization Rules (enforced by validation)
 
-Before marking complete:
+**Preserve Exactly (Never Translate):**
+- `%LINK:target|anchor%` → translate anchor only; preserve target exactly
+- `%IMAGE:path%` unchanged
+- `%COMPONENT:name%` unchanged
+- URLs, paths, IDs, technical tokens
+
+**Translate Naturally:**
+- Titles, body, FAQs
+- Section headings
+- Meta titles/descriptions
+- Image alt text (if present)
+
+**Match Structure:**
+- Same section order + counts
+- Same number of intro paragraphs
+- Same FAQ count and ordering
+- Same gallery structure
+
+**Locale-appropriate phrasing:**
+- Maintain existing formality level unless clearly inconsistent or incorrect
+
+---
+
+## Quality Gates (must pass before "complete")
+
+**Per guide:**
 1. Final audit score ≥ 9.0
 2. Zero critical issues
 3. Zero improvements
-4. All 15 non-EN locales updated
-5. All tokens preserved correctly in locales
-6. Guide renders without errors in dev server
+4. EN JSON valid + tokens preserved
+5. Overrides JSON valid
+
+**Per locale:**
+6. Locale JSON valid
+7. Tokens preserved correctly
+8. Structure parity vs EN
+9. Drift addressed (not just "changed EN strings")
+
+**Batch-level:**
+10. No unresolved corruption remains anywhere in the touched files
+11. Any skipped guide/locale is explicitly documented and user-approved
 
 ---
 
-## Error Handling
+## Error Handling (replacement-only)
 
-**Guide not found:**
-```
-Error: Guide not found
-- Check guide manifest for valid guideKey
-- Verify slug matches manifest entry
-```
+**JSON corruption detected**
+- Restore file from known-good snapshot (or git restore) immediately.
+- Re-apply intended change safely via structured JSON editing.
+- If cannot restore promptly → stop and ask user what they want to do.
 
-**Audit script fails:**
-```
-Error: Audit script execution failed
-- Check script exists at apps/brikette/scripts/audit-guide-seo.ts
-- Verify pnpm workspace dependencies installed
-- Check content JSON is valid
-```
-
-**Localization conflicts:**
-```
-Error: Locale file update failed
-- Verify locale file exists and is valid JSON
-- Check for syntax errors after update
-- Restore from backup if needed
-```
+**Audit script fails**
+- Validate guide-manifest-overrides.json and the target EN guide JSON parse cleanly; restore if corrupted.
+- Verify script path exists and dependencies installed.
+- Re-run.
 
 ---
 
-## Notes
+## Practical implementation note (to avoid non-EN corruption)
 
-- This skill combines **audit + fix + localize** in a single invocation
-- The audit script is the source of truth for scoring logic
-- Fixing must be iterative until the audit is completely clean
-- Localization preserves all technical tokens while translating meaning
-- Web research is encouraged for authoritative content additions
+Edits should be applied by:
+1. loading JSON,
+2. modifying only string fields,
+3. serializing with `JSON.stringify(obj, null, 2)` + newline.
+
+Avoid manual text patching in non-EN locales. This reduces risk of invalid quotes, delimiter issues, and encoding damage.

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'apps/product-pipeline/**'
       - 'packages/next-config/**'
@@ -35,4 +36,7 @@ jobs:
       deploy-cmd: >
         pnpm exec wrangler pages deploy apps/product-pipeline/out --project-name product-pipeline --branch ${{ github.ref_name }} --config apps/product-pipeline/wrangler.toml
       project-name: "product-pipeline"
+      environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.product-pipeline.pages.dev' || 'https://product-pipeline.pages.dev' }}"
+      healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

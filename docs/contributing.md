@@ -1,11 +1,13 @@
+---
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-31
+---
 
 # Contributing
 
-Contributions are welcome! Please open an issue or pull request with improvements.
+This guide defines the contribution workflow for the base-shop monorepo. Follow these procedures to ensure consistent code quality.
 
 ## Formatting
 
@@ -17,7 +19,13 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Create branches from `main` and name them descriptively (e.g., `feat/login-form` or `fix/cart-redirect`). Push your branch and open a pull request against `main`.
+Base-Shop uses a `dev` → `staging` → `main` release pipeline:
+
+- Do not commit directly to `main` or `staging`.
+- Day-to-day work lands on `dev` (either directly, or via feature branches that target `dev`).
+- Shipping is automated via PRs:
+  - Ship `dev` → `staging`: `scripts/git/ship-to-staging.sh`
+  - Promote `staging` → `main`: `scripts/git/promote-to-main.sh`
 
 ## Linting and Tests
 

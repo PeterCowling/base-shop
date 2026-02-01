@@ -1,0 +1,61 @@
+name: Auto-close Failing Zero-Touch PRs
+
+on:
+  workflow_run:
+    workflows:
+      - Merge Gate
+    types:
+      - completed
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  close-on-failure:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' || github.event.workflow_run.conclusion == 'timed_out' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const label = "zero-touch";
+            const keepOpenLabel = "keep-open";
+            const { workflow_run } = context.payload;
+            if (!workflow_run.pull_requests || workflow_run.pull_requests.length === 0) {
+              return;
+            }
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const headSha = workflow_run.head_sha;
+            for (const prInfo of workflow_run.pull_requests) {
+              const number = prInfo.number;
+              const { data: pr } = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: number,
+              });
+              if (pr.state !== "open") {
+                continue;
+              }
+              if (pr.head.sha !== headSha) {
+                continue;
+              }
+              const labels = pr.labels.map((item) => item.name);
+              if (!labels.includes(label) || labels.includes(keepOpenLabel)) {
+                continue;
+              }
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: `Auto-closed: workflow **${workflow_run.name}** failed on ${headSha.slice(0, 7)}.`,
+              });
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: number,
+                state: "closed",
+              });
+            }

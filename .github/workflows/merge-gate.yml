@@ -1,0 +1,352 @@
+name: Merge Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+  checks: read
+
+concurrency:
+  group: merge-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect required workflows
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            github_config:
+              - ".github/workflows/**"
+              - ".github/actions/**"
+              - ".github/dependabot.yml"
+              - ".github/CODEOWNERS"
+
+            # Core Platform CI is skipped when changes are ONLY in apps/cms/** or apps/skylar/**,
+            # or those specific workflow files (see `.github/workflows/ci.yml` paths-ignore).
+            core:
+              - "**/*"
+              - "!apps/cms/**"
+              - "!apps/skylar/**"
+              - "!.github/workflows/cms.yml"
+              - "!.github/workflows/skylar.yml"
+
+            cms_deploy:
+              - "apps/cms/**"
+              - "packages/config/**"
+              - "packages/configurator/**"
+              - "packages/date-utils/**"
+              - "packages/email/**"
+              - "packages/email-templates/**"
+              - "packages/i18n/**"
+              - "packages/next-config/**"
+              - "packages/plugins/sanity/**"
+              - "packages/shared-utils/**"
+              - "packages/theme/**"
+              - "packages/telemetry/**"
+              - "packages/zod-utils/**"
+              - "packages/themes/**"
+              - "packages/ui/**"
+              - "packages/platform-core/**"
+              - "packages/lib/**"
+              - "packages/types/**"
+              - "packages/tailwind-config/**"
+              - "packages/design-tokens/**"
+              - ".github/workflows/cms.yml"
+
+            cms_e2e:
+              - "apps/cms/**"
+              - "packages/config/**"
+              - "packages/configurator/**"
+              - "packages/date-utils/**"
+              - "packages/email/**"
+              - "packages/email-templates/**"
+              - "packages/i18n/**"
+              - "packages/next-config/**"
+              - "packages/plugins/sanity/**"
+              - "packages/shared-utils/**"
+              - "packages/theme/**"
+              - "packages/telemetry/**"
+              - "packages/zod-utils/**"
+              - "packages/themes/**"
+              - "packages/ui/**"
+              - "packages/platform-core/**"
+              - "packages/lib/**"
+              - "packages/types/**"
+              - "packages/tailwind-config/**"
+              - "packages/design-tokens/**"
+              - ".github/workflows/cypress.yml"
+
+            skylar:
+              - "apps/skylar/**"
+              - "packages/config/**"
+              - "packages/i18n/**"
+              - "packages/next-config/**"
+              - "packages/tailwind-config/**"
+              - "packages/ui/**"
+              - "packages/platform-core/**"
+              - "packages/shared-utils/**"
+              - "packages/themes/**"
+              - "packages/design-tokens/**"
+              - ".github/workflows/skylar.yml"
+
+            brikette:
+              - "apps/brikette/**"
+              - "packages/design-system/**"
+              - "packages/design-tokens/**"
+              - "packages/guides-core/**"
+              - "packages/next-config/**"
+              - "packages/platform-core/**"
+              - "packages/telemetry/**"
+              - "packages/ui/**"
+              - ".github/workflows/brikette.yml"
+              - ".github/workflows/reusable-app.yml"
+
+            prime:
+              - "apps/prime/**"
+              - "packages/design-system/**"
+              - "packages/design-tokens/**"
+              - "packages/next-config/**"
+              - "packages/tailwind-config/**"
+              - "packages/themes/**"
+              - "packages/ui/**"
+              - ".github/workflows/prime.yml"
+
+            product_pipeline:
+              - "apps/product-pipeline/**"
+              - "packages/next-config/**"
+              - "packages/tailwind-config/**"
+              - "packages/design-tokens/**"
+              - "packages/themes/**"
+              - "packages/pipeline-engine/**"
+              - "packages/ui/**"
+              - ".github/workflows/product-pipeline.yml"
+
+            storybook:
+              - "apps/storybook/**"
+              - "apps/cms/**"
+              - "apps/cover-me-pretty/**"
+              - "packages/ui/**"
+              - "packages/design-tokens/**"
+              - "packages/tailwind-config/**"
+              - "packages/themes/**"
+              - "packages/theme/**"
+              - "packages/i18n/**"
+              - "packages/shared-utils/**"
+              - "packages/config/**"
+              - "packages/types/**"
+              - "docs/storybook.md"
+              - ".github/workflows/storybook.yml"
+
+            consent_analytics:
+              - "apps/cover-me-pretty/src/app/api/analytics/**"
+              - "apps/cover-me-pretty/src/app/api/leads/**"
+              - "packages/platform-core/src/analytics/**"
+              - "packages/platform-core/src/contexts/CartContext.tsx"
+              - ".github/workflows/consent-analytics.yml"
+
+            lhci:
+              - "apps/cover-me-pretty/**"
+              - "apps/skylar/**"
+              - ".lighthouseci/**"
+              - "lighthouserc*.json"
+              - ".github/workflows/ci-lighthouse.yml"
+
+      - name: Lint GitHub Actions workflows
+        if: ${{ steps.filter.outputs.github_config == 'true' }}
+        uses: rhysd/actionlint@v1
+
+      - name: Wait for required workflows
+        if: ${{ github.event_name != 'push' }}
+        uses: actions/github-script@v7
+        env:
+          NEED_CORE: ${{ steps.filter.outputs.core }}
+          NEED_CMS_DEPLOY: ${{ steps.filter.outputs.cms_deploy }}
+          NEED_CMS_E2E: ${{ steps.filter.outputs.cms_e2e }}
+          NEED_SKYLAR: ${{ steps.filter.outputs.skylar }}
+          NEED_BRIKETTE: ${{ steps.filter.outputs.brikette }}
+          NEED_PRIME: ${{ steps.filter.outputs.prime }}
+          NEED_PRODUCT_PIPELINE: ${{ steps.filter.outputs.product_pipeline }}
+          NEED_STORYBOOK: ${{ steps.filter.outputs.storybook }}
+          NEED_CONSENT_ANALYTICS: ${{ steps.filter.outputs.consent_analytics }}
+          NEED_LHCI: ${{ steps.filter.outputs.lhci }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const sha =
+              context.eventName === "pull_request"
+                ? context.payload.pull_request.head.sha
+                : context.sha;
+
+            const need = {
+              core: process.env.NEED_CORE === "true",
+              cms_deploy: process.env.NEED_CMS_DEPLOY === "true",
+              cms_e2e: process.env.NEED_CMS_E2E === "true",
+              skylar: process.env.NEED_SKYLAR === "true",
+              brikette: process.env.NEED_BRIKETTE === "true",
+              prime: process.env.NEED_PRIME === "true",
+              product_pipeline: process.env.NEED_PRODUCT_PIPELINE === "true",
+              storybook: process.env.NEED_STORYBOOK === "true",
+              consent_analytics: process.env.NEED_CONSENT_ANALYTICS === "true",
+              lhci: process.env.NEED_LHCI === "true",
+            };
+
+            const requiredWorkflows = [];
+            if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
+            if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });
+            if (need.cms_deploy) requiredWorkflows.push({ id: "cms.yml", name: "Deploy CMS" });
+            if (need.skylar) requiredWorkflows.push({ id: "skylar.yml", name: "Deploy Skylar" });
+            if (need.brikette) requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
+            if (need.prime) requiredWorkflows.push({ id: "prime.yml", name: "Deploy Prime" });
+            if (need.product_pipeline) requiredWorkflows.push({ id: "product-pipeline.yml", name: "Deploy Product Pipeline" });
+            if (need.storybook) requiredWorkflows.push({ id: "storybook.yml", name: "Storybook CI" });
+            if (need.consent_analytics) requiredWorkflows.push({ id: "consent-analytics.yml", name: "Consent & Analytics Checks" });
+
+            // LHCI only runs on PRs when paths changed OR label `run-lhci` is present.
+            // Require it only in those cases.
+            if (context.eventName === "pull_request") {
+              const labels = (context.payload.pull_request.labels || []).map((l) => l.name);
+              const hasRunLabel = labels.includes("run-lhci");
+              if (need.lhci || hasRunLabel) {
+                requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+              }
+            } else if (context.eventName === "push" && context.ref === "refs/heads/main") {
+              // On main, LHCI always runs (but not necessarily required for merges).
+              // Don't block the gate on it for push runs.
+            }
+
+            if (requiredWorkflows.length === 0) {
+              core.notice(`No required workflows for this change set. sha=${sha.slice(0, 7)}`);
+              return;
+            }
+
+            core.notice(`Merge Gate watching ${requiredWorkflows.length} workflow(s) for sha=${sha.slice(0, 7)}:`);
+            for (const w of requiredWorkflows) core.notice(`- ${w.name} (${w.id})`);
+
+            const maxMinutes = 55;
+            const pollSeconds = 30;
+            const deadline = Date.now() + maxMinutes * 60_000;
+
+            async function resolveWorkflowIds(workflows) {
+              const resolved = [];
+              for (const wf of workflows) {
+                const { data } = await github.rest.actions.getWorkflow({
+                  owner,
+                  repo,
+                  workflow_id: wf.id,
+                });
+                resolved.push({ ...wf, workflow_numeric_id: data.id });
+              }
+              return resolved;
+            }
+
+            async function listRunsForSha() {
+              const params = {
+                owner,
+                repo,
+                head_sha: sha,
+                per_page: 100,
+              };
+
+              if (context.eventName === "pull_request") {
+                params.event = "pull_request";
+                params.branch = context.payload.pull_request.head.ref;
+              }
+
+              const { data } = await github.rest.actions.listWorkflowRunsForRepo(params);
+              return data.workflow_runs ?? [];
+            }
+
+            function indexRunsByWorkflowId(runs) {
+              const byWorkflowId = new Map();
+              for (const run of runs) {
+                if (!run?.workflow_id) continue;
+                const existing = byWorkflowId.get(run.workflow_id);
+                if (!existing) {
+                  byWorkflowId.set(run.workflow_id, run);
+                  continue;
+                }
+
+                if (new Date(run.created_at).getTime() > new Date(existing.created_at).getTime()) {
+                  byWorkflowId.set(run.workflow_id, run);
+                }
+              }
+
+              return byWorkflowId;
+            }
+
+            function isTerminalFailure(conclusion) {
+              return ["failure", "timed_out", "cancelled", "action_required"].includes(conclusion);
+            }
+
+            const requiredWorkflowsWithIds = await resolveWorkflowIds(requiredWorkflows);
+
+            while (true) {
+              const runs = await listRunsForSha();
+              const runsByWorkflowId = indexRunsByWorkflowId(runs);
+
+              const statuses = [];
+              let allDone = true;
+              let failed = null;
+
+              for (const wf of requiredWorkflowsWithIds) {
+                const run = runsByWorkflowId.get(wf.workflow_numeric_id) ?? null;
+                if (!run) {
+                  statuses.push(`${wf.name}: pending (no run yet)`);
+                  allDone = false;
+                  continue;
+                }
+
+                if (run.status !== "completed") {
+                  statuses.push(`${wf.name}: ${run.status}`);
+                  allDone = false;
+                  continue;
+                }
+
+                const concl = run.conclusion || "unknown";
+                statuses.push(`${wf.name}: completed (${concl})`);
+                if (isTerminalFailure(concl)) {
+                  failed = { wf, run };
+                } else if (concl !== "success") {
+                  // Treat non-success/non-failure as not mergeable.
+                  failed = { wf, run };
+                }
+              }
+
+              core.notice(statuses.join("\n"));
+
+              if (failed) {
+                core.setFailed(
+                  `Merge Gate failed: ${failed.wf.name} concluded '${failed.run.conclusion}'. See: ${failed.run.html_url}`
+                );
+                return;
+              }
+
+              if (allDone) {
+                core.notice("Merge Gate passed: all required workflows succeeded.");
+                return;
+              }
+
+              if (Date.now() > deadline) {
+                core.setFailed("Merge Gate timed out waiting for required workflows to complete.");
+                return;
+              }
+
+              await new Promise((r) => setTimeout(r, pollSeconds * 1000));
+            }

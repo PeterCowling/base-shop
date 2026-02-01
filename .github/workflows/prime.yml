@@ -1,0 +1,45 @@
+name: Deploy Prime
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - 'apps/prime/**'
+      - 'packages/design-system/**'
+      - 'packages/design-tokens/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/themes/**'
+      - 'packages/ui/**'
+      - '.github/workflows/prime.yml'
+  pull_request:
+    paths:
+      - 'apps/prime/**'
+      - 'packages/design-system/**'
+      - 'packages/design-tokens/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/themes/**'
+      - 'packages/ui/**'
+      - '.github/workflows/prime.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/prime"
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      artifact-path: apps/prime/out
+      deploy-cmd: >
+        pnpm exec wrangler pages deploy apps/prime/out
+        --project-name prime
+        --branch ${{ github.ref_name }}
+        --functions apps/prime/functions
+      project-name: "prime"
+      environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime.pages.dev' || 'https://prime.pages.dev' }}"
+      healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
+    secrets: inherit

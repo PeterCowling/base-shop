@@ -1,4 +1,4 @@
-name: Root CI
+name: Core Platform CI
 
 on:
   push:
@@ -14,25 +14,26 @@ on:
       - '.github/workflows/skylar.yml'
       - '.github/workflows/cms.yml'
 
+concurrency:
+  group: core-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  verify:
+  changes:
+    name: Detect changes
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      shop: ${{ steps.filter.outputs.shop }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/setup-repo
       - name: Detect E2E-impacting changes
-        id: changes
+        id: filter
         uses: dorny/paths-filter@v3
         with:
           filters: |
-            dashboard:
-              - 'apps/dashboard/**'
-              - 'packages/ui/**'
-              - 'packages/design-tokens/**'
-              - 'packages/tailwind-config/**'
-              - 'packages/theme/**'
             shop:
               - 'apps/cover-me-pretty/**'
               - 'apps/cms/**'
@@ -41,8 +42,57 @@ jobs:
               - 'packages/config/**'
               - 'packages/i18n/**'
               - 'packages/shared-utils/**'
-      - name: Build ESLint plugin
-        run: pnpm --filter @acme/eslint-plugin-ds build
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Audit dependencies
+        run: |
+          echo "::group::Running pnpm audit"
+          pnpm audit --audit-level=high
+          echo "::endgroup::"
+
+  dep-alignment:
+    name: Dependency Alignment
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check dependency version alignment
+        run: node scripts/check-dep-alignment.mjs
+
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Check dependency licenses
+        run: node scripts/check-licenses.mjs
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Restore ESLint report cache
         uses: actions/cache@v4
         with:
@@ -63,14 +113,50 @@ jobs:
         run: pnpm lint
       - name: Lint (JSON report)
         run: pnpm run lint:json || true
+      - name: Lint (raw Tailwind color baseline)
+        run: pnpm run lint:no-raw-tailwind-color:check
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint
         run: pnpm run docs:lint
       - name: Plans lint
         run: pnpm run plans:lint
+      - name: Agent manifest validation
+        run: node scripts/validate-agent-manifest.js
+      - name: Token validation
+        run: pnpm validate:tokens
+      - name: Token drift report
+        run: pnpm tokens:drift
+      - name: Token drift check
+        run: pnpm tokens:drift:check
+      - name: Token contrast validation
+        run: pnpm tokens:contrast:check
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Typecheck
         run: pnpm typecheck
+
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Runtime contract manifest tests
         run: |
           pnpm --filter @acme/template-app test -- --testPathPattern runtimeContractManifest.test.ts
@@ -80,21 +166,100 @@ jobs:
       - uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info
+
+  storybook-visual:
+    name: Storybook Visual Regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint, typecheck]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Install Playwright browser
+        run: pnpm exec playwright install chromium
+      - name: Visual regression (themes/modes)
+        run: pnpm run storybook:visual
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint, typecheck, test, storybook-visual]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build
         run: pnpm build
-      - name: E2E (dashboard subset)
-        if: steps.changes.outputs.dashboard == 'true'
-        run: pnpm e2e:dashboard
+
+  e2e:
+    name: E2E (shop subset)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [changes, build]
+    if: needs.changes.outputs.shop == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: E2E (shop subset)
-        if: steps.changes.outputs.shop == 'true'
         run: pnpm e2e:shop
 
   release:
-    needs: verify
+    name: Release to staging
+    needs: [build, e2e]
+    # Run release even if e2e was skipped (no shop changes)
+    if: always() && github.ref_name == 'main' && needs.build.result == 'success' && (needs.e2e.result == 'success' || needs.e2e.result == 'skipped')
     runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - run: pnpm exec next-on-pages deploy \
-               --project-name base-shop \
-               --branch ${{ github.ref_name }}
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      # ADMIN-04: Decrypt SOPS secrets before build
+      - name: Decrypt secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
+          require-key: true
+          require-any: true
+          environment: production
+
+      # ADMIN-05: Validate environment before deploy
+      - name: Validate deploy environment
+        run: |
+          chmod +x scripts/validate-deploy-env.sh
+          ./scripts/validate-deploy-env.sh
+        shell: bash
+
+      - name: Build
+        run: pnpm build
+      - name: Deploy to staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec next-on-pages deploy --project-name base-shop --branch staging
+      - name: Post-Deploy Health Check
+        if: success()
+        run: |
+          chmod +x scripts/post-deploy-health-check.sh
+          ./scripts/post-deploy-health-check.sh base-shop --staging
+        shell: bash
+        env:
+          EXTRA_ROUTES: "/api/health"
+          MAX_RETRIES: "10"
+          RETRY_DELAY: "6"

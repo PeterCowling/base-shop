@@ -65,8 +65,14 @@ function listFiles() {
     "packages",
     "src",
   ]);
-  if (rg.status !== 0) {
+  // rg returns exit code 1 when no matches are found, which is not an error
+  // Exit code 2+ indicates an actual error
+  if (rg.status !== null && rg.status > 1) {
     throw new Error(`Failed to list files with rg: ${rg.stderr || rg.stdout}`);
+  }
+  // If rg was killed by a signal (status is null) or returned an error status
+  if (rg.status === null && rg.signal) {
+    throw new Error(`rg process killed by signal: ${rg.signal}`);
   }
   return rg.stdout
     .split("\n")

@@ -5,7 +5,7 @@ try {
   // tailwindcss is not a direct dep of this package; skip if unavailable
   resolveConfig = require("tailwindcss/resolveConfig");
 } catch {
-  console.warn("tailwindcss/resolveConfig not found, skipping integration test");
+  // Silently skip - using it.skip below when resolveConfig is undefined
 }
 
 const itFn = resolveConfig ? it : it.skip;

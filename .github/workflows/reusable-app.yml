@@ -75,7 +75,7 @@ jobs:
         shell: bash
 
       - name: Typecheck
-        run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}
+        run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}...
         shell: bash
 
       - name: Test

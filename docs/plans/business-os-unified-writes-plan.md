@@ -236,7 +236,7 @@ The following skill changes impact this plan:
 | TASK-02a | IMPLEMENT | Create `/api/agent/ideas` endpoint (GET/POST/PATCH) | 85% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-02b | IMPLEMENT | Create `/api/agent/stage-docs` endpoint (GET/POST/PATCH) | 82% | M | Complete (2026-02-02) | TASK-01 |
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Complete (2026-02-02) | TASK-01 |
-| TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Pending | - |
+| TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Complete (2026-02-02) | - |
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Pending | TASK-04 |
 | TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Pending | - |
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Pending | TASK-05 |
@@ -713,6 +713,26 @@ The following skill changes impact this plan:
   - None (internal API)
 - **Notes / references:**
   - Cursor contract: Fact-find section "Cursor contract (Phase 1)"
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 49d9746cb9
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 1
+  - Initial test run: FAIL (expected — endpoint not implemented)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Tests validated cursor + filter behavior
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=board-changes` — PASS (5 tests)
+  - Ran: `pnpm --filter @apps/business-os typecheck` — PASS
+  - Ran: `pnpm exec eslint apps/business-os/src/app/api/board-changes/route.ts apps/business-os/src/app/api/board-changes/__tests__/route.test.ts` — PASS
+- **Documentation updated:** None
+- **Implementation notes:** Added `/api/board-changes` endpoint with full vs delta responses, stale cursor handling, business filters, and audit-log-based cursor changes.
+
 
 ### TASK-04b: Wire UI to `/api/board-changes` endpoint
 

@@ -198,6 +198,31 @@ describe("gmail label state machine", () => {
     expect(messageStore["msg-3"].labelIds).not.toContain(awaitingAgreement.id);
   });
 
+  it("moves Awaiting-Agreement to prepayment chase 1", async () => {
+    const awaitingAgreement = { id: "label-await-2", name: "Brikette/Inbox/Awaiting-Agreement" };
+    const chase1 = { id: "label-chase-1a", name: "Brikette/Workflow/Prepayment-Chase-1" };
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [awaitingAgreement, chase1],
+      messages: {
+        "msg-5": {
+          id: "msg-5",
+          threadId: "thread-5",
+          labelIds: [awaitingAgreement.id],
+          internalDate: String(Date.now()),
+          payload: { headers: [] },
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await handleGmailTool("gmail_mark_processed", { emailId: "msg-5", action: "prepayment_chase_1" });
+
+    expect(messageStore["msg-5"].labelIds).toContain(chase1.id);
+    expect(messageStore["msg-5"].labelIds).not.toContain(awaitingAgreement.id);
+  });
+
   it("creates missing workflow labels and applies them", async () => {
     const { gmail, labelsStore, messageStore } = createGmailStub({
       labels: [],

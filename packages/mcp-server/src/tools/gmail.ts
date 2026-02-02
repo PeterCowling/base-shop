@@ -18,6 +18,11 @@ import {
   formatError,
   jsonResult,
 } from "../utils/validation.js";
+import {
+  type PrepaymentProvider,
+  prepaymentStepFromAction,
+  resolvePrepaymentWorkflow,
+} from "../utils/workflow-triggers.js";
 
 // =============================================================================
 // Constants
@@ -106,7 +111,18 @@ const markProcessedSchema = z.object({
     "prepayment_chase_2",
     "prepayment_chase_3",
   ]),
+  prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
 });
+
+type PrepaymentAction = "prepayment_chase_1" | "prepayment_chase_2" | "prepayment_chase_3";
+
+function isPrepaymentAction(action: string): action is PrepaymentAction {
+  return (
+    action === "prepayment_chase_1" ||
+    action === "prepayment_chase_2" ||
+    action === "prepayment_chase_3"
+  );
+}
 
 // =============================================================================
 // Tool Definitions
@@ -168,6 +184,11 @@ export const gmailTools = [
       type: "object",
       properties: {
         emailId: { type: "string", description: "Gmail message ID" },
+        prepaymentProvider: {
+          type: "string",
+          enum: ["octorate", "hostelworld"],
+          description: "Optional prepayment provider for chase templates.",
+        },
         action: {
           type: "string",
           enum: [
@@ -711,7 +732,7 @@ async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult>> {
-  const { emailId, action } = markProcessedSchema.parse(args);
+  const { emailId, action, prepaymentProvider } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
   const needsProcessingId = labelMap.get(LABELS.NEEDS_PROCESSING);
@@ -849,10 +870,20 @@ async function handleMarkProcessed(
   });
   processingLocks.delete(emailId);
 
+  const workflow = isPrepaymentAction(action)
+    ? {
+        prepayment: resolvePrepaymentWorkflow({
+          step: prepaymentStepFromAction(action),
+          provider: prepaymentProvider as PrepaymentProvider | undefined,
+        }),
+      }
+    : undefined;
+
   return jsonResult({
     success: true,
     message: `Email marked as ${action}`,
     action,
+    workflow,
   });
 }
 

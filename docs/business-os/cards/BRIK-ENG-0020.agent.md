@@ -1,7 +1,7 @@
 ---
 Type: Card
 Status: Active
-Lane: Inbox
+Lane: In progress
 Priority: P2
 Owner: Pete
 ID: BRIK-ENG-0020
@@ -9,14 +9,15 @@ Title: Email Autodraft Response System
 Business: BRIK
 Tags: [email, automation, AI, customer-service]
 Created: 2026-02-01
-Updated: 2026-02-01
+Updated: 2026-02-02
+Last-Progress: 2026-02-02
 ---
 
 ## Card: BRIK-ENG-0020
 
 **Linked Idea:** `docs/business-os/ideas/worked/BRIK-OPP-0003.user.md`
 
-**Current Lane:** Inbox
+**Current Lane:** In progress
 
 **Executive Summary:**
 Automate Brikette customer email responses by integrating Gmail API to generate intelligent drafts. System classifies inquiries, assembles context from website content and availability data, and creates drafts with accurate info and booking CTAs. Pete reviews all drafts before sending.

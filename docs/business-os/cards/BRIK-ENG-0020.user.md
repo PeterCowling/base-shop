@@ -1,7 +1,7 @@
 ---
 Type: Card
 Status: Active
-Lane: Planned
+Lane: In progress
 Priority: P2
 Owner: Pete
 ID: BRIK-ENG-0020

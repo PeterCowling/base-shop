@@ -132,8 +132,8 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-06 | IMPLEMENT | Port GAS email formatting | 82% | M | Completed | - |
 | TASK-07 | INVESTIGATE | Email deliverability testing | 88% | S | Pending | TASK-06 |
 | TASK-08 | IMPLEMENT | Label state machine | 80% | M | Completed | - |
-| TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Pending | TASK-01 |
-| TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Pending | TASK-08, TASK-09 |
+| TASK-09 | IMPLEMENT | Agreement detection | 80% ✅ | M | Complete (2026-02-02) | TASK-01 |
+| TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Complete (2026-02-02) | TASK-08, TASK-09 |
 | TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Pending | TASK-04 |
 | TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Pending | TASK-00 |
 | TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Pending | TASK-01, TASK-03, TASK-04, TASK-11 |
@@ -765,6 +765,26 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ### TASK-09: Enhanced Agreement Detection
 
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 74d77371b6
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts --config ./jest.config.cjs` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Agreement detection now supports explicit/negated/ambiguous phrases with evidence spans and confidence 0–100.
+
 - **Type:** IMPLEMENT
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts` (extend)
 - **Depends on:** TASK-01
@@ -828,10 +848,31 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-10: Prepayment Chase Integration
 
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** 02d3e5a113
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/workflow-triggers.test.ts packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` — PASS (note: Jest reported a worker process not exiting cleanly; consider `--detectOpenHandles` if it recurs)
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** `.claude/skills/process-emails/SKILL.md`
+- **Implementation notes:** Added workflow trigger helpers, prepayment template selection + activity code mapping, and Gmail mark_processed workflow metadata.
+
+
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/utils/workflow-triggers.ts` (new)
+- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/utils/workflow-triggers.ts` (new), `.claude/skills/process-emails/SKILL.md`
 - **Depends on:** TASK-08, TASK-09
 - **Confidence:** 82% ✅ RAISED FROM 78%
   - Implementation: 85% — Templates exist, activity codes well-documented in reception app

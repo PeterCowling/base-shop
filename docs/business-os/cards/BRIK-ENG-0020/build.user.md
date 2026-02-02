@@ -26,7 +26,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-06 | Port GAS email formatting | Complete | 2026-02-02 |
 | TASK-08 | Label state machine | Complete | 2026-02-02 |
 | TASK-09 | Agreement detection | Complete | 2026-02-02 |
-| TASK-10 | Prepayment chase integration | Pending | - |
+| TASK-10 | Prepayment chase integration | Complete | 2026-02-02 |
 | TASK-11 | Hybrid template ranker | Pending | - |
 | TASK-12 | Classification examples resource | Pending | - |
 | TASK-13 | Enhanced draft generation | Pending | - |
@@ -98,6 +98,14 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Commits:** 74d77371b6
 - **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
 - **Notes:** Added explicit/negated/ambiguous handling with human confirmation for unclear cases.
+
+
+
+### 2026-02-02 - TASK-10
+- **Action:** Added prepayment chase workflow helpers, template selection, and workflow metadata for Gmail processing.
+- **Commits:** 02d3e5a113
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/workflow-triggers.test.ts packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` (pass; Jest warned about an exiting worker), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Added prepayment workflow mappings and documented chase steps in the process-emails skill.
 
 ## Blockers
 

@@ -484,6 +484,17 @@ Pre-written templates are available in `packages/mcp-server/data/email-templates
 | activities | Path of the Gods Hike | Activity recommendations |
 | booking-issues | Why cancelled | Booking troubleshooting |
 
+### Prepayment Workflow
+
+When handling prepayment chase emails, apply these mappings:
+- **Step 1:** Use the 1st attempt template (Octorate vs Hostelworld variant based on booking source). Log activity code 2.
+- **Step 2:** Use the 2nd attempt template. Log activity code 3.
+- **Step 3:** Use the cancelled-after-3rd-attempt template. Log activity code 4.
+- **Success:** Use the prepayment successful template. Log activity code 21.
+
+When updating Gmail labels, use `gmail_mark_processed` with:
+`prepayment_chase_1`, `prepayment_chase_2`, or `prepayment_chase_3`.
+
 ### Using Templates
 
 When drafting a response:

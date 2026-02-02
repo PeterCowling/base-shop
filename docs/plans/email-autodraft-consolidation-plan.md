@@ -136,7 +136,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-10 | IMPLEMENT | Prepayment chase integration | 82% ✅ | M | Complete (2026-02-02) | TASK-08, TASK-09 |
 | TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Complete (2026-02-02) | TASK-04 |
 | TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Complete (2026-02-02) | TASK-00 |
-| TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Pending | TASK-01, TASK-03, TASK-04, TASK-11 |
+| TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Complete (2026-02-02) | TASK-01, TASK-03, TASK-04, TASK-11 |
 | TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Pending | TASK-01, TASK-03, TASK-13 |
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Pending | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Pending | TASK-01, TASK-13 |
@@ -1069,10 +1069,31 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ---
 
+
 ### TASK-13: Enhanced Draft Generation
 
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** d30057295b
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Red-green cycles: 1 (tests executed after implementation)
+  - Initial test run: N/A
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-test: 80%
+  - Delta reason: tests validated assumptions
+- **Validation:**
+  - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts --config ./jest.config.cjs` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS
+  - Ran: `pnpm --filter mcp-server build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added draft_generate tool, template ranker integration, knowledge source loading, HTML rendering, and quality gate invocation. Fixed malformed `draft-guide.json`.
+
+
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/tools/draft-generate.ts` (new), `packages/mcp-server/src/tools/index.ts`
+- **Affects:** `packages/mcp-server/src/tools/draft-generate.ts` (new), `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/data/draft-guide.json`
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-11
 - **Confidence:** 80% ✅ RAISED FROM 70%
   - Implementation: 80% — Composition leverages established patterns; preceding tasks well-defined

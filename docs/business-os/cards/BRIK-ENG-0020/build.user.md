@@ -29,7 +29,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-10 | Prepayment chase integration | Complete | 2026-02-02 |
 | TASK-11 | Hybrid template ranker | Complete | 2026-02-02 |
 | TASK-12 | Classification examples resource | Complete | 2026-02-02 |
-| TASK-13 | Enhanced draft generation | Pending | - |
+| TASK-13 | Enhanced draft generation | Complete | 2026-02-02 |
 | TASK-14 | Update process-emails skill | Pending | - |
 | TASK-15 | Template governance & linting | Pending | - |
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
@@ -122,6 +122,14 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 - **Commits:** d11e2afe1c
 - **Validation:** `JEST_FORCE_CJS=1 pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/email-examples.test.ts` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
 - **Notes:** Registered brikette://email-examples resource in MCP server.
+
+
+
+### 2026-02-02 - TASK-13
+- **Action:** Added draft_generate tool with ranker integration, knowledge loading, HTML rendering, and quality checks.
+- **Commits:** d30057295b
+- **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts --config ./jest.config.cjs` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Corrected malformed draft-guide JSON to unblock resource loading.
 
 ## Blockers
 

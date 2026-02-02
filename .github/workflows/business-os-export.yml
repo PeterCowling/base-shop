@@ -1,27 +1,14 @@
 name: Business OS D1 Export
 
+# Deprecated: replaced by bos-export.yml (PR-based export)
+
 # BOS-D1-09: Scheduled export of D1 data to git mirror
 # Exports Business OS entities from D1 to markdown files in docs/business-os/**
 # Commits to work/business-os-export branch
 # Auto-PR workflow handles PR creation + auto-merge
 
 on:
-  # Schedule: Run hourly
-  schedule:
-    - cron: '0 * * * *' # Every hour at :00
-
-  # Allow manual trigger for testing
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Run in dry-run mode (no commits)'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
-
 permissions:
   contents: write  # Required for git push
   pull-requests: write  # Required for auto-PR creation

@@ -20,7 +20,7 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-00A | Gmail inbox query tool | Complete | 2026-02-02 |
 | TASK-01 | Interpretation stage tool | Complete | 2026-02-02 |
 | TASK-02 | Thread context summarizer | Complete | 2026-02-02 |
-| TASK-03 | Quality gate tool | Pending | - |
+| TASK-03 | Quality gate tool | Complete | 2026-02-02 |
 | TASK-04 | Draft quality framework resource | Pending | - |
 | TASK-05 | Voice/tone examples resource | Pending | - |
 | TASK-06 | Port GAS email formatting | Complete | 2026-02-02 |
@@ -35,6 +35,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 
 ## Build Log
+
+
+### 2026-02-02 - TASK-03
+- **Action:** Added draft_quality_check MCP tool and tests.
+- **Commits:** b4b358d03b
+- **Validation:** `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/draft-quality-check.test.ts` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
+- **Notes:** Implements rule checks for questions, prohibited claims, links, signature, and length.
 
 
 ### 2026-02-02 - TASK-02

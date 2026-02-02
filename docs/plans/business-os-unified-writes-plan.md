@@ -238,7 +238,7 @@ The following skill changes impact this plan:
 | TASK-03 | IMPLEMENT | Create `/api/agent/allocate-id` endpoint | 90% | S | Complete (2026-02-02) | TASK-01 |
 | TASK-04 | IMPLEMENT | Create `/api/board-changes` cursor-based delta endpoint | 82% | M | Complete (2026-02-02) | - |
 | TASK-04b | IMPLEMENT | Wire UI to `/api/board-changes` endpoint | 82% | S | Complete (2026-02-02) | TASK-04 |
-| TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Pending | - |
+| TASK-05 | IMPLEMENT | Implement deterministic D1→markdown serializer | 82% | M | Complete (2026-02-02) | - |
 | TASK-05a | IMPLEMENT | Create `/api/admin/export-snapshot` endpoint | 85% | S | Pending | TASK-05 |
 | TASK-06 | IMPLEMENT | Create git export CI job (PR-based, hourly) | 82% | M | Pending | TASK-05a |
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Pending | TASK-06 |
@@ -862,6 +862,26 @@ The following skill changes impact this plan:
   - None
 - **Notes / references:**
   - Serialization rules: These canonicalization rules supersede any conflicting guidance in fact-find
+
+#### Build Completion (2026-02-02)
+- **Status:** Complete
+- **Commits:** bde036fab9
+- **TDD cycle:**
+  - Test cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08
+  - Red-green cycles: 3 (initial test parse errors from escaped strings; round-trip mismatch resolved with normalized parse)
+  - Initial test run: FAIL (serializer test syntax/round-trip issues)
+  - Post-implementation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-test: 82%
+  - Delta reason: Tests validated deterministic serialization and normalization rules
+- **Validation:**
+  - Ran: `pnpm --filter business-os test --testPathPattern=serializer` — PASS (8 tests)
+  - Ran: `pnpm exec eslint apps/business-os/src/lib/export/serializer.ts apps/business-os/src/lib/export/serializer.test.ts` — PASS
+  - Not run: `pnpm --filter @apps/business-os typecheck` (per instruction to avoid repo-wide checks outside edited files)
+- **Documentation updated:** None
+- **Implementation notes:** Added deterministic YAML/frontmatter serializer with date normalization, content canonicalization, and agent-doc template; round-trip test uses stable key ordering to compare payloads.
+
 
 ### TASK-05a: Create `/api/admin/export-snapshot` endpoint
 

@@ -35,6 +35,13 @@ Plan-Link: docs/plans/email-autodraft-consolidation-plan.md
 ## Build Log
 
 
+### 2026-02-02 - TASK-00A
+- **Action:** Added gmail_list_query MCP tool for inbox/date-range sampling.
+- **Commits:** e65d06478a
+- **Validation:** `pnpm --filter mcp-server build` (pass), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server test -- packages/mcp-server/src/__tests__/gmail-list-query.test.ts` (pass)
+- **Notes:** Enables baseline sampling without changing label workflows.
+
+
 ### 2026-02-02 - TASK-17
 - **Action:** Routed reception booking emails through MCP tool with feature-flagged fallback to GAS.
 - **Commits:** 5623ca032b
